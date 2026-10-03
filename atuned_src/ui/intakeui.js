@@ -1392,7 +1392,9 @@ function renderIntake(){
      "which one is open" pointer moves with it (profMark, engine/schema.js)
      and a reload finds this profile again instead of falling back to
      PROFILES[0]. */
-  if(!profOpen(PROFILES[pi].id)){renderIntake();return;}
+  if(!profOpen(PROFILES[pi].id)){
+   status('Not opened. '+(PROF_ERR||['it was refused']).join('. ')+'.','fail');
+   renderIntake();return;}
   IQ_OPEN=null;IQ_SEAT=null;
   syncCh();syncLw();syncSoul();renderIntake();render();};
  var nb=document.getElementById('iqnew');
