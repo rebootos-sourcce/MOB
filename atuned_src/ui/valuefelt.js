@@ -96,4 +96,14 @@ function vfWatch(){
   quiet=vfBlocked()?0:quiet+VF_POLL_MS;
   if(quiet>=VF_QUIET_MS){ vfOpen(); return; }
   waited+=VF_POLL_MS; setTimeout(tick,VF_POLL_MS);})();}
-if(typeof afterBoot==='function')afterBoot(function(){ try{ vfWatch(); }catch(e){} });
+/* THE DEVELOPER SKIP IS HONOURED. ?dev=1 and the button in the boot sheet's
+   corner mean "skip the door and the sequence entirely" (ui/login.js,
+   DEV_SKIP), straight to the dashboard, and a question at open is part of
+   that sequence. It is also how every browser gate reaches the instrument,
+   and a gate that runs a release and reloads would otherwise meet this
+   sheet over whatever it came to measure. tests/valuefeltui.js calls
+   vfWatch itself for that reason, and proves the boot hook below runs by
+   opening without the skip. */
+if(typeof afterBoot==='function')afterBoot(function(){
+ if(typeof DEV_SKIP!=='undefined'&&DEV_SKIP)return;
+ try{ vfWatch(); }catch(e){} });

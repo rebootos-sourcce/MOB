@@ -72,6 +72,21 @@ async function doorHolds(browser, file) {
   return { door, came };
 }
 
+/* the developer skip: a due record, opened with ?dev=1. Returns whether the
+   sheet came, which must be never on the real build. */
+async function devSkipAsks(browser, file) {
+  const cx = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
+  const pg = await cx.newPage();
+  await pg.goto('file://' + file + '?dev=1', { waitUntil: 'load' });
+  await pg.waitForFunction(() => typeof CURP !== 'undefined' && CURP && typeof pSave === 'function');
+  await pg.evaluate(seed(3, 0, 0.1));
+  await pg.goto('file://' + file + '?dev=1', { waitUntil: 'load' });
+  await booted(pg);
+  const came = await waitSheet(pg, 5000);
+  await cx.close();
+  return came;
+}
+
 (async () => {
   if (!fs.existsSync(SRC)) { console.log('source.html is missing: run ./atuned_src/BUILD.sh'); process.exit(1); }
   const browser = await chromium.launch();
@@ -91,18 +106,35 @@ async function doorHolds(browser, file) {
       + JSON.stringify(b));
     fs.rmSync(tmp, { recursive: true, force: true });
   }
+  const skip = 'if(typeof DEV_SKIP!==\'undefined\'&&DEV_SKIP)return;';
+  if (html.indexOf(skip) < 0) {
+    ok(false, 'the developer skip line was not found in source.html, so its known bad copy tests nothing');
+  } else {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'vfui-'));
+    const bad = path.join(tmp, 'source.html');
+    fs.writeFileSync(bad, html.replace(skip, ''));
+    ok(await devSkipAsks(browser, bad), 'on a copy that ignores the developer skip the sheet does open, so the check below can fail');
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
 
   console.log('\nTHE REAL BUILD');
+  ok(!(await devSkipAsks(browser, SRC)), 'under the developer skip a due question is not asked, the skip means straight to the dashboard');
   const d = await doorHolds(browser, SRC);
   ok(d.door && !d.came, 'with the login door standing, the sheet waits and does not open over it: ' + JSON.stringify(d));
 
   const cx = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
   const pg = await cx.newPage();
   pg.on('pageerror', e => errs.push(e.message));
+  /* ?dev=1 skips the door, and the developer skip is honoured by the watch
+     itself, so under it the boot hook never starts the watch. Each open
+     below therefore first proves that, then starts the watch by hand, which
+     is the one call the boot hook makes. That the hook does make it, with no
+     skip, is what the door check above proves on the broken copy. */
   const open = async () => {
     await pg.goto('file://' + SRC + '?dev=1', { waitUntil: 'load' });
     await pg.waitForFunction(() => typeof CURP !== 'undefined' && CURP && typeof pSave === 'function');
     await booted(pg);
+    await pg.evaluate(() => vfWatch());
   };
 
   /* no release yet: never asked */

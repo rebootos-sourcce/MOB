@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1476 70884c6 2026-10-03 00:27"><head><meta charset="utf-8">
+<html lang="en" data-build="v1477 81b7c29 2026-10-03 01:21"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -62653,7 +62653,17 @@ function vfWatch(){
   quiet=vfBlocked()?0:quiet+VF_POLL_MS;
   if(quiet>=VF_QUIET_MS){ vfOpen(); return; }
   waited+=VF_POLL_MS; setTimeout(tick,VF_POLL_MS);})();}
-if(typeof afterBoot==='function')afterBoot(function(){ try{ vfWatch(); }catch(e){} });
+/* THE DEVELOPER SKIP IS HONOURED. ?dev=1 and the button in the boot sheet's
+   corner mean "skip the door and the sequence entirely" (ui/login.js,
+   DEV_SKIP), straight to the dashboard, and a question at open is part of
+   that sequence. It is also how every browser gate reaches the instrument,
+   and a gate that runs a release and reloads would otherwise meet this
+   sheet over whatever it came to measure. tests/valuefeltui.js calls
+   vfWatch itself for that reason, and proves the boot hook below runs by
+   opening without the skip. */
+if(typeof afterBoot==='function')afterBoot(function(){
+ if(typeof DEV_SKIP!=='undefined'&&DEV_SKIP)return;
+ try{ vfWatch(); }catch(e){} });
 
 try{window.__at&&window.__at('ui/valuefelt.js');}catch(e){}
 
@@ -64479,5 +64489,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004215574"></div>
+<div id="eof" hidden data-len="004216174"></div>
 </body></html>
