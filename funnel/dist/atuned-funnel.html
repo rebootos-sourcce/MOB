@@ -1,7 +1,7 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Atuned</title>
-<meta name="description" content="Mindset programming is the cause. This reads where it sits in your body and what it costs.">
+<meta name="description" content="See what's running you. Atuned listens to how you describe what is happening, shows you the patterns it notices, and lets you decide whether it is right.">
 <!-- tokens.css is generated from the app's own stylesheet by tools/tokens.py.
      It is linked and not copied, because a palette copied by hand is correct
      on the day it is copied and wrong afterwards. BUILD-single.sh inlines it
@@ -157,197 +157,364 @@
  --shadow:0 12px 34px rgba(0,0,0,.34);
 }
 </style>
+<!-- ============================================================
+     THE FIRST ROOM OF THE PRODUCT. Round QT, 3 October.
+
+     His words: "I don't like the funnel landing page. It doesn't feel
+     aspirational. And I want to pull elements from the field or the compass
+     or the body throughout the entire experience. So the landing page must
+     also be dynamic moving, breathing, alive. The language referred to the
+     TDD document ... everything's symbolic And there's a narrative flow you
+     can feel."
+
+     The document is reviews/ATUNED-Creative-Storyboard-TDD.md. Its rule for
+     this page is section 0: "The website is not a brochure for the product.
+     The website is the first room of the product." Its rule for the picture
+     is section 8: "The Field is the interface, not the background."
+
+     So the page is one stage and one story. The story scrolls in the left
+     column, one storyboard beat per frame, in the TDD's own words and order.
+     The stage holds still beside it (on a phone, a band pinned to the top)
+     and changes state as each beat arrives: three points of light, six
+     situations, one pattern, the whole network, the body, a knot that
+     loosens, the loop, and at the close one point again. Every motion on it
+     is one of the states in the TDD's visual grammar (section 69), and none
+     of it is decoration: "Decorative motion that communicates none of these
+     states should be removed."
+
+     Every number in the motion is the product's own, so it is the same
+     instrument and not a page bolted onto it:
+       the pulse        ui/wheel.js pulses(): seven pixels, a period of 96
+                        slack to 48 taut, speed 16 + 68 times the square root
+                        of tension, outer end to inner
+       the breath       the Field's 4.2 second wave, --t-breath in tokens.css
+       the seats        each breathes at 4.2 s times 396 over its own tone in
+                        FLOWSEAT, the Registers rule in ui/cone.js, so Root
+                        is on the breath and Crown rings fastest
+       the dial         the Compass plan view in ui/cone.js: a hairline rim,
+                        the seven seat arcs just outside it, meridians in the
+                        seat colours, a dashed circle in the accent
+
+     Reduced motion gets the end state of every frame and nothing travels,
+     the rule the Field and the Compass already keep. No script, and every
+     frame is plain text in order. Nothing here is fetched: the page makes no
+     request of any kind, which tests/funnel.js counts.
+     ============================================================ -->
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
  font-family:var(--sans);-webkit-text-size-adjust:100%}
-body{font-size:17px;line-height:1.62}
+html{scroll-behavior:smooth}
+body{font-size:18px;line-height:1.6;overflow-x:hidden}
+:root{--gut:16px; --col:600px; --stage-h:38vh}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:4px}
 
-/* THE PAGE WAS ONE NARROW COLUMN DOWN THE MIDDLE OF A WIDE SCREEN.
+/* ---- the wordmark. The umlaut sits on the bar and answers to the ground.
+   It floated about thirty pixels above the u at 64 pixels, measured on the
+   before shot, because it was hung off the top of the line box. It is hung
+   off the x height now, so it sits where a printed umlaut sits. ---- */
+.wm{font-weight:600;letter-spacing:-.025em;white-space:nowrap;line-height:1}
+.wm .um{position:relative;display:inline-block}
+.wm .um::before,.wm .um::after{content:'';position:absolute;top:.08em;
+ width:.12em;height:.12em;border-radius:50%;background:var(--um)}
+.wm .um::before{left:.07em}
+.wm .um::after{left:.33em}
 
-   4588 pixels tall at 1600 with the sides empty, because every parallel block
-   on the page was being drawn one narrow item at a time. Prose keeps its
-   measure, which is what --measure is for. Everything tabular or parallel,
-   the pain list, the three registers, the four steps, the instruments, spreads
-   into the width it already had. */
-:root{--measure:64ch; --gut:16px}
-.wrap{max-width:1120px;margin:0 auto;padding:40px var(--gut) 64px}
-.m{max-width:var(--measure)}
-
-/* ---- the hero. The figure is beside the words and never under them: the
-   hero carries no text. ---- */
-.hero-wrap{display:grid;gap:22px;justify-items:center;text-align:center}
-.hero{display:block;width:100%;max-width:130px;height:auto;overflow:visible}
-.hero-body{fill:rgba(150,152,160,.075);stroke:var(--edge-2);stroke-width:1.6;
- vector-effect:non-scaling-stroke}
-.hero-nerves path{fill:none;stroke-width:.3;opacity:.30;stroke-linecap:round}
-.hero-seat{fill:none;stroke-width:.5;opacity:.85}
-h1{font-size:44px;line-height:1;letter-spacing:-.025em;margin:0;font-weight:600}
-h1 .um{position:relative;display:inline-block}
-h1 .um::before,h1 .um::after{content:'';position:absolute;top:-.44em;
- width:.13em;height:.13em;border-radius:50%;background:var(--um)}
-h1 .um::before{left:.05em}
-h1 .um::after{left:.34em}
-.sub{color:var(--mid);font-size:13px;letter-spacing:.14em;
- text-transform:uppercase;margin:12px 0 0}
-.lead{font-size:26px;line-height:1.34;margin:26px 0 0;letter-spacing:-.015em}
-
-p{margin:16px 0 0}
-section{margin-top:56px;padding-top:30px;border-top:1px solid var(--edge)}
-.eye{display:block;font-size:11.5px;letter-spacing:.17em;text-transform:uppercase;
- color:var(--accent);margin:0 0 10px}
-h2{font-size:27px;line-height:1.18;margin:0;letter-spacing:-.018em;font-weight:600}
-h3{font-size:17px;margin:0;font-weight:600}
-
-/* ---- the five item bill ---- */
-.bill{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:1px;
- background:var(--edge);border:1px solid var(--edge);border-radius:10px;overflow:hidden}
-.bill li{background:var(--panel);padding:13px 16px 14px 32px;position:relative;color:var(--mid)}
-.bill li::before{content:'';position:absolute;left:15px;top:20px;width:7px;height:7px;
- border-radius:50%;border:1.4px solid var(--root)}
-.bill li b{color:var(--ink);font-weight:600}
-
-/* ---- the three registers ---- */
-.three{display:grid;gap:1px;margin:24px 0 0;background:var(--edge);
- border:1px solid var(--edge);border-radius:10px;overflow:hidden}
-.three div{background:var(--panel);padding:15px 17px}
-.three b{display:block;font-size:12px;letter-spacing:.11em;text-transform:uppercase;
- color:var(--dim);font-weight:600}
-.three span{display:block;margin-top:5px;color:var(--ink);font-size:16px}
-
-/* ---- the four steps ---- */
-/* THE FOUR CLOSE. The numerals are gone and the rail replaces them: a line
-   down the left of the block that runs through all four and returns under the
-   fourth. Icons are ring and not fill, so the mark on each step is an open
-   ring in that step's seat colour. */
-.steps{display:grid;gap:14px;margin-top:24px;position:relative;
- padding-left:22px}
-.steps::before{content:'';position:absolute;left:5px;top:34px;bottom:30px;
- width:1px;background:var(--edge-2)}
-.step{display:flex;gap:14px;align-items:flex-start;background:var(--panel);
- border:1px solid var(--edge);border-radius:10px;padding:16px 18px 18px}
-.step i{flex:0 0 32px;height:32px;border-radius:50%;border:1.5px solid var(--edge-2);
- margin-top:1px}
-.step p{margin:5px 0 0;color:var(--mid)}
-.step.s1 i{border-color:var(--throat)}
-.step.s2 i{border-color:var(--sacral)}
-.step.s3 i{border-color:var(--heart)}
-.step.s4 i{border-color:var(--root)}
-.loop{position:relative;margin:2px 0 0;color:var(--mid);font-size:15px}
-.loop::before{content:'';position:absolute;left:-17px;top:-16px;width:12px;
- height:24px;border:1px solid var(--edge-2);border-right:0;
- border-radius:8px 0 0 8px}
-
-/* ---- THE ROUTES OUT OF THE FRONT DOOR.
-
-   The landing had none. About and Tiers both carried a nav back to here and
-   here carried nothing forward, so a stranger who arrived on the landing
-   could take the test or leave, and the page that asks for money was
-   unreachable from the page that gets the traffic. Same row, same floor, at
-   the top and at the foot. ---- */
-.nav{margin:26px 0 0;display:flex;gap:var(--g3);flex-wrap:wrap;
- font-size:13px;letter-spacing:.06em;justify-content:center}
-/* THE RULE UNDER EACH LABEL WAS A BORDER ON THE BOX, and the box is now 44
-   high, so every underline detached and floated about twenty pixels beneath
-   the word it belonged to. Measured on the shot. It is a text decoration now,
-   which is attached to the text and does not care how tall the hit area is. */
-.nav a{color:var(--dim);text-decoration:underline;
- text-decoration-color:var(--edge-2);text-underline-offset:5px;
- text-decoration-thickness:1px;
- transition:color var(--t-micro) var(--ease-out),
-            text-decoration-color var(--t-micro) var(--ease-out)}
+/* ---- the bar ---- */
+.top{display:flex;align-items:center;justify-content:space-between;gap:var(--g3);
+ padding:10px var(--gut);position:relative;z-index:3}
+.top .wm{font-size:22px}
+.top .tag{color:var(--mid);font-size:15px;margin-left:14px}
+.nav{display:flex;gap:6px;flex-wrap:wrap;font-size:15px}
+.nav a{display:inline-flex;align-items:center;justify-content:center;
+ min-height:var(--tap);min-width:var(--tap);padding:0 10px;color:var(--mid);
+ text-decoration:underline;text-decoration-color:var(--edge-2);
+ text-underline-offset:5px;text-decoration-thickness:1px;
+ transition:color var(--t-micro) var(--ease-out),text-decoration-color var(--t-micro) var(--ease-out)}
 .nav a:hover,.nav a:focus-visible{color:var(--ink);text-decoration-color:var(--ink)}
-.nav b{color:var(--ink);font-weight:600;text-decoration:underline;
- text-decoration-color:var(--accent);text-underline-offset:5px;
- text-decoration-thickness:1px}
-.foot-nav{margin-top:40px;padding-top:22px;border-top:1px solid var(--edge);
- justify-content:flex-start}
-/* one row, one floor, at every width. The viewport does not say whether a
-   finger or a pointer is aiming, so the floor cannot depend on it. */
-.nav a,.nav b{display:inline-flex;align-items:center;justify-content:center;
- min-height:var(--tap);min-width:var(--tap);padding-bottom:0;line-height:1.2}
-@media(max-width:700px){ .nav{gap:var(--g3) 18px} }
+.nav a.go{color:var(--ink);text-decoration-color:var(--accent)}
 
-/* ---- the instruments ---- */
-.tools{list-style:none;margin:24px 0 0;padding:0;display:grid;gap:1px;
- background:var(--edge);border:1px solid var(--edge);border-radius:10px;overflow:hidden}
-.tools li{background:var(--panel);padding:13px 16px}
-.tools li b{display:block;font-weight:600}
-.tools li b i{display:inline-block;width:7px;height:7px;border-radius:50%;
- margin-right:8px;vertical-align:middle;font-style:normal}
-.tools li span{display:block;color:var(--mid);font-size:15.5px;margin-top:3px}
+/* ---- the stage and the story ---- */
+.story{position:relative}
+.stage{position:sticky;top:0;z-index:2;height:var(--stage-h);
+ background:var(--bg);overflow:hidden}
+/* a phone's stage is a band over the story, so its lower edge fades into the
+   ground rather than cutting the text that scrolls under it */
+.stage::after{content:'';position:absolute;left:0;right:0;bottom:0;height:22px;
+ background:linear-gradient(var(--bg-0,rgba(12,13,18,0)),var(--bg));pointer-events:none}
+.lyr{position:absolute;inset:0;transition:opacity var(--t-context) var(--ease-out)}
+#fld{width:100%;height:100%;display:block}
+.lyr-body,.lyr-dial{display:flex;align-items:center;justify-content:center;opacity:0}
+.stage[data-show="body"] .lyr-body,.stage[data-show="dial"] .lyr-dial{opacity:1}
+.stage[data-show="body"] .lyr-field,.stage[data-show="dial"] .lyr-field{opacity:0}
+/* no script: no Field and no dial to drive, so the stage shows the body, which
+   is drawn in markup and needs nothing to run */
+html:not(.js) .lyr-body{opacity:1}
+/* a layer nobody can see does not run: the body's nerves and seats and the
+   dial's orbit pause while the stage shows something else */
+.js .stage:not([data-show="body"]) .lyr-body *,
+.js .stage:not([data-show="dial"]) .lyr-dial *{animation-play-state:paused}
+html:not(.js) .lyr-dial{display:none}
 
-.open{margin:26px 0 0;padding:18px 18px 20px;border:1px solid var(--edge-2);
- border-radius:10px;background:var(--panel)}
-.open h3{margin-bottom:6px}
-.open p{color:var(--mid);margin-top:8px}
-.cta{margin-top:30px}
-a.btn{display:inline-block;background:var(--accent);color:var(--on-accent);
- text-decoration:none;font-weight:600;font-size:18px;padding:16px 34px;border-radius:9px;
- min-height:52px;line-height:20px}
-a.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
-.meta{margin:14px 0 0;font-size:13px;color:var(--dim)}
-.close{margin-top:56px;padding-top:30px;border-top:1px solid var(--edge-2)}
-.close p{font-size:26px;line-height:1.36;margin:0;letter-spacing:-.015em}
-.close p+p{margin-top:2px}
-.close .last{color:var(--accent)}
-.foot{margin-top:48px;padding-top:20px;border-top:1px solid var(--edge);
- font-size:13px;color:var(--dim)}
+.col{padding:0 var(--gut)}
+.fr{min-height:62vh;padding:40px 0 48px;display:flex;flex-direction:column;
+ justify-content:center;max-width:var(--col)}
 
-@media(min-width:560px){
- .three{grid-template-columns:repeat(3,1fr)}
- .bill{grid-template-columns:1fr 1fr}
- .tools{grid-template-columns:1fr 1fr}
-}
+/* ---- type. Three levels, by weight and space before size. ---- */
+h1{font-size:40px;line-height:1.06;letter-spacing:-.028em;margin:0;font-weight:600;text-wrap:balance}
+h2,.big{font-size:30px;line-height:1.16;letter-spacing:-.02em;margin:0;font-weight:600;max-width:20ch;text-wrap:balance}
+.big+.big{margin-top:4px}
+.lead{font-size:21px;line-height:1.4;color:var(--mid);margin:18px 0 0;max-width:30ch}
+.eye{display:block;font-size:14px;color:var(--accent);margin:0 0 12px;letter-spacing:.01em}
+p{margin:14px 0 0}
+.m{max-width:52ch}
+.soft{color:var(--mid)}
+/* what the stage is showing, in plain words, beside it and never on it, and
+   one press away rather than on the screen at rest. Round QU, 3 October: he
+   put a red X through the body caption and scribbled out the field's, and
+   said "Don't add text if it's unnecessary." The same night, on the Ritual
+   page: "if you want tell you press on something to get information". Every
+   mark on the stage still has its meaning in the frame that shows it, which
+   is the unpack rule, round PO; the meaning waits for the press. Without a
+   script there is no button and the key is printed, so a page whose script
+   never ran still reads in full. The toggle keeps its one word whichever way
+   it stands: a label never changes with the state, the state is aria-expanded
+   and the ring. */
+.cap{margin-top:22px;max-width:52ch}
+.cap-t{display:inline-flex;align-items:center;gap:8px;min-height:var(--tap);min-width:var(--tap);
+ margin-left:-6px;padding:0 12px 0 6px;font:inherit;font-size:15px;color:var(--dim);
+ background:transparent;border:0;border-radius:999px;cursor:pointer;
+ transition:color var(--t-micro) var(--ease-out),background var(--t-micro) var(--ease-out)}
+.cap-t svg{width:18px;height:18px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.4;
+ stroke-linecap:round;transition:stroke var(--t-micro) var(--ease-out)}
+.cap-t svg .dot{fill:currentColor;stroke-width:1}
+.cap-t:hover,.cap-t:focus-visible{color:var(--ink)}
+.cap-t[aria-expanded="true"]{color:var(--ink)}
+.cap-t[aria-expanded="true"] svg circle:first-child{stroke:var(--accent)}
+.cap-b{margin:6px 0 0;padding-left:14px;border-left:1px solid var(--edge-2);
+ font-size:14.5px;line-height:1.55;color:var(--dim)}
+.cap-b:not([hidden]){animation:capin var(--t-element) var(--ease-out)}
+@keyframes capin{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+html:not(.js) .cap-t{display:none}
+html:not(.js) .cap-b{margin-top:0}
+
+/* ---- arrive ---- */
+.cta{margin-top:28px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+a.btn{display:inline-flex;align-items:center;justify-content:center;
+ background:var(--accent);color:var(--on-accent);text-decoration:none;font-weight:600;
+ font-size:18px;padding:0 30px;border-radius:999px;min-height:52px;min-width:var(--tap);
+ transition:transform var(--t-micro) var(--ease-out),box-shadow var(--t-element) var(--ease-out)}
+a.btn:hover{box-shadow:0 0 0 6px rgba(126,184,212,.16)}
+a.btn:active{transform:scale(.98)}
+a.ghost{display:inline-flex;align-items:center;min-height:var(--tap);padding:0 14px;
+ color:var(--mid);text-decoration:underline;text-decoration-color:var(--edge-2);
+ text-underline-offset:5px}
+a.ghost:hover{color:var(--ink)}
+
+/* ---- recognise ---- */
+.keep{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:6px}
+.keep li{font-size:20px;color:var(--mid);display:flex;align-items:center;gap:12px}
+.keep li::before{content:'';flex:0 0 9px;height:9px;border-radius:50%;
+ border:1.5px solid var(--dim)}
+.same{margin-top:22px}
+.same .big{color:var(--ink)}
+.same .big:last-child{color:var(--accent)}
+
+/* ---- the mirror ---- */
+.said{margin:20px 0 0;font-size:24px;line-height:1.35;color:var(--ink);
+ padding-left:16px;border-left:2px solid var(--edge-2);max-width:26ch}
+.said .w{text-decoration:underline;text-decoration-color:transparent;
+ text-underline-offset:6px;text-decoration-thickness:2px;
+ transition:text-decoration-color var(--t-surface) var(--ease-out)}
+.fr.seen .said .w{text-decoration-color:var(--accent)}
+.fr.seen .said .w2{transition-delay:.35s}.fr.seen .said .w3{transition-delay:.7s}
+.parts{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 0;padding:0;list-style:none}
+.parts li{font-size:15px;padding:5px 12px;border:1px solid var(--accent);border-radius:999px;color:var(--ink)}
+.chain{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:14px}
+.chain li{position:relative;display:flex;align-items:center;gap:12px;font-size:16px;color:var(--mid)}
+.chain .nd{flex:0 0 auto;width:18px;height:18px;border-radius:50%;border:1.6px solid var(--mid);background:var(--bg);
+ position:relative;z-index:1;transition:border-color var(--t-element) var(--ease-out),box-shadow var(--t-element) var(--ease-out)}
+.chain li:not(:last-child)::after{content:'';position:absolute;left:8px;top:22px;width:2px;height:calc(100% - 8px);
+ background:linear-gradient(180deg,transparent,var(--ink),transparent) no-repeat,var(--edge-2);
+ background-size:100% 18px,100% 100%;animation:runV 1.5s linear infinite}
+@keyframes runV{from{background-position:0 -30%,0 0}to{background-position:0 130%,0 0}}
+.mirror{margin-top:26px;padding:20px 20px 22px;border:1px solid var(--edge-2);border-radius:var(--r);
+ background:var(--panel)}
+.mirror .eye{margin-bottom:8px}
+.reading{font-size:21px;line-height:1.38;margin:0;color:var(--ink);
+ transition:opacity var(--t-element) var(--ease-out)}
+.reading.out{opacity:0}
+.ask{margin:14px 0 0;color:var(--mid)}
+.ans{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.ans button{font:inherit;font-size:16px;color:var(--ink);background:transparent;
+ border:1px solid var(--edge-2);border-radius:999px;min-height:var(--tap);min-width:var(--tap);
+ padding:0 18px;cursor:pointer;
+ transition:border-color var(--t-micro) var(--ease-out),background var(--t-micro) var(--ease-out)}
+.ans button:hover{border-color:var(--mid)}
+.ans button[aria-pressed="true"]{border-color:var(--accent);background:rgba(126,184,212,.12)}
+.say{margin:14px 0 0;min-height:1.6em;color:var(--accent)}
+.was{list-style:none;margin:10px 0 0;padding:0;font-size:15px;color:var(--dim)}
+.was:empty{display:none}
+.was li{margin-top:4px}
+.was del{text-decoration-color:var(--dim)}
+/* the chain answers the mirror. confirmed, the path stabilises: the run
+   stops and the line holds in the accent. not quite, the structure loosens:
+   the line breaks into dashes. look again, the path stays open from the
+   third link on. Section 69: confirm, correct, unknown. */
+.mx[data-m="yes"] .chain li:not(:last-child)::after{animation:none;background:var(--accent)}
+.mx[data-m="yes"] .chain .nd{border-color:var(--accent);box-shadow:0 0 0 4px rgba(126,184,212,.14)}
+.mx[data-m="no"] .chain li:not(:last-child)::after{animation:none;
+ background:repeating-linear-gradient(180deg,var(--edge-2) 0 4px,transparent 4px 9px)}
+.mx[data-m="again"] .chain li:nth-child(n+3) .nd{border-style:dashed;opacity:.55}
+.mx[data-m="again"] .chain li:nth-child(n+2)::after{animation:none;opacity:.4}
+
+/* ---- the body ---- */
+.felt+.big{margin-top:18px}
+.felt{margin:20px 0 0;font-size:22px;line-height:1.5;color:var(--ink);max-width:28ch}
+.felt span{display:inline-block;margin-right:.32em}
+.hero{display:block;height:88%;width:auto;max-width:92%;overflow:visible}
+.hero-body{fill:rgba(150,152,160,.07);stroke:var(--edge-2);stroke-width:1.4;vector-effect:non-scaling-stroke}
+.hero-nerves path{fill:none;stroke-width:.3;opacity:.22;stroke-linecap:round}
+.hero-run path{fill:none;stroke-width:.42;opacity:.9;stroke-linecap:round;
+ stroke-dasharray:.7 5.3;animation:nerve 2.6s linear infinite}
+.hero-run path:nth-child(3n){animation-duration:3.4s}
+.hero-run path:nth-child(3n+1){animation-duration:2.1s}
+@keyframes nerve{to{stroke-dashoffset:-6}}
+.hero-seat{fill:none;stroke-width:.5;opacity:.9}
+/* each seat breathes at its own tone brought down onto the Field's breath:
+   4.2 s times 396 over the seat's hertz in FLOWSEAT. alternate runs the
+   half period each way, so the duration is half the period. */
+.hero-glow{transform-box:fill-box;transform-origin:center;
+ animation:seat var(--hp,2.1s) var(--ease-breath) infinite alternate}
+.hero-glow[data-seat="root"]{--hp:2.10s}
+.hero-glow[data-seat="sacral"]{--hp:1.99s}
+.hero-glow[data-seat="solar"]{--hp:1.58s}
+.hero-glow[data-seat="heart"]{--hp:1.30s}
+.hero-glow[data-seat="throat"]{--hp:1.12s}
+.hero-glow[data-seat="eye"]{--hp:0.98s}
+.hero-glow[data-seat="crown"]{--hp:0.86s}
+@keyframes seat{from{opacity:.55;transform:scale(.9)}to{opacity:1;transform:scale(1.06)}}
+/* one region activates, Beat 09. The Compass's lit node: the ring, and a
+   second ring outside it. */
+.seat-ping{fill:none;stroke-width:.35;transform-box:fill-box;transform-origin:center;
+ animation:ping var(--t-breath) var(--ease-out) infinite}
+@keyframes ping{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(3.4)}}
+
+/* ---- release ---- */
+.steps{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:10px}
+.steps li{display:grid;grid-template-columns:110px minmax(0,1fr);gap:12px;align-items:baseline;
+ color:var(--dim);transition:color var(--t-element) var(--ease-out)}
+.steps b{font-weight:600;color:var(--dim);transition:color var(--t-element) var(--ease-out)}
+.steps li.on,.steps li.on b{color:var(--ink)}
+.steps li.on b{color:var(--accent)}
+.frame-q{margin:22px 0 0;font-size:21px;line-height:1.4;padding-left:16px;
+ border-left:2px solid var(--accent);max-width:30ch}
+.changed{margin:26px 0 0}
+.changed h3{font-size:21px;margin:0;font-weight:600}
+.opts{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px 18px;color:var(--mid);font-size:16px}
+.opts li{display:flex;align-items:center;gap:8px}
+.opts li::before{content:'';width:7px;height:7px;border-radius:50%;border:1.4px solid var(--dim)}
+
+/* ---- the loop ---- */
+.four{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:14px}
+.four li{display:flex;gap:12px;align-items:flex-start}
+.four i{flex:0 0 18px;height:18px;border-radius:50%;border:1.8px solid;margin-top:4px}
+.four b{display:block;font-weight:600}
+.four span{color:var(--mid);font-size:16.5px}
+.back{margin-top:16px;color:var(--mid)}
+#dial{width:88%;height:88%;max-width:620px;overflow:visible}
+#dial .lbl{font:500 15px var(--sans);fill:var(--ink)}
+@media(max-width:899px){#dial .lbl{font-size:23px}}
+.orbit{transform-box:view-box;transform-origin:200px 200px;animation:orbit 12s linear infinite}
+@keyframes orbit{to{transform:rotate(360deg)}}
+.st-h{opacity:0;animation:stlit 12s linear infinite}
+@keyframes stlit{0%{opacity:0}2.5%{opacity:.7}16%{opacity:0}100%{opacity:0}}
+.cohere{animation:breathe var(--t-breath) var(--ease-breath) infinite alternate}
+@keyframes breathe{from{opacity:.4}to{opacity:.9}}
+
+/* ---- the return ---- */
+.fr-ret{min-height:78vh}
+.end-wm{font-size:64px;line-height:1;margin:34px 0 0}
+.end-tag{font-size:21px;color:var(--mid);margin:12px 0 0}
+.meta{margin:14px 0 0;font-size:14.5px;color:var(--dim);max-width:44ch}
+
+.foot{border-top:1px solid var(--edge);margin-top:20px;padding:18px var(--gut) 40px;
+ font-size:14px;color:var(--dim)}
+.foot .nav{margin:0 0 6px -10px}
+
+/* ---- the reveal. Each frame's lines arrive once, when the frame does. Only
+   with a script, so a page whose script never ran is never blank. ---- */
+.js .fr .rv{opacity:0;transform:translateY(12px);
+ transition:opacity var(--t-surface) var(--ease-out),transform var(--t-surface) var(--ease-out);
+ transition-delay:var(--d,0s)}
+.js .fr.seen .rv{opacity:1;transform:none}
+.js .keep li,.js .same{opacity:.0;transform:translateY(8px);
+ transition:opacity var(--t-element) var(--ease-out),transform var(--t-element) var(--ease-out)}
+.js .keep li.on,.js .same.on{opacity:1;transform:none}
+.js .felt span{opacity:0;transition:opacity var(--t-element) var(--ease-out)}
+.js .fr.seen .felt span{opacity:1}
+
+/* ---- the desk. The story takes the left, the stage stands on the right for
+   the whole scroll, and each frame is a screen tall so one beat is read at a
+   time: "Every frame has one job", section 52. ---- */
 @media(min-width:900px){
- /* THE RAIL LIED AT TWO COLUMNS. The four read left to right and then down
-    here, so a vertical line down the left of the block connects Discover to
-    Flow and leaves Play and Embody off it, and the return hook lands under
-    the wrong card. The rail comes off, and the close becomes a horizontal
-    return under the whole grid with a tick back up at the start, which is
-    the direction the eye actually travelled. */
- .steps{grid-template-columns:1fr 1fr;padding-left:0}
- .steps::before{display:none}
- .loop{margin-top:14px;padding-top:15px;border-top:1px solid var(--edge-2);
-  max-width:var(--measure)}
- .loop::before{left:0;top:-8px;width:1px;height:16px;border:0;
-  background:var(--edge-2);border-radius:0}
- .tools{grid-template-columns:repeat(3,1fr)}
+ :root{--gut:clamp(24px,5vw,96px)}
+ .top{padding:14px var(--gut)}
+ .story{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr)}
+ .stage{grid-column:2;grid-row:1;height:100vh;align-self:start}
+ .stage::after{display:none}
+ .col{grid-column:1;grid-row:1}
+ .fr{min-height:100vh;padding:60px 0}
+ .fr-arrive{min-height:calc(100vh - 72px)}
+ h1{font-size:clamp(48px,4.4vw,68px)}
+ h2,.big{font-size:clamp(34px,2.9vw,44px)}
+ .lead{font-size:24px}
+ .said{font-size:28px}
+ .chain{grid-template-columns:repeat(5,minmax(0,1fr));gap:0}
+ .chain li{flex-direction:column;align-items:center;text-align:center;gap:10px;font-size:15px}
+ .chain li:not(:last-child)::after{left:calc(50% + 13px);top:8px;width:calc(100% - 26px);height:2px;
+  background:linear-gradient(90deg,transparent,var(--ink),transparent) no-repeat,var(--edge-2);
+  background-size:18px 100%,100% 100%;animation-name:runH}
+ .mx[data-m="no"] .chain li:not(:last-child)::after{
+  background:repeating-linear-gradient(90deg,var(--edge-2) 0 4px,transparent 4px 9px)}
+ .four{grid-template-columns:1fr 1fr;gap:20px 28px}
+ .end-wm{font-size:clamp(88px,8vw,128px)}
 }
-/* THE SPREAD. At this width the eyebrow and the heading move into their own
-   column and the body sits beside them, so a section fills the page across
-   instead of running down it. */
-@media(min-width:1040px){
- body{font-size:17.5px}
- section{display:grid;grid-template-columns:250px minmax(0,1fr);
-  column-gap:44px;align-items:start}
- .hd{position:sticky;top:34px}
- .bd{min-width:0}
- .bill{grid-template-columns:repeat(3,1fr)}
- .bill li:nth-child(5){grid-column:span 2}
- .hero-wrap{grid-template-columns:190px minmax(0,1fr);gap:64px;
-  justify-items:start;text-align:left;align-items:center}
- .hero{max-width:190px}
- h1{font-size:64px}
- .lead{font-size:34px;max-width:26ch;margin-top:30px}
- .m{max-width:70ch}
- .open{padding:20px 22px 22px}
+@keyframes runH{from{background-position:-30% 0,0 0}to{background-position:130% 0,0 0}}
+@media(max-width:899px){
+ .top .tag{display:none}
+ .stage{--stage-h:38vh}
 }
-@media(max-width:400px){
- h1{font-size:34px} .lead{font-size:21px} h2{font-size:22px}
- .close p{font-size:20px}
+@media(max-width:380px){
+ h1{font-size:34px} h2,.big{font-size:26px} .said{font-size:21px}
+}
+
+/* ---- reduced motion: the end state of every frame, and nothing travels.
+   The Field draws no pulses there either; the sag already says it. ---- */
+@media (prefers-reduced-motion: reduce){
+ html{scroll-behavior:auto}
+ *,*::before,*::after{animation:none !important;transition:none !important}
+ .js .fr .rv,.js .keep li,.js .same,.js .felt span{opacity:1;transform:none}
+ .st-h{opacity:0}
+ .seat-ping{opacity:.6;transform:scale(1.8)}
 }
 </style></head><body>
-<div class="wrap">
 
-<!-- BEAT 1. THE PAIN. Nothing is explained before it is recognised.
+<header class="top">
+ <div><span class="wm">At<span class="um">u</span>ned</span><span class="tag">See what's running you.</span></div>
+ <nav class="nav" aria-label="Pages"><a href="atuned-about.html">About</a><a href="atuned-buy.html">Tiers</a><a class="go" href="atuned-quiz.html">Start</a></nav>
+</header>
 
-     THE FIGURE IS BACK, AND IT IS THE PRODUCT'S OWN. The avatar is the
-     centrepiece, ruled, and the first page a stranger saw carried type and
-     rules and nothing else. It is generated by make-figure.js out of
-     BODYPATH, NERVEBR, SEATXY and PAL, so it is the same body the Body page
-     draws rather than a drawing of one. No text sits on it. -->
-<div class="hero-wrap">
+<main class="story">
+
+<!-- THE STAGE. Before the story in the source so a phone pins it to the top;
+     a desk moves it to the right column. Every layer is a picture and says
+     nothing a reader needs: what each one means is in the frame that shows
+     it, in the .cap key, beside it and never on it, one press away. -->
+<div class="stage" id="stage" data-show="field" aria-hidden="true">
+ <div class="lyr lyr-field"><canvas id="fld"></canvas></div>
+ <div class="lyr lyr-body">
 <!-- FIGURE START. Generated by make-figure.js. Do not edit by hand. -->
 <svg class="hero" viewBox="25.68 0.50 47.56 99.00" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
  <defs>
@@ -436,210 +603,543 @@ a.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
   <path d="M43.66,82.97L43.66,83.15L43.66,83.33L43.66,83.51L43.66,83.69L43.66,83.87L43.66,84.05L43.66,84.23L43.66,84.42L43.66,84.60L43.66,84.78L43.66,84.96L43.66,85.14L43.66,85.32L43.66,85.32" stroke="var(--root)"/>
  </g>
  <g clip-path="url(#heroClip)">
-  <circle cx="52.75" cy="72.52" r="13" fill="url(#hs-root)"/>
-  <circle cx="50.73" cy="49.07" r="13" fill="url(#hs-sacral)"/>
-  <circle cx="50.03" cy="41.79" r="13" fill="url(#hs-solar)"/>
-  <circle cx="49.94" cy="33.18" r="13" fill="url(#hs-heart)"/>
-  <circle cx="49.89" cy="24.08" r="13" fill="url(#hs-throat)"/>
-  <circle cx="42.96" cy="19.89" r="13" fill="url(#hs-eye)"/>
-  <circle cx="50.00" cy="7.86" r="13" fill="url(#hs-crown)"/>
+  <circle class="hero-glow" data-seat="root" cx="52.75" cy="72.52" r="13" fill="url(#hs-root)"/>
+  <circle class="hero-glow" data-seat="sacral" cx="50.73" cy="49.07" r="13" fill="url(#hs-sacral)"/>
+  <circle class="hero-glow" data-seat="solar" cx="50.03" cy="41.79" r="13" fill="url(#hs-solar)"/>
+  <circle class="hero-glow" data-seat="heart" cx="49.94" cy="33.18" r="13" fill="url(#hs-heart)"/>
+  <circle class="hero-glow" data-seat="throat" cx="49.89" cy="24.08" r="13" fill="url(#hs-throat)"/>
+  <circle class="hero-glow" data-seat="eye" cx="42.96" cy="19.89" r="13" fill="url(#hs-eye)"/>
+  <circle class="hero-glow" data-seat="crown" cx="50.00" cy="7.86" r="13" fill="url(#hs-crown)"/>
  </g>
  <g clip-path="url(#heroClip)">
-  <circle class="hero-seat" cx="52.75" cy="72.52" r="1.5" stroke="var(--root)"/>
-  <circle class="hero-seat" cx="50.73" cy="49.07" r="1.5" stroke="var(--sacral)"/>
-  <circle class="hero-seat" cx="50.03" cy="41.79" r="1.5" stroke="var(--solar)"/>
-  <circle class="hero-seat" cx="49.94" cy="33.18" r="1.5" stroke="var(--heart)"/>
-  <circle class="hero-seat" cx="49.89" cy="24.08" r="1.5" stroke="var(--throat)"/>
-  <circle class="hero-seat" cx="42.96" cy="19.89" r="1.5" stroke="var(--eye)"/>
-  <circle class="hero-seat" cx="50.00" cy="7.86" r="1.5" stroke="var(--crown)"/>
+  <circle class="hero-seat" data-seat="root" cx="52.75" cy="72.52" r="1.5" stroke="var(--root)"/>
+  <circle class="hero-seat" data-seat="sacral" cx="50.73" cy="49.07" r="1.5" stroke="var(--sacral)"/>
+  <circle class="hero-seat" data-seat="solar" cx="50.03" cy="41.79" r="1.5" stroke="var(--solar)"/>
+  <circle class="hero-seat" data-seat="heart" cx="49.94" cy="33.18" r="1.5" stroke="var(--heart)"/>
+  <circle class="hero-seat" data-seat="throat" cx="49.89" cy="24.08" r="1.5" stroke="var(--throat)"/>
+  <circle class="hero-seat" data-seat="eye" cx="42.96" cy="19.89" r="1.5" stroke="var(--eye)"/>
+  <circle class="hero-seat" data-seat="crown" cx="50.00" cy="7.86" r="1.5" stroke="var(--crown)"/>
  </g>
 </svg>
 <!-- FIGURE END -->
- <div>
-  <h1>At<span class="um">u</span>ned</h1>
-  <p class="sub">Instruments for the body you are running</p>
-  <p class="lead">You are tired in a way that sleep does not fix, and the same
-  month keeps arriving.</p>
+ </div>
+ <div class="lyr lyr-dial">
+  <svg id="dial" viewBox="-60 -14 520 428" aria-hidden="true">
+   <g id="dialArcs"></g>
+   <circle cx="200" cy="200" r="150" fill="none" stroke="var(--accent)" stroke-opacity=".34" stroke-width="1"/>
+   <line x1="200" y1="160" x2="200" y2="50" stroke="var(--throat)" stroke-opacity=".3" stroke-width="1.2"/>
+   <line x1="240" y1="200" x2="350" y2="200" stroke="var(--sacral)" stroke-opacity=".3" stroke-width="1.2"/>
+   <line x1="200" y1="240" x2="200" y2="350" stroke="var(--heart)" stroke-opacity=".3" stroke-width="1.2"/>
+   <line x1="160" y1="200" x2="50" y2="200" stroke="var(--root)" stroke-opacity=".3" stroke-width="1.2"/>
+   <circle class="cohere" cx="200" cy="200" r="100" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="2 5"/>
+   <circle cx="200" cy="200" r="40" fill="none" stroke="var(--ink)" stroke-opacity=".12"/>
+   <circle class="cohere" cx="200" cy="200" r="7" fill="var(--accent)"/>
+   <g class="orbit">
+    <path d="M 103.6 85.1 A 150 150 0 0 1 200 50" fill="none" stroke="var(--accent)" stroke-opacity=".5" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="200" cy="50" r="12" fill="var(--accent)" fill-opacity=".2"/>
+    <circle cx="200" cy="50" r="4.5" fill="var(--accent)"/>
+   </g>
+   <circle class="st-h" cx="200" cy="50" r="18" fill="none" stroke="var(--throat)" stroke-width="1.2" style="animation-delay:0s"/>
+   <circle class="st-h" cx="350" cy="200" r="18" fill="none" stroke="var(--sacral)" stroke-width="1.2" style="animation-delay:3s"/>
+   <circle class="st-h" cx="200" cy="350" r="18" fill="none" stroke="var(--heart)" stroke-width="1.2" style="animation-delay:6s"/>
+   <circle class="st-h" cx="50" cy="200" r="18" fill="none" stroke="var(--root)" stroke-width="1.2" style="animation-delay:9s"/>
+   <circle cx="200" cy="50" r="10" fill="var(--bg)" stroke="var(--throat)" stroke-width="2"/>
+   <circle cx="350" cy="200" r="10" fill="var(--bg)" stroke="var(--sacral)" stroke-width="2"/>
+   <circle cx="200" cy="350" r="10" fill="var(--bg)" stroke="var(--heart)" stroke-width="2"/>
+   <circle cx="50" cy="200" r="10" fill="var(--bg)" stroke="var(--root)" stroke-width="2"/>
+   <text class="lbl" x="200" y="20" text-anchor="middle">Discover</text>
+   <text class="lbl" x="370" y="205">Play</text>
+   <text class="lbl" x="200" y="396" text-anchor="middle">Flow</text>
+   <text class="lbl" x="30" y="205" text-anchor="end">Embody</text>
+  </svg>
  </div>
 </div>
 
-<nav class="nav"><b>What it reads</b>
- <a href="atuned-about.html">About</a>
- <a href="atuned-buy.html">Tiers</a>
- <a href="atuned-quiz.html">The test</a></nav>
+<div class="col">
 
-<ul class="bill">
- <li><b>The same argument</b>, with a different person, in the same words.</li>
- <li><b>A tight jaw</b> before you are properly awake.</li>
- <li><b>Work you used to make</b> and stopped making, and you know the month you stopped.</li>
- <li><b>One conversation</b> you have not had, going into its second year.</li>
- <li><b>Gut, sleep, shoulders, breath.</b> A body sending the bill for something
-  the mind filed away.</li>
-</ul>
+<!-- BEAT 01, THE FIELD. Section 9. "Create intrigue without explanation."
+     The stage: one point of light, a second, a third, and the faint network
+     underneath with its pulses running, which is the sentence drawn. -->
+<section class="fr fr-arrive" id="arrive" data-frame="arrive">
+ <h1 class="rv">Something runs the way you live.</h1>
+ <p class="lead rv" style="--d:.15s">You feel it before you can explain it.</p>
+ <div class="cta rv" style="--d:.3s"><a class="btn" href="#recognize">See it</a></div>
+ <div class="cap rv" style="--d:.45s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-arrive"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-arrive">Each point of light is an address: one exact place in your body where
+ a pattern sits. The faint ring holds all 112. The lines are patterns, running.
+ Nothing of yours is in it yet.</p></div>
+</section>
 
-<p class="m">Most of the strain we have agreed to call normal is making us ill. It
-gets called stress, or a phase, or your personality. It is none of those.</p>
+<!-- BEAT 02, THE HUMAN TRUTH. "Make the visitor recognize repetition."
+     Motion: points connect. Each line lights one point on the stage, and on
+     "Same response" the six pull to one place. Section 69: SIGNAL, then
+     CONNECT, then PATTERN, repetition gathers. -->
+<section class="fr" id="recognize" data-frame="recognize">
+ <p class="big rv">You know what you want.</p>
+ <p class="big rv soft" style="--d:.2s">Something gets in the way.</p>
+ <ul class="keep" id="keep">
+  <li>You keep saying yes.</li>
+  <li>You keep putting it off.</li>
+  <li>You keep having the same argument.</li>
+  <li>You keep overthinking it.</li>
+  <li>You keep trying to control it.</li>
+  <li>You keep going back to the same thing.</li>
+ </ul>
+ <div class="same" id="same"><p class="big">Different situation.</p><p class="big">Same response.</p></div>
+ <div class="cap rv" style="--d:.3s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-recognize"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-recognize">Each lit point is one situation. The lines pull them to one place: the
+ same response, every time. That is a pattern.</p></div>
+</section>
 
-<!-- BEAT 2. THE CAUSE, in his words and not softened. -->
-<section>
- <div class="hd"><span class="eye">The cause</span>
-  <h2>Mindset programming.</h2></div>
- <div class="bd">
-  <p style="margin-top:0" class="m">A set of instructions laid down early, still
-  running, and running you. It was written by things that happened to you before
-  you could read, and it has never been reviewed. It is not a mood and it is not
-  a personality.</p>
-  <div class="three">
-   <div><b>Mental</b><span>The loop. The rumination. The version of yourself you argue with.</span></div>
-   <div><b>Physical</b><span>The gut, the jaw, the lower back, the sleep, the immune bill.</span></div>
-   <div><b>Spiritual</b><span>Meaning gone flat. Nothing lands. Nothing is worth starting.</span></div>
+<!-- BEATS 07, 05, 16 AND 17, STORY BECOMES PATTERN, AND THE DIFFERENCE.
+     "Demonstrate the product rather than explain it." The words are the
+     TDD's own example, beat 07, and the reading is section 16's Concept 04.
+     The three answers are real controls and the correction visibly changes
+     the reading, which is beat 05's requirement. The reading set aside is
+     kept, struck, on the card: frame 09, "The original interpretation
+     remains preserved." It is labelled an example because it is one: nothing
+     on this page reads the visitor. -->
+<section class="fr mx" id="mirror" data-frame="mirror" data-m="">
+ <span class="eye rv">Example</span>
+ <h2 class="rv">A story can hide a pattern.</h2>
+ <p class="said rv" style="--d:.15s">I <span class="w w1">keep</span> saying <span class="w w2">yes</span> when I <span class="w w3">don't want</span> to.</p>
+ <ul class="parts rv" style="--d:1s" aria-label="The words, separated"><li>Yes</li><li>Don't want</li><li>Keep</li></ul>
+ <ol class="chain rv" style="--d:1.2s" aria-label="The pattern, in order">
+  <li><span class="nd"></span>Yes</li>
+  <li><span class="nd"></span>Overcommit</li>
+  <li><span class="nd"></span>Pressure</li>
+  <li><span class="nd"></span>Resentment</li>
+  <li><span class="nd"></span>Withdraw</li>
+ </ol>
+ <div class="mirror rv" style="--d:1.4s">
+  <span class="eye">Atuned noticed</span>
+  <p class="reading" id="reading">You say yes before checking whether you actually want to.</p>
+  <p class="ask">Is that what you mean?</p>
+  <div class="ans" role="group" aria-label="Your answer">
+   <button type="button" data-a="yes" aria-pressed="false">That's it</button>
+   <button type="button" data-a="no" aria-pressed="false">Not quite</button>
+   <button type="button" data-a="again" aria-pressed="false">Look again</button>
   </div>
-  <p class="m">And stagnation, which nobody counts as illness and which costs the
-  most years.</p>
+  <p class="say" id="say" role="status" aria-live="polite"></p>
+  <ul class="was" id="was" aria-label="Earlier readings"></ul>
  </div>
+ <p class="rv" style="--d:1.5s">Correct it and the reading changes. You have the last word.</p>
 </section>
 
-<!-- BEAT 3. THE SEPARATION AS A STRESS RESPONSE OUT OF THE STORY. -->
-<section>
- <div class="hd"><span class="eye">What is actually happening</span>
-  <h2>Your story fires as a threat, and the mind leaves the body.</h2></div>
- <div class="bd">
-  <p style="margin-top:0" class="m">Something happened. You made a meaning out of
-  it. The meaning hardened into a rule. The rule now fires as a stress response,
-  and under a stress response the mind goes up and the body goes quiet. That
-  split is the injury.</p>
-  <p class="m">The mind runs a story the body is paying for. The body holds a
-  charge the mind will not look at. They stop speaking to each other. Everything
-  on the list above is that gap, reported from one side or the other.</p>
-  <p class="m">The measure of the gap is coherence. Coherence is the alignment
-  between what arrives from the world, how you read it, what you intend, and what
-  you then do. Four stations, one circuit. When coherence is low the circuit
-  leaks, and the leak shows up as mental, physical and spiritual disease. Every
-  practice you have tried was reaching for coherence without a way to read it.</p>
- </div>
+<!-- BEAT 08, ONE THING BECOMES MANY. Visual: "One point. Repeated points.
+     Clusters. Connections. Network." The stage assembles the whole Field. -->
+<section class="fr" id="connect" data-frame="network">
+ <h2 class="rv">Patterns connect.</h2>
+ <p class="big rv soft" style="--d:.15s">What starts at work can show up at home.</p>
+ <p class="m rv" style="--d:.3s">Atuned looks for the connections.</p>
+ <div class="cap rv" style="--d:.45s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-connect"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-connect">The outer ring is the 112 addresses, coloured by the part of the body
+ each one belongs to. The points inside are patterns. Each line shows where a
+ pattern pulls. A tighter line, with quicker pulses, pulls harder.</p></div>
 </section>
 
-<!-- BEAT 4. THE PURPOSE. His line, and it sits here rather than at the top,
-     because a promise laid over the pain beat softens the pain. It is also the
-     same mechanism as the close: a lock, a key, a door. The paragraph under it
-     names what the lock is, so the phrase is a description of a mechanism and
-     not a slogan about self improvement. -->
-<section>
- <div class="hd"><span class="eye">What it is for</span>
-  <h2>Human potential, unlocked.</h2></div>
- <div class="bd">
-  <p style="margin-top:0" class="m">Not added. Unlocked. The capacity is already
-  in you, and most of it is being spent holding a set of old instructions down.
-  That is the lock. Take the load off one address and the capacity it was
-  spending is available again.</p>
-  <p class="m">So the purpose is mechanical. Close the gap between your mind and
-  your body, and hand you your own instructions so that you can change them. That
-  is the whole purpose and there is not a second one underneath it.</p>
-  <p class="m">It is not built to hold your attention. It is a mirror and a set
-  of instruments. It says: this is you, this is what is running you, from the top
-  to the bottom, and here is the order to take it apart in.</p>
- </div>
+<!-- BEAT 09, THE BODY. "Abstract body architecture. One region activates."
+     The stage turns to the body the Body page draws, generated from the same
+     tables by make-figure.js. "Do not convert sensation into diagnosis." -->
+<section class="fr" id="body" data-frame="body">
+ <h2 class="rv">You feel it in your body.</h2>
+ <p class="felt rv" style="--d:.15s"><span style="transition-delay:.2s">Tight.</span><span style="transition-delay:.45s">Heavy.</span><span style="transition-delay:.7s">Hot.</span><span style="transition-delay:.95s">Numb.</span><span style="transition-delay:1.2s">Restless.</span><span style="transition-delay:1.45s">Pressured.</span><span style="transition-delay:1.7s">Nothing at all.</span></p>
+ <p class="big rv" style="--d:.4s">All of that is information.</p>
+ <div class="cap rv" style="--d:.6s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-body"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-body">Seven colours, seven seats, from the base of the spine to the top of the
+ head. A seat is one part of the body a pattern can settle in. The fine lines are
+ nerves. The lit seat is where a pattern sits.</p></div>
 </section>
 
-<!-- BEAT 5. HOW IT WORKS. The ruled loop: discover, play, flow, embody.
-
-     TWO RULED DEFECTS WERE SITTING HERE, ON THE FIRST PAGE A STRANGER SEES.
-
-     The fourth word was "body". His own correction is on the record: "the
-     last one is embody and not body." It was wrong in the heading, in the
-     step and in the comment above this one.
-
-     And the four were drawn as a numbered column, one to four, which is the
-     other half of the same ruling: "we're showing a core game loop mechanic",
-     and a numbered column of four says the fourth one is the end, which is
-     the opposite of a loop. So the numerals are gone. Each step carries its
-     seat colour, the rail down the left carries through all four, and the
-     fourth hands back to the first in one line rather than stopping. Nothing
-     here is decoration: the four close because the thing they describe
-     closes. -->
-<section>
- <div class="hd"><span class="eye">How it works</span>
-  <h2>Discover, play, flow, embody.</h2></div>
- <div class="bd">
-  <div class="steps">
-   <div class="step s1"><i></i><div><h3>Discover</h3>
-    <p>You write what happened, in your own words. The engine reads the charge out
-    of the words, not out of a questionnaire about your feelings.</p></div></div>
-   <div class="step s2"><i></i><div><h3>Play</h3>
-    <p>A short ritual and real games. Brain release, built out of what you just
-    entered. The practice comes from your own material.</p></div></div>
-   <div class="step s3"><i></i><div><h3>Flow</h3>
-    <p>The charge gets named, seated and released. One address at a time, in an
-    order the instrument works out, because doing it in the wrong order is why the
-    last attempt did not hold.</p></div></div>
-   <div class="step s4"><i></i><div><h3>Embody</h3>
-    <p>The reading lands on a body map at a named plexus or a named nerve. Your
-    avatar carries the load and changes as the load comes off. You watch it.</p></div></div>
-   <p class="loop">Embody hands back to discover. The next thing that happens
-   to you enters the same circuit, and the circuit is the product.</p>
-  </div>
-  <div class="open">
-   <h3>The whole system is readable</h3>
-   <p>Every table the reading runs on is open inside the product. The 112
-   addresses and the plexus each one sits at. The 21 laws of integrity. The
-   saboteurs, what triggers them, and the sentence each one says in your head. The
-   arithmetic that turns all of it into one coherence figure.</p>
-   <p>Open them and check the work against your own life. Nobody else in this
-   category will show you theirs.</p>
-  </div>
+<!-- BEAT 20, RELEASE, told the way section 28 says the funnel can tell it:
+     "A repeated pattern forms. Its signal becomes dense. Release interrupts
+     the flow. The field opens. A new statement enters. The new statement
+     establishes a different path." The stage runs that, and the three steps
+     below light in time with it. Then beat 21, verify. -->
+<section class="fr" id="release" data-frame="release">
+ <h2 class="rv">Release disrupts the old pattern.</h2>
+ <p class="big rv soft" style="--d:.15s">Reframe gives you a new sentence to practise.</p>
+ <ol class="steps rv" style="--d:.3s" id="steps">
+  <li data-step="pattern"><b>Pattern</b><span>A repeated pattern forms, and its lines pull tight.</span></li>
+  <li data-step="release"><b>Release</b><span>Release interrupts the flow. The lines go slack and the field opens.</span></li>
+  <li data-step="reframe"><b>Reframe</b><span>A new statement enters and sets a different path.</span></li>
+ </ol>
+ <p class="frame-q rv" style="--d:.45s">I know that I can say what I mean without abandoning myself.</p>
+ <div class="changed rv" style="--d:.6s">
+  <h3>What changed?</h3>
+  <ul class="opts"><li>I feel different</li><li>I see it differently</li><li>Something moved</li><li>Nothing changed</li><li>I'm not sure</li></ul>
+  <p class="soft m">Nothing changed is an answer too.</p>
  </div>
+ <div class="cap rv" style="--d:.7s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-release"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-release">The knot is one pattern. The new line is the reframe: a sentence that
+ starts with "I know", built from what you said.</p></div>
 </section>
 
-<!-- BEAT 6. THE TOOLS. Named as the product names them. No count stated. -->
-<section>
- <div class="hd"><span class="eye">The tools</span>
-  <h2>Each one reads a different side of the same thing.</h2></div>
- <div class="bd">
-  <ul class="tools">
-   <li><b><i style="background:var(--crown)"></i>Energetics</b><span>Your blueprint, from a date, a time and a place. Nothing else is stored.</span></li>
-   <li><b><i style="background:var(--sacral)"></i>Ritual</b><span>A short daily practice, assembled from what you entered.</span></li>
-   <li><b><i style="background:var(--throat)"></i>Story</b><span>You write it. The engine reads the charge out of it.</span></li>
-   <li><b><i style="background:var(--eye)"></i>Field</b><span>The 112 addresses, lit by what is currently held.</span></li>
-   <li><b><i style="background:var(--root)"></i>Body</b><span>Where it sits. A named plexus. A named nerve. A place to put a hand.</span></li>
-   <li><b><i style="background:var(--heart)"></i>Compass</b><span>The direction out of each address, one step at a time.</span></li>
-   <li><b><i style="background:var(--solar)"></i>Knowledge</b><span>Every table the reading runs on, readable.</span></li>
-   <li><b><i style="background:var(--accent)"></i>Games</b><span>Brain release. It counts toward the loop.</span></li>
-   <li><b><i style="background:var(--mid)"></i>Summary</b><span>The whole reading on one screen, in order of cost.</span></li>
-  </ul>
- </div>
+<!-- BEATS 23 TO 27, THE LOOP AND THE FIELD REMEMBERS. Ruled: "it is a
+     circle, never a list", so the four close on the dial and the light goes
+     round it without stopping. The stage is the Compass plan view. -->
+<section class="fr" id="loop" data-frame="loop">
+ <h2 class="rv">Discover, play, flow, embody.</h2>
+ <ul class="four rv" style="--d:.15s">
+  <li><i style="border-color:var(--throat)"></i><div><b>Discover</b><span>See what keeps happening.</span></div></li>
+  <li><i style="border-color:var(--sacral)"></i><div><b>Play</b><span>Test what you think you know.</span></div></li>
+  <li><i style="border-color:var(--heart)"></i><div><b>Flow</b><span>Release the charge: the weight a pattern leaves on one place in your body.</span></div></li>
+  <li><i style="border-color:var(--root)"></i><div><b>Embody</b><span>Make a different choice.</span></div></li>
+ </ul>
+ <p class="back rv" style="--d:.3s">Embody hands back to discover. Atuned remembers what you found, so
+ next time you have somewhere to look.</p>
+ <div class="cap rv" style="--d:.45s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-loop"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-loop">The light goes round the four and never stops, because the loop has no end.</p></div>
 </section>
 
-<!-- BEAT 7. TAKE THE TEST, then the close, verbatim. -->
-<section>
- <div class="hd"><span class="eye">Take the test</span>
-  <h2>A hundred questions about how you actually live.</h2></div>
- <div class="bd">
-  <p style="margin-top:0" class="m">One question at a time. They are scored
-  against the 21 laws of integrity, and some of them will be uncomfortable to
-  answer honestly. That is the instrument working.</p>
-  <p class="m">At the end you get your coherence, the laws that are thinnest, the
-  saboteurs that are running, and where in the body the load is sitting.</p>
-  <div class="cta">
-   <a class="btn" href="atuned-quiz.html">Take the test</a>
-   <p class="meta">One question per screen. Stop and come back. Nothing you answer
-   leaves your browser.</p>
-  </div>
- </div>
+<!-- BEATS 31 AND 32. "Not a diagnosis. Not a verdict. A map you can
+     question." And the transparency the TDD asks for, which the product
+     already keeps: the glossary in engine/data/kb.js says, row by row, what
+     is measured and what is a model. -->
+<section class="fr" id="honest" data-frame="honest">
+ <h2 class="rv">Not a diagnosis. Not a verdict. A map you can question.</h2>
+ <p class="m rv" style="--d:.15s">Some of it rests on established ideas. Some is our own model. Some we
+ are still testing.</p>
+ <p class="m soft rv" style="--d:.3s">Every table the reading runs on is open inside the product, so you can
+ check the work against your own life.</p>
 </section>
 
-<div class="close">
- <p>No one is coming to save you.</p>
- <p>Do it yourself.</p>
- <p>The software is the key and the roadmap.</p>
- <p class="last">You are the door.</p>
+<!-- BEATS 33 AND 34, RETURN TO THE HUMAN, AND START. "Everything
+     disappears. Black Field." The stage lets every line and point go and
+     keeps one point of light, which is where beat 01 began: the page closes
+     the way the loop does. -->
+<section class="fr fr-ret" id="start" data-frame="ret">
+ <p class="big rv">You don't need to understand yourself first.</p>
+ <p class="big rv soft" style="--d:.25s">Bring something real.</p>
+ <p class="wm end-wm rv" style="--d:.45s">At<span class="um">u</span>ned</p>
+ <p class="end-tag rv" style="--d:.55s">See what's running you.</p>
+ <div class="cta rv" style="--d:.65s"><a class="btn" href="atuned-quiz.html">Start</a><a class="ghost" href="atuned-about.html">Explore first</a></div>
+ <p class="meta rv" style="--d:.75s">One question per screen. Stop and come back. Nothing you answer leaves your browser.</p>
+</section>
+
 </div>
+</main>
 
-<nav class="nav foot-nav">
- <a href="atuned-about.html">About</a>
- <a href="atuned-buy.html">Tiers</a>
- <a href="atuned-quiz.html">The test</a></nav>
+<footer class="foot">
+ <nav class="nav" aria-label="Pages, again"><a href="atuned-about.html">About</a><a href="atuned-buy.html">Tiers</a><a class="go" href="atuned-quiz.html">Start</a></nav>
+ <p>This page makes no request of any kind. It reads self report. A clinician reads a person, and those are different jobs.</p>
+</footer>
 
-<p class="foot">This page makes no request of any kind. It reads self report. A
-clinician reads a person, and those are different jobs.</p>
+<script>
+/* ============================================================
+   THE STAGE, DRIVEN BY THE STORY.
 
-</div></body></html>
+   One Field, built once, eased toward whatever the frame in view asks for,
+   so every change between beats is the state reorganising (section 69,
+   CHANGE) and never a cut. The geometry is illustrative and says so on the
+   page: 112 addresses in seven seat sectors, fourteen patterns, five
+   complexes, one core. Nobody's record is in it.
+   ============================================================ */
+(function(){
+'use strict';
+var D=document, root=D.documentElement;
+root.classList.add('js');
+var RM=window.matchMedia?matchMedia('(prefers-reduced-motion: reduce)'):{matches:false};
+var REDUCED=RM.matches;
+var TAU=Math.PI*2;
+var SEATS=['root','sacral','solar','heart','throat','eye','crown'];
+
+function tok(v){return getComputedStyle(root).getPropertyValue(v).trim();}
+function hex(h){h=(h||'#888888').replace('#','');
+ if(h.length===3)h=h.split('').map(function(c){return c+c;}).join('');
+ return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];}
+function rgba(c,a){return 'rgba('+c[0]+','+c[1]+','+c[2]+','+Math.max(0,Math.min(1,a)).toFixed(3)+')';}
+function mix(a,b,k){return [Math.round(a[0]+(b[0]-a[0])*k),Math.round(a[1]+(b[1]-a[1])*k),Math.round(a[2]+(b[2]-a[2])*k)];}
+function clamp(v,a,b){return v<a?a:v>b?b:v;}
+function lerp(a,b,k){return a+(b-a)*k;}
+function ease(k){k=clamp(k,0,1);return 1-Math.pow(1-k,3);}
+function seeded(s){return function(){s|=0;s=s+0x6D2B79F5|0;var t=Math.imul(s^s>>>15,1|s);
+ t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+
+/* ---------------- the Field ---------------- */
+var cv=D.getElementById('fld'), g=cv&&cv.getContext&&cv.getContext('2d');
+var stage=D.getElementById('stage');
+var COL={}, ACC, BG=[12,13,18], WHITE=[255,255,255];
+function readCols(){SEATS.forEach(function(s){COL[s]=hex(tok('--'+s));});ACC=hex(tok('--accent'));BG=hex(tok('--bg'));}
+readCols();
+
+var rnd=seeded(11);
+var A=[],P=[],C=[],T=[];
+for(var i=0;i<112;i++){var s=Math.floor(i/16),k=i%16;
+ A.push({s:s,t:(s+0.07+0.86*(k+0.5)/16)/7,f:1,x:0,y:0,a:0,lit:0,litT:0});}
+for(var p=0;p<14;p++){var hs=p%7;
+ P.push({s:hs,t:(hs+0.22+0.56*rnd())/7,f:0.54+0.12*rnd(),x:0,y:0,a:0,sc:1});}
+for(var c=0;c<5;c++)C.push({t:(c+0.25+0.5*rnd())/5,f:0.28+0.07*rnd(),x:0,y:0,a:0});
+var CORE={t:0,f:0,x:0,y:0,a:0,sc:1};
+/* the network: each pattern pulls on three addresses in its own seat and one
+   in another, because something that started in one place can show up in
+   many parts of your life (beat 08) */
+P.forEach(function(pt,j){
+ for(var q=0;q<3;q++)T.push({o:A[pt.s*16+((j*5+q*5+3)%16)],i:pt,t:0.15+0.85*Math.pow(rnd(),0.8),g:'net',c:pt.s});
+ T.push({o:A[((pt.s+2+(j%3))%7)*16+((j*7)%16)],i:pt,t:0.15+0.85*rnd(),g:'net',c:(pt.s+2+(j%3))%7});
+ T.push({o:pt,i:C[Math.min(4,Math.floor(j*5/14))],t:0.3+0.6*rnd(),g:'net',c:pt.s});});
+C.forEach(function(cx){T.push({o:cx,i:CORE,t:0.5+0.4*rnd(),g:'net',c:-1});});
+/* recognise: six situations, one per seat but the heart, pulled to one place */
+var REC=[0,1,2,4,5,6].map(function(s,j){return A[s*16+[6,9,4,11,7,10][j]];});
+var RN={t:0.97,f:0.24,x:0,y:0,a:0,sc:1};
+REC.forEach(function(a){T.push({o:a,i:RN,t:0.9,g:'rec',c:a.s});});
+/* release: one knot, the heart's pattern, on eight addresses */
+var K={s:3,t:P[3].t,f:0.30,x:0,y:0,a:0,sc:1};
+var KN=[1,3,5,8,10,12,14].map(function(k){return A[3*16+k];}).concat([A[2*16+13]]);
+KN.forEach(function(a){T.push({o:a,i:K,t:1,g:'knot',c:a.s});});
+var NEWA=A[5*16+7];
+var NEWT={o:K,i:NEWA,t:0.5,g:'new',c:-1,prog:0};
+T.push(NEWT);
+T.forEach(function(th){th.a=0;th.ph=rnd();});
+
+var W=0,H=0,DPR=1,CX=0,CY=0,R=0,SK=1;
+function place(n){var ang=n.t*TAU-Math.PI/2;n.x=CX+Math.cos(ang)*R*n.f;n.y=CY+Math.sin(ang)*R*n.f;}
+function layout(){
+ if(!g)return;
+ var r=cv.getBoundingClientRect();
+ W=Math.max(1,r.width);H=Math.max(1,r.height);
+ DPR=Math.min(2,window.devicePixelRatio||1);
+ cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);
+ CX=W/2;CY=H/2;R=Math.min(W,H)*(W<520?0.40:0.38);SK=clamp(R/300,0.55,1.35);
+ A.forEach(place);P.forEach(place);C.forEach(place);place(RN);place(K);CORE.x=CX;CORE.y=CY;
+ draw(0);}
+
+/* what each frame asks of the Field. ring, net, pat: the alpha the addresses,
+   the network's threads and its nodes ease toward; core and csc the core's
+   strength and size; pul how strongly the pulses show. */
+var FR={
+ arrive:   {ring:.20,net:.22,pat:.12,core:.0, csc:1,  pul:.6},
+ recognize:{ring:.20,net:.06,pat:.04,core:.0, csc:1,  pul:.4},
+ mirror:   {ring:.14,net:.04,pat:.03,core:.0, csc:1,  pul:.35},
+ network:  {ring:.95,net:1,  pat:1,  core:1,  csc:1,  pul:1},
+ body:     {ring:.95,net:1,  pat:1,  core:1,  csc:1,  pul:1},
+ release:  {ring:.34,net:.10,pat:.22,core:.45,csc:.8, pul:.6},
+ loop:     {ring:.95,net:1,  pat:1,  core:1,  csc:1,  pul:1},
+ honest:   {ring:.7, net:.42,pat:.7, core:.8, csc:.9, pul:.3},
+ ret:      {ring:0,  net:0,  pat:0,  core:1,  csc:.3, pul:0}};
+var frame='arrive', frameT=0, now=0, born=0, recN=0, recOn=false, step='';
+var stepEls=[].slice.call(D.querySelectorAll('#steps li'));
+
+function setStep(s){if(s===step)return;step=s;
+ stepEls.forEach(function(li){li.classList.toggle('on',s==='all'||li.getAttribute('data-step')===s);});}
+
+/* the knot's timeline, eleven seconds and round again: dense, released,
+   opened, reframed. Reduced motion holds it at the end, reframed. */
+var RCY=11.2;
+function knot(el){
+ var tr=REDUCED?9.6:(el%RCY), kt, ka, ks, prog, na;
+ if(tr<0.9){kt=lerp(.05,1,ease(tr/.9));ka=lerp(.12,1,ease(tr/.9));}
+ else if(tr<2.6){kt=1;ka=1;}
+ else if(tr<5.6){var u=ease((tr-2.6)/3);kt=lerp(1,.04,u);ka=lerp(1,.35,u);}
+ else if(tr<6.6){kt=.04;ka=lerp(.35,.12,ease(tr-5.6));}
+ else{kt=.04;ka=.12;}
+ ks=tr<2.6?1.8:lerp(1.8,.9,ease((tr-2.6)/3));
+ prog=tr<6.6?0:ease((tr-6.6)/2.2);
+ na=tr<6.6?0:(tr<10.4?1:lerp(1,0,(tr-10.4)/.8));
+ if(tr<0.9&&!REDUCED)ks=lerp(.9,1.8,ease(tr/.9));
+ setStep(REDUCED?'all':(tr<2.6?'pattern':(tr<6.6?'release':'reframe')));
+ return {kt:kt,ka:ka,ks:ks,prog:prog,na:na};}
+
+function step2(dt){
+ var f=FR[frame]||FR.arrive, el=now-frameT, kq=REDUCED?1:1-Math.exp(-dt*3.2);
+ var br=REDUCED?1:0.82+0.18*Math.sin(TAU*now/4.2);
+ var kn=frame==='release'?knot(el):null;
+ /* which addresses are lit */
+ A.forEach(function(a){a.litT=0;});
+ if(frame==='arrive'){[0,2,4].forEach(function(j,q){if(REDUCED||now-born>0.5+0.8*q)REC[j].litT=1;});}
+ if(frame==='recognize'||frame==='mirror'){for(var j=0;j<recN;j++)REC[j].litT=1;}
+ if(kn&&kn.prog>=1)NEWA.litT=kn.na;
+ var ringA=f.ring*(frame==='arrive'||frame==='recognize'||frame==='mirror'?br:1);
+ A.forEach(function(a){a.a+=(Math.max(ringA,a.litT)-a.a)*kq;a.lit+=(a.litT-a.lit)*kq;});
+ P.forEach(function(pt){pt.a+=(f.pat-pt.a)*kq;});
+ C.forEach(function(cx){cx.a+=(f.pat-cx.a)*kq;});
+ CORE.a+=(f.core-CORE.a)*kq; CORE.sc+=(f.csc-CORE.sc)*kq;
+ var rnT=(frame==='recognize'||frame==='mirror')&&recOn?1:0;
+ RN.a+=(rnT-RN.a)*kq; RN.sc+=((frame==='mirror'?1.5:1)-RN.sc)*kq;
+ T.forEach(function(th){
+  if(th.g==='net'){th.a+=(f.net-th.a)*kq;}
+  else if(th.g==='rec'){th.a+=(rnT-th.a)*kq;}
+  else if(th.g==='knot'){if(kn){th.a=kn.ka;th.tt=kn.kt;}else th.a+=(0-th.a)*kq;}
+  else if(th.g==='new'){if(kn){th.a=kn.na;th.prog=kn.prog;}else{th.a+=(0-th.a)*kq;}}});
+ if(kn){K.sc=kn.ks;K.a+=(1-K.a)*kq;K.kt=kn.kt;}else{K.sc+=(1-K.sc)*kq;K.a+=(0-K.a)*kq;K.kt=0;}
+ return f;}
+
+var CLK=0;
+function curve(th){
+ var x0=th.o.x,y0=th.o.y,x1=th.i.x,y1=th.i.y,dx=x1-x0,dy=y1-y0,len=Math.hypot(dx,dy)||1;
+ var t=th.g==='knot'?(th.tt==null?1:th.tt):th.t;
+ var sag=(1-t)*(th.g==='knot'?0.3:0.14)*len;
+ return {x0:x0,y0:y0,x1:x1,y1:y1,qx:(x0+x1)/2-dy/len*sag,qy:(y0+y1)/2+dx/len*sag,t:t,len:len};}
+function colOf(th){return th.c<0?ACC:COL[SEATS[th.c]];}
+function bez(q,u){var v=1-u;return [v*v*q.x0+2*v*u*q.qx+u*u*q.x1,v*v*q.y0+2*v*u*q.qy+u*u*q.y1];}
+
+function draw(dt){
+ if(!g)return;
+ if(dt)CLK+=dt;
+ var f=step2(dt||0.016);
+ g.setTransform(DPR,0,0,DPR,0,0);g.clearRect(0,0,W,H);
+ var br=REDUCED?1:0.82+0.18*Math.sin(TAU*now/4.2);
+ /* threads, then their pulses over all of them, as the Field does */
+ var Q=[];
+ T.forEach(function(th){if(th.a<.01)return;var q=curve(th),cc=colOf(th);Q.push([th,q,cc]);
+  g.beginPath();
+  if(th.g==='new'){var n=Math.max(2,Math.round(28*th.prog));g.moveTo(q.x0,q.y0);
+   for(var m=1;m<=n;m++){var pt=bez(q,th.prog*m/n);g.lineTo(pt[0],pt[1]);}
+   g.strokeStyle=rgba(ACC,th.a*.95);g.lineWidth=2*SK;g.stroke();
+   if(th.prog>0&&th.prog<1){var hd=bez(q,th.prog);g.beginPath();g.arc(hd[0],hd[1],3.2*SK,0,TAU);g.fillStyle=rgba(ACC,th.a);g.fill();}
+   return;}
+  g.moveTo(q.x0,q.y0);g.quadraticCurveTo(q.qx,q.qy,q.x1,q.y1);
+  g.strokeStyle=rgba(cc,th.a*(0.12+0.30*q.t));g.lineWidth=(0.8+0.9*q.t)*SK;g.stroke();});
+ if(!REDUCED&&f.pul>0){
+  g.save();g.lineCap='round';
+  Q.forEach(function(e){var th=e[0],q=e[1],cc=e[2];
+   if(th.g==='new'&&th.prog<.98)return;
+   var t=clamp(q.t,0,1),per=96-48*t,sp=16+68*Math.sqrt(t),ph=th.ph*per;
+   g.setLineDash([7,per-7]);g.lineDashOffset=-((CLK*sp+ph)%per);
+   g.beginPath();g.moveTo(q.x0,q.y0);g.quadraticCurveTo(q.qx,q.qy,q.x1,q.y1);
+   var pa=th.g==='net'?f.pul:1;
+   g.strokeStyle=rgba(mix(cc,WHITE,.42),th.a*pa*(0.28+0.72*t));g.lineWidth=Math.max(1.2,(0.8+0.9*t)*SK*0.9);g.stroke();});
+  g.setLineDash([]);g.restore();}
+ /* the addresses */
+ A.forEach(function(a){if(a.a<.01&&a.lit<.01)return;var cc=COL[SEATS[a.s]];
+  if(a.lit>.01){var gr=g.createRadialGradient(a.x,a.y,0,a.x,a.y,18*SK);
+   gr.addColorStop(0,rgba(mix(cc,WHITE,.3),.55*a.lit*br));gr.addColorStop(1,rgba(cc,0));
+   g.fillStyle=gr;g.beginPath();g.arc(a.x,a.y,18*SK,0,TAU);g.fill();}
+  g.beginPath();g.arc(a.x,a.y,(2+1.6*a.lit)*SK,0,TAU);
+  g.fillStyle=rgba(a.lit>.01?mix(cc,WHITE,.25*a.lit):cc,Math.max(a.a,a.lit));g.fill();});
+ /* the patterns and complexes, ring and not fill: the ground clears the lines
+    under each one and then it is stroked, the Compass's node */
+ function ringN(n,r,cc,a,w){if(a<.01)return;g.beginPath();g.arc(n.x,n.y,r,0,TAU);
+  g.fillStyle=rgba(BG,Math.min(1,a*1.4));g.fill();g.strokeStyle=rgba(cc,a);g.lineWidth=w;g.stroke();}
+ P.forEach(function(pt){ringN(pt,4.2*SK*pt.sc,COL[SEATS[pt.s]],pt.a,1.5*SK);});
+ /* the knot: dense while it holds, a halo that goes as the lines go slack */
+ if(K.a>.01){var kc=COL.heart;
+  if(K.kt>.05){var kh=g.createRadialGradient(K.x,K.y,0,K.x,K.y,26*SK);
+   kh.addColorStop(0,rgba(mix(kc,WHITE,.3),.5*K.kt*K.a*br));kh.addColorStop(1,rgba(kc,0));
+   g.fillStyle=kh;g.beginPath();g.arc(K.x,K.y,26*SK,0,TAU);g.fill();}
+  ringN(K,4.6*SK*K.sc,kc,K.a,1.8*SK);}
+ C.forEach(function(cx){ringN(cx,5.6*SK,mix(ACC,WHITE,.2),cx.a*.85,1.4*SK);});
+ if(RN.a>.01){ringN(RN,6*SK*RN.sc,ACC,RN.a,1.8*SK);
+  if(frame==='mirror'){g.beginPath();g.arc(RN.x,RN.y,(6*RN.sc+6)*SK,0,TAU);g.strokeStyle=rgba(ACC,RN.a*.45*br);g.lineWidth=1;g.stroke();}}
+ /* the core: the Field's sphere, breathing, with its halo */
+ if(CORE.a>.01){var r0=R*0.085*CORE.sc*(1+(REDUCED?0:Math.sin(now*1.4)*.05));
+  var hl=g.createRadialGradient(CX,CY,r0*.9,CX,CY,r0*3.2);
+  hl.addColorStop(0,rgba(mix(ACC,WHITE,.35),.5*CORE.a*br));hl.addColorStop(.3,rgba(ACC,.18*CORE.a));hl.addColorStop(1,rgba(ACC,0));
+  g.fillStyle=hl;g.beginPath();g.arc(CX,CY,r0*3.2,0,TAU);g.fill();
+  var fg=g.createRadialGradient(CX-r0*.3,CY-r0*.4,r0*.05,CX,CY,r0);
+  fg.addColorStop(0,rgba(mix(ACC,WHITE,.45),CORE.a));fg.addColorStop(1,rgba(mix(ACC,[0,0,0],.25),CORE.a));
+  g.fillStyle=fg;g.beginPath();g.arc(CX,CY,r0,0,TAU);g.fill();
+  g.strokeStyle=rgba(mix(ACC,WHITE,.5),.8*CORE.a);g.lineWidth=1.2;g.stroke();}}
+
+var last=0, running=false;
+function tick(ts){
+ if(!running)return;
+ var t=ts/1000, dt=last?Math.min(.05,t-last):0.016; last=t; now+=dt;
+ if(stage.getAttribute('data-show')==='field')draw(dt); else step2(dt);
+ requestAnimationFrame(tick);}
+function start(){if(running||REDUCED||!g)return;running=true;last=0;requestAnimationFrame(tick);}
+function stop(){running=false;}
+D.addEventListener('visibilitychange',function(){D.hidden?stop():start();});
+
+/* ---------------- the story picks the frame ---------------- */
+var frames=[].slice.call(D.querySelectorAll('.fr'));
+var SHOW={body:'body',loop:'dial'};
+function setFrame(fr){
+ if(fr===frame)return; frame=fr; frameT=now; step='';
+ stage.setAttribute('data-show',SHOW[fr]||'field');
+ if(REDUCED){/* the end state of the frame, drawn once */
+  for(var n=0;n<3;n++)step2(1);draw(0);}}
+function probe(){
+ var vh=window.innerHeight, wide=window.innerWidth>=900;
+ var sh=wide?0:stage.getBoundingClientRect().height;
+ var y=wide?vh*0.5:sh+(vh-sh)*0.38, hit=null;
+ frames.forEach(function(el){var r=el.getBoundingClientRect();
+  if(r.top<vh*0.92&&r.bottom>0&&!el.classList.contains('seen')&&r.top<y+vh*0.3)seen(el);
+  if(r.top<=y&&r.bottom>y)hit=el;});
+ if(hit)setFrame(hit.getAttribute('data-frame'));}
+function seen(el){el.classList.add('seen');
+ /* the mirror stands on beat 02's pattern, so arriving there first still
+    draws the six joined, rather than six points with nothing between them */
+ if(el.id==='recognize'||el.id==='mirror')recRun();}
+var queued=false;
+window.addEventListener('scroll',function(){if(queued)return;queued=true;
+ requestAnimationFrame(function(){queued=false;probe();});},{passive:true});
+window.addEventListener('resize',function(){layout();probe();});
+
+/* beat 02: the lines arrive one at a time, and each one lights its point.
+   Then the six join: different situation, same response. */
+var recStarted=false;
+function recRun(){
+ if(recStarted)return; recStarted=true;
+ var lis=[].slice.call(D.querySelectorAll('#keep li')), same=D.getElementById('same');
+ if(REDUCED){lis.forEach(function(l){l.classList.add('on');});same.classList.add('on');recN=6;recOn=true;draw(0);return;}
+ lis.forEach(function(l,j){setTimeout(function(){l.classList.add('on');recN=j+1;},500+j*650);});
+ setTimeout(function(){same.classList.add('on');recOn=true;},500+6*650+350);}
+
+/* ---------------- the mirror, beat 05 and beat 17 ----------------
+   Three readings, all of them the TDD's: section 16 concept 04, beat 05's
+   "connected to what you expect will happen afterward", and beat 16's
+   "a pattern between holding it in and what happens later". A correction
+   moves to the next reading and keeps the one set aside, struck. */
+var RD=['You say yes before checking whether you actually want to.',
+ 'The yes may be connected to what you expect will happen afterward.',
+ 'There may be a pattern between holding it in and what happens later.'];
+var SAY={yes:'That may be the pattern.',
+ no:'Good. Now we know more.', again:'Disagreement is information.'};
+var mx=D.getElementById('mirror'), rdEl=D.getElementById('reading'), sayEl=D.getElementById('say'),
+ wasEl=D.getElementById('was'), idx=0;
+[].slice.call(D.querySelectorAll('.ans button')).forEach(function(b){
+ b.addEventListener('click',function(){
+  var a=b.getAttribute('data-a');
+  [].slice.call(D.querySelectorAll('.ans button')).forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+  mx.setAttribute('data-m',a);
+  sayEl.textContent=SAY[a];
+  if(a==='yes')return;
+  var li=D.createElement('li'),del=D.createElement('del');del.textContent=RD[idx];li.appendChild(del);
+  wasEl.insertBefore(li,wasEl.firstChild);
+  while(wasEl.children.length>2)wasEl.removeChild(wasEl.lastChild);
+  idx=(idx+1)%RD.length;
+  rdEl.classList.add('out');
+  setTimeout(function(){rdEl.textContent=RD[idx];rdEl.classList.remove('out');},REDUCED?0:180);});});
+
+/* ---------------- the key, one press away ----------------
+   Each key is printed in the markup, so a page with no script reads in full.
+   With one, it is folded at rest and the press opens it in place: the same
+   aria-expanded disclosure the intake's rows use, and never a link away. */
+[].slice.call(D.querySelectorAll('.cap-t')).forEach(function(b){
+ var body=D.getElementById(b.getAttribute('aria-controls')); if(!body)return;
+ body.hidden=true;
+ b.addEventListener('click',function(){
+  var open=b.getAttribute('aria-expanded')!=='true';
+  b.setAttribute('aria-expanded',open?'true':'false'); body.hidden=!open;});});
+
+/* ---------------- the body: one region activates ---------------- */
+(function(){
+ var svg=D.querySelector('.lyr-body svg'); if(!svg)return;
+ /* the nerves twice: a still map underneath, and the pulses running over it */
+ var nv=svg.querySelector('.hero-nerves');
+ if(nv){var run=nv.cloneNode(true);run.setAttribute('class','hero-run');nv.parentNode.insertBefore(run,nv.nextSibling);}
+ var lit=svg.querySelector('.hero-seat[data-seat="heart"]');
+ if(lit){var pg=lit.cloneNode(false);pg.setAttribute('class','seat-ping');pg.removeAttribute('data-seat');
+  lit.parentNode.appendChild(pg);lit.setAttribute('stroke-width','.8');}
+ var gl=svg.querySelector('.hero-glow[data-seat="heart"]');
+ if(gl)gl.setAttribute('r','17');})();
+
+/* ---------------- the dial's seven seat arcs, the Compass rim ---------------- */
+(function(){
+ var gA=D.getElementById('dialArcs'); if(!gA)return; var ns='http://www.w3.org/2000/svg';
+ SEATS.forEach(function(s,i){var a0=(i/7)*TAU-Math.PI/2+0.03,a1=((i+1)/7)*TAU-Math.PI/2-0.03,r=158;
+  var pth=D.createElementNS(ns,'path');
+  pth.setAttribute('d','M '+(200+Math.cos(a0)*r).toFixed(1)+' '+(200+Math.sin(a0)*r).toFixed(1)
+   +' A '+r+' '+r+' 0 0 1 '+(200+Math.cos(a1)*r).toFixed(1)+' '+(200+Math.sin(a1)*r).toFixed(1));
+  pth.setAttribute('fill','none');pth.setAttribute('stroke','var(--'+s+')');
+  pth.setAttribute('stroke-opacity','.55');pth.setAttribute('stroke-width','2');gA.appendChild(pth);});})();
+
+function onMotion(){REDUCED=RM.matches; if(REDUCED){stop();draw(0);} else start();}
+if(RM.addEventListener)RM.addEventListener('change',onMotion);
+
+layout(); probe();
+if(REDUCED){for(var n=0;n<3;n++)step2(1);draw(0);} else start();
+})();
+</script>
+</body></html>

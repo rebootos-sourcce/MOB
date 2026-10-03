@@ -88,12 +88,15 @@ e.NERVEBR.forEach(function(br){
   +'" stroke="var('+(VAR[br.s]||'--accent')+')"/>');});
 out.push(' </g>');
 
-/* the seven seats, clipped to the body so the heat stays in the tissue. */
+/* the seven seats, clipped to the body so the heat stays in the tissue.
+   Each carries its seat by name, data-seat, because the landing page breathes
+   each seat at its own tone and lights one of them: anything needing a seat
+   looks it up by identity, never by where it happens to sit in the group. */
 out.push(' <g clip-path="url(#heroClip)">');
 SEATS.forEach(function(k){
  var s=e.SEATXY[k];
  if(!s)throw new Error('SEATXY has no seat called '+k);
- out.push('  <circle cx="'+n(s.x)+'" cy="'+n(s.y)+'" r="13" fill="url(#hs-'+k+')"/>');});
+ out.push('  <circle class="hero-glow" data-seat="'+k+'" cx="'+n(s.x)+'" cy="'+n(s.y)+'" r="13" fill="url(#hs-'+k+')"/>');});
 out.push(' </g>');
 
 /* and the seat itself, a small ring. ring, not fill, and clipped to the body
@@ -105,7 +108,7 @@ out.push(' </g>');
 out.push(' <g clip-path="url(#heroClip)">');
 SEATS.forEach(function(k){
  var s=e.SEATXY[k];
- out.push('  <circle class="hero-seat" cx="'+n(s.x)+'" cy="'+n(s.y)
+ out.push('  <circle class="hero-seat" data-seat="'+k+'" cx="'+n(s.x)+'" cy="'+n(s.y)
   +'" r="1.5" stroke="var('+VAR[k]+')"/>');});
 out.push(' </g>');
 
