@@ -32777,3 +32777,5 @@ Merge commit `aef23f5`, pushed. Two real conflicts: `ui/onboard.js` (one hunk on
 Independently re-verified on a fresh worktree off the pushed commit: `BUILD.sh` claims gate 107/0 and `BUILD-engine.sh` host-free/729-exports both matched exactly; `tests/engine.js` 4483/0 unchanged; `tests/onboarding2.js` 208/0, matching exactly, including the expected "J0 STILL OPEN" printed report (not a failure, the same known, deliberately-closed line per round QW, unchanged by this merge).
 
 Not yet done, named by the merging agent rather than hidden: real screenshots at both widths (the house rule for anything a person can see), and a repack of `atuned-packed.html` (still holds the older build) before it's offered again. Both queued next.
+
+**Screenshots taken and looked at, round QZ.** The merged tutorial renders cleanly on the full-screen stage at both 1600 and 390, the Journal step's wheel, body figure and "Day One, Let's look at something from your journal" card all present and legible, Continue/Skip the tutorial both reachable. No visual regression from the merge.
