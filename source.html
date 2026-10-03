@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1609 d20bf57 2026-10-03 20:14"><head><meta charset="utf-8">
+<html lang="en" data-build="v1588 7123672 2026-10-03 15:21"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -62710,10 +62710,17 @@ function accAccount(){
     is where he will look. The footer is a disclosure and not a description
     of the switch: it says the page it opens is a sketch before a person
     turns it on expecting clients. */
+ /* THE FOOTER SAID "a sketch with no clients on it" from round LL, and round
+    PT put ten worked examples on that page, so it was a disclosure that had
+    stopped being true. It says what turning the switch on does to the
+    person's own record, which is nothing, and whether anybody has let them
+    see theirs, read off pracSightList and never typed. */
+ var sightN=(typeof pracSightList==='function')?pracSightList().length:0;
  h+=accGroup('Practitioner',
    accTog('Practitioner mode','acprac',pracOn(),
     'adds Practitioner to the menu'),
-   'Turned on, it opens a sketch with no clients on it.');
+   'Turning it on shares nothing of yours.'
+   +(sightN?'':' Nobody has let you see their record yet.'));
  /* HS SWEEP, SETTINGS. A footer that only described the control above it is
     cut: this one, Sign in, Lighting, Screen, Motion, the feedback pair and the
     reproducibility clause on the build. Every footer that is a disclosure
@@ -63249,6 +63256,30 @@ function profMenu(){
     +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 9.5h3l4-3.5v12l-4-3.5h-3z"/>'
     +'<path d="M15.2 9.2a4 4 0 010 5.6M17.6 7a7 7 0 010 10"/></svg></span>'
     +'<span>Sound effects</span><span class="pm-sw" aria-hidden="true"><i></i></span></button>':'')
+  /* PRACTITIONER MODE, IN THE MENU HE OPENED, round RB. His words: "the
+     practitioner page is not present and nor is the practitioner toggle
+     present under the user profile." Both were true of this menu and of
+     nothing else: the switch has lived since round LL in Settings, Account,
+     as the fifth group, under the sign in form and below the fold at 1600
+     and at 390, and this menu, which is what the profile button opens, never
+     carried it. With the switch off the door is shut, so the page could not
+     be found either. Round OD's "could not reproduce" pressed #acprac by id
+     and so never met the problem, which is where the switch was, not
+     whether it worked.
+     The same switch and the same writer as the Account row, pracSwitch: a
+     device setting, never a profile write. pm-sfx is this menu's switch row
+     style, borrowed and not copied. Clients is the door itself, shown only
+     while the mode is on, so the switch leads straight to the page. */
+  +((typeof pracOn==='function')
+   ?'<button type="button" role="menuitemcheckbox" class="pm-it pm-sfx" data-pmprac="1" aria-checked="'+pracOn()+'">'
+    +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8.4" r="3.2"/>'
+    +'<path d="M3.4 19.4a5.6 5.6 0 0111.2 0M16 8h4.6M16 12h4.6M17.6 16h3"/></svg></span>'
+    +'<span>Practitioner mode</span><span class="pm-sw" aria-hidden="true"><i></i></span></button>'
+    +(pracOn()?'<button type="button" role="menuitem" class="pm-it" data-pmclients="1">'
+     +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="9" r="2.8"/>'
+     +'<circle cx="16" cy="9" r="2.8"/><path d="M3 19a5 5 0 0110 0M11 19a5 5 0 0110 0"/></svg></span>'
+     +'<span>Clients</span></button>':'')
+   :'')
   /* THE LOG IS REACHABLE WHEN NOTHING IS ON SCREEN. The dock shows for three
      seconds, so its Log button is only there while a message is, and a person
      who looked away needs a door that does not depend on timing. */
@@ -63268,6 +63299,25 @@ function profMenu(){
   var want=!sfxIsOn();
   sfxSwitch(want); sw.setAttribute('aria-checked',want?'true':'false');
   if(want&&typeof sfx==='function')sfx('kept');};
+ /* the menu is drawn again with the switch, because the Clients row under it
+    comes and goes with the mode, and the focus goes back to the switch so a
+    keyboard is left where it pressed. What happened is said on the status
+    line only when it was kept: pracSwitch says the failure itself. */
+ /* THE CLICK STOPS HERE. The redraw detaches the button that was pressed,
+    and the document's own outside-click listener above asks the target
+    whether it sits in #profmenu: a detached button does not, so the menu
+    shut itself the moment it was drawn again. Measured: the switch turned
+    on, the door opened, and the menu was gone. */
+ var ps=m.querySelector('[data-pmprac]');
+ if(ps)ps.onclick=function(e){
+  if(e&&e.stopPropagation)e.stopPropagation();
+  var want=!pracOn(), kept=pracSwitch(want);
+  profMenuShut(); profMenu();
+  var again=document.querySelector('#profmenu [data-pmprac]'); if(again)again.focus();
+  if(kept)status(want?'Practitioner mode is on. Clients is in this menu now.'
+   :'Practitioner mode is off.','ok');};
+ var pc=m.querySelector('[data-pmclients]');
+ if(pc)pc.onclick=function(){profMenuShut(); setTab(TAB.PRACTITIONER);};
  var lg=m.querySelector('[data-pmlog]');
  if(lg)lg.onclick=function(){profMenuShut(); if(typeof msgLogOpen==='function')msgLogOpen();};
  var o=m.querySelector('[data-pmout]');
@@ -63510,8 +63560,9 @@ try{window.__at&&window.__at('ui/account.js');}catch(e){}
    The door is the fifth section in the bar, written shut into the document
    and opened here. The sketch is the page behind it.
 
-   NOTHING HERE READS ANOTHER PERSON'S RECORD, and nothing can: there is no
-   sign in, no store and no grant. CLAUDE.md names a practitioner seeing a
+   NOTHING HERE READS ANOTHER PERSON'S RECORD, and nothing can: sign in has
+   existed since 30 September (ui/auth.js), but no store holds a record off
+   the device and there is no grant. CLAUDE.md names a practitioner seeing a
    person's self report as a consequential grant that needs consent, a
    visible list of who has sight, and revocation, and none of the three
    exists. The page says so in the stub pattern account.js set down: full
@@ -63604,6 +63655,12 @@ function pracCss(){
   'body.tab-prac #rdrill-none{display:none!important}',
   '#rdrill[style*="block"]~#pr-selnone{display:none}',
   '.pr-wrap{display:flex;flex-direction:column;gap:14px;width:100%;max-width:1400px;margin:0 auto;padding:4px 2px 28px}',
+  /* the one line under the heading that says what this mode is, round RB,
+     held to a reading measure so it never runs the full 1400 */
+  '.pr-what{margin:-4px 0 0;max-width:68ch}',
+  /* on a phone with an example open, the list column is hidden and so is
+     this line, which is about the list and would push the reading down */
+  '@media (max-width:900px){.pr-wrap[data-open="1"] .pr-what{display:none}}',
   /* TWO COLUMNS, NOT THREE, since the right one is the rail's Selection now:
      the list, and the open client. The client splits in two side by side
      when the room is there, what moved on the left and what is held on the
@@ -63955,9 +64012,10 @@ function pracList(){
      ruled against shorthand reaching the person, so neither the research
      term for the six and the names PRACTITIONER-STORY.md uses for the grant
      system print here any more */
+  /* the second sentence moved to Your clients above, round RB, which is
+     where the real list now says it is empty and why */
   +'<div class="ac-gf">Ten of the product’s worked examples, not clients, picked to cover the '
-  +'whole range from the heaviest field to the lightest. A real client list needs a way for a '
-  +'person to let a practitioner see their record, which this build does not have yet.</div>';}
+  +'whole range from the heaviest field to the lightest. Open one to practise reading.</div>';}
 /* ONE RING, SEVEN SEATS. Each arc is one of the seven seats (BANDS), equal
    angle so the shape never distorts, its colour at full strength and the
    rest dimmed by how much that seat actually holds against the heaviest
@@ -64190,6 +64248,37 @@ function pracNotesCard(p){
    +(items||'<div class="pr-empty">No notes yet.</div>'),
    'Saved to this device only, never to '+esc(p.nm)+'’s own record and never sent '+
    'anywhere. Sending a note on to the person it is about is not built yet.');}
+/* ============================================================
+   WHO HAS LET THIS PRACTITIONER SEE THEIR RECORD, round RB. The page above
+   lists worked examples, which is the owner's own ruling ("Just do 10 of the
+   clients from our profiles") and stays. What it never said, on the page
+   itself, is the true state of the real list: empty, and why.
+
+   ONE READER, AND IT IS EMPTY BECAUSE NOTHING CAN FILL IT. A yes is given by
+   the person whose record it is, on their own Privacy page, and has to cross
+   from their device to this one. This build has sign in (ui/auth.js) and
+   nothing else on the server: no store holds a record off the device, and
+   no route carries a yes, lists it on both sides or takes it back. CLAUDE.md
+   names this a consequential grant that needs explicit consent, a visible
+   list of who has sight, and revocation, never a silent default, so nothing
+   here invents an entry, reads one out of device storage, or offers a
+   control that would look like it sent a request. The day the server piece
+   exists, this is the function that reads it, and every sentence on both
+   pages that says "nobody" reads its length rather than the word.
+
+   The shape an entry will carry is not decided here, on purpose. Who sees
+   what (DECISIONS.md, "The practitioner": the tier scope, structure only or
+   story with its own yes) is still open, and a field list written now would
+   be a schema nobody ruled on. */
+function pracSightList(){return [];}
+function pracSightGroup(){
+ var L=pracSightList();
+ return accGroup('Your clients',
+   accRow('People who let you see their record',L.length?String(L.length):'nobody yet'),
+   'A person says yes on their own Privacy page before you see anything of theirs, and can '
+   +'take it back with one press. This build has no way yet to let a practitioner see a record '
+   +'on another device. Turning this mode on shares nothing of yours.');}
+
 /* WHO ELSE CAN SEE THIS CLIENT, honestly not here. The mechanism that would
    list a second practitioner on a row like this does not exist in this
    build, so the stub says that in plain words rather than drawing an empty
@@ -64207,7 +64296,7 @@ function pracModeGroup(){
 function pracDetail(){
  if(PRAC_SEL==null||!PEOPLE[PRAC_SEL])
   return '<div class="pr-mid" id="prmid"><div class="ac-grp pr-head"><div class="pr-empty">'
-   +'Select a client on the left to open their reading.</div></div></div>';
+   +'Open a worked example on the left to read it.</div></div></div>';
  var p=PEOPLE[PRAC_SEL], snap=pracRead(p);
  pracSeenSet(p.nm,pracTierWord(snap));
  var head='<div class="ac-grp pr-head"><div class="ac-hd" style="padding:13px 15px 0">'
@@ -64409,7 +64498,7 @@ function pracSelNone(open){
   none.parentNode.insertBefore(d,none.nextSibling);}
  if(d)d.textContent=open
   ?'Nothing selected. Press a figure, a day, a pattern or a seat on '+open.nm+'’s page to read it here.'
-  :'Nothing selected. Open a client on the left.';}
+  :'Nothing selected. Open a worked example on the left.';}
 
 function pracWire(host){
  host.querySelectorAll('[data-pri]').forEach(function(b){
@@ -64438,10 +64527,16 @@ function renderPrac(){
  pracSelNone(open);
  host.innerHTML='<div class="pr-wrap" style="--c:'+seatCol('Throat')+'" data-open="'+(open?'1':'0')+'">'
   +'<div class="ac-hd"><div class="pm-eye">Practitioner</div><h2 class="kb-h">Clients</h2></div>'
+  /* WHAT THIS MODE IS, said on the page it opens, round RB: the page used to
+     begin on a list of names with nothing saying whose they were or what a
+     practitioner is in this product */
+  +'<p class="ac-lead pr-what">For a coach or therapist who works with other people. A client '
+  +'can let you see their reading, and can take that back. You never see their stories.</p>'
   +'<button type="button" class="btn pr-back">Back to clients</button>'
   +'<div class="pr-cols">'
   +'<div class="pr-list-col">'
-  +'<div class="ac-grp">'+pracList()+'</div>'+pracModeGroup()+'</div>'
+  +pracSightGroup()
+  +'<div class="ac-grp"><div class="ac-gh">Worked examples</div>'+pracList()+'</div>'+pracModeGroup()+'</div>'
   +pracDetail()
   +'</div></div>';
  pracWire(host);
@@ -67838,19 +67933,50 @@ function loginSay(msg,kind,own){
 function loginBusy(on){
  var h=document.getElementById('login'); if(!h)return;
  h.querySelectorAll('.ob-acts .btn').forEach(function(b){ b.disabled=!!on; });}
-/* DEVELOPER OPTIONS, DEACTIVATED IN FULL, ROUND RI. His words: "let's
-   deactivate the developer option." Round RA first gated the panel behind a
-   console-only flag so a stranger never saw it; this goes further and removes
-   the capability itself, not only its visibility, because a flag that still
-   grants a real tier four if anyone ever sets it (from a console, or a stray
-   value already sitting in an old browser's storage from before this round)
-   is still the thing the paywall seat warned against: "taking money behind a
-   lock the product unlocks itself." devSight() now always reads false, so
-   lockPlan() (ui/lock.js) never reads a free tier four from this path again,
-   whatever any browser's storage already holds. loginDevOptions() always
-   returns nothing: there is no panel left to disclose. */
-function devSight(){ return false; }
-function loginDevOptions(){ return ''; }
+/* UNLOCK ALL SIGHT, A TESTING SWITCH, round OT, his words: "unlock all these
+   for me." It reads the top tier for the lock (ui/lock.js lockPlan) and is kept
+   in the browser's own store, so it holds across a reload and never travels on
+   the profile or to a server. It is a product boundary, as the lock is, and
+   not an entitlement: nothing about billing changes. */
+var DEV_SIGHT=null;
+function devSight(){
+ if(DEV_SIGHT===null){ try{ DEV_SIGHT=STORE.get('devsight')==='on'; }catch(e){ DEV_SIGHT=false; } }
+ return DEV_SIGHT;}
+function devSightSet(on){
+ DEV_SIGHT=!!on;
+ try{ STORE.set('devsight',on?'on':'off'); }catch(e){}
+ if(typeof render==='function')render();}
+/* DEVELOPER OPTIONS, GATED BEHIND A FLAG NO SHIPPED CONTROL CAN SET, ROUND
+   RA. The comment here used to say "disclosed rather than always visible,"
+   and the disclosure was real: the block was a collapsed <details>, closed
+   by default. But collapsed is not gated. Every visitor to the login card
+   got the same markup, open to a click, and one of its three switches is
+   "Unlock all sight," which lockPlan() (ui/lock.js) turns into a real tier
+   four grant, stored in the browser so it survives a reload. A stranger
+   meeting the funnel never needed to see this to use the product, and the
+   label "Developer options" is itself an invitation to try the switch
+   under it. Reviewed round RA, paywall seat: "the one thing that matters
+   most... taking money behind a lock the product unlocks itself."
+
+   The fix keeps the control, because the team still needs it, and removes
+   it from anyone who has not already turned it on from a console: devtoolsOn()
+   reads a second flag, never written by any rendered control, so turning
+   the panel on at all takes the same console access self-editing a record
+   already does (the privacy note above this function already treats that
+   as the person's own device, not an attack). */
+function devtoolsOn(){
+ try{ return STORE.get('devtools')==='on'; }catch(e){ return false; }}
+function loginDevOptions(){
+ if(!devtoolsOn())return '';
+ return '<details class="login-dev">'
+  +'<summary>Developer options</summary>'
+  +'<label class="login-sw"><input type="checkbox" id="devob"'
+  +(DEV_PLAY_ONBOARDING?' checked':'')+'> Onboarding</label>'
+  +'<label class="login-sw"><input type="checkbox" id="devtut"'
+  +(DEV_PLAY_TUTORIAL?' checked':'')+'> Tutorial</label>'
+  +'<label class="login-sw"><input type="checkbox" id="devsight"'
+  +(devSight()?' checked':'')+'> Unlock all sight</label>'
+  +'</details>';}
 function loginOpen(){
  var h=document.getElementById('login'); if(!h)return;
  LOGIN.open=true; LOGIN.reset=false; h.style.display='flex'; h.innerHTML=loginCard();
@@ -67881,7 +68007,13 @@ function loginWire(h){
   if(send)send.onclick=function(){ loginForgot(); };
   var rf=document.getElementById('loginresetf');
   if(rf)rf.onsubmit=function(e){ e.preventDefault(); loginForgot(); };
-  if(rm)rm.focus(); };}
+  if(rm)rm.focus(); };
+ var devob=document.getElementById('devob');
+ if(devob)devob.onchange=function(){ DEV_PLAY_ONBOARDING=!!devob.checked; };
+ var devtut=document.getElementById('devtut');
+ if(devtut)devtut.onchange=function(){ DEV_PLAY_TUTORIAL=!!devtut.checked; };
+ var devs=document.getElementById('devsight');
+ if(devs)devs.onchange=function(){ devSightSet(!!devs.checked); };}
 function loginClose(){
  var h=document.getElementById('login'); if(!h)return;
  LOGIN.open=false; h.style.display='none'; h.innerHTML='';}
@@ -69923,5 +70055,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004589278"></div>
+<div id="eof" hidden data-len="004597603"></div>
 </body></html>

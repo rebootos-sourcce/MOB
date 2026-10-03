@@ -31,6 +31,65 @@ const b=await chromium.launch({executablePath:CHROME});
 const p=await b.newPage({viewport:{width:1600,height:1000}});
 await p.goto(FILE,{waitUntil:'load'}); await booted(p); await p.waitForTimeout(600);
 
+/* ROUND RB: THE SWITCH IS IN THE MENU THE PROFILE BUTTON OPENS. His words:
+   "the practitioner page is not present and nor is the practitioner toggle
+   present under the user profile." The switch lived only in Settings,
+   Account, below the fold, and the menu he opened never carried it. This is
+   walked by pressing, never by calling pracSwitch, because round OD's
+   "could not reproduce" pressed #acprac by id and so never met where the
+   switch was. Known bad: the build before round RB fails the first check. */
+console.log('=== the profile menu carries the practitioner switch and leads to the page ===');
+const menuWalk=async pg=>pg.evaluate(async()=>{
+ const wait=()=>new Promise(r=>setTimeout(r,200)), o={};
+ const q=s=>document.querySelector(s);
+ const doorShown=()=>{const e=q('#secbar .secb[data-sec="practitioner"]'); return !!e&&e.style.display!=='none';};
+ q('#profbtn').click(); await wait();
+ let sw=q('#profmenu [data-pmprac]');
+ o.sw=!!sw; if(!sw)return o;
+ const r=sw.getBoundingClientRect();
+ o.inView=r.top>=0&&r.bottom<=innerHeight&&r.left>=0&&r.right<=innerWidth; o.h=Math.round(r.height);
+ o.off=sw.getAttribute('aria-checked')==='false'&&!q('#profmenu [data-pmclients]')&&!doorShown();
+ sw.click(); await wait();
+ sw=q('#profmenu [data-pmprac]');
+ o.on=!!sw&&sw.getAttribute('aria-checked')==='true'&&pracOn()===true&&doorShown();
+ o.menuOpen=!q('#profmenu').hidden;
+ o.focus=document.activeElement===sw;
+ o.status=(q('#status')||{}).textContent||'';
+ o.device=devGet('practitioner')===true&&!(CURP.ui&&CURP.ui.practitioner);
+ const cl=q('#profmenu [data-pmclients]'); o.clients=!!cl; if(!cl)return o;
+ cl.click(); await wait();
+ o.page=S.tab===TAB.PRACTITIONER&&q('#profmenu').hidden;
+ const host=q('#prac'), t=host?host.textContent:'';
+ o.lead=/coach or therapist/.test(t)&&/never see their stories/.test(t);
+ const row=[].find.call(host.querySelectorAll('.ac-row'),x=>/People who let you see their record/.test(x.textContent));
+ o.sightRow=row?row.textContent:'';
+ o.sightN=pracSightList().length;
+ o.headings=[].map.call(host.querySelectorAll('.pr-list-col .ac-gh'),x=>x.textContent);
+ /* and off again from the same menu: the door shuts and the person is
+    taken off the page whose door just went */
+ q('#profbtn').click(); await wait();
+ q('#profmenu [data-pmprac]').click(); await wait();
+ o.offAgain=pracOn()===false&&!doorShown()&&!q('#profmenu [data-pmclients]')&&S.tab!==TAB.PRACTITIONER;
+ q('#profbtn').click(); await wait();
+ return o;});
+for(const [w,h] of [[1600,1000],[390,844]]){
+ const pg=w===1600?p:await b.newPage({viewport:{width:w,height:h}});
+ if(pg!==p){await pg.goto(FILE,{waitUntil:'load'}); await booted(pg); await pg.waitForTimeout(600);}
+ const m=await menuWalk(pg);
+ ok(m.sw,w+': the profile menu carries a Practitioner mode switch');
+ ok(m.inView&&m.h>=44,w+': the switch is on screen when the menu opens and 44 tall, '+m.h+'px, in view '+m.inView);
+ ok(m.off,w+': it starts off, with no Clients row and no door');
+ ok(m.on&&m.menuOpen&&m.focus,w+': one press turns it on, opens the door, keeps the menu open and the focus on the switch');
+ ok(/Practitioner mode is on/.test(m.status),w+': the status line says it landed, got "'+m.status+'"');
+ ok(m.device,w+': written to this device, never to the profile');
+ ok(m.clients&&m.page,w+': a Clients row appears under it and opens the practitioner page');
+ ok(m.lead,w+': the page says what practitioner mode is, and that stories are never seen');
+ ok(m.sightN===0&&/nobody yet/.test(m.sightRow),w+': the real client list is empty and says so, "'+m.sightRow+'"');
+ ok(JSON.stringify(m.headings)==='["Your clients","Worked examples","This mode"]',
+  w+': the real list comes before the worked examples, which are named as examples, '+JSON.stringify(m.headings));
+ ok(m.offAgain,w+': off from the same menu shuts the door and leaves the page');
+ if(pg!==p)await pg.close();}
+
 /* the switch, as a device setting, the way a person actually reaches this
    page: turn it on, then press into the section the bar now shows */
 await p.evaluate(()=>{pracSwitch(true); setTab(TAB.PRACTITIONER);});
