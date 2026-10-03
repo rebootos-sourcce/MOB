@@ -1,0 +1,911 @@
+<!doctype html>
+<html lang="en" data-build="proto-body-map-2026-09-27">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pain and pattern map, prototype</title>
+<style>
+:root{
+ --bg:#0E0E0F; --stage:#0F1013; --panel:#15161A; --panel2:#1B1D23; --edge:#26282E; --edge2:#33363E;
+ --ink:#E6E7EA; --mid:#C9CBD2; --dim:#9A9CA4; --accent:#7EB8D4; --proto:#D6A93B;
+ --heat:#D19255; --heat2:#C4635E;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink)}
+body{font:400 14.5px/1.5 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+.proto{position:sticky;top:0;z-index:20;background:var(--proto);color:#16130A;font-weight:600;font-size:13px;padding:6px 16px;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.proto span{font-weight:500;opacity:.85}
+header{padding:16px 16px 4px;max-width:1480px;margin:0 auto}
+.eyebrow{font-size:12px;color:var(--dim);font-weight:600;letter-spacing:.02em}
+h1{font-size:22px;line-height:1.25;margin:4px 0 6px;font-weight:600}
+.sub{color:var(--mid);max-width:84ch;margin:0}
+.bar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;padding:12px 16px 0;max-width:1480px;margin:0 auto}
+.seg{display:inline-flex;gap:2px;padding:3px;border:1px solid var(--edge2);border-radius:999px;background:#0B0C0E;flex-wrap:wrap}
+.seg button{all:unset;box-sizing:border-box;cursor:pointer;min-height:38px;padding:8px 14px;border-radius:999px;font-size:13.5px;color:var(--dim);
+ display:inline-flex;align-items:center;gap:7px}
+.seg button:hover{color:var(--ink)}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.seg button[aria-pressed="true"]{background:#23262E;color:var(--ink)}
+.seg.mode button[data-k="pain"][aria-pressed="true"]{background:#2A1F18;color:#F0D2B8}
+.seg.mode button[data-k="pattern"][aria-pressed="true"]{background:#172229;color:#CFE6F0}
+.seg svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.lbl{font-size:12.5px;color:var(--dim);font-weight:600}
+.grp{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.chip{all:unset;box-sizing:border-box;cursor:pointer;min-height:36px;padding:7px 12px;border:1px solid var(--edge2);border-radius:999px;
+ font-size:13px;color:var(--dim);display:inline-flex;align-items:center;gap:6px}
+.chip:hover{color:var(--ink);border-color:#464A54}
+.chip:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.chip[aria-pressed="true"]{color:var(--ink);border-color:var(--accent)}
+.chip i{width:8px;height:8px;border-radius:50%;display:inline-block}
+select{font:inherit;font-size:13.5px;color:var(--ink);background:#15161A;border:1px solid var(--edge2);border-radius:10px;padding:8px 10px;min-height:38px}
+input[type=range]{accent-color:var(--heat);width:120px}
+main{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px;padding:12px 16px;max-width:1480px;margin:0 auto}
+.stage{position:relative;height:min(80vh,900px);min-height:460px;background:var(--stage);border:1px solid var(--edge);border-radius:12px;overflow:hidden}
+.stage canvas{position:absolute;inset:0;display:block;touch-action:none;cursor:default}
+.stage.paint canvas{cursor:crosshair}
+.hint{position:absolute;left:12px;bottom:10px;right:300px;font-size:12.5px;color:var(--dim);pointer-events:none}
+.corner{position:absolute;right:10px;bottom:8px;font-size:12px;color:var(--dim);pointer-events:none;font-variant-numeric:tabular-nums}
+.zoom{position:absolute;right:10px;bottom:34px;display:flex;flex-direction:column;gap:6px}
+.zoom button{all:unset;box-sizing:border-box;cursor:pointer;width:44px;height:44px;border-radius:12px;border:1px solid var(--edge2);
+ background:rgba(21,22,26,.86);color:var(--mid);display:grid;place-items:center}
+.zoom button:hover{color:var(--ink)}
+.zoom svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round}
+.face{position:absolute;left:10px;bottom:10px;display:none}
+.stage.phone .hint{top:10px;bottom:auto;right:64px}
+.stage.phone .corner{display:none}
+.stage.phone .zoom{bottom:10px}
+#tip{position:absolute;pointer-events:none;background:rgba(18,19,23,.94);border:1px solid var(--edge2);border-radius:8px;padding:6px 9px;
+ font-size:12.5px;color:var(--ink);white-space:nowrap;transform:translate(-50%,-120%);display:none;z-index:4}
+#tip small{color:var(--dim);font-size:12px}
+aside{background:var(--panel);border:1px solid var(--edge);border-radius:12px;padding:14px;max-height:min(80vh,900px);overflow:auto}
+aside h2{font-size:15px;margin:0;font-weight:600}
+aside h3{font-size:12.5px;color:var(--dim);font-weight:600;margin:14px 0 6px}
+aside p{margin:0 0 8px;color:var(--mid);font-size:13.5px}
+.small{font-size:12.5px;color:var(--dim)}
+.card{background:var(--panel2);border:1px solid var(--edge2);border-radius:12px;padding:12px;margin-bottom:14px}
+.card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.card .x{all:unset;cursor:pointer;width:44px;height:44px;display:grid;place-items:center;margin:-10px -10px 0 0;color:var(--dim);border-radius:10px}
+.card .x:hover{color:var(--ink)}
+.nums{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.nums div{background:#121317;border:1px solid var(--edge);border-radius:10px;padding:8px 10px}
+.nums b{font-size:20px;font-weight:600;font-variant-numeric:tabular-nums}
+.nums b small{font-size:12px;color:var(--dim);font-weight:500}
+.nums span{display:block;font-size:12px;color:var(--dim);line-height:1.35;margin-top:2px}
+.rows{list-style:none;margin:0;padding:0}
+.rows li{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:8px;align-items:center;padding:5px 2px;font-size:13px}
+.rows li svg{width:20px;height:20px;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.rows li .v{font-variant-numeric:tabular-nums;color:var(--mid)}
+.rows li em{font-style:normal;color:var(--dim);font-size:12px}
+#sabs li{border-radius:8px;cursor:pointer;grid-template-columns:22px minmax(0,1fr) 34px 74px;min-height:44px}
+#sabs li:hover,#sabs li[aria-pressed="true"]{background:#1D1F25}
+#sabs .bar2{grid-column:2/5;height:3px;background:#23252B;border-radius:2px;overflow:hidden;margin-top:-2px}
+#sabs .bar2 i{display:block;height:100%}
+.dir{font-size:12px;color:var(--dim)}
+.dir.loading{color:#E7C98A}.dir.releasing{color:#9DB4E6}
+.ask{border-left:2px solid var(--proto);padding:4px 0 4px 10px;margin:10px 0;color:var(--mid);font-size:13px}
+.ask b{color:var(--ink)}
+section.doc{max-width:1480px;margin:0 auto;padding:4px 16px 40px;color:var(--mid);font-size:13.5px}
+details{margin:10px 0;border:1px solid var(--edge);border-radius:12px;padding:10px 14px;background:#111215}
+details summary{cursor:pointer;color:var(--ink);font-weight:600;min-height:28px}
+table{border-collapse:collapse;margin-top:8px;width:100%;max-width:1100px;font-size:13px}
+td,th{border-bottom:1px solid var(--edge);padding:6px 8px;text-align:left;vertical-align:top}
+th{color:var(--ink);font-weight:600}
+td.n{font-variant-numeric:tabular-nums;text-align:right}
+tr.win td{color:var(--ink)}
+@media (max-width:900px){
+ main{grid-template-columns:minmax(0,1fr)}
+ .stage{height:70vh;min-height:420px}
+ .face{display:flex}
+ aside{max-height:none}
+}
+</style>
+</head>
+<body>
+<div class="proto" role="note">Prototype. <span>Mock people and mock pain. Not the app, not your reading.</span></div>
+<header>
+ <div class="eyebrow">Body map prototype · built from BODY-MAP-SPEC.md, round GV</div>
+ <h1>Pain and pattern, on one map</h1>
+ <p class="sub">The approved man, front and back, on the 5 cm grid, with 48 regions you can press. <b>Pattern</b> shows the saboteurs running as tension lines between the addresses that built them. <b>Pain</b> is where you paint where it hurts. Switching between them is the interaction to judge. Three ways to do it were built from your words and a fourth from what the simulation found. It opens on the one the simulation picked.</p>
+</header>
+
+<div class="bar" role="toolbar" aria-label="Map controls">
+ <div class="seg mode" id="mode" role="group" aria-label="Show">
+  <button type="button" data-k="pattern" aria-pressed="true"><svg viewBox="0 0 24 24"><path d="M4 18c4-10 12-2 16-12"/><circle cx="4" cy="18" r="1.6"/><circle cx="20" cy="6" r="1.6"/></svg>Pattern</button>
+  <button type="button" data-k="pain" aria-pressed="false"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="6.5"/><circle cx="12" cy="12" r="10"/></svg>Pain</button>
+ </div>
+ <div class="grp"><span class="lbl">Switch</span>
+  <div class="seg" id="variant" role="group" aria-label="How the switch to pain behaves">
+   <button type="button" data-k="A" aria-pressed="false">A · Fade</button>
+   <button type="button" data-k="B" aria-pressed="false">B · Reveal</button>
+   <button type="button" data-k="C" aria-pressed="true">C · Isotherm</button>
+   <button type="button" data-k="D" aria-pressed="false">D · Bands and reveal</button>
+  </div></div>
+ <div class="grp" id="brushg"><label class="lbl" for="brush">Paint at</label><input type="range" id="brush" min="1" max="10" step="1" value="6"><span id="brushv" class="lbl" style="min-width:3ch">6</span>
+  <button type="button" class="chip" id="clear">Clear paint</button></div>
+ <div class="grp"><label class="lbl" for="who">Mock person</label><select id="who"></select></div>
+</div>
+<div class="bar" role="toolbar" aria-label="Layers and questions">
+ <div class="grp" id="layers"><span class="lbl">Layers</span></div>
+ <div class="grp"><span class="lbl">Address, question A</span>
+  <div class="seg" id="amode" role="group" aria-label="How an address is drawn">
+   <button type="button" data-k="A4" aria-pressed="true">Fetter mark</button>
+   <button type="button" data-k="A3" aria-pressed="false">Point in patch</button>
+   <button type="button" data-k="A1" aria-pressed="false">Point</button>
+  </div></div>
+ <div class="grp"><span class="lbl">Deep, question C</span>
+  <div class="seg" id="cmode" role="group" aria-label="Which surface shows a deep structure">
+   <button type="button" data-k="C3" aria-pressed="true">Both, far one faint</button>
+   <button type="button" data-k="C2" aria-pressed="false">Nearer only</button>
+  </div></div>
+ <button type="button" class="chip" id="motion" aria-pressed="false">Reduced motion: off</button>
+</div>
+
+<main>
+ <div class="stage" id="stage">
+  <canvas id="cv" aria-label="The man, front and back, with nerves, the seven seats, the addresses, saboteur tension lines and painted pain"></canvas>
+  <div class="hint" id="hint"></div>
+  <div class="zoom"><button type="button" id="zin" aria-label="Zoom in"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+   <button type="button" id="zout" aria-label="Zoom out"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+   <button type="button" id="zfit" aria-label="Whole body"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button></div>
+  <div class="face seg" id="face" role="group" aria-label="Which side"><button type="button" data-k="front" aria-pressed="true">Front</button><button type="button" data-k="back" aria-pressed="false">Back</button></div>
+  <div id="tip"></div>
+  <div class="corner" id="corner"></div>
+ </div>
+ <aside aria-label="What is pressed, and what is running">
+  <div id="regcard"></div>
+  <h2>Running · <span id="sabn"></span></h2>
+  <p class="small">Saboteurs past five, heaviest first, and which way the load is moving. Point at one to trace its line. Press to hold it.</p>
+  <ul class="rows" id="sabs"></ul>
+  <div class="ask"><b>To confirm with you.</b> Every address here is drawn with the mark of its fetter, inside the ring that shows its charge. That is our reading of "with the icon of the fetter" for question A. The switch above puts it beside the two drawn options. Zoom in to see the marks.</div>
+ </aside>
+</main>
+
+<section class="doc">
+ <details open><summary>The four switches, and what the simulation found</summary><p>Pressing Pain dulls the nerve and seat map and raises the heat. Each switch does it one way. Change the switch above and it replays. A, B and C were built to his words. D was built afterwards, from what the simulation found in the first three, and measured the same way.</p><table><tr><th>Switch</th><th>What dims</th><th>How the heat arrives</th><th>Timing</th></tr><tr><td>A · Fade</td><td>Nerves to 30 percent and nearly grey, seats to 30, evenly, everywhere</td><td>Rises with the ground, smooth, to 86 percent</td><td>Both 400ms together, ease in and out</td></tr><tr><td>B · Reveal</td><td>Nerves to 20 percent where there is no pain. Under the pain they stay lit and warm. Seats hold at 50</td><td>Colour arrives ahead of strength, to 74 percent</td><td>Ground 260ms, then heat 520ms starting at 140ms, ease out</td></tr><tr><td>C · Isotherm</td><td>Nerves to 55 percent, seats to 60, evenly</td><td>Five bands, one at a time from cool to hot, each edge drawn as a thin light line</td><td>Ground 300ms, bands every 90ms</td></tr><tr><td>D · Bands and reveal</td><td>Nerves to 42 percent where there is no pain. Under the pain they stay lit at six tenths. Seats hold at 55</td><td>C's five bands</td><td>Ground 260ms, bands every 80ms from 100ms</td></tr></table><h4 style="color:var(--ink);margin:16px 0 4px">Measured, on the calibration ladder</h4><p>Five cells painted at 2, 4, 6, 8 and 10 on the front torso, where the nerves are densest. Read in headless Chromium at 1600 by 1000, the heat fully up, from the pixels on screen. Measured 2026-09-27.</p><table><tr><th></th><th>A · Fade</th><th>B · Reveal</th><th>C · Isotherm</th><th>D · Bands and reveal</th><th>What it means</th></tr><tr><td>Smallest step between painted levels</td><td class="n">8.1</td><td class="n">5.6</td><td class="n">9.3</td><td class="n">7.3</td><td>colour distance between neighbouring levels, 2 to 10. About 2.3 is the least a person sees; 10 reads at a glance</td></tr><tr><td>Nerve noise inside a painted cell</td><td class="n">6.3</td><td class="n">14.1</td><td class="n">9.1</td><td class="n">11.9</td><td>lightness spread inside one level. Lower means the level reads clean</td></tr><tr><td>Nerve under the pain, against its ground</td><td class="n">1.14</td><td class="n">2.42</td><td class="n">1.34</td><td class="n">1.78</td><td>contrast ratio. Higher shows which nerve carries the pain</td></tr><tr><td>Nerve away from the pain, against its ground</td><td class="n">1.36</td><td class="n">1.21</td><td class="n">1.88</td><td class="n">1.59</td><td>contrast ratio. Enough to stay oriented; Pattern itself reads 2.07</td></tr><tr><td>Heat 90 percent up, ms</td><td class="n">290</td><td class="n">420</td><td class="n">370</td><td class="n">430</td><td>off the switch's own curve</td></tr><tr><td>Switch finished, ms</td><td class="n">400</td><td class="n">660</td><td class="n">450</td><td class="n">500</td><td>the ground and the heat both landed</td></tr><tr><td>Frame cost, ms</td><td class="n">2.55</td><td class="n">2.08</td><td class="n">4.32</td><td class="n">2.45</td><td>main thread, running, heaviest mock person. Headless and without a GPU, so pessimistic</td></tr></table><h4 style="color:var(--ink);margin:16px 0 4px">The panel, simulated</h4><p>The six ICPs from the roster, each weighted on the four things the numbers above measure, by what their own recorded words say they come for. This is the team modelling the panel, not the panel. The weights are shown so they can be argued with.</p><table><tr><th>Who</th><th>Weight of 1,000</th><th>Reads the level</th><th>Sees the route</th><th>Stays oriented</th><th>Speed</th><th>A</th><th>B</th><th>C</th><th>D</th><th>Picks</th></tr><tr><td>Diane, 46. founder, second company</td><td class="n">180</td><td class="n">0.35</td><td class="n">0.15</td><td class="n">0.15</td><td class="n">0.35</td><td class="n">0.62</td><td class="n">0.53</td><td class="n">0.68</td><td class="n">0.57</td><td>C</td></tr><tr><td>Derek, 39. high performer, endurance</td><td class="n">170</td><td class="n">0.4</td><td class="n">0.3</td><td class="n">0.1</td><td class="n">0.2</td><td class="n">0.52</td><td class="n">0.53</td><td class="n">0.58</td><td class="n">0.52</td><td>C</td></tr><tr><td>Marcus, 44. creative director</td><td class="n">160</td><td class="n">0.45</td><td class="n">0.15</td><td class="n">0.15</td><td class="n">0.25</td><td class="n">0.6</td><td class="n">0.49</td><td class="n">0.67</td><td class="n">0.55</td><td>C</td></tr><tr><td>Angela, 36. seeker, six modalities</td><td class="n">150</td><td class="n">0.15</td><td class="n">0.45</td><td class="n">0.25</td><td class="n">0.15</td><td class="n">0.36</td><td class="n">0.54</td><td class="n">0.51</td><td class="n">0.5</td><td>B</td></tr><tr><td>Sofia, 41. somatic practitioner</td><td class="n">140</td><td class="n">0.2</td><td class="n">0.35</td><td class="n">0.35</td><td class="n">0.1</td><td class="n">0.37</td><td class="n">0.47</td><td class="n">0.57</td><td class="n">0.5</td><td>C</td></tr><tr><td>James, 57. C-suite, third turnaround</td><td class="n">100</td><td class="n">0.4</td><td class="n">0.1</td><td class="n">0.1</td><td class="n">0.4</td><td class="n">0.68</td><td class="n">0.54</td><td class="n">0.7</td><td class="n">0.58</td><td>C</td></tr><tr class="win"><td>Weighted by the panel</td><td></td><td></td><td></td><td></td><td></td><td class="n">0.522</td><td class="n">0.515</td><td class="n">0.617</td><td class="n">0.536</td><td>C</td></tr></table><p>The panel, weighted, lands on C, Isotherm at 0.617, then D, Bands and reveal at 0.536, A, Fade at 0.522 and B, Reveal at 0.515. C, Isotherm is the first pick of 750 of the 900 weight; B, Reveal is the first pick of 150 of the 900 weight. Under the pain, a nerve reads at 1.14 to 1 on A, 2.42 on B, 1.34 on C and 1.78 on D. Away from it, 1.36, 1.21, 1.88 and 1.59, against 2.07 in Pattern. The smallest step between painted levels is 8.1, 5.6, 9.3 and 7.3.</p><p><b style="color:var(--ink)">The art direction call: C, and it opens on C.</b> It wins on the panel's weights and on equal weights, and loses only where seeing the route counts for half or more. The one thing it gives up, which nerve sits under the pain, is already drawn in every switch by the pain line, which rides that nerve from the painted place to the spine. B shows the same thing a second time and pays for it in how well the level reads. D, built to split the difference, split it and won nothing, and it stays here because a measured loss is worth seeing.</p></details>
+ <details><summary>Timing, for the team</summary><table><tr><th>What</th><th>How long</th><th>Curve</th><th>Note</th></tr><tr><td>Pattern to Pain</td><td>per switch, above</td><td>per switch</td><td>Pain to Pattern is the same for all three: heat out in 220ms, then ground back in 320ms</td></tr><tr><td>Saboteur pulse</td><td>a route in 5 to 14 s</td><td>linear</td><td>speed by the square root of tension. Toward the heaviest address while loading, away while releasing</td></tr><tr><td>Saboteur hum</td><td>0.9 to 3.1 a second</td><td>sine, a standing wave pinned at each address</td><td>amplitude by tension to the power 1.5. Three times on trace</td></tr><tr><td>Sag</td><td>none</td><td></td><td>slack by (1 minus tension over 10) to the power 1.3. A taut cable runs straight</td></tr><tr><td>Trace, on pointing at a line</td><td>700ms, then hold and hum</td><td>ease out cubic</td><td>his CU ruling: traces the whole line, holds, hums by its tension</td></tr><tr><td>Mark kicked by a pulse</td><td>about 500ms, 20 percent over</td><td>spring, w 14, damping .42</td><td>the Field's own ring spring, from d-fringe</td></tr><tr><td>Stress fringes</td><td>born at the mark, 4 deep</td><td>travel with the load</td><td>spacing 9 to 4px by strain, past five only</td></tr><tr><td>Load drift</td><td>15 to 26s a cycle</td><td>sine</td><td>sets loading or releasing, per saboteur</td></tr><tr><td>Pain line pulse</td><td>toward the spine</td><td>linear</td><td>the direction a pain signal travels. Faster when painted higher</td></tr><tr><td>Opening a region</td><td>about 400ms</td><td>exponential chase</td><td>double press, or the button on the region card</td></tr></table><p>Under reduced motion every switch lands at its end state with no curve, nothing pulses, hums or drifts, and the canvas repaints only when something changes.</p></details>
+ <details><summary>What is real and what is mock</summary><table><tr><th>What</th><th>Where it comes from</th></tr><tr><td>The man, nerves, seats</td><td>the front and back figure he locked on 27 September, FW option A, taken apart into layers so each can dim alone</td></tr><tr><td>Where each address stands</td><td>proto/body-map-spec/gen.js, which reads ANAT from the engine and FW's proposed places. 110 drawn points, every one of the 112 inside the body, which is all but the 4 field anchors above and below it</td></tr><tr><td>Which surface is nearer</td><td>the spec's own split: 17 addresses belong on the back. With question C at C3 they show on both, faint on the far one</td></tr><tr><td>The 48 regions</td><td>the first taxonomy in merge.js, question M. Palm, hip, knee, shin, ankle and foot on the front, and the back's own</td></tr><tr><td>The grid</td><td>5 cm cells, 20 by 36 laid over each view</td></tr><tr><td>Fetter marks</td><td>CHILD in canon.js, the nine fetters' own marks. Shape says which fetter, colour says which seat it stands in</td></tr><tr><td>Saboteur lines</td><td>SAB_LIB, each saboteur's three addresses. Colour is its family's seat, from HCX_LIB</td></tr><tr><td>Limb centres</td><td>his list, "palm, feet, shin, knee". Nothing in the engine stands there yet. Proposed, question D</td></tr><tr><td>Charges, tensions, pain</td><td>mock. Each address takes its fetter's charge from a roster person, moved a little per address. Pain is a preset per person. None of it is a reading</td></tr><tr><td>Tension line routes</td><td>each region to the spine along a nerve drawn in the figure, entering at a level read off the back figure's own labels</td></tr></table></details>
+</section>
+<script>window.__DATA={"read":"derived 2026-09-27 by proto/body-map-build/src/data.js","cm":1.8681811388432221,"body":{"d":"M282 16C283.5 15.8 287.5 15.2 290 16C292.5 16.8 295.5 18.5 297 21C298.5 23.5 299.3 28.2 299 31C298.7 33.8 295.3 36.5 295 38C294.7 39.5 294.5 39.0 297 40C299.5 41.0 306.7 42.5 310 44C313.3 45.5 314.2 46.2 317 49C319.8 51.8 324.5 57.0 327 61C329.5 65.0 331.0 68.0 332 73C333.0 78.0 333.2 86.0 333 91C332.8 96.0 330.5 100.5 331 103C331.5 105.5 335.0 104.0 336 106C337.0 108.0 337.7 110.5 337 115C336.3 119.5 334.0 128.8 332 133C330.0 137.2 327.0 136.2 325 140C323.0 143.8 320.8 149.8 320 156C319.2 162.2 319.5 172.0 320 177C320.5 182.0 320.5 182.5 323 186C325.5 189.5 330.0 194.3 335 198C340.0 201.7 347.3 205.0 353 208C358.7 211.0 363.2 213.8 369 216C374.8 218.2 382.7 219.0 388 221C393.3 223.0 397.3 225.2 401 228C404.7 230.8 407.5 234.5 410 238C412.5 241.5 414.0 243.7 416 249C418.0 254.3 421.2 259.3 422 270C422.8 280.7 420.2 302.5 421 313C421.8 323.5 425.7 323.0 427 333C428.3 343.0 427.8 363.2 429 373C430.2 382.8 431.3 384.8 434 392C436.7 399.2 441.7 401.7 445 416C448.3 430.3 451.5 463.5 454 478C456.5 492.5 457.7 495.7 460 503C462.3 510.3 463.7 516.3 468 522C472.3 527.7 481.0 531.2 486 537C491.0 542.8 494.7 552.0 498 557C501.3 562.0 505.5 564.7 506 567C506.5 569.3 502.7 570.7 501 571C499.3 571.3 498.7 571.3 496 569C493.3 566.7 487.3 559.3 485 557C482.7 554.7 482.8 555.0 482 555C481.2 555.0 478.3 549.2 480 557C481.7 564.8 490.0 593.3 492 602C494.0 610.7 492.3 607.5 492 609C491.7 610.5 490.8 610.7 490 611C489.2 611.3 487.8 611.3 487 611C486.2 610.7 486.3 612.2 485 609C483.7 605.8 480.7 595.8 479 592C477.3 588.2 476.0 586.3 475 586C474.0 585.7 472.7 586.0 473 590C473.3 594.0 476.3 605.0 477 610C477.7 615.0 478.2 618.3 477 620C475.8 621.7 472.2 624.3 470 620C467.8 615.7 465.3 598.7 464 594C462.7 589.3 462.7 592.0 462 592C461.3 592.0 460.2 589.8 460 594C459.8 598.2 461.2 612.8 461 617C460.8 621.2 459.8 618.7 459 619C458.2 619.3 457.0 619.7 456 619C455.0 618.3 454.0 620.0 453 615C452.0 610.0 450.8 593.7 450 589C449.2 584.3 448.8 586.8 448 587C447.2 587.2 445.7 586.8 445 590C444.3 593.2 444.8 603.2 444 606C443.2 608.8 441.0 607.2 440 607C439.0 606.8 438.5 610.3 438 605C437.5 599.7 438.0 584.0 437 575C436.0 566.0 432.5 558.5 432 551C431.5 543.5 435.2 537.5 434 530C432.8 522.5 430.7 518.5 425 506C419.3 493.5 405.2 466.3 400 455C394.8 443.7 396.0 444.7 394 438C392.0 431.3 389.3 423.3 388 415C386.7 406.7 387.8 397.7 386 388C384.2 378.3 378.8 362.5 377 357C375.2 351.5 375.7 355.0 375 355C374.3 355.0 374.3 353.5 373 357C371.7 360.5 368.7 369.2 367 376C365.3 382.8 363.7 391.5 363 398C362.3 404.5 362.3 408.0 363 415C363.7 422.0 366.7 433.2 367 440C367.3 446.8 364.0 447.5 365 456C366.0 464.5 370.3 477.2 373 491C375.7 504.8 379.3 520.7 381 539C382.7 557.3 383.5 581.3 383 601C382.5 620.7 379.5 644.2 378 657C376.5 669.8 376.0 670.0 374 678C372.0 686.0 367.3 692.2 366 705C364.7 717.8 365.0 742.0 366 755C367.0 768.0 370.8 772.7 372 783C373.2 793.3 373.5 807.7 373 817C372.5 826.3 370.5 832.8 369 839C367.5 845.2 366.3 844.8 364 854C361.7 863.2 357.2 883.5 355 894C352.8 904.5 351.7 911.5 351 917C350.3 922.5 350.7 924.3 351 927C351.3 929.7 352.8 929.7 353 933C353.2 936.3 350.7 942.0 352 947C353.3 952.0 356.2 957.2 361 963C365.8 968.8 377.3 977.3 381 982C384.7 986.7 384.5 988.2 383 991C381.5 993.8 374.7 997.7 372 999C369.3 1000.3 368.5 998.5 367 999C365.5 999.5 364.8 1001.8 363 1002C361.2 1002.2 358.5 999.7 356 1000C353.5 1000.3 350.2 1003.5 348 1004C345.8 1004.5 344.3 1003.3 343 1003C341.7 1002.7 342.7 1004.3 340 1002C337.3 999.7 329.3 992.7 327 989C324.7 985.3 327.7 983.2 326 980C324.3 976.8 318.5 973.0 317 970C315.5 967.0 316.5 964.8 317 962C317.5 959.2 319.8 958.2 320 953C320.2 947.8 317.7 936.8 318 931C318.3 925.2 321.3 923.3 322 918C322.7 912.7 322.7 907.0 322 899C321.3 891.0 320.0 880.5 318 870C316.0 859.5 311.7 845.2 310 836C308.3 826.8 307.5 826.7 308 815C308.5 803.3 313.7 780.2 313 766C312.3 751.8 306.2 746.7 304 730C301.8 713.3 302.5 686.3 300 666C297.5 645.7 291.0 622.2 289 608C287.0 593.8 288.5 585.8 288 581C287.5 576.2 286.7 579.0 286 579C285.3 579.0 284.7 575.7 284 581C283.3 586.3 283.3 601.7 282 611C280.7 620.3 277.8 626.8 276 637C274.2 647.2 272.5 656.0 271 672C269.5 688.0 269.0 717.7 267 733C265.0 748.3 260.3 756.3 259 764C257.7 771.7 258.3 772.5 259 779C259.7 785.5 262.3 795.5 263 803C263.7 810.5 263.3 818.0 263 824C262.7 830.0 262.3 832.7 261 839C259.7 845.3 257.0 851.2 255 862C253.0 872.8 249.8 894.3 249 904C248.2 913.7 249.2 915.2 250 920C250.8 924.8 253.8 928.2 254 933C254.2 937.8 250.8 943.2 251 949C251.2 954.8 254.7 964.0 255 968C255.3 972.0 254.5 971.2 253 973C251.5 974.8 247.5 976.2 246 979C244.5 981.8 246.7 986.0 244 990C241.3 994.0 233.3 1000.7 230 1003C226.7 1005.3 225.8 1004.0 224 1004C222.2 1004.0 220.5 1003.7 219 1003C217.5 1002.3 216.0 1000.2 215 1000C214.0 999.8 214.2 1001.7 213 1002C211.8 1002.3 209.3 1002.5 208 1002C206.7 1001.5 206.3 999.5 205 999C203.7 998.5 201.3 999.5 200 999C198.7 998.5 198.0 996.5 197 996C196.0 995.5 195.3 996.8 194 996C192.7 995.2 189.7 993.2 189 991C188.3 988.8 186.3 987.7 190 983C193.7 978.3 206.8 967.5 211 963C215.2 958.5 213.5 958.8 215 956C216.5 953.2 219.5 949.2 220 946C220.5 942.8 217.8 940.2 218 937C218.2 933.8 221.3 934.7 221 927C220.7 919.3 219.7 909.0 216 891C212.3 873.0 201.8 835.8 199 819C196.2 802.2 198.0 800.0 199 790C200.0 780.0 204.0 773.5 205 759C206.0 744.5 206.5 717.7 205 703C203.5 688.3 198.7 687.0 196 671C193.3 655.0 190.0 628.2 189 607C188.0 585.8 188.3 563.8 190 544C191.7 524.2 196.3 501.7 199 488C201.7 474.3 205.0 471.0 206 462C207.0 453.0 204.5 443.0 205 434C205.5 425.0 208.7 415.7 209 408C209.3 400.3 208.7 396.5 207 388C205.3 379.5 200.7 362.5 199 357C197.3 351.5 197.7 355.0 197 355C196.3 355.0 196.7 352.5 195 357C193.3 361.5 189.0 372.0 187 382C185.0 392.0 184.8 406.8 183 417C181.2 427.2 178.7 435.0 176 443C173.3 451.0 171.5 455.5 167 465C162.5 474.5 153.8 489.5 149 500C144.2 510.5 139.7 518.5 138 528C136.3 537.5 139.5 549.5 139 557C138.5 564.5 135.7 566.7 135 573C134.3 579.3 135.3 589.5 135 595C134.7 600.5 134.0 604.0 133 606C132.0 608.0 130.2 607.5 129 607C127.8 606.5 126.5 606.3 126 603C125.5 599.7 126.3 590.0 126 587C125.7 584.0 124.8 584.2 124 585C123.2 585.8 121.8 587.2 121 592C120.2 596.8 119.7 609.7 119 614C118.3 618.3 118.3 617.3 117 618C115.7 618.7 112.2 619.5 111 618C109.8 616.5 109.8 613.3 110 609C110.2 604.7 112.0 595.2 112 592C112.0 588.8 110.7 590.0 110 590C109.3 590.0 109.2 587.7 108 592C106.8 596.3 104.3 611.2 103 616C101.7 620.8 101.2 620.2 100 621C98.8 621.8 97.0 621.5 96 621C95.0 620.5 93.7 622.7 94 618C94.3 613.3 97.3 597.8 98 593C98.7 588.2 98.3 590.0 98 589C97.7 588.0 97.8 583.7 96 587C94.2 590.3 88.8 605.0 87 609C85.2 613.0 85.8 610.7 85 611C84.2 611.3 83.0 611.7 82 611C81.0 610.3 78.0 613.0 79 607C80.0 601.0 86.0 583.3 88 575C90.0 566.7 90.8 560.3 91 557C91.2 553.7 91.2 553.3 89 555C86.8 556.7 80.7 564.5 78 567C75.3 569.5 74.3 569.3 73 570C71.7 570.7 71.2 571.3 70 571C68.8 570.7 63.7 573.3 66 568C68.3 562.7 77.5 547.0 84 539C90.5 531.0 100.5 525.8 105 520C109.5 514.2 108.5 513.5 111 504C113.5 494.5 118.2 473.7 120 463C121.8 452.3 121.0 447.3 122 440C123.0 432.7 124.7 424.7 126 419C127.3 413.3 128.0 410.8 130 406C132.0 401.2 135.8 395.7 138 390C140.2 384.3 142.0 380.7 143 372C144.0 363.3 143.3 346.3 144 338C144.7 329.7 145.8 326.5 147 322C148.2 317.5 150.7 315.5 151 311C151.3 306.5 149.3 301.0 149 295C148.7 289.0 148.0 282.5 149 275C150.0 267.5 153.2 255.8 155 250C156.8 244.2 157.2 243.8 160 240C162.8 236.2 168.5 230.0 172 227C175.5 224.0 174.8 224.3 181 222C187.2 219.7 200.3 216.7 209 213C217.7 209.3 226.5 204.3 233 200C239.5 195.7 244.8 191.3 248 187C251.2 182.7 251.3 179.0 252 174C252.7 169.0 252.7 161.3 252 157C251.3 152.7 248.8 150.8 248 148C247.2 145.2 248.3 142.3 247 140C245.7 137.7 242.0 138.0 240 134C238.0 130.0 235.8 120.5 235 116C234.2 111.5 234.0 109.3 235 107C236.0 104.7 240.3 104.0 241 102C241.7 100.0 239.2 100.0 239 95C238.8 90.0 239.2 77.5 240 72C240.8 66.5 242.2 65.3 244 62C245.8 58.7 248.3 54.8 251 52C253.7 49.2 255.8 47.3 260 45C264.2 42.7 273.8 40.3 276 38C278.2 35.7 273.5 33.0 273 31C272.5 29.0 272.7 27.7 273 26C273.3 24.3 273.7 22.5 275 21C276.3 19.5 279.8 17.8 281 17C282.2 16.2 280.5 16.2 282 16Z","tx":22.3567,"ty":0.5262,"s":0.09696},"nerves":[[{"t":"path","k":"cns","s":"#EFEDE8","w":0.22,"o":0.75,"nm":"Brain","f":"rgba(239,237,232,.04)","d":"M45.80,8.80 C45.90,8.30 46.00,6.58 46.40,5.80 C46.80,5.02 47.60,4.43 48.20,4.10 C48.80,3.77 49.40,3.80 50.00,3.80 C50.60,3.80 51.20,3.77 51.80,4.10 C52.40,4.43 53.20,5.02 53.60,5.80 C54.00,6.58 54.23,7.90 54.20,8.80 C54.17,9.70 54.10,10.68 53.40,11.20 C52.70,11.72 51.13,11.90 50.00,11.90 C48.87,11.90 47.17,11.32 46.60,11.20 Z"},{"t":"path","k":"cns","s":"#EFEDE8","w":0.12,"o":0.75,"nm":"Longitudinal fissure","d":"M50.00,3.90 L50.00,11.20"},{"t":"path","k":"cns","s":"#EFEDE8","w":0.16,"o":0.75,"nm":"Optic nerves and chiasm","d":"M47.90,10.90 C48.25,10.85 49.30,10.60 50.00,10.60 C50.70,10.60 51.75,10.85 52.10,10.90"},{"t":"path","k":"cns","s":"#EFEDE8","w":0.5,"o":0.75,"nm":"Brainstem","d":"M50.00,11.60 L50.00,13.40"},{"t":"path","k":"auto","s":"#7EB8D4","w":0.3,"o":0.85,"nm":"Vagus nerve, cranial nerve X","d":"M49.40,12.80 C49.28,13.25 48.88,14.47 48.70,15.50 C48.52,16.53 48.43,18.00 48.30,19.00 C48.17,20.00 47.98,20.60 47.90,21.50 C47.82,22.40 47.70,23.40 47.80,24.40 C47.90,25.40 48.28,26.40 48.50,27.50 C48.72,28.60 48.95,29.83 49.10,31.00 C49.25,32.17 49.30,33.40 49.40,34.50 C49.50,35.60 49.65,37.08 49.70,37.60"},{"t":"path","k":"auto","s":"#7EB8D4","w":0.3,"o":0.85,"nm":"Vagus nerve, cranial nerve X","d":"M50.60,12.80 C50.72,13.25 51.12,14.47 51.30,15.50 C51.48,16.53 51.57,18.00 51.70,19.00 C51.83,20.00 52.02,20.60 52.10,21.50 C52.18,22.40 52.30,23.40 52.20,24.40 C52.10,25.40 51.72,26.40 51.50,27.50 C51.28,28.60 51.05,29.83 50.90,31.00 C50.75,32.17 50.70,33.40 50.60,34.50 C50.50,35.60 50.35,37.08 50.30,37.60"},{"t":"path","k":"auto","s":"#7EB8D4","w":0.16,"o":0.85,"nm":"Recurrent laryngeal nerve, left, under the aortic arch","d":"M52.00,23.80 C51.87,23.95 51.40,25.00 51.20,24.70 C51.00,24.40 50.85,22.87 50.80,22.00 C50.75,21.13 50.90,20.33 50.90,19.50 C50.90,18.67 50.82,17.42 50.80,17.00"},{"t":"path","k":"auto","s":"#7EB8D4","w":0.16,"o":0.85,"nm":"Recurrent laryngeal nerve, right, under the subclavian","d":"M47.90,21.30 C48.03,21.35 48.48,21.90 48.70,21.60 C48.92,21.30 49.12,20.27 49.20,19.50 C49.28,18.73 49.20,17.42 49.20,17.00"},{"t":"path","k":"auto","s":"#7EB8D4","w":0.16,"o":0.85,"nm":"Sympathetic chain, C1 to the ganglion impar","d":"M48.40,14.00 C48.38,14.83 48.30,16.77 48.30,19.00 C48.30,21.23 48.37,24.40 48.40,27.40 C48.43,30.40 48.45,34.33 48.50,37.00 C48.55,39.67 48.58,41.40 48.70,43.40 C48.82,45.40 48.98,47.57 49.20,49.00 C49.42,50.43 49.87,51.50 50.00,52.00"},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":48.4,"cy":14,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":48.42,"cy":15,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":48.47,"cy":17,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":48.51,"cy":19,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":48.54,"cy":20.2,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":48.57,"cy":21.5,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":48.6,"cy":22.8,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":48.63,"cy":24.2,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":48.67,"cy":25.8,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":48.71,"cy":27.4,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":48.74,"cy":29,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":48.78,"cy":30.6,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":48.82,"cy":32.2,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":48.85,"cy":33.8,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":48.89,"cy":35.4,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":48.93,"cy":37,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":48.96,"cy":38.6,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":49,"cy":40.2,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":49.04,"cy":41.8,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":49.07,"cy":43.4,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":49.15,"cy":46.6,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":49.17,"cy":47.8,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":49.2,"cy":49,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":49.22,"cy":50,"r":0.22},{"t":"path","k":"auto","s":"#7EB8D4","w":0.16,"o":0.85,"nm":"Sympathetic chain, C1 to the ganglion impar","d":"M51.60,14.00 C51.62,14.83 51.70,16.77 51.70,19.00 C51.70,21.23 51.63,24.40 51.60,27.40 C51.57,30.40 51.55,34.33 51.50,37.00 C51.45,39.67 51.42,41.40 51.30,43.40 C51.18,45.40 51.02,47.57 50.80,49.00 C50.58,50.43 50.13,51.50 50.00,52.00"},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":51.6,"cy":14,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":51.58,"cy":15,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":51.53,"cy":17,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":51.49,"cy":19,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":51.46,"cy":20.2,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":51.43,"cy":21.5,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":51.4,"cy":22.8,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":51.37,"cy":24.2,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":51.33,"cy":25.8,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":51.29,"cy":27.4,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":51.26,"cy":29,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":51.22,"cy":30.6,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":51.18,"cy":32.2,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":51.15,"cy":33.8,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":51.11,"cy":35.4,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":51.07,"cy":37,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":51.04,"cy":38.6,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":51,"cy":40.2,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":50.96,"cy":41.8,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":50.93,"cy":43.4,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":50.85,"cy":46.6,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":50.83,"cy":47.8,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":50.8,"cy":49,"r":0.22},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.1,"o":1,"nm":"","f":"#0d0e13","cx":50.78,"cy":50,"r":0.22},{"t":"path","k":"auto","s":"#7EB8D4","w":0.16,"o":0.85,"nm":"Greater splanchnic nerve, T5 to T9","d":"M48.40,27.40 C48.42,28.20 48.45,30.87 48.50,32.20 C48.55,33.53 48.58,34.50 48.70,35.40 C48.82,36.30 49.12,37.23 49.20,37.60"},{"t":"path","k":"auto","s":"#7EB8D4","w":0.16,"o":0.85,"nm":"Greater splanchnic nerve, T5 to T9","d":"M51.60,27.40 C51.58,28.20 51.55,30.87 51.50,32.20 C51.45,33.53 51.42,34.50 51.30,35.40 C51.18,36.30 50.88,37.23 50.80,37.60"},{"t":"path","k":"auto","s":"#7EB8D4","w":0.13,"o":0.85,"nm":"Lesser splanchnic nerve, T10 to T11","d":"M48.50,33.80 C48.45,34.33 48.35,36.20 48.20,37.00 C48.05,37.80 47.70,38.33 47.60,38.60"},{"t":"path","k":"auto","s":"#7EB8D4","w":0.13,"o":0.85,"nm":"Lesser splanchnic nerve, T10 to T11","d":"M51.50,33.80 C51.55,34.33 51.65,36.20 51.80,37.00 C51.95,37.80 52.30,38.33 52.40,38.60"},{"t":"path","k":"som","s":"#C2A063","w":0.16,"o":0.85,"nm":"Phrenic nerve, C3 to C5, to the diaphragm","d":"M48.00,16.40 C47.80,16.92 47.15,18.40 46.80,19.50 C46.45,20.60 46.12,21.75 45.90,23.00 C45.68,24.25 45.53,25.67 45.50,27.00 C45.47,28.33 45.55,29.73 45.70,31.00 C45.85,32.27 46.28,34.00 46.40,34.60"},{"t":"path","k":"som","s":"#C2A063","w":0.16,"o":0.85,"nm":"Phrenic nerve, C3 to C5, to the diaphragm","d":"M52.00,16.40 C52.20,16.92 52.85,18.40 53.20,19.50 C53.55,20.60 53.88,21.75 54.10,23.00 C54.32,24.25 54.47,25.67 54.50,27.00 C54.53,28.33 54.45,29.73 54.30,31.00 C54.15,32.27 53.72,34.00 53.60,34.60"},{"t":"path","k":"auto","s":"#7EB8D4","w":0.18,"o":0.85,"nm":"Hypogastric nerves, to the pelvic plexuses","d":"M50.10,45.40 C49.92,45.70 49.32,46.57 49.00,47.20 C48.68,47.83 48.33,48.87 48.20,49.20"},{"t":"path","k":"auto","s":"#7EB8D4","w":0.18,"o":0.85,"nm":"Hypogastric nerves, to the pelvic plexuses","d":"M49.90,45.40 C50.08,45.70 50.68,46.57 51.00,47.20 C51.32,47.83 51.67,48.87 51.80,49.20"},{"t":"path","k":"auto","s":"#7EB8D4","w":0.13,"o":0.85,"nm":"Pelvic splanchnic nerves, S2 to S4","d":"M49.20,47.80 C49.10,48.00 48.77,48.77 48.60,49.00 C48.43,49.23 48.27,49.17 48.20,49.20"},{"t":"path","k":"auto","s":"#7EB8D4","w":0.13,"o":0.85,"nm":"Pelvic splanchnic nerves, S2 to S4","d":"M50.80,47.80 C50.90,48.00 51.23,48.77 51.40,49.00 C51.57,49.23 51.73,49.17 51.80,49.20"},{"t":"path","k":"som","s":"#C2A063","w":0.1,"o":0.45,"nm":"Intercostal nerves, T1 to T11","d":"M48.20,20.20 C47.67,20.34 46.12,20.73 45.00,21.05 C43.88,21.37 42.50,21.84 41.50,22.12 C40.50,22.40 39.42,22.64 39.00,22.75"},{"t":"path","k":"som","s":"#C2A063","w":0.1,"o":0.45,"nm":"Intercostal nerves, T1 to T11","d":"M51.80,20.20 C52.33,20.34 53.88,20.73 55.00,21.05 C56.12,21.37 57.50,21.84 58.50,22.12 C59.50,22.40 60.58,22.64 61.00,22.75"},{"t":"path","k":"som","s":"#C2A063","w":0.1,"o":0.45,"nm":"Intercostal nerves, T1 to T11","d":"M48.20,21.50 C47.67,21.65 46.12,22.06 45.00,22.40 C43.88,22.74 42.50,23.24 41.50,23.54 C40.50,23.84 39.42,24.09 39.00,24.20"},{"t":"path","k":"som","s":"#C2A063","w":0.1,"o":0.45,"nm":"Intercostal nerves, T1 to T11","d":"M51.80,21.50 C52.33,21.65 53.88,22.06 55.00,22.40 C56.12,22.74 57.50,23.24 58.50,23.54 C59.50,23.84 60.58,24.09 61.00,24.20"},{"t":"path","k":"som","s":"#C2A063","w":0.1,"o":0.45,"nm":"Intercostal nerves, T1 to T11","d":"M48.20,22.80 C47.67,22.96 46.12,23.39 45.00,23.75 C43.88,24.11 42.50,24.64 41.50,24.96 C40.50,25.28 39.42,25.54 39.00,25.65"},{"t":"path","k":"som","s":"#C2A063","w":0.1,"o":0.45,"nm":"Intercostal nerves, T1 to T11","d":"M51.80,22.80 C52.33,22.96 53.88,23.39 55.00,23.75 C56.12,24.11 57.50,24.64 58.50,24.96 C59.50,25.28 60.58,25.54 61.00,25.65"},{"t":"path","k":"som","s":"#C2A063","w":0.1,"o":0.45,"nm":"Intercostal nerves, T1 to T11","d":"M48.20,24.20 C47.67,24.37 46.12,24.82 45.00,25.20 C43.88,25.58 42.50,26.15 41.50,26.48 C40.50,26.81 39.42,27.08 39.00,27.20"},{"t":"path","k":"som","s":"#C2A063","w":0.1,"o":0.45,"nm":"Intercostal nerves, T1 to T11","d":"M51.80,24.20 C52.33,24.37 53.88,24.82 55.00,25.20 C56.12,25.58 57.50,26.15 58.50,26.48 C59.50,26.81 60.58,27.08 61.00,27.20"},{"t":"path","k":"som","s":"#C2A063","w":0.1,"o":0.45,"nm":"Intercostal nerves, T1 to T11","d":"M48.20,25.80 C47.67,25.98 46.12,26.45 45.00,26.85 C43.88,27.25 42.50,27.85 41.50,28.20 C40.50,28.55 39.42,28.82 39.00,28.95"},{"t":"path","k":"som","s":"#C2A063","w":0.1,"o":0.45,"nm":"Intercostal nerves, T1 to T11","d":"M51.80,25.80 C52.33,25.98 53.88,26.45 55.00,26.85 C56.12,27.25 57.50,27.85 58.50,28.20 C59.50,28.55 60.58,28.82 61.00,28.95"},{"t":"path","k":"som","s":"#C2A063","w":0.1,"o":0.45,"nm":"Intercostal nerves, T1 to T11","d":"M48.20,27.40 C47.67,27.58 46.12,28.08 45.00,28.50 C43.88,28.92 42.50,29.55 41.50,29.92 C40.50,30.29 39.42,30.57 39.00,30.70"},{"t":"path","k":"som","s":"#C2A063","w":0.1,"o":0.45,"nm":"Intercostal nerves, T1 to T11","d":"M51.80,27.40 C52.33,27.58 53.88,28.08 55.00,28.50 C56.12,28.92 57.50,29.55 58.50,29.92 C59.50,30.29 60.58,30.57 61.00,30.70"},{"t":"path","k":"som","s":"#C2A063","w":0.1,"o":0.45,"nm":"Intercostal nerves, T1 to T11","d":"M48.20,29.00 C47.67,29.19 46.12,29.71 45.00,30.15 C43.88,30.59 42.50,31.26 41.50,31.64 C40.50,32.02 39.42,32.31 39.00,32.45"},{"t":"path","k":"som","s":"#C2A063","w":0.1,"o":0.45,"nm":"Intercostal nerves, T1 to T11","d":"M51.80,29.00 C52.33,29.19 53.88,29.71 55.00,30.15 C56.12,30.59 57.50,31.26 58.50,31.64 C59.50,32.02 60.58,32.31 61.00,32.45"},{"t":"path","k":"som","s":"#C2A063","w":0.1,"o":0.45,"nm":"Intercostal nerves, T1 to T11","d":"M48.20,30.60 C47.67,30.80 46.12,31.34 45.00,31.80 C43.88,32.26 42.50,32.96 41.50,33.36 C40.50,33.76 39.42,34.06 39.00,34.20"},{"t":"path","k":"som","s":"#C2A063","w":0.1,"o":0.45,"nm":"Intercostal nerves, T1 to T11","d":"M51.80,30.60 C52.33,30.80 53.88,31.34 55.00,31.80 C56.12,32.26 57.50,32.96 58.50,33.36 C59.50,33.76 60.58,34.06 61.00,34.20"},{"t":"path","k":"som","s":"#C2A063","w":0.1,"o":0.45,"nm":"Intercostal nerves, T1 to T11","d":"M48.20,32.20 C47.67,32.41 46.12,32.97 45.00,33.45 C43.88,33.93 42.50,34.66 41.50,35.08 C40.50,35.50 39.42,35.80 39.00,35.95"},{"t":"path","k":"som","s":"#C2A063","w":0.1,"o":0.45,"nm":"Intercostal nerves, T1 to T11","d":"M51.80,32.20 C52.33,32.41 53.88,32.97 55.00,33.45 C56.12,33.93 57.50,34.66 58.50,35.08 C59.50,35.50 60.58,35.80 61.00,35.95"},{"t":"path","k":"som","s":"#C2A063","w":0.1,"o":0.45,"nm":"Intercostal nerves, T1 to T11","d":"M48.20,33.80 C47.67,34.02 46.12,34.60 45.00,35.10 C43.88,35.60 42.50,36.37 41.50,36.80 C40.50,37.23 39.42,37.55 39.00,37.70"},{"t":"path","k":"som","s":"#C2A063","w":0.1,"o":0.45,"nm":"Intercostal nerves, T1 to T11","d":"M51.80,33.80 C52.33,34.02 53.88,34.60 55.00,35.10 C56.12,35.60 57.50,36.37 58.50,36.80 C59.50,37.23 60.58,37.55 61.00,37.70"},{"t":"path","k":"som","s":"#C2A063","w":0.1,"o":0.45,"nm":"Intercostal nerves, T1 to T11","d":"M48.20,35.40 C47.67,35.63 46.12,36.23 45.00,36.75 C43.88,37.27 42.50,38.07 41.50,38.52 C40.50,38.97 39.42,39.29 39.00,39.45"},{"t":"path","k":"som","s":"#C2A063","w":0.1,"o":0.45,"nm":"Intercostal nerves, T1 to T11","d":"M51.80,35.40 C52.33,35.63 53.88,36.23 55.00,36.75 C56.12,37.27 57.50,38.07 58.50,38.52 C59.50,38.97 60.58,39.29 61.00,39.45"},{"t":"path","k":"som","s":"#C2A063","w":0.24,"o":0.85,"nm":"Median nerve, down the front of the arm","d":"M41.60,25.80 C41.43,26.50 40.97,28.47 40.60,30.00 C40.23,31.53 39.75,33.50 39.40,35.00 C39.05,36.50 38.88,37.67 38.50,39.00 C38.12,40.33 37.53,41.67 37.10,43.00 C36.67,44.33 36.30,45.67 35.90,47.00 C35.50,48.33 35.08,49.80 34.70,51.00 C34.32,52.20 33.88,53.13 33.60,54.20 C33.32,55.27 33.10,56.87 33.00,57.40"},{"t":"path","k":"som","s":"#C2A063","w":0.24,"o":0.85,"nm":"Median nerve, down the front of the arm","d":"M58.40,25.80 C58.57,26.50 59.03,28.47 59.40,30.00 C59.77,31.53 60.25,33.50 60.60,35.00 C60.95,36.50 61.12,37.67 61.50,39.00 C61.88,40.33 62.47,41.67 62.90,43.00 C63.33,44.33 63.70,45.67 64.10,47.00 C64.50,48.33 64.92,49.80 65.30,51.00 C65.68,52.20 66.12,53.13 66.40,54.20 C66.68,55.27 66.90,56.87 67.00,57.40"},{"t":"path","k":"som","s":"#C2A063","w":0.18,"o":0.85,"nm":"Ulnar nerve","d":"M41.90,26.20 C41.77,26.83 41.38,28.53 41.10,30.00 C40.82,31.47 40.47,33.57 40.20,35.00 C39.93,36.43 39.85,37.27 39.50,38.60 C39.15,39.93 38.52,41.60 38.10,43.00 C37.68,44.40 37.37,45.67 37.00,47.00 C36.63,48.33 36.22,49.75 35.90,51.00 C35.58,52.25 35.23,53.92 35.10,54.50"},{"t":"path","k":"som","s":"#C2A063","w":0.18,"o":0.85,"nm":"Ulnar nerve","d":"M58.10,26.20 C58.23,26.83 58.62,28.53 58.90,30.00 C59.18,31.47 59.53,33.57 59.80,35.00 C60.07,36.43 60.15,37.27 60.50,38.60 C60.85,39.93 61.48,41.60 61.90,43.00 C62.32,44.40 62.63,45.67 63.00,47.00 C63.37,48.33 63.78,49.75 64.10,51.00 C64.42,52.25 64.77,53.92 64.90,54.50"},{"t":"path","k":"som","s":"#C2A063","w":0.3,"o":0.85,"nm":"Femoral nerve, L2 to L4, under the inguinal ligament","d":"M47.60,41.80 C47.47,42.77 47.03,45.83 46.80,47.60 C46.57,49.37 46.40,51.00 46.20,52.40 C46.00,53.80 45.80,54.82 45.60,56.00 C45.40,57.18 45.10,58.92 45.00,59.50"},{"t":"path","k":"som","s":"#C2A063","w":0.3,"o":0.85,"nm":"Femoral nerve, L2 to L4, under the inguinal ligament","d":"M52.40,41.80 C52.53,42.77 52.97,45.83 53.20,47.60 C53.43,49.37 53.60,51.00 53.80,52.40 C54.00,53.80 54.20,54.82 54.40,56.00 C54.60,57.18 54.90,58.92 55.00,59.50"},{"t":"path","k":"som","s":"#C2A063","w":0.16,"o":0.85,"nm":"Saphenous nerve, down the inner leg","d":"M46.20,56.00 C46.27,57.00 46.45,60.00 46.60,62.00 C46.75,64.00 47.02,66.00 47.10,68.00 C47.18,70.00 47.18,72.00 47.10,74.00 C47.02,76.00 46.75,77.83 46.60,80.00 C46.45,82.17 46.33,84.67 46.20,87.00 C46.07,89.33 45.87,92.83 45.80,94.00"},{"t":"path","k":"som","s":"#C2A063","w":0.16,"o":0.85,"nm":"Saphenous nerve, down the inner leg","d":"M53.80,56.00 C53.73,57.00 53.55,60.00 53.40,62.00 C53.25,64.00 52.98,66.00 52.90,68.00 C52.82,70.00 52.82,72.00 52.90,74.00 C52.98,76.00 53.25,77.83 53.40,80.00 C53.55,82.17 53.67,84.67 53.80,87.00 C53.93,89.33 54.13,92.83 54.20,94.00"},{"t":"path","k":"som","s":"#C2A063","w":0.18,"o":0.85,"nm":"Obturator nerve, into the inner thigh","d":"M48.20,43.40 C48.15,44.58 48.02,48.50 47.90,50.50 C47.78,52.50 47.53,53.98 47.50,55.40 C47.47,56.82 47.63,57.73 47.70,59.00 C47.77,60.27 47.87,62.33 47.90,63.00"},{"t":"path","k":"som","s":"#C2A063","w":0.18,"o":0.85,"nm":"Obturator nerve, into the inner thigh","d":"M51.80,43.40 C51.85,44.58 51.98,48.50 52.10,50.50 C52.22,52.50 52.47,53.98 52.50,55.40 C52.53,56.82 52.37,57.73 52.30,59.00 C52.23,60.27 52.13,62.33 52.10,63.00"},{"t":"path","k":"som","s":"#C2A063","w":0.13,"o":0.85,"nm":"Lateral femoral cutaneous nerve","d":"M45.40,45.40 C45.20,46.50 44.52,50.23 44.20,52.00 C43.88,53.77 43.75,54.33 43.50,56.00 C43.25,57.67 42.83,61.00 42.70,62.00"},{"t":"path","k":"som","s":"#C2A063","w":0.13,"o":0.85,"nm":"Lateral femoral cutaneous nerve","d":"M54.60,45.40 C54.80,46.50 55.48,50.23 55.80,52.00 C56.12,53.77 56.25,54.33 56.50,56.00 C56.75,57.67 57.17,61.00 57.30,62.00"},{"t":"path","k":"som","s":"#C2A063","w":0.16,"o":0.85,"nm":"Deep fibular nerve, down the front of the leg","d":"M43.40,77.60 C43.43,78.33 43.48,80.27 43.60,82.00 C43.72,83.73 43.93,86.00 44.10,88.00 C44.27,90.00 44.52,93.00 44.60,94.00"},{"t":"path","k":"som","s":"#C2A063","w":0.16,"o":0.85,"nm":"Deep fibular nerve, down the front of the leg","d":"M56.60,77.60 C56.57,78.33 56.52,80.27 56.40,82.00 C56.28,83.73 56.07,86.00 55.90,88.00 C55.73,90.00 55.48,93.00 55.40,94.00"},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.14,"o":1,"nm":"Cardiac plexus, at the tracheal bifurcation, T4 to T5","f":"rgba(126,184,212,.18)","cx":50.3,"cy":25.099999999999998,"r":1},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.14,"o":1,"nm":"Pulmonary plexuses, at the roots of the lungs","f":"rgba(126,184,212,.18)","cx":47.3,"cy":26.4,"r":0.6},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.14,"o":1,"nm":"Pulmonary plexuses, at the roots of the lungs","f":"rgba(126,184,212,.18)","cx":52.7,"cy":26.4,"r":0.6},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.14,"o":1,"nm":"Celiac plexus and ganglia, T12 to L1","f":"rgba(126,184,212,.18)","cx":50.3,"cy":37.8,"r":1.1},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.14,"o":1,"nm":"Renal plexuses","f":"rgba(126,184,212,.18)","cx":46.6,"cy":39.2,"r":0.5},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.14,"o":1,"nm":"Renal plexuses","f":"rgba(126,184,212,.18)","cx":53.4,"cy":39.2,"r":0.5},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.14,"o":1,"nm":"Superior mesenteric plexus, L1","f":"rgba(126,184,212,.18)","cx":50.4,"cy":39.300000000000004,"r":0.55},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.14,"o":1,"nm":"Inferior mesenteric plexus, L3","f":"rgba(126,184,212,.18)","cx":50.6,"cy":41.8,"r":0.55},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.14,"o":1,"nm":"Superior hypogastric plexus, L5 to S1","f":"rgba(126,184,212,.18)","cx":50.2,"cy":45.6,"r":0.8},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.14,"o":1,"nm":"Inferior hypogastric plexuses, the pelvic plexuses","f":"rgba(126,184,212,.18)","cx":48.2,"cy":49.4,"r":0.7},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.14,"o":1,"nm":"Inferior hypogastric plexuses, the pelvic plexuses","f":"rgba(126,184,212,.18)","cx":51.8,"cy":49.4,"r":0.7},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.14,"o":1,"nm":"Superior cervical ganglion, C2 to C3","f":"rgba(126,184,212,.18)","cx":48.4,"cy":14.5,"r":0.45},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.14,"o":1,"nm":"Superior cervical ganglion, C2 to C3","f":"rgba(126,184,212,.18)","cx":51.6,"cy":14.5,"r":0.45},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.14,"o":1,"nm":"Pharyngeal plexus, on the pharynx, C2 to C3","f":"rgba(126,184,212,.18)","cx":50,"cy":15,"r":0.6},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.14,"o":1,"nm":"Stellate ganglion, C7 to T1","f":"rgba(126,184,212,.18)","cx":48.3,"cy":19.7,"r":0.45},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.14,"o":1,"nm":"Stellate ganglion, C7 to T1","f":"rgba(126,184,212,.18)","cx":51.7,"cy":19.7,"r":0.45},{"t":"circle","k":"auto","s":"#7EB8D4","w":0.14,"o":1,"nm":"Ganglion impar, the end of both chains","f":"rgba(126,184,212,.18)","cx":50,"cy":52,"r":0.45},{"t":"circle","k":"seat","s":"#A77EDB","w":0.22,"o":0.9,"nm":"Crown seat","da":".5 .35","cx":50,"cy":4.98,"r":1.7},{"t":"circle","k":"seat","s":"#7D93E0","w":0.22,"o":0.9,"nm":"Third eye seat","da":".5 .35","cx":50,"cy":10.57,"r":1.7},{"t":"circle","k":"seat","s":"#5EBBDB","w":0.22,"o":0.9,"nm":"Throat seat","da":".5 .35","cx":50,"cy":20.91,"r":1.7},{"t":"circle","k":"seat","s":"#5FD5A6","w":0.22,"o":0.9,"nm":"Heart seat","da":".5 .35","cx":50,"cy":30.51,"r":1.7},{"t":"circle","k":"seat","s":"#DABF6A","w":0.22,"o":0.9,"nm":"Solar seat","da":".5 .35","cx":50,"cy":40.21,"r":1.7},{"t":"circle","k":"seat","s":"#D8924E","w":0.22,"o":0.9,"nm":"Sacral seat","da":".5 .35","cx":50,"cy":47.02,"r":1.7},{"t":"circle","k":"seat","s":"#D6524C","w":0.22,"o":0.9,"nm":"Root seat","da":".5 .35","cx":50,"cy":53.55,"r":1.7},{"t":"path","k":"flow","s":"#D8924E","w":0.55,"o":0.11,"nm":"","d":"M50.9,53.55 L50.9,47.02"},{"t":"path","k":"flow","s":"#DABF6A","w":0.55,"o":0.04,"nm":"","d":"M50.9,47.02 L50.9,40.21"},{"t":"path","k":"flow","s":"#5FD5A6","w":0.55,"o":0.04,"nm":"","d":"M50.9,40.21 L50.9,30.51"},{"t":"path","k":"flow","s":"#5EBBDB","w":0.55,"o":0.04,"nm":"","d":"M50.9,30.51 L50.9,20.91"},{"t":"path","k":"flow","s":"#7D93E0","w":0.55,"o":0.04,"nm":"","d":"M50.9,20.91 L50.9,10.57"},{"t":"path","k":"flow","s":"#A77EDB","w":0.55,"o":0.04,"nm":"","d":"M50.9,10.57 L50.9,4.98"}],[{"t":"path","k":"cns","s":"#EFEDE8","w":0.62,"o":0.75,"nm":"Spinal cord, C1 to the conus at L1 to L2","d":"M50.00,12.60 C50.00,13.33 50.00,15.73 50.00,17.00 C50.00,18.27 50.00,18.47 50.00,20.20 C50.00,21.93 50.00,24.87 50.00,27.40 C50.00,29.93 50.00,33.40 50.00,35.40 C50.00,37.40 50.00,38.73 50.00,39.40"},{"t":"path","k":"cns","s":"#EFEDE8","w":0.14,"o":0.75,"nm":"Cauda equina, the L2 to S5 roots below the cord","d":"M49.80,39.40 C49.75,40.07 49.55,42.00 49.50,43.40 C49.45,44.80 49.50,46.37 49.50,47.80 C49.50,49.23 49.50,51.30 49.50,52.00"},{"t":"path","k":"cns","s":"#EFEDE8","w":0.14,"o":0.75,"nm":"Cauda equina, the L2 to S5 roots below the cord","d":"M49.88,39.40 C49.85,40.07 49.73,42.00 49.70,43.40 C49.67,44.80 49.70,46.37 49.70,47.80 C49.70,49.23 49.70,51.30 49.70,52.00"},{"t":"path","k":"cns","s":"#EFEDE8","w":0.14,"o":0.75,"nm":"Cauda equina, the L2 to S5 roots below the cord","d":"M49.96,39.40 C49.95,40.07 49.91,42.00 49.90,43.40 C49.89,44.80 49.90,46.37 49.90,47.80 C49.90,49.23 49.90,51.30 49.90,52.00"},{"t":"path","k":"cns","s":"#EFEDE8","w":0.14,"o":0.75,"nm":"Cauda equina, the L2 to S5 roots below the cord","d":"M50.04,39.40 C50.05,40.07 50.09,42.00 50.10,43.40 C50.11,44.80 50.10,46.37 50.10,47.80 C50.10,49.23 50.10,51.30 50.10,52.00"},{"t":"path","k":"cns","s":"#EFEDE8","w":0.14,"o":0.75,"nm":"Cauda equina, the L2 to S5 roots below the cord","d":"M50.12,39.40 C50.15,40.07 50.27,42.00 50.30,43.40 C50.33,44.80 50.30,46.37 50.30,47.80 C50.30,49.23 50.30,51.30 50.30,52.00"},{"t":"path","k":"cns","s":"#EFEDE8","w":0.14,"o":0.75,"nm":"Cauda equina, the L2 to S5 roots below the cord","d":"M50.20,39.40 C50.25,40.07 50.45,42.00 50.50,43.40 C50.55,44.80 50.50,46.37 50.50,47.80 C50.50,49.23 50.50,51.30 50.50,52.00"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,13.00 C50.51,13.01 50.96,13.05 51.30,13.08 C51.64,13.11 52.22,13.18 52.40,13.20"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,13.00 C49.49,13.01 49.04,13.05 48.70,13.08 C48.36,13.11 47.78,13.18 47.60,13.20"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,14.00 C50.51,14.01 50.96,14.05 51.30,14.08 C51.64,14.11 52.22,14.18 52.40,14.20"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,14.00 C49.49,14.01 49.04,14.05 48.70,14.08 C48.36,14.11 47.78,14.18 47.60,14.20"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,15.00 C50.51,15.01 50.96,15.05 51.30,15.08 C51.64,15.11 52.22,15.18 52.40,15.20"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,15.00 C49.49,15.01 49.04,15.05 48.70,15.08 C48.36,15.11 47.78,15.18 47.60,15.20"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,16.00 C50.51,16.01 50.96,16.05 51.30,16.08 C51.64,16.11 52.22,16.18 52.40,16.20"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,16.00 C49.49,16.01 49.04,16.05 48.70,16.08 C48.36,16.11 47.78,16.18 47.60,16.20"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,17.00 C50.51,17.01 50.96,17.05 51.30,17.08 C51.64,17.11 52.22,17.18 52.40,17.20"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,17.00 C49.49,17.01 49.04,17.05 48.70,17.08 C48.36,17.11 47.78,17.18 47.60,17.20"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,18.00 C50.51,18.01 50.96,18.05 51.30,18.08 C51.64,18.11 52.22,18.18 52.40,18.20"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,18.00 C49.49,18.01 49.04,18.05 48.70,18.08 C48.36,18.11 47.78,18.18 47.60,18.20"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,19.00 C50.51,19.01 50.96,19.05 51.30,19.08 C51.64,19.11 52.22,19.18 52.40,19.20"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,19.00 C49.49,19.01 49.04,19.05 48.70,19.08 C48.36,19.11 47.78,19.18 47.60,19.20"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,20.20 C50.51,20.23 50.96,20.32 51.30,20.40 C51.64,20.48 52.22,20.65 52.40,20.70"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,20.20 C49.49,20.23 49.04,20.32 48.70,20.40 C48.36,20.48 47.78,20.65 47.60,20.70"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,21.50 C50.51,21.54 50.96,21.63 51.30,21.72 C51.64,21.81 52.22,22.00 52.40,22.05"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,21.50 C49.49,21.54 49.04,21.63 48.70,21.72 C48.36,21.81 47.78,22.00 47.60,22.05"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,22.80 C50.51,22.84 50.96,22.94 51.30,23.04 C51.64,23.14 52.22,23.34 52.40,23.40"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,22.80 C49.49,22.84 49.04,22.94 48.70,23.04 C48.36,23.14 47.78,23.34 47.60,23.40"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,24.20 C50.51,24.24 50.96,24.35 51.30,24.46 C51.64,24.57 52.22,24.78 52.40,24.85"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,24.20 C49.49,24.24 49.04,24.35 48.70,24.46 C48.36,24.57 47.78,24.78 47.60,24.85"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,25.80 C50.51,25.85 50.96,25.96 51.30,26.08 C51.64,26.20 52.22,26.43 52.40,26.50"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,25.80 C49.49,25.85 49.04,25.96 48.70,26.08 C48.36,26.20 47.78,26.43 47.60,26.50"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,27.40 C50.51,27.45 50.96,27.57 51.30,27.70 C51.64,27.82 52.22,28.07 52.40,28.15"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,27.40 C49.49,27.45 49.04,27.57 48.70,27.70 C48.36,27.82 47.78,28.07 47.60,28.15"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,29.00 C50.51,29.05 50.96,29.19 51.30,29.32 C51.64,29.45 52.22,29.72 52.40,29.80"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,29.00 C49.49,29.05 49.04,29.19 48.70,29.32 C48.36,29.45 47.78,29.72 47.60,29.80"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,30.60 C50.51,30.66 50.96,30.80 51.30,30.94 C51.64,31.08 52.22,31.37 52.40,31.45"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,30.60 C49.49,30.66 49.04,30.80 48.70,30.94 C48.36,31.08 47.78,31.37 47.60,31.45"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,32.20 C50.51,32.26 50.96,32.41 51.30,32.56 C51.64,32.71 52.22,33.01 52.40,33.10"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,32.20 C49.49,32.26 49.04,32.41 48.70,32.56 C48.36,32.71 47.78,33.01 47.60,33.10"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,33.80 C50.51,33.86 50.96,34.02 51.30,34.18 C51.64,34.34 52.22,34.66 52.40,34.75"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,33.80 C49.49,33.86 49.04,34.02 48.70,34.18 C48.36,34.34 47.78,34.66 47.60,34.75"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,35.40 C50.51,35.47 50.96,35.63 51.30,35.80 C51.64,35.97 52.22,36.30 52.40,36.40"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,35.40 C49.49,35.47 49.04,35.63 48.70,35.80 C48.36,35.97 47.78,36.30 47.60,36.40"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,37.00 C50.51,37.07 50.96,37.25 51.30,37.42 C51.64,37.59 52.22,37.95 52.40,38.05"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,37.00 C49.49,37.07 49.04,37.25 48.70,37.42 C48.36,37.59 47.78,37.95 47.60,38.05"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,38.60 C50.51,38.69 50.96,38.93 51.30,39.16 C51.64,39.39 52.22,39.86 52.40,40.00"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,38.60 C49.49,38.69 49.04,38.93 48.70,39.16 C48.36,39.39 47.78,39.86 47.60,40.00"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,40.20 C50.51,40.31 50.96,40.59 51.30,40.86 C51.64,41.13 52.22,41.69 52.40,41.85"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,40.20 C49.49,40.31 49.04,40.59 48.70,40.86 C48.36,41.13 47.78,41.69 47.60,41.85"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,41.80 C50.51,41.93 50.96,42.24 51.30,42.56 C51.64,42.88 52.22,43.51 52.40,43.70"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,41.80 C49.49,41.93 49.04,42.24 48.70,42.56 C48.36,42.88 47.78,43.51 47.60,43.70"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,43.40 C50.51,43.54 50.96,43.90 51.30,44.26 C51.64,44.62 52.22,45.33 52.40,45.55"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,43.40 C49.49,43.54 49.04,43.90 48.70,44.26 C48.36,44.62 47.78,45.33 47.60,45.55"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,45.00 C50.51,45.16 50.96,45.56 51.30,45.96 C51.64,46.36 52.22,47.16 52.40,47.40"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,45.00 C49.49,45.16 49.04,45.56 48.70,45.96 C48.36,46.36 47.78,47.16 47.60,47.40"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,46.60 C50.51,46.78 50.96,47.22 51.30,47.66 C51.64,48.10 52.22,48.98 52.40,49.25"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,46.60 C49.49,46.78 49.04,47.22 48.70,47.66 C48.36,48.10 47.78,48.98 47.60,49.25"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,47.80 C50.51,47.99 50.96,48.48 51.30,48.96 C51.64,49.44 52.22,50.41 52.40,50.70"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,47.80 C49.49,47.99 49.04,48.48 48.70,48.96 C48.36,49.44 47.78,50.41 47.60,50.70"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,49.00 C50.51,49.21 50.96,49.73 51.30,50.26 C51.64,50.78 52.22,51.84 52.40,52.15"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,49.00 C49.49,49.21 49.04,49.73 48.70,50.26 C48.36,50.78 47.78,51.84 47.60,52.15"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,50.00 C50.51,50.23 50.96,50.79 51.30,51.36 C51.64,51.93 52.22,53.06 52.40,53.40"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,50.00 C49.49,50.23 49.04,50.79 48.70,51.36 C48.36,51.93 47.78,53.06 47.60,53.40"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M50.35,50.90 C50.51,51.14 50.96,51.75 51.30,52.36 C51.64,52.97 52.22,54.18 52.40,54.55"},{"t":"path","k":"som","s":"#C2A063","w":0.12,"o":0.85,"nm":"Spinal nerves, 31 pairs, one at every level","d":"M49.65,50.90 C49.49,51.14 49.04,51.75 48.70,52.36 C48.36,52.97 47.78,54.18 47.60,54.55"},{"t":"path","k":"cns","s":"#EFEDE8","w":0.22,"o":0.75,"nm":"Brain, from behind","f":"rgba(239,237,232,.04)","d":"M45.80,8.80 C45.90,8.30 46.00,6.58 46.40,5.80 C46.80,5.02 47.60,4.43 48.20,4.10 C48.80,3.77 49.40,3.80 50.00,3.80 C50.60,3.80 51.20,3.77 51.80,4.10 C52.40,4.43 53.20,5.02 53.60,5.80 C54.00,6.58 54.23,7.90 54.20,8.80 C54.17,9.70 54.10,10.77 53.40,11.20 C52.70,11.63 51.13,11.40 50.00,11.40 C48.87,11.40 47.17,11.23 46.60,11.20 Z"},{"t":"path","k":"cns","s":"#EFEDE8","w":0.2,"o":0.75,"nm":"Cerebellum","f":"rgba(239,237,232,.04)","d":"M46.80,11.80 C47.08,11.65 47.97,10.93 48.50,10.90 C49.03,10.87 49.50,11.60 50.00,11.60 C50.50,11.60 50.97,10.87 51.50,10.90 C52.03,10.93 53.08,11.42 53.20,11.80 C53.32,12.18 52.73,12.95 52.20,13.20 C51.67,13.45 50.73,13.30 50.00,13.30 C49.27,13.30 48.17,13.22 47.80,13.20 Z"},{"t":"path","k":"som","s":"#C2A063","w":0.18,"o":0.85,"nm":"Greater occipital nerve, C2","d":"M49.20,14.00 C49.03,13.67 48.47,12.75 48.20,12.00 C47.93,11.25 47.73,10.33 47.60,9.50 C47.47,8.67 47.43,7.42 47.40,7.00"},{"t":"path","k":"som","s":"#C2A063","w":0.18,"o":0.85,"nm":"Greater occipital nerve, C2","d":"M50.80,14.00 C50.97,13.67 51.53,12.75 51.80,12.00 C52.07,11.25 52.27,10.33 52.40,9.50 C52.53,8.67 52.57,7.42 52.60,7.00"},{"t":"path","k":"som","s":"#C2A063","w":0.2,"o":0.85,"nm":"Cervical plexus, C1 to C4","d":"M49.30,13.00 C49.08,13.22 48.35,13.97 48.00,14.30 C47.65,14.63 47.27,14.72 47.20,15.00 C47.13,15.28 47.70,15.72 47.60,16.00 C47.50,16.28 46.77,16.58 46.60,16.70"},{"t":"path","k":"som","s":"#C2A063","w":0.2,"o":0.85,"nm":"Cervical plexus, C1 to C4","d":"M50.70,13.00 C50.92,13.22 51.65,13.97 52.00,14.30 C52.35,14.63 52.73,14.72 52.80,15.00 C52.87,15.28 52.30,15.72 52.40,16.00 C52.50,16.28 53.23,16.58 53.40,16.70"},{"t":"path","k":"som","s":"#C2A063","w":0.32,"o":0.85,"nm":"Brachial plexus, C5 to T1, to the armpit","d":"M49.26,18.00 C48.88,18.22 47.72,18.67 46.95,19.30 C46.18,19.93 45.40,21.05 44.65,21.80 C43.90,22.55 43.07,23.20 42.45,23.80 C41.83,24.40 41.20,25.13 40.95,25.40"},{"t":"path","k":"som","s":"#C2A063","w":0.32,"o":0.85,"nm":"Brachial plexus, C5 to T1, to the armpit","d":"M50.74,18.00 C51.13,18.22 52.28,18.67 53.05,19.30 C53.82,19.93 54.60,21.05 55.35,21.80 C56.10,22.55 56.93,23.20 57.55,23.80 C58.17,24.40 58.80,25.13 59.05,25.40"},{"t":"path","k":"som","s":"#C2A063","w":0.32,"o":0.85,"nm":"Brachial plexus, C5 to T1, to the armpit","d":"M49.40,18.00 C49.05,18.22 48.03,18.67 47.30,19.30 C46.57,19.93 45.75,21.05 45.00,21.80 C44.25,22.55 43.42,23.20 42.80,23.80 C42.18,24.40 41.55,25.13 41.30,25.40"},{"t":"path","k":"som","s":"#C2A063","w":0.32,"o":0.85,"nm":"Brachial plexus, C5 to T1, to the armpit","d":"M50.60,18.00 C50.95,18.22 51.97,18.67 52.70,19.30 C53.43,19.93 54.25,21.05 55.00,21.80 C55.75,22.55 56.58,23.20 57.20,23.80 C57.82,24.40 58.45,25.13 58.70,25.40"},{"t":"path","k":"som","s":"#C2A063","w":0.32,"o":0.85,"nm":"Brachial plexus, C5 to T1, to the armpit","d":"M49.54,18.00 C49.23,18.22 48.35,18.67 47.65,19.30 C46.95,19.93 46.10,21.05 45.35,21.80 C44.60,22.55 43.77,23.20 43.15,23.80 C42.53,24.40 41.90,25.13 41.65,25.40"},{"t":"path","k":"som","s":"#C2A063","w":0.32,"o":0.85,"nm":"Brachial plexus, C5 to T1, to the armpit","d":"M50.46,18.00 C50.77,18.22 51.65,18.67 52.35,19.30 C53.05,19.93 53.90,21.05 54.65,21.80 C55.40,22.55 56.23,23.20 56.85,23.80 C57.47,24.40 58.10,25.13 58.35,25.40"},{"t":"path","k":"som","s":"#C2A063","w":0.24,"o":0.85,"nm":"Radial nerve, round the back of the arm","d":"M41.30,25.40 C41.13,26.00 40.58,27.73 40.30,29.00 C40.02,30.27 39.85,31.67 39.60,33.00 C39.35,34.33 39.17,35.67 38.80,37.00 C38.43,38.33 37.85,39.67 37.40,41.00 C36.95,42.33 36.50,43.67 36.10,45.00 C35.70,46.33 35.42,47.63 35.00,49.00 C34.58,50.37 33.97,51.87 33.60,53.20 C33.23,54.53 32.93,56.37 32.80,57.00"},{"t":"path","k":"som","s":"#C2A063","w":0.24,"o":0.85,"nm":"Radial nerve, round the back of the arm","d":"M58.70,25.40 C58.87,26.00 59.42,27.73 59.70,29.00 C59.98,30.27 60.15,31.67 60.40,33.00 C60.65,34.33 60.83,35.67 61.20,37.00 C61.57,38.33 62.15,39.67 62.60,41.00 C63.05,42.33 63.50,43.67 63.90,45.00 C64.30,46.33 64.58,47.63 65.00,49.00 C65.42,50.37 66.03,51.87 66.40,53.20 C66.77,54.53 67.07,56.37 67.20,57.00"},{"t":"path","k":"som","s":"#C2A063","w":0.18,"o":0.85,"nm":"Axillary nerve, to the shoulder","d":"M41.80,24.60 C41.53,24.57 40.68,24.27 40.20,24.40 C39.72,24.53 39.12,25.23 38.90,25.40"},{"t":"path","k":"som","s":"#C2A063","w":0.18,"o":0.85,"nm":"Axillary nerve, to the shoulder","d":"M58.20,24.60 C58.47,24.57 59.32,24.27 59.80,24.40 C60.28,24.53 60.88,25.23 61.10,25.40"},{"t":"path","k":"som","s":"#C2A063","w":0.24,"o":0.85,"nm":"Lumbar plexus, L1 to L4, inside psoas","d":"M49.28,38.60 C49.02,38.87 48.13,39.67 47.70,40.20 C47.27,40.73 46.93,41.27 46.70,41.80 C46.47,42.33 46.37,43.13 46.30,43.40"},{"t":"path","k":"som","s":"#C2A063","w":0.24,"o":0.85,"nm":"Lumbar plexus, L1 to L4, inside psoas","d":"M50.72,38.60 C50.98,38.87 51.87,39.67 52.30,40.20 C52.73,40.73 53.07,41.27 53.30,41.80 C53.53,42.33 53.63,43.13 53.70,43.40"},{"t":"path","k":"som","s":"#C2A063","w":0.24,"o":0.85,"nm":"Lumbar plexus, L1 to L4, inside psoas","d":"M49.40,38.60 C49.17,38.87 48.40,39.67 48.00,40.20 C47.60,40.73 47.23,41.27 47.00,41.80 C46.77,42.33 46.67,43.13 46.60,43.40"},{"t":"path","k":"som","s":"#C2A063","w":0.24,"o":0.85,"nm":"Lumbar plexus, L1 to L4, inside psoas","d":"M50.60,38.60 C50.83,38.87 51.60,39.67 52.00,40.20 C52.40,40.73 52.77,41.27 53.00,41.80 C53.23,42.33 53.33,43.13 53.40,43.40"},{"t":"path","k":"som","s":"#C2A063","w":0.24,"o":0.85,"nm":"Lumbar plexus, L1 to L4, inside psoas","d":"M49.52,38.60 C49.32,38.87 48.67,39.67 48.30,40.20 C47.93,40.73 47.53,41.27 47.30,41.80 C47.07,42.33 46.97,43.13 46.90,43.40"},{"t":"path","k":"som","s":"#C2A063","w":0.24,"o":0.85,"nm":"Lumbar plexus, L1 to L4, inside psoas","d":"M50.48,38.60 C50.68,38.87 51.33,39.67 51.70,40.20 C52.07,40.73 52.47,41.27 52.70,41.80 C52.93,42.33 53.03,43.13 53.10,43.40"},{"t":"path","k":"som","s":"#C2A063","w":0.3,"o":0.85,"nm":"Sacral plexus, L4 to S4, on piriformis","d":"M49.18,43.40 C49.03,43.93 48.61,45.87 48.30,46.60 C47.99,47.33 47.60,47.27 47.30,47.80 C47.00,48.33 46.63,49.47 46.50,49.80"},{"t":"path","k":"som","s":"#C2A063","w":0.3,"o":0.85,"nm":"Sacral plexus, L4 to S4, on piriformis","d":"M50.82,43.40 C50.97,43.93 51.39,45.87 51.70,46.60 C52.01,47.33 52.40,47.27 52.70,47.80 C53.00,48.33 53.37,49.47 53.50,49.80"},{"t":"path","k":"som","s":"#C2A063","w":0.3,"o":0.85,"nm":"Sacral plexus, L4 to S4, on piriformis","d":"M49.30,43.40 C49.18,43.93 48.88,45.87 48.60,46.60 C48.32,47.33 47.90,47.27 47.60,47.80 C47.30,48.33 46.93,49.47 46.80,49.80"},{"t":"path","k":"som","s":"#C2A063","w":0.3,"o":0.85,"nm":"Sacral plexus, L4 to S4, on piriformis","d":"M50.70,43.40 C50.82,43.93 51.12,45.87 51.40,46.60 C51.68,47.33 52.10,47.27 52.40,47.80 C52.70,48.33 53.07,49.47 53.20,49.80"},{"t":"path","k":"som","s":"#C2A063","w":0.3,"o":0.85,"nm":"Sacral plexus, L4 to S4, on piriformis","d":"M49.42,43.40 C49.33,43.93 49.15,45.87 48.90,46.60 C48.65,47.33 48.20,47.27 47.90,47.80 C47.60,48.33 47.23,49.47 47.10,49.80"},{"t":"path","k":"som","s":"#C2A063","w":0.3,"o":0.85,"nm":"Sacral plexus, L4 to S4, on piriformis","d":"M50.58,43.40 C50.67,43.93 50.85,45.87 51.10,46.60 C51.35,47.33 51.80,47.27 52.10,47.80 C52.40,48.33 52.77,49.47 52.90,49.80"},{"t":"path","k":"som","s":"#C2A063","w":0.5,"o":0.85,"nm":"Sciatic nerve, L4 to S3, down the back of the thigh","d":"M46.80,49.80 C46.60,50.33 45.90,51.88 45.60,53.00 C45.30,54.12 45.10,55.17 45.00,56.50 C44.90,57.83 44.98,59.42 45.00,61.00 C45.02,62.58 45.07,64.33 45.10,66.00 C45.13,67.67 45.22,69.63 45.20,71.00 C45.18,72.37 45.03,73.67 45.00,74.20"},{"t":"path","k":"som","s":"#C2A063","w":0.5,"o":0.85,"nm":"Sciatic nerve, L4 to S3, down the back of the thigh","d":"M53.20,49.80 C53.40,50.33 54.10,51.88 54.40,53.00 C54.70,54.12 54.90,55.17 55.00,56.50 C55.10,57.83 55.02,59.42 55.00,61.00 C54.98,62.58 54.93,64.33 54.90,66.00 C54.87,67.67 54.78,69.63 54.80,71.00 C54.82,72.37 54.97,73.67 55.00,74.20"},{"t":"path","k":"som","s":"#C2A063","w":0.32,"o":0.85,"nm":"Tibial nerve, down the calf","d":"M45.00,74.20 C45.02,74.83 45.08,76.37 45.10,78.00 C45.12,79.63 45.07,82.00 45.10,84.00 C45.13,86.00 45.25,88.25 45.30,90.00 C45.35,91.75 45.38,93.75 45.40,94.50"},{"t":"path","k":"som","s":"#C2A063","w":0.32,"o":0.85,"nm":"Tibial nerve, down the calf","d":"M55.00,74.20 C54.98,74.83 54.92,76.37 54.90,78.00 C54.88,79.63 54.93,82.00 54.90,84.00 C54.87,86.00 54.75,88.25 54.70,90.00 C54.65,91.75 54.62,93.75 54.60,94.50"},{"t":"path","k":"som","s":"#C2A063","w":0.26,"o":0.85,"nm":"Common fibular nerve, round the head of the fibula","d":"M45.00,74.20 C44.85,74.43 44.40,75.03 44.10,75.60 C43.80,76.17 43.35,77.27 43.20,77.60"},{"t":"path","k":"som","s":"#C2A063","w":0.26,"o":0.85,"nm":"Common fibular nerve, round the head of the fibula","d":"M55.00,74.20 C55.15,74.43 55.60,75.03 55.90,75.60 C56.20,76.17 56.65,77.27 56.80,77.60"},{"t":"path","k":"som","s":"#C2A063","w":0.18,"o":0.85,"nm":"Gluteal nerves","d":"M47.20,49.40 C46.93,49.57 46.08,50.07 45.60,50.40 C45.12,50.73 44.52,51.23 44.30,51.40"},{"t":"path","k":"som","s":"#C2A063","w":0.18,"o":0.85,"nm":"Gluteal nerves","d":"M52.80,49.40 C53.07,49.57 53.92,50.07 54.40,50.40 C54.88,50.73 55.48,51.23 55.70,51.40"},{"t":"path","k":"som","s":"#C2A063","w":0.2,"o":0.85,"nm":"Pudendal nerve, S2 to S4, to the perineum","d":"M48.60,49.00 C48.57,49.43 48.35,50.83 48.40,51.60 C48.45,52.37 48.82,53.27 48.90,53.60"},{"t":"path","k":"som","s":"#C2A063","w":0.2,"o":0.85,"nm":"Pudendal nerve, S2 to S4, to the perineum","d":"M51.40,49.00 C51.43,49.43 51.65,50.83 51.60,51.60 C51.55,52.37 51.18,53.27 51.10,53.60"}]],"spine":[{"lv":"C1","y":13},{"lv":"C7","y":19},{"lv":"T4","y":24.2},{"lv":"T12","y":37},{"lv":"L1","y":38.6},{"lv":"L4","y":43.4},{"lv":"S1","y":46.6},{"lv":"Co","y":52}],"nodes":[{"i":1,"k":"Fear","b":"Root","c":"Fear","n":"Lumbar Plexus"},{"i":2,"k":"Shame","b":"Root","c":"Shame","n":"Pudendal Nerve"},{"i":3,"k":"Guilt","b":"Root","c":"Shame","n":"Inferior Hypogastric Plexus"},{"i":4,"k":"Control","b":"Root","c":"Fear","n":"Sacral Nerves"},{"i":5,"k":"Insecurity","b":"Root","c":"Fear","n":"Pelvic Nerve"},{"i":6,"k":"Victimhood","b":"Root","c":"Sadness","n":"Coccygeal Plexus"},{"i":7,"k":"Scarcity","b":"Root","c":"Fear","n":"Iliac Nerve Branch"},{"i":8,"k":"Root_08_Unnamed","b":"Root","c":null,"n":"Cauda Equina"},{"i":9,"k":"Possession","b":"Root","c":"Shock","n":"Gluteal Nerve"},{"i":10,"k":"Lethargy","b":"Root","c":"Sadness","n":"Obturator Nerve"},{"i":11,"k":"Resistance","b":"Root","c":"Fear","n":"Perineal Branch"},{"i":12,"k":"Compulsion","b":"Root","c":"Fear","n":"Pelvic Floor Nerves"},{"i":13,"k":"Disconnection","b":"Root","c":"Sadness","n":"Sacral Root Ganglia"},{"i":14,"k":"Escapism","b":"Root","c":"Joy","n":"Sciatic Nerve"},{"i":15,"k":"Panic","b":"Root","c":"Fear","n":"Lumbar Sympathetic Chain"},{"i":16,"k":"Collapse","b":"Root","c":"Sadness","n":"Spinal Cord Base"},{"i":17,"k":"Addiction","b":"Sacral","c":"Joy","n":"Sacral Plexus"},{"i":18,"k":"Lust","b":"Sacral","c":"Joy","n":"Genitofemoral Nerve"},{"i":19,"k":"Envy","b":"Sacral","c":"Resentment","n":"Internal Pudendal Nerve"},{"i":20,"k":"Jealousy","b":"Sacral","c":"Resentment","n":"Obturator Nerve"},{"i":21,"k":"Co-Dependency","b":"Sacral","c":"Disgust","n":"Pelvic Splanchnic Nerves"},{"i":22,"k":"Shame Of Desire","b":"Sacral","c":"Joy","n":"Hypogastric Plexus"},{"i":23,"k":"Hypersexuality","b":"Sacral","c":"Joy","n":"Pudendal Plexus"},{"i":24,"k":"Avoidance Of Pleasure","b":"Sacral","c":"Joy","n":"Pelvic Nerve"},{"i":25,"k":"Manipulation Through Emotion","b":"Sacral","c":"Anger","n":"Uterovaginal Plexus"},{"i":26,"k":"Oversensitivity","b":"Sacral","c":"Shock","n":"Inferior Hypogastric Plexus"},{"i":27,"k":"Fantasy","b":"Sacral","c":"Joy","n":"Splanchnic Root"},{"i":28,"k":"Infatuation","b":"Sacral","c":"Joy","n":"Lumbar-Sacral Overlap"},{"i":29,"k":"Obsession","b":"Sacral","c":"Fear","n":"Pelvic Ganglia"},{"i":30,"k":"Guilt Of Pleasure","b":"Sacral","c":"Joy","n":"Sacral Outflow"},{"i":31,"k":"Need For Approval","b":"Sacral","c":"Shame","n":"Iliac Branches"},{"i":32,"k":"Excess Emotion","b":"Sacral","c":"Shock","n":"Urogenital Nerve"},{"i":33,"k":"Pride","b":"Solar","c":"Anger","n":"Celiac Plexus"},{"i":34,"k":"Arrogance","b":"Solar","c":"Anger","n":"Greater Splanchnic Nerve"},{"i":35,"k":"Competition","b":"Solar","c":"Anger","n":"Aortic Plexus"},{"i":36,"k":"Anger","b":"Solar","c":"Anger","n":"Celiac Plexus"},{"i":37,"k":"Judgment","b":"Solar","c":"Anger","n":"Splanchnic Plexus"},{"i":38,"k":"Entitlement","b":"Solar","c":"Anger","n":"Renal Plexus"},{"i":39,"k":"Rebellion","b":"Solar","c":"Anger","n":"Renal Ganglia"},{"i":40,"k":"Perfectionism","b":"Solar","c":"Fear","n":"Mesenteric Plexus"},{"i":41,"k":"Force","b":"Solar","c":"Fear","n":"Splenic Plexus"},{"i":42,"k":"Rigidity","b":"Solar","c":"Fear","n":"Pancreatic Plexus"},{"i":43,"k":"Resentment (Solar)","b":"Solar","c":"Resentment","n":"Suprarenal Plexus"},{"i":44,"k":"Unworthiness","b":"Solar","c":"Shame","n":"Inferior Mesenteric Plexus"},{"i":45,"k":"Anxiety","b":"Solar","c":"Fear","n":"Adrenal Medulla"},{"i":46,"k":"Self-Judgment (Solar)","b":"Solar","c":"Shame","n":"Epigastric Branches"},{"i":47,"k":"Need To Win","b":"Solar","c":"Anger","n":"Vagus-Liver Plexus"},{"i":48,"k":"Superiority","b":"Solar","c":"Anger","n":"Hepatic Nerve"},{"i":49,"k":"Hatred","b":"Heart","c":"Anger","n":"Cardiac Plexus"},{"i":50,"k":"Resentment (Heart)","b":"Heart","c":"Resentment","n":"Thoracic Nerves"},{"i":51,"k":"Self-Judgment (Heart)","b":"Heart","c":"Shame","n":"Vagus Nerve"},{"i":52,"k":"Betrayal","b":"Heart","c":"Shock","n":"Thoracic Plexus"},{"i":53,"k":"Separation","b":"Heart","c":"Sadness","n":"Pericardial Nerve"},{"i":54,"k":"Martyrdom","b":"Heart","c":"Sadness","n":"Intercostal Nerves"},{"i":55,"k":"Longing","b":"Heart","c":"Sadness","n":"Cardiac Nerve Plexus"},{"i":56,"k":"Closed Heart","b":"Heart","c":"Sadness","n":"Costal Branches"},{"i":57,"k":"Manipulative Kindness","b":"Heart","c":"Anger","n":"Phrenic Nerve"},{"i":58,"k":"Expectation","b":"Heart","c":"Fear","n":"Pulmonary Nerve Plexus"},{"i":59,"k":"Blame","b":"Heart","c":"Anger","n":"Thoracic Ganglia"},{"i":60,"k":"False Love","b":"Heart","c":"Disgust","n":"Anterior Thoracic Roots"},{"i":61,"k":"Rejection","b":"Heart","c":"Sadness","n":"Vagal Branches"},{"i":62,"k":"Avoidance Of Grief","b":"Heart","c":"Joy","n":"Great Cardiac Nerve"},{"i":63,"k":"Need To Be Needed","b":"Heart","c":"Disgust","n":"Coronary Plexus"},{"i":64,"k":"Deceit","b":"Throat","c":"Disgust","n":"Cervical Plexus"},{"i":65,"k":"Self-Silencing","b":"Throat","c":"Shame","n":"Vagus Nerve"},{"i":66,"k":"People Pleasing","b":"Throat","c":"Shame","n":"Superior Laryngeal Nerve"},{"i":67,"k":"Lying","b":"Throat","c":"Disgust","n":"Recurrent Laryngeal Nerve"},{"i":68,"k":"Interrupting","b":"Throat","c":"Anger","n":"Pharyngeal Nerve"},{"i":69,"k":"Comparison","b":"Throat","c":"Shame","n":"Accessory Nerve"},{"i":70,"k":"Excuse","b":"Throat","c":"Disgust","n":"Glossopharyngeal Nerve"},{"i":71,"k":"Stage Performing","b":"Throat","c":"Shock","n":"Laryngeal Plexus"},{"i":72,"k":"Speaking To Be Right","b":"Throat","c":"Anger","n":"Cervical Ganglia"},{"i":73,"k":"Manic Expression","b":"Throat","c":"Shock","n":"Spinal Accessory Nerve"},{"i":74,"k":"Talking To Avoid Feeling","b":"Throat","c":"Shock","n":"Subclavian Nerve"},{"i":75,"k":"Spiritual Language To Manipulate","b":"Throat","c":"Disgust","n":"Brachial Plexus"},{"i":76,"k":"Delusion","b":"3rd Eye","c":"Disgust","n":"Optic Nerve"},{"i":77,"k":"Cynicism","b":"3rd Eye","c":"Disgust","n":"Oculomotor Nerve"},{"i":78,"k":"Distrust","b":"3rd Eye","c":"Fear","n":"Abducens Nerve"},{"i":79,"k":"Hypervigilance","b":"3rd Eye","c":"Fear","n":"Optic Chiasm"},{"i":80,"k":"Dogma","b":"3rd Eye","c":"Disgust","n":"Pineal Gland"},{"i":81,"k":"Overanalysis","b":"3rd Eye","c":"Shock","n":"Trigeminal Nerve"},{"i":82,"k":"Projection","b":"3rd Eye","c":"Disgust","n":"Visual Cortex"},{"i":83,"k":"Paranoia","b":"3rd Eye","c":"Fear","n":"Lateral Geniculate"},{"i":84,"k":"Distortion","b":"3rd Eye","c":"Disgust","n":"Occipital Nerve"},{"i":85,"k":"Doubt","b":"3rd Eye","c":"Fear","n":"Cortical Visual Pathway"},{"i":86,"k":"Idealism","b":"3rd Eye","c":"Joy","n":"Supraoptic Nucleus"},{"i":87,"k":"Lack Of Discernment","b":"3rd Eye","c":"Disgust","n":"Thalamus"},{"i":88,"k":"Doubt Of God","b":"Crown","c":"Resentment","n":"Corpus Callosum"},{"i":89,"k":"Hubris","b":"Crown","c":"Anger","n":"Prefrontal Cortex"},{"i":90,"k":"Spiritual Pride","b":"Crown","c":"Disgust","n":"Pineal-Hypothalamic Axis"},{"i":91,"k":"Nihilism","b":"Crown","c":"Sadness","n":"Parietal Cortex"},{"i":92,"k":"Spiritual Escapism","b":"Crown","c":"Joy","n":"Dorsal Raphe Nucleus"},{"i":93,"k":"False Humility","b":"Crown","c":"Shame","n":"Frontal Lobe"},{"i":94,"k":"Seeking Validation","b":"Crown","c":"Shame","n":"Cerebral Cortex"},{"i":95,"k":"Savior Complex","b":"Crown","c":"Disgust","n":"Posterior Cingulate"},{"i":96,"k":"Condemnation","b":"Crown","c":"Anger","n":"Reticular Formation"},{"i":97,"k":"Need To Be Special","b":"Crown","c":"Disgust","n":"Anterior Cingulate"},{"i":98,"k":"Unworthy Of God","b":"Crown","c":"Resentment","n":"Pineal-Amygdala Axis"},{"i":99,"k":"Knowing Better Than God","b":"Crown","c":"Resentment","n":"Default Mode Network"},{"i":100,"k":"Denial Of Truth","b":"Crown","c":"Resentment","n":"Medial Forebrain Bundle"},{"i":101,"k":"Rejection Of Spirit","b":"Crown","c":"Resentment","n":"Posterior Commissure"},{"i":102,"k":"Fear Of God","b":"Crown","c":"Resentment","n":"Temporal Lobe"},{"i":103,"k":"Anger At God","b":"Crown","c":"Resentment","n":"Hypothalamus"},{"i":104,"k":"Forgetfulness","b":"Crown","c":"Sadness","n":"Hippocampus"},{"i":105,"k":"Denial Of Light","b":"Crown","c":"Resentment","n":"Epithalamus"},{"i":106,"k":"Rejection Of Unity","b":"Crown","c":"Resentment","n":"Neocortex"},{"i":107,"k":"Self-Exclusion","b":"Crown","c":"Shame","n":"Superior Sagittal Sinus"},{"i":108,"k":"Endless Seeking","b":"Crown","c":"Sadness","n":"Ascension Column"}],"unplaced":[],"places":[{"x":49.974,"y":10.495,"ids":[79,76],"view":"head","src":"atlas","s":"Optic chiasm, and the optic nerves that meet in it"},{"x":48.695,"y":9.921,"ids":[83],"view":"head","src":"atlas","s":"Lateral geniculate"},{"x":51.179,"y":9.968,"ids":[83],"view":"head","src":"atlas","s":"Lateral geniculate"},{"x":50.437,"y":9.289,"ids":[82],"view":"head","src":"atlas","s":"Visual cortex"},{"x":49.263,"y":9.284,"ids":[82],"view":"head","src":"atlas","s":"Visual cortex"},{"x":51.532,"y":9.489,"ids":[85],"view":"head","src":"atlas","s":"Optic radiation, the nearest real structure to cortical visual pathway"},{"x":48.405,"y":9.416,"ids":[85],"view":"head","src":"atlas","s":"Optic radiation, the nearest real structure to cortical visual pathway"},{"x":49.416,"y":9.105,"ids":[87],"view":"head","src":"atlas","s":"Thalamus"},{"x":50.537,"y":9.121,"ids":[87],"view":"head","src":"atlas","s":"Thalamus"},{"x":49.968,"y":9.421,"ids":[80,105,101],"view":"head","src":"atlas","s":"Pineal region: pineal, epithalamus, posterior commissure"},{"x":50,"y":10.689,"ids":[84],"view":"head","src":"atlas","s":"Occipital nerve, at the inion"},{"x":49.895,"y":5.421,"ids":[107],"view":"head","src":"atlas","s":"Top of the brain on the midline, under the superior sagittal sinus"},{"x":48.189,"y":7.232,"ids":[91],"view":"head","src":"atlas","s":"Parietal lobe"},{"x":51.811,"y":7.247,"ids":[91],"view":"head","src":"atlas","s":"Parietal lobe"},{"x":49.968,"y":7.774,"ids":[95],"view":"head","src":"atlas","s":"Posterior cingulate"},{"x":49.958,"y":8.216,"ids":[97],"view":"head","src":"atlas","s":"Anterior cingulate"},{"x":49.932,"y":8.579,"ids":[88],"view":"head","src":"atlas","s":"Corpus callosum"},{"x":48.389,"y":8.679,"ids":[94,106,93,89],"view":"head","src":"atlas","s":"Cerebral cortex, and the lobe and regions inside it"},{"x":51.595,"y":8.695,"ids":[94,106,93,89],"view":"head","src":"atlas","s":"Cerebral cortex, and the lobe and regions inside it"},{"x":50.974,"y":8.816,"ids":[99],"view":"head","src":"atlas","s":"Default mode network, its core regions"},{"x":48.884,"y":8.695,"ids":[99],"view":"head","src":"atlas","s":"Default mode network, its core regions"},{"x":47.763,"y":10.526,"ids":[102],"view":"head","src":"atlas","s":"Temporal lobe"},{"x":52.2,"y":10.537,"ids":[102],"view":"head","src":"atlas","s":"Temporal lobe"},{"x":51.337,"y":10.263,"ids":[104],"view":"head","src":"atlas","s":"Hippocampus"},{"x":48.579,"y":10.258,"ids":[104],"view":"head","src":"atlas","s":"Hippocampus"},{"x":49.989,"y":10.058,"ids":[103,86,100],"view":"head","src":"atlas","s":"Hypothalamus, with the supraoptic nucleus and the medial forebrain bundle"},{"x":49.979,"y":9.739,"ids":[90],"view":"head","src":"atlas","s":"Pineal to hypothalamus, the middle of the axis"},{"x":50.589,"y":9.924,"ids":[98],"view":"head","src":"atlas","s":"Pineal to amygdala, the middle of the axis"},{"x":49.974,"y":10.342,"ids":[92,77],"view":"head","src":"atlas","s":"Midbrain: dorsal raphe, oculomotor nerve"},{"x":49.968,"y":11.263,"ids":[96,81,78],"view":"head","src":"atlas","s":"Brainstem: reticular formation, trigeminal and abducens nerves"},{"x":50,"y":4.98,"ids":[108],"view":"head","src":"seat","s":"No structure. Filed at the Crown"},{"x":50,"y":30.51,"ids":[49,55],"view":"front","src":"spine","s":"Cardiac plexus"},{"x":50,"y":40.21,"ids":[33,36],"view":"front","src":"spine","s":"Celiac plexus"},{"x":52.2,"y":43.237,"ids":[1],"view":"back","src":"spine","s":"Lumbar plexus, L1 to L4, beside the spine"},{"x":47.8,"y":43.237,"ids":[1],"view":"back","src":"spine","s":"Lumbar plexus, L1 to L4, beside the spine"},{"x":50,"y":53.55,"ids":[6],"view":"back","src":"spine","s":"Coccygeal plexus, the tailbone"},{"x":50,"y":27.9,"ids":[53,62,63],"view":"front","src":"chart","s":"Hridaya: the heart's own nerves, pericardial, great cardiac, coronary"},{"x":41.39,"y":26.54,"ids":[75],"view":"front","src":"chart","s":"Kakshadhara, the front of the armpit: the brachial plexus"},{"x":58.61,"y":26.54,"ids":[75],"view":"front","src":"chart","s":"Kakshadhara, the front of the armpit: the brachial plexus"},{"x":48.6,"y":19.41,"ids":[65,66,67,71],"view":"front","src":"chart","s":"Manya, the vocal cords: the vagus in the neck and the larynx's own nerves"},{"x":51.4,"y":19.41,"ids":[65,66,67,71],"view":"front","src":"chart","s":"Manya, the vocal cords: the vagus in the neck and the larynx's own nerves"},{"x":44.98,"y":31.03,"ids":[54],"view":"front","src":"chart","s":"Stanamula, the space between the ribs under the breast: the intercostal nerves"},{"x":55.02,"y":31.03,"ids":[54],"view":"front","src":"chart","s":"Stanamula, the space between the ribs under the breast: the intercostal nerves"},{"x":47.73,"y":21.28,"ids":[58],"view":"front","src":"chart","s":"Apastambha, the bronchi: the pulmonary plexus"},{"x":52.27,"y":21.28,"ids":[58],"view":"front","src":"chart","s":"Apastambha, the bronchi: the pulmonary plexus"},{"x":49,"y":52.68,"ids":[18],"view":"front","src":"chart","s":"Vitapa, the groin: the genitofemoral nerve"},{"x":51,"y":52.68,"ids":[18],"view":"front","src":"chart","s":"Vitapa, the groin: the genitofemoral nerve"},{"x":42.06,"y":29.69,"ids":[56],"view":"front","src":"chart","s":"Apalapa, the side of the chest: the side branches of the intercostal nerves"},{"x":57.94,"y":29.69,"ids":[56],"view":"front","src":"chart","s":"Apalapa, the side of the chest: the side branches of the intercostal nerves"},{"x":48.94,"y":20.87,"ids":[64],"view":"front","src":"chart","s":"Under the sternocleidomastoid: the cervical plexus"},{"x":51.06,"y":20.87,"ids":[64],"view":"front","src":"chart","s":"Under the sternocleidomastoid: the cervical plexus"},{"x":42.85,"y":21.98,"ids":[69,73],"view":"both","src":"chart","s":"Amsa, the top of the shoulder on the trapezius: the accessory nerve"},{"x":57.15,"y":21.98,"ids":[69,73],"view":"both","src":"chart","s":"Amsa, the top of the shoulder on the trapezius: the accessory nerve"},{"x":49.37,"y":28.26,"ids":[50,59],"view":"back","src":"chart","s":"Brihati, beside the spine between the shoulder blades: thoracic nerves and ganglia"},{"x":50.63,"y":28.26,"ids":[50,59],"view":"back","src":"chart","s":"Brihati, beside the spine between the shoulder blades: thoracic nerves and ganglia"},{"x":45,"y":42.5,"ids":[38,39,43,45],"view":"back","src":"chart","s":"Parshvasandhi, the flank over the kidneys: renal and suprarenal plexuses, the adrenal"},{"x":55,"y":42.5,"ids":[38,39,43,45],"view":"back","src":"chart","s":"Parshvasandhi, the flank over the kidneys: renal and suprarenal plexuses, the adrenal"},{"x":50,"y":43.07,"ids":[44],"view":"front","src":"chart","s":"Nabhi, the navel: the inferior mesenteric plexus"},{"x":50,"y":47.7,"ids":[3,26,22,5,24,21,30,29],"view":"front","src":"chart","s":"Basti, above the pubic bone: the hypogastric plexuses, the pelvic splanchnic nerves that drive the bladder, the ganglia inside the plexus"},{"x":50,"y":53.93,"ids":[2,19,11,32],"view":"front","src":"chart","s":"Guda: the pudendal nerve and its perineal branch"},{"x":50,"y":52.28,"ids":[12],"view":"front","src":"chart","s":"The pelvic floor: the nerve to it"},{"x":47.49,"y":49.33,"ids":[17,28,4,13],"view":"back","src":"chart","s":"Kukundara, the dimples over the sacroiliac joints: the sacral plexus and its roots"},{"x":52.51,"y":49.33,"ids":[17,28,4,13],"view":"back","src":"chart","s":"Kukundara, the dimples over the sacroiliac joints: the sacral plexus and its roots"},{"x":43.68,"y":55.56,"ids":[14,9],"view":"back","src":"chart","s":"Katikataruna, the middle of the buttock: the sciatic and gluteal nerves"},{"x":56.32,"y":55.56,"ids":[14,9],"view":"back","src":"chart","s":"Katikataruna, the middle of the buttock: the sciatic and gluteal nerves"},{"x":44.2,"y":47.2,"ids":[7],"view":"front","src":"proposed","s":"Iliohypogastric and ilioinguinal branches, above the inguinal ligament"},{"x":55.8,"y":47.2,"ids":[7],"view":"front","src":"proposed","s":"Iliohypogastric and ilioinguinal branches, above the inguinal ligament"},{"x":50,"y":45.2,"ids":[8],"view":"back","src":"proposed","s":"Cauda equina, the L2 to S1 roots in the lumbar cistern"},{"x":47,"y":60,"ids":[10,20],"view":"front","src":"proposed","s":"Obturator nerve, through the obturator foramen into the inner thigh"},{"x":53,"y":60,"ids":[10,20],"view":"front","src":"proposed","s":"Obturator nerve, through the obturator foramen into the inner thigh"},{"x":48.5,"y":43.4,"ids":[15],"view":"front","src":"proposed","s":"Lumbar sympathetic chain, on the front and side of the lumbar vertebral bodies"},{"x":51.5,"y":43.4,"ids":[15],"view":"front","src":"proposed","s":"Lumbar sympathetic chain, on the front and side of the lumbar vertebral bodies"},{"x":50,"y":41.7,"ids":[16],"view":"back","src":"proposed","s":"Spinal cord base, the conus medullaris at L1 to L2"},{"x":48.2,"y":51.8,"ids":[23],"view":"front","src":"proposed","s":"Pudendal plexus, S2 to S4, low in the pelvis"},{"x":51.8,"y":51.8,"ids":[23],"view":"front","src":"proposed","s":"Pudendal plexus, S2 to S4, low in the pelvis"},{"x":48.6,"y":49.6,"ids":[25],"view":"front","src":"proposed","s":"Uterovaginal plexus, the lower part of the inferior hypogastric plexus"},{"x":51.4,"y":49.6,"ids":[25],"view":"front","src":"proposed","s":"Uterovaginal plexus, the lower part of the inferior hypogastric plexus"},{"x":48.4,"y":50.4,"ids":[27],"view":"back","src":"proposed","s":"Pelvic splanchnic roots, leaving S2 to S4 through the sacral foramina"},{"x":51.6,"y":50.4,"ids":[27],"view":"back","src":"proposed","s":"Pelvic splanchnic roots, leaving S2 to S4 through the sacral foramina"},{"x":46.93,"y":52.32,"ids":[31],"view":"front","src":"proposed","s":"Ilioinguinal nerve, at the superficial inguinal ring"},{"x":53.07,"y":52.32,"ids":[31],"view":"front","src":"proposed","s":"Ilioinguinal nerve, at the superficial inguinal ring"},{"x":48,"y":37.6,"ids":[34],"view":"front","src":"proposed","s":"Greater splanchnic nerve, T5 to T9, down beside the vertebral bodies to the crus at T12"},{"x":52,"y":37.6,"ids":[34],"view":"front","src":"proposed","s":"Greater splanchnic nerve, T5 to T9, down beside the vertebral bodies to the crus at T12"},{"x":51,"y":43,"ids":[35],"view":"front","src":"proposed","s":"Aortic plexus, on the front of the abdominal aorta left of the midline, L1 to L3"},{"x":47.4,"y":39,"ids":[37],"view":"front","src":"proposed","s":"Lesser splanchnic nerves, T10 to T11, to the aorticorenal ganglia"},{"x":52.6,"y":39,"ids":[37],"view":"front","src":"proposed","s":"Lesser splanchnic nerves, T10 to T11, to the aorticorenal ganglia"},{"x":50.3,"y":41.3,"ids":[40],"view":"front","src":"proposed","s":"Superior mesenteric plexus, round the artery's origin at L1"},{"x":56.8,"y":38.2,"ids":[41],"view":"front","src":"proposed","s":"Splenic plexus, along the splenic artery, upper left of the abdomen"},{"x":52.4,"y":40.2,"ids":[42],"view":"front","src":"proposed","s":"Pancreatic plexus, over the body of the pancreas, left of centre"},{"x":48,"y":35.8,"ids":[46],"view":"front","src":"proposed","s":"Epigastric branches of T7 to T9, under the xiphoid"},{"x":52,"y":35.8,"ids":[46],"view":"front","src":"proposed","s":"Epigastric branches of T7 to T9, under the xiphoid"},{"x":45.2,"y":37,"ids":[47],"view":"front","src":"proposed","s":"Hepatic branch of the anterior vagal trunk, to the liver"},{"x":46.6,"y":38.8,"ids":[48],"view":"front","src":"proposed","s":"Hepatic plexus, along the hepatic artery"},{"x":48.8,"y":28.6,"ids":[51],"view":"front","src":"proposed","s":"The two vagus nerves in the thorax, beside the oesophagus"},{"x":51.2,"y":28.6,"ids":[51],"view":"front","src":"proposed","s":"The two vagus nerves in the thorax, beside the oesophagus"},{"x":51.3,"y":32.4,"ids":[52],"view":"front","src":"proposed","s":"Thoracic aortic plexus, on the descending aorta"},{"x":45.6,"y":30.2,"ids":[57],"view":"front","src":"proposed","s":"Phrenic nerves, C3 to C5, down each side of the pericardium"},{"x":54.4,"y":30.2,"ids":[57],"view":"front","src":"proposed","s":"Phrenic nerves, C3 to C5, down each side of the pericardium"},{"x":43.5,"y":24.8,"ids":[60],"view":"front","src":"proposed","s":"Pectoral nerves, once called the anterior thoracic nerves"},{"x":56.5,"y":24.8,"ids":[60],"view":"front","src":"proposed","s":"Pectoral nerves, once called the anterior thoracic nerves"},{"x":47.4,"y":26.6,"ids":[61],"view":"front","src":"proposed","s":"Pulmonary branches of the vagus, at the roots of the lungs"},{"x":52.6,"y":26.6,"ids":[61],"view":"front","src":"proposed","s":"Pulmonary branches of the vagus, at the roots of the lungs"},{"x":48.8,"y":16.4,"ids":[68],"view":"front","src":"proposed","s":"Pharyngeal branch of the vagus, level with C2 to C3"},{"x":51.2,"y":16.4,"ids":[68],"view":"front","src":"proposed","s":"Pharyngeal branch of the vagus, level with C2 to C3"},{"x":47.6,"y":15,"ids":[70],"view":"front","src":"proposed","s":"Glossopharyngeal nerve, below the angle of the jaw"},{"x":52.4,"y":15,"ids":[70],"view":"front","src":"proposed","s":"Glossopharyngeal nerve, below the angle of the jaw"},{"x":48.1,"y":17.9,"ids":[72],"view":"front","src":"proposed","s":"Cervical sympathetic ganglia, beside C2 to C7"},{"x":51.9,"y":17.9,"ids":[72],"view":"front","src":"proposed","s":"Cervical sympathetic ganglia, beside C2 to C7"},{"x":44.4,"y":21.4,"ids":[74],"view":"front","src":"proposed","s":"Nerve to subclavius, C5 to C6, under the clavicle"},{"x":55.6,"y":21.4,"ids":[74],"view":"front","src":"proposed","s":"Nerve to subclavius, C5 to C6, under the clavicle"}],"child":[{"nm":"Fear","ic":"M12 3l8 14H4z","seat":"Root","opp":"Trust"},{"nm":"Anger","ic":"M13 2L4 14h6l-1 8 9-12h-6z","seat":"Solar","opp":"Equanimity"},{"nm":"Shame","ic":"M5 20V9a7 7 0 0114 0v11M9 20v-6h6v6","seat":"Sacral","opp":"Worth"},{"nm":"Disgust","ic":"M4 8c4 4 12 4 16 0M6 16c3-3 9-3 12 0","seat":"Sacral","opp":"Acceptance"},{"nm":"Apathy","ic":"M4 12h16M4 7h16M4 17h16","seat":"Throat","opp":"Vitality"},{"nm":"Shock","ic":"M12 12m-9 0a9 9 0 1018 0 9 9 0 10-18 0M12 12m-4.5 0a4.5 4.5 0 109 0 4.5 4.5 0 10-9 0","seat":"3rd Eye","opp":"Groundedness"},{"nm":"Sad","ic":"M12 20s-8-5-8-11a4 4 0 018-2 4 4 0 018 2c0 6-8 11-8 11z","seat":"Heart","opp":"Joy"},{"nm":"Surprise","ic":"M12 3v18M7 7c-3 2-3 9 0 11M17 7c3 2 3 9 0 11","seat":"Heart","opp":"Readiness"},{"nm":"Anticipation","ic":"M12 4v11M8 11l4 4 4-4M6 20h12","seat":"Solar","opp":"Presence"}],"sabs":[{"nm":"Controller","nids":[4,36,50],"hcx":"Rigidity"},{"nm":"Victim","nids":[6,50,3],"hcx":"Collapse"},{"nm":"Perfectionist","nids":[40,37,45],"hcx":"Rigidity"},{"nm":"Pleaser","nids":[66,2,65],"hcx":"Collapse"},{"nm":"Hyper-Achiever","nids":[33,40,48],"hcx":"Grandiosity"},{"nm":"Hyper-Vigilant","nids":[79,1,82],"hcx":"Dysregulation"},{"nm":"Judge","nids":[37,48,82],"hcx":"Predatory"},{"nm":"Avoider","nids":[1,14,89],"hcx":"Dissociation"},{"nm":"Worrywart","nids":[45,1,3],"hcx":"Dysregulation"},{"nm":"Loner","nids":[55,1,49],"hcx":"Dissociation"},{"nm":"Nihilist","nids":[91,88,90],"hcx":"Collapse"},{"nm":"Aggressor","nids":[36,49,38],"hcx":"Predatory"},{"nm":"Imposter","nids":[2,45,66],"hcx":"Collapse"},{"nm":"Superior","nids":[48,33,38],"hcx":"Grandiosity"}],"hcx":[{"nm":"Grandiosity","d":"the shape is held bigger than it is, and the gap is defended","b":"Throat","ic":"M12 3a9 9 0 100 18 9 9 0 100-18 M12 7a5 5 0 100 10 5 5 0 100-10"},{"nm":"Predatory","d":"other people are read as terrain, and the move is made before it is felt","b":"3rd Eye","ic":"M3 3l9 9 M12 12l9-9 M12 12v9 M8 21h8"},{"nm":"Collapse","d":"the structure gives way downward and stays down","b":"Root","ic":"M4 20h16 M6 20V9 M18 20V9 M6 9l6 5 6-5"},{"nm":"Rigidity","d":"nothing is allowed out of its cell, including you","b":"Solar","ic":"M4 4h16v16H4z M4 12h16 M12 4v16"},{"nm":"Dysregulation","d":"the swing overshoots at both ends and never settles at the middle","b":"Sacral","ic":"M3 12h3l2-7 3 14 3-11 2 4h5"},{"nm":"Dissociation","d":"the outline holds and there is nobody inside it","b":"Crown","ic":"M12 3a9 9 0 019 9 M21 12a9 9 0 01-9 9 M12 21a9 9 0 01-9-9 M3 12a9 9 0 019-9"}],"painreg":[{"k":"head","nm":"Head","common":"tension headache, migraine, jaw clench, eye strain","pattern":"Overthinking and hypervigilance. The eye and crown holding what the body cannot resolve."},{"k":"throat","nm":"Throat","common":"globus, thyroid strain, chronic clearing, voice loss","pattern":"Truth withheld. Apathy at the shoulder girdle and the throat, silence chosen over cost."},{"k":"shoulders","nm":"Shoulders","common":"trapezius knots, frozen shoulder, upper back burn","pattern":"Carrying what is not yours. Duty overshot into martyrdom."},{"k":"arms","nm":"Arms","common":"tennis elbow, carpal tunnel, radiating ache","pattern":"Reaching and not receiving. Blocked receiving at the anterior cardiac."},{"k":"torso","nm":"Torso","common":"reflux, IBS, rib tension, shallow breath, chest tightness","pattern":"Anger held at the celiac and grief at the cardiac. The two most loaded plexuses in most fields."},{"k":"pelvis","nm":"Pelvis","common":"low back pain, hip impingement, pelvic floor tension, sciatica","pattern":"Shame at the pudendal and fear at the lumbar. Safety and worth, held in the base."},{"k":"legs","nm":"Legs","common":"knee pain, plantar strain, restless legs, shin ache","pattern":"Ground not trusted. Fear at the root refusing to let weight down."},{"k":"hands","nm":"Hands","common":"grip pain, finger stiffness, cold hands","pattern":"Holding on. Control chosen over flow."},{"k":"feet","nm":"Feet","common":"plantar fasciitis, arch collapse, numbness","pattern":"Contact with the ground refused. The root address will not discharge."}],"regions":{"front":[["Head",[43,2,57,15.6]],["Neck",[45.5,15.6,54.5,19.4]],["Chest",[41,19.4,59,33]],["Abdomen",[41,33,59,45]],["Shoulder",[35,19.4,42,25],"r"],["Shoulder",[58,19.4,65,25],"l"],["Upper arm",[32,25,41,36],"r"],["Upper arm",[59,25,68,36],"l"],["Forearm",[29,36,40,48],"r"],["Forearm",[60,36,71,48],"l"],["Palm",[27,48,40,62],"r"],["Palm",[60,48,73,62],"l"],["Hip",[40,45,50,57],"r"],["Hip",[50,45,60,57],"l"],["Thigh",[40,57,50,68],"r"],["Thigh",[50,57,60,68],"l"],["Knee",[40,68,50,74],"r"],["Knee",[50,68,60,74],"l"],["Shin",[40,74,50,88],"r"],["Shin",[50,74,60,88],"l"],["Ankle",[40,88,50,92.5],"r"],["Ankle",[50,88,60,92.5],"l"],["Foot",[38,92.5,50,99],"r"],["Foot",[50,92.5,62,99],"l"]],"back":[["Back of head",[43,2,57,15.6]],["Back of neck",[45.5,15.6,54.5,19.4]],["Upper back",[41,24.5,59,33]],["Mid back",[41,33,59,40]],["Low back",[41,40,59,47]],["Sacrum",[46,47,54,53]],["Trap",[50.6,18.6,63,24.5],"r"],["Trap",[37,18.6,49.4,24.5],"l"],["Upper arm",[59,24.5,68,36],"r"],["Upper arm",[32,24.5,41,36],"l"],["Forearm",[60,36,71,48],"r"],["Forearm",[29,36,40,48],"l"],["Back of hand",[60,48,73,62],"r"],["Back of hand",[27,48,40,62],"l"],["Buttock",[50,47,60,57],"r"],["Buttock",[40,47,50,57],"l"],["Back of thigh",[50,57,60,68],"r"],["Back of thigh",[40,57,50,68],"l"],["Back of knee",[50,68,60,74],"r"],["Back of knee",[40,68,50,74],"l"],["Calf",[50,74,60,88],"r"],["Calf",[40,74,50,88],"l"],["Heel",[50,88,60,99],"r"],["Heel",[40,88,50,99],"l"]]},"people":[{"nm":"Sofia","age":41,"role":"somatic practitioner","says":"I hold the room for everyone. I have not been held in four years and I would not know how to ask.","c":{"Fear":1.5,"Anger":1,"Shame":2,"Disgust":1,"Apathy":1,"Shock":1,"Sad":2.5,"Surprise":1,"Anticipation":2}},{"nm":"Diane","age":46,"role":"founder, second company","says":"I work until the work is done and the work is never done. Rest feels like a moral failure.","c":{"Fear":6,"Anger":5,"Shame":5,"Disgust":3,"Apathy":2,"Shock":4,"Sad":3,"Surprise":3,"Anticipation":8}},{"nm":"Derek","age":39,"role":"high performer, endurance","says":"Pain is information. I have raced on a stress fracture. I would do it again.","c":{"Fear":5,"Anger":6,"Shame":6,"Disgust":4,"Apathy":2,"Shock":6,"Sad":4,"Surprise":3,"Anticipation":7}},{"nm":"James","age":57,"role":"C-suite, third turnaround","says":"I make the call and I sleep fine. People find that cold. It is what they hired.","c":{"Fear":6,"Anger":8,"Shame":7,"Disgust":7,"Apathy":5,"Shock":7,"Sad":4,"Surprise":4,"Anticipation":5}},{"nm":"Rosa","age":61,"role":"retired midwife","says":"Nothing in particular. Things do not sit on me the way they used to.","c":{"Fear":0,"Anger":0,"Shame":0,"Disgust":0,"Apathy":0,"Shock":0,"Sad":0.5,"Surprise":0,"Anticipation":0}},{"nm":"Ana","age":47,"role":"teacher, one year out","says":"I am in the middle of something and I cannot see the far side of it.","c":{"Fear":9,"Anger":7,"Shame":9,"Disgust":7,"Apathy":5,"Shock":8,"Sad":9,"Surprise":6,"Anticipation":7}}]};</script>
+<script>
+/* ============================================================
+   PAIN AND PATTERN, ON ONE MAP. The body map prototype, round GV.
+
+   One canvas, four passes a frame:
+     1. the still layer, cached: grid, the man, the nerves, the seats. Redrawn
+        only when the camera or the dulling moves, never for a pulse.
+     2. the heat, over the nerves, as he asked: "the heat map should overlay
+        the nerve and chakra map".
+     3. what the heat reveals (switch B only): the nerves under the pain, lit.
+     4. the live layer: pain lines, saboteur lines, the addresses, labels.
+
+   THE THREE SWITCHES. Going from Pattern to Pain dulls the nerve and seat
+   map and raises the heat. How much, where, and in what order is the open
+   question, and each switch answers it once:
+     A  Fade. Everything under the heat dims evenly, and the heat rises with
+        it. The literal reading of his sentence.
+     B  Reveal. The map dims everywhere the pain is not. Under the pain the
+        nerves stay lit, so the heat shows which nerve carries it. The
+        ground steps back first and the heat arrives after it.
+     C  Isotherm. The map dims a little and the heat comes in as bands, the
+        way a thermal camera draws it, one band at a time from cool to hot.
+
+   THE SABOTEUR LINES, from the Field's own finish (d-fringe.html): each
+   saboteur is a cable through the three addresses that built it (SAB_LIB).
+   Slack sags, taut runs straight and hums, and the hum is a string pinned at
+   its anchors, so the addresses never move. Pulses run toward the heaviest
+   address while the load rises and away while it falls. Past five an address
+   throws the stress fringes the Field throws, born at the mark and travelling
+   out while loading, sinking back while releasing. A pulse arriving kicks the
+   mark on the Field's spring, w 14, damping .42, so it has mass.
+   ============================================================ */
+(function(){
+'use strict';
+var D=window.__DATA, TAU=Math.PI*2;
+var SEAT={Root:'#C4635E',Sacral:'#D19255',Solar:'#D4BC70',Heart:'#6FC5A3',Throat:'#65B8D4','3rd Eye':'#8296DB',Crown:'#A98BCE'};
+var FIGSEAT={'Crown seat':'Crown','Third eye seat':'3rd Eye','Throat seat':'Throat','Heart seat':'Heart','Solar seat':'Solar','Sacral seat':'Sacral','Root seat':'Root'};
+var C={stage:[15,16,19],man:[22,24,30],edge:[239,237,232],grid:[40,43,52],ink:[230,231,234],dim:[154,156,164],acc:[126,184,212],
+ cns:[239,237,232],auto:[126,184,212],som:[194,160,99],prop:[180,176,168],lit:[255,238,222],casing:[12,13,16]};
+function hex(h){h=h.replace('#','');return [parseInt(h.substr(0,2),16),parseInt(h.substr(2,2),16),parseInt(h.substr(4,2),16)];}
+function rgba(c,a){return 'rgba('+(c[0]|0)+','+(c[1]|0)+','+(c[2]|0)+','+Math.max(0,Math.min(1,a)).toFixed(3)+')';}
+function mix(a,b,t){return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t];}
+function grey(c,s){var l=0.299*c[0]+0.587*c[1]+0.114*c[2];return mix([l,l,l],c,s);}
+function clamp(v,a,b){return v<a?a:v>b?b:v;}
+function sstep(a,b,x){var t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t);}
+function eOut(t){return 1-Math.pow(1-t,3);}
+function eIO(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}
+function frac(x){return x-Math.floor(x);}
+function hash(n){var x=Math.sin(n*127.1+311.7)*43758.5453;return x-Math.floor(x);}
+var SEATC={};Object.keys(SEAT).forEach(function(k){SEATC[k]=hex(SEAT[k]);});
+
+/* ---------- the switches ---------- */
+var VAR={
+ A:{nm:'Fade',on:{g:[0,400,eIO],h:[0,400,eIO]},
+  dull:{nerve:.30,nsat:.15,seat:.30,ssat:.2,grid:.45,addr:.45,sab:.35},heatMax:.86,satLead:1,local:false,iso:false},
+ B:{nm:'Reveal',on:{g:[0,260,eOut],h:[140,520,eOut]},
+  dull:{nerve:.20,nsat:.25,seat:.50,ssat:.6,grid:.5,addr:.35,sab:.40},heatMax:.74,satLead:.5,local:true,iso:false},
+ C:{nm:'Isotherm',on:{g:[0,300,eOut],h:[0,450,null]},
+  dull:{nerve:.55,nsat:.40,seat:.60,ssat:.5,grid:.6,addr:.8,sab:.6},heatMax:.70,satLead:1,local:false,iso:true},
+ /* D is not a guess. It is built from what the simulation found in A, B and
+    C: only B shows which nerve carries the pain, and B pays for it in how
+    well the level reads, because full strength nerves sit on the heat. C
+    reads the level best and keeps a person oriented. So D takes C's bands,
+    B's reveal at about six tenths, and a ground between the two. It was then
+    measured on the same instrument as the other three. */
+ D:{nm:'Bands and reveal',on:{g:[0,260,eOut],h:[100,400,null]},
+  dull:{nerve:.42,nsat:.35,seat:.55,ssat:.55,grid:.55,addr:.45,sab:.45},heatMax:.70,satLead:1,local:true,iso:true,litA:.62}};
+var OFF={g:[80,320,eOut],h:[0,220,eOut]};   /* back to Pattern: heat leaves first */
+
+/* ---------- geometry ---------- */
+var CM=D.cm, U=5/CM, XA=50-10*U, YA=2, COLS=20, ROWS=36, F=10, FW=COLS*F, FH=ROWS*F;
+var OX=74;                            /* the back view sits this far right of the front, in figure units */
+function vx(v){return v?OX:0;}
+var PHONE=false;
+var bodyRaw=new Path2D(D.body.d);
+function bodyIn(v){var p=new Path2D();p.addPath(bodyRaw,new DOMMatrix().translate(D.body.tx+vx(v),D.body.ty).scale(D.body.s));return p;}
+var BODY=[bodyIn(0),bodyIn(1)];
+var probe=document.createElement('canvas').getContext('2d');
+function inBody(v,x,y){return probe.isPointInPath(BODY[v],x+vx(v),y);}
+
+/* nerves as Path2D, per view, per layer */
+var NERV=[[],[]];
+D.nerves.forEach(function(list,v){list.forEach(function(e){
+ var p=new Path2D(), m=new DOMMatrix().translate(vx(v),0);
+ if(e.t==='path')p.addPath(new Path2D(e.d),m); else p.arc(e.cx+vx(v),e.cy,e.r,0,TAU);
+ var col=e.k==='seat'?SEATC[FIGSEAT[e.nm]]||C.dim:e.k==='flow'?hex(e.s):C[e.k]||hex(e.s);
+ NERV[v].push({p:p,k:e.k,c:col,w:e.w,o:e.o,f:e.f,da:e.da?e.da.split(/[ ,]+/).map(Number):null,nm:e.nm,d:e.d,t:e.t});});});
+/* flow colours to the house seat tokens, matched by the seat they rise from */
+var FLOWMAP={'#D8924E':'Sacral','#DABF6A':'Solar','#5FD5A6':'Heart','#5EBBDB':'Throat','#7D93E0':'3rd Eye','#A77EDB':'Crown','#D6524C':'Root'};
+NERV.forEach(function(L,v){L.forEach(function(n,i){if(n.k==='flow'){var s=D.nerves[v][i].s;n.c=SEATC[FLOWMAP[s]]||n.c;}});});
+
+/* sample a nerve path into points, for the pain lines to ride */
+var svgNS='http://www.w3.org/2000/svg', hid=document.createElementNS(svgNS,'svg');
+hid.setAttribute('width','0');hid.setAttribute('height','0');hid.style.position='absolute';document.body.appendChild(hid);
+function samplePath(d){var el=document.createElementNS(svgNS,'path');el.setAttribute('d',d);hid.appendChild(el);
+ var L=el.getTotalLength(),n=Math.max(4,Math.ceil(L/0.5)),out=[];
+ for(var i=0;i<=n;i++){var q=el.getPointAtLength(L*i/n);out.push([q.x,q.y]);}hid.removeChild(el);return out;}
+
+/* ---------- addresses and places ---------- */
+var NODE={};D.nodes.forEach(function(n){NODE[n.i]=n;});
+var CHILD={};D.child.forEach(function(c){CHILD[c.nm]=c;c.p=new Path2D(c.ic);});
+var HCX={};D.hcx.forEach(function(h){HCX[h.nm]=h;h.p=new Path2D(h.ic);});
+/* a place drawn on a view: x in that view's own figure units. The back is
+   seen from behind, so the person's right is on the viewer's right there. */
+var PLACES=D.places.map(function(p,i){return {i:i,x:p.x,y:p.y,ids:p.ids,view:p.view,src:p.src,s:p.s,kick:0,vel:0};});
+function placeX(p,v){return v?100-p.x:p.x;}
+function solidOn(p,v){if(p.view==='both')return true;if(p.view==='head'||p.view==='front')return v===0;return v===1;}
+var BYID={};PLACES.forEach(function(p){p.ids.forEach(function(id){(BYID[id]=BYID[id]||[]).push(p);});});
+
+/* ---------- the 48 regions ---------- */
+var REG=[];
+['front','back'].forEach(function(vn,v){D.regions[vn].forEach(function(r){var b=r[1];
+ REG.push({v:v,nm:r[0],side:r[2]||'',box:b,cx:(b[0]+b[2])/2,cy:(b[1]+b[3])/2,area:(b[2]-b[0])*(b[3]-b[1])});});});
+REG.sort(function(a,b){return a.area-b.area;});
+function regName(r){return r.nm+(r.side?(r.side==='l'?', left':', right'):'');}
+var PAINMAP={'Head':'head','Back of head':'head','Neck':'throat','Back of neck':'throat','Shoulder':'shoulders','Trap':'shoulders',
+ 'Upper arm':'arms','Forearm':'arms','Chest':'torso','Abdomen':'torso','Upper back':'torso','Mid back':'torso',
+ 'Hip':'pelvis','Low back':'pelvis','Sacrum':'pelvis','Buttock':'pelvis','Thigh':'legs','Knee':'legs','Shin':'legs','Ankle':'legs',
+ 'Back of thigh':'legs','Back of knee':'legs','Calf':'legs','Palm':'hands','Back of hand':'hands','Foot':'feet','Heel':'feet'};
+var PAINREG={};D.painreg.forEach(function(r){PAINREG[r.k]=r;});
+/* the nerve each region's tension line rides to the spine, and the level it
+   enters at. Names are matched against the approved figure's own titles. The
+   accessory nerve, which is the trap's own, is not drawn in the figure, so
+   the trap rides the cervical plexus and the panel says so. */
+function lvY(lv){var S=D.spine,m={};S.forEach(function(s){m[s.lv]=s.y;});
+ var ord=['C1','C7','T4','T12','L1','L4','S1','Co'], at={C1:1,C7:7,T4:11,T12:19,L1:20,L4:23,S1:25,Co:30};
+ var num=function(l){var k=l.charAt(0),n=parseInt(l.slice(1),10);return k==='C'?n:k==='T'?7+n:k==='L'?19+n:k==='S'?24+n:30;};
+ var x=num(lv),i=0;while(i<ord.length-2&&x>at[ord[i+1]])i++;var a=ord[i],b=ord[i+1];
+ return m[a]+(x-at[a])*(m[b]-m[a])/(at[b]-at[a]);}
+var ROUTE={
+ front:{'Head':['Brainstem','C1'],'Neck':['Phrenic','C4'],'Chest':['Intercostal','T4'],'Abdomen':['Intercostal','T10'],
+  'Shoulder':['Phrenic','C5'],'Upper arm':['Median','C7'],'Forearm':['Median','C7'],'Palm':['Median','C7'],
+  'Hip':['Femoral','L3'],'Thigh':['Femoral','L3'],'Knee':['Saphenous','L3'],'Shin':['Deep fibular','L5'],'Ankle':['Deep fibular','L5'],'Foot':['Deep fibular','L5']},
+ back:{'Back of head':['Greater occipital','C2'],'Back of neck':['Cervical plexus','C3'],'Upper back':['Spinal nerves','T4'],
+  'Mid back':['Spinal nerves','T8'],'Low back':['Spinal nerves','L3'],'Sacrum':['Sacral plexus','S2'],'Trap':['Cervical plexus','C3'],
+  'Upper arm':['Axillary','C5'],'Forearm':['Radial','C7'],'Back of hand':['Radial','C7'],'Buttock':['Gluteal','L5'],
+  'Back of thigh':['Sciatic','L5'],'Back of knee':['Common fibular','L5'],'Calf':['Tibial','S1'],'Heel':['Tibial','S1']}};
+var SAMPLES=[[],[]];
+function buildRoutes(){
+ NERV.forEach(function(L,v){L.forEach(function(n){if(n.t==='path'&&(n.k==='som'||n.k==='cns'||n.k==='auto'))
+  SAMPLES[v].push({nm:n.nm,pts:samplePath(n.d)});});});
+ REG.forEach(function(r){
+  var rt=ROUTE[r.v?'back':'front'][r.nm]; if(!rt){r.route=null;return;}
+  var key=rt[0], sy=lvY(rt[1]), sp=[50,sy], c=[r.cx,r.cy];
+  var best=null;
+  SAMPLES[r.v].forEach(function(s){if(s.nm.indexOf(key)<0)return;
+   s.pts.forEach(function(q,i){var d=Math.hypot(q[0]-c[0],q[1]-c[1]);if(!best||d<best.d)best={d:d,i:i,s:s};});});
+  var pts=[c];
+  if(best&&best.d<9){
+   var P=best.s.pts, a=P[0], z=P[P.length-1];
+   var toStart=Math.hypot(a[0]-sp[0],a[1]-sp[1])<Math.hypot(z[0]-sp[0],z[1]-sp[1]);
+   var seg=toStart?P.slice(0,best.i+1).reverse():P.slice(best.i);
+   pts=pts.concat(seg);}
+  var e=pts[pts.length-1], mx=(e[0]+sp[0])/2, my=Math.min(e[1],sp[1])-1.2;
+  for(var k=1;k<=12;k++){var t=k/12;pts.push([(1-t)*(1-t)*e[0]+2*(1-t)*t*mx+t*t*sp[0],(1-t)*(1-t)*e[1]+2*(1-t)*t*my+t*t*sp[1]]);}
+  r.route=pts.map(function(q){return [q[0]+vx(r.v),q[1]];}); r.routeLen=polyLen(r.route);
+  r.nerve=best&&best.d<9?best.s.nm:null; r.level=rt[1];});}
+function polyLen(P){var L=0;for(var i=1;i<P.length;i++)L+=Math.hypot(P[i][0]-P[i-1][0],P[i][1]-P[i-1][1]);return L;}
+
+/* ---------- the grid, and the paint on it ---------- */
+var CELLIN=[[],[]];
+[0,1].forEach(function(v){for(var r=0;r<ROWS;r++)for(var c=0;c<COLS;c++){
+ var x0=XA+c*U,y0=YA+r*U,hit=0;[[.5,.5],[.2,.2],[.8,.2],[.2,.8],[.8,.8]].forEach(function(o){if(inBody(v,x0+o[0]*U,y0+o[1]*U))hit++;});
+ CELLIN[v][r*COLS+c]=hit>0;}});
+var CELLS_IN=[CELLIN[0].filter(Boolean).length,CELLIN[1].filter(Boolean).length];
+var PAINT=[new Float32Array(COLS*ROWS),new Float32Array(COLS*ROWS)];
+var FIELD=[new Float32Array(FW*FH),new Float32Array(FW*FH)];
+var HEATCV=[document.createElement('canvas'),document.createElement('canvas')];
+var MASKCV=[document.createElement('canvas'),document.createElement('canvas')];
+HEATCV.concat(MASKCV).forEach(function(c){c.width=FW;c.height=FH;});
+var fieldVer=0;
+/* a painted cell reads its own value across its whole extent, and falls off
+   outside it. Neighbours take the max, never the sum: two sixes side by side
+   are still a six, and a sum would report pain nobody painted. */
+/* Three steps, so the heat is round and still honest. The painted cells as
+   flat plateaus; a gaussian blur of a third of a cell, which rounds every
+   corner and keeps the inside of any block exactly at its value; then each
+   painted cell's own centre pinned back to its value, so a single cell on
+   its own still reads what was painted rather than seventy percent of it. */
+var TMP=new Float32Array(FW*FH), KER=(function(){var s=0.45*F,R=Math.ceil(s*3),k=[],t=0;for(var i=-R;i<=R;i++){var w=Math.exp(-i*i/(2*s*s));k.push(w);t+=w;}return k.map(function(w){return w/t;});})();
+function rebuildField(v){
+ var Fd=FIELD[v],P=PAINT[v],R=(KER.length-1)/2,x,y,k,s;TMP.fill(0);Fd.fill(0);
+ for(var i=0;i<P.length;i++){var val=P[i];if(!val)continue;var c=i%COLS,r=(i/COLS)|0;
+  for(y=r*F;y<r*F+F;y++)for(x=c*F;x<c*F+F;x++)Fd[y*FW+x]=val;}
+ for(y=0;y<FH;y++)for(x=0;x<FW;x++){s=0;for(k=-R;k<=R;k++){var xx=x+k;if(xx>=0&&xx<FW)s+=Fd[y*FW+xx]*KER[k+R];}TMP[y*FW+x]=s;}
+ for(y=0;y<FH;y++)for(x=0;x<FW;x++){s=0;for(k=-R;k<=R;k++){var yy=y+k;if(yy>=0&&yy<FH)s+=TMP[yy*FW+x]*KER[k+R];}Fd[y*FW+x]=s;}
+ for(i=0;i<P.length;i++){val=P[i];if(!val)continue;c=i%COLS;r=(i/COLS)|0;var cx=c*F+F/2,cy=r*F+F/2,rr=F*0.32;
+  for(y=Math.floor(cy-rr);y<=Math.ceil(cy+rr);y++)for(x=Math.floor(cx-rr);x<=Math.ceil(cx+rr);x++){if(x<0||y<0||x>=FW||y>=FH)continue;
+   var d=Math.hypot(x+.5-cx,y+.5-cy)/rr;if(d<=1){var j=y*FW+x,pin=val*(1-0.25*d*d);if(pin>Fd[j])Fd[j]=pin;}}}
+ fieldVer++;}
+function fieldAt(v,x,y){var fx=((x-XA)/U)*F,fy=((y-YA)/U)*F;if(fx<0||fy<0||fx>=FW||fy>=FH)return 0;return FIELD[v][(fy|0)*FW+(fx|0)];}
+
+/* the heat ramp. Sacral to Root and no further: pain is held low and hot in
+   the body, and the ramp lifts in lightness at the top rather than in
+   saturation, the way a filament goes toward white. The alarm red is never
+   in it: it is reserved for something being wrong with the instrument. */
+var RAMP=[[0,[178,122,84],0],[.14,[186,128,88],.22],[.4,hex('#D19255'),.52],[.7,hex('#C4635E'),.68],[1,[232,158,138],.86]];
+function ramp(t){t=clamp(t,0,1);for(var i=1;i<RAMP.length;i++)if(t<=RAMP[i][0]){var a=RAMP[i-1],b=RAMP[i],k=(t-a[0])/(b[0]-a[0]);
+ return [mix(a[1],b[1],k),a[2]+(b[2]-a[2])*k];}return [RAMP[4][1],RAMP[4][2]];}
+var heatKey='';
+function paintHeat(v,gain,sat,maxA,iso,phase){
+ var key=v+'|'+fieldVer+'|'+gain.toFixed(3)+'|'+sat.toFixed(3)+'|'+maxA+'|'+iso;
+ if(HEATCV[v]._k===key)return; HEATCV[v]._k=key;
+ var g=HEATCV[v].getContext('2d'),img=g.createImageData(FW,FH),d=img.data,Fd=FIELD[v];
+ function band(j){return Math.min(5,Math.ceil(Fd[j]/2-1e-4));}
+ for(var j=0;j<Fd.length;j++){var val=Fd[j],o=j*4;if(val<0.05){d[o+3]=0;continue;}
+  var t=val/10, a;
+  if(iso){ /* five bands, stepping in one at a time as gain rises */
+   var shown=Math.ceil(gain*5-1e-6), bnd=band(j);
+   if(bnd>shown||bnd<1){d[o+3]=0;continue;}
+   var tb=bnd/5, rr=ramp(tb), col=grey(rr[0],.35+.65*sat);
+   /* the isotherm: a pixel whose band differs from the next one over. Read
+      off neighbours, so a flat patch never lights up as a whole. */
+   var xq=j%FW, line=(xq<FW-1&&band(j+1)!==bnd)||(j+FW<Fd.length&&band(j+FW)!==bnd)||(xq>0&&band(j-1)!==bnd)||(j>=FW&&band(j-FW)!==bnd)?1:0;
+   col=line?mix(col,[255,236,220],.45):col;
+   a=(rr[1]/.86)*maxA*(line?1:.82);
+   d[o]=col[0];d[o+1]=col[1];d[o+2]=col[2];d[o+3]=a*255;}
+  else{var r=ramp(t*gain),c2=grey(r[0],.35+.65*sat);a=(r[1]/.86)*maxA*Math.min(1,gain*1.2);
+   d[o]=c2[0];d[o+1]=c2[1];d[o+2]=c2[2];d[o+3]=a*255;}}
+ g.putImageData(img,0,0);}
+function paintMask(v){if(MASKCV[v]._k===fieldVer)return;MASKCV[v]._k=fieldVer;
+ var g=MASKCV[v].getContext('2d'),img=g.createImageData(FW,FH),d=img.data,Fd=FIELD[v];
+ for(var j=0;j<Fd.length;j++){var o=j*4;d[o]=d[o+1]=d[o+2]=255;d[o+3]=255*sstep(0.6,2.4,Fd[j]);}g.putImageData(img,0,0);}
+
+/* ---------- the mock person ---------- */
+var S={mode:'pattern',variant:'C',brush:6,who:'Derek',reduced:false,amode:'A4',cmode:'C3',face:'front',
+ layers:{nerves:true,seats:true,addr:true,sabs:true,grid:true,limb:true,labels:true},
+ pg:0,ph:0,tr:null,sel:null,hoverReg:null,hoverSab:null,holdSab:null,hoverPlace:null,traceT0:0,
+ cam:{x:0,y:0,z:1},camT:null,camV:{x:0,y:0,z:0},W:0,H:0,dpr:1,z0:1,frameMs:0,dirty:true,t:0};
+var CHARGE={};
+var PRESET={
+ Derek:[['front','Knee','r',7],['front','Shin','r',5],['back','Low back','',4],['back','Calf','l',6],['front','Foot','r',3]],
+ Diane:[['back','Trap','l',7],['back','Trap','r',5],['back','Back of neck','',6],['front','Head','',4],['back','Upper back','',3]],
+ James:[['front','Chest','',5],['back','Low back','',6],['front','Head','',3]],
+ Ana:[['front','Chest','',8],['front','Abdomen','',7],['front','Neck','',6],['back','Low back','',7],['front','Head','',6],['front','Palm','l',4]],
+ Sofia:[['back','Trap','r',6],['front','Palm','r',5],['front','Palm','l',5],['back','Sacrum','',4]],
+ Rosa:[]};
+function setPerson(nm){
+ S.who=nm;var P=D.people.find(function(p){return p.nm===nm;});
+ /* each address takes its fetter's charge from the person, moved a little
+    per address so the lines are not all one weight. Mock: the engine reads
+    a story to get this, and this page reads nothing. */
+ D.nodes.forEach(function(n){var base=P.c[n.c]||0;CHARGE[n.i]=base<0.3?base:clamp(base+(hash(n.i)-.5)*2.4,0,10);});
+ PAINT[0].fill(0);PAINT[1].fill(0);
+ (PRESET[nm]||[]).forEach(function(p){paintRegion(p[0]==='back'?1:0,p[1],p[2],p[3]);});
+ rebuildField(0);rebuildField(1);buildSabs();S.sel=null;S.holdSab=null;renderAside();S.dirty=true;}
+function paintRegion(v,nm,side,val){
+ var r=REG.find(function(x){return x.v===v&&x.nm===nm&&x.side===side;});if(!r)return;
+ var b=r.box,dmax=Math.hypot(b[2]-b[0],b[3]-b[1])/2;
+ for(var i=0;i<COLS*ROWS;i++){if(!CELLIN[v][i])continue;var c=i%COLS,rw=(i/COLS)|0,x=XA+(c+.5)*U,y=YA+(rw+.5)*U;
+  if(x<b[0]||x>b[2]||y<b[1]||y>b[3])continue;if(!inBody(v,x,y))continue;
+  var d=Math.hypot(x-r.cx,y-r.cy)/dmax, vv=Math.round(val*(1-0.55*d));
+  if(vv>PAINT[v][i])PAINT[v][i]=Math.max(1,vv);}}
+
+/* ---------- saboteurs as cables ---------- */
+var SABS=[];
+function buildSabs(){
+ SABS=D.sabs.map(function(s,k){
+  var ch=s.nids.map(function(i){return CHARGE[i]||0;}), T=ch.reduce(function(a,b){return a+b;},0)/ch.length;
+  var h=HCX[s.hcx], col=SEATC[h?h.b:'Root'];
+  return {k:k,nm:s.nm,nids:s.nids.slice(),fam:s.hcx,famD:h?h.d:'',col:col,T:T,ch:ch,
+   per:15+11*hash(k+3),ph:hash(k+9)*TAU,pulses:[],q0:hash(k+17),views:[null,null],lane:0,fr:0};}).filter(function(s){return s.T>=5;})
+  .sort(function(a,b){return b.T-a.T;});
+ SABS.forEach(function(s,i){s.lane=i;
+  /* heaviest address last, so "toward the heaviest" is always forward */
+  var hi=s.ch.indexOf(Math.max.apply(null,s.ch));
+  if(hi===0){s.nids.reverse();s.ch.reverse();}
+  var n=1+Math.floor(s.T/3.4);for(var j=0;j<n;j++)s.pulses.push({q:frac(s.q0+j/n),prev:0});
+  [0,1].forEach(function(v){s.views[v]=chain(s,v);});});
+ touchHeat();}
+function chain(s,v){
+ var pts=[],prev=null;
+ s.nids.forEach(function(id,j){var cand=BYID[id]||[];if(!cand.length)return;
+  var opts=[];cand.forEach(function(p){opts.push({x:placeX(p,v),y:p.y,p:p,ghost:!solidOn(p,v),id:id});});
+  /* bilateral places have two points; take the side that keeps the cable short */
+  var pick=opts[0];
+  if(opts.length>1){var ref=prev||(function(){var o=BYID[s.nids[j+1]]||BYID[s.nids[j-1]]||[];return o[0]?{x:placeX(o[0],v),y:o[0].y}:{x:50,y:30};})();
+   opts.forEach(function(o){if(Math.hypot(o.x-ref.x,o.y-ref.y)<Math.hypot(pick.x-ref.x,pick.y-ref.y))pick=o;});}
+  pts.push(pick);prev=pick;});
+ return {pts:pts,samp:null,len:0,nodeQ:[]};}
+function touchHeat(){SABS.forEach(function(s){s.hot=[0,1].map(function(v){var c=s.views[v];if(!c)return 0;var m=0;
+ c.pts.forEach(function(p){m=Math.max(m,fieldAt(v,p.x,p.y));});
+ for(var i=1;i<c.pts.length;i++)for(var t=0;t<=1;t+=.1){var a=c.pts[i-1],b=c.pts[i];m=Math.max(m,fieldAt(v,a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t));}
+ return m;});});}
+/* the cable's shape this frame: a sag by slackness, a lane bow so cables that
+   share an address fan out from it like cables off a pylon, and the hum, a
+   standing wave pinned at every address */
+function cableSamples(s,v,t){
+ var c=s.views[v],P=c.pts,out=[],nodeQ=[0],L=0;if(P.length<2)return null;
+ var slack=Math.pow(1-s.T/10,1.3), hover=(S.hoverSab===s||S.holdSab===s);
+ var amp=(S.reduced?0:0.10*Math.pow(s.T/10,1.5)*(hover?3.2:1)), w=TAU*(0.9+2.2*Math.sqrt(s.T/10));
+ for(var i=1;i<P.length;i++){var a=P[i-1],b=P[i],dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1,nx=-dy/len,ny=dx/len;
+  /* lanes. Cables that share addresses would lie on each other up the
+     spine, which reads as one nerve and not as seven patterns. Each takes
+     its own arc, alternating sides and widening by lane, so they spread off
+     the midline like field lines round a core. An arc says link; a line on
+     the spine says nerve, which a saboteur is not. */
+  var side=(s.lane%2)?-1:1, sag=len*0.20*slack, bow=side*Math.min(8,len*(0.12+0.06*(s.lane>>1))+0.6);
+  var cx=(a.x+b.x)/2+nx*bow, cy=(a.y+b.y)/2+sag+ny*bow;
+  var steps=Math.max(10,Math.ceil(len*2.2));
+  for(var k=(i===1?0:1);k<=steps;k++){var u=k/steps,x=(1-u)*(1-u)*a.x+2*(1-u)*u*cx+u*u*b.x,y=(1-u)*(1-u)*a.y+2*(1-u)*u*cy+u*u*b.y;
+   var hum=amp*Math.sin(Math.PI*u)*Math.sin(w*t+s.ph+i);
+   x+=nx*hum;y+=ny*hum;
+   if(out.length){var q=out[out.length-1];L+=Math.hypot(x-q[0],y-q[1]);}
+   out.push([x,y,L,(a.ghost||b.ghost)?1:0]);}
+  nodeQ.push(L);}
+ c.samp=out;c.len=L;c.nodeQ=nodeQ.map(function(q){return q/(L||1);});return c;}
+
+/* ---------- camera ---------- */
+var cv=document.getElementById('cv'),ctx=cv.getContext('2d'),stage=document.getElementById('stage');
+var still=document.createElement('canvas'),sctx=still.getContext('2d');
+var litc=document.createElement('canvas'),lctx=litc.getContext('2d'),lit2=document.createElement('canvas'),l2ctx=lit2.getContext('2d'),litKey='';
+function worldW(){return PHONE?[24,76]:[24-14,OX+76+14];}
+function fitCam(){var w=worldW(),ww=w[1]-w[0],hh=102;
+ var z=Math.min(S.W/ww,(S.H-24)/hh);S.z0=z;
+ var cx=PHONE?(S.face==='back'?OX+50:50):(w[0]+w[1])/2;return {x:cx,y:50.5,z:z};}
+function resize(){var r=stage.getBoundingClientRect();PHONE=r.width<700;S.dpr=Math.min(2,window.devicePixelRatio||1);
+ S.W=r.width;S.H=r.height;[cv,still,litc,lit2].forEach(function(c){c.width=Math.round(S.W*S.dpr);c.height=Math.round(S.H*S.dpr);});
+ cv.style.width=S.W+'px';cv.style.height=S.H+'px';stage.classList.toggle('phone',PHONE);var f=fitCam();hint();S.cam=f;S.camT=null;S.dirty=true;}
+function flyTo(x,y,z){S.camT={x:x,y:y,z:z};if(S.reduced){S.cam={x:x,y:y,z:z};S.camT=null;}S.dirty=true;}
+function w2s(x,y){return [(x-S.cam.x)*S.cam.z+S.W/2,(y-S.cam.y)*S.cam.z+S.H/2];}
+function s2w(x,y){return [(x-S.W/2)/S.cam.z+S.cam.x,(y-S.H/2)/S.cam.z+S.cam.y];}
+function worldTf(g){g.setTransform(S.dpr*S.cam.z,0,0,S.dpr*S.cam.z,S.dpr*(S.W/2-S.cam.x*S.cam.z),S.dpr*(S.H/2-S.cam.y*S.cam.z));}
+function views(){return PHONE?[S.face==='back'?1:0]:[0,1];}
+
+/* ---------- the dulling, as a timeline ---------- */
+function setMode(m){if(m===S.mode)return;S.mode=m;
+ var on=m==='pain',V=VAR[S.variant],T=on?V.on:OFF;
+ S.tr={t0:performance.now(),g0:S.pg,h0:S.ph,gt:on?1:0,ht:on?1:0,T:T};
+ if(S.reduced){S.pg=S.tr.gt;S.ph=S.tr.ht;S.tr=null;}
+ stage.classList.toggle('paint',on);
+ [].forEach.call(document.querySelectorAll('#mode button'),function(b){b.setAttribute('aria-pressed',String(b.dataset.k===m));});
+ hint();S.dirty=true;}
+function stepTr(now){var r=S.tr;if(!r)return;var e=now-r.t0,done=true;
+ function run(from,to,spec){var t=clamp((e-spec[0])/spec[1],0,1);if(t<1)done=false;
+  if(!spec[2]){ /* the isotherm steps: five bands, one every ninety ms */ return from+(to-from)*Math.min(1,Math.ceil(t*5)/5);}
+  return from+(to-from)*spec[2](t);}
+ S.pg=run(r.g0,r.gt,r.T.g);S.ph=run(r.h0,r.ht,r.T.h);if(done)S.tr=null;}
+/* THE GROUND IN PATTERN IS NOT FULL EITHER. At full strength the back's gold
+   nerves were the brightest thing on the page, so the eye landed on the
+   anatomy and not on the pattern. Pattern sets the nerves at 62 percent and
+   the gold a little greyer; each switch's numbers are where Pain lands. */
+var BASE={nerve:.62,nsat:.8,seat:.9,ssat:1,grid:.8,addr:1,sab:1};
+function dull(){var d=VAR[S.variant].dull,g=S.pg,o={};
+ Object.keys(BASE).forEach(function(k){o[k]=BASE[k]+(d[k]-BASE[k])*g;});return o;}
+
+/* ---------- the still layer ---------- */
+var stillKey='';
+function drawStill(dl){
+ var key=[S.cam.x.toFixed(3),S.cam.y.toFixed(3),S.cam.z.toFixed(3),S.W,S.H,dl.nerve.toFixed(3),dl.nsat.toFixed(3),dl.seat.toFixed(3),dl.grid.toFixed(3),
+  S.layers.nerves,S.layers.seats,S.layers.grid,S.mode,PHONE,S.face].join('|');
+ if(key===stillKey)return;stillKey=key;
+ var g=sctx;g.setTransform(1,0,0,1,0,0);g.fillStyle=rgba(C.stage,1);g.fillRect(0,0,still.width,still.height);
+ worldTf(g);var px=1/S.cam.z;
+ views().forEach(function(v){var o=vx(v);
+  /* the grid is the map of him, so it stops at his outline. Outside him it
+     was a cage. */
+  if(S.layers.grid){g.save();g.clip(BODY[v]);g.beginPath();for(var r=0;r<=ROWS;r++){g.moveTo(XA+o,YA+r*U);g.lineTo(XA+COLS*U+o,YA+r*U);}
+   for(var c=0;c<=COLS;c++){g.moveTo(XA+c*U+o,YA);g.lineTo(XA+c*U+o,YA+ROWS*U);}
+   g.strokeStyle=rgba(C.grid,(S.mode==='pain'?1.6:1)*dl.grid);g.lineWidth=px;g.stroke();g.restore();}
+  /* the man, solid. The approved figure fills him at 7 percent, which is
+     what let the glow read through him (spec 1A, item 6). */
+  g.fillStyle=rgba(C.man,1);g.fill(BODY[v]);g.strokeStyle=rgba(C.edge,.20);g.lineWidth=px*1.1;g.stroke(BODY[v]);
+  if(S.layers.nerves)drawNerves(g,v,dl.nerve,dl.nsat,false);
+  if(S.layers.seats)NERV[v].forEach(function(n){if(n.k!=='seat'&&n.k!=='flow')return;
+   var col=grey(n.c,dl.ssat);g.setLineDash(n.da?n.da.map(function(x){return x;}):[]);
+   g.strokeStyle=rgba(col,(n.k==='flow'?Math.max(n.o,.12):n.o)*dl.seat);g.lineWidth=n.k==='flow'?Math.max(n.w,2.2*px):Math.max(n.w,1.4*px);g.stroke(n.p);g.setLineDash([]);});});}
+function drawNerves(g,v,alpha,sat,lit){var px=1/S.cam.z,base=S.z0/S.cam.z;
+ NERV[v].forEach(function(n){if(n.k==='seat'||n.k==='flow')return;
+  var col=lit?mix(n.c,[240,196,160],.55):grey(n.c,sat);
+  /* nerves keep the width they have on the whole body as the view opens,
+     the fix the spec asks for in 1A item 2 */
+  var w=clamp(n.w*S.z0,0.7,2.2)*px;
+  if(n.f&&n.t==='circle'){g.fillStyle=rgba(col,.10*alpha);g.fill(n.p);}
+  g.strokeStyle=rgba(col,n.o*alpha*(lit?1:1));g.lineWidth=lit?w*1.1:w;g.stroke(n.p);});}
+
+/* ---------- the frame ---------- */
+var last=performance.now();
+function frame(now){
+ var dt=Math.min(0.05,(now-last)/1000);last=now;S.t+=S.reduced?0:dt;
+ var moving=false;
+ if(S.tr){stepTr(now);moving=true;}
+ if(S.camT){var k=1-Math.exp(-dt*9);S.cam.x+=(S.camT.x-S.cam.x)*k;S.cam.y+=(S.camT.y-S.cam.y)*k;S.cam.z+=(S.camT.z-S.cam.z)*k;
+  if(Math.abs(S.camT.z-S.cam.z)<S.camT.z*0.002&&Math.abs(S.camT.x-S.cam.x)<0.02&&Math.abs(S.camT.y-S.cam.y)<0.02){S.cam={x:S.camT.x,y:S.camT.y,z:S.camT.z};S.camT=null;}moving=true;}
+ if(S.reduced&&!moving&&!S.dirty){requestAnimationFrame(frame);return;}
+ var t0=performance.now();draw(dt);S.dirty=false;
+ var ms=performance.now()-t0;S.frameMs=S.frameMs?S.frameMs*.92+ms*.08:ms;
+ requestAnimationFrame(frame);}
+function draw(dt){
+ var dl=dull(),V=VAR[S.variant];drawStill(dl);
+ var g=ctx;g.setTransform(1,0,0,1,0,0);g.drawImage(still,0,0);
+ var vs=views(), px=1/S.cam.z;
+ /* 2. the heat, clipped to him */
+ var gain=S.ph;
+ if(gain>0.002)vs.forEach(function(v){
+  var sat=V.satLead<1?Math.pow(gain,V.satLead):gain;
+  paintHeat(v,V.iso?gain:gain,sat,V.heatMax,V.iso,S.t);
+  worldTf(g);g.save();g.clip(BODY[v]);g.imageSmoothingEnabled=true;g.imageSmoothingQuality='high';
+  g.drawImage(HEATCV[v],XA+vx(v),YA,COLS*U,ROWS*U);g.restore();});
+ /* 3. switch B: the nerves under the pain stay lit */
+ if(V.local&&S.pg>0.01&&S.layers.nerves){
+  /* Cached. The first cut recomposited every nerve through the mask on every
+     frame and measured 21ms a frame, over budget, for a layer that changes
+     only when the camera moves or the paint does. One view at a time, since
+     destination-in on a shared pass wipes the other. */
+  var lk=[S.cam.x.toFixed(3),S.cam.y.toFixed(3),S.cam.z.toFixed(3),S.W,S.H,fieldVer,vs.join(','),S.variant].join('|');
+  if(lk!==litKey){litKey=lk;lctx.setTransform(1,0,0,1,0,0);lctx.clearRect(0,0,litc.width,litc.height);
+   vs.forEach(function(v){l2ctx.setTransform(1,0,0,1,0,0);l2ctx.clearRect(0,0,lit2.width,lit2.height);worldTf(l2ctx);
+    drawNerves(l2ctx,v,1,1,true);paintMask(v);
+    l2ctx.globalCompositeOperation='destination-in';l2ctx.imageSmoothingEnabled=true;
+    l2ctx.drawImage(MASKCV[v],XA+vx(v),YA,COLS*U,ROWS*U);l2ctx.globalCompositeOperation='source-over';
+    lctx.drawImage(lit2,0,0);});}
+  g.setTransform(1,0,0,1,0,0);g.globalAlpha=S.pg*(V.litA||1);g.drawImage(litc,0,0);g.globalAlpha=1;}
+ worldTf(g);
+ /* regions: hover and the pressed one, clipped to him */
+ vs.forEach(function(v){g.save();g.clip(BODY[v]);
+  if(S.mode==='pain'){REG.forEach(function(r){if(r.v!==v)return;var b=r.box;g.strokeStyle=rgba(C.acc,.10);g.lineWidth=px;g.strokeRect(b[0]+vx(v),b[1],b[2]-b[0],b[3]-b[1]);});}
+  [S.hoverReg,S.sel].forEach(function(r,i){if(!r||r.v!==v)return;var b=r.box;
+   g.fillStyle=rgba(C.acc,i?.10:.06);g.fillRect(b[0]+vx(v),b[1],b[2]-b[0],b[3]-b[1]);
+   g.strokeStyle=rgba(C.acc,i?.9:.5);g.lineWidth=px*(i?1.6:1.1);g.strokeRect(b[0]+vx(v),b[1],b[2]-b[0],b[3]-b[1]);});
+  if(S.mode==='pain'&&S.hoverCell&&S.hoverCell.v===v){var hc=S.hoverCell;g.strokeStyle=rgba([240,210,184],.85);g.lineWidth=px*1.4;
+   g.strokeRect(XA+hc.c*U+vx(v),YA+hc.r*U,U,U);}
+  g.restore();});
+ /* 4a. pain lines, from the painted region to the spine along its nerve.
+    The pulses run inward, the direction a pain signal actually travels. */
+ if(gain>0.02)drawPainLines(g,vs,gain);
+ /* 4b. limb centres, his list, proposed */
+ if(S.layers.limb)drawLimb(g,vs,dl);
+ /* 4c. saboteur cables */
+ if(S.layers.sabs)drawSabs(g,vs,dl,dt);
+ /* 4d. addresses */
+ if(S.layers.addr)drawAddr(g,vs,dl,dt);
+ if(S.layers.labels&&!PHONE&&S.cam.z<S.z0*1.3)drawLabels(g);
+ corner();}
+
+function strokePoly(g,P,from,to,width,style){ /* P: [x,y,L] samples, draw between lengths from..to */
+ g.beginPath();var started=false;
+ for(var i=0;i<P.length;i++){var p=P[i];if(p[2]<from)continue;if(p[2]>to)break;if(!started){g.moveTo(p[0],p[1]);started=true;}else g.lineTo(p[0],p[1]);}
+ if(!started)return;g.lineWidth=width;g.strokeStyle=style;g.stroke();}
+function withLen(P){var L=0,o=[];for(var i=0;i<P.length;i++){if(i)L+=Math.hypot(P[i][0]-P[i-1][0],P[i][1]-P[i-1][1]);o.push([P[i][0],P[i][1],L]);}return o;}
+
+function regionValue(r){var b=r.box,m=0;for(var i=0;i<COLS*ROWS;i++){var v=PAINT[r.v][i];if(!v)continue;var c=i%COLS,rw=(i/COLS)|0,x=XA+(c+.5)*U,y=YA+(rw+.5)*U;
+ if(x>=b[0]&&x<=b[2]&&y>=b[1]&&y<=b[3]&&v>m)m=v;}return m;}
+function drawPainLines(g,vs,gain){var px=1/S.cam.z;
+ g.lineCap='round';g.lineJoin='round';
+ REG.forEach(function(r){if(vs.indexOf(r.v)<0||!r.route)return;var val=r._val;if(!val)return;
+  if(!r._samp)r._samp=withLen(r.route);var P=r._samp,L=r.routeLen,t=val/10,col=ramp(t)[0];
+  var a=gain*(0.45+0.5*t);
+  strokePoly(g,P,0,L,(3.2+0.3*val)*px,rgba(C.casing,.55*a));
+  strokePoly(g,P,0,L,(1.1+0.22*val)*px,rgba(col,a));
+  if(!S.reduced){var sp=(0.10+0.035*val),n=1+Math.floor(val/4);
+   for(var j=0;j<n;j++){var q=frac(S.t*sp+j/n+hash(r.cx*7+r.cy)),c=q*L,h=L*0.05;
+    var env=Math.sin(Math.PI*q);
+    strokePoly(g,P,c-h,c+h,(4+0.4*val)*px,rgba(col,.14*gain*env));
+    strokePoly(g,P,c-h*.6,c+h*.6,(1.6+0.25*val)*px,rgba(mix(col,[255,240,228],.5),.9*gain*env));}}});}
+
+var LIMB=[['Palm','r'],['Palm','l'],['Knee','r'],['Knee','l'],['Shin','r'],['Shin','l'],['Foot','r'],['Foot','l']];
+function drawLimb(g,vs,dl){var px=1/S.cam.z;
+ LIMB.forEach(function(l){var r=REG.find(function(x){return x.v===0&&x.nm===l[0]&&x.side===l[1];});if(!r)return;
+  var x=r.cx,y=r.cy+(l[0]==='Foot'?1.2:0);
+  [0,1].forEach(function(v){if(vs.indexOf(v)<0)return;if(v===1&&S.cmode==='C2')return;var xx=(v?100-x:x)+vx(v),ghost=v===1;
+   var s=w2s(xx,y);g.setTransform(S.dpr,0,0,S.dpr,0,0);
+   g.setLineDash([2.5,2.5]);g.beginPath();g.arc(s[0],s[1],6.5,0,TAU);g.strokeStyle=rgba(C.prop,(ghost?.28:.75)*dl.addr);g.lineWidth=1.3;g.stroke();g.setLineDash([]);
+   g.beginPath();g.arc(s[0],s[1],1.4,0,TAU);g.fillStyle=rgba(C.prop,(ghost?.25:.7)*dl.addr);g.fill();worldTf(g);});});}
+
+function drawSabs(g,vs,dl,dt){
+ var hot=S.hoverSab||S.holdSab, now=performance.now();
+ SABS.forEach(function(s){
+  /* the load drifts on its own slow sine, the way the Field's does */
+  var ld=Math.cos(TAU*S.t/s.per+s.ph);s.dir=ld>=0?1:-1;
+  vs.forEach(function(v){var c=cableSamples(s,v,S.t);if(!c)return;var P=c.samp,L=c.len;
+   worldTf(g);var px=1/S.cam.z;g.lineCap='round';g.lineJoin='round';
+   var heatLift=VAR[S.variant].local&&s.hot[v]>1.5?1:0;
+   var a=(0.40+0.55*s.T/10)*(dl.sab+(1-dl.sab)*heatLift);
+   if(hot&&hot!==s)a*=0.20;
+   var w=(1.1+0.30*s.T)*px;
+   if(hot===s){a=Math.max(a,.95);w*=1.5;}
+   /* the trace, his CU ruling: it draws the whole line, then holds and hums */
+   var to=L;if(hot===s&&!S.reduced){var tp=eOut(clamp((now-S.traceT0)/700,0,1));to=L*tp;
+    strokePoly(g,P,0,L,w,rgba(s.col,a*.25));}
+   /* ghost segments pass through the body to the far surface: dashed, faint */
+   var solid=[],ghost=[],run=null,runG=-1,lastP=null;
+   for(var pi=0;pi<P.length;pi++){var pp=P[pi];if(pp[2]>to)break;
+    if(pp[3]!==runG){run=lastP?[lastP]:[];(pp[3]?ghost:solid).push(run);runG=pp[3];}
+    run.push(pp);lastP=pp;}
+   solid.forEach(function(seg){if(seg.length<2)return;
+    strokePoly(g,seg,-1,1e9,w+2.4*px,rgba(C.casing,.55*a));strokePoly(g,seg,-1,1e9,w,rgba(s.col,a));});
+   if(S.cmode==='C3')ghost.forEach(function(seg){if(seg.length<2)return;g.setLineDash([3*px,3.5*px]);
+    strokePoly(g,seg,-1,1e9,w*.8,rgba(s.col,a*.45));g.setLineDash([]);});
+   /* pulses */
+   if(!S.reduced&&(!hot||hot===s)){var sp=(0.07+0.15*Math.sqrt(s.T/10))*s.dir;
+    s.pulses.forEach(function(pu){if(v===vs[0]){pu.prev=pu.q;pu.q=frac(pu.q+sp*dt);
+      /* a pulse crossing an address kicks its mark */
+      c.nodeQ.forEach(function(nq,ni){var a0=pu.prev,a1=pu.q;var crossed=s.dir>0?(a0<nq&&a1>=nq&&a1-a0<.5):(a0>nq&&a1<=nq&&a0-a1<.5);
+       if(crossed){var pl=c.pts[ni]&&c.pts[ni].p;if(pl)pl.vel+=1.6*(s.T/10);}});}
+     var cc=pu.q*L,h=L*0.045,env=Math.sin(Math.PI*pu.q);if(cc>to)return;
+     strokePoly(g,P,cc-h,cc+h,w+4.5*px,rgba(s.col,.13*env*(a/.85)));
+     strokePoly(g,P,cc-h*.55,cc+h*.55,w+.9*px,rgba(mix(s.col,[255,255,255],.5),.95*env*Math.min(1,a*1.6)));});}
+  });});}
+
+function markR(p){return 3.2+0.55*Math.min(p.ids.length,6);}
+function drawAddr(g,vs,dl,dt){
+ var zI=S.z0*1.7, ic=S.amode==='A4'?sstep(zI*0.8,zI*1.25,S.cam.z):0;
+ var onLine={};SABS.forEach(function(s){s.nids.forEach(function(id){onLine[id]=Math.max(onLine[id]||0,s.T);});});
+ g.setTransform(S.dpr,0,0,S.dpr,0,0);
+ PLACES.forEach(function(p){
+  /* the mark has mass: kicked by a pulse, it swells past and settles */
+  if(!S.reduced){var acc=196*(0-p.kick)-2*.42*14*p.vel;p.vel+=acc*dt;p.kick+=p.vel*dt;}else{p.kick=0;p.vel=0;}
+  vs.forEach(function(v){
+   var ghost=!solidOn(p,v);if(ghost&&S.cmode==='C2')return;
+   var x=placeX(p,v)+vx(v),s=w2s(x,p.y);if(s[0]<-40||s[1]<-40||s[0]>S.W+40||s[1]>S.H+40)return;
+   var ch=0,seat=null;p.ids.forEach(function(id){if((CHARGE[id]||0)>=ch){ch=CHARGE[id]||0;seat=NODE[id].b;}});
+   var col=SEATC[seat]||C.dim, heatLift=VAR[S.variant].local&&fieldAt(v,placeX(p,v),p.y)>1.5?1:0;
+   var ln0=p.ids.some(function(id){return onLine[id];});
+   var A=(ghost?.30:1)*(dl.addr+(1-dl.addr)*heatLift)*(ln0||!S.layers.sabs?1:.55), held=ch>=0.3;
+   var r=markR(p)*(1+0.18*p.kick)*(S.amode==='A1'?.6:1);
+   /* A3: the patch. The size is a placeholder, 4 cm, until sizes are sourced */
+   if(S.amode==='A3'){g.beginPath();g.arc(s[0],s[1],Math.max(r+2,2*S.cam.z/CM*1.0),0,TAU);g.fillStyle=rgba(col,.10*A);g.fill();}
+   /* fringes, from d-fringe: past five, bands born at the mark and travelling
+      out while loading, back in while releasing */
+   var str=clamp((ch-5)/5,0,1), ln=p.ids.some(function(id){return onLine[id];});
+   if(!ghost&&ln&&str>0.02&&S.layers.sabs&&dl.sab>0.3){var dir=1;SABS.forEach(function(sb){if(sb.nids.indexOf(p.ids[0])>=0)dir=sb.dir;});
+    p.fr=(p.fr||0)+(S.reduced?0:dt*0.9*dir);var f=S.reduced?.5:frac(p.fr),gap=9-5*str;
+    for(var k=0;k<4;k++){var pos=k+f,rr=r+3+pos*gap,al=Math.pow(str,1.3)*Math.sin(Math.PI*pos/4)*.75*A*dl.sab;if(al<.02)continue;
+     g.beginPath();g.arc(s[0],s[1],rr,0,TAU);g.strokeStyle=rgba(k%2?col:mix(col,[255,255,255],.5),al);g.lineWidth=k%2?1:1.4;g.stroke();}}
+   if(ic>0.01&&!ghost){drawRosette(g,p,s,col,A*ic);}
+   var ringA=A*(1-ic*.55);
+   /* the ring: a faint track and the charge arc, the product's own reading
+      circle (ED): the icon inside it, the percent ring around it */
+   g.beginPath();g.arc(s[0],s[1],r,0,TAU);g.strokeStyle=rgba(col,(held?.35:.22)*ringA);g.lineWidth=1.2;g.stroke();
+   if(held&&!ghost){g.beginPath();g.arc(s[0],s[1],r,-Math.PI/2,-Math.PI/2+TAU*ch/10);g.strokeStyle=rgba(col,.95*ringA);g.lineWidth=2;g.stroke();}
+   if(S.hoverPlace===p&&v===S.hoverView){g.beginPath();g.arc(s[0],s[1],r+4,0,TAU);g.strokeStyle=rgba(C.ink,.8);g.lineWidth=1.2;g.stroke();}
+  });});}
+function drawRosette(g,p,s,col,A){
+ var n=p.ids.length, sz=clamp(0.95*S.cam.z,14,24), R=n>1?sz*(0.55+0.11*n):0;
+ p.ids.forEach(function(id,j){var nd=NODE[id],ch=CHILD[nd.c];if(!ch)return;
+  var an=-Math.PI/2+j/n*TAU,x=s[0]+Math.cos(an)*R,y=s[1]+Math.sin(an)*R,c2=SEATC[nd.b]||col,q=CHARGE[id]||0;
+  g.save();g.translate(x-sz/2,y-sz/2);g.scale(sz/24,sz/24);
+  g.strokeStyle=rgba(c2,A*(q>=.3?1:.5));g.lineWidth=1.5*24/sz;g.lineJoin='round';g.lineCap='round';g.stroke(ch.p);g.restore();
+  if(n>1){g.beginPath();g.arc(x,y,sz*0.62,0,TAU);g.strokeStyle=rgba(c2,A*.25);g.lineWidth=1;g.stroke();}});}
+
+/* ---------- labels, two columns, relaxed so none collide ---------- */
+function drawLabels(g){
+ g.setTransform(S.dpr,0,0,S.dpr,0,0);g.font='500 12px Inter,system-ui,sans-serif';g.textBaseline='middle';
+ [0,1].forEach(function(v){
+  var list=[];var seen={};
+  REG.forEach(function(r){if(r.v!==v)return;if(r.side===(v?'l':'l'))return;var k=r.nm;if(seen[k])return;seen[k]=1;list.push(r);});
+  var colX=v?(OX+76+1.2):(24-1.2), sx=w2s(colX,0)[0];
+  var items=list.map(function(r){return {r:r,y:w2s(0,r.cy)[1]};}).sort(function(a,b){return a.y-b.y;});
+  for(var i=1;i<items.length;i++)if(items[i].y-items[i-1].y<15)items[i].y=items[i-1].y+15;
+  for(i=items.length-2;i>=0;i--)if(items[i+1].y-items[i].y<15)items[i].y=items[i+1].y-15;
+  items.forEach(function(it){var r=it.r,val=r._val||0;
+   var lit=S.sel&&S.sel.nm===r.nm&&S.sel.v===v||S.hoverReg&&S.hoverReg.nm===r.nm&&S.hoverReg.v===v;
+   var edgeX=v?r.box[2]:r.box[0];
+   var ex=w2s(edgeX+vx(v),r.cy);
+   g.beginPath();g.moveTo(sx+(v?-4:4),it.y);g.lineTo(ex[0],ex[1]);g.strokeStyle=rgba(C.dim,lit?.5:.14);g.lineWidth=1;g.stroke();
+   var txt=r.nm+(val&&S.mode==='pain'?'  '+val:'');
+   g.textAlign=v?'left':'right';
+   g.fillStyle=lit?rgba(C.ink,1):val&&S.mode==='pain'?rgba(hex('#E3B08F'),.95):rgba(C.dim,.95);
+   g.fillText(txt,sx+(v?-2:2),it.y);});
+  var hx=w2s(v?OX+50:50,0)[0];g.textAlign='center';g.font='600 13px Inter,system-ui,sans-serif';g.fillStyle=rgba(C.ink,.9);
+  g.fillText(v?'Back, seen from behind':'Front',hx,14);g.font='500 12px Inter,system-ui,sans-serif';});}
+
+function corner(){var el=document.getElementById('corner');
+ el.textContent='zoom '+(S.cam.z/S.z0).toFixed(2)+(S.amode==='A4'?' · fetter marks from 1.7':'')+' · '+CELLS_IN[0]+' cells front, '+CELLS_IN[1]+' back';}
+function hint(){document.getElementById('hint').textContent=PHONE?(S.mode==='pain'?'Tap or drag to paint where it hurts.':'Press a region to open it. Point at a line to trace it.'):S.mode==='pain'
+ ?'Tap or drag to paint where it hurts. Tap a painted cell again to clear it. The region opens beside the map.'
+ :'Press a region to open it. Double press to zoom into it. Point at a line to trace it. Scroll to zoom, drag to move.';}
+
+/* ---------- picking ---------- */
+function pick(sx,sy){var w=s2w(sx,sy),v=null;
+ views().forEach(function(vv){if(w[0]>=24+vx(vv)-2&&w[0]<=76+vx(vv)+2)v=vv;});if(v===null)return {w:w};
+ var x=w[0]-vx(v),y=w[1],reg=null;
+ if(inBody(v,x,y))for(var i=0;i<REG.length;i++){var r=REG[i],b=r.box;if(r.v===v&&x>=b[0]&&x<=b[2]&&y>=b[1]&&y<=b[3]){reg=r;break;}}
+ var c=Math.floor((x-XA)/U),rw=Math.floor((y-YA)/U),cell=null;
+ if(c>=0&&c<COLS&&rw>=0&&rw<ROWS&&CELLIN[v][rw*COLS+c])cell={v:v,c:c,r:rw,i:rw*COLS+c};
+ var place=null,bd=1e9;PLACES.forEach(function(p){if(!solidOn(p,v)&&S.cmode==='C2')return;var s=w2s(placeX(p,v)+vx(v),p.y),d=Math.hypot(s[0]-sx,s[1]-sy);
+  if(d<Math.max(10,markR(p)+4)&&d<bd){bd=d;place=p;}});
+ var sab=null,sd=8;if(S.layers.sabs)SABS.forEach(function(s){var c2=s.views[v];if(!c2||!c2.samp)return;
+  for(var i=0;i<c2.samp.length;i+=2){var q=w2s(c2.samp[i][0],c2.samp[i][1]),d=Math.hypot(q[0]-sx,q[1]-sy);if(d<sd){sd=d;sab=s;}}});
+ return {w:w,v:v,x:x,y:y,reg:reg,cell:cell,place:place,sab:sab};}
+var tip=document.getElementById('tip');
+function showTip(sx,sy,html){if(!html){tip.style.display='none';return;}tip.innerHTML=html;tip.style.display='block';tip.style.left=sx+'px';tip.style.top=sy+'px';}
+function placeTip(p){return p.ids.map(function(id){var n=NODE[id];return n.k+' <small>· '+n.c+' · '+n.n+' · '+(CHARGE[id]||0).toFixed(1)+'</small>';}).join('<br>');}
+
+var drag=null;
+cv.addEventListener('pointerdown',function(e){cv.setPointerCapture(e.pointerId);var r=cv.getBoundingClientRect(),sx=e.clientX-r.left,sy=e.clientY-r.top,pk=pick(sx,sy);
+ drag={x:sx,y:sy,cx:S.cam.x,cy:S.cam.y,moved:false,paint:S.mode==='pain'&&!!pk.cell,first:pk.cell?PAINT[pk.cell.v][pk.cell.i]:0,painted:{}};
+ if(drag.paint)paintAt(pk,true);});
+cv.addEventListener('pointermove',function(e){var r=cv.getBoundingClientRect(),sx=e.clientX-r.left,sy=e.clientY-r.top;
+ if(drag){var dx=sx-drag.x,dy=sy-drag.y;if(Math.hypot(dx,dy)>4)drag.moved=true;
+  if(drag.paint){var pk=pick(sx,sy);if(pk.cell)paintAt(pk,false);return;}
+  if(drag.moved){S.camT=null;S.cam.x=drag.cx-dx/S.cam.z;S.cam.y=drag.cy-dy/S.cam.z;S.dirty=true;}return;}
+ var pk=pick(sx,sy);S.hoverReg=pk.reg||null;S.hoverCell=pk.cell||null;
+ if(pk.sab!==S.hoverSab&&!pk.place){S.hoverSab=pk.sab;S.traceT0=performance.now();}
+ S.hoverPlace=pk.place||null;S.hoverView=pk.v;
+ if(pk.place)showTip(sx,sy-8,placeTip(pk.place));else if(pk.sab)showTip(sx,sy-8,pk.sab.nm+' <small>· '+pk.sab.T.toFixed(1)+' · '+(pk.sab.dir>0?'loading':'releasing')+'</small>');
+ else if(pk.reg)showTip(sx,sy-8,regName(pk.reg)+(pk.reg._val?' <small>· painted '+pk.reg._val+'</small>':''));else showTip();
+ S.dirty=true;});
+cv.addEventListener('pointerleave',function(){S.hoverReg=null;S.hoverCell=null;S.hoverSab=null;S.hoverPlace=null;showTip();S.dirty=true;});
+cv.addEventListener('pointerup',function(e){var r=cv.getBoundingClientRect(),sx=e.clientX-r.left,sy=e.clientY-r.top;
+ if(drag&&!drag.moved&&!drag.paint){var pk=pick(sx,sy);
+  if(pk.sab&&!pk.place){S.holdSab=S.holdSab===pk.sab?null:pk.sab;S.traceT0=performance.now();renderAside();}
+  else{S.sel=pk.reg||null;renderAside();}}
+ if(drag&&drag.paint){var pk2=pick(sx,sy);if(pk2.reg){S.sel=pk2.reg;}renderAside();}
+ drag=null;S.dirty=true;});
+cv.addEventListener('dblclick',function(e){var r=cv.getBoundingClientRect(),pk=pick(e.clientX-r.left,e.clientY-r.top);if(pk.reg)openRegion(pk.reg);});
+cv.addEventListener('wheel',function(e){e.preventDefault();var r=cv.getBoundingClientRect(),sx=e.clientX-r.left,sy=e.clientY-r.top,w=s2w(sx,sy);
+ var z=clamp(S.cam.z*Math.pow(1.0015,-e.deltaY),S.z0*0.8,S.z0*8);S.camT=null;S.cam.z=z;S.cam.x=w[0]-(sx-S.W/2)/z;S.cam.y=w[1]-(sy-S.H/2)/z;S.dirty=true;},{passive:false});
+function paintAt(pk,first){var c=pk.cell,key=c.v+':'+c.i;if(drag.painted[key])return;drag.painted[key]=1;
+ var cur=PAINT[c.v][c.i];
+ /* one press: paint at the brush. The same press on a cell already at the
+    brush clears it. No second step. */
+ PAINT[c.v][c.i]=(first&&cur===S.brush)?0:S.brush;
+ rebuildField(c.v);touchHeat();markVals();S.dirty=true;}
+function markVals(){REG.forEach(function(r){r._val=regionValue(r);});}
+function openRegion(r){var b=r.box,w=(b[2]-b[0])+8,h=(b[3]-b[1])+8,z=Math.min(S.W/w,S.H/h,S.z0*6);flyTo((b[0]+b[2])/2+vx(r.v),(b[1]+b[3])/2,z);S.sel=r;renderAside();}
+
+/* ---------- the aside ---------- */
+function svgIc(d,col){return '<svg viewBox="0 0 24 24" style="stroke:'+col+'"><path d="'+d+'"/></svg>';}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function renderAside(){
+ markVals();
+ var box=document.getElementById('regcard'),r=S.sel;
+ if(!r){box.innerHTML='';}else{
+  var b=r.box, here=PLACES.filter(function(p){var x=placeX(p,r.v);return solidOn(p,r.v)&&x>=b[0]&&x<=b[2]&&p.y>=b[1]&&p.y<=b[3]&&inBody(r.v,x,p.y);});
+  var ids=[];here.forEach(function(p){p.ids.forEach(function(i){if(ids.indexOf(i)<0)ids.push(i);});});
+  var charge=ids.length?Math.max.apply(null,ids.map(function(i){return CHARGE[i]||0;})):null;
+  var through=SABS.filter(function(s){var c=s.views[r.v];if(!c||!c.samp)return false;return c.samp.some(function(q){var x=q[0]-vx(r.v);return x>=b[0]&&x<=b[2]&&q[1]>=b[1]&&q[1]<=b[3];});});
+  var pr=PAINREG[PAINMAP[r.nm]]||null, val=r._val||0;
+  var h='<div class="card"><div class="top"><div><h2>'+esc(regName(r))+'</h2><div class="small">'+(r.v?'Back':'Front')+' view · '+esc(r.nerve?'line rides the '+r.nerve.split(',')[0].toLowerCase()+' to '+r.level:'line runs to the spine at '+(r.level||'its level'))+'</div></div>'
+   +'<button class="x" type="button" id="rclose" aria-label="Close this region"><svg viewBox="0 0 24 24" width="18" height="18" style="fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>'
+   +'<div class="nums"><div><b>'+(val?val:'0')+' <small>of 10</small></b><span>Pain you painted here</span></div>'
+   +'<div><b>'+(charge===null?'none':charge.toFixed(1)+' <small>of 10</small>')+'</b><span>Charge on the addresses standing here. Mock</span></div></div>';
+  if(r.nm==='Trap')h+='<p class="small" style="margin-top:8px">The trap\'s own nerve, the accessory nerve, is not drawn in the approved figure, so its line rides the cervical plexus beside it.</p>';
+  h+='<h3>Standing here</h3>';
+  if(ids.length){h+='<ul class="rows">'+ids.map(function(i){var n=NODE[i],c=CHILD[n.c];return '<li>'+svgIc(c?c.ic:'',SEAT[n.b])+'<span>'+esc(n.k)+' <em>· '+esc(n.c)+' · '+esc(n.n)+'</em></span><span class="v">'+(CHARGE[i]||0).toFixed(1)+'</span></li>';}).join('')+'</ul>';}
+  else h+='<p>No address stands on this place. The arms and legs carry 2 of the 112 today, which is question D in the spec.</p>';
+  h+='<h3>Running through here</h3>'+(through.length?'<ul class="rows">'+through.map(function(s){var f=HCX[s.fam];return '<li>'+svgIc(f?f.ic:'',rgba(s.col,1))+'<span>'+esc(s.nm)+' <em>· '+esc(s.famD)+'</em></span><span class="v">'+s.T.toFixed(1)+'</span></li>';}).join('')+'</ul>':'<p>No saboteur line crosses this region.</p>');
+  if(pr)h+='<h3>Commonly presents as</h3><p>'+esc(pr.common)+'.</p><h3>The pattern under it</h3><p>'+esc(pr.pattern)+'</p><p class="small">From today\'s '+esc(pr.nm.toLowerCase())+' line in the engine, one of nine. Each of the 48 regions needs its own in the content pass.</p>';
+  h+='<h3>What helps</h3><p>Practices tied to this region are content still to write, in the content pass he named.</p>';
+  h+='<p><button type="button" class="chip" id="ropen">Zoom into this region</button></p></div>';
+  box.innerHTML=h;
+  document.getElementById('rclose').onclick=function(){S.sel=null;renderAside();S.dirty=true;};
+  document.getElementById('ropen').onclick=function(){openRegion(r);};}
+ var ul=document.getElementById('sabs');document.getElementById('sabn').textContent=SABS.length?SABS.length+' of '+D.sabs.length:'nothing held';
+ ul.innerHTML=SABS.length?SABS.map(function(s){var f=HCX[s.fam];return '<li role="button" tabindex="0" aria-pressed="'+(S.holdSab===s)+'" data-k="'+s.k+'">'+svgIc(f?f.ic:'',rgba(s.col,1))
+  +'<span>'+esc(s.nm)+'</span><span class="v">'+s.T.toFixed(1)+'</span><span class="dir" data-dir="'+s.k+'"></span><span class="bar2"><i style="width:'+(s.T*10)+'%;background:'+rgba(s.col,1)+'"></i></span></li>';}).join('')
+  :'<li style="grid-template-columns:1fr"><span class="small">Nothing held. No saboteur is past five for this person, so no line runs.</span></li>';
+ [].forEach.call(ul.querySelectorAll('li[data-k]'),function(li){var s=SABS.find(function(x){return String(x.k)===li.dataset.k;});
+  li.onmouseenter=function(){S.hoverSab=s;S.traceT0=performance.now();S.dirty=true;};
+  li.onmouseleave=function(){S.hoverSab=null;S.dirty=true;};
+  li.onclick=function(){S.holdSab=S.holdSab===s?null:s;S.traceT0=performance.now();renderAside();S.dirty=true;};
+  li.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();li.onclick();}};});}
+setInterval(function(){SABS.forEach(function(s){var el=document.querySelector('[data-dir="'+s.k+'"]');if(el){var d=s.dir>0?'loading':'releasing';el.textContent=d;el.className='dir '+d;}});},400);
+
+/* ---------- controls ---------- */
+function seg(id,fn){var el=document.getElementById(id);el.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+ [].forEach.call(el.querySelectorAll('button'),function(x){x.setAttribute('aria-pressed',String(x===b));});fn(b.dataset.k);S.dirty=true;});}
+seg('mode',function(k){S.mode=k==='pain'?'pattern':'pain';setMode(k);});
+seg('variant',function(k){S.variant=k;stillKey='';litKey='';HEATCV[0]._k=HEATCV[1]._k='';
+ /* replay the switch so the difference is seen, not only set */
+ if(S.mode==='pain'){S.pg=0;S.ph=0;S.mode='pattern';setMode('pain');}});
+seg('amode',function(k){S.amode=k;});
+seg('cmode',function(k){S.cmode=k;});
+seg('face',function(k){S.face=k;var f=fitCam();flyTo(f.x,f.y,f.z);});
+var br=document.getElementById('brush');br.oninput=function(){S.brush=+br.value;document.getElementById('brushv').textContent=br.value;};
+document.getElementById('clear').onclick=function(){PAINT[0].fill(0);PAINT[1].fill(0);rebuildField(0);rebuildField(1);touchHeat();renderAside();S.dirty=true;};
+var who=document.getElementById('who');
+who.innerHTML=D.people.map(function(p){return '<option value="'+p.nm+'"'+(p.nm===S.who?' selected':'')+'>'+p.nm+', '+p.age+', '+esc(p.role)+'</option>';}).join('');
+who.onchange=function(){setPerson(who.value);};
+var LAY=[['sabs','Saboteur lines'],['addr','Addresses'],['nerves','Nerves'],['seats','Seats'],['grid','Grid'],['limb','Limb centres, proposed'],['labels','Region names']];
+var lay=document.getElementById('layers');
+LAY.forEach(function(l){var b=document.createElement('button');b.type='button';b.className='chip';b.textContent=l[1];b.setAttribute('aria-pressed',String(S.layers[l[0]]));
+ b.onclick=function(){S.layers[l[0]]=!S.layers[l[0]];b.setAttribute('aria-pressed',String(S.layers[l[0]]));stillKey='';S.dirty=true;};lay.appendChild(b);});
+var mo=document.getElementById('motion');
+function setReduced(on){S.reduced=on;mo.setAttribute('aria-pressed',String(on));mo.textContent='Reduced motion: '+(on?'on':'off');
+ if(on&&S.tr){S.pg=S.tr.gt;S.ph=S.tr.ht;S.tr=null;}S.dirty=true;}
+mo.onclick=function(){setReduced(!S.reduced);};
+if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)setReduced(true);
+document.getElementById('zin').onclick=function(){flyTo(S.cam.x,S.cam.y,Math.min(S.cam.z*1.5,S.z0*8));};
+document.getElementById('zout').onclick=function(){flyTo(S.cam.x,S.cam.y,Math.max(S.cam.z/1.5,S.z0*.8));};
+document.getElementById('zfit').onclick=function(){var f=fitCam();flyTo(f.x,f.y,f.z);};
+window.addEventListener('resize',function(){resize();});
+
+/* ---------- the measuring hooks the simulation drives ---------- */
+function lab(r,g,b){function f(c){c/=255;return c<=.04045?c/12.92:Math.pow((c+.055)/1.055,2.4);}
+ var R=f(r),G=f(g),B=f(b),X=(R*.4124+G*.3576+B*.1805)/.95047,Y=R*.2126+G*.7152+B*.0722,Z=(R*.0193+G*.1192+B*.9505)/1.08883;
+ function h(t){return t>.008856?Math.cbrt(t):7.787*t+16/116;}return [116*h(Y)-16,500*(h(X)-h(Y)),200*(h(Y)-h(Z))];}
+function lum(r,g,b){function f(c){c/=255;return c<=.03928?c/12.92:Math.pow((c+.055)/1.055,2.4);}return .2126*f(r)+.7152*f(g)+.0722*f(b);}
+function grab(){draw(0);return ctx.getImageData(0,0,cv.width,cv.height);}
+window.__proto={S:S,VAR:VAR,SABS:function(){return SABS;},REG:REG,setMode:setMode,setPerson:setPerson,flyTo:flyTo,fitCam:fitCam,
+ setVariant:function(k){S.variant=k;stillKey='';litKey='';HEATCV[0]._k=HEATCV[1]._k='';},
+ /* the switch's own curve, sampled: when is the heat readable and the ground settled */
+ timeline:function(k){var V=VAR[k],out={};function at(spec,t){var e=clamp((t-spec[0])/spec[1],0,1);return spec[2]?spec[2](e):Math.ceil(e*5)/5;}
+  for(var t=0;t<=1200;t+=10){if(out.heat90==null&&at(V.on.h,t)>=.9)out.heat90=t;if(out.ground90==null&&at(V.on.g,t)>=.9)out.ground90=t;}
+  out.settled=Math.max(V.on.h[0]+V.on.h[1],V.on.g[0]+V.on.g[1]);return out;},
+ /* a calibration ladder: five cells on the front torso at 2, 4, 6, 8, 10,
+    far enough apart that no two merge */
+ ladder:function(){PAINT[0].fill(0);PAINT[1].fill(0);var cells=[];[2,4,6,8,10].forEach(function(val,j){var c=10,r=8+j*2,i=r*COLS+c;PAINT[0][i]=val;cells.push({v:0,c:c,r:r,val:val});});
+  rebuildField(0);rebuildField(1);touchHeat();markVals();return cells;},
+ measure:function(cells,pattern){
+  /* Each element against its own ground. The nerve pixels are found in the
+     Pattern frame, where every nerve is drawn, so a nerve dimmed almost to
+     nothing in Pain still counts as a nerve, at the contrast it has left.
+     The first cut found them in the Pain frame and so dropped exactly the
+     nerves a switch had dimmed most, which flattered that switch. Marks,
+     cables and labels are off so none of them lands in a sample. */
+  var was={r:S.reduced,l:Object.assign({},S.layers),m:S.mode,pg:S.pg,ph:S.ph};setReduced(true);S.tr=null;
+  ['sabs','addr','limb','labels'].forEach(function(k){S.layers[k]=false;});
+  var f=fitCam();S.cam=f;S.camT=null;
+  function state(pain,nerves){S.mode=pain?'pain':'pattern';S.pg=S.ph=pain?1:0;S.layers.nerves=nerves;stillKey='';HEATCV[0]._k=HEATCV[1]._k='';return grab();}
+  var R1=state(false,true),R0=state(false,false),A=state(!pattern,true),B=state(!pattern,false);
+  var W=cv.width,dpr=S.dpr;
+  function px(img,x,y){var i=(Math.round(y*dpr)*W+Math.round(x*dpr))*4;return [img.data[i],img.data[i+1],img.data[i+2]];}
+  var steps=cells.map(function(c){var L=[0,0,0],n=0,lums=[];
+   for(var a=.3;a<=.701;a+=.05)for(var b=.3;b<=.701;b+=.05){var s=w2s(XA+(c.c+a)*U,YA+(c.r+b)*U),p=px(A,s[0],s[1]),l=lab(p[0],p[1],p[2]);L[0]+=l[0];L[1]+=l[1];L[2]+=l[2];n++;lums.push(l[0]);}
+   var m=lums.reduce(function(x,y){return x+y;},0)/lums.length,sd=Math.sqrt(lums.reduce(function(x,y){return x+(y-m)*(y-m);},0)/lums.length);
+   return {val:c.val,lab:[L[0]/n,L[1]/n,L[2]/n],sdL:sd};});
+  var dE=[];for(var i=1;i<steps.length;i++){var a=steps[i-1].lab,b=steps[i].lab;dE.push(Math.hypot(a[0]-b[0],a[1]-b[1],a[2]-b[2]));}
+  var inH=[],outH=[],mid=(76+OX+24)/2;
+  for(var y=0;y<S.H;y+=2)for(var x=0;x<S.W;x+=2){var r1=px(R1,x,y),r0=px(R0,x,y);
+   if(Math.abs(r1[0]-r0[0])+Math.abs(r1[1]-r0[1])+Math.abs(r1[2]-r0[2])<30)continue;
+   var w=s2w(x,y),v=w[0]>mid?1:0;if(!inBody(v,w[0]-vx(v),w[1]))continue;var hv=fieldAt(v,w[0]-vx(v),w[1]);
+   var pa=px(A,x,y),pb=px(B,x,y),la=lum(pa[0],pa[1],pa[2]),lb=lum(pb[0],pb[1],pb[2]),cr=(Math.max(la,lb)+.05)/(Math.min(la,lb)+.05);
+   if(hv>=3)inH.push(cr);else if(hv<0.2)outH.push(cr);}
+  function med(a){if(!a.length)return null;a=a.slice().sort(function(x,y){return x-y;});return a[a.length>>1];}
+  var man=lab(C.man[0],C.man[1],C.man[2]);
+  var res={minStepDE:Math.min.apply(null,dE),stepsDE:dE,clutterSdL:steps.reduce(function(x,s){return x+s.sdL;},0)/steps.length,
+   nerveInHeat:med(inH),nerveOutHeat:med(outH),nInHeat:inH.length,nOutHeat:outH.length,
+   topVsMan:Math.hypot(steps[4].lab[0]-man[0],steps[4].lab[1]-man[1],steps[4].lab[2]-man[2])};
+  S.layers=was.l;S.mode=was.m;S.pg=was.pg;S.ph=was.ph;setReduced(was.r);stillKey='';S.dirty=true;return res;},
+ frameMs:function(){return S.frameMs;}};
+
+/* ---------- start ---------- */
+buildRoutes();resize();setPerson(S.who);hint();
+requestAnimationFrame(frame);
+})();
+
+</script>
+</body>
+</html>

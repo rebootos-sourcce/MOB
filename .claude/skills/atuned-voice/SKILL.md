@@ -1,0 +1,1487 @@
+---
+name: atuned-voice
+description: The house voice for Atüned / SOURCE, as a system a writer can be held to. The Encarta anchor, the warmth pass, the checkable micro rules with a failing and a fixed line beside each, the owner's own objections as a runnable database, the creative brief's layers and modes as a runnable gate, the reading history of every writing seat, the ten passes, and a runnable gate. Load before writing or editing any user facing string: UI copy, labels, tooltips, drills, readings, errors, empty states, onboarding, funnel and quiz copy, the names of things. Loads alongside atuned-ux, which owns the surface; this owns the words on it.
+---
+
+# Atüned Voice
+
+The surface rules are in `.claude/skills/atuned-ux/SKILL.md`. The buckets are in
+`COPY.md`. The settled rulings are in `BIBLE.md`. This file is the part none of
+those carry: where the voice comes from, what it does to a sentence, and how to
+tell whether a line you just wrote is in it.
+
+---
+
+## Use It In Ten Seconds
+
+You are mid sentence. Read this card, then go back.
+
+    1  Say the fact. Present tense, concrete noun, no lead in.
+    2  Move the subject to the person, and keep the predicate.
+    3  Name the cost.
+    4  Name the one thing to do, or say nothing.
+    5  Cut to the fewest words that stay true. Then read it out loud.
+
+These fail on sight, before any judgement is needed. The count is not written
+here, because this card said nine while carrying eleven the moment two rules
+were added, which is the defect the repository has been bitten by twelve times:
+
+    a word a ten year old would ask about  "architecture", "operates", V21
+    an em dash                          anywhere, including your own notes
+    a line that says a thing is starting  "Welcome to", "Let us begin"
+    an instruction to a nervous system  "relax", "sit back", "gently"
+    a number with no unit               "25 of your allowance"
+    a figure with a tolerance on it     "plus or minus 12", "swing 11"
+    an abstract noun as a heading       Insights, Journey, Wellness
+    a band word standing alone          Severe with nothing attached
+    a weight standing alone             "at a weight of 6.3", V22
+    a second wording for the empty state  it is "not read yet", once
+    a reassurance to a fear not raised  see V12, which is held and not banned
+    two buckets in one string           an instruction that is also a reading
+    all caps in copy                    sentence case in body, title in headers
+
+Then run the gate:
+
+    python3 .claude/skills/atuned-voice/check.py --line "your line here"
+    python3 .claude/skills/atuned-voice/check.py atuned_src/ui/release.js
+    python3 .claude/skills/atuned-voice/check.py --baseline
+    python3 .claude/skills/atuned-voice/check.py --objections
+    python3 .claude/skills/atuned-voice/check.py --brief --line "..." --layer mirror
+
+The last one knows which layer the line sits in. Section 3c.
+
+---
+
+## 1. The Anchor, Named Precisely
+
+The owner said Encarta. That is a real register with real moves, and it is not
+a vibe. Encarta shipped from 1993 on a CD, built on the Funk and Wagnall's
+text, and its house style was set by the constraint it was under: a screen, a
+reader who arrived by search rather than by page, and no room. Eight moves
+carry it. Cite them by number when you are arguing about a line.
+
+**E1. The definition arrives in the first clause.** The subject, a comma, then
+what it is. The shape, written out rather than quoted, is "Jazz, a form of music
+characterised by improvisation and a strong rhythmic base." No approach, no
+framing, no context paragraph first.
+
+**E2. Present tense, indicative.** Things are, not have been shown to be.
+
+**E3. Concrete nouns carry the sentence.** The noun does the work, so the
+adjective is not needed. Where an adjective appears it is a measurement
+(seven, molten, nocturnal), not an evaluation.
+
+**E4. The elaboration follows the definition and is ordered by weight.** What
+matters most is second, not last. There is no build.
+
+**E5. No throat clearing.** No "it is worth noting", no "interestingly", no
+rhetorical question, no exclamation. The entry begins on the subject.
+
+**E6. Every number has a unit and, where it is a share, a denominator.** 4,506
+metres. About 12 per cent of the land area.
+
+**E7. Confidence comes from the sentence being short.** Length is the hedge.
+Encarta does not sound sure because it says "certainly", it sounds sure
+because the sentence stops.
+
+**E8. No second person and no first person.** The reader is not addressed and
+the writer is not present. There is nobody in the room but the subject.
+
+### What Encarta Cannot Do, And Why It Matters Here
+
+The anchor is right about register and wrong about stance, and the reason is
+the subject. Encarta's subject is not reading the entry. Ours is.
+
+- **It cannot instruct.** E8 forbids the second person, so it has no
+  imperative mood. This product's whole purpose is mechanical: hand a person
+  their own instructions so they can change them. That needs an imperative.
+- **It never admits a limit.** An encyclopedia that says "not known" has
+  failed. An instrument that never says "not read yet" is not a mirror.
+- **It never names a cost.** It describes a mechanism and stops. Our reader is
+  paying for the mechanism, which is the only reason they opened it.
+- **It cannot be silent.** Encarta answers every query. This product has a
+  Refusal bucket and uses it.
+- **It is cold, and it is cold on purpose.** It is written about a subject that
+  cannot be hurt by it. A person at level 3 who is defended, or level 1 who is
+  actively repelled, is reading a description of themselves. `BUYERS.md` has
+  the grid. Nothing in Encarta's register was built for that reader.
+
+So: keep the register, move the stance. That is the whole of section 2.
+
+---
+
+## 2. The Warmth Pass, As Operations
+
+Warmth is not a set of adjectives to add. It is six operations on a sentence
+that already passed the Encarta pass. Run them in this order.
+
+**W1. Move the subject to the person and keep the predicate.** This is the
+whole trick and it costs nothing. The verb stays mechanical, so the register
+does not move; only who the sentence is about moves.
+
+    E-form   The masseter contracts under sustained threat appraisal.
+    W-form   A tight jaw before you are properly awake.
+
+That second line ships, at `funnel/index.html:267`, quoted exactly. Notice how
+little it took. The noun is still concrete, the tense is still present, no
+adjective is doing work the noun could do, and the second person arrives once,
+in a subordinate clause, carrying the whole stance on its own. That is the
+lightest available version of the move and it is usually the right one.
+
+**W2. Replace the representative instance with the reader's own.** Encarta's
+example stands for a class. Ours is theirs, because the engine read it out of
+what they wrote. Where the instrument has not read one, say so. Never invent
+the instance to make the sentence land.
+
+**W3. Admit the limit once, at the end, and never hedge throughout.** One
+sentence at the close of a reading, naming what was not read and what would
+put it in. `COPY.md` rules this and `ui/summary.js:242` does it: "There is no
+birth data on file, so the spiritual layer is not in this reading. Date, time
+and place would put it in."
+
+**W4. Add the cost.** Say the number, then what it means, then what it costs,
+in that order. Encarta stops after the second.
+
+**W5. Add one route out, imperative, one step.** Verb first. After the reading,
+never inside it. One step, because a person under load holds about four items
+and you are spending one of them.
+
+**W6. Set the sentence at the speed of speech.** Encarta's cadence is written
+to be read at leisure. Ours is read by somebody tired. Say it out loud. If you
+would not say it to a person sitting across from you, it does not ship.
+
+### What Is Kept, What Is Broken, And Why Each Break Earns Itself
+
+Kept, and not negotiable: E1 definition first. E2 present tense. E3 concrete
+nouns. E4 ordered elaboration. E5 no throat clearing. E6 units and
+denominators. E7 confidence from brevity.
+
+Broken, with the reason each break is paid for:
+
+| Encarta move | Broken to | Why the break earns itself |
+|---|---|---|
+| E8, no second person | Second person throughout | The subject is reading the entry. A description of a person written in the third person about them is a case note, and a practitioner reads a clinical register into whatever he is handed. |
+| No admitted limit | W3, the limit stated once | Every figure here is computed from self report. An instrument that hides that is claiming a measurement it did not make. `TEAM.md` gives that word to one seat and she does not lend it. |
+| No cost named | W4, the cost named | The reader is the one paying. A mechanism with no cost attached is a fact about the world, and they did not come for one. |
+| No imperative | W5, one route out | "Close the gap between your mind and your body, and hand you your own instructions so that you can change them." A route is the product. |
+| Leisure cadence | W6, speech cadence | Working memory holds about four items and the person is under load. Measured at 57 to 71 simultaneous choices per screen. The sentence is not the place to spend more. |
+
+Never licensed, whatever the brief says: comfort in place of information. The
+softening adverb. The abstract noun. A reassurance against a fear nobody
+raised. A claim the engine cannot produce a field for.
+
+---
+
+## 3. The Micro Rules
+
+Each one has a line that failed and the line that replaced it, drawn from copy
+this product ships or shipped. A rule nobody can fail is not a rule, so every
+one of these has a real corpse. The count is not written here: this paragraph
+said sixteen above a list of twenty, which is the defect the repository keeps
+recording.
+
+Cite them by number in review. V21 and V22 sit over all of them, and V22 is
+V21 sharpened: the same plain words, now owed to two readers at once.
+
+### V1. No Line Whose Job Is To Say A Thing Is Starting
+
+    FAIL  ui/release.js:8    Welcome to release and reframe.
+    FAIL  ui/release.js:11   Let us begin.
+    FIX   cut both
+
+The person pressed Begin. They know. The surface title is already on the card.
+A preamble line is the product reading its own heading out loud. Each of these
+holds the screen for 2.2 seconds by `RUN.speed`, so the two of them cost 4.4
+seconds before anything happens.
+
+### V2. Never Instruct A Nervous System
+
+    FAIL  ui/release.js:9    Find a quiet space. Sit back and relax,
+    FIX                      Sit down. Put both feet on the floor.
+
+"Relax" is an outcome, not an action, so it cannot be followed. It is also the
+exact register of the shelf this product refuses. Name a position a body can
+take. `TEAM.md` is explicit that the product does not touch a nervous system.
+
+### V3. A Physical Metaphor Has Mass And A Direction
+
+    FAIL  ui/release.js:10   Feel what the body is doing as the energy goes.
+    FIX                      Keep some attention on your body, and notice
+                             which place answers.
+
+Goes where. "The energy goes" has no direction, no address and no agent. The
+fix names a place and a thing to do with it. Load is physical. A leak is
+physical. A lock is physical. "Energy flowing" is a gesture.
+
+### V4. Every Sensation Line Names A Place
+
+    FAIL  ui/release.js:9    and turn your senses inward to feel what is
+                             released.
+    FIX                      Notice which place answers first.
+
+Inward to where. The passive also hides the agent: what is released, by what.
+The instrument's whole value is that it lands a reading at a named plexus or a
+named nerve, and a sensation line with no address throws that away on the one
+screen where the body is actually being used.
+
+### V5. The Product Never Addresses Itself
+
+    FAIL  ui/imprints.js:87  Nothing held. Write in the box and it gathers
+                             here.
+    SHIPS ui/imprints.js:89  You have not written anything yet. Whatever you
+                             write gets pulled apart and collected here.
+
+Already fixed in this repository, which is why the rule is the house's own and
+not an import. The first line narrates the product's state. The second says
+what a person would say about themselves.
+
+### V6. One String, One Bucket
+
+    FAIL  ui/release.js:10   As the words repeat, follow along in thought.
+    FIX                      Each line names one pattern. Follow it in thought
+                             as it lands.
+
+The failing line is an Instruction and a Definition wearing one coat: it tells
+you what to do and explains the mechanism in the same breath, so neither is
+clean and the mechanism is the part that gets skimmed. The seven buckets are in
+`COPY.md`. A string that is two buckets is a string that is wrong.
+
+### V7. A Number Carries Its Unit, And Its Denominator If It Is A Share
+
+    FAIL  ui/release.js:197   25 of your allowance
+    FAIL  engine/plan.js:155  92 of the gift left
+    FIX                       25 patterns of the 92 you have left
+    FIX                       92 patterns left of the hundred
+
+Twenty five of what. `planAllowance` already returns `left` and `of`, so the
+honest sentence needs no new field. Worse, the free grant is ten patterns a
+week and a run caps at twenty five, so "25 of your allowance" reads as a bill a
+person cannot pay. Both instances are open findings, not fixed: they belong in
+`TASKS.md`, and `check.py` reports them on every run.
+
+This rule has a shipped counter example worth copying. `KB_OF` at
+`ui/knowledge.js:273` is a table of denominator phrases, one per card family,
+so every percent on that surface arrives as "62 per cent of the mask at full
+weight". That is the pattern. The number and what it is out of are written once,
+in one place, and its own comment says why: where a family has no honest percent
+for some of its rows the line says so rather than leaving a person to assume the
+blanks are zeroes.
+
+### V8. A Reading Is Not A Score
+
+    FAIL  the weight printed as "7.4 of 10"
+    SHIPS ui/summary.js:250   at a weight of 7.4
+
+Recorded at `ui/summary.js:249`: "of 10" made it a mark out of ten. A count
+against a total invites a person to pass or fail. A weight is a quantity of
+something they are carrying.
+
+The same defect, caught on a percentage, at `ui/summary.js:280`: "the field
+leans benign at 100 per cent" was a share with no denominator on a surface
+where a percent could mean three different things. The fixed line names both
+ends and says they add to a hundred.
+
+**Superseded, 2 October, CO-31.** That fixed line was itself the defect. "Leans
+100 per cent benign against 0 per cent malignant" is a score, and the sentence
+now says which way the field leans and stops. The exemption for a denominator
+of 1, 10 or 100 is withdrawn: "6.0 of 10" and "7.7 against a clean ten" are
+counts against a total at any scale. A zero is a dash. A percent is never
+printed on a profile nothing has been read for. None of the three can be seen
+from the source, because the digit and the profile arrive at run time, so they
+are held by `tools/copy-verify.py` over the page `tools/copy-walk.js` harvests.
+
+### V9. A Label This Product Puts On A Person Carries Three Things
+
+The definition, the behaviour it produces, and the direction out of it. A word
+like Severe with nothing attached is a judgement. The same word with those
+three is a reading. Ruled in `BIBLE.md`.
+
+    FAIL  Oscillating
+    SHIPS Oscillating. The field spends as much as it builds. Nothing is
+          compounding in either direction.
+
+### V10. Antithesis Is A Tool, Not A Cadence
+
+"X, not Y" and "not X but Y" and "rather than" are the single most recognisable
+machine rhythm in English prose, and the reason is that they let a writer sound
+decisive without deciding anything. The house rate, measured off the shipping
+copy, is under 3 per cent of sentences. Onboarding runs it at 14 per cent.
+
+    FAIL  ui/onboard.js:145   in your own words, not a questionnaire
+    FAIL  ui/onboard.js:146   a place in the body, not a label
+    FIX   ui/onboard.js:145   the day, in your own words
+    FIX   ui/onboard.js:146   a named plexus or a named nerve
+    V21   ui/onboard.js       one exact spot in your body
+
+Two of four cells on one card, each defining a thing by what it is not. The fix
+keeps one negation at most per surface and makes the rest positive and
+concrete. Note that "the day, in your own words" is not new copy: it is already
+in the product at `ui/component.js:412`. Reuse beats invention, and it also
+satisfies one word per concept.
+
+The right cell was fixed a second time on 27 September. "A named plexus or a
+named nerve" beat the antithesis and failed V21: a ten year old does not know
+what a plexus is, and the first card is the one place a word cannot be
+explained first. It reads "one exact spot in your body" now.
+
+`check.py` prints this rate per file against the house rate. It does not carry
+a threshold, because the house rate moves as the copy moves.
+
+### V11. Cap The Sentence That Opens On It Is, That Is, This Is
+
+Measured at 3.3 per cent of product sentences. Onboarding runs 9.5 per cent.
+The construction defers the subject by two words and reads as a machine
+restating itself. The fix is almost always to start on the noun.
+
+    FAIL  It is something you cannot see as separate from you, which is why it
+          costs more than it looks like it should.
+    FIX   A character layer costs more than it looks like it should, because
+          you cannot see it as separate from you.
+
+Same length, one gloss removed, subject first.
+
+### V12. Never Reassure Against A Fear Nobody Raised
+
+    FAIL  ui/drills.js:837   Not a memory exercise. A person who cannot think
+                             of anything they identify with is not unusual,
+                             because an identification that is working does
+                             not feel like one. So go year by year.
+    FIX                      Go year by year and look at what got picked up.
+                             Toys, games, characters, teams, machines.
+                             [and after a person comes up empty]
+                             An identification that is working does not feel
+                             like one, which is why nothing came. Try the next
+                             year.
+
+Thirty one words of comfort arrive before the instruction, answering a fear the
+person has not had yet. Move the reassurance behind the failure it answers. It
+is the same sentence and it is worth ten times more there.
+
+**The bounded exception, and it is the owner's.** The welcome at
+`ui/onboard.js:121` opens on "This is you, and it is okay." followed by "No
+judgment. Nothing here grades you." That is his ruling, quoted in the file, and
+it reverses an earlier opening on "nobody is coming to save you". It stands,
+and the exception is bounded to the welcome: a person arriving at a mirror has
+already raised that fear before the page loaded, which is the condition the
+rule actually tests. Anywhere past the welcome, the rule holds without
+exception. `check.py` flags reassurances and rules on none of them.
+
+### V13. Sentence Case In Body, Title Case In Headers, And A Value Is Body
+
+    FAIL  ui/imprints.js:105   Nothing Held, 15 Installed
+    SHIPS ui/imprints.js:109   nothing held, 15 installed
+
+Recorded in the file: the row styling carried a capital on every word straight
+into the value, so a reading came back wearing a title. A value is never
+titled. `tests/design.js` watches all caps; nothing watches title case on a
+value, so this one is yours to see.
+
+### V14. One Word Per Concept, And A Real Distinction Keeps Its Own Word
+
+Delete or remove, never both. The canonical terms are in the UX skill: the
+empty state is "nothing held", a held address is "held", the person's data is
+"profile". Held, installed and firing are three states and stay three words.
+Run `python3 tools/terms.py` before you commit.
+
+### V15. A Refusal States What Failed, What It Means, And What Changes It
+
+No apology, no exclamation, one sentence where one will do. The model is
+already in the product and is the best refusal here:
+
+    SHIPS ui/release.js:80   You are looking at Sofia, which is a worked
+          example rather than your record. Switch to your own profile to run a
+          release.
+
+State, reason, route. And the shorter one, at `ui/drills.js:150`: "Nothing is
+held here, so there is nothing to release. The protocol opens once this address
+is carrying."
+
+**That model no longer ships, and his ruling is why.** On 25 September (BA9 in
+`TASKS.md`) he struck it above the Field as unnecessary text: a failure holds
+on screen, so it sat there long after the run that raised it. The collision is
+with this rule, and the ruling wins. The state moved onto the control that
+sets it, the profile picker, which reads "Sofia, example" while she is loaded,
+and the refusal kept what failed and why in one line:
+
+    SHIPS ui/release.js      Nothing released on a worked example.
+
+The route is the picker beside it. The story, save and setter refusals follow
+the same line, because they were written to follow this one.
+
+### V16. The Count Stated To Users Is 112
+
+The lower figure the codex counts is never printed in front of a person. It is
+in `check.py` so that no writer has to hold it, and the gate fails on it.
+
+### V17. A Figure's Label Is One Word
+
+    FAIL  ui/record.js      Ground opened, all time
+                             12
+                             addresses and channels opened at least once, from
+                             47 lines spoken. Your own horizon reads about 300,
+                             give or take 40.
+    SHIPS ui/record.js:96    Opened
+                             12 addresses
+                             opened at least once, from 47 lines spoken.
+
+    FAIL  ui/cone.js         Minutes planned, not yet done          30
+    SHIPS ui/cone.js:953     Planned                        30 minutes
+
+The record card is the corpse the rule was written against and it carried the
+second defect too: the horizon, about 300, was stated under the figure and
+stated again four lines below it in the Next block. Same number, twice, on one
+card, which is the "of the same 90 days" he was pointing at.
+
+His, and he asked for it by name. "The buttons still have that noodly text on
+them. 85 days kept, of the 90 days on your record. Of the same 90 days. We
+should need a rule never to write shit like that. Instead of 85 days kept,
+just one word. Recurring, missed, active, streak."
+
+**It is the resolution of a collision between two of his own rulings.** V7
+says a number carries its unit and, where it is a share, its denominator. The
+answer given to V7 was a second line of prose under every figure, so five stat
+cards became five paragraphs and the denominator was said twice in the same
+breath. Both rules are his and both stand. What changes is where each one
+lands:
+
+    the unit rides on the figure          85 days
+    the label is one word                 Kept
+    everything else is in the tooltip     or it is not needed
+
+Recurring. Missed. Active. Streak. Kept. Opened. Planned. Practised. Saved.
+Installed. A word that names what the figure counts, in the register a person
+would use out loud.
+
+**The mechanical half, and it is two halves.** A figure's label carries no
+comma, and it is one word. A comma in a figure's label is a sentence wearing a
+label's clothes: a comma means a second part and a name has one part. An
+article is not a word for this count, so "The core" is a label and "Ground
+opened" is not.
+
+**What this rule does not reach, said rather than left to be found.** An
+eyebrow over a paragraph is not a figure's label and stays as long as it needs
+to be: "How it runs through you" sits over prose and labels nothing that can be
+counted. The gate only reads a label that stands immediately in front of a
+figure, which is the shape a figure actually ships in, and it reads two of
+them: the row pair `['Minutes practised', l.minutes]`, and a label element
+standing immediately in front of an element the stylesheet sets in the numeric
+typeface. Both class lists are read off `shell/head.html` at run time, the
+label set from the rule that capitalises it and the figure set from the rule
+that gives it `var(--num)`, so neither can go stale when a class joins either
+rule. Only a selector that is the element itself counts as a figure: `.rec-big`
+is one, `.rit-sv-h b` is a row that happens to hold one, and the first cut of
+the gate could not tell them apart and reported "Today's ritual" as a figure
+label.
+
+**One thing it collides with, and the collision is the owner's to settle.**
+`COPY.md` rules two labels by name that carry a figure and take two words,
+"Filled in" and "Carrying", and its Label section allows two or three words.
+They sit on the Field rail with a figure beside each. This rule does not
+overturn a ruling, so they stand as written and the gate does not reach them.
+When he rules on it, one of the two documents moves.
+
+**And the unit is not the label.** "85 days" is one figure carrying its own
+unit. It does not become "85" with "days" promoted into the label, which would
+buy the one word rule by breaking V7. Read the pair out loud: "kept, eighty
+five days". If that is not a thing a person would say, the label is wrong.
+
+### V18. A Figure Carries No Interval, No Tolerance And No Decoration
+
+    FAIL  ui/analytics.js    Identification  58%  plus or minus 12
+    FAIL  ui/personas.js     swing 11
+    FAIL  ui/summary.js      of 100, plus or minus 11
+    FAIL  ui/record.js       Your own horizon reads about 300, give or take 40.
+    FIX                      the figure alone, and the range drawn beside it
+
+His, and he ruled it as a class rather than as two strings: "do a sweep of text
+like that. 100 plus minus 12, swing 11. That shit has to all go." A figure with
+a tolerance stapled to it is a lab readout and not copy.
+
+He ruled the replacement in the same breath, and it is the load bearing half:
+"give a pill to the lower right side of the number of the coherence slider,
+like it oscillates within the person's range." **The range is drawn, never
+stated.** An interval is a shape, and a shape is the one thing prose is worst
+at. Where the shape cannot be drawn, the fact survives in words with no figure
+in it: "The needle has play in it, so a small move is not a reading."
+
+The whole class was swept out on 21 September and the gate holds it closed. Two
+sentences that named the interval came out with it, because a sentence pointing
+at a figure that is no longer on the screen is a sentence about nothing.
+
+### V19. The Empty State Has One Wording, And A Refusal Is Not A Value
+
+    FAIL  ui/ui.js:490       masculine   not enough held to read   feminine
+    FIX                      masculine   \u2013   feminine
+    FIX   ui/drills.js       Neither side reaches 1, so no direction is
+                             named. Write what happened and both sides move.
+
+His: "the balance masculine feminine is broken. It says masculine, not enough
+held to read feminine. I do not understand what that bullshit means."
+
+Two defects in one string and they are worth separating, because only one of
+them is gateable.
+
+**The bucket.** A Refusal was sitting in a Value slot, and that slot is centred
+between two labels, so the eye reads one sentence across three elements. A
+value's empty state is a dash. `COPY.md` has said so since it was written: a
+dash is the honest glyph for not read yet, and it is not zero. The refusal
+keeps its full form one door away, in the drill, where there is room to say
+what failed and what changes it.
+
+**The wording.** Five phrasings of one state were in the product: not read yet,
+nothing read yet, not enough held to read, nothing measured, too little held.
+One concept, five words, which is V14 broken on the most read string in the
+app. The wording is **not read yet** as a value, and **Nothing read yet, so
+<what is absent>** as a sentence. The gate holds it.
+
+### V20. If You Cannot Use Regular Words To Describe It, Do Not Describe It
+
+    FAIL  ui/cone.js:752     The waist is 40 to 60 out of 100, where most
+                             people oscillate.
+    FIX                      The narrow middle is where most people sit.
+
+His sentence, and it is the rule. It collides head on with V7, which says every
+number carries its denominator, and **his ruling wins**: the point of V7 was
+that a bare 13 means nothing, not that every figure should be dressed in a
+scale. Where a plain sentence can say it, the plain sentence goes. Where it
+cannot, the number goes, and not the scale.
+
+The distinction that makes this scrubbable rather than endless: a small scale
+label under a figure is V7 working, and prose that hides behind a scale instead
+of saying something is the defect. Read every one out loud as a sentence and
+keep the ones that survive it.
+
+### V21. Speak To A Ten Year Old. Never Abstract Language.
+
+Ruled 27 September 2026, as a core theme and a blocker, in his words:
+
+> "Ensure you do a copy sweep right now. The copy is at a D for our tools, our
+> tips, as far as the information goes. That layer right there is missing a lot
+> of very key kind of simplification of language, right? We want to speak to
+> people as if they're 10. That is a core theme of ours. We don't use abstract
+> language ever, so add that. Make sure you do a sweep of all the copy and
+> update it. That will be a priority pass, seeing as how it's a blocker. That
+> needs to be for all of Atuned, for the tutorial and for onboarding."
+
+Logged as `CO-29` in `objections.json` and as JK in `TASKS.md`. It is added to
+the rules above and replaces none of them.
+
+    FAIL  engine/data/kb.js  Address. The specific location in the body's
+                             energetic architecture where a pattern is
+                             resident.
+    FIX                      Address. One exact place in your body where a
+                             pattern sits.
+
+    FAIL  engine/data/kb.js  Charge. Stored survival energy held at a node.
+                             Installed by a stress response that never
+                             finished. Felt as heat, pressure, tingling, or
+                             weight when accessed.
+    FIX                      Charge. Survival energy stuck at one place in the
+                             body. It gets stuck when a stress reaction starts
+                             and never gets to finish. When your attention
+                             reaches it, it feels like heat, pressure, tingling
+                             or weight.
+
+**The test is one question.** Would a ten year old understand this sentence
+without somebody first explaining a word in it? If not, it fails. Concrete
+beats abstract every time: a real body sensation, a real number, a real
+action. Never a category word standing in for one.
+
+**What it is not.** It is not baby talk, and it is not a licence to be less
+true. The subject stays adult and the words get small: simple words about
+complex things, never simple things in complex words. "A tight jaw before you
+are properly awake" is a sentence a ten year old understands and a clinician
+signs. Pass 1 still comes first. A plainer line that overstates the reading is
+a defect.
+
+**The names stay, and each one is explained once in words a child already
+has.** Address, pattern, charge, release, seat, fetter, Coherence, the band
+names: these are the product's names and one word per concept (V14) still
+holds. A plain word must never become a second name for a named thing. What
+fails is a name defined by more names. "An address in the body's energetic
+architecture" defines one term with three more; "one exact place in your body"
+defines it with words the person had before they opened the product.
+
+**Five operations, in order.** Each has a real corpse in the glossary.
+
+1. **Put the instance where the category was.** "Physical and observable"
+   becomes "heat, shaking, tears, a change in your breathing".
+2. **Turn the noun back into a verb.** "Reduction of internal contradiction"
+   becomes "fewer parts of you pulling against each other". A word ending in
+   -tion, -ment, -ity or -ness is usually a verb that has been embalmed.
+3. **Take the short word.** Location is place. Resident is sits. Operates is
+   works. Accumulated is built up. Utilise is use. The long word is almost
+   always the Latin one and the short one is almost always the one a child
+   says.
+4. **One new word per sentence, and it gets its meaning in that sentence.**
+   "A bundle of nerves, like the solar plexus behind your stomach."
+5. **A physical picture for anything that cannot be pointed at.** Distortion
+   is a straight stick that looks bent in water. Willpower is a battery. The
+   hull is his and it stays. A computer metaphor is not physical: "the
+   operating system underneath the operating system" became bedrock.
+
+**What the gate can hold and what it cannot, said plainly.** Whether a ten
+year old understands a sentence is a fact about the reader, and no pattern
+reads it. That is the rule itself and it is not gateable; it is entered in the
+guidance list of `objections.json` as `ten-year-old` and it is printed on every
+run as the fifth thing the gate did not check. Two parts of it are
+mechanical, and they are held:
+
+- **`abstract-word`, stop.** A short lexicon of words that are always an
+  abstraction standing in for a plain one: architecture, resident, operates,
+  construct, modality, framework, paradigm, facilitate, utilise, leverage,
+  optimise, aperture, correspondence, substrate, parameter, upregulate,
+  trajectory, dynamics, physiological, cognitive. Every one has a short word
+  that replaces it. The list was measured across the whole corpus before it
+  was trusted, and words the owner's own canon uses on purpose, alignment in
+  the definition of Coherence first among them, are left off it.
+- **`abstract` rate, reported and never failed.** The share of sentences
+  carrying a word ending -tion, -sion, -ment, -ness, -ity, -ance, -ence or
+  -ism, per file against the house rate. Checked against a known good and a
+  known bad case first: the funnel questions, which section 7 holds up as the
+  model, ran 12 per cent of sentences and the old glossary ran 44 on the day
+  it was measured. A rate points at the file to read first. It does not say a
+  line is wrong.
+
+**And the gate was blind to the table this rule was written against.** The
+voice gate read only single quoted literals, and the glossary is double quoted
+JSON, so none of the fifty six definitions had ever been checked by it. An
+apostrophe inside a definition also split the file into junk spans. The data
+tables are now read with a string walker that knows both quotes. A rule about
+plain words is worth nothing if it cannot see the definitions.
+
+### V22. Two Readers On One Line. A Weight Carries Its Word And Its Picture.
+
+Ruled 27 September 2026, round JX in `TASKS.md`, as a sharpening of V21 and
+not a rule beside it. His words:
+
+> "I think speak to like where a 10 year old has to do two things. it has to
+> be articulate and contextual. It has to provide knowledge and information,
+> practitioner needs to be able to understand it. and the layman needs to be
+> able to understand it. and we can't speak to them in abstract terms that our
+> meaningless to them. So we can't say six point three weight, when that
+> doesn't say anything. We need to say something like heavily impaired,
+> heavily blocked, right? We can use iconography to show um, given example,
+> uh, the iconography within the summaries, I think would be a fantastic kind
+> of way to like paint the picture. Because it adds a visual to the narrative."
+
+Logged as `CO-30` in `objections.json`. The ladder his example stood in for
+was named in round KD, below, and is called node state.
+
+**V21 had one reader. This has two, on the same line.** A practitioner who
+needs real information, and a layman who needs to just get it. Neither is
+served by writing down to the other, and neither may be told something the
+other is not. V21 holds in full: articulate, contextual, never abstract. What
+V22 adds is that a bare figure fails both readers at once. "6.3" means nothing
+to the layman. To the practitioner it is a number with no scale to check it
+against.
+
+So a figure a person reads about themselves ships as three things, and each
+reader takes the part built for them:
+
+    the node state  the layman reads it on sight     heavily impaired
+    the figure      the practitioner reads it        7.4
+    the picture     both read it before any word     the icon and its ring
+
+    FAIL  ui/summary.js:263  That reaches the body at the anterior heart, on
+                             the fear axis, at a weight of 7.4.
+    FIX                      That reaches the body at the anterior heart, on
+                             the fear axis, heavily impaired at a weight of
+                             7.4.
+
+    FAIL  ui/rings.js:1056   Heaviest pattern. Weight 7.4
+    FIX                      Heaviest pattern. Heavily impaired, 7.4
+                             [drawn in the ring, on the pattern's own glyph]
+
+**The ladder is ruled, and it is called node state.** Round KD in `TASKS.md`,
+his words: "Yeah, we use that let's call it node state instead of band
+ladder. Node state would be open impaired moderately impaired heavily
+impaired blocked." Five rungs, lightest to heaviest:
+
+    open   impaired   moderately impaired   heavily impaired   blocked
+
+This retires the placeholder. V22 first shipped with "heavily blocked", his
+example from round JX, standing in for a ladder he had not named. It is not a
+rung and is not written again. The words are lower case in the table and take
+a capital only where they open a line.
+
+**The words are ruled. The lines between them are not.** He named five rungs
+and no figures. Where a weight stops being moderately impaired is his call,
+and until he makes it no surface prints a node state. Pass 1 still comes
+first. A node state that overstates the figure beside it is a lie with a
+picture on it. The examples above use 7.4 and not his 6.3 for that reason:
+7.4 reads heavily impaired under every split on the table, and 6.3 does not.
+
+**The split on the table is a proposal, and its name says so.**
+`NODESTATE_PROPOSED` in `engine/data/canon.js` puts three of the four lines
+where the engine already draws them on the same 0 to 10 scale:
+
+    open                  0.0     nothing held
+    impaired              0.1 up  charge entered, under the line at 4.
+                                  compute.js rules that charge reportable,
+                                  BELOW THE LINE, so it may not read open
+    moderately impaired   4 up    where an address starts to carry. Every
+                                  surface already counts held here
+    heavily impaired      6.5 up  the hyper gate in compute.js, one complex
+                                  already running hard, and the midpoint of
+                                  4 and 9. The weakest of the four
+    blocked               9 up    where rings.js, component.js and
+                                  imprints.js already draw an address hot
+
+The other split on the table is five even steps of 2. It reads charge a person
+entered as open, which is the failure BELOW THE LINE records, and it puts
+blocked at 8, off the line the renderers already draw hot. The table is
+renamed `NODESTATE` when he confirms or moves the lines, and not before.
+
+**The word is read off the figure, never chosen for it.** This is how two
+readers are told the same thing. One table in `engine/data` maps a figure to
+its word, and every surface asks that table. `nodeStateOf` in
+`engine/data/canon.js` reads the node state off the figure the screen prints,
+`toFixed(1)`, so 3.96 prints 4.0 and reads at 4. The CQ tiers already work
+this way: `tierOf` reads the word off the number the screen prints. The corpse is recorded above it. The word and the figure used
+to disagree at the half point, "CQ 71, gaining" beside a row reading "Gaining
+61 to 70", in 35 of 625 runs on the IK audit of 27 September. That is what a
+contradiction between the practitioner and the layman looks like on a screen.
+A node state picked by a writer per surface would put it on every surface.
+
+**The picture is Summary's, and he named it.** The object already exists.
+`cr()` at `ui/component.js:194` draws every figure on Summary as one thing: an
+icon, a ring carrying the share as an arc, and a pill carrying the number, and
+`ui/summary.js:54` states the rule that surface keeps: nothing on it prints a
+bare figure. Where a surface carries a figure and has room for that object,
+the figure ships inside it. Take the glyph from `SEATGLYPH` in
+`engine/data/canon.js` and do not draw a new one: a second drawing for a thing
+that already has an icon is a second name for it, which is V14 in a picture.
+Icons are ring, not fill.
+
+Where there is no room for a picture, in a sentence or a tooltip, the node
+state does the picture's job alone. A figure in prose never ships without its
+word.
+
+**How it sits with the rules it touches.**
+
+- **V8 holds.** The word does not turn a weight into a score. "Heavily
+  impaired at a weight of 7.4", never "7.4 of 10, heavily impaired".
+- **V9 holds, from the other side.** V9 says a label on a person never stands
+  without its definition, its behaviour and its direction out, and a node
+  state is a label on a person. V22 says a figure never stands without its
+  node state. The three things V9 asks for belong in each rung's table entry,
+  the way `TIERDEF` carries `def`, `energy` and `toward`, and ride one door
+  away, in the tooltip or the drill. They are not written yet. The table
+  carries the word and its floor and nothing else, which is the second reason
+  no surface prints a node state today.
+- **V17 holds.** The label stays one word. The node state rides on the value
+  the way the unit does: "Weight" over "heavily impaired, 7.4".
+- **V20 decides first.** Whether a figure appears at all is still V20's call.
+  V22 decides what it wears when it does.
+- **Section 5, rule 6, is not overturned.** Pass 7 and pass 8 still never
+  resolve against each other. V22 does not ask one sentence to please Angela
+  and Derek both. It gives each a part of the line: the word and the picture
+  are Angela's, the figure is Derek's, and a table makes them agree. Where
+  Derek needs more than the figure, the arithmetic, that is still a separate
+  Definition string, one door away.
+
+**What the gate can hold and what it cannot.** `bare-weight` in
+`objections.json`, run by `--objections`, flagged and never failed. It reports
+a literal ending on weight, weight of, charge held or charge left, where a run
+time figure lands, and the rendered "weight 6.3", when no node state is in
+the same string. It clears on impaired and blocked, which covers four rungs.
+It does not clear on open, which in this product is also a verb and a plan
+word, "Rerunning anything already open costs nothing", so it would clear
+lines on a word that means something else. A weight at open prints 0.0,
+which the product rarely prints, and a false flag there is one a person
+clears. It is a flag and not a stop for three reasons. The lines between the
+rungs are not ruled, so a stop would make every writer pick a node state per
+surface by eye, which is the contradiction above. The sweep reads each literal apart,
+so a node state written after the value, in the next literal, is not seen and
+the flag is false there. And the picture is not text. It reaches weight and
+charge, the two he named, and nothing else: a percent match, a pain figure and
+"Waiting to land" are outside it. Whether one line lands for both readers, and
+whether the icon is on the screen, is `two-readers` in the guidance list. Read
+it as Derek and as Angela with a profile loaded, and look at the shot.
+
+Checked against known good cases before it was trusted, the ones it must not
+fire on: `KB_OF` in `ui/knowledge.js`, "of the mask at full weight", where the
+figure comes first; the "By weight" sort control; the "Shadow weight" label;
+the "What it weighed" eyebrow; "No mask carries weight yet". And "Heaviest" is
+a rank and not a band, so it does not clear a line.
+
+**The sweep that applies it is separate work.** Every bare weight the flag
+reports sits in a renderer, and most of those files are held by other seats.
+The ladder is ruled now. It waits on the lines between the rungs, on the V9
+three for each rung, and on those files. Read the count off the run.
+
+### V23. A Symbol Never Stands Alone. Unpack It, In The Same Place.
+
+Ruled 2 October 2026, round PO, for all information across the board. His
+words, on the first card he opened:
+
+> "The blueprint you were born on reads Earth, which is the architect route on
+> life path nine. There's a bunch of assumptions here that the person has to
+> make. You have to unpack blueprint. They don't know what that means. Earth,
+> they don't know what that means. Architect, they don't know what that means.
+> And they don't know what life path nine."
+
+And on a line of the Compass: "Love generated from within, what does that
+mean? Freely given, what does that mean? No transaction, what does that mean?
+Light that has a source, what does that mean? So meaning is missing."
+
+    FAIL  The blueprint you were born on reads earth, which is the Architect
+          root, on life path 9, the one who completes.
+    FIX   the same sentence, then, in the same paragraph: Blueprint is the
+          pattern you started with, before life added anything. A symbolic
+          reading is a meaning an old system gives to a date or a name, and
+          nothing in your body is measured to get it. Earth is the element of
+          Taurus, Virgo and Capricorn, and it stands for steady, solid and slow
+          to move. Architect is the root that builds order and keeps it.
+          Numerology claims a 9 is the one who completes what others abandoned.
+
+    FAIL  Love generated from within. Freely given. No transaction. Light that
+          has a source.
+    FIX   Love generated from within. The warmth does not depend on getting
+          something back. Freely given. It is given with no expectation of
+          thanks or return. No transaction. Nobody keeps score of who owes whom.
+          Light that has a source. The care comes from inside the person and
+          does not need a room to reflect it.
+
+**One table, three shapes, never a link.** The meaning is in `engine/data/gloss.js`
+and nowhere else is a meaning written. A line that has room prints the sentence
+after the term, set in the quieter size. A line with no room makes the term a
+carrier of the sentence, the one tooltip the product already has, with its dotted
+underline, which opens on hover, on a tap and on keyboard focus. A claim that is
+itself a phrase, a pole line, is cut into its phrases and each is printed with
+its meaning in one paragraph, from `POLE_MEANS` in `engine/data/compass.js`. The
+meaning is never behind a link to another page.
+
+**A claim says whose claim it is.** The sun, moon and rising positions are
+computed from the sky. What a sign or a number means is an old system's say so,
+so the sentence says "astrology claims" and "numerology claims", and the
+blueprint says it is a symbolic reading and not a measurement. A meaning that
+states a mechanism is held against the arithmetic in `tests/engine.js`: the 88
+degrees, the 64 gates, the masters kept at 11, 22 and 33.
+
+**A count in a meaning is read off the table it counts**, and never typed.
+
+**What the gate can hold.** `tests/unpack.js` opens the surfaces in a real
+Chromium and fails when a seeded term stands on one with no meaning beside it,
+and `tools/unpack-walk.js` finds the terms nobody seeded. Whether a stranger
+understands the sentence is the same fact about the reader that V21 records, and
+it is not gateable.
+
+---
+
+## 3b. His Objections, As A Database
+
+"create a log of all the times I said I do not like this copy type. Create a
+database, sweep for it, and kill it. And add that to the style guide."
+
+The last clause is this section. The other three are three files.
+
+    COPY-OBJECTIONS.md    the log, and COPY-OBJECTIONS.html is the same
+                          content for reading rather than for diffing
+    objections.json       the database, beside this file
+    check.py --objections the sweep, and it is the gate
+
+**The database is the source and the log is a build product.** Both are
+rendered by `tools/objections.py`, which imports the sweep rather than
+carrying one, so the log cannot disagree with the database and neither can
+disagree with the product. A log kept by hand beside a database read by a
+program is the defect this repository has been bitten by twelve times in
+another coat.
+
+**Every rule cites the objection it comes from**, by entry id, and every entry
+carries his wording verbatim with the file and line it is recorded at. Where a
+class was taken from a ruling with no quotation behind it, the entry says so
+and says what it was inferred from. Nothing in the log is remembered.
+
+**A rule nobody can express as a check is guidance, and it is named.** They
+sit at the foot of the database, and the count is read off the run: this line
+said nine while the list carried eleven. Among them are the bucket half of V19,
+whether a heading is a thing a person would say, text over a graphic, a legend
+nobody asked for, the AI six itself, and V22's two readers. They are written down rather than dropped, and they are not
+turned into a bad pattern, because a tool that lies is worse than no tool.
+
+**A rule enforced somewhere else is cited, not rewritten.** The figure label,
+the naked number, the em dash, the count, the caps, the soft lexicon and the
+preamble are all in the gate above. The verdict rule is in
+`marketing/refuse.js`. Terminology drift is `tools/terms.py`. One word per
+concept applies to tools as much as to copy.
+
+**Read the counts off the run.** No figure from that sweep is written into this
+file, and the rules that read zero are the ones doing the most work: a class
+swept out and then held closed is what a gate is for.
+
+---
+
+## 3c. The Brief, As Layers
+
+"We need to do a copy sweep. This is the copy engine that needs to be
+developed and then utilized on the product." And, on 1 October: "You have a
+document that gives you rules. I gave that to you earlier."
+
+The document is `CREATIVE-BRIEF-voice.md`. Every rule above reads one line in
+isolation. The brief reads a line by where it sits: a tooltip owes the person
+one idea, a reading owes them qualified language and a next step, a failure
+owes them a route and no comfort. A writer had to hold that in their head.
+Now the gate holds it, as a mode of the same gate and not a third system.
+
+    python3 .claude/skills/atuned-voice/check.py --brief atuned_src/ui \
+        atuned_src/engine atuned_src/shell funnel/*.html funnel/questions.js
+    ... --brief PATHS --json FILE        the same, machine readable
+    ... --brief PATHS --baseline         fails only on a new stop or flag
+    ... --brief PATHS --write-baseline   records today as the baseline
+    ... --brief --line "..." --layer L   one candidate line, in one layer
+    ... --brief --rules                  every rule, a failing and a fixed line
+
+**Every string gets a layer and a mode, and the reason for both.** The layers
+are the brief's own: tooltip, label, information, mirror (its summary or
+mirror layer), discovery, play, flow, embody, button, notification, status
+(its error and system states), metric. The mode is the station of the loop the
+string is read in, DISCOVER, PLAY, FLOW, EMBODY or none, and it is read off
+`TABDEF` in `engine/core.js` at run time, so a tab that changes section takes
+its strings with it. Nothing about the bar is typed into the gate.
+
+**The layer is decided by the first of these that answers.**
+
+    1  what the string is     a status() argument is status, a title or
+                              data-tip is a tooltip, text in a <button> is a
+                              button, a tab or a pressed toggle is a menu
+                              button, a heading or eyebrow is a label
+    2  the function           where a file mixes jobs: AV_ASK is discovery,
+                              STARTD is the doors, the tutorial's cards each
+                              carry their own station
+    3  the data table         GLOSS is information, the letting go cards are
+                              flow, PRACTICE is embody, PEOPLE is quoted
+    4  the file's job         one layer for the whole file, or a split: a
+                              prompt is the file's station, a sentence to the
+                              person is mirror, the rest information
+    5  UNCLASSIFIED           reported by file. Never guessed.
+
+A prompt in a renderer every tab opens, the drills or the controls, stays
+UNCLASSIFIED, because which station an instruction serves cannot be told from
+where it lives. A worked example's own story is **quoted**: somebody else's
+sentence, carried by the product, and no rule about the product's voice
+applies to it.
+
+**Three severities, and only two are mechanical.**
+
+    stop     a certain defect. The brief or the house names the phrase.
+    flag     a probable defect. Counts against the gate.
+    review   a question for a person, written out. Never fails anything.
+
+**The rules.** Each carries the brief section it comes from and a failing and a
+fixed line, the way the micro rules above do. Where the failing line is the
+brief's own Avoid, it is quoted. The list is printed by `--rules`; the count
+is not written here.
+
+    release-language   4, 1, 11   Let go of the charge.
+                                  Release the charge.
+    button-verb        5          Begin Your Transformational Journey
+                                  Begin
+    mirror-identity    5          You are afraid of confrontation.
+                                  You may be avoiding confrontation because
+                                  something about the outcome feels unsafe.
+    diagnosis          5, 8, 3    Your symptoms point to a trauma disorder.
+                                  You reported pressure in your chest three
+                                  times this week.
+    shame              5          You failed again because you are weak.
+    certainty          15.7       This will always hold you back.
+    evidence           6          This reveals a fear of disappointing people.
+                                  The situations seem to share a concern about
+                                  disappointing other people.
+    avoid-list         3          Unlock your full potential and step out of
+                                  your comfort zone.
+    readability        3          about ninth grade, Flesch Kincaid, shown as
+                                  its two halves: what the sentence adds and
+                                  what the words add, with the long words named
+    tooltip-one-idea   5, 14      one idea, prefer one sentence. A leading
+                                  name, "Coherence.", is the term and not a
+                                  second idea
+    next-step          15.10      a failure with no route, a full reading with
+                                  no next step. Review, because V15 lets the
+                                  control beside a refusal carry its route
+    error-plain        5          Oops, something went wrong. Take a breath.
+    notification-plain 5          Don't miss out. Your streak is about to end.
+    familiarity        13         We know exactly how you feel, friend.
+    somatic-metric     5, 12      a body word in a figure's line. Review
+
+**The brief's twelve generation steps, section 15, and what holds each.**
+
+    1  identify the writing layer        the classifier, or UNCLASSIFIED
+    2  identify the stage of the journey the mode, off TABDEF
+    3  the job of the sentence           not checked. Pass 2, the bucket
+    4  the simplest language             readability, and V21's lexicon
+    5  start from the user's experience  not checked
+    6  observation from interpretation   evidence
+    7  no unsupported certainty          certainty, and evidence
+    8  preserve agency                   mirror-identity, shame, diagnosis
+    9  somatic only when it serves       somatic-metric, and the share of
+                                         body words per layer, printed
+    10 a next step when appropriate      next-step
+    11 remove unnecessary words          the house sentence rates, preamble
+                                         and filler
+    12 concrete over inspirational       avoid-list, and V21
+
+Every string the brief engine reads also goes through `scan()` and his
+objections, so a house finding lands in the same report under a layer. The
+avoid list does not repeat the soft lexicon: a term `check.py` already holds
+is held there.
+
+**The avoid list leaves the canon alone, on purpose.** Soul, spiritual,
+source, energy, seat, charge, balance and coherence are his words and are on
+no list. Two of his brand sentences meet the self help list head on, "You are
+already the most powerful version of yourself" and "We help you become the
+best version of yourself", both in `BRAND.md` section 1. They are flagged so
+they are seen and never stopped, on the precedent V12 set for his welcome.
+
+**The baseline.** `--write-baseline` records every stop and flag finding,
+keyed by rule, file and the string itself, never by line, so a string that
+moves is not new and a second copy of a known one is. `--baseline` fails only
+on what is new. A review never counts. This is a different flag from the bare
+`--baseline` in section 6, which prints the house distribution and is
+unchanged.
+
+**It was checked against known good cases first, and it was wrong before it
+was trusted.** `test_brief.py` runs the order the repository asks for:
+
+    1  the brief's own approved lines, each in the layer its heading gives
+       it, must pass every brief rule. Its Avoid lines must fail
+    2  every rule against its failing line, its fixed line, and edge cases
+    3  the classifier against real strings in the product
+    4  real product files with defects put in on purpose: those come back
+       as new findings, and nothing else does
+    5  the old modes: --objections, --line and --baseline answer as they did
+
+What the known good case caught, kept here so the next extension does not
+repeat it. GLOSS went into the tooltip layer because it looks like TERM to
+SIMPLE MEANING, and most of its rows failed one idea per tooltip;
+`knowledge.js` renders it as a row and never on hover. The brief's own "You don't have to erase what
+happened" was flagged as erasing a memory, because the house negator guard
+did not know the contraction. The brief's own fifteenth section question
+graded 13.5 because "something" was counted as three syllables. And the
+mirror rule fired on items in `funnel/questions.js`, the model section 7 holds
+up, until it learned that a discovery item is offered for the person to refuse
+and a reading is not.
+
+**And it found what the house gate could not see.** The house harvest drops
+any literal carrying `=`, `{`, `}`, `#` or `;`, which is every string of
+markup with a class on it. "Sit down. Take ten slow breaths. Relax." ships on
+the first card in `ui/onboard.js` inside `<p class="ob-p">` and fails V2, and
+`check.py atuned_src/ui/onboard.js` does not see it. The brief engine walks
+the markup, and the house rules ride along on what it finds. The house
+harvest is left as it was, because changing what it reads would move every
+number it has ever printed; the brief run is where those strings are read.
+
+**What it cannot judge, printed at the end of every run.** Whether a reading
+is true. Whether a layer the split put a string in is right: read the reason
+it gives. Observation against interpretation beyond the words that mark them.
+Whether the person's own words were used where they would land. Whether body
+language serves the task. Whether an empty state manufactures insight.
+Whether the line helps a person see, understand, experience or choose. And
+the grade is an estimate off syllable counts: a canon name is not a hard word
+to him.
+
+**Where the brief and the rulings disagree, the gate does not settle it.**
+The release protocol's own statement is "I am letting go of believing", ruled
+in `DECISIONS.md`, and the brief says release, never let go. Integrate is a
+button verb in the brief and names no string in `COPY.md` round GS. The brief
+types em dashes and capitals in its examples. Each is flagged, never stopped,
+and each is a question in `COPY-SWEEP-FINDINGS.md`.
+
+---
+
+## 4. The Seats And What They Read
+
+`TEAM.md` has eighteen seats. Seven of them write or rule on writing. A general
+style guide becomes a specific one at exactly this point: what a person has
+read decides what they reach for, and it decides what they cannot see. The
+blindness column is the load bearing one. Nobody is hired for their library
+alone.
+
+**June Okonkwo-Lund, 46, narrative director.** Poetry, then technical writing,
+then twenty years finding out they are the same job at different distances.
+
+- *Reads:* Klinkenborg, *Several Short Sentences About Writing*, which is the
+  one actually reached for. Orwell, *Politics and the English Language*. Le
+  Guin, *Steering the Craft*. Basho and Issa, which is where compression and
+  the Japanese substrate both enter. Zinsser. The original Mac HIG. A folder of
+  screenshotted error messages that is a real folder.
+- *Good at:* cutting, the refusal, the empty state, and where a sentence
+  breaks. Hearing a person's own words and giving them back.
+- *Blind to:* compression that has gone past the reader. A nine word sentence
+  that a level 5 cannot parse is not tight, it is broken, and she will defend
+  it because it sounds finished. She also prefers the line that lands to the
+  line that is true, which is why pass 1 exists and is first.
+
+**Noa Ferreira-Blake, 45, brand director.** Owns what the thing is before it is
+anything it does.
+
+- *Reads:* Paul Rand's IBM and UPS rationales, for the argument and not the
+  mark. Vignelli's *Canon*. Otl Aicher. Kenya Hara on Muji, which is a brand
+  built on the absence of branding and is the nearest reference this product
+  has. Ries and Trout, *Positioning*. Byron Sharp, *How Brands Grow*, as the
+  counterweight to everything romantic. Rory Sutherland.
+- *Good at:* the one true sentence, naming, refusing the category cliché, and
+  saying what we are not, which does more work than saying what we are.
+- *Blind to:* the second screen. Brand reads the first four seconds and stops.
+  She has no instinct for instruction copy at all, because a promise has no
+  imperative mood, and she will approve a hook that becomes a label a person
+  re-reads four hundred times.
+
+**Theo Lindqvist, 41, marketing director.** Reach, positioning, the story
+outward.
+
+- *Reads:* Ogilvy, *Confessions of an Advertising Man*. Bernbach's internal
+  memos. Howard Gossage, for the refusal to shout. Eugene Schwartz,
+  *Breakthrough Advertising*, whose five levels of awareness map almost exactly
+  onto the ten level grid in `BUYERS.md` and are the reason he reads that grid
+  faster than anyone. Dave Trott.
+- *Good at:* the first four seconds. Proof over claim, which in this category
+  is the only available asset. Answering the objection inside the material
+  rather than in a rebuttal.
+- *Blind to:* durability. An advertisement is read once and a label is read
+  four hundred times, and he writes both the same way. He also reaches for
+  urgency under pressure, which in this category is counter signalling and is
+  ruled out.
+
+**Camille Boucher, 44, sales director.** The funnel, the tiers, the conversion.
+
+- *Reads:* Stripe's documentation, for a paid product explaining itself without
+  persuading. Basecamp's pricing pages. Chris Voss. Cialdini, read as a list of
+  things not to do.
+- *Good at:* the upgrade sentence written as a service rather than a push.
+  Naming a drop off as a specific failure with a name on it. Refusing
+  manipulation, which here is disqualifying and not merely distasteful.
+- *Blind to:* the refusal register. A salesperson's reflex at a wall is to
+  soften it, and a refusal that apologises has claimed the product did
+  something wrong by having a limit.
+
+**Ngozi Achebe-Lindgren, 54, game director.** The loop, progression, session
+shape.
+
+- *Reads:* Koster, *A Theory of Fun*. Schell, *The Art of Game Design*. Bogost
+  on procedural rhetoric. The *Dark Souls* item descriptions, which are the
+  best compressed diegetic writing in the medium. Nintendo's first party
+  tutorial copy, which teaches a mechanic in six words and never praises.
+- *Good at:* copy that teaches a mechanic in one line. The streak line. The
+  line on a first that is a dated fact and not a compliment.
+- *Blind to:* praise. A game says "nice". This product reads a nervous system
+  and may not, because praise from an instrument is a reading it did not take.
+
+**Ilse Coetzee-Nakamura, 52, CQ.** Whether the model the product asserts is
+defensible by somebody not already convinced.
+
+- *Reads:* tantric ritual manuals in Sanskrit, and forest plots. Gawande on
+  checklists. She owns the word "measurable" everywhere it appears.
+- *Good at:* provenance, the evidence tier, the falsification list, and handing
+  back the sentence she will sign instead of the one she killed.
+- *Blind to:* rhythm. She will return a sentence that is true and unsayable.
+  Twice in her first pass the replacement was better copy than the line she
+  killed, because the real mechanism was more physical than the invented one.
+  That is the case for running her before the cut and not after.
+
+**Ines Halldors, 44, creative director.** Holds the line between beautiful and
+true, and says yes and no.
+
+- *Reads:* not a library. One habit, and it is the standard: she reads every
+  line as the person on the worst day of their year.
+- *Good at:* killing the line the room has fallen in love with.
+- *Blind to:* nothing that matters here, which is why she is the tiebreak and
+  not a pass.
+
+---
+
+## 5. The Ten Passes
+
+"Simulated it ten times before they gave us an answer."
+
+**Ten polishes are not worth doing.** Ten passes of the same question converge
+on the average of the ten, and the average of ten good answers is the AI six.
+That is exactly what the smoothness is: no pass ever lost, so no pass ever
+decided anything. A line that has been through ten polishes has had every edge
+that could offend anyone taken off it, and the edge was the content.
+
+**Ten different questions are worth doing,** because they disagree, and a
+disagreement has to be settled by a rule, and the rule leaves a mark on the
+line. The mark is the thing the owner is asking for.
+
+So: ten questions, in this order, once each.
+
+    1   Is it true          Against what the engine computes. Name the field.
+                            A beautiful sentence that overstates a reading is
+                            a defect and a lie.
+    2   Which bucket        One of seven. If it is two, it becomes two strings.
+    3   Where in the loop   Discover, play, flow, embody. A string that serves
+                            none of the four is a string nobody needs.
+    4   The Encarta pass    E1 to E7. Definition first, present tense,
+                            concrete nouns, units, no throat clearing. Strip
+                            every trace of stance.
+    5   The warmth pass     W1 to W6. Move the subject. Add the cost. Admit
+                            the limit once. Add one route out.
+    6   Cut                 Fewest words that stay true. Your first draft is
+                            twice as long and you know it.
+    7   Read it as Angela   Level 5, six modalities, wants magic. Does she
+                            stay on the screen or decide this is homework.
+    8   Read it as Derek    Level 7, endurance, wants the diagnostic. Does he
+                            believe the number, or spot a claim with no
+                            instrument behind it.
+    9   Read it as James    Level 3, third turnaround, defended. Does he feel
+                            described or accused.
+    10  Out loud, standing  At the speed of speech. Where does the break land.
+                            Reading it in your head is not reading it.
+
+Passes 7 to 9 use the six reference cases that are already in the product, in
+`ui/personas.js`. Sofia, Diane, Marcus, Angela, Derek and James. Load the
+profile and read the line on the surface with that person's numbers in it.
+A line that lands for all three of Angela, Derek and James is rare and worth
+keeping.
+
+### When Two Passes Disagree
+
+Do not average them. Averaging is how the six happens. Settle it on the
+precedence below and record which pass lost.
+
+1. **Pass 1 beats everything.** A truer line that reads worse ships. There is
+   no exception and it is not a matter of degree.
+2. **Pass 2 beats 4, 5 and 6.** A string doing two jobs is not fixed by better
+   words. It is split.
+3. **Pass 9 beats pass 7.** Losing Angela costs a sale. Accusing James harms a
+   person who came to look at himself. `BUYERS.md` says level 3 is not the
+   market, which makes this cheap to get wrong and is the reason it is written
+   down.
+4. **Pass 10 beats pass 6.** If the cut killed the break, put the word back.
+   Rhythm is not decoration; where a sentence breaks is what makes it land.
+5. **Pass 3 beats pass 5.** If warmth has added a sentence that serves no
+   station of the loop, warmth added furniture.
+6. **Pass 7 and pass 8 do not resolve against each other, ever.** Angela wants
+   the reading and Derek wants the arithmetic, and a line that serves both is
+   usually a line that serves neither. This is not a tie to break, it is a
+   missing string: Derek's version is a Definition, Angela's is a Reading, and
+   the product has two buckets for exactly this reason. Write both.
+7. **Anything still open after that is Ines's,** and it goes to her as the two
+   candidate lines and the pass each one wins on. Never as a question.
+
+### What Changes Between Pass One And Pass Ten
+
+Pass 1 to 3 decide whether the string should exist. Most cuts happen here and
+they are cuts of whole strings, not words. Pass 4 to 6 decide the sentence.
+Pass 7 to 9 decide whether it survives contact with a person, and they are the
+passes that most often send you back to pass 1, because a line that Derek does
+not believe is usually a line that was never true. Pass 10 decides where it
+breaks.
+
+If nothing came back from passes 7 to 9, you did not run them. Read them on the
+surface with the profile loaded, not in your head at your desk.
+
+---
+
+## 6. The Test
+
+`python3 .claude/skills/atuned-voice/check.py`
+
+Three modes, and the first is the one that matters:
+
+    --baseline          what the shipping copy currently reads, and every hard
+                        failure in it
+    --line "..."        one candidate line against that baseline
+    <path> ...          one file or directory against that baseline
+    --all               every file in the corpus, ranked
+    --brief PATH ...    the brief: every string by layer, mode, rule and
+                        severity. Section 3c
+
+**No house number is typed into the gate or into this document.** The
+distribution a line is measured against is computed off the shipping copy on
+every run. This repository has been bitten nine times by a number typed into a
+document that the product then grew past, and a voice gate carrying a
+hardcoded median would have been the tenth. Read the rate off the run.
+
+### What It Checks Mechanically
+
+Hard failures, which are a red run:
+
+    em dash                 anywhere
+    the count               the figure below 112, in a user facing string
+    preamble                a line announcing that a thing is starting
+    soft                    the category lexicon, thirty terms
+    filler                  simply, kindly, please note, no worries, oops
+    bang                    an exclamation mark
+    caps                    all caps in copy, with the real initialisms exempt
+    naked number            a run time value with no unit, in rendered and in
+                            template form
+    abstract-word           V21, the lexicon, run by --objections
+
+Rates, reported against the house rate for the same measure, per file:
+
+    antithesis              X not Y, not X but Y, rather than
+    gloss                   , which is
+    it-is open              a sentence opening on a demonstrative copula
+    reassurance             flagged for a person to rule on, never failed
+    bare weight             V22, a weight with no node state beside it, run
+                            by --objections, flagged and never failed
+    abstract                V21, a sentence carrying an embalmed verb:
+                            -tion, -ment, -ity, -ness and the rest
+    sentence length         median, p90, p95, share over 25 words
+
+### What It Cannot Check, And Says So On Every Run
+
+Five things, and they are the five that decide it. The gate prints this block
+at the end of every run rather than producing a score, because a score with the
+unmeasurable part left out is a lie about how much has been checked.
+
+1. **Is it true.** No regex reads a claim against a reading.
+2. **Is it one bucket.** A string that is two passes every mechanical gate.
+3. **Does it land for Angela, Derek and James.**
+4. **Rhythm.** Where the sentence breaks.
+5. **Would a ten year old understand it** without a word explained first. V21.
+   The lexicon catches the words that are always abstract. It cannot catch a
+   sentence built entirely of short words that still says nothing concrete.
+   And V22: whether the same line serves the practitioner and the layman
+   without telling them different things, and whether the picture sits
+   beside the figure. The bare weight flag sees a missing word, and only in
+   the string it reads.
+
+### The Gate Was Checked Against Known Good Cases First
+
+The first cut of the naked number gate reported seven findings and five were
+wrong: it flagged `KB_OF` at `ui/knowledge.js:273`, which is the correct
+pattern and the one V7 holds up as the model, and a glued mid sentence
+fragment in `ui/panels.js`. It now requires a run time value immediately in
+front of the literal, and it reports two, both real. A tool that lies is worse
+than no tool. If you extend the gate, break a known good line with it first.
+
+### The Rest Of The Checking Is Already Built
+
+    python3 .claude/skills/atuned-voice/check.py --objections
+                                          his own objections, V18 to V20
+    python3 .claude/skills/atuned-voice/check.py --brief PATH ... --baseline
+                                          the brief, by layer, new findings only
+    python3 .claude/skills/atuned-voice/test_brief.py
+                                          the brief engine's own gate
+    python3 tools/objections.py           renders COPY-OBJECTIONS.md and .html
+    python3 tools/terms.py                terminology drift, V14
+    node tests/design.js                  all caps, type floor
+    ./atuned_src/BUILD.sh                 em dashes, and it is a build gate
+    node tools/shots.js OUT 1600 1000     then LOOK at the images
+
+---
+
+## 7. The Evidence
+
+Four before and afters off shipping copy. The rate figures are from a run of
+`check.py --baseline` on 20 September 2026 and are dated on purpose: run it
+again rather than quoting them.
+
+### The Release Opening. The Clearest AI Six In The Product.
+
+`ui/release.js:8` to `:11`. Seven lines, held 2.2 seconds each by `RUN.speed`,
+so 15.4 seconds of preamble before the first address appears. Quoted exactly:
+
+    var OPENING=['Welcome to release and reframe.','We will be here for a few minutes.',
+     'Find a quiet space. Sit back and relax,','and turn your senses inward to feel what is released.',
+     'As the words repeat, follow along in thought.','Feel what the body is doing as the energy goes.',
+     'Let us begin.'];
+
+Named against the rules, line by line, and this is what "it feels like AI"
+turns out to mean when it is made checkable:
+
+    1  Welcome to release and reframe.          V1. Reads the heading aloud.
+    2  We will be here for a few minutes.       V1, and it is vaguer than the
+                                                product: the previous screen
+                                                already prints the run length
+                                                computed from RUN.speed.
+    3  Find a quiet space. Sit back and relax,  V2. An outcome given as an
+                                                instruction, in the register of
+                                                the shelf the brand refuses.
+    4  and turn your senses inward to feel      V4, and the passive hides the
+       what is released.                        agent. Inward to where.
+    5  As the words repeat, follow along in     V6. Instruction and Definition
+       thought.                                 in one string.
+    6  Feel what the body is doing as the       V3. No mass, no direction, no
+       energy goes.                             address.
+    7  Let us begin.                            V1. Nobody says this.
+
+Proposed, and it is a finding for `TASKS.md` and not an edit, because another
+seat is in this copy right now:
+
+    var OPENING=['Sit down. Put both feet on the floor.',
+     'Each line names one pattern. Follow it in thought as it lands.',
+     'Keep some attention on your body, and notice which place answers.'];
+
+Three lines, 6.6 seconds instead of 15.4. Every line is one bucket. The somatic
+work that line 4 was gesturing at is done by line 3 with a place in it. "In
+thought" is kept because it is already the product's term and V14 applies. The
+gate is clean on it:
+
+    $ python3 .claude/skills/atuned-voice/check.py --line "Sit down. Put both
+      feet on the floor. Each line names one pattern. Follow it in thought as
+      it lands. Keep some attention on your body, and notice which place
+      answers."
+      no hard failures
+
+### The Allowance Number
+
+    FAIL  ui/release.js:197    +((RUN.plan||[]).length)+' of your allowance'
+          renders as           25 of your allowance
+    FAIL  engine/plan.js:155   say:giftLeft+' of the gift left'
+          renders as           92 of the gift left
+    FIX                        25 patterns of the 92 you have left
+    FIX                        92 patterns left of the hundred
+
+V7. `planAllowance` already returns `left` and `of`, so neither fix needs a new
+field. The free grant is ten patterns a week against a run cap of twenty five,
+which is why the first one does not merely read oddly: it reads as a bill.
+
+### The Onboarding Card
+
+`ui/onboard.js:145` to `:146`, two of four cells:
+
+    FAIL  ['You write what happened','in your own words, not a questionnaire'],
+    FAIL  ['It finds where that sits','a place in the body, not a label'],
+    FIX   ['You write what happened','the day, in your own words'],
+    FIX   ['It finds where that sits','a named plexus or a named nerve'],
+    V21   ['It finds where that sits','one exact spot in your body'],
+
+V10. Measured, `onboard.js` runs antithesis at 14.3 per cent of its sentences
+and the demonstrative copula opener at 9.5 per cent, against a product rate of
+2.7 and 3.3. It is the worst file in the product on both, and it is the first
+screen a person sees. The fixed left cell is not new copy: it is already at
+`ui/component.js:412`.
+
+### The One The Repository Already Fixed
+
+    FAIL  ui/imprints.js:87    Nothing held. Write in the box and it gathers
+                               here.
+    SHIPS ui/imprints.js:89    You have not written anything yet. Whatever you
+                               write gets pulled apart and collected here.
+
+V5, and the file keeps the dead line in a comment so the rule can be read off
+the repair. That is the practice this whole skill is copying.
+
+### And The Counter Example, Which Is Where The Voice Already Works
+
+`funnel/questions.js`. A hundred items, and not one of them fails a gate. The
+reason is structural and it is the single most portable thing in this document:
+**every item is a physical event, in a body, in a room, on a day.** Not a
+trait, not a feeling, not a self description.
+
+    You hold a room well and then sit in the car a while before you drive.
+    Your hand is on the phone before you notice deciding to reach for it.
+    You say yes while your chest tightens, because no is going to cost more
+    than you have.
+    Somebody asks how you are and the answer is out of your mouth before you
+    have checked.
+
+That is Encarta's grammar, with Encarta's one prohibition lifted and nothing
+else added. Present tense. Concrete nouns. No adjective doing the work. The
+definition in the first clause. Second person, because the subject is reading.
+A cost named. No comfort anywhere.
+
+**And they are the longest copy in the product.** Measured: median 12 words
+against a house median of 6, p95 of 18 against 16, and zero hard failures. That
+is the most useful thing on this page and it is worth stating on its own line so
+nobody mistakes the gate's output for a target. Short is not the test. Naming an
+event is the test, and a sentence that names one is allowed to take twelve words
+to do it. A six word sentence that names no event is the shorter failure.
+
+When a line is not working, the fastest repair in this product is to ask what
+the physical event was, and write that instead.

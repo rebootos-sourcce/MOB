@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Compass, three ways to draw it</title>
+<!-- ============================================================
+     proto/flow-bc/compass.html
+
+     BC4, asked with the drawing. His words: "the compass is about the
+     integrity and intention and expression, I don't know how to visually
+     show those yet, maybe you have ideas."
+
+     Three answers, side by side, same profile, real numbers. The engine is
+     referenced at ../../engine.js and never copied. Nothing in atuned_src
+     is touched and nothing is fetched.
+
+       integrity   CQ, the 21 laws summed over 210            (R.CQ)
+       expression  CQ times what the shadow leaves             (R.EX = CQ x (1 - PULL))
+       intention   R.It x 10 as the engine reads it today, which is the same
+                   21 laws taken seat by seat, so it sits within a few points
+                   of integrity for everybody in the roster. The slider says
+                   so and lets the figures be seen when the two part. A what
+                   if is labelled a what if and is never printed as a reading.
+
+     Colour means seat everywhere in this product, so the three quantities
+     are told apart by shape: intention a chevron, integrity a ring,
+     expression a dot. The shadow is the one warm wash.
+     ============================================================ -->
+<style>
+:root{
+ --bg:#0C0D12; --ground:#101010; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.16);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A; --accent:#7EB8D4; --shadow:#D6524C; --tap:44px;
+ --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif; --num:ui-monospace,'SF Mono',Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5}
+.top{display:flex;align-items:center;gap:14px;padding:10px 16px;border-bottom:1px solid var(--edge);flex-wrap:wrap}
+.top h1{font-size:18px;margin:0;font-weight:600}
+.top select{background:var(--panel);color:var(--ink);border:1px solid var(--edge-2);border-radius:8px;min-height:var(--tap);padding:0 10px;font:inherit;font-size:15px}
+.what{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--edge);flex-wrap:wrap}
+.what p{margin:0;color:var(--mid);font-size:15px;max-width:72ch}
+.what label{font-size:15px}
+.what input[type=range]{width:240px;min-height:var(--tap)}
+.what output{font-family:var(--num);min-width:3ch}
+.what .tag{font-size:13px;color:var(--bg);background:#DABF6A;border-radius:6px;padding:1px 8px}
+.row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:12px}
+.card{background:var(--panel);border:1px solid var(--edge);border-radius:14px;padding:14px;display:flex;flex-direction:column}
+.card h2{font-size:17px;margin:0;font-weight:600}
+.card .sub{color:var(--dim);font-size:14px;margin:2px 0 8px}
+.fig{background:var(--ground);border-radius:10px;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center}
+.fig svg{width:100%;height:100%}
+.read{margin:10px 0 0;display:grid;grid-template-columns:22px 1fr auto;gap:4px 8px;align-items:center;font-size:15px}
+.read b{font-family:var(--num);font-weight:500}
+.read .wf{color:#DABF6A;font-size:13px;margin-left:6px}
+.say{margin:10px 0 0;color:var(--mid);font-size:15px}
+.trade{margin:10px 0 0;padding-top:10px;border-top:1px solid var(--edge);font-size:15px}
+.trade b{font-weight:600}
+@media (max-width:980px){.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="top"><h1>Compass</h1><span id="who" style="color:var(--mid)"></span>
+ <label for="psel" style="margin-left:auto;color:var(--mid)">Profile</label><select id="psel"></select></div>
+<div class="what">
+ <p>Intention has no measurement of its own yet. As the engine reads it today it is the 21 laws taken seat by seat, so it lands within a few points of integrity for everyone in the roster, and every figure below draws the two nearly on top of each other. Drag to see what each figure does when they part.</p>
+ <label for="wi">Intention, what if</label><input id="wi" type="range" min="0" max="100" step="1"><output id="wo"></output>
+ <span class="tag" id="wtag" hidden>what if, not a reading</span>
+</div>
+<div class="row" id="row"></div>
+<script src="../../engine.js"></script>
+<script>
+(function(){
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+/* restated from atuned_src/ui/personas.js seedIntake, the path the product
+   takes, so CQ here is the CQ the product prints. The shots script checks. */
+function seedAnswers(p){
+ var LS=p.law||LAWSET[p.nm]||{_:LAW_DEFAULT}, base=(LS._!==undefined)?LS._:LAW_DEFAULT, bias=(p.nm||'').length%3, ans={};
+ SI.forEach(function(l,li){var v=(LS[l.nm]!==undefined)?LS[l.nm]:base;
+  var split=Math.max(0,(9-v))*(0.62+bias*0.30); if(v<7)split=Math.max(split,3.4);
+  var L=clamp(v+split/2,0,10), Rr=clamp(v-split/2,0,10), N=clamp(v,0,10); if(bias===1){var t=L;L=Rr;Rr=t;}
+  ans[li*3]=Math.round(L*10)/10; ans[li*3+1]=Math.round(Rr*10)/10; ans[li*3+2]=Math.round(N*10)/10;});
+ return ans;}
+var R=null, WHO='Gordon', WHATIF=null;
+function loadRoster(nm){
+ var p=null; PEOPLE.forEach(function(x){if(x.nm===nm)p=x;}); if(!p)return;
+ S.doms=p.doms?p.doms.slice():[p.dom]; S.arcs=p.arcs?p.arcs.slice():[p.a1,p.a2]; S.roots=[]; buildSoul();
+ CHARGES.forEach(function(c){S.charge[c]=(p.c&&p.c[c]!==undefined)?p.c[c]:0; S.replace[c]=(p.rep&&p.rep[c])||0;});
+ var LS=p.law||LAWSET[nm]||{_:LAW_DEFAULT};
+ SINAMES.forEach(function(l){S.law[l]=(LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:LAW_DEFAULT); LAW_UNSET[l]=false;});
+ var pr=blankProfile(nm); pr.intake.answers=seedAnswers(p); iqApply(pr);
+ WHO=nm; R=compute();}
+
+/* the seat each address belongs to, with the four outside the body taken to
+   the seat they extend, the same rule compute() uses for their charge */
+function seatOf(n){return n.b==='Field-Above'?'Crown':(n.b==='Field-Below'?'Root':n.b);}
+function seatPull(){ /* each seat's share of PULL, and its own mean pull */
+ var out={}; BANDS.forEach(function(b){out[b]={n:0,sum:0};});
+ NODES.forEach(function(n){var b=seatOf(n); if(!out[b])return; out[b].n++; out[b].sum+=leverPull(n.sq);});
+ BANDS.forEach(function(b){out[b].mean=out[b].n?out[b].sum/out[b].n:0; out[b].share=out[b].sum/NODES.length;});
+ return out;}
+
+/* the two pole glyphs, restated from atuned_src/ui/cone.js, ring not fill */
+var GL_HALO='M4 12 A8 3.4 0 1 0 20 12 A8 3.4 0 1 0 4 12', GL_FORK='M12 21V9M6 9V3.5M12 9V3M18 9V3.5M5 9h14';
+function gl(d,x,y,c,s){s=s||16; var k=s/24;
+ return '<g transform="translate('+(x-s/2).toFixed(1)+','+(y-s/2).toFixed(1)+') scale('+k.toFixed(4)+')"><path d="'+d+'" fill="none" stroke="'+c+'" stroke-width="'+(1.8/k*0.6).toFixed(2)+'" stroke-linecap="round" stroke-linejoin="round"/></g>';}
+/* the tool labels the product's cone already carries at its two ends. About
+   the tool, never the reading, so they may sit on the figure. */
+function lab(t,x,y,c,anc){return '<text x="'+x+'" y="'+y+'" fill="'+c+'" font-size="11" text-anchor="'+(anc||'middle')+'" font-family="Inter,system-ui,sans-serif">'+t+'</text>';}
+/* the three marks, the same shape in every figure */
+function mInt(x,y){return '<circle cx="'+x+'" cy="'+y+'" r="6.5" fill="#101010" stroke="#EFEDE8" stroke-width="2"/>';}
+function mExp(x,y){return '<circle cx="'+x+'" cy="'+y+'" r="5.5" fill="#7EB8D4"/>';}
+function mInten(x,y,dir){dir=dir||1; /* a chevron pointing along dir (1 right, -1 left, 0 up) */
+ if(dir===0)return '<path d="M'+(x-7)+','+(y+5)+' L'+x+','+(y-4)+' L'+(x+7)+','+(y+5)+'" fill="none" stroke="#B4B0A8" stroke-width="2.2" stroke-linejoin="round"/>';
+ return '<path d="M'+(x-dir*5)+','+(y-7)+' L'+(x+dir*4)+','+y+' L'+(x-dir*5)+','+(y+7)+'" fill="none" stroke="#B4B0A8" stroke-width="2.2" stroke-linejoin="round"/>';}
+function glR(){return '<svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="6.5" fill="none" stroke="#EFEDE8" stroke-width="2"/></svg>';}
+function glE(){return '<svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="5.5" fill="#7EB8D4"/></svg>';}
+function glI(){return '<svg width="20" height="20" viewBox="0 0 20 20"><path d="M7 3 L15 10 L7 17" fill="none" stroke="#B4B0A8" stroke-width="2.2" stroke-linejoin="round"/></svg>';}
+function band(y40,y60,x0,x1){return '<rect x="'+x0+'" y="'+y60+'" width="'+(x1-x0)+'" height="'+(y40-y60)+'" fill="rgba(239,237,232,.055)"/>';}
+
+/* ============================================================
+   A. THE ARROW, THREE MARKS. The figure he ruled, "an arrow up and an arrow
+   down", drawn flat with the cone's own proportions, and the one marker
+   on its spine becomes three.
+   ============================================================ */
+function figA(I,C,E){
+ var cx=150, y=function(q){return 265-q*2.3;}, U=160;
+ var rad=function(at){var SH=0.64,HD=0.76,NK=0.14,FL=0.52;
+  if(at<=SH)return U*(NK*(1-at/SH*0.34)); if(at<=HD){var k=(at-SH)/(HD-SH); return U*(NK*0.66+(FL-NK*0.66)*k);}
+  var k2=(at-HD)/(1-HD); return U*FL*(1-k2);};
+ var L=[],Rr=[]; for(var q=0;q<=100;q+=2){var at=Math.abs((q-50)/50), w=rad(at); L.push([cx-w,y(q)]); Rr.push([cx+w,y(q)]);}
+ var d='M'+L.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1);}).join(' L')+' L'+Rr.slice().reverse().map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1);}).join(' L')+' Z';
+ var h='<svg viewBox="0 0 300 300" role="img" aria-label="An arrow up and an arrow down with three marks on its spine">';
+ h+='<path d="'+d+'" fill="rgba(239,237,232,.035)" stroke="rgba(239,237,232,.28)" stroke-width="1"/>';
+ h+='<clipPath id="ca"><path d="'+d+'"/></clipPath><g clip-path="url(#ca)">'+band(y(40),y(60),0,300)+'</g>';
+ h+='<line x1="'+cx+'" y1="'+y(100)+'" x2="'+cx+'" y2="'+y(0)+'" stroke="rgba(239,237,232,.22)"/>';
+ h+=gl(GL_HALO,cx,y(100)-14,'#DABF6A',18)+gl(GL_FORK,cx,y(0)+14,'#D6524C',16);
+ h+=lab('Coherent',cx+16,y(100)-10,'#94908A','start')+lab('Decoherent',cx+14,y(0)+18,'#94908A','start');
+ /* the shadow's take: the drop from what you hold to what comes out */
+ h+='<rect x="'+(cx+26)+'" y="'+y(C)+'" width="10" height="'+Math.max(0,y(E)-y(C)).toFixed(1)+'" fill="rgba(214,82,76,.45)"/>';
+ h+='<line x1="'+cx+'" y1="'+y(E)+'" x2="'+(cx+31)+'" y2="'+y(E)+'" stroke="#7EB8D4" stroke-width="1.2" stroke-dasharray="2 2"/>';
+ /* reach or slack: the gap between what you aim at and what you hold */
+ if(Math.abs(I-C)>=1)h+='<path d="M'+(cx-30)+','+y(I)+' H'+(cx-36)+' V'+y(C)+' H'+(cx-30)+'" fill="none" stroke="#B4B0A8" stroke-width="1" opacity=".7"/>';
+ h+=mInten(cx-22,y(I),1)+mInt(cx,y(C))+mExp(cx+31,y(E));
+ return h+'</svg>';}
+
+/* ============================================================
+   B. HEADING AND TRACK, SEEN FROM ABOVE. North is where you mean to go.
+   The hull carries you as far as your integrity, and the shadow turns the
+   track off the heading by the angle whose cosine is what the shadow
+   leaves. So the track is integrity long and its northing is expression,
+   exactly: C cos(theta) = C (1 - PULL) = EX. A current that only pushed
+   sideways would not shorten your progress, which would make the picture
+   a lie about the arithmetic; turning the track does.
+   ============================================================ */
+function figB(I,C,E,P,D){
+ var ox=150, oy=262, u=2.2, y=function(q){return oy-q*u;};
+ var th=Math.acos(Math.max(-1,Math.min(1,1-P))), tx=ox+C*Math.sin(th)*u, ty=oy-C*Math.cos(th)*u;
+ var h='<svg viewBox="0 0 300 300" role="img" aria-label="A navigator\'s plot: the heading, how far the hull carries you, and the track you make good">';
+ h+=band(y(40),y(60),14,286);
+ [20,40,60,80,100].forEach(function(q){h+='<line x1="14" y1="'+y(q)+'" x2="286" y2="'+y(q)+'" stroke="rgba(239,237,232,.08)"/>';});
+ /* the current: faint marks setting east, as many as the shadow is heavy */
+ var nC=Math.round((D||0)/7);
+ for(var i=0;i<nC;i++){var cxp=30+((i*97)%240), cyp=y(8+((i*37)%84));
+  h+='<path d="M'+cxp+','+(cyp-3)+' l5,3 l-5,3" fill="none" stroke="rgba(214,82,76,.45)" stroke-width="1.2"/>';}
+ h+=gl(GL_HALO,ox,y(100)-16,'#DABF6A',18)+lab('Coherent',ox+16,y(100)-12,'#94908A','start');
+ h+='<line x1="'+ox+'" y1="'+oy+'" x2="'+ox+'" y2="'+y(100)+'" stroke="rgba(239,237,232,.30)" stroke-dasharray="3 4"/>';
+ /* how far the hull carries you, in any direction */
+ if(C>0.5){var ax=ox+C*u, ay=oy;
+  h+='<path d="M'+ox+','+y(C)+' A'+(C*u).toFixed(1)+','+(C*u).toFixed(1)+' 0 0 1 '+ax.toFixed(1)+','+ay.toFixed(1)+'" fill="none" stroke="rgba(239,237,232,.18)" stroke-dasharray="2 3"/>';}
+ /* the set: how far the shadow turned you off the line */
+ h+='<line x1="'+tx.toFixed(1)+'" y1="'+ty.toFixed(1)+'" x2="'+ox+'" y2="'+ty.toFixed(1)+'" stroke="rgba(214,82,76,.75)" stroke-width="1.4" stroke-dasharray="1.5 3"/>';
+ h+='<line x1="'+ox+'" y1="'+oy+'" x2="'+ox+'" y2="'+y(C)+'" stroke="#EFEDE8" stroke-width="1.6" opacity=".7"/>';
+ h+='<line x1="'+ox+'" y1="'+oy+'" x2="'+tx.toFixed(1)+'" y2="'+ty.toFixed(1)+'" stroke="#7EB8D4" stroke-width="2.6"/>';
+ /* the vessel at the end of its track, pointed along it */
+ var deg=th*180/Math.PI;
+ h+='<g transform="translate('+tx.toFixed(1)+','+ty.toFixed(1)+') rotate('+deg.toFixed(1)+')"><path d="M0,-9 C4,-4 4,4 3,8 L-3,8 C-4,4 -4,-4 0,-9 Z" fill="#101010" stroke="#7EB8D4" stroke-width="1.6"/></g>';
+ h+=mInten(ox,y(I)-2,0)+mInt(ox,y(C))+mExp(ox,ty);
+ h+='<circle cx="'+ox+'" cy="'+oy+'" r="3" fill="#EFEDE8"/>';
+ return h+'</svg>';}
+
+/* ============================================================
+   C. THE HULL, SEEN FROM THE SIDE. The product's own sentence, "Integrity
+   is the hull. A hole in it means the ship takes on water", drawn. The
+   dashed hull rides where integrity alone would hold it. The solid hull
+   rides lower by the share the shadow takes, and that water is shown where
+   it actually is: seven compartments, one per seat, each as wide as the
+   seat has addresses, so the water on board is the shadow's pull and no
+   compartment is made to look bigger than it is.
+   ============================================================ */
+function figC(I,C,E,SP){
+ var yw=196, k=1.2, x0=34, x1=228, H=108;
+ var deckY=function(v){return yw-v*k;};
+ var hull=function(dy){var ky=dy+H;
+  return 'M'+x0+','+dy+' L'+x1+','+dy+' C'+(x1-6)+','+(dy+H*0.55)+' '+(x1-22)+','+ky+' '+(x1-44)+','+ky
+   +' L'+(x0+30)+','+ky+' C'+(x0+12)+','+ky+' '+(x0+4)+','+(dy+H*0.5)+' '+x0+','+dy+' Z';};
+ var h='<svg viewBox="0 0 300 300" role="img" aria-label="A hull seen from the side, riding lower by the water each seat has let in">';
+ var dC=deckY(C), dE=deckY(E);
+ /* the gauge: how high the deck rides, on the coherence scale */
+ var gx=262, gy=function(q){return yw-q*k;};
+ h+='<rect x="'+(gx-8)+'" y="'+gy(60)+'" width="16" height="'+(gy(40)-gy(60))+'" fill="rgba(239,237,232,.07)"/>';
+ h+='<line x1="'+gx+'" y1="'+gy(0)+'" x2="'+gx+'" y2="'+gy(100)+'" stroke="rgba(239,237,232,.3)"/>';
+ [0,20,40,60,80,100].forEach(function(q){h+='<line x1="'+(gx-4)+'" y1="'+gy(q)+'" x2="'+(gx+4)+'" y2="'+gy(q)+'" stroke="rgba(239,237,232,.35)"/>';});
+ h+=gl(GL_HALO,gx,gy(100)-14,'#DABF6A',16)+lab('Coherent',gx-12,gy(100)-10,'#94908A','end');
+ /* where integrity alone would hold the hull */
+ h+='<path d="'+hull(dC)+'" fill="none" stroke="rgba(239,237,232,.35)" stroke-width="1.2" stroke-dasharray="4 4"/>';
+ /* the hull as it rides, and the seven compartments */
+ h+='<clipPath id="hc"><path d="'+hull(dE)+'"/></clipPath>';
+ h+='<g clip-path="url(#hc)">';
+ var tot=0; BANDS.forEach(function(b){tot+=SP[b].n;});
+ var xa=x0+2, inner=(x1-x0-4);
+ BANDS.forEach(function(b){var w=inner*SP[b].n/tot, lev=SP[b].mean*(H-10);
+  h+='<rect x="'+xa.toFixed(1)+'" y="'+(dE+H-lev).toFixed(1)+'" width="'+w.toFixed(1)+'" height="'+lev.toFixed(1)+'" fill="'+PAL[b]+'" opacity=".38"/>';
+  h+='<line x1="'+(xa+w).toFixed(1)+'" y1="'+(dE+6)+'" x2="'+(xa+w).toFixed(1)+'" y2="'+(dE+H)+'" stroke="rgba(239,237,232,.22)"/>';
+  h+='<line x1="'+(xa+2).toFixed(1)+'" y1="'+(dE+H-lev).toFixed(1)+'" x2="'+(xa+w-2).toFixed(1)+'" y2="'+(dE+H-lev).toFixed(1)+'" stroke="'+PAL[b]+'" stroke-width="1.4"/>';
+  xa+=w;});
+ h+='</g><path d="'+hull(dE)+'" fill="none" stroke="#EFEDE8" stroke-width="1.8"/>';
+ /* the sea over the part of the hull that is under it */
+ h+='<rect x="0" y="'+yw+'" width="300" height="'+(300-yw)+'" fill="rgba(60,90,120,.34)"/>';
+ h+='<path d="M0,'+yw+' q12,-3 24,0 t24,0 t24,0 t24,0 t24,0 t24,0 t24,0 t24,0 t24,0 t24,0 t24,0 t24,0 t24,0" fill="none" stroke="rgba(126,184,212,.55)" stroke-width="1.2"/>';
+ /* the three marks on the gauge, and the deck led across to where it rides */
+ h+='<line x1="'+x1+'" y1="'+dE+'" x2="'+(gx-8)+'" y2="'+dE+'" stroke="#7EB8D4" stroke-width="1" stroke-dasharray="2 2"/>';
+ h+='<rect x="'+(gx+10)+'" y="'+Math.min(gy(C),gy(E))+'" width="7" height="'+Math.abs(gy(E)-gy(C)).toFixed(1)+'" fill="rgba(214,82,76,.5)"/>';
+ h+=mInten(gx-15,gy(I),1)+mInt(gx,gy(C))+mExp(gx,gy(E));
+ return h+'</svg>';}
+
+function draw(){
+ var C=R.CQ, E=R.EX, P=R.PULL, D=R.DQ, Ie=R.It*10, I=(WHATIF==null?Ie:WHATIF), SP=seatPull();
+ document.getElementById('who').textContent=WHO;
+ var wi=document.getElementById('wi'), wo=document.getElementById('wo');
+ wi.value=Math.round(I); wo.textContent=Math.round(I);
+ document.getElementById('wtag').hidden=(WHATIF==null);
+ var th=Math.acos(Math.max(-1,Math.min(1,1-P)))*180/Math.PI;
+ var worst=BANDS.slice().sort(function(a,b){return SP[b].share-SP[a].share;})[0];
+ var read=function(){return '<div class="read">'
+   +glI()+'<span>Intention'+(WHATIF==null?'':'<span class="wf">what if</span>')+'</span><b>'+Math.round(I)+'</b>'
+   +glR()+'<span>Integrity</span><b>'+Math.round(C)+'</b>'
+   +glE()+'<span>Expression</span><b>'+Math.round(E)+'</b></div>';};
+ var reach=I-C;
+ var aim=Math.abs(reach)<1?'You aim at what you hold to.'
+  :(reach>0?'You aim '+Math.round(reach)+' higher than you hold to.':'You hold to '+Math.round(-reach)+' more than you aim at.');
+ var cards=[
+  {t:'A. The arrow, three marks',s:'The figure you ruled, with its one marker made three',f:figA(I,C,E),
+   say:aim+' The shadow takes '+Math.round(C-E)+' off the '+Math.round(C)+' you hold to, and '+Math.round(E)+' comes out.',
+   tr:'<b>Tradeoff.</b> The most legible of the three and the least work, because it is the shape you already ruled. It shows that expression falls short, never why.'},
+  {t:'B. Heading and track',s:'Seen from above. North is where you mean to go',f:figB(I,C,E,P,D),
+   say:'Your hull carries you '+Math.round(C)+'. The shadow turns you '+Math.round(th)+(Math.round(th)===1?' degree':' degrees')+' off your heading, so you make good '+Math.round(E)+' toward where you meant.',
+   tr:'<b>Tradeoff.</b> The only one where intention is a direction, which is what a compass is for, and the product\'s own hull image. It replaces the arrow up and arrow down, and the turn is a reading a person learns once.'},
+  {t:'C. The hull',s:'Seen from the side. Each seat is a compartment',f:figC(I,C,E,SP),
+   say:'Integrity would float the deck at '+Math.round(C)+'. The water on board brings it down to '+Math.round(E)+(P>0.005?', and most of that water is in the '+String(worst).replace('3rd Eye','third eye').toLowerCase():'')+'.',
+   tr:'<b>Tradeoff.</b> The only one that says where the loss comes from, seat by seat, in the product\'s own image. Intention is only a mark on a gauge here, not a direction.'}];
+ document.getElementById('row').innerHTML=cards.map(function(c){
+  return '<section class="card"><h2>'+c.t+'</h2><p class="sub">'+c.s+'</p><div class="fig">'+c.f+'</div>'+read()
+   +'<p class="say">'+esc(c.say)+'</p><p class="trade">'+c.tr+'</p></section>';}).join('');
+ window.__cp={who:WHO,CQ:C,EX:E,PULL:P,It10:Ie,intention:I,whatif:WHATIF!=null,turn:th,worstSeat:worst,
+  seatShare:BANDS.map(function(b){return b+' '+SP[b].share.toFixed(3);}).join(', ')};}
+
+var sel=document.getElementById('psel');
+PEOPLE.forEach(function(p){if(p.nm==='You')return; var o=document.createElement('option'); o.value=p.nm; o.textContent=p.nm; sel.appendChild(o);});
+sel.onchange=function(){loadRoster(sel.value); WHATIF=null; draw();};
+document.getElementById('wi').oninput=function(e){WHATIF=+e.target.value; draw();};
+var hs=new URLSearchParams(location.hash.slice(1));
+var who=hs.get('who')||'Gordon'; loadRoster(who); sel.value=who;
+if(hs.get('intent')!=null)WHATIF=+hs.get('intent');
+draw();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fetter placement</title>
+<!--KIT-->
+<style>
+.lay{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:16px;align-items:start}
+.figs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#FH,#FP{max-height:360px}
+.fig{position:relative;background:#101118;border:1px solid var(--edge);border-radius:var(--r);padding:8px 4px 4px}
+.fig h3{margin:0 0 2px 10px;font-size:13px;font-weight:600;color:var(--mid)}
+.fig svg.b{width:100%;height:auto;display:block}
+.body{fill:rgba(150,152,160,.10);stroke:rgba(239,237,232,.30);stroke-width:1.4;vector-effect:non-scaling-stroke}
+.gl{stroke:rgba(255,255,255,.05);stroke-width:.08}
+.gl.m{stroke:rgba(255,255,255,.12);stroke-width:.1}
+.gt{fill:#6f6b66;font-size:1.25px;font-family:var(--sans)}
+.lvl{fill:#8a867f;font-size:1.3px}
+.dot{cursor:pointer;transition:opacity .15s}
+.dot.fade{opacity:.28}
+.sel-ring{fill:none;stroke:#fff;stroke-width:.18}
+.side{display:flex;flex-direction:column;gap:12px;position:sticky;top:52px;max-height:calc(100vh - 64px);overflow:auto}
+.ins h2{margin:0;font-size:19px}
+.ins .kv{display:grid;grid-template-columns:110px 1fr;gap:4px 10px;font-size:13px;margin-top:10px}
+.ins .kv b{font-weight:500;color:var(--dim)}
+.tag{display:inline-block;font-size:11px;padding:2px 7px;border-radius:999px;border:1px solid var(--edge-2);color:var(--mid)}
+.tag.chart{border-color:#7EB8D4;color:#7EB8D4}.tag.atlas{border-color:#5FD5A6;color:#5FD5A6}
+.tag.spine{border-color:#5FD5A6;color:#5FD5A6}.tag.prop{border-color:#C2A063;color:#C2A063}.tag.none{color:var(--dim)}
+.list{max-height:420px;overflow:auto;border-top:1px solid var(--edge)}
+.row{display:grid;grid-template-columns:14px 1fr auto;gap:8px;align-items:center;padding:6px 4px;border-bottom:1px solid var(--edge);cursor:pointer;font-size:13px}
+.row:hover,.row.on{background:var(--panel-2)}
+.row .st{font-size:11px;color:var(--dim)}
+.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.stat div{background:var(--sunk);border:1px solid var(--edge);border-radius:10px;padding:8px}
+.stat b{display:block;font-size:22px;font-weight:600}
+.stat span{font-size:12px;color:var(--mid)}
+.ref{position:relative}
+.ref img{width:100%;display:block;border-radius:8px;filter:invert(.92) hue-rotate(180deg) brightness(.9)}
+.ref svg{position:absolute;inset:0;width:100%;height:100%}
+.ctl{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 12px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--mid);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+@media (max-width:1100px){.lay{grid-template-columns:1fr}.side{position:static;max-height:none}}
+@media (max-width:760px){.figs{grid-template-columns:1fr 1fr;gap:6px}.fig h3{font-size:12px}}
+</style></head><body>
+<div class="wrap">
+ <div class="hd"><div>
+  <div class="eyebrow">Body, the fetters. Item 1 of 6.</div>
+  <h1>Every fetter at its own place</h1>
+  <p>No rings and no curves. One dot per fetter, at the nerve structure the engine names for it, on a grid you can read off in centimetres. Front and back.</p>
+ </div></div>
+ <div class="ctl"><div id="mode"></div><div id="seats"></div><label class="chip"><input type="checkbox" id="grid" checked> Grid</label></div>
+ <div class="lay">
+  <div>
+   <div class="figs"><div class="fig"><h3>Front</h3><svg class="b" id="F" viewBox="18 0 64 100"></svg></div>
+    <div class="fig"><h3>Back, seen from behind</h3><svg class="b" id="B" viewBox="18 0 64 100"></svg></div>
+    <div class="fig"><h3>Head, front, four times</h3><svg class="b" id="FH" viewBox="41 1 18 18"></svg></div>
+    <div class="fig"><h3>Pelvis, front, four times</h3><svg class="b" id="FP" viewBox="40 41 20 20"></svg></div></div>
+   <div class="legend"><span><i style="background:#D6524C"></i>Held, above the line</span>
+    <span><i style="border:1.5px solid #D6524C"></i>Not held</span>
+    <span><i style="background:#D6524C;opacity:.45"></i>Same fetter, other side</span>
+    <span id="lg2"></span></div>
+   <div id="todaybox" class="today" style="display:none;margin-top:12px"><img src="{{img:today-fetters.jpg}}" alt="The Body page today on Gordon, Fetters layer">
+    <div class="cap">The Body page as shipped, commit 58b8583, Gordon, Fetters layer. The 28 without a measured place stand on a spiral round their seat's ring.</div></div>
+  </div>
+  <div class="side">
+   <div class="card ins" id="ins"></div>
+   <div class="card" id="refcard"><div class="eyebrow" id="refttl">His reference chart</div><div class="ref" id="ref"></div></div>
+   <div class="card"><div class="eyebrow">All fetters, by seat</div><div class="list" id="list"></div></div>
+  </div>
+ </div>
+</div>
+<!--DATA-->
+<script>
+/* ============================================================
+   THE 28 WITH NO PLACE, PLACED FROM ANATOMY. Proposed tonight, not shipped.
+   Each is the nerve structure nodes.js names for the fetter, put where a
+   standard anatomy reference puts that structure, in the figure's own units
+   and on the product's own spine ruler (ANATSPINE) so it agrees with the 80
+   already placed. Front views unless the structure is only reachable from
+   behind. Every one still owes a check against his charts or the muscle
+   reference he said he would send.
+   ============================================================ */
+var PROP=[
+ {ids:[7],v:'front',pts:[[44.2,47.2],[55.8,47.2]],s:'Iliohypogastric and ilioinguinal branches, above the inguinal ligament',src:'Kenhub, lumbar plexus: branches of L1 run forward above the iliac crest'},
+ {ids:[8],v:'back',pts:[[50,45.2]],s:'Cauda equina, the L2 to S1 roots in the lumbar cistern',src:'StatPearls, spinal cord morphology: the cord ends at L1 to L2 and the roots below it form the cauda equina'},
+ {ids:[10,20],v:'front',pts:[[47.0,60.0],[53.0,60.0]],s:'Obturator nerve, through the obturator foramen into the inner thigh',src:'Kenhub, lumbar plexus: L2 to L4, to the adductors'},
+ {ids:[15],v:'front',pts:[[48.5,43.4],[51.5,43.4]],s:'Lumbar sympathetic chain, on the front and side of the lumbar vertebral bodies',src:'Standard anatomy, L1 to L4, medial to psoas'},
+ {ids:[16],v:'back',pts:[[50,41.7]],s:'Spinal cord base, the conus medullaris at L1 to L2',src:'StatPearls, spinal cord morphology'},
+ {ids:[23],v:'front',pts:[[48.2,51.8],[51.8,51.8]],s:'Pudendal plexus, S2 to S4, low in the pelvis',src:'Kenhub, sacral plexus: the pudendal nerve arises from S2 to S4'},
+ {ids:[25],v:'front',pts:[[48.6,49.6],[51.4,49.6]],s:'Uterovaginal plexus, the lower part of the inferior hypogastric plexus',src:'StatPearls, inferior hypogastric plexus'},
+ {ids:[27],v:'back',pts:[[48.4,50.4],[51.6,50.4]],s:'Pelvic splanchnic roots, leaving S2 to S4 through the sacral foramina',src:'StatPearls, inferior hypogastric plexus: parasympathetic input from S2 to S4'},
+ {ids:[31],v:'front',pts:[[46.93,52.32],[53.07,52.32]],s:'Ilioinguinal nerve, at the superficial inguinal ring',src:'On his 112 chart as the inguinal hinge',chart:'112.inguinal'},
+ {ids:[34],v:'front',pts:[[48.0,37.6],[52.0,37.6]],s:'Greater splanchnic nerve, T5 to T9, down beside the vertebral bodies to the crus at T12',src:'StatPearls, celiac plexus block: fibres from T5 to T12 through the splanchnic nerves'},
+ {ids:[35],v:'front',pts:[[51.0,43.0]],s:'Aortic plexus, on the front of the abdominal aorta left of the midline, L1 to L3',src:'Standard anatomy, the intermesenteric plexus'},
+ {ids:[37],v:'front',pts:[[47.4,39.0],[52.6,39.0]],s:'Lesser splanchnic nerves, T10 to T11, to the aorticorenal ganglia',src:'StatPearls, celiac plexus block'},
+ {ids:[40],v:'front',pts:[[50.3,41.3]],s:'Superior mesenteric plexus, round the artery\'s origin at L1',src:'Radiopaedia, vertebral levels: the superior mesenteric artery leaves at L1'},
+ {ids:[41],v:'front',pts:[[56.8,38.2]],s:'Splenic plexus, along the splenic artery, upper left of the abdomen',src:'StatPearls, celiac ganglia: the left ganglion lies behind the splenic artery\'s origin'},
+ {ids:[42],v:'front',pts:[[52.4,40.2]],s:'Pancreatic plexus, over the body of the pancreas, left of centre',src:'Radiopaedia, vertebral levels: the neck of the pancreas at L1'},
+ {ids:[46],v:'front',pts:[[48.0,35.8],[52.0,35.8]],s:'Epigastric branches of T7 to T9, under the xiphoid',src:'Radiopaedia, vertebral levels: the xiphisternal joint at T9'},
+ {ids:[47],v:'front',pts:[[45.2,37.0]],s:'Hepatic branch of the anterior vagal trunk, to the liver',src:'Standard anatomy, upper right of the abdomen'},
+ {ids:[48],v:'front',pts:[[46.6,38.8]],s:'Hepatic plexus, along the hepatic artery',src:'Standard anatomy, off the celiac plexus to the right'},
+ {ids:[51],v:'front',pts:[[48.8,28.6],[51.2,28.6]],s:'The two vagus nerves in the thorax, beside the oesophagus',src:'TeachMeAnatomy, vagus nerve'},
+ {ids:[52],v:'front',pts:[[51.3,32.4]],s:'Thoracic aortic plexus, on the descending aorta',src:'Standard anatomy, left of the midline behind the heart'},
+ {ids:[57],v:'front',pts:[[45.6,30.2],[54.4,30.2]],s:'Phrenic nerves, C3 to C5, down each side of the pericardium',src:'Kenhub, cervical plexus: the phrenic nerve from C3 to C5'},
+ {ids:[60],v:'front',pts:[[43.5,24.8],[56.5,24.8]],s:'Pectoral nerves, once called the anterior thoracic nerves',src:'Kenhub, brachial plexus: medial and lateral pectoral nerves'},
+ {ids:[61],v:'front',pts:[[47.4,26.6],[52.6,26.6]],s:'Pulmonary branches of the vagus, at the roots of the lungs',src:'IMAIOS, cardiac plexus: the deep plexus at the tracheal bifurcation'},
+ {ids:[68],v:'front',pts:[[48.8,16.4],[51.2,16.4]],s:'Pharyngeal branch of the vagus, level with C2 to C3',src:'TeachMeAnatomy, cervical plexus'},
+ {ids:[70],v:'front',pts:[[47.6,15.0],[52.4,15.0]],s:'Glossopharyngeal nerve, below the angle of the jaw',src:'Near the jaw point on his 112 chart',chart:'112.jaw'},
+ {ids:[72],v:'front',pts:[[48.1,17.9],[51.9,17.9]],s:'Cervical sympathetic ganglia, beside C2 to C7',src:'Standard anatomy, the superior, middle and inferior ganglia'},
+ {ids:[74],v:'front',pts:[[44.4,21.4],[55.6,21.4]],s:'Nerve to subclavius, C5 to C6, under the clavicle',src:'Kenhub, brachial plexus'}];
+var DOTR=1, CM=175/CHARTS.figure.stature;
+var ROWS=anatRows(), PLACE={}, MODE=(location.hash.match(/mode=(\w+)/)||[])[1]||'exact', SEAT='all', SEL=null;
+ROWS.forEach(function(r){ if(!r.pts){r.ids.forEach(function(id){PLACE[id]={row:r,src:'none',pts:[],view:'front'};});return;}
+ r.ids.forEach(function(id,j){
+  /* the engine gives each address one point, j mod the count. A pair row with
+     one address keeps both points here, so both sides show. */
+  /* his ruling, CS: "it's going to be symmetrical on both sides". A mirrored
+     pair gives every address on the row both sides, where the engine hands
+     each address one side and the next address the other. */
+  var mir=r.pts.length===2&&Math.abs(r.pts[0][0]+r.pts[1][0]-100)<0.8&&Math.abs(r.pts[0][1]-r.pts[1][1])<0.8;
+  var pts=(mir||r.ids.length<r.pts.length)?r.pts:[r.pts[j%r.pts.length]];
+  PLACE[id]={row:r,src:r.src,pts:pts,view:r.view,c:r.c};});});
+PROP.forEach(function(r){r.ids.forEach(function(id){PLACE[id]={row:r,src:'prop',pts:r.pts,view:r.v,c:r.chart?[r.chart]:null,why:r.src};});});
+var CHFIG={};CHARTS.PTS.forEach(function(p){CHFIG[p.id]=p;});
+function chartBack(id){var p=CHFIG[id];return p&&/B$/.test(p.fig);}
+function cleanLbl(w){return String(w||'').replace(/^\s*(\d+|[RK][a0-9]?\d?|T\d|Ka):\s*/,'').replace(/\s*\(.*$/,'').replace(/\. .*$/,'');}
+function nearestChart(id){var P=PLACE[id];if(!P||!P.pts.length)return null;var best=null;
+ var ids=P.c?[].concat(P.c):Object.keys(CHARTS.chartOnUs);
+ ids.forEach(function(cid){var cs=CHARTS.chartOnUs[cid];if(!cs)return;cs.forEach(function(q){P.pts.forEach(function(p){
+  var d=Math.hypot(p[0]-q[0],p[1]-q[1]);if(!best||d<best.d)best={id:cid,d:d,q:q,p:p};});});});
+ return best;}
+var SRCNM={chart:'Placed from his chart',atlas:'Placed from a brain atlas',spine:'Placed on the spine ruler',prop:'Proposed tonight from anatomy',none:'No anatomical place'};
+var TAGC={chart:'chart',atlas:'atlas',spine:'spine',prop:'prop',none:'none'};
+function cm(p){var dx=(p[0]-50)*CM, dy=(p[1]-CHARTS.figure.V)*CM;
+ return (Math.abs(dx)<0.5?'on the midline':Math.abs(dx).toFixed(1)+' cm '+(dx<0?'to the person\'s right':'to the person\'s left'))+', '+dy.toFixed(0)+' cm below the crown';}
+function cell(p){return 'BCDEFGHIJKLM'[Math.max(0,Math.floor((p[0]-20)/5))]+(Math.floor(p[1]/5)+1);}
+
+function gridSvg(){var h='';if(!document.getElementById('grid').checked)return h;
+ for(var x=20;x<=80;x+=2.5)h+='<line class="gl'+(x%5?'':' m')+'" x1="'+x+'" y1="0" x2="'+x+'" y2="100"/>';
+ for(var y=0;y<=100;y+=2.5)h+='<line class="gl'+(y%5?'':' m')+'" x1="18" y1="'+y+'" x2="82" y2="'+y+'"/>';
+ if(DOTR<1){for(var x2=18;x2<=82;x2+=1)h+='<line class="gl" x1="'+x2+'" y1="0" x2="'+x2+'" y2="100" stroke-width=".04"/>';return h;}
+ for(var c=0;c<12;c++)h+='<text class="gt" x="'+(20.9+c*5)+'" y="1.6">'+'BCDEFGHIJKLM'[c]+'</text>';
+ for(var r=1;r<=20;r++)h+='<text class="gt" x="18.4" y="'+(r*5-1.6)+'">'+r+'</text>';
+ return h;}
+function spineSvg(){
+ /* the product's own spine ruler, drawn on the back so a level can be read */
+ var h='',L=[['T4',11.5],['T8',15],['T12',19],['L1',20],['L3',22],['L5',24],['S3',27],['Co',30]];
+ h+='<line x1="50" y1="'+spineY(11.5)+'" x2="50" y2="'+spineY(30)+'" stroke="rgba(255,255,255,.18)" stroke-width=".25" stroke-dasharray=".6 .5"/>';
+ L.forEach(function(l){var y=spineY(l[1]);h+='<line x1="49.2" x2="50.8" y1="'+y+'" y2="'+y+'" stroke="rgba(255,255,255,.3)" stroke-width=".15"/><text class="lvl" x="51.3" y="'+(y+.45)+'">'+l[0]+'</text>';});
+ return h;}
+function dotSvg(id,p,other,sq,view){
+ var n=NODE[id], c=col(n.b), held=sq>=4, r=.62*DOTR;
+ var fade=(SEAT!=='all'&&SEATK[n.b]!==SEAT)||(SEL&&SEL!==id&&MODE!=='today')?' fade':'';
+ return '<g class="dot'+fade+'" data-id="'+id+'"><circle cx="'+p[0].toFixed(2)+'" cy="'+p[1].toFixed(2)+'" r="'+r+'" '
+  +(held?'fill="'+c+'" stroke="none"':'fill="#101118" stroke="'+c+'" stroke-width=".22"')
+  +(other?' opacity=".45"':'')+'><title>'+esc(n.k)+'</title></circle>'
+  +(SEL===id?'<circle class="sel-ring" cx="'+p[0]+'" cy="'+p[1]+'" r="'+(1.25*DOTR)+'"/>':'')+'</g>';}
+function stackBadges(view){
+ /* where several fetters share one point, say how many, because drawing them
+    apart would move them off the place they are at */
+ var at={},h='';Object.keys(PLACE).forEach(function(id){var P=PLACE[id];if(P.view!==view)return;
+  P.pts.forEach(function(p){var k=p[0].toFixed(1)+','+p[1].toFixed(1);(at[k]=at[k]||[]).push(+id);});});
+ Object.keys(at).forEach(function(k){if(at[k].length<2)return;var p=k.split(',').map(Number);
+  h+='<text x="'+(p[0]+.95*DOTR)+'" y="'+(p[1]-.6*DOTR)+'" font-size="'+(1.35*DOTR)+'" fill="#EFEDE8" opacity=".8">'+at[k].length+'</text>';});
+ return h;}
+function draw(){
+ var sq=sqMap(), P=PP();
+ [['front','F',1],['back','B',1],['front','FH',.34],['front','FP',.4]].forEach(function(V){
+  var view=V[0], el=document.getElementById(V[1]); DOTR=V[2];
+  var h=gridSvg()+bodyPath('class="body"'+(view==='back'?' ':''));
+  if(view==='back')h+=spineSvg();
+  /* the seven seats as faint marks on the front, for orientation only */
+  if(view==='front')T.PMBANDS.forEach(function(b){h+='<circle cx="50" cy="'+b.yp+'" r="2.4" fill="none" stroke="'+colK(b.k)+'" stroke-width=".12" stroke-dasharray=".5 .5" opacity=".5"/>';});
+  if(MODE==='charts'){
+   /* every point on both his charts, the ones for this view, and a line from
+      each fetter to the chart point it was matched to */
+   Object.keys(CHARTS.chartOnUs).forEach(function(cid){var back=chartBack(cid);if((view==='back')!==back)return;
+    var m=/^m\./.test(cid);CHARTS.chartOnUs[cid].forEach(function(q){
+     h+='<rect x="'+(q[0]-.55*DOTR)+'" y="'+(q[1]-.55*DOTR)+'" width="'+(1.1*DOTR)+'" height="'+(1.1*DOTR)+'" fill="none" stroke="'+(m?'#7EB8D4':'#C2A063')+'" stroke-width="'+(.18*DOTR)+'" opacity=".9"><title>'+esc(cleanLbl((CHFIG[cid]||{}).w))+'</title></rect>';});});
+   Object.keys(PLACE).forEach(function(id){var Pl=PLACE[id];if(Pl.view!==view||!Pl.c)return;var nb=nearestChart(id);if(!nb)return;
+    h+='<line x1="'+nb.p[0]+'" y1="'+nb.p[1]+'" x2="'+nb.q[0]+'" y2="'+nb.q[1]+'" stroke="#fff" stroke-width="'+(.12*DOTR)+'" opacity=".55"/>';});
+  }
+  if(MODE==='today'){
+   var an={};P.anat.forEach(function(i){an[i]=1;});
+   if(view==='front')P.sq.forEach(function(r){var id=r[0];if(id>108)return;var p=P.pos[id];
+    h+=dotSvg(id,p,false,r[1],view);
+    if(!an[id])h+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="1.1" fill="none" stroke="#C2A063" stroke-width=".14" stroke-dasharray=".4 .3"/>';});
+  }else{
+   Object.keys(PLACE).forEach(function(id){var Pl=PLACE[id];if(Pl.view!==view)return;
+    Pl.pts.forEach(function(p,k){h+=dotSvg(+id,p,k>0&&Pl.pts.length===2&&Pl.row.ids.length<2?false:false,sq[id]||0,view);});});
+   h+=stackBadges(view);
+  }
+  el.innerHTML=h;
+  el.querySelectorAll('.dot').forEach(function(g){g.onclick=function(){SEL=+g.dataset.id;draw();};});
+ }); DOTR=1;
+ document.getElementById('todaybox').style.display=MODE==='today'?'':'none';
+ document.getElementById('lg2').innerHTML=MODE==='charts'?'<span style="color:#C2A063">&#9633; 112 chart point</span> &nbsp; <span style="color:#7EB8D4">&#9633; marma chart point</span>'
+  :MODE==='today'?'<span style="color:#C2A063">dashed ring: no measured place, stood round its seat</span>':'';
+ inspector();list();refChart();
+}
+function counts(){var c={chart:0,atlas:0,spine:0,prop:0,none:0};for(var i=1;i<=108;i++){var P=PLACE[i];c[P?P.src:'none']++;}return c;}
+function median(a){a=a.slice().sort(function(x,y){return x-y;});return a.length?a[Math.floor(a.length/2)]:0;}
+function inspector(){
+ var el=document.getElementById('ins');
+ if(!SEL){var c=counts(), ds=[];
+  Object.keys(PLACE).forEach(function(id){var P=PLACE[id];if(P.src==='chart'){var nb=nearestChart(id);if(nb)ds.push(nb.d*CM);}});
+  el.innerHTML='<div class="eyebrow">What this shows</div><h2>'+(MODE==='today'?'Today, for comparison':MODE==='charts'?'Against his two charts':'Exact places')+'</h2>'
+   +'<div class="stat"><div><b>'+(c.chart+c.atlas+c.spine)+'</b><span>on a measured place, shipped</span></div>'
+   +'<div><b style="color:#C2A063">'+c.prop+'</b><span>proposed tonight from anatomy</span></div>'
+   +'<div><b>'+c.none+'</b><span>with no place in a body</span></div></div>'
+   +'<p class="small muted" style="margin:10px 0 0">Of the ones placed from his charts, the typical fetter sits <b>'+median(ds).toFixed(1)+' cm</b> from the chart point it was matched to. His two charts disagree with each other by about 6 cm on the places both draw, which is the floor under any claim of matching. Where they disagree, the classical marma chart is the one the sources back; the 112 chart is the pasted document checked in docs/research/marma-validation.md.</p>'
+   +'<p class="small muted">Press any dot, or any row in the list, to see its structure, its place in centimetres, and the point on his chart it answers to.</p>'
+   +'<div class="note">The muscle reference he said he would generate on 26 September has not arrived. It is what would let the 28 proposed fetters be checked against something other than an outline.</div>';
+  return;}
+ var n=NODE[SEL], P=PLACE[SEL]||{src:'none',pts:[]}, nb=nearestChart(SEL), sq=sqMap()[SEL]||0;
+ el.innerHTML='<div class="eyebrow">'+seatIc(n.b,14)+' '+esc(SEATNM[SEATK[n.b]]||n.b)+'</div><h2>'+esc(n.k)+'</h2>'
+  +'<div class="kv"><b>Structure</b><span>'+esc(n.n||'none')+'</span>'
+  +'<b>How placed</b><span><span class="tag '+TAGC[P.src]+'">'+SRCNM[P.src]+'</span></span>'
+  +(P.row&&P.row.s?'<b>Where</b><span>'+esc(P.row.s)+'</span>':'')
+  +(P.pts.length?'<b>Place</b><span>'+cm(P.pts[0])+(P.pts.length>1?', and the same on the other side':'')+'</span><b>Grid</b><span>'+P.pts.map(cell).join(' and ')+', '+(P.view==='back'?'back view':'front view')+'</span>':'')
+  +(nb&&P.c?'<b>His chart</b><span>'+esc(cleanLbl(CHFIG[nb.id].w))+', '+(nb.d*CM).toFixed(1)+' cm away, on the '+(/^m\./.test(nb.id)?'classical marma chart':'112 node chart, the pasted document docs/research/marma-validation.md checked and found partly unsupported')+'</span>':'')
+  +(P.why?'<b>Source</b><span>'+esc(P.why)+'</span>':'')
+  +'<b>'+esc(WHO)+'</b><span>'+(sq>=4?'held here, '+weightWord(sq)+' charge':'not held')+'</span></div>'
+  +'<p style="margin:12px 0 0"><button class="chip" onclick="SEL=null;draw()">Clear selection</button></p>';}
+function list(){
+ var sq=sqMap(), h='';['Crown','3rd Eye','Throat','Heart','Solar','Sacral','Root'].forEach(function(b){
+  if(SEAT!=='all'&&SEATK[b]!==SEAT)return;
+  h+='<div class="eyebrow" style="margin:10px 0 2px;color:'+col(b)+'">'+esc(SEATNM[SEATK[b]])+'</div>';
+  T.NODES.filter(function(n){return n.b===b;}).forEach(function(n){var P=PLACE[n.i]||{src:'none',pts:[]};
+   h+='<div class="row'+(SEL===n.i?' on':'')+'" data-id="'+n.i+'"><svg width="12" height="12"><circle cx="6" cy="6" r="4.5" '
+    +((sq[n.i]||0)>=4?'fill="'+col(b)+'"':'fill="none" stroke="'+col(b)+'" stroke-width="1.4"')+'/></svg>'
+    +'<div>'+esc(n.k)+'<div class="st">'+esc(n.n||'')+'</div></div><span class="tag '+TAGC[P.src]+'">'+(P.pts[0]?cell(P.pts[0]):'none')+'</span></div>';});});
+ var el=document.getElementById('list');el.innerHTML=h;
+ el.querySelectorAll('.row').forEach(function(r){r.onclick=function(){SEL=+r.dataset.id;draw();};});}
+function refChart(){
+ /* his own chart beside ours, with the matched point ringed on it */
+ var P=SEL&&PLACE[SEL], cid=P&&P.c?[].concat(P.c)[0]:null, pt=cid&&CHFIG[cid];
+ var useM=pt&&/^M/.test(pt.fig), F=useM?'marma':'112', img=useM?'{{img:ref-marma.jpg}}':'{{img:ref-112.jpg}}';
+ var W=useM?550:1024, H=useM?494:559;
+ document.getElementById('refttl').textContent=useM?'His classical marma chart':'His 112 node chart';
+ var ov='';if(pt){[].concat(Array.isArray(pt.p[0])?pt.p:[pt.p]).forEach(function(q){
+  ov+='<circle cx="'+q[0]+'" cy="'+q[1]+'" r="'+(useM?9:11)+'" fill="none" stroke="#FF2E1F" stroke-width="3"/>';});}
+ document.getElementById('ref').innerHTML='<img src="'+img+'" alt="His reference chart"><svg viewBox="0 0 '+W+' '+H+'">'+ov+'</svg>'
+  +'<div class="small dim" style="margin-top:6px">'+(pt?'Ringed: '+esc(cleanLbl(pt.w))+'.':'Pick a fetter placed from his chart to ring its point here.')+' Colours inverted for the dark ground; the drawing is his.</div>';}
+banner('Fetter placement, item 1 of the FW round');
+seg(document.getElementById('mode'),[['exact','Exact places'],['charts','Against his charts'],['today','Today, for comparison']],MODE,function(k){MODE=k;SEL=null;draw();});
+seg(document.getElementById('seats'),[['all','All seats']].concat(['crown','eye','throat','heart','solar','sacral','root'].map(function(k){return [k,SEATNM[k]];})),'all',function(k){SEAT=k;draw();},'sm');
+document.getElementById('grid').onchange=draw;
+draw();
+</script></body></html>

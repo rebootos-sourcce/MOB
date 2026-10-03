@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="app" content="../../source.html">
+<title>Trace and release</title>
+<!-- A SIMULATION, NOT A BUILD. DB in TASKS.md. His words: "being able to
+     share that pin with someone and say, this is where my pain hurts, this is
+     my saboteur, I want to run a protocol from here... trace and release."
+
+     Pin a chain on the Field, say what it is, and run a release from it. The
+     release is not drawn here: the page opens the shipped build itself, the
+     same file, in a frame, loads the same profile and stories capture.js
+     used, and calls the release panel's own entry point, relPick, with the
+     addresses the pinned chain is fed by. What appears is the real release
+     card, and Begin runs the real run. When it closes, the chain's charge is
+     read back out of that same build and the pin hums at what is left. -->
+<style>
+:root{--ground:#0b0b0d;--panel:#141419;--panel-2:#1a1a20;--edge:rgba(255,255,255,.09);--edge-2:rgba(255,255,255,.16);
+ --ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;--warn:#D9A46A;--good:#8FC6A0;
+ --ease-out:cubic-bezier(.22,1,.36,1);--ease-in:cubic-bezier(.4,0,1,1);--t-micro:.12s;
+ --sans:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}
+html,body{background:var(--ground)}
+body{margin:0;color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45}
+.bar{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--edge)}
+.bar h1{font-size:15px;font-weight:600;margin:0 8px 0 0}
+.grp{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.grp span{color:var(--dim);font-size:12.5px;margin-right:4px}
+button,input{font:inherit}
+.bar button,.bar label,.side button,.stage button{background:transparent;border:1px solid var(--edge);border-radius:8px;color:var(--mid);
+ font-size:13px;padding:6px 11px;min-height:34px;cursor:pointer;
+ transition:border-color var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out),transform var(--t-micro) var(--ease-out)}
+.bar label{display:flex;gap:6px;align-items:center}
+.bar button:hover,.side button:hover,.stage button:hover{border-color:var(--edge-2);color:var(--ink)}
+.bar button[aria-pressed=true]{color:var(--accent);border-color:rgba(126,184,212,.45)}
+.xl{color:var(--accent);font-size:13px;text-underline-offset:3px}
+.wrap{display:flex;gap:16px;padding:16px;align-items:flex-start;flex-wrap:wrap}
+.side{flex:1 1 340px;max-width:420px;min-width:0}
+.side h2{font-size:15px;font-weight:600;margin:0 0 6px}
+.side p{margin:0 0 10px;color:var(--mid)}
+.note{color:var(--dim);font-size:12.5px}
+/* ---- the field view, as pin.html ---- */
+.fv-view{position:relative;overflow:hidden;border-radius:12px;border:1px solid var(--edge);flex:0 0 auto;touch-action:none;
+ user-select:none;-webkit-user-select:none}
+.fv-view.on-line{cursor:pointer}
+.fv-view.panning{cursor:grabbing}
+.fv-plate{position:absolute;left:0;top:0;transform-origin:0 0}
+.fv-full{position:absolute;left:0;top:0;display:block;pointer-events:none}
+.fv-win{position:absolute;overflow:hidden}
+.fv-zl{position:absolute;left:0;top:0;transform-origin:0 0}
+.fv-zl img{position:absolute;left:0;top:0;display:block;pointer-events:none}
+.fv-ov{position:absolute;left:0;top:0;pointer-events:none}
+.fv-whole{position:absolute;min-height:44px;padding:0 16px;border-radius:22px;border:1px solid var(--edge-2);
+ background:rgba(20,20,25,.92);color:var(--ink);font-size:14px;cursor:pointer;visibility:hidden;opacity:0}
+.fv-zk{position:absolute;color:var(--mid);font-size:12px;font-variant-numeric:tabular-nums;pointer-events:none;
+ background:rgba(14,14,18,.86);border-radius:10px;padding:2px 8px}
+.fv-zk:empty{display:none}
+.pill{position:absolute;left:50%;min-height:44px;padding:0 18px;border-radius:22px;border:1px solid var(--edge-2);
+ background:rgba(20,20,25,.94);color:var(--ink);font-size:14px;display:flex;align-items:center;gap:8px;
+ white-space:nowrap;visibility:hidden;opacity:0;pointer-events:none}
+.pill.btn{cursor:pointer;pointer-events:auto}
+.pill.warn{color:var(--warn);border-color:rgba(217,164,106,.45)}
+/* ---- a label on the Field, beside its pin ---- */
+.tag{position:absolute;display:flex;align-items:center;gap:6px;padding:3px 9px 3px 4px;border-radius:14px;
+ background:rgba(14,14,18,.92);border:1px solid;font-size:12.5px;color:var(--ink);white-space:nowrap;pointer-events:none;
+ max-width:230px;overflow:hidden;text-overflow:ellipsis}
+.tag i{font-style:normal;width:18px;height:18px;border-radius:50%;border:1.5px solid currentColor;display:inline-flex;
+ align-items:center;justify-content:center;font-size:10.5px;font-weight:600;flex:0 0 auto}
+.tag span{overflow:hidden;text-overflow:ellipsis}
+/* ---- the card ---- */
+.card{border:1px solid var(--edge);border-radius:12px;padding:14px;background:var(--panel)}
+.card+.card{margin-top:10px}
+.eye{font-size:12px;color:var(--dim);margin:0 0 6px;display:flex;align-items:center;gap:8px}
+.eye i{font-style:normal;width:22px;height:22px;border-radius:50%;border:1.6px solid currentColor;display:inline-flex;
+ align-items:center;justify-content:center;font-size:11px;font-weight:600}
+.route{display:flex;flex-direction:column;gap:2px;margin:4px 0 12px;padding:0;list-style:none}
+.route li{display:grid;grid-template-columns:14px 1fr auto;gap:8px;align-items:center;font-size:13px;color:var(--ink)}
+.route li em{font-style:normal;color:var(--dim);font-variant-numeric:tabular-nums;font-size:12.5px}
+.route li b{font-weight:400;color:var(--good);font-variant-numeric:tabular-nums;font-size:12.5px}
+.route li s{color:var(--dim);text-decoration:line-through;margin-right:6px}
+.route li::before{content:"";width:7px;height:7px;border-radius:50%;border:1.4px solid var(--mid);justify-self:center}
+.route li.lv0::before{border-color:var(--accent)}
+.q{font-size:13px;color:var(--mid);margin:10px 0 6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{border-radius:16px;min-height:36px;font-size:13px}
+.chips button[aria-pressed=true]{color:var(--ink);border-color:var(--edge-2);background:var(--panel-2)}
+.own{margin-top:6px;width:100%;background:transparent;border:1px solid var(--edge);border-radius:8px;color:var(--ink);
+ padding:8px 10px;min-height:38px;font-size:13px}
+.own:focus{outline:none;border-color:rgba(126,184,212,.5)}
+.qlist{font-size:12.5px;color:var(--mid);margin:4px 0 10px;font-variant-numeric:tabular-nums}
+.run{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:46px!important;margin-top:4px;
+ color:#0b0b0d!important;background:var(--accent)!important;border-color:transparent!important;font-weight:600;font-size:14px!important;border-radius:23px!important}
+.run:active{transform:scale(.97)}
+.lift{display:flex;gap:8px;align-items:flex-start;margin-top:10px;font-size:12.5px;color:var(--dim)}
+.lift input{margin-top:2px}
+.after{margin-top:10px;padding:10px 12px;border-radius:10px;border:1px solid rgba(143,198,160,.35);color:var(--ink);font-size:13px}
+.after b{color:var(--good);font-weight:600}
+.others{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.others button{display:flex;gap:6px;align-items:center}
+.empty{color:var(--dim);font-size:13px;padding:8px 0}
+/* ---- the real app, when a release begins ---- */
+.stage{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;background:rgba(6,6,8,.94);
+ visibility:hidden;opacity:0}
+.strip{display:flex;align-items:center;gap:12px;padding:8px 14px;min-height:56px;border-bottom:1px solid var(--edge);flex:0 0 auto;flex-wrap:wrap}
+.strip .from{display:flex;align-items:center;gap:8px;min-width:0;flex:1 1 auto;font-size:13px;color:var(--mid)}
+.strip .from b{color:var(--ink);font-weight:500}
+.strip .from i{font-style:normal;width:22px;height:22px;border-radius:50%;border:1.6px solid currentColor;display:inline-flex;
+ align-items:center;justify-content:center;font-size:11px;font-weight:600;flex:0 0 auto}
+.strip .real{font-size:12px;color:var(--dim)}
+.box{position:relative;flex:1 1 auto;overflow:hidden}
+.frame{position:absolute;left:0;top:0;border:0;transform-origin:0 0;background:#0b0b0d;border-radius:10px}
+.wait{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:13px}
+@media (max-width:700px){.side{max-width:none}}
+</style>
+</head>
+<body>
+<div class="bar">
+ <h1>Trace and release</h1>
+ <div class="grp" id="g-who"><span>Profile</span></div>
+ <div class="grp" id="g-w"><span>Width</span></div>
+ <div class="grp"><label><input type="checkbox" id="rm"> Reduced motion</label></div>
+ <a class="xl" href="pin.html">Pin and zoom alone</a>
+</div>
+<div class="wrap">
+ <div id="host"></div>
+ <div class="side">
+  <div id="pins"></div>
+ </div>
+</div>
+<div class="stage" id="stage" aria-hidden="true">
+ <div class="strip">
+  <div class="from" id="from"></div>
+  <span class="real" id="real">The shipped build, running here</span>
+  <button type="button" id="back">Back to the Field</button>
+ </div>
+ <div class="box" id="box"><div class="wait" id="wait">Opening the instrument</div></div>
+</div>
+<script src="data-sofia.js"></script>
+<script src="data-james.js"></script>
+<script src="data-gordon.js"></script>
+<script src="../../sim/stories.js"></script>
+<script src="overlay.js"></script>
+<script src="hover.js"></script>
+<script src="fieldview.js"></script>
+<script src="pin.js"></script>
+<script src="pinpage.js"></script>
+<script src="release.js"></script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en" data-build="proto-body-map-{{STAMP}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pain and pattern map, prototype</title>
+<style>
+:root{
+ --bg:#0E0E0F; --stage:#0F1013; --panel:#15161A; --panel2:#1B1D23; --edge:#26282E; --edge2:#33363E;
+ --ink:#E6E7EA; --mid:#C9CBD2; --dim:#9A9CA4; --accent:#7EB8D4; --proto:#D6A93B;
+ --heat:#D19255; --heat2:#C4635E;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink)}
+body{font:400 14.5px/1.5 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+.proto{position:sticky;top:0;z-index:20;background:var(--proto);color:#16130A;font-weight:600;font-size:13px;padding:6px 16px;
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.proto span{font-weight:500;opacity:.85}
+header{padding:16px 16px 4px;max-width:1480px;margin:0 auto}
+.eyebrow{font-size:12px;color:var(--dim);font-weight:600;letter-spacing:.02em}
+h1{font-size:22px;line-height:1.25;margin:4px 0 6px;font-weight:600}
+.sub{color:var(--mid);max-width:84ch;margin:0}
+.bar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;padding:12px 16px 0;max-width:1480px;margin:0 auto}
+.seg{display:inline-flex;gap:2px;padding:3px;border:1px solid var(--edge2);border-radius:999px;background:#0B0C0E;flex-wrap:wrap}
+.seg button{all:unset;box-sizing:border-box;cursor:pointer;min-height:38px;padding:8px 14px;border-radius:999px;font-size:13.5px;color:var(--dim);
+ display:inline-flex;align-items:center;gap:7px}
+.seg button:hover{color:var(--ink)}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.seg button[aria-pressed="true"]{background:#23262E;color:var(--ink)}
+.seg.mode button[data-k="pain"][aria-pressed="true"]{background:#2A1F18;color:#F0D2B8}
+.seg.mode button[data-k="pattern"][aria-pressed="true"]{background:#172229;color:#CFE6F0}
+.seg svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.lbl{font-size:12.5px;color:var(--dim);font-weight:600}
+.grp{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.chip{all:unset;box-sizing:border-box;cursor:pointer;min-height:36px;padding:7px 12px;border:1px solid var(--edge2);border-radius:999px;
+ font-size:13px;color:var(--dim);display:inline-flex;align-items:center;gap:6px}
+.chip:hover{color:var(--ink);border-color:#464A54}
+.chip:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.chip[aria-pressed="true"]{color:var(--ink);border-color:var(--accent)}
+.chip i{width:8px;height:8px;border-radius:50%;display:inline-block}
+select{font:inherit;font-size:13.5px;color:var(--ink);background:#15161A;border:1px solid var(--edge2);border-radius:10px;padding:8px 10px;min-height:38px}
+input[type=range]{accent-color:var(--heat);width:120px}
+main{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px;padding:12px 16px;max-width:1480px;margin:0 auto}
+.stage{position:relative;height:min(80vh,900px);min-height:460px;background:var(--stage);border:1px solid var(--edge);border-radius:12px;overflow:hidden}
+.stage canvas{position:absolute;inset:0;display:block;touch-action:none;cursor:default}
+.stage.paint canvas{cursor:crosshair}
+.hint{position:absolute;left:12px;bottom:10px;right:300px;font-size:12.5px;color:var(--dim);pointer-events:none}
+.corner{position:absolute;right:10px;bottom:8px;font-size:12px;color:var(--dim);pointer-events:none;font-variant-numeric:tabular-nums}
+.zoom{position:absolute;right:10px;bottom:34px;display:flex;flex-direction:column;gap:6px}
+.zoom button{all:unset;box-sizing:border-box;cursor:pointer;width:44px;height:44px;border-radius:12px;border:1px solid var(--edge2);
+ background:rgba(21,22,26,.86);color:var(--mid);display:grid;place-items:center}
+.zoom button:hover{color:var(--ink)}
+.zoom svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round}
+.face{position:absolute;left:10px;bottom:10px;display:none}
+.stage.phone .hint{top:10px;bottom:auto;right:64px}
+.stage.phone .corner{display:none}
+.stage.phone .zoom{bottom:10px}
+#tip{position:absolute;pointer-events:none;background:rgba(18,19,23,.94);border:1px solid var(--edge2);border-radius:8px;padding:6px 9px;
+ font-size:12.5px;color:var(--ink);white-space:nowrap;transform:translate(-50%,-120%);display:none;z-index:4}
+#tip small{color:var(--dim);font-size:12px}
+aside{background:var(--panel);border:1px solid var(--edge);border-radius:12px;padding:14px;max-height:min(80vh,900px);overflow:auto}
+aside h2{font-size:15px;margin:0;font-weight:600}
+aside h3{font-size:12.5px;color:var(--dim);font-weight:600;margin:14px 0 6px}
+aside p{margin:0 0 8px;color:var(--mid);font-size:13.5px}
+.small{font-size:12.5px;color:var(--dim)}
+.card{background:var(--panel2);border:1px solid var(--edge2);border-radius:12px;padding:12px;margin-bottom:14px}
+.card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.card .x{all:unset;cursor:pointer;width:44px;height:44px;display:grid;place-items:center;margin:-10px -10px 0 0;color:var(--dim);border-radius:10px}
+.card .x:hover{color:var(--ink)}
+.nums{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.nums div{background:#121317;border:1px solid var(--edge);border-radius:10px;padding:8px 10px}
+.nums b{font-size:20px;font-weight:600;font-variant-numeric:tabular-nums}
+.nums b small{font-size:12px;color:var(--dim);font-weight:500}
+.nums span{display:block;font-size:12px;color:var(--dim);line-height:1.35;margin-top:2px}
+.rows{list-style:none;margin:0;padding:0}
+.rows li{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:8px;align-items:center;padding:5px 2px;font-size:13px}
+.rows li svg{width:20px;height:20px;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.rows li .v{font-variant-numeric:tabular-nums;color:var(--mid)}
+.rows li em{font-style:normal;color:var(--dim);font-size:12px}
+#sabs li{border-radius:8px;cursor:pointer;grid-template-columns:22px minmax(0,1fr) 34px 74px;min-height:44px}
+#sabs li:hover,#sabs li[aria-pressed="true"]{background:#1D1F25}
+#sabs .bar2{grid-column:2/5;height:3px;background:#23252B;border-radius:2px;overflow:hidden;margin-top:-2px}
+#sabs .bar2 i{display:block;height:100%}
+.dir{font-size:12px;color:var(--dim)}
+.dir.loading{color:#E7C98A}.dir.releasing{color:#9DB4E6}
+.ask{border-left:2px solid var(--proto);padding:4px 0 4px 10px;margin:10px 0;color:var(--mid);font-size:13px}
+.ask b{color:var(--ink)}
+section.doc{max-width:1480px;margin:0 auto;padding:4px 16px 40px;color:var(--mid);font-size:13.5px}
+details{margin:10px 0;border:1px solid var(--edge);border-radius:12px;padding:10px 14px;background:#111215}
+details summary{cursor:pointer;color:var(--ink);font-weight:600;min-height:28px}
+table{border-collapse:collapse;margin-top:8px;width:100%;max-width:1100px;font-size:13px}
+td,th{border-bottom:1px solid var(--edge);padding:6px 8px;text-align:left;vertical-align:top}
+th{color:var(--ink);font-weight:600}
+td.n{font-variant-numeric:tabular-nums;text-align:right}
+tr.win td{color:var(--ink)}
+@media (max-width:900px){
+ main{grid-template-columns:minmax(0,1fr)}
+ .stage{height:70vh;min-height:420px}
+ .face{display:flex}
+ aside{max-height:none}
+}
+</style>
+</head>
+<body>
+<div class="proto" role="note">Prototype. <span>Mock people and mock pain. Not the app, not your reading.</span></div>
+<header>
+ <div class="eyebrow">Body map prototype · built from BODY-MAP-SPEC.md, round GV</div>
+ <h1>Pain and pattern, on one map</h1>
+ <p class="sub">The approved man, front and back, on the 5 cm grid, with 48 regions you can press. <b>Pattern</b> shows the saboteurs running as tension lines between the addresses that built them. <b>Pain</b> is where you paint where it hurts. Switching between them is the interaction to judge. Three ways to do it were built from your words and a fourth from what the simulation found. It opens on the one the simulation picked.</p>
+</header>
+
+<div class="bar" role="toolbar" aria-label="Map controls">
+ <div class="seg mode" id="mode" role="group" aria-label="Show">
+  <button type="button" data-k="pattern" aria-pressed="true"><svg viewBox="0 0 24 24"><path d="M4 18c4-10 12-2 16-12"/><circle cx="4" cy="18" r="1.6"/><circle cx="20" cy="6" r="1.6"/></svg>Pattern</button>
+  <button type="button" data-k="pain" aria-pressed="false"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="6.5"/><circle cx="12" cy="12" r="10"/></svg>Pain</button>
+ </div>
+ <div class="grp"><span class="lbl">Switch</span>
+  <div class="seg" id="variant" role="group" aria-label="How the switch to pain behaves">
+   <button type="button" data-k="A" aria-pressed="false">A · Fade</button>
+   <button type="button" data-k="B" aria-pressed="false">B · Reveal</button>
+   <button type="button" data-k="C" aria-pressed="true">C · Isotherm</button>
+   <button type="button" data-k="D" aria-pressed="false">D · Bands and reveal</button>
+  </div></div>
+ <div class="grp" id="brushg"><label class="lbl" for="brush">Paint at</label><input type="range" id="brush" min="1" max="10" step="1" value="6"><span id="brushv" class="lbl" style="min-width:3ch">6</span>
+  <button type="button" class="chip" id="clear">Clear paint</button></div>
+ <div class="grp"><label class="lbl" for="who">Mock person</label><select id="who"></select></div>
+</div>
+<div class="bar" role="toolbar" aria-label="Layers and questions">
+ <div class="grp" id="layers"><span class="lbl">Layers</span></div>
+ <div class="grp"><span class="lbl">Address, question A</span>
+  <div class="seg" id="amode" role="group" aria-label="How an address is drawn">
+   <button type="button" data-k="A4" aria-pressed="true">Fetter mark</button>
+   <button type="button" data-k="A3" aria-pressed="false">Point in patch</button>
+   <button type="button" data-k="A1" aria-pressed="false">Point</button>
+  </div></div>
+ <div class="grp"><span class="lbl">Deep, question C</span>
+  <div class="seg" id="cmode" role="group" aria-label="Which surface shows a deep structure">
+   <button type="button" data-k="C3" aria-pressed="true">Both, far one faint</button>
+   <button type="button" data-k="C2" aria-pressed="false">Nearer only</button>
+  </div></div>
+ <button type="button" class="chip" id="motion" aria-pressed="false">Reduced motion: off</button>
+</div>
+
+<main>
+ <div class="stage" id="stage">
+  <canvas id="cv" aria-label="The man, front and back, with nerves, the seven seats, the addresses, saboteur tension lines and painted pain"></canvas>
+  <div class="hint" id="hint"></div>
+  <div class="zoom"><button type="button" id="zin" aria-label="Zoom in"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+   <button type="button" id="zout" aria-label="Zoom out"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+   <button type="button" id="zfit" aria-label="Whole body"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button></div>
+  <div class="face seg" id="face" role="group" aria-label="Which side"><button type="button" data-k="front" aria-pressed="true">Front</button><button type="button" data-k="back" aria-pressed="false">Back</button></div>
+  <div id="tip"></div>
+  <div class="corner" id="corner"></div>
+ </div>
+ <aside aria-label="What is pressed, and what is running">
+  <div id="regcard"></div>
+  <h2>Running · <span id="sabn"></span></h2>
+  <p class="small">Saboteurs past five, heaviest first, and which way the load is moving. Point at one to trace its line. Press to hold it.</p>
+  <ul class="rows" id="sabs"></ul>
+  <div class="ask"><b>To confirm with you.</b> Every address here is drawn with the mark of its fetter, inside the ring that shows its charge. That is our reading of "with the icon of the fetter" for question A. The switch above puts it beside the two drawn options. Zoom in to see the marks.</div>
+ </aside>
+</main>
+
+<section class="doc">
+ <details open><summary>The four switches, and what the simulation found</summary>{{SIM}}</details>
+ <details><summary>Timing, for the team</summary>{{TIMING}}</details>
+ <details><summary>What is real and what is mock</summary>{{PROV}}</details>
+</section>
+<script>window.__DATA={{DATA}};</script>
+<script>
+{{APP}}
+</script>
+</body>
+</html>

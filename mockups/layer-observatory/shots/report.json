@@ -1,0 +1,105 @@
+{
+ "errors": {
+  "p=Marcus@1600": [],
+  "p=Tomas@1600": [],
+  "p=Sofia@1600": [],
+  "p=Wren@1600": [],
+  "p=Derek@1600": [],
+  "p=Rosa@1600": [],
+  "p=Derek&view=sab@1600": [],
+  "p=Derek&view=cx@1600": [],
+  "p=Derek&view=hy@1600": [],
+  "p=Tomas&view=sab@1600": [],
+  "p=Sofia&view=hy@1600": [],
+  "p=Tomas&view=sab&mode=thread&sel=s:Controller@1600": [],
+  "p=Tomas&view=fet&mode=thread&sel=f:Apathy@1600": [],
+  "p=Derek&view=hy&mode=thread&sel=h:Dysregulation@1600": [],
+  "p=Tomas&view=sab&mode=scrub&step=3@1600": [],
+  "p=Tomas&view=sab&mode=scrub&step=6@1600": [],
+  "p=Tomas&view=sab&mode=scrub&step=9@1600": [],
+  "p=Derek&view=cx&mode=scrub&step=7@1600": [],
+  "p=Derek&view=sab&plan=one@1600": [],
+  "p=Derek&plan=free@1600": [],
+  "p=Derek&plan=one@1600": [],
+  "p=Derek@390": [],
+  "p=Derek&view=sab@390": [],
+  "p=Derek&view=hy@390": [],
+  "p=Tomas&view=sab&mode=thread&sel=s:Controller@390": [],
+  "p=Tomas&view=sab&mode=scrub&step=6@390": [],
+  "p=Derek&view=sab&plan=one@390": [],
+  "p=Derek&plan=one@390": [],
+  "p=Marcus@390": [],
+  "p=Sofia@390": [],
+  "p=Wren@390": []
+ },
+ "reduced": {
+  "390": {
+   "errors": [],
+   "framesDrawnWhileIdle": 0,
+   "reduced": true
+  },
+  "1600": {
+   "errors": [],
+   "framesDrawnWhileIdle": 0,
+   "reduced": true
+  }
+ },
+ "cost": {
+  "1600-Derek": {
+   "scriptMs": 7.48,
+   "medianMs": 4,
+   "worstMs": 115.9,
+   "frameGapMs": 31.4,
+   "n": 127
+  },
+  "1600-Derek-lite": {
+   "scriptMs": 3.78,
+   "medianMs": 3,
+   "worstMs": 34.7,
+   "frameGapMs": 39,
+   "n": 103
+  },
+  "1600-Tomas": {
+   "scriptMs": 6.55,
+   "medianMs": 4.5,
+   "worstMs": 40.4,
+   "frameGapMs": 36.2,
+   "n": 111
+  },
+  "1600-Tomas-lite": {
+   "scriptMs": 4.3,
+   "medianMs": 3.3,
+   "worstMs": 33.4,
+   "frameGapMs": 40.3,
+   "n": 100
+  },
+  "390-Derek": {
+   "scriptMs": 5.49,
+   "medianMs": 3.1,
+   "worstMs": 136.9,
+   "frameGapMs": 36.1,
+   "n": 113
+  },
+  "390-Derek-lite": {
+   "scriptMs": 3.03,
+   "medianMs": 2.4,
+   "worstMs": 49.8,
+   "frameGapMs": 37.9,
+   "n": 109
+  },
+  "390-Tomas": {
+   "scriptMs": 8.07,
+   "medianMs": 4,
+   "worstMs": 95.7,
+   "frameGapMs": 47.6,
+   "n": 85
+  },
+  "390-Tomas-lite": {
+   "scriptMs": 4.07,
+   "medianMs": 2.8,
+   "worstMs": 23.1,
+   "frameGapMs": 37.8,
+   "n": 105
+  }
+ }
+}

@@ -1,0 +1,876 @@
+<title>Discovery Character Sheet</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>
+/*@@FONT@@*/
+/* ============================================================
+   THE I AM SHEET. Field note 11 drawn on the product's own figure.
+
+   A prototype and a review page in one file. Nothing in proto/ is read by
+   the build. Every number is computed by gen.js from engine.js and inlined
+   by build.js; nothing below is typed in. The tokens are the product's own,
+   out of atuned_src/shell/head.html, for four of its seven lightings.
+
+   One source of light on the page, and it is the channel: lit from the root
+   in the seat colours it passes through. Pressure is grey and never a seat
+   colour. What the instrument read wears a seat colour. What the person put
+   there wears ink. Nothing here is the alarm colour, because nothing here is
+   wrong.
+   ============================================================ */
+:root,body.lt-snow{
+ --bg:#EDEBE6;--panel:#F8F7F3;--panel-2:#F2F0EB;--sunk:#E6E4DE;
+ --edge:rgba(20,23,28,.11);--edge-2:rgba(20,23,28,.18);
+ --ink:#16171C;--mid:#4E4C48;--dim:#605E59;
+ --root:#9B4B47;--sacral:#8E6231;--solar:#7E6C29;--heart:#2A7A5C;
+ --throat:#2C6F88;--eye:#4C5F9E;--crown:#6E5490;
+ --accent:#2F6E92;--on-accent:#F4F8FA;
+ --figure:#F8F7F3;--figure-edge:rgba(20,23,28,.24);--track:rgba(20,23,28,.18);
+ --box:rgba(20,23,28,.50);--wash:transparent;--shadow:0 12px 30px rgba(40,54,74,.12);
+ --spec:none;--glow:0;
+ color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#0C0D12;--panel:#1A1D26;--panel-2:#252833;--sunk:#090A0E;
+ --edge:rgba(255,255,255,.09);--edge-2:rgba(255,255,255,.14);
+ --ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;
+ --root:#D6524C;--sacral:#D8924E;--solar:#DABF6A;--heart:#5FD5A6;
+ --throat:#5EBBDB;--eye:#7D93E0;--crown:#A77EDB;
+ --accent:#7EB8D4;--on-accent:#0B1418;
+ --figure:#161922;--figure-edge:rgba(255,255,255,.16);--track:rgba(255,255,255,.15);
+ --box:rgba(255,255,255,.34);--wash:transparent;--shadow:0 12px 34px rgba(0,0,0,.34);--glow:.6;
+ color-scheme:dark;
+}}
+:root[data-theme="dark"],body.lt-dark,body.lt-punch,body.lt-glass{
+ --bg:#0C0D12;--panel:#1A1D26;--panel-2:#252833;--sunk:#090A0E;
+ --edge:rgba(255,255,255,.09);--edge-2:rgba(255,255,255,.14);
+ --ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;
+ --root:#D6524C;--sacral:#D8924E;--solar:#DABF6A;--heart:#5FD5A6;
+ --throat:#5EBBDB;--eye:#7D93E0;--crown:#A77EDB;
+ --accent:#7EB8D4;--on-accent:#0B1418;
+ --figure:#161922;--figure-edge:rgba(255,255,255,.16);--track:rgba(255,255,255,.15);
+ --box:rgba(255,255,255,.34);--wash:transparent;--shadow:0 12px 34px rgba(0,0,0,.34);--glow:.6;
+ color-scheme:dark;
+}
+body.lt-snow{--glow:0}
+/* PUNCH, the product's own: nothing outlined, everything solid, and the shell
+   tints toward the seat the reading names heaviest. --seat is set by the
+   script from the reading, not chosen. */
+body.lt-punch{
+ --seat:#DFCC7E;--seat-w:.3;
+ --edge:transparent;--edge-2:transparent;
+ --bg:color-mix(in srgb,var(--seat) calc(2% + var(--seat-w)*6%),#12131A);
+ --panel:color-mix(in srgb,var(--seat) calc(3% + var(--seat-w)*4%),#171922);
+ --panel-2:color-mix(in srgb,var(--seat) calc(4% + var(--seat-w)*4%),#20222D);
+ --sunk:color-mix(in srgb,var(--seat) calc(2% + var(--seat-w)*5%),#12131B);
+ --figure:var(--panel-2);--figure-edge:transparent;
+}
+/* GLASS, the product's own: one light, upper left, for every surface; the
+   colour is in the light behind the panes and never in the material. */
+body.lt-glass{
+ --seat:#7EB8D4;
+ --bg:#0B0D14;--panel:rgba(30,34,46,.55);--panel-2:rgba(42,47,62,.62);--sunk:rgba(14,17,26,.5);
+ --edge:rgba(255,255,255,.10);--edge-2:rgba(255,255,255,.17);
+ --ink:#F3F2EE;--mid:#C2BEB6;--dim:#928D85;
+ --figure:rgba(30,34,46,.62);--figure-edge:rgba(255,255,255,.20);
+ --wash:radial-gradient(60% 50% at 50% 38%,color-mix(in srgb,var(--seat) 22%,transparent),transparent 70%);
+ --spec:linear-gradient(160deg,rgba(255,255,255,.16),rgba(255,255,255,0) 42%);
+ --shadow:0 24px 64px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:16px;line-height:1.6;
+ -webkit-font-smoothing:antialiased;font-feature-settings:'cv11' 1;
+ transition:background .32s cubic-bezier(.22,1,.36,1),color .32s cubic-bezier(.22,1,.36,1)}
+.wrap{max-width:1504px;margin:0 auto;padding-inline:48px}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.lab{font-size:11px;font-weight:600;line-height:1.3;color:var(--dim);letter-spacing:.01em}
+.num{font-variant-numeric:tabular-nums}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- review controls. they are not the surface. ---------- */
+.rev{border-bottom:1px solid var(--edge);background:var(--sunk)}
+.rev .wrap{display:flex;flex-wrap:wrap;gap:10px 24px;align-items:center;padding-block:10px}
+.rev .note{font-size:13px;color:var(--dim);margin-right:auto}
+.seg{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.seg .lab{margin-right:4px}
+.seg button{min-height:44px;padding:0 14px;border-radius:11px;border:1px solid var(--edge-2);
+ background:transparent;cursor:pointer;font-size:14px;color:var(--mid);
+ transition:border-color .12s,color .12s,background .12s}
+.seg button:hover{color:var(--ink);border-color:var(--dim)}
+.seg button[aria-pressed="true"]{color:var(--ink);border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+body.lt-punch .seg button{border-color:transparent;background:var(--panel)}
+body.lt-punch .seg button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);box-shadow:none}
+
+/* ---------- the surface ---------- */
+.surface{position:relative;padding-block:28px 40px;background:var(--wash)}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:18px}
+.head h1{margin:2px 0 0;font-size:34px;line-height:1.05;font-weight:600;letter-spacing:-.015em}
+.head .ex{font-size:13px;color:var(--dim)}
+.sheet{display:grid;grid-template-columns:216px minmax(0,1fr) 216px;gap:16px;align-items:start}
+.rail{display:flex;flex-direction:column;gap:16px}
+.card{background:var(--panel);border:1px solid var(--edge);border-radius:16px;padding:16px;
+ position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;inset:0;background:var(--spec);pointer-events:none}
+body.lt-glass .card{backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);
+ box-shadow:var(--shadow),inset 1px 1px 0 rgba(126,184,212,.35),inset -1px -1px 0 rgba(232,168,140,.22)}
+.card h2{margin:0 0 10px}
+.who-nm{font-size:20px;font-weight:600;line-height:1.2;margin:0 0 10px}
+.kv{display:grid;grid-template-columns:1fr;gap:2px 12px;font-size:14px}
+.kv .lab{margin-top:8px}
+.kv .lab{white-space:nowrap}
+.tagx{display:inline-block;margin-left:6px;background:transparent;font-size:11px;font-weight:600;color:var(--dim);
+ border:1px solid var(--edge-2);border-radius:6px;padding:0 5px;line-height:16px;vertical-align:1px}
+.arch{display:flex;gap:10px;align-items:flex-start;margin-top:10px}
+.arch svg{flex:0 0 22px;width:22px;height:22px;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.arch b{display:block;font-weight:600;font-size:14px;line-height:1.3}
+.arch span{display:block;font-size:13px;color:var(--mid);line-height:1.35}
+
+/* the spine: the figure in the middle and the seven rows pinned to it */
+.spine{position:relative;height:var(--spine-h)}
+.fig{position:absolute;left:50%;top:0;width:var(--fig-w);transform:translateX(-50%)}
+.fig svg{display:block;width:100%;height:auto;overflow:visible}
+.cap{position:absolute;top:var(--cap-y);left:0;right:0;display:grid;
+ grid-template-columns:minmax(0,1fr) var(--fig-w) minmax(0,1fr);gap:0 18px;align-items:end}
+.cap .l{display:flex;justify-content:flex-end;gap:8px;align-items:center}
+.cap .r{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.key{display:inline-flex;gap:5px;align-items:center}
+.key svg{width:11px;height:11px;overflow:visible}
+.row{position:absolute;left:0;right:0;top:var(--y);transform:translateY(-50%);display:grid;
+ grid-template-columns:minmax(0,1fr) var(--fig-w) minmax(0,1fr);gap:0 18px;align-items:center}
+.row .l{display:flex;justify-content:space-between;align-items:center;gap:12px;min-width:0}
+.row .r{display:flex;justify-content:space-between;align-items:center;gap:12px;min-width:0}
+.row .m{display:none}
+.verb{min-width:0}
+.verb b{display:block;font-size:15px;font-weight:600;line-height:1.25;letter-spacing:-.005em;white-space:nowrap}
+.verb span{display:block;font-size:11px;font-weight:600;color:var(--dim);line-height:1.3}
+.boxes{display:block;flex:0 0 auto}
+.pct{font-size:13px;color:var(--mid);min-width:40px;text-align:right}
+.pairw{margin-top:16px;padding-top:12px;border-top:1px solid var(--edge)}
+.pairw p{margin:8px 0 0;font-size:14px;line-height:1.45;color:var(--ink)}
+.pairw em{font-style:normal;display:block;font-size:11px;font-weight:600;color:var(--dim)}
+.pairw .lands{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--mid)}
+.pairw .lands svg{width:18px;height:18px;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+
+/* the lower flanks, beside the legs */
+.flank{position:absolute;top:var(--flank-y);width:calc((100% - var(--fig-w)) / 2 - 18px)}
+.flank.l{left:0}.flank.r{right:0}
+.big{font-size:28px;font-weight:600;line-height:1.1;letter-spacing:-.01em}
+.flank p{margin:6px 0 0;font-size:14px;line-height:1.55;color:var(--mid);max-width:44ch}
+.flank p b{color:var(--ink);font-weight:600}
+.pair2{display:flex;gap:28px;margin-top:14px}
+.pair2 .big{font-size:22px}
+.seatnm{display:inline-flex;align-items:center;gap:8px}
+.seatnm svg{width:22px;height:22px;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.next{display:flex;width:100%;text-align:left;cursor:pointer;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;
+ min-height:56px;padding:10px 14px;border-radius:11px;border:1px solid var(--edge-2);background:var(--panel)}
+.next:hover,.door:hover{border-color:var(--dim)}
+.next svg{width:18px;height:18px;flex:0 0 18px;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+body.lt-punch .next{border-color:transparent}
+.next b{font-weight:600;font-size:15px}
+.next span{display:block;font-size:13px;color:var(--mid)}
+.doors{display:grid;gap:8px;margin-top:10px}
+.door{display:block;text-align:left;min-height:44px;padding:10px 12px;border-radius:11px;
+ border:1px solid var(--edge-2);background:var(--panel);cursor:pointer}
+.door b{display:block;font-weight:600;font-size:14px}
+.door span{display:block;font-size:13px;color:var(--mid);line-height:1.4}
+body.lt-punch .door{border-color:transparent}
+body.lt-punch .tagx{background:var(--panel-2)}
+
+/* badges */
+.bdg{display:grid;grid-template-columns:38px 1fr;gap:4px 10px;align-items:center;padding:8px 0;border-top:1px solid var(--edge)}
+.bdg:first-of-type{border-top:0}
+.bdg svg.disc{width:38px;height:38px;overflow:visible}
+.bdg .w{display:flex;flex-wrap:wrap;gap:2px 12px;font-size:14px;line-height:1.35}
+.bdg .w span{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.bdg .w svg{width:11px;height:11px;overflow:visible}
+.bdg .s{grid-column:2;font-size:12px;color:var(--dim);line-height:1.35}
+.addbtn{grid-column:2;justify-self:start;min-height:44px;padding:0 12px;border-radius:11px;border:1px dashed var(--edge-2);
+ background:transparent;cursor:pointer;font-size:13px;color:var(--mid)}
+.addbtn[aria-pressed="true"]{border-style:solid;color:var(--ink)}
+.status{min-height:18px;font-size:12px;color:var(--mid);margin-top:6px}
+
+/* the foot: his four weeks and his vision and needs */
+.foot{margin:18px auto 0;max-width:760px;display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-end;gap:14px 26px}
+.wk{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:64px}
+.wk svg{width:34px;height:34px;overflow:visible}
+.wk b{font-size:12px;font-weight:600}
+.wk span{font-size:11px;font-weight:600;color:var(--dim)}
+.vn{display:flex;align-items:center;gap:12px;padding-left:22px;border-left:1px solid var(--edge-2)}
+.vn svg{width:72px;height:72px;overflow:visible}
+.vn b{display:block;font-size:14px;font-weight:600}
+.vn span{display:block;font-size:13px;color:var(--mid);max-width:26ch;line-height:1.4}
+.foothead{text-align:center;margin-top:26px}
+
+/* ---------- the review document ---------- */
+.doc{border-top:1px solid var(--edge);padding-block:44px 64px}
+.doc h2.sec{font-size:26px;font-weight:600;letter-spacing:-.01em;margin:0 0 6px;text-wrap:balance}
+.doc .lede{font-size:16px;color:var(--mid);max-width:70ch;margin:0 0 22px}
+.q{background:var(--panel);border:1px solid var(--edge);border-radius:16px;padding:22px;margin-top:16px}
+body.lt-glass .q{backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.qh{display:grid;grid-template-columns:40px 1fr;gap:4px 12px;align-items:baseline}
+.qn{font-size:22px;font-weight:600;color:var(--dim);font-variant-numeric:tabular-nums}
+.qh h3{margin:0;font-size:20px;font-weight:600;line-height:1.3;text-wrap:balance}
+.qh p{grid-column:2;margin:4px 0 0;color:var(--mid);max-width:74ch;font-size:15px}
+.qbody{display:grid;grid-template-columns:200px minmax(0,1fr);gap:18px;margin-top:16px;align-items:start}
+.his{margin:0}
+.his img{display:block;width:100%;height:auto;border-radius:8px;border:1px solid var(--edge-2)}
+.his figcaption{font-size:12px;color:var(--dim);margin-top:6px;line-height:1.35}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.opt{border:1px solid var(--edge-2);border-radius:12px;padding:14px;background:var(--bg);display:flex;flex-direction:column;gap:8px}
+body.lt-punch .opt{border-color:transparent;background:var(--sunk)}
+.opt .ot{display:flex;gap:10px;align-items:baseline}
+.opt .ol{font-size:13px;font-weight:600;color:var(--on-accent);background:var(--accent);border-radius:6px;padding:0 7px;line-height:20px}
+.opt .ot b{font-size:15px;font-weight:600;line-height:1.35}
+.opt .dr{min-height:40px;display:flex;justify-content:center;align-items:center;padding:6px 0}
+.opt .dr svg{max-width:100%;height:auto;overflow:visible}
+.opt p{margin:0;font-size:14px;line-height:1.5;color:var(--mid)}
+.opt p b{color:var(--ink);font-weight:600}
+.drawn{font-size:13px;color:var(--dim);margin-top:12px}
+.also{margin:12px 0 0;font-size:15px;color:var(--ink)}
+.probe{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+.probe td,.probe th{text-align:left;padding:6px 8px;border-top:1px solid var(--edge);vertical-align:top}
+.probe th{font-size:11px;font-weight:600;color:var(--dim)}
+.marks{display:grid;grid-template-columns:120px repeat(7,minmax(0,1fr));gap:8px 6px;align-items:center;margin-top:4px}
+.marks .lab{align-self:center}
+.marks svg{width:30px;height:30px;justify-self:center;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.marks .x{font-size:11px;color:var(--dim);text-align:center;font-weight:600}
+.tbl{overflow-x:auto;margin-top:8px}
+.tbl table{border-collapse:collapse;width:100%;min-width:720px;font-size:14px}
+.tbl th,.tbl td{text-align:left;padding:9px 10px;border-top:1px solid var(--edge);vertical-align:top}
+.tbl th{font-size:11px;font-weight:600;color:var(--dim)}
+.tbl td.n{font-variant-numeric:tabular-nums;text-align:right}
+.tbl img{width:46px;height:46px;border-radius:6px;display:block}
+.tbl svg{width:26px;height:26px;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.verdict{margin-top:14px;padding:14px 16px;border-radius:12px;background:var(--panel);border:1px solid var(--edge);max-width:90ch}
+.verdict b{font-weight:600}
+.recon{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin-top:10px}
+.recon .card{grid-column:span 2}.recon .card:nth-child(n+4){grid-column:span 3}
+@media (max-width:1100px){.recon{grid-template-columns:1fr}.recon .card,.recon .card:nth-child(n+4){grid-column:auto}}
+.recon .card h3{margin:0 0 6px;font-size:16px}
+.recon .card p,.recon .card li{font-size:14px;color:var(--mid);line-height:1.55}
+.recon .card ul{margin:0;padding-left:18px}
+.prov{font-size:13px;color:var(--dim);max-width:100ch;line-height:1.55}
+.prov code{font-size:12px}
+
+/* breath: period and depth set by the reading, root leads, and it stops
+   for anybody who has asked the machine to stop moving */
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(var(--amp,1.02))}}
+.breathe .seat{transform-box:fill-box;transform-origin:center;animation:breathe var(--per,4s) ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.breathe .seat{animation:none}*{transition:none!important}}
+
+/* ---------- narrow: one column, in the order a phone reads ---------- */
+@media (max-width:1439px){
+ .wrap{padding-inline:16px}
+ .sheet{grid-template-columns:1fr;max-width:720px;margin:0 auto}
+ .rail.who{order:1}.spinewrap{order:2}.rail.bd{order:3}
+ .spine{height:auto}
+ .fig{position:relative;left:auto;transform:none;margin:0 auto;width:min(var(--fig-w-n),100%)}
+ .cap{position:static;display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px 14px;margin:18px 0 6px}
+ .cap .l,.cap .r{justify-content:flex-start;gap:14px}
+ .cap .mid{display:none}
+ .rows{display:flex;flex-direction:column}
+ .row{position:static;transform:none;display:grid;grid-template-columns:36px minmax(0,1fr) minmax(0,1fr) auto;
+  grid-template-areas:"m v v p" "bl bl br br";gap:6px 10px;padding:10px 0;border-top:1px solid var(--edge)}
+ .row .mid{display:none}
+ .row .l .bx{grid-area:bl;justify-self:start}
+ .row .r .bx{grid-area:br;justify-self:end}
+ .row .m{display:block;grid-area:m;width:36px;height:36px}
+ .row .l,.row .r{display:contents}
+ .row .verb{grid-area:v}
+ .row .pct{grid-area:p;align-self:center}
+ .flank{position:static;width:auto;margin-top:18px}
+ .qbody{grid-template-columns:1fr}
+ .his img{max-width:260px}
+ .marks{grid-template-columns:repeat(7,minmax(0,1fr))}
+ .marks .lab{grid-column:1 / -1}
+ /* THE CORNER HOLDS THE LABEL COLUMN, AND THIS WIDTH HAS NO LABEL COLUMN. Wide,
+    the names row opens with one empty cell under Yours, Shipping today and
+    Drawn above, so each name lands under its own mark. Here those labels span
+    the row instead, but the corner is not a label: it took the first of the
+    seven cells and pushed every name one column right. Third eye sat under
+    the throat's clock and mouth, Throat under a heart, Heart under the
+    starburst, and Root fell to a line of its own. The owner read it as his
+    marks being off by one, which is exactly what it was, at every width under
+    1440 and never at the 1600 this was reviewed at. */
+ .marks .corner{display:none}
+}
+@media (min-width:1440px){ .row .bx{display:contents} }
+</style>
+
+<div class="rev" role="region" aria-label="Review controls">
+ <div class="wrap">
+  <div class="note">Review controls. They pick who is loaded and which lighting, for looking only.</div>
+  <div class="seg" id="segState"><span class="lab">Profile</span></div>
+  <div class="seg" id="segLight"><span class="lab">Lighting</span></div>
+ </div>
+</div>
+
+<main>
+ <section class="surface" aria-label="The avatar page, first direction">
+  <div class="wrap">
+   <div class="head">
+    <div><div class="lab">Character sheet</div><h1>I am</h1></div>
+    <div class="ex" id="exNote"></div>
+   </div>
+   <div class="sheet">
+    <aside class="rail who" id="railWho"></aside>
+    <div class="spinewrap"><div class="spine" id="spine"></div>
+     <div class="foothead"><span class="lab">This month</span> <span class="tagx">example</span></div>
+     <div class="foot" id="foot"></div>
+    </div>
+    <aside class="rail bd" id="railBadges"></aside>
+   </div>
+  </div>
+ </section>
+
+ <section class="doc"><div class="wrap">
+  <h2 class="sec">Questions for you</h2>
+  <p class="lede">Ordered by how much the answer changes the build. Each is answerable in a sentence. Where the drawing above had to pick, the question says which option it drew. None of them is settled by the drawing.</p>
+  <div id="questions"></div>
+ </div></section>
+
+ <section class="doc"><div class="wrap">
+  <h2 class="sec">Your seven circles, against the seven seats</h2>
+  <p class="lede">Checked against the engine's own tables: the seat carried by all 112 addresses in <code>engine/data/nodes.js</code>, the laws in <code>SI</code> in <code>engine/data/canon.js</code>, and the one line canon.js already gives each seat.</p>
+  <div id="mapping"></div>
+ </div></section>
+
+ <section class="doc"><div class="wrap">
+  <h2 class="sec">Where this sits against what is already ruled</h2>
+  <p class="lede">This page did not start from nothing. The dashboard of 20 September, the character sheet of the same day, and the purpose map and boundary in the engine all bear on it.</p>
+  <div class="recon" id="recon"></div>
+ </div></section>
+
+ <section class="doc"><div class="wrap">
+  <h2 class="sec">Tried on the roster</h2>
+  <p class="lede">Every person in the product's reference roster, at arrival, read through the same arithmetic as the drawing. The numbers are the engine's. The notes are the design team's read, and every one of them is simulated.</p>
+  <div class="tbl" id="tissue"></div>
+  <p class="prov" id="prov" style="margin-top:28px"></p>
+ </div></section>
+</main>
+
+<script>
+var D=/*@@DATA@@*/null;
+var CROPS=/*@@CROPS@@*/{};
+/* ============================================================ basics */
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+var SEATS=D.bands;                              /* root first, read by name */
+var TOPDOWN=SEATS.slice().reverse();            /* his order, crown first */
+var CV={Root:'var(--root)',Sacral:'var(--sacral)',Solar:'var(--solar)',Heart:'var(--heart)',
+ Throat:'var(--throat)','3rd Eye':'var(--eye)',Crown:'var(--crown)'};
+var SEATNM={Root:'Root',Sacral:'Sacral',Solar:'Solar',Heart:'Heart',Throat:'Throat','3rd Eye':'Third eye',Crown:'Crown'};
+/* his verbs, from field note 11. third eye carries three, the row carries the one the seat's own line uses */
+var VERB={Crown:'I believe','3rd Eye':'I see',Throat:'I speak',Heart:'I feel',Solar:'I am',Sacral:'I connect',Root:'I survive'};
+var PM={}; D.pmbands.forEach(function(b){PM[b.b]=b;});
+var LAWIC={}; D.si.forEach(function(l){LAWIC[l.nm]=l.ic;});
+
+/* ============================================================ the marks */
+function burst(){var p=[];for(var k=0;k<8;k++){var a=(-90+45*k)*Math.PI/180,R=(k%2?6.3:10);
+ p.push([12+R*Math.cos(a),12+R*Math.sin(a)]);var b=(-90+45*k+22.5)*Math.PI/180;
+ p.push([12+3.1*Math.cos(b),12+3.1*Math.sin(b)]);}
+ return 'M'+p.map(function(q){return q[0].toFixed(2)+' '+q[1].toFixed(2);}).join('L')+'z';}
+var GL={
+ /* his seven, redrawn on the product's 24 grid: open stroke, 1.7, round */
+ his:{Crown:'M5 19h14 M8 19v-7 M12 19V6 M16 19v-7',
+  '3rd Eye':'M2.5 12s3.8-6 9.5-6 9.5 6 9.5 6-3.8 6-9.5 6-9.5-6-9.5-6z M12 9.4a2.6 2.6 0 100 5.2 2.6 2.6 0 100-5.2',
+  Throat:'M3 12c2.7-2.9 5.6-3.9 9-2.8 3.4-1.1 6.3-.1 9 2.8-2.7 3.1-5.6 4.6-9 4.6s-6.3-1.5-9-4.6z M3 12h18 M8.2 12v1.9 M12 12v2.3 M15.8 12v1.9',
+  Heart:'M12 20s-7.5-4.6-7.5-10a4 4 0 017.5-2 4 4 0 017.5 2c0 5.4-7.5 10-7.5 10z',
+  Solar:burst(),
+  Sacral:'M12 3.5a8.5 8.5 0 100 17 8.5 8.5 0 100-17 M12 5v1.6 M12 8.6v1.6 M12 12.2v1.6 M12 15.8v1.6 M7.6 10.2c.8.6 1.8.6 2.6 0 M13.8 10.2c.8-.7 1.8-.7 2.6 0 M8 16.2c1.1-1 2.5-1.2 4-.6 M12 15.6c1.5.7 3 .5 4-.6',
+  Root:'M7.8 11a4.2 4.2 0 118.4 0c0 1.7-.8 2.7-1.9 3.3V16H9.7v-1.7C8.6 13.7 7.8 12.7 7.8 11z M10.4 11h.01 M13.6 11h.01 M4 5.5l3 2.2 M20 5.5l-3 2.2 M4 20.5l3-2.2 M20 20.5l-3-2.2'},
+ /* SEATGLYPH, engine/data/canon.js:276, as it ships today */
+ shipped:{Root:'M12 3l7 4v6c0 4-3 7-7 8-4-1-7-4-7-8V7z',Sacral:'M12 4c4 4 4 12 0 16-4-4-4-12 0-16z',
+  Solar:'M13 3L5 14h6l-1 7 8-11h-6z',Heart:'M12 20s-7-4.5-7-9a4 4 0 017-2.6A4 4 0 0119 11c0 4.5-7 9-7 9z',
+  Throat:'M12 4a8 8 0 100 16 8 8 0 100-16 M12 7v5l3 3',
+  '3rd Eye':'M12 9a3 3 0 100 6 3 3 0 100-6 M2 12s4-6 10-6 10 6 10 6-4 6-10 6S2 12 2 12z',Crown:'M12 3v18M3 12h18'}};
+/* the drawing above: his five that hold, the shipped sacral, and a ground line
+   with roots under it for the root, because a skull is a hazard sign */
+/* his crown's three uprights read as a bar chart at 18 pixels, so the outer two
+   open outward like rays. his mouth shared the eye's almond and read as a second
+   eye, so it takes a flat top and a row of teeth. both are still his marks. */
+GL.comp={Crown:'M5 19.5h14 M12 19.5V5 M8.6 19.5c0-4.6-1.3-7.9-3.3-10.3 M15.4 19.5c0-4.6 1.3-7.9 3.3-10.3','3rd Eye':GL.his['3rd Eye'],
+ Throat:'M3.5 9.5h17c0 4.4-3.8 7.5-8.5 7.5S3.5 13.9 3.5 9.5z M8 9.5v4.4 M12 9.5v5.6 M16 9.5v4.4',Heart:GL.his.Heart,
+ Solar:GL.his.Solar,Sacral:GL.shipped.Sacral,Root:'M4 8.5h16 M12 8.5V19.5 M12 13l-4 4.4 M12 13l4 4.4 M8.2 8.5l-3 4.8 M15.8 8.5l3 4.8'};
+function icon(d,col,cls){return '<svg viewBox="0 0 24 24" class="'+(cls||'')+'" aria-hidden="true" style="stroke:'+col+'"><path d="'+d+'"/></svg>';}
+
+/* ============================================================ the figure
+   the product's own silhouette, BODYPATH under figure.js's transform, in the
+   same 100 by 100 space PMBANDS seats are placed in. extended above and below
+   so the four field anchors have somewhere to sit. */
+var VX0=18,VW=64,VY0=-10,VH=118,RING=2.75,GBOX=3.3;
+var FIELDY={'Sol Star':-2.2,'Stellar Gateway':-6.6,'Earth Star':101.6,'Gaia Gateway':106};
+var BASE=PM.Root.yp+2.6, TOP=PM.Crown.yp-2.6;
+function riseY(p){return BASE-(BASE-TOP)*p/100;}
+function strands(){
+ /* two strands, crossing at every seat. his word: snaking around the chakras */
+ var ys=[BASE].concat(SEATS.map(function(b){return PM[b].yp;})).concat([TOP]);
+ var a='',b='';
+ for(var i=0;i<ys.length-1;i++){var y0=ys[i],y1=ys[i+1],A=Math.min(1.9,.2*(y0-y1)),sg=(i%2?-1:1);
+  for(var j=0;j<=14;j++){var u=j/14,y=y0+(y1-y0)*u,x=50+sg*A*Math.sin(Math.PI*u),x2=50-sg*A*Math.sin(Math.PI*u);
+   a+=(i===0&&j===0?'M':'L')+x.toFixed(2)+' '+y.toFixed(2);b+=(i===0&&j===0?'M':'L')+x2.toFixed(2)+' '+y.toFixed(2);}}
+ return [a,b];}
+var STR=strands();
+function figureSVG(s,o){
+ o=o||{};var id=o.id||'f',body=o.body!==false,y0=o.y0!=null?o.y0:VY0,h=o.h!=null?o.h:VH,glyphs=o.glyphs||GL.comp;
+ var live=!s.unread,out=[];
+ var gid=id+'-g',cid=id+'-c';
+ out.push('<svg viewBox="'+VX0+' '+y0+' '+VW+' '+h+'" role="img" aria-label="'+esc(o.label||'')+'"'+(o.cls?' class="'+o.cls+'"':'')+'>');
+ out.push('<defs><linearGradient id="'+gid+'" gradientUnits="userSpaceOnUse" x1="50" y1="'+BASE+'" x2="50" y2="'+TOP+'">');
+ SEATS.forEach(function(b){var off=(BASE-PM[b].yp)/(BASE-TOP);out.push('<stop offset="'+off.toFixed(3)+'" style="stop-color:'+CV[b]+'"/>');});
+ out.push('</linearGradient>');
+ out.push('<filter id="'+gid+'b" x="-60%" y="-5%" width="220%" height="110%"><feGaussianBlur stdDeviation=".9"/></filter>');
+ if(live)out.push('<clipPath id="'+cid+'"><rect x="0" y="'+riseY(s.rise.pct).toFixed(2)+'" width="100" height="'+(BASE-riseY(s.rise.pct)+3).toFixed(2)+'"/></clipPath>');
+ out.push('</defs>');
+ if(body)out.push('<g transform="translate('+D.figure.tx+' '+D.figure.ty+') scale('+D.figure.s+')"><path d="'+D.figure.d+'" style="fill:var(--figure);stroke:var(--figure-edge)" stroke-width="1" vector-effect="non-scaling-stroke"/></g>');
+ /* the channel exists before anything is read: a track the whole length */
+ STR.forEach(function(p){out.push('<path d="'+p+'" fill="none" style="stroke:var(--track)" stroke-width="1" vector-effect="non-scaling-stroke"/>');});
+ if(live){
+  /* lit from the root to the height the rise reads. one light on the page. */
+  out.push('<g clip-path="url(#'+cid+')"><g filter="url(#'+gid+'b)" style="opacity:var(--glow)">');
+  STR.forEach(function(p){out.push('<path d="'+p+'" fill="none" stroke="url(#'+gid+')" stroke-width="1.1"/>');});
+  out.push('</g>');
+  STR.forEach(function(p){out.push('<path d="'+p+'" fill="none" stroke="url(#'+gid+')" stroke-width="3.2" stroke-linecap="round" vector-effect="non-scaling-stroke"/>');});
+  out.push('</g>');
+  if(s.start){var sy=riseY(s.start.pct).toFixed(2);
+   out.push('<path d="M46.6 '+sy+'H53.4" fill="none" style="stroke:var(--mid)" stroke-width="1.5" stroke-dasharray="2 2" vector-effect="non-scaling-stroke"><title>where the rise started</title></path>');}
+  var ry=riseY(s.rise.pct).toFixed(2);
+  out.push('<circle cx="50" cy="'+ry+'" r="1.05" style="fill:var(--bg);stroke:var(--ink)" stroke-width="2" vector-effect="non-scaling-stroke"><title>risen '+s.rise.pct+'%</title></circle>');}
+ /* the seven seats, crown to root in his order, at the product's own heights */
+ SEATS.forEach(function(b,i){
+  var q=s.seats[b],y=PM[b].yp,C=2*Math.PI*RING,t=live?q.t:0,col=CV[b];
+  var per=o.breath?(2+3*Math.max(0,Math.min(100,s.CQ))/100):0,amp=1+(.010+.020*Math.max(0,Math.min(100,s.CQ))/100);
+  var st=live&&o.breath?' style="--per:'+per.toFixed(2)+'s;--amp:'+amp.toFixed(3)+';animation-delay:'+(-(per*(7-i)/7)).toFixed(2)+'s"':'';
+  out.push('<g class="seat"'+st+'><title>'+esc(VERB[b]+', '+SEATNM[b])+'</title>');
+  out.push('<circle cx="50" cy="'+y+'" r="'+(RING+.2)+'" style="fill:var(--figure)"/>');
+  out.push('<circle cx="50" cy="'+y+'" r="'+RING+'" fill="none" style="stroke:'+col+'" stroke-opacity=".28" stroke-width="2" vector-effect="non-scaling-stroke"/>');
+  if(live)out.push('<circle cx="50" cy="'+y+'" r="'+RING+'" fill="none" style="stroke:'+col+'" stroke-width="2.2" stroke-linecap="round" vector-effect="non-scaling-stroke" stroke-dasharray="'+(C*t).toFixed(3)+' '+C.toFixed(3)+'" transform="rotate(-90 50 '+y+')"/>');
+  if(live&&s.rise.blocked===b&&!o.noblock)out.push('<circle cx="50" cy="'+y+'" r="'+(RING+1.05)+'" fill="none" style="stroke:var(--mid)" stroke-width="1" stroke-dasharray="1.6 2.2" vector-effect="non-scaling-stroke"/>');
+  var gs=GBOX/24;
+  out.push('<g transform="translate('+(50-GBOX/2)+' '+(y-GBOX/2)+') scale('+gs+')"><path d="'+glyphs[b]+'" fill="none" style="stroke:'+col+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></g>');
+  out.push('</g>');});
+ if(body&&!o.nofield)D.field.forEach(function(f){var y=FIELDY[f.k];if(y==null)return;
+  out.push('<circle cx="50" cy="'+y+'" r=".95" fill="none" style="stroke:var(--dim)" stroke-width="1" vector-effect="non-scaling-stroke"><title>'+esc(f.k+', '+f.a)+'</title></circle>');});
+ out.push('</svg>');
+ return out.join('');}
+
+/* ============================================================ the boxes
+   one box per address at the seat. right: a slash is held, a short tick sits
+   below the line. left: a ring is installed. heaviest nearest the body. */
+var BX=11,BG=3;
+function boxesSVG(q,b,side){
+ var rows=q.addr.slice();
+ if(side==='L')rows.sort(function(x,y){return (y.st==='installed')-(x.st==='installed')||y.pole-x.pole||x.i-y.i;});
+ var n=rows.length,cols=Math.ceil(n/2),W=cols*(BX+BG)-BG,H=2*BX+BG,col=CV[b],o=[];
+ o.push('<svg class="boxes" width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" aria-hidden="true">');
+ rows.forEach(function(a,i){
+  var c=Math.floor(i/2),r=i%2;
+  if(side==='L')c=cols-1-c;             /* the left side grows away from the body */
+  var x=c*(BX+BG)+.5,y=r*(BX+BG)+.5,w=BX-1;
+  var on=(side==='R'&&(a.st==='held'||a.st==='below'))||(side==='L'&&a.st==='installed');
+  var punch=document.body.classList.contains('lt-punch');
+  if(punch){
+   var fill=on?(a.st==='below'?'color-mix(in srgb,'+col+' 42%,transparent)':col):'var(--panel-2)';
+   o.push('<rect x="'+(x-.5)+'" y="'+(y-.5)+'" width="'+BX+'" height="'+BX+'" rx="2" style="fill:'+fill+'"/>');
+   return;}
+  o.push('<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+w+'" rx="1.5" fill="none" style="stroke:'+(on&&a.st!=='below'?col:'var(--box)')+'" stroke-width="1"/>');
+  if(side==='R'&&a.st==='held')o.push('<rect x="'+(x+2)+'" y="'+(y+2)+'" width="'+(w-4)+'" height="'+(w-4)+'" rx="1" style="fill:'+col+'"/>');
+  if(side==='R'&&a.st==='below')o.push('<circle cx="'+(x+w/2)+'" cy="'+(y+w/2)+'" r="1.7" style="fill:'+col+'"/>');
+  if(side==='L'&&a.st==='installed')o.push('<circle cx="'+(x+w/2)+'" cy="'+(y+w/2)+'" r="2.6" fill="none" style="stroke:'+col+'" stroke-width="1.4"/>');});
+ o.push('</svg>');return o.join('');}
+function keyBox(kind){
+ var o='<svg viewBox="0 0 11 11" aria-hidden="true"><rect x=".5" y=".5" width="10" height="10" rx="1.5" fill="none" style="stroke:'+(kind==='below'?'var(--box)':'var(--mid)')+'"/>';
+ if(kind==='held')o+='<rect x="2.5" y="2.5" width="6" height="6" rx="1" style="fill:var(--mid)"/>';
+ if(kind==='below')o+='<circle cx="5.5" cy="5.5" r="1.7" style="fill:var(--mid)"/>';
+ if(kind==='installed')o+='<circle cx="5.5" cy="5.5" r="2.6" fill="none" style="stroke:var(--mid)" stroke-width="1.4"/>';
+ return o+'</svg>';}
+
+/* ============================================================ badges
+   his disc: one ring, an S through it, a seed in each half. a half is hatched
+   once a release has reached its address, in that address's seat colour.
+   Parent and Teacher have no address; when added they are hatched in ink. */
+function discSVG(bd,o){
+ o=o||{};var R=17,cx=19,cy=19,id=o.id||('d'+Math.random().toString(36).slice(2,7));
+ var colA=bd.a?CV[bd.a.b]:'var(--ink)',colB=bd.b?CV[bd.b.b]:'var(--ink)';
+ var fa=o.fa!=null?o.fa:!!(bd.a&&bd.a.reached),fb=o.fb!=null?o.fb:!!(bd.b&&bd.b.reached);
+ var s='M'+cx+' '+(cy-R)+'a'+(R/2)+' '+(R/2)+' 0 010 '+R+'a'+(R/2)+' '+(R/2)+' 0 000 '+R;
+ var halfA='M'+cx+' '+(cy-R)+'a'+R+' '+R+' 0 000 '+(2*R)+'a'+(R/2)+' '+(R/2)+' 0 010-'+R+'a'+(R/2)+' '+(R/2)+' 0 000-'+R+'z';
+ var halfB='M'+cx+' '+(cy-R)+'a'+R+' '+R+' 0 010 '+(2*R)+'a'+(R/2)+' '+(R/2)+' 0 000-'+R+'a'+(R/2)+' '+(R/2)+' 0 010-'+R+'z';
+ var hatch=function(clip,col){var h='<g clip-path="url(#'+clip+')">';for(var x=cx-R;x<=cx+R;x+=3.2)h+='<path d="M'+x.toFixed(1)+' '+(cy-R)+'V'+(cy+R)+'" style="stroke:'+col+'" stroke-width="1.3"/>';return h+'</g>';};
+ var out='<svg class="disc" viewBox="0 0 38 38" aria-hidden="true"><defs><clipPath id="'+id+'a"><path d="'+halfA+'"/></clipPath><clipPath id="'+id+'b"><path d="'+halfB+'"/></clipPath></defs>';
+ if(fa)out+=hatch(id+'a',colA);
+ if(fb)out+=hatch(id+'b',colB);
+ out+='<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="none" style="stroke:var(--mid)" stroke-width="1.4"'+(o.dashed?' stroke-dasharray="3 3"':'')+'/>';
+ out+='<path d="'+s+'" fill="none" style="stroke:var(--mid)" stroke-width="1.2"/>';
+ out+='<circle cx="'+cx+'" cy="'+(cy-R/2)+'" r="1.9" style="fill:var(--bg);stroke:'+(bd.a?colA:'var(--mid)')+'" stroke-width="1.2"/>';
+ out+='<circle cx="'+cx+'" cy="'+(cy+R/2)+'" r="1.9" style="fill:var(--bg);stroke:'+(bd.b?colB:'var(--mid)')+'" stroke-width="1.2"/>';
+ return out+'</svg>';}
+function miniBox(a){
+ if(!a)return '';var col=CV[a.b];
+ var o='<svg viewBox="0 0 11 11" aria-hidden="true"><rect x=".5" y=".5" width="10" height="10" rx="1.5" fill="none" style="stroke:'+(a.st==='held'||a.st==='installed'?col:'var(--box)')+'"/>';
+ if(a.st==='held')o+='<rect x="2.5" y="2.5" width="6" height="6" rx="1" style="fill:'+col+'"/>';
+ if(a.st==='below')o+='<circle cx="5.5" cy="5.5" r="1.7" style="fill:'+col+'"/>';
+ if(a.st==='installed')o+='<circle cx="5.5" cy="5.5" r="2.6" fill="none" style="stroke:'+col+'" stroke-width="1.4"/>';
+ return o+'</svg>';}
+
+/* ============================================================ his week marks */
+function weekMark(k,col){
+ col=col||'var(--mid)';var s='<svg viewBox="0 0 34 34" aria-hidden="true">';
+ if(k===0)s+='<circle cx="17" cy="17" r="2.2" style="fill:'+col+'"/>';
+ if(k===1)s+='<path d="M17 6L28.5 26.5H5.5z" fill="none" style="stroke:'+col+'" stroke-width="1.8" stroke-linejoin="round"/>';
+ if(k===2){for(var i=0;i<8;i++){var a0=(i*45+6)*Math.PI/180,a1=(i*45+36)*Math.PI/180;
+  s+='<path d="M'+(17+11*Math.cos(a0)).toFixed(2)+' '+(17+11*Math.sin(a0)).toFixed(2)+'L'+(17+11*Math.cos(a1)).toFixed(2)+' '+(17+11*Math.sin(a1)).toFixed(2)+'" style="stroke:'+col+'" stroke-width="2.2" stroke-linecap="round"/>';}}
+ if(k===3)s+='<circle cx="17" cy="17" r="11" fill="none" style="stroke:'+col+'" stroke-width="2.2"/>';
+ return s+'</svg>';}
+/* the purpose map, engine/avatar.js:51: two triangles, soul up and ego down,
+   and where they overlap is the six sided boundary. built, never drawn. */
+function purposeSVG(o){
+ o=o||{};var c=36,R=30,up=[],dn=[],hx=[];
+ for(var i=0;i<3;i++){var a=(-90+120*i)*Math.PI/180;up.push([c+R*Math.cos(a),c+R*Math.sin(a)]);
+  var b=(90+120*i)*Math.PI/180;dn.push([c+R*Math.cos(b),c+R*Math.sin(b)]);}
+ for(var j=0;j<6;j++){var h=(-60+60*j)*Math.PI/180;hx.push([c+R/Math.sqrt(3)*Math.cos(h+Math.PI/6-Math.PI/6),c+R/Math.sqrt(3)*Math.sin(h)]);}
+ var P=function(p){return 'M'+p.map(function(q){return q[0].toFixed(2)+' '+q[1].toFixed(2);}).join('L')+'z';};
+ var dash=o.filled?'':' stroke-dasharray="3 3"';
+ var s='<svg viewBox="-8 -8 88 88" aria-hidden="true"><path d="'+P(up)+'" fill="none" style="stroke:var(--mid)" stroke-width="1.4"'+dash+'/>';
+ s+='<path d="'+P(dn)+'" fill="none" style="stroke:var(--mid)" stroke-width="1.4"'+dash+'/>';
+ if(o.words){var L=function(p,t,dy){return '<text x="'+p[0].toFixed(1)+'" y="'+(p[1]+dy).toFixed(1)+'" text-anchor="middle" style="fill:var(--ink);font-size:6px;font-weight:600">'+esc(t)+'</text>';};
+  s+=L(up[0],o.words.up[0],-3)+L(up[1],o.words.up[1],8)+L(up[2],o.words.up[2],8)+L(dn[0],o.words.dn[0],8)+L(dn[1],o.words.dn[1],-3)+L(dn[2],o.words.dn[2],-3);}
+ return s+'</svg>';}
+
+/* ============================================================ state */
+var STATE=null,LIGHT=null;
+var STATES=D.states.map(function(s){return [s.id,s.label];});
+var LIGHTS=[['dark','Dark'],['snow','Snow'],['punch','Punch'],['glass','Glass']];
+function seg(host,items,cur,fn){var h=host.querySelector('.lab').outerHTML;
+ host.innerHTML=h+items.map(function(it){return '<button type="button" data-k="'+it[0]+'" aria-pressed="'+(it[0]===cur)+'">'+esc(it[1])+'</button>';}).join('');
+ host.querySelectorAll('button').forEach(function(b){b.onclick=function(){fn(b.getAttribute('data-k'));};});}
+function heaviestSeat(s){var best=null;SEATS.forEach(function(b){s.seats[b].addr.forEach(function(a){if(!best||a.sq>best.sq)best=a;});});return best&&best.sq>0?best.b:null;}
+function setLight(k){LIGHT=k;LIGHTS.forEach(function(l){document.body.classList.remove('lt-'+l[0]);});
+ if(k)document.body.classList.add('lt-'+k);
+ var s=cur(),hs=s?heaviestSeat(s):null;
+ document.body.style.setProperty('--seat',hs?getComputedStyle(document.body).getPropertyValue(CV[hs].slice(4,-1)).trim()||'#7EB8D4':'#7EB8D4');
+ document.documentElement.style.background=getComputedStyle(document.body).backgroundColor;
+ seg($('segLight'),LIGHTS,k,setLight);writeHash();renderSurface();renderQuestions();}
+function cur(){for(var i=0;i<D.states.length;i++)if(D.states[i].id===STATE)return D.states[i];return D.states[1];}
+function setState(k){STATE=k;seg($('segState'),STATES,k,setState);writeHash();setLight(LIGHT);}
+function writeHash(){try{var h=(STATE||'')+(LIGHT?'-'+LIGHT:'');if(location.hash.slice(1)!==h)history.replaceState(null,'','#'+h);}catch(e){}}
+
+/* ============================================================ the surface */
+var STARTD=[['Write what happened','The day, in your own words. The engine reads the charge out of it.'],
+ ['Read nine sentences','For anyone who cannot think of themselves as the problem. None of them is a diagnosis.'],
+ ['Go year by year','Three to eighteen. For anyone who cannot think of anything they identify with, which is most people.'],
+ ['Say who you are becoming','The avatar. Release empties an address and replace fills it. This is what you are filling it toward.']];
+var PARENT_ADDED=false;
+function layout(){
+ var wide=window.innerWidth>=1440;
+ var figW=wide?Math.min(434,Math.max(360,Math.round((Math.min(window.innerWidth,1504)-96-216*2-32)*0.46))):300;
+ var k=figW/VW;
+ return {wide:wide,figW:figW,k:k,H:Math.round(VH*k)};}
+function renderSurface(){
+ var s=cur(),L=layout(),live=!s.unread,sp=$('spine');
+ sp.style.setProperty('--fig-w',L.figW+'px');sp.style.setProperty('--fig-w-n','300px');
+ sp.style.setProperty('--spine-h',L.H+'px');
+ sp.style.setProperty('--cap-y',Math.round((PM.Crown.yp-VY0)*L.k-58)+'px');
+ sp.style.setProperty('--flank-y',Math.round((PM.Root.yp+9-VY0)*L.k)+'px');
+ $('exNote').innerHTML=s.who&&s.who.nm?'':'';
+ var lbl=live?(s.who.nm+'. Risen '+s.rise.pct+' per cent from root to crown. The '+SEATNM[s.rise.blocked].toLowerCase()+' costs the rise the most.')
+  :'Nothing read yet, so the channel is drawn without a rise.';
+ var h=['<div class="fig">'+figureSVG(s,{id:'main',label:lbl,breath:true,cls:'breathe'})+'</div>'];
+ h.push('<div class="cap"><div class="l"><span class="key">'+keyBox('installed')+'<span class="lab">Installed</span></span></div><div class="mid"></div>'
+  +'<div class="r"><span style="display:inline-flex;gap:12px"><span class="key">'+keyBox('held')+'<span class="lab">Held</span></span><span class="key">'+keyBox('below')+'<span class="lab">Below the line</span></span></span><span class="lab">Conducts</span></div></div>');
+ h.push('<div class="rows">');
+ TOPDOWN.forEach(function(b){
+  var q=s.seats[b],y=Math.round((PM[b].yp-VY0)*L.k),col=CV[b];
+  var mini='<svg class="m" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="14" fill="none" style="stroke:'+col+'" stroke-opacity=".28" stroke-width="2.4"/>'
+   +(live?'<circle cx="18" cy="18" r="14" fill="none" style="stroke:'+col+'" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="'+(2*Math.PI*14*q.t).toFixed(2)+' 200" transform="rotate(-90 18 18)"/>':'')
+   +'<g transform="translate(9.5 9.5) scale(.7083)"><path d="'+GL.comp[b]+'" fill="none" style="stroke:'+col+'" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></g></svg>';
+  var t=live?Math.round(q.t*100)+'%':'–';
+  var title=VERB[b]+', '+SEATNM[b]+'. '+q.n+' addresses: '+(q.held?q.held+' held':'nothing held')+(q.below?', '+q.below+' below the line':'')+(q.installed?', '+q.installed+' installed':'')+'.'+(live?' Conducts '+Math.round(q.t*100)+' per cent.':'');
+  h.push('<div class="row" style="--y:'+y+'px" title="'+esc(title)+'">'+mini
+   +'<div class="l"><div class="verb"><b>'+VERB[b]+'</b><span>'+SEATNM[b]+'</span></div><div class="bx">'+boxesSVG(q,b,'L')+'</div></div>'
+   +'<div class="mid"></div>'
+   +'<div class="r"><div class="bx">'+boxesSVG(q,b,'R')+'</div><div class="pct num">'+t+'</div></div>'
+   +'<span class="vh">'+esc(title)+'</span>');
+  h.push('</div>');});
+ h.push('</div>');
+ /* the lower flanks */
+ if(live){
+  var lv=s.rise.levers,at=s.rise.at;
+  h.push('<div class="flank l"><div class="lab">Risen</div><div class="big num">'+s.rise.pct+'%</div>'
+   +'<p>Of the way from your root to your crown. The light starts at the root and every seat it passes costs it some.</p>'
+   +(s.start?'<div class="pair2"><div><div class="lab">Started</div><div class="big num">'+s.start.pct+'%</div></div><div><div class="lab">Reached</div><div class="big num">'+s.reachedCount+' <span style="font-size:15px;font-weight:500;color:var(--mid)">addresses</span></div></div></div>'
+     +'<p>The dashed mark on the channel is where you started. It does not move.</p>'
+     :'<p>This first reading is the mark the rise is measured from.</p>')+'</div>');
+  h.push('<div class="flank r"><div class="lab">Costs the most</div><div class="big seatnm">'+icon(GL.comp[s.rise.blocked],CV[s.rise.blocked])+SEATNM[s.rise.blocked]+'</div>'
+   +(at?'<p><b>'+esc(at.k)+'</b>'+(at.n?' at the '+esc(at.n.toLowerCase()):'')+' is the heaviest thing there, at a weight of '+at.sq.toFixed(1)+'.</p>':'')
+   +(lv?'<p>Twelve release runs at your '+SEATNM[s.rise.blocked].toLowerCase()+' take it from '+lv.now+'% to '+lv.release.to+'%.</p>':'')
+   +(s.next?'<button type="button" class="next" data-say="In the product this opens Ritual, set to '+esc(s.next.nm)+'."><div><div class="lab">Next</div><b>'+esc(s.next.nm)+'</b><span>'+s.next.min+' minutes. '+(s.next.sub?'The lightest practice your load allows today.':'Set against your '+SEATNM[s.next.seat].toLowerCase()+'.')+'</span></div>'+icon('M9 6l6 6-6 6','var(--mid)','')+'</button>':'')
+   +'<div class="status" role="status" aria-live="polite" id="surfStatus"></div></div>');
+ } else {
+  h.push('<div class="flank l"><div class="lab">Where to start</div><p>Nothing read yet, so there is no rise to draw. Every box is already here.</p><div class="doors">'
+   +STARTD.map(function(d){return '<button type="button" class="door" data-say="In the product this opens: '+esc(d[0].toLowerCase())+'."><b>'+d[0]+'</b><span>'+d[1]+'</span></button>';}).join('')+'</div><div class="status" role="status" aria-live="polite" id="surfStatus"></div></div>');
+ }
+ sp.innerHTML=h.join('');
+ if(L.wide){var top0=sp.getBoundingClientRect().top,need=L.H;
+  sp.querySelectorAll('.flank').forEach(function(f){need=Math.max(need,Math.ceil(f.getBoundingClientRect().bottom-top0)+12);});
+  sp.style.setProperty('--spine-h',need+'px');}
+ sp.querySelectorAll('[data-say]').forEach(function(el){el.onclick=function(){var st=$('surfStatus');if(!st)return;
+  st.textContent=el.getAttribute('data-say');clearTimeout(st._t);st._t=setTimeout(function(){st.textContent='';},2400);};});
+ /* the rails */
+ var w=s.who||{};
+ var who='<div class="card"><h2 class="lab">Who</h2>'
+  +'<p class="who-nm">'+(w.nm?esc(w.nm):'–')+'</p><div class="kv">'
+  +'<span class="lab">Age</span><span class="num">'+(w.age?w.age:'–')+'</span>'
+  +'<span class="lab">Discipline</span><span>'+(w.nm==='Marcus'?'Design<span class="tagx">example</span>':'–')+'</span>'
+  +'<span class="lab">Speciality</span><span>'+(w.nm==='Marcus'?'Leadership<span class="tagx">example</span>':'–')+'</span></div>';
+ if(w.a1){who+='<div style="margin-top:14px" class="lab">Archetypes</div>';
+  [w.a1,w.a2].forEach(function(a){if(!a)return;who+='<div class="arch">'+icon(a.ic,CV[a.b])+'<div><b>'+esc(a.nm)+'</b><span>'+esc(a.v)+'</span></div></div>';});}
+ if(w.nm==='Marcus'){
+  /* the pair, engine/avatar.js: who you are at your best, and who you are not.
+     the right half resolves to a seat; this one resolves to the throat. an
+     example: the sample pair proto/sheet already carries. */
+  who+='<div class="pairw"><div class="lab">In your words <span class="tagx">example</span></div>'
+   +'<p><em>At my best</em>\u201cI say the hard thing on the day.\u201d</p>'
+   +'<p><em>On a bad day</em>\u201cI said nothing. He took the credit.\u201d</p>'
+   +'<p class="lands">'+icon(GL.comp.Throat,CV.Throat)+'Lands at the throat</p></div>';}
+ who+='</div>';
+ $('railWho').innerHTML=who;
+ var bd='<div class="card"><h2 class="lab">Badges</h2><p style="margin:0 0 6px;font-size:13px;color:var(--mid);line-height:1.45">Five pairs. A half fills once a release has reached it, and it stays filled.</p>';
+ s.badges.forEach(function(b,i){
+  if(!b.a){bd+='<div class="bdg">'+discSVG(b,{id:'bp'+i,fa:PARENT_ADDED,fb:false,dashed:true})
+   +'<div class="w"><span>'+b.pair[0]+'</span><span>'+b.pair[1]+'</span></div>'
+   +'<div class="s">No address. Added by you, drawn in ink.</div>'
+   +'<button type="button" class="addbtn" id="addParent" aria-pressed="'+PARENT_ADDED+'">'+(PARENT_ADDED?'Remove parent':'Add parent')+'</button><div class="status" role="status" aria-live="polite" id="bdStatus"></div></div>';return;}
+  /* the disc alone carries whether a half is earned. a state mark beside each
+     word would say which half somebody runs today, which is the worn reading
+     question 3 argues against, back in by the side door. */
+  bd+='<div class="bdg">'+discSVG(b,{id:'bd'+i})+'<div class="w"><span>'+b.pair[0]+'</span><span>'+b.pair[1]+'</span></div>'
+   +'<div class="s">'+SEATNM[b.a.b]+' and '+SEATNM[b.b.b].toLowerCase()+'</div></div>';});
+ bd+='</div>';
+ $('railBadges').innerHTML=bd;
+ var ab=$('addParent');if(ab)ab.onclick=function(){PARENT_ADDED=!PARENT_ADDED;renderSurface();
+  var st=$('bdStatus');if(st){st.textContent=PARENT_ADDED?'Added. Parent is yours; the instrument read nothing here.':'Removed.';
+   setTimeout(function(){if(st)st.textContent='';},2400);}};
+ /* the foot */
+ var names=['Discover','Play','Flow','Embody'];
+ var f='';for(var i=0;i<4;i++)f+='<div class="wk">'+weekMark(i)+'<b>'+names[i]+'</b><span>Week '+(i+1)+'</span></div>';
+ f+='<div class="vn">'+purposeSVG({})+'<div><b>Vision and needs</b><span>Three words up for vision, three down for needs. Nothing written yet.</span></div></div>';
+ $('foot').innerHTML=f;
+}
+
+/* ============================================================ the questions */
+function opt(letter,title,draw,gives,costs){
+ return '<div class="opt"><div class="ot"><span class="ol">'+letter+'</span><b>'+title+'</b></div>'
+  +(draw?'<div class="dr">'+draw+'</div>':'')
+  +(gives?'<p><b>Gives.</b> '+gives+'</p>':'')+(costs?'<p><b>Costs.</b> '+costs+'</p>':'')+'</div>';}
+function his(key,cap){return CROPS[key]?'<figure class="his"><img src="'+CROPS[key]+'" alt="'+esc(cap)+'"><figcaption>'+esc(cap)+'</figcaption></figure>':'<div></div>';}
+function Q(n,title,sub,crop,cap,opts,tail){
+ return '<article class="q" id="q'+n+'"><div class="qh"><span class="qn">'+n+'</span><h3>'+title+'</h3><p>'+sub+'</p></div>'
+  +'<div class="qbody">'+his(crop,cap)+'<div><div class="opts">'+opts.join('')+'</div>'+(tail||'')+'</div></div></article>';}
+function stateById(id){for(var i=0;i<D.states.length;i++)if(D.states[i].id===id)return D.states[i];}
+function throatRow(s,mode){
+ var b=s.rise.blocked||'Throat',q=s.seats[b],col=CV[b];
+ var ring='<svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true"><circle cx="20" cy="20" r="16" fill="none" style="stroke:'+col+'" stroke-opacity=".28" stroke-width="2.4"/><circle cx="20" cy="20" r="16" fill="none" style="stroke:'+col+'" stroke-width="2.6" stroke-dasharray="'+(2*Math.PI*16*q.t).toFixed(1)+' 200" transform="rotate(-90 20 20)"/><g transform="translate(10.5 10.5) scale(.79)"><path d="'+GL.comp[b]+'" fill="none" style="stroke:'+col+'" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></g></svg>';
+ var L='',R='';
+ if(mode==='A'){L=boxesSVG(q,b,'L');R=boxesSVG(q,b,'R');}
+ if(mode==='B'){L='<span style="font-size:13px;line-height:1.35;text-align:right">\u201cI say the hard thing on the day.\u201d</span>';
+  R='<span style="font-size:13px;line-height:1.35">\u201cI said nothing. He took the credit.\u201d</span>';}
+ if(mode==='C'){L='<span style="display:flex;flex-wrap:wrap;justify-content:flex-end;gap:4px 10px">'+q.laws.map(function(l){return '<span style="display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--mid)"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="'+(LAWIC[l.nm]||'')+'" fill="none" style="stroke:'+col+'" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'+esc(l.nm)+'</span>';}).join('')+'</span>';
+  R=boxesSVG(q,b,'R');}
+ return '<div style="display:grid;grid-template-columns:minmax(0,1fr) 40px minmax(0,1fr);gap:10px;align-items:center;width:100%">'
+  +'<div style="display:flex;justify-content:flex-end">'+L+'</div>'+ring+'<div style="display:flex">'+R+'</div></div>';}
+function renderQuestions(){
+ var m=stateById('marcus'),m6=stateById('marcus6'),g=stateById('gordon');
+ var L=layout(),kD=Math.min(434,Math.max(360,Math.round((1504-96-216*2-32)*0.46)))/VW,kN=300/VW;
+ var ringD=(2*RING*kD).toFixed(0),ringN=(2*RING*kN).toFixed(0);
+ var worn=D.tissue.map(function(t){return t.badges.reduce(function(a,b){return a+(b.a==='held')+(b.b==='held');},0);});
+ var none=worn.filter(function(x){return x===0;}).length,gw=0;D.tissue.forEach(function(t,i){if(t.nm==='Gordon')gw=worn[i];});
+ var P=D.prompts,land=[],own=0,else_=0,nowhere=0;
+ P.forEach(function(p){['trait','event'].forEach(function(k){var L=p[k].land;if(!L.seat)nowhere++;else if(L.seat===p.seat)own++;else else_++;});});
+ var qs=[];
+ /* 1 */
+ qs.push(Q(1,'Is the avatar a person with the channel inside it?',
+  'On 20 September the kundalini rise became the avatar’s progress bar, and whether the figure is a body was left for you to look at (the avatar design notes, the part added that day). Today you said: “It’ll still be a person.” This asks whether that settles it.',
+  'column','Your column of seven circles, field note 11.',
+  [opt('A','The channel alone',
+    '<div style="width:180px">'+figureSVG(m,{id:'q1a',body:false,nofield:true,y0:-2,h:64,label:'The channel alone'})+'</div>',
+    'The dashboard of 20 September. Nothing that can be read as a body type.','Nothing to recognise as you. Your sheet has a person in it and this does not.'),
+   opt('B','The channel inside a person',
+    '<div style="width:180px">'+figureSVG(m,{id:'q1b',label:'The channel inside a person'})+'</div>',
+    'The same figure the Body page already draws, so one drawing, seen twice. The seven sit where the product already puts them.',
+    'A standing figure invites comparison with your own body, however hard the drawing refuses it. The seats are small: '+ringD+' pixels across on a desktop, '+ringN+' on a phone.')],
+  '<p class="drawn">Drawn above: B. Numbers are Marcus at arrival in both.</p>'));
+ /* 2 */
+ qs.push(Q(2,'What fills the boxes beside each circle?',
+  'Your sheet puts small boxes beside every circle, positive on the left and negative on the right. The engine can fill them three ways, and each means something different. Drawn here on Marcus’s throat.',
+  'boxes','Belief and perception, with their boxes.',
+  [opt('A','One box per address at that seat',throatRow(m,'A'),
+    'Read by the engine, nothing to type. The right side empties as releases land, which is your sentence of 20 September: you are already there, and the work is removing what holds you back.',
+    'The person does not choose them. The crown has 21 boxes and the throat 12, so the rows are not even. Four marks to learn: held, below the line, installed, empty.'),
+   opt('B','Your own words',throatRow(m,'B'),
+    'Left, who you are at your best. Right, the same thing on a bad day. The engine already stores this pair (engine/avatar.js) and the right half resolves to a seat.',
+    'Empty until written. The left half never resolves to anything, so the left boxes can only hold words. Nothing in the app can write a pair yet.'),
+   opt('C','The laws seated there',throatRow(m,'C'),
+    'Twenty one laws, each already seated and drawn. The left side is the one thing a person can turn directly.',
+    'Laws move coherence and barely move the rise, so the two sides of one row answer to two different numbers.')],
+  '<p class="also">And do the boxes ever count up? On this drawing nothing on either side is a score: the right side empties with work, and the left side marks only an installed opposite.</p><p class="drawn">Drawn above: A, with one pair of B in Marcus’s own words at the throat, marked example.</p>'));
+ /* 3 */
+ var ex=function(bd,fa,fb,cap){return '<div style="display:flex;flex-direction:column;align-items:center;gap:6px">'+discSVG(bd,{id:'q3'+Math.random().toString(36).slice(2,6),fa:fa,fb:fb}).replace('class="disc"','width="64" height="64"')+'<span style="font-size:12px;color:var(--dim);text-align:center;max-width:22ch">'+cap+'</span></div>';};
+ var hv=m6.badges[0],gv=g.badges[0];
+ qs.push(Q(3,'What is a badge, and are these the tags you meant?',
+  'Your sheet lists ten words in five pairs, and the one badge you drew is split in two with a seed in each half. On 20 September you asked for tags set for each chakra that set up your protocol, and that was designed as a list of practices per seat (the avatar design notes of 20 September). Today you said a person can add tags.',
+  'badges','Your badges, and the one you drew.',
+  [opt('A','Earned',ex(hv,!!hv.a.reached,!!hv.b.reached,'Marcus after six releases: a release reached Victimhood at the root, so that half fills and stays filled.'),
+    'A dated fact that only accumulates, like the firsts. It never says which half you are. Eight of the ten words already have an address: Hero at Savior Complex (crown), Victim at Victimhood (root), Good guy at People Pleasing (throat), Bad guy at Projection (third eye), Forgive at Resentment (heart), Forget at Forgetfulness (crown), Love at False Love (heart), Hate at Hatred (heart). That table is our draft and yours to correct.',
+    'Parent and Teacher have no address, so they cannot be earned this way. Showing all five before any is earned is a list of what somebody has not done yet, and the rule for firsts is that nothing not yet true appears.'),
+   opt('B','Worn',ex(gv,gv.a.st==='held',gv.b.st==='held','Gordon today: both halves held, so he wears Hero and Victim at once.'),
+    'It shows which half your stories run today.',
+    'It puts Victim on a person, and the product’s own glossary calls every identification a limiting belief. Measured on the roster: '+none+' of '+D.tissue.length+' people wear no badge at all, and Gordon wears all '+gw+' halves at once. It reads how much somebody carries, not which role they play.'),
+   opt('C','Added',ex({pair:['Parent','Teacher'],a:null,b:null},true,false,'Parent, pinned by the person. Drawn in ink, because the instrument read nothing.'),
+    'Something plainly yours. It never borrows a seat colour.',
+    'Identity tags the product cannot check. A practitioner granted sight sees them too.')],
+  '<p class="also">And the word: the progression design of 20 September retired badge from every surface in favour of firsts. Your sketch and your gamification brief both use it. Does badge stay?</p><p class="also">And when you said tags today, did you mean these, or the practices set per seat?</p><p class="drawn">Drawn above: A for the four pairs with an address, C for parent and teacher.</p>'));
+ /* 4 */
+ var fig4=function(wide){return '<div style="width:70px'+(wide?';transform:scaleX(1.3)':'')+'">'+figureSVG(m,{id:'q4d'+Math.random().toString(36).slice(2,6),nofield:true,label:wide?'the same figure, widened':'the figure'})+'</div>';};
+ qs.push(Q(4,'What does shape mean?',
+  'Your words today: “elements that a person can add, tags, and you know, shape.” Your sheet ends with four shapes over four weeks, then “vision and needs conscious.”',
+  'weeks','Your four weeks, and vision and needs.',
+  [opt('A','Your week marks','<div style="display:flex;gap:8px">'+[0,1,2,3].map(function(i){return '<div style="width:30px">'+weekMark(i)+'</div>';}).join('')+'</div>',
+    'Each week gets one mark and its shape says how far round the loop the week got: a dot for discover, a triangle once there is play, a broken ring for flow, a closed ring when the next reading comes back. Your ruling that the loop is a circle, drawn as one.',
+    'The product has to know which station each week reached. Entries, rituals and releases are stored already.'),
+   opt('B','Your vision and needs','<div style="width:180px">'+purposeSVG({filled:true,words:{up:['Freedom','Knowledge','Wisdom'],dn:['Health','Family','Wealth']}})+'</div>',
+    'The purpose map: three words up for vision, three down for needs, and where the triangles overlap is the six sided boundary, partner, family, friends, community, coworkers, alone. Built in the engine and validated, never drawn. Example words.',
+    'Two interlaced triangles read as a Star of David to many people. Thirty boundary commitments is a lot to ask.'),
+   opt('C','The masks filling in','<svg viewBox="0 0 150 40" width="150">'+maskStrip(g)+'</svg>',
+    'Your pixel masks of 20 September. The first thing that visibly rewards writing. Gordon at arrival.',
+    'Two of the six always read the same, because Preteen and Professional sit on the same two seats.'),
+   opt('D','The figure’s own outline','<div style="display:flex;gap:22px;opacity:.55">'+fig4(false)+fig4(true)+'</div>',
+    '',
+    'The one we advise against. In 2008 Wii Fit made a child’s avatar visibly heavier, and a figure that changes shape with a reading tells a person their worth moved (the avatar design notes of 20 September).')],
+  '<p class="also">And your strip counts WK4 down to WK1. Is the month a countdown to the avatar’s monthly review, which the product already runs every 30 days, or four weeks building?</p><p class="drawn">Drawn above: A, with B at its end where your note says vision and needs.</p>'));
+ /* 5 */
+ var rows=P.map(function(p){return ['trait','event'].map(function(k){var Lx=p[k].land;return '<tr><td>'+SEATNM[p.seat]+'</td><td>'+esc(p[k].t)+'</td><td>'+(Lx.seat?(Lx.seat===p.seat?'<b>'+SEATNM[Lx.seat]+'</b>, its own seat':SEATNM[Lx.seat]+', a different seat'):'nowhere')+'</td></tr>';}).join('');}).join('');
+ qs.push(Q(5,'Are the questions under your bottom three circles the questions a person answers?',
+  'Your top four circles carry boxes. The bottom three carry questions: “How do we feel powered or disempowered?”, “How are we operating from unfulfilled goals or desires?”, “How are we operating from fear or lack?” The product has a known gap here: the two journal questions that would write an avatar pair were never built (the avatar design notes of 20 September).',
+  'low3','Your bottom three, with their questions.',
+  [opt('A','Seven questions, one per seat','',
+    'The seat comes from the question, so an answer lands where it was asked even when the story parser reads nothing.',
+    'Four more questions in your words: belief, perception, speak, compassion.'),
+   opt('B','One open journal','',
+    'Nothing new to write. The parser decides the seat.',
+    'Today it reads '+nowhere+' of '+(P.length*2)+' answers below as nothing.'),
+   opt('C','Both','','The seven on the sheet, the open journal where it is.','Two routes into one record.')],
+  '<p class="also">We answered each of your three questions twice, once as a trait and once as a day, and ran all six answers through the real story parser. '+own+' landed at the seat the question belongs to, '+else_+' landed at a different seat, and '+nowhere+' landed nowhere. Six sentences written by us, so it is a probe and not a panel.</p>'
+  +'<table class="probe"><tr><th>Question</th><th>Answer</th><th>Lands</th></tr>'+rows+'</table>'
+  +'<p class="also">And should we draft the other four in your voice for you to correct, or will you write them?</p>'));
+ /* 6 */
+ var mk=function(set,lab){return '<span class="lab">'+lab+'</span>'+TOPDOWN.map(function(b){return icon(GL[set][b],CV[b]);}).join('');};
+ qs.push(Q(6,'Which seven marks?',
+  'You drew a mark in every circle. Your eye, heart and starburst are stronger than what ships today. Your crown and mouth are yours but misread at badge size, and your skull and split face collide with marks that already mean something else.',
+  'column','Your seven marks.',
+  ['<div class="opt" style="grid-column:1 / -1"><div class="marks">'+mk('his','Yours')+mk('shipped','Shipping today')+mk('comp','Drawn above')
+   +'<span class="corner"></span>'+TOPDOWN.map(function(b){return '<span class="x">'+SEATNM[b]+'</span>';}).join('')+'</div>'
+   +'<p>The shipped solar mark is the same lightning bolt as the Anger axis and the Power domain, so three names share one drawing; your starburst ends that. The shipped throat mark is a clock; your mouth says speak. At 18 pixels your crown\u2019s three uprights read as a bar chart and your mouth reads as a second eye, so the drawn row opens the crown\u2019s outer uprights and gives the mouth a flat top and teeth. Your skull is a hazard sign at the root, one of the three warm seats that carry the heaviest load in most fields, and the product\u2019s own rule against a palette that shouts loudest at the bottom holds for a symbol too. Your split face is already the Teen mask.</p></div>',
+   opt('A','Yours, all seven','','Your drawing, exactly.','A skull at the root on every avatar. The Teen mask at the sacral.'),
+   opt('B','Yours, reshaped where they misread','','The drawing above. Crown and mouth reshaped, still yours. The sacral keeps its shipped mark and the root gets a ground line with roots under it.','Two marks that are ours rather than yours.'),
+   opt('C','The seven that ship','','Nothing to change anywhere else.','The bolt keeps meaning three things. The throat keeps a clock.')],
+  '<p class="also">And does the change reach the whole product, or only the avatar?</p>'));
+ /* 7 */
+ var railA='<div class="kv" style="font-size:13px"><span class="lab">Discipline</span><span>Design</span><span class="lab">Speciality</span><span>Leadership</span><span class="lab">Age</span><span>44</span></div>';
+ var railB='<div style="font-size:13px">'+[m.who.a1,m.who.a2].map(function(a){return '<div class="arch" style="margin-top:4px">'+icon(a.ic,CV[a.b])+'<div><b>'+a.nm+'</b><span>'+a.v+'</span></div></div>';}).join('')+'</div>';
+ qs.push(Q(7,'Discipline and speciality: your work, or your archetype?',
+  'Your left column lists Art, Design, Engineer and Production, then Leadership and Management, then Age.',
+  'rail','Your left column.',
+  [opt('A','Your work, from a list',railA,'Reads the way a person introduces themselves.','A new field, and the list is a studio’s: Sofia the somatic practitioner, Rosa the retired midwife and Angela the seeker have no box to tick.'),
+   opt('B','Your archetypes',railB,'Already read by the engine, each with its seat and mark. Nothing to enter.','They read as spiritual rather than professional.'),
+   opt('C','Both','','The drawing above.','Two identity blocks in one rail.')],
+  '<p class="also">Age comes from the birth date, which is already stored.</p><p class="drawn">Drawn above: C, with the work fields marked example, taken from Marcus’s role in the roster, creative director.</p>'));
+ /* 8 */
+ qs.push(Q(8,'What is this page called?',
+  'Your sheet is headed “I AM, Discovery character sheet”, and the corner note says lessons from Discovery move to an individual’s character sheet.',
+  'title','Your heading and corner note.',
+  [opt('A','I am','','Your heading. It is also the verb you gave the solar plexus.',''),
+   opt('B','Avatar','','Your word for the centre of the product.',''),
+   opt('C','Character sheet','','Your ruling of 20 September: the avatar is a character sheet.','')],
+  '<p class="also">And is this where Discovery lands, so every entry a person writes is filed here at its seat?</p><p class="drawn">Drawn above: I am.</p>'));
+ /* 9 */
+ qs.push(Q(9,'Is Link a game?',
+  'Your note: “use game link to combine stories to build an intensity map.” There is no Link game today. The two that ship are the Letting Go Run and the Match.',
+  'link','Your link note.',
+  [opt('A','A third game','','Connect two stories and see the seats they share.','A new game to design.'),
+   opt('B','A move on this sheet','','Drop one story onto another.','Dragging on a phone is unreliable.'),
+   opt('C','Automatic','','Stories that land on the same address are linked for you.','Nothing to learn, and nothing to play.')],
+  '<p class="also">The intensity curve from your deck of 25 September may be the same idea. We will check before building anything.</p>'));
+ $('questions').innerHTML=qs.join('');
+}
+/* the six masks as pixel art, MASKART ported from proto/sheet/sheet.src.html */
+var MASKART=['..####..','.#....#.','#......#','#......#','#......#','#......#','#......#','.#....#.','.#....#.','..#..#..','...##...'];
+function maskStrip(s){var P=2.6,o='';s.masks.forEach(function(m,i){var ox=i*25,inside=[];
+ for(var y=0;y<11;y++){var row=MASKART[y],lo=row.indexOf('#'),hi=row.lastIndexOf('#');for(var x=0;x<8;x++){if(row[x]==='#')o+='<rect x="'+(ox+x*P)+'" y="'+(y*P)+'" width="'+P+'" height="'+P+'" style="fill:var(--dim)"/>';else if(x>lo&&x<hi)inside.push([x,y]);}}
+ var lit=Math.round(inside.length*Math.min(1,m.pct/100));inside.sort(function(a,b){return b[1]-a[1]||a[0]-b[0];});
+ inside.forEach(function(q,j){o+='<rect x="'+(ox+q[0]*P)+'" y="'+(q[1]*P)+'" width="'+P+'" height="'+P+'" style="fill:'+(j<lit&&m.lead?CV[m.lead]:'var(--sunk)')+'"/>';});});
+ return o;}
+
+/* ============================================================ the evidence */
+var GLOSS1={Root:'what you stand on',Sacral:'what you want',Solar:'what you carry',Heart:'what you give',Throat:'what you say','3rd Eye':'what you see',Crown:'what you belong to'};
+var HIS={Crown:['Belief','I believe',''],'3rd Eye':['Perception','I think, I see, I perceive',''],Throat:['(no name written)','I speak',''],
+ Heart:['Compassion','I feel',''],Solar:['Empowerment','I am','How do we feel powered or disempowered?'],
+ Sacral:['Passion','I connect','How are we operating from unfulfilled goals or desires?'],Root:['Survival','I survive','How are we operating from fear or lack?']};
+var CROPK={Crown:'c_belief','3rd Eye':'c_perception',Throat:'c_speak',Heart:'c_compassion',Solar:'c_empowerment',Sacral:'c_passion',Root:'c_survival'};
+var EVID={Crown:'Doubt Of God, whose theme is faith. Nihilism, whose theme is meaning.',
+ '3rd Eye':'Lack Of Discernment, whose theme is perception. Distortion, which the table calls mis-seeing.',
+ Throat:'Self-Silencing, whose theme is voice. Lying. People Pleasing.',
+ Heart:'Hatred, whose theme is forgiveness. Closed Heart. The law Compassion sits here.',
+ Solar:'Unworthiness, whose theme is confidence. Anger, power misused. Force.',
+ Sacral:'Lust, whose theme is desire. Envy, whose theme is lack. Need For Approval.',
+ Root:'Fear. Scarcity, whose theme is resources. Insecurity, whose theme is belonging.'};
+function renderMapping(){
+ var s=stateById('first'),h='<div class="tbl"><table><tr><th>Yours</th><th>Your words</th><th>Seat</th><th>What canon.js says the seat is</th><th>Laws seated there</th><th>Addresses there that say the same thing</th></tr>';
+ TOPDOWN.forEach(function(b){var H=HIS[b];
+  h+='<tr><td>'+(CROPS[CROPK[b]]?'<img src="'+CROPS[CROPK[b]]+'" alt="Your '+esc(H[0])+' circle">':'')+'</td>'
+   +'<td><b>'+esc(H[0])+'</b><br>'+esc(H[1])+(H[2]?'<br><span style="color:var(--dim)">'+esc(H[2])+'</span>':'')+'</td>'
+   +'<td><span class="seatnm">'+icon(GL.comp[b],CV[b])+SEATNM[b]+'</span><br><span class="num" style="color:var(--dim);font-size:13px">'+s.seats[b].n+' addresses</span></td>'
+   +'<td>'+GLOSS1[b]+'</td><td>'+s.seats[b].laws.map(function(l){return l.nm;}).join(', ')+'</td><td>'+EVID[b]+'</td></tr>';});
+ h+='</table></div>';
+ h+='<div class="verdict"><b>It holds, all seven, in the same order: your top circle is the crown and your bottom circle is the root.</b> Your words match the seat each time, and two of them are the product’s own words: Compassion is a law seated at the heart, and perception is the theme of an address at the third eye. One seam: the product files Dogma, belief held as an idea, at the third eye, and faith at the crown. So “I believe” at the crown reads as faith and meaning, not opinions. And your solar plexus, “how do we feel powered or disempowered”, agrees with your sentence of 20 September that worth and confidence sit at the solar plexus, where one of the product’s own tables still files worth at the sacral (the character sheet notes of 20 September).</div>';
+ $('mapping').innerHTML=h;}
+function renderRecon(){
+ var c=[['Extends the dashboard of 20 September',
+  '<ul><li>The rise stays the progress bar, computed the same way, root first and in series. It is drawn on the body as the lit channel, crossing at each seat, which is your word: snaking around the chakras.</li><li>Where it started is the dashed mark on the channel, and it never moves. The seat that costs the rise the most keeps its dashed ring.</li><li>What moves: the figure is a person, and the numbers come off the hero into the columns beside it, because nothing is written over the hero graphic.</li></ul>'],
+ ['Extends the character sheet of 20 September',
+  '<ul><li>You are already there: every box is drawn before anything is read, and the right side empties as the work lands. Nothing on the page fills up as a reward.</li><li>The silhouette is the Body page’s own, and the pair in your own words lands at its seat.</li><li>The pixel masks are not on this page. They are one of the answers to question 4.</li></ul>'],
+ ['Keeps what the armature refused',
+  '<ul><li>No face, no body type, no weight, no clothing on the figure. Everything a person adds lives beside the body, never on it, so adding a thing can never make the figure look better or worse.</li><li>Instrument marks wear a seat colour. The person’s own marks wear ink.</li></ul>'],
+ ['Where it conflicts',
+  '<ul><li>Badges name a person. The standing rule is that a label names ground and seat, never the person. Question 3.</li><li>Tags: on 20 September tags became the practices per seat. Today tags may mean badges. Question 3.</li><li>The word badge was retired from surfaces by the progression design. It is not enforced by the terminology gate, and your sketch uses it.</li></ul>'],
+ ['Where the purpose map and boundary surface',
+  '<ul><li>Built in engine/avatar.js and validated at the boundary, never drawn. Your note “vision and needs conscious” at the end of the four weeks is the purpose map read: vision up, needs down. It sits at the foot of the drawing, empty.</li><li>The boundary’s six sides are the relational half of your badges: Parent sits on the family side, Teacher on community or coworkers, and boundaryCross already names which side an entry lands on.</li></ul>']];
+ $('recon').innerHTML=c.map(function(x){return '<div class="card"><h3>'+x[0]+'</h3>'+x[1]+'</div>';}).join('');}
+function renderTissue(){
+ var note={Gordon:'Refuses at the door. Nearly every right hand box is filled and the light barely leaves the root. The page has to read as a place he could start, not a verdict.',
+  Rosa:'Nothing held and nearly every opposite installed. The sheet reads as finished, so for her the loop needs something besides clearing.',
+  Lance:'Reads the same as Rosa: nothing held, 107 installed. A finished sheet.',
+  Ana:'In it now. Worn badges would hang Good guy, Forgive, Love and Hate on her in her worst month.',
+  Sofia:'A practitioner. She will test whether each seat sits at the plexus the product claims, so the model line on this page matters to her.',
+  James:'Fifty seven. Boxes are 11 pixels; the empty outline is the faintest mark on the page and is the one to check against older eyes.',
+  Marcus:'A creative director. Nothing held anywhere, 99 addresses below the line. Without the below the line mark, his sheet would read as clear.'};
+ var h='<table><tr><th>Person</th><th class="n">Risen</th><th>Costs the most</th><th class="n">Held</th><th class="n">Below the line</th><th class="n">Installed</th><th class="n">Worn halves</th><th>Read</th></tr>';
+ D.tissue.forEach(function(t){var w=t.badges.reduce(function(a,b){return a+(b.a==='held')+(b.b==='held');},0);
+  h+='<tr><td><b>'+esc(t.nm)+'</b>, '+t.age+'<br><span style="color:var(--dim);font-size:13px">'+esc(t.role)+'</span></td><td class="n">'+t.rise+'%</td><td>'+SEATNM[t.blocked]+'</td><td class="n">'+t.held+'</td><td class="n">'+t.below+'</td><td class="n">'+t.installed+'</td><td class="n">'+w+'</td><td style="color:var(--mid);font-size:13px;max-width:44ch">'+(note[t.nm]||'')+'</td></tr>';});
+ $('tissue').innerHTML=h+'</table>';
+ $('prov').innerHTML='Every number on this page is computed by <code>proto/avatar/iam/gen.js</code> from <code>engine.js</code> (md5 <code>'+D.engineMd5+'</code>), made '+esc(D.made.slice(0,16).replace('T',' '))+' UTC, with the rise read through <code>proto/avatar/rise.js</code> and the silhouette read from <code>engine/data/figure.js</code>. The seat to plexus correspondence and the seven count are a modern Western reading: the source traditions give five, six, eight and more, and the welding of seats to nerve plexuses dates to 1927. Kundalini is a model. Every number here is a consistent internal system built on a model, and it is not a measurement.';}
+
+/* ============================================================ boot */
+(function(){
+ var h='';try{h=location.hash.slice(1);}catch(e){}
+ var parts=h.split('-'),st=parts[0],lt=parts[1]||null;
+ if(!D.states.some(function(s){return s.id===st;}))st='marcus';
+ if(!LIGHTS.some(function(l){return l[0]===lt;}))lt=null;
+ STATE=st;LIGHT=lt;
+ seg($('segState'),STATES,st,setState);
+ setLight(lt);
+ renderMapping();renderRecon();renderTissue();
+ var t=null;window.addEventListener('resize',function(){clearTimeout(t);t=setTimeout(renderSurface,120);});
+})();
+</script>

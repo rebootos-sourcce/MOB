@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Frames on a phone, live</title>
+<!-- THE PHONE FRAMES COMP, MADE SOMETHING HE CAN PRESS. DC and DF in TASKS.md.
+
+     3-mobile.html was a still: the chrome above and below the figure was a
+     screenshot pasted in, and only the figure drew. His words on opening it,
+     "mobile doesn't do shit", and then, in DF, "let's get the mobile version
+     interactive".
+
+     So nothing here is a picture. The frame below is the shipped build,
+     source.html, the one file, running at a phone's width, with James and his
+     five story bank lines committed exactly as capture.js committed them for
+     the comp. Every press in it is the product's own. The two options from
+     the comp are then applied ON TOP of the live Frames picture by cb.js, the
+     same code 3-mobile.html used, so the comparison is the shipped picture
+     against the comp's proposal on the same live screen:
+
+       As shipped   the build, untouched
+       Option a     the centre emptied to its two arcs, and one readout under
+                    the figure: coherence and shadow, then the three gate
+                    oppositions as balances
+       Option b     coherence and shadow move up into a key row above the
+                    switch, and the gate balances sit under the figure
+
+     What the proposal reads is live: coherence, shadow, the tier and the
+     swing come out of the build's own compute() and cqRange() every time the
+     build redraws the picture, so running a release or changing profile in
+     the frame moves them. The six gate shares are the one exception. No
+     reference profile has lit a gate, the build reads six zeros, and a
+     placement for six percentages cannot be judged on six zeros, so the comp's
+     example shares stand in and the readout says so, the same caption the
+     still carried. If a gate is ever lit, the live shares are used instead.
+
+     The build keeps rewriting its own picture (a new signature, a resize, a
+     layer switched off), so the proposal is re-applied whenever the build
+     replaces the picture, watched with a MutationObserver on #frend. It is
+     never applied by timer. -->
+<link rel="stylesheet" href="inter.css">
+<style>
+:root{--ground:#0b0b0d;--panel:#141419;--edge:rgba(255,255,255,.09);--edge-2:rgba(255,255,255,.16);
+ --ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;--accent:#7EB8D4;--warn:#D9A46A;
+ --ease-out:cubic-bezier(.22,1,.36,1);--t-micro:.12s;
+ --sans:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{background:var(--ground)}
+body{margin:0;color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.45}
+.bar{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--edge)}
+.bar h1{font-size:15px;font-weight:600;margin:0 6px 0 0}
+.grp{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.grp>span{color:var(--dim);font-size:12.5px;margin-right:4px}
+button{font:inherit}
+.bar button{background:transparent;border:1px solid var(--edge);border-radius:8px;color:var(--mid);font-size:13px;
+ padding:6px 11px;min-height:36px;cursor:pointer;
+ transition:border-color var(--t-micro) var(--ease-out),color var(--t-micro) var(--ease-out)}
+.bar button:hover{border-color:var(--edge-2);color:var(--ink)}
+.bar button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.bar button[aria-pressed=true]{color:var(--accent);border-color:rgba(126,184,212,.45)}
+.wrap{display:flex;gap:20px;padding:16px;align-items:flex-start;flex-wrap:wrap}
+.phone{position:relative;flex:0 0 auto;border:1px solid var(--edge-2);border-radius:22px;overflow:hidden;background:#0C0D12}
+.phone iframe{display:block;border:0;background:#0C0D12}
+.wait{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:13px;
+ text-align:center;padding:24px;pointer-events:none;transition:opacity .24s var(--ease-out)}
+.side{flex:1 1 300px;max-width:420px;min-width:0}
+.side h2{font-size:15px;font-weight:600;margin:0 0 6px}
+.side h3{font-size:13px;font-weight:600;margin:16px 0 6px;color:var(--mid)}
+.side p{margin:0 0 10px;color:var(--mid)}
+.side ul{margin:0 0 10px;padding-left:18px;color:var(--mid)}
+.side li{margin:0 0 4px}
+.side b{color:var(--ink);font-weight:500}
+.note{color:var(--dim);font-size:12.5px}
+.meter{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;padding:10px 12px;border:1px solid var(--edge);
+ border-radius:10px;margin:12px 0;font-variant-numeric:tabular-nums}
+.meter span{color:var(--dim)}
+.meter b{font-weight:500;color:var(--ink);overflow-wrap:anywhere}
+/* on a phone the build takes the whole width, as it would on his own phone,
+   so the frame steps out of the page's gutter */
+@media (max-width:520px){
+ .wrap{padding:0;gap:14px}
+ .phone{border-radius:0;border-left:0;border-right:0}
+ .side{padding:0 16px 20px;max-width:none}}
+</style>
+</head>
+<body>
+<div class="bar">
+ <h1>Frames on a phone</h1>
+ <div class="grp" id="g-opt"><span>Picture</span>
+  <button type="button" data-v="ship" id="o-ship">As shipped</button>
+  <button type="button" data-v="a" id="o-a">Option a</button>
+  <button type="button" data-v="b" id="o-b">Option b</button></div>
+ <div class="grp"><button type="button" id="reset">Start James again</button></div>
+</div>
+<div class="wrap">
+ <div class="phone" id="phone"><iframe id="app" title="The shipped build at a phone's width"></iframe>
+  <div class="wait" id="wait">Opening the instrument</div></div>
+ <div class="side">
+  <h2>The real build, at a phone's width</h2>
+  <p>This is <b>source.html itself</b>, running in the frame. Nothing in it is a picture. Press anything: an address, a layer in the key, Wheel and Dial, a tab. It is James with his five story lines, the same person the still comp showed.</p>
+  <h3>What the three buttons above change</h3>
+  <ul>
+   <li><b>As shipped.</b> The build, untouched.</li>
+   <li><b>Option a.</b> The centre keeps only its two arcs. Coherence, shadow and the three gate balances move into one readout under the picture.</li>
+   <li><b>Option b.</b> Coherence and shadow move into a row above the Frames switch. The gate balances stay under the picture.</li>
+  </ul>
+  <div class="meter">
+   <span>Coherence</span><b id="m-cq">-</b>
+   <span>Shadow</span><b id="m-dq">-</b>
+   <span>Gates</span><b id="m-g">-</b>
+   <span>Build</span><b id="m-b">-</b>
+  </div>
+  <p class="note">Coherence and shadow in the options are read live from the build every time it redraws, so they move when the build moves. The six gate shares are example values, because no reference profile has lit a gate yet and the build reads six zeros. Options a and b are the comp's proposal laid over the live screen. They are not in the product.</p>
+ </div>
+</div>
+<script src="../../sim/stories.js"></script>
+<script src="cb.js"></script>
+<script>
+(function(){
+'use strict';
+var APP='../../source.html',WHO='James';
+var $=function(id){return document.getElementById(id);};
+var st={opt:'a',W:null,obs:null,busy:false,ex:null};
+var EXAMPLE=CB.GATES.map(function(g){return g.pct;});
+try{var h=location.hash.slice(1);if(h==='ship'||h==='a'||h==='b')st.opt=h;}catch(e){}
+
+/* running a line inside the build: see release.js in proto/field-overlay for
+   why, and why the script fallback exists */
+function evalIn(W,src){
+ try{return W.eval(src);}catch(e){if(!e||e.name!=='EvalError')throw e;}
+ var d=W.document,s=d.createElement('script');W.__ev=undefined;
+ s.textContent='window.__ev=('+src+');';(d.head||d.documentElement).appendChild(s);s.remove();
+ var v=W.__ev;W.__ev=undefined;return v;}
+
+/* ---- the frame ---- */
+function size(){
+ var f=$('app'),narrow=innerWidth<=520;
+ var w=narrow?innerWidth:390,h=narrow?Math.max(560,innerHeight-($('phone').getBoundingClientRect().top+scrollY)-8):844;
+ f.style.width=w+'px';f.style.height=h+'px';f.width=w;f.height=h;}
+addEventListener('resize',size);
+function open(){
+ var f=$('app'),t0=Date.now();st.W=null;if(st.obs){st.obs.disconnect();st.obs=null;}
+ $('wait').style.opacity='1';$('wait').textContent='Opening the instrument';
+ size();
+ /* a second open reloads the same build rather than stacking a query on it */
+ if(f.getAttribute('src'))try{f.contentWindow.location.reload();}catch(e){f.src=APP;}else f.src=APP;
+ f.onload=function(){(function poll(){var W=f.contentWindow,ok=false;
+  try{ok=W.document.body&&W.document.body.classList.contains('booted');}
+  catch(e){$('wait').textContent='This page has to be served beside source.html to reach it. Opened as a file it cannot.';return;}
+  if(!ok){if(Date.now()-t0<25000)setTimeout(poll,120);else $('wait').textContent='The build did not finish opening.';return;}
+  prep(W);})();};}
+/* James and his five lines, committed the way proto/field-cb/capture.js
+   committed them, then the Field, drawn as Frames */
+function prep(W){
+ evalIn(W,'(function(nm,lines){'
+  +'if(typeof OB!=="undefined"&&OB.open&&typeof obClose==="function")obClose();'
+  +'var i=PEOPLE.findIndex(function(x){return x.nm===nm;});loadP(i);'
+  +'lines.forEach(function(t,k){applyStory(t);verpApply(t);if(typeof leanApply==="function")leanApply(t);'
+  +' if(CURP){CURP.story=CURP.story||{entries:[]};var ps=parseStory(t);'
+  +'  CURP.story.entries.push({t:"2026-09-2"+k+"T08:00:00Z",text:t,imprints:ps.imprints.length,bands:ps.bands});}});'
+  +'setTab(TAB.FIELD);fviewSet("frames");render();})')(WHO,(STORYBANK[WHO]||[]).map(function(x){return x[1];}));
+ st.W=W;
+ st.read=evalIn(W,'(function(){var r=compute(),g=cqRange(r.CQ),V=verpRead();'
+  +'return {CQ:+r.CQ,DQ:+r.DQ,tier:r.tier,lo:g.lo,hi:g.hi,unread:!!r.unread,'
+  +'gates:V.map(function(v){return {k:v.k,pct:v.pct};}),'
+  +'core:FR_L.indexOf("core"),gates_i:FR_L.indexOf("gates"),'
+  +'build:document.documentElement.getAttribute("data-build")};})');
+ injectCss(W.document);
+ var host=W.document.getElementById('frend');
+ st.obs=new W.MutationObserver(function(){apply();});
+ st.obs.observe(host,{childList:true});
+ $('wait').style.opacity='0';
+ apply();}
+
+/* ---- the comp's own rules, scoped so they cannot touch the product ---- */
+var CSS=
+ '.cbx{--tier:#7D93E0;--dq:#B9757B;--edge:rgba(255,255,255,.09);--tap:44px;--r-s:11px;--r-xs:8px;'
+ +'font-family:Inter,system-ui,sans-serif;font-variant-numeric:tabular-nums;color:#EFEDE8;order:1;flex:0 0 auto}'
+ +'.cbx .ro{padding:6px 14px 10px;display:flex;flex-direction:column;gap:10px}'
+ +'.cbx .ro-pair{display:flex;gap:8px}'
+ +'.cbx .ro-q{flex:1 1 0;display:flex;align-items:center;gap:8px;min-height:var(--tap);padding:4px 10px 4px 6px;border:1px solid var(--edge);border-radius:var(--r-s);box-sizing:border-box}'
+ +'.cbx .ro-n{font-size:26px;font-weight:300;line-height:1;letter-spacing:-.02em}'
+ +'.cbx .ro-n2{font-size:20px;font-weight:500}'
+ +'.cbx .ro-l{display:flex;flex-direction:column;font-size:11px;color:#969592;font-weight:500;line-height:14px}'
+ +'.cbx .ro-l b{font-weight:600;color:#B4B0A8}'
+ +'.cbx .ro-gates{display:flex;flex-direction:column;border:1px solid var(--edge);border-radius:var(--r-s)}'
+ +'.cbx .ro-g{display:grid;grid-template-columns:1fr 84px 1fr;align-items:center;gap:8px;min-height:var(--tap);padding:0 10px;font-size:11px}'
+ +'.cbx .ro-g+.ro-g{border-top:1px solid var(--edge)}'
+ +'.cbx .ro-side{display:flex;align-items:center;gap:5px;white-space:nowrap}'
+ +'.cbx .ro-side.lo{justify-content:flex-end}'
+ +'.cbx .ro-side .nm{color:#B4B0A8;font-weight:500}'
+ +'.cbx .ro-side .pc{font-weight:600}'
+ +'.cbx .ro-side.lo .pc{color:#DC7973}.cbx .ro-side.hi .pc{color:#83DBB7}'
+ +'.cbx .ro-bar{position:relative;height:5px;display:flex;gap:2px}'
+ +'.cbx .ro-bar i{display:block;height:5px;border-radius:3px;transition:width .26s cubic-bezier(.22,1,.36,1)}'
+ +'.cbx .ro-bar i.lo{background:rgba(214,82,76,.75)}.cbx .ro-bar i.hi{background:rgba(95,213,166,.85)}'
+ +'.cbx .ro-bar em{position:absolute;left:50%;top:-5px;bottom:-5px;width:1px;background:rgba(255,255,255,.3)}'
+ +'.cbx .ro-cap{font-size:11px;color:#969592;line-height:15px;padding:0 2px}'
+ +'.cbx.keyrow{display:flex;gap:6px;padding:8px 14px 0;align-items:center}'
+ +'.cbx .kb{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:2px 4px;border:1px solid var(--edge);border-radius:var(--r-xs);font-size:12px;white-space:nowrap}'
+ +'.cbx .cr{display:inline-flex;align-items:center;border-radius:999px;background:color-mix(in srgb,var(--c) 9%,transparent);border:1px solid color-mix(in srgb,var(--c) 30%,transparent);padding:2px 10px 2px 2px}'
+ +'.cbx .cr .ring{position:relative;flex:0 0 auto}'
+ +'.cbx .cr .ring svg.arc{transform:rotate(-90deg);display:block;width:24px;height:24px}'
+ +'.cbx .cr .gl-t{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;letter-spacing:-.03em;color:var(--c);line-height:1}'
+ +'.cbx .cr .v{font-weight:500;color:#EFEDE8;margin-left:6px;line-height:1;border-radius:999px;font-size:11.5px;background:color-mix(in srgb,var(--c) 17%,transparent);padding:4px 9px}'
+ +'@media (prefers-reduced-motion:reduce){.cbx .ro-bar i{transition:none}}';
+function injectCss(d){if(d.getElementById('cbx-css'))return;var s=d.createElement('style');s.id='cbx-css';s.textContent=CSS;d.head.appendChild(s);}
+
+/* ---- the proposal, on the live picture ---- */
+function readNow(){var r=st.read();
+ CB.R.CQ=r.CQ;CB.R.DQ=r.DQ;CB.R.tier=r.tier;CB.R.lo=r.lo;CB.R.hi=r.hi;
+ var lit=r.gates.some(function(g){return g.pct>0;}),by={};r.gates.forEach(function(g){by[g.k]=g.pct;});
+ CB.GATES.forEach(function(g,i){g.pct=lit&&by[g.k]!=null?by[g.k]:EXAMPLE[i];});
+ st.ex=!lit;return r;}
+function clean(d){['cbx-ro','cbx-key'].forEach(function(id){var e=d.getElementById(id);if(e)e.remove();});}
+function apply(){
+ var W=st.W;if(!W||st.busy)return;st.busy=true;
+ try{
+  var d=W.document,host=d.getElementById('frend'),r=readNow();
+  meter(r);
+  if(st.opt==='ship'){clean(d);return;}
+  var svg=host&&host.querySelector('svg.frsvg');if(!svg){clean(d);return;}
+  /* the picture's groups, found by the build's own layer order, never by a
+     guess at a position */
+  var gs=[].filter.call(svg.children,function(n){return n.tagName==='g';});
+  var core=gs[r.core],gates=gs[r.gates_i];
+  var cs=core?core.querySelectorAll('circle'):[];
+  if(svg.getAttribute('data-cbx')!==st.opt&&cs.length>=2){
+   var disc=cs[0],track=cs[1];
+   var M={svg:svg,gs:gs,core:core,gates:gates,W:+svg.getAttribute('width'),H:+svg.getAttribute('height'),
+    cx:+track.getAttribute('cx'),cy:+track.getAttribute('cy'),R:+track.getAttribute('r'),
+    w:+track.getAttribute('stroke-width'),disc:+disc.getAttribute('r')};
+   M.halo=M.disc-M.R-M.w/2;M.small=M.W<500;
+   CB.centre(M,'arcs');CB.gates(M,'none');
+   svg.querySelectorAll('text').forEach(function(t){if(/\. SQ /.test(t.textContent))t.textContent=t.textContent.replace('. SQ ','. Held at ');});
+   svg.setAttribute('data-cbx',st.opt);}
+  /* the readout under the picture */
+  var ro=d.getElementById('cbx-ro');
+  if(!ro){ro=d.createElement('div');ro.id='cbx-ro';ro.className='cbx';}
+  if(ro.previousElementSibling!==host)host.parentNode.insertBefore(ro,host.nextSibling);
+  ro.innerHTML='';
+  var inner=CB.readout(ro,{pair:st.opt==='a',gates:true});
+  var cap=d.createElement('div');cap.className='ro-cap';
+  cap.textContent=st.ex?'Gate shares are example values. No reference profile has lit a gate yet.':'Gate shares read live from this profile.';
+  inner.appendChild(cap);
+  /* option b's key row, above the switch */
+  var kr=d.getElementById('cbx-key');
+  if(st.opt==='b'){var fv=d.getElementById('fview');
+   if(!kr){kr=d.createElement('div');kr.id='cbx-key';kr.className='cbx keyrow';}
+   if(kr.nextElementSibling!==fv)fv.parentNode.insertBefore(kr,fv);
+   var chip=function(lab,f,c,val){return '<span class="kb"><span class="cr" style="--c:'+c+'"><span class="ring"><svg class="arc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="rgba(128,128,128,.22)" stroke-width="2.4"/>'
+    +'<circle cx="12" cy="12" r="9" fill="none" stroke="'+c+'" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="56.5" stroke-dashoffset="'+(56.5*(1-f)).toFixed(1)+'"/></svg><span class="gl-t">'+lab+'</span></span><span class="v">'+val+'</span></span></span>';};
+   kr.innerHTML=chip('CQ',CB.R.CQ/100,'#7D93E0',Math.round(CB.R.CQ)+'%')+chip('DQ',CB.R.DQ/100,'#B9757B',Math.round(CB.R.DQ)+'%');}
+  else if(kr)kr.remove();}
+ catch(e){try{console.error('[frames-live]',e);}catch(e2){}}
+ finally{st.busy=false;}}
+function meter(r){
+ $('m-cq').textContent=r.unread?'nothing read yet':(Math.round(r.CQ*10)/10)+', '+r.tier;
+ $('m-dq').textContent=r.unread?'-':String(Math.round(r.DQ*10)/10);
+ $('m-g').textContent=st.ex?'six zeros in the build, example shares shown':'live';
+ $('m-b').textContent=r.build||'-';}
+
+/* ---- the controls ---- */
+function press(){['ship','a','b'].forEach(function(v){$('o-'+v).setAttribute('aria-pressed',String(st.opt===v));});}
+['ship','a','b'].forEach(function(v){$('o-'+v).addEventListener('click',function(){
+ st.opt=v;press();try{history.replaceState(null,'','#'+v);}catch(e){}
+ /* back to the shipped picture means the build draws it again, from itself */
+ if(st.W){try{evalIn(st.W,'(function(){FR_SIG="";render();})')();}catch(e){}
+  if(v==='ship')clean(st.W.document);apply();}});});
+$('reset').addEventListener('click',open);
+press();open();
+})();
+</script>
+</body>
+</html>

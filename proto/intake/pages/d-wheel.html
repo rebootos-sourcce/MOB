@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Archetype picker D</title>
+<!--KIT-->
+<style>
+.lay{display:grid;grid-template-columns:minmax(0,640px) minmax(0,420px);gap:24px;align-items:start;justify-content:center}
+.wheel>svg{width:100%;height:auto;display:block}
+.wheel .nd{cursor:pointer}
+.wheel .nd:focus{outline:none}
+.wheel .nd:focus-visible .hit,.wheel .nd:hover .hit{stroke:var(--ink);stroke-opacity:.5}
+.panel{position:sticky;top:60px}
+.pinb{min-height:44px;padding:0 18px;border-radius:12px;border:1px solid var(--accent);background:transparent;color:var(--accent);font-weight:600;cursor:pointer;margin-top:14px}
+.pinb.on{background:var(--accent);color:var(--on-accent)}
+.ro{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.ro span{display:inline-flex;gap:6px;align-items:center;padding:4px 10px;border-radius:999px;border:1px solid var(--edge-2);font-size:13px}
+/* THE LIST UNDER THE WHEEL, AT PHONE WIDTH. The wheel carries no names at
+   390 because they would print at nine pixels. Hiding the names with no other
+   way to read them is hiding a control, so the same eighteen are here as
+   buttons, grouped by seat, and they select the same mark. */
+.leg{display:none;flex-direction:column;gap:8px;margin-top:16px}
+.leg .lr{display:grid;grid-template-columns:78px minmax(0,1fr);gap:8px;align-items:center}
+.leg .lb{display:flex;gap:6px;flex-wrap:wrap}
+.leg .lr b{font-size:13px}
+.leg button{min-height:44px;padding:0 12px;border-radius:12px;border:1px solid var(--edge-2);background:var(--sunk);cursor:pointer;display:inline-flex;gap:6px;align-items:center;font-size:14px}
+.leg button.on{border-color:var(--accent)}
+@media (max-width:1100px){.lay{grid-template-columns:1fr}.panel{position:static}.wheel{max-width:640px;margin:0 auto;width:100%}}
+@media (max-width:700px){.leg{display:flex}}
+</style></head><body>
+<div class="wrap">
+ <div class="eyebrow">Mockup D of four. The system as one circle.</div>
+ <h1 class="ar-h1">Which of these is most like you?</h1>
+ <p class="ar-lede">The eighteen archetypes sit around the seven seats they act from. Tap any mark to read it. Press <b>This is me</b> on the one closest to you.</p>
+ <div class="lay"><div><div class="wheel" id="wheel"></div></div><div class="card panel" id="panel"></div></div>
+ <div class="leg" id="leg"></div>
+ <div id="foot"></div>
+</div>
+<!--DATA-->
+<script>
+var SEL=null, PIN=null;
+function pol(r,deg){var t=deg*Math.PI/180;return [r*Math.cos(t),r*Math.sin(t)];}
+function arc(r0,r1,a0,a1){var p=[pol(r1,a0),pol(r1,a1),pol(r0,a1),pol(r0,a0)],lg=(a1-a0)>180?1:0;
+ return 'M'+p[0]+'A'+r1+' '+r1+' 0 '+lg+' 1 '+p[1]+'L'+p[2]+'A'+r0+' '+r0+' 0 '+lg+' 0 '+p[3]+'Z';}
+function draw(){
+ var small=window.innerWidth<700, W=small?205:275, n=ROSTER.length, step=360/n, R=160;
+ var aff=STRANGER?[]:(PP().aff||[]), ro=readOrder(), top=ro[0];
+ var h='<svg viewBox="'+(-W)+' '+(-W)+' '+(2*W)+' '+(2*W)+'" role="group" aria-label="Eighteen archetypes around seven seats">';
+ /* the seven seats, as bands, in body order clockwise from the top */
+ var k=0;SEATORD.forEach(function(b){var L=inSeat(b),a0=-90+k*step-step/2,a1=a0+L.length*step,mid=(a0+a1)/2,c=col(b);
+  h+='<path d="'+arc(96,122,a0+1,a1-1)+'" fill="'+c+'" fill-opacity=".14" stroke="'+c+'" stroke-opacity=".5"/>';
+  var lp=pol(109,mid);
+  h+='<text x="'+lp[0].toFixed(1)+'" y="'+lp[1].toFixed(1)+'" fill="'+c+'" font-size="'+(small?13:12)+'" font-weight="600" text-anchor="middle" dominant-baseline="middle" transform="rotate('+((mid>0&&mid<180)?mid-90:mid+90)+' '+lp[0].toFixed(1)+' '+lp[1].toFixed(1)+')">'+esc(seatName(b))+'</text>';
+  k+=L.length;});
+ /* the marks. On a loaded profile a read archetype carries a halo sized by
+    how strongly the field reads it. A draft is dashed and carries none. */
+ ROSTER.forEach(function(a,i){var ang=-90+i*step,p=pol(R,ang),c=col(a.b),on=a.nm===SEL,pn=a.nm===PIN;
+  var hal=(!STRANGER&&a.read>=0)?(25+(aff[a.read]||0)*9):0;
+  h+='<g class="nd" data-a="'+esc(a.nm)+'" tabindex="0" role="button" aria-label="'+esc(a.nm)+'" transform="translate('+p[0].toFixed(1)+' '+p[1].toFixed(1)+')">'
+   +(hal?'<circle r="'+hal.toFixed(1)+'" fill="'+c+'" fill-opacity=".16"/>':'')
+   +(top&&top.nm===a.nm?'<circle r="'+(hal+4).toFixed(1)+'" fill="none" stroke="'+c+'" stroke-dasharray="2 3"/>':'')
+   +'<circle class="hit" r="25" fill="#090A0E" stroke="'+(on||pn?c:'rgba(255,255,255,.14)')+'" stroke-width="'+(on||pn?2:1)+'"'+(a.draft?' stroke-dasharray="3 2"':'')+'/>'
+   +'<g transform="translate(-12 -12)">'+aic(a,24,c,1.6).replace('class="ic"','')+'</g>'
+   +(pn?'<circle r="5" cx="18" cy="-18" fill="'+c+'"/>':'')
+   +'</g>';
+  if(!small){var t=pol(R+34,ang),flip=ang>90&&ang<270;
+   h+='<text x="'+t[0].toFixed(1)+'" y="'+t[1].toFixed(1)+'" fill="'+(on||pn?'#EFEDE8':'#B4B0A8')+'" font-size="13" text-anchor="'+(flip?'end':'start')+'" dominant-baseline="middle" transform="rotate('+(flip?ang-180:ang)+' '+t[0].toFixed(1)+' '+t[1].toFixed(1)+')">'+esc(a.nm)+'</text>';}});
+ /* the centre says what is selected, or what to do */
+ var cs=SEL?A(SEL):null;
+ h+='<circle r="84" fill="#0E0F14" stroke="rgba(255,255,255,.08)"/>';
+ if(cs)h+='<g transform="translate(-18 -44)">'+aic(cs,36,col(cs.b),1.6).replace('class="ic"','')+'</g><text y="14" text-anchor="middle" fill="#EFEDE8" font-size="17" font-weight="600">'+esc(cs.nm)+'</text>'
+  +'<text y="36" text-anchor="middle" fill="'+col(cs.b)+'" font-size="12">'+esc(seatName(cs.b))+'</text>';
+ else h+='<text y="-4" text-anchor="middle" fill="#B4B0A8" font-size="14">Tap a mark</text><text y="16" text-anchor="middle" fill="#94908A" font-size="12">to read it</text>';
+ h+='</svg>';
+ document.getElementById('wheel').innerHTML=h;
+ document.getElementById('leg').innerHTML=SEATORD.map(function(b){return '<div class="lr"><b style="color:'+col(b)+'">'+esc(seatName(b))+'</b><div class="lb">'
+  +inSeat(b).map(function(a){return '<button data-a="'+esc(a.nm)+'" class="'+(a.nm===SEL?'on':'')+'">'+aic(a,18)+esc(a.nm)+'</button>';}).join('')+'</div></div>';}).join('');
+ var p='';
+ if(!STRANGER)p+='<div class="eyebrow">Your field reads first</div><div class="ro">'+ro.slice(0,3).map(function(a){return '<span>'+aic(a,16)+esc(a.nm)+'</span>';}).join('')
+  +'</div><p class="small dim" style="margin:6px 0 14px">The soft halo on the wheel is how strongly your field reads each one. Dashed marks are drafts it cannot read yet.</p>';
+ else p+='<p class="small dim" style="margin:0 0 14px">A dashed mark is a draft: in the table of eighteen, not yet read by the instrument. Load a profile above to see what a field reads.</p>';
+ if(cs)p+=detail(cs)+'<button class="pinb'+(PIN===cs.nm?' on':'')+'" id="pin">'+(PIN===cs.nm?'This is me, picked':'This is me')+'</button>';
+ else p+='<div class="eyebrow">Nothing picked yet</div><p class="muted" style="margin:6px 0 0">Tap any mark on the wheel.</p>';
+ if(PIN)p+=compare(A(PIN));
+ p+=saveRow(!!PIN);
+ document.getElementById('panel').innerHTML=p;
+ document.querySelectorAll('[data-a]').forEach(function(g){g.onclick=function(){SEL=g.dataset.a;draw();};
+  g.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();SEL=g.dataset.a;draw();}};});
+ var e;if(e=document.getElementById('pin'))e.onclick=function(){PIN=PIN===SEL?null:SEL;draw();};
+ wireSave();}
+document.getElementById('foot').innerHTML=foot('<p>The job: "show me the whole system and where I sit in it." The seven seats become the hub the archetypes hang off, which is the logic the owner asked to see worked out: archetype, seat, saboteur, in one picture. It is a circle because the product\'s ruling is that the loop is a circle, and it is the only one of the four that shows, on a loaded profile, what the field already reads beside what the person picks.</p><p>Eighteen marks plus one button, so the highest load of the four at the moment of choosing. It pays that back for Derek and Sofia, who want the model, and it costs Angela, who wants to be told.</p>');
+banner('Archetype picker, mockup D of four, round GQ');
+strangerChip(function(){draw();});
+window.draw=draw;
+window.addEventListener('resize',function(){clearTimeout(window._rt);window._rt=setTimeout(draw,120);});
+window.shootPrep=function(){if(!SEL){SEL='Sage';PIN='Sage';draw();}};
+draw();
+</script></body></html>

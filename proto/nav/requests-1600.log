@@ -1,0 +1,23 @@
+viewport 1600x1000
+requests observed: 2
+GET file:///home/user/MOB/proto/nav/index.html
+GET file:///home/user/MOB/engine.js
+
+not a local file read: 0
+
+page errors: 0
+
+
+gate:
+pass every door in TABDEF is placed once
+pass no door names a surface the engine does not carry
+pass every grouped surface keeps its own host 9 distinct hosts
+pass Knowledge and Games are two hosts under one door #know and #games
+pass Summary is under Story and is its own host #sum under #story
+pass Analytics still resolves to the surface that carries it 4 resolves to 1
+pass Settings has no door and resolves to itself integer 9
+pass Intake keeps its integer 5, host #iq
+pass every control is 44 by 44 or larger
+pass the children start left justified with the doors 0 pixels apart
+
+all clear at 1600 wide

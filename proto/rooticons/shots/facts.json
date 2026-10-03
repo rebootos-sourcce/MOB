@@ -1,0 +1,2102 @@
+{
+ "dark/ship/s0/none": {
+  "doms": {
+   "n": 19,
+   "minCR": 4.18,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.1027
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 5.85,
+   "minAt": "Sage",
+   "meanC": 0.06
+  },
+  "rootIcons": {
+   "n": 0,
+   "minCR": 99,
+   "meanC": 0
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.68,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 6.53,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 9.26,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.33,
+    "state": "off"
+   }
+  ],
+  "rail": 835
+ },
+ "dark/a/s0/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 6.27,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.1256
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 9.13,
+   "minAt": "Sage",
+   "meanC": 0.0723
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 4.68,
+   "minAt": "Architect",
+   "meanC": 0.1258
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.68,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 6.53,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 9.26,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.33,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "dark/b/s0/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 6.2,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.144
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 9.14,
+   "minAt": "Sage",
+   "meanC": 0.0828
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 4.68,
+   "minAt": "Architect",
+   "meanC": 0.1443
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.68,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 6.47,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 9.3,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.27,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "dark/c/s0/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 6.14,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.1633
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 9.15,
+   "minAt": "Sage",
+   "meanC": 0.0943
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 4.66,
+   "minAt": "Architect",
+   "meanC": 0.1636
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.66,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 6.47,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 9.43,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.23,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "dark/a/s1/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 6.27,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.1256
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 4.87,
+   "minAt": "Everyman",
+   "meanC": 0.1256
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 4.68,
+   "minAt": "Architect",
+   "meanC": 0.1258
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.68,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 6.53,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 9.26,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.33,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "dark/b/s1/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 6.2,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.144
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 4.87,
+   "minAt": "Everyman",
+   "meanC": 0.1417
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 4.68,
+   "minAt": "Architect",
+   "meanC": 0.1443
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.68,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 6.47,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 9.3,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.27,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "dark/c/s1/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 6.14,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.1633
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 4.87,
+   "minAt": "Everyman",
+   "meanC": 0.1582
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 4.66,
+   "minAt": "Architect",
+   "meanC": 0.1636
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.66,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 6.47,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 9.43,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.23,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "snow/ship/s0/none": {
+  "doms": {
+   "n": 19,
+   "minCR": 1.34,
+   "minAt": "Connection, Weaver cluster",
+   "meanC": 0.0988
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 3.03,
+   "minAt": "Sage",
+   "meanC": 0.0666
+  },
+  "rootIcons": {
+   "n": 0,
+   "minCR": 99,
+   "meanC": 0
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 2.45,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 2.41,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 1.7,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 2.95,
+    "state": "off"
+   }
+  ],
+  "rail": 835
+ },
+ "snow/a/s0/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 4.09,
+   "minAt": "Connection, Weaver cluster",
+   "meanC": 0.094
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 4.39,
+   "minAt": "Sage",
+   "meanC": 0.0858
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 4.77,
+   "minAt": "Architect",
+   "meanC": 0.0946
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.77,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 4.97,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 4.85,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.88,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "snow/b/s0/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 4.07,
+   "minAt": "Connection, Weaver cluster",
+   "meanC": 0.108
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 4.36,
+   "minAt": "Sage",
+   "meanC": 0.0981
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 4.77,
+   "minAt": "Architect",
+   "meanC": 0.1087
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.77,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 4.97,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 4.83,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.91,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "snow/c/s0/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 4.05,
+   "minAt": "Connection, Weaver cluster",
+   "meanC": 0.1196
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 4.38,
+   "minAt": "Sage",
+   "meanC": 0.1112
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 4.8,
+   "minAt": "Architect",
+   "meanC": 0.1207
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.8,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 4.99,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 4.8,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.95,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "snow/a/s1/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 4.09,
+   "minAt": "Connection, Weaver cluster",
+   "meanC": 0.094
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 4.09,
+   "minAt": "Caregiver",
+   "meanC": 0.0916
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 4.77,
+   "minAt": "Architect",
+   "meanC": 0.0946
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.77,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 4.97,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 4.85,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.88,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "snow/b/s1/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 4.07,
+   "minAt": "Connection, Weaver cluster",
+   "meanC": 0.108
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 4.07,
+   "minAt": "Caregiver",
+   "meanC": 0.1038
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 4.77,
+   "minAt": "Architect",
+   "meanC": 0.1087
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.77,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 4.97,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 4.83,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.91,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "snow/c/s1/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 4.05,
+   "minAt": "Connection, Weaver cluster",
+   "meanC": 0.1196
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 4.05,
+   "minAt": "Caregiver",
+   "meanC": 0.1135
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 4.8,
+   "minAt": "Architect",
+   "meanC": 0.1207
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.8,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 4.99,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 4.8,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.95,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "punch/ship/s0/none": {
+  "doms": {
+   "n": 19,
+   "minCR": 4.87,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.1173
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 6.99,
+   "minAt": "Sage",
+   "meanC": 0.0677
+  },
+  "rootIcons": {
+   "n": 0,
+   "minCR": 99,
+   "meanC": 0
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.52,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 6.31,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 8.96,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.16,
+    "state": "off"
+   }
+  ],
+  "rail": 835
+ },
+ "punch/a/s0/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 5.52,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.1256
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 8.04,
+   "minAt": "Sage",
+   "meanC": 0.0723
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 4.52,
+   "minAt": "Architect",
+   "meanC": 0.1258
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.52,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 6.31,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 8.96,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.16,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "punch/b/s0/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 5.46,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.144
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 8.05,
+   "minAt": "Sage",
+   "meanC": 0.0828
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 4.52,
+   "minAt": "Architect",
+   "meanC": 0.1443
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.52,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 6.26,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 9,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.1,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "punch/c/s0/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 5.41,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.1633
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 8.06,
+   "minAt": "Sage",
+   "meanC": 0.0943
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 4.51,
+   "minAt": "Architect",
+   "meanC": 0.1636
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.51,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 6.26,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 9.12,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.06,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "punch/a/s1/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 5.52,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.1256
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 4.29,
+   "minAt": "Everyman",
+   "meanC": 0.1256
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 4.52,
+   "minAt": "Architect",
+   "meanC": 0.1258
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.52,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 6.31,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 8.96,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.16,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "punch/b/s1/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 5.46,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.144
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 4.29,
+   "minAt": "Everyman",
+   "meanC": 0.1417
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 4.52,
+   "minAt": "Architect",
+   "meanC": 0.1443
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.52,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 6.26,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 9,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.1,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "punch/c/s1/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 5.41,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.1633
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 4.29,
+   "minAt": "Everyman",
+   "meanC": 0.1582
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 4.51,
+   "minAt": "Architect",
+   "meanC": 0.1636
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.51,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 6.26,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 9.12,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.06,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "glass/ship/s0/none": {
+  "doms": {
+   "n": 19,
+   "minCR": 3.36,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.1023
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 4.67,
+   "minAt": "Sage",
+   "meanC": 0.0604
+  },
+  "rootIcons": {
+   "n": 0,
+   "minCR": 99,
+   "meanC": 0
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 5.12,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 7.05,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 10.01,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.76,
+    "state": "off"
+   }
+  ],
+  "rail": 835
+ },
+ "glass/a/s0/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 4.58,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.1256
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 6.67,
+   "minAt": "Sage",
+   "meanC": 0.0723
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 5.12,
+   "minAt": "Architect",
+   "meanC": 0.1258
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 5.12,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 7.05,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 10.01,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.76,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "glass/b/s0/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 4.52,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.144
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 6.67,
+   "minAt": "Sage",
+   "meanC": 0.0828
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 5.12,
+   "minAt": "Architect",
+   "meanC": 0.1443
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 5.12,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 6.99,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 10.05,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.69,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "glass/c/s0/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 4.49,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.1633
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 6.68,
+   "minAt": "Sage",
+   "meanC": 0.0943
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 5.1,
+   "minAt": "Architect",
+   "meanC": 0.1636
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 5.1,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 6.99,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 10.19,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.65,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "glass/a/s1/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 4.58,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.1256
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 3.56,
+   "minAt": "Everyman",
+   "meanC": 0.1256
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 5.12,
+   "minAt": "Architect",
+   "meanC": 0.1258
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 5.12,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 7.05,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 10.01,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.76,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "glass/b/s1/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 4.52,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.144
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 3.56,
+   "minAt": "Everyman",
+   "meanC": 0.1417
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 5.12,
+   "minAt": "Architect",
+   "meanC": 0.1443
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 5.12,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 6.99,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 10.05,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.69,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "glass/c/s1/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 4.49,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.1633
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 3.56,
+   "minAt": "Everyman",
+   "meanC": 0.1582
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 5.1,
+   "minAt": "Architect",
+   "meanC": 0.1636
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 5.1,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 6.99,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 10.19,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.65,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "glasswhite/ship/s0/none": {
+  "doms": {
+   "n": 19,
+   "minCR": 1.59,
+   "minAt": "Connection, Weaver cluster",
+   "meanC": 0.0986
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 3.54,
+   "minAt": "Sage",
+   "meanC": 0.0678
+  },
+  "rootIcons": {
+   "n": 0,
+   "minCR": 99,
+   "meanC": 0
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 2.55,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 2.51,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 1.77,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 3.07,
+    "state": "off"
+   }
+  ],
+  "rail": 835
+ },
+ "glasswhite/a/s0/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 5.16,
+   "minAt": "Connection, Weaver cluster",
+   "meanC": 0.094
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 5.53,
+   "minAt": "Sage",
+   "meanC": 0.0858
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 4.96,
+   "minAt": "Architect",
+   "meanC": 0.0946
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.96,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 5.18,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 5.05,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 6.12,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "glasswhite/b/s0/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 5.14,
+   "minAt": "Connection, Weaver cluster",
+   "meanC": 0.108
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 5.5,
+   "minAt": "Sage",
+   "meanC": 0.0981
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 4.95,
+   "minAt": "Architect",
+   "meanC": 0.1087
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.95,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 5.18,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 5.03,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 6.16,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "glasswhite/c/s0/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 5.11,
+   "minAt": "Connection, Weaver cluster",
+   "meanC": 0.1196
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 5.53,
+   "minAt": "Sage",
+   "meanC": 0.1112
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 4.98,
+   "minAt": "Architect",
+   "meanC": 0.1207
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.98,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 5.2,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 5,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 6.2,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "glasswhite/a/s1/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 5.16,
+   "minAt": "Connection, Weaver cluster",
+   "meanC": 0.094
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 5.16,
+   "minAt": "Caregiver",
+   "meanC": 0.0916
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 4.96,
+   "minAt": "Architect",
+   "meanC": 0.0946
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.96,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 5.18,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 5.05,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 6.12,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "glasswhite/b/s1/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 5.14,
+   "minAt": "Connection, Weaver cluster",
+   "meanC": 0.108
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 5.14,
+   "minAt": "Caregiver",
+   "meanC": 0.1038
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 4.95,
+   "minAt": "Architect",
+   "meanC": 0.1087
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.95,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 5.18,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 5.03,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 6.16,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "glasswhite/c/s1/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 5.11,
+   "minAt": "Connection, Weaver cluster",
+   "meanC": 0.1196
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 5.11,
+   "minAt": "Caregiver",
+   "meanC": 0.1135
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 4.98,
+   "minAt": "Architect",
+   "meanC": 0.1207
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.98,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 5.2,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 5,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 6.2,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "flat/ship/s0/none": {
+  "doms": {
+   "n": 19,
+   "minCR": 4.17,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.1027
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 6.91,
+   "minAt": "Sage",
+   "meanC": 0.0891
+  },
+  "rootIcons": {
+   "n": 0,
+   "minCR": 99,
+   "meanC": 0
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 5.21,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 7.14,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 10.14,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.83,
+    "state": "off"
+   }
+  ],
+  "rail": 835
+ },
+ "flat/a/s0/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 6.23,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.1256
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 10.97,
+   "minAt": "Sage",
+   "meanC": 0.1085
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 5.21,
+   "minAt": "Architect",
+   "meanC": 0.1258
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 5.21,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 7.14,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 10.14,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.83,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "flat/b/s0/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 6.16,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.144
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 11.03,
+   "minAt": "Sage",
+   "meanC": 0.1249
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 5.21,
+   "minAt": "Architect",
+   "meanC": 0.1443
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 5.21,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 7.08,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 10.18,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.77,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "flat/c/s0/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 6.11,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.1633
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 11.11,
+   "minAt": "Sage",
+   "meanC": 0.1411
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 5.19,
+   "minAt": "Architect",
+   "meanC": 0.1636
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 5.19,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 7.09,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 10.32,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.72,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "flat/a/s1/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 6.23,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.1256
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 4.85,
+   "minAt": "Everyman",
+   "meanC": 0.1256
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 5.21,
+   "minAt": "Architect",
+   "meanC": 0.1258
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 5.21,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 7.14,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 10.14,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.83,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "flat/b/s1/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 6.16,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.144
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 4.85,
+   "minAt": "Everyman",
+   "meanC": 0.1417
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 5.21,
+   "minAt": "Architect",
+   "meanC": 0.1443
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 5.21,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 7.08,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 10.18,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.77,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "flat/c/s1/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 6.11,
+   "minAt": "Nature, Witness cluster",
+   "meanC": 0.1633
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 4.85,
+   "minAt": "Everyman",
+   "meanC": 0.1582
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 5.19,
+   "minAt": "Architect",
+   "meanC": 0.1636
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 5.19,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 7.09,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 10.32,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.72,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "lumen/ship/s0/none": {
+  "doms": {
+   "n": 19,
+   "minCR": 1.54,
+   "minAt": "Connection, Weaver cluster",
+   "meanC": 0.1256
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 2.86,
+   "minAt": "Sage",
+   "meanC": 0.1671
+  },
+  "rootIcons": {
+   "n": 0,
+   "minCR": 99,
+   "meanC": 0
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 2.61,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 2.58,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 1.82,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 3.16,
+    "state": "off"
+   }
+  ],
+  "rail": 835
+ },
+ "lumen/a/s0/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 2.22,
+   "minAt": "Power, Engine cluster",
+   "meanC": 0.2101
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 2.86,
+   "minAt": "Sage",
+   "meanC": 0.1671
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 2.61,
+   "minAt": "Engine",
+   "meanC": 0.2144
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.28,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 2.61,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 3.11,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.46,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "lumen/b/s0/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 2.22,
+   "minAt": "Power, Engine cluster",
+   "meanC": 0.2161
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 2.86,
+   "minAt": "Sage",
+   "meanC": 0.1671
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 2.61,
+   "minAt": "Engine",
+   "meanC": 0.2211
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.27,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 2.61,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 3.11,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.57,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "lumen/c/s0/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 2.22,
+   "minAt": "Power, Engine cluster",
+   "meanC": 0.2161
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 2.86,
+   "minAt": "Sage",
+   "meanC": 0.1671
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 2.61,
+   "minAt": "Engine",
+   "meanC": 0.2211
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.27,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 2.61,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 3.11,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.57,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "lumen/a/s1/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 2.22,
+   "minAt": "Power, Engine cluster",
+   "meanC": 0.2101
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 2.22,
+   "minAt": "Creator",
+   "meanC": 0.195
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 2.61,
+   "minAt": "Engine",
+   "meanC": 0.2144
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.28,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 2.61,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 3.11,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.46,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "lumen/b/s1/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 2.22,
+   "minAt": "Power, Engine cluster",
+   "meanC": 0.2161
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 2.22,
+   "minAt": "Creator",
+   "meanC": 0.2003
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 2.61,
+   "minAt": "Engine",
+   "meanC": 0.2211
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.27,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 2.61,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 3.11,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.57,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ },
+ "lumen/c/s1/rec": {
+  "doms": {
+   "n": 19,
+   "minCR": 2.22,
+   "minAt": "Power, Engine cluster",
+   "meanC": 0.2161
+  },
+  "arch": {
+   "n": 12,
+   "minCR": 2.22,
+   "minAt": "Creator",
+   "meanC": 0.2003
+  },
+  "rootIcons": {
+   "n": 4,
+   "minCR": 2.61,
+   "minAt": "Engine",
+   "meanC": 0.2211
+  },
+  "roots": [
+   {
+    "r": "Architect",
+    "cr": 4.27,
+    "state": "washed"
+   },
+   {
+    "r": "Engine",
+    "cr": 2.61,
+    "state": "off"
+   },
+   {
+    "r": "Weaver",
+    "cr": 3.11,
+    "state": "off"
+   },
+   {
+    "r": "Witness",
+    "cr": 5.57,
+    "state": "off"
+   }
+  ],
+  "rail": 843
+ }
+}

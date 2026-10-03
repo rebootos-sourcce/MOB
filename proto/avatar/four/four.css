@@ -1,0 +1,80 @@
+/* THE AVATAR, FOUR WAYS. Prototype over the shipped build. Takes the wheel's
+   own cell on the Field, so it is judged where the centrepiece would stand. */
+body.avx-on.tab-field canvas#cv,body.avx-on.tab-field #frend,body.avx-on.tab-field #fview{display:none!important}
+body:not(.tab-field) #avx{display:none}
+#avx{grid-column:1 / span 2;grid-row:3;align-self:stretch;min-width:0;min-height:0;
+ display:flex;flex-direction:column;gap:10px;padding:4px 18px 14px}
+#avx:empty{display:none}
+.avx-stage{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 300px;
+ gap:24px;align-items:center}
+.avx-fig{min-width:0;min-height:0;height:100%;display:flex;align-items:center;justify-content:center}
+.avx-svg{display:block;width:100%;height:100%;max-height:calc(100vh - 230px);overflow:visible}
+#avx[data-v=ring] .avx-svg{max-height:calc(100vh - 250px)}
+#avx[data-v=ring] .avx-fig{padding:0 4px}
+.avx-cq{font:300 15px/1 var(--sans);fill:var(--ink);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.avx-tier{font:500 3.1px/1 var(--sans);fill:var(--mid)}
+
+/* the side: the name of the drawing, then the reading, then the chain */
+.avx-side{display:flex;flex-direction:column;gap:16px;min-width:0}
+.avx-name b{display:block;font-size:19px;font-weight:600;color:var(--ink);letter-spacing:-.005em}
+.avx-name span{display:block;font-size:13.5px;color:var(--dim)}
+.avx-cap{display:flex;flex-direction:column;gap:16px}
+.avx-read{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 12px}
+.avx-n{display:flex;flex-direction:column;gap:2px;min-width:0}
+.avx-n b{font-size:22px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.1}
+.avx-n b i{font-style:normal;font-size:14px;color:var(--mid);margin-left:1px}
+.avx-n span{font-size:12px;color:var(--dim);line-height:1.3}
+.avx-n.avx-big{grid-column:1 / -1}
+.avx-n.avx-big b{font-size:52px;font-weight:300;letter-spacing:-.02em;line-height:1}
+.avx-n.avx-big span{font-size:14px;color:var(--mid)}
+.avx-lede{margin:0;font-size:14px;color:var(--mid)}
+.avx-door{max-width:320px}
+
+.avx-chain{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;
+ border-left:1px solid var(--edge-2);margin-left:11px}
+.avx-chain li{display:grid;grid-template-columns:24px 58px minmax(0,1fr);align-items:baseline;
+ gap:0 8px;padding:6px 0 6px 0;margin-left:-12px;font-size:13px;line-height:1.4}
+.avx-ic{width:22px;height:22px;align-self:center;fill:none;stroke:var(--mid);stroke-width:1.6;
+ stroke-linecap:round;stroke-linejoin:round;background:var(--panel);border-radius:50%}
+.avx-k{color:var(--dim);font-size:12px}
+.avx-v{color:var(--ink);min-width:0}
+.avx-v em{font-style:normal;color:var(--c,var(--ink))}
+
+/* the prototype strip. Dashed on purpose: nothing inside it is product. */
+.avx-ctl,#avx-float .avx-ctl{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;
+ padding:8px 10px;border:1px dashed var(--edge-2);border-radius:12px;font-size:12.5px;color:var(--dim)}
+#avx-float{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:60;
+ background:var(--panel);border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.35);max-width:calc(100vw - 24px)}
+.avx-tag{font-size:11px;color:var(--dim);border:1px solid var(--edge-2);border-radius:6px;padding:1px 6px}
+.avx-seg{display:flex;flex-wrap:wrap;gap:4px}
+.avx-seg button{font:inherit;font-size:12.5px;color:var(--mid);background:transparent;
+ border:1px solid var(--edge);border-radius:8px;padding:4px 9px;cursor:pointer;line-height:1.25;text-align:left}
+.avx-seg button small{display:block;font-size:11px;color:var(--dim)}
+.avx-seg button[aria-pressed=true]{color:var(--ink);border-color:var(--accent);
+ background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.avx-who button{padding:6px 10px}
+.avx-runs{display:flex;align-items:center;gap:8px}
+.avx-runs input{width:130px;accent-color:var(--accent)}
+.avx-runs output{min-width:52px;color:var(--ink);font-variant-numeric:tabular-nums}
+
+@media (max-width:1180px){
+ .avx-stage{grid-template-columns:minmax(0,1fr) 260px;gap:16px}}
+@media (max-width:720px){
+ #avx{order:1;padding:2px 0 12px;gap:10px}
+ .avx-stage{display:flex;flex-direction:column;gap:14px}
+ .avx-fig{height:auto;width:100%}
+ .avx-svg{height:min(118vw,470px);max-height:none}
+ #avx[data-v=ring] .avx-svg{height:min(92vw,380px)}
+ .avx-side{width:100%;padding:0 4px}
+ .avx-ctl{gap:6px 10px}
+ .avx-runs input{width:110px}}
+
+/* THE GROUND IS THE STAGE'S, NOT THE LIGHTING'S. The Field's render ground is
+   ruled #101010 under every lighting (head.html, "THE RENDER GROUND"), so under
+   Snow the avatar sits on black while Snow's tokens are paper inks: dark ink,
+   and seat colours darkened for a white page. It reads the ground it actually
+   sits on, the same way ui/rings.js does, and takes the Dark inks there. */
+body.snow.tab-field #avx{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;
+ --edge:rgba(255,255,255,.09);--edge-2:rgba(255,255,255,.14);--panel:#1A1D26;
+ --root:#D6524C;--sacral:#D8924E;--solar:#DABF6A;--heart:#5FD5A6;--throat:#5EBBDB;
+ --eye:#7D93E0;--crown:#A77EDB;--accent:#7EB8D4;color:var(--ink)}

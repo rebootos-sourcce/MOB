@@ -1,0 +1,8 @@
+THE REQUEST LOG for the Field renditions. Written by shoot.js.
+Any line marked OFF MACHINE is a request that left the computer, and there must be none.
+
+nested-frames  ok  fonts Inter
+frame-to-circle  ok  fonts Inter
+dial-with-callouts  ok  fonts Inter
+fragment-field  ok  fonts Inter
+compare  ok  fonts Inter

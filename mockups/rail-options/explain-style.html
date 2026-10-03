@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Style switch, explained</title><link rel="stylesheet" href="explain.css"></head>
+<body>
+<h1>The Style switch: same data, two drawings</h1>
+<p class="sub">In the left column, under the readings, there are two strips called Orientation and Balance, and a small switch beside them called Style with two settings, Bar and Arc. This sheet shows the same person drawn both ways. Nothing about the person changes when you press it.</p>
+<div id="app"></div>
+<div class="plain" id="plain"></div>
+<p class="stamp">Example person: Tomas, a long haul driver. Figures read out of the built page on 1 October. Mockup only, nothing here is in the app.</p>
+<script src="rail-data.js"></script><script src="rail-lib.js"></script>
+<script>
+(function(){
+ var RL=window.RL, P=RL.person('tomas');
+ document.body.insertAdjacentHTML('afterbegin',RL.defs());
+ var sw=function(on){return '<div class="sw"><span class="sec-n" style="font-size:12px">Style</span><div class="swbar"><span class="'+(on==='bar'?'on':'')+'"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="3" y="8" width="18" height="8" rx="3"/><path d="M12 8v8"/></svg>Bar</span><span class="'+(on==='arc'?'on':'')+'"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 17a8 8 0 0 1 16 0"/><path d="M12 17l3-5"/></svg>Arc</span></div></div>';};
+ var lab=function(t){return '<div class="lbl" style="font-size:13px;margin:14px 0 4px;color:var(--ink)">'+t+'</div>';};
+ var bar='<div class="pane big"><h2>Style set to Bar</h2><p class="tg">A strip with a break in the middle. The colour grows out from the break toward the side the field leans.</p>'+sw('bar')
+  +lab('Orientation')+RL.dialBar(P,'o')+lab('Balance')+RL.dialBar(P,'b')+'</div>';
+ var arc='<div class="pane"><h2>Style set to Arc</h2><p class="tg">A half dial with the break at the top. A needle swings out from the middle toward the side the field leans.</p>'+sw('arc')
+  +'<div style="display:flex;gap:18px"><div style="flex:1"><div class="lbl" style="font-size:13px;margin:0 0 2px;color:var(--ink)">Orientation</div>'+RL.dialArc(P,'o',190)+'<div class="poles" style="font-size:13px;padding:0"><span>benign</span><span>malignant</span></div></div>'
+  +'<div style="flex:1"><div class="lbl" style="font-size:13px;margin:0 0 2px;color:var(--ink)">Balance</div>'+RL.dialArc(P,'b',190)+'<div class="poles" style="font-size:13px;padding:0"><span>masculine</span><span>feminine</span></div></div></div></div>';
+ document.getElementById('app').innerHTML='<div class="pair">'+bar+arc+'</div>';
+ var m=Math.round((1+P.lean)/2*100);
+ document.getElementById('plain').innerHTML=
+  '<p><b>Same data, two drawings, this is the Style switch.</b> Both panes above are Tomas. Orientation reads '+P.ben+' benign and '+P.mal+' malignant. Balance reads '+m+' masculine and '+(100-m)+' feminine. Those four numbers are identical in both. Only the picture changes.</p>'
+  +'<p><b>Orientation</b> asks one thing: is the charge a person is carrying mostly held and not costing them (benign, drawn as a halo), or is it taking something from them (malignant, drawn as a pitchfork)? Further toward a side means a harder lean that way.</p>'
+  +'<p><b>Balance</b> asks which way the charge points: outward (masculine, structure and direction) or inward (feminine, energy and receptivity). These are two directions of charge. They are not men and women. The middle means neither leads.</p>'
+  +'<p><b>Bar or Arc?</b> Bar is quieter and sits flat under the other readings. Arc takes a little more room but two arcs fit side by side, so it saves height in the left column. The switch is the only difference, and you only ever need one of them.</p>';
+})();
+</script></body></html>

@@ -1,0 +1,278 @@
+{
+ "shut-1600": [
+  {
+   "nm": "Shell",
+   "count": 108,
+   "mean": 1.7999999999975491,
+   "worst": 2.8999999999068677,
+   "rest": 1.3999999999068677,
+   "killed": true,
+   "gapWorst": 16.800000000000182,
+   "over": 0,
+   "gaps": 23
+  },
+  {
+   "nm": "Kerf",
+   "count": 108,
+   "mean": 2.3026315789473686,
+   "worst": 2.7000000001862645,
+   "rest": 1.8999999999068677,
+   "killed": false,
+   "gapWorst": 16.700000000000273,
+   "over": 0,
+   "gaps": 23
+  },
+  {
+   "nm": "Strata",
+   "count": 108,
+   "mean": 1.9078947368666137,
+   "worst": 2.5,
+   "rest": 1.599999999627471,
+   "killed": false,
+   "gapWorst": 16.800000000000182,
+   "over": 0,
+   "gaps": 23
+  },
+  {
+   "nm": "Unroll",
+   "count": 108,
+   "mean": 2.539473684210526,
+   "worst": 3.5,
+   "rest": 1.2000000001862645,
+   "killed": false,
+   "gapWorst": 16.799999999999727,
+   "over": 0,
+   "gaps": 23
+  }
+ ],
+ "open-1600": [
+  {
+   "nm": "Shell",
+   "count": 108,
+   "mean": 1.650000000017156,
+   "worst": 3,
+   "rest": 1.3999999999068677,
+   "killed": true,
+   "gapWorst": 16.699999999999818,
+   "over": 0,
+   "gaps": 23
+  },
+  {
+   "nm": "Kerf",
+   "count": 108,
+   "mean": 2.347368421045279,
+   "worst": 3.8999999999068677,
+   "rest": 1.7999999998137355,
+   "killed": false,
+   "gapWorst": 16.800000000000182,
+   "over": 0,
+   "gaps": 23
+  },
+  {
+   "nm": "Strata",
+   "count": 108,
+   "mean": 1.8578947368445562,
+   "worst": 2.5,
+   "rest": 1.5,
+   "killed": false,
+   "gapWorst": 16.700000000000728,
+   "over": 0,
+   "gaps": 23
+  },
+  {
+   "nm": "Unroll",
+   "count": 108,
+   "mean": 2.455263157889835,
+   "worst": 3.5,
+   "rest": 1.2999999998137355,
+   "killed": false,
+   "gapWorst": 16.800000000000182,
+   "over": 0,
+   "gaps": 23
+  }
+ ],
+ "gordon-1600": [
+  {
+   "nm": "Shell",
+   "count": 108,
+   "mean": 1.7447368421126157,
+   "worst": 2.2999999998137355,
+   "rest": 1.3999999999068677,
+   "killed": true,
+   "gapWorst": 16.700000000000728,
+   "over": 0,
+   "gaps": 23
+  },
+  {
+   "nm": "Kerf",
+   "count": 108,
+   "mean": 3.6631578947294896,
+   "worst": 4.600000000093132,
+   "rest": 2,
+   "killed": false,
+   "gapWorst": 16.80000000000109,
+   "over": 0,
+   "gaps": 23
+  },
+  {
+   "nm": "Strata",
+   "count": 108,
+   "mean": 1.8236842105336684,
+   "worst": 2.1000000000931323,
+   "rest": 1.5,
+   "killed": false,
+   "gapWorst": 49.899999999999636,
+   "over": 1,
+   "gaps": 21
+  },
+  {
+   "nm": "Unroll",
+   "count": 108,
+   "mean": 2.6315789473684212,
+   "worst": 6,
+   "rest": 1.2999999998137355,
+   "killed": false,
+   "gapWorst": 16.700000000000728,
+   "over": 0,
+   "gaps": 23
+  }
+ ],
+ "shut-390": [
+  {
+   "nm": "Shell",
+   "count": 108,
+   "mean": 0.9605263157894737,
+   "worst": 4.5,
+   "rest": 0.6000000000931323,
+   "killed": true,
+   "gapWorst": 16.799999999999955,
+   "over": 0,
+   "gaps": 23
+  },
+  {
+   "nm": "Kerf",
+   "count": 108,
+   "mean": 1.2289473684137,
+   "worst": 1.8999999999068677,
+   "rest": 0.8999999999068677,
+   "killed": false,
+   "gapWorst": 16.800000000000182,
+   "over": 0,
+   "gaps": 23
+  },
+  {
+   "nm": "Strata",
+   "count": 108,
+   "mean": 0.8921052631554439,
+   "worst": 1.5,
+   "rest": 0.599999999627471,
+   "killed": false,
+   "gapWorst": 16.700000000000273,
+   "over": 0,
+   "gaps": 23
+  },
+  {
+   "nm": "Unroll",
+   "count": 108,
+   "mean": 1.6868421052656088,
+   "worst": 2.5,
+   "rest": 0.5,
+   "killed": false,
+   "gapWorst": 16.700000000000273,
+   "over": 0,
+   "gaps": 23
+  }
+ ],
+ "open-390": [
+  {
+   "nm": "Shell",
+   "count": 108,
+   "mean": 0.7342105263133386,
+   "worst": 1,
+   "rest": 0.599999999627471,
+   "killed": true,
+   "gapWorst": 16.700000000000728,
+   "over": 0,
+   "gaps": 23
+  },
+  {
+   "nm": "Kerf",
+   "count": 108,
+   "mean": 1.3157894736842106,
+   "worst": 4,
+   "rest": 1,
+   "killed": false,
+   "gapWorst": 16.799999999999272,
+   "over": 0,
+   "gaps": 23
+  },
+  {
+   "nm": "Strata",
+   "count": 108,
+   "mean": 0.9342105263157895,
+   "worst": 1.2000000001862645,
+   "rest": 0.6000000000931323,
+   "killed": false,
+   "gapWorst": 16.800000000000182,
+   "over": 0,
+   "gaps": 23
+  },
+  {
+   "nm": "Unroll",
+   "count": 108,
+   "mean": 1.8315789473586177,
+   "worst": 4.800000000279397,
+   "rest": 0.5,
+   "killed": false,
+   "gapWorst": 16.800000000000182,
+   "over": 0,
+   "gaps": 23
+  }
+ ],
+ "gordon-390": [
+  {
+   "nm": "Shell",
+   "count": 108,
+   "mean": 0.7447368421003615,
+   "worst": 1.1000000000931323,
+   "rest": 0.5,
+   "killed": true,
+   "gapWorst": 16.80000000000109,
+   "over": 0,
+   "gaps": 23
+  },
+  {
+   "nm": "Kerf",
+   "count": 108,
+   "mean": 1.263157894736842,
+   "worst": 1.5,
+   "rest": 1,
+   "killed": false,
+   "gapWorst": 16.700000000000728,
+   "over": 0,
+   "gaps": 23
+  },
+  {
+   "nm": "Strata",
+   "count": 108,
+   "mean": 0.8289473684210527,
+   "worst": 1.2999999998137355,
+   "rest": 0.5,
+   "killed": false,
+   "gapWorst": 16.799999999999272,
+   "over": 0,
+   "gaps": 23
+  },
+  {
+   "nm": "Unroll",
+   "count": 108,
+   "mean": 1.752631578937565,
+   "worst": 4.399999999906868,
+   "rest": 0.5,
+   "killed": false,
+   "gapWorst": 16.799999999999272,
+   "over": 0,
+   "gaps": 23
+  }
+ ]
+}

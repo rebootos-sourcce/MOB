@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en" data-build="round GV prototype"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Archetype spine prototype</title>
+<!-- ============================================================
+  ROUND GV, VARIATION 4 OF 4. SPINE. A PROTOTYPE, NOT THE APP.
+
+  The avatar stood up. The seven seats run down the body, crown at the top
+  and root at the bottom, and each seat's archetypes sit either side of it
+  with their names on them. Open one and two things are drawn: a short line
+  from the archetype to its own seat, and a moving line from that seat to the
+  seat where its primary saboteur sits, which is ARCH18's own third column.
+  So Impact is shown as well as said: the Warrior acts from the root and its
+  Controller pulls at the solar plexus.
+
+  The moving line is also the first sketch of the owner's round GV creative
+  direction for the energy system, "the tension lines of the saboteurs
+  animate and pulsate". It is one line here, for one pick, on purpose.
+  ============================================================ -->
+<!--BASE-->
+<!--ARCH-->
+<style>
+.lay{display:grid;gap:24px 36px;grid-template-columns:minmax(0,1fr);align-items:start;max-width:1140px;margin:0 auto}
+@media (min-width:960px){.lay{grid-template-columns:minmax(0,600px) minmax(340px,440px);justify-content:center}.side{position:sticky;top:20px}}
+.spine{position:relative;padding:12px 0}
+.spine svg.lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.spine::before{content:"";position:absolute;left:50%;top:44px;bottom:44px;width:2px;transform:translateX(-50%);
+ background:linear-gradient(var(--crown),var(--eye),var(--throat),var(--heart),var(--solar),var(--sacral),var(--root));opacity:.28;border-radius:2px}
+.srow{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 84px minmax(0,1fr);gap:10px;align-items:center;min-height:96px}
+.side-l,.side-r{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.side-l{justify-content:flex-end}
+.node{position:relative;justify-self:center;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:var(--bg);
+ border:1.5px solid color-mix(in srgb,var(--c) 55%,transparent);z-index:1}
+.node svg{width:26px;height:26px;fill:none;stroke:var(--c);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.node .nn{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:3px;font-size:13px;color:var(--dim);white-space:nowrap;background:var(--bg);padding:0 4px;border-radius:4px}
+.node.own{border-color:var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 22%,transparent)}
+.node.sab::after{content:"";position:absolute;inset:-3px;border-radius:50%;border:2px solid var(--s);animation:pulse 1.6s ease-out infinite}
+@keyframes pulse{from{opacity:.9;transform:scale(1)}to{opacity:0;transform:scale(1.6)}}
+.spill{position:relative;min-height:44px;display:inline-flex;align-items:center;gap:7px;padding:0 14px 0 8px;border-radius:999px;
+ border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:15px;
+ box-shadow:0 0 0 var(--g,0px) color-mix(in srgb,var(--c) 16%,transparent)}
+.side-l .spill{flex-direction:row-reverse;padding:0 8px 0 14px}
+.spill svg{width:22px;height:22px;fill:none;stroke:var(--c);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.spill.dr{border-style:dashed}
+.spill.top{outline:1.5px dashed var(--c);outline-offset:calc(var(--g,0px) + 3px)}
+.spill:hover{border-color:var(--c)}
+.spill[aria-pressed="true"]{border:2px solid var(--c);background:color-mix(in srgb,var(--c) 14%,var(--panel))}
+.spill .pk{width:8px;height:8px;border-radius:50%;background:var(--c);flex:none}
+.flow{stroke-dasharray:7 6;animation:flow 1s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-13}}
+.node .nn b{display:block;text-align:center;color:var(--s);font-weight:600}
+.cap{text-align:center;color:var(--dim);font-size:15px;margin:6px auto 0;max-width:520px}
+.empty{color:var(--dim);margin:0}
+.side .card h2{margin:0 0 4px;font-size:19px}
+@media (max-width:560px){.srow{grid-template-columns:minmax(0,1fr) 62px minmax(0,1fr);gap:6px}.side-l,.side-r{flex-direction:column}
+ .side-l{align-items:flex-end}.side-r{align-items:flex-start}.spill{font-size:14px;padding:0 12px 0 7px}.side-l .spill{padding:0 7px 0 12px}
+ .node{width:48px;height:48px}.node .nn{font-size:12px}}
+</style></head><body>
+<main class="page">
+ <header class="head"><p class="eyebrow">Your avatar</p><h1 id="q"></h1>
+  <p class="lede">Your seven parts, crown to root, and the archetypes that act from each. Open one to see where it pulls.</p></header>
+ <div class="lay">
+  <section aria-label="Your avatar, standing"><div class="spine" id="spine"></div><p class="cap" id="cap"></p></section>
+  <aside class="side"><div class="card" id="panel" aria-live="polite"></div></aside>
+ </div>
+ <section class="notes" data-proto aria-label="Design notes"><h2>Design notes. Spine, variation 4</h2><p class="meas" id="meas"></p><dl>
+  <dt>The job</dt><dd>In Sofia's words, a somatic practitioner: <i>"show me where in the body this lives, and what it pulls on."</i> The owner asked for the saboteur to be read as the impact of taking a role on. Here the impact is drawn on the body as well as said.</dd>
+  <dt>The count</dt><dd>Eighteen named buttons and one: nineteen, the same as the round GU wheel, and over the target of twelve. What pays for it is order: seven rows of two or three, read top to bottom in the body's own order, where the wheel asked the eye to go round. Measured live above.</dd>
+  <dt>Where they stop</dt><dd><b>Angela</b> meets eighteen names at once, with only the glow to tell her where to start. <b>James</b> sees a pulsing line land on his solar plexus and may read it as a diagnosis; the panel's Impact line says it is what the role costs, which has to be in view when the line is. <b>Derek</b> gets the most model per glance of the five, and the arithmetic behind it is on the page.</dd>
+  <dt>The move</dt><dd>Lay the wheel out as the body, name every mark, and turn Impact into a line between two seats.</dd>
+  <dt>Instrument</dt><dd>Rows scrolled past before the first open. How many archetypes are opened before a press, compared with the other four. Whether the line changes which archetype is kept, the pick before and after the line appears.</dd>
+  <dt>Grade</dt><dd>B. The most distinctive of the five and the one that carries the product's own idea, that a way of acting has a place in the body. It does not lower the count.</dd>
+ </dl></section>
+</main>
+<!--LIB-->
+<script>
+(function(){
+'use strict';
+function pill(a){var v=AR.aff(a), ro=AR.readOrder(), top=ro[0]&&ro[0].nm===a.nm, on=AR.ST.sel===a.nm, pk=AR.pick()===a.nm;
+ return '<button type="button" class="spill'+(a.draft?' dr':'')+(top?' top':'')+'" data-sp="'+AR.esc(a.nm)+'" aria-pressed="'+on+'" aria-label="'+AR.esc(a.nm)+(pk?', picked':'')+(a.draft?', draft':'')+'"'
+  +' style="--c:'+AR.col(a.seat)+';'+(v!=null?'--g:'+(2+v*9).toFixed(1)+'px':'')+'">'+AR.aicon(a)+'<span>'+AR.esc(a.nm)+'</span>'+(pk?'<span class="pk" aria-hidden="true"></span>':'')+'</button>';}
+function paint(){
+ document.getElementById('q').textContent=AR.question();
+ var sel=AR.ST.sel?AR.A(AR.ST.sel):null, h='<svg class="lines" id="lines" aria-hidden="true"></svg>';
+ AR.SEATS.forEach(function(s){var L=AR.inSeat(s), ar=AR.SA[s];
+  var own=sel&&sel.seat===s, sab=sel&&sel.sabSeat===s;
+  h+='<div class="srow" data-seat="'+s+'"><div class="side-l">'+L.filter(function(_,i){return i%2===0;}).map(pill).join('')+'</div>'
+   +'<div class="node'+(own?' own':'')+(sab?' sab':'')+'" data-node="'+s+'" style="--c:'+AR.col(s)+(sel?';--s:'+AR.col(sel.sabSeat):'')+'">'+AR.svg(ar.k)+'<span class="nn">'+ar.nm+(sab?'<b>'+AR.esc(sel.sab)+'</b>':'')+'</span></div>'
+   +'<div class="side-r">'+L.filter(function(_,i){return i%2===1;}).map(pill).join('')+'</div></div>';});
+ document.getElementById('spine').innerHTML=h;
+ document.getElementById('cap').textContent=sel&&sel.sab?'The moving line runs from where '+sel.nm+' acts to where '+sel.sab+' sits.'
+  :(AR.stranger()?'Nothing read yet, so nothing glows.':'The glow around a name is how strongly your field reads it.');
+ var pn='';
+ if(sel)pn=AR.detail(sel);
+ else pn='<h2>Nothing open yet</h2><p class="empty">Open any name on the body to read it and see where it pulls.</p>';
+ document.getElementById('panel').innerHTML=pn;
+ lines(); AR.measure(document.getElementById('meas'));}
+/* THE LINES are drawn after layout, off the real positions of the name and
+   the two seats, and again on every resize. */
+function lines(){
+ var sv=document.getElementById('lines'), sp=document.getElementById('spine'), sel=AR.ST.sel?AR.A(AR.ST.sel):null;
+ if(!sv)return; sv.innerHTML=''; if(!sel)return;
+ var B=sp.getBoundingClientRect(), rel=function(e){var r=e.getBoundingClientRect();return {x:r.left-B.left,y:r.top-B.top,w:r.width,h:r.height,cx:r.left-B.left+r.width/2,cy:r.top-B.top+r.height/2};};
+ var pl=sp.querySelector('[data-sp="'+sel.nm+'"]'), n0=sp.querySelector('[data-node="'+sel.seat+'"]'), n1=sp.querySelector('[data-node="'+sel.sabSeat+'"]');
+ if(!pl||!n0||!n1)return;
+ var P=rel(pl), N0=rel(n0), N1=rel(n1), left=P.cx<N0.cx, s='';
+ var px=left?P.x+P.w:P.x, nx=left?N0.x:N0.x+N0.w;
+ s+='<line x1="'+px+'" y1="'+P.cy+'" x2="'+nx+'" y2="'+N0.cy+'" stroke="'+AR.col(sel.seat)+'" stroke-width="2" stroke-opacity=".85"/>';
+ var dir=left?1:-1, sc=AR.col(sel.sabSeat);
+ if(sel.sabSeat!==sel.seat){
+  /* the impact bows out on the side away from the name, so it never runs
+     under the name that was opened */
+  var bow=Math.min(34,18+Math.abs(N1.cy-N0.cy)*0.05), x0=N0.cx+dir*N0.w/2, x1=N1.cx+dir*N1.w/2, mx=Math.max(x0,x1)*(dir>0?1:0)+Math.min(x0,x1)*(dir<0?1:0)+dir*bow;
+  s+='<path class="flow" d="M'+x0+' '+N0.cy+' C'+mx+' '+N0.cy+' '+mx+' '+N1.cy+' '+x1+' '+N1.cy+'" fill="none" stroke="'+sc+'" stroke-width="2.4" stroke-linecap="round"/>';
+  }
+ sv.innerHTML=s;}
+document.addEventListener('click',function(e){var t=e.target.closest('[data-sp]'); if(!t)return;
+ AR.ST.sel=AR.ST.sel===t.dataset.sp?null:t.dataset.sp; paint();
+ var f=document.querySelector('[data-sp="'+t.dataset.sp+'"]'); if(f)f.focus({preventScroll:true});
+ var pn=document.getElementById('panel'); if(AR.ST.sel&&innerWidth<960&&pn.getBoundingClientRect().top>innerHeight*0.8)pn.scrollIntoView({behavior:'smooth',block:'start'});});
+function start(){AR.ST.sel=AR.pick()||AR.ST.sel||((AR.readOrder()[0]||{}).nm)||null; paint();}
+AR.bar('v4-spine','Archetype picker on the avatar, round GV, variation 4: Spine. Mock data. A pick is kept in this browser only.');
+AR.fromHash();
+var who=AR.ST.who;
+AR.on(function(){if(AR.ST.who!==who){who=AR.ST.who; AR.ST.sel=null; start();} else paint();});
+var rt; addEventListener('resize',function(){clearTimeout(rt); rt=setTimeout(function(){lines(); AR.measure(document.getElementById('meas'));},100);});
+start();
+})();
+</script></body></html>

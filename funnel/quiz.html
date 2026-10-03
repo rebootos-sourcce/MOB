@@ -1,0 +1,1470 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Atuned test</title>
+<meta name="description" content="A hundred questions, one at a time, scored against the 21 laws of integrity.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20fill%3D%22none%22%20stroke-linecap%3D%22butt%22%20viewBox%3D%22-3%20-3%20206%20206%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20aria-hidden%3D%22true%22%20focusable%3D%22false%22%3E%3Cpath%20d%3D%22M100.000%20181.250A81.25%2081.25%200%200%200%20163.524%20150.659%22%20style%3D%22stroke%3A%23D6524C%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M163.524%20150.659A81.25%2081.25%200%200%200%20179.213%2081.920%22%20style%3D%22stroke%3A%23D8924E%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M179.213%2081.920A81.25%2081.25%200%200%200%20135.253%2026.796%22%20style%3D%22stroke%3A%23DABF6A%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M135.253%2026.796A81.25%2081.25%200%200%200%2064.747%2026.796%22%20style%3D%22stroke%3A%235FD5A6%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M64.747%2026.796A81.25%2081.25%200%200%200%2020.787%2081.920%22%20style%3D%22stroke%3A%235EBBDB%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M20.787%2081.920A81.25%2081.25%200%200%200%2036.476%20150.659%22%20style%3D%22stroke%3A%237D93E0%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M36.476%20150.659A81.25%2081.25%200%200%200%20100.000%20181.250%22%20style%3D%22stroke%3A%23A77EDB%3Bstroke-width%3A37.50%22%2F%3E%3C%2Fsvg%3E">
+<link rel="stylesheet" href="tokens.css">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+ font-family:var(--sans);-webkit-text-size-adjust:100%}
+body{font-size:17px;line-height:1.6}
+.wrap{max-width:680px;margin:0 auto;padding:0 16px 56px}
+
+/* ---- the bar. It fills. It never states a count, because a count is a
+   number to dread and the ruling on the onboarding was one button forward. ---- */
+.top{position:sticky;top:0;background:var(--bg);padding:14px 0 12px;z-index:5;
+ display:flex;align-items:center;gap:16px;border-bottom:1px solid var(--edge)}
+.tl{flex:1 1 auto;min-width:0}
+/* the wordmark is the route back to the landing, which makes it a control and
+   not a label, so it carries the floor like every other one. The negative
+   margin keeps the type where it was: the hit area grows, the drawing does
+   not move. */
+.wm{display:inline-flex;align-items:center;min-height:var(--tap);min-width:var(--tap);
+ margin:-11px 0 -11px -10px;padding:0 10px;
+ font-size:14px;letter-spacing:.02em;color:var(--dim);
+ font-weight:600;text-decoration:none}
+a.wm:hover,a.wm:focus-visible{color:var(--ink)}
+a.wm:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wm .um{position:relative;display:inline-block}
+.wm .um::before,.wm .um::after{content:'';position:absolute;top:-.5em;
+ width:.14em;height:.14em;border-radius:50%;background:var(--dim)}
+.wm .um::before{left:.05em}
+.wm .um::after{left:.36em}
+/* THE TRACK WAS INVISIBLE. --sunk against --bg is a fifth of a stop, so on
+   the first screen the bar had no frame and the fill had nothing to fill.
+   Measured on the shot, not read off the sheet. */
+.bar{height:4px;background:var(--panel-2);border-radius:2px;margin-top:10px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:2px;
+ transition:width var(--t-element) var(--ease-out)}
+.rlab{margin:7px 0 0;font-size:12px;letter-spacing:.04em;color:var(--dim);
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rlab b{color:var(--ink);font-weight:600}
+
+/* ---- THE SEVEN BAND RING. The drawing is ring.js and the geometry is
+   argued there. This sheet sets its size, its frame and its motion, and
+   nothing else. A band thickens over one element beat, which is long enough
+   to be seen moving and short enough that the next question is not waiting
+   on it. ---- */
+.ringwrap{flex:0 0 auto;width:84px;height:84px;line-height:0}
+.ring{display:block;width:100%;height:100%;overflow:visible}
+.ring-fr{fill:none;stroke:var(--edge-2);stroke-width:1}
+.ring-t{fill:none;stroke-linecap:butt;opacity:.24}
+.ring-b{fill:none;stroke-linecap:butt;
+ transition:stroke-width var(--t-element) var(--ease-out)}
+.bigring{display:grid;justify-items:center;align-content:start;gap:12px;margin:22px 0 4px}
+.bigring .ringwrap{width:188px;height:188px}
+.bigring p{margin:0;text-align:center}
+@media(prefers-reduced-motion:reduce){
+ .ring-b{transition:none} .bar i{transition:none}
+}
+
+/* ---- one question per screen ---- */
+.card{min-height:58vh;display:flex;flex-direction:column;justify-content:center;
+ padding:26px 0 8px}
+.q{font-size:27px;line-height:1.32;letter-spacing:-.015em;margin:0 0 26px;font-weight:500}
+.opts{display:grid;gap:9px}
+button.opt{display:block;width:100%;text-align:left;min-height:54px;
+ background:var(--panel);color:var(--ink);border:1px solid var(--edge);
+ border-radius:9px;padding:14px 18px;font:inherit;font-size:17px;cursor:pointer}
+button.opt:hover{background:var(--panel-2);border-color:var(--edge-2)}
+button.opt:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button.opt.on{border-color:var(--accent);background:var(--panel-2)}
+button.opt.on::after{content:'';float:right;width:9px;height:9px;border-radius:50%;
+ background:var(--accent);margin-top:5px}
+.under{display:flex;gap:18px;align-items:center;margin-top:22px;
+ font-size:14px;color:var(--dim);flex-wrap:wrap}
+button.lnk,a.lnk{background:none;border:0;color:var(--mid);font:inherit;font-size:14px;
+ text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:8px 0;
+ min-height:36px}
+button.lnk:hover,a.lnk:hover{color:var(--ink)}
+.fail{margin-top:10px;font-size:14px;color:var(--bad)}
+
+/* ---- the signal, before the questions. The same card and the same option
+   object as a question, because it is the same act: one tap and the page
+   moves. The places and the words are short, so they sit two to a row, which
+   keeps eight of them and the way out on one phone screen. The way out spans
+   the row so it reads as its own answer and not as a ninth place. ---- */
+.sig .eye{margin-bottom:14px}
+.sig .sigin{margin:0 0 14px;color:var(--mid)}
+.sig .q{margin-bottom:20px}
+.sigopts{grid-template-columns:1fr 1fr}
+.sigopts .none{grid-column:1/-1}
+.sigown{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.sigown input{flex:1 1 200px;min-width:0;min-height:52px;background:var(--panel);
+ color:var(--ink);border:1px solid var(--edge-2);border-radius:9px;padding:12px 16px;
+ font:inherit;font-size:17px}
+.sigown input::placeholder{color:var(--dim)}
+.sigown input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sigseen h1{font-size:34px;line-height:1.12;letter-spacing:-.02em;margin:0;font-weight:600}
+.sigseen .said{margin:18px 0 0;padding-left:14px;border-left:2px solid var(--accent);
+ font-size:22px;line-height:1.4;color:var(--ink)}
+.sigseen p{margin:16px 0 0;color:var(--mid)}
+.sigseen .hold{color:var(--ink)}
+.sigseen .pri{margin-top:24px}
+
+/* ---- the opening ---- */
+.open h1{font-size:34px;line-height:1.12;letter-spacing:-.02em;margin:34px 0 0;font-weight:600}
+.open p{color:var(--mid);margin:16px 0 0}
+.open .lead{color:var(--ink);font-size:20px;line-height:1.45}
+.pri{display:inline-block;background:var(--accent);color:var(--on-accent);
+ border:0;border-radius:9px;padding:16px 32px;font:inherit;font-size:18px;
+ font-weight:600;min-height:54px;cursor:pointer;text-decoration:none;margin-top:26px}
+.pri:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.eye{display:block;font-size:11.5px;letter-spacing:.17em;text-transform:uppercase;
+ color:var(--accent);margin:0 0 10px}
+
+/* ---- the reading ---- */
+.read h1{font-size:30px;line-height:1.16;letter-spacing:-.02em;margin:0;font-weight:600}
+.read h2{font-size:24px;margin:0;letter-spacing:-.018em;font-weight:600}
+.read h3{font-size:16px;margin:0 0 2px;font-weight:600}
+.read section{margin-top:44px;padding-top:26px;border-top:1px solid var(--edge)}
+.read section:first-child{margin-top:8px;padding-top:0;border-top:0}
+.read p{margin:14px 0 0}
+.read .sm{font-size:15.5px;color:var(--mid)}
+.cqrow{display:grid;gap:8px;margin-top:20px}
+.cq{display:flex;align-items:baseline;gap:14px}
+.cq b{font-family:var(--num);font-size:68px;line-height:.9;letter-spacing:-.03em;
+ font-weight:600}
+.cq span{font-size:19px;font-weight:600}
+.cqsay p:first-child{margin-top:8px}
+.tierbox{margin-top:20px;border:1px solid var(--edge-2);border-radius:10px;
+ background:var(--panel);padding:16px 18px}
+.tierbox dl{margin:0;display:grid;gap:14px}
+.tierbox dt{font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;
+ color:var(--dim)}
+.tierbox dd{margin:4px 0 0}
+.two{display:grid;gap:30px}
+.seats{list-style:none;margin:22px 0 0;padding:0}
+.seats li{display:flex;align-items:center;gap:10px;padding:6px 0}
+.seats li b{flex:0 0 74px;font-size:13px;font-weight:600;color:var(--mid)}
+.seats li .tr{flex:1 1 auto;height:8px;background:var(--sunk);border-radius:4px;overflow:hidden}
+.seats li .tr i{display:block;height:100%;border-radius:4px}
+.seats li em{flex:0 0 40px;text-align:right;font-family:var(--num);font-size:13px;
+ font-style:normal;color:var(--mid)}
+.laws{list-style:none;margin:20px 0 0;padding:0}
+.laws li{display:flex;align-items:center;gap:10px;padding:8px 0;
+ border-bottom:1px solid var(--edge)}
+.laws li b{flex:0 0 132px;font-weight:600;font-size:15px}
+.laws li .tr{flex:1 1 auto;height:8px;background:var(--sunk);border-radius:4px;overflow:hidden}
+.laws li .tr i{display:block;height:100%;border-radius:4px}
+.laws li em{flex:0 0 34px;text-align:right;font-family:var(--num);font-size:13px;
+ font-style:normal;color:var(--mid)}
+.sabs{display:grid;gap:16px;margin-top:18px}
+.sab{border:1px solid var(--edge);border-radius:10px;
+ background:var(--panel);padding:16px 18px}
+.sab h3{margin:0;font-size:18px;font-weight:600}
+.sab .fam{font-size:13px;color:var(--dim);margin-top:3px}
+.sab .said{margin-top:12px;padding-left:12px;border-left:2px solid var(--edge-2);
+ color:var(--ink);font-style:italic}
+/* every slot on every card is the same object, so they are one class */
+.sab .sl{margin-top:11px;font-size:15px;color:var(--mid);line-height:1.5}
+.sab .sl b{color:var(--ink);font-weight:600}
+/* ---- the reading's layers. A layer that has just opened rises into place
+   once, and the sticky bar with the ring would sit over the heading it was
+   scrolled to, so each layer keeps the bar's height clear above it. Focus
+   lands on the layer itself, which is a region and not a control, so it
+   carries no ring of its own. ---- */
+.read .layer{scroll-margin-top:112px}
+.read .layer:focus{outline:none}
+.read .layer.new{animation:layerin .42s ease-out both}
+@keyframes layerin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){ .read .layer.new{animation:none} }
+.unfold{margin-top:40px;padding-top:22px;border-top:1px solid var(--edge)}
+.unfold p.sm{margin:0}
+.unfold .pri{margin-top:16px}
+.order{list-style:none;margin:18px 0 0;padding:0;counter-reset:ord}
+.order li{display:flex;align-items:baseline;gap:12px;padding:9px 0;
+ border-bottom:1px solid var(--edge);font-size:15.5px;color:var(--mid);counter-increment:ord}
+.order li::before{content:counter(ord);flex:0 0 22px;font-family:var(--num);
+ font-size:13px;color:var(--dim);text-align:right}
+.order li i{flex:0 0 10px;height:10px;box-sizing:border-box;border:2px solid;
+ border-radius:50%;align-self:flex-start;margin-top:.5em}
+.order li b{color:var(--ink);font-weight:600}
+.order li:first-child b{color:var(--accent)}
+.scope{margin-top:22px;border:1px solid var(--edge);border-radius:10px;
+ padding:14px 16px;font-size:15px;color:var(--mid)}
+.scope b{color:var(--ink)}
+.door{margin-top:44px;padding:22px 18px 24px;border:1px solid var(--accent);
+ border-radius:10px;background:var(--panel)}
+.door h2{margin-bottom:0}
+.doorbd{display:grid;gap:4px}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+/* THE DOOR TO THE APP IS A LINK, SO IT IS AN a AND NOT A BUTTON WITH A SCRIPT
+   BEHIND IT. A link can be opened in a new tab, tells a screen reader it
+   goes somewhere, and shows its address before it is pressed. It wears the
+   same object as the record buttons beside it, so the rule reaches both. */
+button.act,a.act{background:var(--panel-2);color:var(--ink);border:1px solid var(--edge-2);
+ border-radius:9px;padding:14px 20px;font:inherit;font-weight:600;min-height:52px;cursor:pointer}
+a.act{display:inline-flex;align-items:center;text-decoration:none}
+.act.go{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+button.act:focus-visible,a.act:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.read>.door:first-child{margin-top:8px}
+/* ---- the story. One box, the same panel as a card, and the type at body
+   size, because a person writing about their week at 14 pixels is squinting
+   at their own sentence. ---- */
+.storyta{display:block;width:100%;min-height:168px;margin-top:18px;resize:vertical;
+ background:var(--panel);color:var(--ink);border:1px solid var(--edge-2);border-radius:10px;
+ padding:14px 16px;font:inherit;font-size:17px;line-height:1.55}
+.storyta::placeholder{color:var(--dim)}
+.storyta:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* two classes, so it outranks the wide rule below that zeroes .acts inside the
+   door, where the grid supplies the gap and here nothing does */
+.read .stacts{margin-top:16px}
+/* ONE ADDRESS, ONE ROW, ONE ANSWER, the app's onboarding row (.ob-row in
+   shell/head.html) in this page's own button object. The pressed answer wears
+   the accent and the label never changes with it, so the word on the button
+   is always the word that was pressed. .read p sets a 14 pixel top margin on
+   every paragraph, which put the address a paragraph's height under the line
+   introducing it, so the row sets its own. */
+.sab .addr{margin-top:12px}
+.sab .addrp{margin:0;font-size:15px;color:var(--mid);line-height:1.5}
+.sab .addrp b{color:var(--ink);font-weight:600}
+.yn{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+button.yna,button.more{min-height:var(--tap);min-width:var(--tap);padding:8px 16px;
+ background:var(--panel-2);color:var(--ink);border:1px solid var(--edge-2);
+ border-radius:9px;font:inherit;font-size:15px;cursor:pointer}
+button.yna.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+button.more{margin-top:12px;color:var(--mid)}
+button.yna:focus-visible,button.more:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.sab .addrst{margin:6px 0 0;font-size:14px;color:var(--dim)}
+/* Read it scrolls here, and the sticky bar with the ring would sit over the
+   heading it scrolled to */
+#lit{scroll-margin-top:112px}
+.note{margin-top:12px;font-size:14px;color:var(--dim)}
+.close{margin-top:44px;padding-top:26px;border-top:1px solid var(--edge-2)}
+.close p{font-size:23px;line-height:1.38;margin:0;letter-spacing:-.01em}
+.close .last{color:var(--accent)}
+.foot{margin-top:40px;font-size:13px;color:var(--dim)}
+@media(min-width:760px){
+ .sabs{grid-template-columns:1fr 1fr}
+}
+/* THE READING WAS ONE NARROW COLUMN ON A WIDE SCREEN, 3926 pixels tall with
+   the sides empty, because five thin laws, seven seat loads and four cards
+   were all being drawn one narrow item at a time. The heading moves into its
+   own column and the parallel blocks spread. Scoped to the reading: the
+   question screen keeps its measure. */
+@media(min-width:1040px){
+ body[data-state="read"] .wrap,body[data-state="story"] .wrap,
+ body[data-state="door"] .wrap{max-width:1120px}
+ .read section{display:grid;grid-template-columns:250px minmax(0,1fr);
+  column-gap:44px;align-items:start}
+ .read .hd{position:sticky;top:60px}
+ .read .bd{min-width:0}
+ .cqrow{grid-template-columns:auto minmax(0,1fr);gap:34px;align-items:center}
+ .cqsay p:first-child{margin-top:0}
+ /* the first line under a heading keeps the paragraph gap while the heading
+    is stacked above it, and loses it at 1040 and up, where the heading sits
+    beside it and the two tops line up. The first cut zeroed it inline at every
+    width, and at 390 the paragraph sat on the heading. */
+ .read .bd>p.lede{margin-top:0}
+ .cq b{font-size:86px}
+ .tierbox dl{grid-template-columns:repeat(3,1fr);gap:24px}
+ .two{grid-template-columns:1fr 1fr;gap:44px}
+ .scope,.door,.close,.read>.foot{max-width:1120px}
+ /* the step to the next layer sits under the layer's body column, so the
+    button is where the eye already is when the layer ends */
+ .unfold{padding-left:294px}
+ /* THE DOOR GOES SIDE BY SIDE HERE AND NOT AT 760, round QZ. At 760 the page
+    is still 680 wide, and the button column is auto, which is every button on
+    one row: measured on the build before this round, the words of the first
+    door were 0 pixels wide at 800 and at 1024, three buttons having taken the
+    whole row. Here the page is 1120 wide, and the record door's column has a
+    ceiling so its fourth button wraps into a second row beside the words
+    rather than taking their width, which it did at 1600 on the first cut. The
+    other doors keep their buttons on one row. */
+ .doorbd{grid-template-columns:minmax(0,1fr) auto;gap:26px;align-items:center}
+ .acts{margin-top:0}
+ .doorbd>.recacts{max-width:440px}
+}
+@media(max-width:400px){
+ .ringwrap{width:56px;height:56px}
+ .bigring .ringwrap{width:150px;height:150px}
+ .q{font-size:22px} .read h1{font-size:25px} .cq b{font-size:54px}
+ .laws li b{flex-basis:104px} .close p{font-size:19px}
+ .seats li b{flex-basis:64px}
+}
+</style></head><body>
+<div class="wrap">
+ <div class="top">
+  <div class="tl">
+   <a class="wm" href="index.html">At<span class="um">u</span>ned</a>
+   <div class="bar"><i id="fill" style="width:0"></i></div>
+   <p class="rlab" id="rlab">The ring reads as you answer</p>
+  </div>
+  <!-- THE SEVEN BAND RING. It is filled by RING.set out of the engine's own
+       band loads, so it cannot disagree with the reading underneath it. -->
+  <div class="ringwrap" id="ringtop"></div>
+ </div>
+ <div id="app"></div>
+</div>
+
+<!-- THE ENGINE IS REFERENCED, NOT COPIED. engine.js is the DOM free half of
+     the product and a build product of atuned_src. A copy pasted into this
+     page is correct on the day it is pasted and silently wrong afterwards,
+     which is the defect this repository has been bitten by seven times. It is
+     a local sibling of the funnel directory, so nothing is fetched off the
+     machine this page is opened on. -->
+<script src="../engine.js"></script>
+<script src="questions.js"></script>
+<script src="ring.js"></script>
+<script>
+/* ============================================================
+   THE TEST. Six states: the opening, the signal, one question, the
+   reading, the story, the door. The signal is the funnel audit's beat 07,
+   item 4 of the punch list in TASKS.md round QY, and it is written up where
+   it is declared. The last two are his
+   four steps, round LJ in TASKS.md:
+   "you have to finish the quiz and get your results of your CQ and your the
+   holes in your integrity. And it needs to sniff out some of the stories so
+   you can see what's running you. And then it invites you to try the app to
+   find more." The story sat nowhere and the door invited nobody anywhere.
+   Nothing here computes a reading of its own. The hundred answers
+   become 21 law values and 9 charge values, and the engine does the
+   rest, because a second arithmetic that agrees with the first on
+   the day it is written is a second arithmetic that drifts.
+   ============================================================ */
+var el=document.getElementById('app'), fill=document.getElementById('fill');
+var esc=function(s){return String(s==null?'':s)
+ .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');};
+
+/* ---- THE LOAD IS CHECKED OUT LOUD. A missing engine or a missing question
+   table must look like a failure and not like an empty page. ---- */
+var MISSING=[];
+/* the reading's last layer names where a release starts and what a release
+   is, off relQueueOf and unpackOf. An engine without them is an older engine,
+   and a reading that said nothing is carrying because a function was missing
+   would be a lie, so it is refused here with the rest. */
+if(typeof SINAMES==='undefined'||typeof read!=='function'
+ ||typeof relQueueOf!=='function'||typeof unpackOf!=='function')MISSING.push('engine.js');
+if(typeof QQ==='undefined')MISSING.push('questions.js');
+if(typeof RING==='undefined')MISSING.push('ring.js');
+/* the ring's seat order is the engine's band order or it is drawing the
+   wrong hue at the wrong address. Checked once, out loud. */
+var SEATMISMATCH=(typeof RING!=='undefined'&&typeof BANDS!=='undefined')
+ &&RING.SEATS.map(function(s){return s[0];}).join('|')!==BANDS.join('|');
+/* A law named in the questions that the engine does not carry would be scored
+   on fewer points than this page claims. It is refused by name. */
+var UNKNOWN=[];
+if(!MISSING.length){
+ QQ.forEach(function(q){ if(SINAMES.indexOf(q.l)<0&&UNKNOWN.indexOf(q.l)<0)UNKNOWN.push(q.l);
+  if(!CHILD.some(function(c){return c.nm===q.c;})&&UNKNOWN.indexOf(q.c)<0)UNKNOWN.push(q.c); });}
+
+/* ---- THE ORDER. Grouped by law in the file so a reviewer can read a law's
+   whole set together, served one law at a time so nobody answers five
+   questions about the same thing in a row and starts pattern matching. The
+   first sweep touches every law, which is what makes a reading available to
+   somebody who stops early. ---- */
+function serveOrder(){
+ var byLaw={};
+ QQ.forEach(function(q,i){ (byLaw[q.l]=byLaw[q.l]||[]).push(i); });
+ var out=[],p=0,more=true;
+ while(more){ more=false;
+  SINAMES.forEach(function(l){ var g=byLaw[l]||[];
+   if(g[p]!=null){ out.push(g[p]); more=true; } });
+  p++; }
+ return out;}
+
+var ORDER=MISSING.length?[]:serveOrder();
+
+/* ============================================================
+   THE BAND LOADS. Mean charge per seat, read off the engine's own field
+   after read() has run, which is the same array the reading prints as bars
+   underneath the ring. One arithmetic, two drawings of it, so they cannot
+   disagree. Measured at 0.9 to 2.3 milliseconds a call on a hundred answers,
+   which is why it can run on every tap rather than once at the end.
+   ============================================================ */
+var LOADS=null;
+function refreshLoads(){
+ if(MISSING.length||UNKNOWN.length||SEATMISMATCH||!answered()){ LOADS=null; return; }
+ read(scored().p);
+ LOADS=BANDS.map(function(b){
+  var g=W.filter(function(n){return n.b===b;});
+  return g.reduce(function(a,n){return a+n.sq;},0)/g.length;});}
+var KEY='atuned.quiz.v2';
+var A={};              /* question index -> 0..4 */
+var AT=0;              /* position in ORDER */
+var STATE='open';
+var SAVE_FAIL='';
+
+/* ============================================================
+   THE READING UNFOLDS. The funnel audit, section 20 of
+   reviews/ATUNED-Funnel-Onboarding-Tutorial-Creative-TDD.md: "Do not show
+   everything at once." It was one page, measured 5651 pixels tall at 390,
+   with the coherence figure, the thin laws, the ring, four saboteur cards and
+   the scope box all arriving in the same frame. So it comes in five layers,
+   each one the answer to the question the one above it raises: where you
+   stand, where it leaks, what keeps it open, where it sits in the body, and
+   where a release starts. Each layer stays on the page once it is shown, so
+   the last screen is the whole reading and nothing read is taken away.
+
+   IT NEVER TRAPS. "Show the whole reading" sits under every layer and opens
+   the rest in one press, the way the signal's skip sits under every step.
+
+   READ_AT is how many layers are on the page. It is held in memory and
+   nowhere else, like the signal: somebody who has unfolded it once is not
+   made to unfold it again for the rest of the visit, and Start again from the
+   top is a new visit. READ_NEW is the layer just opened, which the redraw
+   scrolls to and focuses, and is cleared once it has. ============ */
+var READ_AT=1;
+var READ_NEW=0;
+
+/* ============================================================
+   THE SIGNAL. One moment before the hundred questions, where a person
+   notices what their own body does when something gets to them. The funnel
+   audit, reviews/ATUNED-Funnel-Onboarding-Tutorial-Creative-TDD.md sections
+   15 and 16: the questions went straight from the opening into scoring, so
+   the first thing the instrument ever asked of the body was a number.
+
+   WHAT THE PERSON SAYS IS THE EVIDENCE AND THE MAP IS A MODEL. The audit's
+   own line, and the one this beat is built to hold: "The user's reported
+   sensation is primary evidence. The system's body/address mapping is a
+   model." So nothing here is scored, nothing is mapped to a seat, and the
+   page says back only what the person picked or typed. It never says what
+   the sensation means. The reading's scope box repeats it once the map is on
+   the screen, because that is where the two can disagree.
+
+   IT IS HELD IN MEMORY AND NOWHERE ELSE, by the same rule as the story: it is
+   somebody's body in their own words, on what may be a shared computer. It
+   is not saved, it is not in the record, and the door says so.
+
+   IT NEVER BLOCKS. Every step carries the way past it, and "Nothing I can
+   notice" is an answer that moves forward like any other. A person who has
+   already answered is coming back to carry on and skips it.
+
+   THE PLACES ARE WORDS THE STORY READER ALREADY KNOWS. Each one is in
+   SOMA_PLACE_WORDS in engine/sniff.js, so if this is ever handed to the
+   reader it is the person's own word arriving where the reader looks for it.
+   THE SENSATIONS take their nouns from the product's own definition of a
+   charge, "heat, pressure, tingling or weight" (engine/data/kb.js), and
+   add the four the audit's list carries that a person says about a moment
+   that gets to them. The button is the verb a person says; the noun is what
+   is said back to them.
+   ============================================================ */
+var SIG_WHERE=['Head','Jaw','Throat','Shoulders','Chest','Stomach','Lower belly','Hands'];
+var SIG_WHAT=[['Tightens','tightness'],['Heats up','heat'],['Gets heavy','weight'],
+ ['Presses','pressure'],['Tingles','tingling'],['Drops','a drop'],['Races','racing'],
+ ['Goes numb','numbness']];
+var SIG={where:'',whereOwn:false,what:'',whatOwn:false,none:false,done:false};
+var SIG_AT='where';     /* where, what, seen */
+var SIG_MAX=80;         /* own words, characters */
+
+/* what the person noticed, in a phrase that sits after "you noticed". Their
+   typed words come back inside quotation marks exactly as typed, so the page
+   never paraphrases somebody's body to them. Empty when nothing was given. */
+function sigPlace(){
+ if(SIG.none||!SIG.where)return '';
+ return SIG.whereOwn?'“'+SIG.where+'”':'your '+SIG.where.toLowerCase();}
+function sigSay(){
+ if(SIG.none||!SIG.where||!SIG.what)return '';
+ return (SIG.whatOwn?'“'+SIG.what+'”':SIG.what)+' in '+sigPlace();}
+/* the same thing as a whole sentence, for the places that say it back. A
+   place with no sensation is still a place the person found, and is said. */
+function sigSentence(){
+ if(SIG.none||!SIG.where)return '';
+ return SIG.what?'You noticed '+sigSay()+'.'
+  :'You found it in '+sigPlace()+'. What it does there has no name yet.';}
+
+function save(){
+ try{ localStorage.setItem(KEY,JSON.stringify({a:A})); SAVE_FAIL=''; }
+ catch(e){ SAVE_FAIL='This browser will not keep your answers. Finish in one sitting.'; }}
+function load(){
+ try{ var r=localStorage.getItem(KEY); if(r){ var o=JSON.parse(r)||{}; A=o.a||{}; } }
+ catch(e){ A={}; }}
+function answered(){ var n=0; for(var k in A)if(A[k]!=null)n++; return n; }
+function firstOpen(){
+ for(var i=0;i<ORDER.length;i++)if(A[ORDER[i]]==null)return i;
+ return ORDER.length; }
+
+/* ============================================================
+   SCORING. A hundred points, each one a law and a charge axis.
+   Never is the law closed and nothing held. Always is the law
+   open and the axis loaded. The map is linear across the five,
+   because a five step scale has no honest curve in it.
+   ============================================================ */
+function scored(){
+ var lawSum={},lawN={},chgSum={},chgN={},n=0;
+ QQ.forEach(function(q,i){
+  var a=A[i]; if(a==null)return; n++;
+  lawSum[q.l]=(lawSum[q.l]||0)+(10-a*2.5); lawN[q.l]=(lawN[q.l]||0)+1;
+  chgSum[q.c]=(chgSum[q.c]||0)+(a*2.5);    chgN[q.c]=(chgN[q.c]||0)+1;});
+ /* THE RECORD WAS NAMED "test". blankProfile takes the profile's name and it
+    was given the word the file calls this page, so a person who loaded the
+    record into Atuned met a profile called test. It is the reading somebody
+    took on the web, so that is what it is called. */
+ var p=blankProfile('Web reading');
+ var laws=[];
+ SINAMES.forEach(function(l){
+  if(!lawN[l])return;                    /* not yet touched stays null, not zero */
+  var v=Math.round(lawSum[l]/lawN[l]*10)/10;
+  p.laws[l]=v;
+  laws.push({nm:l,v:v,n:lawN[l],b:(SI.filter(function(x){return x.nm===l;})[0]||{}).b});});
+ CHILD.forEach(function(c){
+  p.axes[c.nm]={held: chgN[c.nm]?Math.round(chgSum[c.nm]/chgN[c.nm]*10)/10:0, opp:0};});
+ return {p:p, laws:laws, answered:n};}
+
+/* ONE CARD PER ARCHITECTURE, TWO WAYS.
+
+   Two names can sit on the same addresses at the same weight, which printed as
+   two identical cards side by side on a flat field. And one name can be
+   detected twice on two different address clusters, because the charge range
+   scan and the cluster scan both reach it: that printed Worrywart at the top of
+   the reading and again three cards later, same definition, same sentence,
+   different addresses. Both read as a broken page to somebody meeting the
+   instrument for the first time. The name is the thing a person carries away,
+   so the name is the key, and the heaviest instance of it is the one shown.
+   Found by looking at the rendered page. It is invisible in the markup. */
+function topSabs(r,max){
+ var seenSig={},seenName={},out=[];
+ r.sabs.forEach(function(s){
+  if(out.length>=max)return;
+  var name=s.nm.toLowerCase();
+  if(seenName[name])return;
+  var sig=s.parts.map(function(n){return n.i;}).sort().join(',')+'|'+s.w.toFixed(2);
+  if(seenSig[sig])return;
+  seenSig[sig]=1; seenName[name]=1; out.push(s);});
+ return out;}
+
+/* ============================================================
+   VIEWS
+   ============================================================ */
+function viewRefusal(){
+ return '<div class="open"><h1>This page did not load completely.</h1>'
+  +'<p>Missing: '+esc((MISSING.concat(UNKNOWN)
+    .concat(SEATMISMATCH?['the ring seats do not match the engine bands']:[])).join(', '))+'. '
+  +'The test cannot be scored without it and will not guess. '
+  +'Serve this page from the funnel directory beside the engine.</p></div>';}
+
+function viewOpen(){
+ var done=answered();
+ return '<div class="open">'
+ +'<span class="eye">The test</span>'
+ +'<h1>A hundred questions about how you actually live.</h1>'
+ +'<p class="lead">One at a time. They are scored against the 21 laws of '
+ +'integrity, which is the same table the instrument itself runs on.</p>'
+ +'<p>Some of them will be uncomfortable to answer honestly, because they are '
+ +'about things that happened rather than about the kind of person you are. '
+ +'Answer them the way your week actually went.</p>'
+ +'<p>At the end you get your coherence, the laws that are thinnest, the '
+ +'saboteurs that are running, and where in the body the load is sitting. '
+ +'Then you can write one thing that happened and see what your own words light.</p>'
+ +'<button class="pri" id="go">'+(done?'Carry on':'Start')+'</button>'
+ +(done?'<div class="under"><button class="lnk" id="restart">Start again from the top</button></div>':'')
+ +'<p class="foot">Nothing you answer leaves this browser. This page makes no '
+ +'request of any kind.</p></div>';}
+
+/* THE SIGNAL, three short screens: where, what happens there, and what was
+   noticed said back. Every string built from what the person typed goes
+   through esc(). Nothing here asks what the sensation means. */
+function viewNotice(){
+ var skip='<button class="lnk" id="sigskip">Skip to the questions</button>';
+ var own=function(ph){
+  return '<div class="sigown"><input id="sigtx" type="text" maxlength="'+SIG_MAX+'" '
+   +'autocomplete="off" spellcheck="false" aria-label="'+esc(ph)+'" placeholder="'+esc(ph)+'">'
+   +'<button class="act" id="sigown">Use my words</button></div>'
+   +'<p class="note" id="signote" aria-live="polite"></p>';};
+
+ if(SIG_AT==='where')return '<div class="card sig">'
+  +'<span class="eye">Before the questions</span>'
+  +'<p class="sigin">Think of a moment that gets to you every time. Do not work out why. '
+  +'Picture it for a few seconds.</p>'
+  +'<p class="q">Where in your body do you notice it?</p>'
+  +'<div class="opts sigopts">'
+  +SIG_WHERE.map(function(w){
+    return '<button class="opt'+(!SIG.whereOwn&&SIG.where===w?' on':'')+'" data-where="'+esc(w)+'">'+esc(w)+'</button>';}).join('')
+  +'<button class="opt none" data-where="">Nothing I can notice</button></div>'
+  +own('Somewhere else, in your words')
+  +'<div class="under">'+skip+'</div></div>';
+
+ if(SIG_AT==='what')return '<div class="card sig">'
+  +'<span class="eye">Before the questions</span>'
+  +'<p class="q">What happens in '+esc(sigPlace())+'?</p>'
+  +'<div class="opts sigopts">'
+  +SIG_WHAT.map(function(p,i){
+    return '<button class="opt'+(!SIG.whatOwn&&SIG.what===p[1]?' on':'')+'" data-what="'+i+'">'+esc(p[0])+'</button>';}).join('')
+  +'<button class="opt none" data-what="">Nothing I can notice</button></div>'
+  +own('Something else, in your words')
+  +'<div class="under"><button class="lnk" id="sigback">Change the place</button>'+skip+'</div></div>';
+
+ /* seen. Nothing noticed is said as a result, because it is one, and the
+    story at the end is named as where it goes if it shows up later. */
+ var said=sigSentence();
+ return '<div class="card sigseen">'
+  +'<span class="eye">Before the questions</span>'
+  +(said
+   ?'<h1>There it is.</h1>'
+    +'<p class="said">'+esc(said)+'</p>'
+    +'<p>A signal is what your body does when something gets to you. You found this one '
+    +'yourself.</p>'
+    +'<p>The hundred questions next draw a map of where you carry load. The map comes from '
+    +'your answers. What you just noticed came from your body. Where the two disagree, go '
+    +'with your body.</p>'
+    +'<p class="hold">Keep your attention there for one breath.</p>'
+   :'<h1>Nothing showed this time.</h1>'
+    +'<p>Not noticing anything is a result too. The questions work the same either way. '
+    +'If something shows up later, the story at the end is the place to write it.</p>')
+  +'<button class="pri" id="sigstart">Start the questions</button>'
+  +'<div class="under"><button class="lnk" id="sigredo">Change what I noticed</button></div>'
+  +'</div>';}
+
+function viewQ(){
+ var qi=ORDER[AT], q=QQ[qi], cur=A[qi];
+ var h='<div class="card"><p class="q">'+esc(q.q)+'</p><div class="opts">';
+ QSCALE.forEach(function(lab,v){
+  h+='<button class="opt'+(cur===v?' on':'')+'" data-v="'+v+'">'+esc(lab)+'</button>';});
+ h+='</div><div class="under">';
+ if(AT>0)h+='<button class="lnk" id="back">Change the one before</button>';
+ if(answered()>=SINAMES.length)h+='<button class="lnk" id="stop">Read it from here</button>';
+ h+='</div>'+(SAVE_FAIL?'<p class="fail">'+esc(SAVE_FAIL)+'</p>':'')+'</div>';
+ return h;}
+
+function viewRead(){
+ var s=scored(), out=read(s.p), r=out.reading;
+ var laws=s.laws.slice().sort(function(a,b){return a.v-b.v;});
+ var thin=laws.slice(0,5), held=laws.slice(-3).reverse();
+ var t=TIER_BY?TIER_BY[r.tier]:null;
+ if(!t)t=TIERDEF.filter(function(x){return x.nm===r.tier;})[0]||{};
+ var sabs=topSabs(r,4);
+ var seatvar={'Root':'--root','Sacral':'--sacral','Solar':'--solar','Heart':'--heart',
+  'Throat':'--throat','3rd Eye':'--eye','Crown':'--crown'};
+ var cv=function(b){return 'var('+(seatvar[b]||'--accent')+')';};
+
+ /* THE BAND STRIP. Mean load per seat, off the same field the engine read.
+    This is the proof, not a decoration: it is the instrument's own arithmetic
+    printed before anybody has paid for anything. It is the array the ring in
+    the header has been drawing the whole way down, not a second one. */
+ var bandload=BANDS.map(function(b,i){return {b:b, v:(LOADS||[])[i]||0};});
+
+ /* the family definition is printed the first time its family appears and not
+    again. Three cards in a row carrying "the swing overshoots at both ends"
+    word for word is the repetition the knowledge pass already measured on
+    another surface, and it makes four readings look like one. */
+ var seenFam={};
+
+ /* WHERE A RELEASE STARTS. Read off the engine and not ranked here: relQueueOf
+    in engine/compute.js is the queue the app's own Release button takes, the
+    heaviest addresses holding something, at or over the line at 4 first.
+    It reads the field read() just placed, so it is called straight after it.
+    The heaviest single address, r.heaviest, is the top of every address
+    carrying anything; the queue keeps only addresses with a named pattern on
+    them, because that is all a release can work on, so the two can differ
+    and layer 5 names the one a release would actually take. */
+ var queue=relQueueOf(8);
+
+ /* THE FIVE LAYERS, in the order the audit gives them. Each is a heading
+    that says what the layer answers, the body it already had, and a short
+    line naming it, which the layer above shows as what comes next. */
+ var LAYERS=[
+
+ /* ---- 1. WHERE YOU STAND. Coherence and its word, nothing else. There is
+    no direction word here: which way coherence is moving is the owner's open
+    question (WAITING-ON-YOU.md item 19) and nothing in the engine computes it. */
+ {eye:'The snapshot', head:'Where you stand today.', top:true,
+  body:'<div class="cqrow"><div class="cq"><b>'+Math.round(r.CQ)+'</b><span>'+esc(r.tier)+'</span></div>'
+  +'<div class="cqsay">'
+  +'<p>That is your coherence. One hundred is every law closed with nothing held '
+  +'in the body. Coherence is the alignment between what arrives, how you read it, '
+  +'what you intend, and what you then do.</p>'
+  +'<p>When it is low the circuit leaks, and the leak is what promotes mental, '
+  +'physical and spiritual disease. That is the mechanism, and it is the reason '
+  +'this instrument exists.</p></div></div>'
+  +'<div class="tierbox"><dl>'
+  +'<div><dt>What '+esc(r.tier)+' means</dt><dd>'+esc(t.def||'')+'</dd></div>'
+  +'<div><dt>What it does to a day</dt><dd>'+esc(t.energy||'')+'</dd></div>'
+  +'<div><dt>'+towardLabel(t.toward)+'</dt><dd>'+esc(t.toward||'')+'</dd></div>'
+  +'</dl></div>'},
+
+ /* ---- 2. WHERE IT LEAKS. The five thinnest laws. The load at each seat
+    used to sit beside them, and it moved to layer 4: the seats are places in
+    the body, and showing the body before the layer that is about the body
+    answers the fourth question second. ---- */
+ {eye:'The thin laws', head:'Where it leaks.', next:'the five laws holding least',
+  body:'<h3>The five laws holding least</h3>'
+  +'<p class="sm">Each law is scored out of ten.</p>'
+  +'<ul class="laws">'+thin.map(lawRow).join('')+'</ul>'
+  +'<p class="sm">Holding best: '+held.map(function(l){return esc(l.nm);}).join(', ')+'.</p>'},
+
+ /* ---- 3. WHAT KEEPS IT OPEN. The saboteurs, unchanged. ---- */
+ {eye:'What is running', head:'What keeps it open.', next:'the habits keeping it open',
+  body:(sabs.length
+   ?'<p class="lede sm">A saboteur is a contraction of several addresses acting '
+    +'together. These are the ones your answers have lit, hardest first.</p>'
+    +'<div class="sabs">'+sabs.map(function(x){return sabCard(x,seenFam);}).join('')+'</div>'
+    +'<p class="sm">Every address named above carries its own direction in the '
+    +'Compass. '
+    +(r.sabs.length>sabs.length
+      ?(r.sabs.length-sabs.length)+' more saboteurs are firing under these, and they '
+       +'compound into '+r.cxs.length+' complexes. The instrument names all of '
+       +'them and works out the order to take them apart in.':'')+'</p>'
+   :'<p class="lede">No saboteur is firing hard enough to name. Charge is present and '
+    +'no cluster has reached the weight where the instrument will name one. That is '
+    +'a real result and not an empty one.</p>')},
+
+ /* ---- 4. WHERE IT SITS IN THE BODY. The ring at full size, the bars, the
+    seat carrying most and the heaviest address. The scope box comes with it,
+    because this is the layer where the map and the body can disagree, and
+    the signal, if one was noticed, is said here for the same reason. ---- */
+ {eye:'The body', head:'Where the load sits in your body.', next:'where the load sits in your body',
+  body:'<div class="two">'
+  /* the ring at full size, the same object that has been filling in the
+     header. It carries the shape. The bars beside it carry the figures. */
+  +'<div class="bigring"><div class="ringwrap">'+RING.svg({loads:LOADS})+'</div>'
+  +'<p class="sm">Each band is a seat. Its weight is the load it is carrying. '
+  +'Root sits at the base and the band climbs the right to Crown.</p></div>'
+  +'<div><h3>The load at each seat</h3>'
+  +'<p class="sm">The nine charges from your answers land on the 112 addresses, '
+  +'each one seated at a named plexus or nerve. Average load per seat, out of ten.</p>'
+  +'<ul class="seats">'+bandload.map(function(x){
+    return '<li><b>'+esc(x.b)+'</b><span class="tr"><i style="width:'
+     +(Math.min(100,x.v*10))+'%;background:'+cv(x.b)+'"></i></span><em>'
+     +x.v.toFixed(1)+'</em></li>';}).join('')+'</ul>'
+  +'<p class="sm">'+esc(r.darkB)+' is carrying the most. '
+  +(r.heaviest?('The heaviest single address is '+esc(r.heaviest.k)+', at the '
+    +esc(r.heaviest.n||'field')+'. '):'')
+  +r.carrying.length+' addresses are carrying something, and '+r.loaded.length
+  +' of them are above the line where it starts to cost.</p></div>'
+  +'</div>'
+  /* ---- THE SCOPE. What this read and what it did not. ---- */
+  +'<div class="scope"><b>What this is.</b> A hundred points on the 21 laws, and '
+  +'the nine charges those points imply. It has not read a story in your own words, '
+  +'which is where the instrument gets its resolution, so the body locations above '
+  +'are where this kind of load sits rather than a reading of your tissue. It reads '
+  +'self report. A clinician reads a person, and those are different jobs.'
+  /* THE SIGNAL OUTRANKS THE MAP, said where the map is. This is the layer
+     where the seats and what the person noticed can disagree, so it is the
+     layer that says which one to go with. */
+  +(sigSentence()?' '+esc(sigSentence())+' That came from your body, before the '
+    +'questions. Where it and the seats above disagree, go with your body.':'')
+  +'</div>'},
+
+ /* ---- 5. WHERE A RELEASE STARTS. The queue the app's Release button takes,
+    first address named, the rest in order. The meanings of release and
+    address come from the product's one table of meanings, unpackOf in
+    engine/data/gloss.js, and are not written here. No weight is printed: a weight needs its node state
+    beside it (V22) and the lines between the node states are not ruled. ---- */
+ {eye:'The order', head:'Where a release starts.', next:'where a release starts',
+  body:(queue.length
+   ?'<p class="lede">On these answers a release starts at <b>'+esc(queue[0].k)+'</b>'
+    +(queue[0].n?', at the '+esc(queue[0].n):'')+'.</p>'
+    +'<p class="sm">'+esc(unpackOf('release'))+' '+esc(unpackOf('address'))
+    +' The app runs a release one address at a time, heaviest first, and takes yours '
+    +'in this order.</p>'
+    +'<ol class="order">'+queue.map(function(n){
+      return '<li><i style="border-color:'+cv(n.b)+'"></i><span><b>'+esc(n.k)+'</b>'
+       +(n.n?' at the '+esc(n.n):'')+'</span></li>';}).join('')+'</ol>'
+   :'<p class="lede">Nothing on these answers is carrying a named pattern, so a release '
+    +'has no address to start on.</p>')}
+ ];
+
+ var N=LAYERS.length;
+ READ_AT=Math.max(1,Math.min(N,READ_AT));
+ var h='<div class="read">'
+  +LAYERS.slice(0,READ_AT).map(function(L,i){
+    var n=i+1;
+    return '<section class="layer'+(n===READ_NEW?' new':'')+'" id="layer'+n+'" data-layer="'+n+'" tabindex="-1">'
+     +'<div class="hd"><span class="eye">'+L.eye+'</span>'
+     +(L.top?'<h1>':'<h2>')+L.head+(L.top?'</h1>':'</h2>')+'</div>'
+     +'<div class="bd">'+L.body+'</div></section>';}).join('');
+
+ /* ---- THE STEP FORWARD INSIDE THE READING. One button to the next layer,
+    named by what it opens, and the way past all of them. ---- */
+ if(READ_AT<N)return h
+  +'<div class="unfold"><p class="sm">Next, '+LAYERS[READ_AT].next+'.</p>'
+  +'<button class="pri" id="more">Keep reading</button>'
+  +'<div class="under"><button class="lnk" id="readall">Show the whole reading</button></div></div>'
+  +'</div>';
+
+ h+=''
+ /* ---- THE STEP FORWARD. The door was here, straight after the scope,
+    so the page said it had not read a story in your own words and then
+    offered nowhere to write one. The story is his third step and the door is
+    his fourth, so this is the way to the third, and it can be skipped: he did
+    not say the story was required, and a step nobody can pass is a wall.
+    Change an answer stays on this page, because this is where a person sees
+    the answer they want to change. ---- */
+ +'<div class="door"><span class="eye">Next</span>'
+ +'<h2>Write one thing that happened.</h2>'
+ +'<div class="doorbd">'
+ +'<p>The hundred questions read the shape of your week. One story in your own '
+ +'words shows what is running under it, read by the same reader the app uses.</p>'
+ +'<div class="acts">'
+  +'<button class="act go" id="tostory">Write a story</button>'
+  +'<button class="act" id="todoor">Skip to my record</button>'
+  +'<button class="act" id="again">Change an answer</button>'
+ +'</div></div></div>'
+
+ +(s.answered<100?'<p class="foot">Some points stayed blank. The reading leans on the ones you answered.</p>':'')
+ +'</div>';
+ return h;
+
+ /* the ladder name is data, so whether `toward` begins with one is asked of the
+    data and not guessed from the sentence. */
+ function towardLabel(txt){
+  var lead=TIERDEF.some(function(x){return String(txt||'').indexOf(x.nm)===0;});
+  return lead?'The next reading up, and how it is reached':'The direction out';}
+ function lawRow(l){
+  return '<li><b>'+esc(l.nm)+'</b><span class="tr"><i style="width:'+(l.v*10)
+   +'%;background:'+cv(l.b)+'"></i></span><em>'+l.v.toFixed(1)+'</em></li>';}
+
+ /* EVERY CARD IS THE SAME KIND OF OBJECT.
+
+    Two of the four were thin. A generated name like Root Flincher carries no
+    entry in the engine's saboteur table, so it printed a family line, its
+    addresses and one borrowed sentence about a way out, beside two cards that
+    printed what the thing does and what it says in your head. Side by side,
+    two read as real and two as filler.
+
+    A generated name is not less real, it is unwritten, and everything needed
+    to write it is already on its own addresses: `d` is what each address
+    produces and `a` is the faculty it costs. So both kinds of card now carry
+    the same four load bearing slots, what it does, what it runs on, what it
+    costs and the way out, filled from the authored table where there is one
+    and composed from the addresses where there is not. Nothing is invented.
+    The one slot that stays authored only is the sentence it says in your head,
+    because putting words in somebody's mouth is not something to compose. */
+ function sabCard(s,seen){
+  var d=(typeof SABDEF!=='undefined'&&SABDEF)?SABDEF[s.nm.toLowerCase()]:null;
+  var fam=HCX_LIB.filter(function(x){return x.nm===s.hcx;})[0];
+  /* parts arrive unsorted for the cluster scan, and "the heaviest of them" has
+     to be true when it is said. */
+  var parts=s.parts.slice().sort(function(a,b){return (b.sq||0)-(a.sq||0);}).slice(0,4);
+  var top=parts[0]||{k:'',n:''};
+  var h='<div class="sab"><h3>'+esc(s.nm)+'</h3>'
+   +'<div class="fam">'+esc(s.hcx)
+   +(seen[s.hcx]?'':': '+esc(fam?fam.d:'a contraction that has hardened into a shape'))
+   +'</div>';
+  seen[s.hcx]=1;
+  h+='<div class="sl"><b>What it does:</b> '
+   +(d&&d.d?esc(firstSentences(d.d,2))
+          :esc('It shows up as '+listOf(parts.map(function(n){return low(n.d);}))+'.'))
+   +'</div>';
+  if(d&&d.q)h+='<div class="said">'+esc(d.q.split(' / ')[0])+'</div>';
+  h+='<div class="sl"><b>It runs on:</b> '+parts.map(function(n){
+   return esc(n.k)+(n.n?' at the '+esc(n.n):'');}).join('. ')+'.</div>';
+  h+='<div class="sl"><b>What it touches:</b> '
+   +esc(cap(listOf(parts.map(function(n){return low(clause(n.a));}))))+'.</div>';
+  /* the generated names are built out of the charge and the seat: Root
+     Flincher is the root seat and Fear. So the trigger is on the addresses
+     too, and the composed card gets the same slot the authored one has.
+     cf is the child fetter, which is always one of the nine; c is a display
+     word and is not. */
+  if(d&&d.t)h+='<div class="sl"><b>It fires when:</b> '+esc(firstSentences(d.t,1))+'</div>';
+  else{
+   var cnt={},best='',seats=[];
+   parts.forEach(function(nd){ if(!nd.cf)return; cnt[nd.cf]=(cnt[nd.cf]||0)+1;
+    if(!best||cnt[nd.cf]>cnt[best])best=nd.cf;
+    if(nd.b&&seats.indexOf(nd.b)<0)seats.push(nd.b);});
+   if(best)h+='<div class="sl"><b>It fires on:</b> '+esc(low(best))+', at the '
+    +esc(listOf(seats.map(function(x){return low(x);})))+'.</div>';}
+  h+='<div class="sl"><b>The way out:</b> '
+   +(d&&d.i?esc(firstSentences(d.i,2))
+          :esc('Start at '+top.k+(top.n?', at the '+top.n:'')
+               +', which is the heaviest of them.'))+'</div>';
+  return h+'</div>';}
+ /* NO LOOKBEHIND. It is unsupported in enough shipped browsers that a
+    saboteur card would throw instead of printing, and a card that throws
+    takes the whole reading with it. */
+ function firstSentences(txt,n){
+  var t=String(txt), out=[], start=0, count=0;
+  for(var i=0;i<t.length&&count<n;i++){
+   if(t.charAt(i)==='.'){ out.push(t.slice(start,i+1)); start=i+1; count++;
+    while(t.charAt(start)===' ')start++; i=start-1; } }
+  return (out.length?out.join(' '):t).trim();}}
+
+/* THE WORDING HELPERS SIT OUT HERE NOW, UNCHANGED. They were declared inside
+   viewRead, so the story's cards could not reach them, and a second copy for
+   the second family of cards is two copies of one rule. Moved and not
+   rewritten: every body is as it was, and none of the four names is a global
+   in engine.js, questions.js or ring.js, checked before they moved. */
+function clause(x){ return String(x||'').split(',')[0].trim(); }
+function low(x){ x=String(x||''); return x.charAt(0).toLowerCase()+x.slice(1); }
+function cap(x){ x=String(x||''); return x.charAt(0).toUpperCase()+x.slice(1); }
+function listOf(a){
+ a=a.filter(function(x,i){return x&&a.indexOf(x)===i;});
+ return a.length<2?(a[0]||''):a.slice(0,-1).join(', ')+' and '+a[a.length-1];}
+
+/* ============================================================
+   THE STORY. His third step: "it needs to sniff out some of the stories so
+   you can see what's running you."
+
+   NOTHING NEW IS SCORED HERE. parseStory is the reader the app's Story page
+   runs, engine/sniff.js, and it arrives with engine.js. This page asks it one
+   question and prints the answer in the same card the saboteurs on the
+   reading wear, so the two halves read as one reading and not two products.
+
+   THE TEXT IS HELD IN MEMORY AND NOWHERE ELSE. The answers are saved in this
+   browser so a person can stop and come back. A story is a different thing
+   to leave on a machine: it is somebody's week in their own words, on what
+   may be a shared computer. So it is never written to storage, the page says
+   so under the box, and closing the page loses it.
+
+   READING WAITS FOR THE BUTTON. Live, every half typed word would print a
+   reading and take it back a keystroke later, and a card that flickers
+   between Fear and nothing while somebody is still writing is a reading
+   nobody can trust.
+   ============================================================ */
+var STORY='';      /* what is in the box now */
+var STORY_AT='';   /* what was in it when Read it was pressed */
+
+/* ============================================================
+   YES AND NOT ME, ON EVERY ADDRESS A CARD NAMES. Item 5 of the funnel punch
+   list in PLAN.md, from reviews/ATUNED-Funnel-Onboarding-Tutorial-Creative-
+   TDD.md section 23: "ATUNED can be wrong. You can correct it." The cards
+   printed the engine's pick of address as a finding and offered no way to
+   say it was wrong.
+
+   PER ADDRESS AND NOT PER CARD, because the card is the part the person
+   already said. A card exists only where the words named the charge
+   (storyLit drops every inferred imprint), so a Yes on the card would be the
+   person confirming the word they typed. The address under it is the
+   engine's pick: parseStory takes the addresses at that seat carrying the
+   named charge and sorts them by susc, which the hundred answers set. That
+   pick is the model, and the model is the thing that can be wrong. It is also
+   the app's own grain, ui/onboard.js obRow: one address, one row, one answer.
+
+   THE LOAD IS HELD THE WAY THE APP HOLDS IT, obGroup: the heaviest address
+   on a card shows with its pair and the rest sit behind a button that says
+   how many. Measured 3 October in Chromium on the gate's two card story: 11
+   visible controls on the page with the rows, against the house target of
+   under 12.
+   Every row open on the same story is 19, and four cards is 16 even folded,
+   which is over and is said in the commit rather than hidden. A Yes and Not
+   me per card would cost at most one control less a card, 13 on the four,
+   still over, and would ask the wrong question.
+
+   WHAT AN ANSWER DOES, AND WHAT IT CANNOT DO HERE. In the app only a yes goes
+   into the release and both are written onto the entry, ob.yes and ob.no.
+   This page has no release and no entry. The record recordJSON writes is
+   saveProfile(scored().p): the hundred answers and nothing from the story,
+   so no address a person said Not me to can reach the record as found. The
+   one slot the schema has for these answers is story.entries[].ob, and
+   engine/schema.js vEntry refuses an entry without its text ("An entry is
+   its text"), which this page promises never to store. Carrying them would
+   take either breaking that promise or a new field, and the schema is the
+   owner's contract with SOURCE. So the answers are held in memory under the
+   story's own rule, the door says they are not in the record, and on the
+   page a Not me does the one thing it can do honestly: the card's last line
+   stops comparing the answers with that address, so the page never goes on
+   reading somebody's answers against a place they have said is not them.
+   ============================================================ */
+var MARK={};       /* node index -> 'yes' or 'no'. Missing is unanswered. */
+var MORE={};       /* charge -> 1 when its card shows every address */
+function marked(){ for(var k in MARK)if(MARK[k])return true; return false; }
+
+/* the words, quoted as they were typed. marksOf maps the scanner's offsets
+   back onto the letters, so a quote is exactly what was scored. A word read
+   after a no is quoted with the no in front of it, so the person can see
+   what the reader did with it. */
+function storyQuote(t,m){
+ var a=m.s;
+ if(m.neg){ var pre=t.slice(0,a).match(/(?:[A-Za-z']+[^A-Za-z']+){1,2}$/); if(pre)a-=pre[0].length; }
+ return '“'+t.slice(a,m.e)+'”';}
+function storyQuotes(t,ms){
+ var seen={}, out=[];
+ ms.forEach(function(m){ var q=storyQuote(t,m), k=q.toLowerCase();
+  if(!seen[k]&&out.length<5){ seen[k]=1; out.push(q); } });
+ return out;}
+
+/* ONE ADDRESS, ONE ROW, ONE ANSWER. The meaning rides on the row in the
+   app's own sentence, onboard.js obAbout, "It concerns ... and shows up as
+   ...", because a person cannot say whether a name is them without being
+   told what it means, round PO. That sentence is built from the same two
+   fields the card's What it does and What it touches lines were built from,
+   moved onto the address they came from rather than joined across four, and
+   it keeps their cut: the first clause of a, as What it touches took it. The
+   whole of a, as the app prints it, read "It concerns worth, embodiment and
+   shows up as self-rejection" on the shot, two lists run into one. */
+function storyRow(n){
+ var a=MARK[n.i]||'', about=low(clause(n.a)), does=low(n.d);
+ return '<div class="addr" data-addr="'+n.i+'">'
+  +'<p class="addrp"><b>'+esc(n.k)+'</b>'+(n.n?' at the '+esc(n.n):'')+'.'
+  +(about||does?' It concerns '+esc(about||'this place')+(does?' and shows up as '+esc(does):'')+'.':'')
+  +'</p>'
+  +'<div class="yn" role="group" aria-label="'+esc(n.k)+'">'
+  +'<button type="button" class="yna'+(a==='yes'?' on':'')+'" aria-pressed="'+(a==='yes')+'" data-ans="yes" data-ai="'+n.i+'">Yes</button>'
+  +'<button type="button" class="yna'+(a==='no'?' on':'')+'" aria-pressed="'+(a==='no')+'" data-ans="no" data-ai="'+n.i+'">Not me</button>'
+  +'</div>'
+  /* the line says what the answer did on this page and claims nothing past
+     it. The app's "In your release" would be false here: there is no
+     release on this page and nothing from the story is saved. */
+  +(a==='yes'?'<p class="addrst">Marked yours.</p>'
+   :a==='no'?'<p class="addrst">Marked not you. The last line on this card no longer counts it.</p>':'')
+  +'</div>';}
+
+function storyLit(ps,t,r){
+ /* A WORD AFTER A NO IS STILL CHARGED, AND THAT IS SHOWN. "I was not scared"
+    lights Fear, measured, because parseStory does not read negation and
+    srcNegated does. The app's Story page shows the same disagreement rather
+    than picking a side, round HX, and this does it the same way: the quote
+    carries the no, and one sentence says the reader counted it anyway. */
+ var nm=normMap(t), negAt={};
+ ps.hits.forEach(function(h){ if(h.band==='coherent')return;
+  if(srcNegated(nm.s,h.at)){ var a=nm.map[h.at+1]; if(a!=null)negAt[a]=1; } });
+ var marks=marksOf(t,ps).filter(function(m){return !m.coh;});
+ marks.forEach(function(m){ m.neg=!!negAt[m.s]; });
+
+ /* NAMED AGAINST INFERRED DECIDES WHAT MAY BE PRINTED. parseStory marks an
+    imprint inferred when the words reached a seat and the address was picked
+    by a fallback. Its own comment records what printing those did: "My father
+    died last year" was told Martyrdom. So an inferred imprint earns no card
+    and no address name here. The seat it reached is still said, because the
+    seat is genuinely known.
+    A STATED imprint is the other trap. Its fetter was named by the word, and
+    its node is only the first address at that seat, which does not carry the
+    fetter at all: "I am exhausted" states Apathy on an address whose own
+    fetter is Anger. So a stated fetter gets its card and no address. */
+ var groups={}, cards=[], seatOnly={}, named={};
+ ps.imprints.forEach(function(im){
+  if(im.inferred){ seatOnly[im.from]=im.band; return; }
+  named[im.from]=1;
+  var g=groups[im.fetter];
+  if(!g){ g=groups[im.fetter]={fet:im.fetter, bands:[], from:{}, nodes:[], at:{}, amt:0}; cards.push(g); }
+  if(g.bands.indexOf(im.band)<0)g.bands.push(im.band);
+  g.from[im.from]=1; g.amt+=im.amt;
+  var n=BY[im.node];
+  if(!im.stated&&n){ if(g.nodes.indexOf(n)<0)g.nodes.push(n); g.at[n.i]=(g.at[n.i]||0)+im.amt; }});
+ cards.sort(function(a,b){return b.amt-a.amt;});
+ /* a card prints four addresses, so the four are the heaviest this story put
+    there and not the first four the seats happened to list */
+ cards.forEach(function(g){ g.nodes.sort(function(a,b){return g.at[b.i]-g.at[a.i];}); });
+
+ /* what the hundred said about the same places. The quiz reading was run
+    first in viewStory, so W, and BY with it, still holds the answers' load. */
+ var qsabs=topSabs(r,r.sabs.length), loadedAt={};
+ (r.loaded||[]).forEach(function(n){ loadedAt[n&&n.i!=null?n.i:n]=1; });
+ /* ONE NAME, AND HOW MUCH IT SHARES. The first cut named the first two
+    saboteurs touching any address on the card, and on a flat field the same
+    two touched every card: measured, both cards of a two card story read
+    "They lit Overthinker and Negotiator on the same addresses", a line that
+    tells a person nothing twice. Several saboteurs sit on one identical set of
+    addresses, so a second name adds no second fact. The one that shares the
+    most of what the card prints is named, with the share, heaviest first on a
+    tie because topSabs already hands them over in that order. */
+ function answersSay(g){
+  /* A NOT ME LEAVES THE COMPARISON. The answers are still compared with the
+     charge, the branch below, because the person named the charge and said
+     only that the engine's place for it was wrong. */
+  var ids=g.nodes.slice(0,4).filter(function(n){return MARK[n.i]!=='no';})
+   .map(function(n){return n.i;});
+  if(!ids.length){
+   var on=qsabs.filter(function(s){return s.parts.some(function(p){return p.cf===g.fet;});});
+   return on.length?'They lit '+on[0].nm+', which runs on '+low(g.fet)+' too.'
+    :'Nothing they lit runs on '+low(g.fet)+'. Only your words named it.';}
+  var best=null;
+  qsabs.forEach(function(s){
+   var n=s.parts.filter(function(p){return ids.indexOf(p.i)>=0;}).length;
+   if(n&&(!best||n>best.n))best={nm:s.nm,n:n};});
+  if(best)return 'They lit '+best.nm+' on '
+   +(ids.length>1?best.n+' of these '+ids.length+' addresses.':'the same address.');
+  if(ids.some(function(i){return loadedAt[i];}))
+   return 'They put load here too, above the line where it starts to cost.';
+  if(ids.some(function(i){return (BY[i].sq||0)>0;}))
+   return 'They left it under the line where it starts to cost. Your words named it.';
+  return 'They put nothing here. Only your words reached it.';}
+
+ function card(g){
+  /* a word that names a charge belongs to that charge's card only. The first
+     cut gave a card every word at its seats, and "ashamed" was quoted on the
+     Fear card because both charges sat at the solar seat. A word that only
+     reached a seat, "shouted", belongs to every card at that seat, because
+     the seat is all it said. */
+  var ws=marks.filter(function(m){
+   var names=m.fet||(m.charge&&CHG2FET[m.charge]);
+   return names?names===g.fet:!!(m.seat&&g.from[m.seat]);});
+  var seats=g.bands.map(function(b){return low(b);});
+  var h='<div class="sab" data-card="'+esc(g.fet)+'"><h3>'+esc(g.fet)+'</h3>'
+   +'<div class="fam">At the '+esc(listOf(seats))+' seat'+(seats.length>1?'s':'')
+   +'. Your words named it.</div>';
+  if(ws.length)h+='<div class="sl"><b>Your words:</b> '+esc(storyQuotes(t,ws).join(', '))+'.'
+   +(ws.some(function(m){return m.neg;})?' The reader counts a word that comes after a no.':'')
+   +'</div>';
+  /* WHAT IT DOES AND WHAT IT TOUCHES ARE ON THE ROWS NOW. They were each
+     address's d and a joined across all four, which, once an address could
+     be refused, went on saying "It shows up as isolation" about a place the
+     person had just said was not them. Each address carries its own two now,
+     on the row its answer sits on. */
+  var parts=g.nodes.slice(0,4);
+  if(parts.length){
+   var one=parts.length===1;
+   h+='<div class="sl"><b>It runs on:</b> '+(one?'One address':parts.length+' addresses')
+    +' the engine picked. Is '+(one?'it':'each one')+' you?</div>';
+   var show=MORE[g.fet]?parts:parts.slice(0,1);
+   show.forEach(function(n){h+=storyRow(n);});
+   var rest=parts.length-show.length;
+   if(rest>0)h+='<button type="button" class="more" data-more="'+esc(g.fet)+'">'
+    +rest+(rest===1?' more address':' more addresses')+' on this card</button>';}
+  else h+='<div class="sl"><b>It runs on:</b> No address at the '+esc(listOf(seats))
+   +' seat carries '+esc(low(g.fet))+', so none is named.</div>';
+  h+='<div class="sl"><b>Your answers:</b> '+esc(answersSay(g))+'</div>';
+  return h+'</div>';}
+
+ var so=Object.keys(seatOnly).filter(function(k){return !named[k];});
+ var soBands=so.map(function(k){return low(seatOnly[k]);});
+ var soWords=marks.filter(function(m){return m.seat&&so.indexOf(m.seat)>=0;});
+ var seatSay=so.length
+  ?esc(soWords.length?cap(listOf(storyQuotes(t,soWords))):'Your words')
+   +' landed at the '+esc(listOf(soBands))+' seat'+(so.length>1?'s':'')
+   +' without naming what is there. A seat alone does not say which address, '
+   +'so none is named.':'';
+
+ var head=cards.length?'What your words named.'
+  :so.length?'Your words landed at a seat and named nothing exact.'
+  /* the app's own empty state for an entry, ui/storyui.js, word for word.
+     One wording per state. */
+  :'Nothing in this entry reads as held yet.';
+ var h='<section id="lit"><div class="hd"><span class="eye">What your words lit</span>'
+  +'<h2>'+esc(head)+'</h2></div><div class="bd">';
+ /* the address is defined where it is first asked about, in kb.js's own
+    words, and the line about the answers being held says so once under the
+    cards rather than on every row */
+ var asks=cards.some(function(g){return g.nodes.length>0;});
+ if(cards.length)h+='<p class="sm lede">Each card is one charge your words '
+  +'named. A charge is survival energy stuck at one place in the body.'
+  +(asks?' An address is one exact place in your body. Your words did not pick the '
+   +'addresses, the engine did, so each one asks Yes or Not me.':'')
+  +' The last line on each card says whether your answers reached the same place.</p>'
+  +'<div class="sabs">'+cards.map(card).join('')+'</div>'
+  +(asks?'<p class="sm">What you mark Yes or Not me stays on this page with your story. '
+   +'It is not saved and it is not in your record.</p>':'')
+  +(seatSay?'<p class="sm">'+seatSay+'</p>':'');
+ else if(so.length)h+='<p class="sm lede">'+seatSay+'</p>'
+  +'<p class="sm">Write where you felt it, and what it was, and the reader can name it.</p>';
+ else h+='<p class="lede">Keep writing, or write where you felt it.</p>';
+ h+='</div></section>'
+  /* the same scope box the reading carries, saying the same kind of thing:
+     what this read and what it did not. */
+  +'<div class="scope"><b>What this is.</b> The same reader the app runs on its Story '
+  +'page. It matches your words against the instrument\'s word list and places each '
+  +'match at a seat in the body. A card appears only where your words named the '
+  +'charge. It read one story, once, and it has not changed your answers or your '
+  +'coherence.</div>';
+ return h;}
+
+function viewStory(){
+ /* THE QUIZ IS READ FIRST, EVERY TIME. parseStory orders a seat's addresses by
+    susc, and susc is set by whichever profile read() loaded last. Run the
+    other way round, the story would be read against whatever field the page
+    held before, and the last line of every card compares against the
+    answers, so it needs their field in W when it asks. */
+ var s=scored(), r=read(s.p).reading;
+ var ps=STORY_AT?parseStory(STORY_AT):null;
+ var h='<div class="read">'
+  +'<section><div class="hd"><span class="eye">Your own words</span>'
+  +'<h1>Write one thing that happened.</h1></div><div class="bd">'
+  +'<p class="lede">Pick a moment from this week that is still sitting in you. '
+  +'Say what happened and where you felt it, the way you would say it out loud. '
+  +'Three or four sentences is enough.</p>'
+  /* the signal, handed forward. The journal feeds the story in his content
+     chain, and this is the same move one step earlier: what the body did is
+     offered to the story, never written into it. */
+  +(sigSay()?'<p class="sm">Before the questions you noticed '+esc(sigSay())
+    +'. If it is the same moment, write that in too.</p>':'')
+  +'<textarea class="storyta" id="storytx" spellcheck="false" aria-label="What happened" '
+  +'placeholder="What happened, and where you felt it.">'+esc(STORY)+'</textarea>'
+  +'<div class="acts stacts">'
+   +'<button class="act go" id="readit">'+(ps?'Read it again':'Read it')+'</button>'
+   +(ps?'':'<button class="act" id="todoor">Skip to my record</button>'
+     +'<button class="act" id="toread">Back to the reading</button>')
+  +'</div><p class="note" id="stnote" aria-live="polite"></p>'
+  +'<p class="note">Nothing you write leaves this browser, and it is not saved. '
+  +'Close the page and it is gone.</p>'
+  +'</div></section>';
+ if(ps)h+=storyLit(ps,STORY_AT,r)
+  +'<div class="acts stacts">'
+   +'<button class="act go" id="todoor">Continue to my record</button>'
+   +'<button class="act" id="toread">Back to the reading</button>'
+  +'</div>';
+ return h+'</div>';}
+
+/* ============================================================
+   THE DOOR. His fourth step: "And then it invites you to try the app to find
+   more." It saved a file and invited nobody anywhere.
+
+   THE LINK IS TO THE BUILT APP IN THIS REPOSITORY, ../source.html, AND NOT
+   TO A WEB ADDRESS. There is no hosted instrument yet, the open hosting item
+   in TASKS.md, and a made up address is a dead link dressed as an
+   invitation. source.html is the instrument itself, one file, and it sits
+   one directory up from this page in the repository, so from the source the
+   link opens it. BUILD-single.sh rewrites it to atuned.html in dist, the
+   name the handover rule in CLAUDE.md gives the app when it is sent, so the
+   two files land in one folder and the link holds. When the instrument has
+   an address, this href is the one line that changes.
+
+   THE ROUTE IN IS NAMED, BECAUSE IT WAS CHECKED. The loader is the Load a
+   Record box under Privacy, reached from the profile button at the top right
+   of the app, measured in Chromium at 1600 and at 390 on 28 September. A
+   door that says where the file goes and is wrong about it is worse than
+   one that says nothing.
+   ============================================================ */
+function viewDoor(){
+ return '<div class="read">'
+ +'<div class="door"><span class="eye">The door</span>'
+ +'<h2>Take the record with you.</h2>'
+ /* the two paragraphs share one cell, because .doorbd is two columns, words
+    and buttons, and a third child squeezed the words into a sliver at 1600 */
+ +'<div class="doorbd"><div>'
+ +'<p>There is no account and no server, so nothing here can be fetched later by '
+ +'anybody, including us. What you save is a profile in the instrument\'s own '
+ +'format, and Atuned\'s loader takes it as it stands: your coherence, the '
+ +'21 law values, the nine charges, and every address they landed on.'
+ /* the signal is held by the story's rule, so it is named beside it */
+ /* and so is what was marked on the story's addresses, named only when
+    something was, so a person who marked nothing is not told about a step
+    they did not take */
+ +(STORY_AT&&sigSentence()?(marked()?' What you noticed, your story and what you marked Yes or Not me are not in it.'
+    :' What you noticed and your story are not in it.')
+   :STORY_AT?(marked()?' Your story and what you marked Yes or Not me are not in it.':' Your story is not in it.')
+   :sigSentence()?' What you noticed is not in it.':'')+'</p>'
+ /* THE RECORD IN A LINK, round QZ. Opening the app with the record already
+    in it replaces two steps, save here and load there, with one press. The
+    sentence says where the record travels in plain words, because "fragment"
+    and "#r=" mean nothing to the person pressing it. */
+ +'<p class="sm" id="linksay">Open the app with my record puts your record inside the '
+ +'link itself, after the # mark. A browser never sends that part of a link to any '
+ +'server, so the record goes from this page to the app and nowhere else. The app '
+ +'loads it, then clears it from the address bar. Anyone you give the link to can '
+ +'open the record, the same as the file.</p></div>'
+ +'<div class="acts recacts">'
+  /* THE SAME href AS THE DOOR BELOW, ../source.html, on purpose. The record
+     is added to it by script once it is packed, so the address the app lives
+     at is written in one place, and BUILD-single.sh rewrites this one exactly
+     as it rewrites that one: atuned.html in dist, beside the quiz. */
+  +'<a class="act go" id="tolink" href="../source.html">Open the app with my record</a>'
+  +'<button class="act" id="dl">Save my record</button>'
+  +'<button class="act" id="copy">Copy it instead</button>'
+  +'<button class="act" id="again">Change an answer</button>'
+ +'</div></div><p class="note" id="dlnote"></p></div>'
+
+ +'<div class="door"><span class="eye">The app</span>'
+ +'<h2>Try the app to find more.</h2>'
+ +'<div class="doorbd"><div>'
+ +'<p>This test read a hundred answers'+(STORY_AT?' and one story':'')+'. The app reads '
+ +'every story you write and shows where each one sits in the body. Then it runs a '
+ +'release on each address that is carrying, to take the load off it. It is one file '
+ +'and it runs in your browser.</p>'
+ +'<p class="sm">To bring this reading in, use Open the app with my record, above. '
+ +'Or save the record, then in the app press the profile button at the top right, '
+ +'choose Privacy, and load the file there.</p>'
+ +'</div>'
+ +'<div class="acts"><a class="act go" id="toapp" href="../source.html">Open the app</a></div>'
+ +'</div></div>'
+
+ +'<div class="close">'
+ +'<p>No one is coming to save you.</p><p>Do it yourself.</p>'
+ +'<p>The software is the key and the roadmap.</p>'
+ +'<p class="last">You are the door.</p></div>'
+ +'</div>';}
+
+
+/* the record a person carries out. It is a profile the app's own boundary
+   accepts, so nothing has to be translated on the way in. */
+function recordJSON(){ return JSON.stringify(saveProfile(scored().p),null,1); }
+
+/* THE RECORD IN A LINK, round QZ. The same text recordJSON gives the file,
+   gzipped by the browser and written with the engine's linkWrap, which is the
+   one place the format is named (engine/schema.js) and the one the app reads
+   it back with. The link and the file are built by the same function, so the
+   two routes cannot load two different readings. Not the same bytes:
+   recordJSON makes a new record each time it is called, with its own id and
+   time, as every press of Save already does. `base` is an address;
+   anything after a # on it is dropped, so a link is never built onto a link.
+   Resolves with the whole address, or rejects when this browser has no
+   CompressionStream, which the caller turns into a sentence. */
+function recordLink(base){
+ if(typeof CompressionStream!=='function'||typeof Response!=='function'
+  ||typeof TextEncoder!=='function')return Promise.reject(new Error('NoCompression'));
+ var raw=new TextEncoder().encode(recordJSON());
+ return new Response(new Blob([raw]).stream().pipeThrough(new CompressionStream('gzip')))
+  .arrayBuffer().then(function(buf){
+   return String(base).split('#')[0]+'#r='+linkWrap(new Uint8Array(buf));});}
+/* The link is packed when the door draws, so the address is ready before the
+   press and the control is a real link: it can be opened in a new tab and it
+   shows where it goes. A press that beats the packing waits rather than
+   opening an empty app under a button that promised the record. A redraw
+   starts a new packing, and an older one that finishes late is ignored. */
+var LINK_SEQ=0;
+function linkArm(a){
+ var seq=++LINK_SEQ, note=document.getElementById('dlnote');
+ a.setAttribute('aria-disabled','true'); a.removeAttribute('data-ready');
+ a.onclick=function(e){
+  if(a.getAttribute('data-ready')==='1')return;
+  e.preventDefault();
+  if(note)note.textContent='Packing the record into the link. Press again in a moment.';};
+ recordLink(a.href).then(function(u){
+  if(seq!==LINK_SEQ)return;
+  a.href=u; a.setAttribute('data-ready','1'); a.removeAttribute('aria-disabled');
+ },function(){
+  if(seq!==LINK_SEQ)return;
+  /* style and not the hidden attribute: a.act sets display, which outranks
+     [hidden], so the attribute alone left a control promising the record. The
+     line explaining it goes with it, since it describes a control not there. */
+  a.style.display='none';
+  var say=document.getElementById('linksay'); if(say)say.style.display='none';
+  if(note)note.textContent='This browser cannot pack the record into a link. Save it instead.';});}
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+/* ---- THE RING IN THE HEADER. Drawn once and then only updated, because
+   replacing the markup replaces the paths and a replaced path has nothing to
+   transition from: the bands would jump instead of thickening. ---- */
+var ringtop=document.getElementById('ringtop'), rlab=document.getElementById('rlab');
+function paintRing(){
+ if(typeof RING==='undefined'||!ringtop)return;
+ if(!ringtop.firstChild)ringtop.innerHTML=RING.svg({loads:LOADS});
+ else RING.set(ringtop,LOADS);
+ if(!rlab)return;
+ var top=RING.heaviest(LOADS);
+ rlab.innerHTML = top
+  ? 'Carrying most: <b>'+esc(top.nm)+'</b>'
+  : 'The ring reads as you answer';}
+
+function render(){
+ if(MISSING.length||UNKNOWN.length||SEATMISMATCH){ el.innerHTML=viewRefusal(); fill.style.width='0'; return; }
+ document.body.setAttribute('data-state',STATE);
+ refreshLoads();
+ el.innerHTML = STATE==='open'?viewOpen() : STATE==='notice'?viewNotice() : STATE==='q'?viewQ()
+  : STATE==='story'?viewStory() : STATE==='door'?viewDoor() : viewRead();
+ fill.style.width = (STATE==='open'||STATE==='notice'||STATE==='q'?(answered()/QQ.length*100):100)+'%';
+ paintRing();
+ var b;
+ /* the signal comes first for somebody starting, once. Somebody carrying on
+    has answers already and goes back to the question they left. */
+ if((b=document.getElementById('go')))b.onclick=function(){
+  if(!answered()&&!SIG.done){ STATE='notice'; SIG_AT='where'; render(); scrollTo(0,0); return; }
+  AT=firstOpen();
+  if(AT>=ORDER.length){STATE='read';}else{STATE='q';}
+  render(); scrollTo(0,0);};
+ if((b=document.getElementById('restart')))b.onclick=function(){
+  A={}; save(); AT=0; READ_AT=1; READ_NEW=0; STATE=SIG.done?'q':'notice'; SIG_AT='where'; render(); scrollTo(0,0);};
+ if(STATE==='notice')bindNotice();
+ if(STATE==='story')bindMarks();
+ if((b=document.getElementById('back')))b.onclick=function(){
+  AT=Math.max(0,AT-1); render(); scrollTo(0,0);};
+ if((b=document.getElementById('stop')))b.onclick=function(){
+  STATE='read'; render(); scrollTo(0,0);};
+ if((b=document.getElementById('again')))b.onclick=function(){
+  AT=0; STATE='q'; render(); scrollTo(0,0);};
+ if((b=document.getElementById('tostory')))b.onclick=function(){
+  STATE='story'; render(); scrollTo(0,0);};
+ if((b=document.getElementById('toread')))b.onclick=function(){
+  STATE='read'; render(); scrollTo(0,0);};
+ if((b=document.getElementById('todoor')))b.onclick=function(){
+  STATE='door'; render(); scrollTo(0,0);};
+ /* THE READING'S OWN STEP. Keep reading opens the next layer and Show the
+    whole reading opens every layer left; either way the page lands on the
+    first layer it just opened, with focus on it, so a keyboard or a screen
+    reader arrives where the eye does. The layers above stay where they were. */
+ var unfold=function(to){
+  var from=READ_AT; READ_AT=to; READ_NEW=from+1; render();
+  var sec=document.getElementById('layer'+READ_NEW); READ_NEW=0;
+  if(sec){ if(sec.scrollIntoView)sec.scrollIntoView({block:'start'});
+   if(sec.focus)sec.focus({preventScroll:true}); }};
+ if((b=document.getElementById('more')))b.onclick=function(){ unfold(READ_AT+1); };
+ if((b=document.getElementById('readall')))b.onclick=function(){ unfold(Infinity); };
+ /* the box keeps its text without a redraw, so typing never loses the caret */
+ if((b=document.getElementById('storytx')))b.oninput=function(){ STORY=this.value; };
+ if((b=document.getElementById('readit')))b.onclick=function(){
+  if(!STORY.trim()){
+   document.getElementById('stnote').textContent='Nothing written yet, so there is nothing to read.';
+   return;}
+  /* a new story is a new set of addresses, so the marks go with the old one,
+     as OB.ans does in the app. The same text read again keeps them. */
+  if(STORY!==STORY_AT){ MARK={}; MORE={}; }
+  STORY_AT=STORY; render();
+  var lit=document.getElementById('lit'); if(lit&&lit.scrollIntoView)lit.scrollIntoView({block:'start'});};
+ if((b=document.getElementById('tolink')))linkArm(b);
+ if((b=document.getElementById('dl')))b.onclick=function(){
+  var note=document.getElementById('dlnote');
+  try{
+   var blob=new Blob([recordJSON()],{type:'application/json'});
+   var u=URL.createObjectURL(blob), a=document.createElement('a');
+   a.href=u; a.download='atuned-record.json'; document.body.appendChild(a); a.click();
+   a.remove(); setTimeout(function(){URL.revokeObjectURL(u);},1000);
+   /* IT SAID "load it from Settings". There was no Settings in the product and
+      the sheet that carries the loader was not reachable from anything at the
+      time, which was measured and reported rather than papered over here. A
+      control must never claim more than it has, so the note says what
+      happened and stops. Round LJ gave the door a real route to it, the
+      profile button then Privacy, named where "Open the app" sits.
+      AND IT SAID "Keep it: it is the handoff." Handoff is the team's word for
+      a seam and keep it is a flourish where save is the verb. His, 27
+      September, TASKS.md GQ: "instead of keep it, just you save". The note
+      says what was saved and what is in it. */
+   note.textContent='Saved as atuned-record.json. Your answers are in it.';
+  }catch(e){ note.textContent='This browser would not save the file. Use copy instead.'; }};
+ if((b=document.getElementById('copy')))b.onclick=function(){
+  var note=document.getElementById('dlnote'), txt=recordJSON();
+  var ok=function(){note.textContent='Copied. Your answers are on the clipboard.';};
+  var no=function(){note.textContent='This browser would not copy it. Use save instead.';};
+  try{ if(navigator.clipboard&&navigator.clipboard.writeText)
+        navigator.clipboard.writeText(txt).then(ok,no);
+       else no(); }catch(e){ no(); }};
+ /* ONE TAP IS THE ANSWER AND THE STEP FORWARD. There is no second button to
+    press, which is the ruling on the onboarding: one button to move forward.
+    Bound on a question only: the signal wears the same .opt and is not an
+    answer, and an unguarded bind would score a place as a question. */
+ if(STATE==='q')Array.prototype.forEach.call(el.querySelectorAll('.opt'),function(n){
+  n.onclick=function(){
+   A[ORDER[AT]]=+n.dataset.v; save();
+   if(AT+1>=ORDER.length){ STATE='read'; }else{ AT++; }
+   render(); scrollTo(0,0);};});}
+
+/* THE MARKS' CONTROLS. A redraw rewrites the whole page, so an answer keeps
+   the person where they were, the scroll and focus on the same button, the
+   way obRenderKeep does in the app: a keyboard user pressing Not me must not
+   be thrown back to the top. A second press on the pressed answer takes it
+   back to unanswered, as it does there. Opening a card moves focus to the
+   first address it revealed. */
+function bindMarks(){
+ var keep=function(find){
+  var y=window.pageYOffset||0; render(); scrollTo(0,y);
+  var f=find(); if(f&&f.focus)f.focus({preventScroll:true});};
+ Array.prototype.forEach.call(el.querySelectorAll('[data-ans]'),function(n){
+  n.onclick=function(){
+   var i=n.getAttribute('data-ai'), v=n.getAttribute('data-ans');
+   if(MARK[i]===v)delete MARK[i]; else MARK[i]=v;
+   keep(function(){return el.querySelector('[data-ans="'+v+'"][data-ai="'+i+'"]');});};});
+ Array.prototype.forEach.call(el.querySelectorAll('[data-more]'),function(n){
+  n.onclick=function(){
+   var fet=n.getAttribute('data-more'); MORE[fet]=1;
+   keep(function(){
+    var c=[].filter.call(el.querySelectorAll('[data-card]'),function(x){
+     return x.getAttribute('data-card')===fet;})[0];
+    var ys=c?c.querySelectorAll('[data-ans="yes"]'):[];
+    return ys[1]||ys[0]||null;});};});}
+
+/* THE SIGNAL'S CONTROLS. A tap on a place or a word is the answer and the step
+   forward, as on a question. Own words go through the button or Enter, and an
+   empty box says so rather than moving on with nothing. */
+function bindNotice(){
+ var go=function(at){ SIG_AT=at; render(); scrollTo(0,0); };
+ var toQuestions=function(){
+  SIG.done=true; AT=firstOpen(); STATE=AT>=ORDER.length?'read':'q'; render(); scrollTo(0,0); };
+ Array.prototype.forEach.call(el.querySelectorAll('[data-where]'),function(n){
+  n.onclick=function(){
+   var w=n.getAttribute('data-where');
+   if(!w){ SIG={where:'',whereOwn:false,what:'',whatOwn:false,none:true,done:false}; go('seen'); return; }
+   SIG.where=w; SIG.whereOwn=false; SIG.none=false; SIG.what=''; SIG.whatOwn=false; go('what');};});
+ Array.prototype.forEach.call(el.querySelectorAll('[data-what]'),function(n){
+  n.onclick=function(){
+   var i=n.getAttribute('data-what');
+   SIG.what=i===''?'':SIG_WHAT[+i][1]; SIG.whatOwn=false; go('seen');};});
+ var tx=document.getElementById('sigtx'), ob=document.getElementById('sigown');
+ if(tx&&ob){
+  ob.onclick=function(){
+   var v=tx.value.replace(/\s+/g,' ').trim().slice(0,SIG_MAX);
+   if(!v){ document.getElementById('signote').textContent='Nothing written yet. Pick one above or write a few words.'; return; }
+   if(SIG_AT==='where'){ SIG.where=v; SIG.whereOwn=true; SIG.none=false; SIG.what=''; SIG.whatOwn=false; go('what'); }
+   else { SIG.what=v; SIG.whatOwn=true; go('seen'); }};
+  tx.onkeydown=function(e){ if(e.key==='Enter'){ e.preventDefault(); ob.click(); } };}
+ var b;
+ if((b=document.getElementById('sigback')))b.onclick=function(){ go('where'); };
+ if((b=document.getElementById('sigredo')))b.onclick=function(){ go('where'); };
+ if((b=document.getElementById('sigstart')))b.onclick=toQuestions;
+ /* a skip declines the beat, so nothing half given is said back later */
+ if((b=document.getElementById('sigskip')))b.onclick=function(){
+  SIG={where:'',whereOwn:false,what:'',whatOwn:false,none:false,done:false}; toQuestions(); };}
+
+load(); render();
+</script></body></html>

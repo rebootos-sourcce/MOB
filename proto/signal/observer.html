@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The observer test</title>
+<!--
+  PROTOTYPE. The observer test, which does not exist anywhere in the product.
+
+  "The observer test is just navigating you through your senses as a stack,
+  backing you through feeling, smelling, listening, tasting, hearing, thought,
+  until you're able to realise that there's a process of you that is perceiving
+  the frequency, the sensation of thought, as a stack before all the other
+  senses."
+
+  The order of the stations is the book's own session order, Part Three of the
+  Observer Sequence, because his own text outranks a reconstruction from a
+  spoken description. The stations are the six senses he named.
+
+  The stack is drawn, not described. It starts with six sense bars and no band
+  above them. The band above appears at the arrival and not before, because the
+  point of the exercise is that a person finds that layer rather than reads
+  about it.
+
+  Six minutes at the paced settings below. That is the finding about where it
+  belongs, and it is argued in RESEARCH-signal.md.
+
+  One file, no dependencies, no network request of any kind.
+-->
+<style>
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --accent:#7EB8D4; --on-accent:#0B1418; --line:#2E323E;
+ --top:#C9A227;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+ background:var(--bg); color:var(--ink); min-height:100vh;
+ font:400 16px/1.55 "Inter","Helvetica Neue",Arial,system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased;
+ display:flex; align-items:center; justify-content:center; padding:24px 16px;
+}
+.shell{width:100%; max-width:600px}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:6px;
+ padding:28px 26px 22px; position:relative}
+.eye{display:block; font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+ color:var(--dim); margin:0 0 14px}
+h1{font-size:23px; line-height:1.28; font-weight:500; margin:0 0 14px; letter-spacing:-.01em}
+h2{font-size:19px; line-height:1.32; font-weight:500; margin:0 0 12px}
+p{margin:0 0 12px; color:var(--mid); max-width:62ch}
+.dim{color:var(--dim); font-size:14px}
+.acts{display:flex; gap:10px; flex-wrap:wrap; margin-top:20px; align-items:center}
+button{font:inherit; font-size:15px; min-height:44px; padding:0 18px; background:transparent;
+ color:var(--ink); border:1px solid var(--line); border-radius:4px; cursor:pointer}
+button:hover{border-color:var(--dim)}
+button.pri{background:var(--accent); color:var(--on-accent); border-color:var(--accent)}
+button.quiet{border-color:transparent; color:var(--dim); padding:0 10px}
+button.quiet:hover{color:var(--mid)}
+button.mark[aria-pressed=true]{border-color:var(--accent); color:var(--accent)}
+button:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.leave{position:absolute; top:12px; right:12px; min-height:34px; font-size:13px}
+
+/* ---- the stack ---- */
+.stack{display:flex; flex-direction:column; gap:5px; margin:20px 0 18px}
+.band{
+ display:flex; align-items:center; gap:12px;
+ border:1px solid var(--line); border-radius:3px;
+ background:var(--sunk); padding:9px 13px; min-height:42px;
+ transition:background .35s ease, border-color .35s ease, opacity .35s ease;
+ opacity:.45;
+}
+.band .nm{font-size:14px; letter-spacing:.02em; color:var(--mid)}
+.band .bar{flex:1; height:2px; background:var(--line); border-radius:2px; overflow:hidden}
+.band .bar i{display:block; height:100%; width:0; background:var(--accent); transition:width .25s linear}
+.band.done{opacity:.7}
+.band.done .bar i{width:100%; background:var(--line)}
+.band.now{opacity:1; border-color:var(--accent); background:var(--panel-2)}
+.band.now .nm{color:var(--ink)}
+.band.aware{
+ border-color:var(--top); background:linear-gradient(90deg,rgba(201,162,39,.14),transparent);
+ opacity:1; margin-bottom:9px;
+}
+.band.aware .nm{color:var(--top); letter-spacing:.1em; text-transform:uppercase; font-size:12px}
+.band.aware .bar{display:none}
+@media (prefers-reduced-motion:reduce){ .band,.band .bar i{transition:none} }
+
+.beat{
+ background:var(--panel-2); border:1px solid var(--line); border-left:2px solid var(--accent);
+ border-radius:3px; padding:16px 18px; margin:0 0 4px;
+}
+.beat p{margin:0 0 8px; color:var(--ink)}
+.beat p:last-child{margin:0}
+.beat.back{border-left-color:var(--top)}
+hr.sep{border:0; border-top:1px solid var(--line); margin:20px 0 0}
+table{width:100%; border-collapse:collapse; font-size:14px; margin:10px 0 0}
+td{padding:5px 0; color:var(--mid); vertical-align:top}
+td:first-child{color:var(--dim); width:46%; padding-right:12px}
+label.fld{display:block; margin:16px 0 0}
+label.fld b{display:block; font-size:13px; color:var(--mid); font-weight:400; margin-bottom:6px}
+input[type=text]{font:inherit; font-size:16px; width:100%; min-height:44px; padding:0 12px;
+ background:var(--sunk); color:var(--ink); border:1px solid var(--line); border-radius:4px}
+input[type=text]:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+.note{border:1px solid var(--line); border-radius:3px; padding:13px 15px; margin:14px 0 0;
+ background:var(--sunk)}
+.note p{margin:0; font-size:14px; color:var(--mid)}
+@media (max-width:420px){
+ .card{padding:22px 18px 18px} h1{font-size:20px} h2{font-size:17px}
+ .band{padding:8px 11px; min-height:40px} .band .nm{font-size:13px}
+}
+</style>
+</head><body>
+<div class="shell"><div class="card" id="card" role="dialog" aria-modal="true" aria-label="The observer test"></div></div>
+<div aria-live="polite" role="status" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)" id="live"></div>
+
+<script>
+/* ============================================================
+   THE STATIONS. His six named senses, in the book's session order:
+   inside the body, then smell, taste, sound, sight, thought.
+
+   Each station is two beats. The sense beat puts attention on the
+   channel. The step back beat asks what is receiving it. The second
+   beat is the whole exercise and the first beat only exists to give
+   the second one something to step back from.
+
+   Durations are in milliseconds and every one of them is argued.
+   The sense beat is 20s because attention needs about fifteen to
+   settle on a channel and the beat has to outlast that. The step
+   back beat is 14s because it is one question and a pause, and a
+   long pause after a question a person has already answered turns
+   into searching. Thought gets longer because the book's version of
+   it has three moves inside it.
+   ============================================================ */
+var ST=[
+ {k:'touch', nm:'Contact',
+  sense:['Attention to the inside of the body. The warmth of it, the weight of it, '
+        +'the places it is touching something.',
+        'Not a survey. One place is enough.'],
+  back:['Something is receiving that. Not the warmth. The thing the warmth is arriving at.',
+        'Find that, and stay there.'], a:20000, b:14000},
+ {k:'smell', nm:'Smell',
+  sense:['Attention to the air. Whatever is in it, or the fact that there is nothing in it.',
+        'Both of those are a reading.'],
+  back:['Something is aware of the smell. Not the smell itself, the thing noticing it.',
+        'Step to that.'], a:20000, b:14000},
+ {k:'taste', nm:'Taste',
+  sense:['Attention to the mouth. What is already there, before you move anything.'],
+  back:['Something is receiving that too, and it is the same something as a moment ago.'],
+  a:20000, b:14000},
+ {k:'sound', nm:'Sound',
+  sense:['Attention out to the sounds. The near ones, then whatever is further than the walls.',
+        'You are picking up information from places you are not at.'],
+  back:['Something is aware of all of it at once, without going anywhere.'],
+  a:20000, b:14000},
+ {k:'sight', nm:'Sight',
+  sense:['Eyes closed or open, whichever you started with. Attention to what is arriving '
+        +'at the eyes. Light, dark, movement, the field of it.'],
+  back:['Something is watching the arriving. It is not in the picture.'],
+  a:20000, b:14000},
+ {k:'thought', nm:'Thought',
+  sense:['Think the words: I am here. Think them again, louder. Again, as loud as a shout, '
+        +'without making a sound.',
+        'You did the changing. The thought did not change itself.'],
+  back:['A thought has a frequency and it lands in the body like the others did. So it is '
+       +'in the stack, and it is not at the top of it.',
+        'Something is aware of the thought, on top of the thought.'],
+  a:24000, b:18000}
+];
+var GROUND_MS=26000, QUESTION_MS=28000, CLOSE_MS=20000;
+
+var D={landed:{}, ownWord:'', arrivalMs:0, dwell:{}, leftAt:null, startedAt:0, finishedAt:0};
+var step=0, si=0, phase='a', timers=[], beatStart=0;
+
+function T(f,ms){ timers.push(setTimeout(f,ms)); }
+function clearT(){ timers.forEach(clearTimeout); timers=[]; }
+function say(s){ document.getElementById('live').textContent=s; }
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){
+ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+/* ---- the stack drawing. `aware` is false until the arrival. ---- */
+function stackHTML(cur,phaseNow,aware){
+ var h='<div class="stack">';
+ if(aware) h+='<div class="band aware"><span class="nm">Aware of all of it</span></div>';
+ for(var i=0;i<ST.length;i++){
+  var cls='band'+(i<cur?' done':'')+(i===cur?' now':'');
+  var fill=(i<cur)?100:(i===cur&&phaseNow==='b'?100:0);
+  h+='<div class="'+cls+'"><span class="nm">'+ST[i].nm+'</span>'
+   +'<span class="bar"><i id="bar'+i+'" style="width:'+fill+'%"></i></span></div>';
+ }
+ return h+'</div>';
+}
+function fillBar(i,ms){
+ var el=document.getElementById('bar'+i); if(!el) return;
+ var t0=performance.now();
+ (function tick(now){
+  var p=Math.min(1,(now-t0)/ms);
+  el.style.width=(p*100).toFixed(1)+'%';
+  if(p<1&&timers.length) requestAnimationFrame(tick);
+ })(t0);
+}
+
+function render(){
+ clearT();
+ var c=document.getElementById('card'), h='';
+ var leave='<button type="button" class="quiet leave" data-go="out">Leave</button>';
+
+ if(step===0){
+  h=leave
+   +'<span class="eye">The observer test</span>'
+   +'<h1>Down through the senses, one at a time.</h1>'
+   +'<p>Six minutes, and it runs on its own. Sitting still, somewhere you will '
+   +'not be interrupted. Eyes closed works better and is not required.</p>'
+   +'<p>Each sense gets two beats. The first puts your attention on the channel. '
+   +'The second asks what the channel is arriving at. The second beat is the '
+   +'exercise.</p>'
+   +stackHTML(-1,'a',false)
+   +'<div class="note"><p>If at any point this becomes uncomfortable, stop. Open '
+   +'your eyes, put your feet flat on the floor, and press Leave. Attention turned '
+   +'inward for several minutes can bring up more than expected, and stopping is '
+   +'the correct move when it does.</p></div>'
+   +'<div class="acts"><button type="button" class="pri" data-go="ground">Start</button></div>';
+ }
+
+ else if(step===1){
+  h=leave+'<span class="eye">Ground</span>'
+   +'<h2>Three slow breaths out, each longer than the last.</h2>'
+   +'<div class="beat"><p>Attention to the middle of the chest. Not on the breath, '
+   +'behind it.</p><p>Let the shoulders drop. Nothing else to do in this beat.</p></div>'
+   +stackHTML(-1,'a',false);
+  c.innerHTML=h; bind(); say('Grounding.');
+  T(function(){ step=2; si=0; phase='a'; render(); },GROUND_MS); return;
+ }
+
+ else if(step===2){
+  var s=ST[si], isA=(phase==='a'), ms=isA?s.a:s.b;
+  h=leave
+   +'<span class="eye">'+esc(s.nm)+(isA?'':', step back')+'</span>'
+   +stackHTML(si,phase,false)
+   +'<div class="beat'+(isA?'':' back')+'">'
+   +(isA?s.sense:s.back).map(function(p){return '<p>'+esc(p)+'</p>';}).join('')
+   +'</div>'
+   +(isA?'':'<div class="acts"><button type="button" class="mark" data-land="'+s.k+'" '
+     +'aria-pressed="'+(D.landed[s.k]?'true':'false')+'">'
+     +(D.landed[s.k]?'Marked: that landed':'That landed')+'</button></div>');
+  c.innerHTML=h; bind(); beatStart=Date.now();
+  say(s.nm+(isA?'':', step back'));
+  fillBar(si,ms);
+  T(function(){
+   D.dwell[s.k]=(D.dwell[s.k]||0)+(Date.now()-beatStart);
+   if(phase==='a'){ phase='b'; render(); }
+   else if(si<ST.length-1){ si++; phase='a'; render(); }
+   else { step=3; render(); }
+  },ms); return;
+ }
+
+ else if(step===3){
+  h=leave+'<span class="eye">The question</span>'
+   +stackHTML(ST.length,'b',false)
+   +'<div class="beat back"><p>Every one of those six arrived somewhere. Including '
+   +'the last one.</p><p>What is the arriving happening to?</p>'
+   +'<p>Do not answer in words. Look for the position it is being asked from.</p></div>';
+  c.innerHTML=h; bind(); say('The question.');
+  T(function(){ step=4; D.arrivalMs=Date.now(); render(); },QUESTION_MS); return;
+ }
+
+ else if(step===4){
+  h=leave+'<span class="eye">The arrival</span>'
+   +stackHTML(ST.length,'b',true)
+   +'<div class="beat back"><p>That is the layer. It was receiving all six and it '
+   +'was not one of them.</p>'
+   +'<p>Stay here as long as you want. Nothing is running now.</p></div>'
+   +'<p class="dim">The body ages and the mind ages. This does not, and it was here '
+   +'before anything was installed on top of it.</p>'
+   +'<div class="acts"><button type="button" class="pri" data-go="close">Come back down</button></div>';
+ }
+
+ else if(step===5){
+  h='<span class="eye">Close</span>'
+   +'<h2>Back to contact.</h2>'
+   +'<div class="beat"><p>Feet flat. Weight in the chair. The temperature of the room.</p>'
+   +'<p>Eyes open when they are ready. No hurry in this beat.</p></div>';
+  c.innerHTML=h; bind(); say('Closing.');
+  T(function(){ step=6; D.finishedAt=Date.now(); render(); },CLOSE_MS); return;
+ }
+
+ else {
+  var n=Object.keys(D.landed).filter(function(k){return D.landed[k];}).length;
+  var held=D.arrivalMs?Math.round((Date.now()-D.arrivalMs)/1000):0;
+  h='<span class="eye">What was captured</span>'
+   +'<h2>The stack has a layer above it, and you found it rather than read it.</h2>'
+   +'<p>This is where a release is done from. A story worked on from inside the '
+   +'stack puts the story back. Worked on from above it, it does not.</p>'
+   +'<label class="fld"><b>One word for that position, if one is there. Yours, not '
+   +'from a list.</b><input type="text" id="ow" maxlength="24" autocomplete="off" '
+   +'spellcheck="false" placeholder="one word, yours" value="'+esc(D.ownWord)+'"></label>'
+   +'<hr class="sep">'
+   +'<table><tbody>'
+   +'<tr><td>Stations where the step back was marked</td><td>'+n+' of the six</td></tr>'
+   +'<tr><td>Held at the arrival</td><td>'+held+' seconds</td></tr>'
+   +'<tr><td>Attention time, all beats</td><td>'
+   +Math.round(Object.keys(D.dwell).reduce(function(a,k){return a+D.dwell[k];},0)/1000)
+   +' seconds</td></tr>'
+   +'<tr><td>Left early</td><td>'+(D.leftAt===null?'no':'at '+D.leftAt)+'</td></tr>'
+   +'</tbody></table>'
+   +'<p class="dim" style="margin-top:14px">This is a record of what you marked and how '
+   +'long you stayed. It is not a measurement of your awareness and there is no '
+   +'reading to take from it. Nothing here is written to a profile in this prototype.</p>'
+   +'<div class="acts"><button type="button" class="pri" data-go="again">Run it again</button>'
+   +'<button type="button" data-go="dump">Show the captured record</button></div>'
+   +'<pre id="dump" style="display:none;white-space:pre-wrap;font-size:12px;color:var(--dim);'
+   +'background:var(--sunk);border:1px solid var(--line);border-radius:4px;padding:12px;'
+   +'margin-top:14px;overflow:auto"></pre>';
+ }
+ c.innerHTML=h; bind();
+}
+
+function bind(){
+ var c=document.getElementById('card');
+ c.querySelectorAll('[data-go]').forEach(function(b){
+  b.addEventListener('click',function(){
+   var g=b.getAttribute('data-go');
+   if(g==='ground'){ D.startedAt=Date.now(); step=1; render(); }
+   else if(g==='close'){ step=5; render(); }
+   else if(g==='again'){
+    clearT();
+    D={landed:{},ownWord:'',arrivalMs:0,dwell:{},leftAt:null,startedAt:0,finishedAt:0};
+    step=0; si=0; phase='a'; render();
+   }
+   else if(g==='dump'){
+    var ow=document.getElementById('ow'); if(ow) D.ownWord=ow.value.trim();
+    var d=document.getElementById('dump');
+    d.style.display='block'; d.textContent=JSON.stringify(D,null,1);
+   }
+   else if(g==='out'){
+    clearT();
+    D.leftAt=(step===2?ST[si].nm+(phase==='a'?'':', step back'):'step '+step);
+    document.getElementById('card').innerHTML=
+     '<span class="eye">Left</span><h2>Stopped where you stopped.</h2>'
+     +'<p>Feet flat, weight in the chair, eyes open. Nothing was kept from a run '
+     +'that did not finish.</p>'
+     +'<div class="acts"><button type="button" class="pri" data-go="again">Start again</button></div>';
+    bind();
+   }
+  });
+ });
+ var m=c.querySelector('[data-land]');
+ if(m) m.addEventListener('click',function(){
+  var k=m.getAttribute('data-land');
+  D.landed[k]=!D.landed[k];
+  m.setAttribute('aria-pressed',D.landed[k]?'true':'false');
+  m.textContent=D.landed[k]?'Marked: that landed':'That landed';
+ });
+}
+addEventListener('keydown',function(e){ if(e.key==='Escape'){ clearT(); step=0; si=0; phase='a'; render(); } });
+render();
+</script>
+</body></html>

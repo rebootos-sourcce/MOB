@@ -1,0 +1,436 @@
+# Atüned / SOURCE
+
+A somatic diagnostic instrument. One HTML file, no dependencies, no network,
+no backend, no accounts. A person records a story, the engine reads charge out
+of it, and the app renders where that charge sits in the body and what it
+costs.
+
+`source.html` is a BUILD PRODUCT. Never edit it. Edit `atuned_src/` and run
+the build. The same goes for `engine.js`.
+
+## The shape of the thing
+
+    atuned_src/MANIFEST        the load order, and it is load bearing
+    atuned_src/BUILD.sh        -> source.html
+    atuned_src/BUILD-engine.sh -> engine.js, the DOM free half
+    atuned_src/engine/         data, math, schema. no browser, ever.
+    atuned_src/ui/             renderers. the only half allowed a document.
+    atuned_src/shell/          head, body, foot
+
+Data before engine, engine before renderers, renderers before ui. A var used
+before its declaration throws at parse. MANIFEST decides the order and nothing
+else may.
+
+## Before you commit. Every time.
+
+    ./atuned_src/BUILD.sh              parse checks, div balance, no em dashes
+    ./atuned_src/BUILD-engine.sh       and asserts the engine is host free
+    node tests/engine.js               headless, and fast
+    node tests/functional.js           real Chromium
+    node tests/collide.js              no overlapping nameplates
+    node tests/design.js               the look, held to its floors
+    node tools/monitor.js             every surface renders, and it logs
+    node tests/funnel.js               the funnel, which nothing gated before
+    node tests/boot.js                 the guard, against a real throwing extension
+    python3 .claude/skills/atuned-voice/check.py --objections
+                                       his own objections, as rules
+
+THE COUNTS ARE GONE FROM THIS COLUMN, AND THAT IS THE FIX. They read 279, 262,
+40 and 22, then 843, 740, 100 and 94, and every set was wrong within days. On
+the last pass two separate seats stopped mid task to report that this paragraph
+disagreed with their own green run, which is a document costing time instead of
+saving it. When it was cut the runs read 1083, 741, 100 and 105, and that
+sentence is dated on purpose: it says what was true on a day, which is
+something a column of numbers above a command cannot say about itself.
+
+A number typed into a document that the product then grows past is the same
+defect as a number typed into a gate, and this repository has now been bitten
+by it nine times: three gates that counted by hand, a heading that said "the
+twelve" above a list of eleven, this paragraph three times, a backlog line that
+said eight definitions were reachable only by hover where the measured number
+was 195, and a test that said loadP(8) and meant the heaviest person in a
+roster that then grew. Read the count off the run.
+
+`monitor.js` is the render watch. It reads TABDEF and TABEXTRA at run time and
+walks every surface they name, at 1600 and at 390, on a blank profile and a
+loaded one, asserts the noscript notice, and
+appends one stamped block to `MONITOR.log` carrying the commit, the md5,
+whether the tree was dirty and the markup size of every surface. It exits non
+zero on an empty surface, so "the centre column is broken again" is answered
+by diffing two blocks of the log rather than by starting from a screenshot.
+
+Three lessons are built into the check and must not be optimised out. innerText
+does not see SVG, so the Body page reports zero characters of text while
+rendering forty seven elements correctly, and a surface therefore passes on
+markup size with text recorded beside it. A canvas has no innerHTML at all, so
+the Field is counted in lit pixels against its own floor: counting its markup
+reported zero for a surface that was drawing correctly. And a CSS animation
+runs without scripts, so the boot sheet fades on its own and uncovers a
+complete looking shell with nothing in it, which is exactly what a preview pane
+showed the owner and why the noscript assertion is in there.
+
+`boot.js` is the guard's own gate, added 27 September after the owner kept
+seeing "This build stopped while it was starting up." over an app that had
+finished booting. The cause was never our code: a real browser extension's
+content script throws on the page, the guard held that error until the
+document parsed, and by then the instrument had started in full. The gate
+reproduces it with a real unpacked extension that throws, on both the raw and
+the packed file, and asserts the guard stays quiet when boot finished, speaks
+first with our own error when it truly did not, and never lets an extension's
+line read as the cause. Checked against a known bad case first: it fails on
+the guard from before this fix and passes on the fix, twice each.
+
+And one lesson learned by this file failing. The watch took the first visible
+child of `.stage` as the surface host. The Field's two key strips are visible
+children of `.stage` on every tab, so from the moment they landed it measured
+the same strip nine times and printed nine identical numbers under the heading
+"all surfaces render". It looks the host up by its id now. The rule the project
+already carries covers it: anything needing a tab's entry looks it up by
+identity, never by where it happens to sit.
+
+Browser gates need `NODE_PATH` pointing at a playwright install and are run
+from the repo root. `design.js` used to fail one check in a sandbox with no
+font egress. It does not any more: the typeface is carried in the file and the
+product makes no outbound request at all, which gate 7 now watches. Every
+failure is yours.
+
+Changed a data table, split a file, or moved code between modules:
+
+    python3 tools/equiv.py old.html source.html
+
+Coverage, when you have added or changed engine logic. Most engine functions
+execute under `tests/engine.js` alone, and the share is read off the run
+rather than out of this paragraph, which said 96.1 while the measurement read
+95.3. That is the twelfth time this file has been bitten by its own number and
+it is the reason the gate counts were cut out of the column above. An
+aggregate hides a hole: the whole birth module sat at zero while the average
+read 92 percent, so check the unexecuted list and not only the number.
+
+    rm -rf /tmp/cov && NODE_V8_COVERAGE=/tmp/cov node tests/engine.js
+
+It compares every top level declaration by name and hashed body and exits non
+zero on any difference, so an intended change is a named diff you acknowledge
+rather than a silent one. It has already caught a boundary that landed inside
+an object literal, which concatenation would have hidden forever.
+
+Changed anything a person can see:
+
+    node tools/shots.js OUT 1600 1000 && node tools/shots.js OUT 390 844
+    python3 tools/terms.py
+
+Then LOOK at the images. Reading CSS is not reviewing a screen.
+
+## Rules learned the expensive way
+
+**Never renumber the TAB integers.** They are identity, persisted and
+compared. `TABDEF` is display order and may be reordered freely. Anything
+needing the entry for a tab looks it up by `.k`, never by position. Compass is
+integer 8, appended for that reason. Analytics (4) is a folded surface: it kept
+its integer and its renderer and lost its tab, so `TABREAL` maps it to the tab
+that now carries it and every caller of `setTab` goes through it.
+
+Games (7) was folded into Knowledge and has been unfolded again, on the ruling
+recorded at `engine/core.js`: they are independent games, somewhere a person
+goes for brain release, and a game folded into a reference page is neither. This paragraph
+said otherwise for longer than it was true, which is how a file that describes
+the code stops being usable as one.
+
+And then it said the bar is eight, in that same sentence, for longer than that
+was true either. TABDEF carries nine. A count typed into the paragraph warning
+against counts typed into paragraphs is the tenth time this repository has been
+bitten by exactly this, and it is the reason the gate counts were cut out of
+this file rather than corrected. The number is not written here any more:
+`TABDEF` is the bar, and its length is the answer.
+
+**A tab host that carries a folded surface cannot also be one.** `#sum` holds
+`#sumbody` and `#ana`. `#know` held `#knowbody` and `#games` until Games was
+unfolded, and the lesson is the reason it is still written down. The first cut
+put the child straight inside the parent and the parent's renderer, which
+writes the whole innerHTML of its host, deleted the child on the way past. The
+functional gate caught it.
+
+**The app opens on the Field, ruled 19 September, reversing Summary.**
+`core.js` has `tab:TAB.FIELD` and `ui.js` calls `setTab(TAB.FIELD)`. This
+paragraph said Summary for longer than it was true, which a first run audit
+caught. The rest of it still holds and is the reason it is still written down. Anything
+that renders there renders to somebody who has entered nothing. Both surfaces
+that print a reading now silence themselves on `r.unread` and show the four
+doors instead, and Summary empties itself on the way out so a hidden surface
+never sits in the document asserting a stale reading.
+
+**The engine may not touch the host.** No `document`, `window`, `navigator`,
+`localStorage`, `fetch`, `new Image`. `hostfree.py` enforces it after
+stripping comments and strings. A host binds storage with `bindStore(get,set)`.
+
+**Validate at the boundary, and never lie about a failure.** `validateProfile`
+is the boundary. A missing field is an older profile and is filled from the
+blank; a field of the wrong type or out of range is refused by name and never
+silently clamped, because a clamped 9999 reads as a 10 the person never
+entered. `pImport` is atomic: nothing is pushed and `CURP` does not move until
+the profile has validated, loaded and saved, and a failure restores what was
+there and says why through `importError()`. `loadProfile` itself still trusts
+its input, which is correct only because everything a person can paste now
+goes through the boundary first. This paragraph used to say there was no
+import control in the UI, and that stopped being true at `a54a16b` on 20
+September: `recordImportHtml` and `recordImportWire` in `ui/panels.js` put a
+paste box and a file picker in the profile sheet, and that is the boundary's
+first real caller. The record fetch at sign in will be the second. Checked 27
+September against HEAD `18238fe`. That stopped being the whole list on 3
+October, round QZ: the quiz can open the app with the record in the address
+after `#r=`, and `recordLinkBoot` in `ui/panels.js` unpacks it and hands the
+text to `pImport`, so the link is a caller of the same boundary and not a
+second importer. The format is `linkWrap`/`linkUnwrap` in `engine/schema.js`,
+a refusal before the boundary is named through `importRefuse`, and
+`tests/recordlink.js` holds the route.
+
+Every write that can fail reports through `status()`; a control must never
+claim success before it has it.
+
+**Reproduce a failure before fixing it, and re-measure after.** Twice this
+session a probe reported a defect that was the probe's own bug: one read the
+background wash canvas instead of the wheel and declared the depth ladder
+broken, another counted object keys at every nesting depth and declared three
+literals duplicated. Both were wrong. A tool that lies is worse than no tool,
+so check the tool against a known good case first.
+
+**One word per concept.** See `.claude/skills/atuned-ux/SKILL.md`, which loads
+before any user facing change and carries the measured UX floors.
+
+## Voice. These are rulings, not preferences.
+
+No em dashes, anywhere, including commit messages and docs. Never say 108; the
+count stated to users is 112. Sentence case, no all caps UI copy. Mechanical
+and precise, no soft wellness language, short sentences, physical metaphors
+only. Muted palette argued from autonomic response. Icons are ring, not fill.
+
+**Port, do not rebuild.** The arithmetic core keeps its bodies and signatures.
+
+## The loop, and the centre. Ruled 20 September.
+
+**The process is discover, play, flow, embody.** His words, corrected by him:
+the last one is embody and not body. It is the spine everything else serves and
+nothing ships that does not move a person through those four.
+
+**And it is a circle, never a list.** Ruled, with his reason: "we're showing a
+core game loop mechanic." A numbered column of four says the fourth one is the
+end, which is the opposite of a loop. Anywhere the four appear together they
+close.
+
+**The avatar is the centrepiece.** "What is Atuned? Your avatar." Not a page in
+the product, the centre of it. A person watches their avatar improve and the
+improvement is driven by releases and by going through the loop above. The
+layers are sewn: the avatar to the ritual, the ritual to the psyche, the psyche
+to the body locations, the body to the story. One complete system.
+
+**The content chain, also his words.** What a person enters in the journal is
+added to the imprints. Part of that becomes a story they have to release. Part
+becomes a practice inside the ritual. Sometimes it becomes an affirmation, also
+in the ritual. The gamification exists to keep that turning, which means the
+content has to be driven enough to make it sticky.
+
+## What this project is becoming
+
+**The fork is called. This becomes an accounts product.** Ruled by the owner.
+A web quiz as its own product flow, a record store, sign in, a practitioner
+who can be granted sight of a person's data, paid tiers, and push
+notifications for ritual accountability.
+
+That does not license building it all at once, and it does not retire the
+engineering posture. What holds:
+
+- `source.html` stays one file with no dependencies. The app gains network at
+  exactly one seam, fetching a record at sign in.
+- The engine stays host free. No `fetch` in `engine/`.
+- Storage is still the person's own browser for everything except the quiz
+  record, so save failures still must be reported rather than swallowed.
+- A practitioner seeing somatic and psychological self report is a
+  consequential grant. It needs explicit consent, a visible list of who has
+  sight, and revocation. Never a silent default.
+- Records off device mean a controller exists. Access, deletion and breach
+  obligations attach.
+
+What is now in scope that was not: auth, paywall and tiers, push
+notifications, a points and badge ladder, and a practitioner view. Each still
+needs designing before building.
+
+## Open, and whose call
+
+**Decided this round.** Strong default rather than a hard gate on the intake.
+A new tab exposes every question in the centre, taken out of the left rail. A
+third theme called Punch, where nothing is outlined and everything is solid.
+The fork goes to accounts. Situational questions modelled on the Ultima virtue
+dilemmas, pending the format ruling. He gave the shape at round JQ, 27
+September, for the laws of integrity questions: "You see a beggar on the
+street, do you walk over them or give them money? You see two kids fighting,
+do you choose sides or break it up? We kind of want to mix it up so that we can
+pin down where a person is." Recorded in `DECISIONS.md`; not built at
+`18238fe`.
+
+**Google Fonts is gone.** Settled. Inter as a variable font, latin subset,
+three hundred to seven hundred in one file, embedded as base64. Forty eight
+kilobytes raw and sixty four as base64, which is about a tenth of the build
+for the last network dependency it had. `tests/design.js` gate 7 watches the
+network and fails on any request that is not one of the two local rasters.
+
+Mine to build when asked:
+
+- **Undo is built, and this paragraph said otherwise for longer than it was
+  true,** which is the same failure mode the Games paragraph above records.
+  `engine/undo.js` is unlimited, `UNDO_MAX=0`, carries a redo stack, and
+  the Story commit calls `undoPush('committing the story')` before the charge
+  lands. (This line used to cite `ui/storyui.js:82`; the call is at line 200
+  at `18238fe`, which is why it is named by function now.) What remains is
+  not undo, it is that the arrows are the only route to it, and he has ruled
+  the arrows hidden, round JZ, 27 September: "let's hide undo redo it's not
+  really necessary." Routed to the shell seat, not built at `18238fe`. Hiding
+  them leaves undo with no route at all unless something else carries it, so
+  whoever builds the hide names what does.
+- **A seed decay policy.** A stated four letter type writes charge onto the
+  nine axes and `seedShare` reports how much of the field is still that seed.
+  Whether it should fade on its own, or only move when the person moves it,
+  is open.
+- **Cognitive load.** Too many simultaneous choices per screen against a
+  working memory of about four. Architectural, needs a decision first. The
+  figure that stood here, 57 to 71, was undated and has been contradicted
+  since: `BIBLE.md` 5.7 records 81 to 98 on the shell at `1c021f4`, and
+  `STABILITY.md` records the Field's first desktop screen going from 103 to 47
+  at `1341796`. Re-measure on the build in hand before quoting any figure.
+- **The impure core.** `compute()` and friends read shared state. A front door
+  contains it. Purifying is a signature rewrite and is deliberately deferred.
+
+His, not mine:
+
+- **Schema v2.** The gates bump is additive and v1 still loads, but it is the
+  cross compatibility contract with SOURCE.
+- `Root_08_Unnamed`, the compressed CQ mid range, domain weighting, the depth
+  button names, the Matrix wiring.
+- Whether the kink sits at the highest charge or the lowest. The code assumed
+  highest by a sort order. `parseStory().path` now reports both ends.
+
+## Handing the build over
+
+**Every build goes to the owner as a download, not a preview.** Ruled. An HTML
+file sent without saying how to present it renders inline in the view pane,
+which looks like the app and cannot be saved, so the one thing a build is for
+is the one thing it will not do. Send `source.html` as an attachment, named
+`atuned.html` so the download says what it is, and state the commit and the
+md5 so it is clear which build it is. The file is one file with no
+dependencies and no network, so it runs from wherever it lands.
+
+**And the file is packed, because it kept arriving cut.** The owner saw the
+boot guard's own message three times, which is the guard working and the
+delivery failing: the file is short, the end of it never arrived. There was
+nothing to trim. The build is 821 kilobytes of script and 199 of style with no
+blob to remove, so it is compressed instead and carries its own decompressor.
+`tools/pack.js` gzips the whole build, base64s it, and wraps it in a few
+hundred bytes that inflate it with DecompressionStream and write it into the
+document. 417 kilobytes against 1.03 megabytes when it was first measured,
+still one file, still nothing fetched: the bytes are in the page. Those sizes
+are the day the packer was written and are not today's. On 27 September the
+committed `source.html` at `18238fe` measured 2,450,666 bytes, more than
+twice that, so the font's "about a tenth of the build" above is also out of
+date. Read the size off the file.
+
+**The committed `atuned-packed.html` is not the committed build.** Measured
+27 September at `18238fe`: the packed file inflates to a build stamped
+`020bcf8 2026-09-27 05:47`, while `source.html` is stamped `1a7083c
+2026-09-27 22:29` (md5 prefix `420ac5ef`). So the raw address route named in
+`DECISIONS.md`, "Every file handed to him is packed", currently serves a build
+about seventeen hours old, without the Compass wire in, the spoken release,
+the Story wire in or the copy sweeps. Repack before the next time that route
+is offered, and state the stamp inside the packed file, not only the one on
+`source.html`.
+
+It also turns the silent failure loud. A truncated gzip stream cannot inflate,
+where a truncated script parses most of the way and leaves a shell. The
+watchdog sits ahead of the payload, because the first cut put the length check
+inside the loader and a cut file cuts the loader: measured at eighty percent it
+sat on "Opening the instrument" for ever, which is the same silent failure in a
+new coat. Measured at 100, 99, 95 and 50 percent on both widths: whole it
+opens, and cut it says it was cut.
+
+**Attach the file, never render it.** The rule above was followed and the build
+still would not come off the screen. An HTML file sent without saying how to
+present it defaults to render, and in the view pane a rendered file has no
+download in its dropdown and no right click save, so the owner sat looking at a
+working app he could not keep. Send it with the card set to attach. State the
+second route beside it: the branch is pushed, so every file also has a raw
+address he can save from a browser. A build he cannot save has not shipped.
+
+## Reporting to the owner. Ruled 21 September.
+
+**Four headings, in his order, and nothing else.** His words: "the output is
+so dense constantly that I cannot read this all the time, I have got decision
+fatigue. If the output is just like, this is what I did, this is how it
+impacts you, this is what I am doing next, and this is what I need from you,
+in bullets. That helps. With questions already listed."
+
+    What I did
+    How it impacts you
+    What I am doing next
+    What I need from you
+
+Bullets, not paragraphs. The questions are listed in full under the last
+heading, never referred to as a list he has to go and find. A finding that
+does not change what he decides goes in the backlog, not in the reply.
+
+**And a question about a drawing is asked with the drawing.** Ruled the same
+day, after a geometry question was put to him in prose and he said, correctly,
+that he could not tell what it meant. Both answers, side by side, same
+profile, both widths.
+
+**OVERRIDDEN, round PD, 1 October: the seats decide and ask at most one question, only when blocked** (his words: "super brain fatigue from all your questions"; see DECISIONS.md). What follows is the earlier ruling, kept for the record.
+
+**OVERRIDDEN, round PH, 1 October: no fixed headings, plain words as if he is ten.** His words: "you don't need to say the order as if I was 10, just give me the output as if I was 10." Read as: drop the four-heading template and the ceremony around it. Write the reply itself in plain, short words a ten year old could follow, in bullets, with any term of art explained in the same sentence. Say what was done, what it changes for him, what is next, and ask only if blocked (round PD still holds). Recorded in `DECISIONS.md`.
+
+**The team is always asking. Ruled 25 September.** He is the executive
+producer who holds the vision; the seats are his eyes and ears technically.
+So every round ends with questions under the fourth heading, framed for the
+person with the vision and not for an engineer, and a seat with nothing to
+ask has not looked hard enough. He may not have the answer; then the question
+is written down open, with the ways it could go and what each costs, and it
+is never answered for him by default. The full ruling is in `DECISIONS.md`.
+
+**No shorthand. Provide context, every time. Ruled 25 September**, after a
+report used "1e-9" with nothing beside it and he had no way to know it meant
+the two codebases agreed with each other, not a claim about his own body.
+His words: "We don't use shorthand, we provide context." A term of art, a
+metric, an internal label, a code identifier: it gets a plain explanation of
+what it means in the same sentence, not after he asks. And any question
+about something from earlier, his own or the team's, carries a quoted
+snippet of that earlier thing with it, the way a question about a drawing
+carries the drawing. He should never have to go find what a question is
+about.
+
+**Steps as if he is ten. Ruled 30 September**, after a set of Cloudflare
+steps skipped the one thing he actually needed, which website to open and
+where to log in, and he had to ask "change where?" His words: "always give
+me steps like I'm 10 with context for your output." Any walkthrough outside
+this codebase, a dashboard, a registrar, a setting on someone else's
+website, names the site to open, that logging in there is a separate
+account from this one if it might be, and where on the page the next
+button or field actually sits. Never assume he is already looking at the
+right screen.
+
+## Records
+
+`MILESTONES.md` is the sequenced plan, scrubbed by five disciplines, and it
+records what each milestone unlocks and what must be decided before it starts.
+`TASKS.md` is the single backlog. It merges the technical items with the
+review feedback so there are not two competing lists. Read it first.
+`STABILITY.md` is the measured snapshot behind the technical half of it.
+`FEEDBACK-alexander.md` is a review session with numbers attached, and it
+separates what can be built in one file from what needs a backend this project
+does not have.
+`REVIEW-source.md` is the original review and the rebuild. `REVIEW-pass2.md`
+is the second engineering pass. `tests/README.md` explains the gates.
+`BOOK-ERRATA.md` is every place the codex and the engine disagree, with the
+line number and the quotation, and which of the two should move.
+`DECISIONS.md` is what the owner has ruled, including the tier ladder, the
+snippet privacy boundary and the practitioner model, with the open items named
+as open. Read it before proposing anything it already settles.
+`FEEDBACK-log.md` is one entry per piece of feedback that moved the product.
+
+**DELIVER, DO NOT POINT. Ruled 2 October, round PL.** His words: "Don't make me have to hunt for shit." Anything he needs to read or look at is SENT to him in the reply (attached, rendered, as a file or picture), never described as "it is in folder X". Reviews end with their tally attached. Mockups are sent as a playable file plus pictures. The live plan is re-sent after any change he asks about. Documents also go to his Drive folder `Atuned / From Claude`. A reply that says "see REVIEW-arch/..." is a defect.
+
+**UNPACK EVERY SYMBOL. Ruled 2 October, round PO, for all information across the board.** His words: "you have to unpack blueprint. They don't know what that means. Earth, they don't know what that means. Architect, they don't know what that means... And this is going to be a general rule for all, all information across the board." A label, symbol, sign, number or term of art never stands alone. Wherever it is shown, its plain meaning is shown with it, in the same place and in one short sentence, and a phrase that is itself a claim ("freely given", "no transaction", "light that has a source") gets its meaning too. Nothing is left for the person to assume. This covers the blueprint born-on card (Earth, architect, life path nine), the teacher lines, signs and placements, axes, laws, and any new label. The check is a gate, not a habit: a surface that prints a term with no meaning beside it fails.

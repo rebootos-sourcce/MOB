@@ -1,0 +1,1475 @@
+{
+ "stamp": {
+  "src": "5f2180b2b64fb30b6d484f364535d29e",
+  "commit": "41b07e4",
+  "dirty": true,
+  "when": "2026-09-21T02:27:14.185Z",
+  "chromium": "1194",
+  "srcAfter": "5f2180b2b64fb30b6d484f364535d29e",
+  "moved": false
+ },
+ "widths": {
+  "390": {
+   "Energetics": {
+    "total": 17,
+    "by": {
+     "tabbar": 6,
+     "subbar": 0,
+     "stage": 4,
+     "leftrail": 0,
+     "rightrail": 0,
+     "top": 7,
+     "elsewhere": 0
+    },
+    "rail": {
+     "leftrail": {
+      "head": 0,
+      "body": 0,
+      "loose": 0,
+      "open": [],
+      "shut": []
+     },
+     "rightrail": {
+      "head": 0,
+      "body": 0,
+      "loose": 0,
+      "open": [],
+      "shut": []
+     }
+    },
+    "sections": {
+     "leftrail": [
+      {
+       "nm": "Awareness",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Child emotions",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "States",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Matrix",
+       "open": false,
+       "controls": 0
+      }
+     ],
+     "rightrail": [
+      {
+       "nm": "Reading",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Selection",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Flow",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Running",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Moral integrity",
+       "open": false,
+       "controls": 0
+      }
+     ]
+    }
+   },
+   "Ritual": {
+    "total": 16,
+    "by": {
+     "tabbar": 6,
+     "subbar": 0,
+     "stage": 3,
+     "leftrail": 0,
+     "rightrail": 0,
+     "top": 7,
+     "elsewhere": 0
+    },
+    "rail": {
+     "leftrail": {
+      "head": 0,
+      "body": 0,
+      "loose": 0,
+      "open": [],
+      "shut": []
+     },
+     "rightrail": {
+      "head": 0,
+      "body": 0,
+      "loose": 0,
+      "open": [],
+      "shut": []
+     }
+    },
+    "sections": {
+     "leftrail": [
+      {
+       "nm": "Awareness",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Child emotions",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "States",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Matrix",
+       "open": false,
+       "controls": 0
+      }
+     ],
+     "rightrail": [
+      {
+       "nm": "Reading",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Selection",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Flow",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Running",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Moral integrity",
+       "open": false,
+       "controls": 0
+      }
+     ]
+    }
+   },
+   "Story": {
+    "total": 23,
+    "by": {
+     "tabbar": 6,
+     "subbar": 0,
+     "stage": 10,
+     "leftrail": 0,
+     "rightrail": 0,
+     "top": 7,
+     "elsewhere": 0
+    },
+    "rail": {
+     "leftrail": {
+      "head": 0,
+      "body": 0,
+      "loose": 0,
+      "open": [],
+      "shut": []
+     },
+     "rightrail": {
+      "head": 0,
+      "body": 0,
+      "loose": 0,
+      "open": [],
+      "shut": []
+     }
+    },
+    "sections": {
+     "leftrail": [
+      {
+       "nm": "Awareness",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Child emotions",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "States",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Matrix",
+       "open": false,
+       "controls": 0
+      }
+     ],
+     "rightrail": [
+      {
+       "nm": "Reading",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Selection",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Flow",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Running",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Moral integrity",
+       "open": false,
+       "controls": 0
+      }
+     ]
+    }
+   },
+   "Field": {
+    "total": 19,
+    "by": {
+     "tabbar": 6,
+     "subbar": 2,
+     "stage": 4,
+     "leftrail": 0,
+     "rightrail": 0,
+     "top": 7,
+     "elsewhere": 0
+    },
+    "rail": {
+     "leftrail": {
+      "head": 0,
+      "body": 0,
+      "loose": 0,
+      "open": [],
+      "shut": []
+     },
+     "rightrail": {
+      "head": 0,
+      "body": 0,
+      "loose": 0,
+      "open": [],
+      "shut": []
+     }
+    },
+    "sections": {
+     "leftrail": [
+      {
+       "nm": "Awareness",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Child emotions",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "States",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Matrix",
+       "open": false,
+       "controls": 0
+      }
+     ],
+     "rightrail": [
+      {
+       "nm": "Reading",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Selection",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Flow",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Running",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Moral integrity",
+       "open": false,
+       "controls": 0
+      }
+     ]
+    }
+   },
+   "Body": {
+    "total": 20,
+    "by": {
+     "tabbar": 6,
+     "subbar": 7,
+     "stage": 0,
+     "leftrail": 0,
+     "rightrail": 0,
+     "top": 7,
+     "elsewhere": 0
+    },
+    "rail": {
+     "leftrail": {
+      "head": 0,
+      "body": 0,
+      "loose": 0,
+      "open": [],
+      "shut": []
+     },
+     "rightrail": {
+      "head": 0,
+      "body": 0,
+      "loose": 0,
+      "open": [],
+      "shut": []
+     }
+    },
+    "sections": {
+     "leftrail": [
+      {
+       "nm": "Awareness",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Child emotions",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "States",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Matrix",
+       "open": false,
+       "controls": 0
+      }
+     ],
+     "rightrail": [
+      {
+       "nm": "Reading",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Selection",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Flow",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Running",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Moral integrity",
+       "open": false,
+       "controls": 0
+      }
+     ]
+    }
+   },
+   "Compass": {
+    "total": 24,
+    "by": {
+     "tabbar": 6,
+     "subbar": 0,
+     "stage": 11,
+     "leftrail": 0,
+     "rightrail": 0,
+     "top": 7,
+     "elsewhere": 0
+    },
+    "rail": {
+     "leftrail": {
+      "head": 0,
+      "body": 0,
+      "loose": 0,
+      "open": [],
+      "shut": []
+     },
+     "rightrail": {
+      "head": 0,
+      "body": 0,
+      "loose": 0,
+      "open": [],
+      "shut": []
+     }
+    },
+    "sections": {
+     "leftrail": [
+      {
+       "nm": "Awareness",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Child emotions",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "States",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Matrix",
+       "open": false,
+       "controls": 0
+      }
+     ],
+     "rightrail": [
+      {
+       "nm": "Reading",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Selection",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Flow",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Running",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Moral integrity",
+       "open": false,
+       "controls": 0
+      }
+     ]
+    }
+   },
+   "Knowledge": {
+    "total": 26,
+    "by": {
+     "tabbar": 6,
+     "subbar": 0,
+     "stage": 13,
+     "leftrail": 0,
+     "rightrail": 0,
+     "top": 7,
+     "elsewhere": 0
+    },
+    "rail": {
+     "leftrail": {
+      "head": 0,
+      "body": 0,
+      "loose": 0,
+      "open": [],
+      "shut": []
+     },
+     "rightrail": {
+      "head": 0,
+      "body": 0,
+      "loose": 0,
+      "open": [],
+      "shut": []
+     }
+    },
+    "sections": {
+     "leftrail": [
+      {
+       "nm": "Awareness",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Child emotions",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "States",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Matrix",
+       "open": false,
+       "controls": 0
+      }
+     ],
+     "rightrail": [
+      {
+       "nm": "Reading",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Selection",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Flow",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Running",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Moral integrity",
+       "open": false,
+       "controls": 0
+      }
+     ]
+    }
+   },
+   "Games": {
+    "total": 16,
+    "by": {
+     "tabbar": 6,
+     "subbar": 0,
+     "stage": 3,
+     "leftrail": 0,
+     "rightrail": 0,
+     "top": 7,
+     "elsewhere": 0
+    },
+    "rail": {
+     "leftrail": {
+      "head": 0,
+      "body": 0,
+      "loose": 0,
+      "open": [],
+      "shut": []
+     },
+     "rightrail": {
+      "head": 0,
+      "body": 0,
+      "loose": 0,
+      "open": [],
+      "shut": []
+     }
+    },
+    "sections": {
+     "leftrail": [
+      {
+       "nm": "Awareness",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Child emotions",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "States",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Matrix",
+       "open": false,
+       "controls": 0
+      }
+     ],
+     "rightrail": [
+      {
+       "nm": "Reading",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Selection",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Flow",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Running",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Moral integrity",
+       "open": false,
+       "controls": 0
+      }
+     ]
+    }
+   },
+   "Summary": {
+    "total": 15,
+    "by": {
+     "tabbar": 6,
+     "subbar": 0,
+     "stage": 2,
+     "leftrail": 0,
+     "rightrail": 0,
+     "top": 7,
+     "elsewhere": 0
+    },
+    "rail": {
+     "leftrail": {
+      "head": 0,
+      "body": 0,
+      "loose": 0,
+      "open": [],
+      "shut": []
+     },
+     "rightrail": {
+      "head": 0,
+      "body": 0,
+      "loose": 0,
+      "open": [],
+      "shut": []
+     }
+    },
+    "sections": {
+     "leftrail": [
+      {
+       "nm": "Awareness",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Child emotions",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "States",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Matrix",
+       "open": false,
+       "controls": 0
+      }
+     ],
+     "rightrail": [
+      {
+       "nm": "Reading",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Selection",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Flow",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Running",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Moral integrity",
+       "open": false,
+       "controls": 0
+      }
+     ]
+    }
+   }
+  },
+  "1600": {
+   "Energetics": {
+    "total": 85,
+    "by": {
+     "tabbar": 9,
+     "subbar": 0,
+     "stage": 14,
+     "leftrail": 47,
+     "rightrail": 8,
+     "top": 7,
+     "elsewhere": 0
+    },
+    "rail": {
+     "leftrail": {
+      "head": 1,
+      "body": 46,
+      "loose": 0,
+      "open": [
+       "Awareness"
+      ],
+      "shut": []
+     },
+     "rightrail": {
+      "head": 1,
+      "body": 7,
+      "loose": 0,
+      "open": [
+       "Reading"
+      ],
+      "shut": []
+     }
+    },
+    "sections": {
+     "leftrail": [
+      {
+       "nm": "Awareness",
+       "open": true,
+       "controls": 46
+      },
+      {
+       "nm": "Child emotions",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "States",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Matrix",
+       "open": false,
+       "controls": 0
+      }
+     ],
+     "rightrail": [
+      {
+       "nm": "Reading",
+       "open": true,
+       "controls": 7
+      },
+      {
+       "nm": "Selection",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Flow",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Running",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Moral integrity",
+       "open": false,
+       "controls": 0
+      }
+     ]
+    }
+   },
+   "Ritual": {
+    "total": 78,
+    "by": {
+     "tabbar": 9,
+     "subbar": 0,
+     "stage": 7,
+     "leftrail": 47,
+     "rightrail": 8,
+     "top": 7,
+     "elsewhere": 0
+    },
+    "rail": {
+     "leftrail": {
+      "head": 1,
+      "body": 46,
+      "loose": 0,
+      "open": [
+       "Awareness"
+      ],
+      "shut": []
+     },
+     "rightrail": {
+      "head": 1,
+      "body": 7,
+      "loose": 0,
+      "open": [
+       "Reading"
+      ],
+      "shut": []
+     }
+    },
+    "sections": {
+     "leftrail": [
+      {
+       "nm": "Awareness",
+       "open": true,
+       "controls": 46
+      },
+      {
+       "nm": "Child emotions",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "States",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Matrix",
+       "open": false,
+       "controls": 0
+      }
+     ],
+     "rightrail": [
+      {
+       "nm": "Reading",
+       "open": true,
+       "controls": 7
+      },
+      {
+       "nm": "Selection",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Flow",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Running",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Moral integrity",
+       "open": false,
+       "controls": 0
+      }
+     ]
+    }
+   },
+   "Story": {
+    "total": 91,
+    "by": {
+     "tabbar": 9,
+     "subbar": 0,
+     "stage": 20,
+     "leftrail": 47,
+     "rightrail": 8,
+     "top": 7,
+     "elsewhere": 0
+    },
+    "rail": {
+     "leftrail": {
+      "head": 1,
+      "body": 46,
+      "loose": 0,
+      "open": [
+       "Awareness"
+      ],
+      "shut": []
+     },
+     "rightrail": {
+      "head": 1,
+      "body": 7,
+      "loose": 0,
+      "open": [
+       "Reading"
+      ],
+      "shut": []
+     }
+    },
+    "sections": {
+     "leftrail": [
+      {
+       "nm": "Awareness",
+       "open": true,
+       "controls": 46
+      },
+      {
+       "nm": "Child emotions",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "States",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Matrix",
+       "open": false,
+       "controls": 0
+      }
+     ],
+     "rightrail": [
+      {
+       "nm": "Reading",
+       "open": true,
+       "controls": 7
+      },
+      {
+       "nm": "Selection",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Flow",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Running",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Moral integrity",
+       "open": false,
+       "controls": 0
+      }
+     ]
+    }
+   },
+   "Field": {
+    "total": 71,
+    "by": {
+     "tabbar": 9,
+     "subbar": 2,
+     "stage": 9,
+     "leftrail": 37,
+     "rightrail": 7,
+     "top": 7,
+     "elsewhere": 0
+    },
+    "rail": {
+     "leftrail": {
+      "head": 1,
+      "body": 36,
+      "loose": 0,
+      "open": [
+       "Awareness"
+      ],
+      "shut": []
+     },
+     "rightrail": {
+      "head": 1,
+      "body": 5,
+      "loose": 1,
+      "open": [
+       "Reading"
+      ],
+      "shut": []
+     }
+    },
+    "sections": {
+     "leftrail": [
+      {
+       "nm": "Awareness",
+       "open": true,
+       "controls": 36
+      },
+      {
+       "nm": "Child emotions",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "States",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Matrix",
+       "open": false,
+       "controls": 0
+      }
+     ],
+     "rightrail": [
+      {
+       "nm": "Reading",
+       "open": true,
+       "controls": 5
+      },
+      {
+       "nm": "Selection",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Flow",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Running",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Moral integrity",
+       "open": false,
+       "controls": 0
+      }
+     ]
+    }
+   },
+   "Body": {
+    "total": 66,
+    "by": {
+     "tabbar": 9,
+     "subbar": 7,
+     "stage": 0,
+     "leftrail": 37,
+     "rightrail": 6,
+     "top": 7,
+     "elsewhere": 0
+    },
+    "rail": {
+     "leftrail": {
+      "head": 1,
+      "body": 36,
+      "loose": 0,
+      "open": [
+       "Awareness"
+      ],
+      "shut": []
+     },
+     "rightrail": {
+      "head": 1,
+      "body": 5,
+      "loose": 0,
+      "open": [
+       "Reading"
+      ],
+      "shut": []
+     }
+    },
+    "sections": {
+     "leftrail": [
+      {
+       "nm": "Awareness",
+       "open": true,
+       "controls": 36
+      },
+      {
+       "nm": "Child emotions",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "States",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Matrix",
+       "open": false,
+       "controls": 0
+      }
+     ],
+     "rightrail": [
+      {
+       "nm": "Reading",
+       "open": true,
+       "controls": 5
+      },
+      {
+       "nm": "Selection",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Flow",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Running",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Moral integrity",
+       "open": false,
+       "controls": 0
+      }
+     ]
+    }
+   },
+   "Compass": {
+    "total": 82,
+    "by": {
+     "tabbar": 9,
+     "subbar": 0,
+     "stage": 11,
+     "leftrail": 47,
+     "rightrail": 8,
+     "top": 7,
+     "elsewhere": 0
+    },
+    "rail": {
+     "leftrail": {
+      "head": 1,
+      "body": 46,
+      "loose": 0,
+      "open": [
+       "Awareness"
+      ],
+      "shut": []
+     },
+     "rightrail": {
+      "head": 1,
+      "body": 7,
+      "loose": 0,
+      "open": [
+       "Reading"
+      ],
+      "shut": []
+     }
+    },
+    "sections": {
+     "leftrail": [
+      {
+       "nm": "Awareness",
+       "open": true,
+       "controls": 46
+      },
+      {
+       "nm": "Child emotions",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "States",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Matrix",
+       "open": false,
+       "controls": 0
+      }
+     ],
+     "rightrail": [
+      {
+       "nm": "Reading",
+       "open": true,
+       "controls": 7
+      },
+      {
+       "nm": "Selection",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Flow",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Running",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Moral integrity",
+       "open": false,
+       "controls": 0
+      }
+     ]
+    }
+   },
+   "Knowledge": {
+    "total": 127,
+    "by": {
+     "tabbar": 9,
+     "subbar": 0,
+     "stage": 56,
+     "leftrail": 47,
+     "rightrail": 8,
+     "top": 7,
+     "elsewhere": 0
+    },
+    "rail": {
+     "leftrail": {
+      "head": 1,
+      "body": 46,
+      "loose": 0,
+      "open": [
+       "Awareness"
+      ],
+      "shut": []
+     },
+     "rightrail": {
+      "head": 1,
+      "body": 7,
+      "loose": 0,
+      "open": [
+       "Reading"
+      ],
+      "shut": []
+     }
+    },
+    "sections": {
+     "leftrail": [
+      {
+       "nm": "Awareness",
+       "open": true,
+       "controls": 46
+      },
+      {
+       "nm": "Child emotions",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "States",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Matrix",
+       "open": false,
+       "controls": 0
+      }
+     ],
+     "rightrail": [
+      {
+       "nm": "Reading",
+       "open": true,
+       "controls": 7
+      },
+      {
+       "nm": "Selection",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Flow",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Running",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Moral integrity",
+       "open": false,
+       "controls": 0
+      }
+     ]
+    }
+   },
+   "Games": {
+    "total": 74,
+    "by": {
+     "tabbar": 9,
+     "subbar": 0,
+     "stage": 3,
+     "leftrail": 47,
+     "rightrail": 8,
+     "top": 7,
+     "elsewhere": 0
+    },
+    "rail": {
+     "leftrail": {
+      "head": 1,
+      "body": 46,
+      "loose": 0,
+      "open": [
+       "Awareness"
+      ],
+      "shut": []
+     },
+     "rightrail": {
+      "head": 1,
+      "body": 7,
+      "loose": 0,
+      "open": [
+       "Reading"
+      ],
+      "shut": []
+     }
+    },
+    "sections": {
+     "leftrail": [
+      {
+       "nm": "Awareness",
+       "open": true,
+       "controls": 46
+      },
+      {
+       "nm": "Child emotions",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "States",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Matrix",
+       "open": false,
+       "controls": 0
+      }
+     ],
+     "rightrail": [
+      {
+       "nm": "Reading",
+       "open": true,
+       "controls": 7
+      },
+      {
+       "nm": "Selection",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Flow",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Running",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Moral integrity",
+       "open": false,
+       "controls": 0
+      }
+     ]
+    }
+   },
+   "Summary": {
+    "total": 77,
+    "by": {
+     "tabbar": 9,
+     "subbar": 0,
+     "stage": 4,
+     "leftrail": 47,
+     "rightrail": 10,
+     "top": 7,
+     "elsewhere": 0
+    },
+    "rail": {
+     "leftrail": {
+      "head": 1,
+      "body": 46,
+      "loose": 0,
+      "open": [
+       "Awareness"
+      ],
+      "shut": []
+     },
+     "rightrail": {
+      "head": 1,
+      "body": 9,
+      "loose": 0,
+      "open": [
+       "Reading"
+      ],
+      "shut": []
+     }
+    },
+    "sections": {
+     "leftrail": [
+      {
+       "nm": "Awareness",
+       "open": true,
+       "controls": 46
+      },
+      {
+       "nm": "Child emotions",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "States",
+       "open": false,
+       "controls": 0
+      },
+      {
+       "nm": "Matrix",
+       "open": false,
+       "controls": 0
+      }
+     ],
+     "rightrail": [
+      {
+       "nm": "Reading",
+       "open": true,
+       "controls": 9
+      },
+      {
+       "nm": "Selection",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Flow",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Running",
+       "open": true,
+       "controls": 0
+      },
+      {
+       "nm": "Moral integrity",
+       "open": false,
+       "controls": 0
+      }
+     ]
+    }
+   }
+  }
+ }
+}

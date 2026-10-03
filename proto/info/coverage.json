@@ -1,0 +1,2728 @@
+{
+ "bySrc": {
+  "address": {
+   "n": 108,
+   "gloss": 2,
+   "row": 108,
+   "table": 28,
+   "nowhere": 0,
+   "none": []
+  },
+  "opposite": {
+   "n": 9,
+   "gloss": 1,
+   "row": 2,
+   "table": 1,
+   "nowhere": 7,
+   "none": [
+    "Trust",
+    "Worth",
+    "Acceptance",
+    "Vitality",
+    "Groundedness",
+    "Joy",
+    "Readiness"
+   ]
+  },
+  "fetter": {
+   "n": 6,
+   "gloss": 0,
+   "row": 6,
+   "table": 0,
+   "nowhere": 0,
+   "none": []
+  },
+  "saboteur": {
+   "n": 39,
+   "gloss": 0,
+   "row": 39,
+   "table": 11,
+   "nowhere": 0,
+   "none": []
+  },
+  "law": {
+   "n": 19,
+   "gloss": 1,
+   "row": 19,
+   "table": 5,
+   "nowhere": 0,
+   "none": []
+  },
+  "mask": {
+   "n": 6,
+   "gloss": 0,
+   "row": 6,
+   "table": 6,
+   "nowhere": 0,
+   "none": []
+  },
+  "domain": {
+   "n": 16,
+   "gloss": 0,
+   "row": 16,
+   "table": 16,
+   "nowhere": 0,
+   "none": []
+  },
+  "archetype": {
+   "n": 12,
+   "gloss": 0,
+   "row": 12,
+   "table": 3,
+   "nowhere": 0,
+   "none": []
+  },
+  "universal law": {
+   "n": 50,
+   "gloss": 6,
+   "row": 50,
+   "table": 7,
+   "nowhere": 0,
+   "none": []
+  },
+  "glossary": {
+   "n": 46,
+   "gloss": 46,
+   "row": 46,
+   "table": 46,
+   "nowhere": 0,
+   "none": []
+  },
+  "seat": {
+   "n": 7,
+   "gloss": 0,
+   "row": 0,
+   "table": 7,
+   "nowhere": 0,
+   "none": []
+  },
+  "hyper-complex": {
+   "n": 4,
+   "gloss": 0,
+   "row": 0,
+   "table": 4,
+   "nowhere": 0,
+   "none": []
+  }
+ },
+ "terms": {
+  "fear": {
+   "t": "Fear",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "shame": {
+   "t": "Shame",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "guilt": {
+   "t": "Guilt",
+   "src": "address",
+   "where": [
+    "SOM",
+    "W",
+    "BY",
+    "NODES"
+   ],
+   "best": 27,
+   "bestIn": "SOM"
+  },
+  "control": {
+   "t": "Control",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "insecurity": {
+   "t": "Insecurity",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "victimhood": {
+   "t": "Victimhood",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "scarcity": {
+   "t": "Scarcity",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "root_08_unnamed": {
+   "t": "Root_08_Unnamed",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "possession": {
+   "t": "Possession",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "lethargy": {
+   "t": "Lethargy",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "resistance": {
+   "t": "Resistance",
+   "src": "address",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 202,
+   "bestIn": "GLOSS"
+  },
+  "compulsion": {
+   "t": "Compulsion",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "disconnection": {
+   "t": "Disconnection",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "escapism": {
+   "t": "Escapism",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "panic": {
+   "t": "Panic",
+   "src": "address",
+   "where": [
+    "SOM",
+    "W",
+    "BY",
+    "LEFT",
+    "NODES"
+   ],
+   "best": 24,
+   "bestIn": "SOM"
+  },
+  "collapse": {
+   "t": "Collapse",
+   "src": "address",
+   "where": [
+    "HCX_LIB"
+   ],
+   "best": 47,
+   "bestIn": "HCX_LIB"
+  },
+  "addiction": {
+   "t": "Addiction",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "lust": {
+   "t": "Lust",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "envy": {
+   "t": "Envy",
+   "src": "address",
+   "where": [
+    "SOM",
+    "W",
+    "BY",
+    "NODES"
+   ],
+   "best": 23,
+   "bestIn": "SOM"
+  },
+  "jealousy": {
+   "t": "Jealousy",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "co-dependency": {
+   "t": "Co-Dependency",
+   "src": "address",
+   "where": [
+    "SOM",
+    "W",
+    "BY",
+    "LEFT",
+    "NODES"
+   ],
+   "best": 24,
+   "bestIn": "SOM"
+  },
+  "shame of desire": {
+   "t": "Shame Of Desire",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "hypersexuality": {
+   "t": "Hypersexuality",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "avoidance of pleasure": {
+   "t": "Avoidance Of Pleasure",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "manipulation through emotion": {
+   "t": "Manipulation Through Emotion",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "oversensitivity": {
+   "t": "Oversensitivity",
+   "src": "address",
+   "where": [
+    "SOM",
+    "W",
+    "BY",
+    "LEFT",
+    "NODES"
+   ],
+   "best": 27,
+   "bestIn": "SOM"
+  },
+  "fantasy": {
+   "t": "Fantasy",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "infatuation": {
+   "t": "Infatuation",
+   "src": "address",
+   "where": [
+    "SOM",
+    "W",
+    "BY",
+    "NODES"
+   ],
+   "best": 21,
+   "bestIn": "SOM"
+  },
+  "obsession": {
+   "t": "Obsession",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "guilt of pleasure": {
+   "t": "Guilt Of Pleasure",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "need for approval": {
+   "t": "Need For Approval",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "excess emotion": {
+   "t": "Excess Emotion",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "pride": {
+   "t": "Pride",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "arrogance": {
+   "t": "Arrogance",
+   "src": "address",
+   "where": [
+    "SOM",
+    "W",
+    "BY",
+    "NODES"
+   ],
+   "best": 24,
+   "bestIn": "SOM"
+  },
+  "competition": {
+   "t": "Competition",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "anger": {
+   "t": "Anger",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "judgment": {
+   "t": "Judgment",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "entitlement": {
+   "t": "Entitlement",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "rebellion": {
+   "t": "Rebellion",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "perfectionism": {
+   "t": "Perfectionism",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "force": {
+   "t": "Force",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "rigidity": {
+   "t": "Rigidity",
+   "src": "address",
+   "where": [
+    "HCX_LIB"
+   ],
+   "best": 49,
+   "bestIn": "HCX_LIB"
+  },
+  "resentment (solar)": {
+   "t": "Resentment (Solar)",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "unworthiness": {
+   "t": "Unworthiness",
+   "src": "address",
+   "where": [
+    "SOM",
+    "W",
+    "BY",
+    "LEFT",
+    "NODES"
+   ],
+   "best": 26,
+   "bestIn": "SOM"
+  },
+  "anxiety": {
+   "t": "Anxiety",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "self-judgment (solar)": {
+   "t": "Self-Judgment (Solar)",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "need to win": {
+   "t": "Need To Win",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "superiority": {
+   "t": "Superiority",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "hatred": {
+   "t": "Hatred",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "resentment (heart)": {
+   "t": "Resentment (Heart)",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "self-judgment (heart)": {
+   "t": "Self-Judgment (Heart)",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "betrayal": {
+   "t": "Betrayal",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "separation": {
+   "t": "Separation",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "martyrdom": {
+   "t": "Martyrdom",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "longing": {
+   "t": "Longing",
+   "src": "address",
+   "where": [
+    "SOM",
+    "W",
+    "BY",
+    "NODES"
+   ],
+   "best": 20,
+   "bestIn": "SOM"
+  },
+  "closed heart": {
+   "t": "Closed Heart",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "manipulative kindness": {
+   "t": "Manipulative Kindness",
+   "src": "address",
+   "where": [
+    "SOM",
+    "W",
+    "BY",
+    "NODES"
+   ],
+   "best": 20,
+   "bestIn": "SOM"
+  },
+  "expectation": {
+   "t": "Expectation",
+   "src": "address",
+   "where": [
+    "SOM",
+    "W",
+    "BY",
+    "LEFT",
+    "NODES"
+   ],
+   "best": 22,
+   "bestIn": "SOM"
+  },
+  "blame": {
+   "t": "Blame",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "false love": {
+   "t": "False Love",
+   "src": "address",
+   "where": [
+    "SOM",
+    "W",
+    "BY",
+    "NODES"
+   ],
+   "best": 23,
+   "bestIn": "SOM"
+  },
+  "rejection": {
+   "t": "Rejection",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "avoidance of grief": {
+   "t": "Avoidance Of Grief",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "need to be needed": {
+   "t": "Need To Be Needed",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "deceit": {
+   "t": "Deceit",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "self-silencing": {
+   "t": "Self-Silencing",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "people pleasing": {
+   "t": "People Pleasing",
+   "src": "address",
+   "where": [
+    "SOM",
+    "W",
+    "BY",
+    "NODES"
+   ],
+   "best": 24,
+   "bestIn": "SOM"
+  },
+  "lying": {
+   "t": "Lying",
+   "src": "address",
+   "where": [
+    "SOM",
+    "W",
+    "BY",
+    "NODES"
+   ],
+   "best": 25,
+   "bestIn": "SOM"
+  },
+  "interrupting": {
+   "t": "Interrupting",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "comparison": {
+   "t": "Comparison",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "excuse": {
+   "t": "Excuse",
+   "src": "address",
+   "where": [
+    "SOM",
+    "W",
+    "BY",
+    "NODES"
+   ],
+   "best": 22,
+   "bestIn": "SOM"
+  },
+  "stage performing": {
+   "t": "Stage Performing",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "speaking to be right": {
+   "t": "Speaking To Be Right",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "manic expression": {
+   "t": "Manic Expression",
+   "src": "address",
+   "where": [
+    "SOM",
+    "W",
+    "BY",
+    "NODES"
+   ],
+   "best": 22,
+   "bestIn": "SOM"
+  },
+  "talking to avoid feeling": {
+   "t": "Talking To Avoid Feeling",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "spiritual language to manipulate": {
+   "t": "Spiritual Language To Manipulate",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "delusion": {
+   "t": "Delusion",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "cynicism": {
+   "t": "Cynicism",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "distrust": {
+   "t": "Distrust",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "hypervigilance": {
+   "t": "Hypervigilance",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "dogma": {
+   "t": "Dogma",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "overanalysis": {
+   "t": "Overanalysis",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "projection": {
+   "t": "Projection",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "paranoia": {
+   "t": "Paranoia",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "distortion": {
+   "t": "Distortion",
+   "src": "address",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 270,
+   "bestIn": "GLOSS"
+  },
+  "doubt": {
+   "t": "Doubt",
+   "src": "address",
+   "where": [
+    "SOM",
+    "W",
+    "BY",
+    "NODES"
+   ],
+   "best": 23,
+   "bestIn": "SOM"
+  },
+  "idealism": {
+   "t": "Idealism",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "lack of discernment": {
+   "t": "Lack Of Discernment",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "doubt of god": {
+   "t": "Doubt Of God",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "hubris": {
+   "t": "Hubris",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "spiritual pride": {
+   "t": "Spiritual Pride",
+   "src": "address",
+   "where": [
+    "SOM",
+    "W",
+    "BY",
+    "NODES"
+   ],
+   "best": 24,
+   "bestIn": "SOM"
+  },
+  "nihilism": {
+   "t": "Nihilism",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "spiritual escapism": {
+   "t": "Spiritual Escapism",
+   "src": "address",
+   "where": [
+    "SOM",
+    "W",
+    "BY",
+    "LEFT",
+    "NODES"
+   ],
+   "best": 20,
+   "bestIn": "SOM"
+  },
+  "false humility": {
+   "t": "False Humility",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "seeking validation": {
+   "t": "Seeking Validation",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "savior complex": {
+   "t": "Savior Complex",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "condemnation": {
+   "t": "Condemnation",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "need to be special": {
+   "t": "Need To Be Special",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "unworthy of god": {
+   "t": "Unworthy Of God",
+   "src": "address",
+   "where": [
+    "SOM",
+    "W",
+    "BY",
+    "NODES"
+   ],
+   "best": 20,
+   "bestIn": "SOM"
+  },
+  "knowing better than god": {
+   "t": "Knowing Better Than God",
+   "src": "address",
+   "where": [
+    "SOM",
+    "W",
+    "BY",
+    "NODES"
+   ],
+   "best": 20,
+   "bestIn": "SOM"
+  },
+  "denial of truth": {
+   "t": "Denial Of Truth",
+   "src": "address",
+   "where": [
+    "SOM",
+    "W",
+    "BY",
+    "NODES"
+   ],
+   "best": 23,
+   "bestIn": "SOM"
+  },
+  "rejection of spirit": {
+   "t": "Rejection Of Spirit",
+   "src": "address",
+   "where": [
+    "SOM",
+    "W",
+    "BY",
+    "NODES"
+   ],
+   "best": 20,
+   "bestIn": "SOM"
+  },
+  "fear of god": {
+   "t": "Fear Of God",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "anger at god": {
+   "t": "Anger At God",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "forgetfulness": {
+   "t": "Forgetfulness",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "denial of light": {
+   "t": "Denial Of Light",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "rejection of unity": {
+   "t": "Rejection Of Unity",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "self-exclusion": {
+   "t": "Self-Exclusion",
+   "src": "address",
+   "where": [
+    "SOM",
+    "W",
+    "BY",
+    "NODES"
+   ],
+   "best": 23,
+   "bestIn": "SOM"
+  },
+  "endless seeking": {
+   "t": "Endless Seeking",
+   "src": "address",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "trust": {
+   "t": "Trust",
+   "src": "opposite",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "equanimity": {
+   "t": "Equanimity",
+   "src": "opposite",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "worth": {
+   "t": "Worth",
+   "src": "opposite",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "disgust": {
+   "t": "Disgust",
+   "src": "fetter",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "acceptance": {
+   "t": "Acceptance",
+   "src": "opposite",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "apathy": {
+   "t": "Apathy",
+   "src": "fetter",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "vitality": {
+   "t": "Vitality",
+   "src": "opposite",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "shock": {
+   "t": "Shock",
+   "src": "fetter",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "groundedness": {
+   "t": "Groundedness",
+   "src": "opposite",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "sad": {
+   "t": "Sad",
+   "src": "fetter",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "joy": {
+   "t": "Joy",
+   "src": "opposite",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "surprise": {
+   "t": "Surprise",
+   "src": "fetter",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "readiness": {
+   "t": "Readiness",
+   "src": "opposite",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "anticipation": {
+   "t": "Anticipation",
+   "src": "fetter",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "presence": {
+   "t": "Presence",
+   "src": "opposite",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 71,
+   "bestIn": "GLOSS"
+  },
+  "controller": {
+   "t": "Controller",
+   "src": "saboteur",
+   "where": [
+    "SABDEF"
+   ],
+   "best": 784,
+   "bestIn": "SABDEF"
+  },
+  "victim": {
+   "t": "Victim",
+   "src": "saboteur",
+   "where": [
+    "SABDEF"
+   ],
+   "best": 75,
+   "bestIn": "SABDEF"
+  },
+  "perfectionist": {
+   "t": "Perfectionist",
+   "src": "saboteur",
+   "where": [
+    "SABDEF"
+   ],
+   "best": 81,
+   "bestIn": "SABDEF"
+  },
+  "pleaser": {
+   "t": "Pleaser",
+   "src": "saboteur",
+   "where": [
+    "SABDEF"
+   ],
+   "best": 82,
+   "bestIn": "SABDEF"
+  },
+  "hyper-achiever": {
+   "t": "Hyper-Achiever",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "hyper-vigilant": {
+   "t": "Hyper-Vigilant",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "judge": {
+   "t": "Judge",
+   "src": "saboteur",
+   "where": [
+    "SABDEF"
+   ],
+   "best": 89,
+   "bestIn": "SABDEF"
+  },
+  "avoider": {
+   "t": "Avoider",
+   "src": "saboteur",
+   "where": [
+    "SABDEF"
+   ],
+   "best": 174,
+   "bestIn": "SABDEF"
+  },
+  "worrywart": {
+   "t": "Worrywart",
+   "src": "saboteur",
+   "where": [
+    "SABDEF"
+   ],
+   "best": 68,
+   "bestIn": "SABDEF"
+  },
+  "loner": {
+   "t": "Loner",
+   "src": "saboteur",
+   "where": [
+    "SABDEF"
+   ],
+   "best": 340,
+   "bestIn": "SABDEF"
+  },
+  "nihilist": {
+   "t": "Nihilist",
+   "src": "saboteur",
+   "where": [
+    "SABDEF"
+   ],
+   "best": 81,
+   "bestIn": "SABDEF"
+  },
+  "aggressor": {
+   "t": "Aggressor",
+   "src": "saboteur",
+   "where": [
+    "SABDEF"
+   ],
+   "best": 79,
+   "bestIn": "SABDEF"
+  },
+  "imposter": {
+   "t": "Imposter",
+   "src": "saboteur",
+   "where": [
+    "SABDEF"
+   ],
+   "best": 64,
+   "bestIn": "SABDEF"
+  },
+  "superior": {
+   "t": "Superior",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "root flincher": {
+   "t": "Root Flincher",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "root mourner": {
+   "t": "Root Mourner",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "sacral drifter": {
+   "t": "Sacral Drifter",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "sacral striker": {
+   "t": "Sacral Striker",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "solar striker": {
+   "t": "Solar Striker",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "solar flincher": {
+   "t": "Solar Flincher",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "heart mourner": {
+   "t": "Heart Mourner",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "heart striker": {
+   "t": "Heart Striker",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "heart recoiler": {
+   "t": "Heart Recoiler",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "throat recoiler": {
+   "t": "Throat Recoiler",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "throat striker": {
+   "t": "Throat Striker",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "throat freezer": {
+   "t": "Throat Freezer",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "3rd eye recoiler": {
+   "t": "3rd Eye Recoiler",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "3rd eye flincher": {
+   "t": "3rd Eye Flincher",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "crown hider": {
+   "t": "Crown Hider",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "crown recoiler": {
+   "t": "Crown Recoiler",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "crown striker": {
+   "t": "Crown Striker",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "crown mourner": {
+   "t": "Crown Mourner",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "diffuse freezer": {
+   "t": "Diffuse Freezer",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "diffuse bracer": {
+   "t": "Diffuse Bracer",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "diffuse startler": {
+   "t": "Diffuse Startler",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "diffuse recoiler": {
+   "t": "Diffuse Recoiler",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "diffuse hider": {
+   "t": "Diffuse Hider",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "diffuse mourner": {
+   "t": "Diffuse Mourner",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "diffuse drifter": {
+   "t": "Diffuse Drifter",
+   "src": "saboteur",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "truth": {
+   "t": "Truth",
+   "src": "law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "transparency": {
+   "t": "Transparency",
+   "src": "law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "justice": {
+   "t": "Justice",
+   "src": "law",
+   "where": [
+    "DOMAINS",
+    "DOMDEF"
+   ],
+   "best": 292,
+   "bestIn": "DOMDEF"
+  },
+  "unity": {
+   "t": "Unity",
+   "src": "law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "awareness": {
+   "t": "Awareness",
+   "src": "law",
+   "where": [
+    "GLOSS",
+    "VERP"
+   ],
+   "best": 39,
+   "bestIn": "GLOSS"
+  },
+  "nature": {
+   "t": "Nature",
+   "src": "law",
+   "where": [
+    "DOMAINS",
+    "DOMDEF"
+   ],
+   "best": 120,
+   "bestIn": "DOMDEF"
+  },
+  "humility": {
+   "t": "Humility",
+   "src": "law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "compassion": {
+   "t": "Compassion",
+   "src": "law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "forgiveness": {
+   "t": "Forgiveness",
+   "src": "law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "generosity": {
+   "t": "Generosity",
+   "src": "law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "aesthetic beauty": {
+   "t": "Aesthetic Beauty",
+   "src": "law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "courage": {
+   "t": "Courage",
+   "src": "law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "duty": {
+   "t": "Duty",
+   "src": "law",
+   "where": [
+    "DOMAINS",
+    "DOMDEF"
+   ],
+   "best": 140,
+   "bestIn": "DOMDEF"
+  },
+  "responsibility": {
+   "t": "Responsibility",
+   "src": "law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "accountability": {
+   "t": "Accountability",
+   "src": "law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "temperance": {
+   "t": "Temperance",
+   "src": "law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "detachment": {
+   "t": "Detachment",
+   "src": "law",
+   "where": [
+    "VERP"
+   ],
+   "best": 38,
+   "bestIn": "VERP"
+  },
+  "non-harm": {
+   "t": "Non-Harm",
+   "src": "law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "patience": {
+   "t": "Patience",
+   "src": "law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "child": {
+   "t": "Child",
+   "src": "mask",
+   "where": [
+    "MASKS"
+   ],
+   "best": 35,
+   "bestIn": "MASKS"
+  },
+  "preteen": {
+   "t": "Preteen",
+   "src": "mask",
+   "where": [
+    "MASKS"
+   ],
+   "best": 40,
+   "bestIn": "MASKS"
+  },
+  "teen": {
+   "t": "Teen",
+   "src": "mask",
+   "where": [
+    "MASKS"
+   ],
+   "best": 42,
+   "bestIn": "MASKS"
+  },
+  "adult": {
+   "t": "Adult",
+   "src": "mask",
+   "where": [
+    "MASKS"
+   ],
+   "best": 34,
+   "bestIn": "MASKS"
+  },
+  "professional": {
+   "t": "Professional",
+   "src": "mask",
+   "where": [
+    "MASKS"
+   ],
+   "best": 44,
+   "bestIn": "MASKS"
+  },
+  "ideological": {
+   "t": "Ideological",
+   "src": "mask",
+   "where": [
+    "MASKS"
+   ],
+   "best": 47,
+   "bestIn": "MASKS"
+  },
+  "knowledge": {
+   "t": "Knowledge",
+   "src": "domain",
+   "where": [
+    "DOMAINS",
+    "DOMDEF"
+   ],
+   "best": 243,
+   "bestIn": "DOMDEF"
+  },
+  "imperium": {
+   "t": "Imperium",
+   "src": "domain",
+   "where": [
+    "DOMAINS",
+    "DOMDEF"
+   ],
+   "best": 103,
+   "bestIn": "DOMDEF"
+  },
+  "fate": {
+   "t": "Fate",
+   "src": "domain",
+   "where": [
+    "DOMAINS",
+    "DOMDEF"
+   ],
+   "best": 127,
+   "bestIn": "DOMDEF"
+  },
+  "power": {
+   "t": "Power",
+   "src": "domain",
+   "where": [
+    "DOMAINS",
+    "DOMDEF"
+   ],
+   "best": 113,
+   "bestIn": "DOMDEF"
+  },
+  "creation": {
+   "t": "Creation",
+   "src": "domain",
+   "where": [
+    "DOMAINS",
+    "DOMDEF"
+   ],
+   "best": 454,
+   "bestIn": "DOMDEF"
+  },
+  "dissolution": {
+   "t": "Dissolution",
+   "src": "domain",
+   "where": [
+    "DOMAINS",
+    "DOMDEF"
+   ],
+   "best": 116,
+   "bestIn": "DOMDEF"
+  },
+  "descent": {
+   "t": "Descent",
+   "src": "domain",
+   "where": [
+    "DOMAINS"
+   ],
+   "best": 36,
+   "bestIn": "DOMAINS"
+  },
+  "death": {
+   "t": "Death",
+   "src": "domain",
+   "where": [
+    "DOMAINS",
+    "DOMDEF"
+   ],
+   "best": 185,
+   "bestIn": "DOMDEF"
+  },
+  "connection": {
+   "t": "Connection",
+   "src": "domain",
+   "where": [
+    "DOMAINS"
+   ],
+   "best": 23,
+   "bestIn": "DOMAINS"
+  },
+  "exchange": {
+   "t": "Exchange",
+   "src": "domain",
+   "where": [
+    "DOMAINS"
+   ],
+   "best": 24,
+   "bestIn": "DOMAINS"
+  },
+  "restoration": {
+   "t": "Restoration",
+   "src": "domain",
+   "where": [
+    "DOMAINS"
+   ],
+   "best": 27,
+   "bestIn": "DOMAINS"
+  },
+  "provision": {
+   "t": "Provision",
+   "src": "domain",
+   "where": [
+    "DOMAINS",
+    "DOMDEF"
+   ],
+   "best": 186,
+   "bestIn": "DOMDEF"
+  },
+  "play": {
+   "t": "Play",
+   "src": "domain",
+   "where": [
+    "DOMAINS",
+    "DOMDEF"
+   ],
+   "best": 191,
+   "bestIn": "DOMDEF"
+  },
+  "trickster": {
+   "t": "Trickster",
+   "src": "domain",
+   "where": [
+    "DOMAINS",
+    "DOMDEF"
+   ],
+   "best": 159,
+   "bestIn": "DOMDEF"
+  },
+  "mystery": {
+   "t": "Mystery",
+   "src": "domain",
+   "where": [
+    "DOMAINS",
+    "DOMDEF"
+   ],
+   "best": 141,
+   "bestIn": "DOMDEF"
+  },
+  "guardian": {
+   "t": "Guardian",
+   "src": "domain",
+   "where": [
+    "DOMAINS",
+    "DOMDEF"
+   ],
+   "best": 129,
+   "bestIn": "DOMDEF"
+  },
+  "warrior": {
+   "t": "Warrior",
+   "src": "archetype",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "sage": {
+   "t": "Sage",
+   "src": "archetype",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "rebel": {
+   "t": "Rebel",
+   "src": "archetype",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "caregiver": {
+   "t": "Caregiver",
+   "src": "archetype",
+   "where": [
+    "ARCH"
+   ],
+   "best": 20,
+   "bestIn": "ARCH"
+  },
+  "creator": {
+   "t": "Creator",
+   "src": "archetype",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "magician": {
+   "t": "Magician",
+   "src": "archetype",
+   "where": [
+    "ARCH"
+   ],
+   "best": 22,
+   "bestIn": "ARCH"
+  },
+  "ruler": {
+   "t": "Ruler",
+   "src": "archetype",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "explorer": {
+   "t": "Explorer",
+   "src": "archetype",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "lover": {
+   "t": "Lover",
+   "src": "archetype",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "jester": {
+   "t": "Jester",
+   "src": "archetype",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "everyman": {
+   "t": "Everyman",
+   "src": "archetype",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "innocent": {
+   "t": "Innocent",
+   "src": "archetype",
+   "where": [
+    "ARCH",
+    "SABDEF"
+   ],
+   "best": 69,
+   "bestIn": "SABDEF"
+  },
+  "all is one": {
+   "t": "All Is One",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "all is motion": {
+   "t": "All Is Motion",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "polarity": {
+   "t": "Polarity",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "all fields correspond": {
+   "t": "All Fields Correspond",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "like fields attract": {
+   "t": "Like Fields Attract",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "inspired action": {
+   "t": "Inspired Action",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "transmutation": {
+   "t": "Transmutation",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "cause & effect": {
+   "t": "Cause & Effect",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "compensation": {
+   "t": "Compensation",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "potential": {
+   "t": "Potential",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "relativity": {
+   "t": "Relativity",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "rhythm": {
+   "t": "Rhythm",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "gender": {
+   "t": "Gender",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "form": {
+   "t": "Form",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "archetype": {
+   "t": "Archetype",
+   "src": "universal law",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 382,
+   "bestIn": "GLOSS"
+  },
+  "biofield": {
+   "t": "Biofield",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "attunement": {
+   "t": "Attunement",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "perception": {
+   "t": "Perception",
+   "src": "universal law",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 172,
+   "bestIn": "GLOSS"
+  },
+  "intelligence": {
+   "t": "Intelligence",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "pleasure & pain": {
+   "t": "Pleasure & Pain",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "the three axes": {
+   "t": "The Three Axes",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "symbol": {
+   "t": "Symbol",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "identity": {
+   "t": "Identity",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "choice": {
+   "t": "Choice",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "ego": {
+   "t": "Ego",
+   "src": "universal law",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 296,
+   "bestIn": "GLOSS"
+  },
+  "intention": {
+   "t": "Intention",
+   "src": "universal law",
+   "where": [
+    "GLOSS",
+    "VERP"
+   ],
+   "best": 182,
+   "bestIn": "GLOSS"
+  },
+  "action": {
+   "t": "Action",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "memory": {
+   "t": "Memory",
+   "src": "universal law",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 116,
+   "bestIn": "GLOSS"
+  },
+  "peace": {
+   "t": "Peace",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "curiosity": {
+   "t": "Curiosity",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "creativity": {
+   "t": "Creativity",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "flow": {
+   "t": "Flow",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "wonder": {
+   "t": "Wonder",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "order": {
+   "t": "Order",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "love": {
+   "t": "Love",
+   "src": "universal law",
+   "where": [
+    "DOMDEF"
+   ],
+   "best": 159,
+   "bestIn": "DOMDEF"
+  },
+  "purpose": {
+   "t": "Purpose",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "will": {
+   "t": "Will",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "fear · safety": {
+   "t": "Fear · Safety",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "anger · calm": {
+   "t": "Anger · Calm",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "shame · worth": {
+   "t": "Shame · Worth",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "disgust · acceptance": {
+   "t": "Disgust · Acceptance",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "apathy · joy": {
+   "t": "Apathy · Joy",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "sad · happy": {
+   "t": "Sad · Happy",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "physical": {
+   "t": "Physical",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "intellectual": {
+   "t": "Intellectual",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "emotional": {
+   "t": "Emotional",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "wisdom": {
+   "t": "Wisdom",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "adversity": {
+   "t": "Adversity",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "coherence": {
+   "t": "Coherence",
+   "src": "universal law",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 164,
+   "bestIn": "GLOSS"
+  },
+  "meta- awareness": {
+   "t": "Meta- Awareness",
+   "src": "universal law",
+   "where": [],
+   "best": 0,
+   "bestIn": ""
+  },
+  "address": {
+   "t": "Address",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 233,
+   "bestIn": "GLOSS"
+  },
+  "allostatic load": {
+   "t": "Allostatic load",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 208,
+   "bestIn": "GLOSS"
+  },
+  "ascension": {
+   "t": "Ascension",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 342,
+   "bestIn": "GLOSS"
+  },
+  "attention": {
+   "t": "Attention",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 132,
+   "bestIn": "GLOSS"
+  },
+  "aura": {
+   "t": "Aura",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 382,
+   "bestIn": "GLOSS"
+  },
+  "biophoton field": {
+   "t": "Biophoton field",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 306,
+   "bestIn": "GLOSS"
+  },
+  "chakra": {
+   "t": "Chakra",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 380,
+   "bestIn": "GLOSS"
+  },
+  "charge": {
+   "t": "Charge",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 149,
+   "bestIn": "GLOSS"
+  },
+  "clair": {
+   "t": "Clair",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 241,
+   "bestIn": "GLOSS"
+  },
+  "replacement state": {
+   "t": "Replacement state",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 216,
+   "bestIn": "GLOSS"
+  },
+  "consciousness": {
+   "t": "Consciousness",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 201,
+   "bestIn": "GLOSS"
+  },
+  "cq": {
+   "t": "CQ",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 153,
+   "bestIn": "GLOSS"
+  },
+  "dq": {
+   "t": "DQ",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 257,
+   "bestIn": "GLOSS"
+  },
+  "drag": {
+   "t": "Drag",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 212,
+   "bestIn": "GLOSS"
+  },
+  "earth star": {
+   "t": "Earth Star",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 82,
+   "bestIn": "GLOSS"
+  },
+  "fetter": {
+   "t": "Fetter",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 307,
+   "bestIn": "GLOSS"
+  },
+  "five paths": {
+   "t": "Five paths",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 223,
+   "bestIn": "GLOSS"
+  },
+  "hardened mask": {
+   "t": "Hardened mask",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 232,
+   "bestIn": "GLOSS"
+  },
+  "hyper-complex": {
+   "t": "Hyper-complex",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 184,
+   "bestIn": "GLOSS"
+  },
+  "integrity": {
+   "t": "Integrity",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 352,
+   "bestIn": "GLOSS"
+  },
+  "justification mechanic": {
+   "t": "Justification mechanic",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 252,
+   "bestIn": "GLOSS"
+  },
+  "karma": {
+   "t": "Karma",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 328,
+   "bestIn": "GLOSS"
+  },
+  "kosha": {
+   "t": "Kosha",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 175,
+   "bestIn": "GLOSS"
+  },
+  "kundalini": {
+   "t": "Kundalini",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 127,
+   "bestIn": "GLOSS"
+  },
+  "letting go": {
+   "t": "Letting go",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 213,
+   "bestIn": "GLOSS"
+  },
+  "limiting belief": {
+   "t": "Limiting belief",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 216,
+   "bestIn": "GLOSS"
+  },
+  "mask": {
+   "t": "Mask",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 200,
+   "bestIn": "GLOSS"
+  },
+  "merkaba": {
+   "t": "Merkaba",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 184,
+   "bestIn": "GLOSS"
+  },
+  "node": {
+   "t": "Node",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 297,
+   "bestIn": "GLOSS"
+  },
+  "ojas": {
+   "t": "OJAS",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 504,
+   "bestIn": "GLOSS"
+  },
+  "plexus": {
+   "t": "Plexus",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 163,
+   "bestIn": "GLOSS"
+  },
+  "primary node": {
+   "t": "Primary node",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 209,
+   "bestIn": "GLOSS"
+  },
+  "pure perception": {
+   "t": "Pure perception",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 205,
+   "bestIn": "GLOSS"
+  },
+  "reading-as-release": {
+   "t": "Reading-as-release",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 232,
+   "bestIn": "GLOSS"
+  },
+  "release": {
+   "t": "Release",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 156,
+   "bestIn": "GLOSS"
+  },
+  "saboteur": {
+   "t": "Saboteur",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 176,
+   "bestIn": "GLOSS"
+  },
+  "self-unraveling state": {
+   "t": "Self-unraveling state",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 244,
+   "bestIn": "GLOSS"
+  },
+  "signal chain": {
+   "t": "Signal chain",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 231,
+   "bestIn": "GLOSS"
+  },
+  "soma": {
+   "t": "Soma",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 196,
+   "bestIn": "GLOSS"
+  },
+  "sol star": {
+   "t": "Sol Star",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 115,
+   "bestIn": "GLOSS"
+  },
+  "source": {
+   "t": "Source",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 160,
+   "bestIn": "GLOSS"
+  },
+  "superego": {
+   "t": "Superego",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 224,
+   "bestIn": "GLOSS"
+  },
+  "tag": {
+   "t": "Tag",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 210,
+   "bestIn": "GLOSS"
+  },
+  "two mechanics": {
+   "t": "Two mechanics",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 279,
+   "bestIn": "GLOSS"
+  },
+  "vritti": {
+   "t": "Vritti",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 350,
+   "bestIn": "GLOSS"
+  },
+  "willpower": {
+   "t": "Willpower",
+   "src": "glossary",
+   "where": [
+    "GLOSS"
+   ],
+   "best": 381,
+   "bestIn": "GLOSS"
+  },
+  "root": {
+   "t": "Root",
+   "src": "seat",
+   "where": [
+    "APC"
+   ],
+   "best": 297,
+   "bestIn": "APC"
+  },
+  "sacral": {
+   "t": "Sacral",
+   "src": "seat",
+   "where": [
+    "APC"
+   ],
+   "best": 386,
+   "bestIn": "APC"
+  },
+  "solar": {
+   "t": "Solar",
+   "src": "seat",
+   "where": [
+    "APC"
+   ],
+   "best": 379,
+   "bestIn": "APC"
+  },
+  "heart": {
+   "t": "Heart",
+   "src": "seat",
+   "where": [
+    "APC"
+   ],
+   "best": 373,
+   "bestIn": "APC"
+  },
+  "throat": {
+   "t": "Throat",
+   "src": "seat",
+   "where": [
+    "APC"
+   ],
+   "best": 438,
+   "bestIn": "APC"
+  },
+  "3rd eye": {
+   "t": "3rd Eye",
+   "src": "seat",
+   "where": [
+    "APC"
+   ],
+   "best": 427,
+   "bestIn": "APC"
+  },
+  "crown": {
+   "t": "Crown",
+   "src": "seat",
+   "where": [
+    "APC"
+   ],
+   "best": 398,
+   "bestIn": "APC"
+  },
+  "grandiosity": {
+   "t": "Grandiosity",
+   "src": "hyper-complex",
+   "where": [
+    "HCX_LIB"
+   ],
+   "best": 60,
+   "bestIn": "HCX_LIB"
+  },
+  "predatory": {
+   "t": "Predatory",
+   "src": "hyper-complex",
+   "where": [
+    "HCX_LIB"
+   ],
+   "best": 72,
+   "bestIn": "HCX_LIB"
+  },
+  "dysregulation": {
+   "t": "Dysregulation",
+   "src": "hyper-complex",
+   "where": [
+    "HCX_LIB"
+   ],
+   "best": 65,
+   "bestIn": "HCX_LIB"
+  },
+  "dissociation": {
+   "t": "Dissociation",
+   "src": "hyper-complex",
+   "where": [
+    "HCX_LIB"
+   ],
+   "best": 47,
+   "bestIn": "HCX_LIB"
+  }
+ }
+}

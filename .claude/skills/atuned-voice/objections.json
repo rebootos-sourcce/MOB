@@ -1,0 +1,991 @@
+{
+  "what": "The owner's copy objections, as data. THIS FILE IS THE SOURCE. COPY-OBJECTIONS.md and COPY-OBJECTIONS.html are build products rendered off it by tools/objections.py, so the log and the database cannot disagree. This repository has been bitten twelve times by a number typed into a document that the product then grew past, and a log kept by hand beside a database read by a program would have been the thirteenth.",
+  "ruling": "create a log of all the times I said I do not like this copy type. Create a database, sweep for it, and kill it. And add that to the style guide.",
+  "flavour": "python re, compiled with re.I and re.M. Every pattern is also valid ECMAScript, so marketing/refuse.js can read this file without translating anything.",
+  "severity": {
+    "stop": "fails the run. The sweep exits non zero.",
+    "flag": "reported and never failed. A person rules on it."
+  },
+  "gate": {
+    "objections": "the patterns in this file, run by check.py --objections.",
+    "check.py:<key>": "already enforced by the voice gate under that key. Not written twice.",
+    "marketing/refuse.js:<id>": "already enforced on outward copy by that rule id.",
+    "tools/terms.py": "terminology drift, enforced by that tool.",
+    "tools/questions.js": "enforced by the question generator's own gate.",
+    "person": "not gateable. It is in the guidance list at the foot of this file, named rather than dropped."
+  },
+  "canonical": {
+    "not read at all, as a value": "not read yet",
+    "not read at all, as a sentence": "Nothing has been read yet. Write a story or set a charge.",
+    "read, but nothing carrying": "nothing held",
+    "the hedge that is not a wording": "yet, on the end of nothing held. The route sentence beside it already says the state is not permanent."
+  },
+  "rules": [
+    {
+      "id": "tolerance",
+      "class": "notation",
+      "severity": "stop",
+      "gate": "objections",
+      "log": [
+        "CO-01",
+        "CO-02",
+        "CO-03"
+      ],
+      "why": "A figure with an interval, a tolerance or a statistical decoration stapled to it is a lab readout and not copy. Ruled as a class rather than as two strings. The range is a shape, so it is drawn and never stated.",
+      "re": [
+        "\\bplus or minus\\b",
+        "\\bplus minus\\b",
+        "\\bgive or take\\b",
+        "±",
+        "\\+/-\\s*\\d",
+        "\\bswing\\b\\s*,?\\s*(?:<[^>]*>)?\\s*$",
+        "\\bswing,?\\s*(?:<[^>]*>)?\\s*\\d",
+        "\\bmargin of error\\b",
+        "\\berror bars?\\b",
+        "\\bconfidence interval\\b",
+        "\\bstandard (?:deviation|error)\\b",
+        "\\bn\\s*=\\s*\\d",
+        "\\bp\\s*[<=]\\s*0?\\.\\d"
+      ],
+      "fail": "of 100, plus or minus 12",
+      "fix": "of 100",
+      "note": "The swing label takes two patterns because it ships in two shapes. In the source the literal ENDS on the word and the figure arrives at run time; on the screen the figure follows it. The first cut carried only the template shape and read \"swing 11\", the exact string the objection names, as clean. Checked against that wording as a known good case before it was trusted. It also reads the literal and not the sentence, because this label ships inside an SVG text element and a sentence walk drops it on the attribute quote."
+    },
+    {
+      "id": "interval-word",
+      "class": "notation",
+      "severity": "flag",
+      "gate": "objections",
+      "log": [
+        "CO-03"
+      ],
+      "why": "A sentence naming the interval is a definition and not a lab readout, so it is flagged and never failed. It points at a figure that is coming off the screen, and a sentence whose referent has gone is a sentence about nothing.",
+      "re": [
+        "\\binterval\\b",
+        "\\bthe band (?:on|around)\\b"
+      ],
+      "fail": "A move smaller than the interval is not a reading.",
+      "fix": "The needle has play in it. Watch the run."
+    },
+    {
+      "id": "scale-prose",
+      "class": "scale",
+      "severity": "stop",
+      "gate": "objections",
+      "log": [
+        "CO-04"
+      ],
+      "why": "Prose that hides behind a scale instead of saying something. The ruling: if you cannot use regular words to describe it, do not describe it.",
+      "re": [
+        "\\b\\d+ to \\d+\\s+(?:out )?of\\s+\\d+\\b"
+      ],
+      "fail": "The waist is 40 to 60 out of 100, where most people oscillate.",
+      "fix": "The narrow middle is where most people sit.",
+      "note": "Zero in the product when this was written, because the scrub already ran. It is a regression gate, which is what a gate is for."
+    },
+    {
+      "id": "count-against-total",
+      "class": "score",
+      "severity": "stop",
+      "gate": "objections",
+      "log": [
+        "CO-05",
+        "CO-31"
+      ],
+      "why": "A count against a total invites a person to pass or fail, and a reading is not a score.",
+      "re": [
+        "(?<![\\w.])\\d+ of (?:the )?(?!1\\b|10\\b|100\\b)\\d+\\b",
+        "\\bof (?:the )?112\\b",
+        "(?<![\\w.])\\d+ of (?:the )?\\d+ (?:addresses|patterns|laws|cards|questions|axes|seats|days|imprints|lines|releases|fetters|complexes)\\b",
+        "(?<![\\w.])\\d+ out of (?:the )?(?!1\\b|10\\b|100\\b)\\d+\\b",
+        "^\\s*(?:<[^>]*>\\s*)*of (?:the )?(?:10|100|ten|a hundred|the hundred)\\b",
+        "\\bagainst (?:a |the )?(?:clean |full )?(?:ten|hundred|10|100)\\b",
+        "\\bout of (?:a |the )?(?:10|100|ten|hundred)\\b",
+        "\\bof the hundred points\\b"
+      ],
+      "fail": "6.0 of 10",
+      "fix": "6.0",
+      "note": "Two survivors are ruled and neither has this shape: intake progress and release queue position, where the person is working through a finite list. A SCALE IS NOT A TOTAL, and the first cut of this rule did not know the difference: it fired on \"4 of 10 counts as loaded\" in funnel/about.html, which is a threshold on the depth scale and is the shape CO-04's own resolution ruled survives. A denominator of 1, 10 or 100 is a scale and is exempt unless a countable set is named after it. SUPERSEDED ON 2 OCTOBER, CO-31: the exemption for a denominator of 1, 10 or 100 is withdrawn. \"Integrity 6.0 of 10\" and \"Your integrity is 7.7 against a clean ten\" are counts against a total whatever the scale, and he read them as a mark out of ten. The three new patterns read the template fragment as well as the sentence, because the digit arrives at run time and the literal is only \" of 10\". tools/copy-verify.py applies the same rule to the rendered page."
+    },
+    {
+      "id": "empty-state",
+      "class": "value",
+      "severity": "stop",
+      "gate": "objections",
+      "log": [
+        "CO-09",
+        "CO-22"
+      ],
+      "why": "The empty state has one wording for each of its two states. Six phrasings were in the product for two facts, and the worst of them landed in a value slot between two labels, where it read as a sentence about the second label.",
+      "re": [
+        "not enough held to read",
+        "\\btoo little held\\b",
+        "\\bnot yet read\\b",
+        "\\bnothing measured\\b",
+        "^\\s*nothing read yet\\s*$",
+        "\\bnothing held yet\\b"
+      ],
+      "fail": "not enough held to read",
+      "fix": "not read yet",
+      "note": "TWO STATES, TWO WORDINGS, AND THEY ARE NOT THE SAME FACT. Not read yet is the instrument having read nothing. Nothing held is a field that has been read and is carrying nothing, which is what the balance strip actually means, so the rule does not force one onto the other. The sentence form keeps a subject and a reason and passes. The drift is the bare value form and the hedge yet, so the anchored pattern fires only where the whole string is those three words. The first cut had no anchor and would have failed the replacement this rule itself proposes, which is a gate refusing its own fix."
+    },
+    {
+      "id": "serial-to-a-person",
+      "class": "label",
+      "severity": "stop",
+      "gate": "objections",
+      "log": [
+        "CO-15"
+      ],
+      "why": "A node serial or a stack integer in front of a person is the data model read out loud.",
+      "re": [
+        "\\bAddress \\d{2,}\\b",
+        "\\b(?:node|addr|hcx|cx)[ _-]?\\d{3}\\b",
+        "(?m)^\\s*\\d+\\s*·\\s"
+      ],
+      "fail": "Address 007 root",
+      "fix": "Root",
+      "note": "Zero in the product when this was written. A regression gate."
+    },
+    {
+      "id": "two-months-free",
+      "class": "offer",
+      "severity": "stop",
+      "gate": "objections",
+      "log": [
+        "CO-25"
+      ],
+      "why": "The offer is not two months free. Any copy saying so is wrong and comes out.",
+      "re": [
+        "two months free",
+        "2 months free"
+      ],
+      "fail": "Two months free on the annual plan.",
+      "fix": "nothing. The annual discount is not ruled, so no copy states one."
+    },
+    {
+      "id": "section-explains-itself",
+      "class": "definition",
+      "severity": "stop",
+      "gate": "objections",
+      "log": [
+        "CO-27",
+        "CO-28",
+        "CO-16"
+      ],
+      "why": "A paragraph under a heading whose only job is to explain what the section is, how to read it, or how to use it. The heading, the layout, the icon and the control already say it, and the person does not read the paragraph; they scan past it and it costs the screen. His ruling, the third time: no text that describes something without an icon or a symbol unless it is body text, and we have overlays for all of it.",
+      "re": [
+        "\\b(?:press|click|tap|double press|double click)\\s+(?:on\\s+)?(?:one|any|a|an|each|every)\\s+[a-z]+(?:\\s+[a-z]+)?\\s+to\\s+(?:open|read|trace|turn|select|see|zoom|name|change|pick|set|choose|view|expand|show|add)\\b",
+        "\\b(?:press|click|tap)\\s+(?:one|any one|either)\\s+to\\s+(?:open|read|trace|turn|select|see|zoom|name|change|pick|set|choose|view|expand|show|add)\\b",
+        "\\bdrag to turn\\b",
+        "\\bdouble press to zoom\\b",
+        "\\b(?:point at|hover over|hover) (?:a|any|the|one) [a-z]+ to\\b",
+        "\\bhere you (?:can|will|see)\\b",
+        "\\b(?:this|the) (?:page|section|panel|tab|card|chart|list|rail|screen|surface|column|pane) (?:shows|lists|is where|is for|lets you)\\b",
+        "\\buse this (?:to|when|for)\\b",
+        "\\bthe bigger the (?:mark|circle|bubble|dot|ring|disc)\\b",
+        "\\bcolumns are\\b.{0,60}\\brows are\\b",
+        "\\bfills in as you go\\b",
+        "\\bevery save writes\\b",
+        "\\bways of acting\\b",
+        "\\byour birth moment and the\\b",
+        "\\bpick how much to\\b",
+        "\\bqueue them here\\b",
+        "\\brolls up to one line\\b"
+      ],
+      "fail": "Archetypes. 12 ways of acting, each beside the part of your life it acts from. Set how much of each one is you, from one to five. [Drag to turn it. Press any name to read that axis.]",
+      "fix": "Archetypes. [the wheel, the scale with its two end words, and nothing else]",
+      "keeps": "Four kinds of line are not this defect and are not cut by it. A reading about the person. An empty state or a refusal that says what is missing and what puts it in. A disclosure the person is owed: what is stored, where, who has sight, what a delete does. And one line of instruction at the moment of use, where the control has no other way to be learned, the model being the archetype scale's own: One press sets it. The same press again takes it off.",
+      "note": "The patterns are the shapes the class actually shipped in, read off the corpses rather than imagined. How to use a control is only caught with an object in front of the verb, press a region to open, press one to trace, because a tooltip's own action line, Click to set as primary, is on demand and is the overlay he asked for; the first cut without the object fired on every canvas tooltip. Checked before it was trusted: nothing found on the product after the HS sweep; run over the tree before it, the archetype line, the Energetics subtitle and the release line he quoted all fire, and so does the BA9 caption struck on 25 September; none of the kept lines above fires. Some lines the sweep cut by reading pass these patterns, the birth moment paragraph he also quoted, the deck's description and the Settings footers among them. A paragraph that explains its section in words no pattern foresaw passes this gate, which is why the guidance entry for a legend stays in the list at the foot of this file."
+    },
+    {
+      "id": "figure-label",
+      "class": "label",
+      "severity": "stop",
+      "gate": "check.py:figure label",
+      "log": [
+        "CO-08"
+      ],
+      "why": "A figure's label is one word and carries no comma. The unit rides on the figure.",
+      "re": [],
+      "fail": "Ground opened, all time",
+      "fix": "Opened"
+    },
+    {
+      "id": "naked-number",
+      "class": "number",
+      "severity": "stop",
+      "gate": "check.py:naked number",
+      "log": [
+        "CO-06",
+        "CO-07"
+      ],
+      "why": "A number with no unit and no denominator. 39 of what.",
+      "re": [],
+      "fail": "25 of your allowance",
+      "fix": "25 patterns of the 92 you have left"
+    },
+    {
+      "id": "em-dash",
+      "class": "punctuation",
+      "severity": "stop",
+      "gate": "check.py:emdash",
+      "log": [
+        "CO-19"
+      ],
+      "why": "No em dashes anywhere, including commit messages and documentation.",
+      "re": [],
+      "fail": "an em dash standing between two clauses",
+      "fix": "the reading, and what it costs",
+      "note": "THE EXAMPLE DOES NOT CONTAIN ONE, and that is deliberate. check.py builds the character from its codepoint for the same reason: a gate that breaks the rule it enforces is the tool lying about the thing it watches, and this file is rendered into two documents the ruling also covers."
+    },
+    {
+      "id": "the-count",
+      "class": "number",
+      "severity": "stop",
+      "gate": "check.py:108",
+      "log": [
+        "CO-19"
+      ],
+      "why": "The count stated to users is 112.",
+      "re": [],
+      "fail": "108 addresses",
+      "fix": "112 addresses"
+    },
+    {
+      "id": "caps",
+      "class": "case",
+      "severity": "stop",
+      "gate": "check.py:caps",
+      "log": [
+        "CO-19"
+      ],
+      "why": "Sentence case in body, title case in headers, and no all caps copy.",
+      "re": [],
+      "fail": "NOTHING HELD",
+      "fix": "nothing held"
+    },
+    {
+      "id": "soft",
+      "class": "register",
+      "severity": "stop",
+      "gate": "check.py:soft",
+      "log": [
+        "CO-20"
+      ],
+      "why": "No soft wellness language. Mechanical and precise, physical metaphors only.",
+      "re": [],
+      "fail": "Sit back and relax, and turn your senses inward.",
+      "fix": "Sit down. Put both feet on the floor."
+    },
+    {
+      "id": "preamble",
+      "class": "register",
+      "severity": "stop",
+      "gate": "check.py:preamble",
+      "log": [
+        "CO-20"
+      ],
+      "why": "No line whose job is to say a thing is starting.",
+      "re": [],
+      "fail": "Welcome to release and reframe.",
+      "fix": "nothing. The person pressed Begin."
+    },
+    {
+      "id": "verdict",
+      "class": "register",
+      "severity": "stop",
+      "gate": "marketing/refuse.js:verdict",
+      "log": [
+        "CO-18"
+      ],
+      "why": "We are not judging anybody. The product says what is running, not what a person is.",
+      "re": [],
+      "fail": "You are the problem here.",
+      "fix": "This pattern is carrying, and here is where."
+    },
+    {
+      "id": "reassurance",
+      "class": "register",
+      "severity": "flag",
+      "gate": "check.py:reassure",
+      "log": [
+        "CO-20"
+      ],
+      "why": "Never a reassurance against a fear nobody has raised. Held rather than banned, because the welcome is a bounded exception the owner ruled himself and it is quoted in the file that carries it.",
+      "re": [],
+      "fail": "A person who cannot think of anything is not unusual.",
+      "fix": "move it behind the failure it answers."
+    },
+    {
+      "id": "one-word-per-concept",
+      "class": "terminology",
+      "severity": "stop",
+      "gate": "tools/terms.py",
+      "log": [
+        "CO-22"
+      ],
+      "why": "Delete or remove, never both. A real distinction keeps its own word.",
+      "re": [],
+      "fail": "delete beside remove for one action",
+      "fix": "one of the two, everywhere"
+    },
+    {
+      "id": "question-mark",
+      "class": "form",
+      "severity": "stop",
+      "gate": "tools/questions.js",
+      "log": [
+        "CO-12"
+      ],
+      "why": "A document titled questions is a document of questions. A statement cannot be answered.",
+      "re": [],
+      "fail": "A2 kept is undecided.",
+      "fix": "Is A2 kept?"
+    },
+    {
+      "id": "plain-field-label",
+      "class": "form",
+      "severity": "stop",
+      "gate": "objections",
+      "log": [
+        "CO-26"
+      ],
+      "why": "A field is named for what goes in it and a button for what it does. A label written in the story bible's voice makes a person work out which box to type in.",
+      "re": [
+        "\\bas you (?:use|see|know|carry|hold|go by) it\\b",
+        "^\\s*keep it\\s*[.:]?\\s*$",
+        "\\bkeep it:",
+        "\\bthe handoff\\b"
+      ],
+      "fail": "Your name, as you use it. [Keep it]",
+      "fix": "First name, Middle, Last. [Save]"
+    },
+    {
+      "id": "abstract-word",
+      "class": "register",
+      "severity": "stop",
+      "gate": "objections",
+      "log": [
+        "CO-29"
+      ],
+      "why": "A word that is always an abstraction standing in for a plain one. A ten year old would have to ask what it means, and every one of these has a short word that says the same thing.",
+      "re": [
+        "\\barchitecture\\b",
+        "\\bresident\\b",
+        "\\boperat(?:e|es|ed|ing|ion|ions|ional|ionally)\\b",
+        "\\bconstructs?\\b",
+        "\\bconstructions?\\b",
+        "\\bmodalit(?:y|ies)\\b",
+        "\\bparadigms?\\b",
+        "\\bframeworks?\\b",
+        "\\bfacilitat\\w*",
+        "\\butili[sz](?:e|es|ed|ing|ation)\\b",
+        "\\bleverag\\w*",
+        "\\boptimi[sz](?:e|es|ed|ing|ation|ations)\\b",
+        "\\baperture\\b",
+        "\\bcorrespondence\\b",
+        "\\bsubstrate\\b",
+        "\\bparameters?\\b",
+        "\\b(?:up|down)[ -]?regulat\\w*",
+        "\\btrajector(?:y|ies)\\b",
+        "\\bdynamics\\b",
+        "\\bphysiological\\b",
+        "\\bcognitive\\b",
+        "\\bcognition\\b"
+      ],
+      "fail": "The specific location in the body's energetic architecture where a pattern is resident.",
+      "fix": "One exact place in your body where a pattern sits.",
+      "note": "Measured across the whole corpus on 27 September before it was trusted, with the data tables read for the first time. Every hit then was cleared in the same pass, and none sat in a file another seat was holding. Words the canon uses on purpose are left off: alignment is in the owner's own definition of Coherence, and somatic is the product's word for its own category. Architecture matches the singular only, because the plural is the codex's name for a family of universal laws, The nine architectures, and V21 keeps names. The short word for each: architecture is layout or map, resident is sits, operates is works or runs, construct is thing built, modality is kind, framework is the way you see things, facilitate is help, utilise is use, leverage is a hold over someone, optimise is improve, aperture is opening, substrate is ground, parameter is setting, regulating up and down is speeding up and slowing down, physiological is of the body, cognition is thinking. The first cut read optimi[sz] and anything after it and failed the Cynic's own voice line, Optimism is naive, which is a saboteur speaking in a plain word. It reads the verb now, and utilise the same way. That was the known good case it was checked against."
+    },
+    {
+      "id": "bare-weight",
+      "class": "reading",
+      "severity": "flag",
+      "gate": "objections",
+      "log": [
+        "CO-30"
+      ],
+      "why": "A weight printed on its own says nothing to either reader. The layman needs a node state he reads on sight, the practitioner needs the figure, and the line carries both, with the picture beside them where the surface has one. V22.",
+      "re": [
+        "^(?![^\\n]*\\b(?:impaired|(?<!heavily )(?<!moderately )blocked)\\b)[^\\n]*(?<!by )\\b(?:(?:shadow )?weight(?: of)?|charge (?:held|left)(?: here)?)\\s+$",
+        "^(?![^\\n]*\\b(?:impaired|(?<!heavily )(?<!moderately )blocked)\\b)[^\\n]*\\bweight(?: of)?\\s+\\d+(?:\\.\\d+)?\\b"
+      ],
+      "fail": "That reaches the body at the anterior heart, on the fear axis, at a weight of 7.4.",
+      "fix": "That reaches the body at the anterior heart, on the fear axis, heavily impaired at a weight of 7.4.",
+      "note": "FLAGGED AND NEVER FAILED, for three reasons, each said rather than left to be found. The ladder is real now and this entry supersedes its own first cut: round KD in TASKS.md, his words, \"Yeah, we use that let's call it node state instead of band ladder. Node state would be open impaired moderately impaired heavily impaired blocked.\" The placeholder heavily blocked, his example from round JX, is retired, and the pattern no longer accepts it or his other examples (heavy, light, flowing, clear). It clears on impaired and on blocked when blocked is not qualified, which covers four rungs. It does not clear on open, which in this product is also a verb and a plan word, \"Rerunning anything already open costs nothing\", so it would clear lines on a word that means something else; a weight at open prints 0.0, which the product rarely prints. First reason: the words are ruled and the lines between them are not. He named five rungs and no figures. NODESTATE_PROPOSED in engine/data/canon.js is a proposal, named as one, and no surface calls nodeStateOf until he confirms the lines. A stop here would make every writer pick a node state per surface by eye, which is one word per concept broken and the contradiction between the two readers this rule exists to prevent. Second, the sweep reads each literal apart, so a band word written after the value in the next literal is not seen and that line is a false flag a person clears. Third, the picture half is not text, and whether the icon sits beside the figure is read off the screen. The first pattern is the template shape: a literal ending on weight, weight of, charge held or charge left, with trailing space or an open tag, which is where a run time figure lands. The second is the rendered shape, weight 6.3. Checked before it was trusted against the known good cases it must not fire on: KB_OF in ui/knowledge.js, of the mask at full weight, where the figure comes before; the By weight sort control; the Shadow weight label; the What it weighed eyebrow; No mask carries weight yet; and a band word earlier in the same literal. And against the known bad ones it must: summary.js at a weight of, rings.js Heaviest pattern. Weight, and the rendered Held at the heart, at a weight of 7.4. Heaviest is a rank and not a band, so it does not clear a line. It reaches weight and charge, the two he named. A percent match, a pain figure or Waiting to land are outside it. Read the count off the run."
+    },
+    {
+      "id": "percent-on-unread",
+      "class": "value",
+      "severity": "stop",
+      "gate": "tools/copy-verify.py:percent-on-unread",
+      "log": [
+        "CO-31"
+      ],
+      "why": "A percent sign, or per cent, on a surface whose profile is unread is a figure about the default, and a percent printed off zero is never a reading.",
+      "re": [],
+      "fail": "Crown, open. 0 carrying, 100 percent through",
+      "fix": "Crown, open. Nothing carrying",
+      "note": "A SOURCE SWEEP CANNOT SEE THIS. The digit and the profile that decides whether it is allowed both arrive at run time, so check.py reports the product clean while the screen prints it. tools/copy-walk.js harvests every string the page shows on a blank profile and a loaded one and tools/copy-verify.py runs the rule over them. Whether a profile is unread is read off compute().unread, never typed."
+    },
+    {
+      "id": "bare-number-on-unread",
+      "class": "value",
+      "severity": "stop",
+      "gate": "tools/copy-verify.py:bare-number-on-unread",
+      "log": [
+        "CO-31"
+      ],
+      "why": "A number standing alone on a surface whose profile is unread says a measured value where nothing was measured.",
+      "re": [],
+      "fail": "0.0",
+      "fix": "–",
+      "note": "A SOURCE SWEEP CANNOT SEE THIS. The digit and the profile that decides whether it is allowed both arrive at run time, so check.py reports the product clean while the screen prints it. tools/copy-walk.js harvests every string the page shows on a blank profile and a loaded one and tools/copy-verify.py runs the rule over them. Whether a profile is unread is read off compute().unread, never typed."
+    },
+    {
+      "id": "zero-as-dash",
+      "class": "value",
+      "severity": "stop",
+      "gate": "tools/copy-verify.py:zero-as-dash",
+      "log": [
+        "CO-31"
+      ],
+      "why": "A zero shown as a number where a dash belongs. A dash is the honest glyph for not read yet, and it is not zero (COPY.md, Value).",
+      "re": [],
+      "fail": "0 days",
+      "fix": "–",
+      "note": "A SOURCE SWEEP CANNOT SEE THIS. The digit and the profile that decides whether it is allowed both arrive at run time, so check.py reports the product clean while the screen prints it. tools/copy-walk.js harvests every string the page shows on a blank profile and a loaded one and tools/copy-verify.py runs the rule over them. Whether a profile is unread is read off compute().unread, never typed."
+    }
+  ],
+  "guidance": [
+    {
+      "id": "ten-year-old",
+      "class": "register",
+      "log": [
+        "CO-29"
+      ],
+      "why": "Would a ten year old understand this sentence without somebody first explaining a word in it. V21. Concrete beats abstract every time: a real body sensation, a real number, a real action, never a category word standing in for one.",
+      "not_gateable": "Whether a reader understands a sentence is a fact about the reader, and a sentence built only of short words can still name nothing a person could point at. The abstract-word lexicon holds the words that are always abstract, and the abstract rate in check.py points at the file to read first. Neither says a line is plain. Read it as a ten year old would, out loud."
+    },
+    {
+      "id": "refusal-in-value",
+      "class": "bucket",
+      "log": [
+        "CO-09"
+      ],
+      "why": "A refusal sentence sitting in a value slot. It passes every pattern, because the wording is fine and the slot is wrong. The balance strip is its corpse: the value slot between masculine and feminine carried a refusal, so a person read one sentence across three elements.",
+      "not_gateable": "No pattern reads which bucket a slot expects. The empty-state rule catches the wording this one arrived in, and nothing catches the next one. Read every value slot's empty state out loud, in the order the eye takes it."
+    },
+    {
+      "id": "empty-state-that-can-be-false",
+      "class": "value",
+      "log": [
+        "CO-09"
+      ],
+      "why": "The empty state's own wording, correct everywhere else, put where it can be false. balance() returns read false when both means sit under one, at engine/compute.js:41, which folds three states into one flag: nothing entered, nothing carrying, and carrying too little to call. Not read yet is true of the first and false of the third, and a person holding eight units of charge would read it beside a Field with addresses lit. The instrument contradicting itself on one screen is the defect the usability panel recorded in a person's own words, and once they cannot tell which half is wrong they stop believing both.",
+      "not_gateable": "A pattern reads the string and never the state behind it. The check is to ask, of every empty state, which states its flag folds together and whether the wording is true of all of them. Where it is not, the value takes the dash and the reason goes one door in."
+    },
+    {
+      "id": "no-context",
+      "class": "reading",
+      "log": [
+        "CO-13"
+      ],
+      "why": "A line written by the seat that found it assumes everything that seat knows.",
+      "not_gateable": "Whether a reader has the context is a fact about the reader."
+    },
+    {
+      "id": "text-over-the-graphic",
+      "class": "placement",
+      "log": [
+        "CO-14"
+      ],
+      "why": "No text over the hero graphic, ever. Text hovering over a thing it cannot be read against is the objection, and it was made twice in one session.",
+      "not_gateable": "Placement, not wording. tools/collide.js and the shot run own it."
+    },
+    {
+      "id": "legend-on-a-surface",
+      "class": "definition",
+      "log": [
+        "CO-16"
+      ],
+      "why": "A card explaining the product's own model to a person who did not ask. Get rid of it.",
+      "not_gateable": "A legend is a whole block and reads as ordinary copy line by line.",
+      "note": "Partly gateable since round HS. The two shapes a legend actually shipped in, the bigger the mark and columns are, rows are, are patterns under section-explains-itself. A legend in any other words still needs a person to see it."
+    },
+    {
+      "id": "heading-a-person-would-say",
+      "class": "menu",
+      "log": [
+        "CO-10"
+      ],
+      "why": "Which day you keep it. The word does not mean anything to the person reading it, and a heading has to be a thing a person would say out loud.",
+      "not_gateable": "No pattern knows whether a phrase is one a person would say. This is the read it out loud pass and it is a person's job."
+    },
+    {
+      "id": "the-ai-six",
+      "class": "register",
+      "log": [
+        "CO-11"
+      ],
+      "why": "The writing reads as AI and the target is a ten. The whole voice skill is the answer to this one.",
+      "not_gateable": "There is no pattern for smooth. The measurable proxies are the rate gates: antithesis, gloss, and the demonstrative copula opener, each reported against the house rate."
+    },
+    {
+      "id": "band-word-alone",
+      "class": "label",
+      "log": [
+        "CO-21"
+      ],
+      "why": "A label this product puts on a person carries a definition, the behaviour it produces, and the direction out of it. Severe with nothing attached is a judgement.",
+      "not_gateable": "The band words are correct values in a row where the definition stands beside them, so a pattern on the word fires on the right use as often as the wrong one. Checked by reading the surface."
+    },
+    {
+      "id": "the-mark-is-named-awareness",
+      "class": "naming",
+      "log": [
+        "CO-17"
+      ],
+      "why": "Just call it sol, lowercase. And then, in the same breath: actually, it is called awareness.",
+      "not_gateable": "A pattern on the word soul fires on the numerology, where soul urge is the right term. The rename is done and a gate here would only break the right use."
+    },
+    {
+      "id": "linear-and-boring",
+      "class": "structure",
+      "log": [
+        "CO-23"
+      ],
+      "why": "The knowledge base was linear and boring. A deck of identical cards is a list wearing a deck's clothes.",
+      "not_gateable": "Structure, not wording."
+    },
+    {
+      "id": "two-readers",
+      "class": "reading",
+      "log": [
+        "CO-30"
+      ],
+      "why": "One line serves a practitioner who needs the real figure and a layman who needs to get it on sight, and tells them the same thing. The node state, the figure and the picture ride together. V22.",
+      "not_gateable": "Whether both readers get it is a fact about two readers, and whether the icon and its ring sit beside the figure is a fact about the rendered screen, which the sweep does not open. The bare-weight flag catches a weight printed with no node state in the same string. It cannot tell that the word agrees with the figure: that is held by reading the word off the figure through one table, nodeStateOf in engine/data/canon.js, the way tierOf reads CQ, and never by a writer choosing it. Its lines are a proposal until he rules them, round KD. Read the line as Derek and as Angela, with a profile loaded, and look at the shot."
+    },
+    {
+      "id": "percent-with-a-denominator",
+      "class": "value",
+      "log": [
+        "CO-31"
+      ],
+      "why": "A percent on a read profile is allowed only where it says what it is a percent of. Coherence and decoherence are read on a scale of a hundred and are printed with a percent sign, and whether that sign stays is his call.",
+      "not_gateable": "copy-verify.py flags every percent on a read profile and fails none. The sweep lists the templates, so the owner can rule on the sign once for the product and not string by string."
+    }
+  ],
+  "log": [
+    {
+      "id": "CO-01",
+      "date": "21 September, twenty first pass",
+      "where": "TASKS.md:143, KN2",
+      "verbatim": true,
+      "words": "Get rid of where it says 50 in the lower right hand corner, is accuracy of 100 plus or minus 12.",
+      "objects": "A figure printed with a tolerance stapled to it. Analytics, the lower right of the reading.",
+      "rules": [
+        "tolerance"
+      ]
+    },
+    {
+      "id": "CO-02",
+      "date": "21 September, twenty first pass",
+      "where": "TASKS.md:140, KN1",
+      "verbatim": true,
+      "words": "Where is this swing 11? Get rid of that.",
+      "objects": "A figure printed with an interval stapled to it. The compass polar and the compass drill.",
+      "rules": [
+        "tolerance"
+      ]
+    },
+    {
+      "id": "CO-03",
+      "date": "21 September, twenty first pass",
+      "where": "TASKS.md:146, KN3",
+      "verbatim": true,
+      "words": "Like I said, do a sweep of text like that. 100 plus minus 12, swing 11. That shit has to all go.",
+      "objects": "The whole class, not the two strings. Any figure carrying an interval, a tolerance or a statistical decoration.",
+      "rules": [
+        "tolerance",
+        "interval-word"
+      ],
+      "note": "He also ruled what replaces it, in the same breath: give a pill to the lower right side of the number of the coherence slider, like it oscillates within the person's range. The range is drawn, never stated."
+    },
+    {
+      "id": "CO-04",
+      "date": "20 September",
+      "where": "TASKS.md:5578, TX",
+      "verbatim": true,
+      "words": "There is some weird text that says the waist is 40 to 60 out of 100. First of all, I told you never to write text like that any more. Scrub the entire app, look for stuff like that. If you cannot use regular words to describe it, do not describe it. And 40 to 60 out of 100 does not give a lot of specific detail.",
+      "objects": "Prose that hides behind a scale instead of saying something.",
+      "rules": [
+        "scale-prose"
+      ],
+      "note": "It collides with CO-06 and CO-07, which say every number states what it is out of, and his ruling here wins: the point of that law was that a bare 13 means nothing, not that every figure should be dressed in a denominator."
+    },
+    {
+      "id": "CO-05",
+      "date": "17 September",
+      "where": "FEEDBACK-log.md, owner, counts",
+      "verbatim": true,
+      "words": "every time you add that 11 of 12, why.",
+      "objects": "A count against a total. A reading is not a score.",
+      "rules": [
+        "count-against-total"
+      ],
+      "note": "The ruling recorded with it: never print a count against a total unless the person is working through a finite list and the number tells them how much is left. Nine count lines were cut and two survive, intake progress and release queue position."
+    },
+    {
+      "id": "CO-06",
+      "date": "recorded in the twelfth note",
+      "where": "TASKS.md:7844, AJ1",
+      "verbatim": true,
+      "words": "you read 13 below the oscillating band. You read 13, what does that mean. Integrity 4.3, what does that mean. Coherence 13.",
+      "objects": "A number with no scale and no meaning beside it.",
+      "rules": [
+        "naked-number"
+      ]
+    },
+    {
+      "id": "CO-07",
+      "date": "recorded in the twelfth note",
+      "where": "TASKS.md:8169, AR1",
+      "verbatim": true,
+      "words": "39 of what. We're not doing that anymore. Make sure that's copy editor. This is your job to make sure it's no longer happening.",
+      "objects": "A number with no unit. Handed to this seat as a standing job rather than as a task.",
+      "rules": [
+        "naked-number"
+      ]
+    },
+    {
+      "id": "CO-08",
+      "date": "20 September, ninth pass",
+      "where": "TASKS.md:2268, NW",
+      "verbatim": true,
+      "words": "85 days kept, of the 90 days on your record. Of the same 90 days. We should need a rule never to write shit like that. I don't even know why you have it. Instead of 85 days kept, just one word. Recurring, missed, active, streak.",
+      "objects": "A figure's label written as a sentence, and the same number said twice on one card.",
+      "rules": [
+        "figure-label"
+      ]
+    },
+    {
+      "id": "CO-09",
+      "date": "21 September, twenty first pass",
+      "where": "TASKS.md:158, BM1",
+      "verbatim": true,
+      "words": "the balance masculine feminine is broken. It says masculine, not enough held to read feminine. I do not understand what that bullshit means.",
+      "objects": "A refusal sitting in a value slot, between two labels, so it reads as a sentence about the second label.",
+      "rules": [
+        "empty-state"
+      ],
+      "note": "The wording half is gateable and the slot half is not. The guidance entry refusal-in-value carries the part no pattern reaches."
+    },
+    {
+      "id": "CO-10",
+      "date": "20 September, ninth pass",
+      "where": "TASKS.md:2291, CP",
+      "verbatim": true,
+      "words": "which day you keep it, I'm not sure what that word means. This goes again to our syntax. We need a sweep of the entire thing, of all the copy. Add that to the list. A copy sweep.",
+      "objects": "A heading that is not a thing a person would say out loud.",
+      "rules": []
+    },
+    {
+      "id": "CO-11",
+      "date": "20 September",
+      "where": "TASKS.md:3206, VC",
+      "verbatim": true,
+      "words": "The writing needs to feel like it's exceptional and right now it feels like it's AI. I need all output content copy to feel like our team simulated it ten times before they gave us an answer. They all have persona backgrounds. We know the type of content they consumed and the writing styles they would have consumed within that content. So the AI should have a deep brain about how to write content for humans, especially if it makes micro rule sets about how it relates to its past history and content and what it's learned and how it's identified with certain styles and techniques. So that the end output is a ten instead of an AI six.",
+      "objects": "The register of the whole product. This is the objection the voice skill exists to answer.",
+      "rules": []
+    },
+    {
+      "id": "CO-12",
+      "date": "18 September",
+      "where": "TASKS.md:1045, QD1",
+      "verbatim": true,
+      "words": "these do not look like questions from the team. It says Atuned questions, but there are no question marks here. These are just statements.",
+      "objects": "A document titled questions holding statements. A list that asks nothing cannot be answered.",
+      "rules": [
+        "question-mark"
+      ]
+    },
+    {
+      "id": "CO-13",
+      "date": "18 September",
+      "where": "TASKS.md:448, QC1",
+      "verbatim": true,
+      "words": "I don't know what A2 kept is. I don't know what does the dot law move so U3 can exist. I don't know if the e loses rhythm. All these have no context. Give me context so I can answer them.",
+      "objects": "A line written by the seat that found it, assuming everything that seat knows.",
+      "rules": []
+    },
+    {
+      "id": "CO-14",
+      "date": "17 September",
+      "where": "FEEDBACK-log.md, owner, Field stage and gates",
+      "verbatim": true,
+      "words": "I do not like text hovering over things unless I can read it. display information over the main feature is bad design, shrink it.",
+      "objects": "Copy placed over a graphic. Two sentences from the same session, recorded together in the log.",
+      "rules": []
+    },
+    {
+      "id": "CO-15",
+      "date": "17 September",
+      "where": "FEEDBACK-log.md, owner, drill headers",
+      "verbatim": true,
+      "words": "Address 007 root, where in your programming are you adding that.",
+      "objects": "A node serial in a header meant for a person. The data model read out loud.",
+      "rules": [
+        "serial-to-a-person"
+      ]
+    },
+    {
+      "id": "CO-16",
+      "date": "20 September, ninth pass",
+      "where": "TASKS.md:2354, RT7",
+      "verbatim": true,
+      "words": "I'm not sure what that is. Get rid of it.",
+      "objects": "A legend on a surface explaining the product's own model to somebody who did not ask.",
+      "rules": []
+    },
+    {
+      "id": "CO-17",
+      "date": "20 September",
+      "where": "TASKS.md:6558, D18",
+      "verbatim": true,
+      "words": "just call it sol, lowercase",
+      "objects": "The name of the mark, and its case.",
+      "rules": [],
+      "note": "He corrected himself in the same breath, and the record keeps both halves so nobody reinstates the first: \"actually, it's called awareness.\" Awareness stands, lowercase, and sol is superseded."
+    },
+    {
+      "id": "CO-18",
+      "date": "ruled, undated in the record",
+      "where": "DECISIONS.md:305, the register",
+      "verbatim": true,
+      "words": "We are not judging anybody.",
+      "objects": "A verdict about a person. The product says what is running, not what a person is.",
+      "rules": [
+        "verdict"
+      ],
+      "note": "Recorded in DECISIONS.md as the owner's words. The ruling it settles: a label describing a PATTERN may be blunt, a label describing the WHOLE PERSON may not."
+    },
+    {
+      "id": "CO-19",
+      "date": "settled, no quotation on record",
+      "where": "BIBLE.md, Voice",
+      "verbatim": false,
+      "words": "No em dashes. Anywhere. Including commit messages and documentation. Never say 108. The count stated to users is 112. Sentence case. No all caps UI copy.",
+      "objects": "Punctuation, the count, and case.",
+      "rules": [
+        "em-dash",
+        "the-count",
+        "caps"
+      ],
+      "note": "INFERRED FROM THE RECORD, not quoted. BIBLE.md carries these as settled law and says it keeps his words where he gave them. These three carry no quotation, so the class is taken from the ruling and not from an utterance."
+    },
+    {
+      "id": "CO-20",
+      "date": "settled, no quotation on record",
+      "where": "BIBLE.md, Voice, and CLAUDE.md, Voice",
+      "verbatim": false,
+      "words": "Mechanical and precise. No soft wellness language. Short sentences. Physical metaphors only.",
+      "objects": "The category lexicon, the line that announces a thing is starting, and the reassurance against a fear nobody raised.",
+      "rules": [
+        "soft",
+        "preamble",
+        "reassurance"
+      ],
+      "note": "INFERRED FROM THE RECORD, not quoted. The reassurance half is the voice skill's own V12 and carries his one bounded exception, the welcome at ui/onboard.js:121, which is quoted in that file and stands."
+    },
+    {
+      "id": "CO-21",
+      "date": "settled, no quotation on record",
+      "where": "BIBLE.md, Voice",
+      "verbatim": false,
+      "words": "A label this product puts on a person carries a definition, the behaviour it produces, and the direction out of it. A word like Severe with nothing attached is a judgement. The same word with those three is a reading.",
+      "objects": "A band word standing alone.",
+      "rules": [],
+      "note": "INFERRED FROM THE RECORD, not quoted. It is the team's proposal that he accepted, which BIBLE.md records as law."
+    },
+    {
+      "id": "CO-22",
+      "date": "settled, no quotation on record",
+      "where": "BIBLE.md, Voice",
+      "verbatim": false,
+      "words": "One word per concept. A real distinction keeps its own word; held, installed and firing are three states and stay three words.",
+      "objects": "Two words doing one job.",
+      "rules": [
+        "one-word-per-concept",
+        "empty-state"
+      ],
+      "note": "INFERRED FROM THE RECORD, not quoted. tools/terms.py is the gate that already holds it."
+    },
+    {
+      "id": "CO-23",
+      "date": "graded, in his words",
+      "where": "BIBLE.md:154, grades on record",
+      "verbatim": true,
+      "words": "The knowledge base was linear and boring.",
+      "objects": "Content structure. A deck of identical cards is a list wearing a deck's clothes.",
+      "rules": []
+    },
+    {
+      "id": "CO-25",
+      "date": "ruled, recorded 20 September",
+      "where": "TASKS.md:6984",
+      "verbatim": false,
+      "words": "Two months free is out. The offer is not two months free. Any copy saying so is wrong and comes out.",
+      "objects": "An offer stated in copy that the owner has ruled out.",
+      "rules": [
+        "two-months-free"
+      ],
+      "note": "Recorded as his ruling inside a list of them, so the wording is the record's rather than a quotation. The class is not in doubt and BUYERS.md states it a second way."
+    },
+    {
+      "id": "CO-26",
+      "date": "27 September, in his words",
+      "where": "TASKS.md, round GQ",
+      "verbatim": true,
+      "words": "instead of saying shit like your name as you see it, just from our narrative story Bible, name, first, middle, last, instead of keep it, just you save, whatever's causing you to write lingo like that, stop that, date",
+      "objects": "A form label or a control written in the story bible's voice. The field is named for what goes in it and the button for what it does.",
+      "rules": [
+        "plain-field-label"
+      ],
+      "note": "The strings he saw were in proto/fw/pages/energetics.html, the FW round's Energetics mockup: \"Your name, as you use it\" over one box, \"The date you were born\", and a button reading \"Keep it\". \"As you see it\" is his recollection of \"as you use it\". The shipped form, ui/intakeui.js, already read First name, Middle, Last and Date of birth. The live funnel carried the same button voice in a note, \"Keep it: it is the handoff\", at funnel/quiz.html."
+    },
+    {
+      "id": "CO-27",
+      "date": "27 September, in his words",
+      "where": "TASKS.md, round HS",
+      "verbatim": true,
+      "words": "you have this text again, where it says archetypes, 12 ways of acting. Each besides the part, holy shit, I told you I don't want text like that anymore. Energetics, your birth moment is 63 questions. Why is this not being fixed in code? Why is that text never being written out ever again after I keep asking for it to never be written out? What is in your programming? What is happening within our copy Bible where this is constantly being violated? ... Do a sweep of the entire site with the UI UX team get rid of all this like second or three third tier text pick how much to run each pattern is what like we have overlays for all this shit clean up my UI UX get rid of all this small noodly nuanced shit across the entire site I don't want to see it anymore",
+      "objects": "A paragraph under a section heading explaining what the section is or how to use it, on a shipped screen, after he had asked for the class never to be written.",
+      "rules": [
+        "section-explains-itself"
+      ],
+      "note": "The strings he quoted were the archetype paragraph in ui/avatarui.js, the Energetics subtitle and the birth moment paragraph in ui/intakeui.js, and the release panel's opening line in ui/storyui.js, \"Pick how much to run. Each pattern is one thought line at one address.\" The first three were cut in a0d90b3 and the fourth in the sweep that added this rule. \"five field 25.48\" and \"two words, zero tag\" in the same dictation are two value defects and not this class: an imprint seat row reading \"5 held, 26.4, 8 installed\" and the Story counter reading \"2 words, 0 tagged\"."
+    },
+    {
+      "id": "CO-28",
+      "date": "25 September, marked on a screenshot",
+      "where": "TASKS.md, round BA, BA9",
+      "verbatim": true,
+      "words": "You have unnecessary text, I want those removed.",
+      "objects": "The caption under the wheel explaining the ring and how to press it, struck through on his screenshot beside a notice he struck in the same mark.",
+      "rules": [
+        "section-explains-itself"
+      ],
+      "note": "Logged in round HS, when the class was ruled a third time. It had not been entered here, which is part of why the class had no gate: the caption was cut by hand and nothing held it closed."
+    },
+    {
+      "id": "CO-29",
+      "date": "27 September, in his words",
+      "where": "TASKS.md, round JK",
+      "verbatim": true,
+      "words": "Ensure you do a copy sweep right now. The copy is at a D for our tools, our tips, as far as the information goes. That layer right there is missing a lot of very key kind of simplification of language, right? We want to speak to people as if they're 10. That is a core theme of ours. We don't use abstract language ever, so add that. Make sure you do a sweep of all the copy and update it. That will be a priority pass, seeing as how it's a blocker. That needs to be for all of Atuned, for the tutorial and for onboarding.",
+      "objects": "The tooltips and the definitions behind them, graded a D as a layer, and the tutorial and onboarding with them. A definition that explains one term with three more, in words a ten year old would have to ask about.",
+      "rules": [
+        "abstract-word"
+      ],
+      "note": "Ruled as a core theme and added to the voice as V21 in SKILL.md, beside the rules and replacing none. The rule itself, whether a ten year old understands a sentence, is a fact about the reader and is in the guidance list as ten-year-old. The lexicon and the abstract rate in check.py are the two parts a program can hold."
+    },
+    {
+      "id": "CO-30",
+      "date": "27 September, in his words",
+      "where": "TASKS.md, round JX",
+      "verbatim": true,
+      "words": "I think speak to like where a 10 year old has to do two things. it has to be articulate and contextual. It has to provide knowledge and information, practitioner needs to be able to understand it. and the layman needs to be able to understand it. and we can't speak to them in abstract terms that our meaningless to them. So we can't say six point three weight, when that doesn't say anything. We need to say something like heavily impaired, heavily blocked, right? We can use iconography to show um, given example, uh, the iconography within the summaries, I think would be a fantastic kind of way to like paint the picture. Because it adds a visual to the narrative.",
+      "objects": "A weight printed as a bare figure, which means nothing to the layman and too little to the practitioner, with no band word to read it by and no picture beside it.",
+      "rules": [
+        "bare-weight"
+      ],
+      "note": "A refinement of CO-29 and not a second rule beside it: V21 had one reader and this has two, on the same line. Added to the voice as V22 in SKILL.md. The ladder for a weight was open in this round: \"Is it flowing? Is it blocked? And then what are the states in between? ... it's zero to five, but you can scale that up to zero to 10.\" Round KD in TASKS.md named it, and this entry's own placeholder is superseded: \"Yeah, we use that let's call it node state instead of band ladder. Node state would be open impaired moderately impaired heavily impaired blocked.\" The words are ruled. The figures between the rungs are not: NODESTATE_PROPOSED in engine/data/canon.js is a proposal and says so. The icon model he names is Summary's, where cr() in ui/component.js draws every figure as an icon, a ring and a pill. The sweep that applies this across the product is separate work and waits on the lines between the rungs, on a definition, behaviour and direction out for each rung (V9), and on files other seats hold."
+    },
+    {
+      "id": "CO-31",
+      "date": "2 October, in his words",
+      "where": "round PL, task J13",
+      "verbatim": true,
+      "words": "I keep seeing this percent shit, the hardest carrying zero percent. I don't want that. You have rules for this content. Use them. And earlier: I need you to verify that you have gone through the site because I have seen much stuff that doesn't have the rules. Especially in the tooltips. And some of the info. And on the Field rail: Help me make sense of these: This is field carrying filled in heaviest most shut. What are you trying to tell me here? If it doesn't make sense, cut it.",
+      "objects": "A percent printed off zero or off a default, a count against a total at any scale, a zero shown as a number, and a block of four rows on an unread profile that reads two empty states, a zero and a verdict about a throat nobody has read.",
+      "rules": [
+        "count-against-total",
+        "percent-on-unread",
+        "bare-number-on-unread",
+        "zero-as-dash"
+      ],
+      "note": "The rules existed and the product broke them, because the gate read the source and he reads the screen. The strings that broke them are built at run time or held in tables and shown by a stylesheet, so a literal sweep reported zero while the Field rail printed \"Heaviest Root 0.0\". The answer is a second gate that reads the rendered page: tools/copy-walk.js and tools/copy-verify.py, with the counts in COPY-VERIFY.md. The Field rail block is not printed while the profile is unread, because the four doors above it already say nothing has been read."
+    }
+  ],
+  "handover": [
+    {
+      "file": "atuned_src/ui/ui.js",
+      "rule": "empty-state",
+      "log": "CO-09",
+      "bucket": "value",
+      "old": "label:b.read?dir:'not read yet'",
+      "new": "label:b.read?dir:''",
+      "why": "The balance pill, and the last piece of the string the objection names. The structural half is landed and right: the pill draws a dash and the refusal moved out from between the two pole labels. The label is the part still to go. Not read yet is false on a field that has been read and is carrying under a mean of one on both sides, which is a real state the engine folds in with the empty one at compute.js:41. A label that can be false about the screen it sits on is worse than no label. The dash is the value, the absence needs no name, and the reason is one tap away in the drill.",
+      "note": "If an empty label draws an empty box, drop the key rather than passing a space."
+    },
+    {
+      "file": "atuned_src/ui/ui.js",
+      "rule": "empty-state",
+      "log": "CO-09",
+      "bucket": "refusal",
+      "old": "'Balance. Not read yet. Neither side reaches 1, so no direction is '",
+      "new": "'Balance. Neither side reaches 1, so no direction is '",
+      "why": "The same claim in the tooltip, and the sentence directly after it already says what is true. Neither side reaches 1 is checkable on any profile. Not read yet is not."
+    },
+    {
+      "file": "atuned_src/ui/drills.js",
+      "rule": "empty-state",
+      "log": "CO-09",
+      "bucket": "value",
+      "old": "+(!b.read?'not read yet'",
+      "new": "+(!b.read?'no direction named'",
+      "why": "The drill's headline value, the same slot one door in, where there is room for three words. It says what the instrument did rather than guessing which of three states it is in, and the paragraph two lines below carries the reason with both means printed beside it."
+    },
+    {
+      "file": "atuned_src/ui/analytics.js",
+      "rule": "interval-word",
+      "log": "CO-03",
+      "bucket": "definition",
+      "old": "'. This is an estimate. A small move is not a reading.'",
+      "new": "'. The needle has play in it, so a small move is not a reading.'",
+      "why": "Marked provisional in the file and waiting on this seat. The fact is the instrument's resolution, and a physical metaphor carries it where the arithmetic used to: play is the slack in a linkage, which is what an interval is. This is an estimate is the product talking about itself, and the sheet behind the profile button already says it once."
+    },
+    {
+      "file": "atuned_src/ui/panels.js",
+      "rule": "interval-word",
+      "log": "CO-03",
+      "bucket": "definition",
+      "old": "'Every reading is an estimate, not a measurement. A small move is not '",
+      "new": "'Every reading is an estimate. The needle has play in it, so a small move is not a reading.'",
+      "why": "Thirty words with three antithesis turns in them, X not Y twice and rather than once, against a house rate of 2.7 per cent of sentences. Noise is the lab register with the figure taken out of it, which is the class the sweep refuses. And the instrument saying it does not flatter you is the product praising itself for not praising.",
+      "note": "The second literal on the following line, 'a reading, it is noise, and the instrument says so rather than flattering you.</p></div>', is replaced by '</p></div>'. The new sentence closes the paragraph."
+    },
+    {
+      "file": "atuned_src/ui/analytics.js",
+      "rule": "count-against-total",
+      "log": "CO-05",
+      "bucket": "definition",
+      "old": "'21 of the 76 laws, each answered from never to every time.'",
+      "new": "'21 laws, each answered from never to every time.'",
+      "why": "A count against a total, and the total is a fact about the codex rather than about the person. Said this way it reads as coverage of twenty seven per cent and invites the question why not the rest. The number a person needs is how many they answered and how."
+    },
+    {
+      "file": "atuned_src/ui/games.js",
+      "rule": "count-against-total",
+      "log": "CO-05",
+      "bucket": "reading",
+      "old": "'</b> of the 112 addresses. '",
+      "new": "'</b> address'+(at.length===1?'':'es')+'. '",
+      "why": "A count against a total, and this one is the total stated to a person. The set is the addresses this fetter runs, so the figure carries its own unit and needs no denominator. The sentence after it already says how many of them are carrying.",
+      "note": "The literal in front of it, It runs <b> plus the count, does not move."
+    }
+  ]
+}

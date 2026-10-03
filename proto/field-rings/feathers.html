@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Field, feathers</title>
+<meta name="viewport" content="width=1600">
+<link rel="stylesheet" href="inter.css"><link rel="stylesheet" href="kit.css">
+<script src="data-james.js"></script><script src="kit.js"></script>
+<script src="data-feathers.js"></script><script src="feathers-core.js"></script>
+<style>
+/* the hover. The one under the pointer comes up and the other twenty give
+   ground, eased at the micro state the product already uses, so "which one is
+   that" is answered by the drawing rather than hunted for. */
+.fg .fth{transition:opacity 160ms var(--ease-out)}
+.fg.hov .fth{opacity:.42}
+.fg.hov .fth.on{opacity:1}
+.hit{fill:transparent;stroke:none;cursor:pointer}
+.tipglyph{opacity:0;transition:opacity 160ms var(--ease-out);pointer-events:none}
+.tipglyph.on{opacity:1}
+@media (prefers-reduced-motion:reduce){.fg .fth,.tipglyph{transition:none}}
+/* THE PROBE, in the shape the wheel's own #probe already speaks: the kind,
+   the name, then the reading, one fact a line. */
+.probe{position:absolute;z-index:9;pointer-events:none;min-width:150px;max-width:230px;
+ background:var(--panel);border:1px solid var(--edge-2);border-radius:var(--r-xs);
+ box-shadow:var(--shadow);padding:8px 11px 9px;font-size:12px;line-height:17px;color:var(--mid);display:none}
+.probe .k{font-size:11px;color:var(--dim)}
+.probe .n{font-size:13px;font-weight:600;color:var(--ink);margin:1px 0 4px}
+.probe b{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+</style>
+</head><body>
+<script>
+/* FEATHERS. The nested frames rendition with the laws drawn as feathers.
+
+   Two things differ from nested-frames.html and nothing else does.
+
+   THE LAWS. They were twenty one bars on the innermost frame, and at the size
+   the frame draws them they read as a tick ring: the owner looked at it and
+   said he did not see the feathers. Now each law is a feather out of the core,
+   as long as it sits off centre, in the direction of the seat it is seated at.
+   The band the bars sat in is gone, so the feathers have the room it held.
+
+   THE GATES. They sat three above the core and three below. The heart fan
+   points straight down at 186 degrees, which is where the lower three were, so
+   the six move into the seam at twelve o'clock: the one bearing on the ring no
+   seat owns, and the gates are the one thing at the core no seat owns. Higher
+   over lower, each column a pair of opposites, the pill under each ring.
+
+   Everything else is nested-frames.html line for line. */
+(function(){
+const M=K.mount({name:'Feathers'}), F=K.F, w=M.win, cx=w.cx, cy=w.cy, TAU=K.TAU, FT=window.FEATHER;
+const NS=12;
+const ring=d=>K.Ring(cx,cy,w.a-d,w.b-d,NS);
+const lineRing=(g,d,al)=>K.el('path',{d:ring(d).d(),fill:'none',stroke:K.rgba(K.INK,al),'stroke-width':1},g);
+const D={dom0:0,dom1:20, story:25, base:31, barMax:48, seatNm:94,
+ mask0:106,mask1:114, arch0:119,arch1:133, pat:147, cx:165, hy:181, sup:197};
+const base=ring(D.base); K.useLoop(base);
+K.shadow(M);
+
+/* ---- domains ---- */
+{const o=ring(D.dom0),i=ring(D.dom1),mid=ring((D.dom0+D.dom1)/2),g=M.L.domains,tg=M.T.domains;
+ F.domains.forEach((dm,k)=>{const t0=k/19+.0016,t1=(k+1)/19-.0016;
+  const c=K.hx(F.rootCol[dm.r]), a=dm.sel?.34:.05+dm.v*.22;
+  const p=K.el('path',{d:K.bandD(o,i,K.th(t0),K.th(t1)),fill:K.rgba(c,a),
+   stroke:dm.sel?K.rgba(c,.95):null,'stroke-width':dm.sel?1.5:null},g);
+  K.title(p,dm.nm+'. '+dm.r+' root.'+(dm.sel?' Your selection.':''));
+  const q=mid.at(K.th(dm.t));
+  K.glyph(tg,dm.ic,q.x,q.y,12,K.rgba(c,dm.sel?1:.42+dm.v*.5),1.7);});}
+
+/* ---- addresses ---- */
+const tip={};
+{const g=M.L.addresses,slot=base.len/K.N,hw=slot*.25;
+ lineRing(g,D.base,.10);
+ K.slots.forEach(s=>{const p=base.at(K.th(s.t)),tx=p.ny,ty=-p.nx;
+  if(s.field){const q={x:p.x+p.nx*8,y:p.y+p.ny*8};
+   K.title(K.el('circle',{cx:q.x,cy:q.y,r:4,fill:'none',stroke:K.rgba(K.INK,.55),'stroke-width':1.3},g),
+    s.k+'. '+s.a+', outside the body.');
+   tip[s.s]=q; return;}
+  const sq=s.sq, len=4+K.clamp(sq/10,0,1)*D.barMax, held=sq>=4, c=K.nodeCol(s.b,sq);
+  const quad=l=>[[p.x+tx*hw,p.y+ty*hw],[p.x-tx*hw,p.y-ty*hw],[p.x-tx*hw+p.nx*l,p.y-ty*hw+p.ny*l],[p.x+tx*hw+p.nx*l,p.y+ty*hw+p.ny*l]];
+  K.el('path',{d:K.polyD(quad(D.barMax+4),true),fill:K.rgba(K.INK,.03)},g);
+  const bar=K.el('path',{d:K.polyD(quad(len),true),fill:K.rgba(c,held?.92:.44)},g);
+  if(sq>=9)K.el('path',{d:K.polyD(quad(len),true),fill:'none',stroke:K.rgb(K.ALARM),'stroke-width':1.4},g);
+  K.title(bar,s.k+'. '+s.b+', '+s.cf+'. Held at '+sq.toFixed(1)+'.');
+  tip[s.s]={x:p.x+p.nx*len,y:p.y+p.ny*len};});
+ const nm=ring(D.seatNm);
+ K.SEATS.forEach(b=>{const S=K.sector[b],c=K.seat(b);
+  K.el('path',{d:K.polyD(base.seg(K.th(S.t0+.002),K.th(S.t1-.002))),fill:'none',stroke:K.rgba(c,.9),'stroke-width':2},g);
+  const q=nm.at(K.th(S.tm));K.seatGlyph(M.T.seats,b,q.x,q.y,17);});}
+
+/* ---- stories ---- */
+{const g=M.L.stories,st=ring(D.story);
+ Object.keys(F.atoms).forEach(j=>{const s=K.slots[+j+2];if(!s)return;
+  F.atoms[j].forEach(a=>{const p=st.at(K.th(s.t)),c=K.mix(K.seat(s.b),K.INK,.4),l=2+a.amt;
+   K.el('line',{x1:p.x+p.nx*5,y1:p.y+p.ny*5,x2:p.x-p.nx*l,y2:p.y-p.ny*l,stroke:K.rgba(c,.85),'stroke-width':1.3,'stroke-linecap':'round'},g);
+   K.title(K.el('circle',{cx:p.x-p.nx*l,cy:p.y-p.ny*l,r:2.1,fill:K.rgb(c)},g),
+    '"'+F.entries[a.ei]+'" Put '+a.amt.toFixed(1)+' on '+s.k+'.');});});}
+
+/* ---- masks, archetypes ---- */
+{const o=ring(D.mask0),i=ring(D.mask1),g=M.L.masks,warm=[224,214,186];
+ F.masks.forEach((m,k)=>{const t0=k/6+.003,t1=(k+1)/6-.003,v=K.clamp(m.w/10,0,1);
+  K.title(K.el('path',{d:K.bandD(o,i,K.th(t0),K.th(t1)),fill:K.rgba(warm,.04+v*.30)},g),m.nm+' mask. Weight '+m.w.toFixed(1)+'.');});}
+{const o=ring(D.arch0),i=ring(D.arch1),mid=ring((D.arch0+D.arch1)/2),g=M.L.archetypes,tg=M.T.archetypes,gc=K.ACCENT;
+ K.SEATS.forEach(b=>{const mine=F.arch.filter(a=>a.b===b),S=K.sector[b],span=(S.t1-S.t0)/mine.length;
+  mine.forEach((a,k)=>{const j=F.arch.indexOf(a),lead=j===F.pi,sec=j===F.si;
+   const t0=S.t0+k*span+.002,t1=S.t0+(k+1)*span-.002;
+   K.title(K.el('path',{d:K.bandD(o,i,K.th(t0),K.th(t1)),fill:K.rgba(gc,.04+a.aff*.16),
+    stroke:lead?K.rgba(gc,.55):sec?K.rgba(gc,.32):null,'stroke-width':lead?1.4:sec?1.1:null},g),
+    a.nm+'. Runs through '+b+'.'+(lead?' Your first.':sec?' Your second.':''));
+   const q=mid.at(K.th(a.t));
+   K.glyph(tg,a.ic,q.x,q.y,11,K.rgba(gc,lead?1:sec?.85:.35+a.aff*.4),1.8);});});}
+
+/* ---- patterns ---- */
+const at={sab:[],cx:[],hy:[],sup:[]};
+{const tr=ring(D.pat),g=M.L.patterns;
+ K.el('path',{d:tr.d(),fill:'none',stroke:K.rgba(K.INK,.07),'stroke-width':1},g);
+ const w01=s=>K.clamp((s.w-3.5)/3,0,1);
+ F.sabs.forEach((s,k)=>{const p=tr.at(K.th(s.t)),kk=w01(s);at.sab[k]=p;
+  s.parts.forEach(j=>{const q=tip[j+2];if(!q)return;const nc=K.seat(F.nodes[j].b);
+   K.el('path',{d:K.bowD(q,p,cx,cy,K.sag(j,.16)),fill:'none',stroke:K.rgba(nc,.16+kk*.22),'stroke-width':(.7+kk*1).toFixed(2),
+    'stroke-dasharray':s.unnamed?'3 3':null},g);});});
+ F.sabs.forEach((s,k)=>{const p=at.sab[k],c=K.seat(s.b||'Root'),r=2.6+w01(s)*3.4;
+  const b=s.unnamed?K.el('circle',{cx:p.x,cy:p.y,r:r,fill:K.rgb(K.GROUND),stroke:K.rgb(c),'stroke-width':1.5},g)
+                   :K.el('circle',{cx:p.x,cy:p.y,r:r,fill:K.rgb(c)},g);
+  K.title(b,s.nm+(s.unnamed?', inferred':'')+'. Weight '+s.w.toFixed(1)+', built from '+s.parts.length+' address'+(s.parts.length===1?'':'es')+'.');});}
+
+/* ---- chains ---- */
+{const g=M.L.chains,tiers=[['cx',F.cxs,D.cx,'Solar',3.4,1.5,at.sab,.30],['hy',F.hys,D.hy,'Sacral',4.8,2.1,at.cx,.40],['sup',F.sups,D.sup,'Root',6.8,2.7,at.hy,.50]];
+ tiers.forEach(T=>{const [key,list,d,seat,rb,wd,from,pull]=T,tr=ring(d),c=K.seat(seat);
+  K.el('path',{d:tr.d(),fill:'none',stroke:K.rgba(c,.09),'stroke-width':1},g);
+  list.forEach((o,k)=>{const p=tr.at(K.th(o.t));at[key][k]=p;
+   const kk=K.clamp((o.w-3.5)/3,0,1);
+   o.parts.forEach(pi=>{const q=from[pi];if(!q)return;
+    K.el('path',{d:K.bowD(q,p,cx,cy,pull),fill:'none',stroke:K.rgba(c,.18+kk*.26),'stroke-width':(wd*(.45+kk*.7)).toFixed(2)},g);});});
+  list.forEach((o,k)=>{const p=at[key][k],kk=K.clamp((o.w-3.5)/3,0,1);
+   K.title(K.el('circle',{cx:p.x,cy:p.y,r:rb+kk*2.4,fill:K.rgb(c),stroke:K.rgb(K.GROUND),'stroke-width':1.5},g),o.nm+'. Weight '+o.w.toFixed(1)+'.');});});}
+
+/* ---- laws. THE FEATHERS ----
+   James's laws come off data-feathers.js, which carries whether each was
+   answered, and are checked against the laws the rest of this stage stands
+   on. Two captures of one build that disagreed would be two Jameses. */
+const FD=window.FEATHERS, J=FD.rows.find(r=>r.nm===F.who);
+const agree=J&&F.laws.every(l=>{const m=J.laws.find(x=>x.nm===l.nm);return m&&Math.abs(m.v-l.v)<0.051;})&&Math.abs(J.CQ-F.CQ)<0.01;
+if(!agree)console.error('feathers: data-feathers.js and data-james.js disagree about '+F.who);
+const prof={nm:F.who,CQ:F.CQ,tierCol:F.tierCol,range:F.range,unread:F.unread,laws:J.laws};
+const bear=FT.bearings();
+const fig=FT.figure(M.L.laws,cx,cy,prof,{defs:M.defs,core:false,bear:bear});
+const idn=FT.check(prof.laws,prof.CQ);
+window.__feathers={identity:idn,agree:agree,marks:fig.marks.map(m=>({nm:m.l.nm,b:m.l.b,v:m.l.v,in:m.l.in,
+ th:m.l.th,L:m.L,tip:m.tip,root:m.root}))};
+
+/* ---- the gates, in the seam ----
+   Columns are the three pairs, higher over lower: awareness over ignorance,
+   detachment over attachment, intention over aversion. The ring, the glyph
+   and the pill are K.gate's; the pill sits under the ring rather than off its
+   lower right, which is what lets six fit between the crown fan and the root
+   fan with clear air on both sides. */
+const GR=11, COL=34, ROW=42, PW=24, PH=14;
+function gate(g,x,y,v){const up=v.side==='higher',c=K.seat(up?'Heart':'Root'),ev=F.gateEvidence,f=v.pct/100;
+ const gg=K.el('g',{},g);
+ K.el('circle',{cx:x,cy:y,r:GR,fill:K.rgb(K.GROUND)},gg);
+ K.el('circle',{cx:x,cy:y,r:GR,fill:'none',stroke:K.rgba(c,ev?.22:.46),'stroke-width':2},gg);
+ if(f>0)K.el('path',{d:K.arcD(x,y,GR,-Math.PI/2,-Math.PI/2+TAU*f),fill:'none',stroke:K.rgba(c,.95),'stroke-width':2,'stroke-linecap':'round'},gg);
+ K.glyph(gg,v.glyph,x,y,GR*1.15,K.rgba(K.INK,ev?.95:.86),1.6);
+ const px=x-PW/2, py=y+GR+2;
+ K.el('rect',{x:px,y:py,width:PW,height:PH,rx:PH/2,fill:ev?K.rgb(c):K.rgb([58,58,62])},gg);
+ K.text(gg,ev?v.pct+'%':'–',x,py+PH/2+4,{'text-anchor':'middle','font-size':11,'font-weight':600,
+  fill:ev?K.rgb([16,16,16]):K.rgba(K.INK,.8)});
+ K.title(gg,v.nm+'. '+(ev?v.pct+'% of the story ran through it.':'Nothing read yet, so the ring is empty. A story fills it.'));
+ return {x:x,y:y,px:px,py:py};}
+const gbox=[];
+{const hi=F.gates.filter(v=>v.side==='higher'),lo=F.gates.filter(v=>v.side==='lower'),g=M.L.gates;
+ const yLo=cy-93-PH-2-GR, yHi=yLo-ROW;
+ hi.forEach((v,k)=>gbox.push(gate(g,cx+(k-1)*COL,yHi,v)));
+ lo.forEach((v,k)=>gbox.push(gate(g,cx+(k-1)*COL,yLo,v)));}
+
+/* ---- the core, last, so nothing can be drawn over the number ---- */
+K.core(M.L.core,cx,cy,FT.G.R,{w:FT.G.W,fs:FT.G.FS});
+
+/* ---- CLEARANCES, measured rather than trusted ----
+   Every feather at its longest possible length, ten points, and every wedge
+   target, against every gate ring and pill, the number's disc and the chains.
+   Printed for the shooter, which fails the run on anything under zero. */
+{const G=FT.G, lim=FT.limit(G), hw=G.HWMAX, st=G.STEP*Math.PI/180;
+ const segD=(p,a,b)=>{const vx=b[0]-a[0],vy=b[1]-a[1],t=K.clamp(((p[0]-a[0])*vx+(p[1]-a[1])*vy)/(vx*vx+vy*vy),0,1);
+  return Math.hypot(p[0]-a[0]-t*vx,p[1]-a[1]-t*vy);};
+ let gateMin=1e9, gateWho='';
+ fig.laid.forEach(l=>{const a=[cx+Math.cos(l.th)*G.HUB,cy+Math.sin(l.th)*G.HUB],b=[cx+Math.cos(l.th)*lim,cy+Math.sin(l.th)*lim];
+  gbox.forEach(gb=>{
+   const dc=segD([gb.x,gb.y],a,b)-GR-1-hw;
+   /* the pill as its four corners and its centre line, which is enough for a
+      segment that cannot run parallel to it inside the seam */
+   const pts=[[gb.px,gb.py],[gb.px+PW,gb.py],[gb.px,gb.py+PH],[gb.px+PW,gb.py+PH],[gb.px+PW/2,gb.py+PH/2]];
+   const dp=Math.min.apply(null,pts.map(q=>segD(q,a,b)))-hw;
+   const d=Math.min(dc,dp); if(d<gateMin){gateMin=d;gateWho=l.nm;}});});
+ /* the wedge targets: a gate centre must not sit inside any law's wedge */
+ let wedgeHit=0;
+ fig.laid.forEach(l=>gbox.forEach(gb=>{const th=Math.atan2(gb.y-cy,gb.x-cx),r=Math.hypot(gb.x-cx,gb.y-cy);
+  let dth=Math.atan2(Math.sin(th-l.th),Math.cos(th-l.th));
+  if(Math.abs(dth)<st/2+Math.asin(Math.min(1,(GR+1)/r))&&r<lim+GR)wedgeHit++;}));
+ /* three distances from a seed inward: to the core's backing disc, which is
+    the ground colour and cannot be seen; to the range arc, the outermost
+    thing the ring draws; and to the ring itself */
+ const coreClear=G.HUB-G.SEED-(G.R+G.W/2+10);
+ const rangeClear=G.HUB-G.SEED-(G.R+G.W/2+5+1.5), ringClear=G.HUB-G.SEED-(G.R+G.W/2);
+ /* the nearest chain bead to the gate block's top, which is the only other
+    thing that shares the seam */
+ const top=Math.min.apply(null,gbox.map(b=>b.y-GR));
+ const beads=[].concat(at.cx,at.hy,at.sup).filter(Boolean);
+ let beadMin=1e9;beads.forEach(p=>gbox.forEach(gb=>{beadMin=Math.min(beadMin,Math.hypot(p.x-gb.x,p.y-gb.y)-GR-9.2);}));
+ window.__clear={gateMin:+gateMin.toFixed(2),gateWho:gateWho,wedgeOverGate:wedgeHit,
+  coreToSeed:+coreClear.toFixed(2),rangeToSeed:+rangeClear.toFixed(2),ringToSeed:+ringClear.toFixed(2),
+  blockTop:+(top-cy).toFixed(1),beadToGate:+beadMin.toFixed(2),limit:lim,hub:G.HUB};
+ console.log('clearances',JSON.stringify(window.__clear));
+ console.log('identity',JSON.stringify(idn),'agree',agree);}
+
+/* ---- HOVER. The target is the wedge, the full depth of the scale at the
+   feather's own angular slot, because a law close to ten is the shortest mark
+   and must still be findable. A mouse gets twenty one; on a coarse pointer the
+   seven fans would be the targets, which is the ruling the earlier feather
+   pass already reached for a finger. ---- */
+{const G=FT.G, lim=FT.limit(G), st=G.STEP*Math.PI/180, tg=M.T.laws;
+ const probe=document.createElement('div');probe.className='probe';M.st.appendChild(probe);
+ const glyphs={};
+ fig.marks.forEach(m=>{const l=m.l,u=[Math.cos(l.th),Math.sin(l.th)];
+  const gr=m.L+G.HUB+11, gx=cx+u[0]*gr, gy=cy+u[1]*gr;
+  const ic=(F.laws.find(x=>x.nm===l.nm)||{}).ic;
+  const gl=K.glyph(tg,ic,gx,gy,12,K.rgb(m.col),1.7);gl.setAttribute('class','tipglyph');glyphs[l.nm]=gl;});
+ fig.marks.forEach(m=>{const l=m.l;
+  const a0=l.th-st/2,a1=l.th+st/2,r0=G.HUB-4,r1=lim+6;
+  const pts=[];for(let i=0;i<=6;i++){const a=a0+(a1-a0)*i/6;pts.push([cx+Math.cos(a)*r1,cy+Math.sin(a)*r1]);}
+  for(let i=6;i>=0;i--){const a=a0+(a1-a0)*i/6;pts.push([cx+Math.cos(a)*r0,cy+Math.sin(a)*r0]);}
+  const hit=K.el('path',{d:K.polyD(pts,true),class:'hit','data-law':l.nm},tg);
+  hit.addEventListener('pointerenter',e=>{fig.g.classList.add('hov');m.g.classList.add('on');glyphs[l.nm].classList.add('on');
+   const off=FT.gap(l);
+   probe.innerHTML='<div class="k">law</div><div class="n">'+l.nm+'</div>'
+    +'seated at the '+l.b.toLowerCase()+'<br>'
+    +(l.in?'reads <b>'+l.v.toFixed(1)+'</b><br>off centre <b>'+off.toFixed(1)+'</b>':'not read yet');
+   probe.style.display='block';});
+  hit.addEventListener('pointermove',e=>{const r=M.st.getBoundingClientRect();
+   let x=e.clientX-r.left+16,y=e.clientY-r.top+14;if(x>r.width-240)x-=260;probe.style.left=x+'px';probe.style.top=y+'px';});
+  hit.addEventListener('pointerleave',()=>{fig.g.classList.remove('hov');m.g.classList.remove('on');glyphs[l.nm].classList.remove('on');probe.style.display='none';});});}
+
+/* the two toggles whose meaning changed say so */
+{const lb=M.st.querySelector('.lay[data-k="laws"]');if(lb)lb.title='Laws. The twenty one laws as feathers. Each is as long as it sits off centre, and points at its seat.';
+ const gb=M.st.querySelector('.lay[data-k="gates"]');if(gb)gb.title='Gates. Three higher over three lower, above the core.';}
+})();
+</script>
+</body></html>

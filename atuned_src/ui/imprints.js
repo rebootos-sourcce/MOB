@@ -1,0 +1,309 @@
+
+/* ============================================================
+   STORY. Type or speak. Every keystroke runs the sniffer. Imprints
+   gather as they are found and nothing touches the field until you
+   commit.
+   ============================================================ */
+var ST_TEXT='', ST_PARSED=null, ST_REC=null, ST_LISTEN=false;
+var IMP_GROUP='band', IMP_PICK={};
+var IMP_GROUPS=[['band','Seat'],['charge','Charge'],['sab','Saboteur'],
+                ['story','Story'],['expr','Expression']];
+function impLive(){
+ return W.filter(function(n){return n.sq>=4||n.pole>=4;}).sort(function(a,b){return b.sq-a.sq;});}
+/* pending imprints the sniffer has found but that are not committed yet.
+   they draw as ghosts, so you can see where the text is about to land. */
+function impGhosts(){
+ if(!ST_PARSED)return [];
+ var out={},seen={},order=[];
+ ST_PARSED.imprints.forEach(function(im){
+  if(seen[im.node])return; seen[im.node]=1;
+  var n=BY[im.node]; if(!n)return;
+  if(n.sq>=4)return;                 /* already live, not a ghost */
+  /* A STATED FETTER AT A SEAT WITH NO ADDRESS FOR IT lands on the seat's
+     first address as a carrier, and the address name is not what the words
+     said. "I am exhausted" printed Pride. It is labelled like an inferred
+     ghost, by what was read, and the title says the fetter was named. */
+  var off=!!im.stated&&n.cf!==im.fetter;
+  /* ONE PILL PER SEAT AND FETTER WHEN NOTHING NAMED THE ADDRESS, round GR.
+     An inferred ghost prints the fetter and not the address, so the fallback's
+     four addresses printed four identical pills, "Anger +1.7" four times, and
+     read as four findings. They are one reading: the seat, the fetter, and the
+     amount that lands on it, which is their sum. A named ghost keeps one pill
+     per address, because each of those carries its own name. */
+  var key=(im.inferred||off)?('f|'+n.b+'|'+im.fetter):('n|'+im.node);
+  if(out[key]){out[key].amt=Math.round((out[key].amt+im.amt)*10)/10; out[key].n++; return;}
+  /* inferred carries through, because the chip is the first place a person
+     reads what the instrument thinks their sentence was about. */
+  out[key]={node:n,amt:im.amt,inferred:!!im.inferred||off,fet:im.fetter||null,
+   stated:off,n:1};
+  order.push(key);});
+ return order.map(function(k){return out[k];});}
+function painOf(n,bandLoad){
+ return Math.min(10,Math.round((bandLoad[n.b]||0)*0.9+n.sq*0.3));}
+/* one engine pass, then one index. the original called compute() once per pill. */
+function impIndex(){
+ /* the reading a person on this plan may see (ui/lock.js): feeds below counts
+    saboteurs, and a count of them is a reading of them */
+ var r=computeSeen(), feeds={}, bandLoad={};
+ BANDS.forEach(function(b){var seg=W.filter(function(n){return n.b===b;});
+  bandLoad[b]=seg.reduce(function(a,n){return a+n.sq;},0)/Math.max(1,seg.length);});
+ r.sabs.forEach(function(s){leaves(s).forEach(function(n){feeds[n.i]=(feeds[n.i]||0)+1;});});
+ /* the child patterns come off the same reading as everything else in here,
+    so the Child figure is a subset of the Held figure by construction and
+    the two cannot disagree. childFound reads r.loaded, which is the line the
+    Held figure is filtered at. */
+ return {r:r,feeds:feeds,bandLoad:bandLoad,kid:childFound(r)};}
+function impPill(n,maxW,IX,ghost,inferred){
+ /* three states. held carries SQ. installed carries the coherent opposite and
+    is not load, so it reads as a pole and not as a zero. pending is what the
+    sniffer has found and nothing has committed. */
+ var installed=(!ghost && n.sq<4 && n.pole>=4);
+ var c=installed?seatCol('Heart'):seatCol(n.b);
+ /* An installed node scales by its pole, which can exceed the held
+    maximum when nothing is held, so the ratio is clamped. Unclamped it
+    produced a 34px pill for a profile with poles of 7 and no held SQ. */
+ var rel=Math.min(1,(ghost?2:(installed?n.pole:n.sq))/Math.max(1,maxW));
+ var fs=(13+rel*4).toFixed(1), pad=(6+rel*5).toFixed(0);
+ var opp=(CHILD.filter(function(x){return x.nm===n.cf;})[0]||{}).opp||'';
+ var on=!!IMP_PICK[n.i], hot=n.sq>=9;
+ var val=ghost?('+'+ghost.toFixed(1)):(installed?('\u2713 '+n.pole.toFixed(1)):n.sq.toFixed(1));
+ /* V21. This read "Shame, toward Worth · Root · SQ 5.4 · pain 3 · feeds 2":
+    a variable name and two bare counts. Each figure now says what it counts.
+    feeds is the saboteurs the address is part of, from impIndex. */
+ var fed=IX.feeds[n.i]||0;
+ var title=n.k+(opp?', toward '+opp:'')+', '+n.b.toLowerCase()+' seat. '
+  +(ghost?'Waiting to land: '+ghost.toFixed(1)+'.'
+    :(installed?opp+' installed at '+n.pole.toFixed(1)+'.'
+      :'Charge left '+n.sq.toFixed(1)+', pain '+painOf(n,IX.bandLoad)
+       /* the saboteur count is a reading of saboteurs, which a plan below
+          tier one cannot see: "part of 0 saboteurs" would be a false statement
+          about somebody who is part of several */
+       +(lockSees('sab')&&fed?', part of '+fed+' saboteur'+(fed===1?'':'s'):'')+'.'));
+ /* WHAT THE SENTENCE NAMED, OR WHAT THE SEAT IS. Never the address name on an
+    inferred hit. The scan reads a seat and an intensity out of a sentence, and
+    when the words name no child emotion the address is chosen by a fallback:
+    the seat's modal emotion, sorted by susceptibility, first four. Printing the
+    address name there told a person who had been cut out of a deal that they
+    were carrying Deceit and Lying, and a person whose father had died that
+    they were carrying Martyrdom. The charge is real and the seat is real. The
+    name was arithmetic wearing a character judgement.
+
+    So an inferred chip says the fetter and the seat, which is what was
+    actually read, and the title says plainly that the address is not named. */
+ /* THE CHILD PATTERN CARRIES THE SEAT'S OWN COLOUR, HARDER. Ruled: a more
+    intense colour of the chakra colour rather than a new colour, so the
+    palette and the body map keep saying the same thing. Intensity is the only
+    channel that moves, and it is the seat colour's share of the fill, which
+    is why one rule answers all seven lightings: every seat colour is darker
+    than the two paper grounds and lighter than the five others, so raising
+    its share darkens on paper and lifts on the dark ones without a second
+    rule anywhere.
+
+    A ghost is not one. childFound reads what is committed, and a pending
+    imprint has not landed, so calling it a child pattern would promise
+    something the field does not hold yet. */
+ var kid=(!ghost&&IX.kid&&IX.kid.at[n.i])||null;
+ /* an inferred ghost arrives as its record from impGhosts, which carries the
+    fetter the reading gave, how many addresses were folded into the one pill,
+    and whether the words named a fetter this seat has no address for. */
+ var gx=(ghost&&inferred&&typeof inferred==='object')?inferred:null;
+ var fl=(gx&&gx.fet)||n.cf||n.b, seat=String(n.b).toLowerCase();
+ var lbl=(ghost&&inferred)?fl:n.k;
+ var ttl=(ghost&&inferred)
+   ? ((gx&&gx.stated)
+     ? fl+' at the '+seat+'. Your words named '+String(fl).toLowerCase()
+       +' and this seat has no address for it, so the charge lands on the seat.'
+     : fl+' at the '+seat
+       +'. Your words named the seat, not the address, so this is where the '
+       +'charge lands and not what it is called.')
+     +((gx&&gx.n>1)?' The amount is the sum across '+gx.n+' addresses.':'')
+   : title;
+ if(kid)ttl=kid.ax+' sits here. '+ttl;
+ return '<button class="ip'+(on?' on':'')+(hot?' hot':'')+(ghost?' ghost':'')
+  +(ghost&&inferred?' infer':'')
+  +(kid?' kid':'')
+  +(installed?' inst':'')+'" data-imp="'+n.i+'" '
+  +'style="--c:'+c+';font-size:'+fs+'px;padding:'+pad+'px '+(+pad+7)+'px" '
+  +'title="'+esc(ttl)+'">'+esc(lbl)+'<b>'+val+'</b></button>';}
+function impRender(){
+ var host=document.getElementById('imp'); if(!host)return;
+ var live=impLive(), ghosts=impGhosts(), IX=impIndex();
+ var maxW=live.length?live[0].sq:1;
+ var total=live.reduce(function(a,n){return a+n.sq;},0);
+ /* THE PANEL WAS COUNTING THE CURE AS THE DISEASE.
+
+    `impLive` returns everything at or above the line on EITHER side: sq is
+    charge held, pole is the coherent opposite installed, and a release
+    produces the second. So the heading counted both and called the sum
+    imprints. Measured on the shipping build: Sofia holds nothing and the
+    panel read "Imprints, 49". Angela 33. On James, address 31 carries a pole
+    of 4.16, so Need For Approval appeared on a page where nothing had been
+    entered, which is exactly what the owner reported and what I wrongly put
+    down to a persona still being selected. The seat rows already said it out
+    loud and contradicted themselves in the same line: nothing held, 14
+    installed.
+
+    The two are counted apart now. Held is the imprint. Installed is what the
+    work put there, and the product already has a word for it on the Summary
+    rail. A number that counts a person's progress as their load is worse than
+    no number. */
+ var held=live.filter(function(n){return n.sq>=4;});
+ var filled=live.length-held.length;
+ /* AND THE LABEL IS ONE WORD, which the new voice gate caught in this very
+    string within minutes of landing. "Held, 8, filled in 13" is three counts
+    wearing a label's clothes, and a comma means a second part where a name
+    has one. So the label is Held, the figure rides beside it, and the other
+    two counts are their own figures rather than a clause. */
+ /* AND THE PANEL SAID NOTHING ABOUT WHICH OF THEM ARE CHILDREN, which is the
+    one distinction the owner has called special. It is its own figure, its
+    label is one word for the same reason the other three are, and it is
+    absent rather than zero when nothing is found: off a blank profile nothing
+    lights because nothing has been found, and a figure reading nought is a
+    claim about a person who has not written anything yet. */
+ var kids=(IX.kid&&IX.kid.found)||[];
+ var h='<div class="ip-hd"><span class="pm-eye">Held</span>'
+  +'<span class="ip-n">'+(held.length||'\u2013')+'</span>'
+  +(filled?'<span class="pm-eye">Filled in</span><span class="ip-n">'+filled+'</span>':'')
+  +(kids.length?'<span class="pm-eye">Child</span><span class="ip-n">'+kids.length+'</span>':'')
+  +(ghosts.length?'<span class="pm-eye">Pending</span><span class="ip-n">'+ghosts.length+'</span>':'')
+  +'<div class="ip-ctl">';
+ IMP_GROUPS.forEach(function(gp){
+  h+='<button class="ip-g'+(IMP_GROUP===gp[0]?' on':'')+'" data-ig="'+gp[0]+'">'+gp[1]+'</button>';});
+ /* THE FULL WIDTH TOGGLE WENT WITH THE MOVE. It hid the journal and spread
+    the imprints across the stage, and the imprints are in the right rail
+    since GO, so it would have hidden the journal and widened Source AI. */
+ h+='</div></div>';
+ if(!live.length&&!ghosts.length){
+  /* "Nothing held. Write in the box and it gathers here." is the product
+     talking to itself. A person says: I have not written anything yet. */
+  /* AND IT SAID SO TO A PERSON WHO HAD JUST WRITTEN. This branch asked what is
+     live, which is an address at 4 or over on either side, and never asked
+     whether anything had been written. applyStory lands 0.35 of what it reads,
+     so a first sixty word story on a blank record usually leaves every address
+     under 4, and the panel answered the commit with "You have not written
+     anything yet". A false empty state, in the minute after the first commit.
+
+     The record is the witness: every commit pushes onto CURP.story.entries.
+     The line says what is true whatever happened since. Undo takes the charge
+     back and leaves the entry, so "your story sits below the line" would be
+     false after an undo, and "nothing reaches the line" is true either way. */
+  var wrote=((CURP&&CURP.story&&CURP.story.entries)||[]).length;
+  h+=wrote
+   ? '<div class="ip-none">You have committed '+wrote+(wrote===1?' story':' stories')
+     +' and nothing reaches the line yet. An address shows here once it does.</div>'
+   : '<div class="ip-none">You have not written anything yet. '
+     +'Whatever you write gets pulled apart and collected here.</div>';
+  host.innerHTML=h; impWire(); return;}
+ /* AND IT SAYS WHERE THE CHILD SITS, in the seat's own terms and not in a
+    second vocabulary: the axis, the seat it is held at, the address inside
+    that seat, and what the address is carrying. It sits above the groupings
+    because it is true of all five of them, and it is drawn in the seat's
+    colour for the same reason the pill is. The seats are counted off the rows
+    rather than stated, which is the rule this repository has been bitten by
+    nine times for breaking. */
+ if(kids.length){
+  var kseats={}; kids.forEach(function(k){kseats[k.seat]=1;});
+  var ksn=Object.keys(kseats).length;
+  h+='<div class="ip-bh ip-kh">Child patterns<em class="plain">across '
+   +ksn+(ksn===1?' seat':' seats')+'</em></div>';
+  kids.forEach(function(k){
+   h+='<div class="ip-kr" style="--c:'+seatCol(k.seat)+'">'
+    +'<span class="ip-kn">'+esc(k.ax)+'</span>'
+    +'<span class="ip-ka">at the '+esc(String(k.seat).toLowerCase())+', '
+    +esc(k.at.k)+'</span><b>'+k.at.sq.toFixed(1)+'</b></div>';});}
+ function cloud(list,gl,gi){var s='<div class="ip-cloud">';
+  list.forEach(function(n){s+=impPill(n,maxW,IX,gl?gl[n.i]:0,gi&&gi[n.i]);});return s+'</div>';}
+ if(IMP_GROUP==='band'){
+  BANDS.forEach(function(b){
+   var seg=live.filter(function(n){return n.b===b;});
+   var gs=ghosts.filter(function(x){return x.node.b===b;});
+   if(!seg.length&&!gs.length)return;
+   var heldN=seg.filter(function(n){return n.sq>=4;});
+   var instN=seg.filter(function(n){return n.sq<4&&n.pole>=4;});
+   /* TWO BUCKETS IN ONE ROW, which is the design: the seat name on the left
+      is a label and the reading on the right is a value. The row carried the
+      capital on every word straight into the value, so "nothing held, 15
+      installed" was printed back as "Nothing Held, 15 Installed", a reading
+      wearing a title. Every em in this renderer is a value, so every em opts
+      out and the seat name keeps the rule. */
+   /* THE SUMMED CHARGE IS GONE FROM THIS ROW. Round HS, his words: "you've
+      got five field 25.48 or something like that installed what is that"
+      It was "5 held, 26.4, 8 installed" on Derek's sacral: a count, then the
+      charge of all five added together with no unit, then a second count, so
+      the eye ran the sum into the count after it and read one number that
+      does not exist. A sum of charge across addresses is not a quantity a
+      person carries anywhere else in the product, and every pill below the
+      row already prints its own charge. Reproduced on Derek, Sofia, James and
+      Lance before it was cut. */
+   h+='<div class="ip-bh" style="--c:'+seatCol(b)+'">'+b+'<em class="plain">'
+    +(heldN.length?heldN.length+' held':'nothing held')
+    +(instN.length?', '+instN.length+' installed':'')
+    +(gs.length?', '+gs.length+' pending':'')+'</em></div>';
+   /* two maps, because ghost is passed as the amount and is a number. The
+      inferred flag rides beside it rather than being smuggled onto a float. */
+   var gl={},gi={};gs.forEach(function(x){gl[x.node.i]=x.amt;gi[x.node.i]=x.inferred?x:false;});
+   h+=cloud(seg.concat(gs.map(function(x){return x.node;})),gl,gi);});
+ } else if(IMP_GROUP==='charge'){
+  CHILD.forEach(function(c){
+   var seg=live.filter(function(n){return n.cf===c.nm;});
+   if(!seg.length)return;
+   h+='<div class="ip-bh" style="--c:'+seatCol(c.seat)+'">'+c.nm+' toward '+c.opp
+    +'<em class="plain">held '+(S.charge[c.nm]||0).toFixed(1)+', opposite '+(S.replace[c.nm]||0).toFixed(1)
+    +'</em></div>'+cloud(seg);});
+ } else if(IMP_GROUP==='sab'){
+  if(!lockSees('sab')) h+=lockPanelHtml('sab');
+  else if(!IX.r.sabs.length) h+='<div class="ip-none">Nothing is compounding yet.</div>';
+  IX.r.sabs.slice(0,10).forEach(function(s){
+   var lv=leaves(s).filter(function(n){return n.sq>=4;});
+   if(!lv.length)return;
+   h+='<div class="ip-bh" style="--c:'+(s.over?'var(--alarm)':seatCol(lv[0].b))+'">'+esc(s.nm)
+    +'<em class="plain">'+(s.score?s.score+'% match, ':'')+'weight '+s.w.toFixed(1)+'</em></div>'+cloud(lv);});
+ } else if(IMP_GROUP==='story'){
+  /* grouped by the entry that put the weight there */
+  var ents=((CURP&&CURP.story&&CURP.story.entries)||[]);
+  if(!ents.length) h+='<div class="ip-none">No committed entries yet. Commit one and its imprints group here.</div>';
+  ents.slice().reverse().slice(0,6).forEach(function(e,i){
+   var bandsIn=Object.keys(e.bands||{}).map(function(k){return K2BAND[k];}).filter(Boolean);
+   var seg=live.filter(function(n){return bandsIn.indexOf(n.b)>=0;});
+   h+='<div class="ip-bh" style="--c:var(--gold)">Entry '+(ents.length-i)
+    +'<em class="plain">'+new Date(e.t).toLocaleDateString()+', '+e.imprints+' imprints</em></div>'
+    +'<div class="ad-q">'+esc(e.text.slice(0,130))+(e.text.length>130?'…':'')+'</div>'
+    +cloud(seg.slice(0,12));});
+ } else {
+  /* expression. what is unfilled leaks the named shadow. */
+  exprRead().sort(function(a,b){return a.fill-b.fill;}).forEach(function(e){
+   var seg=live.filter(function(n){return n.b===e.b;});
+   h+='<div class="ip-bh" style="--c:'+seatCol(e.b)+'">'+e.nm
+    +'<em class="plain">fill '+e.fill.toFixed(1)+', leaks '+e.sh+'</em></div>'
+    +(seg.length?cloud(seg):'<div class="ip-none" style="padding:6px 0">nothing held at the '
+      +e.b.toLowerCase()+'</div>');});}
+ var picked=Object.keys(IMP_PICK).filter(function(k){return IMP_PICK[k];});
+ /* HS sweep: "click a pill to select" told a person how to use the panel.
+    The pills are buttons and the two controls beside this are disabled until
+    one is pressed, so the empty half of this slot says nothing. */
+ h+='<div class="ip-bar"><span class="ip-sel">'
+  +(picked.length?picked.length+' selected':'')+'</span>'
+  +'<button class="btn" id="impinfo"'+(picked.length===1?'':' disabled')+'>Detail</button>'
+  +'<button class="btn pri" id="imprun"'+(picked.length?'':' disabled')+'>Release '
+  +(picked.length>1?picked.length:'')+'</button></div>';
+ host.innerHTML=h; impWire();
+ /* the Saboteur grouping is the chain's first rung, so its button is the plan's */
+ lockApply(host.querySelector('[data-ig="sab"]'),'sab');}
+function impWire(){
+ document.querySelectorAll('[data-ig]').forEach(function(el){el.onclick=function(){
+  IMP_GROUP=el.dataset.ig; impRender();};});
+ document.querySelectorAll('[data-imp]').forEach(function(el){el.onclick=function(){
+  var id=+el.dataset.imp; IMP_PICK[id]=!IMP_PICK[id]; impRender();
+  /* what is picked here is what the Story's release column runs, round IG:
+     "In that imprints I can select what I want to be released". stRelPanel
+     loads after this file and runs at click time. */
+  if(typeof stRelPanel==='function')stRelPanel();};});
+ var rb=document.getElementById('imprun');
+ if(rb)rb.onclick=function(){
+  var ids=Object.keys(IMP_PICK).filter(function(k){return IMP_PICK[k];}).map(Number);
+  if(ids.length)relPick(ids);};
+ var ib=document.getElementById('impinfo');
+ if(ib)ib.onclick=function(){
+  var id=+Object.keys(IMP_PICK).filter(function(k){return IMP_PICK[k];})[0];
+  var n=BY[id]; if(n)runNodeDrill(n);};}
+

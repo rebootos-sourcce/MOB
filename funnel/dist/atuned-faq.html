@@ -1,0 +1,511 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- THE QUESTIONS PAGE. reviews/ATUNED-Creative-Storyboard-TDD.md section 48,
+     "FAQ: answer the questions before they are asked", and section 71, the
+     same ten with the rule that the privacy answer must never invent a
+     guarantee. The ten questions are his document's, in his order. The answers
+     are his document's drafts cut to what the build does today, under the
+     document's own editorial rule: "If a FAQ answer cannot be demonstrated by
+     the product or supported by the current architecture, mark the statement
+     for validation instead of turning it into a stronger claim." On a page a
+     stranger reads, marking a line for validation means not printing it, so
+     every line the build cannot back was cut rather than softened, and each
+     cut is named beside its answer below.
+
+     Checked against the build at 999d40c, by file and function:
+       the mirror, Yes and Not me, Correct it, "a guess"   ui/onboard.js
+       only a yes goes into the release                    ui/onboard.js
+       release lines and reframe lines at one address      ui/release.js relBucket,
+                                                           engine/data/gloss.js 'truth line'
+       What changed, five answers, kept alike              engine/practice.js RV_ANSWERS, RV_SAY
+       guess or stated, per imprint                        engine/sniff.js inferred
+       it does not sync                                    ui/auth.js, its own header
+       what leaves and when                                funnel/legal/privacy.html section 4
+       the free test makes no request                      funnel/legal/privacy.html section 3
+
+     The name is written Atüned in copy. The document writes ATUNED, and the
+     standing voice ruling is sentence case with no all caps copy. -->
+<title>Atüned, questions</title>
+<meta name="description" content="What people ask before they start, answered with what the instrument does today and no more.">
+<style>
+/* FALLBACK TOKENS ONLY, AND tokens.css OVERRIDES EVERY ONE OF THEM, linked
+   after this block for the reason about.html gives: later wins at equal
+   specificity, so whenever the generated sheet is beside the page or inlined
+   by BUILD-single.sh, the value in force is the generated one. This block
+   holds only the tokens this page reads, so the page still opens correctly
+   with no siblings. */
+:root{
+ --bg:#0C0D12; --panel:#1A1D26;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --accent:#7EB8D4; --on-accent:#0B1418;
+ --au:#C2A063; --um:#FFFFFF;
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --num:'Inter','Inter Tight',system-ui,-apple-system,sans-serif;
+ --r-s:11px; --tap:44px;
+ --ease-out:cubic-bezier(.22,1,.36,1); --t-micro:120ms;
+ --g2:10px; --g3:16px;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+ font-family:var(--sans);-webkit-text-size-adjust:100%}
+body{font-size:17px;line-height:1.62}
+html{scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* the about page's grammar, so the pages read as one product */
+:root{--measure:64ch}
+.wrap{max-width:1120px;margin:0 auto;padding:40px var(--g3) 64px}
+.m{max-width:var(--measure)}
+
+.mark{display:grid;gap:4px;justify-items:center;text-align:center}
+h1{font-size:44px;line-height:1;letter-spacing:-.025em;margin:0;font-weight:600}
+h1 .um{position:relative;display:inline-block}
+h1 .um::before,h1 .um::after{content:'';position:absolute;top:-.44em;
+ width:.13em;height:.13em;border-radius:50%;background:var(--um)}
+h1 .um::before{left:.05em}
+h1 .um::after{left:.34em}
+.os{font-family:var(--num);font-size:12.5px;letter-spacing:.34em;
+ color:var(--au);margin:0;font-weight:500}
+.nav{margin:26px 0 0;display:flex;gap:var(--g3);flex-wrap:wrap;
+ font-size:13px;letter-spacing:.06em}
+.nav a{color:var(--dim);text-decoration:underline;
+ text-decoration-color:var(--edge-2);text-underline-offset:5px;
+ text-decoration-thickness:1px;
+ transition:color var(--t-micro) var(--ease-out),
+            text-decoration-color var(--t-micro) var(--ease-out)}
+.nav a:hover,.nav a:focus-visible{color:var(--ink);text-decoration-color:var(--ink)}
+.nav b{color:var(--ink);font-weight:600;text-decoration:underline;
+ text-decoration-color:var(--accent);text-underline-offset:5px;
+ text-decoration-thickness:1px}
+.nav a,.nav b{display:inline-flex;align-items:center;justify-content:center;
+ min-height:var(--tap);min-width:var(--tap);padding-bottom:0;line-height:1.2}
+.foot-nav{margin-top:40px;padding-top:22px;border-top:1px solid var(--edge)}
+@media(max-width:700px){ .nav{gap:var(--g3) 18px} }
+
+.lead{font-size:26px;line-height:1.34;margin:34px 0 0;letter-spacing:-.015em;
+ max-width:34ch}
+.lead b{font-weight:600;color:var(--ink)}
+.lead span{display:block;color:var(--mid)}
+
+p{margin:16px 0 0}
+section{margin-top:48px;padding-top:28px;border-top:1px solid var(--edge);
+ scroll-margin-top:24px}
+h2{font-size:24px;line-height:1.22;margin:0;letter-spacing:-.016em;font-weight:600}
+.bd{margin-top:12px}
+.bd>p:first-child{margin-top:0}
+.bd p{color:var(--ink)}
+.bd p.q{color:var(--mid)}
+
+/* THE TEN, AS A LIST OF ROUTES. Each one is a control, so each one meets the
+   44 floor at every width, the rule the nav above already keeps. */
+.qs{list-style:none;margin:30px 0 0;padding:0;display:grid;gap:1px;
+ background:var(--edge);border:1px solid var(--edge);border-radius:var(--r-s);
+ overflow:hidden}
+.qs li{background:var(--panel)}
+.qs a{display:flex;align-items:center;min-height:var(--tap);padding:10px 16px;
+ color:var(--ink);text-decoration:none;font-size:16px;line-height:1.35;
+ transition:color var(--t-micro) var(--ease-out)}
+.qs a:hover,.qs a:focus-visible{color:var(--accent)}
+.qs a:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
+
+/* what leaves the device, one route per row, no bullet furniture */
+.out{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:1px;
+ background:var(--edge);border:1px solid var(--edge);border-radius:var(--r-s);
+ overflow:hidden;max-width:var(--measure)}
+.out li{background:var(--panel);padding:11px 16px;color:var(--mid)}
+.out li b{color:var(--ink);font-weight:600}
+
+.cta{margin-top:30px;display:flex;gap:var(--g2);flex-wrap:wrap;align-items:center}
+a.btn{display:inline-block;background:var(--accent);color:var(--on-accent);
+ text-decoration:none;font-weight:600;font-size:18px;padding:16px 34px;
+ border-radius:9px;min-height:var(--tap);line-height:20px}
+a.btn.ghost{background:transparent;color:var(--ink);
+ box-shadow:inset 0 0 0 1px var(--edge-2)}
+a.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.meta{margin:14px 0 0;font-size:13px;color:var(--dim)}
+.foot{margin-top:48px;padding-top:20px;border-top:1px solid var(--edge);
+ font-size:13px;color:var(--dim)}
+
+@media(min-width:560px){ .qs{grid-template-columns:1fr 1fr} }
+@media(min-width:1040px){
+ body{font-size:17.5px}
+ section{display:grid;grid-template-columns:330px minmax(0,1fr);
+  column-gap:44px;align-items:start}
+ .hd{position:sticky;top:34px}
+ .bd{min-width:0;margin-top:0}
+ .mark{justify-items:start;text-align:left}
+ h1{font-size:64px}
+ .lead{font-size:34px;margin-top:30px}
+ .m{max-width:70ch}
+}
+@media(max-width:400px){
+ h1{font-size:34px} .lead{font-size:21px} h2{font-size:21px}
+ .os{letter-spacing:.26em}
+}
+</style>
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20fill%3D%22none%22%20stroke-linecap%3D%22butt%22%20viewBox%3D%22-3%20-3%20206%20206%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20aria-hidden%3D%22true%22%20focusable%3D%22false%22%3E%3Cpath%20d%3D%22M100.000%20181.250A81.25%2081.25%200%200%200%20163.524%20150.659%22%20style%3D%22stroke%3A%23D6524C%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M163.524%20150.659A81.25%2081.25%200%200%200%20179.213%2081.920%22%20style%3D%22stroke%3A%23D8924E%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M179.213%2081.920A81.25%2081.25%200%200%200%20135.253%2026.796%22%20style%3D%22stroke%3A%23DABF6A%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M135.253%2026.796A81.25%2081.25%200%200%200%2064.747%2026.796%22%20style%3D%22stroke%3A%235FD5A6%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M64.747%2026.796A81.25%2081.25%200%200%200%2020.787%2081.920%22%20style%3D%22stroke%3A%235EBBDB%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M20.787%2081.920A81.25%2081.25%200%200%200%2036.476%20150.659%22%20style%3D%22stroke%3A%237D93E0%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M36.476%20150.659A81.25%2081.25%200%200%200%20100.000%20181.250%22%20style%3D%22stroke%3A%23A77EDB%3Bstroke-width%3A37.50%22%2F%3E%3C%2Fsvg%3E">
+<style>
+/* tokens.css, inlined by BUILD-single.sh */
+/* GENERATED. Do not edit.
+   Written by tools/tokens.py from atuned_src/shell/head.html, which is the
+   app's own stylesheet. The funnel and the app have to look like one
+   product, and a palette copied by hand is correct on the day it is copied
+   and wrong afterwards. Change a value in head.html and run the tool.
+   49 tokens. */
+:root{
+ /* THE SURFACE RAMP WAS NARROWER THAN A PRINTING TOLERANCE.
+
+    Measured: --bg to --panel was 1.08 to 1 and --bg to --panel-2 was 1.14.
+    Four declared levels of surface spanning a sixth of a stop, which is why
+    the page squints down to three vertical grey slabs and the eye lands on
+    nothing first. The architecture of every screen rested on a distinction
+    that was not visible.
+
+    The ground goes down and the raised surfaces go up, so the range opens
+    from both ends rather than lightening the product. Muted is a saturation
+    ruling and not a contrast one, and this changes no hue. */
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ /* --dim WAS BELOW AA EVERYWHERE IT APPEARED, and it is the only token
+    marking the second tier of the information architecture: every eyebrow,
+    every key label, every explanatory subline. Measured at 3.70 to 1 on
+    --panel-2 and 3.92 on --panel, and it carried 104 of the 105 contrast
+    failures on the Summary in Dark. One value, 104 defects.
+
+    It also matters more than the ratio suggests. Six of the thirteen people
+    in the reference sample are 57 or older, and contrast sensitivity falls
+    materially past 55. At 3.70 that half of the sample loses the whole layer
+    that tells them what they are looking at. */
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A;
+ --heart:#5FD5A6; --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB;
+ --alarm:#FF2E1F; --alarm-soft:rgba(255,46,31,.16);
+ /* THE ACCENT IS BLUE. Ruled. It was gold since the rebuild and the owner
+    never chose it: he chose the blue, which is the original app's own
+    --law-accent:#7eb8d4, used there in thirteen places. --accent is the one
+    source of truth and --gold is kept as its alias because sixty places in
+    this sheet already read that name. Nothing reads a literal.
+
+    --on-accent is the ink that sits on top of a filled accent. It was
+    var(--on-accent), a warm near black chosen against gold, and a warm ink on a cool
+    fill is the one thing that would still have read as the old palette.
+
+    --um is the umlaut on the wordmark. It sits on the bar rather than on the
+    letter, so it answers to the background. White on dark, as ruled. */
+ --accent:#7EB8D4; --gold:var(--accent); --on-accent:#0B1418;
+ /* TRUE GOLD, SEPARATE FROM --gold.
+
+    --gold is an alias for the accent and has been since the accent was ruled
+    blue, so everything reaching for "gold" gets blue. That is correct for the
+    eyebrows and the rules that were gold before the ruling, and it is wrong
+    for the one thing that was asked for in actual gold: Source OS under the
+    wordmark rendered in the blue accent, twice, because the token lied about
+    its own name.
+
+    --au is gold. Muted, warm, sitting next to the Solar seat without becoming
+    it, and dark enough on paper to hold. Nothing else uses it unless it is
+    asked for by name. */
+ --au:#C2A063;
+ /* the ink on a solid seat colour. every seat in this palette is light
+    enough that one dark ink holds on all seven, in every lighting. */
+ --on-flat:#0E1015;
+ --sky:#7EB8D4; --um:#FFFFFF;
+ /* #CB5F59 measures 4.01 against --panel-2 and 4.44 against the seat tinted
+    panel. It is not carrying text today, it is a three pixel marker and a
+    seven percent wash, so the 4.5 text threshold is not the one it has to
+    clear. Moved anyway: a marker that thin at four to one is hard to see at
+    all past about fifty five, and three of the nine reference people are
+    fifty seven or older. #D4736D measures 4.87 and 5.40 on the same two.
+    Snow's own value is 5.62 and does not move. */
+ --good:#68CBA4; --bad:#D4736D;
+ /* Lexend is a wide face by design, which is why the rail clipped: Witness
+    rendered as Wit. Inter is narrower at the same size and carries more
+    characters per line without dropping the point size. The font tuner is
+    gone on the owner's ruling, so this is the one face and there is no
+    per person override to keep working. */
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ /* ONE FAMILY MEANT ONE FAMILY, AND THIS TOKEN NAMED A SECOND ONE.
+
+    The comment above it said Lexend carries the digits. Lexend was never in
+    the build. When Google Fonts went, Inter was embedded as a variable font
+    and Lexend was not, so document.fonts lists exactly one family and every
+    number in this product, every reading, every allowance, every tabular
+    column, was falling through to system-ui. Which face that is depends on
+    the machine, so the one thing this token existed to guarantee, that
+    columns of figures line up, was the one thing it could not do.
+
+    document.fonts.check('12px Lexend') returns true, which is what hid this:
+    check answers whether the text can be rendered at all, and a fallback
+    counts. The list of loaded families is the honest reader and it has one
+    entry.
+
+    Inter carries the digits now, which is a statement about a font that is
+    actually here. Tabular figures are a feature of Inter and every column in
+    the sheet already asks for them with font-variant-numeric. */
+ --num:'Inter','Inter Tight',system-ui,-apple-system,sans-serif;
+ --r:16px; --r-s:11px; --r-xs:8px;
+ /* Minimum touch target. 69 of the interactive elements measured under 44px,
+    which is the floor a finger needs. The number lives here so it cannot
+    drift back into forty separate padding declarations. */
+ --tap:44px;
+ /* Motion. Measured before this block existed: 381 of 384 live animated
+    elements ran on the browser default ease, a symmetric curve that reads as
+    mechanical because it decelerates as slowly as it accelerates. The four
+    hand written beziers in this sheet sat on one live element. Three curves
+    and four durations, named for the job, so a hover and a tab cannot drift
+    to the same speed again.
+
+    out  for a thing arriving. fast off the mark, long settle.
+    in   for a thing leaving. it does not need to be watched out.
+    land for a thing that lands. one overshoot, no ring. */
+ --ease-out:cubic-bezier(.22,1,.36,1);
+ --ease-in:cubic-bezier(.4,0,1,1);
+ --ease-land:cubic-bezier(.34,1.56,.64,1);
+ /* hover, press, focus. below about 100ms a change reads as a jump with no
+    cause; above about 150 the pointer has already left. */
+ --t-micro:120ms;
+ /* one thing entering or leaving. */
+ --t-element:220ms;
+ /* a panel or a rail, which carries more area and so needs more time. */
+ --t-surface:320ms;
+ /* a whole tab. the longest thing the product is allowed to take. */
+ --t-context:420ms;
+ /* A READING ARRIVING. The wheel's own entrance numbers, ENTER_SPAN and
+    ENTER_STAGGER in ui/wheel.js, on the wheel's own curve, a cubic out, so a
+    band on either rail fills on the same beat the wheel assembles on and the
+    dock's circles sweep on. FV in TASKS.md, his words: "Where's the animation
+    of the bands animating?" Written here rather than typed into each rule, so
+    the stylesheet and the canvas cannot drift apart without one of these
+    lines changing. */
+ --t-enter:380ms; --t-stagger:62ms; --ease-enter:cubic-bezier(.33,1,.68,1);
+ /* A READING BREATHING, ROUND MQ. The Field's own wave, 0.82+0.18 sin(2 pi
+    t/4.2) in ui/wheel.js, so opacity .64 to 1 over 4.2s. A loop is not an
+    arrival, a departure or a landing, so none of the three curves above
+    fits: this is the sine's own cubic, still at both ends the way
+    Math.sin is. Named here rather than typed into the rule, gate 12 in
+    tests/design.js reads transitions and not keyframes, so a loop typed
+    straight into a rule goes unchecked by it. */
+ --t-breath:4.2s; --ease-breath:cubic-bezier(.37,0,.63,1);
+ /* the spacing scale. three steps. 6 between things in one control, 10
+    between controls, 16 between blocks. gaps of 5, 7, 8, 9 and 11 were all
+    doing one of those three jobs with no reason stated, so they read as
+    drift rather than as rhythm. */
+ --g1:6px; --g2:10px; --g3:16px;
+ --shadow:0 12px 34px rgba(0,0,0,.34);
+}
+</style>
+</head><body>
+<div class="wrap">
+
+<div class="mark">
+ <h1>At<span class="um">u</span>ned</h1>
+ <p class="os">Source OS</p>
+</div>
+
+<nav class="nav"><a href="atuned-funnel.html">What it reads</a>
+ <a href="atuned-about.html">About</a>
+ <b>Questions</b>
+ <a href="atuned-quiz.html">Start</a></nav>
+
+<p class="lead"><b>What people ask before they start.</b>
+<span>Each answer says what the instrument does today, and no more.</span></p>
+
+<ol class="qs">
+ <li><a href="#doing">What is Atüned actually doing?</a></li>
+ <li><a href="#where">How does Atüned know where to look?</a></li>
+ <li><a href="#accurate">How do I know the reading is accurate?</a></li>
+ <li><a href="#wrong">What happens if Atüned gets me wrong?</a></li>
+ <li><a href="#reframe">What is the difference between release and reframe?</a></li>
+ <li><a href="#feel">What should I expect to feel?</a></li>
+ <li><a href="#again">Why would I use Atüned again after the first session?</a></li>
+ <li><a href="#remember">Does Atüned remember what I have already worked on?</a></li>
+ <li><a href="#therapy">Is Atüned therapy, coaching, meditation or a personality test?</a></li>
+ <li><a href="#information">What happens to my information?</a></li>
+</ol>
+
+<!-- 01. The document's last line, "an instrument for self-observation, not an
+     authority on who you are", is kept and said in plain words. -->
+<section id="doing">
+ <div class="hd"><h2>What is Atüned actually doing?</h2></div>
+ <div class="bd">
+  <p class="m">It reads what you write about your life, in your own words. In the
+  Atüned model, words point to places in the body, and it shows you each place
+  it found.</p>
+  <p class="m">On your first story you answer each place, yes or no. A yes sends
+  it into a release: a short run of lines, read or heard, aimed at that place.
+  Afterwards it asks what changed, and keeps your answer.</p>
+  <p class="m">It is an instrument for watching yourself, not an authority on
+  who you are.</p>
+ </div>
+</section>
+
+<!-- 02. "words, feelings, behaviors, context, relationships, and other
+     signals" is cut. The engine reads words against a table. The Feel and
+     Body taps in onboarding do not reach the reading (CONGRUENCY-AUDIT.md 2.7),
+     so the longer list would claim inputs it does not read. -->
+<section id="where">
+ <div class="hd"><h2>How does Atüned know where to look?</h2></div>
+ <div class="bd">
+  <p class="m">It starts with what you actually wrote. The engine reads your words
+  against a table. Each word it knows points to an address. The Atüned model
+  has 112 of them, and every address has a place in the body.</p>
+  <p class="m">An address organises what you wrote. It is not a medical
+  diagnosis, and nothing in your body is measured to find it.</p>
+ </div>
+</section>
+
+<!-- 03. "Your correction changes the record" is cut to what a correction
+     does. On the first story a no keeps that place out of the release and is
+     kept on the entry; the weight the words put on that seat still lands,
+     because filtering the charge by the answer is F16 and unbuilt
+     (ui/onboard.js, "WHAT A NO DOES NOT DO YET"). The mirror is on the first
+     story only: the Story tab commits without one. -->
+<section id="accurate">
+ <div class="hd"><h2>How do I know the reading is accurate?</h2></div>
+ <div class="bd">
+  <p class="m">You do not have to take it on faith.</p>
+  <p class="m">On your first story it shows you what it heard, one place at a
+  time, and marks the ones that are its guess. You answer each one, Yes or Not
+  me. If it missed something, press Correct it and say what is off.</p>
+  <p class="m">You are the authority on your own experience.</p>
+ </div>
+</section>
+
+<!-- 04. "treats your correction as new evidence instead of forcing the
+     original interpretation to fit" is cut: while F16 is open the original
+     read's weight still lands. What a no and a correction actually do is
+     said instead, and nothing more. -->
+<section id="wrong">
+ <div class="hd"><h2>What happens if Atüned gets me wrong?</h2></div>
+ <div class="bd">
+  <p class="m">Tell it. Not me keeps that place out of your release, and your no
+  is kept on your record.</p>
+  <p class="m">Correct it reads what you write the same way it read your story.
+  Each place it finds there gets its own Yes and Not me.</p>
+  <p class="m">A wrong read tells you about the instrument, not about you.</p>
+ </div>
+</section>
+
+<!-- 05. The document's public pair, "release disrupts the old flow, reframe
+     gives you a new direction", held to the build's own definition: the
+     truth line in engine/data/gloss.js puts "the opposite quality in at the
+     address, where the limit was". "Release" names the whole run (round GS,
+     "stick with release"), so this says a release carries both kinds of
+     line. The document's "the reframe should be connected to what you
+     actually discovered" is cut: the reframe lines come from the address,
+     not from the person's own words. The release and reframe screen is being
+     rebuilt (round QM); re-read this answer against it when it lands. -->
+<section id="reframe">
+ <div class="hd"><h2>What is the difference between release and reframe?</h2></div>
+ <div class="bd">
+  <p class="m">A release carries two kinds of line, both aimed at the same place.</p>
+  <p class="m">Release lines work on the old pattern. They take the limit off.</p>
+  <p class="m">Reframe lines give it a new direction. They put the opposite
+  quality in, where the limit was.</p>
+ </div>
+</section>
+
+<!-- 06. Kept close to the document. "Nothing changed" and "Not sure" are the
+     product's own words for two of the five answers, RV_SAY. -->
+<section id="feel">
+ <div class="hd"><h2>What should I expect to feel?</h2></div>
+ <div class="bd">
+  <p class="m">There is no right feeling. You might notice less pressure, more
+  room, movement, a new view of it, or nothing at first.</p>
+  <p class="m">A busy mind can miss a small change, so do not force one. Feeling
+  nothing is information too.</p>
+  <p class="m">After a release it asks what changed. Nothing changed and Not sure
+  are kept exactly like Something moved.</p>
+ </div>
+</section>
+
+<!-- 07. "Over time, ATUNED can use your confirmed history to make the next
+     experience more specific to you" is cut. There is no memory or decision
+     engine that does that yet (CONGRUENCY-AUDIT.md, remaining gaps), and a
+     yes on the mirror does not reach the graph while F16 is open. The first
+     release is short by ruling (F5, at most three addresses), so the reason
+     to come back is stated as that, without the number. -->
+<section id="again">
+ <div class="hd"><h2>Why would I use Atüned again after the first session?</h2></div>
+ <div class="bd">
+  <p class="m">A first release is short. A story often lights more places than it
+  works, and those are still there.</p>
+  <p class="m">Release those, write a new story, or run one again and see whether
+  your answer to what changed is different.</p>
+ </div>
+</section>
+
+<!-- 08. "confirmed patterns ... practices, observations, and outcomes" is cut
+     to what the record holds today. The loss case is said, because a page
+     that says what is kept and not what can lose it is a promise. -->
+<section id="remember">
+ <div class="hd"><h2>Does Atüned remember what I have already worked on?</h2></div>
+ <div class="bd">
+  <p class="m">Yes, in this browser. It keeps your stories exactly as you typed
+  them, what it read in each one, every yes and no you gave, and every release
+  with what you said changed.</p>
+  <p class="m">Each thing it read stays marked as your words or its guess, so a
+  guess is never stored as something you said.</p>
+  <p class="m">Clear this browser's data and the record goes with it, unless you
+  exported a copy first.</p>
+ </div>
+</section>
+
+<!-- 09. The house lines, not new ones: "It reads what is running, not who is
+     running it" (about.html, the not list), the clinician line every funnel
+     page ends on, and "If you are under care, stay under it" from the privacy
+     draft section 2. -->
+<section id="therapy">
+ <div class="hd"><h2>Is Atüned therapy, coaching, meditation or a personality test?</h2></div>
+ <div class="bd">
+  <p class="m">None of those. You use it to watch yourself and to practise.</p>
+  <p class="m">It reads what is running, not who is running it.</p>
+  <p class="m">It reads self report. A clinician reads a person, and those are
+  different jobs. If you are under care, stay under it.</p>
+ </div>
+</section>
+
+<!-- 10. Section 71: "The receiving AI must never invent privacy guarantees."
+     Every line here is a row of the privacy draft, sections 3 and 4, checked
+     against ui/auth.js ("It does not sync") and the dictation in
+     ui/storyui.js. Rows the draft marks not built (Google sign in, the name
+     lookup, error reports, the morning note) are not listed. The draft itself
+     is not linked: it carries a warning that it must not go live until
+     counsel has read it. When it does, link it here and re-read this answer
+     against it, line by line. -->
+<section id="information">
+ <div class="hd"><h2>What happens to my information?</h2></div>
+ <div class="bd">
+  <p class="m">It stays in this browser, on your device: your stories, your
+  answers, what the instrument read and every release. It does not sync, and
+  nobody at Atüned can read it.</p>
+  <p class="m">The free test makes no request at all, and a story typed into it is
+  never saved.</p>
+  <p class="m q">Some things leave, and only when you choose them:</p>
+  <ul class="out">
+   <li><b>An account.</b> Your sign in details, if you make one.</li>
+   <li><b>Help.</b> A message you send us, posted to a channel on our Discord server.</li>
+   <li><b>Dictation.</b> Your speech, which your browser's maker turns into text.</li>
+   <li><b>A voice.</b> The lines of a release, if you pick a voice that runs online.</li>
+   <li><b>Payment.</b> Your card, typed on Stripe's page and never into Atüned.</li>
+  </ul>
+ </div>
+</section>
+
+<div class="cta">
+ <a class="btn" href="atuned-quiz.html">Take the test</a>
+ <a class="btn ghost" href="atuned-about.html">Read what it is</a>
+</div>
+<p class="meta">A hundred questions, one per screen. Stop and come back.
+Nothing you answer leaves your browser.</p>
+
+<nav class="nav foot-nav"><a href="atuned-funnel.html">What it reads</a>
+ <a href="atuned-about.html">About</a>
+ <a href="atuned-buy.html">Tiers</a>
+ <a href="atuned-quiz.html">Start</a></nav>
+<p class="foot">This page makes no request of any kind. It reads self report. A
+clinician reads a person, and those are different jobs.</p>
+
+</div></body></html>

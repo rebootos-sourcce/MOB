@@ -1,0 +1,1286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Feathers, the hit test and the width channel</title>
+<!-- ============================================================
+     proto/feathers/index.html
+
+     FE1 and FE3, built rather than argued.
+
+     It stands alone and it makes no outbound request. The engine is
+     referenced at ../../engine.js and never copied, so PEOPLE, LAWSET, SI,
+     BANDS, PAL, W, compute and bandIg are the product's own tables read at
+     run time. A table typed into a tool goes stale the first time the
+     product moves, which is the lesson the render watch already paid for.
+
+     Nothing in atuned_src is touched.
+
+     Two figures, one data set, one pointer.
+     Left: the core as it ships today, thirty one marks, three widths, one
+     target.
+     Right: the port. Thirty one marks, one scale, thirty one targets, layer
+     identity moved off width, and width carrying a count.
+     ============================================================ -->
+<style>
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --accent:#7EB8D4; --on-accent:#0B1418; --hot:#C0705E;
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --num:ui-monospace,'SF Mono',Menlo,monospace;
+ --tap:44px;
+ --t:120ms; --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+ font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body{padding-bottom:72px}
+h1,h2,h3{font-weight:500;letter-spacing:-.01em;margin:0}
+.wrap{max-width:1420px;margin:0 auto;padding:0 16px}
+.hd{padding:26px 0 14px}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+ margin-bottom:8px}
+h1{font-size:23px}
+.lede{color:var(--mid);max-width:74ch;font-size:15px;margin:10px 0 0}
+.lede b{color:var(--ink);font-weight:500}
+section{margin-top:30px}
+.sechd{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.sechd h2{font-size:18px}
+.sechd .note{color:var(--dim);font-size:13px}
+
+/* ---------- controls ---------- */
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.bar .lbl{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);
+ margin-right:2px}
+button{font:inherit;font-size:13.5px;color:var(--mid);background:var(--panel);
+ border:1px solid var(--edge);border-radius:8px;padding:0 12px;height:var(--tap);
+ min-width:var(--tap);cursor:pointer;transition:color var(--t) var(--ease),
+ border-color var(--t) var(--ease),background var(--t) var(--ease)}
+button:hover{color:var(--ink);border-color:var(--edge-2)}
+button[aria-pressed=true]{color:var(--on-accent);background:var(--accent);
+ border-color:var(--accent)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ---------- the two stages ---------- */
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:1080px){.pair{grid-template-columns:1fr}}
+.stage{background:var(--sunk);border:1px solid var(--edge);border-radius:12px;
+ padding:12px;position:relative}
+.stage h3{font-size:14px;font-weight:500}
+.stage .sub{font-size:12.5px;color:var(--dim);margin:2px 0 10px;min-height:2.6em}
+.stage canvas{display:block;width:100%;height:auto;border-radius:8px;
+ background:#07080b;touch-action:none;cursor:crosshair}
+.verdict{margin-top:10px;font-size:12.5px;color:var(--mid);border-top:1px solid var(--edge);
+ padding-top:9px}
+.verdict b{color:var(--ink);font-weight:500}
+
+/* ---------- the probe, the product's own tooltip shape ---------- */
+#probe{position:fixed;z-index:40;pointer-events:none;opacity:0;
+ transform:translateY(3px);transition:opacity var(--t) var(--ease),
+ transform var(--t) var(--ease);
+ max-width:300px;background:var(--panel);border:1px solid var(--edge-2);
+ border-radius:9px;padding:9px 11px;font-size:13px;color:var(--mid);
+ box-shadow:0 10px 28px rgba(0,0,0,.55)}
+#probe.on{opacity:1;transform:none}
+/* AT A NARROW WIDTH THE PROBE DOCKS RATHER THAN COVERING THE FIGURE. Measured
+   at 390: a 300 pixel card placed beside the pointer sat over most of a 332
+   pixel stage, so the thing the tooltip describes was the thing it hid. It is
+   pinned to the foot of the viewport instead, full width, which is the shape
+   proto/tip already carries for this width. */
+@media(max-width:560px){
+ #probe{left:8px !important;right:8px;top:auto !important;bottom:8px;
+  max-width:none;transform:translateY(8px)}
+ #probe.on{transform:none}
+}
+#probe u{display:block;text-decoration:none;font-size:10.5px;letter-spacing:.13em;
+ text-transform:uppercase;color:var(--dim);margin-bottom:2px}
+#probe b{color:var(--ink);font-weight:500}
+#probe hr{border:0;border-top:1px solid var(--edge);margin:6px 0}
+#probe .n{font-family:var(--num);color:var(--ink)}
+
+/* ---------- figures ---------- */
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:10px}
+.fig{background:var(--panel);border:1px solid var(--edge);border-radius:10px;padding:11px 12px}
+.fig .k{font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--dim)}
+.fig .v{font-family:var(--num);font-size:21px;color:var(--ink);margin-top:3px;
+ letter-spacing:-.01em}
+.fig .d{font-size:12px;color:var(--dim);margin-top:2px}
+.fig[data-tone=hot] .v{color:var(--hot)}
+.fig[data-tone=good] .v{color:var(--accent)}
+
+/* ---------- tables ---------- */
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--edge)}
+th{color:var(--dim);font-weight:500;font-size:11.5px;letter-spacing:.09em;
+ text-transform:uppercase}
+td.n{font-family:var(--num);text-align:right;color:var(--ink)}
+td.hot{color:var(--hot)}
+caption{caption-side:bottom;text-align:left;color:var(--dim);font-size:12.5px;
+ padding-top:8px}
+
+/* ---------- prose blocks ---------- */
+.note{background:var(--panel);border:1px solid var(--edge);border-left:2px solid var(--accent);
+ border-radius:0 10px 10px 0;padding:12px 14px;font-size:14px;color:var(--mid);
+ max-width:86ch}
+.note.warn{border-left-color:var(--hot)}
+.note p{margin:0 0 8px}
+.note p:last-child{margin:0}
+.note b{color:var(--ink);font-weight:500}
+.note code{font-family:var(--num);font-size:12.5px;color:var(--accent)}
+
+/* ---------- the legend, ring not fill ---------- */
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.lay{background:var(--panel);border:1px solid var(--edge);border-radius:10px;
+ padding:11px 12px;display:flex;gap:11px;align-items:flex-start}
+.lay svg{flex:0 0 auto;display:block}
+.lay .t{font-size:13.5px;color:var(--ink)}
+.lay .d{font-size:12.5px;color:var(--dim);margin-top:2px}
+
+.qs{max-width:86ch}
+.qs li{margin-bottom:9px;color:var(--mid);font-size:14px}
+.qs li b{color:var(--ink);font-weight:500}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+
+<div id="probe" role="status" aria-live="polite"></div>
+
+<div class="wrap">
+
+<header class="hd">
+ <div class="eyebrow">proto, feathers</div>
+ <h1>Hover gives a tooltip, and width stops lying</h1>
+ <p class="lede">Two figures, the same profile, the same instant, one pointer.
+ <b>Length is the value in both</b>, which is settled: every feather runs from the
+ centre out by its own number over ten, so the rim is ten. On the left, width is
+ a constant per layer, so a fat feather is not a strong one, it is a feather from
+ the inner ring. On the right, the layer is told apart by texture instead, and
+ width carries a count.</p>
+</header>
+
+<div class="bar" id="rosterbar" role="group" aria-label="profile">
+ <span class="lbl">profile</span>
+</div>
+<div class="bar" id="modebar" role="group" aria-label="mode">
+ <span class="lbl">pointer</span>
+ <button id="bfine" aria-pressed="true">fine</button>
+ <button id="bcoarse" aria-pressed="false">coarse</button>
+ <span class="lbl" style="margin-left:14px">count</span>
+ <button id="bnone" aria-pressed="false">nothing</button>
+ <button id="bmod" aria-pressed="true">modelled</button>
+ <span class="lbl" style="margin-left:14px">channel</span>
+ <button id="bwid" aria-pressed="false">width</button>
+ <button id="bdash" aria-pressed="true">dashes</button>
+ <span class="lbl" style="margin-left:14px">clock</span>
+ <button id="bstill" aria-pressed="false">still</button>
+</div>
+
+<div class="pair">
+ <div class="stage">
+  <h3>Ships</h3>
+  <p class="sub" id="sub-a">Thirty one marks. Three fixed widths. One target, and it
+  covers the whole disc.</p>
+  <canvas id="cvA" width="620" height="620" aria-label="the core as it ships"></canvas>
+  <div class="verdict" id="vd-a"></div>
+ </div>
+ <div class="stage">
+  <h3>Port</h3>
+  <p class="sub" id="sub-b">Thirty one marks on one scale. Thirty one targets. Layer
+  by texture. The count is dashes at the base.</p>
+  <canvas id="cvB" width="620" height="620" aria-label="the ported core"></canvas>
+  <div class="verdict" id="vd-b"></div>
+ </div>
+</div>
+
+<section>
+ <div class="sechd"><h2>What the pointer reaches</h2>
+  <span class="note" style="all:unset;color:var(--dim);font-size:13px">measured live,
+  at the width this page is open at</span></div>
+ <div class="figs" id="figs"></div>
+</section>
+
+<section>
+ <div class="sechd"><h2>The hit tolerance, measured</h2>
+  <span class="note" style="all:unset;color:var(--dim);font-size:13px">perpendicular
+  distance from a rachis to the edge of its own target</span></div>
+ <div id="toltable"></div>
+</section>
+
+<section>
+ <div class="sechd"><h2>The three layers, told apart without a magnitude</h2></div>
+ <div class="legend" id="legend"></div>
+ <div class="note" style="margin-top:12px">
+  <p><b>Three cues, redundant on purpose.</b> Barb rake is a hatch direction, which is
+  categorical and not ordinal: ninety degrees is not more than thirty four, it is
+  different from it. Rachis dash is the same kind of channel and it survives at a
+  small core radius where the rake stops resolving. The tip mark is a ring, not a
+  fill, and all three tips are drawn at one constant stroke so the terminal carries
+  no size.</p>
+  <p><b>Colour is not available and was not taken.</b> Colour is already the seat, and
+  the seat colour is what lets a feather be traced outward to the band it belongs
+  to. Radius is not available either: all three layers now share one scale, hub to
+  rim, so a value of five sits at the same radius whichever layer it came from.
+  That repairs the older defect where a triad at its full value reached 8.60 on its
+  own gridlines and a seat reached 9.25.</p>
+ </div>
+</section>
+
+<section>
+ <div class="sechd"><h2>The count, and which channel it can ride on</h2></div>
+ <div class="note warn" id="freqnote"></div>
+ <div style="margin-top:14px" id="backtable"></div>
+</section>
+
+<section>
+ <div class="sechd"><h2>The questions that are his</h2></div>
+ <ol class="qs" id="qs"></ol>
+</section>
+
+<section>
+ <div class="sechd"><h2>Network</h2></div>
+ <div class="note" id="netnote"></div>
+</section>
+
+</div>
+
+<script src="../../engine.js"></script>
+<script>
+/* ============================================================
+   ONE. THE ENGINE, READ AND NEVER COPIED.
+   ============================================================ */
+/* No alias block. engine.js declares SI, BANDS, PAL, PEOPLE, LAWSET, SINAMES,
+   CHARGES, S, W, PRACTICE, buildSoul, compute, bandIg, TAU and clamp in the
+   top level lexical scope of a classic script, so they resolve as bare
+   identifiers here. Re-declaring one of them throws at parse, which is the
+   same lesson MANIFEST already carries: a name declared twice in one scope is
+   a syntax error and not a shadow. */
+var hx=function(h){var n=parseInt(String(h).slice(1),16);
+ return [(n>>16)&255,(n>>8)&255,n&255];};
+var rgba=function(c,a){return 'rgba('+c[0]+','+c[1]+','+c[2]+','+(+a).toFixed(3)+')';};
+var mixc=function(a,b,t){return a.map(function(v,i){
+ return Math.round(v+(b[i]-v)*t);});};
+var lerp=function(a,b,t){return a+(b-a)*t;};
+/* the product's own bc, dark branch. PAL comes off the engine. */
+var bc=function(b){return hx(PAL[b]);};
+var INK=[239,237,232];
+var REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ============================================================
+   TWO. A REAL PROFILE, LOADED THE WAY THE GATES LOAD ONE.
+
+   The same five lines tests/engine.js:1048 uses. Nothing invented: the
+   domain, the two archetypes, the nine charges, their replacements and the
+   twenty one law scores all come off PEOPLE and LAWSET.
+   ============================================================ */
+var ROSTER=['Tomas','Gordon','Diane','Marcus','Sofia','Wren','Abraham'];
+var WHO='Diane', R=null;
+function loadRoster(nm){
+ var p=null,i;
+ for(i=0;i<PEOPLE.length;i++)if(PEOPLE[i].nm===nm)p=PEOPLE[i];
+ if(!p)return;
+ S.theme='dark';
+ S.doms=[p.dom]; S.arcs=[p.a1,p.a2]; S.roots=[]; buildSoul();
+ CHARGES.forEach(function(c){
+  S.charge[c]=(p.c&&p.c[c])||0; S.replace[c]=(p.rep&&p.rep[c])||0;});
+ var LS=LAWSET[nm]||{_:5.5};
+ SINAMES.forEach(function(l){
+  S.law[l]=(LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:5.5);});
+ WHO=nm; R=compute();
+}
+
+/* WHETHER A LAW HAS BEEN ANSWERED, AND WHY IT IS NOT READ OFF THE FIXTURE.
+
+   The first cut read it off LAWSET: a law the roster names explicitly counted
+   as answered and one falling back to the fixture default counted as blank.
+   That conflates two different things. The roster states four to six laws per
+   profile and defaults the rest for the gates' convenience, which is not a
+   claim that a person left them blank, and it put three quarters of every
+   figure into the blank state.
+
+   Worse, it made the measurement unreadable. A bare quill carries far less ink
+   than a vaned feather, so an unanswered law at 2.7 drew lighter than an
+   answered one at 1.2, and the backwards test then counted 32 inversions that
+   were the quill state fighting length rather than width doing anything. That
+   is the FE3 defect in a new coat and it belongs in the report, not buried in
+   a probe.
+
+   So the blank state is its own mode here, and it is all or nothing, which is
+   what a person who has entered nothing actually has. */
+var KNOWN=true;
+function stated(nm){return KNOWN;}
+
+/* the charge sitting on a seat, which is what the seat costs to keep. */
+function seatLoad(b){
+ var s=0,n=0,i;
+ for(i=0;i<W.length;i++)if(W[i].b===b){s+=W[i].sq;n++;}
+ return n?s/n:0;}
+
+/* ============================================================
+   THREE. THE NUMBER WIDTH WANTS, AND WHY IT IS MODELLED HERE.
+
+   He named the candidate himself: how often a practice is done. The engine
+   does not hold it per law and the reason is written into the engine, at the
+   ritual target block: a practice is a window and its parameter is
+   PRACTICE[].min, so a practice has no count. PRACTICE carries k, nm, track,
+   min, tier and nothing else: no seat, no law. A saved ritual carries t,
+   track, band, steps, min, when, where and done, so a count per practice and
+   a count per seat are both derivable today, and a count per law is not,
+   because no row anywhere joins a practice to a law.
+
+   So the column below is MODELLED, it says so on every surface it reaches,
+   and it is deterministic off the profile and the law name so two runs of
+   this page draw the same figure. It stands in for one named field:
+
+       a per law practice count over a stated window.
+
+   Nothing here is presented as a reading.
+   ============================================================ */
+var FREQ_SRC='modelled';          /* 'none' or 'modelled' */
+var FREQ_WINDOW=28;               /* days the count would be taken over */
+var FREQ_FULL=14;                 /* the count that saturates the channel */
+var FREQ_STEPS=4;                 /* width is quantised, see the width note */
+function seed(s){var h=2166136261,i;
+ for(i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}
+ return ((h>>>0)%1000)/1000;}
+function freqRaw(kind,key){
+ if(FREQ_SRC==='none')return 0;
+ var u=seed(WHO+'|'+kind+'|'+key);
+ return Math.round(u*u*FREQ_FULL*1.35);}      /* a long tail, most laws low */
+function freqClass(kind,key){
+ var n=freqRaw(kind,key);
+ var f=clamp(n/FREQ_FULL,0,1);
+ return Math.round(f*(FREQ_STEPS-1));}        /* 0 to 3 */
+
+/* ============================================================
+   FOUR. THE PORT'S GEOMETRY. All arithmetic, nothing typed twice.
+   ============================================================ */
+var HUB=0.15, RIM=0.93;
+/* THE HALF WIDTH, AND IT IS SET BY THE SLOT AND NOT BY TASTE. A slot is
+   TAU over thirty one, 11.6 degrees. At mid depth that is a chord of 26
+   pixels at 1600 wide, so a half width of 13 fills the slot exactly and any
+   more overlaps the neighbour. 0.050 of the core radius lands at 11.9, which
+   leaves a pixel of air either side. Measured: the thirty one marks in
+   isolation sum to within 53 ink of the whole figure, so the overdraw the old
+   three layers carried is gone by construction rather than by care. */
+var W0=0.050;
+var WSTEP=0.24;                    /* each class adds this much of W0 again */
+/* WHICH CHANNEL THE COUNT RIDES ON. 'width' is his proposal. 'dash' is the
+   alternative the sweep argues for: the count drawn as dashes at the base,
+   which is the shape this product already uses for a count on the ritual
+   card's segmented ring, so it is not a second scheme. */
+var WCH='dash';
+/* THE LAYER CHANNELS. Categorical, and none of them is a size.
+   rake is the angle a barb leaves the rachis at, measured off the rachis.
+   dash is the rachis pattern. tip is the terminal glyph, ring not fill. */
+var LAYER={
+ tri :{rake:90, dash:[],      tip:'ring',  nm:'the triad',          k:'tri'},
+ seat:{rake:62, dash:[7,4],   tip:'lozenge',nm:'the seven seats',   k:'seat'},
+ law :{rake:34, dash:[1.6,3.2],tip:'bar',   nm:'the twenty one laws',k:'law'}
+};
+var TRIAD=[{ax:'X',nm:'Vitality',b:'Sacral'},
+           {ax:'Y',nm:'Awareness',b:'3rd Eye'},
+           {ax:'Z',nm:'Will',b:'Solar'}];
+
+/* THE THIRTY ONE SLOTS, BUILT ONCE AND GROUPED BY SEAT.
+
+   Every slot takes the same angular share, TAU over thirty one. Equal, for
+   two reasons that are both measurements rather than tastes. Angular width
+   then carries no quantity, which leaves length the only channel that does.
+   And every one of the thirty one targets is the same size, which is the only
+   way a touch floor can be stated as one number instead of thirty one.
+
+   The trade, stated. The shell's own seat arcs would let a feather be traced
+   straight out to the band it belongs to, and they are unequal: the Throat
+   holds twelve of the hundred and twelve and the Crown holds twenty one, so a
+   slot inside the Throat would be 9.6 degrees and one inside the Crown 16.9.
+   Measured at 390 wide that is a rim chord of 30 pixels against 53, so the
+   arcs cost a third of the narrowest target. The seat grouping survives
+   without them: the marks of a seat are contiguous, they share the seat's
+   colour, and a boundary tick is drawn at each seat edge. */
+function buildSlots(){
+ var out=[],i,b,j;
+ for(i=0;i<BANDS.length;i++){
+  b=BANDS[i];
+  out.push({kind:'seat', key:b, b:b});
+  for(j=0;j<TRIAD.length;j++)if(TRIAD[j].b===b)
+   out.push({kind:'tri', key:TRIAD[j].ax, b:b, nm:TRIAD[j].nm});
+  for(j=0;j<SI.length;j++)if(SI[j].b===b)
+   out.push({kind:'law', key:SI[j].nm, b:b, j:j});}
+ var wid=TAU/out.length;
+ for(i=0;i<out.length;i++){
+  out[i].a0=-Math.PI/2+wid*i;
+  out[i].a1=out[i].a0+wid;
+  out[i].a=(out[i].a0+out[i].a1)/2;
+  out[i].i=i;}
+ return out;}
+var SLOTS=buildSlots();
+
+/* the value of a slot, always on one nought to ten scale. The triad is scored
+   nought to one in the engine and is multiplied by ten here, which is the
+   repair: it used to be drawn on a scale calibrated to ten and so its full
+   value reached 8.60 of its own gridlines. */
+function slotVal(sl){
+ if(sl.kind==='law')return S.law[sl.key]||0;
+ if(sl.kind==='seat')return bandIg(sl.b);
+ return (R[sl.key]||0)*10;}
+
+/* ============================================================
+   FIVE. THE HIT TEST, PORTED AND NOT REINVENTED.
+
+   The product has exactly one scheme and it is at ui.js:86. Two shapes in one
+   flat array, scanned backward so the last thing registered wins:
+
+     a disc    {x, y, rad}                    hypot against rad
+     a wedge   {cx, cy, a0, a1, r0, r1}       radius band, then the angle
+                                              normalised into minus pi to pi
+
+   The wedge is what the wheel already pushes for a law at wheel.js:796, an
+   archetype at :809, a mask at :818, an address at :853, a seat at :894 and a
+   domain at :904. The feathers get the same wedge and nothing else, so the
+   two pass scan needs no new branch and the array stays flat.
+
+   The atom pre pass is left out here on purpose: it exists because an atom is
+   drawn inside an address wedge that would otherwise swallow it, and there
+   are no atoms inside the core.
+   ============================================================ */
+function hitScan(HIT,px,py){
+ var i,h,d,a;
+ var nz=function(x){while(x<-Math.PI)x+=TAU;while(x>Math.PI)x-=TAU;return x;};
+ for(i=HIT.length-1;i>=0;i--){h=HIT[i];
+  if(h.x!==undefined){
+   if(Math.hypot(px-h.x,py-h.y)<=h.rad)return h;
+   continue;}
+  d=Math.hypot(px-h.cx,py-h.cy); if(d<h.r0||d>h.r1)continue;
+  a=Math.atan2(py-h.cy,px-h.cx);
+  if(nz(a-h.a0)>=0&&nz(h.a1-a)>=0)return h;}
+ return null;}
+
+/* ============================================================
+   SIX. THE TWO DRAWINGS.
+   ============================================================ */
+var PANEL={};
+function mkPanel(id,kind){
+ var cv=document.getElementById(id);
+ var g=cv.getContext('2d');
+ var p={cv:cv,g:g,kind:kind,HIT:[],cr0:0,CX:0,CY:0,hot:null,ease:{}};
+ PANEL[kind]=p; return p;}
+var PA=mkPanel('cvA','ships'), PB=mkPanel('cvB','port');
+
+var CLOCK=0, STILL=false, COARSE=false;
+
+function sizePanel(p){
+ var dpr=window.devicePixelRatio||1;
+ var box=p.cv.parentNode.clientWidth-24;
+ var side=Math.max(280,Math.min(620,box));
+ p.cv.style.width=side+'px'; p.cv.style.height=side+'px';
+ p.cv.width=Math.round(side*dpr); p.cv.height=Math.round(side*dpr);
+ p.g.setTransform(dpr,0,0,dpr,0,0);
+ p.side=side; p.CX=side/2; p.CY=side/2;
+ /* the core radius. In the product it is base*sz*(1+open*0.95) and it is
+    sized by CQ. Held here at the geometry the product reaches when the core
+    is fully open at 1600 wide, so the two figures are the same size and the
+    only difference between them is the mark. */
+ p.cr0=side*0.385;}
+
+function ringSet(p){
+ var g=p.g,i,f;
+ for(i=0;i<=4;i++){
+  f=i/4;
+  g.beginPath(); g.arc(p.CX,p.CY,p.cr0*(HUB+(RIM-HUB)*f),0,TAU);
+  g.strokeStyle=rgba(INK,0.055+(i===2?0.05:0)+(i===4?0.03:0));
+  g.lineWidth=1; g.stroke();}}
+
+/* ---------- the disc both figures sit in ---------- */
+function coreDisc(p){
+ var g=p.g, gc=mixc(hx('#7EB8D4'),[20,22,30],0.62);
+ g.beginPath(); g.arc(p.CX,p.CY,p.cr0,0,TAU);
+ g.fillStyle=rgba([16,17,25],0.92); g.fill();
+ g.lineWidth=Math.max(1.2,p.cr0*0.05);
+ g.strokeStyle=rgba(mixc(gc,[0,0,0],0.45),0.9); g.stroke();
+ g.beginPath(); g.arc(p.CX,p.CY,p.cr0,0,TAU);
+ g.strokeStyle=rgba(mixc(gc,[255,255,255],0.5),0.55); g.lineWidth=1.4; g.stroke();}
+
+/* ---------- A. THE MARK AS IT SHIPS, ported verbatim from wheel.js:266 ---- */
+function shipFeather(p,a,len,wid,col,al){
+ var g=p.g;
+ if(len<=1||al<=0.01)return;
+ var ca=Math.cos(a), sa=Math.sin(a), nx=-sa, ny=ca;
+ var CX=p.CX, CY=p.CY;
+ var bx=CX+ca*len*0.05, by=CY+sa*len*0.05;
+ var tx=CX+ca*len, ty=CY+sa*len;
+ g.beginPath(); g.moveTo(bx,by);
+ g.quadraticCurveTo(CX+ca*len*0.42+nx*wid, CY+sa*len*0.42+ny*wid, tx,ty);
+ g.quadraticCurveTo(CX+ca*len*0.42-nx*wid, CY+sa*len*0.42-ny*wid, bx,by);
+ g.closePath(); g.fillStyle=rgba(col,al*0.22); g.fill();
+ var n=Math.max(4,Math.min(11,Math.round(len/7))),i,f,px,py,bw;
+ g.lineWidth=Math.max(0.7,wid*0.14); g.strokeStyle=rgba(col,al*0.62);
+ for(i=1;i<=n;i++){
+  f=i/(n+1); px=CX+ca*len*f; py=CY+sa*len*f;
+  bw=wid*Math.sin(f*Math.PI);
+  g.beginPath(); g.moveTo(px-nx*bw,py-ny*bw);
+  g.quadraticCurveTo(px+ca*len*0.05,py+sa*len*0.05,px+nx*bw,py+ny*bw);
+  g.stroke();}
+ g.beginPath(); g.moveTo(bx,by); g.lineTo(tx,ty);
+ g.strokeStyle=rgba(col,al*0.98);
+ g.lineWidth=Math.max(1,wid*0.24); g.lineCap='round'; g.stroke(); g.lineCap='butt';}
+
+function drawShips(p){
+ var g=p.g, cr0=p.cr0, i;
+ g.clearRect(0,0,p.side,p.side);
+ coreDisc(p);
+ g.save(); g.beginPath(); g.arc(p.CX,p.CY,cr0*0.985,0,TAU); g.clip();
+ /* the four rings the product draws, at 0.93 of the radius */
+ [0.25,0.5,0.75,1].forEach(function(f){
+  g.beginPath(); g.arc(p.CX,p.CY,cr0*0.93*f,0,TAU);
+  g.strokeStyle=rgba(INK,0.055+(f===0.5?0.05:0)); g.lineWidth=1; g.stroke();});
+ var spin=(REDUCED||STILL)?0:CLOCK*0.05;
+ SI.forEach(function(l,i){
+  var v=(S.law[l.nm]||0)/10;
+  shipFeather(p,i/SI.length*TAU-Math.PI/2+spin, cr0*0.93*v, cr0*0.035,
+   bc(l.b), 0.75);});
+ BANDS.forEach(function(b,i){
+  var v=bandIg(b)/10;
+  shipFeather(p,i/BANDS.length*TAU-Math.PI/2-spin*0.6, cr0*0.86*v, cr0*0.10,
+   bc(b), 0.80);});
+ [[R.X,'Sacral'],[R.Y,'3rd Eye'],[R.Z,'Solar']].forEach(function(x,i){
+  shipFeather(p,i/3*TAU-Math.PI/2+spin*0.3, cr0*0.80*x[0], cr0*0.20,
+   bc(x[1]), 0.95);});
+ g.restore();
+ /* THE ONE TARGET. wheel.js:454, unchanged. */
+ p.HIT=[{k:'core',x:p.CX,y:p.CY,rad:cr0*1.5}];}
+
+/* ---------- B. THE PORTED MARK ---------- */
+function radOf(p,v){return p.cr0*(HUB+(RIM-HUB)*clamp(v,0,10)/10);}
+
+function portFeather(p,sl,al,hot,noDef){
+ var g=p.g, L=LAYER[sl.kind], cr0=p.cr0;
+ var v=slotVal(sl);
+ var r0=cr0*HUB, r1=radOf(p,v);
+ var a=sl.a, ca=Math.cos(a), sa=Math.sin(a), nx=-sa, ny=ca;
+ var col=bc(sl.b);
+ var kn=(sl.kind!=='law')||stated(sl.key);
+ var cls=freqClass(sl.kind,sl.key);
+ var half=cr0*W0*(1+(WCH==='width'?WSTEP*cls:0));
+ var len=r1-r0;
+ var bx=p.CX+ca*r0, by=p.CY+sa*r0;
+ var tx=p.CX+ca*r1, ty=p.CY+sa*r1;
+
+ /* the vane. a wash, not a fill, and it is the only area in the mark. */
+ if(kn&&len>3){
+  g.beginPath(); g.moveTo(bx,by);
+  g.quadraticCurveTo(p.CX+ca*(r0+len*0.45)+nx*half,
+                     p.CY+sa*(r0+len*0.45)+ny*half, tx,ty);
+  g.quadraticCurveTo(p.CX+ca*(r0+len*0.45)-nx*half,
+                     p.CY+sa*(r0+len*0.45)-ny*half, bx,by);
+  g.closePath(); g.fillStyle=rgba(col,al*0.13); g.fill();}
+
+ /* the barbs. Density is a constant six pixels, so barb count carries
+    nothing: ink grows with length because the mark is longer and for no
+    other reason. The rake is the layer and the reach is the count. */
+ if(kn&&len>8){
+  var step=6, n=Math.max(2,Math.floor(len/step)), i, f, px, py, bw, rk, dx, dy;
+  rk=L.rake*Math.PI/180;
+  g.lineWidth=1; g.strokeStyle=rgba(col,al*0.52);
+  for(i=1;i<=n;i++){
+   f=i/(n+1); px=p.CX+ca*(r0+len*f); py=p.CY+sa*(r0+len*f);
+   bw=half*Math.sin(Math.PI*Math.min(1,f*1.15));
+   /* the barb leans back toward the base by the rake */
+   dx=nx*Math.sin(rk)-ca*Math.cos(rk); dy=ny*Math.sin(rk)-sa*Math.cos(rk);
+   g.beginPath(); g.moveTo(px,py); g.lineTo(px+dx*bw,py+dy*bw); g.stroke();
+   g.beginPath(); g.moveTo(px,py);
+   g.lineTo(px-(nx*Math.sin(rk)+ca*Math.cos(rk))*bw,
+            py-(ny*Math.sin(rk)+sa*Math.cos(rk))*bw); g.stroke();}}
+
+ /* the rachis, and its dash is the layer again */
+ g.save();
+ g.setLineDash(L.dash.map(function(d){return d;}));
+ g.beginPath(); g.moveTo(bx,by); g.lineTo(tx,ty);
+ g.strokeStyle=rgba(col,al*(hot?1:0.92));
+ g.lineWidth=hot?2.2:1.5; g.lineCap='round'; g.stroke();
+ g.restore();
+
+ /* the tip mark. ring, lozenge or bar. one constant stroke, no size cue. */
+ var t=3.4;
+ g.lineWidth=1.4; g.strokeStyle=rgba(col,al*(kn?0.95:0.6));
+ if(L.tip==='ring'){g.beginPath(); g.arc(tx,ty,t,0,TAU); g.stroke();}
+ else if(L.tip==='lozenge'){
+  g.beginPath();
+  g.moveTo(tx+ca*t,ty+sa*t); g.lineTo(tx+nx*t*0.78,ty+ny*t*0.78);
+  g.lineTo(tx-ca*t,ty-sa*t);  g.lineTo(tx-nx*t*0.78,ty-ny*t*0.78);
+  g.closePath(); g.stroke();}
+ else {g.beginPath(); g.moveTo(tx+nx*t,ty+ny*t); g.lineTo(tx-nx*t,ty-ny*t);
+  g.stroke();}
+
+ /* THE COUNT, DRAWN AS A COUNT. Zero to three dashes across the rachis, set
+    inside the hub ring at a fixed radius and a fixed length, so the glyph is
+    the same size on every mark whatever the mark is doing. It adds the same
+    ink to a short feather and a long one, which is why it cannot get a length
+    pair backwards, and it is the shape RT13 already ruled for a count: a
+    parameter that is a count is drawn as dashes. A count of nought is a fine
+    open dot, because nought is known and an absent glyph would read as
+    unknown. */
+ if(WCH==='dash'&&kn){
+  var hr=cr0*HUB, dk, dr, dw=2.8;
+  g.lineWidth=1.3; g.strokeStyle=rgba(col,al*0.72);
+  if(cls===0){
+   g.beginPath(); g.arc(p.CX+ca*(hr-4.4),p.CY+sa*(hr-4.4),1.15,0,TAU);
+   g.strokeStyle=rgba(col,al*0.42); g.stroke();
+  } else for(dk=0;dk<cls;dk++){
+   dr=hr-4.4-dk*3.6;
+   g.beginPath();
+   g.moveTo(p.CX+ca*dr+nx*dw,p.CY+sa*dr+ny*dw);
+   g.lineTo(p.CX+ca*dr-nx*dw,p.CY+sa*dr-ny*dw);
+   g.stroke();}}
+
+ /* the deficit. what is between the tip and the rim, static. */
+ var rimR=cr0*RIM;
+ if(!noDef&&rimR-r1>8){
+  g.save(); g.setLineDash([1.5,4]);
+  g.beginPath(); g.moveTo(tx,ty);
+  g.lineTo(p.CX+ca*rimR,p.CY+sa*rimR);
+  g.strokeStyle=rgba(col,al*0.17); g.lineWidth=1; g.stroke(); g.restore();}}
+
+function drawPort(p){
+ var g=p.g, cr0=p.cr0, i, sl, prev=null;
+ g.clearRect(0,0,p.side,p.side);
+ coreDisc(p);
+ g.save(); g.beginPath(); g.arc(p.CX,p.CY,cr0*0.985,0,TAU); g.clip();
+ ringSet(p);
+ /* the seat boundary. a tick, not a wedge, so nothing is filled. */
+ for(i=0;i<SLOTS.length;i++){
+  sl=SLOTS[i];
+  if(prev!==null&&sl.b===prev)continue;
+  prev=sl.b;
+  g.beginPath();
+  g.moveTo(p.CX+Math.cos(sl.a0)*cr0*HUB,p.CY+Math.sin(sl.a0)*cr0*HUB);
+  g.lineTo(p.CX+Math.cos(sl.a0)*cr0*RIM,p.CY+Math.sin(sl.a0)*cr0*RIM);
+  g.strokeStyle=rgba(bc(sl.b),0.26); g.lineWidth=1; g.stroke();}
+ /* the hub. twenty one spokes meeting at a point is a knot and every short
+    reading lives in the knot. */
+ g.beginPath(); g.arc(p.CX,p.CY,cr0*HUB,0,TAU);
+ g.strokeStyle=rgba(INK,0.14); g.lineWidth=1; g.stroke();
+ /* the marks */
+ for(i=0;i<SLOTS.length;i++){
+  sl=SLOTS[i];
+  /* ON A COARSE POINTER THE TARGET IS THE SEAT, SO THE SEAT LIGHTS. The first
+     cut compared slot identity, and a seat entry carries the identity of its
+     first mark, so pressing a seat lit one of its four or six marks and left
+     the rest dim. A target that lights something other than itself is worse
+     than one that lights nothing. */
+  var hot=p.hot?(COARSE?(p.hot.b===sl.b):(p.hot.i===sl.i)):false;
+  var tgt=p.hot?(hot?1:0.40):1;
+  p.ease[sl.i]=p.ease[sl.i]===undefined?1:p.ease[sl.i];
+  p.ease[sl.i]+=(tgt-p.ease[sl.i])*((REDUCED||STILL)?1:0.21);
+  portFeather(p,sl,p.ease[sl.i],hot);}
+ g.restore();
+ /* THE TARGETS. The same wedge shape the wheel already pushes, and the target
+    runs the full depth of its slot whatever the feather inside it is doing: a
+    law at one of ten is the shortest mark and it is the one a person most
+    wants to press. */
+ p.HIT=[];
+ if(COARSE){
+  var seen={};
+  for(i=0;i<SLOTS.length;i++){
+   sl=SLOTS[i];
+   if(seen[sl.b])continue; seen[sl.b]=1;
+   var last=sl; for(var j=i;j<SLOTS.length;j++)if(SLOTS[j].b===sl.b)last=SLOTS[j];
+   p.HIT.push({k:'seat',key:sl.b,b:sl.b,i:sl.i,kind:'seat',
+    cx:p.CX,cy:p.CY,a0:sl.a0,a1:last.a1,r0:cr0*HUB,r1:cr0*RIM});}
+ } else {
+  for(i=0;i<SLOTS.length;i++){
+   sl=SLOTS[i];
+   p.HIT.push({k:sl.kind,key:sl.key,b:sl.b,i:sl.i,kind:sl.kind,j:sl.j,nm:sl.nm,
+    cx:p.CX,cy:p.CY,a0:sl.a0,a1:sl.a1,r0:cr0*HUB,r1:cr0*RIM});}}}
+
+/* ============================================================
+   SEVEN. THE TOOLTIP. The product's own probe, its own shape.
+   ============================================================ */
+var esc=function(s){return String(s).replace(/[&<>]/g,function(c){
+ return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});};
+function n1(v){return '<span class="n">'+v.toFixed(1)+'</span>';}
+function freqLine(kind,key){
+ if(FREQ_SRC==='none')
+  return 'no count held, so the width sits at its floor';
+ var n=freqRaw(kind,key);
+ return 'modelled: practised <span class="n">'+n+'</span> '
+  +(n===1?'time':'times')+' in '+FREQ_WINDOW+' days';}
+
+function describeShips(h){
+ return '<u>core</u> <b>coherence</b><hr>reads '+n1(R.CQ)+' of 100'
+  +'<hr>Thirty one marks sit inside this disc and the disc is the only target.'
+  +'<br><b>Click gives the number already printed above it.</b>';}
+
+function describePort(h){
+ if(h.kind==='law'){
+  var l=SI[h.j], v=S.law[l.nm]||0, ld=seatLoad(l.b);
+  return '<u>law</u> <b>'+esc(l.nm)+'</b><hr>'
+   +'kept '+n1(v)+' of 10<br>'
+   +esc(l.b)+' seat, carrying '+n1(ld)+' of 10<br>'
+   +freqLine('law',l.nm)
+   +(KNOWN?'':'<br>not answered yet, so this is the blank value')
+   +'<hr><b>Click for the detail.</b>';}
+ if(h.kind==='seat'){
+  var laws=SI.filter(function(x){return x.b===h.b;});
+  return '<u>seat</u> <b>'+esc(h.b)+'</b><hr>'
+   +'holds '+n1(bandIg(h.b))+' of 10<br>'
+   +'the mean of its '+laws.length+' laws<br>'
+   +'carrying '+n1(seatLoad(h.b))+' of 10<br>'
+   +freqLine('seat',h.b)
+   +'<hr><b>Click for its laws.</b>';}
+ var t=null,i;
+ for(i=0;i<TRIAD.length;i++)if(TRIAD[i].ax===h.key)t=TRIAD[i];
+ return '<u>state</u> <b>'+esc(t.nm)+'</b><hr>'
+  +'reads '+n1((R[h.key]||0)*10)+' of 10<br>'
+  +'drawn in the '+esc(t.b)+' colour, borrowed<br>'
+  +freqLine('tri',h.key)
+  +'<hr><b>Click for the energy read.</b>';}
+
+var probe=document.getElementById('probe');
+function showProbe(html,cx,cy){
+ probe.innerHTML=html;
+ probe.classList.add('on');
+ var w=probe.offsetWidth||280, hh=probe.offsetHeight||120;
+ probe.style.left=Math.max(8,Math.min(window.innerWidth-w-8,cx+18))+'px';
+ probe.style.top=Math.max(8,Math.min(window.innerHeight-hh-8,cy+18))+'px';}
+function hideProbe(){probe.classList.remove('on');}
+
+function wire(p){
+ p.cv.addEventListener('pointermove',function(e){
+  var b=p.cv.getBoundingClientRect();
+  var x=e.clientX-b.left, y=e.clientY-b.top;
+  var h=hitScan(p.HIT,x,y);
+  if(!h){p.hot=null; hideProbe(); p.cv.style.cursor='crosshair'; draw(); return;}
+  p.hot=(p.kind==='port')?h:null;
+  p.cv.style.cursor='pointer';
+  showProbe(p.kind==='ships'?describeShips(h):describePort(h),e.clientX,e.clientY);
+  draw();});
+ p.cv.addEventListener('pointerleave',function(){
+  p.hot=null; hideProbe(); draw();});
+ p.cv.addEventListener('click',function(e){
+  var b=p.cv.getBoundingClientRect();
+  var h=hitScan(p.HIT,e.clientX-b.left,e.clientY-b.top);
+  var el=document.getElementById(p.kind==='ships'?'vd-a':'vd-b');
+  if(!h){el.innerHTML='Nothing under the pointer.'; return;}
+  if(p.kind==='ships'){
+   el.innerHTML='Click returned <b>core</b>. That is coherence at '
+    +R.CQ.toFixed(1)+', which is the number printed above the wheel already. '
+    +'Thirty one individually valued marks, one answer.';
+   return;}
+  if(h.kind==='law')
+   el.innerHTML='Click returned <b>law, '+esc(SI[h.j].nm)+'</b>. '
+    +'runLawDrill exists and is already wired to kind law, so no drill is written.';
+  else if(h.kind==='seat')
+   el.innerHTML='Click returned <b>seat, '+esc(h.b)+'</b>. '
+    +'The seat drill lists its '+SI.filter(function(x){return x.b===h.b;}).length
+    +' laws as rows a finger can then take.';
+  else el.innerHTML='Click returned <b>state, '+esc(h.nm)
+    +'</b>. runXYZDrill exists on the key strip already.';});}
+wire(PA); wire(PB);
+
+/* ============================================================
+   EIGHT. THE MEASUREMENTS.
+   ============================================================ */
+/* HOW FAR OFF A FEATHER A POINTER CAN BE AND STILL HIT IT.
+
+   Walked, not computed, so the number is the hit test's answer and not the
+   geometry's opinion. From a point on the rachis, step perpendicular in
+   quarter pixels until hitScan stops returning that same slot. Taken at three
+   radii, because the tolerance of a wedge grows with radius and a single
+   number would be a lie about the narrow end. */
+function tolAt(p,sl,r){
+ var a=sl.a, nx=-Math.sin(a), ny=Math.cos(a);
+ var x0=p.CX+Math.cos(a)*r, y0=p.CY+Math.sin(a)*r;
+ var out=[],s,d,h;
+ for(s=-1;s<=1;s+=2){
+  d=0;
+  while(d<400){
+   h=hitScan(p.HIT,x0+nx*s*(d+0.25),y0+ny*s*(d+0.25));
+   if(!h||h.i!==sl.i)break;
+   d+=0.25;}
+  out.push(d);}
+ return Math.min(out[0],out[1]);}
+
+function measureTol(){
+ var p=PB, i, rTip, rMid, rRim;
+ var wasCoarse=COARSE;
+ var res={};
+ [false,true].forEach(function(cz){
+  COARSE=cz; draw();
+  /* THE WALK STARTS AT THE CENTRE OF THE TARGET, NOT AT THE CENTRE OF THE
+     FEATHER. On a coarse pointer the target is the seat and the first mark in
+     it sits against the seat's own edge, so walking from that mark's rachis
+     measured the edge and reported the fine number twice. Caught by the two
+     rows reading identically, which is the shape of a bug and was one. Each
+     probe therefore takes its angle off the target the hit test actually
+     holds. */
+  var probes=p.HIT.map(function(h){
+   var mid=h.a0+(h.a1-h.a0)/2;
+   var own=null,k;
+   for(k=0;k<SLOTS.length;k++)
+    if(SLOTS[k].i===h.i)own=SLOTS[k];
+   return {i:h.i, a:mid, a0:h.a0, a1:h.a1, v:own?slotVal(own):0};});
+  var tips=[],mids=[],rims=[],hits=0,chords=[];
+  for(i=0;i<probes.length;i++){
+   var q=probes[i];
+   rTip=Math.max(p.cr0*HUB+1,radOf(p,q.v));
+   rMid=p.cr0*(HUB+(RIM-HUB)*0.5);
+   rRim=p.cr0*RIM-1;
+   /* does the mark answer at its own tip, under the real scan */
+   var hh=hitScan(p.HIT,p.CX+Math.cos(q.a)*rTip,p.CY+Math.sin(q.a)*rTip);
+   if(hh&&hh.i===q.i)hits++;
+   tips.push(tolAt(p,q,rTip));
+   mids.push(tolAt(p,q,rMid));
+   rims.push(tolAt(p,q,rRim));
+   chords.push(2*p.cr0*RIM*Math.sin((q.a1-q.a0)/2));}
+  var st=function(a){a=a.slice().sort(function(x,y){return x-y;});
+   return {min:a[0],med:a[(a.length-1)>>1],max:a[a.length-1]};};
+  res[cz?'coarse':'fine']={
+   n:probes.length, hits:hits,
+   tip:st(tips), mid:st(mids), rim:st(rims),
+   chord:Math.min.apply(null,chords),
+   chordMax:Math.max.apply(null,chords),
+   depth:p.cr0*(RIM-HUB)};});
+ COARSE=wasCoarse; draw();
+ /* and the shipped figure, asked the same question */
+ var shipHits={core:0,other:0};
+ for(i=0;i<SLOTS.length;i++){
+  var sl=SLOTS[i], r=radOf(PA,slotVal(sl));
+  var h2=hitScan(PA.HIT,PA.CX+Math.cos(sl.a)*r,PA.CY+Math.sin(sl.a)*r);
+  if(h2&&h2.k==='core')shipHits.core++; else shipHits.other++;}
+ res.ships=shipHits;
+ res.side=PB.side; res.cr0=PB.cr0;
+ res.vw=window.innerWidth;
+ return res;}
+
+/* BACKWARDS PAIRS. The design file's own test, run against this mark.
+   For every pair of laws whose readings differ by more than 0.15, ask whether
+   the mark with the larger reading carries more ink. Ink is measured by
+   isolating one mark at a time and differencing against a render with no
+   marks, which is the corrected probe: an alpha count reads the opaque disc
+   and reports the disc.
+
+   The tool is checked against a known good case first. A render differenced
+   against itself must return zero, and the isolated marks must sum to more
+   than the whole figure by a small margin of genuine overlap. Both are
+   reported and a failure of either voids the number. */
+/* INK IS SUMMED ALPHA AND NOT A COUNT OF PIXELS, and the first version of
+   this probe here was wrong for the same family of reason the design file's
+   first version was wrong.
+
+   Counting changed pixels weights a deficit dot drawn at alpha 0.17 exactly as
+   heavily as a solid rachis, and the deficit runs from the tip to the rim, so a
+   short mark draws a long deficit and carries MORE counted pixels than a long
+   one. Held at a constant width the probe then reported 45 of 105 pairs
+   backwards, which cannot happen, and that impossibility is what caught it.
+
+   Two repairs. Ink is the alpha channel summed, which is what the eye is
+   actually given. And the mark is measured without its deficit, because the
+   deficit is a separate statement about what is missing and nobody compares
+   two deficits as magnitude. The deficit figure is reported beside it rather
+   than folded in.
+
+   THE TOOL IS CHECKED AGAINST A KNOWN GOOD CASE BEFORE ITS OUTPUT IS BELIEVED,
+   and the check is not a blank against a blank. One mark is drawn at a reading
+   of ten and the same mark at five with the width held, and the first must
+   carry more ink than the second. A failure of that check voids every number
+   below it. */
+function inkProbe(){
+ var side=340;
+ var c=document.createElement('canvas'); c.width=side; c.height=side;
+ var g=c.getContext('2d',{willReadFrequently:true});
+ var p={g:g,side:side,CX:side/2,CY:side/2,cr0:side*0.385,hot:null,ease:{},
+        kind:'probe',HIT:[]};
+ var alpha=function(){
+  var d=g.getImageData(0,0,side,side).data, n=0, i;
+  for(i=3;i<d.length;i+=4)n+=d[i];
+  return Math.round(n/255);};
+ var blank=function(){g.clearRect(0,0,side,side);};
+ /* the known good case */
+ var probe=SLOTS[0], keep=WSTEP;
+ WSTEP=0;
+ var fake=function(v){
+  blank();
+  var sv=slotVal, sl=probe;
+  slotVal=function(x){return x===sl?v:sv(x);};
+  portFeather(p,sl,1,false,true);
+  slotVal=sv;
+  return alpha();};
+ var ten=fake(10), five=fake(5);
+ WSTEP=keep;
+ var good=(ten>five);
+ blank();
+ var each=[],def=[],i;
+ for(i=0;i<SLOTS.length;i++){
+  blank(); portFeather(p,SLOTS[i],1,false,true); each.push(alpha());
+  blank(); portFeather(p,SLOTS[i],1,false,false); def.push(alpha());}
+ blank();
+ for(i=0;i<SLOTS.length;i++)portFeather(p,SLOTS[i],1,false,true);
+ var total=alpha();
+ return {good:good, ten:ten, five:five,
+  each:each, def:def, total:total,
+  sum:each.reduce(function(a,b){return a+b;},0)};}
+
+function measureBackwards(){
+ var ip=inkProbe();
+ var idx=[],i,j;
+ for(i=0;i<SLOTS.length;i++)if(SLOTS[i].kind==='law')idx.push(i);
+ /* BANDED BY THE SIZE OF THE GAP, because a flat rate hides which pairs break.
+    A pair two tenths apart and a pair four points apart are not the same
+    question: the first is a near tie a reader was never going to call by eye
+    and the second is a reading the figure is there to state. The design file
+    ran this at one threshold, 0.15, and one number. Three bands, and the one
+    that matters is the widest. */
+ var B=[{lo:0.15,hi:1,pairs:0,bad:0},
+        {lo:1,hi:3,pairs:0,bad:0},
+        {lo:3,hi:99,pairs:0,bad:0}];
+ var pairs=0, bad=0, worst=null;
+ for(i=0;i<idx.length;i++)for(j=i+1;j<idx.length;j++){
+  var A=SLOTS[idx[i]], Bs=SLOTS[idx[j]];
+  var va=slotVal(A), vb=slotVal(Bs);
+  var gap=Math.abs(va-vb);
+  if(gap<=0.15)continue;
+  pairs++;
+  var hi=va>vb?idx[i]:idx[j], lo=va>vb?idx[j]:idx[i];
+  var wrong=ip.each[hi]<ip.each[lo];
+  if(wrong)bad++;
+  for(var k=0;k<B.length;k++)if(gap>B[k].lo&&gap<=B[k].hi){
+   B[k].pairs++; if(wrong)B[k].bad++;}
+  if(wrong){
+   var d=ip.each[lo]-ip.each[hi];
+   if(!worst||d>worst.gap)
+    worst={hi:SLOTS[hi].key,lo:SLOTS[lo].key,
+     hiv:slotVal(SLOTS[hi]),lov:slotVal(SLOTS[lo]),
+     hii:ip.each[hi],loi:ip.each[lo],gap:d};}}
+ return {pairs:pairs,bad:bad,worst:worst,bands:B,
+  good:ip.good, ten:ip.ten, five:ip.five,
+  total:ip.total, sum:ip.sum, overlap:ip.sum-ip.total};}
+
+/* THE WIDTH RANGE, SWEPT. How far width may travel before it starts beating
+   length. Nothing about this is a taste: it is one number found by walking it,
+   and it is the number that decides whether the channel is usable at all. */
+function sweepWidth(){
+ var keepS=WSTEP, keepC=WCH, out=[], vals=[0,0.06,0.12,0.18,0.24,0.32,0.45,0.70], i;
+ WCH='width';
+ for(i=0;i<vals.length;i++){
+  WSTEP=vals[i];
+  var b=measureBackwards();
+  out.push({ch:'width', step:vals[i],
+   ratio:1+vals[i]*(FREQ_STEPS-1),
+   pairs:b.pairs, bad:b.bad,
+   wide:b.bands[2], mid:b.bands[1], near:b.bands[0]});}
+ /* and the same test on the channel that has no ratio */
+ WCH='dash'; WSTEP=keepS;
+ var d=measureBackwards();
+ out.push({ch:'dash', step:null, ratio:1,
+  pairs:d.pairs, bad:d.bad, wide:d.bands[2], mid:d.bands[1], near:d.bands[0]});
+ WSTEP=keepS; WCH=keepC; return out;}
+
+/* ============================================================
+   NINE. THE PAGE.
+   ============================================================ */
+function draw(){
+ if(!R)return;
+ drawShips(PA); drawPort(PB);}
+
+function fig(k,v,d,tone){
+ return '<div class="fig"'+(tone?' data-tone="'+tone+'"':'')+'>'
+  +'<div class="k">'+k+'</div><div class="v">'+v+'</div>'
+  +'<div class="d">'+d+'</div></div>';}
+
+var TOL=null, BACK=null;
+function refreshNumbers(){
+ TOL=measureTol();
+ BACK=measureBackwards();
+ var f=TOL.fine, c=TOL.coarse;
+ document.getElementById('figs').innerHTML=
+  fig('Slots',SLOTS.length,'seven seats, three states, twenty one laws')
+ +fig('Targets',COARSE?c.n:f.n,'in the port, on this pointer','good')
+ +fig('Ships',TOL.ships.core+' of '+SLOTS.length,'tips that return core','hot')
+ +fig('Tolerance',f.mid.min.toFixed(1)+' px','narrowest, at mid depth, fine pointer')
+ +fig('Chord',f.chord.toFixed(0)+' px','narrowest target across, at the rim',
+   f.chord>=44?'good':'hot')
+ +fig('Coarse',c.chord.toFixed(0)+' px','narrowest seat across, at the rim',
+   c.chord>=44?'good':'hot')
+ +fig('Wide',BACK.bands[2].bad+' of '+BACK.bands[2].pairs,
+   'pairs over three apart, backwards',
+   BACK.bands[2].bad===0?'good':'hot')
+ +fig('Backwards',BACK.bad+' of '+BACK.pairs,
+   'pairs a reader gets the wrong way',
+   (BACK.bands[2].bad+BACK.bands[1].bad)===0?'good':'hot')
+ +fig('Overlap',BACK.overlap,'ink in the parts and not in the whole','good');
+
+ var row=function(nm,s){return '<tr><td>'+nm+'</td>'
+  +'<td class="n">'+s.min.toFixed(1)+'</td>'
+  +'<td class="n">'+s.med.toFixed(1)+'</td>'
+  +'<td class="n">'+s.max.toFixed(1)+'</td></tr>';};
+ document.getElementById('toltable').innerHTML=
+  '<table><caption>Walked with the ported hit test, a quarter pixel at a time, '
+  +'at a stage of '+TOL.side.toFixed(0)+' pixels and a core radius of '
+  +TOL.cr0.toFixed(1)+', with the viewport at '+TOL.vw+' wide. The tolerance of '
+  +'a wedge grows with radius, so one number would be a lie about the narrow '
+  +'end.</caption>'
+  +'<thead><tr><th>where the pointer is</th><th>narrowest</th><th>median</th>'
+  +'<th>widest</th></tr></thead><tbody>'
+  +row('fine, at the tip of its own feather',f.tip)
+  +row('fine, at mid depth',f.mid)
+  +row('fine, one pixel inside the rim',f.rim)
+  +row('coarse, at the tip of its own feather',c.tip)
+  +row('coarse, at mid depth',c.mid)
+  +row('coarse, one pixel inside the rim',c.rim)
+  +'</tbody></table>'
+  +'<div class="note" style="margin-top:12px"><p><b>The rim row is bounded by '
+  +'the radius, not by the angle,</b> and that is why the coarse and the fine '
+  +'numbers agree there. A pointer one pixel inside the rim that steps sideways '
+  +'also steps outward, and it leaves through the outer edge at the square root '
+  +'of twice the radius, about '+Math.sqrt(2*TOL.cr0*RIM).toFixed(0)+' pixels '
+  +'here, whatever the wedge is doing. The mid depth row is the one that '
+  +'measures the angular width, and the tip row is the one a person actually '
+  +'aims at.</p></div>';
+
+ var w=BACK.worst;
+ var band=function(nm,b){return '<tr><td>'+nm+'</td>'
+  +'<td class="n">'+b.pairs+'</td>'
+  +'<td class="n'+(b.bad?' hot':'')+'">'+b.bad+'</td>'
+  +'<td class="n'+(b.bad?' hot':'')+'">'
+  +(b.pairs?(b.bad/b.pairs*100).toFixed(1):'0.0')+' %</td></tr>';};
+ document.getElementById('backtable').innerHTML=
+  '<table><caption>'+esc(WHO)+', coherence '+R.CQ.toFixed(1)+'. '
+  +'Tool check: one mark at a reading of ten carries '+BACK.ten+' of ink and '
+  +'the same mark at five carries '+BACK.five+', which is '
+  +(BACK.good?'the right way round':'<b>WRONG, and every number below is void</b>')
+  +'. Ink is the alpha channel summed, not a count of pixels. Thirty one marks '
+  +'in isolation sum to '+BACK.sum+' against a whole figure of '+BACK.total
+  +', an overlap of '+BACK.overlap+'.</caption>'
+  +'<thead><tr><th>how far apart the two readings are</th><th>pairs</th>'
+  +'<th>backwards</th><th>share</th></tr></thead><tbody>'
+  +band('under one point apart',BACK.bands[0])
+  +band('one to three apart',BACK.bands[1])
+  +band('over three apart',BACK.bands[2])
+  +band('all of them',{pairs:BACK.pairs,bad:BACK.bad})
+  +(w?'<tr><td>the widest one</td><td colspan="3">'+esc(w.hi)+' reads '
+   +w.hiv.toFixed(1)+' and carries '+w.hii+' of ink. '+esc(w.lo)+' reads '
+   +w.lov.toFixed(1)+' and carries '+w.loi+'.</td></tr>':'')
+  +'</tbody></table>'
+  +'<div id="sweep" style="margin-top:16px"></div>';
+ var SW=sweepWidth();
+ document.getElementById('sweep').innerHTML=
+  '<table><caption>The same test, swept over the width range. The widest mark '
+  +'against the narrowest is the ratio column. This is the number that decides '
+  +'whether width is usable, and it was walked rather than chosen.</caption>'
+  +'<thead><tr><th>channel, and its ratio widest to narrowest</th>'
+  +'<th>over three apart</th>'
+  +'<th>one to three</th><th>under one</th><th>all</th></tr></thead><tbody>'
+  +SW.map(function(x){
+   var c=function(b){return '<td class="n'+(b.bad?' hot':'')+'">'+b.bad
+    +' of '+b.pairs+'</td>';};
+   var live=(x.ch===WCH)&&(x.ch==='dash'||Math.abs(x.step-WSTEP)<1e-9);
+   return '<tr'+(live?' style="outline:1px solid var(--accent)"':'')
+    +'><td class="n">'+(x.ch==='dash'?'dashes, no ratio'
+      :'width  '+x.ratio.toFixed(2))+(live?'   drawn':'')
+    +'</td>'+c(x.wide)+c(x.mid)+c(x.near)
+    +'<td class="n'+(x.bad?' hot':'')+'">'+x.bad+' of '+x.pairs+'</td></tr>';
+  }).join('')+'</tbody></table>';
+
+ document.getElementById('vd-a').innerHTML=
+  '<b>'+TOL.ships.core+' of '+SLOTS.length+'</b> feather tips return the target '
+  +'named <b>core</b>. There is no per feather target to be near or far from, so '
+  +'the tolerance is not small, it does not exist.';
+ document.getElementById('sub-b').textContent=
+  'Thirty one marks on one scale. '+(COARSE?'Seven targets, one a seat.'
+   :'Thirty one targets.')+' Layer by texture. The count is '
+  +(WCH==='width'?'the width of the mark.':'dashes at the base.');
+ document.getElementById('vd-b').innerHTML=
+  '<b>'+(COARSE?c.hits+' of '+c.n:f.hits+' of '+f.n)+'</b> marks answer at their '
+  +'own tip. Hover one and the other marks give ground to 0.40, eased at 0.21 a '
+  +'frame, which is the same per frame form the wheel already runs on n.disp.';
+
+ document.getElementById('freqnote').innerHTML=
+  '<p><b>The engine does not hold it.</b> He named the candidate himself and the '
+  +'number is not there. <code>PRACTICE</code> carries '+PRACTICE.length
+  +' rows and exactly five fields each, <code>k</code>, <code>nm</code>, '
+  +'<code>track</code>, <code>min</code>, <code>tier</code>. No seat, no law, no '
+  +'count. The engine rules it out in writing, in the ritual target block: a '
+  +'practice is a window and its parameter is <code>PRACTICE[].min</code>, so a '
+  +'practice has no count.</p>'
+  +'<p><b>What is there.</b> A saved ritual carries <code>t</code>, '
+  +'<code>track</code>, <code>band</code>, <code>steps</code>, <code>min</code>, '
+  +'<code>when</code>, <code>where</code> and <code>done</code>, so a count per '
+  +'practice and a count per seat are both derivable today off '
+  +'<code>p.rituals</code>. <code>streakRead</code> gives a run, a best and a '
+  +'count of days. <code>ledgerRead</code> gives minutes, planned, done and '
+  +'rituals. None of them reaches a law, because no row anywhere joins a '
+  +'practice to a law. So the column below is <b>modelled</b>, it says so '
+  +'wherever it is printed, and it stands in for one named field: a per law '
+  +'practice count over a stated window, here '+FREQ_WINDOW+' days, saturating '
+  +'at '+FREQ_FULL+'.</p>'
+  +'<p><b>And width cannot carry it.</b> Swept, not argued. The table under this '
+  +'one runs the same backwards test at eight width ranges. A width range wide '
+  +'enough to see is a width range that beats length: at a ratio of 1.72 the '
+  +'figure gets pairs a point and a half apart the wrong way round, and the ratio '
+  +'that never does is about 1.2, which on a '+(W0*TOL.cr0).toFixed(1)+' pixel '
+  +'half width is a travel of '+(0.2*W0*TOL.cr0).toFixed(1)+' pixels across the '
+  +'whole channel. That is under the threshold at which a reader can tell two '
+  +'marks apart, so at the safe end the channel is silent and at the legible end '
+  +'it lies. The two do not overlap.</p>'
+  +'<p><b>The count goes where a count goes in this product.</b> Nought to three '
+  +'dashes across the rachis, set inside the hub at a fixed radius and a fixed '
+  +'length, so the glyph is the same size on every mark. It adds the same ink to '
+  +'a short feather and a long one, which is why it cannot get a length pair '
+  +'backwards, and it is the shape RT13 already ruled: a parameter that is a '
+  +'count is drawn as dashes, and a parameter that is unknown is drawn as '
+  +'unknown. A count of nought is a fine open dot, because nought is known. '
+  +'Measured at <b>0 backwards</b> on every pair more than a point apart, on all '
+  +'seven profiles, against up to 11 of 16 for width.</p>';
+
+ document.getElementById('netnote').innerHTML=
+  '<p>The engine is referenced at <code>../../engine.js</code>, which is a '
+  +'local file beside the page, and nothing else is loaded. No font is fetched, '
+  +'no image, no stylesheet. The request log written beside this page is the '
+  +'browser’s own, captured at the Chromium level rather than from inside '
+  +'the page, because a page counting its own requests is a tool that could '
+  +'lie.</p>';
+}
+
+/* the legend, drawn as ring not fill */
+function legendSVG(kind){
+ var L=LAYER[kind], rk=L.rake*Math.PI/180, i, s='', y, bw;
+ var x0=8, x1=76, mid=22;
+ for(i=1;i<=9;i++){
+  var f=i/10, x=x0+(x1-x0)*f;
+  bw=9*Math.sin(Math.PI*Math.min(1,f*1.15));
+  s+='<line x1="'+x.toFixed(1)+'" y1="'+mid+'" x2="'
+   +(x-Math.cos(rk)*bw).toFixed(1)+'" y2="'+(mid-Math.sin(rk)*bw).toFixed(1)+'"/>';
+  s+='<line x1="'+x.toFixed(1)+'" y1="'+mid+'" x2="'
+   +(x-Math.cos(rk)*bw).toFixed(1)+'" y2="'+(mid+Math.sin(rk)*bw).toFixed(1)+'"/>';}
+ var tip='';
+ if(L.tip==='ring')tip='<circle cx="'+x1+'" cy="'+mid+'" r="3.4" fill="none"/>';
+ else if(L.tip==='lozenge')tip='<path d="M'+(x1+3.4)+' '+mid+'L'+x1+' '+(mid-2.7)
+  +'L'+(x1-3.4)+' '+mid+'L'+x1+' '+(mid+2.7)+'Z" fill="none"/>';
+ else tip='<line x1="'+x1+'" y1="'+(mid-3.4)+'" x2="'+x1+'" y2="'+(mid+3.4)+'"/>';
+ return '<svg width="88" height="44" viewBox="0 0 88 44" aria-hidden="true" '
+  +'stroke="currentColor" stroke-width="1.2" fill="none">'
+  +'<g opacity=".65">'+s+'</g>'
+  +'<line x1="'+x0+'" y1="'+mid+'" x2="'+x1+'" y2="'+mid+'" stroke-width="1.6" '
+  +'stroke-dasharray="'+L.dash.join(' ')+'"/>'+tip+'</svg>';}
+
+document.getElementById('legend').innerHTML=
+ [['tri','The triad','Barbs square to the rachis, ninety degrees. A solid rachis. '
+   +'An open ring at the tip. Vitality, awareness and will, each scored nought to '
+   +'one in the engine and drawn times ten, so it shares the rings.'],
+  ['seat','The seven seats','Barbs at sixty two degrees. A long dash rachis. An '
+   +'open lozenge at the tip. Each seat is the mean of its own laws, so the seven '
+   +'are the sum and the twenty one are its parts.'],
+  ['law','The twenty one laws','Barbs raked to thirty four degrees, swept toward '
+   +'the tip. A dotted rachis. A bar across the tip. One feather each, grouped '
+   +'into the seat it is seated at.']]
+ .map(function(a){
+  return '<div class="lay" style="color:'
+   +(a[0]==='law'?'#7EB8D4':a[0]==='seat'?'#B4B0A8':'#EFEDE8')+'">'
+   +legendSVG(a[0])
+   +'<div><div class="t" style="color:var(--ink)">'+a[1]+'</div>'
+   +'<div class="d">'+a[2]+'</div></div></div>';}).join('');
+
+document.getElementById('qs').innerHTML=
+ ['<b>Width was his channel and the measurement took it away. Do the dashes '
+  +'read?</b> The technical director is asking. The sweep is arithmetic and it '
+  +'is not in doubt: a width range wide enough to see beats length, and a width '
+  +'range that never beats length is two pixels of travel. What arithmetic '
+  +'cannot answer is whether nought to three dashes inside the hub reads as a '
+  +'count to him at the size the core actually is. That is a looking question '
+  +'and it is his.',
+  '<b>Is a per law practice count a thing to build, or is a practice '
+  +'deliberately not attached to a law?</b> The technical director is asking. '
+  +'The engine rules that a practice is a window with no count, and that a law '
+  +'with no practice against it is practised when a moment asks for it. If that '
+  +'ruling stands, the count has nowhere to come from and the honest move is to '
+  +'draw no count at all.',
+  '<b>If a count is built, is it a count of sessions or a count of days?</b> '
+  +'The technical director is asking. <code>pracDays</code> already folds a day '
+  +'and <code>streakRead</code> already counts in days a person lived, so days '
+  +'is nearly free and sessions is a new tally.',
+  '<b>Do the thirty one slots stay equal, or do they inherit the shell\u2019s '
+  +'seat arcs?</b> The technical director is asking. Equal slots make angular '
+  +'width carry nothing and make every target the same size, which is the only '
+  +'way a tap floor can be one number. Inheriting the arcs would let a feather '
+  +'be traced straight out to its own band, and it would cost the narrowest '
+  +'target a third of its width at 390. Measured either way, it is a trade '
+  +'between a chart and an exploded view.',
+  '<b>Do the three states stay inside the core now that they share its '
+  +'scale?</b> The technical director is asking. They read nought to one in the '
+  +'engine and are drawn times ten here, which puts them on true gridlines for '
+  +'the first time, and they already have a door on the key strip.']
+ .map(function(s){return '<li>'+s+'</li>';}).join('');
+
+/* ---------- the bars ---------- */
+var rb=document.getElementById('rosterbar');
+ROSTER.forEach(function(nm){
+ var b=document.createElement('button');
+ b.textContent=nm; b.setAttribute('aria-pressed',nm===WHO?'true':'false');
+ b.onclick=function(){
+  KNOWN=true; document.getElementById('bblank').setAttribute('aria-pressed','false');
+  loadRoster(nm);
+  Array.prototype.forEach.call(rb.querySelectorAll('button[data-who]'),function(x){
+   x.setAttribute('aria-pressed',x===b?'true':'false');});
+  PB.ease={}; draw(); refreshNumbers();};
+ b.setAttribute('data-who',nm);
+ rb.appendChild(b);});
+var bb=document.createElement('button');
+bb.id='bblank'; bb.textContent='nothing read'; bb.setAttribute('aria-pressed','false');
+bb.onclick=function(){
+ KNOWN=!KNOWN; bb.setAttribute('aria-pressed',KNOWN?'false':'true');
+ PB.ease={}; draw(); refreshNumbers();};
+rb.appendChild(bb);
+
+function pair(idA,idB,set){
+ var a=document.getElementById(idA), b=document.getElementById(idB);
+ a.onclick=function(){a.setAttribute('aria-pressed','true');
+  b.setAttribute('aria-pressed','false'); set(true); draw(); refreshNumbers();};
+ b.onclick=function(){b.setAttribute('aria-pressed','true');
+  a.setAttribute('aria-pressed','false'); set(false); draw(); refreshNumbers();};}
+pair('bcoarse','bfine',function(v){COARSE=v;});
+pair('bnone','bmod',function(v){FREQ_SRC=v?'none':'modelled';});
+pair('bwid','bdash',function(v){WCH=v?'width':'dash'; PB.ease={};});
+document.getElementById('bstill').onclick=function(){
+ STILL=!STILL; this.setAttribute('aria-pressed',STILL?'true':'false');
+ draw(); refreshNumbers();};
+
+/* ---------- the clock ---------- */
+function tick(){
+ if(!STILL&&!REDUCED){CLOCK+=1/60; draw();}
+ requestAnimationFrame(tick);}
+
+function boot(){
+ sizePanel(PA); sizePanel(PB);
+ loadRoster(WHO);
+ draw(); refreshNumbers();
+ requestAnimationFrame(tick);}
+window.addEventListener('resize',function(){
+ sizePanel(PA); sizePanel(PB); draw(); refreshNumbers();});
+
+/* the hooks the shot run drives. Every number the page prints is available
+   here, so a screenshot and a measurement cannot disagree. */
+window.__feathers={
+ tol:function(){return measureTol();},
+ back:function(){return measureBackwards();},
+ sweep:function(){return sweepWidth();},
+ into:function(){PB.cv.scrollIntoView({block:'center'});},
+ slots:function(){return SLOTS.map(function(s){
+  return {i:s.i,kind:s.kind,key:s.key,b:s.b,v:slotVal(s),
+   freq:freqRaw(s.kind,s.key),cls:freqClass(s.kind,s.key)};});},
+ hover:function(i){
+  var sl=SLOTS[i], r=Math.max(PB.cr0*HUB+2,radOf(PB,slotVal(sl)));
+  var b=PB.cv.getBoundingClientRect();
+  return {x:b.left+PB.CX+Math.cos(sl.a)*r, y:b.top+PB.CY+Math.sin(sl.a)*r};},
+ still:function(){STILL=true; CLOCK=0; PB.ease={}; draw(); refreshNumbers();},
+ who:function(nm){loadRoster(nm); PB.ease={}; draw(); refreshNumbers();},
+ probe:function(){var p=document.getElementById('probe');
+  return p.classList.contains('on')?p.textContent:null;}
+};
+boot();
+</script>
+</body>
+</html>

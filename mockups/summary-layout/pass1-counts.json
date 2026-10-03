@@ -1,0 +1,92 @@
+{
+ "blank-1600": {
+  "controls": 4,
+  "controlsWholeScreen": 37,
+  "groups": 2,
+  "textBlocks": 5,
+  "words": 27,
+  "rings": 1,
+  "balance": {
+   "rows": 0,
+   "worst": null,
+   "mean": null
+  },
+  "where": {
+   "storyTop": null,
+   "toldTop": null,
+   "actionTop": null,
+   "nineTop": null,
+   "slotTop": null
+  },
+  "fullHeight": 1000
+ },
+ "loaded-1600": {
+  "controls": 8,
+  "controlsWholeScreen": 37,
+  "groups": 9,
+  "textBlocks": 15,
+  "words": 119,
+  "rings": 1,
+  "balance": {
+   "rows": 3,
+   "worst": {
+    "cls": "sg-two",
+    "n": 2,
+    "min": 651,
+    "max": 651,
+    "level": 0.39
+   },
+   "mean": 0.59
+  },
+  "where": {
+   "storyTop": 926,
+   "toldTop": 768,
+   "actionTop": 2381,
+   "nineTop": 1504,
+   "slotTop": null
+  },
+  "fullHeight": 2689
+ },
+ "blank-390": {
+  "controls": 4,
+  "controlsWholeScreen": 9,
+  "groups": 2,
+  "textBlocks": 5,
+  "words": 27,
+  "rings": 1,
+  "balance": {
+   "rows": 0,
+   "worst": null,
+   "mean": null
+  },
+  "where": {
+   "storyTop": null,
+   "toldTop": null,
+   "actionTop": null,
+   "nineTop": null,
+   "slotTop": null
+  },
+  "fullHeight": 3453
+ },
+ "loaded-390": {
+  "controls": 0,
+  "controlsWholeScreen": 5,
+  "groups": 3,
+  "textBlocks": 6,
+  "words": 49,
+  "rings": 1,
+  "balance": {
+   "rows": 0,
+   "worst": null,
+   "mean": null
+  },
+  "where": {
+   "storyTop": 1813,
+   "toldTop": 1630,
+   "actionTop": 4860,
+   "nineTop": 3275,
+   "slotTop": null
+  },
+  "fullHeight": 9071
+ }
+}

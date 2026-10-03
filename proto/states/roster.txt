@@ -1,0 +1,257 @@
+States stack, read off engine.js at 0d6dd30
+
+==== Sofia  Pisces / Capricorn / Aquarius  Wood Ox  (1985-03-14 04:20, Asheville, NC)
+rail     Stack: no shear
+joints   ground braced, moon>rising offset, rising>sun offset, sun>moon braced
+
+Wood ox. Soft edges, a voice inside saying hold it together, driven by the new version.
+
+Year, Wood ox. You plough. You pull the load in a straight line, one furrow at a time, and do not renegotiate the field. Wood grows toward the light. You need room, and you split what stands in the way of the growth.
+Moon, Capricorn. The voice inside says hold it together. It plans three moves ahead and counts what it is carrying.
+Rising, Aquarius. What drives you is the new version. You push against how it has always been done.
+Sun, Pisces. Your edges are soft. The body takes on the mood of the room and moves with it.
+
+Ground
+  The ground carries the stack. You let the world come to you, and most of the layers on it hold too.
+Where it shears
+  No joint shears. Nothing in the stack fights the rest, and the cost is that nothing in it brakes you either.
+Weight
+  No element carries the three. Each layer runs on its own fuel, and the cost is the switch between them.
+
+==== Diane  Scorpio / Virgo / Sagittarius  Metal Monkey  (1980-11-02 09:05, Chicago, IL)
+rail     Stack: shears, moon to rising
+joints   ground offset, moon>rising shear, rising>sun offset, sun>moon braced
+
+Metal monkey. A still body holding its force, a voice inside checking the work, driven by the horizon.
+
+Year, Metal monkey. You swing. You find the shortcut, try it, and are three branches on before anyone follows. Metal cuts clean and holds an edge. You decide, divide, and keep the line you drew.
+Moon, Virgo. The voice inside checks the work. It finds the flaw first and says it is not finished yet.
+Rising, Sagittarius. What drives you is the horizon. A bigger question, a further place, room to run.
+Sun, Scorpio. You go still and watch. The body holds its force back until it is certain, then commits all of it.
+
+Ground
+  The ground runs across the stack. You meet the world head on, and most of the layers on it hold. What you build stands on ground moving the other way.
+Where it shears
+  Moon to rising. The voice inside wants to wait and feel it through, and the drive is to go out and start. What you tell yourself and what you want pull apart, so a decision gets made twice.
+Weight
+  No element carries the three. Each layer runs on its own fuel, and the cost is the switch between them.
+
+==== Marcus  Leo / Virgo / Aries  Water Dog  (1982-07-23 23:40, Portland, OR)
+rail     Stack: no shear
+joints   ground braced, moon>rising offset, rising>sun braced, sun>moon offset
+
+Water dog. A body built to be seen, a voice inside checking the work, driven by the start.
+
+Year, Water dog. You guard. You stay with your pack and walk the perimeter long after the threat has gone. Water takes the shape of whatever holds it, and given time it changes the shape of the mountain.
+Moon, Virgo. The voice inside checks the work. It finds the flaw first and says it is not finished yet.
+Rising, Aries. What drives you is the start. The first move, the open field, the thing nobody has tried.
+Sun, Leo. You take the centre of the room. The body is built to be seen doing the work.
+
+Ground
+  The ground carries the stack. You meet the world head on, and most of the layers on it push out too.
+Where it shears
+  No joint shears. Nothing in the stack fights the rest, and the cost is that nothing in it brakes you either.
+Weight
+  Mostly fire. You start things, and the heat shows. The cost is the finish.
+
+==== Angela  Gemini / Sagittarius / Virgo  Metal Horse  (1990-06-08 12:15, Santa Fe, NM)
+rail     Stack: shears in three places
+joints   ground braced, moon>rising shear, rising>sun shear, sun>moon shear
+
+Metal horse. Quick hands, a restless voice inside, driven to get it right.
+
+Year, Metal horse. You run. You move to relieve pressure, and you trample what stands in the way. Metal cuts clean and holds an edge. You decide, divide, and keep the line you drew.
+Moon, Sagittarius. The voice inside looks past the edge of the map. It says there is more out there, and it gets restless when there is not.
+Rising, Virgo. What drives you is getting it right. A broken system you can fix pulls harder than a reward.
+Sun, Gemini. Your hands and your mouth run together. You talk with the whole body and change direction mid sentence.
+
+Ground
+  The ground carries the stack. You meet the world head on, and most of the layers on it push out too.
+Where it shears
+  Moon to rising. The voice inside wants to act, and the drive is to secure and keep. What you tell yourself and what you want pull apart, so a decision gets made twice.
+  Rising to sun. The drive is to secure and keep, and the body moves first. What you want and what the body does pull apart, so the move arrives late or sideways.
+  Sun to moon. Gemini and Sagittarius sit at opposite ends of one axis, so the two layers pull on the same rope from both ends. What the body does and what the voice inside says do not agree, so you act and then argue with it.
+Weight
+  No element carries the three. Each layer runs on its own fuel, and the cost is the switch between them.
+
+==== Derek  Capricorn / Virgo / Capricorn  Fire Tiger  (1987-01-19 06:50, Boulder, CO)
+rail     Stack: no shear
+joints   ground offset, moon>rising braced, rising>sun flush, sun>moon braced
+
+Fire tiger. A straight back under load, a voice inside checking the work, driven by the summit.
+
+Year, Fire tiger. You pounce. You take the risk in one leap and deal with the landing after. Fire sets what it touches alight, so change follows you whether you meant it or not.
+Moon, Virgo. The voice inside checks the work. It finds the flaw first and says it is not finished yet.
+Rising, Capricorn. What drives you is the summit. Rank, structure, a thing that will stand after you.
+Sun, Capricorn. You carry weight upright. The body works the long climb and does not show the load.
+
+Ground
+  The ground runs across the stack. You meet the world head on, and most of the layers on it hold. What you build stands on ground moving the other way.
+Where it shears
+  No joint shears. Nothing in the stack fights the rest, and the cost is that nothing in it brakes you either.
+Weight
+  All earth. You build and you hold. The cost is speed, and letting go.
+
+==== James  Libra / Taurus / Pisces  Earth Rooster  (1969-09-27 17:30, Boston, MA)
+rail     Stack: no shear
+joints   ground braced, moon>rising braced, rising>sun offset, sun>moon offset
+
+Earth rooster. A posture that matches the room, a voice inside that wants solid ground, driven by something larger than you.
+
+Year, Earth rooster. You call it. You name the thing out loud, early, and keep order in the yard. Earth holds. You steady whatever you stand on, and you are slow to be moved off it.
+Moon, Taurus. The voice inside wants the ground solid. It says keep what works, and it pushes back on any change you did not choose.
+Rising, Pisces. What drives you is the pull of something larger than you. Meaning moves you more than reward does.
+Sun, Libra. You match the room. Your posture mirrors whoever is in front of you, and you smooth the edges.
+
+Ground
+  The ground carries the stack. You let the world come to you, and most of the layers on it hold too.
+Where it shears
+  No joint shears. Nothing in the stack fights the rest, and the cost is that nothing in it brakes you either.
+Weight
+  No element carries the three. Each layer runs on its own fuel, and the cost is the switch between them.
+
+==== Rosa  Aquarius / Gemini / Sagittarius  Wood Snake  (1965-02-11 03:10, Oaxaca, MX)
+rail     Stack: shears, moon to rising
+joints   ground offset, moon>rising shear, rising>sun braced, sun>moon braced
+
+Wood snake. A body at the edge of the group, a voice inside that never stops talking, driven by the horizon.
+
+Year, Wood snake. You coil. You wait, you watch, and you strike once. Wood grows toward the light. You need room, and you split what stands in the way of the growth.
+Moon, Gemini. The voice inside never stops talking. It runs three conversations at once and replays the last one.
+Rising, Sagittarius. What drives you is the horizon. A bigger question, a further place, room to run.
+Sun, Aquarius. You stand at the edge of the group. The body keeps a little distance so the eyes can see the whole.
+
+Ground
+  The ground runs across the stack. You let the world come to you, and most of the layers on it push out. What you build stands on ground moving the other way.
+Where it shears
+  Moon to rising. Gemini and Sagittarius sit at opposite ends of one axis, so the two layers pull on the same rope from both ends. What you tell yourself and what you want pull apart, so a decision gets made twice.
+Weight
+  Mostly air. You think it through and talk it out. The cost is the body, which gets left behind.
+
+==== Ana  Taurus / Cancer / Scorpio  Earth Goat  (1979-04-30 20:45, Lisbon, PT)
+rail     Stack: shears, rising to sun
+joints   ground braced, moon>rising braced, rising>sun shear, sun>moon braced
+
+Earth goat. Planted feet, a watchful voice inside, driven to reach what is underneath.
+
+Year, Earth goat. You climb. You give way on the surface and keep your footing underneath, on ground others will not try. Earth holds. You steady whatever you stand on, and you are slow to be moved off it.
+Moon, Cancer. The voice inside keeps watch over the people you hold. It remembers every slight and every kindness.
+Rising, Scorpio. What drives you is what sits under the surface. You go after it and stay until you have it.
+Sun, Taurus. You plant your feet. The body moves slowly, and once it is set it does not get pushed.
+
+Ground
+  The ground carries the stack. You let the world come to you, and most of the layers on it hold too.
+Where it shears
+  Rising to sun. Scorpio and Taurus sit at opposite ends of one axis, so the two layers pull on the same rope from both ends. What you want and what the body does pull apart, so the move arrives late or sideways.
+Weight
+  Mostly water. You feel it before you think it. The cost is telling your own weather from the room.
+
+==== Gordon  Leo / Capricorn / Scorpio  Earth Monkey  (1968-08-05 14:00, Greenwich, CT)
+rail     Stack: shears, rising to sun
+joints   ground offset, moon>rising braced, rising>sun shear, sun>moon offset
+
+Earth monkey. A body built to be seen, a voice inside saying hold it together, driven to reach what is underneath.
+
+Year, Earth monkey. You swing. You find the shortcut, try it, and are three branches on before anyone follows. Earth holds. You steady whatever you stand on, and you are slow to be moved off it.
+Moon, Capricorn. The voice inside says hold it together. It plans three moves ahead and counts what it is carrying.
+Rising, Scorpio. What drives you is what sits under the surface. You go after it and stay until you have it.
+Sun, Leo. You take the centre of the room. The body is built to be seen doing the work.
+
+Ground
+  The ground runs across the stack. You meet the world head on, and most of the layers on it hold. What you build stands on ground moving the other way.
+Where it shears
+  Rising to sun. The drive is to secure and keep, and the body moves first. What you want and what the body does pull apart, so the move arrives late or sideways.
+Weight
+  No element carries the three. Each layer runs on its own fuel, and the cost is the switch between them.
+
+==== Tomas  Scorpio / Cancer / Libra  Fire Goat  (1967-11-22 03:55, Chicago, IL)
+rail     Stack: shears, moon to rising
+joints   ground braced, moon>rising shear, rising>sun offset, sun>moon braced
+
+Fire goat. A still body holding its force, a watchful voice inside, driven to close the gap between people.
+
+Year, Fire goat. You climb. You give way on the surface and keep your footing underneath, on ground others will not try. Fire sets what it touches alight, so change follows you whether you meant it or not.
+Moon, Cancer. The voice inside keeps watch over the people you hold. It remembers every slight and every kindness.
+Rising, Libra. What drives you is balance. A gap between people pulls you in to close it.
+Sun, Scorpio. You go still and watch. The body holds its force back until it is certain, then commits all of it.
+
+Ground
+  The ground carries the stack. You let the world come to you, and most of the layers on it hold too.
+Where it shears
+  Moon to rising. The voice inside wants to wait and feel it through, and the drive is to go out and start. What you tell yourself and what you want pull apart, so a decision gets made twice.
+Weight
+  Mostly water. You feel it before you think it. The cost is telling your own weather from the room.
+
+==== Nkem  Virgo / Aquarius / Pisces  Metal Horse  (1990-09-03 19:10, Boston, MA)
+rail     Stack: shears, rising to sun
+joints   ground offset, moon>rising offset, rising>sun shear, sun>moon offset
+
+Metal horse. Exact hands, a voice inside standing back to watch, driven by something larger than you.
+
+Year, Metal horse. You run. You move to relieve pressure, and you trample what stands in the way. Metal cuts clean and holds an edge. You decide, divide, and keep the line you drew.
+Moon, Aquarius. The voice inside stands back and watches. It takes a feeling apart before it lets you have it.
+Rising, Pisces. What drives you is the pull of something larger than you. Meaning moves you more than reward does.
+Sun, Virgo. Your hands go to the detail. You straighten the crooked thing on the table before you sit down.
+
+Ground
+  The ground runs across the stack. You meet the world head on, and most of the layers on it hold. What you build stands on ground moving the other way.
+Where it shears
+  Rising to sun. Pisces and Virgo sit at opposite ends of one axis, so the two layers pull on the same rope from both ends. What you want and what the body does pull apart, so the move arrives late or sideways.
+Weight
+  No element carries the three. Each layer runs on its own fuel, and the cost is the switch between them.
+
+==== Wren  Aries / Leo / Gemini  Earth Pig  (1959-04-17 08:35, Portland, OR)
+rail     Stack: no shear
+joints   ground offset, moon>rising braced, rising>sun braced, sun>moon braced
+
+Earth pig. A body that moves first, a voice inside asking whether anyone saw, driven by the next question.
+
+Year, Earth pig. You forage and share. You give more than the exchange required and make the table bigger. Earth holds. You steady whatever you stand on, and you are slow to be moved off it.
+Moon, Leo. The voice inside wants to know it mattered. It replays the moment and asks whether anyone saw.
+Rising, Gemini. What drives you is the next piece of information. An open question is a motor running.
+Sun, Aries. You move first and find out by moving. The body is through the door before the plan is.
+
+Ground
+  The ground runs across the stack. You let the world come to you, and most of the layers on it push out. What you build stands on ground moving the other way.
+Where it shears
+  No joint shears. Nothing in the stack fights the rest, and the cost is that nothing in it brakes you either.
+Weight
+  Mostly fire. You start things, and the heat shows. The cost is the finish.
+
+==== Abraham  Cancer / Taurus / Virgo  Metal Rabbit  (1951-06-29 11:20, Boulder, CO)
+rail     Stack: no shear
+joints   ground braced, moon>rising braced, rising>sun braced, sun>moon braced
+
+Metal rabbit. A guarded front, a voice inside that wants solid ground, driven to get it right.
+
+Year, Metal rabbit. You find the side path. You avoid the collision and keep every relationship whole on the way through. Metal cuts clean and holds an edge. You decide, divide, and keep the line you drew.
+Moon, Taurus. The voice inside wants the ground solid. It says keep what works, and it pushes back on any change you did not choose.
+Rising, Virgo. What drives you is getting it right. A broken system you can fix pulls harder than a reward.
+Sun, Cancer. You turn side on to protect what is soft. The body guards first and opens once it is sure.
+
+Ground
+  The ground carries the stack. You let the world come to you, and most of the layers on it hold too.
+Where it shears
+  No joint shears. Nothing in the stack fights the rest, and the cost is that nothing in it brakes you either.
+Weight
+  Mostly earth. You build and you hold. The cost is speed, and letting go.
+
+==== James, time removed  Libra / Aries /   Earth Rooster  (1969-09-27 no time, Boston, MA)
+rail     Stack: shears, sun to moon
+joints   ground offset, moon>rising open, rising>sun open, sun>moon shear
+
+Earth rooster. A posture that matches the room, an impatient voice inside.
+
+Year, Earth rooster. You call it. You name the thing out loud, early, and keep order in the yard. Earth holds. You steady whatever you stand on, and you are slow to be moved off it.
+Moon, Aries. The voice inside is impatient. It says go now, and it argues with anything that makes you wait.
+Rising. not read yet
+Sun, Libra. You match the room. Your posture mirrors whoever is in front of you, and you smooth the edges.
+
+Ground
+  The ground runs across the stack. You let the world come to you, and most of the layers on it push out. What you build stands on ground moving the other way.
+Where it shears
+  Sun to moon. Libra and Aries sit at opposite ends of one axis, so the two layers pull on the same rope from both ends. What the body does and what the voice inside says do not agree, so you act and then argue with it.
+Limit
+  Rising is not read yet, so its joints are not read either. A birth time would put it in.
+
+---- joints over the 13 reference cases: {"braced":25,"offset":17,"shear":9,"flush":1}

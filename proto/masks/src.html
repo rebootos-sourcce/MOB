@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pixel masks prototype</title>
+<!--FONT-->
+<style>
+/* ============================================================
+   PIXEL MASKS. Round GG, item 2. A prototype, not the app.
+
+   The tokens are the product's own Dark values (shell/head.html and the
+   seat PAL in engine/data/canon.js), copied rather than invented, so the
+   mockup is judged on its idea and not on a palette the product does not
+   have.
+   ============================================================ */
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --accent:#7EB8D4; --on-accent:#0B1418; --au:#C2A063;
+ /* the mask's own line, measured at 3.16:1 on --sunk so the silhouette
+    clears the 3:1 floor for a graphic a person needs to read */
+ --line:#5E6068;
+ /* an empty cell. deliberately under the floor: it is space, not content */
+ --free:#24262D;
+ --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --r:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+ font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+
+/* THE PROTOTYPE SAYS SO ON ITS OWN FACE. Ruled in FK after two scares. */
+.pb{position:sticky;top:0;z-index:50;display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+ padding:10px 16px;background:#2A2410;color:#F3E3B5;border-bottom:1px solid #5A4A1C;font-size:13.5px}
+.pb b{font-weight:600}
+.pb .sp{flex:1}
+.pb .who{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.pb .chip{background:#3A3216;border-color:#6A5822;color:#F3E3B5}
+.pb .chip.on{background:#F3E3B5;color:#2A2410;border-color:#F3E3B5;font-weight:600}
+
+.wrap{max-width:1400px;margin:0 auto;padding:18px 16px 64px}
+.hd{margin:6px 0 16px}
+.hd h1{font-size:26px;font-weight:600;margin:4px 0 8px;letter-spacing:-.01em}
+.eyebrow{font-size:12.5px;color:var(--dim)}
+.muted{color:var(--mid)} .dim{color:var(--dim)} .small{font-size:13px}
+
+.seg{display:inline-flex;gap:4px;padding:4px;border:1px solid var(--edge-2);border-radius:999px;background:var(--sunk);flex-wrap:wrap}
+.seg button{border:0;background:transparent;padding:8px 16px;border-radius:999px;cursor:pointer;min-height:40px;color:var(--mid);font-size:14px}
+.seg button.on{background:var(--accent);color:var(--on-accent);font-weight:600}
+.chip{white-space:nowrap;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--edge-2);border-radius:999px;
+ padding:5px 11px;font-size:13px;background:var(--panel);cursor:pointer;min-height:32px}
+
+.card{background:var(--panel);border:1px solid var(--edge);border-radius:var(--r);padding:16px}
+
+/* COPY BELONGS TO THE NARRATIVE DIRECTOR. Every box like this is a hole left
+   on purpose, with what goes in it written on the outside. */
+.ph{border:1px dashed #6A5822;background:rgba(194,160,99,.06);border-radius:10px;padding:8px 12px;
+ font-size:13px;color:#D9C9A0;margin:10px 0}
+.ph b{font-weight:600;color:#F3E3B5}
+.wn{border-left:2px solid var(--au);padding:4px 0 4px 12px;font-size:13.5px;color:var(--mid);margin:8px 0}
+.wn .eyebrow{color:var(--au)}
+
+.stage{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:16px;align-items:start;margin-top:14px}
+.cast{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.mc{display:flex;flex-direction:column;gap:8px;padding:14px;border-radius:12px;background:var(--sunk);border:1px solid var(--edge);
+ cursor:pointer;text-align:left;min-height:44px}
+.mc:hover{border-color:var(--edge-2)}
+.mc.on{border-color:var(--accent)}
+.mc .art{display:flex;justify-content:center;padding:6px 0 2px}
+.mc .art svg{width:100%;max-width:190px;height:auto}
+.mc .nm{font-size:16px;font-weight:600;display:flex;align-items:center;gap:8px}
+.mc .row{font-size:13px;color:var(--mid);display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.mc .num{font-variant-numeric:tabular-nums}
+
+.side{position:sticky;top:64px;display:flex;flex-direction:column;gap:12px}
+.big{background:var(--sunk);border:1px solid var(--edge);border-radius:12px;padding:16px;display:flex;justify-content:center}
+.big svg{width:100%;max-width:340px;height:auto}
+.big rect.cell{transition:transform .7s cubic-bezier(.5,0,.2,1),fill .5s,stroke .5s,opacity .3s}
+.readout{min-height:22px;font-size:13px;color:var(--mid);font-variant-numeric:tabular-nums}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:var(--sunk);border:1px solid var(--edge);border-radius:10px;padding:8px 10px}
+.stat .v{font-size:20px;font-weight:600;font-variant-numeric:tabular-nums}
+.stat .k{font-size:12px;color:var(--dim);line-height:1.35}
+.ctl{display:flex;flex-direction:column;gap:8px}
+.ctl label{font-size:13px;color:var(--mid);display:flex;justify-content:space-between}
+.ctl input[type=range]{width:100%;accent-color:var(--accent);min-height:32px}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--edge-2);background:var(--panel-2);border-radius:10px;padding:10px 14px;min-height:44px;cursor:pointer;font-size:14px}
+.btn:hover{border-color:var(--accent)}
+.btn[disabled]{opacity:.45;cursor:default}
+.arch{display:flex;gap:12px;align-items:flex-start}
+.arch h3{margin:0;font-size:18px;font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--mid)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.list{max-height:320px;overflow:auto;border:1px solid var(--edge);border-radius:10px}
+.li{display:grid;grid-template-columns:14px 1fr auto;gap:10px;align-items:center;padding:8px 12px;border:0;border-bottom:1px solid var(--edge);
+ background:transparent;width:100%;text-align:left;cursor:pointer;min-height:44px}
+.li:last-child{border-bottom:0}
+.li:hover,.li.on{background:var(--panel-2)}
+.li .n{font-size:14px}
+.li .a{font-size:12px;color:var(--dim)}
+.li .q{font-size:13px;color:var(--mid);font-variant-numeric:tabular-nums;text-align:right}
+
+table.tt{border-collapse:separate;border-spacing:6px;width:100%}
+.ttw{overflow-x:auto}
+.tt th{font-size:13px;font-weight:600;color:var(--mid);text-align:left;padding:0 4px}
+.tt td{background:var(--sunk);border:1px solid var(--edge);border-radius:10px;padding:8px;text-align:center;vertical-align:top}
+.tt td svg{width:84px;height:auto;display:block;margin:0 auto 4px}
+.tt td .s{font-size:12px;color:var(--dim);font-variant-numeric:tabular-nums}
+.tt th.m{white-space:nowrap}
+
+.gram{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:10px}
+.gram .cell2{text-align:center;font-size:13px;color:var(--mid);padding:12px;border:1px solid var(--edge);border-radius:12px;background:var(--sunk)}
+.gram .cell2 svg{width:110px;height:auto}
+.gram .cell2 b{display:block;color:var(--ink);font-weight:600;margin-top:6px}
+.map{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;align-items:center;margin-top:10px;font-size:14px}
+.map .l{color:var(--dim)}
+h2{font-size:19px;font-weight:600;margin:0 0 4px}
+.sec{margin-top:16px}
+@media (max-width:1060px){.stage{grid-template-columns:1fr}.side{position:static}}
+@media (max-width:520px){.pb{position:static}.cast{grid-template-columns:repeat(2,minmax(0,1fr))}.stats .v{font-size:17px}
+ .hd h1{font-size:22px}.tt td svg{width:64px}}
+</style></head><body>
+<div class="wrap">
+ <div class="hd">
+  <div class="eyebrow">Round GG, item 2. The six masks, redrawn as pixel art.</div>
+  <h1>Pixel masks</h1>
+  <div class="ph"><b>Copy to come, narrative-director.</b> One or two plain lines under the heading: what a mask is and why it is made of pixels. Physical, specific, no abstraction. The line "a mask is not a fault, not a stage you fail to leave" is ruled out.</div>
+ </div>
+ <div id="mode"></div>
+ <div id="view"></div>
+</div>
+<!--DATA-->
+<script>
+/* ============================================================
+   THE SPRITE. One face for all six, because the product already rules it:
+   "the six wear one face with six different seams". 16 by 17, hand placed
+   rather than rasterised from MASK_FACE, because a rasterised ellipse steps
+   unevenly and a sprite is read on its stair steps.
+   ============================================================ */
+var SPR=[
+'.....######.....',
+'...##########...',
+'..############..',
+'.##############.',
+'.##############.',
+'################',
+'################',
+'################',
+'################',
+'.##############.',
+'.##############.',
+'..############..',
+'..############..',
+'...##########...',
+'....########....',
+'.....######.....',
+'......####......'];
+var COLS=16, ROWS=SPR.length, U=10, INS=1.1;
+var EYE_L=[[6,4],[6,5],[7,3],[7,4],[7,5]], EYE_R=[[6,10],[6,11],[7,10],[7,11],[7,12]];
+function range(a,b){var r=[];for(var i=a;i<=b;i++)r.push(i);return r;}
+/* what each stage cuts into the face. the product's own icon comments are
+   quoted beside each, because the pixel seam is the same mark at a new size. */
+var SEAM={
+ Child:{cut:EYE_L, why:'one eye open. nothing has been added yet.'},
+ Preteen:{cut:EYE_L.concat(EYE_R), why:'two. it has learned there is someone watching.'},
+ Teen:{cut:EYE_L.concat(EYE_R, range(0,16).map(function(r){return [r,r%2?8:7];})),
+  why:'a split down the middle, held together from outside.'},
+ Adult:{cut:EYE_L.concat(EYE_R, range(1,14).filter(function(c){return c!==4&&c!==11;}).map(function(c){return [10,c];})),
+  why:'a seam across. the two halves are joined and the join shows.'},
+ Professional:{cut:EYE_L.concat(EYE_R, range(4,11).map(function(c){return [10,c];}), range(4,11).map(function(c){return [14,c];}),
+  [[11,4],[12,4],[13,4],[11,11],[12,11],[13,11]]), why:'a squared jaw fitted over the lower half. it was issued, not grown.'},
+ Ideological:{cut:EYE_L.concat(EYE_R, [[1,7],[1,8],[2,6],[2,9],[3,6],[3,9],[4,7],[4,8]]),
+  why:'a ring above the face, worn where a thought is kept.'}};
+
+/* THE ARCHETYPE PER MASK. The owner's own example fixes one of them: the
+   teen is the Rebel. The names are the product's ARCH table, which is the
+   Jungian twelve with Hero called Warrior and Orphan called Everyman. The
+   sentence is a working note from the art direction seat, for the narrative
+   director to rewrite. It is not the copy. */
+var ARCHOF={
+ Child:{a:'Innocent', why:'The Innocent trusts the bigger body to decide, which is how a child too small to feed or defend itself stays alive; the mask keeps making you small so that trust still has somewhere to land.'},
+ Preteen:{a:'Everyman', why:'The Everyman, the Orphan in the older lists, buys belonging by matching the room, which at ten to twelve is how you get into the group that protects you; the mask still checks the room before the throat opens.'},
+ Teen:{a:'Rebel', why:'The Rebel pushes on the nearest authority to prove the self is a separate body, which is the job adolescence has to finish; the mask keeps pushing on the person after the separation is done.'},
+ Adult:{a:'Ruler', why:'The Ruler keeps a household running by taking control of it, which is how an adult holds a life steady under load; the mask keeps absorbing the cost and filing it instead of setting it down.'},
+ Professional:{a:'Warrior', why:'The Warrior, the Hero in the older lists, proves worth by performing under pressure, which earns rank and pay; the mask performs the competence so the fear underneath never has to be felt.'},
+ Ideological:{a:'Sage', why:'The Sage cuts uncertainty down to a system it can trust, which gives a mind a stable place to act from; the mask answers from the system instead of from the moment in front of it.'}};
+
+var T=DATA.tables, NODE={}, ARCH={}, PAL=T.PAL;
+T.NODES.forEach(function(n){NODE[n.i]=n;});
+T.ARCH.forEach(function(a){ARCH[a.nm]=a;});
+var WHOS=Object.keys(DATA.people), WHO=DATA.people.Derek?'Derek':WHOS[0], PICK='Teen', MODE='one';
+var REVEAL=1, RELEASED={}, HI=null;
+
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function hx(h){h=h.replace('#','');return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];}
+function mix(a,b,t){var A=hx(a),B=hx(b);return '#'+A.map(function(v,i){var x=Math.round(B[i]+(v-B[i])*t);return (x<16?'0':'')+x.toString(16);}).join('');}
+function hash(s){var h=2166136261>>>0;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h;}
+function rng(seed){var a=seed>>>0;return function(){a=(a+0x6D2B79F5)>>>0;var t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return ((t^(t>>>14))>>>0)/4294967296;};}
+function ic(d,sz,c,sw){return '<svg viewBox="0 0 24 24" width="'+sz+'" height="'+sz+'" fill="none" stroke="'+c+'" stroke-width="'+(sw||1.6)+'" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="'+d+'"/></svg>';}
+function maskOf(nm){return T.MASKS.filter(function(m){return m.nm===nm;})[0];}
+
+/* THE CHARGE STEPS. Four, on the engine's own 0 to 10 per address, mixed
+   toward the ground rather than faded with opacity, so a light charge loses
+   saturation and value together and reads calm, which is the autonomic
+   argument: a washed colour settles, a vivid one alerts. */
+/* MEASURED, NOT EYEBALLED. A flat mix of .46 put the lightest Root pixel at
+   1.84:1 on its own ground, under the 3:1 floor for a graphic a person needs
+   to see, while Solar at the same mix sat at 3.04. So each seat gets its own
+   ladder: step one is solved to 3:1 against the ground, and the four steps
+   are spaced evenly from there to the full seat colour. */
+var STEPS=[[2],[4],[6],[10]];
+var GROUND='#090A0E';
+function lum(h){return hx(h).map(function(x){x/=255;return x<=.03928?x/12.92:Math.pow((x+.055)/1.055,2.4);}).reduce(function(a,v,i){return a+v*[.2126,.7152,.0722][i];},0);}
+function cr(a,b){var x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);}
+var LADDER={};
+function ladder(seat){if(LADDER[seat])return LADDER[seat];var lo=0,hi=1;
+ for(var k=0;k<24;k++){var m=(lo+hi)/2;if(cr(mix(PAL[seat],GROUND,m),GROUND)<3)lo=m;else hi=m;}
+ return LADDER[seat]=[0,1,2,3].map(function(i){return hi+(1-hi)*i/3;});}
+function stepOf(sq){for(var i=0;i<STEPS.length;i++)if(sq<=STEPS[i][0])return i;return 3;}
+function stepTone(seat,i){return mix(PAL[seat],GROUND,ladder(seat)[i]);}
+function tone(seat,sq){return stepTone(seat,stepOf(sq));}
+
+/* the cells of one mask, top to bottom, left to right, which is the order a
+   disk is read in and so the order the fragmentation is measured in */
+function cellsOf(nm){var cut={};SEAM[nm].cut.forEach(function(p){cut[p[0]+','+p[1]]=1;});
+ var out=[];for(var r=0;r<ROWS;r++)for(var c=0;c<COLS;c++)if(SPR[r][c]==='#'&&!cut[r+','+c])out.push([r,c]);return out;}
+
+/* ============================================================
+   THE LAYOUT. Every address at the mask's seats is one belief, and every
+   belief owns an equal share of the face, laid down in address order. That
+   is the defragmented disk: each belief one clean run.
+
+   A belief the journal has written carries charge, and charge fragments it.
+   It is cut into more pieces the heavier it is (pieces = blocks x charge /
+   10), and each piece after the first is thrown from home by up to charge /
+   10 of the whole face. At charge 1 a belief sits almost where it belongs.
+   At charge 7 it is in pieces across the face. A released belief is laid
+   back into one run, which is the defragmenter's whole job and the loop's.
+
+   Every piece has its own seed, person by seat set by address by piece, so
+   releasing one belief moves that belief and nothing else by more than a
+   rank. Preteen and Professional share a seat set on purpose: they are made
+   of the same addresses, and a seed that hid that would be the mockup lying.
+   ============================================================ */
+function layout(who,nm,opt){
+ opt=opt||{};
+ var m=maskOf(nm), cells=cellsOf(nm), P=DATA.people[who], sq={};
+ (P?P.sq:[]).forEach(function(x){sq[x[0]]=x[1];});
+ var bel=T.NODES.filter(function(n){return m.b.indexOf(n.b)>=0;});
+ var n=bel.length, C=cells.length, base=Math.floor(C/n), extra=C%n;
+ /* the journal arriving: the heaviest charge is found first */
+ var written=bel.filter(function(b){return (opt.flat!=null?opt.flat:sq[b.i]||0)>0;})
+  .sort(function(a,b){return (sq[b.i]||0)-(sq[a.i]||0)||a.i-b.i;});
+ var rev=opt.reveal==null?1:opt.reveal, shown={};
+ written.slice(0,Math.ceil(written.length*rev-1e-9)).forEach(function(b){shown[b.i]=1;});
+ var frags=[], home=0, seedBase=who+'|'+m.b.join('+');
+ bel.forEach(function(b,j){
+  var blocks=base+(j<extra?1:0), q=opt.flat!=null?opt.flat:(sq[b.i]||0);
+  var st=!shown[b.i]?'free':(opt.rel&&opt.rel[b.i])?'rel':'chg';
+  var f=st==='chg'?Math.max(1,Math.round(blocks*q/10)):1;
+  var at=home;
+  for(var k=0;k<f;k++){
+   var size=Math.floor(blocks/f)+(k<blocks%f?1:0), R=rng(hash(seedBase+'|'+b.i+'|'+k));
+   var disp=k===0?0:(R()*2-1)*q/10*C;
+   frags.push({b:b,st:st,q:q,key:at+disp,k:k,size:size,from:at-home});
+   at+=size;}
+  home+=blocks;});
+ frags.sort(function(a,b){return a.key-b.key||a.b.i-b.b.i||a.k-b.k;});
+ var out=[], ci=0;
+ frags.forEach(function(fr){for(var t=0;t<fr.size;t++){var c=cells[ci++];
+  out.push({id:fr.b.i+'_'+(fr.from+t),b:fr.b,st:fr.st,q:fr.q,r:c[0],c:c[1]});}});
+ /* A RUN IS DRAWN AS ONE BAR. Two cells of the same belief side by side close
+    the gutter between them, so an unbroken belief is a bar and a broken one is
+    loose squares. Without it a one seat mask, the teen, is one hue and its
+    fragmentation cannot be seen at all, which was the first cut's defect. */
+ out.forEach(function(x,i){var nx=out[i+1];x.join=x.st!=='free'&&nx&&nx.b.i===x.b.i&&nx.st===x.st&&nx.r===x.r&&nx.c===x.c+1;});
+ /* pieces per written belief, counted off the laid out face the way a
+    defragmenter counts them: a run ends when the next cell is somebody else */
+ var runs={};out.forEach(function(x,i){if(x.st!=='chg')return;var prev=out[i-1];
+  if(!prev||prev.b.i!==x.b.i)runs[x.b.i]=(runs[x.b.i]||0)+1;});
+ var wk=Object.keys(runs), pieces=wk.length?wk.reduce(function(a,k){return a+runs[k];},0)/wk.length:0;
+ return {m:m,cells:out,n:n,written:wk.length+Object.keys(opt.rel||{}).filter(function(i){return shown[i];}).length,
+  charged:wk.length,pieces:pieces,runs:runs,sq:sq,bel:bel,w:(P&&P.masks.filter(function(x){return x.nm===nm;})[0]||{}).w||0};}
+
+/* the mask's own line: every edge between a cell that is there and one that
+   is not, which traces the outline, the eyes and the seam in one stroke */
+function outline(nm){var cut={};SEAM[nm].cut.forEach(function(p){cut[p[0]+','+p[1]]=1;});
+ function on(r,c){return r>=0&&r<ROWS&&c>=0&&c<COLS&&SPR[r][c]==='#'&&!cut[r+','+c];}
+ var d='';for(var r=0;r<ROWS;r++)for(var c=0;c<COLS;c++){if(!on(r,c))continue;var x=c*U,y=r*U;
+  if(!on(r-1,c))d+='M'+x+' '+y+'h'+U;if(!on(r+1,c))d+='M'+x+' '+(y+U)+'h'+U;
+  if(!on(r,c-1))d+='M'+x+' '+y+'v'+U;if(!on(r,c+1))d+='M'+(x+U)+' '+y+'v'+U;}
+ return d;}
+
+function cellAttrs(x){
+ var seat=x.b.b, s=U-INS*2;
+ if(x.st==='chg')return 'fill="'+tone(seat,x.q)+'" stroke="none"';
+ if(x.st==='rel')return 'fill="none" stroke="'+mix(PAL[seat],GROUND,.8)+'" stroke-width="1.3"';
+ return 'fill="none" stroke="#24262D" stroke-width="1"';}
+function svgMask(L,opt){
+ opt=opt||{};var pad=4, s=U-INS*2;
+ var h='<svg viewBox="'+(-pad)+' '+(-pad)+' '+(COLS*U+pad*2)+' '+(ROWS*U+pad*2)+'" role="img" aria-label="'+esc(L.m.nm+' mask, '+L.charged+' of '+L.n+' beliefs carrying charge')+'">';
+ L.cells.forEach(function(x){
+  var dim=HI!=null&&opt.live&&x.b.i!==HI?' opacity=".3"':'';
+  h+='<rect class="cell" data-i="'+x.b.i+'" id="'+(opt.live?'c'+x.id:'')+'" x="'+INS+'" y="'+INS+'" width="'+(x.join?U:s)+'" height="'+s+'" rx=".6" style="transform:translate('+x.c*U+'px,'+x.r*U+'px)" '+cellAttrs(x)+dim+'/>';});
+ h+='<path d="'+outline(L.m.nm)+'" fill="none" stroke="#5E6068" stroke-width="'+(opt.thin?1.4:1)+'" stroke-linecap="square"/>';
+ return h+'</svg>';}
+
+/* ---------- one profile: the six on the left, the one picked on the right */
+function vOne(){
+ var h='<div class="stage"><div><div class="cast">';
+ T.MASKS.forEach(function(m){var L=layout(WHO,m.nm,{reveal:REVEAL,rel:RELEASED[WHO+'|'+m.nm]}), A=ARCH[ARCHOF[m.nm].a];
+  h+='<button class="mc'+(PICK===m.nm?' on':'')+'" data-m="'+m.nm+'"><div class="art">'+svgMask(L)+'</div>'
+   +'<div class="nm">'+esc(m.nm)+'</div>'
+   +'<div class="row">'+ic(A.ic,16,PAL[A.b])+'<span>'+esc(A.nm)+'</span></div>'
+   +'<div class="row num">'+L.charged+' of '+L.n+' written'+(L.charged?', '+L.pieces.toFixed(1)+' pieces each':'')+'</div></button>';});
+ h+='</div>'+(DATA.people[WHO].unread?'<div class="wn"><div class="eyebrow">Working note</div>This is the blank profile a stranger opens on. Nothing has been written, so every mask is the empty outline. It fills as the journal does.</div>':'')+'</div>';
+ return h+'<div class="side" id="side">'+side()+'</div></div>';}
+
+function side(){
+ var m=maskOf(PICK), rk=WHO+'|'+PICK, rel=RELEASED[rk]||{}, L=layout(WHO,PICK,{reveal:REVEAL,rel:rel}), AO=ARCHOF[PICK], A=ARCH[AO.a];
+ var seats=m.b.map(function(b){return '<span style="display:inline-flex;align-items:center;gap:5px"><svg width="10" height="10"><rect x="1" y="1" width="8" height="8" rx="1" fill="'+PAL[b]+'"/></svg>'+esc(b)+'</span>';}).join(' ');
+ var heavy=L.bel.filter(function(b){return (L.sq[b.i]||0)>0&&!rel[b.i];}).sort(function(a,b){return L.sq[b.i]-L.sq[a.i];})[0];
+ var h='<div class="card"><div class="eyebrow">The '+esc(PICK.toLowerCase())+' mask, '+esc(WHO)+'</div>'
+  +'<h2 style="margin-top:2px">'+esc(PICK)+'</h2><div class="small muted" style="display:flex;gap:12px;flex-wrap:wrap">'+seats+'</div>'
+  +'<div class="big" style="margin-top:12px" id="big">'+svgMask(L,{live:1,thin:1})+'</div>'
+  +'<div class="readout" id="ro">Point at a pixel to read the belief it belongs to.</div>'
+  +'<div class="stats" style="margin-top:8px">'
+  +'<div class="stat"><div class="v">'+L.charged+'<span class="dim" style="font-size:14px"> / '+L.n+'</span></div><div class="k">beliefs written, one per address at these seats</div></div>'
+  +'<div class="stat"><div class="v">'+(L.charged?L.pieces.toFixed(1):'0')+'</div><div class="k">pieces per written belief. One means unbroken</div></div>'
+  +'<div class="stat"><div class="v">'+L.w.toFixed(1)+'<span class="dim" style="font-size:14px"> / 10</span></div><div class="k">engine mask weight, the mean charge here</div></div></div>'
+  +'<div class="ph"><b>Copy to come, narrative-director.</b> What each of these three numbers means in the body, under the new load rule: a number never ships without its physiological meaning.</div>'
+  +'<div class="legend" style="margin-top:6px">'
+  +'<span><svg width="12" height="12"><rect x="1.5" y="1.5" width="9" height="9" rx="1" fill="none" stroke="#24262D"/></svg>no charge written</span>'
+  +STEPS.map(function(s,i){return '<span><svg width="12" height="12"><rect x="1" y="1" width="10" height="10" rx="1" fill="'+stepTone(m.b[0],i)+'"/></svg>'+(i?STEPS[i-1][0]:0)+' to '+s[0]+'</span>';}).join('')
+  +'<span><svg width="12" height="12"><rect x="1.5" y="1.5" width="9" height="9" rx="1" fill="none" stroke="'+mix(PAL[m.b[0]],GROUND,.8)+'" stroke-width="1.3"/></svg>released, back in one run</span></div></div>';
+ h+='<div class="card ctl"><label for="rv"><span>Simulated journal, entries arriving</span><span id="rvv">'+Math.round(REVEAL*100)+'%</span></label>'
+  +'<input id="rv" type="range" min="0" max="100" step="5" value="'+Math.round(REVEAL*100)+'">'
+  +'<div class="btns"><button class="btn" id="relb"'+(heavy?'':' disabled')+'>Release the heaviest'+(heavy?': '+esc(heavy.k):'')+'</button>'
+  +'<button class="btn" id="rst">Reset</button></div>'
+  +'<div class="small dim">Simulated. The charges are the engine\'s own; the journal order and the release are played here so the fill and the defragment can be seen moving.</div></div>';
+ h+='<div class="card"><div class="eyebrow">Archetype powering it</div><div class="arch" style="margin-top:8px">'+ic(A.ic,40,PAL[A.b],1.5)
+  +'<div><h3>'+esc(A.nm)+'</h3><div class="small muted">Engine line today: '+esc(A.v)+'. Seated at '+esc(A.b)+'.</div></div></div>'
+  +'<div class="wn"><div class="eyebrow">Working note, art direction, for narrative-director to rewrite</div>'+esc(AO.why)+'</div>'
+  +'<div class="ph"><b>Copy to come, narrative-director.</b> The archetype line a person reads: what it was for, where it sits in the body, what it costs now.</div>'
+  +'<div class="small dim">Mask line today, from the engine: '+esc(m.v)+'.</div>'
+  +'<div class="small dim" style="margin-top:4px">Seam: '+esc(SEAM[PICK].why)+'</div></div>';
+ var list=L.bel.slice().sort(function(a,b){return (L.sq[b.i]||0)-(L.sq[a.i]||0)||a.i-b.i;});
+ h+='<div class="card"><div class="eyebrow" style="margin-bottom:8px">The beliefs this mask is made of, heaviest first. Press one to find its pixels.</div><div class="list">'
+  +list.map(function(b){var q=L.sq[b.i]||0, st=rel[b.i]?'released':q>0?q.toFixed(1)+', '+(L.runs[b.i]||1)+' pc':'none';
+   var sw=q>0&&!rel[b.i]?'<rect x="1" y="1" width="10" height="10" rx="1" fill="'+tone(b.b,q)+'"/>':'<rect x="1.5" y="1.5" width="9" height="9" rx="1" fill="none" stroke="'+(rel[b.i]?mix(PAL[b.b],GROUND,.8):'#3A3C44')+'"/>';
+   return '<button class="li'+(HI===b.i?' on':'')+'" data-b="'+b.i+'"><svg width="12" height="12">'+sw+'</svg><span><span class="n">'+esc(b.k)+'</span><br><span class="a">'+esc(b.n)+', '+esc(b.b)+'</span></span><span class="q">'+st+'</span></button>';}).join('')
+  +'</div></div>';
+ return h;}
+
+/* repaint the big mask in place, so a release animates as a defragment rather
+   than a redraw */
+function repaintBig(){
+ var rk=WHO+'|'+PICK, L=layout(WHO,PICK,{reveal:REVEAL,rel:RELEASED[rk]||{}});
+ L.cells.forEach(function(x){var e=document.getElementById('c'+x.id);if(!e)return;
+  e.style.transform='translate('+x.c*U+'px,'+x.r*U+'px)';e.setAttribute('width',x.join?U:U-INS*2);
+  var s=cellAttrs(x);e.setAttribute('fill',/fill="([^"]+)"/.exec(s)[1]);
+  e.setAttribute('stroke',/stroke="([^"]+)"/.exec(s)[1]);
+  var sw=/stroke-width="([^"]+)"/.exec(s);if(sw)e.setAttribute('stroke-width',sw[1]);else e.removeAttribute('stroke-width');
+  if(HI!=null&&x.b.i!==HI)e.setAttribute('opacity','.3');else e.removeAttribute('opacity');});}
+
+/* ---------- across profiles: the tissue test, every mask on every ICP */
+function vAll(){
+ var h='<div class="card" style="margin-top:14px"><div class="eyebrow">Every mask on every reference profile, read off the committed engine. Each cell: beliefs written of the total, then pieces per written belief.</div><div class="ttw"><table class="tt"><tr><th></th>'
+  +WHOS.map(function(w){return '<th>'+esc(w)+'</th>';}).join('')+'</tr>';
+ T.MASKS.forEach(function(m){h+='<tr><th class="m">'+esc(m.nm)+'<div class="small dim" style="font-weight:400">'+esc(ARCHOF[m.nm].a)+'</div></th>'
+  +WHOS.map(function(w){var L=layout(w,m.nm);return '<td>'+svgMask(L)+'<div class="s">'+L.charged+'/'+L.n+(L.charged?', '+L.pieces.toFixed(1):'')+'</div></td>';}).join('')+'</tr>';});
+ h+='</table></div>'
+  +'<div class="wn"><div class="eyebrow">Finding, for the owner</div>Preteen and Professional are built from the same 28 addresses, Solar and Throat, so the engine gives them the same weight on every profile (Diane 3.12 and 3.12, Derek 3.39 and 3.39). Drawn honestly they carry the same pixels and differ only by the seam. Two masks that can never read differently is a data question, not a drawing one.</div></div>';
+ return h;}
+
+/* ---------- how it reads: the grammar, with the defragmenter beside it */
+function vRead(){
+ var h='<div class="card sec"><h2>Where the picture comes from</h2><div class="small muted">The disk defragmenter showed a drive as a grid of blocks, one colour per state. The mask is the same grid, cut to the shape of a face.</div>'
+  +'<div class="map">'
+  +'<span class="l">one block on the disk</span><span>one pixel on the mask</span>'
+  +'<span class="l">one file</span><span>one belief, one address at the mask\'s seats</span>'
+  +'<span class="l">the file\'s colour</span><span>the seat the address sits at</span>'
+  +'<span class="l">a fragmented file</span><span>a charged belief, broken into pieces across the face; heavier breaks further</span>'
+  +'<span class="l">a contiguous file</span><span>a released belief, laid back into one run</span>'
+  +'<span class="l">free space</span><span>an address the journal has not written, an empty ring</span>'
+  +'<span class="l">unmovable system files</span><span>the stage\'s seam, cut out of the face</span></div></div>';
+ h+='<div class="card sec"><h2>Charge breaks the belief</h2><div class="small muted">The teen mask on a synthetic profile with every belief at one charge. The pieces are counted off the face, not typed.</div><div class="gram">'
+  +[1,3,5,8].map(function(q){var L=layout('Derek','Teen',{flat:q});return '<div class="cell2">'+svgMask(L)+'<b>Every belief at '+q+'</b>'+L.pieces.toFixed(1)+' pieces each</div>';}).join('')+'</div></div>';
+ h+='<div class="card sec"><h2>One face, six seams</h2><div class="small muted">The outline never changes, so the family reads at a glance. What each stage cut into it is the product\'s own icon mark, carried to pixels.</div><div class="gram">'
+  +T.MASKS.map(function(m){var L=layout('You',m.nm);return '<div class="cell2">'+svgMask(L)+'<b>'+esc(m.nm)+'</b>'+esc(SEAM[m.nm].why)+'</div>';}).join('')+'</div></div>';
+ h+='<div class="card sec"><h2>Ring, then fill</h2><div class="small muted">The house rule is ring, not fill, and here it becomes the meaning: an empty cell is a ring, charge fills it, release empties it back to a ring. Fill is the only solid on the page and it always means charge is held.</div>'
+  +'<div class="ph"><b>Copy to come, narrative-director.</b> The one line a person reads to learn this grammar, if it ships as a help panel.</div></div>';
+ return h;}
+
+function draw(){
+ var v=document.getElementById('view');
+ v.innerHTML=MODE==='one'?vOne():MODE==='all'?vAll():vRead();
+ wire();}
+function wire(){
+ var v=document.getElementById('view');
+ v.querySelectorAll('[data-m]').forEach(function(e){e.onclick=function(){PICK=e.dataset.m;HI=null;draw();
+  if(innerWidth<1060){var sd=document.getElementById('side');if(sd)sd.scrollIntoView({behavior:'smooth'});}};});
+ v.querySelectorAll('[data-b]').forEach(function(e){e.onclick=function(){var i=+e.dataset.b;HI=HI===i?null:i;
+  repaintBig();v.querySelectorAll('[data-b]').forEach(function(x){x.classList.toggle('on',+x.dataset.b===HI);});};});
+ var big=document.getElementById('big');
+ if(big){var ro=document.getElementById('ro'), L0=null;
+  function read(t){var i=t&&t.getAttribute&&t.getAttribute('data-i');if(!i)return;var n=NODE[i], L=layout(WHO,PICK,{reveal:REVEAL,rel:RELEASED[WHO+'|'+PICK]||{}}), q=L.sq[i]||0;
+   ro.textContent=n.k+', '+n.n+', '+n.b+'. '+((RELEASED[WHO+'|'+PICK]||{})[i]?'Released.':q>0?'Charge '+q.toFixed(1)+' of 10, in '+(L.runs[i]||1)+' piece'+((L.runs[i]||1)===1?'':'s')+'.':'No charge written.');}
+  big.addEventListener('pointermove',function(e){read(e.target);});
+  big.addEventListener('click',function(e){read(e.target);});}
+ var rv=document.getElementById('rv');
+ if(rv)rv.oninput=function(){REVEAL=rv.value/100;document.getElementById('rvv').textContent=rv.value+'%';repaintBig();refreshCast();};
+ var rb=document.getElementById('relb');
+ if(rb)rb.onclick=function(){var rk=WHO+'|'+PICK, rel=RELEASED[rk]=RELEASED[rk]||{}, L=layout(WHO,PICK,{reveal:REVEAL,rel:rel});
+  var hv=L.bel.filter(function(b){return (L.sq[b.i]||0)>0&&!rel[b.i];}).sort(function(a,b){return L.sq[b.i]-L.sq[a.i];})[0];
+  if(!hv)return;rel[hv.i]=1;HI=null;repaintBig();setTimeout(function(){document.getElementById('side').innerHTML=side();refreshCast();wire();},750);};
+ var rs=document.getElementById('rst');
+ if(rs)rs.onclick=function(){RELEASED[WHO+'|'+PICK]={};REVEAL=1;HI=null;draw();};}
+function refreshCast(){document.querySelectorAll('.mc').forEach(function(e){var nm=e.dataset.m, L=layout(WHO,nm,{reveal:REVEAL,rel:RELEASED[WHO+'|'+nm]});
+ e.querySelector('.art').innerHTML=svgMask(L);e.querySelector('.num').textContent=L.charged+' of '+L.n+' written'+(L.charged?', '+L.pieces.toFixed(1)+' pieces each':'');});}
+function setMode(){var host=document.getElementById('mode');
+ var opts=[['one','One profile'],['all','Across profiles'],['read','How it reads']];
+ host.innerHTML='<div class="seg">'+opts.map(function(o){return '<button data-k="'+o[0]+'" class="'+(o[0]===MODE?'on':'')+'">'+o[1]+'</button>';}).join('')+'</div>';
+ host.querySelectorAll('button').forEach(function(b){b.onclick=function(){MODE=b.dataset.k;setMode();draw();};});}
+function banner(){
+ var who='<span class="who"><span>Profile</span> '+WHOS.map(function(n){return '<button class="chip'+(n===WHO?' on':'')+'" data-who="'+n+'">'+n+'</button>';}).join('')+'</span>';
+ document.body.insertAdjacentHTML('afterbegin','<div class="pb"><b>Prototype, not the app.</b><span>Pixel masks, round GG item 2. Charges are the engine\'s own, computed on commit '+DATA.stamp.commit
+  +'. The journal slider and the release are simulated. Every dashed box is copy still to be written. Nothing here saves.</span><span class="sp"></span>'+who+'</div>');
+ document.querySelectorAll('.pb [data-who]').forEach(function(b){b.onclick=function(){WHO=b.dataset.who;HI=null;
+  document.querySelectorAll('.pb [data-who]').forEach(function(x){x.classList.toggle('on',x.dataset.who===WHO);});draw();};});}
+banner();setMode();draw();
+</script></body></html>

@@ -1,0 +1,276 @@
+{
+ "when": "Measured 2026-09-27",
+ "w": 1600,
+ "h": 1000,
+ "v": {
+  "A": {
+   "minStepDE": 8.087433357218087,
+   "stepsDE": [
+    17.74494459292288,
+    9.317106832539675,
+    9.552568102254579,
+    8.087433357218087
+   ],
+   "clutterSdL": 6.329057633387431,
+   "nerveInHeat": 1.1424737851540574,
+   "nerveOutHeat": 1.3632780687598454,
+   "nIn": 99,
+   "nOut": 4283,
+   "topVsMan": 58.257601640079095,
+   "heat90": 290,
+   "settled": 400,
+   "frame": 2.546209963368426
+  },
+  "B": {
+   "minStepDE": 5.5694795430375645,
+   "stepsDE": [
+    14.118456530495562,
+    5.5694795430375645,
+    11.436191228571504,
+    11.705246590513273
+   ],
+   "clutterSdL": 14.11881108454437,
+   "nerveInHeat": 2.4234512758730404,
+   "nerveOutHeat": 1.2062473899415134,
+   "nIn": 99,
+   "nOut": 4283,
+   "topVsMan": 58.146666924312285,
+   "heat90": 420,
+   "settled": 660,
+   "frame": 2.075517070014052
+  },
+  "C": {
+   "minStepDE": 9.33932238794163,
+   "stepsDE": [
+    16.087109089221087,
+    9.460612281155813,
+    10.865962515729398,
+    9.33932238794163
+   ],
+   "clutterSdL": 9.129648048506734,
+   "nerveInHeat": 1.3425314721428516,
+   "nerveOutHeat": 1.8804569007200351,
+   "nIn": 99,
+   "nOut": 4283,
+   "topVsMan": 53.26553706897954,
+   "heat90": 370,
+   "settled": 450,
+   "frame": 4.318465146011515
+  },
+  "D": {
+   "minStepDE": 7.273744776201253,
+   "stepsDE": [
+    14.885086333253142,
+    7.273744776201253,
+    9.674298104374705,
+    10.943649726779759
+   ],
+   "clutterSdL": 11.871303158754683,
+   "nerveInHeat": 1.784476098608864,
+   "nerveOutHeat": 1.5874865798897655,
+   "nIn": 99,
+   "nOut": 4283,
+   "topVsMan": 55.623994777829935,
+   "heat90": 430,
+   "settled": 500,
+   "frame": 2.4508214749676522
+  }
+ },
+ "control": {
+  "nerveOutHeat": 2.0689571414920613,
+  "pattern": 2.0689571414920613
+ },
+ "metricsInfo": {
+  "minStepDE": {
+   "nm": "Smallest step between painted levels",
+   "dp": 1,
+   "why": "colour distance between neighbouring levels, 2 to 10. About 2.3 is the least a person sees; 10 reads at a glance"
+  },
+  "clutterSdL": {
+   "nm": "Nerve noise inside a painted cell",
+   "dp": 1,
+   "why": "lightness spread inside one level. Lower means the level reads clean"
+  },
+  "nerveInHeat": {
+   "nm": "Nerve under the pain, against its ground",
+   "dp": 2,
+   "why": "contrast ratio. Higher shows which nerve carries the pain"
+  },
+  "nerveOutHeat": {
+   "nm": "Nerve away from the pain, against its ground",
+   "dp": 2,
+   "why": "contrast ratio. Enough to stay oriented; Pattern itself reads 2.07"
+  },
+  "heat90": {
+   "nm": "Heat 90 percent up, ms",
+   "dp": 0,
+   "why": "off the switch's own curve"
+  },
+  "settled": {
+   "nm": "Switch finished, ms",
+   "dp": 0,
+   "why": "the ground and the heat both landed"
+  },
+  "frame": {
+   "nm": "Frame cost, ms",
+   "dp": 2,
+   "why": "main thread, running, heaviest mock person. Headless and without a GPU, so pessimistic"
+  }
+ },
+ "norm": {
+  "A": {
+   "level": 0.7078938941705802,
+   "route": 0.0712368925770287,
+   "orient": 0.33984343680306783,
+   "speed": 0.8875
+  },
+  "B": {
+   "level": 0.3898635680126295,
+   "route": 0.7117256379365202,
+   "orient": 0.19294261849790456,
+   "speed": 0.725
+  },
+  "C": {
+   "level": 0.7255113659432457,
+   "route": 0.1712657360714258,
+   "orient": 0.8236596833911267,
+   "speed": 0.7875
+  },
+  "D": {
+   "level": 0.5123795553652205,
+   "route": 0.39223804930443196,
+   "orient": 0.5495885261309408,
+   "speed": 0.7125
+  }
+ },
+ "panel": [
+  {
+   "nm": "Diane",
+   "age": 46,
+   "role": "founder, second company",
+   "pw": 180,
+   "says": "Rest feels like a moral failure",
+   "w": {
+    "level": 0.35,
+    "route": 0.15,
+    "orient": 0.15,
+    "speed": 0.35
+   },
+   "s": {
+    "A": 0.6200499123667176,
+    "B": 0.525902487269584,
+    "C": 0.6787927909995188,
+    "D": 0.5699818306931331
+   },
+   "pick": "C"
+  },
+  {
+   "nm": "Derek",
+   "age": 39,
+   "role": "high performer, endurance",
+   "pw": 170,
+   "says": "Pain is information",
+   "w": {
+    "level": 0.4,
+    "route": 0.3,
+    "orient": 0.1,
+    "speed": 0.2
+   },
+   "s": {
+    "A": 0.5160129691216475,
+    "B": 0.5337573804357983,
+    "C": 0.5814502355378387,
+    "D": 0.5200820895505118
+   },
+   "pick": "C"
+  },
+  {
+   "nm": "Marcus",
+   "age": 44,
+   "role": "creative director",
+   "pw": 160,
+   "says": "I can see what is wrong with anything in four seconds",
+   "w": {
+    "level": 0.45,
+    "route": 0.15,
+    "orient": 0.15,
+    "speed": 0.25
+   },
+   "s": {
+    "A": 0.6020893017837756,
+    "B": 0.49238884407084693,
+    "C": 0.6725939275938434,
+    "D": 0.5499697862296552
+   },
+   "pick": "C"
+  },
+  {
+   "nm": "Angela",
+   "age": 36,
+   "role": "seeker, six modalities",
+   "pw": 150,
+   "says": "Everything happens for a reason",
+   "w": {
+    "level": 0.15,
+    "route": 0.45,
+    "orient": 0.25,
+    "speed": 0.15
+   },
+   "s": {
+    "A": 0.3563265449860169,
+    "B": 0.5357417268978046,
+    "C": 0.5099362069714102,
+    "D": 0.4976361870245126
+   },
+   "pick": "B"
+  },
+  {
+   "nm": "Sofia",
+   "age": 41,
+   "role": "somatic practitioner",
+   "pw": 140,
+   "says": "I hold the room for everyone",
+   "w": {
+    "level": 0.2,
+    "route": 0.35,
+    "orient": 0.35,
+    "speed": 0.1
+   },
+   "s": {
+    "A": 0.3742068941171498,
+    "B": 0.46710660335457455,
+    "C": 0.5720761700005426,
+    "D": 0.5033652124754245
+   },
+   "pick": "C"
+  },
+  {
+   "nm": "James",
+   "age": 57,
+   "role": "C-suite, third turnaround",
+   "pw": 100,
+   "says": "I make the call",
+   "w": {
+    "level": 0.4,
+    "route": 0.1,
+    "orient": 0.1,
+    "speed": 0.4
+   },
+   "s": {
+    "A": 0.6792655906062417,
+    "B": 0.5364122528484943,
+    "C": 0.7046970883235536,
+    "D": 0.5841344796896255
+   },
+   "pick": "C"
+  }
+ ],
+ "total": {
+  "A": 0.5215888702744679,
+  "B": 0.5150898069145633,
+  "C": 0.6174389716827821,
+  "D": 0.5361509514603273,
+  "pick": "C"
+ },
+ "verdict": "The panel, weighted, lands on C, Isotherm at 0.617, then D, Bands and reveal at 0.536, A, Fade at 0.522 and B, Reveal at 0.515. C, Isotherm is the first pick of 750 of the 900 weight; B, Reveal is the first pick of 150 of the 900 weight. Under the pain, a nerve reads at 1.14 to 1 on A, 2.42 on B, 1.34 on C and 1.78 on D. Away from it, 1.36, 1.21, 1.88 and 1.59, against 2.07 in Pattern. The smallest step between painted levels is 8.1, 5.6, 9.3 and 7.3."
+}

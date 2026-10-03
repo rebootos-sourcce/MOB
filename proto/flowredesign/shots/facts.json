@@ -1,0 +1,1650 @@
+{
+ "0-sofia-1600": {
+  "controls": 8,
+  "words": 71,
+  "figures": 11,
+  "height": 818,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 45,
+  "patterns": {
+   "all": 11,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Enabling5.1overshoot of Predatory13 addr",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex, overshot / Enabling"
+  }
+ },
+ "0-diane-1600": {
+  "controls": 12,
+  "words": 106,
+  "figures": 24,
+  "height": 1058,
+  "stopNamed": true,
+  "stopSeat": "Solar",
+  "heldSeats": [
+   "Heart",
+   "Solar"
+  ],
+  "clinical": true,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 62,
+  "patterns": {
+   "all": 42,
+   "atHeld": 24
+  },
+  "press": {
+   "pressed": "Dysregulation7.0bipolar · ADHD9 addr",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Dysregulation"
+  }
+ },
+ "0-marcus-1600": {
+  "controls": 8,
+  "words": 75,
+  "figures": 14,
+  "height": 818,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": true,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 46,
+  "patterns": {
+   "all": 13,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Rigidity5.2OCPD · paranoia5 addr",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Rigidity"
+  }
+ },
+ "0-angela-1600": {
+  "controls": 10,
+  "words": 85,
+  "figures": 15,
+  "height": 938,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 53,
+  "patterns": {
+   "all": 20,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Mania6.5overshoot of Collapse14 addr",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex, overshot / Mania"
+  }
+ },
+ "0-derek-1600": {
+  "controls": 14,
+  "words": 125,
+  "figures": 31,
+  "height": 1192,
+  "stopNamed": true,
+  "stopSeat": "Root",
+  "heldSeats": [
+   "Crown",
+   "Throat",
+   "Solar",
+   "Sacral",
+   "Root"
+  ],
+  "clinical": true,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 70,
+  "patterns": {
+   "all": 61,
+   "atHeld": 54
+  },
+  "press": {
+   "pressed": "Grandiosity7.1narcissism · histrionic8 addr",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Grandiosity"
+  }
+ },
+ "0-james-1600": {
+  "controls": 14,
+  "words": 124,
+  "figures": 30,
+  "height": 1192,
+  "stopNamed": true,
+  "stopSeat": "Root",
+  "heldSeats": [
+   "Throat",
+   "Heart",
+   "Sacral",
+   "Root"
+  ],
+  "clinical": true,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 70,
+  "patterns": {
+   "all": 49,
+   "atHeld": 43
+  },
+  "press": {
+   "pressed": "Dysregulation6.8bipolar · ADHD5 addr",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Dysregulation"
+  }
+ },
+ "1-sofia-1600": {
+  "controls": 8,
+  "words": 10,
+  "figures": 1,
+  "height": 255,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 4,
+  "patterns": {
+   "all": 11,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Enablingsits at the crown, carrying",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex, overshot / Enabling"
+  }
+ },
+ "1-diane-1600": {
+  "controls": 12,
+  "words": 38,
+  "figures": 1,
+  "height": 471,
+  "stopNamed": true,
+  "stopSeat": "Solar",
+  "heldSeats": [
+   "Heart",
+   "Solar"
+  ],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 13,
+  "patterns": {
+   "all": 42,
+   "atHeld": 24
+  },
+  "press": {
+   "pressed": "Dysregulationpinches the solar, carrying",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Dysregulation"
+  }
+ },
+ "1-marcus-1600": {
+  "controls": 8,
+  "words": 15,
+  "figures": 1,
+  "height": 255,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 5,
+  "patterns": {
+   "all": 13,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Rigiditysits at the sacral, carrying",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Rigidity"
+  }
+ },
+ "1-angela-1600": {
+  "controls": 10,
+  "words": 24,
+  "figures": 1,
+  "height": 363,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 8,
+  "patterns": {
+   "all": 20,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Maniasits at the crown, carrying",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex, overshot / Mania"
+  }
+ },
+ "1-derek-1600": {
+  "controls": 14,
+  "words": 49,
+  "figures": 1,
+  "height": 579,
+  "stopNamed": true,
+  "stopSeat": "Root",
+  "heldSeats": [
+   "Crown",
+   "Throat",
+   "Solar",
+   "Sacral",
+   "Root"
+  ],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 17,
+  "patterns": {
+   "all": 61,
+   "atHeld": 54
+  },
+  "press": {
+   "pressed": "Grandiositypinches the solar, carrying",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Grandiosity"
+  }
+ },
+ "1-james-1600": {
+  "controls": 14,
+  "words": 49,
+  "figures": 1,
+  "height": 579,
+  "stopNamed": true,
+  "stopSeat": "Root",
+  "heldSeats": [
+   "Throat",
+   "Heart",
+   "Sacral",
+   "Root"
+  ],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 17,
+  "patterns": {
+   "all": 49,
+   "atHeld": 43
+  },
+  "press": {
+   "pressed": "Dysregulationpinches the root, carrying",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Dysregulation"
+  }
+ },
+ "2-sofia-1600": {
+  "controls": 8,
+  "words": 21,
+  "figures": 1,
+  "height": 358,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 5,
+  "patterns": {
+   "all": 11,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Enabling, hyper-complex",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex, overshot / Enabling"
+  }
+ },
+ "2-diane-1600": {
+  "controls": 12,
+  "words": 33,
+  "figures": 1,
+  "height": 495,
+  "stopNamed": true,
+  "stopSeat": "Solar",
+  "heldSeats": [
+   "Heart",
+   "Solar"
+  ],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 10,
+  "patterns": {
+   "all": 42,
+   "atHeld": 24
+  },
+  "press": {
+   "pressed": "Dysregulation, hyper-complex",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Dysregulation"
+  }
+ },
+ "2-marcus-1600": {
+  "controls": 8,
+  "words": 26,
+  "figures": 1,
+  "height": 358,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 6,
+  "patterns": {
+   "all": 13,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Rigidity, hyper-complex",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Rigidity"
+  }
+ },
+ "2-angela-1600": {
+  "controls": 10,
+  "words": 25,
+  "figures": 1,
+  "height": 373,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 7,
+  "patterns": {
+   "all": 20,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Mania, hyper-complex",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex, overshot / Mania"
+  }
+ },
+ "2-derek-1600": {
+  "controls": 14,
+  "words": 37,
+  "figures": 1,
+  "height": 632,
+  "stopNamed": true,
+  "stopSeat": "Root",
+  "heldSeats": [
+   "Crown",
+   "Throat",
+   "Solar",
+   "Sacral",
+   "Root"
+  ],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 12,
+  "patterns": {
+   "all": 61,
+   "atHeld": 54
+  },
+  "press": {
+   "pressed": "Grandiosity, hyper-complex",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Grandiosity"
+  }
+ },
+ "2-james-1600": {
+  "controls": 14,
+  "words": 37,
+  "figures": 1,
+  "height": 632,
+  "stopNamed": true,
+  "stopSeat": "Root",
+  "heldSeats": [
+   "Throat",
+   "Heart",
+   "Sacral",
+   "Root"
+  ],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 12,
+  "patterns": {
+   "all": 49,
+   "atHeld": 43
+  },
+  "press": {
+   "pressed": "Dysregulation, hyper-complex",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Dysregulation"
+  }
+ },
+ "3-sofia-1600": {
+  "controls": 17,
+  "words": 12,
+  "figures": 2,
+  "height": 388,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 9,
+  "patterns": {
+   "all": 11,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Enabling, hyper-complex",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex, overshot / Enabling"
+  }
+ },
+ "3-diane-1600": {
+  "controls": 31,
+  "words": 45,
+  "figures": 5,
+  "height": 700,
+  "stopNamed": true,
+  "stopSeat": "Solar",
+  "heldSeats": [
+   "Heart",
+   "Solar"
+  ],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 26,
+  "patterns": {
+   "all": 42,
+   "atHeld": 24
+  },
+  "press": {
+   "pressed": "Diffuse Drifter overshot, saboteur",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Saboteur, overshot / Diffuse Drifter overshot"
+  }
+ },
+ "3-marcus-1600": {
+  "controls": 15,
+  "words": 17,
+  "figures": 2,
+  "height": 389,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 10,
+  "patterns": {
+   "all": 13,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Dreamer, saboteur",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Saboteur / Dreamer"
+  }
+ },
+ "3-angela-1600": {
+  "controls": 22,
+  "words": 16,
+  "figures": 4,
+  "height": 388,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 11,
+  "patterns": {
+   "all": 20,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Crown Mourner overshot, saboteur",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Saboteur, overshot / Crown Mourner overshot"
+  }
+ },
+ "3-derek-1600": {
+  "controls": 33,
+  "words": 54,
+  "figures": 6,
+  "height": 700,
+  "stopNamed": true,
+  "stopSeat": "Root",
+  "heldSeats": [
+   "Crown",
+   "Throat",
+   "Solar",
+   "Sacral",
+   "Root"
+  ],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 27,
+  "patterns": {
+   "all": 61,
+   "atHeld": 54
+  },
+  "press": {
+   "pressed": "Predatory, hyper-complex",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Predatory"
+  }
+ },
+ "3-james-1600": {
+  "controls": 33,
+  "words": 49,
+  "figures": 6,
+  "height": 700,
+  "stopNamed": true,
+  "stopSeat": "Root",
+  "heldSeats": [
+   "Throat",
+   "Heart",
+   "Sacral",
+   "Root"
+  ],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 27,
+  "patterns": {
+   "all": 49,
+   "atHeld": 43
+  },
+  "press": {
+   "pressed": "Predatory, hyper-complex",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Predatory"
+  }
+ },
+ "4-sofia-1600": {
+  "controls": 4,
+  "words": 38,
+  "figures": 2,
+  "height": 308,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 9,
+  "patterns": {
+   "all": 11,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Heart Striker overshotA saboteur at the heart.",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Saboteur, overshot / Heart Striker overshot"
+  }
+ },
+ "4-diane-1600": {
+  "controls": 4,
+  "words": 36,
+  "figures": 2,
+  "height": 291,
+  "stopNamed": true,
+  "stopSeat": "Solar",
+  "heldSeats": [
+   "Heart",
+   "Solar"
+  ],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 10,
+  "patterns": {
+   "all": 42,
+   "atHeld": 24
+  },
+  "press": {
+   "pressed": "AggressorA saboteur at the solar.",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Saboteur / Aggressor"
+  }
+ },
+ "4-marcus-1600": {
+  "controls": 4,
+  "words": 37,
+  "figures": 2,
+  "height": 291,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 10,
+  "patterns": {
+   "all": 13,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "PerfectionistA saboteur at the sacral.",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Saboteur / Perfectionist"
+  }
+ },
+ "4-angela-1600": {
+  "controls": 4,
+  "words": 38,
+  "figures": 2,
+  "height": 308,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 9,
+  "patterns": {
+   "all": 20,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Crown Mourner overshotA saboteur at the crown.",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Saboteur, overshot / Crown Mourner overshot"
+  }
+ },
+ "4-derek-1600": {
+  "controls": 4,
+  "words": 38,
+  "figures": 2,
+  "height": 291,
+  "stopNamed": true,
+  "stopSeat": "Root",
+  "heldSeats": [
+   "Crown",
+   "Throat",
+   "Solar",
+   "Sacral",
+   "Root"
+  ],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 10,
+  "patterns": {
+   "all": 61,
+   "atHeld": 54
+  },
+  "press": {
+   "pressed": "Control FreakA saboteur at the root.",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Saboteur / Control Freak"
+  }
+ },
+ "4-james-1600": {
+  "controls": 4,
+  "words": 36,
+  "figures": 2,
+  "height": 291,
+  "stopNamed": true,
+  "stopSeat": "Root",
+  "heldSeats": [
+   "Throat",
+   "Heart",
+   "Sacral",
+   "Root"
+  ],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 10,
+  "patterns": {
+   "all": 49,
+   "atHeld": 43
+  },
+  "press": {
+   "pressed": "Dramatizer + OverthinkerA complex at the root.",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Complex / Dramatizer + Overthinker"
+  }
+ },
+ "floors-1600": {
+  "pageErrors": [],
+  "outboundRequests": []
+ },
+ "0-sofia-390": {
+  "controls": 8,
+  "words": 71,
+  "figures": 11,
+  "height": 776,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 45,
+  "patterns": {
+   "all": 11,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Enabling5.1overshoot of Predatory13 addr",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex, overshot / Enabling"
+  }
+ },
+ "0-diane-390": {
+  "controls": 12,
+  "words": 106,
+  "figures": 24,
+  "height": 1016,
+  "stopNamed": true,
+  "stopSeat": "Solar",
+  "heldSeats": [
+   "Heart",
+   "Solar"
+  ],
+  "clinical": true,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 62,
+  "patterns": {
+   "all": 42,
+   "atHeld": 24
+  },
+  "press": {
+   "pressed": "Dysregulation7.0bipolar · ADHD9 addr",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Dysregulation"
+  }
+ },
+ "0-marcus-390": {
+  "controls": 8,
+  "words": 75,
+  "figures": 14,
+  "height": 776,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": true,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 46,
+  "patterns": {
+   "all": 13,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Rigidity5.2OCPD · paranoia5 addr",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Rigidity"
+  }
+ },
+ "0-angela-390": {
+  "controls": 10,
+  "words": 85,
+  "figures": 15,
+  "height": 896,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 53,
+  "patterns": {
+   "all": 20,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Mania6.5overshoot of Collapse14 addr",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex, overshot / Mania"
+  }
+ },
+ "0-derek-390": {
+  "controls": 14,
+  "words": 125,
+  "figures": 31,
+  "height": 1136,
+  "stopNamed": true,
+  "stopSeat": "Root",
+  "heldSeats": [
+   "Crown",
+   "Throat",
+   "Solar",
+   "Sacral",
+   "Root"
+  ],
+  "clinical": true,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 70,
+  "patterns": {
+   "all": 61,
+   "atHeld": 54
+  },
+  "press": {
+   "pressed": "Grandiosity7.1narcissism · histrionic8 addr",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Grandiosity"
+  }
+ },
+ "0-james-390": {
+  "controls": 14,
+  "words": 124,
+  "figures": 30,
+  "height": 1136,
+  "stopNamed": true,
+  "stopSeat": "Root",
+  "heldSeats": [
+   "Throat",
+   "Heart",
+   "Sacral",
+   "Root"
+  ],
+  "clinical": true,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 70,
+  "patterns": {
+   "all": 49,
+   "atHeld": 43
+  },
+  "press": {
+   "pressed": "Dysregulation6.8bipolar · ADHD5 addr",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Dysregulation"
+  }
+ },
+ "1-sofia-390": {
+  "controls": 8,
+  "words": 10,
+  "figures": 1,
+  "height": 199,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 4,
+  "patterns": {
+   "all": 11,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Enablingsits at the crown, carrying",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex, overshot / Enabling"
+  }
+ },
+ "1-diane-390": {
+  "controls": 12,
+  "words": 38,
+  "figures": 1,
+  "height": 415,
+  "stopNamed": true,
+  "stopSeat": "Solar",
+  "heldSeats": [
+   "Heart",
+   "Solar"
+  ],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 13,
+  "patterns": {
+   "all": 42,
+   "atHeld": 24
+  },
+  "press": {
+   "pressed": "Dysregulationpinches the solar, carrying",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Dysregulation"
+  }
+ },
+ "1-marcus-390": {
+  "controls": 8,
+  "words": 15,
+  "figures": 1,
+  "height": 199,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 5,
+  "patterns": {
+   "all": 13,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Rigiditysits at the sacral, carrying",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Rigidity"
+  }
+ },
+ "1-angela-390": {
+  "controls": 10,
+  "words": 24,
+  "figures": 1,
+  "height": 307,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 8,
+  "patterns": {
+   "all": 20,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Maniasits at the crown, carrying",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex, overshot / Mania"
+  }
+ },
+ "1-derek-390": {
+  "controls": 14,
+  "words": 49,
+  "figures": 1,
+  "height": 523,
+  "stopNamed": true,
+  "stopSeat": "Root",
+  "heldSeats": [
+   "Crown",
+   "Throat",
+   "Solar",
+   "Sacral",
+   "Root"
+  ],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 17,
+  "patterns": {
+   "all": 61,
+   "atHeld": 54
+  },
+  "press": {
+   "pressed": "Grandiositypinches the solar, carrying",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Grandiosity"
+  }
+ },
+ "1-james-390": {
+  "controls": 14,
+  "words": 49,
+  "figures": 1,
+  "height": 523,
+  "stopNamed": true,
+  "stopSeat": "Root",
+  "heldSeats": [
+   "Throat",
+   "Heart",
+   "Sacral",
+   "Root"
+  ],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 17,
+  "patterns": {
+   "all": 49,
+   "atHeld": 43
+  },
+  "press": {
+   "pressed": "Dysregulationpinches the root, carrying",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Dysregulation"
+  }
+ },
+ "2-sofia-390": {
+  "controls": 8,
+  "words": 21,
+  "figures": 1,
+  "height": 318,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 5,
+  "patterns": {
+   "all": 11,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Enabling, hyper-complex",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex, overshot / Enabling"
+  }
+ },
+ "2-diane-390": {
+  "controls": 12,
+  "words": 33,
+  "figures": 1,
+  "height": 471,
+  "stopNamed": true,
+  "stopSeat": "Solar",
+  "heldSeats": [
+   "Heart",
+   "Solar"
+  ],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 10,
+  "patterns": {
+   "all": 42,
+   "atHeld": 24
+  },
+  "press": {
+   "pressed": "Dysregulation, hyper-complex",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Dysregulation"
+  }
+ },
+ "2-marcus-390": {
+  "controls": 8,
+  "words": 26,
+  "figures": 1,
+  "height": 318,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 6,
+  "patterns": {
+   "all": 13,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Rigidity, hyper-complex",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Rigidity"
+  }
+ },
+ "2-angela-390": {
+  "controls": 10,
+  "words": 25,
+  "figures": 1,
+  "height": 333,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 7,
+  "patterns": {
+   "all": 20,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Mania, hyper-complex",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex, overshot / Mania"
+  }
+ },
+ "2-derek-390": {
+  "controls": 14,
+  "words": 37,
+  "figures": 1,
+  "height": 624,
+  "stopNamed": true,
+  "stopSeat": "Root",
+  "heldSeats": [
+   "Crown",
+   "Throat",
+   "Solar",
+   "Sacral",
+   "Root"
+  ],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 12,
+  "patterns": {
+   "all": 61,
+   "atHeld": 54
+  },
+  "press": {
+   "pressed": "Grandiosity, hyper-complex",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Grandiosity"
+  }
+ },
+ "2-james-390": {
+  "controls": 14,
+  "words": 37,
+  "figures": 1,
+  "height": 624,
+  "stopNamed": true,
+  "stopSeat": "Root",
+  "heldSeats": [
+   "Throat",
+   "Heart",
+   "Sacral",
+   "Root"
+  ],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 12,
+  "patterns": {
+   "all": 49,
+   "atHeld": 43
+  },
+  "press": {
+   "pressed": "Dysregulation, hyper-complex",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Dysregulation"
+  }
+ },
+ "3-sofia-390": {
+  "controls": 17,
+  "words": 12,
+  "figures": 2,
+  "height": 388,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 9,
+  "patterns": {
+   "all": 11,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Enabling, hyper-complex",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex, overshot / Enabling"
+  }
+ },
+ "3-diane-390": {
+  "controls": 31,
+  "words": 45,
+  "figures": 5,
+  "height": 700,
+  "stopNamed": true,
+  "stopSeat": "Solar",
+  "heldSeats": [
+   "Heart",
+   "Solar"
+  ],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 26,
+  "patterns": {
+   "all": 42,
+   "atHeld": 24
+  },
+  "press": {
+   "pressed": "Diffuse Drifter overshot, saboteur",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Saboteur, overshot / Diffuse Drifter overshot"
+  }
+ },
+ "3-marcus-390": {
+  "controls": 15,
+  "words": 17,
+  "figures": 2,
+  "height": 389,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 10,
+  "patterns": {
+   "all": 13,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Dreamer, saboteur",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Saboteur / Dreamer"
+  }
+ },
+ "3-angela-390": {
+  "controls": 22,
+  "words": 16,
+  "figures": 4,
+  "height": 388,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 11,
+  "patterns": {
+   "all": 20,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Crown Mourner overshot, saboteur",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Saboteur, overshot / Crown Mourner overshot"
+  }
+ },
+ "3-derek-390": {
+  "controls": 33,
+  "words": 54,
+  "figures": 6,
+  "height": 700,
+  "stopNamed": true,
+  "stopSeat": "Root",
+  "heldSeats": [
+   "Crown",
+   "Throat",
+   "Solar",
+   "Sacral",
+   "Root"
+  ],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 27,
+  "patterns": {
+   "all": 61,
+   "atHeld": 54
+  },
+  "press": {
+   "pressed": "Predatory, hyper-complex",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Predatory"
+  }
+ },
+ "3-james-390": {
+  "controls": 33,
+  "words": 49,
+  "figures": 6,
+  "height": 700,
+  "stopNamed": true,
+  "stopSeat": "Root",
+  "heldSeats": [
+   "Throat",
+   "Heart",
+   "Sacral",
+   "Root"
+  ],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 27,
+  "patterns": {
+   "all": 49,
+   "atHeld": 43
+  },
+  "press": {
+   "pressed": "Predatory, hyper-complex",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Hyper-complex / Predatory"
+  }
+ },
+ "4-sofia-390": {
+  "controls": 4,
+  "words": 38,
+  "figures": 2,
+  "height": 308,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 9,
+  "patterns": {
+   "all": 11,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Heart Striker overshotA saboteur at the heart.",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Saboteur, overshot / Heart Striker overshot"
+  }
+ },
+ "4-diane-390": {
+  "controls": 4,
+  "words": 36,
+  "figures": 2,
+  "height": 291,
+  "stopNamed": true,
+  "stopSeat": "Solar",
+  "heldSeats": [
+   "Heart",
+   "Solar"
+  ],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 10,
+  "patterns": {
+   "all": 42,
+   "atHeld": 24
+  },
+  "press": {
+   "pressed": "AggressorA saboteur at the solar.",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Saboteur / Aggressor"
+  }
+ },
+ "4-marcus-390": {
+  "controls": 4,
+  "words": 37,
+  "figures": 2,
+  "height": 291,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 10,
+  "patterns": {
+   "all": 13,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "PerfectionistA saboteur at the sacral.",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Saboteur / Perfectionist"
+  }
+ },
+ "4-angela-390": {
+  "controls": 4,
+  "words": 38,
+  "figures": 2,
+  "height": 308,
+  "stopNamed": null,
+  "stopSeat": null,
+  "heldSeats": [],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 9,
+  "patterns": {
+   "all": 20,
+   "atHeld": 0
+  },
+  "press": {
+   "pressed": "Crown Mourner overshotA saboteur at the crown.",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Saboteur, overshot / Crown Mourner overshot"
+  }
+ },
+ "4-derek-390": {
+  "controls": 4,
+  "words": 38,
+  "figures": 2,
+  "height": 291,
+  "stopNamed": true,
+  "stopSeat": "Root",
+  "heldSeats": [
+   "Crown",
+   "Throat",
+   "Solar",
+   "Sacral",
+   "Root"
+  ],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 10,
+  "patterns": {
+   "all": 61,
+   "atHeld": 54
+  },
+  "press": {
+   "pressed": "Control FreakA saboteur at the root.",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Saboteur / Control Freak"
+  }
+ },
+ "4-james-390": {
+  "controls": 4,
+  "words": 36,
+  "figures": 2,
+  "height": 291,
+  "stopNamed": true,
+  "stopSeat": "Root",
+  "heldSeats": [
+   "Throat",
+   "Heart",
+   "Sacral",
+   "Root"
+  ],
+  "clinical": false,
+  "small": [],
+  "overflowing": 0,
+  "layer": "hyper",
+  "shown": 10,
+  "patterns": {
+   "all": 49,
+   "atHeld": 43
+  },
+  "press": {
+   "pressed": "Dramatizer + OverthinkerA complex at the root.",
+   "taps": 1,
+   "opened": true,
+   "inView": true,
+   "title": "Complex / Dramatizer + Overthinker"
+  }
+ },
+ "floors-390": {
+  "pageErrors": [],
+  "outboundRequests": []
+ }
+}

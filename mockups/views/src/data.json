@@ -1,0 +1,4775 @@
+{
+ "Derek": {
+  "archTop": [
+   {
+    "nm": "Caregiver",
+    "v": "attends to the other",
+    "a": 1
+   },
+   {
+    "nm": "Warrior",
+    "v": "moves on the threat",
+    "a": 0.82
+   },
+   {
+    "nm": "Rebel",
+    "v": "refuses the frame",
+    "a": 0.66
+   }
+  ],
+  "rit": {
+   "how": ""
+  },
+  "next": {
+   "nm": "Entry",
+   "left": 1
+  },
+  "tierObj": {
+   "at": 41,
+   "nm": "Oscillating",
+   "state": "Searching",
+   "soma": "Taking it all in and understanding it, and still stuck in your head.",
+   "def": "Fifty is the median, the middle of the line. The field crosses it both ways, above it some days and below it on others.",
+   "energy": "The day decides. What is running that morning sets the range.",
+   "toward": "Even. Consistency rather than intensity. The swing narrows before the number rises."
+  },
+  "nm": "Derek",
+  "role": "high performer, endurance · ICP",
+  "says": "Pain is information. I have raced on a stress fracture. I would do it again.",
+  "tier": "Oscillating",
+  "unread": false,
+  "CQ": 48.5,
+  "DQ": 26.2,
+  "X": 0.24,
+  "Y": 0.278,
+  "Z": 0.241,
+  "steer": "withheld",
+  "will": 0.225,
+  "drag": 2.6,
+  "EX": 42.6,
+  "darkB": "Solar",
+  "root": "Engine",
+  "rootsIn": [
+   "Engine"
+  ],
+  "outMean": 5,
+  "inMean": 4.6,
+  "lean": 0.04,
+  "read": true,
+  "charge": [
+   {
+    "nm": "Fear",
+    "v": 5,
+    "seat": "Root",
+    "addr": "Lumbar plexus",
+    "loc": "lower back, gut",
+    "opp": "Trust"
+   },
+   {
+    "nm": "Anger",
+    "v": 6,
+    "seat": "Solar",
+    "addr": "Celiac plexus",
+    "loc": "upper abdomen",
+    "opp": "Equanimity"
+   },
+   {
+    "nm": "Shame",
+    "v": 6,
+    "seat": "Sacral",
+    "addr": "Pudendal plexus",
+    "loc": "pelvic floor",
+    "opp": "Worth"
+   },
+   {
+    "nm": "Disgust",
+    "v": 4,
+    "seat": "Sacral",
+    "addr": "Sacral and dermis",
+    "loc": "lower abdomen, skin",
+    "opp": "Acceptance"
+   },
+   {
+    "nm": "Apathy",
+    "v": 2,
+    "seat": "Throat",
+    "addr": "Shoulder girdle and throat",
+    "loc": "base of neck",
+    "opp": "Vitality"
+   },
+   {
+    "nm": "Shock",
+    "v": 6,
+    "seat": "3rd Eye",
+    "addr": "Prefrontal and dermis",
+    "loc": "forehead, skin",
+    "opp": "Groundedness"
+   },
+   {
+    "nm": "Sad",
+    "v": 4,
+    "seat": "Heart",
+    "addr": "Cardiac plexus",
+    "loc": "centre chest",
+    "opp": "Joy"
+   },
+   {
+    "nm": "Surprise",
+    "v": 3,
+    "seat": "Heart",
+    "addr": "Upper chest and back",
+    "loc": "upper torso",
+    "opp": "Readiness"
+   },
+   {
+    "nm": "Anticipation",
+    "v": 7,
+    "seat": "Solar",
+    "addr": "Below the heart",
+    "loc": "lower sternum",
+    "opp": "Presence"
+   }
+  ],
+  "seats": [
+   {
+    "max": 3.6884420028515046,
+    "k": "crown",
+    "n": "Crown",
+    "sk": "Sahasrara",
+    "nv": "Cranial plexus",
+    "seat": "the top of the head",
+    "src": 26,
+    "hot": 0,
+    "tot": 21,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Crown"
+   },
+   {
+    "max": 3.8148268732859996,
+    "k": "eye",
+    "n": "Brow",
+    "sk": "Ajna",
+    "nv": "Cavernous plexus",
+    "seat": "between the eyebrows",
+    "src": 90,
+    "hot": 0,
+    "tot": 12,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "3rd Eye"
+   },
+   {
+    "max": 4.960107654302657,
+    "k": "throat",
+    "n": "Throat",
+    "sk": "Vishuddha",
+    "nv": "Pharyngeal plexus",
+    "seat": "the suprasternal notch",
+    "src": 188,
+    "hot": 5,
+    "tot": 12,
+    "load": 0.189,
+    "pass": 0.745,
+    "held": true,
+    "mean": 4.53,
+    "band": "Throat"
+   },
+   {
+    "max": 3.3764088216504757,
+    "k": "heart",
+    "n": "Heart",
+    "sk": "Anahata",
+    "nv": "Cardiac plexus",
+    "seat": "mid sternum",
+    "src": 276,
+    "hot": 0,
+    "tot": 15,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Heart"
+   },
+   {
+    "max": 5.3757600000000005,
+    "k": "solar",
+    "n": "Solar",
+    "sk": "Manipura",
+    "nv": "Celiac plexus",
+    "seat": "below the ribs, above the navel",
+    "src": 372,
+    "hot": 7,
+    "tot": 16,
+    "load": 0.219,
+    "pass": 0.704,
+    "held": true,
+    "mean": 5.02,
+    "band": "Solar"
+   },
+   {
+    "max": 6.751680000000001,
+    "k": "sacral",
+    "n": "Sacral",
+    "sk": "Svadhisthana",
+    "nv": "Hypogastric plexus",
+    "seat": "below the navel",
+    "src": 438,
+    "hot": 5,
+    "tot": 16,
+    "load": 0.169,
+    "pass": 0.772,
+    "held": true,
+    "mean": 5.4,
+    "band": "Sacral"
+   },
+   {
+    "max": 5.395432868158615,
+    "k": "root",
+    "n": "Root",
+    "sk": "Muladhara",
+    "nv": "Lumbar plexus",
+    "seat": "the base of the spine",
+    "src": 502,
+    "hot": 3,
+    "tot": 16,
+    "load": 0.101,
+    "pass": 0.863,
+    "held": false,
+    "mean": 5.4,
+    "band": "Root"
+   }
+  ],
+  "top": [
+   {
+    "i": 31,
+    "k": "Need For Approval",
+    "b": "Sacral",
+    "n": "Iliac Branches",
+    "a": "Identity in others",
+    "d": "Conformity",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 6.75
+   },
+   {
+    "i": 25,
+    "k": "Manipulation Through Emotion",
+    "b": "Sacral",
+    "n": "Uterovaginal Plexus",
+    "a": "Control",
+    "d": "Emotional blackmail",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 5.96
+   },
+   {
+    "i": 2,
+    "k": "Shame",
+    "b": "Root",
+    "n": "Pudendal Nerve",
+    "a": "Worth, embodiment",
+    "d": "Self-rejection",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 5.4
+   },
+   {
+    "i": 3,
+    "k": "Guilt",
+    "b": "Root",
+    "n": "Inferior Hypogastric Plexus",
+    "a": "Responsibility",
+    "d": "Overcompensation",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 5.4
+   },
+   {
+    "i": 12,
+    "k": "Compulsion",
+    "b": "Root",
+    "n": "Pelvic Floor Nerves",
+    "a": "Safety rituals",
+    "d": "Fixation",
+    "c": "Fear",
+    "cf": "Anticipation",
+    "sq": 5.4
+   },
+   {
+    "i": 33,
+    "k": "Pride",
+    "b": "Solar",
+    "n": "Celiac Plexus",
+    "a": "Self-importance",
+    "d": "Superiority",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 5.38
+   },
+   {
+    "i": 34,
+    "k": "Arrogance",
+    "b": "Solar",
+    "n": "Greater Splanchnic Nerve",
+    "a": "Ego",
+    "d": "Inflated Self",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 5.38
+   },
+   {
+    "i": 35,
+    "k": "Competition",
+    "b": "Solar",
+    "n": "Aortic Plexus",
+    "a": "Comparison",
+    "d": "Division",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 5.38
+   },
+   {
+    "i": 29,
+    "k": "Obsession",
+    "b": "Sacral",
+    "n": "Pelvic Ganglia",
+    "a": "Focus",
+    "d": "Fixation",
+    "c": "Fear",
+    "cf": "Anticipation",
+    "sq": 5.35
+   },
+   {
+    "i": 72,
+    "k": "Speaking To Be Right",
+    "b": "Throat",
+    "n": "Cervical Ganglia",
+    "a": "Ego",
+    "d": "Righteousness",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 4.96
+   },
+   {
+    "i": 36,
+    "k": "Anger",
+    "b": "Solar",
+    "n": "Celiac Plexus",
+    "a": "Power misused",
+    "d": "Attack",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 4.75
+   },
+   {
+    "i": 37,
+    "k": "Judgment",
+    "b": "Solar",
+    "n": "Splanchnic Plexus",
+    "a": "Othering",
+    "d": "Projection",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 4.75
+   },
+   {
+    "i": 38,
+    "k": "Entitlement",
+    "b": "Solar",
+    "n": "Renal Plexus",
+    "a": "Control of outcomes",
+    "d": "Deserving",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 4.75
+   },
+   {
+    "i": 39,
+    "k": "Rebellion",
+    "b": "Solar",
+    "n": "Renal Ganglia",
+    "a": "Defiance",
+    "d": "Misalignment",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 4.75
+   },
+   {
+    "i": 19,
+    "k": "Envy",
+    "b": "Sacral",
+    "n": "Internal Pudendal Nerve",
+    "a": "Lack",
+    "d": "Hatred of others' joy",
+    "c": "Resentment",
+    "cf": "Anger",
+    "sq": 4.46
+   },
+   {
+    "i": 20,
+    "k": "Jealousy",
+    "b": "Sacral",
+    "n": "Obturator Nerve",
+    "a": "Possessiveness",
+    "d": "Paranoia",
+    "c": "Resentment",
+    "cf": "Anger",
+    "sq": 4.46
+   },
+   {
+    "i": 65,
+    "k": "Self-Silencing",
+    "b": "Throat",
+    "n": "Vagus Nerve",
+    "a": "Voice",
+    "d": "Withholding",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 4.42
+   },
+   {
+    "i": 66,
+    "k": "People Pleasing",
+    "b": "Throat",
+    "n": "Superior Laryngeal Nerve",
+    "a": "Approval",
+    "d": "Inauthenticity",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 4.42
+   },
+   {
+    "i": 68,
+    "k": "Interrupting",
+    "b": "Throat",
+    "n": "Pharyngeal Nerve",
+    "a": "Listening",
+    "d": "Imposition",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 4.42
+   },
+   {
+    "i": 69,
+    "k": "Comparison",
+    "b": "Throat",
+    "n": "Accessory Nerve",
+    "a": "Voice Identity",
+    "d": "Envy",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 4.42
+   },
+   {
+    "i": 7,
+    "k": "Scarcity",
+    "b": "Root",
+    "n": "Iliac Nerve Branch",
+    "a": "Resources",
+    "d": "Hoarding",
+    "c": "Fear",
+    "cf": "Fear",
+    "sq": 3.85
+   },
+   {
+    "i": 11,
+    "k": "Resistance",
+    "b": "Root",
+    "n": "Perineal Branch",
+    "a": "Change",
+    "d": "Holding on",
+    "c": "Fear",
+    "cf": "Fear",
+    "sq": 3.85
+   },
+   {
+    "i": 79,
+    "k": "Hypervigilance",
+    "b": "3rd Eye",
+    "n": "Optic Chiasm",
+    "a": "Control",
+    "d": "Overthinking",
+    "c": "Fear",
+    "cf": "Anticipation",
+    "sq": 3.81
+   },
+   {
+    "i": 105,
+    "k": "Denial Of Light",
+    "b": "Crown",
+    "n": "Epithalamus",
+    "a": "Revelation",
+    "d": "Avoidance",
+    "c": "Resentment",
+    "cf": "Anger",
+    "sq": 3.69
+   }
+  ],
+  "carrying": 20,
+  "hotN": 9,
+  "shut": [
+   {
+    "nm": "Equanimity",
+    "b": "3rd Eye"
+   },
+   {
+    "nm": "Temperance",
+    "b": "Sacral"
+   },
+   {
+    "nm": "Non-Harm",
+    "b": "Root"
+   }
+  ],
+  "sp": {
+   "sun": "Capricorn",
+   "moon": "Virgo",
+   "rising": "Capricorn",
+   "celem": "Fire",
+   "chinese": "Tiger",
+   "lp": 9,
+   "hd": "1/4",
+   "gk": "60.1",
+   "root": "Architect",
+   "mode": "initiates",
+   "lpMean": "completes"
+  },
+  "runs": {
+   "sun": "builds the structure and then lives inside it",
+   "moon": "corrects the detail that nobody asked about",
+   "rising": "builds the structure and then lives inside it",
+   "ch": "takes the risk and deals with it after",
+   "lp": "completes what others abandoned",
+   "glyph": {
+    "sun": "♑",
+    "moon": "♍",
+    "rising": "♑"
+   }
+  },
+  "agree": [
+   "design line 4 and a field that is contracting point the same way"
+  ],
+  "differ": [
+   "birth element points Architect, your domain runs Engine",
+   "life path 9 reads Magician, you run Caregiver",
+   "birth mode cardinal against a field that is contracting"
+  ],
+  "lensW": {
+   "t": "Western",
+   "a": "Engine",
+   "b": "Fire, cardinal. Initiates and burns.",
+   "c": "root domain as element"
+  },
+  "lensE": {
+   "t": "Eastern",
+   "a": "Solar",
+   "b": "Manipura, fire, RAM",
+   "c": "the seat carrying the most"
+  },
+  "lensD": {
+   "t": "Design",
+   "a": "Caregiver",
+   "b": "defined at the solar, responds, authority at the solar plexus",
+   "c": "archetype and polarity"
+  },
+  "lensG": {
+   "t": "Gene keys",
+   "a": "Need For Approval",
+   "b": "Shame to Worth to Worth as sovereignty",
+   "c": "shadow, gift, siddhi"
+  },
+  "arch": "Caregiver",
+  "ig": 4.9,
+  "heavyAxis": "Anticipation",
+  "tierCol": null
+ },
+ "Wren": {
+  "archTop": [
+   {
+    "nm": "Warrior",
+    "v": "moves on the threat",
+    "a": 1
+   },
+   {
+    "nm": "Sage",
+    "v": "reads the situation",
+    "a": 0.93
+   },
+   {
+    "nm": "Innocent",
+    "v": "takes it at face value",
+    "a": 0.63
+   }
+  ],
+  "rit": {
+   "how": ""
+  },
+  "next": {
+   "nm": "Entry",
+   "left": 1
+  },
+  "tierObj": {
+   "at": 91,
+   "nm": "Mastery",
+   "state": "Sovereign",
+   "soma": "Everything in you is clear and standing straight. Nothing from the past is left to work through.",
+   "def": "The field builds far more than it costs. Almost nothing is held.",
+   "energy": "Intention and action arrive together. There is no gap left to manage.",
+   "toward": "Hold it. The work here is maintenance, and what you can now carry for other people."
+  },
+  "nm": "Wren",
+  "role": "luthier, forty one years at the bench",
+  "says": "Most of it went quiet a long time ago. One thing did not, and I know exactly which.",
+  "tier": "Mastery",
+  "unread": false,
+  "CQ": 91.1,
+  "DQ": 3.8,
+  "X": 0.764,
+  "Y": 0.973,
+  "Z": 0.587,
+  "steer": "forced",
+  "will": 0.954,
+  "drag": 0.455,
+  "EX": 90.6,
+  "darkB": "Throat",
+  "root": "Architect",
+  "rootsIn": [
+   "Architect"
+  ],
+  "outMean": 1.23,
+  "inMean": 2.82,
+  "lean": -0.39,
+  "read": true,
+  "charge": [
+   {
+    "nm": "Fear",
+    "v": 2,
+    "seat": "Root",
+    "addr": "Lumbar plexus",
+    "loc": "lower back, gut",
+    "opp": "Trust"
+   },
+   {
+    "nm": "Anger",
+    "v": 1.2,
+    "seat": "Solar",
+    "addr": "Celiac plexus",
+    "loc": "upper abdomen",
+    "opp": "Equanimity"
+   },
+   {
+    "nm": "Shame",
+    "v": 7.5,
+    "seat": "Sacral",
+    "addr": "Pudendal plexus",
+    "loc": "pelvic floor",
+    "opp": "Worth"
+   },
+   {
+    "nm": "Disgust",
+    "v": 1,
+    "seat": "Sacral",
+    "addr": "Sacral and dermis",
+    "loc": "lower abdomen, skin",
+    "opp": "Acceptance"
+   },
+   {
+    "nm": "Apathy",
+    "v": 1.5,
+    "seat": "Throat",
+    "addr": "Shoulder girdle and throat",
+    "loc": "base of neck",
+    "opp": "Vitality"
+   },
+   {
+    "nm": "Shock",
+    "v": 1.1,
+    "seat": "3rd Eye",
+    "addr": "Prefrontal and dermis",
+    "loc": "forehead, skin",
+    "opp": "Groundedness"
+   },
+   {
+    "nm": "Sad",
+    "v": 2,
+    "seat": "Heart",
+    "addr": "Cardiac plexus",
+    "loc": "centre chest",
+    "opp": "Joy"
+   },
+   {
+    "nm": "Surprise",
+    "v": 0.7,
+    "seat": "Heart",
+    "addr": "Upper chest and back",
+    "loc": "upper torso",
+    "opp": "Readiness"
+   },
+   {
+    "nm": "Anticipation",
+    "v": 2,
+    "seat": "Solar",
+    "addr": "Below the heart",
+    "loc": "lower sternum",
+    "opp": "Presence"
+   }
+  ],
+  "seats": [
+   {
+    "max": 3.610610839036754,
+    "k": "crown",
+    "n": "Crown",
+    "sk": "Sahasrara",
+    "nv": "Cranial plexus",
+    "seat": "the top of the head",
+    "src": 26,
+    "hot": 0,
+    "tot": 21,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Crown"
+   },
+   {
+    "max": 0.5497979621901535,
+    "k": "eye",
+    "n": "Brow",
+    "sk": "Ajna",
+    "nv": "Cavernous plexus",
+    "seat": "between the eyebrows",
+    "src": 90,
+    "hot": 0,
+    "tot": 12,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "3rd Eye"
+   },
+   {
+    "max": 2.0616960106956306,
+    "k": "throat",
+    "n": "Throat",
+    "sk": "Vishuddha",
+    "nv": "Pharyngeal plexus",
+    "seat": "the suprasternal notch",
+    "src": 188,
+    "hot": 0,
+    "tot": 12,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Throat"
+   },
+   {
+    "max": 2.132278528457308,
+    "k": "heart",
+    "n": "Heart",
+    "sk": "Anahata",
+    "nv": "Cardiac plexus",
+    "seat": "mid sternum",
+    "src": 276,
+    "hot": 0,
+    "tot": 15,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Heart"
+   },
+   {
+    "max": 2.0621772398264064,
+    "k": "solar",
+    "n": "Solar",
+    "sk": "Manipura",
+    "nv": "Celiac plexus",
+    "seat": "below the ribs, above the navel",
+    "src": 372,
+    "hot": 0,
+    "tot": 16,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Solar"
+   },
+   {
+    "max": 2.1179859059333266,
+    "k": "sacral",
+    "n": "Sacral",
+    "sk": "Svadhisthana",
+    "nv": "Hypogastric plexus",
+    "seat": "below the navel",
+    "src": 438,
+    "hot": 0,
+    "tot": 16,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Sacral"
+   },
+   {
+    "max": 4.035963802080689,
+    "k": "root",
+    "n": "Root",
+    "sk": "Muladhara",
+    "nv": "Lumbar plexus",
+    "seat": "the base of the spine",
+    "src": 502,
+    "hot": 2,
+    "tot": 16,
+    "load": 0.05,
+    "pass": 0.932,
+    "held": false,
+    "mean": 4.04,
+    "band": "Root"
+   }
+  ],
+  "top": [
+   {
+    "i": 2,
+    "k": "Shame",
+    "b": "Root",
+    "n": "Pudendal Nerve",
+    "a": "Worth, embodiment",
+    "d": "Self-rejection",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 4.04
+   },
+   {
+    "i": 3,
+    "k": "Guilt",
+    "b": "Root",
+    "n": "Inferior Hypogastric Plexus",
+    "a": "Responsibility",
+    "d": "Overcompensation",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 4.04
+   },
+   {
+    "i": 107,
+    "k": "Self-Exclusion",
+    "b": "Crown",
+    "n": "Superior Sagittal Sinus",
+    "a": "Belonging",
+    "d": "Disconnection",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 3.61
+   },
+   {
+    "i": 93,
+    "k": "False Humility",
+    "b": "Crown",
+    "n": "Frontal Lobe",
+    "a": "Disguise",
+    "d": "Manipulation",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 2.3
+   },
+   {
+    "i": 94,
+    "k": "Seeking Validation",
+    "b": "Crown",
+    "n": "Cerebral Cortex",
+    "a": "Ego",
+    "d": "Worship addiction",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 2.3
+   },
+   {
+    "i": 51,
+    "k": "Self-Judgment (Heart)",
+    "b": "Heart",
+    "n": "Vagus Nerve",
+    "a": "Grace",
+    "d": "Harshness",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 2.13
+   },
+   {
+    "i": 31,
+    "k": "Need For Approval",
+    "b": "Sacral",
+    "n": "Iliac Branches",
+    "a": "Identity in others",
+    "d": "Conformity",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 2.12
+   },
+   {
+    "i": 46,
+    "k": "Self-Judgment (Solar)",
+    "b": "Solar",
+    "n": "Epigastric Branches",
+    "a": "Inner war",
+    "d": "Invalidation",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 2.06
+   },
+   {
+    "i": 65,
+    "k": "Self-Silencing",
+    "b": "Throat",
+    "n": "Vagus Nerve",
+    "a": "Voice",
+    "d": "Withholding",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 2.06
+   },
+   {
+    "i": 66,
+    "k": "People Pleasing",
+    "b": "Throat",
+    "n": "Superior Laryngeal Nerve",
+    "a": "Approval",
+    "d": "Inauthenticity",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 2.06
+   },
+   {
+    "i": 69,
+    "k": "Comparison",
+    "b": "Throat",
+    "n": "Accessory Nerve",
+    "a": "Voice Identity",
+    "d": "Envy",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 2.06
+   },
+   {
+    "i": 12,
+    "k": "Compulsion",
+    "b": "Root",
+    "n": "Pelvic Floor Nerves",
+    "a": "Safety rituals",
+    "d": "Fixation",
+    "c": "Fear",
+    "cf": "Anticipation",
+    "sq": 1.22
+   },
+   {
+    "i": 9,
+    "k": "Possession",
+    "b": "Root",
+    "n": "Gluteal Nerve",
+    "a": "Attachment",
+    "d": "Control of objects",
+    "c": "Shock",
+    "cf": "Shock",
+    "sq": 0.87
+   },
+   {
+    "i": 29,
+    "k": "Obsession",
+    "b": "Sacral",
+    "n": "Pelvic Ganglia",
+    "a": "Focus",
+    "d": "Fixation",
+    "c": "Fear",
+    "cf": "Anticipation",
+    "sq": 0.63
+   },
+   {
+    "i": 58,
+    "k": "Expectation",
+    "b": "Heart",
+    "n": "Pulmonary Nerve Plexus",
+    "a": "Outcome",
+    "d": "Contractual love",
+    "c": "Fear",
+    "cf": "Anticipation",
+    "sq": 0.57
+   },
+   {
+    "i": 45,
+    "k": "Anxiety",
+    "b": "Solar",
+    "n": "Adrenal Medulla",
+    "a": "Control of outcomes",
+    "d": "Future fear",
+    "c": "Fear",
+    "cf": "Anticipation",
+    "sq": 0.55
+   },
+   {
+    "i": 79,
+    "k": "Hypervigilance",
+    "b": "3rd Eye",
+    "n": "Optic Chiasm",
+    "a": "Control",
+    "d": "Overthinking",
+    "c": "Fear",
+    "cf": "Anticipation",
+    "sq": 0.55
+   },
+   {
+    "i": 21,
+    "k": "Co-Dependency",
+    "b": "Sacral",
+    "n": "Pelvic Splanchnic Nerves",
+    "a": "Neediness",
+    "d": "Self-abandonment",
+    "c": "Disgust",
+    "cf": "Disgust",
+    "sq": 0.41
+   },
+   {
+    "i": 32,
+    "k": "Excess Emotion",
+    "b": "Sacral",
+    "n": "Urogenital Nerve",
+    "a": "Drama",
+    "d": "Flooding",
+    "c": "Shock",
+    "cf": "Shock",
+    "sq": 0.4
+   },
+   {
+    "i": 81,
+    "k": "Overanalysis",
+    "b": "3rd Eye",
+    "n": "Trigeminal Nerve",
+    "a": "Clarity",
+    "d": "Paralysis",
+    "c": "Shock",
+    "cf": "Shock",
+    "sq": 0.39
+   },
+   {
+    "i": 71,
+    "k": "Stage Performing",
+    "b": "Throat",
+    "n": "Laryngeal Plexus",
+    "a": "Image",
+    "d": "Persona",
+    "c": "Shock",
+    "cf": "Shock",
+    "sq": 0.39
+   },
+   {
+    "i": 73,
+    "k": "Manic Expression",
+    "b": "Throat",
+    "n": "Spinal Accessory Nerve",
+    "a": "Over-talking",
+    "d": "Energy discharge",
+    "c": "Shock",
+    "cf": "Shock",
+    "sq": 0.39
+   },
+   {
+    "i": 74,
+    "k": "Talking To Avoid Feeling",
+    "b": "Throat",
+    "n": "Subclavian Nerve",
+    "a": "Presence",
+    "d": "Avoidance",
+    "c": "Shock",
+    "cf": "Shock",
+    "sq": 0.39
+   },
+   {
+    "i": 15,
+    "k": "Panic",
+    "b": "Root",
+    "n": "Lumbar Sympathetic Chain",
+    "a": "Reaction",
+    "d": "Unconsciousness",
+    "c": "Fear",
+    "cf": "Surprise",
+    "sq": 0.38
+   }
+  ],
+  "carrying": 2,
+  "hotN": 0,
+  "shut": [],
+  "sp": {
+   "sun": "Aries",
+   "moon": "Leo",
+   "rising": "Gemini",
+   "celem": "Earth",
+   "chinese": "Pig",
+   "lp": 9,
+   "hd": "5/1",
+   "gk": "42.5",
+   "root": "Engine",
+   "mode": "initiates",
+   "lpMean": "completes"
+  },
+  "runs": {
+   "sun": "starts before it is ready and finds out by moving",
+   "moon": "needs the work to be seen or it stops feeling real",
+   "rising": "takes in more channels than it closes",
+   "ch": "gives more than the exchange required",
+   "lp": "completes what others abandoned",
+   "glyph": {
+    "sun": "♈",
+    "moon": "♌",
+    "rising": "♊"
+   }
+  },
+  "agree": [
+   "birth mode cardinal matches a field that is expanding"
+  ],
+  "differ": [
+   "birth element points Engine, your domain runs Architect",
+   "life path 9 reads Magician, you run Warrior",
+   "design line 1 against a field that is expanding"
+  ],
+  "lensW": {
+   "t": "Western",
+   "a": "Architect",
+   "b": "Earth, fixed. Builds and holds.",
+   "c": "root domain as element"
+  },
+  "lensE": {
+   "t": "Eastern",
+   "a": "Throat",
+   "b": "Vishuddha, ether, HAM",
+   "c": "the seat carrying the most"
+  },
+  "lensD": {
+   "t": "Design",
+   "a": "Warrior",
+   "b": "defined at the throat, initiates, authority at the solar plexus",
+   "c": "archetype and polarity"
+  },
+  "lensG": {
+   "t": "Gene keys",
+   "a": "Shame",
+   "b": "Shame to Worth to Worth as sovereignty",
+   "c": "shadow, gift, siddhi"
+  },
+  "arch": "Warrior",
+  "ig": 9.9,
+  "heavyAxis": "Shame",
+  "tierCol": null
+ },
+ "James": {
+  "archTop": [
+   {
+    "nm": "Sage",
+    "v": "reads the situation",
+    "a": 1
+   },
+   {
+    "nm": "Ruler",
+    "v": "orders the field",
+    "a": 0.79
+   },
+   {
+    "nm": "Warrior",
+    "v": "moves on the threat",
+    "a": 0.68
+   }
+  ],
+  "rit": {
+   "how": ""
+  },
+  "next": {
+   "nm": "Entry",
+   "left": 1
+  },
+  "tierObj": {
+   "at": 41,
+   "nm": "Oscillating",
+   "state": "Searching",
+   "soma": "Taking it all in and understanding it, and still stuck in your head.",
+   "def": "Fifty is the median, the middle of the line. The field crosses it both ways, above it some days and below it on others.",
+   "energy": "The day decides. What is running that morning sets the range.",
+   "toward": "Even. Consistency rather than intensity. The swing narrows before the number rises."
+  },
+  "nm": "James",
+  "role": "C-suite, third turnaround · ICP",
+  "says": "I make the call and I sleep fine. People find that cold. It is what they hired.",
+  "tier": "Oscillating",
+  "unread": false,
+  "CQ": 42.3,
+  "DQ": 26.8,
+  "X": 0.15,
+  "Y": 0.253,
+  "Z": 0.204,
+  "steer": "withheld",
+  "will": 0.176,
+  "drag": 2.6,
+  "EX": 37.2,
+  "darkB": "Sacral",
+  "root": "Architect",
+  "rootsIn": [
+   "Architect"
+  ],
+  "outMean": 6,
+  "inMean": 5.8,
+  "lean": 0.02,
+  "read": true,
+  "charge": [
+   {
+    "nm": "Fear",
+    "v": 6,
+    "seat": "Root",
+    "addr": "Lumbar plexus",
+    "loc": "lower back, gut",
+    "opp": "Trust"
+   },
+   {
+    "nm": "Anger",
+    "v": 8,
+    "seat": "Solar",
+    "addr": "Celiac plexus",
+    "loc": "upper abdomen",
+    "opp": "Equanimity"
+   },
+   {
+    "nm": "Shame",
+    "v": 7,
+    "seat": "Sacral",
+    "addr": "Pudendal plexus",
+    "loc": "pelvic floor",
+    "opp": "Worth"
+   },
+   {
+    "nm": "Disgust",
+    "v": 7,
+    "seat": "Sacral",
+    "addr": "Sacral and dermis",
+    "loc": "lower abdomen, skin",
+    "opp": "Acceptance"
+   },
+   {
+    "nm": "Apathy",
+    "v": 5,
+    "seat": "Throat",
+    "addr": "Shoulder girdle and throat",
+    "loc": "base of neck",
+    "opp": "Vitality"
+   },
+   {
+    "nm": "Shock",
+    "v": 7,
+    "seat": "3rd Eye",
+    "addr": "Prefrontal and dermis",
+    "loc": "forehead, skin",
+    "opp": "Groundedness"
+   },
+   {
+    "nm": "Sad",
+    "v": 4,
+    "seat": "Heart",
+    "addr": "Cardiac plexus",
+    "loc": "centre chest",
+    "opp": "Joy"
+   },
+   {
+    "nm": "Surprise",
+    "v": 4,
+    "seat": "Heart",
+    "addr": "Upper chest and back",
+    "loc": "upper torso",
+    "opp": "Readiness"
+   },
+   {
+    "nm": "Anticipation",
+    "v": 5,
+    "seat": "Solar",
+    "addr": "Below the heart",
+    "loc": "lower sternum",
+    "opp": "Presence"
+   }
+  ],
+  "seats": [
+   {
+    "max": 3.705959984692534,
+    "k": "crown",
+    "n": "Crown",
+    "sk": "Sahasrara",
+    "nv": "Cranial plexus",
+    "seat": "the top of the head",
+    "src": 26,
+    "hot": 0,
+    "tot": 21,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Crown"
+   },
+   {
+    "max": 2.7177457433394303,
+    "k": "eye",
+    "n": "Brow",
+    "sk": "Ajna",
+    "nv": "Cavernous plexus",
+    "seat": "between the eyebrows",
+    "src": 90,
+    "hot": 0,
+    "tot": 12,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "3rd Eye"
+   },
+   {
+    "max": 5.427274428801613,
+    "k": "throat",
+    "n": "Throat",
+    "sk": "Vishuddha",
+    "nv": "Pharyngeal plexus",
+    "seat": "the suprasternal notch",
+    "src": 188,
+    "hot": 3,
+    "tot": 12,
+    "load": 0.124,
+    "pass": 0.832,
+    "held": false,
+    "mean": 4.98,
+    "band": "Throat"
+   },
+   {
+    "max": 6.321945895431075,
+    "k": "heart",
+    "n": "Heart",
+    "sk": "Anahata",
+    "nv": "Cardiac plexus",
+    "seat": "mid sternum",
+    "src": 276,
+    "hot": 4,
+    "tot": 15,
+    "load": 0.148,
+    "pass": 0.8,
+    "held": false,
+    "mean": 5.56,
+    "band": "Heart"
+   },
+   {
+    "max": 3.1975724805095886,
+    "k": "solar",
+    "n": "Solar",
+    "sk": "Manipura",
+    "nv": "Celiac plexus",
+    "seat": "below the ribs, above the navel",
+    "src": 372,
+    "hot": 0,
+    "tot": 16,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Solar"
+   },
+   {
+    "max": 5.758875731681308,
+    "k": "sacral",
+    "n": "Sacral",
+    "sk": "Svadhisthana",
+    "nv": "Hypogastric plexus",
+    "seat": "below the navel",
+    "src": 438,
+    "hot": 8,
+    "tot": 16,
+    "load": 0.255,
+    "pass": 0.656,
+    "held": true,
+    "mean": 5.1,
+    "band": "Sacral"
+   },
+   {
+    "max": 5.2988,
+    "k": "root",
+    "n": "Root",
+    "sk": "Muladhara",
+    "nv": "Lumbar plexus",
+    "seat": "the base of the spine",
+    "src": 502,
+    "hot": 3,
+    "tot": 16,
+    "load": 0.087,
+    "pass": 0.882,
+    "held": false,
+    "mean": 4.65,
+    "band": "Root"
+   }
+  ],
+  "top": [
+   {
+    "i": 59,
+    "k": "Blame",
+    "b": "Heart",
+    "n": "Thoracic Ganglia",
+    "a": "Responsibility",
+    "d": "Externalization",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 6.32
+   },
+   {
+    "i": 19,
+    "k": "Envy",
+    "b": "Sacral",
+    "n": "Internal Pudendal Nerve",
+    "a": "Lack",
+    "d": "Hatred of others' joy",
+    "c": "Resentment",
+    "cf": "Anger",
+    "sq": 5.76
+   },
+   {
+    "i": 20,
+    "k": "Jealousy",
+    "b": "Sacral",
+    "n": "Obturator Nerve",
+    "a": "Possessiveness",
+    "d": "Paranoia",
+    "c": "Resentment",
+    "cf": "Anger",
+    "sq": 5.76
+   },
+   {
+    "i": 60,
+    "k": "False Love",
+    "b": "Heart",
+    "n": "Anterior Thoracic Roots",
+    "a": "Image",
+    "d": "Projection",
+    "c": "Disgust",
+    "cf": "Disgust",
+    "sq": 5.53
+   },
+   {
+    "i": 63,
+    "k": "Need To Be Needed",
+    "b": "Heart",
+    "n": "Coronary Plexus",
+    "a": "Identity",
+    "d": "Validation",
+    "c": "Disgust",
+    "cf": "Disgust",
+    "sq": 5.53
+   },
+   {
+    "i": 68,
+    "k": "Interrupting",
+    "b": "Throat",
+    "n": "Pharyngeal Nerve",
+    "a": "Listening",
+    "d": "Imposition",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 5.43
+   },
+   {
+    "i": 14,
+    "k": "Escapism",
+    "b": "Root",
+    "n": "Sciatic Nerve",
+    "a": "Facing pain",
+    "d": "Running",
+    "c": "Joy",
+    "cf": "Apathy",
+    "sq": 5.3
+   },
+   {
+    "i": 17,
+    "k": "Addiction",
+    "b": "Sacral",
+    "n": "Sacral Plexus",
+    "a": "Craving",
+    "d": "Obsession",
+    "c": "Joy",
+    "cf": "Apathy",
+    "sq": 5.3
+   },
+   {
+    "i": 18,
+    "k": "Lust",
+    "b": "Sacral",
+    "n": "Genitofemoral Nerve",
+    "a": "Desire",
+    "d": "Objectification",
+    "c": "Joy",
+    "cf": "Apathy",
+    "sq": 5.3
+   },
+   {
+    "i": 21,
+    "k": "Co-Dependency",
+    "b": "Sacral",
+    "n": "Pelvic Splanchnic Nerves",
+    "a": "Neediness",
+    "d": "Self-abandonment",
+    "c": "Disgust",
+    "cf": "Disgust",
+    "sq": 5.04
+   },
+   {
+    "i": 57,
+    "k": "Manipulative Kindness",
+    "b": "Heart",
+    "n": "Phrenic Nerve",
+    "a": "Motive",
+    "d": "Transactional giving",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 4.86
+   },
+   {
+    "i": 64,
+    "k": "Deceit",
+    "b": "Throat",
+    "n": "Cervical Plexus",
+    "a": "Honesty",
+    "d": "Manipulation",
+    "c": "Disgust",
+    "cf": "Disgust",
+    "sq": 4.75
+   },
+   {
+    "i": 67,
+    "k": "Lying",
+    "b": "Throat",
+    "n": "Recurrent Laryngeal Nerve",
+    "a": "Integrity",
+    "d": "Protection",
+    "c": "Disgust",
+    "cf": "Disgust",
+    "sq": 4.75
+   },
+   {
+    "i": 22,
+    "k": "Shame Of Desire",
+    "b": "Sacral",
+    "n": "Hypogastric Plexus",
+    "a": "Repression",
+    "d": "Suppression",
+    "c": "Joy",
+    "cf": "Apathy",
+    "sq": 4.68
+   },
+   {
+    "i": 23,
+    "k": "Hypersexuality",
+    "b": "Sacral",
+    "n": "Pudendal Plexus",
+    "a": "Validation",
+    "d": "Dissociation",
+    "c": "Joy",
+    "cf": "Apathy",
+    "sq": 4.68
+   },
+   {
+    "i": 7,
+    "k": "Scarcity",
+    "b": "Root",
+    "n": "Iliac Nerve Branch",
+    "a": "Resources",
+    "d": "Hoarding",
+    "c": "Fear",
+    "cf": "Fear",
+    "sq": 4.32
+   },
+   {
+    "i": 11,
+    "k": "Resistance",
+    "b": "Root",
+    "n": "Perineal Branch",
+    "a": "Change",
+    "d": "Holding on",
+    "c": "Fear",
+    "cf": "Fear",
+    "sq": 4.32
+   },
+   {
+    "i": 25,
+    "k": "Manipulation Through Emotion",
+    "b": "Sacral",
+    "n": "Uterovaginal Plexus",
+    "a": "Control",
+    "d": "Emotional blackmail",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 4.31
+   },
+   {
+    "i": 58,
+    "k": "Expectation",
+    "b": "Heart",
+    "n": "Pulmonary Nerve Plexus",
+    "a": "Outcome",
+    "d": "Contractual love",
+    "c": "Fear",
+    "cf": "Anticipation",
+    "sq": 3.95
+   },
+   {
+    "i": 72,
+    "k": "Speaking To Be Right",
+    "b": "Throat",
+    "n": "Cervical Ganglia",
+    "a": "Ego",
+    "d": "Righteousness",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 3.9
+   },
+   {
+    "i": 105,
+    "k": "Denial Of Light",
+    "b": "Crown",
+    "n": "Epithalamus",
+    "a": "Revelation",
+    "d": "Avoidance",
+    "c": "Resentment",
+    "cf": "Anger",
+    "sq": 3.71
+   },
+   {
+    "i": 12,
+    "k": "Compulsion",
+    "b": "Root",
+    "n": "Pelvic Floor Nerves",
+    "a": "Safety rituals",
+    "d": "Fixation",
+    "c": "Fear",
+    "cf": "Anticipation",
+    "sq": 3.6
+   },
+   {
+    "i": 49,
+    "k": "Hatred",
+    "b": "Heart",
+    "n": "Cardiac Plexus",
+    "a": "Forgiveness",
+    "d": "Vengeance",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 3.56
+   },
+   {
+    "i": 50,
+    "k": "Resentment (Heart)",
+    "b": "Heart",
+    "n": "Thoracic Nerves",
+    "a": "Holding pain",
+    "d": "Withholding love",
+    "c": "Resentment",
+    "cf": "Anger",
+    "sq": 3.56
+   }
+  ],
+  "carrying": 18,
+  "hotN": 10,
+  "shut": [
+   {
+    "nm": "Transparency",
+    "b": "Throat"
+   },
+   {
+    "nm": "Unity",
+    "b": "Crown"
+   },
+   {
+    "nm": "Compassion",
+    "b": "Heart"
+   },
+   {
+    "nm": "Forgiveness",
+    "b": "Heart"
+   }
+  ],
+  "sp": {
+   "sun": "Libra",
+   "moon": "Taurus",
+   "rising": "Pisces",
+   "celem": "Earth",
+   "chinese": "Rooster",
+   "lp": 7,
+   "hd": "5/2",
+   "gk": "46.5",
+   "root": "Witness",
+   "mode": "initiates",
+   "lpMean": "looks"
+  },
+  "runs": {
+   "sun": "waits for the balance point and pays for the wait",
+   "moon": "holds position until the thing is actually built",
+   "rising": "dissolves the boundary and absorbs what is there",
+   "ch": "names the thing out loud",
+   "lp": "looks at it until it makes sense",
+   "glyph": {
+    "sun": "♎",
+    "moon": "♉",
+    "rising": "♓"
+   }
+  },
+  "agree": [
+   "life path 7 and your first archetype both read Sage"
+  ],
+  "differ": [
+   "birth element points Witness, your domain runs Architect",
+   "birth mode cardinal against a field that is contracting",
+   "design line 2 against a field that is contracting"
+  ],
+  "lensW": {
+   "t": "Western",
+   "a": "Architect",
+   "b": "Earth, fixed. Builds and holds.",
+   "c": "root domain as element"
+  },
+  "lensE": {
+   "t": "Eastern",
+   "a": "Sacral",
+   "b": "Svadhisthana, water, VAM",
+   "c": "the seat carrying the most"
+  },
+  "lensD": {
+   "t": "Design",
+   "a": "Sage",
+   "b": "defined at the sacral, responds, authority at the solar plexus",
+   "c": "archetype and polarity"
+  },
+  "lensG": {
+   "t": "Gene keys",
+   "a": "Blame",
+   "b": "Anger to Equanimity to Equanimity as mercy",
+   "c": "shadow, gift, siddhi"
+  },
+  "arch": "Sage",
+  "ig": 4.2,
+  "heavyAxis": "Anger",
+  "tierCol": null
+ },
+ "Ana": {
+  "archTop": [
+   {
+    "nm": "Magician",
+    "v": "changes the conditions",
+    "a": 1
+   },
+   {
+    "nm": "Rebel",
+    "v": "refuses the frame",
+    "a": 0.8
+   },
+   {
+    "nm": "Creator",
+    "v": "makes the thing",
+    "a": 0.7
+   }
+  ],
+  "rit": {
+   "how": ""
+  },
+  "next": {
+   "nm": "Entry",
+   "left": 1
+  },
+  "tierObj": {
+   "at": 31,
+   "nm": "Incoherent",
+   "state": "Frustrated",
+   "soma": "Caught between the weight in your body and the odd moment of seeing clearly.",
+   "def": "The field costs more than it builds. Charge is held at more addresses than are clearing.",
+   "energy": "Effort goes in and less comes out. You are working, and the work is going into holding.",
+   "toward": "Oscillating, which starts at 41. Take the heaviest seat first. One address cleared where the load actually sits moves this further than ten cleared anywhere else."
+  },
+  "nm": "Ana",
+  "role": "teacher, one year out",
+  "says": "I am in the middle of something and I cannot see the far side of it.",
+  "tier": "Incoherent",
+  "unread": false,
+  "CQ": 37,
+  "DQ": 37.4,
+  "X": 0.15,
+  "Y": 0.213,
+  "Z": 0.159,
+  "steer": "withheld",
+  "will": 0.132,
+  "drag": 2.6,
+  "EX": 27.1,
+  "darkB": "Solar",
+  "root": "Engine",
+  "rootsIn": [
+   "Engine"
+  ],
+  "outMean": 6.75,
+  "inMean": 8,
+  "lean": -0.08,
+  "read": true,
+  "charge": [
+   {
+    "nm": "Fear",
+    "v": 9,
+    "seat": "Root",
+    "addr": "Lumbar plexus",
+    "loc": "lower back, gut",
+    "opp": "Trust"
+   },
+   {
+    "nm": "Anger",
+    "v": 7,
+    "seat": "Solar",
+    "addr": "Celiac plexus",
+    "loc": "upper abdomen",
+    "opp": "Equanimity"
+   },
+   {
+    "nm": "Shame",
+    "v": 9,
+    "seat": "Sacral",
+    "addr": "Pudendal plexus",
+    "loc": "pelvic floor",
+    "opp": "Worth"
+   },
+   {
+    "nm": "Disgust",
+    "v": 7,
+    "seat": "Sacral",
+    "addr": "Sacral and dermis",
+    "loc": "lower abdomen, skin",
+    "opp": "Acceptance"
+   },
+   {
+    "nm": "Apathy",
+    "v": 5,
+    "seat": "Throat",
+    "addr": "Shoulder girdle and throat",
+    "loc": "base of neck",
+    "opp": "Vitality"
+   },
+   {
+    "nm": "Shock",
+    "v": 8,
+    "seat": "3rd Eye",
+    "addr": "Prefrontal and dermis",
+    "loc": "forehead, skin",
+    "opp": "Groundedness"
+   },
+   {
+    "nm": "Sad",
+    "v": 9,
+    "seat": "Heart",
+    "addr": "Cardiac plexus",
+    "loc": "centre chest",
+    "opp": "Joy"
+   },
+   {
+    "nm": "Surprise",
+    "v": 6,
+    "seat": "Heart",
+    "addr": "Upper chest and back",
+    "loc": "upper torso",
+    "opp": "Readiness"
+   },
+   {
+    "nm": "Anticipation",
+    "v": 7,
+    "seat": "Solar",
+    "addr": "Below the heart",
+    "loc": "lower sternum",
+    "opp": "Presence"
+   }
+  ],
+  "seats": [
+   {
+    "max": 4.405405822061242,
+    "k": "crown",
+    "n": "Crown",
+    "sk": "Sahasrara",
+    "nv": "Cranial plexus",
+    "seat": "the top of the head",
+    "src": 26,
+    "hot": 3,
+    "tot": 21,
+    "load": 0.063,
+    "pass": 0.915,
+    "held": false,
+    "mean": 4.41,
+    "band": "Crown"
+   },
+   {
+    "max": 3.5459073449137173,
+    "k": "eye",
+    "n": "Brow",
+    "sk": "Ajna",
+    "nv": "Cavernous plexus",
+    "seat": "between the eyebrows",
+    "src": 90,
+    "hot": 0,
+    "tot": 12,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "3rd Eye"
+   },
+   {
+    "max": 4.8234324582517,
+    "k": "throat",
+    "n": "Throat",
+    "sk": "Vishuddha",
+    "nv": "Pharyngeal plexus",
+    "seat": "the suprasternal notch",
+    "src": 188,
+    "hot": 3,
+    "tot": 12,
+    "load": 0.121,
+    "pass": 0.837,
+    "held": false,
+    "mean": 4.82,
+    "band": "Throat"
+   },
+   {
+    "max": 9.832680000000002,
+    "k": "heart",
+    "n": "Heart",
+    "sk": "Anahata",
+    "nv": "Cardiac plexus",
+    "seat": "mid sternum",
+    "src": 276,
+    "hot": 8,
+    "tot": 15,
+    "load": 0.347,
+    "pass": 0.531,
+    "held": true,
+    "mean": 6.51,
+    "band": "Heart"
+   },
+   {
+    "max": 8.444052208873076,
+    "k": "solar",
+    "n": "Solar",
+    "sk": "Manipura",
+    "nv": "Celiac plexus",
+    "seat": "below the ribs, above the navel",
+    "src": 372,
+    "hot": 14,
+    "tot": 16,
+    "load": 0.501,
+    "pass": 0.323,
+    "held": true,
+    "mean": 5.73,
+    "band": "Solar"
+   },
+   {
+    "max": 8.09699043079037,
+    "k": "sacral",
+    "n": "Sacral",
+    "sk": "Svadhisthana",
+    "nv": "Hypogastric plexus",
+    "seat": "below the navel",
+    "src": 438,
+    "hot": 11,
+    "tot": 16,
+    "load": 0.401,
+    "pass": 0.459,
+    "held": true,
+    "mean": 5.83,
+    "band": "Sacral"
+   },
+   {
+    "max": 4.603914314342649,
+    "k": "root",
+    "n": "Root",
+    "sk": "Muladhara",
+    "nv": "Lumbar plexus",
+    "seat": "the base of the spine",
+    "src": 502,
+    "hot": 2,
+    "tot": 16,
+    "load": 0.058,
+    "pass": 0.922,
+    "held": false,
+    "mean": 4.6,
+    "band": "Root"
+   }
+  ],
+  "top": [
+   {
+    "i": 51,
+    "k": "Self-Judgment (Heart)",
+    "b": "Heart",
+    "n": "Vagus Nerve",
+    "a": "Grace",
+    "d": "Harshness",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 9.83
+   },
+   {
+    "i": 46,
+    "k": "Self-Judgment (Solar)",
+    "b": "Solar",
+    "n": "Epigastric Branches",
+    "a": "Inner war",
+    "d": "Invalidation",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 8.44
+   },
+   {
+    "i": 31,
+    "k": "Need For Approval",
+    "b": "Sacral",
+    "n": "Iliac Branches",
+    "a": "Identity in others",
+    "d": "Conformity",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 8.1
+   },
+   {
+    "i": 49,
+    "k": "Hatred",
+    "b": "Heart",
+    "n": "Cardiac Plexus",
+    "a": "Forgiveness",
+    "d": "Vengeance",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 7.65
+   },
+   {
+    "i": 50,
+    "k": "Resentment (Heart)",
+    "b": "Heart",
+    "n": "Thoracic Nerves",
+    "a": "Holding pain",
+    "d": "Withholding love",
+    "c": "Resentment",
+    "cf": "Anger",
+    "sq": 7.65
+   },
+   {
+    "i": 25,
+    "k": "Manipulation Through Emotion",
+    "b": "Sacral",
+    "n": "Uterovaginal Plexus",
+    "a": "Control",
+    "d": "Emotional blackmail",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 7.64
+   },
+   {
+    "i": 47,
+    "k": "Need To Win",
+    "b": "Solar",
+    "n": "Vagus-Liver Plexus",
+    "a": "Ego",
+    "d": "Domination",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 7.44
+   },
+   {
+    "i": 48,
+    "k": "Superiority",
+    "b": "Solar",
+    "n": "Hepatic Nerve",
+    "a": "Hierarchy",
+    "d": "Distinction",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 7.44
+   },
+   {
+    "i": 57,
+    "k": "Manipulative Kindness",
+    "b": "Heart",
+    "n": "Phrenic Nerve",
+    "a": "Motive",
+    "d": "Transactional giving",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 6.75
+   },
+   {
+    "i": 43,
+    "k": "Resentment (Solar)",
+    "b": "Solar",
+    "n": "Suprarenal Plexus",
+    "a": "Grudge",
+    "d": "Recycled anger",
+    "c": "Resentment",
+    "cf": "Anger",
+    "sq": 6.57
+   },
+   {
+    "i": 19,
+    "k": "Envy",
+    "b": "Sacral",
+    "n": "Internal Pudendal Nerve",
+    "a": "Lack",
+    "d": "Hatred of others' joy",
+    "c": "Resentment",
+    "cf": "Anger",
+    "sq": 6.47
+   },
+   {
+    "i": 20,
+    "k": "Jealousy",
+    "b": "Sacral",
+    "n": "Obturator Nerve",
+    "a": "Possessiveness",
+    "d": "Paranoia",
+    "c": "Resentment",
+    "cf": "Anger",
+    "sq": 6.47
+   },
+   {
+    "i": 21,
+    "k": "Co-Dependency",
+    "b": "Sacral",
+    "n": "Pelvic Splanchnic Nerves",
+    "a": "Neediness",
+    "d": "Self-abandonment",
+    "c": "Disgust",
+    "cf": "Disgust",
+    "sq": 6.47
+   },
+   {
+    "i": 29,
+    "k": "Obsession",
+    "b": "Sacral",
+    "n": "Pelvic Ganglia",
+    "a": "Focus",
+    "d": "Fixation",
+    "c": "Fear",
+    "cf": "Anticipation",
+    "sq": 5.87
+   },
+   {
+    "i": 33,
+    "k": "Pride",
+    "b": "Solar",
+    "n": "Celiac Plexus",
+    "a": "Self-importance",
+    "d": "Superiority",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 5.66
+   },
+   {
+    "i": 34,
+    "k": "Arrogance",
+    "b": "Solar",
+    "n": "Greater Splanchnic Nerve",
+    "a": "Ego",
+    "d": "Inflated Self",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 5.66
+   },
+   {
+    "i": 35,
+    "k": "Competition",
+    "b": "Solar",
+    "n": "Aortic Plexus",
+    "a": "Comparison",
+    "d": "Division",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 5.66
+   },
+   {
+    "i": 32,
+    "k": "Excess Emotion",
+    "b": "Sacral",
+    "n": "Urogenital Nerve",
+    "a": "Drama",
+    "d": "Flooding",
+    "c": "Shock",
+    "cf": "Shock",
+    "sq": 5.54
+   },
+   {
+    "i": 59,
+    "k": "Blame",
+    "b": "Heart",
+    "n": "Thoracic Ganglia",
+    "a": "Responsibility",
+    "d": "Externalization",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 5.05
+   },
+   {
+    "i": 60,
+    "k": "False Love",
+    "b": "Heart",
+    "n": "Anterior Thoracic Roots",
+    "a": "Image",
+    "d": "Projection",
+    "c": "Disgust",
+    "cf": "Disgust",
+    "sq": 5.05
+   },
+   {
+    "i": 63,
+    "k": "Need To Be Needed",
+    "b": "Heart",
+    "n": "Coronary Plexus",
+    "a": "Identity",
+    "d": "Validation",
+    "c": "Disgust",
+    "cf": "Disgust",
+    "sq": 5.05
+   },
+   {
+    "i": 45,
+    "k": "Anxiety",
+    "b": "Solar",
+    "n": "Adrenal Medulla",
+    "a": "Control of outcomes",
+    "d": "Future fear",
+    "c": "Fear",
+    "cf": "Anticipation",
+    "sq": 5.05
+   },
+   {
+    "i": 52,
+    "k": "Betrayal",
+    "b": "Heart",
+    "n": "Thoracic Plexus",
+    "a": "Trust",
+    "d": "Abandonment",
+    "c": "Shock",
+    "cf": "Surprise",
+    "sq": 5.04
+   },
+   {
+    "i": 26,
+    "k": "Oversensitivity",
+    "b": "Sacral",
+    "n": "Inferior Hypogastric Plexus",
+    "a": "Pain threshold",
+    "d": "Victim reactivity",
+    "c": "Shock",
+    "cf": "Surprise",
+    "sq": 5.03
+   }
+  ],
+  "carrying": 41,
+  "hotN": 24,
+  "shut": [
+   {
+    "nm": "Transparency",
+    "b": "Throat"
+   },
+   {
+    "nm": "Justice",
+    "b": "Throat"
+   },
+   {
+    "nm": "Unity",
+    "b": "Crown"
+   },
+   {
+    "nm": "Awareness",
+    "b": "Crown"
+   },
+   {
+    "nm": "Nature",
+    "b": "Crown"
+   },
+   {
+    "nm": "Presence",
+    "b": "3rd Eye"
+   },
+   {
+    "nm": "Humility",
+    "b": "3rd Eye"
+   },
+   {
+    "nm": "Equanimity",
+    "b": "3rd Eye"
+   },
+   {
+    "nm": "Compassion",
+    "b": "Heart"
+   },
+   {
+    "nm": "Forgiveness",
+    "b": "Heart"
+   },
+   {
+    "nm": "Generosity",
+    "b": "Heart"
+   },
+   {
+    "nm": "Aesthetic Beauty",
+    "b": "Heart"
+   },
+   {
+    "nm": "Duty",
+    "b": "Solar"
+   },
+   {
+    "nm": "Responsibility",
+    "b": "Solar"
+   },
+   {
+    "nm": "Accountability",
+    "b": "Solar"
+   },
+   {
+    "nm": "Temperance",
+    "b": "Sacral"
+   },
+   {
+    "nm": "Detachment",
+    "b": "Sacral"
+   },
+   {
+    "nm": "Non-Harm",
+    "b": "Root"
+   },
+   {
+    "nm": "Patience",
+    "b": "Root"
+   }
+  ],
+  "sp": {
+   "sun": "Taurus",
+   "moon": "Cancer",
+   "rising": "Scorpio",
+   "celem": "Earth",
+   "chinese": "Goat",
+   "lp": 33,
+   "hd": "1/3",
+   "gk": "24.1",
+   "root": "Architect",
+   "mode": "holds",
+   "lpMean": "teaches"
+  },
+  "runs": {
+   "sun": "holds position until the thing is actually built",
+   "moon": "protects first, then decides whether to",
+   "rising": "goes all the way down or does not go",
+   "ch": "yields on the surface, holds underneath",
+   "lp": "teaches by carrying it first",
+   "glyph": {
+    "sun": "♉",
+    "moon": "♋",
+    "rising": "♏"
+   }
+  },
+  "agree": [
+   "birth mode fixed matches a field that is contracting"
+  ],
+  "differ": [
+   "birth element points Architect, your domain runs Engine",
+   "life path 33 reads Sage, you run Magician",
+   "design line 3 against a field that is contracting"
+  ],
+  "lensW": {
+   "t": "Western",
+   "a": "Engine",
+   "b": "Fire, cardinal. Initiates and burns.",
+   "c": "root domain as element"
+  },
+  "lensE": {
+   "t": "Eastern",
+   "a": "Solar",
+   "b": "Manipura, fire, RAM",
+   "c": "the seat carrying the most"
+  },
+  "lensD": {
+   "t": "Design",
+   "a": "Magician",
+   "b": "defined at the solar, responds, authority at the solar plexus",
+   "c": "archetype and polarity"
+  },
+  "lensG": {
+   "t": "Gene keys",
+   "a": "Self-Judgment (Heart)",
+   "b": "Shame to Worth to Worth as sovereignty",
+   "c": "shadow, gift, siddhi"
+  },
+  "arch": "Magician",
+  "ig": 3.7,
+  "heavyAxis": "Fear",
+  "tierCol": null
+ },
+ "Marcus": {
+  "archTop": [
+   {
+    "nm": "Warrior",
+    "v": "moves on the threat",
+    "a": 1
+   },
+   {
+    "nm": "Sage",
+    "v": "reads the situation",
+    "a": 0.99
+   },
+   {
+    "nm": "Rebel",
+    "v": "refuses the frame",
+    "a": 0.65
+   }
+  ],
+  "rit": {
+   "how": ""
+  },
+  "next": {
+   "nm": "Entry",
+   "left": 1
+  },
+  "tierObj": {
+   "at": 61,
+   "nm": "Gaining",
+   "state": "Tuned",
+   "soma": "Finding the places you get stuck and fixing them. Practical, and set on getting it done.",
+   "def": "The field builds more than it spends, and the margin is thin.",
+   "energy": "Forward on most days, and one hard week takes it back.",
+   "toward": "Compounding. Same seat, same address, repeated, until the load there stops returning."
+  },
+  "nm": "Marcus",
+  "role": "creative director · ICP",
+  "says": "I can see what is wrong with anything in four seconds. It has cost me two studios.",
+  "tier": "Gaining",
+  "unread": false,
+  "CQ": 62.1,
+  "DQ": 10.7,
+  "X": 0.421,
+  "Y": 0.77,
+  "Z": 0.623,
+  "steer": "withheld",
+  "will": 0.392,
+  "drag": 1.239,
+  "EX": 62,
+  "darkB": "Throat",
+  "root": "Architect",
+  "rootsIn": [
+   "Architect"
+  ],
+  "outMean": 2.88,
+  "inMean": 1.7,
+  "lean": 0.26,
+  "read": true,
+  "charge": [
+   {
+    "nm": "Fear",
+    "v": 2,
+    "seat": "Root",
+    "addr": "Lumbar plexus",
+    "loc": "lower back, gut",
+    "opp": "Trust"
+   },
+   {
+    "nm": "Anger",
+    "v": 3.5,
+    "seat": "Solar",
+    "addr": "Celiac plexus",
+    "loc": "upper abdomen",
+    "opp": "Equanimity"
+   },
+   {
+    "nm": "Shame",
+    "v": 2,
+    "seat": "Sacral",
+    "addr": "Pudendal plexus",
+    "loc": "pelvic floor",
+    "opp": "Worth"
+   },
+   {
+    "nm": "Disgust",
+    "v": 4,
+    "seat": "Sacral",
+    "addr": "Sacral and dermis",
+    "loc": "lower abdomen, skin",
+    "opp": "Acceptance"
+   },
+   {
+    "nm": "Apathy",
+    "v": 1.5,
+    "seat": "Throat",
+    "addr": "Shoulder girdle and throat",
+    "loc": "base of neck",
+    "opp": "Vitality"
+   },
+   {
+    "nm": "Shock",
+    "v": 1.5,
+    "seat": "3rd Eye",
+    "addr": "Prefrontal and dermis",
+    "loc": "forehead, skin",
+    "opp": "Groundedness"
+   },
+   {
+    "nm": "Sad",
+    "v": 1.5,
+    "seat": "Heart",
+    "addr": "Cardiac plexus",
+    "loc": "centre chest",
+    "opp": "Joy"
+   },
+   {
+    "nm": "Surprise",
+    "v": 1,
+    "seat": "Heart",
+    "addr": "Upper chest and back",
+    "loc": "upper torso",
+    "opp": "Readiness"
+   },
+   {
+    "nm": "Anticipation",
+    "v": 3,
+    "seat": "Solar",
+    "addr": "Below the heart",
+    "loc": "lower sternum",
+    "opp": "Presence"
+   }
+  ],
+  "seats": [
+   {
+    "max": 1.7919648800093302,
+    "k": "crown",
+    "n": "Crown",
+    "sk": "Sahasrara",
+    "nv": "Cranial plexus",
+    "seat": "the top of the head",
+    "src": 26,
+    "hot": 0,
+    "tot": 21,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Crown"
+   },
+   {
+    "max": 1.3069549094089574,
+    "k": "eye",
+    "n": "Brow",
+    "sk": "Ajna",
+    "nv": "Cavernous plexus",
+    "seat": "between the eyebrows",
+    "src": 90,
+    "hot": 0,
+    "tot": 12,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "3rd Eye"
+   },
+   {
+    "max": 2.0742886527698943,
+    "k": "throat",
+    "n": "Throat",
+    "sk": "Vishuddha",
+    "nv": "Pharyngeal plexus",
+    "seat": "the suprasternal notch",
+    "src": 188,
+    "hot": 0,
+    "tot": 12,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Throat"
+   },
+   {
+    "max": 2.436164199356373,
+    "k": "heart",
+    "n": "Heart",
+    "sk": "Anahata",
+    "nv": "Cardiac plexus",
+    "seat": "mid sternum",
+    "src": 276,
+    "hot": 0,
+    "tot": 15,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Heart"
+   },
+   {
+    "max": 1.2627210894527114,
+    "k": "solar",
+    "n": "Solar",
+    "sk": "Manipura",
+    "nv": "Celiac plexus",
+    "seat": "below the ribs, above the navel",
+    "src": 372,
+    "hot": 0,
+    "tot": 16,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Solar"
+   },
+   {
+    "max": 2.505082666460431,
+    "k": "sacral",
+    "n": "Sacral",
+    "sk": "Svadhisthana",
+    "nv": "Hypogastric plexus",
+    "seat": "below the navel",
+    "src": 438,
+    "hot": 0,
+    "tot": 16,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Sacral"
+   },
+   {
+    "max": 1.4624000000000001,
+    "k": "root",
+    "n": "Root",
+    "sk": "Muladhara",
+    "nv": "Lumbar plexus",
+    "seat": "the base of the spine",
+    "src": 502,
+    "hot": 0,
+    "tot": 16,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Root"
+   }
+  ],
+  "top": [
+   {
+    "i": 21,
+    "k": "Co-Dependency",
+    "b": "Sacral",
+    "n": "Pelvic Splanchnic Nerves",
+    "a": "Neediness",
+    "d": "Self-abandonment",
+    "c": "Disgust",
+    "cf": "Disgust",
+    "sq": 2.51
+   },
+   {
+    "i": 60,
+    "k": "False Love",
+    "b": "Heart",
+    "n": "Anterior Thoracic Roots",
+    "a": "Image",
+    "d": "Projection",
+    "c": "Disgust",
+    "cf": "Disgust",
+    "sq": 2.44
+   },
+   {
+    "i": 63,
+    "k": "Need To Be Needed",
+    "b": "Heart",
+    "n": "Coronary Plexus",
+    "a": "Identity",
+    "d": "Validation",
+    "c": "Disgust",
+    "cf": "Disgust",
+    "sq": 2.44
+   },
+   {
+    "i": 19,
+    "k": "Envy",
+    "b": "Sacral",
+    "n": "Internal Pudendal Nerve",
+    "a": "Lack",
+    "d": "Hatred of others' joy",
+    "c": "Resentment",
+    "cf": "Anger",
+    "sq": 2.19
+   },
+   {
+    "i": 20,
+    "k": "Jealousy",
+    "b": "Sacral",
+    "n": "Obturator Nerve",
+    "a": "Possessiveness",
+    "d": "Paranoia",
+    "c": "Resentment",
+    "cf": "Anger",
+    "sq": 2.19
+   },
+   {
+    "i": 59,
+    "k": "Blame",
+    "b": "Heart",
+    "n": "Thoracic Ganglia",
+    "a": "Responsibility",
+    "d": "Externalization",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 2.13
+   },
+   {
+    "i": 64,
+    "k": "Deceit",
+    "b": "Throat",
+    "n": "Cervical Plexus",
+    "a": "Honesty",
+    "d": "Manipulation",
+    "c": "Disgust",
+    "cf": "Disgust",
+    "sq": 2.07
+   },
+   {
+    "i": 67,
+    "k": "Lying",
+    "b": "Throat",
+    "n": "Recurrent Laryngeal Nerve",
+    "a": "Integrity",
+    "d": "Protection",
+    "c": "Disgust",
+    "cf": "Disgust",
+    "sq": 2.07
+   },
+   {
+    "i": 68,
+    "k": "Interrupting",
+    "b": "Throat",
+    "n": "Pharyngeal Nerve",
+    "a": "Listening",
+    "d": "Imposition",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 1.82
+   },
+   {
+    "i": 105,
+    "k": "Denial Of Light",
+    "b": "Crown",
+    "n": "Epithalamus",
+    "a": "Revelation",
+    "d": "Avoidance",
+    "c": "Resentment",
+    "cf": "Anger",
+    "sq": 1.79
+   },
+   {
+    "i": 57,
+    "k": "Manipulative Kindness",
+    "b": "Heart",
+    "n": "Phrenic Nerve",
+    "a": "Motive",
+    "d": "Transactional giving",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 1.72
+   },
+   {
+    "i": 70,
+    "k": "Excuse",
+    "b": "Throat",
+    "n": "Glossopharyngeal Nerve",
+    "a": "Ownership",
+    "d": "Victimization",
+    "c": "Disgust",
+    "cf": "Disgust",
+    "sq": 1.59
+   },
+   {
+    "i": 25,
+    "k": "Manipulation Through Emotion",
+    "b": "Sacral",
+    "n": "Uterovaginal Plexus",
+    "a": "Control",
+    "d": "Emotional blackmail",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 1.59
+   },
+   {
+    "i": 7,
+    "k": "Scarcity",
+    "b": "Root",
+    "n": "Iliac Nerve Branch",
+    "a": "Resources",
+    "d": "Hoarding",
+    "c": "Fear",
+    "cf": "Fear",
+    "sq": 1.46
+   },
+   {
+    "i": 11,
+    "k": "Resistance",
+    "b": "Root",
+    "n": "Perineal Branch",
+    "a": "Change",
+    "d": "Holding on",
+    "c": "Fear",
+    "cf": "Fear",
+    "sq": 1.46
+   },
+   {
+    "i": 95,
+    "k": "Savior Complex",
+    "b": "Crown",
+    "n": "Posterior Cingulate",
+    "a": "Responsibility",
+    "d": "Overreach",
+    "c": "Disgust",
+    "cf": "Disgust",
+    "sq": 1.43
+   },
+   {
+    "i": 97,
+    "k": "Need To Be Special",
+    "b": "Crown",
+    "n": "Anterior Cingulate",
+    "a": "Identity",
+    "d": "Distinction",
+    "c": "Disgust",
+    "cf": "Disgust",
+    "sq": 1.43
+   },
+   {
+    "i": 9,
+    "k": "Possession",
+    "b": "Root",
+    "n": "Gluteal Nerve",
+    "a": "Attachment",
+    "d": "Control of objects",
+    "c": "Shock",
+    "cf": "Shock",
+    "sq": 1.43
+   },
+   {
+    "i": 90,
+    "k": "Spiritual Pride",
+    "b": "Crown",
+    "n": "Pineal-Hypothalamic Axis",
+    "a": "Insight",
+    "d": "Superiority",
+    "c": "Disgust",
+    "cf": "Disgust",
+    "sq": 1.39
+   },
+   {
+    "i": 72,
+    "k": "Speaking To Be Right",
+    "b": "Throat",
+    "n": "Cervical Ganglia",
+    "a": "Ego",
+    "d": "Righteousness",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 1.39
+   },
+   {
+    "i": 99,
+    "k": "Knowing Better Than God",
+    "b": "Crown",
+    "n": "Default Mode Network",
+    "a": "Will",
+    "d": "Arrogance",
+    "c": "Resentment",
+    "cf": "Anger",
+    "sq": 1.39
+   },
+   {
+    "i": 100,
+    "k": "Denial Of Truth",
+    "b": "Crown",
+    "n": "Medial Forebrain Bundle",
+    "a": "Insight",
+    "d": "Resistance",
+    "c": "Resentment",
+    "cf": "Anger",
+    "sq": 1.39
+   },
+   {
+    "i": 102,
+    "k": "Fear Of God",
+    "b": "Crown",
+    "n": "Temporal Lobe",
+    "a": "Love",
+    "d": "Dread",
+    "c": "Resentment",
+    "cf": "Anger",
+    "sq": 1.39
+   },
+   {
+    "i": 103,
+    "k": "Anger At God",
+    "b": "Crown",
+    "n": "Hypothalamus",
+    "a": "Trust",
+    "d": "Rebellion",
+    "c": "Resentment",
+    "cf": "Anger",
+    "sq": 1.39
+   }
+  ],
+  "carrying": 0,
+  "hotN": 0,
+  "shut": [
+   {
+    "nm": "Unity",
+    "b": "Crown"
+   },
+   {
+    "nm": "Compassion",
+    "b": "Heart"
+   },
+   {
+    "nm": "Forgiveness",
+    "b": "Heart"
+   }
+  ],
+  "sp": {
+   "sun": "Leo",
+   "moon": "Virgo",
+   "rising": "Aries",
+   "celem": "Water",
+   "chinese": "Dog",
+   "lp": 5,
+   "hd": "4/6",
+   "gk": "56.4",
+   "root": "Engine",
+   "mode": "holds",
+   "lpMean": "moves"
+  },
+  "runs": {
+   "sun": "needs the work to be seen or it stops feeling real",
+   "moon": "corrects the detail that nobody asked about",
+   "rising": "starts before it is ready and finds out by moving",
+   "ch": "stays loyal past the point of evidence",
+   "lp": "moves before the walls close",
+   "glyph": {
+    "sun": "♌",
+    "moon": "♍",
+    "rising": "♈"
+   }
+  },
+  "agree": [
+   "design line 6 and a field that is expanding point the same way"
+  ],
+  "differ": [
+   "birth element points Engine, your domain runs Architect",
+   "life path 5 reads Explorer, you run Warrior",
+   "birth mode fixed against a field that is expanding"
+  ],
+  "lensW": {
+   "t": "Western",
+   "a": "Architect",
+   "b": "Earth, fixed. Builds and holds.",
+   "c": "root domain as element"
+  },
+  "lensE": {
+   "t": "Eastern",
+   "a": "Throat",
+   "b": "Vishuddha, ether, HAM",
+   "c": "the seat carrying the most"
+  },
+  "lensD": {
+   "t": "Design",
+   "a": "Warrior",
+   "b": "defined at the throat, initiates, authority at the solar plexus",
+   "c": "archetype and polarity"
+  },
+  "lensG": {
+   "t": "Gene keys",
+   "a": "nothing held",
+   "b": "no shadow running",
+   "c": "shadow, gift, siddhi"
+  },
+  "arch": "Warrior",
+  "ig": 6.2,
+  "heavyAxis": "Disgust",
+  "tierCol": null
+ },
+ "Nkem": {
+  "archTop": [
+   {
+    "nm": "Explorer",
+    "v": "goes to the edge",
+    "a": 1
+   },
+   {
+    "nm": "Lover",
+    "v": "closes the distance",
+    "a": 0.89
+   },
+   {
+    "nm": "Caregiver",
+    "v": "attends to the other",
+    "a": 0.82
+   }
+  ],
+  "rit": {
+   "how": ""
+  },
+  "next": {
+   "nm": "Entry",
+   "left": 1
+  },
+  "tierObj": {
+   "at": 11,
+   "nm": "Severe",
+   "state": "Numb",
+   "soma": "Numbing or distracting yourself to get through. The body is starting to shut down.",
+   "def": "Most of the field is carrying. Very little is clear.",
+   "energy": "Ordinary demands read as threats. Capacity is spent before the day starts.",
+   "toward": "Corrupt, and it is reached one address at a time. One seat, one address, one line. Not a programme."
+  },
+  "nm": "Nkem",
+  "role": "paediatric nurse, third year of nights",
+  "says": "I am very good at the job. I have started crying in the car park before the shift, not after.",
+  "tier": "Severe",
+  "unread": false,
+  "CQ": 14.3,
+  "DQ": 42.9,
+  "X": 0.087,
+  "Y": 0.085,
+  "Z": 0.069,
+  "steer": "withheld",
+  "will": 0.02,
+  "drag": 2.6,
+  "EX": 9.5,
+  "darkB": "Throat",
+  "root": "Weaver",
+  "rootsIn": [
+   "Weaver"
+  ],
+  "outMean": 5.73,
+  "inMean": 7.46,
+  "lean": -0.13,
+  "read": true,
+  "charge": [
+   {
+    "nm": "Fear",
+    "v": 7.8,
+    "seat": "Root",
+    "addr": "Lumbar plexus",
+    "loc": "lower back, gut",
+    "opp": "Trust"
+   },
+   {
+    "nm": "Anger",
+    "v": 6.2,
+    "seat": "Solar",
+    "addr": "Celiac plexus",
+    "loc": "upper abdomen",
+    "opp": "Equanimity"
+   },
+   {
+    "nm": "Shame",
+    "v": 8.4,
+    "seat": "Sacral",
+    "addr": "Pudendal plexus",
+    "loc": "pelvic floor",
+    "opp": "Worth"
+   },
+   {
+    "nm": "Disgust",
+    "v": 5.1,
+    "seat": "Sacral",
+    "addr": "Sacral and dermis",
+    "loc": "lower abdomen, skin",
+    "opp": "Acceptance"
+   },
+   {
+    "nm": "Apathy",
+    "v": 7.1,
+    "seat": "Throat",
+    "addr": "Shoulder girdle and throat",
+    "loc": "base of neck",
+    "opp": "Vitality"
+   },
+   {
+    "nm": "Shock",
+    "v": 6,
+    "seat": "3rd Eye",
+    "addr": "Prefrontal and dermis",
+    "loc": "forehead, skin",
+    "opp": "Groundedness"
+   },
+   {
+    "nm": "Sad",
+    "v": 8,
+    "seat": "Heart",
+    "addr": "Cardiac plexus",
+    "loc": "centre chest",
+    "opp": "Joy"
+   },
+   {
+    "nm": "Surprise",
+    "v": 4.2,
+    "seat": "Heart",
+    "addr": "Upper chest and back",
+    "loc": "upper torso",
+    "opp": "Readiness"
+   },
+   {
+    "nm": "Anticipation",
+    "v": 7.4,
+    "seat": "Solar",
+    "addr": "Below the heart",
+    "loc": "lower sternum",
+    "opp": "Presence"
+   }
+  ],
+  "seats": [
+   {
+    "max": 7.974566194925091,
+    "k": "crown",
+    "n": "Crown",
+    "sk": "Sahasrara",
+    "nv": "Cranial plexus",
+    "seat": "the top of the head",
+    "src": 26,
+    "hot": 12,
+    "tot": 21,
+    "load": 0.296,
+    "pass": 0.601,
+    "held": true,
+    "mean": 5.18,
+    "band": "Crown"
+   },
+   {
+    "max": 6.685262101988016,
+    "k": "eye",
+    "n": "Brow",
+    "sk": "Ajna",
+    "nv": "Cavernous plexus",
+    "seat": "between the eyebrows",
+    "src": 90,
+    "hot": 8,
+    "tot": 12,
+    "load": 0.341,
+    "pass": 0.539,
+    "held": true,
+    "mean": 5.12,
+    "band": "3rd Eye"
+   },
+   {
+    "max": 7.199513032910172,
+    "k": "throat",
+    "n": "Throat",
+    "sk": "Vishuddha",
+    "nv": "Pharyngeal plexus",
+    "seat": "the suprasternal notch",
+    "src": 188,
+    "hot": 12,
+    "tot": 12,
+    "load": 0.571,
+    "pass": 0.23,
+    "held": true,
+    "mean": 5.71,
+    "band": "Throat"
+   },
+   {
+    "max": 6.318350117070558,
+    "k": "heart",
+    "n": "Heart",
+    "sk": "Anahata",
+    "nv": "Cardiac plexus",
+    "seat": "mid sternum",
+    "src": 276,
+    "hot": 7,
+    "tot": 15,
+    "load": 0.245,
+    "pass": 0.669,
+    "held": true,
+    "mean": 5.25,
+    "band": "Heart"
+   },
+   {
+    "max": 6.293109851622068,
+    "k": "solar",
+    "n": "Solar",
+    "sk": "Manipura",
+    "nv": "Celiac plexus",
+    "seat": "below the ribs, above the navel",
+    "src": 372,
+    "hot": 13,
+    "tot": 16,
+    "load": 0.413,
+    "pass": 0.442,
+    "held": true,
+    "mean": 5.09,
+    "band": "Solar"
+   },
+   {
+    "max": 7.171483007003772,
+    "k": "sacral",
+    "n": "Sacral",
+    "sk": "Svadhisthana",
+    "nv": "Hypogastric plexus",
+    "seat": "below the navel",
+    "src": 438,
+    "hot": 7,
+    "tot": 16,
+    "load": 0.227,
+    "pass": 0.694,
+    "held": true,
+    "mean": 5.18,
+    "band": "Sacral"
+   },
+   {
+    "max": 4.057458835217893,
+    "k": "root",
+    "n": "Root",
+    "sk": "Muladhara",
+    "nv": "Lumbar plexus",
+    "seat": "the base of the spine",
+    "src": 502,
+    "hot": 4,
+    "tot": 16,
+    "load": 0.101,
+    "pass": 0.864,
+    "held": false,
+    "mean": 4.04,
+    "band": "Root"
+   }
+  ],
+  "top": [
+   {
+    "i": 91,
+    "k": "Nihilism",
+    "b": "Crown",
+    "n": "Parietal Cortex",
+    "a": "Meaning",
+    "d": "Apathy",
+    "c": "Sadness",
+    "cf": "Sad",
+    "sq": 7.97
+   },
+   {
+    "i": 65,
+    "k": "Self-Silencing",
+    "b": "Throat",
+    "n": "Vagus Nerve",
+    "a": "Voice",
+    "d": "Withholding",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 7.2
+   },
+   {
+    "i": 66,
+    "k": "People Pleasing",
+    "b": "Throat",
+    "n": "Superior Laryngeal Nerve",
+    "a": "Approval",
+    "d": "Inauthenticity",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 7.2
+   },
+   {
+    "i": 69,
+    "k": "Comparison",
+    "b": "Throat",
+    "n": "Accessory Nerve",
+    "a": "Voice Identity",
+    "d": "Envy",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 7.2
+   },
+   {
+    "i": 31,
+    "k": "Need For Approval",
+    "b": "Sacral",
+    "n": "Iliac Branches",
+    "a": "Identity in others",
+    "d": "Conformity",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 7.17
+   },
+   {
+    "i": 78,
+    "k": "Distrust",
+    "b": "3rd Eye",
+    "n": "Abducens Nerve",
+    "a": "Faith",
+    "d": "Suspicion",
+    "c": "Fear",
+    "cf": "Fear",
+    "sq": 6.69
+   },
+   {
+    "i": 79,
+    "k": "Hypervigilance",
+    "b": "3rd Eye",
+    "n": "Optic Chiasm",
+    "a": "Control",
+    "d": "Overthinking",
+    "c": "Fear",
+    "cf": "Anticipation",
+    "sq": 6.34
+   },
+   {
+    "i": 61,
+    "k": "Rejection",
+    "b": "Heart",
+    "n": "Vagal Branches",
+    "a": "Inclusion",
+    "d": "Othering",
+    "c": "Sadness",
+    "cf": "Sad",
+    "sq": 6.32
+   },
+   {
+    "i": 62,
+    "k": "Avoidance Of Grief",
+    "b": "Heart",
+    "n": "Great Cardiac Nerve",
+    "a": "Loss",
+    "d": "Suppression",
+    "c": "Joy",
+    "cf": "Sad",
+    "sq": 6.32
+   },
+   {
+    "i": 40,
+    "k": "Perfectionism",
+    "b": "Solar",
+    "n": "Mesenteric Plexus",
+    "a": "Idealism",
+    "d": "Rigidity",
+    "c": "Fear",
+    "cf": "Fear",
+    "sq": 6.29
+   },
+   {
+    "i": 44,
+    "k": "Unworthiness",
+    "b": "Solar",
+    "n": "Inferior Mesenteric Plexus",
+    "a": "Confidence",
+    "d": "Minimization",
+    "c": "Shame",
+    "cf": "Sad",
+    "sq": 6.23
+   },
+   {
+    "i": 30,
+    "k": "Guilt Of Pleasure",
+    "b": "Sacral",
+    "n": "Sacral Outflow",
+    "a": "Joy",
+    "d": "Self-denial",
+    "c": "Joy",
+    "cf": "Apathy",
+    "sq": 6.06
+   },
+   {
+    "i": 72,
+    "k": "Speaking To Be Right",
+    "b": "Throat",
+    "n": "Cervical Ganglia",
+    "a": "Ego",
+    "d": "Righteousness",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 6.02
+   },
+   {
+    "i": 71,
+    "k": "Stage Performing",
+    "b": "Throat",
+    "n": "Laryngeal Plexus",
+    "a": "Image",
+    "d": "Persona",
+    "c": "Shock",
+    "cf": "Shock",
+    "sq": 5.82
+   },
+   {
+    "i": 73,
+    "k": "Manic Expression",
+    "b": "Throat",
+    "n": "Spinal Accessory Nerve",
+    "a": "Over-talking",
+    "d": "Energy discharge",
+    "c": "Shock",
+    "cf": "Shock",
+    "sq": 5.82
+   },
+   {
+    "i": 74,
+    "k": "Talking To Avoid Feeling",
+    "b": "Throat",
+    "n": "Subclavian Nerve",
+    "a": "Presence",
+    "d": "Avoidance",
+    "c": "Shock",
+    "cf": "Shock",
+    "sq": 5.82
+   },
+   {
+    "i": 93,
+    "k": "False Humility",
+    "b": "Crown",
+    "n": "Frontal Lobe",
+    "a": "Disguise",
+    "d": "Manipulation",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 5.61
+   },
+   {
+    "i": 94,
+    "k": "Seeking Validation",
+    "b": "Crown",
+    "n": "Cerebral Cortex",
+    "a": "Ego",
+    "d": "Worship addiction",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 5.61
+   },
+   {
+    "i": 68,
+    "k": "Interrupting",
+    "b": "Throat",
+    "n": "Pharyngeal Nerve",
+    "a": "Listening",
+    "d": "Imposition",
+    "c": "Anger",
+    "cf": "Anger",
+    "sq": 5.31
+   },
+   {
+    "i": 98,
+    "k": "Unworthy Of God",
+    "b": "Crown",
+    "n": "Pineal-Amygdala Axis",
+    "a": "Divinity",
+    "d": "Disbelief",
+    "c": "Resentment",
+    "cf": "Sad",
+    "sq": 5.31
+   },
+   {
+    "i": 101,
+    "k": "Rejection Of Spirit",
+    "b": "Crown",
+    "n": "Posterior Commissure",
+    "a": "Divinity",
+    "d": "Abandonment",
+    "c": "Resentment",
+    "cf": "Sad",
+    "sq": 5.31
+   },
+   {
+    "i": 32,
+    "k": "Excess Emotion",
+    "b": "Sacral",
+    "n": "Urogenital Nerve",
+    "a": "Drama",
+    "d": "Flooding",
+    "c": "Shock",
+    "cf": "Shock",
+    "sq": 5.12
+   },
+   {
+    "i": 83,
+    "k": "Paranoia",
+    "b": "3rd Eye",
+    "n": "Lateral Geniculate",
+    "a": "Fear",
+    "d": "Narrative spinning",
+    "c": "Fear",
+    "cf": "Fear",
+    "sq": 5.1
+   },
+   {
+    "i": 85,
+    "k": "Doubt",
+    "b": "3rd Eye",
+    "n": "Cortical Visual Pathway",
+    "a": "Intuition",
+    "d": "Dismissal",
+    "c": "Fear",
+    "cf": "Fear",
+    "sq": 5.1
+   }
+  ],
+  "carrying": 63,
+  "hotN": 29,
+  "shut": [
+   {
+    "nm": "Truth",
+    "b": "Throat"
+   },
+   {
+    "nm": "Transparency",
+    "b": "Throat"
+   },
+   {
+    "nm": "Justice",
+    "b": "Throat"
+   },
+   {
+    "nm": "Unity",
+    "b": "Crown"
+   },
+   {
+    "nm": "Awareness",
+    "b": "Crown"
+   },
+   {
+    "nm": "Nature",
+    "b": "Crown"
+   },
+   {
+    "nm": "Presence",
+    "b": "3rd Eye"
+   },
+   {
+    "nm": "Humility",
+    "b": "3rd Eye"
+   },
+   {
+    "nm": "Equanimity",
+    "b": "3rd Eye"
+   },
+   {
+    "nm": "Forgiveness",
+    "b": "Heart"
+   },
+   {
+    "nm": "Generosity",
+    "b": "Heart"
+   },
+   {
+    "nm": "Aesthetic Beauty",
+    "b": "Heart"
+   },
+   {
+    "nm": "Courage",
+    "b": "Solar"
+   },
+   {
+    "nm": "Responsibility",
+    "b": "Solar"
+   },
+   {
+    "nm": "Accountability",
+    "b": "Solar"
+   },
+   {
+    "nm": "Temperance",
+    "b": "Sacral"
+   },
+   {
+    "nm": "Detachment",
+    "b": "Sacral"
+   },
+   {
+    "nm": "Patience",
+    "b": "Root"
+   }
+  ],
+  "sp": {
+   "sun": "Virgo",
+   "moon": "Aquarius",
+   "rising": "Pisces",
+   "celem": "Metal",
+   "chinese": "Horse",
+   "lp": 4,
+   "hd": "4/1",
+   "gk": "40.4",
+   "root": "Architect",
+   "mode": "adapts",
+   "lpMean": "builds"
+  },
+  "runs": {
+   "sun": "corrects the detail that nobody asked about",
+   "moon": "stands outside the group to see it",
+   "rising": "dissolves the boundary and absorbs what is there",
+   "ch": "moves to relieve pressure",
+   "lp": "builds a thing that outlasts the builder",
+   "glyph": {
+    "sun": "♍",
+    "moon": "♒",
+    "rising": "♓"
+   }
+  },
+  "agree": [
+   "birth mode mutable matches a field that is contracting",
+   "design line 1 and a field that is contracting point the same way"
+  ],
+  "differ": [
+   "birth element points Architect, your domain runs Weaver",
+   "life path 4 reads Ruler, you run Explorer"
+  ],
+  "lensW": {
+   "t": "Western",
+   "a": "Weaver",
+   "b": "Water, mutable. Joins and dissolves.",
+   "c": "root domain as element"
+  },
+  "lensE": {
+   "t": "Eastern",
+   "a": "Throat",
+   "b": "Vishuddha, ether, HAM",
+   "c": "the seat carrying the most"
+  },
+  "lensD": {
+   "t": "Design",
+   "a": "Explorer",
+   "b": "defined at the throat, responds, authority at the solar plexus",
+   "c": "archetype and polarity"
+  },
+  "lensG": {
+   "t": "Gene keys",
+   "a": "Nihilism",
+   "b": "Sad to Joy to Joy as bliss",
+   "c": "shadow, gift, siddhi"
+  },
+  "arch": "Explorer",
+  "ig": 1.4,
+  "heavyAxis": "Shame",
+  "tierCol": null
+ },
+ "Sofia": {
+  "archTop": [
+   {
+    "nm": "Explorer",
+    "v": "goes to the edge",
+    "a": 1
+   },
+   {
+    "nm": "Lover",
+    "v": "closes the distance",
+    "a": 0.89
+   },
+   {
+    "nm": "Caregiver",
+    "v": "attends to the other",
+    "a": 0.82
+   }
+  ],
+  "rit": {
+   "how": ""
+  },
+  "next": {
+   "nm": "Entry",
+   "left": 1
+  },
+  "tierObj": {
+   "at": 71,
+   "nm": "Compounding",
+   "state": "Aligned",
+   "soma": "A lot moves through you and very little catches.",
+   "def": "Each cleared address makes the next one cheaper. The gains are stacking.",
+   "energy": "Less effort buys more movement than it did a month ago.",
+   "toward": "Embodied. Stop opening addresses. Finish the ones already open."
+  },
+  "nm": "Sofia",
+  "role": "somatic practitioner · ICP",
+  "says": "I hold the room for everyone. I have not been held in four years and I would not know how to ask.",
+  "tier": "Compounding",
+  "unread": false,
+  "CQ": 72.9,
+  "DQ": 3.2,
+  "X": 0.812,
+  "Y": 0.677,
+  "Z": 0.768,
+  "steer": "withheld",
+  "will": 0.566,
+  "drag": 0.775,
+  "EX": 72.8,
+  "darkB": "Throat",
+  "root": "Weaver",
+  "rootsIn": [
+   "Weaver"
+  ],
+  "outMean": 1.25,
+  "inMean": 1.6,
+  "lean": -0.12,
+  "read": true,
+  "charge": [
+   {
+    "nm": "Fear",
+    "v": 1.5,
+    "seat": "Root",
+    "addr": "Lumbar plexus",
+    "loc": "lower back, gut",
+    "opp": "Trust"
+   },
+   {
+    "nm": "Anger",
+    "v": 1,
+    "seat": "Solar",
+    "addr": "Celiac plexus",
+    "loc": "upper abdomen",
+    "opp": "Equanimity"
+   },
+   {
+    "nm": "Shame",
+    "v": 2,
+    "seat": "Sacral",
+    "addr": "Pudendal plexus",
+    "loc": "pelvic floor",
+    "opp": "Worth"
+   },
+   {
+    "nm": "Disgust",
+    "v": 1,
+    "seat": "Sacral",
+    "addr": "Sacral and dermis",
+    "loc": "lower abdomen, skin",
+    "opp": "Acceptance"
+   },
+   {
+    "nm": "Apathy",
+    "v": 1,
+    "seat": "Throat",
+    "addr": "Shoulder girdle and throat",
+    "loc": "base of neck",
+    "opp": "Vitality"
+   },
+   {
+    "nm": "Shock",
+    "v": 1,
+    "seat": "3rd Eye",
+    "addr": "Prefrontal and dermis",
+    "loc": "forehead, skin",
+    "opp": "Groundedness"
+   },
+   {
+    "nm": "Sad",
+    "v": 2.5,
+    "seat": "Heart",
+    "addr": "Cardiac plexus",
+    "loc": "centre chest",
+    "opp": "Joy"
+   },
+   {
+    "nm": "Surprise",
+    "v": 1,
+    "seat": "Heart",
+    "addr": "Upper chest and back",
+    "loc": "upper torso",
+    "opp": "Readiness"
+   },
+   {
+    "nm": "Anticipation",
+    "v": 2,
+    "seat": "Solar",
+    "addr": "Below the heart",
+    "loc": "lower sternum",
+    "opp": "Presence"
+   }
+  ],
+  "seats": [
+   {
+    "max": 0.626651371038422,
+    "k": "crown",
+    "n": "Crown",
+    "sk": "Sahasrara",
+    "nv": "Cranial plexus",
+    "seat": "the top of the head",
+    "src": 26,
+    "hot": 0,
+    "tot": 21,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Crown"
+   },
+   {
+    "max": 1.2023560470217847,
+    "k": "eye",
+    "n": "Brow",
+    "sk": "Ajna",
+    "nv": "Cavernous plexus",
+    "seat": "between the eyebrows",
+    "src": 90,
+    "hot": 0,
+    "tot": 12,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "3rd Eye"
+   },
+   {
+    "max": 1.2023560470217847,
+    "k": "throat",
+    "n": "Throat",
+    "sk": "Vishuddha",
+    "nv": "Pharyngeal plexus",
+    "seat": "the suprasternal notch",
+    "src": 188,
+    "hot": 0,
+    "tot": 12,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Throat"
+   },
+   {
+    "max": 0.8777726238989305,
+    "k": "heart",
+    "n": "Heart",
+    "sk": "Anahata",
+    "nv": "Cardiac plexus",
+    "seat": "mid sternum",
+    "src": 276,
+    "hot": 0,
+    "tot": 15,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Heart"
+   },
+   {
+    "max": 0.8952594138304656,
+    "k": "solar",
+    "n": "Solar",
+    "sk": "Manipura",
+    "nv": "Celiac plexus",
+    "seat": "below the ribs, above the navel",
+    "src": 372,
+    "hot": 0,
+    "tot": 16,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Solar"
+   },
+   {
+    "max": 1.5426763752358665,
+    "k": "sacral",
+    "n": "Sacral",
+    "sk": "Svadhisthana",
+    "nv": "Hypogastric plexus",
+    "seat": "below the navel",
+    "src": 438,
+    "hot": 0,
+    "tot": 16,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Sacral"
+   },
+   {
+    "max": 0.7965573741019151,
+    "k": "root",
+    "n": "Root",
+    "sk": "Muladhara",
+    "nv": "Lumbar plexus",
+    "seat": "the base of the spine",
+    "src": 502,
+    "hot": 0,
+    "tot": 16,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Root"
+   }
+  ],
+  "top": [
+   {
+    "i": 31,
+    "k": "Need For Approval",
+    "b": "Sacral",
+    "n": "Iliac Branches",
+    "a": "Identity in others",
+    "d": "Conformity",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 1.54
+   },
+   {
+    "i": 65,
+    "k": "Self-Silencing",
+    "b": "Throat",
+    "n": "Vagus Nerve",
+    "a": "Voice",
+    "d": "Withholding",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 1.2
+   },
+   {
+    "i": 66,
+    "k": "People Pleasing",
+    "b": "Throat",
+    "n": "Superior Laryngeal Nerve",
+    "a": "Approval",
+    "d": "Inauthenticity",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 1.2
+   },
+   {
+    "i": 69,
+    "k": "Comparison",
+    "b": "Throat",
+    "n": "Accessory Nerve",
+    "a": "Voice Identity",
+    "d": "Envy",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 1.2
+   },
+   {
+    "i": 79,
+    "k": "Hypervigilance",
+    "b": "3rd Eye",
+    "n": "Optic Chiasm",
+    "a": "Control",
+    "d": "Overthinking",
+    "c": "Fear",
+    "cf": "Anticipation",
+    "sq": 1.2
+   },
+   {
+    "i": 29,
+    "k": "Obsession",
+    "b": "Sacral",
+    "n": "Pelvic Ganglia",
+    "a": "Focus",
+    "d": "Fixation",
+    "c": "Fear",
+    "cf": "Anticipation",
+    "sq": 1.13
+   },
+   {
+    "i": 45,
+    "k": "Anxiety",
+    "b": "Solar",
+    "n": "Adrenal Medulla",
+    "a": "Control of outcomes",
+    "d": "Future fear",
+    "c": "Fear",
+    "cf": "Anticipation",
+    "sq": 0.9
+   },
+   {
+    "i": 46,
+    "k": "Self-Judgment (Solar)",
+    "b": "Solar",
+    "n": "Epigastric Branches",
+    "a": "Inner war",
+    "d": "Invalidation",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 0.9
+   },
+   {
+    "i": 58,
+    "k": "Expectation",
+    "b": "Heart",
+    "n": "Pulmonary Nerve Plexus",
+    "a": "Outcome",
+    "d": "Contractual love",
+    "c": "Fear",
+    "cf": "Anticipation",
+    "sq": 0.88
+   },
+   {
+    "i": 12,
+    "k": "Compulsion",
+    "b": "Root",
+    "n": "Pelvic Floor Nerves",
+    "a": "Safety rituals",
+    "d": "Fixation",
+    "c": "Fear",
+    "cf": "Anticipation",
+    "sq": 0.8
+   },
+   {
+    "i": 30,
+    "k": "Guilt Of Pleasure",
+    "b": "Sacral",
+    "n": "Sacral Outflow",
+    "a": "Joy",
+    "d": "Self-denial",
+    "c": "Joy",
+    "cf": "Apathy",
+    "sq": 0.77
+   },
+   {
+    "i": 32,
+    "k": "Excess Emotion",
+    "b": "Sacral",
+    "n": "Urogenital Nerve",
+    "a": "Drama",
+    "d": "Flooding",
+    "c": "Shock",
+    "cf": "Shock",
+    "sq": 0.77
+   },
+   {
+    "i": 26,
+    "k": "Oversensitivity",
+    "b": "Sacral",
+    "n": "Inferior Hypogastric Plexus",
+    "a": "Pain threshold",
+    "d": "Victim reactivity",
+    "c": "Shock",
+    "cf": "Surprise",
+    "sq": 0.73
+   },
+   {
+    "i": 17,
+    "k": "Addiction",
+    "b": "Sacral",
+    "n": "Sacral Plexus",
+    "a": "Craving",
+    "d": "Obsession",
+    "c": "Joy",
+    "cf": "Apathy",
+    "sq": 0.68
+   },
+   {
+    "i": 18,
+    "k": "Lust",
+    "b": "Sacral",
+    "n": "Genitofemoral Nerve",
+    "a": "Desire",
+    "d": "Objectification",
+    "c": "Joy",
+    "cf": "Apathy",
+    "sq": 0.68
+   },
+   {
+    "i": 70,
+    "k": "Excuse",
+    "b": "Throat",
+    "n": "Glossopharyngeal Nerve",
+    "a": "Ownership",
+    "d": "Victimization",
+    "c": "Disgust",
+    "cf": "Disgust",
+    "sq": 0.68
+   },
+   {
+    "i": 71,
+    "k": "Stage Performing",
+    "b": "Throat",
+    "n": "Laryngeal Plexus",
+    "a": "Image",
+    "d": "Persona",
+    "c": "Shock",
+    "cf": "Shock",
+    "sq": 0.68
+   },
+   {
+    "i": 73,
+    "k": "Manic Expression",
+    "b": "Throat",
+    "n": "Spinal Accessory Nerve",
+    "a": "Over-talking",
+    "d": "Energy discharge",
+    "c": "Shock",
+    "cf": "Shock",
+    "sq": 0.68
+   },
+   {
+    "i": 74,
+    "k": "Talking To Avoid Feeling",
+    "b": "Throat",
+    "n": "Subclavian Nerve",
+    "a": "Presence",
+    "d": "Avoidance",
+    "c": "Shock",
+    "cf": "Shock",
+    "sq": 0.68
+   },
+   {
+    "i": 21,
+    "k": "Co-Dependency",
+    "b": "Sacral",
+    "n": "Pelvic Splanchnic Nerves",
+    "a": "Neediness",
+    "d": "Self-abandonment",
+    "c": "Disgust",
+    "cf": "Disgust",
+    "sq": 0.66
+   },
+   {
+    "i": 22,
+    "k": "Shame Of Desire",
+    "b": "Sacral",
+    "n": "Hypogastric Plexus",
+    "a": "Repression",
+    "d": "Suppression",
+    "c": "Joy",
+    "cf": "Apathy",
+    "sq": 0.66
+   },
+   {
+    "i": 23,
+    "k": "Hypersexuality",
+    "b": "Sacral",
+    "n": "Pudendal Plexus",
+    "a": "Validation",
+    "d": "Dissociation",
+    "c": "Joy",
+    "cf": "Apathy",
+    "sq": 0.66
+   },
+   {
+    "i": 51,
+    "k": "Self-Judgment (Heart)",
+    "b": "Heart",
+    "n": "Vagus Nerve",
+    "a": "Grace",
+    "d": "Harshness",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 0.66
+   },
+   {
+    "i": 15,
+    "k": "Panic",
+    "b": "Root",
+    "n": "Lumbar Sympathetic Chain",
+    "a": "Reaction",
+    "d": "Unconsciousness",
+    "c": "Fear",
+    "cf": "Surprise",
+    "sq": 0.65
+   }
+  ],
+  "carrying": 0,
+  "hotN": 0,
+  "shut": [
+   {
+    "nm": "Temperance",
+    "b": "Sacral"
+   },
+   {
+    "nm": "Detachment",
+    "b": "Sacral"
+   }
+  ],
+  "sp": {
+   "sun": "Pisces",
+   "moon": "Capricorn",
+   "rising": "Aquarius",
+   "celem": "Wood",
+   "chinese": "Ox",
+   "lp": 4,
+   "hd": "6/2",
+   "gk": "22.6",
+   "root": "Weaver",
+   "mode": "adapts",
+   "lpMean": "builds"
+  },
+  "runs": {
+   "sun": "dissolves the boundary and absorbs what is there",
+   "moon": "builds the structure and then lives inside it",
+   "rising": "stands outside the group to see it",
+   "ch": "carries the weight without renegotiating",
+   "lp": "builds a thing that outlasts the builder",
+   "glyph": {
+    "sun": "♓",
+    "moon": "♑",
+    "rising": "♒"
+   }
+  },
+  "agree": [
+   "birth element water and your root domain both read Weaver",
+   "design line 2 and a field that is expanding point the same way"
+  ],
+  "differ": [
+   "life path 4 reads Ruler, you run Explorer",
+   "birth mode mutable against a field that is expanding"
+  ],
+  "lensW": {
+   "t": "Western",
+   "a": "Weaver",
+   "b": "Water, mutable. Joins and dissolves.",
+   "c": "root domain as element"
+  },
+  "lensE": {
+   "t": "Eastern",
+   "a": "Throat",
+   "b": "Vishuddha, ether, HAM",
+   "c": "the seat carrying the most"
+  },
+  "lensD": {
+   "t": "Design",
+   "a": "Explorer",
+   "b": "defined at the throat, initiates, authority at the solar plexus",
+   "c": "archetype and polarity"
+  },
+  "lensG": {
+   "t": "Gene keys",
+   "a": "nothing held",
+   "b": "no shadow running",
+   "c": "shadow, gift, siddhi"
+  },
+  "arch": "Explorer",
+  "ig": 7.7,
+  "heavyAxis": "Sad",
+  "tierCol": null
+ },
+ "You": {
+  "archTop": [
+   {
+    "nm": "Warrior",
+    "v": "moves on the threat",
+    "a": 1
+   },
+   {
+    "nm": "Sage",
+    "v": "reads the situation",
+    "a": 0.72
+   },
+   {
+    "nm": "Innocent",
+    "v": "takes it at face value",
+    "a": 0.71
+   }
+  ],
+  "rit": {
+   "how": ""
+  },
+  "next": {
+   "nm": "Entry",
+   "left": 1
+  },
+  "tierObj": null,
+  "nm": "You",
+  "role": "custom",
+  "says": "",
+  "tier": null,
+  "unread": true,
+  "CQ": 0,
+  "DQ": 0,
+  "X": 1,
+  "Y": 0.76,
+  "Z": 0.6,
+  "steer": "forced",
+  "will": 0.36,
+  "drag": 0,
+  "EX": 0,
+  "darkB": "Root",
+  "root": "Architect",
+  "rootsIn": [
+   "Architect"
+  ],
+  "outMean": 0,
+  "inMean": 0,
+  "lean": 0,
+  "read": false,
+  "charge": [
+   {
+    "nm": "Fear",
+    "v": 0,
+    "seat": "Root",
+    "addr": "Lumbar plexus",
+    "loc": "lower back, gut",
+    "opp": "Trust"
+   },
+   {
+    "nm": "Anger",
+    "v": 0,
+    "seat": "Solar",
+    "addr": "Celiac plexus",
+    "loc": "upper abdomen",
+    "opp": "Equanimity"
+   },
+   {
+    "nm": "Shame",
+    "v": 0,
+    "seat": "Sacral",
+    "addr": "Pudendal plexus",
+    "loc": "pelvic floor",
+    "opp": "Worth"
+   },
+   {
+    "nm": "Disgust",
+    "v": 0,
+    "seat": "Sacral",
+    "addr": "Sacral and dermis",
+    "loc": "lower abdomen, skin",
+    "opp": "Acceptance"
+   },
+   {
+    "nm": "Apathy",
+    "v": 0,
+    "seat": "Throat",
+    "addr": "Shoulder girdle and throat",
+    "loc": "base of neck",
+    "opp": "Vitality"
+   },
+   {
+    "nm": "Shock",
+    "v": 0,
+    "seat": "3rd Eye",
+    "addr": "Prefrontal and dermis",
+    "loc": "forehead, skin",
+    "opp": "Groundedness"
+   },
+   {
+    "nm": "Sad",
+    "v": 0,
+    "seat": "Heart",
+    "addr": "Cardiac plexus",
+    "loc": "centre chest",
+    "opp": "Joy"
+   },
+   {
+    "nm": "Surprise",
+    "v": 0,
+    "seat": "Heart",
+    "addr": "Upper chest and back",
+    "loc": "upper torso",
+    "opp": "Readiness"
+   },
+   {
+    "nm": "Anticipation",
+    "v": 0,
+    "seat": "Solar",
+    "addr": "Below the heart",
+    "loc": "lower sternum",
+    "opp": "Presence"
+   }
+  ],
+  "seats": [
+   {
+    "max": 0,
+    "k": "crown",
+    "n": "Crown",
+    "sk": "Sahasrara",
+    "nv": "Cranial plexus",
+    "seat": "the top of the head",
+    "src": 26,
+    "hot": 0,
+    "tot": 21,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Crown"
+   },
+   {
+    "max": 0,
+    "k": "eye",
+    "n": "Brow",
+    "sk": "Ajna",
+    "nv": "Cavernous plexus",
+    "seat": "between the eyebrows",
+    "src": 90,
+    "hot": 0,
+    "tot": 12,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "3rd Eye"
+   },
+   {
+    "max": 0,
+    "k": "throat",
+    "n": "Throat",
+    "sk": "Vishuddha",
+    "nv": "Pharyngeal plexus",
+    "seat": "the suprasternal notch",
+    "src": 188,
+    "hot": 0,
+    "tot": 12,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Throat"
+   },
+   {
+    "max": 0,
+    "k": "heart",
+    "n": "Heart",
+    "sk": "Anahata",
+    "nv": "Cardiac plexus",
+    "seat": "mid sternum",
+    "src": 276,
+    "hot": 0,
+    "tot": 15,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Heart"
+   },
+   {
+    "max": 0,
+    "k": "solar",
+    "n": "Solar",
+    "sk": "Manipura",
+    "nv": "Celiac plexus",
+    "seat": "below the ribs, above the navel",
+    "src": 372,
+    "hot": 0,
+    "tot": 16,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Solar"
+   },
+   {
+    "max": 0,
+    "k": "sacral",
+    "n": "Sacral",
+    "sk": "Svadhisthana",
+    "nv": "Hypogastric plexus",
+    "seat": "below the navel",
+    "src": 438,
+    "hot": 0,
+    "tot": 16,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Sacral"
+   },
+   {
+    "max": 0,
+    "k": "root",
+    "n": "Root",
+    "sk": "Muladhara",
+    "nv": "Lumbar plexus",
+    "seat": "the base of the spine",
+    "src": 502,
+    "hot": 0,
+    "tot": 16,
+    "load": 0,
+    "pass": 1,
+    "held": false,
+    "mean": 0,
+    "band": "Root"
+   }
+  ],
+  "top": [
+   {
+    "i": 1,
+    "k": "Fear",
+    "b": "Root",
+    "n": "Lumbar Plexus",
+    "a": "Instinct, threat",
+    "d": "Avoidance",
+    "c": "Fear",
+    "cf": "Fear",
+    "sq": 0
+   },
+   {
+    "i": 2,
+    "k": "Shame",
+    "b": "Root",
+    "n": "Pudendal Nerve",
+    "a": "Worth, embodiment",
+    "d": "Self-rejection",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 0
+   },
+   {
+    "i": 3,
+    "k": "Guilt",
+    "b": "Root",
+    "n": "Inferior Hypogastric Plexus",
+    "a": "Responsibility",
+    "d": "Overcompensation",
+    "c": "Shame",
+    "cf": "Shame",
+    "sq": 0
+   },
+   {
+    "i": 4,
+    "k": "Control",
+    "b": "Root",
+    "n": "Sacral Nerves",
+    "a": "Safety through force",
+    "d": "Domination",
+    "c": "Fear",
+    "cf": "Fear",
+    "sq": 0
+   },
+   {
+    "i": 5,
+    "k": "Insecurity",
+    "b": "Root",
+    "n": "Pelvic Nerve",
+    "a": "Belonging",
+    "d": "Dependency",
+    "c": "Fear",
+    "cf": "Fear",
+    "sq": 0
+   },
+   {
+    "i": 6,
+    "k": "Victimhood",
+    "b": "Root",
+    "n": "Coccygeal Plexus",
+    "a": "Agency",
+    "d": "Blame",
+    "c": "Sadness",
+    "cf": "Sad",
+    "sq": 0
+   },
+   {
+    "i": 7,
+    "k": "Scarcity",
+    "b": "Root",
+    "n": "Iliac Nerve Branch",
+    "a": "Resources",
+    "d": "Hoarding",
+    "c": "Fear",
+    "cf": "Fear",
+    "sq": 0
+   },
+   {
+    "i": 8,
+    "k": "Root_08_Unnamed",
+    "b": "Root",
+    "n": "Cauda Equina",
+    "a": "Privilege",
+    "d": "Deservingness",
+    "c": null,
+    "cf": null,
+    "sq": 0
+   },
+   {
+    "i": 9,
+    "k": "Possession",
+    "b": "Root",
+    "n": "Gluteal Nerve",
+    "a": "Attachment",
+    "d": "Control of objects",
+    "c": "Shock",
+    "cf": "Shock",
+    "sq": 0
+   },
+   {
+    "i": 10,
+    "k": "Lethargy",
+    "b": "Root",
+    "n": "Obturator Nerve",
+    "a": "Momentum",
+    "d": "Stagnation",
+    "c": "Sadness",
+    "cf": "Sad",
+    "sq": 0
+   },
+   {
+    "i": 11,
+    "k": "Resistance",
+    "b": "Root",
+    "n": "Perineal Branch",
+    "a": "Change",
+    "d": "Holding on",
+    "c": "Fear",
+    "cf": "Fear",
+    "sq": 0
+   },
+   {
+    "i": 12,
+    "k": "Compulsion",
+    "b": "Root",
+    "n": "Pelvic Floor Nerves",
+    "a": "Safety rituals",
+    "d": "Fixation",
+    "c": "Fear",
+    "cf": "Anticipation",
+    "sq": 0
+   },
+   {
+    "i": 13,
+    "k": "Disconnection",
+    "b": "Root",
+    "n": "Sacral Root Ganglia",
+    "a": "Presence",
+    "d": "Numbness",
+    "c": "Sadness",
+    "cf": "Sad",
+    "sq": 0
+   },
+   {
+    "i": 14,
+    "k": "Escapism",
+    "b": "Root",
+    "n": "Sciatic Nerve",
+    "a": "Facing pain",
+    "d": "Running",
+    "c": "Joy",
+    "cf": "Apathy",
+    "sq": 0
+   },
+   {
+    "i": 15,
+    "k": "Panic",
+    "b": "Root",
+    "n": "Lumbar Sympathetic Chain",
+    "a": "Reaction",
+    "d": "Unconsciousness",
+    "c": "Fear",
+    "cf": "Surprise",
+    "sq": 0
+   },
+   {
+    "i": 16,
+    "k": "Collapse",
+    "b": "Root",
+    "n": "Spinal Cord Base",
+    "a": "Structure",
+    "d": "Abandoning Self",
+    "c": "Sadness",
+    "cf": "Sad",
+    "sq": 0
+   },
+   {
+    "i": 17,
+    "k": "Addiction",
+    "b": "Sacral",
+    "n": "Sacral Plexus",
+    "a": "Craving",
+    "d": "Obsession",
+    "c": "Joy",
+    "cf": "Apathy",
+    "sq": 0
+   },
+   {
+    "i": 18,
+    "k": "Lust",
+    "b": "Sacral",
+    "n": "Genitofemoral Nerve",
+    "a": "Desire",
+    "d": "Objectification",
+    "c": "Joy",
+    "cf": "Apathy",
+    "sq": 0
+   },
+   {
+    "i": 19,
+    "k": "Envy",
+    "b": "Sacral",
+    "n": "Internal Pudendal Nerve",
+    "a": "Lack",
+    "d": "Hatred of others' joy",
+    "c": "Resentment",
+    "cf": "Anger",
+    "sq": 0
+   },
+   {
+    "i": 20,
+    "k": "Jealousy",
+    "b": "Sacral",
+    "n": "Obturator Nerve",
+    "a": "Possessiveness",
+    "d": "Paranoia",
+    "c": "Resentment",
+    "cf": "Anger",
+    "sq": 0
+   },
+   {
+    "i": 21,
+    "k": "Co-Dependency",
+    "b": "Sacral",
+    "n": "Pelvic Splanchnic Nerves",
+    "a": "Neediness",
+    "d": "Self-abandonment",
+    "c": "Disgust",
+    "cf": "Disgust",
+    "sq": 0
+   },
+   {
+    "i": 22,
+    "k": "Shame Of Desire",
+    "b": "Sacral",
+    "n": "Hypogastric Plexus",
+    "a": "Repression",
+    "d": "Suppression",
+    "c": "Joy",
+    "cf": "Apathy",
+    "sq": 0
+   },
+   {
+    "i": 23,
+    "k": "Hypersexuality",
+    "b": "Sacral",
+    "n": "Pudendal Plexus",
+    "a": "Validation",
+    "d": "Dissociation",
+    "c": "Joy",
+    "cf": "Apathy",
+    "sq": 0
+   },
+   {
+    "i": 24,
+    "k": "Avoidance Of Pleasure",
+    "b": "Sacral",
+    "n": "Pelvic Nerve",
+    "a": "Sensuality",
+    "d": "Denial of life",
+    "c": "Joy",
+    "cf": "Apathy",
+    "sq": 0
+   }
+  ],
+  "carrying": 0,
+  "hotN": 0,
+  "shut": [],
+  "sp": null,
+  "runs": null,
+  "agree": null,
+  "differ": null,
+  "lensW": {
+   "t": "Western",
+   "a": "Architect",
+   "b": "Earth, fixed. Builds and holds.",
+   "c": "root domain as element"
+  },
+  "lensE": {
+   "t": "Eastern",
+   "a": "Root",
+   "b": "Muladhara, earth, LAM",
+   "c": "the seat carrying the most"
+  },
+  "lensD": {
+   "t": "Design",
+   "a": "Warrior",
+   "b": "defined at the root, authority at the solar plexus",
+   "c": "archetype and polarity"
+  },
+  "lensG": {
+   "t": "Gene keys",
+   "a": "nothing held",
+   "b": "no shadow running",
+   "c": "shadow, gift, siddhi"
+  },
+  "arch": "Warrior",
+  "ig": 6,
+  "heavyAxis": "Fear",
+  "tierCol": null
+ }
+}

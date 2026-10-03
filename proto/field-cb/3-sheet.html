@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=1600">
+<title>Field on a phone, side by side</title>
+<link rel="stylesheet" href="inter.css"><link rel="stylesheet" href="cb.css">
+<script src="cap/cap.js"></script><script src="cb.js"></script>
+<style>body{width:1600px}
+.ph{width:390px;height:1000px;overflow:hidden;position:relative;border-radius:14px;border:1px solid var(--edge)}
+.ph img{width:390px;display:block}
+.ph .fold{position:absolute;left:0;right:0;top:844px;border-top:1px dashed rgba(126,184,212,.8)}
+</style>
+</head><body>
+<div class="sheet">
+ <h1>The phone Field, figures out of the centre</h1>
+ <p class="lede">"For the mobile frames and dial... we just want to get those stats out of that centre area now." As it
+ ships, the phone centre carries the coherence figure and six gate discs with their pills, inside a core
+ <span id="dd"></span> pixels across on the Dial and <span id="fd"></span> on Frames. Both options empty the centre to its two arcs and move every figure under or over the picture. The dashed
+ line is the fold of an 844 pixel tall phone. Each column is cut at 1000 pixels.</p>
+ <div class="band">Frames</div>
+ <div class="row" id="fr"></div>
+ <div class="band">Dial</div>
+ <div class="row" id="di"></div>
+ <p class="prov">Mockup. proto/field-cb/3-mobile.html, shot at 390 by 844. James, example.</p>
+</div>
+<script>
+/* the two cores, read off the captured pictures rather than typed */
+(function(){const t=document.createElement('div');t.style.cssText='position:absolute;left:-9999px';document.body.appendChild(t);
+ ['dial','frames'].forEach(v=>{const M=CB.mount(t,v+'-390');document.getElementById(v==='dial'?'dd':'fd').textContent=Math.round(2*M.R);});
+ t.remove();})();
+const COLS=[['before','As it ships','The figure sits in the core, ringed by six gate discs and six pills.'],
+ ['a','A. One readout under the figure','Coherence and shadow, then the three oppositions, together under the picture. Reads the picture first and the figures second.'],
+ ['b','B. Figures in the key row','Coherence and shadow stay in the row above, where they are today, with SQ gone. The gates go under the picture.']];
+[['fr','frames'],['di','dial']].forEach(([id,v])=>{const row=document.getElementById(id);
+ COLS.forEach(([o,h,t])=>{const c=document.createElement('div');c.className='cell';c.style.setProperty('--w','390px');
+  const src=o==='before'?'cap/page-'+v+'-390.png':'shots/3-'+v+'-'+o+'-390.png';
+  c.innerHTML='<div class="ph"><img src="'+src+'" alt=""><div class="fold"></div></div><h2>'+h+'</h2><p>'+t+'</p>';row.appendChild(c);});});
+window.__ready=true;
+</script>
+</body></html>

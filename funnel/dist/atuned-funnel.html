@@ -1,0 +1,1337 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Atuned</title>
+<meta name="description" content="See what's running you. Atuned listens to how you describe what is happening, shows you the patterns it notices, and lets you decide whether it is right.">
+<!-- tokens.css is generated from the app's own stylesheet by tools/tokens.py.
+     It is linked and not copied, because a palette copied by hand is correct
+     on the day it is copied and wrong afterwards. BUILD-single.sh inlines it
+     for the sendable build. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20fill%3D%22none%22%20stroke-linecap%3D%22butt%22%20viewBox%3D%22-3%20-3%20206%20206%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20aria-hidden%3D%22true%22%20focusable%3D%22false%22%3E%3Cpath%20d%3D%22M100.000%20181.250A81.25%2081.25%200%200%200%20163.524%20150.659%22%20style%3D%22stroke%3A%23D6524C%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M163.524%20150.659A81.25%2081.25%200%200%200%20179.213%2081.920%22%20style%3D%22stroke%3A%23D8924E%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M179.213%2081.920A81.25%2081.25%200%200%200%20135.253%2026.796%22%20style%3D%22stroke%3A%23DABF6A%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M135.253%2026.796A81.25%2081.25%200%200%200%2064.747%2026.796%22%20style%3D%22stroke%3A%235FD5A6%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M64.747%2026.796A81.25%2081.25%200%200%200%2020.787%2081.920%22%20style%3D%22stroke%3A%235EBBDB%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M20.787%2081.920A81.25%2081.25%200%200%200%2036.476%20150.659%22%20style%3D%22stroke%3A%237D93E0%3Bstroke-width%3A37.50%22%2F%3E%3Cpath%20d%3D%22M36.476%20150.659A81.25%2081.25%200%200%200%20100.000%20181.250%22%20style%3D%22stroke%3A%23A77EDB%3Bstroke-width%3A37.50%22%2F%3E%3C%2Fsvg%3E">
+<style>
+/* tokens.css, inlined by BUILD-single.sh */
+/* GENERATED. Do not edit.
+   Written by tools/tokens.py from atuned_src/shell/head.html, which is the
+   app's own stylesheet. The funnel and the app have to look like one
+   product, and a palette copied by hand is correct on the day it is copied
+   and wrong afterwards. Change a value in head.html and run the tool.
+   49 tokens. */
+:root{
+ /* THE SURFACE RAMP WAS NARROWER THAN A PRINTING TOLERANCE.
+
+    Measured: --bg to --panel was 1.08 to 1 and --bg to --panel-2 was 1.14.
+    Four declared levels of surface spanning a sixth of a stop, which is why
+    the page squints down to three vertical grey slabs and the eye lands on
+    nothing first. The architecture of every screen rested on a distinction
+    that was not visible.
+
+    The ground goes down and the raised surfaces go up, so the range opens
+    from both ends rather than lightening the product. Muted is a saturation
+    ruling and not a contrast one, and this changes no hue. */
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ /* --dim WAS BELOW AA EVERYWHERE IT APPEARED, and it is the only token
+    marking the second tier of the information architecture: every eyebrow,
+    every key label, every explanatory subline. Measured at 3.70 to 1 on
+    --panel-2 and 3.92 on --panel, and it carried 104 of the 105 contrast
+    failures on the Summary in Dark. One value, 104 defects.
+
+    It also matters more than the ratio suggests. Six of the thirteen people
+    in the reference sample are 57 or older, and contrast sensitivity falls
+    materially past 55. At 3.70 that half of the sample loses the whole layer
+    that tells them what they are looking at. */
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --root:#D6524C; --sacral:#D8924E; --solar:#DABF6A;
+ --heart:#5FD5A6; --throat:#5EBBDB; --eye:#7D93E0; --crown:#A77EDB;
+ --alarm:#FF2E1F; --alarm-soft:rgba(255,46,31,.16);
+ /* THE ACCENT IS BLUE. Ruled. It was gold since the rebuild and the owner
+    never chose it: he chose the blue, which is the original app's own
+    --law-accent:#7eb8d4, used there in thirteen places. --accent is the one
+    source of truth and --gold is kept as its alias because sixty places in
+    this sheet already read that name. Nothing reads a literal.
+
+    --on-accent is the ink that sits on top of a filled accent. It was
+    var(--on-accent), a warm near black chosen against gold, and a warm ink on a cool
+    fill is the one thing that would still have read as the old palette.
+
+    --um is the umlaut on the wordmark. It sits on the bar rather than on the
+    letter, so it answers to the background. White on dark, as ruled. */
+ --accent:#7EB8D4; --gold:var(--accent); --on-accent:#0B1418;
+ /* TRUE GOLD, SEPARATE FROM --gold.
+
+    --gold is an alias for the accent and has been since the accent was ruled
+    blue, so everything reaching for "gold" gets blue. That is correct for the
+    eyebrows and the rules that were gold before the ruling, and it is wrong
+    for the one thing that was asked for in actual gold: Source OS under the
+    wordmark rendered in the blue accent, twice, because the token lied about
+    its own name.
+
+    --au is gold. Muted, warm, sitting next to the Solar seat without becoming
+    it, and dark enough on paper to hold. Nothing else uses it unless it is
+    asked for by name. */
+ --au:#C2A063;
+ /* the ink on a solid seat colour. every seat in this palette is light
+    enough that one dark ink holds on all seven, in every lighting. */
+ --on-flat:#0E1015;
+ --sky:#7EB8D4; --um:#FFFFFF;
+ /* #CB5F59 measures 4.01 against --panel-2 and 4.44 against the seat tinted
+    panel. It is not carrying text today, it is a three pixel marker and a
+    seven percent wash, so the 4.5 text threshold is not the one it has to
+    clear. Moved anyway: a marker that thin at four to one is hard to see at
+    all past about fifty five, and three of the nine reference people are
+    fifty seven or older. #D4736D measures 4.87 and 5.40 on the same two.
+    Snow's own value is 5.62 and does not move. */
+ --good:#68CBA4; --bad:#D4736D;
+ /* Lexend is a wide face by design, which is why the rail clipped: Witness
+    rendered as Wit. Inter is narrower at the same size and carries more
+    characters per line without dropping the point size. The font tuner is
+    gone on the owner's ruling, so this is the one face and there is no
+    per person override to keep working. */
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ /* ONE FAMILY MEANT ONE FAMILY, AND THIS TOKEN NAMED A SECOND ONE.
+
+    The comment above it said Lexend carries the digits. Lexend was never in
+    the build. When Google Fonts went, Inter was embedded as a variable font
+    and Lexend was not, so document.fonts lists exactly one family and every
+    number in this product, every reading, every allowance, every tabular
+    column, was falling through to system-ui. Which face that is depends on
+    the machine, so the one thing this token existed to guarantee, that
+    columns of figures line up, was the one thing it could not do.
+
+    document.fonts.check('12px Lexend') returns true, which is what hid this:
+    check answers whether the text can be rendered at all, and a fallback
+    counts. The list of loaded families is the honest reader and it has one
+    entry.
+
+    Inter carries the digits now, which is a statement about a font that is
+    actually here. Tabular figures are a feature of Inter and every column in
+    the sheet already asks for them with font-variant-numeric. */
+ --num:'Inter','Inter Tight',system-ui,-apple-system,sans-serif;
+ --r:16px; --r-s:11px; --r-xs:8px;
+ /* Minimum touch target. 69 of the interactive elements measured under 44px,
+    which is the floor a finger needs. The number lives here so it cannot
+    drift back into forty separate padding declarations. */
+ --tap:44px;
+ /* Motion. Measured before this block existed: 381 of 384 live animated
+    elements ran on the browser default ease, a symmetric curve that reads as
+    mechanical because it decelerates as slowly as it accelerates. The four
+    hand written beziers in this sheet sat on one live element. Three curves
+    and four durations, named for the job, so a hover and a tab cannot drift
+    to the same speed again.
+
+    out  for a thing arriving. fast off the mark, long settle.
+    in   for a thing leaving. it does not need to be watched out.
+    land for a thing that lands. one overshoot, no ring. */
+ --ease-out:cubic-bezier(.22,1,.36,1);
+ --ease-in:cubic-bezier(.4,0,1,1);
+ --ease-land:cubic-bezier(.34,1.56,.64,1);
+ /* hover, press, focus. below about 100ms a change reads as a jump with no
+    cause; above about 150 the pointer has already left. */
+ --t-micro:120ms;
+ /* one thing entering or leaving. */
+ --t-element:220ms;
+ /* a panel or a rail, which carries more area and so needs more time. */
+ --t-surface:320ms;
+ /* a whole tab. the longest thing the product is allowed to take. */
+ --t-context:420ms;
+ /* A READING ARRIVING. The wheel's own entrance numbers, ENTER_SPAN and
+    ENTER_STAGGER in ui/wheel.js, on the wheel's own curve, a cubic out, so a
+    band on either rail fills on the same beat the wheel assembles on and the
+    dock's circles sweep on. FV in TASKS.md, his words: "Where's the animation
+    of the bands animating?" Written here rather than typed into each rule, so
+    the stylesheet and the canvas cannot drift apart without one of these
+    lines changing. */
+ --t-enter:380ms; --t-stagger:62ms; --ease-enter:cubic-bezier(.33,1,.68,1);
+ /* A READING BREATHING, ROUND MQ. The Field's own wave, 0.82+0.18 sin(2 pi
+    t/4.2) in ui/wheel.js, so opacity .64 to 1 over 4.2s. A loop is not an
+    arrival, a departure or a landing, so none of the three curves above
+    fits: this is the sine's own cubic, still at both ends the way
+    Math.sin is. Named here rather than typed into the rule, gate 12 in
+    tests/design.js reads transitions and not keyframes, so a loop typed
+    straight into a rule goes unchecked by it. */
+ --t-breath:4.2s; --ease-breath:cubic-bezier(.37,0,.63,1);
+ /* the spacing scale. three steps. 6 between things in one control, 10
+    between controls, 16 between blocks. gaps of 5, 7, 8, 9 and 11 were all
+    doing one of those three jobs with no reason stated, so they read as
+    drift rather than as rhythm. */
+ --g1:6px; --g2:10px; --g3:16px;
+ --shadow:0 12px 34px rgba(0,0,0,.34);
+}
+</style>
+<!-- ============================================================
+     THE FIRST ROOM OF THE PRODUCT. Round QT, 3 October.
+
+     His words: "I don't like the funnel landing page. It doesn't feel
+     aspirational. And I want to pull elements from the field or the compass
+     or the body throughout the entire experience. So the landing page must
+     also be dynamic moving, breathing, alive. The language referred to the
+     TDD document ... everything's symbolic And there's a narrative flow you
+     can feel."
+
+     The document is reviews/ATUNED-Creative-Storyboard-TDD.md. Its rule for
+     this page is section 0: "The website is not a brochure for the product.
+     The website is the first room of the product." Its rule for the picture
+     is section 8: "The Field is the interface, not the background."
+
+     So the page is one stage and one story. The story scrolls in the left
+     column, one storyboard beat per frame, in the TDD's own words and order.
+     The stage holds still beside it (on a phone, a band pinned to the top)
+     and changes state as each beat arrives: three points of light, six
+     situations, one pattern, an answer that runs through the whole field
+     until it runs on its own, the whole network, the body, a knot that
+     loosens, the loop, and at the close one point again. Every motion on it
+     is one of the states in the TDD's visual grammar (section 69), and none
+     of it is decoration: "Decorative motion that communicates none of these
+     states should be removed."
+
+     Every number in the motion is the product's own, so it is the same
+     instrument and not a page bolted onto it:
+       the pulse        ui/wheel.js pulses(): seven pixels, a period of 96
+                        slack to 48 taut, speed 16 + 68 times the square root
+                        of tension, outer end to inner
+       the breath       the Field's 4.2 second wave, --t-breath in tokens.css
+       the seats        each breathes at 4.2 s times 396 over its own tone in
+                        FLOWSEAT, the Registers rule in ui/cone.js, so Root
+                        is on the breath and Crown rings fastest
+       the dial         the Compass plan view in ui/cone.js: a hairline rim,
+                        the seven seat arcs just outside it, meridians in the
+                        seat colours, a dashed circle in the accent
+
+     Reduced motion gets the end state of every frame and nothing travels,
+     the rule the Field and the Compass already keep. No script, and every
+     frame is plain text in order. Nothing here is fetched: the page makes no
+     request of any kind, which tests/funnel.js counts.
+     ============================================================ -->
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+ font-family:var(--sans);-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth}
+body{font-size:18px;line-height:1.6;overflow-x:hidden}
+:root{--gut:16px; --col:600px; --stage-h:38vh}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:4px}
+
+/* ---- the wordmark. The umlaut sits on the bar and answers to the ground.
+   It floated about thirty pixels above the u at 64 pixels, measured on the
+   before shot, because it was hung off the top of the line box. It is hung
+   off the x height now, so it sits where a printed umlaut sits. ---- */
+.wm{font-weight:600;letter-spacing:-.025em;white-space:nowrap;line-height:1}
+.wm .um{position:relative;display:inline-block}
+.wm .um::before,.wm .um::after{content:'';position:absolute;top:.08em;
+ width:.12em;height:.12em;border-radius:50%;background:var(--um)}
+.wm .um::before{left:.07em}
+.wm .um::after{left:.33em}
+
+/* ---- the bar ---- */
+.top{display:flex;align-items:center;justify-content:space-between;gap:var(--g3);
+ padding:10px var(--gut);position:relative;z-index:3}
+.top .wm{font-size:22px}
+.top .tag{color:var(--mid);font-size:15px;margin-left:14px}
+.nav{display:flex;gap:6px;flex-wrap:wrap;font-size:15px}
+.nav a{display:inline-flex;align-items:center;justify-content:center;
+ min-height:var(--tap);min-width:var(--tap);padding:0 10px;color:var(--mid);
+ text-decoration:underline;text-decoration-color:var(--edge-2);
+ text-underline-offset:5px;text-decoration-thickness:1px;
+ transition:color var(--t-micro) var(--ease-out),text-decoration-color var(--t-micro) var(--ease-out)}
+.nav a:hover,.nav a:focus-visible{color:var(--ink);text-decoration-color:var(--ink)}
+.nav a.go{color:var(--ink);text-decoration-color:var(--accent)}
+
+/* ---- the stage and the story ---- */
+.story{position:relative}
+.stage{position:sticky;top:0;z-index:2;height:var(--stage-h);
+ background:var(--bg);overflow:hidden}
+/* a phone's stage is a band over the story, so its lower edge fades into the
+   ground rather than cutting the text that scrolls under it */
+.stage::after{content:'';position:absolute;left:0;right:0;bottom:0;height:22px;
+ background:linear-gradient(var(--bg-0,rgba(12,13,18,0)),var(--bg));pointer-events:none}
+.lyr{position:absolute;inset:0;transition:opacity var(--t-context) var(--ease-out)}
+#fld{width:100%;height:100%;display:block}
+.lyr-body,.lyr-dial{display:flex;align-items:center;justify-content:center;opacity:0}
+.stage[data-show="body"] .lyr-body,.stage[data-show="dial"] .lyr-dial{opacity:1}
+.stage[data-show="body"] .lyr-field,.stage[data-show="dial"] .lyr-field{opacity:0}
+/* no script: no Field and no dial to drive, so the stage shows the body, which
+   is drawn in markup and needs nothing to run */
+html:not(.js) .lyr-body{opacity:1}
+/* a layer nobody can see does not run: the body's nerves and seats and the
+   dial's orbit pause while the stage shows something else */
+.js .stage:not([data-show="body"]) .lyr-body *,
+.js .stage:not([data-show="dial"]) .lyr-dial *{animation-play-state:paused}
+html:not(.js) .lyr-dial{display:none}
+
+.col{padding:0 var(--gut)}
+.fr{min-height:62vh;padding:40px 0 48px;display:flex;flex-direction:column;
+ justify-content:center;max-width:var(--col)}
+
+/* ---- type. Three levels, by weight and space before size. ---- */
+h1{font-size:40px;line-height:1.06;letter-spacing:-.028em;margin:0;font-weight:600;text-wrap:balance}
+h2,.big{font-size:30px;line-height:1.16;letter-spacing:-.02em;margin:0;font-weight:600;max-width:20ch;text-wrap:balance}
+.big+.big{margin-top:4px}
+.lead{font-size:21px;line-height:1.4;color:var(--mid);margin:18px 0 0;max-width:30ch}
+.eye{display:block;font-size:14px;color:var(--accent);margin:0 0 12px;letter-spacing:.01em}
+p{margin:14px 0 0}
+.m{max-width:52ch}
+.soft{color:var(--mid)}
+/* what the stage is showing, in plain words, beside it and never on it, and
+   one press away rather than on the screen at rest. Round QU, 3 October: he
+   put a red X through the body caption and scribbled out the field's, and
+   said "Don't add text if it's unnecessary." The same night, on the Ritual
+   page: "if you want tell you press on something to get information". Every
+   mark on the stage still has its meaning in the frame that shows it, which
+   is the unpack rule, round PO; the meaning waits for the press. Without a
+   script there is no button and the key is printed, so a page whose script
+   never ran still reads in full. The toggle keeps its one word whichever way
+   it stands: a label never changes with the state, the state is aria-expanded
+   and the ring. */
+.cap{margin-top:22px;max-width:52ch}
+.cap-t{display:inline-flex;align-items:center;gap:8px;min-height:var(--tap);min-width:var(--tap);
+ margin-left:-6px;padding:0 12px 0 6px;font:inherit;font-size:15px;color:var(--dim);
+ background:transparent;border:0;border-radius:999px;cursor:pointer;
+ transition:color var(--t-micro) var(--ease-out),background var(--t-micro) var(--ease-out)}
+.cap-t svg{width:18px;height:18px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.4;
+ stroke-linecap:round;transition:stroke var(--t-micro) var(--ease-out)}
+.cap-t svg .dot{fill:currentColor;stroke-width:1}
+.cap-t:hover,.cap-t:focus-visible{color:var(--ink)}
+.cap-t[aria-expanded="true"]{color:var(--ink)}
+.cap-t[aria-expanded="true"] svg circle:first-child{stroke:var(--accent)}
+.cap-b{margin:6px 0 0;padding-left:14px;border-left:1px solid var(--edge-2);
+ font-size:14.5px;line-height:1.55;color:var(--dim)}
+.cap-b:not([hidden]){animation:capin var(--t-element) var(--ease-out)}
+@keyframes capin{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+html:not(.js) .cap-t{display:none}
+html:not(.js) .cap-b{margin-top:0}
+
+/* ---- arrive ---- */
+.cta{margin-top:28px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+a.btn{display:inline-flex;align-items:center;justify-content:center;
+ background:var(--accent);color:var(--on-accent);text-decoration:none;font-weight:600;
+ font-size:18px;padding:0 30px;border-radius:999px;min-height:52px;min-width:var(--tap);
+ transition:transform var(--t-micro) var(--ease-out),box-shadow var(--t-element) var(--ease-out)}
+a.btn:hover{box-shadow:0 0 0 6px rgba(126,184,212,.16)}
+a.btn:active{transform:scale(.98)}
+a.ghost{display:inline-flex;align-items:center;min-height:var(--tap);padding:0 14px;
+ color:var(--mid);text-decoration:underline;text-decoration-color:var(--edge-2);
+ text-underline-offset:5px}
+a.ghost:hover{color:var(--ink)}
+
+/* ---- recognise ---- */
+.keep{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:6px}
+.keep li{font-size:20px;color:var(--mid);display:flex;align-items:center;gap:12px}
+.keep li::before{content:'';flex:0 0 9px;height:9px;border-radius:50%;
+ border:1.5px solid var(--dim)}
+.same{margin-top:22px}
+.same .big{color:var(--ink)}
+.same .big:last-child{color:var(--accent)}
+
+/* ---- the mirror ---- */
+.said{margin:20px 0 0;font-size:24px;line-height:1.35;color:var(--ink);
+ padding-left:16px;border-left:2px solid var(--edge-2);max-width:26ch}
+.said .w{text-decoration:underline;text-decoration-color:transparent;
+ text-underline-offset:6px;text-decoration-thickness:2px;
+ transition:text-decoration-color var(--t-surface) var(--ease-out)}
+.fr.seen .said .w{text-decoration-color:var(--accent)}
+.fr.seen .said .w2{transition-delay:.35s}.fr.seen .said .w3{transition-delay:.7s}
+.parts{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 0;padding:0;list-style:none}
+.parts li{font-size:15px;padding:5px 12px;border:1px solid var(--accent);border-radius:999px;color:var(--ink)}
+.chain{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:14px}
+.chain li{position:relative;display:flex;align-items:center;gap:12px;font-size:16px;color:var(--mid)}
+.chain .nd{flex:0 0 auto;width:18px;height:18px;border-radius:50%;border:1.6px solid var(--mid);background:var(--bg);
+ position:relative;z-index:1;transition:border-color var(--t-element) var(--ease-out),box-shadow var(--t-element) var(--ease-out)}
+.chain li:not(:last-child)::after{content:'';position:absolute;left:8px;top:22px;width:2px;height:calc(100% - 8px);
+ background:linear-gradient(180deg,transparent,var(--ink),transparent) no-repeat,var(--edge-2);
+ background-size:100% 18px,100% 100%;animation:runV 1.5s linear infinite}
+@keyframes runV{from{background-position:0 -30%,0 0}to{background-position:0 130%,0 0}}
+.mirror{margin-top:26px;padding:20px 20px 22px;border:1px solid var(--edge-2);border-radius:var(--r);
+ background:var(--panel)}
+.mirror .eye{margin-bottom:8px}
+.reading{font-size:21px;line-height:1.38;margin:0;color:var(--ink);
+ transition:opacity var(--t-element) var(--ease-out)}
+.reading.out{opacity:0}
+.ask{margin:14px 0 0;color:var(--mid)}
+.ans{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.ans button{font:inherit;font-size:16px;color:var(--ink);background:transparent;
+ border:1px solid var(--edge-2);border-radius:999px;min-height:var(--tap);min-width:var(--tap);
+ padding:0 18px;cursor:pointer;
+ transition:border-color var(--t-micro) var(--ease-out),background var(--t-micro) var(--ease-out)}
+.ans button:hover{border-color:var(--mid)}
+.ans button[aria-pressed="true"]{border-color:var(--accent);background:rgba(126,184,212,.12)}
+.say{margin:14px 0 0;min-height:1.6em;color:var(--accent)}
+.was{list-style:none;margin:10px 0 0;padding:0;font-size:15px;color:var(--dim)}
+.was:empty{display:none}
+.was li{margin-top:4px}
+.was del{text-decoration-color:var(--dim)}
+/* the chain answers the mirror. confirmed, the path stabilises: the run
+   stops and the line holds in the accent. not quite, the structure loosens:
+   the line breaks into dashes. look again, the path stays open from the
+   third link on. Section 69: confirm, correct, unknown. */
+.mx[data-m="yes"] .chain li:not(:last-child)::after{animation:none;background:var(--accent)}
+.mx[data-m="yes"] .chain .nd{border-color:var(--accent);box-shadow:0 0 0 4px rgba(126,184,212,.14)}
+.mx[data-m="no"] .chain li:not(:last-child)::after{animation:none;
+ background:repeating-linear-gradient(180deg,var(--edge-2) 0 4px,transparent 4px 9px)}
+.mx[data-m="again"] .chain li:nth-child(n+3) .nd{border-style:dashed;opacity:.55}
+.mx[data-m="again"] .chain li:nth-child(n+2)::after{animation:none;opacity:.4}
+
+/* ---- the body ---- */
+.felt+.big{margin-top:18px}
+.felt{margin:20px 0 0;font-size:22px;line-height:1.5;color:var(--ink);max-width:28ch}
+.felt span{display:inline-block;margin-right:.32em}
+.hero{display:block;height:88%;width:auto;max-width:92%;overflow:visible}
+.hero-body{fill:rgba(150,152,160,.07);stroke:var(--edge-2);stroke-width:1.4;vector-effect:non-scaling-stroke}
+.hero-nerves path{fill:none;stroke-width:.3;opacity:.22;stroke-linecap:round}
+.hero-run path{fill:none;stroke-width:.42;opacity:.9;stroke-linecap:round;
+ stroke-dasharray:.7 5.3;animation:nerve 2.6s linear infinite}
+.hero-run path:nth-child(3n){animation-duration:3.4s}
+.hero-run path:nth-child(3n+1){animation-duration:2.1s}
+@keyframes nerve{to{stroke-dashoffset:-6}}
+.hero-seat{fill:none;stroke-width:.5;opacity:.9}
+/* each seat breathes at its own tone brought down onto the Field's breath:
+   4.2 s times 396 over the seat's hertz in FLOWSEAT. alternate runs the
+   half period each way, so the duration is half the period. */
+.hero-glow{transform-box:fill-box;transform-origin:center;
+ animation:seat var(--hp,2.1s) var(--ease-breath) infinite alternate}
+.hero-glow[data-seat="root"]{--hp:2.10s}
+.hero-glow[data-seat="sacral"]{--hp:1.99s}
+.hero-glow[data-seat="solar"]{--hp:1.58s}
+.hero-glow[data-seat="heart"]{--hp:1.30s}
+.hero-glow[data-seat="throat"]{--hp:1.12s}
+.hero-glow[data-seat="eye"]{--hp:0.98s}
+.hero-glow[data-seat="crown"]{--hp:0.86s}
+@keyframes seat{from{opacity:.55;transform:scale(.9)}to{opacity:1;transform:scale(1.06)}}
+/* one region activates, Beat 09. The Compass's lit node: the ring, and a
+   second ring outside it. */
+.seat-ping{fill:none;stroke-width:.35;transform-box:fill-box;transform-origin:center;
+ animation:ping var(--t-breath) var(--ease-out) infinite}
+@keyframes ping{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(3.4)}}
+
+/* ---- release ---- */
+.steps{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:10px}
+.steps li{display:grid;grid-template-columns:110px minmax(0,1fr);gap:12px;align-items:baseline;
+ color:var(--dim);transition:color var(--t-element) var(--ease-out)}
+.steps b{font-weight:600;color:var(--dim);transition:color var(--t-element) var(--ease-out)}
+.steps li.on,.steps li.on b{color:var(--ink)}
+.steps li.on b{color:var(--accent)}
+.frame-q{margin:22px 0 0;font-size:21px;line-height:1.4;padding-left:16px;
+ border-left:2px solid var(--accent);max-width:30ch}
+.changed{margin:26px 0 0}
+.changed h3{font-size:21px;margin:0;font-weight:600}
+.opts{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px 18px;color:var(--mid);font-size:16px}
+.opts li{display:flex;align-items:center;gap:8px}
+.opts li::before{content:'';width:7px;height:7px;border-radius:50%;border:1.4px solid var(--dim)}
+
+/* ---- the loop ---- */
+.four{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:14px}
+.four li{display:flex;gap:12px;align-items:flex-start}
+.four i{flex:0 0 18px;height:18px;border-radius:50%;border:1.8px solid;margin-top:4px}
+.four b{display:block;font-weight:600}
+.four span{color:var(--mid);font-size:16.5px}
+.back{margin-top:16px;color:var(--mid)}
+#dial{width:88%;height:88%;max-width:620px;overflow:visible}
+#dial .lbl{font:500 15px var(--sans);fill:var(--ink)}
+@media(max-width:899px){#dial .lbl{font-size:23px}}
+.orbit{transform-box:view-box;transform-origin:200px 200px;animation:orbit 12s linear infinite}
+@keyframes orbit{to{transform:rotate(360deg)}}
+.st-h{opacity:0;animation:stlit 12s linear infinite}
+@keyframes stlit{0%{opacity:0}2.5%{opacity:.7}16%{opacity:0}100%{opacity:0}}
+.cohere{animation:breathe var(--t-breath) var(--ease-breath) infinite alternate}
+@keyframes breathe{from{opacity:.4}to{opacity:.9}}
+
+/* ---- the return ---- */
+.fr-ret{min-height:78vh}
+.end-wm{font-size:64px;line-height:1;margin:34px 0 0}
+.end-tag{font-size:21px;color:var(--mid);margin:12px 0 0}
+.meta{margin:14px 0 0;font-size:14.5px;color:var(--dim);max-width:44ch}
+
+.foot{border-top:1px solid var(--edge);margin-top:20px;padding:18px var(--gut) 40px;
+ font-size:14px;color:var(--dim)}
+.foot .nav{margin:0 0 6px -10px}
+
+/* ---- the reveal. Each frame's lines arrive once, when the frame does. Only
+   with a script, so a page whose script never ran is never blank. ---- */
+.js .fr .rv{opacity:0;transform:translateY(12px);
+ transition:opacity var(--t-surface) var(--ease-out),transform var(--t-surface) var(--ease-out);
+ transition-delay:var(--d,0s)}
+.js .fr.seen .rv{opacity:1;transform:none}
+.js .keep li,.js .same{opacity:.0;transform:translateY(8px);
+ transition:opacity var(--t-element) var(--ease-out),transform var(--t-element) var(--ease-out)}
+.js .keep li.on,.js .same.on{opacity:1;transform:none}
+.js .felt span{opacity:0;transition:opacity var(--t-element) var(--ease-out)}
+.js .fr.seen .felt span{opacity:1}
+
+/* ---- the desk. The story takes the left, the stage stands on the right for
+   the whole scroll, and each frame is a screen tall so one beat is read at a
+   time: "Every frame has one job", section 52. ---- */
+@media(min-width:900px){
+ :root{--gut:clamp(24px,5vw,96px)}
+ .top{padding:14px var(--gut)}
+ .story{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr)}
+ .stage{grid-column:2;grid-row:1;height:100vh;align-self:start}
+ .stage::after{display:none}
+ .col{grid-column:1;grid-row:1}
+ .fr{min-height:100vh;padding:60px 0}
+ .fr-arrive{min-height:calc(100vh - 72px)}
+ h1{font-size:clamp(48px,4.4vw,68px)}
+ h2,.big{font-size:clamp(34px,2.9vw,44px)}
+ .lead{font-size:24px}
+ .said{font-size:28px}
+ .chain{grid-template-columns:repeat(5,minmax(0,1fr));gap:0}
+ .chain li{flex-direction:column;align-items:center;text-align:center;gap:10px;font-size:15px}
+ .chain li:not(:last-child)::after{left:calc(50% + 13px);top:8px;width:calc(100% - 26px);height:2px;
+  background:linear-gradient(90deg,transparent,var(--ink),transparent) no-repeat,var(--edge-2);
+  background-size:18px 100%,100% 100%;animation-name:runH}
+ .mx[data-m="no"] .chain li:not(:last-child)::after{
+  background:repeating-linear-gradient(90deg,var(--edge-2) 0 4px,transparent 4px 9px)}
+ .four{grid-template-columns:1fr 1fr;gap:20px 28px}
+ .end-wm{font-size:clamp(88px,8vw,128px)}
+}
+@keyframes runH{from{background-position:-30% 0,0 0}to{background-position:130% 0,0 0}}
+@media(max-width:899px){
+ .top .tag{display:none}
+ .stage{--stage-h:38vh}
+}
+@media(max-width:380px){
+ h1{font-size:34px} h2,.big{font-size:26px} .said{font-size:21px}
+}
+
+/* ---- reduced motion: the end state of every frame, and nothing travels.
+   The Field draws no pulses there either; the sag already says it. ---- */
+@media (prefers-reduced-motion: reduce){
+ html{scroll-behavior:auto}
+ *,*::before,*::after{animation:none !important;transition:none !important}
+ .js .fr .rv,.js .keep li,.js .same,.js .felt span{opacity:1;transform:none}
+ .st-h{opacity:0}
+ .seat-ping{opacity:.6;transform:scale(1.8)}
+}
+</style></head><body>
+
+<header class="top">
+ <div><span class="wm">At<span class="um">u</span>ned</span><span class="tag">See what's running you.</span></div>
+ <nav class="nav" aria-label="Pages"><a href="atuned-about.html">About</a><a href="atuned-faq.html">Questions</a><a class="go" href="atuned-quiz.html">Start</a></nav>
+</header>
+
+<main class="story">
+
+<!-- THE STAGE. Before the story in the source so a phone pins it to the top;
+     a desk moves it to the right column. Every layer is a picture and says
+     nothing a reader needs: what each one means is in the frame that shows
+     it, in the .cap key, beside it and never on it, one press away. -->
+<div class="stage" id="stage" data-show="field" aria-hidden="true">
+ <div class="lyr lyr-field"><canvas id="fld"></canvas></div>
+ <div class="lyr lyr-body">
+<!-- FIGURE START. Generated by make-figure.js. Do not edit by hand. -->
+<svg class="hero" viewBox="25.68 0.50 47.56 99.00" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+ <defs>
+  <radialGradient id="hs-root"><stop offset="0" stop-color="var(--root)" stop-opacity=".62"/><stop offset=".55" stop-color="var(--root)" stop-opacity=".18"/><stop offset="1" stop-color="var(--root)" stop-opacity="0"/></radialGradient>
+  <radialGradient id="hs-sacral"><stop offset="0" stop-color="var(--sacral)" stop-opacity=".62"/><stop offset=".55" stop-color="var(--sacral)" stop-opacity=".18"/><stop offset="1" stop-color="var(--sacral)" stop-opacity="0"/></radialGradient>
+  <radialGradient id="hs-solar"><stop offset="0" stop-color="var(--solar)" stop-opacity=".62"/><stop offset=".55" stop-color="var(--solar)" stop-opacity=".18"/><stop offset="1" stop-color="var(--solar)" stop-opacity="0"/></radialGradient>
+  <radialGradient id="hs-heart"><stop offset="0" stop-color="var(--heart)" stop-opacity=".62"/><stop offset=".55" stop-color="var(--heart)" stop-opacity=".18"/><stop offset="1" stop-color="var(--heart)" stop-opacity="0"/></radialGradient>
+  <radialGradient id="hs-throat"><stop offset="0" stop-color="var(--throat)" stop-opacity=".62"/><stop offset=".55" stop-color="var(--throat)" stop-opacity=".18"/><stop offset="1" stop-color="var(--throat)" stop-opacity="0"/></radialGradient>
+  <radialGradient id="hs-eye"><stop offset="0" stop-color="var(--eye)" stop-opacity=".62"/><stop offset=".55" stop-color="var(--eye)" stop-opacity=".18"/><stop offset="1" stop-color="var(--eye)" stop-opacity="0"/></radialGradient>
+  <radialGradient id="hs-crown"><stop offset="0" stop-color="var(--crown)" stop-opacity=".62"/><stop offset=".55" stop-color="var(--crown)" stop-opacity=".18"/><stop offset="1" stop-color="var(--crown)" stop-opacity="0"/></radialGradient>
+  <clipPath id="heroClip"><path transform="translate(22.3567,0.5262) scale(0.09696)" d="M282 16C283.5 15.8 287.5 15.2 290 16C292.5 16.8 295.5 18.5 297 21C298.5 23.5 299.3 28.2 299 31C298.7 33.8 295.3 36.5 295 38C294.7 39.5 294.5 39.0 297 40C299.5 41.0 306.7 42.5 310 44C313.3 45.5 314.2 46.2 317 49C319.8 51.8 324.5 57.0 327 61C329.5 65.0 331.0 68.0 332 73C333.0 78.0 333.2 86.0 333 91C332.8 96.0 330.5 100.5 331 103C331.5 105.5 335.0 104.0 336 106C337.0 108.0 337.7 110.5 337 115C336.3 119.5 334.0 128.8 332 133C330.0 137.2 327.0 136.2 325 140C323.0 143.8 320.8 149.8 320 156C319.2 162.2 319.5 172.0 320 177C320.5 182.0 320.5 182.5 323 186C325.5 189.5 330.0 194.3 335 198C340.0 201.7 347.3 205.0 353 208C358.7 211.0 363.2 213.8 369 216C374.8 218.2 382.7 219.0 388 221C393.3 223.0 397.3 225.2 401 228C404.7 230.8 407.5 234.5 410 238C412.5 241.5 414.0 243.7 416 249C418.0 254.3 421.2 259.3 422 270C422.8 280.7 420.2 302.5 421 313C421.8 323.5 425.7 323.0 427 333C428.3 343.0 427.8 363.2 429 373C430.2 382.8 431.3 384.8 434 392C436.7 399.2 441.7 401.7 445 416C448.3 430.3 451.5 463.5 454 478C456.5 492.5 457.7 495.7 460 503C462.3 510.3 463.7 516.3 468 522C472.3 527.7 481.0 531.2 486 537C491.0 542.8 494.7 552.0 498 557C501.3 562.0 505.5 564.7 506 567C506.5 569.3 502.7 570.7 501 571C499.3 571.3 498.7 571.3 496 569C493.3 566.7 487.3 559.3 485 557C482.7 554.7 482.8 555.0 482 555C481.2 555.0 478.3 549.2 480 557C481.7 564.8 490.0 593.3 492 602C494.0 610.7 492.3 607.5 492 609C491.7 610.5 490.8 610.7 490 611C489.2 611.3 487.8 611.3 487 611C486.2 610.7 486.3 612.2 485 609C483.7 605.8 480.7 595.8 479 592C477.3 588.2 476.0 586.3 475 586C474.0 585.7 472.7 586.0 473 590C473.3 594.0 476.3 605.0 477 610C477.7 615.0 478.2 618.3 477 620C475.8 621.7 472.2 624.3 470 620C467.8 615.7 465.3 598.7 464 594C462.7 589.3 462.7 592.0 462 592C461.3 592.0 460.2 589.8 460 594C459.8 598.2 461.2 612.8 461 617C460.8 621.2 459.8 618.7 459 619C458.2 619.3 457.0 619.7 456 619C455.0 618.3 454.0 620.0 453 615C452.0 610.0 450.8 593.7 450 589C449.2 584.3 448.8 586.8 448 587C447.2 587.2 445.7 586.8 445 590C444.3 593.2 444.8 603.2 444 606C443.2 608.8 441.0 607.2 440 607C439.0 606.8 438.5 610.3 438 605C437.5 599.7 438.0 584.0 437 575C436.0 566.0 432.5 558.5 432 551C431.5 543.5 435.2 537.5 434 530C432.8 522.5 430.7 518.5 425 506C419.3 493.5 405.2 466.3 400 455C394.8 443.7 396.0 444.7 394 438C392.0 431.3 389.3 423.3 388 415C386.7 406.7 387.8 397.7 386 388C384.2 378.3 378.8 362.5 377 357C375.2 351.5 375.7 355.0 375 355C374.3 355.0 374.3 353.5 373 357C371.7 360.5 368.7 369.2 367 376C365.3 382.8 363.7 391.5 363 398C362.3 404.5 362.3 408.0 363 415C363.7 422.0 366.7 433.2 367 440C367.3 446.8 364.0 447.5 365 456C366.0 464.5 370.3 477.2 373 491C375.7 504.8 379.3 520.7 381 539C382.7 557.3 383.5 581.3 383 601C382.5 620.7 379.5 644.2 378 657C376.5 669.8 376.0 670.0 374 678C372.0 686.0 367.3 692.2 366 705C364.7 717.8 365.0 742.0 366 755C367.0 768.0 370.8 772.7 372 783C373.2 793.3 373.5 807.7 373 817C372.5 826.3 370.5 832.8 369 839C367.5 845.2 366.3 844.8 364 854C361.7 863.2 357.2 883.5 355 894C352.8 904.5 351.7 911.5 351 917C350.3 922.5 350.7 924.3 351 927C351.3 929.7 352.8 929.7 353 933C353.2 936.3 350.7 942.0 352 947C353.3 952.0 356.2 957.2 361 963C365.8 968.8 377.3 977.3 381 982C384.7 986.7 384.5 988.2 383 991C381.5 993.8 374.7 997.7 372 999C369.3 1000.3 368.5 998.5 367 999C365.5 999.5 364.8 1001.8 363 1002C361.2 1002.2 358.5 999.7 356 1000C353.5 1000.3 350.2 1003.5 348 1004C345.8 1004.5 344.3 1003.3 343 1003C341.7 1002.7 342.7 1004.3 340 1002C337.3 999.7 329.3 992.7 327 989C324.7 985.3 327.7 983.2 326 980C324.3 976.8 318.5 973.0 317 970C315.5 967.0 316.5 964.8 317 962C317.5 959.2 319.8 958.2 320 953C320.2 947.8 317.7 936.8 318 931C318.3 925.2 321.3 923.3 322 918C322.7 912.7 322.7 907.0 322 899C321.3 891.0 320.0 880.5 318 870C316.0 859.5 311.7 845.2 310 836C308.3 826.8 307.5 826.7 308 815C308.5 803.3 313.7 780.2 313 766C312.3 751.8 306.2 746.7 304 730C301.8 713.3 302.5 686.3 300 666C297.5 645.7 291.0 622.2 289 608C287.0 593.8 288.5 585.8 288 581C287.5 576.2 286.7 579.0 286 579C285.3 579.0 284.7 575.7 284 581C283.3 586.3 283.3 601.7 282 611C280.7 620.3 277.8 626.8 276 637C274.2 647.2 272.5 656.0 271 672C269.5 688.0 269.0 717.7 267 733C265.0 748.3 260.3 756.3 259 764C257.7 771.7 258.3 772.5 259 779C259.7 785.5 262.3 795.5 263 803C263.7 810.5 263.3 818.0 263 824C262.7 830.0 262.3 832.7 261 839C259.7 845.3 257.0 851.2 255 862C253.0 872.8 249.8 894.3 249 904C248.2 913.7 249.2 915.2 250 920C250.8 924.8 253.8 928.2 254 933C254.2 937.8 250.8 943.2 251 949C251.2 954.8 254.7 964.0 255 968C255.3 972.0 254.5 971.2 253 973C251.5 974.8 247.5 976.2 246 979C244.5 981.8 246.7 986.0 244 990C241.3 994.0 233.3 1000.7 230 1003C226.7 1005.3 225.8 1004.0 224 1004C222.2 1004.0 220.5 1003.7 219 1003C217.5 1002.3 216.0 1000.2 215 1000C214.0 999.8 214.2 1001.7 213 1002C211.8 1002.3 209.3 1002.5 208 1002C206.7 1001.5 206.3 999.5 205 999C203.7 998.5 201.3 999.5 200 999C198.7 998.5 198.0 996.5 197 996C196.0 995.5 195.3 996.8 194 996C192.7 995.2 189.7 993.2 189 991C188.3 988.8 186.3 987.7 190 983C193.7 978.3 206.8 967.5 211 963C215.2 958.5 213.5 958.8 215 956C216.5 953.2 219.5 949.2 220 946C220.5 942.8 217.8 940.2 218 937C218.2 933.8 221.3 934.7 221 927C220.7 919.3 219.7 909.0 216 891C212.3 873.0 201.8 835.8 199 819C196.2 802.2 198.0 800.0 199 790C200.0 780.0 204.0 773.5 205 759C206.0 744.5 206.5 717.7 205 703C203.5 688.3 198.7 687.0 196 671C193.3 655.0 190.0 628.2 189 607C188.0 585.8 188.3 563.8 190 544C191.7 524.2 196.3 501.7 199 488C201.7 474.3 205.0 471.0 206 462C207.0 453.0 204.5 443.0 205 434C205.5 425.0 208.7 415.7 209 408C209.3 400.3 208.7 396.5 207 388C205.3 379.5 200.7 362.5 199 357C197.3 351.5 197.7 355.0 197 355C196.3 355.0 196.7 352.5 195 357C193.3 361.5 189.0 372.0 187 382C185.0 392.0 184.8 406.8 183 417C181.2 427.2 178.7 435.0 176 443C173.3 451.0 171.5 455.5 167 465C162.5 474.5 153.8 489.5 149 500C144.2 510.5 139.7 518.5 138 528C136.3 537.5 139.5 549.5 139 557C138.5 564.5 135.7 566.7 135 573C134.3 579.3 135.3 589.5 135 595C134.7 600.5 134.0 604.0 133 606C132.0 608.0 130.2 607.5 129 607C127.8 606.5 126.5 606.3 126 603C125.5 599.7 126.3 590.0 126 587C125.7 584.0 124.8 584.2 124 585C123.2 585.8 121.8 587.2 121 592C120.2 596.8 119.7 609.7 119 614C118.3 618.3 118.3 617.3 117 618C115.7 618.7 112.2 619.5 111 618C109.8 616.5 109.8 613.3 110 609C110.2 604.7 112.0 595.2 112 592C112.0 588.8 110.7 590.0 110 590C109.3 590.0 109.2 587.7 108 592C106.8 596.3 104.3 611.2 103 616C101.7 620.8 101.2 620.2 100 621C98.8 621.8 97.0 621.5 96 621C95.0 620.5 93.7 622.7 94 618C94.3 613.3 97.3 597.8 98 593C98.7 588.2 98.3 590.0 98 589C97.7 588.0 97.8 583.7 96 587C94.2 590.3 88.8 605.0 87 609C85.2 613.0 85.8 610.7 85 611C84.2 611.3 83.0 611.7 82 611C81.0 610.3 78.0 613.0 79 607C80.0 601.0 86.0 583.3 88 575C90.0 566.7 90.8 560.3 91 557C91.2 553.7 91.2 553.3 89 555C86.8 556.7 80.7 564.5 78 567C75.3 569.5 74.3 569.3 73 570C71.7 570.7 71.2 571.3 70 571C68.8 570.7 63.7 573.3 66 568C68.3 562.7 77.5 547.0 84 539C90.5 531.0 100.5 525.8 105 520C109.5 514.2 108.5 513.5 111 504C113.5 494.5 118.2 473.7 120 463C121.8 452.3 121.0 447.3 122 440C123.0 432.7 124.7 424.7 126 419C127.3 413.3 128.0 410.8 130 406C132.0 401.2 135.8 395.7 138 390C140.2 384.3 142.0 380.7 143 372C144.0 363.3 143.3 346.3 144 338C144.7 329.7 145.8 326.5 147 322C148.2 317.5 150.7 315.5 151 311C151.3 306.5 149.3 301.0 149 295C148.7 289.0 148.0 282.5 149 275C150.0 267.5 153.2 255.8 155 250C156.8 244.2 157.2 243.8 160 240C162.8 236.2 168.5 230.0 172 227C175.5 224.0 174.8 224.3 181 222C187.2 219.7 200.3 216.7 209 213C217.7 209.3 226.5 204.3 233 200C239.5 195.7 244.8 191.3 248 187C251.2 182.7 251.3 179.0 252 174C252.7 169.0 252.7 161.3 252 157C251.3 152.7 248.8 150.8 248 148C247.2 145.2 248.3 142.3 247 140C245.7 137.7 242.0 138.0 240 134C238.0 130.0 235.8 120.5 235 116C234.2 111.5 234.0 109.3 235 107C236.0 104.7 240.3 104.0 241 102C241.7 100.0 239.2 100.0 239 95C238.8 90.0 239.2 77.5 240 72C240.8 66.5 242.2 65.3 244 62C245.8 58.7 248.3 54.8 251 52C253.7 49.2 255.8 47.3 260 45C264.2 42.7 273.8 40.3 276 38C278.2 35.7 273.5 33.0 273 31C272.5 29.0 272.7 27.7 273 26C273.3 24.3 273.7 22.5 275 21C276.3 19.5 279.8 17.8 281 17C282.2 16.2 280.5 16.2 282 16Z"/></clipPath>
+ </defs>
+ <path class="hero-body" transform="translate(22.3567,0.5262) scale(0.09696)" d="M282 16C283.5 15.8 287.5 15.2 290 16C292.5 16.8 295.5 18.5 297 21C298.5 23.5 299.3 28.2 299 31C298.7 33.8 295.3 36.5 295 38C294.7 39.5 294.5 39.0 297 40C299.5 41.0 306.7 42.5 310 44C313.3 45.5 314.2 46.2 317 49C319.8 51.8 324.5 57.0 327 61C329.5 65.0 331.0 68.0 332 73C333.0 78.0 333.2 86.0 333 91C332.8 96.0 330.5 100.5 331 103C331.5 105.5 335.0 104.0 336 106C337.0 108.0 337.7 110.5 337 115C336.3 119.5 334.0 128.8 332 133C330.0 137.2 327.0 136.2 325 140C323.0 143.8 320.8 149.8 320 156C319.2 162.2 319.5 172.0 320 177C320.5 182.0 320.5 182.5 323 186C325.5 189.5 330.0 194.3 335 198C340.0 201.7 347.3 205.0 353 208C358.7 211.0 363.2 213.8 369 216C374.8 218.2 382.7 219.0 388 221C393.3 223.0 397.3 225.2 401 228C404.7 230.8 407.5 234.5 410 238C412.5 241.5 414.0 243.7 416 249C418.0 254.3 421.2 259.3 422 270C422.8 280.7 420.2 302.5 421 313C421.8 323.5 425.7 323.0 427 333C428.3 343.0 427.8 363.2 429 373C430.2 382.8 431.3 384.8 434 392C436.7 399.2 441.7 401.7 445 416C448.3 430.3 451.5 463.5 454 478C456.5 492.5 457.7 495.7 460 503C462.3 510.3 463.7 516.3 468 522C472.3 527.7 481.0 531.2 486 537C491.0 542.8 494.7 552.0 498 557C501.3 562.0 505.5 564.7 506 567C506.5 569.3 502.7 570.7 501 571C499.3 571.3 498.7 571.3 496 569C493.3 566.7 487.3 559.3 485 557C482.7 554.7 482.8 555.0 482 555C481.2 555.0 478.3 549.2 480 557C481.7 564.8 490.0 593.3 492 602C494.0 610.7 492.3 607.5 492 609C491.7 610.5 490.8 610.7 490 611C489.2 611.3 487.8 611.3 487 611C486.2 610.7 486.3 612.2 485 609C483.7 605.8 480.7 595.8 479 592C477.3 588.2 476.0 586.3 475 586C474.0 585.7 472.7 586.0 473 590C473.3 594.0 476.3 605.0 477 610C477.7 615.0 478.2 618.3 477 620C475.8 621.7 472.2 624.3 470 620C467.8 615.7 465.3 598.7 464 594C462.7 589.3 462.7 592.0 462 592C461.3 592.0 460.2 589.8 460 594C459.8 598.2 461.2 612.8 461 617C460.8 621.2 459.8 618.7 459 619C458.2 619.3 457.0 619.7 456 619C455.0 618.3 454.0 620.0 453 615C452.0 610.0 450.8 593.7 450 589C449.2 584.3 448.8 586.8 448 587C447.2 587.2 445.7 586.8 445 590C444.3 593.2 444.8 603.2 444 606C443.2 608.8 441.0 607.2 440 607C439.0 606.8 438.5 610.3 438 605C437.5 599.7 438.0 584.0 437 575C436.0 566.0 432.5 558.5 432 551C431.5 543.5 435.2 537.5 434 530C432.8 522.5 430.7 518.5 425 506C419.3 493.5 405.2 466.3 400 455C394.8 443.7 396.0 444.7 394 438C392.0 431.3 389.3 423.3 388 415C386.7 406.7 387.8 397.7 386 388C384.2 378.3 378.8 362.5 377 357C375.2 351.5 375.7 355.0 375 355C374.3 355.0 374.3 353.5 373 357C371.7 360.5 368.7 369.2 367 376C365.3 382.8 363.7 391.5 363 398C362.3 404.5 362.3 408.0 363 415C363.7 422.0 366.7 433.2 367 440C367.3 446.8 364.0 447.5 365 456C366.0 464.5 370.3 477.2 373 491C375.7 504.8 379.3 520.7 381 539C382.7 557.3 383.5 581.3 383 601C382.5 620.7 379.5 644.2 378 657C376.5 669.8 376.0 670.0 374 678C372.0 686.0 367.3 692.2 366 705C364.7 717.8 365.0 742.0 366 755C367.0 768.0 370.8 772.7 372 783C373.2 793.3 373.5 807.7 373 817C372.5 826.3 370.5 832.8 369 839C367.5 845.2 366.3 844.8 364 854C361.7 863.2 357.2 883.5 355 894C352.8 904.5 351.7 911.5 351 917C350.3 922.5 350.7 924.3 351 927C351.3 929.7 352.8 929.7 353 933C353.2 936.3 350.7 942.0 352 947C353.3 952.0 356.2 957.2 361 963C365.8 968.8 377.3 977.3 381 982C384.7 986.7 384.5 988.2 383 991C381.5 993.8 374.7 997.7 372 999C369.3 1000.3 368.5 998.5 367 999C365.5 999.5 364.8 1001.8 363 1002C361.2 1002.2 358.5 999.7 356 1000C353.5 1000.3 350.2 1003.5 348 1004C345.8 1004.5 344.3 1003.3 343 1003C341.7 1002.7 342.7 1004.3 340 1002C337.3 999.7 329.3 992.7 327 989C324.7 985.3 327.7 983.2 326 980C324.3 976.8 318.5 973.0 317 970C315.5 967.0 316.5 964.8 317 962C317.5 959.2 319.8 958.2 320 953C320.2 947.8 317.7 936.8 318 931C318.3 925.2 321.3 923.3 322 918C322.7 912.7 322.7 907.0 322 899C321.3 891.0 320.0 880.5 318 870C316.0 859.5 311.7 845.2 310 836C308.3 826.8 307.5 826.7 308 815C308.5 803.3 313.7 780.2 313 766C312.3 751.8 306.2 746.7 304 730C301.8 713.3 302.5 686.3 300 666C297.5 645.7 291.0 622.2 289 608C287.0 593.8 288.5 585.8 288 581C287.5 576.2 286.7 579.0 286 579C285.3 579.0 284.7 575.7 284 581C283.3 586.3 283.3 601.7 282 611C280.7 620.3 277.8 626.8 276 637C274.2 647.2 272.5 656.0 271 672C269.5 688.0 269.0 717.7 267 733C265.0 748.3 260.3 756.3 259 764C257.7 771.7 258.3 772.5 259 779C259.7 785.5 262.3 795.5 263 803C263.7 810.5 263.3 818.0 263 824C262.7 830.0 262.3 832.7 261 839C259.7 845.3 257.0 851.2 255 862C253.0 872.8 249.8 894.3 249 904C248.2 913.7 249.2 915.2 250 920C250.8 924.8 253.8 928.2 254 933C254.2 937.8 250.8 943.2 251 949C251.2 954.8 254.7 964.0 255 968C255.3 972.0 254.5 971.2 253 973C251.5 974.8 247.5 976.2 246 979C244.5 981.8 246.7 986.0 244 990C241.3 994.0 233.3 1000.7 230 1003C226.7 1005.3 225.8 1004.0 224 1004C222.2 1004.0 220.5 1003.7 219 1003C217.5 1002.3 216.0 1000.2 215 1000C214.0 999.8 214.2 1001.7 213 1002C211.8 1002.3 209.3 1002.5 208 1002C206.7 1001.5 206.3 999.5 205 999C203.7 998.5 201.3 999.5 200 999C198.7 998.5 198.0 996.5 197 996C196.0 995.5 195.3 996.8 194 996C192.7 995.2 189.7 993.2 189 991C188.3 988.8 186.3 987.7 190 983C193.7 978.3 206.8 967.5 211 963C215.2 958.5 213.5 958.8 215 956C216.5 953.2 219.5 949.2 220 946C220.5 942.8 217.8 940.2 218 937C218.2 933.8 221.3 934.7 221 927C220.7 919.3 219.7 909.0 216 891C212.3 873.0 201.8 835.8 199 819C196.2 802.2 198.0 800.0 199 790C200.0 780.0 204.0 773.5 205 759C206.0 744.5 206.5 717.7 205 703C203.5 688.3 198.7 687.0 196 671C193.3 655.0 190.0 628.2 189 607C188.0 585.8 188.3 563.8 190 544C191.7 524.2 196.3 501.7 199 488C201.7 474.3 205.0 471.0 206 462C207.0 453.0 204.5 443.0 205 434C205.5 425.0 208.7 415.7 209 408C209.3 400.3 208.7 396.5 207 388C205.3 379.5 200.7 362.5 199 357C197.3 351.5 197.7 355.0 197 355C196.3 355.0 196.7 352.5 195 357C193.3 361.5 189.0 372.0 187 382C185.0 392.0 184.8 406.8 183 417C181.2 427.2 178.7 435.0 176 443C173.3 451.0 171.5 455.5 167 465C162.5 474.5 153.8 489.5 149 500C144.2 510.5 139.7 518.5 138 528C136.3 537.5 139.5 549.5 139 557C138.5 564.5 135.7 566.7 135 573C134.3 579.3 135.3 589.5 135 595C134.7 600.5 134.0 604.0 133 606C132.0 608.0 130.2 607.5 129 607C127.8 606.5 126.5 606.3 126 603C125.5 599.7 126.3 590.0 126 587C125.7 584.0 124.8 584.2 124 585C123.2 585.8 121.8 587.2 121 592C120.2 596.8 119.7 609.7 119 614C118.3 618.3 118.3 617.3 117 618C115.7 618.7 112.2 619.5 111 618C109.8 616.5 109.8 613.3 110 609C110.2 604.7 112.0 595.2 112 592C112.0 588.8 110.7 590.0 110 590C109.3 590.0 109.2 587.7 108 592C106.8 596.3 104.3 611.2 103 616C101.7 620.8 101.2 620.2 100 621C98.8 621.8 97.0 621.5 96 621C95.0 620.5 93.7 622.7 94 618C94.3 613.3 97.3 597.8 98 593C98.7 588.2 98.3 590.0 98 589C97.7 588.0 97.8 583.7 96 587C94.2 590.3 88.8 605.0 87 609C85.2 613.0 85.8 610.7 85 611C84.2 611.3 83.0 611.7 82 611C81.0 610.3 78.0 613.0 79 607C80.0 601.0 86.0 583.3 88 575C90.0 566.7 90.8 560.3 91 557C91.2 553.7 91.2 553.3 89 555C86.8 556.7 80.7 564.5 78 567C75.3 569.5 74.3 569.3 73 570C71.7 570.7 71.2 571.3 70 571C68.8 570.7 63.7 573.3 66 568C68.3 562.7 77.5 547.0 84 539C90.5 531.0 100.5 525.8 105 520C109.5 514.2 108.5 513.5 111 504C113.5 494.5 118.2 473.7 120 463C121.8 452.3 121.0 447.3 122 440C123.0 432.7 124.7 424.7 126 419C127.3 413.3 128.0 410.8 130 406C132.0 401.2 135.8 395.7 138 390C140.2 384.3 142.0 380.7 143 372C144.0 363.3 143.3 346.3 144 338C144.7 329.7 145.8 326.5 147 322C148.2 317.5 150.7 315.5 151 311C151.3 306.5 149.3 301.0 149 295C148.7 289.0 148.0 282.5 149 275C150.0 267.5 153.2 255.8 155 250C156.8 244.2 157.2 243.8 160 240C162.8 236.2 168.5 230.0 172 227C175.5 224.0 174.8 224.3 181 222C187.2 219.7 200.3 216.7 209 213C217.7 209.3 226.5 204.3 233 200C239.5 195.7 244.8 191.3 248 187C251.2 182.7 251.3 179.0 252 174C252.7 169.0 252.7 161.3 252 157C251.3 152.7 248.8 150.8 248 148C247.2 145.2 248.3 142.3 247 140C245.7 137.7 242.0 138.0 240 134C238.0 130.0 235.8 120.5 235 116C234.2 111.5 234.0 109.3 235 107C236.0 104.7 240.3 104.0 241 102C241.7 100.0 239.2 100.0 239 95C238.8 90.0 239.2 77.5 240 72C240.8 66.5 242.2 65.3 244 62C245.8 58.7 248.3 54.8 251 52C253.7 49.2 255.8 47.3 260 45C264.2 42.7 273.8 40.3 276 38C278.2 35.7 273.5 33.0 273 31C272.5 29.0 272.7 27.7 273 26C273.3 24.3 273.7 22.5 275 21C276.3 19.5 279.8 17.8 281 17C282.2 16.2 280.5 16.2 282 16Z"/>
+ <g clip-path="url(#heroClip)" class="hero-nerves">
+  <path d="M29.89,51.99L27.18,53.44L29.17,50.54L31.71,48.37L32.43,45.47L32.97,42.57L33.34,39.68L34.42,36.78L35.51,33.88L35.87,30.98L36.60,28.08L36.23,25.18L36.96,22.29L39.13,19.75L42.03,18.66L44.93,17.22L46.56,14.68L46.56,13.77" stroke="var(--eye)"/>
+  <path d="M31.52,56.88L31.71,59.06L32.61,57.06L33.15,55.25L33.34,57.43L34.24,56.52L34.24,54.35L34.60,52.17L34.60,50.00L35.51,47.83L36.60,45.65L37.68,43.48L38.77,41.31L39.31,39.13L39.68,36.96L40.22,34.78L40.94,32.79" stroke="var(--heart)"/>
+  <path d="M45.47,8.34L45.29,7.07L45.29,5.80L45.65,4.54L46.56,3.27L47.83,2.54L49.09,2.18L50.36,2.18L51.63,2.36L52.90,2.91L53.98,4.17L54.53,5.44L54.71,6.71L54.53,7.98L55.25,9.06L55.07,10.33L54.53,11.60L53.98,11.78" stroke="var(--crown)"/>
+  <path d="M55.80,92.20L55.07,91.66L54.71,90.94L54.53,90.21L54.53,89.49L54.53,88.76L54.71,88.04L54.71,87.31L54.89,86.59L54.89,85.86L55.07,85.14L55.25,84.42L55.25,83.69L55.25,82.97L55.43,82.24L55.43,81.52L55.43,80.79L55.43,80.07L55.43,79.52" stroke="var(--root)"/>
+  <path d="M43.66,73.55L43.30,73.73L43.12,74.45L42.94,75.18L42.57,75.90L42.39,76.63L42.39,77.35L42.21,78.08L42.21,78.80L42.39,79.52L42.39,80.25L42.39,80.97L42.57,81.70L42.75,82.42L42.75,83.15L42.94,83.87L43.12,84.60L43.30,85.32L43.30,85.68" stroke="var(--root)"/>
+  <path d="M45.29,91.66L45.29,90.94L45.47,90.21L45.47,89.49L45.47,88.76L45.29,88.04L45.11,87.31L45.11,86.59L44.93,85.86L44.75,85.14L44.75,84.42L44.57,83.69L44.57,82.97L44.38,82.24L44.38,81.52L44.38,80.79L44.38,80.07L44.20,79.71" stroke="var(--root)"/>
+  <path d="M34.97,47.83L35.15,47.28L35.51,46.74L35.69,46.20L36.05,45.65L36.23,45.11L36.42,44.57L36.78,44.02L36.96,43.48L37.32,42.94L37.50,42.39L37.68,41.85L37.86,41.31L38.05,40.76L38.23,40.22L38.23,39.68L38.41,39.13L38.41,38.59L38.41,38.05L38.23,37.68" stroke="var(--solar)"/>
+  <path d="M64.67,47.10L64.49,46.56L64.13,46.02L63.95,45.47L63.58,44.93L63.40,44.38L63.04,43.84L62.86,43.30L62.68,42.75L62.32,42.21L62.14,41.67L61.95,41.12L61.95,40.58L61.77,40.04L61.59,39.49L61.59,38.95L61.59,38.41L61.41,38.05" stroke="var(--solar)"/>
+  <path d="M33.70,49.82L33.34,50.00L33.15,49.46L33.34,48.91L33.52,48.37L33.70,47.83L34.06,47.28L34.24,46.74L34.42,46.20L34.42,45.65L34.60,45.11L34.78,44.57L34.97,44.02L34.97,43.48L35.15,42.94L35.33,42.39L35.33,41.85L35.33,41.67" stroke="var(--solar)"/>
+  <path d="M65.94,50.18L66.48,50.18L66.85,49.64L66.66,49.09L66.48,48.55L66.12,48.01L65.94,47.46L65.76,46.92L65.58,46.38L65.40,45.83L65.40,45.29L65.22,44.75L65.03,44.20L64.85,43.66L64.85,43.12L64.67,42.57L64.49,42.03L64.49,41.85" stroke="var(--solar)"/>
+  <path d="M53.98,84.05L53.98,84.42L53.98,84.78L53.98,85.14L53.98,85.50L53.98,85.86L53.98,86.23L53.98,86.59L53.98,86.95L53.98,87.31L53.98,87.68L53.98,88.04L53.80,88.40L53.80,88.76L53.80,89.12L53.80,89.49L53.80,89.85L53.62,90.21L53.62,90.57L53.62,90.94L53.62,91.30L53.44,91.66L53.44,92.02L53.44,92.02" stroke="var(--root)"/>
+  <path d="M41.49,59.96L41.49,59.60L41.49,59.24L41.49,58.88L41.49,58.51L41.49,58.15L41.49,57.79L41.49,57.43L41.67,57.06L41.67,56.70L42.03,56.34L42.03,55.98L42.21,55.62L42.39,55.25L42.57,54.89L42.75,54.53L42.94,54.17L43.12,53.80L43.30,53.44L43.48,53.08L43.84,52.72L44.02,52.35L44.20,52.35" stroke="var(--root)"/>
+  <path d="M58.51,59.96L58.51,59.60L58.51,59.24L58.51,58.88L58.51,58.51L58.51,58.15L58.51,57.79L58.51,57.43L58.33,57.06L58.15,56.70L57.97,56.34L57.97,55.98L57.79,55.62L57.61,55.25L57.43,54.89L57.25,54.53L57.06,54.17L56.88,53.80L56.52,53.44L56.34,53.08L56.16,52.72L55.98,52.35L55.80,52.35" stroke="var(--root)"/>
+  <path d="M63.40,31.52L63.40,31.16L63.40,30.80L63.22,30.44L63.04,30.08L63.04,29.71L62.86,29.35L62.68,28.99L62.50,28.63L62.50,28.26L62.32,27.90L62.14,27.54L61.95,27.18L61.77,26.82L61.59,26.45L61.23,26.09L61.05,25.73L60.87,25.37L60.51,25.00L60.14,24.64L59.96,24.46" stroke="var(--throat)"/>
+  <path d="M54.17,82.42L54.17,82.06L54.17,81.70L54.17,81.34L54.17,80.97L54.17,80.61L54.17,80.25L54.17,79.89L54.17,79.52L54.35,79.16L54.35,78.80L54.35,78.44L54.35,78.08L54.35,77.71L54.35,77.35L54.35,76.99L54.35,76.63L54.17,76.26L54.17,75.90L54.17,75.54L53.98,75.36" stroke="var(--root)"/>
+  <path d="M57.61,80.61L57.61,80.25L57.61,79.89L57.61,79.52L57.61,79.16L57.61,78.80L57.61,78.44L57.61,78.08L57.61,77.71L57.61,77.35L57.61,76.99L57.43,76.63L57.43,76.26L57.25,75.90L57.25,75.54L57.06,75.18L56.88,74.82L56.88,74.45L56.70,74.09L56.70,73.73L56.70,73.73" stroke="var(--root)"/>
+  <path d="M55.07,34.60L55.43,34.60L55.80,34.24L55.62,33.88L55.25,33.52L54.89,33.15L54.53,32.79L54.17,32.61L53.80,32.43L53.44,32.25L53.08,32.07L52.72,31.89L52.35,31.71L51.99,31.52L51.63,31.34L51.27,31.16L50.91,30.98L50.54,30.80L50.54,30.80" stroke="var(--heart)"/>
+  <path d="M45.11,66.85L44.93,66.48L44.93,66.12L45.11,65.76L45.11,65.40L45.11,65.03L45.11,64.67L45.11,64.31L45.11,63.95L45.11,63.58L45.11,63.22L45.11,62.86L44.93,62.50L44.93,62.14L44.93,61.77L44.75,61.41L44.57,61.05L44.57,61.05" stroke="var(--root)"/>
+  <path d="M55.25,66.85L55.07,66.48L54.89,66.12L54.89,65.76L54.89,65.40L54.89,65.03L54.89,64.67L54.89,64.31L54.89,63.95L54.89,63.58L54.89,63.22L54.89,62.86L54.89,62.50L55.07,62.14L55.07,61.77L55.07,61.41L55.25,61.23" stroke="var(--root)"/>
+  <path d="M57.43,80.97L57.43,81.34L57.43,81.70L57.25,82.06L57.25,82.42L57.25,82.78L57.06,83.15L57.06,83.51L56.88,83.87L56.88,84.23L56.70,84.60L56.70,84.96L56.70,85.32L56.70,85.68L56.52,86.05L56.52,86.41L56.52,86.59" stroke="var(--root)"/>
+  <path d="M46.02,84.78L46.02,84.96L46.02,85.14L46.02,85.32L46.02,85.50L46.02,85.68L46.02,85.86L46.02,86.05L46.02,86.23L46.02,86.41L46.02,86.59L46.02,86.77L46.02,86.95L46.02,87.13L46.02,87.31L46.02,87.49L46.02,87.68L46.02,87.86L46.02,88.04L46.02,88.22L46.02,88.40L46.02,88.58L46.20,88.76L46.20,88.94L46.20,89.12L46.20,89.31L46.20,89.49L46.20,89.67L46.20,89.85L46.20,90.03L46.20,90.21L46.20,90.21" stroke="var(--root)"/>
+  <path d="M55.62,36.78L55.62,36.60L55.43,36.42L55.43,36.23L55.25,36.05L55.07,35.87L55.07,35.69L54.89,35.51L54.71,35.33L54.53,35.15L54.35,34.97L54.35,34.78L54.17,34.60L53.98,34.42L53.80,34.24L53.62,34.24L53.44,34.06L53.26,34.06L53.08,33.88L52.90,33.70L52.72,33.70L52.54,33.52L52.35,33.52L52.17,33.34L51.99,33.34L51.81,33.15L51.63,33.15L51.45,32.97L51.27,32.97L51.09,32.79L51.09,32.79" stroke="var(--heart)"/>
+  <path d="M56.34,84.60L56.34,84.42L56.34,84.23L56.34,84.05L56.34,83.87L56.34,83.69L56.34,83.51L56.34,83.33L56.34,83.15L56.34,82.97L56.34,82.78L56.34,82.60L56.34,82.42L56.34,82.24L56.34,82.06L56.34,81.88L56.34,81.70L56.34,81.52L56.34,81.34L56.34,81.15L56.34,80.97L56.34,80.79L56.16,80.61L56.16,80.43L56.16,80.25L56.16,80.07L56.16,79.89L56.16,79.71L55.98,79.52L55.80,79.34L55.80,79.34" stroke="var(--root)"/>
+  <path d="M42.03,51.09L42.21,50.91L42.39,50.72L42.57,50.54L42.75,50.36L42.94,50.18L43.12,50.00L43.30,49.82L43.30,49.64L43.48,49.46L43.66,49.28L43.66,49.09L43.84,48.91L43.84,48.73L44.02,48.55L44.02,48.37L44.02,48.19L44.20,48.01L44.20,47.83L44.20,47.65L44.20,47.46L44.20,47.28L44.38,47.10L44.38,46.92L44.38,46.74L44.38,46.56L44.38,46.38L44.38,46.20L44.20,46.02L44.20,46.02" stroke="var(--sacral)"/>
+  <path d="M54.35,73.18L54.17,73.00L53.98,72.82L53.80,72.64L53.62,72.46L53.44,72.28L53.44,72.10L53.26,71.92L53.26,71.74L53.26,71.55L53.08,71.37L53.08,71.19L53.08,71.01L52.90,70.83L52.90,70.65L52.90,70.47L52.90,70.29L52.72,70.11L52.72,69.92L52.72,69.74L52.72,69.56L52.72,69.38L52.54,69.20L52.54,69.02L52.54,68.84L52.54,68.66L52.35,68.48L52.35,68.29L52.35,68.11L52.35,68.11" stroke="var(--root)"/>
+  <path d="M53.80,44.02L53.80,43.84L53.80,43.66L53.80,43.48L53.80,43.30L53.62,43.12L53.44,42.94L53.44,42.75L53.44,42.57L53.44,42.39L53.44,42.21L53.26,42.03L53.26,41.85L53.08,41.67L53.08,41.49L52.90,41.31L52.90,41.12L52.72,40.94L52.72,40.76L52.54,40.58L52.35,40.40L52.35,40.22L52.17,40.04L51.99,39.86L51.81,39.68L51.63,39.68L51.45,39.49L51.45,39.31L51.45,39.31" stroke="var(--solar)"/>
+  <path d="M37.14,29.17L37.14,28.99L37.32,28.81L37.32,28.63L37.50,28.45L37.50,28.26L37.50,28.08L37.68,27.90L37.68,27.72L37.86,27.54L37.86,27.36L38.05,27.18L38.05,27.00L38.23,26.82L38.23,26.63L38.41,26.45L38.41,26.27L38.59,26.09L38.77,25.91L38.95,25.73L38.95,25.55L39.13,25.37L39.31,25.18L39.49,25.00L39.68,24.82L39.86,24.64L39.86,24.64" stroke="var(--throat)"/>
+  <path d="M59.42,30.26L59.42,30.08L59.42,29.89L59.42,29.71L59.42,29.53L59.42,29.35L59.42,29.17L59.42,28.99L59.42,28.81L59.42,28.63L59.42,28.45L59.42,28.26L59.42,28.08L59.42,27.90L59.42,27.72L59.42,27.54L59.42,27.36L59.42,27.18L59.42,27.00L59.42,26.82L59.42,26.63L59.42,26.45L59.24,26.27L59.24,26.09L59.24,25.91L59.06,25.73L59.06,25.73" stroke="var(--heart)"/>
+  <path d="M71.55,56.70L71.55,56.88L71.55,57.06L71.55,57.25L71.74,57.43L71.74,57.61L71.55,57.79L71.55,57.97L71.37,58.15L71.19,58.15L71.01,57.97L70.83,57.79L70.83,57.61L70.65,57.43L70.65,57.25L70.47,57.06L70.47,56.88L70.29,56.70L70.29,56.52L70.29,56.34L70.11,56.16L70.11,55.98L70.11,55.80L69.92,55.62L69.92,55.43L69.74,55.25L69.74,55.25" stroke="var(--root)"/>
+  <path d="M47.46,56.88L47.46,56.70L47.46,56.52L47.46,56.34L47.28,56.16L47.28,55.98L47.28,55.80L47.10,55.62L47.10,55.43L47.10,55.25L46.92,55.07L46.92,54.89L46.92,54.71L46.74,54.53L46.74,54.35L46.56,54.17L46.56,53.98L46.56,53.80L46.56,53.62L46.38,53.44L46.38,53.26L46.38,53.08L46.20,52.90L46.20,52.72L46.20,52.54L46.02,52.35L46.02,52.35" stroke="var(--root)"/>
+  <path d="M46.20,44.20L46.20,44.02L46.20,43.84L46.02,43.66L46.20,43.48L46.20,43.30L46.20,43.12L46.38,42.94L46.38,42.75L46.38,42.57L46.56,42.39L46.56,42.21L46.56,42.03L46.74,41.85L46.74,41.67L46.92,41.49L46.92,41.31L47.10,41.12L47.10,40.94L47.28,40.76L47.46,40.58L47.46,40.40L47.65,40.22L47.83,40.04L48.01,39.86L48.01,39.86" stroke="var(--solar)"/>
+  <path d="M70.11,52.17L70.29,52.35L70.47,52.35L70.29,52.54L70.29,52.72L70.29,52.90L70.29,53.08L70.29,53.26L70.29,53.44L70.29,53.62L70.47,53.80L70.47,53.98L70.65,54.17L70.65,54.35L70.65,54.53L70.83,54.71L70.83,54.89L71.01,55.07L71.01,55.25L71.01,55.43L71.19,55.62L71.19,55.80L71.19,55.98L71.37,56.16L71.37,56.34L71.37,56.34" stroke="var(--root)"/>
+  <path d="M45.65,79.89L45.65,79.71L45.65,79.52L45.65,79.34L45.65,79.16L45.65,78.98L45.65,78.80L45.65,78.62L45.65,78.44L45.65,78.26L45.65,78.08L45.65,77.89L45.65,77.71L45.65,77.53L45.65,77.35L45.65,77.17L45.65,76.99L45.65,76.81L45.65,76.63L45.65,76.45L45.65,76.26L45.65,76.08L45.65,75.90L45.83,75.72L45.83,75.54L45.83,75.54" stroke="var(--root)"/>
+  <path d="M40.58,30.08L40.58,29.89L40.58,29.71L40.58,29.53L40.58,29.35L40.58,29.17L40.58,28.99L40.58,28.81L40.58,28.63L40.58,28.45L40.58,28.26L40.58,28.08L40.58,27.90L40.58,27.72L40.58,27.54L40.58,27.36L40.58,27.18L40.58,27.00L40.58,26.82L40.58,26.63L40.58,26.45L40.58,26.27L40.58,26.09L40.76,25.91L40.76,25.91" stroke="var(--heart)"/>
+  <path d="M52.54,56.52L52.54,56.34L52.54,56.16L52.72,55.98L52.72,55.80L52.72,55.62L52.90,55.43L52.90,55.25L52.90,55.07L53.08,54.89L53.08,54.71L53.26,54.53L53.26,54.35L53.26,54.17L53.44,53.98L53.44,53.80L53.44,53.62L53.62,53.44L53.62,53.26L53.62,53.08L53.62,52.90L53.80,52.72L53.80,52.54L53.80,52.35L53.80,52.35" stroke="var(--root)"/>
+  <path d="M41.12,26.45L41.12,26.27L41.12,26.09L40.94,25.91L40.76,25.73L40.76,25.55L40.94,25.37L40.94,25.18L40.94,25.00L40.94,24.82L41.12,24.64L41.12,24.46L41.12,24.28L41.31,24.10L41.31,23.92L41.49,23.74L41.67,23.55L41.85,23.37L41.85,23.19L42.03,23.01L42.21,22.83L42.39,22.65L42.39,22.47L42.39,22.47" stroke="var(--throat)"/>
+  <path d="M57.06,65.03L57.06,64.85L57.06,64.67L57.06,64.49L56.88,64.31L56.88,64.13L56.70,63.95L56.70,63.77L56.70,63.58L56.52,63.40L56.52,63.22L56.34,63.04L56.16,62.86L56.16,62.68L55.98,62.50L55.98,62.32L55.80,62.14L55.80,61.95L55.80,61.77L55.62,61.59L55.62,61.41L55.62,61.23L55.43,61.05L55.43,61.05" stroke="var(--root)"/>
+  <path d="M46.20,11.42L46.20,11.60L46.02,11.78L45.83,11.78L45.65,11.78L45.47,11.60L45.29,11.42L45.11,11.24L45.11,11.06L45.11,10.88L44.93,10.69L44.93,10.51L44.93,10.33L44.75,10.15L44.75,9.97L44.75,9.79L44.75,9.61L44.57,9.43L44.57,9.25L44.57,9.06L44.57,8.88L44.57,8.70L44.57,8.70" stroke="var(--crown)"/>
+  <path d="M54.35,29.35L54.17,29.17L53.98,28.99L53.80,28.81L53.62,28.81L53.44,28.63L53.26,28.63L53.08,28.63L52.90,28.45L52.72,28.45L52.54,28.45L52.35,28.26L52.17,28.26L51.99,28.26L51.81,28.26L51.63,28.08L51.45,28.08L51.27,27.90L51.09,27.90L50.91,27.72L50.72,27.72L50.54,27.72L50.54,27.72" stroke="var(--heart)"/>
+  <path d="M67.75,48.37L67.75,48.55L67.75,48.73L67.93,48.91L67.93,49.09L68.11,49.28L68.11,49.46L68.29,49.64L68.48,49.82L68.66,49.82L68.84,50.00L69.02,50.00L69.20,50.18L69.38,50.18L69.56,50.36L69.74,50.36L69.92,50.54L70.11,50.72L70.29,50.91L70.47,51.09L70.65,51.27L70.83,51.45L70.83,51.45" stroke="var(--sacral)"/>
+  <path d="M53.26,7.07L53.26,7.25L53.26,7.43L53.26,7.62L53.26,7.80L53.44,7.98L53.62,8.16L53.62,8.34L53.62,8.52L53.62,8.70L53.62,8.88L53.80,9.06L53.80,9.25L53.80,9.43L53.98,9.61L53.98,9.79L53.98,9.97L53.98,10.15L53.98,10.33L53.80,10.51L53.80,10.69L53.80,10.69" stroke="var(--crown)"/>
+  <path d="M38.05,24.28L38.23,24.10L38.41,23.92L38.59,23.74L38.77,23.55L38.95,23.37L39.13,23.19L39.31,23.01L39.49,22.83L39.68,22.83L39.86,22.65L40.04,22.47L40.22,22.47L40.40,22.47L40.58,22.29L40.76,22.29L40.94,22.29L41.12,22.11L41.31,22.11L41.49,21.92L41.67,21.92L41.67,21.92" stroke="var(--throat)"/>
+  <path d="M55.98,86.95L55.98,87.13L55.98,87.31L55.98,87.49L55.98,87.68L55.98,87.86L56.16,88.04L56.16,88.22L56.16,88.40L56.16,88.58L56.16,88.76L56.16,88.94L56.16,89.12L56.16,89.31L56.16,89.49L56.16,89.67L56.16,89.85L56.16,90.03L56.16,90.21L56.16,90.39L56.16,90.57L56.16,90.57" stroke="var(--root)"/>
+  <path d="M54.35,22.47L54.17,22.47L53.98,22.47L53.80,22.29L53.62,22.29L53.44,22.11L53.26,22.11L53.08,22.11L52.90,21.92L52.72,21.92L52.54,21.92L52.35,21.92L52.17,21.92L51.99,21.92L51.81,21.92L51.63,21.92L51.45,21.92L51.27,21.74L51.09,21.74L50.91,21.56L50.91,21.56" stroke="var(--throat)"/>
+  <path d="M53.80,24.46L53.62,24.28L53.44,24.10L53.44,23.92L53.26,23.74L53.08,23.55L52.90,23.55L52.72,23.55L52.54,23.55L52.35,23.55L52.17,23.55L51.99,23.55L51.81,23.37L51.63,23.37L51.45,23.37L51.27,23.19L51.09,23.19L50.91,23.01L50.72,23.01L50.54,22.83L50.54,22.83" stroke="var(--throat)"/>
+  <path d="M36.23,32.61L36.23,32.79L36.23,32.97L36.23,33.15L36.23,33.34L36.23,33.52L36.23,33.70L36.23,33.88L36.23,34.06L36.23,34.24L36.23,34.42L36.23,34.60L36.23,34.78L36.23,34.97L36.23,35.15L36.23,35.33L36.23,35.51L36.23,35.69L36.42,35.87L36.42,35.87" stroke="var(--heart)"/>
+  <path d="M54.89,20.84L54.89,21.02L54.89,21.20L54.71,21.38L54.53,21.20L54.35,21.20L54.17,21.02L53.98,21.02L53.80,20.84L53.62,20.84L53.44,20.84L53.26,20.66L53.08,20.66L52.90,20.66L52.72,20.48L52.54,20.48L52.35,20.48L52.17,20.48L52.17,20.48" stroke="var(--throat)"/>
+  <path d="M58.88,26.45L58.88,26.27L58.88,26.09L58.88,25.91L58.88,25.73L59.06,25.55L59.06,25.37L59.06,25.18L58.88,25.00L58.88,24.82L58.88,24.64L58.69,24.46L58.69,24.28L58.51,24.10L58.51,23.92L58.33,23.74L58.33,23.55L58.33,23.55" stroke="var(--throat)"/>
+  <path d="M34.24,39.49L34.24,39.31L34.42,39.13L34.42,38.95L34.42,38.77L34.60,38.59L34.60,38.41L34.78,38.23L34.78,38.05L34.97,37.86L35.15,37.68L35.15,37.50L35.33,37.32L35.51,37.14L35.51,36.96L35.69,36.78L35.87,36.60L35.87,36.60" stroke="var(--solar)"/>
+  <path d="M49.82,40.94L49.82,41.12L49.64,41.31L49.46,41.31L49.28,41.12L49.28,40.94L49.46,40.76L49.46,40.58L49.64,40.40L49.64,40.22L49.64,40.04L49.64,39.86L49.64,39.68L49.64,39.49L49.64,39.31L49.64,39.13L49.64,38.95L49.64,38.95" stroke="var(--solar)"/>
+  <path d="M45.83,50.18L45.83,50.36L45.83,50.54L45.83,50.72L45.83,50.91L46.02,50.91L46.20,50.72L46.20,50.54L46.20,50.36L46.20,50.18L46.20,50.00L46.20,49.82L46.20,49.64L46.20,49.46L46.02,49.28L46.02,49.09L46.02,48.91L46.02,48.91" stroke="var(--sacral)"/>
+  <path d="M48.19,51.09L48.01,50.91L47.83,50.72L47.65,50.54L47.46,50.36L47.28,50.18L47.28,50.00L47.10,49.82L46.92,49.64L46.74,49.46L46.74,49.28L46.56,49.09L46.56,48.91L46.38,48.73L46.38,48.55L46.38,48.37L46.38,48.19L46.38,48.19" stroke="var(--sacral)"/>
+  <path d="M45.83,80.43L45.83,80.61L45.83,80.79L45.83,80.97L45.83,81.15L45.83,81.34L45.83,81.52L45.83,81.70L45.83,81.88L45.83,82.06L45.83,82.24L45.83,82.42L45.83,82.60L45.83,82.78L45.83,82.97L45.83,83.15L45.83,83.33L45.83,83.33" stroke="var(--root)"/>
+  <path d="M63.77,32.97L63.77,33.15L63.77,33.34L63.77,33.52L63.77,33.70L63.77,33.88L63.77,34.06L63.77,34.24L63.77,34.42L63.77,34.60L63.77,34.78L63.77,34.97L63.77,35.15L63.77,35.33L63.77,35.51L63.77,35.69L63.77,35.69" stroke="var(--heart)"/>
+  <path d="M50.00,3.81L50.00,3.99L50.00,4.17L50.00,4.35L50.00,4.54L50.00,4.72L50.00,4.90L50.00,5.08L50.00,5.26L50.00,5.44L50.00,5.62L50.00,5.80L50.00,5.98L50.00,6.17L50.00,6.35L50.00,6.35" stroke="var(--crown)"/>
+  <path d="M51.09,6.71L50.91,6.89L50.72,7.07L50.54,7.25L50.54,7.43L50.36,7.62L50.36,7.80L50.54,7.98L50.72,7.80L50.91,7.62L51.09,7.62L51.27,7.62L51.45,7.43L51.63,7.43L51.81,7.43L51.81,7.43" stroke="var(--crown)"/>
+  <path d="M46.20,8.88L46.20,9.06L46.02,9.25L46.02,9.43L46.02,9.61L46.02,9.79L46.02,9.97L46.02,10.15L46.02,10.33L46.02,10.51L46.20,10.69L46.20,10.88L46.38,11.06L46.56,11.24L46.74,11.42L46.74,11.42" stroke="var(--eye)"/>
+  <path d="M60.32,22.83L60.14,22.65L59.96,22.47L59.78,22.47L59.60,22.47L59.42,22.29L59.24,22.29L59.06,22.29L58.88,22.11L58.69,22.11L58.51,21.92L58.33,21.92L58.15,21.74L57.97,21.56L57.79,21.56L57.79,21.56" stroke="var(--throat)"/>
+  <path d="M53.98,39.68L53.98,39.86L54.17,40.04L54.17,40.22L54.17,40.40L54.17,40.58L54.17,40.76L54.17,40.94L54.35,41.12L54.53,41.31L54.71,41.49L54.89,41.67L55.07,41.67L55.25,41.67L55.43,41.67L55.43,41.67" stroke="var(--solar)"/>
+  <path d="M65.94,44.20L65.94,44.02L65.94,43.84L65.76,43.66L65.76,43.48L65.58,43.30L65.58,43.12L65.40,42.94L65.40,42.75L65.22,42.57L65.22,42.39L65.03,42.21L65.03,42.03L64.85,41.85L64.67,41.67L64.67,41.67" stroke="var(--solar)"/>
+  <path d="M51.45,46.38L51.27,46.20L51.09,46.02L50.91,45.83L50.72,45.65L50.54,45.47L50.36,45.29L50.18,45.11L50.18,44.93L50.00,44.75L50.00,44.57L50.00,44.38L50.00,44.20L50.00,44.02L50.00,43.84L50.00,43.84" stroke="var(--sacral)"/>
+  <path d="M43.66,82.06L43.66,81.88L43.66,81.70L43.66,81.52L43.66,81.34L43.66,81.15L43.66,80.97L43.66,80.79L43.66,80.61L43.66,80.43L43.84,80.25L43.84,80.07L43.84,79.89L43.84,79.71L44.02,79.52L44.02,79.52" stroke="var(--root)"/>
+  <path d="M47.83,15.04L47.83,15.22L48.01,15.40L48.19,15.22L48.37,15.04L48.19,14.86L48.01,14.68L47.83,14.50L47.65,14.50L47.46,14.32L47.28,14.14L47.10,13.95L46.92,13.77L46.74,13.59L46.74,13.59" stroke="var(--eye)"/>
+  <path d="M40.40,30.80L40.40,30.98L40.40,31.16L40.40,31.34L40.40,31.52L40.40,31.71L40.22,31.89L40.22,32.07L40.22,32.25L40.22,32.43L40.22,32.61L40.04,32.79L40.04,32.97L40.04,33.15L40.04,33.15" stroke="var(--heart)"/>
+  <path d="M60.32,34.42L60.32,34.60L60.51,34.78L60.51,34.97L60.51,35.15L60.69,35.33L60.69,35.51L60.69,35.69L60.87,35.87L60.87,36.05L61.05,36.23L61.05,36.42L61.23,36.60L61.41,36.78L61.41,36.78" stroke="var(--heart)"/>
+  <path d="M51.27,36.05L51.27,36.23L51.27,36.42L51.09,36.60L50.91,36.42L50.72,36.23L50.54,36.05L50.36,35.87L50.36,35.69L50.36,35.51L50.36,35.33L50.18,35.15L50.36,34.97L50.36,34.78L50.36,34.78" stroke="var(--heart)"/>
+  <path d="M49.09,39.13L49.28,38.95L49.46,38.77L49.64,38.59L49.64,38.41L49.46,38.23L49.46,38.05L49.64,37.86L49.64,37.68L49.64,37.50L49.64,37.32L49.64,37.14L49.64,36.96L49.64,36.78L49.64,36.78" stroke="var(--solar)"/>
+  <path d="M50.18,40.94L50.36,41.12L50.54,40.94L50.54,40.76L50.36,40.58L50.36,40.40L50.18,40.22L50.18,40.04L50.18,39.86L50.18,39.68L50.18,39.49L50.18,39.31L50.18,39.13L50.18,38.95L50.18,38.95" stroke="var(--solar)"/>
+  <path d="M44.75,50.91L44.75,51.09L44.75,51.27L44.93,51.27L45.11,51.09L45.11,50.91L45.11,50.72L44.93,50.54L44.93,50.36L45.11,50.18L45.11,50.00L45.11,49.82L45.11,49.64L45.29,49.46L45.29,49.46" stroke="var(--sacral)"/>
+  <path d="M52.17,51.27L52.17,51.09L52.17,50.91L52.17,50.72L52.35,50.54L52.54,50.36L52.72,50.18L52.72,50.00L52.90,49.82L53.08,49.64L53.08,49.46L53.26,49.28L53.26,49.09L53.44,48.91L53.44,48.91" stroke="var(--sacral)"/>
+  <path d="M53.80,75.72L53.80,75.54L53.80,75.36L53.98,75.18L53.80,75.00L53.80,74.82L53.80,74.63L53.80,74.45L53.80,74.27L53.80,74.09L53.80,73.91L53.80,73.73L53.80,73.55L53.80,73.37L53.80,73.37" stroke="var(--root)"/>
+  <path d="M43.66,82.97L43.66,83.15L43.66,83.33L43.66,83.51L43.66,83.69L43.66,83.87L43.66,84.05L43.66,84.23L43.66,84.42L43.66,84.60L43.66,84.78L43.66,84.96L43.66,85.14L43.66,85.32L43.66,85.32" stroke="var(--root)"/>
+ </g>
+ <g clip-path="url(#heroClip)">
+  <circle class="hero-glow" data-seat="root" cx="52.75" cy="72.52" r="13" fill="url(#hs-root)"/>
+  <circle class="hero-glow" data-seat="sacral" cx="50.73" cy="49.07" r="13" fill="url(#hs-sacral)"/>
+  <circle class="hero-glow" data-seat="solar" cx="50.03" cy="41.79" r="13" fill="url(#hs-solar)"/>
+  <circle class="hero-glow" data-seat="heart" cx="49.94" cy="33.18" r="13" fill="url(#hs-heart)"/>
+  <circle class="hero-glow" data-seat="throat" cx="49.89" cy="24.08" r="13" fill="url(#hs-throat)"/>
+  <circle class="hero-glow" data-seat="eye" cx="42.96" cy="19.89" r="13" fill="url(#hs-eye)"/>
+  <circle class="hero-glow" data-seat="crown" cx="50.00" cy="7.86" r="13" fill="url(#hs-crown)"/>
+ </g>
+ <g clip-path="url(#heroClip)">
+  <circle class="hero-seat" data-seat="root" cx="52.75" cy="72.52" r="1.5" stroke="var(--root)"/>
+  <circle class="hero-seat" data-seat="sacral" cx="50.73" cy="49.07" r="1.5" stroke="var(--sacral)"/>
+  <circle class="hero-seat" data-seat="solar" cx="50.03" cy="41.79" r="1.5" stroke="var(--solar)"/>
+  <circle class="hero-seat" data-seat="heart" cx="49.94" cy="33.18" r="1.5" stroke="var(--heart)"/>
+  <circle class="hero-seat" data-seat="throat" cx="49.89" cy="24.08" r="1.5" stroke="var(--throat)"/>
+  <circle class="hero-seat" data-seat="eye" cx="42.96" cy="19.89" r="1.5" stroke="var(--eye)"/>
+  <circle class="hero-seat" data-seat="crown" cx="50.00" cy="7.86" r="1.5" stroke="var(--crown)"/>
+ </g>
+</svg>
+<!-- FIGURE END -->
+ </div>
+ <div class="lyr lyr-dial">
+  <svg id="dial" viewBox="-60 -14 520 428" aria-hidden="true">
+   <g id="dialArcs"></g>
+   <circle cx="200" cy="200" r="150" fill="none" stroke="var(--accent)" stroke-opacity=".34" stroke-width="1"/>
+   <line x1="200" y1="160" x2="200" y2="50" stroke="var(--throat)" stroke-opacity=".3" stroke-width="1.2"/>
+   <line x1="240" y1="200" x2="350" y2="200" stroke="var(--sacral)" stroke-opacity=".3" stroke-width="1.2"/>
+   <line x1="200" y1="240" x2="200" y2="350" stroke="var(--heart)" stroke-opacity=".3" stroke-width="1.2"/>
+   <line x1="160" y1="200" x2="50" y2="200" stroke="var(--root)" stroke-opacity=".3" stroke-width="1.2"/>
+   <circle class="cohere" cx="200" cy="200" r="100" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="2 5"/>
+   <circle cx="200" cy="200" r="40" fill="none" stroke="var(--ink)" stroke-opacity=".12"/>
+   <circle class="cohere" cx="200" cy="200" r="7" fill="var(--accent)"/>
+   <g class="orbit">
+    <path d="M 103.6 85.1 A 150 150 0 0 1 200 50" fill="none" stroke="var(--accent)" stroke-opacity=".5" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="200" cy="50" r="12" fill="var(--accent)" fill-opacity=".2"/>
+    <circle cx="200" cy="50" r="4.5" fill="var(--accent)"/>
+   </g>
+   <circle class="st-h" cx="200" cy="50" r="18" fill="none" stroke="var(--throat)" stroke-width="1.2" style="animation-delay:0s"/>
+   <circle class="st-h" cx="350" cy="200" r="18" fill="none" stroke="var(--sacral)" stroke-width="1.2" style="animation-delay:3s"/>
+   <circle class="st-h" cx="200" cy="350" r="18" fill="none" stroke="var(--heart)" stroke-width="1.2" style="animation-delay:6s"/>
+   <circle class="st-h" cx="50" cy="200" r="18" fill="none" stroke="var(--root)" stroke-width="1.2" style="animation-delay:9s"/>
+   <circle cx="200" cy="50" r="10" fill="var(--bg)" stroke="var(--throat)" stroke-width="2"/>
+   <circle cx="350" cy="200" r="10" fill="var(--bg)" stroke="var(--sacral)" stroke-width="2"/>
+   <circle cx="200" cy="350" r="10" fill="var(--bg)" stroke="var(--heart)" stroke-width="2"/>
+   <circle cx="50" cy="200" r="10" fill="var(--bg)" stroke="var(--root)" stroke-width="2"/>
+   <text class="lbl" x="200" y="20" text-anchor="middle">Discover</text>
+   <text class="lbl" x="370" y="205">Play</text>
+   <text class="lbl" x="200" y="396" text-anchor="middle">Flow</text>
+   <text class="lbl" x="30" y="205" text-anchor="end">Embody</text>
+  </svg>
+ </div>
+</div>
+
+<div class="col">
+
+<!-- BEAT 01, THE FIELD. Section 9. "Create intrigue without explanation."
+     The stage: one point of light, a second, a third, and the faint network
+     underneath with its pulses running, which is the sentence drawn. -->
+<section class="fr fr-arrive" id="arrive" data-frame="arrive">
+ <h1 class="rv">Something runs the way you live.</h1>
+ <p class="lead rv" style="--d:.15s">You feel it before you can explain it.</p>
+ <div class="cta rv" style="--d:.3s"><a class="btn" href="#recognize">See it</a></div>
+ <div class="cap rv" style="--d:.45s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-arrive"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-arrive">Each point of light is an address: one exact place in your body where
+ a pattern sits. The faint ring holds all 112. The lines are patterns, running.
+ Nothing of yours is in it yet.</p></div>
+</section>
+
+<!-- BEAT 02, THE HUMAN TRUTH. "Make the visitor recognize repetition."
+     Motion: points connect. Each line lights one point on the stage, and on
+     "Same response" the six pull to one place. Section 69: SIGNAL, then
+     CONNECT, then PATTERN, repetition gathers. -->
+<section class="fr" id="recognize" data-frame="recognize">
+ <p class="big rv">You know what you want.</p>
+ <p class="big rv soft" style="--d:.2s">Something gets in the way.</p>
+ <ul class="keep" id="keep">
+  <li>You keep saying yes.</li>
+  <li>You keep putting it off.</li>
+  <li>You keep having the same argument.</li>
+  <li>You keep overthinking it.</li>
+  <li>You keep trying to control it.</li>
+  <li>You keep going back to the same thing.</li>
+ </ul>
+ <div class="same" id="same"><p class="big">Different situation.</p><p class="big">Same response.</p></div>
+ <div class="cap rv" style="--d:.3s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-recognize"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-recognize">Each lit point is one situation. The lines pull them to one place: the
+ same response, every time. That is a pattern.</p></div>
+</section>
+
+<!-- BEATS 07, 05, 16 AND 17, STORY BECOMES PATTERN, AND THE DIFFERENCE.
+     "Demonstrate the product rather than explain it." The words are the
+     TDD's own example, beat 07, and the reading is section 16's Concept 04.
+     The three answers are real controls and the correction visibly changes
+     the reading, which is beat 05's requirement. The reading set aside is
+     kept, struck, on the card: frame 09, "The original interpretation
+     remains preserved." It is labelled an example because it is one: nothing
+     on this page reads the visitor. -->
+<section class="fr mx" id="mirror" data-frame="mirror" data-m="">
+ <span class="eye rv">Example</span>
+ <h2 class="rv">A story can hide a pattern.</h2>
+ <p class="said rv" style="--d:.15s">I <span class="w w1">keep</span> saying <span class="w w2">yes</span> when I <span class="w w3">don't want</span> to.</p>
+ <ul class="parts rv" style="--d:1s" aria-label="The words, separated"><li>Yes</li><li>Don't want</li><li>Keep</li></ul>
+ <ol class="chain rv" style="--d:1.2s" aria-label="The pattern, in order">
+  <li><span class="nd"></span>Yes</li>
+  <li><span class="nd"></span>Overcommit</li>
+  <li><span class="nd"></span>Pressure</li>
+  <li><span class="nd"></span>Resentment</li>
+  <li><span class="nd"></span>Withdraw</li>
+ </ol>
+ <div class="mirror rv" style="--d:1.4s">
+  <span class="eye">Atuned noticed</span>
+  <p class="reading" id="reading">You say yes before checking whether you actually want to.</p>
+  <p class="ask">Is that what you mean?</p>
+  <div class="ans" role="group" aria-label="Your answer">
+   <button type="button" data-a="yes" aria-pressed="false">Yes</button>
+   <button type="button" data-a="no" aria-pressed="false">Not me</button>
+   <button type="button" data-a="again" aria-pressed="false">Correct it</button>
+  </div>
+  <p class="say" id="say" role="status" aria-live="polite"></p>
+  <ul class="was" id="was" aria-label="Earlier readings"></ul>
+ </div>
+ <p class="rv" style="--d:1.5s">Correct it and the reading changes. You have the last word.</p>
+</section>
+
+<!-- FUNNEL BEAT 04, THE CASCADE. reviews/ATUNED-Funnel-Onboarding-Tutorial-
+     Creative-TDD.md section 12: "The user sees a coherent system. A
+     disturbance enters. The response travels through the conceptual system
+     ... event, response, nerve, nervous system, body, larger system. Then the
+     system repeats. The response becomes conditioned. The user sees that the
+     original event can eventually become unnecessary for the response to
+     appear."
+
+     Here because that is the TDD's own order: the mirror just above is beat
+     03, a story hiding a pattern, and the network just below is where the
+     Field assembles whole, which is beat 05. Nothing before this showed a
+     response travelling or a response running on its own, so it is its own
+     frame and not a line added to either neighbour.
+
+     The stage is the same Field, eased, never a cut. Something comes in from
+     outside and lands on one address. The answer runs in along a thread to
+     the heart's pattern (the same pattern release loosens further down),
+     through a complex to the core, back out along that pattern's own threads
+     to its seat, and round the whole ring. Four passes. Each one is quicker,
+     the thread pulls tighter and straighter, its pulses run faster by the
+     Field's own rule, and the steps between stages close until they read as
+     one event. The third spark is faint and the fourth pass has none: the
+     answer runs anyway. The three steps light in time with it, the way
+     release's do.
+
+     "Do not present this as a universal biomedical law. The animation is an
+     ATUNED conceptual model." So the frame says it is a model, in print, and
+     the key never names a nerve as anything but a likeness. -->
+<section class="fr" id="cascade" data-frame="cascade">
+ <h2 class="rv">A response can become a pattern.</h2>
+ <p class="big rv soft" style="--d:.15s">A pattern can become a habit.</p>
+ <ol class="steps rv" style="--d:.3s" id="csteps">
+  <li data-step="once"><b>Once</b><span>Something happens. Your body answers.</span></li>
+  <li data-step="again"><b>Again</b><span>The same answer comes back, quicker each time.</span></li>
+  <li data-step="own"><b>On its own</b><span>The answer starts with nothing new to answer, before you choose it.</span></li>
+ </ol>
+ <p class="m soft rv" style="--d:.45s">The picture is our own model of how a pattern forms.</p>
+ <div class="cap rv" style="--d:.6s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-cascade"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-cascade">Something comes in from outside and lands on one point on the ring.
+ That point is one place in your body, and it answers. The answer runs in along
+ a line, the way a nerve carries a signal. It crosses the middle and spreads back
+ out until the whole ring has felt it. Each time round, the line pulls tighter and
+ the answer comes quicker. On the last pass nothing comes in, and it runs anyway.
+ It is a picture of a model, and it measures nothing.</p></div>
+</section>
+
+<!-- BEAT 08, ONE THING BECOMES MANY. Visual: "One point. Repeated points.
+     Clusters. Connections. Network." The stage assembles the whole Field. -->
+<section class="fr" id="connect" data-frame="network">
+ <h2 class="rv">Patterns connect.</h2>
+ <p class="big rv soft" style="--d:.15s">What starts at work can show up at home.</p>
+ <p class="m rv" style="--d:.3s">Atuned looks for the connections.</p>
+ <div class="cap rv" style="--d:.45s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-connect"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-connect">The outer ring is the 112 addresses, coloured by the part of the body
+ each one belongs to. The points inside are patterns. Each line shows where a
+ pattern pulls. A tighter line, with quicker pulses, pulls harder.</p></div>
+</section>
+
+<!-- BEAT 09, THE BODY. "Abstract body architecture. One region activates."
+     The stage turns to the body the Body page draws, generated from the same
+     tables by make-figure.js. "Do not convert sensation into diagnosis." -->
+<section class="fr" id="body" data-frame="body">
+ <h2 class="rv">You feel it in your body.</h2>
+ <p class="felt rv" style="--d:.15s"><span style="transition-delay:.2s">Tight.</span><span style="transition-delay:.45s">Heavy.</span><span style="transition-delay:.7s">Hot.</span><span style="transition-delay:.95s">Numb.</span><span style="transition-delay:1.2s">Restless.</span><span style="transition-delay:1.45s">Pressured.</span><span style="transition-delay:1.7s">Nothing at all.</span></p>
+ <p class="big rv" style="--d:.4s">All of that is information.</p>
+ <div class="cap rv" style="--d:.6s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-body"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-body">Seven colours, seven seats, from the base of the spine to the top of the
+ head. A seat is one part of the body a pattern can settle in. The fine lines are
+ nerves. The lit seat is where a pattern sits.</p></div>
+</section>
+
+<!-- BEAT 20, RELEASE, told the way section 28 says the funnel can tell it:
+     "A repeated pattern forms. Its signal becomes dense. Release interrupts
+     the flow. The field opens. A new statement enters. The new statement
+     establishes a different path." The stage runs that, and the three steps
+     below light in time with it. Then beat 21, verify. -->
+<section class="fr" id="release" data-frame="release">
+ <h2 class="rv">Release disrupts the old pattern.</h2>
+ <p class="big rv soft" style="--d:.15s">Reframe gives you a new sentence to practise.</p>
+ <ol class="steps rv" style="--d:.3s" id="steps">
+  <li data-step="pattern"><b>Pattern</b><span>A repeated pattern forms, and its lines pull tight.</span></li>
+  <li data-step="release"><b>Release</b><span>Release interrupts the flow. The lines go slack and the field opens.</span></li>
+  <li data-step="reframe"><b>Reframe</b><span>A new statement enters and sets a different path.</span></li>
+ </ol>
+ <p class="frame-q rv" style="--d:.45s">I know that I am allowed to say what I mean.</p>
+ <div class="changed rv" style="--d:.6s">
+  <h3>What changed?</h3>
+  <ul class="opts"><li>I feel different</li><li>I see it differently</li><li>Something moved</li><li>Nothing changed</li><li>Not sure</li></ul>
+  <p class="soft m">Nothing changed is an answer too.</p>
+ </div>
+ <div class="cap rv" style="--d:.7s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-release"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-release">The knot is one pattern. The new line is the reframe: a sentence that
+ starts with "I know", built from what you said.</p></div>
+</section>
+
+<!-- BEATS 23 TO 27, THE LOOP AND THE FIELD REMEMBERS. Ruled: "it is a
+     circle, never a list", so the four close on the dial and the light goes
+     round it without stopping. The stage is the Compass plan view. -->
+<section class="fr" id="loop" data-frame="loop">
+ <h2 class="rv">Discover, play, flow, embody.</h2>
+ <ul class="four rv" style="--d:.15s">
+  <li><i style="border-color:var(--throat)"></i><div><b>Discover</b><span>See what keeps happening.</span></div></li>
+  <li><i style="border-color:var(--sacral)"></i><div><b>Play</b><span>Test what you think you know.</span></div></li>
+  <li><i style="border-color:var(--heart)"></i><div><b>Flow</b><span>Release the charge: the weight a pattern leaves on one place in your body.</span></div></li>
+  <li><i style="border-color:var(--root)"></i><div><b>Embody</b><span>Make a different choice.</span></div></li>
+ </ul>
+ <p class="back rv" style="--d:.3s">Embody hands back to discover. Atuned remembers what you found, so
+ next time you have somewhere to look.</p>
+ <div class="cap rv" style="--d:.45s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-loop"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-loop">The light goes round the four and never stops, because the loop has no end.</p></div>
+</section>
+
+<!-- BEATS 31 AND 32. "Not a diagnosis. Not a verdict. A map you can
+     question." And the transparency the TDD asks for, which the product
+     already keeps: the glossary in engine/data/kb.js says, row by row, what
+     is measured and what is a model. -->
+<section class="fr" id="honest" data-frame="honest">
+ <h2 class="rv">Not a diagnosis. Not a verdict. A map you can question.</h2>
+ <p class="m rv" style="--d:.15s">Some of it rests on established ideas. Some is our own model. Some we
+ are still testing.</p>
+ <p class="m soft rv" style="--d:.3s">Every table the reading runs on is open inside the product, so you can
+ check the work against your own life.</p>
+</section>
+
+<!-- BEATS 33 AND 34, RETURN TO THE HUMAN, AND START. "Everything
+     disappears. Black Field." The stage lets every line and point go and
+     keeps one point of light, which is where beat 01 began: the page closes
+     the way the loop does. -->
+<section class="fr fr-ret" id="start" data-frame="ret">
+ <p class="big rv">You don't need to understand yourself first.</p>
+ <p class="big rv soft" style="--d:.25s">Bring something real.</p>
+ <p class="wm end-wm rv" style="--d:.45s">At<span class="um">u</span>ned</p>
+ <p class="end-tag rv" style="--d:.55s">See what's running you.</p>
+ <div class="cta rv" style="--d:.65s"><a class="btn" href="atuned-quiz.html">Start</a><a class="ghost" href="atuned-about.html">Explore first</a></div>
+ <p class="meta rv" style="--d:.75s">One question per screen. Stop and come back. Nothing you answer leaves your browser.</p>
+</section>
+
+</div>
+</main>
+
+<footer class="foot">
+ <nav class="nav" aria-label="Pages, again"><a href="atuned-about.html">About</a><a href="atuned-faq.html">Questions</a><a href="atuned-buy.html">Tiers</a><a class="go" href="atuned-quiz.html">Start</a></nav>
+ <p>This page makes no request of any kind. It reads self report. A clinician reads a person, and those are different jobs.</p>
+</footer>
+
+<script>
+/* ============================================================
+   THE STAGE, DRIVEN BY THE STORY.
+
+   One Field, built once, eased toward whatever the frame in view asks for,
+   so every change between beats is the state reorganising (section 69,
+   CHANGE) and never a cut. The geometry is illustrative and says so on the
+   page: 112 addresses in seven seat sectors, fourteen patterns, five
+   complexes, one core. Nobody's record is in it.
+   ============================================================ */
+(function(){
+'use strict';
+var D=document, root=D.documentElement;
+root.classList.add('js');
+var RM=window.matchMedia?matchMedia('(prefers-reduced-motion: reduce)'):{matches:false};
+var REDUCED=RM.matches;
+var TAU=Math.PI*2;
+var SEATS=['root','sacral','solar','heart','throat','eye','crown'];
+
+function tok(v){return getComputedStyle(root).getPropertyValue(v).trim();}
+function hex(h){h=(h||'#888888').replace('#','');
+ if(h.length===3)h=h.split('').map(function(c){return c+c;}).join('');
+ return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];}
+function rgba(c,a){return 'rgba('+c[0]+','+c[1]+','+c[2]+','+Math.max(0,Math.min(1,a)).toFixed(3)+')';}
+function mix(a,b,k){return [Math.round(a[0]+(b[0]-a[0])*k),Math.round(a[1]+(b[1]-a[1])*k),Math.round(a[2]+(b[2]-a[2])*k)];}
+function clamp(v,a,b){return v<a?a:v>b?b:v;}
+function lerp(a,b,k){return a+(b-a)*k;}
+function ease(k){k=clamp(k,0,1);return 1-Math.pow(1-k,3);}
+function seeded(s){return function(){s|=0;s=s+0x6D2B79F5|0;var t=Math.imul(s^s>>>15,1|s);
+ t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+
+/* ---------------- the Field ---------------- */
+var cv=D.getElementById('fld'), g=cv&&cv.getContext&&cv.getContext('2d');
+var stage=D.getElementById('stage');
+var COL={}, ACC, INK=[230,230,235], BG=[12,13,18], WHITE=[255,255,255];
+function readCols(){SEATS.forEach(function(s){COL[s]=hex(tok('--'+s));});ACC=hex(tok('--accent'));INK=hex(tok('--ink'));BG=hex(tok('--bg'));}
+readCols();
+
+var rnd=seeded(11);
+var A=[],P=[],C=[],T=[];
+for(var i=0;i<112;i++){var s=Math.floor(i/16),k=i%16;
+ A.push({s:s,t:(s+0.07+0.86*(k+0.5)/16)/7,f:1,x:0,y:0,a:0,lit:0,litT:0});}
+for(var p=0;p<14;p++){var hs=p%7;
+ P.push({s:hs,t:(hs+0.22+0.56*rnd())/7,f:0.54+0.12*rnd(),x:0,y:0,a:0,sc:1});}
+for(var c=0;c<5;c++)C.push({t:(c+0.25+0.5*rnd())/5,f:0.28+0.07*rnd(),x:0,y:0,a:0});
+var CORE={t:0,f:0,x:0,y:0,a:0,sc:1};
+/* the network: each pattern pulls on three addresses in its own seat and one
+   in another, because something that started in one place can show up in
+   many parts of your life (beat 08) */
+P.forEach(function(pt,j){
+ for(var q=0;q<3;q++)T.push({o:A[pt.s*16+((j*5+q*5+3)%16)],i:pt,t:0.15+0.85*Math.pow(rnd(),0.8),g:'net',c:pt.s});
+ T.push({o:A[((pt.s+2+(j%3))%7)*16+((j*7)%16)],i:pt,t:0.15+0.85*rnd(),g:'net',c:(pt.s+2+(j%3))%7});
+ T.push({o:pt,i:C[Math.min(4,Math.floor(j*5/14))],t:0.3+0.6*rnd(),g:'net',c:pt.s});});
+C.forEach(function(cx){T.push({o:cx,i:CORE,t:0.5+0.4*rnd(),g:'net',c:-1});});
+/* recognise: six situations, one per seat but the heart, pulled to one place */
+var REC=[0,1,2,4,5,6].map(function(s,j){return A[s*16+[6,9,4,11,7,10][j]];});
+var RN={t:0.97,f:0.24,x:0,y:0,a:0,sc:1};
+REC.forEach(function(a){T.push({o:a,i:RN,t:0.9,g:'rec',c:a.s});});
+/* release: one knot, the heart's pattern, on eight addresses */
+var K={s:3,t:P[3].t,f:0.30,x:0,y:0,a:0,sc:1};
+var KN=[1,3,5,8,10,12,14].map(function(k){return A[3*16+k];}).concat([A[2*16+13]]);
+KN.forEach(function(a){T.push({o:a,i:K,t:1,g:'knot',c:a.s});});
+var NEWA=A[5*16+7];
+var NEWT={o:K,i:NEWA,t:0.5,g:'new',c:-1,prog:0};
+T.push(NEWT);
+T.forEach(function(th){th.a=0;th.ph=rnd();});
+
+var W=0,H=0,DPR=1,CX=0,CY=0,R=0,SK=1;
+function place(n){var ang=n.t*TAU-Math.PI/2;n.x=CX+Math.cos(ang)*R*n.f;n.y=CY+Math.sin(ang)*R*n.f;}
+function layout(){
+ if(!g)return;
+ var r=cv.getBoundingClientRect();
+ W=Math.max(1,r.width);H=Math.max(1,r.height);
+ DPR=Math.min(2,window.devicePixelRatio||1);
+ cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);
+ CX=W/2;CY=H/2;R=Math.min(W,H)*(W<520?0.40:0.38);SK=clamp(R/300,0.55,1.35);
+ A.forEach(place);P.forEach(place);C.forEach(place);place(RN);place(K);CORE.x=CX;CORE.y=CY;
+ draw(0);}
+
+/* what each frame asks of the Field. ring, net, pat: the alpha the addresses,
+   the network's threads and its nodes ease toward; core and csc the core's
+   strength and size; pul how strongly the pulses show. */
+var FR={
+ arrive:   {ring:.20,net:.22,pat:.12,core:.0, csc:1,  pul:.6},
+ recognize:{ring:.20,net:.06,pat:.04,core:.0, csc:1,  pul:.4},
+ mirror:   {ring:.14,net:.04,pat:.03,core:.0, csc:1,  pul:.35},
+ cascade:  {ring:.26,net:.06,pat:.12,core:.3, csc:.75,pul:.35},
+ network:  {ring:.95,net:1,  pat:1,  core:1,  csc:1,  pul:1},
+ body:     {ring:.95,net:1,  pat:1,  core:1,  csc:1,  pul:1},
+ release:  {ring:.34,net:.10,pat:.22,core:.45,csc:.8, pul:.6},
+ loop:     {ring:.95,net:1,  pat:1,  core:1,  csc:1,  pul:1},
+ honest:   {ring:.7, net:.42,pat:.7, core:.8, csc:.9, pul:.3},
+ ret:      {ring:0,  net:0,  pat:0,  core:1,  csc:.3, pul:0}};
+var frame='arrive', frameT=0, now=0, born=0, recN=0, recOn=false, step='';
+var stepEls=[].slice.call(D.querySelectorAll('#steps li'));
+var cstepEls=[].slice.call(D.querySelectorAll('#csteps li')), cstep='';
+
+function setStep(s){if(s===step)return;step=s;
+ stepEls.forEach(function(li){li.classList.toggle('on',s==='all'||li.getAttribute('data-step')===s);});}
+
+/* the knot's timeline, eleven seconds and round again: dense, released,
+   opened, reframed. Reduced motion holds it at the end, reframed. */
+var RCY=11.2;
+function knot(el){
+ var tr=REDUCED?9.6:(el%RCY), kt, ka, ks, prog, na;
+ if(tr<0.9){kt=lerp(.05,1,ease(tr/.9));ka=lerp(.12,1,ease(tr/.9));}
+ else if(tr<2.6){kt=1;ka=1;}
+ else if(tr<5.6){var u=ease((tr-2.6)/3);kt=lerp(1,.04,u);ka=lerp(1,.35,u);}
+ else if(tr<6.6){kt=.04;ka=lerp(.35,.12,ease(tr-5.6));}
+ else{kt=.04;ka=.12;}
+ ks=tr<2.6?1.8:lerp(1.8,.9,ease((tr-2.6)/3));
+ prog=tr<6.6?0:ease((tr-6.6)/2.2);
+ na=tr<6.6?0:(tr<10.4?1:lerp(1,0,(tr-10.4)/.8));
+ if(tr<0.9&&!REDUCED)ks=lerp(.9,1.8,ease(tr/.9));
+ setStep(REDUCED?'all':(tr<2.6?'pattern':(tr<6.6?'release':'reframe')));
+ return {kt:kt,ka:ka,ks:ks,prog:prog,na:na};}
+
+/* ---------------- beat 04, the cascade ----------------
+   A disturbance enters a coherent system and the answer travels: event,
+   response, nerve, nervous system, body, larger system. On the Field that is
+   a spark from outside landing on one address at the top of the ring, which
+   answers; a thread in to that seat's pattern; through its complex, the core
+   and out the far side to the heart's pattern (the knot release loosens
+   further down); that pattern's own three threads out to its seat at the
+   bottom, which lights; and a wave from that seat round the whole ring. The
+   answer has to cross the whole field, so the eye takes it in the order it
+   happens. Then it repeats, four passes in thirteen seconds, and each pass
+   carries the data the beat is about:
+
+     k     the pass's time scale. 1, .62, .45, .40: it comes quicker.
+     tt    the thread's tension after the pass. Its sag and its pulse speed
+           are the Field's own rule off t, so a habit is drawn as a line that
+           pulls straighter and runs faster, which the network's key already
+           says: "A tighter line, with quicker pulses, pulls harder."
+     rem   what the path keeps after the pass: the groove deepens.
+     ev    the spark. Full, full, faint, none. The fourth pass runs with
+           nothing coming in.
+
+   The stagger between the three outgoing threads is 80 ms on the first pass,
+   which reads as three things happening, and 35 ms by the fourth, which reads
+   as one: the steps fuse as it becomes automatic. Reduced motion holds the
+   end of the fourth pass, taut and lit with nothing coming in, and draws it
+   once. */
+var CCY=13, CEV=.85;
+/* every hop is a thread the network already draws: an address to its seat's
+   pattern, a pattern to its complex, a complex to the core */
+var CE=A[0*16+3], CP0=P[0], CC0=C[0], CPN=P[3], CC1=C[Math.min(4,Math.floor(3*5/14))];
+var CHOME=[0,1,2].map(function(q){return A[3*16+((3*5+q*5+3)%16)];}), CMID=A[3*16+7];
+var CPASS=[{at:.30,k:1,  ev:1,  rem:.22,tt:.2},
+           {at:4.75,k:.62,ev:1,  rem:.38,tt:.5},
+           {at:7.60,k:.45,ev:.45,rem:.55,tt:.75},
+           {at:9.70,k:.40,ev:0,  rem:.75,tt:1}];
+CPASS.forEach(function(p){p.ti=p.at+(p.ev>0?CEV*p.k:0);});
+/* each hop starts 30 ms before the last one lands, so nothing waits for the
+   thing before it to finish */
+var CLEG=[{o:CE,i:CP0,s:.10,d:.32,c:0},
+          {o:CP0,i:CC0,s:.40,d:.25,c:0},
+          {o:CC0,i:CORE,s:.62,d:.25,c:-1},
+          {o:CORE,i:CC1,s:.85,d:.25,c:-1},
+          {o:CC1,i:CPN,s:1.07,d:.25,c:3}];
+CHOME.forEach(function(a,q){CLEG.push({o:CPN,i:a,s:1.30+.08*q,d:.30,c:3});});
+var CNODE=[CP0,CC0,CC1,CPN], CS=null, CA=0;
+function sm(k){k=clamp(k,0,1);return k*k*(3-2*k);}
+function ioc(k){k=clamp(k,0,1);return k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;}
+function env(t,s,up,hold,dn){if(t<s)return 0;t-=s;if(t<up)return ease(t/up);t-=up;
+ if(t<hold)return 1;t-=hold;return t<dn?1-sm(t/dn):0;}
+function casc(el){
+ var tr=el%CCY, i=-1, ei=A.indexOf(CE), mi=A.indexOf(CMID),
+  st={env:[],legs:[],spark:null,ping:null,core:0,node:[0,0,0,0],tt:.1,fade:1,pass:0};
+ for(var n=0;n<112;n++)st.env.push(0);
+ if(REDUCED){st.pass=3;st.tt=1;st.core=.5;st.node=[.9,.8,.8,1];st.env[ei]=.8;
+  CLEG.forEach(function(L){st.legs.push({b:.75,p:-1,pa:0});});
+  CHOME.forEach(function(a){st.env[A.indexOf(a)]=.6;});
+  return st;}
+ CPASS.forEach(function(p,j){if(tr>=p.at)i=j;});
+ st.pass=Math.max(0,i);
+ if(tr>CCY-.7)st.fade=1-sm((tr-(CCY-.7))/.7);
+ if(i<0){CLEG.forEach(function(){st.legs.push({b:0,p:-1,pa:0});});return st;}
+ var P0=CPASS[i], k=P0.k, t=tr-P0.ti, remP=i>0?CPASS[i-1].rem:0, ttP=i>0?CPASS[i-1].tt:.1;
+ /* the spark, accelerating in: a disturbance arrives on the ease in */
+ if(P0.ev>0&&tr<P0.ti){var u=(tr-P0.at)/(CEV*k);
+  st.spark={p:Math.pow(u,2.2),p0:Math.pow(Math.max(0,u-.16),2.2),a:P0.ev};}
+ st.tt=t<.1*k?ttP:lerp(ttP,P0.tt,ioc((t-.1*k)/(.5*k)));
+ CLEG.forEach(function(L){var s0=L.s*k,d=L.d*k,lg={b:remP,p:-1,pa:0};
+  if(t>=s0&&t<s0+d){lg.p=ioc((t-s0)/d);lg.pa=1;}
+  else if(t>=s0+d){lg.b=lerp(1,P0.rem,sm((t-s0-d)/(.6*k)));}
+  st.legs.push(lg);});
+ /* the address that answers: it lands past full, settles, and keeps some */
+ var eP=remP*.8, eI=P0.rem*.8, e;
+ if(t<0)e=eP; else if(t<.12*k)e=lerp(eP,1.25,ease(t/(.12*k)));
+ else if(t<.3*k)e=lerp(1.25,1,sm((t-.12*k)/(.18*k))); else if(t<.6*k)e=1;
+ else e=lerp(1,eI,sm((t-.6*k)/(1.2*k)));
+ if(t>=0&&t<.6*Math.max(k,.7))st.ping={k:t/(.6*Math.max(k,.7))};
+ A.forEach(function(a,n){var v=0;
+  /* the body: the seat lights outward from where the threads land */
+  if(a.s===3){var kk=n-48,dd=Math.min(Math.abs(kk-2),Math.abs(kk-7),Math.abs(kk-12));
+   v=.85*env(t,(1.6+.03*dd)*k,.12*k,.05*k,.7*k);}
+  /* the larger system: from that seat, a wave both ways round the ring until
+   it meets itself at the top, where it began */
+  var dr=Math.abs(n-mi); dr=Math.min(dr,112-dr);
+  v=Math.max(v,.6*env(t,(1.8+.018*dr)*k,.1*k,0,.55*k));
+  st.env[n]=v;});
+ st.env[ei]=Math.max(st.env[ei],e);
+ st.core=.75*env(t,.87*k,.15*k,.2*k,1.6*k);
+ /* the four patterns and complexes it passes through light as it arrives
+   and keep the groove's share after */
+ CNODE.forEach(function(nd,j){var L=CLEG[j],at=(L.s+L.d)*k;
+  st.node[j]=Math.max(remP>0?remP+.25:0,env(t,at,.08*k,.25*k,.8*k),t>at?P0.rem+.25:0);});
+ return st;}
+function setCStep(s){if(s===cstep)return;cstep=s;
+ cstepEls.forEach(function(li){li.classList.toggle('on',s==='all'||li.getAttribute('data-step')===s);});}
+
+function step2(dt){
+ var f=FR[frame]||FR.arrive, el=now-frameT, kq=REDUCED?1:1-Math.exp(-dt*3.2);
+ var br=REDUCED?1:0.82+0.18*Math.sin(TAU*now/4.2);
+ var kn=frame==='release'?knot(el):null;
+ var cs=frame==='cascade'?casc(el):null;
+ if(cs){CS=cs;setCStep(REDUCED?'all':['once','again','again','own'][cs.pass]);}
+ CA+=((cs?1:0)-CA)*kq;
+ /* which addresses are lit */
+ A.forEach(function(a){a.litT=0;});
+ if(frame==='arrive'){[0,2,4].forEach(function(j,q){if(REDUCED||now-born>0.5+0.8*q)REC[j].litT=1;});}
+ if(frame==='recognize'||frame==='mirror'){for(var j=0;j<recN;j++)REC[j].litT=1;}
+ if(kn&&kn.prog>=1)NEWA.litT=kn.na;
+ var ringA=f.ring*(frame==='arrive'||frame==='recognize'||frame==='mirror'||frame==='cascade'?br:1);
+ A.forEach(function(a){a.a+=(Math.max(ringA,a.litT)-a.a)*kq;a.lit+=(a.litT-a.lit)*kq;});
+ if(cs)A.forEach(function(a,n){var v=cs.env[n]*cs.fade;if(v>a.lit)a.lit=v;});
+ P.forEach(function(pt){pt.a+=(f.pat-pt.a)*kq;});
+ C.forEach(function(cx){cx.a+=(f.pat-cx.a)*kq;});
+ CORE.a+=(f.core-CORE.a)*kq; CORE.sc+=(f.csc-CORE.sc)*kq;
+ if(cs){CORE.a=Math.max(CORE.a,f.core+cs.core*cs.fade);
+  CNODE.forEach(function(nd,j){nd.a=Math.max(nd.a,Math.min(1,cs.node[j])*cs.fade);});}
+ var rnT=(frame==='recognize'||frame==='mirror')&&recOn?1:0;
+ RN.a+=(rnT-RN.a)*kq; RN.sc+=((frame==='mirror'?1.5:1)-RN.sc)*kq;
+ T.forEach(function(th){
+  if(th.g==='net'){th.a+=(f.net-th.a)*kq;}
+  else if(th.g==='rec'){th.a+=(rnT-th.a)*kq;}
+  else if(th.g==='knot'){if(kn){th.a=kn.ka;th.tt=kn.kt;}else th.a+=(0-th.a)*kq;}
+  else if(th.g==='new'){if(kn){th.a=kn.na;th.prog=kn.prog;}else{th.a+=(0-th.a)*kq;}}});
+ if(kn){K.sc=kn.ks;K.a+=(1-K.a)*kq;K.kt=kn.kt;}else{K.sc+=(1-K.sc)*kq;K.a+=(0-K.a)*kq;K.kt=0;}
+ return f;}
+
+var CLK=0;
+function curve(th){
+ var x0=th.o.x,y0=th.o.y,x1=th.i.x,y1=th.i.y,dx=x1-x0,dy=y1-y0,len=Math.hypot(dx,dy)||1;
+ var t=th.g==='knot'?(th.tt==null?1:th.tt):th.t;
+ var sag=(1-t)*(th.g==='knot'?0.3:0.14)*len;
+ return {x0:x0,y0:y0,x1:x1,y1:y1,qx:(x0+x1)/2-dy/len*sag,qy:(y0+y1)/2+dx/len*sag,t:t,len:len};}
+function colOf(th){return th.c<0?ACC:COL[SEATS[th.c]];}
+function bez(q,u){var v=1-u;return [v*v*q.x0+2*v*u*q.qx+u*u*q.x1,v*v*q.y0+2*v*u*q.qy+u*u*q.y1];}
+
+/* the cascade's threads: what the path keeps, its pulses at its own tension,
+   and the answer travelling along it with a head, the reframe's own mark */
+function cascLegs(){
+ var cs=CS, al=CA*cs.fade, tt=cs.tt;
+ CLEG.forEach(function(L,j){var lg=cs.legs[j]; if(!lg)return;
+  var x0=L.o.x,y0=L.o.y,x1=L.i.x,y1=L.i.y,dx=x1-x0,dy=y1-y0,len=Math.hypot(dx,dy)||1,sag=(1-tt)*.24*len;
+  var q={x0:x0,y0:y0,x1:x1,y1:y1,qx:(x0+x1)/2-dy/len*sag,qy:(y0+y1)/2+dx/len*sag};
+  var cc=L.c<0?ACC:COL[SEATS[L.c]], b=lg.b*al;
+  if(b>.01){g.beginPath();g.moveTo(x0,y0);g.quadraticCurveTo(q.qx,q.qy,x1,y1);
+   g.strokeStyle=rgba(cc,b*(.35+.5*tt));g.lineWidth=(0.8+0.9*tt)*SK;g.stroke();
+   if(!REDUCED){var per=96-48*tt,sp=16+68*Math.sqrt(tt);
+    g.save();g.lineCap='round';g.setLineDash([7,per-7]);g.lineDashOffset=-((CLK*sp+j*17)%per);
+    g.beginPath();g.moveTo(x0,y0);g.quadraticCurveTo(q.qx,q.qy,x1,y1);
+    g.strokeStyle=rgba(mix(cc,WHITE,.42),b*(0.28+0.72*tt));g.lineWidth=Math.max(1.2,(0.8+0.9*tt)*SK*0.9);g.stroke();
+    g.restore();}}
+  if(lg.p>=0&&al>.01){var n=Math.max(2,Math.round(24*lg.p));g.beginPath();g.moveTo(x0,y0);
+   for(var m=1;m<=n;m++){var pt=bez(q,lg.p*m/n);g.lineTo(pt[0],pt[1]);}
+   g.strokeStyle=rgba(mix(cc,WHITE,.2),lg.pa*al*.95);g.lineWidth=2*SK;g.stroke();
+   var hd=bez(q,lg.p);g.beginPath();g.arc(hd[0],hd[1],3.2*SK,0,TAU);g.fillStyle=rgba(mix(cc,WHITE,.4),lg.pa*al);g.fill();}});}
+/* the spark from outside, and the ring the answering address throws when it
+   lands: the body's own "one region activates" mark */
+function cascTop(){
+ var cs=CS, al=CA*cs.fade;
+ if(cs.ping&&!REDUCED&&al>.01){var pk=ease(cs.ping.k);g.beginPath();g.arc(CE.x,CE.y,lerp(3,17,pk)*SK,0,TAU);
+  g.strokeStyle=rgba(mix(COL[SEATS[CE.s]],WHITE,.3),.9*(1-cs.ping.k)*al);g.lineWidth=1.4*SK;g.stroke();}
+ if(cs.spark&&al>.01){var th=Math.atan2(CE.y-CY,CE.x-CX),t0=th-.55;
+  /* it starts at the stage's edge, never past it: a phone's band is short,
+     and a spark that spends its flight above the band never entered */
+  var r0=Math.min(1.6*R,Math.abs((W/2-6)/(Math.cos(t0)||1e-6)),Math.abs((H/2-6)/(Math.sin(t0)||1e-6))),
+   rc=R+(r0-R)*.53;
+  var q={x0:CX+Math.cos(t0)*r0,y0:CY+Math.sin(t0)*r0,
+         qx:CX+Math.cos(th-.2)*rc,qy:CY+Math.sin(th-.2)*rc,x1:CE.x,y1:CE.y};
+  var sa=cs.spark.a*al, p0=cs.spark.p0, p1=cs.spark.p;
+  g.beginPath();for(var m=0;m<=10;m++){var pt=bez(q,lerp(p0,p1,m/10));m?g.lineTo(pt[0],pt[1]):g.moveTo(pt[0],pt[1]);}
+  g.strokeStyle=rgba(INK,.5*sa);g.lineWidth=2*SK;g.lineCap='round';g.stroke();g.lineCap='butt';
+  var hd=bez(q,p1),gl=g.createRadialGradient(hd[0],hd[1],0,hd[0],hd[1],11*SK);
+  gl.addColorStop(0,rgba(INK,.4*sa));gl.addColorStop(1,rgba(INK,0));
+  g.fillStyle=gl;g.beginPath();g.arc(hd[0],hd[1],11*SK,0,TAU);g.fill();
+  g.beginPath();g.arc(hd[0],hd[1],3.2*SK,0,TAU);g.fillStyle=rgba(INK,sa);g.fill();}}
+
+function draw(dt){
+ if(!g)return;
+ if(dt)CLK+=dt;
+ var f=step2(dt||0.016);
+ g.setTransform(DPR,0,0,DPR,0,0);g.clearRect(0,0,W,H);
+ var br=REDUCED?1:0.82+0.18*Math.sin(TAU*now/4.2);
+ /* threads, then their pulses over all of them, as the Field does */
+ var Q=[];
+ T.forEach(function(th){if(th.a<.01)return;var q=curve(th),cc=colOf(th);Q.push([th,q,cc]);
+  g.beginPath();
+  if(th.g==='new'){var n=Math.max(2,Math.round(28*th.prog));g.moveTo(q.x0,q.y0);
+   for(var m=1;m<=n;m++){var pt=bez(q,th.prog*m/n);g.lineTo(pt[0],pt[1]);}
+   g.strokeStyle=rgba(ACC,th.a*.95);g.lineWidth=2*SK;g.stroke();
+   if(th.prog>0&&th.prog<1){var hd=bez(q,th.prog);g.beginPath();g.arc(hd[0],hd[1],3.2*SK,0,TAU);g.fillStyle=rgba(ACC,th.a);g.fill();}
+   return;}
+  g.moveTo(q.x0,q.y0);g.quadraticCurveTo(q.qx,q.qy,q.x1,q.y1);
+  g.strokeStyle=rgba(cc,th.a*(0.12+0.30*q.t));g.lineWidth=(0.8+0.9*q.t)*SK;g.stroke();});
+ if(!REDUCED&&f.pul>0){
+  g.save();g.lineCap='round';
+  Q.forEach(function(e){var th=e[0],q=e[1],cc=e[2];
+   if(th.g==='new'&&th.prog<.98)return;
+   var t=clamp(q.t,0,1),per=96-48*t,sp=16+68*Math.sqrt(t),ph=th.ph*per;
+   g.setLineDash([7,per-7]);g.lineDashOffset=-((CLK*sp+ph)%per);
+   g.beginPath();g.moveTo(q.x0,q.y0);g.quadraticCurveTo(q.qx,q.qy,q.x1,q.y1);
+   var pa=th.g==='net'?f.pul:1;
+   g.strokeStyle=rgba(mix(cc,WHITE,.42),th.a*pa*(0.28+0.72*t));g.lineWidth=Math.max(1.2,(0.8+0.9*t)*SK*0.9);g.stroke();});
+  g.setLineDash([]);g.restore();}
+ if(CS&&CA>.01)cascLegs();
+ /* the addresses */
+ A.forEach(function(a){if(a.a<.01&&a.lit<.01)return;var cc=COL[SEATS[a.s]];
+  if(a.lit>.01){var gr=g.createRadialGradient(a.x,a.y,0,a.x,a.y,18*SK);
+   gr.addColorStop(0,rgba(mix(cc,WHITE,.3),.55*a.lit*br));gr.addColorStop(1,rgba(cc,0));
+   g.fillStyle=gr;g.beginPath();g.arc(a.x,a.y,18*SK,0,TAU);g.fill();}
+  g.beginPath();g.arc(a.x,a.y,(2+1.6*a.lit)*SK,0,TAU);
+  g.fillStyle=rgba(a.lit>.01?mix(cc,WHITE,.25*a.lit):cc,Math.max(a.a,a.lit));g.fill();});
+ /* the patterns and complexes, ring and not fill: the ground clears the lines
+    under each one and then it is stroked, the Compass's node */
+ function ringN(n,r,cc,a,w){if(a<.01)return;g.beginPath();g.arc(n.x,n.y,r,0,TAU);
+  g.fillStyle=rgba(BG,Math.min(1,a*1.4));g.fill();g.strokeStyle=rgba(cc,a);g.lineWidth=w;g.stroke();}
+ P.forEach(function(pt){ringN(pt,4.2*SK*pt.sc,COL[SEATS[pt.s]],pt.a,1.5*SK);});
+ /* the knot: dense while it holds, a halo that goes as the lines go slack */
+ if(K.a>.01){var kc=COL.heart;
+  if(K.kt>.05){var kh=g.createRadialGradient(K.x,K.y,0,K.x,K.y,26*SK);
+   kh.addColorStop(0,rgba(mix(kc,WHITE,.3),.5*K.kt*K.a*br));kh.addColorStop(1,rgba(kc,0));
+   g.fillStyle=kh;g.beginPath();g.arc(K.x,K.y,26*SK,0,TAU);g.fill();}
+  ringN(K,4.6*SK*K.sc,kc,K.a,1.8*SK);}
+ C.forEach(function(cx){ringN(cx,5.6*SK,mix(ACC,WHITE,.2),cx.a*.85,1.4*SK);});
+ if(RN.a>.01){ringN(RN,6*SK*RN.sc,ACC,RN.a,1.8*SK);
+  if(frame==='mirror'){g.beginPath();g.arc(RN.x,RN.y,(6*RN.sc+6)*SK,0,TAU);g.strokeStyle=rgba(ACC,RN.a*.45*br);g.lineWidth=1;g.stroke();}}
+ /* the core: the Field's sphere, breathing, with its halo */
+ if(CORE.a>.01){var r0=R*0.085*CORE.sc*(1+(REDUCED?0:Math.sin(now*1.4)*.05));
+  var hl=g.createRadialGradient(CX,CY,r0*.9,CX,CY,r0*3.2);
+  hl.addColorStop(0,rgba(mix(ACC,WHITE,.35),.5*CORE.a*br));hl.addColorStop(.3,rgba(ACC,.18*CORE.a));hl.addColorStop(1,rgba(ACC,0));
+  g.fillStyle=hl;g.beginPath();g.arc(CX,CY,r0*3.2,0,TAU);g.fill();
+  var fg=g.createRadialGradient(CX-r0*.3,CY-r0*.4,r0*.05,CX,CY,r0);
+  fg.addColorStop(0,rgba(mix(ACC,WHITE,.45),CORE.a));fg.addColorStop(1,rgba(mix(ACC,[0,0,0],.25),CORE.a));
+  g.fillStyle=fg;g.beginPath();g.arc(CX,CY,r0,0,TAU);g.fill();
+  g.strokeStyle=rgba(mix(ACC,WHITE,.5),.8*CORE.a);g.lineWidth=1.2;g.stroke();}
+ if(CS&&CA>.01)cascTop();}
+
+var last=0, running=false;
+function tick(ts){
+ if(!running)return;
+ var t=ts/1000, dt=last?Math.min(.05,t-last):0.016; last=t; now+=dt;
+ if(stage.getAttribute('data-show')==='field')draw(dt); else step2(dt);
+ requestAnimationFrame(tick);}
+function start(){if(running||REDUCED||!g)return;running=true;last=0;requestAnimationFrame(tick);}
+function stop(){running=false;}
+D.addEventListener('visibilitychange',function(){D.hidden?stop():start();});
+
+/* ---------------- the story picks the frame ---------------- */
+var frames=[].slice.call(D.querySelectorAll('.fr'));
+var SHOW={body:'body',loop:'dial'};
+function setFrame(fr){
+ if(fr===frame)return; frame=fr; frameT=now; step=''; cstep='';
+ stage.setAttribute('data-show',SHOW[fr]||'field');
+ if(REDUCED){/* the end state of the frame, drawn once */
+  for(var n=0;n<3;n++)step2(1);draw(0);}}
+function probe(){
+ var vh=window.innerHeight, wide=window.innerWidth>=900;
+ var sh=wide?0:stage.getBoundingClientRect().height;
+ var y=wide?vh*0.5:sh+(vh-sh)*0.38, hit=null;
+ frames.forEach(function(el){var r=el.getBoundingClientRect();
+  if(r.top<vh*0.92&&r.bottom>0&&!el.classList.contains('seen')&&r.top<y+vh*0.3)seen(el);
+  if(r.top<=y&&r.bottom>y)hit=el;});
+ if(hit)setFrame(hit.getAttribute('data-frame'));}
+function seen(el){el.classList.add('seen');
+ /* the mirror stands on beat 02's pattern, so arriving there first still
+    draws the six joined, rather than six points with nothing between them */
+ if(el.id==='recognize'||el.id==='mirror')recRun();}
+var queued=false;
+window.addEventListener('scroll',function(){if(queued)return;queued=true;
+ requestAnimationFrame(function(){queued=false;probe();});},{passive:true});
+window.addEventListener('resize',function(){layout();probe();});
+
+/* beat 02: the lines arrive one at a time, and each one lights its point.
+   Then the six join: different situation, same response. */
+var recStarted=false;
+function recRun(){
+ if(recStarted)return; recStarted=true;
+ var lis=[].slice.call(D.querySelectorAll('#keep li')), same=D.getElementById('same');
+ if(REDUCED){lis.forEach(function(l){l.classList.add('on');});same.classList.add('on');recN=6;recOn=true;draw(0);return;}
+ lis.forEach(function(l,j){setTimeout(function(){l.classList.add('on');recN=j+1;},500+j*650);});
+ setTimeout(function(){same.classList.add('on');recOn=true;},500+6*650+350);}
+
+/* ---------------- the mirror, beat 05 and beat 17 ----------------
+   Three readings, all of them the TDD's: section 16 concept 04, beat 05's
+   "connected to what you expect will happen afterward", and beat 16's
+   "a pattern between holding it in and what happens later". A correction
+   moves to the next reading and keeps the one set aside, struck. */
+var RD=['You say yes before checking whether you actually want to.',
+ 'The yes may be connected to what you expect will happen afterward.',
+ 'There may be a pattern between holding it in and what happens later.'];
+var SAY={yes:'That may be the pattern.',
+ no:'Good. Now we know more.', again:'Disagreement is information.'};
+var mx=D.getElementById('mirror'), rdEl=D.getElementById('reading'), sayEl=D.getElementById('say'),
+ wasEl=D.getElementById('was'), idx=0;
+[].slice.call(D.querySelectorAll('.ans button')).forEach(function(b){
+ b.addEventListener('click',function(){
+  var a=b.getAttribute('data-a');
+  [].slice.call(D.querySelectorAll('.ans button')).forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+  mx.setAttribute('data-m',a);
+  sayEl.textContent=SAY[a];
+  if(a==='yes')return;
+  var li=D.createElement('li'),del=D.createElement('del');del.textContent=RD[idx];li.appendChild(del);
+  wasEl.insertBefore(li,wasEl.firstChild);
+  while(wasEl.children.length>2)wasEl.removeChild(wasEl.lastChild);
+  idx=(idx+1)%RD.length;
+  rdEl.classList.add('out');
+  setTimeout(function(){rdEl.textContent=RD[idx];rdEl.classList.remove('out');},REDUCED?0:180);});});
+
+/* ---------------- the key, one press away ----------------
+   Each key is printed in the markup, so a page with no script reads in full.
+   With one, it is folded at rest and the press opens it in place: the same
+   aria-expanded disclosure the intake's rows use, and never a link away. */
+[].slice.call(D.querySelectorAll('.cap-t')).forEach(function(b){
+ var body=D.getElementById(b.getAttribute('aria-controls')); if(!body)return;
+ body.hidden=true;
+ b.addEventListener('click',function(){
+  var open=b.getAttribute('aria-expanded')!=='true';
+  b.setAttribute('aria-expanded',open?'true':'false'); body.hidden=!open;});});
+
+/* ---------------- the body: one region activates ---------------- */
+(function(){
+ var svg=D.querySelector('.lyr-body svg'); if(!svg)return;
+ /* the nerves twice: a still map underneath, and the pulses running over it */
+ var nv=svg.querySelector('.hero-nerves');
+ if(nv){var run=nv.cloneNode(true);run.setAttribute('class','hero-run');nv.parentNode.insertBefore(run,nv.nextSibling);}
+ var lit=svg.querySelector('.hero-seat[data-seat="heart"]');
+ if(lit){var pg=lit.cloneNode(false);pg.setAttribute('class','seat-ping');pg.removeAttribute('data-seat');
+  lit.parentNode.appendChild(pg);lit.setAttribute('stroke-width','.8');}
+ var gl=svg.querySelector('.hero-glow[data-seat="heart"]');
+ if(gl)gl.setAttribute('r','17');})();
+
+/* ---------------- the dial's seven seat arcs, the Compass rim ---------------- */
+(function(){
+ var gA=D.getElementById('dialArcs'); if(!gA)return; var ns='http://www.w3.org/2000/svg';
+ SEATS.forEach(function(s,i){var a0=(i/7)*TAU-Math.PI/2+0.03,a1=((i+1)/7)*TAU-Math.PI/2-0.03,r=158;
+  var pth=D.createElementNS(ns,'path');
+  pth.setAttribute('d','M '+(200+Math.cos(a0)*r).toFixed(1)+' '+(200+Math.sin(a0)*r).toFixed(1)
+   +' A '+r+' '+r+' 0 0 1 '+(200+Math.cos(a1)*r).toFixed(1)+' '+(200+Math.sin(a1)*r).toFixed(1));
+  pth.setAttribute('fill','none');pth.setAttribute('stroke','var(--'+s+')');
+  pth.setAttribute('stroke-opacity','.55');pth.setAttribute('stroke-width','2');gA.appendChild(pth);});})();
+
+function onMotion(){REDUCED=RM.matches; if(REDUCED){stop();draw(0);} else start();}
+if(RM.addEventListener)RM.addEventListener('change',onMotion);
+
+layout(); probe();
+if(REDUCED){for(var n=0;n<3;n++)step2(1);draw(0);} else start();
+})();
+</script>
+</body></html>

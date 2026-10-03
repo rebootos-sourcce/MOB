@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Saboteur masks</title>
+<!--KIT-->
+<style>
+.fam{margin:0 0 16px}
+.famhd{display:flex;gap:14px;align-items:center;margin-bottom:12px}
+.famhd h2{margin:0;font-size:20px;font-weight:600}
+.famhd p{margin:2px 0 0;color:var(--mid);font-size:14px}
+.cast{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.sab{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:center;padding:12px;border-radius:12px;background:var(--sunk);border:1px solid var(--edge);cursor:pointer}
+.sab:hover,.sab.on{border-color:var(--edge-2);background:#14161d}
+.sab .nm{font-weight:600;font-size:15px}
+.sab .q{font-size:13px;color:var(--mid);margin-top:2px}
+.sab .q.own{font-style:italic;color:var(--ink)}
+.sab .w{font-size:11px;color:var(--dim);margin-top:4px;display:flex;gap:6px;align-items:center}
+.pairs{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.pair{display:flex;align-items:center;gap:8px;padding:6px 12px 6px 6px;border:1px solid var(--edge);border-radius:999px;font-size:13px;color:var(--mid)}
+.duo{position:relative;width:52px;height:34px;flex:none}
+.duo svg{position:absolute;top:0}
+.duo svg:last-child{left:18px}
+.char{display:flex;gap:16px;align-items:center}
+.stage{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:16px;align-items:start}
+.bodyfig{background:#101118;border:1px solid var(--edge);border-radius:var(--r);padding:8px}
+.bodyfig>svg{width:100%;height:auto;display:block;max-height:880px}
+.body{fill:rgba(150,152,160,.10);stroke:rgba(239,237,232,.30);stroke-width:1.4;vector-effect:non-scaling-stroke}
+.mk{cursor:pointer}
+.mk .halo{fill:#101118;opacity:.85}
+.desc{display:flex;flex-direction:column;gap:10px}
+.lvl{border-left:3px solid var(--edge-2);padding:8px 0 8px 14px}
+.lvl .eyebrow{margin-bottom:6px}
+.fdots{display:flex;flex-wrap:wrap;gap:6px}
+.fd{display:inline-flex;gap:6px;align-items:center;font-size:12px;color:var(--mid);border:1px solid var(--edge);border-radius:999px;padding:3px 9px}
+.gram{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
+.gram .cell{text-align:center;font-size:12px;color:var(--mid);padding:10px;border:1px solid var(--edge);border-radius:12px;background:var(--sunk)}
+@media (max-width:1000px){.stage{grid-template-columns:1fr}}
+@media (max-width:520px){.cast{grid-template-columns:1fr}.sab{grid-template-columns:52px 1fr}}
+</style></head><body>
+<div class="wrap">
+ <div class="hd"><div>
+  <div class="eyebrow">Body, the patterns. Item 2 of 6.</div>
+  <h1>Every saboteur wears a face</h1>
+  <p>A saboteur is a voice, and a voice is easier to recognise than a circle. Each face is built from what the engine already knows about it: the outline is its family, the expression is the charge it runs on, the colour is its seat.</p>
+ </div></div>
+ <div style="margin-bottom:14px" id="mode"></div>
+ <div id="view"></div>
+</div>
+<!--DATA-->
+<script>
+var MODE=(location.hash.match(/mode=(\w+)/)||[])[1]||'cast', PICK=null, FAMPICK=null;
+var FAMORD=['Predatory','Rigidity','Dysregulation','Collapse','Dissociation','Grandiosity'];
+function famOfSab(s){return FAM_OUT[s.hcx]?s.hcx:(POLE_OF[s.hcx]||'Dissociation');}
+function famMask(f,sz,c){return '<svg class="ic" viewBox="0 0 24 24" width="'+sz+'" height="'+sz+'" fill="none" stroke="'+(c||col(famSeat(f)))+'" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="'+FAM_OUT[f]+'"'+(f==='Dissociation'?' stroke-dasharray="2.2 1.8"':'')+'/><path d="'+famIc(f)+'" transform="translate(7.2 7.4) scale(.4)" stroke-width="2.4" opacity=".75"/></svg>';}
+function sabByNm(){var m={};PP().sabs.forEach(function(s){m[s.nm]=s;});return m;}
+var INFER=/^(Heart|Diffuse|Root|Sacral|Solar|Throat|3rd Eye|Crown) /, SEEN={};
+function sabCard(s){var v=sabVoice(s), dup=SEEN[s.nm]; SEEN[s.nm]=1;
+ return '<div class="sab'+(PICK===s.nm?' on':'')+'" data-s="'+esc(s.nm)+'">'+maskSvg(s,64)
+  +'<div><div class="nm">'+esc(s.nm)+'</div><div class="q'+(v.own?' own':'')+'">'+(v.own?'&ldquo;'+esc(v.q)+'&rdquo;':esc(v.q))+'</div>'
+  +'<div class="w">'+seatIc(sabSeat(s),13)+' '+esc(SEATNM[SEATK[sabSeat(s)]]||sabSeat(s))+', '+weightWord(s.w)+(INFER.test(s.nm)?', inferred':'')+'</div>'+(dup?'<div class="w" style="color:#C2A063">Listed a second time by the engine</div>':'')+'</div></div>';}
+function duo(a,b){return '<span class="duo">'+(a?maskSvg(a,34):'')+(b?maskSvg(b,34):'')+'</span>';}
+function vCast(){
+ var P=PP(), by={}, S=sabByNm(); SEEN={};
+ P.sabs.forEach(function(s){var f=famOfSab(s);(by[f]=by[f]||[]).push(s);});
+ var hy={};P.hys.forEach(function(h){hy[h.nm]=h;});
+ var h='';
+ if(P.sups.length)h+='<div class="card fam"><div class="eyebrow">The character, where two families have joined</div><div class="char" style="flex-wrap:wrap;gap:24px;margin-top:8px">'
+  +P.sups.map(function(c){var a=c.parts[0],b=c.parts[1];return '<div class="char">'+famMask(FAM_OUT[a]?a:POLE_OF[a]||a,54)+famMask(FAM_OUT[b]?b:POLE_OF[b]||b,54)
+   +'<div><b>'+esc(a)+' with '+esc(b)+'</b><div class="small muted">'+weightWord(c.w)+'</div></div></div>';}).join('')+'</div></div>';
+ var fams=Object.keys(by).sort(function(a,b){return ((hy[b]||{}).w||0)-((hy[a]||{}).w||0)||by[b].length-by[a].length;});
+ fams.forEach(function(f){var list=by[f].sort(function(a,b){return b.w-a.w;}), H=hy[f];
+  var cx=P.cxs.filter(function(c){return (FAM_OUT[c.hcx]?c.hcx:POLE_OF[c.hcx])===f;});
+  h+='<div class="card fam"><div class="famhd">'+famMask(f,58)+'<div><h2>'+esc(f)+(H?'':' <span class="small dim" style="font-weight:400">not yet a hyper complex</span>')+'</h2><p>'
+   +esc(famD(f).replace(/^./,function(c){return c.toUpperCase();}))+'. '+list.length+' voice'+(list.length===1?'':'s')+(cx.length?', '+cx.length+' paired':'')+'.</p></div></div>'
+   +'<div class="cast">'+list.map(sabCard).join('')+'</div>'
+   +(cx.length?'<div class="eyebrow" style="margin-top:14px">Complexes, two voices that run together</div><div class="pairs">'+cx.map(function(c){
+     return '<span class="pair">'+duo(S[c.parts[0]],S[c.parts[1]])+esc(c.parts[0])+' with '+esc(c.parts[1])+'</span>';}).join('')+'</div>':'')
+   +'</div>';});
+ return h||'<div class="card">Nothing is running for '+esc(WHO)+'.</div>';}
+/* on the body: each mask where its own fetters are, and no line to them */
+function vBody(){
+ var P=PP(), list=P.sabs.slice().sort(function(a,b){return b.w-a.w;}), all=/all=1/.test(location.hash);
+ if(!all)list=list.slice(0,12);
+ var M=list.map(function(s){var xs=0,ys=0,n=0;(s.parts||[]).forEach(function(id){var p=P.pos[id];if(p){xs+=p[0];ys+=p[1];n++;}});
+  return {s:s,x:n?xs/n:50,y:n?ys/n:30,r:2.2+s.w*0.22};});
+ /* push apart until no two faces overlap. fixed order, so the same person
+    always gets the same picture */
+ for(var it=0;it<120;it++)for(var i=0;i<M.length;i++)for(var j=i+1;j<M.length;j++){var a=M[i],b=M[j],dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||.01,g=a.r+b.r+.4;
+  if(d<g){var k=(g-d)/2/d;a.x-=dx*k;a.y-=dy*k;b.x+=dx*k;b.y+=dy*k;}}
+ var pick=PICK&&M.filter(function(m){return m.s.nm===PICK;})[0];
+ var h='<svg viewBox="16 0 68 100">'+bodyPath('class="body"');
+ if(pick)(pick.s.parts||[]).forEach(function(id){var p=P.pos[id];if(p)h+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r=".8" fill="'+col(NODE[id].b)+'"/>';});
+ M.forEach(function(m){var sz=m.r*2, dim=pick&&pick!==m?' opacity=".35"':'';
+  h+='<g class="mk" data-s="'+esc(m.s.nm)+'"'+dim+'><circle class="halo" cx="'+m.x+'" cy="'+m.y+'" r="'+(m.r*.92)+'"/>'
+   +maskSvg(m.s,sz).replace('<svg ','<svg x="'+(m.x-m.r)+'" y="'+(m.y-m.r)+'" ')+'</g>';});
+ h+='</svg>';
+ var side=pick?(function(){var s=pick.s,v=sabVoice(s);return '<div class="card"><div style="display:flex;gap:12px;align-items:center">'+maskSvg(s,72)
+  +'<div><div class="eyebrow">'+esc(famOfSab(s))+'</div><h2 style="margin:0">'+esc(s.nm)+'</h2></div></div>'
+  +'<p style="font-size:17px;'+(v.own?'font-style:italic':'color:var(--mid)')+'">'+(v.own?'&ldquo;'+esc(v.q)+'&rdquo;':esc(v.q))+'</p>'
+  +'<div class="eyebrow">Where it lives</div><div class="fdots" style="margin-top:6px">'+(s.parts||[]).map(function(id){var n=NODE[id];
+   return '<span class="fd"><svg width="9" height="9"><circle cx="4.5" cy="4.5" r="4" fill="'+col(n.b)+'"/></svg>'+esc(n.k)+', '+esc(n.n)+'</span>';}).join('')+'</div>'
+  +'<p class="small dim">Its fetters light on the figure. No line is drawn to them: the face sits where they are.</p></div>';})()
+  :'<div class="card"><div class="eyebrow">On the body</div><p>Each face sits where its own fetters are, sized by how hard it runs. Press one to light the fetters it stands on.</p><p class="small muted">Showing the '+(all?'whole cast':'twelve heaviest')+'. <a href="#" id="allsw">'+(all?'Show the twelve heaviest':'Show every one')+'</a></p></div>';
+ return '<div class="stage"><div class="bodyfig">'+h+'</div><div>'+side+'</div></div>';}
+/* the descent: one family, from the character down to the fetters, nested
+   rather than wired */
+function vDescent(){
+ var P=PP(), S=sabByNm(), fams=P.hys.map(function(h){return h.nm;});
+ if(!fams.length)fams=Array.from(new Set(P.sabs.map(famOfSab)));
+ if(!FAMPICK||fams.indexOf(FAMPICK)<0)FAMPICK=fams[0];
+ var f=FAMPICK, H=P.hys.filter(function(h){return h.nm===f;})[0], cxs=H?H.parts:[], sup=P.sups.filter(function(c){return c.parts.indexOf(f)>=0;})[0];
+ var h='<div style="margin-bottom:12px" class="pairs">'+fams.map(function(x){return '<button class="chip'+(x===f?' on':'')+'" data-f="'+esc(x)+'">'+famMask(FAM_OUT[x]?x:(POLE_OF[x]||'Dissociation'),20)+esc(x)+'</button>';}).join('')+'</div><div class="desc">';
+ if(sup)h+='<div class="lvl"><div class="eyebrow">Character</div><div class="char">'+famMask(FAM_OUT[sup.parts[0]]?sup.parts[0]:POLE_OF[sup.parts[0]],40)+famMask(FAM_OUT[sup.parts[1]]?sup.parts[1]:POLE_OF[sup.parts[1]],40)+'<b>'+esc(sup.parts.join(' with '))+'</b></div></div>';
+ h+='<div class="lvl" style="margin-left:'+(sup?18:0)+'px"><div class="eyebrow">Hyper complex</div><div class="char">'+famMask(FAM_OUT[f]?f:POLE_OF[f],56)+'<div><b style="font-size:18px">'+esc(f)+'</b><div class="muted small">'+esc(famD(FAM_OUT[f]?f:POLE_OF[f]))+'</div></div></div></div>';
+ var m=sup?36:18;
+ (cxs.length?cxs:[null]).forEach(function(cn){
+  var parts=cn?cn.split(' + '):P.sabs.filter(function(s){return famOfSab(s)===f;}).map(function(s){return s.nm;});
+  h+='<div class="lvl" style="margin-left:'+m+'px"><div class="eyebrow">'+(cn?'Complex':'Voices in this family')+'</div>'+(cn?'<div class="char">'+duo(S[parts[0]],S[parts[1]])+'<b>'+esc(parts.join(' with '))+'</b></div>':'')
+   +'<div class="cast" style="margin-top:10px">'+parts.map(function(nm){var s=S[nm];if(!s)return '';var v=sabVoice(s);
+    return '<div class="sab" data-s="'+esc(nm)+'" style="grid-template-columns:52px 1fr">'+maskSvg(s,52)+'<div><div class="nm">'+esc(nm)+'</div><div class="q'+(v.own?' own':'')+'">'+(v.own?'&ldquo;'+esc(v.q)+'&rdquo;':esc(v.q))+'</div>'
+     +'<div class="fdots" style="margin-top:6px">'+(s.parts||[]).map(function(id){var n=NODE[id];return '<span class="fd"><svg width="8" height="8"><circle cx="4" cy="4" r="3.5" fill="'+col(n.b)+'"/></svg>'+esc(n.k)+'</span>';}).join('')+'</div></div></div>';}).join('')+'</div></div>';});
+ return h+'</div>';}
+function vGrammar(){
+ var fams=Object.keys(FAM_OUT), ch=Object.keys(FACE);
+ var h='<div class="card fam"><div class="eyebrow">The outline is the family</div><div class="gram" style="margin-top:10px">'+fams.map(function(f){
+  return '<div class="cell">'+famMask(f,56)+'<div style="color:var(--ink);margin-top:6px">'+f+'</div><div>'+esc(famD(f))+'</div></div>';}).join('')+'</div></div>';
+ h+='<div class="card fam"><div class="eyebrow">The expression is the charge it runs on</div><div class="gram" style="margin-top:10px">'+ch.map(function(c){
+  return '<div class="cell">'+'<svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="var(--ink)" stroke-width="1.4" stroke-linecap="round"><path d="'+FAM_OUT.Dissociation+'" stroke-dasharray="1 2" opacity=".4"/><path d="'+FACE[c]+'"/></svg><div style="color:var(--ink);margin-top:6px">'+(c==='anticipation'?'Bracing':c.charAt(0).toUpperCase()+c.slice(1))+'</div></div>';}).join('')+'</div></div>';
+ h+='<div class="card fam"><div class="eyebrow">The colour is the seat, and the stroke is the weight</div><div class="gram" style="margin-top:10px">'
+  +['Root','Sacral','Solar','Heart','Throat','3rd Eye','Crown'].map(function(b,i){var s={nm:'x',hcx:'Rigidity',w:2+i*1.3,parts:[],charges:['fear']};
+   return '<div class="cell">'+maskSvg(s,56,{c:col(b)})+'<div style="color:var(--ink);margin-top:6px">'+esc(SEATNM[SEATK[b]])+'</div><div>'+weightWord(s.w)+'</div></div>';}).join('')+'</div>'
+  +'<p class="small muted">Stroked, never filled, on the product\'s 24 unit icon grid, so a mask sits in a list row, on the body and in the Knowledge base at the same size as every other icon.</p></div>';
+ return h;}
+function vToday(){return '<div class="grid2"><div class="today"><img src="{{img:today-sab.jpg}}" alt="Saboteurs today"><div class="cap">Saboteurs today, Gordon. Rings outside the body, curves to the seats.</div></div>'
+ +'<div class="today"><img src="{{img:today-masks.jpg}}" alt="Masks today"><div class="cap">Masks today, the six developmental masks, the same rings and curves.</div></div></div>';}
+function draw(){
+ var v=document.getElementById('view');
+ v.innerHTML=MODE==='cast'?vCast():MODE==='body'?vBody():MODE==='descent'?vDescent():MODE==='grammar'?vGrammar():vToday();
+ v.querySelectorAll('[data-s]').forEach(function(e){e.onclick=function(){PICK=PICK===e.dataset.s?null:e.dataset.s;if(MODE==='cast'){MODE='body';setMode();}draw();};});
+ v.querySelectorAll('[data-f]').forEach(function(e){e.onclick=function(){FAMPICK=e.dataset.f;draw();};});
+ var a=document.getElementById('allsw');if(a)a.onclick=function(ev){ev.preventDefault();location.hash=/all=1/.test(location.hash)?'':'all=1';draw();};}
+function setMode(){seg(document.getElementById('mode'),[['cast','The cast'],['body','On the body'],['descent','The descent'],['grammar','How a mask is built'],['today','Today, for comparison']],MODE,function(k){MODE=k;PICK=null;draw();});}
+banner('Saboteur, complex and hyper complex masks, item 2 of the FW round');
+setMode();draw();
+</script></body></html>

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en" data-build="round GV prototype"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Archetype three prototype</title>
+<!-- ============================================================
+  ROUND GV, VARIATION 3 OF 4. THREE. A PROTOTYPE, NOT THE APP.
+
+  The fewest choices of the five. Three archetypes at a time, each shown
+  whole: what it does, its impact, and the one button. On a loaded profile
+  the first three are the three the field reads strongest; after that, three
+  more at a press, until all eighteen have been shown once. On a first run
+  nothing can be ranked, so each set of three is dealt from different parts
+  of the body, which keeps a set from being three variations on one theme.
+  The avatar sits above, small, and takes the pick into its core.
+  ============================================================ -->
+<!--BASE-->
+<!--ARCH-->
+<style>
+.top{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;margin:0 auto 18px;max-width:900px}
+.top .figwrap{width:190px;max-width:190px;margin:0}
+.top .sat{width:16cqw;height:16cqw;min-width:30px;min-height:30px}
+.top .sat svg{width:9cqw;height:9cqw}
+.top .sat .pc{display:none}
+.top .core .big{font-size:22px}.top .core .lb{font-size:12px}.top .core .anm{font-size:13px}
+.top .say{max-width:420px;color:var(--dim);font-size:16px;margin:0}
+.top .say b{color:var(--c,var(--ink));font-weight:620}
+.cards{display:grid;gap:18px;grid-template-columns:minmax(0,1fr);max-width:1240px;margin:0 auto}
+@media (min-width:980px){.cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.cards .card{display:flex;flex-direction:column;border-top:3px solid var(--c)}
+.cards .card .ar-det{display:flex;flex-direction:column;flex:1}
+.cards .ar-def{font-size:16px}
+.cards .ar-act{margin-top:auto;padding-top:18px}
+.rk{margin:0 0 10px;font-size:14px;color:var(--c)}
+.rk.dim{color:var(--dim)}
+.nav{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:20px;flex-wrap:wrap}
+.nav button{min-height:48px;padding:0 22px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-weight:600}
+.pips{display:flex;gap:8px}
+.pips i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--dim)}
+.pips i.on{background:var(--ink);border-color:var(--ink)}
+.fr{text-align:center;color:var(--dim);margin:0 auto 14px;max-width:640px}
+@media (min-width:980px){.cards.enter .card{animation:rise .35s ease-out both}.cards.enter .card:nth-child(2){animation-delay:.05s}.cards.enter .card:nth-child(3){animation-delay:.1s}}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+</style></head><body>
+<main class="page">
+ <header class="head"><p class="eyebrow">Your avatar</p><h1 id="q"></h1><p class="lede" id="lede"></p></header>
+ <div class="top"><div class="figwrap"><div class="fig" id="fig"></div></div><p class="say" id="say"></p></div>
+ <p class="fr" id="fr"></p>
+ <div class="cards" id="cards"></div>
+ <div class="nav"><button type="button" id="next">Show three more</button><span class="pips" id="pips" aria-hidden="true"></span></div>
+ <section class="notes" data-proto aria-label="Design notes"><h2>Design notes. Three, variation 3</h2><p class="meas" id="meas"></p><dl>
+  <dt>The job</dt><dd>In Angela's words: <i>"just tell me which ones to look at."</i> She is level 5 on the buyer grid, the largest group and the hardest sell, and she is the one the wheel cost most.</dd>
+  <dt>The count</dt><dd>Three buttons and one control: four, the lowest of the five. Hick's law is the reason, and it is also the whole of the cost below. Measured live above.</dd>
+  <dt>Where they stop</dt><dd><b>Derek</b> wants to see the system and has to press five times to see it all, and never sees it as one picture. <b>James</b> sees Sage, Ruler and Warrior first, which are his own field's top three, and may feel typecast before he has chosen anything. <b>Angela</b> reads three whole descriptions side by side, which is the comparison the wheel never let her make.</dd>
+  <dt>The move</dt><dd>Show less, and show each one whole. The description and its impact are on every card, so nothing has to be tapped to be read.</dd>
+  <dt>Instrument</dt><dd>Which set the first press lands in. How many sets are seen before it. Share of first presses on the first card.</dd>
+  <dt>Grade</dt><dd>B for Angela and a first run, C plus for Derek. The strongest answer to "too much at once", and the weakest to "show me the model".</dd>
+ </dl></section>
+</main>
+<!--LIB-->
+<script>
+(function(){
+'use strict';
+var set=0;
+function sets(){
+ var ro=AR.readOrder();
+ if(ro.length){var list=ro.concat(AR.ROSTER.filter(function(a){return a.read<0;})), out=[];
+  for(var i=0;i<list.length;i+=3)out.push(list.slice(i,i+3)); return out;}
+ /* a first run: dealt round the body so each three spans different parts */
+ var R=AR.ROSTER, n=Math.ceil(R.length/3), o=[]; for(var j=0;j<n;j++)o.push([R[j],R[j+n],R[j+2*n]].filter(Boolean)); return o;}
+function paint(anim){
+ document.getElementById('q').textContent=AR.question();
+ var S=sets(), ro=AR.readOrder(), p=AR.pick(), pa=p?AR.A(p):null;
+ if(set>=S.length)set=0;
+ document.getElementById('lede').textContent=ro.length?'Three at a time, strongest first, as your field reads them.':'Three at a time, each from a different part of your life.';
+ document.getElementById('fr').textContent=ro.length?'':'Nothing read yet, so these are not in any order.';
+ document.getElementById('fig').innerHTML=AR.ring({nolabs:true});
+ var sy=document.getElementById('say'); sy.style.setProperty('--c',pa?AR.col(pa.seat):'');
+ sy.innerHTML=pa?'Archetype <b>'+AR.esc(pa.nm)+'</b>. It sits in the middle of your avatar, at '+AR.esc(AR.SA[pa.seat].nm)+'.':'Nothing picked yet. What you pick goes in the middle of your avatar.';
+ document.getElementById('cards').innerHTML=S[set].map(function(a){
+  var k=ro.indexOf(a), rk=k===0?'Your field reads this first':k===1?'Your field reads this second':k===2?'Your field reads this third':a.draft?'A draft, not read yet':k>0?'Your field reads this further down':'';
+  return '<article class="card" style="--c:'+AR.col(a.seat)+'">'+(rk?'<p class="rk'+(k>2||a.draft?' dim':'')+'">'+rk+'</p>':'')+AR.detail(a)+'</article>';}).join('');
+ var c=document.getElementById('cards'); c.classList.remove('enter'); if(anim){void c.offsetWidth; c.classList.add('enter');}
+ document.getElementById('pips').innerHTML=S.map(function(_,i){return '<i'+(i===set?' class="on"':'')+'></i>';}).join('');
+ document.getElementById('next').textContent=set===S.length-1?'Start again from the first three':'Show three more';
+ AR.measure(document.getElementById('meas'));}
+document.getElementById('next').addEventListener('click',function(){set=(set+1)%sets().length; paint(true);
+ var c=document.getElementById('cards'); if(c.getBoundingClientRect().top<0)c.scrollIntoView({behavior:'smooth',block:'start'});});
+function start(){set=0; var p=AR.pick(); if(p)sets().forEach(function(s,i){if(s.some(function(a){return a.nm===p;}))set=i;}); paint(false);}
+AR.bar('v3-three','Archetype picker on the avatar, round GV, variation 3: Three. Mock data. A pick is kept in this browser only.');
+AR.fromHash();
+var who=AR.ST.who;
+AR.on(function(){if(AR.ST.who!==who){who=AR.ST.who; start();} else paint(false);});
+addEventListener('resize',function(){AR.measure(document.getElementById('meas'));});
+start();
+})();
+</script></body></html>

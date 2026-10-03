@@ -1,0 +1,370 @@
+/* ============================================================
+   THE CALENDAR'S DATA. Every number real, and every gate stated.
+
+   This is build-data.js carried forward for the calendar. It keeps that file's
+   reading and walk, and it adds the three things the calendar needs that the
+   board did not: the kind each ritual belongs to, the seat loads the always on
+   kind is aimed at, and the queue's proposals.
+
+   NOTHING HERE IS INVENTED. Every proposal carries `src`, the name of the
+   engine.js export it came out of, and GATE 4 refuses to write if any `src` is
+   not a real export. A proposal with no source is a decoration.
+
+   SIX GATES, numbered 0 to 5.
+
+   GATE 0  the ported ritFor deals the DQ bands ui/ritual.js deals, read out
+           of both files. Added 27 September, after this port dealt 8 and 4
+           for a day and a half after the product moved to 70 and 40.
+   GATE 1  the ported ritFor agrees with the pin in pin.js on CQ, DQ, seat,
+           track, tier, practice, minutes and releasable, for all nine
+           profiles. Until 27 September this was PANEL-ritual-1000.md section
+           3.1 transcribed, which is the 20 September engine; pin.js says why
+           it is pinned rather than read live.
+   GATE 2  PANEL-ritual-1000.md 3.1's practice column is reconciled, not
+           gated. It was taken with the first practice in the table rather
+           than the lightest, which is the change ui/ritual.js documents, and
+           the old rule is run to show which rows it still reproduces.
+   GATE 3  the practice column agrees with DESIGN-ritual.md section 1.2, which
+           is the current measurement, parsed out of the document itself.
+   GATE 4  every queue proposal names a real engine.js export as its source.
+
+   build-data.js cited "PANEL-ritual-1000.md section A1". There is no section
+   A1 in that file; it reads the same pin as this file now.
+   ============================================================ */
+const path=require('path'), fs=require('fs');
+const E=require(path.resolve(__dirname,'../../engine.js'));
+const {S,CHARGES,SINAMES,LAWSET,PEOPLE,buildSoul,compute,PRACTICE,ladderRead,
+       SPEC_POLE,sniffStory,avatarBlank,avatarValid}=E;
+
+/* the same port of ui/personas.js loadP that build-data.js carries. compute()
+   reads shared state rather than its argument, so a profile is loaded and not
+   passed. */
+function loadPerson(p){
+ S.dom=p.dom; S.a1=p.a1; S.a2=p.a2;
+ S.doms=[p.dom]; S.arcs=[p.a1,p.a2]; S.roots=[];
+ buildSoul();
+ CHARGES.forEach(c=>{S.charge[c]=(p.c&&p.c[c]!==undefined)?p.c[c]:0;
+  S.replace[c]=(p.rep&&p.rep[c])||0;});
+ const LS=LAWSET[p.nm]||{_:5.5};
+ SINAMES.forEach(l=>{S.law[l]=(LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:5.5);});
+ return compute();}
+
+const TRACK4BAND={Root:'Body',Sacral:'Somatic',Solar:'Somatic',Heart:'Body',
+                  Throat:'Mind','3rd Eye':'Mind',Crown:'Energy'};
+const lightest=set=>set.slice().sort((a,b)=>(a.min-b.min)||(a.tier-b.tier))[0];
+const firstInTable=set=>set[0];
+
+/* ritFor, ported line for line from atuned_src/ui/ritual.js:9. */
+function ritFor(r,pick){
+ pick=pick||lightest;
+ const band=r.darkB||'Root', track=TRACK4BAND[band]||'Body';
+ /* the owner's bands, 70 and 40, ruled 26 September. This copy read 8
+    and 4 from 3824c63 until 27 September; GATE 0 now reads it against
+    ui/ritual.js. */
+ const tier=r.DQ>=70?1:(r.DQ>=40?2:3);
+ const fit=PRACTICE.filter(p=>p.tier<=tier);
+ const first=fit.filter(p=>p.track===track);
+ const called=first.length?pick(first):pick(fit);
+ return {band,track,tier,called,substituted:!first.length,
+  actualTrack:called?called.track:track,all:fit};}
+
+/* the lightest practice on the track that moves a given seat, at the tier the
+   reading allows. Same rule as ritFor, aimed at a seat the reading did not
+   pick, which is what the avatar and the weak law need. */
+function forSeat(seat,tier,skip){
+ /* skip is the set of practice keys already standing. THE SAME PRACTICE MAY
+    NOT OCCUPY TWO KINDS AT ONCE. Gordon's weakest law seats at the throat, the
+    mind track holds nothing at tier 1, so it substitutes and lands on the
+    signal test, which is already his always on ritual. The board then printed
+    the same practice twice under two headings. Taking the next one in the same
+    ordering is not a new rule, it is the next element of the rule already
+    being applied. */
+ skip=skip||{};
+ const track=TRACK4BAND[seat]||'Body';
+ const fit=PRACTICE.filter(p=>p.tier<=tier&&!skip[p.k]);
+ const on=fit.filter(p=>p.track===track);
+ if(!fit.length)return null;
+ const c=on.length?lightest(on):lightest(fit);
+ return c?{k:c.k,nm:c.nm,min:c.min,track:c.track,tier:c.tier,
+           substituted:!on.length,wanted:track}:null;}
+
+const SIM=require(path.resolve(__dirname,'losssim.js'));
+const PIN=require(path.resolve(__dirname,'pin.js'));
+const TODAY=Date.UTC(2026,8,20);           /* Sunday 20 September 2026 */
+const WHO=['Marcus','Gordon','Diane','Angela','Sofia','Derek','Rosa','James'];
+const WT={Diane:180,Derek:170,Marcus:160,Angela:150,Sofia:140,James:100,
+          Ana:50,Gordon:35,Rosa:15};
+
+/* ---------- THE THREE KINDS ----------
+   CLOSED AT THREE, and the argument is that each one names a different engine
+   function as the source of its proposals. Always on reads the seat loads off
+   compute().carrying, because avatarGap calls a seat clear when its load is
+   zero and an avatar cannot manifest while a seat is carrying. Behaviour reads
+   compute().weakL, the lowest of the twenty one laws. Release reads
+   sniffStory's offer and, where the story gives nothing, the addresses above
+   the release threshold. A fourth kind would need a fourth source and the
+   engine has none, and a kind a person could type would make the calendar's
+   colour legend unbounded against a working memory of about four. What a
+   person is optimising for is therefore not a fourth kind, it is which of the
+   three the queue puts first. Each one also names
+   the engine function its proposals come out of, because a kind that cannot
+   say where its work comes from is a label rather than a category. The colour
+   is not new: MARKS already carries three families, each family already sits
+   at a band, and PAL already gives that band a colour. */
+const KIND=[
+ {k:'hold',   nm:'Always on', fam:'Practice',  band:'Root',
+  d:'the avatar does not manifest without these',
+  src:'carrying',  cadence:'every day'},
+ {k:'change', nm:'Behaviour', fam:'Structure', band:'Heart',
+  d:'aimed at the law that is running weakest',
+  src:'weakL',     cadence:'every day'},
+ {k:'release',nm:'Release',   fam:'Ground',    band:'Throat',
+  d:'the protocol, at one address',
+  src:'sniffStory',cadence:'when called'}];
+
+const out={profiles:{}, kinds:KIND, today:TODAY, pal:E.PAL,
+           practiceN:PRACTICE.length, lawN:SINAMES.length};
+
+WHO.forEach(nm=>{
+ const P=PEOPLE.filter(p=>p.nm===nm)[0];
+ if(!P)throw new Error('no person '+nm);
+ const r=loadPerson(P);
+ const c=ritFor(r);
+ const prof=Object.assign({},P,{rituals:[],axes:S.axes,meter:S.meter,history:[]});
+ const lad=ladderRead(prof,TODAY);
+
+ /* EVERYTHING READ OFF r IS READ HERE, BEFORE THE SIMULATOR RUNS.
+    compute() reads and writes shared state, which is the impure core
+    CLAUDE.md names, and r.carrying points into it. The first cut of this file
+    read the seat loads and the releasable addresses AFTER runSim, and by then
+    runSim had called compute() a few thousand times and r.carrying held the
+    last simulated profile instead of this one. Gordon's ninety seven
+    releasable addresses came back as zero and the release lane of the queue
+    was empty for all eight people. GATE 5 below reloads each profile from
+    scratch and refuses to write if the extracted numbers have moved. */
+
+ /* seat loads, summed off the live imprints. This is what the avatar's own
+    gap function measures: avatarGap calls a seat clear when its load is zero,
+    so the seat carrying most is what is standing between the avatar and
+    manifest. */
+ const seatLoad={};
+ r.carrying.forEach(x=>{seatLoad[x.b]=(seatLoad[x.b]||0)+x.held;});
+ const seats=Object.entries(seatLoad).map(([b,v])=>({b,load:+v.toFixed(2),
+   n:r.carrying.filter(x=>x.b===b).length}))
+  .sort((a,b)=>b.load-a.load);
+
+ /* the releasable addresses, at the sq >= 4 threshold ui/personas.js:418
+    builds the release queue at. Same rule PANEL 3.1 counts with. */
+ const carryingN=r.carrying.length;
+ const releasableN=r.carrying.filter(x=>x.sq>=4).length;
+ const weakL=r.weakL||null;
+ const rel=r.carrying.filter(x=>x.sq>=4)
+  .sort((a,b)=>b.sq-a.sq).slice(0,3)
+  .map(x=>({addr:x.n, fetter:x.k, seat:x.b, axis:x.c, sq:+x.sq.toFixed(2),
+            replacement:(SPEC_POLE[x.c]||{}).pole||null}));
+
+ /* what the sniffer actually gets out of this person's own words. Measured,
+    not assumed: TASKS.md 0j records that thirteen of fourteen persona voices
+    return nothing, and this is that same measurement taken here. */
+ const sn=sniffStory(P.says||'');
+ const snOffer=sn.offer.map(o=>({addr:o.address, axis:o.axis,
+   replacement:o.replacement, shadow:o.shadow}));
+
+ /* the avatar. No profile in PEOPLE carries one, so avatarBlank is what the
+    engine has for all eight, and the avatar's first proposal is therefore to
+    be built. That is not a placeholder, it is what is missing. */
+ const av=avatarBlank();
+
+ /* the day by day walk, from the simulator, at the design as costed. It runs
+    last because it destroys the shared state everything above reads. */
+ Object.keys(SIM.TRACE).forEach(k=>delete SIM.TRACE[k]);
+ SIM.runSim('final',{trace:nm});
+ const t=Object.assign({},SIM.TRACE);
+
+ out.profiles[nm]={
+  nm, age:P.age, role:P.role, weight:WT[nm]||0, says:P.says||'',
+  CQ:+(+r.CQ).toFixed(1), DQ:+(+r.DQ).toFixed(2),
+  seat:c.band, track:c.track, tier:c.tier, substituted:c.substituted,
+  actualTrack:c.actualTrack,
+  called:c.called?{k:c.called.k,nm:c.called.nm,min:c.called.min,
+    track:c.called.track,tier:c.called.tier}:null,
+  fit:c.all.map(p=>({k:p.k,nm:p.nm,min:p.min,track:p.track,tier:p.tier})),
+  seats, carryingN, releasableN, rel, weakL,
+  snOffer, snImprints:(sn.parsed&&sn.parsed.imprints||[]).length,
+  avatarBuilt:!!av.built, avatarPairs:(av.pairs||[]).length,
+  ledger:lad.ledger, streak:lad.streak,
+  earned:lad.earned.map(m=>m.nm), next:lad.next?lad.next.nm:null,
+  walk:t.days||[], walkDone:t.doneN||0, walkStreak:t.streak||0,
+  sampled:t.n||0, survived:t.alive30||0};});
+
+/* ============================================================
+   THE QUEUE. Three proposers, one order.
+
+   Ordered and not listed: the order is the load each proposal is aimed at,
+   heaviest first, and the person's optimise choice lifts one kind to the top
+   without hiding the other two. Every row carries the engine export it came
+   from so GATE 4 can check it.
+   ============================================================ */
+function queueFor(o){
+ const q=[];
+
+ /* AVATAR, into the always on kind. avatarBlank says nothing is built, so
+    what is missing for the avatar to progress is the avatar. That is the
+    first row and it is not a practice. */
+ if(!o.avatarBuilt)
+  q.push({kind:'hold', by:'avatar', src:'avatarBlank', weight:1e6,
+   nm:'Build the avatar', min:null, unit:'once',
+   because:'Nothing is written on either side yet, so there is no gap to close '
+    +'and nothing to hold a daily ritual to.'});
+
+ /* AVATAR, into the always on kind, off the seat carrying most. avatarGap
+    calls a seat clear when its load is zero, so this is the distance the
+    avatar has left to travel, read at an address rather than guessed. */
+ o.seats.slice(0,2).forEach((s,i)=>{
+  const p=forSeat(s.b,o.tier); if(!p)return;
+  q.push({kind:'hold', by:'avatar', src:'avatarGap', weight:s.load,
+   nm:p.nm, min:p.min, track:p.track, seat:s.b, unit:'a day',
+   because:'Your '+s.b.toLowerCase()+' carries '+s.n+' live imprints, more than '
+    +(i===0?'any other seat':'all but one')+'. The '+p.wanted.toLowerCase()
+    +' track is what moves a '+s.b.toLowerCase()+'.'});});
+
+ /* THE WEAK LAW, into the behaviour kind. compute().weakL is the lowest of the
+    twenty one, and it arrives already seated at a band with its own icon. */
+ if(o.weakL){
+  const p=forSeat(o.weakL.b,o.tier,o.called?{[o.called.k]:1}:{});
+  if(p)q.push({kind:'change', by:'you', src:'weakL', weight:500,
+   nm:p.nm, min:p.min, track:p.track, seat:o.weakL.b, law:o.weakL.nm,
+   unit:'a day',
+   because:o.weakL.nm.toLowerCase()+' is the weakest of your twenty one laws. '
+    +'It seats at the '+o.weakL.b.toLowerCase()+', and the '+p.wanted.toLowerCase()
+    +' track is what moves a '+o.weakL.b.toLowerCase()+'.'});}
+
+ /* THE SNIFFER, into the release kind. sniffStory on the person's own words.
+    Where it returns an offer the address is named. Where it returns nothing
+    the lane says so and says why, because a sniffer that cannot read is a
+    measured defect and not a quiet blank. */
+ o.snOffer.forEach(of=>{
+  q.push({kind:'release', by:'sniffer', src:'sniffStory', weight:400+of.shadow,
+   nm:of.addr, via:'The Observer Technique', min:20, track:'Somatic',
+   addr:of.addr, axis:of.axis, replacement:of.replacement, unit:'when called',
+   because:'Your own words carry '+of.axis.toLowerCase()+' at '+of.addr
+    +'. The far pole there is '+of.replacement+'.'});});
+
+ /* THE FIELD, into the release kind, where the story gave nothing. The
+    addresses at or above the release threshold, heaviest first. */
+ o.rel.forEach(a=>{
+  q.push({kind:'release', by:'you', src:'carrying', weight:200+a.sq,
+   nm:a.fetter, via:'The Observer Technique', min:20, track:'Somatic',
+   addr:a.addr, axis:a.axis, replacement:a.replacement, fetter:a.fetter,
+   unit:'when called',
+   because:a.fetter+' is held at '+a.addr+', above the line release opens at. '
+    +'The far pole there is '+a.replacement+'.'});});
+
+ q.sort((a,b)=>b.weight-a.weight);
+ return q.map((x,i)=>Object.assign({i},x));}
+
+Object.values(out.profiles).forEach(o=>{o.queue=queueFor(o);});
+
+/* ============================================================
+   THE GATES
+   ============================================================ */
+let bad=0;
+const fail=m=>{bad++;console.error('  FAIL  '+m);};
+
+/* GATE 0, 1, 2 AND 3 READ OFF pin.js, THE ONE COPY. These four used to be
+   typed here, transcribed from PANEL-ritual-1000.md 3.1 and DESIGN-ritual.md
+   1.2, and the same tables were typed into two sibling files. All three went
+   red on 25 September and stayed red: the engine had been refitted under
+   them, and their ritFor still dealt the 8 and 4 bands the product left at
+   3824c63. pin.js says which of the failures was drift and which a defect,
+   and why the values are pinned rather than read live. */
+console.error('GATE 0  the ported ritFor deals the bands ui/ritual.js deals');
+const bands=PIN.checkBands(__filename,fail);
+console.error('        port '+bands.have+', product '+bands.want);
+
+console.error('GATE 1  the reading against the pin, '+PIN.AT);
+const stale=[], now={};
+Object.keys(PIN.PIN).forEach(nm=>{
+ const P=PEOPLE.filter(p=>p.nm===nm)[0];
+ const r=loadPerson(P), c=ritFor(r), old=ritFor(r,firstInTable);
+ const got=c.substituted?c.actualTrack:c.track;
+ PIN.checkPin(nm,{CQ:r.CQ,DQ:r.DQ,seat:r.darkB,track:got,tier:c.tier,
+  practice:c.called.nm,min:c.called.min,releasable:r.carrying.filter(x=>x.sq>=4).length},fail);
+ now[nm]={seat:r.darkB,track:got,substituted:c.substituted,tier:c.tier,
+  practice:c.called.nm,min:c.called.min};
+ /* GATE 2. PANEL-ritual-1000.md 3.1's practice column, reconciled and not
+    gated: see P31_PRACTICE in pin.js. */
+ const p31=PIN.P31_PRACTICE[nm];
+ if(p31&&(c.called.nm!==p31[0]||c.called.min!==p31[1]))
+  stale.push(nm+': panel '+p31[0]+' '+p31[1]+'m, build '+c.called.nm+' '+c.called.min+'m, '
+   +(old.called.nm===p31[0]&&old.called.min===p31[1]
+     ?'and the old first in table rule reproduces the panel'
+     :'and the old rule gives '+old.called.nm+' now, because the engine under it moved'));});
+console.error('        '+(bad?bad+' failures':'nine profiles, eight columns each, all agree'));
+
+console.error('GATE 2  the practice column of PANEL-ritual-1000.md 3.1, reconciled, not gated');
+console.error('        '+stale.length+' of 9 rows differ from the build. ui/ritual.js records the');
+console.error('        pick rule change; 3.1 is the 20 September snapshot and says so.');
+stale.forEach(s=>console.error('          '+s));
+
+/* GATE 3. DESIGN-ritual.md section 1.2, which is the current measurement,
+   parsed out of the document rather than typed here, so the document and
+   the build cannot disagree without this file refusing to write. */
+console.error('GATE 3  the practice column against DESIGN-ritual.md 1.2, read out of the document');
+const n12=PIN.checkDoc(now,fail);
+console.error('        '+n12+' profiles, six columns each');
+
+/* GATE 4. Every proposal names a real source: either a function engine.js
+   exports, or a field compute() puts on its own return. A proposal that can
+   name neither is a decoration and this file will not write it. */
+console.error('GATE 4  every queue row names a real engine.js source');
+const RREF=loadPerson(PEOPLE.filter(p=>p.nm==='Gordon')[0]);
+const isSrc=s=>(typeof E[s]==='function')||(s in E)||(s in RREF);
+let rows=0, srcs={};
+Object.values(out.profiles).forEach(o=>o.queue.forEach(q=>{
+ rows++; srcs[q.src]=(srcs[q.src]||0)+1;
+ if(!isSrc(q.src))
+  fail('queue row cites '+q.src+', which is neither an engine.js export nor a '
+   +'field of compute()');
+ if(!q.because)fail('queue row with no because: '+q.nm);}));
+console.error('        '+rows+' rows across '+WHO.length+' profiles, sources: '
+ +Object.entries(srcs).map(([k,v])=>k+' '+v).join(', '));
+
+/* GATE 5. THE ONE THAT CAUGHT THIS FILE'S OWN BUG.
+   Reload every profile from scratch, with nothing else having run in between,
+   and check the numbers written into cal.json against the reload. compute()
+   reads shared state, so any read taken after the simulator has run is a read
+   of somebody else's field. This gate does not care why a number moved. It
+   refuses to write if one did. */
+console.error('GATE 5  every extracted number survives a clean reload');
+let drift=0;
+WHO.forEach(nm=>{
+ const o=out.profiles[nm];
+ const r=loadPerson(PEOPLE.filter(p=>p.nm===nm)[0]);
+ const relN=r.carrying.filter(x=>x.sq>=4).length;
+ const seatN=Object.keys(r.carrying.reduce((a,x)=>(a[x.b]=1,a),{})).length;
+ if(o.carryingN!==r.carrying.length){
+  drift++; fail(nm+' carrying '+o.carryingN+' in cal.json, '+r.carrying.length+' on reload');}
+ if(o.releasableN!==relN){
+  drift++; fail(nm+' releasable '+o.releasableN+' in cal.json, '+relN+' on reload');}
+ if(o.seats.length!==seatN){
+  drift++; fail(nm+' seats '+o.seats.length+' in cal.json, '+seatN+' on reload');}
+ if(o.weakL&&r.weakL&&o.weakL.nm!==r.weakL.nm){
+  drift++; fail(nm+' weakest law '+o.weakL.nm+' in cal.json, '+r.weakL.nm+' on reload');}});
+console.error('        '+(drift?drift+' numbers moved':'eight profiles, four numbers each, none moved'));
+
+if(bad){console.error('\n'+bad+' failures. refusing to write cal.json.');process.exit(1);}
+
+fs.writeFileSync(path.resolve(__dirname,'cal.json'),JSON.stringify(out,null,1));
+console.error('\nwrote cal.json, '+Object.keys(out.profiles).length+' profiles, '
+ +(fs.statSync(path.resolve(__dirname,'cal.json')).size/1024).toFixed(1)+' kB');
+Object.values(out.profiles).forEach(o=>console.error(
+ '  '+o.nm.padEnd(8)+' seat '+o.seat.padEnd(7)
+ +(o.substituted?o.actualTrack+'*':o.track).padEnd(9)+'t'+o.tier+'  '
+ +o.called.nm.padEnd(24)+String(o.called.min).padStart(2)+'m'
+ +'  walk '+String(o.walk.length).padStart(2)
+ +'  imprints '+String(o.carryingN).padStart(3)
+ +'  releasable '+String(o.releasableN).padStart(3)
+ +'  sniffer offers '+o.snOffer.length
+ +'  queue '+String(o.queue.length).padStart(2)
+ +'  weakest law '+(o.weakL?o.weakL.nm:'none')));

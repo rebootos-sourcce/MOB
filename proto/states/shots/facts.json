@@ -1,0 +1,104 @@
+[
+ {
+  "state": "angela",
+  "width": 1600,
+  "tiles": 8,
+  "smallest": 62,
+  "captionsWiderThanTile": 0,
+  "railText": "Sun Gemini Moon Sagittarius Rising Virgo Year Metal horse Stack shears in three places 33 Path 33 Profile 5/1 Gene key 35.5 Prototype only Names Shown Hidden Time As entered Removed"
+ },
+ {
+  "state": "james",
+  "width": 1600,
+  "tiles": 8,
+  "smallest": 62,
+  "captionsWiderThanTile": 0,
+  "railText": "Sun Libra Moon Taurus Rising Pisces Year Earth rooster Stack no shear 7 Path 7 Profile 5/2 Gene key 46.5 Prototype only Names Shown Hidden Time As entered Removed"
+ },
+ {
+  "state": "derek",
+  "width": 1600,
+  "tiles": 8,
+  "smallest": 62,
+  "captionsWiderThanTile": 0,
+  "railText": "Sun Capricorn Moon Virgo Rising Capricorn Year Fire tiger Stack no shear 9 Path 9 Profile 1/4 Gene key 60.1 Prototype only Names Shown Hidden Time As entered Removed"
+ },
+ {
+  "state": "sun card, press the moon row",
+  "width": 1600,
+  "opened": "Moon"
+ },
+ {
+  "state": "james, time removed",
+  "width": 1600,
+  "tiles": 8,
+  "smallest": 62,
+  "captionsWiderThanTile": 0,
+  "railText": "Sun Libra Moon not read yet Rising not read yet Year Earth rooster Stack not fully read 7 Path 7 Profile 5/1 Gene key 46.5 Prototype only Names Shown Hidden Time As entered Removed"
+ },
+ {
+  "state": "blank",
+  "width": 1600,
+  "tiles": 4,
+  "smallest": 62,
+  "captionsWiderThanTile": 0,
+  "railText": "Sun not read yet Moon not read yet Rising not read yet Year not read yet No birth data. Date, time and place unlock sun, moon, rising, the year animal, life path and the gene key. Open Energetics Prototype only Names Shown Hidden Time As entered Removed"
+ },
+ {
+  "state": "errors and requests",
+  "width": 1600,
+  "pageErrors": [],
+  "outboundRequests": []
+ },
+ {
+  "state": "angela",
+  "width": 390,
+  "tiles": 8,
+  "smallest": 69,
+  "captionsWiderThanTile": 0,
+  "railText": "Sun Gemini Moon Sagittarius Rising Virgo Year Metal horse Stack shears in three places 33 Path 33 Profile 5/1 Gene key 35.5 Prototype only Names Shown Hidden Time As entered Removed"
+ },
+ {
+  "state": "james",
+  "width": 390,
+  "tiles": 8,
+  "smallest": 69,
+  "captionsWiderThanTile": 0,
+  "railText": "Sun Libra Moon Taurus Rising Pisces Year Earth rooster Stack no shear 7 Path 7 Profile 5/2 Gene key 46.5 Prototype only Names Shown Hidden Time As entered Removed"
+ },
+ {
+  "state": "derek",
+  "width": 390,
+  "tiles": 8,
+  "smallest": 69,
+  "captionsWiderThanTile": 0,
+  "railText": "Sun Capricorn Moon Virgo Rising Capricorn Year Fire tiger Stack no shear 9 Path 9 Profile 1/4 Gene key 60.1 Prototype only Names Shown Hidden Time As entered Removed"
+ },
+ {
+  "state": "sun card, press the moon row",
+  "width": 390,
+  "opened": "Moon"
+ },
+ {
+  "state": "james, time removed",
+  "width": 390,
+  "tiles": 8,
+  "smallest": 69,
+  "captionsWiderThanTile": 0,
+  "railText": "Sun Libra Moon not read yet Rising not read yet Year Earth rooster Stack not fully read 7 Path 7 Profile 5/1 Gene key 46.5 Prototype only Names Shown Hidden Time As entered Removed"
+ },
+ {
+  "state": "blank",
+  "width": 390,
+  "tiles": 4,
+  "smallest": 82,
+  "captionsWiderThanTile": 0,
+  "railText": "Sun not read yet Moon not read yet Rising not read yet Year not read yet No birth data. Date, time and place unlock sun, moon, rising, the year animal, life path and the gene key. Open Energetics Prototype only Names Shown Hidden Time As entered Removed"
+ },
+ {
+  "state": "errors and requests",
+  "width": 390,
+  "pageErrors": [],
+  "outboundRequests": []
+ }
+]

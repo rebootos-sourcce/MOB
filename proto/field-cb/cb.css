@@ -1,0 +1,87 @@
+/* THE SHEET for the round CB mockups. Tokens are the product's Dark lighting,
+   lifted from atuned_src/shell/head.html by way of proto/field-rings/kit.css,
+   so a comp that reads right here reads right for the reason the product
+   does. Nothing in the product reads this file. */
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E; --stage:#101010;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#969592;
+ --root:#D6524C; --heart:#5FD5A6; --accent:#7EB8D4;
+ /* the tier colour of the reading on screen, Oscillating, TIERCOL in canon.js */
+ --tier:#7D93E0;
+ /* SHADOW. The Root washed 45 percent toward slate, the product's own nodeCol
+    grammar for a light charge. 5.34 to 1 on the stage, 4.72 on the panel, so it
+    holds as type on both, and it is neither the alarm nor the full Root red
+    the compass paints its lower half in. Weight, not warning. */
+ --dq:#B9757B;
+ --sans:'Inter',system-ui,sans-serif;
+ --r:16px; --r-s:11px; --r-xs:8px; --tap:44px;
+}
+html,body{margin:0;padding:0}
+body{background:var(--bg);font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased;
+ font-variant-numeric:tabular-nums}
+svg text{font-family:var(--sans);font-variant-numeric:tabular-nums}
+
+/* A SHEET is a page of labelled comparisons. Its words are the comp's own
+   captions and not product copy, set small and dim so the pictures lead. */
+.sheet{padding:28px 32px 40px;box-sizing:border-box}
+.sheet h1{font-size:22px;font-weight:600;margin:0 0 4px;letter-spacing:-.01em}
+.sheet .lede{font-size:13px;line-height:19px;color:var(--mid);max-width:980px;margin:0 0 22px}
+.row{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap}
+.cell{flex:0 0 auto;display:flex;flex-direction:column;gap:8px}
+.cell .pic{background:var(--stage);border:1px solid var(--edge);border-radius:var(--r);overflow:hidden;position:relative}
+.cell h2{font-size:14px;font-weight:600;margin:6px 0 0}
+.cell h2 i{font-style:normal;color:var(--dim);font-weight:500;margin-right:6px}
+.cell p{font-size:12px;line-height:17px;color:var(--mid);margin:0;max-width:var(--w,360px)}
+.cell p b{color:var(--ink);font-weight:600}
+.cell p.m{color:var(--dim);font-size:11.5px}
+.band{font-size:11px;font-weight:600;color:var(--dim);letter-spacing:.02em;margin:26px 0 10px}
+.prov{font-size:11px;color:var(--dim);margin-top:26px}
+.pic svg{display:block}
+/* the comp's own marks on a picture: a guide circle, a fold line. dashed and
+   in the accent at low weight, so nobody reads them as the product's */
+.guide{fill:none;stroke:var(--accent);stroke-width:1;stroke-dasharray:4 4;opacity:.7}
+.guide-t{fill:var(--accent);font-size:11px;font-weight:500}
+
+/* the product's key pill, .kb and .cr, from head.html by way of kit.css */
+.kb{display:inline-flex;align-items:center;gap:6px;min-height:var(--tap);padding:2px 4px;
+ background:transparent;border:1px solid var(--edge);border-radius:var(--r-xs);
+ color:var(--mid);font:inherit;font-size:12px;white-space:nowrap}
+.cr{display:inline-flex;align-items:center;vertical-align:middle;border-radius:999px;
+ background:color-mix(in srgb,var(--c) 9%,transparent);border:1px solid color-mix(in srgb,var(--c) 30%,transparent);
+ padding:2px 10px 2px 2px}
+.cr .ring{position:relative;flex:0 0 auto}
+.cr .ring svg.arc{transform:rotate(-90deg);display:block;width:24px;height:24px}
+.cr .gl-t{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;
+ font-weight:600;letter-spacing:-.03em;color:var(--c);line-height:1}
+.cr .v{font-weight:500;color:var(--ink);margin-left:6px;line-height:1;border-radius:999px;font-size:11.5px;
+ background:color-mix(in srgb,var(--c) 17%,transparent);padding:4px 9px}
+
+/* THE READOUT. Where the numbers go when they leave a picture's centre. The
+   same three levels as the centre, flat: coherence large and light, shadow
+   smaller and heavier, the names at eleven. Every row holds the 44 pixel
+   floor, because on a phone each is the way into its own reading. */
+.ro{padding:6px 14px 10px;display:flex;flex-direction:column;gap:10px}
+.ro-pair{display:flex;gap:8px}
+.ro-q{flex:1 1 0;display:flex;align-items:center;gap:8px;min-height:var(--tap);padding:4px 10px 4px 6px;
+ border:1px solid var(--edge);border-radius:var(--r-s);box-sizing:border-box}
+.ro-q svg{transform:none;flex:0 0 auto}
+.ro-n{font-size:26px;font-weight:300;line-height:1;letter-spacing:-.02em}
+.ro-n2{font-size:20px;font-weight:500}
+.ro-l{display:flex;flex-direction:column;font-size:11px;color:var(--dim);font-weight:500;line-height:14px}
+.ro-l b{font-weight:600;color:var(--mid)}
+.ro-gates{display:flex;flex-direction:column;border:1px solid var(--edge);border-radius:var(--r-s)}
+.ro-g{display:grid;grid-template-columns:1fr 84px 1fr;align-items:center;gap:8px;min-height:var(--tap);padding:0 10px;font-size:11px}
+.ro-g + .ro-g{border-top:1px solid var(--edge)}
+.ro-side{display:flex;align-items:center;gap:5px;white-space:nowrap}
+.ro-side.lo{justify-content:flex-end}
+.ro-side .nm{color:var(--mid);font-weight:500}
+.ro-side .pc{font-weight:600}
+.ro-side.lo .pc{color:#DC7973}
+.ro-side.hi .pc{color:#83DBB7}
+.ro-bar{position:relative;height:5px;display:flex;gap:2px}
+.ro-bar i{display:block;height:5px;border-radius:3px}
+.ro-bar i.lo{background:rgba(214,82,76,.75)}
+.ro-bar i.hi{background:rgba(95,213,166,.85)}
+.ro-bar em{position:absolute;left:50%;top:-5px;bottom:-5px;width:1px;background:rgba(255,255,255,.3)}
+.ro-cap{font-size:11px;color:var(--dim);line-height:15px;padding:0 2px}

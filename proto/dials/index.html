@@ -1,0 +1,812 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Two dials</title>
+<!-- ============================================================
+     THE DIAL PROTOTYPE. proto/dials/index.html
+
+     TD1 to TD4. Balance and orientation read the same kind of thing in two
+     shapes. This page measures what each one reads off the engine today,
+     shows both as they ship, and puts one design in their place.
+
+     It stands alone and it makes no outbound request. The engine is
+     referenced at ../../engine.js and never copied, so PAL, MIRROR,
+     mirrorAt, balance, leanRead and PEOPLE are the product's own tables
+     and functions, not numbers typed into this file. Every figure on this
+     page is computed at run time. Nothing in atuned_src is touched.
+     ============================================================ -->
+<style>
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ --ink:#EFEDE8; --mid:#B4B0A8; --dim:#94908A;
+ --accent:#7EB8D4; --on-accent:#0B1418;
+ --alarm:#FF2E1F;
+ /* Inter is carried in the shipping build as an embedded variable font. This
+    page has no siblings and fetches nothing, so it runs on the host stack and
+    the port inherits the real face. */
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --num:ui-monospace,'SF Mono',Menlo,monospace;
+ --tap:44px; --r:16px; --r-s:11px; --r-xs:8px;
+ --t:120ms; --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+ font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{padding-bottom:72px}
+h1,h2,h3{font-weight:500;letter-spacing:-.01em;margin:0}
+p{margin:0 0 10px}
+code{font-family:var(--num);font-size:.92em;color:var(--mid)}
+b{font-weight:600}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+.hd{padding:26px 0 14px}
+.hd h1{font-size:25px}
+.lede{color:var(--mid);max-width:70ch;font-size:15px;margin-top:8px}
+section{margin-top:34px}
+.sechd{margin-bottom:12px}
+.sechd h2{font-size:19px}
+.sechd .note{color:var(--dim);font-size:13.5px;margin-top:4px;max-width:74ch}
+.panel{background:var(--panel);border:1px solid var(--edge);border-radius:var(--r);
+ padding:16px}
+.tier1{font-size:11px;color:var(--dim);margin-bottom:7px;letter-spacing:.02em}
+.cap{font-size:12.5px;color:var(--dim);line-height:1.55;margin-top:8px;max-width:72ch}
+
+/* ---------- the person control ---------- */
+.who{position:sticky;top:0;z-index:20;background:var(--bg);
+ border-bottom:1px solid var(--edge);padding:10px 0}
+.who-in{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.who label{font-size:12.5px;color:var(--dim);flex:0 0 auto}
+select{font-family:var(--sans);font-size:14px;color:var(--ink);background:var(--panel-2);
+ border:1px solid var(--edge-2);border-radius:var(--r-s);min-height:var(--tap);
+ padding:0 12px;flex:1 1 210px;max-width:380px;cursor:pointer}
+.step{min-width:var(--tap);min-height:var(--tap);border-radius:var(--r-s);
+ background:var(--panel-2);border:1px solid var(--edge-2);color:var(--ink);
+ font-family:var(--sans);font-size:17px;cursor:pointer;flex:0 0 auto}
+.step:hover{background:var(--panel)}
+.says{color:var(--mid);font-size:13.5px;margin-top:8px;max-width:78ch}
+
+/* ---------- the roster readout ---------- */
+.tbl{width:100%;border-collapse:collapse;font-size:11.5px}
+.tbl th{text-align:right;font-weight:500;color:var(--dim);font-size:11px;
+ padding:5px 6px;border-bottom:1px solid var(--edge-2);white-space:nowrap}
+.tbl th:first-child,.tbl td:first-child{text-align:left}
+.tbl td{text-align:right;padding:5px 6px;border-bottom:1px solid var(--edge);
+ font-family:var(--num);font-variant-numeric:tabular-nums;color:var(--mid);
+ white-space:nowrap}
+.tbl td:first-child{font-family:var(--sans);color:var(--ink)}
+.tbl tr.on td{background:var(--panel-2);color:var(--ink)}
+.tbl tr.on td:first-child{font-weight:600}
+
+/* ---------- the two shipping dials, reproduced ---------- */
+/* The markup and the rules in this block are the shipping ones, carried over
+   so the comparison is against the product and not against a memory of it.
+   atuned_src/ui/ui.js renderBal and the polbar block, atuned_src/shell/head.html
+   lines 1364 to 1397 and 1542 to 1563. Nothing here is a redesign. */
+.ship{display:grid;grid-template-columns:repeat(auto-fit,minmax(272px,1fr));gap:14px}
+.ship .panel{min-width:0}
+
+.polbar{height:32px;border-radius:var(--r-xs);position:relative;overflow:hidden;
+ background:var(--sunk);margin-bottom:4px}
+.polbar .fill{position:absolute;top:0;bottom:0;left:50%}
+.polbar .fill.mal{left:auto;right:50%}
+.polbar .mid{position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--edge-2)}
+.pol-g{display:inline-flex;align-items:center;color:var(--dim)}
+.pol-g svg{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;
+ stroke-linejoin:round}
+.pol-g.on{color:var(--c)}
+.polbar .lb{position:absolute;top:0;bottom:0;display:flex;align-items:center;gap:6px;
+ font-family:var(--num);font-size:11px;font-weight:500;color:var(--ink);opacity:.86;
+ padding:0 10px}
+.polbar .lb b{font-weight:500}
+.polbar .l{left:0}.polbar .r{right:0}
+.bmnote{font-size:12.5px;color:var(--dim);margin:6px 0 0;line-height:1.55}
+
+.bal{display:flex;flex-direction:column;gap:6px;width:100%;text-align:left;
+ background:none;border:0;padding:6px 0;cursor:pointer;min-height:var(--tap)}
+.bal-t{display:flex;justify-content:space-between;align-items:center;gap:7px;
+ font-size:11px;color:var(--dim);white-space:nowrap}
+.bal-t .on{font-weight:600}
+.bal-n{flex:1 1 auto;text-align:center;display:flex;justify-content:center}
+.bal-n em{font-style:normal;color:var(--dim);font-size:11.5px}
+.bal-g{display:inline-flex;align-items:center;flex:0 0 auto;color:var(--dim)}
+.bal-g svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;
+ stroke-linejoin:round}
+.bal-g.on{color:var(--ink)}
+.bal-tr{position:relative;height:6px;border-radius:3px;background:var(--sunk);
+ overflow:hidden}
+.bal-f{position:absolute;top:0;bottom:0;border-radius:3px;opacity:.9}
+.bal-tr i{position:absolute;top:-1px;bottom:-1px;width:2px;left:calc(50% - 1px);
+ background:var(--bg);z-index:2}
+/* cr(), the product's percentage object, at size sm and xs. */
+.cr{display:inline-flex;align-items:center;vertical-align:middle;border-radius:999px;
+ background:color-mix(in srgb,var(--c) 9%,transparent);
+ border:1px solid color-mix(in srgb,var(--c) 30%,transparent);
+ padding:2px 10px 2px 2px;font-family:var(--sans)}
+.cr .ring{position:relative;flex:0 0 auto}
+.cr .ring svg.arc{transform:rotate(-90deg);display:block}
+.cr .ring .gl{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.cr .ring .gl svg{fill:none;stroke:var(--c);stroke-width:1.7;stroke-linecap:round;
+ stroke-linejoin:round;width:10px;height:10px}
+.cr .v{font-family:var(--num);font-weight:500;font-variant-numeric:tabular-nums;
+ color:var(--c);margin-left:6px;line-height:1;border-radius:999px;font-size:11.5px;
+ background:color-mix(in srgb,var(--c) 17%,transparent);padding:4px 9px;white-space:nowrap}
+.bmrow{display:grid;grid-template-columns:78px 1fr 44px;gap:10px;align-items:center;
+ font-size:12px;color:var(--mid);margin-bottom:6px}
+.bmbar{height:8px;background:var(--sunk);border-radius:4px;overflow:hidden}
+.bmbar i{display:block;height:100%;border-radius:4px}
+.bmv{font-family:var(--num);font-variant-numeric:tabular-nums;text-align:right}
+.hidden-tag{display:inline-block;font-size:10.5px;color:var(--dim);
+ border:1px solid var(--edge-2);border-radius:999px;padding:1px 7px;margin-left:6px}
+
+/* ============================================================
+   THE ONE DESIGN.
+
+   One object, two readings. Both are a signed position on a bipolar axis:
+   two named poles, even at the centre, nought to a hundred toward either
+   side, and a spread the reading moves across. Two shapes for one object
+   makes the reader learn the shape twice and makes the two readings look
+   like different kinds of fact.
+
+   Six parts, in his order. A thin line. Icons at the two ends. A figure
+   with a pill under it. A colour bar leaning to the side leaned to, with
+   the percent said. And the swing, on the same axis as the figure, drawn
+   as an interval and never as a dot.
+   ============================================================ */
+/* SHOWN AT THE WIDTH IT WILL SHIP AT. The rail is about this wide. Stretched
+   to a full panel at 1600 the two end marks sit a foot apart with the figure
+   floating between them and nothing reads as one object, which is the lesson
+   proto/nav already paid for once. */
+.dial{display:block;width:100%;max-width:300px;text-align:left;background:none;
+ border:0;padding:8px 0 4px;cursor:pointer;min-height:var(--tap)}
+/* row one. the ends, and the figure over the origin. */
+.d-top{display:grid;grid-template-columns:22px 1fr 22px;align-items:center;gap:8px}
+.d-g{display:flex;align-items:center;justify-content:center;color:var(--dim);
+ transition:color var(--t) var(--ease)}
+.d-g svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;
+ stroke-linecap:round;stroke-linejoin:round}
+/* the lit end is carried by value, not by hue: hue is already saying the
+   magnitude in the bar, and spending it twice in one object is the fourth
+   thing this product refuses to add. */
+.d-g.on{color:var(--ink)}
+.d-fig{text-align:center;line-height:1}
+/* the figure. tabular, so the number does not shift width as it moves, and
+   large enough that the malignant hue clears the large text floor rather
+   than the normal one. */
+.d-n{font-family:var(--num);font-variant-numeric:tabular-nums;font-size:30px;
+ font-weight:500;color:var(--c);letter-spacing:-.02em;display:block}
+.d-n.none{color:var(--dim);font-size:24px}
+/* the pill. its ink is --ink and its hairline is the pole colour, because
+   the pole colour at this size does not clear the normal text floor against
+   its own washed ground. Measured: 3.46 for the root hue, against 4.5. */
+.d-pill{display:inline-block;margin-top:6px;font-size:11.5px;line-height:1;
+ padding:4px 10px;border-radius:999px;color:var(--ink);
+ border:1px solid color-mix(in srgb,var(--c) 42%,transparent);
+ background:color-mix(in srgb,var(--c) 10%,transparent)}
+.d-pill.none{color:var(--dim);border-color:var(--edge-2);background:none}
+/* row two. the swing, then the line. Two rows four pixels apart, because an
+   interval drawn inside a magnitude bar is swallowed by it: at a figure of
+   a hundred the bar covers the whole side and the interval disappears under
+   the thing it is supposed to disagree with. */
+.d-rows{position:relative;margin-top:12px;height:20px}
+.d-sw{position:absolute;left:0;right:0;top:3px;height:4px}
+.d-sw i{position:absolute;top:0;height:4px;border-radius:2px;
+ background:color-mix(in srgb,var(--c) 40%,transparent)}
+/* the ends. taller than the span, because an interval is defined by its ends
+   and a wash with no ends is a smudge. */
+.d-sw u{position:absolute;top:-3px;width:2px;height:10px;border-radius:1px;
+ background:var(--c);text-decoration:none}
+/* the line. the value every divider in this product already uses, not --sunk:
+   at two pixels a trough is not a trough, it is nothing, measured at 1.18
+   against the panel it sits on. */
+.d-line{position:absolute;left:0;right:0;top:13px;height:2px;border-radius:1px;
+ background:var(--edge-2)}
+/* the bar. five pixels on a two pixel line, so it overhangs and is read
+   against the panel rather than against the line: root 4.14, heart 9.26,
+   both clear of the three to one floor a graphic answers to. */
+/* square at the origin and round at the far end. A bar that grows out of a
+   break is flat where it leaves the break: a rounded cap there reads as a
+   lozenge floating near the centre rather than as something with an origin. */
+.d-f{position:absolute;top:-1.5px;height:5px;background:var(--c);z-index:1;
+ transition:width .3s var(--ease),left .3s var(--ease),right .3s var(--ease)}
+.d-f.r{border-radius:0 2.5px 2.5px 0}
+.d-f.l{border-radius:2.5px 0 0 2.5px}
+/* THE BREAK, AND WHY IT HAS ITS OWN CLASS.
+
+   It was `.d-line i`, and the bar is an `<i>` inside `.d-line` too, so the
+   break's rule outranked the bar's class and painted the bar two pixels wide
+   in the background colour. The bar did not draw at all and the whole reading
+   was missing. Reading the rules said it was fine; the screenshot said it was
+   not, which is the whole reason the screenshot is in the loop. */
+.d-brk{position:absolute;top:-3.5px;height:9px;width:2px;left:calc(50% - 1px);
+ background:var(--panel);z-index:2}
+.d-say{font-size:11.5px;color:var(--dim);margin-top:9px;line-height:1.5}
+.d-say b{color:var(--mid);font-weight:500}
+.d-say .flag{color:var(--ink)}
+.dial:hover .d-line{background:var(--panel-2)}
+.pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(272px,1fr));gap:14px}
+.pair .panel{min-width:0}
+
+/* ---------- the numbers ---------- */
+.nums{font-size:12.5px;color:var(--mid);line-height:1.7}
+.nums .k{color:var(--dim)}
+.nums div{padding:4px 0;border-bottom:1px solid var(--edge)}
+.nums div:last-child{border-bottom:0}
+.fail{color:var(--ink);background:color-mix(in srgb,var(--alarm) 14%,transparent);
+ border-radius:4px;padding:0 5px}
+ul{margin:0 0 10px;padding-left:19px;color:var(--mid);font-size:13.5px}
+li{margin-bottom:6px}
+
+@media (max-width:520px){
+ .hd h1{font-size:22px}
+ .d-n{font-size:26px}
+ .tbl th,.tbl td{padding:5px 3px}
+ .who{padding:8px 0}
+}
+</style>
+</head>
+<body>
+
+<div class="who"><div class="wrap"><div class="who-in">
+ <label for="psel">Person</label>
+ <select id="psel"></select>
+ <button type="button" class="step" id="prev" aria-label="Previous person">&#8249;</button>
+ <button type="button" class="step" id="next" aria-label="Next person">&#8250;</button>
+</div><div class="says" id="says"></div></div></div>
+
+<div class="wrap">
+ <div class="hd">
+  <h1>Two dials, one design</h1>
+  <p class="lede">Balance and orientation read the same kind of thing and are
+  drawn in two shapes, so a person learns the shape twice. Both are a signed
+  position on an axis with two named poles. Every figure below is computed off
+  <code>../../engine.js</code> at run time against the roster, so nothing on
+  this page is a number somebody typed.</p>
+ </div>
+
+ <section>
+  <div class="sechd"><h2>What each one reads today</h2>
+   <p class="note">Orientation is <code>leanRead(r)</code> at
+   <code>engine/verp.js:495</code>. With no story scanned it returns
+   <code>100 - r.malig</code>, and <code>malig</code> is
+   <code>CQ&gt;=50 ? 0 : (50-CQ)/50*100</code> at
+   <code>engine/compute.js:188</code>, so above coherence fifty the dial has
+   nowhere left to go. Balance is <code>balance()</code> at
+   <code>engine/compute.js:29</code>, four outward axes meaned against five
+   inward. The swing column is the spread of <code>mirrorAt()</code> across
+   the eight compass axes, which is the only oscillation the engine can
+   already compute.</p></div>
+  <div class="panel"><table class="tbl" id="roster"></table>
+   <p class="cap" id="rostercap"></p></div>
+ </section>
+
+ <section>
+  <div class="sechd"><h2>As they ship</h2>
+   <p class="note">The markup and the rules in this block are the shipping
+   ones, carried over rather than remembered. Three renderings of two
+   readings, and the third is in a container with <code>hidden</code> on it.</p></div>
+  <div class="ship">
+   <div class="panel">
+    <div class="tier1">0 &middot; Orientation</div>
+    <div class="polbar" id="ship-pol"></div>
+    <p class="cap">One track thirty two pixels tall. The two figures sit at the
+    ends, the fill grows from the centre, and there is no pill. It carries no
+    <code>r.unread</code> guard, so an unread field prints a reading.</p>
+   </div>
+   <div class="panel">
+    <div class="tier1">1 &middot; Balance</div>
+    <div id="ship-bal"></div>
+    <p class="cap">A word row with a pill in the middle and a separate six
+    pixel track under it. The figure is one number, not two, and the poles are
+    words as well as marks. It does guard, on <code>b.read</code>.</p>
+   </div>
+   <div class="panel">
+    <div class="tier1">The same reading again<span class="hidden-tag">hidden</span></div>
+    <div id="ship-pol2"></div>
+    <p class="cap">Two left to right bars with the reader doing the
+    subtraction. It is written on every render into <code>#pol</code>, inside
+    <code>#tl</code>, which carries <code>hidden</code>. One reading, three
+    drawings.</p>
+   </div>
+  </div>
+ </section>
+
+ <section>
+  <div class="sechd"><h2>One design, used twice</h2>
+   <p class="note">Same object both times. A thin line with a break at the
+   centre, a ring mark at each end, a figure over the origin with a pill under
+   it naming the side, a colour bar out of the break toward that side, and the
+   swing as an interval above the line. The line is the axis: even at the
+   centre, a hundred at either pole. The figure is the distance from even, so
+   orientation is restated as a lean rather than as a share, which is the step
+   that lets one shape carry both.</p></div>
+  <div class="pair">
+   <div class="panel">
+    <div class="tier1">0 &middot; Orientation</div>
+    <div id="new-pol"></div>
+   </div>
+   <div class="panel">
+    <div class="tier1">1 &middot; Balance</div>
+    <div id="new-bal"></div>
+   </div>
+  </div>
+  <p class="cap" id="paircap"></p>
+ </section>
+
+ <section>
+  <div class="sechd"><h2>Where the figure and the swing disagree</h2>
+   <p class="note">TD4. The figure and the swing are two measurements of one
+   axis, so they can disagree, and the disagreement is the reading. Sofia and
+   Wren print the same figure and are not the same person.</p></div>
+  <div class="pair">
+   <div class="panel"><div class="tier1">Sofia</div><div id="cmp-a"></div></div>
+   <div class="panel"><div class="tier1">Wren</div><div id="cmp-b"></div></div>
+  </div>
+  <p class="cap" id="cmpcap"></p>
+ </section>
+
+ <section>
+  <div class="sechd"><h2>And one thing that is yours to rule</h2>
+   <p class="note">The figure above is the field's own orientation,
+   <code>100 - 2 &times; malig</code>, which is the reading the dial prints
+   today. It pegs at a hundred for everybody at coherence fifty or over, which
+   is why it disagrees with the swing so often. The same drawing takes a figure
+   that cannot peg: the mean of the eight compass axes, on the same axis the
+   swing is already measured on. Then the figure always sits inside the swing
+   and the two never fight. It is a different measurement, so it is your
+   call.</p></div>
+  <div class="pair">
+   <div class="panel"><div class="tier1">Figure off the field, as it ships</div>
+    <div id="alt-a"></div></div>
+   <div class="panel"><div class="tier1">Figure off the compass, as an option</div>
+    <div id="alt-b"></div></div>
+  </div>
+  <p class="cap" id="altcap"></p>
+ </section>
+
+ <section>
+  <div class="sechd"><h2>Measured</h2>
+   <p class="note">Contrast against each element's own ground, not against the
+   page. Computed in this document, so the figures move if a token does.</p></div>
+  <div class="panel"><div class="nums" id="nums"></div></div>
+ </section>
+
+ <section>
+  <div class="sechd"><h2>Does the swing exist</h2></div>
+  <div class="panel">
+   <ul id="swingsays"></ul>
+  </div>
+ </section>
+</div>
+
+<!-- The engine is referenced, never copied. -->
+<script src="../../engine.js"></script>
+<script>
+/* ============================================================
+   READING THE ENGINE. Nothing below invents a number.
+   ============================================================ */
+function esc(s){return String(s==null?'':s)
+ .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function seatCol(b){return PAL[b]||'var(--accent)';}
+function clampN(v,a,b){return Math.max(a,Math.min(b,v));}
+
+/* loading a reference record, the way proto/story4 already does it. loadP
+   lives in ui/personas.js and is not in the engine contract, so the four
+   lines it needs from it are here and nothing else is. */
+function loadWho(i){
+ var p=PEOPLE[i];
+ S.dom=p.dom; S.a1=p.a1; S.a2=p.a2; S.doms=[p.dom]; S.arcs=[p.a1,p.a2]; S.roots=[];
+ buildSoul();
+ CHARGES.forEach(function(c){
+  S.charge[c]=(p.c&&p.c[c]!==undefined)?p.c[c]:0;
+  S.replace[c]=(p.rep&&p.rep[c])||0;});
+ var LS=LAWSET[p.nm]||{_:5.5};
+ SINAMES.forEach(function(l){S.law[l]=(LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:5.5);});
+ return p;}
+
+/* THE SWING, AND WHERE IT COMES FROM.
+
+   His ruling: "the benign malignant is the oscillation of the compass." The
+   compass reads a person eight times, once per mirror pair, and every read is
+   a position between the inverted pole and the coherent pole on the same
+   nought to a hundred axis the orientation figure sits on. mirrorAt is at
+   engine/data/compass.js:253 and ui/cone.js already draws all eight as a
+   ribbon and calls it the shape of the field rather than eight unrelated
+   dots. Reducing eight positions to their lowest and highest is a minimum and
+   a maximum, not a new model, which is why this is the one swing that needs
+   no engine change and no schema field. */
+function compassSwing(){
+ var pos=MIRROR.map(function(m){
+  var grp=W.filter(function(n){return n.b===m.seat;});
+  var load=grp.length?grp.reduce(function(a,n){return a+n.sq;},0)/grp.length:0;
+  return mirrorAt(load,bandIg(m.seat));});
+ return {pos:pos, lo:Math.min.apply(null,pos), hi:Math.max.apply(null,pos),
+  width:Math.max.apply(null,pos)-Math.min.apply(null,pos)};}
+
+/* ============================================================
+   THE ONE DESIGN, AS A FUNCTION.
+
+   signed runs -100 to 100. Negative is the left pole, positive the right.
+   swing is {lo,hi} on the same signed axis, or null when nothing has
+   measured it twice. A null swing draws nothing and says so: a zero width
+   interval on an unmeasured quantity is the claim that a person never
+   moves, which is the same defect as a single number for one that does.
+   ============================================================ */
+function dial(o){
+ var L=o.left, R=o.right;
+ var unread=o.unread;
+ var v=unread?null:o.signed;
+ var side=(v===null)?null:(v===0?null:(v<0?L:R));
+ var col=side?side.col:'var(--dim)';
+ var fig=(v===null)?'&#8211;':String(Math.round(Math.abs(v)));
+ var word=unread?'not read yet':(v===0?'even':side.word);
+ var x=function(s){return (50+clampN(s,-100,100)/2).toFixed(2)+'%';};
+
+ /* the fill, out of the break toward the side leaned to */
+ var fill='';
+ if(v!==null&&Math.abs(v)>0.5){
+  var w=(Math.abs(clampN(v,-100,100))/2).toFixed(2)+'%';
+  fill='<i class="d-f '+(v<0?'l':'r')+'" style="'+(v<0?'right:50%':'left:50%')
+   +';width:'+w+'"></i>';}
+
+ /* the swing. drawn in two pieces when it straddles the centre, so each half
+    wears the hue of the pole it is actually on. */
+ var sw='';
+ if(o.swing){
+  var lo=clampN(o.swing.lo,-100,100), hi=clampN(o.swing.hi,-100,100);
+  if(lo<0){var a=lo, b=Math.min(hi,0);
+   sw+='<i style="left:'+x(a)+';width:'+((Math.min(0,b)-a)/2).toFixed(2)+'%;'
+    +'--c:'+L.col+'"></i>';}
+  if(hi>0){var c=Math.max(lo,0);
+   sw+='<i style="left:'+x(c)+';width:'+((hi-c)/2).toFixed(2)+'%;--c:'+R.col+'"></i>';}
+  sw+='<u style="left:calc('+x(lo)+' - 1px);--c:'+(lo<0?L.col:R.col)+'"></u>';
+  sw+='<u style="left:calc('+x(hi)+' - 1px);--c:'+(hi<0?L.col:R.col)+'"></u>';}
+
+ /* what the swing says, in words, on the axis's own terms */
+ var say;
+ if(unread) say='<b>Not read yet.</b> Nothing has been entered, so there is no '
+  +'figure and no swing.';
+ else if(!o.swing) say='<b>Swing not measured.</b> '+esc(o.why);
+ else{
+  var lo2=Math.round(o.swing.lo), hi2=Math.round(o.swing.hi);
+  var nm=function(s){return s===0?'even':(Math.abs(s)+' '+(s<0?L.word:R.word));};
+  /* THE RANGE IS SAID IN THE READER'S FRAME, NOT THE AXIS'S.
+
+     On the left pole the signed low end is the LARGER figure, so printing the
+     signed pair straight gave "swing 42 to 6 malignant", which is a range
+     running backwards and reads as a mistake. The two magnitudes go up. The
+     side is said once when both ends are on it and twice only when the swing
+     crosses even, because that crossing is the thing worth two words. */
+  var same=(lo2<0)===(hi2<0)&&lo2!==0&&hi2!==0;
+  var span=same
+   ? Math.min(Math.abs(lo2),Math.abs(hi2))+' to '+Math.max(Math.abs(lo2),Math.abs(hi2))
+     +' '+(hi2<0?L.word:R.word)
+   : nm(lo2)+' to '+nm(hi2);
+  say='<b>Swing '+span+'</b>, across '+(hi2-lo2)+' points'
+   +(o.src?', '+esc(o.src):'')+'.';
+  /* and so is the disagreement. Above and below are the axis's words and a
+     person would have to translate them: a figure of 92 malignant is BELOW a
+     swing of 6 to 42 malignant on the signed axis and further malignant than
+     it in every other sense. One sentence, in poles, either way. */
+  var out=(v>hi2+0.5)||(v<lo2-0.5);
+  if(out) say+=' <span class="flag">The figure sits outside the swing, further '
+   +esc(v<0?L.word:R.word)+' than the swing reaches.</span>';
+  else if(hi2-lo2<=6) say+=' The reading holds still.';}
+
+ return '<button type="button" class="dial" style="--c:'+col+'" '
+  +'aria-label="'+esc(o.label)+'. '+esc(word)+'.">'
+  +'<div class="d-top">'
+   +'<span class="d-g'+(side===L?' on':'')+'"><svg viewBox="0 0 24 24" '
+    +'aria-hidden="true">'+L.glyph+'</svg></span>'
+   +'<span class="d-fig"><span class="d-n'+(v===null?' none':'')+'">'+fig+'</span>'
+    +'<span class="d-pill'+(v===null||v===0?' none':'')+'">'+esc(word)+'</span></span>'
+   +'<span class="d-g'+(side===R?' on':'')+'"><svg viewBox="0 0 24 24" '
+    +'aria-hidden="true">'+R.glyph+'</svg></span>'
+  +'</div>'
+  +'<div class="d-rows"><div class="d-sw">'+sw+'</div>'
+   +'<div class="d-line">'+fill+'<i class="d-brk"></i></div></div>'
+  +'<div class="d-say">'+say+'</div></button>';}
+
+/* ---- the four marks. ring, never fill, straight off ui/ui.js ---- */
+var GLYPH_M='<circle cx="10" cy="14" r="6"/><path d="M14.5 9.5L20 4M15.5 4H20v4.5"/>';
+var GLYPH_F='<circle cx="12" cy="9" r="6"/><path d="M12 15v7M8.5 19h7"/>';
+var GLYPH_B='<circle cx="12" cy="12" r="8"/><path d="M8.6 14.2l2.6-3.1 2.2 2 2-3.4"/>';
+var GLYPH_X='<path d="M15.6 18.6A8 8 0 1 1 18.6 15.4"/>'
+ +'<path d="M8.6 9.9l2.6 3.1 2.2-2 2 3.4"/>';
+
+function poles(){
+ return {
+  /* malignant left, benign right: the axis runs toward the coherent pole,
+     which is the direction mirrorAt already counts in. */
+  pol:{left:{word:'malignant',glyph:GLYPH_X,col:PAL.Root},
+       right:{word:'benign',glyph:GLYPH_B,col:PAL.Heart}},
+  /* masculine left, feminine right. The owner's ruling, and it is the
+     opposite handedness from the body on purpose: face a mirror and your
+     right hand is on the left. Logged in BOOK-ERRATA. */
+  bal:{left:{word:'masculine',glyph:GLYPH_M,col:PAL.Solar},
+       right:{word:'feminine',glyph:GLYPH_F,col:PAL.Throat}}};}
+
+/* ---- the two readings, as the one design reads them ---- */
+function polDial(r,sw){
+ var P=poles().pol;
+ /* the share restated as a lean off even. benign share minus malignant share,
+    which is 100 - 2*malig. Same measurement, one step of arithmetic. */
+ return dial({label:'Orientation', left:P.left, right:P.right,
+  unread:r.unread, signed:100-2*clampN(r.malig,0,100),
+  swing:r.unread?null:{lo:2*sw.lo-100, hi:2*sw.hi-100},
+  src:'read from the eight compass axes'});}
+function balDial(r){
+ var P=poles().bal, b=r.balance;
+ /* lean +1 is outward, which is masculine, which is the left end, so the sign
+    flips on the way onto the axis. */
+ return dial({label:'Balance', left:P.left, right:P.right,
+  unread:!b.read, signed:-b.lean*100, swing:null,
+  why:'snapshot() writes fifteen fields and this lean is not one of them, so '
+   +'nothing on the record has read it twice.'});}
+
+/* ============================================================
+   THE SHIPPING TWO, REPRODUCED. Bodies carried over from
+   ui/ui.js so the comparison is against the product.
+   ============================================================ */
+var CRGEO={sm:{box:24,r:9,w:2.4},xs:{box:18,r:6.5,w:2}};
+function cr(band,pct,o){
+ o=o||{}; var G=CRGEO[o.size||'sm'];
+ var p=clampN(pct||0,0,100), C=2*Math.PI*G.r, off=C*(1-p/100);
+ var col=o.color||seatCol(band);
+ var val=(o.raw!=null)?o.raw:(Math.round(p)+'%');
+ return '<span class="cr" style="--c:'+col+'">'
+  +'<span class="ring"><svg class="arc" width="'+G.box+'" height="'+G.box+'" '
+   +'aria-hidden="true"><circle cx="'+(G.box/2)+'" cy="'+(G.box/2)+'" r="'+G.r
+   +'" fill="none" stroke="rgba(128,128,128,.22)" stroke-width="'+G.w+'"/>'
+   +'<circle cx="'+(G.box/2)+'" cy="'+(G.box/2)+'" r="'+G.r+'" fill="none" stroke="'
+   +col+'" stroke-width="'+G.w+'" stroke-linecap="round" stroke-dasharray="'
+   +C.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'"/></svg>'
+   +'<span class="gl"><svg viewBox="0 0 24 24" aria-hidden="true">'+(o.glyph||'')
+   +'</svg></span></span><span class="v">'+esc(val)+'</span></span>';}
+function balG(g,on){
+ return '<span class="bal-g'+(on?' on':'')+'">'
+  +'<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">'+g+'</svg></span>';}
+function shipBal(r){
+ var b=r.balance;
+ var lean=b.read?Math.abs(b.lean)*100:0;
+ var dir=!b.read?'':b.lean===0?'even':b.lean>0?'masculine':'feminine';
+ var c=b.lean>=0?seatCol('Solar'):seatCol('Throat');
+ var half=(b.read?Math.min(1,Math.abs(b.lean)):0)*50;
+ var fill=!b.read||half<=0?''
+  :'<span class="bal-f" style="'+(b.lean>0?'right:50%;width:'+half.toFixed(1)+'%'
+    :'left:50%;width:'+half.toFixed(1)+'%')+';background:'+c+'"></span>';
+ return '<div class="bal"><div class="bal-t">'
+  +balG(GLYPH_M,dir==='masculine')
+  +'<span'+(dir==='masculine'?' class="on" style="color:'+c+'"':'')+'>masculine</span>'
+  +'<span class="bal-n">'+(!b.read?'<em>not enough held to read</em>'
+    :cr('Heart',lean,{size:'xs',color:c,glyph:(b.lean>=0?GLYPH_M:GLYPH_F),
+      raw:(b.lean===0?'even':Math.round(lean)+'%')}))
+  +'</span>'
+  +'<span'+(dir==='feminine'?' class="on" style="color:'+c+'"':'')+'>feminine</span>'
+  +balG(GLYPH_F,dir==='feminine')
+  +'</div><div class="bal-tr">'+fill+'<i></i></div></div>';}
+function shipPol(r){
+ var L=leanRead(r);
+ var off=Math.abs(L.ben-50)*2, mal=L.mal>L.ben;
+ function pIco(g,on,c){
+  return '<span class="pol-g'+(on?' on':'')+'" style="--c:'+c+'">'
+   +'<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">'+g+'</svg></span>';}
+ return '<div class="fill'+(mal?' mal':'')+'" style="width:'+(off/2).toFixed(1)+'%;'
+  +'background:'+(mal?PAL.Root:PAL.Heart)+';opacity:.62"></div><div class="mid"></div>'
+  +'<div class="lb l">'+pIco(GLYPH_B,!mal,PAL.Heart)+'<b>'+L.ben.toFixed(0)+'</b></div>'
+  +'<div class="lb r"><b>'+L.mal.toFixed(0)+'</b>'+pIco(GLYPH_X,mal,PAL.Root)+'</div>';}
+function shipPol2(r){
+ var mal=clampN(r.malig||0,0,100), ben=100-mal;
+ if(r.unread)return '<div class="bmnote">Nothing read yet, so there is no split '
+  +'to show.</div>';
+ return '<div class="bmrow"><span>Benign</span>'
+  +'<span class="bmbar"><i style="width:'+ben.toFixed(0)+'%;background:'+PAL.Heart+'"></i></span>'
+  +'<span class="bmv" style="color:'+PAL.Heart+'">'+ben.toFixed(0)+'%</span></div>'
+  +'<div class="bmrow"><span>Malignant</span>'
+  +'<span class="bmbar"><i style="width:'+mal.toFixed(0)+'%;background:'+PAL.Root+'"></i></span>'
+  +'<span class="bmv" style="color:'+PAL.Root+'">'+mal.toFixed(0)+'%</span></div>'
+  +'<div class="bmnote">'+(ben>=mal?'most of what is held is benign'
+    :'most of what is held is malignant')+'</div>';}
+
+/* ============================================================
+   CONTRAST, COMPUTED HERE SO IT CANNOT GO STALE.
+   ============================================================ */
+function lin(c){c/=255;return c<=0.03928?c/12.92:Math.pow((c+0.055)/1.055,2.4);}
+function lum(h){h=h.replace('#','');
+ return 0.2126*lin(parseInt(h.slice(0,2),16))+0.7152*lin(parseInt(h.slice(2,4),16))
+  +0.0722*lin(parseInt(h.slice(4,6),16));}
+function ratio(a,b){var x=lum(a),y=lum(b);
+ return (Math.max(x,y)+0.05)/(Math.min(x,y)+0.05);}
+function over(fg,bg,a){fg=fg.replace('#','');bg=bg.replace('#','');var o='#';
+ for(var i=0;i<3;i++){var f=parseInt(fg.substr(i*2,2),16),b=parseInt(bg.substr(i*2,2),16);
+  o+=Math.round(f*a+b*(1-a)).toString(16).padStart(2,'0');}return o;}
+var TOK={panel:'#1A1D26', sunk:'#090A0E', bg:'#0C0D12', ink:'#EFEDE8', dim:'#94908A'};
+function numsHTML(){
+ var rows=[];
+ function row(what,got,floor,note){
+  var ok=got>=floor;
+  rows.push('<div><span class="k">'+what+'</span> &nbsp; '
+   +(ok?'':'<span class="fail">')+got.toFixed(2)+' to 1'+(ok?'':'</span>')
+   +' &nbsp; <span class="k">floor '+floor.toFixed(1)+', '+esc(note)+'</span></div>');}
+ /* the shipping pill, against its own washed ground. this is the case that
+    burns, because the ground is not the panel, it is the pill. */
+ ['Root','Heart','Solar','Throat'].forEach(function(k){
+  var g=over(PAL[k],TOK.panel,0.17);
+  row('cr() pill, '+k.toLowerCase()+' ink on its own ground, 11.5px',
+   ratio(PAL[k],g),4.5,'normal text');});
+ /* the shipping orientation numbers, where the fill reaches under them */
+ ['Heart','Root'].forEach(function(k){
+  var fill=over(PAL[k],TOK.sunk,0.62);
+  row('polbar figure, ink at .86 over the '+k.toLowerCase()+' fill, 11px',
+   ratio(over(TOK.ink,fill,0.86),fill),4.5,'normal text');});
+ /* the one design */
+ ['Root','Heart','Solar','Throat'].forEach(function(k){
+  row('dial figure, '+k.toLowerCase()+' on panel, 30px',
+   ratio(PAL[k],TOK.panel),3.0,'large text');});
+ row('dial pill ink on panel, 11.5px',ratio(TOK.ink,TOK.panel),4.5,'normal text');
+ row('dial swing line on panel, 11.5px',ratio(TOK.dim,TOK.panel),4.5,'normal text');
+ ['Root','Heart','Solar','Throat'].forEach(function(k){
+  row('dial swing cap, '+k.toLowerCase()+' on the sunk line',
+   ratio(PAL[k],TOK.sunk),3.0,'graphic');});
+ return rows.join('');}
+
+/* ============================================================
+   THE ROSTER READOUT AND THE PAINT.
+   ============================================================ */
+var WHO=0, SNAP=[];
+function measureAll(){
+ SNAP=[];
+ for(var i=0;i<PEOPLE.length;i++){
+  var p=loadWho(i), r=compute(), sw=compassSwing();
+  SNAP.push({i:i, nm:p.nm, role:p.role, says:p.says, CQ:r.CQ, tier:r.tier,
+   malig:r.malig, unread:r.unread,
+   lean:100-2*clampN(r.malig,0,100),
+   bal:Math.round(Math.abs(r.balance.lean)*100),
+   balDir:r.balance.lean===0?'even':(r.balance.lean>0?'masculine':'feminine'),
+   balRead:r.balance.read, sw:sw});}
+}
+function rosterHTML(){
+ var h='<thead><tr><th>Person</th><th>cq</th><th>lean</th><th>swing</th>'
+  +'<th>range</th><th>balance</th></tr></thead><tbody>';
+ SNAP.forEach(function(s){
+  var lo=2*s.sw.lo-100, hi=2*s.sw.hi-100;
+  h+='<tr'+(s.i===WHO?' class="on"':'')+'><td>'+esc(s.nm)+'</td>'
+   +'<td>'+s.CQ.toFixed(1)+'</td>'
+   +'<td>'+Math.abs(Math.round(s.lean))+' '+(s.lean<0?'mal':'ben')+'</td>'
+   +'<td>'+(hi-lo)+'</td>'
+   +'<td>'+Math.round(lo)+' to '+Math.round(hi)+'</td>'
+   +'<td>'+(s.balRead?(s.bal+' '+s.balDir.slice(0,3)):'unread')+'</td></tr>';});
+ return h+'</tbody>';}
+
+function paint(){
+ var p=loadWho(WHO), r=compute(), sw=compassSwing(), s=SNAP[WHO];
+ document.getElementById('says').innerHTML='<b>'+esc(p.nm)+'</b>, '+p.age+', '
+  +esc(p.role.replace(' · ICP',', one of the six'))+'. Coherence '
+  +r.CQ.toFixed(1)+', band '+esc(r.tier)+'.';
+ document.getElementById('ship-pol').innerHTML=shipPol(r);
+ document.getElementById('ship-bal').innerHTML=shipBal(r);
+ document.getElementById('ship-pol2').innerHTML=shipPol2(r);
+ document.getElementById('new-pol').innerHTML=polDial(r,sw);
+ document.getElementById('new-bal').innerHTML=balDial(r);
+ document.getElementById('roster').innerHTML=rosterHTML();
+
+ /* the caption under the roster reads its own numbers off the run, because a
+    count typed into a sentence is the defect this repository has been bitten
+    by more than any other. */
+ var pegged=SNAP.filter(function(x){return x.malig===0;});
+ var flat=SNAP.filter(function(x){return (2*x.sw.hi-100)-(2*x.sw.lo-100)<=6;});
+ var widest=SNAP.slice().sort(function(a,b){
+  return (b.sw.hi-b.sw.lo)-(a.sw.hi-a.sw.lo);})[0];
+ document.getElementById('rostercap').innerHTML=
+  'Read off this run, on '+SNAP.length+' roster records. '+pegged.length
+  +' of them sit at a hundred benign with nothing left to say, because coherence '
+  +'at or above fifty puts malignancy at nought: '
+  +pegged.map(function(x){return esc(x.nm);}).join(', ')+'. '
+  +flat.length+' hold still inside six points. The widest swing is '
+  +esc(widest.nm)+', at '+((2*widest.sw.hi-100)-(2*widest.sw.lo-100))+' points, '
+  +'and the figure says a hundred.';
+
+ var cap='Balance shows no swing on any record, and that is the reading rather '
+  +'than a gap in the drawing. Orientation shows one because the compass has '
+  +'already read this person eight times.';
+ document.getElementById('paircap').textContent=cap;
+
+ document.getElementById('nums').innerHTML=numsHTML();
+ drawAlt();
+}
+
+function whoIs(nm){var i=-1,k;
+ for(k=0;k<PEOPLE.length;k++)if(PEOPLE[k].nm===nm)i=k; return i;}
+
+/* the two named cases, drawn side by side and independent of the control */
+function drawPair(){
+ var out={};
+ ['Sofia','Wren'].forEach(function(nm){
+  loadWho(whoIs(nm)); var r=compute(), sw=compassSwing();
+  out[nm]=polDial(r,sw);
+  out[nm+'_n']={lean:100-2*r.malig, lo:2*sw.lo-100, hi:2*sw.hi-100};});
+ document.getElementById('cmp-a').innerHTML=out.Sofia;
+ document.getElementById('cmp-b').innerHTML=out.Wren;
+ var a=out.Sofia_n, b=out.Wren_n;
+ document.getElementById('cmpcap').textContent=
+  'Both print '+Math.round(a.lean)+'. Sofia swings '+Math.round(a.lo)+' to '
+  +Math.round(a.hi)+', across '+Math.round(a.hi-a.lo)+' points. Wren swings '
+  +Math.round(b.lo)+' to '+Math.round(b.hi)+', across '+Math.round(b.hi-b.lo)
+  +'. One figure cannot tell them apart. The swing does it at a glance.';}
+
+/* the open question, drawn rather than described. Same component, two inputs. */
+function drawAlt(){
+ loadWho(WHO);
+ var r=compute(), sw=compassSwing(), P=poles().pol;
+ var mean=sw.pos.reduce(function(a,x){return a+x;},0)/sw.pos.length;
+ document.getElementById('alt-a').innerHTML=polDial(r,sw);
+ document.getElementById('alt-b').innerHTML=dial({label:'Orientation',
+  left:P.left, right:P.right, unread:r.unread, signed:2*mean-100,
+  swing:r.unread?null:{lo:2*sw.lo-100, hi:2*sw.hi-100},
+  src:'read from the eight compass axes'});
+ document.getElementById('altcap').textContent=r.unread
+  ? 'Nothing is entered on this record, so both sides say so.'
+  : 'The field says '+Math.round(100-2*r.malig)+'. The compass mean says '
+   +Math.round(2*mean-100)+', inside a swing of '+Math.round(2*sw.lo-100)+' to '
+   +Math.round(2*sw.hi-100)+'. Both are real measurements of the same axis.';}
+
+function swingSays(){
+ var L=[
+  ['The orientation swing exists and needs no engine change.',
+   'mirrorAt at engine/data/compass.js:253 returns a position between the '
+   +'inverted pole and the coherent pole for each of the eight mirror pairs, on '
+   +'the same axis the figure sits on. ui/cone.js:206 already draws all eight. '
+   +'What is missing is the reduction to a lowest and a highest, which is one '
+   +'function of four lines and no new data.'],
+  ['The balance swing does not exist and cannot be recovered.',
+   'balance() at engine/compute.js:29 reads S.charge and nothing else. '
+   +'snapshot() at engine/schema.js:153 writes fifteen fields and the lean is '
+   +'not one of them, nor are the nine charges. So no record carries this '
+   +'reading twice and there is nothing to take a range of.'],
+  ['And adding it is two lines, not one.',
+   'validateProfile rebuilds every history entry from a whitelist at '
+   +'engine/schema.js:726, four strings and eleven numbers by name, so a '
+   +'sixteenth field added to snapshot() survives until the next read off the '
+   +'disk and is then dropped in silence. engine/verp.js:524 already records '
+   +'this exact trap for the orientation lean and refuses to ship into it.'],
+  ['A point and a range is already an object in this engine.',
+   'iqScore at engine/intake.js:47 returns score, spread and reliable per law: '
+   +'the mean of three measured contexts, the highest minus the lowest, and a '
+   +'floor of three below which it refuses to name a direction. That is the '
+   +'shape TD4 asks for, built once, at the law layer, and neither dial reads '
+   +'it.'],
+  ['Two kinds of band must not be drawn the same way.',
+   'accuracy() at engine/compute.js:297 returns pct and band, which is a '
+   +'figure and how much the instrument knows. A swing is a figure and how far '
+   +'the person moves. Both are an interval around a number and they mean '
+   +'opposite things, so they cannot share a drawing.'],
+  ['The word oscillating is taken.',
+   'It is one of the ten coherence bands, at <code>TIERCOL</code>, with its own '
+   +'colour. '
+   +'One word per concept, so the range on this dial is called the swing.']];
+ document.getElementById('swingsays').innerHTML=L.map(function(x){
+  return '<li><b>'+esc(x[0])+'</b> '+x[1]+'</li>';}).join('');}
+
+/* ---- the control ---- */
+(function(){
+ gatesClear();
+ measureAll();
+ var sel=document.getElementById('psel');
+ SNAP.forEach(function(s){
+  var o=document.createElement('option');
+  o.value=s.i;
+  var w=(2*s.sw.hi-100)-(2*s.sw.lo-100);
+  o.textContent=s.nm+', swing '+w+(w<=6?', flat':'');
+  sel.appendChild(o);});
+ sel.value=String(WHO);
+ sel.addEventListener('change',function(e){WHO=+e.target.value; paint();});
+ document.getElementById('prev').addEventListener('click',function(){
+  WHO=(WHO-1+PEOPLE.length)%PEOPLE.length; sel.value=String(WHO); paint();});
+ document.getElementById('next').addEventListener('click',function(){
+  WHO=(WHO+1)%PEOPLE.length; sel.value=String(WHO); paint();});
+ paint(); drawPair(); swingSays();
+})();
+</script>
+</body>
+</html>

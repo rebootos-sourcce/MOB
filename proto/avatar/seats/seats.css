@@ -1,0 +1,156 @@
+/* SEVEN SEATS. Prototype over the shipped build, round EI. Takes the wheel's
+   own cell on the Field, the centre of the product, where the avatar stands. */
+body.sv-on.tab-field canvas#cv,body.sv-on.tab-field #frend,body.sv-on.tab-field #fview,body.sv-on.tab-field #pol2{display:none!important}
+body:not(.tab-field) #sv7{display:none}
+#sv7{grid-column:1 / span 2;grid-row:3;align-self:stretch;min-width:0;min-height:0;overflow-y:auto;
+ display:flex;flex-direction:column;gap:18px;padding:4px 18px 28px;color:var(--ink)}
+#sv7:empty{display:none}
+
+/* the page head: the name, then the highest ideal the person wrote */
+.sv-head{display:flex;flex-direction:column;gap:4px;min-width:0}
+.sv-head h2{margin:0;font-size:22px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
+.sv-head p{margin:0;font-size:15px;color:var(--mid);max-width:68ch}
+.sv-head p b{display:block;font-size:19px;font-weight:500;color:var(--ink);line-height:1.35;margin-top:2px}
+.sv-head p span{font-size:12.5px;font-weight:600;color:var(--dim)}
+
+/* the avatar and the top three */
+.sv-main{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:24px;align-items:start}
+.sv-fig{min-width:0;display:flex;align-items:center;justify-content:center}
+.sv-svg{display:block;width:100%;max-width:520px;height:auto;overflow:visible}
+.sv-peg{cursor:pointer}
+.sv-peg:focus{outline:none}
+.sv-peg:focus-visible .sv-hit{stroke:var(--accent);stroke-opacity:1}
+.sv-cn{font:300 13px/1 var(--sans);fill:var(--ink);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.sv-cl{font:500 3.3px/1 var(--sans);fill:var(--mid)}
+.sv-sn{font-size:2.9px;opacity:.9}
+
+.sv-eye{font-size:12.5px;font-weight:600;color:var(--dim);letter-spacing:.01em;margin:0 0 8px}
+.sv-top{display:flex;flex-direction:column;gap:8px;min-width:0}
+.sv-card{border:1px solid var(--edge);border-radius:12px;background:transparent;min-width:0}
+.sv-card[aria-expanded=true]{border-color:color-mix(in srgb,var(--c) 55%,transparent);
+ background:color-mix(in srgb,var(--c) 6%,transparent)}
+.sv-cardh{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:10px;align-items:center;
+ width:100%;min-height:56px;padding:9px 12px;font:inherit;color:inherit;text-align:left;
+ background:transparent;border:0;border-radius:12px;cursor:pointer}
+.sv-cardh:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.sv-cardh svg{width:30px;height:30px;display:block}
+.sv-be{font-size:14.5px;line-height:1.3;color:var(--ink);min-width:0}
+.sv-be small{display:block;font-size:12.5px;color:var(--dim);margin-top:2px}
+.sv-w{font-size:13px;color:var(--mid);white-space:nowrap;font-variant-numeric:tabular-nums}
+.sv-w em{font-style:normal;color:var(--c)}
+.sv-body{margin-top:4px;padding:14px;display:flex;flex-direction:column;gap:12px;border-radius:12px;
+ border:1px solid color-mix(in srgb,var(--c) 45%,transparent);background:color-mix(in srgb,var(--c) 5%,transparent)}
+.sv-pair{display:grid;grid-template-columns:86px minmax(0,1fr);gap:4px 10px;font-size:13.5px;line-height:1.4}
+.sv-pair span{color:var(--dim)}
+.sv-pair q{color:var(--ink);quotes:"\201C" "\201D"}
+.sv-addr{display:flex;flex-direction:column;gap:3px;margin:0;padding:0;list-style:none}
+.sv-addr li{display:grid;grid-template-columns:10px minmax(0,1fr) auto;gap:8px;align-items:center;font-size:13px;color:var(--mid)}
+.sv-addr li i{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--c)}
+.sv-addr li b{font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
+.sv-rit{font-size:13.5px;color:var(--mid)}
+.sv-rit b{font-weight:500;color:var(--ink)}
+.sv-act{display:flex;flex-wrap:wrap;gap:8px}
+.sv-act .btn{min-height:44px}
+.sv-note{margin:0;font-size:13px;color:var(--dim);line-height:1.45}
+.sv-note b{color:var(--ink);font-weight:500}
+.sv-empty{border:1px dashed var(--edge-2);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.sv-empty p{margin:0;font-size:14px;color:var(--mid);line-height:1.45}
+
+/* the core loop, drawn closed, and the station it is on */
+.sv-loop{display:grid;grid-template-columns:230px minmax(0,1fr);gap:24px;align-items:start;
+ border-top:1px solid var(--edge);padding-top:18px}
+.sv-wheel{position:relative;width:230px;height:230px}
+.sv-wheel svg{position:absolute;inset:0;width:100%;height:100%}
+.sv-st{position:absolute;transform:translate(-50%,-50%);min-width:84px;min-height:44px;padding:6px 10px;
+ font:inherit;font-size:13.5px;color:var(--mid);background:var(--panel);border:1px solid var(--edge-2);
+ border-radius:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.sv-st svg{position:static;width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;
+ stroke-linecap:round;stroke-linejoin:round}
+.sv-st[aria-pressed=true]{color:var(--ink);border-color:var(--accent);
+ background:color-mix(in srgb,var(--accent) 14%,var(--panel))}
+.sv-st:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sv-panel{min-width:0;display:flex;flex-direction:column;gap:12px}
+.sv-panel h3{margin:0;font-size:16px;font-weight:600;color:var(--ink)}
+.sv-panel label{display:flex;flex-direction:column;gap:5px;font-size:13px;color:var(--dim)}
+.sv-panel textarea,.sv-panel input[type=text]{font:inherit;font-size:16px;color:var(--ink);background:transparent;
+ border:1px solid var(--edge-2);border-radius:10px;padding:10px 12px;min-height:44px;width:100%;box-sizing:border-box}
+.sv-panel textarea{min-height:76px;resize:vertical}
+.sv-panel textarea:focus,.sv-panel input:focus{outline:2px solid var(--accent);outline-offset:1px}
+.sv-flash{margin:0;font-size:13.5px;color:var(--ink);border-left:2px solid var(--accent);padding:4px 0 4px 10px}
+.sv-flash.fail{border-left-color:var(--root)}
+.sv-plist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.sv-plist li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;font-size:13.5px;
+ padding:8px 0;border-bottom:1px solid var(--edge)}
+.sv-plist li span{color:var(--ink)}
+.sv-plist li small{grid-column:1;color:var(--dim);font-size:12.5px}
+.sv-plist li em{grid-row:1 / span 2;grid-column:2;align-self:center;font-style:normal;font-size:13px;color:var(--c,var(--dim));white-space:nowrap}
+.sv-two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.sv-days{display:flex;gap:6px;flex-wrap:wrap}
+.sv-days i{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--edge-2)}
+.sv-days i.on{border-color:var(--accent);box-shadow:inset 0 0 0 3px color-mix(in srgb,var(--accent) 45%,transparent)}
+.sv-days i.today{outline:1px dashed var(--dim);outline-offset:2px}
+.sv-figs{display:flex;flex-wrap:wrap;gap:10px 26px}
+.sv-fg{display:flex;flex-direction:column;gap:2px}
+.sv-fg span{font-size:12.5px;color:var(--dim)}
+.sv-fg b{font-size:22px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
+.sv-fg b i{font-style:normal;font-size:13px;color:var(--mid);margin-left:3px}
+.sv-later{display:flex;gap:10px;align-items:baseline;border:1px dashed var(--edge-2);border-radius:10px;
+ padding:8px 10px;font-size:12.5px;color:var(--dim)}
+
+/* what the page reads, and the masks it is worn under */
+.sv-read{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:24px;
+ border-top:1px solid var(--edge);padding-top:18px}
+.sv-sum p{margin:0 0 8px;font-size:14.5px;line-height:1.55;color:var(--mid);max-width:66ch}
+.sv-sum b{color:var(--ink);font-weight:500}
+.sv-masks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.sv-mask{display:grid;grid-template-columns:26px minmax(0,1fr);grid-template-rows:auto auto;gap:0 8px;align-items:center;
+ min-height:52px;padding:6px 8px;font:inherit;text-align:left;color:var(--mid);background:transparent;
+ border:1px solid var(--edge);border-radius:10px;cursor:pointer}
+.sv-mask svg{grid-row:1 / span 2;width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.5;
+ stroke-linecap:round;stroke-linejoin:round}
+.sv-mask b{font-size:13px;font-weight:500;color:var(--ink)}
+.sv-mask span{font-size:12px;color:var(--dim);font-variant-numeric:tabular-nums}
+.sv-mask.on{border-color:color-mix(in srgb,var(--c) 60%,transparent);color:var(--c)}
+.sv-mask:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+
+/* the prototype strip. Dashed on purpose: nothing inside it is product. */
+.sv-ctl,#sv-float .sv-ctl{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;
+ padding:8px 10px;border:1px dashed var(--edge-2);border-radius:12px;font-size:12.5px;color:var(--dim)}
+#sv-float{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:60;
+ background:var(--panel);border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.35);max-width:calc(100vw - 24px)}
+.sv-tag{font-size:11px;color:var(--dim);border:1px solid var(--edge-2);border-radius:6px;padding:1px 6px}
+.sv-seg{display:flex;flex-wrap:wrap;gap:4px}
+.sv-seg button{font:inherit;font-size:12.5px;color:var(--mid);background:transparent;min-height:44px;
+ border:1px solid var(--edge);border-radius:8px;padding:4px 9px;cursor:pointer;line-height:1.25;text-align:left}
+.sv-seg button small{display:block;font-size:11px;color:var(--dim)}
+.sv-seg button[aria-pressed=true]{color:var(--ink);border-color:var(--accent);
+ background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.sv-runs{display:flex;align-items:center;gap:8px}
+.sv-runs input{width:130px;accent-color:var(--accent)}
+.sv-runs output{min-width:58px;color:var(--ink);font-variant-numeric:tabular-nums}
+
+@media (max-width:1180px){
+ .sv-main{grid-template-columns:minmax(0,1fr) 300px;gap:16px}
+ .sv-read{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:720px){
+ #sv7{order:1;padding:2px 0 16px;gap:16px;overflow:visible}
+ .sv-main{display:flex;flex-direction:column;gap:16px}
+ .sv-fig{width:100%}
+ .sv-svg{max-width:360px;margin:0 auto}
+ .sv-loop{display:flex;flex-direction:column;align-items:center;gap:16px}
+ .sv-panel{width:100%}
+ .sv-read{display:flex;flex-direction:column}
+ .sv-masks{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .sv-two{grid-template-columns:minmax(0,1fr)}
+ .sv-body{padding:12px}
+ .sv-pair{grid-template-columns:74px minmax(0,1fr)}
+ .sv-ctl{gap:6px 10px}
+ .sv-runs input{width:110px}}
+
+/* THE GROUND IS THE STAGE'S, NOT THE LIGHTING'S. The Field's render ground is
+   ruled #101010 under every lighting, so under Snow the page takes the Dark
+   inks, the same way proto/avatar/four and ui/rings.js do. */
+body.snow.tab-field #sv7{--ink:#EFEDE8;--mid:#B4B0A8;--dim:#94908A;
+ --edge:rgba(255,255,255,.09);--edge-2:rgba(255,255,255,.14);--panel:#1A1D26;
+ --root:#D6524C;--sacral:#D8924E;--solar:#DABF6A;--heart:#5FD5A6;--throat:#5EBBDB;
+ --eye:#7D93E0;--crown:#A77EDB;--accent:#7EB8D4;color:var(--ink)}

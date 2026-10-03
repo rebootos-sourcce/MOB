@@ -1,0 +1,46 @@
+/* ============================================================
+   THE ARRIVAL'S OWN LAYERS. Prototype, round EQ.
+
+   The hand and the tracers sit in their own layer over the picture and never
+   take a press, so a person can reach any mark while they run. Rotation and
+   opacity on an HTML layer are composited, so the hand costs no paint.
+   ============================================================ */
+.ar-over{position:absolute;z-index:7;pointer-events:none;overflow:visible}
+.ar-over svg.ar-trace{position:absolute;left:0;top:0;overflow:visible}
+/* THE SWEEP HAND. A trail of the accent behind it, brightest at the hand and
+   gone twenty six degrees back, held to the dial's registers: nothing over the
+   core and nothing past the rim. */
+.ar-hand{position:absolute;border-radius:50%;opacity:0;will-change:transform,opacity;
+ background:conic-gradient(from 0deg,rgba(var(--ac),0) 0deg 318deg,rgba(var(--ac),.07) 342deg,
+  rgba(var(--ac),.24) 359.2deg,rgba(var(--ac),0) 360deg);
+ -webkit-mask:radial-gradient(circle closest-side,transparent calc(var(--in) + 2%),#000 calc(var(--in) + 5%),#000 99%,transparent 100%);
+ mask:radial-gradient(circle closest-side,transparent calc(var(--in) + 2%),#000 calc(var(--in) + 5%),#000 99%,transparent 100%)}
+.ar-hand::after{content:'';position:absolute;left:50%;top:0;width:2px;margin-left:-1px;height:50%;
+ border-radius:1px;background:linear-gradient(to bottom,rgba(var(--ac),.95),rgba(var(--ac),.55) 60%,rgba(var(--ac),0))}
+
+/* ---- the prototype's own questions. Not part of the product. ---- */
+#ar-opts{position:fixed;left:12px;bottom:12px;z-index:10050;font:14px/1.45 Inter,system-ui,sans-serif;color:#EFEDE8}
+#ar-opts .ar-ob{min-height:44px;padding:0 14px;border-radius:12px;border:1px dashed rgba(126,184,212,.7);
+ background:rgba(12,13,18,.9);color:#7EB8D4;font:inherit;cursor:pointer}
+#ar-opts .ar-oc{position:absolute;left:0;bottom:52px;width:min(372px,calc(100vw - 24px));padding:10px 12px 12px;
+ border-radius:14px;background:rgba(12,13,18,.95);border:1px dashed rgba(126,184,212,.55);
+ max-height:calc(100vh - 80px);overflow-y:auto}
+#ar-opts .ar-h{margin:8px 0 6px;font-size:12.5px;font-weight:600;color:#94908A}
+#ar-opts .ar-seg{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+#ar-opts .ar-seg button{min-height:44px;padding:4px 11px;border-radius:10px;border:1px solid rgba(255,255,255,.14);
+ background:transparent;color:#B4B0A8;font:inherit;font-size:13.5px;cursor:pointer;text-align:left;line-height:1.25}
+#ar-opts .ar-seg button small{display:block;font-size:11px;color:#94908A}
+#ar-opts .ar-seg button[aria-pressed=true]{border-color:#7EB8D4;color:#EFEDE8;background:rgba(126,184,212,.12)}
+#ar-opts .ar-seg button:focus-visible,#ar-opts .ar-ob:focus-visible{outline:2px solid #7EB8D4;outline-offset:2px}
+#ar-opts .ar-scrub{display:flex;flex-direction:column;gap:4px;margin:6px 0 8px;font-size:12.5px;color:#94908A}
+#ar-opts .ar-scrub input{width:100%;min-height:32px;accent-color:#7EB8D4}
+#ar-opts .ar-scrub output{font-variant-numeric:tabular-nums;color:#EFEDE8}
+#ar-opts .ar-note{margin:6px 0 0;font-size:12.5px;color:#94908A}
+/* the canvas the picture is revealed on, and the parts that move on their
+   own, over it. Neither takes a press: the real picture under them does. */
+.ar-over .ar-cv{position:absolute;left:0;top:0}
+.ar-over .ar-front{position:absolute;left:0;top:0;overflow:visible}
+.ar-front,.ar-front *{pointer-events:none!important}
+/* each part that moves on its own is its own small layer */
+.ar-bit{position:absolute;will-change:transform,opacity;pointer-events:none}
+.ar-bit svg{display:block;overflow:visible}

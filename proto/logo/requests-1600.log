@@ -1,0 +1,8 @@
+viewport 1600x1000
+requests observed: 1
+GET file:///home/user/MOB/proto/logo/index.html
+
+not a local file read: 0
+
+page errors: 0
+

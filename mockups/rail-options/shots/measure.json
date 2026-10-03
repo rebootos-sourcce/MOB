@@ -1,0 +1,82 @@
+{
+ "A": {
+  "marcus": {
+   "choices": 11,
+   "small": [],
+   "archBottom": 934,
+   "railBottom": 990,
+   "scrollH": 867,
+   "clientH": 867,
+   "anims": 78
+  },
+  "tomas": {
+   "choices": 11,
+   "small": [],
+   "archBottom": 934,
+   "railBottom": 990,
+   "scrollH": 867,
+   "clientH": 867,
+   "anims": 121
+  }
+ },
+ "B": {
+  "marcus": {
+   "choices": 11,
+   "small": [],
+   "archBottom": 965,
+   "railBottom": 990,
+   "scrollH": 867,
+   "clientH": 867,
+   "anims": 82
+  },
+  "tomas": {
+   "choices": 11,
+   "small": [],
+   "archBottom": 965,
+   "railBottom": 990,
+   "scrollH": 867,
+   "clientH": 867,
+   "anims": 125
+  }
+ },
+ "C": {
+  "marcus": {
+   "choices": 11,
+   "small": [],
+   "archBottom": 965,
+   "railBottom": 990,
+   "scrollH": 867,
+   "clientH": 867,
+   "anims": 78
+  },
+  "tomas": {
+   "choices": 11,
+   "small": [],
+   "archBottom": 965,
+   "railBottom": 990,
+   "scrollH": 867,
+   "clientH": 867,
+   "anims": 121
+  }
+ },
+ "D": {
+  "marcus": {
+   "choices": 11,
+   "small": [],
+   "archBottom": 960,
+   "railBottom": 990,
+   "scrollH": 867,
+   "clientH": 867,
+   "anims": 80
+  },
+  "tomas": {
+   "choices": 11,
+   "small": [],
+   "archBottom": 960,
+   "railBottom": 990,
+   "scrollH": 867,
+   "clientH": 867,
+   "anims": 123
+  }
+ }
+}

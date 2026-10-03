@@ -1,0 +1,19 @@
+{
+  "clip": "atuned-opening.webm",
+  "master": "atuned-opening.wav",
+  "seconds": 49.69,
+  "draft": true,
+  "note": "Phrase boundaries are measured from the silences in the recording and are reliable. The text is a draft read by an offline recogniser and is NOT confirmed. The owner corrects any word; the screen shows only confirmed text.",
+  "phrases": [
+    {"start": 1.85, "end": 3.71, "text": "Take a moment to set the", "confirmed": false},
+    {"start": 4.88, "end": 6.59, "text": "Place your feet on the floor", "confirmed": false},
+    {"start": 8.73, "end": 11.61, "text": "Notice where it is inside your body", "confirmed": false},
+    {"start": 14.90, "end": 15.71, "text": "You're breathing", "confirmed": false},
+    {"start": 16.55, "end": 17.66, "text": "Take a deep breath", "confirmed": false},
+    {"start": 18.85, "end": 20.41, "text": "Slowly exhale", "confirmed": false},
+    {"start": 22.58, "end": 24.90, "text": "And repeat, settle your mind", "confirmed": false},
+    {"start": 27.13, "end": 28.84, "text": "And release", "confirmed": false},
+    {"start": 29.89, "end": 39.95, "text": "I'm releasing believing, thinking, feeling, behaving and acting that I am", "confirmed": false},
+    {"start": 40.86, "end": 49.67, "text": "I'm letting go of believing, behaving, thinking, acting, feeling that I am", "confirmed": false}
+  ]
+}

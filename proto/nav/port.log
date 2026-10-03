@@ -1,0 +1,38 @@
+THE PORT, MEASURED ON source.html. 2026-09-20
+commit cfb4fe7   md5 9cacfa16e783628cac2cc449f9a021b7
+
+== 390 wide ==
+doors on the bar          9 -> 4
+doors past the right edge 5 -> 0   (Body, Compass, Knowledge, Games, Summary)
+chrome, Field             301px -> 266px   11.6 per cent off
+  top bar                 239 -> 176
+  sub bar                 62 -> 90
+chrome, Summary           239px -> 222px   7.1 per cent off
+  top bar                 239 -> 176
+  sub bar                 0 -> 46
+second row first word at  15px -> 125px, first door at 124px
+doors under the 44 floor  0
+
+== 1280 wide ==
+doors on the bar          9 -> 4
+doors past the right edge 3 -> 0   (Knowledge, Games, Summary)
+chrome, Field             127px -> 104px   18.1 per cent off
+  top bar                 65 -> 58
+  sub bar                 62 -> 46
+chrome, Summary           65px -> 104px   -60 per cent off
+  top bar                 65 -> 58
+  sub bar                 0 -> 46
+second row first word at  18px -> 128px, first door at 127px
+doors under the 44 floor  0
+
+== 1600 wide ==
+doors on the bar          9 -> 4
+doors past the right edge 0 -> 0
+chrome, Field             127px -> 104px   18.1 per cent off
+  top bar                 65 -> 58
+  sub bar                 62 -> 46
+chrome, Summary           65px -> 104px   -60 per cent off
+  top bar                 65 -> 58
+  sub bar                 0 -> 46
+second row first word at  18px -> 128px, first door at 127px
+doors under the 44 floor  0

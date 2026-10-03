@@ -1,0 +1,9 @@
+proto/feathers/index.html, viewport 1600x1000
+captured by playwright at the chromium level, not from inside the page
+run 2026-09-21T00:31:05.572Z
+
+requests: 2
+  GET file:///home/user/MOB/proto/feathers/index.html
+  GET file:///home/user/MOB/engine.js
+
+outbound (anything not file://): 0

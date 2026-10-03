@@ -1,0 +1,1104 @@
+{
+ "when": "2026-09-27T15:11:27.951Z",
+ "panel": 1000,
+ "entries": 168,
+ "nothingRead": 27,
+ "results": {
+  "e": {
+   "name": "E. Chain",
+   "tot": {
+    "wrote": 818,
+    "read": 596,
+    "reach": 461,
+    "ran": 368,
+    "back": 362,
+    "n": 1000
+   },
+   "by": {
+    "Diane": {
+     "n": 180,
+     "wrote": 141,
+     "read": 111,
+     "reach": 87,
+     "ran": 64,
+     "back": 65,
+     "stops": {
+      "read": 30,
+      "wrote": 39,
+      "reach": 24,
+      "back": 9,
+      "ran": 23
+     }
+    },
+    "Derek": {
+     "n": 170,
+     "wrote": 152,
+     "read": 121,
+     "reach": 100,
+     "ran": 90,
+     "back": 80,
+     "stops": {
+      "wrote": 18,
+      "ran": 10,
+      "reach": 21,
+      "read": 31,
+      "back": 15
+     }
+    },
+    "Marcus": {
+     "n": 160,
+     "wrote": 133,
+     "read": 114,
+     "reach": 98,
+     "ran": 77,
+     "back": 84,
+     "stops": {
+      "ran": 21,
+      "wrote": 27,
+      "reach": 16,
+      "read": 19,
+      "back": 9
+     }
+    },
+    "Angela": {
+     "n": 150,
+     "wrote": 123,
+     "read": 63,
+     "reach": 36,
+     "ran": 22,
+     "back": 24,
+     "stops": {
+      "read": 60,
+      "back": 6,
+      "wrote": 27,
+      "ran": 14,
+      "reach": 27
+     }
+    },
+    "Sofia": {
+     "n": 140,
+     "wrote": 126,
+     "read": 106,
+     "reach": 84,
+     "ran": 78,
+     "back": 70,
+     "stops": {
+      "ran": 6,
+      "reach": 22,
+      "back": 12,
+      "read": 20,
+      "wrote": 14
+     }
+    },
+    "James": {
+     "n": 100,
+     "wrote": 63,
+     "read": 38,
+     "reach": 27,
+     "ran": 13,
+     "back": 18,
+     "stops": {
+      "read": 25,
+      "wrote": 37,
+      "ran": 14,
+      "reach": 11,
+      "back": 1
+     }
+    },
+    "Ana": {
+     "n": 50,
+     "wrote": 46,
+     "read": 32,
+     "reach": 19,
+     "ran": 16,
+     "back": 16,
+     "stops": {
+      "read": 14,
+      "reach": 13,
+      "wrote": 4,
+      "back": 3,
+      "ran": 3
+     }
+    },
+    "Gordon": {
+     "n": 35,
+     "wrote": 20,
+     "read": 2,
+     "reach": 1,
+     "ran": 0,
+     "back": 0,
+     "stops": {
+      "wrote": 15,
+      "read": 18,
+      "reach": 1,
+      "ran": 1
+     }
+    },
+    "Rosa": {
+     "n": 15,
+     "wrote": 14,
+     "read": 9,
+     "reach": 9,
+     "ran": 8,
+     "back": 5,
+     "stops": {
+      "back": 4,
+      "read": 5,
+      "ran": 1,
+      "wrote": 1
+     }
+    }
+   },
+   "dev": {
+    "390": {
+     "n": 528,
+     "reach": 180,
+     "ran": 139,
+     "back": 123
+    },
+    "1440": {
+     "n": 162,
+     "reach": 93,
+     "ran": 79,
+     "back": 79
+    },
+    "1600": {
+     "n": 310,
+     "reach": 188,
+     "ran": 150,
+     "back": 160
+    }
+   }
+  },
+  "f": {
+   "name": "F. Band",
+   "tot": {
+    "wrote": 827,
+    "read": 669,
+    "reach": 500,
+    "ran": 393,
+    "back": 390,
+    "n": 1000
+   },
+   "by": {
+    "Diane": {
+     "n": 180,
+     "wrote": 144,
+     "read": 127,
+     "reach": 95,
+     "ran": 68,
+     "back": 72,
+     "stops": {
+      "read": 17,
+      "wrote": 36,
+      "reach": 32,
+      "ran": 27,
+      "back": 7
+     }
+    },
+    "Derek": {
+     "n": 170,
+     "wrote": 153,
+     "read": 129,
+     "reach": 106,
+     "ran": 95,
+     "back": 84,
+     "stops": {
+      "wrote": 17,
+      "ran": 11,
+      "reach": 23,
+      "back": 16,
+      "read": 24
+     }
+    },
+    "Marcus": {
+     "n": 160,
+     "wrote": 133,
+     "read": 115,
+     "reach": 98,
+     "ran": 77,
+     "back": 84,
+     "stops": {
+      "ran": 21,
+      "wrote": 27,
+      "reach": 17,
+      "read": 18,
+      "back": 9
+     }
+    },
+    "Angela": {
+     "n": 150,
+     "wrote": 127,
+     "read": 91,
+     "reach": 49,
+     "ran": 27,
+     "back": 31,
+     "stops": {
+      "reach": 42,
+      "read": 36,
+      "back": 10,
+      "ran": 22,
+      "wrote": 23
+     }
+    },
+    "Sofia": {
+     "n": 140,
+     "wrote": 126,
+     "read": 109,
+     "reach": 85,
+     "ran": 79,
+     "back": 72,
+     "stops": {
+      "ran": 6,
+      "reach": 24,
+      "back": 11,
+      "read": 17,
+      "wrote": 14
+     }
+    },
+    "James": {
+     "n": 100,
+     "wrote": 64,
+     "read": 45,
+     "reach": 31,
+     "ran": 16,
+     "back": 20,
+     "stops": {
+      "read": 19,
+      "wrote": 36,
+      "reach": 14,
+      "ran": 15,
+      "back": 2
+     }
+    },
+    "Ana": {
+     "n": 50,
+     "wrote": 46,
+     "read": 42,
+     "reach": 26,
+     "ran": 23,
+     "back": 22,
+     "stops": {
+      "back": 4,
+      "reach": 16,
+      "wrote": 4,
+      "ran": 3,
+      "read": 4
+     }
+    },
+    "Gordon": {
+     "n": 35,
+     "wrote": 20,
+     "read": 2,
+     "reach": 1,
+     "ran": 0,
+     "back": 0,
+     "stops": {
+      "wrote": 15,
+      "read": 18,
+      "reach": 1,
+      "ran": 1
+     }
+    },
+    "Rosa": {
+     "n": 15,
+     "wrote": 14,
+     "read": 9,
+     "reach": 9,
+     "ran": 8,
+     "back": 5,
+     "stops": {
+      "back": 4,
+      "read": 5,
+      "ran": 1,
+      "wrote": 1
+     }
+    }
+   },
+   "dev": {
+    "390": {
+     "n": 528,
+     "reach": 219,
+     "ran": 164,
+     "back": 151
+    },
+    "1440": {
+     "n": 162,
+     "reach": 92,
+     "ran": 78,
+     "back": 77
+    },
+    "1600": {
+     "n": 310,
+     "reach": 189,
+     "ran": 151,
+     "back": 162
+    }
+   }
+  },
+  "g": {
+   "name": "G. Dock",
+   "tot": {
+    "wrote": 813,
+    "read": 588,
+    "reach": 550,
+    "ran": 436,
+    "back": 457,
+    "n": 1000
+   },
+   "by": {
+    "Diane": {
+     "n": 180,
+     "wrote": 140,
+     "read": 107,
+     "reach": 100,
+     "ran": 72,
+     "back": 77,
+     "stops": {
+      "read": 33,
+      "wrote": 40,
+      "ran": 28,
+      "back": 8,
+      "reach": 7
+     }
+    },
+    "Derek": {
+     "n": 170,
+     "wrote": 152,
+     "read": 121,
+     "reach": 115,
+     "ran": 104,
+     "back": 96,
+     "stops": {
+      "wrote": 18,
+      "ran": 11,
+      "reach": 6,
+      "read": 31,
+      "back": 15
+     }
+    },
+    "Marcus": {
+     "n": 160,
+     "wrote": 133,
+     "read": 114,
+     "reach": 109,
+     "ran": 84,
+     "back": 102,
+     "stops": {
+      "ran": 25,
+      "wrote": 27,
+      "reach": 5,
+      "read": 19,
+      "back": 5
+     }
+    },
+    "Angela": {
+     "n": 150,
+     "wrote": 121,
+     "read": 62,
+     "reach": 57,
+     "ran": 36,
+     "back": 47,
+     "stops": {
+      "read": 59,
+      "back": 5,
+      "wrote": 29,
+      "ran": 21,
+      "reach": 5
+     }
+    },
+    "Sofia": {
+     "n": 140,
+     "wrote": 125,
+     "read": 105,
+     "reach": 97,
+     "ran": 91,
+     "back": 81,
+     "stops": {
+      "ran": 6,
+      "back": 14,
+      "read": 20,
+      "wrote": 15,
+      "reach": 8
+     }
+    },
+    "James": {
+     "n": 100,
+     "wrote": 62,
+     "read": 36,
+     "reach": 31,
+     "ran": 15,
+     "back": 24,
+     "stops": {
+      "read": 26,
+      "wrote": 38,
+      "ran": 16,
+      "reach": 5,
+      "back": 1
+     }
+    },
+    "Ana": {
+     "n": 50,
+     "wrote": 46,
+     "read": 32,
+     "reach": 30,
+     "ran": 26,
+     "back": 25,
+     "stops": {
+      "read": 14,
+      "back": 5,
+      "ran": 4,
+      "wrote": 4,
+      "reach": 2
+     }
+    },
+    "Gordon": {
+     "n": 35,
+     "wrote": 20,
+     "read": 2,
+     "reach": 2,
+     "ran": 0,
+     "back": 0,
+     "stops": {
+      "wrote": 15,
+      "read": 18,
+      "ran": 2
+     }
+    },
+    "Rosa": {
+     "n": 15,
+     "wrote": 14,
+     "read": 9,
+     "reach": 9,
+     "ran": 8,
+     "back": 5,
+     "stops": {
+      "back": 4,
+      "read": 5,
+      "ran": 1,
+      "wrote": 1
+     }
+    }
+   },
+   "dev": {
+    "390": {
+     "n": 528,
+     "reach": 272,
+     "ran": 210,
+     "back": 223
+    },
+    "1440": {
+     "n": 162,
+     "reach": 91,
+     "ran": 77,
+     "back": 76
+    },
+    "1600": {
+     "n": 310,
+     "reach": 187,
+     "ran": 149,
+     "back": 158
+    }
+   }
+  },
+  "h": {
+   "name": "H. Flow",
+   "tot": {
+    "wrote": 829,
+    "read": 677,
+    "reach": 632,
+    "ran": 489,
+    "back": 528,
+    "n": 1000
+   },
+   "by": {
+    "Diane": {
+     "n": 180,
+     "wrote": 145,
+     "read": 129,
+     "reach": 120,
+     "ran": 82,
+     "back": 91,
+     "stops": {
+      "read": 16,
+      "wrote": 35,
+      "ran": 38,
+      "back": 8,
+      "reach": 9
+     }
+    },
+    "Derek": {
+     "n": 170,
+     "wrote": 153,
+     "read": 130,
+     "reach": 124,
+     "ran": 112,
+     "back": 110,
+     "stops": {
+      "wrote": 17,
+      "ran": 12,
+      "reach": 6,
+      "read": 23,
+      "back": 9
+     }
+    },
+    "Marcus": {
+     "n": 160,
+     "wrote": 133,
+     "read": 115,
+     "reach": 110,
+     "ran": 85,
+     "back": 104,
+     "stops": {
+      "ran": 25,
+      "wrote": 27,
+      "reach": 5,
+      "read": 18,
+      "back": 5
+     }
+    },
+    "Angela": {
+     "n": 150,
+     "wrote": 127,
+     "read": 93,
+     "reach": 86,
+     "ran": 52,
+     "back": 68,
+     "stops": {
+      "ran": 34,
+      "read": 34,
+      "back": 9,
+      "wrote": 23,
+      "reach": 7
+     }
+    },
+    "Sofia": {
+     "n": 140,
+     "wrote": 126,
+     "read": 109,
+     "reach": 100,
+     "ran": 94,
+     "back": 84,
+     "stops": {
+      "ran": 6,
+      "back": 14,
+      "read": 17,
+      "wrote": 14,
+      "reach": 9
+     }
+    },
+    "James": {
+     "n": 100,
+     "wrote": 64,
+     "read": 47,
+     "reach": 40,
+     "ran": 20,
+     "back": 31,
+     "stops": {
+      "read": 17,
+      "wrote": 36,
+      "ran": 20,
+      "reach": 7,
+      "back": 1
+     }
+    },
+    "Ana": {
+     "n": 50,
+     "wrote": 47,
+     "read": 43,
+     "reach": 41,
+     "ran": 36,
+     "back": 35,
+     "stops": {
+      "back": 6,
+      "ran": 5,
+      "wrote": 3,
+      "reach": 2,
+      "read": 4
+     }
+    },
+    "Gordon": {
+     "n": 35,
+     "wrote": 20,
+     "read": 2,
+     "reach": 2,
+     "ran": 0,
+     "back": 0,
+     "stops": {
+      "wrote": 15,
+      "read": 18,
+      "ran": 2
+     }
+    },
+    "Rosa": {
+     "n": 15,
+     "wrote": 14,
+     "read": 9,
+     "reach": 9,
+     "ran": 8,
+     "back": 5,
+     "stops": {
+      "back": 4,
+      "read": 5,
+      "ran": 1,
+      "wrote": 1
+     }
+    }
+   },
+   "dev": {
+    "390": {
+     "n": 528,
+     "reach": 352,
+     "ran": 261,
+     "back": 291
+    },
+    "1440": {
+     "n": 162,
+     "reach": 92,
+     "ran": 78,
+     "back": 77
+    },
+    "1600": {
+     "n": 310,
+     "reach": 188,
+     "ran": 150,
+     "back": 160
+    }
+   }
+  },
+  "hx-b": {
+   "name": "HX B. Route, round HX",
+   "tot": {
+    "wrote": 839,
+    "read": 591,
+    "reach": 333,
+    "ran": 269,
+    "back": 232,
+    "n": 1000
+   },
+   "by": {
+    "Diane": {
+     "n": 180,
+     "wrote": 147,
+     "read": 112,
+     "reach": 59,
+     "ran": 42,
+     "back": 41,
+     "stops": {
+      "read": 35,
+      "wrote": 33,
+      "reach": 53,
+      "back": 8,
+      "ran": 17
+     }
+    },
+    "Derek": {
+     "n": 170,
+     "wrote": 155,
+     "read": 122,
+     "reach": 65,
+     "ran": 57,
+     "back": 39,
+     "stops": {
+      "wrote": 15,
+      "ran": 8,
+      "reach": 57,
+      "back": 21,
+      "read": 33
+     }
+    },
+    "Marcus": {
+     "n": 160,
+     "wrote": 134,
+     "read": 110,
+     "reach": 81,
+     "ran": 65,
+     "back": 57,
+     "stops": {
+      "back": 20,
+      "ran": 16,
+      "read": 24,
+      "wrote": 26,
+      "reach": 29
+     }
+    },
+    "Angela": {
+     "n": 150,
+     "wrote": 131,
+     "read": 64,
+     "reach": 20,
+     "ran": 14,
+     "back": 13,
+     "stops": {
+      "read": 67,
+      "back": 5,
+      "wrote": 19,
+      "ran": 6,
+      "reach": 44
+     }
+    },
+    "Sofia": {
+     "n": 140,
+     "wrote": 126,
+     "read": 105,
+     "reach": 72,
+     "ran": 66,
+     "back": 58,
+     "stops": {
+      "ran": 6,
+      "reach": 33,
+      "back": 12,
+      "read": 21,
+      "wrote": 14
+     }
+    },
+    "James": {
+     "n": 100,
+     "wrote": 64,
+     "read": 36,
+     "reach": 13,
+     "ran": 6,
+     "back": 8,
+     "stops": {
+      "read": 28,
+      "wrote": 36,
+      "reach": 23,
+      "back": 1,
+      "ran": 7
+     }
+    },
+    "Ana": {
+     "n": 50,
+     "wrote": 48,
+     "read": 32,
+     "reach": 15,
+     "ran": 13,
+     "back": 12,
+     "stops": {
+      "read": 16,
+      "reach": 17,
+      "wrote": 2,
+      "back": 3,
+      "ran": 2
+     }
+    },
+    "Gordon": {
+     "n": 35,
+     "wrote": 20,
+     "read": 1,
+     "reach": 1,
+     "ran": 0,
+     "back": 0,
+     "stops": {
+      "wrote": 15,
+      "read": 19,
+      "ran": 1
+     }
+    },
+    "Rosa": {
+     "n": 15,
+     "wrote": 14,
+     "read": 9,
+     "reach": 7,
+     "ran": 6,
+     "back": 4,
+     "stops": {
+      "back": 3,
+      "read": 5,
+      "ran": 1,
+      "wrote": 1,
+      "reach": 2
+     }
+    }
+   },
+   "dev": {
+    "390": {
+     "n": 528,
+     "reach": 126,
+     "ran": 100,
+     "back": 86
+    },
+    "1440": {
+     "n": 162,
+     "reach": 67,
+     "ran": 56,
+     "back": 46
+    },
+    "1600": {
+     "n": 310,
+     "reach": 140,
+     "ran": 113,
+     "back": 100
+    }
+   }
+  },
+  "hx-c": {
+   "name": "HX C. Trace, round HX",
+   "tot": {
+    "wrote": 839,
+    "read": 591,
+    "reach": 332,
+    "ran": 268,
+    "back": 232,
+    "n": 1000
+   },
+   "by": {
+    "Diane": {
+     "n": 180,
+     "wrote": 147,
+     "read": 112,
+     "reach": 59,
+     "ran": 42,
+     "back": 41,
+     "stops": {
+      "read": 35,
+      "wrote": 33,
+      "reach": 53,
+      "back": 8,
+      "ran": 17
+     }
+    },
+    "Derek": {
+     "n": 170,
+     "wrote": 155,
+     "read": 122,
+     "reach": 65,
+     "ran": 57,
+     "back": 39,
+     "stops": {
+      "wrote": 15,
+      "ran": 8,
+      "reach": 57,
+      "back": 21,
+      "read": 33
+     }
+    },
+    "Marcus": {
+     "n": 160,
+     "wrote": 134,
+     "read": 110,
+     "reach": 80,
+     "ran": 64,
+     "back": 57,
+     "stops": {
+      "back": 19,
+      "ran": 16,
+      "read": 24,
+      "wrote": 26,
+      "reach": 30
+     }
+    },
+    "Angela": {
+     "n": 150,
+     "wrote": 131,
+     "read": 64,
+     "reach": 20,
+     "ran": 14,
+     "back": 13,
+     "stops": {
+      "read": 67,
+      "back": 5,
+      "wrote": 19,
+      "ran": 6,
+      "reach": 44
+     }
+    },
+    "Sofia": {
+     "n": 140,
+     "wrote": 126,
+     "read": 105,
+     "reach": 72,
+     "ran": 66,
+     "back": 58,
+     "stops": {
+      "ran": 6,
+      "reach": 33,
+      "back": 12,
+      "read": 21,
+      "wrote": 14
+     }
+    },
+    "James": {
+     "n": 100,
+     "wrote": 64,
+     "read": 36,
+     "reach": 13,
+     "ran": 6,
+     "back": 8,
+     "stops": {
+      "read": 28,
+      "wrote": 36,
+      "reach": 23,
+      "back": 1,
+      "ran": 7
+     }
+    },
+    "Ana": {
+     "n": 50,
+     "wrote": 48,
+     "read": 32,
+     "reach": 15,
+     "ran": 13,
+     "back": 12,
+     "stops": {
+      "read": 16,
+      "reach": 17,
+      "wrote": 2,
+      "back": 3,
+      "ran": 2
+     }
+    },
+    "Gordon": {
+     "n": 35,
+     "wrote": 20,
+     "read": 1,
+     "reach": 1,
+     "ran": 0,
+     "back": 0,
+     "stops": {
+      "wrote": 15,
+      "read": 19,
+      "ran": 1
+     }
+    },
+    "Rosa": {
+     "n": 15,
+     "wrote": 14,
+     "read": 9,
+     "reach": 7,
+     "ran": 6,
+     "back": 4,
+     "stops": {
+      "back": 3,
+      "read": 5,
+      "ran": 1,
+      "wrote": 1,
+      "reach": 2
+     }
+    }
+   },
+   "dev": {
+    "390": {
+     "n": 528,
+     "reach": 125,
+     "ran": 99,
+     "back": 86
+    },
+    "1440": {
+     "n": 162,
+     "reach": 67,
+     "ran": 56,
+     "back": 46
+    },
+    "1600": {
+     "n": 310,
+     "reach": 140,
+     "ran": 113,
+     "back": 100
+    }
+   }
+  }
+ },
+ "page": {
+  "method": "A thousand people drawn from the ICPs in the proportions sim/harness.js already uses, each writing two lines of their own words from sim/stories.js, on the device they use. The page facts are measured in Chromium inside the product's frame; the reading is the committed engine's; the only judgement is how much each friction costs, applied identically to every layout.",
+  "layouts": {
+   "e": {
+    "name": "E. Chain",
+    "fold1600": true,
+    "fold390": false,
+    "choices1600": 18,
+    "scroll390": 862,
+    "fitts1600": 7.44,
+    "funnel": {
+     "wrote": 0.818,
+     "read": 0.596,
+     "reach": 0.461,
+     "ran": 0.368,
+     "back": 0.362
+    }
+   },
+   "f": {
+    "name": "F. Band",
+    "fold1600": true,
+    "fold390": false,
+    "choices1600": 18,
+    "scroll390": 866,
+    "fitts1600": 6.99,
+    "funnel": {
+     "wrote": 0.827,
+     "read": 0.669,
+     "reach": 0.5,
+     "ran": 0.393,
+     "back": 0.39
+    }
+   },
+   "g": {
+    "name": "G. Dock",
+    "fold1600": true,
+    "fold390": false,
+    "choices1600": 18,
+    "scroll390": 0,
+    "fitts1600": 7.26,
+    "funnel": {
+     "wrote": 0.813,
+     "read": 0.588,
+     "reach": 0.55,
+     "ran": 0.436,
+     "back": 0.457
+    }
+   },
+   "h": {
+    "name": "H. Flow",
+    "fold1600": true,
+    "fold390": true,
+    "choices1600": 18,
+    "scroll390": 0,
+    "fitts1600": 7.41,
+    "funnel": {
+     "wrote": 0.829,
+     "read": 0.677,
+     "reach": 0.632,
+     "ran": 0.489,
+     "back": 0.528
+    }
+   },
+   "hx-b": {
+    "name": "HX B. Route, round HX",
+    "fold1600": false,
+    "fold390": false,
+    "choices1600": 13,
+    "scroll390": 1558,
+    "fitts1600": 8.69,
+    "funnel": {
+     "wrote": 0.839,
+     "read": 0.591,
+     "reach": 0.333,
+     "ran": 0.269,
+     "back": 0.232
+    }
+   },
+   "hx-c": {
+    "name": "HX C. Trace, round HX",
+    "fold1600": false,
+    "fold390": false,
+    "choices1600": 13,
+    "scroll390": 1566,
+    "fitts1600": 8.69,
+    "funnel": {
+     "wrote": 0.839,
+     "read": 0.591,
+     "reach": 0.332,
+     "ran": 0.268,
+     "back": 0.232
+    }
+   }
+  },
+  "findings": [
+   "At 1600 wide, all four put the journal, the instrument and Run on the first screen. Round HX's Route put Run 470px below it. At 1600 the share of the panel who reach the release goes from 45% on Route to between 60% and 61% on the four new layouts, so at this width the panel cannot tell the four apart.",
+   "The phone is what separates them. Reaching the release on a phone: H. Flow 67%, G. Dock 52%, F. Band 41%, E. Chain 34%, against 24% on Route. Only H puts all three on the first phone screen; G keeps Run on screen as a bar; E and F leave Run 862px and 866px down.",
+   "The panel favours H. Flow: 49% run a release and 53% would come back, against 27% and 23% on round HX's Route.",
+   "The biggest single loss on every layout is not the layout. 27 of the 168 entries the panel wrote read nothing at all, which is 231 of the 1000 people, and a person whose words light nothing stops at the reading whatever the page looks like.",
+   "Angela is the worst served on every layout and stops at the reading: half her lines read nothing. Sofia and Derek are the best served. James stops before he writes, on every layout alike."
+  ]
+ }
+}
