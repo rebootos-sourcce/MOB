@@ -3286,7 +3286,11 @@ ok(/right hand sentence steers the release/.test(avat.pair)
 ok(/freedom, wisdom, truth/.test(avat.pur),'the higher centre is the sum of its corners');
 ok(/how you make money and how you find fulfilment/.test(avat.pur),
  'and the line between the two answers what it was ruled to answer');
-ok(/2 of 30 written/.test(avat.pur),'the boundary counts thirty');
+/* NO COUNT AGAINST THIRTY, round RB. This held "2 of 30 written", which is
+   a count against a total, the standing ruling against a score. A side shows
+   five marks, lit for each line written, and the side's own name. */
+ok(!/\d+ of (5|30)\b/.test(avat.pur)&&/Partner\s*\u25CF \u25CF \u25CB \u25CB \u25CB/.test(avat.pur),
+ 'the boundary shows five marks a side, two lit on the partner side, and no count against thirty');
 ok(/A mirror half described shows half a person/.test(avat.pur),
  'and says why thirty is not a lot to ask');
 
