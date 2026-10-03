@@ -176,8 +176,6 @@ button.act:focus-visible,a.act:focus-visible{outline:2px solid var(--ink);outlin
 .foot{margin-top:40px;font-size:13px;color:var(--dim)}
 @media(min-width:760px){
  .sabs{grid-template-columns:1fr 1fr}
- .doorbd{grid-template-columns:minmax(0,1fr) auto;gap:26px;align-items:center}
- .acts{margin-top:0}
 }
 /* THE READING WAS ONE NARROW COLUMN ON A WIDE SCREEN, 3926 pixels tall with
    the sides empty, because five thin laws, seven seat loads and four cards
@@ -202,6 +200,17 @@ button.act:focus-visible,a.act:focus-visible{outline:2px solid var(--ink);outlin
  .tierbox dl{grid-template-columns:repeat(3,1fr);gap:24px}
  .two{grid-template-columns:1fr 1fr;gap:44px}
  .scope,.door,.close,.read>.foot{max-width:1120px}
+ /* THE DOOR GOES SIDE BY SIDE HERE AND NOT AT 760, round QZ. At 760 the page
+    is still 680 wide, and the button column is auto, which is every button on
+    one row: measured on the build before this round, the words of the first
+    door were 0 pixels wide at 800 and at 1024, three buttons having taken the
+    whole row. Here the page is 1120 wide, and the record door's column has a
+    ceiling so its fourth button wraps into a second row beside the words
+    rather than taking their width, which it did at 1600 on the first cut. The
+    other doors keep their buttons on one row. */
+ .doorbd{grid-template-columns:minmax(0,1fr) auto;gap:26px;align-items:center}
+ .acts{margin-top:0}
+ .doorbd>.recacts{max-width:440px}
 }
 @media(max-width:400px){
  .ringwrap{width:56px;height:56px}
@@ -828,14 +837,30 @@ function viewDoor(){
  return '<div class="read">'
  +'<div class="door"><span class="eye">The door</span>'
  +'<h2>Take the record with you.</h2>'
- +'<div class="doorbd">'
+ /* the two paragraphs share one cell, because .doorbd is two columns, words
+    and buttons, and a third child squeezed the words into a sliver at 1600 */
+ +'<div class="doorbd"><div>'
  +'<p>There is no account and no server, so nothing here can be fetched later by '
  +'anybody, including us. What you save is a profile in the instrument\'s own '
  +'format, and Atuned\'s loader takes it as it stands: your coherence, the '
  +'21 law values, the nine charges, and every address they landed on.'
  +(STORY_AT?' Your story is not in it.':'')+'</p>'
- +'<div class="acts">'
-  +'<button class="act go" id="dl">Save my record</button>'
+ /* THE RECORD IN A LINK, round QZ. Opening the app with the record already
+    in it replaces two steps, save here and load there, with one press. The
+    sentence says where the record travels in plain words, because "fragment"
+    and "#r=" mean nothing to the person pressing it. */
+ +'<p class="sm" id="linksay">Open the app with my record puts your record inside the '
+ +'link itself, after the # mark. A browser never sends that part of a link to any '
+ +'server, so the record goes from this page to the app and nowhere else. The app '
+ +'loads it, then clears it from the address bar. Anyone you give the link to can '
+ +'open the record, the same as the file.</p></div>'
+ +'<div class="acts recacts">'
+  /* THE SAME href AS THE DOOR BELOW, ../source.html, on purpose. The record
+     is added to it by script once it is packed, so the address the app lives
+     at is written in one place, and BUILD-single.sh rewrites this one exactly
+     as it rewrites that one: atuned.html in dist, beside the quiz. */
+  +'<a class="act go" id="tolink" href="../source.html">Open the app with my record</a>'
+  +'<button class="act" id="dl">Save my record</button>'
   +'<button class="act" id="copy">Copy it instead</button>'
   +'<button class="act" id="again">Change an answer</button>'
  +'</div></div><p class="note" id="dlnote"></p></div>'
@@ -847,8 +872,9 @@ function viewDoor(){
  +'every story you write and shows where each one sits in the body. Then it runs a '
  +'release on each address that is carrying, to take the load off it. It is one file '
  +'and it runs in your browser.</p>'
- +'<p class="sm">To bring this reading in, save the record first. In the app, press '
- +'the profile button at the top right, choose Privacy, and load the file there.</p>'
+ +'<p class="sm">To bring this reading in, use Open the app with my record, above. '
+ +'Or save the record, then in the app press the profile button at the top right, '
+ +'choose Privacy, and load the file there.</p>'
  +'</div>'
  +'<div class="acts"><a class="act go" id="toapp" href="../source.html">Open the app</a></div>'
  +'</div></div>'
@@ -863,6 +889,48 @@ function viewDoor(){
 /* the record a person carries out. It is a profile the app's own boundary
    accepts, so nothing has to be translated on the way in. */
 function recordJSON(){ return JSON.stringify(saveProfile(scored().p),null,1); }
+
+/* THE RECORD IN A LINK, round QZ. The same text recordJSON gives the file,
+   gzipped by the browser and written with the engine's linkWrap, which is the
+   one place the format is named (engine/schema.js) and the one the app reads
+   it back with. The link and the file are built by the same function, so the
+   two routes cannot load two different readings. Not the same bytes:
+   recordJSON makes a new record each time it is called, with its own id and
+   time, as every press of Save already does. `base` is an address;
+   anything after a # on it is dropped, so a link is never built onto a link.
+   Resolves with the whole address, or rejects when this browser has no
+   CompressionStream, which the caller turns into a sentence. */
+function recordLink(base){
+ if(typeof CompressionStream!=='function'||typeof Response!=='function'
+  ||typeof TextEncoder!=='function')return Promise.reject(new Error('NoCompression'));
+ var raw=new TextEncoder().encode(recordJSON());
+ return new Response(new Blob([raw]).stream().pipeThrough(new CompressionStream('gzip')))
+  .arrayBuffer().then(function(buf){
+   return String(base).split('#')[0]+'#r='+linkWrap(new Uint8Array(buf));});}
+/* The link is packed when the door draws, so the address is ready before the
+   press and the control is a real link: it can be opened in a new tab and it
+   shows where it goes. A press that beats the packing waits rather than
+   opening an empty app under a button that promised the record. A redraw
+   starts a new packing, and an older one that finishes late is ignored. */
+var LINK_SEQ=0;
+function linkArm(a){
+ var seq=++LINK_SEQ, note=document.getElementById('dlnote');
+ a.setAttribute('aria-disabled','true'); a.removeAttribute('data-ready');
+ a.onclick=function(e){
+  if(a.getAttribute('data-ready')==='1')return;
+  e.preventDefault();
+  if(note)note.textContent='Packing the record into the link. Press again in a moment.';};
+ recordLink(a.href).then(function(u){
+  if(seq!==LINK_SEQ)return;
+  a.href=u; a.setAttribute('data-ready','1'); a.removeAttribute('aria-disabled');
+ },function(){
+  if(seq!==LINK_SEQ)return;
+  /* style and not the hidden attribute: a.act sets display, which outranks
+     [hidden], so the attribute alone left a control promising the record. The
+     line explaining it goes with it, since it describes a control not there. */
+  a.style.display='none';
+  var say=document.getElementById('linksay'); if(say)say.style.display='none';
+  if(note)note.textContent='This browser cannot pack the record into a link. Save it instead.';});}
 
 /* ============================================================
    RENDER
@@ -916,6 +984,7 @@ function render(){
    return;}
   STORY_AT=STORY; render();
   var lit=document.getElementById('lit'); if(lit&&lit.scrollIntoView)lit.scrollIntoView({block:'start'});};
+ if((b=document.getElementById('tolink')))linkArm(b);
  if((b=document.getElementById('dl')))b.onclick=function(){
   var note=document.getElementById('dlnote');
   try{

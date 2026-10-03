@@ -969,10 +969,7 @@ function recordImportWire(p,after){
   var np=pImport(txt);
   if(!np){ var e=(typeof importError==='function'&&importError())||['it was refused'];
    impSay('Not loaded. '+e.join('. ')+'.',1); return; }
-  if(typeof syncCh==='function')syncCh();
-  if(typeof syncLw==='function')syncLw();
-  if(typeof syncSoul==='function')syncSoul();
-  if(typeof render==='function')render();
+  recordLanded();
   if(typeof status==='function')status('Record loaded.');
   /* THE HOST REDRAWS FIRST AND THE MESSAGE IS WRITTEN AFTER IT.
      The account area prints the record's own name, so it has to redraw on a
@@ -993,6 +990,110 @@ function recordImportWire(p,after){
    impRun(String(rd.result||''));};
   rd.onerror=function(){impSay('That file could not be read.',1);};
   rd.readAsText(f);};}
+/* WHAT A LOAD THAT LANDED REDRAWS. Lifted out of impRun so the paste box and
+   the record link below take the same steps after pImport says yes, rather
+   than two copies of the list drifting apart. */
+function recordLanded(){
+ if(typeof syncCh==='function')syncCh();
+ if(typeof syncLw==='function')syncLw();
+ if(typeof syncSoul==='function')syncSoul();
+ if(typeof render==='function')render();}
+
+/* ============================================================
+   THE RECORD IN A LINK, the app's half, round QZ.
+
+   The quiz can open the app with the reading packed into the address, after
+   #r=. engine/schema.js names the format (linkWrap, linkUnwrap) and says why
+   the fragment is the right place for it: a browser never sends that part of
+   an address to any server. This half does the two things only a browser can,
+   reading the address and inflating the gzip, and then hands the text to
+   pImport, the same boundary the paste box above uses. There is no second
+   importer: a record that would be refused pasted is refused linked, by the
+   same name, and a record that loads lands the same way.
+
+   READ ONCE AND TAKEN OFF THE ADDRESS AT ONCE, before anything is decoded,
+   the way authBillingBack takes ?billing= off it. A refresh must not load the
+   record a second time, and a reading should not sit in an address bar where
+   a screenshot or a shared screen carries it. It comes off whether the load
+   then lands or not: a refused link does not get better by being re-read on
+   every reload, and the quiz that made it still holds the answers.
+
+   THE ANSWER IS SAID WHERE IT CAN BE SEEN, recordLinkSay. The link is read
+   and inflated in a few milliseconds, while the boot sheet still covers the
+   screen, and status() fades every line after three seconds whatever its
+   kind. Measured on the first cut: the line was said, faded, and was gone
+   before the sheet lifted, so the person met the record with nothing telling
+   them where it came from. So the line waits for the sheet to lift, through
+   afterBoot, the helper the wheel's entrance already waits on. And when the
+   login door is standing, it goes on the door's own message line through
+   loginSay, which also tells status(): the door covers the status line, and
+   ui/login.js already says why the card has to carry the sentence itself.
+   The message log keeps every line either way.
+   ============================================================ */
+function recordLinkSay(msg,kind){
+ var say=function(){
+  if(typeof LOGIN!=='undefined'&&LOGIN.open&&typeof loginSay==='function')loginSay(msg,kind);
+  else status(msg,kind);};
+ if(typeof afterBoot==='function')afterBoot(say); else say();}
+/* the inflated text is capped as it streams, so a small link that unpacks to
+   an enormous one is stopped part way rather than after it has filled memory */
+var LINK_INFLATE_MAX=4194304;
+function recordLinkTake(){
+ var h=''; try{ h=String(location.hash||''); }catch(e){ return null; }
+ if(h.indexOf('#r=')!==0)return null;
+ var cleared=false;
+ try{ history.replaceState(history.state,'',location.pathname+location.search); cleared=true; }
+ catch(e){ try{ location.hash=''; cleared=true; }catch(e2){} }
+ return {text:h.slice(3), cleared:cleared};}
+/* Resolves, never rejects, with the profile pImport returned or null, and
+   importError() saying why on a null, which is pImport's own contract. */
+function recordLinkInflate(bytes){
+ if(typeof DecompressionStream!=='function'||typeof Response!=='function')
+  return Promise.resolve(importRefuse('this browser cannot unpack a record link. In the quiz, '
+   +'save the record and load the file here instead'));
+ var rd, chunks=[], got=0;
+ try{ rd=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip')).getReader(); }
+ catch(e){ return Promise.resolve(importRefuse('the link is damaged, so it could not be unpacked')); }
+ var pump=function(){
+  return rd.read().then(function(r){
+   if(r.done)return true;
+   got+=r.value.length;
+   if(got>LINK_INFLATE_MAX){ try{ rd.cancel(); }catch(e){} return false; }
+   chunks.push(r.value); return pump();});};
+ return pump().then(function(whole){
+  if(!whole)return importRefuse('the link unpacks to more than any record holds');
+  var all=new Uint8Array(got), o=0;
+  chunks.forEach(function(c){ all.set(c,o); o+=c.length; });
+  var txt;
+  try{ txt=new TextDecoder('utf-8',{fatal:true}).decode(all); }
+  catch(e){ return importRefuse('what the link unpacks to is not text, so it is damaged'); }
+  return pImport(txt);
+ },function(){ return importRefuse('the link is damaged or cut short, so it could not be unpacked'); });}
+/* the boot step. Returns the promise so a gate can wait on the real result
+   rather than on a timer. */
+function recordLinkBoot(){
+ var got=recordLinkTake(); if(!got)return null;
+ var bytes=linkUnwrap(got.text);
+ var run=bytes?recordLinkInflate(bytes):Promise.resolve(null);
+ /* anything that throws on the way to pImport is a refusal and says so, never
+    a promise that fails with nobody listening */
+ return run.then(null,function(e){
+  return importRefuse('the link could not be read, '+((e&&e.message)||'error')); })
+ .then(function(np){
+  var still=got.cleared?'':' The link is still in the address bar, so close this tab when you are done.';
+  if(!np){
+   var e=(importError()||['it was refused']).join('. ');
+   /* a colon and the reason as the boundary wrote it: capitalising it turned
+      the field path axes.Fear.held into a name the record does not have */
+   recordLinkSay('Not loaded from the link: '+e+'. Nothing else was touched.'+still,'fail');
+   return null;}
+  /* the record has landed and been saved by now, so a redraw that throws is a
+     drawing fault and not a refused load, and the line still says it loaded */
+  try{ recordLanded(); }
+  catch(e){ try{ if(window.console)console.error('[atuned] redraw after a linked record',e); }catch(e2){} }
+  recordLinkSay('Loaded '+(np.name||'the record')+' from the link. Nothing else was touched.'+still,
+   still?'fail':'');
+  return np;});}
 function profileSheet(){
  var r=compute(), m=(typeof meterRead==='function')?meterRead(CURP):null;
  var who=capName((CURP&&CURP.name)||'You');

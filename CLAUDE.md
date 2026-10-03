@@ -175,7 +175,13 @@ import control in the UI, and that stopped being true at `a54a16b` on 20
 September: `recordImportHtml` and `recordImportWire` in `ui/panels.js` put a
 paste box and a file picker in the profile sheet, and that is the boundary's
 first real caller. The record fetch at sign in will be the second. Checked 27
-September against HEAD `18238fe`.
+September against HEAD `18238fe`. That stopped being the whole list on 3
+October, round QZ: the quiz can open the app with the record in the address
+after `#r=`, and `recordLinkBoot` in `ui/panels.js` unpacks it and hands the
+text to `pImport`, so the link is a caller of the same boundary and not a
+second importer. The format is `linkWrap`/`linkUnwrap` in `engine/schema.js`,
+a refusal before the boundary is named through `importRefuse`, and
+`tests/recordlink.js` holds the route.
 
 Every write that can fail reports through `status()`; a control must never
 claim success before it has it.

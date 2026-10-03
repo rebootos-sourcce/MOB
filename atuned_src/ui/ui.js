@@ -1764,6 +1764,15 @@ step('the stored record',function(){
  mirrorYou();
  syncCh(); syncLw(); syncSoul();
 });
+/* A RECORD CARRIED IN FROM THE QUIZ, round QZ, ui/panels.js recordLinkBoot.
+   After the stored record and not before it: pImport adds to PROFILES, and the
+   step above replaces PROFILES with what is on the disk, so a record loaded
+   earlier would be written over by the person's own list. The address is read
+   and cleared here, synchronously; the inflate finishes a moment after the
+   boot does and reports through status() when it has an answer. The promise
+   is kept where a gate can wait on it. */
+var RECORD_LINK=null;
+step('record from a link',function(){ RECORD_LINK=recordLinkBoot(); });
 /* THE APP OPENS ON THE FIELD, on the owner's ruling of 19 September, which
    reverses the earlier one that opened it on Summary.
 

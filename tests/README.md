@@ -78,6 +78,36 @@ record, and an answered record is not asked again. It first runs the door
 check on a copy whose `vfBlocked` cannot see a dialog, and that copy must
 fail. Read the counts off the run.
 
+## The record in a link
+
+The quiz can open the app with the reading packed into the address after
+`#r=`, the part of an address a browser never sends to any server. Two gates.
+
+    node tests/engine.js                                         group 15f
+    NODE_PATH=/opt/node22/lib/node_modules node tests/recordlink.js
+    SHOTS=dir ... node tests/recordlink.js                       and the pictures
+
+Group 15f is the wire format, headless: `linkWrap` and `linkUnwrap` in
+`engine/schema.js` round trip every length and every byte value, write only
+characters an address carries unescaped, open with a format version, and
+refuse an empty, unversioned, later format, damaged, cut or oversized link by
+name through `importError()`, with the profile list and the open profile
+untouched.
+
+`tests/recordlink.js` is the whole route in a real Chromium, nothing stubbed:
+the quiz builds the link from real answers off the same anchor as its door to
+the app; the app opened on it loads the record through `pImport`, says so on
+screen once the boot sheet has lifted (on the login door's own line when the
+door stands), and takes the record off the address so a reload cannot load it
+twice; eight bad links (cut, cut mid group, damaged, a later format, a stray
+character, not JSON, a record the boundary refuses, a charge of 9999) are
+each refused by name with the list, the open profile and the stored bytes
+unmoved; and the built quiz in `funnel/dist` reaches `atuned.html` beside it,
+and the packed build, which rewrites its own document, still sees the address.
+It first runs on two known bad copies of the app, one that never reads the
+link and one whose importer skips the boundary, and each must fail its check.
+Read the counts off the run.
+
 ## The front door
 
 The engine has one entrance and the three surfaces are separable, so each can be

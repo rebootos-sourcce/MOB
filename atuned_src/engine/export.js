@@ -150,6 +150,8 @@ if(typeof module!=='undefined'&&module.exports){
      saveProfile's documented blind spot and correct for a person. */
                   LAW_UNSET:LAW_UNSET,
                   pExport:pExport, pImport:pImport, validateProfile:validateProfile, importError:importError,
+                  importRefuse:importRefuse, linkWrap:linkWrap, linkUnwrap:linkUnwrap,
+                  LINK_V:LINK_V, LINK_MAX:LINK_MAX,
                   meterRun:meterRun, meterRead:meterRead, meterKey:meterKey, meterBudget:meterBudget,
                   meterGiftAt:meterGiftAt,
                   meterNext:meterNext, meterPlan:meterPlan,

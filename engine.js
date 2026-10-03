@@ -9931,6 +9931,75 @@ function pImport(txt){
  if(!pPersist()){ back(); IMPORT_ERR=['could not save: '+(SAVE_ERR||'error')]; return null; }
  return v.profile;}
 function importError(){ return IMPORT_ERR; }
+/* A HOST THAT STOPPED A RECORD BEFORE IT REACHED THE BOUNDARY SAYS WHY HERE.
+   The record link below is unpacked by the host, because the inflate is a
+   browser stream and the engine never names its host. When that step fails
+   there is no text for pImport to refuse, and a second channel for the reason
+   would be a second set of failure words. So the reason goes where pImport's
+   own go, and importError() stays the one place a refusal is read. It sets the
+   reason and nothing else: nothing is pushed and CURP does not move. */
+function importRefuse(why){ IMPORT_ERR=[String(why||'it was refused')]; return null; }
+
+/* ============================================================
+   THE RECORD IN A LINK, round QZ.
+
+   The web reading reached the app as a file a person saved and then loaded,
+   which is two steps and a folder to find between them. The address of the
+   app can carry it instead, after the # mark. That part of an address is
+   called the fragment, and a browser never sends it to any server: it stays
+   on the device, in the page that reads it. So the record goes from the quiz
+   page to the app page with nothing fetched and nothing sent, which is the
+   product's standing posture.
+
+   This is the wire format and nothing else, named once so the page that
+   writes a link and the page that reads one cannot drift apart. The bytes are
+   gzip, made and unmade by the host, because CompressionStream is a browser
+   object. The text is base64url, the variant of base64 whose alphabet needs
+   no escaping in an address. And it opens with a format version and a dot,
+   because a link saved in somebody's notes today is a record written six
+   months ago the day it is opened, and a later format has to be told apart
+   from this one rather than misread as it.
+
+   linkUnwrap refuses by name through importError(), the same channel and the
+   same shape as pImport: null, and the reason beside it. It never decides
+   whether the record is good. That is validateProfile's alone, and the text
+   this produces goes through pImport like a paste does.
+   ============================================================ */
+var LINK_V='1';
+/* a reading from the quiz is about a kilobyte here. This is a ceiling far
+   above any record a link was built to carry, so a pasted wall of text is
+   refused before anything is decoded or inflated. */
+var LINK_MAX=65536;
+var B64U='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+function linkWrap(bytes){
+ var out='', i, n=bytes.length, a, b, c;
+ for(i=0;i+2<n;i+=3){
+  a=bytes[i]; b=bytes[i+1]; c=bytes[i+2];
+  out+=B64U[a>>2]+B64U[((a&3)<<4)|(b>>4)]+B64U[((b&15)<<2)|(c>>6)]+B64U[c&63];}
+ if(n-i===1){ a=bytes[i]; out+=B64U[a>>2]+B64U[(a&3)<<4]; }
+ else if(n-i===2){ a=bytes[i]; b=bytes[i+1];
+  out+=B64U[a>>2]+B64U[((a&3)<<4)|(b>>4)]+B64U[(b&15)<<2]; }
+ return LINK_V+'.'+out;}
+function linkUnwrap(s){
+ IMPORT_ERR=null;
+ if(typeof s!=='string'||!s)return importRefuse('the link carries nothing after r=');
+ if(s.length>LINK_MAX)return importRefuse('the link is longer than any record link this app makes');
+ var dot=s.indexOf('.');
+ if(dot<1)return importRefuse('the link is not in a form this app reads');
+ var ver=s.slice(0,dot), t=s.slice(dot+1);
+ if(ver!==LINK_V)return importRefuse('the link was made in format '+ver.slice(0,8)
+  +', and this app reads format '+LINK_V);
+ if(!t)return importRefuse('the link carries nothing after r=');
+ if(!/^[A-Za-z0-9_-]+$/.test(t))return importRefuse('the link carries characters '
+  +'a record link never has, so it is damaged');
+ /* one character over a whole group of four is not a byte. It is a link
+    that was cut, and saying so is more use than saying it would not decode. */
+ if(t.length%4===1)return importRefuse('the link is cut short');
+ var out=new Uint8Array(Math.floor(t.length*3/4)), o=0, acc=0, bits=0;
+ for(var i=0;i<t.length;i++){
+  acc=(acc<<6)|B64U.indexOf(t[i]); bits+=6;
+  if(bits>=8){ bits-=8; out[o++]=(acc>>bits)&255; }}
+ return out;}
 
 /* ============================================================
    THE JOURNEY, THE READ HALF. Where a new person is on the way in,
@@ -17283,6 +17352,8 @@ if(typeof module!=='undefined'&&module.exports){
      saveProfile's documented blind spot and correct for a person. */
                   LAW_UNSET:LAW_UNSET,
                   pExport:pExport, pImport:pImport, validateProfile:validateProfile, importError:importError,
+                  importRefuse:importRefuse, linkWrap:linkWrap, linkUnwrap:linkUnwrap,
+                  LINK_V:LINK_V, LINK_MAX:LINK_MAX,
                   meterRun:meterRun, meterRead:meterRead, meterKey:meterKey, meterBudget:meterBudget,
                   meterGiftAt:meterGiftAt,
                   meterNext:meterNext, meterPlan:meterPlan,

@@ -596,6 +596,59 @@ g('15c \u00b7 the boundary');
  ok(/could not save/.test(String(importError())),'and says the save failed: '+importError());
 }
 
+g('15f \u00b7 the record in a link: the format, and its refusals by name');
+/* THE WIRE FORMAT IS NAMED ONCE AND HELD HERE. engine/schema.js linkWrap and
+   linkUnwrap are what the quiz writes a link with and what the app reads one
+   with, so a drift between them is a drift in one function and this group
+   catches it. The gzip half is the host's and is gated in a real browser by
+   tests/recordlink.js; this is the half that never needs one. */
+{
+ const {linkWrap,linkUnwrap,importRefuse,importError,LINK_V,LINK_MAX,profiles,current}=E;
+ /* every length mod 3, and every byte value, so the padding-free tail is
+    exercised at all three of its shapes and nothing is lost at the edges */
+ let all=true, bad='';
+ for(let n=0;n<=260;n++){
+  const b=new Uint8Array(n); for(let i=0;i<n;i++)b[i]=(i*37+n)&255;
+  const w=linkWrap(b);
+  if(!/^[0-9]+\.[A-Za-z0-9_-]*$/.test(w)){all=false;bad='shape at '+n;break;}
+  if(n===0)continue;
+  const u=linkUnwrap(w);
+  if(!u||u.length!==n||u.some((x,i)=>x!==b[i])){all=false;bad='bytes at '+n;break;}}
+ ok(all,'every length from 1 to 260 bytes goes out and comes back the same'+(bad?', broke on '+bad:''));
+ ok(linkWrap(new Uint8Array([1])).indexOf(LINK_V+'.')===0,'a link opens with its format version, '+LINK_V);
+ /* and it is the alphabet an address carries without escaping */
+ const every=new Uint8Array(256); for(let i=0;i<256;i++)every[i]=i;
+ const ew=linkWrap(every);
+ ok(encodeURIComponent(ew)===ew,'nothing in a link needs escaping in an address');
+ /* REFUSED BY NAME, through importError, and nothing else moves. The same
+    atomic check the boundary itself is held to above. */
+ const before=JSON.stringify(profiles()), n0=profiles().length, cur0=current();
+ const refusals=[
+  ['empty',            '',                         /carries nothing/],
+  ['no version',       'H4sIAAAA',                 /not in a form this app reads/],
+  ['a later format',   '9.H4sIAAAA',               /format 9, and this app reads format 1/],
+  ['version, no body', LINK_V+'.',                 /carries nothing/],
+  ['damaged',          LINK_V+'.H4sI AAA',         /damaged/],
+  ['percent mangled',  LINK_V+'.H4sI%2BAA',        /damaged/],
+  ['cut mid group',    LINK_V+'.H4sIA',            /cut short/],
+  ['far too long',     LINK_V+'.'+'A'.repeat(LINK_MAX), /longer than any record link/]];
+ refusals.forEach(([nm,txt,want])=>{
+  const r=linkUnwrap(txt);
+  ok(r===null,'a link that is '+nm+' is refused');
+  ok(want.test(String(importError())),'and says why by name: '+importError());});
+ ok(linkUnwrap(null)===null&&linkUnwrap(42)===null,'a value that is not text is refused');
+ ok(profiles().length===n0&&JSON.stringify(profiles())===before&&current()===cur0,
+  'and no refusal touched the profile list or the current profile');
+ /* the host's refusal goes through the same channel and does nothing else */
+ ok(importRefuse('the host stopped it')===null&&String(importError())==='the host stopped it',
+  'a host refusal is read back through importError, '+importError());
+ ok(profiles().length===n0&&current()===cur0,'and it moved nothing either');
+ /* a good unwrap clears a stale reason, so a reason is never read off an
+    earlier failure after a success */
+ linkUnwrap(linkWrap(new Uint8Array([7,8,9])));
+ ok(importError()===null,'a link that unwraps leaves no reason behind');
+}
+
 g('15e \u00b7 the two nested bags');
 /* THE BOUNDARY IS STRICT AND TWO BAGS WALKED PAST IT. rituals was accepted on
    one condition, that each entry is an object, and story.entries was a bare

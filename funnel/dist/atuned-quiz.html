@@ -325,8 +325,6 @@ button.act:focus-visible,a.act:focus-visible{outline:2px solid var(--ink);outlin
 .foot{margin-top:40px;font-size:13px;color:var(--dim)}
 @media(min-width:760px){
  .sabs{grid-template-columns:1fr 1fr}
- .doorbd{grid-template-columns:minmax(0,1fr) auto;gap:26px;align-items:center}
- .acts{margin-top:0}
 }
 /* THE READING WAS ONE NARROW COLUMN ON A WIDE SCREEN, 3926 pixels tall with
    the sides empty, because five thin laws, seven seat loads and four cards
@@ -351,6 +349,17 @@ button.act:focus-visible,a.act:focus-visible{outline:2px solid var(--ink);outlin
  .tierbox dl{grid-template-columns:repeat(3,1fr);gap:24px}
  .two{grid-template-columns:1fr 1fr;gap:44px}
  .scope,.door,.close,.read>.foot{max-width:1120px}
+ /* THE DOOR GOES SIDE BY SIDE HERE AND NOT AT 760, round QZ. At 760 the page
+    is still 680 wide, and the button column is auto, which is every button on
+    one row: measured on the build before this round, the words of the first
+    door were 0 pixels wide at 800 and at 1024, three buttons having taken the
+    whole row. Here the page is 1120 wide, and the record door's column has a
+    ceiling so its fourth button wraps into a second row beside the words
+    rather than taking their width, which it did at 1600 on the first cut. The
+    other doors keep their buttons on one row. */
+ .doorbd{grid-template-columns:minmax(0,1fr) auto;gap:26px;align-items:center}
+ .acts{margin-top:0}
+ .doorbd>.recacts{max-width:440px}
 }
 @media(max-width:400px){
  .ringwrap{width:56px;height:56px}
@@ -10315,6 +10324,75 @@ function pImport(txt){
  if(!pPersist()){ back(); IMPORT_ERR=['could not save: '+(SAVE_ERR||'error')]; return null; }
  return v.profile;}
 function importError(){ return IMPORT_ERR; }
+/* A HOST THAT STOPPED A RECORD BEFORE IT REACHED THE BOUNDARY SAYS WHY HERE.
+   The record link below is unpacked by the host, because the inflate is a
+   browser stream and the engine never names its host. When that step fails
+   there is no text for pImport to refuse, and a second channel for the reason
+   would be a second set of failure words. So the reason goes where pImport's
+   own go, and importError() stays the one place a refusal is read. It sets the
+   reason and nothing else: nothing is pushed and CURP does not move. */
+function importRefuse(why){ IMPORT_ERR=[String(why||'it was refused')]; return null; }
+
+/* ============================================================
+   THE RECORD IN A LINK, round QZ.
+
+   The web reading reached the app as a file a person saved and then loaded,
+   which is two steps and a folder to find between them. The address of the
+   app can carry it instead, after the # mark. That part of an address is
+   called the fragment, and a browser never sends it to any server: it stays
+   on the device, in the page that reads it. So the record goes from the quiz
+   page to the app page with nothing fetched and nothing sent, which is the
+   product's standing posture.
+
+   This is the wire format and nothing else, named once so the page that
+   writes a link and the page that reads one cannot drift apart. The bytes are
+   gzip, made and unmade by the host, because CompressionStream is a browser
+   object. The text is base64url, the variant of base64 whose alphabet needs
+   no escaping in an address. And it opens with a format version and a dot,
+   because a link saved in somebody's notes today is a record written six
+   months ago the day it is opened, and a later format has to be told apart
+   from this one rather than misread as it.
+
+   linkUnwrap refuses by name through importError(), the same channel and the
+   same shape as pImport: null, and the reason beside it. It never decides
+   whether the record is good. That is validateProfile's alone, and the text
+   this produces goes through pImport like a paste does.
+   ============================================================ */
+var LINK_V='1';
+/* a reading from the quiz is about a kilobyte here. This is a ceiling far
+   above any record a link was built to carry, so a pasted wall of text is
+   refused before anything is decoded or inflated. */
+var LINK_MAX=65536;
+var B64U='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+function linkWrap(bytes){
+ var out='', i, n=bytes.length, a, b, c;
+ for(i=0;i+2<n;i+=3){
+  a=bytes[i]; b=bytes[i+1]; c=bytes[i+2];
+  out+=B64U[a>>2]+B64U[((a&3)<<4)|(b>>4)]+B64U[((b&15)<<2)|(c>>6)]+B64U[c&63];}
+ if(n-i===1){ a=bytes[i]; out+=B64U[a>>2]+B64U[(a&3)<<4]; }
+ else if(n-i===2){ a=bytes[i]; b=bytes[i+1];
+  out+=B64U[a>>2]+B64U[((a&3)<<4)|(b>>4)]+B64U[(b&15)<<2]; }
+ return LINK_V+'.'+out;}
+function linkUnwrap(s){
+ IMPORT_ERR=null;
+ if(typeof s!=='string'||!s)return importRefuse('the link carries nothing after r=');
+ if(s.length>LINK_MAX)return importRefuse('the link is longer than any record link this app makes');
+ var dot=s.indexOf('.');
+ if(dot<1)return importRefuse('the link is not in a form this app reads');
+ var ver=s.slice(0,dot), t=s.slice(dot+1);
+ if(ver!==LINK_V)return importRefuse('the link was made in format '+ver.slice(0,8)
+  +', and this app reads format '+LINK_V);
+ if(!t)return importRefuse('the link carries nothing after r=');
+ if(!/^[A-Za-z0-9_-]+$/.test(t))return importRefuse('the link carries characters '
+  +'a record link never has, so it is damaged');
+ /* one character over a whole group of four is not a byte. It is a link
+    that was cut, and saying so is more use than saying it would not decode. */
+ if(t.length%4===1)return importRefuse('the link is cut short');
+ var out=new Uint8Array(Math.floor(t.length*3/4)), o=0, acc=0, bits=0;
+ for(var i=0;i<t.length;i++){
+  acc=(acc<<6)|B64U.indexOf(t[i]); bits+=6;
+  if(bits>=8){ bits-=8; out[o++]=(acc>>bits)&255; }}
+ return out;}
 
 /* ============================================================
    THE JOURNEY, THE READ HALF. Where a new person is on the way in,
@@ -17667,6 +17745,8 @@ if(typeof module!=='undefined'&&module.exports){
      saveProfile's documented blind spot and correct for a person. */
                   LAW_UNSET:LAW_UNSET,
                   pExport:pExport, pImport:pImport, validateProfile:validateProfile, importError:importError,
+                  importRefuse:importRefuse, linkWrap:linkWrap, linkUnwrap:linkUnwrap,
+                  LINK_V:LINK_V, LINK_MAX:LINK_MAX,
                   meterRun:meterRun, meterRead:meterRead, meterKey:meterKey, meterBudget:meterBudget,
                   meterGiftAt:meterGiftAt,
                   meterNext:meterNext, meterPlan:meterPlan,
@@ -19038,14 +19118,30 @@ function viewDoor(){
  return '<div class="read">'
  +'<div class="door"><span class="eye">The door</span>'
  +'<h2>Take the record with you.</h2>'
- +'<div class="doorbd">'
+ /* the two paragraphs share one cell, because .doorbd is two columns, words
+    and buttons, and a third child squeezed the words into a sliver at 1600 */
+ +'<div class="doorbd"><div>'
  +'<p>There is no account and no server, so nothing here can be fetched later by '
  +'anybody, including us. What you save is a profile in the instrument\'s own '
  +'format, and Atuned\'s loader takes it as it stands: your coherence, the '
  +'21 law values, the nine charges, and every address they landed on.'
  +(STORY_AT?' Your story is not in it.':'')+'</p>'
- +'<div class="acts">'
-  +'<button class="act go" id="dl">Save my record</button>'
+ /* THE RECORD IN A LINK, round QZ. Opening the app with the record already
+    in it replaces two steps, save here and load there, with one press. The
+    sentence says where the record travels in plain words, because "fragment"
+    and "#r=" mean nothing to the person pressing it. */
+ +'<p class="sm" id="linksay">Open the app with my record puts your record inside the '
+ +'link itself, after the # mark. A browser never sends that part of a link to any '
+ +'server, so the record goes from this page to the app and nowhere else. The app '
+ +'loads it, then clears it from the address bar. Anyone you give the link to can '
+ +'open the record, the same as the file.</p></div>'
+ +'<div class="acts recacts">'
+  /* THE SAME href AS THE DOOR BELOW, ../source.html, on purpose. The record
+     is added to it by script once it is packed, so the address the app lives
+     at is written in one place, and BUILD-single.sh rewrites this one exactly
+     as it rewrites that one: atuned.html in dist, beside the quiz. */
+  +'<a class="act go" id="tolink" href="atuned.html">Open the app with my record</a>'
+  +'<button class="act" id="dl">Save my record</button>'
   +'<button class="act" id="copy">Copy it instead</button>'
   +'<button class="act" id="again">Change an answer</button>'
  +'</div></div><p class="note" id="dlnote"></p></div>'
@@ -19057,8 +19153,9 @@ function viewDoor(){
  +'every story you write and shows where each one sits in the body. Then it runs a '
  +'release on each address that is carrying, to take the load off it. It is one file '
  +'and it runs in your browser.</p>'
- +'<p class="sm">To bring this reading in, save the record first. In the app, press '
- +'the profile button at the top right, choose Privacy, and load the file there.</p>'
+ +'<p class="sm">To bring this reading in, use Open the app with my record, above. '
+ +'Or save the record, then in the app press the profile button at the top right, '
+ +'choose Privacy, and load the file there.</p>'
  +'</div>'
  +'<div class="acts"><a class="act go" id="toapp" href="atuned.html">Open the app</a></div>'
  +'</div></div>'
@@ -19073,6 +19170,48 @@ function viewDoor(){
 /* the record a person carries out. It is a profile the app's own boundary
    accepts, so nothing has to be translated on the way in. */
 function recordJSON(){ return JSON.stringify(saveProfile(scored().p),null,1); }
+
+/* THE RECORD IN A LINK, round QZ. The same text recordJSON gives the file,
+   gzipped by the browser and written with the engine's linkWrap, which is the
+   one place the format is named (engine/schema.js) and the one the app reads
+   it back with. The link and the file are built by the same function, so the
+   two routes cannot load two different readings. Not the same bytes:
+   recordJSON makes a new record each time it is called, with its own id and
+   time, as every press of Save already does. `base` is an address;
+   anything after a # on it is dropped, so a link is never built onto a link.
+   Resolves with the whole address, or rejects when this browser has no
+   CompressionStream, which the caller turns into a sentence. */
+function recordLink(base){
+ if(typeof CompressionStream!=='function'||typeof Response!=='function'
+  ||typeof TextEncoder!=='function')return Promise.reject(new Error('NoCompression'));
+ var raw=new TextEncoder().encode(recordJSON());
+ return new Response(new Blob([raw]).stream().pipeThrough(new CompressionStream('gzip')))
+  .arrayBuffer().then(function(buf){
+   return String(base).split('#')[0]+'#r='+linkWrap(new Uint8Array(buf));});}
+/* The link is packed when the door draws, so the address is ready before the
+   press and the control is a real link: it can be opened in a new tab and it
+   shows where it goes. A press that beats the packing waits rather than
+   opening an empty app under a button that promised the record. A redraw
+   starts a new packing, and an older one that finishes late is ignored. */
+var LINK_SEQ=0;
+function linkArm(a){
+ var seq=++LINK_SEQ, note=document.getElementById('dlnote');
+ a.setAttribute('aria-disabled','true'); a.removeAttribute('data-ready');
+ a.onclick=function(e){
+  if(a.getAttribute('data-ready')==='1')return;
+  e.preventDefault();
+  if(note)note.textContent='Packing the record into the link. Press again in a moment.';};
+ recordLink(a.href).then(function(u){
+  if(seq!==LINK_SEQ)return;
+  a.href=u; a.setAttribute('data-ready','1'); a.removeAttribute('aria-disabled');
+ },function(){
+  if(seq!==LINK_SEQ)return;
+  /* style and not the hidden attribute: a.act sets display, which outranks
+     [hidden], so the attribute alone left a control promising the record. The
+     line explaining it goes with it, since it describes a control not there. */
+  a.style.display='none';
+  var say=document.getElementById('linksay'); if(say)say.style.display='none';
+  if(note)note.textContent='This browser cannot pack the record into a link. Save it instead.';});}
 
 /* ============================================================
    RENDER
@@ -19126,6 +19265,7 @@ function render(){
    return;}
   STORY_AT=STORY; render();
   var lit=document.getElementById('lit'); if(lit&&lit.scrollIntoView)lit.scrollIntoView({block:'start'});};
+ if((b=document.getElementById('tolink')))linkArm(b);
  if((b=document.getElementById('dl')))b.onclick=function(){
   var note=document.getElementById('dlnote');
   try{
