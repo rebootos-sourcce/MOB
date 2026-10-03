@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1458 bf03218 2026-10-03 02:58"><head><meta charset="utf-8">
+<html lang="en" data-build="v1459 c99a7f3 2026-10-03 04:32"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -7084,6 +7084,78 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
  .obx-enter .obx-in>*,.obx-enter .ob-h .obx-w,.obx-enter .ob-seats>.ob-seat{animation:none}
  .obx-fill,.obx .ob-dot,.obx-fn,.obx-glow::before{transition:none}
  .obx.ob-leaving{transition:none}}
+/* ============================================================
+   THE DAY ONE TUTORIAL ON THE STAGE, ROUND QJ. ui/tutorial.js's header has
+   the account: the tutorial stands on the stage above, built by the same
+   obStage and changed step by step through the same obSwap, so every rule
+   above already moves it and the reduced block above already stills it.
+   What is here is only what is the tutorial's own: five poses, which names
+   show, and its chain. No keyframe below is new; the chain's rows rise on
+   obxRise, the first run's own.
+
+   THE POSES ARE READ BY data-ts AND NEVER data-step, so not one of the first
+   run's eight poses, its names or its way out rules reach this sheet because
+   two numbers happen to match.
+   ============================================================ */
+body.tut-on .app,body.tut-on #bgaura{visibility:hidden}
+/* Journal: the hero, the body whole with its seven seats named down its side,
+   the map before anything is written on it, held at 96 per cent. Discover:
+   the entry has landed, and the body comes the last four per cent forward,
+   on the camera's own two per cent backswing, so the press winds up, the
+   body lands at 640ms and the seats ignite on it from 420ms, a consequence
+   of the commit and not a second event. Measured before this: Journal and
+   Discover both stood at 1, the body did not move on the one step where
+   the words become charge, and only the ring turned. The ring turns its
+   eighth, and only the seats the words lit keep a name.
+   Understand steps back a little so the chain beside it is the thing read.
+   Release comes forward. Flow steps back, the walk handed on to practice. */
+.tutx[data-ts="0"]{--k:0;--fs:.96;--fo:1;--ro:1;--ax:27vw}
+.tutx[data-ts="1"]{--k:1;--fs:1;--fo:1;--ro:.86;--ax:27vw}
+.tutx[data-ts="2"]{--k:2;--fs:.94;--fo:.8;--ro:.7;--ax:26vw}
+.tutx[data-ts="3"]{--k:3;--fs:1;--fo:1;--ro:1;--ax:27vw}
+.tutx[data-ts="4"]{--k:4;--fs:.9;--fo:.62;--ro:.6;--ax:25vw}
+.obx.tutx[data-ts="0"] .obx-fn{opacity:1}
+/* a name never stands without its meaning (round PO): where a name shows, the
+   anatomy line under it shows too */
+.obx.tutx[data-ts="0"] .obx-fn i,.obx.tutx .obx-fn.on i{display:block}
+/* the steps that carry their own way out, Skip the tutorial, Not now and
+   Done, do not need a second one in the corner */
+.tutx[data-ts="0"] .obx-x,.tutx[data-ts="3"] .obx-x,.tutx[data-ts="4"] .obx-x{visibility:hidden}
+/* THE CHAIN, a thread and not a table. The bordered grid was the old card's
+   chrome inside a stage that has none. Four stations down one line, the
+   seat's own ring on the body's row, so the row and the lit seat on the
+   figure are visibly the same place. */
+.obx .ob-grid{display:block;position:relative;background:none;border:0;border-radius:0;overflow:visible;
+ margin:26px 0 20px;padding-left:28px}
+.obx .ob-grid::before{content:'';position:absolute;left:5.5px;top:9px;bottom:26px;width:1px;
+ background:linear-gradient(to bottom,color-mix(in srgb,var(--ink) 34%,transparent),color-mix(in srgb,var(--ink) 12%,transparent))}
+.obx .ob-g{position:relative;background:none;padding:0 0 18px;gap:3px}
+.obx .ob-g::before{content:'';position:absolute;left:-28px;top:3px;width:12px;height:12px;border-radius:50%;
+ box-sizing:border-box;border:1.3px solid color-mix(in srgb,var(--ink) 42%,transparent);background:var(--bg)}
+.obx .ob-g.ob-g-seat::before{border-color:var(--c);box-shadow:0 0 10px -1px var(--c)}
+.obx .ob-g b{font-size:12.5px;font-weight:600;letter-spacing:.04em;color:var(--dim)}
+.obx .ob-g span{font-size:1em;line-height:1.5;color:var(--ink);max-width:46ch}
+.obx-enter .obx-in>.ob-grid{animation:none}
+.obx-enter .ob-grid>.ob-g{animation:obxRise .44s cubic-bezier(.22,1,.36,1) both;
+ animation-delay:calc(var(--d0) + var(--si,0) * 70ms + var(--ci,0) * 80ms)}
+@media(max-width:899px){
+ /* narrow: the words take the screen on every step and the body is the
+    emblem over them, still lit where the entry landed, as the first run's
+    own reading steps do. Named in the card, so not beside the emblem. */
+ .obx.tutx[data-ts]{--fs:.5;--ax:50vw;--ay:calc(62px + var(--fh) * .2353);--st:calc(62px + var(--fh) * .5 + 6px)}
+ .obx.tutx[data-ts="2"],.obx.tutx[data-ts="4"]{--fo:.62}
+ .obx.tutx .obx-fn,.obx.tutx[data-ts="0"] .obx-fn{opacity:0}
+ .obx.tutx.obx-in-arrive .obx-fn{animation:none}
+ .obx .ob-grid{margin:18px 0 14px}
+ .obx .ob-g{padding-bottom:14px}}
+@media (prefers-reduced-motion:reduce){
+ .obx-enter .ob-grid>.ob-g{animation:none}
+ /* MEASURED, round QJ: with reduced motion set, the primary's arrow still
+    slid 4px on hover. The document wide *{transition:none!important} does
+    not reach it, because * matches no pseudo element. Seen as the one running
+    animation on the stage when a new Next lands under a pointer that has not
+    moved, on this sheet and on the first run's alike. */
+ .obx .btn.pri::after{transition:none}}
 .s-lens{display:grid;gap:1px;background:var(--edge);border:1px solid var(--edge);
  border-radius:var(--r);overflow:hidden}
 .s-ln{background:var(--panel);padding:9px 12px 10px;display:flex;
@@ -40824,15 +40896,57 @@ try{window.__at&&window.__at('ui/storyui.js');}catch(e){}
    stands ahead of it. See onboard.js's own header for why nothing is
    added here that only looks like one.
    ============================================================ */
-var TUT={open:false, step:0, text:'', commit:null, deep:null, replay:false, parsed:null, plan:null};
+var TUT={open:false, step:0, text:'', commit:null, deep:null, replay:false, parsed:null, plan:null, shown:-1, leaveT:null};
+/* ============================================================
+   THE STAGE, ROUND QJ. His words, on the first run's rebuild: "Continue full
+   build in the style. For the funnel, onboarding, tutorial... Make this
+   priority." This sheet was the last first run surface still opening as the
+   old popup card over a dimmed app, which is exactly what the onboarding's
+   welcome was before round QH took it full screen.
+
+   SO IT STANDS ON THAT STAGE, AND NOT ON A COPY OF IT. obStage, obSwap,
+   obCard, obGhost, obPushOut and obRailAt are ui/onboard.js's own: the far
+   wash, the ring of the 112, the body with its seats, the arrival (the
+   spine climbs, the seats pop as its tip passes, the outline pours from the
+   crown, the ring winds in), the Field's 4.2 second breath at rest, the
+   ghost out and the rise in on a change of step, the pulse up the spine,
+   and the push through on the way out. Not one keyframe is new. What is the
+   tutorial's own is its five poses, in shell/head.html under .tutx, and
+   which seats it lights.
+
+   THE LIGHT CARRIES THE ENTRY. A seat lights only where this entry put
+   weight, read off the same commit the words on the card are read off: the
+   two places What this found names, the one the chain names, and the plan's
+   own addresses on Release and Flow. Nothing is lit before the commit,
+   because nothing has been read. So the commit, which is the moment the
+   words become charge in the field, is the moment the body lights, root to
+   crown on the boot's beat, and a person can see where it landed with the
+   words still rising beside it.
+
+   REDUCED MOTION GETS THE END STATE: no arrival, no ghost, no camera, no
+   breath, no pulse. Every one of those is already held under the stage's
+   own reduced block, and the script paths all ask obCalm first.
+   ============================================================ */
+var TUT_N=5;
+/* the rail's names: the storyboard's own, this file's header, in order */
+var TUT_STEPNM=['Journal','Discover','Understand','Release','Flow'];
 
 function tutOpen(replay){
  var h=document.getElementById('tutorial'); if(!h)return;
  TUT.open=true; TUT.step=0; TUT.text=''; TUT.commit=null; TUT.deep=null; TUT.replay=!!replay; TUT.parsed=null; TUT.plan=null;
+ TUT.shown=-1;
+ if(TUT.leaveT){ clearTimeout(TUT.leaveT); TUT.leaveT=null; }
  h.classList.remove('ob-leaving');
+ /* a fresh stage on every open, so the arrival plays from its first frame */
+ h.innerHTML=''; h.classList.remove('obx','obx-lit','obx-in-arrive');
+ h.classList.add('tutx');
+ if(typeof obStage==='function')obStage(h,TUT_N,'data-tut="skip"');
+ /* the running app goes out of the picture while the stage is up */
+ document.body.classList.add('tut-on');
  tutRender();
  h.style.display='flex';
- var f=h.querySelector('button'); if(f)f.focus();}
+ if(typeof obPenWidth==='function')obPenWidth(h);
+ var f=h.querySelector('.obx-slot textarea,.obx-slot button'); if(f)f.focus({preventScroll:true});}
 /* the login.js hook already calls tutorialOpen(); this is the real name,
    kept short for the five screens below that call it on themselves. */
 function tutorialOpen(replay){ tutOpen(replay); }
@@ -40841,7 +40955,12 @@ var TUT_LEAVE_MS=520;
 function tutClose(){
  var h=document.getElementById('tutorial'); if(!h)return;
  TUT.open=false; h.classList.add('ob-leaving');
- setTimeout(function(){ h.style.display='none'; h.classList.remove('ob-leaving'); h.innerHTML=''; },TUT_LEAVE_MS);
+ document.body.classList.remove('tut-on');
+ /* the first run's own way out: the body goes forward past the camera */
+ if(typeof obPushOut==='function')obPushOut(h);
+ TUT.leaveT=setTimeout(function(){ TUT.leaveT=null; if(TUT.open)return;
+  h.style.display='none'; h.classList.remove('ob-leaving','obx','tutx','obx-lit','obx-in-arrive');
+  h.removeAttribute('data-ts'); h.removeAttribute('data-dir'); h.innerHTML=''; },TUT_LEAVE_MS);
  /* EVERY WRITE THAT CAN FAIL REPORTS, the same lesson onboard.js's own
     obClose carries: a flag that silently fails to save reopens the sheet
     on every launch with no explanation a person can act on. */
@@ -40854,18 +40973,27 @@ function tutClose(){
    status('This browser would not save. The tutorial will open again.','fail'); }
  if(typeof render==='function')render();}
 
+/* THE CARD IS THE STAGE'S COLUMN NOW, round QJ: obCard's eyebrow, its
+   headline a word to a masked line, the body, the actions. The five dots it
+   carried are the stage's rail at the top of the screen, which fills as the
+   run goes. nsteps is kept in the signature so no caller has to change. */
 function tutCard(title,body,acts,nsteps){
- var n=nsteps||5;
- return '<div class="ob-card" role="dialog" aria-modal="true" aria-label="'+esc(title)+'">'
-  +'<div class="ob-wash" aria-hidden="true"></div>'
-  +'<div class="ob-scroll">'
-  +'<span class="pm-eye">Day one</span>'
-  +'<h2 class="ob-h">'+esc(title)+'</h2>'
-  +body
-  +'<div class="ob-acts">'+acts+'</div>'
-  +'<div class="ob-dots">'+Array.from({length:n}).map(function(_,i){
-    return '<span class="ob-dot'+(i===TUT.step?' on':'')+'"></span>';}).join('')+'</div>'
-  +'</div></div>';}
+ return obCard('Day one',title,body,acts);}
+
+/* WHICH SEATS THIS STEP LIGHTS, read off what the card on the same step
+   prints and nothing else. Seat names are the node's own .b, the band the
+   word lit, the same name the stage's seats carry. */
+function tutLitNow(){
+ var s=TUT.step, c=TUT.commit, kept=(c&&c.ok&&c.k&&c.kept)||[], lit=[];
+ var add=function(b){ if(b&&BANDS.indexOf(b)>=0&&lit.indexOf(b)<0)lit.push(b); };
+ if(s===1){ add(kept[0]&&kept[0].b); add(kept[1]&&kept[1].b); }
+ else if(s===2){ add(kept[0]&&kept[0].b); }
+ else if(s>=3){
+  var pl=TUT.plan;
+  if(pl&&pl.ok)pl.addrs.forEach(function(i){ add(BY[i]&&BY[i].b); });
+  else{ var off=(TUT.deep&&TUT.deep.offer&&TUT.deep.offer[0])||null;
+   if(off&&kept.length)add(kept[0].b); }}
+ return {lit:lit, pick:null, mark:null};}
 
 /* a node's own fields, read exactly as the engine stores them: .b is the
    seat the word lit (a band name, "Heart"), .k is the word itself, .cf is
@@ -40929,7 +41057,10 @@ function tutRender(){
       ['Story', kept[0]?kept[0].cf:'not named'],
       ['Body response', kept[0]?kept[0].b:'not named'],
       ['What it costs', off?off.because[0]:'not enough here yet to say']]
-     .map(function(x){return '<div class="ob-g"><b>'+esc(x[0])+'</b>'
+     /* the body's row wears its seat's colour, the seat lit on the figure
+        beside it (round QJ): the same place, said twice in one picture */
+     .map(function(x,j){var sb=(j===2&&kept[0]&&BANDS.indexOf(kept[0].b)>=0)?kept[0].b:null;
+       return '<div class="ob-g'+(sb?' ob-g-seat" style="--c:'+seatCol(sb):'')+'"><b>'+esc(x[0])+'</b>'
        +'<span>'+esc(x[1])+'</span></div>';}).join('')
     +'</div>'
     +'<p class="ob-p ob-dim">This is not just this one moment. Something runs '
@@ -40985,12 +41116,17 @@ function tutRender(){
    '<button type="button" class="btn pri" data-tut="ritual">Go to Ritual</button>'
    +'<button type="button" class="btn" data-tut="done">Done</button>');
  }
- h.innerHTML=out;
+ /* ROUND QJ: onto the stage, through the first run's own change of step */
+ if(typeof obStage==='function')obStage(h,TUT_N,'data-tut="skip"');
+ var sw=obSwap(h,out,{s:s, shown:TUT.shown, attr:'data-ts', lit:tutLitNow(),
+  rail:function(h){ obRailAt(h,TUT.step,TUT_N,TUT_STEPNM); }});
+ TUT.shown=s;
  var ta=document.getElementById('tuttext');
  if(ta){ta.oninput=function(){
-   var go=h.querySelector('[data-tut="commit"]'); if(go)go.disabled=!ta.value.trim();};
-  ta.value=TUT.text; ta.focus();}
- var f=h.querySelector('.ob-scroll'); if(f)f.scrollTop=0;}
+   var go=h.querySelector('.obx-slot [data-tut="commit"]'); if(go)go.disabled=!ta.value.trim();};
+  ta.value=TUT.text; ta.focus({preventScroll:true});}
+ else if(sw.moved&&!sw.arrive){ var hd=sw.card&&sw.card.querySelector('.ob-h'); if(hd)hd.focus({preventScroll:true}); }
+ var f=sw.card&&sw.card.querySelector('.ob-scroll'); if(f)f.scrollTop=0;}
 
 /* ---- the one commit this sheet makes, through the real path ---- */
 function tutCommit(){
@@ -57981,7 +58117,12 @@ function paidWelcomeOpen(){
  var h=document.getElementById('tutorial'); if(!h)return false;
  if(CURP&&CURP.ui&&CURP.ui.paidWelcomed)return false;
  if(typeof TUT!=='undefined'&&TUT.open)return false;
- h.classList.remove('ob-leaving');
+ /* the tutorial's stage leaves its classes on the host until its own exit
+    has run (ui/tutorial.js, tutClose); this card is the old sheet and must
+    not open wearing them, nor be wiped by that exit's timer */
+ if(typeof TUT!=='undefined'&&TUT.leaveT){ clearTimeout(TUT.leaveT); TUT.leaveT=null; }
+ document.body.classList.remove('tut-on');
+ h.classList.remove('ob-leaving','obx','tutx','obx-lit','obx-in-arrive');
  h.innerHTML='<div class="ob-card" role="dialog" aria-modal="true" aria-label="You are in">'
   +'<div class="ob-wash" aria-hidden="true"></div><div class="ob-scroll">'
   +'<span class="pm-eye">Paid</span>'
@@ -62373,8 +62514,13 @@ function obRing(){
    to the top of the screen, because a rail that is redrawn with each card
    cannot show the run so far filling. The wordmark is the bar's own, cloned
    from the document rather than drawn a second time. */
-function obStage(h){
+/* ROUND QJ: the Day One tutorial stands on this same stage (ui/tutorial.js),
+   so the count of stations and the way out are the caller's. Called with
+   only a host it is the first run's stage exactly as it was: eight stations
+   and a Not now that answers to data-ob. */
+function obStage(h,n,xattr){
  if(h.querySelector('.obx-slot'))return;
+ n=n||OB_NSTEPS; xattr=xattr||'data-ob="skip"';
  var wm=document.querySelector('#brand .bn'), mark=wm?wm.outerHTML:'';
  h.classList.add('obx');
  h.innerHTML='<div class="obx-far" aria-hidden="true"><div class="obx-wash"></div></div>'
@@ -62384,12 +62530,12 @@ function obStage(h){
   +'<div class="obx-near">'+obStageFig()+'</div>'
   +'<div class="obx-top">'
   +'<span class="obx-mark" aria-hidden="true">'+mark+'</span>'
-  +'<div class="obx-rail" role="progressbar" aria-valuemin="1" aria-valuemax="'+OB_NSTEPS+'">'
+  +'<div class="obx-rail" role="progressbar" aria-valuemin="1" aria-valuemax="'+n+'">'
   +'<div class="obx-track"><i class="obx-fill"></i>'
-  +Array.from({length:OB_NSTEPS}).map(function(_,i){
+  +Array.from({length:n}).map(function(_,i){
     return '<span class="ob-dot" style="--k:'+i+'"></span>';}).join('')+'</div>'
   +'<span class="obx-step"></span></div>'
-  +'<button type="button" class="obx-x" data-ob="skip">Not now</button>'
+  +'<button type="button" class="obx-x" '+xattr+'>Not now</button>'
   +'</div>'
   +'<div class="obx-slot"></div>';}
 /* WHAT THE BODY SHOWS ON EACH STEP. lit is the seats that carry a reading,
@@ -62418,8 +62564,10 @@ function obLitNow(){
    not ignited again, so an answer on the mirror that redraws the card does
    not fire every seat a second time. Ignition order is root to crown on the
    boot's 90ms beat, starting after the body has landed in its new pose. */
-function obFigSync(h,delay){
- var now=obLitNow(), on={}, k=0, calm=obCalm();
+/* now, when given, is the caller's own {lit, pick, mark}: the tutorial lights
+   the seats its own entry read, through this same ignition. */
+function obFigSync(h,delay,now){
+ now=now||obLitNow(); var on={}, k=0, calm=obCalm();
  /* A PREVIEW NEVER OUTLIVES ITS STEP. Found in the frame capture, which
     hovers a chip before pressing it the way a pointer does: the press
     replaces the card, a removed chip never fires pointerout, and obPreview
@@ -62497,7 +62645,9 @@ function obGhost(h,old,dir){
  g.setAttribute('aria-hidden','true'); g.inert=true;
  [g].concat([].slice.call(g.querySelectorAll('*'))).forEach(function(e){
   if(e.id)e.removeAttribute('id');
-  [].slice.call(e.attributes).forEach(function(a){if(/^data-ob/.test(a.name))e.removeAttribute(a.name);});});
+  /* data-tut too: the tutorial's ghost is made here, and a copy of its Next
+     must never be a second Next */
+  [].slice.call(e.attributes).forEach(function(a){if(/^data-(ob|tut)/.test(a.name))e.removeAttribute(a.name);});});
  g.style.left=r.left+'px'; g.style.top=r.top+'px'; g.style.width=r.width+'px'; g.style.height=r.height+'px';
  h.appendChild(g);
  var gs=g.querySelector('.ob-scroll'); if(gs)gs.scrollTop=y;
@@ -62517,7 +62667,8 @@ function obStagger(card){
  var inn=card.querySelector('.obx-in'); if(!inn)return;
  [].slice.call(inn.children).forEach(function(c,i){
   c.style.setProperty('--si',Math.min(i,7));
-  [].slice.call(c.querySelectorAll('.ob-seat')).forEach(function(x,j){x.style.setProperty('--ci',j);});});}
+  /* .ob-g is the tutorial's chain, four rows that take the chips' own count */
+  [].slice.call(c.querySelectorAll('.ob-seat,.ob-g')).forEach(function(x,j){x.style.setProperty('--ci',j);});});}
 /* the headline, one word to a masked line, so it rises out of its own baseline.
    textContent is the title exactly: the spaces stay as text between the words. */
 function obWords(t){
@@ -62593,19 +62744,22 @@ function obOpen(replay){
    rather than a fade: the body goes forward and past the camera, the boot's
    own exit (bxPush), so leaving the first run reads as going in. */
 var OB_LEAVE_MS=520;
+/* the push, on its own so the tutorial's way out is this one and not a copy */
+function obPushOut(h){
+ if(obCalm())return;
+ try{
+  var n=h.querySelector('.obx-near'), r=h.querySelector('.obx-ring');
+  if(n)n.animate([{scale:getComputedStyle(n).scale,opacity:1,easing:'cubic-bezier(.45,0,.55,1)'},
+   {offset:.26,scale:String((parseFloat(getComputedStyle(n).scale)||1)*.972),opacity:1,easing:'cubic-bezier(.4,0,1,1)'},
+   {scale:String((parseFloat(getComputedStyle(n).scale)||1)*1.45),opacity:0}],{duration:460,fill:'forwards'});
+  if(r)r.animate([{opacity:getComputedStyle(r).opacity},{opacity:0,scale:String((parseFloat(getComputedStyle(r).scale)||1)*1.12)}],
+   {duration:420,easing:'cubic-bezier(.4,0,1,1)',fill:'forwards'});
+ }catch(e){}}
 function obClose(){
  var h=document.getElementById('ob'); if(!h)return;
  OB.open=false; h.classList.add('ob-leaving');
  document.body.classList.remove('ob-on');
- if(!obCalm()){
-  try{
-   var n=h.querySelector('.obx-near'), r=h.querySelector('.obx-ring');
-   if(n)n.animate([{scale:getComputedStyle(n).scale,opacity:1,easing:'cubic-bezier(.45,0,.55,1)'},
-    {offset:.26,scale:String((parseFloat(getComputedStyle(n).scale)||1)*.972),opacity:1,easing:'cubic-bezier(.4,0,1,1)'},
-    {scale:String((parseFloat(getComputedStyle(n).scale)||1)*1.45),opacity:0}],{duration:460,fill:'forwards'});
-   if(r)r.animate([{opacity:getComputedStyle(r).opacity},{opacity:0,scale:String((parseFloat(getComputedStyle(r).scale)||1)*1.12)}],
-    {duration:420,easing:'cubic-bezier(.4,0,1,1)',fill:'forwards'});
-  }catch(e){}}
+ obPushOut(h);
  /* LEFT BEFORE COMMIT. Nothing was written, and the words are not lost:
     they are still the Story tab's pending text, ST_TEXT, where the Commit
     button there can keep them. Said once, so a person who pressed Escape on
@@ -62666,16 +62820,17 @@ function obCard(eye,title,body,acts){
   +'</div></div></div>';}
 /* THE RAIL. Eight stations, the run so far filled, the step in hand named in
    words beside it, so the rail says how far along without anybody counting. */
-function obRail(h){
- var s=OB.step;
+function obRail(h){ obRailAt(h,OB.step,OB_NSTEPS,OB_STEPNM); }
+/* the rail for any run on this stage: the step, how many, and their names */
+function obRailAt(h,s,n,nm){
  h.querySelectorAll('.obx-rail .ob-dot').forEach(function(d,i){
   d.classList.toggle('on',i===s); d.classList.toggle('past',i<s);});
- var f=h.querySelector('.obx-fill'); if(f)f.style.setProperty('--p',(s/(OB_NSTEPS-1)).toFixed(4));
+ var f=h.querySelector('.obx-fill'); if(f)f.style.setProperty('--p',(s/(n-1)).toFixed(4));
  var rl=h.querySelector('.obx-rail');
  if(rl){ rl.setAttribute('aria-valuenow',String(s+1));
-  rl.setAttribute('aria-valuetext','Step '+(s+1)+' of '+OB_NSTEPS+', '+OB_STEPNM[s]); }
+  rl.setAttribute('aria-valuetext','Step '+(s+1)+' of '+n+', '+nm[s]); }
  var t=h.querySelector('.obx-step');
- if(t)t.innerHTML='Step <b>'+(s+1)+'</b> of '+OB_NSTEPS+'<span class="obx-stepn">'+esc(OB_STEPNM[s])+'</span>';}
+ if(t)t.innerHTML='Step <b>'+(s+1)+'</b> of '+n+'<span class="obx-stepn">'+esc(nm[s])+'</span>';}
 /* a row of chips, one choice at most. sel is the picked index, -1 for "not
    sure", null for nothing picked yet. b, when given, is the chip's seat
    band and tints it through seatCol, the same colour the body figure and
@@ -62709,6 +62864,37 @@ function obChips(items,attr,sel,withNotSure){
   +(withNotSure?'<button type="button" class="ob-seat'+(sel===-1?' on':'')+'" data-'+attr+'="-1">'
    +'<span class="ob-seat-n">Not sure</span></button>':'')
   +'</div>';}
+
+/* ROUND QH'S CHANGE OF STEP, on its own since round QJ so the Day One
+   tutorial changes step through this one and not through a copy of it. The
+   card goes into the stage's slot. On a change of step the old card leaves
+   as a ghost and the new one rises; on a redraw of the same step, an answer
+   on the mirror, it is swapped where it stands, because a person who pressed
+   Yes has not gone anywhere. o.s is the step, o.shown the step on screen (-1
+   for none, which is the arrival), o.attr the attribute the poses read, o.rail
+   the rail's own writer and o.lit, when given, the seats to light. */
+function obSwap(h,out,o){
+ var slot=h.querySelector('.obx-slot'), old=slot.querySelector('.ob-card');
+ var s=o.s, moved=o.shown!==s, arrive=o.shown<0, dir=(s<o.shown)?-1:1;
+ var from=(moved&&!arrive)?obPoseRead(h):null;
+ if(moved&&!arrive)obGhost(h,old,dir);
+ h.setAttribute('data-dir',dir<0?'back':'fwd');
+ h.setAttribute(o.attr||'data-step',String(s));
+ h.classList.toggle('obx-in-arrive',arrive);
+ slot.innerHTML=out;
+ var card=slot.querySelector('.ob-card');
+ if(moved&&card&&!obCalm()){ card.classList.add('obx-enter'); obStagger(card); }
+ if(o.rail)o.rail(h);
+ /* the seat lights land after the body has: 420ms into a move, at once on a
+    redraw where the body has not moved */
+ obFigSync(h,moved?(arrive?1300:420):0,o.lit||null);
+ if(from)obPosePlay(h,from,dir);
+ /* the step reads on the body: one pulse up the spine forward, down it on
+    Back. Restarted rather than queued, so a fast run of presses shows the
+    latest direction and never a backlog. */
+ var sg=h.querySelector('.obx-surge');
+ if(sg&&moved&&!arrive&&!obCalm()){ sg.classList.remove('go'); void sg.offsetWidth; sg.classList.add('go'); }
+ return {moved:moved, arrive:arrive, card:card};}
 
 function obRender(){
  var h=document.getElementById('ob'); if(!h)return;
@@ -62828,31 +63014,10 @@ function obRender(){
  else {
   out=obBridgeCard();
  }
- /* ROUND QH. The card goes into the stage's slot. On a change of step the
-    old card leaves as a ghost and the new one rises; on a redraw of the same
-    step, an answer on the mirror, it is swapped where it stands, because a
-    person who pressed Yes has not gone anywhere. */
+ /* ROUND QH, the change of step, which obSwap above now carries */
  obStage(h);
- var slot=h.querySelector('.obx-slot'), old=slot.querySelector('.ob-card');
- var moved=OB.shown!==s, arrive=OB.shown<0, dir=(s<OB.shown)?-1:1;
- var from=(moved&&!arrive)?obPoseRead(h):null;
- if(moved&&!arrive)obGhost(h,old,dir);
- h.setAttribute('data-dir',dir<0?'back':'fwd');
- h.setAttribute('data-step',String(s));
- h.classList.toggle('obx-in-arrive',arrive);
- slot.innerHTML=out;
- var card=slot.querySelector('.ob-card');
- if(moved&&card&&!obCalm()){ card.classList.add('obx-enter'); obStagger(card); }
- obRail(h);
- /* the seat lights land after the body has: 420ms into a move, at once on a
-    redraw where the body has not moved */
- obFigSync(h,moved?(arrive?1300:420):0);
- if(from)obPosePlay(h,from,dir);
- /* the step reads on the body: one pulse up the spine forward, down it on
-    Back. Restarted rather than queued, so a fast run of presses shows the
-    latest direction and never a backlog. */
- var sg=h.querySelector('.obx-surge');
- if(sg&&moved&&!arrive&&!obCalm()){ sg.classList.remove('go'); void sg.offsetWidth; sg.classList.add('go'); }
+ var sw=obSwap(h,out,{s:s, shown:OB.shown, attr:'data-step', rail:obRail});
+ var moved=sw.moved, arrive=sw.arrive, card=sw.card;
  OB.shown=s;
  var ta=document.getElementById('obtext');
  if(ta){ta.value=OB.text; ta.oninput=function(){
@@ -65507,5 +65672,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004287414"></div>
+<div id="eof" hidden data-len="004298401"></div>
 </body></html>

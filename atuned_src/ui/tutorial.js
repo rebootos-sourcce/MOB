@@ -36,15 +36,57 @@
    stands ahead of it. See onboard.js's own header for why nothing is
    added here that only looks like one.
    ============================================================ */
-var TUT={open:false, step:0, text:'', commit:null, deep:null, replay:false, parsed:null, plan:null};
+var TUT={open:false, step:0, text:'', commit:null, deep:null, replay:false, parsed:null, plan:null, shown:-1, leaveT:null};
+/* ============================================================
+   THE STAGE, ROUND QJ. His words, on the first run's rebuild: "Continue full
+   build in the style. For the funnel, onboarding, tutorial... Make this
+   priority." This sheet was the last first run surface still opening as the
+   old popup card over a dimmed app, which is exactly what the onboarding's
+   welcome was before round QH took it full screen.
+
+   SO IT STANDS ON THAT STAGE, AND NOT ON A COPY OF IT. obStage, obSwap,
+   obCard, obGhost, obPushOut and obRailAt are ui/onboard.js's own: the far
+   wash, the ring of the 112, the body with its seats, the arrival (the
+   spine climbs, the seats pop as its tip passes, the outline pours from the
+   crown, the ring winds in), the Field's 4.2 second breath at rest, the
+   ghost out and the rise in on a change of step, the pulse up the spine,
+   and the push through on the way out. Not one keyframe is new. What is the
+   tutorial's own is its five poses, in shell/head.html under .tutx, and
+   which seats it lights.
+
+   THE LIGHT CARRIES THE ENTRY. A seat lights only where this entry put
+   weight, read off the same commit the words on the card are read off: the
+   two places What this found names, the one the chain names, and the plan's
+   own addresses on Release and Flow. Nothing is lit before the commit,
+   because nothing has been read. So the commit, which is the moment the
+   words become charge in the field, is the moment the body lights, root to
+   crown on the boot's beat, and a person can see where it landed with the
+   words still rising beside it.
+
+   REDUCED MOTION GETS THE END STATE: no arrival, no ghost, no camera, no
+   breath, no pulse. Every one of those is already held under the stage's
+   own reduced block, and the script paths all ask obCalm first.
+   ============================================================ */
+var TUT_N=5;
+/* the rail's names: the storyboard's own, this file's header, in order */
+var TUT_STEPNM=['Journal','Discover','Understand','Release','Flow'];
 
 function tutOpen(replay){
  var h=document.getElementById('tutorial'); if(!h)return;
  TUT.open=true; TUT.step=0; TUT.text=''; TUT.commit=null; TUT.deep=null; TUT.replay=!!replay; TUT.parsed=null; TUT.plan=null;
+ TUT.shown=-1;
+ if(TUT.leaveT){ clearTimeout(TUT.leaveT); TUT.leaveT=null; }
  h.classList.remove('ob-leaving');
+ /* a fresh stage on every open, so the arrival plays from its first frame */
+ h.innerHTML=''; h.classList.remove('obx','obx-lit','obx-in-arrive');
+ h.classList.add('tutx');
+ if(typeof obStage==='function')obStage(h,TUT_N,'data-tut="skip"');
+ /* the running app goes out of the picture while the stage is up */
+ document.body.classList.add('tut-on');
  tutRender();
  h.style.display='flex';
- var f=h.querySelector('button'); if(f)f.focus();}
+ if(typeof obPenWidth==='function')obPenWidth(h);
+ var f=h.querySelector('.obx-slot textarea,.obx-slot button'); if(f)f.focus({preventScroll:true});}
 /* the login.js hook already calls tutorialOpen(); this is the real name,
    kept short for the five screens below that call it on themselves. */
 function tutorialOpen(replay){ tutOpen(replay); }
@@ -53,7 +95,12 @@ var TUT_LEAVE_MS=520;
 function tutClose(){
  var h=document.getElementById('tutorial'); if(!h)return;
  TUT.open=false; h.classList.add('ob-leaving');
- setTimeout(function(){ h.style.display='none'; h.classList.remove('ob-leaving'); h.innerHTML=''; },TUT_LEAVE_MS);
+ document.body.classList.remove('tut-on');
+ /* the first run's own way out: the body goes forward past the camera */
+ if(typeof obPushOut==='function')obPushOut(h);
+ TUT.leaveT=setTimeout(function(){ TUT.leaveT=null; if(TUT.open)return;
+  h.style.display='none'; h.classList.remove('ob-leaving','obx','tutx','obx-lit','obx-in-arrive');
+  h.removeAttribute('data-ts'); h.removeAttribute('data-dir'); h.innerHTML=''; },TUT_LEAVE_MS);
  /* EVERY WRITE THAT CAN FAIL REPORTS, the same lesson onboard.js's own
     obClose carries: a flag that silently fails to save reopens the sheet
     on every launch with no explanation a person can act on. */
@@ -66,18 +113,27 @@ function tutClose(){
    status('This browser would not save. The tutorial will open again.','fail'); }
  if(typeof render==='function')render();}
 
+/* THE CARD IS THE STAGE'S COLUMN NOW, round QJ: obCard's eyebrow, its
+   headline a word to a masked line, the body, the actions. The five dots it
+   carried are the stage's rail at the top of the screen, which fills as the
+   run goes. nsteps is kept in the signature so no caller has to change. */
 function tutCard(title,body,acts,nsteps){
- var n=nsteps||5;
- return '<div class="ob-card" role="dialog" aria-modal="true" aria-label="'+esc(title)+'">'
-  +'<div class="ob-wash" aria-hidden="true"></div>'
-  +'<div class="ob-scroll">'
-  +'<span class="pm-eye">Day one</span>'
-  +'<h2 class="ob-h">'+esc(title)+'</h2>'
-  +body
-  +'<div class="ob-acts">'+acts+'</div>'
-  +'<div class="ob-dots">'+Array.from({length:n}).map(function(_,i){
-    return '<span class="ob-dot'+(i===TUT.step?' on':'')+'"></span>';}).join('')+'</div>'
-  +'</div></div>';}
+ return obCard('Day one',title,body,acts);}
+
+/* WHICH SEATS THIS STEP LIGHTS, read off what the card on the same step
+   prints and nothing else. Seat names are the node's own .b, the band the
+   word lit, the same name the stage's seats carry. */
+function tutLitNow(){
+ var s=TUT.step, c=TUT.commit, kept=(c&&c.ok&&c.k&&c.kept)||[], lit=[];
+ var add=function(b){ if(b&&BANDS.indexOf(b)>=0&&lit.indexOf(b)<0)lit.push(b); };
+ if(s===1){ add(kept[0]&&kept[0].b); add(kept[1]&&kept[1].b); }
+ else if(s===2){ add(kept[0]&&kept[0].b); }
+ else if(s>=3){
+  var pl=TUT.plan;
+  if(pl&&pl.ok)pl.addrs.forEach(function(i){ add(BY[i]&&BY[i].b); });
+  else{ var off=(TUT.deep&&TUT.deep.offer&&TUT.deep.offer[0])||null;
+   if(off&&kept.length)add(kept[0].b); }}
+ return {lit:lit, pick:null, mark:null};}
 
 /* a node's own fields, read exactly as the engine stores them: .b is the
    seat the word lit (a band name, "Heart"), .k is the word itself, .cf is
@@ -141,7 +197,10 @@ function tutRender(){
       ['Story', kept[0]?kept[0].cf:'not named'],
       ['Body response', kept[0]?kept[0].b:'not named'],
       ['What it costs', off?off.because[0]:'not enough here yet to say']]
-     .map(function(x){return '<div class="ob-g"><b>'+esc(x[0])+'</b>'
+     /* the body's row wears its seat's colour, the seat lit on the figure
+        beside it (round QJ): the same place, said twice in one picture */
+     .map(function(x,j){var sb=(j===2&&kept[0]&&BANDS.indexOf(kept[0].b)>=0)?kept[0].b:null;
+       return '<div class="ob-g'+(sb?' ob-g-seat" style="--c:'+seatCol(sb):'')+'"><b>'+esc(x[0])+'</b>'
        +'<span>'+esc(x[1])+'</span></div>';}).join('')
     +'</div>'
     +'<p class="ob-p ob-dim">This is not just this one moment. Something runs '
@@ -197,12 +256,17 @@ function tutRender(){
    '<button type="button" class="btn pri" data-tut="ritual">Go to Ritual</button>'
    +'<button type="button" class="btn" data-tut="done">Done</button>');
  }
- h.innerHTML=out;
+ /* ROUND QJ: onto the stage, through the first run's own change of step */
+ if(typeof obStage==='function')obStage(h,TUT_N,'data-tut="skip"');
+ var sw=obSwap(h,out,{s:s, shown:TUT.shown, attr:'data-ts', lit:tutLitNow(),
+  rail:function(h){ obRailAt(h,TUT.step,TUT_N,TUT_STEPNM); }});
+ TUT.shown=s;
  var ta=document.getElementById('tuttext');
  if(ta){ta.oninput=function(){
-   var go=h.querySelector('[data-tut="commit"]'); if(go)go.disabled=!ta.value.trim();};
-  ta.value=TUT.text; ta.focus();}
- var f=h.querySelector('.ob-scroll'); if(f)f.scrollTop=0;}
+   var go=h.querySelector('.obx-slot [data-tut="commit"]'); if(go)go.disabled=!ta.value.trim();};
+  ta.value=TUT.text; ta.focus({preventScroll:true});}
+ else if(sw.moved&&!sw.arrive){ var hd=sw.card&&sw.card.querySelector('.ob-h'); if(hd)hd.focus({preventScroll:true}); }
+ var f=sw.card&&sw.card.querySelector('.ob-scroll'); if(f)f.scrollTop=0;}
 
 /* ---- the one commit this sheet makes, through the real path ---- */
 function tutCommit(){

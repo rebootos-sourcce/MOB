@@ -450,6 +450,63 @@ console.log('\n=== the Day One tutorial reaches the same real release ===');
  await page.close();
 }
 
+console.log('\n=== the Day One tutorial stands on the first run\'s stage, lit only where its entry landed (round QJ) ===');
+/* The tutorial opened as the old popup card over a dimmed app after the
+   first run had gone full screen. It now stands on the same stage (obStage,
+   obSwap). Held here: it fills the viewport with no card chrome, its rail has
+   five stations, nothing is lit before the commit, the seats lit after it
+   are exactly the seats the commit's own kept nodes name, the step change
+   leaves a ghost that carries no live control, and with reduced motion set
+   nothing on it runs at all, pseudo elements included. */
+for(const calm of [false,true]){
+ const ctx=await browser.newContext({viewport:{width:1600,height:1000},reducedMotion:calm?'reduce':'no-preference'});
+ const page=await ctx.newPage();
+ const errs=[]; page.on('pageerror',e=>errs.push(e.message));
+ await page.goto(FILE+'?dev=1',{waitUntil:'load'}); await booted(page);
+ const tag=calm?'reduced motion: ':'';
+ const running=()=>page.evaluate(()=>{const h=document.getElementById('tutorial');
+  return document.getAnimations().filter(a=>a.playState==='running'&&a.effect&&a.effect.target&&h.contains(a.effect.target))
+   .map(a=>(a.animationName||a.transitionProperty||'script')+(a.effect.pseudoElement||'')).slice(0,6);});
+ await page.evaluate(()=>{ loadP(0); CURP.ui=CURP.ui||{}; CURP.ui.tutorialSeen=false; tutorialOpen(true); });
+ await page.waitForTimeout(calm?60:2600);
+ const s0=await page.evaluate(()=>{const h=document.getElementById('tutorial'), r=h.getBoundingClientRect(),
+   c=h.querySelector('.ob-card'), cs=c?getComputedStyle(c):null;
+  return {full:r.width===innerWidth&&r.height===innerHeight, stage:h.classList.contains('obx'),
+   border:cs?cs.borderTopWidth:'-', bg:cs?cs.backgroundColor:'-', dots:h.querySelectorAll('.obx-rail .ob-dot').length,
+   inCard:c?c.querySelectorAll('.ob-dot,.ob-wash').length:-1, lit:h.querySelectorAll('.obx-near .obx-s.on').length,
+   appHidden:getComputedStyle(document.querySelector('.app')).visibility==='hidden'};});
+ ok(s0.full&&s0.stage,tag+'the tutorial fills the viewport on the stage, '+JSON.stringify(s0));
+ ok(s0.border==='0px'&&/rgba\(0, 0, 0, 0\)|transparent/.test(s0.bg)&&s0.inCard===0,
+  tag+'no card chrome: no border, no fill, no wash and no dots inside the column, '+s0.border+' '+s0.bg+' '+s0.inCard);
+ ok(s0.dots===5&&s0.appHidden,tag+'five stations on the rail and the app out of the picture, '+s0.dots);
+ ok(s0.lit===0,tag+'nothing is lit before anything is written, '+s0.lit);
+ if(calm)ok((await running()).length===0,tag+'nothing runs on arrival, '+JSON.stringify(await running()));
+ await page.fill('#tuttext',REAL_STORY);
+ await page.click('[data-tut="commit"]'); await page.waitForTimeout(calm?60:120);
+ const s1=await page.evaluate(()=>({lit:[...document.querySelectorAll('#tutorial .obx-near .obx-s.on')].map(e=>e.getAttribute('data-obseat')).sort(),
+  want:[...new Set((TUT.commit.kept||[]).slice(0,2).map(n=>n.b))].sort(),
+  ghosts:document.querySelectorAll('#tutorial .obx-ghost').length,
+  ghostLive:document.querySelectorAll('#tutorial .obx-ghost [data-tut],#tutorial .obx-ghost [id]').length}));
+ ok(s1.want.length>0&&JSON.stringify(s1.lit)===JSON.stringify(s1.want),
+  tag+'the commit lights exactly the seats What this found names, '+JSON.stringify(s1));
+ if(calm){
+  ok(s1.ghosts===0,tag+'no ghost is made, '+s1.ghosts);
+  ok((await running()).length===0,tag+'nothing runs on the step change, '+JSON.stringify(await running()));}
+ else ok(s1.ghosts===1&&s1.ghostLive===0,tag+'the old card leaves as one ghost with no live control or id in it, '+JSON.stringify(s1));
+ for(const k of [2,3,4]){
+  await page.click('#tutorial .obx-slot [data-tut="next"]'); await page.waitForTimeout(calm?60:120);
+  if(calm)ok((await running()).length===0,tag+'nothing runs on step '+(k+1)+', even under a pointer that has not moved: '+JSON.stringify(await running()));}
+ const s4=await page.evaluate(()=>({step:TUT.step, ts:document.getElementById('tutorial').getAttribute('data-ts'),
+  name:(document.querySelector('#tutorial .obx-step')||{}).textContent||''}));
+ ok(s4.step===4&&s4.ts==='4'&&/Step 5 of 5/.test(s4.name),tag+'the rail and the pose follow the step, '+JSON.stringify(s4));
+ await page.click('#tutorial .obx-slot [data-tut="done"]'); await page.waitForTimeout(700);
+ const out=await page.evaluate(()=>{const h=document.getElementById('tutorial');
+  return {shown:getComputedStyle(h).display, cls:h.className, app:getComputedStyle(document.querySelector('.app')).visibility};});
+ ok(out.shown==='none'&&!/obx|tutx/.test(out.cls)&&out.app!=='hidden',
+  tag+'Done takes the stage down and gives the host back plain, '+JSON.stringify(out));
+ ok(errs.length===0,tag+'no script error, '+errs.slice(0,3).join(' | '));
+ await ctx.close();}
+
 console.log('\n=== what changed: every answer kept across a reload, Skip and leaving keep nothing ===');
 {
  /* SEVEN FRESH STORES. The five answers, Skip, and Done pressed with nothing

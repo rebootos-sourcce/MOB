@@ -7084,6 +7084,78 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
  .obx-enter .obx-in>*,.obx-enter .ob-h .obx-w,.obx-enter .ob-seats>.ob-seat{animation:none}
  .obx-fill,.obx .ob-dot,.obx-fn,.obx-glow::before{transition:none}
  .obx.ob-leaving{transition:none}}
+/* ============================================================
+   THE DAY ONE TUTORIAL ON THE STAGE, ROUND QJ. ui/tutorial.js's header has
+   the account: the tutorial stands on the stage above, built by the same
+   obStage and changed step by step through the same obSwap, so every rule
+   above already moves it and the reduced block above already stills it.
+   What is here is only what is the tutorial's own: five poses, which names
+   show, and its chain. No keyframe below is new; the chain's rows rise on
+   obxRise, the first run's own.
+
+   THE POSES ARE READ BY data-ts AND NEVER data-step, so not one of the first
+   run's eight poses, its names or its way out rules reach this sheet because
+   two numbers happen to match.
+   ============================================================ */
+body.tut-on .app,body.tut-on #bgaura{visibility:hidden}
+/* Journal: the hero, the body whole with its seven seats named down its side,
+   the map before anything is written on it, held at 96 per cent. Discover:
+   the entry has landed, and the body comes the last four per cent forward,
+   on the camera's own two per cent backswing, so the press winds up, the
+   body lands at 640ms and the seats ignite on it from 420ms, a consequence
+   of the commit and not a second event. Measured before this: Journal and
+   Discover both stood at 1, the body did not move on the one step where
+   the words become charge, and only the ring turned. The ring turns its
+   eighth, and only the seats the words lit keep a name.
+   Understand steps back a little so the chain beside it is the thing read.
+   Release comes forward. Flow steps back, the walk handed on to practice. */
+.tutx[data-ts="0"]{--k:0;--fs:.96;--fo:1;--ro:1;--ax:27vw}
+.tutx[data-ts="1"]{--k:1;--fs:1;--fo:1;--ro:.86;--ax:27vw}
+.tutx[data-ts="2"]{--k:2;--fs:.94;--fo:.8;--ro:.7;--ax:26vw}
+.tutx[data-ts="3"]{--k:3;--fs:1;--fo:1;--ro:1;--ax:27vw}
+.tutx[data-ts="4"]{--k:4;--fs:.9;--fo:.62;--ro:.6;--ax:25vw}
+.obx.tutx[data-ts="0"] .obx-fn{opacity:1}
+/* a name never stands without its meaning (round PO): where a name shows, the
+   anatomy line under it shows too */
+.obx.tutx[data-ts="0"] .obx-fn i,.obx.tutx .obx-fn.on i{display:block}
+/* the steps that carry their own way out, Skip the tutorial, Not now and
+   Done, do not need a second one in the corner */
+.tutx[data-ts="0"] .obx-x,.tutx[data-ts="3"] .obx-x,.tutx[data-ts="4"] .obx-x{visibility:hidden}
+/* THE CHAIN, a thread and not a table. The bordered grid was the old card's
+   chrome inside a stage that has none. Four stations down one line, the
+   seat's own ring on the body's row, so the row and the lit seat on the
+   figure are visibly the same place. */
+.obx .ob-grid{display:block;position:relative;background:none;border:0;border-radius:0;overflow:visible;
+ margin:26px 0 20px;padding-left:28px}
+.obx .ob-grid::before{content:'';position:absolute;left:5.5px;top:9px;bottom:26px;width:1px;
+ background:linear-gradient(to bottom,color-mix(in srgb,var(--ink) 34%,transparent),color-mix(in srgb,var(--ink) 12%,transparent))}
+.obx .ob-g{position:relative;background:none;padding:0 0 18px;gap:3px}
+.obx .ob-g::before{content:'';position:absolute;left:-28px;top:3px;width:12px;height:12px;border-radius:50%;
+ box-sizing:border-box;border:1.3px solid color-mix(in srgb,var(--ink) 42%,transparent);background:var(--bg)}
+.obx .ob-g.ob-g-seat::before{border-color:var(--c);box-shadow:0 0 10px -1px var(--c)}
+.obx .ob-g b{font-size:12.5px;font-weight:600;letter-spacing:.04em;color:var(--dim)}
+.obx .ob-g span{font-size:1em;line-height:1.5;color:var(--ink);max-width:46ch}
+.obx-enter .obx-in>.ob-grid{animation:none}
+.obx-enter .ob-grid>.ob-g{animation:obxRise .44s cubic-bezier(.22,1,.36,1) both;
+ animation-delay:calc(var(--d0) + var(--si,0) * 70ms + var(--ci,0) * 80ms)}
+@media(max-width:899px){
+ /* narrow: the words take the screen on every step and the body is the
+    emblem over them, still lit where the entry landed, as the first run's
+    own reading steps do. Named in the card, so not beside the emblem. */
+ .obx.tutx[data-ts]{--fs:.5;--ax:50vw;--ay:calc(62px + var(--fh) * .2353);--st:calc(62px + var(--fh) * .5 + 6px)}
+ .obx.tutx[data-ts="2"],.obx.tutx[data-ts="4"]{--fo:.62}
+ .obx.tutx .obx-fn,.obx.tutx[data-ts="0"] .obx-fn{opacity:0}
+ .obx.tutx.obx-in-arrive .obx-fn{animation:none}
+ .obx .ob-grid{margin:18px 0 14px}
+ .obx .ob-g{padding-bottom:14px}}
+@media (prefers-reduced-motion:reduce){
+ .obx-enter .ob-grid>.ob-g{animation:none}
+ /* MEASURED, round QJ: with reduced motion set, the primary's arrow still
+    slid 4px on hover. The document wide *{transition:none!important} does
+    not reach it, because * matches no pseudo element. Seen as the one running
+    animation on the stage when a new Next lands under a pointer that has not
+    moved, on this sheet and on the first run's alike. */
+ .obx .btn.pri::after{transition:none}}
 .s-lens{display:grid;gap:1px;background:var(--edge);border:1px solid var(--edge);
  border-radius:var(--r);overflow:hidden}
 .s-ln{background:var(--panel);padding:9px 12px 10px;display:flex;
