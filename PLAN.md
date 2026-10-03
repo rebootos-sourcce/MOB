@@ -6,6 +6,83 @@ read off the repository and the gate runs, not recalled. "Pushed" means on
 since round PH: plain words, as if he is ten, no fixed headings; questions only
 when blocked (round PD).
 
+## RD. The funnel creative direction TDD, mapped to the code, and its production order (round RD, 3 October)
+
+His words: "a priority item ... review this three times. strategize its production ... build. give me the
+HTML files and push to the cloud." The document is `ATUNED-Funnel-Creative-Direction-TDD-v1.md` (repo root).
+Read three times, then each of its 26 beats checked against the real pages, not assumed: `funnel/index.html`
+(the landing, one stage and one scrolling story), `funnel/quiz.html` (signal, hundred questions, five layer
+reading, story with Yes and Not me per address, the door), `funnel/faq.html`, `funnel/about.html`.
+
+**What the document mostly is.** A sharper, more cinematic version of what is already on the landing, with
+one real change of direction: it retires the old opening by name (section 2, "You know what you want.
+Something gets in the way. That is too abstract as the opening of this experience") and replaces it with
+"Something happens. You react." It also asks for things the funnel cannot honestly do yet (beats 23 to 25,
+section 23's state objects, section 34's "the creative cannot outrun the product").
+
+**Statuses.** BUILT RD: built this round, matches the document. MATCHES: was already there and matches.
+DRIFT: built, but the copy or the picture is not what this document now says. NOT BUILT. Sizes: S is copy
+or a tweak to one frame, under a day. M is a new frame or interaction with stage work, one to two days.
+L needs saved state, a backend, accounts or a ruling from him first.
+
+| Beat | Where it lives now | Status | Size | What it takes |
+|---|---|---|---|---|
+| 01 Arrival | landing `#arrive` | BUILT RD | | Was three lit points and the whole network running under "Something runs the way you live." Now one living point on a dark Field, section 6's onset in order (faint vibration, more amplitude, soft pulse, the nearby field answers), and his line "You feel something before you can explain it." |
+| 02 Name the experience | landing `#name` | BUILT RD | | Six words as buttons. Naming gives the point a ring and steadies its vibration. Word is never stored. |
+| 03 Something happens | landing `#happens` | BUILT RD | | Second point lands, a sine wave runs to the first, the first answers; each line lands with its event. |
+| 04 Awareness follows the signal | landing `#notice` | BUILT RD | | Light goes to the feeling, then the wave starts to move and the light passes to it. |
+| 05 The reaction repeats | landing `#repeats` | BUILT RD | | Four passes, each quicker, the line keeps more of itself and pulls tighter; from pass three the feeling lights before the wave arrives; then automatic on the half breath. |
+| 06 Conditioning | landing `#cascade` | DRIFT | S, then M | The cascade already shows the answer running "with nothing coming in". Copy is "A response can become a pattern" where the document says "The reaction becomes familiar. Familiar responses take less effort to repeat. Choosing differently can take more effort." S for the copy (the funnel gate asserts the cascade headline says "pattern", so the gate line moves with it, on purpose). M for the document's picture: a faint new path beside the old one, the old one pulling harder. |
+| 07 Resistance | nowhere as a frame | NOT BUILT | M | The tension rule exists (tighter, faster, heavier, shadow, built into the beat 05 wave this round). Needs its own frame: two nodes pulling, field compressing round them, "The reaction can start to feel stronger than the choice." |
+| 08 Stories commingle | landing `#recognize` | DRIFT (copy fixed RD) | M | Copy is now the document's ("One story can connect to another ... Separate reactions can become one repeating pattern"). Still drifts: the six lines are not sine waves and do not intersect, and the frame sits before the mirror instead of after beats 06 and 07. Reordering moves a gate assertion (`tests/funnel.js` holds the cascade between the mirror and the network, from the older storyboard). |
+| 09 The network | landing `#connect` | DRIFT | S | Picture matches (quiet nodes and loud ones, tension lines, the Field's pulses). Second line should be "Connected patterns can shape how you respond across different parts of your life." Threads are curves, not sine waves: M to put the wave on all of them and re-measure frame cost. |
+| 10 Recognition, by domain | nowhere | NOT BUILT | M | Eight domain buttons (work, relationships, family, money, health, self, purpose, something else), network reorganises round the pick. Visual only on the landing; anything that weights the reading by domain touches "domain weighting", which is his open call. |
+| 11 Story | quiz `viewStory` | DRIFT | S, L | Built and working. Copy drifts: the document says "Tell me what happened. Use your own words. Start anywhere." with "Show me" and "Speak instead". S for copy. Voice entry and "words enter the Field as signals" need a Field on the quiz page: L. |
+| 12 Atuned listens | nowhere | NOT BUILT | M | A short beat between pressing the button and the cards: the person's own words become points that gather. Must be the real parse, not a fake delay (section 34). |
+| 13 Mirror | landing `#mirror` (example), quiz story cards (real) | DRIFT | S | Both exist and both let a person refuse. Copy drifts: the document's labels are "You said / Atuned noticed / Possible pattern", the question "Does this feel accurate?", the answers "That's it / Not quite / Correct it". The landing chain already stays provisional until confirmed, which is section 21. |
+| 14 Correction | landing `#mirror`, quiz Not me | DRIFT | S, L | Works on both. Copy drifts ("Got it. I'll work from your correction."). The deeper gap is section 34: in the app a Not me still does not reach the graph (F16 above), and on the quiz it cannot reach the record (schema). Saying "your correction becomes evidence" waits on F16. |
+| 15 Body address | quiz signal, landing `#body` | MATCHES (landing copy fixed RD) | M | The quiz signal asks exactly this, with nearly the document's list of places. Landing heading is now "Where do you feel the reaction?" and its key says it is a model and a map. The document's picture, the network moving toward the body, is a crossfade today: M. |
+| 16 Pattern structure | about.html, quiz layer 3 | DRIFT | S | "A kink becomes a cluster. A cluster becomes a network." on about. The document's plainer lines ("One reaction can connect to another. Related reactions form a pattern. Connected patterns form a network.") are not on the landing. |
+| 17 The pattern is not the person | landing `#honest` in part | NOT BUILT | S, M | "A pattern is something you learned. A pattern is not who you are. You can work with what you learned." is nowhere. S as copy, M with the network stepping back from the centre. |
+| 18 Release | landing `#release`, app | DRIFT | S | The knot loosening is built and matches. The document's guidance lines ("You don't have to force a sensation ... No sensation is also information.") are in the FAQ, not on the frame. |
+| 19 Tonal release | app only | NOT BUILT on the funnel | L | Claims sensitive by the document's own rule: never presented as a validated frequency mechanism. Needs his say on the public wording before anything is drawn. |
+| 20 Reframe | landing `#release`, FAQ | DRIFT | S, L | "Reframe gives the story a new direction" is the document's line; the landing says "a new sentence to practise". S. Reframe sources (model, person, both) do not exist: the app's reframe lines come from the address. L. |
+| 21 Verify | landing `#release` (static), app `releaseVerify` | MATCHES | S | The five answers are the document's, and "Nothing changed" is accepted. On the landing they are a printed list; S to make them pressable. |
+| 22 Signal retest | nowhere | NOT BUILT | M | The quiz already captures the signal before the questions. Ask it again after the story ("Think about the same situation again"), reusing the same three screens, and say both back. |
+| 23 Before and after | nowhere | NOT BUILT | M, L | Follows 22. Real before and after evidence needs the signal saved, which the quiz deliberately never does today. |
+| 24 Ritual detected | app only | NOT BUILT on the funnel | L | Needs the ritual object and somewhere to keep it. |
+| 25 Account handoff | quiz door: save, copy, open the app with my record | DRIFT, conflicts | L | The document says no export, no import, no file: straight into an account. There are no live accounts yet (Google OAuth and the record store are open items). Until they exist the door has to keep the file and the link, or a person loses what they found. |
+| 26 Tutorial | landing `#loop`, app tutorial | DRIFT | M | The four close on a circle, which is his ruling and the document's ending. The debrief lines ("You just gave Atuned a real story ... Now Atuned remembers") are not built, and "remembers" is only true once 24 and 25 are. |
+
+**Count, read off the table above:** 5 built this round, 2 already matching, 11 built with drift, 8 not built (two of those, 19 and 24, exist in the app but not on the funnel).
+
+**The rest of the document.** Section 15, the FAQ: all six questions were already on `faq.html` (round QY);
+this round the second heading took the document's wording and the therapy answer says it does not replace
+clinical care. The document's own answer to the second question ("uses your reported sensation and location")
+is not used, because the reading is built from words, not from the reported place. Sections 5, 18, 19:
+the new beats reuse the landing's existing Field machinery, no second animation system. Section 26: every new
+beat has a reduced motion end state and prints in full with no script. Section 27: the new layer is one
+polyline and two dots, paused with the page when hidden, no blur or filter.
+
+**Later, named and not attempted this round.** Section 23's state objects (Signal, Story, Hypothesis, User
+response, Release, Reframe, Verification, Ritual) with real persistence. That is backend work, it touches
+the record schema (his contract with SOURCE), and it is the precondition for beats 14, 22 to 26 being true
+rather than drawn. It belongs after accounts and the record store, not before.
+
+**Production order, after this round.** 1, the S copy passes on 06, 09, 11, 13, 14, 16, 18, 20 in one
+sweep (one gate line moves with 06). 2, beats 07 and 17 as frames, and 08 moved after 07 (the gate's order
+assertion moves with it). 3, beat 10 and the sine wave on every network thread, frame cost measured. 4,
+beats 22 and 23 on the quiz. 5, beat 12. Then the L items as accounts land.
+
+**Claims, read against section 31.** Fixed this round, house copy: about.html "lands it at a named plexus
+or a named nerve" and the quiz's "seated at a named plexus or nerve" now say "in the Atüned model"; about's
+"a product that read somebody's nervous system" no longer says Atuned reads a nervous system; the landing
+body key says it is a map and nothing is measured. Not touched, because they are his words: the held quiz
+line (WAITING-ON-YOU item 12) and the sentence after it, "That is the mechanism"; about.html's "The nervous
+system has kinks all over it, blocking the natural energy flow of the body" and "brings inner peace ...
+naturally releases stress from the body" (audit rows L5 and L6). His new document's own fix for these is to
+open them with "In the Atuned model". That is his call to make.
+
 ## 0. CURRENT TOP PRIORITY, refreshed round QG, 2 October night. Supersedes the ordering below until closed
 
 Round QG, his words: "Review the last two or three TDDs find out what needs to be blocked and put into
