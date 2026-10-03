@@ -184,7 +184,7 @@ after F16 and the rest of section 0 above, per his own order.
 
 **The funnel-completion punch list, in order, corrected for the dropped item above:**
 1. ~~Small copy fixes~~ **DONE, round QY** (six items, listed above).
-2. Merge `storyboard-faq-nav` onto the rebuilt landing page. Real conflicts (`git merge-tree` confirmed), not a fast-forward; needs a real merge pass across `.claude/skills/atuned-voice/brief.py`, `atuned_src/MANIFEST` and others.
+2. ~~Merge `storyboard-faq-nav` onto the rebuilt landing page.~~ **DONE, round QY.** Merge commit `8a95bee`, pushed. The FAQ page, the nav audit (Tiers off the header, onto every footer) and the Value Felt capture feature all landed. Independently re-verified on a fresh worktree checked out from the pushed commit: build, host-free check, `tests/engine.js` (4459/0), `tests/valuefelt.js` (7/0), the voice checker, and `tools/equiv.py` (exactly 25 new declarations, nothing removed or changed) all matched the merging agent's claims exactly. One open visible change for him to confirm: the landing page header no longer shows Tiers, matching the storyboard TDD's own rule and every other funnel page; a one-line revert at `funnel/index.html:357` if he wants it back.
 3. The URL-fragment record handoff (`#r=...`), replacing the current save-file/load-file dance. The audit's own highest-leverage single item: ~2.1KB, small enough for a browser fragment that never reaches a server.
 4. A pre-quiz notice/signal beat.
 5. Yes/Not-me on funnel story cards (ties into F16 above, the mirror-answers-to-trace-graph closure).
