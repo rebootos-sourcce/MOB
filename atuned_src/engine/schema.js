@@ -1743,6 +1743,12 @@ function pImport(txt){
  catch(e){ back(); IMPORT_ERR=['could not load: '+((e&&e.message)||'error')]; return null; }
  PROFILES.push(v.profile); CURP=v.profile;
  if(!pPersist()){ back(); IMPORT_ERR=['could not save: '+(SAVE_ERR||'error')]; return null; }
+ /* so a reload opens what was just imported rather than falling back to
+    PROFILES[0], the gap the record link's own build surfaced: a load that
+    landed and then vanished on the next visit. Best effort, same as every
+    other devSet convenience in this file; a failed write here costs a
+    fallback to PROFILES[0], never data. */
+ try{ devSet('open',v.profile.id); }catch(e){}
  return v.profile;}
 function importError(){ return IMPORT_ERR; }
 /* A HOST THAT STOPPED A RECORD BEFORE IT REACHED THE BOUNDARY SAYS WHY HERE.

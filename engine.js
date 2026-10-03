@@ -9929,6 +9929,12 @@ function pImport(txt){
  catch(e){ back(); IMPORT_ERR=['could not load: '+((e&&e.message)||'error')]; return null; }
  PROFILES.push(v.profile); CURP=v.profile;
  if(!pPersist()){ back(); IMPORT_ERR=['could not save: '+(SAVE_ERR||'error')]; return null; }
+ /* so a reload opens what was just imported rather than falling back to
+    PROFILES[0], the gap the record link's own build surfaced: a load that
+    landed and then vanished on the next visit. Best effort, same as every
+    other devSet convenience in this file; a failed write here costs a
+    fallback to PROFILES[0], never data. */
+ try{ devSet('open',v.profile.id); }catch(e){}
  return v.profile;}
 function importError(){ return IMPORT_ERR; }
 /* A HOST THAT STOPPED A RECORD BEFORE IT REACHED THE BOUNDARY SAYS WHY HERE.
@@ -17166,7 +17172,12 @@ function profCreate(name){
  if(!pPersist()){ back(); PROF_ERR=['could not save: '+(SAVE_ERR||'error')]; return null; }
  return p;}
 /* THE RETRIEVE. Validated on a copy first, loaded second, and CURP moves last.
-   Nothing is written: opening a profile is reading it. */
+   The record itself is never rewritten here: opening a profile is reading it.
+   The one write is a device-side pointer to which one is open (devSet, the
+   same convenience store practitioner mode and sound already use), so the
+   boot step can find it again rather than falling back to PROFILES[0] on
+   every reload. Best effort: a failed write costs that fallback, never a
+   record. */
 function profOpen(id){
  PROF_ERR=null;
  var p=profFind(id);
@@ -17180,6 +17191,7 @@ function profOpen(id){
  catch(e){ CURP=keepC; try{ if(keepC)loadProfile(keepC); }catch(e2){}
   PROF_ERR=['could not load: '+((e&&e.message)||'error')]; return null; }
  CURP=p;
+ try{ devSet('open',p.id); }catch(e){}
  return p;}
 /* THE DELETE, of any profile on the list and not only the open one. Deleting
    the open one opens the first left, and deleting the last one leaves a blank

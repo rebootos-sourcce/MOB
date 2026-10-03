@@ -1743,7 +1743,17 @@ step('the stored record',function(){
    +' could not be read by this version of the app'
    +(blank?', so this is a new blank profile. ':' and '+(one?'is':'are')+' not shown. ')
    +(one?'It is':'They are')+' kept in this browser, untouched.','fail');}
- CURP=PROFILES[0];
+ /* WHICH ONE WAS OPEN LAST, read back through the same device pointer
+    profOpen and pImport now write (round QZ3, the fix for a record loaded
+    from the quiz link reopening as "You" on the very next reload, since
+    nothing before this read anything but index 0). Falls back to
+    PROFILES[0] exactly as before when there is no pointer, the pointed-to
+    profile is gone, or the store cannot be read. */
+ var openId=null; try{ openId=devGet('open'); }catch(e){}
+ var opened=null;
+ if(openId)for(var oi=0;oi<PROFILES.length;oi++)
+  if(PROFILES[oi].id===openId){ opened=PROFILES[oi]; break; }
+ CURP=opened||PROFILES[0];
  /* loadP(0) cached a blank profile under the persona name a moment ago, and
     replacing PROFILES left that cache pointing at an object no longer in the
     list. Picking a reference case and coming back sent CURP to the orphan,
