@@ -65,18 +65,13 @@
    is read once at load from the window, and a person who sets it in a console
    is in the position of one who edits their own record, said above. */
 var SIGHT_PLAN=(typeof window!=='undefined'&&window.SIGHT_PLAN)||null;
-/* THE SIGHT SWITCH COUNTS ONLY WHILE ITS PANEL IS OPEN TO THIS BROWSER, round
-   RB. The switch is stored, so it outlives the reason it was allowed. Round RB
-   gave the panel to the owner's signed in account (devtoolsOn, ui/login.js),
-   and an owner who turns sight on and then signs out left a stored "on" with
-   no control left on screen to turn it off: the next person at that browser
-   read tier four. The same stored "on" is also still held by every browser
-   that pressed the switch before round RA hid it from strangers. Reading it
-   through devtoolsOn closes both, and changes nothing for anybody the panel is
-   open to. */
+/* THE SIGHT SWITCH IS GONE, ROUND RI. devSight() always reads false now
+   (ui/login.js), so the free tier four this read for the owner's own account
+   or a console flag can never fire again, whatever any browser's storage
+   already holds. */
 function lockPlan(){
  if(SIGHT_PLAN)return SIGHT_PLAN;
- if(typeof devSight==='function'&&devSight()&&typeof devtoolsOn==='function'&&devtoolsOn())
+ if(typeof devSight==='function'&&devSight())
   return {tier:'four',status:'active'};
  return (typeof CURP!=='undefined'&&CURP&&CURP.plan)||null;}
 /* Whether this person may see a thing right now. Read at every call and never
