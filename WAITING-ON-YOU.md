@@ -31,6 +31,8 @@ You asked for this directly: "bring everything that you need for me to do front 
 | Summary page UX pass | `claude/round-rf-summary-flow` | A real bug found and fixed (the protocol card showed nothing for every profile); the page now leads with what to do, not a wall of text. |
 | The Signal Test, from your newest document | `claude/funnel-signal-test` | The YES/NO body-sensation exercise, built as a real interaction on the funnel, between recognition and the mirror. |
 | A real bug found while auditing your newest document | `claude/tdd-funnel-audit-tomas` | Pressing Yes on the onboarding mirror has never actually registered as a confirmation anywhere downstream, since that mirror was built. Fixed. Also tightened four glossary lines that overstated what the instrument measures. |
+| Energetic summary, moved | `claude/move-energetic-summary-left` | The right rail's top panel is now the left rail's top panel, closed, exactly as you asked tonight. |
+| Reframe, Verification, and the Intake invitation | `claude/funnel-tdd-build` | The next two pieces of your newest document, plus the onboarding tour now inviting a stop at Intake. |
 
 **Seven real word-level and architecture problems found tonight, each needing your call, not a guess:**
 
