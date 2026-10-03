@@ -208,6 +208,16 @@ function acctLoopRead(st){
    Nothing here is a rate. The figures over the cubes are counts of days and
    minutes, the ruling for every surface that shows a record. */
 var ACCT_COLS=7;
+/* ROUND QX, A CALENDAR AND NOT A CHART. His words: "the whole thing should
+   look effectively like a calendar." Round QS laid the thirty a week to a row
+   counted back from today, so a row began on whatever weekday that was and the
+   grid had no weekday a person could read off it: a progress chart in a
+   calendar's clothes. Now the columns are the days of the week, Monday first
+   as RU2 ruled, with their letters over them; each cube carries its date; the
+   first day of a month carries the month; and the rest of this week is drawn
+   ahead of today, so a ritual set for Tuesday, Thursday and Saturday shows on
+   the days it is still to come. The thirty are still the read: the figures
+   count those thirty and nothing ahead, and a day ahead is never a miss. */
 function acctCubeRead(st){
  var today=st.today, t0=today-ACCT_LOOP+1, out=[];
  var md=(typeof markDays==='function')?markDays(CURP,Date.now()):{}, pin={};
@@ -219,25 +229,35 @@ function acctCubeRead(st){
    if(s.st==='done')X.done.push(s); else if(s.st==='miss')X.miss.push(s); else if(s.st==='plan')X.plan.push(s);});
   X.st=X.done.length?'done':X.plan.length?'plan':X.miss.length?'miss':'none';
   out.push(X);}
- return {days:out, md:md};}
-function acctCubeHtml(X,i,n,today,empty){
- var j=n-1-i, row=Math.floor((n-1)/ACCT_COLS)-Math.floor(j/ACCT_COLS)+1, col=ACCT_COLS-(j%ACCT_COLS);
+ /* the rest of this week, ahead: what is set for it, and nothing else */
+ var ahead=[];
+ for(var e=today+1;e<=today+6-ritWd(today);e++){
+  var Y={d:e, done:[], miss:[], plan:[], marks:[], st:'ahead'}, seen2={};
+  ritDaySegs(e,st.plans,today).forEach(function(s){if(s.st!=='ahead'||seen2[s.nm])return; seen2[s.nm]=1; Y.plan.push(s);});
+  ahead.push(Y);}
+ return {days:out, ahead:ahead, pad:ritWd(t0), md:md};}
+function acctCubeHtml(X,k,today,empty){
+ var row=Math.floor(k/ACCT_COLS)+2, col=k%ACCT_COLS+1;
  var nm=function(a){return a.map(function(s){return s.nm;}).join(', ');};
  var bg='';
  if(X.done.length){var w=100/X.done.length;
-  bg=';background:linear-gradient(90deg,'+X.done.map(function(s,k){return s.col+' '+(k*w).toFixed(1)+'% '+((k+1)*w).toFixed(1)+'%';}).join(',')+')';}
+  bg=';background:linear-gradient(90deg,'+X.done.map(function(s,j){return s.col+' '+(j*w).toFixed(1)+'% '+((j+1)*w).toFixed(1)+'%';}).join(',')+')';}
  var c=(X.done[0]||X.plan[0]||X.miss[0]||{}).col||'var(--accent)';
- var said=[X.done.length?'Done: '+nm(X.done)+'.':'', X.plan.length?'Planned: '+nm(X.plan)+'.':'',
+ var ahead=X.st==='ahead';
+ var said=ahead?(X.plan.length?'Set: '+nm(X.plan)+'.':'Nothing set yet.')
+  :([X.done.length?'Done: '+nm(X.done)+'.':'', X.plan.length?'Planned: '+nm(X.plan)+'.':'',
   X.miss.length?'Missed: '+nm(X.miss)+'.':'', X.marks.length?'Earned '+X.marks.map(function(m){return m.nm;}).join(', ')+'.':'']
-  .filter(Boolean).join(' ')||'Nothing was set for this day.';
- var day=ritDayName(X.d,today);
- return '<span class="rv-cb rv-cb-'+X.st+(X.d===today?' rv-cb-now':'')+'" style="grid-row:'+row+';grid-column:'+col
+  .filter(Boolean).join(' ')||'Nothing was set for this day.');
+ var day=ritDayName(X.d,today), dt=ritDateOf(X.d);
+ var date=(dt.getDate()===1?dt.toLocaleDateString('en-GB',{month:'short'})+' ':'')+dt.getDate();
+ return '<span class="rv-cb rv-cb-'+X.st+(ahead&&X.plan.length?' rv-cb-set':'')+(X.d===today?' rv-cb-now':'')+'" style="grid-row:'+row+';grid-column:'+col
   +';--c:'+c+';--i:'+(row+col)+bg+'"'
   /* AN EMPTY RECORD IS A PICTURE AND NOT THIRTY PRESSES, the month's own rule
      (ritRecordHtml): on a first visit the sockets show what will fill and are
      not each a carrier to tab through */
   +(empty?' aria-hidden="true"':rvTip(day,said)+' aria-label="'+esc(day+'. '+said)+'"')+'>'
-  +X.marks.map(function(m,k){return '<i class="rv-cbm" style="--c:'+seatCol(m.b)+';--k:'+k+'" aria-hidden="true">'
+  +'<i class="rv-cbd" aria-hidden="true">'+date+'</i>'
+  +X.marks.map(function(m,j){return '<i class="rv-cbm" style="--c:'+seatCol(m.b)+';--k:'+j+'" aria-hidden="true">'
    +'<svg viewBox="0 0 24 24"><path d="'+m.ic+'"/></svg></i>';}).join('')+'</span>';}
 /* the earned marks, each a carrier: its name, its meaning, and its date when
    the record dates it. The shelf is ritMarksHtml's circle, the ladder's own
@@ -254,15 +274,21 @@ function acctShelfHtml(L,md,today){
    which is also the name of a ladder mark (thirty in a row) shown on the
    Ongoing goal card on the same screen: one word for two things. */
 function acctLoopHtml(st){
- var L=acctLoopRead(st), Q=acctCubeRead(st), n=Q.days.length;
+ var L=acctLoopRead(st), Q=acctCubeRead(st);
  var empty=!st.plans.length&&!((CURP&&CURP.rituals)||[]).length;
  var figs='<div class="rv-cbf"><span class="rv-cbk"><b>'+(L.kept||'–')+'</b> '+(L.kept===1?'day':'days')+' kept</span>'
   +'<span><b>'+(L.miss||'–')+'</b> missed</span><span><b>'+(L.mins||'–')+'</b> min</span></div>';
+ var all=Q.days.concat(Q.ahead), a=ritDateOf(all[0].d), z=ritDateOf(all[all.length-1].d);
+ var mo=a.getMonth()===z.getMonth()?a.toLocaleDateString('en-GB',{month:'long',year:'numeric'})
+  :a.toLocaleDateString('en-GB',{month:'long'})+' to '+z.toLocaleDateString('en-GB',{month:'long',year:'numeric'});
  return '<div class="rv-sec rv-loopw"><div class="rv-hd"><span class="rv-h">Thirty day loop</span></div>'
-  +'<p class="rv-mean">The last thirty days as cubes, a week to a row and today last. A solid cube is a day you kept a ritual, '
-  +'in the colour of its seat; an outline is planned; dashed is missed. A mark on a cube is one you earned that day.</p>'
-  +figs+'<div class="rv-cubes'+(empty?' rv-cubes0':'')+'" role="group" aria-label="The last thirty days">'
-  +Q.days.map(function(X,i){return acctCubeHtml(X,i,n,st.today,empty);}).join('')+'</div>'
+  +'<p class="rv-mean">The last thirty days as a calendar, Monday to Sunday, a week to a row, with the rest of this week ahead. '
+  +'A solid cube is a day you kept a ritual, in the colour of its seat; an outline is planned; dashed is missed. A mark on a cube is one you earned that day.</p>'
+  +figs+'<p class="rv-cbmo">'+esc(mo)+'</p>'
+  +'<div class="rv-cubes'+(empty?' rv-cubes0':'')+'" role="group" aria-label="The last thirty days, Monday first">'
+  +RIT_WD.map(function(w){return '<span class="rv-cbw" aria-hidden="true">'+w+'</span>';}).join('')
+  +Q.days.map(function(X,i){return acctCubeHtml(X,Q.pad+i,st.today,empty);}).join('')
+  +Q.ahead.map(function(X,i){return acctCubeHtml(X,Q.pad+Q.days.length+i,st.today,empty);}).join('')+'</div>'
   +'<div class="rv-key" aria-hidden="true"><span><i class="rv-k-cube"></i>Done</span><span><i class="rv-k-cplan"></i>Planned</span>'
   +'<span><i class="rv-k-cmiss"></i>Missed</span></div>'
   +acctShelfHtml(st.L,Q.md,st.today)+'</div>';}

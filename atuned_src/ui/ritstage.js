@@ -38,6 +38,13 @@
                 Practice analytics the chain from story to goal, kept days by
                                    seat and minutes by week, off CURP.rituals.
 
+   ROUND QX changed two of the six on his words, "my complete list of daily,
+   weekly, monthly goals, and my success win": the middle is Goals, the
+   Active list as its Today with a week and a month beside it, and the last
+   is Success over time, his ten spans from a year down to a day. Both are in
+   ui/ritcal.js, which also says what each suggestion is, what it is for, the
+   person's own record with it, and takes Save for later and Dismiss.
+
    WHAT "SUGGESTED BY THE SNIFFER" TURNED OUT TO MEAN, checked rather than
    invented. engine/sourceai.js suggests nothing: it asks questions about a
    story. Three reads already turn the sniffer's seat reading into a practice,
@@ -144,37 +151,71 @@ function ritSugHtml(st){
  /* a practice already picked in the builder above is that choice being made,
     so it is not offered a second time underneath. A release schedule is tied
     to a place and is a different choice, so it stays. */
- var all=ritSuggest(st), list=all.filter(function(x){return x.rel!=null||!RIT.sel[x.k];}); RIT.sug=list;
+ /* ROUND QX: one saved for later or dismissed is not offered again here. A
+    saved one is under Saved for later; a dismissed one comes back with Put
+    back, or with Bring back dismissed at the foot of the list. */
+ var MO=(typeof ritMore==='function')?ritMore():{save:[],gone:[]}, held={};
+ MO.save.forEach(function(s){held[ritSugKey(s)]=1;}); MO.gone.forEach(function(k){held[k]=1;});
+ var all0=ritSuggest(st), all=all0.filter(function(x){return !held[ritSugKey(x)];});
+ var list=all.filter(function(x){return x.rel!=null||!RIT.sel[x.k];}); RIT.sug=list;
+ var saved=(typeof ritSavedHtml==='function')?ritSavedHtml():'';
+ var undo=RIT.sgGone?'<div class="rv-gone" role="status"><span>Dismissed '+esc(RIT.sgGone.nm)+'.</span>'
+  +'<button type="button" class="btn" data-act="sug-back">Put back</button></div>':'';
+ var foot=(MO.gone.length&&!RIT.sgGone)?'<div class="rv-sgfoot"><button type="button" class="btn rv-sgq" data-act="sug-all">Bring back dismissed</button></div>':'';
  /* and when the builder holds every suggestion there is, the section says
     nothing: "Nothing to suggest yet" under a builder holding the suggestion
     would be untrue */
- if(!list.length&&all.length)return '';
+ if(!list.length&&all.length&&!undo)return saved;
  RIT.sgw=RIT.sgw||{};
- var body=!list.length?'<p class="rv-empty">Nothing to suggest yet.</p>'
+ var body=!list.length?'<p class="rv-empty">'+(all0.length?'Nothing else to suggest. Each one is started, saved for later or dismissed.':'Nothing to suggest yet.')+'</p>'
   :'<ul class="rv-sugl">'+list.map(function(x,i){
    var b=x.seats[0]||'', col=b?seatCol(b):'var(--accent)', M=ritSugMark(x,b), open=!!RIT.sgw[x.k+'|'+x.rel];
+   /* ROUND QX, "add a text description. And the success of what it leads
+      to." The description is the library's own line for the practice. What
+      it leads to is the quality release installs at the place the card is
+      for, a canon word and not a measurement. The success is the person's own
+      record with this practice, because no measure of how well a practice
+      works exists anywhere in the engine and one made up here would be the
+      status lie. ui/ritcal.js says the same at ritSugRec. */
+   var R=ritSugRec(x,(st.r.loaded||[]).length), T=ritSugToward(x), recSays=ritSugRecSays(x,R);
+   var chips='<div class="rv-sgo">'
+    +(T?'<span class="rv-sgc"'+rvTip('Toward '+T.opp.toLowerCase(),'What it is for: '+T.opp.toLowerCase()
+      +' is the quality release puts back where '+ritCfWord(T.nm)+' was held. You hold '+String(T.k).toLowerCase()+' at '+ritThe(T.b)+'.')+'>'
+      +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14 M14 7l5 5-5 5"/></svg>Toward '+esc(T.opp.toLowerCase())+'</span>':'')
+    +'<span class="rv-sgc'+(R.kept?'':' rv-sgc0')+'"'+rvTip('Your record with it',recSays.join(' '))+'>'
+     +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>'
+     +(R.kept?'Kept '+acctDays(R.kept):'Not tried yet')+'</span></div>';
    return '<li class="rv-sg1'+(open?' rv-open':'')+'" style="--c:'+col+'">'
     +'<div class="rv-sgh"><button type="button" class="rv-sgs" data-act="sgwhy" data-i="'+i+'" aria-expanded="'+open
      +'" aria-label="Why '+esc(x.p.nm)+' is suggested">'+M.badge+'</button>'
-    +'<span class="rv-sgt0"><span class="rv-sgn">'+esc(x.p.nm)+'</span><span class="rv-sgm">'+x.p.min+' min</span></span></div>'
-    /* ONE LINE STAYS VISIBLE, round QV. His words: "with suggested add a
-       little text". The full why-list is still one press away (round QS,
-       "more show less tell"); this is only the first reason, the one the
-       card was actually built from, kept short so the card is not bare. */
-    +'<p class="rv-sg0">'+esc(x.why[0]||'')+'</p>'
+    +'<span class="rv-sgt0"><span class="rv-sgn">'+esc(x.p.nm)+'</span><span class="rv-sgm">'+x.p.min+' min a day</span></span></div>'
+    /* ONE LINE STAYS VISIBLE, round QV, "with suggested add a little text".
+       Round QX made it what the practice is, his "text description", and the
+       reason it is offered moved into the press, where the full why-list was
+       already: the first reason was printed twice whenever a card was open. */
+    +'<p class="rv-sgd">'+esc(x.p.d||'')+'</p>'+chips
     /* THE REASONS ARE ONE PRESS AWAY, round QS. His words: "more show less
        tell if you want tell you press on something to get information." The
        mark is the press, and it opens the reasons and what the ring measures
        in place, under the name, rather than in a panel somewhere else. */
     +'<div class="rv-sgx"'+(open?'':' hidden')+'><ul class="rv-sgw">'+x.why.map(function(w){return '<li>'+esc(w)+'</li>';}).join('')
-     +'</ul><p class="rv-sgr">'+esc(M.says)+'</p></div>'
+     +'</ul><ul class="rv-sgrec">'+recSays.map(function(w){return '<li>'+esc(w)+'</li>';}).join('')+'</ul>'
+     +'<p class="rv-sgr">'+esc(M.says)+'</p></div>'
     +'<div class="rv-sgf"><span class="rv-sgt">'+x.seats.map(function(sb){
       return '<em class="rv-tg" style="--t:'+seatCol(sb)+'"><svg viewBox="0 0 24 24" aria-hidden="true">'+(SEATGLYPH[sb]||SEATGLYPH._)+'</svg>'
-       +esc(ritTagNm(sb))+'</em>';}).join('')+'</span>'
-    +'<button type="button" class="btn" data-act="sug" data-i="'+i+'" aria-label="Start '+esc(x.p.nm)+' for a week">Start for a week</button></div></li>';}).join('')+'</ul>';
+       +esc(ritTagNm(sb))+'</em>';}).join('')+'</span></div>'
+    /* ROUND QX, HIS THREE: "add them to my daily practice or bank them to my
+       vault or dismiss". Add is the press it always was (ritSugStart). Save
+       for later is his "bank to my vault": Bank and Vault already mean the
+       imprints held and what has been released, so a third meaning for either
+       word would be one word for two concepts. Dismiss takes it off the list,
+       with Put back in the same place. */
+    +'<div class="rv-sga"><button type="button" class="btn pri" data-act="sug" data-i="'+i+'" aria-label="Add '+esc(x.p.nm)+' to daily practice, each day for a week">Add to daily practice</button>'
+    +'<button type="button" class="btn" data-act="sug-save" data-i="'+i+'" aria-label="Save '+esc(x.p.nm)+' for later">Save for later</button>'
+    +'<button type="button" class="btn rv-sgq" data-act="sug-x" data-i="'+i+'" aria-label="Dismiss '+esc(x.p.nm)+'">Dismiss</button></div></li>';}).join('')+'</ul>';
  return '<div class="rv-sec rv-sug"><div class="rv-hd"><span class="rv-h">Suggested</span></div>'
   +'<p class="rv-mean">Read from your avatar\'s stories and from the places your field holds the most charge. '
-  +'Each is the practice that seat calls for at the charge you carry now. Its mark is the seat, or the pattern it releases.</p>'+body+'</div>';}
+  +'Each is the practice that seat calls for at the charge you carry now. Its mark is the seat, or the pattern it releases.</p>'+undo+body+foot+'</div>'+saved;}
 /* A SUGGESTION'S MARK, round QS. His words: "the cards that come from the
    ritual builder they should be colorized and related to the color of the
    chakra or fetter with their symbol." A card that runs as a release schedule
@@ -359,38 +400,12 @@ function ritKeep(id){
  return ritStartPlan({steps:p.steps, band:p.band, track:p.track, days:7, when:p.when, where:p.where,
   rel:p.rel, tc:p.tc, tags:p.tags, on:p.on, tm:p.tm},'Kept. '+ritName(p.steps)+' runs a week more.');}
 
-/* ---------------- practice analytics ---------------- */
-var RIT_WK_NM=['Last 7 days','2 weeks ago','3 weeks ago','4 weeks ago'];
-function ritAnaRead(st){
- var t0=st.today-29, seat={}, wk=[0,0,0,0], any=false;
- ((CURP&&CURP.rituals)||[]).forEach(function(x){
-  if(!x||!ritIsDone(x))return;
-  var d=pracDay(x.t); if(d===null||d<t0||d>st.today)return;
-  any=true;
-  var b=(x.band&&BANDS.indexOf(x.band)>=0)?x.band:'';
-  (seat[b]=seat[b]||{})[d]=1;
-  var w=Math.floor((st.today-d)/7); if(w<4)wk[w]+=(+x.min||0);});
- var bars=BANDS.slice().reverse().concat(['']).filter(function(b){return seat[b];})
-  .map(function(b){return {b:b, n:Object.keys(seat[b]).length};});
- return {any:any, bars:bars, wk:wk};}
-function ritAnaHtml(st,chain){
- var A=ritAnaRead(st), g='';
- if(!A.any)g='<p class="rv-empty">Nothing kept in the last thirty days.</p>';
- else{
-  var top=Math.max.apply(null,A.bars.map(function(x){return x.n;}).concat([1]));
-  var wtop=Math.max.apply(null,A.wk.concat([1]));
-  g='<div class="rv-anag"><div class="rv-ana1"><span class="rv-lb">Kept by seat, last thirty days</span><ul class="rv-sbars">'
-   +A.bars.map(function(x){
-    return '<li style="--c:'+(x.b?seatCol(x.b):'var(--dim)')+'"><span class="rv-sbn">'+esc(x.b?ritTagNm(x.b):'No seat')+'</span>'
-     +'<span class="rv-sbt"><i style="width:'+(100*x.n/top).toFixed(1)+'%"></i></span><span class="rv-sbv">'+acctDays(x.n)+'</span></li>';}).join('')
-   +'</ul></div><div class="rv-ana1"><span class="rv-lb">Minutes by week</span><div class="rv-wks">'
-   +A.wk.slice().reverse().map(function(m,j){var i=3-j;
-    return '<div class="rv-wk1"><span class="rv-wkv">'+(m?m+'<small> min</small>':'–')+'</span>'
-     +'<span class="rv-wkb"><i style="height:'+(100*m/wtop).toFixed(1)+'%"></i></span><span class="rv-wkn">'+RIT_WK_NM[i]+'</span></div>';}).join('')
-   +'</div></div></div>';}
- return '<section class="rv-sec rv-c rv-c-ana"><div class="rv-hd"><span class="rv-h">Practice analytics</span></div>'
-  +'<p class="rv-mean">From what you wrote, to what it left held, to the practice it calls for. Then the days you kept a ritual at each seat, '
-  +'and the minutes of every ritual marked done, counted back in sevens from today.</p>'+chain+g+'</section>';}
+/* ---------------- practice analytics ----------------
+   GONE AS A CARD, round QX. Its two thirty day charts, kept by seat and
+   minutes by week, are Success over time now (ui/ritcal.js), for whichever of
+   his ten spans is picked, and the chain from story to goal moved with them.
+   A second drawing of the same days beside it would be one page saying a
+   thing twice. */
 
 /* ---------------- the still layer behind the stage ---------------- */
 function ritLiveHtml(){
@@ -408,9 +423,12 @@ function ritLiveHtml(){
 
 /* the six, in his slots. Active today is the existing list and keeps its own
    heading, so the middle slot is the one a person already knows. */
+/* ROUND QX: the middle slot is Goals, the Active list as its Today with the
+   week and the month beside it, and the last slot is Success over time, his
+   ten spans. Both are ui/ritcal.js. */
 function ritStageHtml(st,P){
- return '<div class="rv-six">'+ritAvHtml(st)+ritGoalHtml(st)+P.active+ritOkHtml(st)+ritKeepHtml(st)
-  +ritAnaHtml(st,P.chain)+'</div>';}
+ return '<div class="rv-six">'+ritAvHtml(st)+ritGoalHtml(st)+ritGoalsHtml(st,P)+ritOkHtml(st)+ritKeepHtml(st)
+  +ritSuccessHtml(st,P.chain)+'</div>';}
 
 function ritStageCss(){
  if(document.getElementById('rit2-css'))return;

@@ -9,6 +9,7 @@ engine/data/compass.js
 engine/data/ages.js
 engine/data/practice.js
 engine/data/teachers_recipes.js
+engine/data/affirm.js
 engine/data/people.js
 engine/data/zones.js
 engine/data/catalog.js
@@ -71,6 +72,7 @@ ui/release.js
 ui/ritual.js
 ui/accountability.js
 ui/ritstage.js
+ui/ritcal.js
 ui/cone.js
 ui/drills.js
 ui/knowledge.js

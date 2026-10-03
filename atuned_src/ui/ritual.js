@@ -994,9 +994,16 @@ function ritTimer(id){
    right menu now and the list has the stage to itself, so the timer, the
    days and the rest are on the row all the time and the mode is gone. */
 function ritActiveHtml(act,today,building){
+ var due=act.filter(function(p){return ritDue(p,today);});
+ return '<div class="rv-sec rv-act"><div class="rv-hd"><span class="rv-h">Active today</span>'
+  +(due.length?'<span class="rv-min">'+due.length+(due.length===1?' ritual':' rituals')+'</span>':'')+'</div>'
+  +ritActiveBody(act,today,building)+'</div>';}
+/* THE LIST WITHOUT ITS CARD, round QX. The Goals card (ui/ritcal.js) carries
+   the Active list as its Today, so the rows, the empty line and its press are
+   one function and the two cards cannot draw them two ways. */
+function ritActiveBody(act,today,building){
  var due=act.filter(function(p){return ritDue(p,today);}), rest=act.filter(function(p){return !ritDue(p,today);});
- var out='<div class="rv-sec rv-act"><div class="rv-hd"><span class="rv-h">Active today</span>'
-  +(due.length?'<span class="rv-min">'+due.length+(due.length===1?' ritual':' rituals')+'</span>':'')+'</div>';
+ var out='';
  /* THE EMPTY LINE CARRIES THE PRESS AND NOT A DIRECTION, round QF. It used to
     say "in the right menu", which was true for one round and is wrong twice
     over now: the builder is in the left column, and on a phone the columns
@@ -1017,7 +1024,7 @@ function ritActiveHtml(act,today,building){
  out+='<p class="rv-mean">A ritual is active from the day you start it until it ends or you stop it.</p>';
  out+=ritRowsHtml(due,today,act);
  if(rest.length)out+='<div class="rv-h rv-h2 rv-other">Other days</div>'+ritRowsHtml(rest,today,act);
- return out+'</div>';}
+ return out;}
 /* one ritual's ring for one day, a dash per step, ticked when the day is done.
    The Active list and Accountability's due list draw the same ring, so the
    press means the same thing in both places and there is one drawing of it. */
@@ -1413,7 +1420,7 @@ function ritRender(){
   /* the next arrival draws in again, round QN */
   RIT.arrive=true;
   return;}
- ritCss(); ritStageCss();
+ ritCss(); ritStageCss(); if(typeof ritCalCss==='function')ritCalCss();
  if(!h||!RIT.open)return;
  h.style.display='flex';
  var st=ritRead(), c=st.c, r=st.r, today=st.today, act=st.act;
@@ -1431,7 +1438,7 @@ function ritRender(){
     as a page that cannot sit still */
  var arrive=!!RIT.arrive; RIT.arrive=false;
  var P={note:ritNote(), live:ritLiveHtml(),
-  chain:ritChainHtml(c,r,act), active:ritActiveHtml(act,today,building)};
+  chain:ritChainHtml(c,r,act), active:ritActiveHtml(act,today,building), building:building};
  P.stage=ritStageHtml(st,P);
  h.innerHTML='<div class="rel-card rit-card rv'+(arrive?' rv-arrive':'')+'">'+ritLayout(P)+'</div>';
  flowHeadAt('flownewhd','New','Start a ritual, or change one you already have.','plus');
@@ -1482,7 +1489,9 @@ function ritWire(h,c){
   var a=b.getAttribute('data-act'), id=b.getAttribute('data-id');
   /* the offer to put a deletion back lasts until the next thing that writes
      or builds. Looking around the record does not spend it. */
-  if(['putback','view','day','mo','exp','more','hmore','sgwhy'].indexOf(a)<0)RIT.gone=null;
+  if(['putback','view','day','mo','exp','more','hmore','sgwhy','gview','rng'].indexOf(a)<0)RIT.gone=null;
+  /* a dismissed suggestion's Put back lasts the same way, round QX */
+  if(['sug-back','sgwhy','gview','rng','exp','view','day','mo'].indexOf(a)<0)RIT.sgGone=null;
   switch(a){
    case 'go-story': if(typeof setTab==='function')setTab(TAB.STORY); return;
    /* EDIT ON A MISSED RITUAL IS NOW ONE PRESS AND NO NAVIGATION, round QF.
@@ -1541,6 +1550,20 @@ function ritWire(h,c){
    /* round QN, ui/ritstage.js and ui/accountability.js. Each goes through the
       one writer, so a failed save says so and a worked example is refused. */
    case 'sug': ritSugStart(+b.getAttribute('data-i')); return;
+   /* round QX, ui/ritcal.js: the two other answers to a suggestion, the
+      saved shelf, the goals' three views, the span of the record, and the
+      day's affirmations and challenges. Every write goes through
+      ritMoreWrite, which refuses a worked example and says so on a failure. */
+   case 'sug-save': ritSugSave(+b.getAttribute('data-i')); return;
+   case 'sug-x': ritSugDrop(+b.getAttribute('data-i')); return;
+   case 'sug-back': ritSugBack(); return;
+   case 'sug-all': ritSugAll(); return;
+   case 'sv-add': ritSavedStart(+b.getAttribute('data-i')); return;
+   case 'sv-rm': ritSavedDrop(+b.getAttribute('data-i')); return;
+   case 'gview': RIT.gview=b.getAttribute('data-v'); break;
+   case 'rng': RIT.span=b.getAttribute('data-v'); break;
+   case 'said': ritDayMark('said',id); return;
+   case 'did': ritDayMark('did',id); return;
    /* a suggestion's mark opens its reasons in place, round QS */
    case 'sgwhy': {var sx=(RIT.sug||[])[+b.getAttribute('data-i')];
     if(sx){var sk=sx.k+'|'+sx.rel; RIT.sgw=RIT.sgw||{}; RIT.sgw[sk]=!RIT.sgw[sk];} break;}

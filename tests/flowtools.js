@@ -121,14 +121,14 @@ async function flowGate(browser,FILE,ok,booted){
    return {av:b('.rv-c-av'),goal:b('.rv-c-goal'),act:b('.rv-act'),ok:b('.rv-c-ok'),keep:b('.rv-c-keep'),ana:b('.rv-c-ana'),
     w:wr&&{l:Math.round(wr.left),r:Math.round(wr.right)}, n:w?w.children.length:0};});
   const S6=six, names=S6.av&&[S6.av.h,S6.goal.h,S6.act.h,S6.ok.h,S6.keep.h,S6.ana.h];
-  ok(S6.n===6&&JSON.stringify(names)===JSON.stringify(['Ritual to avatar','Ongoing goal','Active today','Did it work','Keep or delete','Practice analytics']),
+  ok(S6.n===6&&JSON.stringify(names)===JSON.stringify(['Ritual to avatar','Ongoing goal','Goals','Did it work','Keep or delete','Success over time']),
    'FT17: '+tag+'the centre is six cards, named for his slots, '+JSON.stringify([S6.n,names]));
   const across6=S6.av&&S6.av.r<=S6.goal.l+1&&Math.abs(S6.av.t-S6.goal.t)<=2&&S6.act.t>=Math.max(S6.av.b,S6.goal.b)
    &&S6.act.l-S6.w.l<=2&&S6.w.r-S6.act.r<=2&&S6.ok.t>=S6.act.b&&S6.ok.r<=S6.keep.l+1&&Math.abs(S6.ok.t-S6.keep.t)<=2
    &&S6.ana.t>=Math.max(S6.ok.b,S6.keep.b)&&S6.ana.r-S6.ana.l>=S6.w.r-S6.w.l-2;
   const down6=S6.av&&[S6.av,S6.goal,S6.act,S6.ok,S6.keep,S6.ana].every((x,i,a)=>i===0||a[i-1].b<=x.t+1);
   ok(W>1180?across6:down6,
-   'FT17: '+tag+(W>1180?'Ritual to avatar top left, Ongoing goal top right, Active today the middle across both, then Did it work beside Keep or delete, analytics last'
+   'FT17: '+tag+(W>1180?'Ritual to avatar top left, Ongoing goal top right, Goals the middle across both, then Did it work beside Keep or delete, Success over time last'
     :'stacked in his order, top left, top right, middle, then the rest')+', '+JSON.stringify(S6));
 
   /* off Flow the columns are the product's own again */
@@ -156,7 +156,12 @@ async function flowGate(browser,FILE,ok,booted){
    const n=(root)=>[...root.querySelectorAll(ctl)].length;
    const w=document.getElementById('ritwhen');
    return {inLeft:n(lc), inRight:n(rc), inStage:n(rit), when:!!(w&&lc.contains(w)),
-    acc:rit.querySelectorAll('.rv-rec,.rv-today,.rv-marks,.rv-cal,.rv-key,.rv-hero,.rv-figs').length,
+    /* round QX: Success over time and the Goals views carry figures and a key
+       of their own, his "success win ... over a period of a year" in the centre.
+       They are reads over a span he picks, not the tracker's parts, so they are
+       left out here and FT32 holds them; anything else of the tracker's still
+       fails this */
+    acc:[...rit.querySelectorAll('.rv-rec,.rv-today,.rv-marks,.rv-cal,.rv-key,.rv-hero,.rv-figs')].filter(e=>!e.closest('.rv-c-ana,.rv-goals')).length,
     stage:[...rit.querySelectorAll('.rv-h')].map(x=>x.textContent)};});
   ok(nr.inLeft>0&&nr.inRight===0&&nr.inStage===0&&nr.when,
    'FT4: '+tag+'the builder, its tags, timer, days and when and where fields are in the left column and nowhere else, '+JSON.stringify(nr));
@@ -298,8 +303,8 @@ async function flowGate(browser,FILE,ok,booted){
     const h=(s.querySelector('.rv-h')||{}).textContent, m=s.querySelector('.rv-mean');
     out[h]=m?m.textContent.length:0;});
    return out;});
-  ok(['Done','Record','Due today','Missed','Active today'].every(h=>mean[h]>30),
-   'FT14: Done, Record, Due today, Missed and Active today each carry a sentence saying what they mean, '+JSON.stringify(mean));
+  ok(['Done','Record','Due today','Missed','Goals','Success over time'].every(h=>mean[h]>30),
+   'FT14: Done, Record, Due today, Missed, Goals and Success over time each carry a sentence saying what they mean, '+JSON.stringify(mean));
 
   /* FT9: a mark is one press, through the one writer, and it says so */
   const mk=await pg.evaluate(async()=>{
@@ -563,19 +568,29 @@ async function flowGate(browser,FILE,ok,booted){
   ok(dl.gone&&dl.here&&!dl.there&&dl.back,'FT20: Delete takes it off, Put back is offered in the same card and not one column over, and puts it back, '+JSON.stringify(dl));
   await pg.evaluate(()=>{ritWrite(plans=>{plans.forEach(p=>{if(p.id==='qa')p.days=0;}); return plans;},null);});
 
-  /* ---- FT21 ---- */
-  const lp=await pg.evaluate(()=>{const s=document.querySelector('#flowside .rv-loopw'); const cb=[...s.querySelectorAll('.rv-cb')];
+  /* ---- FT21, a calendar since round QX ---- */
+  const lp=await pg.evaluate(()=>{const s=document.querySelector('#flowside .rv-loopw'); const all=[...s.querySelectorAll('.rv-cb')];
+   const cb=all.filter(e=>!e.classList.contains('rv-cb-ahead')), ah=all.filter(e=>e.classList.contains('rv-cb-ahead'));
    const pos=e=>{const st=getComputedStyle(e); return [+st.gridRowStart,+st.gridColumnStart];};
+   const now=cb.filter(e=>e.classList.contains('rv-cb-now'))[0];
+   /* the weekday and the date, worked out here: Monday is column one */
+   const DAY=86400000, off=new Date().getTimezoneOffset()*60000, today=Math.floor((Date.now()-off)/DAY);
+   const wd=d=>(new Date(d*DAY).getUTCDay()+6)%7, date=d=>new Date(d*DAY+off+12*3600000).getDate();
+   const dates=cb.map(e=>+(e.querySelector('.rv-cbd')||{textContent:''}).textContent.replace(/^\D+/,''));
+   const want=[]; for(let d=today-29;d<=today;d++)want.push(date(d));
    return {n:cb.length, done:cb.filter(e=>e.classList.contains('rv-cb-done')).length,
-    last:cb.length?pos(cb[cb.length-1]):null, lastNow:cb.length?cb[cb.length-1].classList.contains('rv-cb-now'):false,
-    rows:Math.max(...cb.map(e=>pos(e)[0])), tips:cb.every(e=>e.hasAttribute('data-tip')),
+    nowAt:now?pos(now):null, wantCol:wd(today)+1, firstCol:cb.length?pos(cb[0])[1]:null, wantFirst:wd(today-29)+1,
+    ahead:ah.length, wantAhead:6-wd(today), heads:[...s.querySelectorAll('.rv-cbw')].map(x=>x.textContent).join(''),
+    datesOk:JSON.stringify(dates)===JSON.stringify(want), tips:cb.every(e=>e.hasAttribute('data-tip')),
+    mo:(s.querySelector('.rv-cbmo')||{}).textContent||'',
     kept:(s.querySelector('.rv-cbk b')||{}).textContent, figs:(s.querySelector('.rv-cbf')||{}).textContent||'',
     oldRing:s.querySelectorAll('path.rv-ld').length};});
   /* the expected count of done cubes is worked out from the seed's days: a day
      in the thirty with anything marked done */
   const doneDays=seed.keptDays;
-  ok(lp.n===30&&lp.done===doneDays&&lp.lastNow&&lp.last&&lp.last[0]===lp.rows&&lp.last[1]===7&&lp.tips&&lp.oldRing===0,
-   'FT21: thirty cubes, the '+doneDays+' kept days solid, today last at the lower right, every cube a press, and the ring gone, '+JSON.stringify(lp));
+  ok(lp.n===30&&lp.done===doneDays&&lp.nowAt&&lp.nowAt[1]===lp.wantCol&&lp.firstCol===lp.wantFirst&&lp.heads==='MTWTFSS'
+    &&lp.datesOk&&lp.ahead===lp.wantAhead&&/\d{4}$/.test(lp.mo)&&lp.tips&&lp.oldRing===0,
+   'FT21: thirty days as a calendar, Monday first under the weekday letters, each cube its own date, today in its weekday column, the rest of the week ahead, the '+doneDays+' kept days solid, '+JSON.stringify(lp));
   ok(+lp.kept===seed.keptDays&&lp.figs.indexOf(seed.mins+' min')>=0&&!/%|rate/.test(lp.figs),
    'FT21: the figures over the cubes are counts of days and minutes worked out from the seed, '+JSON.stringify([lp.kept,lp.figs,seed.keptDays,seed.mins]));
 
@@ -771,6 +786,185 @@ async function flowGate(browser,FILE,ok,booted){
   ok(none.sug&&none.lcol<none.rit&&none.lcol<none.rcol&&one.rit<one.rcol&&one.rcol<one.lcol,
    'FT24: @390 with nothing active New and Suggested come first, and with one running the order is the ritual, the tracker, then new, '+JSON.stringify({none,one}));
   }catch(e){ok(false,'FT24: the phone group threw, '+String(e.message).split('\n')[0]);}
+  await pg.close();
+ }
+
+ /* ---- FT29 to FT32: round QX, the page as a calendar ----
+    One seed of the person's own, with a ritual set for Tuesday, Thursday and
+    Saturday (his own example cadence), a record that starts forty days back,
+    and three avatar lines. Every expected figure is worked out here from the
+    seed's days and the tables, never asked of the page's own reads. */
+ for(const [W,H] of [[1600,1000],[390,844]]){
+  const phone=W<600, tag='@'+W+' ';
+  const pg=await browser.newPage({viewport:{width:W,height:H},hasTouch:phone,isMobile:phone});
+  const err=[]; pg.on('pageerror',e=>err.push(e.message));
+  await pg.goto(FILE,{waitUntil:'load'}); await booted(pg); await pg.waitForTimeout(400);
+  try{
+  const seed=await pg.evaluate(()=>{
+   loadP(0); CURP.rituals=[]; CURP.history=[]; ritPlanPut([]);
+   const DAY=86400000, off=new Date().getTimezoneOffset()*60000;
+   const today=Math.floor((Date.now()-off)/DAY);
+   const iso=d=>new Date(d*DAY+off+12*3600000).toISOString();
+   const wd=d=>(new Date(d*DAY).getUTCDay()+6)%7;
+   ['I am terrified of being abandoned and I panic and cannot breathe. My chest is tight.',
+    'I feel worthless and ashamed, I am never enough, I am a failure.'].forEach(t=>{ST_TEXT=t; ST_PARSED=parseStory(t); stCommit();});
+   const h0=snapshot(CURP); h0.t=iso(today-60); h0.loaded=19; CURP.history.unshift(h0);
+   CURP.avatar=avatarBlank(); CURP.avatar.built=true; CURP.avatar.at=iso(today-30);
+   CURP.avatar.pairs=[{be:'I speak up calmly in the room',notbe:'I feel worthless and ashamed, I am never enough'},
+    {be:'I feel safe in my own body',notbe:'I am terrified of being abandoned and I panic and cannot breathe'}];
+   const P=(id,k,band,from,days,on)=>({id,steps:[k],when:'',where:'',days,from:iso(from),stop:null,band,track:'',rel:null,tc:null,tags:[band],on:on||null,tm:null});
+   /* Tuesday, Thursday and Saturday are 1, 3 and 5, Monday first */
+   const plans=[P('za','noting','Throat',today-40,0),P('zt','box','Root',today-27,0,[1,3,5])];
+   const done={za:[],zt:[]};
+   for(let d=today-40;d<today;d++)if(d%5!==0)done.za.push(d);
+   for(let d=today-27;d<today;d++)if([1,3,5].indexOf(wd(d))>=0&&d%4!==0)done.zt.push(d);
+   const key={za:'noting',zt:'box'}, band={za:'Throat',zt:'Root'};
+   Object.keys(done).forEach(id=>done[id].forEach(d=>CURP.rituals.push({t:iso(d),steps:[key[id]],min:5,when:'',where:'',band:band[id],done:iso(d)})));
+   CURP.rituals.sort((a,b)=>Date.parse(a.t)-Date.parse(b.t));
+   const wrote=ritPlanPut(plans)&&pSave();
+   try{STORE.set('atuned-ritual-more','{}');}catch(e){}
+   RIT.sel={}; RIT.order=[]; RIT.add=false; RIT.edit=null; RIT.gview='today'; RIT.span='1m'; setTab(TAB.RITUAL); ritRender();
+   return {wrote, today, done, rs:today-40};});
+  await pg.waitForTimeout(500);
+  ok(seed.wrote,'FT29: '+tag+'the QX seed was written through the store and the record');
+
+  /* ---- FT29: a suggestion says what it is, what it is for, your record with it, and takes three answers ---- */
+  const sg=await pg.evaluate(()=>{const L=document.getElementById('flowleft');
+   return [...L.querySelectorAll('.rv-sg1')].map((c,i)=>{const x=RIT.sug[i], p=ritPr(x.k);
+    /* the record with this practice, counted here off the entries */
+    const days=new Set(CURP.rituals.filter(e=>e.steps.indexOf(x.k)>=0&&e.done!==false).map(e=>pracDay(e.t))).size;
+    const b=x.seats[0]||'', n=x.rel!=null?BY[x.rel]:(b?W.filter(h=>h.b===b&&h.cf&&h.sq>=4).sort((a,c)=>c.sq-a.sq)[0]:null);
+    const cf=n&&n.cf?CHILD.find(f=>f.nm===n.cf):null;
+    const chips=[...c.querySelectorAll('.rv-sgc')].map(e=>e.textContent);
+    const btn=sel=>{const e=c.querySelector(sel); if(!e)return null; const r=e.getBoundingClientRect(); return [Math.round(r.width),Math.round(r.height)];};
+    return {nm:p.nm, desc:(c.querySelector('.rv-sgd')||{}).textContent===p.d,
+     toward:cf?chips.indexOf('Toward '+cf.opp.toLowerCase())>=0:!chips.some(t=>/^Toward/.test(t)),
+     rec:chips.indexOf(days?'Kept '+days+(days===1?' day':' days'):'Not tried yet')>=0,
+     tips:[...c.querySelectorAll('.rv-sgc')].every(e=>(e.getAttribute('data-tip')||'').length>20),
+     add:btn('[data-act="sug"]'), save:btn('[data-act="sug-save"]'), drop:btn('[data-act="sug-x"]'),
+     noRate:!/%|\brate\b|\bscore\b/i.test(c.innerText)};});});
+  ok(sg.length>0&&sg.every(c=>c.desc&&c.toward&&c.rec&&c.tips&&c.noRate),
+   'FT29: '+tag+'each suggestion shows what the practice is, what it is for when a held place gives it one, and your own record with it, counted here, with no rate, '+JSON.stringify(sg));
+  ok(sg.every(c=>[c.add,c.save,c.drop].every(b=>b&&b[0]>=44&&b[1]>=44)),
+   'FT29: '+tag+'every suggestion carries Add to daily practice, Save for later and Dismiss, each at least 44 by 44, '+JSON.stringify(sg.map(c=>[c.add,c.save,c.drop])));
+  const ans=await pg.evaluate(async()=>{const L=document.getElementById('flowleft'), w=()=>new Promise(r=>setTimeout(r,250));
+   const names=()=>[...L.querySelectorAll('.rv-sug .rv-sg1 .rv-sgn')].map(x=>x.textContent);
+   const shelf=()=>[...L.querySelectorAll('.rv-saved .rv-sv1 .rv-sgn')].map(x=>x.textContent);
+   const said=()=>(document.getElementById('status')||{}).textContent||'';
+   const out={n0:names()};
+   /* Dismiss first, while there is a card to dismiss */
+   const nm1=names()[0]; L.querySelector('[data-act="sug-x"][data-i="0"]').click(); await w();
+   out.drop={gone:names().indexOf(nm1)<0, back:!!L.querySelector('[data-act="sug-back"]')};
+   L.querySelector('[data-act="sug-back"]').click(); await w(); out.drop.again=names().indexOf(nm1)>=0;
+   /* dismissed again, and the Put back offer spent the way any other press
+      spends it, so the foot of the list offers them all back */
+   L.querySelector('[data-act="sug-x"][data-i="0"]').click(); await w(); RIT.sgGone=null; ritRender();
+   out.drop.all=!!L.querySelector('[data-act="sug-all"]');
+   if(out.drop.all){L.querySelector('[data-act="sug-all"]').click(); await w(); out.drop.allBack=names().indexOf(nm1)>=0;}
+   const nm0=names()[0]; L.querySelector('[data-act="sug-save"][data-i="0"]').click(); await w();
+   out.save={said:said(), gone:names().indexOf(nm0)<0, shelf:shelf(), stored:JSON.parse(STORE.get('atuned-ritual-more'))[CURP.id].save.length};
+   ritRender(); out.save.kept=shelf().indexOf(nm0)>=0;
+   const r0=CURP.rituals.length; L.querySelector('[data-act="sv-add"][data-i="0"]').click(); await w();
+   out.add={said:said(), plan:ritPlans().some(p=>ritName(p.steps)===nm0&&ritActive(p,ritToday0())&&p.days===7), shelf:shelf(), r:CURP.rituals.length-r0};
+   return out;});
+  ok(/^Saved for later\./.test(ans.save.said)&&ans.save.gone&&ans.save.kept&&ans.save.stored===1,
+   'FT29: '+tag+'Save for later takes it off Suggested, puts it under Saved for later, keeps it across a repaint, and says so, '+JSON.stringify(ans.save));
+  ok(ans.drop&&ans.drop.gone&&ans.drop.back&&ans.drop.again&&ans.drop.all&&ans.drop.allBack,
+   'FT29: '+tag+'Dismiss takes it off with Put back in the same place, and Bring back dismissed returns every one, '+JSON.stringify(ans.drop));
+  ok(/^(Started|Set)\./.test(ans.add.said)&&ans.add.plan&&ans.add.shelf.length===0,
+   'FT29: '+tag+'Add from Saved for later starts it each day for a week and it leaves the shelf, '+JSON.stringify(ans.add));
+  const we=await pg.evaluate(()=>{loadP(PEOPLE.findIndex(x=>x.nm==='James')); setTab(TAB.RITUAL); ritRender();
+   const b=document.querySelector('#flowleft [data-act="sug-save"]'); if(b)b.click();
+   const r={said:(document.getElementById('status')||{}).textContent||'', btn:!!b};
+   loadP(0); setTab(TAB.RITUAL); ritRender(); return r;});
+  ok(we.btn&&/worked example, so nothing was saved/.test(we.said),'FT29: '+tag+'on a worked example the answer is refused by name, '+JSON.stringify(we));
+
+  /* ---- FT30: Goals, today, the week and the month ---- */
+  const gl=await pg.evaluate(()=>{RIT.gview='today'; ritRender(); const g=document.querySelector('#rit .rv-goals');
+   const af=[...g.querySelectorAll('.rv-aff .rv-af1')].map(x=>x.querySelector('.rv-afq').textContent);
+   const ch=[...g.querySelectorAll('.rv-chal .rv-af1')].map(x=>({nm:x.querySelector('.rv-chn').childNodes[0].textContent, act:x.querySelector('.rv-afq').textContent}));
+   /* the rows due today, worked out off the plans: active, and today one of its days */
+   const DAY=86400000, off=new Date().getTimezoneOffset()*60000, today=Math.floor((Date.now()-off)/DAY), wd=(new Date(today*DAY).getUTCDay()+6)%7;
+   const due=ritPlans().filter(p=>!p.stop&&(!p.on||p.on.indexOf(wd)>=0)).length;
+   return {views:[...g.querySelectorAll('[data-act="gview"]')].map(b=>b.textContent), rows:g.querySelectorAll('.rv-item').length, due,
+    af, ch, pairs:CURP.avatar.pairs.map(p=>p.be).reverse()};});
+  const wantAf=gl.pairs.map(b=>'"'+b+'"');
+  ok(JSON.stringify(gl.views)===JSON.stringify(['Today','This week','This month'])&&gl.rows===gl.due&&gl.due>0&&gl.af.length===3
+    &&JSON.stringify(gl.af.slice(0,2))===JSON.stringify(wantAf)&&gl.ch.length>=1,
+   'FT30: '+tag+'Goals is Today, This week and This month; Today holds the Active rows, three affirmations with your own avatar lines first, newest first, and the challenges, '+JSON.stringify(gl));
+  const sd=await pg.evaluate(async()=>{const r0=CURP.rituals.length, k0=ladderRead(CURP,Date.now()).streak.run;
+   const b=document.querySelector('#rit .rv-aff [data-act="said"]'); b.click(); await new Promise(r=>setTimeout(r,250));
+   const on=document.querySelector('#rit .rv-aff [data-act="said"]').getAttribute('aria-pressed');
+   const said=(document.getElementById('status')||{}).textContent||'';
+   document.querySelector('#rit .rv-aff [data-act="said"]').click(); await new Promise(r=>setTimeout(r,250));
+   return {on, said, off:document.querySelector('#rit .rv-aff [data-act="said"]').getAttribute('aria-pressed'),
+    rit:CURP.rituals.length-r0, streak:ladderRead(CURP,Date.now()).streak.run-k0};});
+  ok(sd.on==='true'&&/^Said\./.test(sd.said)&&sd.off==='false'&&sd.rit===0&&sd.streak===0,
+   'FT30: '+tag+'an affirmation is marked said for today and taken off with the same press, and it is not a kept ritual day: the record and the streak do not move, '+JSON.stringify(sd));
+  const wk=await pg.evaluate(()=>{RIT.gview='week'; ritRender(); const g=document.querySelector('#rit .rv-goals .rv-wg');
+   const DAY=86400000, off=new Date().getTimezoneOffset()*60000, today=Math.floor((Date.now()-off)/DAY);
+   const wd=d=>(new Date(d*DAY).getUTCDay()+6)%7, mon=today-wd(today);
+   const heads=[...g.querySelectorAll('.rv-wgh')].map(h=>h.textContent);
+   const want=[0,1,2,3,4,5,6].map(i=>['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][i]+new Date((mon+i)*DAY+off+12*3600000).getDate());
+   /* the Tuesday, Thursday and Saturday row: set on exactly those three */
+   const cells=[...g.querySelectorAll('.rv-wc')].filter(c=>/^Box Breathing,/.test(c.getAttribute('aria-label')));
+   const st=cells.map(c=>c.className.match(/rv-wc-(\w+)/)[1]);
+   RIT.gview='today'; ritRender();
+   return {heads, want, st, setOn:st.map((s,i)=>s==='off'?-1:i).filter(i=>i>=0)};});
+  ok(JSON.stringify(wk.heads)===JSON.stringify(wk.want)&&JSON.stringify(wk.setOn)===JSON.stringify([1,3,5]),
+   'FT30: '+tag+'This week is a calendar week, Monday first with each date, and a ritual set for Tuesday, Thursday and Saturday is drawn on those three days and no other, '+JSON.stringify(wk));
+
+  /* ---- FT31: the content is real, and says where it came from ---- */
+  const ct=await pg.evaluate(()=>{const miss=CHILD.filter(c=>!AFFIRM[c.nm]||!CHALLENGE[c.nm]).map(c=>c.nm);
+   const lines=[].concat(Object.values(AFFIRM),Object.values(CHALLENGE).map(c=>c.act+' '+c.when));
+   loadP(PEOPLE.findIndex(x=>x.nm==='James')); const r=compute();
+   const named=r.sabs.slice().sort((a,b)=>b.w-a.w).map(s=>s.nm.replace(/\s+overshot$/i,'').toLowerCase().replace(/-/g,' ')).filter(k=>SABDEF[k]);
+   const want=[...new Set(named)].slice(0,3).map(k=>SABDEF[k].i);
+   const got=ritChallenge({r}).map(c=>c.act);
+   loadP(0); setTab(TAB.RITUAL); ritRender();
+   /* an inferred saboteur, handed in by its name the way compute() names one:
+      the seat, then the agent noun for the fetter (INFER_NOUN) */
+   const noun=INFER_NOUN.Sad, inf=ritChallenge({r:{sabs:[{nm:'Root '+noun,w:5,parts:[W.find(n=>n.b==='Root')]}]}})
+    .map(c=>({nm:c.nm, act:c.act===CHALLENGE.Sad.act, who:c.who}));
+   return {miss, dash:lines.some(t=>/—|–/.test(t)), want, got, inf};});
+  ok(ct.miss.length===0&&!ct.dash,'FT31: every one of the nine axes has an affirmation and a challenge, and no line carries a dash, '+JSON.stringify(ct.miss));
+  ok(ct.want.length===3&&JSON.stringify(ct.got)===JSON.stringify(ct.want),
+   'FT31: a named saboteur\'s challenge is its own intervention from SABDEF, the heaviest three, '+JSON.stringify(ct));
+  ok(ct.inf.length===1&&ct.inf[0].act&&/does not name/.test(ct.inf[0].who)&&/sadness at the root/.test(ct.inf[0].who),'FT31: an inferred saboteur says it is one, and carries its fetter\'s challenge, '+JSON.stringify(ct.inf));
+
+  /* ---- FT32: success over time, his ten spans, and honest before the record starts ---- */
+  const sx=await pg.evaluate(async()=>{const DAY=86400000, off=new Date().getTimezoneOffset()*60000, today=Math.floor((Date.now()-off)/DAY);
+   const wd=d=>(new Date(d*DAY).getUTCDay()+6)%7, dk=t=>Math.floor((Date.parse(t)-off)/DAY);
+   const plans=ritPlans(), doneD=new Set(CURP.rituals.filter(x=>x.done!==false).map(x=>dk(x.t)));
+   const covers=(p,d)=>{const s=dk(p.from); if(d<s)return false; if(p.on&&p.on.indexOf(wd(d))<0)return false; if(p.days&&d>=s+p.days)return false; if(p.stop&&d>=dk(p.stop))return false; return true;};
+   const rs=Math.min(...CURP.rituals.map(x=>dk(x.t)),...plans.map(p=>dk(p.from)));
+   const back=(m,d)=>{if(d)return today-d+1; const t=new Date((today)*DAY+off+12*3600000); return dk(new Date(t.getFullYear(),t.getMonth()-m,t.getDate(),12).toISOString())+1;};
+   const spans=[['1y',12],['6m',6],['3m',3],['2m',2],['1m',1],['2w',0,14],['1w',0,7],['5d',0,5],['3d',0,3],['1d',0,1]];
+   const sec=()=>document.querySelector('#rit .rv-c-ana');
+   const out={chips:[...sec().querySelectorAll('[data-act="rng"]')].map(b=>b.textContent), rows:[]};
+   for(const [k,m,d] of spans){
+    sec().querySelector('[data-act="rng"][data-v="'+k+'"]').click(); await new Promise(r=>setTimeout(r,120));
+    const t0=back(m,d); let kept=0, missed=0, pre=0;
+    for(let x=t0;x<=today;x++){if(x<rs){pre++;continue;} if(doneD.has(x)){kept++;continue;}
+     if(x<today&&plans.some(p=>covers(p,x)))missed++;}
+    const figs=[...sec().querySelectorAll('.rv-sfigs .rv-fig')].map(f=>f.querySelector('b').textContent.trim().split(/\s/)[0]);
+    const n=v=>v?String(v):'–';
+    out.rows.push({k, kept:figs[0]===n(kept), missed:figs[1]===n(missed), pre:sec().querySelectorAll('.rv-sc-pre').length===pre,
+     note:pre?new RegExp(pre+' days? of this span before that are drawn blank').test(sec().innerText):!sec().querySelector('.rv-sparse'),
+     cells:sec().querySelectorAll('.rv-sc').length===today-t0+1, wide:!!sec().querySelector('.rv-syr')===(today-t0+1>62), want:[kept,missed,pre], figs});}
+   sec().querySelector('[data-act="rng"][data-v="1m"]').click();
+   loadP(PEOPLE.findIndex(x=>x.nm==='Marcus')); setTab(TAB.RITUAL); ritRender();
+   out.empty=/Nothing on your record yet/.test(sec().innerText)&&sec().querySelectorAll('.rv-sc-done,.rv-sc-miss').length===0;
+   loadP(0); setTab(TAB.RITUAL); ritRender();
+   return out;});
+  ok(JSON.stringify(sx.chips)===JSON.stringify(['1 year','6 months','3 months','2 months','1 month','2 weeks','1 week','5 days','3 days','1 day']),
+   'FT32: '+tag+'Success over time offers his ten spans in his order, '+JSON.stringify(sx.chips));
+  const badRow=sx.rows.filter(r=>!(r.kept&&r.missed&&r.pre&&r.note&&r.cells&&r.wide));
+  ok(badRow.length===0,
+   'FT32: '+tag+'every span counts the kept and missed days worked out here, a day a square, and a span reaching back before the record draws those days blank, says how many, and never counts them missed, '+JSON.stringify(badRow.length?badRow:sx.rows.map(r=>r.k+':'+r.want.join('/'))));
+  ok(sx.empty,'FT32: '+tag+'a person with no record is told so, and nothing is drawn kept or missed, '+JSON.stringify(sx.empty));
+  }catch(e){ok(false,'FT29: '+tag+'the round QX group threw, '+String(e.message).split('\n')[0]);}
+  ok(err.length===0,'FT29: '+tag+'no page errors across the round QX group, '+err.join(' | '));
   await pg.close();
  }
 
