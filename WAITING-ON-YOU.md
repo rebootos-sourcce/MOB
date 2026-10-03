@@ -6,6 +6,8 @@ One list, in the order I'd look at it if I were you. Each line says what I sent,
 
 You asked for this directly: "bring everything that you need for me to do front and center with context." Here it is. Nothing below is urgent in the way the security fix above is; these are finished, independently checked pieces of work sitting on their own branches, none merged, all waiting on your decision to bring them in.
 
+**Your own priority order, round RI, confirmed and acted on:** security fix (PR #2) first, Source AI chat mode (PR #3) second, both already built and waiting only on your merge click; the funnel/onboarding/tutorial work stays the standing top build priority, confirmed, already moving; the paywall fix third, also already built (`claude/paywall-fix-rb`), waiting on the same merge; a fourth copy sweep queued behind all of that. Two things from that same round are already done, not waiting on anything: the developer options panel is fully deactivated now, no exception, even for your own account; and the right rail's top panel ("Energetic summary," what you called core energetics) is being moved to the left rail as its own top, closed section, dispatched and in progress.
+
 **Eighteen branches from tonight, each independently verified (gates re-run, screenshots looked at directly, not taken on an agent's word) and logged in `TASKS.md` round by round.** Say the word and I will open a pull request for every one of these so you can read, comment and merge them from GitHub like PR #2, or tell me to merge a specific subset first.
 
 | What it is | Branch | What it changes |
