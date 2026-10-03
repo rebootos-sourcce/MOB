@@ -34,8 +34,12 @@
    moves: the keys are side and phase ("Llimit"), so no key already on a
    record changes meaning. */
 var CHAN=[['L','Left','limit'],['R','Right','limit'],['L','Left','truth'],['R','Right','truth']];
-/* the book's own words for the two sides, at 1042 */
-var REL_SIDE={L:'Left, inward',R:'Right, outward'};
+/* THE TWO SIDES ARE CHANNELS, round QQ. His words: "Swap left inward with left
+   channel. And then right on that right side, right channel." The book's own
+   words at 1042, "Left, inward" and "Right, outward", gave way to the word the
+   run already uses for a side everywhere else (CHAN, relBucket's "left
+   channel"), so one side has one name on the screen. */
+var REL_SIDE={L:'Left channel',R:'Right channel'};
 /* WHICH NERVOUS SYSTEM A SIDE IS, AND WHICH POLE. Asked 27 September, his
    words: "the release protocol is a list of the parasympathetic and
    sympathetic nerves, left and right channels, masculine and feminine." The
@@ -260,7 +264,7 @@ var RUN={open:false,queue:[],plan:[],sec:0,idx:0,phase:'idle',speed:2.2,timer:nu
          t0:0,tEnd:0,pauseAt:0,pausedMs:0,tick:null,
          tally:null,hits:null,settleAt:0,settled:false,
          heavy:{},look:false,rerun:false,pick:[],studioLost:false,
-         ask:false,said:null,skip:false,storyT:null,grp:'story',gfocus:0};
+         ask:false,said:null,skip:false,storyT:null,grp:'story',gfocus:0,books:{}};
 /* THE RUN IS A PLAN OF THOUGHT LINES, ruled. One pattern is one thought line
    and the line targets the address by way of the channel, so a run is a list
    of address, channel and line, capped at RUN_MAX. It is built when the run is
@@ -362,7 +366,7 @@ function relPick(nodeIds,from){
  relTicker(false);
  RUN.t0=0;RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;
  RUN.tally=null;RUN.hits=null;RUN.settleAt=0;RUN.settled=false;
- RUN.heavy={};RUN.look=false;
+ RUN.heavy={};RUN.look=false;RUN.books={};
  RUN.pick=RUN.queue.slice(); RUN.rerun=false; RUN.reach=null; RUN.planN=0;
  RUN.resShown=false; RUN.ask=false; RUN.said=null; RUN.skip=false; RUN.storyT=(from&&typeof from.story_t==='string')?from.story_t:null;
  RUN.pace=Math.max(0.5,Math.min(2,Math.round(22/(RUN.speed||2.2))/10));
@@ -693,13 +697,16 @@ function relProject(){
  var c0=Object.assign({},S.charge), r0=Object.assign({},S.replace);
  try{
   var r=compute(), w0=q.map(function(n){return n.sq*10;});
+  /* CQ counts answered laws only, so with none answered it is not read yet and
+     no release can lift it; the row says so rather than printing a nought */
+  P.cqUnread=!r.answered;
   var dq=[r.DQ], sq=[q.map(function(n){return n.sq;})];
   q.forEach(function(n,k){
    relWrite(q,n,w0[k]); r=compute();
    dq.push(r.DQ); sq.push(q.map(function(x){return x.sq;}));});
   P.dq=dq; P.sq=sq;}
  catch(e){P.dq=null;}
- finally{relPut(S.charge,c0); relPut(S.replace,r0); compute();}
+ finally{relPut(S.charge,c0); relPut(S.replace,r0); P.cq=relProjectCq(); compute();}
  if(!P.dq)return P;
  /* which queue address each plan line speaks for, and how many lines each has.
     The first place an address sits in the queue is the one the write uses. */
@@ -708,6 +715,37 @@ function relProject(){
  P.lines=q.map(function(){return 0;});
  P.of.forEach(function(k){if(k!=null)P.lines[k]++;});
  return P;}
+/* ============================================================
+   CQ, COUNTED UP WHILE THE RUN IS SPOKEN, round QQ. His words: "I want to
+   see my CQ improvement." The run showed DQ coming down and nothing of CQ,
+   because the comment above measured CQ's move at 0.09 to 0.22 a run and the
+   surfaces print it at one decimal. At two decimals, the row's own precision,
+   it is seen.
+
+   It is the commit's own arithmetic run ahead, the same way the DQ row is:
+   releaseWork, engine/compute.js, is what relCoolDown calls with the keys of
+   new ground meterRun reports, and new ground is a plan key the record has
+   not opened (meterRun's own rule, read the same way here). So each plan
+   entry's key is handed to releaseWork in plan order on the live record, CQ
+   read after each, and the record's work is put back before anything draws.
+   An entry reached is written whole at the end (relReach), so cq[i+1] is
+   exactly what the record reads once entry i has a line said, and the step
+   inside an entry is drawn between the two. A rerun opens nothing new and
+   so lifts nothing, and the row says so by not moving. */
+function relProjectCq(){
+ if(typeof releaseWork!=='function'||typeof cqSum!=='function'||typeof CURP==='undefined'||!CURP)return null;
+ if(typeof LAW_REC!=='undefined'&&LAW_REC!==CURP)return null;
+ var saved=JSON.stringify(CURP.work||{}), had=('work' in CURP), out=null;
+ try{
+  var open={}; ((CURP.meter&&CURP.meter.unique)||[]).forEach(function(k){open[k]=1;});
+  out=[cqSum()];
+  (RUN.plan||[]).forEach(function(k){
+   var fresh=(!RUN.rerun&&!open[k])?[k]:[]; open[k]=1;
+   if(fresh.length)releaseWork(CURP,fresh);
+   out.push(cqSum());});}
+ catch(e){out=null;}
+ finally{if(had)CURP.work=JSON.parse(saved); else delete CURP.work;}
+ return out;}
 /* where the count stands on the line being said. A line counts once it has
    been said, so the first pass of a run reads the field as it stood. An
    address the plan was cut before reaching has no lines, so its share lands
@@ -725,7 +763,13 @@ function relLive(){
  var f=said.map(function(x,k){return P.lines[k]?Math.min(1,x/(P.lines[k]*RUN.dose)):0;});
  var dq=P.dq[0];
  f.forEach(function(x,k){dq+=x*(P.dq[k+1]-P.dq[k]);});
- return {dq:dq,dq0:P.dq[0],
+ /* CQ at the entry the walker is on, between the two it moves from and to */
+ var cq=null, cq0=null;
+ if(P.cq&&P.cq.length){cq0=P.cq[0];
+  if(RUN.phase!=='run')cq=cq0;
+  else {var j=Math.min(RUN.idx,P.cq.length-2);
+   cq=j<0?cq0:P.cq[j]+Math.min(1,RUN.pass/Math.max(1,RUN.dose))*(P.cq[j+1]-P.cq[j]);}}
+ return {dq:dq,dq0:P.dq[0],cq:P.cqUnread?null:cq,cq0:cq0,cqUnread:!!P.cqUnread,
   sqAt:function(n){var k=n?P.at[n.i]:null; if(k==null)return null;
    return P.sq[k][k]+f[k]*(P.sq[k+1][k]-P.sq[k][k]);}};}
 /* THE ROW. A label is one word (V17), and DQ is the word the Field prints beside
@@ -836,7 +880,17 @@ function relTally(c,live){
   +fig('This session',c.of+c.putOf,'lines')
   +(live&&live.dq!=null?'<div class="rel-fig"><span>DQ</span><b>'+live.dq.toFixed(2)+'</b></div>'
     +'<div class="rel-fig"><span>Down</span><b>'+Math.max(0,live.dq0-live.dq).toFixed(2)+'</b></div>':'')
+  /* CQ and how far it has come up, round QQ, see CQ, COUNTED UP above */
+  +(live&&live.cq!=null?'<div class="rel-fig" id="relcq"><span>CQ</span><b>'+live.cq.toFixed(2)+'</b></div>'
+    +'<div class="rel-fig" id="relcqup"><span>Up</span><b>'+Math.max(0,live.cq-live.cq0).toFixed(2)+'</b></div>'
+    :live&&live.cqUnread?'<div class="rel-fig" id="relcq"><span>CQ</span><b>\u2013</b></div>':'')
   +'</div>'
+  /* every figure on the row says what it is in the same place, round PO */
+  +(live&&(live.dq!=null||live.cq!=null||live.cqUnread)?'<div class="rel-ct rel-figs-s" id="relfigmean">'
+    +(live.cq!=null?'CQ is your coherence number, how closely you keep the 21 laws. Up is how far this release has lifted it. '
+     :live.cqUnread?'CQ is your coherence number, how closely you keep the 21 laws. It is not read yet, because no law is answered. ':'')
+    +(live.dq!=null?'DQ is your shadow reading, the charge your body still holds. Down is how far this release has moved it.':'')
+    +'</div>':'')
   +((tw||at)?'<div class="rel-ct rel-figs-s">'+esc([tw,at].filter(Boolean).join(' '))+'</div>':'');}
 /* THE CLOCK IN THE CORNER, round QM. Elapsed and Left sat in their own row
    under the counts and fell below the first screen once the list took the
@@ -1124,6 +1178,8 @@ function relCoolDown(){
  /* and the shadow, so the row the run counted down on lands on a number the
     engine computed, read before the write and after it */
  RUN.dq0=_pre.DQ;
+ /* and CQ, round QQ, so the results can say how far the laws were lifted */
+ RUN.cq0=_pre.CQ;
  /* the release empties addresses and installs their opposites. it is the
     largest single write this product makes and it had no way back. */
  undoPush((RUN.rerun?'the rerun at ':'the release at ')+(RUN.queue.length?RUN.queue.length+' addresses':'no addresses'));
@@ -1446,13 +1502,27 @@ function relHeavyKeys(){
    keyboard, Left and Right on a line are the two swipes.
    ============================================================ */
 var REL_PILE={bank:'Bank',shadow:'Shadow'};
-/* a mark's pile: 1 is a tap, which is the bank */
+/* a mark's pile: 1 is a tap, which is the bank, and kept is a bank pick that
+   was submitted (THE BANK PICK, below), still the bank */
 function relPileOf(v){return v==='shadow'?'shadow':'bank';}
+/* the word on a marked row: a pick reads Bank, a submitted pick Banked */
+function relPileWord(v){return v==='kept'?'Banked':REL_PILE[relPileOf(v)];}
+/* one row's look, read off its mark, so every writer draws a row one way */
+function relRowSync(row,k){
+ if(!row)return;
+ var v=RUN.heavy[k];
+ row.setAttribute('aria-pressed',String(!!v));
+ if(v)row.setAttribute('data-pile',relPileOf(v)); else row.removeAttribute('data-pile');
+ if(v==='kept')row.setAttribute('data-kept','1'); else row.removeAttribute('data-kept');
+ var hv=row.querySelector('.rel-cr-hv'); if(hv)hv.textContent=v?relPileWord(v):'Heavy';}
 function relMarkSet(k,pile,row){
+ /* a submitted line stays in the bank: Submit is the person saying keep these,
+    so a tap or a swipe after it does not quietly undo that. Said, never silent. */
+ if(RUN.heavy[k]==='kept'){
+  if(typeof status==='function')status('That line is already submitted to your bank.');
+  return;}
  if(pile)RUN.heavy[k]=pile; else delete RUN.heavy[k];
- if(row){row.setAttribute('aria-pressed',String(!!RUN.heavy[k]));
-  if(RUN.heavy[k])row.setAttribute('data-pile',relPileOf(RUN.heavy[k])); else row.removeAttribute('data-pile');
-  var hv=row.querySelector('.rel-cr-hv'); if(hv)hv.textContent=RUN.heavy[k]?REL_PILE[relPileOf(RUN.heavy[k])]:'Heavy';}
+ relRowSync(row,k);
  relHeavyHint();}
 /* how many lines are in each pile, and at which seat, read off the marks */
 function relPiles(){
@@ -1461,11 +1531,72 @@ function relPiles(){
   var p=relPileOf(RUN.heavy[k]), at=relAt(+String(k).split(':')[0]); o[p]++;
   if(at&&at.n){var s=o.seat[at.n.b]||(o.seat[at.n.b]={bank:0,shadow:0}); s[p]++;}});
  return o;}
+/* ============================================================
+   THE BANK PICK, round QQ. His words: "Get rid of the text three lines
+   marked heavy to kept in your bank. One way in shadow. There should be a
+   button for how many you selected for your bank. That can be submitted. Or
+   recycled."
+
+   So the sentence that counted both piles is gone, and the bank pile has a
+   control of its own under the list: the count of lines picked for the bank,
+   Submit and Recycle. It reads and writes RUN.heavy and nothing else, the one
+   state the tap, the swipe and the arrow keys already write, so there is no
+   second list of picks to fall out of step with the rows.
+
+   A PICK IS 'bank', A SUBMITTED PICK IS 'kept'. Submit moves every pick to
+   kept, and a kept line stays in the bank: Recycle does not reach it and a
+   tap on it does not take it off. Recycle takes every pick that is not yet
+   submitted back off the list, unmarked, as if it had never been picked.
+
+   WHAT SUBMIT CAN AND CANNOT DO MID RUN, said plainly. The record only takes
+   a heavy mark on a line it has opened (meterHeavyWhy), and a new run's lines
+   are opened by meterRun when the run ends, in relCoolDown. So Submit seals
+   the pick now and the record takes it when the release ends, through the
+   same meterHeavy call every mark has gone through since round OG. A pick
+   still standing when the release ends is kept as well, so a line a person
+   marked with their eyes shut is never lost for want of a second press.
+   ============================================================ */
+function relPickN(v){
+ return Object.keys(RUN.heavy||{}).filter(function(k){return RUN.heavy[k]===v;}).length;}
+function relBankHtml(){
+ return '<div class="rel-bk" id="relbk" role="group" aria-label="Lines picked for your bank">'
+  +'<span class="rel-bk-f"><span class="rel-bk-l">Bank</span><b id="relbkn">\u2013</b><em id="relbku">picked</em></span>'
+  +'<button type="button" class="btn rel-b" id="relbksub">Submit</button>'
+  +'<button type="button" class="btn rel-b" id="relbkrec">Recycle</button></div>';}
+function relBankSubmit(){
+ var n=0;
+ Object.keys(RUN.heavy||{}).forEach(function(k){if(RUN.heavy[k]==='bank'){RUN.heavy[k]='kept'; n++;}});
+ relMarksRedraw();
+ if(typeof status==='function')status(n
+  ?n+(n===1?' line is':' lines are')+' submitted to your bank. Your record takes '+(n===1?'it':'them')+' when the release ends.'
+  :'Nothing is picked for your bank yet.');
+ return n;}
+function relBankRecycle(){
+ var n=0;
+ Object.keys(RUN.heavy||{}).forEach(function(k){if(RUN.heavy[k]==='bank'){delete RUN.heavy[k]; n++;}});
+ relMarksRedraw();
+ if(typeof status==='function')status(n
+  ?n+(n===1?' pick is':' picks are')+' recycled, back in the list unmarked.'
+  :'Nothing is picked for your bank yet.');
+ return n;}
+/* every row on the list redrawn off its mark, and the count with them */
+function relMarksRedraw(){
+ var car=document.getElementById('relcar');
+ if(car)car.querySelectorAll('[data-relh]').forEach(function(r){relRowSync(r,r.getAttribute('data-relh'));});
+ relHeavyHint();}
 function relHeavyHint(){
+ var pick=relPickN('bank'), kept=relPickN('kept');
+ var n=document.getElementById('relbkn'), u=document.getElementById('relbku'),
+  sb=document.getElementById('relbksub'), rc=document.getElementById('relbkrec');
+ /* A ZERO IS A DASH, round J13, and the slot keeps its label */
+ if(n)n.textContent=pick?String(pick):'\u2013';
+ if(u)u.textContent=pick===1?'line picked':'lines picked';
+ if(sb){sb.disabled=!pick; sb.setAttribute('aria-label','Submit '+pick+(pick===1?' line':' lines')+' to your bank');}
+ if(rc){rc.disabled=!pick; rc.setAttribute('aria-label','Recycle '+pick+(pick===1?' pick':' picks'));}
  var e=document.getElementById('relhv'); if(!e)return;
- var P=relPiles(), k=P.bank+P.shadow;
- e.textContent=k?k+(k===1?' line':' lines')+' marked heavy: '+P.bank+' kept in your bank, '+P.shadow+' weighted in your shadow.'
-  :'Tap or swipe a line that feels heavy. Swipe right to keep it in your bank, the lines still to release. Swipe left to weight it in your shadow, the load you still carry.';}
+ e.textContent=pick?'Submit keeps them in your bank, the lines still to release. Recycle puts them back unmarked.'
+  :kept?kept+(kept===1?' line is':' lines are')+' submitted to your bank. Swipe right on a line to pick another.'
+  :'Tap or swipe right on a line that feels heavy to pick it for your bank, the lines still to release. Swipe left to weight it in your shadow, the load you still carry.';}
 /* THE HEAVIEST, ON THE FINISHED CARD. "Note the patterns that felt heaviest.
    That's the work." The lines marked while they were said, each under the
    address it was said at, with the same double ring the list marks them with,
@@ -1499,6 +1630,8 @@ var REL_IC={
     which is a play mark, the same triangle every other surface uses for it */
  play:'<path d="M8 5.5v13l11-6.5z" fill="currentColor" stroke="none"/>',
  stop:'<circle cx="12" cy="12" r="8.5"/><path d="M9 9h6v6H9z" fill="currentColor" stroke="none"/>',
+ /* the bookmark, an outline that fills once the line is marked, round QQ */
+ book:'<path class="rel-ic-bk" d="M7 3.5h10v17l-5-4-5 4z"/>',
  /* the cancel mark, a ring and a cross, ring and not fill like every icon here */
  x:'<circle cx="12" cy="12" r="9"/><path d="M8.7 8.7l6.6 6.6M15.3 8.7l-6.6 6.6"/>'};
 function relIc(k){
@@ -1803,6 +1936,22 @@ function relCss(){
   '.rel-fs #relhd .rel-plate .rel-ct{display:block;margin-top:2px}',
   '.rel-fs .rel-scr{margin-top:6px}.rel-fs .rel-cr .rel-cr-nav{margin:2px 0 0}',
   '.rel-fs .rel-cr .rel-cr-hint{margin-top:4px}',
+  /* THE BANK PICK, round QQ: the count and its two presses on one centred row
+     under the list, the label over the figure the way every figure here reads */
+  '.rel-cr .rel-bk{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px 12px;margin:10px auto 0}',
+  '.rel-cr .rel-bk-f{display:inline-flex;align-items:baseline;gap:6px;min-width:120px;justify-content:center}',
+  '.rel-cr .rel-bk-l{font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--dim)}',
+  '.rel-cr .rel-bk-f b{font-family:var(--num);font-variant-numeric:tabular-nums;font-size:22px;font-weight:500;color:var(--alarm)}',
+  '.rel-cr .rel-bk-f em{font-style:normal;font-size:12.5px;color:var(--dim)}',
+  '.rel-cr .rel-bk .rel-b{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;padding:0 16px}',
+  '.rel-cr .rel-bk .rel-b:disabled{opacity:.45;cursor:default}',
+  /* a submitted line keeps the filled mark and reads Banked */
+  '.rel-cr .rel-cr-i[data-kept] .rel-cr-hv{font-weight:700}',
+  /* A BOOKMARKED LINE, round QQ: a small outline bookmark in the row's left
+     gutter, which stays visible at 390 where the number column hides */
+  '.rel-cr .rel-cr-i[data-book]::before{content:"";position:absolute;left:6px;top:50%;width:8px;height:12px;margin-top:-6px;',
+  ' background:var(--accent);clip-path:polygon(0 0,100% 0,100% 100%,50% 72%,0 100%);pointer-events:none}',
+  '.rel-b[aria-pressed="true"] .rel-ic-bk{fill:currentColor}',
   '.rel-res .rel-gi-a{display:flex;flex-wrap:wrap;justify-content:center;row-gap:2px;font-size:14px;font-weight:500;line-height:1.5}',
   '.rel-res .rel-gi-a i{font-style:normal;color:var(--dim);margin:0 6px}',
   /* ---- the prompt, pinned between the rail and what scrolls ---- */
@@ -1983,14 +2132,16 @@ function relCar(sp){
   +'<button type="button" id="relback" aria-label="Back">'+relIc('up')+'</button>'
   +'<button type="button" id="relnow" aria-pressed="true" aria-label="Now">'+relIc('now')+'</button>'
   +'<button type="button" id="relfwd" aria-label="Forward">'+relIc('down')+'</button></span></div>'
+  +relBankHtml()
   +'<div class="rel-cr-hint" id="relhv"></div></div>';}
 /* one line of the list. data-pile carries which pile a heavy mark is in, so
    the sheet can tint it and the word beside the ring can say it. */
 function relRow(k,num,text){
  var v=RUN.heavy[k], pile=v?relPileOf(v):'';
- return '<button type="button" class="rel-cr-i" data-relh="'+k+'" aria-pressed="'+!!v+'"'+(pile?' data-pile="'+pile+'"':'')+'>'
+ return '<button type="button" class="rel-cr-i" data-relh="'+k+'" aria-pressed="'+!!v+'"'+(pile?' data-pile="'+pile+'"':'')
+  +(v==='kept'?' data-kept="1"':'')+(RUN.books&&RUN.books[k]?' data-book="1"':'')+'>'
   +'<span class="rel-cr-n">'+num+'</span><span class="rel-cr-t">'+relLineHtml(text)+'</span>'
-  +'<span class="rel-cr-m" aria-hidden="true"><i class="rel-cr-f"></i><span class="rel-cr-hv">'+(pile?REL_PILE[pile]:'Heavy')+'</span></span></button>';}
+  +'<span class="rel-cr-m" aria-hidden="true"><i class="rel-cr-f"></i><span class="rel-cr-hv">'+(v?relPileWord(v):'Heavy')+'</span></span></button>';}
 /* ============================================================
    THE TWO PASSES, DRAWN, AND THE SCRUB ON THEM, round QM.
 
@@ -2020,7 +2171,9 @@ function relScrubHtml(sp){
    +'<em>'+(at.ch[0]==='L'?'left':'right')+'</em></i>';}
  segs+='<i class="rel-sg" data-half="end" style="flex:1"></i>';
  return '<div class="rel-scr">'
-  +'<div class="rel-scr-h" aria-hidden="true"><span>Release</span><span>Reframe, the recharge</span></div>'
+  /* "Release just have a release and reframe. It doesn't need to say reframe
+     the charge." Round QQ. One word a half, the prompt's own two words. */
+  +'<div class="rel-scr-h" aria-hidden="true"><span>Release</span><span>Reframe</span></div>'
   +'<div class="rel-scr-t"><div class="rel-scr-sg" aria-hidden="true">'+segs+'</div>'
   +'<i class="rel-scr-now" id="relscrnow" aria-hidden="true"></i>'
   +'<input type="range" id="relscrub" min="0" max="'+(n-1)+'" step="1" value="0" '
@@ -2090,7 +2243,15 @@ function relCarSync(smooth){
   r.classList.toggle('now',on); r.classList.toggle('next',nxt);
   if(on){r.setAttribute('aria-current','step'); live=r;} else r.removeAttribute('aria-current');
   if(t)t.classList.toggle('rel-line',on);
-  if(n)n.textContent=on?'Now':nxt?'Next':(k==='end'?'':String(p+1));});
+  /* NUMBERS THROUGHOUT, round QQ. His words: "Get rid of the now next." The
+     column printed the pass number on every row but two, where it printed the
+     words Now and Next, so one column carried two kinds of thing and the two
+     rows a person most needs to place were the two without a number. Every
+     row carries its number now. The live row is still told three ways that
+     take no words: full ink on the centre, its number in the accent colour,
+     and aria-current for a screen reader. The Now button under the list keeps
+     its name, because it is a control that does something, not a marker. */
+  if(n)n.textContent=k==='end'?'':String(p+1);});
  var nb=document.getElementById('relnow'); if(nb)nb.setAttribute('aria-pressed',String(!RUN.look));
  relHeavyHint(); relScrubLive(L,live);
  /* THE LIVE ROW ON THE CENTRE. It sat three tenths down so the line just
@@ -2126,6 +2287,8 @@ function relCarBind(){
   if(k&&car._swiped){car._swiped=false; return;}
   if(k){ relMarkSet(k,RUN.heavy[k]?null:'bank',t); return; }
   if(t.id==='relnow'){RUN.look=false; relCarSync(true); return;}
+  if(t.id==='relbksub'){relBankSubmit(); return;}
+  if(t.id==='relbkrec'){relBankRecycle(); return;}
   if(t.id==='relback'||t.id==='relfwd'){relCarLook(); relCarStep(t.id==='relfwd'?1:-1);}};
  /* what counts as the person moving the list: a wheel, a drag, a key, or a
     press on the scrollbar. Not the scroll event, which the list's own
@@ -2454,11 +2617,66 @@ function relShell(o){
   +relTop(o.right)+(o.pre||'')
   +'<div class="rel-scroll" id="relsc">'+(o.body||'')+'</div>'
   +(o.foot?'<div class="rel-foot rel-act" id="relfoot">'+o.foot+'</div>':'')+'</div>';}
-/* Pause and End, the same two on every phase that has them */
+/* Pause and End, the same two on every phase that has them. NAMED IN HIS
+   WORDS, round QQ: "I need all my controls here. I need end session. Pause,
+   play. Bookmark." Both were on the screen, pinned on the centre line under
+   the list since round QM, as Pause or Resume and End. They are the same two
+   buttons doing the same thing under his names for them, Play beside the
+   play mark it already drew, and End session, which says what ends. */
 function relPauseEnd(){
- return '<button class="btn rel-b" id="relpause" aria-label="'+(RUN.paused?'Resume':'Pause')+'">'
-  +relIc(RUN.paused?'play':'pause')+'<span>'+(RUN.paused?'Resume':'Pause')+'</span></button>'
-  +'<button class="btn rel-b" id="relstop" aria-label="End">'+relIc('stop')+'<span>End</span></button>';}
+ return '<button class="btn rel-b" id="relpause" aria-label="'+(RUN.paused?'Play':'Pause')+'">'
+  +relIc(RUN.paused?'play':'pause')+'<span>'+(RUN.paused?'Play':'Pause')+'</span></button>'
+  +'<button class="btn rel-b" id="relstop" aria-label="End session">'+relIc('stop')+'<span>End session</span></button>';}
+/* ============================================================
+   BOOKMARK, round QQ, the third control he named. Nothing like it existed:
+   searched the engine and the screens for a bookmark, a save for later or a
+   flag on a run, and the only mark a line could carry was Heavy, which says
+   the body answered and goes to the bank or the shadow. A bookmark says
+   something else, come back to this line, so it is its own mark and never a
+   heavy one.
+
+   THE SMALLEST HONEST VERSION, and what it does not do is said on the screen.
+   It marks one line of this run: the line being said, or, while the person
+   has moved the list by hand, the line on the centre that they are looking
+   at. A second press on the same line takes it off. The row carries a small
+   bookmark, and the results list every bookmarked line under the address it
+   was said at. It lives on the run, RUN.books, keyed by plan index and pass
+   the way RUN.heavy is, and it is gone when the results close: the record
+   has no place for it, and making one is a field on the profile, which is
+   the owner's schema to rule on. It costs nothing and changes no reading.
+   ============================================================ */
+function relBookKey(){
+ if(RUN.phase!=='run')return null;
+ if(RUN.look){var L=document.getElementById('relcarl');
+  if(L){var r=relCarRows(L)[relCarMid(L)], k=r&&r.getAttribute('data-relh'); if(k&&k!=='end')return k;}}
+ return RUN.idx+':'+RUN.pass;}
+function relBookBtn(){
+ var k=relBookKey(), on=!!(k&&RUN.books&&RUN.books[k]);
+ return '<button class="btn rel-b" id="relbook" aria-pressed="'+on+'" aria-label="Bookmark this line">'
+  +relIc('book')+'<span>Bookmark</span></button>';}
+function relBookToggle(){
+ var k=relBookKey(); if(!k)return false;
+ if(!RUN.books)RUN.books={};
+ var ip=k.split(':').map(Number), at=relAt(ip[0]), st=at?relStepAt(at,ip[1]):null;
+ if(RUN.books[k])delete RUN.books[k];
+ else RUN.books[k]={text:st?st.text:'',nm:at&&at.n?at.n.k:'',half:at&&at.ch[2]==='truth'?'Reframe':'Release',
+  side:at?at.ch[1].toLowerCase():'',line:ip[1]+1};
+ var on=!!RUN.books[k];
+ var row=document.querySelector('#relcarl [data-relh="'+k+'"]');
+ if(row){if(on)row.setAttribute('data-book','1'); else row.removeAttribute('data-book');}
+ var b=document.getElementById('relbook'); if(b)b.setAttribute('aria-pressed',String(on));
+ if(typeof status==='function')status(on?'Bookmarked. The line is on your results when the release ends.':'Bookmark taken off.');
+ return on;}
+/* the bookmarked lines on the results, in the order the run said them */
+function relBooksHtml(){
+ var ks=Object.keys(RUN.books||{}).sort(function(a,b){var x=a.split(':').map(Number), y=b.split(':').map(Number);
+  return x[0]-y[0]||x[1]-y[1];});
+ if(!ks.length)return '';
+ return relSect('Bookmarked','<div class="rel-log" style="max-height:none;overflow:visible;text-align:left">'
+  +ks.map(function(k){var b=RUN.books[k];
+   return '<div class="rel-row" style="grid-template-columns:1fr"><span>'+esc(b.text)
+    +'<em style="display:block">'+esc(b.nm)+', '+esc(b.half.toLowerCase())+', '+esc(b.side)+' channel, line '+b.line+'</em></span></div>';}).join('')
+  +'</div><div class="rel-rs-s">A bookmark marks a line to come back to. It stays here until you press Done and is not saved to your record.</div>','relbooks');}
 /* the switches as one centred row, his "toggles for my options" */
 function relSws(n){var s=relSwitches(n); return s?'<div class="rel-sws">'+s+'</div>'+relBinSay():'';}
 /* ============================================================
@@ -2488,7 +2706,7 @@ function relBinSay(){
    representations for left and right, how many have been released and how
    many have been recharged." The strips that stood at the card's two edges
    said the side and nothing else. Each side is now a column: the strips' own
-   words, "Left, inward" and "Right, outward" (REL_SIDE, the book's), and two
+   words, "Left channel" and "Right channel" (REL_SIDE, round QQ), and two
    meters, released and recharged, each a bar that fills as that side's
    lines are said, with the count beside it. The pole is not printed: round
    LY struck "feminine, parasympathetic" from the run by name. The live side
@@ -2583,8 +2801,22 @@ function relResults(){
      +'<span class="rel-seat-w">'+s.w0.toFixed(1)+' <i aria-hidden="true">→</i> '+s.w1.toFixed(1)+'</span>'
      +((pb.bank||pb.shadow)?'<span class="rel-seat-p">'+pb.bank+' to bank, '+pb.shadow+' to shadow</span>':'')+'</div>';}).join('')
    +'</div><div class="rel-rs-s">Weight at a seat is the charge held at the addresses this release worked there, added up. Each address reads nought to ten.</div>':''));
+ /* 4b. CQ before and after, round QQ: "I want to see my CQ improvement." Read
+    off compute() after the write, against the figure read before it, so it
+    is the record's own number and the same one the run counted up to. */
+ var _rq=compute(), cqNow=(RUN.cq0!=null&&_rq.answered)?_rq.CQ:null;
+ if(cqNow!=null)out+=relSect('Your CQ',
+  '<div class="rel-clock" id="relrscq">'
+  +'<div class="rel-fig"><span>CQ</span><b>'+cqNow.toFixed(2)+'</b></div>'
+  +'<div class="rel-fig"><span>Up</span><b>'+Math.max(0,cqNow-RUN.cq0).toFixed(2)+'</b></div></div>'
+  +'<div class="rel-rs-s">CQ is your coherence number, how closely you keep the 21 laws, from nought to a hundred. Up is how far this release lifted it. '
+  +(RUN.rerun?'A rerun opens no new lines, so it lifts nothing.':'Each new line you open lifts the laws at its seat a little.')+'</div>');
+ else if(RUN.cq0!=null)out+=relSect('Your CQ','<div class="rel-clock" id="relrscq"><div class="rel-fig"><span>CQ</span><b>\u2013</b></div></div>'
+  +'<div class="rel-rs-s">CQ is your coherence number, how closely you keep the 21 laws. It is not read yet, because no law is answered. Once one is, each new line you open lifts it a little.</div>');
  /* 5. what changed, the TDD's own question, unchanged */
  out+=relAskHtml();
+ /* 5b. the lines bookmarked on the run, round QQ */
+ out+=relBooksHtml();
  /* 6. why this ran, and what it carried */
  var G=relGroups('story');
  if(G.length)out+=relSect('Why this release ran',G.map(function(g){
@@ -2713,7 +2945,7 @@ function relRender(){
      round LY. End does not abandon the run, and it does not bill the whole
      plan: it runs the cooldown over what was reached and charges only that,
      see relReach and relCoolDown. */
-  var foot=relPauseEnd();
+  var foot=relPauseEnd()+relBookBtn();
   /* AND THE LIST IS NEVER REDRAWN UNDER A FINGER. While the run stays on one
      address the screen is rewritten around the list, and the list is only
      marked again; a new address is a new list, following the live line from
@@ -2729,7 +2961,7 @@ function relRender(){
      so nothing moves it. It changes twice an address, at the turn into the
      reframe and back, and only then does it arrive. */
   var pr=relPrompt(at), prE=document.getElementById('relpr'),
-   prH='<span>'+esc(pr.half==='Reframe'?'Reframe, the recharge':pr.half)+'</span><b>'+esc(pr.text)+'</b>';
+   prH='<span>'+esc(pr.half)+'</span><b>'+esc(pr.text)+'</b>';
   if(car&&hdE&&ftE&&prE&&fE&&tE&&car.getAttribute('data-span')===sp.key){
    if(prE.getAttribute('data-k')!==pr.half){prE.setAttribute('data-k',pr.half); prE.innerHTML=prH;
     prE.classList.toggle('ref',pr.truth); prE.classList.remove('in'); void prE.offsetWidth; prE.classList.add('in');}
@@ -2903,6 +3135,7 @@ function relRender(){
   /* the elapsed clock stops with the run and does not count the pause */
   if(RUN.paused){RUN.pauseAt=Date.now();relHush();relRender();}
   else {if(RUN.pauseAt)RUN.pausedMs+=Date.now()-RUN.pauseAt; RUN.pauseAt=0; relStep();}};
+ if((b=document.getElementById('relbook')))b.onclick=relBookToggle;
  if((b=document.getElementById('reldose')))b.onchange=function(){
   RUN.dose=Math.max(1,Math.min(REL_DOSES[REL_DOSES.length-1],Math.round(+this.value)||1));relRender();};
  h.querySelectorAll('[data-reldose]').forEach(function(el){el.onclick=function(){

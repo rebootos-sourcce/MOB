@@ -28,7 +28,17 @@
      9  no page error at either width
 
    Known bad first: run against the build before this round (ATUNED_FILE
-   pointing at ab6666a's source.html) it fails on 1, 2, 3, 4, 5, 6, 7 and 8. */
+   pointing at ab6666a's source.html) it fails on 1, 2, 3, 4, 5, 6, 7 and 8.
+
+   ROUND QQ, his feedback on those pictures, added at the foot: the sides are
+   Left channel and Right channel; the scrub reads Release and Reframe; the
+   rows carry numbers only, no Now or Next; End session, Pause and Play, and
+   Bookmark are on the running screen at the tap floor; the heavy count
+   sentence is gone and the bank pick has its own count, Submit and Recycle,
+   acting on RUN.heavy; CQ and Up count up on the run and land exactly on the
+   record's CQ after the write, and the results show both. Known bad: run
+   against f164f17's own source.html, the build before it, every one of those
+   checks fails. */
 const {chromium}=require('playwright');
 const path=require('path');
 const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1';
@@ -192,6 +202,129 @@ const STORY='I am afraid I will be left. When she goes quiet I panic and try to 
   ok(s6&&s6.label==='Binaural tone','the tone switch is named for what it is, Binaural tone: '+(s6&&s6.label));
 
   }catch(e){ok(false,'section 6 and 8 scrub and switch could not run: '+e.message.split('\n')[0]);}
+  /* ============================================================
+     ROUND QQ, his feedback on the round QM pictures. Read off the page on a
+     fresh run, the same discipline as above.
+     ============================================================ */
+  try{
+  const q=await ev(page,()=>{relPick(RUN.pick.map(function(n){return n.i;})); RUN.dose=4; RUN.plan=relPlan();
+   relTicker(false); RUN.phase='run'; RUN.idx=0; RUN.pass=1; RUN.paused=false; RUN.look=false; RUN.heavy={}; relRender();
+   var rel=document.getElementById('rel'), o={};
+   o.sides=[].slice.call(document.querySelectorAll('#rel .rel-lr-h')).map(function(e){return e.textContent;});
+   o.inout=/inward|outward/i.test(rel.innerText);
+   o.scr=[].slice.call(document.querySelectorAll('#rel .rel-scr-h span')).map(function(e){return e.textContent;});
+   var i=RUN.plan.findIndex(function(k){return /truth/.test(k);}); RUN.idx=i; RUN.pass=1; relRender();
+   o.prRef=(document.querySelector('#relpr span')||{}).textContent;
+   o.recharge=/the recharge/.test(rel.innerText);
+   RUN.idx=0; RUN.pass=1; relRender();
+   /* the number column: a number on every row, and no Now or Next among them */
+   var rows=[].slice.call(document.querySelectorAll('#relcarl .rel-cr-i[data-relh]')).filter(function(r){return r.getAttribute('data-relh')!=='end';});
+   o.words=rows.map(function(r){return r.querySelector('.rel-cr-n').textContent;}).filter(function(t){return /now|next/i.test(t);});
+   o.nums=rows.every(function(r){var p=+r.getAttribute('data-relh').split(':')[1]; return r.querySelector('.rel-cr-n').textContent===String(p+1);});
+   var live=document.querySelector('#relcarl .rel-cr-i[aria-current="step"]');
+   o.live=live?live.getAttribute('data-relh'):null;
+   /* the three controls he named, on the screen and at the tap floor */
+   o.ctl=['relpause','relstop','relbook'].map(function(id){var e=document.getElementById(id); if(!e)return {id:id};
+    var r=e.getBoundingClientRect(); return {id:id,t:e.textContent.trim(),w:r.width,h:r.height,
+     seen:r.top>=0&&r.bottom<=innerHeight&&r.left>=0&&r.right<=innerWidth};});
+   return o;});
+  ok(q.sides&&q.sides.join('|')==='Left channel|Right channel'&&!q.inout,'the two sides are Left channel and Right channel, and inward and outward are gone: '+JSON.stringify(q.sides));
+  ok(q.scr&&q.scr.join('|')==='Release|Reframe'&&q.prRef==='Reframe'&&!q.recharge,'the scrub reads Release and Reframe, and nothing says "the recharge": '+JSON.stringify([q.scr,q.prRef]));
+  ok(q.words&&q.words.length===0&&q.nums,'every row carries its number, and no row reads Now or Next: '+JSON.stringify(q.words));
+  ok(q.live==='0:1','the live row is still marked for a screen reader, aria-current on '+q.live);
+  const cmap={}; (q.ctl||[]).forEach(c=>cmap[c.id]=c);
+  ok(cmap.relstop&&cmap.relstop.t==='End session'&&cmap.relpause&&cmap.relpause.t==='Pause'&&cmap.relbook&&cmap.relbook.t==='Bookmark',
+   'End session, Pause and Bookmark are on the running screen in his words: '+JSON.stringify(q.ctl&&q.ctl.map(c=>c.t)));
+  ok((q.ctl||[]).length===3&&q.ctl.every(c=>c.w>=44&&c.h>=44&&c.seen),'each is at least 44 by 44 and inside the screen: '+JSON.stringify(q.ctl));
+  await page.click('#relpause'); await page.waitForTimeout(120);
+  const play=await ev(page,()=>({t:(document.getElementById('relpause')||{}).textContent,p:RUN.paused}));
+  ok(play.p===true&&/^Play$/.test((play.t||'').trim()),'Pause turns to Play while the run is held: '+JSON.stringify(play));
+  await page.click('#relpause'); await page.waitForTimeout(120);
+  await ev(page,()=>{relHush(); RUN.paused=true; relRender();});
+
+  /* the bank pick: a count, Submit and Recycle, on RUN.heavy itself */
+  await page.waitForTimeout(400);
+  const kB=await (async()=>{const b=await page.evaluate(()=>{var r=document.querySelector('#relcarl .rel-cr-i[data-d="1"]'); if(!r)return null;
+    var q=r.getBoundingClientRect(); return {k:r.getAttribute('data-relh'),x:q.left+q.width/2,y:q.top+q.height/2};});
+   if(!b)return null;
+   await page.mouse.move(b.x,b.y); await page.mouse.down();
+   for(let s=1;s<=10;s++){await page.mouse.move(b.x+110*s/10,b.y); await page.waitForTimeout(16);}
+   await page.mouse.up(); await page.waitForTimeout(350); return b.k;})();
+  const bk=await ev(page,k=>{var o={k:k,h1:Object.assign({},RUN.heavy)};
+   var n=function(){return (document.getElementById('relbkn')||{}).textContent;};
+   o.n1=n(); o.heavyWords=/marked heavy|kept in your bank|weighted in your shadow/.test(document.getElementById('rel').innerText);
+   /* a second pick by tap and a shadow mark beside them */
+   var rows=[].slice.call(document.querySelectorAll('#relcarl .rel-cr-i[data-relh]')).filter(function(r){return r.getAttribute('data-relh')!==k&&r.getAttribute('data-relh')!=='end';});
+   rows[0].click(); relMarkSet(rows[1].getAttribute('data-relh'),'shadow',rows[1]);
+   o.n2=n(); o.sub0=document.getElementById('relbksub').disabled;
+   document.getElementById('relbksub').click();
+   o.h3=Object.assign({},RUN.heavy); o.n3=n(); o.sub1=document.getElementById('relbksub').disabled;
+   o.word=(document.querySelector('#relcarl [data-relh="'+k+'"] .rel-cr-hv')||{}).textContent;
+   /* a submitted line stays put under a tap, and Recycle leaves it */
+   document.querySelector('#relcarl [data-relh="'+k+'"]').click(); o.h4=RUN.heavy[k];
+   rows[2].click(); o.n5=n();
+   document.getElementById('relbkrec').click(); o.h6=Object.assign({},RUN.heavy); o.n6=n();
+   o.r2=rows[2].getAttribute('aria-pressed');
+   var t=document.getElementById('relbksub'), r=t.getBoundingClientRect(); o.tap=[r.width,r.height];
+   return o;},kB);
+  ok(bk.h1&&bk.h1[kB]==='bank'&&bk.n1==='1','a swipe right picks the line, and the bank count reads 1: '+JSON.stringify([bk.h1,bk.n1]));
+  /* read on its own, with one mark in each pile, so a build that cannot reach
+     the bank pick above still answers this one */
+  const hw=await ev(page,()=>{var rows=[].slice.call(document.querySelectorAll('#relcarl .rel-cr-i[data-relh]')).filter(function(r){return r.getAttribute('data-relh')!=='end';});
+   var keep=Object.assign({},RUN.heavy), a=rows[rows.length-1], b=rows[rows.length-2];
+   relMarkSet(a.getAttribute('data-relh'),'bank',a); relMarkSet(b.getAttribute('data-relh'),'shadow',b);
+   var t=document.getElementById('rel').innerText;
+   RUN.heavy=keep; if(typeof relMarksRedraw==='function')relMarksRedraw(); else relRender();
+   return /marked heavy|kept in your bank|weighted in your shadow/.test(t);});
+  ok(hw===false,'the sentence counting lines marked heavy is gone from the screen, with a mark in each pile: '+JSON.stringify(hw));
+  ok(bk.n2==='2'&&bk.sub0===false,'a tap picks a second, the shadow mark is not counted, and Submit is live: '+bk.n2);
+  ok(bk.h3&&Object.keys(bk.h3).filter(k=>bk.h3[k]==='kept').length===2&&Object.keys(bk.h3).filter(k=>bk.h3[k]==='shadow').length===1
+   &&bk.n3==='–'&&bk.sub1===true&&bk.word==='Banked','Submit moves both picks into the bank, leaves the shadow mark, and the count empties: '+JSON.stringify([bk.h3,bk.n3,bk.word]));
+  ok(bk.h4==='kept','a submitted line is not taken off by a tap: '+bk.h4);
+  ok(bk.n5==='1'&&Object.keys(bk.h6).filter(k=>bk.h6[k]==='kept').length===2&&Object.keys(bk.h6).filter(k=>bk.h6[k]==='bank').length===0
+   &&bk.n6==='–'&&bk.r2==='false','Recycle takes back the one unsubmitted pick, unmarked, and leaves what was submitted: '+JSON.stringify([bk.n5,bk.h6,bk.n6]));
+  ok(bk.tap&&bk.tap[0]>=44&&bk.tap[1]>=44,'Submit is at the tap floor: '+JSON.stringify(bk.tap));
+
+  /* bookmark: the line being said, on the row, off again, and on the results */
+  const bm=await ev(page,()=>{var o={}; RUN.look=false; relRender();
+   var k=RUN.idx+':'+RUN.pass;
+   document.getElementById('relbook').click(); o.on=!!RUN.books[k]; o.row=!!document.querySelector('#relcarl [data-relh="'+k+'"][data-book]');
+   o.pressed=document.getElementById('relbook').getAttribute('aria-pressed');
+   document.getElementById('relbook').click(); o.off=!RUN.books[k]&&!document.querySelector('#relcarl [data-relh="'+k+'"][data-book]');
+   document.getElementById('relbook').click();
+   o.u0=CURP.meter.unique.length; o.c0=compute().DQ;
+   return o;});
+  ok(bm.on&&bm.row&&bm.pressed==='true','Bookmark marks the line being said, on its row: '+JSON.stringify(bm));
+  ok(bm.off,'and a second press takes it off');
+
+  /* CQ: not read yet with no law answered, then counted up with them answered,
+     landing on the number the record reads after the write */
+  const cq0=await ev(page,()=>{RUN.proj=null; relRender();
+   return {fig:(document.querySelector('#relcq b')||{}).textContent,up:!!document.getElementById('relcqup'),
+    mean:(document.getElementById('relfigmean')||{}).textContent,answered:compute().answered};});
+  ok(cq0.answered===0&&cq0.fig==='–'&&!cq0.up&&/CQ is your coherence number/.test(cq0.mean||'')&&/not read yet/.test(cq0.mean||''),
+   'with no law answered CQ reads a dash and says it is not read yet: '+JSON.stringify(cq0));
+  const cq=await ev(page,()=>{SI.forEach(function(l){CURP.laws[l.nm]=5; S.law[l.nm]=5;}); compute();
+   RUN.proj=null; RUN.idx=Math.min(5,RUN.plan.length-1); RUN.pass=2; relRender();
+   var o={proj:RUN.proj&&RUN.proj.cq, cq0:compute().CQ, work:JSON.stringify(CURP.work||{})};
+   o.fig=+(document.querySelector('#relcq b')||{}).textContent; o.up=+(document.querySelector('#relcqup b')||{}).textContent;
+   o.mean=(document.getElementById('relfigmean')||{}).textContent;
+   var j=RUN.idx; o.want=o.proj?o.proj[j]+(RUN.pass/RUN.dose)*(o.proj[j+1]-o.proj[j]):null;
+   RUN.halted=false; RUN.idx=RUN.plan.length; relCoolDown();
+   o.after=compute().CQ; o.end=o.proj?o.proj[o.proj.length-1]:null; o.rec0=RUN.cq0;
+   var b=document.getElementById('relrest'); if(b)b.click();
+   o.res=[].slice.call(document.querySelectorAll('#relrscq .rel-fig b')).map(function(e){return +e.textContent;});
+   o.sec=[].slice.call(document.querySelectorAll('#rel .rel-rs-h')).map(function(e){return e.textContent;});
+   o.books=(document.getElementById('relbooks')||{}).textContent;
+   return o;});
+  ok(cq.proj&&cq.proj.length>1&&cq.proj[cq.proj.length-1]>cq.proj[0],'with laws answered the run projects CQ rising: '+JSON.stringify(cq.proj&&[cq.proj[0],cq.proj[cq.proj.length-1]]));
+  ok(cq.want!=null&&Math.abs(cq.fig-cq.want)<0.006&&Math.abs(cq.up-(cq.want-cq.proj[0]))<0.006,'the row prints CQ and Up where the walker is: '+JSON.stringify([cq.fig,cq.up,cq.want]));
+  ok(/Up is how far/.test(cq.mean||'')&&/DQ is your shadow reading/.test(cq.mean||''),'and says what CQ, Up, DQ and Down are, in the same place');
+  ok(cq.end!=null&&Math.abs(cq.end-cq.after)<1e-9,'the projection lands exactly on the CQ the record reads after the write: '+JSON.stringify([cq.end,cq.after]));
+  ok(cq.sec.indexOf('Your CQ')>=0&&Math.abs(cq.res[0]-cq.after)<0.006&&Math.abs(cq.res[1]-(cq.after-cq.rec0))<0.006&&cq.res[1]>0,
+   'the results show CQ after and how far it came up: '+JSON.stringify([cq.res,cq.after,cq.rec0]));
+  ok(cq.sec.indexOf('Bookmarked')>=0&&/not saved to your record/.test(cq.books||''),'the bookmarked line is on the results, and they say it is not saved to the record: '+JSON.stringify(cq.books));
+  }catch(e){ok(false,'round QQ could not run: '+e.message.split('\n')[0]);}
   /* and the app comes back when it closes */
   const back=await ev(page,()=>{relClose(); return {app:getComputedStyle(document.querySelector('.app')).visibility,
    cls:document.body.classList.contains('rel-on')};});
