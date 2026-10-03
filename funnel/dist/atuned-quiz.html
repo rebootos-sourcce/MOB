@@ -338,6 +338,23 @@ button.act:focus-visible,a.act:focus-visible{outline:2px solid var(--ink);outlin
 /* two classes, so it outranks the wide rule below that zeroes .acts inside the
    door, where the grid supplies the gap and here nothing does */
 .read .stacts{margin-top:16px}
+/* ONE ADDRESS, ONE ROW, ONE ANSWER, the app's onboarding row (.ob-row in
+   shell/head.html) in this page's own button object. The pressed answer wears
+   the accent and the label never changes with it, so the word on the button
+   is always the word that was pressed. .read p sets a 14 pixel top margin on
+   every paragraph, which put the address a paragraph's height under the line
+   introducing it, so the row sets its own. */
+.sab .addr{margin-top:12px}
+.sab .addrp{margin:0;font-size:15px;color:var(--mid);line-height:1.5}
+.sab .addrp b{color:var(--ink);font-weight:600}
+.yn{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+button.yna,button.more{min-height:var(--tap);min-width:var(--tap);padding:8px 16px;
+ background:var(--panel-2);color:var(--ink);border:1px solid var(--edge-2);
+ border-radius:9px;font:inherit;font-size:15px;cursor:pointer}
+button.yna.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+button.more{margin-top:12px;color:var(--mid)}
+button.yna:focus-visible,button.more:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.sab .addrst{margin:6px 0 0;font-size:14px;color:var(--dim)}
 /* Read it scrolls here, and the sticky bar with the ring would sit over the
    heading it scrolled to */
 #lit{scroll-margin-top:112px}
@@ -19076,6 +19093,51 @@ function listOf(a){
 var STORY='';      /* what is in the box now */
 var STORY_AT='';   /* what was in it when Read it was pressed */
 
+/* ============================================================
+   YES AND NOT ME, ON EVERY ADDRESS A CARD NAMES. Item 5 of the funnel punch
+   list in PLAN.md, from reviews/ATUNED-Funnel-Onboarding-Tutorial-Creative-
+   TDD.md section 23: "ATUNED can be wrong. You can correct it." The cards
+   printed the engine's pick of address as a finding and offered no way to
+   say it was wrong.
+
+   PER ADDRESS AND NOT PER CARD, because the card is the part the person
+   already said. A card exists only where the words named the charge
+   (storyLit drops every inferred imprint), so a Yes on the card would be the
+   person confirming the word they typed. The address under it is the
+   engine's pick: parseStory takes the addresses at that seat carrying the
+   named charge and sorts them by susc, which the hundred answers set. That
+   pick is the model, and the model is the thing that can be wrong. It is also
+   the app's own grain, ui/onboard.js obRow: one address, one row, one answer.
+
+   THE LOAD IS HELD THE WAY THE APP HOLDS IT, obGroup: the heaviest address
+   on a card shows with its pair and the rest sit behind a button that says
+   how many. Measured 3 October in Chromium on the gate's two card story: 11
+   visible controls on the page with the rows, against the house target of
+   under 12.
+   Every row open on the same story is 19, and four cards is 16 even folded,
+   which is over and is said in the commit rather than hidden. A Yes and Not
+   me per card would cost at most one control less a card, 13 on the four,
+   still over, and would ask the wrong question.
+
+   WHAT AN ANSWER DOES, AND WHAT IT CANNOT DO HERE. In the app only a yes goes
+   into the release and both are written onto the entry, ob.yes and ob.no.
+   This page has no release and no entry. The record recordJSON writes is
+   saveProfile(scored().p): the hundred answers and nothing from the story,
+   so no address a person said Not me to can reach the record as found. The
+   one slot the schema has for these answers is story.entries[].ob, and
+   engine/schema.js vEntry refuses an entry without its text ("An entry is
+   its text"), which this page promises never to store. Carrying them would
+   take either breaking that promise or a new field, and the schema is the
+   owner's contract with SOURCE. So the answers are held in memory under the
+   story's own rule, the door says they are not in the record, and on the
+   page a Not me does the one thing it can do honestly: the card's last line
+   stops comparing the answers with that address, so the page never goes on
+   reading somebody's answers against a place they have said is not them.
+   ============================================================ */
+var MARK={};       /* node index -> 'yes' or 'no'. Missing is unanswered. */
+var MORE={};       /* charge -> 1 when its card shows every address */
+function marked(){ for(var k in MARK)if(MARK[k])return true; return false; }
+
 /* the words, quoted as they were typed. marksOf maps the scanner's offsets
    back onto the letters, so a quote is exactly what was scored. A word read
    after a no is quoted with the no in front of it, so the person can see
@@ -19089,6 +19151,32 @@ function storyQuotes(t,ms){
  ms.forEach(function(m){ var q=storyQuote(t,m), k=q.toLowerCase();
   if(!seen[k]&&out.length<5){ seen[k]=1; out.push(q); } });
  return out;}
+
+/* ONE ADDRESS, ONE ROW, ONE ANSWER. The meaning rides on the row in the
+   app's own sentence, onboard.js obAbout, "It concerns ... and shows up as
+   ...", because a person cannot say whether a name is them without being
+   told what it means, round PO. That sentence is built from the same two
+   fields the card's What it does and What it touches lines were built from,
+   moved onto the address they came from rather than joined across four, and
+   it keeps their cut: the first clause of a, as What it touches took it. The
+   whole of a, as the app prints it, read "It concerns worth, embodiment and
+   shows up as self-rejection" on the shot, two lists run into one. */
+function storyRow(n){
+ var a=MARK[n.i]||'', about=low(clause(n.a)), does=low(n.d);
+ return '<div class="addr" data-addr="'+n.i+'">'
+  +'<p class="addrp"><b>'+esc(n.k)+'</b>'+(n.n?' at the '+esc(n.n):'')+'.'
+  +(about||does?' It concerns '+esc(about||'this place')+(does?' and shows up as '+esc(does):'')+'.':'')
+  +'</p>'
+  +'<div class="yn" role="group" aria-label="'+esc(n.k)+'">'
+  +'<button type="button" class="yna'+(a==='yes'?' on':'')+'" aria-pressed="'+(a==='yes')+'" data-ans="yes" data-ai="'+n.i+'">Yes</button>'
+  +'<button type="button" class="yna'+(a==='no'?' on':'')+'" aria-pressed="'+(a==='no')+'" data-ans="no" data-ai="'+n.i+'">Not me</button>'
+  +'</div>'
+  /* the line says what the answer did on this page and claims nothing past
+     it. The app's "In your release" would be false here: there is no
+     release on this page and nothing from the story is saved. */
+  +(a==='yes'?'<p class="addrst">Marked yours.</p>'
+   :a==='no'?'<p class="addrst">Marked not you. The last line on this card no longer counts it.</p>':'')
+  +'</div>';}
 
 function storyLit(ps,t,r){
  /* A WORD AFTER A NO IS STILL CHARGED, AND THAT IS SHOWN. "I was not scared"
@@ -19140,7 +19228,11 @@ function storyLit(ps,t,r){
     most of what the card prints is named, with the share, heaviest first on a
     tie because topSabs already hands them over in that order. */
  function answersSay(g){
-  var ids=g.nodes.slice(0,4).map(function(n){return n.i;});
+  /* A NOT ME LEAVES THE COMPARISON. The answers are still compared with the
+     charge, the branch below, because the person named the charge and said
+     only that the engine's place for it was wrong. */
+  var ids=g.nodes.slice(0,4).filter(function(n){return MARK[n.i]!=='no';})
+   .map(function(n){return n.i;});
   if(!ids.length){
    var on=qsabs.filter(function(s){return s.parts.some(function(p){return p.cf===g.fet;});});
    return on.length?'They lit '+on[0].nm+', which runs on '+low(g.fet)+' too.'
@@ -19167,20 +19259,27 @@ function storyLit(ps,t,r){
    var names=m.fet||(m.charge&&CHG2FET[m.charge]);
    return names?names===g.fet:!!(m.seat&&g.from[m.seat]);});
   var seats=g.bands.map(function(b){return low(b);});
-  var h='<div class="sab"><h3>'+esc(g.fet)+'</h3>'
+  var h='<div class="sab" data-card="'+esc(g.fet)+'"><h3>'+esc(g.fet)+'</h3>'
    +'<div class="fam">At the '+esc(listOf(seats))+' seat'+(seats.length>1?'s':'')
    +'. Your words named it.</div>';
   if(ws.length)h+='<div class="sl"><b>Your words:</b> '+esc(storyQuotes(t,ws).join(', '))+'.'
    +(ws.some(function(m){return m.neg;})?' The reader counts a word that comes after a no.':'')
    +'</div>';
+  /* WHAT IT DOES AND WHAT IT TOUCHES ARE ON THE ROWS NOW. They were each
+     address's d and a joined across all four, which, once an address could
+     be refused, went on saying "It shows up as isolation" about a place the
+     person had just said was not them. Each address carries its own two now,
+     on the row its answer sits on. */
   var parts=g.nodes.slice(0,4);
   if(parts.length){
-   h+='<div class="sl"><b>What it does:</b> '
-    +esc('It shows up as '+listOf(parts.map(function(n){return low(n.d);}))+'.')+'</div>';
-   h+='<div class="sl"><b>It runs on:</b> '+parts.map(function(n){
-    return esc(n.k)+(n.n?' at the '+esc(n.n):'');}).join('. ')+'.</div>';
-   h+='<div class="sl"><b>What it touches:</b> '
-    +esc(cap(listOf(parts.map(function(n){return low(clause(n.a));}))))+'.</div>';}
+   var one=parts.length===1;
+   h+='<div class="sl"><b>It runs on:</b> '+(one?'One address':parts.length+' addresses')
+    +' the engine picked. Is '+(one?'it':'each one')+' you?</div>';
+   var show=MORE[g.fet]?parts:parts.slice(0,1);
+   show.forEach(function(n){h+=storyRow(n);});
+   var rest=parts.length-show.length;
+   if(rest>0)h+='<button type="button" class="more" data-more="'+esc(g.fet)+'">'
+    +rest+(rest===1?' more address':' more addresses')+' on this card</button>';}
   else h+='<div class="sl"><b>It runs on:</b> No address at the '+esc(listOf(seats))
    +' seat carries '+esc(low(g.fet))+', so none is named.</div>';
   h+='<div class="sl"><b>Your answers:</b> '+esc(answersSay(g))+'</div>';
@@ -19202,10 +19301,18 @@ function storyLit(ps,t,r){
   :'Nothing in this entry reads as held yet.';
  var h='<section id="lit"><div class="hd"><span class="eye">What your words lit</span>'
   +'<h2>'+esc(head)+'</h2></div><div class="bd">';
+ /* the address is defined where it is first asked about, in kb.js's own
+    words, and the line about the answers being held says so once under the
+    cards rather than on every row */
+ var asks=cards.some(function(g){return g.nodes.length>0;});
  if(cards.length)h+='<p class="sm lede">Each card is one charge your words '
-  +'named. A charge is survival energy stuck at one place in the body. The last line '
-  +'on each card says whether your answers reached the same place.</p>'
+  +'named. A charge is survival energy stuck at one place in the body.'
+  +(asks?' An address is one exact place in your body. Your words did not pick the '
+   +'addresses, the engine did, so each one asks Yes or Not me.':'')
+  +' The last line on each card says whether your answers reached the same place.</p>'
   +'<div class="sabs">'+cards.map(card).join('')+'</div>'
+  +(asks?'<p class="sm">What you mark Yes or Not me stays on this page with your story. '
+   +'It is not saved and it is not in your record.</p>':'')
   +(seatSay?'<p class="sm">'+seatSay+'</p>':'');
  else if(so.length)h+='<p class="sm lede">'+seatSay+'</p>'
   +'<p class="sm">Write where you felt it, and what it was, and the reader can name it.</p>';
@@ -19288,8 +19395,12 @@ function viewDoor(){
  +'format, and Atuned\'s loader takes it as it stands: your coherence, the '
  +'21 law values, the nine charges, and every address they landed on.'
  /* the signal is held by the story's rule, so it is named beside it */
- +(STORY_AT&&sigSentence()?' What you noticed and your story are not in it.'
-   :STORY_AT?' Your story is not in it.'
+ /* and so is what was marked on the story's addresses, named only when
+    something was, so a person who marked nothing is not told about a step
+    they did not take */
+ +(STORY_AT&&sigSentence()?(marked()?' What you noticed, your story and what you marked Yes or Not me are not in it.'
+    :' What you noticed and your story are not in it.')
+   :STORY_AT?(marked()?' Your story and what you marked Yes or Not me are not in it.':' Your story is not in it.')
    :sigSentence()?' What you noticed is not in it.':'')+'</p>'
  /* THE RECORD IN A LINK, round QZ. Opening the app with the record already
     in it replaces two steps, save here and load there, with one press. The
@@ -19414,6 +19525,7 @@ function render(){
  if((b=document.getElementById('restart')))b.onclick=function(){
   A={}; save(); AT=0; STATE=SIG.done?'q':'notice'; SIG_AT='where'; render(); scrollTo(0,0);};
  if(STATE==='notice')bindNotice();
+ if(STATE==='story')bindMarks();
  if((b=document.getElementById('back')))b.onclick=function(){
   AT=Math.max(0,AT-1); render(); scrollTo(0,0);};
  if((b=document.getElementById('stop')))b.onclick=function(){
@@ -19432,6 +19544,9 @@ function render(){
   if(!STORY.trim()){
    document.getElementById('stnote').textContent='Nothing written yet, so there is nothing to read.';
    return;}
+  /* a new story is a new set of addresses, so the marks go with the old one,
+     as OB.ans does in the app. The same text read again keeps them. */
+  if(STORY!==STORY_AT){ MARK={}; MORE={}; }
   STORY_AT=STORY; render();
   var lit=document.getElementById('lit'); if(lit&&lit.scrollIntoView)lit.scrollIntoView({block:'start'});};
  if((b=document.getElementById('tolink')))linkArm(b);
@@ -19470,6 +19585,30 @@ function render(){
    A[ORDER[AT]]=+n.dataset.v; save();
    if(AT+1>=ORDER.length){ STATE='read'; }else{ AT++; }
    render(); scrollTo(0,0);};});}
+
+/* THE MARKS' CONTROLS. A redraw rewrites the whole page, so an answer keeps
+   the person where they were, the scroll and focus on the same button, the
+   way obRenderKeep does in the app: a keyboard user pressing Not me must not
+   be thrown back to the top. A second press on the pressed answer takes it
+   back to unanswered, as it does there. Opening a card moves focus to the
+   first address it revealed. */
+function bindMarks(){
+ var keep=function(find){
+  var y=window.pageYOffset||0; render(); scrollTo(0,y);
+  var f=find(); if(f&&f.focus)f.focus({preventScroll:true});};
+ Array.prototype.forEach.call(el.querySelectorAll('[data-ans]'),function(n){
+  n.onclick=function(){
+   var i=n.getAttribute('data-ai'), v=n.getAttribute('data-ans');
+   if(MARK[i]===v)delete MARK[i]; else MARK[i]=v;
+   keep(function(){return el.querySelector('[data-ans="'+v+'"][data-ai="'+i+'"]');});};});
+ Array.prototype.forEach.call(el.querySelectorAll('[data-more]'),function(n){
+  n.onclick=function(){
+   var fet=n.getAttribute('data-more'); MORE[fet]=1;
+   keep(function(){
+    var c=[].filter.call(el.querySelectorAll('[data-card]'),function(x){
+     return x.getAttribute('data-card')===fet;})[0];
+    var ys=c?c.querySelectorAll('[data-ans="yes"]'):[];
+    return ys[1]||ys[0]||null;});};});}
 
 /* THE SIGNAL'S CONTROLS. A tap on a place or a word is the answer and the step
    forward, as on a question. Own words go through the button or Enter, and an

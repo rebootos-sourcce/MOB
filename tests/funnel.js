@@ -298,6 +298,126 @@ const PROBE = () => {
     ok(await page.locator('.opt').count() === shape.scale,
       '@' + w + ': "Change an answer" does not return to a question');
 
+    /* YES AND NOT ME ON THE STORY'S ADDRESSES, punch list item 5. Every
+       address a card names asks Yes or Not me, in the app's own two words; the
+       heaviest shows and the rest sit behind a button that says how many; a
+       press is held, said back, and taken back by a second press; a Not me
+       leaves the card's last line; and nothing marked reaches storage or the
+       record. The story is read in the real reader, so the cards and their
+       addresses come off the engine and no count of them is typed here.
+       Checked against two broken copies first, one that wrote the marks into
+       the record as an entry and one that kept comparing the answers with a
+       refused address. The gate caught both. */
+    await page.locator('#stop').click();
+    const rec0 = await page.evaluate(() => recordJSON());
+    await page.click('#tostory');
+    const ST = 'I was scared to call my mother. My chest went tight and I felt ashamed that I still flinch.';
+    await page.fill('#storytx', ST);
+    await page.click('#readit');
+    const cardsOf = () => page.evaluate(() => [...document.querySelectorAll('.sab[data-card]')].map(c => {
+      const runs = [...c.querySelectorAll('.sl')].map(n => n.textContent)
+        .filter(t => /^It runs on:/.test(t))[0] || '';
+      const m = runs.match(/^It runs on: (One|\d+) address/);
+      return { fet: c.getAttribute('data-card'),
+        n: m ? (m[1] === 'One' ? 1 : +m[1]) : 0,
+        rows: [...c.querySelectorAll('.addr')].map(r => r.getAttribute('data-addr')),
+        yes: [...c.querySelectorAll('[data-ans="yes"]')].map(b => b.textContent),
+        no: [...c.querySelectorAll('[data-ans="no"]')].map(b => b.textContent),
+        more: (c.querySelector('[data-more]') || {}).textContent || '',
+        last: ([...c.querySelectorAll('.sl')].pop() || {}).textContent || '' };
+    }));
+    const c0 = await cardsOf();
+    const asking = c0.filter(c => c.n > 0);
+    ok(asking.length > 0, '@' + w + ': the story read no card with an address, so nothing asks Yes or Not me');
+    asking.forEach(c => {
+      ok(c.rows.length === 1, '@' + w + ': the ' + c.fet + ' card opens on ' + c.rows.length + ' addresses, not its heaviest one');
+      ok(c.yes.every(t => t === 'Yes') && c.no.every(t => t === 'Not me') && c.yes.length === c.rows.length
+        && c.no.length === c.rows.length,
+        '@' + w + ': the ' + c.fet + ' card does not ask Yes and Not me on every address it shows: '
+        + c.yes.concat(c.no).join('/'));
+      const rest = c.n - c.rows.length;
+      ok(rest === 0 ? !c.more : (c.more.indexOf(String(rest)) === 0),
+        '@' + w + ': the ' + c.fet + ' card holds ' + c.n + ' addresses and its button says "' + c.more + '"');
+    });
+    /* the load and the floor, on the page as it opens with the rows on it */
+    const choices = await page.evaluate(() => [...document.querySelectorAll(
+      'button,input,select,textarea,a[href],[role=button]')].filter(e => {
+      const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0; }).length);
+    ok(choices < 12, '@' + w + ': the story page opens on ' + choices + ' choices, over the house target of under 12');
+    const spr = await page.evaluate(PROBE);
+    const sunder = spr.ctrl.filter(c => c.w < 44 || c.h < 44);
+    ok(sunder.length === 0, '@' + w + ': ' + sunder.length + ' story control(s) under 44 by 44: '
+      + sunder.slice(0, 4).map(c => '"' + c.t + '" ' + c.w + 'x' + c.h).join(', '));
+
+    /* a press is held, said back, keeps focus, and a second press takes it back */
+    const first = asking[0], ai = first.rows[0];
+    const rowState = () => page.evaluate(i => {
+      const r = document.querySelector('.addr[data-addr="' + i + '"]');
+      const a = document.activeElement;
+      return { yes: r.querySelector('[data-ans="yes"]').getAttribute('aria-pressed'),
+        no: r.querySelector('[data-ans="no"]').getAttribute('aria-pressed'),
+        said: ((r.querySelector('.addrst') || {}).textContent || ''),
+        focus: a ? (a.getAttribute('data-ans') || '') + ':' + (a.getAttribute('data-ai') || '') : '' };
+    }, ai);
+    await page.click('.addr[data-addr="' + ai + '"] [data-ans="no"]');
+    let rs = await rowState();
+    ok(rs.no === 'true' && rs.yes === 'false' && /^Marked not you\./.test(rs.said),
+      '@' + w + ': Not me was not held and said back: ' + JSON.stringify(rs));
+    ok(rs.focus === 'no:' + ai, '@' + w + ': focus left Not me after the redraw, it is on "' + rs.focus + '"');
+    await page.click('.addr[data-addr="' + ai + '"] [data-ans="yes"]');
+    rs = await rowState();
+    ok(rs.yes === 'true' && rs.no === 'false' && rs.said === 'Marked yours.',
+      '@' + w + ': Yes did not replace Not me: ' + JSON.stringify(rs));
+    await page.click('.addr[data-addr="' + ai + '"] [data-ans="yes"]');
+    rs = await rowState();
+    ok(rs.yes === 'false' && rs.no === 'false' && rs.said === '',
+      '@' + w + ': a second press on Yes did not take it back: ' + JSON.stringify(rs));
+
+    /* the rest of the card opens, and focus lands on the first it revealed */
+    if (first.n > 1) {
+      await page.click('.sab[data-card="' + first.fet + '"] [data-more]');
+      const c1 = (await cardsOf()).filter(c => c.fet === first.fet)[0];
+      ok(c1.rows.length === first.n && !c1.more,
+        '@' + w + ': the ' + first.fet + ' card opened ' + c1.rows.length + ' of ' + first.n + ' addresses');
+      const fa = await page.evaluate(() => document.activeElement && document.activeElement.getAttribute('data-ai'));
+      ok(fa === c1.rows[1], '@' + w + ': opening the card left focus on ' + fa + ', not the first address it revealed');
+    }
+
+    /* a Not me on every address the card names takes the answers' comparison
+       off every one of them, so its last line no longer talks about addresses */
+    const before = (await cardsOf()).filter(c => c.fet === first.fet)[0];
+    for (const id of before.rows) await page.click('.addr[data-addr="' + id + '"] [data-ans="no"]');
+    const after = (await cardsOf()).filter(c => c.fet === first.fet)[0];
+    ok(!/address/.test(after.last),
+      '@' + w + ': every address on the ' + first.fet + ' card is Not me and its last line still reads "' + after.last + '"');
+    console.log('  story: ' + c0.length + ' cards, ' + asking.map(c => c.fet + ' ' + c.n).join(', ')
+      + ' addresses, ' + choices + ' choices as it opens');
+    console.log('  last line before Not me: "' + before.last + '"');
+    console.log('  last line after Not me:  "' + after.last + '"');
+
+    /* nothing marked reaches the record or storage. The record is compared
+       whole, less the three fields every call stamps fresh. */
+    const strip = j => { const o = JSON.parse(j); delete o.id; delete o.created; delete o.updated; return o; };
+    const rec1 = await page.evaluate(() => recordJSON());
+    ok(JSON.stringify(strip(rec1)) === JSON.stringify(strip(rec0)),
+      '@' + w + ': marking Yes and Not me changed the record');
+    const r1 = JSON.parse(rec1);
+    ok(r1.story && r1.story.entries && r1.story.entries.length === 0,
+      '@' + w + ': the record carries ' + (r1.story && r1.story.entries ? r1.story.entries.length : '?') + ' story entries');
+    const stored = await page.evaluate(() => {
+      const out = {}; for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i); out[k] = localStorage.getItem(k); } return out; });
+    const keys = Object.keys(stored).map(k => k + ':' + Object.keys(JSON.parse(stored[k]) || {}).join(','));
+    ok(keys.length === 1 && keys[0] === 'atuned.quiz.v2:a',
+      '@' + w + ': storage holds more than the answers: ' + keys.join(' '));
+    ok(JSON.stringify(stored).indexOf('mother') < 0, '@' + w + ': the story reached storage');
+
+    /* and the door says what was marked is not in the record */
+    await page.click('#todoor');
+    const doorSay = await page.locator('.door').first().innerText();
+    ok(/what you marked Yes or Not me are not in it/.test(doorSay),
+      '@' + w + ': the door does not say what was marked is not in the record');
+
     ok(errs.length === 0, '@' + w + ': the quiz threw: ' + errs.slice(0, 2).join(' | '));
     await ctx.close();
   }
