@@ -252,7 +252,10 @@ function anaRender(){
       time on this surface. Each bar names its CQ and seat on its title, and
       the warning stands once, beside Identification. */
    +'<div class="ana-strip">';
-  H.forEach(function(x){out+='<div class="ana-px" title="CQ '+x.cq+', heaviest at the '+String(x.dark).toLowerCase()
+  /* ESCAPED, ROUND RA: x.dark is a history row's own string, checked by the schema
+     boundary for type only, not content (engine/schema.js); it lands in a title
+     attribute here, where an unescaped quote breaks out of it. esc() closes that. */
+  H.forEach(function(x){out+='<div class="ana-px" title="CQ '+x.cq+', heaviest at the '+esc(String(x.dark).toLowerCase())
    +'"><u style="height:'+Math.max(6,Math.round(x.cq/100*50))+'px;background:'
    +seatCol(x.dark)+'"></u></div>';});
   out+='</div>';}

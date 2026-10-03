@@ -1320,6 +1320,11 @@ function drawWheel0(r,L){
      DAMPENED A SECOND TIME, FIFTY PERCENT, round OG: "the jitter animation
      on the field is still too strong. By about fifty percent." 0.021 became
      0.0105, half of it, which is 0.35 of the first cut's 0.03.
+
+     DAMPENED A THIRD TIME, THIRTY PERCENT MORE, round RA: "dampen the
+     jitter animation on the field by 30% more." 0.0105 became 0.00735,
+     seven tenths of it, which is 0.245 of the first cut's 0.03. Shape and
+     the two frequencies, 9 and 11Hz, still untouched.
      ============================================================ */
   const JIT_AT=0.5;
   /* DAMPENED 30 PERCENT, round MI: "one note on the vibration animation of
@@ -1328,7 +1333,7 @@ function drawWheel0(r,L){
      two frequencies untouched. */
   const jitOff=(x0,y0,k)=>{
    if(REDUCED||!k||k<=JIT_AT)return null;
-   var s=(k-JIT_AT)/(1-JIT_AT), amp=U*0.0105*s;
+   var s=(k-JIT_AT)/(1-JIT_AT), amp=U*0.00735*s;
    var ph=(((x0*12.9898+y0*78.233)%1)+1)%1*TAU;
    return [Math.sin(S.t*TAU*9+ph)*amp,Math.sin(S.t*TAU*11+ph*1.7)*amp];};
   /* the thread, and its pulse queued: t is the same tension its sag is drawn
