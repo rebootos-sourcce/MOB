@@ -174,6 +174,15 @@ after F16 and the rest of section 0 above, per his own order.
   closing line naming the count released and reframed before the cooldown. Not yet dispatched as of this
   write; next action this session.
 
+**TDD 5, the Funnel/Onboarding/Tutorial Creative TDD** (`reviews/ATUNED-Funnel-Onboarding-Tutorial-Creative-TDD.md`, round QX, 3 October). A full first-use journey handoff: funnel beats, a public Signal Test and Baseline reveal before any score, a progressive Reading, Story/Mirror/Test/Correct, Release/Reframe/Verify, a Signal Re-test, Ritual Detected, account handoff, a Tutorial debrief, an About page outline, FAQ copy, and a full frontend/backend data contract. Heavily overlaps TDD 4 above (same signal test, baseline, CQ direction, gap, ritual-detection ground) - audited with instructions to cite TDD 4's verdicts rather than re-grade them, and to end with an ordered, sized punch list for the funnel specifically, since his own round QX order is **release first (done, see below), then funnel to completion, everything else secondary.** Audit dispatched, running; this section gets the punch list the moment it lands.
+
+**Release screen: DONE, merged round QX.** `release-simplify` landed at `abd1fb9`. The "that I am" fix, seat-colour lines, and the round QR simplification pass are all in. `tests/engine.js` 4459/0, `tests/release-screen.js` 145/0, both re-verified on the merged tree.
+
+**Queued, explicitly secondary to release and funnel per his own round QX order, not started, not lost:**
+- **A real sniffer finding, not a feature idea.** His own words: "I'm able to talk about painful situations and the sniffer's not picking up because the sniffer is too specific... it needs to be fuzzier. The rules need to be looser." Read as: extend the sniffer's matching to synonyms and antonyms of its existing key words rather than requiring a literal lexicon hit. This is the same gap already measured earlier tonight (the sniffer's own recall gap, about 91 percent of his prose currently reading as nothing), now hit independently from his own real use. Real, concrete, worth prioritizing once release and funnel are through.
+- **A right-hand info-area carousel**, cycling short snippets (behavior, identity, "who you are") from the person's own summary, replaced by whatever is selected, interruptible. His own words: "I'm not certain how I feel about that" - a real idea, explicitly not a committed spec.
+- **A two-way chat mode for Source AI** ("make source a socially chat interactive," "add a button where I can just have a conversation back and forth"), visually in the Field's own living language rather than a plain text box ("make it look like the soul," read against the house rule against a second visual language).
+
 ## A. Done and pushed (latest build v1161, commit 8df2ce2, sent to him as atuned.html)
 
 Full list in `PLAN-HISTORY.md`. This round: all gates green on a quiet machine; welcome
