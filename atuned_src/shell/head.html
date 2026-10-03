@@ -4555,15 +4555,98 @@ body.punch .ip.kid{background:color-mix(in srgb,var(--c) 68%,var(--panel-2))}
 .ab-b:hover circle{opacity:.95}
 .ab-b.on circle{stroke-width:2.8}
 .ana-laws{display:flex;gap:6px;align-items:flex-end;margin-top:11px;flex-wrap:wrap}
-.ana-lw{display:flex;flex-direction:column;align-items:center;gap:6px;width:40px}
+.ana-lw{display:flex;flex-direction:column;align-items:center;gap:6px;width:44px;min-height:var(--tap)}
 .ana-lw s{text-decoration:none;display:flex;align-items:flex-end;height:60px}
 .ana-lw u{display:block;width:20px;border-radius:3px 3px 0 0;text-decoration:none}
 .ana-lw span{font-size:11px;font-weight:600;color:var(--dim)}
 .ana-lw.shut u{opacity:.3}
 .ana-lw.shut span{color:var(--alarm)}
 .ana-strip{display:flex;gap:4px;align-items:flex-end;margin-top:11px;flex-wrap:wrap}
-.ana-px{display:flex;align-items:flex-end;height:50px}
+.ana-px{display:flex;align-items:flex-end;justify-content:center;width:44px;height:56px}
 .ana-px u{display:block;width:18px;border-radius:3px;text-decoration:none}
+/* THE BUBBLE LABELS ON THEIR OWN FILL, round RB. The fill runs to 82 per cent
+   of the seat colour and the label is ink, so on a light seat a white label
+   sat on a pale disc and failed a basic contrast check (REVIEW-mvp/TALLY.md,
+   the visual seat). A halo in the panel's own colour sits between the two,
+   so the label is read against the ground it was chosen for on every
+   lighting, whatever the disc underneath it is. */
+.ab-t,.ab-v{paint-order:stroke;stroke:var(--panel-2);stroke-width:3.2px;stroke-linejoin:round}
+.ab-b:focus-visible{outline:none}
+.ab-b:focus-visible circle{stroke-width:2.8}
+/* EVERY PRESS ON THE PAGE IS A BUTTON, round RB, so each takes the button
+   resets and the 44 pixel floor the tap gate holds */
+.ana-lw,.ana-px,.ana-g,.ana-g-h,.ana-g-r,.ana-tile,.ana-rung,.ana-bar,.ana-crumb{font:inherit;color:inherit;
+ cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ana-lw,.ana-px{background:none;border:0;padding:0;border-radius:var(--r-xs)}
+.ana-lw:hover,.ana-px:hover,.ana-g-h:hover,.ana-g-r:hover,.ana-bar:hover{background:var(--sunk)}
+.ana-lw:focus-visible,.ana-px:focus-visible,.ana-g:focus-visible,.ana-g-h:focus-visible,.ana-g-r:focus-visible,
+.ana-tile:focus-visible,.ana-rung:focus-visible,.ana-bar:focus-visible,.ana-crumb:focus-visible,
+.ab-acc[data-ana]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ab-acc[data-ana]{cursor:pointer;border-radius:var(--r-xs)}
+.ab-acc[data-ana]:hover b{color:var(--gold)}
+.ana-tele{margin-top:4px}
+.ana-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px;margin-top:9px}
+.ana-tile{display:flex;flex-direction:column;align-items:center;gap:7px;padding:12px 6px 10px;min-height:var(--tap);
+ border:1px solid var(--edge);border-radius:var(--r);background:var(--panel-2)}
+.ana-tile:hover{border-color:var(--edge-2)}
+.ana-tile-l{font-size:12.5px;font-weight:600;color:var(--ink);border-bottom:1px dotted var(--edge-2)}
+/* the grid. a column per seat, a row per feeling, both edges are doors */
+.ana-grid{display:grid;grid-template-columns:minmax(96px,auto) repeat(7,minmax(44px,1fr));gap:3px;
+ margin-top:9px;padding:12px;border:1px solid var(--edge);border-radius:var(--r);background:var(--panel-2)}
+.ana-g-c{display:block}
+.ana-g-h,.ana-g-r{display:flex;flex-direction:column;justify-content:center;gap:4px;min-height:var(--tap);
+ background:none;border:0;border-radius:var(--r-xs);padding:4px 5px}
+.ana-g-h{align-items:center;text-align:center;font-size:11.5px;font-weight:600;color:var(--dim)}
+.ana-g-r{align-items:flex-start;text-align:left;font-size:13px;color:var(--ink)}
+.ana-g-h i,.ana-g-r i{display:block;height:3px;border-radius:2px;max-width:100%}
+.ana-g-h i{align-self:stretch;margin:0 auto}
+.ana-g{min-height:var(--tap);min-width:44px;padding:0;border:1px solid var(--edge);border-radius:var(--r-xs)}
+.ana-g.held{box-shadow:inset 0 0 0 2px var(--c)}
+.ana-g:hover{border-color:var(--ink)}
+.ana-g-x{min-height:var(--tap);border-radius:var(--r-xs);opacity:.55;
+ background:repeating-linear-gradient(135deg,transparent 0 5px,var(--edge) 5px 6px)}
+/* the chain, ring by ring */
+.ana-rungs{display:flex;flex-wrap:wrap;align-items:center;gap:4px 2px;margin-top:9px}
+.ana-rung{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:var(--tap);min-height:var(--tap);
+ padding:8px 12px;border:1px solid var(--edge);border-radius:var(--r);background:var(--panel-2)}
+.ana-rung:hover{border-color:var(--edge-2)}
+.ana-rung b{font-family:var(--num);font-size:20px;font-weight:400;color:var(--ink);line-height:1.1}
+.ana-rung b .lk-mk,.ana-rung b svg{width:16px;height:16px}
+.ana-rung span{font-size:12px;color:var(--mid)}
+.ana-rung-s{color:var(--dim);font-size:16px;padding:0 2px}
+/* inside a card: the trail, the figure row, the splits */
+.ana-crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:2px 2px;margin:0 0 8px}
+.ana-crumb{min-height:var(--tap);padding:4px 10px;border:1px solid var(--edge);border-radius:999px;
+ background:none;font-size:12.5px;color:var(--mid);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ana-crumb:hover{color:var(--ink);border-color:var(--edge-2)}
+.ana-crumb-s{color:var(--dim);padding:0 3px}
+.ana-crumb-at{font-size:12.5px;font-weight:600;color:var(--ink);padding:0 4px}
+.ana-kv{display:flex;flex-wrap:wrap;gap:8px 14px;margin:4px 0 12px}
+.ana-kv>div{display:flex;flex-direction:column;gap:4px;min-width:44px}
+.ana-kv span{font-size:11px;font-weight:600;color:var(--dim)}
+.ana-kv b{font-family:var(--num);font-size:20px;font-weight:400;color:var(--ink);line-height:1.2}
+.ana-bars{display:flex;flex-direction:column;gap:2px;margin-top:6px}
+.ana-bar{display:grid;grid-template-columns:minmax(76px,30%) 1fr auto;gap:10px;align-items:center;width:100%;
+ min-height:var(--tap);padding:4px 6px;border:0;background:none;border-radius:var(--r-xs);text-align:left;font-size:13.5px}
+.ana-bar-n{color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ana-bar-t{display:block;height:8px;border-radius:4px;background:var(--sunk);overflow:hidden}
+.ana-bar-t i{display:block;height:100%;border-radius:4px}
+.ana-bar-f{font-size:12px;color:var(--dim);white-space:nowrap}
+.ana-dls{display:flex;flex-direction:column;gap:2px;margin:6px 0 10px}
+.ana-dl{display:grid;grid-template-columns:1fr auto minmax(86px,auto);gap:10px;align-items:baseline;
+ padding:5px 6px;border-bottom:1px solid var(--edge);font-size:13.5px;color:var(--mid)}
+.ana-dl b{font-family:var(--num);font-weight:400;color:var(--ink);font-variant-numeric:tabular-nums}
+.ana-dl em{font-style:normal;font-size:12px;color:var(--dim);text-align:right}
+/* ON A PHONE the feeling's name takes its own line over its row, so the
+   seven squares under it keep the 44 pixel floor across a 390 screen */
+@media (max-width:560px){
+ .ana-grid{grid-template-columns:repeat(7,minmax(0,1fr));padding:8px}
+ .ana-g-c{display:none}
+ .ana-g-r{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:flex-start;gap:10px;padding:6px 4px 2px}
+ .ana-g-r span{flex:0 0 auto}
+ .ana-g-h{padding:4px 1px;font-size:11px}
+ .ana-g,.ana-g-x{min-width:0}
+}
 
 /* ============================================================
    DRILL

@@ -1658,7 +1658,8 @@ document.addEventListener('click',function(e){
  var axb=e.target.closest?e.target.closest('[data-axd]'):null;
  if(axb){axdSet(axb.getAttribute('data-axd'));return;}
  var row=e.target.closest?e.target.closest('.ad-r[data-addr]'):null;
- if(!row)return;
+ /* a row inside the Analytics trail is that trail's, round RB */
+ if(!row||row.hasAttribute('data-ana'))return;
  var n=BY[+row.getAttribute('data-addr')];
  if(!n)return;
  /* No render() here. runNodeDrill paints the drill itself, and on Analytics a
