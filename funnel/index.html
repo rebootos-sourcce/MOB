@@ -27,7 +27,8 @@
      column, one storyboard beat per frame, in the TDD's own words and order.
      The stage holds still beside it (on a phone, a band pinned to the top)
      and changes state as each beat arrives: three points of light, six
-     situations, one pattern, the whole network, the body, a knot that
+     situations, one pattern, an answer that runs through the whole field
+     until it runs on its own, the whole network, the body, a knot that
      loosens, the loop, and at the close one point again. Every motion on it
      is one of the states in the TDD's visual grammar (section 69), and none
      of it is decoration: "Decorative motion that communicates none of these
@@ -577,6 +578,52 @@ a.ghost:hover{color:var(--ink)}
  <p class="rv" style="--d:1.5s">Correct it and the reading changes. You have the last word.</p>
 </section>
 
+<!-- FUNNEL BEAT 04, THE CASCADE. reviews/ATUNED-Funnel-Onboarding-Tutorial-
+     Creative-TDD.md section 12: "The user sees a coherent system. A
+     disturbance enters. The response travels through the conceptual system
+     ... event, response, nerve, nervous system, body, larger system. Then the
+     system repeats. The response becomes conditioned. The user sees that the
+     original event can eventually become unnecessary for the response to
+     appear."
+
+     Here because that is the TDD's own order: the mirror just above is beat
+     03, a story hiding a pattern, and the network just below is where the
+     Field assembles whole, which is beat 05. Nothing before this showed a
+     response travelling or a response running on its own, so it is its own
+     frame and not a line added to either neighbour.
+
+     The stage is the same Field, eased, never a cut. Something comes in from
+     outside and lands on one address. The answer runs in along a thread to
+     the heart's pattern (the same pattern release loosens further down),
+     through a complex to the core, back out along that pattern's own threads
+     to its seat, and round the whole ring. Four passes. Each one is quicker,
+     the thread pulls tighter and straighter, its pulses run faster by the
+     Field's own rule, and the steps between stages close until they read as
+     one event. The third spark is faint and the fourth pass has none: the
+     answer runs anyway. The three steps light in time with it, the way
+     release's do.
+
+     "Do not present this as a universal biomedical law. The animation is an
+     ATUNED conceptual model." So the frame says it is a model, in print, and
+     the key never names a nerve as anything but a likeness. -->
+<section class="fr" id="cascade" data-frame="cascade">
+ <h2 class="rv">A response can become a pattern.</h2>
+ <p class="big rv soft" style="--d:.15s">A pattern can become a habit.</p>
+ <ol class="steps rv" style="--d:.3s" id="csteps">
+  <li data-step="once"><b>Once</b><span>Something happens. Your body answers.</span></li>
+  <li data-step="again"><b>Again</b><span>The same answer comes back, quicker each time.</span></li>
+  <li data-step="own"><b>On its own</b><span>The answer starts with nothing new to answer, before you choose it.</span></li>
+ </ol>
+ <p class="m soft rv" style="--d:.45s">The picture is our own model of how a pattern forms.</p>
+ <div class="cap rv" style="--d:.6s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-cascade"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-cascade">Something comes in from outside and lands on one point on the ring.
+ That point is one place in your body, and it answers. The answer runs in along
+ a line, the way a nerve carries a signal. It crosses the middle and spreads back
+ out until the whole ring has felt it. Each time round, the line pulls tighter and
+ the answer comes quicker. On the last pass nothing comes in, and it runs anyway.
+ It is a picture of a model, and it measures nothing.</p></div>
+</section>
+
 <!-- BEAT 08, ONE THING BECOMES MANY. Visual: "One point. Repeated points.
      Clusters. Connections. Network." The stage assembles the whole Field. -->
 <section class="fr" id="connect" data-frame="network">
@@ -710,8 +757,8 @@ function seeded(s){return function(){s|=0;s=s+0x6D2B79F5|0;var t=Math.imul(s^s>>
 /* ---------------- the Field ---------------- */
 var cv=D.getElementById('fld'), g=cv&&cv.getContext&&cv.getContext('2d');
 var stage=D.getElementById('stage');
-var COL={}, ACC, BG=[12,13,18], WHITE=[255,255,255];
-function readCols(){SEATS.forEach(function(s){COL[s]=hex(tok('--'+s));});ACC=hex(tok('--accent'));BG=hex(tok('--bg'));}
+var COL={}, ACC, INK=[230,230,235], BG=[12,13,18], WHITE=[255,255,255];
+function readCols(){SEATS.forEach(function(s){COL[s]=hex(tok('--'+s));});ACC=hex(tok('--accent'));INK=hex(tok('--ink'));BG=hex(tok('--bg'));}
 readCols();
 
 var rnd=seeded(11);
@@ -762,6 +809,7 @@ var FR={
  arrive:   {ring:.20,net:.22,pat:.12,core:.0, csc:1,  pul:.6},
  recognize:{ring:.20,net:.06,pat:.04,core:.0, csc:1,  pul:.4},
  mirror:   {ring:.14,net:.04,pat:.03,core:.0, csc:1,  pul:.35},
+ cascade:  {ring:.26,net:.06,pat:.12,core:.3, csc:.75,pul:.35},
  network:  {ring:.95,net:1,  pat:1,  core:1,  csc:1,  pul:1},
  body:     {ring:.95,net:1,  pat:1,  core:1,  csc:1,  pul:1},
  release:  {ring:.34,net:.10,pat:.22,core:.45,csc:.8, pul:.6},
@@ -770,6 +818,7 @@ var FR={
  ret:      {ring:0,  net:0,  pat:0,  core:1,  csc:.3, pul:0}};
 var frame='arrive', frameT=0, now=0, born=0, recN=0, recOn=false, step='';
 var stepEls=[].slice.call(D.querySelectorAll('#steps li'));
+var cstepEls=[].slice.call(D.querySelectorAll('#csteps li')), cstep='';
 
 function setStep(s){if(s===step)return;step=s;
  stepEls.forEach(function(li){li.classList.toggle('on',s==='all'||li.getAttribute('data-step')===s);});}
@@ -791,20 +840,121 @@ function knot(el){
  setStep(REDUCED?'all':(tr<2.6?'pattern':(tr<6.6?'release':'reframe')));
  return {kt:kt,ka:ka,ks:ks,prog:prog,na:na};}
 
+/* ---------------- beat 04, the cascade ----------------
+   A disturbance enters a coherent system and the answer travels: event,
+   response, nerve, nervous system, body, larger system. On the Field that is
+   a spark from outside landing on one address at the top of the ring, which
+   answers; a thread in to that seat's pattern; through its complex, the core
+   and out the far side to the heart's pattern (the knot release loosens
+   further down); that pattern's own three threads out to its seat at the
+   bottom, which lights; and a wave from that seat round the whole ring. The
+   answer has to cross the whole field, so the eye takes it in the order it
+   happens. Then it repeats, four passes in thirteen seconds, and each pass
+   carries the data the beat is about:
+
+     k     the pass's time scale. 1, .62, .45, .40: it comes quicker.
+     tt    the thread's tension after the pass. Its sag and its pulse speed
+           are the Field's own rule off t, so a habit is drawn as a line that
+           pulls straighter and runs faster, which the network's key already
+           says: "A tighter line, with quicker pulses, pulls harder."
+     rem   what the path keeps after the pass: the groove deepens.
+     ev    the spark. Full, full, faint, none. The fourth pass runs with
+           nothing coming in.
+
+   The stagger between the three outgoing threads is 80 ms on the first pass,
+   which reads as three things happening, and 35 ms by the fourth, which reads
+   as one: the steps fuse as it becomes automatic. Reduced motion holds the
+   end of the fourth pass, taut and lit with nothing coming in, and draws it
+   once. */
+var CCY=13, CEV=.85;
+/* every hop is a thread the network already draws: an address to its seat's
+   pattern, a pattern to its complex, a complex to the core */
+var CE=A[0*16+3], CP0=P[0], CC0=C[0], CPN=P[3], CC1=C[Math.min(4,Math.floor(3*5/14))];
+var CHOME=[0,1,2].map(function(q){return A[3*16+((3*5+q*5+3)%16)];}), CMID=A[3*16+7];
+var CPASS=[{at:.30,k:1,  ev:1,  rem:.22,tt:.2},
+           {at:4.75,k:.62,ev:1,  rem:.38,tt:.5},
+           {at:7.60,k:.45,ev:.45,rem:.55,tt:.75},
+           {at:9.70,k:.40,ev:0,  rem:.75,tt:1}];
+CPASS.forEach(function(p){p.ti=p.at+(p.ev>0?CEV*p.k:0);});
+/* each hop starts 30 ms before the last one lands, so nothing waits for the
+   thing before it to finish */
+var CLEG=[{o:CE,i:CP0,s:.10,d:.32,c:0},
+          {o:CP0,i:CC0,s:.40,d:.25,c:0},
+          {o:CC0,i:CORE,s:.62,d:.25,c:-1},
+          {o:CORE,i:CC1,s:.85,d:.25,c:-1},
+          {o:CC1,i:CPN,s:1.07,d:.25,c:3}];
+CHOME.forEach(function(a,q){CLEG.push({o:CPN,i:a,s:1.30+.08*q,d:.30,c:3});});
+var CNODE=[CP0,CC0,CC1,CPN], CS=null, CA=0;
+function sm(k){k=clamp(k,0,1);return k*k*(3-2*k);}
+function ioc(k){k=clamp(k,0,1);return k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;}
+function env(t,s,up,hold,dn){if(t<s)return 0;t-=s;if(t<up)return ease(t/up);t-=up;
+ if(t<hold)return 1;t-=hold;return t<dn?1-sm(t/dn):0;}
+function casc(el){
+ var tr=el%CCY, i=-1, ei=A.indexOf(CE), mi=A.indexOf(CMID),
+  st={env:[],legs:[],spark:null,ping:null,core:0,node:[0,0,0,0],tt:.1,fade:1,pass:0};
+ for(var n=0;n<112;n++)st.env.push(0);
+ if(REDUCED){st.pass=3;st.tt=1;st.core=.5;st.node=[.9,.8,.8,1];st.env[ei]=.8;
+  CLEG.forEach(function(L){st.legs.push({b:.75,p:-1,pa:0});});
+  CHOME.forEach(function(a){st.env[A.indexOf(a)]=.6;});
+  return st;}
+ CPASS.forEach(function(p,j){if(tr>=p.at)i=j;});
+ st.pass=Math.max(0,i);
+ if(tr>CCY-.7)st.fade=1-sm((tr-(CCY-.7))/.7);
+ if(i<0){CLEG.forEach(function(){st.legs.push({b:0,p:-1,pa:0});});return st;}
+ var P0=CPASS[i], k=P0.k, t=tr-P0.ti, remP=i>0?CPASS[i-1].rem:0, ttP=i>0?CPASS[i-1].tt:.1;
+ /* the spark, accelerating in: a disturbance arrives on the ease in */
+ if(P0.ev>0&&tr<P0.ti){var u=(tr-P0.at)/(CEV*k);
+  st.spark={p:Math.pow(u,2.2),p0:Math.pow(Math.max(0,u-.16),2.2),a:P0.ev};}
+ st.tt=t<.1*k?ttP:lerp(ttP,P0.tt,ioc((t-.1*k)/(.5*k)));
+ CLEG.forEach(function(L){var s0=L.s*k,d=L.d*k,lg={b:remP,p:-1,pa:0};
+  if(t>=s0&&t<s0+d){lg.p=ioc((t-s0)/d);lg.pa=1;}
+  else if(t>=s0+d){lg.b=lerp(1,P0.rem,sm((t-s0-d)/(.6*k)));}
+  st.legs.push(lg);});
+ /* the address that answers: it lands past full, settles, and keeps some */
+ var eP=remP*.8, eI=P0.rem*.8, e;
+ if(t<0)e=eP; else if(t<.12*k)e=lerp(eP,1.25,ease(t/(.12*k)));
+ else if(t<.3*k)e=lerp(1.25,1,sm((t-.12*k)/(.18*k))); else if(t<.6*k)e=1;
+ else e=lerp(1,eI,sm((t-.6*k)/(1.2*k)));
+ if(t>=0&&t<.6*Math.max(k,.7))st.ping={k:t/(.6*Math.max(k,.7))};
+ A.forEach(function(a,n){var v=0;
+  /* the body: the seat lights outward from where the threads land */
+  if(a.s===3){var kk=n-48,dd=Math.min(Math.abs(kk-2),Math.abs(kk-7),Math.abs(kk-12));
+   v=.85*env(t,(1.6+.03*dd)*k,.12*k,.05*k,.7*k);}
+  /* the larger system: from that seat, a wave both ways round the ring until
+   it meets itself at the top, where it began */
+  var dr=Math.abs(n-mi); dr=Math.min(dr,112-dr);
+  v=Math.max(v,.6*env(t,(1.8+.018*dr)*k,.1*k,0,.55*k));
+  st.env[n]=v;});
+ st.env[ei]=Math.max(st.env[ei],e);
+ st.core=.75*env(t,.87*k,.15*k,.2*k,1.6*k);
+ /* the four patterns and complexes it passes through light as it arrives
+   and keep the groove's share after */
+ CNODE.forEach(function(nd,j){var L=CLEG[j],at=(L.s+L.d)*k;
+  st.node[j]=Math.max(remP>0?remP+.25:0,env(t,at,.08*k,.25*k,.8*k),t>at?P0.rem+.25:0);});
+ return st;}
+function setCStep(s){if(s===cstep)return;cstep=s;
+ cstepEls.forEach(function(li){li.classList.toggle('on',s==='all'||li.getAttribute('data-step')===s);});}
+
 function step2(dt){
  var f=FR[frame]||FR.arrive, el=now-frameT, kq=REDUCED?1:1-Math.exp(-dt*3.2);
  var br=REDUCED?1:0.82+0.18*Math.sin(TAU*now/4.2);
  var kn=frame==='release'?knot(el):null;
+ var cs=frame==='cascade'?casc(el):null;
+ if(cs){CS=cs;setCStep(REDUCED?'all':['once','again','again','own'][cs.pass]);}
+ CA+=((cs?1:0)-CA)*kq;
  /* which addresses are lit */
  A.forEach(function(a){a.litT=0;});
  if(frame==='arrive'){[0,2,4].forEach(function(j,q){if(REDUCED||now-born>0.5+0.8*q)REC[j].litT=1;});}
  if(frame==='recognize'||frame==='mirror'){for(var j=0;j<recN;j++)REC[j].litT=1;}
  if(kn&&kn.prog>=1)NEWA.litT=kn.na;
- var ringA=f.ring*(frame==='arrive'||frame==='recognize'||frame==='mirror'?br:1);
+ var ringA=f.ring*(frame==='arrive'||frame==='recognize'||frame==='mirror'||frame==='cascade'?br:1);
  A.forEach(function(a){a.a+=(Math.max(ringA,a.litT)-a.a)*kq;a.lit+=(a.litT-a.lit)*kq;});
+ if(cs)A.forEach(function(a,n){var v=cs.env[n]*cs.fade;if(v>a.lit)a.lit=v;});
  P.forEach(function(pt){pt.a+=(f.pat-pt.a)*kq;});
  C.forEach(function(cx){cx.a+=(f.pat-cx.a)*kq;});
  CORE.a+=(f.core-CORE.a)*kq; CORE.sc+=(f.csc-CORE.sc)*kq;
+ if(cs){CORE.a=Math.max(CORE.a,f.core+cs.core*cs.fade);
+  CNODE.forEach(function(nd,j){nd.a=Math.max(nd.a,Math.min(1,cs.node[j])*cs.fade);});}
  var rnT=(frame==='recognize'||frame==='mirror')&&recOn?1:0;
  RN.a+=(rnT-RN.a)*kq; RN.sc+=((frame==='mirror'?1.5:1)-RN.sc)*kq;
  T.forEach(function(th){
@@ -823,6 +973,46 @@ function curve(th){
  return {x0:x0,y0:y0,x1:x1,y1:y1,qx:(x0+x1)/2-dy/len*sag,qy:(y0+y1)/2+dx/len*sag,t:t,len:len};}
 function colOf(th){return th.c<0?ACC:COL[SEATS[th.c]];}
 function bez(q,u){var v=1-u;return [v*v*q.x0+2*v*u*q.qx+u*u*q.x1,v*v*q.y0+2*v*u*q.qy+u*u*q.y1];}
+
+/* the cascade's threads: what the path keeps, its pulses at its own tension,
+   and the answer travelling along it with a head, the reframe's own mark */
+function cascLegs(){
+ var cs=CS, al=CA*cs.fade, tt=cs.tt;
+ CLEG.forEach(function(L,j){var lg=cs.legs[j]; if(!lg)return;
+  var x0=L.o.x,y0=L.o.y,x1=L.i.x,y1=L.i.y,dx=x1-x0,dy=y1-y0,len=Math.hypot(dx,dy)||1,sag=(1-tt)*.24*len;
+  var q={x0:x0,y0:y0,x1:x1,y1:y1,qx:(x0+x1)/2-dy/len*sag,qy:(y0+y1)/2+dx/len*sag};
+  var cc=L.c<0?ACC:COL[SEATS[L.c]], b=lg.b*al;
+  if(b>.01){g.beginPath();g.moveTo(x0,y0);g.quadraticCurveTo(q.qx,q.qy,x1,y1);
+   g.strokeStyle=rgba(cc,b*(.35+.5*tt));g.lineWidth=(0.8+0.9*tt)*SK;g.stroke();
+   if(!REDUCED){var per=96-48*tt,sp=16+68*Math.sqrt(tt);
+    g.save();g.lineCap='round';g.setLineDash([7,per-7]);g.lineDashOffset=-((CLK*sp+j*17)%per);
+    g.beginPath();g.moveTo(x0,y0);g.quadraticCurveTo(q.qx,q.qy,x1,y1);
+    g.strokeStyle=rgba(mix(cc,WHITE,.42),b*(0.28+0.72*tt));g.lineWidth=Math.max(1.2,(0.8+0.9*tt)*SK*0.9);g.stroke();
+    g.restore();}}
+  if(lg.p>=0&&al>.01){var n=Math.max(2,Math.round(24*lg.p));g.beginPath();g.moveTo(x0,y0);
+   for(var m=1;m<=n;m++){var pt=bez(q,lg.p*m/n);g.lineTo(pt[0],pt[1]);}
+   g.strokeStyle=rgba(mix(cc,WHITE,.2),lg.pa*al*.95);g.lineWidth=2*SK;g.stroke();
+   var hd=bez(q,lg.p);g.beginPath();g.arc(hd[0],hd[1],3.2*SK,0,TAU);g.fillStyle=rgba(mix(cc,WHITE,.4),lg.pa*al);g.fill();}});}
+/* the spark from outside, and the ring the answering address throws when it
+   lands: the body's own "one region activates" mark */
+function cascTop(){
+ var cs=CS, al=CA*cs.fade;
+ if(cs.ping&&!REDUCED&&al>.01){var pk=ease(cs.ping.k);g.beginPath();g.arc(CE.x,CE.y,lerp(3,17,pk)*SK,0,TAU);
+  g.strokeStyle=rgba(mix(COL[SEATS[CE.s]],WHITE,.3),.9*(1-cs.ping.k)*al);g.lineWidth=1.4*SK;g.stroke();}
+ if(cs.spark&&al>.01){var th=Math.atan2(CE.y-CY,CE.x-CX),t0=th-.55;
+  /* it starts at the stage's edge, never past it: a phone's band is short,
+     and a spark that spends its flight above the band never entered */
+  var r0=Math.min(1.6*R,Math.abs((W/2-6)/(Math.cos(t0)||1e-6)),Math.abs((H/2-6)/(Math.sin(t0)||1e-6))),
+   rc=R+(r0-R)*.53;
+  var q={x0:CX+Math.cos(t0)*r0,y0:CY+Math.sin(t0)*r0,
+         qx:CX+Math.cos(th-.2)*rc,qy:CY+Math.sin(th-.2)*rc,x1:CE.x,y1:CE.y};
+  var sa=cs.spark.a*al, p0=cs.spark.p0, p1=cs.spark.p;
+  g.beginPath();for(var m=0;m<=10;m++){var pt=bez(q,lerp(p0,p1,m/10));m?g.lineTo(pt[0],pt[1]):g.moveTo(pt[0],pt[1]);}
+  g.strokeStyle=rgba(INK,.5*sa);g.lineWidth=2*SK;g.lineCap='round';g.stroke();g.lineCap='butt';
+  var hd=bez(q,p1),gl=g.createRadialGradient(hd[0],hd[1],0,hd[0],hd[1],11*SK);
+  gl.addColorStop(0,rgba(INK,.4*sa));gl.addColorStop(1,rgba(INK,0));
+  g.fillStyle=gl;g.beginPath();g.arc(hd[0],hd[1],11*SK,0,TAU);g.fill();
+  g.beginPath();g.arc(hd[0],hd[1],3.2*SK,0,TAU);g.fillStyle=rgba(INK,sa);g.fill();}}
 
 function draw(dt){
  if(!g)return;
@@ -851,6 +1041,7 @@ function draw(dt){
    var pa=th.g==='net'?f.pul:1;
    g.strokeStyle=rgba(mix(cc,WHITE,.42),th.a*pa*(0.28+0.72*t));g.lineWidth=Math.max(1.2,(0.8+0.9*t)*SK*0.9);g.stroke();});
   g.setLineDash([]);g.restore();}
+ if(CS&&CA>.01)cascLegs();
  /* the addresses */
  A.forEach(function(a){if(a.a<.01&&a.lit<.01)return;var cc=COL[SEATS[a.s]];
   if(a.lit>.01){var gr=g.createRadialGradient(a.x,a.y,0,a.x,a.y,18*SK);
@@ -880,7 +1071,8 @@ function draw(dt){
   var fg=g.createRadialGradient(CX-r0*.3,CY-r0*.4,r0*.05,CX,CY,r0);
   fg.addColorStop(0,rgba(mix(ACC,WHITE,.45),CORE.a));fg.addColorStop(1,rgba(mix(ACC,[0,0,0],.25),CORE.a));
   g.fillStyle=fg;g.beginPath();g.arc(CX,CY,r0,0,TAU);g.fill();
-  g.strokeStyle=rgba(mix(ACC,WHITE,.5),.8*CORE.a);g.lineWidth=1.2;g.stroke();}}
+  g.strokeStyle=rgba(mix(ACC,WHITE,.5),.8*CORE.a);g.lineWidth=1.2;g.stroke();}
+ if(CS&&CA>.01)cascTop();}
 
 var last=0, running=false;
 function tick(ts){
@@ -896,7 +1088,7 @@ D.addEventListener('visibilitychange',function(){D.hidden?stop():start();});
 var frames=[].slice.call(D.querySelectorAll('.fr'));
 var SHOW={body:'body',loop:'dial'};
 function setFrame(fr){
- if(fr===frame)return; frame=fr; frameT=now; step='';
+ if(fr===frame)return; frame=fr; frameT=now; step=''; cstep='';
  stage.setAttribute('data-show',SHOW[fr]||'field');
  if(REDUCED){/* the end state of the frame, drawn once */
   for(var n=0;n<3;n++)step2(1);draw(0);}}

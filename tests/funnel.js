@@ -32,6 +32,12 @@
         heaviest is the band the reading's own bars call heaviest. One
         arithmetic or it is two products.
 
+   And the landing's one beat that is a timeline rather than a state:
+
+     8  the cascade, funnel beat 04, runs and repeats, quickens, ends with
+        nothing coming in, holds still under reduced motion and reads with no
+        script, measured in the canvas's own pixels under a paused clock.
+
    NO COUNT IS TYPED INTO THIS FILE. Not the number of pages, not the number
    of questions, not the number of controls, not the number of seats. Every
    one of them is read off the run and printed. This repository has been
@@ -591,6 +597,187 @@ const PROBE = () => {
         'SIGHT now adds something at tier four, and the buy page says tier four adds only the lead suite');
       await ctx.close();
     }
+  }
+
+  /* ---------- the landing's cascade, funnel beat 04 ----------
+     The TDD, section 12: a disturbance enters, the answer travels through the
+     system, the system repeats, the answer becomes conditioned, and "the
+     original event can eventually become unnecessary for the response to
+     appear." Every one of those is held here against the page as it runs,
+     under Playwright's clock so a moment is the same moment every run:
+
+       it sits where the TDD puts it, after the mirror and before the network
+       it runs its steps in order and comes round again, so it repeats
+       a spark enters on the first pass, and none on the last
+       the spark's flight is shorter on each pass that has one: it quickens
+       it says, in print, that the picture is a model
+       reduced motion gets the end state, drawn, and nothing travels
+       with no script it reads in full, key included
+       and nothing leaves the machine while it runs
+
+     The spark is the only mark drawn outside the ring, so it is found in
+     pixels beyond the ring's reach: the radius, its glow and the landing ring
+     at most. That reach is the page's own layout rule, R from the stage's
+     short side and SK from R, read here off the canvas rather than out of a
+     table. If the rule changes the ring's glow lands past the line and the
+     last pass reports a spark, which is a loud failure and not a quiet one.
+
+     No pass count, cycle length or duration is typed here. The run samples
+     until the lit step has come round to the first one again, under a cap. */
+  /* Playwright's installed clock keeps flowing in real time between runFor
+     calls, so a slow pixel read would add time nobody asked for and the
+     passes would arrive early. It is paused before the page loads, and moves
+     only when told. Paused then and not later, because pausing a running
+     clock "a little ahead" is a race a loaded machine loses. The frame is
+     entered the way a reader enters it, by scrolling, and the run waits for
+     the frame to take the stage rather than assuming it has. */
+  const PAUSED = async (pg) => { await pg.clock.install({ time: 0 }); await pg.clock.pauseAt(1000); };
+  const INTO = async (pg) => {
+    await pg.evaluate(() => document.fonts.ready);
+    await pg.evaluate(() => {
+      const el = document.getElementById('cascade'), r = el.getBoundingClientRect();
+      const sh = innerWidth >= 900 ? 0 : document.getElementById('stage').getBoundingClientRect().height;
+      window.scrollTo({ top: scrollY + r.top - sh, behavior: 'instant' });
+    });
+    for (let i = 0; i < 100; i++) {
+      await pg.clock.runFor(20);
+      if (await pg.evaluate(() => !!document.querySelector('#csteps li.on'))) return true;
+    }
+    return false;
+  };
+  for (const [w, hgt] of WIDTHS) {
+    console.log('\n--- the landing cascade @' + w + ' ---');
+    const ctx = await browser.newContext({ viewport: { width: w, height: hgt } });
+    const page = await ctx.newPage();
+    const reqs = [], errs = [];
+    page.on('request', r => { const u = r.url(); if (!/^(file:|data:|blob:|about:)/.test(u)) reqs.push(u); });
+    page.on('pageerror', e => errs.push(String(e && e.message || e)));
+    await PAUSED(page);
+    await page.goto('file://' + path.join(DIR, 'index.html'), { waitUntil: 'load' });
+    await page.clock.runFor(200);
+
+    const shape = await page.evaluate(() => {
+      const c = document.getElementById('cascade'), mi = document.getElementById('mirror'),
+        nw = document.getElementById('connect');
+      if (!c) return null;
+      const after = (a, b) => !!(a && b && (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING));
+      return { frame: c.getAttribute('data-frame'),
+        afterMirror: after(mi, c), beforeNetwork: after(c, nw),
+        steps: [...c.querySelectorAll('#csteps li')].map(l => l.getAttribute('data-step')),
+        labels: [...c.querySelectorAll('#csteps li b')].map(b => b.textContent.trim()),
+        head: (c.querySelector('h2') || {}).textContent || '',
+        text: c.textContent.replace(/\s+/g, ' '),
+        key: !!c.querySelector('.cap-t[aria-controls="cap-cascade"]') && !!document.getElementById('cap-cascade') };
+    });
+    ok(!!shape, '@' + w + ': the landing has no cascade frame');
+    if (!shape) { await ctx.close(); continue; }
+    ok(shape.frame === 'cascade', '@' + w + ': the cascade frame is called ' + shape.frame);
+    ok(shape.afterMirror && shape.beforeNetwork,
+      '@' + w + ': the cascade is not between the mirror (beat 03) and the network (beat 05)');
+    ok(shape.steps.join() === 'once,again,own', '@' + w + ': the steps read ' + shape.steps.join());
+    ok(/pattern/i.test(shape.head), '@' + w + ': the headline does not say a response becomes a pattern');
+    ok(/our own model/i.test(shape.text), '@' + w + ': the frame never says the picture is a model');
+    ok(shape.key, '@' + w + ': the cascade has no key, so its marks go unexplained');
+
+    /* into the frame, the way a reader arrives: under the band on a phone */
+    ok(await INTO(page), '@' + w + ': scrolled to the cascade and the stage never took it up');
+    const SAMPLE = () => {
+      const cv = document.getElementById('fld'), g = cv.getContext('2d');
+      const W = cv.width, H = cv.height, dpr = W / cv.clientWidth;
+      const cw = cv.clientWidth, ch = cv.clientHeight;
+      const R = Math.min(cw, ch) * (cw < 520 ? 0.40 : 0.38), SK = Math.min(1.35, Math.max(0.55, R / 300));
+      const reach = (R + 22 * SK + 3) * dpr, cx = W / 2, cy = H / 2;
+      const d = g.getImageData(0, 0, W, H).data;
+      let out = 0, lit = 0, sum = 0;
+      for (let y = 0; y < H; y += 2) for (let x = 0; x < W; x += 2) {
+        const i = (y * W + x) * 4, a = d[i + 3];
+        if (a < 60) continue;
+        lit++; sum = (sum + (d[i] + 3 * d[i + 1] + 7 * d[i + 2]) * (x + 1) * (y + 3)) % 1000000007;
+        const dx = x - cx, dy = y - cy;
+        if (dx * dx + dy * dy > reach * reach) out++;
+      }
+      const on = [...document.querySelectorAll('#csteps li.on')].map(l => l.getAttribute('data-step'));
+      return { on: on.join('+'), out, lit, sum };
+    };
+    const STEP = 40, CAP = 30000;
+    const S = [];
+    let t = 0, seenOwn = false, back = false;
+    while (t < CAP) {
+      await page.clock.runFor(STEP); t += STEP;
+      const s = await page.evaluate(SAMPLE); s.t = t; S.push(s);
+      if (s.on === 'own') seenOwn = true;
+      if (seenOwn && s.on === 'once') { back = true; if (S.filter(x => x.on === 'once' && x.t > t - 1500).length > 30) break; }
+    }
+    const seq = [];
+    S.forEach(s => { if (s.on && seq[seq.length - 1] !== s.on) seq.push(s.on); });
+    console.log('  steps lit, in order: ' + seq.join(' > ') + '   sampled ' + S.length + ' times over ' + (t / 1000) + ' s');
+    ok(seq.slice(0, 3).join() === 'once,again,own', '@' + w + ': the steps lit ' + seq.join(' > '));
+    ok(back, '@' + w + ': it never came round to the first pass again, so it does not repeat');
+    ok(new Set(S.map(s => s.sum)).size > S.length / 2, '@' + w + ': the stage barely changes, so it is not running');
+    ok(S.some(s => s.on === 'once' && s.out > 0), '@' + w + ': nothing enters from outside on the first pass');
+    const ownOut = S.filter(s => s.on === 'own' && s.out > 0);
+    ok(ownOut.length === 0, '@' + w + ': something enters on the last pass, ' + ownOut.length + ' samples, so the answer is not shown running on its own');
+    /* the flights, as runs of samples with a spark out past the ring, in the
+       first time round only */
+    const firstOwn = S.findIndex(s => s.on === 'own');
+    const runs = []; let cur = 0;
+    S.slice(0, firstOwn < 0 ? S.length : firstOwn).forEach(s => {
+      if (s.out > 0) cur++; else if (cur) { runs.push(cur); cur = 0; } });
+    if (cur) runs.push(cur);
+    console.log('  spark in flight past the ring, samples per pass: ' + runs.join(', ') + ' (' + STEP + ' ms each)');
+    ok(runs.length >= 2, '@' + w + ': a spark enters on ' + runs.length + ' pass(es) before the last, so it does not repeat');
+    /* quicker means clearly quicker. Sampling lands a flight one sample
+       either way, and the third spark is drawn fainter so its tail leaves the
+       count early, so passes at one pace can still read 12, 11, 10. Each
+       flight must take at most 85 per cent of the one before it. */
+    ok(runs.every((r, i) => i === 0 || r <= runs[i - 1] * 0.85),
+      '@' + w + ': the spark does not arrive clearly quicker each pass: ' + runs.join(', '));
+    const own = S.filter(s => s.on === 'own').map(s => s.lit).sort((a, b) => a - b);
+    const ownLit = own.length ? own[own.length >> 1] : 0;
+    ok(reqs.length === 0, '@' + w + ': the cascade made ' + reqs.length + ' outbound request(s)');
+    ok(errs.length === 0, '@' + w + ': ' + errs.length + ' error(s) while it ran: ' + errs.slice(0, 2).join(' | '));
+    await ctx.close();
+
+    /* reduced motion: the end of the last pass, drawn once, and still */
+    const rctx = await browser.newContext({ viewport: { width: w, height: hgt }, reducedMotion: 'reduce' });
+    const rp = await rctx.newPage();
+    await PAUSED(rp);
+    await rp.goto('file://' + path.join(DIR, 'index.html'), { waitUntil: 'load' });
+    ok(await INTO(rp), '@' + w + ': reduced motion, scrolled to the cascade and the stage never took it up');
+    await rp.clock.runFor(300);
+    const r0 = await rp.evaluate(SAMPLE);
+    await rp.clock.runFor(3000);
+    const r1 = await rp.evaluate(SAMPLE);
+    console.log('  reduced: steps ' + r1.on + '  lit ' + r1.lit + ' against ' + ownLit
+      + ' at the middle of the moving last pass  past the ring ' + r1.out);
+    ok(r1.on === 'once+again+own', '@' + w + ': reduced motion lights ' + (r1.on || 'nothing') + ', not every step');
+    ok(r0.sum === r1.sum, '@' + w + ': reduced motion still moves the stage');
+    ok(r1.out === 0, '@' + w + ': reduced motion draws a spark');
+    /* the end state is the last pass drawn and held: the taut path, the
+       seat it lands in and the core, all at once. So it lights at least as
+       much of the stage as the moving last pass does at its middle, and on
+       the day this was written it lit well over that at both widths. A page
+       that skipped the end state, checked against a copy broken that way,
+       draws only the ring and the core at rest and lit well under two thirds
+       of it at both widths. The line sits between the two. */
+    ok(r1.lit >= ownLit * 0.9, '@' + w + ': reduced motion lights ' + r1.lit
+      + ' against ' + ownLit + ' in the moving last pass, so it does not hold the end state');
+    await rctx.close();
+
+    /* no script: every word of it, in order, and the key printed */
+    const nctx = await browser.newContext({ viewport: { width: w, height: hgt }, javaScriptEnabled: false });
+    const np = await nctx.newPage();
+    await np.goto('file://' + path.join(DIR, 'index.html'), { waitUntil: 'load' });
+    const ns = await np.evaluate(() => {
+      const c = document.getElementById('cascade'), k = document.getElementById('cap-cascade');
+      return { text: c ? c.innerText : '', key: k ? k.innerText.trim().length : 0,
+        labels: c ? [...c.querySelectorAll('#csteps li b')].map(b => b.innerText.trim()) : [] };
+    });
+    ok(/pattern/i.test(ns.text) && /our own model/i.test(ns.text), '@' + w + ': with no script the cascade does not read');
+    ok(ns.key > 0, '@' + w + ': with no script the cascade key is not printed');
+    ok(shape.labels.length > 0 && ns.labels.join('|') === shape.labels.join('|'),
+      '@' + w + ': with no script the steps read ' + ns.labels.join(', ') + ', not ' + shape.labels.join(', '));
+    await nctx.close();
   }
 
   /* ---------- the sendable build, if it has been made ---------- */
