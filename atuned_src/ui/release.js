@@ -187,10 +187,28 @@ function relWelcome(){
   ?(nm.length>1?nm.slice(0,-1).join(', ')+' and ':'')+nm[nm.length-1]
   :nm.slice(0,3).join(', ')+' and '+(nm.length-3)+' more';
  return ['You are releasing '+said+'.'].concat(REL_WELCOME);}
-/* THE PASSES. "Let go. Give up. Forgive myself. Forgive others. Same
-   mechanic. Different entry points." (2315.) They rotate because the book
-   says the entry that is hardest to say is the diagnostic. */
-var REL_ENTRY=['I let go of ','I give up ','I forgive myself for '];
+/* THE PASSES, round QR, 3 October. His words, over a picture of the run:
+   "remember the progression starts with dot dot dot that I am and it's the
+   color of the chakra being."
+
+   The passes rotated the book's entries, "Let go. Give up. Forgive myself"
+   (2315), as I let go of, I give up and I forgive myself for, over the
+   pattern's bare name. That was never his script and he objected to what it
+   produced twice: round PA, "I don't know why it says, I forgive myself for
+   separation from my boss. I gave up separation. I don't know what that is
+   for", and round OZ, '"I give up separation" does not say what'. The voice
+   brief names "let go of" as the one release phrase it forbids. His script,
+   round QH: "The script is dot, dot, dot, that I am. And then the release
+   script." And said aloud, round JP: "letting go of believing thinking
+   feeling behavior right? that I am afraid of heights one two three four".
+   The six channels once, then "that I am" and the card's own words, again.
+
+   So a release pass is the head's own words after the stem, the same
+   construction the reframe's passes already use (relRefTail), and it reads
+   as the line under the pinned prompt it continues. The rung table is kept,
+   one rung beside the reframe's one, so a second entry is still a string
+   added here and no code. */
+var REL_ENTRY=['that I am '];
 /* ============================================================
    THE REFRAME, IN HIS WORDS, round QM, 2 October. "The next set is the
    reframe, it's the I know that I am ... I know that I am and then the
@@ -423,6 +441,10 @@ function relSplit(text){
     script, whatever follows "that", so an axes card's install said after
     "I know that" splits on the same seam as a card truth does */
  if(t.indexOf(REL_KNOW_PRE+'that ')===0)return {pre:REL_KNOW_PRE,tail:t.slice(REL_KNOW_PRE.length)};
+ /* a release pass is the script alone, round QR: the prompt it continues is
+    the one pinned above and said once at the head, so there is nothing in
+    the line to lift out and the drawn ellipsis joins it to the prompt */
+ if(t.indexOf(REL_THAT)===0)return {pre:'',tail:t};
  var stems=[typeof C3_STEM==='string'?C3_STEM:'',typeof C3_TRUTH==='string'?C3_TRUTH:''];
  for(var i=0;i<stems.length;i++){var s=stems[i];
   if(s&&s.slice(-REL_THAT.length)===REL_THAT&&t.indexOf(s)===0){
@@ -432,7 +454,10 @@ function relSplit(text){
    not see, the script after it with its ellipsis drawn by the sheet */
 function relLineHtml(text){
  var sp=relSplit(text);
- return sp?'<span class="rel-sr">'+esc(sp.pre)+'</span><span class="rel-tail">'+esc(sp.tail)+'</span>':esc(text);}
+ return sp?(sp.pre?'<span class="rel-sr">'+esc(sp.pre)+'</span>':'')+'<span class="rel-tail">'+esc(sp.tail)+'</span>':esc(text);}
+/* a said line printed off the list, on the results: a release pass is the
+   script after the prompt, so it keeps its ellipsis there too */
+function relSaidTxt(t){t=String(t||''); return t.indexOf(REL_THAT)===0?'… '+t:t;}
 /* the prompt for the half a plan key is in */
 /* The reframe's prompt is his "I know", the half of "I know that I am" that
    comes before the script, the same seam the release's six channels sit on. */
@@ -448,9 +473,19 @@ function relPrompt(at){
 /* ROUND QM: the reframe's passes are his "I know that I am" over the reframe,
    on the same rung index as the release's, and no longer the opposite's bare
    name. relRefTail says why the words are the head's own. */
+/* what a release pass says after "that I am": the head's own words after the
+   six channel stem, cut at its first sentence. Measured 3 October over every
+   release head the engine can build, 21,400 of them across both sides: every
+   one opens on C3_STEM, and the longest first sentence is nine words, "not
+   going to make it through what is ahead". A head that ever did not open on
+   the stem is said whole, the reframe's own fallback. */
+function relRelTail(head){
+ var t=String(head||'');
+ if(typeof C3_STEM!=='string'||t.indexOf(C3_STEM)!==0)return '';
+ return t.slice(C3_STEM.length).split(/\.\s/)[0].replace(/\.$/,'').trim();}
 function relShort(at,i,head){
- if(at.ch[2]==='limit')
-  return REL_ENTRY[(i-1)%REL_ENTRY.length]+String(at.n.k||'').toLowerCase()+'.';
+ if(at.ch[2]==='limit'){var r=relRelTail(head);
+  return r?REL_ENTRY[(i-1)%REL_ENTRY.length]+r+'.':head;}
  var t=relRefTail(at,head);
  return t?REF_ENTRY[(i-1)%REF_ENTRY.length]+t+'.':head;}
 function relStepAt(at,pass){
@@ -875,9 +910,15 @@ function relTally(c,live){
     installing"); recharged is his word for the reframe half. */
  var tw=c.toward.length?'Toward '+c.toward.join(', ').toLowerCase()+'.':'';
  var at=(hist&&(hist.relLines||hist.truthLines))?'All time: '+(hist.relLines||0)+' released, '+(hist.truthLines||0)+' recharged.':'';
+ /* THE ROW IS WHAT MOVES, round QR. This session sat here at the same size
+    as the four live readings and is the one figure on the row that never
+    changes while the list runs: it is the plan's size. It reads on the plate
+    now, at the end of the line that already says where in the plan the run
+    is (the plate in relRender), and the row keeps Remaining, which counts down, and the
+    readings that count down and up. Six across wrapped CQ onto a row of its
+    own at 390; five fit. */
  return '<div class="rel-clock rel-figs">'
   +fig('Remaining',c.left,c.left===1?'pattern':'patterns')
-  +fig('This session',c.of+c.putOf,'lines')
   +(live&&live.dq!=null?'<div class="rel-fig"><span>DQ</span><b>'+live.dq.toFixed(2)+'</b></div>'
     +'<div class="rel-fig"><span>Down</span><b>'+Math.max(0,live.dq0-live.dq).toFixed(2)+'</b></div>':'')
   /* CQ and how far it has come up, round QQ, see CQ, COUNTED UP above */
@@ -1453,7 +1494,7 @@ function relNextKey(){
 /* HEAVY, MARKED WHILE IT IS SAID. Round JO put a Felt mark on the finished
    card, one to an address, which comes after the fact and cannot say which
    line it was. This mark is on the line, keyed by plan index and pass, so a
-   tap lights the row tapped and no other. "I give up fear." at pass 4 and at
+   tap lights the row tapped and no other. "that I am afraid." at pass 4 and at
    pass 7 are the same words at two moments, and which moment landed is what
    the person is telling us. Carried out as the distinct sentences, because
    that is what a ritual can use. */
@@ -1609,7 +1650,7 @@ function relHeaviest(){
   rows+='<div class="rel-row" style="grid-template-columns:auto 1fr">'
    +'<i aria-hidden="true" style="width:12px;height:12px;border-radius:50%;border:2px solid var(--alarm);'
    +'background:var(--alarm);box-shadow:0 0 0 2px var(--panel),0 0 0 3.5px var(--alarm);margin:0 4px"></i>'
-   +'<span>'+esc(tx)+'<em style="display:block">'+esc(x.name)+'</em></span></div>';});});
+   +'<span>'+esc(relSaidTxt(tx))+'<em style="display:block">'+esc(x.name)+'</em></span></div>';});});
  return rows?'<div class="pm-eye" style="margin-top:6px">Heaviest</div>'
   +'<div class="rel-log" style="max-height:none;overflow:visible">'+rows+'</div>':'';}
 /* GRAPHIC SYMBOLS, round LY. His words: "turn the back now forward pause
@@ -1705,7 +1746,8 @@ function relCss(){
      while they read. Every row is set at the one size; the live one is told
      by the step, which takes up no room. */
   '.rel-cr .rel-cr-i{display:grid;grid-template-columns:60px 1fr 60px;gap:8px;align-items:center;width:100%;',
-  ' min-height:52px;padding:8px 4px;border:0;border-radius:var(--r-s);background:transparent;color:var(--ink);',
+  ' min-height:52px;padding:8px 4px;border:0;border-radius:var(--r-s);background:transparent;',
+  ' color:color-mix(in oklab,var(--c,var(--ink)) 80%,var(--ink));',
   ' font:inherit;font-size:20px;line-height:1.45;font-weight:300;letter-spacing:-.005em;text-align:center;cursor:pointer;',
   ' opacity:.05;transform:scale(.88);',
   /* THE STEP LANDS WITH THE GLIDE. The rows changed ink on the element
@@ -1762,6 +1804,18 @@ function relCss(){
   '.rel-cr .rel-cr-i[aria-pressed="true"] .rel-cr-f{border-color:var(--alarm);background:var(--alarm);',
   ' box-shadow:0 0 0 2px var(--bg),0 0 0 3.5px var(--alarm)}',
   '.rel-cr .rel-cr-i[aria-pressed="true"] .rel-cr-t{color:var(--alarm)}',
+  /* THE LINE IN ITS SEAT'S COLOUR, round QR, "it's the color of the chakra
+     being". --c is the seat's colour off seatCol, set on the row (relRow), and
+     it is exposed a fifth of the way toward the lighting's own ink, because the
+     live line is 20 pixels at weight 300 and so is held to 4.5 to 1 like body
+     text. Measured against its own ground, the room's light of that seat
+     included, with the raw seat colour: Root 4.34 on Dark and 3.91 on Punch,
+     five of seven seats under 4.5 on Snow and six on Glass white, lowest 3.62.
+     At four fifths seat and one fifth ink every seat on those six lightings
+     clears it, lowest 4.79 (Solar, Glass white), and the hue is still the
+     seat's. Lumen is left raw: its release ground is white under a white ink,
+     so mixing toward ink would only take the seat's colour further out. */
+  'body.lumen .rel-cr .rel-cr-i{color:var(--c,var(--ink))}',
   /* the live row's sentence carries .rel-line for the gates, and not its look */
   '.rel-cr .rel-line{margin:0;min-height:0;font-size:inherit;line-height:inherit;font-weight:inherit;color:inherit}',
   '.rel-cr .rel-cr-nav{display:flex;justify-content:center;margin:8px 0 2px}',
@@ -1906,6 +1960,12 @@ function relCss(){
   /* ---- the top: the word, the rail, the way out ---- */
   '.rel-top{flex:none;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:64px;padding:0 24px}',
   '.rel-word{justify-self:start;font-size:13px;font-weight:600;letter-spacing:.04em;color:var(--mid)}',
+  /* ON THE LIST THE WORD IS SAID THREE TIMES IN SEVENTY PIXELS, round QR: here,
+     as the rail's own step word beside it, and over the prompt. The rail's
+     word and the prompt's stay, because they change and this does not. Hidden
+     and not removed, so the rail stays on the centre of its grid. A phone
+     already drops it on every phase, see the 520 rule. */
+  '.rel-running .rel-word{visibility:hidden}',
   '.rel-topr{justify-self:end;display:flex;align-items:center;min-width:44px;min-height:44px}',
   '.rel-rail{display:flex;align-items:center;gap:14px}',
   '.rel-trk{position:relative;width:min(232px,34vw);height:12px;display:flex;align-items:center;justify-content:space-between}',
@@ -1934,6 +1994,7 @@ function relCss(){
   '.rel-figs-s{font-family:var(--sans);margin:0 auto 6px;max-width:560px;line-height:1.5}',
   '.rel-fs #relhd .rel-plate{margin:8px 0 0}',
   '.rel-fs #relhd .rel-plate .rel-ct{display:block;margin-top:2px}',
+  '.rel-plate .rel-nw{white-space:nowrap}',
   '.rel-fs .rel-scr{margin-top:6px}.rel-fs .rel-cr .rel-cr-nav{margin:2px 0 0}',
   '.rel-fs .rel-cr .rel-cr-hint{margin-top:4px}',
   /* THE BANK PICK, round QQ: the count and its two presses on one centred row
@@ -1977,7 +2038,13 @@ function relCss(){
   '.rel-mid{display:grid;grid-template-columns:minmax(140px,210px) minmax(0,660px) minmax(140px,210px);',
   ' justify-content:center;align-items:center;column-gap:clamp(16px,3vw,52px)}',
   '.rel-mid>.rel-cr{min-width:0}',
-  '.rel-fs .rel-cr{--ch:clamp(220px,calc(100dvh - 600px),460px)}',
+  /* THE READINGS CLEAR THE CONTROLS, round QR. At 1600 by 1000 the list took
+     400 pixels and the row of readings under it sat at 886 to 939 with the
+     pinned controls from 924, so the numbers he reads for change, DQ and
+     Down, were cut through their middle on the first screen. Forty pixels
+     off the list, which still shows the line, two either side and the far
+     fade, and the row ends above the controls. */
+  '.rel-fs .rel-cr{--ch:clamp(220px,calc(100dvh - 640px),460px)}',
   /* THE HEADINGS SCROLL WITH THEIR BLOCK on the full screen. Pinned, each
      needed an opaque band to hide the rows passing under it, and on the
      breathing ground that band read as a dark box laid over the light, the
@@ -1986,6 +2053,8 @@ function relCss(){
      feather like the bottom. */
   '.rel-fs .rel-cr .rel-cr-h{position:static;background:transparent}',
   '.rel-fs .rel-cr .rel-cr-l{--hh:0px}',
+  /* the channel block's heading, heard and not drawn, round QR, see relCar */
+  '.rel-fs .rel-cr .rel-cr-h.rel-cr-hx{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}',
   '.rel-lr{display:flex;flex-direction:column;gap:16px;opacity:.5;transition:opacity var(--t-surface) var(--ease-out)}',
   '.rel-lr.on{opacity:1}',
   '.rel-lr-L{align-items:flex-end;text-align:right}.rel-lr-R{align-items:flex-start;text-align:left}',
@@ -2010,7 +2079,6 @@ function relCss(){
   '.rel-sg{position:relative;height:100%;border-radius:3px;background:color-mix(in srgb,var(--accent) 36%,transparent)}',
   '.rel-sg[data-half="ref"]{background:color-mix(in srgb,var(--au) 42%,transparent)}',
   '.rel-sg[data-half="end"]{background:color-mix(in srgb,var(--ink) 14%,transparent);min-width:3px}',
-  '.rel-sg em{position:absolute;top:10px;left:0;right:0;font-style:normal;font-size:10.5px;color:var(--dim);text-align:center}',
   /* where the voice is: a tick moved by transform across the track's width */
   '.rel-scr-now{position:absolute;left:11px;right:11px;top:0;bottom:0;pointer-events:none;',
   ' transform:translateX(calc(var(--k,0) * 100%));transition:transform var(--t-surface) var(--ease-out)}',
@@ -2099,22 +2167,29 @@ function relCar(sp){
  var rows='<div class="rel-cr-pad" aria-hidden="true"></div>', i, p;
  for(i=sp.a0;i<sp.a1;i++){
   var at=relAt(i); if(!at||!at.n)continue;
-  var pole=relPole(at.ch[0]), nm=relBucket(at.ch);
-  /* one line at 390, so the heading does not take a fifth of the list */
-  /* ONE WRAPPER A BLOCK, round QM, so a heading is sticky only while its own
-     block is on screen and the next block's heading pushes it off. In one
-     shared container every heading stuck at the same top and, with the
-     taller list of the full screen, two of them stood one over the other. */
-  rows+='<div class="rel-cr-blk"><div class="rel-cr-h">'+esc(nm)+(pole?' <em>· '+esc(pole.nm.toLowerCase())+'</em>':'')+'</div>';
+  var nm=relBucket(at.ch), col=seatCol(at.n.b);
+  /* ONE WRAPPER A BLOCK, round QM, so a heading travels with its own block.
+     THE HEADING IS FOR A SCREEN READER ONLY NOW, round QR. Drawn, it read
+     "Release, left channel · feminine", the words round LY struck by name
+     ("get rid of the text saying release left channel, feminine,
+     parasympathetic"), and at 1600 it sat sliced under the top feather of
+     the list, a ghost line between the prompt and the script it introduces.
+     The eye has the half from the prompt's own word and the side from the
+     lit side panel and the scrub; a screen reader, which has neither, still
+     hears the half and the side at the top of every block. The pole is not
+     said: it was the word he struck. */
+  rows+='<div class="rel-cr-blk"><div class="rel-cr-h rel-cr-hx">'+esc(nm)+'</div>';
   for(p=0;p<RUN.dose;p++){
    var st=relStepAt(at,p);
-   rows+=relRow(i+':'+p,p+1,st.text);}
+   rows+=relRow(i+':'+p,p+1,st.text,col);}
   rows+='</div>';}
  /* THE FOOT. The next address's first line is a row like any other and can
-    be marked; the closing is shown and is not the list, so it is not. */
+    be marked; the closing is shown and is not the list, so it is not. The
+    next address is in its own seat's colour, which is how the eye sees the
+    address change before it reads the heading. */
  var nx=sp.a1<(RUN.plan||[]).length?relStepAt(relAt(sp.a1),0):null;
  rows+=nx
-  ?'<div class="rel-cr-blk"><div class="rel-cr-h">Next address, '+esc(nx.at.n.k)+'</div>'+relRow(sp.a1+':0',1,nx.text)+'</div>'
+  ?'<div class="rel-cr-blk"><div class="rel-cr-h">Next address, '+esc(nx.at.n.k)+'</div>'+relRow(sp.a1+':0',1,nx.text,seatCol(nx.at.n.b))+'</div>'
   :'<div class="rel-cr-blk"><div class="rel-cr-h">After the list</div>'
    +'<div class="rel-cr-i rel-cr-end" data-relh="end"><span class="rel-cr-n"></span>'
    +'<span class="rel-cr-t">'+esc(COOLING[0])+'</span><span></span></div></div>';
@@ -2135,10 +2210,15 @@ function relCar(sp){
   +relBankHtml()
   +'<div class="rel-cr-hint" id="relhv"></div></div>';}
 /* one line of the list. data-pile carries which pile a heavy mark is in, so
-   the sheet can tint it and the word beside the ring can say it. */
-function relRow(k,num,text){
+   the sheet can tint it and the word beside the ring can say it. col is the
+   seat's colour, round QR, "it's the color of the chakra being": the line is
+   set in the colour of the seat it is said at, the same seatCol the plate,
+   the room's light and the results already use, so a theme moves it with
+   them. */
+function relRow(k,num,text,col){
  var v=RUN.heavy[k], pile=v?relPileOf(v):'';
  return '<button type="button" class="rel-cr-i" data-relh="'+k+'" aria-pressed="'+!!v+'"'+(pile?' data-pile="'+pile+'"':'')
+  +(col?' style="--c:'+esc(col)+'"':'')
   +(v==='kept'?' data-kept="1"':'')+(RUN.books&&RUN.books[k]?' data-book="1"':'')+'>'
   +'<span class="rel-cr-n">'+num+'</span><span class="rel-cr-t">'+relLineHtml(text)+'</span>'
   +'<span class="rel-cr-m" aria-hidden="true"><i class="rel-cr-f"></i><span class="rel-cr-hv">'+(v?relPileWord(v):'Heavy')+'</span></span></button>';}
@@ -2167,8 +2247,12 @@ function relRow(k,num,text){
 function relScrubHtml(sp){
  var segs='', n=(sp.a1-sp.a0)*RUN.dose+1, i;
  for(i=sp.a0;i<sp.a1;i++){var at=relAt(i); if(!at)continue;
-  segs+='<i class="rel-sg" data-half="'+(at.ch[2]==='truth'?'ref':'rel')+'" style="flex:'+RUN.dose+'">'
-   +'<em>'+(at.ch[0]==='L'?'left':'right')+'</em></i>';}
+  /* NO SIDE WORD UNDER A SEGMENT, round QR. Each of the four read left or
+     right, eleven pixels under the rail, the same words the two side panels
+     print beside the list at twice the size, and the panel of the side being
+     said is the lit one. The order is the plan's and never changes, left
+     then right in each half, so the segments are read by the panels. */
+  segs+='<i class="rel-sg" data-half="'+(at.ch[2]==='truth'?'ref':'rel')+'" data-side="'+at.ch[0]+'" style="flex:'+RUN.dose+'"></i>';}
  segs+='<i class="rel-sg" data-half="end" style="flex:1"></i>';
  return '<div class="rel-scr">'
   /* "Release just have a release and reframe. It doesn't need to say reframe
@@ -2674,7 +2758,7 @@ function relBooksHtml(){
  if(!ks.length)return '';
  return relSect('Bookmarked','<div class="rel-log" style="max-height:none;overflow:visible;text-align:left">'
   +ks.map(function(k){var b=RUN.books[k];
-   return '<div class="rel-row" style="grid-template-columns:1fr"><span>'+esc(b.text)
+   return '<div class="rel-row" style="grid-template-columns:1fr"><span>'+esc(relSaidTxt(b.text))
     +'<em style="display:block">'+esc(b.nm)+', '+esc(b.half.toLowerCase())+', '+esc(b.side)+' channel, line '+b.line+'</em></span></div>';}).join('')
   +'</div><div class="rel-rs-s">A bookmark marks a line to come back to. It stays here until you press Done and is not saved to your record.</div>','relbooks');}
 /* the switches as one centred row, his "toggles for my options" */
@@ -2780,7 +2864,7 @@ function relResults(){
  /* 2. left and right, mirrored, the same panels the run counted on */
  if(t.side)out+=relSect('Left and right',
   '<div class="rel-lrw">'+relSidePanel('L',t,null)+relSidePanel('R',t,null)+'</div>'
-  +'<div class="rel-rs-s">Released is a release line said, "I let go". Recharged is a reframe line said, "I know that I am".</div>');
+  +'<div class="rel-rs-s">Released is a release line said, "I am letting go of ... that I am". Recharged is a reframe line said, "I know that I am".</div>');
  /* 3. the bank and the vault, now and before the run */
  out+=relSect('Your patterns','<div class="rel-rs-row">'
   +relFig('Bank',RUN.bank1,RUN.bank1===1?'address held':'addresses held',RUN.bank0,'What is still held in your body, waiting to be released.')
@@ -2936,7 +3020,11 @@ function relRender(){
    +'<span><span class="rel-node" style="color:'+c+'">'+esc(n.k)+'</span>'
    +'<span class="rel-sub">'+esc(n.b)+' · '+esc(n.n||'')+'</span>'
    /* where in the run, on the plate it describes, rather than a row of its own */
-   +'<span class="rel-ct">Pass '+(RUN.pass+1)+' of '+RUN.dose+' · address '+(ad.at+1)+' of '+ad.of+'</span></span></div>';
+   /* each part whole, so a phone breaks the line between parts and never
+      leaves "session" on a line of its own */
+   +'<span class="rel-ct">'+['Pass '+(RUN.pass+1)+' of '+RUN.dose,'address '+(ad.at+1)+' of '+ad.of]
+    .concat(cts&&cts.of?[(cts.of+cts.putOf)+' lines this session']:[])
+    .map(function(x){return '<span class="rel-nw">'+x+'</span>';}).join(' · ')+'</span></span></div>';
   var info=relTally(cts,live)+relSws(n);
   /* PAUSE AND END ON THE CENTRE LINE, round QM, his words: "You can keep the
      buttons organized center screen." Round LY had put them at the lower

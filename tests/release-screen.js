@@ -38,7 +38,14 @@
    acting on RUN.heavy; CQ and Up count up on the run and land exactly on the
    record's CQ after the write, and the results show both. Known bad: run
    against f164f17's own source.html, the build before it, every one of those
-   checks fails. */
+   checks fails.
+
+   ROUND QR, "simplify the UI and remember the progression starts with dot dot
+   dot that I am and it's the color of the chakra being", added after QQ: every
+   release pass is "that I am" and the head's own words; every row is in its
+   seat's colour; the channel heading is heard and not drawn; the scrub drops
+   its side words; the top word hides on the list; This session moves to the
+   plate; and at 1600 by 1000 the readings end above the controls. */
 const {chromium}=require('playwright');
 const path=require('path');
 const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1';
@@ -110,7 +117,7 @@ const STORY='I am afraid I will be left. When she goes quiet I panic and try to 
   ok(r3.ref.filter(l=>l.p>0).every(l=>l.t.indexOf(r3.entries[1][(l.p-1)%r3.entries[1].length])===0),
    'a reframe pass opens on REF_ENTRY at the same rung index a release pass uses');
   ok(r3.rel.filter(l=>l.p>0).every(l=>l.t.indexOf(r3.entries[0][(l.p-1)%r3.entries[0].length])===0)
-   &&r3.rel.filter(l=>l.p===0).every(l=>/^I am letting go of believing/.test(l.t)),'and the release side is untouched: six channels on the head, his three entries on the passes');
+   &&r3.rel.filter(l=>l.p===0).every(l=>/^I am letting go of believing/.test(l.t)),'and the release side keeps its own: six channels on the head, REL_ENTRY on the passes');
   ok(r3.prompts.Reframe==='I know'&&/^I am letting go of/.test(r3.prompts.Release||''),'the reframe prompt is "I know", the release prompt the six channels: '+JSON.stringify(r3.prompts));
   const shown=await ev(page,()=>{var i=RUN.plan.findIndex(function(k){return /truth/.test(k);});
    RUN.phase='run'; RUN.idx=i; RUN.pass=2; RUN.look=false; relRender();
@@ -325,6 +332,61 @@ const STORY='I am afraid I will be left. When she goes quiet I panic and try to 
    'the results show CQ after and how far it came up: '+JSON.stringify([cq.res,cq.after,cq.rec0]));
   ok(cq.sec.indexOf('Bookmarked')>=0&&/not saved to your record/.test(cq.books||''),'the bookmarked line is on the results, and they say it is not saved to the record: '+JSON.stringify(cq.books));
   }catch(e){ok(false,'round QQ could not run: '+e.message.split('\n')[0]);}
+  /* ============================================================
+     ROUND QR, 3 October. His words over a picture of the run: "this version
+     just simplify the UI and remember the progression starts with dot dot dot
+     that I am and it's the color of the chakra being." Read off the page on a
+     fresh run. Known bad: run against 0634a16's own source.html, the build
+     before it, every check in this block fails.
+     ============================================================ */
+  try{
+  const qr=await ev(page,()=>{relPick(RUN.pick.map(function(n){return n.i;})); RUN.dose=4; RUN.plan=relPlan();
+   relTicker(false); RUN.phase='run'; RUN.idx=0; RUN.pass=2; RUN.paused=true; RUN.look=false; RUN.heavy={}; relRender();
+   var o={passes:[]};
+   /* every release pass is "that I am" and the head's own first sentence */
+   (RUN.plan||[]).forEach(function(k,i){var at=relAt(i); if(!at||at.ch[2]!=='limit')return;
+    var h=relStepAt(at,0).text, tail=h.indexOf(C3_STEM)===0?h.slice(C3_STEM.length).split(/\.\s/)[0].replace(/\.$/,'').trim():null;
+    for(var p=1;p<RUN.dose;p++)o.passes.push({t:relStepAt(at,p).text,want:tail?'that I am '+tail+'.':null});});
+   var tl=document.querySelector('#rel .rel-cr-i.now .rel-tail');
+   o.liveTail=tl?tl.textContent:null;
+   o.liveDot=tl?getComputedStyle(tl,'::before').content:null;
+   o.liveLine=(document.querySelector('#rel .rel-line')||{}).textContent||'';
+   o.prompt=(document.querySelector('#relpr b')||{}).textContent||'';
+   /* every row in its seat's colour, the next address in its own */
+   var rows=[].slice.call(document.querySelectorAll('#relcarl .rel-cr-i[data-relh]')).filter(function(r){return r.getAttribute('data-relh')!=='end';});
+   o.cols=rows.map(function(r){var at=relAt(+r.getAttribute('data-relh').split(':')[0]);
+    return {got:r.style.getPropertyValue('--c'),want:at&&at.n?seatCol(at.n.b):null};});
+   o.cBad=o.cols.filter(function(c){return !c.want||c.got!==c.want;}).length;
+   var now=document.querySelector('#relcarl .rel-cr-i.now');
+   o.nowCol=now?getComputedStyle(now).color:null; o.inkCol=getComputedStyle(document.querySelector('#relpr b')).color;
+   /* the channel heading is heard and not drawn, and says no pole */
+   o.heads=[].slice.call(document.querySelectorAll('#relcarl .rel-cr-h')).filter(function(h){return /channel/.test(h.textContent);})
+    .map(function(h){var r=h.getBoundingClientRect(); return {t:h.textContent,w:r.width,h:r.height};});
+   /* no side word under the scrub, the top word hidden on the list */
+   o.scrWords=((document.querySelector('#rel .rel-scr-sg')||{}).textContent||'').trim();
+   var wd=document.querySelector('#rel .rel-word'); o.word=wd?getComputedStyle(wd).visibility:null;
+   /* the row carries what moves; the session's size is on the plate */
+   o.figs=[].slice.call(document.querySelectorAll('#relft .rel-figs .rel-fig span')).map(function(e){return e.textContent;});
+   o.plate=(document.querySelector('#relhd .rel-ct')||{}).textContent||'';
+   var fg=document.querySelector('#relft .rel-figs'), ft=document.getElementById('relfoot');
+   o.figB=fg?fg.getBoundingClientRect().bottom:null; o.footT=ft?ft.getBoundingClientRect().top:null;
+   return o;});
+  const bad=qr.passes.filter(p=>!p.want||p.t!==p.want);
+  ok(qr.passes.length>0&&bad.length===0,'every release pass reads "that I am" and the head\'s own words, '+qr.passes.length+' checked'
+   +(bad.length?': '+bad.slice(0,3).map(p=>p.t+' (want '+p.want+')').join(' | '):', first "'+(qr.passes[0]||{}).t+'"'));
+  ok(qr.passes.every(p=>!/^I (let go of|give up|forgive myself for) /.test(p.t)),'and none says I let go of, I give up or I forgive myself for');
+  ok(/^that I am /.test(qr.liveTail||'')&&/…/.test(qr.liveDot||'')&&qr.liveLine===qr.liveTail&&/feeling$/.test(qr.prompt),
+   'on screen the live pass continues the pinned prompt, "... that I am", and is said as shown: '+JSON.stringify([qr.prompt,qr.liveDot,qr.liveTail]));
+  ok(qr.cols.length>0&&qr.cBad===0,'every row of the list is set in its own seat\'s colour, '+qr.cols.length+' rows, '+qr.cBad+' wrong: '+JSON.stringify(qr.cols.slice(0,2)));
+  ok(qr.nowCol&&qr.nowCol!==qr.inkCol,'and the live line is not the plain ink of the prompt: '+JSON.stringify([qr.nowCol,qr.inkCol]));
+  ok(qr.heads.length>0&&qr.heads.every(h=>h.w<=1&&h.h<=1&&/^(Release|Reframe), (left|right) channel$/.test(h.t)),
+   'the channel heading is for a screen reader only and names no pole: '+JSON.stringify(qr.heads.slice(0,2)));
+  ok(qr.scrWords==='','the scrub carries no left or right under its segments: '+JSON.stringify(qr.scrWords));
+  ok(qr.word==='hidden','the top word Release is hidden on the list, where the rail and the prompt say it: '+qr.word);
+  ok(qr.figs.indexOf('This session')<0&&qr.figs[0]==='Remaining'&&qr.figs.indexOf('DQ')>=0&&/\d+ lines this session$/.test(qr.plate),
+   'the row keeps what moves and the session\'s size is on the plate: '+JSON.stringify([qr.figs,qr.plate]));
+  if(W===1600)ok(qr.figB!=null&&qr.footT!=null&&qr.figB<=qr.footT,'at 1600 by 1000 the readings end above the controls: '+qr.figB+' against '+qr.footT);
+  }catch(e){ok(false,'round QR could not run: '+e.message.split('\n')[0]);}
   /* and the app comes back when it closes */
   const back=await ev(page,()=>{relClose(); return {app:getComputedStyle(document.querySelector('.app')).visibility,
    cls:document.body.classList.contains('rel-on')};});

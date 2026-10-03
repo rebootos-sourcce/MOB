@@ -694,10 +694,10 @@ def is_copy(t, shaped, stem=False):
         # a lower case single token in a shaped slot is usually a class or a
         # key; a lower case word in a button is still a word
         return False
-    # A SENTENCE STEM IS COPY. REL_ENTRY is "I let go of " and the address is
-    # added at run time, so the literal is twelve characters and check.py's
-    # prose test, fourteen and up, never saw the one string the brief names
-    # as wrong. A literal of two words or more that ends on a space is the
+    # A SENTENCE STEM IS COPY. REL_ENTRY was "I let go of " (it is "that I am "
+    # since round QR) and the address is added at run time, so the literal was
+    # twelve characters and check.py's prose test, fourteen and up, never saw
+    # the one string the brief names as wrong. A literal of two words or more that ends on a space is the
     # front half of a sentence.
     if stem and len(bare) >= 6 and re.search(r'[A-Za-z]+ [a-z]+', bare):
         return True
