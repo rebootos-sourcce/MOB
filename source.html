@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1538 cea53fb 2026-10-03 06:49"><head><meta charset="utf-8">
+<html lang="en" data-build="v1540 2e41941 2026-10-03 06:56"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -17513,7 +17513,7 @@ function pPersist(){
  catch(e){ SAVE_OK=false; SAVE_ERR=(e&&e.name)||'error'; }
  return SAVE_OK; }
 function saveState(){ return {ok:SAVE_OK, err:SAVE_ERR}; }
-function pNew(name){ var p=blankProfile(name); PROFILES.push(p); CURP=p; pPersist(); return p; }
+function pNew(name){ var p=blankProfile(name); PROFILES.push(p); CURP=p; pPersist(); profMark(p); return p; }
 /* A SAVE REPORTS WHETHER IT SAVED. This returned CURP, an object, so every
    caller testing it got true whatever the disk did, and accDelete's guard
    `if(!pSave())` could never fire: a delete that failed to write said
@@ -18749,6 +18749,15 @@ function meterFirst(p,key,label,at){
  p.meter.firsts.push(f);
  return f;}
 
+/* WHICH PROFILE IS OPEN, so a reload finds it again rather than falling back
+   to PROFILES[0], the gap the record link's own build surfaced (round QZ): a
+   load that landed and then vanished on the next visit. Every function that
+   moves CURP to a real profile calls this, the one place that writes the
+   device-side pointer, rather than each copying the same try/catch. Best
+   effort, same as every other devSet convenience: a failed write costs the
+   PROFILES[0] fallback, never data. */
+function profMark(p){ try{ if(p&&p.id)devSet('open',p.id); }catch(e){} }
+
 var IMPORT_ERR=null;
 function pImport(txt){
  IMPORT_ERR=null;
@@ -18763,12 +18772,7 @@ function pImport(txt){
  catch(e){ back(); IMPORT_ERR=['could not load: '+((e&&e.message)||'error')]; return null; }
  PROFILES.push(v.profile); CURP=v.profile;
  if(!pPersist()){ back(); IMPORT_ERR=['could not save: '+(SAVE_ERR||'error')]; return null; }
- /* so a reload opens what was just imported rather than falling back to
-    PROFILES[0], the gap the record link's own build surfaced: a load that
-    landed and then vanished on the next visit. Best effort, same as every
-    other devSet convenience in this file; a failed write here costs a
-    fallback to PROFILES[0], never data. */
- try{ devSet('open',v.profile.id); }catch(e){}
+ profMark(v.profile);
  return v.profile;}
 function importError(){ return IMPORT_ERR; }
 /* A HOST THAT STOPPED A RECORD BEFORE IT REACHED THE BOUNDARY SAYS WHY HERE.
@@ -26044,14 +26048,13 @@ function profCreate(name){
  PROFILES.push(p); CURP=p;
  try{ loadProfile(p); }catch(e){ back(); PROF_ERR=['could not load: '+((e&&e.message)||'error')]; return null; }
  if(!pPersist()){ back(); PROF_ERR=['could not save: '+(SAVE_ERR||'error')]; return null; }
+ profMark(p);
  return p;}
 /* THE RETRIEVE. Validated on a copy first, loaded second, and CURP moves last.
    The record itself is never rewritten here: opening a profile is reading it.
-   The one write is a device-side pointer to which one is open (devSet, the
-   same convenience store practitioner mode and sound already use), so the
-   boot step can find it again rather than falling back to PROFILES[0] on
-   every reload. Best effort: a failed write costs that fallback, never a
-   record. */
+   The one write is profMark, the device-side pointer to which one is open
+   (engine/schema.js), so the boot step can find it again rather than falling
+   back to PROFILES[0] on every reload. */
 function profOpen(id){
  PROF_ERR=null;
  var p=profFind(id);
@@ -26065,7 +26068,7 @@ function profOpen(id){
  catch(e){ CURP=keepC; try{ if(keepC)loadProfile(keepC); }catch(e2){}
   PROF_ERR=['could not load: '+((e&&e.message)||'error')]; return null; }
  CURP=p;
- try{ devSet('open',p.id); }catch(e){}
+ profMark(p);
  return p;}
 /* THE DELETE, of any profile on the list and not only the open one. Deleting
    the open one opens the first left, and deleting the last one leaves a blank
@@ -46227,7 +46230,12 @@ function renderIntake(){
  var ps=document.getElementById('iqprof');
  if(ps)ps.onchange=function(){
   var pi=+ps.value; if(pi<0||!PROFILES[pi]){renderIntake();return;}
-  CURP=PROFILES[pi];loadProfile(CURP);IQ_OPEN=null;IQ_SEAT=null;
+  /* through profOpen and not a direct CURP assignment, so the device's
+     "which one is open" pointer moves with it (profMark, engine/schema.js)
+     and a reload finds this profile again instead of falling back to
+     PROFILES[0]. */
+  if(!profOpen(PROFILES[pi].id)){renderIntake();return;}
+  IQ_OPEN=null;IQ_SEAT=null;
   syncCh();syncLw();syncSoul();renderIntake();render();};
  var nb=document.getElementById('iqnew');
  if(nb)nb.onclick=function(){var n=prompt('Profile name','Profile '+(PROFILES.length+1));
@@ -67327,5 +67335,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004410920"></div>
+<div id="eof" hidden data-len="004411273"></div>
 </body></html>

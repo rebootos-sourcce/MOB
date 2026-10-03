@@ -1388,7 +1388,12 @@ function renderIntake(){
  var ps=document.getElementById('iqprof');
  if(ps)ps.onchange=function(){
   var pi=+ps.value; if(pi<0||!PROFILES[pi]){renderIntake();return;}
-  CURP=PROFILES[pi];loadProfile(CURP);IQ_OPEN=null;IQ_SEAT=null;
+  /* through profOpen and not a direct CURP assignment, so the device's
+     "which one is open" pointer moves with it (profMark, engine/schema.js)
+     and a reload finds this profile again instead of falling back to
+     PROFILES[0]. */
+  if(!profOpen(PROFILES[pi].id)){renderIntake();return;}
+  IQ_OPEN=null;IQ_SEAT=null;
   syncCh();syncLw();syncSoul();renderIntake();render();};
  var nb=document.getElementById('iqnew');
  if(nb)nb.onclick=function(){var n=prompt('Profile name','Profile '+(PROFILES.length+1));

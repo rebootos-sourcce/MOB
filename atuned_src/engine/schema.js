@@ -493,7 +493,7 @@ function pPersist(){
  catch(e){ SAVE_OK=false; SAVE_ERR=(e&&e.name)||'error'; }
  return SAVE_OK; }
 function saveState(){ return {ok:SAVE_OK, err:SAVE_ERR}; }
-function pNew(name){ var p=blankProfile(name); PROFILES.push(p); CURP=p; pPersist(); return p; }
+function pNew(name){ var p=blankProfile(name); PROFILES.push(p); CURP=p; pPersist(); profMark(p); return p; }
 /* A SAVE REPORTS WHETHER IT SAVED. This returned CURP, an object, so every
    caller testing it got true whatever the disk did, and accDelete's guard
    `if(!pSave())` could never fire: a delete that failed to write said
@@ -1729,6 +1729,15 @@ function meterFirst(p,key,label,at){
  p.meter.firsts.push(f);
  return f;}
 
+/* WHICH PROFILE IS OPEN, so a reload finds it again rather than falling back
+   to PROFILES[0], the gap the record link's own build surfaced (round QZ): a
+   load that landed and then vanished on the next visit. Every function that
+   moves CURP to a real profile calls this, the one place that writes the
+   device-side pointer, rather than each copying the same try/catch. Best
+   effort, same as every other devSet convenience: a failed write costs the
+   PROFILES[0] fallback, never data. */
+function profMark(p){ try{ if(p&&p.id)devSet('open',p.id); }catch(e){} }
+
 var IMPORT_ERR=null;
 function pImport(txt){
  IMPORT_ERR=null;
@@ -1743,12 +1752,7 @@ function pImport(txt){
  catch(e){ back(); IMPORT_ERR=['could not load: '+((e&&e.message)||'error')]; return null; }
  PROFILES.push(v.profile); CURP=v.profile;
  if(!pPersist()){ back(); IMPORT_ERR=['could not save: '+(SAVE_ERR||'error')]; return null; }
- /* so a reload opens what was just imported rather than falling back to
-    PROFILES[0], the gap the record link's own build surfaced: a load that
-    landed and then vanished on the next visit. Best effort, same as every
-    other devSet convenience in this file; a failed write here costs a
-    fallback to PROFILES[0], never data. */
- try{ devSet('open',v.profile.id); }catch(e){}
+ profMark(v.profile);
  return v.profile;}
 function importError(){ return IMPORT_ERR; }
 /* A HOST THAT STOPPED A RECORD BEFORE IT REACHED THE BOUNDARY SAYS WHY HERE.
