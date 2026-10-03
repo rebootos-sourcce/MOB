@@ -440,7 +440,12 @@ function paidWelcomeOpen(){
  var h=document.getElementById('tutorial'); if(!h)return false;
  if(CURP&&CURP.ui&&CURP.ui.paidWelcomed)return false;
  if(typeof TUT!=='undefined'&&TUT.open)return false;
- h.classList.remove('ob-leaving');
+ /* the tutorial's stage leaves its classes on the host until its own exit
+    has run (ui/tutorial.js, tutClose); this card is the old sheet and must
+    not open wearing them, nor be wiped by that exit's timer */
+ if(typeof TUT!=='undefined'&&TUT.leaveT){ clearTimeout(TUT.leaveT); TUT.leaveT=null; }
+ document.body.classList.remove('tut-on');
+ h.classList.remove('ob-leaving','obx','tutx','obx-lit','obx-in-arrive');
  h.innerHTML='<div class="ob-card" role="dialog" aria-modal="true" aria-label="You are in">'
   +'<div class="ob-wash" aria-hidden="true"></div><div class="ob-scroll">'
   +'<span class="pm-eye">Paid</span>'

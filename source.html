@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1542 df8d370 2026-10-03 06:58"><head><meta charset="utf-8">
+<html lang="en" data-build="v1556 4ed2f52 2026-10-03 08:43"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -6465,13 +6465,7 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
   radial-gradient(circle at 48% 46%,rgba(167,126,219,.15) 0,transparent 46%);
  animation:obWashDrift 30s var(--ease-breath) infinite alternate}
 @keyframes obWashDrift{from{transform:scale(1) rotate(0deg)}to{transform:scale(1.1) rotate(3deg)}}
-/* THE STANDING FIGURE, FAINT, BEHIND EVERY CARD rather than shown once at
-   full strength on the welcome screen alone: the same continuity the
-   Field gives every tab, one figure the whole product is read against. */
-.ob-fig-wm{position:absolute;inset:0;z-index:0;display:flex;align-items:center;
- justify-content:center;opacity:.07;pointer-events:none}
-.ob-fig-wm .ob-fig{width:64%;height:auto}
-.ob-card>:not(.ob-wash):not(.ob-fig-wm){position:relative;z-index:1}
+.ob-card>:not(.ob-wash){position:relative;z-index:1}
 @media (prefers-reduced-motion:reduce){.ob-wash{animation:none}}
 .ob-h{font-size:24px;line-height:1.2;margin:6px 0 14px;font-weight:600;
  letter-spacing:-.012em;color:var(--ink)}
@@ -6533,24 +6527,19 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
  color:var(--ink);margin-top:10px;cursor:pointer}
 .login-sw-off{color:var(--dim);cursor:default}
 .login-dim{color:var(--dim);font-size:11.5px;margin-left:4px}
-.ob-dot{width:6px;height:6px;border-radius:50%;background:var(--edge-2)}
+/* THE DOTS SURVIVE EVERY LIGHTING. They were drawn in var(--edge-2), which
+   Punch, Flat and Lumen set to transparent by their own rule that nothing is
+   outlined, so on those three the whole rail vanished and one lit dot sat
+   alone over the actions: a progress indicator that cannot say how long the
+   run is. Mixed off var(--ink) instead, which every lighting defines, so the
+   rail is there on all seven. Round QG, and the defect predates it. */
+.ob-dot{width:6px;height:6px;border-radius:50%;
+ background:color-mix(in srgb,var(--ink) 18%,transparent)}
+/* HOW FAR ALONG. A passed step is half the accent, the step in hand is all of
+   it, and what is still to come is the plain rest. */
+.ob-dot.past{background:color-mix(in srgb,var(--accent) 48%,transparent)}
 .ob-dot.on{background:var(--accent)}
-/* THE FIGURE ON THE WELCOME. Centred, generous, and the only thing on the
-   screen with any size to it. The seats fade up root to crown in a hundred and
-   seventy millisecond step, which is the boot's own rhythm halved, so it reads
-   as the same creature taking a breath rather than as a second animation.
 
-   Under the type floor question: this carries no text, so it has none to be
-   under. Height is capped in vmin as well as pixels because at 390 by 844 a
-   300 pixel figure and three lines of copy do not both fit above the fold. */
-.ob-fig{display:block;margin:2px auto 20px;width:min(34vmin,168px);
- height:auto;overflow:visible;fill:none;stroke-linecap:round}
-.ob-fig-h{stroke:var(--au);stroke-width:1.4;opacity:.8}
-.ob-fig-s{stroke:var(--edge-2);stroke-width:1.4}
-.ob-fig-d{opacity:0;animation:obDot .52s cubic-bezier(.22,1,.36,1) both}
-@keyframes obDot{0%{opacity:0;transform:translateY(3px)}100%{opacity:.92;transform:none}}
-@media (prefers-reduced-motion:reduce){
- .ob-fig-d{animation:none;opacity:.92}}
 .ob-grid{display:grid;gap:1px;background:var(--edge);border:1px solid var(--edge);
  border-radius:var(--r);overflow:hidden;margin:4px 0 2px}
 .ob-g{background:var(--panel-2);padding:10px 13px;display:flex;
@@ -6570,11 +6559,650 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
  border:1px solid var(--edge);background:var(--panel-2);color:var(--mid);
  font:inherit;font-size:13px;cursor:pointer}
 .ob-seat:hover{color:var(--ink);border-color:var(--edge-2)}
-.ob-seat.on{background:var(--c,var(--accent));border-color:var(--c,var(--accent));
- color:var(--on-accent);font-weight:600}
+/* THE PRESSED CHIP IS A RING OVER A WASH, NEVER A SOLID SLAB OF THE SEAT.
+   Round QG. It filled with var(--c), so on Dark a pressed Root chip was
+   #D6524C at full strength and the brightest object on a card whose subject
+   is the question above it. ui/intakeui.js records the same defect and its
+   fix at round PQ for the archetype pills, and these are the same values, so
+   a seat is pressed the same way on both surfaces. The ink stays var(--ink)
+   over the wash: measured on Dark, 14 per cent of each of the seven seats over
+   var(--panel) reads 11.4 to 1 at worst, against a 4.5 floor for this size. */
+.ob-seat.on{background:color-mix(in srgb,var(--c,var(--accent)) 14%,transparent);
+ border-color:var(--c,var(--accent));box-shadow:inset 0 0 0 .5px var(--c,var(--accent));
+ color:var(--ink);font-weight:600}
+/* a chip carrying a seat mark is a row of two things, not a word with a
+   picture glued to its left: the mark takes the line's height and the word
+   sits on the optical centre of it */
+.ob-seats-mk .ob-seat{display:inline-flex;align-items:center;gap:8px;padding:5px 13px 5px 7px}
+.ob-seats-mk .ob-seat:has(.ob-seat-n:only-child){padding-left:13px}
+.ob-mk{display:block;flex:0 0 auto;width:26px;height:26px;overflow:visible}
+.ob-mk-dk{stroke:none;fill:color-mix(in srgb,var(--c) 12%,var(--sunk))}
+.ob-mk-tk{fill:none;stroke:var(--c);stroke-width:2.4;opacity:.8}
+.ob-mk-ld{fill:none;stroke:var(--c);stroke-width:3.2;stroke-linecap:round}
+.ob-mk-gl{fill:none;stroke:var(--c);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ob-mk-g{width:30px;height:30px}
+.ob-mk-p{width:34px;height:34px}
+/* THE LIGHT LIGHTINGS, the same reading ui/intakeui.js took for the same
+   object: the disc sits on the panel rather than sinking below it, and the
+   seat is deepened toward ink so the track, drawn at eighty per cent, still
+   clears 3 to 1 as a graphic on paper. */
+body.snow .ob-mk,body.glasswhite .ob-mk{--c:color-mix(in srgb,var(--c) 78%,var(--ink))}
+body.snow .ob-mk-dk,body.glasswhite .ob-mk-dk{fill:color-mix(in srgb,var(--c) 8%,var(--panel))}
+/* a thin colour recedes on paper, so the resting seat ring on the figure
+   carries more of itself there and the lit one keeps the same step to full */
+body.snow .obx-sr,body.glasswhite .obx-sr{stroke-opacity:.72}
+/* Punch draws nothing outlined: the disc goes solid at its own 26 per cent and
+   the track, an outline, goes. The arc stays, because it is a reading. */
+body.punch .ob-mk-dk{fill:color-mix(in srgb,var(--c) 26%,var(--sunk))}
+body.punch .ob-mk-tk{display:none}
+.ob-figsay{margin:0 0 12px;text-align:center;max-width:none}
+.ob-seatsay{margin-top:10px}
+.ob-foot{margin-top:16px;color:var(--dim);font-size:12.5px}
+/* ---------- the loop, and it closes ---------- */
+.ob-loopw{display:grid;grid-template-columns:116px 1fr;gap:16px;align-items:center;
+ margin:14px 0 4px}
+.ob-loop{display:block;width:116px;height:116px;overflow:visible}
+/* THE TRACK IS UNBROKEN AND CARRIES NO ARROW HEAD. An arrow head is a start
+   and an end; a closed ring with four marks on it is a turn. */
+/* THE TRACK BELONGS TO THE SAME FAMILY AS THE MARKS ON IT. Drawn in
+   var(--edge-2), which is white at fourteen per cent, a 1.6 pixel line read as
+   nothing between four discs and the figure came out as a cross of circles
+   rather than a turn. It is the accent at thirty per cent now: the loop is the
+   subject and the stations are on it. */
+.ob-loop-tk{fill:none;stroke:color-mix(in srgb,var(--accent) 30%,transparent);
+ stroke-width:1.8}
+.ob-loop-d{fill:var(--sunk);stroke:var(--accent);stroke-width:1.4;stroke-opacity:.7}
+.ob-loop-g{fill:none;stroke:var(--accent);stroke-width:1.9;stroke-linecap:round;
+ stroke-linejoin:round}
+.ob-loop-n{opacity:0;animation:obLoopIn .42s cubic-bezier(.22,1,.36,1) both}
+@keyframes obLoopIn{0%{opacity:0}100%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.ob-loop-n{animation:none;opacity:1}}
+.ob-loopr{list-style:none;margin:0;padding:0;display:grid;
+ grid-template-columns:19px 1fr;gap:3px 9px;align-items:start}
+.ob-loopr li{display:contents}
+.ob-loopr-ic{grid-column:1;width:19px;height:19px;margin-top:1px;fill:none;
+ stroke:var(--accent);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.ob-loopr-n{grid-column:2;font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.4}
+.ob-loopr-s{grid-column:2;font-size:13px;line-height:1.5;color:var(--mid);
+ margin-bottom:7px}
+/* ---------- the mirror's seat heading ---------- */
+.ob-grph-r{display:flex;align-items:flex-start;gap:9px}
+.ob-grph-r .ob-grph{flex:1 1 auto;margin-top:3px}
+/* ---------- the first release's plan ---------- */
+.ob-plan{display:flex;flex-wrap:wrap;gap:10px;margin:4px 0 14px}
+.ob-plan-i{display:flex;align-items:center;gap:9px;padding:7px 13px 7px 8px;
+ border:1px solid var(--edge);border-radius:var(--r-s);background:var(--panel-2)}
+.ob-plan-n{font-size:13.5px;font-weight:600;color:var(--ink)}
+.ob-plan-v{font-family:var(--num);font-size:12.5px;color:var(--dim)}
 @media(max-width:640px){
  .ob{padding:12px}.ob-card{padding:20px 18px 16px}.ob-h{font-size:20px}
- .ob-word{font-size:27px;padding:17px 10px}}
+ .ob-word{font-size:27px;padding:17px 10px}
+ /* THE RING GOES OVER THE ROWS AT 390, not beside them. Beside them it had
+    92 pixels to live in and its four glyphs rendered at 14, which is a
+    symbol a person cannot read beside the same symbol at 19 in the row under
+    it. Over them it gets 132 and the two match. */
+ .ob-loopw{grid-template-columns:1fr;justify-items:center;gap:14px}
+ .ob-loop{width:132px;height:132px}
+ .ob-loopr{width:100%}
+ .ob-plan{gap:7px}}
+.ob-mirrorfig{margin:10px 0 4px}
+/* ============================================================
+   THE STAGE, ROUND QH. ui/onboard.js's header carries the account: the sheet
+   is a full screen with three depths, the body is one object moved by poses,
+   and the card is the only thing replaced. Everything here is scoped to .obx,
+   because #login and #tutorial wear the same .ob and .ob-card and are not
+   part of this round.
+
+   THE POSES ARE DESIGN VALUES, per step and per width, and the script reads
+   them rather than knowing them: --ax and --ay are where the navel of the
+   body stands on screen, --fs and --fo its scale and opacity, --k the step,
+   which turns the ring an eighth each, --ro the ring's opacity. Nothing that
+   a pose sets carries a transition: the camera in ui/onboard.js animates
+   from the old computed value to the new one, and a CSS transition on the
+   same property would sit above it in the cascade and fight it.
+
+   THE NAVEL IS THE ANCHOR because it is the body's centre of mass and the
+   centre a ring round a standing figure is drawn from. In the drawing's own
+   box, 68 by 102 units, it stands at x 44 and y 48, the Sacral seat: .43137
+   and .4706 of the drawing's height.
+   ============================================================ */
+.obx{--fh:min(76vh,800px,58vw);--ax:27vw;--ay:52vh;--fs:1;--fo:1;--k:0;--ro:1;--dy:1;--d0:140ms;
+ padding:0;background:var(--bg);overflow:hidden;z-index:95}
+.obx[data-dir=back]{--dy:-1}
+.obx-in-arrive{--d0:1100ms}
+/* ROUND QI: the words wait for the body. At 560 they began while the figure
+   was still a fade at 93 per cent, so the first read split between two
+   things. At 1100 the spine has climbed, the seats have popped and the
+   outline is most of the way down; the words are the second thing a person
+   reads, not the joint first. The buttons are live and the primary has focus
+   from the first frame, so a person who already knows can go at once. */
+/* the running app is out of the picture while the stage is up, not dimmed
+   behind it, and the compositor stops drawing a Field nobody can see */
+body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
+/* the leaving: the stage goes after the body has started forward */
+.obx.ob-leaving{opacity:0;transition:opacity var(--t-context) var(--ease-in) .1s}
+.obx-far,.obx-vig,.obx-tint,.obx-ring,.obx-near{position:absolute;pointer-events:none}
+/* ---- far: the boot's wash, the seven pools on their own bearings ---- */
+.obx-far{inset:-12%;z-index:0;translate:calc(var(--k) * -.9vw) calc(var(--k) * .5vh)}
+.obx-wash{position:absolute;inset:0;
+ background:radial-gradient(circle at 30% 14%,color-mix(in srgb,var(--crown) 15%,transparent) 0,transparent 30%),
+  radial-gradient(circle at 18% 24%,color-mix(in srgb,var(--eye) 14%,transparent) 0,transparent 30%),
+  radial-gradient(circle at 40% 34%,color-mix(in srgb,var(--throat) 12%,transparent) 0,transparent 32%),
+  radial-gradient(circle at 16% 50%,color-mix(in srgb,var(--heart) 12%,transparent) 0,transparent 32%),
+  radial-gradient(circle at 42% 62%,color-mix(in srgb,var(--solar) 11%,transparent) 0,transparent 30%),
+  radial-gradient(circle at 22% 78%,color-mix(in srgb,var(--sacral) 12%,transparent) 0,transparent 32%),
+  radial-gradient(circle at 36% 92%,color-mix(in srgb,var(--root) 13%,transparent) 0,transparent 30%),
+  radial-gradient(circle at 78% 30%,color-mix(in srgb,var(--accent) 7%,transparent) 0,transparent 42%);
+ will-change:transform,opacity;
+ animation:obxBreath 2.1s var(--ease-breath) 2.1s infinite alternate backwards,
+  obWashDrift 30s var(--ease-breath) infinite alternate}
+/* the Field's own wave, .82 to 1 over 4.2s, which is two of these. ROUND QI:
+   it starts at 2.1s, the same instant the body's breath does, so the room
+   and the figure inhale together; it began at 0 and ran half a breath out of
+   step with everything that breathes on it. The drift under it is the first
+   run sheet's own, obWashDrift above, which this stage dropped when it
+   replaced that sheet: the pools turn three degrees over thirty seconds, so
+   the room is never the same picture twice and never visibly moving. */
+@keyframes obxBreath{from{opacity:.82}to{opacity:1}}
+/* THE PUSH IN, round QI. This bloom came from 1.18 down to 1, the room
+   shrinking while the body held still, which is a camera pulling back from
+   a figure that is supposed to be arriving. Now every depth comes forward
+   and the nearer moves more: far 2 per cent, the ring 4, the body 6. */
+.obx-in-arrive .obx-far{animation:obxBloom 1.6s cubic-bezier(.22,1,.36,1) both}
+@keyframes obxBloom{from{opacity:0;scale:.98}to{opacity:1;scale:1}}
+/* the edges fall away, so the eye starts where the body is */
+.obx-vig{inset:0;z-index:0;
+ background:radial-gradient(130% 100% at var(--ax) 50%,transparent 46%,color-mix(in srgb,var(--sunk) 78%,transparent) 100%),
+  linear-gradient(to bottom,color-mix(in srgb,var(--bg) 70%,transparent) 0,transparent 96px)}
+/* ---- the room takes the colour of a reading, and only of a reading ---- */
+.obx-tint{left:0;top:0;z-index:0;width:calc(var(--fh) * 1.5);height:calc(var(--fh) * 1.5);
+ translate:calc(var(--ax) - var(--fh) * .75) calc(var(--ay) - var(--fh) * .82);opacity:0;
+ background:radial-gradient(closest-side,color-mix(in srgb,var(--tc,var(--accent)) 24%,transparent),
+  color-mix(in srgb,var(--tc,var(--accent)) 7%,transparent) 55%,transparent)}
+.obx-lit .obx-tint{opacity:1}
+/* ---- middle: the 112 ---- */
+.obx-ring{left:0;top:0;z-index:1;width:calc(var(--fh) * 1.06);height:calc(var(--fh) * 1.06);
+ translate:calc(var(--ax) - var(--fh) * .53) calc(var(--ay) - var(--fh) * .53);
+ rotate:calc(var(--k) * 45deg);scale:var(--fs);opacity:var(--ro)}
+.obx-ringsv{display:block;width:100%;height:100%;overflow:visible}
+.obx-r0,.obx-r1{fill:none;stroke:color-mix(in srgb,var(--ink) 9%,transparent);stroke-width:1;vector-effect:non-scaling-stroke}
+.obx-tk{stroke:var(--c);stroke-width:1.4;stroke-linecap:round;vector-effect:non-scaling-stroke;opacity:.52}
+.obx-halo{fill:none;stroke:var(--au);stroke-width:1;vector-effect:non-scaling-stroke;opacity:.42;
+ stroke-dasharray:100 100;rotate:-90deg;transform-origin:100px 100px}
+/* the arrival: the addresses come in clockwise from twelve, five
+   milliseconds apart, so the ring is one sweep and not a scatter (the boot's
+   throw runs three apart over the same 112); then the gold closes round them */
+.obx-in-arrive .obx-tk{animation:obxTick .5s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(.3s + var(--s) * 5ms)}
+@keyframes obxTick{from{opacity:0}to{opacity:.52}}
+/* and the ring winds into place while they arrive: the boot's own drift,
+   bxDrift, -24 degrees to rest, on the child so the pose's eighth of a turn
+   per step, on the parent, is never touched. The progress the ring carries
+   is its parent's rotation, and that does not move here. */
+.obx-in-arrive .obx-ringsv{animation:obxWind 1.8s cubic-bezier(.22,1,.36,1) .1s backwards}
+@keyframes obxWind{from{rotate:-24deg;scale:.96}to{rotate:0deg;scale:1}}
+.obx-in-arrive .obx-halo{animation:obxHalo .96s cubic-bezier(.45,0,.15,1) .86s both}
+@keyframes obxHalo{0%{opacity:0;stroke-dasharray:0 100}6%{opacity:.42}100%{opacity:.42;stroke-dasharray:100 100}}
+/* ---- near: the body ---- */
+.obx-near{left:0;top:0;z-index:2;width:calc(var(--fh) * 68 / 102);height:var(--fh);
+ transform-origin:64.706% 47.06%;
+ translate:calc(var(--ax) - var(--fh) * .43137) calc(var(--ay) - var(--fh) * .4706);
+ scale:var(--fs);opacity:var(--fo)}
+/* the body's own part of the push in: from 94 per cent of its pose. Only a
+   from, so it lands on whatever the pose says without this rule knowing it,
+   and backwards and not both, so nothing holds the pose once it has landed */
+.obx-in-arrive .obx-near{animation:obxPush 1.6s cubic-bezier(.22,1,.36,1) backwards}
+@keyframes obxPush{from{scale:calc(var(--fs) * .94)}}
+/* THE BREATH, round QI. The whole figure, names and lights with it, so
+   nothing it carries slides off its seat. Wider more than taller, because a
+   breath fills the ribs before it lifts the head: 1.4 per cent across and
+   .7 up, from the feet, which stay where they stand. Measured at the top of
+   the inhale on the 318 by 714 pixel body at 1600: 4.5 pixels wider, the
+   head 5 higher, the crown's name 2.5 across and 5 up, less than a line's
+   own leading; at 390 under 2 everywhere. Enough to see, too little to read
+   as the words moving. Compositor only, and measured so (LayerTree paint
+   events over two breaths at 1600): with will-change on scale, Chromium
+   repainted the whole 327 by 723 figure at each turn of the breath, four
+   times in two breaths; on transform it holds the raster, and the figure
+   paints exactly as often as a figure that does not breathe at all. */
+.obx-fig{position:relative;width:100%;height:100%;transform-origin:64.706% 97%;will-change:transform;
+ animation:obxInhale 2.1s var(--ease-breath) 2.1s infinite alternate backwards}
+@keyframes obxInhale{from{scale:1}to{scale:1.014 1.007}}
+.obx-figsv{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+/* LIT FROM ABOVE. A fill that is brighter at the shoulders and gone by the
+   feet, and a rim at a third: the Body page's solid shape on a dark ground,
+   given the one light source a figure on a stage has. ROUND QI: this comment
+   stood over a flat seven per cent fill and a flat rim for a whole round,
+   which is why the figure read as a grey cut out. The gradients are in the
+   drawing, ui/onboard.js obStageFig, and these are their stops. */
+.obx-skin{fill:url(#obxSkF);stroke:url(#obxSkS);stroke-width:1.2;vector-effect:non-scaling-stroke}
+.obx-gf0{stop-color:color-mix(in srgb,var(--ink) 17%,transparent)}
+.obx-gf1{stop-color:color-mix(in srgb,var(--ink) 7%,transparent)}
+.obx-gf2{stop-color:color-mix(in srgb,var(--ink) 2%,transparent)}
+.obx-gs0{stop-color:color-mix(in srgb,var(--ink) 62%,transparent)}
+.obx-gs1{stop-color:color-mix(in srgb,var(--ink) 34%,transparent)}
+.obx-gs2{stop-color:color-mix(in srgb,var(--ink) 12%,transparent)}
+.obx-ax{stroke:color-mix(in srgb,var(--ink) 16%,transparent);stroke-width:1;vector-effect:non-scaling-stroke;
+ stroke-dasharray:100 100}
+/* THE ARRIVAL OF THE BODY, round QI, in the order a person is built and not
+   all at once. The spine climbs first, 600ms from 120. The outline then
+   pours from the crown down both sides: the path starts at the crown, so a
+   dash of d, a gap, and a dash of d draws d from each end of it, and d runs
+   0 to 50. It starts at 600, as the spine's tip reaches the head, and is the
+   halo's curve. The fill comes up once the pen is past the hips, at 1150:
+   it fades as one, and begun earlier it ran ahead of the pen down the legs,
+   measured on the frame at 1120, a body filled before it was drawn. */
+/* The pen draws it, ui/onboard.js obStageFig says why it is a second copy,
+   and the rim takes over in the same frame the pen lands: same outline, same
+   gradient, same width, so the swap is not a thing anyone can see. */
+.obx-draw{display:none;fill:none;stroke:url(#obxSkS);stroke-width:1.66}
+.obx-in-arrive .obx-draw{display:inline;
+ animation:obxOutline 1s cubic-bezier(.45,0,.15,1) .6s backwards,obxPenOff 1ms 1.6s forwards}
+@keyframes obxOutline{from{stroke-dasharray:0 100 0}to{stroke-dasharray:50 0 50}}
+@keyframes obxPenOff{to{opacity:0}}
+.obx-in-arrive .obx-skin{animation:obxRimOff 1ms 1.6s backwards,
+ obxFill .7s cubic-bezier(.22,1,.36,1) 1.15s backwards}
+@keyframes obxRimOff{from{stroke-opacity:0}to{stroke-opacity:0}}
+@keyframes obxFill{from{fill-opacity:0}to{fill-opacity:1}}
+.obx-in-arrive .obx-ax{animation:obxAx .6s cubic-bezier(.45,0,.55,1) .12s backwards}
+@keyframes obxAx{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
+/* THE PULSE, the wheel's thread pulse carried onto the spine: a thin line of
+   ink with its tail below it, climbing from the root seat to the crown seat
+   over the inhale's first 1.93s and gone before the exhale. Ink and never a
+   seat's colour, because nothing on this step has been read. translate and
+   opacity, so compositor only. --cl is the climb as a share of the drawing's
+   height, set from PMBANDS in ui/onboard.js. */
+.obx-pulse,.obx-surge{position:absolute;z-index:1;width:2px;height:calc(var(--fh) * .075);margin-left:-1px;
+ border-radius:1px;translate:0 -50%;opacity:0;pointer-events:none;will-change:translate,opacity;
+ background:linear-gradient(to top,transparent,color-mix(in srgb,var(--ink) 74%,transparent) 72%,transparent)}
+.obx-pulse{animation:obxPulseUp 4.2s 2.1s infinite backwards,obxPulseOp 4.2s 2.1s infinite backwards}
+@keyframes obxPulseUp{
+ 0%{translate:0 -50%;animation-timing-function:cubic-bezier(.37,0,.63,1)}
+ 46%,100%{translate:0 calc(-50% - var(--fh) * var(--cl))}}
+@keyframes obxPulseOp{
+ 0%{opacity:0;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+ 7%{opacity:.62}
+ 36%{opacity:.62;animation-timing-function:cubic-bezier(.4,0,1,1)}
+ 47%,100%{opacity:0}}
+/* THE STEP'S PULSE: the same line, once, quick, in the direction of the
+   step. 560ms, inside the body's own 640 move, from 60ms so it reads as a
+   consequence of the press and not as the press. */
+.obx[data-dir=fwd] .obx-surge.go{animation:obxSurgeUp .56s cubic-bezier(.45,0,.55,1) 60ms both,obxSurgeOp .56s 60ms both}
+.obx[data-dir=back] .obx-surge.go{animation:obxSurgeDn .56s cubic-bezier(.45,0,.55,1) 60ms both,obxSurgeOp .56s 60ms both}
+@keyframes obxSurgeUp{from{translate:0 -50%}to{translate:0 calc(-50% - var(--fh) * var(--cl))}}
+@keyframes obxSurgeDn{from{translate:0 calc(-50% - var(--fh) * var(--cl))}to{translate:0 -50%}}
+@keyframes obxSurgeOp{
+ 0%{opacity:0;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+ 14%{opacity:.85}
+ 70%{opacity:.85;animation-timing-function:cubic-bezier(.4,0,1,1)}
+ 100%{opacity:0}}
+/* THE SEAT RINGS, the house ring at half strength at rest. They breathe on
+   the Field's wave with the phase walking root to crown, three tenths of a
+   second a seat, so the body takes one slow breath upward. Stroke opacity,
+   which is not the channel the arrival's pop uses, so the two never fight. */
+/* r is a size and is set here, per width, because the same ring is 18 pixels
+   of radius at 2.4 units on a 760 pixel body, which reads as a disc down the
+   middle of a person and is the column the brief rules out. 1.3 is 10 pixels
+   at that height; the narrow width keeps 2.1, 6 pixels at 300. */
+/* ROUND QI: the walk is no longer a guess at a phase, three tenths a seat,
+   which no climbing thing could ever agree with. Each ring flares at the
+   instant the pulse reaches its height, --pd, worked out in ui/onboard.js
+   from the pulse's own curve, and the flare is stroke width as well as
+   strength, because .36 to .66 on a ten pixel ring was measured as the whole
+   of the body's life at rest and nobody could see it. It peaks at .78 and
+   1.7px and never higher: a seat that is read or picked stands at 1 and 1.8
+   with its glow behind it (.obx-s.on below), and a breath that outshone a
+   reading would be the one lie this drawing must not tell. The first cut
+   peaked at .95 and 2.3 and did exactly that. The same delay sits in
+   the arrival's list below, so when the arrival ends the browser keeps this
+   animation running by its name rather than starting it again out of step. */
+.obx-sr{r:1.3px;fill:none;stroke:var(--c);stroke-width:1.3;vector-effect:non-scaling-stroke;stroke-opacity:.42;
+ transform-box:fill-box;transform-origin:center;
+ animation:obxSeat 4.2s infinite backwards;animation-delay:var(--pd)}
+@keyframes obxSeat{
+ 0%{stroke-opacity:.42;stroke-width:1.3px;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+ 8%{stroke-opacity:.78;stroke-width:1.7px;animation-timing-function:cubic-bezier(.37,0,.63,1)}
+ 34%,100%{stroke-opacity:.42;stroke-width:1.3px}}
+/* the pop lands as the spine's tip passes, --pp, from ui/onboard.js */
+.obx-in-arrive .obx-sr{animation:obxPop .44s both,obxSeat 4.2s infinite backwards;
+ animation-delay:var(--pp),var(--pd)}
+/* the boot's spring, bxPop: out of rest at speed, a peak, a trough, rest */
+@keyframes obxPop{
+ 0%{opacity:0;scale:.2;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+ 45%{opacity:1;scale:1.32;animation-timing-function:cubic-bezier(.45,0,.55,1)}
+ 75%{opacity:1;scale:.94;animation-timing-function:cubic-bezier(.45,0,.55,1)}
+ 100%{opacity:1;scale:1}}
+.obx-s.on .obx-sr,.obx-s.prev .obx-sr{stroke-opacity:1;stroke-width:1.8;animation:none}
+/* THE LIGHT, where a reading is, and nowhere else. Sized off the body's own
+   height so it is the same light at 760 pixels and at 300. */
+.obx-glow{position:absolute;width:0;height:0;z-index:1}
+.obx-glow::before{content:'';position:absolute;width:calc(var(--fh) * .1);height:calc(var(--fh) * .1);
+ left:calc(var(--fh) * -.05);top:calc(var(--fh) * -.05);border-radius:50%;
+ background:radial-gradient(circle,color-mix(in srgb,var(--c) 70%,#fff) 0,var(--c) 9%,
+  color-mix(in srgb,var(--c) 34%,transparent) 26%,color-mix(in srgb,var(--c) 10%,transparent) 50%,transparent 70%);
+ opacity:0;scale:.4;transition:opacity var(--t-surface) var(--ease-out),scale var(--t-surface) var(--ease-out)}
+.obx-glow.prev::before{opacity:.7;scale:.86}
+.obx-glow.on::before{opacity:1;scale:1;animation:obxGlow 2.1s var(--ease-breath) infinite alternate}
+@keyframes obxGlow{from{opacity:.78}to{opacity:1}}
+/* IGNITION: one overshoot and settle on the land curve, and a ring of the
+   seat's light leaves it once. Delay is set per seat by the script, root to
+   crown on the boot's 90ms beat. */
+.obx-glow.on.ign::before{animation:obxIgnite .62s both,obxGlow 2.1s var(--ease-breath) infinite alternate;
+ animation-delay:var(--ig,0ms),calc(var(--ig,0ms) + .62s)}
+@keyframes obxIgnite{
+ 0%{opacity:0;scale:.2;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+ 50%{opacity:1;scale:1.34;animation-timing-function:cubic-bezier(.45,0,.55,1)}
+ 100%{opacity:1;scale:1}}
+.obx-wave{position:absolute;width:calc(var(--fh) * .07);height:calc(var(--fh) * .07);
+ left:calc(var(--fh) * -.035);top:calc(var(--fh) * -.035);border-radius:50%;
+ border:1.5px solid var(--c);opacity:0}
+.obx-glow.on.ign .obx-wave{animation:obxWave .96s cubic-bezier(.22,1,.36,1) both;animation-delay:var(--ig,0ms)}
+@keyframes obxWave{0%{opacity:.85;scale:.3}100%{opacity:0;scale:3.2}}
+/* THE NAMES, in pixels at every size. Shown where the step is about the
+   seats, and otherwise only beside a seat that carries a reading. The
+   anatomy line under each is FLOWSEAT's own, the meaning beside the name. */
+.obx-fn{position:absolute;z-index:2;translate:0 -50%;display:flex;flex-direction:column;align-items:flex-end;
+ gap:1px;white-space:nowrap;text-align:right;opacity:0;padding-right:10px;
+ transition:opacity var(--t-surface) var(--ease-out)}
+/* the ground's own halo round each word, so a tick of the ring passing behind
+   a name reads as behind it: ui/wheel.js strokes the words inside its ring on
+   the stage's own ground for the same reason */
+.obx-fn{text-shadow:0 0 3px var(--bg),0 0 6px var(--bg),0 0 10px var(--bg)}
+/* AND A PLATE UNDER THE HALO, round QH. Measured on the Body step at 1600:
+   the ring's ticks cross "the top of the head", "3rd Eye" and "between the
+   eyebrows", and a ten pixel glow round the letters does not cover a tick
+   that runs between two of them. A soft field of the ground behind the whole
+   label puts the ring visibly behind the words rather than through them. It
+   is the ground's own colour at little more than half, faded out at the edge:
+   the first cut at 88 per cent read as a black smudge on the lit mirror's
+   warm room, a box after all. Painted once, never animated. */
+.obx-fn::before{content:'';position:absolute;z-index:-1;inset:-8px -6px -8px -22px;border-radius:999px;
+ background:radial-gradient(closest-side,color-mix(in srgb,var(--bg) 58%,transparent) 0,
+  color-mix(in srgb,var(--bg) 42%,transparent) 55%,transparent);
+ pointer-events:none}
+/* the tap the mirror keeps: said under the name in words, because a ring with
+   no light needs its meaning beside it (round PO) */
+.obx-fn em{display:none;font-style:normal;font-size:11.5px;color:var(--dim)}
+.obx .obx-fn.mark{opacity:1}
+.obx .obx-fn.mark em{display:block}
+.obx-s.mark .obx-sr{stroke-opacity:.95;stroke-width:1.6;stroke-dasharray:1.6 1.2;animation:none}
+.obx-fn b{font-size:13px;font-weight:500;letter-spacing:.01em;color:color-mix(in srgb,var(--ink) 82%,transparent)}
+.obx-fn i{font-style:normal;font-size:11.5px;color:var(--dim)}
+.obx[data-step="0"] .obx-fn,.obx[data-step="4"] .obx-fn,.obx .obx-fn.on,.obx .obx-fn.prev{opacity:1}
+.obx .obx-fn.on b,.obx .obx-fn.prev b{color:var(--c);font-weight:600}
+.obx:not([data-step="0"]):not([data-step="4"]) .obx-fn i{display:none}
+/* backwards and not both. A fill that holds the end of the entrance holds
+   opacity 1 above the base rule, and when the step changes the hold and the
+   rule change in the same frame, so the 320ms fade had nothing to start
+   from: measured, the seven names went from 1 to 0 in one frame on Arrive to
+   Ask. Backwards holds only the hidden start through the delay; the end is
+   the base rule's own 1, which the fade then has to leave from. */
+.obx-in-arrive .obx-fn{animation:obxName .5s cubic-bezier(.22,1,.36,1) backwards;animation-delay:calc(1.05s + var(--i) * 60ms)}
+/* THE NAMES COME IN AFTER THE BODY HAS LANDED, on the step that is about the
+   body. Measured at 390 on Feel to Body: the names began their fade at 0ms
+   while the body was still the half scale emblem, so for the first 160ms
+   seven names stood stacked on a figure 150 pixels tall. The body's move is
+   640ms with its backswing in the first hundred; the names wait 280ms, past
+   the backswing and into the glide, then come up root to crown 40ms apart, a
+   secondary action under the move that reads as its consequence. Only the way
+   in is delayed: the rule for leaving carries no delay, so a name never
+   lingers on a step that is not about it. */
+.obx[data-step="4"] .obx-fn{transition-delay:calc(280ms + var(--i) * 40ms)}
+@keyframes obxName{from{opacity:0;translate:6px -50%}to{opacity:1;translate:0 -50%}}
+/* ---- the poses. Wide: the body stands in the left half, the words in the
+   right. Receding is smaller, fainter and a little further from the words;
+   coming forward is the reverse. ---- */
+.obx[data-step="1"]{--k:1;--fs:.9;--fo:.42;--ro:.6;--ax:25vw}
+.obx[data-step="2"]{--k:2;--fs:.86;--fo:.3;--ro:.42;--ax:24.5vw}
+.obx[data-step="3"]{--k:3;--fs:.92;--fo:.5;--ro:.64;--ax:25.5vw}
+.obx[data-step="4"]{--k:4;--fs:1;--fo:1;--ro:1;--ax:27vw}
+.obx[data-step="5"]{--k:5;--fs:.94;--fo:.62;--ro:.7;--ax:26vw}
+.obx[data-step="6"]{--k:6;--fs:1;--fo:1;--ro:.86;--ax:27vw}
+.obx[data-step="7"]{--k:7;--fs:.96;--fo:.92;--ro:1;--ax:27vw}
+/* ---- the top: the wordmark, the rail, the way out ---- */
+.obx-top{position:absolute;left:0;right:0;top:0;z-index:4;height:76px;display:flex;align-items:center;
+ justify-content:space-between;padding:0 32px}
+.obx-mark{display:block;color:var(--ink)}
+.obx-mark .bn{display:block;width:96px;height:auto;overflow:visible}
+.obx-mark .wm-d{fill:var(--um)}
+.obx-rail{position:absolute;left:50%;top:0;height:76px;translate:-50% 0;display:flex;align-items:center;gap:18px}
+.obx-track{position:relative;width:min(232px,40vw);height:12px;display:flex;align-items:center;
+ justify-content:space-between}
+.obx-track::before{content:'';position:absolute;left:3px;right:3px;top:50%;height:1px;
+ background:color-mix(in srgb,var(--ink) 16%,transparent)}
+.obx-fill{position:absolute;left:3px;right:3px;top:50%;height:1px;margin-top:-.5px;background:var(--accent);
+ transform-origin:0 50%;scale:var(--p,0) 1;transition:scale var(--t-context) var(--ease-out)}
+.obx .ob-dot{position:relative;z-index:1;width:7px;height:7px;
+ transition:background var(--t-surface) var(--ease-out),scale var(--t-surface) var(--ease-land),
+  box-shadow var(--t-surface) var(--ease-out)}
+.obx .ob-dot.past{background:var(--accent)}
+.obx .ob-dot.on{scale:1.5;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+.obx-step{font-size:12.5px;color:var(--dim);white-space:nowrap;font-variant-numeric:tabular-nums}
+.obx-step b{color:var(--ink);font-weight:600}
+.obx-stepn{margin-left:10px;padding-left:10px;border-left:1px solid color-mix(in srgb,var(--ink) 18%,transparent);
+ color:var(--mid)}
+.obx-x{min-height:var(--tap);padding:0 18px;border-radius:999px;background:transparent;font:inherit;font-size:13px;
+ color:var(--mid);border:1px solid color-mix(in srgb,var(--ink) 16%,transparent);cursor:pointer;
+ transition:color var(--t-micro) var(--ease-out),border-color var(--t-micro) var(--ease-out)}
+.obx-x:hover{color:var(--ink);border-color:color-mix(in srgb,var(--ink) 34%,transparent)}
+/* the two steps that carry their own way out do not need a second one */
+.obx[data-step="0"] .obx-x,.obx[data-step="7"] .obx-x{visibility:hidden}
+/* ---- the words: a column, not a card ---- */
+/* the words start clear of the ring at its widest, the hero pose: its centre
+   at 27vw and its radius .53 of the body's height, and a margin past it */
+.obx-slot{position:absolute;z-index:3;top:0;bottom:0;right:0;left:max(50vw,calc(27vw + var(--fh) * .54 + 40px))}
+.obx .ob-card{position:absolute;inset:0;width:auto;max-height:none;background:none;border:0;border-radius:0;
+ padding:0;overflow:visible;transition:none}
+.obx-ghost{position:fixed;z-index:3;pointer-events:none}
+/* A COPY STARTS ITS ANIMATIONS AGAIN. Measured on Settle going Back to Ask:
+   the cloned loop's names restarted their own entrance from zero, so for the
+   first 160ms of its exit the ghost's ring stood empty and then its icons
+   popped in on a card that was leaving. A negative delay longer than any
+   entrance puts every one of them at its own last frame, already arrived,
+   without this rule having to know each one's resting state; anything that
+   breathes simply carries on at some phase of its breath. */
+.obx-ghost,.obx-ghost *{animation-delay:-60s!important}
+.obx .ob-scroll{position:absolute;inset:0;max-height:none;overflow:auto;display:flex;flex-direction:column;
+ padding:108px 64px 56px 0;scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--ink) 18%,transparent) transparent}
+.obx .obx-in{margin:auto 0;width:100%;max-width:600px;font-size:17px}
+.obx .obx-eye{display:flex;align-items:center;gap:14px;margin:0 0 22px;font-size:12.5px;font-weight:600;
+ letter-spacing:.14em;color:var(--accent)}
+.obx .obx-eye.plain{letter-spacing:.04em}
+.obx .obx-eye::before{content:'';flex:0 0 32px;height:1px;background:currentColor;opacity:.7}
+.obx .ob-h{margin:0 0 26px;font-size:clamp(40px,4.2vw,66px);line-height:1.04;font-weight:300;
+ letter-spacing:-.035em;color:var(--ink);text-wrap:balance;outline:none}
+.obx-wl{display:inline-block;overflow:hidden;vertical-align:top;padding:0 .03em .14em;margin:0 -.03em -.14em}
+.obx-w{display:inline-block}
+.obx .ob-p{font-size:1em;line-height:1.62;max-width:46ch;margin:0 0 15px}
+.obx .ob-dim{font-size:.88em}
+.obx .ob-p b{color:var(--ink);font-weight:600}
+.obx .ob-figsay{text-align:left}
+.obx .ob-foot{display:flex;align-items:center;gap:12px;margin-top:30px;font-size:13px}
+.obx .ob-foot::before{content:'';flex:0 0 18px;height:1px;background:currentColor;opacity:.6}
+/* the actions: the way forward is a real object, the way back is quiet */
+.obx .ob-acts{margin-top:34px;gap:12px;align-items:center}
+.obx .btn{min-height:48px;padding:0 22px;font-size:15px}
+.obx .btn:active{scale:.97}
+.obx .btn.pri{min-height:54px;padding:0 26px 0 30px;display:inline-flex;align-items:center;gap:14px;font-size:15.5px;
+ box-shadow:0 14px 34px -12px color-mix(in srgb,var(--accent) 60%,transparent)}
+.obx .btn.pri::after{content:'';width:8px;height:8px;border-top:1.6px solid currentColor;border-right:1.6px solid currentColor;
+ rotate:45deg;translate:-2px 0;transition:translate var(--t-micro) var(--ease-out)}
+.obx .btn.pri:hover::after{translate:2px 0}
+.obx .btn.pri:disabled{box-shadow:none}
+.obx .btn[data-ob=back]{background:transparent;border-color:transparent;color:var(--dim);padding:0 14px}
+.obx .btn[data-ob=back]:hover{color:var(--ink);background:transparent}
+.obx .btn[data-ob=back]::before{content:'';width:7px;height:7px;margin-right:10px;display:inline-block;
+ border-bottom:1.5px solid currentColor;border-left:1.5px solid currentColor;rotate:45deg;translate:0 -1px}
+/* the chips, at the size of a choice and not of a setting */
+.obx .ob-seats{gap:10px;margin:24px 0 8px}
+.obx .ob-seat{min-height:48px;padding:8px 18px;border-radius:999px;font-size:15px;color:var(--ink);
+ background:color-mix(in srgb,var(--ink) 4%,transparent);border-color:color-mix(in srgb,var(--ink) 14%,transparent);
+ transition:background var(--t-micro) var(--ease-out),border-color var(--t-micro) var(--ease-out),
+  translate var(--t-micro) var(--ease-out)}
+.obx .ob-seat:hover{background:color-mix(in srgb,var(--ink) 8%,transparent);
+ border-color:color-mix(in srgb,var(--ink) 30%,transparent);translate:0 -1px}
+.obx .ob-seats-mk .ob-seat{padding:6px 18px 6px 8px}
+.obx .ob-seats-mk .ob-seat:has(.ob-seat-n:only-child){padding-left:18px}
+.obx .ob-mk-s{width:32px;height:32px}
+.obx .ob-f textarea{font-size:19px;line-height:1.55;padding:18px 20px;min-height:168px;border-radius:16px;
+ background:color-mix(in srgb,var(--ink) 4%,transparent);border-color:color-mix(in srgb,var(--ink) 14%,transparent)}
+.obx .ob-loopw{grid-template-columns:150px 1fr;gap:30px;margin:28px 0 14px}
+.obx .ob-loop{width:150px;height:150px}
+.obx .ob-loopr{grid-template-columns:22px 1fr;gap:3px 12px}
+.obx .ob-loopr-ic{width:22px;height:22px}
+.obx .ob-loopr-n{font-size:15px}
+.obx .ob-loopr-s{font-size:14.5px;margin-bottom:10px}
+.obx .ob-grp{margin:22px 0 8px}
+.obx .ob-plan{gap:12px;margin:8px 0 20px}
+.obx .ob-plan-i{padding:10px 16px 10px 10px;border-radius:14px;background:color-mix(in srgb,var(--ink) 4%,transparent);
+ border-color:color-mix(in srgb,var(--ink) 14%,transparent)}
+.obx .ob-mk-p{width:40px;height:40px}
+/* ---- the entrance. Forward rises from below, back comes down from above;
+   --dy carries the sign. The headline rises out of its own line a word at a
+   time. Only a change of step adds .obx-enter: a redraw on the same step,
+   an answer on the mirror, does not move a thing. ---- */
+.obx-enter .obx-in>*{animation:obxRise .44s cubic-bezier(.22,1,.36,1) both;
+ animation-delay:calc(var(--d0) + var(--si,0) * 70ms)}
+.obx-enter .obx-in>.ob-h,.obx-enter .obx-in>.ob-seats{animation:none}
+.obx-enter .ob-h .obx-w{animation:obxWord .56s cubic-bezier(.22,1,.36,1) both;
+ animation-delay:calc(var(--d0) + 60ms + var(--wi,0) * 45ms)}
+.obx-enter .ob-seats>.ob-seat{animation:obxRise .4s cubic-bezier(.22,1,.36,1) both;
+ animation-delay:calc(var(--d0) + var(--si,0) * 70ms + var(--ci,0) * 28ms)}
+@keyframes obxRise{from{opacity:0;translate:0 calc(var(--dy) * 26px)}to{opacity:1;translate:0 0}}
+@keyframes obxWord{from{translate:0 calc(var(--dy) * 112%)}to{translate:0 0}}
+/* ---- narrow: the body stands over the words instead of beside them. On the
+   two steps that are about the body it is shown whole, with its names; on the
+   rest it steps back to an emblem at the top, still lit where a reading is,
+   and the words take the screen. ---- */
+@media(max-width:899px){
+ .obx{--fh:min(38vh,300px);--ax:50vw;--ay:calc(70px + var(--fh) * .4706);--st:calc(70px + var(--fh) + 8px)}
+ .obx[data-step="1"],.obx[data-step="2"],.obx[data-step="3"],.obx[data-step="5"],
+ .obx[data-step="6"],.obx[data-step="7"]{--fs:.5;--ax:50vw;--ay:calc(62px + var(--fh) * .2353);
+  --st:calc(62px + var(--fh) * .5 + 6px)}
+ .obx[data-step="2"]{--fo:.42}
+ .obx[data-step="4"]{--fs:1;--ax:50vw;--ay:calc(70px + var(--fh) * .4706)}
+ .obx-far{translate:calc(var(--k) * -1.6vw) 0}
+ .obx-wash{background:radial-gradient(circle at 50% 12%,color-mix(in srgb,var(--crown) 15%,transparent) 0,transparent 26%),
+  radial-gradient(circle at 30% 18%,color-mix(in srgb,var(--eye) 13%,transparent) 0,transparent 26%),
+  radial-gradient(circle at 70% 22%,color-mix(in srgb,var(--throat) 12%,transparent) 0,transparent 26%),
+  radial-gradient(circle at 34% 30%,color-mix(in srgb,var(--heart) 12%,transparent) 0,transparent 28%),
+  radial-gradient(circle at 66% 36%,color-mix(in srgb,var(--solar) 10%,transparent) 0,transparent 26%),
+  radial-gradient(circle at 40% 46%,color-mix(in srgb,var(--sacral) 10%,transparent) 0,transparent 28%),
+  radial-gradient(circle at 60% 56%,color-mix(in srgb,var(--root) 11%,transparent) 0,transparent 28%)}
+ .obx-vig{background:radial-gradient(120% 70% at 50% 24%,transparent 40%,color-mix(in srgb,var(--sunk) 80%,transparent) 100%)}
+ .obx-top{height:60px;padding:0 16px}
+ .obx-mark .bn{width:72px}
+ .obx-rail{height:60px;flex-direction:column;justify-content:center;gap:6px}
+ .obx-track{width:min(150px,38vw);height:10px}
+ .obx .ob-dot{width:6px;height:6px}
+ .obx-step{font-size:11.5px}
+ .obx-stepn{display:none}
+ .obx-x{padding:0 14px}
+ .obx-slot{left:0;top:var(--st)}
+ .obx .ob-scroll{padding:14px 20px 28px}
+ .obx .obx-in{margin:0;max-width:none;font-size:16px}
+ .obx .obx-eye{margin-bottom:12px;font-size:12px}
+ .obx .obx-eye::before{flex-basis:20px}
+ .obx .ob-h{font-size:32px;margin-bottom:16px;letter-spacing:-.03em}
+ .obx .ob-acts{margin-top:22px}
+ .obx .btn.pri{min-height:52px}
+ .obx .ob-seats{gap:8px;margin:16px 0 6px}
+ .obx .ob-seat{min-height:46px;padding:6px 15px;font-size:14.5px}
+ .obx .ob-f textarea{font-size:17px;min-height:140px}
+ .obx .ob-loopw{grid-template-columns:1fr;justify-items:center;gap:18px}
+ .obx .ob-loop{width:136px;height:136px}
+ .obx-sr{r:2.1px}
+ .obx-fn{padding-right:7px}
+ .obx-fn b{font-size:12px}
+ .obx-fn i{display:none}
+ /* the emblem is too small to carry a name, and the card names every seat */
+ .obx[data-step="5"] .obx-fn,.obx[data-step="6"] .obx-fn,.obx[data-step="7"] .obx-fn{opacity:0}}
+/* REDUCED MOTION GETS THE END STATE. The poses still apply; nothing travels
+   to them. A light that carries a reading still shows, at once. */
+@media (prefers-reduced-motion:reduce){
+ .obx-wash,.obx-sr,.obx-glow.on::before{animation:none}
+ /* round QI: no breath, no pulse, no push and no wind. The figure stands lit
+    from above, drawn whole, with its rings at rest, which is where every one
+    of those moves ends */
+ .obx-fig,.obx-in-arrive .obx-near,.obx-in-arrive .obx-ringsv{animation:none}
+ .obx-pulse,.obx-surge,.obx-in-arrive .obx-draw{display:none}
+ .obx-in-arrive .obx-far,.obx-in-arrive .obx-tk,.obx-in-arrive .obx-halo,.obx-in-arrive .obx-skin,
+ .obx-in-arrive .obx-ax,.obx-in-arrive .obx-sr,.obx-in-arrive .obx-fn,
+ .obx-glow.on.ign::before,.obx-glow.on.ign .obx-wave{animation:none}
+ .obx-enter .obx-in>*,.obx-enter .ob-h .obx-w,.obx-enter .ob-seats>.ob-seat{animation:none}
+ .obx-fill,.obx .ob-dot,.obx-fn,.obx-glow::before{transition:none}
+ .obx.ob-leaving{transition:none}}
+/* ============================================================
+   THE DAY ONE TUTORIAL ON THE STAGE, ROUND QJ. ui/tutorial.js's header has
+   the account: the tutorial stands on the stage above, built by the same
+   obStage and changed step by step through the same obSwap, so every rule
+   above already moves it and the reduced block above already stills it.
+   What is here is only what is the tutorial's own: five poses, which names
+   show, and its chain. No keyframe below is new; the chain's rows rise on
+   obxRise, the first run's own.
+
+   THE POSES ARE READ BY data-ts AND NEVER data-step, so not one of the first
+   run's eight poses, its names or its way out rules reach this sheet because
+   two numbers happen to match.
+   ============================================================ */
+body.tut-on .app,body.tut-on #bgaura{visibility:hidden}
+/* Journal: the hero, the body whole with its seven seats named down its side,
+   the map before anything is written on it, held at 96 per cent. Discover:
+   the entry has landed, and the body comes the last four per cent forward,
+   on the camera's own two per cent backswing, so the press winds up, the
+   body lands at 640ms and the seats ignite on it from 420ms, a consequence
+   of the commit and not a second event. Measured before this: Journal and
+   Discover both stood at 1, the body did not move on the one step where
+   the words become charge, and only the ring turned. The ring turns its
+   eighth, and only the seats the words lit keep a name.
+   Understand steps back a little so the chain beside it is the thing read.
+   Release comes forward. Flow steps back, the walk handed on to practice. */
+.tutx[data-ts="0"]{--k:0;--fs:.96;--fo:1;--ro:1;--ax:27vw}
+.tutx[data-ts="1"]{--k:1;--fs:1;--fo:1;--ro:.86;--ax:27vw}
+.tutx[data-ts="2"]{--k:2;--fs:.94;--fo:.8;--ro:.7;--ax:26vw}
+.tutx[data-ts="3"]{--k:3;--fs:1;--fo:1;--ro:1;--ax:27vw}
+.tutx[data-ts="4"]{--k:4;--fs:.9;--fo:.62;--ro:.6;--ax:25vw}
+.obx.tutx[data-ts="0"] .obx-fn{opacity:1}
+/* a name never stands without its meaning (round PO): where a name shows, the
+   anatomy line under it shows too */
+.obx.tutx[data-ts="0"] .obx-fn i,.obx.tutx .obx-fn.on i{display:block}
+/* the steps that carry their own way out, Skip the tutorial, Not now and
+   Done, do not need a second one in the corner */
+.tutx[data-ts="0"] .obx-x,.tutx[data-ts="3"] .obx-x,.tutx[data-ts="4"] .obx-x{visibility:hidden}
+/* THE CHAIN, a thread and not a table. The bordered grid was the old card's
+   chrome inside a stage that has none. Four stations down one line, the
+   seat's own ring on the body's row, so the row and the lit seat on the
+   figure are visibly the same place. */
+.obx .ob-grid{display:block;position:relative;background:none;border:0;border-radius:0;overflow:visible;
+ margin:26px 0 20px;padding-left:28px}
+.obx .ob-grid::before{content:'';position:absolute;left:5.5px;top:9px;bottom:26px;width:1px;
+ background:linear-gradient(to bottom,color-mix(in srgb,var(--ink) 34%,transparent),color-mix(in srgb,var(--ink) 12%,transparent))}
+.obx .ob-g{position:relative;background:none;padding:0 0 18px;gap:3px}
+.obx .ob-g::before{content:'';position:absolute;left:-28px;top:3px;width:12px;height:12px;border-radius:50%;
+ box-sizing:border-box;border:1.3px solid color-mix(in srgb,var(--ink) 42%,transparent);background:var(--bg)}
+.obx .ob-g.ob-g-seat::before{border-color:var(--c);box-shadow:0 0 10px -1px var(--c)}
+.obx .ob-g b{font-size:12.5px;font-weight:600;letter-spacing:.04em;color:var(--dim)}
+.obx .ob-g span{font-size:1em;line-height:1.5;color:var(--ink);max-width:46ch}
+.obx-enter .obx-in>.ob-grid{animation:none}
+.obx-enter .ob-grid>.ob-g{animation:obxRise .44s cubic-bezier(.22,1,.36,1) both;
+ animation-delay:calc(var(--d0) + var(--si,0) * 70ms + var(--ci,0) * 80ms)}
+@media(max-width:899px){
+ /* narrow: the words take the screen on every step and the body is the
+    emblem over them, still lit where the entry landed, as the first run's
+    own reading steps do. Named in the card, so not beside the emblem. */
+ .obx.tutx[data-ts]{--fs:.5;--ax:50vw;--ay:calc(62px + var(--fh) * .2353);--st:calc(62px + var(--fh) * .5 + 6px)}
+ .obx.tutx[data-ts="2"],.obx.tutx[data-ts="4"]{--fo:.62}
+ .obx.tutx .obx-fn,.obx.tutx[data-ts="0"] .obx-fn{opacity:0}
+ .obx.tutx.obx-in-arrive .obx-fn{animation:none}
+ .obx .ob-grid{margin:18px 0 14px}
+ .obx .ob-g{padding-bottom:14px}}
+@media (prefers-reduced-motion:reduce){
+ .obx-enter .ob-grid>.ob-g{animation:none}
+ /* MEASURED, round QJ: with reduced motion set, the primary's arrow still
+    slid 4px on hover. The document wide *{transition:none!important} does
+    not reach it, because * matches no pseudo element. Seen as the one running
+    animation on the stage when a new Next lands under a pointer that has not
+    moved, on this sheet and on the first run's alike. */
+ .obx .btn.pri::after{transition:none}}
 .s-lens{display:grid;gap:1px;background:var(--edge);border:1px solid var(--edge);
  border-radius:var(--r);overflow:hidden}
 .s-ln{background:var(--panel);padding:9px 12px 10px;display:flex;
@@ -40734,15 +41362,57 @@ try{window.__at&&window.__at('ui/storyui.js');}catch(e){}
    stands ahead of it. See onboard.js's own header for why nothing is
    added here that only looks like one.
    ============================================================ */
-var TUT={open:false, step:0, text:'', commit:null, deep:null, replay:false, parsed:null, plan:null};
+var TUT={open:false, step:0, text:'', commit:null, deep:null, replay:false, parsed:null, plan:null, shown:-1, leaveT:null};
+/* ============================================================
+   THE STAGE, ROUND QJ. His words, on the first run's rebuild: "Continue full
+   build in the style. For the funnel, onboarding, tutorial... Make this
+   priority." This sheet was the last first run surface still opening as the
+   old popup card over a dimmed app, which is exactly what the onboarding's
+   welcome was before round QH took it full screen.
+
+   SO IT STANDS ON THAT STAGE, AND NOT ON A COPY OF IT. obStage, obSwap,
+   obCard, obGhost, obPushOut and obRailAt are ui/onboard.js's own: the far
+   wash, the ring of the 112, the body with its seats, the arrival (the
+   spine climbs, the seats pop as its tip passes, the outline pours from the
+   crown, the ring winds in), the Field's 4.2 second breath at rest, the
+   ghost out and the rise in on a change of step, the pulse up the spine,
+   and the push through on the way out. Not one keyframe is new. What is the
+   tutorial's own is its five poses, in shell/head.html under .tutx, and
+   which seats it lights.
+
+   THE LIGHT CARRIES THE ENTRY. A seat lights only where this entry put
+   weight, read off the same commit the words on the card are read off: the
+   two places What this found names, the one the chain names, and the plan's
+   own addresses on Release and Flow. Nothing is lit before the commit,
+   because nothing has been read. So the commit, which is the moment the
+   words become charge in the field, is the moment the body lights, root to
+   crown on the boot's beat, and a person can see where it landed with the
+   words still rising beside it.
+
+   REDUCED MOTION GETS THE END STATE: no arrival, no ghost, no camera, no
+   breath, no pulse. Every one of those is already held under the stage's
+   own reduced block, and the script paths all ask obCalm first.
+   ============================================================ */
+var TUT_N=5;
+/* the rail's names: the storyboard's own, this file's header, in order */
+var TUT_STEPNM=['Journal','Discover','Understand','Release','Flow'];
 
 function tutOpen(replay){
  var h=document.getElementById('tutorial'); if(!h)return;
  TUT.open=true; TUT.step=0; TUT.text=''; TUT.commit=null; TUT.deep=null; TUT.replay=!!replay; TUT.parsed=null; TUT.plan=null;
+ TUT.shown=-1;
+ if(TUT.leaveT){ clearTimeout(TUT.leaveT); TUT.leaveT=null; }
  h.classList.remove('ob-leaving');
+ /* a fresh stage on every open, so the arrival plays from its first frame */
+ h.innerHTML=''; h.classList.remove('obx','obx-lit','obx-in-arrive');
+ h.classList.add('tutx');
+ if(typeof obStage==='function')obStage(h,TUT_N,'data-tut="skip"');
+ /* the running app goes out of the picture while the stage is up */
+ document.body.classList.add('tut-on');
  tutRender();
  h.style.display='flex';
- var f=h.querySelector('button'); if(f)f.focus();}
+ if(typeof obPenWidth==='function')obPenWidth(h);
+ var f=h.querySelector('.obx-slot textarea,.obx-slot button'); if(f)f.focus({preventScroll:true});}
 /* the login.js hook already calls tutorialOpen(); this is the real name,
    kept short for the five screens below that call it on themselves. */
 function tutorialOpen(replay){ tutOpen(replay); }
@@ -40751,7 +41421,12 @@ var TUT_LEAVE_MS=520;
 function tutClose(){
  var h=document.getElementById('tutorial'); if(!h)return;
  TUT.open=false; h.classList.add('ob-leaving');
- setTimeout(function(){ h.style.display='none'; h.classList.remove('ob-leaving'); h.innerHTML=''; },TUT_LEAVE_MS);
+ document.body.classList.remove('tut-on');
+ /* the first run's own way out: the body goes forward past the camera */
+ if(typeof obPushOut==='function')obPushOut(h);
+ TUT.leaveT=setTimeout(function(){ TUT.leaveT=null; if(TUT.open)return;
+  h.style.display='none'; h.classList.remove('ob-leaving','obx','tutx','obx-lit','obx-in-arrive');
+  h.removeAttribute('data-ts'); h.removeAttribute('data-dir'); h.innerHTML=''; },TUT_LEAVE_MS);
  /* EVERY WRITE THAT CAN FAIL REPORTS, the same lesson onboard.js's own
     obClose carries: a flag that silently fails to save reopens the sheet
     on every launch with no explanation a person can act on. */
@@ -40764,18 +41439,27 @@ function tutClose(){
    status('This browser would not save. The tutorial will open again.','fail'); }
  if(typeof render==='function')render();}
 
+/* THE CARD IS THE STAGE'S COLUMN NOW, round QJ: obCard's eyebrow, its
+   headline a word to a masked line, the body, the actions. The five dots it
+   carried are the stage's rail at the top of the screen, which fills as the
+   run goes. nsteps is kept in the signature so no caller has to change. */
 function tutCard(title,body,acts,nsteps){
- var n=nsteps||5;
- return '<div class="ob-card" role="dialog" aria-modal="true" aria-label="'+esc(title)+'">'
-  +'<div class="ob-wash" aria-hidden="true"></div>'
-  +'<div class="ob-scroll">'
-  +'<span class="pm-eye">Day one</span>'
-  +'<h2 class="ob-h">'+esc(title)+'</h2>'
-  +body
-  +'<div class="ob-acts">'+acts+'</div>'
-  +'<div class="ob-dots">'+Array.from({length:n}).map(function(_,i){
-    return '<span class="ob-dot'+(i===TUT.step?' on':'')+'"></span>';}).join('')+'</div>'
-  +'</div></div>';}
+ return obCard('Day one',title,body,acts);}
+
+/* WHICH SEATS THIS STEP LIGHTS, read off what the card on the same step
+   prints and nothing else. Seat names are the node's own .b, the band the
+   word lit, the same name the stage's seats carry. */
+function tutLitNow(){
+ var s=TUT.step, c=TUT.commit, kept=(c&&c.ok&&c.k&&c.kept)||[], lit=[];
+ var add=function(b){ if(b&&BANDS.indexOf(b)>=0&&lit.indexOf(b)<0)lit.push(b); };
+ if(s===1){ add(kept[0]&&kept[0].b); add(kept[1]&&kept[1].b); }
+ else if(s===2){ add(kept[0]&&kept[0].b); }
+ else if(s>=3){
+  var pl=TUT.plan;
+  if(pl&&pl.ok)pl.addrs.forEach(function(i){ add(BY[i]&&BY[i].b); });
+  else{ var off=(TUT.deep&&TUT.deep.offer&&TUT.deep.offer[0])||null;
+   if(off&&kept.length)add(kept[0].b); }}
+ return {lit:lit, pick:null, mark:null};}
 
 /* a node's own fields, read exactly as the engine stores them: .b is the
    seat the word lit (a band name, "Heart"), .k is the word itself, .cf is
@@ -40839,7 +41523,10 @@ function tutRender(){
       ['Story', kept[0]?kept[0].cf:'not named'],
       ['Body response', kept[0]?kept[0].b:'not named'],
       ['What it costs', off?off.because[0]:'not enough here yet to say']]
-     .map(function(x){return '<div class="ob-g"><b>'+esc(x[0])+'</b>'
+     /* the body's row wears its seat's colour, the seat lit on the figure
+        beside it (round QJ): the same place, said twice in one picture */
+     .map(function(x,j){var sb=(j===2&&kept[0]&&BANDS.indexOf(kept[0].b)>=0)?kept[0].b:null;
+       return '<div class="ob-g'+(sb?' ob-g-seat" style="--c:'+seatCol(sb):'')+'"><b>'+esc(x[0])+'</b>'
        +'<span>'+esc(x[1])+'</span></div>';}).join('')
     +'</div>'
     +'<p class="ob-p ob-dim">This is not just this one moment. Something runs '
@@ -40895,12 +41582,17 @@ function tutRender(){
    '<button type="button" class="btn pri" data-tut="ritual">Go to Ritual</button>'
    +'<button type="button" class="btn" data-tut="done">Done</button>');
  }
- h.innerHTML=out;
+ /* ROUND QJ: onto the stage, through the first run's own change of step */
+ if(typeof obStage==='function')obStage(h,TUT_N,'data-tut="skip"');
+ var sw=obSwap(h,out,{s:s, shown:TUT.shown, attr:'data-ts', lit:tutLitNow(),
+  rail:function(h){ obRailAt(h,TUT.step,TUT_N,TUT_STEPNM); }});
+ TUT.shown=s;
  var ta=document.getElementById('tuttext');
  if(ta){ta.oninput=function(){
-   var go=h.querySelector('[data-tut="commit"]'); if(go)go.disabled=!ta.value.trim();};
-  ta.value=TUT.text; ta.focus();}
- var f=h.querySelector('.ob-scroll'); if(f)f.scrollTop=0;}
+   var go=h.querySelector('.obx-slot [data-tut="commit"]'); if(go)go.disabled=!ta.value.trim();};
+  ta.value=TUT.text; ta.focus({preventScroll:true});}
+ else if(sw.moved&&!sw.arrive){ var hd=sw.card&&sw.card.querySelector('.ob-h'); if(hd)hd.focus({preventScroll:true}); }
+ var f=sw.card&&sw.card.querySelector('.ob-scroll'); if(f)f.scrollTop=0;}
 
 /* ---- the one commit this sheet makes, through the real path ---- */
 function tutCommit(){
@@ -60378,7 +61070,12 @@ function paidWelcomeOpen(){
  var h=document.getElementById('tutorial'); if(!h)return false;
  if(CURP&&CURP.ui&&CURP.ui.paidWelcomed)return false;
  if(typeof TUT!=='undefined'&&TUT.open)return false;
- h.classList.remove('ob-leaving');
+ /* the tutorial's stage leaves its classes on the host until its own exit
+    has run (ui/tutorial.js, tutClose); this card is the old sheet and must
+    not open wearing them, nor be wiped by that exit's timer */
+ if(typeof TUT!=='undefined'&&TUT.leaveT){ clearTimeout(TUT.leaveT); TUT.leaveT=null; }
+ document.body.classList.remove('tut-on');
+ h.classList.remove('ob-leaving','obx','tutx','obx-lit','obx-in-arrive');
  h.innerHTML='<div class="ob-card" role="dialog" aria-modal="true" aria-label="You are in">'
   +'<div class="ob-wash" aria-hidden="true"></div><div class="ob-scroll">'
   +'<span class="pm-eye">Paid</span>'
@@ -64465,42 +65162,564 @@ var OB={open:false, step:0, replay:false,
     the bridge and never stored: the record keeps ob.yes, not the plan. */
  plan:null};
 
-/* THE FIGURE, AT REST. Unchanged from the shipped sheet: seven seats on a
-   spine with a gold halo over the crown, the same column the boot just
-   drew. Kept here rather than moved, because every card below still wants
-   it as its watermark (obCard's own .ob-fig-wm) and the welcome still wants
-   it at full strength. */
-function obFigure(){
- var y=[160,140,120,100,80,60,40];
- var col=['Root','Sacral','Solar','Heart','Throat','3rd Eye','Crown'];
- return '<svg class="ob-fig" viewBox="0 0 200 178" aria-hidden="true">'
-  +'<ellipse class="ob-fig-h" cx="100" cy="21" rx="13" ry="4.4"/>'
-  +'<line class="ob-fig-s" x1="100" y1="160" x2="100" y2="40"/>'
-  +y.map(function(yy,i){
-    return '<circle class="ob-fig-d" cx="100" cy="'+yy+'" r="4.6" '
-     +'style="fill:'+seatCol(col[i])+';animation-delay:'+(0.1+i*0.07).toFixed(2)+'s"/>';}).join('')
-  +'</svg>';}
+/* ============================================================
+   THE SKIN, ROUND QG. "Redesign this in our field compass or body style.
+   Just pull our aesthetics into this. And replace what's there."
+
+   A six panel storyboard was drawn against this flow: a stock mountain lake
+   under a glowing orange ring, a glossy translucent human with seven bright
+   rainbow dots down its middle, a blue to pink gradient portal with the word
+   Release inside it, and bright blue pill buttons. Section 4 of the owner's
+   own Congruency TDD (reviews/ATUNED-System-Congruency-MVP-TDD.md) lists
+   exactly that set as what this product avoids: "stock photography, humans as
+   decoration, mystical portals, religious imagery, dashboard clutter, generic
+   wellness aesthetics." The same section names what the language is: "dark
+   field, minimal typography, thin geometry, body figure, rings, nodes, 112
+   addresses, colour, motion, breathing, symbolic geometry."
+
+   SO NOTHING HERE IS DRAWN BY EYE. Every mark below is the product's own,
+   taken from the file that already owns it:
+
+     the figure      BODYPATH and its transform, engine/data/figure.js, the
+                     same silhouette ui/map.js clips the Body page to. Not a
+                     spine with dots on it, which is what this file drew.
+     the seat places PMBANDS, engine/data/practice.js, each seat's real height
+                     on that figure. The Body page puts its seat rings there.
+     the seat names  FLOWSEAT, same file, for where on the body each one is:
+                     mid sternum, below the navel. The anatomy, not a mood.
+     the seat colour seatCol, ui/component.js, which reads PAL, PAL_LIGHT or
+                     PAL_VIVID by lighting, so a seat is the same colour here
+                     as on the wheel and goes light on Snow like everything
+                     else.
+     the seat mark   iqxMark's grammar, ui/intakeui.js, merged this round and
+                     named the house standard for a seat shown as a mark: a
+                     disc washed with its seat, a quiet track at 2.4, a
+                     heavier arc at 3.2 over it, and the glyph stroked and
+                     never filled. The glyph is SEATGLYPH, canon.js, and no
+                     second drawing is made for a thing that has one.
+     the loop        the four section marks in shell/body.html, the eye, the
+                     play ring, the two waves and the standing figure, which
+                     is what the bar already draws for discover, play, flow
+                     and embody.
+     the release     ui/release.js keeps every line of it. This sheet hands
+                     over through relPick and draws no release of its own.
+
+   AND ONE RULE FROM THE CHIP IT COPIES, kept rather than loosened: an arc is
+   a reading. iqxMark's own note says "an arc drawn full for decoration would
+   lie in a product where every arc is a reading." So a seat mark on a card
+   where nothing has been read yet carries its track and no arc, and the two
+   cards that do carry an arc say in words what it counts.
+   ============================================================ */
+/* THE SEVEN SEATS ON THE REAL FIGURE. PMBANDS is crown first; this sheet
+   reads root first, the order OB_PLACES and the body itself run in. */
+function obSeatRows(){
+ return BANDS.map(function(b){
+  var pb=null, fs=null, i;
+  for(i=0;i<PMBANDS.length;i++)if(PMBANDS[i].b===b)pb=PMBANDS[i];
+  for(i=0;i<FLOWSEAT.length;i++)if(pb&&FLOWSEAT[i].k===pb.k)fs=FLOWSEAT[i];
+  return {b:b, y:pb?pb.yp:50, where:fs?fs.seat:''};});}
+/* ONE SEAT AS A MARK, the chip grammar iqxMark set. share is a real quantity
+   or null, and null draws no arc. The box is 56 like the chip's, so the two
+   are the same object at two sizes and not two drawings. */
+function obSeatMark(b,share,cls){
+ var R=24.5, C=2*Math.PI*R, s=(share==null)?null:Math.max(0,Math.min(1,share));
+ return '<svg class="ob-mk'+(cls?' '+cls:'')+'" viewBox="0 0 56 56" aria-hidden="true" '
+  +'style="--c:'+seatCol(b)+'">'
+  +'<circle class="ob-mk-dk" cx="28" cy="28" r="27"/>'
+  +'<circle class="ob-mk-tk" cx="28" cy="28" r="'+R+'"/>'
+  +(s>0?'<circle class="ob-mk-ld" cx="28" cy="28" r="'+R+'" transform="rotate(-90 28 28)" '
+   +'stroke-dasharray="'+(C*s).toFixed(1)+' '+C.toFixed(1)+'"/>':'')
+  +'<g class="ob-mk-gl" transform="translate(16 16)">'+(SEATGLYPH[b]||SEATGLYPH._)+'</g></svg>';}
+/* ============================================================
+   THE STAGE, ROUND QH. His words, on the screenshots of round QG: "I don't
+   want anything in the pop-up panel. I want full screen. I want this to feel
+   heavily like visually designed. As if an ad agency did it ... And I want it
+   to feel like I'm being led through a process. Right now it's doing none of
+   those."
+
+   What he was looking at: a 560 pixel card centred over the running app, the
+   bar and the right rail dimmed behind it, and a step change that swapped the
+   card's text in place. A dialog that paused the product, which is the
+   opposite of somebody being taken somewhere.
+
+   SO THE SHEET IS NOW A STAGE, and the stage is built once per open and
+   stays. Three depths, the boot's own staging (shell/head.html, .bx-wash is
+   "the far depth", the figure "the middle depth", the lens "the near"):
+
+     far    the seven seat pools, the boot's wash, breathing on the Field's
+            4.2 second wave. Moves least and arrives last.
+     middle the 112 addresses as one ring, each tick in its own seat's colour,
+            the Field's wheel drawn as a halo. It turns one eighth of a turn
+            per step, so eight steps walk it once round: the turn the Settle
+            card names ("you are about to walk one turn of it") is a turn a
+            person watches happen. Progress, readable with every label off.
+     near   the body. The real silhouette, the same one object for all eight
+            steps. It is never redrawn between steps, it is moved: each step
+            gives it a pose, and the change of pose is the camera.
+
+   The card is the fourth thing, on top, and it is the only thing that is
+   replaced. The old one leaves as a ghost, a copy with every id and data-ob
+   attribute stripped so nothing can click it or find it, and the new one
+   rises in behind it.
+
+   THE MOTION LANGUAGE, and why each piece of it:
+
+     direction   forward is up. The outgoing card lifts 36 pixels and goes on
+                 the ease in, 260ms; the incoming one rises 26 from below on
+                 the ease out. Back reverses both signs, so a person who
+                 pressed Back sees the column come down to meet them. The
+                 direction is the information: with the words blurred out a
+                 viewer could still say which button was pressed.
+     overlap     the new card starts 140ms in, while the old is still going.
+                 Nothing waits for the thing before it to finish.
+     staging     eyebrow, headline, body, actions, 70ms apart, inside the
+                 60 to 110 range where siblings read as a sequence and not as
+                 a list being read out. The headline rises word by word out
+                 of its own line, 45ms apart, deliberately under 50 so it
+                 reads as one event with texture rather than as six.
+     parallax    the three depths go to the same pose on different clocks:
+                 the body in 640ms with a backswing, the ring in 820, the far
+                 pools in 1100. Same destination, different arrival, and the
+                 difference is what the eye reads as depth.
+     anticipation the body draws back a little before every move, two percent
+                 against the way it is about to go, 16 per cent of the move.
+                 The boot's own push does exactly this (bxPush, "a push with
+                 no draw back first starts from rest at full speed, which is
+                 the one thing nothing in nature does").
+     data        light only where something was read. The seat a person
+                 picks ignites on the body and stays lit into the Story. The
+                 mirror ignites the seats the words put weight on, root to
+                 crown on the boot's 90ms beat, each one landing with a single
+                 overshoot and a ring of light leaving it. Nothing glows on a
+                 step where nothing has been read, which is the rule iqxMark
+                 set for an arc, carried to a glow.
+
+   AT REST, which is most of the time a person spends here, rebuilt in round
+   QI (the block above obStageFig has the account): the whole figure
+   breathes on the Field's 4.2 second wave, a thin line of ink climbs the
+   spine on each inhale and each seat ring flares as it passes, and the room
+   inhales with it and drifts. The figure, the line and the pools are layer
+   transforms and opacity and run on the compositor, measured. The rings are
+   stroke width and opacity, which is a repaint and not free: seven circles
+   of about ten pixels, each lit for about a third of a breath. Said so
+   rather than claimed free, which this line did until round QH measured it.
+
+   WHAT THIS DOES NOT REOPEN, all ruled last round for reasons still true:
+   no stock picture, no glossy figure with seven bright dots (the seats on the
+   welcome are the house rings at half strength, never glows), no five step
+   rail over an eight step flow (the rail has eight stations), no countdown on
+   the hand off, and no targets on the body itself. Round QG measured it and
+   the number still stands: at 390 the seven seats span 49 of 102 units of the
+   drawing's height, 15 pixels between crown and brow against a tap floor of
+   44, so the chips stay the control and the body is the picture.
+
+   REDUCED MOTION GETS THE END STATE, never a faster animation: no ghost, no
+   rise, no camera, no breath, no pulse, no pen. The body is there drawn
+   whole and lit from above from the first frame. The poses are still there; they are simply
+   where everything already is.
+   ============================================================ */
+function obCalm(){ try{ return !!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches); }catch(e){ return false; } }
+/* the step names on the rail, the same words each card's eyebrow already uses */
+var OB_STEPNM=['Arrive','Ask','Settle','Feel','Body','Story','Mirror','Next'];
+/* THE BODY, ONCE, AT STAGE SIZE. The Body page's silhouette at the Body page's
+   transform, seats where PMBANDS puts them. The names are HTML laid over the
+   drawing at each seat's own height rather than SVG text, because an SVG name
+   scales with the drawing: 4.4 units is 33 pixels on a 760 pixel body and 11
+   on a 250 pixel one, and this one object is shown at both. A name in pixels
+   is 13 pixels at every size. Under it, on the steps that introduce the
+   seats, the anatomy line FLOWSEAT already carries, so a name never stands
+   without its meaning (round PO).
+
+   The box is the Body page's own with the gutter on the left kept, 6 to 74
+   wide, so the names have the 28.8 units left of the silhouette to sit in. */
+var OB_FIGBOX={x:6,w:68,h:102};
+/* ============================================================
+   ROUND QI, THE MOTION PASS. His grade on the welcome: "the animation is a
+   d-, visually, its a stand in and needs aesthetic innovation and animation
+   pass, out program must feel alive." Measured before a line was changed
+   (tools/obwelcome-motion.js, computed style read frame by frame): on the
+   way in the body layer's scale and opacity held at exactly 1 and the ring's
+   rotation at 0, so every layer that moved arrived by fading, and at rest the
+   only things that changed in eight seconds were the wash's opacity, .82 to
+   1 on pools that are themselves under 15 per cent colour, and seven ten
+   pixel rings. A still picture with a dimmer on it. The grade was right.
+
+   WHAT MOVES NOW, every piece an idiom the product already owns:
+
+     the spine     drawn root to crown first, the boot's own bxSpine draw,
+                   because the house rule is that the body breathes upward.
+     the seats     each ring pops on the boot's spring (bxPop) at the moment
+                   the spine's drawn tip passes its real PMBANDS height, so the
+                   seven arrive as one rising event and not on a timer.
+     the outline   poured from the crown down both sides at once, one stroke
+                   with a three part dash, the halo's own draw. The contour
+                   starts at the crown, so half the dash runs each way and the
+                   two meet between the feet.
+     the camera    a push in: the body from 94 per cent, the ring from 96 with
+                   the boot's drift wound out of it (bxDrift, -24 degrees),
+                   the far pools least. Nearer moves more, the same parallax
+                   the step change already uses.
+     at rest       the body breathes on the Field's 4.2 second wave, and on
+                   every inhale one thin line of ink climbs the spine, the
+                   wheel's thread pulse (ui/wheel.js, pulses), and each seat
+                   ring flares as it passes. Ink and never a seat's colour:
+                   nothing has been read on this step and a coloured light
+                   would claim it had.
+     a step        the same pulse once, quick: up the spine on a step forward,
+                   down it on Back, so the direction reads on the body too.
+
+   obBezT finds when a CSS ease reaches a given share of its travel, so a
+   seat's flare is timed to the instant the pulse actually reaches it rather
+   than to a guess of where a curve might be. */
+function obBezT(x1,y1,x2,y2,f){
+ var lo=0,hi=1,s,k,B=function(a,b,t){return 3*(1-t)*(1-t)*t*a+3*(1-t)*t*t*b+t*t*t;};
+ for(k=0;k<26;k++){ s=(lo+hi)/2; if(B(y1,y2,s)<f)lo=s; else hi=s; }
+ return B(x1,x2,(lo+hi)/2);}
+/* THE CLOCK, in seconds and milliseconds. The breath starts at OB_BREATH_E,
+   once the arrival has settled, so the first inhale is not spent under the
+   entrance. The climb is the inhale's first 46 per cent, which is how long
+   obxPulseUp's keyframes give it. Change one, change the stylesheet beside
+   it: shell/head.html carries the same three numbers. */
+var OB_SPINE={ms:600, at:120, y0:57, y1:3.6};
+var OB_BREATH={e:2100, cyc:4200, climb:.46, peak:.08};
+function obStageFig(){
+ var rows=obSeatRows(), B=OB_FIGBOX, root=rows[0], crown=rows[rows.length-1];
+ var span=root.y-crown.y;
+ var s='<div class="obx-fig" aria-hidden="true">'
+  +'<svg class="obx-figsv" viewBox="'+B.x+' 0 '+B.w+' '+B.h+'">'
+  /* LIT FROM ABOVE, which the stylesheet said and did not do: the fill and
+     the rim are both brightest at the shoulders and gone by the feet */
+  +'<defs><linearGradient id="obxSkF" x1="0" y1="0" x2="0" y2="1">'
+  +'<stop class="obx-gf0" offset="0"/><stop class="obx-gf1" offset=".42"/><stop class="obx-gf2" offset="1"/>'
+  +'</linearGradient><linearGradient id="obxSkS" x1="0" y1="0" x2="0" y2="1">'
+  +'<stop class="obx-gs0" offset="0"/><stop class="obx-gs1" offset=".34"/><stop class="obx-gs2" offset="1"/>'
+  +'</linearGradient></defs>'
+  +'<g transform="translate(0 1)">'
+  +'<g transform="translate('+PMTX+','+PMTY+') scale('+PMS+')">'
+  +'<path class="obx-skin" d="'+BODYPATH+'"/>'
+  /* THE PEN, a second copy of the outline that exists only to be drawn on
+     arrival. Measured, round QI: the skin's rim is non-scaling, and Chromium
+     lays a non-scaling stroke's dashes out in screen pixels while scaling
+     them by pathLength in the path's own units, so a dash of a quarter ran a
+     third of the contour at 1600 and nearly all of it at 390, and the half
+     coming down the left side never showed. This copy scales like any other
+     line, so pathLength means what it says in every browser, and its width
+     is set from the drawing's real scale (obPenWidth) to match the rim. */
+  +'<path class="obx-draw" pathLength="100" d="'+BODYPATH+'"/></g>'
+  /* root end first, so the draw climbs */
+  +'<line class="obx-ax" pathLength="100" x1="50" y1="'+OB_SPINE.y0+'" x2="50" y2="'+OB_SPINE.y1+'"/>';
+ rows.forEach(function(r,i){
+  /* the pop: when the spine's tip, on its own curve, reaches this seat */
+  var fa=(OB_SPINE.y0-r.y)/(OB_SPINE.y0-OB_SPINE.y1);
+  var pp=Math.round(OB_SPINE.at+OB_SPINE.ms*obBezT(.45,0,.55,1,fa));
+  /* the flare: when the climbing pulse, on the breath's curve, reaches it,
+     less the time the flare's own keyframes take to peak */
+  var fp=span?(root.y-r.y)/span:0;
+  var pd=Math.round(OB_BREATH.e+OB_BREATH.cyc*(OB_BREATH.climb*obBezT(.37,0,.63,1,fp)-OB_BREATH.peak));
+  s+='<g class="obx-s" data-obseat="'+esc(r.b)+'" style="--c:'+seatCol(r.b)+';--i:'+i+';--pp:'+pp+'ms;--pd:'+pd+'ms">'
+   +'<circle class="obx-sr" cx="50" cy="'+r.y+'" r="2.4"/></g>';});
+ s+='</g></svg>';
+ /* the pulse, from the root seat to the crown seat, in the drawing's own
+    coordinates: the breath's one, and the step's one */
+ var pt=((root.y+1)/B.h*100).toFixed(3)+'%', pl=((50-B.x)/B.w*100).toFixed(3)+'%', cl=(span/B.h).toFixed(4);
+ s+='<i class="obx-pulse" style="top:'+pt+';left:'+pl+';--cl:'+cl+'"></i>'
+  +'<i class="obx-surge" style="top:'+pt+';left:'+pl+';--cl:'+cl+'"></i>';
+ /* the glows and the names, in the drawing's own coordinates as percentages */
+ rows.forEach(function(r,i){
+  var top=((r.y+1)/B.h*100).toFixed(3)+'%', left=((50-B.x)/B.w*100).toFixed(3)+'%';
+  var right=((B.x+B.w-26)/B.w*100).toFixed(3)+'%';
+  s+='<span class="obx-glow" data-obseat="'+esc(r.b)+'" style="--c:'+seatCol(r.b)+';top:'+top+';left:'+left+'">'
+   +'<i class="obx-wave"></i></span>'
+   +'<span class="obx-fn" data-obseat="'+esc(r.b)+'" style="--c:'+seatCol(r.b)+';top:'+top+';right:'+right+';--i:'+i+'">'
+   +'<b>'+esc(r.b)+'</b>'+(r.where?'<i>'+esc(r.where)+'</i>':'')
+   +'<em>you tapped here</em></span>';});
+ return s+'</div>';}
+/* THE PEN'S WIDTH: the rim's 1.2 screen pixels in the outline's own units.
+   The outline is drawn at PMS inside a viewBox 102 units tall shown at the
+   figure's layout height, so one of its units is PMS times that height over
+   102 pixels. Read after the stage is shown, since a hidden box has no
+   height; with none, the stylesheet's own width stands. */
+function obPenWidth(h){
+ var f=h.querySelector('.obx-fig'), d=h.querySelector('.obx-draw');
+ var k=f?PMS*f.offsetHeight/OB_FIGBOX.h:0;
+ if(d&&k>0)d.style.strokeWidth=(1.2/k).toFixed(3);}
+/* THE 112, AS A RING. Every address, in the engine's own order, which runs
+   seat by seat root first, so the ring reads as seven arcs of colour and four
+   neutral ticks for the two places above and below the body. The Field's
+   wheel at the size of a halo: the product's two primary drawings, the body
+   and the wheel, composed as one picture. Drawn once, coloured once, and never
+   repainted: it moves only as a whole layer. */
+function obRing(){
+ var s='<svg class="obx-ringsv" viewBox="0 0 200 200">'
+  +'<circle class="obx-r0" cx="100" cy="100" r="98.6"/>'
+  +'<circle class="obx-r1" cx="100" cy="100" r="88.4"/>';
+ var N=(typeof NODES!=='undefined'&&NODES.length)?NODES:[], n=N.length||112;
+ for(var k=0;k<n;k++){
+  var a=(-90+k*360/n)*Math.PI/180, b=N[k]?N[k].b:null;
+  var c=(b&&BANDS.indexOf(b)>=0)?seatCol(b):'var(--dim)';
+  var r0=91.2, r1=(k%4===0)?96.6:95.2, ca=Math.cos(a), sa=Math.sin(a);
+  s+='<line class="obx-tk" style="--c:'+c+';--s:'+k+'" x1="'+(100+r0*ca).toFixed(2)+'" y1="'+(100+r0*sa).toFixed(2)
+   +'" x2="'+(100+r1*ca).toFixed(2)+'" y2="'+(100+r1*sa).toFixed(2)+'"/>';}
+ /* the gold halo, the boot's, as ruled: gold round the whole figure */
+ return s+'<circle class="obx-halo" cx="100" cy="100" r="101.6" pathLength="100"/></svg>';}
+/* THE SKELETON. Built on open and kept until close. The rail's eight stations
+   are the .ob-dot every gate already counts; they moved from inside the card
+   to the top of the screen, because a rail that is redrawn with each card
+   cannot show the run so far filling. The wordmark is the bar's own, cloned
+   from the document rather than drawn a second time. */
+/* ROUND QJ: the Day One tutorial stands on this same stage (ui/tutorial.js),
+   so the count of stations and the way out are the caller's. Called with
+   only a host it is the first run's stage exactly as it was: eight stations
+   and a Not now that answers to data-ob. */
+function obStage(h,n,xattr){
+ if(h.querySelector('.obx-slot'))return;
+ n=n||OB_NSTEPS; xattr=xattr||'data-ob="skip"';
+ var wm=document.querySelector('#brand .bn'), mark=wm?wm.outerHTML:'';
+ h.classList.add('obx');
+ h.innerHTML='<div class="obx-far" aria-hidden="true"><div class="obx-wash"></div></div>'
+  +'<div class="obx-vig" aria-hidden="true"></div>'
+  +'<div class="obx-tint" aria-hidden="true"></div>'
+  +'<div class="obx-ring" aria-hidden="true">'+obRing()+'</div>'
+  +'<div class="obx-near">'+obStageFig()+'</div>'
+  +'<div class="obx-top">'
+  +'<span class="obx-mark" aria-hidden="true">'+mark+'</span>'
+  +'<div class="obx-rail" role="progressbar" aria-valuemin="1" aria-valuemax="'+n+'">'
+  +'<div class="obx-track"><i class="obx-fill"></i>'
+  +Array.from({length:n}).map(function(_,i){
+    return '<span class="ob-dot" style="--k:'+i+'"></span>';}).join('')+'</div>'
+  +'<span class="obx-step"></span></div>'
+  +'<button type="button" class="obx-x" '+xattr+'>Not now</button>'
+  +'</div>'
+  +'<div class="obx-slot"></div>';}
+/* WHAT THE BODY SHOWS ON EACH STEP. lit is the seats that carry a reading,
+   pick the one a person tapped. Every name here is read off what this sheet
+   already holds; nothing is lit that the mirror or the plan does not say. */
+function obLitNow(){
+ var s=OB.step, lit=[], pick=null;
+ var pl=(OB.place!=null&&OB.place>=0)?OB_PLACES[OB.place]:null;
+ if((s===4||s===5)&&pl)pick=pl.b;
+ if(s===6){
+  (OB.read||[]).forEach(function(g){if(lit.indexOf(g.seat)<0)lit.push(g.seat);});
+  OB.fixReads.forEach(function(f){f.groups.forEach(function(g){if(lit.indexOf(g.seat)<0)lit.push(g.seat);});});}
+ if(s===7&&OB.plan&&OB.plan.ok)
+  OB.plan.addrs.forEach(function(i){var b=BY[i]&&BY[i].b; if(b&&lit.indexOf(b)<0)lit.push(b);});
+ if(pick&&lit.indexOf(pick)<0)lit.push(pick);
+ /* THE MIRROR KEEPS THE TAP, round QH. Its own copy says "You tapped your
+    chest, at your Heart seat. Your words put weight at other seats ... Both
+    are kept as they are", and the body showed only the second half: the seat
+    the person pressed went dark the moment the mirror came up, so the drawing
+    and the sentence beside it disagreed. The tapped seat is marked, a full
+    ring and its name with no light, because light means words put weight
+    there and the words did not. A tap the words also lit is simply lit. */
+ var mark=(s===6&&pl&&lit.indexOf(pl.b)<0)?pl.b:null;
+ return {lit:lit, pick:pick, mark:mark};}
+/* LIGHT THE BODY. A seat newly lit ignites; one already lit stays lit and is
+   not ignited again, so an answer on the mirror that redraws the card does
+   not fire every seat a second time. Ignition order is root to crown on the
+   boot's 90ms beat, starting after the body has landed in its new pose. */
+/* now, when given, is the caller's own {lit, pick, mark}: the tutorial lights
+   the seats its own entry read, through this same ignition. */
+function obFigSync(h,delay,now){
+ now=now||obLitNow(); var on={}, k=0, calm=obCalm();
+ /* A PREVIEW NEVER OUTLIVES ITS STEP. Found in the frame capture, which
+    hovers a chip before pressing it the way a pointer does: the press
+    replaces the card, a removed chip never fires pointerout, and obPreview
+    ignores every step but the Body one, so the hovered seat kept its preview
+    light through the Story and onto the mirror, where it claimed weight the
+    words did not put there. Every sync starts from no preview. */
+ h.querySelectorAll('.obx-near .prev').forEach(function(x){x.classList.remove('prev');});
+ now.lit.forEach(function(b){on[b]=1;});
+ BANDS.forEach(function(b){
+  var q='[data-obseat="'+b.replace(/"/g,'')+'"]';
+  var els=h.querySelectorAll('.obx-near '+q);
+  var was=els[0]&&els[0].classList.contains('on');
+  els.forEach(function(e){
+   e.classList.toggle('on',!!on[b]);
+   e.classList.toggle('pick',now.pick===b);
+   e.classList.toggle('mark',now.mark===b);});
+  if(on[b]&&!was&&!calm){
+   var gl=h.querySelector('.obx-glow'+q);
+   if(gl){ gl.classList.remove('ign'); void gl.offsetWidth;
+    gl.style.setProperty('--ig',((delay||0)+k*90)+'ms'); gl.classList.add('ign'); k++; }}});
+ /* the room takes the colour of the first seat that carries a reading */
+ var tc=now.lit.length?seatCol(now.lit[0]):null;
+ h.classList.toggle('obx-lit',!!tc);
+ if(tc)h.style.setProperty('--tc',tc);}
+/* THE CAMERA. The poses are CSS, per step and per width, so a pose is a
+   design value and not a number buried in a function. This reads where each
+   layer is, lets the new step's pose apply, reads where each layer now
+   belongs, and animates the difference. First, last, invert, play. */
+var OB_LAYERS=[
+ /* near: the body. 640ms, a two per cent backswing over the first 16 per cent */
+ {q:'.obx-near', ms:640, back:true},
+ /* middle: the ring. 820ms, no backswing, a turn does not wind up */
+ {q:'.obx-ring', ms:820},
+ {q:'.obx-tint', ms:820},
+ /* far: the pools. slowest, least, last */
+ {q:'.obx-far', ms:1100}];
+function obPoseRead(h){
+ return OB_LAYERS.map(function(L){
+  var e=h.querySelector(L.q); if(!e)return null;
+  var c=getComputedStyle(e);
+  return {e:e, translate:c.translate, scale:c.scale, rotate:c.rotate, opacity:c.opacity};});}
+function obPosePlay(h,from,dir){
+ if(obCalm())return;
+ var to=obPoseRead(h);
+ OB_LAYERS.forEach(function(L,i){
+  var a=from[i], b=to[i]; if(!a||!b)return;
+  if(a.translate===b.translate&&a.scale===b.scale&&a.rotate===b.rotate&&a.opacity===b.opacity)return;
+  var A={translate:a.translate, scale:a.scale, rotate:a.rotate, opacity:a.opacity};
+  var Z={translate:b.translate, scale:b.scale, rotate:b.rotate, opacity:b.opacity};
+  var kf;
+  if(L.back){
+   /* the backswing: against the direction of travel, and drawn in */
+   var s0=parseFloat(a.scale)||1, sB=s0*0.98;
+   kf=[Object.assign({},A,{easing:'cubic-bezier(.45,0,.55,1)'}),
+    Object.assign({},A,{offset:.16, scale:String(sB), easing:'cubic-bezier(.22,1,.36,1)'}),Z];
+  } else kf=[Object.assign({},A,{easing:'cubic-bezier(.22,1,.36,1)'}),Z];
+  try{ b.e.animate(kf,{duration:L.ms}); }catch(e){}});}
+/* THE GHOST. The outgoing card, copied where it stands and made inert: no id,
+   no data-ob attribute, no pointer, hidden from the accessibility tree. It is
+   appended after the live slot, so document order still finds the live card
+   first for anything that asks for .ob-card, .ob-h or #obtext. */
+/* HOW LONG THE OLD CARD TAKES TO GO. 260 on a wide screen, where the words
+   and the body never share ground. 180 on a narrow one, where they do: the
+   body stands over the column there, and on the move into the Body step it
+   grows from the emblem down into the space the outgoing card is lifting
+   out of. Measured at 390 before this: at 160ms the ghost was still at about
+   half strength under the growing figure and its names. At 180 the ease in
+   has it under a tenth by then. Still inside the 180 to 260 an exit takes. */
+function obGhostMs(){ try{ return (window.matchMedia&&matchMedia('(max-width: 899px)').matches)?180:260; }catch(e){ return 260; } }
+function obGhost(h,old,dir){
+ if(!old||obCalm())return;
+ var r=old.getBoundingClientRect(), sc=old.querySelector('.ob-scroll'), y=sc?sc.scrollTop:0;
+ var g=old.cloneNode(true);
+ g.className='obx-ghost'; ['role','aria-modal','aria-label'].forEach(function(a){g.removeAttribute(a);});
+ g.setAttribute('aria-hidden','true'); g.inert=true;
+ [g].concat([].slice.call(g.querySelectorAll('*'))).forEach(function(e){
+  if(e.id)e.removeAttribute('id');
+  /* data-tut too: the tutorial's ghost is made here, and a copy of its Next
+     must never be a second Next */
+  [].slice.call(e.attributes).forEach(function(a){if(/^data-(ob|tut)/.test(a.name))e.removeAttribute(a.name);});});
+ g.style.left=r.left+'px'; g.style.top=r.top+'px'; g.style.width=r.width+'px'; g.style.height=r.height+'px';
+ h.appendChild(g);
+ var gs=g.querySelector('.ob-scroll'); if(gs)gs.scrollTop=y;
+ var gone=function(){ if(g.parentNode)g.parentNode.removeChild(g); }, an=null;
+ try{
+  an=g.animate([{opacity:1,translate:'0 0'},{opacity:0,translate:'0 '+(-36*dir)+'px'}],
+   {duration:obGhostMs(),easing:'cubic-bezier(.4,0,1,1)',fill:'forwards'});
+  an.onfinish=gone; an.oncancel=gone;
+ }catch(e){ gone(); }
+ /* the fallback only for an exit that is not alive: one that is still
+    running, or held, finishes on its own and removes itself */
+ setTimeout(function(){ if(!an||(an.playState!=='running'&&an.playState!=='paused'))gone(); },900);}
+/* THE STAGGER. Each direct child of the card's column gets its place in the
+   order, capped at seven so a long mirror does not keep a person waiting on
+   its last paragraph; chips inside a row get their own faster count. */
+function obStagger(card){
+ var inn=card.querySelector('.obx-in'); if(!inn)return;
+ [].slice.call(inn.children).forEach(function(c,i){
+  c.style.setProperty('--si',Math.min(i,7));
+  /* .ob-g is the tutorial's chain, four rows that take the chips' own count */
+  [].slice.call(c.querySelectorAll('.ob-seat,.ob-g')).forEach(function(x,j){x.style.setProperty('--ci',j);});});}
+/* the headline, one word to a masked line, so it rises out of its own baseline.
+   textContent is the title exactly: the spaces stay as text between the words. */
+function obWords(t){
+ return String(t||'').split(' ').map(function(w,i){
+  return '<span class="obx-wl"><span class="obx-w" style="--wi:'+i+'">'+esc(w)+'</span></span>';}).join(' ');}
+/* THE LOOP, AND IT CLOSES. CLAUDE.md: "it is a circle, never a list ... a
+   numbered column of four says the fourth one is the end, which is the
+   opposite of a loop. Anywhere the four appear together they close." So the
+   storyboard's four cards with arrows between them are drawn as four marks on
+   one ring with the track running all the way round and no arrow head on it.
+   The marks are the section bar's own, shell/body.html, so the four things a
+   person is about to meet are drawn here exactly as they will be drawn in the
+   menu they meet them in. */
+var OB_LOOP=[
+ {k:'discover', nm:'Discover', say:'You write what happened, in your own words.',
+  ic:'<path d="M2.8 12c2.4-4.2 5.5-6.3 9.2-6.3s6.8 2.1 9.2 6.3c-2.4 4.2-5.5 6.3-9.2 6.3S5.2 16.2 2.8 12z"/><circle cx="12" cy="12" r="2.9"/>'},
+ {k:'play', nm:'Play', say:'The instrument reads where that sits in your body.',
+  ic:'<circle cx="12" cy="12" r="9.2"/><path d="M10.2 8.6l5.2 3.4-5.2 3.4z"/>'},
+ {k:'flow', nm:'Flow', say:'You say the lines, and the charge leaves.',
+  ic:'<path d="M3 9.2c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0M3 14.8c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0"/>'},
+ {k:'embody', nm:'Embody', say:'What is left is yours, and the circle starts again.',
+  ic:'<circle cx="12" cy="7.8" r="2.3"/><path d="M3.6 4.4c1.7 4.9 4.5 7.4 8.4 7.4s6.7-2.5 8.4-7.4M12 11.8v4.4M7.4 21c1.2-3.2 2.7-4.8 4.6-4.8s3.4 1.6 4.6 4.8"/>'}];
+function obLoopRing(){
+ /* R 36 and a node of 11.5, not 34 and 13: at the first values the chord
+    between two neighbouring nodes was 48 units and the nodes took 26 of it,
+    so 22 units of track showed between them and the ring read as a flower of
+    four discs rather than as a turn with four stations on it. 28 units show
+    now, which is the shortest run of clear track that still reads as track. */
+ var R=36, cx=50, cy=50, NR=11.5;
+ var s='<svg class="ob-loop" viewBox="0 0 100 100" aria-hidden="true">'
+  +'<circle class="ob-loop-tk" cx="'+cx+'" cy="'+cy+'" r="'+R+'"/>';
+ OB_LOOP.forEach(function(x,i){
+  var a=(-90+i*90)*Math.PI/180, px=cx+R*Math.cos(a), py=cy+R*Math.sin(a);
+  s+='<g class="ob-loop-n" style="animation-delay:'+(0.08+i*0.07).toFixed(2)+'s">'
+   +'<circle class="ob-loop-d" cx="'+px.toFixed(2)+'" cy="'+py.toFixed(2)+'" r="'+NR+'"/>'
+   +'<g class="ob-loop-g" transform="translate('+(px-8).toFixed(2)+' '+(py-8).toFixed(2)+') scale(.667)">'
+   +x.ic+'</g></g>';});
+ return s+'</svg>';}
+/* the four, as rows beside the ring, each with its own plain sentence. One
+   object says the shape and the rows say the words: a ring with four words
+   crammed on it says neither, and at a hundred and sixteen pixels a word on
+   that ring renders at five, which is half the type floor.
+
+   THE MARK IS ON BOTH, which is a legend and not a second drawing. The ring
+   says these four close; the row says which mark is which word. A person
+   reading the row learns the mark, and the mark is the one the section bar
+   will draw for the rest of their time in the product. */
+function obLoopRows(){
+ return '<ol class="ob-loopr">'+OB_LOOP.map(function(x){
+   return '<li><svg class="ob-loopr-ic" viewBox="0 0 24 24" aria-hidden="true">'+x.ic+'</svg>'
+    +'<span class="ob-loopr-n">'+esc(x.nm)+'</span>'
+    +'<span class="ob-loopr-s">'+esc(x.say)+'</span></li>';}).join('')+'</ol>';}
 function obOpen(replay){
  var h=document.getElementById('ob'); if(!h)return;
  OB.open=true; OB.step=0; OB.replay=!!replay;
  OB.pick=null; OB.feel=null; OB.place=null;
  OB.text=''; OB.commit=null; OB.corr=''; OB.fixes=[];
  OB.read=null; OB.fixReads=[]; OB.ans={}; OB.more={}; OB.plan=null;
+ OB.shown=-1;
+ if(OB.leaveT){ clearTimeout(OB.leaveT); OB.leaveT=null; }
  h.classList.remove('ob-leaving');
+ /* a fresh stage on every open, so the arrival plays from its first frame */
+ h.innerHTML=''; h.classList.remove('obx','obx-lit','obx-in-arrive');
+ obStage(h);
+ /* the running app goes out of the picture, not dimmed behind it: hidden, so
+    nothing of it shows and the compositor stops drawing what nobody sees */
+ document.body.classList.add('ob-on');
  obRender();
  h.style.display='flex';
- var f=h.querySelector('button,textarea'); if(f)f.focus();}
-/* THE HANDOFF TO THE FIELD IS A FADE, NOT A CUT, unchanged from round MP. */
+ obPenWidth(h);
+ var f=h.querySelector('.obx-slot button,.obx-slot textarea'); if(f)f.focus({preventScroll:true});}
+/* THE HANDOFF TO THE FIELD, unchanged in length from round MP and now a push
+   rather than a fade: the body goes forward and past the camera, the boot's
+   own exit (bxPush), so leaving the first run reads as going in. */
 var OB_LEAVE_MS=520;
+/* the push, on its own so the tutorial's way out is this one and not a copy */
+function obPushOut(h){
+ if(obCalm())return;
+ try{
+  var n=h.querySelector('.obx-near'), r=h.querySelector('.obx-ring');
+  if(n)n.animate([{scale:getComputedStyle(n).scale,opacity:1,easing:'cubic-bezier(.45,0,.55,1)'},
+   {offset:.26,scale:String((parseFloat(getComputedStyle(n).scale)||1)*.972),opacity:1,easing:'cubic-bezier(.4,0,1,1)'},
+   {scale:String((parseFloat(getComputedStyle(n).scale)||1)*1.45),opacity:0}],{duration:460,fill:'forwards'});
+  if(r)r.animate([{opacity:getComputedStyle(r).opacity},{opacity:0,scale:String((parseFloat(getComputedStyle(r).scale)||1)*1.12)}],
+   {duration:420,easing:'cubic-bezier(.4,0,1,1)',fill:'forwards'});
+ }catch(e){}}
 function obClose(){
  var h=document.getElementById('ob'); if(!h)return;
  OB.open=false; h.classList.add('ob-leaving');
+ document.body.classList.remove('ob-on');
+ obPushOut(h);
  /* LEFT BEFORE COMMIT. Nothing was written, and the words are not lost:
     they are still the Story tab's pending text, ST_TEXT, where the Commit
     button there can keep them. Said once, so a person who pressed Escape on
     the mirror is not left to assume the story was saved. */
  var left=OB.read&&!OB.commit&&OB.text&&typeof ST_TEXT==='string'&&ST_TEXT===OB.text;
- setTimeout(function(){ h.style.display='none'; h.classList.remove('ob-leaving'); h.innerHTML=''; },OB_LEAVE_MS);
+ OB.leaveT=setTimeout(function(){ OB.leaveT=null; if(OB.open)return;
+  h.style.display='none'; h.classList.remove('ob-leaving','obx','obx-lit'); h.innerHTML=''; },OB_LEAVE_MS);
  /* EVERY WRITE THAT CAN FAIL REPORTS, unchanged lesson. */
  try{
   if(CURP){ if(!CURP.ui||typeof CURP.ui!=='object')CURP.ui={}; CURP.ui.onboarded=true;
@@ -64514,31 +65733,121 @@ function obClose(){
 
 /* ---- the card shell. nsteps carries over tutorial.js's own pattern,
    because a sheet of a fixed four steps is no longer the only one. ---- */
-function obCard(eye,title,body,acts,nsteps){
- var n=nsteps||OB_NSTEPS;
+/* A LABEL IS TITLE CASED AND A SENTENCE IS NOT, and this card was printing a
+   sentence as a title. .pm-eye carries text-transform:capitalize, and
+   shell/head.html states the rule beside it: "A label is a short name for a
+   region: four words or fewer, and no comma with a word after it ... Everything
+   else is a sentence. A sentence takes plain and stays in sentence case."
+   Measured on the shipped sheet: the welcome's eyebrow rendered "Welcome To A
+   Neurosomatic Experience", five words, a sentence wearing a title. The rule
+   is applied here once rather than remembered per card. */
+function obEyeCls(s){
+ var t=String(s||'').trim();
+ return (t.split(/\s+/).length<=4&&!/,\s*\S/.test(t))?'pm-eye':'pm-eye plain';}
+/* HOW FAR ALONG, not only where. Eight identical dots with one lit answers
+   "which step is this" only by counting them, which is a person doing the
+   instrument's arithmetic. A passed step is marked, so the run so far is a
+   length a person reads on sight. */
+/* ONE DRAWING PER CARD. The watermark is the standing figure behind every
+   card, which was the only figure this sheet had. Four cards now carry a
+   drawing of their own, and the watermark sat behind them: a spine with seven
+   coloured dots showing through a silhouette, two drawings of one subject on
+   one card, and the one the brief rules out drawn over the one it asks for.
+   Measured on the Body card at 390, where the watermark's column reads through
+   the figure's belly, and on Settle, where its gold halo lands in the middle
+   of the loop ring and puts a mark where the loop has no station. A card that
+   carries a drawing carries no watermark, read off the body it was handed
+   rather than off a flag a caller has to remember to pass. */
+/* ROUND QH: the card is a column on the stage and no longer a sheet. The wash,
+   the watermark and the dots are the stage's, built once in obStage, so a card
+   carries only what changes from one step to the next. The column is wrapped
+   in .obx-in so a short card sits on the optical centre of the screen and a
+   long one, the mirror, scrolls from its top. */
+function obCard(eye,title,body,acts){
  return '<div class="ob-card" role="dialog" aria-modal="true" aria-label="'+esc(title)+'">'
-  +'<div class="ob-wash" aria-hidden="true"></div>'
-  +'<div class="ob-fig-wm" aria-hidden="true">'+obFigure()+'</div>'
-  +'<div class="ob-scroll">'
-  +'<span class="pm-eye">'+esc(eye)+'</span>'
-  +'<h2 class="ob-h">'+esc(title)+'</h2>'
+  +'<div class="ob-scroll"><div class="obx-in">'
+  +'<span class="'+obEyeCls(eye)+' obx-eye">'+esc(eye)+'</span>'
+  +'<h2 class="ob-h" tabindex="-1">'+obWords(title)+'</h2>'
   +body
   +'<div class="ob-acts">'+acts+'</div>'
-  +'<div class="ob-dots">'+Array.from({length:n}).map(function(_,i){
-    return '<span class="ob-dot'+(i===OB.step?' on':'')+'"></span>';}).join('')+'</div>'
-  +'</div></div>';}
+  +'</div></div></div>';}
+/* THE RAIL. Eight stations, the run so far filled, the step in hand named in
+   words beside it, so the rail says how far along without anybody counting. */
+function obRail(h){ obRailAt(h,OB.step,OB_NSTEPS,OB_STEPNM); }
+/* the rail for any run on this stage: the step, how many, and their names */
+function obRailAt(h,s,n,nm){
+ h.querySelectorAll('.obx-rail .ob-dot').forEach(function(d,i){
+  d.classList.toggle('on',i===s); d.classList.toggle('past',i<s);});
+ var f=h.querySelector('.obx-fill'); if(f)f.style.setProperty('--p',(s/(n-1)).toFixed(4));
+ var rl=h.querySelector('.obx-rail');
+ if(rl){ rl.setAttribute('aria-valuenow',String(s+1));
+  rl.setAttribute('aria-valuetext','Step '+(s+1)+' of '+n+', '+nm[s]); }
+ var t=h.querySelector('.obx-step');
+ if(t)t.innerHTML='Step <b>'+(s+1)+'</b> of '+n+'<span class="obx-stepn">'+esc(nm[s])+'</span>';}
 /* a row of chips, one choice at most. sel is the picked index, -1 for "not
    sure", null for nothing picked yet. b, when given, is the chip's seat
    band and tints it through seatCol, the same colour the body figure and
    the finished card already use for that seat; with no b the chip carries
-   no colour, because this file makes no claim it has not earned. */
+   no colour, because this file makes no claim it has not earned.
+
+   A SEAT CHIP CARRIES ITS SEAT MARK, round QG, the grammar ui/intakeui.js set
+   this round and the reason the twelve starting points and the six feeling
+   words still carry none: a feeling is not one place in the body, which
+   engine/data/onboarding.js states beside those two lists, and a mark would
+   be the claim this file has not earned. The seven body places are a seat and
+   the data says so, so they get the mark and nothing else does. The mark
+   carries no arc here: nothing has been read at the point a person is being
+   asked where they feel it.
+
+   AND THE PRESSED CHIP IS A RING, NEVER A SLAB. It filled solid with the
+   seat, which on Dark put a Root answer at full #D6524C and made the pressed
+   chip the brightest object on the card. ui/intakeui.js records the same
+   defect and its fix, round PQ: "pressed is a ring in the archetype's own
+   seat over a faint wash of it, never the solid accent slab ... which was the
+   brightest thing on the screen and pulled the eye off the question." Same
+   fix, same values, so the two surfaces press the same way. */
 function obChips(items,attr,sel,withNotSure){
- return '<div class="ob-seats">'+items.map(function(x,i){
+ return '<div class="ob-seats'+(items.some(function(x){return x.b;})?' ob-seats-mk':'')+'">'
+  +items.map(function(x,i){
    var c=x.b?' style="--c:'+seatCol(x.b)+'"':'';
    return '<button type="button" class="ob-seat'+(sel===i?' on':'')+'"'+c
-    +' data-'+attr+'="'+i+'">'+esc(x.n)+'</button>';}).join('')
-  +(withNotSure?'<button type="button" class="ob-seat'+(sel===-1?' on':'')+'" data-'+attr+'="-1">Not sure</button>':'')
+    +' data-'+attr+'="'+i+'">'
+    +(x.b?obSeatMark(x.b,null,'ob-mk-s'):'')
+    +'<span class="ob-seat-n">'+esc(x.n)+'</span></button>';}).join('')
+  +(withNotSure?'<button type="button" class="ob-seat'+(sel===-1?' on':'')+'" data-'+attr+'="-1">'
+   +'<span class="ob-seat-n">Not sure</span></button>':'')
   +'</div>';}
+
+/* ROUND QH'S CHANGE OF STEP, on its own since round QJ so the Day One
+   tutorial changes step through this one and not through a copy of it. The
+   card goes into the stage's slot. On a change of step the old card leaves
+   as a ghost and the new one rises; on a redraw of the same step, an answer
+   on the mirror, it is swapped where it stands, because a person who pressed
+   Yes has not gone anywhere. o.s is the step, o.shown the step on screen (-1
+   for none, which is the arrival), o.attr the attribute the poses read, o.rail
+   the rail's own writer and o.lit, when given, the seats to light. */
+function obSwap(h,out,o){
+ var slot=h.querySelector('.obx-slot'), old=slot.querySelector('.ob-card');
+ var s=o.s, moved=o.shown!==s, arrive=o.shown<0, dir=(s<o.shown)?-1:1;
+ var from=(moved&&!arrive)?obPoseRead(h):null;
+ if(moved&&!arrive)obGhost(h,old,dir);
+ h.setAttribute('data-dir',dir<0?'back':'fwd');
+ h.setAttribute(o.attr||'data-step',String(s));
+ h.classList.toggle('obx-in-arrive',arrive);
+ slot.innerHTML=out;
+ var card=slot.querySelector('.ob-card');
+ if(moved&&card&&!obCalm()){ card.classList.add('obx-enter'); obStagger(card); }
+ if(o.rail)o.rail(h);
+ /* the seat lights land after the body has: 420ms into a move, at once on a
+    redraw where the body has not moved */
+ obFigSync(h,moved?(arrive?1300:420):0,o.lit||null);
+ if(from)obPosePlay(h,from,dir);
+ /* the step reads on the body: one pulse up the spine forward, down it on
+    Back. Restarted rather than queued, so a fast run of presses shows the
+    latest direction and never a backlog. */
+ var sg=h.querySelector('.obx-surge');
+ if(sg&&moved&&!arrive&&!obCalm()){ sg.classList.remove('go'); void sg.offsetWidth; sg.classList.add('go'); }
+ return {moved:moved, arrive:arrive, card:card};}
 
 function obRender(){
  var h=document.getElementById('ob'); if(!h)return;
@@ -64550,10 +65859,23 @@ function obRender(){
      a neurosomatic experience," is his line too (NOTES.md item 1) and sits
      here as the eyebrow rather than a second sentence, so the card still
      opens on the figure and not on a claim. */
+  /* THE HERO IS THE REAL BODY, round QG. It was a vertical line with seven
+     coloured dots on it, which at 168 pixels reads as a dotted rule and is
+     the rainbow column the brief rules out drawn small. This is the Body
+     page's own silhouette with the seats where PMBANDS puts them, named down
+     its left the way the release sheets name them. The storyboard's stock
+     mountain lake and its glowing ring are not replaced by another picture,
+     they are replaced by the one drawing this product already owns. */
+  /* ROUND QH: the body is the stage's now, the one figure every step moves,
+     so the card carries the words and the figure stands beside them at a
+     size a card could never give it. */
   out=obCard('Welcome to a neurosomatic experience','This is you, and it is okay.',
-   obFigure()
-   +'<p class="ob-p">No judgment. Nothing here grades you. This one is for you.</p>'
-   +'<p class="ob-p ob-dim">A few minutes. One real thing to write. Nothing to fill in.</p>',
+   '<p class="ob-p">No judgment. Nothing here grades you. This one is for you.</p>'
+   +'<p class="ob-p ob-dim">A few minutes. One real thing to write. Nothing to fill in.</p>'
+   /* THE PRIVACY LINE IS A FACT ABOUT THE BUILD AND NOT A PROMISE. One file,
+      no network: the storyboard's three fragments say it three times, so it
+      is said once, as the thing that is actually true. */
+   +'<p class="ob-p ob-foot">Nothing you write leaves this device.</p>',
    '<button type="button" class="btn pri" data-ob="next">Come in</button>'
    +'<button type="button" class="btn" data-ob="skip">Not now</button>');
  }
@@ -64570,9 +65892,21 @@ function obRender(){
   /* SETTLE. His two lines, kept exactly as the mockup carries them
      (NOTES.md item 1): the awareness line, which answers what this sheet
      is asking the senses to do, and the instruction that follows it. */
+  /* THE LOOP GOES HERE, round QG. The storyboard's second panel is "a 30
+     second look at how Atuned works", four cards in a row with arrows between
+     them. Four in a row with arrows is the one shape CLAUDE.md rules out by
+     name: "a numbered column of four says the fourth one is the end, which is
+     the opposite of a loop. Anywhere the four appear together they close." So
+     the four are drawn on a closed ring, in the section bar's own marks, and
+     they sit on this card because Settle is where the flow already pauses and
+     was two sentences and nothing else. No step was added: the dots still
+     read eight and every index below is where it was. */
   out=obCard('Settle','Do not solve it yet.',
    '<p class="ob-p">Awareness and intuition is a tool we use to turn your senses inward.</p>'
-   +'<p class="ob-p">Notice what is here.</p>',
+   +'<p class="ob-p">Notice what is here.</p>'
+   +'<div class="ob-loopw">'+obLoopRing()+obLoopRows()+'</div>'
+   +'<p class="ob-p ob-dim">Four parts, and the fourth goes back to the first. '
+   +'You are about to walk one turn of it.</p>',
    '<button type="button" class="btn pri" data-ob="next">Continue</button>'
    +'<button type="button" class="btn" data-ob="back">Back</button>');
  }
@@ -64583,9 +65917,34 @@ function obRender(){
    '<button type="button" class="btn" data-ob="back">Back</button>');
  }
  else if(s===4){
+  /* THE BODY IS ON THE SCREEN NOW, round QG, and that is a defect fixed and
+     not a decoration added. The card said "Tap the place on the body" over
+     seven grey word chips and no body, so the instruction named a thing that
+     was not there. The figure is the real one, the chips are the control for
+     the reason the stage's header states (15 pixels between seats at 390),
+     and each chip carries its seat's own mark.
+
+     WHAT THE DRAWING SAYS NOW, round QH. Round QG kept a promise out of the
+     copy here because the lit seat was on screen for one frame: a press is
+     the advance, and the card that held the figure was replaced by the
+     Story. The figure is the stage's now and is not replaced, so the seat a
+     person presses ignites and stays lit through the Story step. The copy
+     still promises nothing; the light is simply no longer thrown away. */
+  var pb=(OB.place!=null&&OB.place>=0)?OB_PLACES[OB.place]:null;
   out=obCard('Body','Where do you notice it?',
-   '<p class="ob-p ob-dim">Tap the place on the body.</p>'
-   +obChips(OB_PLACES,'obplace',OB.place,true),
+   '<p class="ob-p ob-dim">Pick the place that is closest to it.</p>'
+   /* the figure is the stage's, beside this column on a wide screen and over
+      it on a narrow one; a chip held under a pointer lights its seat there
+      before it is pressed, and the press keeps it lit into the Story */
+   /* THE MEANING ONCE, round PO. The first cut led with "Seven seats, from the
+      base of the spine to the top of the head" and then printed the table's
+      sentence, which says the same thing in the same words: one fact, twice,
+      on the card where the word seat is first used. The table's sentence is
+      the one that ships, because it is the one every other surface prints. */
+   +'<p class="ob-p ob-dim ob-figsay">'+esc(unpackOf('seat'))+'</p>'
+   +obChips(OB_PLACES,'obplace',OB.place,true)
+   +(pb?'<p class="ob-p ob-dim ob-seatsay">'+esc(pb.n)+', at your <b>'+esc(pb.b)+'</b> seat. '
+     +esc(obSeatMean(pb.b))+'</p>':''),
    '<button type="button" class="btn" data-ob="back">Back</button>');
  }
  else if(s===5){
@@ -64611,17 +65970,22 @@ function obRender(){
  else {
   out=obBridgeCard();
  }
- h.innerHTML=out;
+ /* ROUND QH, the change of step, which obSwap above now carries */
+ obStage(h);
+ var sw=obSwap(h,out,{s:s, shown:OB.shown, attr:'data-step', rail:obRail});
+ var moved=sw.moved, arrive=sw.arrive, card=sw.card;
+ OB.shown=s;
  var ta=document.getElementById('obtext');
  var obMask=function(){var m=document.getElementById('obmask'); if(!m||!ta)return;
   var runs=maskedRuns(ta.value); m.hidden=!runs.length; m.textContent=maskedSay(runs);};
  if(ta){ta.value=OB.text; ta.oninput=function(){
    var go=document.getElementById('obdone'); if(go)go.disabled=(ta.value.trim().split(/\s+/).filter(Boolean).length<3);
    obMask();};
-  obMask(); ta.focus();}
+  obMask(); ta.focus({preventScroll:true});}
+ else if(moved&&!arrive){ var hd=card&&card.querySelector('.ob-h'); if(hd)hd.focus({preventScroll:true}); }
  var ci=document.getElementById('obcorr');
  if(ci){ci.oninput=function(){OB.corr=ci.value;};}
- var f=h.querySelector('.ob-scroll'); if(f)f.scrollTop=0;}
+ var f=card&&card.querySelector('.ob-scroll'); if(f&&moved)f.scrollTop=0;}
 
 /* ============================================================
    THE MIRROR. Built only from what the person gave: the pick, the feel and
@@ -64747,12 +66111,29 @@ function obRow(r,seat){
    has when the words named the feeling. The first address shows; the rest
    at the seat sit behind a button that says how many, never hidden with no
    affordance. */
+/* HOW MUCH OF A SEAT HAS BEEN ANSWERED YES, as a share of the addresses this
+   card has actually shown at it. It is the one real quantity a seat carries on
+   this card, so it is the one thing the seat mark's arc is allowed to draw.
+   Nothing answered draws no arc, which is the chip's own rule. */
+function obGrpShare(g){
+ var shown=g.rows.filter(function(r,i){return i===0||OB.more[g.id];});
+ if(!shown.length)return null;
+ var yes=shown.filter(function(r){return OB.ans[r.n.i]==='yes';}).length;
+ return yes/shown.length;}
 function obGroup(g){
  var col=(typeof seatCol==='function')?seatCol(g.seat):'';
  var mean=obSeatMean(g.seat);
+ /* THE SEAT ARRIVES AS A MARK AND NOT AS A TWO PIXEL RULE. It was a coloured
+    left border and a bold word, which on a card of nine paragraphs gives the
+    eye nothing to land on and makes the seat colour the thinnest thing in the
+    product carrying it. The mark is the house chip, obSeatMark, so a seat
+    reads the same here as on the Avatar's archetype rows and the Summary
+    rings. The heading stays the first <p> inside .ob-grp, which is where the
+    gate reads the lead off. */
  var o='<div class="ob-grp" data-obgrp="'+esc(g.id)+'" style="--c:'+col+'">'
+  +'<div class="ob-grph-r">'+obSeatMark(g.seat,obGrpShare(g),'ob-mk-g')
   +'<p class="ob-p ob-grph">At your <b>'+esc(g.seat)+'</b> seat.'
-  +(mean?' <span class="ob-dim">'+esc(mean)+'</span>':'')+'</p>';
+  +(mean?' <span class="ob-dim">'+esc(mean)+'</span>':'')+'</p></div>';
  var ws=g.words.length?obQuoteList(g.words):'';
  if(g.stated)
   o+='<p class="ob-p">'+(ws?(g.words.length>1?'Your words ':'Your word ')+ws:'Your words')
@@ -64792,9 +66173,21 @@ function obMirrorCard(){
  lines+='<p class="ob-p">'+(OB.text?'You said: <b>&ldquo;'+esc(obQuote(OB.text))+'&rdquo;</b>'
    :'You did not say what happened.')+'</p>';
  if(groups.length){
-  lines+='<p class="ob-p">This separates into its own components, one seat at a time. '
+  /* WHERE IT LIVES, AS THE FIGURE AND NOT AS A SENTENCE ALONE. The storyboard's
+     fourth panel draws a body with a glow at the heart under the words "Where
+     it lives: Heart". The body it draws is a glossy figure that is not this
+     product's; this is the real silhouette with the seats the words actually
+     lit standing out on it, read off the groups below and never a second
+     reading of its own. */
+  var seats=[]; groups.forEach(function(g){if(seats.indexOf(g.seat)<0)seats.push(g.seat);});
+  lines+='<div class="ob-mirrorfig">'
+   +'<p class="ob-p ob-dim ob-figsay">Lit on the body where your words put weight: '
+   +seats.map(function(b){return '<b>'+esc(b)+'</b>';}).join(seats.length===2?' and ':', ')
+   +(seats.length===1?' seat.':' seats.')+'</p></div>'
+   +'<p class="ob-p">This separates into its own components, one seat at a time. '
    +'<span class="ob-dim">'+esc(unpackOf('seat'))+' '+esc(unpackOf('address'))+'</span></p>'
-   +'<p class="ob-p ob-dim">Say Yes to each one that fits you. Only a yes goes into your release.</p>';
+   +'<p class="ob-p ob-dim">Say Yes to each one that fits you. Only a yes goes into your release. '
+   +'The ring beside each seat fills as you answer yes at it.</p>';
   if(pl&&!groups.some(function(g){return obSameSeat(g.seat,pl.b);}))
    lines+='<p class="ob-p ob-dim">You tapped your '+esc(pl.n.toLowerCase())+', at your '+esc(pl.b)
     +' seat. Your words put weight at other seats, shown below. Both are kept as they are.</p>';
@@ -64922,6 +66315,27 @@ function obMiniWhy(pl,yes){
  if(pl&&pl.why==='no new ground')
   return 'Every place '+(yes?'you said yes to':'this story touched')+' is already fully opened, so there is nothing new to release from it.';
  return '';}
+/* THE PLAN AS MARKS, round QG. The card said what the release takes in three
+   paragraphs and drew nothing, on the one screen where a person is deciding
+   whether to start. One mark per seat the plan reaches, in the house chip
+   grammar, with the lines that seat carries under it. The arc is that seat's
+   share of the run's lines, which is a real quantity off the plan and is said
+   in words beside it: a count of places with no arc would be a figure with no
+   picture, and an arc with no count would be a picture of nothing. */
+function obPlanMarks(pl){
+ if(!pl||!pl.ok||!pl.addrs||!pl.addrs.length)return '';
+ var per=pl.lines/pl.addrs.length, by=[], ix={};
+ pl.addrs.forEach(function(i){
+  var b=BY[i]&&BY[i].b; if(!b)return;
+  if(ix[b]==null){ix[b]=by.length; by.push({b:b,n:0});}
+  by[ix[b]].n++;});
+ if(!by.length)return '';
+ return '<div class="ob-plan">'+by.map(function(x){
+   var ln=Math.round(x.n*per);
+   return '<div class="ob-plan-i">'+obSeatMark(x.b,pl.lines?ln/pl.lines:null,'ob-mk-p')
+    +'<b class="ob-plan-n">'+esc(x.b)+'</b>'
+    +'<span class="ob-plan-v">'+ln+(ln===1?' line':' lines')+'</span></div>';}).join('')
+  +'</div>';}
 function obBridgeCard(){
  var c=OB.commit, yes=(c&&c.ok)?obYesSignal():[];
  /* the plan reads the yes rows, F4's answers, never the raw story read */
@@ -64929,8 +66343,18 @@ function obBridgeCard(){
  if(pl&&pl.ok){
   var first=(typeof journeyRead==='function')?journeyRead(CURP).first:true;
   return obCard('Next',first?'Next is your first release.':'Next is a release.',
-   obMiniSay(pl,first,true)
-   +'<p class="ob-p ob-dim">You choose the pace and how many times each line repeats once you are there, and you can stop any time.</p>',
+   obPlanMarks(pl)
+   +obMiniSay(pl,first,true)
+   /* SILENCE IS STATED, round QG. The storyboard's fifth panel is a blue to
+      pink gradient ring the width of the screen with the word Release inside
+      it, a timer, and "Breathe with the field". None of that is drawn here and
+      no second release is drawn here either: the handoff is relPick and
+      ui/release.js owns every pixel of the run. What this card owes a person
+      is the one thing that panel does not say, which is that the run is
+      silent and they set its pace. tests/design.js already holds the release
+      to it: "the release runs to its end in silence." */
+   +'<p class="ob-p">The lines are read in silence. Nothing speaks and nothing counts down. '
+   +'You set the pace and how many times each line repeats, and you can stop at any line.</p>',
    '<button type="button" class="btn pri" data-ob="release">Begin the release</button>'
    +'<button type="button" class="btn" data-ob="done">Not now</button>');
  }
@@ -64992,6 +66416,24 @@ addEventListener('click',function(e){
    relPick(ids,(OB.commit&&OB.commit.ok&&OB.commit.t)?{story_t:OB.commit.t}:null);
   return;}
  if(k==='skip'||k==='done'){ obClose(); return; }});
+/* THE PREVIEW, round QH. On the Body step a chip under the pointer, or under
+   keyboard focus, lights its own seat on the figure before it is pressed: the
+   secondary action under the main one, so the word and the place are seen
+   together and the press reads as a consequence of what was already shown.
+   A class and a 120ms transition, nothing more; reduced motion still gets the
+   light, at once, because the light is information and not decoration. */
+function obPreview(e,on){
+ if(!OB.open||OB.step!==4)return;
+ var t=e.target&&e.target.closest?e.target.closest('[data-obplace]'):null;
+ var h=document.getElementById('ob'); if(!h)return;
+ h.querySelectorAll('.obx-near .prev').forEach(function(x){x.classList.remove('prev');});
+ if(!on||!t)return;
+ var i=+t.getAttribute('data-obplace'), p=(i>=0)?OB_PLACES[i]:null; if(!p)return;
+ h.querySelectorAll('.obx-near [data-obseat="'+p.b+'"]').forEach(function(x){x.classList.add('prev');});}
+addEventListener('pointerover',function(e){obPreview(e,true);});
+addEventListener('pointerout',function(e){obPreview(e,false);});
+addEventListener('focusin',function(e){obPreview(e,true);});
+addEventListener('focusout',function(e){obPreview(e,false);});
 /* escape leaves, because a sheet a person cannot dismiss is a sheet that has
    stopped being an invitation. */
 addEventListener('keydown',function(e){
@@ -67337,5 +68779,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004411357"></div>
+<div id="eof" hidden data-len="004508352"></div>
 </body></html>
