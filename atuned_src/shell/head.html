@@ -6622,7 +6622,13 @@ body.punch .ob-mk-tk{display:none}
 .obx{--fh:min(76vh,800px,58vw);--ax:27vw;--ay:52vh;--fs:1;--fo:1;--k:0;--ro:1;--dy:1;--d0:140ms;
  padding:0;background:var(--bg);overflow:hidden;z-index:95}
 .obx[data-dir=back]{--dy:-1}
-.obx-in-arrive{--d0:560ms}
+.obx-in-arrive{--d0:1100ms}
+/* ROUND QI: the words wait for the body. At 560 they began while the figure
+   was still a fade at 93 per cent, so the first read split between two
+   things. At 1100 the spine has climbed, the seats have popped and the
+   outline is most of the way down; the words are the second thing a person
+   reads, not the joint first. The buttons are live and the primary has focus
+   from the first frame, so a person who already knows can go at once. */
 /* the running app is out of the picture while the stage is up, not dimmed
    behind it, and the compositor stops drawing a Field nobody can see */
 body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
@@ -6640,11 +6646,23 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
   radial-gradient(circle at 22% 78%,color-mix(in srgb,var(--sacral) 12%,transparent) 0,transparent 32%),
   radial-gradient(circle at 36% 92%,color-mix(in srgb,var(--root) 13%,transparent) 0,transparent 30%),
   radial-gradient(circle at 78% 30%,color-mix(in srgb,var(--accent) 7%,transparent) 0,transparent 42%);
- animation:obxBreath 2.1s var(--ease-breath) infinite alternate}
-/* the Field's own wave, .82 to 1 over 4.2s, which is two of these */
+ will-change:transform,opacity;
+ animation:obxBreath 2.1s var(--ease-breath) 2.1s infinite alternate backwards,
+  obWashDrift 30s var(--ease-breath) infinite alternate}
+/* the Field's own wave, .82 to 1 over 4.2s, which is two of these. ROUND QI:
+   it starts at 2.1s, the same instant the body's breath does, so the room
+   and the figure inhale together; it began at 0 and ran half a breath out of
+   step with everything that breathes on it. The drift under it is the first
+   run sheet's own, obWashDrift above, which this stage dropped when it
+   replaced that sheet: the pools turn three degrees over thirty seconds, so
+   the room is never the same picture twice and never visibly moving. */
 @keyframes obxBreath{from{opacity:.82}to{opacity:1}}
-.obx-in-arrive .obx-far{animation:obxBloom 1.5s cubic-bezier(.22,1,.36,1) both}
-@keyframes obxBloom{from{opacity:0;scale:1.18}to{opacity:1;scale:1}}
+/* THE PUSH IN, round QI. This bloom came from 1.18 down to 1, the room
+   shrinking while the body held still, which is a camera pulling back from
+   a figure that is supposed to be arriving. Now every depth comes forward
+   and the nearer moves more: far 2 per cent, the ring 4, the body 6. */
+.obx-in-arrive .obx-far{animation:obxBloom 1.6s cubic-bezier(.22,1,.36,1) both}
+@keyframes obxBloom{from{opacity:0;scale:.98}to{opacity:1;scale:1}}
 /* the edges fall away, so the eye starts where the body is */
 .obx-vig{inset:0;z-index:0;
  background:radial-gradient(130% 100% at var(--ax) 50%,transparent 46%,color-mix(in srgb,var(--sunk) 78%,transparent) 100%),
@@ -6669,6 +6687,12 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
    throw runs three apart over the same 112); then the gold closes round them */
 .obx-in-arrive .obx-tk{animation:obxTick .5s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(.3s + var(--s) * 5ms)}
 @keyframes obxTick{from{opacity:0}to{opacity:.52}}
+/* and the ring winds into place while they arrive: the boot's own drift,
+   bxDrift, -24 degrees to rest, on the child so the pose's eighth of a turn
+   per step, on the parent, is never touched. The progress the ring carries
+   is its parent's rotation, and that does not move here. */
+.obx-in-arrive .obx-ringsv{animation:obxWind 1.8s cubic-bezier(.22,1,.36,1) .1s backwards}
+@keyframes obxWind{from{rotate:-24deg;scale:.96}to{rotate:0deg;scale:1}}
 .obx-in-arrive .obx-halo{animation:obxHalo .96s cubic-bezier(.45,0,.15,1) .86s both}
 @keyframes obxHalo{0%{opacity:0;stroke-dasharray:0 100}6%{opacity:.42}100%{opacity:.42;stroke-dasharray:100 100}}
 /* ---- near: the body ---- */
@@ -6676,19 +6700,94 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
  transform-origin:64.706% 47.06%;
  translate:calc(var(--ax) - var(--fh) * .43137) calc(var(--ay) - var(--fh) * .4706);
  scale:var(--fs);opacity:var(--fo)}
-.obx-fig{position:relative;width:100%;height:100%}
+/* the body's own part of the push in: from 94 per cent of its pose. Only a
+   from, so it lands on whatever the pose says without this rule knowing it,
+   and backwards and not both, so nothing holds the pose once it has landed */
+.obx-in-arrive .obx-near{animation:obxPush 1.6s cubic-bezier(.22,1,.36,1) backwards}
+@keyframes obxPush{from{scale:calc(var(--fs) * .94)}}
+/* THE BREATH, round QI. The whole figure, names and lights with it, so
+   nothing it carries slides off its seat. Wider more than taller, because a
+   breath fills the ribs before it lifts the head: 1.4 per cent across and
+   .7 up, from the feet, which stay where they stand. Measured at the top of
+   the inhale on the 318 by 714 pixel body at 1600: 4.5 pixels wider, the
+   head 5 higher, the crown's name 2.5 across and 5 up, less than a line's
+   own leading; at 390 under 2 everywhere. Enough to see, too little to read
+   as the words moving. Compositor only, and measured so (LayerTree paint
+   events over two breaths at 1600): with will-change on scale, Chromium
+   repainted the whole 327 by 723 figure at each turn of the breath, four
+   times in two breaths; on transform it holds the raster, and the figure
+   paints exactly as often as a figure that does not breathe at all. */
+.obx-fig{position:relative;width:100%;height:100%;transform-origin:64.706% 97%;will-change:transform;
+ animation:obxInhale 2.1s var(--ease-breath) 2.1s infinite alternate backwards}
+@keyframes obxInhale{from{scale:1}to{scale:1.014 1.007}}
 .obx-figsv{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 /* LIT FROM ABOVE. A fill that is brighter at the shoulders and gone by the
    feet, and a rim at a third: the Body page's solid shape on a dark ground,
-   given the one light source a figure on a stage has. */
-.obx-skin{fill:color-mix(in srgb,var(--ink) 7%,transparent);stroke:color-mix(in srgb,var(--ink) 34%,transparent);
- stroke-width:1.2;vector-effect:non-scaling-stroke}
+   given the one light source a figure on a stage has. ROUND QI: this comment
+   stood over a flat seven per cent fill and a flat rim for a whole round,
+   which is why the figure read as a grey cut out. The gradients are in the
+   drawing, ui/onboard.js obStageFig, and these are their stops. */
+.obx-skin{fill:url(#obxSkF);stroke:url(#obxSkS);stroke-width:1.2;vector-effect:non-scaling-stroke}
+.obx-gf0{stop-color:color-mix(in srgb,var(--ink) 17%,transparent)}
+.obx-gf1{stop-color:color-mix(in srgb,var(--ink) 7%,transparent)}
+.obx-gf2{stop-color:color-mix(in srgb,var(--ink) 2%,transparent)}
+.obx-gs0{stop-color:color-mix(in srgb,var(--ink) 62%,transparent)}
+.obx-gs1{stop-color:color-mix(in srgb,var(--ink) 34%,transparent)}
+.obx-gs2{stop-color:color-mix(in srgb,var(--ink) 12%,transparent)}
 .obx-ax{stroke:color-mix(in srgb,var(--ink) 16%,transparent);stroke-width:1;vector-effect:non-scaling-stroke;
- stroke-dasharray:60 60}
-.obx-in-arrive .obx-skin{animation:obxSkin .9s cubic-bezier(.22,1,.36,1) .22s both}
-@keyframes obxSkin{from{opacity:0}to{opacity:1}}
-.obx-in-arrive .obx-ax{animation:obxAx .6s cubic-bezier(.22,1,.36,1) .5s both}
-@keyframes obxAx{from{stroke-dashoffset:60}to{stroke-dashoffset:0}}
+ stroke-dasharray:100 100}
+/* THE ARRIVAL OF THE BODY, round QI, in the order a person is built and not
+   all at once. The spine climbs first, 600ms from 120. The outline then
+   pours from the crown down both sides: the path starts at the crown, so a
+   dash of d, a gap, and a dash of d draws d from each end of it, and d runs
+   0 to 50. It starts at 600, as the spine's tip reaches the head, and is the
+   halo's curve. The fill comes up once the pen is past the hips, at 1150:
+   it fades as one, and begun earlier it ran ahead of the pen down the legs,
+   measured on the frame at 1120, a body filled before it was drawn. */
+/* The pen draws it, ui/onboard.js obStageFig says why it is a second copy,
+   and the rim takes over in the same frame the pen lands: same outline, same
+   gradient, same width, so the swap is not a thing anyone can see. */
+.obx-draw{display:none;fill:none;stroke:url(#obxSkS);stroke-width:1.66}
+.obx-in-arrive .obx-draw{display:inline;
+ animation:obxOutline 1s cubic-bezier(.45,0,.15,1) .6s backwards,obxPenOff 1ms 1.6s forwards}
+@keyframes obxOutline{from{stroke-dasharray:0 100 0}to{stroke-dasharray:50 0 50}}
+@keyframes obxPenOff{to{opacity:0}}
+.obx-in-arrive .obx-skin{animation:obxRimOff 1ms 1.6s backwards,
+ obxFill .7s cubic-bezier(.22,1,.36,1) 1.15s backwards}
+@keyframes obxRimOff{from{stroke-opacity:0}to{stroke-opacity:0}}
+@keyframes obxFill{from{fill-opacity:0}to{fill-opacity:1}}
+.obx-in-arrive .obx-ax{animation:obxAx .6s cubic-bezier(.45,0,.55,1) .12s backwards}
+@keyframes obxAx{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
+/* THE PULSE, the wheel's thread pulse carried onto the spine: a thin line of
+   ink with its tail below it, climbing from the root seat to the crown seat
+   over the inhale's first 1.93s and gone before the exhale. Ink and never a
+   seat's colour, because nothing on this step has been read. translate and
+   opacity, so compositor only. --cl is the climb as a share of the drawing's
+   height, set from PMBANDS in ui/onboard.js. */
+.obx-pulse,.obx-surge{position:absolute;z-index:1;width:2px;height:calc(var(--fh) * .075);margin-left:-1px;
+ border-radius:1px;translate:0 -50%;opacity:0;pointer-events:none;will-change:translate,opacity;
+ background:linear-gradient(to top,transparent,color-mix(in srgb,var(--ink) 74%,transparent) 72%,transparent)}
+.obx-pulse{animation:obxPulseUp 4.2s 2.1s infinite backwards,obxPulseOp 4.2s 2.1s infinite backwards}
+@keyframes obxPulseUp{
+ 0%{translate:0 -50%;animation-timing-function:cubic-bezier(.37,0,.63,1)}
+ 46%,100%{translate:0 calc(-50% - var(--fh) * var(--cl))}}
+@keyframes obxPulseOp{
+ 0%{opacity:0;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+ 7%{opacity:.62}
+ 36%{opacity:.62;animation-timing-function:cubic-bezier(.4,0,1,1)}
+ 47%,100%{opacity:0}}
+/* THE STEP'S PULSE: the same line, once, quick, in the direction of the
+   step. 560ms, inside the body's own 640 move, from 60ms so it reads as a
+   consequence of the press and not as the press. */
+.obx[data-dir=fwd] .obx-surge.go{animation:obxSurgeUp .56s cubic-bezier(.45,0,.55,1) 60ms both,obxSurgeOp .56s 60ms both}
+.obx[data-dir=back] .obx-surge.go{animation:obxSurgeDn .56s cubic-bezier(.45,0,.55,1) 60ms both,obxSurgeOp .56s 60ms both}
+@keyframes obxSurgeUp{from{translate:0 -50%}to{translate:0 calc(-50% - var(--fh) * var(--cl))}}
+@keyframes obxSurgeDn{from{translate:0 calc(-50% - var(--fh) * var(--cl))}to{translate:0 -50%}}
+@keyframes obxSurgeOp{
+ 0%{opacity:0;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+ 14%{opacity:.85}
+ 70%{opacity:.85;animation-timing-function:cubic-bezier(.4,0,1,1)}
+ 100%{opacity:0}}
 /* THE SEAT RINGS, the house ring at half strength at rest. They breathe on
    the Field's wave with the phase walking root to crown, three tenths of a
    second a seat, so the body takes one slow breath upward. Stroke opacity,
@@ -6697,12 +6796,28 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
    of radius at 2.4 units on a 760 pixel body, which reads as a disc down the
    middle of a person and is the column the brief rules out. 1.3 is 10 pixels
    at that height; the narrow width keeps 2.1, 6 pixels at 300. */
-.obx-sr{r:1.3px;fill:none;stroke:var(--c);stroke-width:1.3;vector-effect:non-scaling-stroke;stroke-opacity:.5;
+/* ROUND QI: the walk is no longer a guess at a phase, three tenths a seat,
+   which no climbing thing could ever agree with. Each ring flares at the
+   instant the pulse reaches its height, --pd, worked out in ui/onboard.js
+   from the pulse's own curve, and the flare is stroke width as well as
+   strength, because .36 to .66 on a ten pixel ring was measured as the whole
+   of the body's life at rest and nobody could see it. It peaks at .78 and
+   1.7px and never higher: a seat that is read or picked stands at 1 and 1.8
+   with its glow behind it (.obx-s.on below), and a breath that outshone a
+   reading would be the one lie this drawing must not tell. The first cut
+   peaked at .95 and 2.3 and did exactly that. The same delay sits in
+   the arrival's list below, so when the arrival ends the browser keeps this
+   animation running by its name rather than starting it again out of step. */
+.obx-sr{r:1.3px;fill:none;stroke:var(--c);stroke-width:1.3;vector-effect:non-scaling-stroke;stroke-opacity:.42;
  transform-box:fill-box;transform-origin:center;
- animation:obxSeat 2.1s var(--ease-breath) infinite alternate;animation-delay:calc(var(--i) * .3s)}
-@keyframes obxSeat{from{stroke-opacity:.36}to{stroke-opacity:.66}}
-.obx-in-arrive .obx-sr{animation:obxPop .44s both,obxSeat 2.1s var(--ease-breath) infinite alternate;
- animation-delay:calc(.72s + var(--i) * 90ms),calc(1.6s + var(--i) * .3s)}
+ animation:obxSeat 4.2s infinite backwards;animation-delay:var(--pd)}
+@keyframes obxSeat{
+ 0%{stroke-opacity:.42;stroke-width:1.3px;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+ 8%{stroke-opacity:.78;stroke-width:1.7px;animation-timing-function:cubic-bezier(.37,0,.63,1)}
+ 34%,100%{stroke-opacity:.42;stroke-width:1.3px}}
+/* the pop lands as the spine's tip passes, --pp, from ui/onboard.js */
+.obx-in-arrive .obx-sr{animation:obxPop .44s both,obxSeat 4.2s infinite backwards;
+ animation-delay:var(--pp),var(--pd)}
 /* the boot's spring, bxPop: out of rest at speed, a peak, a trough, rest */
 @keyframes obxPop{
  0%{opacity:0;scale:.2;animation-timing-function:cubic-bezier(.22,1,.36,1)}
@@ -6774,7 +6889,7 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
    from: measured, the seven names went from 1 to 0 in one frame on Arrive to
    Ask. Backwards holds only the hidden start through the delay; the end is
    the base rule's own 1, which the fade then has to leave from. */
-.obx-in-arrive .obx-fn{animation:obxName .5s cubic-bezier(.22,1,.36,1) backwards;animation-delay:calc(.82s + var(--i) * 90ms)}
+.obx-in-arrive .obx-fn{animation:obxName .5s cubic-bezier(.22,1,.36,1) backwards;animation-delay:calc(1.05s + var(--i) * 60ms)}
 /* THE NAMES COME IN AFTER THE BODY HAS LANDED, on the step that is about the
    body. Measured at 390 on Feel to Body: the names began their fade at 0ms
    while the body was still the half scale emblem, so for the first 160ms
@@ -6958,6 +7073,11 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
    to them. A light that carries a reading still shows, at once. */
 @media (prefers-reduced-motion:reduce){
  .obx-wash,.obx-sr,.obx-glow.on::before{animation:none}
+ /* round QI: no breath, no pulse, no push and no wind. The figure stands lit
+    from above, drawn whole, with its rings at rest, which is where every one
+    of those moves ends */
+ .obx-fig,.obx-in-arrive .obx-near,.obx-in-arrive .obx-ringsv{animation:none}
+ .obx-pulse,.obx-surge,.obx-in-arrive .obx-draw{display:none}
  .obx-in-arrive .obx-far,.obx-in-arrive .obx-tk,.obx-in-arrive .obx-halo,.obx-in-arrive .obx-skin,
  .obx-in-arrive .obx-ax,.obx-in-arrive .obx-sr,.obx-in-arrive .obx-fn,
  .obx-glow.on.ign::before,.obx-glow.on.ign .obx-wave{animation:none}

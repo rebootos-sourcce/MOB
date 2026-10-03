@@ -209,13 +209,15 @@ function obSeatMark(b,share,cls){
                  step where nothing has been read, which is the rule iqxMark
                  set for an arc, carried to a glow.
 
-   AT REST, which is most of the time a person spends here: the seat rings
-   breathe on the Field's wave with the phase walking up the spine, root
-   first, so the body takes a slow breath upward. The pools breathe under it.
-   The pools are layer opacity and run on the compositor. The rings are
-   stroke-opacity, which is a repaint and not free: seven circles of about
-   ten pixels, a few hundred pixels of paint a frame. Said so rather than
-   claimed free, which this line did until round QH measured it.
+   AT REST, which is most of the time a person spends here, rebuilt in round
+   QI (the block above obStageFig has the account): the whole figure
+   breathes on the Field's 4.2 second wave, a thin line of ink climbs the
+   spine on each inhale and each seat ring flares as it passes, and the room
+   inhales with it and drifts. The figure, the line and the pools are layer
+   transforms and opacity and run on the compositor, measured. The rings are
+   stroke width and opacity, which is a repaint and not free: seven circles
+   of about ten pixels, each lit for about a third of a breath. Said so
+   rather than claimed free, which this line did until round QH measured it.
 
    WHAT THIS DOES NOT REOPEN, all ruled last round for reasons still true:
    no stock picture, no glossy figure with seven bright dots (the seats on the
@@ -227,7 +229,8 @@ function obSeatMark(b,share,cls){
    44, so the chips stay the control and the body is the picture.
 
    REDUCED MOTION GETS THE END STATE, never a faster animation: no ghost, no
-   rise, no camera, no breath. The poses are still there; they are simply
+   rise, no camera, no breath, no pulse, no pen. The body is there drawn
+   whole and lit from above from the first frame. The poses are still there; they are simply
    where everything already is.
    ============================================================ */
 function obCalm(){ try{ return !!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches); }catch(e){ return false; } }
@@ -245,18 +248,97 @@ var OB_STEPNM=['Arrive','Ask','Settle','Feel','Body','Story','Mirror','Next'];
    The box is the Body page's own with the gutter on the left kept, 6 to 74
    wide, so the names have the 28.8 units left of the silhouette to sit in. */
 var OB_FIGBOX={x:6,w:68,h:102};
+/* ============================================================
+   ROUND QI, THE MOTION PASS. His grade on the welcome: "the animation is a
+   d-, visually, its a stand in and needs aesthetic innovation and animation
+   pass, out program must feel alive." Measured before a line was changed
+   (tools/obwelcome-motion.js, computed style read frame by frame): on the
+   way in the body layer's scale and opacity held at exactly 1 and the ring's
+   rotation at 0, so every layer that moved arrived by fading, and at rest the
+   only things that changed in eight seconds were the wash's opacity, .82 to
+   1 on pools that are themselves under 15 per cent colour, and seven ten
+   pixel rings. A still picture with a dimmer on it. The grade was right.
+
+   WHAT MOVES NOW, every piece an idiom the product already owns:
+
+     the spine     drawn root to crown first, the boot's own bxSpine draw,
+                   because the house rule is that the body breathes upward.
+     the seats     each ring pops on the boot's spring (bxPop) at the moment
+                   the spine's drawn tip passes its real PMBANDS height, so the
+                   seven arrive as one rising event and not on a timer.
+     the outline   poured from the crown down both sides at once, one stroke
+                   with a three part dash, the halo's own draw. The contour
+                   starts at the crown, so half the dash runs each way and the
+                   two meet between the feet.
+     the camera    a push in: the body from 94 per cent, the ring from 96 with
+                   the boot's drift wound out of it (bxDrift, -24 degrees),
+                   the far pools least. Nearer moves more, the same parallax
+                   the step change already uses.
+     at rest       the body breathes on the Field's 4.2 second wave, and on
+                   every inhale one thin line of ink climbs the spine, the
+                   wheel's thread pulse (ui/wheel.js, pulses), and each seat
+                   ring flares as it passes. Ink and never a seat's colour:
+                   nothing has been read on this step and a coloured light
+                   would claim it had.
+     a step        the same pulse once, quick: up the spine on a step forward,
+                   down it on Back, so the direction reads on the body too.
+
+   obBezT finds when a CSS ease reaches a given share of its travel, so a
+   seat's flare is timed to the instant the pulse actually reaches it rather
+   than to a guess of where a curve might be. */
+function obBezT(x1,y1,x2,y2,f){
+ var lo=0,hi=1,s,k,B=function(a,b,t){return 3*(1-t)*(1-t)*t*a+3*(1-t)*t*t*b+t*t*t;};
+ for(k=0;k<26;k++){ s=(lo+hi)/2; if(B(y1,y2,s)<f)lo=s; else hi=s; }
+ return B(x1,x2,(lo+hi)/2);}
+/* THE CLOCK, in seconds and milliseconds. The breath starts at OB_BREATH_E,
+   once the arrival has settled, so the first inhale is not spent under the
+   entrance. The climb is the inhale's first 46 per cent, which is how long
+   obxPulseUp's keyframes give it. Change one, change the stylesheet beside
+   it: shell/head.html carries the same three numbers. */
+var OB_SPINE={ms:600, at:120, y0:57, y1:3.6};
+var OB_BREATH={e:2100, cyc:4200, climb:.46, peak:.08};
 function obStageFig(){
- var rows=obSeatRows(), B=OB_FIGBOX;
+ var rows=obSeatRows(), B=OB_FIGBOX, root=rows[0], crown=rows[rows.length-1];
+ var span=root.y-crown.y;
  var s='<div class="obx-fig" aria-hidden="true">'
   +'<svg class="obx-figsv" viewBox="'+B.x+' 0 '+B.w+' '+B.h+'">'
+  /* LIT FROM ABOVE, which the stylesheet said and did not do: the fill and
+     the rim are both brightest at the shoulders and gone by the feet */
+  +'<defs><linearGradient id="obxSkF" x1="0" y1="0" x2="0" y2="1">'
+  +'<stop class="obx-gf0" offset="0"/><stop class="obx-gf1" offset=".42"/><stop class="obx-gf2" offset="1"/>'
+  +'</linearGradient><linearGradient id="obxSkS" x1="0" y1="0" x2="0" y2="1">'
+  +'<stop class="obx-gs0" offset="0"/><stop class="obx-gs1" offset=".34"/><stop class="obx-gs2" offset="1"/>'
+  +'</linearGradient></defs>'
   +'<g transform="translate(0 1)">'
   +'<g transform="translate('+PMTX+','+PMTY+') scale('+PMS+')">'
-  +'<path class="obx-skin" d="'+BODYPATH+'"/></g>'
-  +'<line class="obx-ax" x1="50" y1="3.6" x2="50" y2="57"/>';
+  +'<path class="obx-skin" d="'+BODYPATH+'"/>'
+  /* THE PEN, a second copy of the outline that exists only to be drawn on
+     arrival. Measured, round QI: the skin's rim is non-scaling, and Chromium
+     lays a non-scaling stroke's dashes out in screen pixels while scaling
+     them by pathLength in the path's own units, so a dash of a quarter ran a
+     third of the contour at 1600 and nearly all of it at 390, and the half
+     coming down the left side never showed. This copy scales like any other
+     line, so pathLength means what it says in every browser, and its width
+     is set from the drawing's real scale (obPenWidth) to match the rim. */
+  +'<path class="obx-draw" pathLength="100" d="'+BODYPATH+'"/></g>'
+  /* root end first, so the draw climbs */
+  +'<line class="obx-ax" pathLength="100" x1="50" y1="'+OB_SPINE.y0+'" x2="50" y2="'+OB_SPINE.y1+'"/>';
  rows.forEach(function(r,i){
-  s+='<g class="obx-s" data-obseat="'+esc(r.b)+'" style="--c:'+seatCol(r.b)+';--i:'+i+'">'
+  /* the pop: when the spine's tip, on its own curve, reaches this seat */
+  var fa=(OB_SPINE.y0-r.y)/(OB_SPINE.y0-OB_SPINE.y1);
+  var pp=Math.round(OB_SPINE.at+OB_SPINE.ms*obBezT(.45,0,.55,1,fa));
+  /* the flare: when the climbing pulse, on the breath's curve, reaches it,
+     less the time the flare's own keyframes take to peak */
+  var fp=span?(root.y-r.y)/span:0;
+  var pd=Math.round(OB_BREATH.e+OB_BREATH.cyc*(OB_BREATH.climb*obBezT(.37,0,.63,1,fp)-OB_BREATH.peak));
+  s+='<g class="obx-s" data-obseat="'+esc(r.b)+'" style="--c:'+seatCol(r.b)+';--i:'+i+';--pp:'+pp+'ms;--pd:'+pd+'ms">'
    +'<circle class="obx-sr" cx="50" cy="'+r.y+'" r="2.4"/></g>';});
  s+='</g></svg>';
+ /* the pulse, from the root seat to the crown seat, in the drawing's own
+    coordinates: the breath's one, and the step's one */
+ var pt=((root.y+1)/B.h*100).toFixed(3)+'%', pl=((50-B.x)/B.w*100).toFixed(3)+'%', cl=(span/B.h).toFixed(4);
+ s+='<i class="obx-pulse" style="top:'+pt+';left:'+pl+';--cl:'+cl+'"></i>'
+  +'<i class="obx-surge" style="top:'+pt+';left:'+pl+';--cl:'+cl+'"></i>';
  /* the glows and the names, in the drawing's own coordinates as percentages */
  rows.forEach(function(r,i){
   var top=((r.y+1)/B.h*100).toFixed(3)+'%', left=((50-B.x)/B.w*100).toFixed(3)+'%';
@@ -267,6 +349,15 @@ function obStageFig(){
    +'<b>'+esc(r.b)+'</b>'+(r.where?'<i>'+esc(r.where)+'</i>':'')
    +'<em>you tapped here</em></span>';});
  return s+'</div>';}
+/* THE PEN'S WIDTH: the rim's 1.2 screen pixels in the outline's own units.
+   The outline is drawn at PMS inside a viewBox 102 units tall shown at the
+   figure's layout height, so one of its units is PMS times that height over
+   102 pixels. Read after the stage is shown, since a hidden box has no
+   height; with none, the stylesheet's own width stands. */
+function obPenWidth(h){
+ var f=h.querySelector('.obx-fig'), d=h.querySelector('.obx-draw');
+ var k=f?PMS*f.offsetHeight/OB_FIGBOX.h:0;
+ if(d&&k>0)d.style.strokeWidth=(1.2/k).toFixed(3);}
 /* THE 112, AS A RING. Every address, in the engine's own order, which runs
    seat by seat root first, so the ring reads as seven arcs of colour and four
    neutral ticks for the two places above and below the body. The Field's
@@ -505,6 +596,7 @@ function obOpen(replay){
  document.body.classList.add('ob-on');
  obRender();
  h.style.display='flex';
+ obPenWidth(h);
  var f=h.querySelector('.obx-slot button,.obx-slot textarea'); if(f)f.focus({preventScroll:true});}
 /* THE HANDOFF TO THE FIELD, unchanged in length from round MP and now a push
    rather than a fade: the body goes forward and past the camera, the boot's
@@ -765,6 +857,11 @@ function obRender(){
     redraw where the body has not moved */
  obFigSync(h,moved?(arrive?1300:420):0);
  if(from)obPosePlay(h,from,dir);
+ /* the step reads on the body: one pulse up the spine forward, down it on
+    Back. Restarted rather than queued, so a fast run of presses shows the
+    latest direction and never a backlog. */
+ var sg=h.querySelector('.obx-surge');
+ if(sg&&moved&&!arrive&&!obCalm()){ sg.classList.remove('go'); void sg.offsetWidth; sg.classList.add('go'); }
  OB.shown=s;
  var ta=document.getElementById('obtext');
  if(ta){ta.value=OB.text; ta.oninput=function(){
