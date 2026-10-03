@@ -2562,11 +2562,25 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
   'and what the next rung lets you see, off the table, got '+up.say);
  ok(!/miss|lose|locked out|only/i.test(up.say),'never as what a person is short of');
  ok(planUpgrade({tier:'four',status:'active'})===null,'with nothing to sell at the top');
- /* tier three to tier four moves no ground and no sight: the step is the lead
-    suite alone, and the sentence says so without inventing a sight benefit */
+ /* TIER FOUR IS CLOSED UNTIL BUILT, round PK, enforced round RB. This used to
+    assert that tier three's next step was tier four, "the same ground", which
+    is what put a ninety nine dollar Move to under a person on tier three for a
+    lead suite that does not exist. A closed rung is not a next step. When the
+    suite is built and the row loses built:false, tier three's next step is tier
+    four again and the else branch holds the old sentence. */
  const up34=planUpgrade({tier:'three',status:'active'});
- ok(up34.to.k==='four'&&up34.ground===0&&up34.sight.length===0&&up34.say==='the same ground',
-  'tier three to four is the same ground and the same sight, said as that, got '+JSON.stringify(up34.say));
+ if(E.PLAN_BY.four.built===false)
+  ok(up34===null,'tier four is closed, so tier three is offered no next step, got '+JSON.stringify(up34&&up34.to.k));
+ else
+  ok(up34.to.k==='four'&&up34.ground===0&&up34.sight.length===0&&up34.say==='the same ground',
+   'tier three to four is the same ground and the same sight, said as that, got '+JSON.stringify(up34.say));
+ /* planBuyable is the one answer to whether a checkout may start */
+ ok(E.planBuyable('one')&&E.planBuyable('two')&&E.planBuyable('three'),'tiers one to three can be bought');
+ ok(E.planBuyable('four')===(E.PLAN_BY.four.built!==false),'tier four can be bought exactly when it is built');
+ ok(!E.planBuyable('free')&&!E.planBuyable('gift')&&!E.planBuyable('nonsense')&&!E.planBuyable(undefined),
+  'free, the gift and a key this build does not know are never bought');
+ /* closing a rung moves nobody: a record on tier four still reads tier four */
+ ok(E.planOf({tier:'four',status:'active'}).k==='four','a record already on tier four still reads tier four');
  /* A DIFFERENCE ONLY MEANS SOMETHING WHEN THE PERIODS MATCH. Free is ten a
     week and tier one is four hundred a month. Subtracting gave 390 more a
     month, which is arithmetic over two different units. */
@@ -5834,6 +5848,11 @@ g('NZ · the tiers side by side, read off the ladder and nothing else');
  const dead=planLadder({tier:'three',status:'canceled'});
  ok(dead.find(r=>r.now).k==='free','a cancelled tier three reads free here as everywhere, through planOf');
  ok(planLadder({tier:'four',status:'active'}).every(r=>!r.up),'at the top there is nothing to move up to');
+ /* buy is whether a rung can be bought today; up is only where it sits. A
+    closed rung is still above, and carries no press (ui/plans.js) */
+ ok(free.every(r=>r.buy===E.planBuyable(r.k)),'every row carries buy, read off planBuyable');
+ ok(free.find(r=>r.k==='four').up&&free.find(r=>r.k==='four').buy===(PLAN_BY.four.built!==false),
+  'from free tier four is above, and buyable only when built');
  /* SIGHT BY TIER. The row carries what the tier sees and what it adds over the
     rung below, both read off SIGHT, so the comparison types no tier. */
  ok(free.every(r=>JSON.stringify(r.adds.map(g=>g.k))===JSON.stringify(E.planAdds(r.k).map(g=>g.k))),

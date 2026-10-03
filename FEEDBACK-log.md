@@ -356,6 +356,33 @@ it and the shelf under them (FT21, FT28); the marks took the points TDD's slice
 0 in engine/ladder.js. Suggested cards wear their seat's colour and the seat's
 or the pattern's mark (FT27). Gate: tests/flowtools.js.
 
+## 2026-10-03 · owner · the paywall
+
+said: "we need to fix the paywall." After the round RA review graded the
+paywall seat lowest of ten, 46.
+read: three promises on the money path had nothing behind them. Tier four
+went to a 99 dollar checkout for a lead suite ui/practitioner.js says is not
+built, against his own round PK ruling, "tier four is closed until built". The
+buy page promised 25 patterns an invitation, and nothing in the product sends
+an invitation or grants one. The terms page called itself "a generic draft",
+which it is not, and left the ruled age (18, round PB) as a blank.
+change: round RB, branch claude/paywall-fix-rb. Tier four carries built:false
+in engine/plan.js and planBuyable answers whether a checkout may start; the
+tiers page shows "Opens with the lead suite" where the press was, the plan
+sheet offers no Move to it, and planOpen refuses it by name before any host is
+called. tools/stripe-setup.js no longer makes the tier four price by default.
+The referral sentence came off funnel/buy.html, and tests/funnel.js holds it
+off until a mechanism exists. TERMS.md: 18 filled, the sign up section says
+what ships (an email and a password of 8 to 200 characters), "generic"
+corrected in all three legal documents, and every unknown kept marked.
+Gates: tests/engine.js, tests/funnel.js (checked against the old page first:
+4 failed there, 0 here), tests/functional.js.
+open: the reboot-os server is a separate repository. Its stripe.js keeps four
+in TIER_PLAN and opens a checkout for it whenever STRIPE_PRICE_FOUR is set, so
+leaving that setting empty is what closes tier four on the server side. The referral needs a
+server to build (TASKS.md AK6). The terms still carry 9 placeholders and need
+a lawyer before they go live.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.

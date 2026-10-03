@@ -3937,10 +3937,14 @@ const tiers=await page.evaluate(async()=>{
  o.presses=g?[...g.querySelectorAll('[data-ptier]')].map(b=>b.getAttribute('data-ptier')):[];
  o.text=g?g.textContent.replace(/\s+/g,' '):'';
  o.same=g?(g.querySelector('.pt-same')||{}).textContent||'':'';
- o.rowSees={}; if(g)[...g.querySelectorAll('.pt-row')].forEach(r=>{
-  const k=(r.querySelector('[data-ptier]')||{getAttribute:()=>null}).getAttribute('data-ptier')
-   ||(r.classList.contains('on')?'free':null);
-  o.rowSees[k]=(r.querySelector('.pt-sees')||{}).textContent||'';});
+ /* rows by identity, data-pt, round RB: a closed rung carries no button, so
+    finding a row by its press found nothing for tier four */
+ o.rowSees={}; o.rowGo={}; if(g)[...g.querySelectorAll('.pt-row')].forEach(r=>{
+  const k=r.getAttribute('data-pt');
+  o.rowSees[k]=(r.querySelector('.pt-sees')||{}).textContent||'';
+  o.rowGo[k]=((r.querySelector('.pt-go')||{}).textContent||'').trim();
+  if(k==='four')o.rowLine4=(r.querySelector('.pt-d')||{}).textContent||'';});
+ o.closed4=(PLAN_BY.four.built===false);
  /* "Your plan" above keeps its state and Manage billing, and drops what the
     tiers below now carry, so nothing is said twice on one pane */
  const pane=document.querySelector('#settings .ac-pane');
@@ -3955,7 +3959,7 @@ const tiers=await page.evaluate(async()=>{
  const b2=g&&g.querySelector('[data-ptier="two"]'); if(b2)b2.click();
  o.called=called;
  /* the bars: tier four's ground equals tier three's, so the bars match */
- const w=k=>{const r=[...g.querySelectorAll('.pt-row')].find(x=>x.querySelector('[data-ptier="'+k+'"]'));
+ const w=k=>{const r=g.querySelector('.pt-row[data-pt="'+k+'"]');
   return r?r.querySelector('.pt-bar i').style.width:'';};
  o.bar3=w('three'); o.bar4=w('four');
  /* on tier two, the rows below carry no press */
@@ -3978,6 +3982,15 @@ const tiers=await page.evaluate(async()=>{
  called=null;
  const b3c=document.querySelector('#plantiers [data-ptier="three"]'); if(b3c)b3c.click();
  o.calledEnded=called;
+ /* A CLOSED TIER IS REFUSED AT THE DOOR, round RB, even by a caller that
+    forgot to ask: the host is never reached and the status line says why */
+ called=null;
+ planOpen('checkout','four');
+ o.called4=called;
+ o.status4=(document.getElementById('status').textContent||'').trim();
+ /* and a tier three person is offered no Move to tier four on the sheet */
+ CURP.plan={tier:'three',status:'active',granted:1200,carried:0,base:100,since:null,until:null};
+ profileSheet(); o.sheet3up=!!document.querySelector('#sheet #planup'); sheetShut();
  /* every control on the surface meets the touch floor */
  o.small=[...g2.querySelectorAll('button')].filter(b=>{const r=b.getBoundingClientRect();
   return r.width>0&&r.height<44;}).length;
@@ -3988,7 +4001,18 @@ ok(tiers.there,'Billing carries the tiers group');
 ok(JSON.stringify(tiers.rows)===JSON.stringify(['Free','Tier one','Tier two','Tier three','Tier four']),
  'one row per tier, in ladder order, the gift left out: '+JSON.stringify(tiers.rows));
 ok(JSON.stringify(tiers.now)==='["Free"]','the tier in force is marked, and only it: '+JSON.stringify(tiers.now));
-ok(tiers.presses.join()==='one,two,three,four','from free every paid tier has a press: '+tiers.presses.join());
+ok(tiers.presses.join()===(tiers.closed4?'one,two,three':'one,two,three,four'),
+ 'from free every paid tier that can be bought has a press: '+tiers.presses.join());
+/* TIER FOUR IS CLOSED UNTIL BUILT, round PK, enforced round RB */
+if(tiers.closed4){
+ ok(tiers.rowGo.four==='Opens with the lead suite','the closed rung says "Opens with the lead suite" where the press was: '+JSON.stringify(tiers.rowGo.four));
+ ok(/Not open yet/.test(tiers.rowLine4||'')&&/None of it is built/.test(tiers.rowLine4||''),
+  'and its line says it is not open and the suite is not built: '+JSON.stringify(tiers.rowLine4));
+ ok(tiers.called4===null,'a checkout for tier four never reaches the billing host: '+JSON.stringify(tiers.called4));
+ ok(/Tier four is not open yet/.test(tiers.status4)&&/Nothing was charged/.test(tiers.status4),
+  'and the status line says so, by name: '+JSON.stringify(tiers.status4));
+ ok(!tiers.sheet3up,'a person on tier three is offered no Move to tier four on the plan sheet');
+}
 ok(tiers.called&&tiers.called.what==='checkout'&&tiers.called.tier==='two',
  'a press goes through planOpen to the same seam as Move to, with its own tier: '+JSON.stringify(tiers.called));
 ok(/On every tier, free included/.test(tiers.same)&&/your 112 addresses/i.test(tiers.same)&&/rerunning anything already open/i.test(tiers.same),
@@ -4040,7 +4064,7 @@ ok(/Manage billing/.test(tiers.paneText)&&tiers.planman,'Your plan keeps Manage 
 ok(!tiers.planup,'and drops its own Move to, because the tiers below carry every press');
 ok((tiers.paneText.match(/On every tier/g)||[]).length===1,
  'what is on every tier is said once on the pane, not twice');
-ok(tiers.presses2.join()==='three,four','on tier two only three and four are offered: '+tiers.presses2.join());
+ok(tiers.presses2.join()===(tiers.closed4?'three':'three,four'),'on tier two only the buyable rungs above are offered: '+tiers.presses2.join());
 ok(JSON.stringify(tiers.now2)==='["Tier two"]','and tier two is the one marked');
 ok(tiers.called2&&tiers.called2.what==='portal'&&tiers.called2.tier===null,
  'on a live plan a press opens the portal, never a second checkout: '+JSON.stringify(tiers.called2));

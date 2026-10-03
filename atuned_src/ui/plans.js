@@ -66,6 +66,14 @@ function ptLine(r){
     consent rule CLAUDE.md sets for a practitioner: nothing crosses until that
     person says yes, and they can take it back. LEAD_SEES is part of a reading
     and not all of it, so the line says part. */
+ /* CLOSED UNTIL BUILT, round RB. The line said what the suite does in the
+    present tense on a row with a ninety nine dollar press, and none of it
+    existed. A closed rung says what it will add, that it is not built, and
+    the consent rule it will open under, as a promise about then. */
+ if(r.lead&&!r.buy)return 'Not open yet. It will add the cohort lead suite to tier three: tools to '
+  +'manage profiles, build rituals and build accountability for the people you lead. None of it '
+  +'is built, so nothing here can be bought. When it opens, you will see part of a person\'s '
+  +'reading only after they say yes, and they can take that back at any time.';
  if(r.lead)return 'The same ground as tier three, and the cohort lead suite: manage profiles, '
   +'build rituals and build accountability for the people you lead. You see part of a person\'s '
   +'reading only after they say yes, and they can take that back at any time.';
@@ -131,7 +139,9 @@ function planTiersHtml(){
   +'<div class="pt-list" role="list">';
  rows.forEach(function(r){
   var w=Math.max(2,Math.round(ptMonthly(r)/top*100));
-  h+='<div class="pt-row'+(r.now?' on':'')+'" role="listitem"'+(r.now?' aria-current="true"':'')+'>'
+  /* data-pt is the row's tier key, so a reader finds a row by identity. A
+     closed rung has no button to find it by. */
+  h+='<div class="pt-row'+(r.now?' on':'')+'" role="listitem" data-pt="'+esc(r.k)+'"'+(r.now?' aria-current="true"':'')+'>'
    +'<div class="pt-who"><div class="pt-nm">'+esc(r.nm)+'</div>'
    +'<p class="pt-d">'+esc(ptLine(r))+'</p>'
    +'<p class="pt-sees">'+ptSees(r)+'</p></div>'
@@ -142,9 +152,13 @@ function planTiersHtml(){
       As a fourth column it wrapped to two lines at 1600, measured. */
    +'<div class="pt-pr"><span>Price</span><b>'+esc(ptPrice(r))+'</b></div></div>'
    +'<div class="pt-go">'
+   /* a rung above that cannot be bought says so where the press would sit,
+      in the ruled words, REVIEW-arch/TALLY.md ruling 9. Plain text and not a
+      disabled button: a control that takes a press and refuses is furniture. */
    +(r.now?'<span class="pt-now">You are on this</span>'
+     :(r.up&&!r.buy?'<span class="pt-now pt-shut">'+(r.lead?'Opens with the lead suite':'Not open yet')+'</span>'
      :(r.up?'<button class="btn" type="button" data-ptier="'+esc(r.k)+'">Move to '
-       +esc(r.nm.toLowerCase())+'</button>':''))
+       +esc(r.nm.toLowerCase())+'</button>':'')))
    +'</div></div>';});
  h+='</div>';
  /* THE FOOT SAYS WHAT A PRESS WILL MEET, before it is pressed. */

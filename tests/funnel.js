@@ -595,6 +595,25 @@ const PROBE = () => {
         'buy: tier four does not say it shows what tier three shows');
       ok(E.planAdds('four').length === 0,
         'SIGHT now adds something at tier four, and the buy page says tier four adds only the lead suite');
+      /* TIER FOUR IS CLOSED UNTIL BUILT, round PK, and for a round the page sold
+         it anyway. While the row in engine/plan.js says built:false the page
+         must say, on the rung and in the ladder, that it is not open, and must
+         not describe the consent list as a thing that exists today. */
+      if (E.PLAN_BY.four.built === false) {
+        ok(!E.planBuyable('four'), 'engine: a tier marked built:false must not be buyable');
+        ok(/not open yet/.test(buy.rungs.four || ''),
+          'buy: tier four is closed until built, and its rung does not say it is not open yet');
+        ok(/opens with the lead suite/i.test(buy.text),
+          'buy: tier four is closed, and the page does not say "Opens with the lead suite"');
+        ok(!/sits on their own record|one press takes the yes back|what it adds is the cohort lead suite/i.test(buy.text),
+          'buy: describes the lead suite or its consent list in the present tense, and neither is built');
+      }
+      /* THE REFERRAL IS RULED AND NOT BUILT, round RB. The page promised 25
+         patterns an invitation and nothing in the product sends one or grants
+         one. This holds the promise off the page until a mechanism exists; when
+         it does, this line moves with it. */
+      ok(!/invite somebody|invitations? a month|when they join|refer a friend/i.test(buy.text),
+        'buy: promises a referral, and nothing in the product invites anybody or grants patterns for it');
       await ctx.close();
     }
   }
