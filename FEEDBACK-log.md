@@ -356,6 +356,26 @@ it and the shelf under them (FT21, FT28); the marks took the points TDD's slice
 0 in engine/ladder.js. Suggested cards wear their seat's colour and the seat's
 or the pattern's mark (FT27). Gate: tests/flowtools.js.
 
+## 2026-10-03 · owner · the archetypes, nested like the seats
+
+said: "The intake page, the archetypes, these things need to be nested. The
+questions, very similar to the chakra ones. If I click on a chakra one, it
+shows me the questions underneath. As it unfolds it, I want the archetypes to
+have the same behavior. So the archetypes will be buttons, and if I press on
+one, the question pops down. With this way, we're not scrolling infinitely."
+read: the eighteen archetype questions stood open one under the other. Measured
+on a blank profile at 1600 by 1000, the block was 7,411 pixels tall, about
+seven and a half screens, with 117 controls in it; at 390 it was 7,175.
+change: round RB, branch claude/intake-archetype-nest. The seat row's tile,
+panel and press were pulled out of the seat code into one nest (iqNestHtml,
+iqNestBind in ui/intakeui.js) and the archetypes are drawn through it: twelve
+tiles, shut on arrival, a press drops that archetype's own three questions
+under the row and shuts any other. A question names two archetypes, so it
+opens under both and is one answer either way. Collapsed, the block measured
+441 pixels at 1600 and 506 at 390, with twelve controls, the twelve tiles.
+The emotional axes and the action axes are still stacked. Gate:
+tests/functional.js, "the three blocks stacked under the laws".
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.
