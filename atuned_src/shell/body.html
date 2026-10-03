@@ -658,6 +658,46 @@
         Drawn by ritRender in ui/ritual.js, shown on the Ritual tab only,
         head.html beside .fl-rail. -->
    <div class="fl-rail fl-new" id="flownew"><div class="fl-hd" id="flownewhd"></div><div class="rvr" id="flowleft"></div></div>
+   <!-- ENERGETIC SUMMARY, MOVED TO THIS RAIL AND KEPT AT ITS HEAD. 3 October,
+        his own words: "For the core energetics that's on the right hand menu
+        at the very top, move that to the left hand menu at the very top.
+        That's a spiritual energetics meaning anyway. That's where it goes.
+        Make sure it starts closed." It sat at the top of the right rail,
+        closed, since FV in TASKS.md. He now wants it beside what he already
+        ruled a spiritual grouping on this rail, round OJ in TASKS.md:
+        "the spiritual, the celestial section and the archetype section."
+
+        THE KEY STAYS OVERLAP, SO NOTHING THAT OPENS IT BY KEY MOVES.
+        ui/ui.js reads which rail a section is on off data-rail, railOf(sec),
+        never off where the section sits in the file, and opens or closes it
+        by sec.dataset.sec against OPENSEC[rail]. data-rail is left rather
+        than right now; OPENSEC.left starts {}, nothing open by default on
+        this rail, which is what keeps it closed on arrival with no switch to
+        flip for it. (OPENSEC.right still opens only Reading, you:1, and does
+        not need to lose the overlap key it never carried.)
+
+        THE RAIL'S OWN FOLD CONTROL FOLLOWED IT TO THE TOP. #lfold sits over
+        whichever header is physically first inside #lpanel: it is absolute
+        within the panel, not sticky to the screen, so it scrolls with the
+        rail's own content and only ever overlaps the section standing right
+        under it. The padding that keeps a header's words clear of that
+        control was keyed to data-sec=energetics in head.html, because Root
+        Energetics used to be first; it is keyed to data-sec=overlap now,
+        because this is what stands under the control today, and Root
+        Energetics does not carry that reserved width any more.
+
+        STILL TWO NAMES FOR TWO THINGS, GO in TASKS.md, repeated here because
+        the two sections now share a rail and a future reader could mistake
+        that for an invitation to fold them into one, which he already ruled
+        against once: "root energetics on the right hand side, sorry, root
+        energetics on the left hand side." This stays Energetic Summary, what
+        the four systems say together; Root Energetics below it stays what
+        each says on its own. ui/rootsum.js fills it, off rootOverlap in
+        engine/overlap.js. -->
+   <div class="lsec re" data-rail="left" data-sec="overlap">
+    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9.4" r="5.2"/><circle cx="15" cy="9.4" r="5.2"/><circle cx="12" cy="14.6" r="5.2"/></svg>Energetic summary</span><i></i></button>
+    <div class="lsec-bd"><div id="rootsum"></div></div>
+   </div>
    <!-- ROOT ENERGETICS, ABOVE THE READINGS, AND IT OPENS CLOSED. EZ in
         TASKS.md, his words: "The states Western Eastern number design I need
         all my numerology stuff ... that is all collapsible and goes above
@@ -674,8 +714,10 @@
         CAPITALISED AND SET APART. FV, his words: "I want a slightly different
         treatment for root energetics. I want energetics capitalized." Both
         words take the capital, and the section wears a tinted panel of its own
-        with the accent's edge, the class re, which the summary at the head of
-        the right rail wears too, because they are one thing read two ways. -->
+        with the accent's edge, the class re, which the Energetic summary above
+        it wears too, because they are one thing read two ways. It no longer
+        needs the control's reserved width on its own header; that moved to
+        the section now standing under the control, see the comment above. -->
    <div class="lsec re" data-sec="energetics">
     <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9.4" r="5.2"/><circle cx="15" cy="9.4" r="5.2"/><circle cx="12" cy="14.6" r="5.2"/></svg>Root Energetics</span><i></i></button>
     <div class="lsec-bd"><div id="spirit"></div></div>
@@ -999,22 +1041,6 @@
     <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
      <rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M15 4.5v15"/>
      <path class="lf-ch" d="M8.4 9.4L11 12l-2.6 2.6"/></svg></button>
-   <!-- ROOT ENERGETICS, READ ACROSS, AT THE VERY TOP AND CLOSED. FV in
-        TASKS.md, his words: "When I open root energetics, I want a summary
-        of that on the right hand side, also at the very top closed." It
-        mirrors the left rail's own head: Root Energetics over the dock on the
-        left, Root Energetics over the coherence line on the right, so the two
-        rails open on the same section and the same line under it. Closed
-        because OPENSEC in ui/ui.js opens only Reading on this rail.
-        ui/rootsum.js fills it, off rootOverlap in engine/overlap.js.
-
-        ENERGETIC SUMMARY, AND NO LONGER A SECOND ROOT ENERGETICS. GO in
-        TASKS.md. Two sections on two rails wore one name, and he caught it in
-        his own correction: "root energetics on the right hand side, sorry,
-        root energetics on the left hand side." One name per thing: the left
-        keeps Root Energetics, what each system says; this is the Energetic
-        Summary, what they say together. The key stays overlap, so nothing that
-        opens it by key moves. -->
    <!-- THE FLOW MENU. Ruled 2 October, his words: "On the flow pages, get rid of
         the left and right menu. Actually, sorry. Move the new ritual to the
         right menu." So on Flow the left column is gone and this column holds
@@ -1024,15 +1050,21 @@
         that cannot be found. Drawn by ritRender in ui/ritual.js and shown on
         the two Flow tabs only, head.html beside .fl-rail. -->
    <div class="fl-rail" id="flowrail"><div class="fl-hd" id="flowhd"></div><div class="rvr" id="flowside"></div></div>
-   <div class="lsec re" data-rail="right" data-sec="overlap">
-    <button class="lsec-hd" type="button"><span><svg class="lsec-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="9.4" r="5.2"/><circle cx="15" cy="9.4" r="5.2"/><circle cx="12" cy="14.6" r="5.2"/></svg>Energetic summary</span><i></i></button>
-    <div class="lsec-bd"><div id="rootsum"></div></div>
-   </div>
+   <!-- ENERGETIC SUMMARY LEFT THIS RAIL, 3 October, his own words: "For the
+        core energetics that's on the right hand menu at the very top, move
+        that to the left hand menu at the very top. That's a spiritual
+        energetics meaning anyway." It sat here from FV in TASKS.md through
+        GO, at the very top of this rail and closed; the section and the
+        history of its name are at the head of #lpanel now, above Root
+        Energetics, which is why the comment that used to stand here is gone
+        rather than left to describe a section no longer in this file. -->
    <!-- ON THE STORY, THIS RAIL IS THE IMPRINTS PAGE. GO in TASKS.md, his
         words: "the information pane then becomes an imprints and the
         protocol." The imprints came here whole, with the id every renderer and
-        gate reads. After the summary, so the rail's first section stays the
-        summary the gate holds it to; the summary is hidden on the Story anyway.
+        gate reads. It is the rail's first section now that the summary has
+        moved to the left rail; nothing here held a fixed position on the
+        summary being first, only on the summary being hidden on the Story,
+        which never depended on where it sat.
         Shown on the Story only, and the rail's other sections are hidden
         there except Selection, which is where an imprint's Detail opens.
 

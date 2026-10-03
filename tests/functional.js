@@ -6490,16 +6490,17 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  ok(re.nums.length>=4&&re.match,'and it carries the name\'s numerology, the same figures numerologyOf gives, '+JSON.stringify(re.nums));
  ok(re.blocks==='Energy,Psyche','the rail\'s first block is called Energy now, got '+re.blocks);
 
- /* FV. ROOT ENERGETICS READ ACROSS, at the very top of the right rail and
-    closed; the section set apart on both rails; a mark on every section
+ /* FV, MOVED TO THE LEFT RAIL 3 October. ROOT ENERGETICS READ ACROSS, at the
+    very top of the left rail now and closed; the section set apart, the
+    same tint Root Energetics wears below it; a mark on every section
     header; no root names on the matrix; Running as badges; and the core's
     feathers on Frames and Dial as well as the wheel. */
  const fv=await fp.evaluate(async()=>{loadP(PERSON('Tomas'));setTab(TAB.FIELD);render();
   const panel=document.getElementById('rootsum').closest('.panel');
-  const sec=document.querySelector('.lsec[data-rail=right][data-sec=overlap]');
-  /* the first section, and not the first child: since LO the rail's fold
-     control leads the panel, the way lfold leads the left one, and it is a
-     control and not a section */
+  const sec=document.querySelector('.lsec[data-rail=left][data-sec=overlap]');
+  /* the first section, and not the first child: the rail's own fold control,
+     lfold, leads the panel and is not a .lsec, so :scope>.lsec skips past it
+     to whatever section actually stands first */
   const first=panel.querySelector(':scope>.lsec');
   const closed=!sec.classList.contains('open');
   sec.querySelector('.lsec-hd').click();
@@ -6541,16 +6542,16 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   fviewSet('wheel');
   out.fe=fe;
   return out;});
- /* named Energetic Summary since GO, so the two rails no longer carry one
-    name for two sections; the left keeps Root Energetics, asserted above */
- ok(fv.first&&fv.closed&&fv.name==='Energetic summary','the summary is the right rail\'s first section, closed on arrival, '
+ /* named Energetic Summary since GO, so it still does not share Root
+    Energetics' name now that the two sit on the same rail, asserted above */
+ ok(fv.first&&fv.closed&&fv.name==='Energetic summary','the summary is the left rail\'s first section, closed on arrival, '
   +JSON.stringify({first:fv.first,closed:fv.closed,name:fv.name}));
  ok(fv.meets.length&&fv.meets.join()===fv.want.join(),'it leads with the meetings the engine finds, '+fv.meets.join(', '));
  ok(fv.lit.join()===fv.wantLit.join(),'each band lights exactly the systems that land there, '+fv.lit.join(' '));
  ok(fv.says&&fv.range===fv.wantRange,'each meeting says what it means, and the range carries every other reading, '+fv.range);
  ok(fv.noFigure,'and no probability or percentage is printed at the person');
  ok(/No birth data/.test(fv.blank)&&fv.blankGo,'a blank profile is told what unlocks it, with the door, '+fv.blank);
- ok(fv.tinted,'Root Energetics is set apart on both rails');
+ ok(fv.tinted,'Root Energetics and Energetic summary both carry the tinted panel');
  ok(!fv.bare.length,'every section header carries its mark, bare: '+fv.bare.join(', '));
  ok(fv.heads,'and every Root Energetics heading its system\'s');
  ok(!fv.mx,'the matrix carries no root names');
@@ -6934,14 +6935,14 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
   return {tab:S.tab===TAB.FIELD,lshut:document.body.classList.contains('lshut'),stored:STORE.get('lcol'),
    energetics:!document.querySelector('[data-sec=energetics]').classList.contains('open'),
    left:document.querySelector('[data-sec=energetics] .lsec-hd').textContent.trim(),
-   right:document.querySelector('[data-sec=overlap] .lsec-hd').textContent.trim(),
+   esum:document.querySelector('[data-sec=overlap] .lsec-hd').textContent.trim(),
    seats:lay('seats').getAttribute('aria-label'),gates:lay('gates').getAttribute('aria-label'),
    stale:names.filter(n=>/^(Seats|Gates)$/.test(n)),
    view:S.view,custom:LAYSET,ring:dv.getAttribute('stroke-dasharray'),
    togMark:F.querySelector('.fb-tog svg').innerHTML,foldMark:document.querySelector('#lfold svg').innerHTML};});
  ok(a.tab&&a.lshut&&a.stored===null,'a first visit at 1600 lands on the Field with the left column shut and nothing stored, '+JSON.stringify({lshut:a.lshut,stored:a.stored}));
  ok(a.energetics&&a.left==='Root Energetics','the left rail keeps Root Energetics, closed, '+a.left);
- ok(a.right==='Energetic summary','and the right rail\'s summary is the Energetic summary, so no two sections share a name, '+a.right);
+ ok(a.esum==='Energetic summary','and the summary keeps its own name, Energetic summary, so no two sections share one, '+a.esum);
  ok(a.seats==='Assemblage points'&&a.gates==='Action'&&!a.stale.length,'the bar says Assemblage points and Action, and neither old word, '+JSON.stringify([a.seats,a.gates,a.stale]));
  ok(a.view===3&&a.custom===null&&a.ring==='100.0 100','depth starts full, Blueprint, and its ring reads full, '+a.ring);
  ok(a.togMark!==a.foldMark,'the bar\'s fold and the column\'s fold wear two marks, since they now stand side by side');
