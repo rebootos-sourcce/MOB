@@ -33,6 +33,13 @@ shipped tiers, "gap = 100 minus CQ" reverses a deliberate change from CQ
 headroom to expression headroom, and the results screen's example ("CQ 62 to
 66 after one release") is about 360 times what this engine produces, measured.
 
+**The addendum, in one line (3.7):** nothing shows how sure a single reading
+is beyond the onboarding mirror's "you named" and "a guess"; a tolerance
+figure was shown once and he struck it; and the "why" he wants already exists
+in the engine as separate signals that sort cleanly into the person's input
+and the engine's own guessing, with the masked dictation bug as the first
+input side case.
+
 ---
 
 ## Step 1. The canonical build
@@ -274,6 +281,73 @@ which draws "Coherence over time" and its up or down word, does not check
 with one after reads as the person moving. Small, real, and the exact case
 the stamp exists to prevent.
 
+### 3.7 Model accuracy, variance, and why (round QR addendum)
+
+Added after the first push, at the owner's request in the same round. His
+words: "I want you to show model accuracy. Plus the variance. And then the
+tooltip, I want the Y behind the variance. To see if it's a user input thing
+or if it's a code thing."
+
+**The question this number would answer, in one sentence:** how far should
+a person trust this one reading of their story, and is the doubt in what
+they gave the instrument or in the instrument itself.
+
+**What exists today, per reading and per profile:**
+
+| Piece | Where | What it shows | Who sees it |
+|---|---|---|---|
+| Named or guessed, per address | `parseStory` imprint `stated`/`inferred` (`sniff.js:636-658`); the onboarding mirror tags each row "you named shame" or "a guess", and says why: "It did not name a feeling, so what follows is a guess" (`ui/onboard.js:332-369`) | A two valued confidence with its cause in words | Onboarding only; the Story tab, tutorial and Avatar doors do not show it (`CONGRUENCY-AUDIT.md` D3) |
+| Evidence of return, per seat | `srcRung` 0 to 10 (`sourceai.js:111`), drawn as ten pips beside "Next question" (`srcPips`, `ui/storyui.js:818`, `:879`) and on the Story chart's lanes (`:1252`) | How often the text comes back to a seat: a count, not a confidence | Story tab, unlabelled pips (`aria-hidden`) |
+| Saboteur confidence, with its citation | `sniffStory` ranked rows, `confidence` plus `because` on every row (`sniff.js:1142-1191`) | A real 0 to 1 number with the words that produced it | Called only from `ui/tutorial.js:219`, which is off by default (`DEV_PLAY_TUTORIAL=false`) |
+| "Accuracy", per profile | `accuracy(r)` (`compute.js:577-600`): a fitted figure plus a `band`, the interval, built from named causes. Drawn as the Accuracy ring on the Field (`ui/personas.js:428-440`); its drill lists what widens it: laws not answered, little signal, no expression, "pairs of patterns too alike to tell apart" (`runAccDrill`) | How closely the field matches a named family. **Not the sniffer's accuracy**, and a fit (5.68 mean absolute error, `compute.js:562-565`), not a measurement against truth | Field, Summary, Analytics. The interval is computed and not shown |
+
+**The variance was shown once, and he struck it.** The Accuracy ring printed
+"of 100, plus or minus 12" and Analytics printed "58% plus or minus 11". His
+words, recorded in `COPY-OBJECTIONS.md:55`: "100 plus minus 12, swing 11.
+That shit has to all go." Ruled again 26 September (CH): "we just want the
+word accuracy, we don't need anything else after that." Both came off
+(`ui/personas.js:388-400`, `ui/analytics.js:160-170`), and the voice gate now
+**fails any figure with a tolerance on it** (`.claude/skills/atuned-voice/
+SKILL.md:34`, run by `check.py --objections`). His new request reverses that
+ruling. It is his to reverse; it is not the team's to quietly route around,
+and a build of it as worded fails a gate that encodes his own objection.
+
+**And "model accuracy" for the sniffer is not learnable from this data.**
+`DESIGN-sniffer.md:373`: "whether a reading is right. There is no ground truth
+here and there is not going to be one." No labelled set exists, and the
+privacy ruling keeps the person and the story apart for modelling, so no
+outcome can ever be joined back to a reading to calibrate it. A figure labelled
+accuracy on a reading would be arithmetic presented as a measurement, which is
+the failure the `inferred` flag exists to prevent. What can be shown honestly
+is **evidence strength**: how much of this reading the person's own words
+carried, and a named reason for every part they did not.
+
+**The cause categories already exist in the engine, unnamed as such.** Every
+reason a reading is unsure is either in what was given, or in what the engine
+does with it. Measured or cited, each one:
+
+| Reason | Side | Detectable today by |
+|---|---|---|
+| Words hidden behind stars by dictation | the person's input, via their device | `maskedRuns` (on `sniffer-mask-fix`) |
+| No feeling word, so the address is the fallback's choice | the person's input | `imprint.inferred` with no `stated` hit in its clause |
+| Too little written: few words, one seat | the person's input | word count; `srcRung` 1 to 6, heard once |
+| A feeling named, but no word names an address, so the four addresses on that axis are the engine's pick | the engine | `stated` true on an axis, address chosen by `parseStory`'s modal fetter rule (`DESIGN-sniffer.md` question 13: "I was furious" returns four addresses with the flag green) |
+| Negation in the sentence, which the sniffer does not read | the engine | `srcNegated` true on a hit `parseStory` charged (`sniff.js:726`; `CONGRUENCY-AUDIT.md` D4) |
+| The place word seated differently by two tables | the engine | `OB_PLACES` against `SOMA_PLACE` (D5) |
+| Read under an older lexicon | the engine | `entry.lex` not equal to `LEX_VERSION`; `restated` in the graph |
+| Patterns too alike to tell apart | the engine | `accuracy().deg` |
+
+So the masked dictation bug is the first worked case of the user input side,
+and the categorisation the tooltip needs should be one engine function that
+returns these reasons, each tagged input or engine, and the mask line under
+the Journal box should become one of its rows rather than a second mechanism.
+
+| Requirement | Real | Grade |
+|---|---|---|
+| A model accuracy figure for a sniffer reading | Nothing per reading. The profile's Accuracy ring is family identification, not the sniffer, and is a fit. A measured sniffer accuracy cannot exist on this data | MISSING |
+| The variance beside it | Computed (`accuracy().band`) and removed from every screen on his own ruling, which a gate now enforces | CONFLICT |
+| A tooltip saying why, input or code | Causes are named in words in two places, the mirror's "a guess" per row and the accuracy drill's list, and neither sorts them into the person's side and the engine's side | PARTIAL |
+
 ---
 
 ## Step 4. Every new requirement, graded
@@ -327,18 +401,23 @@ Only what this document adds. The chain in Step 2 is not counted.
 | N43 | Signal, gap, memory, decision versions | MISSING | nothing to version |
 | N44 | Do not overwrite readings after an algorithm change | PARTIAL | rows stamped; `seriesRead` ignores the stamp |
 | N45 | One authoritative CQ, never in the frontend | EXISTS | `cqSum`; the quiz inlines the same `engine.js` |
+| N46 | Model accuracy shown for a sniffer reading (addendum) | MISSING | 3.7; not measurable on this data, evidence strength is |
+| N47 | The variance shown beside it (addendum) | CONFLICT | 3.7; his own "100 plus minus 12 ... has to all go", enforced by the voice gate |
+| N48 | A tooltip naming the cause, input or code (addendum) | PARTIAL | 3.7; causes named in words, never sorted by side |
 
-**Tally, counted off the table above, row by row: 9 EXISTS, 10 PARTIAL, 10
-MISSING, 16 CONFLICT, 0 UNVERIFIED.** Forty five rows, forty five grades.
+**Tally, counted off the table above, row by row: 9 EXISTS, 11 PARTIAL, 11
+MISSING, 17 CONFLICT, 0 UNVERIFIED.** Forty eight rows, forty eight grades.
+Rows N1 to N45 are the two documents; N46 to N48 are the owner's addendum in
+the same round.
 
-Sixteen conflicts is high, and the reason matters more than the count: ten
-of the sixteen (N1, N2, N15, N16, N17, N23, N24, N27, N29, N37) are the
-document against a ruling the owner has already made: SIG, CQ is the 21 laws
-and nothing else, the ten tiers, the mini release size, the two minute
-countdown, the on device engine with one seam. Of the other six, one is the
-document against itself (N18), one is the document against its own rule
-(N32), and four are the product against itself or a word already taken (N8,
-N19, N25, N38). The same failure both earlier audits found
+Seventeen conflicts is high, and the reason matters more than the count:
+eleven of the seventeen (N1, N2, N15, N16, N17, N23, N24, N27, N29, N37, N47)
+are a request against a ruling the owner has already made: SIG, CQ is the 21
+laws and nothing else, the ten tiers, the mini release size, the two minute
+countdown, the on device engine with one seam, and no tolerance figure on a
+reading. Of the other six, one is the document against itself (N18), one is
+the document against its own rule (N32), and four are the product against
+itself or a word already taken (N8, N19, N25, N38). The same failure both earlier audits found
 holds here: a document written from an earlier picture of the product
 becomes a requirement against the product's own later rulings.
 
@@ -412,7 +491,24 @@ the runs, the sentence and the degree word measurement above.
    of value, and it is about 150 lines across `engine/journey.js`,
    `ui/release.js` and `tests/engine.js`. It touches `ui/release.js`, which
    `release-carousel` owns, so it lands after that merge.
-2. **Rule the three words, not build them.** One owner decision, asked with
+2. **Why a reading is unsure, sorted by side (the addendum, N46 to N48).**
+   One host free engine read, beside `parseStory`, that takes the text and
+   its parse and returns every reason in the 3.7 table that applies, each
+   tagged the person's input or the engine, with the words it came from:
+   hidden words (`maskedRuns`, already built on `sniffer-mask-fix`, becomes
+   its first row), no feeling named, too little written, a named feeling with
+   a guessed address, unread negation, the stomach seat disagreement, an older
+   lexicon. Beside each reading, the evidence strength said as two counts a
+   person can check ("named by your words: 1, guessed: 12") and a tooltip
+   listing the reasons under two headings, "in what you wrote" and "in how
+   the instrument reads it". The masking line under the Journal box becomes
+   that read's first user input row, so there is one mechanism and not two.
+   No number labelled accuracy and no tolerance until he rules (below): the
+   reasons ship either way, because they are the "why" he asked for and they
+   pass every gate. About 120 engine lines, 80 renderer lines, an engine gate
+   group with a null case (a story fully named reads no reasons) and an
+   adversarial one (stars plus negation reads one row on each side).
+3. **Rule the three words, not build them.** One owner decision, asked with
    the picture: keep the ten tiers and drop the three bands; or let three
    words name the median range and either side (40 to 60 already exists as
    `MEDIAN_LO`, `MEDIAN_HI`) under a word other than Oscillating; and keep
@@ -420,32 +516,36 @@ the runs, the sentence and the degree word measurement above.
    for "gap": expression headroom stays the gap a release can close, or 100
    minus CQ is shown as "laws still open", with no claim that body load makes
    it. Nothing should be written into the FAQ or About page before this.
-3. **Fix the one word that is already wrong in shipped copy.** "Run the
+4. **Fix the one word that is already wrong in shipped copy.** "Run the
    signal test again" (`ui/account.js:164`) opens an onboarding with no
    signal test, under a comment that says it writes nothing, and the practice
    row `sig` promises an exercise "built into the app" that is not. Rename
    the button to what it opens, correct the comment, and mark the practice
    row as not yet built. Copy only, through the voice gate; an hour.
-4. **Fix `seriesRead` to respect `m`.** Compare only rows of the same
+5. **Fix `seriesRead` to respect `m`.** Compare only rows of the same
    `CQ_MODEL`, and say where the comparable run begins, the way `lawSeries`
    already does. Twenty lines and a gate group.
-5. **Build the owner's signal test, not the document's.** SIG1 to SIG6 and
+6. **Build the owner's signal test, not the document's.** SIG1 to SIG6 and
    the KD script, at the throat, yes ten times then no ten times, no word
    list, capturing at most a timestamp and the person's own word (SIG18 is
    still his open question: does it produce a number at all). The prototype
    exists (`proto/signal/signal.html`). This replaces the document's N1 to N6
    rather than adding to them.
-6. **Ritual provenance, inside the cutover already named.** When the ritual
+7. **Ritual provenance, inside the cutover already named.** When the ritual
    cutover to `p.practice.rituals` runs (`CONGRUENCY-AUDIT.md` D11), the
    ritual carries the release keys and the entry's `t` it came from, and the
    detection rule moves into the engine with a version. Not before the
    cutover, or it becomes a fourth store.
-7. **Blocked, and his.** The anonymous claim and any server copy of first use
+8. **Blocked, and his.** The anonymous claim and any server copy of first use
    work: a record store build behind consent, encryption at rest and
    de-identification, per the superseding privacy ruling. The order of the
    door against the onboarding. Whether the first release is one address
    (this document) or three (his round PA). Whether the two minute countdown
-   stays (his 27 September ruling) against this document's "no countdown".
+   stays (his 27 September ruling) against this document's "no countdown". And whether a figure labelled accuracy, with a
+   tolerance beside it, comes back on a reading: it reverses his own "100 plus
+   minus 12, swing 11. That shit has to all go", which the voice gate fails
+   today, and a measured sniffer accuracy cannot exist on this data, so the
+   honest figure is evidence strength (step 2), not accuracy.
 
 ---
 
