@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1574 426694d 2026-10-03 10:39"><head><meta charset="utf-8">
+<html lang="en" data-build="v1577 4d674a9 2026-10-03 10:45"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -40212,7 +40212,11 @@ function stMarks(t,p){
  p.path.steps.forEach(function(s){if(!s.seat||s.coherent)return;
   if(srcNegated(nm.s,s.at)){var a=nm.map[s.at+1];if(a!=null)negAt[a]=1;}});
  p.hits.forEach(function(h){if(!h.mod)return;var a=nm.map[h.at+1];if(a!=null)modAt[a]={f:h.mod,w:h.modw};});
- var toks=[],re=/[A-Za-z']+/g,m; while((m=re.exec(t)))toks.push({s:m.index,e:m.index+m[0].length,w:m[0]});
+ /* a curly apostrophe, the mark a phone's own autocorrect writes, used to
+    split "don't" into two tokens and leave the strike-through short of the
+    negator. The class matches NORM_APOS (engine/sniff.js), the same marks
+    normMap already treats as one. */
+ var toks=[],re=/[A-Za-z'‘’]+/g,m; while((m=re.exec(t)))toks.push({s:m.index,e:m.index+m[0].length,w:m[0]});
  var seen={};
  marks.forEach(function(k){
   k.txt=t.slice(k.s,k.e); k.neg=!!negAt[k.s]; k.mod=modAt[k.s]||null;
@@ -40222,7 +40226,7 @@ function stMarks(t,p){
   toks.forEach(function(o,j){if(o.s>=k.s&&o.e<=k.e){if(k.t0<0)k.t0=j;k.t1=j;o.m=k;}});
   /* the negator, found the way srcNegated finds it: within SRC_NEG_W words */
   if(k.neg)for(var q=1;q<=SRC_NEG_W;q++){var d=toks[k.t0-q];
-   if(d&&SRC_NEG.indexOf(d.w.toLowerCase().replace(/'/g,''))>=0)k.negFrom=d.s;}});
+   if(d&&SRC_NEG.indexOf(d.w.toLowerCase().replace(/['‘’]/g,''))>=0)k.negFrom=d.s;}});
  marks.toks=toks;
  return marks;}
 function stRead(){
@@ -69913,5 +69917,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004588033"></div>
+<div id="eof" hidden data-len="004588311"></div>
 </body></html>

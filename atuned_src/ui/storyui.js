@@ -368,7 +368,11 @@ function stMarks(t,p){
  p.path.steps.forEach(function(s){if(!s.seat||s.coherent)return;
   if(srcNegated(nm.s,s.at)){var a=nm.map[s.at+1];if(a!=null)negAt[a]=1;}});
  p.hits.forEach(function(h){if(!h.mod)return;var a=nm.map[h.at+1];if(a!=null)modAt[a]={f:h.mod,w:h.modw};});
- var toks=[],re=/[A-Za-z']+/g,m; while((m=re.exec(t)))toks.push({s:m.index,e:m.index+m[0].length,w:m[0]});
+ /* a curly apostrophe, the mark a phone's own autocorrect writes, used to
+    split "don't" into two tokens and leave the strike-through short of the
+    negator. The class matches NORM_APOS (engine/sniff.js), the same marks
+    normMap already treats as one. */
+ var toks=[],re=/[A-Za-z'‘’]+/g,m; while((m=re.exec(t)))toks.push({s:m.index,e:m.index+m[0].length,w:m[0]});
  var seen={};
  marks.forEach(function(k){
   k.txt=t.slice(k.s,k.e); k.neg=!!negAt[k.s]; k.mod=modAt[k.s]||null;
@@ -378,7 +382,7 @@ function stMarks(t,p){
   toks.forEach(function(o,j){if(o.s>=k.s&&o.e<=k.e){if(k.t0<0)k.t0=j;k.t1=j;o.m=k;}});
   /* the negator, found the way srcNegated finds it: within SRC_NEG_W words */
   if(k.neg)for(var q=1;q<=SRC_NEG_W;q++){var d=toks[k.t0-q];
-   if(d&&SRC_NEG.indexOf(d.w.toLowerCase().replace(/'/g,''))>=0)k.negFrom=d.s;}});
+   if(d&&SRC_NEG.indexOf(d.w.toLowerCase().replace(/['‘’]/g,''))>=0)k.negFrom=d.s;}});
  marks.toks=toks;
  return marks;}
 function stRead(){
