@@ -129,7 +129,12 @@ put reads on the stage (the six cards of FT17), and none of them is a tracker
 part under another name: the avatar's cycles, the next mark, before and after,
 and kept days by seat are reads of what the practice did. The one press the
 stage shares with the tracker is still the ring on an Active row that marks
-today done.
+today done. Round QX put his "success win ... over a period of a year" in the
+centre, as Success over time, and a week and a month of goals in the Goals
+card: both carry figures and a key of their own, and both are reads over a
+span he picks, not the tracker's parts, so this rule does not count them and
+FT30 and FT32 hold them. Due today, the streak, the earned marks shelf,
+Missed and the Record month are still the right column's alone.
 
 Gate: `tests/flowtools.js`, `FT5:`.
 
@@ -274,10 +279,14 @@ Gate: `tests/flowtools.js`, `FT16:`.
 Round QN: "ideally this would be about six stack tall my upper right would be my
 ongoing goal challenge the middle would be my active challenge and then my top
 left would be Ritual to avatar." At 1600, Ritual to avatar is top left and
-Ongoing goal top right on one row; Active today is the middle, across both;
-Did it work and Keep or delete share the row under it; Practice analytics is
-last, across both. At 390 they stack in that order. Active today is his
-"active challenge", kept under his own word Active.
+Ongoing goal top right on one row; Goals is the middle, across both;
+Did it work and Keep or delete share the row under it; Success over time is
+last, across both. At 390 they stack in that order. Round QX renamed two of
+the six on his words, "my complete list of daily, weekly, monthly goals, and
+my success win": Active today is now the Today of Goals (his "active
+challenge", the Active list unchanged inside it), and Practice analytics is
+Success over time, its thirty day charts now drawn for whichever span he
+picks.
 
 Gate: `tests/flowtools.js`, `FT17:`.
 
@@ -321,8 +330,13 @@ Gate: `tests/flowtools.js`, `FT20:`.
 
 Round QS, his words: "the accountability should have the 30 days of cubes
 showing my progression and my achievements and badges and whatnot attached to
-it". Thirty cubes, one a day, seven to a row, today last at the lower right.
-A cube is done, planned, missed or empty off `ritDaySegs`, the month's own
+it". Thirty cubes, one a day. Round QX, "the whole thing should look
+effectively like a calendar", made them one: the columns are the days of the
+week, Monday first under their letters; each cube carries its date and the
+first of a month its month; the month or months are named over the grid; and
+the rest of this week is drawn ahead of today, so a ritual set for Tuesday,
+Thursday and Saturday shows on the days still to come. A day ahead is never
+counted and never a miss. A cube is done, planned, missed or empty off `ritDaySegs`, the month's own
 read, so the cubes and the month cannot disagree; a done cube carries the seat
 colour of every ritual kept on it. The figures over the cubes are days kept,
 days missed and minutes in those thirty, never a rate. The cubes replace round
@@ -426,10 +440,86 @@ rest are never listed.
 
 Gate: `tests/flowtools.js`, `FT28:`.
 
+### FT29. A suggestion says what it is, what it is for and your record with it, and takes three answers.
+
+Round QX, his words: "The ones on the left add a text description. And the
+success of what it leads to ... allow me to add them to my daily practice or
+bank them to my vault or dismiss." At rest each card shows the practice's own
+line from the library, what it is for (the coherent opposite of the pattern
+held at its place, CHILD's opp, only when a held place gives it one), and the
+person's own record with that practice: days kept, or Not tried yet. No rate
+is shown, because no measure of how well a practice works exists anywhere in
+the engine, for anyone; a made up one would be the status lie. Three answers,
+each 44 by 44: Add to daily practice (the old Start for a week), Save for
+later, and Dismiss. Save for later is his "bank to my vault": Bank and Vault
+already mean the imprints held and what has been released, so the saved
+shelf has its own name. Dismiss offers Put back in place, and Bring back
+dismissed at the foot returns them all. Both are kept beside the record under
+`atuned-ritual-more`, refused on a worked example by name.
+
+Gate: `tests/flowtools.js`, `FT29:`.
+
+### FT30. Goals is today, this week and this month.
+
+His words: "my complete list of daily, weekly, monthly goals". Today is the
+Active list, three affirmations and the challenges, each with a ring pressed
+once done today and pressed again to take it off. A said affirmation or a done
+challenge is not a kept ritual day: the record, the streak, the avatar's
+cycles and the thirty day loop do not move. This week is a calendar week,
+Monday first with each date, one row per active ritual drawn on the days it is
+set for: his "Tuesday, Thursday, Saturday" shows on those three days and no
+other. This month is each active ritual with where its span ends, and the
+month's counts.
+
+Gate: `tests/flowtools.js`, `FT30:`.
+
+### FT31. The affirmations and the challenges are real content and say where they came from.
+
+His words: "I should see three. Daily affirmations. Three challenges." An
+affirmation is the person's own avatar line first, newest first, then one line
+per pattern held at four or more from `AFFIRM` (engine/data/affirm.js), each
+said as the coherent opposite of that pattern. A challenge is a named
+saboteur's own intervention from `SABDEF`, heaviest first; an inferred one
+(seat and agent noun, "the Root Mourner") takes its fetter's line from
+`CHALLENGE`, and says it is inferred; then a place held. Fewer than three is
+said, never padded. Every one of the nine axes has both lines, first draft and
+his to change, and none carries a dash.
+
+Gate: `tests/flowtools.js`, `FT31:`.
+
+### FT32. Success over time is his ten spans, counted off the record, and honest before it starts.
+
+His words: "my success win in my accountability tracker that I can look at
+over a period of a year, broken up into a year, six months, three months, two
+months, one month, two weeks, one week. Five days, three days, one day." Ten
+spans in his order. The figures are days kept, days missed, minutes and marks
+earned in the span, counts and never a grade. The span is drawn a day a
+square: a calendar of weeks for two months or less, and a year folded weeks to
+columns past that. A span that reaches back before the record starts draws
+those days blank, says how many, and counts none of them missed. A person with
+no record is told so.
+
+Gate: `tests/flowtools.js`, `FT32:`.
+
 ## 5. Not built, and why
 
 These are in the practice TDD and are not in this change. Each is named so the
 gap is not read as an oversight.
+
+- **A success rate per practice** (round QX, "the success of what it leads
+  to"). Nothing in the engine measures how well a practice works, for this
+  person or anyone. A suggestion shows the person's own record with it and
+  what it is for, and no rate, until the practice domain's Outcome records
+  are written by a ritual.
+- **Said and done travelling with an export** (round QX). Affirmations said,
+  challenges done, and suggestions saved or dismissed sit beside the record
+  under `atuned-ritual-more`, like the plans, because adding fields to the
+  record is schema v2 and his. They survive a reload and stay in this browser.
+- **One calendar where there are now two** (round QX). The thirty day loop is
+  a calendar now and the Record month under it is the older one, with day
+  presses that mark yesterday and delete an entry. Folding the Record's
+  presses into the cubes and retiring the rings is the next cut, and changes
+  FT8 and the Record's gates, so it is named and not made here.
 
 - **The reason a day was missed.** TDD section 24 lists the classes
   (`wrong_time`, `too_long` and the rest, `PR_MISS` in the engine). The profile
@@ -467,7 +557,7 @@ gap is not read as an oversight.
 
 | Rule | Gate |
 |---|---|
-| FT1 to FT28 | `tests/flowtools.js` |
+| FT1 to FT32 | `tests/flowtools.js` |
 | FT1, and every TAB integer | `tests/engine.js`, `tests/functional.js` |
 | FT6, FT12 | `tests/design.js`, `tools/monitor.js` |
 | FT10 | `tests/functional.js` |
