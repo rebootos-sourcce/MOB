@@ -360,13 +360,23 @@ function stBank(){
    halves of the engine disagree and round HX chose to show that rather than
    pick a side for him: the mark runs back over the negator and is struck,
    the bar is dashed, and the list says which words were the only ones.
-   ============================================================ */
+
+   THE SENTENCE BOUNDARY, THREADED IN, ROUND RA. srcNegated's own header
+   (engine/sourceai.js) names this exact gap: "floor is sniff.js's own
+   clauseFloor... srcHear passes it, and nothing else does." This was that
+   nothing else. Measured directly before this fix: "I am not afraid.
+   Afraid now." reads nm.s as " i am not afraid afraid now ", and the
+   chart's own check, called with no floor, read the second afraid as
+   negated, the same cross sentence bug round NQ already fixed for Source
+   AI's own reading. srcHear passes clauseFloor; this now does too, so the
+   sentence, the chart and the list go back to agreeing, including about
+   which sentence a negation stops at. */
 var STR={t:null,marks:[],toks:[],heard:null};
 function stMarks(t,p){
  if(!p||!p.hits||!p.hits.length||typeof marksOf!=='function')return [];
  var marks=marksOf(t,p), nm=normMap(t), negAt={}, modAt={};
  p.path.steps.forEach(function(s){if(!s.seat||s.coherent)return;
-  if(srcNegated(nm.s,s.at)){var a=nm.map[s.at+1];if(a!=null)negAt[a]=1;}});
+  if(srcNegated(nm.s,s.at,clauseFloor(t,nm,s.at))){var a=nm.map[s.at+1];if(a!=null)negAt[a]=1;}});
  p.hits.forEach(function(h){if(!h.mod)return;var a=nm.map[h.at+1];if(a!=null)modAt[a]={f:h.mod,w:h.modw};});
  /* a curly apostrophe, the mark a phone's own autocorrect writes, used to
     split "don't" into two tokens and leave the strike-through short of the
