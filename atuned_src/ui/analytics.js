@@ -483,7 +483,7 @@ function anaByFeeling(list){
    title:'Open '+g.k+'. The bar is the charge left on these fetters, added up.'};}));}
 function anaBySeat(list){
  return anaBars(anaGroup(list,function(n){return n.b;}).map(function(g){
-  return {key:anaKey('seat',anaSeatNm(g.k)),lbl:anaSeatWord(g.k),v:g.v,c:seatCol(g.k),fig:anaFig(g),
+  return {key:anaKey('seat',anaSeatNm(g.k)),lbl:anaSeatWord(g.k,true),v:g.v,c:seatCol(g.k),fig:anaFig(g),
    title:'Open the '+String(g.k).toLowerCase()+' seat. The bar is the charge left on these fetters, added up.'};}));}
 /* the two splits, under one pair of headings, for any set of addresses */
 function anaSplits(list){
@@ -539,7 +539,10 @@ function anaChainCard(r,o){
    title:'How heavily it runs, on the same scale as an address'})],
   ['Fetters',anaN(lv.length)],['Held',anaN(lv.filter(function(n){return n.sq>=4;}).length)],
   ['Seats',anaN(bs.length)]]);
- h+='<div class="pm-eye">What it is</div><p class="ad-p">'+unpSay(K[0])+'</p>';
+ /* the word's own meaning, from the one table. Not "What it is": a
+    saboteur's card carries that heading already, for its library entry
+    (kbSabBlock), and two headings of one name read as one section twice. */
+ h+='<div class="pm-eye">What the word means</div><p class="ad-p">'+unpSay(K[0])+'</p>';
  /* WHAT IT RUNS ON, AND HOW ITS WEIGHT IS MADE. Each sentence is the line in
     compute() that builds it, said in words. */
  var made=o.over?'Its weight is how far past the helpful point the opposite sits, on average, across those fetters.'
@@ -710,7 +713,7 @@ function anaMetRow(r,k){
 function anaMetCard(r,k){
  var M=ANA_MET[k]; if(!M)return null;
  var f=M.fig(r), h=anaHead('Reading',M.nm);
- h+=anaKv([[esc(M.nm),cr(M.seat,f.p,{size:'md',raw:f.raw,text:M.txt,hot:false,label:M.nm})]]);
+ h+=anaKv([['Now',cr(M.seat,f.p,{size:'md',raw:f.raw,text:M.txt,hot:false,label:M.nm})]]);
  h+='<p class="ad-p">'+esc(M.tip)+'</p>';
  var bySeat=function(){return anaBySeat(W.filter(function(n){return n.sq>0;}));};
  if(k==='cq'){
