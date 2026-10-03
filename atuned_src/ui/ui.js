@@ -1147,11 +1147,11 @@ function render(){
     t:'Coherence, '+(r.unread?'not read yet.':Math.round(r.CQ)+'%. '
       +(r.complete?'The '+SI.length+' laws, summed.':tierSay(r)+'.')
       +(r.PULL>0.003?' Decoherence is holding '+(r.CQ-r.EX).toFixed(0)+' points of it back, so what gets out is '+Math.round(r.EX)+'.':'')
-      +' The edge of the colour moves through the band your coherence swings in. Press for the reading.')},
+      +' The edge of the colour moves through the band your coherence swings in, and the notches at the top and foot of the bar mark where it stands now. Press for the reading.')},
    R:{nm:'Decoherence',ic:'dq',c:seatCol('Root'),v:r.unread?0:r.DQ,raw:Math.round(r.DQ)+'%',q:'dq',fk:'shadow',
     sw:amp>0.05?function(t){return amp*Math.sin(t*TAU*PUL_WAVE_HZ);}:null, fw:2*amp,
     t:'Decoherence, '+(r.unread?'not read yet.':Math.round(r.DQ)+'%. All the charge on all 112 addresses, '
-      +'against the most they could hold. The edge of the colour breathes with the shadow, by as much as the Field\'s own pulses do. Press for the reading.')},
+      +'against the most they could hold. The edge of the colour breathes with the shadow, by as much as the Field\'s own pulses do, and the notches mark where it stands now. Press for the reading.')},
    title:'Coherence against decoherence, two separate figures: coherence runs in from the left, decoherence from the right. '
     +'The notches at the top and foot of the bar mark where each stands now.'};
   $('key').innerHTML=rbPair('cqdq',spec);

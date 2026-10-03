@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1588 7123672 2026-10-03 15:46"><head><meta charset="utf-8">
+<html lang="en" data-build="v1589 36b90e9 2026-10-03 16:42"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -2087,7 +2087,8 @@ body:not(.tab-field) .fdock{display:none}
    number. A bead rides it at the Field's rate and loses light at each seat
    by the share that seat holds back. The decoherence hashes went with the
    same ruling, into the coherence and decoherence pair. */
-.rb-wave{position:absolute;left:92px;right:62px;top:9px;bottom:9px;display:block;pointer-events:none}
+.rb-wave{position:absolute;display:block;pointer-events:none}
+.rbar.rb-wavein .rb-wave{left:92px;right:62px;top:9px;bottom:9px}
 .rb-wave svg{display:block;width:100%;height:100%;overflow:visible}
 .rb-wave .wb rect{opacity:.11}
 .rb-wave .wm{fill:none;stroke:var(--edge-2);stroke-width:1;stroke-dasharray:2 4;vector-effect:non-scaling-stroke}
@@ -7763,6 +7764,8 @@ body.quiet .sp-pulse,body.rm .sp-pulse{display:none}
 .rb2-now::before{top:0;border-radius:0 0 1px 1px}
 .rb2-now::after{bottom:0;border-radius:1px 1px 0 0}
 .rb2.off .rb2-l,.rb2.off .rb2-r,.rb2.off .rb2-now{display:none}
+/* a whole pair has one meeting point, so its one notch carries the most ink */
+.rb2.whole .rb2-now::before,.rb2.whole .rb2-now::after{opacity:.85}
 .rb2-p{position:absolute;top:0;bottom:0;display:flex;align-items:center;gap:8px;pointer-events:none;z-index:1;
  color:var(--ink)}
 .rb2-p.l{left:12px}
@@ -28440,8 +28443,12 @@ function rbPair(k,o){
     the 44px floor; a pair that is one reading is pressed as one, by its host */
  function key(P,side){return P.q?'<button type="button" class="kb rb2-k '+side+'" data-q="'+P.q+'"'
   +(P.fk?' data-fk="'+P.fk+'"':'')+' style="--pc:'+P.c+'" title="'+esc(P.t||P.nm)+'" aria-label="'+esc(P.t||P.nm)+'"></button>':'';}
+ /* a pair whose halves are doors carries its words on the halves only: a
+    title on the bar as well would answer for a held half once the hold has
+    lifted the half's own title, and the click that ends the hold would get
+    through (ui/tip.js, carrierIn) */
  return '<span class="rb2'+(read?'':' off')+(o.whole?' whole':'')+'" data-pair="'+k+'" style="--lc:'+L.c+';--rc:'+R.c+'"'
-  +(o.title?' title="'+esc(o.title)+'"':'')+'>'
+  +(o.title&&!(L.q||R.q)?' title="'+esc(o.title)+'"':'')+'>'
   +'<span class="rb2-t" aria-hidden="true"><i class="rb2-l"></i><i class="rb2-r"></i>'
   +'<em class="rb2-now l"></em>'+(o.whole?'':'<em class="rb2-now r"></em>')+'</span>'
   +pole(L,'l')+pole(R,'r')+key(L,'l')+key(R,'r')+'</span>';}
@@ -69205,11 +69212,11 @@ function render(){
     t:'Coherence, '+(r.unread?'not read yet.':Math.round(r.CQ)+'%. '
       +(r.complete?'The '+SI.length+' laws, summed.':tierSay(r)+'.')
       +(r.PULL>0.003?' Decoherence is holding '+(r.CQ-r.EX).toFixed(0)+' points of it back, so what gets out is '+Math.round(r.EX)+'.':'')
-      +' The edge of the colour moves through the band your coherence swings in. Press for the reading.')},
+      +' The edge of the colour moves through the band your coherence swings in, and the notches at the top and foot of the bar mark where it stands now. Press for the reading.')},
    R:{nm:'Decoherence',ic:'dq',c:seatCol('Root'),v:r.unread?0:r.DQ,raw:Math.round(r.DQ)+'%',q:'dq',fk:'shadow',
     sw:amp>0.05?function(t){return amp*Math.sin(t*TAU*PUL_WAVE_HZ);}:null, fw:2*amp,
     t:'Decoherence, '+(r.unread?'not read yet.':Math.round(r.DQ)+'%. All the charge on all 112 addresses, '
-      +'against the most they could hold. The edge of the colour breathes with the shadow, by as much as the Field\'s own pulses do. Press for the reading.')},
+      +'against the most they could hold. The edge of the colour breathes with the shadow, by as much as the Field\'s own pulses do, and the notches mark where it stands now. Press for the reading.')},
    title:'Coherence against decoherence, two separate figures: coherence runs in from the left, decoherence from the right. '
     +'The notches at the top and foot of the bar mark where each stands now.'};
   $('key').innerHTML=rbPair('cqdq',spec);
@@ -69829,5 +69836,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004581902"></div>
+<div id="eof" hidden data-len="004582468"></div>
 </body></html>

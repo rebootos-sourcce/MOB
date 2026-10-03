@@ -740,8 +740,12 @@ function rbPair(k,o){
     the 44px floor; a pair that is one reading is pressed as one, by its host */
  function key(P,side){return P.q?'<button type="button" class="kb rb2-k '+side+'" data-q="'+P.q+'"'
   +(P.fk?' data-fk="'+P.fk+'"':'')+' style="--pc:'+P.c+'" title="'+esc(P.t||P.nm)+'" aria-label="'+esc(P.t||P.nm)+'"></button>':'';}
+ /* a pair whose halves are doors carries its words on the halves only: a
+    title on the bar as well would answer for a held half once the hold has
+    lifted the half's own title, and the click that ends the hold would get
+    through (ui/tip.js, carrierIn) */
  return '<span class="rb2'+(read?'':' off')+(o.whole?' whole':'')+'" data-pair="'+k+'" style="--lc:'+L.c+';--rc:'+R.c+'"'
-  +(o.title?' title="'+esc(o.title)+'"':'')+'>'
+  +(o.title&&!(L.q||R.q)?' title="'+esc(o.title)+'"':'')+'>'
   +'<span class="rb2-t" aria-hidden="true"><i class="rb2-l"></i><i class="rb2-r"></i>'
   +'<em class="rb2-now l"></em>'+(o.whole?'':'<em class="rb2-now r"></em>')+'</span>'
   +pole(L,'l')+pole(R,'r')+key(L,'l')+key(R,'r')+'</span>';}

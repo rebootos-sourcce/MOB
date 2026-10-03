@@ -2087,7 +2087,8 @@ body:not(.tab-field) .fdock{display:none}
    number. A bead rides it at the Field's rate and loses light at each seat
    by the share that seat holds back. The decoherence hashes went with the
    same ruling, into the coherence and decoherence pair. */
-.rb-wave{position:absolute;left:92px;right:62px;top:9px;bottom:9px;display:block;pointer-events:none}
+.rb-wave{position:absolute;display:block;pointer-events:none}
+.rbar.rb-wavein .rb-wave{left:92px;right:62px;top:9px;bottom:9px}
 .rb-wave svg{display:block;width:100%;height:100%;overflow:visible}
 .rb-wave .wb rect{opacity:.11}
 .rb-wave .wm{fill:none;stroke:var(--edge-2);stroke-width:1;stroke-dasharray:2 4;vector-effect:non-scaling-stroke}
@@ -7763,6 +7764,8 @@ body.quiet .sp-pulse,body.rm .sp-pulse{display:none}
 .rb2-now::before{top:0;border-radius:0 0 1px 1px}
 .rb2-now::after{bottom:0;border-radius:1px 1px 0 0}
 .rb2.off .rb2-l,.rb2.off .rb2-r,.rb2.off .rb2-now{display:none}
+/* a whole pair has one meeting point, so its one notch carries the most ink */
+.rb2.whole .rb2-now::before,.rb2.whole .rb2-now::after{opacity:.85}
 .rb2-p{position:absolute;top:0;bottom:0;display:flex;align-items:center;gap:8px;pointer-events:none;z-index:1;
  color:var(--ink)}
 .rb2-p.l{left:12px}

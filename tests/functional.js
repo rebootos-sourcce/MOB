@@ -6428,18 +6428,22 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   await new Promise(r=>setTimeout(r,ENTER_SPAN+9*ENTER_STAGGER+250));
   const was=parseFloat(bar().style.width), cqWas=cq(); loadP(PERSON('James'));render();
   const goal2=parseFloat(document.querySelector('#keylo .rbar').getAttribute('data-w')), cqGoal=RB2.cqdq.l1;
+  /* the pair's own record, read in the frame the change lands: it leaves from
+     where it stood and is bound for the new figure, which is a sweep and not
+     a snap whatever the machine's frame rate */
+  const cqFrom=RB2.cqdq.l0, cqTo=RB2.cqdq.l1;
   await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
   const mid2=parseFloat(bar().style.width), cqMid=cq();
   await new Promise(r=>setTimeout(r,ENTER_SPAN+120));
   const end=parseFloat(bar().style.width), cqEnd=cq();
   const nl=document.querySelector('#fdock .rb2[data-pair=cqdq] .rb2-now.l'), w=RB2.cqdq.wpx;
   const notch=parseFloat((nl.style.transform.match(/translate3d\(([-\d.]+)px/)||[])[1]);
-  return {was,goal2,mid2,end,cqWas,cqGoal,cqMid,cqEnd,notch,notchWant:compute().CQ*w/100};});
+  return {was,goal2,mid2,end,cqWas,cqGoal,cqFrom,cqTo,cqMid,cqEnd,notch,notchWant:compute().CQ*w/100};});
  ok(Math.abs(mo.goal2-mo.was)>1&&Math.abs(mo.mid2-mo.goal2)>0.5&&Math.abs(mo.mid2-mo.was)>0.01,
   'a changed vitality sweeps, part way a frame in: from '+mo.was.toFixed(1)+' toward '+mo.goal2.toFixed(1)+', at '+mo.mid2.toFixed(1));
  ok(Math.abs(mo.end-mo.goal2)<0.05,'and lands exactly on its value, '+mo.end.toFixed(2)+' against '+mo.goal2.toFixed(2));
- ok(Math.abs(mo.cqGoal-mo.cqWas)>1&&Math.abs(mo.cqMid-mo.cqGoal)>0.5&&Math.abs(mo.cqEnd-mo.cqGoal)<0.05,
-  'RB: the coherence pole sweeps too, from '+mo.cqWas.toFixed(1)+' through '+mo.cqMid.toFixed(1)+' to '+mo.cqEnd.toFixed(1));
+ ok(Math.abs(mo.cqGoal-mo.cqWas)>1&&Math.abs(mo.cqFrom-mo.cqWas)<0.5&&Math.abs(mo.cqTo-mo.cqGoal)<0.05&&Math.abs(mo.cqEnd-mo.cqGoal)<0.05,
+  'RB: the coherence pole sweeps too, leaving from '+mo.cqFrom.toFixed(1)+' for '+mo.cqTo.toFixed(1)+' and landing on '+mo.cqEnd.toFixed(1));
  ok(Math.abs(mo.notch-mo.notchWant)<=0.6,'RB: and its notch lands on the figure, '+mo.notch+'px against '+mo.notchWant.toFixed(1));
 
  /* ROUND RB, THE PAIRS ARE DATA AND THEIR SWING IS THE FIELD'S. His words:
@@ -6467,8 +6471,10 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   const edges=()=>{const m=RB2.cqdq, w=m.wpx, el=pair('cqdq');
    return {l:(px(el,'.rb2-l')/w*100)+100-m.fl/2, r:100-((px(el,'.rb2-r')/w*100)+m.fr/2)};};
   const rg=cqRange(R.CQ), amp=R.DQ*PUL_WAVE*clamp(R.DQ/100,0,1);
-  const ls=[], rs=[];
-  for(let i=0;i<24;i++){await new Promise(r=>setTimeout(r,125)); const e=edges(); ls.push(e.l); rs.push(e.r);}
+  const ls=[], rs=[], t0=S.t;
+  /* the Field's own clock is driven across one whole wander, 24 seconds of it,
+     rather than waited on, so a starved machine reads the same swing */
+  for(let i=0;i<48;i++){S.t=t0+i*0.5; rbPairTick(performance.now()); const e=edges(); ls.push(e.l); rs.push(e.r);}
   document.body.classList.add('quiet'); rbPairTick(performance.now());
   await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
   const q1=edges(); await new Promise(r=>setTimeout(r,600)); const q2=edges();
