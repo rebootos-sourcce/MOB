@@ -245,7 +245,7 @@ def render_body(md):
 
 def page(title, short, desc, body, fname):
     others = [('index.html', 'What it reads'), ('about.html', 'About'),
-              ('buy.html', 'Tiers'), ('quiz.html', 'The test')]
+              ('faq.html', 'Questions'), ('buy.html', 'Tiers'), ('quiz.html', 'Start')]
     legal = [('privacy.html', 'Privacy'), ('terms.html', 'Terms'), ('consumer-health-data.html', 'Consumer health data')]
 
     def nav(cur):

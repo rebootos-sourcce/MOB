@@ -29,6 +29,7 @@ engine/trace.js
 engine/schema.js
 engine/journey.js
 engine/practice.js
+engine/valuefelt.js
 engine/loop.js
 engine/pracex.js
 engine/exdepth.js
@@ -89,5 +90,6 @@ ui/railwire.js
 ui/railmotion.js
 ui/onboard.js
 ui/login.js
+ui/valuefelt.js
 ui/ui.js
 shell/foot.html

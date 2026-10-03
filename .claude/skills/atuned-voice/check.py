@@ -50,7 +50,7 @@ import statistics
 # the copy is written and not everywhere it is read.
 CORPUS = ['atuned_src/ui', 'atuned_src/engine/data', 'atuned_src/shell/body.html',
           'funnel/index.html', 'funnel/quiz.html', 'funnel/about.html',
-          'funnel/buy.html',
+          'funnel/buy.html', 'funnel/faq.html',
           'funnel/questions.js', 'atuned_src/engine/plan.js']
 
 # A COUNTEREXAMPLE IS COPY ABOUT COPY, and it is written to fail. The release
