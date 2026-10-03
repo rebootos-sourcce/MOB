@@ -26,7 +26,7 @@ the same reason.
 
     python3 tools/slim.py source.html atuned-slim.html
 """
-import io,os,re,subprocess,sys,tempfile
+import io,os,re,shutil,subprocess,sys,tempfile
 
 def strip_css(css):
     """CSS comments, respecting strings and url() payloads."""
@@ -65,15 +65,18 @@ def strip_html_comments(h):
 def strip_js(js):
     """Through the TypeScript compiler, which actually parses."""
     d=tempfile.mkdtemp()
-    src=os.path.join(d,'m.js')
-    io.open(src,'w',encoding='utf-8').write(js)
-    r=subprocess.run(['npx','--no-install','tsc','--allowJs','--removeComments',
-                      '--target','esnext','--outDir',os.path.join(d,'o'),src],
-                     capture_output=True,text=True)
-    out=os.path.join(d,'o','m.js')
-    if not os.path.exists(out):
-        sys.stderr.write('tsc produced nothing\n'+r.stdout+r.stderr); sys.exit(1)
-    return io.open(out,encoding='utf-8').read()
+    try:
+        src=os.path.join(d,'m.js')
+        io.open(src,'w',encoding='utf-8').write(js)
+        r=subprocess.run(['npx','--no-install','tsc','--allowJs','--removeComments',
+                          '--target','esnext','--outDir',os.path.join(d,'o'),src],
+                         capture_output=True,text=True)
+        out=os.path.join(d,'o','m.js')
+        if not os.path.exists(out):
+            sys.stderr.write('tsc produced nothing\n'+r.stdout+r.stderr); sys.exit(1)
+        return io.open(out,encoding='utf-8').read()
+    finally:
+        shutil.rmtree(d,ignore_errors=True)
 
 def blank_runs(s):
     """collapse runs of blank lines left behind, and trailing spaces. Nothing
