@@ -47,7 +47,8 @@ ring = (here/'ring.js').read_text(encoding='utf-8')
 # not an asset the page needs to render, so the four travel together and any
 # one of them opens alone.
 OUT = {'index.html':'atuned-funnel.html', 'quiz.html':'atuned-quiz.html',
-       'about.html':'atuned-about.html',  'buy.html':'atuned-buy.html'}
+       'about.html':'atuned-about.html',  'buy.html':'atuned-buy.html',
+       'faq.html':'atuned-faq.html'}
 # THE DOOR TO THE APP. quiz.html links ../source.html, the built instrument one
 # directory up in the repository, because there is no hosted address yet and a
 # made up one is a dead link. A file sent on its own has no directory above it,
