@@ -40,8 +40,14 @@
    copy the quiz prints ("Hurry in to help and make it worse" is a law's low
    pole, not urgency). The list is CLAIMS below and the run prints it.
 
-   HELD, AND NOT HIDDEN. Four shipped lines break the cause rule and are the
-   owner's own words. A seat does not rewrite his words without him, and the
+   HELD, AND NOT HIDDEN. Shipped lines that break the cause rule and are the
+   owner's own words are held here; the count is read off the run. Three of
+   them left with the landing page, round QT, 3 October, when it was rebuilt
+   on reviews/ATUNED-Creative-Storyboard-TDD.md at his instruction: that
+   document's own claims boundary, section 7, says "ATUNED must not present
+   unverified mechanisms as established medical fact", so none of the three
+   was carried onto the new page, and their holds were deleted by the rule
+   below rather than kept for lines that no longer ship. A seat does not rewrite his words without him, and the
    question is already in front of him (WAITING-ON-YOU.md item 12; the audit
    names it D1). So each is caught first and then held by its exact
    sentence, with whose words it is and where he said them, and every run
@@ -87,15 +93,6 @@ const ok = (c, m) => { if (c) PASS++; else { FAIL++; console.log('  FAIL  ' + m)
 /* ---------------- HELD. His words, waiting on his ruling. ---------------- */
 const WAITS = 'WAITING-ON-YOU.md item 12; reviews/MASTER-BMT-AUDIT.md Step 5, D1';
 const HELD = [
-  { text: 'Mindset programming is the cause.', rules: ['cause'],
-    whose: 'His. TASKS.md FN, 20 September: "Letting me know that mindset programming is the cause of mental, physical and spiritual disease and stagnation." The page marks the beat "THE CAUSE, in his words and not softened".',
-    where: 'funnel/index.html meta description, which is what a search result prints' },
-  { text: 'Most of the strain we have agreed to call normal is making us ill.', rules: ['cause'],
-    whose: 'His. TASKS.md AJ2, the substance of the welcome "in his order": "The stress we have conditioned as normal is making us sick".',
-    where: 'funnel/index.html, under the opening list' },
-  { text: 'When coherence is low the circuit leaks, and the leak shows up as mental, physical and spiritual disease.', rules: ['cause'],
-    whose: 'His. TASKS.md IN, 27 September: "Coherence, decoherence is the core of all negative mental experiences, emotional experiences, and the mental and physical and spiritual disease that come with it."',
-    where: 'funnel/index.html, beat 3' },
   { text: 'When it is low the circuit leaks, and the leak is what promotes mental, physical and spiritual disease.', rules: ['cause'],
     whose: 'His. TASKS.md QZ3: "A low CQ promotes mental, physical and spiritual disease."',
     where: 'funnel/quiz.html, the reading' }
