@@ -4399,6 +4399,70 @@ body.punch .src-new{border-color:transparent;background:var(--panel-2)}
 .src-pips i{width:5px;height:12px;border-radius:1px;border:1px solid var(--edge-2)}
 .src-pips i.ask{border-color:var(--c)}
 .src-pips i.on{background:var(--c);border-color:var(--c)}
+/* ---------- Talk, PLAN.md C4 ----------
+   His words: "add a button where I can just have a conversation back and
+   forth," and "make it look like the soul." The same Source AI box, the same
+   halo, bar and floor, holding a thread instead of one question: see
+   srcThread in ui/storyui.js for what each row is and why the wires carry
+   the numbers they do.
+
+   THE BOX TAKES THE COLUMN'S ROOM WHILE TALKING. The journal box steps aside
+   for a reply line, so the question box grows into the room the box had and
+   the thread scrolls inside it. It scrolls on an inner list and not on .st-pe
+   itself, because .st-pe's bar and scan sit three pixels outside its padding
+   on its border, and a scroller clips there. */
+.st-talk{margin-left:auto}
+.st-talk[aria-pressed="true"]{border-color:var(--accent);color:var(--ink)}
+/* ON A PHONE IT IS ITS MARK, the way the bank and the vault are, and the word
+   stays in the button for a screen reader. Measured with the word: the
+   name, Talk and Record need 330 pixels and the row has 328 at 390 and 298 at
+   360, so Record dropped to a line of its own under the name. Two classes
+   deep, because the phone rule that lets every child of .st-hd shrink to
+   nothing is later in this sheet and squeezed the mark to sixteen pixels. */
+@media (max-width:720px){
+ .st-hd .st-talk{flex:0 0 auto;min-width:var(--tap);justify-content:center;padding-left:0;padding-right:0}
+ .st-talk span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}}
+.st-chat .st-glow{flex:1 1 auto;display:flex;flex-direction:column;min-height:0}
+.st-chat .st-pe{flex:1 1 auto;display:flex;flex-direction:column;min-height:260px}
+.src-th{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;margin:0;padding:2px 4px 0 0;
+ list-style:none}
+/* a row is its node, its words, and the wire down to the next node. No
+   margin between rows: the wire is exactly a row tall because the next node
+   sits the same distance down its own row as this one does in this. */
+.src-tn{position:relative;list-style:none;min-height:24px;padding:3px 0 14px 32px}
+.src-tn-past{padding-bottom:6px}
+.src-tw{position:absolute;left:0;top:16px;width:24px;overflow:visible;pointer-events:none}
+.src-wire{fill:none;stroke:var(--c);stroke-width:1.5;stroke-linecap:round}
+/* the pulse is frflow's own keyframes, the renditions' tension run, so it is
+   one wave in two places and never a second one drawn to look like it */
+.src-puls{fill:none;stroke-linecap:round;stroke-width:2.2;
+ stroke:color-mix(in srgb,var(--c) 62%,var(--ink));
+ animation:frflow var(--d,3s) linear infinite;animation-delay:var(--ph,0s)}
+body.quiet .src-puls,body.rm .src-puls{display:none}
+@media (prefers-reduced-motion:reduce){.src-puls{display:none}}
+/* the nodes are rings, never fills, on the ground so the wire stops at them.
+   Source AI's are the size of the Field's own address ring and the person's
+   are smaller, so whose turn it was reads before a word does. The live one
+   breathes on the panel's beat, srcBreath, locked to the same clock. */
+.src-nd{position:absolute;left:6px;top:10px;width:12px;height:12px;border-radius:50%;
+ box-sizing:border-box;border:1.6px solid var(--c);background:var(--sunk)}
+.src-tn-me .src-nd{left:8px;top:12px;width:8px;height:8px;border-width:1.4px}
+.src-tn-now .src-nd{animation:srcBreath 4.2s ease-in-out infinite;border-color:var(--accent)}
+body.quiet .src-tn-now .src-nd,body.rm .src-tn-now .src-nd{animation:none}
+@media (prefers-reduced-motion:reduce){.src-tn-now .src-nd{animation:none}}
+/* the person's words in the journal's own hand, light, so the two voices on
+   the thread are told apart by weight and not by a bubble around either */
+.src-me{margin:0;font-family:var(--sans);font-size:16px;line-height:1.6;font-weight:300;
+ color:var(--ink);white-space:pre-wrap;overflow-wrap:break-word;max-width:60ch}
+.src-tn-now .src-open,.src-tn-now .src-q{margin-top:0}
+/* the reply line, on the journal box's own ground and type */
+.src-cmp{display:flex;align-items:flex-end;gap:8px}
+.src-cin{flex:1 1 auto;min-width:0;min-height:var(--tap);resize:none;box-sizing:border-box;
+ background:var(--sunk);border:1px solid var(--edge);border-radius:var(--r-s);padding:10px 14px;
+ font-family:var(--sans);font-size:16px;line-height:1.5;font-weight:300;color:var(--ink)}
+.src-cin:focus{outline:none;border-color:var(--accent)}
+.src-cin::placeholder{color:var(--dim)}
+body.punch .src-cin{border-color:transparent;background:var(--panel-2)}
 /* stacked, the Story reads journal, Source AI, imprints, release, and the
    tools after. Without this the whole left rail sat between what a person
    wrote and what it found whenever the column was open. The breakpoint is the
@@ -5656,6 +5720,10 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
  .st-bar{margin-top:8px}
  .src-row{margin-top:4px}
  .st-ed,.st-ta,.st-hl{min-height:128px}
+ /* stacked, the page scrolls and not the column, so the thread is held to
+    under half a screen and the reply line stays near the top of it */
+ .st-chat .st-pe{min-height:0}
+ .src-th{max-height:44vh}
  .st-flow:not([data-focus="write"]) .st-ed,.st-flow:not([data-focus="write"]) .st-ta,
  .st-flow:not([data-focus="write"]) .st-hl{min-height:96px}
  .st-cvw{flex:0 0 auto;height:230px;min-height:0}

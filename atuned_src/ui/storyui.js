@@ -69,7 +69,7 @@ function stRender(){
  var out='<div class="st-flow" id="stflow" data-focus="'+STV.focus+'">'
   /* ---- the write column: the journal, with Source AI inside it ---- */
   +'<div class="st-colw">'
-  +'<div class="st-pan st-jr" id="stjr">'
+  +'<div class="st-pan st-jr'+(STV.chat?' st-chat':'')+'" id="stjr">'
   /* SPEAK BECAME RECORD, AND IT CARRIES ITS STATE.
 
      Speak is what you do, record is what the control does, and the ruling
@@ -93,6 +93,21 @@ function stRender(){
      the word it was always beside. */
   +'<div class="st-hd">'
    +stMark('j','Journal','journal','','<span class="src-live" aria-hidden="true"></span>')
+   /* TALK, PLAN.md C4, his words: "add a button where I can just have a
+      conversation back and forth." It wears Record's own pill, so every
+      lighting that already restyles Record restyles this, and it is a toggle
+      with aria-pressed the way the bank is, because it changes how the column
+      is shown and nothing about what is written. The mark is two rings and
+      the wire between them, the Field's own thread, never the bubble the
+      question button already draws: one drawing per named thing. The margin
+      takes the free space, so it and Record stand together at the right
+      edge where Record stood alone. See srcThread for what it opens. */
+   +'<button class="st-mic st-talk" id="sttalk" type="button" aria-pressed="'+!!STV.chat+'" '
+   +'title="Write it as a conversation, one turn at a time. Every reply goes into this entry.">'
+   +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
+   +'<circle cx="6" cy="6.5" r="3"/><circle cx="18" cy="17.5" r="3"/>'
+   +'<path d="M8.4 8.4Q16.5 7 15.6 15.6"/></svg>'
+   +'<span>Talk</span></button>'
    +'<button class="st-mic'+(ST_LISTEN?' on':'')+'" id="stmic" type="button" '
    +'title="'+(ST_LISTEN?'Recording. Press to stop and keep what it heard.'
      :'Record what happened out loud instead of typing it. Recording sends the audio to your browser\'s speech service; typing does not leave this device.')+'">'
@@ -150,9 +165,19 @@ function stRender(){
      cannot carry colour, so the highlight is a layer behind it holding the
      same text at the same metrics, and the textarea's own text is
      transparent with only its caret showing. */
-  +'<div class="st-ed"><div class="st-hl" id="sthl" aria-hidden="true"></div>'
-  +'<textarea id="sttext" class="st-ta" spellcheck="false" aria-label="The day" '
-  +'placeholder="What happened. Write it the way you would say it out loud.">'+esc(ST_TEXT)+'</textarea></div>'
+  /* TALKING, THE BOX IS A REPLY LINE AND NOT A SECOND ENTRY. The whole entry
+     is still ST_TEXT and a reply is appended to it, see srcChatSend, so the
+     big box steps aside rather than standing beside a copy of itself, and
+     Talk pressed again puts it back holding every reply as its own line. */
+  +(STV.chat
+   ?'<div class="src-cmp"><textarea id="stcin" class="src-cin" rows="2" spellcheck="false" '
+    +'aria-label="Your reply" placeholder="Write back. Enter sends.">'+esc(SRC_CDRAFT)+'</textarea>'
+    +'<button type="button" class="src-new" id="stcsend" aria-label="Send" title="Send">'
+    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6.5l5.5 5.5-5.5 5.5"/></svg>'
+    +'</button></div>'
+   :'<div class="st-ed"><div class="st-hl" id="sthl" aria-hidden="true"></div>'
+    +'<textarea id="sttext" class="st-ta" spellcheck="false" aria-label="The day" '
+    +'placeholder="What happened. Write it the way you would say it out loud.">'+esc(ST_TEXT)+'</textarea></div>')
   /* WORDS DICTATION HID BEHIND STARS, said under the box they are in, round
      QR. His own story arrived with whole words turned to stars by the speech
      service and nothing on the page said so. The sentence and the rule are
@@ -265,16 +290,22 @@ function stRender(){
  var cl=document.getElementById('stclear');
  if(cl)cl.onclick=function(){ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;srcFresh();stRender();};
  var ap=document.getElementById('stapply');
- if(ap)ap.onclick=stCommit;
+ /* a reply still in the line is the person's words, so Commit sends it first
+    rather than committing the entry without it */
+ if(ap)ap.onclick=function(){if(STV.chat)srcChatSend(); return stCommit();};
  var mic=document.getElementById('stmic');
- if(mic)mic.onclick=stMic;}
+ if(mic)mic.onclick=stMic;
+ var tk=document.getElementById('sttalk');
+ if(tk)tk.onclick=function(){STV.chat=!STV.chat; stRender();
+  var f=document.getElementById(STV.chat?'stcin':'sttext'); if(f)f.focus();};
+ srcChatWire();}
 
 /* ============================================================
    THE PAGE'S OWN STATE. None of it is a reading: which way the lanes are
    sorted, which column has the room, which list is up, and whether the bank
    is open. Kept across a return to the tab, never saved.
    ============================================================ */
-var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false};
+var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:false};
 /* the one width the page changes shape at is the one the product stacks its
    columns at, so the Story cannot be in three columns while the rails are
    already one. */
@@ -737,8 +768,11 @@ var SRC_LOG=[], SRC_DK=[];
 function srcLog(k,seat){
  if(SRC_LOG.some(function(r){return r.k===k&&r.seat===seat;}))return;
  SRC_LOG.push({k:k, seat:seat||null, at:ST_TEXT.length, moved:false});}
-/* a new entry is a new conversation: the built question quoted the last one */
-function srcFresh(){SRC_DQ='';SRC_DW='';SRC_DN=0;SRC_DNONE=false;SRC_LOG=[];SRC_DK=[];}
+/* a new entry is a new conversation: the built question quoted the last one.
+   The thread goes with it, and so does a reply still in the line, which on a
+   commit has already been sent into the entry and on Clear is cleared. */
+function srcFresh(){SRC_DQ='';SRC_DW='';SRC_DN=0;SRC_DNONE=false;SRC_LOG=[];SRC_DK=[];
+ SRC_CHAT=[];SRC_CPRESS=false;SRC_CDRAFT='';}
 /* THE BUTTON'S QUESTIONS, ONE PER DIMENSION, 20.H1. It walked four of these
    by how many times it was pressed; srcNext now picks the dimension the
    entry has not answered, in the order written in engine/sourceai.js. Each
@@ -844,6 +878,16 @@ function srcPips(rung,col){
  var s='<span class="src-pips" aria-hidden="true" style="--c:'+col+'">';
  for(var i=1;i<=10;i++)s+='<i class="'+(i<=rung?'on':'')+(i>=SRC_ASK?' ask':'')+'"></i>';
  return s+'</span>';}
+/* the listening gauge and the listening refusal, lifted out of srcPaint
+   unchanged so the thread says them in the same words and draws the same
+   pips: two copies of one line are two lines to drift apart. */
+function srcGauge(top){
+ return '<div class="src-row"><span class="src-gauge" style="--c:'+seatCol(top.band)+'">'
+  +'<span>Next question</span>'+srcPips(top.rung,seatCol(top.band))
+  +'<span class="src-seat">'+esc(top.band)+'</span></span></div>';}
+function srcNone(){
+ return 'Nothing read yet, so '+(SRC_DNONE?'there is nothing of yours to ask from':'nothing is asked')
+  +'. Say what your body did, and where.';}
 function srcPaint(){
  var h=document.getElementById('stsrc'); if(!h)return;
  var heard=STR.heard||srcHear(ST_TEXT,null);
@@ -900,11 +944,8 @@ function srcPaint(){
      one: a question built from their words is the one thing on this move
      they pressed for, so it stands at full size. */
   o+='<div class="src-ask">'+srcLand('src-open'+(SRC_DQ?'':' quiet'),q)+acts+'</div>';
-  if(heard.top)o+='<div class="src-row"><span class="src-gauge" style="--c:'+seatCol(heard.top.band)+'">'
-   +'<span>Next question</span>'+srcPips(heard.top.rung,seatCol(heard.top.band))
-   +'<span class="src-seat">'+esc(heard.top.band)+'</span></span></div>';
-  else o+='<p class="src-note">Nothing read yet, so '+(SRC_DNONE?'there is nothing of yours to ask from':'nothing is asked')
-   +'. Say what your body did, and where.</p>';}
+  if(heard.top)o+=srcGauge(heard.top);
+  else o+='<p class="src-note">'+esc(srcNone())+'</p>';}
  /* THE REFUSAL FOR A PRESS WITH NOTHING TO READ. Nothing heard in this entry
     and nothing on the record, so the button has nothing of the person's to
     build from, and it says so rather than handing back a question from the
@@ -920,8 +961,16 @@ function srcPaint(){
     fails a class with no rule. Found by its id, the way the house finds a host. */
  if(why)o+='<div id="srcwhy" style="margin-top:14px"><span class="pm-eye">Why</span>'
   +'<p class="src-open quiet" style="margin:2px 0 0">'+esc(why)+'</p></div>';
+ /* TALKING, THE SAME MOVE IS DRAWN AS A THREAD. Everything above still ran:
+    the same turn, the same question, and the same srcLog row for an ask, so
+    what the entry keeps at commit is identical whichever way it was shown.
+    Only the markup is swapped, and the wiring below finds the same ids. */
+ var cur=null;
+ if(STV.chat){cur=srcChatCur(turn,heard,q,ask); srcChatSync(); srcChatNote(cur);
+  o=srcThread(turn,heard,cur,acts,why);}
  h.innerHTML=o;
- SRC_SHOWN=turn.move==='pass'?'':q;
+ SRC_SHOWN=cur?cur.q:(turn.move==='pass'?'':q);
+ if(cur)srcWire(h);
  srcHearing(h);
  /* the dot used to be rebuilt here on every key and put back on the beat.
     Since round QB it lives in the Journal row, which a key never rewrites,
@@ -932,6 +981,8 @@ function srcPaint(){
     only a question the person pressed for. */
  var said=turn.move==='open'?q:(turn.move==='ask'?ask:(turn.move==='pass'?'Cool.'
   :((SRC_DQ||SRC_QI>=0)?q:'')));
+ /* talking, every turn Source AI takes is a line it says, once */
+ if(cur)said=cur.q;
  var sy=document.getElementById('srcsay');
  if(sy&&sy.textContent!==said)sy.textContent=said;
  var mv=document.getElementById('srcpass');
@@ -939,7 +990,8 @@ function srcPaint(){
   SRC_LOG.forEach(function(r){if(r.k===turn.why&&r.seat===turn.seat)r.moved=true;});
   srcPaint();};
  var press=function(id,fn){var b=document.getElementById(id); if(!b)return;
-  b.onclick=function(){fn(); srcPaint(); var a=document.getElementById(id); if(a)a.focus();};};
+  b.onclick=function(){fn(); if(STV.chat)SRC_CPRESS=true; srcPaint();
+   var a=document.getElementById(id); if(a)a.focus();};};
  press('srcnew',function(){SRC_DNONE=false; srcNextQ();});
  press('srcdyn',function(){
   var d=srcDyn(STR.heard||heard,(CURP&&CURP.story&&CURP.story.entries)||[],ST_TEXT);
@@ -958,7 +1010,9 @@ function srcPaint(){
    at the document's own zero, and so all of them are on the same beat
    however late each was made. Only the named loops are touched; the words
    landing and the caret are one shot and keep their own start. */
-var SRC_LOOPS={srcHalo:1,srcPass:1,srcBreath:1,srcWind:1};
+/* frflow joined at Talk: the thread's pulses are rebuilt on every repaint of
+   the column, and on this clock a rebuilt pulse lands where it already was. */
+var SRC_LOOPS={srcHalo:1,srcPass:1,srcBreath:1,srcWind:1,frflow:1};
 function srcLock(el){
  if(!el||typeof el.getAnimations!=='function')return;
  el.getAnimations({subtree:true}).forEach(function(a){
@@ -1033,6 +1087,199 @@ function srcHearing(h){
  clearTimeout(SRC_HT);
  SRC_HT=setTimeout(function(){var e=document.getElementById('stsrc');
   if(e){e.classList.remove('hear'); srcLock(document.querySelector('#stjr .src-live'));}},1100);}
+/* ============================================================
+   TALK. PLAN.md section C item 4, his words: "make source a socially chat
+   interactive," "add a button where I can just have a conversation back and
+   forth," and "make it look like the soul."
+
+   NOTHING NEW DECIDES ANYTHING. The four moves are srcTurn's, the questions
+   are srcAsk's, the walk's and srcDyn's, Move on is the same button, and
+   srcLog still writes one kind and one seat per question shown. This is the
+   same loop the panel above runs, drawn as a thread: what the person wrote,
+   turn by turn, and what Source AI said back.
+
+   A REPLY IS APPENDED TO THE ONE ENTRY, AND THAT IS A DECISION WITH A
+   MEASUREMENT BEHIND IT. The other way was each reply a message of its own,
+   read on its own. That breaks two things srcHear already gets right only
+   because it reads the entry as one text:
+     the rung   a seat comes back across turns. "I am afraid" then "still
+                afraid" reads rung 7 and asks, as one text; read apart, each
+                is one mention and nothing would ever be asked in a
+                conversation, which is where a story most comes back.
+     negation   srcNegated reads the two words before a mention, cut at a
+                sentence end by clauseFloor. Measured on engine.js with "I did
+                not sleep" then "afraid all night.": joined by a space, afraid
+                reads negated, the first turn's "not" reaching into the
+                second; joined by a newline it reads root, rung 5, exactly
+                what "afraid all night." reads alone. A newline is in
+                SENT_END, so the turn is a boundary the reader already honours.
+   So a reply is the old text with its trailing spaces cut, a newline, and the
+   reply. The trailing spaces are cut because normMap maps a run of
+   punctuation and spaces to its FIRST raw character: "sleep \nafraid" puts
+   the space first and the boundary is lost, measured, the afraid read as
+   negated again. A turn the person ended on a comma loses it the same way,
+   and that is left as it is rather than editing their text: negation only
+   ever removes a mention, so the cost is a seat heard less, the cheap miss
+   sourceai.js already chose over asking about what someone said they were
+   not.
+
+   WHAT THE THREAD HOLDS, AND THAT IT IS NEVER KEPT. SRC_CHAT is page memory
+   beside ST_TEXT, cleared by srcFresh on Clear and on commit, and nothing in
+   stCommit reads it: the entry still keeps text, bands and srcAsked(SRC_LOG),
+   a kind and a seat per question and never its words. A Source AI row holds
+   the line it said, so the thread can show it; a reply row holds offsets into
+   ST_TEXT and the reply as sent, which is only how the thread notices the
+   entry was edited in the box. tests/srcchat.js commits a conversation and
+   checks the record holds nothing else.
+
+   ONE QUESTION ON SCREEN, STILL. Only the newest Source AI row carries its
+   words. Every earlier one is its ring on the thread, so a person reading
+   back sees their own words in full and one live question, never a column of
+   them to answer. And it never asks the same why twice: an ask about the seat
+   it is already asking about updates that row in place, the way the panel's
+   one question updates its count, rather than landing as a second ask.
+
+   THE THREAD IS THE FIELD'S, AND ITS NUMBERS ARE ITS READING. Round LV kept
+   the Field's canvas off this page, and this keeps to that: no canvas. The
+   threads are the renditions' half of pulses() that rings.js already draws in
+   markup, frFlow, on its numbers: a wire hangs by the tension of what it
+   carries, the bow 1.28 less 0.62 of it, and carries a pulse seven long, a
+   period from 96 slack to 48 taut and a speed from 16 to 84 pixels a second on
+   the square root, running from the earlier turn to the newer, toward now.
+   The tension is the rung the reading stood at on that turn, tenths of ten,
+   and the colour its seat's. So as a story comes back to one place the wire
+   it is written on tightens, quickens and takes that seat's colour, and a
+   conversation that has found nothing hangs slack and runs slow and faint.
+   Nothing on it is decoration. Reduced motion, quiet and rm keep the wires,
+   which are the reading, and drop the pulses, which are motion.
+   ============================================================ */
+var SRC_CHAT=[], SRC_CPRESS=false, SRC_CDRAFT='';
+/* WHAT SOURCE AI SAYS ON THIS TURN, as a row, from the move srcPaint already
+   chose. The key is what makes two rows the same turn: an ask is the seat and
+   the why, so its count updating is not a new question. Listening it says
+   back what it heard, the person's own words and the place they land, in
+   srcAsk's own wording, and asks nothing, srcTurn's listen; a question the
+   person pressed for since their last reply stands instead. */
+function srcChatCur(turn,heard,q,ask){
+ var top=heard&&heard.top, r={rg:top?top.rung:0, bd:turn.band||(top?top.band:null), mv:turn.move};
+ if(turn.move==='open'){r.key='open|'+q; r.q=q;}
+ else if(turn.move==='ask'){r.key='ask|'+turn.seat+'|'+turn.why; r.q=ask;}
+ else if(turn.move==='pass'){r.key='pass'; r.q='Cool.';}
+ else if(SRC_CPRESS&&!SRC_DNONE){r.key='q|'+q; r.q=q; r.mv='asked';}
+ else if(top){var w=srcQuote(top.words);
+  r.key='say|'+top.seat; r.q=(w?'You wrote '+w+'. ':'')+'It lands '+srcPlace(top.band)+'.';}
+ else{r.key='say|'; r.q=srcNone();}
+ r.w='src'; return r;}
+/* THE REPLIES STILL MATCH THE ENTRY. Text added in the box, or by Record,
+   since the last row is the person's next turn. Text changed inside an
+   earlier turn means the rows no longer say what the entry says, so the
+   thread starts again from the entry as one turn rather than show a
+   conversation that is not the one on the record. */
+function srcChatSync(){
+ var t=ST_TEXT, end=0, okk=SRC_CHAT.every(function(r){
+  if(r.w!=='me')return true; end=r.b; return t.slice(r.a,r.b)===r.t;});
+ if(!okk){SRC_CHAT=[]; end=0;}
+ var tail=t.slice(end), lead=tail.length-tail.replace(/^\s+/,'').length, v=tail.trim();
+ if(v)SRC_CHAT.push({w:'me', a:end+lead, b:end+lead+v.length, t:v});}
+/* A NEW TURN IS NOTED, OR THE LAST ONE IS UPDATED. Same key, the same turn
+   with its words refreshed. Nothing written since a question the person
+   pressed for, or since a line said back, and the new one takes its place:
+   pressing for another question is asking for that one instead. Otherwise it
+   is a new turn, and the one before it folds to its ring. */
+function srcChatNote(cur){
+ var li=-1, after=false;
+ SRC_CHAT.forEach(function(r,i){if(r.w==='src'){li=i; after=false;} else if(li>=0)after=true;});
+ var L=li>=0?SRC_CHAT[li]:null;
+ if(L&&L.key===cur.key){L.q=cur.q; L.mv=cur.mv; L.rg=cur.rg; L.bd=cur.bd; return;}
+ if(L&&!after&&/^(open|q|say)\|/.test(L.key)){SRC_CHAT[li]=cur; return;}
+ SRC_CHAT.push(cur);}
+/* SEND. The reply joins the entry on its own line, see the block above for
+   why a newline and why the trailing spaces go, and the page reads it the way
+   a key in the box is read: parse, then stRefresh, which repaints the thread. */
+function srcChatSend(){
+ var cin=document.getElementById('stcin'), v=String(cin?cin.value:SRC_CDRAFT).trim();
+ if(!v)return false;
+ srcChatSync();
+ var base=ST_TEXT.replace(/\s+$/,''), a=base.length+(base?1:0);
+ ST_TEXT=base+(base?'\n':'')+v;
+ SRC_CHAT.push({w:'me', a:a, b:ST_TEXT.length, t:v});
+ SRC_CDRAFT=''; SRC_CPRESS=false; if(cin)cin.value='';
+ ST_PARSED=parseStory(ST_TEXT); stRefresh();
+ if(cin)cin.focus();
+ return true;}
+/* the reply line. Enter sends and Shift and Enter is a new line, the way a
+   conversation box works everywhere else; a draft is kept across a repaint
+   of the page, and Commit counts it as something to commit. */
+function srcChatWire(){
+ var cin=document.getElementById('stcin'); if(!cin)return;
+ var ap=document.getElementById('stapply');
+ cin.oninput=function(){SRC_CDRAFT=cin.value; if(ap)ap.disabled=!ST_PARSED&&!cin.value.trim();};
+ cin.onkeydown=function(e){if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault(); srcChatSend();}};
+ cin.onfocus=function(){stFocus('write');};
+ if(ap&&SRC_CDRAFT.trim())ap.disabled=false;
+ var sd=document.getElementById('stcsend');
+ if(sd)sd.onclick=function(){srcChatSend(); cin.focus();};}
+/* THE THREAD. A row per turn, oldest at the top, each on its node, and under
+   every node but the last the wire down to the next one. The newest Source
+   AI row carries its words and the same controls the panel does, under the
+   same ids, so srcPaint wires them without knowing which view it drew. */
+function srcThread(turn,heard,cur,acts,why){
+ var ents=(CURP&&CURP.story&&CURP.story.entries)||[], pr=null, last=-1;
+ SRC_CHAT.forEach(function(r,i){if(r.w==='src')last=i;});
+ var o='<ol class="src-th" aria-label="Conversation">';
+ SRC_CHAT.forEach(function(r,i){
+  /* a reply's reading is the entry as it stood when it was sent */
+  if(r.w==='me'&&r.rg===undefined){pr=pr||srcPrior(ents);
+   var hh=srcHear(ST_TEXT.slice(0,r.b),pr); r.rg=hh.top?hh.top.rung:0; r.bd=hh.top?hh.top.band:null;}
+  var t=clamp((r.rg||0)/10,0,1), col=r.bd?seatCol(r.bd):'var(--dim)';
+  var cls='src-tn src-tn-'+(r.w==='me'?'me':(i===last?'now':'past'));
+  o+='<li class="'+cls+'" style="--c:'+col+'"'+(r.w==='src'&&i!==last?' aria-label="An earlier turn"':'')+'>';
+  if(i<SRC_CHAT.length-1){
+   var per=96-48*t, sp=16+68*Math.sqrt(t), dur=per/sp, ph=(((i*12.9898+t*78.233)%1)+1)%1*dur;
+   o+='<svg class="src-tw" aria-hidden="true" data-t="'+t.toFixed(2)+'" data-s="'+(i%2?-1:1)+'">'
+    +'<path class="src-wire" style="opacity:'+(0.4+0.5*t).toFixed(2)+'"/>'
+    +'<path class="src-puls" stroke-dasharray="7 '+(per-7).toFixed(1)+'" style="opacity:'
+    +(0.28+0.72*t).toFixed(2)+';--p:'+per.toFixed(1)+';--d:'+dur.toFixed(2)+'s;--ph:-'+ph.toFixed(2)+'s"/></svg>';}
+  o+='<i class="src-nd"></i>';
+  if(r.w==='me')o+='<p class="src-me">'+esc(r.t)+'</p>';
+  else if(i===last)o+=srcThreadNow(r,turn,heard,acts,why);
+  o+='</li>';});
+ return o+'</ol>';}
+/* the one live Source AI row, in the panel's own markup for each move */
+function srcThreadNow(r,turn,heard,acts,why){
+ var o='';
+ if(turn.move==='ask')
+  o+=srcLand('src-q',r.q,'--c:'+seatCol(turn.band))
+   +'<div class="src-row"><button type="button" class="btn" id="srcpass">Move on</button>'
+   +'<span class="src-note">Answer below, or leave it.</span></div>';
+ else if(turn.move==='pass')
+  o+='<p class="src-q">Cool.</p><p class="src-note">Nothing more asked in this entry.</p>';
+ else{
+  o+='<div class="src-ask">'+srcLand('src-open'+(r.key.indexOf('say|')===0?' quiet':''),r.q)+acts+'</div>';
+  if(r.key.indexOf('say|')===0&&heard.top)o+=srcGauge(heard.top);
+  if(SRC_DNONE&&turn.move==='open')
+   o+='<p class="src-note">Nothing read yet, so there is nothing of yours to ask from. Write a line first.</p>';}
+ if(why)o+='<div id="srcwhy" style="margin-top:12px"><span class="pm-eye">Why</span>'
+  +'<p class="src-open quiet" style="margin:2px 0 0">'+esc(why)+'</p></div>';
+ return o;}
+/* THE WIRES ARE LAID AFTER THE ROWS ARE. A row's height is only known once it
+   is on the page, and a viewBox stretched to fit would stretch the pulse with
+   it, so every height is read first and every path written after, one layout
+   for the whole thread. Each wire runs from its node to the next row's node,
+   which sits the same distance down its own row, so it is exactly the row
+   tall. The bow is frSag's, scaled down on a short row so a folded turn does
+   not kink. Then the pulses go on the panel's one clock, srcLock, so a
+   repaint does not restart them, and the thread opens at its newest turn. */
+function srcWire(h){
+ var lis=[].slice.call(h.querySelectorAll('.src-tn')), hs=lis.map(function(li){return li.offsetHeight;});
+ lis.forEach(function(li,i){
+  var sv=li.querySelector('.src-tw'); if(!sv)return;
+  var H=hs[i], t=+sv.getAttribute('data-t')||0, s=+sv.getAttribute('data-s')||1;
+  var bow=7*(1.28-0.62*t)*Math.min(1,H/80), d='M12 0Q'+(12+2*s*bow).toFixed(1)+' '+(H/2).toFixed(1)+' 12 '+H;
+  sv.setAttribute('viewBox','0 0 24 '+H); sv.style.height=H+'px';
+  [].forEach.call(sv.querySelectorAll('path'),function(p){p.setAttribute('d',d);});});
+ srcLock(h);
+ var th=h.querySelector('.src-th'); if(th)th.scrollTop=th.scrollHeight;}
 /* THE RAIL HOST IS STATIC, SO IT IS EMPTIED ON THE WAY OUT. A hidden surface
    never sits in the document asserting a stale reading, the rule Summary
    already keeps. setTab calls this on every tab but Story. The bank closes
