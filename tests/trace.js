@@ -479,6 +479,37 @@ function suite(T,E,ok,g){
   ok(J(v.profile.trace)===before,'and none of it was written to the record');
  }
 
+ g('TG13b · the mirror card\'s Yes is the person confirming the reading');
+ {
+  /* ob.yes is written by ui/onboard.js and checked by vEntryOb. Before 3
+     October nothing read it, so every Yes reached loopRead as unanswered. */
+  const P=worked(E); if(!P)return;
+  const ids=T.traceStoryIds(P), sid='story:'+ids[1];
+  const base=T.traceFromRecord(JSON.parse(J(P)));
+  const read=base.edges.filter(e=>e.from===sid&&e.edge==='supports').map(e=>+e.to.split(':')[1]);
+  ok(read.length>=2,'the second entry reads at two or more addresses, got '+J(read));
+  const far=E.NODES.find(n=>n.cf&&read.indexOf(n.i)<0&&n.b==='Crown').i;
+  P.story.entries[1].ob={pick:null,feel:null,place:null,yes:[read[0],far],no:[read[1]]};
+  const v=E.validateProfile(JSON.parse(J(P)));
+  ok(v.ok,'an entry carrying the mirror\'s answers passes the boundary, '+J(v.errs));
+  const G=T.traceFromRecord(v.profile);
+  ok(G.refused.length===0,'nothing refused reading the answers, '+J(G.refused));
+  const y=G.edges.find(e=>e.from===sid&&e.to==='pattern:'+read[0]);
+  ok(y&&y.src==='user_confirmed'&&y.was==='inferred'&&y.yes===true,
+   'a Yes on an address the reading made confirms that edge and keeps that it was inferred, got '+J(y));
+  const f=G.edges.find(e=>e.from===sid&&e.to==='pattern:'+far);
+  ok(f&&f.src==='user_confirmed'&&f.was===undefined,
+   'a Yes on an address today\'s reading no longer reaches is still held as the person\'s, with nothing it was before, got '+J(f));
+  const n=G.edges.find(e=>e.from===sid&&e.to==='pattern:'+read[1]);
+  ok(n&&n.src==='inferred','a Not me changes nothing in the graph: it has no provenance for a refusal, got '+J(n));
+  ok(G.alg===2,'and the graph says it was read under the rule that reads the Yes');
+  if(typeof E.loopRead==='function'){
+   const L=E.loopRead(Object.assign({},v.profile,{practice:null}));
+   const row=k=>L.patterns.find(x=>x.key==='pattern:'+k);
+   ok(row(read[0])&&row(read[0]).state==='confirmed','the loop read reports the Yes as confirmed');
+   ok(row(read[1])&&row(read[1]).state==='unanswered','and the Not me as unanswered, not confirmed');}
+ }
+
  g('TG14 · privacy, and nothing thrown');
  {
   ok(E.OB_KEYS.indexOf('trace')<0,'the outbox has no key a graph could ride out on');
@@ -525,6 +556,9 @@ function mutants(E){
   ['the reading follows whatever is loaded', Object.assign({},X,{traceFromRecord:function(p,i){
     const q=JSON.parse(JSON.stringify(p));
     q.soul={doms:E.S.doms.slice(),arcs:E.S.arcs.slice(),roots:E.S.roots.slice()};
+    return E.traceFromRecord(q,i);}})],
+  ['the mirror card\'s Yes is ignored', Object.assign({},X,{traceFromRecord:function(p,i){
+    const q=JSON.parse(JSON.stringify(p)); ((q.story&&q.story.entries)||[]).forEach(e=>{if(e)delete e.ob;});
     return E.traceFromRecord(q,i);}})],
   ['planned rituals count as done', Object.assign({},X,{traceFromRecord:function(p,i){
     const q=JSON.parse(JSON.stringify(p)); (q.rituals||[]).forEach(r=>{if(r&&r.done===false)r.done=true;});
