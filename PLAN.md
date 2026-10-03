@@ -77,6 +77,69 @@ own closing line, and are not scheduled here.
   uploads. The repo's own checked model (`tools/ritualsim.js`, 1000 people, seed 20260920) gives 28 of
   1,000 still active at day 90, run and confirmed directly.
 
+**TDD 4, the Next AI handoff** (`ATUNED_Next_AI_Experience_Measurement_Handshake.md` and
+`ATUNED_Next_AI_Documentation_Index.md`, round QR). Audited (`reviews/NEXT-AI-AUDIT.md`, round QR,
+landed and checked): 48 requirements, 9 EXISTS, 11 PARTIAL, 11 MISSING, 17 CONFLICT, 0 UNVERIFIED.
+Eleven of the seventeen conflicts are the document asking for something the owner has already ruled
+against elsewhere, not a new idea.
+
+- **Signal test: CONFLICT with his own ruling.** His ruling (TASKS.md SIG5, SIG10): no picking from a
+  list of words or places; his version is think yes ten times then no ten times, at the throat (JY, KD,
+  KE). The shipped onboarding has no signal test at all (`ui/onboard.js:33` removed it); what ships is a
+  Feel step and a Body step, both pick lists. "Signal test" now names three different things in shipped
+  copy. Not building the document's version; the owner's own version is still unbuilt either.
+- **Baseline and re-test: MISSING, the one genuinely new idea in the document.** Today the product only
+  asks "what changed" after a release, never before. The `before`/`after` fields already exist on every
+  evidence record, unused, and cannot be edited once written, so a baseline is safe to add without a
+  schema change. Measured: one release moves CQ by about 0.01 on a 100 point scale (62.0000 to 62.0111);
+  the document's own example (62 to 66) is about 360 times that size and should not be treated as typical.
+- **CQ direction bands (Descending/Oscillating/Ascending): not implemented, but the premise is wrong.**
+  CQ already has ten named tiers (`TIERDEF`), one of which is already called Oscillating (41-50), and the
+  two tables disagree at 11 of 101 printed values. The document's own example (CQ 62) reads Oscillating
+  under its bands but Ascending under TIERDEF. Needs one ruling (ONE set of words, see first steps) before
+  either table ships anywhere customer-facing.
+- **Gap = 100 - CQ: CONFLICT.** The gap was deliberately moved off CQ onto expression (`cqCeiling`
+  replaced by `exHeadroom`); body load never enters CQ. "Gap" is also already the Avatar's own word for
+  something else. Not building the document's formula without a ruling.
+- **Ritual detection and account claim: PARTIAL to MISSING.** Suggestion exists in host code (`ritFor`,
+  plus `ritSuggest` on the unmerged `flow3-qn`). Storage is still split three ways with no link back to
+  the story. "Don't re-tell the story" holds on one device only (sign-in does not sync). The claim flow
+  itself is MISSING. Storing it off-device needs consent, encryption at rest and de-identification, none
+  built.
+- **Algorithm versioning: PARTIAL.** Coherence (`CQ_MODEL`) and trace (`TRACE_ALG`) are already versioned
+  under other names. The lexicon (`LEX_VERSION`) versions its tables but not its parsing rules. Release,
+  pattern and ritual-detection versions do not exist. A real small defect found along the way: `seriesRead`
+  does not check `m`, so a formula change can read as the person having moved.
+- **His own addendum (model accuracy, variance, the "why" tooltip): MISSING/CONFLICT/PARTIAL.** Nothing
+  shows a per-reading accuracy, and one cannot be measured on this data (`DESIGN-sniffer.md:373`). He
+  himself struck the plus-or-minus figure ("100 plus minus 12, swing 11. That shit has to all go") and the
+  voice gate now fails any figure carrying a tolerance, so a variance number is not being rebuilt without
+  a fresh ruling. The "why is this reading unsure" tooltip is buildable now: the reasons already exist as
+  separate engine signals, they sort cleanly into the person's own input versus the engine's guessing, and
+  the masked-word fix below is the first input-side case.
+
+**First steps on TDD 4, ordered:**
+1. A single owner ruling on the CQ direction words and on "gap" before either goes anywhere
+   customer-facing (FAQ, About page). Open question, see WAITING-ON-YOU.md.
+2. The before/after baseline-and-retest capture: ~150 lines on the existing evidence fields, no schema
+   change. Touches `ui/release.js`, so it lands after `release-carousel` merges.
+3. The "why is this reading unsure" engine read and its tooltip: counts only (named by your words /
+   guessed), no accuracy percentage and no tolerance number until step 1's ruling extends to cover those.
+
+**FIXED and merged, round QR: the masked-profanity bug**, found from the owner's own annotated Journal
+screenshot. Root cause is outside this codebase: the browser's own dictation (Chrome's Web Speech API,
+Gboard voice typing) silently replaces a swear word with stars before the text ever reaches the page, and
+gives the page no way to turn that off. Measured: a masked run can also inflate a reading, not only lose
+one ("really ****** furious" at 33.6 vs. the same sentence typed out at 24.0, because the mask removes the
+word the degree-word was modifying). The fix (`engine/sniff.js`: `maskedRuns`, `maskedSay`, pure engine
+functions, no host access) detects any run of two or more stars inside a word and shows one plain sentence
+under the Journal box and the onboarding story box saying dictation hid a word and inviting the person to
+type it over the stars. Verified directly: merged into `claude/laughing-feynman-xhfyj3` at `f47aa63`,
+rebuilt clean, `tests/engine.js` 4448 passed 0 failed (12 new, confirmed to fail on the pre-fix engine),
+`tests/claims.js` 108 passed 0 failed, and reproduced live in a real browser (Playwright/Chromium) typing
+the exact sentence above into the Journal box at both 1600 and 390 pixels wide, screenshotted, the warning
+line present and reading correctly both times.
+
 **First steps, ordered:**
 1. DONE (above). The claims gate.
 2. A claim-type register: every public number and causal sentence tagged with one of the nine claim types
