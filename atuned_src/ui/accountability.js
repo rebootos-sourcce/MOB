@@ -84,9 +84,11 @@ function acctDueHtml(st){
     left column of this same page now, so the press opens it where it stands:
     naming a column would have been wrong anyway, because on a phone the
     columns stack and the left one is not on the left. */
+ /* and the press stands alone, round RB: Nothing active yet went on his "Get
+    rid of all the sec[ond] third tier text", because the card's own line
+    above already says what is listed here and an empty list says the rest */
  if(!st.act.length)
-  body='<p class="rv-empty">Nothing active yet.</p>'
-   +'<div class="rv-acts"><button type="button" class="btn" data-act="add">New ritual</button></div>';
+  body='<div class="rv-acts"><button type="button" class="btn" data-act="add">New ritual</button></div>';
  else if(!due.length)body='<p class="rv-empty">Nothing due today.</p>';
  else{
   body='<ol class="rv-list">';
@@ -263,8 +265,11 @@ function acctCubeHtml(X,k,today,empty){
    the record dates it. The shelf is ritMarksHtml's circle, the ladder's own
    icon in its family's seat colour, ring not fill. */
 function acctShelfHtml(L,md,today){
- if(!L.earned.length)return '<div class="rv-marks"><span class="rv-lb">Marks</span>'
-  +'<p class="rv-empty">None yet. A mark is earned from your record, never bought.</p></div>';
+ /* NO MARKS IS NO SHELF, round RB. The line under the label went on his "Get
+    rid of all the sec[ond] third tier text", and a label with nothing under
+    it reads as a shelf that failed to draw, so the shelf goes with it until
+    the first mark is earned. The cubes above still pin a mark on its day. */
+ if(!L.earned.length)return '';
  return '<div class="rv-marks"><span class="rv-lb">Marks</span><div class="rv-mk">'
   +L.earned.map(function(m,i){var d=md[m.k];
    return '<span class="rv-m" style="--c:'+seatCol(m.b)+';--i:'+i+'"'

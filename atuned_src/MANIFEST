@@ -50,6 +50,7 @@ engine/outbox.js
 engine/profiles.js
 engine/export.js
 engine/charfield.js
+engine/ritex.js
 ui/component.js
 ui/sound.js
 ui/tip.js

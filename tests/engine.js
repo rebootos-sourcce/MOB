@@ -7281,5 +7281,55 @@ g('QZ · the sniffer reads other words for the same reading, and still reads not
   'and everything is put back, '+Object.keys(LEX).length+' entries');
 }
 
+g('RB · every worked example with a row runs rituals, written in the shapes the Ritual page reads');
+{
+ /* engine/ritex.js. Before it, every example opened the Ritual page on zero
+    plans and zero days. Each row is checked against a known answer worked out
+    from the table by hand, and every day goes through the boundary. */
+ const NOW=Date.parse('2026-10-03T12:00:00Z'), H=E.RITEX_HIST, today=E.pracDay(NOW);
+ const names=Object.keys(H);
+ ok(names.every(n=>E.PEOPLE.some(p=>p.nm===n)),'every row names a person in the roster, '+names.filter(n=>!E.PEOPLE.some(p=>p.nm===n)).join(', '));
+ const built={};
+ names.forEach(n=>{let R=null,thr='';
+  try{R=E.ritexBuild(E.PEOPLE.find(p=>p.nm===n),NOW);}catch(e){thr=e.message;}
+  built[n]=R;
+  ok(R&&!thr&&R.plans.length===H[n].length,n+' builds one plan per row, '+(thr||(R&&R.plans.length)));
+  if(!R)return;
+  const rec=E.blankProfile(n); rec.rituals=R.rituals;
+  const v=E.validateProfile(JSON.parse(JSON.stringify(rec)));
+  ok(v.ok&&v.profile.rituals.length===R.rituals.length,n+'\'s '+R.rituals.length+' days pass the boundary whole, '+(v.errs||[]).join('; '));});
+ const key=s=>s.join('+'), done=(R,k)=>R.rituals.filter(x=>key(x.steps)===k&&x.done).map(x=>E.pracDay(x.t));
+ /* Derek, box and truth every day for forty days and today: forty one days,
+    and the streak the ladder reads off them is at least that */
+ const D=built.Derek;
+ ok(done(D,'box+truth').length===41&&done(D,'box+truth').indexOf(today)>=0,'Derek kept his morning forty one days running, today included, '+done(D,'box+truth').length);
+ const rec=E.blankProfile('Derek'); rec.rituals=D.rituals;
+ ok(E.ladderRead(rec,NOW).streak.run>=41,'and the ladder reads a run of at least forty one, '+E.ladderRead(rec,NOW).streak.run);
+ /* Diane, every day for twelve days, the last three missed: nine kept, and
+    nothing at all on the three days she stopped */
+ const Di=built.Diane, dd=done(Di,'truth+slow');
+ ok(dd.length===9&&[1,2,3].every(b=>dd.indexOf(today-b)<0),'Diane kept nine and stopped for the last three, '+JSON.stringify(dd.map(d=>today-d)));
+ /* Ana stopped Noting nine days ago: no day on it after that */
+ const An=built.Ana, an=An.rituals.filter(x=>key(x.steps)==='noting').map(x=>today-E.pracDay(x.t));
+ ok(an.length>0&&an.every(b=>b>9)&&An.plans.find(p=>key(p.steps)==='noting').stop,'Ana\'s stopped ritual carries its stop and no day after it, '+JSON.stringify(an));
+ /* Tomas started today and has not done it: one entry, the start, not done */
+ const T=built.Tomas;
+ ok(T.rituals.length===1&&T.rituals[0].done===false&&E.pracDay(T.rituals[0].t)===today&&T.kept===0&&T.missed===0,'Tomas started today and the start is written undone, '+JSON.stringify(T.rituals));
+ /* weekdays are kept to: Wren's hands are never on a Sunday, his garden only on one */
+ const Wr=built.Wren;
+ ok(done(Wr,'hands').every(d=>E.ritexWd(d)!==6)&&done(Wr,'na_tend').every(d=>E.ritexWd(d)===6)&&done(Wr,'na_tend').length>=4,
+  'Wren\'s rituals land on their own weekdays and no other');
+ ok(JSON.stringify(E.ritexBuild(E.PEOPLE.find(p=>p.nm==='Ana'),NOW))===JSON.stringify(An),'the same moment builds the same history');
+ ok(E.ritexBuild({nm:'Nobody'},NOW)===null&&E.ritexBuild(E.PEOPLE.find(p=>p.nm==='James'),NOW)===null,'a person with no row has no rituals, and none is invented');
+ /* known bad: a step naming no practice is refused by name */
+ H.__rb={}; H.__rb=[{k:'box+nosuch', b:'Root', on:null, n:0, back:2, d:'c'}]; let thr='';
+ try{E.ritexBuild({nm:'__rb'},NOW);}catch(e){thr=e.message;}
+ H.__rb=[{k:'box', b:'Spleen', on:null, n:0, back:2, d:'c'}]; let thr2='';
+ try{E.ritexBuild({nm:'__rb'},NOW);}catch(e){thr2=e.message;}
+ delete H.__rb;
+ ok(/nosuch names no practice/.test(thr)&&/Spleen is not a seat/.test(thr2),'a row naming no practice or no seat is refused by name, '+thr+' / '+thr2);
+ ok(E.ritexHas(E.blankProfile('b'))===false&&E.ritexHas(rec)===true,'a blank record carries no day log, a built one does');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);
