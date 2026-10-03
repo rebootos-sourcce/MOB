@@ -3255,6 +3255,51 @@ body.punch .s-readbox,body.punch .s-out{background:var(--panel-2);border-color:t
    1600 above All masks. Each card stands at its own height now. */
 .sg-two.sg-even{align-items:start}
 .sg-two.sg-even>.sg-card>.sg-fold:first-of-type{margin-top:14px}
+/* ROUND RF, THE FLOW. The left half of the lead row is two cards now, what
+   you told it over the Reading, in a column wrapper with no look of its own.
+   On one column both wrappers dissolve and the four cards take the order a
+   person needs them in: their words, what to do, the Reading, the drivers.
+   Measured at 390 on Diane: What to do started 2.8 screens down, under
+   about 500 words, before this. */
+.sg-col{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sg-told>.s-told{margin-bottom:0}
+@media (max-width:1100px){
+ .sg-lead2>.sg-col,.sg-lead2>.sg-side{display:contents}
+ .sg-lead2>.sg-col>.sg-told{order:1}
+ .sg-lead2>.sg-side>.sg-todo{order:2}
+ .sg-lead2>.sg-col>.sg-story{order:3}
+ .sg-lead2>.sg-side>.sg-drive{order:4}}
+/* THE PLATE ON ONE LINE where there is width for it. Name, then the band,
+   then where it goes, read left to right in the order the plate means them.
+   It stood as two rows with the band pushed to the far right and the middle
+   of the row empty, which spent a quarter of the first screen at 1600 on
+   three facts. */
+@media (min-width:1101px){
+ .sg-who .s-plate{grid-template-columns:auto auto minmax(0,1fr);column-gap:32px}
+ .sg-who .s-pl-l{grid-column:1;grid-row:1}
+ .sg-who .s-pl-r{grid-column:2;grid-row:1}
+ .sg-who .s-ptoward{grid-column:3;grid-row:1;margin-top:0;padding-left:28px;
+  border-left:1px solid var(--edge)}}
+/* TEXT A PERSON READS, AT THE READING SIZE. Measured on Diane at 1600 before
+   this: 80 per cent of the visible characters on this page were under 16px,
+   the house floor for body text, and that included their own words, every
+   meaning in the Reading, the line under each action and the drivers' own
+   sentences. Those come up to 16, and the line under an action to 14 in the
+   middle ink, because it is the reason for the button under it. Labels,
+   ring values and footnotes keep their sizes: they are scanned, not read.
+
+   And the Reading's claims lead by ink rather than by size. The meanings
+   stayed one step smaller to let the claim lead; at one size, the claim is
+   set in the full ink and the meaning in the middle ink, so the order of
+   importance survives without a meaning dropping under the floor. */
+.sum-wrap .s-story .s-p{color:var(--ink)}
+.sum-wrap .s-story .s-un{font-size:16px;color:var(--mid)}
+.sum-wrap .s-told-e p{font-size:16px}
+.sum-wrap .s-told-e time{font-size:12px}
+.sum-wrap .s-out-s{font-size:14px;color:var(--mid)}
+.sum-wrap .sg-m-t p{font-size:16px}
+.sum-wrap .sg-note{font-size:14px}
+.sum-wrap .sg-card .s-axes .s-p{font-size:16px}
 .sg-folds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start}
 .sg-fold{border:1px solid var(--edge);border-radius:var(--r-s);min-width:0;margin-top:14px}
 .sg-folds .sg-fold{margin-top:0;background:var(--panel)}
