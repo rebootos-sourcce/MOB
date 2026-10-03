@@ -14,19 +14,11 @@ Short version: a real public web link, with no password on it, has been sitting 
 
 This is separate from, and does not replace, the J0 decision itself below. Fixing the leak stops a stranger from reaching the unsafe flow through this one link. It does not build the safety check that flow still needs.
 
-## Then read this one
+## J0, closed as a question, round QW
 
-**J0: no stranger's first story should reach the engine until there's a distress check.** Three separate reviews tonight independently landed on the same gap: the Story screen writes a reading into your field the moment you finish typing, with no chance to confirm, correct or reject it, and no check at all for whether what was typed is a crisis, not a pattern to work on. This is also exactly the thing you said "not yet" to a few hours ago (the clinician and counsel review).
+Your words: "I'm not dealing with crisis shit right now. Ignore it. Move the fuck past it. This is for investors, not for precision or clinicians. Stop asking until we move towards the release candidate." Taken exactly as said, not relitigated here. No A/B/C, no new question.
 
-The third review (the final funnel spec) split this into two pieces, and that split matters: the detector itself (does this story read as a crisis, yes or no) shows nothing to anybody and changes nothing anybody sees, so I'm treating that half as ordinary engineering and building it now, same as anything else tonight. What it does when it fires, meaning the actual words shown to someone in crisis and whether that's safe without a clinician checking it first, is the part I will not build without your word. Three ways to go, costs attached to each:
-
-- **A. Ship a plain first version of the response now,** that stops before the reading is saved, says plainly it may have misread, and shows a card with a person to call. You'd be reviewing real working behavior rather than a plan. Cost: the words go out before anyone with clinical training has checked them.
-- **B. Tell me who should write those words first,** you, a clinician you pick, or someone else. Cost: the response, and the public link going live for real strangers, both wait for that person.
-- **C. Keep the public link dark until a clinician has reviewed the words,** no matter how long that takes. Cost: same wait as B, but open-ended rather than tied to one person.
-
-One more real data point, found trying to act on that plan tonight: the agent I sent to build the invisible detector was stopped mid-task by an automated content filter, specifically while writing test cases out of real crisis language (lines like "I do not want to be here anymore"). Even the harmless, shows-nothing-to-anyone half of this could not get all the way through automated building. I did not force it through. That is itself a reason to lean toward B or C rather than A: if a model cannot safely write test sentences for this, writing the real words a distressed stranger would actually see should be a person's job, not an agent's, whichever option you pick.
-
-I will not point the public domain at this branch again until you've picked one of the three above.
+What still stands regardless of that: the detector itself (invisible, shows nothing, decides nothing a person sees) is ordinary engineering and gets built like anything else. The public domain (atuned.world) still doesn't get this branch from me, for the plain reason stated once in `TASKS.md` round QW: "for investors" is about who you mean to show it to, and a real named public domain is reachable by anyone who finds it, not only them. When you want it live, say so and it goes up that day; nothing here is a blocker on that, it is just not happening on its own.
 
 ## Listen to this one when you're near a speaker
 
