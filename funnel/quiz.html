@@ -80,6 +80,29 @@ button.lnk,a.lnk{background:none;border:0;color:var(--mid);font:inherit;font-siz
 button.lnk:hover,a.lnk:hover{color:var(--ink)}
 .fail{margin-top:10px;font-size:14px;color:var(--bad)}
 
+/* ---- the signal, before the questions. The same card and the same option
+   object as a question, because it is the same act: one tap and the page
+   moves. The places and the words are short, so they sit two to a row, which
+   keeps eight of them and the way out on one phone screen. The way out spans
+   the row so it reads as its own answer and not as a ninth place. ---- */
+.sig .eye{margin-bottom:14px}
+.sig .sigin{margin:0 0 14px;color:var(--mid)}
+.sig .q{margin-bottom:20px}
+.sigopts{grid-template-columns:1fr 1fr}
+.sigopts .none{grid-column:1/-1}
+.sigown{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.sigown input{flex:1 1 200px;min-width:0;min-height:52px;background:var(--panel);
+ color:var(--ink);border:1px solid var(--edge-2);border-radius:9px;padding:12px 16px;
+ font:inherit;font-size:17px}
+.sigown input::placeholder{color:var(--dim)}
+.sigown input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sigseen h1{font-size:34px;line-height:1.12;letter-spacing:-.02em;margin:0;font-weight:600}
+.sigseen .said{margin:18px 0 0;padding-left:14px;border-left:2px solid var(--accent);
+ font-size:22px;line-height:1.4;color:var(--ink)}
+.sigseen p{margin:16px 0 0;color:var(--mid)}
+.sigseen .hold{color:var(--ink)}
+.sigseen .pri{margin-top:24px}
+
 /* ---- the opening ---- */
 .open h1{font-size:34px;line-height:1.12;letter-spacing:-.02em;margin:34px 0 0;font-weight:600}
 .open p{color:var(--mid);margin:16px 0 0}
@@ -245,8 +268,11 @@ button.act:focus-visible,a.act:focus-visible{outline:2px solid var(--ink);outlin
 <script src="ring.js"></script>
 <script>
 /* ============================================================
-   THE TEST. Five states: the opening, one question, the reading, the
-   story, the door. The last two are his four steps, round LJ in TASKS.md:
+   THE TEST. Six states: the opening, the signal, one question, the
+   reading, the story, the door. The signal is the funnel audit's beat 07,
+   item 4 of the punch list in TASKS.md round QY, and it is written up where
+   it is declared. The last two are his
+   four steps, round LJ in TASKS.md:
    "you have to finish the quiz and get your results of your CQ and your the
    holes in your integrity. And it needs to sniff out some of the stories so
    you can see what's running you. And then it invites you to try the app to
@@ -313,6 +339,62 @@ var A={};              /* question index -> 0..4 */
 var AT=0;              /* position in ORDER */
 var STATE='open';
 var SAVE_FAIL='';
+
+/* ============================================================
+   THE SIGNAL. One moment before the hundred questions, where a person
+   notices what their own body does when something gets to them. The funnel
+   audit, reviews/ATUNED-Funnel-Onboarding-Tutorial-Creative-TDD.md sections
+   15 and 16: the questions went straight from the opening into scoring, so
+   the first thing the instrument ever asked of the body was a number.
+
+   WHAT THE PERSON SAYS IS THE EVIDENCE AND THE MAP IS A MODEL. The audit's
+   own line, and the one this beat is built to hold: "The user's reported
+   sensation is primary evidence. The system's body/address mapping is a
+   model." So nothing here is scored, nothing is mapped to a seat, and the
+   page says back only what the person picked or typed. It never says what
+   the sensation means. The reading's scope box repeats it once the map is on
+   the screen, because that is where the two can disagree.
+
+   IT IS HELD IN MEMORY AND NOWHERE ELSE, by the same rule as the story: it is
+   somebody's body in their own words, on what may be a shared computer. It
+   is not saved, it is not in the record, and the door says so.
+
+   IT NEVER BLOCKS. Every step carries the way past it, and "Nothing I can
+   notice" is an answer that moves forward like any other. A person who has
+   already answered is coming back to carry on and skips it.
+
+   THE PLACES ARE WORDS THE STORY READER ALREADY KNOWS. Each one is in
+   SOMA_PLACE_WORDS in engine/sniff.js, so if this is ever handed to the
+   reader it is the person's own word arriving where the reader looks for it.
+   THE SENSATIONS take their nouns from the product's own definition of a
+   charge, "heat, pressure, tingling or weight" (engine/data/kb.js), and
+   add the four the audit's list carries that a person says about a moment
+   that gets to them. The button is the verb a person says; the noun is what
+   is said back to them.
+   ============================================================ */
+var SIG_WHERE=['Head','Jaw','Throat','Shoulders','Chest','Stomach','Lower belly','Hands'];
+var SIG_WHAT=[['Tightens','tightness'],['Heats up','heat'],['Gets heavy','weight'],
+ ['Presses','pressure'],['Tingles','tingling'],['Drops','a drop'],['Races','racing'],
+ ['Goes numb','numbness']];
+var SIG={where:'',whereOwn:false,what:'',whatOwn:false,none:false,done:false};
+var SIG_AT='where';     /* where, what, seen */
+var SIG_MAX=80;         /* own words, characters */
+
+/* what the person noticed, in a phrase that sits after "you noticed". Their
+   typed words come back inside quotation marks exactly as typed, so the page
+   never paraphrases somebody's body to them. Empty when nothing was given. */
+function sigPlace(){
+ if(SIG.none||!SIG.where)return '';
+ return SIG.whereOwn?'“'+SIG.where+'”':'your '+SIG.where.toLowerCase();}
+function sigSay(){
+ if(SIG.none||!SIG.where||!SIG.what)return '';
+ return (SIG.whatOwn?'“'+SIG.what+'”':SIG.what)+' in '+sigPlace();}
+/* the same thing as a whole sentence, for the places that say it back. A
+   place with no sensation is still a place the person found, and is said. */
+function sigSentence(){
+ if(SIG.none||!SIG.where)return '';
+ return SIG.what?'You noticed '+sigSay()+'.'
+  :'You found it in '+sigPlace()+'. What it does there has no name yet.';}
 
 function save(){
  try{ localStorage.setItem(KEY,JSON.stringify({a:A})); SAVE_FAIL=''; }
@@ -401,6 +483,60 @@ function viewOpen(){
  +(done?'<div class="under"><button class="lnk" id="restart">Start again from the top</button></div>':'')
  +'<p class="foot">Nothing you answer leaves this browser. This page makes no '
  +'request of any kind.</p></div>';}
+
+/* THE SIGNAL, three short screens: where, what happens there, and what was
+   noticed said back. Every string built from what the person typed goes
+   through esc(). Nothing here asks what the sensation means. */
+function viewNotice(){
+ var skip='<button class="lnk" id="sigskip">Skip to the questions</button>';
+ var own=function(ph){
+  return '<div class="sigown"><input id="sigtx" type="text" maxlength="'+SIG_MAX+'" '
+   +'autocomplete="off" spellcheck="false" aria-label="'+esc(ph)+'" placeholder="'+esc(ph)+'">'
+   +'<button class="act" id="sigown">Use my words</button></div>'
+   +'<p class="note" id="signote" aria-live="polite"></p>';};
+
+ if(SIG_AT==='where')return '<div class="card sig">'
+  +'<span class="eye">Before the questions</span>'
+  +'<p class="sigin">Think of a moment that gets to you every time. Do not work out why. '
+  +'Picture it for a few seconds.</p>'
+  +'<p class="q">Where in your body do you notice it?</p>'
+  +'<div class="opts sigopts">'
+  +SIG_WHERE.map(function(w){
+    return '<button class="opt'+(!SIG.whereOwn&&SIG.where===w?' on':'')+'" data-where="'+esc(w)+'">'+esc(w)+'</button>';}).join('')
+  +'<button class="opt none" data-where="">Nothing I can notice</button></div>'
+  +own('Somewhere else, in your words')
+  +'<div class="under">'+skip+'</div></div>';
+
+ if(SIG_AT==='what')return '<div class="card sig">'
+  +'<span class="eye">Before the questions</span>'
+  +'<p class="q">What happens in '+esc(sigPlace())+'?</p>'
+  +'<div class="opts sigopts">'
+  +SIG_WHAT.map(function(p,i){
+    return '<button class="opt'+(!SIG.whatOwn&&SIG.what===p[1]?' on':'')+'" data-what="'+i+'">'+esc(p[0])+'</button>';}).join('')
+  +'<button class="opt none" data-what="">Nothing I can notice</button></div>'
+  +own('Something else, in your words')
+  +'<div class="under"><button class="lnk" id="sigback">Change the place</button>'+skip+'</div></div>';
+
+ /* seen. Nothing noticed is said as a result, because it is one, and the
+    story at the end is named as where it goes if it shows up later. */
+ var said=sigSentence();
+ return '<div class="card sigseen">'
+  +'<span class="eye">Before the questions</span>'
+  +(said
+   ?'<h1>There it is.</h1>'
+    +'<p class="said">'+esc(said)+'</p>'
+    +'<p>A signal is what your body does when something gets to you. You found this one '
+    +'yourself.</p>'
+    +'<p>The hundred questions next draw a map of where you carry load. The map comes from '
+    +'your answers. What you just noticed came from your body. Where the two disagree, go '
+    +'with your body.</p>'
+    +'<p class="hold">Keep your attention there for one breath.</p>'
+   :'<h1>Nothing showed this time.</h1>'
+    +'<p>Not noticing anything is a result too. The questions work the same either way. '
+    +'If something shows up later, the story at the end is the place to write it.</p>')
+  +'<button class="pri" id="sigstart">Start the questions</button>'
+  +'<div class="under"><button class="lnk" id="sigredo">Change what I noticed</button></div>'
+  +'</div>';}
 
 function viewQ(){
  var qi=ORDER[AT], q=QQ[qi], cur=A[qi];
@@ -505,7 +641,13 @@ function viewRead(){
  +'the nine charges those points imply. It has not read a story in your own words, '
  +'which is where the instrument gets its resolution, so the body locations above '
  +'are where this kind of load sits rather than a reading of your tissue. It reads '
- +'self report. A clinician reads a person, and those are different jobs.</div>'
+ +'self report. A clinician reads a person, and those are different jobs.'
+ /* THE SIGNAL OUTRANKS THE MAP, said where the map is. This is the screen
+    where the seats and what the person noticed can disagree, so it is the
+    screen that says which one to go with. */
+ +(sigSentence()?' '+esc(sigSentence())+' That came from your body, before the '
+   +'questions. Where it and the seats above disagree, go with your body.':'')
+ +'</div>'
 
  /* ---- 4. THE STEP FORWARD. The door was here, straight after the scope,
     so the page said it had not read a story in your own words and then
@@ -796,6 +938,11 @@ function viewStory(){
   +'<p class="lede">Pick a moment from this week that is still sitting in you. '
   +'Say what happened and where you felt it, the way you would say it out loud. '
   +'Three or four sentences is enough.</p>'
+  /* the signal, handed forward. The journal feeds the story in his content
+     chain, and this is the same move one step earlier: what the body did is
+     offered to the story, never written into it. */
+  +(sigSay()?'<p class="sm">Before the questions you noticed '+esc(sigSay())
+    +'. If it is the same moment, write that in too.</p>':'')
   +'<textarea class="storyta" id="storytx" spellcheck="false" aria-label="What happened" '
   +'placeholder="What happened, and where you felt it.">'+esc(STORY)+'</textarea>'
   +'<div class="acts stacts">'
@@ -844,7 +991,10 @@ function viewDoor(){
  +'anybody, including us. What you save is a profile in the instrument\'s own '
  +'format, and Atuned\'s loader takes it as it stands: your coherence, the '
  +'21 law values, the nine charges, and every address they landed on.'
- +(STORY_AT?' Your story is not in it.':'')+'</p>'
+ /* the signal is held by the story's rule, so it is named beside it */
+ +(STORY_AT&&sigSentence()?' What you noticed and your story are not in it.'
+   :STORY_AT?' Your story is not in it.'
+   :sigSentence()?' What you noticed is not in it.':'')+'</p>'
  /* THE RECORD IN A LINK, round QZ. Opening the app with the record already
     in it replaces two steps, save here and load there, with one press. The
     sentence says where the record travels in plain words, because "fragment"
@@ -953,17 +1103,21 @@ function render(){
  if(MISSING.length||UNKNOWN.length||SEATMISMATCH){ el.innerHTML=viewRefusal(); fill.style.width='0'; return; }
  document.body.setAttribute('data-state',STATE);
  refreshLoads();
- el.innerHTML = STATE==='open'?viewOpen() : STATE==='q'?viewQ()
+ el.innerHTML = STATE==='open'?viewOpen() : STATE==='notice'?viewNotice() : STATE==='q'?viewQ()
   : STATE==='story'?viewStory() : STATE==='door'?viewDoor() : viewRead();
- fill.style.width = (STATE==='open'||STATE==='q'?(answered()/QQ.length*100):100)+'%';
+ fill.style.width = (STATE==='open'||STATE==='notice'||STATE==='q'?(answered()/QQ.length*100):100)+'%';
  paintRing();
  var b;
+ /* the signal comes first for somebody starting, once. Somebody carrying on
+    has answers already and goes back to the question they left. */
  if((b=document.getElementById('go')))b.onclick=function(){
+  if(!answered()&&!SIG.done){ STATE='notice'; SIG_AT='where'; render(); scrollTo(0,0); return; }
   AT=firstOpen();
   if(AT>=ORDER.length){STATE='read';}else{STATE='q';}
   render(); scrollTo(0,0);};
  if((b=document.getElementById('restart')))b.onclick=function(){
-  A={}; save(); AT=0; STATE='q'; render(); scrollTo(0,0);};
+  A={}; save(); AT=0; STATE=SIG.done?'q':'notice'; SIG_AT='where'; render(); scrollTo(0,0);};
+ if(STATE==='notice')bindNotice();
  if((b=document.getElementById('back')))b.onclick=function(){
   AT=Math.max(0,AT-1); render(); scrollTo(0,0);};
  if((b=document.getElementById('stop')))b.onclick=function(){
@@ -1012,12 +1166,46 @@ function render(){
         navigator.clipboard.writeText(txt).then(ok,no);
        else no(); }catch(e){ no(); }};
  /* ONE TAP IS THE ANSWER AND THE STEP FORWARD. There is no second button to
-    press, which is the ruling on the onboarding: one button to move forward. */
- Array.prototype.forEach.call(el.querySelectorAll('.opt'),function(n){
+    press, which is the ruling on the onboarding: one button to move forward.
+    Bound on a question only: the signal wears the same .opt and is not an
+    answer, and an unguarded bind would score a place as a question. */
+ if(STATE==='q')Array.prototype.forEach.call(el.querySelectorAll('.opt'),function(n){
   n.onclick=function(){
    A[ORDER[AT]]=+n.dataset.v; save();
    if(AT+1>=ORDER.length){ STATE='read'; }else{ AT++; }
    render(); scrollTo(0,0);};});}
+
+/* THE SIGNAL'S CONTROLS. A tap on a place or a word is the answer and the step
+   forward, as on a question. Own words go through the button or Enter, and an
+   empty box says so rather than moving on with nothing. */
+function bindNotice(){
+ var go=function(at){ SIG_AT=at; render(); scrollTo(0,0); };
+ var toQuestions=function(){
+  SIG.done=true; AT=firstOpen(); STATE=AT>=ORDER.length?'read':'q'; render(); scrollTo(0,0); };
+ Array.prototype.forEach.call(el.querySelectorAll('[data-where]'),function(n){
+  n.onclick=function(){
+   var w=n.getAttribute('data-where');
+   if(!w){ SIG={where:'',whereOwn:false,what:'',whatOwn:false,none:true,done:false}; go('seen'); return; }
+   SIG.where=w; SIG.whereOwn=false; SIG.none=false; SIG.what=''; SIG.whatOwn=false; go('what');};});
+ Array.prototype.forEach.call(el.querySelectorAll('[data-what]'),function(n){
+  n.onclick=function(){
+   var i=n.getAttribute('data-what');
+   SIG.what=i===''?'':SIG_WHAT[+i][1]; SIG.whatOwn=false; go('seen');};});
+ var tx=document.getElementById('sigtx'), ob=document.getElementById('sigown');
+ if(tx&&ob){
+  ob.onclick=function(){
+   var v=tx.value.replace(/\s+/g,' ').trim().slice(0,SIG_MAX);
+   if(!v){ document.getElementById('signote').textContent='Nothing written yet. Pick one above or write a few words.'; return; }
+   if(SIG_AT==='where'){ SIG.where=v; SIG.whereOwn=true; SIG.none=false; SIG.what=''; SIG.whatOwn=false; go('what'); }
+   else { SIG.what=v; SIG.whatOwn=true; go('seen'); }};
+  tx.onkeydown=function(e){ if(e.key==='Enter'){ e.preventDefault(); ob.click(); } };}
+ var b;
+ if((b=document.getElementById('sigback')))b.onclick=function(){ go('where'); };
+ if((b=document.getElementById('sigredo')))b.onclick=function(){ go('where'); };
+ if((b=document.getElementById('sigstart')))b.onclick=toQuestions;
+ /* a skip declines the beat, so nothing half given is said back later */
+ if((b=document.getElementById('sigskip')))b.onclick=function(){
+  SIG={where:'',whereOwn:false,what:'',whatOwn:false,none:false,done:false}; toQuestions(); };}
 
 load(); render();
 </script></body></html>

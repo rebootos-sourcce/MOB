@@ -190,6 +190,48 @@ const PROBE = () => {
        repeats, and that is what makes a reading available to somebody who
        stops early. */
     await page.click('#go');
+
+    /* THE SIGNAL, before the questions. A person starting is asked where they
+       notice something and what happens there, then is told back what they
+       picked, and nothing about it is scored, stored or put in the record.
+       The places and the words are read off the page's own tables, never
+       typed here. 1600 walks the picks and 390 walks typed words with markup
+       in them, so both routes are held and esc() is held with them. */
+    const sig = await page.evaluate(() => ({
+      state: STATE, at: SIG_AT, where: SIG_WHERE.slice(), what: SIG_WHAT.map(p => p.slice()),
+      places: document.querySelectorAll('[data-where]').length,
+      skip: !!document.getElementById('sigskip'), own: !!document.getElementById('sigtx')
+    }));
+    ok(sig.state === 'notice' && sig.at === 'where',
+      '@' + w + ': Start opens on ' + sig.state + '/' + sig.at + ', not on the signal');
+    ok(sig.places === sig.where.length + 1,
+      '@' + w + ': the signal offers ' + sig.places + ' places for ' + sig.where.length + ' and a way out');
+    ok(sig.skip && sig.own, '@' + w + ': the signal has no skip or no box for own words');
+    let expect, given;
+    if (w > 400) {
+      const pi = 1, si = 0;
+      await page.click('[data-where="' + sig.where[pi] + '"]');
+      ok(await page.locator('[data-what]').count() === sig.what.length + 1,
+        '@' + w + ': the second step does not offer every word and a way out');
+      await page.click('[data-what="' + si + '"]');
+      given = sig.what[si][1];
+      expect = 'You noticed ' + sig.what[si][1] + ' in your ' + sig.where[pi].toLowerCase() + '.';
+    } else {
+      const P = 'my <i>neck</i>', S = 'like a <b>fist</b>';
+      await page.fill('#sigtx', P); await page.press('#sigtx', 'Enter');
+      await page.fill('#sigtx', S); await page.click('#sigown');
+      given = 'fist';
+      expect = 'You noticed “' + S + '” in “' + P + '”.';
+      ok(await page.locator('.sigseen i, .sigseen b').count() === 0,
+        '@' + w + ': typed markup became markup on the signal');
+    }
+    const said = (await page.locator('.sigseen .said').innerText()).trim();
+    ok(said === expect, '@' + w + ': the signal said back "' + said + '", expected "' + expect + '"');
+    await page.click('#sigstart');
+    ok(await page.evaluate(() => STATE === 'q' && answered() === 0),
+      '@' + w + ': Start the questions did not land on an unanswered question');
+    console.log('  signal: said back "' + said + '"');
+
     const t0 = Date.now();
     for (let i = 0; i < shape.laws; i++) {
       const n = await page.locator('.opt').count();
@@ -199,6 +241,13 @@ const PROBE = () => {
       await page.locator('.opt').nth((i * 3) % shape.scale).click();
     }
     const tSweep = Date.now() - t0;
+
+    /* checked after the sweep and not before it: the page saves on an answer,
+       so before the first answer nothing has been written and this could not
+       fail. Checked against a copy that saves the signal, which it caught. */
+    const kept = await page.evaluate(() => JSON.stringify(localStorage) + recordJSON());
+    ok(kept.indexOf(given) < 0,
+      '@' + w + ': what was noticed, "' + given + '", reached storage or the record');
 
     const bands1 = await page.$$eval('#ringtop .ring-b', n => n.map(x => +x.style.strokeWidth));
     const moved = bands1.filter((v, i) => Math.abs(v - bands0[i]) > 0.01).length;
