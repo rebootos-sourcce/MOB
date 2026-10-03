@@ -516,7 +516,7 @@ function viewRead(){
   +'<button class="act" id="again">Change an answer</button>'
  +'</div></div></div>'
 
- +'<p class="foot">Answered: '+s.answered+' of the hundred points.</p>'
+ +(s.answered<100?'<p class="foot">Some points stayed blank. The reading leans on the ones you answered.</p>':'')
  +'</div>';
  return h;
 
