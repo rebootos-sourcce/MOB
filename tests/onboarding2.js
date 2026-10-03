@@ -303,7 +303,13 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
  console.log('  reached a real release in '+(Date.now()-t0)+'ms of wall clock, shrunk timing');
 
  /* WHAT CHANGED, on the card the run landed on. Read off the build: the five
-    keys and their words off the engine's own table, never typed here. */
+    keys and their words off the engine's own table, never typed here.
+    ROUND QH: the two minutes are their own screen now, between the list and
+    this card, and the card arrives when they run out or are skipped. This
+    gate is not here to sit through two minutes, so it skips them through the
+    button a person uses, which is itself checked to be there. */
+ const rested=await page.evaluate(()=>{const r=document.getElementById('relrest'); if(r)r.click(); return !!r;});
+ ok(rested,'the run lands on the two minutes first, and they can be skipped');
  const ask=await page.evaluate(()=>{const a=document.getElementById('relask');
   return {there:!!a, text:a?a.textContent:'',
    answers:[...document.querySelectorAll('#relask .seg [data-relsaid]')].map(b=>({k:b.getAttribute('data-relsaid'),
@@ -460,6 +466,8 @@ console.log('\n=== what changed: every answer kept across a reload, Skip and lea
   if(d){await d.evaluate(el=>{el.value='1';el.dispatchEvent(new Event('change'));});}
   await page.click('#relgo');
   await page.waitForFunction(()=>RUN.phase==='done'&&RUN.cool>=COOLING.length,null,{timeout:60000}).catch(()=>{});
+  /* past the two minutes, round QH, through the button a person uses */
+  await page.evaluate(()=>{const r=document.getElementById('relrest'); if(r)r.click();});
   const pre=await page.evaluate(()=>({asked:!!document.querySelector('#relask .seg'),
    ev:((CURP.practice&&CURP.practice.evidence)||[]).length, q:(RUN.queue||[]).map(n=>n.i),
    t:(CURP.story.entries[CURP.story.entries.length-1]||{}).t}));

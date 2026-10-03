@@ -113,6 +113,17 @@ binds `localStorage`.
                                last fifty in a log, a failure never swallowed.
     node tests/protocol.js     a release's cross, End on every phase, and End
                                charging only the lines that were said.
+    node tests/release-screen.js round QM, the release as the whole screen: no
+                               frame, the prompt pinned, the reframe in "I know
+                               that I am", left and right counts, swipe to bank
+                               or shadow, the scrub, the results. Fails on the
+                               build before it, ab6666a, 44 of 50. Round QQ
+                               added his feedback on it: Left and Right channel,
+                               Release and Reframe on the scrub, numbers only
+                               down the list, End session, Pause and Play,
+                               Bookmark, the bank pick's count with Submit and
+                               Recycle, and CQ with Up landing on the record's
+                               own CQ. Those fail on f164f17, the build before.
     node tests/device.js       device settings (Practitioner mode) on a worked
                                example. The last three are also called from
                                functional.js, and each fails on the build from

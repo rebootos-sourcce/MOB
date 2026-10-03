@@ -319,7 +319,7 @@ def find_unit(file, rx, layer=None):
 
 
 REAL = [
-    ('atuned_src/ui/release.js', r'^I let go of$', 'flow', 'DISCOVER'),
+    ('atuned_src/ui/release.js', r'^that I am$', 'flow', 'DISCOVER'),
     ('atuned_src/ui/storyui.js', r'^Nothing committed on a worked example', 'status', 'DISCOVER'),
     ('atuned_src/ui/storyui.js', r'^What happened\. Write it', 'discovery', 'DISCOVER'),
     ('atuned_src/ui/fieldbar.js', r'^Your 112 addresses\. Each mark', 'tooltip', 'PLAY'),

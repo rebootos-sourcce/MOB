@@ -69,8 +69,8 @@ async function protocolGate(browser,FILE,ok,booted){
    relClose();
    return o;});
   for(const k of ['welcome','opening','run'])
-   ok(b[k].ph===k&&b[k].end&&b[k].endText==='End'&&b[k].pause&&b[k].css&&b[k].inView,
-    'at '+w+', the '+k+' carries a visible End and a Pause, each at least 44 by 44, '+JSON.stringify(b[k]));
+   ok(b[k].ph===k&&b[k].end&&b[k].endText==='End session'&&b[k].pause&&b[k].css&&b[k].inView,
+    'at '+w+', the '+k+' carries a visible End session (his words, round QQ) and a Pause, each at least 44 by 44, '+JSON.stringify(b[k]));
   /* ---- 3 and 4. End charges what was released ---- */
   const c=await pg.evaluate(async()=>{
    const wait=ms=>new Promise(r=>setTimeout(r,ms)), o={};
