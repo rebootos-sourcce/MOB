@@ -114,6 +114,12 @@ const BLANK=()=>{loadP(0); CURP.rituals=[]; CURP.history=[]; ritPlanPut([]); CUR
   await p.evaluate(BLANK); await p.waitForTimeout(1400);
   await p.screenshot({path:path.join(OUT,'flow-1600-blank.png')});
   await p.close();}
+ /* and the same first visit on a phone, where the column that starts a ritual
+    comes first when nothing is active (ritnone, FT24) */
+ {const p=await open(390,844,true);
+  await p.evaluate(BLANK); await p.waitForTimeout(1400);
+  await p.screenshot({path:path.join(OUT,'flow-390-blank.png')});
+  await p.close();}
  await b.close();
  console.log('shots in '+OUT+(errs.length?'\nERRORS '+errs.join(' | '):''));
  process.exit(errs.length?1:0);})();

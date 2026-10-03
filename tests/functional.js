@@ -4752,6 +4752,10 @@ console.log('\n=== the ritual plan cap is one number, not two ===');
 const rp=await page.evaluate(async()=>{
  loadP(PERSON('James')); setTab(TAB.RITUAL);
  await new Promise(r=>setTimeout(r,500));
+ /* the builder no longer opens itself on a first visit, round QN (FT24 in
+    tests/flowtools.js), so it is opened the way a person opens it */
+ if(!document.getElementById('ritwhen')){const a=document.querySelector('#lcol [data-act="add"]'); if(a)a.click();
+  await new Promise(r=>setTimeout(r,300));}
  const w=document.getElementById('ritwhen'), e=document.getElementById('ritwhere');
  return {there:!!(w&&e), cap:(typeof RIT_PLAN_MAX==='number')?RIT_PLAN_MAX:null,
   when:w?w.maxLength:-1, where:e?e.maxLength:-1};});

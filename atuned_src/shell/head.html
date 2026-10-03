@@ -5533,11 +5533,24 @@ body:not(.tab-ritual) .fl-rail{display:none}
    Edit on a missed one, has asked for that column, and a builder two screens
    down is an opening nobody sees. ritRender puts ritbuild on the body while
    the builder is holding something, so the column they just asked for is the
-   one in front of them. */
+   one in front of them.
+
+   AND WITH NOTHING ACTIVE IT COMES FIRST, round QN. "Rarer than keeping one"
+   is false when there is nothing to keep. The builder used to open itself
+   then, and ritbuild carried the column up; it no longer opens itself (FT24),
+   so ritnone says the same thing directly, and a stranger on a phone meets
+   New ritual and Suggested on the first screen and not four thousand pixels
+   down, measured, under six cards that each say nothing has happened yet. */
 @media (max-width:1180px){
  body.tab-ritual #rcol{order:1}
  body.tab-ritual #lcol{order:2}
- body.tab-ritual.ritbuild #lcol{order:-2}}
+ body.tab-ritual.ritbuild #lcol,body.tab-ritual.ritnone #lcol{order:-2}}
+/* THE CENTRE'S OWN NEW RITUAL IS FOR A FOLDED LEFT COLUMN ONLY, round QN. With
+   nothing active it is drawn under Active today, and while the left column is
+   open that column carries the same press with Suggested under it, on the
+   same screen at 1600 and first on a phone. Folded shut, the left column is
+   one control, and then this press is the way to start one. */
+body.tab-ritual:not(.lshut) #rit .rv-addx{display:none}
 /* THE MENU'S OWN RULES LIVE HERE AND NOT IN ui/ritual.js. #flowhd and #flowside
    are in the document from the first paint, and the design gate holds every
    class the document carries to a rule in the sheet: they sat in the script's

@@ -121,8 +121,15 @@ function ritSuggest(st){
   if(n>=3||q.sq<4||seen[q.b]||(bc&&q.b===bc.seat)||actRel[q.i])return;
   var called=ritFor({darkB:q.b, DQ:r.DQ}).called; if(!called)return;
   seen[q.b]=1; n++;
-  add(called.k,q.b,'You hold '+String(q.k).toLowerCase()+' at '+ritThe(q.b)
-   +'. This runs as a release schedule for it.',q.i);});
+  var why='You hold '+String(q.k).toLowerCase()+' at '+ritThe(q.b)+'. This runs as a release schedule for it.';
+  /* THE SAME PRACTICE AT THE SAME SEAT IS ONE CARD, round QN, found walking
+     the page as James: the sacral carried the most charge and held envy, so
+     The Somatic Truth Check was offered twice at the sacral, one plain and one
+     for envy. The place is the more particular reason, so the card the field
+     or the avatar already made takes it, and its Start sets the schedule. */
+  var same=out.filter(function(x){return x.k===called.k&&x.rel==null&&x.seats.indexOf(q.b)>=0;})[0];
+  if(same){same.why.push(why); same.rel=q.i; by[called.k+'|'+q.i]=same; return;}
+  add(called.k,q.b,why,q.i);});
  return out;}
 function ritCap(s){s=String(s||''); return s.charAt(0).toUpperCase()+s.slice(1);}
 function ritSugStart(i){
@@ -133,7 +140,14 @@ function ritSugStart(i){
   return ritStartPlan(q,'Set. '+x.p.nm+' each day for a week, for '+String(BY[x.rel].k).toLowerCase()+'.');}
  return ritStartPlan(q,'Started. '+x.p.nm+' each day for a week.');}
 function ritSugHtml(st){
- var list=ritSuggest(st); RIT.sug=list;
+ /* a practice already picked in the builder above is that choice being made,
+    so it is not offered a second time underneath. A release schedule is tied
+    to a place and is a different choice, so it stays. */
+ var all=ritSuggest(st), list=all.filter(function(x){return x.rel!=null||!RIT.sel[x.k];}); RIT.sug=list;
+ /* and when the builder holds every suggestion there is, the section says
+    nothing: "Nothing to suggest yet" under a builder holding the suggestion
+    would be untrue */
+ if(!list.length&&all.length)return '';
  var body=!list.length?'<p class="rv-empty">Nothing to suggest yet.</p>'
   :'<ul class="rv-sugl">'+list.map(function(x,i){
    var col=x.seats.length?seatCol(x.seats[0]):'var(--accent)';

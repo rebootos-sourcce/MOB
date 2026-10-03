@@ -66,7 +66,7 @@ question in the round and it is written down open.
 | | Inputting new (`#flownew`) | The ritual (`#rit`) | The tracker (`#flowrail`) |
 |---|---|---|---|
 | Question it answers | What shall I start? | What am I doing, and is it working? | Did I do it? |
-| Holds | New ritual closed to one press and seven tags, and Suggested; open, the builder | Six cards, round QN: Ritual to avatar, Ongoing goal, Active today, Did it work, Keep or delete, Practice analytics (the chain is inside it) | Due today, Thirty days, Done, Missed, History, the Record |
+| Holds | New ritual closed to one press and seven tags, and Suggested; open, the builder | Six cards, round QN: Ritual to avatar, Ongoing goal, Active today, Did it work, Keep or delete, Practice analytics (the chain is inside it) | Due today, the Thirty day loop, Done, Missed, History, the Record |
 | Reads | `PRACTICE`, `ritFor`, the Avatar page's queue `avRituals`, the bank's `relQueueOf` | plans, the record, `avCycles`, `avRows`, `ritBecoming`, `ladderRead.next`, the snapshot history, `compute().loaded` | plans, the record, the ladder |
 | Writes | start, edit, move, stop, delete a ritual; start a suggested one; the timer | mark a day done; the timer; a release schedule; keep a week more; delete and put back | mark a day done or take it off; delete an entry and put it back; back in rotation |
 | Files | `ui/ritual.js`, `ui/ritstage.js` | `ui/ritual.js`, `ui/ritstage.js` | `ui/accountability.js`, written by `ritRender` |
@@ -137,7 +137,7 @@ Gate: `tests/flowtools.js`, `FT5:`.
 
 `setTab(TAB.ACCOUNT)` lands on the Ritual page, the Flow group has no button
 for 14, and there is no `#acct` in the document. The right column holds Due
-today, Thirty days, Done, Missed, History and the Record, in that order, on a
+today, the Thirty day loop, Done, Missed, History and the Record, in that order, on a
 blank profile and a loaded one.
 
 Gate: `tests/flowtools.js`, `FT6:`; `tools/monitor.js`, which walks every
@@ -245,8 +245,9 @@ Gate: `tests/flowtools.js`, `FT15:`.
 ### FT16. Inputting new lists every ritual suggested, and each one is a real read.
 
 Round QN, his words: "on the left hand side ... I not only want the input there
-but I want all the suggested ones that have come from the sniffer." Shut, the
-left column holds New ritual, the seven tags, and Suggested. The sniffer
+but I want all the suggested ones that have come from the sniffer." The left
+column holds the input, New ritual and the seven tags or the builder they
+open, and Suggested under it (FT24 says when). The sniffer
 (`engine/sourceai.js`) suggests nothing itself, so Suggested lists the three
 reads that already turn the sniffer's seat reading into a practice: the
 practice the seat carrying the most calls for (`ritFor`, which was the chain's
@@ -335,6 +336,32 @@ one quiet pool. The readings draw in once when the page is arrived at and not
 on every press. Under `prefers-reduced-motion` no animation runs on the page.
 
 Gate: `tests/flowtools.js`, `FT23:`.
+
+### FT24. Suggested is there with the input, on a first visit too, and says each choice once.
+
+Found by walking the built page as Angela, Derek and James rather than by
+reading it. The first cut of round QN wrote the left column as the builder or
+Suggested, never both, and the builder opened itself whenever nothing was
+active, a rule from round JQ written when the builder was the only place the
+called practice had a Start. So a person with nothing running, the one who
+most needs a suggestion, was shown none. His words ask for both.
+
+The builder no longer opens itself. Suggested sits under the input whether the
+builder is shut or open, and goes only while an existing ritual is being
+edited, a different job, where a Start would leave the edit half done. A
+practice already picked in the builder's draft is not offered again beneath
+it. The same practice at the same seat is one card: walking James, the sacral
+carried the most charge and held envy, and The Somatic Truth Check was offered
+twice at the sacral. The held place is the more particular reason, so the card
+already there takes it as a second line and its Start sets the release
+schedule for that place.
+
+Measured 3 October on a first visit at 1600, the left column's controls on
+screen at once: 28 with the builder open on its own and no suggestion shown,
+for Angela, James and a blank profile alike; after, 10 for Angela and the blank
+profile and 12 for James, with every suggestion visible.
+
+Gate: `tests/flowtools.js`, `FT24:`.
 
 ## 5. Not built, and why
 

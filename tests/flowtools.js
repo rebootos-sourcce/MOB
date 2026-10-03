@@ -66,9 +66,9 @@ async function flowGate(browser,FILE,ok,booted){
 
   /* A PERSON WITH SOMETHING ALREADY RUNNING, and the builder shut, because
      that is the state the stack order is written for. With nothing active the
-     page opens its own builder, which is right and which puts the input column
-     first on a phone by design (FT4 checks that state by its own flag), so
-     measuring the order there would be measuring the exception. */
+     input column comes first on a phone by design (ritnone, round QN; FT24
+     checks that state), so measuring the order there would be measuring the
+     exception. */
   await pg.evaluate(()=>{
    loadP(0); CURP.rituals=[]; ritPlanPut([]); setTab(TAB.RITUAL);
    ritStartPlan({steps:[PRACTICE.filter(p=>!p.tc)[0].k],band:'',track:'',days:7,when:'',where:''},'Started.');
@@ -143,10 +143,13 @@ async function flowGate(browser,FILE,ok,booted){
    'FT3: '+tag+'off Flow both menus are shut and empty and the rails have their sections back, '+JSON.stringify(off));
 
   /* ---- FT4 and FT5: inputting new is the left column, and only there ---- */
-  /* nothing active, so the page opens its own builder and there is a builder
-     to look for. The group above left one running on purpose and took it back
-     here, because the two rules want opposite states. */
-  await pg.evaluate(()=>{loadP(0); CURP.rituals=[]; ritPlanPut([]); setTab(TAB.RITUAL); ritRender();}); await wait(500);
+  /* nothing active, and the builder is opened the way a person opens it, with
+     New ritual. It used to open itself here; round QN stopped that (FT24), and
+     this check had leaned on it to have a builder to look for. The group above
+     left one running on purpose and took it back here, because the two rules
+     want opposite states. */
+  await pg.evaluate(()=>{loadP(0); CURP.rituals=[]; ritPlanPut([]); RIT.sel={}; RIT.order=[]; RIT.add=false; RIT.edit=null;
+   setTab(TAB.RITUAL); ritRender(); const a=document.querySelector('#lcol [data-act="add"]'); if(a)a.click();}); await wait(500);
   const nr=await pg.evaluate(()=>{
    const lc=document.getElementById('lcol'), rc=document.getElementById('rcol'), rit=document.getElementById('rit');
    const ctl='[data-act="tag"],[data-act="newtag"],[data-act="save"],[data-act="span"],[data-act="often"],.rv-build,#ritwhen,#ritwhere';
@@ -163,9 +166,9 @@ async function flowGate(browser,FILE,ok,booted){
   const closed=await pg.evaluate(async()=>{
    const k=PRACTICE.filter(p=>!p.tc)[0].k;
    ritStartPlan({steps:[k],band:'',track:'',days:7,when:'',where:''},'Started.');
-   /* the builder had opened itself on the called practice while nothing was
-      active, and a start through the builder's own button clears it, so this
-      does what that press does before it looks at the closed menu */
+   /* a start through the builder's own button clears its draft, so this does
+      what that press does before it looks at the closed menu. (The builder
+      no longer opens itself on a first visit, round QN; FT24 holds that.) */
    RIT.sel={}; RIT.order=[]; RIT.add=false; ritRender();
    await new Promise(r=>setTimeout(r,200));
    const lc=document.getElementById('lcol');
@@ -197,9 +200,9 @@ async function flowGate(browser,FILE,ok,booted){
     heads:[...document.querySelectorAll('#flowside .rv-h')].map(x=>x.textContent)};});
   ok(open.landed&&open.cls&&open.noDoor&&open.noHost&&open.shown&&open.text>60&&open.rit!=='none',
    'FT6: '+tag+'the folded integer lands on the Ritual page, with no door and no host of its own, '+JSON.stringify(open));
-  const order=['Due today','Thirty days','Done','Missed','History','Record'];
+  const order=['Due today','Thirty day loop','Done','Missed','History','Record'];
   ok(order.every(h=>open.heads.indexOf(h)>=0)&&order.every((h,i)=>i===0||open.heads.indexOf(order[i-1])<open.heads.indexOf(h)),
-   'FT6: '+tag+'the right column holds Due today, Thirty days, Done, Missed, History and the Record, in that order, '+JSON.stringify(open.heads));
+   'FT6: '+tag+'the right column holds Due today, the Thirty day loop, Done, Missed, History and the Record, in that order, '+JSON.stringify(open.heads));
   }catch(e){ok(false,'FT6: '+tag+'the columns group threw, '+String(e.message).split('\n')[0]);}
   await pg.close();
   ok(err.length===0,tag+'no page errors across the Flow page, '+err.join(' | '));
@@ -595,6 +598,102 @@ async function flowGate(browser,FILE,ok,booted){
    return document.getAnimations().filter(a=>{const t=a.effect&&a.effect.target; return t&&t.closest&&t.closest('#rit,#flowside')&&a.playState==='running';}).length;});
   ok(still===0,'FT23: under prefers-reduced-motion nothing on the page moves, '+still+' running');
   }catch(e){ok(false,'FT23: the stillness group threw, '+String(e.message).split('\n')[0]);}
+  await pg.close();
+ }
+ /* ---- FT24: Suggested is there with the input, and says each choice once ----
+    Found by walking the built page as named people. A blank profile is the
+    stranger's first visit; James is a worked example from the roster, read
+    only, whose heaviest seat also holds a place, which is the doubled card. */
+ {
+  const pg=await browser.newPage({viewport:{width:1600,height:1000}});
+  const err=[]; pg.on('pageerror',e=>err.push(e.message));
+  await pg.goto(FILE,{waitUntil:'load'}); await booted(pg); await pg.waitForTimeout(400);
+  try{
+  const fresh=()=>pg.evaluate(who=>{loadP(who==null?0:PEOPLE.findIndex(x=>x.nm===who)); CURP.rituals=[]; ritPlanPut([]);
+   RIT.sel={}; RIT.order=[]; RIT.add=false; RIT.edit=null; setTab(TAB.RITUAL); ritRender();},null);
+  await fresh(); await pg.waitForTimeout(300);
+  const first=await pg.evaluate(()=>{const L=document.getElementById('lcol'), s=L.querySelector('.rv-sug'), n=L.querySelector('.rv-new');
+   const called=ritRead().c.called;
+   return {building:document.body.classList.contains('ritbuild'), builder:!!L.querySelector('.rv-build'), sug:!!s,
+    cards:[...L.querySelectorAll('.rv-sg1 .rv-sgn')].map(x=>x.textContent), called:called&&called.nm,
+    below:!!(s&&n)&&s.getBoundingClientRect().top>=n.getBoundingClientRect().bottom-1};});
+  ok(!first.building&&!first.builder&&first.sug&&first.cards[0]===first.called&&first.below,
+   'FT24: a first visit with nothing running shows the input shut and Suggested under it, the called practice first, '+JSON.stringify(first));
+  /* the centre's own New ritual is not a second copy of the left column's on
+     one screen; folded shut, the left column is one control and the centre's
+     press is back */
+  const dup=await pg.evaluate(async()=>{
+   const shown=sel=>[...document.querySelectorAll(sel)].filter(e=>{const r=e.getBoundingClientRect(); return r.width>0&&r.height>0;}).length;
+   const open={left:shown('#lcol [data-act="add"]'), centre:shown('#rit [data-act="add"]')};
+   document.getElementById('lfold').click(); await new Promise(r=>setTimeout(r,200));
+   const folded={left:shown('#lcol [data-act="add"]'), centre:shown('#rit [data-act="add"]')};
+   document.getElementById('lfold').click(); await new Promise(r=>setTimeout(r,200));
+   return {open, folded};});
+  ok(dup.open.left===1&&dup.open.centre===0&&dup.folded.centre===1,
+   'FT24: with the left column open its New ritual is the one in the centre and left, and folded the centre carries it, '+JSON.stringify(dup));
+  /* New ritual: the builder opens with the called practice picked, and the
+     list under it does not offer that same practice a second time */
+  const open=await pg.evaluate(async()=>{document.querySelector('#lcol [data-act="add"]').click(); await new Promise(r=>setTimeout(r,250));
+   const L=document.getElementById('lcol'), picked=Object.keys(RIT.sel).filter(k=>RIT.sel[k]).map(k=>ritPr(k).nm);
+   const out={builder:!!L.querySelector('.rv-build'), picked, sugText:(L.querySelector('.rv-sug')||{innerText:''}).innerText,
+    cards:[...L.querySelectorAll('.rv-sg1 .rv-sgn')].map(x=>x.textContent)};
+   /* opened with a press, it closes with one, even with nothing active */
+   const c=L.querySelector('[data-act="cancel"]'); out.cancel=!!c;
+   if(c){c.click(); await new Promise(r=>setTimeout(r,250));}
+   out.shutAgain=!L.querySelector('.rv-build')&&!!L.querySelector('.rv-sug .rv-sg1');
+   return out;});
+  ok(open.builder&&open.picked.length>0&&open.cards.every(n=>open.picked.indexOf(n)<0)&&!/Nothing to suggest/.test(open.sugText),
+   'FT24: with the builder open the practice it holds is not offered again beneath, and the list never says there is nothing while the builder holds it, '+JSON.stringify(open));
+  ok(open.cancel&&open.shutAgain,'FT24: a builder opened on a first visit has Cancel, and Cancel shuts it with Suggested back, '+JSON.stringify(open));
+  /* on a record whose list is longer, Suggested stays under the open builder */
+  await pg.evaluate(()=>{loadP(PEOPLE.findIndex(x=>x.nm==='James')); RIT.sel={}; RIT.order=[]; RIT.add=false; RIT.edit=null; setTab(TAB.RITUAL); ritRender();});
+  await pg.waitForTimeout(250);
+  const jm=await pg.evaluate(async()=>{const L=document.getElementById('lcol');
+   const cards=[...L.querySelectorAll('.rv-sg1')].map(c=>({nm:c.querySelector('.rv-sgn').textContent,
+    tags:[...c.querySelectorAll('.rv-tg')].map(t=>t.textContent).join('/'), why:[...c.querySelectorAll('.rv-sgw li')].map(l=>l.textContent)}));
+   const rel=(RIT.sug||[]).map(x=>x.rel!=null);
+   L.querySelector('[data-act="add"]').click(); await new Promise(r=>setTimeout(r,250));
+   const b=L.querySelector('.rv-build'), s=L.querySelector('.rv-sug');
+   return {cards, rel, underBuilder:!!(b&&s)&&s.getBoundingClientRect().top>=b.getBoundingClientRect().bottom-1};});
+  const pairs=jm.cards.map(c=>c.nm+'@'+c.tags), both=jm.cards.filter(c=>c.why.length>1);
+  ok(jm.cards.length>1&&new Set(pairs).size===pairs.length&&jm.underBuilder,
+   'FT24: no practice is offered twice at one seat, and Suggested stays under the open builder, '+JSON.stringify(jm));
+  ok(both.length>0&&both.every(c=>/^You hold .+ release schedule/.test(c.why[c.why.length-1]))&&jm.rel[jm.cards.indexOf(both[0])]===true,
+   'FT24: a seat that carries the most and holds a place is one card with both reasons, and it starts the schedule for that place, '+JSON.stringify({both,rel:jm.rel}));
+  /* editing an existing ritual is a different job, and Suggested steps aside */
+  await fresh(); await pg.waitForTimeout(200);
+  const ed=await pg.evaluate(async()=>{const k=PRACTICE.filter(p=>!p.tc)[0].k;
+   ritStartPlan({steps:[k],band:'',track:'',days:7,when:'',where:''},'Started.'); RIT.sel={}; RIT.order=[]; RIT.add=false; ritRender();
+   const id=ritPlans()[0].id; ritEditOpen(id); await new Promise(r=>setTimeout(r,250));
+   const L=document.getElementById('lcol');
+   const during={edit:RIT.edit===id, sug:!!L.querySelector('.rv-sug')};
+   const c=L.querySelector('[data-act="cancel"]'); if(c)c.click(); await new Promise(r=>setTimeout(r,250));
+   return {during, after:!!L.querySelector('.rv-sug')};});
+  ok(ed.during.edit&&!ed.during.sug&&ed.after,'FT24: while a ritual is being edited Suggested steps aside, and comes back when the edit is left, '+JSON.stringify(ed));
+  await pg.evaluate(()=>{ritWrite(function(){CURP.rituals=[];return [];},null);});
+  }catch(e){ok(false,'FT24: the group threw, '+String(e.message).split('\n')[0]);}
+  ok(err.length===0,'FT24: no page errors, '+err.join(' | '));
+  await pg.close();
+ }
+ /* FT24 on a phone: with nothing active the column that starts one is first,
+    and with one running the stack is back to the ritual, the tracker, then new */
+ {
+  const pg=await browser.newPage({viewport:{width:390,height:844},hasTouch:true,isMobile:true});
+  await pg.goto(FILE,{waitUntil:'load'}); await booted(pg); await pg.waitForTimeout(400);
+  try{
+  const top=()=>pg.evaluate(()=>{const t=id=>Math.round(document.getElementById(id).getBoundingClientRect().top);
+   return {lcol:t('lcol'), rit:t('rit'), rcol:t('rcol'), sug:!!document.querySelector('#lcol .rv-sg1')};});
+  await pg.evaluate(()=>{loadP(0); CURP.rituals=[]; ritPlanPut([]); RIT.sel={}; RIT.order=[]; RIT.add=false; RIT.edit=null; setTab(TAB.RITUAL); ritRender();});
+  await pg.waitForTimeout(400);
+  const none=await top();
+  await pg.evaluate(()=>{ritStartPlan({steps:[PRACTICE.filter(p=>!p.tc)[0].k],band:'',track:'',days:7,when:'',where:''},'Started.');
+   RIT.sel={}; RIT.order=[]; RIT.add=false; ritRender();});
+  await pg.waitForTimeout(400);
+  const one=await top();
+  await pg.evaluate(()=>{ritWrite(function(){CURP.rituals=[];return [];},null);});
+  ok(none.sug&&none.lcol<none.rit&&none.lcol<none.rcol&&one.rit<one.rcol&&one.rcol<one.lcol,
+   'FT24: @390 with nothing active New and Suggested come first, and with one running the order is the ritual, the tracker, then new, '+JSON.stringify({none,one}));
+  }catch(e){ok(false,'FT24: the phone group threw, '+String(e.message).split('\n')[0]);}
   await pg.close();
  }
 

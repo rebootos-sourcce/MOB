@@ -195,6 +195,9 @@ function acctLoopSvg(L){
    +' L'+ritP(110+r2*Math.cos(a))+' '+ritP(110+r2*Math.sin(a))+'"/>';}
  out+='<circle class="rv-lnow" cx="110" cy="'+ritP(110-R0-w/2-7)+'" r="3.4"/>';
  return out+'</svg>';}
+/* NAMED IN HIS WORDS, "the thirty day loop", round QN. It read Thirty days,
+   which is also the name of a ladder mark (thirty in a row) shown on the
+   Ongoing goal card on the same screen: one word for two things. */
 function acctLoopHtml(st){
  var L=acctLoopRead(st);
  var key=L.rings.length?'<ul class="rv-lkey">'+L.rings.map(function(R,i){
@@ -203,7 +206,7 @@ function acctLoopHtml(st){
  var sum=!L.n?'<p class="rv-lsum">Nothing on the record in the last thirty days yet.</p>'
   :'<p class="rv-lsum">In the last thirty days you kept a ritual on <b>'+acctDays(L.kept)+'</b> and missed one on <b>'
    +acctDays(L.miss)+'</b>. <b>'+L.mins+' minutes</b> in all, across <b>'+L.n+(L.n===1?' ritual':' rituals')+'</b>.</p>';
- return '<div class="rv-sec rv-loopw"><div class="rv-hd"><span class="rv-h">Thirty days</span></div>'
+ return '<div class="rv-sec rv-loopw"><div class="rv-hd"><span class="rv-h">Thirty day loop</span></div>'
   +'<p class="rv-mean">The last thirty days as one loop. It starts just after the top, runs clockwise, and today closes it at the top. '
   +'Each track round it is one ritual. A mark outside falls every seven days, one turn of your avatar.</p>'
   +'<div class="rv-loopb">'+acctLoopSvg(L)+'<div class="rv-lmid"><b>'+(L.kept||'–')+'</b><span>days kept</span></div></div>'

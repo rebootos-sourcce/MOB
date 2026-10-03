@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1448 56ebb09 2026-10-02 23:11"><head><meta charset="utf-8">
+<html lang="en" data-build="v1449 14e6b64 2026-10-03 00:48"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -5533,11 +5533,24 @@ body:not(.tab-ritual) .fl-rail{display:none}
    Edit on a missed one, has asked for that column, and a builder two screens
    down is an opening nobody sees. ritRender puts ritbuild on the body while
    the builder is holding something, so the column they just asked for is the
-   one in front of them. */
+   one in front of them.
+
+   AND WITH NOTHING ACTIVE IT COMES FIRST, round QN. "Rarer than keeping one"
+   is false when there is nothing to keep. The builder used to open itself
+   then, and ritbuild carried the column up; it no longer opens itself (FT24),
+   so ritnone says the same thing directly, and a stranger on a phone meets
+   New ritual and Suggested on the first screen and not four thousand pixels
+   down, measured, under six cards that each say nothing has happened yet. */
 @media (max-width:1180px){
  body.tab-ritual #rcol{order:1}
  body.tab-ritual #lcol{order:2}
- body.tab-ritual.ritbuild #lcol{order:-2}}
+ body.tab-ritual.ritbuild #lcol,body.tab-ritual.ritnone #lcol{order:-2}}
+/* THE CENTRE'S OWN NEW RITUAL IS FOR A FOLDED LEFT COLUMN ONLY, round QN. With
+   nothing active it is drawn under Active today, and while the left column is
+   open that column carries the same press with Suggested under it, on the
+   same screen at 1600 and first on a phone. Folded shut, the left column is
+   one control, and then this press is the way to start one. */
+body.tab-ritual:not(.lshut) #rit .rv-addx{display:none}
 /* THE MENU'S OWN RULES LIVE HERE AND NOT IN ui/ritual.js. #flowhd and #flowside
    are in the document from the first paint, and the design gate holds every
    class the document carries to a rule in the sheet: they sat in the script's
@@ -48774,12 +48787,16 @@ function ritActiveHtml(act,today,building){
     active yet and offers no press would be the blank screen with a name on it
     that panels.js already warns about, so the press is here. The unpacking is
     the same sentence: what Active means, said where it is shown. */
- /* and the press is offered only while the builder is shut. With nothing
-    active the builder opens itself in the left column, so a second New ritual
-    here would be the same control twice on one screen, which is how a person
-    ends up wondering whether the two do different things. */
+ /* and the press is offered only while the builder is shut. A second New
+    ritual on the same screen as the left column's is the same control twice,
+    which is how a person ends up wondering whether the two do different
+    things. ROUND QN: the builder no longer opens itself, so with nothing
+    active the left column is shut and carries New ritual and Suggested, and
+    it comes first on a phone (ritnone). This press is drawn for the one case
+    the left column is not there to carry it, folded shut, and shell/head.html
+    shows it only then (rv-addx). */
  out+=due.length?'':'<p class="rv-empty">'+(act.length?'Nothing due today.':'Nothing active yet.')+'</p>'
-  +((act.length||building)?'':'<div class="rv-acts"><button type="button" class="btn pri" data-act="add">'+ritIc('plus')+'New ritual</button></div>');
+  +((act.length||building)?'':'<div class="rv-acts rv-addx"><button type="button" class="btn pri" data-act="add">'+ritIc('plus')+'New ritual</button></div>');
  out+='<p class="rv-mean">A ritual is active from the day you start it until it ends or you stop it.</p>';
  out+=ritRowsHtml(due,today,act);
  if(rest.length)out+='<div class="rv-h rv-h2 rv-other">Other days</div>'+ritRowsHtml(rest,today,act);
@@ -48936,9 +48953,12 @@ function ritBuildHtml(c,nAct){
   +'</div>';
  out+='<div class="rv-acts">'
   +(editing?'<button type="button" class="btn" data-act="del-plan" data-id="'+RIT.edit+'">Delete</button>':'')
-  /* nothing to go back to on the tab when nothing is active, so no cancel:
-     the builder is the page. Over another tab it closes. */
-  +((editing||nAct||!ritTab())?'<button type="button" class="btn" id="ritx" data-act="cancel">'+(ritTab()?'Cancel':'Close')+'</button>':'')
+  /* CANCEL IS ALWAYS THERE NOW, round QN. It was left off when nothing was
+     active, because the builder then opened itself and was the page. It no
+     longer opens itself (FT24): a person opens it with a press, and a thing
+     opened with a press closes with one, or the left column is a room with no
+     door. Over another tab it reads Close. */
+  +'<button type="button" class="btn" id="ritx" data-act="cancel">'+(ritTab()?'Cancel':'Close')+'</button>'
   +'<button type="button" class="btn pri" id="ritsave" data-act="save"'+(draft.length?'':' disabled')+'>'+(editing?'Save':'Start')+'</button>'
   +'</div>';
  return out+'</div>';}
@@ -49115,7 +49135,7 @@ function ritRender(){
  if(h&&(!onR||!RIT.open)){h.style.display='none';h.innerHTML='';}
  if(!onR){
   if(left)left.innerHTML=''; if(side)side.innerHTML='';
-  if(document.body)document.body.classList.remove('ritbuild');
+  if(document.body){document.body.classList.remove('ritbuild'); document.body.classList.remove('ritnone');}
   /* the next arrival draws in again, round QN */
   RIT.arrive=true;
   return;}
@@ -49124,9 +49144,13 @@ function ritRender(){
  h.style.display='flex';
  var st=ritRead(), c=st.c, r=st.r, today=st.today, act=st.act;
  var drafting=Object.keys(RIT.sel).some(function(k){return RIT.sel[k];});
- /* when nothing is active the page's one job is to start something, so the
-    builder is open with the called practice ready and nothing else to find. */
- if(!act.length&&!drafting&&!RIT.edit&&c.called){RIT.sel[c.called.k]=true; RIT.order=[c.called.k]; drafting=true;}
+ /* THE BUILDER NO LONGER OPENS ITSELF ON A FIRST VISIT, round QN. It did, from
+    round JQ, with the called practice picked, because then that was the only
+    place the practice had a Start. Suggested carries it now, first, with the
+    reason the seat calls for it and one press to start it, and an open builder
+    hid the list: a person with nothing running, the one who most needs a
+    suggestion, was shown none. Measured 3 October on a first visit at 1600,
+    the left column's controls on screen at once went from 28 to 10. FT24. */
  var building=!!RIT.edit||RIT.add||drafting;
  /* the page draws in on arrival and not on every press: a press repaints the
     whole page, and a reading that replayed its entrance each time would read
@@ -49138,11 +49162,17 @@ function ritRender(){
  h.innerHTML='<div class="rel-card rit-card rv'+(arrive?' rv-arrive':'')+'">'+ritLayout(P)+'</div>';
  flowHeadAt('flownewhd','New','Start a ritual, or change one you already have.','plus');
  flowHead('Accountability','Whether you did what you set.','check');
- /* the builder holds the column while it is open; shut, the column is the one
-    press, the seven tags and every ritual suggested, round QN */
- if(left)left.innerHTML=(building?ritBuildHtml(c,act.length):ritNewHtml()+ritSugHtml(st));
+ /* THE INPUT AND WHAT IS SUGGESTED, BOTH, round QN. His words: "I not only want
+    the input there but I want all the suggested ones." So Suggested sits under
+    the input whether the builder is shut or open. The one time it goes is
+    while an existing ritual is being edited, which is a different job, and a
+    Start pressed there would leave the edit half done. */
+ if(left)left.innerHTML=(building?ritBuildHtml(c,act.length):ritNewHtml())+(RIT.edit?'':ritSugHtml(st));
  if(side)side.innerHTML=acctSideHtml(st,arrive);
- if(document.body)document.body.classList.toggle('ritbuild',building);
+ if(document.body){document.body.classList.toggle('ritbuild',building);
+  /* nothing active: starting one is the page's one job, so on a phone the
+     column that starts one comes first, shell/head.html, round QN */
+  document.body.classList.toggle('ritnone',!act.length);}
  ritWire(h,c); if(left)ritWire(left,c); if(side)ritWire(side,c);}
 
 /* one listener on the host. Every control carries what it does in data-act,
@@ -49739,6 +49769,9 @@ function acctLoopSvg(L){
    +' L'+ritP(110+r2*Math.cos(a))+' '+ritP(110+r2*Math.sin(a))+'"/>';}
  out+='<circle class="rv-lnow" cx="110" cy="'+ritP(110-R0-w/2-7)+'" r="3.4"/>';
  return out+'</svg>';}
+/* NAMED IN HIS WORDS, "the thirty day loop", round QN. It read Thirty days,
+   which is also the name of a ladder mark (thirty in a row) shown on the
+   Ongoing goal card on the same screen: one word for two things. */
 function acctLoopHtml(st){
  var L=acctLoopRead(st);
  var key=L.rings.length?'<ul class="rv-lkey">'+L.rings.map(function(R,i){
@@ -49747,7 +49780,7 @@ function acctLoopHtml(st){
  var sum=!L.n?'<p class="rv-lsum">Nothing on the record in the last thirty days yet.</p>'
   :'<p class="rv-lsum">In the last thirty days you kept a ritual on <b>'+acctDays(L.kept)+'</b> and missed one on <b>'
    +acctDays(L.miss)+'</b>. <b>'+L.mins+' minutes</b> in all, across <b>'+L.n+(L.n===1?' ritual':' rituals')+'</b>.</p>';
- return '<div class="rv-sec rv-loopw"><div class="rv-hd"><span class="rv-h">Thirty days</span></div>'
+ return '<div class="rv-sec rv-loopw"><div class="rv-hd"><span class="rv-h">Thirty day loop</span></div>'
   +'<p class="rv-mean">The last thirty days as one loop. It starts just after the top, runs clockwise, and today closes it at the top. '
   +'Each track round it is one ritual. A mark outside falls every seven days, one turn of your avatar.</p>'
   +'<div class="rv-loopb">'+acctLoopSvg(L)+'<div class="rv-lmid"><b>'+(L.kept||'–')+'</b><span>days kept</span></div></div>'
@@ -49963,8 +49996,15 @@ function ritSuggest(st){
   if(n>=3||q.sq<4||seen[q.b]||(bc&&q.b===bc.seat)||actRel[q.i])return;
   var called=ritFor({darkB:q.b, DQ:r.DQ}).called; if(!called)return;
   seen[q.b]=1; n++;
-  add(called.k,q.b,'You hold '+String(q.k).toLowerCase()+' at '+ritThe(q.b)
-   +'. This runs as a release schedule for it.',q.i);});
+  var why='You hold '+String(q.k).toLowerCase()+' at '+ritThe(q.b)+'. This runs as a release schedule for it.';
+  /* THE SAME PRACTICE AT THE SAME SEAT IS ONE CARD, round QN, found walking
+     the page as James: the sacral carried the most charge and held envy, so
+     The Somatic Truth Check was offered twice at the sacral, one plain and one
+     for envy. The place is the more particular reason, so the card the field
+     or the avatar already made takes it, and its Start sets the schedule. */
+  var same=out.filter(function(x){return x.k===called.k&&x.rel==null&&x.seats.indexOf(q.b)>=0;})[0];
+  if(same){same.why.push(why); same.rel=q.i; by[called.k+'|'+q.i]=same; return;}
+  add(called.k,q.b,why,q.i);});
  return out;}
 function ritCap(s){s=String(s||''); return s.charAt(0).toUpperCase()+s.slice(1);}
 function ritSugStart(i){
@@ -49975,7 +50015,14 @@ function ritSugStart(i){
   return ritStartPlan(q,'Set. '+x.p.nm+' each day for a week, for '+String(BY[x.rel].k).toLowerCase()+'.');}
  return ritStartPlan(q,'Started. '+x.p.nm+' each day for a week.');}
 function ritSugHtml(st){
- var list=ritSuggest(st); RIT.sug=list;
+ /* a practice already picked in the builder above is that choice being made,
+    so it is not offered a second time underneath. A release schedule is tied
+    to a place and is a different choice, so it stays. */
+ var all=ritSuggest(st), list=all.filter(function(x){return x.rel!=null||!RIT.sel[x.k];}); RIT.sug=list;
+ /* and when the builder holds every suggestion there is, the section says
+    nothing: "Nothing to suggest yet" under a builder holding the suggestion
+    would be untrue */
+ if(!list.length&&all.length)return '';
  var body=!list.length?'<p class="rv-empty">Nothing to suggest yet.</p>'
   :'<ul class="rv-sugl">'+list.map(function(x,i){
    var col=x.seats.length?seatCol(x.seats[0]):'var(--accent)';
@@ -65011,5 +65058,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004255389"></div>
+<div id="eof" hidden data-len="004258848"></div>
 </body></html>

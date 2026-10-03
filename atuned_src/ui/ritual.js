@@ -1004,12 +1004,16 @@ function ritActiveHtml(act,today,building){
     active yet and offers no press would be the blank screen with a name on it
     that panels.js already warns about, so the press is here. The unpacking is
     the same sentence: what Active means, said where it is shown. */
- /* and the press is offered only while the builder is shut. With nothing
-    active the builder opens itself in the left column, so a second New ritual
-    here would be the same control twice on one screen, which is how a person
-    ends up wondering whether the two do different things. */
+ /* and the press is offered only while the builder is shut. A second New
+    ritual on the same screen as the left column's is the same control twice,
+    which is how a person ends up wondering whether the two do different
+    things. ROUND QN: the builder no longer opens itself, so with nothing
+    active the left column is shut and carries New ritual and Suggested, and
+    it comes first on a phone (ritnone). This press is drawn for the one case
+    the left column is not there to carry it, folded shut, and shell/head.html
+    shows it only then (rv-addx). */
  out+=due.length?'':'<p class="rv-empty">'+(act.length?'Nothing due today.':'Nothing active yet.')+'</p>'
-  +((act.length||building)?'':'<div class="rv-acts"><button type="button" class="btn pri" data-act="add">'+ritIc('plus')+'New ritual</button></div>');
+  +((act.length||building)?'':'<div class="rv-acts rv-addx"><button type="button" class="btn pri" data-act="add">'+ritIc('plus')+'New ritual</button></div>');
  out+='<p class="rv-mean">A ritual is active from the day you start it until it ends or you stop it.</p>';
  out+=ritRowsHtml(due,today,act);
  if(rest.length)out+='<div class="rv-h rv-h2 rv-other">Other days</div>'+ritRowsHtml(rest,today,act);
@@ -1166,9 +1170,12 @@ function ritBuildHtml(c,nAct){
   +'</div>';
  out+='<div class="rv-acts">'
   +(editing?'<button type="button" class="btn" data-act="del-plan" data-id="'+RIT.edit+'">Delete</button>':'')
-  /* nothing to go back to on the tab when nothing is active, so no cancel:
-     the builder is the page. Over another tab it closes. */
-  +((editing||nAct||!ritTab())?'<button type="button" class="btn" id="ritx" data-act="cancel">'+(ritTab()?'Cancel':'Close')+'</button>':'')
+  /* CANCEL IS ALWAYS THERE NOW, round QN. It was left off when nothing was
+     active, because the builder then opened itself and was the page. It no
+     longer opens itself (FT24): a person opens it with a press, and a thing
+     opened with a press closes with one, or the left column is a room with no
+     door. Over another tab it reads Close. */
+  +'<button type="button" class="btn" id="ritx" data-act="cancel">'+(ritTab()?'Cancel':'Close')+'</button>'
   +'<button type="button" class="btn pri" id="ritsave" data-act="save"'+(draft.length?'':' disabled')+'>'+(editing?'Save':'Start')+'</button>'
   +'</div>';
  return out+'</div>';}
@@ -1345,7 +1352,7 @@ function ritRender(){
  if(h&&(!onR||!RIT.open)){h.style.display='none';h.innerHTML='';}
  if(!onR){
   if(left)left.innerHTML=''; if(side)side.innerHTML='';
-  if(document.body)document.body.classList.remove('ritbuild');
+  if(document.body){document.body.classList.remove('ritbuild'); document.body.classList.remove('ritnone');}
   /* the next arrival draws in again, round QN */
   RIT.arrive=true;
   return;}
@@ -1354,9 +1361,13 @@ function ritRender(){
  h.style.display='flex';
  var st=ritRead(), c=st.c, r=st.r, today=st.today, act=st.act;
  var drafting=Object.keys(RIT.sel).some(function(k){return RIT.sel[k];});
- /* when nothing is active the page's one job is to start something, so the
-    builder is open with the called practice ready and nothing else to find. */
- if(!act.length&&!drafting&&!RIT.edit&&c.called){RIT.sel[c.called.k]=true; RIT.order=[c.called.k]; drafting=true;}
+ /* THE BUILDER NO LONGER OPENS ITSELF ON A FIRST VISIT, round QN. It did, from
+    round JQ, with the called practice picked, because then that was the only
+    place the practice had a Start. Suggested carries it now, first, with the
+    reason the seat calls for it and one press to start it, and an open builder
+    hid the list: a person with nothing running, the one who most needs a
+    suggestion, was shown none. Measured 3 October on a first visit at 1600,
+    the left column's controls on screen at once went from 28 to 10. FT24. */
  var building=!!RIT.edit||RIT.add||drafting;
  /* the page draws in on arrival and not on every press: a press repaints the
     whole page, and a reading that replayed its entrance each time would read
@@ -1368,11 +1379,17 @@ function ritRender(){
  h.innerHTML='<div class="rel-card rit-card rv'+(arrive?' rv-arrive':'')+'">'+ritLayout(P)+'</div>';
  flowHeadAt('flownewhd','New','Start a ritual, or change one you already have.','plus');
  flowHead('Accountability','Whether you did what you set.','check');
- /* the builder holds the column while it is open; shut, the column is the one
-    press, the seven tags and every ritual suggested, round QN */
- if(left)left.innerHTML=(building?ritBuildHtml(c,act.length):ritNewHtml()+ritSugHtml(st));
+ /* THE INPUT AND WHAT IS SUGGESTED, BOTH, round QN. His words: "I not only want
+    the input there but I want all the suggested ones." So Suggested sits under
+    the input whether the builder is shut or open. The one time it goes is
+    while an existing ritual is being edited, which is a different job, and a
+    Start pressed there would leave the edit half done. */
+ if(left)left.innerHTML=(building?ritBuildHtml(c,act.length):ritNewHtml())+(RIT.edit?'':ritSugHtml(st));
  if(side)side.innerHTML=acctSideHtml(st,arrive);
- if(document.body)document.body.classList.toggle('ritbuild',building);
+ if(document.body){document.body.classList.toggle('ritbuild',building);
+  /* nothing active: starting one is the page's one job, so on a phone the
+     column that starts one comes first, shell/head.html, round QN */
+  document.body.classList.toggle('ritnone',!act.length);}
  ritWire(h,c); if(left)ritWire(left,c); if(side)ritWire(side,c);}
 
 /* one listener on the host. Every control carries what it does in data-act,
