@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1584 13da904 2026-10-03 14:00"><head><meta charset="utf-8">
+<html lang="en" data-build="v1609 d20bf57 2026-10-03 20:14"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -67838,50 +67838,19 @@ function loginSay(msg,kind,own){
 function loginBusy(on){
  var h=document.getElementById('login'); if(!h)return;
  h.querySelectorAll('.ob-acts .btn').forEach(function(b){ b.disabled=!!on; });}
-/* UNLOCK ALL SIGHT, A TESTING SWITCH, round OT, his words: "unlock all these
-   for me." It reads the top tier for the lock (ui/lock.js lockPlan) and is kept
-   in the browser's own store, so it holds across a reload and never travels on
-   the profile or to a server. It is a product boundary, as the lock is, and
-   not an entitlement: nothing about billing changes. */
-var DEV_SIGHT=null;
-function devSight(){
- if(DEV_SIGHT===null){ try{ DEV_SIGHT=STORE.get('devsight')==='on'; }catch(e){ DEV_SIGHT=false; } }
- return DEV_SIGHT;}
-function devSightSet(on){
- DEV_SIGHT=!!on;
- try{ STORE.set('devsight',on?'on':'off'); }catch(e){}
- if(typeof render==='function')render();}
-/* DEVELOPER OPTIONS, GATED BEHIND A FLAG NO SHIPPED CONTROL CAN SET, ROUND
-   RA. The comment here used to say "disclosed rather than always visible,"
-   and the disclosure was real: the block was a collapsed <details>, closed
-   by default. But collapsed is not gated. Every visitor to the login card
-   got the same markup, open to a click, and one of its three switches is
-   "Unlock all sight," which lockPlan() (ui/lock.js) turns into a real tier
-   four grant, stored in the browser so it survives a reload. A stranger
-   meeting the funnel never needed to see this to use the product, and the
-   label "Developer options" is itself an invitation to try the switch
-   under it. Reviewed round RA, paywall seat: "the one thing that matters
-   most... taking money behind a lock the product unlocks itself."
-
-   The fix keeps the control, because the team still needs it, and removes
-   it from anyone who has not already turned it on from a console: devtoolsOn()
-   reads a second flag, never written by any rendered control, so turning
-   the panel on at all takes the same console access self-editing a record
-   already does (the privacy note above this function already treats that
-   as the person's own device, not an attack). */
-function devtoolsOn(){
- try{ return STORE.get('devtools')==='on'; }catch(e){ return false; }}
-function loginDevOptions(){
- if(!devtoolsOn())return '';
- return '<details class="login-dev">'
-  +'<summary>Developer options</summary>'
-  +'<label class="login-sw"><input type="checkbox" id="devob"'
-  +(DEV_PLAY_ONBOARDING?' checked':'')+'> Onboarding</label>'
-  +'<label class="login-sw"><input type="checkbox" id="devtut"'
-  +(DEV_PLAY_TUTORIAL?' checked':'')+'> Tutorial</label>'
-  +'<label class="login-sw"><input type="checkbox" id="devsight"'
-  +(devSight()?' checked':'')+'> Unlock all sight</label>'
-  +'</details>';}
+/* DEVELOPER OPTIONS, DEACTIVATED IN FULL, ROUND RI. His words: "let's
+   deactivate the developer option." Round RA first gated the panel behind a
+   console-only flag so a stranger never saw it; this goes further and removes
+   the capability itself, not only its visibility, because a flag that still
+   grants a real tier four if anyone ever sets it (from a console, or a stray
+   value already sitting in an old browser's storage from before this round)
+   is still the thing the paywall seat warned against: "taking money behind a
+   lock the product unlocks itself." devSight() now always reads false, so
+   lockPlan() (ui/lock.js) never reads a free tier four from this path again,
+   whatever any browser's storage already holds. loginDevOptions() always
+   returns nothing: there is no panel left to disclose. */
+function devSight(){ return false; }
+function loginDevOptions(){ return ''; }
 function loginOpen(){
  var h=document.getElementById('login'); if(!h)return;
  LOGIN.open=true; LOGIN.reset=false; h.style.display='flex'; h.innerHTML=loginCard();
@@ -67912,13 +67881,7 @@ function loginWire(h){
   if(send)send.onclick=function(){ loginForgot(); };
   var rf=document.getElementById('loginresetf');
   if(rf)rf.onsubmit=function(e){ e.preventDefault(); loginForgot(); };
-  if(rm)rm.focus(); };
- var devob=document.getElementById('devob');
- if(devob)devob.onchange=function(){ DEV_PLAY_ONBOARDING=!!devob.checked; };
- var devtut=document.getElementById('devtut');
- if(devtut)devtut.onchange=function(){ DEV_PLAY_TUTORIAL=!!devtut.checked; };
- var devs=document.getElementById('devsight');
- if(devs)devs.onchange=function(){ devSightSet(!!devs.checked); };}
+  if(rm)rm.focus(); };}
 function loginClose(){
  var h=document.getElementById('login'); if(!h)return;
  LOGIN.open=false; h.style.display='none'; h.innerHTML='';}
@@ -69960,5 +69923,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004591275"></div>
+<div id="eof" hidden data-len="004589278"></div>
 </body></html>
