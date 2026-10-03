@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1450 eb7e864 2026-10-03 02:03"><head><meta charset="utf-8">
+<html lang="en" data-build="v1451 9c0364e 2026-10-03 03:13"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -24089,28 +24089,67 @@ function intentionRead(p,now){
 
    A mark's test takes the ledger, the streak and the profile and returns true
    or false. Nothing in a test reaches outside those three. */
+/* THE PRACTICE MARKS ARE THE TDD'S SLICE 0, round QS, 3 October.
+   ATUNED-points-achievements-unlocks-TDD-v3.md section 3 measured four of
+   these wrong and section 9.3 gives each its corrected test:
+     first   counted every entry, so pressing Start and never finishing earned
+             First run. It reads a ritual marked done (l.done), 21.J2's half.
+     week, month, season
+             read best, the strict row, so twice a week for ninety days earned
+             none of them (LD3, measured). They read days practised (s.days,
+             pracDays, which already skips a set-and-not-done entry), and the
+             copy no longer says "in a row", because a mark that demands a row
+             shames a gap (TDD 10.4, DESIGN-ladder anti design 1).
+   And two of the TDD's new practice marks land with them, each a count of
+   something that happened and read off the record alone:
+     tracks  one ritual marked done in every track PRACTICE carries, read at
+             run time so a track added later is counted without an edit here.
+     back    a gap of BACK_GAP days or more between two days practised. Coming
+             back is the act a streak punishes, so it is the one this names.
+   Nothing new is stored. A mark's date is derived by markDays below, off the
+   same record, the way the TDD's own drawer dates one (9.1). */
+var BACK_GAP=14;
+function pracTracks(p){
+ var by={}, seen={};
+ ((typeof PRACTICE!=='undefined'&&PRACTICE)||[]).forEach(function(x){if(x&&x.track)by[x.k]=x.track;});
+ ((p&&p.rituals)||[]).forEach(function(x){
+  if(!x||x.done===false||!Array.isArray(x.steps))return;
+  x.steps.forEach(function(k){if(by[k])seen[by[k]]=1;});});
+ var all={}; Object.keys(by).forEach(function(k){all[by[k]]=1;});
+ return {done:Object.keys(seen).length, all:Object.keys(all).length};}
+function pracBack(days){
+ for(var i=1;i<days.length;i++)if(days[i-1]-days[i]>=BACK_GAP)return true;
+ return false;}
 var MARKS=[
  /* practice */
  {k:'first', fam:'Practice', b:'Root', nm:'First run',
-  d:'You ran one. The instrument is no longer a thing you are reading about.',
+  d:'You marked one ritual done. The instrument is no longer a thing you are reading about.',
   ic:'M12 21V6 M7 11l5-5 5 5',
-  t:function(l){return l.rituals>=1;}},
+  t:function(l){return l.done>=1;}},
  {k:'week', fam:'Practice', b:'Root', nm:'Seven days',
-  d:'Seven days in a row. This is where it stops being a decision each morning.',
+  d:'Seven days of practice on the record. This is where it stops being a decision each morning.',
   ic:'M4 6h16v14H4z M4 11h16 M8 3v4 M16 3v4',
-  t:function(l,s){return s.best>=7;}},
+  t:function(l,s){return s.days>=7;}},
  {k:'month', fam:'Practice', b:'Root', nm:'Thirty days',
-  d:'Thirty in a row. The nervous system has had long enough to believe you.',
+  d:'Thirty days of practice on the record. The nervous system has had long enough to believe you.',
   ic:'M4 6h16v14H4z M4 11h16 M8 3v4 M16 3v4 M9 15l2 2 4-4',
-  t:function(l,s){return s.best>=30;}},
+  t:function(l,s){return s.days>=30;}},
  {k:'season', fam:'Practice', b:'Root', nm:'Ninety days',
-  d:'A quarter of a year, unbroken. Nothing about this is a beginner number.',
+  d:'Ninety days of practice on the record. Nothing about this is a beginner number.',
   ic:'M12 3a9 9 0 109 9 M12 3v9h9 M12 12l5 5',
-  t:function(l,s){return s.best>=90;}},
+  t:function(l,s){return s.days>=90;}},
  {k:'hour', fam:'Practice', b:'Root', nm:'Sixty minutes',
   d:'An hour of practice on the record, however it was spread.',
   ic:'M12 3a9 9 0 100 18 9 9 0 100-18 M12 7v5l4 2',
   t:function(l){return l.minutes>=60;}},
+ {k:'tracks', fam:'Practice', b:'Root', nm:'Every track run',
+  d:'A ritual marked done in every track the practice library carries.',
+  ic:'M12 3v18 M3 12h18 M6 6l12 12',
+  t:function(l,s,p){var t=pracTracks(p); return t.all>0&&t.done>=t.all;}},
+ {k:'back', fam:'Practice', b:'Root', nm:'Came back',
+  d:'Two weeks or more away, then a day of practice. Coming back is the practice too.',
+  ic:'M9 5L4 10l5 5 M4 10h10a5 5 0 010 10h-4',
+  t:function(l,s,p){return pracBack(pracDays(p));}},
  /* ground */
  {k:'ten', fam:'Ground', b:'Throat', nm:'Ten addresses',
   d:'Ten distinct addresses opened. Not ten runs. Ten places.',
@@ -24174,6 +24213,44 @@ function ladderRead(p,now){
  var lead=null, best=-1;
  left.forEach(function(m){var n=by[m.fam]||0; if(n>best){best=n; lead=m;}});
  return {earned:got, next:lead, ledger:l, streak:s};}
+
+/* WHEN A PRACTICE MARK BECAME TRUE, round QS. The TDD dates every mark with
+   the moment it first became true (9.1) and stores it; storing is a schema
+   change and the schema is the owner's call (CLAUDE.md, Schema v2), so this
+   derives the date instead, off the same record the test reads. It walks the
+   practised days oldest first and returns the day key on which each earned
+   practice mark's line was crossed. Only the practice family is dated: every
+   one of its tests is a count of days or minutes that only rises, so the day
+   it crossed is a fact of the record. A state mark (First clearing) can fall
+   and rise again, and a date for it would be a guess, so it is left undated.
+
+   An entry deleted later moves a date, which is right: the date says which
+   day on the record now carries the mark, and the record is the person's. */
+function markDays(p,now){
+ var L=ladderRead(p,now), want={}, out={};
+ L.earned.forEach(function(m){if(m.fam==='Practice')want[m.k]=1;});
+ var today=pracDay(now||Date.now()), by={}, tr={}, all={};
+ ((typeof PRACTICE!=='undefined'&&PRACTICE)||[]).forEach(function(x){if(x&&x.track){tr[x.k]=x.track; all[x.track]=1;}});
+ var nAll=Object.keys(all).length;
+ ((p&&p.rituals)||[]).forEach(function(x){
+  if(!x||x.done===false)return;
+  var d=pracDay(x.t); if(d===null||(today!==null&&d>today+1))return;
+  var e=by[d]=by[d]||{min:0, tracks:{}};
+  e.min+=(+x.min)||0;
+  (Array.isArray(x.steps)?x.steps:[]).forEach(function(k){if(tr[k])e.tracks[tr[k]]=1;});});
+ var days=Object.keys(by).map(Number).sort(function(a,b){return a-b;});
+ var n=0, mins=0, seen={}, last=null;
+ var at=function(k,d){if(want[k]&&out[k]===undefined)out[k]=d;};
+ days.forEach(function(d){
+  n++; mins+=by[d].min;
+  Object.keys(by[d].tracks).forEach(function(t){seen[t]=1;});
+  at('first',d);
+  if(n>=7)at('week',d); if(n>=30)at('month',d); if(n>=90)at('season',d);
+  if(mins>=60)at('hour',d);
+  if(nAll&&Object.keys(seen).length>=nAll)at('tracks',d);
+  if(last!==null&&d-last>=BACK_GAP)at('back',d);
+  last=d;});
+ return out;}
 
 /* ============================================================
    COHERENCE OVER TIME. The series behind the graph.
@@ -25813,7 +25890,7 @@ if(typeof module!=='undefined'&&module.exports){
                   PAINREG:PAINREG, PEOPLE:PEOPLE, LAWSET:LAWSET, BIRTH:BIRTH,
                   LEX:LEX, ADJ2CHG:ADJ2CHG, PHRASES:PHRASES, VERP:VERP,
                   NERVEBR:NERVEBR, BODYPATH:BODYPATH, TAB:TAB,
-  /* the ladder */MARKS:MARKS, ladderRead:ladderRead, ledgerRead:ledgerRead,
+  /* the ladder */MARKS:MARKS, ladderRead:ladderRead, markDays:markDays, BACK_GAP:BACK_GAP, ledgerRead:ledgerRead,
                   intentionRead:intentionRead, INTENT_DAYS:INTENT_DAYS,
                   streakRead:streakRead, pracDays:pracDays, pracDay:pracDay,
   /* indexes */   W:W, BY:BY, ALL_SAB:ALL_SAB, S:S,
@@ -48804,6 +48881,61 @@ function ritActiveHtml(act,today,building){
 /* one ritual's ring for one day, a dash per step, ticked when the day is done.
    The Active list and Accountability's due list draw the same ring, so the
    press means the same thing in both places and there is one drawing of it. */
+/* ---------------- ROUND QS: THE SYMBOL, THE PERCENT AND THE PRESS ----------------
+   His words, 3 October, on a screenshot of this page: "for the ritual
+   everything like the rest of the app has to be visually symbolic it's also a
+   UI element that's tied to the system to show the percent complete and more
+   show less tell if you want tell you press on something to get information".
+
+   So a ritual carries the object the rest of the product already uses for a
+   measured value, crBadge (ui/component.js): its seat's own mark inside, a
+   ring round the rim in the seat's colour, and the figure in a pill at the
+   lower right. That is the ruled shape (DECISIONS.md, "A measured value is a
+   circle with its icon inside, a ring round the rim, and a small pill at the
+   lower right carrying the number"), not a new one.
+
+   WHAT THE RING IS. Percent complete of what the ritual is set for: the days
+   it was kept, over the days its span covers on the days it is set for. It
+   only fills, because a kept day stays kept and the span does not move. It is
+   not a rate and not a grade: a missed day does not empty it, it just does not
+   fill it. A ritual with no end has nothing to complete, so its ring stays
+   empty and the pill carries the days kept, a count, which is what every
+   other record figure on the page already is.
+
+   THE TELL IS ON THE PRESS. The badge is a carrier for the one tooltip
+   (ui/tip.js): a hover on a desk, a tap on a phone, and the sentence says what
+   the ring and the pill are, with the figure and what it is out of. */
+function rvTip(t,b,n,k){
+ return ' tabindex="0" data-tip-t="'+esc(t)+'" data-tip="'+esc(b)+'"'+(n?' data-tip-n="'+esc(n)+'"':'')
+  +(k?' data-tip-k="'+esc(k)+'"':'');}
+/* the one seat a ritual sits at: its band, or its first seat tag */
+function ritSeat(p){
+ if(p&&p.band&&BANDS.indexOf(p.band)>=0)return p.band;
+ return ((p&&p.tags)||[]).filter(function(b){return BANDS.indexOf(b)>=0;})[0]||'';}
+function ritPct(p,today){
+ if(!p||!p.days)return null;
+ var s=ritStart0(p), due=0, kept=0;
+ for(var d=s;d<s+p.days;d++){
+  if(!ritCovers(p,d))continue; due++;
+  var e=ritEntryFor(p,d); if(e&&ritIsDone(e.x))kept++;}
+ return due?{kept:kept, due:due, pct:100*kept/due}:null;}
+function ritPctHtml(p,today,size){
+ var b=ritSeat(p), col=ritCol(p), P=ritPct(p,today), nm=ritName(p.steps);
+ var where=b?ritTagNm(b)+' seat':'No seat';
+ var o={size:size||'sm', color:col, glyph:SEATGLYPH[b]||SEATGLYPH._}, badge, body, n='';
+ if(P){var pc=Math.round(P.pct);
+  badge=crBadge(b,P.pct,Object.assign(o,{raw:pc+'%'}));
+  body='Percent complete: the days you kept it, of the days it is set for. A kept day stays kept, so the ring only fills.';
+  n='Kept|'+acctDays(P.kept)+'|'+P.due+' set';}
+ else{var k=ritRunRead(p,today).kept;
+  badge=crBadge(b,0,Object.assign(o,{raw:String(k)}));
+  body='No end, so nothing to complete. The number is the days you have kept it.';}
+ return '<span class="rv-pc" style="--c:'+col+'"'+rvTip(nm,body,n,where)+'>'+badge+'</span>';}
+/* a seat tag as its mark, for the tags past the first on a row. The first is
+   the badge; a second seat is a second mark and not a second word. */
+function ritTagMark(b){
+ return '<em class="rv-tgi" style="--t:'+seatCol(b)+'" title="'+esc(ritTagNm(b))+' seat">'
+  +'<svg viewBox="0 0 24 24" aria-hidden="true">'+(SEATGLYPH[b]||SEATGLYPH._)+'</svg></em>';}
 function ritRingHtml(p,d,col){
  return '<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="14" class="rv-track" style="stroke-width:4"/>'
   +ritArcs(20,20,14,p.steps.map(function(){return {col:col, st:d?'done':'plan'};}),4)
@@ -48829,8 +48961,10 @@ function ritRowsHtml(list,today,act){
       screen with both rails open. Mid line it is a value and a value is
       never titled, V13: it read "20 minutes, Every day but Thu". */
    +ritTm(p)+' minutes'+(p.on?', '+esc(ritOften(p.on).replace(/^(Every|Week)/,function(m){return m.toLowerCase();})):'')+(p.when?', '+esc(p.when):'')+'<i>'+ritLeft(p,today)+'</i>'
-   +p.tags.map(function(b){return '<em class="rv-tg" style="--t:'+seatCol(b)+'">'+esc(ritTagNm(b))+'</em>';}).join('')
-   +'</span></button>'+ritTimerHtml(p)+'</div>';
+   /* ROUND QS: the seat is the badge beside the row now, its mark and its
+      percent complete; a second seat tag is a second mark, never a word */
+   +p.tags.filter(function(b){return b!==ritSeat(p);}).map(ritTagMark).join('')
+   +'</span></button>'+ritPctHtml(p,today)+ritTimerHtml(p)+'</div>';
   if(open){
    out+='<div class="rv-more">'
     +ritSteps(p).map(function(s,i){
@@ -49173,7 +49307,32 @@ function ritRender(){
   /* nothing active: starting one is the page's one job, so on a phone the
      column that starts one comes first, shell/head.html, round QN */
   document.body.classList.toggle('ritnone',!act.length);}
- ritWire(h,c); if(left)ritWire(left,c); if(side)ritWire(side,c);}
+ ritWire(h,c); if(left)ritWire(left,c); if(side)ritWire(side,c);
+ [h,left,side].forEach(ritTell);
+ /* the rings move into their values, the same tween the dock's circles and
+    every badge in the rails use (crMotion, ui/component.js): from empty on
+    first sight, and after that only when a value moves. Reduced motion gets
+    the value in the frame it is written. */
+ if(typeof crMotion==='function')crMotion([h,left,side]);}
+
+/* THE TELL IS ON THE PRESS, round QS. His words: "more show less tell if you
+   want tell you press on something to get information." Every part of this
+   page carried its meaning as a sentence under its heading, the unpack rule
+   (CLAUDE.md, round PO). The sentence is not cut: it moves onto the heading,
+   which becomes a carrier for the one tooltip, the shape the unpack rule
+   already accepts ("the term inside a carrier whose tooltip is that
+   sentence", tests/unpack.js). Hover on a desk, tap on a phone, focus from
+   the keyboard. The sentence stays in the document, folded, so nothing that
+   reads it loses it. Only the first sentence of a part moves: a second one is
+   advice tied to a state (Missed's "does not fit your days") and stays where
+   the state is. */
+function ritTell(root){
+ if(!root)return;
+ root.querySelectorAll('.rv-sec').forEach(function(sec){
+  var hd=sec.querySelector(':scope>.rv-hd'), h=hd&&hd.querySelector('.rv-h'), m=sec.querySelector(':scope>.rv-mean');
+  if(!h||!m||h.hasAttribute('data-tip'))return;
+  h.setAttribute('tabindex','0'); h.setAttribute('data-tip',m.textContent);
+  h.setAttribute('data-tip-t',h.textContent); h.classList.add('rv-hq'); m.classList.add('rv-told');});}
 
 /* one listener on the host. Every control carries what it does in data-act,
    so a layout that moves a control does not have to move its wiring. */
@@ -49183,7 +49342,7 @@ function ritWire(h,c){
   var a=b.getAttribute('data-act'), id=b.getAttribute('data-id');
   /* the offer to put a deletion back lasts until the next thing that writes
      or builds. Looking around the record does not spend it. */
-  if(['putback','view','day','mo','exp','more','hmore'].indexOf(a)<0)RIT.gone=null;
+  if(['putback','view','day','mo','exp','more','hmore','sgwhy'].indexOf(a)<0)RIT.gone=null;
   switch(a){
    case 'go-story': if(typeof setTab==='function')setTab(TAB.STORY); return;
    /* EDIT ON A MISSED RITUAL IS NOW ONE PRESS AND NO NAVIGATION, round QF.
@@ -49242,6 +49401,9 @@ function ritWire(h,c){
    /* round QN, ui/ritstage.js and ui/accountability.js. Each goes through the
       one writer, so a failed save says so and a worked example is refused. */
    case 'sug': ritSugStart(+b.getAttribute('data-i')); return;
+   /* a suggestion's mark opens its reasons in place, round QS */
+   case 'sgwhy': {var sx=(RIT.sug||[])[+b.getAttribute('data-i')];
+    if(sx){var sk=sx.k+'|'+sx.rel; RIT.sgw=RIT.sgw||{}; RIT.sgw[sk]=!RIT.sgw[sk];} break;}
    case 'keep': ritKeep(id); return;
    case 'del-keep': RIT.goneAt='keep'; ritDelPlan(id); return;
    case 'rot': acctRotate(+b.getAttribute('data-i')); return;
@@ -49671,7 +49833,7 @@ function acctDueHtml(st){
     +(d?'Done today. Press to take it off':'Mark '+esc(ritName(p.steps))+' done today')+'">'+ritRingHtml(p,d,col)+'</button>'
     +'<span class="rv-txt"><span class="rv-nm">'+esc(ritName(p.steps))+'</span>'
     +'<span class="rv-sub">'+(d?'Done today':'Planned for today')+'<i>'+esc(ritLeft(p,st.today))+'</i></span></span>'
-    +'</div></li>';});
+    +ritPctHtml(p,st.today)+'</div></li>';});
   body+='</ol>';}
  return '<div class="rv-sec rv-act"><div class="rv-hd"><span class="rv-h">Due today</span>'
   +(due.length?'<span class="rv-min">'+due.length+(due.length===1?' ritual':' rituals')+'</span>':'')+'</div>'
@@ -49714,7 +49876,9 @@ function acctDoneHtml(st){
   /* the earned marks stay here, with the record that earned them. The next one
      moved to the Ongoing goal card in the centre, round QN, because the next
      mark is a goal and that card is where he asked the goal to sit. */
-  +ritMarksHtml(st.L,true)+'</div>';}
+  /* ROUND QS: the earned marks moved to the cubes, pinned to the day each was
+     earned, his "achievements and badges ... attached to it". Shown once. */
+  +'</div>';}
 
 /* ---------------- THE THIRTY DAY LOOP, round QN ----------------
    His words: "on the accountability tracker slide on the right hand side the
@@ -49750,42 +49914,94 @@ function acctLoopRead(st){
   .sort(function(a,b){return (b.act-a.act)||(b.last-a.last);});
  return {t0:t0, today:today, rings:used.slice(0,ACCT_RINGS), more:Math.max(0,used.length-ACCT_RINGS),
   n:used.length, kept:Object.keys(kept).length, miss:Object.keys(miss).length, mins:mins};}
-function acctArc(r,a0,a1){
- var p=function(a){a=a*Math.PI/180; return ritP(110+r*Math.cos(a))+' '+ritP(110+r*Math.sin(a));};
- return 'M'+p(a0)+' A'+r+' '+r+' 0 0 1 '+p(a1);}
-function acctLoopSvg(L){
- var R0=92, step=12, w=8, seg=360/ACCT_LOOP, gap=2.2, out='<svg viewBox="0 0 220 220" class="rv-loop" aria-hidden="true">';
- var rings=L.rings.length?L.rings:[{col:'var(--dim)', days:{}}];
- rings.forEach(function(R,ri){
-  var r=R0-ri*step;
-  for(var i=0;i<ACCT_LOOP;i++){
-   var d=L.t0+i, s=R.days[d]||'none';
-   out+='<path class="rv-ld rv-ld-'+s+(d===L.today?' rv-ld-now':'')+'" d="'+acctArc(r,-90+i*seg+gap/2,-90+(i+1)*seg-gap/2)
-    +'" style="stroke-width:'+w+';--i:'+(i+ri*4)+(s==='none'||s==='miss'?'':';stroke:'+R.col)+'"/>';}});
- /* a turn every seven days back from today, outside the outer track */
- for(var j=1;j*7<ACCT_LOOP;j++){
-  var a=(-90+(ACCT_LOOP-j*7)*seg)*Math.PI/180, r1=R0+w/2+3, r2=R0+w/2+8;
-  out+='<path class="rv-ltk" d="M'+ritP(110+r1*Math.cos(a))+' '+ritP(110+r1*Math.sin(a))
-   +' L'+ritP(110+r2*Math.cos(a))+' '+ritP(110+r2*Math.sin(a))+'"/>';}
- out+='<circle class="rv-lnow" cx="110" cy="'+ritP(110-R0-w/2-7)+'" r="3.4"/>';
- return out+'</svg>';}
+/* ---------------- THE THIRTY DAYS AS CUBES, round QS ----------------
+   His words, 3 October: "the accountability should have the the 30 days of
+   cubes showing my progression and my achievements and badges and whatnot
+   attached to it".
+
+   THE CUBES REPLACE THE RING, and that is a judgment and is said as one. The
+   ring of round QN and these cubes are two drawings of one read, and one page
+   says a thing once, so the picture changed and the read did not: every cube
+   is ritDaySegs for its day, the month's own read, exactly as each piece of
+   the ring was. The heading stays his name for it, Thirty day loop.
+
+   ONE CUBE A DAY, seven to a row and today last, at the lower right, so the
+   page reads oldest to newest the way a person reads, and a row is a week
+   counted back from today. A day kept is a solid cube in the seat colour of
+   every ritual kept on it, side by side; planned and not yet done is its
+   outline; missed is dashed; a day nothing was set for is the empty socket.
+   The same grammar as the month and the rings: solid is done, faint is
+   planned, dashed is missed.
+
+   THE MARKS ARE PINNED TO THE DAY THAT EARNED THEM. markDays (engine/ladder.js)
+   dates each earned practice mark off the record, and a mark whose day falls
+   in the thirty sits on that cube, in its own seat colour with its own icon.
+   Every earned mark is on the shelf under the cubes, each with its meaning and
+   its date on the press. Only earned marks: the next one is the Ongoing goal
+   card's, and the rest are never listed (engine/ladder.js, "never how many of
+   how many").
+
+   Nothing here is a rate. The figures over the cubes are counts of days and
+   minutes, the ruling for every surface that shows a record. */
+var ACCT_COLS=7;
+function acctCubeRead(st){
+ var today=st.today, t0=today-ACCT_LOOP+1, out=[];
+ var md=(typeof markDays==='function')?markDays(CURP,Date.now()):{}, pin={};
+ (st.L.earned||[]).forEach(function(m){var d=md[m.k]; if(d!=null&&d>=t0&&d<=today)(pin[d]=pin[d]||[]).push(m);});
+ for(var d=t0;d<=today;d++){
+  var X={d:d, done:[], miss:[], plan:[], marks:pin[d]||[]}, seen={};
+  ritDaySegs(d,st.plans,today).forEach(function(s){
+   var k=s.st+'|'+s.nm; if(seen[k])return; seen[k]=1;
+   if(s.st==='done')X.done.push(s); else if(s.st==='miss')X.miss.push(s); else if(s.st==='plan')X.plan.push(s);});
+  X.st=X.done.length?'done':X.plan.length?'plan':X.miss.length?'miss':'none';
+  out.push(X);}
+ return {days:out, md:md};}
+function acctCubeHtml(X,i,n,today,empty){
+ var j=n-1-i, row=Math.floor((n-1)/ACCT_COLS)-Math.floor(j/ACCT_COLS)+1, col=ACCT_COLS-(j%ACCT_COLS);
+ var nm=function(a){return a.map(function(s){return s.nm;}).join(', ');};
+ var bg='';
+ if(X.done.length){var w=100/X.done.length;
+  bg=';background:linear-gradient(90deg,'+X.done.map(function(s,k){return s.col+' '+(k*w).toFixed(1)+'% '+((k+1)*w).toFixed(1)+'%';}).join(',')+')';}
+ var c=(X.done[0]||X.plan[0]||X.miss[0]||{}).col||'var(--accent)';
+ var said=[X.done.length?'Done: '+nm(X.done)+'.':'', X.plan.length?'Planned: '+nm(X.plan)+'.':'',
+  X.miss.length?'Missed: '+nm(X.miss)+'.':'', X.marks.length?'Earned '+X.marks.map(function(m){return m.nm;}).join(', ')+'.':'']
+  .filter(Boolean).join(' ')||'Nothing was set for this day.';
+ var day=ritDayName(X.d,today);
+ return '<span class="rv-cb rv-cb-'+X.st+(X.d===today?' rv-cb-now':'')+'" style="grid-row:'+row+';grid-column:'+col
+  +';--c:'+c+';--i:'+(row+col)+bg+'"'
+  /* AN EMPTY RECORD IS A PICTURE AND NOT THIRTY PRESSES, the month's own rule
+     (ritRecordHtml): on a first visit the sockets show what will fill and are
+     not each a carrier to tab through */
+  +(empty?' aria-hidden="true"':rvTip(day,said)+' aria-label="'+esc(day+'. '+said)+'"')+'>'
+  +X.marks.map(function(m,k){return '<i class="rv-cbm" style="--c:'+seatCol(m.b)+';--k:'+k+'" aria-hidden="true">'
+   +'<svg viewBox="0 0 24 24"><path d="'+m.ic+'"/></svg></i>';}).join('')+'</span>';}
+/* the earned marks, each a carrier: its name, its meaning, and its date when
+   the record dates it. The shelf is ritMarksHtml's circle, the ladder's own
+   icon in its family's seat colour, ring not fill. */
+function acctShelfHtml(L,md,today){
+ if(!L.earned.length)return '<div class="rv-marks"><span class="rv-lb">Marks</span>'
+  +'<p class="rv-empty">None yet. A mark is earned from your record, never bought.</p></div>';
+ return '<div class="rv-marks"><span class="rv-lb">Marks</span><div class="rv-mk">'
+  +L.earned.map(function(m,i){var d=md[m.k];
+   return '<span class="rv-m" style="--c:'+seatCol(m.b)+';--i:'+i+'"'
+    +rvTip(m.nm,m.d+(d!=null?' Earned '+String(ritDayName(d,today)).replace(/^(Today|Yesterday)$/,function(x){return x.toLowerCase();})+'.':''),'',m.fam)+'>'
+    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+m.ic+'"/></svg></span>';}).join('')+'</div></div>';}
 /* NAMED IN HIS WORDS, "the thirty day loop", round QN. It read Thirty days,
    which is also the name of a ladder mark (thirty in a row) shown on the
    Ongoing goal card on the same screen: one word for two things. */
 function acctLoopHtml(st){
- var L=acctLoopRead(st);
- var key=L.rings.length?'<ul class="rv-lkey">'+L.rings.map(function(R,i){
-  return '<li style="--c:'+R.col+'"><i aria-hidden="true"></i>'+esc(R.nm)+(i===0?' <small>outermost</small>':'')+'</li>';}).join('')
-  +(L.more?'<li style="--c:var(--dim)"><i aria-hidden="true"></i><small>and '+L.more+' more in the Record</small></li>':'')+'</ul>':'';
- var sum=!L.n?'<p class="rv-lsum">Nothing on the record in the last thirty days yet.</p>'
-  :'<p class="rv-lsum">In the last thirty days you kept a ritual on <b>'+acctDays(L.kept)+'</b> and missed one on <b>'
-   +acctDays(L.miss)+'</b>. <b>'+L.mins+' minutes</b> in all, across <b>'+L.n+(L.n===1?' ritual':' rituals')+'</b>.</p>';
+ var L=acctLoopRead(st), Q=acctCubeRead(st), n=Q.days.length;
+ var empty=!st.plans.length&&!((CURP&&CURP.rituals)||[]).length;
+ var figs='<div class="rv-cbf"><span class="rv-cbk"><b>'+(L.kept||'–')+'</b> '+(L.kept===1?'day':'days')+' kept</span>'
+  +'<span><b>'+(L.miss||'–')+'</b> missed</span><span><b>'+(L.mins||'–')+'</b> min</span></div>';
  return '<div class="rv-sec rv-loopw"><div class="rv-hd"><span class="rv-h">Thirty day loop</span></div>'
-  +'<p class="rv-mean">The last thirty days as one loop. It starts just after the top, runs clockwise, and today closes it at the top. '
-  +'Each track round it is one ritual. A mark outside falls every seven days, one turn of your avatar.</p>'
-  +'<div class="rv-loopb">'+acctLoopSvg(L)+'<div class="rv-lmid"><b>'+(L.kept||'–')+'</b><span>days kept</span></div></div>'
-  +key+'<div class="rv-key" aria-hidden="true"><span><i class="rv-k-done"></i>Done</span><span><i class="rv-k-plan"></i>Planned</span>'
-  +'<span><i class="rv-k-miss"></i>Missed</span></div>'+sum+'</div>';}
+  +'<p class="rv-mean">The last thirty days as cubes, a week to a row and today last. A solid cube is a day you kept a ritual, '
+  +'in the colour of its seat; an outline is planned; dashed is missed. A mark on a cube is one you earned that day.</p>'
+  +figs+'<div class="rv-cubes'+(empty?' rv-cubes0':'')+'" role="group" aria-label="The last thirty days">'
+  +Q.days.map(function(X,i){return acctCubeHtml(X,i,n,st.today,empty);}).join('')+'</div>'
+  +'<div class="rv-key" aria-hidden="true"><span><i class="rv-k-cube"></i>Done</span><span><i class="rv-k-cplan"></i>Planned</span>'
+  +'<span><i class="rv-k-cmiss"></i>Missed</span></div>'
+  +acctShelfHtml(st.L,Q.md,st.today)+'</div>';}
 
 /* ---------------- HISTORY, round QN ----------------
    His words: "I want to be able to track my accountability history. I want my
@@ -49934,12 +50150,13 @@ try{window.__at&&window.__at('ui/accountability.js');}catch(e){}
 
    ACHIEVEMENTS, WHEN THAT SYSTEM COMES ONLINE. It does not exist yet
    (POINTS-AUDIT.md; the points, achievements and unlocks TDD is audited and
-   unbuilt). The link point is the row ritSuggest returns: when achievements
-   exist, a row may carry the achievement it moves toward, read from that
-   system and never typed here. Nothing reads or writes one now, and the page
-   says nothing about achievements, because a promise on screen with nothing
-   behind it is the status lie. The ladder's marks (engine/ladder.js) are real
-   and are shown, as the next mark, on the Ongoing goal card.
+   unbuilt past its slice 0). The link point is the row ritSuggest returns:
+   when achievements exist, a row may carry the achievement it moves toward,
+   read from that system and never typed here. Nothing reads or writes one now,
+   because a promise on screen with nothing behind it is the status lie. The
+   ladder's marks (engine/ladder.js) are real: the next one is on the Ongoing
+   goal card, and since round QS the earned ones are pinned on the thirty day
+   cubes on the day each was earned (ui/accountability.js, FT28).
 
    ALIVE AT REST. The stage carries a still layer behind the cards, one soft
    pool per seat that holds charge, placed at the seat's own angle on the
@@ -50023,22 +50240,71 @@ function ritSugHtml(st){
     nothing: "Nothing to suggest yet" under a builder holding the suggestion
     would be untrue */
  if(!list.length&&all.length)return '';
+ RIT.sgw=RIT.sgw||{};
  var body=!list.length?'<p class="rv-empty">Nothing to suggest yet.</p>'
   :'<ul class="rv-sugl">'+list.map(function(x,i){
-   var col=x.seats.length?seatCol(x.seats[0]):'var(--accent)';
-   return '<li class="rv-sg1" style="--c:'+col+'">'
-    +'<div class="rv-sgh"><span class="rv-sgn">'+esc(x.p.nm)+'</span><span class="rv-sgm">'+x.p.min+' min</span></div>'
-    /* one line per reason, so a practice two sources call for reads as two
-       short reasons and not one paragraph */
-    +'<ul class="rv-sgw">'+x.why.map(function(w){return '<li>'+esc(w)+'</li>';}).join('')+'</ul>'
-    +'<div class="rv-sgf"><span class="rv-sgt">'+x.seats.map(function(b){
-      return '<em class="rv-tg" style="--t:'+seatCol(b)+'">'+esc(ritTagNm(b))+'</em>';}).join('')+'</span>'
+   var b=x.seats[0]||'', col=b?seatCol(b):'var(--accent)', M=ritSugMark(x,b), open=!!RIT.sgw[x.k+'|'+x.rel];
+   return '<li class="rv-sg1'+(open?' rv-open':'')+'" style="--c:'+col+'">'
+    +'<div class="rv-sgh"><button type="button" class="rv-sgs" data-act="sgwhy" data-i="'+i+'" aria-expanded="'+open
+     +'" aria-label="Why '+esc(x.p.nm)+' is suggested">'+M.badge+'</button>'
+    +'<span class="rv-sgt0"><span class="rv-sgn">'+esc(x.p.nm)+'</span><span class="rv-sgm">'+x.p.min+' min</span></span></div>'
+    /* THE REASONS ARE ONE PRESS AWAY, round QS. His words: "more show less
+       tell if you want tell you press on something to get information." The
+       mark is the press, and it opens the reasons and what the ring measures
+       in place, under the name, rather than in a panel somewhere else. */
+    +'<div class="rv-sgx"'+(open?'':' hidden')+'><ul class="rv-sgw">'+x.why.map(function(w){return '<li>'+esc(w)+'</li>';}).join('')
+     +'</ul><p class="rv-sgr">'+esc(M.says)+'</p></div>'
+    +'<div class="rv-sgf"><span class="rv-sgt">'+x.seats.map(function(sb){
+      return '<em class="rv-tg" style="--t:'+seatCol(sb)+'"><svg viewBox="0 0 24 24" aria-hidden="true">'+(SEATGLYPH[sb]||SEATGLYPH._)+'</svg>'
+       +esc(ritTagNm(sb))+'</em>';}).join('')+'</span>'
     +'<button type="button" class="btn" data-act="sug" data-i="'+i+'" aria-label="Start '+esc(x.p.nm)+' for a week">Start for a week</button></div></li>';}).join('')+'</ul>';
  return '<div class="rv-sec rv-sug"><div class="rv-hd"><span class="rv-h">Suggested</span></div>'
   +'<p class="rv-mean">Read from your avatar\'s stories and from the places your field holds the most charge. '
-  +'Each is the practice that seat calls for at the charge you carry now. The tag on it is the seat.</p>'+body+'</div>';}
+  +'Each is the practice that seat calls for at the charge you carry now. Its mark is the seat, or the pattern it releases.</p>'+body+'</div>';}
+/* A SUGGESTION'S MARK, round QS. His words: "the cards that come from the
+   ritual builder they should be colorized and related to the color of the
+   chakra or fetter with their symbol." A card that runs as a release schedule
+   is tied to one held place, so it wears that place's pattern, the fetter's
+   own mark from CHILD (the one the rail and the Avatar page draw for it), and
+   its ring is that place's charge, which is crbNode's shape for an address.
+   Any other card is for its seat, so it wears the seat's mark from SEATGLYPH
+   and its ring is the heaviest place held at that seat. Both in the seat's
+   colour, from seatCol. A seat holding nothing draws the mark with an empty
+   ring and says so. */
+function ritSugMark(x,b){
+ var n=(x.rel!=null&&BY[x.rel])?BY[x.rel]:null;
+ if(!n&&b)n=ritHeld().filter(function(h){return h.b===b;}).sort(function(a,c){return c.sq-a.sq;})[0]||null;
+ var cf=n&&n.cf?CHILD.filter(function(c){return c.nm===n.cf;})[0]:null;
+ var glyph=(x.rel!=null&&cf)?glyphPath(cf.ic):(SEATGLYPH[b]||SEATGLYPH._);
+ var col=b?seatCol(b):'var(--accent)';
+ var badge=crBadge(b,n?n.sq*10:0,{size:'md', color:col, glyph:glyph, raw:n?n.sq.toFixed(1):'–'});
+ var says=!b?'No seat yet, so the mark is empty.'
+  :n?'The mark is '+(x.rel!=null&&cf?'the pattern '+cf.nm.toLowerCase()+', ':'the seat, ')+'and the ring is '
+    +String(n.k).toLowerCase()+' held at '+ritThe(b)+', at '+n.sq.toFixed(1)+'.'
+  :'The mark is the seat. Nothing is held at '+ritThe(b)+', so the ring is empty.';
+ return {badge:badge, says:says};}
 
-/* ---------------- ritual to avatar ---------------- */
+/* ---------------- ritual to avatar ----------------
+   ROUND QS made this card a picture first. His words: "everything like the
+   rest of the app has to be visually symbolic ... more show less tell if you
+   want tell you press on something to get information."
+
+   THE HERO is the avatar's own percent complete, avState().overall, the
+   figure the Avatar page draws round its core and the one he called good
+   there ("And the percent complete, that's good", round HG). It is drawn as
+   cr() at its hero size, the CQ circle's own object, with the avatar's own
+   mark (AV_IC.person) inside. Nothing new is measured: the ring is how much of
+   what the avatar's stories carried has gone since they were written.
+
+   THE CYCLES beside it are unchanged: avCycles, the days kept turning the
+   avatar a seat at a time.
+
+   THE SEATS are tiles, one per seat an avatar story sits at, each a crBadge
+   with the Avatar page's own mark for that area (AV_IC) in the seat's colour,
+   its ring the area's percent complete (avState().areas). The line the person
+   wrote and the ritual that feeds the seat moved off the card and onto the
+   press, so the card at rest is seven marks and not seven paragraphs. A dot
+   under the mark is filled when an active ritual feeds the seat. */
 function ritAvHtml(st){
  var C=(typeof avCycles==='function')?avCycles(CURP):{days:0,cyc:[]};
  var cur=-1; C.cyc.forEach(function(c,i){if(cur<0&&!c.done)cur=i;});
@@ -50052,6 +50318,18 @@ function ritAvHtml(st){
   var turns=c.turns.filter(function(f){return f>=1;}).length;
   return '<div class="rv-cy'+(i===cur?' rv-cur':'')+'" role="img" aria-label="'+names[i]+' cycle, '
    +(c.done?'done':(turns?turns+(turns===1?' turn':' turns')+' done':'not started'))+'">'+s+'</svg><span>'+names[i]+'</span></div>';}).join('');
+ var A0=(typeof avState==='function')?avState():null;
+ var all=A0&&A0.overall!=null?A0.overall:null, pc=all===null?0:Math.round(all*100);
+ var hero='<span class="rv-avhero"'+rvTip('Your avatar',
+   'Percent complete: how much of what your avatar\'s stories carried has gone since you wrote them. The same figure the Avatar page draws round its core.',
+   all===null?'':'Complete|'+pc+'%|100%','Avatar')+'>'
+  +cr('Heart',pc,{size:'hero', hot:false, color:'var(--k)', glyph:(typeof AV_IC!=='undefined'?AV_IC.person:SEATGLYPH._), raw:all===null?'–':pc+'%'})
+  +'<span class="rv-avhl">Avatar</span></span>';
+ var cyc='<div class="rv-avc"'+rvTip('Cycles',
+   'Each day you keep a ritual turns your avatar one seat, root to crown. Seven days make a turn, and three turns make a cycle.',
+   'Kept|'+acctDays(C.days)+'|'+(AV_TURN*AV_TURNS*AV_CYCLES)+' days for three cycles','Ritual to avatar')+'>'
+  +'<div class="rv-cys">'+rings+'</div>'
+  +'<div class="rv-avfig"><b>'+(C.days?C.days+'<small>'+(C.days===1?' day':' days')+'</small>':'–')+'</b><span>kept</span></div></div>';
  var rows=(typeof avRows==='function')?avRows():[], seat={};
  rows.forEach(function(x){if(x.gap&&x.gap.seat)seat[x.gap.seat]=x;});
  var seats=BANDS.filter(function(b){return seat[b];});
@@ -50059,20 +50337,20 @@ function ritAvHtml(st){
  if(!rows.length)list='<p class="rv-empty">Your avatar has no stories yet.</p>'
   +'<div class="rv-acts"><button type="button" class="btn" data-act="go-avatar">Open the avatar</button></div>';
  else if(!seats.length)list='<p class="rv-empty">Your avatar\'s stories do not read at a seat yet.</p>';
- else list='<ul class="rv-avl">'+seats.slice(0,4).map(function(b){
-  var x=seat[b], A=(typeof AV_OF!=='undefined'&&AV_OF[b])||{nm:b,about:''};
+ else list='<ul class="rv-avl">'+seats.map(function(b,i){
+  var x=seat[b], A=(typeof AV_OF!=='undefined'&&AV_OF[b])||{nm:b,about:'',k:''};
   var fed=st.act.filter(function(p){return p.band===b||p.tags.indexOf(b)>=0;});
-  return '<li class="rv-avs" style="--c:'+seatCol(b)+'"><i aria-hidden="true"></i><span class="rv-avt">'
-   +'<span class="rv-avn">'+esc(A.nm)+' <small>'+esc(A.about)+', at '+esc(ritThe(b))+'</small></span>'
-   +'<span class="rv-avb">"'+esc(ritClip(String(x.pair.be).replace(/^"+|"+$/g,''),64))+'"</span>'
-   +'<span class="rv-avf'+(fed.length?' rv-fed':'')+'">'+(x.gap.clear?'Clear at this seat'
-    :fed.length?'Fed by '+esc(fed.map(function(p){return ritName(p.steps);}).join(', '))
-    :'No ritual at this seat yet')+'</span></span></li>';}).join('')+'</ul>';
+  var ar=A0&&A0.areas&&A0.areas[A.k], ap=ar&&ar.pct!=null?Math.round(ar.pct*100):null;
+  var said=x.gap.clear?'Clear at this seat.'
+   :fed.length?'Fed by '+fed.map(function(p){return ritName(p.steps);}).join(', ')+'.':'No ritual at this seat yet.';
+  return '<li class="rv-avs'+(fed.length?' rv-fed':'')+'" style="--c:'+seatCol(b)+';--i:'+i+'"'
+   +rvTip(A.nm+', at '+ritThe(b),'"'+String(x.pair.be).replace(/^"+|"+$/g,'')+'" '+said,
+    ap===null?'':'Complete|'+ap+'%|100%',A.about)+'>'
+   +crBadge(b,ap||0,{size:'md', glyph:(typeof AV_IC!=='undefined'&&AV_IC[A.k])||SEATGLYPH[b], raw:ap===null?'–':ap+'%'})
+   +'<span class="rv-avn">'+esc(A.nm)+'</span><i class="rv-avd" aria-hidden="true"></i></li>';}).join('')+'</ul>';
  return '<section class="rv-sec rv-c rv-c-av" data-slot="top-left"><div class="rv-hd"><span class="rv-h">Ritual to avatar</span></div>'
-  +'<p class="rv-mean">Each day you keep a ritual turns your avatar one seat, root to crown. Seven days make a turn, and three turns make a cycle.</p>'
-  +'<div class="rv-avw"><div class="rv-cys">'+rings+'</div>'
-  +'<div class="rv-fig rv-avfig"><b>'+(C.days?C.days+'<small>'+(C.days===1?' day':' days')+'</small>':'–')+'</b><span>Kept</span></div></div>'
-  +list+'</section>';}
+  +'<p class="rv-mean">Your avatar\'s percent complete, the cycles your kept days turn, and each seat your avatar has a story at.</p>'
+  +'<div class="rv-avw">'+hero+cyc+'</div>'+list+'</section>';}
 function ritClip(s,n){return s.length>n?s.slice(0,n-1).replace(/\s+\S*$/,'')+'…':s;}
 
 /* ---------------- the ongoing goal ---------------- */
@@ -50262,29 +50540,15 @@ function ritStageCss(){
   '.rv-sgf{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}',
   '.rv-sgt{display:flex;flex-wrap:wrap;gap:4px}',
   /* ritual to avatar */
-  '.rv-avw{display:flex;align-items:center;gap:14px;margin:0 0 10px;flex-wrap:wrap}',
   '.rv-cys{display:flex;gap:10px}',
   '.rv-cy{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12.5px;color:var(--mid)}',
-  '.rv-cy svg{width:58px;height:58px}',
   '.rv-cy-t{fill:none;stroke:var(--edge-2);stroke-width:3;stroke-linecap:round;opacity:.7}',
   '.rv-cy-a{fill:none;stroke:var(--k);stroke-width:3.4;stroke-linecap:round}',
   '.rv-cy-ok{fill:none;stroke:var(--k);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}',
   '.rv-cy.rv-cur .rv-cy-a{animation:rvGlow var(--t-breath) var(--ease-breath) infinite alternate}',
   '.rv-cy.rv-cur span{color:var(--ink);font-weight:600}',
   '@keyframes rvGlow{from{opacity:.62}to{opacity:1}}',
-  '.rv-avfig{flex:0 0 auto;min-width:96px}',
-  '.rv-c-av .rv-fig{border-color:color-mix(in srgb,var(--k) 40%,transparent);background:color-mix(in srgb,var(--k) 8%,var(--panel))}',
-  '.rv-c-av .rv-fig b{color:var(--k)}',
   '.rv-avl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}',
-  '.rv-avs{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--edge)}',
-  '.rv-avs>i{width:10px;height:10px;margin-top:5px;border-radius:50%;border:2px solid var(--c);flex:0 0 auto}',
-  '.rv-avt{display:flex;flex-direction:column;gap:2px;min-width:0}',
-  '.rv-avn{font-size:14px;font-weight:600;color:var(--ink)}',
-  '.rv-avn small{font-weight:400;font-size:13px;color:var(--dim)}',
-  '.rv-avb{font-size:14px;line-height:1.45;color:var(--mid)}',
-  '.rv-avf{font-size:13px;color:var(--dim)}',
-  '.rv-avf.rv-fed{color:var(--ink)}',
-  '.rv-avf.rv-fed::before{content:"";display:inline-block;width:7px;height:7px;margin:0 6px 1px 0;border-radius:50%;background:var(--c)}',
   /* the ongoing goal */
   '.rv-c-goal .rv-why{margin:0 0 12px}',
   '.rv-nxm{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--panel-2);border:1px solid var(--edge)}',
@@ -50331,27 +50595,6 @@ function ritStageCss(){
   '.rv-loopw{--k:var(--sec-embody)}',
   '.rv-loopw,.rv-hist{border-color:color-mix(in srgb,var(--k) 38%,transparent);background:color-mix(in srgb,var(--k) 6%,var(--panel))}',
   '.rv-hist{--k:var(--sec-flow)}',
-  '.rv-loopb{position:relative;width:min(100%,260px);aspect-ratio:1/1;margin:2px auto 8px}',
-  '.rv-loop{display:block;width:100%;height:100%;overflow:visible}',
-  '.rv-ld{fill:none;stroke-linecap:butt}',
-  '.rv-ld-none{stroke:var(--edge-2);opacity:.55}',
-  '.rv-ld-done{opacity:1}',
-  '.rv-ld-plan{opacity:.34}',
-  '.rv-ld-ahead{opacity:.34}',
-  '.rv-ld-miss{stroke:var(--dim)!important;opacity:.9;stroke-dasharray:2 2.4}',
-  '.rv-ld-now.rv-ld-plan{animation:rvNow var(--t-breath) var(--ease-breath) infinite alternate}',
-  '@keyframes rvNow{from{opacity:.3}to{opacity:.85}}',
-  '.rv-ltk{stroke:var(--mid);stroke-width:1.6;stroke-linecap:round}',
-  '.rv-lnow{fill:var(--k);animation:rvGlow var(--t-breath) var(--ease-breath) infinite alternate}',
-  '.rv-lmid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}',
-  '.rv-lmid b{font-size:34px;font-weight:600;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}',
-  '.rv-lmid span{font-size:13px;color:var(--mid);margin-top:4px}',
-  '.rv-lkey{list-style:none;margin:0 0 8px;padding:0;display:flex;flex-direction:column;gap:4px}',
-  '.rv-lkey li{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--ink)}',
-  '.rv-lkey li i{width:18px;height:6px;border-radius:3px;background:var(--c);flex:0 0 auto}',
-  '.rv-lkey li small{color:var(--dim);font-size:13px}',
-  '.rv-lsum{margin:8px 0 0;padding:10px 12px;border-radius:12px;background:var(--panel-2);font-size:14px;line-height:1.55;color:var(--mid)}',
-  '.rv-lsum b{color:var(--ink);font-weight:600}',
   '.rv-hl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}',
   '.rv-hc{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;background:var(--panel-2);border:1px solid var(--edge);',
   ' box-shadow:inset 3px 0 0 var(--c)}',
@@ -50366,13 +50609,106 @@ function ritStageCss(){
   '.rv-arrive .rv-cy-a{animation:rvDraw .9s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(.15s + var(--i,0) * 70ms)}',
   '.rv-arrive .rv-cy.rv-cur .rv-cy-a{animation:rvDraw .9s cubic-bezier(.22,1,.36,1) both,rvGlow var(--t-breath) var(--ease-breath) 1.2s infinite alternate}',
   '@keyframes rvDraw{from{stroke-dasharray:0 1}to{stroke-dasharray:1 0}}',
-  '.rv-arrive .rv-ld{animation:rvTick .5s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(var(--i,0) * 18ms)}',
-  '@keyframes rvTick{from{opacity:0}}',
-  '.rv-arrive .rv-ld-now.rv-ld-plan{animation:rvTick .5s cubic-bezier(.22,1,.36,1) both,rvNow var(--t-breath) var(--ease-breath) .6s infinite alternate}',
   '.rv-arrive .rv-okb i,.rv-arrive .rv-sbt i{animation:rvGrow .8s cubic-bezier(.22,1,.36,1) both}',
   '.rv-arrive .rv-wkb i{animation:rvRise .8s cubic-bezier(.22,1,.36,1) both}',
   '@keyframes rvGrow{from{transform:scaleX(0)}} @keyframes rvRise{from{transform:scaleY(0)}}',
-  '.rv-okb i,.rv-sbt i{transform-origin:left center} .rv-wkb i{transform-origin:bottom center}'
+  '.rv-okb i,.rv-sbt i{transform-origin:left center} .rv-wkb i{transform-origin:bottom center}',
+  /* ---- ROUND QS: symbol first, the tell on the press ---- */
+  /* a ring drawn by cr() or crBadge() takes its colour as an attribute, which
+     cannot read a token; the page's own colour is a token (var(--k), the
+     accent), so the arc and the glyph read --c from the sheet instead. Same
+     value for a seat hex, and the right one for a token. */
+  '.rv .crb-a circle:last-child,.rv .cr .arc circle:last-child{stroke:var(--c)}',
+  /* the folded sentence, and the heading that carries it now */
+  '.rv-mean.rv-told{display:none}',
+  '.rv-h.rv-hq{cursor:help;text-decoration:underline dotted color-mix(in srgb,var(--k) 70%,var(--edge-2));text-underline-offset:4px;text-decoration-thickness:1px;border-radius:4px}',
+  '.rv-h.rv-hq:focus-visible,.rv-pc:focus-visible,.rv-avs:focus-visible,.rv-avhero:focus-visible,.rv-avc:focus-visible,.rv-cb:focus-visible,.rv-m:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
+  /* a ritual's badge on its row: the seat's mark, percent complete, the pill */
+  '.rv-pc{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;min-width:44px;min-height:44px;margin-right:6px;cursor:help;border-radius:12px}',
+  '.rv-tgi{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--t);font-style:normal}',
+  '.rv-tgi svg{width:11px;height:11px;fill:none;stroke:var(--t);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}',
+  /* the builder\'s rituals wear their seat: a wash and an edge in its colour,
+     not only the stripe at the left */
+  '.rv-item{background:color-mix(in srgb,var(--c) 7%,var(--panel-2));border-color:color-mix(in srgb,var(--c) 30%,var(--edge))}',
+  /* ritual to avatar, the picture */
+  '.rv-c-av .rv-avw{display:flex;align-items:center;gap:16px;margin:2px 0 14px;flex-wrap:wrap}',
+  '.rv-avhero{display:flex;flex-direction:column;align-items:center;gap:6px;margin-right:26px;cursor:help;border-radius:14px;padding:2px}',
+  '.rv-avhero .cr.hero{--c:var(--k);margin:0 0 12px}',
+  '.rv-avhero .cr.hero .v{font-size:16px;height:24px;line-height:24px;padding:0 8px;min-width:0}',
+  '.rv-avhero .cr.hero .ring .gl svg{width:28px;height:28px;stroke-width:1.6}',
+  '.rv-avhl{font-size:12.5px;color:var(--mid);font-weight:600}',
+  '.rv-avc{display:flex;flex-direction:column;gap:6px;cursor:help;border-radius:12px;padding:2px}',
+  '.rv-c-av .rv-cys{gap:8px}',
+  '.rv-c-av .rv-cy svg{width:46px;height:46px}',
+  '.rv-c-av .rv-avfig{display:flex;align-items:baseline;gap:6px;min-width:0}',
+  '.rv-c-av .rv-avfig b{font-size:20px;font-weight:600;color:var(--k);font-variant-numeric:tabular-nums}',
+  '.rv-c-av .rv-avfig small{font-size:13px;font-weight:400;color:var(--mid)}',
+  '.rv-c-av .rv-avfig span{font-size:13px;color:var(--mid)}',
+  '.rv-c-av .rv-avl{flex-direction:row;flex-wrap:wrap;gap:6px}',
+  '.rv-c-av .rv-avs{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 6px 7px;border:0;border-radius:12px;min-width:84px;cursor:help;',
+  ' background:color-mix(in srgb,var(--c) 8%,transparent);transition:background var(--t-micro) var(--ease-out)}',
+  '.rv-c-av .rv-avs:hover{background:color-mix(in srgb,var(--c) 15%,transparent)}',
+  '.rv-c-av .rv-avn{font-size:13px;font-weight:600;color:var(--ink)}',
+  '.rv-avd{width:7px;height:7px;border-radius:50%;border:1.5px solid var(--c);opacity:.7}',
+  '.rv-avs.rv-fed .rv-avd{background:var(--c);opacity:1}',
+  /* the suggestions, coloured by the seat or the pattern they are for */
+  '.rv-sg1{background:color-mix(in srgb,var(--c) 9%,var(--panel-2));border-color:color-mix(in srgb,var(--c) 40%,var(--edge));box-shadow:none}',
+  '.rv-sgh{align-items:center;justify-content:flex-start;gap:8px}',
+  '.rv-sgs{flex:0 0 auto;display:inline-flex;min-width:44px;min-height:44px;padding:0;border:0;border-radius:12px;background:none;cursor:pointer;color:inherit}',
+  '.rv-sgs:hover .crb-a circle:first-child{stroke:color-mix(in srgb,var(--c) 40%,transparent)}',
+  '.rv-sgs:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
+  '.rv-sgt0{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex:1 1 auto;min-width:0}',
+  '.rv-sgx{margin:6px 0 8px;padding:8px 10px;border-radius:10px;background:color-mix(in srgb,var(--c) 7%,var(--panel))}',
+  '.rv-sgx[hidden]{display:none}',
+  '.rv-sg1 .rv-sgw{margin:0}',
+  '.rv-sgr{margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--dim)}',
+  '.rv-sg1.rv-open .rv-sgx{animation:rvOpen .22s cubic-bezier(.22,1,.36,1) both}',
+  '@keyframes rvOpen{from{opacity:0;transform:translateY(-4px)}}',
+  '.rv-sgf{margin-top:8px}',
+  '.rv-sg1 .rv-tg{gap:5px;padding:2px 9px 2px 6px;color:var(--ink);background:color-mix(in srgb,var(--t) 12%,transparent)}',
+  '.rv-tg svg{width:12px;height:12px;fill:none;stroke:var(--t);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}',
+  '.rv-sg1 .btn{border-color:color-mix(in srgb,var(--c) 45%,var(--edge-2))}',
+  /* the thirty days as cubes */
+  '.rv-cbf{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px;margin:0 0 12px;font-size:13px;color:var(--mid)}',
+  '.rv-cbf b{font-size:17px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}',
+  '.rv-cbf .rv-cbk b{font-size:30px;color:var(--k);line-height:1}',
+  '.rv-cubes{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;max-width:340px;margin:0 auto 10px}',
+  '.rv-cb{position:relative;aspect-ratio:1/1;border-radius:7px;background:color-mix(in srgb,var(--edge-2) 30%,transparent);cursor:help}',
+  '.rv-cubes0 .rv-cb{cursor:default}',
+  /* a kept day is a cube: the top lit, the foot in shade, so it sits on the
+     panel rather than being printed on it */
+  '.rv-cb-done{box-shadow:inset 0 1.5px 0 rgba(255,255,255,.28),inset 0 -4px 0 rgba(0,0,0,.30),0 2px 6px -2px color-mix(in srgb,var(--c) 70%,transparent)}',
+  '.rv-cb-plan{background:color-mix(in srgb,var(--c) 12%,transparent);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 70%,transparent)}',
+  '.rv-cb-miss{background:none;box-shadow:inset 0 0 0 1.5px transparent;outline:1.5px dashed var(--dim);outline-offset:-1.5px}',
+  '.rv-cb-now::after{content:"";position:absolute;left:50%;bottom:-6px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--ink)}',
+  /* today, set and not yet kept, breathes until it is: the product's own
+     breath, on the opacity of a ring laid over the cube, so the compositor
+     carries it and nothing repaints */
+  '.rv-cb-now.rv-cb-plan::before{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 2px var(--c);',
+  ' animation:rvNowCb var(--t-breath) var(--ease-breath) infinite alternate}',
+  '@keyframes rvNowCb{from{opacity:.2}to{opacity:1}}',
+  '.rv-cbm{position:absolute;top:-6px;right:-6px;display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;',
+  ' background:var(--panel);border:1.5px solid var(--c);color:var(--c);z-index:1}',
+  '.rv-cbm+.rv-cbm{right:auto;left:-6px}',
+  '.rv-cbm svg{width:11px;height:11px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}',
+  '.rv-key .rv-k-cube,.rv-key .rv-k-cplan,.rv-key .rv-k-cmiss{border-radius:3px;border:0;background:var(--sec-embody);box-shadow:inset 0 -2px 0 rgba(0,0,0,.3)}',
+  '.rv-key .rv-k-cplan{background:none;box-shadow:inset 0 0 0 1.5px var(--sec-embody);opacity:1}',
+  '.rv-key .rv-k-cmiss{background:none;box-shadow:none;outline:1.5px dashed var(--dim);outline-offset:-1.5px}',
+  '.rv-loopw .rv-marks{margin:14px 0 0;padding-top:12px;border-top:1px solid color-mix(in srgb,var(--k) 25%,var(--edge))}',
+  '.rv-loopw .rv-m{cursor:help;background:color-mix(in srgb,var(--c) 10%,transparent)}',
+  /* motion. The cubes land as a wave that runs from the oldest corner to
+     today, row plus column at 32ms, so thirty cubes read as one event and not
+     thirty: a quick rise with a small overshoot, 240ms, on transform and
+     opacity only, which the compositor carries. The marks land after their
+     cube, a beat later and with more overshoot, because they are the news.
+     Under reduced motion shell/head.html stills every animation and the end
+     state is what is drawn. */
+  '.rv-arrive .rv-cb{animation:rvCube .24s cubic-bezier(.34,1.56,.64,1) both;animation-delay:calc(var(--i,0) * 32ms)}',
+  '@keyframes rvCube{from{opacity:0;transform:translateY(6px) scale(.72)}}',
+  '.rv-arrive .rv-cbm{animation:rvPin .32s cubic-bezier(.34,1.56,.64,1) both;animation-delay:calc(var(--i,0) * 32ms + 260ms + var(--k,0) * 80ms)}',
+  '@keyframes rvPin{from{opacity:0;transform:scale(.2)}}',
+  '.rv-arrive .rv-m{animation:rvPin .32s cubic-bezier(.34,1.56,.64,1) both;animation-delay:calc(560ms + var(--i,0) * 70ms)}',
+  '.rv-arrive .rv-avs{animation:rvCube .26s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(120ms + var(--i,0) * 70ms)}'
   /* NO REDUCED MOTION RULE HERE, and that is on purpose: shell/head.html
      already stills every animation in the product under
      prefers-reduced-motion, '*{animation:none!important}'. A second rule
@@ -65058,5 +65394,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004258848"></div>
+<div id="eof" hidden data-len="004282820"></div>
 </body></html>

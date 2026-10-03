@@ -59,12 +59,13 @@
 
    ACHIEVEMENTS, WHEN THAT SYSTEM COMES ONLINE. It does not exist yet
    (POINTS-AUDIT.md; the points, achievements and unlocks TDD is audited and
-   unbuilt). The link point is the row ritSuggest returns: when achievements
-   exist, a row may carry the achievement it moves toward, read from that
-   system and never typed here. Nothing reads or writes one now, and the page
-   says nothing about achievements, because a promise on screen with nothing
-   behind it is the status lie. The ladder's marks (engine/ladder.js) are real
-   and are shown, as the next mark, on the Ongoing goal card.
+   unbuilt past its slice 0). The link point is the row ritSuggest returns:
+   when achievements exist, a row may carry the achievement it moves toward,
+   read from that system and never typed here. Nothing reads or writes one now,
+   because a promise on screen with nothing behind it is the status lie. The
+   ladder's marks (engine/ladder.js) are real: the next one is on the Ongoing
+   goal card, and since round QS the earned ones are pinned on the thirty day
+   cubes on the day each was earned (ui/accountability.js, FT28).
 
    ALIVE AT REST. The stage carries a still layer behind the cards, one soft
    pool per seat that holds charge, placed at the seat's own angle on the
@@ -148,22 +149,71 @@ function ritSugHtml(st){
     nothing: "Nothing to suggest yet" under a builder holding the suggestion
     would be untrue */
  if(!list.length&&all.length)return '';
+ RIT.sgw=RIT.sgw||{};
  var body=!list.length?'<p class="rv-empty">Nothing to suggest yet.</p>'
   :'<ul class="rv-sugl">'+list.map(function(x,i){
-   var col=x.seats.length?seatCol(x.seats[0]):'var(--accent)';
-   return '<li class="rv-sg1" style="--c:'+col+'">'
-    +'<div class="rv-sgh"><span class="rv-sgn">'+esc(x.p.nm)+'</span><span class="rv-sgm">'+x.p.min+' min</span></div>'
-    /* one line per reason, so a practice two sources call for reads as two
-       short reasons and not one paragraph */
-    +'<ul class="rv-sgw">'+x.why.map(function(w){return '<li>'+esc(w)+'</li>';}).join('')+'</ul>'
-    +'<div class="rv-sgf"><span class="rv-sgt">'+x.seats.map(function(b){
-      return '<em class="rv-tg" style="--t:'+seatCol(b)+'">'+esc(ritTagNm(b))+'</em>';}).join('')+'</span>'
+   var b=x.seats[0]||'', col=b?seatCol(b):'var(--accent)', M=ritSugMark(x,b), open=!!RIT.sgw[x.k+'|'+x.rel];
+   return '<li class="rv-sg1'+(open?' rv-open':'')+'" style="--c:'+col+'">'
+    +'<div class="rv-sgh"><button type="button" class="rv-sgs" data-act="sgwhy" data-i="'+i+'" aria-expanded="'+open
+     +'" aria-label="Why '+esc(x.p.nm)+' is suggested">'+M.badge+'</button>'
+    +'<span class="rv-sgt0"><span class="rv-sgn">'+esc(x.p.nm)+'</span><span class="rv-sgm">'+x.p.min+' min</span></span></div>'
+    /* THE REASONS ARE ONE PRESS AWAY, round QS. His words: "more show less
+       tell if you want tell you press on something to get information." The
+       mark is the press, and it opens the reasons and what the ring measures
+       in place, under the name, rather than in a panel somewhere else. */
+    +'<div class="rv-sgx"'+(open?'':' hidden')+'><ul class="rv-sgw">'+x.why.map(function(w){return '<li>'+esc(w)+'</li>';}).join('')
+     +'</ul><p class="rv-sgr">'+esc(M.says)+'</p></div>'
+    +'<div class="rv-sgf"><span class="rv-sgt">'+x.seats.map(function(sb){
+      return '<em class="rv-tg" style="--t:'+seatCol(sb)+'"><svg viewBox="0 0 24 24" aria-hidden="true">'+(SEATGLYPH[sb]||SEATGLYPH._)+'</svg>'
+       +esc(ritTagNm(sb))+'</em>';}).join('')+'</span>'
     +'<button type="button" class="btn" data-act="sug" data-i="'+i+'" aria-label="Start '+esc(x.p.nm)+' for a week">Start for a week</button></div></li>';}).join('')+'</ul>';
  return '<div class="rv-sec rv-sug"><div class="rv-hd"><span class="rv-h">Suggested</span></div>'
   +'<p class="rv-mean">Read from your avatar\'s stories and from the places your field holds the most charge. '
-  +'Each is the practice that seat calls for at the charge you carry now. The tag on it is the seat.</p>'+body+'</div>';}
+  +'Each is the practice that seat calls for at the charge you carry now. Its mark is the seat, or the pattern it releases.</p>'+body+'</div>';}
+/* A SUGGESTION'S MARK, round QS. His words: "the cards that come from the
+   ritual builder they should be colorized and related to the color of the
+   chakra or fetter with their symbol." A card that runs as a release schedule
+   is tied to one held place, so it wears that place's pattern, the fetter's
+   own mark from CHILD (the one the rail and the Avatar page draw for it), and
+   its ring is that place's charge, which is crbNode's shape for an address.
+   Any other card is for its seat, so it wears the seat's mark from SEATGLYPH
+   and its ring is the heaviest place held at that seat. Both in the seat's
+   colour, from seatCol. A seat holding nothing draws the mark with an empty
+   ring and says so. */
+function ritSugMark(x,b){
+ var n=(x.rel!=null&&BY[x.rel])?BY[x.rel]:null;
+ if(!n&&b)n=ritHeld().filter(function(h){return h.b===b;}).sort(function(a,c){return c.sq-a.sq;})[0]||null;
+ var cf=n&&n.cf?CHILD.filter(function(c){return c.nm===n.cf;})[0]:null;
+ var glyph=(x.rel!=null&&cf)?glyphPath(cf.ic):(SEATGLYPH[b]||SEATGLYPH._);
+ var col=b?seatCol(b):'var(--accent)';
+ var badge=crBadge(b,n?n.sq*10:0,{size:'md', color:col, glyph:glyph, raw:n?n.sq.toFixed(1):'–'});
+ var says=!b?'No seat yet, so the mark is empty.'
+  :n?'The mark is '+(x.rel!=null&&cf?'the pattern '+cf.nm.toLowerCase()+', ':'the seat, ')+'and the ring is '
+    +String(n.k).toLowerCase()+' held at '+ritThe(b)+', at '+n.sq.toFixed(1)+'.'
+  :'The mark is the seat. Nothing is held at '+ritThe(b)+', so the ring is empty.';
+ return {badge:badge, says:says};}
 
-/* ---------------- ritual to avatar ---------------- */
+/* ---------------- ritual to avatar ----------------
+   ROUND QS made this card a picture first. His words: "everything like the
+   rest of the app has to be visually symbolic ... more show less tell if you
+   want tell you press on something to get information."
+
+   THE HERO is the avatar's own percent complete, avState().overall, the
+   figure the Avatar page draws round its core and the one he called good
+   there ("And the percent complete, that's good", round HG). It is drawn as
+   cr() at its hero size, the CQ circle's own object, with the avatar's own
+   mark (AV_IC.person) inside. Nothing new is measured: the ring is how much of
+   what the avatar's stories carried has gone since they were written.
+
+   THE CYCLES beside it are unchanged: avCycles, the days kept turning the
+   avatar a seat at a time.
+
+   THE SEATS are tiles, one per seat an avatar story sits at, each a crBadge
+   with the Avatar page's own mark for that area (AV_IC) in the seat's colour,
+   its ring the area's percent complete (avState().areas). The line the person
+   wrote and the ritual that feeds the seat moved off the card and onto the
+   press, so the card at rest is seven marks and not seven paragraphs. A dot
+   under the mark is filled when an active ritual feeds the seat. */
 function ritAvHtml(st){
  var C=(typeof avCycles==='function')?avCycles(CURP):{days:0,cyc:[]};
  var cur=-1; C.cyc.forEach(function(c,i){if(cur<0&&!c.done)cur=i;});
@@ -177,6 +227,18 @@ function ritAvHtml(st){
   var turns=c.turns.filter(function(f){return f>=1;}).length;
   return '<div class="rv-cy'+(i===cur?' rv-cur':'')+'" role="img" aria-label="'+names[i]+' cycle, '
    +(c.done?'done':(turns?turns+(turns===1?' turn':' turns')+' done':'not started'))+'">'+s+'</svg><span>'+names[i]+'</span></div>';}).join('');
+ var A0=(typeof avState==='function')?avState():null;
+ var all=A0&&A0.overall!=null?A0.overall:null, pc=all===null?0:Math.round(all*100);
+ var hero='<span class="rv-avhero"'+rvTip('Your avatar',
+   'Percent complete: how much of what your avatar\'s stories carried has gone since you wrote them. The same figure the Avatar page draws round its core.',
+   all===null?'':'Complete|'+pc+'%|100%','Avatar')+'>'
+  +cr('Heart',pc,{size:'hero', hot:false, color:'var(--k)', glyph:(typeof AV_IC!=='undefined'?AV_IC.person:SEATGLYPH._), raw:all===null?'–':pc+'%'})
+  +'<span class="rv-avhl">Avatar</span></span>';
+ var cyc='<div class="rv-avc"'+rvTip('Cycles',
+   'Each day you keep a ritual turns your avatar one seat, root to crown. Seven days make a turn, and three turns make a cycle.',
+   'Kept|'+acctDays(C.days)+'|'+(AV_TURN*AV_TURNS*AV_CYCLES)+' days for three cycles','Ritual to avatar')+'>'
+  +'<div class="rv-cys">'+rings+'</div>'
+  +'<div class="rv-avfig"><b>'+(C.days?C.days+'<small>'+(C.days===1?' day':' days')+'</small>':'–')+'</b><span>kept</span></div></div>';
  var rows=(typeof avRows==='function')?avRows():[], seat={};
  rows.forEach(function(x){if(x.gap&&x.gap.seat)seat[x.gap.seat]=x;});
  var seats=BANDS.filter(function(b){return seat[b];});
@@ -184,20 +246,20 @@ function ritAvHtml(st){
  if(!rows.length)list='<p class="rv-empty">Your avatar has no stories yet.</p>'
   +'<div class="rv-acts"><button type="button" class="btn" data-act="go-avatar">Open the avatar</button></div>';
  else if(!seats.length)list='<p class="rv-empty">Your avatar\'s stories do not read at a seat yet.</p>';
- else list='<ul class="rv-avl">'+seats.slice(0,4).map(function(b){
-  var x=seat[b], A=(typeof AV_OF!=='undefined'&&AV_OF[b])||{nm:b,about:''};
+ else list='<ul class="rv-avl">'+seats.map(function(b,i){
+  var x=seat[b], A=(typeof AV_OF!=='undefined'&&AV_OF[b])||{nm:b,about:'',k:''};
   var fed=st.act.filter(function(p){return p.band===b||p.tags.indexOf(b)>=0;});
-  return '<li class="rv-avs" style="--c:'+seatCol(b)+'"><i aria-hidden="true"></i><span class="rv-avt">'
-   +'<span class="rv-avn">'+esc(A.nm)+' <small>'+esc(A.about)+', at '+esc(ritThe(b))+'</small></span>'
-   +'<span class="rv-avb">"'+esc(ritClip(String(x.pair.be).replace(/^"+|"+$/g,''),64))+'"</span>'
-   +'<span class="rv-avf'+(fed.length?' rv-fed':'')+'">'+(x.gap.clear?'Clear at this seat'
-    :fed.length?'Fed by '+esc(fed.map(function(p){return ritName(p.steps);}).join(', '))
-    :'No ritual at this seat yet')+'</span></span></li>';}).join('')+'</ul>';
+  var ar=A0&&A0.areas&&A0.areas[A.k], ap=ar&&ar.pct!=null?Math.round(ar.pct*100):null;
+  var said=x.gap.clear?'Clear at this seat.'
+   :fed.length?'Fed by '+fed.map(function(p){return ritName(p.steps);}).join(', ')+'.':'No ritual at this seat yet.';
+  return '<li class="rv-avs'+(fed.length?' rv-fed':'')+'" style="--c:'+seatCol(b)+';--i:'+i+'"'
+   +rvTip(A.nm+', at '+ritThe(b),'"'+String(x.pair.be).replace(/^"+|"+$/g,'')+'" '+said,
+    ap===null?'':'Complete|'+ap+'%|100%',A.about)+'>'
+   +crBadge(b,ap||0,{size:'md', glyph:(typeof AV_IC!=='undefined'&&AV_IC[A.k])||SEATGLYPH[b], raw:ap===null?'–':ap+'%'})
+   +'<span class="rv-avn">'+esc(A.nm)+'</span><i class="rv-avd" aria-hidden="true"></i></li>';}).join('')+'</ul>';
  return '<section class="rv-sec rv-c rv-c-av" data-slot="top-left"><div class="rv-hd"><span class="rv-h">Ritual to avatar</span></div>'
-  +'<p class="rv-mean">Each day you keep a ritual turns your avatar one seat, root to crown. Seven days make a turn, and three turns make a cycle.</p>'
-  +'<div class="rv-avw"><div class="rv-cys">'+rings+'</div>'
-  +'<div class="rv-fig rv-avfig"><b>'+(C.days?C.days+'<small>'+(C.days===1?' day':' days')+'</small>':'–')+'</b><span>Kept</span></div></div>'
-  +list+'</section>';}
+  +'<p class="rv-mean">Your avatar\'s percent complete, the cycles your kept days turn, and each seat your avatar has a story at.</p>'
+  +'<div class="rv-avw">'+hero+cyc+'</div>'+list+'</section>';}
 function ritClip(s,n){return s.length>n?s.slice(0,n-1).replace(/\s+\S*$/,'')+'…':s;}
 
 /* ---------------- the ongoing goal ---------------- */
@@ -387,29 +449,15 @@ function ritStageCss(){
   '.rv-sgf{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}',
   '.rv-sgt{display:flex;flex-wrap:wrap;gap:4px}',
   /* ritual to avatar */
-  '.rv-avw{display:flex;align-items:center;gap:14px;margin:0 0 10px;flex-wrap:wrap}',
   '.rv-cys{display:flex;gap:10px}',
   '.rv-cy{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12.5px;color:var(--mid)}',
-  '.rv-cy svg{width:58px;height:58px}',
   '.rv-cy-t{fill:none;stroke:var(--edge-2);stroke-width:3;stroke-linecap:round;opacity:.7}',
   '.rv-cy-a{fill:none;stroke:var(--k);stroke-width:3.4;stroke-linecap:round}',
   '.rv-cy-ok{fill:none;stroke:var(--k);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}',
   '.rv-cy.rv-cur .rv-cy-a{animation:rvGlow var(--t-breath) var(--ease-breath) infinite alternate}',
   '.rv-cy.rv-cur span{color:var(--ink);font-weight:600}',
   '@keyframes rvGlow{from{opacity:.62}to{opacity:1}}',
-  '.rv-avfig{flex:0 0 auto;min-width:96px}',
-  '.rv-c-av .rv-fig{border-color:color-mix(in srgb,var(--k) 40%,transparent);background:color-mix(in srgb,var(--k) 8%,var(--panel))}',
-  '.rv-c-av .rv-fig b{color:var(--k)}',
   '.rv-avl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}',
-  '.rv-avs{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--edge)}',
-  '.rv-avs>i{width:10px;height:10px;margin-top:5px;border-radius:50%;border:2px solid var(--c);flex:0 0 auto}',
-  '.rv-avt{display:flex;flex-direction:column;gap:2px;min-width:0}',
-  '.rv-avn{font-size:14px;font-weight:600;color:var(--ink)}',
-  '.rv-avn small{font-weight:400;font-size:13px;color:var(--dim)}',
-  '.rv-avb{font-size:14px;line-height:1.45;color:var(--mid)}',
-  '.rv-avf{font-size:13px;color:var(--dim)}',
-  '.rv-avf.rv-fed{color:var(--ink)}',
-  '.rv-avf.rv-fed::before{content:"";display:inline-block;width:7px;height:7px;margin:0 6px 1px 0;border-radius:50%;background:var(--c)}',
   /* the ongoing goal */
   '.rv-c-goal .rv-why{margin:0 0 12px}',
   '.rv-nxm{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--panel-2);border:1px solid var(--edge)}',
@@ -456,27 +504,6 @@ function ritStageCss(){
   '.rv-loopw{--k:var(--sec-embody)}',
   '.rv-loopw,.rv-hist{border-color:color-mix(in srgb,var(--k) 38%,transparent);background:color-mix(in srgb,var(--k) 6%,var(--panel))}',
   '.rv-hist{--k:var(--sec-flow)}',
-  '.rv-loopb{position:relative;width:min(100%,260px);aspect-ratio:1/1;margin:2px auto 8px}',
-  '.rv-loop{display:block;width:100%;height:100%;overflow:visible}',
-  '.rv-ld{fill:none;stroke-linecap:butt}',
-  '.rv-ld-none{stroke:var(--edge-2);opacity:.55}',
-  '.rv-ld-done{opacity:1}',
-  '.rv-ld-plan{opacity:.34}',
-  '.rv-ld-ahead{opacity:.34}',
-  '.rv-ld-miss{stroke:var(--dim)!important;opacity:.9;stroke-dasharray:2 2.4}',
-  '.rv-ld-now.rv-ld-plan{animation:rvNow var(--t-breath) var(--ease-breath) infinite alternate}',
-  '@keyframes rvNow{from{opacity:.3}to{opacity:.85}}',
-  '.rv-ltk{stroke:var(--mid);stroke-width:1.6;stroke-linecap:round}',
-  '.rv-lnow{fill:var(--k);animation:rvGlow var(--t-breath) var(--ease-breath) infinite alternate}',
-  '.rv-lmid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}',
-  '.rv-lmid b{font-size:34px;font-weight:600;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}',
-  '.rv-lmid span{font-size:13px;color:var(--mid);margin-top:4px}',
-  '.rv-lkey{list-style:none;margin:0 0 8px;padding:0;display:flex;flex-direction:column;gap:4px}',
-  '.rv-lkey li{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--ink)}',
-  '.rv-lkey li i{width:18px;height:6px;border-radius:3px;background:var(--c);flex:0 0 auto}',
-  '.rv-lkey li small{color:var(--dim);font-size:13px}',
-  '.rv-lsum{margin:8px 0 0;padding:10px 12px;border-radius:12px;background:var(--panel-2);font-size:14px;line-height:1.55;color:var(--mid)}',
-  '.rv-lsum b{color:var(--ink);font-weight:600}',
   '.rv-hl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}',
   '.rv-hc{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;background:var(--panel-2);border:1px solid var(--edge);',
   ' box-shadow:inset 3px 0 0 var(--c)}',
@@ -491,13 +518,106 @@ function ritStageCss(){
   '.rv-arrive .rv-cy-a{animation:rvDraw .9s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(.15s + var(--i,0) * 70ms)}',
   '.rv-arrive .rv-cy.rv-cur .rv-cy-a{animation:rvDraw .9s cubic-bezier(.22,1,.36,1) both,rvGlow var(--t-breath) var(--ease-breath) 1.2s infinite alternate}',
   '@keyframes rvDraw{from{stroke-dasharray:0 1}to{stroke-dasharray:1 0}}',
-  '.rv-arrive .rv-ld{animation:rvTick .5s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(var(--i,0) * 18ms)}',
-  '@keyframes rvTick{from{opacity:0}}',
-  '.rv-arrive .rv-ld-now.rv-ld-plan{animation:rvTick .5s cubic-bezier(.22,1,.36,1) both,rvNow var(--t-breath) var(--ease-breath) .6s infinite alternate}',
   '.rv-arrive .rv-okb i,.rv-arrive .rv-sbt i{animation:rvGrow .8s cubic-bezier(.22,1,.36,1) both}',
   '.rv-arrive .rv-wkb i{animation:rvRise .8s cubic-bezier(.22,1,.36,1) both}',
   '@keyframes rvGrow{from{transform:scaleX(0)}} @keyframes rvRise{from{transform:scaleY(0)}}',
-  '.rv-okb i,.rv-sbt i{transform-origin:left center} .rv-wkb i{transform-origin:bottom center}'
+  '.rv-okb i,.rv-sbt i{transform-origin:left center} .rv-wkb i{transform-origin:bottom center}',
+  /* ---- ROUND QS: symbol first, the tell on the press ---- */
+  /* a ring drawn by cr() or crBadge() takes its colour as an attribute, which
+     cannot read a token; the page's own colour is a token (var(--k), the
+     accent), so the arc and the glyph read --c from the sheet instead. Same
+     value for a seat hex, and the right one for a token. */
+  '.rv .crb-a circle:last-child,.rv .cr .arc circle:last-child{stroke:var(--c)}',
+  /* the folded sentence, and the heading that carries it now */
+  '.rv-mean.rv-told{display:none}',
+  '.rv-h.rv-hq{cursor:help;text-decoration:underline dotted color-mix(in srgb,var(--k) 70%,var(--edge-2));text-underline-offset:4px;text-decoration-thickness:1px;border-radius:4px}',
+  '.rv-h.rv-hq:focus-visible,.rv-pc:focus-visible,.rv-avs:focus-visible,.rv-avhero:focus-visible,.rv-avc:focus-visible,.rv-cb:focus-visible,.rv-m:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
+  /* a ritual's badge on its row: the seat's mark, percent complete, the pill */
+  '.rv-pc{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;min-width:44px;min-height:44px;margin-right:6px;cursor:help;border-radius:12px}',
+  '.rv-tgi{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--t);font-style:normal}',
+  '.rv-tgi svg{width:11px;height:11px;fill:none;stroke:var(--t);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}',
+  /* the builder\'s rituals wear their seat: a wash and an edge in its colour,
+     not only the stripe at the left */
+  '.rv-item{background:color-mix(in srgb,var(--c) 7%,var(--panel-2));border-color:color-mix(in srgb,var(--c) 30%,var(--edge))}',
+  /* ritual to avatar, the picture */
+  '.rv-c-av .rv-avw{display:flex;align-items:center;gap:16px;margin:2px 0 14px;flex-wrap:wrap}',
+  '.rv-avhero{display:flex;flex-direction:column;align-items:center;gap:6px;margin-right:26px;cursor:help;border-radius:14px;padding:2px}',
+  '.rv-avhero .cr.hero{--c:var(--k);margin:0 0 12px}',
+  '.rv-avhero .cr.hero .v{font-size:16px;height:24px;line-height:24px;padding:0 8px;min-width:0}',
+  '.rv-avhero .cr.hero .ring .gl svg{width:28px;height:28px;stroke-width:1.6}',
+  '.rv-avhl{font-size:12.5px;color:var(--mid);font-weight:600}',
+  '.rv-avc{display:flex;flex-direction:column;gap:6px;cursor:help;border-radius:12px;padding:2px}',
+  '.rv-c-av .rv-cys{gap:8px}',
+  '.rv-c-av .rv-cy svg{width:46px;height:46px}',
+  '.rv-c-av .rv-avfig{display:flex;align-items:baseline;gap:6px;min-width:0}',
+  '.rv-c-av .rv-avfig b{font-size:20px;font-weight:600;color:var(--k);font-variant-numeric:tabular-nums}',
+  '.rv-c-av .rv-avfig small{font-size:13px;font-weight:400;color:var(--mid)}',
+  '.rv-c-av .rv-avfig span{font-size:13px;color:var(--mid)}',
+  '.rv-c-av .rv-avl{flex-direction:row;flex-wrap:wrap;gap:6px}',
+  '.rv-c-av .rv-avs{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 6px 7px;border:0;border-radius:12px;min-width:84px;cursor:help;',
+  ' background:color-mix(in srgb,var(--c) 8%,transparent);transition:background var(--t-micro) var(--ease-out)}',
+  '.rv-c-av .rv-avs:hover{background:color-mix(in srgb,var(--c) 15%,transparent)}',
+  '.rv-c-av .rv-avn{font-size:13px;font-weight:600;color:var(--ink)}',
+  '.rv-avd{width:7px;height:7px;border-radius:50%;border:1.5px solid var(--c);opacity:.7}',
+  '.rv-avs.rv-fed .rv-avd{background:var(--c);opacity:1}',
+  /* the suggestions, coloured by the seat or the pattern they are for */
+  '.rv-sg1{background:color-mix(in srgb,var(--c) 9%,var(--panel-2));border-color:color-mix(in srgb,var(--c) 40%,var(--edge));box-shadow:none}',
+  '.rv-sgh{align-items:center;justify-content:flex-start;gap:8px}',
+  '.rv-sgs{flex:0 0 auto;display:inline-flex;min-width:44px;min-height:44px;padding:0;border:0;border-radius:12px;background:none;cursor:pointer;color:inherit}',
+  '.rv-sgs:hover .crb-a circle:first-child{stroke:color-mix(in srgb,var(--c) 40%,transparent)}',
+  '.rv-sgs:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
+  '.rv-sgt0{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex:1 1 auto;min-width:0}',
+  '.rv-sgx{margin:6px 0 8px;padding:8px 10px;border-radius:10px;background:color-mix(in srgb,var(--c) 7%,var(--panel))}',
+  '.rv-sgx[hidden]{display:none}',
+  '.rv-sg1 .rv-sgw{margin:0}',
+  '.rv-sgr{margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--dim)}',
+  '.rv-sg1.rv-open .rv-sgx{animation:rvOpen .22s cubic-bezier(.22,1,.36,1) both}',
+  '@keyframes rvOpen{from{opacity:0;transform:translateY(-4px)}}',
+  '.rv-sgf{margin-top:8px}',
+  '.rv-sg1 .rv-tg{gap:5px;padding:2px 9px 2px 6px;color:var(--ink);background:color-mix(in srgb,var(--t) 12%,transparent)}',
+  '.rv-tg svg{width:12px;height:12px;fill:none;stroke:var(--t);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}',
+  '.rv-sg1 .btn{border-color:color-mix(in srgb,var(--c) 45%,var(--edge-2))}',
+  /* the thirty days as cubes */
+  '.rv-cbf{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px;margin:0 0 12px;font-size:13px;color:var(--mid)}',
+  '.rv-cbf b{font-size:17px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}',
+  '.rv-cbf .rv-cbk b{font-size:30px;color:var(--k);line-height:1}',
+  '.rv-cubes{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;max-width:340px;margin:0 auto 10px}',
+  '.rv-cb{position:relative;aspect-ratio:1/1;border-radius:7px;background:color-mix(in srgb,var(--edge-2) 30%,transparent);cursor:help}',
+  '.rv-cubes0 .rv-cb{cursor:default}',
+  /* a kept day is a cube: the top lit, the foot in shade, so it sits on the
+     panel rather than being printed on it */
+  '.rv-cb-done{box-shadow:inset 0 1.5px 0 rgba(255,255,255,.28),inset 0 -4px 0 rgba(0,0,0,.30),0 2px 6px -2px color-mix(in srgb,var(--c) 70%,transparent)}',
+  '.rv-cb-plan{background:color-mix(in srgb,var(--c) 12%,transparent);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--c) 70%,transparent)}',
+  '.rv-cb-miss{background:none;box-shadow:inset 0 0 0 1.5px transparent;outline:1.5px dashed var(--dim);outline-offset:-1.5px}',
+  '.rv-cb-now::after{content:"";position:absolute;left:50%;bottom:-6px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--ink)}',
+  /* today, set and not yet kept, breathes until it is: the product's own
+     breath, on the opacity of a ring laid over the cube, so the compositor
+     carries it and nothing repaints */
+  '.rv-cb-now.rv-cb-plan::before{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 2px var(--c);',
+  ' animation:rvNowCb var(--t-breath) var(--ease-breath) infinite alternate}',
+  '@keyframes rvNowCb{from{opacity:.2}to{opacity:1}}',
+  '.rv-cbm{position:absolute;top:-6px;right:-6px;display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;',
+  ' background:var(--panel);border:1.5px solid var(--c);color:var(--c);z-index:1}',
+  '.rv-cbm+.rv-cbm{right:auto;left:-6px}',
+  '.rv-cbm svg{width:11px;height:11px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}',
+  '.rv-key .rv-k-cube,.rv-key .rv-k-cplan,.rv-key .rv-k-cmiss{border-radius:3px;border:0;background:var(--sec-embody);box-shadow:inset 0 -2px 0 rgba(0,0,0,.3)}',
+  '.rv-key .rv-k-cplan{background:none;box-shadow:inset 0 0 0 1.5px var(--sec-embody);opacity:1}',
+  '.rv-key .rv-k-cmiss{background:none;box-shadow:none;outline:1.5px dashed var(--dim);outline-offset:-1.5px}',
+  '.rv-loopw .rv-marks{margin:14px 0 0;padding-top:12px;border-top:1px solid color-mix(in srgb,var(--k) 25%,var(--edge))}',
+  '.rv-loopw .rv-m{cursor:help;background:color-mix(in srgb,var(--c) 10%,transparent)}',
+  /* motion. The cubes land as a wave that runs from the oldest corner to
+     today, row plus column at 32ms, so thirty cubes read as one event and not
+     thirty: a quick rise with a small overshoot, 240ms, on transform and
+     opacity only, which the compositor carries. The marks land after their
+     cube, a beat later and with more overshoot, because they are the news.
+     Under reduced motion shell/head.html stills every animation and the end
+     state is what is drawn. */
+  '.rv-arrive .rv-cb{animation:rvCube .24s cubic-bezier(.34,1.56,.64,1) both;animation-delay:calc(var(--i,0) * 32ms)}',
+  '@keyframes rvCube{from{opacity:0;transform:translateY(6px) scale(.72)}}',
+  '.rv-arrive .rv-cbm{animation:rvPin .32s cubic-bezier(.34,1.56,.64,1) both;animation-delay:calc(var(--i,0) * 32ms + 260ms + var(--k,0) * 80ms)}',
+  '@keyframes rvPin{from{opacity:0;transform:scale(.2)}}',
+  '.rv-arrive .rv-m{animation:rvPin .32s cubic-bezier(.34,1.56,.64,1) both;animation-delay:calc(560ms + var(--i,0) * 70ms)}',
+  '.rv-arrive .rv-avs{animation:rvCube .26s cubic-bezier(.22,1,.36,1) both;animation-delay:calc(120ms + var(--i,0) * 70ms)}'
   /* NO REDUCED MOTION RULE HERE, and that is on purpose: shell/head.html
      already stills every animation in the product under
      prefers-reduced-motion, '*{animation:none!important}'. A second rule

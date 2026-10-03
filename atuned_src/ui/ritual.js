@@ -1021,6 +1021,61 @@ function ritActiveHtml(act,today,building){
 /* one ritual's ring for one day, a dash per step, ticked when the day is done.
    The Active list and Accountability's due list draw the same ring, so the
    press means the same thing in both places and there is one drawing of it. */
+/* ---------------- ROUND QS: THE SYMBOL, THE PERCENT AND THE PRESS ----------------
+   His words, 3 October, on a screenshot of this page: "for the ritual
+   everything like the rest of the app has to be visually symbolic it's also a
+   UI element that's tied to the system to show the percent complete and more
+   show less tell if you want tell you press on something to get information".
+
+   So a ritual carries the object the rest of the product already uses for a
+   measured value, crBadge (ui/component.js): its seat's own mark inside, a
+   ring round the rim in the seat's colour, and the figure in a pill at the
+   lower right. That is the ruled shape (DECISIONS.md, "A measured value is a
+   circle with its icon inside, a ring round the rim, and a small pill at the
+   lower right carrying the number"), not a new one.
+
+   WHAT THE RING IS. Percent complete of what the ritual is set for: the days
+   it was kept, over the days its span covers on the days it is set for. It
+   only fills, because a kept day stays kept and the span does not move. It is
+   not a rate and not a grade: a missed day does not empty it, it just does not
+   fill it. A ritual with no end has nothing to complete, so its ring stays
+   empty and the pill carries the days kept, a count, which is what every
+   other record figure on the page already is.
+
+   THE TELL IS ON THE PRESS. The badge is a carrier for the one tooltip
+   (ui/tip.js): a hover on a desk, a tap on a phone, and the sentence says what
+   the ring and the pill are, with the figure and what it is out of. */
+function rvTip(t,b,n,k){
+ return ' tabindex="0" data-tip-t="'+esc(t)+'" data-tip="'+esc(b)+'"'+(n?' data-tip-n="'+esc(n)+'"':'')
+  +(k?' data-tip-k="'+esc(k)+'"':'');}
+/* the one seat a ritual sits at: its band, or its first seat tag */
+function ritSeat(p){
+ if(p&&p.band&&BANDS.indexOf(p.band)>=0)return p.band;
+ return ((p&&p.tags)||[]).filter(function(b){return BANDS.indexOf(b)>=0;})[0]||'';}
+function ritPct(p,today){
+ if(!p||!p.days)return null;
+ var s=ritStart0(p), due=0, kept=0;
+ for(var d=s;d<s+p.days;d++){
+  if(!ritCovers(p,d))continue; due++;
+  var e=ritEntryFor(p,d); if(e&&ritIsDone(e.x))kept++;}
+ return due?{kept:kept, due:due, pct:100*kept/due}:null;}
+function ritPctHtml(p,today,size){
+ var b=ritSeat(p), col=ritCol(p), P=ritPct(p,today), nm=ritName(p.steps);
+ var where=b?ritTagNm(b)+' seat':'No seat';
+ var o={size:size||'sm', color:col, glyph:SEATGLYPH[b]||SEATGLYPH._}, badge, body, n='';
+ if(P){var pc=Math.round(P.pct);
+  badge=crBadge(b,P.pct,Object.assign(o,{raw:pc+'%'}));
+  body='Percent complete: the days you kept it, of the days it is set for. A kept day stays kept, so the ring only fills.';
+  n='Kept|'+acctDays(P.kept)+'|'+P.due+' set';}
+ else{var k=ritRunRead(p,today).kept;
+  badge=crBadge(b,0,Object.assign(o,{raw:String(k)}));
+  body='No end, so nothing to complete. The number is the days you have kept it.';}
+ return '<span class="rv-pc" style="--c:'+col+'"'+rvTip(nm,body,n,where)+'>'+badge+'</span>';}
+/* a seat tag as its mark, for the tags past the first on a row. The first is
+   the badge; a second seat is a second mark and not a second word. */
+function ritTagMark(b){
+ return '<em class="rv-tgi" style="--t:'+seatCol(b)+'" title="'+esc(ritTagNm(b))+' seat">'
+  +'<svg viewBox="0 0 24 24" aria-hidden="true">'+(SEATGLYPH[b]||SEATGLYPH._)+'</svg></em>';}
 function ritRingHtml(p,d,col){
  return '<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="14" class="rv-track" style="stroke-width:4"/>'
   +ritArcs(20,20,14,p.steps.map(function(){return {col:col, st:d?'done':'plan'};}),4)
@@ -1046,8 +1101,10 @@ function ritRowsHtml(list,today,act){
       screen with both rails open. Mid line it is a value and a value is
       never titled, V13: it read "20 minutes, Every day but Thu". */
    +ritTm(p)+' minutes'+(p.on?', '+esc(ritOften(p.on).replace(/^(Every|Week)/,function(m){return m.toLowerCase();})):'')+(p.when?', '+esc(p.when):'')+'<i>'+ritLeft(p,today)+'</i>'
-   +p.tags.map(function(b){return '<em class="rv-tg" style="--t:'+seatCol(b)+'">'+esc(ritTagNm(b))+'</em>';}).join('')
-   +'</span></button>'+ritTimerHtml(p)+'</div>';
+   /* ROUND QS: the seat is the badge beside the row now, its mark and its
+      percent complete; a second seat tag is a second mark, never a word */
+   +p.tags.filter(function(b){return b!==ritSeat(p);}).map(ritTagMark).join('')
+   +'</span></button>'+ritPctHtml(p,today)+ritTimerHtml(p)+'</div>';
   if(open){
    out+='<div class="rv-more">'
     +ritSteps(p).map(function(s,i){
@@ -1390,7 +1447,32 @@ function ritRender(){
   /* nothing active: starting one is the page's one job, so on a phone the
      column that starts one comes first, shell/head.html, round QN */
   document.body.classList.toggle('ritnone',!act.length);}
- ritWire(h,c); if(left)ritWire(left,c); if(side)ritWire(side,c);}
+ ritWire(h,c); if(left)ritWire(left,c); if(side)ritWire(side,c);
+ [h,left,side].forEach(ritTell);
+ /* the rings move into their values, the same tween the dock's circles and
+    every badge in the rails use (crMotion, ui/component.js): from empty on
+    first sight, and after that only when a value moves. Reduced motion gets
+    the value in the frame it is written. */
+ if(typeof crMotion==='function')crMotion([h,left,side]);}
+
+/* THE TELL IS ON THE PRESS, round QS. His words: "more show less tell if you
+   want tell you press on something to get information." Every part of this
+   page carried its meaning as a sentence under its heading, the unpack rule
+   (CLAUDE.md, round PO). The sentence is not cut: it moves onto the heading,
+   which becomes a carrier for the one tooltip, the shape the unpack rule
+   already accepts ("the term inside a carrier whose tooltip is that
+   sentence", tests/unpack.js). Hover on a desk, tap on a phone, focus from
+   the keyboard. The sentence stays in the document, folded, so nothing that
+   reads it loses it. Only the first sentence of a part moves: a second one is
+   advice tied to a state (Missed's "does not fit your days") and stays where
+   the state is. */
+function ritTell(root){
+ if(!root)return;
+ root.querySelectorAll('.rv-sec').forEach(function(sec){
+  var hd=sec.querySelector(':scope>.rv-hd'), h=hd&&hd.querySelector('.rv-h'), m=sec.querySelector(':scope>.rv-mean');
+  if(!h||!m||h.hasAttribute('data-tip'))return;
+  h.setAttribute('tabindex','0'); h.setAttribute('data-tip',m.textContent);
+  h.setAttribute('data-tip-t',h.textContent); h.classList.add('rv-hq'); m.classList.add('rv-told');});}
 
 /* one listener on the host. Every control carries what it does in data-act,
    so a layout that moves a control does not have to move its wiring. */
@@ -1400,7 +1482,7 @@ function ritWire(h,c){
   var a=b.getAttribute('data-act'), id=b.getAttribute('data-id');
   /* the offer to put a deletion back lasts until the next thing that writes
      or builds. Looking around the record does not spend it. */
-  if(['putback','view','day','mo','exp','more','hmore'].indexOf(a)<0)RIT.gone=null;
+  if(['putback','view','day','mo','exp','more','hmore','sgwhy'].indexOf(a)<0)RIT.gone=null;
   switch(a){
    case 'go-story': if(typeof setTab==='function')setTab(TAB.STORY); return;
    /* EDIT ON A MISSED RITUAL IS NOW ONE PRESS AND NO NAVIGATION, round QF.
@@ -1459,6 +1541,9 @@ function ritWire(h,c){
    /* round QN, ui/ritstage.js and ui/accountability.js. Each goes through the
       one writer, so a failed save says so and a worked example is refused. */
    case 'sug': ritSugStart(+b.getAttribute('data-i')); return;
+   /* a suggestion's mark opens its reasons in place, round QS */
+   case 'sgwhy': {var sx=(RIT.sug||[])[+b.getAttribute('data-i')];
+    if(sx){var sk=sx.k+'|'+sx.rel; RIT.sgw=RIT.sgw||{}; RIT.sgw[sk]=!RIT.sgw[sk];} break;}
    case 'keep': ritKeep(id); return;
    case 'del-keep': RIT.goneAt='keep'; ritDelPlan(id); return;
    case 'rot': acctRotate(+b.getAttribute('data-i')); return;

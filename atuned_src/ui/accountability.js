@@ -97,7 +97,7 @@ function acctDueHtml(st){
     +(d?'Done today. Press to take it off':'Mark '+esc(ritName(p.steps))+' done today')+'">'+ritRingHtml(p,d,col)+'</button>'
     +'<span class="rv-txt"><span class="rv-nm">'+esc(ritName(p.steps))+'</span>'
     +'<span class="rv-sub">'+(d?'Done today':'Planned for today')+'<i>'+esc(ritLeft(p,st.today))+'</i></span></span>'
-    +'</div></li>';});
+    +ritPctHtml(p,st.today)+'</div></li>';});
   body+='</ol>';}
  return '<div class="rv-sec rv-act"><div class="rv-hd"><span class="rv-h">Due today</span>'
   +(due.length?'<span class="rv-min">'+due.length+(due.length===1?' ritual':' rituals')+'</span>':'')+'</div>'
@@ -140,7 +140,9 @@ function acctDoneHtml(st){
   /* the earned marks stay here, with the record that earned them. The next one
      moved to the Ongoing goal card in the centre, round QN, because the next
      mark is a goal and that card is where he asked the goal to sit. */
-  +ritMarksHtml(st.L,true)+'</div>';}
+  /* ROUND QS: the earned marks moved to the cubes, pinned to the day each was
+     earned, his "achievements and badges ... attached to it". Shown once. */
+  +'</div>';}
 
 /* ---------------- THE THIRTY DAY LOOP, round QN ----------------
    His words: "on the accountability tracker slide on the right hand side the
@@ -176,42 +178,94 @@ function acctLoopRead(st){
   .sort(function(a,b){return (b.act-a.act)||(b.last-a.last);});
  return {t0:t0, today:today, rings:used.slice(0,ACCT_RINGS), more:Math.max(0,used.length-ACCT_RINGS),
   n:used.length, kept:Object.keys(kept).length, miss:Object.keys(miss).length, mins:mins};}
-function acctArc(r,a0,a1){
- var p=function(a){a=a*Math.PI/180; return ritP(110+r*Math.cos(a))+' '+ritP(110+r*Math.sin(a));};
- return 'M'+p(a0)+' A'+r+' '+r+' 0 0 1 '+p(a1);}
-function acctLoopSvg(L){
- var R0=92, step=12, w=8, seg=360/ACCT_LOOP, gap=2.2, out='<svg viewBox="0 0 220 220" class="rv-loop" aria-hidden="true">';
- var rings=L.rings.length?L.rings:[{col:'var(--dim)', days:{}}];
- rings.forEach(function(R,ri){
-  var r=R0-ri*step;
-  for(var i=0;i<ACCT_LOOP;i++){
-   var d=L.t0+i, s=R.days[d]||'none';
-   out+='<path class="rv-ld rv-ld-'+s+(d===L.today?' rv-ld-now':'')+'" d="'+acctArc(r,-90+i*seg+gap/2,-90+(i+1)*seg-gap/2)
-    +'" style="stroke-width:'+w+';--i:'+(i+ri*4)+(s==='none'||s==='miss'?'':';stroke:'+R.col)+'"/>';}});
- /* a turn every seven days back from today, outside the outer track */
- for(var j=1;j*7<ACCT_LOOP;j++){
-  var a=(-90+(ACCT_LOOP-j*7)*seg)*Math.PI/180, r1=R0+w/2+3, r2=R0+w/2+8;
-  out+='<path class="rv-ltk" d="M'+ritP(110+r1*Math.cos(a))+' '+ritP(110+r1*Math.sin(a))
-   +' L'+ritP(110+r2*Math.cos(a))+' '+ritP(110+r2*Math.sin(a))+'"/>';}
- out+='<circle class="rv-lnow" cx="110" cy="'+ritP(110-R0-w/2-7)+'" r="3.4"/>';
- return out+'</svg>';}
+/* ---------------- THE THIRTY DAYS AS CUBES, round QS ----------------
+   His words, 3 October: "the accountability should have the the 30 days of
+   cubes showing my progression and my achievements and badges and whatnot
+   attached to it".
+
+   THE CUBES REPLACE THE RING, and that is a judgment and is said as one. The
+   ring of round QN and these cubes are two drawings of one read, and one page
+   says a thing once, so the picture changed and the read did not: every cube
+   is ritDaySegs for its day, the month's own read, exactly as each piece of
+   the ring was. The heading stays his name for it, Thirty day loop.
+
+   ONE CUBE A DAY, seven to a row and today last, at the lower right, so the
+   page reads oldest to newest the way a person reads, and a row is a week
+   counted back from today. A day kept is a solid cube in the seat colour of
+   every ritual kept on it, side by side; planned and not yet done is its
+   outline; missed is dashed; a day nothing was set for is the empty socket.
+   The same grammar as the month and the rings: solid is done, faint is
+   planned, dashed is missed.
+
+   THE MARKS ARE PINNED TO THE DAY THAT EARNED THEM. markDays (engine/ladder.js)
+   dates each earned practice mark off the record, and a mark whose day falls
+   in the thirty sits on that cube, in its own seat colour with its own icon.
+   Every earned mark is on the shelf under the cubes, each with its meaning and
+   its date on the press. Only earned marks: the next one is the Ongoing goal
+   card's, and the rest are never listed (engine/ladder.js, "never how many of
+   how many").
+
+   Nothing here is a rate. The figures over the cubes are counts of days and
+   minutes, the ruling for every surface that shows a record. */
+var ACCT_COLS=7;
+function acctCubeRead(st){
+ var today=st.today, t0=today-ACCT_LOOP+1, out=[];
+ var md=(typeof markDays==='function')?markDays(CURP,Date.now()):{}, pin={};
+ (st.L.earned||[]).forEach(function(m){var d=md[m.k]; if(d!=null&&d>=t0&&d<=today)(pin[d]=pin[d]||[]).push(m);});
+ for(var d=t0;d<=today;d++){
+  var X={d:d, done:[], miss:[], plan:[], marks:pin[d]||[]}, seen={};
+  ritDaySegs(d,st.plans,today).forEach(function(s){
+   var k=s.st+'|'+s.nm; if(seen[k])return; seen[k]=1;
+   if(s.st==='done')X.done.push(s); else if(s.st==='miss')X.miss.push(s); else if(s.st==='plan')X.plan.push(s);});
+  X.st=X.done.length?'done':X.plan.length?'plan':X.miss.length?'miss':'none';
+  out.push(X);}
+ return {days:out, md:md};}
+function acctCubeHtml(X,i,n,today,empty){
+ var j=n-1-i, row=Math.floor((n-1)/ACCT_COLS)-Math.floor(j/ACCT_COLS)+1, col=ACCT_COLS-(j%ACCT_COLS);
+ var nm=function(a){return a.map(function(s){return s.nm;}).join(', ');};
+ var bg='';
+ if(X.done.length){var w=100/X.done.length;
+  bg=';background:linear-gradient(90deg,'+X.done.map(function(s,k){return s.col+' '+(k*w).toFixed(1)+'% '+((k+1)*w).toFixed(1)+'%';}).join(',')+')';}
+ var c=(X.done[0]||X.plan[0]||X.miss[0]||{}).col||'var(--accent)';
+ var said=[X.done.length?'Done: '+nm(X.done)+'.':'', X.plan.length?'Planned: '+nm(X.plan)+'.':'',
+  X.miss.length?'Missed: '+nm(X.miss)+'.':'', X.marks.length?'Earned '+X.marks.map(function(m){return m.nm;}).join(', ')+'.':'']
+  .filter(Boolean).join(' ')||'Nothing was set for this day.';
+ var day=ritDayName(X.d,today);
+ return '<span class="rv-cb rv-cb-'+X.st+(X.d===today?' rv-cb-now':'')+'" style="grid-row:'+row+';grid-column:'+col
+  +';--c:'+c+';--i:'+(row+col)+bg+'"'
+  /* AN EMPTY RECORD IS A PICTURE AND NOT THIRTY PRESSES, the month's own rule
+     (ritRecordHtml): on a first visit the sockets show what will fill and are
+     not each a carrier to tab through */
+  +(empty?' aria-hidden="true"':rvTip(day,said)+' aria-label="'+esc(day+'. '+said)+'"')+'>'
+  +X.marks.map(function(m,k){return '<i class="rv-cbm" style="--c:'+seatCol(m.b)+';--k:'+k+'" aria-hidden="true">'
+   +'<svg viewBox="0 0 24 24"><path d="'+m.ic+'"/></svg></i>';}).join('')+'</span>';}
+/* the earned marks, each a carrier: its name, its meaning, and its date when
+   the record dates it. The shelf is ritMarksHtml's circle, the ladder's own
+   icon in its family's seat colour, ring not fill. */
+function acctShelfHtml(L,md,today){
+ if(!L.earned.length)return '<div class="rv-marks"><span class="rv-lb">Marks</span>'
+  +'<p class="rv-empty">None yet. A mark is earned from your record, never bought.</p></div>';
+ return '<div class="rv-marks"><span class="rv-lb">Marks</span><div class="rv-mk">'
+  +L.earned.map(function(m,i){var d=md[m.k];
+   return '<span class="rv-m" style="--c:'+seatCol(m.b)+';--i:'+i+'"'
+    +rvTip(m.nm,m.d+(d!=null?' Earned '+String(ritDayName(d,today)).replace(/^(Today|Yesterday)$/,function(x){return x.toLowerCase();})+'.':''),'',m.fam)+'>'
+    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+m.ic+'"/></svg></span>';}).join('')+'</div></div>';}
 /* NAMED IN HIS WORDS, "the thirty day loop", round QN. It read Thirty days,
    which is also the name of a ladder mark (thirty in a row) shown on the
    Ongoing goal card on the same screen: one word for two things. */
 function acctLoopHtml(st){
- var L=acctLoopRead(st);
- var key=L.rings.length?'<ul class="rv-lkey">'+L.rings.map(function(R,i){
-  return '<li style="--c:'+R.col+'"><i aria-hidden="true"></i>'+esc(R.nm)+(i===0?' <small>outermost</small>':'')+'</li>';}).join('')
-  +(L.more?'<li style="--c:var(--dim)"><i aria-hidden="true"></i><small>and '+L.more+' more in the Record</small></li>':'')+'</ul>':'';
- var sum=!L.n?'<p class="rv-lsum">Nothing on the record in the last thirty days yet.</p>'
-  :'<p class="rv-lsum">In the last thirty days you kept a ritual on <b>'+acctDays(L.kept)+'</b> and missed one on <b>'
-   +acctDays(L.miss)+'</b>. <b>'+L.mins+' minutes</b> in all, across <b>'+L.n+(L.n===1?' ritual':' rituals')+'</b>.</p>';
+ var L=acctLoopRead(st), Q=acctCubeRead(st), n=Q.days.length;
+ var empty=!st.plans.length&&!((CURP&&CURP.rituals)||[]).length;
+ var figs='<div class="rv-cbf"><span class="rv-cbk"><b>'+(L.kept||'–')+'</b> '+(L.kept===1?'day':'days')+' kept</span>'
+  +'<span><b>'+(L.miss||'–')+'</b> missed</span><span><b>'+(L.mins||'–')+'</b> min</span></div>';
  return '<div class="rv-sec rv-loopw"><div class="rv-hd"><span class="rv-h">Thirty day loop</span></div>'
-  +'<p class="rv-mean">The last thirty days as one loop. It starts just after the top, runs clockwise, and today closes it at the top. '
-  +'Each track round it is one ritual. A mark outside falls every seven days, one turn of your avatar.</p>'
-  +'<div class="rv-loopb">'+acctLoopSvg(L)+'<div class="rv-lmid"><b>'+(L.kept||'–')+'</b><span>days kept</span></div></div>'
-  +key+'<div class="rv-key" aria-hidden="true"><span><i class="rv-k-done"></i>Done</span><span><i class="rv-k-plan"></i>Planned</span>'
-  +'<span><i class="rv-k-miss"></i>Missed</span></div>'+sum+'</div>';}
+  +'<p class="rv-mean">The last thirty days as cubes, a week to a row and today last. A solid cube is a day you kept a ritual, '
+  +'in the colour of its seat; an outline is planned; dashed is missed. A mark on a cube is one you earned that day.</p>'
+  +figs+'<div class="rv-cubes'+(empty?' rv-cubes0':'')+'" role="group" aria-label="The last thirty days">'
+  +Q.days.map(function(X,i){return acctCubeHtml(X,i,n,st.today,empty);}).join('')+'</div>'
+  +'<div class="rv-key" aria-hidden="true"><span><i class="rv-k-cube"></i>Done</span><span><i class="rv-k-cplan"></i>Planned</span>'
+  +'<span><i class="rv-k-cmiss"></i>Missed</span></div>'
+  +acctShelfHtml(st.L,Q.md,st.today)+'</div>';}
 
 /* ---------------- HISTORY, round QN ----------------
    His words: "I want to be able to track my accountability history. I want my

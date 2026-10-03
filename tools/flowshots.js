@@ -37,15 +37,21 @@ const SEED=()=>{
  /* the snapshots the commits left, moved back to five days before anything
     started, in their order */
  CURP.history.forEach((h,i)=>{h.t=iso(today-34+i);});
- /* one pass of the release's own arithmetic, and the reading it leaves */
- for(let k=0;k<2;k++){const q=relQueueOf(8); q.forEach(n=>relWrite(q,n,n.sq));}
- CURP.history.push(snapshot(CURP)); CURP.history[CURP.history.length-1].t=iso(today-3);
  CURP.avatar=CURP.avatar||avatarBlank();
  CURP.avatar.pairs=[
   {be:'I feel safe in my own body',notbe:'I am terrified of being abandoned and I panic and cannot breathe'},
   {be:'I speak up calmly in the room',notbe:'I feel worthless and ashamed, I am never enough'},
   {be:'I stay close to the people I love',notbe:'I go quiet and pull away from my partner when I feel judged and rejected'}];
  CURP.avatar.built=true; CURP.avatar.at=iso(today-30);
+ /* ROUND QS: each avatar story's starting weight, kept the way the Avatar
+    page's own Save keeps it (avSideWrite, load0 = the row's load once the story
+    has landed), and before the release below, so the percent complete the
+    Ritual page now draws is the release's real movement and not a number
+    typed here */
+ compute(); avSideWrite(e=>{avRows().forEach(x=>{if(x.gap)e.load0[avKey(x.pair)]=x.gap.load;});});
+ /* one pass of the release's own arithmetic, and the reading it leaves */
+ for(let k=0;k<2;k++){const q=relQueueOf(8); q.forEach(n=>relWrite(q,n,n.sq));}
+ CURP.history.push(snapshot(CURP)); CURP.history[CURP.history.length-1].t=iso(today-3);
  const P=(id,k,band,from,days,extra)=>Object.assign({id,steps:[k],when:'',where:'',days,from:iso(from),stop:null,
   band,track:(PRACTICE.find(p=>p.k===k)||{}).track||'',rel:null,tc:null,tags:[band],on:null,tm:null},extra||{});
  const plans=[P('rt','truth','Solar',today-26,0),P('rl','listen','Throat',today-6,7),
@@ -88,6 +94,8 @@ const BLANK=()=>{loadP(0); CURP.rituals=[]; CURP.history=[]; ritPlanPut([]); CUR
   await p.setViewportSize({width:1600,height:2300}); await p.waitForTimeout(800);
   await p.screenshot({path:path.join(OUT,'flow-1600-tall.png')});
   await shot(p,'#rit .rv-six','stack-1600.png');
+  await shot(p,'#rit .rv-c-av','avatar-1600.png');
+  await shot(p,'#rit .rv-act','active-1600.png');
   await p.close();}
  /* 390: the page is one scroll on a phone, so it is shot whole */
  {const p=await open(390,844,true);

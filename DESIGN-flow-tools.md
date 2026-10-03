@@ -154,7 +154,10 @@ one the month draws as dashed rings. A ritual kept on one weekday is not missed
 on the others. Most missed is first. Edit is offered at `PR_MISS_AT` misses or
 more, the engine's own constant, and below that a miss is only counted. The
 streak is the ladder's, so this column cannot disagree with the Summary. No
-percent, no score, no rate, anywhere on the page. The gate works the expected
+score and no rate anywhere on the page. A percent appears in one place only,
+round QS, 3 October, on his words "a UI element that's tied to the system to
+show the percent complete": the pill of a percent complete badge (FT25), and
+nowhere in running text, where the only word for it is "percent complete". The gate works the expected
 counts out from the days and the entries and does not ask the page's own
 function.
 
@@ -226,7 +229,10 @@ Gate: `tests/flowtools.js`, `FT13:`.
 ### FT14. Every heading says what it means, in the same place.
 
 Each of the three columns names its job and says in a sentence what it is. Due
-today, Done, Missed, Record and Active today each carry a sentence under them.
+today, Done, Missed, Record and Active today each carry a sentence. Since round
+QS the sentence is on the heading's press and not under it (FT26): his words,
+"more show less tell if you want tell you press on something to get
+information".
 Streak, Best, Kept and Practised are explained under the figures. The rings on
 the month are explained under the key. This is the owner's unpack rule of 2
 October (`CLAUDE.md`, "UNPACK EVERY SYMBOL").
@@ -280,8 +286,12 @@ Gate: `tests/flowtools.js`, `FT17:`.
 The days kept are `avCycles`, the read the Avatar page draws its Cycles from,
 so the two pages cannot disagree: distinct days with a ritual marked done.
 Three rings, one a cycle, each cut in three turns of seven days, and a full
-cycle takes a tick. Under them, each seat an avatar story sits at says which
-active ritual is kept at that seat, or that none is.
+cycle takes a tick. Round QS put the avatar's own percent complete beside them
+as the hero, `avState().overall`, the figure the Avatar page draws round its
+core, in `cr()` at its hero size. Under them, each seat an avatar story sits at
+is a tile, a `crBadge` with the Avatar page's own mark for that area (`AV_IC`)
+and the area's percent complete as its ring; its press says the line the
+person wrote and which active ritual is kept at that seat, or that none is.
 
 Gate: `tests/flowtools.js`, `FT18:`.
 
@@ -307,14 +317,16 @@ with no end never comes here.
 
 Gate: `tests/flowtools.js`, `FT20:`.
 
-### FT21. The thirty day loop is the record of thirty days, and the summary under it is counts.
+### FT21. The thirty day loop is the record of thirty days, and the figures over it are counts.
 
-One track per ritual round one loop, outermost first, thirty pieces each, today
-closing the loop at the top; at most four tracks and the rest named as more. A
-piece is done, planned or missed off `ritDaySegs`, the month's own read, so the
-loop and the month cannot disagree. The figure in its middle is the days kept
-in those thirty, and the line under it says days kept, days missed, minutes
-and rituals, never a rate.
+Round QS, his words: "the accountability should have the 30 days of cubes
+showing my progression and my achievements and badges and whatnot attached to
+it". Thirty cubes, one a day, seven to a row, today last at the lower right.
+A cube is done, planned, missed or empty off `ritDaySegs`, the month's own
+read, so the cubes and the month cannot disagree; a done cube carries the seat
+colour of every ritual kept on it. The figures over the cubes are days kept,
+days missed and minutes in those thirty, never a rate. The cubes replace round
+QN's ring: one read, one drawing of it. Each cube's press says its day.
 
 Gate: `tests/flowtools.js`, `FT21:`.
 
@@ -363,6 +375,57 @@ profile and 12 for James, with every suggestion visible.
 
 Gate: `tests/flowtools.js`, `FT24:`.
 
+### FT25. A ritual is a symbol carrying its percent complete.
+
+Every ritual row, in Active today and in Due today, carries a `crBadge`: its
+seat's mark (`SEATGLYPH`) inside, a ring in its seat's colour, the figure in a
+pill. The ring is percent complete: days kept over the days its span is set
+for, `ritPct`, which only fills. A ritual with no end has nothing to complete,
+so its ring is empty and the pill is the days kept. The seat tag is the badge
+now, so a row prints no seat word; a second seat is a second mark. The badge's
+press says what the ring and the pill are, with the figure and what it is out
+of. The gate works the expected percent out from the days and the span.
+
+Gate: `tests/flowtools.js`, `FT25:`.
+
+### FT26. The tell is on the press.
+
+His words, round QS: "more show less tell if you want tell you press on
+something to get information". The first sentence of every part moves onto its
+heading, which becomes a carrier for the one tooltip (`ui/tip.js`): the shape
+the unpack gate already accepts, the term inside a carrier whose tooltip is
+its sentence. The sentence stays in the document, folded. A second sentence
+that is advice tied to a state stays where the state is.
+
+Gate: `tests/flowtools.js`, `FT26:`.
+
+### FT27. A suggestion wears its seat's colour and its seat's or pattern's mark.
+
+His words, round QS: "the cards that come from the ritual builder they should
+be colorized and related to the color of the chakra or fetter with their
+symbol." Each Suggested card takes its seat's colour (`seatCol`) as a wash and
+an edge. Its mark is a `crBadge`: for a release schedule, the held place's
+pattern, the fetter's own mark from `CHILD`, with that place's charge as the
+ring (`crbNode`'s shape); otherwise the seat's mark from `SEATGLYPH`, with the
+heaviest place held at that seat as the ring. The mark is the press that opens
+the reasons in place. Each seat tag carries the seat's mark beside its name.
+The active rituals wear their seat as a wash too.
+
+Gate: `tests/flowtools.js`, `FT27:`.
+
+### FT28. The marks are attached to the days that earned them.
+
+The marks are the ladder's (`engine/ladder.js`), with round QS's slice 0 of the
+points and achievements TDD: First run reads a ritual marked done, Seven,
+Thirty and Ninety days read days practised and not a strict row, and Every
+track run and Came back are new. `markDays` dates each earned practice mark off
+the record. A mark whose day is in the thirty is pinned on that cube; every
+earned mark is on the shelf under the cubes, each with its meaning and its date
+on the press. Only earned marks: the next is the Ongoing goal card's, and the
+rest are never listed.
+
+Gate: `tests/flowtools.js`, `FT28:`.
+
 ## 5. Not built, and why
 
 These are in the practice TDD and are not in this change. Each is named so the
@@ -381,10 +444,12 @@ gap is not read as an oversight.
   after a ritual as a read (FT20). The TDD's change record, an outcome per
   practice event, still waits on the practice domain being written by a
   ritual, which nothing does yet.
-- **Achievements.** His round QN words, "links it up with the achievements when
-  that system comes online". It does not exist (`POINTS-AUDIT.md`). The link
-  point is the row `ritSuggest` returns in `ui/ritstage.js`, named in its
-  header, and nothing on the page promises one (FT16).
+- **Achievements, past slice 0.** His round QN words, "links it up with the
+  achievements when that system comes online". Round QS built the TDD's slice 0
+  for the practice marks and attached them to the cubes (FT28). Points, stored
+  marks (`p.progress`), the quarter families and the evidence drawer are not
+  built: storing is a schema change and the schema is his. The link point for a
+  suggestion is still the row `ritSuggest` returns in `ui/ritstage.js`.
 - **What "a second design" means.** Round QN ends "I think I mentioned we're
   going to use a second design." Searched `TASKS.md`, `DECISIONS.md`, the
   `DESIGN-*.md` files, `mockups/` and `proto/` for it. Two older candidates
@@ -402,7 +467,7 @@ gap is not read as an oversight.
 
 | Rule | Gate |
 |---|---|
-| FT1 to FT23 | `tests/flowtools.js` |
+| FT1 to FT28 | `tests/flowtools.js` |
 | FT1, and every TAB integer | `tests/engine.js`, `tests/functional.js` |
 | FT6, FT12 | `tests/design.js`, `tools/monitor.js` |
 | FT10 | `tests/functional.js` |

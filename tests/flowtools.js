@@ -265,7 +265,12 @@ async function flowGate(browser,FILE,ok,booted){
    const figs=[...document.querySelectorAll('#flowside .rv-fig')].map(f=>f.textContent.replace(/\s+/g,' ').trim());
    return {rows, due, figs, streak:+(document.querySelector('#flowside .rv-mid b')||{}).textContent,
     ladder:ladderRead(CURP,Date.now()).streak.run,
-    both:document.getElementById('flowrail').innerText+' '+document.getElementById('rit').innerText};});
+    both:document.getElementById('flowrail').innerText+' '+document.getElementById('rit').innerText,
+    /* ROUND QS: a percent lives in one place, the pill of a percent complete
+       badge (FT25). Everything else is read with the pills taken out. */
+    bare:[document.getElementById('flowrail'),document.getElementById('rit')].map(e=>{const c=e.cloneNode(true);
+     c.querySelectorAll('.crb-v,.cr .v').forEach(v=>v.remove()); return c.innerText||c.textContent;}).join(' '),
+    pills:[...document.querySelectorAll('#flowrail .crb-v,#rit .crb-v,#rit .cr .v')].map(v=>v.textContent)};});
   const num=t=>{const m=/(\d+) days? missed/.exec(t); return m?+m[1]:0;};
   const rowOf=nm=>rd.rows.filter(r=>r.t.indexOf(nm)===0)[0];
   ok(num((rowOf(seed.names.ra)||{}).t||'')===seed.want.ra&&seed.want.ra>0,
@@ -282,7 +287,9 @@ async function flowGate(browser,FILE,ok,booted){
   ok(rd.streak===rd.ladder,'FT7: the streak is the ladder\'s own, '+rd.streak+' against '+rd.ladder);
   ok(rd.figs.some(f=>new RegExp('^'+seed.keptDays+' days?\\s*Kept').test(f)),
    'FT7: Kept is the count of days with something done, '+seed.keptDays+', got '+JSON.stringify(rd.figs));
-  ok(!/%|\bscore\b|\bpercent\b/i.test(rd.both),'FT7: no percent and no score anywhere on the Flow page');
+  ok(!/%|\bscore\b|\bpercent\b(?! complete)|\brate\b/i.test(rd.bare)&&!/\bscore\b|\brate\b/i.test(rd.both)&&rd.pills.every(t=>/^(\d+%?|\u2013)$/.test(t)),
+   'FT7: no score and no rate anywhere on the Flow page, and a percent only in a badge pill (FT25), '+JSON.stringify(rd.pills)
+   +' '+JSON.stringify((rd.bare.match(/.{0,40}(%|\bscore\b|\bpercent\b(?! complete)|\brate\b).{0,40}/gi)||[]).slice(0,4)));
 
   /* FT14, the unpack rule: each heading carries its meaning in the same place */
   const mean=await pg.evaluate(()=>{
@@ -471,14 +478,23 @@ async function flowGate(browser,FILE,ok,booted){
    tags:[...x.querySelectorAll('.rv-tg')].map(t=>t.textContent), why:[...x.querySelectorAll('.rv-sgw li')].map(l=>l.textContent)})));
   /* ---- FT18 ---- */
   const av=await pg.evaluate(()=>{const c=document.querySelector('#rit .rv-c-av'); if(!c)return {none:true};
+   /* ROUND QS: a seat is a tile and what it says is on its press, so the
+      seat and the ritual feeding it are read off the carrier */
+   const A=avState();
    return {fig:(c.querySelector('.rv-avfig b')||{}).textContent||'', rings:c.querySelectorAll('.rv-cy').length,
     tick:c.querySelectorAll('.rv-cy-ok').length,
-    seats:[...c.querySelectorAll('.rv-avs')].map(x=>({n:x.querySelector('.rv-avn').textContent,f:x.querySelector('.rv-avf').textContent}))};});
+    hero:(c.querySelector('.rv-avhero .cr.hero .v')||{}).textContent||'', heroTip:!!c.querySelector('.rv-avhero[data-tip]'),
+    overall:A.overall,
+    seats:[...c.querySelectorAll('.rv-avs')].map(x=>({n:x.getAttribute('data-tip-t')||'',f:x.getAttribute('data-tip')||'',
+     glyph:!!x.querySelector('.crb .crb-g svg'), fedDot:x.classList.contains('rv-fed')}))};});
   ok(!av.none&&new RegExp('^'+seed.keptDays+' days?$').test(av.fig.trim())&&av.rings===3&&av.tick===(seed.keptDays>=21?1:0),
    'FT18: Ritual to avatar prints the '+seed.keptDays+' distinct days kept, draws three cycles and ticks only a full one, '+JSON.stringify(av));
   const heart=(av.seats||[]).filter(x=>/at the heart/.test(x.n))[0], solar=(av.seats||[]).filter(x=>/solar plexus/.test(x.n))[0];
-  ok(heart&&/^Fed by Controlled Breath/.test(heart.f)&&solar&&/No ritual at this seat yet/.test(solar.f),
-   'FT18: each avatar seat says the active ritual kept there, or that none is, '+JSON.stringify(av.seats));
+  ok(heart&&/ Fed by Controlled Breath\.$/.test(heart.f)&&heart.fedDot&&solar&&/No ritual at this seat yet/.test(solar.f)&&!solar.fedDot,
+   'FT18: each avatar seat says on its press the active ritual kept there, or that none is, and its dot is filled only when fed, '+JSON.stringify(av.seats));
+  const wantHero=av.overall==null?'\u2013':(Math.round(av.overall*100)?Math.round(av.overall*100)+'%':'\u2013');
+  ok(av.hero===wantHero&&av.heroTip&&(av.seats||[]).every(x=>x.glyph),
+   'FT18: the hero is the Avatar page\'s own percent complete, '+wantHero+', with its meaning on the press, and every seat is a badge with a mark, '+JSON.stringify([av.hero,av.overall]));
 
   /* ---- FT19 ---- */
   const goal=await pg.evaluate(()=>{const c=document.querySelector('#rit .rv-c-goal');
@@ -548,15 +564,76 @@ async function flowGate(browser,FILE,ok,booted){
   await pg.evaluate(()=>{ritWrite(plans=>{plans.forEach(p=>{if(p.id==='qa')p.days=0;}); return plans;},null);});
 
   /* ---- FT21 ---- */
-  const lp=await pg.evaluate(()=>{const s=document.querySelector('#flowside .rv-loopw'); const ds=[...s.querySelectorAll('path.rv-ld')];
-   return {n:ds.length, ring0done:ds.slice(0,30).filter(p=>p.classList.contains('rv-ld-done')).length,
-    nowTop:ds.slice(0,30).map(p=>p.classList.contains('rv-ld-now')).lastIndexOf(true),
-    mid:(s.querySelector('.rv-lmid b')||{}).textContent, key:[...s.querySelectorAll('.rv-lkey li')].map(l=>l.textContent),
-    sum:(s.querySelector('.rv-lsum')||{}).textContent||''};});
-  ok(lp.n===30*Math.min(4,seed.loopRituals+1)&&lp.ring0done===seed.qaLoop&&lp.nowTop===29&&/^Noting Meditation/.test(lp.key[0]||''),
-   'FT21: one track of thirty per ritual, outermost the first active, its done pieces the '+seed.qaLoop+' days kept, today last, '+JSON.stringify(lp));
-  ok(+lp.mid===seed.keptDays&&lp.sum.indexOf(seed.keptDays+' days')>=0&&lp.sum.indexOf(seed.mins+' minutes')>=0&&!/%|rate/.test(lp.sum),
-   'FT21: the middle and the summary are counts of days and minutes worked out from the seed, '+JSON.stringify([lp.mid,lp.sum,seed.keptDays,seed.mins]));
+  const lp=await pg.evaluate(()=>{const s=document.querySelector('#flowside .rv-loopw'); const cb=[...s.querySelectorAll('.rv-cb')];
+   const pos=e=>{const st=getComputedStyle(e); return [+st.gridRowStart,+st.gridColumnStart];};
+   return {n:cb.length, done:cb.filter(e=>e.classList.contains('rv-cb-done')).length,
+    last:cb.length?pos(cb[cb.length-1]):null, lastNow:cb.length?cb[cb.length-1].classList.contains('rv-cb-now'):false,
+    rows:Math.max(...cb.map(e=>pos(e)[0])), tips:cb.every(e=>e.hasAttribute('data-tip')),
+    kept:(s.querySelector('.rv-cbk b')||{}).textContent, figs:(s.querySelector('.rv-cbf')||{}).textContent||'',
+    oldRing:s.querySelectorAll('path.rv-ld').length};});
+  /* the expected count of done cubes is worked out from the seed's days: a day
+     in the thirty with anything marked done */
+  const doneDays=seed.keptDays;
+  ok(lp.n===30&&lp.done===doneDays&&lp.lastNow&&lp.last&&lp.last[0]===lp.rows&&lp.last[1]===7&&lp.tips&&lp.oldRing===0,
+   'FT21: thirty cubes, the '+doneDays+' kept days solid, today last at the lower right, every cube a press, and the ring gone, '+JSON.stringify(lp));
+  ok(+lp.kept===seed.keptDays&&lp.figs.indexOf(seed.mins+' min')>=0&&!/%|rate/.test(lp.figs),
+   'FT21: the figures over the cubes are counts of days and minutes worked out from the seed, '+JSON.stringify([lp.kept,lp.figs,seed.keptDays,seed.mins]));
+
+  /* ---- FT25: a ritual's badge, its percent complete worked out here ---- */
+  const pc=await pg.evaluate(()=>{const rows=[...document.querySelectorAll('#rit .rv-act .rv-item')];
+   return rows.map(r=>({id:r.querySelector('.rv-log').getAttribute('data-id'), pill:(r.querySelector('.rv-pc .crb-v')||{}).textContent,
+    glyph:!!r.querySelector('.rv-pc .crb-g svg'), tip:(r.querySelector('.rv-pc')||{getAttribute:()=>''}).getAttribute('data-tip')||'',
+    word:[...r.querySelectorAll('.rv-sub .rv-tg')].length}));});
+  const by=Object.fromEntries(pc.map(x=>[x.id,x]));
+  /* the percent each span ritual should read, worked out here from its plan
+     and the entries, not by asking the page: days in its span on its days of
+     the week, and of those the days with an entry for its steps marked done */
+  const want=await pg.evaluate(()=>{const DAY=86400000, off=new Date().getTimezoneOffset()*60000;
+   const dk=t=>Math.floor((Date.parse(t)-off)/DAY), wd=d=>(new Date(d*DAY).getUTCDay()+6)%7, out={};
+   ritPlans().forEach(p=>{if(!p.days)return; const s=dk(p.from); let due=0,kept=0;
+    for(let d=s;d<s+p.days;d++){if(p.on&&p.on.indexOf(wd(d))<0)continue; if(p.stop&&d>=dk(p.stop))continue; due++;
+     if(CURP.rituals.some(x=>dk(x.t)===d&&x.steps.join('+')===p.steps.join('+')&&x.done!==false))kept++;}
+    out[p.id]=due?(Math.round(100*kept/due)?Math.round(100*kept/due)+'%':'\u2013'):null;});
+   return out;});
+  const spans=pc.filter(x=>want[x.id]!=null);
+  ok(spans.length>0&&spans.every(x=>x.pill===want[x.id]&&/Percent complete/.test(x.tip))&&/Percent complete/.test(by.qb.tip)&&by.qa&&by.qa.pill===String(seed.qaKept)
+   &&by.qd&&by.qd.pill==='\u2013'&&pc.every(x=>x.glyph&&x.word===0),
+   'FT25: a span ritual reads its percent complete, '+JSON.stringify(want)+', one with no end its days kept, none kept a dash, each with its seat mark and no seat word, '+JSON.stringify(pc));
+  const due=await pg.evaluate(()=>[...document.querySelectorAll('#flowside .rv-act .rv-item')].map(r=>!!r.querySelector('.rv-pc .crb')));
+  ok(due.length>0&&due.every(Boolean),'FT25: every Due today row carries the same badge, '+JSON.stringify(due));
+
+  /* ---- FT26: the tell is on the press ---- */
+  const tell=await pg.evaluate(()=>{const out=[];
+   document.querySelectorAll('#rit .rv-sec,#flowside .rv-sec,#flowleft .rv-sec').forEach(sec=>{
+    const h=sec.querySelector(':scope>.rv-hd .rv-h'), m=sec.querySelector(':scope>.rv-mean'); if(!h||!m)return;
+    out.push({h:h.textContent, tip:h.getAttribute('data-tip')===m.textContent, focus:h.getAttribute('tabindex')==='0',
+     shown:getComputedStyle(m).display!=='none'});});
+   return out;});
+  ok(tell.length>=8&&tell.every(x=>x.tip&&x.focus&&!x.shown),
+   'FT26: every part\'s sentence is on its heading\'s press, reachable by keyboard, and folded at rest, '+JSON.stringify(tell));
+
+  /* ---- FT27: a suggestion wears its seat and its mark ---- */
+  const sg=await pg.evaluate(async()=>{const L=document.getElementById('flowleft');
+   const cards=[...L.querySelectorAll('.rv-sg1')].map((c,i)=>{const x=RIT.sug[i], b=x.seats[0]||'';
+    const n=x.rel!=null?BY[x.rel]:null, cf=n&&n.cf?CHILD.find(f=>f.nm===n.cf):null;
+    const want=(n&&cf)?cf.ic:null, g=c.querySelector('.rv-sgs .crb-g svg');
+    return {nm:c.querySelector('.rv-sgn').textContent, col:getComputedStyle(c).getPropertyValue('--c').trim()===seatCol(b),
+     mark:!!g&&(want?g.innerHTML.indexOf(want)>=0:g.innerHTML===(SEATGLYPH[b]||SEATGLYPH._)),
+     hidden:c.querySelector('.rv-sgx').hidden, tagMark:[...c.querySelectorAll('.rv-tg svg')].length===x.seats.length};});
+   const b=L.querySelector('.rv-sgs'); b.click(); await new Promise(r=>setTimeout(r,200));
+   const c0=L.querySelector('.rv-sg1');
+   return {cards, opened:!c0.querySelector('.rv-sgx').hidden&&b.isConnected===false&&L.querySelector('.rv-sgs').getAttribute('aria-expanded')==='true'};});
+  ok(sg.cards.length>0&&sg.cards.every(c=>c.col&&c.mark&&c.hidden&&c.tagMark)&&sg.opened,
+   'FT27: each suggestion is in its seat\'s colour with the seat\'s or the pattern\'s mark, its reasons folded until the mark is pressed, '+JSON.stringify(sg));
+
+  /* ---- FT28: the marks, on the days that earned them ---- */
+  const mk2=await pg.evaluate(()=>{const s=document.querySelector('#flowside .rv-loopw'), L=ladderRead(CURP,Date.now()), md=markDays(CURP,Date.now());
+   const t0=ritToday0()-29, inWin=L.earned.filter(m=>md[m.k]!=null&&md[m.k]>=t0);
+   return {earned:L.earned.map(m=>m.k), shelf:s.querySelectorAll('.rv-marks .rv-m').length, pins:s.querySelectorAll('.rv-cbm').length,
+    inWin:inWin.length, shelfTips:[...s.querySelectorAll('.rv-marks .rv-m')].every(e=>/Earned|\./.test(e.getAttribute('data-tip')||'')),
+    next:!!s.querySelector('.rv-next'), first:md.first};});
+  ok(mk2.earned.length>0&&mk2.shelf===mk2.earned.length&&mk2.pins===mk2.inWin&&mk2.inWin>0&&mk2.shelfTips&&!mk2.next,
+   'FT28: every earned mark is on the shelf with its meaning, the ones earned in the thirty are pinned on their day, and no next mark here, '+JSON.stringify(mk2));
 
   /* ---- FT22 ---- */
   const hi=await pg.evaluate(async()=>{const cards=()=>[...document.querySelectorAll('#flowside .rv-hc')].map(c=>({nm:c.querySelector('.rv-hcn').textContent,
