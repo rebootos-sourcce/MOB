@@ -243,7 +243,7 @@ ok(/costs/.test(s1.lean),'and names which context holds');
 const p4=E.blankProfile('noise');
 p4.intake.answers[0]=6;p4.intake.answers[1]=5;p4.intake.answers[2]=6;
 const s2=E.iqScore(p4)[SI[0].nm];
-ok(!s2.reliable&&/noise/.test(s2.lean),'a spread under 3 is inside measurement noise');
+ok(!s2.reliable&&/no lean|to show a lean/.test(s2.lean),'a spread under 3 names no lean');
 
 g('11 · the sniffer');
 reset(3,0,6);

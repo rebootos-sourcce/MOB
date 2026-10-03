@@ -362,8 +362,12 @@ function chRailHtml(r){
   +'</div><p class="chr-note">The bar is how closed the seat is, from the charge on its own addresses. Past about a third the field pinches there, runs slow and breaks up. An open seat swells.</p>';
  /* what the points are, which is the question the owner asked of the mockup */
  h+='<div class="pm-eye chr-sp">What the points are</div>'
-  +'<p class="ad-p">Each point round the body is one address. '+chPl(AF.filter(function(x){return !x.field;}).length,'address sits','addresses sit')
-  +' round the body at the height of its seat, going slowly round the spine. Four are field anchors, two above the head and two below the feet, drawn as rings. Size and brightness are the address’s charge, and a ring round a point is a charge above seven tenths.</p>'
+  /* NEVER THE LOWER COUNT. This printed the body's own share of the
+     addresses, which is the figure the house rule says is never put in front
+     of a person: the count stated is the whole set. Round RG. */
+  +'<p class="ad-p">Each point is one address, and there are '+AF.length
+  +'. Most sit round the body at the height of their seat, going slowly round the spine. '
+  +'Four are field anchors, two above the head and two below the feet, drawn as rings. Size and brightness are the address’s charge, and a ring round a point is a charge above seven tenths.</p>'
   +'<div class="chr-counts">'+SF.map(function(s){return '<span style="--sc:'+PAL[s.seat]+'"><i></i>'+esc(chSeatName(s.seat))+' <b>'+s.n+'</b></span>';}).join('')+'<span class="chr-anc"><i></i>Anchors <b>4</b></span></div>';
  h+='</div>';
  return h;}

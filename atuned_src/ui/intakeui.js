@@ -766,7 +766,11 @@ function iqInHand(p){
  for(var i=0;i<o.length;i++)if(iqGot(p,o[i])<3)return o[i];
  return o[0];}
 /* the accordion's own words for a law, kept word for word */
-function iqLine(s,g){return s?'spread '+s.spread+', '+s.lean:g?(3-g)+' left':'unanswered';}
+/* ROUND RG. "spread 2.2" named a statistic and "2 left" counted nothing a
+   person could name. The spread is how far apart the three answers sit, and
+   what is left is questions, so each says so. */
+function iqLine(s,g){return s?'answers '+s.spread+' apart, '+s.lean
+ :g?(3-g)+((3-g)===1?' question left':' questions left'):'unanswered';}
 /* a law as Summary draws a thing: its own glyph in a ring. The ring is the
    page's grammar, written above at iqSegs: segments while it is being
    answered, one arc once it reads. Untouched is the track and a dim glyph,
@@ -866,7 +870,7 @@ function iqHeroRing(p,sc,cq){
  var o=iqBodyOrder(), vals=o.map(function(li){var g=iqGot(p,li); return sc[SI[li].nm]?1:g?.5:0;});
  var seg=iqSegs(vals,function(i){return seatCol(SI[o[i]].b);},48,48,40,6.5,5);
  return '<span class="iqa-hr"><svg viewBox="0 0 96 96" aria-hidden="true">'+seg+'</svg>'
-  +'<span class="iqa-hn"><b>'+(cq==null?'–':Math.round(cq))+'</b><i>CQ</i></span></span>';}
+  +'<span class="iqa-hn"><b>'+(cq==null?'–':Math.round(cq))+'</b><i class="tipu"'+unpAttr('cq',null,'CQ')+'>CQ</i></span></span>';}
 /* A SIMULATION, NOT A BEHAVIOUR, round OK. His words: "What if we do show CQ
    at 100 on starting? It shows the soul raw expression. And then as the input
    stuff, it comes down. I don't want that to actually happen. But I'm curious

@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1584 13da904 2026-10-03 14:00"><head><meta charset="utf-8">
+<html lang="en" data-build="v1602 10ffd36 2026-10-03 18:24"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -10428,8 +10428,12 @@ const TIERDEF=[
  {at:41, nm:'Oscillating',
   state:'Searching',
   soma:'Taking it all in and understanding it, and still stuck in your head.',
-  def:'Fifty is the median, the middle of the line. The field crosses it both ways, '
-     +'above it some days and below it on others.',
+  /* ROUND RG. This opened on "Fifty is the median, the middle of the line",
+     and the meaning table keeps a tier's first sentence, so the one place
+     Oscillating was defined said what fifty is and never what Oscillating
+     is. Same two facts, the meaning first. */
+  def:'The field crosses fifty, the median or middle of the line, both ways: above it some days '
+     +'and below it on others.',
   energy:'The day decides. What is running that morning sets the range.',
   toward:'Even. Consistency rather than intensity. The swing narrows before the number rises.'},
  {at:31, nm:'Incoherent',
@@ -11250,7 +11254,10 @@ var PRACTICE=[
    +'You are mapping, not fixing. When the system is clear all nine live around the heart. '
    +'Where you feel them now is where they are displaced to.'},
  {k:'box', nm:'Box Breathing', track:'Body', min:5, tier:1,
-  d:'Four and four, or eight and eight. The entry into a grounded state.',
+  /* ROUND RG. "Four and four, or eight and eight" was two numbers with no
+     unit and no action: four of what, done how. The how below says it, and
+     the short line now carries the same fact. */
+  d:'Breathe in, hold, breathe out, hold, for a count of four each, or eight when it is easy. The entry into a grounded state.',
   how:'Inhale, hold, exhale, hold, each for the same count. Four to start, eight when it is '
    +'easy. This regulates the autonomic nervous system and it is the door into every other '
    +'practice here.'},
@@ -13281,7 +13288,24 @@ var UNPACK_BASE={
  'mask':'A mask is a way of showing up, such as Child or Teen, read from the weight held at a group of seats.',
  'axis':'An axis is a feeling and its opposite, such as fear and trust, and the instrument reads how much of the first is held and how much of the second is in place.',
  'cq':'CQ is your coherence number, built only from your answers on the laws.',
+ /* DQ stood as a bare label on the release clock. Round RG. */
+ 'dq':'DQ is your shadow weight: all the charge you carry, on every address, against the most your body could hold.',
  'coherence':'Coherence is when what you mean, what you do and what your body does point the same way.',
+ /* ROUND RG, the copy sweep. His words: "you read 62 above the oscillating
+    band. Your integrity is 6.2. Integrity is the hull. It's got to be human."
+    Integrity was printed as a figure on the Compass with no meaning anywhere
+    on that screen, and the rail's own tooltip defined it by two more terms.
+    The sentence is the law family's own phrasing, so the two cannot drift. */
+ 'integrity':'Integrity is how well you keep the laws: how often you do what each one asks, when it costs you, when nobody would know and on an ordinary day.',
+ /* Shadow weight was printed as a bare figure in the Summary reading and in
+    Analytics. It is DQ: every address summed against the most they could
+    hold (compute.js), so the sentence says that and nothing more. */
+ 'shadow weight':'Shadow weight is all the charge you carry, on every address, against the most your body could hold.',
+ /* Expression the reading, as against expression the numerology number,
+    which keeps the bare key above. Two meanings sat on one Summary page. */
+ 'field:expression':'Expression is the part of your coherence that gets past the charge you carry.',
+ /* the line every surface counts held from, BELOW THE LINE in compute.js */
+ 'the line':'The line is the point where the charge at one address reaches 4 and starts to cost your body.',
  /* YOUR PATTERNS, the trace graph's screen (ui/loopread.js, engine/loop.js).
     Each word below is a label that block prints, and its meaning is the
     graph's own: confirmed is a user_confirmed edge, unanswered is everything
@@ -22074,7 +22098,9 @@ function iqScore(p){
      instrument cannot actually see. */
   out[l.nm]={score:Math.round(mean*10)/10, spread:Math.round(spread*10)/10,
    reliable: spread>=3,
-   lean: spread<3 ? 'even, within measurement noise'
+   /* "within measurement noise" was a lab word on a line a person reads.
+      The fact is the same and the words are his reader's. Round RG. */
+   lean: spread<3 ? 'too close together to show a lean'
        : v[0]>v[1] ? 'holds when it costs, slips when unseen'
        : 'holds when unseen, slips when it costs'};});
  return out;}
@@ -34880,7 +34906,7 @@ function renderMap(r){
    +(held?'':'<circle cx="50" cy="'+b.yp+'" r="'+(0.42*ZS).toFixed(3)+'" fill="'+PC[b.b]+'" opacity=".92"/>');
   seatHit+='<circle class="pm-seat" data-seat="'+b.k+'" cx="50" cy="'+b.yp+'" r="'
    +(SR+0.5*ZS).toFixed(2)+'" fill="transparent"><title>'+b.nm+', '
-   +(st.hot?st.hot+' carrying, '+Math.round(st.pass*100)+' percent through':'nothing carrying')+'</title></circle>';});
+   +(st.hot?bmSeatSay(st):'nothing carrying')+'</title></circle>';});
  /* the domains you run, ringing the seats they own. The ring used to grow by
     half a unit per address the domain held there, which on Gordon made one
     dashed circle thirteen units across that ran through Sacral and Root at
@@ -36456,6 +36482,12 @@ function bmDrawHubs(g,vs){
    figures, its step in words, where there is a lane; on a phone the step is
    in the seat's own name and in its answer when it is pressed. */
 var BMFLOW=[[.8,'open'],[.6,'mildly impaired'],[.4,'moderately impaired'],[.2,'heavily impaired'],[0,'blocked']];
+/* ROUND RG. "17 carrying, 53 percent through" counted nothing it named and
+   gave a share of nothing it named. The count is addresses and the share is
+   how much of the flow up the spine this seat lets past, which is pass. */
+function bmSeatSay(st){
+ return st.hot+(st.hot===1?' address':' addresses')+' carrying, '
+  +Math.round(st.pass*100)+' percent of the flow getting through';}
 function bmFlowStep(pass){for(var i=0;i<BMFLOW.length;i++)if(pass>=BMFLOW[i][0])return BMFLOW[i][1];return 'blocked';}
 function bmDrawFlow(g,vs){
  if(!BM.ov.on.flow)return;
@@ -36898,7 +36930,7 @@ function bmSeats(seats){
  var g=BM.sv&&BM.sv.querySelector('[data-bmseats]'); if(!g)return;
  g.innerHTML=PMBANDS.map(function(b){var st=seats.filter(function(s){return s.p.k===b.k;})[0];
   return '<circle class="pm-seat" data-seat="'+b.k+'" cx="50" cy="'+b.yp+'" r="2.4" fill="transparent"><title>'
-   +b.nm+', '+bmFlowStep(st.pass)+'. '+(st.hot?st.hot+' carrying, '+Math.round(st.pass*100)+' percent through':'Nothing carrying')+'</title></circle>';}).join('');}
+   +b.nm+', '+bmFlowStep(st.pass)+'. '+(st.hot?bmSeatSay(st):'Nothing carrying')+'</title></circle>';}).join('');}
 
 /* ---------- what is under a point ---------- */
 /* THE PICK IS A REGION'S KEY, OR A PAIR'S. A name in the panel below stands
@@ -39412,8 +39444,12 @@ function chRailHtml(r){
   +'</div><p class="chr-note">The bar is how closed the seat is, from the charge on its own addresses. Past about a third the field pinches there, runs slow and breaks up. An open seat swells.</p>';
  /* what the points are, which is the question the owner asked of the mockup */
  h+='<div class="pm-eye chr-sp">What the points are</div>'
-  +'<p class="ad-p">Each point round the body is one address. '+chPl(AF.filter(function(x){return !x.field;}).length,'address sits','addresses sit')
-  +' round the body at the height of its seat, going slowly round the spine. Four are field anchors, two above the head and two below the feet, drawn as rings. Size and brightness are the address’s charge, and a ring round a point is a charge above seven tenths.</p>'
+  /* NEVER THE LOWER COUNT. This printed the body's own share of the
+     addresses, which is the figure the house rule says is never put in front
+     of a person: the count stated is the whole set. Round RG. */
+  +'<p class="ad-p">Each point is one address, and there are '+AF.length
+  +'. Most sit round the body at the height of their seat, going slowly round the spine. '
+  +'Four are field anchors, two above the head and two below the feet, drawn as rings. Size and brightness are the address’s charge, and a ring round a point is a charge above seven tenths.</p>'
   +'<div class="chr-counts">'+SF.map(function(s){return '<span style="--sc:'+PAL[s.seat]+'"><i></i>'+esc(chSeatName(s.seat))+' <b>'+s.n+'</b></span>';}).join('')+'<span class="chr-anc"><i></i>Anchors <b>4</b></span></div>';
  h+='</div>';
  return h;}
@@ -42465,12 +42501,18 @@ function sumStory(r){
    +(stop?' Flow stops at the '+seatB(String(stop.p.n).toLowerCase(),stop.p.b,String(stop.p.n).toLowerCase(),'seat')
      +', which is where the charge is dense enough to close the seat.'
     :' No seat is closed, so what is held is not yet stopping flow.')
-   +' Shadow weight is '+Math.round(r.DQ)+'. The law furthest shut is '
+   /* ROUND RG. "Shadow weight is 54" was a bare figure under a term nobody
+      on this page had been told. The term carries its sentence now. */
+   +' '+unp('shadow weight','Shadow weight')+' is '+Math.round(r.DQ)+'. The law furthest shut is '
    +seatB(r.weakL.nm,r.weakL.b,r.weakL.nm.toLowerCase(),'law')+', at the '
    +seatB(String(r.weakL.b).toLowerCase(),r.weakL.b,String(r.weakL.b).toLowerCase(),'seat')+'.');
  }else{
-  p.push('Nothing is held above the line, so nothing is reaching the body as load. '
-   +(r.under?'There are '+r.under+' addresses carrying under it, which is signal and not yet cost.':''));}
+  /* ROUND RG. "The line" was never said, and "signal and not yet cost" was
+     shorthand that had also stopped being true: DQ counts the charge under
+     the line since it was rebuilt, and vitality and drag feel it. The line
+     carries its sentence and the clause that overstated is gone. */
+  p.push('Nothing is held above '+unp('the line')+', so nothing is reaching the body as load. '
+   +(r.under?'There are '+r.under+' addresses carrying charge under it.':''));}
 
  /* THREE. momentum, and what stands between here and the avatar.
     A PAIR IS {be,notbe}, NOT {seat,becoming}. This read pair.seat and
@@ -42523,7 +42565,9 @@ function sumStory(r){
   /* .length, because r.excess is a list and an empty list is truthy: this
      told every one of the fourteen reference cases the pole was past paying,
      including the ones with nothing past it. ui.js reads it the same way. */
-  +(r.excess.length?' Installed pole is past the point where it pays, so some of the work is now costing.':'')
+  /* "Installed pole" was two terms of art and no picture. Round RG. */
+  +(r.excess.length?' At '+r.excess.length+(r.excess.length===1?' address':' addresses')
+    +' the opposite quality has been pushed past the point where it helps, so some of the work is now costing.':'')
   +gapLine).trim());
 
  return '<div class="s-story"><div class="pm-eye">Reading</div>'
@@ -43161,7 +43205,12 @@ function sumOutput(r){
     var THIN=1.5;
     if(hot)return card('Release this first',hot.k,
      hot.b+' seat, holding '+hot.sq.toFixed(1)
-      +(r.unread||!r.complete?'':'. Release has about '+rhead.toFixed(1)+' points of expression in it'),
+      /* ROUND RG. "Points of expression" was a term of art on the same page
+         where Expression is a numerology number, so one word meant two
+         things a scroll apart. The headroom is coherence held back by the
+         charge, which is what exHeadroom measures, and it is said that way. */
+      +(r.unread||!r.complete?'':'. What you carry holds back about '+rhead.toFixed(1)
+        +' points of your coherence, and release can give them back'),
      '<button class="btn s-oact" data-sout="rel" data-n="'+hot.i+'">Run a release</button>');
     if(r.heaviest&&(r.unread||rhead>=THIN))return card('Release this first',r.heaviest.k,
      r.heaviest.b+' seat, below the line at '+r.heaviest.sq.toFixed(1)
@@ -43172,12 +43221,12 @@ function sumOutput(r){
     /* while CQ is still filling, expression cannot rise above it, so the
        headroom is near 0 whatever is held and the figure says nothing */
     if(!r.complete)return card('What moves the reading','The twenty one laws',
-     'Coherence fills as you answer them, and expression cannot rise above it',
+     'Coherence fills as you answer them. Until it is full, release has little to give back',
      '<button class="btn s-oact" data-sout="iq">Answer the laws</button>');
     if(r.heaviest)return card('What moves the reading','The twenty one laws',
-     (rhead>=0.05?'Release has about '+rhead.toFixed(1)+' points of expression left in it for you. The rest '
-      +'is the laws, and they move when you answer them or when what you do changes'
-      :'Release has no expression left in it for you. What is left is the laws, and they move '
+     (rhead>=0.05?'What you carry holds back about '+rhead.toFixed(1)+' points of your coherence, and release '
+      +'can give them back. Past that only the laws move it, and they move when you answer them or when what you do changes'
+      :'Release has nothing left to give back to your coherence. What is left is the laws, and they move '
       +'when you answer them or when what you do changes'),
      '<button class="btn s-oact" data-sout="iq">Answer the laws</button>');
     return card('Release this first','Nothing is carrying',
@@ -43838,7 +43887,10 @@ function anaRender(){
       a measurement in a sentence about their field. */
    /* and while CQ is still filling there is no word yet, so the sentence says
       what is left rather than naming a band off laws nobody answered */
-   :(r.tier?'The field reads <b>'+esc(r.tier.toLowerCase())+'</b>. '
+   /* ROUND RG. The band word stood alone, bold, with nothing on it, which
+      is V9's judgement and not a reading. The tier's own first sentence
+      rides after it, the same one Clients carries on its tooltip. */
+   :(r.tier?'The field reads <b>'+esc(r.tier.toLowerCase())+'</b>. '+unpSay(r.tier,'tier')+' '
      :'Coherence is still filling, with <b>'+esc(tierSay(r))+'</b>. ')
    +(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. '
      /* "Nothing is compounding" is a claim about somebody's chain, and a plan
@@ -43847,12 +43899,12 @@ function anaRender(){
    /* a count against a total is a score, and this is not a score */
    +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every seat is passing. ')
    +(held.length?'<b>'+held.length+'</b> address'+(held.length===1?' is':'es are')
-     +' carrying, at a shadow weight of <b>'+Math.round(r.DQ)+' per cent</b>.'
+     +' carrying, at a '+unp('shadow weight')+' of <b>'+Math.round(r.DQ)+' per cent</b>.'
    /* Held above the line and carrying anything at all are two different facts
       and this said the second when it only knew the first. A field with load
       spread under the line reported "Nothing is carrying" beside a tier word
       earned by that same load. It now says which of the two is true. */
-    :(r.heaviest?'Nothing is above the line. The heaviest is <b>'+esc(r.heaviest.k)
+    :(r.heaviest?'Nothing is above '+unp('the line')+'. The heaviest is <b>'+esc(r.heaviest.k)
       +'</b> at <b>'+r.heaviest.sq.toFixed(1)+'</b>, at the '
       +String(r.heaviest.b).toLowerCase()+'.':'Nothing is carrying.'))
    /* only against a row the same arithmetic wrote. A row from before 25
@@ -46818,7 +46870,11 @@ function iqInHand(p){
  for(var i=0;i<o.length;i++)if(iqGot(p,o[i])<3)return o[i];
  return o[0];}
 /* the accordion's own words for a law, kept word for word */
-function iqLine(s,g){return s?'spread '+s.spread+', '+s.lean:g?(3-g)+' left':'unanswered';}
+/* ROUND RG. "spread 2.2" named a statistic and "2 left" counted nothing a
+   person could name. The spread is how far apart the three answers sit, and
+   what is left is questions, so each says so. */
+function iqLine(s,g){return s?'answers '+s.spread+' apart, '+s.lean
+ :g?(3-g)+((3-g)===1?' question left':' questions left'):'unanswered';}
 /* a law as Summary draws a thing: its own glyph in a ring. The ring is the
    page's grammar, written above at iqSegs: segments while it is being
    answered, one arc once it reads. Untouched is the track and a dim glyph,
@@ -46918,7 +46974,7 @@ function iqHeroRing(p,sc,cq){
  var o=iqBodyOrder(), vals=o.map(function(li){var g=iqGot(p,li); return sc[SI[li].nm]?1:g?.5:0;});
  var seg=iqSegs(vals,function(i){return seatCol(SI[o[i]].b);},48,48,40,6.5,5);
  return '<span class="iqa-hr"><svg viewBox="0 0 96 96" aria-hidden="true">'+seg+'</svg>'
-  +'<span class="iqa-hn"><b>'+(cq==null?'–':Math.round(cq))+'</b><i>CQ</i></span></span>';}
+  +'<span class="iqa-hn"><b>'+(cq==null?'–':Math.round(cq))+'</b><i class="tipu"'+unpAttr('cq',null,'CQ')+'>CQ</i></span></span>';}
 /* A SIMULATION, NOT A BEHAVIOUR, round OK. His words: "What if we do show CQ
    at 100 on starting? It shows the soul raw expression. And then as the input
    stuff, it comes down. I don't want that to actually happen. But I'm curious
@@ -48325,7 +48381,7 @@ function relLive(){
 function relShade(dq,dq0){
  if(dq==null||dq0==null)return '';
  return '<div class="rel-clock">'
-  +'<div class="rel-fig"><span>DQ</span><b>'+dq.toFixed(2)+'</b></div>'
+  +'<div class="rel-fig"><span class="tipu"'+unpAttr('dq',null,'DQ')+'>DQ</span><b>'+dq.toFixed(2)+'</b></div>'
   +'<div class="rel-fig"><span>Down</span><b>'+Math.max(0,dq0-dq).toFixed(2)+'</b></div></div>';}
 /* ============================================================
    THE TWO COUNTS. His words, 27 September: "You should have a
@@ -48414,12 +48470,12 @@ function relTally(c,live){
     own at 390; five fit. */
  return '<div class="rel-clock rel-figs">'
   +fig('Remaining',c.left,c.left===1?'pattern':'patterns')
-  +(live&&live.dq!=null?'<div class="rel-fig"><span>DQ</span><b>'+live.dq.toFixed(2)+'</b></div>'
+  +(live&&live.dq!=null?'<div class="rel-fig"><span class="tipu"'+unpAttr('dq',null,'DQ')+'>DQ</span><b>'+live.dq.toFixed(2)+'</b></div>'
     +'<div class="rel-fig"><span>Down</span><b>'+Math.max(0,live.dq0-live.dq).toFixed(2)+'</b></div>':'')
   /* CQ and how far it has come up, round QQ, see CQ, COUNTED UP above */
-  +(live&&live.cq!=null?'<div class="rel-fig" id="relcq"><span>CQ</span><b>'+live.cq.toFixed(2)+'</b></div>'
+  +(live&&live.cq!=null?'<div class="rel-fig" id="relcq"><span class="tipu"'+unpAttr('cq',null,'CQ')+'>CQ</span><b>'+live.cq.toFixed(2)+'</b></div>'
     +'<div class="rel-fig" id="relcqup"><span>Up</span><b>'+Math.max(0,live.cq-live.cq0).toFixed(2)+'</b></div>'
-    :live&&live.cqUnread?'<div class="rel-fig" id="relcq"><span>CQ</span><b>\u2013</b></div>':'')
+    :live&&live.cqUnread?'<div class="rel-fig" id="relcq"><span class="tipu"'+unpAttr('cq',null,'CQ')+'>CQ</span><b>\u2013</b></div>':'')
   +'</div>'
   /* every figure on the row says what it is in the same place, round PO */
   +(live&&(live.dq!=null||live.cq!=null||live.cqUnread)?'<div class="rel-ct rel-figs-s" id="relfigmean">'
@@ -50433,6 +50489,10 @@ function relResults(){
  var _now=compute(), _mv=_now.EX-(RUN.ex0||0), _left=exHeadroom(_now.EX);
  out+='</div><div class="rel-note">Expression '
   +(Math.abs(_mv)<0.05?'did not move.':(_mv>0?'up ':'down ')+Math.abs(_mv).toFixed(1)+', now '+_now.EX.toFixed(1)+'.')
+  /* ROUND RG. Expression was printed here with a figure and no meaning, and
+     on Summary the same word is a numerology number. The table's sentence
+     for this one rides beside it. */
+  +' '+unpSay('expression','field')
   +' '+(_left<1.5
    ?'Release has about '+_left.toFixed(1)+' points left to give you. The laws '
     +'hold expression down from here, and there are twenty one of them. '
@@ -56923,9 +56983,32 @@ function coneRead(){
   +esc(tierSay(r))+'</b>. Your position on this figure settles once all '
   +SI.length+' are in.</p>';
  var cq=Math.round(r.CQ);
- var band=cq>=60?'above the oscillating band':cq<=40?'below the oscillating band'
-  :'inside the oscillating band, where most people stand';
+ /* ROUND RG, THE COPY SWEEP. His words, about this paragraph: "you read 62
+    above the oscillating band. Your integrity is 6.2. Integrity is the hull.
+    It's got to be human... it has to be unpacked into what actually needs to
+    be changed."
+
+    Four misses, and each was a real one. "You read 62" never said what read
+    62. "The oscillating band" is forty to sixty on this figure and forty one
+    to fifty as a tier, so Diane at 59 read "inside the oscillating band" here
+    and Even on every other surface: one word, two meanings. "Your integrity
+    is 6.2" was a figure with no meaning on the screen. And nothing said what
+    to do. So: what the number is, where it sits in plain words, what
+    integrity is, and the one law with the most room, with what it asks. */
+ var band=cq>=60?'You sit above the middle band of the figure'
+  :cq<=40?'You sit below the middle band of the figure'
+  :'You sit in the middle band of the figure';
  var rising=r.Ig>=5;
+ /* THE LAW WITH THE MOST ROOM. CQ is the laws summed (cqSum), so the lowest
+    one has the most room to rise. weakL is the first of the lowest, so a tie
+    is said as a tie, and a field with every law level names none. */
+ var lo=S.law[r.weakL.nm], hi=Math.max.apply(null,SI.map(function(l){return S.law[l.nm];}));
+ var tied=SI.filter(function(l){return Math.abs(S.law[l.nm]-lo)<0.05;}).length;
+ var weak=(hi-lo<0.05)?''
+  :'<p class="cone-p">'+(tied>1?'<b>'+esc(r.weakL.nm)+'</b> is one of the '+tied+' laws you keep least. '
+    :'The law you keep least is <b>'+esc(r.weakL.nm)+'</b>. ')
+   +unpSay(r.weakL.nm,'law')+' Your coherence is built from your answers on the laws, '
+   +'so this one has the most room to rise.</p>';
  /* EVERY NUMBER SAYS WHAT IT IS OUT OF. His instruction, and this line broke
     it twice: "you read 88" and "integrity 9.3" with nothing to measure either
     against. Coherence runs nought to a hundred and integrity runs nought to
@@ -56936,13 +57019,19 @@ function coneRead(){
     is the shape he objected to and a repetition on top of it. The band already
     says where the number sits, so the number is said once and the sentence
     carries the meaning rather than the arithmetic. */
- return '<p class="cone-p">You read <b>'+cq+'</b>, '+band+'.</p>'
-  +'<p class="cone-p">Your integrity is <b>'+r.Ig.toFixed(1)+'</b>.</p>'
+ /* "CURRENTLY TURNING" CAME OFF. The direction is read from where integrity
+    sits, the top or the bottom half of its range, and not from a change over
+    time, so the sentence says what it is read from and claims no movement. */
+ return '<p class="cone-p">Your coherence is <b>'+cq+'</b>. '+unpSay('coherence')+' '
+  +band+', where most people swing between better days and worse ones.</p>'
+  +'<p class="cone-p">Your integrity is <b>'+r.Ig.toFixed(1)+'</b>. '+unpSay('integrity')+'</p>'
   +'<p class="cone-p">Integrity is the hull. A hole in it means the ship takes '
   +'on water, and everything above the waterline stops mattering. Integrity '
   +'raises coherence, coherence raises what you can hold to, and that raises '
-  +'integrity again. The loop turns both ways. Yours is currently turning '
-  +'<b>'+(rising?'up':'down')+'</b>.</p>'
+  +'integrity again. The loop turns both ways. Yours is turning '
+  +'<b>'+(rising?'up':'down')+'</b>, because your integrity is in the '
+  +(rising?'top':'bottom')+' half of its range.</p>'
+  +weak
   /* "You are floating the ship out of the water so that it can float" came
      off the end: a ship floats in water, so the sentence cannot be pictured,
      and the hull line above already carries the metaphor whole. */
@@ -57938,8 +58027,9 @@ function runLawDrill(l){
      with a sentence after it starting in lower case. The intake prints the
      same two facts joined by a comma and reads correctly, so this joins them
      the same way. */
-  ? '<div class="pm-eye">From your diagnostic</div><p class="ad-p">Spread <b>'+sc.spread
-    +'</b>, '+sc.lean+'.</p>'
+  /* ROUND RG: "Spread" said what kind of number it was and not what it was. */
+  ? '<div class="pm-eye">From your diagnostic</div><p class="ad-p">Your three answers sit <b>'+sc.spread
+    +'</b> apart, '+sc.lean+'.</p>'
   : '<div class="pm-eye">Not measured</div><p class="ad-p">Not answered in the diagnostic, so '
     +'it defaults to '+v.toFixed(1)+'. Three questions would replace the guess.</p>';
  if(hot.length)h+='<div class="pm-eye">Held here</div><div class="ad-rows">'
@@ -69960,5 +70050,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004591275"></div>
+<div id="eof" hidden data-len="004597963"></div>
 </body></html>
