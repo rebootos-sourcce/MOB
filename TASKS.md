@@ -32779,3 +32779,15 @@ Independently re-verified on a fresh worktree off the pushed commit: `BUILD.sh` 
 Not yet done, named by the merging agent rather than hidden: real screenshots at both widths (the house rule for anything a person can see), and a repack of `atuned-packed.html` (still holds the older build) before it's offered again. Both queued next.
 
 **Screenshots taken and looked at, round QZ.** The merged tutorial renders cleanly on the full-screen stage at both 1600 and 390, the Journal step's wheel, body figure and "Day One, Let's look at something from your journal" card all present and legible, Continue/Skip the tutorial both reachable. No visual regression from the merge.
+
+## The secondary queue continues: ritual-calendar merged
+
+Second item in the now-open queue. Dispatched to a `fullstack-td` agent in its own worktree to merge `ritual-calendar` (`fc33b5b`, the calendar Thirty day loop, three real Suggested-card actions, affirmations and challenges, the Goals/Success-over-time centre column) onto dev.
+
+Merge commit `3f48da8`, pushed. Only one real conflict, `source.html`, a build product resolved by rebuilding rather than hand-merging. Everything else merged cleanly: `MANIFEST` took both sides' new files with no overlap, `engine/schema.js`'s own-dev changes (the profile-open pointer, the record link) don't interact with the new ritual code since it only reads existing profile fields, and `TASKS.md`/`PLAN.md` never conflicted since this branch hadn't touched them.
+
+**A real push race, handled correctly.** The agent's first merge attempt was rejected on push because another round had landed `00e5467` in between; rather than force-pushing or stacking a second merge commit, it discarded the rejected local commit (which had never left its own worktree) and redid the merge on the new tip, re-running both gates on the corrected tree before pushing. Exactly the right call.
+
+Independently re-verified on a fresh worktree off the pushed commit: `BUILD.sh` claims gate 107/0 and `BUILD-engine.sh` host-free/729-exports both matched exactly; `tests/engine.js` 4483/0 unchanged; `tests/flowtools.js` 135/0, matching both the agent's own number and the branch's original pre-merge number exactly.
+
+Not yet done: screenshots and a repack, same as the tutorial merge, queued together now that both merges are in.
