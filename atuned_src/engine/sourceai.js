@@ -233,12 +233,17 @@ var SRC_DIM_CUE={
   'husband','wife','boyfriend','girlfriend','mother','father','mum','mom','dad',
   'parents','son','daughter','brother','sister','friend','friends','family','kids',
   'child','children','teacher','client'],
- prediction:['will','wont',"won't","i'll","they'll","it'll",'going to','gonna',
+ /* WRITTEN WITHOUT APOSTROPHES since round QZ, because normMap drops them
+    and a cue with one could never be found. won't was already here as wont.
+    i'll comes back as ill, which is also the word for sick, so it is read
+    only before the verbs a prediction takes. */
+ prediction:['will','wont','theyll','itll','ill be','ill never','ill end up','ill lose',
+  'ill have to','ill always','going to','gonna',
   'expect','expected','expecting','what if','would happen','bound to'],
  belief:['i believe','i must','i have to','i should','if i','i always','i never',
   'people always','nobody ever'],
  meaning:['means','meant','mean that','says about me','proves','which means','what it means'],
- goal:['i want','i wanted','i wish','i need','i needed','i hope','i would like',"i'd like",
+ goal:['i want','i wanted','i wish','i need','i needed','i hope','i would like','id like',
   'trying to']};
 /* WHAT A PERSON DID, ported rather than written. VERPCUE already carries the
    engine's approach, avoidance and attachment cues (engine/verp.js), and the

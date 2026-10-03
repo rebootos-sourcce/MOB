@@ -7143,5 +7143,143 @@ g('QR · words dictation hid behind stars are found, said, and never changed');
  ok(E.maskedRuns('I was really pissed off').length===0,'an uncensored word is not a hidden one, and nothing here hides it');
 }
 
+g('QZ · the sniffer reads other words for the same reading, and still reads nothing into quiet text');
+/* His bug report, verbatim: "I'm able to talk about painful situations and the
+   sniffer's not picking up because the sniffer is too specific... it needs to
+   be fuzzier. The rules need to be looser." Measured before anything moved, on
+   proto/sniffer/fuzzy-corpus.js: 42 of 119 painful lines lit. The recall
+   numbers live in that probe and not here, because a count typed into a gate
+   is the defect CLAUDE.md records a dozen times. What is asserted here is the
+   mechanism: the three things that were wrong, read right, and the quiet lines
+   the looser rules must not light, each by name. */
+{
+ const {LEX,ADJ2CHG,LEXMETA,PHRASES,LEXSYN,LEXANT,LEXANT_FRAMES,LEXKIN,LEXSYN_NO,
+        LEXSYNRUN,LEXSYNPLACES,SOMA_PLACE,LEX_SEAT,LEX_AMT,LEX_FET,lexSyn,lexKeyOk,
+        normMap,scanStory,parseStory,marksOf,srcNegated,SOMA_PLACE_WORDS}=E;
+ const lit=t=>parseStory(t).imprints.length>0;
+ const seats=t=>{const b=parseStory(t).bands;return Object.keys(b).filter(k=>b[k]>0);};
+
+ /* ---- 1. the apostrophe. every dont and cant key was unreachable as typed ---- */
+ const plain=JSON.stringify(parseStory('I cant cope').bands);
+ ok(plain!=='{}','the key itself reads, '+plain);
+ ok(JSON.stringify(parseStory("I can't cope").bands)===plain,'and so does the straight apostrophe a keyboard types');
+ ok(JSON.stringify(parseStory('I can’t cope').bands)===plain,'and the curly one a phone types, which used to become a space');
+ ok(!/['‘’]/.test(normMap("don't, can’t ‘quoted’").s),'normMap keeps no apostrophe of any kind');
+ const raw="I can't cope.", m=marksOf(raw,parseStory(raw));
+ ok(m.length===1&&raw.slice(m[0].s,m[0].e)==="can't cope",'and the mark still lands on the letters typed, apostrophe and all: '+(m[0]?JSON.stringify(raw.slice(m[0].s,m[0].e)):'none'));
+ const nm=normMap("i don't panic");
+ ok(srcNegated(nm.s,nm.s.indexOf(' panic')),'srcNegated, whose list was always written dont, now hears "don\'t"');
+ ok(!lexKeyOk("can't cope")&&lexKeyOk('cant cope'),'and a key with an apostrophe is refused, because it could never be reached');
+ /* AND THE ONE OTHER READER OF normMap's COPY THAT HELD APOSTROPHES. Source
+    AI's dimension cues carried i'll, they'll, it'll and i'd like, which this
+    change would have made unreachable without a word. */
+ const cueApos=[];Object.keys(E.SRC_DIM_CUE).forEach(k=>E.SRC_DIM_CUE[k].forEach(c=>{if(/'/.test(c))cueApos.push(c);}));
+ ok(cueApos.length===0,'no Source AI cue carries an apostrophe it could never be found by, '+cueApos.join(', '));
+ ok((E.srcDims("I'll lose everything, I know it").answered.prediction||[]).length>0,'"I\'ll lose everything" still answers the prediction');
+ ok(!E.srcDims('I have been ill all week').answered.prediction,'and "I have been ill" does not, although i\'ll now reads as ill');
+ ok((E.srcDims("They'll leave me").answered.prediction||[]).length>0&&(E.srcDims("I'd like to sleep").answered.goal||[]).length>0,
+  'and they\'ll and i\'d like are read without their apostrophes');
+
+ /* ---- 2. a different word for the same reading ---- */
+ const same=[['I am so worried about money','anxious'],['I have been crying all week','sad'],
+  ['I am completely worn out','exhausted'],['I was bullied at school','laughed'],
+  ['he talks over me in every meeting','interrupted'],['I feel like such a failure','worthless']];
+ same.forEach(([t,head])=>{const h=scanStory(t).find(x=>x.kind==='word'&&LEXMETA[x.t]&&LEXMETA[x.t].from===head);
+  ok(h&&h.band===LEX[head][LEX_SEAT],JSON.stringify(t)+' reads through '+head+' at '+LEX[head][LEX_SEAT]+(h?', on "'+h.t+'"':', and did not'));});
+
+ /* A SYNONYM CHANGES THE WORD AND NOTHING ELSE, the fold's contract, checked
+    on every row this pass wrote rather than on the six above. */
+ const mine=Object.keys(LEXMETA).filter(k=>LEXMETA[k].src==='synonym'||LEXMETA[k].src==='antonym');
+ ok(mine.length===LEXSYNRUN.added,'every entry the pass reports adding is marked synonym or antonym, '+mine.length+' of '+LEXSYNRUN.added);
+ const drift=mine.filter(k=>{const h=LEXMETA[k].from, e=LEX[k], b=LEX[h];
+  return !b||e[LEX_SEAT]!==b[LEX_SEAT]||e[LEX_AMT]!==b[LEX_AMT]||String(e[LEX_FET])!==String(b[LEX_FET])
+   ||(ADJ2CHG[h]||null)!==(ADJ2CHG[k]||null);});
+ ok(drift.length===0,'each carries its headword\'s seat, amount, stated fetter and charge name exactly, '+drift.length+' do not: '+JSON.stringify(drift.slice(0,5)));
+ const chain=mine.filter(k=>{const s=LEXMETA[LEXMETA[k].from].src;return s==='synonym'||s==='antonym';});
+ ok(chain.length===0,'and no headword is itself a synonym, so nothing drifts by chaining, '+chain.length+' do');
+ const amts=new Set(Object.keys(LEX).filter(k=>mine.indexOf(k)<0).map(k=>LEX[k][LEX_AMT]));
+ ok(mine.every(k=>amts.has(LEX[k][LEX_AMT])),'so no amount exists that the table did not already hold');
+ const inRows=[];PHRASES.forEach(r=>r[0].forEach(w=>{if(LEXSYNRUN.from[w])inRows.push(w);}));
+ ok(inRows.length===LEXSYNRUN.phrase,'an idiom\'s synonym joins that idiom\'s own row and keeps its label, '+inRows.length+' of '+LEXSYNRUN.phrase);
+ ok(scanStory("I couldn't sleep again").some(h=>h.kind==='phrase'&&h.label==='hypervigilance'),'"I couldn\'t sleep" reads as the row "cannot sleep" already named');
+
+ /* ---- 3. the opposite, said not ---- */
+ ok(seats("I don't feel safe in my own home").indexOf('root')>=0,'"I don\'t feel safe" reads at the root, where unsafe is');
+ const calm=scanStory('I was not calm at all');
+ ok(!calm.some(h=>h.band==='coherent')&&calm.some(h=>h.band==='root'),
+  '"I was not calm" no longer SUBTRACTS charge, which it did, and reads as the anxiety it reports');
+ ok(scanStory('I felt calm').some(h=>h.band==='coherent'),'and "I felt calm" still subtracts, untouched');
+ ok(seats('I never felt loved by my father').indexOf('heart')>=0,'"never felt loved" reads at the heart, where unloved is');
+ ok(seats("Honestly I'm not okay").indexOf('heart')>=0,'"I\'m not okay" reads');
+ ok(Object.keys(LEXANT).every(h=>Object.keys(LEXANT[h]).every(s=>LEXANT_FRAMES[s])),'every opposite names a frame set that exists');
+ const bare=[];Object.keys(LEXANT).forEach(h=>Object.keys(LEXANT[h]).forEach(s=>LEXANT[h][s].forEach(w=>{if(LEX[w]&&LEX[w][LEX_SEAT]!=='coherent')bare.push(w);})));
+ ok(bare.length===0,'and the plain opposite word is never a charged key itself: safe is not charge, '+bare.length+' are: '+bare.join(', '));
+
+ /* ---- 4. the family ---- */
+ ok(seats('My dad passed when I was twelve').indexOf('heart')>=0,'"my dad passed" reads at the heart');
+ ok(seats('We lost the baby at twenty weeks').indexOf('heart')>=0,'and "lost the baby"');
+ ok(!lit('I lost my keys again this morning'),'and "lost my keys" does not, because keys is not kin');
+ ok(LEXKIN.every(w=>lexKeyOk(w)),'every kin word is a form the scanner can produce');
+
+ /* ---- 5. the quiet lines each looser rule was drawn to miss, by name ---- */
+ const quiet=['I have not heard back from the plumber yet.','I haven’t seen that film yet.',
+  'I was tired after the long hike, in a good way.','She was mad about the new puppy.',
+  'He is down at the shops getting milk.','We were stuck in traffic for twenty minutes.',
+  'No worries, see you Tuesday.','I want to stress that the deadline moved.',
+  'We binge watched the whole series.','I put down the phone and made tea.',
+  'The invisible hand of the market.','The room overlooked the bay.',
+  'I passed the exam.','The printer is broken.','I am not sure what time the shop closes.',
+  'I made a cup of tea and read the paper.','I felt safe and calm sitting by the sea.',
+  'I feel confident about the interview tomorrow.','My friend really listened to me today.',
+  'I slept well and woke up rested.','Break up the ice before you pour.',
+  'I replayed the video for my son.','Supple tissue is replaced with stiff scar.'];
+ quiet.forEach(t=>{const s=seats(t);ok(!s.length,'quiet: '+JSON.stringify(t)+' reads nothing'+(s.length?', but lit '+s.join(' and ')+' on '+scanStory(t).map(h=>h.t).join(', '):''));});
+ /* AND A THOUGHT ABOUT ONE'S OWN DEATH IS NOT A BEREAVEMENT. suicide is
+    refused by name for exactly this. */
+ ok(!scanStory('I have thought about suicide').some(h=>LEX[h.t]&&LEX[h.t][LEX_SEAT]==='heart'),
+  'a person writing about suicide is not read as grief at the heart');
+
+ /* ---- 6. the refusals are refusals, and the pass is honest about itself ---- */
+ ok(Object.keys(LEXSYNRUN.refused).length===0,'every authored row landed, so nothing in the tables is a dead letter: '+JSON.stringify(LEXSYNRUN.refused));
+ const leaked=Object.keys(LEXSYN_NO).filter(k=>LEX[k]||PHRASES.some(r=>r[0].indexOf(k)>=0));
+ ok(leaked.length===0,'a word refused by name never reaches the table, '+leaked.length+' did: '+leaked.join(', '));
+ ok(Object.keys(LEXSYN_NO).every(k=>typeof LEXSYN_NO[k]==='string'&&LEXSYN_NO[k].length>15),'and every refusal says why');
+ ok(JSON.stringify(SOMA_PLACE)===JSON.stringify(LEXSYNPLACES),'the pass moves no place: the place table is identical to the one before it ran');
+ /* the refusal paths, each made to fire once and then put back */
+ const keep=JSON.stringify([LEXSYN,LEXANT]), n0=Object.keys(LEX).length, p0=JSON.stringify(PHRASES);
+ LEXSYN.weary.push('tired'); LEXSYN.sad.push('Sad!'); LEXSYN.sad.push('sad in my back');
+ LEXSYN.scared.push('numb with fear'); LEXSYN.sad.push('cannot stop crying');
+ LEXSYN['cannot sleep'].push('self worth'); LEXSYN.nosuchword=['xyzzy']; LEXANT.sad.nope=['glad'];
+ LEXSYN.sad.push('rests');
+ const r=lexSyn({words:SOMA_PLACE_WORDS,seat:LEXSYNPLACES.seat});
+ LEXSYN.weary.pop(); LEXSYN.sad.splice(LEXSYN.sad.length-4,4); LEXSYN.scared.pop();
+ LEXSYN['cannot sleep'].pop(); delete LEXSYN.nosuchword; delete LEXANT.sad.nope;
+ [['tired','refused by name'],['Sad!','not a form'],['sad in my back','names the place back'],
+  ['numb with fear','carries numb'],['cannot stop crying','overlaps the phrase'],
+  ['self worth','would eat the key'],['xyzzy','neither LEX nor PHRASES'],['sad nope','frame set'],
+  ['rests','refused by the fold']].forEach(([k,why])=>
+  ok(r.refused[k]&&r.refused[k].indexOf(why)>=0,'the pass refuses '+JSON.stringify(k)+' and says why: '+(r.refused[k]||'it did not')));
+ ok(r.added===0&&r.phrase===0,'and a re-run adds nothing, so the pass cannot double the table');
+ ok(JSON.stringify([LEXSYN,LEXANT])===keep&&Object.keys(LEX).length===n0&&JSON.stringify(PHRASES)===p0,
+  'and the tables are exactly as they were, '+Object.keys(LEX).length+' entries');
+ ok(lexSyn().added===0,'and with no place table handed in it still adds nothing');
+ /* THE TWO PATHS A CLEAN RUN NEVER TAKES, each forced once and undone. A row
+    added with no place table handed in still lands, at its headword's seat;
+    and a refusal by lexAdd itself, made to happen by withdrawing the source
+    from LEX_SRC for one call, is reported by name and writes nothing. */
+ LEXSYN.sad.push('qzprobe');
+ const r2=lexSyn();
+ ok(r2.added===1&&LEX.qzprobe&&LEX.qzprobe[LEX_SEAT]===LEX.sad[LEX_SEAT]&&ADJ2CHG.qzprobe===ADJ2CHG.sad,
+  'a new row lands at its headword\'s seat with its charge name, '+JSON.stringify(LEX.qzprobe));
+ delete LEX.qzprobe; delete LEXMETA.qzprobe; delete ADJ2CHG.qzprobe; delete E.CHGMETA.qzprobe;
+ const si=E.LEX_SRC.indexOf('synonym'); E.LEX_SRC.splice(si,1);
+ const r3=lexSyn();
+ E.LEX_SRC.splice(si,0,'synonym'); LEXSYN.sad.pop();
+ ok(r3.added===0&&/source synonym is not one of/.test(r3.refused.qzprobe||'')&&!LEX.qzprobe,
+  'and a refusal by the boundary is reported, not swallowed: '+(r3.refused.qzprobe||'it was not'));
+ ok(JSON.stringify([LEXSYN,LEXANT])===keep&&Object.keys(LEX).length===n0&&E.LEX_SRC.indexOf('synonym')>=0,
+  'and everything is put back, '+Object.keys(LEX).length+' entries');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

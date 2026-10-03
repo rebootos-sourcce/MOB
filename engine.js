@@ -4993,7 +4993,14 @@ var LEX_SEATS=['root','sacral','solar','heart','throat','eye','crown','coherent'
    family of them. The validator refused every composite entry until this line
    existed, which is the validator working: a new provenance is declared here or
    it does not reach the table. */
-var LEX_SRC=['authored','canon','fold','composite'];
+/* TWO MORE, round QZ follow on, for pass three, lexSyn. `synonym` is a
+   different word for a headword's own reading and `antonym` is the negation of
+   a word whose opposite a headword already is. Both copy the headword's seat,
+   amount, fetter and charge name exactly, and both name the headword in
+   `from`. They are two sources rather than one because the second carries a
+   frame and the first does not, and a reviewer asking why "not safe" is in
+   the table must be told it is a negation and not a synonym of safe. */
+var LEX_SRC=['authored','canon','fold','composite','synonym','antonym'];
 var LEX_AMT_MAX=30;
 /* key -> {src, from, rule, cite}. Covers LEX exactly, in both directions, and
    the gate asserts that, because a provenance table with holes in it is worse
@@ -5010,9 +5017,11 @@ Object.keys(ADJ2CHG).forEach(function(k){
    reading the author never wrote. */
 function lexKeyOk(k){
  /* exactly the surface forms scanStory's normalisation can produce: lowercase
-    letters, apostrophes and single interior spaces. A key with a capital or a
-    comma in it can never match anything and is a dead row that looks live. */
- return typeof k==='string' && /^[a-z']+( [a-z']+)*$/.test(k);}
+    letters and single interior spaces. A key with a capital or a comma in it
+    can never match anything and is a dead row that looks live. An apostrophe
+    is refused too, since round QZ: normMap drops every apostrophe, so a key
+    carrying one could never be reached, which is the same dead row. */
+ return typeof k==='string' && /^[a-z]+( [a-z]+)*$/.test(k);}
 
 function lexRefuse(k,seat,amt,fet){
  var errs=[];
@@ -5194,6 +5203,375 @@ function lexFold(){
      flag that decides what the product is allowed to say out loud. */
   if(ADJ2CHG[k])chgAdd(f,ADJ2CHG[k],{src:'fold',from:k,rule:made[f].rule,cite:'corpus'});});
  out.generated=Object.keys(made).length;
+ return out;}
+
+/* ============================================================
+   PASS THREE, THE OTHER WORDS. Round QZ follow on, the owner's own bug
+   report: "I'm able to talk about painful situations and the sniffer's not
+   picking up because the sniffer is too specific... it needs to be fuzzier.
+   The rules need to be looser."
+
+   MEASURED BEFORE ANYTHING MOVED, proto/sniffer/fuzzy-measure.js over
+   proto/sniffer/fuzzy-corpus.js, which was written and frozen first:
+     119 lines of painful writing in ordinary words   42 lit, 35.3 percent
+     80 quiet lines, plain, warm and trap             7 lit, every one of them
+                                                       by a word already here
+     the owner's book, 7881 sentences                 93.1 percent read nothing
+   The misses sort into three kinds, and each is answered by one mechanism
+   below. None of them is a new way of matching: every entry this pass writes
+   is an ordinary key, found by scanStory's own rule, longest first.
+
+   1. A DIFFERENT WORD FOR THE SAME READING. worried where the table holds
+      anxious, crying where it holds sad, worn out where it holds exhausted.
+      LEXSYN, keyed by a word already in the table.
+   2. THE OPPOSITE, SAID NOT. "I don't feel safe" names the reading unsafe
+      already carries, through a word, safe, that the table rightly does not
+      hold, because safe on its own is not charge. LEXANT, keyed the same way,
+      and written out through a small fixed set of negating frames.
+   3. A FAMILY MEMBER, NAMED. "My dad passed" and "we lost the baby". LEXKIN.
+   (And a fourth, which is not here: an apostrophe. Every key in this file
+   that a person writes with one, dont, cant, didnt, was unreachable when
+   they typed it, because normMap kept the apostrophe. That is a rule of the
+   normalisation and it is fixed there, in sniff.js.)
+
+   A SYNONYM CHANGES THE WORD AND NOTHING ELSE, the fold's own contract. It
+   takes its headword's seat, amount, stated fetter and charge name, exactly,
+   so the only judgement in a row is which headword it means, and the
+   headword is chosen for meaning AND for weight: worried takes anxious and
+   not terrified. No amount is typed anywhere in this pass. A headword that
+   is an idiom in PHRASES rather than a key in LEX takes its row instead, and
+   the synonym is added to that row's words, so it keeps the idiom's label.
+
+   WHERE THE LINE IS DRAWN, which is the whole question. Too narrow does not
+   answer him and too wide lights quiet text, and a false positive in a
+   somatic reading costs more than a miss. So:
+     a word goes in bare only when, written by a person about their own day,
+       its ordinary sense IS the feeling. worried, terrified, heartbroken.
+     a word with a common quiet sense goes in only inside a frame that fixes
+       the sense. tired is a hike as often as a life, so it is read as "so
+       tired", "tired of" and "i am tired", never bare. mad is keen in one
+       country and furious in another, so it is read as "mad at" and "so mad".
+     a word that cannot be fixed by a short frame is refused by name in
+       LEXSYN_NO with the reason, the way LEX_FOLD_NO refuses a fold. down,
+       stuck, lost, broken, dead and passed are there. The refusals are data
+       so the next seat can argue with a row instead of rediscovering it.
+   ============================================================ */
+var LEXSYN={
+ /* fear, at the root */
+ scared:['fearful','spooked','frightening','scares me','scared me'],
+ terrified:['scared to death','scared stiff','terrifies me'],
+ panicked:['freaked out','freaking out','freak out','freaks me out'],
+ 'panic attack':['panic attacks','anxiety attack','anxiety attacks'],
+ anxious:['anxiety','worried','worry','worrying','worried sick','stressed',
+  'stressed out','so much stress','under stress','stressful','uneasy','apprehensive'],
+ nervous:['on edge','jittery','jumpy'],
+ dread:['dreaded','filled with dread'],
+ froze:['flinch','flinched','flinching','froze up','freeze up'],
+ shaking:['i shake','i shook','shook me','shaken','shaken up'],
+ trembling:['trembled','trembles'],
+ 'cannot breathe':['short of breath','hyperventilating','hyperventilated','gasping for air',
+  'struggling to breathe'],
+ /* being hurt by someone, at the root, because what it breaks is safety. The
+    headword is unsafe, which names Fear, and not terrified: the sentence
+    reports what happened, not how frightened the person was, so it takes the
+    plain word and its plain weight. */
+ unsafe:['abused','abuse','abusive','assaulted','molested','raped','rape','hit me','hits me',
+  'beat me','beats me','beat me up','slapped me','punched me','kicked me',
+  'threatened me','threatens me','in danger'],
+ /* anger, at the solar plexus */
+ angry:['annoyed','irritated','frustrated','frustrating','frustration','pissed off',
+  'mad at','so mad','really mad','got mad','mad with','lost my temper','losing my temper'],
+ furious:['enraged','outraged','incensed','fuming','irate','raging'],
+ shouted:['shouting','shouts at','screamed at','screams at','yells at','swore at','swears at',
+  'raised his voice','raised her voice','raised their voice','raises his voice',
+  'raises her voice','raises their voice'],
+ snapped:['snap at','snaps at','snapped at'],
+ 'lashed out':['lash out','lashing out','lashes out'],
+ slammed:['punched the wall','smashed','threw things'],
+ blamed:['accused','scapegoated','not my fault'],
+ /* exhaustion and overwhelm, at the solar plexus, Apathy where the headword
+    states it, on the owner's exhaustion ruling */
+ exhausted:['worn out','knackered','run down','tired out','dead tired','sleep deprived','frazzled'],
+ weary:['so tired','tired of','sick of','sick and tired','fed up','im tired','i am tired',
+  'feel tired','feeling tired','always tired','tired all the time','lethargic','listless'],
+ 'no energy':['no motivation','unmotivated','cant be bothered','could not be bothered',
+  'couldnt be bothered'],
+ 'running on empty':['running on fumes'],
+ overwhelmed:['swamped','overloaded','snowed under','going under',
+  'falling apart','fell apart','meltdown','had a breakdown','nervous breakdown',
+  'mental breakdown','breaking point','out of control','cant keep up','cannot keep up',
+  'too much to handle'],
+ /* self worth, at the solar plexus, the round GR family, Shame stated */
+ ashamed:['shameful'],
+ embarrassed:['embarrassing','self conscious'],
+ humiliated:['humiliation','humiliating me'],
+ stupid:['such an idiot','like an idiot','im an idiot','i am an idiot','feel foolish','felt foolish',
+  'so foolish'],
+ worthless:['such a failure','like a failure','im a failure','i am a failure','a total failure',
+  'feel a failure','a burden',
+  'unworthy','good for nothing','im useless','i am useless','feel useless','felt useless',
+  'feeling useless','feel so useless','im pathetic','i am pathetic','feel pathetic',
+  'like im nothing','like i am nothing','like dirt','like rubbish','waste of space'],
+ guilty:['guilt','blame myself','blaming myself','my fault'],
+ /* being judged, at the sacral, where criticised and laughed already sit */
+ criticised:['feel judged','felt judged','feeling judged','being judged','judged by','judging me',
+  'put me down','puts me down','belittled',
+  'belittling','shamed','insulted'],
+ laughed:['laughed at','mocked','mocking me','ridiculed','teased','bullied','bully','bullying',
+  'made fun of','make fun of','makes fun of','picked on'],
+ disgust:['disgusted','repulsed','revolted','sickened','makes me sick','made me sick'],
+ addicted:['binge eat','binge ate','binge eating','binge drinking','drinking too much',
+  'drink too much','drank too much'],
+ nauseous:['nausea','nauseated','queasy','feel sick','felt sick','feeling sick','threw up',
+  'throwing up','vomited'],
+ 'stomach knot':['knot in my stomach','knots in my stomach','stomach in knots',
+  'stomach dropped','pit of my stomach'],
+ /* grief, loss, loneliness and rejection, at the heart */
+ sad:['unhappy','upset','sorrow','sorrowful','gloomy','tearful','teary','cried','crying',
+  'cry','sobbing','sobbed','weeping','wept','in tears','burst into tears','feel down',
+  'feeling down','felt down','so down','been down','heavy hearted','heart sank'],
+ miserable:['depressed','depression','wretched'],
+ hopeless:['despair','despairing','no hope','lost hope','no way out','feel trapped','felt trapped',
+  'feeling trapped','so trapped','im trapped','i am trapped','i was trapped'],
+ defeated:['helpless','powerless','feel stuck','feeling stuck','felt stuck'],
+ heartbroken:['heartbreak','heartbreaking','devastated','gutted','broken hearted','brokenhearted',
+  'heartache'],
+ hurt:['wounded','stung','hurting','hurtful','let me down','let down','letting me down'],
+ grieving:['grieve','grieved','miss him','miss her','miss them','missing him','missing her'],
+ loss:['divorce','divorced','breakup','broke up with','we broke up','split up'],
+ 'no one came':['nobody came'],
+ 'i do not recognise myself':['dont recognise myself','dont recognize myself',
+  'dont know who i am anymore','do not know who i am anymore'],
+ died:['killed himself','killed herself','took his own life','took her own life'],
+ miscarriage:['lost the baby','lost our baby','lost my baby'],
+ rejected:['dumped me','got dumped','ghosted','left me for','left out','excluded','shut me out',
+  'pushed me away','pushes me away','stopped speaking to me','stopped talking to me',
+  'not speaking to me','not talking to me','wont speak to me','wont talk to me'],
+ abandoned:['deserted','walked out on','neglected','neglect'],
+ lonely:['lonesome','nobody to talk to','no one to talk to','no friends','friendless'],
+ unloved:['nobody loves me','no one loves me','uncared for'],
+ remorse:['regret','regrets','regretted','regretting','wish i hadnt','wish i had not'],
+ /* not heard, lied to, betrayed, at the throat */
+ ignored:['feel invisible','felt invisible','feeling invisible','im invisible','i am invisible',
+  'feel unseen','felt unseen','feeling unseen'],
+ dismissed:['invalidated','patronised','patronized','condescending','brushed off',
+  'brushed aside','talked down to','not taken seriously','undervalued','unappreciated',
+  'disrespected'],
+ 'nobody listened':['nobody listens','no one listens','no one listened','never listens',
+  'doesnt listen','dont listen to me','wont listen'],
+ interrupted:['talks over','talking over','talked right over','talks right over',
+  'cut me off','cuts me off','never lets me finish','wont let me finish',
+  'doesnt let me finish','never let me finish','never lets me speak','wont let me speak'],
+ 'shut me down':['told me to shut up','tells me to shut up','shuts me down'],
+ 'stayed quiet':['kept quiet','stayed silent','held my tongue','kept it to myself',
+  'bottled it up','bottle it up','bottling it up','swallowed it'],
+ betrayed:['backstabbed','double crossed','sold me out'],
+ cheated:['cheated on me','cheating on me','been cheating','was cheating','an affair','unfaithful'],
+ deceived:['manipulated','gaslit','gaslighted','gaslighting','tricked','conned'],
+ choked:['lump in my throat'],
+ tense:['went stiff','goes stiff','go stiff'],
+ /* numbness, meaning and the mind that will not stop, at the crown and eye */
+ numb:['numbed','dead inside','emotionless'],
+ disconnected:['nothing feels real','feels unreal','behind glass',
+  'dissociated','dissociating','dissociate'],
+ pointless:['no point','see no point','dont see the point','cant see the point','no purpose',
+  'purposeless','aimless'],
+ overthinking:['ruminating','rumination','racing thoughts','thoughts racing','mind racing',
+  'mind is racing','cant switch off','cant switch my brain off','cant turn my brain off',
+  'cant shut my brain off','second guessing','second guess','spiralling','spiraling',
+  'keep thinking about'],
+ replaying:['i replay','reliving','relive','flashbacks','flashback',
+  'keep going over'],
+ /* the idioms, whose rows keep their labels */
+ 'hated myself':['hate myself','hating myself'],
+ 'cannot sleep':['cant sleep','couldnt sleep','could not sleep'],
+ 'cannot trust':['cant trust','couldnt trust','could not trust']};
+
+/* THE OPPOSITES, said not. headword -> {frame set: [the plain word]}. The
+   plain word is never added on its own: safe is not charge and calm already
+   subtracts. Only the negated frames are written, so "i do not feel safe"
+   reaches unsafe through "not feel safe", and the longer key outranks calm
+   inside "not calm" exactly the way a phrase outranks the words inside it.
+   That precedence is the reason this works with no new rule: "i was not calm"
+   had been SUBTRACTING charge, measured, and now it reads as the anxiety it
+   reports.
+
+   THE FRAME SET IS PART OF THE ROW, because the words do not all negate the
+   same way:
+     is    a state that is the person's own. "not safe", "never happy",
+           "no longer calm". The widest set.
+     been  a state somebody else gives. "never felt loved", "not wanted",
+           "wasnt valued". Not "never X", because "i never loved him" says
+           the opposite of unloved.
+     feel  only after a feeling verb. "dont feel heard" and never "not
+           heard", because "i have not heard back" is a plumber.
+     self  okay, fine, alright, said by the person about the person. "im not
+           okay" and never bare "not okay", which is often about somebody
+           else's conduct and is anger, not hurt.
+     can   a thing the person cannot do. "cant relax", "couldnt sleep". */
+var LEXANT_FRAMES={
+ is:['not X','never X','no longer X','wasnt X','isnt X','arent X','werent X','not very X',
+  'never been X','not been X','not feel X','not feeling X','not felt X','dont feel X',
+  'didnt feel X','doesnt feel X','never feel X','never felt X','havent felt X',
+  'no longer feel X'],
+ been:['not X','wasnt X','werent X','never been X','not been X','not feel X','not feeling X',
+  'not felt X','dont feel X','didnt feel X','doesnt feel X','never feel X','never felt X',
+  'havent felt X','no longer feel X'],
+ feel:['not feel X','not feeling X','not felt X','dont feel X','didnt feel X','doesnt feel X',
+  'never feel X','never felt X','havent felt X','no longer feel X'],
+ self:['im not X','i am not X','i was not X','i wasnt X','not feeling X','not feel X',
+  'dont feel X','didnt feel X','not doing X','havent been X','not been X'],
+ can:['cant X','cannot X','can not X','couldnt X','could not X','unable to X','not able to X']};
+var LEXANT={
+ unsafe:{is:['safe'], been:['protected'], feel:['secure']},
+ anxious:{is:['calm','relaxed','at ease'], can:['relax']},
+ sad:{is:['happy']},
+ hurt:{self:['okay','ok','alright','fine']},
+ unloved:{been:['loved','cared for']},
+ unwanted:{been:['wanted']},
+ unheard:{feel:['heard','listened to']},
+ ignored:{feel:['seen','noticed']},
+ dismissed:{been:['valued','respected','appreciated','taken seriously']},
+ isolated:{been:['supported']},
+ 'not good enough':{feel:['good enough']},
+ worthless:{is:['worthy']},
+ 'no confidence':{is:['confident']},
+ hopeless:{is:['hopeful']},
+ weary:{is:['rested']},
+ 'cannot cope':{can:['cope']},
+ 'cannot breathe':{can:['breathe']},
+ distracted:{can:['focus','concentrate']},
+ overwhelmed:{can:['think straight']},
+ 'no energy':{can:['get out of bed']},
+ 'cannot sleep':{can:['sleep']},
+ 'cannot trust':{can:['trust']}};
+
+/* THE FAMILY. A person names who died or left, and "my dad passed" carries
+   no feeling word at all. The kin words are a closed list and the frames fix
+   the sense: "lost my keys" is not here because keys is not kin. */
+var LEXKIN=['mum','mom','mother','dad','father','husband','wife','son','daughter','brother',
+ 'sister','grandmother','grandfather','grandma','grandpa','nan','gran','partner','baby',
+ 'best friend','boyfriend','girlfriend','fiance','fiancee'];
+var LEXKIN_FRAMES={died:['my K passed'], loss:['lost my K'], grieving:['miss my K','missing my K']};
+
+/* THE REFUSALS, read this before adding to the tables above. Each is a word
+   that would have answered a line in the corpus and is refused because its
+   ordinary quiet sense is too common to read bare. A refused key never reaches
+   the table, and the gate asserts that. */
+var LEXSYN_NO={
+ tired:'a hike as often as a life. read only inside a frame: so tired, tired of, i am tired',
+ mad:'keen in one country and furious in another. read only as mad at, so mad',
+ useless:'the advice was useless says nothing about the writer. read only as i am useless and feel useless',
+ down:'down the road, down at the shops. read only as feel down, so down',
+ low:'low tide, low battery, a low price',
+ blue:'a colour first, and blue in the face is laughing',
+ stuck:'stuck in traffic. read only as feel stuck',
+ lost:'lost my keys, lost the match. read only as lost my and a family word, or lost hope',
+ passed:'passed the exam, passed the salt. read only as my and a family word and passed',
+ dead:'the battery is dead, dead tired. read only as dead inside',
+ broken:'the printer is broken. read only as broken hearted',
+ killed:'killed it at the gym, the cold killed the plants',
+ attacked:'felt attacked in an argument is defensive anger, not the root',
+ shattered:'exhausted in one country and devastated in another, two seats',
+ sorry:'said a hundred times a day for nothing',
+ hate:'i hate mondays. read only as hate myself',
+ sick:'off sick, a sick day. read only as feel sick, sick of, makes me sick',
+ cross:'cross the road, a cross on a form',
+ 'not okay':'that is not okay is usually about somebody else and reads as anger. read only as im not okay',
+ 'not heard':'i have not heard back from the plumber',
+ 'not seen':'i have not seen that film',
+ 'not sure':'i am not sure what time the shop closes',
+ 'wound up':'excited children are wound up',
+ suicide:'a person writing about their own thoughts of it is not bereaved, and died would read it as grief at the heart. read only as took his own life and took her own life, which are a death',
+ worries:'no worries is a pleasantry',
+ stress:'i want to stress that, a stress test. read only as stressed and so much stress',
+ 'put down':'put down the phone. read only as put me down',
+ binge:'binge watch a series. read only as binge eating and binge drinking',
+ dumped:'dumped the rubbish. read only as dumped me',
+ overlooked:'the room overlooked the bay',
+ 'pushed me':'pushed me to do better',
+ 'grabbed me':'the book really grabbed me',
+ 'used me':'used me as a reference',
+ replay:'watched the replay, i replayed the video for my son. read only as i replay',
+ cheating:'cheating at cards, cheating on a diet. read only as cheating on me',
+ 'didnt listen':'i did not listen to the radio. read only as he never listens and nobody listens',
+ edgy:'an edgy haircut, an edgy film',
+ invisible:'the invisible hand, invisible ink, invisible to direct sensing. read only as feel invisible and i am invisible',
+ unseen:'an unseen force. read only as feel unseen',
+ 'a failure':'a failure of the system. read only as such a failure, like a failure, i am a failure',
+ judged:'someone i judged smarter is the writer judging. read only as feel judged and being judged',
+ foolish:'people do foolish things. read only as feel foolish',
+ betray:'is the writer betraying, and betrayed is the person betrayed, a different reading',
+ 'break up':'break up a fight, break up the ice. read only as broke up with and split up',
+ trapped:'signal trapped beneath the tissue, trapped in traffic. read only as feel trapped and i am trapped',
+ stiff:'a stiff drink, stiff inelastic scar. read only as went stiff and goes stiff',
+ 'over and over':'pressing a button over and over. read only as keep going over',
+ 'zoned out':'zoned out in a dull meeting is boredom, and disconnected reads it at the crown',
+ 'stabbed in the back':'carries back, which the place rule refuses to seat, so the key could seat a refused place',
+ ill:'is i will once the apostrophe is gone, so it can never be a key'};
+
+/* run the pass. Headwords are resolved against the table as it stands after
+   canon and fold, and nothing this pass writes can be a headword for it,
+   which is how a generator quietly chains its own output: a synonym of a
+   synonym drifts a little further from the word that was meant each time. */
+function lexSyn(places){
+ var out={added:0,phrase:0,already:0,refused:{},from:{},rows:[]};
+ var heads=Object.keys(LEX), phr={};
+ PHRASES.forEach(function(r,ri){r[0].forEach(function(w){phr[w]=ri;});});
+ var phrWords=Object.keys(phr);
+ function has(hay,w){return (' '+hay+' ').indexOf(' '+w+' ')>=0;}
+ function refuse(k,why){if(!out.refused[k])out.refused[k]=why;}
+ function add(k,head,src,how){
+  if(LEXSYN_NO[k]){refuse(k,'refused by name: '+LEXSYN_NO[k]);return;}
+  if(LEX_FOLD_NO[k]){refuse(k,'refused by the fold: '+LEX_FOLD_NO[k]);return;}
+  if(!lexKeyOk(k)){refuse(k,'not a form the scanner can produce');return;}
+  var inLex=heads.indexOf(head)>=0, ri=phr[head];
+  if(!inLex&&ri===undefined){refuse(k,'its headword '+head+' is in neither LEX nor PHRASES');return;}
+  if(LEX[k]||phr[k]!==undefined){out.already++;return;}
+  /* a phrase is matched before any key and blocks what it overlaps, so a key
+     with a phrase inside it is a dead row, and a phrase with a phrase inside
+     it, or inside another, is read twice. A phrase containing a key is only
+     the phrase outranking its own words, which is the rule working. */
+  var eat=phrWords.filter(function(p){return has(k,p)||(!inLex&&has(p,k));});
+  if(eat.length){refuse(k,'overlaps the phrase '+eat[0]);return;}
+  /* and a new phrase would eat every key that contains it */
+  var kill=inLex?[]:heads.filter(function(h){return has(h,k);});
+  if(kill.length){refuse(k,'would eat the key '+kill[0]);return;}
+  /* a word inside the key that names a charge of its own is still read by
+     the adjective pass, which nothing blocks, so it must name the same
+     charge as the headword or the reading splits. */
+  var hc=ADJ2CHG[head]||null;
+  var clash=hc?k.split(' ').filter(function(w){return ADJ2CHG[w]&&ADJ2CHG[w]!==hc;}):[];
+  if(k.indexOf(' ')>0&&clash.length){refuse(k,'carries '+clash[0]+', which names '+ADJ2CHG[clash[0]]+' and not '+hc);return;}
+  /* a body word inside a key seats that body word for the place rule, 20.H2,
+     so a key may only carry a place the table already seats where its
+     headword sits. Otherwise this pass would move where a sensation lands. */
+  var seat=inLex?LEX[head][LEX_SEAT]:PHRASES[ri][1];
+  var pw=(places&&places.words||[]).filter(function(w){return has(k,w);});
+  var badp=pw.filter(function(w){return places.seat[w]!==seat;});
+  if(badp.length){refuse(k,'names the place '+badp[0]+', which the table seats at '+(places.seat[badp[0]]||'no seat')+' and not '+seat);return;}
+  if(inLex){
+   /* through the same boundary as every other entry. It cannot refuse here:
+      the key was checked above and every other value is copied off an entry
+      that already passed it, and the gate asserts the refusal list is empty,
+      so a refusal that did happen would not be silent. */
+   var e=LEX[head], meta={src:src,from:head,rule:how,cite:'judgement'};
+   var a=lexAdd(k,e[LEX_SEAT],e[LEX_AMT],e[LEX_FET]!=null?e[LEX_FET]:null,meta);
+   if(!a.ok){refuse(k,a.why);return;}
+   if(ADJ2CHG[head])chgAdd(k,ADJ2CHG[head],meta);
+   out.added++;
+  } else {
+   PHRASES[ri][0].push(k); phr[k]=ri; phrWords.push(k); out.phrase++;}
+  out.from[k]={head:head,src:src,rule:how,table:inLex?'LEX':'PHRASES'};
+  out.rows.push(k);}
+ Object.keys(LEXSYN).forEach(function(h){LEXSYN[h].forEach(function(k){add(k,h,'synonym','same reading');});});
+ Object.keys(LEXANT).forEach(function(h){Object.keys(LEXANT[h]).forEach(function(set){
+  var fr=LEXANT_FRAMES[set];
+  if(!fr){refuse(h+' '+set,'names a frame set that does not exist');return;}
+  LEXANT[h][set].forEach(function(w){fr.forEach(function(f){
+   add(f.replace('X',w),h,'antonym','not '+w+', '+set);});});});});
+ Object.keys(LEXKIN_FRAMES).forEach(function(h){LEXKIN_FRAMES[h].forEach(function(f){
+  LEXKIN.forEach(function(kw){add(f.replace('K',kw),h,'synonym','family, '+f);});});});
  return out;}
 /* lexFold is NOT run here, and the reason is load order. lexRefuse checks a
    stated fetter against CHARGES, and CHARGES is declared in core.js, which
@@ -12697,6 +13075,14 @@ function somaPlaces(){
    +' ('+ck.map(function(k){return cs[k];}).join('; ')+')';
   else out.phraseRefused[ph]='the codex does not name it';});
  return out;}
+/* PASS THREE RUNS HERE, round QZ follow on, and not beside the canon and the
+   fold above, because it needs the place words, which are declared just above,
+   and must finish before the place table below is derived from LEX. It is
+   handed the place table as it stands without it, and refuses any key that
+   would seat a place differently, so SOMA_PLACE comes out the same and the gate
+   asserts that against LEXSYNPLACES, the table as it stood before. */
+var LEXSYNPLACES=somaPlaces();
+var LEXSYNRUN=lexSyn({words:SOMA_PLACE_WORDS,seat:LEXSYNPLACES.seat});
 var SOMA_PLACE=somaPlaces();
 /* ============================================================
    THE NORMALISATION, AND THE INDEX BACK OUT OF IT.
@@ -12723,12 +13109,25 @@ var SOMA_PLACE=somaPlaces();
 
    Ported from proto/story4, where four prototypes each carried a copy.
    ============================================================ */
+/* THE APOSTROPHE IS DROPPED, round QZ follow on, and it was the cheapest
+   recall this file had. Measured before: "I can't cope" read nothing, "I
+   cant cope" read solar 26. Every key in the lexicon that a person writes with
+   an apostrophe, dont, cant, didnt, couldnt, wouldnt, havent, whats, im, is
+   typed without one, and normMap kept the one the person typed, so all of
+   them were unreachable from ordinary writing. A phone types the curly one,
+   which was turned into a SPACE, "can t", which was worse. lawNorm, the other
+   normalisation in this file, has always dropped apostrophes, and srcNegated's
+   own list is written dont and cant, so this makes the two readers agree
+   rather than inventing a third rule. Dropping a character moves no offset
+   the map cannot carry: map holds the raw index of every character kept. */
+var NORM_APOS=/['\u2018\u2019]/;
 function normMap(t){
  t=String(t||'');
  var body='',bm=[],i,c;
  for(i=0;i<t.length;i++){
   c=t.charAt(i).toLowerCase();
-  if(!/[a-z' ]/.test(c))c=' ';
+  if(NORM_APOS.test(c))continue;
+  if(!/[a-z ]/.test(c))c=' ';
   body+=c; bm.push(i);}
  var s=' ', map=[0], prev=true;
  for(i=0;i<body.length;i++){
@@ -13387,7 +13786,15 @@ function axisAddr(imprints,axis){
    rules that the field should move with the contract. */
 var LEXCOMP={resentment:['Anger','Apathy'], resentful:['Anger','Apathy'],
  bitter:['Anger','Apathy'], bitterness:['Anger','Apathy'], grudge:['Anger','Apathy'],
- begrudge:['Anger','Apathy'], embittered:['Anger','Apathy']};
+ begrudge:['Anger','Apathy'], embittered:['Anger','Apathy'],
+ /* THE VERB, round QZ follow on. "I resent having to carry everyone" read
+    nothing, measured, because the table held the noun and the adjective and
+    not the thing a person does. These are added HERE and not to pass three's
+    synonym table, because a synonym copies one fetter and this reading is
+    two, and lexComposite below already seats an unseated key off its
+    family's unanimous seat and floor, which is exactly what is wanted. */
+ resent:['Anger','Apathy'], resents:['Anger','Apathy'], resented:['Anger','Apathy'],
+ resenting:['Anger','Apathy']};
 
 /* A COMPOSITE KEY THE SCANNER CANNOT REACH IS A DEAD ROW, and three of these
    were. Found by the gate rather than by reading: `grudge`, `begrudge` and
@@ -14140,12 +14547,17 @@ var SRC_DIM_CUE={
   'husband','wife','boyfriend','girlfriend','mother','father','mum','mom','dad',
   'parents','son','daughter','brother','sister','friend','friends','family','kids',
   'child','children','teacher','client'],
- prediction:['will','wont',"won't","i'll","they'll","it'll",'going to','gonna',
+ /* WRITTEN WITHOUT APOSTROPHES since round QZ, because normMap drops them
+    and a cue with one could never be found. won't was already here as wont.
+    i'll comes back as ill, which is also the word for sick, so it is read
+    only before the verbs a prediction takes. */
+ prediction:['will','wont','theyll','itll','ill be','ill never','ill end up','ill lose',
+  'ill have to','ill always','going to','gonna',
   'expect','expected','expecting','what if','would happen','bound to'],
  belief:['i believe','i must','i have to','i should','if i','i always','i never',
   'people always','nobody ever'],
  meaning:['means','meant','mean that','says about me','proves','which means','what it means'],
- goal:['i want','i wanted','i wish','i need','i needed','i hope','i would like',"i'd like",
+ goal:['i want','i wanted','i wish','i need','i needed','i hope','i would like','id like',
   'trying to']};
 /* WHAT A PERSON DID, ported rather than written. VERPCUE already carries the
    engine's approach, avoidance and attachment cues (engine/verp.js), and the
@@ -17526,6 +17938,10 @@ if(typeof module!=='undefined'&&module.exports){
                   lexCanon:lexCanon, lexCanonWords:lexCanonWords,
                   lexFamilyFloor:lexFamilyFloor,
                   LEXCANONRUN:LEXCANONRUN, LEXFOLDRUN:LEXFOLDRUN,
+                  LEXSYN:LEXSYN, LEXANT:LEXANT, LEXANT_FRAMES:LEXANT_FRAMES,
+                  LEXKIN:LEXKIN, LEXKIN_FRAMES:LEXKIN_FRAMES, LEXSYN_NO:LEXSYN_NO,
+                  lexSyn:lexSyn, LEXSYNRUN:LEXSYNRUN, LEXSYNPLACES:LEXSYNPLACES,
+                  NORM_APOS:NORM_APOS,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,
   /* birth */     sunSign:sunSign, moonSign:moonSign, risingSign:risingSign,
                   lifePath:lifePath, spiritual:spiritual, converge:converge,

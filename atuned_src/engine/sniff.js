@@ -256,6 +256,14 @@ function somaPlaces(){
    +' ('+ck.map(function(k){return cs[k];}).join('; ')+')';
   else out.phraseRefused[ph]='the codex does not name it';});
  return out;}
+/* PASS THREE RUNS HERE, round QZ follow on, and not beside the canon and the
+   fold above, because it needs the place words, which are declared just above,
+   and must finish before the place table below is derived from LEX. It is
+   handed the place table as it stands without it, and refuses any key that
+   would seat a place differently, so SOMA_PLACE comes out the same and the gate
+   asserts that against LEXSYNPLACES, the table as it stood before. */
+var LEXSYNPLACES=somaPlaces();
+var LEXSYNRUN=lexSyn({words:SOMA_PLACE_WORDS,seat:LEXSYNPLACES.seat});
 var SOMA_PLACE=somaPlaces();
 /* ============================================================
    THE NORMALISATION, AND THE INDEX BACK OUT OF IT.
@@ -282,12 +290,25 @@ var SOMA_PLACE=somaPlaces();
 
    Ported from proto/story4, where four prototypes each carried a copy.
    ============================================================ */
+/* THE APOSTROPHE IS DROPPED, round QZ follow on, and it was the cheapest
+   recall this file had. Measured before: "I can't cope" read nothing, "I
+   cant cope" read solar 26. Every key in the lexicon that a person writes with
+   an apostrophe, dont, cant, didnt, couldnt, wouldnt, havent, whats, im, is
+   typed without one, and normMap kept the one the person typed, so all of
+   them were unreachable from ordinary writing. A phone types the curly one,
+   which was turned into a SPACE, "can t", which was worse. lawNorm, the other
+   normalisation in this file, has always dropped apostrophes, and srcNegated's
+   own list is written dont and cant, so this makes the two readers agree
+   rather than inventing a third rule. Dropping a character moves no offset
+   the map cannot carry: map holds the raw index of every character kept. */
+var NORM_APOS=/['\u2018\u2019]/;
 function normMap(t){
  t=String(t||'');
  var body='',bm=[],i,c;
  for(i=0;i<t.length;i++){
   c=t.charAt(i).toLowerCase();
-  if(!/[a-z' ]/.test(c))c=' ';
+  if(NORM_APOS.test(c))continue;
+  if(!/[a-z ]/.test(c))c=' ';
   body+=c; bm.push(i);}
  var s=' ', map=[0], prev=true;
  for(i=0;i<body.length;i++){
@@ -946,7 +967,15 @@ function axisAddr(imprints,axis){
    rules that the field should move with the contract. */
 var LEXCOMP={resentment:['Anger','Apathy'], resentful:['Anger','Apathy'],
  bitter:['Anger','Apathy'], bitterness:['Anger','Apathy'], grudge:['Anger','Apathy'],
- begrudge:['Anger','Apathy'], embittered:['Anger','Apathy']};
+ begrudge:['Anger','Apathy'], embittered:['Anger','Apathy'],
+ /* THE VERB, round QZ follow on. "I resent having to carry everyone" read
+    nothing, measured, because the table held the noun and the adjective and
+    not the thing a person does. These are added HERE and not to pass three's
+    synonym table, because a synonym copies one fetter and this reading is
+    two, and lexComposite below already seats an unseated key off its
+    family's unanimous seat and floor, which is exactly what is wanted. */
+ resent:['Anger','Apathy'], resents:['Anger','Apathy'], resented:['Anger','Apathy'],
+ resenting:['Anger','Apathy']};
 
 /* A COMPOSITE KEY THE SCANNER CANNOT REACH IS A DEAD ROW, and three of these
    were. Found by the gate rather than by reading: `grudge`, `begrudge` and

@@ -435,15 +435,21 @@ async function flowGate(browser,FILE,ok,booted){
    const DAY=86400000, off=new Date().getTimezoneOffset()*60000;
    const today=Math.floor((Date.now()-off)/DAY);
    const iso=d=>new Date(d*DAY+off+12*3600000).toISOString();
+   /* ROUND QZ: the third line said "when I feel judged and rejected". Once the
+      sniffer read "feel judged" (sacral 22) beside "rejected" (heart 22), the
+      two seats tied at 7.2 and the first one written won, so this seed's heart
+      seat moved to the sacral on a tie break rather than on anything the line
+      means. Dropping "judged and" gives the line exactly the reading it had
+      before, heart alone, which is what FT18 below is built on. */
    ['I am terrified of being abandoned and I panic and cannot breathe. My chest is tight.',
     'I feel worthless and ashamed, I am never enough, I am a failure.',
-    'I go quiet and pull away from my partner when I feel judged and rejected.'].forEach(t=>{ST_TEXT=t; ST_PARSED=parseStory(t); stCommit();});
+    'I go quiet and pull away from my partner when I feel rejected.'].forEach(t=>{ST_TEXT=t; ST_PARSED=parseStory(t); stCommit();});
    /* a reading from before the first plan started, with a held count the field
       never had, so the card can only print it by reading this row */
    const h0=snapshot(CURP); h0.t=iso(today-15); h0.loaded=17; CURP.history.unshift(h0);
    CURP.avatar=avatarBlank(); CURP.avatar.built=true; CURP.avatar.at=iso(today-30);
    CURP.avatar.pairs=[{be:'I speak up calmly in the room',notbe:'I feel worthless and ashamed, I am never enough'},
-    {be:'I stay close to the people I love',notbe:'I go quiet and pull away from my partner when I feel judged and rejected'},
+    {be:'I stay close to the people I love',notbe:'I go quiet and pull away from my partner when I feel rejected'},
     {be:'I feel safe in my own body',notbe:'I am terrified of being abandoned and I panic and cannot breathe'}];
    const P=(id,k,band,from,days)=>({id,steps:[k],when:'',where:'',days,from:iso(from),stop:null,band,track:'',rel:null,tc:null,tags:[band],on:null,tm:null});
    const plans=[P('qa','noting','Throat',today-12,0),P('qb','listen','3rd Eye',today-6,7),

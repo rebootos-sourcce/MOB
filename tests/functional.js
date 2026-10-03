@@ -5548,7 +5548,12 @@ console.log('\n=== the story lights what the engine read, once ===');
   'and the page carries the name the engine holds, '+JSON.stringify(n)
   +', got '+JSON.stringify(lit.story.names)));
  /* THE IDIOM ACROSS PUNCTUATION, which a search over the raw text cannot find. */
- ok(lit.idiom.lit===1,'the idiom is one mark and not none, got '+lit.idiom.lit);
+ /* ROUND QZ: "I felt so tired" now reads too, as weary, so the sentence
+    carries two marks. What this row guards is the idiom: lit once, as one
+    stretch, first. */
+ const idm=(lit.idiom.text||[]).filter(t=>/shut the door/.test(t));
+ ok(idm.length===1&&lit.idiom.lit===lit.idiom.engineMarks,'the idiom is one mark and not none, got '+idm.length
+  +' of '+lit.idiom.lit+': '+JSON.stringify(lit.idiom.text));
  ok(/,/.test(lit.idiom.text[0]),
   'lit as one stretch including the punctuation inside it, got '
   +JSON.stringify(lit.idiom.text[0]));

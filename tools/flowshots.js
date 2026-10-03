@@ -30,7 +30,7 @@ const SEED=()=>{
  const texts=['I am terrified of being abandoned and I panic and cannot breathe. My chest is tight.',
   'I am full of anger and rage at my father, I resent him and I hate that I blame myself.',
   'I feel worthless and ashamed, I am never enough, I am a failure.',
-  'I go quiet and pull away from my partner when I feel judged and rejected.',
+  'I go quiet and pull away from my partner when I feel rejected.',
   'I am anxious all the time, worried, my stomach knots, I feel powerless and controlled.',
   'I feel guilty and I hide, I cannot speak my truth, my throat closes, I lie to keep the peace.'];
  texts.forEach(t=>{ST_TEXT=t; ST_PARSED=parseStory(t); stCommit();});
@@ -41,7 +41,7 @@ const SEED=()=>{
  CURP.avatar.pairs=[
   {be:'I feel safe in my own body',notbe:'I am terrified of being abandoned and I panic and cannot breathe'},
   {be:'I speak up calmly in the room',notbe:'I feel worthless and ashamed, I am never enough'},
-  {be:'I stay close to the people I love',notbe:'I go quiet and pull away from my partner when I feel judged and rejected'}];
+  {be:'I stay close to the people I love',notbe:'I go quiet and pull away from my partner when I feel rejected'}];
  CURP.avatar.built=true; CURP.avatar.at=iso(today-30);
  /* ROUND QS: each avatar story's starting weight, kept the way the Avatar
     page's own Save keeps it (avSideWrite, load0 = the row's load once the story
