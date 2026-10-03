@@ -157,6 +157,11 @@ function ritSugHtml(st){
     +'<div class="rv-sgh"><button type="button" class="rv-sgs" data-act="sgwhy" data-i="'+i+'" aria-expanded="'+open
      +'" aria-label="Why '+esc(x.p.nm)+' is suggested">'+M.badge+'</button>'
     +'<span class="rv-sgt0"><span class="rv-sgn">'+esc(x.p.nm)+'</span><span class="rv-sgm">'+x.p.min+' min</span></span></div>'
+    /* ONE LINE STAYS VISIBLE, round QV. His words: "with suggested add a
+       little text". The full why-list is still one press away (round QS,
+       "more show less tell"); this is only the first reason, the one the
+       card was actually built from, kept short so the card is not bare. */
+    +'<p class="rv-sg0">'+esc(x.why[0]||'')+'</p>'
     /* THE REASONS ARE ONE PRESS AWAY, round QS. His words: "more show less
        tell if you want tell you press on something to get information." The
        mark is the press, and it opens the reasons and what the ring measures
@@ -567,6 +572,7 @@ function ritStageCss(){
   '.rv-sgs:hover .crb-a circle:first-child{stroke:color-mix(in srgb,var(--c) 40%,transparent)}',
   '.rv-sgs:focus-visible{outline:2px solid var(--accent);outline-offset:2px}',
   '.rv-sgt0{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex:1 1 auto;min-width:0}',
+  '.rv-sg0{margin:4px 0 0;font-size:13px;line-height:1.4;color:var(--mid);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}',
   '.rv-sgx{margin:6px 0 8px;padding:8px 10px;border-radius:10px;background:color-mix(in srgb,var(--c) 7%,var(--panel))}',
   '.rv-sgx[hidden]{display:none}',
   '.rv-sg1 .rv-sgw{margin:0}',
