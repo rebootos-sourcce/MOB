@@ -487,7 +487,7 @@ function accBilling(m){
    link only becomes a door when it is an https invite on one of Discord's own
    two invite hosts. Anything else, a typo or a link to some other site pasted
    here by mistake, stays a stub and never reaches a person as a link. */
-var COMMUNITY_INVITE='';
+var COMMUNITY_INVITE='https://discord.gg/VRP8NApj2d';
 function commInvite(){
  var u=String(COMMUNITY_INVITE||'').trim();
  return /^https:\/\/(discord\.gg|discord\.com\/invite)\/[A-Za-z0-9-]{2,64}\/?$/.test(u)?u:'';}

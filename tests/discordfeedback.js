@@ -207,7 +207,11 @@ async function appGate(ok){
    return o;});
   ok(a.items.indexOf('Discord feedback')>=0&&a.fbH>=44&&a.fbIn,
    'the profile menu carries Discord feedback at the 44px floor, on screen'+at+', '+J({h:a.fbH,items:a.items}));
-  ok(!a.join&&a.items.indexOf('Join our Discord')<0,'with no invite link there is no join row in the menu'+at);
+  /* COMMUNITY_INVITE now ships with the real, owner-confirmed invite
+     (https://discord.gg/VRP8NApj2d), so the shipped menu carries the join
+     row by default; the override just below still proves the mechanism
+     generically with a different link, independent of what ships today */
+  ok(a.join&&a.items.indexOf('Join our Discord')>=0,'with the shipped invite link the join row is in the menu'+at);
   if(SHOTS)await pg.screenshot({path:path.join(SHOTS,'menu-'+w+'.png')});
 
   /* the press */
