@@ -50,13 +50,14 @@
    second kind of row, so rc marks it, and the test that walks the round KQ
    rows skips rc rows rather than being edited to expect them.
 
-   THREE POLES HAVE NO PLACE ON THE COMPASS YET. Akhenaten, Zoroaster and
-   Confucius are rows 12 to 14 of the roster and the figure, MIRROR, PATHS and
-   BECOMING do not carry them until the roster change lands. Their recipes are
-   written now, so that landing them is a drawing task and not a writing one.
-   Until then recipeOf finds them and nothing on the Compass can open them, and
-   a ritual added from one of them carries no tc, because becomingOf answers
-   null for a pole it does not know and ritPlanOk would refuse the whole plan.
+   THREE POLES ARE ON THE COMPASS'S NAME PANELS AND NOT YET ON ITS FIGURE.
+   Akhenaten, Zoroaster and Confucius are rows 12 to 14 of the roster. Round RB
+   put them in HOME_POLES (engine/data/compass.js) and on the two name panels
+   beside the figure, where a press opens their row here. MIRROR, PATHS,
+   BECOMING and the needle still do not carry them (PLAN.md section N says
+   why). A ritual added from one of them carries no tc, because becomingOf
+   answers null for a pole it does not know and ritPlanOk would refuse the
+   whole plan.
 
    NO COUNT, NO SCORE, NO PERCENT. Nothing in this file is measured against a
    total. A behaviour is listed or it is not.

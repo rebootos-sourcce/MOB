@@ -2765,7 +2765,8 @@ function coneNames(side){
     its overlays and nothing else. Still .cn-nms and still .cn-nr, so every
     gate that finds a row by those names finds it where it was. */
  return '<div class="cn-pan cn-nms cn-nms-'+side+'" role="group" aria-label="Characters, '
-  +(side==='l'?'the first four axes':'the last four axes')+'">'
+  +(side==='l'?'the first half of the axes, and of the poles on no axis'
+    :'the second half of the axes, and of the poles on no axis')+'">'
   +half.map(function(x){
    /* the inverted pole is the seat token at an opacity, which is the brand's
       darker version of a token over the ground. coneDull's grey mix was a new
@@ -2798,7 +2799,45 @@ function coneNames(side){
     +'<span class="cn-nd">'+esc(x.m.dn)+'</span>'
     +'</span>'
     +'</button>';}).join('')
+  +cnOffAxis(side)
   +'</div>';}
+/* THE POLES ON NO AXIS, UNDER THE EIGHT. Round RB, his words: "On the
+   compass, we're supposed to have 13 character people, and we I still have
+   the original eight." The panels were built from MIRROR alone, so they named
+   eight axes and seven people. The roster (DESIGN-teachers.md v2 section 2) is
+   fourteen poles: the eight axes, then Krishna, Rama and Lao Tzu, then
+   Akhenaten, Zoroaster and Confucius, three a side in that order.
+
+   None of the six stands on an axis, so none has a position to ring. The
+   ring is drawn whole with no reading in it, and the caption above them says
+   why in the design's own words (mockups/teachers/imprint.html). The meaning
+   on the row is the pole's own line from engine/data/teachers_recipes.js, and
+   a press opens that row, the panel every other teacher opens. Not data-cnax:
+   that attribute is an axis index the figure aims at, and these have none. */
+function cnOffAxis(side){
+ var all=(typeof compassOffAxis==='function')?compassOffAxis():[];
+ if(!all.length)return '';
+ var cut=Math.ceil(all.length/2), half=side==='l'?all.slice(0,cut):all.slice(cut);
+ if(!half.length)return '';
+ return '<p class="cn-grp">Read across the field <i>no one seat, so no position</i></p>'
+  +half.map(function(p){
+   var c=seatCol(p.home||null), cd=/^#[0-9a-f]{6}$/i.test(c)?rgba(hx(c),.72):c;
+   var rc=(typeof recipeOf==='function')?recipeOf(p.k):null;
+   var tip=rc&&rc.line?rc.line+'.':'';
+   /* PATHS writes its quality in lower case, for the glossary's sentence
+      ("Krishna, flow"); a label on its own starts with a capital */
+   var q=String(p.q||''); q=q.charAt(0).toUpperCase()+q.slice(1);
+   return '<button type="button" class="cn-nr cn-off" data-cnpole="'+esc(p.k)+'" '
+    +'style="--ax:'+c+';--axd:'+cd+'" '
+    +'aria-label="'+esc(q)+': '+esc(p.up)+', opposite '+esc(p.dn)+'. No one seat, so no position on an axis." '
+    +(tip?'data-tip-k="'+esc(q)+'" data-tip="'+esc(tip)+'">':'title="Read '+esc(p.up)+', opposite '+esc(p.dn)+'">')
+    +'<span class="cn-pr">'+cnOrb(p.ic,false,true)+cnOrb(p.dic,true)+'</span>'
+    +'<span class="cn-tx">'
+    +'<span class="cn-nq">'+esc(q)+'</span>'
+    +'<span class="cn-nu">'+esc(p.up)+'</span>'
+    +'<span class="cn-nd">'+esc(p.dn)+'</span>'
+    +'</span>'
+    +'</button>';}).join('');}
 /* one rgb triple as a css colour, so a canvas colour can be handed to the
    sheet the same way a seat colour is */
 function rgbcss(c){return 'rgb('+c[0]+','+c[1]+','+c[2]+')';}
@@ -2807,13 +2846,16 @@ function rgbcss(c){return 'rgb('+c[0]+','+c[1]+','+c[2]+')';}
    a button and a button cannot hold one. Ring, never fill. The coherent
    pole's ring and pill are written by coneAxPaint off the axis's spring; the
    inversion's draws the track alone, broken, at the row's darker token. */
-function cnOrb(ic,inv){
- return '<span class="fb-orb cn-or'+(inv?' inv':'')+'">'
+/* bare is a coherent pole on no axis: its ring is whole and carries no
+   reading and no pill, because there is no position for either to say */
+function cnOrb(ic,inv,bare){
+ var plain=inv||bare;
+ return '<span class="fb-orb cn-or'+(inv?' inv':'')+(bare?' bare':'')+'">'
   +'<svg class="fb-arc" viewBox="0 0 40 40" aria-hidden="true">'
   +'<circle class="trk" cx="20" cy="20" r="18"/>'
-  +(inv?'':'<circle class="val" cx="20" cy="20" r="18" pathLength="100" stroke-dasharray="0 100"/>')
+  +(plain?'':'<circle class="val" cx="20" cy="20" r="18" pathLength="100" stroke-dasharray="0 100"/>')
   +'</svg><span class="fb-gl">'+fbSvg(ic)+'</span>'
-  +(inv?'':'<span class="fb-v" aria-hidden="true">\u2013</span>')+'</span>';}
+  +(plain?'':'<span class="fb-v" aria-hidden="true">\u2013</span>')+'</span>';}
 /* WHICH ROW IS LIT, updated from the tick rather than from a repaint. Redrawing
    the rail every frame would rebuild sixteen buttons sixty times a second and
    throw away the hover the person is currently on. */
@@ -3208,6 +3250,15 @@ function coneOpen(inTab){
    var m=MIRROR[i]; if(!m)return;
    coneAimAt(i);
    if(typeof runTeacherDrill==='function')runTeacherDrill(m,'up');};});
+ /* A POLE ON NO AXIS IS PRESSED, round RB. Nothing to aim at, so a press
+    only reads: a path opens its path drill, as its badge on the figure does,
+    and the three poles on no axis open theirs. Found by key, never by place. */
+ h.querySelectorAll('[data-cnpole]').forEach(function(b){
+  var k=b.getAttribute('data-cnpole');
+  b.onclick=function(){
+   var p=(typeof compassPoleOf==='function')?compassPoleOf(k):null; if(!p)return;
+   if(PATHS.indexOf(p)>=0){if(typeof runPathDrill==='function')runPathDrill(p);}
+   else if(typeof runHomePoleDrill==='function')runHomePoleDrill(p);};});
  coneNamesSync();
  /* the graph is a door onto the long version of itself. Ruled. */
  var gm=document.getElementById('cngomore'), gr=document.getElementById('cngraph');
