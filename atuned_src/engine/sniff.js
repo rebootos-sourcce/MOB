@@ -311,6 +311,51 @@ function normMap(t){
  if(!prev){s+=' '; map.push(t.length);}
  return {s:s,map:map};}
 /* ============================================================
+   WORDS DICTATION HID BEHIND STARS. Round QR, 3 October: his own dictated
+   story on the Journal arrived as "I used to just ******* hate" and "I was
+   really ****** ***", whole words gone, with nothing on the page saying so.
+
+   THIS PRODUCT DID NOT DO IT. Searched: nothing in atuned_src masks a word.
+   Reproduced in Chromium with the recognizer stood in: whatever transcript the
+   speech service hands stMic lands in the box byte for byte, stars and swear
+   words alike. The stars are put there by the dictation service before the
+   words reach the page: Chrome's Web Speech API, Gboard voice typing and
+   other vendors' dictation all filter profanity by default, some keeping the
+   first letter ("s****") and some not ("*******"). The page cannot get the
+   word back. What it can do is notice, say so, and ask.
+
+   And it matters to the reading, not only to the record. normMap above turns
+   every star into a space, so a hidden word is not read as a gap, it is read
+   as nothing: "really ****** ***" reaches the scanner as "really", and
+   "really ****** furious" reaches it as "really furious", which puts the
+   degree word against a word the person did not put it against (24 read as
+   33.6, measured). The stars are not changed here; that is the scanner's own
+   rule and it is protected. The person is told, and can type the word.
+
+   A RUN IS TWO OR MORE STARS IN A ROW inside one word, with any letters the
+   service left on either side: "******", "s****", "f***ing". One star alone
+   is a person's own emphasis or a footnote, and is not flagged. Returns each
+   run with its raw offset, its length and the word as it stands, in order.
+   Pure: no host, nothing stored. */
+var MASK_RE=/[A-Za-z']*\*{2,}[A-Za-z'*]*/g;
+function maskedRuns(t){
+ t=String(t||''); var out=[], m;
+ MASK_RE.lastIndex=0;
+ while((m=MASK_RE.exec(t))){out.push({at:m.index, len:m[0].length, word:m[0]});}
+ return out;}
+/* THE SENTENCE, ONE COPY, for every surface that takes a story. Plain words
+   per the ten year old ruling, and the word dictation unpacked where it
+   stands. Empty when nothing is hidden, so a caller prints it or prints
+   nothing and never a sentence about zero words. */
+function maskedSay(runs){
+ var n=(runs&&runs.length)||0; if(!n)return '';
+ var one=n===1;
+ return (one?'One word was':n+' words were')+' hidden behind stars before '
+  +(one?'it':'they')+' reached this page. Dictation, the speech to text on '
+  +'your device or in your browser, does that to words it counts as swearing. '
+  +'Nothing here changed '+(one?'it':'them')+', and the reading cannot see '
+  +(one?'it':'them')+'. Type each word over its stars and it will be read.';}
+/* ============================================================
    THE CLAUSE FLOOR. One shared primitive, built so srcNegated below and
    anything built on 20.G6 or 20.G7 later can all stop a backward read at a
    sentence boundary without a second normalised copy of the text.

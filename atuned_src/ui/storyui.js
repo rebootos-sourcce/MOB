@@ -153,6 +153,14 @@ function stRender(){
   +'<div class="st-ed"><div class="st-hl" id="sthl" aria-hidden="true"></div>'
   +'<textarea id="sttext" class="st-ta" spellcheck="false" aria-label="The day" '
   +'placeholder="What happened. Write it the way you would say it out loud.">'+esc(ST_TEXT)+'</textarea></div>'
+  /* WORDS DICTATION HID BEHIND STARS, said under the box they are in, round
+     QR. His own story arrived with whole words turned to stars by the speech
+     service and nothing on the page said so. The sentence and the rule are
+     the engine's (maskedRuns, maskedSay in engine/sniff.js); this is only
+     where it is shown. role=note, not a live region: the status line already
+     speaks once when a recording brings stars in, see stMic. */
+  +'<p class="st-mask" id="stmask" role="note"'+(maskedRuns(ST_TEXT).length?'':' hidden')+'>'
+   +esc(maskedSay(maskedRuns(ST_TEXT)))+'</p>'
   /* THE COUNTER UNDER THE JOURNAL IS GONE. Round HS, his words: "under the
      left window it says two words zero tag get rid of that so it's never
      there" It read "2 words, 0 tagged". The word count is a number nobody
@@ -469,8 +477,14 @@ function stCommit(){
     which is the one thing layout H exists to stop. */
  STV.focus=stPhone()?'write':'release';
  toYou();syncCh();if(typeof stRender==='function')stRender();render();
- status(k?'Committed. '+k+(k===1?' imprint':' imprints')+' written to the field.'
-  :'Kept. Nothing here read as charge, so nothing moved.');
+ /* A STORY KEPT WITH STARS IN IT SAYS SO, round QR. The person may choose
+    not to type the hidden words, and the entry is still theirs; it is kept
+    as it stands. What the line may not do is report the commit as if every
+    word had been read. */
+ var hid=maskedRuns(text).length;
+ status((k?'Committed. '+k+(k===1?' imprint':' imprints')+' written to the field.'
+  :'Kept. Nothing here read as charge, so nothing moved.')
+  +(hid?' '+hid+(hid===1?' word':' words')+' hidden behind stars by dictation could not be read.':''));
  if(typeof sfx==='function')sfx('kept');
  return {ok:true,k:k,kept:kept,bands:bands,text:text,t:entT};}
 
@@ -482,12 +496,19 @@ function stRefresh(){
  if(ap){ap.disabled=!ST_PARSED;
   ap.textContent='Commit'+(ST_PARSED&&ST_PARSED.imprints.length?' '+ST_PARSED.imprints.length:'');}
  stRead();
+ stMaskPaint();
  stFocus('write');
  /* the highlight is refreshed with the count, not with the whole surface,
     because stRefresh exists so typing never loses the caret. */
  stPaintHL();
  stPaintAll();
  if(keep){keep.focus(); try{keep.setSelectionRange(pos,pos);}catch(e){}}}
+/* the stars line under the box, kept in step with the text as it is typed
+   over, so it goes the moment the last hidden word has been typed in */
+function stMaskPaint(){
+ var e=document.getElementById('stmask'); if(!e)return;
+ var runs=maskedRuns(ST_TEXT);
+ e.hidden=!runs.length; e.textContent=maskedSay(runs);}
 /* everything below the sentence, off the one read */
 function stPaintAll(){
  STC.sync(); stRelayout();
@@ -1925,13 +1946,26 @@ function stMic(){
     sentence survives a pause. `live` is only ever the current interim
     phrase, shown but never kept until the browser itself marks it final. */
  var heard=ST_TEXT;
+ /* STARS FROM THE SPEECH SERVICE ARE SAID ONCE, round QR. The browser's
+    speech service filters what it counts as swearing before the words reach
+    this handler, and nothing here can undo it (maskedRuns, engine/sniff.js).
+    The line under the box says so for as long as stars are there; the status
+    line says it once, when a recording first brings new ones in, so a person
+    talking with their eyes off the screen still hears it. */
+ var hidAt=maskedRuns(heard).length;
  ST_REC.onresult=function(e){var fin='',live='';
   for(var i=e.resultIndex;i<e.results.length;i++){
    var t=e.results[i][0].transcript;
    if(e.results[i].isFinal) fin+=t; else live+=t;}
   if(fin) heard=(heard+' '+fin).trim();
   ST_TEXT=(heard+' '+live).trim();
-  ST_PARSED=ST_TEXT?parseStory(ST_TEXT):null; stRender();};
+  ST_PARSED=ST_TEXT?parseStory(ST_TEXT):null; stRender();
+  var hid=maskedRuns(heard).length;
+  if(fin&&hid>hidAt){
+   status('Dictation hid '+(hid-hidAt===1?'a word':(hid-hidAt)+' words')
+    +' behind stars. Type '+(hid-hidAt===1?'it':'them')+' over the stars to have '
+    +(hid-hidAt===1?'it':'them')+' read.','fail');
+   hidAt=hid;}};
  ST_REC.onend=function(){ST_LISTEN=false;ST_LISTEN_T0=null;stRender();};
  ST_REC.onerror=function(e){ST_LISTEN=false;ST_LISTEN_T0=null;stRender();
   stMicSay((e&&e.error)||'unknown');};

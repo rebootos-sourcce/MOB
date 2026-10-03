@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1471 d1594c9 2026-10-02 23:03"><head><meta charset="utf-8">
+<html lang="en" data-build="v1481 eacc3b0 2026-10-03 00:54"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -4128,6 +4128,10 @@ body.quiet .st-mic.on .st-dot::after,body.rm .st-mic.on .st-dot::after{animation
 .st-ta:focus{border-color:rgba(223,204,126,.48)}
 .st-ta::placeholder{color:var(--dim)}
 .st-bar{display:flex;align-items:center;gap:10px;margin-top:11px}
+/* words dictation hid behind stars, said where the words are (maskedRuns) */
+.st-mask{margin:10px 0 0;padding:8px 12px;border-left:2px solid var(--accent);
+ background:var(--sunk);border-radius:3px;font-size:13.5px;line-height:1.45;color:var(--mid)}
+.st-mask[hidden]{display:none}
 .st-ct{flex:1 1 auto;font-family:var(--num);font-size:12.5px;color:var(--dim)}
 /* ---------- the Story's rail, GO in TASKS.md ----------
    The imprints and the release live in the right rail on the Story and
@@ -21241,6 +21245,51 @@ function normMap(t){
  if(!prev){s+=' '; map.push(t.length);}
  return {s:s,map:map};}
 /* ============================================================
+   WORDS DICTATION HID BEHIND STARS. Round QR, 3 October: his own dictated
+   story on the Journal arrived as "I used to just ******* hate" and "I was
+   really ****** ***", whole words gone, with nothing on the page saying so.
+
+   THIS PRODUCT DID NOT DO IT. Searched: nothing in atuned_src masks a word.
+   Reproduced in Chromium with the recognizer stood in: whatever transcript the
+   speech service hands stMic lands in the box byte for byte, stars and swear
+   words alike. The stars are put there by the dictation service before the
+   words reach the page: Chrome's Web Speech API, Gboard voice typing and
+   other vendors' dictation all filter profanity by default, some keeping the
+   first letter ("s****") and some not ("*******"). The page cannot get the
+   word back. What it can do is notice, say so, and ask.
+
+   And it matters to the reading, not only to the record. normMap above turns
+   every star into a space, so a hidden word is not read as a gap, it is read
+   as nothing: "really ****** ***" reaches the scanner as "really", and
+   "really ****** furious" reaches it as "really furious", which puts the
+   degree word against a word the person did not put it against (24 read as
+   33.6, measured). The stars are not changed here; that is the scanner's own
+   rule and it is protected. The person is told, and can type the word.
+
+   A RUN IS TWO OR MORE STARS IN A ROW inside one word, with any letters the
+   service left on either side: "******", "s****", "f***ing". One star alone
+   is a person's own emphasis or a footnote, and is not flagged. Returns each
+   run with its raw offset, its length and the word as it stands, in order.
+   Pure: no host, nothing stored. */
+var MASK_RE=/[A-Za-z']*\*{2,}[A-Za-z'*]*/g;
+function maskedRuns(t){
+ t=String(t||''); var out=[], m;
+ MASK_RE.lastIndex=0;
+ while((m=MASK_RE.exec(t))){out.push({at:m.index, len:m[0].length, word:m[0]});}
+ return out;}
+/* THE SENTENCE, ONE COPY, for every surface that takes a story. Plain words
+   per the ten year old ruling, and the word dictation unpacked where it
+   stands. Empty when nothing is hidden, so a caller prints it or prints
+   nothing and never a sentence about zero words. */
+function maskedSay(runs){
+ var n=(runs&&runs.length)||0; if(!n)return '';
+ var one=n===1;
+ return (one?'One word was':n+' words were')+' hidden behind stars before '
+  +(one?'it':'they')+' reached this page. Dictation, the speech to text on '
+  +'your device or in your browser, does that to words it counts as swearing. '
+  +'Nothing here changed '+(one?'it':'them')+', and the reading cannot see '
+  +(one?'it':'them')+'. Type each word over its stars and it will be read.';}
+/* ============================================================
    THE CLAUSE FLOOR. One shared primitive, built so srcNegated below and
    anything built on 20.G6 or 20.G7 later can all stop a backward read at a
    sentence boundary without a second normalised copy of the text.
@@ -25860,7 +25909,7 @@ if(typeof module!=='undefined'&&module.exports){
      is one plain sentence, and so a tool can read the same table the page does. */
                   unpackAll:unpackAll, unpackOf:unpackOf, unpackKey:unpackKey,
                   compassPoleOf:compassPoleOf, compassPoleLines:compassPoleLines, POLE_MEANS:POLE_MEANS,
-  /* sniffer */   scanStory:scanStory, normMap:normMap, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory,
+  /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory,
                   wordsOf:wordsOf, unmarkedOf:unmarkedOf,
                   SOMA_SENSE:SOMA_SENSE, SOMA_PLACE_WORDS:SOMA_PLACE_WORDS, SOMA_PLACE_RULED:SOMA_PLACE_RULED, SOMA_PLACE:SOMA_PLACE, somaPlaces:somaPlaces,
                   LEX_VERSION:LEX_VERSION, LEXV_RE:LEXV_RE, lexVersion:lexVersion,
@@ -38459,6 +38508,14 @@ function stRender(){
   +'<div class="st-ed"><div class="st-hl" id="sthl" aria-hidden="true"></div>'
   +'<textarea id="sttext" class="st-ta" spellcheck="false" aria-label="The day" '
   +'placeholder="What happened. Write it the way you would say it out loud.">'+esc(ST_TEXT)+'</textarea></div>'
+  /* WORDS DICTATION HID BEHIND STARS, said under the box they are in, round
+     QR. His own story arrived with whole words turned to stars by the speech
+     service and nothing on the page said so. The sentence and the rule are
+     the engine's (maskedRuns, maskedSay in engine/sniff.js); this is only
+     where it is shown. role=note, not a live region: the status line already
+     speaks once when a recording brings stars in, see stMic. */
+  +'<p class="st-mask" id="stmask" role="note"'+(maskedRuns(ST_TEXT).length?'':' hidden')+'>'
+   +esc(maskedSay(maskedRuns(ST_TEXT)))+'</p>'
   /* THE COUNTER UNDER THE JOURNAL IS GONE. Round HS, his words: "under the
      left window it says two words zero tag get rid of that so it's never
      there" It read "2 words, 0 tagged". The word count is a number nobody
@@ -38775,8 +38832,14 @@ function stCommit(){
     which is the one thing layout H exists to stop. */
  STV.focus=stPhone()?'write':'release';
  toYou();syncCh();if(typeof stRender==='function')stRender();render();
- status(k?'Committed. '+k+(k===1?' imprint':' imprints')+' written to the field.'
-  :'Kept. Nothing here read as charge, so nothing moved.');
+ /* A STORY KEPT WITH STARS IN IT SAYS SO, round QR. The person may choose
+    not to type the hidden words, and the entry is still theirs; it is kept
+    as it stands. What the line may not do is report the commit as if every
+    word had been read. */
+ var hid=maskedRuns(text).length;
+ status((k?'Committed. '+k+(k===1?' imprint':' imprints')+' written to the field.'
+  :'Kept. Nothing here read as charge, so nothing moved.')
+  +(hid?' '+hid+(hid===1?' word':' words')+' hidden behind stars by dictation could not be read.':''));
  if(typeof sfx==='function')sfx('kept');
  return {ok:true,k:k,kept:kept,bands:bands,text:text,t:entT};}
 
@@ -38788,12 +38851,19 @@ function stRefresh(){
  if(ap){ap.disabled=!ST_PARSED;
   ap.textContent='Commit'+(ST_PARSED&&ST_PARSED.imprints.length?' '+ST_PARSED.imprints.length:'');}
  stRead();
+ stMaskPaint();
  stFocus('write');
  /* the highlight is refreshed with the count, not with the whole surface,
     because stRefresh exists so typing never loses the caret. */
  stPaintHL();
  stPaintAll();
  if(keep){keep.focus(); try{keep.setSelectionRange(pos,pos);}catch(e){}}}
+/* the stars line under the box, kept in step with the text as it is typed
+   over, so it goes the moment the last hidden word has been typed in */
+function stMaskPaint(){
+ var e=document.getElementById('stmask'); if(!e)return;
+ var runs=maskedRuns(ST_TEXT);
+ e.hidden=!runs.length; e.textContent=maskedSay(runs);}
 /* everything below the sentence, off the one read */
 function stPaintAll(){
  STC.sync(); stRelayout();
@@ -40231,13 +40301,26 @@ function stMic(){
     sentence survives a pause. `live` is only ever the current interim
     phrase, shown but never kept until the browser itself marks it final. */
  var heard=ST_TEXT;
+ /* STARS FROM THE SPEECH SERVICE ARE SAID ONCE, round QR. The browser's
+    speech service filters what it counts as swearing before the words reach
+    this handler, and nothing here can undo it (maskedRuns, engine/sniff.js).
+    The line under the box says so for as long as stars are there; the status
+    line says it once, when a recording first brings new ones in, so a person
+    talking with their eyes off the screen still hears it. */
+ var hidAt=maskedRuns(heard).length;
  ST_REC.onresult=function(e){var fin='',live='';
   for(var i=e.resultIndex;i<e.results.length;i++){
    var t=e.results[i][0].transcript;
    if(e.results[i].isFinal) fin+=t; else live+=t;}
   if(fin) heard=(heard+' '+fin).trim();
   ST_TEXT=(heard+' '+live).trim();
-  ST_PARSED=ST_TEXT?parseStory(ST_TEXT):null; stRender();};
+  ST_PARSED=ST_TEXT?parseStory(ST_TEXT):null; stRender();
+  var hid=maskedRuns(heard).length;
+  if(fin&&hid>hidAt){
+   status('Dictation hid '+(hid-hidAt===1?'a word':(hid-hidAt)+' words')
+    +' behind stars. Type '+(hid-hidAt===1?'it':'them')+' over the stars to have '
+    +(hid-hidAt===1?'it':'them')+' read.','fail');
+   hidAt=hid;}};
  ST_REC.onend=function(){ST_LISTEN=false;ST_LISTEN_T0=null;stRender();};
  ST_REC.onerror=function(e){ST_LISTEN=false;ST_LISTEN_T0=null;stRender();
   stMicSay((e&&e.error)||'unknown');};
@@ -61662,7 +61745,10 @@ function obRender(){
      own words exist before the engine reads them. */
   out=obCard('Story','What was happening?',
    '<p class="ob-p ob-dim">A sentence or two is enough. Your own words.</p>'
-   +'<div class="ob-f"><textarea id="obtext" rows="4" placeholder="What happened, and what it was like."></textarea></div>',
+   +'<div class="ob-f"><textarea id="obtext" rows="4" placeholder="What happened, and what it was like."></textarea></div>'
+   /* the same stars line the Journal carries, round QR: a keyboard's own
+      dictation types straight into this box and filters the same way */
+   +'<p class="st-mask" id="obmask" role="note" hidden></p>',
    '<button type="button" class="btn pri" id="obdone" data-ob="storydone" disabled>Done</button>'
    +'<button type="button" class="btn" data-ob="storyskip">I would rather not say</button>'
    +'<button type="button" class="btn" data-ob="back">Back</button>');
@@ -61675,9 +61761,12 @@ function obRender(){
  }
  h.innerHTML=out;
  var ta=document.getElementById('obtext');
+ var obMask=function(){var m=document.getElementById('obmask'); if(!m||!ta)return;
+  var runs=maskedRuns(ta.value); m.hidden=!runs.length; m.textContent=maskedSay(runs);};
  if(ta){ta.value=OB.text; ta.oninput=function(){
-   var go=document.getElementById('obdone'); if(go)go.disabled=(ta.value.trim().split(/\s+/).filter(Boolean).length<3);};
-  ta.focus();}
+   var go=document.getElementById('obdone'); if(go)go.disabled=(ta.value.trim().split(/\s+/).filter(Boolean).length<3);
+   obMask();};
+  obMask(); ta.focus();}
  var ci=document.getElementById('obcorr');
  if(ci){ci.oninput=function(){OB.corr=ci.value;};}
  var f=h.querySelector('.ob-scroll'); if(f)f.scrollTop=0;}
@@ -64248,5 +64337,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004202454"></div>
+<div id="eof" hidden data-len="004207995"></div>
 </body></html>

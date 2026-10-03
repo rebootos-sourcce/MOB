@@ -7029,5 +7029,33 @@ g('QD · every worked example\'s bank and vault, replayed through the real write
  reset();
 }
 
+g('QR · words dictation hid behind stars are found, said, and never changed');
+{
+ /* his own screenshot, round QR, word for word where the stars are */
+ const his='I used to just ******* hate him. I was really ****** ***.';
+ const r=E.maskedRuns(his);
+ ok(r.length===3,'his sentence carries three hidden words, '+r.length);
+ ok(r.map(x=>x.word).join('|')==='*******|******|***','each run is the stars as they stand: '+r.map(x=>x.word).join('|'));
+ ok(r.every(x=>his.substr(x.at,x.len)===x.word),'and every offset addresses the raw text, not the normalised copy');
+ /* the vendors that keep a letter, and a hidden stem */
+ ok(E.maskedRuns('that s**** again').map(x=>x.word).join()==='s****','a first letter kept by the service is part of the run');
+ ok(E.maskedRuns('so f***ing tired').map(x=>x.word).join()==='f***ing','a hidden middle with its ending is one run');
+ /* what is not a hidden word */
+ ok(E.maskedRuns('this * is a footnote and 5*3 is maths').length===0,'one star alone is a person\'s own, and is not flagged');
+ ok(E.maskedRuns('').length===0&&E.maskedRuns(null).length===0&&E.maskedSay([])==='','nothing hidden reads nothing, and says nothing');
+ /* the sentence, counted off the runs and never typed */
+ const one=E.maskedSay(E.maskedRuns('really ****** furious')), three=E.maskedSay(r);
+ ok(/^One word was hidden/.test(one)&&/^3 words were hidden/.test(three),'the sentence counts what is there: '+three.slice(0,30));
+ ok(/Dictation, the speech to text/.test(three),'and unpacks the word dictation where it stands');
+ ok(!/—/.test(one+three),'no em dash');
+ /* WHY IT MATTERS TO THE READING, held so a change to it is a named diff:
+    the scanner turns stars into spaces, so a hidden word between a degree word
+    and a feeling word puts the two side by side. Measured, not argued. */
+ const a=E.parseStory('I was really ****** furious').bands.solar||0, b=E.parseStory('I was really fucking furious').bands.solar||0;
+ ok(a>b,'stars close the gap the hidden word held: '+a.toFixed(1)+' against '+b.toFixed(1)+' with the word typed in');
+ /* AND THE ENGINE CENSORS NOTHING: it reads the stars and never writes them */
+ ok(E.maskedRuns('I was really pissed off').length===0,'an uncensored word is not a hidden one, and nothing here hides it');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);

@@ -209,7 +209,10 @@ function obRender(){
      own words exist before the engine reads them. */
   out=obCard('Story','What was happening?',
    '<p class="ob-p ob-dim">A sentence or two is enough. Your own words.</p>'
-   +'<div class="ob-f"><textarea id="obtext" rows="4" placeholder="What happened, and what it was like."></textarea></div>',
+   +'<div class="ob-f"><textarea id="obtext" rows="4" placeholder="What happened, and what it was like."></textarea></div>'
+   /* the same stars line the Journal carries, round QR: a keyboard's own
+      dictation types straight into this box and filters the same way */
+   +'<p class="st-mask" id="obmask" role="note" hidden></p>',
    '<button type="button" class="btn pri" id="obdone" data-ob="storydone" disabled>Done</button>'
    +'<button type="button" class="btn" data-ob="storyskip">I would rather not say</button>'
    +'<button type="button" class="btn" data-ob="back">Back</button>');
@@ -222,9 +225,12 @@ function obRender(){
  }
  h.innerHTML=out;
  var ta=document.getElementById('obtext');
+ var obMask=function(){var m=document.getElementById('obmask'); if(!m||!ta)return;
+  var runs=maskedRuns(ta.value); m.hidden=!runs.length; m.textContent=maskedSay(runs);};
  if(ta){ta.value=OB.text; ta.oninput=function(){
-   var go=document.getElementById('obdone'); if(go)go.disabled=(ta.value.trim().split(/\s+/).filter(Boolean).length<3);};
-  ta.focus();}
+   var go=document.getElementById('obdone'); if(go)go.disabled=(ta.value.trim().split(/\s+/).filter(Boolean).length<3);
+   obMask();};
+  obMask(); ta.focus();}
  var ci=document.getElementById('obcorr');
  if(ci){ci.oninput=function(){OB.corr=ci.value;};}
  var f=h.querySelector('.ob-scroll'); if(f)f.scrollTop=0;}
