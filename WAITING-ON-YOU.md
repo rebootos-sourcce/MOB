@@ -2,6 +2,16 @@
 
 One list, in the order I'd look at it if I were you. Each line says what I sent, and what I need back.
 
+## Read this one first. Your live site had a free paywall bypass and an XSS hole, and I already fixed both, but they're only live once you merge
+
+Found this round, by the paywall and schema reviews you asked for. Both were real and both were already deployed, since atuned.world went live earlier today.
+
+**What was wrong.** 1) Every visitor to the login screen could open "Developer options" and check a box called "Unlock all sight," which gave them a real, permanent tier-four account for free, no payment, no login, two clicks. 2) The quiz's record-link feature (`#r=`), which loads automatically when someone opens a link with no click needed, could carry a crafted record that runs script inside the app, able to read a person's stored data and sign-in token.
+
+**What I did.** Fixed both, verified the fixes actually work (not just that the code looks right), and opened the pull request: **https://github.com/rebootos-sourcce/MOB/pull/2**. Same as last time: I can't push straight to the live site myself, so this needs your merge click to actually take effect on atuned.world. Until you merge it, the free-unlock hole is still open on the real site.
+
+**What I need from you.** Merge that pull request as soon as you can. No question attached, nothing else blocking it.
+
 ## Read this one before anything else. This may still be live right now.
 
 Short version: a real public web link, with no password on it, has been sitting open for hours tonight, and it leads to the exact unsafe thing named below (J0). I found it, I stopped it from getting any worse, but I cannot make the already-open link close. Only you can do that part.

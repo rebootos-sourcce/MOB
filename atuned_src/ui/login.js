@@ -183,10 +183,28 @@ function devSightSet(on){
  DEV_SIGHT=!!on;
  try{ STORE.set('devsight',on?'on':'off'); }catch(e){}
  if(typeof render==='function')render();}
-/* DEVELOPER OPTIONS, DISCLOSED RATHER THAN ALWAYS VISIBLE: this is a
-   testing control, not a thing a stranger meeting the funnel needs to
-   see open by default. */
+/* DEVELOPER OPTIONS, GATED BEHIND A FLAG NO SHIPPED CONTROL CAN SET, ROUND
+   RA. The comment here used to say "disclosed rather than always visible,"
+   and the disclosure was real: the block was a collapsed <details>, closed
+   by default. But collapsed is not gated. Every visitor to the login card
+   got the same markup, open to a click, and one of its three switches is
+   "Unlock all sight," which lockPlan() (ui/lock.js) turns into a real tier
+   four grant, stored in the browser so it survives a reload. A stranger
+   meeting the funnel never needed to see this to use the product, and the
+   label "Developer options" is itself an invitation to try the switch
+   under it. Reviewed round RA, paywall seat: "the one thing that matters
+   most... taking money behind a lock the product unlocks itself."
+
+   The fix keeps the control, because the team still needs it, and removes
+   it from anyone who has not already turned it on from a console: devtoolsOn()
+   reads a second flag, never written by any rendered control, so turning
+   the panel on at all takes the same console access self-editing a record
+   already does (the privacy note above this function already treats that
+   as the person's own device, not an attack). */
+function devtoolsOn(){
+ try{ return STORE.get('devtools')==='on'; }catch(e){ return false; }}
 function loginDevOptions(){
+ if(!devtoolsOn())return '';
  return '<details class="login-dev">'
   +'<summary>Developer options</summary>'
   +'<label class="login-sw"><input type="checkbox" id="devob"'
