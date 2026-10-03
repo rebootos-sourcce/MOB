@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1475 999d40c 2026-10-02 23:36"><head><meta charset="utf-8">
+<html lang="en" data-build="v1476 70884c6 2026-10-03 00:27"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -6875,6 +6875,9 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
 .ob-f{margin:16px 0 4px}
 .ob-f label{display:block;font-size:12px;font-weight:600;color:var(--dim);
  letter-spacing:.06em;margin-bottom:6px}
+/* a field whose label is a question reads as one, in the same voice as the
+   questions with buttons beside it (ui/valuefelt.js, the middle of three) */
+.ob-f label.ob-qt{font-size:14px;font-weight:300;color:var(--ink);letter-spacing:0;margin-bottom:7px}
 /* SAID BEFORE THEY TYPE. Always these words, and never below the field. */
 .ob-warn{margin:0 0 8px;font-size:12.5px;color:var(--sacral);line-height:1.5}
 .ob-f textarea{width:100%;background:var(--sunk);border:1px solid var(--edge);
@@ -20097,7 +20100,7 @@ try{window.__at&&window.__at('engine/practice.js');}catch(e){}
    it travels there and not through a second path.
 
    WHEN IT IS ASKED. Read off the record and never stored: a release has run
-   (meter.relLines), nothing has been answered yet, and the first spoken line
+   (meter.relLines or meter.truthLines), nothing has been answered yet, and the first spoken line
    (meter.first) is inside the window. The window is what keeps this a
    measure of session one. Asked a month later it measures something else,
    so after the window it is never asked. A skip writes nothing, the same
@@ -20135,7 +20138,11 @@ function valueFeltRead(P){
 function valueFeltDue(p,now){
  if(!p||typeof p!=='object')return {due:false, why:'no record'};
  var m=p.meter||{};
- if(!(typeof m.relLines==='number'&&m.relLines>0))return {due:false, why:'no release yet'};
+ /* a release is either kind of line said: a run of reframe lines alone
+    adds to truthLines and leaves relLines at nothing, and it is still a
+    release the person ran */
+ var said=(typeof m.relLines==='number'?m.relLines:0)+(typeof m.truthLines==='number'?m.truthLines:0);
+ if(!(said>0))return {due:false, why:'no release yet'};
  if(valueFeltRead(p.practice).length)return {due:false, why:'answered'};
  var first=(typeof m.first==='string')?new Date(m.first).getTime():NaN;
  if(isNaN(first))return {due:false, why:'no time for the first release'};
@@ -62592,7 +62599,7 @@ function vfSheet(since){
   /* SAID BEFORE THEY ANSWER, not after */
   +'<p class="sh-p">Your answers stay on your record, in this browser. Nothing is sent.</p>'
   +'<div class="ob-qs">'+vfRow('value',VF_VALUE,VF_Q.value)+'</div>'
-  +'<div class="ob-f"><label for="vfwhy">'+esc(VF_Q.reason)+'</label>'
+  +'<div class="ob-f"><label class="ob-qt" for="vfwhy">'+esc(VF_Q.reason)+'</label>'
   +'<textarea id="vfwhy" maxlength="'+VF_REASON_MAX+'" rows="3"></textarea></div>'
   +'<div class="ob-qs">'+vfRow('again',VF_AGAIN,VF_Q.again)+'</div>'
   +'<div class="sh-act"><button class="btn pri" id="vfkeep" type="button"'
@@ -64472,5 +64479,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004215042"></div>
+<div id="eof" hidden data-len="004215574"></div>
 </body></html>

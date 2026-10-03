@@ -11713,7 +11713,7 @@ function practiceFromLegacy(p,plans,now){
    it travels there and not through a second path.
 
    WHEN IT IS ASKED. Read off the record and never stored: a release has run
-   (meter.relLines), nothing has been answered yet, and the first spoken line
+   (meter.relLines or meter.truthLines), nothing has been answered yet, and the first spoken line
    (meter.first) is inside the window. The window is what keeps this a
    measure of session one. Asked a month later it measures something else,
    so after the window it is never asked. A skip writes nothing, the same
@@ -11751,7 +11751,11 @@ function valueFeltRead(P){
 function valueFeltDue(p,now){
  if(!p||typeof p!=='object')return {due:false, why:'no record'};
  var m=p.meter||{};
- if(!(typeof m.relLines==='number'&&m.relLines>0))return {due:false, why:'no release yet'};
+ /* a release is either kind of line said: a run of reframe lines alone
+    adds to truthLines and leaves relLines at nothing, and it is still a
+    release the person ran */
+ var said=(typeof m.relLines==='number'?m.relLines:0)+(typeof m.truthLines==='number'?m.truthLines:0);
+ if(!(said>0))return {due:false, why:'no release yet'};
  if(valueFeltRead(p.practice).length)return {due:false, why:'answered'};
  var first=(typeof m.first==='string')?new Date(m.first).getTime():NaN;
  if(isNaN(first))return {due:false, why:'no time for the first release'};

@@ -244,6 +244,8 @@ FILES = {
     'funnel/about.html': (None, ('all', 'information'),
         'what the instrument is and how it works.'),
     'funnel/buy.html': (None, ('all', 'information'), 'the tiers, for money.'),
+    'funnel/faq.html': (None, ('all', 'information'),
+        'the questions page: ten asked before a person starts, answered with what the build does.'),
     'funnel/quiz.html': (None, ('stage', 'discovery'),
         'the web quiz: the door, the questions and the ring\'s reading.'),
     'funnel/questions.js': (None, ('all', 'discovery'),

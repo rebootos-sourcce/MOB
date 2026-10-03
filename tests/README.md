@@ -57,6 +57,27 @@ every hold. A held line changed by one word is caught again, and a hold whose
 line no longer ships fails the run until it is deleted. Nothing goes in
 `HELD` without his ruling. Read the counts off the run.
 
+## Value felt after session one
+
+Two gates for the measure in `reviews/ATUNED-Creative-Storyboard-TDD.md`
+section 49: after a person's first release, how valuable it was, why, and
+whether they would spend ten minutes on it again.
+
+    node tests/valuefelt.js
+    NODE_PATH=/opt/node22/lib/node_modules node tests/valuefeltui.js
+
+The first is headless and holds `engine/valuefelt.js`: when it is asked,
+the one writer, refusals by name with nothing clamped, and that a value
+report is never a graph edge. It runs the same suite on copies of the engine
+with one rule broken each, and every copy must fail.
+
+The second drives a real Chromium against `source.html` and holds
+`ui/valuefelt.js`: asked on the next open and never from the release code,
+never over a standing door, Skip writes nothing, Keep reaches the stored
+record, and an answered record is not asked again. It first runs the door
+check on a copy whose `vfBlocked` cannot see a dialog, and that copy must
+fail. Read the counts off the run.
+
 ## The front door
 
 The engine has one entrance and the three surfaces are separable, so each can be

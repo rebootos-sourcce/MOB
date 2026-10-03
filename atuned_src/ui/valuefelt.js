@@ -42,7 +42,7 @@ function vfSheet(since){
   /* SAID BEFORE THEY ANSWER, not after */
   +'<p class="sh-p">Your answers stay on your record, in this browser. Nothing is sent.</p>'
   +'<div class="ob-qs">'+vfRow('value',VF_VALUE,VF_Q.value)+'</div>'
-  +'<div class="ob-f"><label for="vfwhy">'+esc(VF_Q.reason)+'</label>'
+  +'<div class="ob-f"><label class="ob-qt" for="vfwhy">'+esc(VF_Q.reason)+'</label>'
   +'<textarea id="vfwhy" maxlength="'+VF_REASON_MAX+'" rows="3"></textarea></div>'
   +'<div class="ob-qs">'+vfRow('again',VF_AGAIN,VF_Q.again)+'</div>'
   +'<div class="sh-act"><button class="btn pri" id="vfkeep" type="button"'

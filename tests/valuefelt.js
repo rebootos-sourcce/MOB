@@ -55,6 +55,10 @@ function suite(E) {
   const d1 = E.valueFeltDue(prof(12, T0), at(0.1));
   ok(d1.due === true && d1.since === T0, 'a release inside the window is due, and says since when');
   ok(E.valueFeltDue(prof(12, T0), at(E.VF_WINDOW_DAYS + 0.5)).why === 'window closed', 'after the window it is not due');
+  /* a run of reframe lines alone adds to truthLines and not relLines, and it
+     is still a release the person ran */
+  ok(E.valueFeltDue({ meter: { relLines: 0, truthLines: 4, first: T0 }, practice: null }, at(0.1)).due === true,
+    'a release of reframe lines alone is due');
 
   /* 2. the writer */
   const P0 = E.practiceBlank();
@@ -108,6 +112,7 @@ function suite(E) {
    mutation tested nothing and the gate says so. */
 const MUTANTS = [
   ['the answered check removed', "if(valueFeltRead(p.practice).length)return {due:false, why:'answered'};", ''],
+  ['a release counted by its release lines only', "+(typeof m.truthLines==='number'?m.truthLines:0)", ''],
   ['the window removed', "if(t-first>VF_WINDOW_DAYS*864e5)", 'if(false)'],
   ['the reason clamped instead of refused', "if(why&&why.length>VF_REASON_MAX)\n    errs.push(", "if(why&&why.length>VF_REASON_MAX)\n    why=why.slice(0,VF_REASON_MAX); if(0)errs.push("],
   ['the dimension written as effect', "type:'internal', dimension:'affect',\n   pattern_id:null", "type:'internal', dimension:'effect',\n   pattern_id:null"],
