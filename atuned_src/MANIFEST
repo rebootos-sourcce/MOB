@@ -88,7 +88,6 @@ ui/personas.js
 ui/rootsum.js
 ui/loopread.js
 ui/railtiles.js
-ui/railwire.js
 ui/railmotion.js
 ui/onboard.js
 ui/login.js

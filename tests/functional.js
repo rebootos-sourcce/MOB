@@ -5415,25 +5415,31 @@ console.log('\n=== the orientation dial says nothing about an unread field ===')
  const dial=await pd.evaluate(async()=>{
   setTab(TAB.FIELD); loadP(0);
   await new Promise(r=>setTimeout(r,260));
+  /* ROUND RB: the dial is the rail's pair bar now, rbPair. Unread, it keeps
+     its two marks and names and prints a dash for each figure, and lays no
+     colour: the bar is .off and its fills are not drawn. */
   const pb=document.getElementById('polbar'), pol=document.getElementById('pol');
+  const bar=()=>pb&&pb.querySelector('.rb2');
+  const laid=()=>{const b=bar(); if(!b)return false; const l=b.querySelector('.rb2-l');
+   return !b.classList.contains('off')&&!!l&&getComputedStyle(l).display!=='none';};
   const blank={unread:!!compute().unread,
    text:pb?pb.textContent.replace(/\s+/g,''):null,
-   fill:!!(pb&&pb.querySelector('.fill')),
-   mid:!!(pb&&pb.querySelector('.mid')),
+   fill:laid(),
+   mid:!!(bar()&&bar().querySelector('.rb2-t')),
    h:pb?Math.round(pb.getBoundingClientRect().height):0,
-   title:pb?pb.title:'', pol:pol?pol.textContent.trim().slice(0,60):''};
+   title:bar()?bar().title:'', pol:pol?pol.textContent.trim().slice(0,60):''};
   loadP(PERSON('Gordon'));
   await new Promise(r=>setTimeout(r,260));
   const read={unread:!!compute().unread,
    text:pb?pb.textContent.replace(/\s+/g,''):null,
-   fill:!!(pb&&pb.querySelector('.fill')),
+   fill:laid(),
    h:pb?Math.round(pb.getBoundingClientRect().height):0};
   return {blank, read};});
  ok(dial.blank.unread,'an arrival who has entered nothing reads as unread');
- ok(dial.blank.text==='','and the dial prints no figure at all, got '
-  +JSON.stringify(dial.blank.text));
- ok(dial.blank.fill===false,'and draws no fill');
- ok(dial.blank.mid===true,'and keeps its centre line, so the trough is still a trough');
+ ok(!/\d/.test(dial.blank.text||'x')&&/Benign/.test(dial.blank.text)&&/Malignant/.test(dial.blank.text),
+  'and the bar prints no figure at all, only its two names and dashes, got '+JSON.stringify(dial.blank.text));
+ ok(dial.blank.fill===false,'and lays no colour');
+ ok(dial.blank.mid===true,'and keeps its track, so the bar is still a bar');
  ok(dial.blank.h>0,'and keeps its height, which the Field\'s layout is measured '
   +'against, got '+dial.blank.h);
  ok(/[Nn]othing read yet/.test(dial.blank.title),
@@ -5443,7 +5449,7 @@ console.log('\n=== the orientation dial says nothing about an unread field ===')
  ok(dial.read.unread===false&&/\d/.test(dial.read.text||''),
   'and a field that HAS been read still prints its figures, got '
   +JSON.stringify(dial.read.text));
- ok(dial.read.fill===true,'and still draws its fill');
+ ok(dial.read.fill===true,'and lays its colours');
  ok(dial.read.h===dial.blank.h,'and the two states are the same height, '
   +dial.read.h+' against '+dial.blank.h);
  console.log('  blank      '+JSON.stringify(dial.blank.text)+'  height '+dial.blank.h);
@@ -6339,38 +6345,52 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  /* the readings are in the left column, which a first visit lands on shut, GO,
     so it is opened the way a person opens it */
  await fp.click('#lfold'); await fp.waitForTimeout(300);
- /* ROUND OG: THE READINGS ARE BARS NOW. His words: "instead of the circles,
-    have those horizontal bars stacked on top of each other with the text,
-    with their name, and the color of the bar based off of the percent." The
-    geometry below is the bars': six rows in one column, in reading order,
-    each filled to its own figure and coloured from the wheel's ramp. Measured
-    after the first sight's sweep has finished, so the fill is the value and
-    not a frame on the way to it. */
+ /* ROUND OG AND ROUND RB: EVERY ELEMENT OF THE BLOCK IS ONE BAR. OG, his
+    words: "instead of the circles, have those horizontal bars stacked on top
+    of each other with the text, with their name, and the color of the bar
+    based off of the percent." RB: "This stack of elements should all be bar
+    style with the symbolic icon and the text inside of the bar itself to
+    maximize space. Coherence, decoherence is CQ and DQ is on the same bar."
+    So the block is eight bars in one column: the coherence and decoherence
+    pair, the five single readings, and the orientation and balance pairs.
+    Measured after the first sight's sweep has finished, so a fill is the
+    value and not a frame on the way to it. */
  const dock=await fp.evaluate(async()=>{const d=document.getElementById('fdock'),left=document.getElementById('lcol');
   await new Promise(r=>setTimeout(r,ENTER_SPAN+9*ENTER_STAGGER+250));
   const mid=r=>r.top+r.height/2;
+  const rows=[...d.querySelectorAll('.rbar,.rb2')].filter(e=>e.offsetParent), rr=rows.map(e=>e.getBoundingClientRect());
   const bars=[...d.querySelectorAll('.rbar')], rc=bars.map(e=>e.getBoundingClientRect());
   const R=compute(), f=flSpeed();
-  const want=[['Coherence',R.CQ,false],['Decoherence',R.DQ,true],['Vitality',R.X*100,false],['Awareness',R.Y*100,false],['Will',R.Z*100,false],['Flow',f*100,false]];
+  const want=[['Vitality',R.X*100],['Awareness',R.Y*100],['Will',R.Z*100],['Radiance',R.radiance*100],['Flow',f*100]];
+  const pairs=[...d.querySelectorAll('.rb2')];
   const bar={names:bars.map(e=>e.querySelector('.rb-n').textContent),
-   stacked:rc.every((r,i)=>i===0||r.top>=rc[i-1].bottom-0.5),
-   oneColumn:new Set(rc.map(r=>Math.round(r.left))).size===1&&new Set(rc.map(r=>Math.round(r.width))).size===1,
+   pairNames:pairs.map(p=>[...p.querySelectorAll('.rb2-n')].map(n=>n.textContent)),
+   stacked:rr.every((r,i)=>i===0||r.top>=rr[i-1].bottom-0.5),
+   oneColumn:new Set(rr.map(r=>Math.round(r.left))).size===1&&new Set(rr.map(r=>Math.round(r.width))).size===1,
+   heights:[...new Set(rr.map(r=>Math.round(r.height)))],
    fills:bars.map((e,i)=>Math.abs(parseFloat(e.querySelector('.rb-t i').style.width)-Math.max(0,Math.min(100,want[i][1])))<0.1),
-   colours:bars.map((e,i)=>e.style.getPropertyValue('--c')===rbCol(Math.max(0,Math.min(100,want[i][1])),want[i][2])),
-   tall:Math.min(...rc.map(r=>r.height)),
+   colours:bars.map((e,i)=>e.style.getPropertyValue('--c')===rbCol(Math.max(0,Math.min(100,want[i][1])),false)),
+   tall:Math.min(...rr.map(r=>r.height)),
    inside:bars.every(e=>{const b=e.getBoundingClientRect(),n=e.querySelector('.rb-n').getBoundingClientRect(),v=e.querySelector('.rb-v').getBoundingClientRect();
     return n.top>=b.top&&n.bottom<=b.bottom&&v.top>=b.top&&v.bottom<=b.bottom&&n.height<b.height;}),
+   /* in a pair, each pole's mark, name and figure sit inside the bar, at its
+      own end, the left pole left of the right one */
+   pairInside:pairs.every(p=>{const b=p.getBoundingClientRect(), ps=[...p.querySelectorAll('.rb2-p')].map(x=>x.getBoundingClientRect());
+    const ics=p.querySelectorAll('.rb2-p .rb-ic').length;
+    return ps.length===2&&ics===2&&ps.every(x=>x.top>=b.top-0.5&&x.bottom<=b.bottom+0.5&&x.left>=b.left&&x.right<=b.right)&&ps[0].right<ps[1].left;}),
    turns:bars.every((e,i)=>{const o=e.querySelector('.rb-over'),cs=getComputedStyle(o),base=getComputedStyle(e.querySelector('.rb-n')).color,
     over=getComputedStyle(o.querySelector('.rb-n')).color;
-    return cs.clipPath!=='none'&&base!==over&&Math.abs(parseFloat(e.style.getPropertyValue('--w'))-parseFloat(e.querySelector('.rb-t i').style.width))<0.1;})};
+    return cs.clipPath!=='none'&&base!==over&&Math.abs(parseFloat(e.style.getPropertyValue('--w'))-parseFloat(e.querySelector('.rb-t i').style.width))<0.1;}),
+   /* the wire is gone and gives its gutter back: nothing in the dock to the
+      left of the bars */
+   wire:!!d.querySelector('.rw-bus'), gutter:Math.round(rr[0].left-d.getBoundingClientRect().left)};
   const items=[...d.querySelectorAll('.kb, #accbtn')].map(e=>e.getBoundingClientRect());
-  const rows=[...new Set(items.map(r=>Math.round(mid(r))))].sort((a,b)=>a-b);
   const st=document.getElementById('stage'),s=st.getBoundingClientRect(),acc=document.getElementById('acc');
   const ac=document.querySelector('#accbtn .cr').getBoundingClientRect(),ab=acc.getBoundingClientRect();
   const zs=[...document.querySelectorAll('#fzoom .fb-b')].filter(x=>x.offsetParent).map(x=>x.getBoundingClientRect());
   const low=zs.sort((a,b)=>b.bottom-a.bottom)[0];
   return {inLeft:left.contains(d),inStage:st.contains(d),bar,
-   sq:!!document.querySelector('#fdock [data-q=sq]'),rows:rows.length,
+   sq:!!document.querySelector('#fdock [data-q=sq]'),
    sqElsewhere:/SQ/.test((document.querySelector('#fbar [data-fb=addresses]')||{}).getAttribute('data-tip')||''),
    keylo:left.contains(document.getElementById('keylo')),
    acc:{inStage:st.contains(acc),inLeft:left.contains(acc),
@@ -6379,13 +6399,17 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
     mirror:+Math.abs((ab.left-s.left)-(s.right-Math.max(...zs.map(r=>r.right)))).toFixed(2),
     overlay:typeof OVERLAY!=='undefined'&&OVERLAY.indexOf('acc')>=0}};});
  ok(dock.inLeft&&!dock.inStage&&dock.keylo,'the readings sit at the head of the left rail and none of them along the stage\'s foot');
- ok(JSON.stringify(dock.bar.names)==='["Coherence","Decoherence","Vitality","Awareness","Will","Flow"]',
-  'OG: six readings, CQ first, in reading order, as bars, '+JSON.stringify(dock.bar.names));
- ok(dock.bar.stacked&&dock.bar.oneColumn,'OG: stacked one on top of the next, in one column of one width, '+JSON.stringify({stacked:dock.bar.stacked,oneColumn:dock.bar.oneColumn}));
- ok(dock.bar.fills.every(Boolean),'OG: every bar is filled to its own figure, '+JSON.stringify(dock.bar.fills));
- ok(dock.bar.colours.every(Boolean),'OG: and coloured from the wheel\'s ramp by that figure, the shadow from its inverse, '+JSON.stringify(dock.bar.colours));
- ok(dock.bar.tall>=44,'OG: every row is a button at the 44px floor, shortest '+dock.bar.tall);
+ ok(JSON.stringify(dock.bar.names)==='["Vitality","Awareness","Will","Radiance","Flow"]',
+  'RB: five single readings in reading order, Radiance a bar among them, '+JSON.stringify(dock.bar.names));
+ ok(JSON.stringify(dock.bar.pairNames)==='[["Coherence","Decoherence"],["Benign","Malignant"],["Masculine","Feminine"]]',
+  'RB: three pairs, coherence and decoherence on one bar, '+JSON.stringify(dock.bar.pairNames));
+ ok(dock.bar.stacked&&dock.bar.oneColumn,'RB: all eight stacked one on top of the next, in one column of one width, '+JSON.stringify({stacked:dock.bar.stacked,oneColumn:dock.bar.oneColumn}));
+ ok(dock.bar.heights.length===1&&dock.bar.tall>=44,'RB: every bar the same height, at the 44px floor, '+JSON.stringify(dock.bar.heights));
+ ok(dock.bar.fills.every(Boolean),'OG: every single bar is filled to its own figure, '+JSON.stringify(dock.bar.fills));
+ ok(dock.bar.colours.every(Boolean),'OG: and coloured from the wheel\'s ramp by that figure, '+JSON.stringify(dock.bar.colours));
  ok(dock.bar.inside&&dock.bar.turns,'OG: the name and the number sit inside the bar, which is taller than the words, and the words turn colour at the fill\'s edge, '+JSON.stringify({inside:dock.bar.inside,turns:dock.bar.turns}));
+ ok(dock.bar.pairInside,'RB: in every pair both poles\' marks, names and figures sit inside the bar, each at its own end');
+ ok(!dock.bar.wire&&dock.bar.gutter<=1,'RB: the unnamed wire beside the bars is gone and its gutter with it, '+JSON.stringify({wire:dock.bar.wire,gutter:dock.bar.gutter}));
  ok(!dock.sq&&dock.sqElsewhere,'SQ is off the dock and only off the dock: the bar\'s Addresses circle still says SQ');
  ok(dock.acc.inStage&&!dock.acc.inLeft&&dock.acc.lowerLeft,
   'LR: accuracy lies on the stage in its lower left and not in the rail, '+JSON.stringify(dock.acc));
@@ -6393,58 +6417,79 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   'LR: accuracy\'s circle is level with the lowest zoom circle and as far in from the left as zoom is from the right, '+JSON.stringify(dock.acc));
  ok(dock.acc.overlay,'LR: and it is in OVERLAY, so the wheel measures its radius against it');
 
- /* THE CIRCLES MOVE INTO A CHANGED VALUE rather than snapping, EZ: "I want to
-    be able to see the animations on these." Sampled a frame after a load that
-    moves CQ: the ring is on its way and not yet at the end. */
+ /* THE BARS MOVE INTO A CHANGED VALUE rather than snapping, EZ: "I want to
+    be able to see the animations on these." Sampled a frame after a load
+    that moves the figure: a single bar's fill is on its way and not yet at
+    the end, and so is the coherence pole of the pair, whose notch lands on
+    the figure to the half pixel. */
  const mo=await fp.evaluate(async()=>{loadP(PERSON('Marcus'));render();
-  const bar=()=>document.querySelector('#fdock .rbar[data-q=cq] .rb-t i');
+  const bar=()=>document.querySelector('#keylo .rbar .rb-t i');
+  const cq=()=>{const m=RB2.cqdq;return m.l0+(m.l1-m.l0)*rbE3((performance.now()-m.t0)/m.dur);};
   await new Promise(r=>setTimeout(r,ENTER_SPAN+9*ENTER_STAGGER+250));
-  const was=parseFloat(bar().style.width); loadP(PERSON('James'));render();
-  const goal2=parseFloat(document.querySelector('#fdock .rbar[data-q=cq]').getAttribute('data-w'));
+  const was=parseFloat(bar().style.width), cqWas=cq(); loadP(PERSON('James'));render();
+  const goal2=parseFloat(document.querySelector('#keylo .rbar').getAttribute('data-w')), cqGoal=RB2.cqdq.l1;
   await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
-  const mid2=parseFloat(bar().style.width);
+  const mid2=parseFloat(bar().style.width), cqMid=cq();
   await new Promise(r=>setTimeout(r,ENTER_SPAN+120));
-  const end=parseFloat(bar().style.width);
-  return {was,goal2,mid2,end};});
+  const end=parseFloat(bar().style.width), cqEnd=cq();
+  const nl=document.querySelector('#fdock .rb2[data-pair=cqdq] .rb2-now.l'), w=RB2.cqdq.wpx;
+  const notch=parseFloat((nl.style.transform.match(/translate3d\(([-\d.]+)px/)||[])[1]);
+  return {was,goal2,mid2,end,cqWas,cqGoal,cqMid,cqEnd,notch,notchWant:compute().CQ*w/100};});
  ok(Math.abs(mo.goal2-mo.was)>1&&Math.abs(mo.mid2-mo.goal2)>0.5&&Math.abs(mo.mid2-mo.was)>0.01,
-  'a changed CQ sweeps, part way a frame in: from '+mo.was.toFixed(1)+' toward '+mo.goal2.toFixed(1)+', at '+mo.mid2.toFixed(1));
+  'a changed vitality sweeps, part way a frame in: from '+mo.was.toFixed(1)+' toward '+mo.goal2.toFixed(1)+', at '+mo.mid2.toFixed(1));
  ok(Math.abs(mo.end-mo.goal2)<0.05,'and lands exactly on its value, '+mo.end.toFixed(2)+' against '+mo.goal2.toFixed(2));
+ ok(Math.abs(mo.cqGoal-mo.cqWas)>1&&Math.abs(mo.cqMid-mo.cqGoal)>0.5&&Math.abs(mo.cqEnd-mo.cqGoal)<0.05,
+  'RB: the coherence pole sweeps too, from '+mo.cqWas.toFixed(1)+' through '+mo.cqMid.toFixed(1)+' to '+mo.cqEnd.toFixed(1));
+ ok(Math.abs(mo.notch-mo.notchWant)<=0.6,'RB: and its notch lands on the figure, '+mo.notch+'px against '+mo.notchWant.toFixed(1));
 
- /* ROUND OM AND OO, THE LEFT MENU RE-CUT. His words: "For coherence and
-    decoherence, the percent is fine. For shadow, have hashes for each of the
-    shadow chakra colors. And have those bars moving. Vertically. Flow. Let's
-    use an actual sine wave. When a person's sine wave is healthy, it ranges
-    full spectrum zero to one. Otherwise, we get to show how choppy it is. By
-    the weights of the chakra. Let's move masculine and feminine and benign
-    and malignant here." And OO: the animation in the left menu does not reach
-    into the centre pane. Held here: the six rows are still six rows; the
-    shadow row is seven hashes, one a seat in the seat's colour, each as high
-    as the charge on that seat's addresses; the flow row is a wave of seven
-    stretches whose range is the full zero to one when every seat passes
-    everything and is rougher and smaller when they do not; the two dials sit
-    in the block; the Awareness grids are folded to two lines on a first
-    visit; the word is Decoherence on the bar and on its circle; and nothing
-    of the menu is drawn on the stage. */
+ /* ROUND RB, THE PAIRS ARE DATA AND THEIR SWING IS THE FIELD'S. His words:
+    "opposing colors with the termination gradient as the oscillating the
+    numbers that the user oscillates ... It's data driven." Held here, on
+    Tomas, who carries the widest coherence band in the roster: the two
+    figures are CQ and DQ, each colour ends at its own figure, the coherence
+    edge moves and never leaves cqRange, the band the compass marker beside
+    the wheel rides, on the same drift; the decoherence edge never leaves the
+    shadow's own breath; orientation and balance are two shares of one whole
+    meeting at the left share; and under Quiet nothing swings. Also still
+    held from OM: Flow is a wave of seven stretches, one a seat, and a healthy
+    wave spans the whole range; the Awareness grids fold; nothing of the menu
+    is drawn on the stage. */
  const om=await fp.evaluate(async()=>{
   loadP(PERSON('Tomas'));setTab(TAB.FIELD);render();
-  await new Promise(r=>setTimeout(r,ENTER_SPAN+9*ENTER_STAGGER+7*70+300));
-  const dq=document.querySelector('#fdock .rbar[data-q=dq]'), fl=document.querySelector('#fdock .rbar[data-q=flow]');
-  const hs=[...dq.querySelectorAll('.rb-hash b')].map(b=>parseFloat((b.style.transform.match(/scaleY\(([\d.]+)\)/)||[])[1]));
-  const want=rbSeatShadow().map(v=>Math.min(1,v*RB_GAIN));
-  const cols=[...dq.querySelectorAll('.rb-hash s')].map(e=>e.style.getPropertyValue('--k'));
-  const seatCols=BANDS.map(b=>seatCol(b));
+  await new Promise(r=>setTimeout(r,ENTER_SPAN+9*ENTER_STAGGER+300));
+  const R=compute(), L=leanRead(R), b=R.balance, bt=b.outMean+b.inMean;
+  const pair=k=>document.querySelector('#fdock .rb2[data-pair='+k+']');
+  const figs=k=>[...pair(k).querySelectorAll('.rb2-v')].map(v=>v.textContent);
+  const px=(el,sel)=>parseFloat((el.querySelector(sel).style.transform.match(/translate3d\(([-\d.]+)px/)||[])[1]);
+  /* where the colour's edge is, as a share of the bar, read off what was
+     written: the left layer's end less half its fade, the right's start
+     plus half */
+  const edges=()=>{const m=RB2.cqdq, w=m.wpx, el=pair('cqdq');
+   return {l:(px(el,'.rb2-l')/w*100)+100-m.fl/2, r:100-((px(el,'.rb2-r')/w*100)+m.fr/2)};};
+  const rg=cqRange(R.CQ), amp=R.DQ*PUL_WAVE*clamp(R.DQ/100,0,1);
+  const ls=[], rs=[];
+  for(let i=0;i<24;i++){await new Promise(r=>setTimeout(r,125)); const e=edges(); ls.push(e.l); rs.push(e.r);}
+  document.body.classList.add('quiet'); rbPairTick(performance.now());
+  await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+  const q1=edges(); await new Promise(r=>setTimeout(r,600)); const q2=edges();
+  document.body.classList.remove('quiet');
+  const fl=document.querySelector('#fdock .rbar[data-q=flow]');
   const ys=pass=>rbWavePts(pass).pts.map(p=>p[1]);
   const full=ys([1,1,1,1,1,1,1]), tom=ys(rbSeatPass());
   const span=a=>Math.max(...a)-Math.min(...a), rough=a=>a.slice(1).reduce((t,v,i)=>t+Math.abs(v-a[i]),0);
   const dock=document.getElementById('fdock');
-  return {rows:dock.querySelectorAll('.rbar').length,
-   hashes:hs.length,hashOk:hs.every((v,i)=>Math.abs(v-want[i])<0.02),hashCols:cols.join()===seatCols.join(),
-   hashMoves:getComputedStyle(dq.querySelector('.rb-hash u')).animationName,
-   dqName:dq.querySelector('.rb-n').textContent,dqTall:dq.getBoundingClientRect().height,dqFill:!!dq.querySelector('.rb-t i'),
+  const lean=pair('lean'), bal=pair('bal'), lw=RB2.lean.wpx, bw=RB2.bal.wpx;
+  return {cq:R.CQ, dq:R.DQ, figs:figs('cqdq'), lean:figs('lean'), bal:figs('bal'),
+   ben:L.ben, mal:L.mal, masc:bt?b.outMean/bt*100:50,
+   lo:rg.lo, hi:rg.hi, lmin:Math.min(...ls), lmax:Math.max(...ls), amp, rmin:Math.min(...rs), rmax:Math.max(...rs),
+   quiet:{l:Math.abs(q1.l-q2.l), r:Math.abs(q1.r-q2.r), atL:Math.abs(q1.l-R.CQ), atR:Math.abs(q1.r-R.DQ)},
+   leanNotch:px(lean,'.rb2-now.l')/lw*100, balNotch:px(bal,'.rb2-now.l')/bw*100,
+   cqHalves:[...pair('cqdq').querySelectorAll('.rb2-k')].map(k=>k.getAttribute('data-q')).join(),
+   balHost:!!bal.closest('#bal'), axpick:!!document.getElementById('axpick'),
    segs:fl.querySelectorAll('path.wv').length,flTall:fl.getBoundingClientRect().height,
    healthySpan:+span(full).toFixed(1),healthyRough:+rough(full).toFixed(0),tomSpan:+span(tom).toFixed(1),tomRough:+rough(tom).toFixed(0),
    range:RB_WV.H-6,
-   dials:dock.contains(document.getElementById('polbar'))&&dock.contains(document.getElementById('bal'))&&dock.contains(document.getElementById('axpick')),
+   dials:dock.contains(document.getElementById('polbar'))&&dock.contains(document.getElementById('bal')),
    oldSection:!!document.querySelector('.lsec[data-sec=lean]'),
    soulOpen:document.querySelector('.lsec[data-sec=soul]').classList.contains('open'),
    fold:[...document.querySelectorAll('#awsum .aw-r')].map(b=>{const r=b.getBoundingClientRect();return [b.getAttribute('data-aw'),Math.round(r.height),Math.round(r.width)];}),
@@ -6452,10 +6497,20 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
    shadowCircle:(document.querySelector('#fbar [data-fb=shadow]')||{getAttribute:()=>''}).getAttribute('aria-label'),
    overlay:!!document.getElementById('rlink'),
    rail2:document.body.classList.contains('rail2')};});
- ok(om.rows===6&&om.dqName==='Decoherence'&&om.dqFill,'OM: still six rows, and the shadow row is called Decoherence and still carries its fill element, '+JSON.stringify([om.rows,om.dqName,om.dqFill]));
- ok(om.hashes===7&&om.hashOk&&om.hashCols,'OM: Decoherence is seven hashes in the seven seat colours, each as high as its seat\'s charge, '+om.hashes);
- ok(om.hashMoves!=='none'&&om.dqTall>=44,'OM: and they move, '+om.hashMoves+', in a row of '+om.dqTall+'px');
- ok(om.segs===7&&om.flTall>=44,'OM: Flow is a wave of seven stretches, one a seat, in a row of '+om.flTall+'px');
+ ok(om.figs.join()===Math.round(om.cq)+'%,'+Math.round(om.dq)+'%','RB: the pair prints CQ and DQ, '+om.figs.join(' and '));
+ ok(om.cqHalves==='cq,dq','RB: and each half is its own door, coherence left and decoherence right, '+om.cqHalves);
+ ok(om.lmin>=om.lo-0.6&&om.lmax<=om.hi+0.6&&om.lmax-om.lmin>1,
+  'RB: the coherence edge swings, '+om.lmin.toFixed(1)+' to '+om.lmax.toFixed(1)+', and never leaves the band coherence wanders in, '
+  +om.lo.toFixed(1)+' to '+om.hi.toFixed(1));
+ ok(om.rmin>=om.dq-om.amp-0.6&&om.rmax<=om.dq+om.amp+0.6,
+  'RB: the decoherence edge stays inside the shadow\'s own breath, '+om.rmin.toFixed(1)+' to '+om.rmax.toFixed(1)+' about '+om.dq.toFixed(1)+' plus or minus '+om.amp.toFixed(1));
+ ok(om.quiet.l<0.6&&om.quiet.r<0.6&&om.quiet.atL<0.6&&om.quiet.atR<0.6,'RB: under Quiet nothing swings and each edge rests on its figure, '+JSON.stringify(om.quiet));
+ ok(om.lean.join()===Math.round(om.ben)+'%,'+Math.round(om.mal)+'%'&&Math.abs(om.leanNotch-om.ben)<0.6,
+  'RB: orientation is benign against malignant, meeting at the benign share, '+om.lean.join(' and ')+' at '+om.leanNotch.toFixed(1));
+ ok(om.bal.join()===Math.round(om.masc)+'%,'+Math.round(100-om.masc)+'%'&&Math.abs(om.balNotch-om.masc)<0.6,
+  'RB: balance is masculine against feminine, meeting at the masculine share, '+om.bal.join(' and ')+' at '+om.balNotch.toFixed(1));
+ ok(om.balHost&&!om.axpick,'RB: balance is pressed as one by its host, and the switch between two dial designs is gone');
+ ok(om.segs===7&&om.flTall>=44&&om.flTall<=46,'RB: Flow\'s wave of seven stretches, one a seat, rides inside a 44px bar, '+om.flTall+'px');
  ok(Math.abs(om.healthySpan-om.range)<1.5&&om.healthyRough<om.tomRough&&om.tomSpan<om.healthySpan,
   'OM: a healthy wave spans the whole range, '+om.healthySpan+' of '+om.range+', and a heavy person\'s is smaller, '+om.tomSpan+', and rougher, '+om.tomRough+' against '+om.healthyRough);
  ok(om.dials&&!om.oldSection,'OM: orientation and balance sit in the block with the readings, and their old section is gone');
@@ -6752,24 +6807,23 @@ console.log('\n=== FJ: words with the zoom, layers that move, one dial in two de
  const land=await fj.evaluate(async()=>{await new Promise(r=>setTimeout(r,700));layPick(1);await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
   const v=LAYF.archetypes.v; layPick(3); return v;});
  ok(land===0,'a depth set by the program lands on the next frame, archetypes read '+land);
- /* ONE DIAL, TWO DESIGNS. Both dials take the pick, the fill runs toward the
-    heavier end on both, and the pick is kept */
- for(const d of ['bar','arc']){
-  const o=await fj.evaluate(d=>{axdSet(d);const q=id=>{const h=document.getElementById(id);
-   const f=[...h.querySelectorAll('.fill')];
-   return {kind:h.querySelector('.ax').className,figs:[...h.querySelectorAll('.lb b')].map(b=>+b.textContent),
-    on:(h.querySelector('.lb.on')||{}).className||'',
-    fill:d==='bar'?(f[0]&&f[0].getAttribute('class')):f.filter(x=>parseFloat(x.style.strokeDasharray)>0).map(x=>x.getAttribute('class')).join()};};
-   return {pol:q('polbar'),bal:q('bal'),stored:STORE.get('axdial'),
-    pressed:[...document.querySelectorAll('#axpick [data-axd]')].map(b=>b.getAttribute('aria-checked')).join()};},d);
+ /* ONE MECHANIC, ONE DRAWING. FJ ruled orientation and balance the same
+    mechanic; round RB made both, and coherence against decoherence, the
+    rail's one pair bar. Each pair's two figures are two shares of one whole,
+    and the heavier pole's colour reaches past the middle toward the lighter
+    end. The two dial designs and their switch are gone with the dial. */
+ {const o=await fj.evaluate(async()=>{setTab(TAB.FIELD);render();
+   if(document.body.classList.contains('lshut')){document.getElementById('lfold').click();}
+   await new Promise(r=>setTimeout(r,ENTER_SPAN+9*ENTER_STAGGER+300));
+   const q=k=>{const m=RB2[k], el=document.querySelector('#fdock .rb2[data-pair='+k+']');
+   return {figs:[...el.querySelectorAll('.rb2-v')].map(v=>parseFloat(v.textContent)),
+    meet:parseFloat((el.querySelector('.rb2-now.l').style.transform.match(/translate3d\(([-\d.]+)px/)||[])[1])/m.wpx*100};};
+   return {pol:q('lean'),bal:q('bal'),axpick:!!document.getElementById('axpick')};});
   for(const k of ['pol','bal']){const x=o[k],sum=x.figs[0]+x.figs[1];
-   ok(x.kind.indexOf('ax-'+d)>=0,d+': '+k+' is drawn as the '+d+', '+x.kind);
-   ok(x.figs.length===2&&Math.abs(sum-100)<=1,d+': '+k+' carries two shares of one whole, '+x.figs.join(' and '));
+   ok(x.figs.length===2&&Math.abs(sum-100)<=1,'RB: '+k+' carries two shares of one whole, '+x.figs.join(' and '));
    const heavy=x.figs[0]>x.figs[1]?'l':'r';
-   ok((x.on.indexOf(' '+heavy)>=0||x.figs[0]===x.figs[1])&&x.fill.indexOf(heavy==='l'?'lt':'rt')>=0,
-    d+': '+k+' fills toward its heavier end, '+heavy+', fill '+x.fill);}
-  ok(o.stored===d&&o.pressed===(d==='bar'?'true,false':'false,true'),d+': the pick is kept and the switch says which, '+o.stored+' '+o.pressed);}
- await fj.evaluate(()=>axdSet('bar'));
+   ok(x.figs[0]===x.figs[1]||(heavy==='l'?x.meet>50:x.meet<50),'RB: '+k+'\'s heavier pole reaches past the middle, '+heavy+', meeting at '+x.meet.toFixed(1));}
+  ok(!o.axpick,'RB: there is one design, so there is no switch');}
  ok(ferr.length===0,'FJ: no errors, '+ferr.join(' | '));
  await fj.close();
 }

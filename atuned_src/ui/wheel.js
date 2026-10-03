@@ -65,7 +65,12 @@ function drawAura(r){
   [.09,.83+Math.sin(t*.6)*.05],[.91,.79+Math.cos(t*.9)*.05]].forEach(function(xy,i){
   const c=i%2?warm:lead;
   const gr=bgx.createRadialGradient(xy[0]*w,xy[1]*h,0,xy[0]*w,xy[1]*h,Math.max(w,h)*(.28+dens*.36));
-  gr.addColorStop(0,rgba(c,.40*dens));gr.addColorStop(1,rgba(c,0));
+  /* A SHOULDER, round RB: "the heat map needs to be sharper, brighter." The
+     lobe was a straight fade from .40 to nothing, which at an eighth scale
+     stretched up has no edge anywhere. It holds most of its strength to
+     .45 of its reach now and falls from there, and its peak is a step
+     brighter, so each lobe reads as a region with a border. */
+  gr.addColorStop(0,rgba(c,.46*dens));gr.addColorStop(.45,rgba(c,.30*dens));gr.addColorStop(1,rgba(c,0));
   bgx.fillStyle=gr;bgx.fillRect(0,0,w,h);});}
 
 /* ---- CQ. the core. saturation and size are coherence. ---- */
@@ -1167,6 +1172,84 @@ function fringeDraw(shell){
    g.beginPath(); g.arc(CX,CY,ro+4+pos*gap,n.ang-half,n.ang+half);
    g.strokeStyle=rgba(k%2?c:lift,al); g.lineWidth=(k%2?1.1:1.6)*(0.8+0.4*n.frStr); g.stroke();}}
  g.restore();}
+/* ============================================================
+   THE HEAT, TRACED, round RB. His words, on the Field: "the heat map is
+   present. It's just not defined very well. So the heat map needs to be
+   sharper, brighter. Almost trace the areas that are affected."
+
+   The heat he could see is the Decoherence layer, the wash behind
+   everything (drawAura, above), and it could not do what he asked: it is
+   painted at an eighth of the screen and stretched, which is what makes it
+   soft, and its four lobes sit in the four corners of the page whatever the
+   person carries, so it says how much and never where. This draws the where,
+   on the wheel, at full resolution, as part of the same layer: the
+   Decoherence switch on the glass bar takes both.
+
+   WHAT IS DRAWN. Round the outside of the ring, a contour whose height at
+   each address is the charge held there, so the outline of the heat is the
+   outline of the load: a lobe stands out over a run of carrying addresses
+   and lies flat on the ring where nothing is held. Each address keeps its
+   own peak and lends a falling share to its neighbours (a dilation, not an
+   average, so one heavy address still reads at its own height), which joins
+   a cluster into one shape. The colour round the contour is each address's
+   own seat colour, and its strength is the charge, so a light load is a
+   faint trace and a heavy one a bright edge. A crisp line traces the edge,
+   a wider soft one under it carries the glow, and the inside is a thin wash
+   of the same colours. Nothing else: no blur filter and no shadow, which are
+   the two things that cost the wash its frame rate before.
+
+   IT BREATHES ON THE FIELD'S CLOCK, address by address on the seat wave the
+   fringes and the rail's tiles already take (4.2 seconds, the phase
+   stepping 0.12 an address), so the bright edge travels the ring the way the
+   rest of the Field does. Reduced motion gets the trace at its strength and
+   no breath.
+
+   COST. One path of 216 curve segments, three conic gradients of 108 stops,
+   two strokes and a fill a frame, against a wheel already drawing every
+   frame. Where conic gradients are missing the trace is not drawn, and the
+   wash still is. */
+var HEAT_REACH=0.115, HEAT_SPREAD=2.2;
+var HEAT_K=(function(){var k=[];for(var j=-6;j<=6;j++)k.push(Math.exp(-(j*j)/(2*HEAT_SPREAD*HEAT_SPREAD)));return k;})();
+function heatTrace(shell){
+ var N=W.length; if(!N||typeof g.createConicGradient!=='function')return;
+ var raw=new Array(N), p=new Array(N), i, j, any=0;
+ for(i=0;i<N;i++){var n=W[i]; raw[i]=clamp((+n.disp||0)/10,0,1)*enterSeat(n.b); if(raw[i]>any)any=raw[i];}
+ if(any<0.02)return;
+ for(i=0;i<N;i++){var m=0;
+  for(j=-6;j<=6;j++){var v=raw[(i+j+N)%N]*HEAT_K[j+6]; if(v>m)m=v;}
+  p[i]=m;}
+ var t=REDUCED?0:S.t, lt=LIGHT(), reach=U*HEAT_REACH;
+ var rIn=function(i){return shell+(W[i].frB||0)+2;};
+ var rOut=function(i){return rIn(i)+2+reach*Math.pow(p[i],0.8);};
+ var a0=W[0].ang-TAU/N/2, step=TAU/N;
+ /* the colour round the ring, one stop an address, each at its own charge */
+ var conic=function(scale){var gr=g.createConicGradient(a0,CX,CY), first=null;
+  for(var q=0;q<N;q++){var c=bc(W[q].b), cc=lt?mixc(c,[0,0,0],.12):mixc(c,[255,255,255],.22);
+   var br=REDUCED?1:0.8+0.2*Math.sin(TAU*t/4.2-q*0.12);
+   /* lifted at the light end, so a load of two out of ten is a visible
+      edge and not a guess: the height of the contour stays the charge */
+   var al=clamp(scale*Math.min(1,1.15*Math.pow(p[q],0.55))*br,0,1), col=rgba(cc,al);
+   if(q===0)first=col;
+   gr.addColorStop((q+0.5)/N,col);}
+  gr.addColorStop(0,first); gr.addColorStop(1,first); return gr;};
+ /* the outline, smoothed through the midpoints so it reads as a drawn edge
+    and not as a polygon at any zoom */
+ var pt=function(i,r){var a=W[i].ang;return [CX+Math.cos(a)*r,CY+Math.sin(a)*r];};
+ var outer=function(){var P=[];for(var q=0;q<N;q++)P.push(pt(q,rOut(q)));
+  var m0=[(P[N-1][0]+P[0][0])/2,(P[N-1][1]+P[0][1])/2]; g.moveTo(m0[0],m0[1]);
+  for(var q2=0;q2<N;q2++){var a=P[q2], b=P[(q2+1)%N]; g.quadraticCurveTo(a[0],a[1],(a[0]+b[0])/2,(a[1]+b[1])/2);}};
+ g.save(); g.lineJoin='round';
+ /* the inside: between the ring and the outline, a thin wash */
+ g.beginPath(); outer(); g.closePath();
+ /* the ring is its own subpath, begun with a move, so nothing joins it to the
+    outline and the even odd rule leaves exactly the band between */
+ for(i=N-1;i>=0;i--){var pi=pt(i,rIn(i)); if(i===N-1)g.moveTo(pi[0],pi[1]); else g.lineTo(pi[0],pi[1]);}
+ g.closePath(); g.fillStyle=conic(lt?0.26:0.3); g.fill('evenodd');
+ /* the glow under the edge, then the edge */
+ g.beginPath(); outer(); g.closePath();
+ g.strokeStyle=conic(lt?0.16:0.2); g.lineWidth=7; g.stroke();
+ g.strokeStyle=conic(lt?0.9:1); g.lineWidth=1.6; g.stroke();
+ g.restore();}
 /* the words' strength for this frame, off the wheel's own zoom, and put back
    whatever happens inside, so a throw cannot leave the next surface faded */
 function drawWheel(r,L){
@@ -1421,6 +1504,9 @@ function drawWheel0(r,L){
 
  /* --- THE SHELL. 108 addresses. SQ. present at every depth. --- */
  const fg=fetA(0), fn=fetA(1);
+ /* the heat, traced round the ring where the charge sits, under the fringes
+    and the addresses, as part of the Decoherence layer (heatTrace above) */
+ lay('shadow',()=>heatTrace(R.shell));
  lay('addresses',()=>fringeDraw(R.shell));
  lay('addresses',()=>W.forEach(n=>{
   /* its seat's turn to arrive. Nothing is drawn before its turn, which is

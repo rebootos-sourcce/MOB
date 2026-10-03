@@ -356,6 +356,36 @@ it and the shelf under them (FT21, FT28); the marks took the points TDD's slice
 0 in engine/ladder.js. Suggested cards wear their seat's colour and the seat's
 or the pattern's mark (FT27). Gate: tests/flowtools.js.
 
+## 2026-10-03 · owner · the Field's left rail, one bar style, and the heat
+
+said: "every single element looks completely different. Orientation, radiance,
+vitality, awareness, decoherence, and even that. I don't know what this blue and
+red bar pulsating on the left side of them that was vertical. I don't even know
+what that is, it doesn't have, doesn't say anything. This stack of elements
+should all be bar style with the symbolic icon and the text inside of the bar
+itself to maximize space. Coherence, decoherence is CQ and DQ is on the same
+bar. As opposing colors with the termination gradient as the oscillating the
+numbers that the user oscillates." And: "the heat map needs to be sharper,
+brighter. Almost trace the areas that are affected."
+read: the readings block was five drawings: fill bars, a row of seven hashes
+for decoherence, a wave row with no fill, a line of small type for radiance,
+and two dials with headings over them, pole names under them and a switch
+between two designs. The vertical thing beside them was the wire the rows hung
+on, coloured by the rows, carrying pulses, with no word anywhere. The heat was
+the Decoherence wash, painted at an eighth scale with its lobes in the four
+corners whatever the person carries.
+change: round RB, branch claude/rb-field-rail-bars. Every element is one 44px
+bar with its mark, name and figure inside it. Three pairs are one component,
+rbPair: coherence against decoherence, benign against malignant, masculine
+against feminine, each pole's colour pressing in from its own end, the edge
+fading over and travelling the range the reading swings by (cqRange on the
+compass marker's own drift, the shadow's own breath, orientation through
+coherence; balance holds still because nothing moves it). Radiance is a bar;
+Flow's wave rides inside its bar. The wire is gone. On the wheel the
+Decoherence layer now traces the load round the ring, heatTrace. Five further
+options for the Field's motion are in PLAN.md section N, not built. Gates:
+tests/functional.js, tests/design.js.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.
