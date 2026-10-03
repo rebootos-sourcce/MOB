@@ -32462,3 +32462,9 @@ What they ask for, read once already: a new pre-story beat ("Signal Test": notic
 Separately, a real bug, shown rather than described: his screenshot of the Journal page shows his own story dictation with chunks replaced by asterisks ("I used to just ******* hate", "I was really ****** ***"), whole verbs and feelings gone, with his own red underlines marking exactly where. Something between dictation and the story field is masking words as profanity before the sniffer ever sees them, which is not a sniffer accuracy problem, it is the sniffer being handed a censored sentence and asked to read it anyway. Folded into the same dispatch as a concrete defect to trace and fix, not theoretical.
 
 His closing instruction is new and kept going forward: when something is ready, he wants a link, not only a file. The already-standing rule against this branch's own public auto-deploy (J0 still open) still holds, so the link is a published Artifact of the build, a separate, safe channel that needs no deploy and carries no public exposure, not the live site.
+
+## Round QR, continued: model accuracy, variance, and why
+
+His words, verbatim: "One note for the accuracy. I want you to show model accuracy. Plus the variance. And then the tooltip, I want the Y behind the variance. To see if it's a user input thing or if it's a code thing. Continue."
+
+Read as an addition to the same sniffer-enhancement thread: whatever reading the sniffer gives should carry its own accuracy and variance alongside it, not just the number, and a tooltip on the variance should say which of the two it is, something the person said or wrote being unclear, or something the algorithm itself is uncertain about. Routed to the audit agent already running on the Next AI handoff and the masking bug, since distinguishing a user-input cause from a code cause is the same question that bug already turns on. Not a new dispatch, an addendum to the one in flight.
