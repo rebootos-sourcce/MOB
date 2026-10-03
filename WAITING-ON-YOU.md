@@ -63,7 +63,16 @@ What still stands regardless of that: the detector itself (invisible, shows noth
 
 11. **Stripe**: the four products are made (test mode), the portal, cancel, renewal and the double-bill fix are all built and pushed to the server's own branch. What's left, only you can do: a Stripe test key in this environment's secrets so it can be proven end to end against the real Stripe rather than a fake one, and the decision to actually deploy (push that branch to `main`, which goes live) once you've looked.
 12. **Google OAuth**: now a build item per round PW. Client ID and secret, steps in `API-SETUP-NOW.md`, resend if you want it again.
-13. **Discord**: you asked for a feedback form that posts to a Discord channel, and a Discord connection so users can reach the community, and asked how to set it up. Short answer: both are buildable. What I need from you to wire the feedback form: a Discord webhook URL (Discord: open the server, Server Settings, Integrations, Webhooks, New Webhook, name it, pick the channel, Copy Webhook URL, paste it to me or set it as a secret, never post it in a public channel since anyone with it can post as that webhook). For the community connection: a standing invite link to your Discord server (right click the server name, Invite People, copy the link; set it to never expire if you want it permanent), which I put on a button in the app. If you don't have a Discord server yet for this, that's step zero, on your side, Discord.com, Add a Server.
+13. **Discord: both pieces are now built and pushed, branch `claude/discord-feedback`, not merged. One click-by-click step is all that's left.** The feedback form, the profile menu row, and the "Join our Discord" button are all built; your real webhook never touches the repo or the shipped file, it lives only in a Cloudflare setting you add yourself, and your confirmed invite link (`https://discord.gg/VRP8NApj2d`) is already wired into the Join button. What's left is one setting, step by step, like you asked:
+    1. Open **dash.cloudflare.com** in a browser and log in. This is a different login from GitHub, Discord and Claude.
+    2. In the left menu, click **Workers & Pages** (newer layouts put it under **Compute (Workers)**; search "Workers & Pages" at the top if you don't see it).
+    3. Click the project called **atuned**. Not **atuned-api**, that's a different thing and this setting won't work there.
+    4. Click **Settings**, then find **Variables and Secrets**. If it asks which environment, pick **Production**.
+    5. Click **+ Add** (may say "Add variable"). For **Type**, pick **Secret** so Cloudflare hides it after saving.
+    6. In **Variable name**, type exactly `DISCORD_FEEDBACK_WEBHOOK`.
+    7. In **Value**, paste your Discord webhook address (starts `https://discord.com/api/webhooks/`). Paste only the address, never in a chat or public channel.
+    8. Click **Save**. It only takes effect on the next deploy that includes this branch, so merging it to `main` is the other half, your call, same as every other branch tonight.
+    9. To test: open the app, press the person icon, "Discord feedback," type something, press Send. It should say "Sent. Thank you." and show up in the channel. If it says "not switched on yet," the setting is missing or the deploy predates it.
 
 ## Older, standing, still open
 
