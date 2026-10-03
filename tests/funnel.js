@@ -26,7 +26,8 @@
    And the quiz, which is the only surface here with state:
 
      6  it answers from the first question to a reading without a dead end,
-        and the reading carries the sections it promises.
+        and the reading carries the sections it promises, unfolding one layer
+        at a time with a way past every one of them.
      7  the seven band ring fills as the answers land, and the band it calls
         heaviest is the band the reading's own bars call heaviest. One
         arithmetic or it is two products.
@@ -265,6 +266,113 @@ const PROBE = () => {
     const stop = page.locator('#stop');
     ok(await stop.count() === 1, '@' + w + ': no way to read it from here after a full sweep');
     await stop.click();
+
+    /* THE READING UNFOLDS, punch list item 6, the audit's section 20: "Do not
+       show everything at once." It opens on its first layer alone; Keep
+       reading adds exactly the next one, in order, and nothing past it; each
+       layer arrives carrying its own data and the layers after it carry none
+       of theirs; the page lands on the layer it opened, with focus on it; the
+       door waits for the last layer; and Show the whole reading opens every
+       layer left in one press from any of them. The number of layers is read
+       off the page's own markup as it grows, never typed here, and what each
+       layer must carry is read off the engine: the five thinnest laws off
+       scored(), the seats off BANDS, and the release order off relQueueOf,
+       the queue the app's own Release button takes.
+       Checked against three broken copies first: one that opened on every
+       layer at once, one whose second layer dropped the laws, and one whose
+       last layer named the heaviest address in place of the release order.
+       The gate caught all three. */
+    const layerState = () => page.evaluate(() => {
+      const vis = e => { const r = e.getBoundingClientRect(); return r.width > 0 && r.height > 0; };
+      const secs = [...document.querySelectorAll('.read section[data-layer]')];
+      const last = secs[secs.length - 1];
+      const lr = last ? last.getBoundingClientRect() : { top: -1 };
+      return {
+        layers: secs.map(s => +s.getAttribute('data-layer')),
+        heads: secs.map(s => (s.querySelector('h1,h2') || {}).textContent || ''),
+        cq: !!document.querySelector('section[data-layer] .cq b'),
+        laws: document.querySelectorAll('.laws li').length,
+        sabs: document.querySelectorAll('.read .sab').length,
+        sabNone: secs.some(s => /No saboteur is firing/.test(s.textContent)),
+        seats: document.querySelectorAll('.seats li').length,
+        bigring: document.querySelectorAll('.bigring .ring-b').length,
+        order: [...document.querySelectorAll('.order li b')].map(b => b.textContent),
+        orderNone: secs.some(s => /a release has no address to start on/.test(s.textContent)),
+        more: !!document.getElementById('more'), all: !!document.getElementById('readall'),
+        door: !!document.getElementById('tostory'),
+        next: ((document.querySelector('.unfold p') || {}).textContent || '').trim(),
+        focus: document.activeElement ? document.activeElement.id : '',
+        lastTop: Math.round(lr.top), vh: innerHeight,
+        atEnd: scrollY + innerHeight >= document.documentElement.scrollHeight - 2,
+        choices: [...document.querySelectorAll('button,input,select,textarea,a[href],[role=button]')]
+          .filter(vis).length
+      };
+    });
+    const want = await page.evaluate(() => {
+      read(scored().p);
+      return { laws: Math.min(5, scored().laws.length), seats: BANDS.length,
+        order: relQueueOf(8).map(n => n.k) };
+    });
+    /* what layer n must carry, and what a later layer's data looks like when
+       it has leaked in early */
+    const CARRY = [
+      [st => st.cq, st => st.cq],
+      [st => st.laws === want.laws, st => st.laws > 0],
+      [st => st.sabs > 0 || st.sabNone, st => st.sabs > 0 || st.sabNone],
+      [st => st.seats === want.seats && st.bigring === want.seats, st => st.seats > 0 || st.bigring > 0],
+      [st => want.order.length ? st.order.join('|') === want.order.join('|') : st.orderNone,
+       st => st.order.length > 0 || st.orderNone]];
+    const has = (st, n) => !!CARRY[n - 1] && CARRY[n - 1][0](st);
+    const early = (st, n) => CARRY[n - 1][1](st);
+
+    let st = await layerState();
+    ok(st.layers.join(',') === '1', '@' + w + ': the reading opens on layers ' + st.layers.join(',') + ', not on the first alone');
+    ok(st.more && st.all, '@' + w + ': the first layer offers no Keep reading or no way to the whole reading');
+    ok(!st.door, '@' + w + ': the door to the story is on the page before the reading has unfolded');
+    const walk = [];
+    let n = 1;
+    for (;;) {
+      ok(has(st, n), '@' + w + ': layer ' + n + ' arrived without its own data: ' + JSON.stringify(st));
+      for (let k = n + 1; k <= CARRY.length; k++)
+        ok(!early(st, k), '@' + w + ': layer ' + k + '\'s data is on the page at layer ' + n);
+      ok(st.choices < 12, '@' + w + ': layer ' + n + ' opens on ' + st.choices + ' choices, over the house target of under 12');
+      walk.push(n + ' "' + st.heads[n - 1] + '" ' + st.choices + ' choices' + (st.next ? ', then "' + st.next + '"' : ''));
+      if (!st.more) break;
+      await page.click('#more');
+      const st2 = await layerState();
+      ok(st2.layers.length === st.layers.length + 1 && st2.layers.every((v, i) => v === i + 1),
+        '@' + w + ': Keep reading went from layers ' + st.layers + ' to ' + st2.layers);
+      ok(st2.focus === 'layer' + st2.layers.length,
+        '@' + w + ': Keep reading left focus on "' + st2.focus + '", not on the layer it opened');
+      /* at the top of the screen, or as near it as the page can scroll: a
+         short layer at the foot of the page cannot climb past the end */
+      ok(st2.lastTop >= 0 && (st2.lastTop < st2.vh / 2 || (st2.atEnd && st2.lastTop < st2.vh - 120)),
+        '@' + w + ': the layer Keep reading opened sits at ' + st2.lastTop + ' in a ' + st2.vh + ' screen');
+      st = st2; n = st.layers.length;
+      if (n > 12) break;                       /* a runaway, not a reading */
+    }
+    ok(st.door && !st.all, '@' + w + ': after the last layer the door is ' + (st.door ? 'there' : 'missing')
+      + ' and the skip is ' + (st.all ? 'still there' : 'gone'));
+    const N = n;
+    ok(N === CARRY.length, '@' + w + ': the reading unfolds in ' + N + ' layers and the gate knows what '
+      + CARRY.length + ' of them carry');
+    console.log('  unfolds in ' + N + ' layers:');
+    walk.forEach(l => console.log('    ' + l));
+
+    /* the way past, from the first layer and from a middle one. Reset to one
+       layer through the page's own state, which is what a new visit holds. */
+    for (const from of [1, 3]) {
+      await page.evaluate(k => { READ_AT = k; render(); scrollTo(0, 0); }, from);
+      await page.click('#readall');
+      const sa = await layerState();
+      ok(sa.layers.length === N && sa.door && !sa.more,
+        '@' + w + ': Show the whole reading from layer ' + from + ' opened ' + sa.layers.length + ' of the layers, door '
+        + (sa.door ? 'there' : 'missing'));
+      ok(sa.focus === 'layer' + (from + 1),
+        '@' + w + ': Show the whole reading from layer ' + from + ' left focus on "' + sa.focus + '"');
+      for (let k = 1; k <= N; k++) ok(has(sa, k), '@' + w + ': the whole reading is missing layer ' + k + '\'s data');
+    }
+
     const rd = await page.evaluate(() => ({
       sections: document.querySelectorAll('.read section').length,
       seats: [...document.querySelectorAll('.seats li')].map(li => ({

@@ -52,7 +52,7 @@ a.wm:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-rad
 .ring-t{fill:none;stroke-linecap:butt;opacity:.24}
 .ring-b{fill:none;stroke-linecap:butt;
  transition:stroke-width var(--t-element) var(--ease-out)}
-.bigring{display:grid;justify-items:center;gap:12px;margin:22px 0 4px}
+.bigring{display:grid;justify-items:center;align-content:start;gap:12px;margin:22px 0 4px}
 .bigring .ringwrap{width:188px;height:188px}
 .bigring p{margin:0;text-align:center}
 @media(prefers-reduced-motion:reduce){
@@ -160,6 +160,28 @@ button.lnk:hover,a.lnk:hover{color:var(--ink)}
 /* every slot on every card is the same object, so they are one class */
 .sab .sl{margin-top:11px;font-size:15px;color:var(--mid);line-height:1.5}
 .sab .sl b{color:var(--ink);font-weight:600}
+/* ---- the reading's layers. A layer that has just opened rises into place
+   once, and the sticky bar with the ring would sit over the heading it was
+   scrolled to, so each layer keeps the bar's height clear above it. Focus
+   lands on the layer itself, which is a region and not a control, so it
+   carries no ring of its own. ---- */
+.read .layer{scroll-margin-top:112px}
+.read .layer:focus{outline:none}
+.read .layer.new{animation:layerin .42s ease-out both}
+@keyframes layerin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){ .read .layer.new{animation:none} }
+.unfold{margin-top:40px;padding-top:22px;border-top:1px solid var(--edge)}
+.unfold p.sm{margin:0}
+.unfold .pri{margin-top:16px}
+.order{list-style:none;margin:18px 0 0;padding:0;counter-reset:ord}
+.order li{display:flex;align-items:baseline;gap:12px;padding:9px 0;
+ border-bottom:1px solid var(--edge);font-size:15.5px;color:var(--mid);counter-increment:ord}
+.order li::before{content:counter(ord);flex:0 0 22px;font-family:var(--num);
+ font-size:13px;color:var(--dim);text-align:right}
+.order li i{flex:0 0 10px;height:10px;box-sizing:border-box;border:2px solid;
+ border-radius:50%;align-self:flex-start;margin-top:.5em}
+.order li b{color:var(--ink);font-weight:600}
+.order li:first-child b{color:var(--accent)}
 .scope{margin-top:22px;border:1px solid var(--edge);border-radius:10px;
  padding:14px 16px;font-size:15px;color:var(--mid)}
 .scope b{color:var(--ink)}
@@ -240,6 +262,9 @@ button.yna:focus-visible,button.more:focus-visible{outline:2px solid var(--ink);
  .tierbox dl{grid-template-columns:repeat(3,1fr);gap:24px}
  .two{grid-template-columns:1fr 1fr;gap:44px}
  .scope,.door,.close,.read>.foot{max-width:1120px}
+ /* the step to the next layer sits under the layer's body column, so the
+    button is where the eye already is when the layer ends */
+ .unfold{padding-left:294px}
  /* THE DOOR GOES SIDE BY SIDE HERE AND NOT AT 760, round QZ. At 760 the page
     is still 680 wide, and the button column is auto, which is every button on
     one row: measured on the build before this round, the words of the first
@@ -306,7 +331,12 @@ var esc=function(s){return String(s==null?'':s)
 /* ---- THE LOAD IS CHECKED OUT LOUD. A missing engine or a missing question
    table must look like a failure and not like an empty page. ---- */
 var MISSING=[];
-if(typeof SINAMES==='undefined'||typeof read!=='function')MISSING.push('engine.js');
+/* the reading's last layer names where a release starts and what a release
+   is, off relQueueOf and unpackOf. An engine without them is an older engine,
+   and a reading that said nothing is carrying because a function was missing
+   would be a lie, so it is refused here with the rest. */
+if(typeof SINAMES==='undefined'||typeof read!=='function'
+ ||typeof relQueueOf!=='function'||typeof unpackOf!=='function')MISSING.push('engine.js');
 if(typeof QQ==='undefined')MISSING.push('questions.js');
 if(typeof RING==='undefined')MISSING.push('ring.js');
 /* the ring's seat order is the engine's band order or it is drawing the
@@ -356,6 +386,28 @@ var A={};              /* question index -> 0..4 */
 var AT=0;              /* position in ORDER */
 var STATE='open';
 var SAVE_FAIL='';
+
+/* ============================================================
+   THE READING UNFOLDS. The funnel audit, section 20 of
+   reviews/ATUNED-Funnel-Onboarding-Tutorial-Creative-TDD.md: "Do not show
+   everything at once." It was one page, measured 5651 pixels tall at 390,
+   with the coherence figure, the thin laws, the ring, four saboteur cards and
+   the scope box all arriving in the same frame. So it comes in five layers,
+   each one the answer to the question the one above it raises: where you
+   stand, where it leaks, what keeps it open, where it sits in the body, and
+   where a release starts. Each layer stays on the page once it is shown, so
+   the last screen is the whole reading and nothing read is taken away.
+
+   IT NEVER TRAPS. "Show the whole reading" sits under every layer and opens
+   the rest in one press, the way the signal's skip sits under every step.
+
+   READ_AT is how many layers are on the page. It is held in memory and
+   nowhere else, like the signal: somebody who has unfolded it once is not
+   made to unfold it again for the rest of the visit, and Start again from the
+   top is a new visit. READ_NEW is the layer just opened, which the redraw
+   scrolls to and focuses, and is cleared once it has. ============ */
+var READ_AT=1;
+var READ_NEW=0;
 
 /* ============================================================
    THE SIGNAL. One moment before the hundred questions, where a person
@@ -589,41 +641,79 @@ function viewRead(){
     another surface, and it makes four readings look like one. */
  var seenFam={};
 
- var h='<div class="read">'
+ /* WHERE A RELEASE STARTS. Read off the engine and not ranked here: relQueueOf
+    in engine/compute.js is the queue the app's own Release button takes, the
+    heaviest addresses holding something, at or over the line at 4 first.
+    It reads the field read() just placed, so it is called straight after it.
+    The heaviest single address, r.heaviest, is the top of every address
+    carrying anything; the queue keeps only addresses with a named pattern on
+    them, because that is all a release can work on, so the two can differ
+    and layer 5 names the one a release would actually take. */
+ var queue=relQueueOf(8);
 
- /* ---- 1. THE SNAPSHOT OF IMPACT ---- */
- +'<section><div class="hd"><span class="eye">The snapshot</span>'
- +'<h1>This is what the hundred read.</h1></div><div class="bd">'
- +'<div class="cqrow"><div class="cq"><b>'+Math.round(r.CQ)+'</b><span>'+esc(r.tier)+'</span></div>'
- +'<div class="cqsay">'
- +'<p>That is your coherence. One hundred is every law closed with nothing held '
- +'in the body. Coherence is the alignment between what arrives, how you read it, '
- +'what you intend, and what you then do.</p>'
- +'<p>When it is low the circuit leaks, and the leak is what promotes mental, '
- +'physical and spiritual disease. That is the mechanism, and it is the reason '
- +'this instrument exists.</p></div></div>'
- +'<div class="tierbox"><dl>'
- +'<div><dt>What '+esc(r.tier)+' means</dt><dd>'+esc(t.def||'')+'</dd></div>'
- +'<div><dt>What it does to a day</dt><dd>'+esc(t.energy||'')+'</dd></div>'
- +'<div><dt>'+towardLabel(t.toward)+'</dt><dd>'+esc(t.toward||'')+'</dd></div>'
- +'</dl></div></div></section>'
+ /* THE FIVE LAYERS, in the order the audit gives them. Each is a heading
+    that says what the layer answers, the body it already had, and a short
+    line naming it, which the layer above shows as what comes next. */
+ var LAYERS=[
 
- /* ---- 2. WHAT THE ISSUES ARE ---- */
- +'<section><div class="hd"><span class="eye">The issues</span>'
- +'<h2>Where it is thinnest, and where it is sitting.</h2></div><div class="bd">'
- +'<div class="two">'
-  +'<div><h3>The five laws holding least</h3>'
+ /* ---- 1. WHERE YOU STAND. Coherence and its word, nothing else. There is
+    no direction word here: which way coherence is moving is the owner's open
+    question (WAITING-ON-YOU.md item 19) and nothing in the engine computes it. */
+ {eye:'The snapshot', head:'Where you stand today.', top:true,
+  body:'<div class="cqrow"><div class="cq"><b>'+Math.round(r.CQ)+'</b><span>'+esc(r.tier)+'</span></div>'
+  +'<div class="cqsay">'
+  +'<p>That is your coherence. One hundred is every law closed with nothing held '
+  +'in the body. Coherence is the alignment between what arrives, how you read it, '
+  +'what you intend, and what you then do.</p>'
+  +'<p>When it is low the circuit leaks, and the leak is what promotes mental, '
+  +'physical and spiritual disease. That is the mechanism, and it is the reason '
+  +'this instrument exists.</p></div></div>'
+  +'<div class="tierbox"><dl>'
+  +'<div><dt>What '+esc(r.tier)+' means</dt><dd>'+esc(t.def||'')+'</dd></div>'
+  +'<div><dt>What it does to a day</dt><dd>'+esc(t.energy||'')+'</dd></div>'
+  +'<div><dt>'+towardLabel(t.toward)+'</dt><dd>'+esc(t.toward||'')+'</dd></div>'
+  +'</dl></div>'},
+
+ /* ---- 2. WHERE IT LEAKS. The five thinnest laws. The load at each seat
+    used to sit beside them, and it moved to layer 4: the seats are places in
+    the body, and showing the body before the layer that is about the body
+    answers the fourth question second. ---- */
+ {eye:'The thin laws', head:'Where it leaks.', next:'the five laws holding least',
+  body:'<h3>The five laws holding least</h3>'
   +'<p class="sm">Each law is scored out of ten.</p>'
   +'<ul class="laws">'+thin.map(lawRow).join('')+'</ul>'
-  +'<p class="sm">Holding best: '+held.map(function(l){return esc(l.nm);}).join(', ')+'.</p></div>'
-  +'<div><h3>The load at each seat</h3>'
-  +'<p class="sm">The nine charges from your answers land on the 112 addresses, '
-  +'each one seated at a named plexus or nerve. Average load per seat, out of ten.</p>'
+  +'<p class="sm">Holding best: '+held.map(function(l){return esc(l.nm);}).join(', ')+'.</p>'},
+
+ /* ---- 3. WHAT KEEPS IT OPEN. The saboteurs, unchanged. ---- */
+ {eye:'What is running', head:'What keeps it open.', next:'the habits keeping it open',
+  body:(sabs.length
+   ?'<p class="lede sm">A saboteur is a contraction of several addresses acting '
+    +'together. These are the ones your answers have lit, hardest first.</p>'
+    +'<div class="sabs">'+sabs.map(function(x){return sabCard(x,seenFam);}).join('')+'</div>'
+    +'<p class="sm">Every address named above carries its own direction in the '
+    +'Compass. '
+    +(r.sabs.length>sabs.length
+      ?(r.sabs.length-sabs.length)+' more saboteurs are firing under these, and they '
+       +'compound into '+r.cxs.length+' complexes. The instrument names all of '
+       +'them and works out the order to take them apart in.':'')+'</p>'
+   :'<p class="lede">No saboteur is firing hard enough to name. Charge is present and '
+    +'no cluster has reached the weight where the instrument will name one. That is '
+    +'a real result and not an empty one.</p>')},
+
+ /* ---- 4. WHERE IT SITS IN THE BODY. The ring at full size, the bars, the
+    seat carrying most and the heaviest address. The scope box comes with it,
+    because this is the layer where the map and the body can disagree, and
+    the signal, if one was noticed, is said here for the same reason. ---- */
+ {eye:'The body', head:'Where the load sits in your body.', next:'where the load sits in your body',
+  body:'<div class="two">'
   /* the ring at full size, the same object that has been filling in the
-     header. It carries the shape. The bars under it carry the figures. */
+     header. It carries the shape. The bars beside it carry the figures. */
   +'<div class="bigring"><div class="ringwrap">'+RING.svg({loads:LOADS})+'</div>'
   +'<p class="sm">Each band is a seat. Its weight is the load it is carrying. '
   +'Root sits at the base and the band climbs the right to Crown.</p></div>'
+  +'<div><h3>The load at each seat</h3>'
+  +'<p class="sm">The nine charges from your answers land on the 112 addresses, '
+  +'each one seated at a named plexus or nerve. Average load per seat, out of ten.</p>'
   +'<ul class="seats">'+bandload.map(function(x){
     return '<li><b>'+esc(x.b)+'</b><span class="tr"><i style="width:'
      +(Math.min(100,x.v*10))+'%;background:'+cv(x.b)+'"></i></span><em>'
@@ -633,40 +723,59 @@ function viewRead(){
     +esc(r.heaviest.n||'field')+'. '):'')
   +r.carrying.length+' addresses are carrying something, and '+r.loaded.length
   +' of them are above the line where it starts to cost.</p></div>'
- +'</div></div></section>'
+  +'</div>'
+  /* ---- THE SCOPE. What this read and what it did not. ---- */
+  +'<div class="scope"><b>What this is.</b> A hundred points on the 21 laws, and '
+  +'the nine charges those points imply. It has not read a story in your own words, '
+  +'which is where the instrument gets its resolution, so the body locations above '
+  +'are where this kind of load sits rather than a reading of your tissue. It reads '
+  +'self report. A clinician reads a person, and those are different jobs.'
+  /* THE SIGNAL OUTRANKS THE MAP, said where the map is. This is the layer
+     where the seats and what the person noticed can disagree, so it is the
+     layer that says which one to go with. */
+  +(sigSentence()?' '+esc(sigSentence())+' That came from your body, before the '
+    +'questions. Where it and the seats above disagree, go with your body.':'')
+  +'</div>'},
 
- /* ---- 3. WHICH SABOTEURS ARE RUNNING ---- */
- +'<section><div class="hd"><span class="eye">What is running</span>'
- +'<h2>'+(sabs.length?'The saboteurs your answers have lit.':'No saboteur is firing hard enough to name.')+'</h2></div>'
- +'<div class="bd">'
- +(sabs.length
-   ?'<p style="margin-top:0" class="sm">A saboteur is a contraction of several '
-    +'addresses acting together. These are the ones running hardest.</p>'
-    +'<div class="sabs">'+sabs.map(function(x){return sabCard(x,seenFam);}).join('')+'</div>'
-    +'<p class="sm">Every address named above carries its own direction in the '
-    +'Compass. '
-    +(r.sabs.length>sabs.length
-      ?(r.sabs.length-sabs.length)+' more saboteurs are firing under these, and they '
-       +'compound into '+r.cxs.length+' complexes. The instrument names all of '
-       +'them and works out the order to take them apart in.':'')+'</p>'
-   :'<p style="margin-top:0">Charge is present and no cluster has reached the weight where the '
-    +'instrument will name one. That is a real result and not an empty one.</p>')
- +'</div></section>'
+ /* ---- 5. WHERE A RELEASE STARTS. The queue the app's Release button takes,
+    first address named, the rest in order. The meanings of release and
+    address come from the product's one table of meanings, unpackOf in
+    engine/data/gloss.js, and are not written here. No weight is printed: a weight needs its node state
+    beside it (V22) and the lines between the node states are not ruled. ---- */
+ {eye:'The order', head:'Where a release starts.', next:'where a release starts',
+  body:(queue.length
+   ?'<p class="lede">On these answers a release starts at <b>'+esc(queue[0].k)+'</b>'
+    +(queue[0].n?', at the '+esc(queue[0].n):'')+'.</p>'
+    +'<p class="sm">'+esc(unpackOf('release'))+' '+esc(unpackOf('address'))
+    +' The app runs a release one address at a time, heaviest first, and takes yours '
+    +'in this order.</p>'
+    +'<ol class="order">'+queue.map(function(n){
+      return '<li><i style="border-color:'+cv(n.b)+'"></i><span><b>'+esc(n.k)+'</b>'
+       +(n.n?' at the '+esc(n.n):'')+'</span></li>';}).join('')+'</ol>'
+   :'<p class="lede">Nothing on these answers is carrying a named pattern, so a release '
+    +'has no address to start on.</p>')}
+ ];
 
- /* ---- THE SCOPE. What this read and what it did not. ---- */
- +'<div class="scope"><b>What this is.</b> A hundred points on the 21 laws, and '
- +'the nine charges those points imply. It has not read a story in your own words, '
- +'which is where the instrument gets its resolution, so the body locations above '
- +'are where this kind of load sits rather than a reading of your tissue. It reads '
- +'self report. A clinician reads a person, and those are different jobs.'
- /* THE SIGNAL OUTRANKS THE MAP, said where the map is. This is the screen
-    where the seats and what the person noticed can disagree, so it is the
-    screen that says which one to go with. */
- +(sigSentence()?' '+esc(sigSentence())+' That came from your body, before the '
-   +'questions. Where it and the seats above disagree, go with your body.':'')
- +'</div>'
+ var N=LAYERS.length;
+ READ_AT=Math.max(1,Math.min(N,READ_AT));
+ var h='<div class="read">'
+  +LAYERS.slice(0,READ_AT).map(function(L,i){
+    var n=i+1;
+    return '<section class="layer'+(n===READ_NEW?' new':'')+'" id="layer'+n+'" data-layer="'+n+'" tabindex="-1">'
+     +'<div class="hd"><span class="eye">'+L.eye+'</span>'
+     +(L.top?'<h1>':'<h2>')+L.head+(L.top?'</h1>':'</h2>')+'</div>'
+     +'<div class="bd">'+L.body+'</div></section>';}).join('');
 
- /* ---- 4. THE STEP FORWARD. The door was here, straight after the scope,
+ /* ---- THE STEP FORWARD INSIDE THE READING. One button to the next layer,
+    named by what it opens, and the way past all of them. ---- */
+ if(READ_AT<N)return h
+  +'<div class="unfold"><p class="sm">Next, '+LAYERS[READ_AT].next+'.</p>'
+  +'<button class="pri" id="more">Keep reading</button>'
+  +'<div class="under"><button class="lnk" id="readall">Show the whole reading</button></div></div>'
+  +'</div>';
+
+ h+=''
+ /* ---- THE STEP FORWARD. The door was here, straight after the scope,
     so the page said it had not read a story in your own words and then
     offered nowhere to write one. The story is his third step and the door is
     his fourth, so this is the way to the third, and it can be skipped: he did
@@ -1227,7 +1336,7 @@ function render(){
   if(AT>=ORDER.length){STATE='read';}else{STATE='q';}
   render(); scrollTo(0,0);};
  if((b=document.getElementById('restart')))b.onclick=function(){
-  A={}; save(); AT=0; STATE=SIG.done?'q':'notice'; SIG_AT='where'; render(); scrollTo(0,0);};
+  A={}; save(); AT=0; READ_AT=1; READ_NEW=0; STATE=SIG.done?'q':'notice'; SIG_AT='where'; render(); scrollTo(0,0);};
  if(STATE==='notice')bindNotice();
  if(STATE==='story')bindMarks();
  if((b=document.getElementById('back')))b.onclick=function(){
@@ -1242,6 +1351,17 @@ function render(){
   STATE='read'; render(); scrollTo(0,0);};
  if((b=document.getElementById('todoor')))b.onclick=function(){
   STATE='door'; render(); scrollTo(0,0);};
+ /* THE READING'S OWN STEP. Keep reading opens the next layer and Show the
+    whole reading opens every layer left; either way the page lands on the
+    first layer it just opened, with focus on it, so a keyboard or a screen
+    reader arrives where the eye does. The layers above stay where they were. */
+ var unfold=function(to){
+  var from=READ_AT; READ_AT=to; READ_NEW=from+1; render();
+  var sec=document.getElementById('layer'+READ_NEW); READ_NEW=0;
+  if(sec){ if(sec.scrollIntoView)sec.scrollIntoView({block:'start'});
+   if(sec.focus)sec.focus({preventScroll:true}); }};
+ if((b=document.getElementById('more')))b.onclick=function(){ unfold(READ_AT+1); };
+ if((b=document.getElementById('readall')))b.onclick=function(){ unfold(Infinity); };
  /* the box keeps its text without a redraw, so typing never loses the caret */
  if((b=document.getElementById('storytx')))b.oninput=function(){ STORY=this.value; };
  if((b=document.getElementById('readit')))b.onclick=function(){
