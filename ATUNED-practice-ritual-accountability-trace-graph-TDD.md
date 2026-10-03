@@ -2076,44 +2076,54 @@ This is what turns Ritual from a standard habit feature into an integral compone
 
 ---
 
-# 45. Flow Tool Sets: Ritual and Accountability
+# 45. Flow: one page of three columns
 
-Ruled 2 October, round PO, in his words: "On the flow pages, get rid of the
-left and right menu. Actually, sorry. Move the new ritual to the right menu. And
-you're supposed to move accountability to its own tool set. You should have
-rules on a TDD for all this."
+Ruled 2 October, round QF, in his words: "And if you'll notice, we're
+re-merging the knowledge base and the accountability tracker. Left menu will be
+for inputting new. Right side of the menu is for the accountability tracker.
+Center piece is for the ritual."
 
-Section 31 already put ACCOUNTABILITY in its own group of the information
-architecture, beside PRACTICE. The product now matches it: Flow holds two tool
-sets, and each has a stage and a right menu.
+**This section has been rewritten twice in one day and the churn is the
+record.** Round JQ attached the accountability tracker to the ritual page.
+Round PO, earlier on 2 October, split it out: "get rid of the left and right
+menu. Actually, sorry. Move the new ritual to the right menu. And you're
+supposed to move accountability to its own tool set." Round QF puts it back,
+as a column rather than a page, and gives the left column the job it did not
+have before. Section 31 still holds: ACCOUNTABILITY is its own group of the
+information architecture, with Today, Evidence, History and Change. What
+changed is where that group is drawn, not what it is.
 
 ```text
-FLOW
- ├── RITUAL            what I will do, and when
- │     stage:  the chain, the becoming prompt, the Active list
- │     menu:   New ritual (the builder)
- └── ACCOUNTABILITY    did I do what I set
-       stage:  Done (rings, streak, figures, marks) and the Record
-       menu:   Due today, and Missed
+FLOW  ·  one page, TAB.RITUAL
+ ├── left    INPUTTING NEW      what shall I start?
+ │             New ritual, closed to one press and seven tags;
+ │             open, the builder
+ ├── centre  THE RITUAL         what am I doing?
+ │             the chain, the becoming prompt, the Active list
+ └── right   THE TRACKER        did I do it?
+               Due today, Done (rings, streak, figures, marks),
+               Missed, the Record
 ```
 
-Flow has no left column. The full rules are in `DESIGN-flow-tools.md`, FT1 to
-FT15, and each carries the gate that fails it. The index:
+TAB.ACCOUNT keeps integer 14 and loses its door, through TABFOLD, which is the
+fold Games and Analytics have each been through. The full rules are in
+`DESIGN-flow-tools.md`, FT1 to FT15, and each carries the gate that fails it.
+The index:
 
 ```text
-FT1   Flow is exactly two tool sets, each a tab of its own looked up by key
-FT2   Flow has no left column
-FT3   Flow's right column holds one panel, the Flow menu
-FT4   New ritual lives in the right menu on Ritual, and only there
+FT1   Flow is one page with one door, and Accountability keeps its integer
+FT2   All three columns are drawn, each holds the thing it is for
+FT3   Each rail holds exactly one panel on Flow, and both go away off Flow
+FT4   Inputting new is the left column, and only there
 FT5   The Ritual stage holds no accountability
-FT6   Accountability is its own entry and it renders
-FT7   Accountability reads three things and invents nothing
-FT8   Empty states say what is empty and never offer a second builder
+FT6   The tracker is the right column, with no door and no host of its own
+FT7   The tracker reads three things and invents nothing
+FT8   Empty states say what is empty and offer the one press
 FT9   Every write goes through the one writer and says how it went
 FT10  Add to my ritual on the Compass teacher panel still lands
 FT11  A caller off Flow goes to Flow
 FT12  Both widths hold: inside the screen, the builder's week fits
-FT13  The fold is the person's and still works
+FT13  Both folds are the person's and still work
 FT14  Every heading says what it means, in the same place
 FT15  The rules and the gates are one list
 ```
@@ -2122,8 +2132,9 @@ The gates that hold them, named so none is left to be found:
 
 ```text
 tests/flowtools.js     FT1 to FT15. Runs alone, and is called from tests/functional.js.
-tests/functional.js    the TAB integers, the nav placements (Ritual and Accountability
-                       in Flow), and the Compass teacher panel's Add to my ritual
+tests/functional.js    the TAB integers, the nav placements (Ritual in Flow, and
+                       Accountability folded onto it), and the Compass teacher
+                       panel's Add to my ritual
 tests/engine.js        the TAB integers, headless
 tests/design.js        one surface per tab, the 44 pixel tap floor on every TABDEF tab
 tools/monitor.js       every surface renders, at both widths, blank and loaded

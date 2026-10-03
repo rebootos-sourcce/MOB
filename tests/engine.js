@@ -2961,6 +2961,39 @@ console.log('\n27 · the ladder');
   ok(L.remaining===undefined&&L.all===undefined&&L.total===undefined,
    'the read exposes no remainder and no total to print a count against');
   ok(L.earned.some(m=>m.k==='week'),'seven days running earns the week mark');}
+
+ /* ROUND QS, the TDD's slice 0 for the practice marks (TDD v3 sections 3 and
+    9.3). Each check is the measured fault it closes. */
+ {const {markDays,BACK_GAP}=E;
+  /* First run reads a ritual marked done, not any entry: Start without a
+     finish earns nothing (21.J2's open half) */
+  const q=blankProfile('L'); q.rituals.push({t:day(0),min:10,steps:['box'],done:false});
+  ok(!ladderRead(q,NOW).earned.some(m=>m.k==='first'),'a set and not done entry does not earn First run');
+  q.rituals[0].done=day(0);
+  ok(ladderRead(q,NOW).earned.some(m=>m.k==='first'),'and marking it done does');
+  /* LD3: seven days practised earn Seven days with gaps between them. Twice
+     a week for four weeks is eight days and no row longer than one */
+  const gap=mk([0,3,7,10,14,17,21,24]);
+  ok(streakRead(gap,NOW).best===1&&ladderRead(gap,NOW).earned.some(m=>m.k==='week'),
+   'seven days practised with gaps earn Seven days, the strict row is not asked for, best '+streakRead(gap,NOW).best);
+  ok(!ladderRead(mk([0,3,7,10,14,17]),NOW).earned.some(m=>m.k==='week'),'and six days do not');
+  /* Came back: a gap of BACK_GAP or more, then a day practised */
+  ok(ladderRead(mk([0,BACK_GAP]),NOW).earned.some(m=>m.k==='back'),'a day practised after '+BACK_GAP+' days away earns Came back');
+  ok(!ladderRead(mk([0,BACK_GAP-1]),NOW).earned.some(m=>m.k==='back'),'and one day short of it does not');
+  /* Every track run, read off PRACTICE at run time */
+  const tracks=[...new Set(E.PRACTICE.map(x=>x.track).filter(Boolean))];
+  const tp=blankProfile('L');
+  tracks.forEach((t,i)=>{const k=E.PRACTICE.find(x=>x.track===t).k; tp.rituals.push({t:day(i),min:5,steps:[k]});});
+  ok(tracks.length>1&&ladderRead(tp,NOW).earned.some(m=>m.k==='tracks'),'one done ritual in each of the '+tracks.length+' tracks earns Every track run');
+  tp.rituals.pop();
+  ok(!ladderRead(tp,NOW).earned.some(m=>m.k==='tracks'),'and one track short does not');
+  /* the dates: derived off the record, the day the line was crossed. Oldest
+     first the days are 24, 21, 17, 14, 10, 7, 3 and 0 back, ten minutes each */
+  const md=markDays(gap,NOW), pd=n=>E.pracDay(day(n));
+  ok(md.first===pd(24)&&md.week===pd(3)&&md.hour===pd(7),
+   'markDays dates First run on the oldest day, Seven days on the seventh and Sixty minutes on the sixth, '+JSON.stringify(md));
+  ok(Object.keys(md).every(k=>MARKS.find(m=>m.k===k).fam==='Practice'),'only practice marks are dated');
+  ok(Object.keys(markDays(blankProfile('L'),NOW)).length===0,'a blank profile has no dated mark');}
 }
 
 console.log('\n27c · a save never costs a person data, and a drain never leaks');

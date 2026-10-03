@@ -5476,42 +5476,85 @@ body.tab-ritual #rit .rit-card{width:100%;max-width:820px;margin:0 auto;
  max-height:none;border:0;background:transparent;box-shadow:none;padding:14px 18px 22px}
 body.tab-ritual #rit .rel-act{position:sticky;bottom:0;background:var(--bg);
  padding-top:10px;margin-top:14px}
-/* FLOW IS TWO TOOL SETS AND HAS NO LEFT COLUMN. Ruled 2 October, his words:
-   "On the flow pages, get rid of the left and right menu. Actually, sorry.
-   Move the new ritual to the right menu." The left column is not drawn on
-   Ritual or Accountability, and the right column holds one thing, #flowrail,
-   the menu of the tool set the person is in: New ritual on Ritual, what is due
-   and what was missed on Accountability. Every other section the rail carries
-   (the Energetic Summary, the Reading, Selection, Flow's own shelf, Running,
-   Moral integrity and Run a release) is hidden here, by the child selector and
-   not by a list of names, so a section added to the rail later does not turn
-   up on Flow. !important because the rail's own shut rule above is important
-   and the Run a release row carries its display inline.
+/* FLOW IS ONE PAGE OF THREE COLUMNS, round QF, 2 October, his words: "we're
+   re-merging the knowledge base and the accountability tracker. Left menu will
+   be for inputting new. Right side of the menu is for the accountability
+   tracker. Center piece is for the ritual."
 
-   THE FOLD STILL WORKS. A person who shut the right column on the Field keeps
-   it shut here, because the fold is their arrangement of the screen, and the
-   one control it leaves is the way back. Shut, New ritual is one press away
-   and the Active list says where it went. */
-body.tab-ritual .mid>#lcol,body.tab-acct .mid>#lcol{display:none}
-body.tab-ritual #rpanel>*:not(.rfold):not(.fl-rail),
-body.tab-acct #rpanel>*:not(.rfold):not(.fl-rail){display:none!important}
-body:not(.tab-ritual):not(.tab-acct) .fl-rail{display:none}
-/* 400 and not the rail's usual 336, measured: the builder's week is seven
-   presses of the 44 pixel floor, 308 plus its gaps, and 336 less the rail's
-   padding and the card around it left 280 */
+   So each of the three columns the shell already has gets one job and keeps it,
+   and the person never presses anything to see all three:
+
+     left    #flownew, inputting new. Closed it is one press and the seven
+             tags; open it is the builder.
+     centre  #rit, the ritual. The chain from story to work, and the Active
+             list with the ring that marks a day done.
+     right   #flowrail, the accountability tracker. What is due today, what
+             was done, what was missed, and the record.
+
+   This reverses round PO, which took the left column off Flow and put the
+   builder on the right. The left column comes back with a job, and the right
+   column changes hands. Every other section the rails carry (Root Energetics,
+   Awareness, Child emotions, Matrix on the left; the Energetic Summary, the
+   Reading, Selection, Flow's own shelf, Running, Moral integrity and Run a
+   release on the right) is hidden here by the child selector and not by a list
+   of names, so a section added to either rail later does not turn up on Flow.
+   !important because each rail's own shut rule above is important and the Run
+   a release row carries its display inline.
+
+   THE FOLD STILL WORKS, on both columns. A person who shut a column on the
+   Field keeps it shut here, because the fold is their arrangement of the
+   screen, and the one control it leaves is the way back. */
+body.tab-ritual #lpanel>*:not(.lfold):not(.fl-rail){display:none!important}
+body.tab-ritual #rpanel>*:not(.rfold):not(.fl-rail){display:none!important}
+body:not(.tab-ritual) .fl-rail{display:none}
+/* 400 ON BOTH SIDES, measured rather than chosen, and measured twice. Both
+   columns carry a row of seven presses at the 44 pixel floor: the builder's
+   week on the left, the record's month on the right. That is 308 plus its
+   gaps, and the rail's usual 302 less its padding and the card inside it left
+   246. 360 was tried first and the seventh day of the week was still cut off
+   at 1600, which a shot caught and a number in a stylesheet would not have. */
 @media (min-width:1181px){
- body.tab-ritual .mid,body.tab-acct .mid,
- body.lshut.tab-ritual .mid,body.lshut.tab-acct .mid{grid-template-columns:minmax(0,1fr) 400px}
- body.rshut.tab-ritual .mid,body.rshut.tab-acct .mid,
- body.lshut.rshut.tab-ritual .mid,body.lshut.rshut.tab-acct .mid{grid-template-columns:minmax(0,1fr) 58px}}
-/* stacked, the menu comes first on both tool sets, ahead of the stage whose own
-   order is -1 on a phone. On Ritual a person who presses Start on the chain or
-   opens a ritual to edit it is looking at the top of the page, and a builder
-   opened below a screenful of list is an opening nobody sees. On Accountability
-   the menu is what is due today and what was missed, the things to act on, and
-   the month under them is a record to read once they are done: below the
-   month they were four screens down on a phone, measured at 390. */
-@media (max-width:1180px){body.tab-ritual #rcol,body.tab-acct #rcol{order:-2}}
+ body.tab-ritual .mid{grid-template-columns:400px minmax(0,1fr) 400px}
+ body.lshut.tab-ritual .mid{grid-template-columns:58px minmax(0,1fr) 400px}
+ body.rshut.tab-ritual .mid{grid-template-columns:400px minmax(0,1fr) 58px}
+ body.lshut.rshut.tab-ritual .mid{grid-template-columns:58px minmax(0,1fr) 58px}}
+/* THE PHONE STACK IS THE CENTRE, THEN THE TRACKER, THEN NEW, and the order was
+   measured rather than argued. Three columns side by side become three blocks
+   in a scroll, and whichever goes first is the only one most people see.
+
+   The tracker went first on the first cut, on the reasoning that a person
+   opens this page to press a ring. Measured at 390 with two rituals running,
+   that put the accountability column at 1553 pixels tall and the ritual list
+   at 1684 down the page, nearly two screens of scrolling to reach the thing
+   the page is named after. And it bought nothing: the ring that marks a day
+   done is on the Active row in the centre as well, which is the one piece of
+   accountability the Ritual stage has always carried. So the centre goes
+   first, the press is on the first screen either way, and the tracker reads
+   underneath it.
+
+   Inputting new is last, because starting a ritual is rarer than keeping one.
+   AND IT MOVES WHEN THE BUILDER OPENS. A person who presses New ritual, or
+   Edit on a missed one, has asked for that column, and a builder two screens
+   down is an opening nobody sees. ritRender puts ritbuild on the body while
+   the builder is holding something, so the column they just asked for is the
+   one in front of them.
+
+   AND WITH NOTHING ACTIVE IT COMES FIRST, round QN. "Rarer than keeping one"
+   is false when there is nothing to keep. The builder used to open itself
+   then, and ritbuild carried the column up; it no longer opens itself (FT24),
+   so ritnone says the same thing directly, and a stranger on a phone meets
+   New ritual and Suggested on the first screen and not four thousand pixels
+   down, measured, under six cards that each say nothing has happened yet. */
+@media (max-width:1180px){
+ body.tab-ritual #rcol{order:1}
+ body.tab-ritual #lcol{order:2}
+ body.tab-ritual.ritbuild #lcol,body.tab-ritual.ritnone #lcol{order:-2}}
+/* THE CENTRE'S OWN NEW RITUAL IS FOR A FOLDED LEFT COLUMN ONLY, round QN. With
+   nothing active it is drawn under Active today, and while the left column is
+   open that column carries the same press with Suggested under it, on the
+   same screen at 1600 and first on a phone. Folded shut, the left column is
+   one control, and then this press is the way to start one. */
+body.tab-ritual:not(.lshut) #rit .rv-addx{display:none}
 /* THE MENU'S OWN RULES LIVE HERE AND NOT IN ui/ritual.js. #flowhd and #flowside
    are in the document from the first paint, and the design gate holds every
    class the document carries to a rule in the sheet: they sat in the script's
@@ -5527,10 +5570,10 @@ body:not(.tab-ritual):not(.tab-acct) .fl-rail{display:none}
 .fl-nm{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:600;color:var(--ink)}
 .fl-nm svg{width:20px;height:20px;fill:none;stroke:var(--sec-flow);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .fl-says{font-size:13.5px;line-height:1.5;color:var(--mid)}
-body.tab-acct #acct{display:flex!important;z-index:5;overflow-y:auto}
-body:not(.tab-acct) #acct{display:none!important}
-body.tab-acct #acct .rit-card{width:100%;max-width:1760px;margin:0 auto;
- max-height:none;border:0;background:transparent;box-shadow:none;padding:14px 18px 22px}
+/* the left menu's head takes the accent, the colour of every primary press,
+   because inputting new is what this column is for. The right menu's head
+   keeps Flow's own colour above. */
+.fl-new .fl-nm svg{stroke:var(--accent)}
 #cone.tabmode{position:absolute;z-index:5;background:transparent;backdrop-filter:none}
 #cone.tabmode .cone-card{width:100%;max-height:none;border:0;background:transparent;
  box-shadow:none;padding:14px 18px 18px}

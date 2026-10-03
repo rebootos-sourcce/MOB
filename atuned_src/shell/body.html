@@ -477,7 +477,12 @@
    </div>
    <div class="tabgrp" data-sec="flow" role="group" aria-label="Flow"><span class="tabgrp-hd" aria-hidden="true">Flow</span>
     <button type="button" class="vt tabtop" data-tabk="10" aria-pressed="false" title="Ritual"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.4c.9 2.9 4.6 4.9 4.6 9.3a4.6 4.6 0 0 1-9.2 0c0-2.3 1.1-3.7 2.3-4.8.3 1.5 1 2.4 2 2.7-.5-2.8 0-5.1.3-7.2z"/><path d="M8 21h8"/></svg><span class="n">Ritual</span></button>
-    <button type="button" class="vt tabtop" data-tabk="14" aria-pressed="false" title="Accountability"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M8 12.4l2.8 2.8 5.2-5.8"/></svg><span class="n">Accountability</span></button>
+    <!-- ACCOUNTABILITY HAS NO BUTTON, round QF. It is the right column of the
+         Ritual page, not a page beside it: "Right side of the menu is for the
+         accountability tracker." Integer 14 is folded onto 10 in core.js, so
+         it keeps its integer and its renderer and loses only its door, the
+         way Games and Analytics each did before it. The gate holds this group
+         to TABDEF, so a button left here would fail the run. -->
    </div>
    <div class="tabgrp" data-sec="embody" role="group" aria-label="Embody"><span class="tabgrp-hd" aria-hidden="true">Embody</span>
     <button type="button" class="vt tabtop" data-tabk="6" aria-pressed="false" title="Knowledge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5.6c3.1-.8 6-.4 8.5 1.3v12.8c-2.5-1.6-5.4-2-8.5-1.2zM20.5 5.6c-3.1-.8-6-.4-8.5 1.3v12.8c2.5-1.6 5.4-2 8.5-1.2z"/></svg><span class="n">Knowledge</span></button>
@@ -638,6 +643,21 @@
     <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
      <rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M9 4.5v15"/>
      <path class="lf-ch" d="M15.6 9.4L13 12l2.6 2.6"/></svg></button>
+   <!-- THE FLOW INPUT MENU. Ruled round QF, 2 October, his words: "Left menu
+        will be for inputting new." So on the Ritual page this column is the
+        one place a person starts or changes a ritual: closed it is one press
+        and the seven tags, open it is the builder. Round PO had taken the
+        left column off Flow and put the builder on the right; this reverses
+        the second half of that and gives the left column a job instead of
+        hiding it.
+
+        It is not a .lsec. A section folds, and an input menu that folds shut
+        is a New ritual a person cannot find, which is the standing rule that
+        a control is never hidden with no affordance. The column's own fold
+        still works, because that is the person's arrangement of the screen.
+        Drawn by ritRender in ui/ritual.js, shown on the Ritual tab only,
+        head.html beside .fl-rail. -->
+   <div class="fl-rail fl-new" id="flownew"><div class="fl-hd" id="flownewhd"></div><div class="rvr" id="flowleft"></div></div>
    <!-- ROOT ENERGETICS, ABOVE THE READINGS, AND IT OPENS CLOSED. EZ in
         TASKS.md, his words: "The states Western Eastern number design I need
         all my numerology stuff ... that is all collapsible and goes above
@@ -920,13 +940,15 @@
    <div id="ana" class="iq"></div>
    <div id="rel" class="rel"></div>
    <div id="rit" class="rel"></div>
-   <!-- ACCOUNTABILITY, ITS OWN HOST. A sibling of #rit and never a child of it,
-        on the #sum and #ana rule this file already names: setTab shows and
-        hides every host by its own id, so a surface carried inside another
-        host disappears with it. Drawn by acctRender in ui/accountability.js.
-        Its class is iq and not rel, because rel is a modal overlay and this
-        is a page. -->
-   <div id="acct" class="iq"></div>
+   <!-- ACCOUNTABILITY HAS NO HOST ON THE STAGE ANY MORE, round QF. It was a
+        page of its own for one round and it is the right column of this page
+        now, so what it draws goes into #flowside in the right rail and
+        nothing is nested inside #rit. That matters and is not tidiness: the
+        renderer for #rit writes the whole innerHTML of its host, so a host
+        for a second surface placed inside it is deleted on the way past,
+        which is the #know and #games lesson this file already carries. The
+        right rail is a sibling of the stage, so it cannot be deleted by the
+        stage's own paint. -->
    <!-- the compass with volume. its own canvas, its own context, and an
         axonometric projection. no library and no new dependency. -->
    <div id="cone" class="rel"></div>

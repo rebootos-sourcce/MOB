@@ -5565,14 +5565,19 @@ const TABDEF=[
  /* "Flow is ritual and accountability." The Ritual tab carries both the
     building of a ritual and the accountability for keeping it, so the whole
     tab moves and nothing is split. */
+ /* FLOW IS ONE PAGE OF THREE COLUMNS, round QF, 2 October, and that is the
+    third ruling on this one surface. Round JQ attached the accountability
+    tracker to the ritual page, round PO split it out into a tool set of its
+    own, and round QF put it back, with a column each and a job named for
+    every column. His words: "we're re-merging the knowledge base and the
+    accountability tracker. Left menu will be for inputting new. Right side
+    of the menu is for the accountability tracker. Center piece is for the
+    ritual."
+    So TAB.RITUAL is the whole of Flow again: the left column inputs a new
+    ritual, the centre is the ritual, the right column is the accountability
+    tracker. DESIGN-flow-tools.md is the rulebook and every rule names its
+    gate. */
  {k:TAB.RITUAL,  id:'rit',   nm:'Ritual',    cls:'tab-ritual',  sec:'flow'},
- /* "Flow is ritual and accountability" was one tab at round KT, and the
-    comment above says "nothing is split". On 2 October he split it: "move
-    accountability to its own tool set." Flow is two tool sets now, in that
-    order, Ritual to set what a person will do and Accountability to read
-    what they did. Looked up by .k like every other entry, never by position,
-    because Practitioner's door comes and goes and a position would move. */
- {k:TAB.ACCOUNT, id:'acct',  nm:'Accountability', cls:'tab-acct', sec:'flow'},
  /* "Embody is knowledge." */
  {k:TAB.KNOW,    id:'know',  nm:'Knowledge', cls:'tab-know',    sec:'embody'},
  /* The practitioner section's one door. Clients and not Practitioner, on the
@@ -5614,14 +5619,16 @@ const TABOF=function(k){for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)retur
    before a fold still resolves to something rather than silently to the
    first entry in the bar, which is what TABOF would have done.
 
-   IT IS EMPTY NOW. Both surfaces this file has ever folded have been
-   unfolded: Games first, back at KT and unfolded before this comment was
-   last true, and Analytics at round LV, in the same round this comment is
-   being corrected in. TABFOLD stays declared, empty, rather than removed,
-   because TABREAL still has to check it and a fold is exactly the kind of
-   ruling that gets made again. Adding one back is a single line here and a
-   TABDEF entry taken out, not a rewrite of the function below. */
+   AND ONE IS BACK IN IT, round QF: ACCOUNTABILITY. The line above said
+   adding one back is a single line here and a TABDEF entry taken out, and
+   that is exactly what this is. Integer 14 keeps its value, acctSideHtml in
+   ui/accountability.js keeps the body the page's renderer had, and what moved
+   is where it draws: it is the right column of the Ritual page rather than a page of
+   its own, so a tab stored by anybody who used it while it had a door still
+   resolves to the surface that carries it instead of falling through to
+   Summary. Games and Analytics were each folded this way before. */
 const TABFOLD={};
+TABFOLD[TAB.ACCOUNT]=TAB.RITUAL;
 const TABREAL=function(k){
  if(TABFOLD[k]!==undefined)return TABFOLD[k];
  for(var i=0;i<TABDEF.length;i++)if(TABDEF[i].k===k)return k;
@@ -15286,28 +15293,67 @@ function intentionRead(p,now){
 
    A mark's test takes the ledger, the streak and the profile and returns true
    or false. Nothing in a test reaches outside those three. */
+/* THE PRACTICE MARKS ARE THE TDD'S SLICE 0, round QS, 3 October.
+   ATUNED-points-achievements-unlocks-TDD-v3.md section 3 measured four of
+   these wrong and section 9.3 gives each its corrected test:
+     first   counted every entry, so pressing Start and never finishing earned
+             First run. It reads a ritual marked done (l.done), 21.J2's half.
+     week, month, season
+             read best, the strict row, so twice a week for ninety days earned
+             none of them (LD3, measured). They read days practised (s.days,
+             pracDays, which already skips a set-and-not-done entry), and the
+             copy no longer says "in a row", because a mark that demands a row
+             shames a gap (TDD 10.4, DESIGN-ladder anti design 1).
+   And two of the TDD's new practice marks land with them, each a count of
+   something that happened and read off the record alone:
+     tracks  one ritual marked done in every track PRACTICE carries, read at
+             run time so a track added later is counted without an edit here.
+     back    a gap of BACK_GAP days or more between two days practised. Coming
+             back is the act a streak punishes, so it is the one this names.
+   Nothing new is stored. A mark's date is derived by markDays below, off the
+   same record, the way the TDD's own drawer dates one (9.1). */
+var BACK_GAP=14;
+function pracTracks(p){
+ var by={}, seen={};
+ ((typeof PRACTICE!=='undefined'&&PRACTICE)||[]).forEach(function(x){if(x&&x.track)by[x.k]=x.track;});
+ ((p&&p.rituals)||[]).forEach(function(x){
+  if(!x||x.done===false||!Array.isArray(x.steps))return;
+  x.steps.forEach(function(k){if(by[k])seen[by[k]]=1;});});
+ var all={}; Object.keys(by).forEach(function(k){all[by[k]]=1;});
+ return {done:Object.keys(seen).length, all:Object.keys(all).length};}
+function pracBack(days){
+ for(var i=1;i<days.length;i++)if(days[i-1]-days[i]>=BACK_GAP)return true;
+ return false;}
 var MARKS=[
  /* practice */
  {k:'first', fam:'Practice', b:'Root', nm:'First run',
-  d:'You ran one. The instrument is no longer a thing you are reading about.',
+  d:'You marked one ritual done. The instrument is no longer a thing you are reading about.',
   ic:'M12 21V6 M7 11l5-5 5 5',
-  t:function(l){return l.rituals>=1;}},
+  t:function(l){return l.done>=1;}},
  {k:'week', fam:'Practice', b:'Root', nm:'Seven days',
-  d:'Seven days in a row. This is where it stops being a decision each morning.',
+  d:'Seven days of practice on the record. This is where it stops being a decision each morning.',
   ic:'M4 6h16v14H4z M4 11h16 M8 3v4 M16 3v4',
-  t:function(l,s){return s.best>=7;}},
+  t:function(l,s){return s.days>=7;}},
  {k:'month', fam:'Practice', b:'Root', nm:'Thirty days',
-  d:'Thirty in a row. The nervous system has had long enough to believe you.',
+  d:'Thirty days of practice on the record. The nervous system has had long enough to believe you.',
   ic:'M4 6h16v14H4z M4 11h16 M8 3v4 M16 3v4 M9 15l2 2 4-4',
-  t:function(l,s){return s.best>=30;}},
+  t:function(l,s){return s.days>=30;}},
  {k:'season', fam:'Practice', b:'Root', nm:'Ninety days',
-  d:'A quarter of a year, unbroken. Nothing about this is a beginner number.',
+  d:'Ninety days of practice on the record. Nothing about this is a beginner number.',
   ic:'M12 3a9 9 0 109 9 M12 3v9h9 M12 12l5 5',
-  t:function(l,s){return s.best>=90;}},
+  t:function(l,s){return s.days>=90;}},
  {k:'hour', fam:'Practice', b:'Root', nm:'Sixty minutes',
   d:'An hour of practice on the record, however it was spread.',
   ic:'M12 3a9 9 0 100 18 9 9 0 100-18 M12 7v5l4 2',
   t:function(l){return l.minutes>=60;}},
+ {k:'tracks', fam:'Practice', b:'Root', nm:'Every track run',
+  d:'A ritual marked done in every track the practice library carries.',
+  ic:'M12 3v18 M3 12h18 M6 6l12 12',
+  t:function(l,s,p){var t=pracTracks(p); return t.all>0&&t.done>=t.all;}},
+ {k:'back', fam:'Practice', b:'Root', nm:'Came back',
+  d:'Two weeks or more away, then a day of practice. Coming back is the practice too.',
+  ic:'M9 5L4 10l5 5 M4 10h10a5 5 0 010 10h-4',
+  t:function(l,s,p){return pracBack(pracDays(p));}},
  /* ground */
  {k:'ten', fam:'Ground', b:'Throat', nm:'Ten addresses',
   d:'Ten distinct addresses opened. Not ten runs. Ten places.',
@@ -15371,6 +15417,44 @@ function ladderRead(p,now){
  var lead=null, best=-1;
  left.forEach(function(m){var n=by[m.fam]||0; if(n>best){best=n; lead=m;}});
  return {earned:got, next:lead, ledger:l, streak:s};}
+
+/* WHEN A PRACTICE MARK BECAME TRUE, round QS. The TDD dates every mark with
+   the moment it first became true (9.1) and stores it; storing is a schema
+   change and the schema is the owner's call (CLAUDE.md, Schema v2), so this
+   derives the date instead, off the same record the test reads. It walks the
+   practised days oldest first and returns the day key on which each earned
+   practice mark's line was crossed. Only the practice family is dated: every
+   one of its tests is a count of days or minutes that only rises, so the day
+   it crossed is a fact of the record. A state mark (First clearing) can fall
+   and rise again, and a date for it would be a guess, so it is left undated.
+
+   An entry deleted later moves a date, which is right: the date says which
+   day on the record now carries the mark, and the record is the person's. */
+function markDays(p,now){
+ var L=ladderRead(p,now), want={}, out={};
+ L.earned.forEach(function(m){if(m.fam==='Practice')want[m.k]=1;});
+ var today=pracDay(now||Date.now()), by={}, tr={}, all={};
+ ((typeof PRACTICE!=='undefined'&&PRACTICE)||[]).forEach(function(x){if(x&&x.track){tr[x.k]=x.track; all[x.track]=1;}});
+ var nAll=Object.keys(all).length;
+ ((p&&p.rituals)||[]).forEach(function(x){
+  if(!x||x.done===false)return;
+  var d=pracDay(x.t); if(d===null||(today!==null&&d>today+1))return;
+  var e=by[d]=by[d]||{min:0, tracks:{}};
+  e.min+=(+x.min)||0;
+  (Array.isArray(x.steps)?x.steps:[]).forEach(function(k){if(tr[k])e.tracks[tr[k]]=1;});});
+ var days=Object.keys(by).map(Number).sort(function(a,b){return a-b;});
+ var n=0, mins=0, seen={}, last=null;
+ var at=function(k,d){if(want[k]&&out[k]===undefined)out[k]=d;};
+ days.forEach(function(d){
+  n++; mins+=by[d].min;
+  Object.keys(by[d].tracks).forEach(function(t){seen[t]=1;});
+  at('first',d);
+  if(n>=7)at('week',d); if(n>=30)at('month',d); if(n>=90)at('season',d);
+  if(mins>=60)at('hour',d);
+  if(nAll&&Object.keys(seen).length>=nAll)at('tracks',d);
+  if(last!==null&&d-last>=BACK_GAP)at('back',d);
+  last=d;});
+ return out;}
 
 /* ============================================================
    COHERENCE OVER TIME. The series behind the graph.
@@ -17002,7 +17086,7 @@ if(typeof module!=='undefined'&&module.exports){
                   PAINREG:PAINREG, PEOPLE:PEOPLE, LAWSET:LAWSET, BIRTH:BIRTH,
                   LEX:LEX, ADJ2CHG:ADJ2CHG, PHRASES:PHRASES, VERP:VERP,
                   NERVEBR:NERVEBR, BODYPATH:BODYPATH, TAB:TAB,
-  /* the ladder */MARKS:MARKS, ladderRead:ladderRead, ledgerRead:ledgerRead,
+  /* the ladder */MARKS:MARKS, ladderRead:ladderRead, markDays:markDays, BACK_GAP:BACK_GAP, ledgerRead:ledgerRead,
                   intentionRead:intentionRead, INTENT_DAYS:INTENT_DAYS,
                   streakRead:streakRead, pracDays:pracDays, pracDay:pracDay,
   /* indexes */   W:W, BY:BY, ALL_SAB:ALL_SAB, S:S,

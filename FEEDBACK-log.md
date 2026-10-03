@@ -333,6 +333,29 @@ surface that prints a seeded term bare, and it fails on the build from before.
 tools/unpack-walk.js finds the terms nobody seeded. See TASKS.md round PO and
 V23 in the voice skill.
 
+## 2026-10-03 · owner · the ritual page, symbolic
+
+said: "for the ritual everything like the rest of the app has to be visually
+symbolic it's also a UI element that's tied to the system to show the percent
+complete and more show less tell if you want tell you press on something to get
+information otherwise this is a bit very minimal text screen if you the
+accountability should have the the 30 days of cubes showing my progression and
+my achievements and badges and whatnot attached to it and then the cards that
+come from the ritual builder they should be colorized and related to the color
+of the chakra or fetter with their symbol."
+read: the page printed words where every other surface draws a symbol. Each
+ritual, each avatar seat and each suggestion was a paragraph, and every part
+carried a sentence under its heading. The thirty days were a ring of arcs and
+the marks sat in a row under the figures, attached to nothing.
+change: round QS, branch ritual-symbolic. A ritual carries crBadge, its seat's
+mark with its percent complete as the ring (FT25). Ritual to avatar is the
+Avatar page's own percent complete as the hero, and one badge per seat (FT18).
+Every part's sentence moved onto its heading's press (FT26). The thirty days
+are cubes, a week to a row, with each earned mark pinned on the day that earned
+it and the shelf under them (FT21, FT28); the marks took the points TDD's slice
+0 in engine/ladder.js. Suggested cards wear their seat's colour and the seat's
+or the pattern's mark (FT27). Gate: tests/flowtools.js.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.
