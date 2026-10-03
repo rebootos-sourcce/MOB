@@ -32765,3 +32765,15 @@ Dispatched to an `animation-vfx-director` agent in its own worktree. Commit `734
 Left open, named by the agent rather than hidden: a visitor who lingers past 13 seconds sees the loop seam where the path resets to its curved first-pass shape, judged acceptable for a scroll-through beat and flagged as the lever to pull (shorten the hold) if real use shows it wears; `functional.js`, `collide.js`, `design.js`, `monitor.js` and `boot.js` weren't re-run since no byte of `source.html` or `engine.js` changed.
 
 **All seven funnel-completion punch-list items are now done, round QZ.** Small copy fixes, the `storyboard-faq-nav` merge, the URL-fragment record handoff (plus its own two follow-up fixes), the pre-quiz signal beat, Yes/Not-me on story cards, the five-layer reading reveal, and the cascade. Every item independently re-verified on a fresh worktree against the building agent's own claimed numbers before being logged, with no exceptions this round.
+
+Sent him the full packed build (`atuned.html`, build v1542, commit `773c5d0`, `source.html` md5 `f729a4d6`) and a plain-words status summarising the completed punch list, per round PH style. No question, nothing blocked.
+
+## The secondary queue opens: tutorial-cinematic merged
+
+With release and the full funnel punch list done, his own round QX gate is open and the held-back work moves up (`PLAN.md` section 0 updated to reflect this). First: `tutorial-cinematic` (`8bb370a`, the Day One tutorial on the same full-screen stage the onboarding welcome uses), already fully built and verified weeks ago in this session, held only because it wasn't the funnel. Dispatched to a `fullstack-td` agent in its own worktree to merge onto dev.
+
+Merge commit `aef23f5`, pushed. Two real conflicts: `ui/onboard.js` (one hunk on the Story step's textarea wiring, both sides' changes kept: dev's dictation-stars mask and the tutorial branch's focus/scroll handling), and `source.html` (a build product, rebuilt rather than hand-merged, md5 `cfe1a196`). Everything else that changed on both sides (`shell/head.html`, `tests/onboarding2.js`) was checked directly and found non-overlapping.
+
+Independently re-verified on a fresh worktree off the pushed commit: `BUILD.sh` claims gate 107/0 and `BUILD-engine.sh` host-free/729-exports both matched exactly; `tests/engine.js` 4483/0 unchanged; `tests/onboarding2.js` 208/0, matching exactly, including the expected "J0 STILL OPEN" printed report (not a failure, the same known, deliberately-closed line per round QW, unchanged by this merge).
+
+Not yet done, named by the merging agent rather than hidden: real screenshots at both widths (the house rule for anything a person can see), and a repack of `atuned-packed.html` (still holds the older build) before it's offered again. Both queued next.
