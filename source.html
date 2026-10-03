@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1583 8e23658 2026-10-03 13:49"><head><meta charset="utf-8">
+<html lang="en" data-build="v1584 13da904 2026-10-03 14:00"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -43954,7 +43954,10 @@ function anaRender(){
       time on this surface. Each bar names its CQ and seat on its title, and
       the warning stands once, beside Identification. */
    +'<div class="ana-strip">';
-  H.forEach(function(x){out+='<div class="ana-px" title="CQ '+x.cq+', heaviest at the '+String(x.dark).toLowerCase()
+  /* ESCAPED, ROUND RA: x.dark is a history row's own string, checked by the schema
+     boundary for type only, not content (engine/schema.js); it lands in a title
+     attribute here, where an unescaped quote breaks out of it. esc() closes that. */
+  H.forEach(function(x){out+='<div class="ana-px" title="CQ '+x.cq+', heaviest at the '+esc(String(x.dark).toLowerCase())
    +'"><u style="height:'+Math.max(6,Math.round(x.cq/100*50))+'px;background:'
    +seatCol(x.dark)+'"></u></div>';});
   out+='</div>';}
@@ -60023,11 +60026,15 @@ function recRender(){
   +recRow('Character',a.ch,b.ch,0,true);
 
  var moved=[];
- /* a null tier is a row written while CQ was still filling, which has no word to compare */
+ /* a null tier is a row written while CQ was still filling, which has no word to compare.
+    ESCAPED, ROUND RA: the schema boundary only checks dark/tier/arch are strings, not
+    their content (engine/schema.js), so an imported history row carrying markup reached
+    this innerHTML sink verbatim. esc() (ui/component.js) closes it without changing what
+    the boundary lets through, which stays its own, separate fix. */
  if(a.m===b.m&&a.tier&&b.tier&&a.tier!==b.tier)
-  moved.push('the tier read '+a.tier.toLowerCase()+' and now reads '+b.tier.toLowerCase());
- if(a.dark!==b.dark)moved.push('the heaviest seat moved from the '+a.dark.toLowerCase()+' to the '+b.dark.toLowerCase());
- if(a.arch!==b.arch)moved.push('the primary archetype moved from '+a.arch+' to '+b.arch);
+  moved.push('the tier read '+esc(a.tier.toLowerCase())+' and now reads '+esc(b.tier.toLowerCase()));
+ if(a.dark!==b.dark)moved.push('the heaviest seat moved from the '+esc(a.dark.toLowerCase())+' to the '+esc(b.dark.toLowerCase()));
+ if(a.arch!==b.arch)moved.push('the primary archetype moved from '+esc(a.arch)+' to '+esc(b.arch));
  h+='<p class="sum-p" style="margin-top:14px">'+(moved.length
    ? 'Between these two, '+moved.join(', and ')+'.'
    : 'Between these two, the tier, the heaviest seat and the primary archetype all held.')
@@ -60982,10 +60989,13 @@ ROOTD.forEach(function(rn){
  var r=$('roots'); if(!r||!r.parentNode)return;
  var d=document.createElement('div'); d.className='rootlegend'; d.id='rootlegend';
  r.parentNode.insertBefore(d,r.nextSibling);})();
+/* ESCAPED, ROUND RA: S.roots comes from soul.roots, which the schema boundary
+   only checks is an array of strings, not their content (engine/schema.js);
+   DOMAINS[i].nm is the fixed table and needs nothing. */
 function capD(){
  $('capD').innerHTML=S.doms.map(function(i){
   return '<b style="color:'+rootCol(DOMAINS[i].r)+'">'+DOMAINS[i].nm+'</b>';}).join(' + ')
-  +(S.roots.length?'<br>plus all of '+S.roots.join(', '):'');}
+  +(S.roots.length?'<br>plus all of '+S.roots.map(esc).join(', '):'');}
 [['ar1','a1'],['ar2','a2']].forEach(function(pair){
  ARCH.forEach(function(a,i){
   var b=document.createElement('button');b.className='ib';b.type='button';
@@ -67841,10 +67851,28 @@ function devSightSet(on){
  DEV_SIGHT=!!on;
  try{ STORE.set('devsight',on?'on':'off'); }catch(e){}
  if(typeof render==='function')render();}
-/* DEVELOPER OPTIONS, DISCLOSED RATHER THAN ALWAYS VISIBLE: this is a
-   testing control, not a thing a stranger meeting the funnel needs to
-   see open by default. */
+/* DEVELOPER OPTIONS, GATED BEHIND A FLAG NO SHIPPED CONTROL CAN SET, ROUND
+   RA. The comment here used to say "disclosed rather than always visible,"
+   and the disclosure was real: the block was a collapsed <details>, closed
+   by default. But collapsed is not gated. Every visitor to the login card
+   got the same markup, open to a click, and one of its three switches is
+   "Unlock all sight," which lockPlan() (ui/lock.js) turns into a real tier
+   four grant, stored in the browser so it survives a reload. A stranger
+   meeting the funnel never needed to see this to use the product, and the
+   label "Developer options" is itself an invitation to try the switch
+   under it. Reviewed round RA, paywall seat: "the one thing that matters
+   most... taking money behind a lock the product unlocks itself."
+
+   The fix keeps the control, because the team still needs it, and removes
+   it from anyone who has not already turned it on from a console: devtoolsOn()
+   reads a second flag, never written by any rendered control, so turning
+   the panel on at all takes the same console access self-editing a record
+   already does (the privacy note above this function already treats that
+   as the person's own device, not an attack). */
+function devtoolsOn(){
+ try{ return STORE.get('devtools')==='on'; }catch(e){ return false; }}
 function loginDevOptions(){
+ if(!devtoolsOn())return '';
  return '<details class="login-dev">'
   +'<summary>Developer options</summary>'
   +'<label class="login-sw"><input type="checkbox" id="devob"'
@@ -69932,5 +69960,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004589236"></div>
+<div id="eof" hidden data-len="004591275"></div>
 </body></html>

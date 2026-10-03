@@ -143,11 +143,15 @@ function recRender(){
   +recRow('Character',a.ch,b.ch,0,true);
 
  var moved=[];
- /* a null tier is a row written while CQ was still filling, which has no word to compare */
+ /* a null tier is a row written while CQ was still filling, which has no word to compare.
+    ESCAPED, ROUND RA: the schema boundary only checks dark/tier/arch are strings, not
+    their content (engine/schema.js), so an imported history row carrying markup reached
+    this innerHTML sink verbatim. esc() (ui/component.js) closes it without changing what
+    the boundary lets through, which stays its own, separate fix. */
  if(a.m===b.m&&a.tier&&b.tier&&a.tier!==b.tier)
-  moved.push('the tier read '+a.tier.toLowerCase()+' and now reads '+b.tier.toLowerCase());
- if(a.dark!==b.dark)moved.push('the heaviest seat moved from the '+a.dark.toLowerCase()+' to the '+b.dark.toLowerCase());
- if(a.arch!==b.arch)moved.push('the primary archetype moved from '+a.arch+' to '+b.arch);
+  moved.push('the tier read '+esc(a.tier.toLowerCase())+' and now reads '+esc(b.tier.toLowerCase()));
+ if(a.dark!==b.dark)moved.push('the heaviest seat moved from the '+esc(a.dark.toLowerCase())+' to the '+esc(b.dark.toLowerCase()));
+ if(a.arch!==b.arch)moved.push('the primary archetype moved from '+esc(a.arch)+' to '+esc(b.arch));
  h+='<p class="sum-p" style="margin-top:14px">'+(moved.length
    ? 'Between these two, '+moved.join(', and ')+'.'
    : 'Between these two, the tier, the heaviest seat and the primary archetype all held.')

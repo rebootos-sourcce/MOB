@@ -696,10 +696,13 @@ ROOTD.forEach(function(rn){
  var r=$('roots'); if(!r||!r.parentNode)return;
  var d=document.createElement('div'); d.className='rootlegend'; d.id='rootlegend';
  r.parentNode.insertBefore(d,r.nextSibling);})();
+/* ESCAPED, ROUND RA: S.roots comes from soul.roots, which the schema boundary
+   only checks is an array of strings, not their content (engine/schema.js);
+   DOMAINS[i].nm is the fixed table and needs nothing. */
 function capD(){
  $('capD').innerHTML=S.doms.map(function(i){
   return '<b style="color:'+rootCol(DOMAINS[i].r)+'">'+DOMAINS[i].nm+'</b>';}).join(' + ')
-  +(S.roots.length?'<br>plus all of '+S.roots.join(', '):'');}
+  +(S.roots.length?'<br>plus all of '+S.roots.map(esc).join(', '):'');}
 [['ar1','a1'],['ar2','a2']].forEach(function(pair){
  ARCH.forEach(function(a,i){
   var b=document.createElement('button');b.className='ib';b.type='button';
