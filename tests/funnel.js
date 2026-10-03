@@ -45,6 +45,15 @@
         picked or typed exactly as given, stores nothing, draws a point on
         the body only for a place picked from the list, and reads in full
         with no script.
+    10  reframe, his slide 17, sits after release and before verify, mirrors
+        whatever is typed exactly, never as markup, lets it be changed, and
+        refuses an empty answer by name rather than accepting it as one.
+    11  verify, his slide 19, sits right after reframe and before the loop,
+        tells the truth about having no baseline when the signal test was
+        never taken or found nothing, shows the signal test's own reading
+        when it was, and answers "Nothing changed" the same as the other
+        four: a real result, never a failure. Neither frame writes to
+        storage.
 
    NO COUNT IS TYPED INTO THIS FILE. Not the number of pages, not the number
    of questions, not the number of controls, not the number of seats. Every
@@ -931,6 +940,81 @@ const PROBE = () => {
     for (const l of SIG_HIS)
       ok(nt.indexOf(l) >= 0, 'signal @' + w + ': with no script his line is missing: "' + l + '"');
     await nctx.close();
+  }
+
+  /* ---------- the landing's reframe and verify, his slides 17 and 19 ----------
+     Held against the page as a person walks it, same method the signal test
+     above uses: a real page, real clicks, nothing assumed from the markup. */
+  for (const [w, hgt] of WIDTHS) {
+    const tag = 'reframe/verify @' + w;
+    const rctx = await browser.newContext({ viewport: { width: w, height: hgt } });
+    const rp = await rctx.newPage();
+    const rerr = [];
+    rp.on('pageerror', e => rerr.push(String(e && e.message || e)));
+    await rp.goto('file://' + path.join(DIR, 'index.html'), { waitUntil: 'load' });
+    await rp.evaluate(() => document.fonts.ready);
+    const order = await rp.evaluate(() => [...document.querySelectorAll('.fr')].map(f => f.id));
+    const ri = order.indexOf('reframe'), vi = order.indexOf('verify');
+    ok(ri > 0 && ri === order.indexOf('release') + 1 && vi === ri + 1 && order.indexOf('loop') === vi + 1,
+      tag + ': the order is not release, reframe, verify, loop: ' + order.join(','));
+
+    /* reframe mirrors exactly what was typed, markup and all kept as text */
+    const typed = 'I can say <b>yes</b> & mean it, without the old weight';
+    await rp.fill('#rftx', typed);
+    await rp.click('#rf [data-rf="keep"]');
+    const said = await rp.evaluate(() => document.getElementById('rftext').textContent);
+    ok(said === typed, tag + ': the reframe is not mirrored exactly, it reads "' + said + '"');
+    const saidHtml = await rp.evaluate(() => document.getElementById('rftext').innerHTML);
+    ok(!/<b>/.test(saidHtml), tag + ': the typed reframe was run as markup, not said back as text');
+    await rp.click('#rf [data-rf="edit"]');
+    const back = await rp.evaluate(() => document.getElementById('rftx').value);
+    ok(back === typed, tag + ': changing it loses the words, the box now reads "' + back + '"');
+    await rp.fill('#rftx', '  ');
+    await rp.click('#rf [data-rf="keep"]');
+    const note = await rp.evaluate(() => document.getElementById('rfnote').textContent);
+    ok(/Write a few words first/.test(note), tag + ': an empty reframe is kept with nothing said: "' + note + '"');
+
+    /* verify, with no signal test taken on this page: honest about it */
+    const vfHonest = await rp.evaluate(() => document.getElementById('vf').innerText);
+    ok(/nothing to compare|skipped/i.test(vfHonest) && !/landed in the/i.test(vfHonest),
+      tag + ': verify invents a baseline with no signal test taken: "' + vfHonest + '"');
+    const store0 = await rp.evaluate(() => localStorage.length + sessionStorage.length);
+    await rp.click('#vfans [data-v="Nothing changed."]');
+    const say = await rp.evaluate(() => document.getElementById('vfsay').textContent);
+    ok(/answer too/i.test(say) && !/fail|wrong|incomplete|no result/i.test(say),
+      tag + ': "Nothing changed" does not read as a real result: "' + say + '"');
+    const store1 = await rp.evaluate(() => localStorage.length + sessionStorage.length);
+    ok(store0 === 0 && store1 === 0, tag + ': reframe or verify wrote ' + store1 + ' item(s) to storage');
+    ok(rerr.length === 0, tag + ': ' + rerr.length + ' error(s): ' + rerr.slice(0, 2).join(' | '));
+    console.log('  ' + tag + ': order held, reframe mirrored exactly, empty reframe refused, '
+      + 'verify honest with no baseline, "Nothing changed" answered as a result, storage ' + store1);
+    await rctx.close();
+  }
+  /* verify shows the signal test's own baseline when one exists, never a
+     second one invented for this frame */
+  {
+    const tag = 'reframe/verify, signal test taken first';
+    const bctx = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
+    const bp = await bctx.newPage();
+    await bp.goto('file://' + path.join(DIR, 'index.html'), { waitUntil: 'load' });
+    const tap = async (sel) => { await bp.click('#sg ' + sel); await bp.waitForTimeout(30); };
+    await tap('[data-sg="go"]'); await tap('[data-sg="go"]');
+    await tap('[data-sg="pick"][data-v="Chest"]'); await tap('[data-sg="pick"][data-v="Dense"]');
+    await tap('[data-sg="pick"][data-v="Warm"]'); await tap('[data-sg="pick"][data-v="Red"]');
+    await tap('[data-sg="pick"][data-v="It stays the same"]');
+    await bp.evaluate(() => {
+      const el = document.getElementById('verify'), r = el.getBoundingClientRect();
+      window.scrollTo({ top: scrollY + r.top, behavior: 'instant' });
+    });
+    let shown = '';
+    for (let i = 0; i < 40; i++) {
+      shown = await bp.evaluate(() => (document.getElementById('vf') || {}).innerText || '');
+      if (/chest/i.test(shown)) break;
+      await bp.waitForTimeout(60);
+    }
+    ok(/yes/i.test(shown) && /chest/i.test(shown) && /dense/i.test(shown),
+      tag + ': verify does not carry the signal test\'s own reading forward: "' + shown + '"');
+    await bctx.close();
   }
 
   /* ---------- the sendable build, if it has been made ---------- */

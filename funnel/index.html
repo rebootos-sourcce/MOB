@@ -268,6 +268,22 @@ a.ghost:hover{color:var(--ink)}
 .opts li{display:flex;align-items:center;gap:8px}
 .opts li::before{content:'';width:7px;height:7px;border-radius:50%;border:1.4px solid var(--dim)}
 
+/* ---- reframe, his slide 17 and section 37, "mirror the user's exact
+   language". The card is the signal test's own (.sg, defined below, one
+   rule set earns both), so a second piece of free text on this page does
+   not grow a second card style to carry it. ---- */
+.rf .lb{display:block;font-size:14px;color:var(--mid);margin:0 0 6px}
+.rf textarea{display:block;width:100%;min-height:92px;font:inherit;font-size:17px;line-height:1.45;
+ color:var(--ink);background:var(--bg);border:1px solid var(--edge-2);border-radius:14px;
+ padding:12px 16px;resize:vertical}
+.rf textarea::placeholder{color:var(--dim)}
+
+/* ---- verify, his slide 19: the signal test's own report, said back
+   beside what the person notices now. ---- */
+.vf{margin-top:14px}
+.vf .eye{display:block;margin-bottom:4px}
+.vf .base{margin:2px 0 0;color:var(--mid)}
+
 /* ---- the loop ---- */
 .four{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:14px}
 .four li{display:flex;gap:12px;align-items:flex-start}
@@ -790,6 +806,80 @@ html:not(.js) .sigc{display:none}
  starts with "I know", built from what you said.</p></div>
 </section>
 
+<!-- SLIDE 17, REFRAME. His own words, section 36: "release creates space.
+     reframe gives the story a new direction." The question is his, section
+     36's primary and its alternative. The answer is free text, and section
+     37 is explicit about what happens to it: "Mirror the user's exact
+     language. No embellishment. No interpretation." So this never rewrites
+     what is typed. It is said back under its own heading, with the words
+     unchanged but for the whitespace trim the signal test's own "own"
+     answers already get (sgEsc and the own-input pattern a few hundred
+     lines below are reused rather than copied). The card is the signal
+     test's (.sg), so the funnel does not grow a second free-text card style
+     an hour after building its first one.
+
+     HELD IN MEMORY ONLY, the same rule as the signal test above: there is
+     no account yet for a reframe to belong to, and a funnel visitor has no
+     profile this could attach to. Close the page and it is gone. With no
+     script the question still reads and the box is still there to write
+     into, it is only the mirrored echo below that needs the click. -->
+<section class="fr" id="reframe" data-frame="reframe">
+ <span class="eye rv">Reframe</span>
+ <h2 class="rv">What feels possible when the old pattern stops running you?</h2>
+ <p class="m soft rv" style="--d:.15s">Or: what becomes possible when your intention stops fighting it, rather than running from it?</p>
+ <div class="sg rf rv" id="rf" style="--d:.3s">
+  <div id="rfedit">
+   <label class="lb" for="rftx">Your words</label>
+   <textarea id="rftx" maxlength="400" rows="3" aria-label="What feels possible now, in your own words"
+    placeholder="What feels possible now, in your own words"></textarea>
+   <p class="note" id="rfnote" aria-live="polite"></p>
+   <div class="act"><button type="button" class="btn" data-rf="keep">Keep these words</button></div>
+  </div>
+  <div id="rfsaid" hidden>
+   <span class="eye">Your reframe</span>
+   <p class="reading" id="rftext" tabindex="-1"></p>
+   <p class="small">These are your words, kept exactly as you wrote them. Nothing here is saved, and it is gone when you close the page.</p>
+   <div class="sg-under"><button type="button" class="sg-lnk" data-rf="edit">Change it</button></div>
+  </div>
+ </div>
+</section>
+
+<!-- SLIDE 19, VERIFICATION. His own words, section 41: "Return to the
+     original signal. Think about the same situation again. What happens in
+     your body now?" and his own rule, right beside it: "Every result is
+     evidence. No result should be framed as failure." So "Nothing changed"
+     sits in the same row as the other four, not struck out or greyed, and
+     picking it gets the same plain acknowledgement the others do.
+
+     THE BASELINE IS THE SIGNAL TEST'S OWN, never a second one invented for
+     this frame. sgFound, sgVal, sgNoticed and SGR are the signal test's own
+     state a few hundred lines below, read here and not duplicated. If
+     nothing was noticed there, or the signal test was skipped (the "Skip
+     yes and no" link a few frames back), this frame says exactly that
+     rather than showing a baseline that was never recorded: an invented
+     comparison would be a quieter version of the clamped 9999 CLAUDE.md's
+     own validation rule warns against, a reading of something that was
+     never there. -->
+<section class="fr" id="verify" data-frame="verify">
+ <span class="eye rv">Verify</span>
+ <h2 class="rv">Return to the signal.</h2>
+ <p class="m rv" style="--d:.15s">Think about the same situation again. What happens in your body now?</p>
+ <div class="vf rv" id="vf" style="--d:.3s"></div>
+ <ul class="sg-qs rv" style="--d:.45s"><li>Where do you feel the sensation now?</li>
+  <li>Is the intensity different?</li><li>Is the location different?</li>
+  <li>Is the quality different?</li>
+  <li>Is the charge different? Charge is the weight the word left on that place.</li></ul>
+ <p class="m soft rv" style="--d:.5s">Every answer below is evidence, including no change at all.</p>
+ <div class="ans rv" id="vfans" style="--d:.6s" role="group" aria-label="What changed since the signal test">
+  <button type="button" data-v="I feel different." aria-pressed="false">I feel different</button>
+  <button type="button" data-v="I see it differently." aria-pressed="false">I see it differently</button>
+  <button type="button" data-v="Something moved." aria-pressed="false">Something moved</button>
+  <button type="button" data-v="Nothing changed." aria-pressed="false">Nothing changed</button>
+  <button type="button" data-v="I'm not sure." aria-pressed="false">I'm not sure</button>
+ </div>
+ <p class="say rv" id="vfsay" style="--d:.7s" role="status" aria-live="polite"></p>
+</section>
+
 <!-- BEATS 23 TO 27, THE LOOP AND THE FIELD REMEMBERS. Ruled: "it is a
      circle, never a list", so the four close on the dial and the light goes
      round it without stopping. The stage is the Compass plan view. -->
@@ -931,6 +1021,16 @@ var FR={
  network:  {ring:.95,net:1,  pat:1,  core:1,  csc:1,  pul:1},
  body:     {ring:.95,net:1,  pat:1,  core:1,  csc:1,  pul:1},
  release:  {ring:.34,net:.10,pat:.22,core:.45,csc:.8, pul:.6},
+ /* reframe and verify sit between release's loosened field and the loop's
+    full one, climbing back the way release came down: his own sequence,
+    section 54, is release then reframe then verify, and slide 18 describes
+    the field reorganising through exactly this stretch, "the heat map
+    shifts". Neither frame has its own canvas scene, the way honest below
+    does not either: the ambient field climbing is the demonstration, and a
+    second bespoke animation for two text frames would be a second drawing
+    of the same idea the knot above already draws once. */
+ reframe:  {ring:.42,net:.18,pat:.32,core:.55,csc:.85,pul:.65},
+ verify:   {ring:.68,net:.46,pat:.64,core:.78,csc:.92,pul:.82},
  loop:     {ring:.95,net:1,  pat:1,  core:1,  csc:1,  pul:1},
  honest:   {ring:.7, net:.42,pat:.7, core:.8, csc:.9, pul:.3},
  ret:      {ring:0,  net:0,  pat:0,  core:1,  csc:.3, pul:0}};
@@ -1214,6 +1314,17 @@ function setFrame(fr){
  /* the Body frame shares the layer, so the points the person put there are
     wiped before it shows. Anywhere else the layer fades with them on it. */
  else if(fr==='body'&&sgg){sgg.setTransform(1,0,0,1,0,0);sgg.clearRect(0,0,sgc.width,sgc.height);}
+ /* VERIFY'S BASELINE IS READ OFF THE SIGNAL TEST'S OWN STATE EVERY TIME THE
+    FRAME IS ENTERED, not written once at load. It is declared a few hundred
+    lines below this function and still reachable here: this whole landing
+    is one script, defined top to bottom before any scroll can fire, so by
+    the time a person has scrolled this far every name below is already
+    assigned. Refreshing on arrival rather than on load matters because a
+    person can answer the signal test, scroll on, then scroll back; the
+    first cut of this read the baseline once and would have shown "nothing
+    noticed" forever after, which is the exact invented-emptiness this frame
+    exists to avoid. */
+ else if(fr==='verify'&&typeof vfBase==='function'){var ve=document.getElementById('vf'); if(ve)ve.innerHTML=vfBase();}
  if(REDUCED){/* the end state of the frame, drawn once */
   for(var n=0;n<3;n++)step2(1);draw(0);}}
 function probe(){
@@ -1471,6 +1582,53 @@ if(sgEl){
  sgEl.addEventListener('keydown',function(e){
   if(e.key==='Enter'&&e.target&&e.target.id==='sgtx'){e.preventDefault();
    var b=sgEl.querySelector('[data-sg="own"]');if(b)b.click();}});}
+
+/* ---------------- slide 17, reframe ----------------
+   Section 37: "Mirror the user's exact language. No embellishment. No
+   interpretation." So the write-up here never runs the typed text through
+   innerHTML: rftext.textContent is set directly, which is what already
+   keeps the "own" answers safe above (sgEsc exists because that path runs
+   through innerHTML; textContent needs no escaping at all, so this does
+   not add a second escaping rule for the same problem). RFR is read by
+   nothing outside this block and is never written to storage. */
+var rfEdit=D.getElementById('rfedit'), rfSaid=D.getElementById('rfsaid'),
+ rfTx=D.getElementById('rftx'), rfTextEl=D.getElementById('rftext'), rfNote=D.getElementById('rfnote'),
+ rfKeep=rfEdit&&rfEdit.querySelector('[data-rf="keep"]'), rfChange=rfSaid&&rfSaid.querySelector('[data-rf="edit"]');
+function rfCommit(){
+ var v=(rfTx.value||'').replace(/\s+/g,' ').trim();
+ if(!v){rfNote.textContent='Write a few words first.';rfTx.focus();return;}
+ rfTextEl.textContent=v; rfEdit.hidden=true; rfSaid.hidden=false; rfTextEl.focus({preventScroll:true});}
+if(rfEdit&&rfKeep&&rfChange){
+ rfKeep.addEventListener('click',rfCommit);
+ rfTx.addEventListener('keydown',function(e){
+  if(e.key==='Enter'&&(e.metaKey||e.ctrlKey)){e.preventDefault();rfCommit();}});
+ rfChange.addEventListener('click',function(){rfSaid.hidden=true;rfEdit.hidden=false;rfTx.focus();});}
+
+/* ---------------- slide 19, verification ----------------
+   Section 41: "Return to the original signal... Every result is evidence.
+   No result should be framed as failure." The baseline is read off the
+   signal test above, sgFound/sgVal/sgNoticed/SGR and sgEsc, never a second
+   copy of that state: a visitor who skipped the signal test or noticed
+   nothing for either word gets told exactly that, in place of a baseline
+   that was never recorded. */
+var vfEl=D.getElementById('vf'), vfAns=D.getElementById('vfans'), vfSay=D.getElementById('vfsay');
+function vfBase(){
+ if(!sgNoticed())
+  return '<p class="base">You skipped the signal test, or nothing showed for yes or no. '
+   +'There is no earlier reading to hold this against, and that is fine. What you notice now still counts on its own.</p>';
+ var rows=['yes','no'].filter(sgFound).map(function(w){
+  var loc=sgVal(w,'where'), q=SG_Q.quality[w]?sgVal(w,'quality'):'';
+  return '<p class="base">Earlier, <b>'+w+'</b> landed in the '+sgEsc(loc)+'.'
+   +(q?' It felt '+sgEsc(q)+'.':'')+'</p>';});
+ return '<span class="eye">Before, from the signal test</span>'+rows.join('');}
+var VF_SAY={'I feel different.':'That is real evidence.','I see it differently.':'That is real evidence.',
+ 'Something moved.':'That is real evidence.','Nothing changed.':'Nothing changed is an answer too.',
+ 'I\'m not sure.':'Not sure is an answer too.'};
+if(vfEl){vfEl.innerHTML=vfBase();}
+if(vfAns&&vfSay){vfAns.addEventListener('click',function(e){
+ var b=e.target.closest('button[data-v]'); if(!b||!vfAns.contains(b))return;
+ [].slice.call(vfAns.querySelectorAll('button')).forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+ vfSay.textContent=VF_SAY[b.getAttribute('data-v')]||'Noted.';});}
 
 /* ---- the stage ---- */
 var sgc=D.getElementById('sigc'), sgg=sgc&&sgc.getContext&&sgc.getContext('2d');
