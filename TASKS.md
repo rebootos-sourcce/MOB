@@ -33106,3 +33106,14 @@ Both the rail-move agent and the funnel/onboarding build agent died mid-task to 
 **Round RI is now fully closed: the developer-options deactivation, the rail move and the funnel/onboarding build are all done, verified and pushed.** Of tonight's dispatched work, only the harder Hypothesis Contract question from round RH (`WAITING-ON-YOU.md` item 0) remains genuinely open, his to decide.
 
 No further subagent dispatch is possible until the weekly limit resets (8 October, 8am UTC). Work continues directly rather than through further delegation.
+
+## Round RJ, 3 October. His words, verbatim, after trying the app himself
+
+"I went fast. I went on I went the experience. So not only do I went fast, but I went the onboarding experience. The lead into the app, the paywall has to be tight. The user need to be able to like connect on and connect off. Looking up Discord. Yeah, you can do paywall onboarding. I just want to confirm that the 11 Labs voice is swapped from the Claude voice."
+
+**Sorted:**
+1. He tried the app himself, specifically the onboarding experience.
+2. Real feedback from that pass: the lead into the app and the paywall both need to be tight. Matches his own round RI priority order (paywall third); taken as confirmation to keep that priority, not a new item.
+3. "The user needs to be able to connect on and connect off" is unclear and not guessed at. Could mean the Discord connection (the join/leave he was looking at in the same breath), an account sign-in/out, or the practitioner sight grant being revocable (`CLAUDE.md`'s own standing rule that a sight grant needs "explicit consent... and revocation. Never a silent default"). Flagged in `WAITING-ON-YOU.md` rather than built against a guess.
+4. "Yeah, you can do paywall onboarding" read as confirming the stated priority: resolve the paywall PR's merge conflict next, as already planned.
+5. The ElevenLabs question, checked directly against the real code before answering: `atuned_src/engine/schema.js` line 48, `atuned_src/ui/auth.js` line 281, `atuned_src/ui/release.js` line 1429, `atuned_src/ui/sound.js` line 816. There is no "Claude voice" anywhere in this product; what exists is a browser-default voice (on by ruling, `studio:false`) and an ElevenLabs "studio" voice, switchable, off by default because it sends each line to a company over the network and a network-reaching voice is something a person chooses, never one they find already on. The key itself lives only on the server (the reboot-os Worker's `/v1/voice/synthesize`), never in the shipped file, the same pattern the Discord relay already uses. Real, wired, not a stub. Answered directly rather than guessed at what he meant by "the Claude voice," most likely his own name for the browser's default voice.
