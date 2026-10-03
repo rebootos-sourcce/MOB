@@ -874,7 +874,6 @@ body.rm .msgdock{transition:none}
 
 
 .spacer{flex:1 1 auto;min-width:8px}
-.toplab{font-family:var(--num);font-size:11px;font-weight:400;color:var(--dim);white-space:nowrap}
 
 /* ---------- buttons ---------- */
 .vt{background:transparent;border:1px solid var(--edge);border-radius:var(--r-s);
@@ -3692,9 +3691,20 @@ body.punch .card{border-color:transparent}
 .bmnote{font-size:12.5px;color:var(--dim);line-height:1.55;margin-top:5px;font-weight:300}
 
 /* ---------- select ---------- */
+/* SMALLER, ROUND RB. His words: "shrink down the size of that button. right
+   now, custom and the down arrow is taking up a lot of space." It was 190
+   pixels wide holding one word, because a closed select is as wide as its
+   longest option and the longest is a test case's role, which nobody sees
+   until the list opens. field-sizing:content sizes it to the entry that is
+   showing instead, so Profile takes the room of Profile and the bar gets the
+   rest back; the 190 pixel cap below still holds for a long name. A browser
+   without field-sizing keeps the old width, which is the old behaviour and
+   not a broken one. Type came down from 14 pixels to 13 and side padding
+   from 11 to 8; the height stays on the tap floor, because a thumb hits the
+   same target whatever the word inside it is. */
 select#psel{background:var(--panel-2);color:var(--ink);border:1px solid var(--edge);
- min-height:var(--tap);border-radius:var(--r-s);padding:8px 11px;font-family:var(--sans);font-size:14px;
- font-weight:400;cursor:pointer;max-width:262px}
+ min-height:var(--tap);border-radius:var(--r-s);padding:8px 8px;font-family:var(--sans);font-size:13px;
+ font-weight:400;cursor:pointer;max-width:262px;field-sizing:content}
 select#psel option{background:var(--panel);color:var(--ink);padding:5px}
 select#psel optgroup{background:var(--sunk);color:var(--dim);font-style:normal;
  font-size:12.5px;font-weight:600}
@@ -7629,7 +7639,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
     as the bar, so a name has the whole width before it is cut */
  .top .pload{top:calc(var(--tap) + 12px);left:8px;right:8px;min-width:0}
  /* the picker and its label leave the bar for the circle above */
- .top .toplab,.top #psel{display:none}
+ .top #psel{display:none}
  /* the strip is the main menu here, where the names are the point, so the
     fold's toggle leaves and a folded strip opens with its names */
  .top .tabnames-i{display:none}

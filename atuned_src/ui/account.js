@@ -137,6 +137,23 @@ function accAccount(){
    +'</form>'
    +accAct('No account yet','acnew',{btn:'Create account'}),
    'Your email and password go to the account server. Your stories and readings stay on this device.');
+ /* DEVELOPER OPTIONS FOR THE OWNER'S OWN ACCOUNT, round RB: "if I log in as
+    myself under my email address, then I have full developer options."
+    devtoolsOn (ui/login.js) says yes for his signed in account or the console
+    flag, and the login card already asks it. But a held session skips that
+    card at boot (loginBoot), so signed in as himself he would never see the
+    card the panel lives on, and the ruling would be true and unreachable.
+    This is the panel's second home, where a signed in person lands.
+
+    One switch and not the card's three. Onboarding and Tutorial on the card
+    choose what plays behind the door on the next pass through it, and a
+    person on this page is already through it; the replays sit two groups
+    down, under The opening, for everybody. Unlock all sight is the same
+    setter as the card's (devSightSet), so the two can never disagree. */
+ if(typeof devtoolsOn==='function'&&devtoolsOn())
+  h+=accGroup('Developer options',
+   accTog('Unlock all sight','acdevsight',typeof devSight==='function'&&devSight()),
+   'Unlock all sight draws every layer on this device. Billing does not change.');
  /* THE NAME IS EDITED IN ONE PLACE, and since round JZ that place is Profiles,
     where the list it has to be unique in is on the same screen. This row said
     "Profile name" as an input, and two editors for one field is two answers to
@@ -284,6 +301,8 @@ function accSwitched(){
  PROF_BY[PEOPLE[0].nm]=CURP;
  mirrorYou();
  var sel=$('psel'); if(sel)sel.value='0';
+ /* a rename lands here too, and the bar's entry carries the name, round RB */
+ if(typeof pselOwnSync==='function')pselOwnSync();
  if(typeof IQ_OPEN!=='undefined')IQ_OPEN=null;
  syncCh(); if(typeof syncLw==='function')syncLw(); if(typeof syncSoul==='function')syncSoul();
  if(typeof applyUiPrefs==='function')applyUiPrefs();
@@ -591,6 +610,7 @@ function accWire(){
  if(si)si.onsubmit=function(e){ e.preventDefault(); accEnter('signin'); };
  var an=$('acnew'); if(an)an.onclick=function(){ accEnter('signup'); };
  var ao=$('acout'); if(ao)ao.onclick=function(){ accSignOut(); };
+ var dv=$('acdevsight'); if(dv)dv.onclick=function(){ devSightSet(!devSight()); renderAccount(); };
  var gi=$('acgoiq'); if(gi)gi.onclick=function(){setTab(TAB.INTAKE);};
  var ob=$('acob'); if(ob)ob.onclick=function(){
   if(typeof sheetShut==='function')sheetShut();

@@ -200,8 +200,33 @@ function devSightSet(on){
    reads a second flag, never written by any rendered control, so turning
    the panel on at all takes the same console access self-editing a record
    already does (the privacy note above this function already treats that
-   as the person's own device, not an attack). */
+   as the person's own device, not an attack).
+
+   THE SECOND WAY IN IS THE OWNER'S OWN ACCOUNT, ROUND RB. His words: "Remove
+   developer option. However, if I log in as myself under my email address,
+   then I have full developer options." The console flag above is a door only
+   somebody with a console open can use. So the panel also opens for exactly one signed in account: DEV_OWNER is the
+   product owner's own email, and no other address is special anywhere in the
+   product. It reads the email the server handed back at sign in (authSession,
+   ui/auth.js), never what is typed into the card's field, because the field
+   is a claim and the session is the server's answer to it; a stranger typing
+   his address gets the same card as anybody else. Compared trimmed and lower
+   case, because the session holds whatever spelling the server sent back,
+   authEnter lower cases only when the server sent none, and Lance.O.Powell is
+   the same mailbox as lance.o.powell.
+
+   It is no stronger than the session, and it does not need to be. A stored
+   session is read before the boot check has asked the server about it
+   (authCheck), and somebody with a console can write one by hand; that is
+   the same console the flag above already treats as the person's own
+   device, so this adds no door that was not open. */
+var DEV_OWNER='lance.o.powell@gmail.com';
+function devOwner(){
+ try{ var s=(typeof authSession==='function')?authSession():null;
+  return !!(s&&typeof s.email==='string'&&s.email.trim().toLowerCase()===DEV_OWNER); }
+ catch(e){ return false; }}
 function devtoolsOn(){
+ if(devOwner())return true;
  try{ return STORE.get('devtools')==='on'; }catch(e){ return false; }}
 function loginDevOptions(){
  if(!devtoolsOn())return '';

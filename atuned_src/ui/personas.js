@@ -504,8 +504,32 @@ function lawsFor(p){ return p.law || LAWSET[p.nm] || {_:LAW_DEFAULT}; }
    example" is 188, so the words that carry the state would have been the
    part cut off. Every entry not loaded keeps its age and role, because that
    is what a person chooses by. */
+/* THE PERSON'S OWN ENTRY SAYS WHOSE IT IS, round RB. His words: "replace the
+   word custom with the word profile", and "where it says your own, it'll be
+   the person's name. Everyone underneath that is our test cases." It read
+   Custom, a word for a setting and not for a person, under a heading, Your
+   own, that was the only thing on the list saying the entry was theirs.
+
+   The name is the record's own, the one Profiles edits (accProfSave), read
+   off the record the entry loads (PROF_BY, the same pointer toYou and the
+   boot use). It is not the signed in email: an account carries no name, and
+   an address printed in the bar is an address on every screenshot. A record
+   still called You, which every blank one is, has no name yet and reads
+   Profile. Printed as typed, because title casing a name is a claim about
+   how the person spells it. */
+function pselOwnName(){
+ var own=(typeof PROF_BY!=='undefined')?PROF_BY[PEOPLE[0].nm]:null;
+ var nm=(own&&typeof own.name==='string')?own.name.trim():'';
+ return (nm&&nm!=='You')?nm:'Profile';}
+/* and the bar's entry is rewritten when the name or the record under it
+   changes: the list is built once, before the boot has pointed PROF_BY at the
+   stored record, so without this a named record read Profile until the first
+   switch of profile */
+function pselOwnSync(){
+ var o=document.querySelector('#psel option[value="0"]');
+ if(o)o.textContent=pselOwnName();}
 function pselName(p,up){
- if(p.you)return 'Custom';
+ if(p.you)return pselOwnName();
  return up?p.nm+', example':p.nm+', '+p.age+', '+p.role.replace(' · ICP','');}
 /* THE PICKER READS THE SAME CQ THE PROFILE WILL, AND IS SORTED BY IT.
    The examples were two groups by an accident of how they were added: the six
@@ -522,27 +546,37 @@ function pselName(p,up){
    needs the seed to exist before the first load, which seedIntake allows: it is
    idempotent and loadP calls it again for free.
 
-   The blank profile stays in its own group in front, because it is the
-   person's own and not an example. Nothing else changed about the select: the
-   value is still the index into PEOPLE, so loadP, the phone menu that reads
-   this element and every gate that loads by index are untouched. */
+   The blank profile stays in front, because it is the person's own and not an
+   example. Nothing else changed about the select: the value is still the
+   index into PEOPLE, so loadP, the phone menu that reads this element and
+   every gate that loads by index are untouched.
+
+   ROUND RB TOOK THE OWN ENTRY OUT OF ITS GROUP AND NAMED THE REST TEST CASES.
+   "I want to separate the users from our test users." The Your own heading
+   went, because the entry under it now carries the person's name and a
+   heading over one row saying whose it is says it twice. Every tier heading
+   now opens on Test cases, so no heading anywhere in the list can be read as
+   a group of real people: an optgroup cannot hold an optgroup, so the one
+   word that says these are ours rides on each tier instead of over them. The
+   phone loader reads these labels straight off the element, so it says the
+   same. */
 function personaCQ(p){
  seedIntake(p);
  var sc=iqScore({intake:{answers:p.intakeAnswers}});
  return SINAMES.reduce(function(a,l){return a+(sc[l]?sc[l].score:0);},0)/(SINAMES.length*10)*100;}
 (function(){var sel=$('psel');
  var mk=function(lab){var g=document.createElement('optgroup');g.label=lab;sel.appendChild(g);return g;};
- var gYou=null, ex=[];
+ var ex=[];
  PEOPLE.forEach(function(p,i){
   if(p.you){var o=document.createElement('option');o.value=i;o.textContent=pselName(p,false);
-   gYou=gYou||mk('Your own'); gYou.appendChild(o);}
+   sel.appendChild(o);}
   else ex.push({i:i,cq:personaCQ(p)});});
  /* a tie keeps the roster order, so the sort is stable on every engine */
  ex.sort(function(a,b){return a.cq-b.cq||a.i-b.i;});
  var g=null, gt=null;
  ex.forEach(function(e){
   var t=tierOf(e.cq).nm;
-  if(t!==gt){g=mk(t); gt=t;}
+  if(t!==gt){g=mk('Test cases, '+t); gt=t;}
   var o=document.createElement('option');o.value=e.i;
   o.textContent=pselName(PEOPLE[e.i],false); g.appendChild(o);});})();
 $('psel').addEventListener('change',function(e){loadP(+e.target.value);});

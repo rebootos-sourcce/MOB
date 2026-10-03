@@ -2846,6 +2846,7 @@ const relrun=await page.evaluate(()=>{
  loadP(0); setTab(TAB.FIELD); render();
  {const ps=document.getElementById('psel');
   o.ownPicker=ps.options[ps.selectedIndex].textContent;
+  o.ownName=((PROF_BY[PEOPLE[0].nm]||{}).name||'').trim();
   o.caseBack=ps.querySelector('option[value="'+GORDON()+'"]').textContent;
   o.caseAge=PEOPLE[GORDON()].age;}
  const held=W.filter(n=>n.sq>=4).slice(0,3).map(n=>n.i);
@@ -2938,10 +2939,13 @@ ok(!/You are looking at/.test(relrun.refSaid)&&(relrun.refSaid.match(/[.!?](\s|$
 ok(/^Gordon\b/.test(relrun.refPicker)&&/example/.test(relrun.refPicker),
  'the picker names the case and marks it as an example while it is up, reads '
  +JSON.stringify(relrun.refPicker));
-ok(relrun.ownPicker==='Custom'&&!/example/.test(relrun.caseBack)
+/* round RB: the own entry reads Profile, his word for it, until the record
+   has a name, and then the name. It read Custom. */
+ok(relrun.ownPicker===((relrun.ownName&&relrun.ownName!=='You')?relrun.ownName:'Profile')
+ &&!/example/.test(relrun.caseBack)
  &&relrun.caseBack.indexOf('Gordon, '+relrun.caseAge+', ')===0,
- 'and on the person\'s own record it reads Custom and the case goes back to its age and role, '
- +JSON.stringify([relrun.ownPicker,relrun.caseBack]));
+ 'and on the person\'s own record it reads Profile or the record\'s name, and the case goes back to its age and role, '
+ +JSON.stringify([relrun.ownPicker,relrun.ownName,relrun.caseBack]));
 /* THE FIELD MOVES WITH THE IDENTITY, OR A STRANGER'S FIELD BECOMES YOURS.
    Measured before the fix: a person whose nine axes were all zero came out of a
    release run started on James carrying 50.6 of his charge, saved and
@@ -7002,8 +7006,8 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
 console.log('\n=== the profile picker: grouped by tier, lowest first ===');
 {
  const pk=await page.evaluate(()=>{
-  const sel=document.getElementById('psel'), groups=[].map.call(sel.children,g=>({
-   label:g.label, opts:[].map.call(g.children,o=>+o.value)}));
+  const sel=document.getElementById('psel'), groups=[].map.call(sel.children,g=>g.tagName==='OPTGROUP'?{
+   label:g.label, opts:[].map.call(g.children,o=>+o.value)}:{own:true, you:!!PEOPLE[+g.value].you, label:g.textContent, opts:[+g.value]});
   /* the number a person sees for each, through the one door every example goes by */
   const keep=S.who, cq={};
   PEOPLE.forEach((p,i)=>{if(p.you)return; loadP(i); cq[i]=compute().CQ;});
@@ -7011,9 +7015,17 @@ console.log('\n=== the profile picker: grouped by tier, lowest first ===');
   return {groups,cq,tiers:TIERDEF.map(t=>t.nm),each:PEOPLE.map((p,i)=>p.you?null:{i,tier:tierOf(cq[i]).nm,nm:p.nm}).filter(Boolean),
    nExamples:PEOPLE.filter(p=>!p.you).length,
    words:[].map.call(sel.querySelectorAll('option'),o=>o.textContent)};});
- const own=pk.groups.filter(g=>g.label==='Your own'), tg=pk.groups.filter(g=>g.label!=='Your own');
- ok(pk.groups[0].label==='Your own'&&own.length===1&&own[0].opts.length===1,
-  'the blank profile stays in front, in a group of its own, got '+pk.groups.map(g=>g.label).join(', '));
+ /* round RB: the person's own entry sits in front with no heading over it,
+    and every heading after it opens on Test cases, so none of them reads as
+    a group of real people. It was a group of one called Your own. */
+ const own=pk.groups.filter(g=>g.own), tg=pk.groups.filter(g=>!g.own);
+ ok(pk.groups[0].own&&own.length===1&&own[0].opts.length===1&&own[0].you,
+  'the blank profile stays in front, on its own, got '+pk.groups.map(g=>g.label).join(', '));
+ const TC='Test cases, ';
+ ok(tg.length>0&&tg.every(g=>g.label.indexOf(TC)===0),
+  'every group heading after it says Test cases, got '+tg.map(g=>g.label).join(', '));
+ const heads0=tg.map(g=>g.label);
+ tg.forEach(g=>{g.label=g.label.slice(TC.length);});
  /* every group is a tier, once, and they run lowest band first */
  const order=pk.tiers.slice().reverse();
  const idx=tg.map(g=>order.indexOf(g.label));
@@ -7037,7 +7049,7 @@ console.log('\n=== the profile picker: grouped by tier, lowest first ===');
  const menu=await page.evaluate(()=>{const b=document.getElementById('ploadbtn'); if(!b)return null;
   b.click(); const m=document.getElementById('pload');
   const heads=[].map.call(m.querySelectorAll('.pl-g'),x=>x.textContent); b.click(); return heads;});
- ok(menu!==null&&menu.join('|')===pk.groups.map(g=>g.label).join('|'),
+ ok(menu!==null&&menu.join('|')===heads0.join('|'),
   'the phone menu lists the same groups in the same order, got '+(menu&&menu.join(', ')));
 }
 

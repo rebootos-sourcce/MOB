@@ -548,9 +548,12 @@ function setLighting(k){
  ['themes','navthemes'].forEach(function(id){var seg=$(id);
   if(seg)seg.querySelectorAll('button').forEach(function(x,j){
    x.setAttribute('aria-pressed',LIGHTINGS[j]&&LIGHTINGS[j][0]===k);});});
- var nw=$('lightnow');
- if(nw){var e=LIGHTINGS.filter(function(t){return t[0]===k;})[0];
-  if(e)nw.textContent=e[1];}
+ /* the bar's button shows its icon only, round RB ("I just want the icon"),
+    so the lighting that is on is carried by its name for a screen reader and
+    its tooltip, and no longer printed beside the icon */
+ var lb=$('lightbtn');
+ if(lb){var e=LIGHTINGS.filter(function(t){return t[0]===k;})[0];
+  if(e){lb.setAttribute('aria-label','Lighting, '+e[1]); lb.title='Lighting, '+e[1];}}
  rebuildSwatches(); render();}
 LIGHTINGS.forEach(function(t,i){
  var b=document.createElement('button');b.type='button';
