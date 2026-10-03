@@ -121,9 +121,34 @@ h2,.big{font-size:30px;line-height:1.16;letter-spacing:-.02em;margin:0;font-weig
 p{margin:14px 0 0}
 .m{max-width:52ch}
 .soft{color:var(--mid)}
-/* what the stage is showing, in plain words, beside it and never on it */
-.cap{margin-top:26px;padding-left:14px;border-left:1px solid var(--edge-2);
- font-size:14.5px;line-height:1.55;color:var(--dim);max-width:52ch}
+/* what the stage is showing, in plain words, beside it and never on it, and
+   one press away rather than on the screen at rest. Round QU, 3 October: he
+   put a red X through the body caption and scribbled out the field's, and
+   said "Don't add text if it's unnecessary." The same night, on the Ritual
+   page: "if you want tell you press on something to get information". Every
+   mark on the stage still has its meaning in the frame that shows it, which
+   is the unpack rule, round PO; the meaning waits for the press. Without a
+   script there is no button and the key is printed, so a page whose script
+   never ran still reads in full. The toggle keeps its one word whichever way
+   it stands: a label never changes with the state, the state is aria-expanded
+   and the ring. */
+.cap{margin-top:22px;max-width:52ch}
+.cap-t{display:inline-flex;align-items:center;gap:8px;min-height:var(--tap);min-width:var(--tap);
+ margin-left:-6px;padding:0 12px 0 6px;font:inherit;font-size:15px;color:var(--dim);
+ background:transparent;border:0;border-radius:999px;cursor:pointer;
+ transition:color var(--t-micro) var(--ease-out),background var(--t-micro) var(--ease-out)}
+.cap-t svg{width:18px;height:18px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.4;
+ stroke-linecap:round;transition:stroke var(--t-micro) var(--ease-out)}
+.cap-t svg .dot{fill:currentColor;stroke-width:1}
+.cap-t:hover,.cap-t:focus-visible{color:var(--ink)}
+.cap-t[aria-expanded="true"]{color:var(--ink)}
+.cap-t[aria-expanded="true"] svg circle:first-child{stroke:var(--accent)}
+.cap-b{margin:6px 0 0;padding-left:14px;border-left:1px solid var(--edge-2);
+ font-size:14.5px;line-height:1.55;color:var(--dim)}
+.cap-b:not([hidden]){animation:capin var(--t-element) var(--ease-out)}
+@keyframes capin{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+html:not(.js) .cap-t{display:none}
+html:not(.js) .cap-b{margin-top:0}
 
 /* ---- arrive ---- */
 .cta{margin-top:28px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
@@ -336,8 +361,8 @@ a.ghost:hover{color:var(--ink)}
 
 <!-- THE STAGE. Before the story in the source so a phone pins it to the top;
      a desk moves it to the right column. Every layer is a picture and says
-     nothing a reader needs: what each one means is printed in the frame that
-     shows it, in the .cap line, beside it and never on it. -->
+     nothing a reader needs: what each one means is in the frame that shows
+     it, in the .cap key, beside it and never on it, one press away. -->
 <div class="stage" id="stage" data-show="field" aria-hidden="true">
  <div class="lyr lyr-field"><canvas id="fld"></canvas></div>
  <div class="lyr lyr-body">
@@ -487,12 +512,13 @@ a.ghost:hover{color:var(--ink)}
      The stage: one point of light, a second, a third, and the faint network
      underneath with its pulses running, which is the sentence drawn. -->
 <section class="fr fr-arrive" id="arrive" data-frame="arrive">
- <h1 class="rv">Something is running underneath the way you live.</h1>
- <p class="lead rv" style="--d:.15s">You can feel it before you can always explain it.</p>
+ <h1 class="rv">Something runs the way you live.</h1>
+ <p class="lead rv" style="--d:.15s">You feel it before you can explain it.</p>
  <div class="cta rv" style="--d:.3s"><a class="btn" href="#recognize">See it</a></div>
- <p class="cap rv" style="--d:.45s">Each point of light is one address: one exact place in your body where
- a pattern sits. The faint ring is all 112 of them. The lines underneath are
- patterns, running. Nothing of yours is in it yet.</p>
+ <div class="cap rv" style="--d:.45s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-arrive"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-arrive">Each point of light is an address: one exact place in your body where
+ a pattern sits. The faint ring holds all 112. The lines are patterns, running.
+ Nothing of yours is in it yet.</p></div>
 </section>
 
 <!-- BEAT 02, THE HUMAN TRUTH. "Make the visitor recognize repetition."
@@ -501,7 +527,7 @@ a.ghost:hover{color:var(--ink)}
      CONNECT, then PATTERN, repetition gathers. -->
 <section class="fr" id="recognize" data-frame="recognize">
  <p class="big rv">You know what you want.</p>
- <p class="big rv soft" style="--d:.2s">But something gets in the way.</p>
+ <p class="big rv soft" style="--d:.2s">Something gets in the way.</p>
  <ul class="keep" id="keep">
   <li>You keep saying yes.</li>
   <li>You keep putting it off.</li>
@@ -511,8 +537,9 @@ a.ghost:hover{color:var(--ink)}
   <li>You keep going back to the same thing.</li>
  </ul>
  <div class="same" id="same"><p class="big">Different situation.</p><p class="big">Same response.</p></div>
- <p class="cap rv" style="--d:.3s">Each lit point is one situation. When the lines join them to one place,
- that place is the same response showing up every time. That is a pattern.</p>
+ <div class="cap rv" style="--d:.3s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-recognize"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-recognize">Each lit point is one situation. The lines pull them to one place: the
+ same response, every time. That is a pattern.</p></div>
 </section>
 
 <!-- BEATS 07, 05, 16 AND 17, STORY BECOMES PATTERN, AND THE DIFFERENCE.
@@ -535,7 +562,6 @@ a.ghost:hover{color:var(--ink)}
   <li><span class="nd"></span>Resentment</li>
   <li><span class="nd"></span>Withdraw</li>
  </ol>
- <p class="m rv" style="--d:1.3s">Atuned makes the pattern visible.</p>
  <div class="mirror rv" style="--d:1.4s">
   <span class="eye">Atuned noticed</span>
   <p class="reading" id="reading">You say yes before checking whether you actually want to.</p>
@@ -548,34 +574,32 @@ a.ghost:hover{color:var(--ink)}
   <p class="say" id="say" role="status" aria-live="polite"></p>
   <ul class="was" id="was" aria-label="Earlier readings"></ul>
  </div>
- <p class="rv" style="--d:1.5s">Atuned gets better when you correct it. You remain the authority on your experience.</p>
+ <p class="rv" style="--d:1.5s">Correct it and the reading changes. You have the last word.</p>
 </section>
 
 <!-- BEAT 08, ONE THING BECOMES MANY. Visual: "One point. Repeated points.
      Clusters. Connections. Network." The stage assembles the whole Field. -->
 <section class="fr" id="connect" data-frame="network">
- <h2 class="rv">One response can become a pattern.</h2>
- <p class="big rv soft" style="--d:.15s">A pattern can repeat.</p>
- <p class="big rv soft" style="--d:.3s">Repeated patterns can connect.</p>
- <p class="m rv" style="--d:.45s">Something that started in one place can show up in many parts of your life.
- Atuned looks for the connections.</p>
- <p class="cap rv" style="--d:.6s">This is a Field. The outer ring is the 112 addresses, coloured by the part
- of the body each one belongs to. The points inside are patterns, and each line
- shows which places a pattern pulls on. A tighter line carries quicker pulses,
- because it is pulling harder.</p>
+ <h2 class="rv">Patterns connect.</h2>
+ <p class="big rv soft" style="--d:.15s">What starts at work can show up at home.</p>
+ <p class="m rv" style="--d:.3s">Atuned looks for the connections.</p>
+ <div class="cap rv" style="--d:.45s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-connect"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-connect">The outer ring is the 112 addresses, coloured by the part of the body
+ each one belongs to. The points inside are patterns. Each line shows where a
+ pattern pulls. A tighter line, with quicker pulses, pulls harder.</p></div>
 </section>
 
 <!-- BEAT 09, THE BODY. "Abstract body architecture. One region activates."
      The stage turns to the body the Body page draws, generated from the same
      tables by make-figure.js. "Do not convert sensation into diagnosis." -->
 <section class="fr" id="body" data-frame="body">
- <h2 class="rv">Sometimes you can feel the pattern before you can explain it.</h2>
+ <h2 class="rv">You feel it in your body.</h2>
  <p class="felt rv" style="--d:.15s"><span style="transition-delay:.2s">Tight.</span><span style="transition-delay:.45s">Heavy.</span><span style="transition-delay:.7s">Hot.</span><span style="transition-delay:.95s">Numb.</span><span style="transition-delay:1.2s">Restless.</span><span style="transition-delay:1.45s">Pressured.</span><span style="transition-delay:1.7s">Nothing at all.</span></p>
  <p class="big rv" style="--d:.4s">All of that is information.</p>
- <p class="cap rv" style="--d:.6s">Seven colours, seven seats, from the base of the spine to the top of the
+ <div class="cap rv" style="--d:.6s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-body"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-body">Seven colours, seven seats, from the base of the spine to the top of the
  head. A seat is one part of the body a pattern can settle in. The fine lines are
- nerves. Each seat breathes at its own pace, and one is lit. What you feel comes
- first, and it is never turned into a diagnosis.</p>
+ nerves. The lit seat is where a pattern sits.</p></div>
 </section>
 
 <!-- BEAT 20, RELEASE, told the way section 28 says the funnel can tell it:
@@ -585,7 +609,7 @@ a.ghost:hover{color:var(--ink)}
      below light in time with it. Then beat 21, verify. -->
 <section class="fr" id="release" data-frame="release">
  <h2 class="rv">Release disrupts the old pattern.</h2>
- <p class="big rv soft" style="--d:.15s">Reframe gives you something new to practice.</p>
+ <p class="big rv soft" style="--d:.15s">Reframe gives you a new sentence to practise.</p>
  <ol class="steps rv" style="--d:.3s" id="steps">
   <li data-step="pattern"><b>Pattern</b><span>A repeated pattern forms, and its lines pull tight.</span></li>
   <li data-step="release"><b>Release</b><span>Release interrupts the flow. The lines go slack and the field opens.</span></li>
@@ -595,11 +619,11 @@ a.ghost:hover{color:var(--ink)}
  <div class="changed rv" style="--d:.6s">
   <h3>What changed?</h3>
   <ul class="opts"><li>I feel different</li><li>I see it differently</li><li>Something moved</li><li>Nothing changed</li><li>I'm not sure</li></ul>
-  <p class="soft m">Nothing changed is useful too. You don't have to force a result.</p>
+  <p class="soft m">Nothing changed is an answer too.</p>
  </div>
- <p class="cap rv" style="--d:.7s">The knot is one pattern. Released, its lines go slack and the pulses slow.
- The new line is the reframe: a sentence that starts with "I know", built from
- what you said, for you to practise.</p>
+ <div class="cap rv" style="--d:.7s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-release"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-release">The knot is one pattern. The new line is the reframe: a sentence that
+ starts with "I know", built from what you said.</p></div>
 </section>
 
 <!-- BEATS 23 TO 27, THE LOOP AND THE FIELD REMEMBERS. Ruled: "it is a
@@ -613,10 +637,10 @@ a.ghost:hover{color:var(--ink)}
   <li><i style="border-color:var(--heart)"></i><div><b>Flow</b><span>Release the charge: the weight a pattern leaves on one place in your body.</span></div></li>
   <li><i style="border-color:var(--root)"></i><div><b>Embody</b><span>Make a different choice.</span></div></li>
  </ul>
- <p class="back rv" style="--d:.3s">Embody hands back to discover. Atuned remembers what you've explored, so
- the next time something similar happens, you'll have somewhere to look.</p>
- <p class="cap rv" style="--d:.45s">The four stations sit on one circle. The light travels round it and never
- stops at embody, because the loop does not end there.</p>
+ <p class="back rv" style="--d:.3s">Embody hands back to discover. Atuned remembers what you found, so
+ next time you have somewhere to look.</p>
+ <div class="cap rv" style="--d:.45s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-loop"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-loop">The light goes round the four and never stops, because the loop has no end.</p></div>
 </section>
 
 <!-- BEATS 31 AND 32. "Not a diagnosis. Not a verdict. A map you can
@@ -625,9 +649,8 @@ a.ghost:hover{color:var(--ink)}
      is measured and what is a model. -->
 <section class="fr" id="honest" data-frame="honest">
  <h2 class="rv">Not a diagnosis. Not a verdict. A map you can question.</h2>
- <p class="m rv" style="--d:.15s">Some parts of this system are grounded in established ideas. Some are our
- own models. Some are hypotheses we're still testing. We'll show you the
- difference.</p>
+ <p class="m rv" style="--d:.15s">Some of it rests on established ideas. Some is our own model. Some we
+ are still testing.</p>
  <p class="m soft rv" style="--d:.3s">Every table the reading runs on is open inside the product, so you can
  check the work against your own life.</p>
 </section>
@@ -637,8 +660,8 @@ a.ghost:hover{color:var(--ink)}
      keeps one point of light, which is where beat 01 began: the page closes
      the way the loop does. -->
 <section class="fr fr-ret" id="start" data-frame="ret">
- <p class="big rv">You don't need to understand yourself before you begin.</p>
- <p class="big rv soft" style="--d:.25s">You just need something real.</p>
+ <p class="big rv">You don't need to understand yourself first.</p>
+ <p class="big rv soft" style="--d:.25s">Bring something real.</p>
  <p class="wm end-wm rv" style="--d:.45s">At<span class="um">u</span>ned</p>
  <p class="end-tag rv" style="--d:.55s">See what's running you.</p>
  <div class="cta rv" style="--d:.65s"><a class="btn" href="quiz.html">Start</a><a class="ghost" href="about.html">Explore first</a></div>
@@ -912,7 +935,7 @@ function recRun(){
 var RD=['You say yes before checking whether you actually want to.',
  'The yes may be connected to what you expect will happen afterward.',
  'There may be a pattern between holding it in and what happens later.'];
-var SAY={yes:'Something is becoming clear. This may be the pattern underneath what you described.',
+var SAY={yes:'That may be the pattern.',
  no:'Good. Now we know more.', again:'Disagreement is information.'};
 var mx=D.getElementById('mirror'), rdEl=D.getElementById('reading'), sayEl=D.getElementById('say'),
  wasEl=D.getElementById('was'), idx=0;
@@ -929,6 +952,17 @@ var mx=D.getElementById('mirror'), rdEl=D.getElementById('reading'), sayEl=D.get
   idx=(idx+1)%RD.length;
   rdEl.classList.add('out');
   setTimeout(function(){rdEl.textContent=RD[idx];rdEl.classList.remove('out');},REDUCED?0:180);});});
+
+/* ---------------- the key, one press away ----------------
+   Each key is printed in the markup, so a page with no script reads in full.
+   With one, it is folded at rest and the press opens it in place: the same
+   aria-expanded disclosure the intake's rows use, and never a link away. */
+[].slice.call(D.querySelectorAll('.cap-t')).forEach(function(b){
+ var body=D.getElementById(b.getAttribute('aria-controls')); if(!body)return;
+ body.hidden=true;
+ b.addEventListener('click',function(){
+  var open=b.getAttribute('aria-expanded')!=='true';
+  b.setAttribute('aria-expanded',open?'true':'false'); body.hidden=!open;});});
 
 /* ---------------- the body: one region activates ---------------- */
 (function(){
