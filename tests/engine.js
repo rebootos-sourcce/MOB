@@ -5648,7 +5648,27 @@ g('J14 · the starter recipe for each teacher');
  /* the roster's three new poles are written before the Compass carries them,
     named here because their absence from MIRROR is the point */
  ok(['SA','TU','NA'].every(k=>!!recipeOf(k)&&!MIRROR.some(m=>m.k===k)&&!PATHS.some(p=>p.k===k)),
-  'Akhenaten, Zoroaster and Confucius have recipes ahead of their place on the Compass');
+  'Akhenaten, Zoroaster and Confucius have recipes and are on no axis and on no path');
+ /* ROUND RB, THE ROSTER ON THE COMPASS. His words: "we're supposed to have 13
+    character people, and we I still have the original eight." The panels draw
+    MIRROR and then compassOffAxis(), so the poles the Compass names must be
+    exactly the recipe table's poles, each once, and the people one fewer than
+    the poles because Jesus stands at two. Nothing here types a count. */
+ {const {HOME_POLES,compassOffAxis,compassPoleOf}=E;
+  const off=compassOffAxis(), named=MIRROR.map(m=>m.k).concat(off.map(p=>p.k));
+  ok(new Set(named).size===named.length,'no pole is named twice on the Compass, '+JSON.stringify(named));
+  ok(named.slice().sort().join()===keys.slice().sort().join(),
+   'the Compass names every pole of the roster and nothing else, named '+JSON.stringify(named)+' against '+JSON.stringify(keys));
+  const people=new Set(MIRROR.map(m=>m.up).concat(off.map(p=>p.up)));
+  ok(people.size===named.length-1&&people.size===new Set(TEACHER_RECIPES.map(r=>r.who)).size,
+   'the people are one fewer than the poles, Jesus at two, and they are the roster\'s people, saw '+people.size);
+  ok(!off.some(p=>p.k==='BO'||p.k==='AW'),'a path that is an axis read twice is not named a second time');
+  ok(HOME_POLES.every(p=>p.ic&&p.dic&&p.q&&p.up&&p.dn&&p.from==='proposed'&&/[A-Za-z]/.test(p.src)),
+   'each pole on no axis carries both marks, its words, and the source its opposite is to be checked against');
+  ok(HOME_POLES.every(p=>p.home===null||BANDS.indexOf(p.home)>=0),'a home seat is a seat this product measures');
+  ok(HOME_POLES.every(p=>compassPoleOf(p.k)===p),'compassPoleOf finds each of the three by key');
+  ok(compassPoleOf('TU').ic===E.SI.filter(l=>l.nm==='Truth')[0].ic&&compassPoleOf('NA').ic===E.SI.filter(l=>l.nm==='Nature')[0].ic,
+   'Zoroaster and Confucius wear the mark of the law their quality names, read and not copied');}
  ok(TEACHER_RECIPES.filter(r=>r.who==='Jesus').length===2,'Jesus stands at two poles and has two rows, one each');
  /* the three not found branches, which coverage showed nothing reached: an
     unknown pole, an unknown ritual id and a step the library no longer carries
@@ -5660,7 +5680,7 @@ g('J14 · the starter recipe for each teacher');
     compass data that the row did not follow is a named failure and not a drift */
  const drift=[];
  TEACHER_RECIPES.forEach(r=>{
-  const m=MIRROR.filter(x=>x.k===r.k)[0]||PATHS.filter(x=>x.k===r.k)[0]; if(!m)return;
+  const m=MIRROR.filter(x=>x.k===r.k)[0]||PATHS.filter(x=>x.k===r.k)[0]||E.HOME_POLES.filter(x=>x.k===r.k)[0]; if(!m)return;
   if(m.up!==r.who)drift.push(r.k+' who '+r.who+' vs '+m.up);
   if(m.dn!==r.opp)drift.push(r.k+' opp '+r.opp+' vs '+m.dn);
   if(String(m.q).toLowerCase()!==String(r.q).toLowerCase())drift.push(r.k+' q '+r.q+' vs '+m.q);});

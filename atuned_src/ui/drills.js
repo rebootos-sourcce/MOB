@@ -835,6 +835,20 @@ function runPathDrill(p){
   +(typeof ritTeachHtml==='function'?ritTeachHtml(p.k):'');
  rdShell(h);
  if(typeof ritTeachWire==='function')ritTeachWire(function(){runPathDrill(p);});}
+/* AKHENATEN, ZOROASTER AND CONFUCIUS, round RB. They stand on no axis and are
+   not paths (HOME_POLES in engine/data/compass.js), so a press on one of their
+   names opens their behaviour panel, the same one every other teacher opens.
+   The codex gives them no line, so when the table has no row for one the
+   panel says the names and what is missing, and writes no line of its own. */
+function runHomePoleDrill(p){
+ if(!p)return;
+ var cx=(typeof ritComplexHtml==='function')?ritComplexHtml(p.k):'';
+ if(cx){rdShell(cx); ritComplexWire(function(){runHomePoleDrill(p);}); return;}
+ rdShell('<div class="pm-eye">'+esc(p.q)+'</div>'
+  +'<div class="ad-nm">'+(p.ic?'<svg class="ad-ic" viewBox="0 0 24 24" aria-hidden="true">'
+    +'<path d="'+p.ic+'"/></svg>':'')+esc(p.up)+'</div>'
+  +'<div class="ad-sub">opposite '+esc(p.dn)+'</div>'
+  +'<p class="ad-p">No behaviours are written for this teacher yet.</p>');}
 function runPoleDrill(end){
  var up=(end!=='dn'), r=compute();
  var h='<div class="pm-eye">'+(up?'The upward cone':'The downward cone')+'</div>'

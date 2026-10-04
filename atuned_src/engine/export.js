@@ -181,6 +181,7 @@ if(typeof module!=='undefined'&&module.exports){
      is one plain sentence, and so a tool can read the same table the page does. */
                   unpackAll:unpackAll, unpackOf:unpackOf, unpackKey:unpackKey,
                   compassPoleOf:compassPoleOf, compassPoleLines:compassPoleLines, POLE_MEANS:POLE_MEANS,
+                  HOME_POLES:HOME_POLES, compassOffAxis:compassOffAxis,
   /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory,
                   wordsOf:wordsOf, unmarkedOf:unmarkedOf,
                   SOMA_SENSE:SOMA_SENSE, SOMA_PLACE_WORDS:SOMA_PLACE_WORDS, SOMA_PLACE_RULED:SOMA_PLACE_RULED, SOMA_PLACE:SOMA_PLACE, somaPlaces:somaPlaces,

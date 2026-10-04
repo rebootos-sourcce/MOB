@@ -1415,6 +1415,61 @@ IC_NEW['Ravana']='M5 3.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8M12 2.6a2.4 2.4 0 11
 IC_NEW['Shu and Hu']='M12 8.5a6 6 0 110 12 6 6 0 010-12M8.8 3v8.4M15.2 3v8.4M7 3h3.6M13.4 3h3.6';
 PATHS.forEach(function(p){p.ic=icOf(p.up); p.dic=icOf(p.dn);});
 
+/* ---- THE THREE POLES ON NO AXIS THAT ARE NOT PATHS ----
+   Round RB, his words: "On the compass, we're supposed to have 13 character
+   people, and we I still have the original eight." The roster is
+   DESIGN-teachers.md v2 section 2, fourteen poles for thirteen people, Jesus
+   at two, accepted at round PD. Eight are the axes above and three are the
+   paths that are not an axis read twice (Krishna, Rama, Lao Tzu). These are
+   the last three, in the paths' own shape so the panels draw all six alike.
+
+   NOT A ROW OF MIRROR, ON PURPOSE. An axis is a quality read at one seat and
+   its ring is that seat's reading. Akhenaten has no seat. Zoroaster and
+   Confucius have a home seat, where their law sits and what colours their
+   ring, and section 2 rules that a home seat "gives no position on an axis,
+   because Moses already holds the Throat's axis and a second teacher would
+   print the same number." Placing them on the figure is the needle's own
+   slice (T10 there), and the plan says why (PLAN.md section N).
+
+   NO CODEX LINE. The codex gives none of the three an upd or a dnd, so none
+   is written here; the panel a press opens is the behaviour pair in
+   engine/data/teachers_recipes.js. The opposites are the document's own
+   proposals, marked proposed, each with the text it names to check them
+   against. The keys are identity and are never reused. */
+const HOME_POLES=[
+ {k:'SA', q:'Light', up:'Akhenaten', dn:'Apep', home:null,
+  from:'proposed', src:'the nightly voyage texts, the Amduat and the Book of Gates'},
+ {k:'TU', q:'Truth', up:'Zoroaster', dn:'The Lie', home:'Throat',
+  from:'proposed', src:'Yasna 30 and 31'},
+ {k:'NA', q:'Nature', up:'Confucius', dn:'The farmer of Song', home:'Crown',
+  from:'proposed', src:'Mencius 2A2, and Analects 17.19'}];
+/* the marks. Zoroaster, Confucius and the Lie are the design's own, ported
+   from mockups/teachers/imprint.html. Apep and the farmer had none anywhere,
+   so they are drawn here, argued from what each one does, and are a first
+   draft. Same 24 unit grid, ring not fill. */
+/* Zoroaster and Confucius wear the mark of the law their quality names, the
+   Truth law's plumb line and the Nature law's stem, as the design drew them.
+   Read off SI rather than copied, so one mark cannot become two. */
+(function(){
+ function law(nm){for(var i=0;i<SI.length;i++)if(SI[i].nm===nm)return SI[i].ic; return null;}
+ IC_NEW['Zoroaster']=law('Truth');
+ IC_NEW['Confucius']=law('Nature');})();
+/* the Lie: the plumb line broken and turned aside on its way down */
+IC_NEW['The Lie']='M12 3v4l-3 3 6 4-3 3v4';
+/* Apep: the sun disc, and the serpent's open jaw closing over it from below.
+   Light taken in and nothing handed on, the inverse of Akhenaten's rays */
+IC_NEW['Apep']='M12 4.5a3 3 0 110 6 3 3 0 010-6M4 20c2.4-2.6 4.8-2.6 7.2 0s4.8 2.6 7.2 0M18.4 20c1.6-3.4.6-7.6-2.6-9.6M5.6 12.4c1.6-1.6 3.8-2.2 5.8-1.6';
+/* the farmer of Song: the shoot pulled clear of the ground, roots in the air
+   over the hole it came out of */
+IC_NEW['The farmer of Song']='M3 20h6.5M14.5 20H21M12 14.5V5.5M12 9c-2.2 0-3.6-1.3-3.6-3.2 2.2 0 3.6 1.3 3.6 3.2M12 7.6c2.2 0 3.6-1.3 3.6-3.2-2.2 0-3.6 1.3-3.6 3.2M12 14.5l-2 2.6M12 14.5l2 2.6M12 14.5v3';
+HOME_POLES.forEach(function(p){p.ic=icOf(p.up); p.dic=icOf(p.dn);});
+/* THE POLES THAT STAND ON NO AXIS, in the roster's order: the paths that are
+   not an axis read twice, then the three above. A path is an axis read twice
+   when its line is a mirror pair's own, the rule runPathDrill uses. */
+function compassOffAxis(){
+ return PATHS.filter(function(p){
+  return !MIRROR.some(function(m){return m.up===p.up&&m.upd===p.upd;});}).concat(HOME_POLES);}
+
 /* ============================================================
    WHAT EACH PHRASE OF A POLE MEANS. Round PO, UNPACK EVERY SYMBOL.
 
@@ -1499,11 +1554,13 @@ var POLE_MEANS={
 POLE_MEANS.AW=POLE_MEANS.PE; POLE_MEANS.BO=POLE_MEANS.IL;
 MIRROR.forEach(function(m){var pm=POLE_MEANS[m.k]; if(pm){m.upm=pm.up; m.dnm=pm.dn;}});
 PATHS.forEach(function(p){var pm=POLE_MEANS[p.k]; if(pm){p.upm=pm.up; p.dnm=pm.dn;}});
-/* a pole by its key, from the eight mirror axes or the five paths, or null */
+/* a pole by its key, from the eight mirror axes, the five paths or the three
+   poles on no axis, or null */
 function compassPoleOf(k){
  var i;
  for(i=0;i<MIRROR.length;i++)if(MIRROR[i].k===k)return MIRROR[i];
  for(i=0;i<PATHS.length;i++)if(PATHS[i].k===k)return PATHS[i];
+ for(i=0;i<HOME_POLES.length;i++)if(HOME_POLES[i].k===k)return HOME_POLES[i];
  return null;}
 /* a pole's phrases, each with its meaning, for one end. The phrases a pole has
    no meanings for come back as the codex line whole, so nothing is ever blank. */
@@ -2159,13 +2216,14 @@ var PAINREG=[
    second kind of row, so rc marks it, and the test that walks the round KQ
    rows skips rc rows rather than being edited to expect them.
 
-   THREE POLES HAVE NO PLACE ON THE COMPASS YET. Akhenaten, Zoroaster and
-   Confucius are rows 12 to 14 of the roster and the figure, MIRROR, PATHS and
-   BECOMING do not carry them until the roster change lands. Their recipes are
-   written now, so that landing them is a drawing task and not a writing one.
-   Until then recipeOf finds them and nothing on the Compass can open them, and
-   a ritual added from one of them carries no tc, because becomingOf answers
-   null for a pole it does not know and ritPlanOk would refuse the whole plan.
+   THREE POLES ARE ON THE COMPASS'S NAME PANELS AND NOT YET ON ITS FIGURE.
+   Akhenaten, Zoroaster and Confucius are rows 12 to 14 of the roster. Round RB
+   put them in HOME_POLES (engine/data/compass.js) and on the two name panels
+   beside the figure, where a press opens their row here. MIRROR, PATHS,
+   BECOMING and the needle still do not carry them (PLAN.md section N says
+   why). A ritual added from one of them carries no tc, because becomingOf
+   answers null for a pole it does not know and ritPlanOk would refuse the
+   whole plan.
 
    NO COUNT, NO SCORE, NO PERCENT. Nothing in this file is measured against a
    total. A behaviour is listed or it is not.
@@ -17888,6 +17946,7 @@ if(typeof module!=='undefined'&&module.exports){
      is one plain sentence, and so a tool can read the same table the page does. */
                   unpackAll:unpackAll, unpackOf:unpackOf, unpackKey:unpackKey,
                   compassPoleOf:compassPoleOf, compassPoleLines:compassPoleLines, POLE_MEANS:POLE_MEANS,
+                  HOME_POLES:HOME_POLES, compassOffAxis:compassOffAxis,
   /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory,
                   wordsOf:wordsOf, unmarkedOf:unmarkedOf,
                   SOMA_SENSE:SOMA_SENSE, SOMA_PLACE_WORDS:SOMA_PLACE_WORDS, SOMA_PLACE_RULED:SOMA_PLACE_RULED, SOMA_PLACE:SOMA_PLACE, somaPlaces:somaPlaces,
