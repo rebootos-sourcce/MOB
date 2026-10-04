@@ -103,7 +103,7 @@ function stRender(){
       takes the free space, so it and Record stand together at the right
       edge where Record stood alone. See srcThread for what it opens. */
    +'<button class="st-mic st-talk" id="sttalk" type="button" aria-pressed="'+!!STV.chat+'" '
-   +'title="Write it as a conversation, one turn at a time. Every reply goes into this entry.">'
+   +'title="Write it as a conversation, one turn at a time.">'
    +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
    +'<circle cx="6" cy="6.5" r="3"/><circle cx="18" cy="17.5" r="3"/>'
    +'<path d="M8.4 8.4Q16.5 7 15.6 15.6"/></svg>'

@@ -1247,9 +1247,8 @@ function render(){
        +(r.PULL>0.003?' Decoherence is holding '+(r.CQ-r.EX).toFixed(0)+' points of it back, the hatched foot of the bar, '
         +'so what gets out is '+Math.round(r.EX)+'.':''))})
   +rbRow('dq','Decoherence',r.DQ,r.unread?'\u2013':Math.round(r.DQ)+'%',
-    {unread:r.unread,bad:true,fk:'shadow',ic:'dq',hash:rbSeatShadow(),title:'Decoherence. All the charge on all 112 addresses, '
-       +'against the most they could hold. The seven marks are the seats, root to crown, each as high as the charge on its '
-       +'own addresses, and a seat holding half of what it could stands full height.'});
+    {unread:r.unread,bad:true,fk:'shadow',ic:'dq',hash:rbSeatShadow(),title:'Decoherence. The seven marks are the seats, root '
+       +'to crown, each as high as the charge on its own addresses: a seat holding half of what it could stands full height.'});
  /* TWO KINDS, TWO STRIPS. Ruled, and the grouping is his: CQ, DQ and SQ are
     one kind of reading. Vitality, awareness, will and flow are another, and
     they go lower left.
