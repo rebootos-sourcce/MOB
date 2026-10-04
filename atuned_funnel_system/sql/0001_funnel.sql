@@ -12,10 +12,26 @@
 -- implementation of that interface needs no change to funnelService.ts.
 --
 -- This migration owns ONLY the tables the funnel TDDs name as new:
--- funnel_sessions, starter_gifts, funnel_events, tutorial_progress,
--- usage_ledger, referrals. It does not create users, stories, patterns,
+-- funnel_sessions, starter_gifts, starter_gift_items, funnel_events,
+-- tutorial_progress, usage_ledger, referrals, idempotency_claims,
+-- attachment_challenges. It does not create users, stories, patterns,
 -- releases, or any table the real engine already owns the shape of
 -- elsewhere (see domain.ts's REFERENCE ONLY types for why).
+--
+-- THIS FILE HAS NEVER BEEN APPLIED to a real database: it is still a
+-- template, offered alongside the rest of this scaffold. The Database
+-- Production Completion TDD v2's own rule, "migrations remain append
+-- only, never edit an applied migration," starts counting from the
+-- first real `wrangler`/`supabase migration up` (or equivalent) against
+-- a live environment. Until that first real apply, this file may still
+-- be corrected in place, which is what this file's own round SF
+-- correction pass did: the original version stored a starter gift's
+-- patterns as a bare `pattern_ids text[]` column and a single
+-- `funnel_idempotency_keys` table with no atomic claim semantics, both
+-- named directly as defects in that TDD's own section 5 (`TASKS.md`
+-- round SF has the full citation). Once this file is ever actually run
+-- against a real database, every future change belongs in a new,
+-- separately numbered file, never an edit here.
 -- ============================================================
 
 create extension if not exists pgcrypto;
@@ -53,7 +69,11 @@ create table if not exists starter_gifts (
   user_id             uuid null,
   source              text not null default 'funnel',
   selected_ground_id  text not null,
-  pattern_ids         text[] not null,
+  -- The frozen set's own hash, taken at issuance. A future canon change
+  -- must never silently reinterpret an already-issued gift; this is what
+  -- a reconciliation job compares against to notice if it ever did
+  -- (Database Production Completion TDD v2, section 9, "gift issuance").
+  pattern_set_hash    text not null,
   granted             integer not null default 100,
   remaining           integer not null,
   issued_at           timestamptz not null default now(),
@@ -62,12 +82,42 @@ create table if not exists starter_gifts (
 
   constraint starter_gifts_granted_chk check (granted = 100),
   constraint starter_gifts_remaining_chk check (remaining >= 0 and remaining <= 100),
-  constraint starter_gifts_pattern_count_chk check (array_length(pattern_ids, 1) = 100),
   constraint starter_gifts_status_chk
     check (status in ('pending','active','depleted','cancelled'))
 );
 create index if not exists starter_gifts_funnel_session_id_idx on starter_gifts (funnel_session_id);
 create unique index if not exists starter_gifts_one_per_session_uq on starter_gifts (funnel_session_id);
+
+-- ONE ROW PER PATTERN, replacing a bare `pattern_ids text[]` column (the
+-- Database Production Completion TDD v2's own section 5.4: a JSON/array
+-- column "cannot by itself enforce valid pattern references, uniqueness,
+-- or referential integrity"). `pattern_id` is left as `text` rather than
+-- `uuid` because the real pattern catalog's own keys are text (the
+-- engine's Saboteur/address/pattern tables are keyed by name, not a
+-- generated uuid); the comment at that section's own words: "use that
+-- canonical key type rather than inventing a new one." A real attachment
+-- pass should add a foreign key here once the real catalog's table is in
+-- the same database; until then `pattern_id` is validated application
+-- side by PatternCatalogAdapter at issuance, named here so the gap is
+-- visible rather than silently assumed closed.
+create table if not exists starter_gift_items (
+  gift_id     uuid not null references starter_gifts(id),
+  pattern_id  text not null,
+  position    integer not null,
+  created_at  timestamptz not null default now(),
+
+  constraint starter_gift_items_position_chk check (position >= 0 and position < 100)
+);
+create unique index if not exists starter_gift_items_pattern_uq on starter_gift_items (gift_id, pattern_id);
+create unique index if not exists starter_gift_items_position_uq on starter_gift_items (gift_id, position);
+create index if not exists starter_gift_items_gift_id_idx on starter_gift_items (gift_id);
+
+-- Enforced at the row-count level by the application transaction (insert
+-- the gift and its 100 item rows together, same transaction, round out
+-- with a check against count(*) before commit); Postgres has no bare
+-- "exactly 100 child rows" table constraint, so this is named here as a
+-- transactional invariant rather than a declarative one, consistent with
+-- the TDD's own build-order: expand, backfill, validate, switch.
 
 create table if not exists tutorial_progress (
   funnel_session_id       uuid primary key references funnel_sessions(id),
@@ -121,27 +171,70 @@ create table if not exists referrals (
   constraint referrals_grant_amount_chk check (grant_amount = 25)
 );
 create index if not exists referrals_inviter_user_id_idx on referrals (inviter_user_id);
+-- NOTE, section 5.5's own correction: a unique `id` on this table (already
+-- the primary key) proves a referral ROW is unique. It does not prove the
+-- GRANT was only issued once, since two concurrent callbacks could both
+-- read status <> 'grant_issued' before either writes. The actual
+-- one-time guarantee lives in `idempotency_claims` below, keyed by this
+-- referral's own id under the 'referral_grant' operation; `issueReferralGrant`
+-- in funnelService.ts claims that row before ever writing `grant_issued_at`.
 
 create table if not exists funnel_events (
-  id          uuid primary key default gen_random_uuid(),
-  session_id  uuid not null references funnel_sessions(id),
-  user_id     uuid null,
-  type        text not null,
-  data        jsonb not null default '{}'::jsonb,
-  created_at  timestamptz not null default now()
+  id            uuid primary key default gen_random_uuid(),
+  session_id    uuid not null references funnel_sessions(id),
+  user_id       uuid null,
+  type          text not null,
+  -- monotonic within one session; required so a reader can reconstruct
+  -- exact ordering even when two events share a timestamp (section 8.2)
+  sequence      integer not null,
+  event_version integer not null default 1,
+  data          jsonb not null default '{}'::jsonb,
+  created_at    timestamptz not null default now()
 );
 create index if not exists funnel_events_session_id_idx on funnel_events (session_id);
 create index if not exists funnel_events_type_idx on funnel_events (type);
+create unique index if not exists funnel_events_session_sequence_uq on funnel_events (session_id, sequence);
 
--- idempotency ledger backing FunnelRepository.hasIdempotencyKey /
--- recordIdempotencyKey, scoped so the same key can be reused safely
--- across different operation types (e.g. "release" vs "payment_webhook").
-create table if not exists funnel_idempotency_keys (
-  scope       text not null,
-  key         text not null,
-  created_at  timestamptz not null default now(),
-  primary key (scope, key)
+-- ATOMIC IDEMPOTENCY CLAIM, replacing the plain funnel_idempotency_keys
+-- table this file used to hold. The old shape was a bare (scope, key)
+-- primary key with no request hash and no status: a caller could insert
+-- the key, then crash before finishing its work, and a retry would see
+-- the key already present and silently treat an unfinished operation as
+-- done. Section 5.1's own required behavior: "claim atomically, if
+-- completed return stored result, if in progress apply controlled replay
+-- behavior." The insert below IS the atomic claim: a unique violation on
+-- (scope_key, idempotency_key) is how a real adapter implementation
+-- tells "someone already claimed this" apart from "this key is new,"
+-- inside one statement, not a prior SELECT.
+create table if not exists idempotency_claims (
+  scope_key         text not null,
+  operation         text not null,
+  idempotency_key   text not null,
+  request_hash      text not null,
+  status            text not null default 'in_progress',
+  result_reference  text null,
+  created_at        timestamptz not null default now(),
+  completed_at      timestamptz null,
+
+  primary key (scope_key, idempotency_key),
+  constraint idempotency_claims_status_chk check (status in ('in_progress','completed'))
 );
+
+-- ANONYMOUS-SESSION ATTACHMENT CREDENTIAL (sections 14-15). A funnel
+-- session id is not a secret (it travels in a URL, a cookie, local
+-- storage) and must never by itself be treated as proof that the browser
+-- presenting it is the one that ran the session. Only the credential's
+-- hash is ever stored; the raw credential lives in the browser alone
+-- (issueAttachmentChallenge in funnelService.ts never persists it).
+create table if not exists attachment_challenges (
+  id               uuid primary key default gen_random_uuid(),
+  session_id       uuid not null references funnel_sessions(id),
+  credential_hash  text not null,
+  expires_at       timestamptz not null,
+  used_at          timestamptz null,
+  created_at       timestamptz not null default now()
+);
+create index if not exists attachment_challenges_session_id_idx on attachment_challenges (session_id);
 
 -- ============================================================
 -- ROW LEVEL SECURITY. Deny by default (Implementation TDD section 24).
@@ -153,11 +246,13 @@ create table if not exists funnel_idempotency_keys (
 
 alter table funnel_sessions enable row level security;
 alter table starter_gifts enable row level security;
+alter table starter_gift_items enable row level security;
 alter table tutorial_progress enable row level security;
 alter table usage_ledger enable row level security;
 alter table referrals enable row level security;
 alter table funnel_events enable row level security;
-alter table funnel_idempotency_keys enable row level security;
+alter table idempotency_claims enable row level security;
+alter table attachment_challenges enable row level security;
 
 -- Anonymous sessions are scoped by an unguessable id passed from the
 -- client and validated at the service boundary, not by auth.uid(), since

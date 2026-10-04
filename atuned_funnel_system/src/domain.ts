@@ -81,12 +81,36 @@ export interface StarterGift {
   userId: string | null;
   source: 'funnel';
   selectedGroundId: string;
+  /** The frozen set, for quick reads and the exactly-100 check. The
+   *  durable, referentially sound record is `StarterGiftItem`, one row per
+   *  pattern; this array must always equal that row set. Kept here because
+   *  the in-memory fakes and the service layer read it directly, not
+   *  because a JSON array is the production source of truth (the Database
+   *  Production Completion TDD v2, section 5.4, rules a bare array out for
+   *  exactly this reason: it cannot enforce uniqueness or a real foreign
+   *  key to the pattern catalog on its own). */
   patternIds: string[];
   granted: 100;
   remaining: number;
+  /** A hash of the frozen pattern set, taken at issuance. A future canon
+   *  change must never silently change an already-issued gift; comparing
+   *  this hash is how a reconciliation job notices if it ever did. */
+  patternSetHash: string;
   issuedAt: string;
   transferredAt: string | null;
   status: StarterGiftStatus;
+}
+
+/** One row per pattern in a starter gift, the production-real form of
+ *  `StarterGift.patternIds`. `(giftId, patternId)` and `(giftId, position)`
+ *  are both unique (see `sql/0001_funnel.sql`); a gift has exactly 100 of
+ *  these rows, checked at issuance and reconcilable later even if the
+ *  convenience array on `StarterGift` is ever dropped. */
+export interface StarterGiftItem {
+  giftId: string;
+  patternId: string;
+  position: number;
+  createdAt: string;
 }
 
 export type UsageOperation = 'OPEN_NEW_GROUND' | 'RERUN';
@@ -282,7 +306,54 @@ export interface FunnelEvent {
   sessionId: string;
   userId: string | null;
   type: FunnelEventType;
+  /** Monotonic within one session, so a reader can reconstruct the exact
+   *  order state changed in even if two events share a timestamp. Required
+   *  by the Database Production Completion TDD v2, section 8.2. */
+  sequence: number;
+  /** The event payload's own shape version, independent of `schema_version`
+   *  elsewhere; lets a future change to what one event type carries without
+   *  reinterpreting an already-written historical event. */
+  eventVersion: number;
   data: Record<string, unknown>;
+  createdAt: string;
+}
+
+/** An atomic idempotency claim, replacing the read-then-execute-then-write
+ *  pattern `FunnelRepository.hasIdempotencyKey`/`recordIdempotencyKey`
+ *  described in round SE: two concurrent callers with the same key must not
+ *  both pass the check before either has recorded it. `claimIdempotencyKey`
+ *  in adapters.ts is the atomic replacement; this is its row shape (Database
+ *  Production Completion TDD v2, sections 5.1 and 13). */
+export type IdempotencyStatus = 'in_progress' | 'completed';
+
+export interface IdempotencyClaim {
+  scopeKey: string;
+  operation: string;
+  idempotencyKey: string;
+  /** A hash of the request's own meaningful fields. The same key with a
+   *  different hash must be rejected, not silently replayed with new
+   *  inputs. */
+  requestHash: string;
+  status: IdempotencyStatus;
+  resultReference: string | null;
+  createdAt: string;
+  completedAt: string | null;
+}
+
+/** The anonymous-session security handshake (Database Production Completion
+ *  TDD v2, sections 14-15): a session id alone must never be treated as
+ *  proof of ownership when attaching it to a real account. This is the
+ *  credential that proves the browser calling attachAccount is the same one
+ *  that ran the funnel session, independent of whatever the real identity
+ *  system (the existing reboot-os Worker) uses to prove who the account is. */
+export interface AttachmentChallenge {
+  id: string;
+  sessionId: string;
+  /** Never the raw credential. The credential itself lives only in the
+   *  browser; this is what the server checks it against. */
+  credentialHash: string;
+  expiresAt: string;
+  usedAt: string | null;
   createdAt: string;
 }
 
@@ -298,7 +369,9 @@ export class FunnelError extends Error {
       | 'STALE_VERSION'
       | 'ENTITLEMENT_DENIED'
       | 'DUPLICATE_IDEMPOTENCY_KEY'
-      | 'SAFETY_STOP_ACTIVE',
+      | 'SAFETY_STOP_ACTIVE'
+      | 'ATTACHMENT_CREDENTIAL_INVALID'
+      | 'IDEMPOTENCY_HASH_MISMATCH',
     message: string,
   ) {
     super(message);

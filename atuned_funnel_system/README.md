@@ -1,12 +1,13 @@
 # Atuned funnel system scaffold
 
-Built from two handoff documents: `ATUNED_Master_Application_Graph_Funnel_TDD_v1.md` and
-`ATUNED_Funnel_System_Implementation_TDD_v1.md` (both reviewed twice against the real,
-shipped product before anything here was written; the full review is in the main
-repo's `PLAN.md`, section T, and `TASKS.md`, round SE). This is a handoff package for
-whoever (human or AI) attaches the funnel to a real backend. It is not live code, it
-is not wired into `source.html`, `atuned_src/`, or `funnel/`, and it should not be,
-until the decisions in "What this is not" below are made.
+Built from three handoff documents: `ATUNED_Master_Application_Graph_Funnel_TDD_v1.md`,
+`ATUNED_Funnel_System_Implementation_TDD_v1.md` (both reviewed twice, `PLAN.md` section T,
+`TASKS.md` round SE) and `ATUNED_Database_Production_Completion_TDD_v2.md` (reviewed three
+times, `PLAN.md` section U, `TASKS.md` round SF, which corrected several real defects this
+scaffold had in its first round, named in "What round SF fixed" below). This is a handoff
+package for whoever (human or AI) attaches the funnel to a real backend. It is not live
+code, it is not wired into `source.html`, `atuned_src/`, or `funnel/`, and it should not
+be, until the decisions in "What this is not" below are made.
 
 ## What this is
 
@@ -27,7 +28,7 @@ until the decisions in "What this is not" below are made.
   idempotency and accounting rules both TDDs call non-negotiable (no duplicate
   starter gift, no rerun charge, no client-granted entitlement, no silent
   state jump).
-- `sql/0001_funnel.sql`: a Postgres-flavoured migration for the six tables
+- `sql/0001_funnel.sql`: a Postgres-flavoured migration for the nine tables
   the funnel owns, offered, not mandatory (see "What this is not").
 - `tests/`: in-memory fakes for every adapter, plus a state-machine suite and
   a service suite covering exactly the invariants above. `npm test` compiles
@@ -43,7 +44,55 @@ npm install
 npm test
 ```
 
-18 tests, 0 failures, as of the round this was built.
+22 tests, 0 failures, as of the round this was built.
+
+## What round SF fixed
+
+The Database Production Completion TDD v2's own "Pass 2: adversarial
+implementation review" named defects in "the prior implementation package."
+Checked against this scaffold's own first round rather than assumed: some
+applied here directly, some did not (this scaffold already compiled and ran
+its own tests under a stock Node runtime, for instance, which that pass's
+finding 7 says a prior package could not). What did apply, and what changed:
+
+- **Idempotency was read-then-execute-then-write, not atomic.** Two
+  concurrent callers with the same key could both pass the check before
+  either recorded it. `FunnelRepository.hasIdempotencyKey`/`recordIdempotencyKey`
+  is gone; `claimIdempotencyKey`/`completeIdempotencyClaim` is an atomic
+  claim instead (a real implementation needs a real unique constraint on
+  `(scope_key, idempotency_key)` behind it, which `sql/0001_funnel.sql`'s
+  `idempotency_claims` table now has). A key reused with a different request
+  now throws `IDEMPOTENCY_HASH_MISMATCH` rather than silently replaying.
+- **The starter gift was a bare `pattern_ids text[]` column.** Nothing
+  enforced per-pattern uniqueness or a real reference to the pattern catalog.
+  `starter_gift_items` is now one row per pattern, unique on `(gift_id,
+  pattern_id)` and `(gift_id, position)`; `StarterGift.patternIds` is kept as
+  a convenience projection, never the other way around. A `pattern_set_hash`
+  is taken at issuance, so a later canon change can never silently
+  reinterpret an already-issued gift.
+- **Referral uniqueness didn't bind the grant.** A unique referral row
+  proves the row is unique, not that the grant it describes was only issued
+  once; two concurrent callbacks could still race past a plain status check.
+  `issueReferralGrant` now claims an idempotency row keyed to the referral's
+  own id under the `referral_grant` operation before it ever writes
+  `grant_issued_at`.
+- **No anonymous-session attachment security.** A funnel session id is not a
+  secret, and nothing stopped it from being treated as sufficient proof to
+  attach someone else's gift. `issueAttachmentChallenge`/`attachAccount` now
+  require a credential issued to the same browser that ran the session,
+  hashed at rest, expiring, and single-use (`attachment_challenges`).
+- **Events carried no ordering.** `FunnelEvent` now carries a per-session
+  `sequence` (monotonic, gap free) and an `eventVersion`, so two events that
+  land in the same millisecond are still reconstructable in order.
+
+Two real items this round did **not** build, named rather than silently
+left out: the payment-webhook trust boundary (`PaymentAdapter.resolveWebhookEvent`
+was already adapter-resolved rather than a bare client-supplied boolean, so
+that specific finding did not apply here, but full provider signature
+verification, renewal/refund/chargeback handling and out-of-order event
+ordering are real, larger work, named as BLOCKED in `PLAN.md` section U); and
+the free/paid allowance carry-forward, retention and RPO/RTO decisions the
+new TDD's own section 48 says must never be invented by the receiving AI.
 
 ## What this is not
 

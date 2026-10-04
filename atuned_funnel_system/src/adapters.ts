@@ -55,7 +55,10 @@ export interface FunnelRepository {
   saveSession(session: FunnelSession): Promise<void>;
 
   getGift(id: string): Promise<StarterGift | null>;
-  saveGift(gift: StarterGift): Promise<void>;
+  /** Must write `gift` and its full `StarterGiftItem` row set in the same
+   *  transaction: `patternIds.length` must always equal the item row count,
+   *  per the Database Production Completion TDD v2, section 5.4. */
+  saveGift(gift: StarterGift, items: import('./domain.js').StarterGiftItem[]): Promise<void>;
 
   getTutorial(sessionId: string): Promise<TutorialProgress | null>;
   saveTutorial(progress: TutorialProgress): Promise<void>;
@@ -64,15 +67,42 @@ export interface FunnelRepository {
   getReferralByToken(token: string): Promise<import('./domain.js').Referral | null>;
 
   appendEvent(event: FunnelEvent): Promise<void>;
+  /** The next `sequence` value for this session's event stream. Must be
+   *  gap free and monotonic per session even under concurrent writers. */
+  nextEventSequence(sessionId: string): Promise<number>;
 
-  /** Idempotency ledger: has this exact operation + key already run?
-   *  Backing store for every "required idempotency key" the Implementation
-   *  TDD names in section 25. */
-  hasIdempotencyKey(scope: string, key: string): Promise<boolean>;
-  recordIdempotencyKey(scope: string, key: string): Promise<void>;
+  /** Atomic idempotency claim, replacing the round SE
+   *  hasIdempotencyKey/recordIdempotencyKey pair, which read then executed
+   *  then wrote with no atomic claim in between: two concurrent callers
+   *  with the same key could both pass the check before either recorded
+   *  it. Database Production Completion TDD v2, sections 5.1 and 13.
+   *
+   *  Must behave as one atomic operation (a unique constraint on
+   *  (scopeKey, idempotencyKey) with an insert-or-return-existing, or
+   *  equivalent): the first caller gets `{claimed: true}` and proceeds; a
+   *  concurrent or later caller with the SAME key and the SAME
+   *  requestHash gets `{claimed: false, existing}` and must return the
+   *  existing claim's own eventual result, never re-run the operation. A
+   *  caller with the same key and a DIFFERENT requestHash must be
+   *  rejected (FunnelError, a hash mismatch), never silently served either
+   *  result. */
+  claimIdempotencyKey(
+    scopeKey: string,
+    operation: string,
+    idempotencyKey: string,
+    requestHash: string,
+  ): Promise<{ claimed: true } | { claimed: false; existing: import('./domain.js').IdempotencyClaim }>;
+  completeIdempotencyClaim(scopeKey: string, idempotencyKey: string, resultReference: string): Promise<void>;
 
   appendUsageLedgerEntry(entry: import('./domain.js').UsageLedgerEntry): Promise<void>;
   getUsageBalance(userId: string, source: import('./domain.js').UsageSource): Promise<number>;
+
+  /** The anonymous-session attachment credential (sections 14-15). A
+   *  session id by itself is never sufficient proof to attach a funnel
+   *  session to a real account; this challenge is. */
+  saveAttachmentChallenge(challenge: import('./domain.js').AttachmentChallenge): Promise<void>;
+  getAttachmentChallenge(sessionId: string): Promise<import('./domain.js').AttachmentChallenge | null>;
+  markAttachmentChallengeUsed(id: string): Promise<void>;
 }
 
 // ---------- identity ----------
