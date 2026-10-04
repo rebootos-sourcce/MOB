@@ -153,12 +153,12 @@ html:not(.js) .cap-b{margin-top:0}
 
 /* ---- arrive ---- */
 .cta{margin-top:28px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-a.btn{display:inline-flex;align-items:center;justify-content:center;
+a.btn,button.btn{display:inline-flex;align-items:center;justify-content:center;border:0;cursor:pointer;font-family:inherit;
  background:var(--accent);color:var(--on-accent);text-decoration:none;font-weight:600;
  font-size:18px;padding:0 30px;border-radius:999px;min-height:52px;min-width:var(--tap);
  transition:transform var(--t-micro) var(--ease-out),box-shadow var(--t-element) var(--ease-out)}
-a.btn:hover{box-shadow:0 0 0 6px rgba(126,184,212,.16)}
-a.btn:active{transform:scale(.98)}
+a.btn:hover,button.btn:hover{box-shadow:0 0 0 6px rgba(126,184,212,.16)}
+a.btn:active,button.btn:active{transform:scale(.98)}
 a.ghost{display:inline-flex;align-items:center;min-height:var(--tap);padding:0 14px;
  color:var(--mid);text-decoration:underline;text-decoration-color:var(--edge-2);
  text-underline-offset:5px}
@@ -199,12 +199,12 @@ a.ghost:hover{color:var(--ink)}
 .reading.out{opacity:0}
 .ask{margin:14px 0 0;color:var(--mid)}
 .ans{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.ans button{font:inherit;font-size:16px;color:var(--ink);background:transparent;
+.ans button,.sg-opts button{font:inherit;font-size:16px;color:var(--ink);background:transparent;
  border:1px solid var(--edge-2);border-radius:999px;min-height:var(--tap);min-width:var(--tap);
  padding:0 18px;cursor:pointer;
  transition:border-color var(--t-micro) var(--ease-out),background var(--t-micro) var(--ease-out)}
-.ans button:hover{border-color:var(--mid)}
-.ans button[aria-pressed="true"]{border-color:var(--accent);background:rgba(126,184,212,.12)}
+.ans button:hover,.sg-opts button:hover{border-color:var(--mid)}
+.ans button[aria-pressed="true"],.sg-opts button[aria-pressed="true"]{border-color:var(--accent);background:rgba(126,184,212,.12)}
 .say{margin:14px 0 0;min-height:1.6em;color:var(--accent)}
 .was{list-style:none;margin:10px 0 0;padding:0;font-size:15px;color:var(--dim)}
 .was:empty{display:none}
@@ -268,6 +268,22 @@ a.ghost:hover{color:var(--ink)}
 .opts li{display:flex;align-items:center;gap:8px}
 .opts li::before{content:'';width:7px;height:7px;border-radius:50%;border:1.4px solid var(--dim)}
 
+/* ---- reframe, his slide 17 and section 37, "mirror the user's exact
+   language". The card is the signal test's own (.sg, defined below, one
+   rule set earns both), so a second piece of free text on this page does
+   not grow a second card style to carry it. ---- */
+.rf .lb{display:block;font-size:14px;color:var(--mid);margin:0 0 6px}
+.rf textarea{display:block;width:100%;min-height:92px;font:inherit;font-size:17px;line-height:1.45;
+ color:var(--ink);background:var(--bg);border:1px solid var(--edge-2);border-radius:14px;
+ padding:12px 16px;resize:vertical}
+.rf textarea::placeholder{color:var(--dim)}
+
+/* ---- verify, his slide 19: the signal test's own report, said back
+   beside what the person notices now. ---- */
+.vf{margin-top:14px}
+.vf .eye{display:block;margin-bottom:4px}
+.vf .base{margin:2px 0 0;color:var(--mid)}
+
 /* ---- the loop ---- */
 .four{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:14px}
 .four li{display:flex;gap:12px;align-items:flex-start}
@@ -294,6 +310,65 @@ a.ghost:hover{color:var(--ink)}
 .foot{border-top:1px solid var(--edge);margin-top:20px;padding:18px var(--gut) 40px;
  font-size:14px;color:var(--dim)}
 .foot .nav{margin:0 0 6px -10px}
+
+/* ---- the signal test, his slide 03. One card, one question at a time,
+   the quiz's own rule: a tap is the answer and the step forward, and every
+   step carries the way back and the way past. The options take the mirror's
+   pill buttons above and the primary takes the page's own .btn, so nothing
+   here is a second control style. ---- */
+.sg{margin-top:22px;padding:20px 20px 22px;border:1px solid var(--edge-2);border-radius:var(--r);
+ background:var(--panel);max-width:560px}
+.sg .eye{margin-bottom:8px}
+.sg h3{font-size:24px;line-height:1.25;margin:0;font-weight:600;letter-spacing:-.015em;max-width:26ch}
+.sg h3:focus{outline:none}
+.sg h3+p,.sg .sub{margin:10px 0 0;color:var(--mid)}
+.sg .ins{margin:10px 0 0;font-size:20px;line-height:1.4;color:var(--ink);max-width:30ch}
+.sg .ins:first-of-type{margin-top:0}
+.sg .gl{margin:8px 0 0;font-size:15px;color:var(--dim)}
+.sg .prev{margin:10px 0 0;font-size:15px;color:var(--dim)}
+.sg .prev b{font-weight:500;color:var(--mid)}
+.wd{color:var(--accent);font-weight:600}
+.sg-opts{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.sg-opts button.none{color:var(--mid);border-style:dashed}
+.sg-own{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.sg-own input{flex:1 1 220px;min-width:0;min-height:var(--tap);font:inherit;font-size:16px;color:var(--ink);
+ background:var(--bg);border:1px solid var(--edge-2);border-radius:999px;padding:0 16px}
+.sg-own input::placeholder{color:var(--dim)}
+.sg-own button{font:inherit;font-size:16px;color:var(--ink);background:transparent;cursor:pointer;
+ border:1px solid var(--accent);border-radius:999px;min-height:var(--tap);min-width:var(--tap);padding:0 18px}
+.sg .note{margin:6px 0 0;min-height:1.2em;font-size:15px;color:var(--accent)}
+.sg .act{margin-top:20px;display:flex;gap:10px 16px;flex-wrap:wrap;align-items:center}
+.sg-under{display:flex;gap:2px 10px;flex-wrap:wrap;margin-top:14px;margin-left:-12px}
+.sg-lnk{display:inline-flex;align-items:center;min-height:var(--tap);min-width:var(--tap);padding:0 12px;
+ font:inherit;font-size:15px;color:var(--mid);background:transparent;border:0;cursor:pointer;
+ text-decoration:underline;text-decoration-color:var(--edge-2);text-underline-offset:5px}
+.sg-lnk:hover,.sg-lnk:focus-visible{color:var(--ink)}
+/* what was noticed, said back: one row per question, yes beside no. Every
+   value is the person's own pick or their own words, never a reading. */
+.sg-rep{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1fr);gap:7px 14px;
+ margin:14px 0 0;font-size:15.5px;line-height:1.4}
+.sg-rep>*{margin:0;min-width:0;overflow-wrap:anywhere}
+.sg-rep .hd{font-weight:600}
+.sg-rep .k{color:var(--dim);overflow-wrap:normal}
+.sg-rep .v{color:var(--ink)}
+.sg-rep .v.e{color:var(--dim)}
+.sg .aha{margin:22px 0 0;font-size:26px;line-height:1.2;font-weight:600;letter-spacing:-.018em;max-width:22ch}
+.sg .his{margin:12px 0 0;font-size:19px;line-height:1.45;max-width:34ch}
+.sg .his.soft{color:var(--mid)}
+.sg .small{margin:14px 0 0;font-size:14.5px;line-height:1.5;color:var(--dim);max-width:44ch}
+.sg-qs{margin:8px 0 0;padding-left:20px;color:var(--mid)}
+.sg-qs li{margin-top:2px}
+/* the stage while the signal test is in view. The body is the same body the
+   Body frame draws. Its seats step back so the only bright marks are the
+   ones the person put there, and the Body frame's lit heart is not shown,
+   because a place nobody reported is not drawn as if they had. */
+.sigc{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;display:block}
+html:not(.js) .sigc{display:none}
+.hero-glows,.hero-seats,.seat-ping{transition:opacity var(--t-context) var(--ease-out)}
+.stage[data-sig="on"] .hero-glows{opacity:.22}
+.stage[data-sig="on"] .hero-seats{opacity:.22}
+.stage[data-sig="on"] .seat-ping{visibility:hidden}
+@media(min-width:900px){.sg .aha{font-size:30px}}
 
 /* ---- the reveal. Each frame's lines arrive once, when the frame does. Only
    with a script, so a page whose script never ran is never blank. ---- */
@@ -474,6 +549,7 @@ a.ghost:hover{color:var(--ink)}
  </g>
 </svg>
 <!-- FIGURE END -->
+  <canvas class="sigc" id="sigc"></canvas>
  </div>
  <div class="lyr lyr-dial">
   <svg id="dial" viewBox="-60 -14 520 428" aria-hidden="true">
@@ -541,6 +617,63 @@ a.ghost:hover{color:var(--ink)}
  <div class="cap rv" style="--d:.3s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-recognize"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
  <p class="cap-b" id="cap-recognize">Each lit point is one situation. The lines pull them to one place: the
  same response, every time. That is a pattern.</p></div>
+</section>
+
+<!-- SLIDE 03, THE SIGNAL TEST. ATUNED-Funnel-Signal-Story-Pattern-Release-
+     Reframe-TDD-v1.md section 8: "This is the first true experiential
+     interaction." Its intention: "Create a direct experience of the mind-body
+     relationship before explaining the system." So it sits straight after
+     recognition, which is his slide 02, and before anything on this page
+     explains a pattern.
+
+     Every question is his, in his order, from section 8. Three of his lines
+     are moved, and each one is named where the code says it:
+       "Sit back and relax." is the exact line the voice gate's V2 was
+         written against ("an instruction to a nervous system"), and the
+         release opening in the app already dropped it. The house's own
+         replacement stands in: "Sit down. Put both feet on the floor."
+       YES and NO are set lower case and carried by colour, because the house
+         rules no all caps in copy. The capital was emphasis, and the accent
+         carries it.
+       "This is where the ATUNED journey begins." loses "journey", which the
+         soft lexicon stops. "This is where Atuned begins."
+     Colour is spelled the way the rest of this page spells it.
+
+     What the person reports is kept as they gave it, section 9: "Preserve
+     the user's report. Do not convert a reported sensation into a medical
+     diagnosis." It is held in memory and nowhere else, by the same rule the
+     quiz holds its own body signal: somebody's body in their own words, on
+     what may be a shared computer. Nothing is scored and nothing is mapped
+     to a seat. The stage draws only the places picked from the list.
+
+     With no script the card prints the whole exercise in order, so it can be
+     done in the head with nothing to press. -->
+<section class="fr" id="signal" data-frame="signal">
+ <h2 class="rv">Feel what happens.</h2>
+ <div class="sg rv" id="sg" style="--d:.15s">
+  <p class="ins">Sit down. Put both feet on the floor.</p>
+  <p class="ins">This will take about two minutes.</p>
+  <p class="ins">Find a quiet and calm space if you can.</p>
+  <p class="ins">When you are ready, move your awareness into your body.</p>
+  <p class="ins">Think the word <span class="wd">yes</span> ten times. Each time, notice where yes lands in your body.</p>
+  <ul class="sg-qs"><li>Where do you feel yes?</li><li>Can you identify the exact location?</li>
+   <li>Does the sensation feel dense or flowing?</li><li>Is there a temperature?</li>
+   <li>Is there a colour?</li><li>Does the charge change? Charge is the weight the word leaves on that place.</li></ul>
+  <p class="ins">Now think the word <span class="wd">no</span> ten times.</p>
+  <ul class="sg-qs"><li>Where does no land in your body?</li><li>Does no have a different quality from yes?</li>
+   <li>Is the location different?</li><li>Is the temperature different?</li><li>Is the colour different?</li>
+   <li>Is the charge different?</li><li>How does the sensation make you feel?</li></ul>
+  <p class="his">A word is lighter than air, yet the experience of a word can have a direct effect on what you notice in your body.</p>
+  <p class="his">This is where Atuned begins.</p>
+  <p class="his soft">Words carry meaning, tone, memory, and association.</p>
+  <p class="his soft">When you identify with a word, the word can become connected to a lived experience.</p>
+ </div>
+ <div class="cap rv" style="--d:.3s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-signal"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-signal">The ring on the right is the word yes, and the ring on the left is
+ the word no. Pick a place and a point lights there on the body, with a wavy line
+ from the word to it. A dense feeling pulls the line tight and quick. A flowing
+ one lets it run long and slow. The picture draws only what you picked, and
+ nothing in your body is measured to draw it.</p></div>
 </section>
 
 <!-- BEATS 07, 05, 16 AND 17, STORY BECOMES PATTERN, AND THE DIFFERENCE.
@@ -671,6 +804,80 @@ a.ghost:hover{color:var(--ink)}
  <div class="cap rv" style="--d:.7s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-release"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
  <p class="cap-b" id="cap-release">The knot is one pattern. The new line is the reframe: a sentence that
  starts with "I know", built from what you said.</p></div>
+</section>
+
+<!-- SLIDE 17, REFRAME. His own words, section 36: "release creates space.
+     reframe gives the story a new direction." The question is his, section
+     36's primary and its alternative. The answer is free text, and section
+     37 is explicit about what happens to it: "Mirror the user's exact
+     language. No embellishment. No interpretation." So this never rewrites
+     what is typed. It is said back under its own heading, with the words
+     unchanged but for the whitespace trim the signal test's own "own"
+     answers already get (sgEsc and the own-input pattern a few hundred
+     lines below are reused rather than copied). The card is the signal
+     test's (.sg), so the funnel does not grow a second free-text card style
+     an hour after building its first one.
+
+     HELD IN MEMORY ONLY, the same rule as the signal test above: there is
+     no account yet for a reframe to belong to, and a funnel visitor has no
+     profile this could attach to. Close the page and it is gone. With no
+     script the question still reads and the box is still there to write
+     into, it is only the mirrored echo below that needs the click. -->
+<section class="fr" id="reframe" data-frame="reframe">
+ <span class="eye rv">Reframe</span>
+ <h2 class="rv">What feels possible when the old pattern stops running you?</h2>
+ <p class="m soft rv" style="--d:.15s">Or: what becomes possible when your intention stops fighting it, rather than running from it?</p>
+ <div class="sg rf rv" id="rf" style="--d:.3s">
+  <div id="rfedit">
+   <label class="lb" for="rftx">Your words</label>
+   <textarea id="rftx" maxlength="400" rows="3" aria-label="What feels possible now, in your own words"
+    placeholder="What feels possible now, in your own words"></textarea>
+   <p class="note" id="rfnote" aria-live="polite"></p>
+   <div class="act"><button type="button" class="btn" data-rf="keep">Keep these words</button></div>
+  </div>
+  <div id="rfsaid" hidden>
+   <span class="eye">Your reframe</span>
+   <p class="reading" id="rftext" tabindex="-1"></p>
+   <p class="small">These are your words, kept exactly as you wrote them. Nothing here is saved, and it is gone when you close the page.</p>
+   <div class="sg-under"><button type="button" class="sg-lnk" data-rf="edit">Change it</button></div>
+  </div>
+ </div>
+</section>
+
+<!-- SLIDE 19, VERIFICATION. His own words, section 41: "Return to the
+     original signal. Think about the same situation again. What happens in
+     your body now?" and his own rule, right beside it: "Every result is
+     evidence. No result should be framed as failure." So "Nothing changed"
+     sits in the same row as the other four, not struck out or greyed, and
+     picking it gets the same plain acknowledgement the others do.
+
+     THE BASELINE IS THE SIGNAL TEST'S OWN, never a second one invented for
+     this frame. sgFound, sgVal, sgNoticed and SGR are the signal test's own
+     state a few hundred lines below, read here and not duplicated. If
+     nothing was noticed there, or the signal test was skipped (the "Skip
+     yes and no" link a few frames back), this frame says exactly that
+     rather than showing a baseline that was never recorded: an invented
+     comparison would be a quieter version of the clamped 9999 CLAUDE.md's
+     own validation rule warns against, a reading of something that was
+     never there. -->
+<section class="fr" id="verify" data-frame="verify">
+ <span class="eye rv">Verify</span>
+ <h2 class="rv">Return to the signal.</h2>
+ <p class="m rv" style="--d:.15s">Think about the same situation again. What happens in your body now?</p>
+ <div class="vf rv" id="vf" style="--d:.3s"></div>
+ <ul class="sg-qs rv" style="--d:.45s"><li>Where do you feel the sensation now?</li>
+  <li>Is the intensity different?</li><li>Is the location different?</li>
+  <li>Is the quality different?</li>
+  <li>Is the charge different? Charge is the weight the word left on that place.</li></ul>
+ <p class="m soft rv" style="--d:.5s">Every answer below is evidence, including no change at all.</p>
+ <div class="ans rv" id="vfans" style="--d:.6s" role="group" aria-label="What changed since the signal test">
+  <button type="button" data-v="I feel different." aria-pressed="false">I feel different</button>
+  <button type="button" data-v="I see it differently." aria-pressed="false">I see it differently</button>
+  <button type="button" data-v="Something moved." aria-pressed="false">Something moved</button>
+  <button type="button" data-v="Nothing changed." aria-pressed="false">Nothing changed</button>
+  <button type="button" data-v="I'm not sure." aria-pressed="false">I'm not sure</button>
+ </div>
+ <p class="say rv" id="vfsay" style="--d:.7s" role="status" aria-live="polite"></p>
 </section>
 
 <!-- BEATS 23 TO 27, THE LOOP AND THE FIELD REMEMBERS. Ruled: "it is a
@@ -808,11 +1015,22 @@ function layout(){
 var FR={
  arrive:   {ring:.20,net:.22,pat:.12,core:.0, csc:1,  pul:.6},
  recognize:{ring:.20,net:.06,pat:.04,core:.0, csc:1,  pul:.4},
+ signal:   {ring:.20,net:.06,pat:.04,core:.0, csc:1,  pul:.4},
  mirror:   {ring:.14,net:.04,pat:.03,core:.0, csc:1,  pul:.35},
  cascade:  {ring:.26,net:.06,pat:.12,core:.3, csc:.75,pul:.35},
  network:  {ring:.95,net:1,  pat:1,  core:1,  csc:1,  pul:1},
  body:     {ring:.95,net:1,  pat:1,  core:1,  csc:1,  pul:1},
  release:  {ring:.34,net:.10,pat:.22,core:.45,csc:.8, pul:.6},
+ /* reframe and verify sit between release's loosened field and the loop's
+    full one, climbing back the way release came down: his own sequence,
+    section 54, is release then reframe then verify, and slide 18 describes
+    the field reorganising through exactly this stretch, "the heat map
+    shifts". Neither frame has its own canvas scene, the way honest below
+    does not either: the ambient field climbing is the demonstration, and a
+    second bespoke animation for two text frames would be a second drawing
+    of the same idea the knot above already draws once. */
+ reframe:  {ring:.42,net:.18,pat:.32,core:.55,csc:.85,pul:.65},
+ verify:   {ring:.68,net:.46,pat:.64,core:.78,csc:.92,pul:.82},
  loop:     {ring:.95,net:1,  pat:1,  core:1,  csc:1,  pul:1},
  honest:   {ring:.7, net:.42,pat:.7, core:.8, csc:.9, pul:.3},
  ret:      {ring:0,  net:0,  pat:0,  core:1,  csc:.3, pul:0}};
@@ -1079,6 +1297,7 @@ function tick(ts){
  if(!running)return;
  var t=ts/1000, dt=last?Math.min(.05,t-last):0.016; last=t; now+=dt;
  if(stage.getAttribute('data-show')==='field')draw(dt); else step2(dt);
+ if(frame==='signal')sigDraw(dt);
  requestAnimationFrame(tick);}
 function start(){if(running||REDUCED||!g)return;running=true;last=0;requestAnimationFrame(tick);}
 function stop(){running=false;}
@@ -1086,10 +1305,26 @@ D.addEventListener('visibilitychange',function(){D.hidden?stop():start();});
 
 /* ---------------- the story picks the frame ---------------- */
 var frames=[].slice.call(D.querySelectorAll('.fr'));
-var SHOW={body:'body',loop:'dial'};
+var SHOW={body:'body',loop:'dial',signal:'body'};
 function setFrame(fr){
  if(fr===frame)return; frame=fr; frameT=now; step=''; cstep='';
  stage.setAttribute('data-show',SHOW[fr]||'field');
+ stage.setAttribute('data-sig',fr==='signal'?'on':'off');
+ if(fr==='signal'){sigLayout();if(REDUCED)sigDraw(0);}
+ /* the Body frame shares the layer, so the points the person put there are
+    wiped before it shows. Anywhere else the layer fades with them on it. */
+ else if(fr==='body'&&sgg){sgg.setTransform(1,0,0,1,0,0);sgg.clearRect(0,0,sgc.width,sgc.height);}
+ /* VERIFY'S BASELINE IS READ OFF THE SIGNAL TEST'S OWN STATE EVERY TIME THE
+    FRAME IS ENTERED, not written once at load. It is declared a few hundred
+    lines below this function and still reachable here: this whole landing
+    is one script, defined top to bottom before any scroll can fire, so by
+    the time a person has scrolled this far every name below is already
+    assigned. Refreshing on arrival rather than on load matters because a
+    person can answer the signal test, scroll on, then scroll back; the
+    first cut of this read the baseline once and would have shown "nothing
+    noticed" forever after, which is the exact invented-emptiness this frame
+    exists to avoid. */
+ else if(fr==='verify'&&typeof vfBase==='function'){var ve=document.getElementById('vf'); if(ve)ve.innerHTML=vfBase();}
  if(REDUCED){/* the end state of the frame, drawn once */
   for(var n=0;n<3;n++)step2(1);draw(0);}}
 function probe(){
@@ -1107,7 +1342,7 @@ function seen(el){el.classList.add('seen');
 var queued=false;
 window.addEventListener('scroll',function(){if(queued)return;queued=true;
  requestAnimationFrame(function(){queued=false;probe();});},{passive:true});
-window.addEventListener('resize',function(){layout();probe();});
+window.addEventListener('resize',function(){layout();sigLayout();if(frame==='signal'&&REDUCED)sigDraw(0);probe();});
 
 /* beat 02: the lines arrive one at a time, and each one lights its point.
    Then the six join: different situation, same response. */
@@ -1144,6 +1379,364 @@ var mx=D.getElementById('mirror'), rdEl=D.getElementById('reading'), sayEl=D.get
   idx=(idx+1)%RD.length;
   rdEl.classList.add('out');
   setTimeout(function(){rdEl.textContent=RD[idx];rdEl.classList.remove('out');},REDUCED?0:180);});});
+
+/* ---------------- slide 03, the signal test ----------------
+   ATUNED-Funnel-Signal-Story-Pattern-Release-Reframe-TDD-v1.md, sections 8
+   and 9. The person thinks one word ten times and says where it landed,
+   then the other word, then sees the two side by side.
+
+   WHAT IS KEPT IS HIS CONTRACT, section 9, field for field: word,
+   reported_location, reported_quality, reported_temperature, reported_color,
+   reported_charge, reported_intensity. Two fields are not in his contract
+   and are named here rather than slipped in: reported_feeling, the answer to
+   his own "How does the sensation make you feel?", which the contract has no
+   field for, and own, which records which answers were typed rather than
+   picked so a typed answer is always said back in quotation marks, exactly
+   as typed. The ids, the user and the timestamp are a backend's to stamp,
+   and there is no backend on this page.
+
+   IT IS HELD IN MEMORY AND NOWHERE ELSE. No storage of any kind is touched,
+   and the card says so. Close the page and it is gone.
+
+   NOTHING HERE READS THE REPORT. No seat, no address, no meaning. The stage
+   draws a point at a place picked from the list and nowhere else; a place
+   in the person's own words is kept in words. The places are the quiz
+   signal's list, which is SOMA_PLACE_WORDS in engine/sniff.js, so one word
+   per concept holds across the funnel.
+
+   THE PICTURE IS THE FIELD'S GRAMMAR AND ITS NUMBERS, section 3 of his
+   document: "A node appears and vibrates", "A sine-wave path forms between
+   related nodes". Vibration is the Field's jitOff, 9 Hz on one axis and 11 on
+   the other. The soft pulse is a ring out to 38 px over 1.4 s, once each
+   half breath, 2.1 s, while a word is being thought: something to keep pace
+   with that is not a counter, because a count against a total reads as a
+   score. The wave is a sine laid along the line, pinned at both ends,
+   amplitude 3 + 3 vib + 4 tension, 2.5 + 4.5 tension cycles, its pulses at
+   the Field's rule, period 96 - 48 tension and speed 16 + 68 root tension.
+   These are the numbers the earlier funnel round (RD) put on its own wave,
+   so the two read as one line when they meet on one page. Tension is the
+   quality the person reported: dense pulls it taut, flowing lets it go
+   slack. Charge moves the point: heavier shakes it harder, lighter steadies
+   it, moves lets it wander.
+   ============================================================ */
+var SG_PLACES=['Head','Jaw','Throat','Shoulders','Chest','Stomach','Lower belly','Hands'];
+/* where each place sits on the figure, in the figure's own viewBox units,
+   read off a render of make-figure.js's body with a grid laid over it. Two
+   sided places light both sides. */
+var SG_AT={'Head':[[50,8.6]],'Jaw':[[50,14.2]],'Throat':[[50,19.6]],
+ 'Shoulders':[[40.6,24.6],[59.4,24.6]],'Chest':[[49.9,33.2]],'Stomach':[[50,41.8]],
+ 'Lower belly':[[50.7,49.2]],'Hands':[[32.8,53.6],[67.2,53.6]]};
+var SG_TT={'Dense':.85,'Pressure':.7,'Vibration':.5,'Flowing':.15};
+var SG_Q={
+ where:  {f:'reported_location',
+          yes:['Where do you feel yes?','Can you identify the exact location?'],
+          no: ['Where does no land in your body?','Is the location different?'],
+          opts:SG_PLACES, none:'Nothing I can notice', ph:'The exact place, in your words'},
+ quality:{f:'reported_quality',
+          yes:['Does the sensation feel dense or flowing?'],
+          no: ['Does no have a different quality from yes?'],
+          opts:['Dense','Flowing','Pressure','Vibration'], none:'Not sure', ph:'Another quality, in your words'},
+ temp:   {f:'reported_temperature',
+          yes:['Is there a temperature?'], no:['Is the temperature different?'],
+          opts:['Warm','Hot','Cool','Cold','No temperature'], none:'Not sure', ph:'The temperature, in your words'},
+ colour: {f:'reported_color',
+          yes:['Is there a colour?'], no:['Is the colour different?'],
+          opts:['Red','Orange','Yellow','Green','Blue','Violet','White','Dark','No colour'], none:'Not sure',
+          ph:'The colour, in your words'},
+ charge: {f:'reported_charge',
+          yes:['Does the charge change?'], no:['Is the charge different?'],
+          gloss:'Charge is the weight the word leaves on that place.',
+          opts:['It gets heavier','It gets lighter','It moves','It stays the same'], none:'Not sure',
+          ph:'What the charge does, in your words'},
+ feel:   {f:'reported_feeling',
+          no: ['How does the sensation make you feel?'],
+          opts:['Calm','Open','Safe','Uneasy','Guarded','Closed'], none:'Not sure', ph:'The feeling, in your words'}};
+/* his order: the instruction, yes and its five, no and its six, the aha */
+var SG_STEPS=['intro','yes:count','yes:where','yes:quality','yes:temp','yes:colour','yes:charge',
+ 'no:count','no:where','no:quality','no:temp','no:colour','no:charge','no:feel','aha'];
+var SG_MAX=80, SG_NONE='–';
+function sgBlank(w){return {word:w,reported_location:'',reported_quality:'',reported_temperature:'',
+ reported_color:'',reported_charge:'',reported_intensity:null,reported_feeling:'',own:{}};}
+var SGR={yes:sgBlank('yes'),no:sgBlank('no')}, sgAt='intro';
+var sgEl=D.getElementById('sg');
+function sgEsc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+ .replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+/* a value said back: a typed answer in quotation marks exactly as typed, a
+   picked one in lower case because a value is never titled, and nothing as
+   the dash, which is the house's one glyph for not answered */
+function sgVal(w,k){var r=SGR[w],f=SG_Q[k].f,v=r[f];
+ if(!v)return '';
+ if(r.own[f])return '“'+v+'”';
+ if(k==='where'&&v===SG_Q.where.none)return 'nothing you could notice';
+ return v.toLowerCase();}
+function sgFound(w){var v=SGR[w].reported_location;return !!v&&v!==SG_Q.where.none;}
+function sgNoticed(){return sgFound('yes')||sgFound('no');}
+
+function sgView(){
+ var s=sgAt, i=s.indexOf(':'), w=i<0?'':s.slice(0,i), k=i<0?s:s.slice(i+1);
+ var skip='<button type="button" class="sg-lnk" data-sg="skip">Skip yes and no</button>';
+ var back='<button type="button" class="sg-lnk" data-sg="back">Change the one before</button>';
+ if(s==='intro')return '<h3 tabindex="-1">Sit down. Put both feet on the floor.</h3>'
+  +'<p>This will take about two minutes.</p>'
+  +'<p class="sub">Find a quiet and calm space if you can.</p>'
+  +'<p class="sub">When you are ready, move your awareness into your body.</p>'
+  +'<div class="act"><button type="button" class="btn" data-sg="go">I am ready</button></div>'
+  +'<div class="sg-under">'+skip+'</div>';
+ if(k==='count')return '<span class="eye">'+(w==='yes'?'Yes':'No')+'</span>'
+  +(w==='yes'
+   ?'<h3 tabindex="-1">Think the word <span class="wd">yes</span> ten times.</h3>'
+    +'<p>Each time, notice where yes lands in your body.</p>'
+   :'<h3 tabindex="-1">Now think the word <span class="wd">no</span> ten times.</h3>'
+    +'<p>Each time, notice where no lands in your body.</p>')
+  +'<div class="act"><button type="button" class="btn" data-sg="go">I thought it ten times</button></div>'
+  +'<div class="sg-under">'+back+skip+'</div>';
+ if(s==='aha')return sgAha();
+ var Q=SG_Q[k], L=Q[w], r=SGR[w], cur=r[Q.f], own=!!r.own[Q.f];
+ var h='<span class="eye">'+(w==='yes'?'Yes':'No')+'</span>'
+  +'<h3 tabindex="-1">'+sgEsc(L[0])+'</h3>';
+ if(L[1])h+='<p class="sub">'+sgEsc(L[1])+'</p>';
+ if(Q.gloss)h+='<p class="gl">'+sgEsc(Q.gloss)+'</p>';
+ /* no is asked against yes, so what yes did is on the screen beside it */
+ if(w==='no'&&k!=='feel'){var pv=sgVal('yes',k);
+  if(pv)h+='<p class="prev">For yes: <b>'+sgEsc(pv)+'</b></p>';}
+ h+='<div class="sg-opts" role="group" aria-label="'+sgEsc(L[0])+'">'
+  +Q.opts.map(function(o){return '<button type="button" data-sg="pick" data-v="'+sgEsc(o)+'" aria-pressed="'
+   +(!own&&cur===o?'true':'false')+'">'+sgEsc(o)+'</button>';}).join('')
+  +'<button type="button" class="none" data-sg="pick" data-v="'+sgEsc(Q.none)+'" aria-pressed="'
+   +(!own&&cur===Q.none?'true':'false')+'">'+sgEsc(Q.none)+'</button></div>'
+  +'<div class="sg-own"><input type="text" id="sgtx" maxlength="'+SG_MAX+'" autocomplete="off" '
+  +'spellcheck="false" aria-label="'+sgEsc(Q.ph)+'" placeholder="'+sgEsc(Q.ph)+'" value="'+(own?sgEsc(cur):'')+'">'
+  +'<button type="button" data-sg="own">Use my words</button></div>'
+  +'<p class="note" id="sgnote" aria-live="polite"></p>'
+  +'<div class="sg-under">'+back+skip+'</div>';
+ return h;}
+
+function sgAha(){
+ var rows=[['Where','where'],['Quality','quality'],['Temperature','temp'],['Colour','colour'],
+  ['Charge','charge'],['Feeling','feel']];
+ var g='<div class="sg-rep" role="table" aria-label="What you noticed, yes beside no">'
+  +'<div role="row" style="display:contents"><span role="columnheader" class="k"></span>'
+  +'<span role="columnheader" class="hd wd">Yes</span><span role="columnheader" class="hd wd">No</span></div>';
+ rows.forEach(function(rw){
+  g+='<div role="row" style="display:contents"><span role="rowheader" class="k">'+rw[0]+'</span>';
+  ['yes','no'].forEach(function(w){var v=SG_Q[rw[1]][w]?sgVal(w,rw[1]):'';
+   g+='<span role="cell" class="v'+(v?'':' e')+'">'+sgEsc(v||SG_NONE)+'</span>';});
+  g+='</div>';});
+ g+='</div>';
+ var top=sgNoticed()
+  ?'<p class="aha" tabindex="-1">You just experienced a mind-body connection.</p>'
+  :'<p class="aha" tabindex="-1">Nothing showed this time.</p>'
+   +'<p class="his">No sensation is also information.</p>';
+ return '<span class="eye">What you noticed</span>'+g+top
+  +'<p class="his">A word is lighter than air, yet the experience of a word can have a direct effect on what you notice in your body.</p>'
+  +'<p class="his">This is where Atuned begins.</p>'
+  +'<p class="his soft">Words carry meaning, tone, memory, and association.</p>'
+  +'<p class="his soft">When you identify with a word, the word can become connected to a lived experience.</p>'
+  +'<p class="small">These are your words, kept as you gave them. Nothing in your body was measured. '
+  +'Nothing here is saved, and it is gone when you close the page.</p>'
+  +'<div class="act"><a class="btn" href="#mirror">Carry on</a>'
+  +'<button type="button" class="sg-lnk" data-sg="again">Do it again</button></div>';}
+
+function sgIdx(){return SG_STEPS.indexOf(sgAt);}
+/* the next step, past a word's questions when nothing was noticed for it:
+   there is no quality to a place that was not found */
+function sgNext(){var i=sgIdx()+1;
+ while(i<SG_STEPS.length){var s=SG_STEPS[i],w=s.split(':')[0];
+  if(s.indexOf(':')>0&&!/count|where/.test(s)&&!sgFound(w)){i++;continue;}
+  break;}
+ return SG_STEPS[Math.min(i,SG_STEPS.length-1)];}
+function sgPrev(){var i=sgIdx()-1;
+ while(i>0){var s=SG_STEPS[i],w=s.split(':')[0];
+  if(s.indexOf(':')>0&&!/count|where/.test(s)&&!sgFound(w)){i--;continue;}
+  break;}
+ return SG_STEPS[Math.max(0,i)];}
+function sgGo(s,focus){
+ sgAt=s; sgEl.innerHTML=sgView(); sgSync();
+ if(focus){var f=sgEl.querySelector('[tabindex="-1"]');
+  if(f){f.focus({preventScroll:true});
+   var r=sgEl.getBoundingClientRect(),top=innerWidth>=900?0:stage.getBoundingClientRect().height;
+   if(r.top<top||r.top>innerHeight*.6)window.scrollTo({top:scrollY+r.top-top-24,behavior:REDUCED?'auto':'smooth'});}}
+ if(REDUCED)sigDraw(0);}
+function sgAnswer(v,own){
+ var s=sgAt.split(':'), w=s[0], Q=SG_Q[s[1]], r=SGR[w];
+ r[Q.f]=v; if(own)r.own[Q.f]=true; else delete r.own[Q.f];
+ if(s[1]==='where'&&!sgFound(w)){['quality','temp','colour','charge','feel'].forEach(function(k){
+  var f=SG_Q[k].f; r[f]=''; delete r.own[f];});}
+ sgGo(sgNext(),true);}
+if(sgEl){
+ sgEl.innerHTML=sgView();
+ sgEl.addEventListener('click',function(e){
+  var b=e.target.closest('[data-sg]'); if(!b||!sgEl.contains(b))return;
+  var a=b.getAttribute('data-sg');
+  if(a==='go')sgGo(sgNext(),true);
+  else if(a==='back')sgGo(sgPrev(),true);
+  else if(a==='pick')sgAnswer(b.getAttribute('data-v'),false);
+  else if(a==='own'){var tx=D.getElementById('sgtx'),v=(tx&&tx.value||'').replace(/\s+/g,' ').trim();
+   if(!v){var n=D.getElementById('sgnote');if(n)n.textContent='Type a few words first, or pick one above.';
+    if(tx)tx.focus();return;}
+   sgAnswer(v,true);}
+  else if(a==='again'){SGR={yes:sgBlank('yes'),no:sgBlank('no')};SGS.yes.born=SGS.no.born=null;sgGo('intro',true);}
+  else if(a==='skip'){var m=D.getElementById('mirror');
+   if(m){var top=innerWidth>=900?0:stage.getBoundingClientRect().height;
+    window.scrollTo({top:scrollY+m.getBoundingClientRect().top-top,behavior:REDUCED?'auto':'smooth'});}}});
+ sgEl.addEventListener('keydown',function(e){
+  if(e.key==='Enter'&&e.target&&e.target.id==='sgtx'){e.preventDefault();
+   var b=sgEl.querySelector('[data-sg="own"]');if(b)b.click();}});}
+
+/* ---------------- slide 17, reframe ----------------
+   Section 37: "Mirror the user's exact language. No embellishment. No
+   interpretation." So the write-up here never runs the typed text through
+   innerHTML: rftext.textContent is set directly, which is what already
+   keeps the "own" answers safe above (sgEsc exists because that path runs
+   through innerHTML; textContent needs no escaping at all, so this does
+   not add a second escaping rule for the same problem). RFR is read by
+   nothing outside this block and is never written to storage. */
+var rfEdit=D.getElementById('rfedit'), rfSaid=D.getElementById('rfsaid'),
+ rfTx=D.getElementById('rftx'), rfTextEl=D.getElementById('rftext'), rfNote=D.getElementById('rfnote'),
+ rfKeep=rfEdit&&rfEdit.querySelector('[data-rf="keep"]'), rfChange=rfSaid&&rfSaid.querySelector('[data-rf="edit"]');
+function rfCommit(){
+ var v=(rfTx.value||'').replace(/\s+/g,' ').trim();
+ if(!v){rfNote.textContent='Write a few words first.';rfTx.focus();return;}
+ rfTextEl.textContent=v; rfEdit.hidden=true; rfSaid.hidden=false; rfTextEl.focus({preventScroll:true});}
+if(rfEdit&&rfKeep&&rfChange){
+ rfKeep.addEventListener('click',rfCommit);
+ rfTx.addEventListener('keydown',function(e){
+  if(e.key==='Enter'&&(e.metaKey||e.ctrlKey)){e.preventDefault();rfCommit();}});
+ rfChange.addEventListener('click',function(){rfSaid.hidden=true;rfEdit.hidden=false;rfTx.focus();});}
+
+/* ---------------- slide 19, verification ----------------
+   Section 41: "Return to the original signal... Every result is evidence.
+   No result should be framed as failure." The baseline is read off the
+   signal test above, sgFound/sgVal/sgNoticed/SGR and sgEsc, never a second
+   copy of that state: a visitor who skipped the signal test or noticed
+   nothing for either word gets told exactly that, in place of a baseline
+   that was never recorded. */
+var vfEl=D.getElementById('vf'), vfAns=D.getElementById('vfans'), vfSay=D.getElementById('vfsay');
+function vfBase(){
+ if(!sgNoticed())
+  return '<p class="base">You skipped the signal test, or nothing showed for yes or no. '
+   +'There is no earlier reading to hold this against, and that is fine. What you notice now still counts on its own.</p>';
+ var rows=['yes','no'].filter(sgFound).map(function(w){
+  var loc=sgVal(w,'where'), q=SG_Q.quality[w]?sgVal(w,'quality'):'';
+  return '<p class="base">Earlier, <b>'+w+'</b> landed in the '+sgEsc(loc)+'.'
+   +(q?' It felt '+sgEsc(q)+'.':'')+'</p>';});
+ return '<span class="eye">Before, from the signal test</span>'+rows.join('');}
+var VF_SAY={'I feel different.':'That is real evidence.','I see it differently.':'That is real evidence.',
+ 'Something moved.':'That is real evidence.','Nothing changed.':'Nothing changed is an answer too.',
+ 'I\'m not sure.':'Not sure is an answer too.'};
+if(vfEl){vfEl.innerHTML=vfBase();}
+if(vfAns&&vfSay){vfAns.addEventListener('click',function(e){
+ var b=e.target.closest('button[data-v]'); if(!b||!vfAns.contains(b))return;
+ [].slice.call(vfAns.querySelectorAll('button')).forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+ vfSay.textContent=VF_SAY[b.getAttribute('data-v')]||'Noted.';});}
+
+/* ---- the stage ---- */
+var sgc=D.getElementById('sigc'), sgg=sgc&&sgc.getContext&&sgc.getContext('2d');
+var sgSvg=D.querySelector('.lyr-body svg.hero');
+(function(){if(!sgSvg)return;
+ var gl=sgSvg.querySelector('.hero-glow'), st=sgSvg.querySelector('.hero-seat');
+ if(gl)gl.parentNode.classList.add('hero-glows'); if(st)st.parentNode.classList.add('hero-seats');})();
+var SGW=0,SGH=0,SGD=1;
+/* each word: its ring beside the body, the point where it landed, the wave */
+var SGS={yes:{u:[90,30],a:0,on:0,act:0,pT:-99,next:0,born:null,pts:[],na:0,tt:.45,ttT:.45,vib:0,
+  amp:1,ampT:1,wan:0,ph:0,prog:0},
+ no:{u:[10,30],a:0,on:0,act:0,pT:-99,next:0,born:null,pts:[],na:0,tt:.45,ttT:.45,vib:0,
+  amp:1,ampT:1,wan:0,ph:0,prog:0}};
+function sigLayout(){
+ if(!sgg)return; var r=sgc.getBoundingClientRect();
+ SGW=Math.max(1,r.width);SGH=Math.max(1,r.height);SGD=Math.min(2,window.devicePixelRatio||1);
+ sgc.width=Math.round(SGW*SGD);sgc.height=Math.round(SGH*SGD);}
+/* the figure's viewBox to the canvas, off the figure's own transform, so
+   the point lands where the drawing is whatever size the stage is */
+function sgMap(){
+ if(!sgSvg||!sgSvg.getScreenCTM)return null; var m=sgSvg.getScreenCTM(); if(!m)return null;
+ var r=sgc.getBoundingClientRect();
+ return {k:m.d,f:function(x,y){return [m.a*x+m.c*y+m.e-r.left,m.b*x+m.d*y+m.f-r.top];}};}
+/* what the step asks of each word */
+function sgSync(){
+ var i=sgIdx();
+ ['yes','no'].forEach(function(w){var S=SGS[w],r=SGR[w],c=SG_STEPS.indexOf(w+':count');
+  S.on=i>=c?1:0;
+  S.act=(sgAt===w+':count')?1:0;
+  var loc=r.reported_location, own=!!r.own.reported_location;
+  var pts=(!own&&SG_AT[loc])||[];
+  if(pts.length&&S.pts!==pts){S.pts=pts;S.born=now;S.prog=0;}
+  if(!pts.length){S.pts=[];S.born=null;}
+  var q=r.reported_quality;
+  S.ttT=(!r.own.reported_quality&&SG_TT[q]!=null)?SG_TT[q]:.45;
+  S.vib=q==='Vibration'?1:0;
+  var ch=r.reported_charge;
+  S.ampT=ch==='It gets heavier'?1.8:ch==='It gets lighter'?.45:1;
+  S.ttT=Math.max(.05,Math.min(1,S.ttT+(ch==='It gets heavier'?.12:ch==='It gets lighter'?-.12:0)));
+  S.wan=ch==='It moves'?1:0;});}
+function sgWavePt(q,amp,cyc,ph,u){var v=1-u;
+ var x=v*v*q.x0+2*v*u*q.qx+u*u*q.x1, y=v*v*q.y0+2*v*u*q.qy+u*u*q.y1;
+ var dx=2*v*(q.qx-q.x0)+2*u*(q.x1-q.qx), dy=2*v*(q.qy-q.y0)+2*u*(q.y1-q.qy), l=Math.hypot(dx,dy)||1;
+ var o=amp*Math.sin(Math.PI*u)*Math.sin(TAU*cyc*u-ph);
+ return [x-dy/l*o,y+dx/l*o];}
+function sgWave(q,amp,cyc,ph,u1){var n=Math.max(8,Math.ceil(90*u1));sgg.beginPath();
+ for(var m=0;m<=n;m++){var p=sgWavePt(q,amp,cyc,ph,u1*m/n);if(m)sgg.lineTo(p[0],p[1]);else sgg.moveTo(p[0],p[1]);}}
+function sigDraw(dt){
+ if(!sgg)return;
+ if(!SGW)sigLayout();
+ var M=sgMap(); if(!M)return;
+ var kq=REDUCED?1:1-Math.exp(-(dt||.016)*3.2), sk=clamp(M.k/8.9,.55,1.35);
+ var br=REDUCED?1:0.82+0.18*Math.sin(TAU*now/4.2), act=sgAt!=='aha'&&sgAt!=='intro';
+ sgg.setTransform(SGD,0,0,SGD,0,0);sgg.clearRect(0,0,SGW,SGH);
+ var font=getComputedStyle(root).getPropertyValue('--sans')||'sans-serif';
+ ['yes','no'].forEach(function(w){
+  var S=SGS[w], cur=sgAt.indexOf(w+':')===0, dimT=(act&&!cur&&S.on)?.5:1;
+  S.a+=(S.on*dimT-S.a)*kq; S.tt+=(S.ttT-S.tt)*kq; S.amp+=(S.ampT-S.amp)*kq;
+  if(S.a<.01)return;
+  var P=M.f(S.u[0],S.u[1]), x=P[0], y=P[1];
+  /* the word is a node that vibrates while it is being thought, and throws
+     its soft pulse once each half breath */
+  if(S.act&&!REDUCED&&now>=S.next){S.pT=now;S.next=now+2.1;}
+  var ja=REDUCED?0:(S.act?1.1:.3)*sk, jx=Math.sin(TAU*9*now+1.3)*ja, jy=Math.sin(TAU*11*now+2.2)*ja;
+  var wx=x+jx, wy=y+jy;
+  var fr=(30+20*S.act)*sk, lf=sgg.createRadialGradient(wx,wy,0,wx,wy,fr);
+  lf.addColorStop(0,rgba(mix(ACC,WHITE,.2),(.12+.16*S.act)*S.a*br));lf.addColorStop(1,rgba(ACC,0));
+  sgg.fillStyle=lf;sgg.beginPath();sgg.arc(wx,wy,fr,0,TAU);sgg.fill();
+  var kp=(now-S.pT)/1.4;
+  if(kp>=0&&kp<1&&!REDUCED){sgg.beginPath();sgg.arc(wx,wy,lerp(6,38,ease(kp))*sk,0,TAU);
+   sgg.strokeStyle=rgba(mix(ACC,WHITE,.3),.4*Math.pow(1-kp,1.5)*S.a);sgg.lineWidth=1.3*sk;sgg.stroke();}
+  /* the waves first, so the rings sit over their ends */
+  S.prog=S.born===null?0:(REDUCED?1:ioc((now-S.born)/.6));
+  S.pts.forEach(function(u,j){
+   var B=M.f(u[0],u[1]);
+   if(S.wan&&!REDUCED){B=[B[0]+Math.cos(TAU*now/4.2+j)*5*sk,B[1]+Math.sin(TAU*now/4.2+j)*5*sk];}
+   var dx=B[0]-wx, dy=B[1]-wy, len=Math.hypot(dx,dy)||1, sag=(1-S.tt)*.14*len*(w==='yes'?1:-1);
+   var q={x0:wx,y0:wy,x1:B[0],y1:B[1],qx:(wx+B[0])/2-dy/len*sag,qy:(wy+B[1])/2+dx/len*sag};
+   var tt=S.tt, amp=(3+3*S.vib+4*tt)*sk, cyc=2.5+4.5*tt, lw=(1.1+1.1*tt)*sk, sp=16+68*Math.sqrt(tt);
+   if(!REDUCED&&dt)S.ph+=dt*sp*cyc/len*TAU/S.pts.length;
+   if(S.prog>.005){
+    if(tt>.25){sgWave(q,amp,cyc,S.ph,S.prog);
+     sgg.strokeStyle=rgba(ACC,.12*(tt-.25)/.75*S.a);sgg.lineWidth=lw*(3+5*tt);sgg.stroke();}
+    sgWave(q,amp,cyc,S.ph,S.prog);
+    sgg.strokeStyle=rgba(ACC,S.a*(.48+.40*tt));sgg.lineWidth=lw;sgg.stroke();
+    if(!REDUCED&&S.prog>.98){var per=96-48*tt;
+     sgg.save();sgg.lineCap='round';sgg.setLineDash([7,per-7]);sgg.lineDashOffset=-((CLK*sp+j*23)%per);
+     sgWave(q,amp,cyc,S.ph,1);
+     sgg.strokeStyle=rgba(mix(ACC,WHITE,.42),S.a*(.28+.72*tt));sgg.lineWidth=Math.max(1.2,lw*.9);sgg.stroke();
+     sgg.restore();}}
+   /* where it landed: a point that appears and vibrates, harder as the
+      charge gets heavier, ring and not fill */
+   if(S.prog>.9){var na=S.a*sm((S.prog-.9)/.1), ba=REDUCED?0:.9*S.amp*sk,
+     bx=B[0]+Math.sin(TAU*9*now+j)*ba, by=B[1]+Math.sin(TAU*11*now+.7+j)*ba;
+    var bg=sgg.createRadialGradient(bx,by,0,bx,by,(16+8*S.amp)*sk);
+    bg.addColorStop(0,rgba(mix(ACC,WHITE,.3),.5*na*br));bg.addColorStop(1,rgba(ACC,0));
+    sgg.fillStyle=bg;sgg.beginPath();sgg.arc(bx,by,(16+8*S.amp)*sk,0,TAU);sgg.fill();
+    var lk=(now-S.born-.6)/1.4;
+    if(lk>=0&&lk<1&&!REDUCED){sgg.beginPath();sgg.arc(bx,by,lerp(5,38,ease(lk))*sk,0,TAU);
+     sgg.strokeStyle=rgba(mix(ACC,WHITE,.3),.4*Math.pow(1-lk,1.5)*na);sgg.lineWidth=1.3*sk;sgg.stroke();}
+    sgg.beginPath();sgg.arc(bx,by,3.6*sk,0,TAU);sgg.fillStyle=rgba(BG,Math.min(1,na*1.4));sgg.fill();
+    sgg.strokeStyle=rgba(mix(ACC,WHITE,.2),na);sgg.lineWidth=1.6*sk;sgg.stroke();}});
+  /* the word's ring and its name */
+  sgg.beginPath();sgg.arc(wx,wy,5.4*sk,0,TAU);sgg.fillStyle=rgba(BG,Math.min(1,S.a*1.4));sgg.fill();
+  sgg.strokeStyle=rgba(ACC,S.a);sgg.lineWidth=1.8*sk;sgg.stroke();
+  sgg.font='500 '+Math.round(Math.max(13,15*sk))+'px '+font;sgg.textAlign='center';sgg.textBaseline='top';
+  sgg.fillStyle=rgba(INK,.85*S.a);sgg.fillText(w==='yes'?'Yes':'No',x,y+12*sk);});}
+sgSync();
 
 /* ---------------- the key, one press away ----------------
    Each key is printed in the markup, so a page with no script reads in full.
