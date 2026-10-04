@@ -214,10 +214,26 @@ binds `localStorage`.
                                its invite is a real Discord invite. The engine
                                half runs on a private copy and against broken
                                copies; the surface half against a stubbed
-                               /v1/feedback, so nothing leaves the machine.
+                               feedback address, so nothing leaves the machine.
                                Also called from functional.js. Fails on the
                                build from before it. FB_NO_BROWSER=1 runs the
                                engine half alone.
+    node tests/discordfeedback.js  the relay, functions/feedback.js, the Pages
+                               Function that reads DISCORD_FEEDBACK_WEBHOOK and
+                               posts to Discord. Its key and kind lists held
+                               equal to the engine's, every malformed request
+                               refused by name, an unset variable a 503 and
+                               never a loss, no mention able to ping, and five
+                               broken copies that must each fail. Then the app
+                               served over http with the real handler at
+                               /feedback and Discord stubbed: the profile
+                               menu's Discord feedback row, held when the
+                               variable is unset, sent only on a Discord yes,
+                               the join row only with a real invite, and a
+                               file copy that says it cannot send. Fails on
+                               the build from before it. DF_NO_BROWSER=1 runs
+                               the Function half alone; SHOTS=dir keeps the
+                               pictures.
 
 All three resolve `source.html` from the working directory, so run them from the
 repo root.
