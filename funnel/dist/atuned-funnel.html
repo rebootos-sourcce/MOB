@@ -225,16 +225,19 @@ a{color:inherit}
 /* ---- the bar ---- */
 .top{display:flex;align-items:center;justify-content:space-between;gap:var(--g3);
  padding:10px var(--gut);position:relative;z-index:3}
+.top .brand{display:flex;flex-direction:column;gap:15px}
 .top .wm{font-size:22px}
-.top .tag{color:var(--mid);font-size:15px;margin-left:14px}
-.nav{display:flex;gap:6px;flex-wrap:wrap;font-size:15px}
+.top .pwr{color:var(--dim);font-size:12px;letter-spacing:.02em}
+.nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:15px}
 .nav a{display:inline-flex;align-items:center;justify-content:center;
  min-height:var(--tap);min-width:var(--tap);padding:0 10px;color:var(--mid);
  text-decoration:underline;text-decoration-color:var(--edge-2);
  text-underline-offset:5px;text-decoration-thickness:1px;
  transition:color var(--t-micro) var(--ease-out),text-decoration-color var(--t-micro) var(--ease-out)}
 .nav a:hover,.nav a:focus-visible{color:var(--ink);text-decoration-color:var(--ink)}
-.nav a.go{color:var(--ink);text-decoration-color:var(--accent)}
+.nav a.go{background:var(--accent);color:var(--on-accent);font-weight:600;
+ text-decoration:none;padding:0 18px;border-radius:999px}
+.nav a.go:hover,.nav a.go:focus-visible{color:var(--on-accent);box-shadow:0 0 0 5px rgba(126,184,212,.16)}
 
 /* ---- the stage and the story ---- */
 .story{position:relative}
@@ -503,8 +506,8 @@ a.ghost:hover{color:var(--ink)}
 </style></head><body>
 
 <header class="top">
- <div><span class="wm">At<span class="um">u</span>ned</span><span class="tag">Instruments for the body you are running.</span></div>
- <nav class="nav" aria-label="Pages"><a href="atuned-about.html">About</a><a href="atuned-faq.html">FAQ</a><a class="go" href="atuned-quiz.html">Start quiz</a></nav>
+ <div class="brand"><span class="wm">At<span class="um">u</span>ned</span><span class="pwr">Powered by SOURCE OS</span></div>
+ <nav class="nav" aria-label="Pages"><a href="atuned-about.html">About</a><a href="atuned-faq.html">FAQ</a><a class="go" href="atuned-quiz.html">Take quiz</a></nav>
 </header>
 
 <main class="story">
@@ -865,7 +868,7 @@ a.ghost:hover{color:var(--ink)}
 </main>
 
 <footer class="foot">
- <nav class="nav" aria-label="Pages, again"><a href="atuned-about.html">About</a><a href="atuned-faq.html">FAQ</a><a href="atuned-buy.html">Tiers</a><a class="go" href="atuned-quiz.html">Start quiz</a></nav>
+ <nav class="nav" aria-label="Pages, again"><a href="atuned-about.html">About</a><a href="atuned-faq.html">FAQ</a><a href="atuned-buy.html">Tiers</a><a class="go" href="atuned-quiz.html">Take quiz</a></nav>
  <p>&copy; 2026 Tula Unified LLC. All rights reserved.</p>
 </footer>
 
