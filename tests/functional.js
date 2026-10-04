@@ -5529,7 +5529,10 @@ console.log('\n=== the orientation dial says nothing about an unread field ===')
    fill:!!(pb&&pb.querySelector('.fill')),
    mid:!!(pb&&pb.querySelector('.mid')),
    h:pb?Math.round(pb.getBoundingClientRect().height):0,
-   title:pb?pb.title:'', pol:pol?pol.textContent.trim().slice(0,60):''};
+   /* round RZ: this dial carries its tooltip as data-tip, not the native
+      title attribute, which axDial now removes outright on every build
+      (never on touch, unreliable on hover). Read the real carrier. */
+   title:pb?(pb.getAttribute('data-tip')||''):'', pol:pol?pol.textContent.trim().slice(0,60):''};
   loadP(PERSON('Gordon'));
   await new Promise(r=>setTimeout(r,260));
   const read={unread:!!compute().unread,
