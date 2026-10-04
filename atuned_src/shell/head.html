@@ -1999,7 +1999,7 @@ body.punch .fb-v{background:var(--c);color:var(--on-flat);border-color:var(--c)}
    is still a button that opens its reading on the right; only where it sits
    and the shape it is drawn in changed. */
 .fdock{display:flex;flex-direction:column;align-items:stretch;gap:16px;min-width:0;position:relative;
- padding:4px 0 16px 20px;margin:0 0 12px;border-bottom:1px solid var(--edge)}
+ padding:4px 0 16px;margin:0 0 12px;border-bottom:1px solid var(--edge)}
 body:not(.tab-field) .fdock{display:none}
 /* CQ AND DQ, A PAIR. "Line those up so they don't look like a design element
    that's not quite designed right, but has a symmetry, and I do want the CQ
@@ -7897,41 +7897,18 @@ body.quiet .sp-pulse,body.rm .sp-pulse{display:none}
 
 
 /* ============================================================
-   THE SIX READINGS ON ONE WIRE, ui/railwire.js. Layout and paint only; every
-   number that moves is written by the script from a reading. The gutter
-   belongs to the column that stands beside the stage: a stacked rail on a
-   phone gives the bars the width back. The gutter itself is the left padding
-   of the one .fdock rule above, 20px, because a class is declared once.
+   RADIANCE, ui/railwire.js. The connecting wire that used to run beside
+   these bars is gone, his ruling, round RZ: "I don't know what that bar is
+   on the left-hand side, but it's taking up real estate. Kill it." It drew
+   real computed relationships, never explained anywhere a person could
+   find, so it read as decoration and cost a column of width for it. The
+   gutter it reserved, the left padding of .fdock above, is reclaimed there.
+   Radiance keeps its own row: an icon, a name and a tappable meaning.
    ============================================================ */
-.rw-bus{position:absolute;left:0;top:0;bottom:0;width:20px;pointer-events:none;opacity:0;
- transition:opacity var(--t-enter) var(--ease-enter) 200ms}
-.rw-bus.in{opacity:1}
-.rw-bus svg{position:absolute;left:0;top:0;overflow:visible}
-.rw-w{fill:none;stroke:var(--edge-2);stroke-width:1.4}
-.rw-ws{fill:none;stroke:var(--accent);stroke-linecap:round}
-.rw-tap{fill:none;stroke:var(--edge-2);stroke-width:1}
-.rw-n{fill:var(--panel);stroke-width:1.7}
-.rw-halo{fill:var(--accent);transform-box:fill-box;transform-origin:center;animation:rwhalo var(--t-breath) var(--ease-breath) infinite}
-@keyframes rwhalo{0%,100%{transform:scale(.88)}50%{transform:scale(1.14)}}
-body.quiet .rw-halo,body.rm .rw-halo{animation:none}
-@media (prefers-reduced-motion:reduce){.rw-halo{animation:none}}
-.rw-rn{fill:var(--panel);stroke:var(--accent);stroke-width:1.5}
-.rw-rc{fill:var(--accent)}
-/* a pulse is a dash eight pixels long, the Field's own scale, in the accent
-   whitened so it reads on every lighting, and it only ever has a transform
-   and an opacity written */
-.rw-p{position:absolute;left:0;top:0;width:2px;height:8px;margin:-4px 0 0 -1px;border-radius:2px;
- background:color-mix(in srgb,var(--accent) 55%,#fff);opacity:0;will-change:transform,opacity;pointer-events:none;
- box-shadow:0 0 6px color-mix(in srgb,var(--accent) 70%,transparent)}
-body.quiet .rw-p,body.rm .rw-p{display:none}
-body.quiet .rw-bus,body.rm .rw-bus{transition:none}
-@media (prefers-reduced-motion:reduce){.rw-p{display:none}.rw-bus{transition:none}}
-/* RADIANCE, the junction the three vitals run into. Not a control: nothing
-   here is pressed, so it takes no tap target. */
-.rw-rad{display:flex;justify-content:space-between;align-items:center;height:24px;padding:0 12px;
- font-size:11.5px;color:var(--mid);letter-spacing:.01em}
-.rw-rad b{font-family:var(--num);font-variant-numeric:tabular-nums;font-weight:600;color:var(--mid);font-size:12px}
-@media (max-width:1180px){.fdock{padding-left:0}.rw-bus,.rw-rad{display:none}}
+.rw-rad{display:flex;align-items:center;gap:8px;height:24px;padding:0 12px;
+ font-size:11.5px;color:var(--mid);letter-spacing:.01em;cursor:help}
+.rw-rad b{font-family:var(--num);font-variant-numeric:tabular-nums;font-weight:600;color:var(--mid);font-size:12px;margin-left:auto}
+.rw-rad:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
 
 
 /* ORIENTATION AND BALANCE, UNDER THE READINGS, round OM. One instrument: the
@@ -7993,8 +7970,7 @@ body.quiet .aw-c.on::after,body.rm .aw-c.on::after{animation:none;opacity:.7}
    the foot. Nothing here changes a gate: the page opens on option one and this
    sheet applies only under body.rail2, set from the address.
    ============================================================ */
-body.rail2 .fdock{padding-left:0}
-body.rail2 .rw-bus,body.rail2 .rw-rad{display:none}
+body.rail2 .rw-rad{display:none}
 body.rail2 .fdock .key{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 body.rail2 .fdock .keylo{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;border-top:0;margin-top:6px;padding-top:0}
 body.rail2 .fdock .keylo .rb-waverow{grid-column:1/-1}

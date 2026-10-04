@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1627 c3a12d2 2026-10-04 01:53"><head><meta charset="utf-8">
+<html lang="en" data-build="v1635 da8d4e6 2026-10-04 06:18"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -1999,7 +1999,7 @@ body.punch .fb-v{background:var(--c);color:var(--on-flat);border-color:var(--c)}
    is still a button that opens its reading on the right; only where it sits
    and the shape it is drawn in changed. */
 .fdock{display:flex;flex-direction:column;align-items:stretch;gap:16px;min-width:0;position:relative;
- padding:4px 0 16px 20px;margin:0 0 12px;border-bottom:1px solid var(--edge)}
+ padding:4px 0 16px;margin:0 0 12px;border-bottom:1px solid var(--edge)}
 body:not(.tab-field) .fdock{display:none}
 /* CQ AND DQ, A PAIR. "Line those up so they don't look like a design element
    that's not quite designed right, but has a symmetry, and I do want the CQ
@@ -7897,41 +7897,18 @@ body.quiet .sp-pulse,body.rm .sp-pulse{display:none}
 
 
 /* ============================================================
-   THE SIX READINGS ON ONE WIRE, ui/railwire.js. Layout and paint only; every
-   number that moves is written by the script from a reading. The gutter
-   belongs to the column that stands beside the stage: a stacked rail on a
-   phone gives the bars the width back. The gutter itself is the left padding
-   of the one .fdock rule above, 20px, because a class is declared once.
+   RADIANCE, ui/railwire.js. The connecting wire that used to run beside
+   these bars is gone, his ruling, round RZ: "I don't know what that bar is
+   on the left-hand side, but it's taking up real estate. Kill it." It drew
+   real computed relationships, never explained anywhere a person could
+   find, so it read as decoration and cost a column of width for it. The
+   gutter it reserved, the left padding of .fdock above, is reclaimed there.
+   Radiance keeps its own row: an icon, a name and a tappable meaning.
    ============================================================ */
-.rw-bus{position:absolute;left:0;top:0;bottom:0;width:20px;pointer-events:none;opacity:0;
- transition:opacity var(--t-enter) var(--ease-enter) 200ms}
-.rw-bus.in{opacity:1}
-.rw-bus svg{position:absolute;left:0;top:0;overflow:visible}
-.rw-w{fill:none;stroke:var(--edge-2);stroke-width:1.4}
-.rw-ws{fill:none;stroke:var(--accent);stroke-linecap:round}
-.rw-tap{fill:none;stroke:var(--edge-2);stroke-width:1}
-.rw-n{fill:var(--panel);stroke-width:1.7}
-.rw-halo{fill:var(--accent);transform-box:fill-box;transform-origin:center;animation:rwhalo var(--t-breath) var(--ease-breath) infinite}
-@keyframes rwhalo{0%,100%{transform:scale(.88)}50%{transform:scale(1.14)}}
-body.quiet .rw-halo,body.rm .rw-halo{animation:none}
-@media (prefers-reduced-motion:reduce){.rw-halo{animation:none}}
-.rw-rn{fill:var(--panel);stroke:var(--accent);stroke-width:1.5}
-.rw-rc{fill:var(--accent)}
-/* a pulse is a dash eight pixels long, the Field's own scale, in the accent
-   whitened so it reads on every lighting, and it only ever has a transform
-   and an opacity written */
-.rw-p{position:absolute;left:0;top:0;width:2px;height:8px;margin:-4px 0 0 -1px;border-radius:2px;
- background:color-mix(in srgb,var(--accent) 55%,#fff);opacity:0;will-change:transform,opacity;pointer-events:none;
- box-shadow:0 0 6px color-mix(in srgb,var(--accent) 70%,transparent)}
-body.quiet .rw-p,body.rm .rw-p{display:none}
-body.quiet .rw-bus,body.rm .rw-bus{transition:none}
-@media (prefers-reduced-motion:reduce){.rw-p{display:none}.rw-bus{transition:none}}
-/* RADIANCE, the junction the three vitals run into. Not a control: nothing
-   here is pressed, so it takes no tap target. */
-.rw-rad{display:flex;justify-content:space-between;align-items:center;height:24px;padding:0 12px;
- font-size:11.5px;color:var(--mid);letter-spacing:.01em}
-.rw-rad b{font-family:var(--num);font-variant-numeric:tabular-nums;font-weight:600;color:var(--mid);font-size:12px}
-@media (max-width:1180px){.fdock{padding-left:0}.rw-bus,.rw-rad{display:none}}
+.rw-rad{display:flex;align-items:center;gap:8px;height:24px;padding:0 12px;
+ font-size:11.5px;color:var(--mid);letter-spacing:.01em;cursor:help}
+.rw-rad b{font-family:var(--num);font-variant-numeric:tabular-nums;font-weight:600;color:var(--mid);font-size:12px;margin-left:auto}
+.rw-rad:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
 
 
 /* ORIENTATION AND BALANCE, UNDER THE READINGS, round OM. One instrument: the
@@ -7993,8 +7970,7 @@ body.quiet .aw-c.on::after,body.rm .aw-c.on::after{animation:none;opacity:.7}
    the foot. Nothing here changes a gate: the page opens on option one and this
    sheet applies only under body.rail2, set from the address.
    ============================================================ */
-body.rail2 .fdock{padding-left:0}
-body.rail2 .rw-bus,body.rail2 .rw-rad{display:none}
+body.rail2 .rw-rad{display:none}
 body.rail2 .fdock .key{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 body.rail2 .fdock .keylo{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;border-top:0;margin-top:6px;padding-top:0}
 body.rail2 .fdock .keylo .rb-waverow{grid-column:1/-1}
@@ -28303,7 +28279,9 @@ function rbOn(p,bad){var c=cqRamp(bad?100-p:p),f=function(v){v/=255;return v<=.0
    not drawn on those two rows: a percent bar under seven columns and a wave
    would be three drawings of one number. */
 var RB_IC={cq:'<path d="M3 9c3-3.5 6 3.5 9 0s6 3.5 9 0M3 15c3-3.5 6 3.5 9 0s6 3.5 9 0"/>',
- dq:'<path d="M12 3.5a8.5 8.5 0 100 17 8.5 8.5 0 000-17M4.2 14.2h15.6"/>'};
+ dq:'<path d="M12 3.5a8.5 8.5 0 100 17 8.5 8.5 0 000-17M4.2 14.2h15.6"/>',
+ rad:'<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1'
+  +'M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>'};
 function rbIcon(k){var d=RB_IC[k]||(k&&QICON[k])||'';
  return d?'<svg class="rb-ic" viewBox="0 0 24 24" aria-hidden="true">'+d+'</svg>':'';}
 /* the seven seats' own numbers, root first. Shadow is the mean charge on the
@@ -28379,7 +28357,8 @@ function rbRow(q,nm,pct,raw,o){
  return '<button type="button" class="kb rbar'+cls+(read?'':' off')+'" data-q="'+q+'" data-w="'+p.toFixed(2)+'"'
   +(o.fk?' data-fk="'+o.fk+'"':'')+(o.bad?' data-bad="1"':'')
   +(sv?' data-s="'+sv.map(function(v){return v.toFixed(3);}).join(',')+'"':'')
-  +' style="--c:'+(read?rbCol(p,o.bad):'var(--dim)')+';--on:'+(read?rbOn(p,o.bad):'var(--ink)')+';--w:'+w+'%"'+(o.title?' title="'+esc(o.title)+'"':'')+'>'
+  +' style="--c:'+(read?rbCol(p,o.bad):'var(--dim)')+';--on:'+(read?rbOn(p,o.bad):'var(--ink)')+';--w:'+w+'%"'
+  +(o.title?' data-tip-k="'+esc(nm)+'" data-tip="'+esc(o.title)+'"':'')+'>'
   +'<span class="rb-t" aria-hidden="true"><i style="width:'+w+'%">'+pull+'</i><em class="rb-h"></em></span>'
   +inner
   +'<span class="rb-d" aria-hidden="true"></span>'
@@ -58587,9 +58566,14 @@ function runBalDrill(){
     The term is the copy seat's, not mine and not provisional: five phrasings
     of this one state were in the product and its sweep rules them down to
     "not read yet" as a value. It is the same string the strip now carries. */
+ /* A LEAN IS SAID, NEVER SCORED. A bare percent here ("19% outward") is the
+    same defect the dial's own tooltip already avoids (ui.js, axDial: "Leans
+    masculine.", "Leans feminine.", "Even.", no figure). Matched to that
+    established wording rather than inventing a second one. The real figures,
+    the two means it is computed from, still carry the arithmetic below. */
  var h='<div class="pm-eye">Balance</div><div class="ad-nm">'
   +(!b.read?'not read yet'
-    :b.lean===0?'even':(Math.abs(b.lean)*100).toFixed(0)+'% '+(b.lean>0?'outward':'inward'))+'</div>'
+    :b.lean===0?'even':'leans '+(b.lean>0?'outward':'inward'))+'</div>'
   +'<div class="pm-eye">How to read it</div><p class="ad-p">The nine axes split by the direction the '
   +'body takes under them. Four discharge outward, five withdraw inward. Four against five is not a '
   +'fair sum, so the means are what compare.'
@@ -66394,9 +66378,7 @@ try{window.__at&&window.__at('ui/railtiles.js');}catch(e){}
    the frame would end requestAnimationFrame for the session, so each half is
    held, and a failure stops the layer and goes once to the console.
    ============================================================ */
-var RW={rad:null,radShown:undefined,radRec:null,geo:null,sig:'',dots:[],clk:0,last:null,on:false,dead:false,seen:false};
-var RW_GUT=20;
-function rwClamp(v,a,b){return Math.max(a,Math.min(b,v));}
+var RW={rad:null,radShown:undefined,radRec:null,on:false,dead:false,seen:false};
 function rwFail(e){RW.dead=true;
  try{console.error('railwire stopped: '+(e&&e.message?e.message:e));}catch(x){}}
 /* ---- the radiance figure, and its tween ---- */
@@ -66411,103 +66393,36 @@ function rwRadRow(r){
  else if(Math.abs(q.b-rt)>0.001){
   RW.rad={a:RW.radShown,b:rt,t0:now,dur:ENTER_SPAN,done:rbStill()}; if(rbStill())RW.radShown=rt;}
  var v=RW.radShown;
- return '<div class="rw-rad" title="Radiance. Vitality, awareness and will combined, the root of their squares. '
-  +'It sets how bright the field behind the wheel is."><span>Radiance</span><b>'+(v===null||v===undefined?'–':v.toFixed(2))+'</b></div>';}
+ return '<div class="rw-rad" tabindex="0" data-tip-k="Radiance" data-tip="Vitality, awareness and will combined, '
+  +'the root of their squares. It sets how bright the field behind the wheel is."><span class="rb-n">'+rbIcon('rad')
+  +'Radiance</span><b>'+(v===null||v===undefined?'–':v.toFixed(2))+'</b></div>';}
 function rwRadFrame(){
  var q=RW.rad; if(!q||q.done||q.b===null||q.a===null)return;
  var e=crMoAt(q,performance.now()), v=q.a+(q.b-q.a)*e;
  RW.radShown=v; if(e>=1){q.done=true;RW.radShown=q.b;v=q.b;}
- var b=document.querySelector('#fdock .rw-rad b'); if(b)b.textContent=v.toFixed(2);
- var h=document.querySelector('#fdock .rw-halo'), c=document.querySelector('#fdock .rw-rc');
- if(h)h.style.opacity=(0.12+0.5*v).toFixed(2);
- if(c)c.style.opacity=(0.25+0.75*v).toFixed(2);}
+ var b=document.querySelector('#fdock .rw-rad b'); if(b)b.textContent=v.toFixed(2);}
 /* ============================================================
    DRESS. Called at the end of render(), after the six rows have been written
    and have taken their motion. The wire lives in the dock and not in either
    strip, so it survives the strips being rewritten; what it rebuilds from is
    the rows' own positions and the readings.
    ============================================================ */
-function rwDress(r){
- if(RW.dead)return;
- try{
-  var dock=$('fdock'), rows=dock?[].slice.call(dock.querySelectorAll('.rbar')):[];
-  var rad=dock&&dock.querySelector('.rw-rad');
-  if(rows.length!==6||!rad||!dock.offsetParent){RW.on=false;return;}
-  var bus=dock.querySelector('.rw-bus');
-  if(!bus){bus=document.createElement('div'); bus.className='rw-bus'; bus.setAttribute('aria-hidden','true');
-   dock.insertBefore(bus,dock.firstChild); RW.sig='';}
-  if(!bus.offsetWidth){RW.on=false;return;}
-  RW.on=true;
-  var dr=dock.getBoundingClientRect();
-  /* flow is a taller row that holds its wave under its name, so its tap is
-     level with the name and not with the middle of the wave */
-  var ys=rows.map(function(row,i){var b=row.getBoundingClientRect(); return b.top-dr.top+(i===5?20:b.height/2);});
-  var rb=rad.getBoundingClientRect(), yr=rb.top-dr.top+rb.height/2;
-  var cols=rows.map(function(row){return row.style.getPropertyValue('--c')||'var(--dim)';});
-  var un=!!r.unread, X=r.X, Y=r.Y, Z=r.Z;
-  /* strengths, each the term the engine multiplies by */
-  var sPull=un?0:rwClamp(Math.sqrt(r.PULL/0.54),0,1), sDrain=un?0:rwClamp(r.DQ/14,0,1),
-   sX=un?0:X, sXY=un?0:Math.sqrt((X*X+Y*Y)/2), sR=un?0:r.radiance;
-  var sig=[ys.map(Math.round).join(','),Math.round(yr),Math.round(dr.height),
-   [sPull,sDrain,sX,sXY,sR].map(function(v){return Math.round(v*20);}).join(','),cols.join('|'),un?1:0].join('/');
-  RW.geo={ys:ys,yr:yr,sPull:sPull,sDrain:sDrain,sX:sX,sY:un?0:Y,sZ:un?0:Z};
-  if(sig===RW.sig&&bus.firstChild)return;
-  RW.sig=sig;
-  function seg(y0,y1,s){var o=0.16+0.7*s, w=1.2+1.6*s;
-   return '<path class="rw-w" d="M7 '+y0.toFixed(1)+'V'+y1.toFixed(1)+'"/>'
-    +'<path class="rw-ws" d="M7 '+y0.toFixed(1)+'V'+y1.toFixed(1)+'" style="opacity:'+o.toFixed(2)
-    +';stroke-width:'+w.toFixed(2)+'"/>';}
-  var rv=RW.radShown, h='<svg width="'+RW_GUT+'" height="'+dr.height.toFixed(1)+'" viewBox="0 0 '+RW_GUT+' '+dr.height.toFixed(1)+'">'
-   +seg(ys[0],ys[1],sPull)+seg(ys[1],ys[2],sDrain)+seg(ys[2],ys[3],sX)+seg(ys[3],ys[4],sXY)+seg(ys[4],yr,sR);
-  /* the taps: each a short branch from the wire to the start of its bar */
-  rows.forEach(function(row,i){
-   h+='<path class="rw-tap" d="M7 '+ys[i].toFixed(1)+'H'+RW_GUT+'"/>'
-    +'<circle class="rw-n" cx="7" cy="'+ys[i].toFixed(1)+'" r="3.2" style="stroke:'+cols[i]+'"/>';});
-  /* radiance: a larger node whose glow is the figure */
-  h+='<circle class="rw-halo" cx="7" cy="'+yr.toFixed(1)+'" r="9" style="opacity:'+(un||rv==null?0:(0.12+0.5*rv).toFixed(2))+'"/>'
-   +'<circle class="rw-rn" cx="7" cy="'+yr.toFixed(1)+'" r="4.6"/>'
-   +'<circle class="rw-rc" cx="7" cy="'+yr.toFixed(1)+'" r="2" style="opacity:'+(un||rv==null?0:(0.25+0.75*rv).toFixed(2))+'"/></svg>';
-  bus.innerHTML=h;
-  /* five dashes on the wire, made once per rebuild */
-  var spec=[['pull',0],['drain',.35],['x',.1],['y',.45],['z',.8]];
-  RW.dots=spec.map(function(s){var d=document.createElement('i'); d.className='rw-p'; bus.appendChild(d);
-   return {el:d,k:s[0],ph:s[1],last:''};});
-  /* a wire that arrives with the bars and not before them */
-  if(!bus.classList.contains('in')){
-   var on=function(){requestAnimationFrame(function(){bus.classList.add('in');});};
-   if(isBooted())on(); else afterBoot(on);}
- }catch(e){rwFail(e);}}
+/* THE WIRE ITSELF IS OFF. His words: "I don't know what that bar is on the
+   left-hand side, but it's taking up real estate. Kill it." It drew real
+   computed relationships between the six readings, never explained anywhere
+   a person could find, so it read as decoration and cost a column of width
+   for it. RW.on stays false, so rwFrame's own animation loop never starts
+   one either. Radiance keeps its own tween, rwRadFrame, which never
+   depended on the wire being on. */
+function rwDress(r){RW.on=false;}
 /* ============================================================
    THE FRAME. Called from the loop on the Field only. It advances the clock at
    the Field's own rate and moves the dashes along their wires. Nothing here
    touches layout.
    ============================================================ */
-function rwDot(d,x,y,a,horiz){
- var key=x.toFixed(1)+'|'+y.toFixed(1)+'|'+a.toFixed(2);
- if(d.last===key)return; d.last=key;
- d.el.style.opacity=a?a.toFixed(2):'0';
- d.el.style.transform='translate3d('+x.toFixed(1)+'px,'+y.toFixed(1)+'px,0)'+(horiz?' rotate(90deg)':'');}
 function rwFrame(r){
  if(RW.dead)return;
- try{
-  rwRadFrame();
-  if(!RW.on||!RW.geo||rbStill())return;
-  var t=S.t, step=(RW.last===null||t<RW.last)?0:(t-RW.last); RW.last=t;
-  var rate=pulseRate(r); RW.clk+=step*rate;
-  var G=RW.geo, ys=G.ys;
-  /* each path is a run down or up the one vertical, [from y, to y, strength] */
-  var P={pull:[ys[1],ys[0],G.sPull],drain:[ys[1],ys[2],G.sDrain],
-   x:[ys[2],G.yr,G.sX],y:[ys[3],G.yr,G.sY],z:[ys[4],G.yr,G.sZ]};
-  RW.dots.forEach(function(d){
-   var p=P[d.k], s=p[2], len=Math.abs(p[1]-p[0]);
-   if(s<=0.02||len<6){rwDot(d,0,0,0,0);return;}
-   /* the Field's own law: a wave on a string goes as the square root of its
-      tension, so the strength is the tension here and the speed is its root */
-   var v=14+60*Math.sqrt(s), per=len*1.7, u=(RW.clk*v+d.ph*per)%per;
-   if(u>len){rwDot(d,0,0,0,0);return;}
-   var y=p[0]+(p[1]>p[0]?u:-u);
-   rwDot(d,7,y,0.3+0.7*s,0);});
- }catch(e){rwFail(e);}}
+ try{rwRadFrame();}catch(e){rwFail(e);}}
 
 try{window.__at&&window.__at('ui/railwire.js');}catch(e){}
 /* ============================================================
@@ -69425,7 +69340,13 @@ function axDial(host,o){
      state is committed first, one read of the layout, so the fill grows out
      of the break the way a change does. */
   built=true; void host.offsetWidth;}
- host.title=o.title||'';
+ /* A NATIVE title NEVER SHOWS ON TOUCH AND IS UNRELIABLE ON HOVER. The same
+    tap-and-keyboard carrier the rest of the product reads from, data-tip,
+    not a second mechanism for this one dial. */
+ host.removeAttribute('title');
+ if(o.title){host.setAttribute('data-tip-k',(o.title.split('.')[0]||'').trim());
+  host.setAttribute('data-tip',o.title); host.setAttribute('tabindex','0');}
+ else{host.removeAttribute('data-tip'); host.removeAttribute('data-tip-k'); host.removeAttribute('tabindex');}
  var L=o.L, R=o.R, heavy=!o.read?0:(L.v>R.v?-1:R.v>L.v?1:0), diff=o.read?Math.abs(L.v-R.v):0;
  var col=heavy<0?L.c:R.c;
  /* the pole names only once there is a reading to name, so an unread dial
@@ -70298,5 +70219,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004614052"></div>
+<div id="eof" hidden data-len="004609404"></div>
 </body></html>

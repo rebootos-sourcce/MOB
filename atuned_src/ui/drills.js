@@ -597,9 +597,14 @@ function runBalDrill(){
     The term is the copy seat's, not mine and not provisional: five phrasings
     of this one state were in the product and its sweep rules them down to
     "not read yet" as a value. It is the same string the strip now carries. */
+ /* A LEAN IS SAID, NEVER SCORED. A bare percent here ("19% outward") is the
+    same defect the dial's own tooltip already avoids (ui.js, axDial: "Leans
+    masculine.", "Leans feminine.", "Even.", no figure). Matched to that
+    established wording rather than inventing a second one. The real figures,
+    the two means it is computed from, still carry the arithmetic below. */
  var h='<div class="pm-eye">Balance</div><div class="ad-nm">'
   +(!b.read?'not read yet'
-    :b.lean===0?'even':(Math.abs(b.lean)*100).toFixed(0)+'% '+(b.lean>0?'outward':'inward'))+'</div>'
+    :b.lean===0?'even':'leans '+(b.lean>0?'outward':'inward'))+'</div>'
   +'<div class="pm-eye">How to read it</div><p class="ad-p">The nine axes split by the direction the '
   +'body takes under them. Four discharge outward, five withdraw inward. Four against five is not a '
   +'fair sum, so the means are what compare.'
