@@ -7142,6 +7142,13 @@ await require('./locks.js').lockGate(browser,FILE,ok,booted);
 console.log('\n=== flow, one page of three columns: inputting new, the ritual, the accountability tracker ===');
 await require('./flowtools.js').flowGate(browser,FILE,ok,booted);
 
+/* THE ANALYTICS TRAIL, tests/anatrail.js, round RB. His words: "I should be
+   able to click on it and drill down deeper and trace all my patterns down to
+   the fetters." A file of its own so it can run alone, called here so a full
+   run holds it through the same code. */
+console.log('\n=== analytics: every figure a door, the chain walked down to the fetter and back ===');
+await require('./anatrail.js').anaTrailGate(browser,FILE,ok,booted);
+
 await browser.close();
 
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');

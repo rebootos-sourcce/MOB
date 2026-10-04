@@ -376,6 +376,33 @@ opens under both and is one answer either way. Collapsed, the block measured
 The emotional axes and the action axes are still stacked. Gate:
 tests/functional.js, "the three blocks stacked under the laws".
 
+## 2026-10-03 · owner · Analytics, the trail and the telemetry
+
+said: "For analytics, um, I'm supposed to th- all the bubbles. I should be able
+to click on it and drill down deeper and trace all my patterns down to the
+fetters. And I want the analytics page to give me telemetry and have that
+telemetry broken out in as many dimensions as we can to see what's running and
+where. If I click on any analytics, I want it to give me a summary on the right
+side. And I just clicked on the word innocent under analytics. and it says
+innocent, built from one held address across root. We did our copy sweep, and
+it doesn't look like any of this stuff got touched."
+read: a bubble opened one card one level down and stopped. A hyper-complex
+jumped straight to its addresses, nothing on the card could be pressed, and
+only the seven bubble kinds had a card at all. The line he read counted every
+address under a pattern as held, which only the ones at 4 or more are, and the
+page's opening sentence called the held count "carrying". The What is running
+chart cut its list at sixteen in ring order, so a deep chain drew no saboteur
+in the blue its own key names.
+change: round RB. Every bubble, reading, square, ring count, law bar and
+session bar is a door into a trail in Selection: character, hyper-complex,
+complex, saboteur, fetter, feeling, each card listing its real parts and
+splitting what it runs on by seat and by feeling, with each step kept at the
+top and pressable to go back. Telemetry on the page: six readings, a seat by
+feeling grid of every address, and the chain counted ring by ring. The held
+counts are true, the chart shows the sixteen heaviest, and the bubble labels
+carry a halo for contrast. The address and law cards are the product's own
+(nodeDrillHtml and lawDrillHtml in ui/drills.js). Gate: tests/anatrail.js.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.

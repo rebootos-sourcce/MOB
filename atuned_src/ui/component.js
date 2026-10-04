@@ -744,7 +744,11 @@ function addrRow(n,o){o=o||{};
  /* o.em and o.ink let a caller say something else at the right of the row,
     the Reading's direction word and seat name in round IT, without a third
     copy of this markup. Every caller that passes neither is unchanged. */
+ /* o.ana, round RB: the row also carries the Analytics trail's key, and the
+    trail's own handler opens it inside the trail (ui/analytics.js). The
+    address handler in ui.js leaves a row carrying it alone. */
  return '<button type="button" class="ad-r" data-addr="'+n.i+'" '
+  +(o.ana?'data-ana="addr|'+n.i+'" ':'')
   +'title="Open '+esc(n.k)+'">'+crbNode(n,'sm')
   +'<span>'+esc(n.k)+'</span><em'+(o.ink?' style="color:'+o.ink+'"':'')+'>'
   /* ROUND PO. When the right of the row is a seat, the seat says what it is. */
