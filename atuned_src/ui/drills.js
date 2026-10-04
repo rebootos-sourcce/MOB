@@ -236,8 +236,13 @@ function runDrill(o){
   CHV.pick=m.nm; if(typeof uiSet==='function')uiSet('chmask',m.nm);
   chDrill(m); render();};});}
 
-function runLawDrill(l){
- if(!l)return;
+/* THE LAW'S CARD, AS MARKUP, round RB. runLawDrill shows it on its own and
+   Analytics shows the same card inside its trail (ui/analytics.js), so there
+   is one card and two doors, not two cards. o.ana marks the held rows so a
+   press on one stays inside the Analytics trail. */
+function runLawDrill(l){if(l)rdShell(lawDrillHtml(l));}
+function lawDrillHtml(l,o){
+ o=o||{};
  var v=S.law[l.nm], seg=W.filter(function(n){return n.b===l.b;});
  var hot=seg.filter(function(n){return n.sq>=4;});
  var sc=CURP?(iqScore(CURP)[l.nm]||null):null;
@@ -272,11 +277,16 @@ function runLawDrill(l){
   : '<div class="pm-eye">Not measured</div><p class="ad-p">Not answered in the diagnostic, so '
     +'it defaults to '+v.toFixed(1)+'. Three questions would replace the guess.</p>';
  if(hot.length)h+='<div class="pm-eye">Held here</div><div class="ad-rows">'
-  +hot.slice(0,6).map(addrRow).join('')+'</div>';
- rdShell(h);}
+  +hot.slice(0,6).map(function(n){return addrRow(n,{ana:!!o.ana});}).join('')+'</div>';
+ return h;}
 
-function runNodeDrill(n){
- if(!n)return;
+/* THE ADDRESS CARD, AS MARKUP, round RB, for the same reason as the law's:
+   Analytics traces a pattern down to this card and must show this card, not
+   a second one. o.ana turns the Feeds chips into rows that climb back up the
+   chain, because a trace that can only go down is half a trace. */
+function runNodeDrill(n){if(n)rdShell(nodeDrillHtml(n));}
+function nodeDrillHtml(n,o){
+ o=o||{};
  var c=CHILD.filter(function(x){return x.nm===n.cf;})[0]||{};
  var r=computeSeen();
  var owners=[].concat(r.sups,r.hys,r.cxs,r.sabs).filter(function(o){return leaves(o).indexOf(n)>=0;});
@@ -304,14 +314,20 @@ function runNodeDrill(n){
     +'. '+((S.replace[c.nm]||0)>=4?'You have '+c.opp.toLowerCase()+' partly installed.'
       :c.opp+' is what fills this address once it is emptied.')
    :'A field address, with no poled axis under it. This one is an open ruling.')+'</p>'
+  /* in the Analytics trail, the feeling and the seat under this address are
+     the next two steps down, round RB */
+  +(o.ana&&typeof anaTraceRows==='function'?anaTraceRows(n):'')
   /* WHAT AN ADDRESS FEEDS IS WHAT IS RUNNING ON IT, so below tier one it is the
      lock's own panel: "nothing compounds from here" would be a false statement
      about an address that feeds a saboteur */
   +(lockSees('sab')
-   ?'<div class="pm-eye">Feeds'+(owners.length?' '+owners.length:'')+'</div><div class="pm-chips">'
+   ?(o.ana&&owners.length&&typeof anaPatRow==='function'
+    ?'<div class="pm-eye">Feeds '+owners.length+'</div><div class="ad-rows">'
+     +owners.slice(0,8).map(anaPatRow).join('')+'</div>'
+    :'<div class="pm-eye">Feeds'+(owners.length?' '+owners.length:'')+'</div><div class="pm-chips">'
     +(owners.length?owners.slice(0,8).map(function(o){
      return '<span class="pm-chip'+(o.over?' over':'')+'">'+esc(o.nm)+' '+o.w.toFixed(1)+'</span>';}).join('')
-    :'<span class="pm-chip">nothing compounds from here</span>')+'</div>'
+    :'<span class="pm-chip">nothing compounds from here</span>')+'</div>')
    :'<div class="pm-eye">Feeds</div>'+lockPanelHtml('sab',{brief:true}));
  h+=nodeStories(n);
  /* RUN THE PROTOCOL HERE. The reading ended at the reading: a person could see
@@ -328,7 +344,7 @@ function runNodeDrill(n){
  else
   h+='<p class="ad-p">Nothing is held here, so there is nothing to release. '
    +'The protocol opens once this address is carrying.</p>';
- rdShell(h);}
+ return h;}
 /* THE STORY AT THIS ADDRESS. Round JQ, his words: "And then seeing the story,
    the story is just the imprint associated with those, and you can run those
    from there." atomIndex in ui/wheel.js already reads which of a person's own
