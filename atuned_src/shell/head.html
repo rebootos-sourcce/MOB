@@ -2538,8 +2538,12 @@ body:not(.tab-field) .lsec.lp-sec,.lsec.lp-sec.lp-none{display:none}
 @media (max-width:1000px){.sg-loop .lp{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:720px){.lp-figs{grid-template-columns:repeat(2,minmax(0,1fr))}
  .lp-chain li{grid-template-columns:70px minmax(0,1fr)}}
-/* ROOT ENERGETICS IS SET APART, on both rails. FV: "I want a slightly
-   different treatment for root energetics." Everything else on the rail is a
+/* ROOT ENERGETICS IS SET APART, and so is Energetic summary, which wears the
+   same class since they are one thing read two ways; both sat on separate
+   rails until 3 October, when Energetic summary moved to this one, and the
+   class carries them together without caring which rail either stands on.
+   FV: "I want a slightly different treatment for root energetics." Everything
+   else on the rail is a
    reading of the field; this is the birth, the one layer nothing a person does
    can move. So it sits on a panel of its own: the accent at six percent under
    it and a hairline of the accent round it, the same two moves the dock's
@@ -2603,8 +2607,10 @@ body.punch .lsec.re{box-shadow:none;background:var(--panel-2)}
 .rs-rm{font-size:12.5px;line-height:1.5;color:var(--mid);grid-column:2}
 /* ---- THE LEFT COLUMN'S FOLD. EZ in TASKS.md: "I want to be able to close up
    that column." ui/ui.js, colFold. The control sits in the top right corner
-   of the rail over Root energetics' header, which gives it the width a
-   section's chevron would otherwise run into, so it costs the rail no row. */
+   of the rail, absolute within #lpanel rather than sticky to the screen, so
+   it scrolls with the rail's own content and always overlaps whichever
+   section is physically first, which gives that section's header the width
+   a chevron would otherwise run into, so it costs the rail no row. */
 #lpanel{position:relative}
 .lfold{position:absolute;top:16px;right:8px;z-index:2;width:var(--tap);height:var(--tap);
  display:flex;align-items:center;justify-content:center;padding:0;border:0;border-radius:var(--r-xs);
@@ -2613,7 +2619,13 @@ body.punch .lsec.re{box-shadow:none;background:var(--panel-2)}
 .lfold:hover{background:var(--sunk);color:var(--ink)}
 .lfold svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .lfold .lf-ch{transform-box:fill-box;transform-origin:center;transition:transform var(--t-element) var(--ease-out)}
-.lsec[data-sec=energetics] .lsec-hd{padding-right:52px}
+/* THIS WAS KEYED TO data-sec=energetics, because Root Energetics used to be
+   the first section in #lpanel. 3 October: Energetic summary moved here from
+   the right rail and sits above it now, so the control sits over Energetic
+   summary's header instead, and the reserved width moved with it. Keyed to
+   the section standing under the control, not to a fixed position, so the
+   next section to lead this rail is the one that has to carry it next. */
+.lsec[data-sec=overlap] .lsec-hd{padding-right:52px}
 /* shut, the column is the control and nothing else. It keeps its panel, so
    the way back open is a thing on a surface rather than a button floating in
    the gutter, and the chevron turns to point the way the column will go. */
