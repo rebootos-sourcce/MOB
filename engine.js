@@ -1010,8 +1010,12 @@ const TIERDEF=[
  {at:41, nm:'Oscillating',
   state:'Searching',
   soma:'Taking it all in and understanding it, and still stuck in your head.',
-  def:'Fifty is the median, the middle of the line. The field crosses it both ways, '
-     +'above it some days and below it on others.',
+  /* ROUND RG. This opened on "Fifty is the median, the middle of the line",
+     and the meaning table keeps a tier's first sentence, so the one place
+     Oscillating was defined said what fifty is and never what Oscillating
+     is. Same two facts, the meaning first. */
+  def:'The field crosses fifty, the median or middle of the line, both ways: above it some days '
+     +'and below it on others.',
   energy:'The day decides. What is running that morning sets the range.',
   toward:'Even. Consistency rather than intensity. The swing narrows before the number rises.'},
  {at:31, nm:'Incoherent',
@@ -1826,7 +1830,10 @@ var PRACTICE=[
    +'You are mapping, not fixing. When the system is clear all nine live around the heart. '
    +'Where you feel them now is where they are displaced to.'},
  {k:'box', nm:'Box Breathing', track:'Body', min:5, tier:1,
-  d:'Four and four, or eight and eight. The entry into a grounded state.',
+  /* ROUND RG. "Four and four, or eight and eight" was two numbers with no
+     unit and no action: four of what, done how. The how below says it, and
+     the short line now carries the same fact. */
+  d:'Breathe in, hold, breathe out, hold, for a count of four each, or eight when it is easy. The entry into a grounded state.',
   how:'Inhale, hold, exhale, hold, each for the same count. Four to start, eight when it is '
    +'easy. This regulates the autonomic nervous system and it is the door into every other '
    +'practice here.'},
@@ -3839,7 +3846,24 @@ var UNPACK_BASE={
  'mask':'A mask is a way of showing up, such as Child or Teen, read from the weight held at a group of seats.',
  'axis':'An axis is a feeling and its opposite, such as fear and trust, and the instrument reads how much of the first is held and how much of the second is in place.',
  'cq':'CQ is your coherence number, built only from your answers on the laws.',
+ /* DQ stood as a bare label on the release clock. Round RG. */
+ 'dq':'DQ is your shadow weight: all the charge you carry, on every address, against the most your body could hold.',
  'coherence':'Coherence is when what you mean, what you do and what your body does point the same way.',
+ /* ROUND RG, the copy sweep. His words: "you read 62 above the oscillating
+    band. Your integrity is 6.2. Integrity is the hull. It's got to be human."
+    Integrity was printed as a figure on the Compass with no meaning anywhere
+    on that screen, and the rail's own tooltip defined it by two more terms.
+    The sentence is the law family's own phrasing, so the two cannot drift. */
+ 'integrity':'Integrity is how well you keep the laws: how often you do what each one asks, when it costs you, when nobody would know and on an ordinary day.',
+ /* Shadow weight was printed as a bare figure in the Summary reading and in
+    Analytics. It is DQ: every address summed against the most they could
+    hold (compute.js), so the sentence says that and nothing more. */
+ 'shadow weight':'Shadow weight is all the charge you carry, on every address, against the most your body could hold.',
+ /* Expression the reading, as against expression the numerology number,
+    which keeps the bare key above. Two meanings sat on one Summary page. */
+ 'field:expression':'Expression is the part of your coherence that gets past the charge you carry.',
+ /* the line every surface counts held from, BELOW THE LINE in compute.js */
+ 'the line':'The line is the point where the charge at one address reaches 4 and starts to cost your body.',
  /* YOUR PATTERNS, the trace graph's screen (ui/loopread.js, engine/loop.js).
     Each word below is a label that block prints, and its meaning is the
     graph's own: confirmed is a user_confirmed edge, unanswered is everything
@@ -12596,7 +12620,9 @@ function iqScore(p){
      instrument cannot actually see. */
   out[l.nm]={score:Math.round(mean*10)/10, spread:Math.round(spread*10)/10,
    reliable: spread>=3,
-   lean: spread<3 ? 'even, within measurement noise'
+   /* "within measurement noise" was a lab word on a line a person reads.
+      The fact is the same and the words are his reader's. Round RG. */
+   lean: spread<3 ? 'too close together to show a lean'
        : v[0]>v[1] ? 'holds when it costs, slips when unseen'
        : 'holds when unseen, slips when it costs'};});
  return out;}

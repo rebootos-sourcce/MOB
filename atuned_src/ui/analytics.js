@@ -136,7 +136,10 @@ function anaRender(){
       a measurement in a sentence about their field. */
    /* and while CQ is still filling there is no word yet, so the sentence says
       what is left rather than naming a band off laws nobody answered */
-   :(r.tier?'The field reads <b>'+esc(r.tier.toLowerCase())+'</b>. '
+   /* ROUND RG. The band word stood alone, bold, with nothing on it, which
+      is V9's judgement and not a reading. The tier's own first sentence
+      rides after it, the same one Clients carries on its tooltip. */
+   :(r.tier?'The field reads <b>'+esc(r.tier.toLowerCase())+'</b>. '+unpSay(r.tier,'tier')+' '
      :'Coherence is still filling, with <b>'+esc(tierSay(r))+'</b>. ')
    +(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. '
      /* "Nothing is compounding" is a claim about somebody's chain, and a plan
@@ -145,12 +148,12 @@ function anaRender(){
    /* a count against a total is a score, and this is not a score */
    +(stop?'Flow stops at the <b>'+stop.p.n.toLowerCase()+'</b>. ':'Every seat is passing. ')
    +(held.length?'<b>'+held.length+'</b> address'+(held.length===1?' is':'es are')
-     +' carrying, at a shadow weight of <b>'+Math.round(r.DQ)+' per cent</b>.'
+     +' carrying, at a '+unp('shadow weight')+' of <b>'+Math.round(r.DQ)+' per cent</b>.'
    /* Held above the line and carrying anything at all are two different facts
       and this said the second when it only knew the first. A field with load
       spread under the line reported "Nothing is carrying" beside a tier word
       earned by that same load. It now says which of the two is true. */
-    :(r.heaviest?'Nothing is above the line. The heaviest is <b>'+esc(r.heaviest.k)
+    :(r.heaviest?'Nothing is above '+unp('the line')+'. The heaviest is <b>'+esc(r.heaviest.k)
       +'</b> at <b>'+r.heaviest.sq.toFixed(1)+'</b>, at the '
       +String(r.heaviest.b).toLowerCase()+'.':'Nothing is carrying.'))
    /* only against a row the same arithmetic wrote. A row from before 25
