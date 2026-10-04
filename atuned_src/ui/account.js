@@ -176,10 +176,17 @@ function accAccount(){
     is where he will look. The footer is a disclosure and not a description
     of the switch: it says the page it opens is a sketch before a person
     turns it on expecting clients. */
+ /* THE FOOTER SAID "a sketch with no clients on it" from round LL, and round
+    PT put ten worked examples on that page, so it was a disclosure that had
+    stopped being true. It says what turning the switch on does to the
+    person's own record, which is nothing, and whether anybody has let them
+    see theirs, read off pracSightList and never typed. */
+ var sightN=(typeof pracSightList==='function')?pracSightList().length:0;
  h+=accGroup('Practitioner',
    accTog('Practitioner mode','acprac',pracOn(),
     'adds Practitioner to the menu'),
-   'Turned on, it opens a sketch with no clients on it.');
+   'Turning it on shares nothing of yours.'
+   +(sightN?'':' Nobody has let you see their record yet.'));
  /* HS SWEEP, SETTINGS. A footer that only described the control above it is
     cut: this one, Sign in, Lighting, Screen, Motion, the feedback pair and the
     reproducibility clause on the build. Every footer that is a disclosure
@@ -715,6 +722,30 @@ function profMenu(){
     +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 9.5h3l4-3.5v12l-4-3.5h-3z"/>'
     +'<path d="M15.2 9.2a4 4 0 010 5.6M17.6 7a7 7 0 010 10"/></svg></span>'
     +'<span>Sound effects</span><span class="pm-sw" aria-hidden="true"><i></i></span></button>':'')
+  /* PRACTITIONER MODE, IN THE MENU HE OPENED, round RB. His words: "the
+     practitioner page is not present and nor is the practitioner toggle
+     present under the user profile." Both were true of this menu and of
+     nothing else: the switch has lived since round LL in Settings, Account,
+     as the fifth group, under the sign in form and below the fold at 1600
+     and at 390, and this menu, which is what the profile button opens, never
+     carried it. With the switch off the door is shut, so the page could not
+     be found either. Round OD's "could not reproduce" pressed #acprac by id
+     and so never met the problem, which is where the switch was, not
+     whether it worked.
+     The same switch and the same writer as the Account row, pracSwitch: a
+     device setting, never a profile write. pm-sfx is this menu's switch row
+     style, borrowed and not copied. Clients is the door itself, shown only
+     while the mode is on, so the switch leads straight to the page. */
+  +((typeof pracOn==='function')
+   ?'<button type="button" role="menuitemcheckbox" class="pm-it pm-sfx" data-pmprac="1" aria-checked="'+pracOn()+'">'
+    +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8.4" r="3.2"/>'
+    +'<path d="M3.4 19.4a5.6 5.6 0 0111.2 0M16 8h4.6M16 12h4.6M17.6 16h3"/></svg></span>'
+    +'<span>Practitioner mode</span><span class="pm-sw" aria-hidden="true"><i></i></span></button>'
+    +(pracOn()?'<button type="button" role="menuitem" class="pm-it" data-pmclients="1">'
+     +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="9" r="2.8"/>'
+     +'<circle cx="16" cy="9" r="2.8"/><path d="M3 19a5 5 0 0110 0M11 19a5 5 0 0110 0"/></svg></span>'
+     +'<span>Clients</span></button>':'')
+   :'')
   /* DISCORD FEEDBACK, 3 October. His words: "Put Discord feedback in the
      profile. And when a person selects it, it takes them to the feedback page,
      that dumps the data into the customer service support on Discord. And they
@@ -758,6 +789,25 @@ function profMenu(){
   var want=!sfxIsOn();
   sfxSwitch(want); sw.setAttribute('aria-checked',want?'true':'false');
   if(want&&typeof sfx==='function')sfx('kept');};
+ /* the menu is drawn again with the switch, because the Clients row under it
+    comes and goes with the mode, and the focus goes back to the switch so a
+    keyboard is left where it pressed. What happened is said on the status
+    line only when it was kept: pracSwitch says the failure itself. */
+ /* THE CLICK STOPS HERE. The redraw detaches the button that was pressed,
+    and the document's own outside-click listener above asks the target
+    whether it sits in #profmenu: a detached button does not, so the menu
+    shut itself the moment it was drawn again. Measured: the switch turned
+    on, the door opened, and the menu was gone. */
+ var ps=m.querySelector('[data-pmprac]');
+ if(ps)ps.onclick=function(e){
+  if(e&&e.stopPropagation)e.stopPropagation();
+  var want=!pracOn(), kept=pracSwitch(want);
+  profMenuShut(); profMenu();
+  var again=document.querySelector('#profmenu [data-pmprac]'); if(again)again.focus();
+  if(kept)status(want?'Practitioner mode is on. Clients is in this menu now.'
+   :'Practitioner mode is off.','ok');};
+ var pc=m.querySelector('[data-pmclients]');
+ if(pc)pc.onclick=function(){profMenuShut(); setTab(TAB.PRACTITIONER);};
  /* the page first and the sheet second, because setTab redraws Settings and
     the sheet is the thing that must be on top when the press is over */
  var fb=m.querySelector('[data-pmfb]');
