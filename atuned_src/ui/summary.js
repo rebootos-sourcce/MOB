@@ -977,16 +977,12 @@ function sumOutput(r){
    +'<div class="s-out-n">'+esc(nm)+'</div>'
    +(sub?'<div class="s-out-s">'+esc(sub)+'</div>':'')
    +(act||'')+'</div>';};
+ /* THE CARD THAT SAYS FIRST GOES FIRST, round RF. "Release this first" stood
+    second, under the protocol, so the row's own words and its order
+    disagreed and the one card carrying the page's main action was the one a
+    person reached second. The release slot leads now in every one of its
+    cases, then the protocol, then the marker, which has no button. */
  return '<div class="s-outrow">'
-  /* A LABEL, NOT A CLAUSE. "The protocol this calls for" is five words and
-     came back as "The Protocol This Calls For". card() writes one eyebrow for
-     every card in this row, so the fix belongs in the string rather than in a
-     per call opt out: the row is driven by the reading, which is what "this
-     calls for" was there to say, and the row says it already. */
-  +(rit?card('The protocol',rit.nm||'A practice',
-     rit.how||rit.d||'','<button class="btn s-oact" data-sout="rit">Open it</button>')
-    :card('The protocol','Not read yet',
-     'Write what happened and this fills in',''))
   /* WHAT RELEASE HAS LEFT IN IT, said before the person spends the time, and
      only when there is something to spend it on.
 
@@ -1034,6 +1030,31 @@ function sumOutput(r){
      '<button class="btn s-oact" data-sout="iq">Answer the laws</button>');
     return card('Release this first','Nothing is carrying',
      'No address is holding anything','');}())
+  /* A LABEL, NOT A CLAUSE. "The protocol this calls for" is five words and
+     came back as "The Protocol This Calls For". card() writes one eyebrow for
+     every card in this row, so the fix belongs in the string rather than in a
+     per call opt out: the row is driven by the reading, which is what "this
+     calls for" was there to say, and the row says it already. */
+  /* THE PROTOCOL NAMED NOTHING, round RF. This read rit.nm, rit.how and rit.d,
+     and ritFor has never returned any of them: it returns the seat, the track
+     and the practice it calls for, under called. So every read profile in the
+     roster was told its protocol was "A practice", with nothing under it, on
+     the card a person is meant to act on. The practice is named now, with its
+     own one line and how long it takes, read off PRACTICE and nowhere else. */
+  +(function(){
+    var c=rit&&rit.called;
+    if(c)return card('The protocol',c.nm,
+     /* the length, unless the practice's own line already says it: Active
+        Listening's reads "Ten minutes on sound", and a card saying ten
+        minutes twice is a card that was not read */
+     [c.d||'',(c.min&&!/minute/i.test(c.d||''))?c.min+(c.min===1?' minute.':' minutes.'):'']
+      .filter(Boolean).join(' '),
+     '<button class="btn s-oact" data-sout="rit">Open it</button>');
+    if(rit)return card('The protocol','A practice',
+     'Nothing in the library fits this reading yet',
+     '<button class="btn s-oact" data-sout="rit">Open it</button>');
+    return card('The protocol','Not read yet',
+     'Write what happened and this fills in','');}())
   /* A NUMBER CARRIES ITS UNIT. This read "12 away", twelve of what; the
      record card says the same distance in addresses, so this does too. And
      the fallback said "The first one. Open some ground and it appears",
@@ -1083,13 +1104,51 @@ function sumFull(r){
      reading is a claim about the person and the story is the evidence for
      it, and evidence goes first. It stands on the first screen, left of the
      roots, and the phone reads it before them. */
-  +'<div class="sg-two sg-lead">'
-   +'<section class="sg-card sg-story" data-grp="story">'+told
-    +'<div class="s-readbox sg-flat">'+story+'</div></section>'
-   +drv
+  /* THE LEAD ROW, REBUILT, round RB. His words: "The summary page layout is
+     abysmal. I'm not sure what happened here." Measured on Diane at 1600 with
+     three entries before touching it: the story card ran about 1750 pixels
+     and the drivers card beside it was stretched to match while its content
+     ended near 950, so the right half of the first two screens was a hole
+     about 750 pixels tall with one fold sitting at its foot. And What to do,
+     the only block on the page that says what a person can do, sat about 2730
+     pixels down, the best part of three screens under the reading.
+
+     So the row stops stretching and the right column carries two cards: what
+     to do first, where the hole was, and the drivers under it. The story
+     keeps the left and the first screen, which is the ruling above. Nothing
+     is removed and no sentence changes; the action moves up beside the
+     evidence it acts on. */
+  /* WHAT THEY SAID, WHAT TO DO, THEN WHY. Round RF, his words: "simulate the
+     best UI UX flow for least friction, most text visibility, most
+     visibility. If you have to change stuff to change, feel free."
+
+     Measured at 390 before this: What to do started 2.8 screens down, under
+     about 500 words, because on one column the lead row stacked as the whole
+     left half (what you told it and the whole Reading) and then the right. A
+     person on a phone read the full reading, every meaning in it, before
+     reaching the one thing on the page they could do.
+
+     So what you told it and the Reading are two cards, not one, and on one
+     column the four pieces of this row interleave: their own words, then what
+     to do about them, then the Reading that explains it, then the drivers.
+     Evidence still goes first, which is the ruling above; the action now
+     follows the evidence it acts on instead of following the explanation of
+     it. On two columns nothing moves: the left is their words over the
+     Reading, the right is what to do over the drivers. The column wrappers
+     carry no look of their own, so a single column can dissolve them. */
+  +'<div class="sg-two sg-lead sg-lead2">'
+   +'<div class="sg-col">'
+    +(told?'<section class="sg-card sg-told" data-grp="told">'+told+'</section>':'')
+    +'<section class="sg-card sg-story" data-grp="story">'
+     +'<div class="s-readbox sg-flat">'+story+'</div></section>'
+   +'</div>'
+   +'<div class="sg-side">'+sgZone('todo','What to do',sumOutput(r),'sg-card')+drv+'</div>'
   +'</div>'
+  /* the patterns block follows the lead on every width. On a phone it was
+     lifted above the story by an order rule written before it existed. */
+  +(typeof sumLoopSlot==='function'?sumLoopSlot(r):'')
   +sumMarks(B,r)
-  +'<div class="sg-two">'
+  +'<div class="sg-two sg-even">'
    +'<section class="sg-card" data-grp="run">'+sgHead('run','What is running')
     +sumBlueprint()
     +'<div class="sg-gap">'+sumArch(r)+'</div>'
@@ -1104,8 +1163,6 @@ function sumFull(r){
     +sgFold('ig','Integrity over time',sumIg(r))
    +'</section>'
   +'</div>'
-  +sgZone('todo','What to do',sumOutput(r))
-  +(typeof sumLoopSlot==='function'?sumLoopSlot(r):'')
   +'<div class="sg-folds">'
    +sgFold('lens','Four lenses',sumLens(r,true))
    +(C?sgFold('conv','Birth comparison',sumConverge(C)):'')

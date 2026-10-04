@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1625 db55c18 2026-10-04 01:50"><head><meta charset="utf-8">
+<html lang="en" data-build="v1621 d825d04 2026-10-04 02:37"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -3244,6 +3244,65 @@ body.punch .s-readbox,body.punch .s-out{background:var(--panel-2);border-color:t
  font-size:13px;font-weight:600}
 .sum-wrap.sg-slots .sg-day:empty::before{content:"slot: " attr(data-slot) " summary, under the story, above what to do"}
 /* folds, a nested group the person opens. The row carries a chevron. */
+/* THE LEAD ROW, round RB: the two halves stand at their own heights, and the
+   right half is a column of two cards, what to do and the drivers, so the
+   space beside a long reading is used rather than stretched. */
+.sg-lead2{align-items:start}
+.sg-side{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sg-side>.sg-todo{margin:0;gap:14px}
+.sg-side>.sg-todo .s-outrow{grid-template-columns:1fr;gap:10px}
+.sg-side>.sg-todo .s-out{padding:14px 16px;background:var(--panel-2)}
+.sg-side>.sg-drive>.sg-fold{margin-top:14px}
+/* and the row under it the same way: What is running pushed its fold to the
+   foot of a card stretched to What it costs, a hole of about 290 pixels at
+   1600 above All masks. Each card stands at its own height now. */
+.sg-two.sg-even{align-items:start}
+.sg-two.sg-even>.sg-card>.sg-fold:first-of-type{margin-top:14px}
+/* ROUND RF, THE FLOW. The left half of the lead row is two cards now, what
+   you told it over the Reading, in a column wrapper with no look of its own.
+   On one column both wrappers dissolve and the four cards take the order a
+   person needs them in: their words, what to do, the Reading, the drivers.
+   Measured at 390 on Diane: What to do started 2.8 screens down, under
+   about 500 words, before this. */
+.sg-col{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sg-told>.s-told{margin-bottom:0}
+@media (max-width:1100px){
+ .sg-lead2>.sg-col,.sg-lead2>.sg-side{display:contents}
+ .sg-lead2>.sg-col>.sg-told{order:1}
+ .sg-lead2>.sg-side>.sg-todo{order:2}
+ .sg-lead2>.sg-col>.sg-story{order:3}
+ .sg-lead2>.sg-side>.sg-drive{order:4}}
+/* THE PLATE ON ONE LINE where there is width for it. Name, then the band,
+   then where it goes, read left to right in the order the plate means them.
+   It stood as two rows with the band pushed to the far right and the middle
+   of the row empty, which spent a quarter of the first screen at 1600 on
+   three facts. */
+@media (min-width:1101px){
+ .sg-who .s-plate{grid-template-columns:auto auto minmax(0,1fr);column-gap:32px}
+ .sg-who .s-pl-l{grid-column:1;grid-row:1}
+ .sg-who .s-pl-r{grid-column:2;grid-row:1}
+ .sg-who .s-ptoward{grid-column:3;grid-row:1;margin-top:0;padding-left:28px;
+  border-left:1px solid var(--edge)}}
+/* TEXT A PERSON READS, AT THE READING SIZE. Measured on Diane at 1600 before
+   this: 80 per cent of the visible characters on this page were under 16px,
+   the house floor for body text, and that included their own words, every
+   meaning in the Reading, the line under each action and the drivers' own
+   sentences. Those come up to 16, and the line under an action to 14 in the
+   middle ink, because it is the reason for the button under it. Labels,
+   ring values and footnotes keep their sizes: they are scanned, not read.
+
+   And the Reading's claims lead by ink rather than by size. The meanings
+   stayed one step smaller to let the claim lead; at one size, the claim is
+   set in the full ink and the meaning in the middle ink, so the order of
+   importance survives without a meaning dropping under the floor. */
+.sum-wrap .s-story .s-p{color:var(--ink)}
+.sum-wrap .s-story .s-un{font-size:16px;color:var(--mid)}
+.sum-wrap .s-told-e p{font-size:16px}
+.sum-wrap .s-told-e time{font-size:12px}
+.sum-wrap .s-out-s{font-size:14px;color:var(--mid)}
+.sum-wrap .sg-m-t p{font-size:16px}
+.sum-wrap .sg-note{font-size:14px}
+.sum-wrap .sg-card .s-axes .s-p{font-size:16px}
 .sg-folds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start}
 .sg-fold{border:1px solid var(--edge);border-radius:var(--r-s);min-width:0;margin-top:14px}
 .sg-folds .sg-fold{margin-top:0;background:var(--panel)}
@@ -3272,7 +3331,8 @@ body.punch .s-readbox,body.punch .s-out{background:var(--panel-2);border-color:t
     marks, with the detail cards after them. */
  .sum-wrap{display:flex;flex-direction:column}
  .sum-wrap>.sg-lead{order:1}
- .sum-wrap>.sg-marks{order:2}
+ .sum-wrap>.sg-loop{order:2}
+ .sum-wrap>.sg-marks{order:3}
  .sum-wrap>.sg-day{order:3}
  .sum-wrap>.sg-todo{order:4}
  .sum-wrap>.sg-two:not(.sg-lead){order:5}
@@ -17096,8 +17156,99 @@ try{window.__at&&window.__at('engine/plan.js');}catch(e){}
    arguments, so nothing here reaches for a document or a store.
    ============================================================ */
 const AV_MONTH=30*24*3600*1000;
+/* ============================================================
+   THE BECOMING SLICES S1 AND S2, round RB. ATUNED-becoming-system-TDD.md,
+   audited in BECOMING-AUDIT.md, whose section 11 orders the build. His words
+   at round RB: "The avatar page has a new TDD. It doesn't look like it was
+   ever updated or touched." It had not been: none of S1 to S4 was built.
+
+   S1. What the Avatar page writes now travels with the record. The archetype
+   ratings (arch), the weight each pair was written against (load0) and the
+   tags a person put on or took off (tags) lived under their own key in the
+   browser beside the record, so an export dropped them and another device
+   never saw them (R08). They are fields of the avatar now. The daily rule
+   stays beside the record until S7 makes it a ritual step, as the audit says.
+   movedAt says when the old key was read across, once, so a person who then
+   takes every rating off does not have them read back in on the next paint.
+
+   S2. Identity and bookkeeping the document's section 6.2 asks for: a name,
+   a title and a description the person writes; a version that moves only when
+   the person says they revised it; a status, draft, active or archived, which
+   is a declared fact (R06: evolving and integrated are readings and are never
+   stored); and an id on every pair, so a weight is kept against the pair and
+   not against its words, which changed meaning every time a word was fixed.
+
+   All additive inside schema version 2, the house's own precedent for the
+   practice objects and the bank of days: an older record has none of these
+   and is filled from this blank.
+   ============================================================ */
+const AV_STATUS=['draft','active','archived'];
+/* the caps on what a person writes, one place, read by the boundary and the
+   surface alike so the field and the refusal agree about the number */
+const AV_CAP={name:60, title:80, description:280, tag:60, tags:60};
 function avatarBlank(){
- return {built:false, at:null, reviewedAt:null, pairs:[]};}
+ return {built:false, at:null, reviewedAt:null, pairs:[],
+  name:'', title:'', description:'', version:1, status:'draft',
+  arch:{}, load0:{}, tags:{}, movedAt:null};}
+/* the status a record carries, or for one written before there was a status,
+   the one its own built flag already said */
+function avatarStatus(av){
+ if(av&&AV_STATUS.indexOf(av.status)>=0)return av.status;
+ return (av&&av.built)?'active':'draft';}
+/* A PAIR'S ID. A pair written before ids existed is given one that is the same
+   on every load, read off its own words and seat, so the weight kept against
+   it does not move to a new key each time the record is opened. Two pairs
+   with the same words take the next free suffix, in order. */
+function avatarHash(t){
+ var h=2166136261; t=String(t);
+ for(var i=0;i<t.length;i++){h^=t.charCodeAt(i); h=Math.imul(h,16777619);}
+ return (h>>>0).toString(36);}
+function avatarPairId(pr,taken){
+ var base='p'+avatarHash((pr.be||'')+'\n'+(pr.notbe||'')+'\n'+(pr.seat||'')), id=base, n=1;
+ while(taken&&taken[id]){n++; id=base+'x'+n;}
+ return id;}
+const AV_ID=/^[a-z0-9]{1,24}$/;
+/* every pair carries an id after this, and no two share one */
+function avatarEnsureIds(av){
+ if(!av||!Array.isArray(av.pairs))return av;
+ var taken={};
+ av.pairs.forEach(function(pr){if(pr&&typeof pr.id==='string'&&AV_ID.test(pr.id)&&!taken[pr.id])taken[pr.id]=1;
+  else if(pr)pr.id=null;});
+ av.pairs.forEach(function(pr){if(pr&&!pr.id){pr.id=avatarPairId(pr,taken); taken[pr.id]=1;}});
+ return av;}
+/* a new pair's id, minted at the moment of writing, never reused */
+function avatarNewId(now,rnd){
+ return 'n'+Math.floor(now||Date.now()).toString(36)+Math.floor((rnd==null?Math.random():rnd)*1679616).toString(36);}
+/* THE MONTHLY REVIEW, ANSWERED. avatarDue says a month has passed; this is
+   the person's answer. Still true moves the review date and nothing else.
+   Revised moves the version, because the version counts the times the person
+   said who they are becoming has changed, and nothing else may move it. */
+function avatarReview(av,revised,now){
+ if(!av)return av;
+ av.reviewedAt=new Date(now||Date.now()).toISOString();
+ if(revised)av.version=Math.max(1,(+av.version||1))+1;
+ return av;}
+/* the side key's entry for one profile, read across into the avatar, once.
+   keyOf maps the old text key of a pair to the pair, because the side key
+   kept weights against the pair's words. What is read across is only what the
+   avatar does not already hold, so a record that was written by a newer
+   build wins over the browser's older copy. Returns how many were moved. */
+function avatarMoveSide(av,e,keyOf,now){
+ if(!av||av.movedAt)return 0;
+ var n=0;
+ if(e&&typeof e==='object'){
+  if(e.arch&&typeof e.arch==='object')Object.keys(e.arch).forEach(function(k){
+   var v=e.arch[k]; if(av.arch[k]===undefined&&[1,2,3,4,5].indexOf(v)>=0){av.arch[k]=v; n++;}});
+  if(e.load0&&typeof e.load0==='object')Object.keys(e.load0).forEach(function(k){
+   var v=e.load0[k], pr=keyOf?keyOf(k):null;
+   if(pr&&pr.id&&av.load0[pr.id]===undefined&&typeof v==='number'&&v>=0&&v<=10){av.load0[pr.id]=v; n++;}});
+  if(e.tags&&typeof e.tags==='object')Object.keys(e.tags).forEach(function(b){
+   var t=e.tags[b]; if(!t||typeof t!=='object'||av.tags[b])return;
+   var keep=function(a){return (Array.isArray(a)?a:[]).filter(function(w){
+    return typeof w==='string'&&w.length>0&&w.length<=AV_CAP.tag;}).slice(0,AV_CAP.tags);};
+   av.tags[b]={add:keep(t.add), off:keep(t.off)}; n++;});}
+ av.movedAt=new Date(now||Date.now()).toISOString();
+ return n;}
 /* A PAIR IS WRITTEN AS A PAIR. The left side is a value and a value has no
    address. The right side is a sentence about a bad day, and a sentence about
    a bad day parses. That is why neither half is written alone. */
@@ -17149,6 +17300,31 @@ function avatarProgress(rows){
    ============================================================ */
 const PUR_SIDES=['partner','family','friends','community','coworkers','alone'];
 const PUR_PER_SIDE=5;
+/* THE CAPS, said once, round RB, S3. A value is a word or two and stays under
+   120 characters; a commitment is one sentence and stays under 200. The
+   boundary used to replace an over long value with an empty string and say
+   nothing (R10), which is a value the person thinks they wrote and the record
+   does not hold. It refuses by name now, and the field on the page stops at
+   the same number, so the refusal is never met by typing. */
+const PUR_VAL_MAX=120, PUR_LINE_MAX=200;
+/* THE SIX SIDES, IN HIS WORDS, round RB, S3. The stored keys are his ruling
+   (DECISIONS.md, the purpose map) and are identity, so they never rename. The
+   document's names, Self, Relationship and Work, are not used: "alone" and
+   "self" are not the same idea, and choosing between them is his (Q4). Each
+   label carries its plain meaning beside it, round PO, unpack every symbol. */
+const PUR_SIDE_SAY={
+ partner:{nm:'Partner',say:'the person you share a life with'},
+ family:{nm:'Family',say:'the people you were born or married into'},
+ friends:{nm:'Friends',say:'the people you chose'},
+ community:{nm:'Community',say:'the groups you belong to'},
+ coworkers:{nm:'Coworkers',say:'the people you work with or for'},
+ alone:{nm:'Alone',say:'you, with nobody else there'}};
+/* what is wrong with one value or one commitment, or null when nothing is.
+   The surface and the boundary both ask it, so they refuse the same thing. */
+function purposeRefuse(text,max){
+ if(typeof text!=='string')return 'is not text';
+ if(text.length>=max)return 'is '+text.length+' characters, and the most is '+(max-1);
+ return null;}
 const PUR_SOUL='Universal. Freedom, free will, knowledge, wisdom, that register.';
 const PUR_EGO='With a body attached. Health, fitness, financial stability, wealth, family.';
 function purposeBlank(){
@@ -18289,6 +18465,7 @@ function loadProfile(p){
  if(p.plan.base===undefined)p.plan.base=null;
  if(!p.avatar)p.avatar=avatarBlank();
  if(!Array.isArray(p.avatar.pairs))p.avatar.pairs=[];
+ avatarFill(p.avatar);
  if(!p.purpose)p.purpose=purposeBlank();
  /* a record from before the release lift has done no work since its answers,
     which is exactly what an empty map says */
@@ -19037,6 +19214,18 @@ function vEntry(errs,i,x){
   var ob=vEntryOb(errs,path+'.ob',x.ob);
   if(ob)q.ob=ob;}
  return q;}
+/* AN OLDER AVATAR GAINS WHAT THE BLANK CARRIES, round RB, and nothing it
+   already holds is touched. Called where a record is filled, so a profile in
+   memory from before this build reads like a new one. */
+function avatarFill(av){
+ if(!av)return av;
+ var b=avatarBlank(), st=avatarStatus(av);
+ Object.keys(b).forEach(function(k){if(av[k]===undefined)av[k]=b[k];});
+ av.status=st;
+ ['arch','load0','tags'].forEach(function(k){
+  if(!av[k]||typeof av[k]!=='object'||Array.isArray(av[k]))av[k]={};});
+ if(AV_STATUS.indexOf(av.status)<0)av.status=avatarStatus(av);
+ return avatarEnsureIds(av);}
 function validateProfile(o){
  var errs=[];
  if(!o||typeof o!=='object'||Array.isArray(o))return {ok:false, errs:['not an object']};
@@ -19263,11 +19452,70 @@ function validateProfile(o){
      if(x.seat!==undefined&&x.seat!==null){
       if(BANDS.indexOf(x.seat)>=0)q.seat=x.seat;
       else errs.push('avatar.pairs seat '+JSON.stringify(x.seat)+' is not a seat');}
+     /* THE PAIR'S ID, round RB, S2. Kept when it is one; refused by name when
+        it is something else, because a weight kept against a pair is found by
+        it. Missing is an older pair and is given one below. */
+     if(x.id!==undefined&&x.id!==null){
+      if(typeof x.id==='string'&&AV_ID.test(x.id))q.id=x.id;
+      else errs.push('avatar.pairs id '+JSON.stringify(x.id)+' is not a pair id');}
      return q;});
    if(p.avatar.pairs.length!==o.avatar.pairs.length)
     errs.push('avatar.pairs held '+(o.avatar.pairs.length-p.avatar.pairs.length)
-     +' entries that are not a written pair');}
-  else if(o.avatar.pairs!==undefined)errs.push('avatar.pairs is not a list');}
+     +' entries that are not a written pair');
+   var seenId={};
+   p.avatar.pairs.forEach(function(q){if(!q.id)return;
+    if(seenId[q.id])errs.push('avatar.pairs id '+q.id+' is on two pairs');
+    seenId[q.id]=1;});}
+  else if(o.avatar.pairs!==undefined)errs.push('avatar.pairs is not a list');
+  avatarEnsureIds(p.avatar);
+  /* WHO THE AVATAR IS, round RB, S2: three things the person writes, a
+     version and a status. Text is bounded and never edited; a wrong type or a
+     length past the cap is refused by name, never cut. */
+  ['name','title','description'].forEach(function(f){
+   var v=o.avatar[f]; if(v===undefined||v===null)return;
+   if(typeof v!=='string')errs.push('avatar.'+f+' is not text');
+   else if(v.length>AV_CAP[f])errs.push('avatar.'+f+' is '+v.length+' characters, and the most is '+AV_CAP[f]);
+   else p.avatar[f]=v;});
+  if(o.avatar.version!==undefined&&o.avatar.version!==null){
+   if(NUM(o.avatar.version)&&o.avatar.version>=1&&Math.floor(o.avatar.version)===o.avatar.version)p.avatar.version=o.avatar.version;
+   else errs.push('avatar.version '+JSON.stringify(o.avatar.version)+' is not a whole number from 1');}
+  if(o.avatar.status!==undefined&&o.avatar.status!==null){
+   if(AV_STATUS.indexOf(o.avatar.status)>=0)p.avatar.status=o.avatar.status;
+   else errs.push('avatar.status '+JSON.stringify(o.avatar.status)+' is not one of '+AV_STATUS.join(', '));}
+  else p.avatar.status=p.avatar.built?'active':'draft';
+  if(o.avatar.movedAt!==undefined&&o.avatar.movedAt!==null){
+   if(typeof o.avatar.movedAt==='string'&&!isNaN(new Date(o.avatar.movedAt).getTime()))p.avatar.movedAt=o.avatar.movedAt;
+   else errs.push('avatar.movedAt is not a date');}
+  /* WHAT THE AVATAR PAGE WRITES, round RB, S1, on the record at last. Each is
+     the shape ui/avatarui.js writes and nothing else: a rating is one to five
+     on an archetype that exists; a starting weight is nought to ten against a
+     pair on this record; a tag list is per seat. Anything else is refused by
+     name, which is the boundary's rule, and the read on the page stays as
+     strict as it was beside the record. */
+  var obj=function(v){return v&&typeof v==='object'&&!Array.isArray(v);};
+  if(o.avatar.arch!==undefined&&o.avatar.arch!==null){
+   if(!obj(o.avatar.arch))errs.push('avatar.arch is not an object');
+   else Object.keys(o.avatar.arch).forEach(function(k){var v=o.avatar.arch[k];
+    if(!ARCH.some(function(a){return a.nm===k;}))errs.push('avatar.arch names '+JSON.stringify(k)+', which is not an archetype');
+    else if([1,2,3,4,5].indexOf(v)<0)errs.push('avatar.arch.'+k+' is '+JSON.stringify(v)+', not one to five');
+    else p.avatar.arch[k]=v;});}
+  if(o.avatar.load0!==undefined&&o.avatar.load0!==null){
+   if(!obj(o.avatar.load0))errs.push('avatar.load0 is not an object');
+   else Object.keys(o.avatar.load0).forEach(function(k){var v=o.avatar.load0[k];
+    if(!p.avatar.pairs.some(function(q){return q.id===k;}))errs.push('avatar.load0 names pair '+JSON.stringify(k)+', which is not on this record');
+    else if(!NUM(v)||v<0||v>10)errs.push('avatar.load0.'+k+' is '+JSON.stringify(v)+', not nought to ten');
+    else p.avatar.load0[k]=v;});}
+  if(o.avatar.tags!==undefined&&o.avatar.tags!==null){
+   if(!obj(o.avatar.tags))errs.push('avatar.tags is not an object');
+   else Object.keys(o.avatar.tags).forEach(function(b){var t=o.avatar.tags[b];
+    if(BANDS.indexOf(b)<0){errs.push('avatar.tags names '+JSON.stringify(b)+', which is not a seat'); return;}
+    if(!obj(t)){errs.push('avatar.tags.'+b+' is not an object'); return;}
+    var q={add:[],off:[]}, bad=false;
+    ['add','off'].forEach(function(f){var a=t[f]; if(a===undefined)return;
+     if(!Array.isArray(a)||a.length>AV_CAP.tags||a.some(function(w){return typeof w!=='string'||!w.length||w.length>AV_CAP.tag;})){
+      errs.push('avatar.tags.'+b+'.'+f+' is not a list of words'); bad=true; return;}
+     q[f]=a.slice();});
+    if(!bad)p.avatar.tags[b]=q;});}}
  /* NULL IS MISSING, NOT WRONG. The rule is that a missing field is an older
     profile and is filled from the blank, and only a field of the wrong type or
     out of range is refused by name. These two tested `!==undefined`, so a
@@ -19284,8 +19532,14 @@ function validateProfile(o){
    if(o.purpose[f]===undefined)return;
    if(!Array.isArray(o.purpose[f])||o.purpose[f].length>3){
     errs.push('purpose.'+f+' is not three values'); return;}
-   p.purpose[f]=o.purpose[f].map(function(x){
-    return typeof x==='string'&&x.length<120?x:'';});
+   /* REFUSED BY NAME, round RB, S3. This replaced an over long value with an
+      empty string and said nothing (BECOMING-AUDIT.md R10). */
+   p.purpose[f]=o.purpose[f].map(function(x,i){
+    /* an unwritten corner is empty, however an older build wrote it */
+    if(x===null||x===undefined)return '';
+    var why=purposeRefuse(x,PUR_VAL_MAX);
+    if(why){errs.push('purpose.'+f+'['+i+'] '+why); return '';}
+    return x;});
    while(p.purpose[f].length<3)p.purpose[f].push('');});
   if(o.purpose.sides&&typeof o.purpose.sides==='object'){
    PUR_SIDES.forEach(function(sd){
@@ -19295,8 +19549,13 @@ function validateProfile(o){
     if(a.length>PUR_PER_SIDE){
      errs.push('purpose.sides.'+sd+' holds '+a.length+', which is more than '+PUR_PER_SIDE);
      return;}
-    p.purpose.sides[sd]=a.filter(function(x){
-     return typeof x==='string'&&x.length>0&&x.length<200;});});}
+    /* and a commitment the same way: an empty one is a slot nobody wrote
+       and is left out, a wrong one is refused by name rather than dropped */
+    p.purpose.sides[sd]=a.filter(function(x,i){
+     if(x==='')return false;
+     var why=purposeRefuse(x,PUR_LINE_MAX);
+     if(why){errs.push('purpose.sides.'+sd+'['+i+'] '+why); return false;}
+     return true;});});}
   else if(o.purpose.sides!==undefined)errs.push('purpose.sides is not an object');}
  else if(o.purpose!==undefined&&o.purpose!==null)errs.push('purpose is not an object');
  if(Array.isArray(o.rituals))p.rituals=o.rituals
@@ -19571,6 +19830,7 @@ function meterRun(p,keys,at){
  if(p.plan.base===undefined)p.plan.base=null;
  if(!p.avatar)p.avatar=avatarBlank();
  if(!Array.isArray(p.avatar.pairs))p.avatar.pairs=[];
+ avatarFill(p.avatar);
  if(!p.purpose)p.purpose=purposeBlank();
  var list=(keys||[]).filter(function(k){return typeof k==='string'&&k;});
  if(!list.length)return {added:0,repeated:0,fresh:[]};
@@ -27238,6 +27498,11 @@ if(typeof module!=='undefined'&&module.exports){
                  redoPop:redoPop, redoDepth:redoDepth, redoPeek:redoPeek,
                   undoPeek:undoPeek, undoClear:undoClear, UNDO_MAX:UNDO_MAX,
   /* avatar */   avatarBlank:avatarBlank, avatarValid:avatarValid, avatarDue:avatarDue,
+                 avatarStatus:avatarStatus, avatarPairId:avatarPairId, avatarEnsureIds:avatarEnsureIds,
+                 avatarNewId:avatarNewId, avatarReview:avatarReview, avatarMoveSide:avatarMoveSide,
+                 AV_STATUS:AV_STATUS, AV_CAP:AV_CAP, AV_ID:AV_ID,
+                 PUR_VAL_MAX:PUR_VAL_MAX, PUR_LINE_MAX:PUR_LINE_MAX, PUR_SIDE_SAY:PUR_SIDE_SAY,
+                 purposeRefuse:purposeRefuse, avatarFill:avatarFill,
                  avatarDaysLeft:avatarDaysLeft, avatarGap:avatarGap,
                  avatarProgress:avatarProgress, AV_MONTH:AV_MONTH,
   /* purpose */  purposeBlank:purposeBlank, purposeReady:purposeReady,
@@ -43128,16 +43393,12 @@ function sumOutput(r){
    +'<div class="s-out-n">'+esc(nm)+'</div>'
    +(sub?'<div class="s-out-s">'+esc(sub)+'</div>':'')
    +(act||'')+'</div>';};
+ /* THE CARD THAT SAYS FIRST GOES FIRST, round RF. "Release this first" stood
+    second, under the protocol, so the row's own words and its order
+    disagreed and the one card carrying the page's main action was the one a
+    person reached second. The release slot leads now in every one of its
+    cases, then the protocol, then the marker, which has no button. */
  return '<div class="s-outrow">'
-  /* A LABEL, NOT A CLAUSE. "The protocol this calls for" is five words and
-     came back as "The Protocol This Calls For". card() writes one eyebrow for
-     every card in this row, so the fix belongs in the string rather than in a
-     per call opt out: the row is driven by the reading, which is what "this
-     calls for" was there to say, and the row says it already. */
-  +(rit?card('The protocol',rit.nm||'A practice',
-     rit.how||rit.d||'','<button class="btn s-oact" data-sout="rit">Open it</button>')
-    :card('The protocol','Not read yet',
-     'Write what happened and this fills in',''))
   /* WHAT RELEASE HAS LEFT IN IT, said before the person spends the time, and
      only when there is something to spend it on.
 
@@ -43185,6 +43446,31 @@ function sumOutput(r){
      '<button class="btn s-oact" data-sout="iq">Answer the laws</button>');
     return card('Release this first','Nothing is carrying',
      'No address is holding anything','');}())
+  /* A LABEL, NOT A CLAUSE. "The protocol this calls for" is five words and
+     came back as "The Protocol This Calls For". card() writes one eyebrow for
+     every card in this row, so the fix belongs in the string rather than in a
+     per call opt out: the row is driven by the reading, which is what "this
+     calls for" was there to say, and the row says it already. */
+  /* THE PROTOCOL NAMED NOTHING, round RF. This read rit.nm, rit.how and rit.d,
+     and ritFor has never returned any of them: it returns the seat, the track
+     and the practice it calls for, under called. So every read profile in the
+     roster was told its protocol was "A practice", with nothing under it, on
+     the card a person is meant to act on. The practice is named now, with its
+     own one line and how long it takes, read off PRACTICE and nowhere else. */
+  +(function(){
+    var c=rit&&rit.called;
+    if(c)return card('The protocol',c.nm,
+     /* the length, unless the practice's own line already says it: Active
+        Listening's reads "Ten minutes on sound", and a card saying ten
+        minutes twice is a card that was not read */
+     [c.d||'',(c.min&&!/minute/i.test(c.d||''))?c.min+(c.min===1?' minute.':' minutes.'):'']
+      .filter(Boolean).join(' '),
+     '<button class="btn s-oact" data-sout="rit">Open it</button>');
+    if(rit)return card('The protocol','A practice',
+     'Nothing in the library fits this reading yet',
+     '<button class="btn s-oact" data-sout="rit">Open it</button>');
+    return card('The protocol','Not read yet',
+     'Write what happened and this fills in','');}())
   /* A NUMBER CARRIES ITS UNIT. This read "12 away", twelve of what; the
      record card says the same distance in addresses, so this does too. And
      the fallback said "The first one. Open some ground and it appears",
@@ -43234,13 +43520,51 @@ function sumFull(r){
      reading is a claim about the person and the story is the evidence for
      it, and evidence goes first. It stands on the first screen, left of the
      roots, and the phone reads it before them. */
-  +'<div class="sg-two sg-lead">'
-   +'<section class="sg-card sg-story" data-grp="story">'+told
-    +'<div class="s-readbox sg-flat">'+story+'</div></section>'
-   +drv
+  /* THE LEAD ROW, REBUILT, round RB. His words: "The summary page layout is
+     abysmal. I'm not sure what happened here." Measured on Diane at 1600 with
+     three entries before touching it: the story card ran about 1750 pixels
+     and the drivers card beside it was stretched to match while its content
+     ended near 950, so the right half of the first two screens was a hole
+     about 750 pixels tall with one fold sitting at its foot. And What to do,
+     the only block on the page that says what a person can do, sat about 2730
+     pixels down, the best part of three screens under the reading.
+
+     So the row stops stretching and the right column carries two cards: what
+     to do first, where the hole was, and the drivers under it. The story
+     keeps the left and the first screen, which is the ruling above. Nothing
+     is removed and no sentence changes; the action moves up beside the
+     evidence it acts on. */
+  /* WHAT THEY SAID, WHAT TO DO, THEN WHY. Round RF, his words: "simulate the
+     best UI UX flow for least friction, most text visibility, most
+     visibility. If you have to change stuff to change, feel free."
+
+     Measured at 390 before this: What to do started 2.8 screens down, under
+     about 500 words, because on one column the lead row stacked as the whole
+     left half (what you told it and the whole Reading) and then the right. A
+     person on a phone read the full reading, every meaning in it, before
+     reaching the one thing on the page they could do.
+
+     So what you told it and the Reading are two cards, not one, and on one
+     column the four pieces of this row interleave: their own words, then what
+     to do about them, then the Reading that explains it, then the drivers.
+     Evidence still goes first, which is the ruling above; the action now
+     follows the evidence it acts on instead of following the explanation of
+     it. On two columns nothing moves: the left is their words over the
+     Reading, the right is what to do over the drivers. The column wrappers
+     carry no look of their own, so a single column can dissolve them. */
+  +'<div class="sg-two sg-lead sg-lead2">'
+   +'<div class="sg-col">'
+    +(told?'<section class="sg-card sg-told" data-grp="told">'+told+'</section>':'')
+    +'<section class="sg-card sg-story" data-grp="story">'
+     +'<div class="s-readbox sg-flat">'+story+'</div></section>'
+   +'</div>'
+   +'<div class="sg-side">'+sgZone('todo','What to do',sumOutput(r),'sg-card')+drv+'</div>'
   +'</div>'
+  /* the patterns block follows the lead on every width. On a phone it was
+     lifted above the story by an order rule written before it existed. */
+  +(typeof sumLoopSlot==='function'?sumLoopSlot(r):'')
   +sumMarks(B,r)
-  +'<div class="sg-two">'
+  +'<div class="sg-two sg-even">'
    +'<section class="sg-card" data-grp="run">'+sgHead('run','What is running')
     +sumBlueprint()
     +'<div class="sg-gap">'+sumArch(r)+'</div>'
@@ -43255,8 +43579,6 @@ function sumFull(r){
     +sgFold('ig','Integrity over time',sumIg(r))
    +'</section>'
   +'</div>'
-  +sgZone('todo','What to do',sumOutput(r))
-  +(typeof sumLoopSlot==='function'?sumLoopSlot(r):'')
   +'<div class="sg-folds">'
    +sgFold('lens','Four lenses',sumLens(r,true))
    +(C?sgFold('conv','Birth comparison',sumConverge(C)):'')
@@ -44197,14 +44519,13 @@ try{window.__at&&window.__at('ui/analytics.js');}catch(e){}
                   the shipped ritual builder, which is the one writer of a
                   ritual.
 
-   WHAT IS NOT IN THE RECORD, said here and on nothing that claims otherwise.
-   The profile boundary, validateProfile, rebuilds every stored record from
-   the fields it names and drops the rest on the next load. It names no
-   archetype rating and no starting weight for a pair, so both live beside the
-   record under their own key in the same bound store, keyed by the profile's
-   id, with the rules of round JP and the tags of round KH beside them. They
-   survive a reload and do not travel with an export. Putting them in
-   the record is a schema change, which is the owner's (CLAUDE.md, Schema v2).
+   WHAT IS IN THE RECORD, round RB, Becoming slice S1. The archetype ratings,
+   the starting weight of each pair and the tags lived beside the record under
+   their own key, so they survived a reload and did not travel with an export.
+   They are fields of CURP.avatar now, named at the boundary (engine/schema.js)
+   and read across from the old key once (avatarMoveSide, engine/avatar.js).
+   The daily rule of round JP still lives beside the record, on the audit's
+   own order: it becomes a ritual step at S7, and moving it twice is waste.
    ============================================================ */
 /* ============================================================
    ROOT TO CROWN, round JP, 27 September. His words, and they are the
@@ -44418,15 +44739,26 @@ function avSideAll(){
   return (o&&typeof o==='object'&&!Array.isArray(o))?o:{};}catch(e){return {};}}
 function avSide(){
  var out={arch:{}, load0:{}, rule:{}, tags:{}};
+ /* THE RECORD FIRST, round RB, S1. The ratings, the weights and the tags are
+    the avatar's own fields now; the strict read stays exactly what it was
+    beside the record, so a value this page would never write is never shown. */
+ var av=(typeof CURP!=='undefined'&&CURP&&CURP.avatar)||null;
+ if(av){
+  avatarFill(av); avMove(av);
+  Object.keys(av.arch||{}).forEach(function(k){
+   if(avArchByName(k)&&AV_SCALE.indexOf(av.arch[k])>=0)out.arch[k]=av.arch[k];});
+  Object.keys(av.load0||{}).forEach(function(k){
+   var v=av.load0[k]; if(typeof v==='number'&&v>=0&&v<=10)out.load0[k]=v;});
+  Object.keys(av.tags||{}).forEach(function(b){
+   var t=av.tags[b]; if(BANDS.indexOf(b)<0||!t||typeof t!=='object')return;
+   var keep=function(a){return (Array.isArray(a)?a:[]).filter(function(w){return avLexOf(b,w)!==null;});};
+   out.tags[b]={add:keep(t.add), off:keep(t.off)};});}
  if(!avOwn())return out;
  var e=avSideAll()[CURP.id];
  if(!e||typeof e!=='object')return out;
- if(e.arch&&typeof e.arch==='object')Object.keys(e.arch).forEach(function(k){
-  if(avArchByName(k)&&AV_SCALE.indexOf(e.arch[k])>=0)out.arch[k]=e.arch[k];});
- if(e.load0&&typeof e.load0==='object')Object.keys(e.load0).forEach(function(k){
-  var v=e.load0[k]; if(typeof v==='number'&&v>=0&&v<=10)out.load0[k]=v;});
- /* a rule is one seat's practice for a set run of days. Same posture as the
-    two above: a rule that is not the shape avRuleSet writes is not a rule. */
+ /* a rule is one seat's practice for a set run of days. A rule that is not
+    the shape avRuleSet writes is not a rule. It stays beside the record until
+    S7 makes it a ritual step. */
  if(e.rule&&typeof e.rule==='object')Object.keys(e.rule).forEach(function(b){
   var r=e.rule[b];
   if(BANDS.indexOf(b)<0||!r||typeof r!=='object')return;
@@ -44434,14 +44766,35 @@ function avSide(){
   if(typeof r.from!=='string'||pracDay(r.from)===null)return;
   out.rule[b]={k:r.k, days:r.days, from:r.from,
    done:(Array.isArray(r.done)?r.done:[]).filter(function(d){return typeof d==='number'&&isFinite(d);})};});
- /* tags, round KH: per seat, the words a person added and the found ones they
-    took off. A word that is not in that seat's lexicon is not a tag and is
-    left out on the read, the same posture as a rule. */
- if(e.tags&&typeof e.tags==='object')Object.keys(e.tags).forEach(function(b){
-  var t=e.tags[b]; if(BANDS.indexOf(b)<0||!t||typeof t!=='object')return;
-  var keep=function(a){return (Array.isArray(a)?a:[]).filter(function(w){return avLexOf(b,w)!==null;});};
-  out.tags[b]={add:keep(t.add), off:keep(t.off)};});
  return out;}
+/* THE OLD KEY, READ ACROSS ONCE, round RB, S1. Only on the person's own
+   profile, only before the avatar says it has been done, and the key itself
+   is left where it is so an older build in the same browser still reads it.
+   A move that found something is saved and says so; one that could not be
+   saved says that, and is tried again on the next paint. */
+function avMove(av){
+ if(!av||av.movedAt||!avOwn())return;
+ var e=avSideAll()[CURP.id];
+ var keyOf=function(k){return (av.pairs||[]).filter(function(pr){return avKey(pr)===k;})[0]||null;};
+ var n=avatarMoveSide(av,e,keyOf);
+ if(!n)return;
+ pSave();
+ var sv=(typeof saveState==='function')?saveState():{ok:true};
+ if(!sv.ok){av.movedAt=null;
+  status('Your ratings and tags were not moved onto your record. Storage is full or blocked.','fail');}}
+/* A WRITE TO THE AVATAR ON THE RECORD, round RB. fn changes CURP.avatar; the
+   save is checked; a refused save puts back exactly what was there and the
+   status says why. True only when it was kept. */
+function avRecWrite(fn,ok){
+ if(!avOwn()){status('Nothing saved on a worked example.','fail');return false;}
+ var av=CURP.avatar=CURP.avatar||avatarBlank(); avatarFill(av);
+ var was=JSON.stringify(av);
+ fn(av); pSave();
+ var sv=(typeof saveState==='function')?saveState():{ok:true};
+ if(!sv.ok){CURP.avatar=JSON.parse(was);
+  status('Not saved. Storage is full or blocked, so this would not survive a reload.','fail');return false;}
+ if(ok)status(ok);
+ return true;}
 /* true only when the store took it. A store that was never bound, or that
    throws on quota or on a blocked origin, answers false and the caller says so. */
 function avSideWrite(fn){
@@ -44717,7 +45070,7 @@ function avState(){
     below tier one cannot see */
  var r=computeSeen(), side=avSide();
  var rows=(typeof avRows==='function')?avRows():[];
- rows.forEach(function(x,i){x.i=i; x.c=avClosure(x,side.load0[avKey(x.pair)]);});
+ rows.forEach(function(x,i){x.i=i; x.c=avClosure(x,side.load0[x.pair.id]);});
  /* A STORY SITS AT THE SEAT IT WAS WRITTEN AT, round JP, which is where its
     row and its tick are. The percent it carries is still read at the seat
     the sniffer hears it at, because that is where the load it is measured
@@ -45464,7 +45817,10 @@ function avDilHTML(){
 
    avSub('intake') is still understood and opens that face, so anything that
    learned the round JP name lands where the questions are now. */
-var AV_SUBS=[['becoming','Becoming'],['arch','Archetypes']];
+/* AND A THIRD, round RB, Becoming slice S3: Purpose, the document's layers B
+   and C on the one Avatar page, which is the audit's recommendation for Q7
+   (a layer of the page, not a fifth section of a four step loop). */
+var AV_SUBS=[['becoming','Becoming'],['purpose','Purpose'],['arch','Archetypes']];
 function avSub(k){
  if(k==='intake'){AV.sub='becoming'; AV.face='iq'; renderAvatar(); return;}
  if(!AV_SUBS.some(function(s){return s[0]===k;}))return;
@@ -45724,7 +46080,74 @@ var AV_CSS=[
  ' #avbody .av-ring.avh{width:100%;max-width:560px}}',
  '@media (max-width:600px){',
  ' .avs-sb{padding:0 12px;font-size:14px}.avs-subs{width:100%;justify-content:space-between}',
- ' .avh .av-slab{font-size:11px}.avs-q{font-size:16px}}'].join('\n');
+ ' .avh .av-slab{font-size:11px}.avs-q{font-size:16px}}',
+ /* WHO THE AVATAR IS, round RB, S2: one row beside the subtabs */
+ '.avs-top{display:flex;flex-wrap:wrap;gap:12px 20px;justify-content:space-between}',
+ '.avi{display:flex;align-items:center;flex-wrap:wrap;gap:10px 16px;min-width:0;flex:1 1 auto;justify-content:flex-end}',
+ '.avi-main{display:flex;align-items:center;gap:12px;min-width:0;flex:0 1 auto}',
+ '.avi-rvw{display:flex;align-items:center;flex-wrap:wrap;gap:8px}',
+ '.avi-mk{flex:0 0 auto;width:44px;height:44px;border-radius:50%;border:1.5px solid var(--accent);display:flex;align-items:center;justify-content:center;color:var(--accent)}',
+ '.avi-mk svg,.avi-add svg,.avi-pen svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}',
+ '.avi-t{display:flex;flex-direction:column;gap:2px;min-width:0;flex:0 1 auto;max-width:520px}',
+ '.avi-n{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}',
+ '.avi-n b{font-size:17px;font-weight:600;color:var(--ink)}',
+ '.avi-n em{font-style:normal;font-size:14px;color:var(--mid)}',
+ '.avi-d{font-size:14px;line-height:1.45;color:var(--mid)}',
+ '.avi-pen{flex:0 0 auto;width:var(--tap);height:var(--tap);border-radius:50%;border:1px solid var(--edge-2);background:none;color:var(--mid);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}',
+ '.avi-pen:hover{color:var(--ink);border-color:var(--accent)}',
+ '.avi-add{display:inline-flex;align-items:center;gap:10px;min-height:var(--tap);padding:0 18px 0 12px;border-radius:999px;border:1px dashed var(--edge-2);background:none;color:var(--mid);font:inherit;font-size:15px;cursor:pointer}',
+ '.avi-add:hover{color:var(--ink);border-color:var(--accent)}',
+ '.avi-rv{font-size:13px;color:var(--dim)}',
+ '.avi-due{color:var(--ink)}',
+ '.avi-rb{min-height:var(--tap)}',
+ '.avi-ed{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px 12px;flex:1 1 100%;padding:14px 16px;border-radius:var(--r-s);background:var(--sunk);border:1px solid var(--edge)}',
+ '.avi-f{display:flex;flex-direction:column;gap:5px;font-size:13px;color:var(--dim);min-width:0}',
+ '.avi-wide{grid-column:1/-1}',
+ '.avi-f input,.avi-f textarea{min-height:var(--tap);font:inherit;font-size:16px;color:var(--ink);background:var(--panel);border:1px solid var(--edge-2);border-radius:var(--r-s);padding:9px 12px;resize:vertical}',
+ '.avi-act{grid-column:1/-1;display:flex;gap:10px}',
+ /* PURPOSE, round RB, S3: the figure is the art and takes the left, the
+    fields are text and take the right, the house rule for a centre column */
+ '.avp{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,1fr);gap:28px;align-items:start;margin-top:8px}',
+ '.avp-art{min-width:0;display:flex;justify-content:center}',
+ '.avp-fig{width:100%;max-width:600px;height:auto;overflow:visible}',
+ '.avp-trk{fill:none;stroke:var(--edge-2);stroke-width:10;stroke-linecap:round;opacity:.55}',
+ '.avp-hit{fill:none;stroke:transparent;stroke-width:44;cursor:pointer;pointer-events:stroke}',
+ '.avp-side{cursor:pointer;outline:none}',
+ '.avp-side.on .avp-trk{stroke:var(--accent);opacity:.4}',
+ '.avp-side:focus-visible .avp-trk{stroke:var(--ink);opacity:.6}',
+ '.avp-tk{fill:var(--panel);stroke:var(--dim);stroke-width:1.6;stroke-dasharray:2 2.4}',
+ '.avp-tk.lit{stroke:var(--accent);stroke-width:2.6;stroke-dasharray:none}',
+ '.avp-sl{font-size:15px;fill:var(--mid);font-family:var(--sans)}',
+ '.avp-side.on .avp-sl{fill:var(--ink);font-weight:600}',
+ '.avp-tri{fill:color-mix(in srgb,var(--c) 7%,transparent);stroke:var(--c);stroke-width:1.8;stroke-linejoin:round}',
+ '.avp-cn{fill:var(--panel);stroke:var(--dim);stroke-width:1.6;stroke-dasharray:2.4 2.4}',
+ '.avp-cn.lit{stroke:var(--c);stroke-width:2.6;stroke-dasharray:none}',
+ '.avp-vl{font-size:14px;fill:var(--c);font-family:var(--sans);font-weight:500}',
+ '.avp-cl{font-size:13px;fill:var(--c);font-family:var(--sans);font-weight:600;letter-spacing:.02em}',
+ '.avp-btw{stroke:var(--accent);stroke-width:1.6;stroke-dasharray:3 4;fill:none}',
+ '.avp-col{min-width:0;display:flex;flex-direction:column;gap:16px}',
+ '.avp-note{margin:0;font-size:14px;color:var(--dim)}',
+ '.avp-blk{display:flex;flex-direction:column;gap:10px;padding:14px 16px;border-radius:var(--r-s);background:var(--sunk);border-left:2px solid var(--c,var(--accent))}',
+ '.avp-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}',
+ '.avp-h b{font-size:16px;font-weight:600;color:var(--ink)}',
+ '.avp-h span{font-size:14px;color:var(--dim)}',
+ '.avp-vals,.avp-lines{display:flex;flex-direction:column;gap:8px}',
+ '.avp-in{min-height:var(--tap);font:inherit;font-size:16px;color:var(--ink);background:var(--panel);border:1px solid var(--edge-2);border-radius:var(--r-s);padding:9px 12px;width:100%;box-sizing:border-box}',
+ '.avp-in:focus{border-color:var(--c,var(--accent));outline:none}',
+ '.avp-in:disabled{opacity:.85;cursor:default}',
+ '.avp-read{display:flex;flex-direction:column;gap:6px;padding:12px 16px;border-radius:var(--r-s);border:1px solid var(--edge)}',
+ '.avp-read p{margin:0;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;font-size:15px;color:var(--ink)}',
+ '.avp-read p span{font-size:13px;color:var(--dim);min-width:92px}',
+ '.avp-read .avp-btwl{display:block;color:var(--mid);font-size:14px;line-height:1.5;margin-top:4px}',
+ '.avp-bd{border-left-color:var(--accent)}',
+ '.avp-sides{display:flex;flex-wrap:wrap;gap:6px}',
+ '.avp-sb{min-height:var(--tap);padding:0 14px;border-radius:999px;border:1px solid var(--edge-2);background:var(--panel);color:var(--mid);font:inherit;font-size:14px;cursor:pointer}',
+ '.avp-sb.av-on{border-color:var(--accent);color:var(--ink);background:color-mix(in srgb,var(--accent) 14%,var(--panel))}',
+ '.avp-say{margin:0;font-size:14px;color:var(--mid)}',
+ '.avp-say b{color:var(--ink);font-weight:600;margin-right:4px}',
+ 'body.punch .avp-blk,body.punch .avp-read{border-color:transparent}',
+ '@media (max-width:1100px){.avp{grid-template-columns:minmax(0,1fr)}.avp-fig{max-width:520px}}',
+ '@media (max-width:600px){.avi{justify-content:flex-start}.avi-ed{grid-template-columns:minmax(0,1fr)}.avp-sl{font-size:17px}.avp-vl{font-size:16px}}'].join('\n');
 function avCss(){
  if(document.getElementById('avs-css'))return;
  var s=document.createElement('style'); s.id='avs-css'; s.textContent=AV_CSS;
@@ -45735,7 +46158,7 @@ function avHead(st){
  var h='<header class="av-hd avs-top"><div class="avs-subs" role="group" aria-label="Avatar">'
   +AV_SUBS.map(function(s){var on=AV.sub===s[0];
    return '<button type="button" class="avs-sb'+(on?' av-on':'')+'" aria-pressed="'+on+'" data-avsub="'+s[0]+'">'+s[1]+'</button>';}).join('')
-  +'</div></header>';
+  +'</div>'+avIdHTML()+'</header>';
  /* THE LINE IS GONE, round LV. What used to sit here in its place: the tag
     summary, above the ring rather than a paragraph explaining the ring. */
  if(AV.sub==='becoming')h+=avTagSummary(st);
@@ -45749,12 +46172,15 @@ function renderAvatar(){
     onto somebody else's avatar. */
  var who=S.who+'|'+(CURP&&CURP.id);
  if(AV.who!==who){AV.who=who; AV.arch=null; AV.trace=null; AV.q=null; AV.seat=null;
-  AV.ask={}; AV.drafts={}; AV.edit=null; AV.tag=null; AV.tagOpen=false; AV.tagQ='';}
+  AV.ask={}; AV.drafts={}; AV.edit=null; AV.tag=null; AV.tagOpen=false; AV.tagQ='';
+  AV.idEdit=false; AV.side=null;}
  if(!AV.sub)AV.sub='becoming';
  var st=avState(), h='<div class="av">'+avHead(st);
  if(AV.sub==='becoming'){
   h+=avHero(st)+'<div class="avh-under">'+avMenu(st)+'</div>';
   h+=avPairs(st)+'<div class="av-row2">'+avCycHTML(st)+avRitHTML(st)+'</div>'+avRunHTML(st);}
+ else if(AV.sub==='purpose'){
+  h+=avPurposeHTML();}
  else{
   var W2=avWheel(st);
   /* THE PARAGRAPH EXPLAINING WHAT THIS SECTION IS, AND HOW TO USE THE SCALE,
@@ -45795,7 +46221,10 @@ function avSig(){
  /* answers is keyed by index and is not always an array, so it is read whole */
  var ans=JSON.stringify((p.intake&&p.intake.answers)||{});
  var pl=(p.plan&&p.plan.tier)+':'+(p.plan&&p.plan.status);
- return [S.who, p.id, e.length, av.length, R.length, dn, s.toFixed(4), S.theme, ans, pl].join('|');}
+ /* the identity and the purpose map are the page's too since round RB */
+ var A=p.avatar||{}, idk=[A.name,A.title,A.description,A.version,A.reviewedAt].join('/');
+ var pu=JSON.stringify(p.purpose||{});
+ return [S.who, p.id, e.length, av.length, R.length, dn, s.toFixed(4), S.theme, ans, pl, idk, pu].join('|');}
 function avRefresh(){
  var host=document.getElementById('avbody');
  if(host&&(!host.firstChild||AV.sig!==avSig()))renderAvatar();
@@ -45867,6 +46296,7 @@ function avBind(host,st){
   var q=avQueue(x.gap.seat); if(!q.length)return;
   relPick(q.map(function(n){return n.i;})); avWatch(bb);});
  on('[data-avdil]',function(el){avDilemma(+el.dataset.avdil,+el.dataset.avdv);});
+ avIdBind(host); avPurBind(host);
  /* the boxes. The lit layer takes the text at once, because the textarea's
     own text is transparent and a layer that lagged would be a box that ate
     keystrokes. The reading under it waits for a pause, as the journal's does. */
@@ -45901,6 +46331,194 @@ function avBind(host,st){
      queue in it and asks the when and the where before it saves. */
   ritOpen(); RIT.sel={}; keys.forEach(function(k){RIT.sel[k]=true;}); RIT.all=true; ritRender();};}
 
+/* ============================================================
+   WHO THE AVATAR IS, round RB, Becoming slice S2, the document's layer A.
+   One row in the header beside the subtabs, which was empty space: the name
+   a person gives who they are becoming, a title, and one sentence. The
+   monthly review the engine has always counted (avatarDue) is answered here,
+   where the avatar is, rather than only in a drill nobody opens. "Still
+   true" moves the review date; "I changed it" moves the version too, and
+   nothing else does. A worked example shows what it carries and offers no
+   control, because nothing is saved on one.
+   ============================================================ */
+var AVI_PEN='<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>';
+var AVI_MK='<circle cx="12" cy="8" r="3.6"/><path d="M5 20c.8-4 3.5-6 7-6s6.2 2 7 6"/>';
+function avIdHTML(){
+ var av=(CURP&&CURP.avatar)||avatarBlank(), own=avOwn();
+ var nm=String(av.name||''), ti=String(av.title||''), de=String(av.description||'');
+ if(AV.idEdit&&own){
+  return '<div class="avi avi-ed" data-avidform>'
+   +'<label class="avi-f"><span>Name</span><input data-avid="name" maxlength="'+AV_CAP.name+'" value="'+esc(nm)+'" '
+   +'placeholder="What you call who you are becoming"></label>'
+   +'<label class="avi-f"><span>Title</span><input data-avid="title" maxlength="'+AV_CAP.title+'" value="'+esc(ti)+'" '
+   +'placeholder="A few words, if you want them"></label>'
+   +'<label class="avi-f avi-wide"><span>In one sentence</span><textarea data-avid="description" rows="2" maxlength="'+AV_CAP.description+'" '
+   +'placeholder="Who you are becoming, in your words">'+esc(de)+'</textarea></label>'
+   +'<div class="avi-act"><button type="button" class="btn pri" data-avidsave>Save</button>'
+   +'<button type="button" class="btn" data-avidcancel>Cancel</button></div></div>';}
+ var rv='';
+ if(av.built&&own){
+  rv=avatarDue(av)
+   ?'<span class="avi-rv avi-due">Your monthly look is due</span>'
+    +'<button type="button" class="btn avi-rb" data-avrev="same">Still true</button>'
+    +'<button type="button" class="btn avi-rb" data-avrev="changed">I changed it</button>'
+   :'<span class="avi-rv">Next monthly look in '+avatarDaysLeft(av)+' days</span>';}
+ if(!nm&&!de){
+  if(!own)return rv?'<div class="avi"><span class="avi-rvw">'+rv+'</span></div>':'';
+  return '<div class="avi"><button type="button" class="avi-add" data-avidedit>'+avSvg(AVI_MK)
+   +'<span>Name who you are becoming</span></button>'+(rv?'<span class="avi-rvw">'+rv+'</span>':'')+'</div>';}
+ return '<div class="avi"><span class="avi-main"><span class="avi-mk" aria-hidden="true">'+avSvg(AVI_MK)+'</span>'
+  +'<span class="avi-t"><span class="avi-n"><b>'+esc(nm||'Unnamed')+'</b>'+(ti?'<em>'+esc(ti)+'</em>':'')+'</span>'
+  +(de?'<span class="avi-d">'+esc(de)+'</span>':'')+'</span>'
+  +(own?'<button type="button" class="avi-pen" data-avidedit aria-label="Change who you are becoming" title="Change who you are becoming">'
+   +avSvg(AVI_PEN)+'</button>':'')+'</span>'+(rv?'<span class="avi-rvw">'+rv+'</span>':'')+'</div>';}
+function avIdBind(host){
+ host.querySelectorAll('[data-avidedit]').forEach(function(el){el.onclick=function(){
+  AV.idEdit=true; renderAvatar(); var f=host.querySelector('[data-avid="name"]'); if(f)f.focus();};});
+ host.querySelectorAll('[data-avidcancel]').forEach(function(el){el.onclick=function(){AV.idEdit=false; renderAvatar();};});
+ host.querySelectorAll('[data-avidsave]').forEach(function(el){el.onclick=function(){
+  var v={}; host.querySelectorAll('[data-avid]').forEach(function(f){v[f.dataset.avid]=String(f.value||'').trim();});
+  var bad=['name','title','description'].filter(function(k){return (v[k]||'').length>AV_CAP[k];})[0];
+  if(bad){status('Not saved. The '+bad+' is longer than '+AV_CAP[bad]+' characters.','fail');return;}
+  if(avRecWrite(function(av){av.name=v.name||''; av.title=v.title||''; av.description=v.description||'';},'Saved.')){
+   AV.idEdit=false; renderAvatar();}};});
+ host.querySelectorAll('[data-avrev]').forEach(function(el){el.onclick=function(){
+  var ch=el.dataset.avrev==='changed';
+  if(avRecWrite(function(av){avatarReview(av,ch);},
+   ch?'Saved. Your avatar has moved on, and the next look is in a month.':'Saved. The next look is in a month.'))renderAvatar();};});}
+
+/* ============================================================
+   PURPOSE, round RB, Becoming slice S3, the document's layers B and C on the
+   one Avatar page. BECOMING-AUDIT.md R11: the six values and the thirty
+   commitments were validated, stored, exported and read, and nothing in the
+   product could write them, so the "Purpose set" mark could not be earned by
+   using the product. This is the writer.
+
+   What it is made of, and what it is not:
+     the figure    his own description, the two pyramids with a gap of limbo
+                   between them (round HS, the redesign brief 13b), inside the
+                   boundary as the Field's segmented ring, six facets with
+                   five marks each, in the geometry the document draws: the
+                   self at the top, work at the bottom.
+     the values    free words, as ruled (DECISIONS.md, purpose): three for the
+                   spirit, three for the body. No ontology and no icon per
+                   value, because none exists (Q3) and inventing one is the
+                   thing the brief says not to do.
+     the readings  derived, never typed: purposeRead, exactly as ruled. "Six
+                   values in, three readings out, and a person may type none
+                   of the three." The document's typed Unified Purpose waits
+                   on Q2.
+     the sides     his six names, each with its meaning beside it, and the
+                   stored keys unchanged (Q4 stays his).
+     no count      a facet's five marks are lit or not. Nothing prints a
+                   number against thirty, the standing ruling.
+   ============================================================ */
+var AVP_ORDER=['alone','partner','friends','coworkers','community','family'];
+var AVP_ANG={alone:-90, partner:-30, friends:30, coworkers:90, community:150, family:210};
+function avpShort(t,n){t=String(t||''); return t.length>n?t.slice(0,n-1)+'…':t;}
+function avpFigure(pu,sel){
+ var cx=280, cy=262, R=204, crown=seatCol('Crown'), root=seatCol('Root');
+ var pt=function(r,deg){var a=deg*Math.PI/180; return [cx+r*Math.cos(a), cy+r*Math.sin(a)];};
+ var f=function(n){return n.toFixed(1);};
+ var arc=function(r,d0,d1){var a=pt(r,d0), b=pt(r,d1);
+  return 'M'+f(a[0])+' '+f(a[1])+'A'+r+' '+r+' 0 0 1 '+f(b[0])+' '+f(b[1]);};
+ var s='<svg class="avp-fig" viewBox="0 0 560 524" role="group" aria-label="Your purpose map: two triangles, and the six sides of the boundary around them">';
+ /* the boundary, six facets of five marks */
+ AVP_ORDER.forEach(function(k){
+  var c=AVP_ANG[k], on=sel===k, lines=((pu.sides&&pu.sides[k])||[]).filter(function(x){return x&&String(x).trim();});
+  var say=PUR_SIDE_SAY[k];
+  s+='<g class="avp-side'+(on?' on':'')+'" data-avside="'+k+'" role="button" tabindex="0" aria-pressed="'+on+'" '
+   +'aria-label="'+esc(say.nm+', '+say.say)+'">'
+   +'<path d="'+arc(R,c-27,c+27)+'" class="avp-hit"/>'
+   +'<path d="'+arc(R,c-26,c+26)+'" class="avp-trk"/>';
+  [-18,-9,0,9,18].forEach(function(o,i){var q=pt(R,c+o), lit=i<lines.length;
+   s+='<circle cx="'+f(q[0])+'" cy="'+f(q[1])+'" r="6" class="avp-tk'+(lit?' lit':'')+'"/>';});
+  var lp=pt(R+26,c), anc=Math.abs(Math.cos(c*Math.PI/180))<0.2?'middle':(Math.cos(c*Math.PI/180)>0?'start':'end');
+  s+='<text x="'+f(lp[0])+'" y="'+f(lp[1]+5)+'" text-anchor="'+anc+'" class="avp-sl">'+esc(say.nm)+'</text></g>';});
+ /* the two triangles, and the gap between them */
+ var up=[[280,128],[200,240],[360,240]], dn=[[200,284],[360,284],[280,396]];
+ var tri=function(P,col,vals,cls){
+  var o='<path d="M'+P.map(function(q){return q[0]+' '+q[1];}).join('L')+'Z" class="avp-tri '+cls+'" style="--c:'+col+'"/>';
+  P.forEach(function(q,i){var v=String(vals[i]||'').trim();
+   o+='<circle cx="'+q[0]+'" cy="'+q[1]+'" r="8" class="avp-cn'+(v?' lit':'')+'" style="--c:'+col+'"/>';});
+  return o;};
+ s+=tri(up,crown,pu.soul||[],'avp-up')+tri(dn,root,pu.ego||[],'avp-dn');
+ /* the values at their corners, short on the figure and whole in the fields */
+ var lab=function(q,v,anc,dy,col){v=String(v||'').trim(); if(!v)return '';
+  return '<text x="'+q[0]+'" y="'+(q[1]+dy)+'" text-anchor="'+anc+'" class="avp-vl" style="--c:'+col+'">'+esc(avpShort(v,anc==='middle'?20:13))+'</text>';};
+ var su=pu.soul||[], eg=pu.ego||[];
+ s+=lab([280,128],su[0],'middle',-18,crown)+lab([186,240],su[1],'end',5,crown)+lab([374,240],su[2],'start',5,crown);
+ s+=lab([186,284],eg[0],'end',5,root)+lab([374,284],eg[1],'start',5,root)+lab([280,396],eg[2],'middle',28,root);
+ var ready=purposeReady(pu);
+ s+='<text x="280" y="210" text-anchor="middle" class="avp-cl" style="--c:'+crown+'">Spirit</text>'
+  +'<text x="280" y="324" text-anchor="middle" class="avp-cl" style="--c:'+root+'">Body</text>';
+ if(ready)s+='<path d="M280 218V306" class="avp-btw"/>';
+ return s+'</svg>';}
+function avPurposeHTML(){
+ var pu=(CURP&&CURP.purpose)||purposeBlank(), own=avOwn();
+ var sel=(AV.side&&PUR_SIDES.indexOf(AV.side)>=0)?AV.side:AVP_ORDER[0];
+ var dis=own?'':' disabled';
+ var vals=function(k,ph,col){
+  return '<div class="avp-vals" style="--c:'+col+'">'+[0,1,2].map(function(i){
+   return '<input class="avp-in" data-avpv="'+k+'" data-i="'+i+'" data-avpk="'+k+i+'" maxlength="'+(PUR_VAL_MAX-1)+'" '
+    +'value="'+esc((pu[k]&&pu[k][i])||'')+'" placeholder="'+esc(ph[i])+'" aria-label="'+(k==='soul'?'Spirit':'Body')+' value '+(i+1)+'"'+dis+'>';}).join('')
+   +'</div>';};
+ var rd=purposeRead(pu), say=PUR_SIDE_SAY[sel], lines=(pu.sides&&pu.sides[sel])||[];
+ var h='<section class="avp">'
+  +'<div class="avp-art">'+avpFigure(pu,sel)+'</div>'
+  +'<div class="avp-col">'
+  +(own?'':'<p class="avp-note">A worked example. Nothing here is saved.</p>')
+  +'<div class="avp-blk" style="--c:'+seatCol('Crown')+'"><div class="avp-h"><b>Spirit</b><span>what moves you in the spirit</span></div>'
+  +vals('soul',['freedom','knowledge','wisdom'],seatCol('Crown'))+'</div>'
+  +'<div class="avp-blk" style="--c:'+seatCol('Root')+'"><div class="avp-h"><b>Body</b><span>what drives you on the earth</span></div>'
+  +vals('ego',['health','family','financial stability'],seatCol('Root'))+'</div>'
+  +(rd?'<div class="avp-read"><p><span>In the spirit</span><b>'+esc(rd.higher)+'</b></p>'
+    +'<p><span>On the earth</span><b>'+esc(rd.earthly)+'</b></p>'
+    +'<p class="avp-btwl">'+esc(rd.between)+'</p></div>':'')
+  +'<div class="avp-blk avp-bd"><div class="avp-h"><b>Boundary</b><span>what is yours to protect, side by side</span></div>'
+  +'<div class="avp-sides" role="group" aria-label="The six sides">'+AVP_ORDER.map(function(k){var on=k===sel;
+    return '<button type="button" class="avp-sb'+(on?' av-on':'')+'" data-avside="'+k+'" aria-pressed="'+on+'">'+esc(PUR_SIDE_SAY[k].nm)+'</button>';}).join('')+'</div>'
+  +'<p class="avp-say"><b>'+esc(say.nm)+'</b> '+esc(say.say)+'</p>'
+  +'<div class="avp-lines">'+[0,1,2,3,4].map(function(i){
+    return '<input class="avp-in" data-avpl="'+sel+'" data-i="'+i+'" data-avpk="'+sel+i+'" maxlength="'+(PUR_LINE_MAX-1)+'" '
+     +'value="'+esc(lines[i]||'')+'" placeholder="A line you keep" aria-label="'+esc(say.nm)+', line '+(i+1)+'"'+dis+'>';}).join('')+'</div>'
+  +'</div></div></section>';
+ return h;}
+/* one field kept. Values keep their corner; a side's lines close up, because
+   the boundary keeps only lines that were written. Refused by name past the
+   cap, which the field's own limit means is never met by typing. */
+function avPurSet(el){
+ if(!avOwn()){status('Nothing saved on a worked example.','fail');return false;}
+ var pu=CURP.purpose=CURP.purpose||purposeBlank(), v=String(el.value||'').trim();
+ var k=el.dataset.avpv||el.dataset.avpl, isVal=!!el.dataset.avpv, max=isVal?PUR_VAL_MAX:PUR_LINE_MAX;
+ var why=purposeRefuse(v,max);
+ if(why){status('Not saved. That '+(isVal?'value':'line')+' '+why+'.','fail');return false;}
+ var was=JSON.stringify(pu), wasReady=purposeReady(pu);
+ if(isVal){pu[k]=(pu[k]||['','','']).slice(); pu[k][+el.dataset.i]=v;}
+ else{
+  var host=el.closest('.avp-lines'), all=[];
+  if(host)host.querySelectorAll('[data-avpl="'+k+'"]').forEach(function(f){var t=String(f.value||'').trim(); if(t)all.push(t);});
+  pu.sides=pu.sides||purposeBlank().sides; pu.sides[k]=all.slice(0,PUR_PER_SIDE);}
+ pSave();
+ var sv=(typeof saveState==='function')?saveState():{ok:true};
+ if(!sv.ok){CURP.purpose=JSON.parse(was);
+  status('Not saved. Storage is full or blocked, so this would not survive a reload.','fail');return false;}
+ status(!wasReady&&purposeReady(pu)?'Saved. Six values in, and the three readings are out.':'Saved.');
+ return true;}
+function avPurBind(host){
+ host.querySelectorAll('[data-avside]').forEach(function(el){
+  var go=function(){AV.side=el.dataset.avside; renderAvatar();};
+  el.onclick=go;
+  el.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault(); go();}};});
+ host.querySelectorAll('[data-avpv],[data-avpl]').forEach(function(el){
+  el.onchange=function(){
+   if(!avPurSet(el))return;
+   /* the next field the person moved to keeps the caret through the repaint */
+   setTimeout(function(){var a=document.activeElement, k=a&&a.dataset?a.dataset.avpk:null;
+    renderAvatar();
+    if(k){var n=document.querySelector('[data-avpk="'+k+'"]'); if(n)n.focus();}},0);};
+  el.onkeydown=function(e){if(e.key==='Enter'){e.preventDefault(); el.blur();}};});}
+
 /* ---------------- the writes ----------------
    Each one says what happened through status(), and none of them claims a
    save it did not get. A pair goes into the record, so a refused save takes
@@ -45926,15 +46544,21 @@ function avSeatAdd(b){
  var d=avDraft(b), pr={be:d.be.trim(), notbe:d.notbe.trim(), seat:b};
  if(!avatarValid(pr))return;
  if(!avOwn()){status('Nothing saved on a worked example.','fail');return;}
- var av=CURP.avatar=CURP.avatar||avatarBlank(), was={built:av.built, at:av.at};
+ var av=CURP.avatar=CURP.avatar||avatarBlank(); avatarFill(av);
+ var was={built:av.built, at:av.at, status:av.status};
  var P=av.pairs, rows=avRows(), ed=(AV.edit!=null&&rows[AV.edit])?rows[AV.edit]:null;
  var at=ed?P.indexOf(ed.pair):-1, old=at>=0?P[at]:null;
+ /* an edited pair keeps its id, round RB, S2: it is the same line of the
+    avatar rewritten, and its weight is kept against it below; a new one is
+    minted one that no pair has held */
+ pr.id=old&&old.id?old.id:avatarNewId();
  if(old)P[at]=pr; else P.push(pr);
  av.built=true; if(!av.at)av.at=new Date().toISOString();
+ if(av.status==='draft')av.status='active';
  pSave();
  if(!statusSaved()){
   if(old)P[at]=old; else P.pop();
-  av.built=was.built; av.at=was.at; return;}
+  av.built=was.built; av.at=was.at; av.status=was.status; return;}
  var send=!old||old.notbe!==pr.notbe, p=parseStory(pr.notbe), k=p.imprints.length, msg;
  if(send&&k&&S.who===0){
   undoPush('adding a story to your avatar');
@@ -45963,10 +46587,12 @@ function avSeatAdd(b){
     story and starts again from the weight now. */
  compute();
  var rows2=avRows(), idx=old?at:rows2.length-1, row=rows2[idx];
- var kept=avSideWrite(function(e){
-  if(old)delete e.load0[avKey(old)];
-  if(row&&row.gap)e.load0[avKey(pr)]=row.gap.load;});
- if(!kept&&row&&row.gap)status('Saved. The starting weight was not kept, so this one reads from nothing done.','fail');
+ /* on the record since round RB, S1, against the pair's id */
+ var L=CURP.avatar.load0=CURP.avatar.load0||{}, wasL=L[pr.id];
+ if(row&&row.gap){L[pr.id]=row.gap.load; pSave();
+  var sv2=(typeof saveState==='function')?saveState():{ok:true};
+  if(!sv2.ok){if(wasL===undefined)delete L[pr.id]; else L[pr.id]=wasL;
+   status('Saved. The starting weight was not kept, so this one reads from nothing done.','fail');}}
  AV.drafts[b]={be:'',notbe:''}; AV.edit=null; AV.seat=b; AV.face='story'; AV.q=null;
  renderAvatar();}
 function avTake(i){
@@ -45975,31 +46601,32 @@ function avTake(i){
  if(!x)return;
  if(!avOwn()){status('Nothing saved on a worked example.','fail');return;}
  var P=CURP.avatar.pairs, j=P.indexOf(x.pair); if(j<0)return;
- var b=avSeatOf(x);
- P.splice(j,1); pSave();
- if(!statusSaved()){P.splice(j,0,x.pair); return;}
+ var b=avSeatOf(x), L=CURP.avatar.load0||{}, wasL=L[x.pair.id];
+ /* the weight goes with its pair in the same save, because the boundary
+    refuses a weight for a pair that is not on the record */
+ P.splice(j,1); if(x.pair.id)delete L[x.pair.id]; pSave();
+ if(!statusSaved()){P.splice(j,0,x.pair); if(wasL!==undefined)L[x.pair.id]=wasL; return;}
  /* the rule goes with the last story at its seat, because a rule is a
     commitment to a story and there is no story left to keep it for */
  var left=avRows().some(function(y){return avSeatOf(y)===b;});
- avSideWrite(function(e){delete e.load0[avKey(x.pair)]; if(b&&!left)delete e.rule[b];});
+ if(b&&!left)avSideWrite(function(e){delete e.rule[b];});
  AV.q=null; AV.edit=null; AV.tag=null; renderAvatar();}
-/* A TAG PUT ON OR TAKEN OFF, round KH. Kept beside the record, like the
-   rules and the ratings, so it survives a reload and does not travel with an
-   export; putting it in the record is a schema change, which is the owner's.
-   A word outside the seat's lexicon is refused before anything is written.
+/* A TAG PUT ON OR TAKEN OFF, round KH. On the record since round RB, S1, so
+   it travels with an export. A word outside the seat's lexicon is refused
+   before anything is written.
    Taking off a tag the sniffer found keeps it off, so the next story at the
    seat does not quietly put it back; putting it on again clears that. */
 function avTagSet(b,t,put,st){
  if(!avOwn()){status('Nothing saved on a worked example.','fail');return;}
  if(!avLexOf(b,t))return;
  var found=avFound(st,b).indexOf(t)>=0;
- var ok=avSideWrite(function(e){
+ var ok=avRecWrite(function(e){
   var T=e.tags[b]=e.tags[b]&&typeof e.tags[b]==='object'?e.tags[b]:{};
   T.add=(Array.isArray(T.add)?T.add:[]).filter(function(w){return w!==t;});
   T.off=(Array.isArray(T.off)?T.off:[]).filter(function(w){return w!==t;});
   if(put&&!found)T.add.push(t);
   if(!put&&found)T.off.push(t);});
- if(!ok){status('Not saved. Storage is full or blocked, so this session will not survive a reload.','fail');return;}
+ if(!ok)return;
  if(!put&&AV.tag===t)AV.tag=null;
  status(put?'Tagged '+avTagNm(t)+'.':avTagNm(t)+' taken off.');
  renderAvatar();}
@@ -46047,8 +46674,8 @@ function avRate(n){
  var a=avArchByName(AV.arch); if(!a)return;
  if(!avOwn()){status('Nothing saved on a worked example.','fail');return;}
  var was=avSide().arch[a.nm]||0, to=(was===n)?0:n;
- var ok=avSideWrite(function(e){if(to)e.arch[a.nm]=to; else delete e.arch[a.nm];});
- if(!ok){status('Not saved. Storage is full or blocked, so this session will not survive a reload.','fail');return;}
+ var ok=avRecWrite(function(e){if(to)e.arch[a.nm]=to; else delete e.arch[a.nm];});
+ if(!ok)return;
  status(to?'Saved. '+a.nm+' at '+to+'.':'Taken off. '+a.nm+' is not set.');
  renderAvatar();}
 
@@ -58777,12 +59404,15 @@ function runAvatarDrill(){
     +'<em>'+(g2?(g2.clear?'clear':esc(String(g2.seat).toLowerCase())+', '+g2.load.toFixed(1))
       :'not resolved')+'</em></button>';});
   h+='</div>';
-  if(pg)h+='<p class="ad-p"><b>'+pg.done+' of '+pg.total+'</b> clear at the address behind '
+  /* a count against a total is a score, the standing ruling, round RB */
+  if(pg)h+='<p class="ad-p"><b>'+(pg.done===0?'None':pg.done===pg.total?'All of them':String(pg.done))+'</b> clear at the address behind '
    +'them. Read from what you have actually cleared, not from what you wrote.</p>';
  } else {
-  h+='<p class="ad-p">Nothing written yet. The journal asks for it in two questions: '
-   +'describe yourself on your best day, not what you achieved but how you were. Then the '
-   +'opposite.</p>';}
+  /* THE PROMISE WAS FALSE, round RB, S3 (BECOMING-AUDIT.md R11): no journal
+     prompt ever asked these two questions. The Avatar page is where a pair is
+     written, one seat at a time. */
+  h+='<p class="ad-p">Nothing written yet. Write it on the Avatar page, one seat at a time. '
+   +'Say how you are on your best day, and how you are on a bad one.</p>';}
  if(av.built){
   var d=avatarDaysLeft(av);
   h+='<p class="ad-p">Reviewed monthly. '+(avatarDue(av)?'Due now.':d+' days to the next one.')
@@ -58859,15 +59489,26 @@ function runPurposeDrill(){
   +'yours to protect and outside it is choice.</p>'
   +'<div class="ad-rows">'+PUR_SIDES.map(function(sd){
     var n=((pu.sides&&pu.sides[sd])||[]).filter(function(x){return x&&String(x).trim();}).length;
+    /* five marks a side, lit or not, and no count against the five or the
+       thirty, the standing ruling, round RB. The side's own name and meaning
+       come from the one table, PUR_SIDE_SAY. */
+    var say=(typeof PUR_SIDE_SAY!=='undefined'&&PUR_SIDE_SAY[sd])||{nm:sd,say:''};
     return '<div class="ad-r static'+(n>=PUR_PER_SIDE?' on':'')+'">'
-     +'<span class="ad-k">'+esc(sd)+'</span>'
-     +'<span class="ad-v">'+n+' of '+PUR_PER_SIDE+'</span></div>';}).join('')+'</div>'
-  +'<p class="ad-p">'+bc.filled+' of '+bc.of+' written. Thirty is not a lot to ask of a '
+     +'<span class="ad-k">'+esc(say.nm)+'</span>'
+     +'<span class="ad-v" aria-label="'+esc(n?n+' written':'none written')+'">'
+     +[0,1,2,3,4].map(function(i){return i<n?'\u25CF':'\u25CB';}).join(' ')+'</span></div>';}).join('')+'</div>'
+  +'<p class="ad-p">'+(bc.filled?'':'Nothing written on any side yet. ')+'Thirty is not a lot to ask of a '
   +'mirror you will hold for as long as this takes. A mirror half described shows half a '
   +'person.</p>'
-  +'<div class="ad-act"><button class="btn" id="puback">The avatar</button></div>';
+  +'<div class="ad-act"><button class="btn pri" id="puwrite">Write it</button>'
+  +'<button class="btn" id="puback">The avatar</button></div>';
  rdShell(h);
- var b=document.getElementById('puback'); if(b)b.onclick=runAvatarDrill;}
+ var b=document.getElementById('puback'); if(b)b.onclick=runAvatarDrill;
+ /* the writer, round RB, S3: the Avatar page's Purpose subtab */
+ var w=document.getElementById('puwrite'); if(w)w.onclick=function(){
+  if(typeof AV!=='undefined')AV.sub='purpose';
+  if(typeof rdClose==='function')rdClose();
+  setTab(TAB.INTAKE); if(typeof renderAvatar==='function')renderAvatar();};}
 
 /* ============================================================
    THE AGE LADDER, on screen.
@@ -59153,8 +59794,20 @@ try{window.__at&&window.__at('ui/drills.js');}catch(e){}
    ranks are intensity. It deals from the person's own held
    addresses, so a card is a thing they are actually carrying.
    ============================================================ */
-/* opens on the universal laws, the first deck in KB_SECS since KT */
-var KB_Q='', KB_SEC='harm';
+/* OPENS ON THE CROWN, round RB. His words: "The embodied knowledge base, I
+   want the design to take its cue from the intake page... crown, third eye,
+   throat, heart, solar, sacral, root. Let's design it around that. That way,
+   all the content is in the center column." So the codex is read by seat, in
+   the Intake page's own order, crown down to root, and KB_SEAT is the seat
+   that is open. KB_SEC is now a second way in, by kind: 'all' while a seat is
+   being read, or one deck's key, which then shows that deck across all seven
+   seats in the same order. Exactly one of the two is pressed at a time, so the
+   page always says where a person is. It opened on the universal laws before
+   (KT); a seat's own page still lists the universal laws first. */
+var KB_Q='', KB_SEC='all', KB_SEAT='Crown';
+/* the seat order, the Intake page's, read from it where it is loaded */
+function kbSeatOrder(){
+ return (typeof IQ_SEATS!=='undefined')?IQ_SEATS:['Crown','3rd Eye','Throat','Heart','Solar','Sacral','Root'];}
 
 /* every searchable thing in the instrument, built from the engine tables.
    kind decides which drill a row opens. */
@@ -59210,7 +59863,28 @@ function kbPct(v){return Math.max(0,Math.min(100,Math.round((v||0)*10)));}
 function kbPct100(v){return Math.max(0,Math.min(100,Math.round((v||0)*100)));}
 function kbFind(a,nm){for(var i=0;i<a.length;i++)if(a[i].nm===nm)return a[i];return null;}
 
+/* EVERY DECK AT ONCE, for the seat pages and for a search across them. The
+   decks are built one at a time and joined, so a row is the same object it is
+   in its own deck and opens the same drill. */
 function kbRows(sec){
+ if(sec==='all'){var all=[];
+  KB_SECS.forEach(function(x){all=all.concat(kbRows(x[0]));});
+  return all;}
+ return kbRowsOf(sec).map(function(x){x.seats=kbSeatsOf(x); return x;});}
+/* WHICH SEATS A ROW IS FILED UNDER, round RB. Read off the row's own data,
+   never assigned for the page: an address, a law, an archetype, a child
+   emotion and a saboteur's architecture each name one seat; a mask is worn
+   over the seats it names and is filed under each; a gate is higher or lower
+   and so sits at the crown or the root, as its ring already did. A domain, an
+   intensity band, a pattern kind, a pole and a card that names no axis belong
+   to no one seat, and they say so in their own place under the seven rather
+   than being put in a seat that would be a guess. */
+function kbSeatsOf(x){
+ if(x.k==='mask')return ((x.o&&x.o.b)||[]).filter(function(b){return BANDS.indexOf(b)>=0;});
+ if(x.k==='dom'||x.k==='band'||x.k==='kind'||x.k==='pole'||x.k==='gloss')return [];
+ if(x.k==='axcard'&&!(x.o&&x.o.ax))return [];
+ return BANDS.indexOf(x.seat)>=0?[x.seat]:[];}
+function kbRowsOf(sec){
  /* computeSeen, not compute(): the live weight beside each saboteur here is
     which of them are running, which is the tier's (ui/lock.js) */
  var r=computeSeen(), out=[];
@@ -59325,8 +59999,14 @@ function kbRows(sec){
     instrument's own vocabulary rather than a reading about a person, so there
     is nothing for them to be a percent of and they carry none. */
  if(sec==='card'){
+  /* A CARD SITS WHERE ITS AXIS SITS, round RB. Every one of the printed cards
+     names the axis it releases, and the axis already has a seat, so the card
+     is filed there rather than at the Heart, which was a colour standing in
+     for "no seat" and would have put Anxiety in the wrong place on a page now
+     read by seat. */
   CARDSET.forEach(function(c){
-   out.push(kbRow('card', c.nm, 'release protocol', 'Heart',
+   var ch=c.ax?kbFind(CHILD,c.ax):null;
+   out.push(kbRow('card', c.nm, 'release protocol', (ch&&ch.seat)||'Heart',
     kbPct(S.charge[c.ax]), 'M5 3h14v18H5z M8 7h8 M8 11h8 M8 15h5', c));});
   AXCARD.forEach(function(c){
    var ch=c.ax?kbFind(CHILD,c.ax):null;
@@ -59492,45 +60172,102 @@ const KB_KIND={node:'Fetter',fetter:'Child emotion',sab:'Saboteur',
    passes when the heaviest thing is first. */
 var KB_SORT='order';
 
+/* WHAT A ROW SAYS UNDER ITS NAME ON A SEAT'S PAGE, round RB. The rule from
+   the decks holds: the fourth thing is never the heading said again. On a
+   page that is already a seat, a row whose family is that seat would print
+   the seat's name on every line, so each kind says the fact it has that the
+   seat cannot: an address its nerve, a child emotion where it is felt, an
+   archetype and a mask what they do, a universal law its family. */
+function kbSubIn(x){
+ var o=x.o||{};
+ if(x.k==='node')return o.n||x.s;
+ if(x.k==='fetter')return o.loc||'';
+ if(x.k==='arch')return o.v||'';
+ if(x.k==='mask')return o.v||'';
+ if(x.k==='harm')return x.fam||'';
+ if(x.k==='law')return '';
+ if(x.k==='card')return o.dom||x.s;
+ return x.s;}
+/* one row, the markup it always had, so the drills and the gates read it as
+   before. i is its place in the list the click handler holds. */
+function kbRowHtml(x,i,sub){
+ var seat=BANDS.indexOf(x.seat)>=0?x.seat:'Heart';
+ var c=x.col||seatCol(seat);
+ /* THE FIGURE TAKES THE INK COLOUR AND NOT THE SEAT'S. Measured against its
+    own ground: Root is 4.17 to 1 on the panel a row stands on when pointed
+    at, under the 4.5 a number needs. The ring already carries the seat. */
+ var cls=x.p==null?' off':(x.p?'':' z');
+ if(x.k==='node')return kbPoleRow(x,i,seat,c,sub);
+ return '<button type="button" class="kb-row" data-kbi="'+i+'" style="--c:'+c+'">'
+  +crBadge(seat, x.p||0, {size:'md', bare:true, color:c,
+     glyph:glyphPath(x.ic), title:x.t+(x.p?' · '+x.p+'%':'')})
+  +'<span class="kb-rt"><span class="kb-rn">'+esc(x.t)+'</span>'
+  +(sub?'<span class="kb-rs">'+esc(sub)+'</span>':'')+'</span>'
+  +'<span class="kb-rv'+cls+'">'+(x.p?x.p+'%':'–')+'</span>'
+  +'</button>';}
+/* THE SEAT'S RING ON ITS TILE. One arc, the share of the seat's addresses
+   carrying charge, which is the stack row's own figure, around the seat's
+   mark. No number on the tile: the figure is on the stack row inside. */
+function kbSeatRing(b,pct){
+ var r=22, C=2*Math.PI*r, f=Math.max(0,Math.min(100,pct||0))/100, col=seatCol(b);
+ return '<span class="kbs-rg"><svg viewBox="0 0 56 56" aria-hidden="true">'
+  +'<circle cx="28" cy="28" r="'+r+'" fill="none" stroke="rgba(128,128,128,.22)" stroke-width="4"/>'
+  +(f>0?'<circle cx="28" cy="28" r="'+r+'" fill="none" stroke="'+col+'" stroke-width="4" stroke-linecap="round" '
+   +'stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+(C*(1-f)).toFixed(1)+'" transform="rotate(-90 28 28)"/>':'')
+  +'<svg x="16" y="16" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="'+col+'" stroke-width="1.7" '
+  +'stroke-linecap="round" stroke-linejoin="round">'+(SEATGLYPH[b]||SEATGLYPH._)+'</svg></svg></span>';}
+/* the line under a seat's name, the Intake page's own, so a seat is
+   described one way across the product */
+function kbSeatLine(b){
+ return (typeof IQ_SEATLINE!=='undefined'&&IQ_SEATLINE[b])||'';}
+/* the deck a row came from, by its kind. Four kinds share the cards deck. */
+function kbDeckOf(x){
+ return ({node:'addr',fetter:'fetter',sab:'sab',law:'law',mask:'mask',dom:'dom',arch:'arch',
+  gate:'gate',seat:'seat',card:'card',axcard:'card',band:'card',kind:'card',pole:'card',harm:'harm'})[x.k]||x.k;}
+/* a seat's page lists the seat itself first, then the decks in KB_SECS order */
+function kbDeckOrder(){
+ return [['seat','The stack']].concat(KB_SECS.filter(function(d){return d[0]!=='seat';}));}
+
 function kbRender(){
  /* #knowbody, not #know. #know is the tab host and it also carries the folded
     games surface, which this function would otherwise overwrite. */
  var host=document.getElementById('knowbody'); if(!host)return;
- var q=KB_Q.trim().toLowerCase();
- var rows=kbRows(KB_SEC).filter(function(x){return kbMatch(x,q);});
- if(KB_SORT==='weight') rows=rows.slice().sort(function(a,b){
+ /* the seat tile and the seat panel are the Intake page's own, and its sheet
+    is injected when that page first draws, so it is asked for here too */
+ if(typeof iqArtCss==='function')iqArtCss();
+ var q=KB_Q.trim().toLowerCase(), SEATS=kbSeatOrder();
+ if(SEATS.indexOf(KB_SEAT)<0)KB_SEAT=SEATS[0];
+ var deck=(KB_SEC&&KB_SEC!=='all')?KB_SEC:null;
+ /* each deck is built once per paint and read from here after, because the
+    page asks for every deck several times over and each build reads the field */
+ var MEMO={}, rowsOf=function(k){
+  if(k==='all'){if(!MEMO.all){var all=[];KB_SECS.forEach(function(x){all=all.concat(rowsOf(x[0]));});MEMO.all=all;}return MEMO.all;}
+  return MEMO[k]||(MEMO[k]=kbRows(k));};
+ var bySeat=!deck&&!q;
+ var pool=rowsOf(deck||'all').filter(function(x){return kbMatch(x,q);});
+ if(KB_SORT==='weight') pool=pool.slice().sort(function(a,b){
   return (b.p==null?-1:b.p)-(a.p==null?-1:a.p);});
  /* the count across every deck, so search says what it found everywhere */
  var total=0, per={};
  KB_SECS.forEach(function(s){
-  var n=kbRows(s[0]).filter(function(x){return kbMatch(x,q);}).length;
+  var n=rowsOf(s[0]).filter(function(x){return kbMatch(x,q);}).length;
   per[s[0]]=n; total+=n;});
  /* and the glossary, which is not a deck and answers above the rows */
- var gl=q?kbRows('gloss').filter(function(x){return kbMatch(x,q);}):[];
+ var gl=q?rowsOf('gloss').filter(function(x){return kbMatch(x,q);}):[];
+ var share={};
+ rowsOf('seat').forEach(function(x){share[x.t]=x.p||0;});
 
- /* THE HEADER WAS EATING THE PAGE AND THE ROW COULD NOT BE REACHED PAST IT.
-
-    Measured on the shipping build: the codex's own header was 288 pixels at
-    1600 and 381 on a phone, and the app's chrome above it is another 104 and
-    267. So on a 844 pixel screen the header was 648 pixels, 77 percent of the
-    device, and one entry was visible below it.
-
-    Four separate attempts at the row were measured before this was, and all
-    four left the header alone. Every one of them put a better row on a phone
-    with nothing above the fold to see it in. The paragraph explaining that the
-    codex is open goes: it said the same thing on every one of eleven decks,
-    on every visit, forever. The twelve deck chips stop wrapping to two and
-    three rows and scroll sideways on one. The eyebrow, the deck's name and
-    what its percent means sit on one baseline.
-
-    154 pixels at 1600 and 226 on a phone. Twelve rows above the fold became
-    thirty nine, and one became six. */
- var h='<div class="kb-top">'
+ /* THE HEADER. What is open, said once: a seat's name and the Intake page's
+    line for it, or a deck's name and what its percent is of, or a search. */
+/* on a seat's page the panel under the map already names the seat and its
+    line, so the header names the page and not the seat a second time */
+ var title=q?'Search':deck?kbSecName(deck):'The seven seats';
+ var scale=q?'':deck?((KB_OF[deck]&&!kbUnread())?'The percent is '+KB_OF[deck]+'.':'')
+  :'Crown down to root, the order the Intake page reads in.';
+ var h='<div class="kb-top kbs">'
   +'<div class="kb-hdr"><div class="pm-eye">The codex</div>'
-  +'<h2 class="kb-h">'+esc(kbSecName(KB_SEC))+'</h2>'
-  +'<span class="kb-scale">'+rows.length+(q?' matching':' of them')
-  +(KB_SEC==='addr'?'. Each is a pattern against its opposite, with the weight of each. The bar shows which way you lean.'
-    :(KB_OF[KB_SEC]&&!kbUnread())?'. The percent is '+esc(KB_OF[KB_SEC])+'.':'')+'</span></div>'
+  +'<h2 class="kb-h">'+esc(title)+'</h2>'
+  +(scale?'<span class="kb-scale">'+esc(scale)+'</span>':'')+'</div>'
   +'<div class="kb-bar">'
   +'<input type="search" id="kbq" class="kb-q" placeholder="Search the codex" '
   +'value="'+esc(KB_Q)+'" aria-label="Search the knowledge base">'
@@ -59540,14 +60277,22 @@ function kbRender(){
   +' aria-pressed="'+(KB_SORT==='order')+'">In order</button>'
   +'<button type="button" class="kb-swb'+(KB_SORT==='weight'?' on':'')+'" data-kbs="weight"'
   +' aria-pressed="'+(KB_SORT==='weight')+'">By weight</button></span></div>'
-  +'<div class="kb-strip" role="tablist">'+KB_SECS.map(function(s){
-    return '<button type="button" role="tab" class="kb-t'+(KB_SEC===s[0]?' on':'')+'" data-kb="'+s[0]+'" '
-     +'aria-selected="'+(KB_SEC===s[0])+'">'+s[1]+' <b>'+(q?per[s[0]]:kbRows(s[0]).length)+'</b></button>';}).join('')
+  /* THE SEVEN SEATS, CROWN DOWN TO ROOT. The Intake page's map, the same
+     tile and the same order, so the two pages read as one instrument. */
+  +'<div class="iqa-map kbs-map" role="group" aria-label="The seven seats">'
+  +SEATS.map(function(b){var on=bySeat&&KB_SEAT===b;
+    return '<button type="button" class="iqa-tile kbs-tile" data-kbseat="'+esc(b)+'" data-st="'+(share[b]?2:0)+'" '
+     +'aria-pressed="'+on+'" aria-label="'+esc(b+', '+kbSeatLine(b))+'" style="--c:'+seatCol(b)+'">'
+     +kbSeatRing(b,share[b])+'<span class="iqa-tn">'+esc(b)+'</span></button>';}).join('')
+  +'</div>'
+  /* AND BY KIND, the second way in. A kind shows across all seven seats, in
+     the same order, so nothing moves out of the seat layout to be found. */
+  +'<div class="kb-strip" role="tablist" aria-label="By kind">'+KB_SECS.map(function(s){
+    return '<button type="button" role="tab" class="kb-t'+(deck===s[0]?' on':'')+'" data-kb="'+s[0]+'" '
+     +'aria-selected="'+(deck===s[0])+'">'+s[1]+' <b>'+(q?per[s[0]]:rowsOf(s[0]).length)+'</b></button>';}).join('')
   +'</div></div>';
 
- /* THE GLOSSARY ANSWERS FIRST AND ANSWERS ONCE. A name is glossed in one
-    table and the search shows it; nothing else on this page carries a
-    definition any more. */
+ /* THE GLOSSARY ANSWERS FIRST AND ANSWERS ONCE. */
  if(gl.length){
   h+='<div class="kb-gloss">';
   gl.slice(0,4).forEach(function(g){
@@ -59555,40 +60300,60 @@ function kbRender(){
     +'<p class="kb-gd">'+esc(g.o.d)+'</p></div>';});
   h+='</div>';}
 
- h+='<div class="kb-rg'+(KB_SEC==='addr'?' kbp-g':'')+'">';
- if(!rows.length) h+='<div class="rnone">Nothing here matches. The count beside each deck says where it is.</div>';
- var lastAx='';
- rows.forEach(function(x,i){
-  /* the axis break, so the flow is visible rather than implied. It is only
-     drawn in the deck's own order, because a sort by weight crosses the axes
-     by definition and a heading over a mixed run would be a lie. */
-  if(KB_SEC==='harm'&&KB_SORT==='order'&&!q&&x.axis&&x.axis!==lastAx){
-   lastAx=x.axis;
-   h+='<div class="kb-sec">'+esc(KB_AXHD[x.axis]||x.axis)+'</div>';}
-  var seat=BANDS.indexOf(x.seat)>=0?x.seat:'Heart';
-  var c=x.col||seatCol(seat);
-  /* THE FIGURE TAKES THE INK COLOUR AND NOT THE SEAT'S.
+ /* every row on the page, in the order drawn, so a press finds its row */
+ var shown=[];
+ function grid(rows,isPole){
+  if(!rows.length)return '';
+  return '<div class="kb-rg'+(isPole?' kbp-g':'')+'">'+rows.map(function(x){
+   var i=shown.length; shown.push(x);
+   var sub=kbSubIn(x);
+   /* a search crosses kinds, so a row says which kind it is */
+   if(q)sub=(KB_KIND[x.k]||x.k)+(sub?' · '+sub:'');
+   return kbRowHtml(x,i,sub);}).join('')+'</div>';}
+ /* rows deck by deck, each under its deck's name */
+ function byDeck(rows){
+  var o='';
+  /* A LAW IS LISTED ONCE ON A PAGE. The twenty one moral integrity laws are
+     also universal laws in the book's own list, so a seat's page printed
+     Unity twice, a screen apart. Where both decks are on the page the law
+     stands under Moral integrity, the deck the intake scores, and the
+     universal laws list keeps the ones that are only its own. */
+  if(rows.some(function(x){return x.k==='law';}))
+   rows=rows.filter(function(x){return !(x.k==='harm'&&x.axis==='spirit');});
+  kbDeckOrder().forEach(function(d){
+   var rs=rows.filter(function(x){return kbDeckOf(x)===d[0];});
+   if(!rs.length)return;
+   o+='<div class="kb-sec">'+esc(d[1])+'</div>'+grid(rs,d[0]==='addr');});
+  return o;}
+ function seatPanel(b,inner){
+  return '<section class="iqa-pn kbs-pn" data-kbpn="'+esc(b)+'" style="--c:'+seatCol(b)+'">'
+   +'<div class="iqa-ph"><span class="iqa-shn">'+esc(b)+'</span>'
+   +'<span class="iqa-shl">'+esc(kbSeatLine(b))+'</span></div>'+inner+'</section>';}
+ function across(inner){
+  return '<section class="iqa-pn kbs-pn kbs-any" data-kbpn="any">'
+   +'<div class="iqa-ph"><span class="iqa-shn">Across every seat</span>'
+   +'<span class="iqa-shl">held by no one seat</span></div>'+inner+'</section>';}
 
-     Measured against its own ground rather than against the page, which is
-     the only way this is ever caught: Root is 4.81 to 1 on the page and 4.17
-     on the panel, which is what the row stands on when a person points at it,
-     and a number needs 4.5. So the Root percent dropped below AA on hover.
-
-     It is the better design regardless. The ring already carries the seat
-     colour, so a coloured figure is the same channel used twice, and on the
-     moral integrity deck a high figure in a warm colour would read as an
-     alarm on a law that is being kept. Colour means the seat, once. */
-  var cls=x.p==null?' off':(x.p?'':' z');
-  /* the family comes back on a row whose section heading is not drawn */
-  var fam=(x.fam&&(KB_SORT==='weight'||q))?x.fam:x.s;
-  if(x.k==='node'){h+=kbPoleRow(x,i,seat,c,fam); return;}
-  h+='<button type="button" class="kb-row" data-kbi="'+i+'" style="--c:'+c+'">'
-   +crBadge(seat, x.p||0, {size:'md', bare:true, color:c,
-      glyph:glyphPath(x.ic), title:x.t+(x.p?' · '+x.p+'%':'')})
-   +'<span class="kb-rt"><span class="kb-rn">'+esc(x.t)+'</span>'
-   +(fam?'<span class="kb-rs">'+esc(q?(KB_KIND[x.k]||x.k)+' · '+fam:fam)+'</span>':'')+'</span>'
-   +'<span class="kb-rv'+cls+'">'+(x.p?x.p+'%':'–')+'</span>'
-   +'</button>';});
+ h+='<div class="kbs-body">';
+ if(bySeat){
+  /* ONE SEAT OPEN, everything filed under it, deck by deck. */
+  var mine=pool.filter(function(x){return x.seats.indexOf(KB_SEAT)>=0;});
+  h+=seatPanel(KB_SEAT,byDeck(mine));
+  /* and what belongs to no seat, one press away and named, never dropped */
+  var none=pool.filter(function(x){return !x.seats.length;});
+  if(none.length)h+='<details class="kbs-fold"'+(KB_ANY?' open':'')+'><summary><span>Across every seat</span>'
+   +'<span class="kbs-fs">domains, bands, kinds and poles</span></summary>'
+   +'<div class="kbs-fb">'+byDeck(none)+'</div></details>';
+ }else{
+  /* A KIND OR A SEARCH, laid out the same way: seat by seat, crown to root,
+     and what belongs to no seat last. A mask worn over two seats is in both. */
+  if(!pool.length)h+='<div class="rnone">Nothing here matches. The count beside each kind says where it is.</div>';
+  SEATS.forEach(function(b){
+   var rs=pool.filter(function(x){return x.seats.indexOf(b)>=0;});
+   if(!rs.length)return;
+   h+=seatPanel(b,deck?grid(rs,deck==='addr'):byDeck(rs));});
+  var none2=pool.filter(function(x){return !x.seats.length;});
+  if(none2.length)h+=across(deck?grid(none2,deck==='addr'):byDeck(none2));}
  h+='</div>';
 
  /* the deck sits under the base, because a card is the base at practice speed */
@@ -59599,19 +60364,69 @@ function kbRender(){
   +(deckSize()?'<b>'+deckSize()+'</b> cards in the deck.':'Nothing is held above the line yet, so the deck is empty.')+'</p>'
   +'<button class="btn pri" id="kbdeck"'+(deckSize()?'':' disabled')+'>Deal a card</button></div>';
 
- kbpCss();
+ kbpCss(); kbsCss();
  host.innerHTML=h;
  var qi=document.getElementById('kbq');
  if(qi){qi.oninput=function(){KB_Q=qi.value; kbRender();
    var e=document.getElementById('kbq'); if(e){e.focus(); try{e.setSelectionRange(e.value.length,e.value.length);}catch(err){}}};}
  host.querySelectorAll('[data-kb]').forEach(function(el){el.onclick=function(){
-  KB_SEC=el.getAttribute('data-kb'); kbRender();};});
+  var k=el.getAttribute('data-kb');
+  /* pressing the open kind again goes back to the seat it came from */
+  KB_SEC=(KB_SEC===k)?'all':k; kbRender();};});
+ host.querySelectorAll('[data-kbseat]').forEach(function(el){el.onclick=function(){
+  KB_SEAT=el.getAttribute('data-kbseat'); KB_SEC='all'; KB_Q=''; kbRender();};});
  host.querySelectorAll('[data-kbs]').forEach(function(el){el.onclick=function(){
   KB_SORT=el.getAttribute('data-kbs'); kbRender();};});
  host.querySelectorAll('[data-kbi]').forEach(function(el){el.onclick=function(){
-  kbOpen(rows[+el.getAttribute('data-kbi')]);};});
+  kbOpen(shown[+el.getAttribute('data-kbi')]);};});
+ var fd=host.querySelector('.kbs-fold');
+ if(fd)fd.addEventListener('toggle',function(){KB_ANY=fd.open;});
  var dk=document.getElementById('kbdeck');
  if(dk)dk.onclick=function(){deckDeal();};}
+/* whether the fold of what belongs to no seat was left open, kept through a
+   repaint because the page is rewritten whole on every press */
+var KB_ANY=false;
+/* the seat page's own sheet, injected beside kbpCss for the same reason */
+function kbsCss(){
+ if(document.getElementById('kbs-css'))return;
+ var st=document.createElement('style'); st.id='kbs-css';
+ st.textContent=[
+  '.kbs-map{margin:4px 0 2px}',
+  '.kbs-tile{min-height:92px}',
+  '.kbs-tile .kbs-rg{display:grid;place-items:center}',
+  '.kbs-tile .kbs-rg>svg{display:block;width:56px;height:56px}',
+  '.kbs-tile[aria-pressed="true"]{background:color-mix(in srgb,var(--c) 20%,var(--panel-2));box-shadow:inset 0 0 0 1.5px var(--c)}',
+  '.kbs-tile[aria-pressed="true"] .iqa-tn{color:var(--ink)}',
+  '.kbs-body{display:flex;flex-direction:column;gap:14px;margin-top:4px}',
+  '.kbs-pn{padding:8px 16px 14px}',
+  '.kbs-pn .kb-sec{color:color-mix(in srgb,var(--c) 58%,var(--dim))}',
+  '.kbs-pn .iqa-ph+.kb-sec{padding-top:4px}',
+  '.kbs-any{--c:var(--accent)}',
+  '.kbs-fold{border:1px solid var(--edge);border-radius:var(--r);background:var(--panel-2)}',
+  '.kbs-fold>summary{display:flex;align-items:center;gap:10px;min-height:var(--tap);padding:10px 16px;cursor:pointer;',
+  ' list-style:none;font-size:15px;font-weight:500;color:var(--ink)}',
+  '.kbs-fold>summary::-webkit-details-marker{display:none}',
+  '.kbs-fold>summary::before{content:"";flex:0 0 auto;width:7px;height:7px;border-right:1.6px solid var(--dim);',
+  ' border-bottom:1.6px solid var(--dim);transform:rotate(-45deg);margin:0 4px 0 2px;transition:transform .15s}',
+  '.kbs-fold[open]>summary::before{transform:rotate(45deg)}',
+  '.kbs-fs{font-size:13px;font-weight:400;color:var(--dim)}',
+  '.kbs-fb{padding:0 16px 14px}',
+  /* a track that can shrink below its longest line, or a nerve's long name
+     pushes the figure off the panel's edge on a phone, measured at 390 */
+  '.kbs .kb-rg,.kbs-body .kb-rg{grid-template-columns:repeat(3,minmax(0,1fr))}',
+  '.kbs-body .kb-rg.kbp-g{grid-template-columns:repeat(2,minmax(0,1fr))}',
+  '@media (max-width:1100px){.kbs-body .kb-rg{grid-template-columns:repeat(2,minmax(0,1fr))}}',
+  '@media (max-width:900px){.kbs-body .kb-rg.kbp-g{grid-template-columns:minmax(0,1fr)}}',
+  '@media (max-width:720px){.kbs-body .kb-rg{grid-template-columns:minmax(0,1fr)}}',
+  '@media (max-width:700px){',
+  ' .kbs-map{gap:4px}',
+  ' .kbs-tile{min-height:76px;padding:10px 2px 9px;gap:5px}',
+  ' .kbs-tile .kbs-rg>svg{width:40px;height:40px}',
+  ' .kbs-tile .iqa-tn{font-size:11.5px}',
+  ' .kbs-pn{padding:6px 8px 10px}',
+  ' .kbs-fb{padding:0 8px 10px}}'
+ ].join('\n');
+ document.head.appendChild(st);}
 
 /* the deck's own name, looked up by key and never by position, which is the
    rule this repository already carries for anything needing a tab's entry. */
@@ -60477,6 +61292,7 @@ function setTab(i){
   var T=TABEXTRA[k]; if(T&&T.cls)document.body.classList.remove(T.cls);});
  document.body.classList.add(TABOF(i).cls);   /* by key, not by position */
  if(typeof colTab==='function')colTab();   /* the left column's own fold per surface */
+ if(typeof railTab==='function')railTab(); /* and the right's, round RB */
  /* THE TAB ARRIVES RATHER THAN APPEARING. Switching surfaces was a single
     frame cut: one host went to display:none and the next to flex, which gives
     the eye no direction to follow and no sense that anything moved rather than
@@ -68834,18 +69650,26 @@ var LCOL_BESIDE='(min-width:1181px)';
    defaults open. The key is its own, the Compass's own pattern, so a person
    who shuts it on Flow keeps it shut on Flow and the Field's choice is
    untouched. */
+/* AND KNOWLEDGE HAS ITS OWN, round RB, his words: "on the knowledge start
+   with the left and right menus closed." The page is one centre column built
+   around the seven seats, so both columns start shut there, at every width:
+   on a phone they stack under the codex, and a reference a person came to
+   read should not end in two open rails of readings. Its own key, the
+   Compass's pattern, so a choice made on the Field does not open it here and
+   a person who opens it here keeps it open here. */
 function colKey(){
  if(typeof TAB==='undefined'||!S)return 'lcol';
  if(S.tab===TAB.COMPASS)return 'lcolc';
  if(S.tab===TAB.RITUAL)return 'lcolf';
+ if(S.tab===TAB.KNOW)return 'lcolk';
  return 'lcol'; }
 function colShut(){
  var beside=true; try{beside=matchMedia(LCOL_BESIDE).matches;}catch(e){}
  var k=colKey();
  /* only a store with nothing in it defaults, and what it defaults to is the
     surface's own answer: shut where the column is a rail, open where it is
-    the menu the surface is for */
- var dflt=(k==='lcolf')?false:beside;
+    the menu the surface is for, and shut at every width on Knowledge */
+ var dflt=(k==='lcolf')?false:(k==='lcolk')?true:beside;
  var shut=dflt;
  try{var got=STORE.get(k); shut=got?(got==='shut'):dflt;}catch(e){shut=false;}
  return shut;}
@@ -68881,9 +69705,19 @@ function railFoldPaint(shut){
  var say=shut?'Open the right column':'Close the right column';
  b.setAttribute('aria-expanded',shut?'false':'true');
  b.setAttribute('aria-label',say); fbTip(b,say);}
+/* THE RIGHT COLUMN'S KEY, PER SURFACE, round RB. One shared key opened the
+   right column on Knowledge whenever it was open anywhere, which is every
+   surface, since it defaults open. Knowledge carries its own key and its own
+   default, shut, on his ruling above colKey. Every other surface keeps the
+   one shared key and the default it always had, open. */
+function railKey(){
+ return (typeof TAB!=='undefined'&&S&&S.tab===TAB.KNOW)?'rcolk':'rcol';}
+function railShut(){
+ var k=railKey(), dflt=(k==='rcolk');
+ try{var got=STORE.get(k); return got?(got==='shut'):dflt;}catch(e){return false;}}
+function railTab(){ railFoldPaint(railShut()); }
 function railFold(){
- var shut=false; try{shut=STORE.get('rcol')==='shut';}catch(e){shut=false;}
- railFoldPaint(shut);
+ railFoldPaint(railShut());
  var b=$('rfold'); if(!b)return;
  /* the control is pinned over the rail's head, and once the rail has
     scrolled it takes the panel's ground, head.html beside .rfold */
@@ -68892,7 +69726,7 @@ function railFold(){
  b.onclick=function(){
   var now=!document.body.classList.contains('rshut');
   railFoldPaint(now);
-  try{STORE.set('rcol',now?'shut':'open');}catch(e){}
+  try{STORE.set(railKey(),now?'shut':'open');}catch(e){}
   if(!now&&typeof fitGrids==='function')requestAnimationFrame(fitGrids);};}
 
 /* ============================================================
@@ -69982,5 +70816,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004593474"></div>
+<div id="eof" hidden data-len="004648921"></div>
 </body></html>
