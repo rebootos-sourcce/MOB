@@ -288,7 +288,8 @@ ABSTRACT = re.compile(
 
 CAPS = re.compile(r'\b[A-Z]{3,}\b')
 CAPS_OK = {'CQ', 'SQ', 'DQ', 'IQ', 'MBTI', 'INFJ', 'ENTP', 'JSON', 'HTML',
-           'CSS', 'URL', 'API', 'OK', 'AM', 'PM', 'UTC', 'ICP', 'IBS'}
+           'CSS', 'URL', 'API', 'OK', 'AM', 'PM', 'UTC', 'ICP', 'IBS',
+           'FAQ', 'LLC'}
 
 # ------------------------------------------------------- V17, a figure's label
 #
