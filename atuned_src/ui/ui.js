@@ -988,7 +988,13 @@ function axDial(host,o){
      state is committed first, one read of the layout, so the fill grows out
      of the break the way a change does. */
   built=true; void host.offsetWidth;}
- host.title=o.title||'';
+ /* A NATIVE title NEVER SHOWS ON TOUCH AND IS UNRELIABLE ON HOVER. The same
+    tap-and-keyboard carrier the rest of the product reads from, data-tip,
+    not a second mechanism for this one dial. */
+ host.removeAttribute('title');
+ if(o.title){host.setAttribute('data-tip-k',(o.title.split('.')[0]||'').trim());
+  host.setAttribute('data-tip',o.title); host.setAttribute('tabindex','0');}
+ else{host.removeAttribute('data-tip'); host.removeAttribute('data-tip-k'); host.removeAttribute('tabindex');}
  var L=o.L, R=o.R, heavy=!o.read?0:(L.v>R.v?-1:R.v>L.v?1:0), diff=o.read?Math.abs(L.v-R.v):0;
  var col=heavy<0?L.c:R.c;
  /* the pole names only once there is a reading to name, so an unread dial
