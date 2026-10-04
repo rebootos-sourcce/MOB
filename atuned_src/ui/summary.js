@@ -317,12 +317,18 @@ function sumStory(r){
    +(stop?' Flow stops at the '+seatB(String(stop.p.n).toLowerCase(),stop.p.b,String(stop.p.n).toLowerCase(),'seat')
      +', which is where the charge is dense enough to close the seat.'
     :' No seat is closed, so what is held is not yet stopping flow.')
-   +' Shadow weight is '+Math.round(r.DQ)+'. The law furthest shut is '
+   /* ROUND RG. "Shadow weight is 54" was a bare figure under a term nobody
+      on this page had been told. The term carries its sentence now. */
+   +' '+unp('shadow weight','Shadow weight')+' is '+Math.round(r.DQ)+'. The law furthest shut is '
    +seatB(r.weakL.nm,r.weakL.b,r.weakL.nm.toLowerCase(),'law')+', at the '
    +seatB(String(r.weakL.b).toLowerCase(),r.weakL.b,String(r.weakL.b).toLowerCase(),'seat')+'.');
  }else{
-  p.push('Nothing is held above the line, so nothing is reaching the body as load. '
-   +(r.under?'There are '+r.under+' addresses carrying under it, which is signal and not yet cost.':''));}
+  /* ROUND RG. "The line" was never said, and "signal and not yet cost" was
+     shorthand that had also stopped being true: DQ counts the charge under
+     the line since it was rebuilt, and vitality and drag feel it. The line
+     carries its sentence and the clause that overstated is gone. */
+  p.push('Nothing is held above '+unp('the line')+', so nothing is reaching the body as load. '
+   +(r.under?'There are '+r.under+' addresses carrying charge under it.':''));}
 
  /* THREE. momentum, and what stands between here and the avatar.
     A PAIR IS {be,notbe}, NOT {seat,becoming}. This read pair.seat and
@@ -375,7 +381,9 @@ function sumStory(r){
   /* .length, because r.excess is a list and an empty list is truthy: this
      told every one of the fourteen reference cases the pole was past paying,
      including the ones with nothing past it. ui.js reads it the same way. */
-  +(r.excess.length?' Installed pole is past the point where it pays, so some of the work is now costing.':'')
+  /* "Installed pole" was two terms of art and no picture. Round RG. */
+  +(r.excess.length?' At '+r.excess.length+(r.excess.length===1?' address':' addresses')
+    +' the opposite quality has been pushed past the point where it helps, so some of the work is now costing.':'')
   +gapLine).trim());
 
  return '<div class="s-story"><div class="pm-eye">Reading</div>'
@@ -1009,7 +1017,12 @@ function sumOutput(r){
     var THIN=1.5;
     if(hot)return card('Release this first',hot.k,
      hot.b+' seat, holding '+hot.sq.toFixed(1)
-      +(r.unread||!r.complete?'':'. Release has about '+rhead.toFixed(1)+' points of expression in it'),
+      /* ROUND RG. "Points of expression" was a term of art on the same page
+         where Expression is a numerology number, so one word meant two
+         things a scroll apart. The headroom is coherence held back by the
+         charge, which is what exHeadroom measures, and it is said that way. */
+      +(r.unread||!r.complete?'':'. What you carry holds back about '+rhead.toFixed(1)
+        +' points of your coherence, and release can give them back'),
      '<button class="btn s-oact" data-sout="rel" data-n="'+hot.i+'">Run a release</button>');
     if(r.heaviest&&(r.unread||rhead>=THIN))return card('Release this first',r.heaviest.k,
      r.heaviest.b+' seat, below the line at '+r.heaviest.sq.toFixed(1)
@@ -1020,12 +1033,12 @@ function sumOutput(r){
     /* while CQ is still filling, expression cannot rise above it, so the
        headroom is near 0 whatever is held and the figure says nothing */
     if(!r.complete)return card('What moves the reading','The twenty one laws',
-     'Coherence fills as you answer them, and expression cannot rise above it',
+     'Coherence fills as you answer them. Until it is full, release has little to give back',
      '<button class="btn s-oact" data-sout="iq">Answer the laws</button>');
     if(r.heaviest)return card('What moves the reading','The twenty one laws',
-     (rhead>=0.05?'Release has about '+rhead.toFixed(1)+' points of expression left in it for you. The rest '
-      +'is the laws, and they move when you answer them or when what you do changes'
-      :'Release has no expression left in it for you. What is left is the laws, and they move '
+     (rhead>=0.05?'What you carry holds back about '+rhead.toFixed(1)+' points of your coherence, and release '
+      +'can give them back. Past that only the laws move it, and they move when you answer them or when what you do changes'
+      :'Release has nothing left to give back to your coherence. What is left is the laws, and they move '
       +'when you answer them or when what you do changes'),
      '<button class="btn s-oact" data-sout="iq">Answer the laws</button>');
     return card('Release this first','Nothing is carrying',

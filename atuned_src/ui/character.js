@@ -397,8 +397,12 @@ function chRailHtml(r){
   +'</div><p class="chr-note">The bar is how closed the seat is, from the charge on its own addresses. Past about a third the field pinches there, runs slow and breaks up. An open seat swells.</p>';
  /* what the points are, which is the question the owner asked of the mockup */
  h+='<div class="pm-eye chr-sp">What the points are</div>'
-  +'<p class="ad-p">Each point round the body is one address. '+chPl(AF.filter(function(x){return !x.field;}).length,'address sits','addresses sit')
-  +' round the body at the height of its seat, going slowly round the spine. Four are field anchors, two above the head and two below the feet, drawn as rings. Size and brightness are the address’s charge, and a thin pale ring round a point is a charge above seven tenths.</p>'
+  /* NEVER THE LOWER COUNT. This printed the body's own share of the
+     addresses, which is the figure the house rule says is never put in front
+     of a person: the count stated is the whole set. Round RG. */
+  +'<p class="ad-p">Each point is one address, and there are '+AF.length
+  +'. Most sit round the body at the height of their seat, going slowly round the spine. '
+  +'Four are field anchors, two above the head and two below the feet, drawn as rings. Size and brightness are the address’s charge, and a ring round a point is a charge above seven tenths.</p>'
   /* round RB: the saboteur's ring, the complex's second ring, the dimmed body
      and the line, each said where it is drawn, with what a saboteur and a
      complex are taken from the one table of meanings */

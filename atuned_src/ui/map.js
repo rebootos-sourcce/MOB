@@ -622,7 +622,7 @@ function renderMap(r){
    +(held?'':'<circle cx="50" cy="'+b.yp+'" r="'+(0.42*ZS).toFixed(3)+'" fill="'+PC[b.b]+'" opacity=".92"/>');
   seatHit+='<circle class="pm-seat" data-seat="'+b.k+'" cx="50" cy="'+b.yp+'" r="'
    +(SR+0.5*ZS).toFixed(2)+'" fill="transparent"><title>'+b.nm+', '
-   +(st.hot?st.hot+' carrying, '+Math.round(st.pass*100)+' percent through':'nothing carrying')+'</title></circle>';});
+   +(st.hot?bmSeatSay(st):'nothing carrying')+'</title></circle>';});
  /* the domains you run, ringing the seats they own. The ring used to grow by
     half a unit per address the domain held there, which on Gordon made one
     dashed circle thirteen units across that ran through Sacral and Root at
@@ -2198,6 +2198,12 @@ function bmDrawHubs(g,vs){
    figures, its step in words, where there is a lane; on a phone the step is
    in the seat's own name and in its answer when it is pressed. */
 var BMFLOW=[[.8,'open'],[.6,'mildly impaired'],[.4,'moderately impaired'],[.2,'heavily impaired'],[0,'blocked']];
+/* ROUND RG. "17 carrying, 53 percent through" counted nothing it named and
+   gave a share of nothing it named. The count is addresses and the share is
+   how much of the flow up the spine this seat lets past, which is pass. */
+function bmSeatSay(st){
+ return st.hot+(st.hot===1?' address':' addresses')+' carrying, '
+  +Math.round(st.pass*100)+' percent of the flow getting through';}
 function bmFlowStep(pass){for(var i=0;i<BMFLOW.length;i++)if(pass>=BMFLOW[i][0])return BMFLOW[i][1];return 'blocked';}
 function bmDrawFlow(g,vs){
  if(!BM.ov.on.flow)return;
@@ -2640,7 +2646,7 @@ function bmSeats(seats){
  var g=BM.sv&&BM.sv.querySelector('[data-bmseats]'); if(!g)return;
  g.innerHTML=PMBANDS.map(function(b){var st=seats.filter(function(s){return s.p.k===b.k;})[0];
   return '<circle class="pm-seat" data-seat="'+b.k+'" cx="50" cy="'+b.yp+'" r="2.4" fill="transparent"><title>'
-   +b.nm+', '+bmFlowStep(st.pass)+'. '+(st.hot?st.hot+' carrying, '+Math.round(st.pass*100)+' percent through':'Nothing carrying')+'</title></circle>';}).join('');}
+   +b.nm+', '+bmFlowStep(st.pass)+'. '+(st.hot?bmSeatSay(st):'Nothing carrying')+'</title></circle>';}).join('');}
 
 /* ---------- what is under a point ---------- */
 /* THE PICK IS A REGION'S KEY, OR A PAIR'S. A name in the panel below stands

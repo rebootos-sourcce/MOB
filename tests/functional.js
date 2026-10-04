@@ -4514,9 +4514,11 @@ for(const w of [[1600,1000],[390,844]]){
        reading carries EITHER a scale OR the band it sits in, said in words.
        Both satisfy a person. Only one satisfies a regular expression, which is
        why the regular expression was the wrong thing to assert. */
-    if(t===8&&!/unread/i.test(txt)&&/You read/i.test(txt)
+    /* round RG: the reading opens "Your coherence is" now, and the band is
+       said as the figure's middle band, so the guard follows the words */
+    if(t===8&&!/unread/i.test(txt)&&/Your coherence is/i.test(txt)
        &&!/\b\d{1,3}\s*(?:of|out of)\s*(?:10|100)\b/.test(txt)
-       &&!/oscillating band/i.test(txt))
+       &&!/middle band/i.test(txt))
      bad.push('tab 8: a reading with neither a scale nor a band to read it by');}
    return bad;},who);
   ok(hits.length===0,'no count against a total at '+w[0]+' for '+who

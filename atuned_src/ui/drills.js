@@ -272,8 +272,9 @@ function lawDrillHtml(l,o){
      with a sentence after it starting in lower case. The intake prints the
      same two facts joined by a comma and reads correctly, so this joins them
      the same way. */
-  ? '<div class="pm-eye">From your diagnostic</div><p class="ad-p">Spread <b>'+sc.spread
-    +'</b>, '+sc.lean+'.</p>'
+  /* ROUND RG: "Spread" said what kind of number it was and not what it was. */
+  ? '<div class="pm-eye">From your diagnostic</div><p class="ad-p">Your three answers sit <b>'+sc.spread
+    +'</b> apart, '+sc.lean+'.</p>'
   : '<div class="pm-eye">Not measured</div><p class="ad-p">Not answered in the diagnostic, so '
     +'it defaults to '+v.toFixed(1)+'. Three questions would replace the guess.</p>';
  if(hot.length)h+='<div class="pm-eye">Held here</div><div class="ad-rows">'

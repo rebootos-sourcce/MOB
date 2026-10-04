@@ -2650,9 +2650,32 @@ function coneRead(){
   +esc(tierSay(r))+'</b>. Your position on this figure settles once all '
   +SI.length+' are in.</p>';
  var cq=Math.round(r.CQ);
- var band=cq>=60?'above the oscillating band':cq<=40?'below the oscillating band'
-  :'inside the oscillating band, where most people stand';
+ /* ROUND RG, THE COPY SWEEP. His words, about this paragraph: "you read 62
+    above the oscillating band. Your integrity is 6.2. Integrity is the hull.
+    It's got to be human... it has to be unpacked into what actually needs to
+    be changed."
+
+    Four misses, and each was a real one. "You read 62" never said what read
+    62. "The oscillating band" is forty to sixty on this figure and forty one
+    to fifty as a tier, so Diane at 59 read "inside the oscillating band" here
+    and Even on every other surface: one word, two meanings. "Your integrity
+    is 6.2" was a figure with no meaning on the screen. And nothing said what
+    to do. So: what the number is, where it sits in plain words, what
+    integrity is, and the one law with the most room, with what it asks. */
+ var band=cq>=60?'You sit above the middle band of the figure'
+  :cq<=40?'You sit below the middle band of the figure'
+  :'You sit in the middle band of the figure';
  var rising=r.Ig>=5;
+ /* THE LAW WITH THE MOST ROOM. CQ is the laws summed (cqSum), so the lowest
+    one has the most room to rise. weakL is the first of the lowest, so a tie
+    is said as a tie, and a field with every law level names none. */
+ var lo=S.law[r.weakL.nm], hi=Math.max.apply(null,SI.map(function(l){return S.law[l.nm];}));
+ var tied=SI.filter(function(l){return Math.abs(S.law[l.nm]-lo)<0.05;}).length;
+ var weak=(hi-lo<0.05)?''
+  :'<p class="cone-p">'+(tied>1?'<b>'+esc(r.weakL.nm)+'</b> is one of the '+tied+' laws you keep least. '
+    :'The law you keep least is <b>'+esc(r.weakL.nm)+'</b>. ')
+   +unpSay(r.weakL.nm,'law')+' Your coherence is built from your answers on the laws, '
+   +'so this one has the most room to rise.</p>';
  /* EVERY NUMBER SAYS WHAT IT IS OUT OF. His instruction, and this line broke
     it twice: "you read 88" and "integrity 9.3" with nothing to measure either
     against. Coherence runs nought to a hundred and integrity runs nought to
@@ -2663,13 +2686,19 @@ function coneRead(){
     is the shape he objected to and a repetition on top of it. The band already
     says where the number sits, so the number is said once and the sentence
     carries the meaning rather than the arithmetic. */
- return '<p class="cone-p">You read <b>'+cq+'</b>, '+band+'.</p>'
-  +'<p class="cone-p">Your integrity is <b>'+r.Ig.toFixed(1)+'</b>.</p>'
+ /* "CURRENTLY TURNING" CAME OFF. The direction is read from where integrity
+    sits, the top or the bottom half of its range, and not from a change over
+    time, so the sentence says what it is read from and claims no movement. */
+ return '<p class="cone-p">Your coherence is <b>'+cq+'</b>. '+unpSay('coherence')+' '
+  +band+', where most people swing between better days and worse ones.</p>'
+  +'<p class="cone-p">Your integrity is <b>'+r.Ig.toFixed(1)+'</b>. '+unpSay('integrity')+'</p>'
   +'<p class="cone-p">Integrity is the hull. A hole in it means the ship takes '
   +'on water, and everything above the waterline stops mattering. Integrity '
   +'raises coherence, coherence raises what you can hold to, and that raises '
-  +'integrity again. The loop turns both ways. Yours is currently turning '
-  +'<b>'+(rising?'up':'down')+'</b>.</p>'
+  +'integrity again. The loop turns both ways. Yours is turning '
+  +'<b>'+(rising?'up':'down')+'</b>, because your integrity is in the '
+  +(rising?'top':'bottom')+' half of its range.</p>'
+  +weak
   /* "You are floating the ship out of the water so that it can float" came
      off the end: a ship floats in water, so the sentence cannot be pictured,
      and the hull line above already carries the metaphor whole. */
