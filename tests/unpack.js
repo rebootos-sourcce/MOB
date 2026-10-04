@@ -200,9 +200,27 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
 
  /* ---- the Compass: every pole, phrase by phrase ---- */
  await p.evaluate(()=>setTab(TAB.COMPASS)); await p.waitForTimeout(700);
- const axs=await p.evaluate(()=>Array.prototype.map.call(document.querySelectorAll('.cn-nr'),function(x){
+ /* the axis rows only. Round RB put the poles on no axis on the same panels,
+    and they are checked on their own just below */
+ const axs=await p.evaluate(()=>Array.prototype.map.call(document.querySelectorAll('.cn-nr[data-cnax]'),function(x){
   return {q:x.querySelector('.cn-nq').textContent,t:x.getAttribute('data-tip')||'',ti:x.getAttribute('title')||''};}));
  ok(axs.length===E.MIRROR.length,'the Compass lists every axis, saw '+axs.length);
+ /* ROUND RB. Every pole on no axis is named on the panels, and its word carries
+    the pole's own line from the recipe table as its meaning, never the Heart
+    axis's sentence (Akhenaten's Light is not the axis called Light) */
+ const offs=await p.evaluate(()=>Array.prototype.map.call(document.querySelectorAll('.cn-nr[data-cnpole]'),function(x){
+  return {k:x.getAttribute('data-cnpole'),q:x.querySelector('.cn-nq').textContent,t:x.getAttribute('data-tip')||''};}));
+ const offWant=E.compassOffAxis().map(x=>x.k);
+ ok(offs.map(x=>x.k).join()===offWant.join(),'the Compass names every pole on no axis, in the roster order, saw '+JSON.stringify(offs.map(x=>x.k)));
+ offs.forEach(o=>ok(o.t===E.recipeOf(o.k).line+'.','pole '+o.k+' ('+o.q+') carries its own line as its meaning, has "'+o.t.slice(0,60)+'"'));
+ ok(await p.evaluate(()=>!!document.querySelector('#cone .cn-grp i')),'and the caption over them says why they carry no number');
+ for(const k of offWant){
+  const got=await p.evaluate(k=>{const b=document.querySelector('#cone [data-cnpole="'+k+'"]'); if(!b)return null; b.click();
+   const d=document.querySelector('#rdrill .tcx');
+   return d?{k:d.getAttribute('data-tcx'),txt:d.innerText,tips:Array.prototype.map.call(d.querySelectorAll('.ad-sub .tipu'),c=>c.getAttribute('data-tip'))}:{};},k);
+  await p.waitForTimeout(120);
+  ok(got&&got.k===k&&got.txt.indexOf(E.recipeOf(k).line)>=0,'pressing pole '+k+' on the panel opens its behaviour panel, saw '+(got&&got.k));
+  ok(got&&got.tips&&got.tips.indexOf(T['axis:light'])<0,'and pole '+k+' does not borrow the Heart axis\'s meaning');}
  axs.forEach(a=>ok(a.t===T['axis:'+a.q.toLowerCase()],'axis '+a.q+' says what it measures in the table\'s sentence, has "'+(a.t||a.ti).slice(0,60)+'"'));
 
  const pairsIn=(m,end)=>{const a=end==='dn'?m.dnm:m.upm; return a&&a.length?a:[];};

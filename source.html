@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1681 69b2d7b 2026-10-04 21:38"><head><meta charset="utf-8">
+<html lang="en" data-build="v1685 e8935f8 2026-10-04 21:39"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -6535,6 +6535,16 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
  display:flex;align-items:center;gap:5px}
 .cn-nd{font-size:11.5px;font-weight:500;color:var(--axd);line-height:1.25;
  display:flex;align-items:center;gap:5px}
+/* THE POLES ON NO AXIS, round RB. Their ring is whole, at half the seat's
+   token, and holds no reading, which the caption over them says in words:
+   there is no seat, so there is no position. The caption is the quality
+   line's size and colour, so it recedes the way a label does. */
+.cn-or.bare .trk{stroke:color-mix(in srgb,var(--c) 50%,transparent)}
+.cn-grp{margin:4px 6px 0;font-size:11px;font-weight:500;line-height:1.3;
+ letter-spacing:.02em;color:var(--dim)}
+.cn-grp i{display:block;font-style:normal;font-weight:400}
+.cn-nms-r .cn-grp{text-align:right}
+.cone-fig.stk .cn-grp{grid-column:1 / -1;text-align:left}
 /* the icon sits on the figure side of its name, so the pair reads as one
    object, which is how the canvas drew it before the names moved out */
 .cn-gl{width:13px;height:13px;flex:0 0 13px;display:block}
@@ -10994,6 +11004,61 @@ IC_NEW['Ravana']='M5 3.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8M12 2.6a2.4 2.4 0 11
 IC_NEW['Shu and Hu']='M12 8.5a6 6 0 110 12 6 6 0 010-12M8.8 3v8.4M15.2 3v8.4M7 3h3.6M13.4 3h3.6';
 PATHS.forEach(function(p){p.ic=icOf(p.up); p.dic=icOf(p.dn);});
 
+/* ---- THE THREE POLES ON NO AXIS THAT ARE NOT PATHS ----
+   Round RB, his words: "On the compass, we're supposed to have 13 character
+   people, and we I still have the original eight." The roster is
+   DESIGN-teachers.md v2 section 2, fourteen poles for thirteen people, Jesus
+   at two, accepted at round PD. Eight are the axes above and three are the
+   paths that are not an axis read twice (Krishna, Rama, Lao Tzu). These are
+   the last three, in the paths' own shape so the panels draw all six alike.
+
+   NOT A ROW OF MIRROR, ON PURPOSE. An axis is a quality read at one seat and
+   its ring is that seat's reading. Akhenaten has no seat. Zoroaster and
+   Confucius have a home seat, where their law sits and what colours their
+   ring, and section 2 rules that a home seat "gives no position on an axis,
+   because Moses already holds the Throat's axis and a second teacher would
+   print the same number." Placing them on the figure is the needle's own
+   slice (T10 there), and the plan says why (PLAN.md section N).
+
+   NO CODEX LINE. The codex gives none of the three an upd or a dnd, so none
+   is written here; the panel a press opens is the behaviour pair in
+   engine/data/teachers_recipes.js. The opposites are the document's own
+   proposals, marked proposed, each with the text it names to check them
+   against. The keys are identity and are never reused. */
+const HOME_POLES=[
+ {k:'SA', q:'Light', up:'Akhenaten', dn:'Apep', home:null,
+  from:'proposed', src:'the nightly voyage texts, the Amduat and the Book of Gates'},
+ {k:'TU', q:'Truth', up:'Zoroaster', dn:'The Lie', home:'Throat',
+  from:'proposed', src:'Yasna 30 and 31'},
+ {k:'NA', q:'Nature', up:'Confucius', dn:'The farmer of Song', home:'Crown',
+  from:'proposed', src:'Mencius 2A2, and Analects 17.19'}];
+/* the marks. Zoroaster, Confucius and the Lie are the design's own, ported
+   from mockups/teachers/imprint.html. Apep and the farmer had none anywhere,
+   so they are drawn here, argued from what each one does, and are a first
+   draft. Same 24 unit grid, ring not fill. */
+/* Zoroaster and Confucius wear the mark of the law their quality names, the
+   Truth law's plumb line and the Nature law's stem, as the design drew them.
+   Read off SI rather than copied, so one mark cannot become two. */
+(function(){
+ function law(nm){for(var i=0;i<SI.length;i++)if(SI[i].nm===nm)return SI[i].ic; return null;}
+ IC_NEW['Zoroaster']=law('Truth');
+ IC_NEW['Confucius']=law('Nature');})();
+/* the Lie: the plumb line broken and turned aside on its way down */
+IC_NEW['The Lie']='M12 3v4l-3 3 6 4-3 3v4';
+/* Apep: the sun disc, and the serpent's open jaw closing over it from below.
+   Light taken in and nothing handed on, the inverse of Akhenaten's rays */
+IC_NEW['Apep']='M12 4.5a3 3 0 110 6 3 3 0 010-6M4 20c2.4-2.6 4.8-2.6 7.2 0s4.8 2.6 7.2 0M18.4 20c1.6-3.4.6-7.6-2.6-9.6M5.6 12.4c1.6-1.6 3.8-2.2 5.8-1.6';
+/* the farmer of Song: the shoot pulled clear of the ground, roots in the air
+   over the hole it came out of */
+IC_NEW['The farmer of Song']='M3 20h6.5M14.5 20H21M12 14.5V5.5M12 9c-2.2 0-3.6-1.3-3.6-3.2 2.2 0 3.6 1.3 3.6 3.2M12 7.6c2.2 0 3.6-1.3 3.6-3.2-2.2 0-3.6 1.3-3.6 3.2M12 14.5l-2 2.6M12 14.5l2 2.6M12 14.5v3';
+HOME_POLES.forEach(function(p){p.ic=icOf(p.up); p.dic=icOf(p.dn);});
+/* THE POLES THAT STAND ON NO AXIS, in the roster's order: the paths that are
+   not an axis read twice, then the three above. A path is an axis read twice
+   when its line is a mirror pair's own, the rule runPathDrill uses. */
+function compassOffAxis(){
+ return PATHS.filter(function(p){
+  return !MIRROR.some(function(m){return m.up===p.up&&m.upd===p.upd;});}).concat(HOME_POLES);}
+
 /* ============================================================
    WHAT EACH PHRASE OF A POLE MEANS. Round PO, UNPACK EVERY SYMBOL.
 
@@ -11078,11 +11143,13 @@ var POLE_MEANS={
 POLE_MEANS.AW=POLE_MEANS.PE; POLE_MEANS.BO=POLE_MEANS.IL;
 MIRROR.forEach(function(m){var pm=POLE_MEANS[m.k]; if(pm){m.upm=pm.up; m.dnm=pm.dn;}});
 PATHS.forEach(function(p){var pm=POLE_MEANS[p.k]; if(pm){p.upm=pm.up; p.dnm=pm.dn;}});
-/* a pole by its key, from the eight mirror axes or the five paths, or null */
+/* a pole by its key, from the eight mirror axes, the five paths or the three
+   poles on no axis, or null */
 function compassPoleOf(k){
  var i;
  for(i=0;i<MIRROR.length;i++)if(MIRROR[i].k===k)return MIRROR[i];
  for(i=0;i<PATHS.length;i++)if(PATHS[i].k===k)return PATHS[i];
+ for(i=0;i<HOME_POLES.length;i++)if(HOME_POLES[i].k===k)return HOME_POLES[i];
  return null;}
 /* a pole's phrases, each with its meaning, for one end. The phrases a pole has
    no meanings for come back as the codex line whole, so nothing is ever blank. */
@@ -11744,13 +11811,14 @@ try{window.__at&&window.__at('engine/data/practice.js');}catch(e){}
    second kind of row, so rc marks it, and the test that walks the round KQ
    rows skips rc rows rather than being edited to expect them.
 
-   THREE POLES HAVE NO PLACE ON THE COMPASS YET. Akhenaten, Zoroaster and
-   Confucius are rows 12 to 14 of the roster and the figure, MIRROR, PATHS and
-   BECOMING do not carry them until the roster change lands. Their recipes are
-   written now, so that landing them is a drawing task and not a writing one.
-   Until then recipeOf finds them and nothing on the Compass can open them, and
-   a ritual added from one of them carries no tc, because becomingOf answers
-   null for a pole it does not know and ritPlanOk would refuse the whole plan.
+   THREE POLES ARE ON THE COMPASS'S NAME PANELS AND NOT YET ON ITS FIGURE.
+   Akhenaten, Zoroaster and Confucius are rows 12 to 14 of the roster. Round RB
+   put them in HOME_POLES (engine/data/compass.js) and on the two name panels
+   beside the figure, where a press opens their row here. MIRROR, PATHS,
+   BECOMING and the needle still do not carry them (PLAN.md section N says
+   why). A ritual added from one of them carries no tc, because becomingOf
+   answers null for a pole it does not know and ritPlanOk would refuse the
+   whole plan.
 
    NO COUNT, NO SCORE, NO PERCENT. Nothing in this file is measured against a
    total. A behaviour is listed or it is not.
@@ -27802,6 +27870,7 @@ if(typeof module!=='undefined'&&module.exports){
      is one plain sentence, and so a tool can read the same table the page does. */
                   unpackAll:unpackAll, unpackOf:unpackOf, unpackKey:unpackKey,
                   compassPoleOf:compassPoleOf, compassPoleLines:compassPoleLines, POLE_MEANS:POLE_MEANS,
+                  HOME_POLES:HOME_POLES, compassOffAxis:compassOffAxis,
   /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory,
                   wordsOf:wordsOf, unmarkedOf:unmarkedOf,
                   SOMA_SENSE:SOMA_SENSE, SOMA_PLACE_WORDS:SOMA_PLACE_WORDS, SOMA_PLACE_RULED:SOMA_PLACE_RULED, SOMA_PLACE:SOMA_PLACE, somaPlaces:somaPlaces,
@@ -52435,15 +52504,22 @@ function ritComplexHtml(k){
  var list=function(a){
   return a&&a.length?'<ul class="tcx-l">'+a.map(function(t){return '<li>'+esc(t)+'</li>';}).join('')+'</ul>'
    :'<p class="tcx-none">–</p>';};
+ /* THE AXIS MEANING ONLY FOR AN AXIS, round RB. The quality word was read
+    through the axis table for every pole, so Akhenaten's Light, which is no
+    axis, would have printed the Heart axis's sentence about warmth. Every
+    other pole's headline line above is what its word means. And the mark is
+    the pole's own when becomingOf does not know the pole. */
+ var onAxis=!!(pole&&MIRROR.indexOf(pole)>=0);
+ var ic=(b&&b.ic)||(pole&&pole.ic)||null;
  var h='<div class="tcx" data-tcx="'+esc(row.k)+'">'
-  +'<div class="ad-nm plain">'+(b&&b.ic?'<svg class="ad-ic" viewBox="0 0 24 24" aria-hidden="true">'
-   +'<path d="'+b.ic+'"/></svg>':'')+esc(row.line)+'</div>'
+  +'<div class="ad-nm plain">'+(ic?'<svg class="ad-ic" viewBox="0 0 24 24" aria-hidden="true">'
+   +'<path d="'+ic+'"/></svg>':'')+esc(row.line)+'</div>'
   /* ROUND PO, UNPACK EVERY SYMBOL. "After Jesus · Light · Heart" was three
      names and no meaning. Each is a carrier of its sentence, and under the two
      columns the pole is said phrase by phrase, each phrase with what it means,
      at both ends. The codex lines it reads from are in engine/data/compass.js. */
   +'<div class="ad-sub">After '+unp('teacher',row.who)+' \u00b7 '
-   +unp(String(row.q).toLowerCase(),row.q,'axis')
+   +(onAxis?unp(String(row.q).toLowerCase(),row.q,'axis'):esc(row.q))
    +(b&&b.seat?' \u00b7 '+unp(String(b.seat).toLowerCase(),b.seat,'seat'):'')+'</div>'
   +'<div class="tcx-pair">'
   +'<div class="tcx-col"><div class="pm-eye">Release</div>'
@@ -58148,7 +58224,8 @@ function coneNames(side){
     its overlays and nothing else. Still .cn-nms and still .cn-nr, so every
     gate that finds a row by those names finds it where it was. */
  return '<div class="cn-pan cn-nms cn-nms-'+side+'" role="group" aria-label="Characters, '
-  +(side==='l'?'the first four axes':'the last four axes')+'">'
+  +(side==='l'?'the first half of the axes, and of the poles on no axis'
+    :'the second half of the axes, and of the poles on no axis')+'">'
   +half.map(function(x){
    /* the inverted pole is the seat token at an opacity, which is the brand's
       darker version of a token over the ground. coneDull's grey mix was a new
@@ -58181,7 +58258,45 @@ function coneNames(side){
     +'<span class="cn-nd">'+esc(x.m.dn)+'</span>'
     +'</span>'
     +'</button>';}).join('')
+  +cnOffAxis(side)
   +'</div>';}
+/* THE POLES ON NO AXIS, UNDER THE EIGHT. Round RB, his words: "On the
+   compass, we're supposed to have 13 character people, and we I still have
+   the original eight." The panels were built from MIRROR alone, so they named
+   eight axes and seven people. The roster (DESIGN-teachers.md v2 section 2) is
+   fourteen poles: the eight axes, then Krishna, Rama and Lao Tzu, then
+   Akhenaten, Zoroaster and Confucius, three a side in that order.
+
+   None of the six stands on an axis, so none has a position to ring. The
+   ring is drawn whole with no reading in it, and the caption above them says
+   why in the design's own words (mockups/teachers/imprint.html). The meaning
+   on the row is the pole's own line from engine/data/teachers_recipes.js, and
+   a press opens that row, the panel every other teacher opens. Not data-cnax:
+   that attribute is an axis index the figure aims at, and these have none. */
+function cnOffAxis(side){
+ var all=(typeof compassOffAxis==='function')?compassOffAxis():[];
+ if(!all.length)return '';
+ var cut=Math.ceil(all.length/2), half=side==='l'?all.slice(0,cut):all.slice(cut);
+ if(!half.length)return '';
+ return '<p class="cn-grp">Read across the field <i>no one seat, so no position</i></p>'
+  +half.map(function(p){
+   var c=seatCol(p.home||null), cd=/^#[0-9a-f]{6}$/i.test(c)?rgba(hx(c),.72):c;
+   var rc=(typeof recipeOf==='function')?recipeOf(p.k):null;
+   var tip=rc&&rc.line?rc.line+'.':'';
+   /* PATHS writes its quality in lower case, for the glossary's sentence
+      ("Krishna, flow"); a label on its own starts with a capital */
+   var q=String(p.q||''); q=q.charAt(0).toUpperCase()+q.slice(1);
+   return '<button type="button" class="cn-nr cn-off" data-cnpole="'+esc(p.k)+'" '
+    +'style="--ax:'+c+';--axd:'+cd+'" '
+    +'aria-label="'+esc(q)+': '+esc(p.up)+', opposite '+esc(p.dn)+'. No one seat, so no position on an axis." '
+    +(tip?'data-tip-k="'+esc(q)+'" data-tip="'+esc(tip)+'">':'title="Read '+esc(p.up)+', opposite '+esc(p.dn)+'">')
+    +'<span class="cn-pr">'+cnOrb(p.ic,false,true)+cnOrb(p.dic,true)+'</span>'
+    +'<span class="cn-tx">'
+    +'<span class="cn-nq">'+esc(q)+'</span>'
+    +'<span class="cn-nu">'+esc(p.up)+'</span>'
+    +'<span class="cn-nd">'+esc(p.dn)+'</span>'
+    +'</span>'
+    +'</button>';}).join('');}
 /* one rgb triple as a css colour, so a canvas colour can be handed to the
    sheet the same way a seat colour is */
 function rgbcss(c){return 'rgb('+c[0]+','+c[1]+','+c[2]+')';}
@@ -58190,13 +58305,16 @@ function rgbcss(c){return 'rgb('+c[0]+','+c[1]+','+c[2]+')';}
    a button and a button cannot hold one. Ring, never fill. The coherent
    pole's ring and pill are written by coneAxPaint off the axis's spring; the
    inversion's draws the track alone, broken, at the row's darker token. */
-function cnOrb(ic,inv){
- return '<span class="fb-orb cn-or'+(inv?' inv':'')+'">'
+/* bare is a coherent pole on no axis: its ring is whole and carries no
+   reading and no pill, because there is no position for either to say */
+function cnOrb(ic,inv,bare){
+ var plain=inv||bare;
+ return '<span class="fb-orb cn-or'+(inv?' inv':'')+(bare?' bare':'')+'">'
   +'<svg class="fb-arc" viewBox="0 0 40 40" aria-hidden="true">'
   +'<circle class="trk" cx="20" cy="20" r="18"/>'
-  +(inv?'':'<circle class="val" cx="20" cy="20" r="18" pathLength="100" stroke-dasharray="0 100"/>')
+  +(plain?'':'<circle class="val" cx="20" cy="20" r="18" pathLength="100" stroke-dasharray="0 100"/>')
   +'</svg><span class="fb-gl">'+fbSvg(ic)+'</span>'
-  +(inv?'':'<span class="fb-v" aria-hidden="true">\u2013</span>')+'</span>';}
+  +(plain?'':'<span class="fb-v" aria-hidden="true">\u2013</span>')+'</span>';}
 /* WHICH ROW IS LIT, updated from the tick rather than from a repaint. Redrawing
    the rail every frame would rebuild sixteen buttons sixty times a second and
    throw away the hover the person is currently on. */
@@ -58591,6 +58709,15 @@ function coneOpen(inTab){
    var m=MIRROR[i]; if(!m)return;
    coneAimAt(i);
    if(typeof runTeacherDrill==='function')runTeacherDrill(m,'up');};});
+ /* A POLE ON NO AXIS IS PRESSED, round RB. Nothing to aim at, so a press
+    only reads: a path opens its path drill, as its badge on the figure does,
+    and the three poles on no axis open theirs. Found by key, never by place. */
+ h.querySelectorAll('[data-cnpole]').forEach(function(b){
+  var k=b.getAttribute('data-cnpole');
+  b.onclick=function(){
+   var p=(typeof compassPoleOf==='function')?compassPoleOf(k):null; if(!p)return;
+   if(PATHS.indexOf(p)>=0){if(typeof runPathDrill==='function')runPathDrill(p);}
+   else if(typeof runHomePoleDrill==='function')runHomePoleDrill(p);};});
  coneNamesSync();
  /* the graph is a door onto the long version of itself. Ruled. */
  var gm=document.getElementById('cngomore'), gr=document.getElementById('cngraph');
@@ -59654,6 +59781,20 @@ function runPathDrill(p){
   +(typeof ritTeachHtml==='function'?ritTeachHtml(p.k):'');
  rdShell(h);
  if(typeof ritTeachWire==='function')ritTeachWire(function(){runPathDrill(p);});}
+/* AKHENATEN, ZOROASTER AND CONFUCIUS, round RB. They stand on no axis and are
+   not paths (HOME_POLES in engine/data/compass.js), so a press on one of their
+   names opens their behaviour panel, the same one every other teacher opens.
+   The codex gives them no line, so when the table has no row for one the
+   panel says the names and what is missing, and writes no line of its own. */
+function runHomePoleDrill(p){
+ if(!p)return;
+ var cx=(typeof ritComplexHtml==='function')?ritComplexHtml(p.k):'';
+ if(cx){rdShell(cx); ritComplexWire(function(){runHomePoleDrill(p);}); return;}
+ rdShell('<div class="pm-eye">'+esc(p.q)+'</div>'
+  +'<div class="ad-nm">'+(p.ic?'<svg class="ad-ic" viewBox="0 0 24 24" aria-hidden="true">'
+    +'<path d="'+p.ic+'"/></svg>':'')+esc(p.up)+'</div>'
+  +'<div class="ad-sub">opposite '+esc(p.dn)+'</div>'
+  +'<p class="ad-p">No behaviours are written for this teacher yet.</p>');}
 function runPoleDrill(end){
  var up=(end!=='dn'), r=compute();
  var h='<div class="pm-eye">'+(up?'The upward cone':'The downward cone')+'</div>'
@@ -71134,5 +71275,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004684653"></div>
+<div id="eof" hidden data-len="004693683"></div>
 </body></html>

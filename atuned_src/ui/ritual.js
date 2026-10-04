@@ -555,15 +555,22 @@ function ritComplexHtml(k){
  var list=function(a){
   return a&&a.length?'<ul class="tcx-l">'+a.map(function(t){return '<li>'+esc(t)+'</li>';}).join('')+'</ul>'
    :'<p class="tcx-none">–</p>';};
+ /* THE AXIS MEANING ONLY FOR AN AXIS, round RB. The quality word was read
+    through the axis table for every pole, so Akhenaten's Light, which is no
+    axis, would have printed the Heart axis's sentence about warmth. Every
+    other pole's headline line above is what its word means. And the mark is
+    the pole's own when becomingOf does not know the pole. */
+ var onAxis=!!(pole&&MIRROR.indexOf(pole)>=0);
+ var ic=(b&&b.ic)||(pole&&pole.ic)||null;
  var h='<div class="tcx" data-tcx="'+esc(row.k)+'">'
-  +'<div class="ad-nm plain">'+(b&&b.ic?'<svg class="ad-ic" viewBox="0 0 24 24" aria-hidden="true">'
-   +'<path d="'+b.ic+'"/></svg>':'')+esc(row.line)+'</div>'
+  +'<div class="ad-nm plain">'+(ic?'<svg class="ad-ic" viewBox="0 0 24 24" aria-hidden="true">'
+   +'<path d="'+ic+'"/></svg>':'')+esc(row.line)+'</div>'
   /* ROUND PO, UNPACK EVERY SYMBOL. "After Jesus · Light · Heart" was three
      names and no meaning. Each is a carrier of its sentence, and under the two
      columns the pole is said phrase by phrase, each phrase with what it means,
      at both ends. The codex lines it reads from are in engine/data/compass.js. */
   +'<div class="ad-sub">After '+unp('teacher',row.who)+' \u00b7 '
-   +unp(String(row.q).toLowerCase(),row.q,'axis')
+   +(onAxis?unp(String(row.q).toLowerCase(),row.q,'axis'):esc(row.q))
    +(b&&b.seat?' \u00b7 '+unp(String(b.seat).toLowerCase(),b.seat,'seat'):'')+'</div>'
   +'<div class="tcx-pair">'
   +'<div class="tcx-col"><div class="pm-eye">Release</div>'

@@ -561,6 +561,23 @@ That is his mind stack, already written down, already in the layer order he just
 2. Does detecting superego/limiter patterns in a person's own story count as the kind of learning-from-writing `DECISIONS.md` already says needs its own consent line, or did you mean something narrower?
 3. For the 6,000 recipes: besides demo profiles and themed giveaways, is there any day-one, real-person use you want reachable at launch, or does it stay demo/giveaway-only until a tier decision is made later?
 
+## N. Round RB: thirteen teachers on the Compass, not eight
+
+His words: "On the compass, we're supposed to have 13 character people, and we I still have the original eight. and that's not done."
+
+**What was ruled.** `DESIGN-teachers.md` v2, section 2, the roster table: 14 poles for 13 people, Jesus at two (`IL` at the Heart, `RE` at the Crown). Accepted at round PD (section H above: "The teacher roster in DESIGN-teachers.md v2 stands as recommended: 14 poles, thirteen people, Jesus at two poles."). The 14, in the document's own order (`TEACH_ORDER`, section 9c): `IL` Jesus, `RE` Jesus, `DE` Ramakrishna, `OR` Moses, `PO` Musashi, `PE` Buddha, `TR` Rumi, `CH` Elijah, `FL` Krishna, `AL` Rama, `HO` Lao Tzu, `SA` Akhenaten, `TU` Zoroaster, `NA` Confucius.
+
+**What the Compass drew.** The two name panels were built from `MIRROR` alone (`ui/cone.js` `coneNames`, four axes a side), so they named the eight axes and seven people. Krishna, Rama and Lao Tzu were only on the figure, as three of the five small path badges at its top point. Akhenaten, Zoroaster and Confucius were nowhere a person could press, though their behaviours and starter rituals were already written (`engine/data/teachers_recipes.js` rows `SA`, `TU`, `NA`, whose own header says "THREE POLES HAVE NO PLACE ON THE COMPASS YET").
+
+**The mapping problem.** Six of the 14 poles do not fit the eight axis shape, and the document says so itself. An axis in `MIRROR` is a quality read at one body seat, and the ring on its name is that seat's reading (`coneMirPos`). `FL`, `AL`, `HO` and `SA` have no seat. `TU` and `NA` have a home seat (Throat and Crown), and section 2 rules that a home seat "gives no position on an axis, because Moses already holds the Throat's axis and a second teacher would print the same number." So appending them to `MIRROR` would be wrong twice: it would invent a reading, and the needle (`ui/cone.js`) is sized to eight axes throughout, in typed arrays, spring arrays and the `t:j/8` spacing, so it is a rewrite of the figure, not a data row. The document already sizes that rewrite as its own large slice (section 13, T10, "The needle", size L).
+
+**The resolution, built this round, additive.** `MIRROR` is untouched and still eight. The six off-axis poles join the two name panels under the axes, three a side, under a caption that says why they carry no number: "Read across the field, no one seat, so no position" (the mockup's own words, `mockups/teachers/imprint.html`). Their ring is a plain ring with no reading. A press opens the same behaviour panel every other teacher opens (`ritComplexHtml`, round PL J14). The three new poles get one small table in `engine/data/compass.js`, `HOME_POLES`, in the paths' own shape, with the quality, the teacher, the opposite, the home seat and the source the document names for each opposite. Icons: Zoroaster, Confucius and the Lie are ported from the mockup; Apep and the farmer of Song had none anywhere and are drawn new, argued from what each figure does, and marked first draft.
+
+**Left for later, and why.**
+- Drawing the three new poles on the figure itself (T10). Structural, as above.
+- `MASTERS` gaining Zoroaster and Confucius (T2). Every row there is a codex quotation with a place on the Sat, Chit and Ananda coordinates, and the codex gives these two neither. Writing one would be canon written by an engineer.
+- A ritual added from Akhenaten, Zoroaster or Confucius still carries no teacher key, because `BECOMING` and `becomingOf` do not know them and would call them paths (section 11, T6).
+- The Heart's two labels. The roster gives Light to Akhenaten while the Heart axis `IL` (Jesus) is also called Light, by his round KE ruling ("Just change illumination to light"). Section 14, question 1b recommends relabelling `IL` to Love and `TR` to Beauty. That reverses his own earlier word, so it is not done here; both rows now say Light, each with its own meaning beside it.
 ## N2. Round RF, 3 October. His own dictation, sorted into four, one explicitly held
 
 Full verbatim in `TASKS.md`. Priority stays onboarding, funnel, tutorial, by his own closing line; the four below queue behind that.
