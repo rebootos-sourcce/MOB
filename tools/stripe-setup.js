@@ -3,11 +3,14 @@
      node tools/stripe-setup.js              dry run, prints what it would make, touches nothing
      node tools/stripe-setup.js --go         creates test mode products and prices
      node tools/stripe-setup.js --go --live  same, with a live key (refused without --live)
-     --tiers=one,two,three,four              which tiers (default: the four ruled in round OG)
+     --tiers=one,two,three                   which tiers (default: the three that can be bought)
+   Tier four is left out of the default on purpose. It is closed to purchase until the lead suite
+   is built (DECISIONS.md round PK, "tier four is closed until built"; engine/plan.js built:false),
+   so a live run must not make a price a checkout could charge. Name it in --tiers once it opens.
    Safe to run twice: a price is found by its lookup key and never made twice. */
 var TIERS={one:{name:'Atüned tier one',usd:12},two:{name:'Atüned tier two',usd:29},three:{name:'Atüned tier three',usd:59},four:{name:'Atüned tier four',usd:99}};
 var argv=process.argv.slice(2),go=argv.indexOf('--go')>=0,live=argv.indexOf('--live')>=0;
-var tl=(argv.filter(function(a){return a.indexOf('--tiers=')===0;})[0]||'--tiers=one,two,three,four').slice(8).split(',');
+var tl=(argv.filter(function(a){return a.indexOf('--tiers=')===0;})[0]||'--tiers=one,two,three').slice(8).split(',');
 var KEY=process.env.STRIPE_SECRET_KEY||'';
 function form(o,p,out){out=out||[];for(var k in o){var key=p?p+'['+k+']':k,v=o[k];if(v&&typeof v==='object')form(v,key,out);else out.push(encodeURIComponent(key)+'='+encodeURIComponent(v));}return out.join('&');}
 async function api(method,path,body){

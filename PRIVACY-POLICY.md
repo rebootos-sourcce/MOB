@@ -1,6 +1,6 @@
 # Privacy policy
 
-> **Warning. Read this first.** This is a generic draft written by an AI. It is not legal advice. A lawyer who knows your jurisdiction must review it before anyone relies on it, and it must not go live until they have. The parts that most need that review are section 10 (moving data between countries), section 11 (children), section 7 (how long we keep data and what deletion reaches), section 9 (getting back a deleted account), sections 4 and 5 (health information and who sees it), sections 13 and 14 (the European, United Kingdom and California rights) and the medical disclaimer in section 2. Every [PLACEHOLDER] is a fact only the owner can supply. Every [CHECK] is a statement to test against the build, or a point a lawyer must rule on, before this goes live. Every [PROPOSED] is something the owner has decided or the draft recommends, which a lawyer must confirm.
+> **Warning. Read this first.** This is a draft. An AI wrote it for Atüned, from the owner's own rulings, and no lawyer has read it yet. It is not legal advice. A lawyer who knows your jurisdiction must review it before anyone relies on it, and it must not go live until they have. The parts that most need that review are section 10 (moving data between countries), section 11 (children), section 7 (how long we keep data and what deletion reaches), section 9 (getting back a deleted account), sections 4 and 5 (health information and who sees it), sections 13 and 14 (the European, United Kingdom and California rights) and the medical disclaimer in section 2. Every [PLACEHOLDER] is a fact only the owner can supply. Every [CHECK] is a statement to test against the build, or a point a lawyer must rule on, before this goes live. Every [PROPOSED] is something the owner has decided or the draft recommends, which a lawyer must confirm.
 
 Draft of 1 October 2026, revised after round PA. Effective from: [PLACEHOLDER: the date this page goes live].
 
@@ -198,7 +198,7 @@ You can ask us for a copy of the safeguard in force. Write to the address in sec
 
 ## 11. Children
 
-Atüned is for people aged [PLACEHOLDER: age floor. Proposed: 18] and over. It is not directed at children. We do not knowingly keep an account for anyone under that age. If we learn that we do, we delete it. If you think a child has an account, write to the address in section 19.
+Atüned is for people aged 18 and over. It is not directed at children. We do not knowingly keep an account for anyone under that age. If we learn that we do, we delete it. If you think a child has an account, write to the address in section 19.
 
 [CHECK: the sign up asks the person to confirm their age with a ticked box, so the floor is more than a line in the terms. At 18 no country's rule on a parent's consent for a child is reached. Those ages run from 13 to 16 across the European Union and are 13 in the United Kingdom.]
 

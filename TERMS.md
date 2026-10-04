@@ -1,6 +1,6 @@
 # Terms
 
-> **Warning. Read this first.** This is a generic draft written by an AI. It is not legal advice. A lawyer who knows your jurisdiction must review it before anyone relies on it, and it must not go live until they have. The clauses that most need that review are section 8 (renewal, cancellation and refunds), section 15 (disclaimers, including the medical disclaimer in section 3), section 16 (limit of liability), section 5 (age), section 20 (governing law and disputes), and the data transfer terms and the European, United Kingdom and California rights in the privacy policy it points to. Every [PLACEHOLDER] is a fact only the owner can supply. Every [CHECK] is a statement to test against the build, or a point a lawyer must rule on, before this goes live. Every [PROPOSED] is something the owner has decided or the draft recommends, which a lawyer must confirm.
+> **Warning. Read this first.** This is a draft. An AI wrote it for Atüned, from the owner's own rulings, and no lawyer has read it yet. It is not legal advice. A lawyer who knows your jurisdiction must review it before anyone relies on it, and it must not go live until they have. The clauses that most need that review are section 8 (renewal, cancellation and refunds), section 15 (disclaimers, including the medical disclaimer in section 3), section 16 (limit of liability), section 5 (age), section 20 (governing law and disputes), and the data transfer terms and the European, United Kingdom and California rights in the privacy policy it points to. Every [PLACEHOLDER] is a fact only the owner can supply. Every [CHECK] is a statement to test against the build, or a point a lawyer must rule on, before this goes live. Every [PROPOSED] is something the owner has decided or the draft recommends, which a lawyer must confirm.
 
 Draft of 1 October 2026, revised after round PA. Effective from: [PLACEHOLDER: the date this page goes live].
 
@@ -36,7 +36,7 @@ If you are thinking about ending your life, or you do not feel safe, contact a c
 
 ## 5. Who may use it
 
-You must be [PLACEHOLDER: age floor. Proposed: 18] or older. You confirm it with a box you tick when you create an account. Atüned is not directed at children. If we learn that someone under that age has an account, we delete it.
+You must be 18 or older. You confirm it with a box you tick when you create an account. Atüned is not directed at children. If we learn that someone under that age has an account, we delete it. [CHECK: 18 is ruled, round PB. The sign up that ships has no age box yet, and it must be built before this page goes live, LEGAL-IA.md section 9 item 6.]
 
 You must be able to enter an agreement where you live. You must not be barred from using the service by law.
 
@@ -44,9 +44,9 @@ You must be able to enter an agreement where you live. You must not be barred fr
 
 You can use Atüned without an account. An account is for keeping a copy of your record on our server, for paying, and for the features that need them.
 
-To create an account you give a username and a passphrase. You may also give a recovery email address. It is optional. We use it only to help you get back into the account, and we delete it with the account. If you give none, we cannot reset a lost passphrase. [CHECK: the owner ruled a username of 3 to 20 characters and a passphrase, with an optional recovery email. The shipped sign up takes an email address and a password of 8 to 200 characters and has no username. Write the lengths here that ship.]
+To create an account you give an email address and a password of 8 to 200 characters. You sign in with the email, and a link to reset a lost password goes to it. We delete it with the account. [CHECK: the owner ruled a username of 3 to 20 characters, a passphrase and an optional recovery email, in round PA. The sign up that ships takes an email address and a password of 8 to 200 characters and has no username, and this section says what ships. If the ruled sign up is built, this section changes with it.]
 
-Keep your passphrase to yourself. You are responsible for what happens under your account. If you think someone else has it, change the passphrase and write to us.
+Keep your password to yourself. You are responsible for what happens under your account. If you think someone else has it, change the password and write to us.
 
 One account is for one person. Do not share it, sell it or hand it on.
 
@@ -80,7 +80,7 @@ We may change a price. We will tell you at least [PLACEHOLDER: days] before it a
 
 **Reminders.** If you pay by the year in future, we will remind you before each renewal. [CHECK: the plans are monthly today. Keep or delete this line when a yearly plan is decided.]
 
-**Refunds.** You can have a refund of any charge if you ask within seven days of that charge. Write to hello@atuned.world, from the recovery email on your account if you gave one, and say your username and which charge. We refund the whole charge. After seven days from the charge, we do not refund it. The seven days are counted from the time of the charge. This applies to every monthly charge, not only the first. Cancelling stops the next charge. It does not refund a charge already made. The only other refunds are those in sections 18 and 19, and any the law requires. [PROPOSED: the owner's ruling in round PA is "no refund after seven days". The draft reads it as a full refund within seven days, on every charge, asked for by email. A lawyer confirms the wording, and the owner confirms the route.] [CHECK: people in the European Union and the United Kingdom have a right to cancel a distance purchase within 14 days, and seven days is shorter. For a digital service that starts at once, the law lets the person give up that right only if they ask for it to start and accept that they lose it. A lawyer rules, and the paid step may need a second box for it.] [CHECK: the same words must go into Stripe's settings and the buy page.]
+**Refunds.** You can have a refund of any charge if you ask within seven days of that charge. Write to hello@atuned.world from the email on your account, and say which charge. We refund the whole charge. After seven days from the charge, we do not refund it. The seven days are counted from the time of the charge. This applies to every monthly charge, not only the first. Cancelling stops the next charge. It does not refund a charge already made. The only other refunds are those in sections 18 and 19, and any the law requires. [PROPOSED: the owner's ruling in round PA is "no refund after seven days". The draft reads it as a full refund within seven days, on every charge, asked for by email. A lawyer confirms the wording, and the owner confirms the route.] [CHECK: people in the European Union and the United Kingdom have a right to cancel a distance purchase within 14 days, and seven days is shorter. For a digital service that starts at once, the law lets the person give up that right only if they ask for it to start and accept that they lose it. A lawyer rules, and the paid step may need a second box for it.] [CHECK: the same words must go into Stripe's settings and the buy page.]
 
 ## 9. What you write
 

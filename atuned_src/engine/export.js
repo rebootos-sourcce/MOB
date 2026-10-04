@@ -41,7 +41,7 @@ if(typeof module!=='undefined'&&module.exports){
                  planState:planState, planOf:planOf, planSees:planSees,
                  planNextSight:planNextSight, planAllowance:planAllowance,
                  planWeeks:planWeeks, GIFT_N:GIFT_N, WEEK_MS:WEEK_MS,
-                 planUpgrade:planUpgrade, RUN_MAX:RUN_MAX, RUN_MIN:RUN_MIN,
+                 planUpgrade:planUpgrade, planBuyable:planBuyable, RUN_MAX:RUN_MAX, RUN_MIN:RUN_MIN,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  PLAN_PRICE:PLAN_PRICE, planPrice:planPrice, planLadder:planLadder,

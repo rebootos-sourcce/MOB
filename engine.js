@@ -7422,10 +7422,33 @@ const PLANS=[
  /* TIER FOUR IS NOT MORE OF THE SAME. It carries the same twelve hundred as
     tier three, so patterns do not separate them at all, and it sees what tier
     three sees: what tier four buys is the cohort lead suite. Ruled, and it is
-    the one rung with a price attached. */
- {k:'four',  nm:'Tier four',   per:'month', grant:1200, lead:true,
+    the one rung with a price attached.
+
+    AND IT IS CLOSED TO PURCHASE UNTIL THE SUITE EXISTS, built:false. Ruled at
+    round PK, 2 October, DECISIONS.md: "tier four is closed until built", with
+    the words the screen says in REVIEW-arch/TALLY.md ruling 9, "Opens with the
+    lead suite". The ruling was recorded and never reached the code: the tiers
+    page and the plan sheet both offered "Move to tier four" and a press went
+    to checkout at ninety nine dollars, for the same patterns and the same
+    sight as tier three and a roster ui/practitioner.js says plainly is not
+    there ("no sign in, no store and no grant"). The same flag the Kundalini
+    row of SIGHT carries, read the same way: the row is kept, so the ladder
+    still shows what is coming and at what price, and planBuyable is the one
+    answer to whether a checkout may be started for it. Opening it is one word
+    here, when the lead suite and its consent list are built. A record that
+    already says tier four, a worked example or a test account, still reads
+    tier four through planOf: this closes the door, it moves nobody. */
+ {k:'four',  nm:'Tier four',   per:'month', grant:1200, lead:true, built:false,
   d:'The same twelve hundred as tier three, and the cohort lead suite. Manage profiles, build rituals and build accountability for the people you lead.'}];
 const PLAN_BY={}; PLANS.forEach(function(p){PLAN_BY[p.k]=p;});
+/* WHETHER A CHECKOUT MAY BE STARTED FOR A TIER. Only a paid tier that exists
+   and is built. Free and the gift are never bought, and a key this build does
+   not know is not a thing to sell. Every press that could reach a payment page
+   asks this, at the one door they share (planOpen, ui/panels.js), and the
+   ladder carries it so a screen can say "not open yet" before anybody presses. */
+function planBuyable(k){
+ var p=PLAN_BY[k];
+ return !!(p&&p.k!=='free'&&p.k!=='gift'&&p.built!==false);}
 /* THE GIFT'S SIZE, NAMED ONCE. It is the gift row's grant above. planAllowance
    carried its own literal 100 in five places beside that row, which is the same
    number held twice and one edit away from two answers. */
@@ -7552,7 +7575,10 @@ function planLadder(pl){
    week:(p.per==='week')?p.grant:Math.round(p.grant/4),
    runs:Math.floor(p.grant/RUN_MIN), lead:!!p.lead, price:planPrice(p.k),
    sees:planSeesAt(p.k), adds:planAdds(p.k),
-   now:(p.k===now.k), up:(i>at&&p.k!=='free')};});}
+   /* up is where the rung sits against the one in force; buy is whether it
+      can be bought today. A closed rung is still a step up, and says so, and
+      carries no press. */
+   now:(p.k===now.k), up:(i>at&&p.k!=='free'), buy:planBuyable(p.k)};});}
 
 /* THE STATES A SUBSCRIPTION CAN BE IN, and what each one means for access.
    past_due keeps access, because cutting somebody off mid month over a card
@@ -7790,7 +7816,10 @@ function planUpgrade(pl){
  var now=planOf(pl);
  var i=PLANS.map(function(p){return p.k;}).indexOf(now.k);
  var nxt=null;
- for(var j=i+1;j<PLANS.length;j++){if(PLANS[j].k!=='gift'){nxt=PLANS[j];break;}}
+ /* the next rung that can be bought. A closed rung is not offered as the next
+    step, because the step this names becomes a "Move to" button, and a button
+    that opens a refusal is the dead press the house rules out. */
+ for(var j=i+1;j<PLANS.length;j++){if(PLANS[j].k!=='gift'&&planBuyable(PLANS[j].k)){nxt=PLANS[j];break;}}
  if(!nxt)return null;
  /* what the next rung lets a person see that this one does not, off SIGHT */
  var moreSight=planAdds(nxt.k);
@@ -18253,7 +18282,7 @@ if(typeof module!=='undefined'&&module.exports){
                  planState:planState, planOf:planOf, planSees:planSees,
                  planNextSight:planNextSight, planAllowance:planAllowance,
                  planWeeks:planWeeks, GIFT_N:GIFT_N, WEEK_MS:WEEK_MS,
-                 planUpgrade:planUpgrade, RUN_MAX:RUN_MAX, RUN_MIN:RUN_MIN,
+                 planUpgrade:planUpgrade, planBuyable:planBuyable, RUN_MAX:RUN_MAX, RUN_MIN:RUN_MIN,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  PLAN_PRICE:PLAN_PRICE, planPrice:planPrice, planLadder:planLadder,
