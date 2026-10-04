@@ -722,14 +722,52 @@ function runMaskDrill(m){
    +hot.slice(0,6).map(addrRow).join('')+'</div>';}
  rdShell(h);}
 
-/* the definition, the trigger and the interrupt. an interrupt is the only
-   part a person can act on in the moment, so it is printed last and plainly. */
+/* THE SABOTEUR CARD, SAID AS WHAT HAPPENS. Round SB, ruled: "that's good
+   copy... let's integrate this across the system, wire it all in."
+
+   This printed SABDEF straight, What it is, When it fires, What it says, The
+   interrupt, and the first field was a clinical definition read to the person
+   it describes: "Hypervigilance at the level of outcomes. The foundation of
+   the Type A pattern." The facts were right and the stance was a case note.
+   The card now opens on the situation and the behaviour, from SABCARD in
+   engine/data/sabcard.js, which is composed from SABDEF's own trigger and
+   definition and carries no fact SABDEF does not. The sentence is still
+   SABDEF.q, verbatim, and the interrupt is the same move said as notice,
+   separate, choose. A row SABCARD does not carry falls back to the SABDEF
+   field it was composed from, so a gap prints the old copy and never nothing;
+   tests/engine.js fails before that can ship.
+
+   CONNECTED IS ONLY WHAT SAB_LIB KNOWS. Thirteen of the 33 have fetters and a
+   family in the engine. The other twenty were left unnamed by the engine on
+   purpose, and a card that drew three addresses for Martyr would be the guess
+   that boundary exists to refuse, so the gap is printed as a gap. The family
+   prints d and never sub: sub is a diagnostic name, and engine/data/nodes.js
+   records the day a person was handed "depression, BPD and anxiety" about
+   themselves as a subtitle. */
 function kbSabBlock(nm){
  var def=SABDEF[KB_KEY(nm)]; if(!def)return '';
- return (def.d?'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(def.d)+'</p>':'')
-  +(def.t?'<div class="pm-eye">When it fires</div><p class="ad-p">'+esc(def.t)+'</p>':'')
-  +(def.q?'<div class="pm-eye">What it says</div><p class="ad-p"><em>'+esc(def.q)+'</em></p>':'')
-  +(def.i?'<div class="pm-eye">The interrupt</div><p class="ad-p">'+esc(def.i)+'</p>':'');}
+ var c=(typeof SABCARD!=='undefined'&&SABCARD[KB_KEY(nm)])||{};
+ var h=c.h||def.d, n=c.n||def.i;
+ return (h?'<div class="pm-eye">What happens</div><p class="ad-p">'+esc(h)+'</p>':'')
+  +(def.q?'<div class="pm-eye">The sentence it runs</div><p class="ad-q">“'+esc(def.q)+'”</p>':'')
+  +(c.a?'<div class="pm-eye">What becomes available</div><p class="ad-p">'+esc(c.a)+'</p>':'')
+  +(n?'<div class="pm-eye">Next move</div><p class="ad-p">'+esc(n)+'</p>':'')
+  +kbSabLinked(nm);}
+/* the quiet part of the card. Looked up by name in SAB_LIB, never by
+   position, and each address by its id through BY. */
+function kbSabLinked(nm){
+ var lib=SAB_LIB.filter(function(s){return s.nm===nm;})[0];
+ if(!lib)return '<div class="ad-gap"><div class="pm-eye">Connected</div><p class="ad-sub">'
+  +'The charge this pattern runs on is known. Where it sits in the body is not mapped '
+  +'yet, so no place is shown here. The gap stays open, and it is never filled in with a guess.</p></div>';
+ var fam=HCX_LIB.filter(function(f){return f.nm===lib.hcx;})[0];
+ var seat=function(b){return b==='3rd Eye'?'3rd eye':String(b).toLowerCase();};
+ return '<div class="ad-con"><div class="pm-eye">Connected</div>'
+  +lib.nids.map(function(i){return BY[i];}).filter(Boolean).map(function(x){
+   return '<p class="ad-sub"><b>'+esc(x.k)+'</b>, at the '+esc(seat(x.b))
+    +(x.n?', in the '+esc(String(x.n).toLowerCase()):'')+'.</p>';}).join('')
+  +(fam?'<p class="ad-sub">It belongs to the <b>'+esc(fam.nm)+'</b> family: '+esc(fam.d)+'.</p>':'')
+  +'</div>';}
 
 function runKbDrill(eyebrow,title,sub,body){
  rdShell('<div class="pm-eye">'+esc(eyebrow)+'</div><div class="ad-nm">'+esc(title)+'</div>'

@@ -7281,5 +7281,59 @@ g('QZ · the sniffer reads other words for the same reading, and still reads not
   'and everything is put back, '+Object.keys(LEX).length+' entries');
 }
 
+g('SB · the saboteur card is the same 33 as SABDEF, and its opposites are read off SAB33 and CHILD');
+/* ROUND SB. The card kbSabBlock prints is composed copy, and composed copy is
+   where a fact gets invented without anybody deciding to. Three things are
+   held here, each in both directions where there are two.
+
+   The rows are SABDEF's rows. A saboteur SABDEF carries and SABCARD does not
+   would fall back to the clinical field; one SABCARD carries and SABDEF does
+   not would never print. Either is a drift, and a count would not see it.
+
+   "What becomes available" names every opposite its own SAB33 row reaches.
+   The mock-up the owner approved said "Rest becomes available" for Martyr,
+   and rest is the opposite of nothing Martyr runs on: sadness, shame and
+   apathy reach joy, worth and vitality. The check is run on that line first
+   and must fail it, or it is not a check.
+
+   SAB_LIB's own map resolves, and the card can only print what it holds:
+   every address id is a real node and every family has a d, since the card
+   prints d and never sub. Superior is in SAB_LIB and in neither table, and it
+   must stay without a card row, because a row would be a definition nobody
+   wrote. */
+{
+ const {SABDEF,SABCARD,SAB_LIB,HCX_LIB}=E;
+ const KK=s=>String(s).replace(/^[Tt]he\s+/,'').toLowerCase().replace(/-/g,' ');
+ const ax2child=k=>CHILD.find(c=>c.nm===(k==='sadness'?'Sad':k.charAt(0).toUpperCase()+k.slice(1)));
+ const missingOpp=(card)=>{const out=[];
+  SAB33.forEach(r=>{const row=card[KK(r[0])]; if(!row)return;
+   r[1].forEach(p=>{const c=ax2child(p[0]);
+    if(!c)out.push(r[0]+' keys on '+p[0]+', which is not a CHILD axis');
+    else if(!new RegExp('\\b'+c.opp+'\\b','i').test(row.a))out.push(r[0]+' leaves out '+c.opp);});});
+  return out;};
+ const dk=Object.keys(SABDEF).sort(), ck=Object.keys(SABCARD).sort();
+ ok(JSON.stringify(dk)===JSON.stringify(ck),'SABCARD carries exactly SABDEF\'s rows, '+ck.length+
+  ': missing '+JSON.stringify(dk.filter(k=>!SABCARD[k]))+', extra '+JSON.stringify(ck.filter(k=>!SABDEF[k])));
+ ok(SAB33.every(r=>SABCARD[KK(r[0])]),'and every SAB33 name has a card row');
+ ok(ck.every(k=>['h','a','n'].every(f=>typeof SABCARD[k][f]==='string'&&SABCARD[k][f].length>40)),
+  'every row carries what happens, what becomes available and the next move');
+ const bad=JSON.parse(JSON.stringify(SABCARD));
+ bad.martyr.a='The giving might be real. So might the exhaustion. Rest becomes available instead of something to earn.';
+ const caught=missingOpp(bad);
+ ok(caught.length===3&&caught.every(m=>/^Martyr/.test(m)),'the check fails the mock-up\'s Rest line, and only it: '+JSON.stringify(caught));
+ const miss=missingOpp(SABCARD);
+ ok(miss.length===0,'every row names each opposite its SAB33 axes reach in CHILD: '+JSON.stringify(miss));
+ const all=ck.map(k=>['h','a','n'].map(f=>SABCARD[k][f]).join(' ')).join(' ');
+ ok(!/\byou are an? /i.test(all),'no row says you are a pattern');
+ ok(!/—/.test(all),'and no row carries an em dash');
+ const linked=SAB33.filter(r=>SAB_LIB.some(s=>s.nm===r[0])).length;
+ ok(SAB_LIB.every(s=>s.nids.every(i=>NODES.some(n=>n.i===i))),'every SAB_LIB address id is a real node');
+ ok(SAB_LIB.every(s=>{const f=HCX_LIB.find(h=>h.nm===s.hcx);return f&&typeof f.d==='string'&&f.d.length>0;}),
+  'every SAB_LIB family resolves and carries a d to print, '+linked+' of the 33 are mapped and '+(SAB33.length-linked)+' print the gap');
+ const orphans=SAB_LIB.filter(s=>!SAB33.some(r=>r[0]===s.nm));
+ ok(orphans.every(s=>!SABDEF[KK(s.nm)]&&!SABCARD[KK(s.nm)]),
+  'a SAB_LIB name outside the 33 gets no card row, '+JSON.stringify(orphans.map(s=>s.nm)));
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);
