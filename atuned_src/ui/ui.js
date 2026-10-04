@@ -591,10 +591,13 @@ fieldPinch($('frend'),false);
    EZ in TASKS.md: States went to the head of the rail as Root energetics,
    "and I want that one to start closed." The finding above still holds, a
    closed header can read as an empty one, and it is answered differently
-   now: the section is the first thing in the rail and says what it holds in
-   its own name, where States sat fifth under a word nobody read as birth
-   data. Its key is energetics, not spirit, so nothing that remembered the
-   old section opens the new one by accident. */
+   now: the section says what it holds in its own name, where States sat
+   fifth under a word nobody read as birth data. Its key is energetics, not
+   spirit, so nothing that remembered the old section opens the new one by
+   accident. (It was the first thing in the rail until 3 October, when
+   Energetic summary moved above it from the right rail; both still open
+   closed, off the same empty left set below, so the move needed no entry
+   here.) */
 var OPENSEC={left:{}, right:{you:1}};
 /* which surfaces have already had their sections seeded, so a tab opens what
    it is about the first time and never argues with a person who closed it. */
