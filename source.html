@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1677 c6cbc9d 2026-10-04 21:37"><head><meta charset="utf-8">
+<html lang="en" data-build="v1681 69b2d7b 2026-10-04 21:38"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -5444,16 +5444,35 @@ body.tab-masksview #masksview{background:#0C0D12}
 .chp-stage{position:absolute;inset:0;overflow:hidden}
 .chp-cv{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:manipulation}
 .chp-cv.hit{cursor:pointer}
+/* THE ROOM'S COLOUR, round RB: the colour the aura gives off, as a pool behind
+   the figure, written by ui/character.js chAura. --aura is the colour as three
+   channels, the opacity is its strength and its breath, both set per frame,
+   and nothing here moves on its own. The pool sits a little below the middle
+   because the figure's light is weighted there. Wider than the stage so its
+   edge is never seen, and clipped by .chp. */
+.chp-aura{position:absolute;inset:-12%;pointer-events:none;opacity:0;will-change:opacity,transform;--aura:150,158,174;
+ background:radial-gradient(ellipse 34% 40% at 50% 52%,rgba(var(--aura),.7) 0%,rgba(var(--aura),.28) 46%,rgba(var(--aura),0) 100%),
+  radial-gradient(ellipse 70% 62% at 50% 54%,rgba(var(--aura),.2) 0%,rgba(var(--aura),0) 100%)}
+.chr-read+.chr-note{margin-top:12px}
 /* THE MASK ICONS, upper left, full colour. Each is a real button because each
    becomes a protocol, and 60 pixels, well over the 44 floor. */
 .chp-masks{position:absolute;left:20px;top:18px;display:flex;gap:12px;z-index:3}
+/* NO GLOW, round RB, his words: "the buttons on the upper left-hand side
+   have a glow around them. Turn that off. We don't have that anywhere else."
+   They had a coloured halo on hover and three on the pressed one, 30 and 62
+   pixels of blur in the mask's own colours, and a brightness filter on top.
+   They now take the Field bar's own disc (.fb-orb): the dark glass, its one
+   neutral drop shadow, and a lighter glass when hovered or pressed. The
+   pressed mask keeps the one hairline ring in its colour, which is an edge
+   and not a light, and its wash at full, so which mask is on still reads. */
 .chp-mk{position:relative;width:60px;height:60px;border-radius:50%;border:0;padding:0;cursor:pointer;
- background:rgba(14,16,22,.55);color:inherit;filter:saturate(1.05);
- transition:transform var(--t-element) var(--ease-out),box-shadow var(--t-element) var(--ease-out),filter var(--t-element) var(--ease-out)}
+ background:rgba(22,24,32,.74);color:inherit;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 6px 18px rgba(0,0,0,.30);
+ transition:transform var(--t-element) var(--ease-out),background-color var(--t-micro) var(--ease-out),box-shadow var(--t-element) var(--ease-out)}
 .chp-mk svg{position:absolute;inset:0;width:60px;height:60px;overflow:visible}
-.chp-mk:hover{transform:translateY(-1px);box-shadow:0 0 18px -4px var(--mc2)}
-.chp-mk[aria-pressed="true"]{transform:scale(1.08);filter:saturate(1.25) brightness(1.12);
- box-shadow:0 0 0 1px var(--mc1),0 0 30px -2px var(--mc2),0 0 62px -14px var(--mc1)}
+.chp-mk:hover{background:rgba(40,44,58,.86)}
+.chp-mk[aria-pressed="true"]{transform:scale(1.08);background:rgba(40,44,58,.86);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 6px 18px rgba(0,0,0,.30),0 0 0 1px var(--mc1)}
 .chp-mk[aria-pressed="true"] .wash{fill-opacity:1}
 .chp-mk:focus-visible,.chp-ob:focus-visible{outline:2px solid #EFEDE8;outline-offset:4px}
 /* THE OVERLAY TOGGLES, upper right. Ring icons, 44 pixels, lit when on and
@@ -5464,7 +5483,9 @@ body.tab-masksview #masksview{background:#0C0D12}
  transition:color var(--t-element) var(--ease-out),border-color var(--t-element) var(--ease-out),box-shadow var(--t-element) var(--ease-out)}
 .chp-ob svg{width:24px;height:24px}
 .chp-ob:hover{color:#EFEDE8;border-color:rgba(239,237,232,.4)}
-.chp-ob[aria-pressed="true"]{color:#EFEDE8;border-color:var(--mc1,#7EB8D4);box-shadow:0 0 0 1px var(--mc1,#7EB8D4),0 0 16px -4px var(--mc1,#7EB8D4)}
+/* and the same for the toggles: the coloured edge says on, the 16 pixel
+   halo it carried with it was the same glow and is gone */
+.chp-ob[aria-pressed="true"]{color:#EFEDE8;border-color:var(--mc1,#7EB8D4);box-shadow:0 0 0 1px var(--mc1,#7EB8D4)}
 body.punch .chp-mk,body.punch .chp-ob{box-shadow:none}
 @media (prefers-reduced-motion:reduce){.chp-mk,.chp-ob{transition:none}}
 @media (max-width:700px){
@@ -38827,8 +38848,11 @@ var CHC=(function(){
     to a quarter. THIS IS HOW THE MASK ANSWERS THE STORIES. The sniffer writes
     the channel charges out of what a person writes, compute() turns them into
     NODES[i].sq, and this map is that and nothing else. */
- var NHB=16,NLB=6,ALB=[.1,.2,.36,.56,.78,.95],WHB=[0,0,.04,.12,.24,.4],SZB=[.85,.95,1.05,1.15,1.28,1.45];
- var RBASE=(function(){var a=[];for(var h=0;h<NHB;h++)a.push(h<9?mixc([178,186,202],PCOL[h],.4):mixc(EMBER,specAt(h-9),.85));return a;})();
+ /* the seventeenth bin is DIMMED: a point a saboteur is dimming loses its
+    colour to a cold grey a step darker than the unlit ember, so the place reads
+    as light taken away and not as a different colour of light (round RB) */
+ var NHB=17,HDIM=16,NLB=6,ALB=[.1,.2,.36,.56,.78,.95],WHB=[0,0,.04,.12,.24,.4],SZB=[.85,.95,1.05,1.15,1.28,1.45];
+ var RBASE=(function(){var a=[];for(var h=0;h<NHB;h++)a.push(h===HDIM?[96,102,116]:h<9?mixc([178,186,202],PCOL[h],.4):mixc(EMBER,specAt(h-9),.85));return a;})();
  var COLSB=RBASE.map(function(base){return WHB.map(function(w){return css(mixc(base,INK,w),1);});});
  var CMW=26,CMH=46,CMX0=-.65,CMY0=-1.2,CMS=20;   /* 26 by 46 cells of 0.05 */
  function restXY(A,C,cp,i,o){var c=C[A.cap[i]];
@@ -38841,8 +38865,29 @@ var CHC=(function(){
    for(var y=iy-ry;y<=iy+ry;y++){if(y<0||y>=CMH)continue;var dy=((y+.5)-cyn)/(sy*CMS);
     for(var x=ix-rx;x<=ix+rx;x++){if(x<0||x>=CMW)continue;var dx=((x+.5)-cxn)/(sx*CMS);M[y*CMW+x]+=ch*Math.exp(-dx*dx-dy*dy);}}}
   for(var i=0;i<M.length;i++){var v=M[i]*.55;M[i]=v>1.25?1.25:v;}}
+ /* THE DIM MAP, round RB: "I should see in the body where my light is dim ...
+    and the saboteurs are dimming it." The same bump, on the same grid, at the
+    same place as the charge map, but as tall as the saboteur running at that
+    address and not as its charge. A point of the cloud reads it at its resting
+    place and loses up to DIMK of its light there, and the heaviest dimming also
+    takes its colour (HDIM). So the charge still makes a region dense, and a
+    saboteur makes that dense region dark: matter held, light blocked. sc.sab is
+    the eased weight, 0 for an address no saboteur runs through. */
+ var DIMK=.7;
+ function buildDM(sc){var M=sc.mem.DM;M.fill(0);if(!sc.sabAny)return;
+  for(var j=0;j<112;j++){var a=ADDR[j];if(a.fld)continue;var s=sc.sab[j];if(s<.01)continue;
+   var sy=a.seat===0?.16:.075,sx=.1,cxn=(a.ax-CMX0)*CMS,cyn=(a.yr-CMY0)*CMS,rx=Math.ceil(2.6*sx*CMS),ry=Math.ceil(2.6*sy*CMS);
+   var ix=cxn|0,iy=cyn|0;
+   for(var y=iy-ry;y<=iy+ry;y++){if(y<0||y>=CMH)continue;var dy=((y+.5)-cyn)/(sy*CMS);
+    for(var x=ix-rx;x<=ix+rx;x++){if(x<0||x>=CMW)continue;var dx=((x+.5)-cxn)/(sx*CMS),v=s*Math.exp(-dx*dx-dy*dy),o=y*CMW+x;
+     /* the strongest saboteur at a cell sets it, and a second one only adds a
+        little: two saboteurs on one place do not make it twice as dark */
+     M[o]=M[o]>v?M[o]+.25*v:v+.25*M[o];}}}
+  for(var i=0;i<M.length;i++)if(M[i]>1)M[i]=1;}
  function cmAt(sc,x,y){var M=sc.mem.CM,fx=(x-CMX0)*CMS-.5,fy=(y-CMY0)*CMS-.5;if(fx<0)fx=0;if(fy<0)fy=0;if(fx>CMW-1.001)fx=CMW-1.001;if(fy>CMH-1.001)fy=CMH-1.001;
   var ix=fx|0,iy=fy|0,ux=fx-ix,uy=fy-iy,o=iy*CMW+ix;return (M[o]*(1-ux)+M[o+1]*ux)*(1-uy)+(M[o+CMW]*(1-ux)+M[o+CMW+1]*ux)*uy;}
+ /* the dim map read the same way, nearest cell: it is smooth already */
+ function dmAt(sc,x,y){var ix=((x-CMX0)*CMS)|0,iy=((y-CMY0)*CMS)|0;if(ix<0||iy<0||ix>=CMW||iy>=CMH)return 0;return sc.mem.DM[iy*CMW+ix];}
 
  /* ---------- the world a mask lives in ----------
     Each mask is a posture and a thing it is held against, and both are drawn in
@@ -39124,21 +39169,95 @@ var CHC=(function(){
  function drawAddrs(sc){var g=sc.g,d=sc.dpr,k=sc.k,cx=sc.cx,cy=sc.cy,c=sc.c,air=sc.air,DB=sc.mem.DA,st=sc.ss.st;DB.reset();
   var light=.1+.9*Math.pow(c,1.1),size=sc.mobile?2:2.3;
   var orb=[];for(var s=0;s<7;s++)orb.push(sc.acc('orb'+s,(.05+.2*sc.c)*(1-.55*st.sh[s])));
-  var rings=[],a,ch,x,y,z;
+  var rings=[],marks=[],a,ch,x,y,z,og=Math.min(1,.25+.75*sc.og);
   for(var j=0;j<112;j++){a=ADDR[j];ch=sc.ach[j];addrXY(sc,a,orb[a.seat],_ap);x=_ap[0];y=_ap[1];z=_ap[2];
-   var f=.6+.4*(z+1)/2,b=(.14+.86*Math.pow(ch,.8))*light*f;
+   var f=.6+.4*(z+1)/2,b=(.14+.86*Math.pow(ch,.8))*light*f,sw=sc.sab[j];
+   /* A SABOTEUR IS LIT BY ITS OWN WEIGHT, round RB: "I want to see my
+      saboteurs more visible." Every other point is lit by coherence, so at
+      low coherence the saboteurs were as dim as the light they are taking,
+      which hid the cause in the dark it makes. A point a saboteur runs at is
+      held at least as bright as that saboteur is heavy. */
+   if(sw>.01)b=Math.max(b,(.3+.6*sw)*og*f);
    if(sc.sel>=0)b*=a.seat===sc.sel?1.3:.3;
    var px=cx+x*k,py=cy+y*k;sc.AP.push([px,py,j]);
    var lv=Math.min(4,(b*5.2)|0);if(b<.03)continue;
    DB.add(px,py,air.binAt(x,y),lv,(.8+.2*f)*(.75+1.6*Math.pow(ch,.8)));
    if(ch>.42&&b>.12){sc.glow(px,py,6+14*ch,air.rgbAt(x,y),.34*b*ch);}
-   if(a.fld||ch>.68)rings.push([px,py,x,y,ch,b,a.fld]);}
+   if(sw>.01&&!a.fld)marks.push([px,py,j,sw,sc.cxw[j],b,x,y]);
+   else if(a.fld||ch>.68)rings.push([px,py,x,y,ch,b,a.fld]);}
+  /* the lines go under the points, so a point sits on the end of its line */
+  if(sc.leadSab.length)drawSabLines(sc,marks);
   DB.flush(g,d,COLQ,AQ,SQ5,size);
   g.lineWidth=1.1*d;
   for(var i=0;i<rings.length;i++){var q=rings[i],rgb=air.rgbAt(q[2],q[3]);g.globalAlpha=Math.min(1,.55*q[5]+.1);g.strokeStyle=css(mixc(rgb,INK,.25));g.beginPath();
    g.arc(q[0]*d,q[1]*d,(q[6]?6+7*q[4]:3.5+size*.5+3*q[4])*d,0,6.2832);g.stroke();}
+  /* THE SABOTEUR'S MARK: a ring in the seat's own colour, not the air's, so
+     it is the one ring on the page that does not take the colour of where it
+     is. Size and strength are the weight. Rings, never a fill.
+     TWO STRENGTHS, ONE ORDER. Gordon carries 39 saboteurs over 106 of the 108
+     body addresses, and a bold ring on every one of them was a swarm that hid
+     the body it was meant to explain, measured on the first shot. So the
+     three heaviest saboteurs, the ones with a line, are bold, with a second
+     ring outside when that saboteur is part of a complex, and every other
+     point a saboteur runs at gets a thin, quiet ring: still found, read
+     second. */
+  for(i=0;i<marks.length;i++){var m=marks[i],col=mixc(SEATC[ADDR[m[2]].seat],INK,.12),sf=sc.sel>=0?(ADDR[m[2]].seat===sc.sel?1:.3):1,bold=sc.leadSab.indexOf(m[2])>=0;
+   var r0=bold?4.2+2.6*m[3]:3.4+1.6*m[3];g.strokeStyle=css(col);
+   g.lineWidth=(bold?1.2+.5*m[3]:.9)*d;g.globalAlpha=clamp((bold?.5+.45*m[3]:.14+.2*m[3])*og*sf,0,1);
+   g.beginPath();g.arc(m[0]*d,m[1]*d,r0*d,0,6.2832);g.stroke();
+   if(bold&&m[4]>.01){g.lineWidth=.9*d;g.globalAlpha=clamp((.22+.4*m[4])*og*sf,0,1);g.beginPath();g.arc(m[0]*d,m[1]*d,(r0+3.4)*d,0,6.2832);g.stroke();}}
   g.globalAlpha=1;}
- var _ap=[0,0,0];
+ var _ap=[0,0,0],_sl=[0,0,0,0];
+ /* THE LINE FROM A SABOTEUR TO THE PLACE IT DIMS, round RB: "the saboteurs
+    are dimming it." A dimmed place alone does not say what dimmed it, so the
+    three heaviest saboteurs each draw a dotted line from every point they run
+    at to the place on the body that point dims, which is where the dim map
+    put its bump: the address's own resting place, carried onto the spine as
+    it is posed now. One faint bead goes down each line toward the body, once
+    every LINE_S seconds, leaving the saboteur slowly and speeding into the
+    body (an ease in, u squared), so the eye reads which end is the cause. Only three, because a person carrying thirty nine saboteurs
+    would otherwise get thirty nine sets of lines and read none of them; the
+    rest are dimmed and ringed and not joined. Under reduced motion the bead
+    is not drawn and the line stands still. */
+ var LINE_S=3.4;
+ function drawSabLines(sc,marks){var g=sc.g,d=sc.dpr,k=sc.k,cx=sc.cx,cy=sc.cy,og=Math.min(1,.25+.75*sc.og),lead=sc.leadSab;
+  for(var i=0;i<marks.length;i++){var m=marks[i],j=m[2],r=lead.indexOf(j);if(r<0)continue;var a=ADDR[j];
+   if(sc.sel>=0&&a.seat!==sc.sel)continue;
+   spineAt(sc.sp,a.yr,_sl);var bx=cx+(_sl[0]+(-_sl[3])*a.ax)*k,by=cy+(_sl[1]+_sl[2]*a.ax)*k;
+   var x0=m[0],y0=m[1],dx=bx-x0,dy=by-y0,len=Math.hypot(dx,dy);if(len<10)continue;
+   /* a shallow arc, bowed away from the spine, so a line never lies along
+      the body's own edge */
+   var bow=.16*len*(x0<cx?-1:1),qx=(x0+bx)/2+bow*(dy/len)*-1,qy=(y0+by)/2+bow*(dx/len);
+   var col=mixc(SEATC[a.seat],INK,.2),n=Math.max(6,Math.round(len/5)),al=(.34+.4*m[3])*og;
+   g.fillStyle=css(col);
+   for(var s=1;s<n;s++){var u=s/n,v=1-u,px=v*v*x0+2*v*u*qx+u*u*bx,py=v*v*y0+2*v*u*qy+u*u*by;
+    g.globalAlpha=al*(.55+.45*Math.sin(u*Math.PI));g.fillRect((px-1)*d,(py-1)*d,2*d,2*d);}
+   /* the place it dims: a small open ring, dim, on the body */
+   g.globalAlpha=al*.9;g.strokeStyle=css(col);g.lineWidth=d;g.beginPath();g.arc(bx*d,by*d,3*d,0,6.2832);g.stroke();
+   if(!sc._still){var ph=frac(sc.t/LINE_S+hash(j,31)),bu=ph*ph,bv=1-bu;
+    var ex=bv*bv*x0+2*bv*bu*qx+bu*bu*bx,ey=bv*bv*y0+2*bv*bu*qy+bu*bu*by,ba=al*1.6*Math.sin(ph*Math.PI);
+    g.globalAlpha=clamp(ba,0,1);g.fillRect((ex-1.4)*d,(ey-1.4)*d,2.8*d,2.8*d);}}
+  g.globalAlpha=1;}
+
+ /* THE COLOUR THE AURA IS RADIATING, round RB: "I want the background of the
+    character to reflect the combination color that the aura is radiating. And
+    I want that dynamic." It is not chosen here, it is summed. Every point the
+    cloud splats into the air carries its own colour at its own brightness, so
+    the mean of those splats, weighted the same way, is the one colour the
+    whole person gives off: the seats that are lit, the patterns that are
+    loaded, and the grey of whatever a saboteur is dimming. It is made bright
+    the way each cell of the air is, then drawn toward ember by how little
+    coherence there is, the way airWorld draws the world, so a compressed
+    field gives off a dim grey and a full spectrum one gives off colour.
+    The mean of many colours is always paler than any of them, so the spread
+    from its own grey is put back at SAT before that. Read on the frames the
+    air is rebuilt, every third, and eased in update(). */
+ var AURA_SAT=4;
+ function auraOf(sc,r,g,b,w){var c;
+  if(w<1e-3)c=EMBER.slice();
+  else{c=[r/w,g/w,b/w];var L=(c[0]+c[1]+c[2])/3;c=c.map(function(v){return clamp(L+(v-L)*AURA_SAT,0,255);});
+   var m=Math.max(c[0],c[1],c[2])||1,k=236/m;c=[c[0]*k,c[1]*k,c[2]*k];c=mixc(EMBER,c,.3+.7*sc.c);}
+  sc.auraT=c;if(!sc.aura||sc._still)sc.aura=c.slice();}
 
  /* ---------- the body, drawn ---------- */
  function drawBody(sc){var g=sc.g,A=sc.mem.A,B=sc.mem.B,air=sc.air,d=sc.dpr,t=sc.t,F=sc.fig,C=F.caps,k=sc.k,cx=sc.cx,cy=sc.cy,c=sc.c;
@@ -39148,7 +39267,7 @@ var CHC=(function(){
      thirteen percent, and not black: "near black, not totally black". */
   var gain=(.13+.9*Math.pow(c,.9))*Math.min(1,Math.pow(F.scale,1.6)),szB=(sc.mobile?1.3:1.5)*(1+.14*sstep(0,.9,c));
   var doAir=sc.manual||sc.airNow,show=sc.ov.cloud;if(doAir)air.clear();
-  var sel=sc.sel,hov=sc.hov,stride=sc.stride;B.reset();
+  var sel=sc.sel,hov=sc.hov,stride=sc.stride,dimOn=sc.sabAny,ar=0,ag=0,ab=0,aw=0,nsp=0;B.reset();
   for(var i=0;i<A.n;i+=1){var rk=A.sc7[i];
    /* the governor thins the cloud by skipping points that are not in this
       frame's share. A skipped point is still a point of the person, so the
@@ -39159,12 +39278,26 @@ var CHC=(function(){
    var sf=1;if(sel>=0)sf=rk===sel?1.12:.3;else if(hov>=0)sf=rk===hov?1.15:.85;
    var b=gain*A.lum[i]*(.6+.8*Math.pow(q,.8))*sf*(p===lp?.9+.2*beat:1)*xy[2]*(1+.12*Math.sin(t*(.9+A.ph[i]*1.4)+i)),h=p;
    var rj=Math.round(s0),dk=Math.abs(s0-rj);
-   if(rj>=1&&dk<.2){var bl=(1-dk/.2)*lit[rj];if(bl>.08){b+=bl*.45*A.lum[i];if(bl>.3)h=9+rj;}}
+   /* where a saboteur runs, the light is taken down and the colour with it:
+      the seat's own band of light first, which is the brightest thing on the
+      body and would otherwise shine straight through the dimming, then the
+      point itself. A point's share of the grey is its own fixed draw (ph), so
+      the edge of a dimmed place is a scatter of grey into colour and never a
+      line */
+   var dm=dimOn?dmAt(sc,A.rx[i],A.ry[i]):0;
+   if(rj>=1&&dk<.2){var bl=(1-dk/.2)*lit[rj]*(1-.8*dm);if(bl>.08){b+=bl*.45*A.lum[i];if(bl>.3)h=9+rj;}}
+   if(dm>.02){b*=1-DIMK*dm;if(A.ph[i]<dm*1.1)h=HDIM;}
    var l=(b*NLB*.95)|0;if(l>=NLB)l=NLB-1;if(l<0)l=0;
    if(show){B.add(x,y,h,l,1);sc.regB(x,y,rk);}
-   if(doAir&&!(i&3)){var rb=RBASE[h],w=b>1?1:b*1.1;air.splat(qx,qy,rb[0],rb[1],rb[2],w);}}
+   /* a quarter of the points drawn this frame, counted, and not every fourth
+      index: under the governor's stride of 2, a frame whose number is odd
+      draws only odd indices, none of them a multiple of four, so the air was
+      rebuilt from nothing on every other rebuild and went to bare ember, and
+      the aura's colour went with it. Found by round RB, measured on Rosa at
+      390 with the governor at its first step. */
+   if(doAir&&!((nsp++)&3)){var rb=RBASE[h],w=b>1?1:b*1.1;air.splat(qx,qy,rb[0],rb[1],rb[2],w);ar+=rb[0]*w;ag+=rb[1]*w;ab+=rb[2]*w;aw+=w;}}
   if(show)B.flush(g,d,COLSB,ALB,SZB,szB);
-  if(doAir){air.ambient(c);air.finish(1.6);}
+  if(doAir){air.ambient(c);air.finish(1.6);auraOf(sc,ar,ag,ab,aw);}
   if(show)drawWorld(sc,airWorld(sc));}
 
  /* ---------- the heat map ----------
@@ -39217,12 +39350,17 @@ var CHC=(function(){
   this.q=0;this.qk=1;this.stride=1;this.airNow=true;this.heatDirty=true;
   addrInit();
   this.ach=new Float32Array(112);this.achT=new Float32Array(112);
+  /* round RB: the saboteur weight at each address, 0 to 1, eased and target,
+     the complex weight beside it, and the addresses of the three heaviest
+     saboteurs, which are the ones joined to the place they dim */
+  this.sab=new Float32Array(112);this.sabT=new Float32Array(112);this.cxw=new Float32Array(112);this.leadSab=[];this.sabAny=false;
+  this.aura=null;this.auraT=EMBER.slice();
   this.tp=Object.assign({},REST);this.tm=0;this.tL=0;this.tpc=this.pc.slice();this.lead=0;
   /* the allocation, once: the cloud's points, the batches, the torus' scratch */
   var N=this.small?4600:9000,A=this.mem.A=bodySample(N,NSEED);this.mem.B=new Batch(N,NHB,NLB);
   var F=buildFig(REST),C=F.caps,cp=segFrames(C),oo=[0,0];A.rx=new Float32Array(N);A.ry=new Float32Array(N);A.sc7=new Uint8Array(N);
   for(var i=0;i<N;i++){restXY(A,C,cp,i,oo);A.rx[i]=oo[0];A.ry[i]=oo[1];var r=Math.round(A.s0[i]);A.sc7[i]=r<0?0:r>6?6:r;}
-  this.mem.CM=new Float32Array(CMW*CMH);this.air=new Air();this.mem.DA=new Batch(120,NBIN,5);worldInit(this);
+  this.mem.CM=new Float32Array(CMW*CMH);this.mem.DM=new Float32Array(CMW*CMH);this.air=new Air();this.mem.DA=new Batch(120,NBIN,5);worldInit(this);
   this.mem.S=newS(120);this.mem.S1=newS(2);this.mem.S2=newS(80);
   this.mem.LB=new LineBatch(9000,NBIN,5);this.mem.LB2=new LineBatch(1600,NBIN,5);this.mem.DB=new Batch(9000,NBIN,5);
   this.mem.T=mkT(0,1.12,1.32,14,3);
@@ -39235,20 +39373,22 @@ var CHC=(function(){
   if(d.w)this.w=d.w;if(d.ig)this.ig=d.ig;if(d.coh!==undefined)this.cT=clamp(d.coh,0,1);if(d.vit!==undefined)this.vit=clamp(d.vit,0,1);
   if(d.mask)this.mask=d.mask;if(d.unread!==undefined)this.unread=!!d.unread;
   if(d.ach)for(var j=0;j<112;j++)this.achT[j]=clamp(d.ach[j],0,1);
+  if(d.sab){var any=false;for(var j2=0;j2<112;j2++){this.sabT[j2]=clamp(d.sab[j2],0,1);this.cxw[j2]=clamp(d.cx?d.cx[j2]:0,0,1);if(this.sabT[j2]>0)any=true;}
+   this.sabAny=any||this.sabAny;this.leadSab=d.lead||[];}
   /* THE FIRST FEED SETS THE LIGHT AND THE CHARGES WHERE THEY ARE GOING and
      leaves the pose to ease. The opening is charGrow's to make, from the dim
      floor to the real level, and a coherence that also eased up from nothing
      would grow twice and take twice as long: the opening measured about four
      seconds before this. The figure still gathers and bends into its mask,
      because that is the pose easing from a plain person. */
-  if(!this.fed){this.fed=1;this.cc=this.cT;this.ach.set(this.achT);}
+  if(!this.fed){this.fed=1;this.cc=this.cT;this.ach.set(this.achT);this.sab.set(this.sabT);}
   this.setTarget();};
  Scene.prototype.setTarget=function(){var M=maskDef(this.mask),w=this.w,r=mixPose(M.nm,w);
   this.tp=r.p;this.tm=r.m;this.tL=r.L;
   /* charges, seen through the mask: a seat the mask does not wear is held back to a third */
   this.tpc=AX.map(function(a){return Math.min(1,(w[a.nm]||0)/9)*(M.b.indexOf(a.seat)>=0?1:.34);});
   this.lead=leadPat(w);this.per=PER[M.nm];};
- Scene.prototype.snap=function(){this.pv=Object.assign({},this.tp);this.m=this.tm;this.L=this.tL;this.pc=this.tpc.slice();this.fade=1;this.ready=true;this.cc=this.cT;this.ach.set(this.achT);};
+ Scene.prototype.snap=function(){this.pv=Object.assign({},this.tp);this.m=this.tm;this.L=this.tL;this.pc=this.tpc.slice();this.fade=1;this.ready=true;this.cc=this.cT;this.ach.set(this.achT);this.sab.set(this.sabT);this.sabAny=this.sabT.some(function(v){return v>0;});if(this.auraT)this.aura=this.auraT.slice();};
  Scene.prototype.resize=function(){var r=this.host.getBoundingClientRect(),d=this.dpr,w=Math.round(r.width*d),h=Math.round(r.height*d);
   if(!w||!h)return false;
   if(this.cv.width!==w||this.cv.height!==h){this.cv.width=w;this.cv.height=h;this.heatDirty=true;}this.W=w;this.H=h;this.w2=r.width;this.h2=r.height;this.mobile=r.width<700;return true;};
@@ -39269,7 +39409,13 @@ var CHC=(function(){
      gathers, then it is lit. Going down is quicker than going up, a held breath
      is shorter than an exhale. */
   var cq=1-Math.exp(-dt*(this.cT>this.cc?1.5:2.2));this.cc+=(this.cT-this.cc)*cq;
-  var qa=1-Math.exp(-dt*(this.ready?1.6:9));for(var j=0;j<112;j++)this.ach[j]+=(this.achT[j]-this.ach[j])*qa;
+  var qa=1-Math.exp(-dt*(this.ready?1.6:9)),sa=false;for(var j=0;j<112;j++){this.ach[j]+=(this.achT[j]-this.ach[j])*qa;
+   this.sab[j]+=(this.sabT[j]-this.sab[j])*qa;if(this.sab[j]>.005)sa=true;}
+  this.sabAny=sa;
+  /* the aura's colour moves on a slower clock than anything it is made of,
+     a time constant of 1.4 seconds, so the room changes like light changing
+     and never flickers with the points it is summed from */
+  if(this.aura){var qc=1-Math.exp(-dt/1.4);for(var c3=0;c3<3;c3++)this.aura[c3]+=(this.auraT[c3]-this.aura[c3])*qc;}
   this.ts+=(this.tsT-this.ts)*(1-Math.exp(-dt*6));if(Math.abs(this.tsT-this.ts)<.002)this.ts=this.tsT;};
  Scene.prototype.update=function(dt,still){
   /* a person who asked for less motion gets the settled picture, held still:
@@ -39325,7 +39471,7 @@ var CHC=(function(){
   g.globalCompositeOperation='lighter';
   /* the Vitality oscillation: a phase in cycles that keeps counting as the rate eases */
   this.osc=charOscillation(this.unread?0:this.vit);this.oscPh=this.acc('osc',this.osc.rate);
-  spineNow(this);seatState(this);buildH(this);viewState(this);buildCM(this);
+  spineNow(this);seatState(this);buildH(this);viewState(this);buildCM(this);buildDM(this);
   if(this.ov.heat)drawHeat(this);
   drawBody(this);
   if(this.ov.torus){
@@ -39563,12 +39709,41 @@ function chOvSave(o){
 
 /* THE NUMBERS THE SCENE IS FED, read off the engine on every render and off
    nothing else. r is the reading render() just took. */
+/* WHAT RUNS AT EACH ADDRESS, round RB. The saboteurs and complexes are the
+   reading's own, r.sabs and r.cxs, which render() has already put through the
+   plan (sightR): a plan that cannot see saboteurs hands this two empty lists
+   and the page dims nothing and rings nothing. Each saboteur already names the
+   addresses it runs on (parts) and its weight, 0 to 10, which is the mean
+   charge of those addresses; nothing here re-derives it. The weight becomes
+   0 to 1 between CH_SAB_LO and CH_SAB_FULL: the weakest saboteur compute()
+   lets exist, 3.7, reads about a tenth, and 9.5 reads full. An address in two
+   saboteurs takes the heavier. A complex is two saboteurs, so its weight lands
+   on every address of both. lead is the addresses of the three heaviest
+   saboteurs, which are the ones drawn joined to the place they dim. who is the
+   heaviest saboteur and complex at each address, for the line under the
+   pointer. */
+var CH_SAB_LO=3, CH_SAB_FULL=9.5, CH_SAB_LINES=3;
+function chSabW(w){return clamp(((+w||0)-CH_SAB_LO)/(CH_SAB_FULL-CH_SAB_LO),0,1);}
+function chSabs(r,AF){
+ var sab=new Float32Array(112), cx=new Float32Array(112), who=[], lead=[], at={};
+ AF.forEach(function(a,j){at[a.i]=j;});
+ var unread=!r||!!r.unread, sabs=(!unread&&r.sabs)||[], cxs=(!unread&&r.cxs)||[];
+ sabs.forEach(function(s,rank){var v=chSabW(s.w);
+  (s.parts||[]).forEach(function(n){var j=at[n.i];if(j===undefined)return;
+   if(v>sab[j]){sab[j]=v;who[j]=who[j]||{};who[j].sab=s;}
+   if(rank<CH_SAB_LINES&&lead.indexOf(j)<0)lead.push(j);});});
+ cxs.forEach(function(c){var v=chSabW(c.w);
+  (c.parts||[]).forEach(function(s){(s.parts||[]).forEach(function(n){var j=at[n.i];if(j===undefined)return;
+   if(v>cx[j]){cx[j]=v;who[j]=who[j]||{};who[j].cx=c;}});});});
+ return {sab:sab, cx:cx, who:who, lead:lead};}
 function chData(r){
  var w={}; CHILD.forEach(function(c){w[c.nm]=+S.charge[c.nm]||0;});
  var AF=addrField(), ach=new Float32Array(112), SF=seatField();
  AF.forEach(function(a,j){ach[j]=a.sq/10;});
- var unread=!r||!!r.unread;
+ var unread=!r||!!r.unread, SB=chSabs(r,AF);
+ CHV.who=SB.who;
  return {w:w, ach:ach, ig:SF.map(function(s){return s.ig;}), unread:unread, mask:CHV.pick,
+  sab:SB.sab, cx:SB.cx, lead:SB.lead,
   coh:unread?0:clamp((+r.CQ||0)/100,0,1),
   /* VITALITY IS r.X, the figure the left menu prints beside the leaf. A reading
      nobody has made yet is unread, the menu prints a dash for it, and the torus
@@ -39605,7 +39780,7 @@ function chOvBtn(k,nm,d,ic,pressed){
 function chBuild(host){
  if(CHV.built&&host.querySelector('.chp-stage')&&CHV.sc)return;
  CHV.ov=chOvGet();
- host.innerHTML='<div class="chp"><div class="chp-stage" id="chpstage">'
+ host.innerHTML='<div class="chp"><div class="chp-aura" aria-hidden="true"></div><div class="chp-stage" id="chpstage">'
   +'<div class="chp-masks" role="group" aria-label="Masks">'+MASKS_READ.map(chMaskBtn).join('')+'</div>'
   +'<div class="chp-ovs" role="group" aria-label="Overlays">'
   +CH_OVERLAYS.map(function(x){return chOvBtn(x.k,x.nm,x.d,CH_IC[x.k],CHV.ov[x.k]);}).join('')
@@ -39691,9 +39866,13 @@ function chAnchor(){
 function chHoverText(j,seat){
  var sc=CHV.sc;
  if(j>=0){var a=CHC.addr()[j];
+  var wo=(CHV.who&&CHV.who[j])||null;
   return '<b>'+esc(a.k)+'</b>'+(a.plex?', '+esc(a.plex.toLowerCase()):'')+'. '
    +(a.fld?esc(a.b):esc(chSeatName(a.b))+' seat')+(a.c?', '+esc(a.c.toLowerCase())+' channel':'')
-   +'. Charge '+(sc.achT[j]*10).toFixed(1)+'.';}
+   +'. Charge '+(sc.achT[j]*10).toFixed(1)+'.'
+   /* round RB: what is running here, and what it does to the body */
+   +(wo&&wo.sab?' The saboteur '+esc(wo.sab.nm)+' runs here and dims the body at this place.':'')
+   +(wo&&wo.cx?' It is part of the complex '+esc(wo.cx.nm)+'.':'');}
  if(seat>=0){var st=CHC.seatState(sc,true),sh=st.st.sh[seat];
   return '<b>'+chSentence(chSeatWord(BANDS[seat])+' seat').replace(/\.$/,'')+'</b>, '+Math.round(sh*100)+' percent shadow. Press to trace it.';}
  /* nothing under the pointer is the empty value, a dash. The sentence that
@@ -39790,7 +39969,9 @@ function chRailHtml(r){
  h+='<div class="pm-eye chr-sp">Light and breath</div><div class="chr-read">'
   +'<div class="chr-row"><span>Coherence</span><b>'+(unread?'–':cq+'%')+'</b><i>'+esc(chSentence(charCohWord(unread?0:cq/100)))+' It lights the figure and sets how wide, bright and whole the field is.</i></div>'
   +'<div class="chr-row"><span>Vitality</span><b>'+(unread?'–':vt.toFixed(2))+'</b><i>'+esc(chVitWord(unread?0:vt))+' It sets how far and how fast the field breathes.</i></div>'
-  +'<div class="chr-row"><span>Decoherence</span><b>'+(unread?'–':dq+'%')+'</b><i>The shadow, all 112 addresses against the most they could hold. It opens the gaps.</i></div></div>';
+  +'<div class="chr-row"><span>Decoherence</span><b>'+(unread?'–':dq+'%')+'</b><i>The shadow, all 112 addresses against the most they could hold. It opens the gaps.</i></div></div>'
+  /* round RB: the glow behind the figure is a picture too, so it is said */
+  +(unread?'':'<p class="chr-note">The glow behind the figure is the colour your whole field gives off: every point\u2019s colour, mixed by how bright it is. It breathes with the field.</p>');
  /* the seven seats: root first as everywhere, each a button that traces it */
  h+='<div class="pm-eye chr-sp plain">The seven seats</div><div class="chr-seats">'
   +SF.map(function(s,k){var sh=charSmooth(CHAR_SEAT_LO,CHAR_SEAT_FULL,s.mean),word=sh<.25?'Open':sh<.6?'Loaded':'Closed';
@@ -39801,7 +39982,12 @@ function chRailHtml(r){
  /* what the points are, which is the question the owner asked of the mockup */
  h+='<div class="pm-eye chr-sp">What the points are</div>'
   +'<p class="ad-p">Each point round the body is one address. '+chPl(AF.filter(function(x){return !x.field;}).length,'address sits','addresses sit')
-  +' round the body at the height of its seat, going slowly round the spine. Four are field anchors, two above the head and two below the feet, drawn as rings. Size and brightness are the address’s charge, and a ring round a point is a charge above seven tenths.</p>'
+  +' round the body at the height of its seat, going slowly round the spine. Four are field anchors, two above the head and two below the feet, drawn as rings. Size and brightness are the address’s charge, and a thin pale ring round a point is a charge above seven tenths.</p>'
+  /* round RB: the saboteur's ring, the complex's second ring, the dimmed body
+     and the line, each said where it is drawn, with what a saboteur and a
+     complex are taken from the one table of meanings */
+  +(CHV.who&&CHV.who.some(function(x){return x&&x.sab;})?'<p class="ad-p">A ring in the seat\u2019s own colour marks a point where a saboteur runs. '+esc(unpackOf('saboteur'))
+   +' The body under a saboteur goes dark and grey by how heavy it is. The three heaviest saboteurs are drawn bold, each with a dotted line to the place on the body it dims, and a second ring outside a bold one means that saboteur is part of a complex. '+esc(unpackOf('complex'))+'</p>':'')
   +'<div class="chr-counts">'+SF.map(function(s){return '<span style="--sc:'+PAL[s.seat]+'"><i></i>'+esc(chSeatName(s.seat))+' <b>'+s.n+'</b></span>';}).join('')+'<span class="chr-anc"><i></i>Anchors <b>4</b></span></div>';
  h+='</div>';
  return h;}
@@ -39850,11 +40036,48 @@ function chFrame(ts){
    /* a person who asked for less motion gets one settled picture, drawn again
       only when something has changed it */
    if(!still||CHV.dirty){
-    var a=performance.now(); sc.render(); var ms=performance.now()-a;
+    var a=performance.now(); sc.render(); chAura(sc); var ms=performance.now()-a;
     CHV.perf.n++;CHV.perf.ms+=ms;if(ms>CHV.perf.max)CHV.perf.max=ms;CHV.dirty=false;
     if(!still&&raw>0&&raw<250)sc.govern(raw);}}
  }catch(e){CHV.raf=0;CHV.live=false;throw e;}
  CHV.raf=requestAnimationFrame(chFrame);}
+
+/* THE ROOM TAKES THE AURA'S COLOUR, round RB, his words: "similar to how
+   we're bringing in the red for the body in the background, I want the
+   background of the character to ... reflect the combination color that the
+   aura is radiating. And I want that dynamic." The Body's red is drawAura in
+   ui/wheel.js, pools of the darkest seat at a strength read off the reading.
+   This is the same idea with the page's own number: the colour is the scene's
+   aura (chcloud.js auraOf, every point's colour mixed by its brightness), and
+   the strength is coherence, so a compressed field sits in a faint grey room
+   and a lit one in its own colour. Nothing is drawn for a profile nobody has
+   read.
+
+   DYNAMIC, THREE WAYS, AND NONE OF THEM INVENTED HERE. The colour follows the
+   cloud, so a mask press, a story or a release moves it, eased over 1.4
+   seconds in the scene. The pool breathes on the torus's own phase (oscPh,
+   from Vitality through charOscillation), so the room and the field inhale on
+   the same beat: the Field's own wash breathes .82 to 1 and this one swings
+   between 12 and 32 percent of its strength as Vitality goes from nothing to
+   full, with a scale of 1.2 to 3.2 percent riding it. And it opens with the
+   page, because the strength reads the grown coherence.
+
+   WHAT IT COSTS. The colour is written only when it moves by three steps in a
+   channel, so the gradient is repainted a few times a second while the colour
+   is travelling and not at all once it has arrived. Every frame writes only
+   opacity and a scale, which the compositor does without a repaint. Under
+   reduced motion it is the settled colour at its middle strength, held. */
+var CHAU={el:null,key:''};
+function chAura(sc){
+ var el=CHAU.el;
+ if(!el||!el.isConnected){el=CHAU.el=document.querySelector('#masksview .chp-aura');CHAU.key='';}
+ if(!el||!sc.aura)return;
+ var key=sc.aura.map(function(v){return Math.round(v/3)*3;}).join(',');
+ if(key!==CHAU.key){CHAU.key=key;el.style.setProperty('--aura',key);}
+ var lvl=sc.unread?0:.2+.5*sc.c, still=!!sc._still, vit=sc.unread?0:sc.vit,
+  br=still?0:Math.sin((sc.oscPh||0)*Math.PI*2), sw=.12+.2*vit;
+ el.style.opacity=(lvl*(1-sw*.5+sw*.5*br)).toFixed(3);
+ el.style.transform=still?'none':'scale('+(1+(.012+.02*vit)*br).toFixed(4)+')';}
 
 /* THE REAL ENTRY. render() calls this on every press anywhere, so everything
    in it is cheap and idempotent: the numbers are handed to the scene, the
@@ -70911,5 +71134,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004667921"></div>
+<div id="eof" hidden data-len="004684653"></div>
 </body></html>

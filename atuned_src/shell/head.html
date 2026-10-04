@@ -5444,16 +5444,35 @@ body.tab-masksview #masksview{background:#0C0D12}
 .chp-stage{position:absolute;inset:0;overflow:hidden}
 .chp-cv{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:manipulation}
 .chp-cv.hit{cursor:pointer}
+/* THE ROOM'S COLOUR, round RB: the colour the aura gives off, as a pool behind
+   the figure, written by ui/character.js chAura. --aura is the colour as three
+   channels, the opacity is its strength and its breath, both set per frame,
+   and nothing here moves on its own. The pool sits a little below the middle
+   because the figure's light is weighted there. Wider than the stage so its
+   edge is never seen, and clipped by .chp. */
+.chp-aura{position:absolute;inset:-12%;pointer-events:none;opacity:0;will-change:opacity,transform;--aura:150,158,174;
+ background:radial-gradient(ellipse 34% 40% at 50% 52%,rgba(var(--aura),.7) 0%,rgba(var(--aura),.28) 46%,rgba(var(--aura),0) 100%),
+  radial-gradient(ellipse 70% 62% at 50% 54%,rgba(var(--aura),.2) 0%,rgba(var(--aura),0) 100%)}
+.chr-read+.chr-note{margin-top:12px}
 /* THE MASK ICONS, upper left, full colour. Each is a real button because each
    becomes a protocol, and 60 pixels, well over the 44 floor. */
 .chp-masks{position:absolute;left:20px;top:18px;display:flex;gap:12px;z-index:3}
+/* NO GLOW, round RB, his words: "the buttons on the upper left-hand side
+   have a glow around them. Turn that off. We don't have that anywhere else."
+   They had a coloured halo on hover and three on the pressed one, 30 and 62
+   pixels of blur in the mask's own colours, and a brightness filter on top.
+   They now take the Field bar's own disc (.fb-orb): the dark glass, its one
+   neutral drop shadow, and a lighter glass when hovered or pressed. The
+   pressed mask keeps the one hairline ring in its colour, which is an edge
+   and not a light, and its wash at full, so which mask is on still reads. */
 .chp-mk{position:relative;width:60px;height:60px;border-radius:50%;border:0;padding:0;cursor:pointer;
- background:rgba(14,16,22,.55);color:inherit;filter:saturate(1.05);
- transition:transform var(--t-element) var(--ease-out),box-shadow var(--t-element) var(--ease-out),filter var(--t-element) var(--ease-out)}
+ background:rgba(22,24,32,.74);color:inherit;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 6px 18px rgba(0,0,0,.30);
+ transition:transform var(--t-element) var(--ease-out),background-color var(--t-micro) var(--ease-out),box-shadow var(--t-element) var(--ease-out)}
 .chp-mk svg{position:absolute;inset:0;width:60px;height:60px;overflow:visible}
-.chp-mk:hover{transform:translateY(-1px);box-shadow:0 0 18px -4px var(--mc2)}
-.chp-mk[aria-pressed="true"]{transform:scale(1.08);filter:saturate(1.25) brightness(1.12);
- box-shadow:0 0 0 1px var(--mc1),0 0 30px -2px var(--mc2),0 0 62px -14px var(--mc1)}
+.chp-mk:hover{background:rgba(40,44,58,.86)}
+.chp-mk[aria-pressed="true"]{transform:scale(1.08);background:rgba(40,44,58,.86);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 6px 18px rgba(0,0,0,.30),0 0 0 1px var(--mc1)}
 .chp-mk[aria-pressed="true"] .wash{fill-opacity:1}
 .chp-mk:focus-visible,.chp-ob:focus-visible{outline:2px solid #EFEDE8;outline-offset:4px}
 /* THE OVERLAY TOGGLES, upper right. Ring icons, 44 pixels, lit when on and
@@ -5464,7 +5483,9 @@ body.tab-masksview #masksview{background:#0C0D12}
  transition:color var(--t-element) var(--ease-out),border-color var(--t-element) var(--ease-out),box-shadow var(--t-element) var(--ease-out)}
 .chp-ob svg{width:24px;height:24px}
 .chp-ob:hover{color:#EFEDE8;border-color:rgba(239,237,232,.4)}
-.chp-ob[aria-pressed="true"]{color:#EFEDE8;border-color:var(--mc1,#7EB8D4);box-shadow:0 0 0 1px var(--mc1,#7EB8D4),0 0 16px -4px var(--mc1,#7EB8D4)}
+/* and the same for the toggles: the coloured edge says on, the 16 pixel
+   halo it carried with it was the same glow and is gone */
+.chp-ob[aria-pressed="true"]{color:#EFEDE8;border-color:var(--mc1,#7EB8D4);box-shadow:0 0 0 1px var(--mc1,#7EB8D4)}
 body.punch .chp-mk,body.punch .chp-ob{box-shadow:none}
 @media (prefers-reduced-motion:reduce){.chp-mk,.chp-ob{transition:none}}
 @media (max-width:700px){
