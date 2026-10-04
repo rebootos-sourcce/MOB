@@ -130,6 +130,11 @@ tbody tr.free td{background:var(--panel-2)}
    four vertical gold rules through one row and read as a ruled grid rather
    than as a mark. Caught at 390, where the row is tallest. */
 tbody tr.four td:first-child{box-shadow:inset 2px 0 0 var(--au)}
+/* A CLOSED RUNG IS NOT MARKED IN GOLD, round RB. Tier four cannot be bought
+   until the lead suite is built, and a gold rule on the one row nobody can buy
+   is a premium mark on a promise. It reads in the quieter ink, rule and all. */
+tbody tr.four.shut td{color:var(--mid)}
+tbody tr.four.shut td:first-child{box-shadow:inset 2px 0 0 var(--edge-2)}
 .wide{overflow-x:auto}
 
 /* ---- the state of checkout. One line, said once, not repeated and not
@@ -395,9 +400,25 @@ open, and how far up the chain you can see.</span></p>
      banking; the grants at 400, 800, 1200 and 1200 plus the cohort suite; the
      price column at twelve, twenty nine, fifty nine and ninety nine; sight by
      tier, saboteurs from tier one, complexes from tier two, hyper complexes
-     and character from tier three; the
-     referral at twenty five (he changed it from fifty on 1 October), capped at four a month; a cancellation destroying
+     and character from tier three; a cancellation destroying
      nothing; and the cohort lead seeing the outputs and never the story cloud.
+
+     TWO RULED THINGS ARE NOT SOLD HERE, ROUND RB, BECAUSE NEITHER EXISTS.
+
+     Tier four. Ruled closed until built at round PK ("tier four is closed until
+     built", DECISIONS.md), in the words REVIEW-arch/TALLY.md ruling 9 gives
+     the screen: "Opens with the lead suite". The row stays, with its ruled
+     price, so a lead can see what is coming, and the page says plainly that it
+     cannot be bought. engine/plan.js carries built:false on the row, and
+     tests/funnel.js fails this page if it sells tier four while that holds.
+
+     The referral. Ruled at twenty five patterns (round PW, changed from fifty),
+     capped at four a month. This page promised it ("Invite somebody and you
+     get 25 patterns when they join, up to four invitations a month") and
+     nothing in the product invites anybody or grants anything for it: no
+     invite link, no code, no grant, and TASKS.md AK6 says it needs a server.
+     The sentence came off. It goes back the day an invitation can be sent and
+     the patterns land, and tests/funnel.js holds it off until then.
 
      THE PRICES ARE RULED, BY HIM, 1 OCTOBER. His words, after checking the
      documentation: "Free: $0. Tier 1: $12/month. Tier 2: $29/month. Tier 3:
@@ -505,7 +526,7 @@ open, and how far up the chain you can see.</span></p>
      <td class="n r">200</td><td class="n r price">29</td></tr>
     <tr><td class="rung">Three</td><td class="n">1,200 a month</td>
      <td class="n r">300</td><td class="n r price">59</td></tr>
-    <tr class="four"><td class="rung">Four<i>and the people you lead</i></td>
+    <tr class="four shut"><td class="rung">Four<i>not open yet</i></td>
      <td class="n">1,200 a month</td>
      <td class="n r">300</td><td class="n r price">99</td></tr>
    </tbody>
@@ -513,9 +534,10 @@ open, and how far up the chain you can see.</span></p>
   </div></div>
   <p class="state"><b>Checkout is not open yet</b>, so nothing on this table can be
   charged today. The gift above needs no card and no account.</p>
+  <p class="m">Tier four stays closed when checkout opens. It opens with the lead
+  suite, and the lead suite is not built yet.</p>
   <p class="m">The free rung banks. Ten a week against a run of 25 means one
-  release every two and a half weeks. The pace is deliberate. Invite somebody and
-  you get 25 patterns when they join, up to four invitations a month.</p>
+  release every two and a half weeks. The pace is deliberate.</p>
  </div>
 </section>
 
@@ -549,8 +571,8 @@ open, and how far up the chain you can see.</span></p>
     join.</li>
    <li data-rung="three"><b>Tier three</b> shows you your hyper complexes, your
     character, the registers (your point cloud in the compass) and the masks.</li>
-   <li data-rung="four"><b>Tier four</b> shows you what tier three shows, and
-    adds the cohort lead suite.</li>
+   <li data-rung="four"><b>Tier four</b> shows you what tier three shows. It is
+    not open yet: it opens when the cohort lead suite is built.</li>
   </ul>
   <p class="m">What a rung does not show stays locked, with a padlock on it, and
   the lock says which rung opens it. Nothing is hidden and then sold back in a
@@ -563,24 +585,32 @@ open, and how far up the chain you can see.</span></p>
         the page where it is being sold and not in a policy behind it. -->
 <section>
  <div class="hd"><span class="eye">Tier four</span>
-  <h2>For somebody leading other people.</h2></div>
+  <h2>For somebody leading other people. Not open yet.</h2></div>
  <div class="bd">
-  <p class="m">Tier four carries the same 1,200 patterns a month as tier three, so
-  the volume is not what separates them. What it adds is the cohort lead suite:
-  manage profiles, build rituals and hold accountability for the people you
-  lead.</p>
-  <p class="m">A lead sees the outputs and not the tools. Fetters, saboteurs,
+  <!-- ROUND RB. This section sold the suite in the present tense, "What it
+       adds is the cohort lead suite", and the box said the consent list "sits
+       on their own record" and "one press takes the yes back". None of it is
+       built: ui/practitioner.js says "there is no sign in, no store and no
+       grant". So the section says what tier four will be, and that it cannot
+       be bought until it is. The consent rule stays on the page, as the rule
+       it opens under, because that is the part a person deciding whether to
+       trust a lead needs to read first. -->
+  <p class="m">Tier four cannot be bought yet. It opens when the cohort lead suite
+  is built: tools to manage profiles, build rituals and hold accountability for
+  the people you lead. It will carry the same 1,200 patterns a month as tier
+  three, so the volume is not what separates them.</p>
+  <p class="m">A lead will see the outputs and not the tools. Fetters, saboteurs,
   complexes, hyper complexes and the analytics behind them. Not the spiritual
   material, and not the story cloud: the story is the person's own words, and the
   record and the story are never held joined.</p>
   <div class="box">
    <!-- was "How sight is granted", the team's word, and a customer reading
         this box is deciding whether to trust a lead with someone's reading -->
-   <h3>Who can see a person's reading</h3>
+   <h3>Who will be able to see a person's reading</h3>
    <p>Only a lead that person has said yes to, by name. The list of who can see
-   it sits on their own record, where they can read it, and one press takes the
-   yes back. Nobody is added without being asked, and paying for tier four adds
-   nobody.</p>
+   it will sit on their own record, where they can read it, and one press will
+   take the yes back. Nobody is added without being asked, and paying for tier
+   four adds nobody. Tier four does not open until that list exists.</p>
   </div>
  </div>
 </section>
