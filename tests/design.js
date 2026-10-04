@@ -1431,48 +1431,28 @@ console.log('\n=== a figure is legible against the ground it is printed on ===')
     chip[k].seat=((c.getAttribute('style')||'').match(/--c:\s*([^;]+)/)||[,'?'])[1].trim();
     chip[k].px=+parseFloat(getComputedStyle(v).fontSize).toFixed(1);
     chip[k].txt=v.textContent.trim();}});
-  /* THE DIAL AT A FULL LEAN EACH WAY, so each figure is measured with the fill
-     that can actually reach it under it, and the coverage is checked by
-     geometry rather than assumed. */
-  const pb=document.getElementById('polbar');
+  /* THE PAIR BARS' FIGURES, round RB. Orientation and balance were a dial
+     whose fill reached under one end figure; since RB every pair on the rail
+     is rbPair, where each pole's colour lies at its own end under its own
+     name and share, and the edge of the colour swings. So each figure is
+     measured three times, over the bare track and over each pole's colour
+     at full strength, and the worst is what is held: whatever the
+     reading and wherever the edge has swung to, the figure sits on one of
+     those two grounds or a blend between them. Read for every pair, the
+     coherence and decoherence bar with them. */
   const dial=[];
-  if(pb&&pb.querySelector('.fill')){
-   /* the trough is the dial's own .ax-tr inside its host now, one drawing
-      shared with balance, so its ground is read there */
-   const tr=pb.querySelector('.ax-tr')||pb;
-   const trough=rgb(getComputedStyle(tr).backgroundColor);
-   const base=trough.a>=0.999?trough.c:painted(tr);
-   /* THE FILL RUNS TOWARD THE HEAVIER END NOW, FJ in TASKS.md, where it ran
-      away from it: orientation and balance are one drawing, axDial in
-      ui/ui.js, and balance's ruling was the fill toward the lean. So a
-      benign lean covers the benign figure on the left and a malignant one
-      the malignant figure on the right. */
-   [['benign','l',PAL.Heart,' lt'],['malignant','r',PAL.Root,' rt']].forEach(cs=>{
-    const f=pb.querySelector('.fill');
-    /* THE TRANSITION IS OFF FOR THE MEASUREMENT. .fill animates its width,
-       so setting 50% and reading the rect in the same tick reads wherever
-       the animation starts. That was invisible while Gordon leaned 98 to 2
-       and his fill already sat at 48 per cent. Since 25 September his CQ is
-       his laws, 17.5, so he leans 61 to 39 and the fill starts at 11 per
-       cent, and the rect read 29 pixels of a 132 pixel target. */
-    f.style.transition='none';
-    f.className='fill'+cs[3]; f.style.width='50%'; f.style.background=cs[2];
-    const lb=pb.querySelector('.lb.'+cs[1]); if(!lb)return;
-    const b=lb.querySelector('b')||lb;
-    const fr=f.getBoundingClientRect(), br=b.getBoundingClientRect();
-    const covered=(br.left>=fr.left-0.5&&br.right<=fr.right+0.5);
-    const fc=rgb(getComputedStyle(f).backgroundColor);
-    const fop=parseFloat(getComputedStyle(f).opacity||'1');
-    const fill=comp(fc.c,fc.a*fop,base);
-    const own=rgb(getComputedStyle(b).backgroundColor);
-    const pill=own.a>0.999?own.c:(own.a>0.001?comp(own.c,own.a,covered?fill:base):null);
-    const under=pill||(covered?fill:base);
-    const eff=parseFloat(getComputedStyle(b).opacity||'1')
-     *parseFloat(getComputedStyle(lb).opacity||'1');
-    const ink=comp(rgb(getComputedStyle(b).color).c,eff,under);
-    dial.push({lean:cs[0], covered, pilled:!!pill,
-     px:+parseFloat(getComputedStyle(b).fontSize).toFixed(1),
-     r:+ratio(lum(ink),lum(under)).toFixed(2)});});}
+  document.querySelectorAll('#fdock .rb2').forEach(pr=>{
+   const base=painted(pr);
+   const colOf=k=>{const t=document.createElement('i'); t.style.color='var('+k+')'; pr.appendChild(t);
+    const c=rgb(getComputedStyle(t).color).c; t.remove(); return c;};
+   /* either pole's colour at its full strength, forty percent over the
+      track: a pole near nothing has the other's colour reach under its words */
+   const fills=[comp(colOf('--lc'),0.40,base),comp(colOf('--rc'),0.40,base)];
+   ['l','r'].forEach(side=>{
+    const v=pr.querySelector('.rb2-p.'+side+' .rb2-v'); if(!v)return;
+    const r=Math.min.apply(null,[base].concat(fills).map(g=>ratio(lum(inkOn(v,g)),lum(g))));
+    dial.push({lean:pr.getAttribute('data-pair')+':'+side, covered:true, pilled:false,
+     px:+parseFloat(getComputedStyle(v).fontSize).toFixed(1), r:+r.toFixed(2)});});});
   return {chip, dial};});
  const FLOOR=4.5;
  ok(seen.chip.plain.n>0,'the Field draws ring chips to measure, got '+seen.chip.plain.n);
@@ -1486,15 +1466,11 @@ console.log('\n=== a figure is legible against the ground it is printed on ===')
   +seen.chip.plain.n+' on '+seen.chip.plain.seat);
  console.log('  chip hot   '+seen.chip.hot.r.toFixed(2)+'  worst of '
   +seen.chip.hot.n+' on '+seen.chip.hot.seat);
- ok(seen.dial.length===2,'the dial has two end figures to measure, got '+seen.dial.length);
+ ok(seen.dial.length===6,'the three pair bars have six end figures to measure, got '+seen.dial.length);
  seen.dial.forEach(d=>{
-  /* if the fill does not reach the figure this row proves nothing, so the
-     geometry is asserted rather than trusted. */
-  ok(d.covered,'a full '+d.lean+' lean reaches the figure it travels toward');
-  ok(d.r>=FLOOR,'and the '+d.lean+' figure holds '+FLOOR+' to 1 over it, got '
+  ok(d.r>=FLOOR,'the '+d.lean+' figure holds '+FLOOR+' to 1 on the bare track and on either pole\'s full colour, worst '
    +d.r+' at '+d.px+'px');
-  console.log('  dial '+d.lean.padEnd(10)+d.r.toFixed(2)
-   +(d.pilled?'  on its own ground':'  on the fill'));});
+  console.log('  pair '+d.lean.padEnd(10)+d.r.toFixed(2)+'  worse of track and fill');});
  await fg.close();
 }
 
