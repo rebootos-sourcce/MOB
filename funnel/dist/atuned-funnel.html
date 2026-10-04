@@ -455,6 +455,13 @@ a.ghost:hover{color:var(--ink)}
 .js .keep li.on,.js .same.on{opacity:1;transform:none}
 .js .felt span{opacity:0;transition:opacity var(--t-element) var(--ease-out)}
 .js .fr.seen .felt span{opacity:1}
+/* a line on the stage's clock: it lands when the thing it names happens on
+   the stage, one element beat, on the ease that arrives. The stage adds .on
+   and never takes it off, so a line read once stays read. */
+.js .fr .ln{opacity:0;transform:translateY(10px);
+ transition:opacity var(--t-element) var(--ease-out),transform var(--t-element) var(--ease-out)}
+.js .fr .ln.on{opacity:1;transform:none}
+.feel{margin-top:22px}
 
 /* ---- the desk. The story takes the left, the stage stands on the right for
    the whole scroll, and each frame is a screen tall so one beat is read at a
@@ -496,7 +503,7 @@ a.ghost:hover{color:var(--ink)}
 @media (prefers-reduced-motion: reduce){
  html{scroll-behavior:auto}
  *,*::before,*::after{animation:none !important;transition:none !important}
- .js .fr .rv,.js .keep li,.js .same,.js .felt span{opacity:1;transform:none}
+ .js .fr .rv,.js .fr .ln,.js .keep li,.js .same,.js .felt span{opacity:1;transform:none}
  .st-h{opacity:0}
  .seat-ping{opacity:.6;transform:scale(1.8)}
 }
@@ -658,26 +665,116 @@ a.ghost:hover{color:var(--ink)}
 
 <div class="col">
 
-<!-- BEAT 01, THE FIELD. Section 9. "Create intrigue without explanation."
-     The stage: one point of light, a second, a third, and the faint network
-     underneath with its pulses running, which is the sentence drawn. -->
+<!-- BEATS 01 TO 05, round RD, 3 October. ATUNED-Funnel-Creative-Direction-
+     TDD-v1.md, section 14. The opening was rebuilt on that document's own
+     beats and words. Its section 2 retires the old opening by name: "You know
+     what you want. Something gets in the way. That is too abstract as the
+     opening of this experience." The stronger entry it gives is "Something
+     happens. You react."
+
+     The stage for these five is one living point, then a second, then a
+     sine wave between them, and nothing else: "Complexity is earned by
+     narrative progression", section 7. Every motion is the Field's own
+     machinery, section 5 and 18: the 4.2 second breath, the 9 and 11 Hz
+     vibration the Field's jitOff puts on a thread under load, the thread
+     drawn by this page's own curve() from its tension, and its pulses at the
+     Field's rule, a period of 96 slack to 48 taut and a speed of 16 + 68
+     times the square root of tension. The wave is that same thread with a
+     sine laid along it, its amplitude and frequency read off the same
+     tension, section 19: slack is a small slow wave, taut is a tight fast one
+     with a shadow under it. Nothing here moves for visual interest.
+
+     The copy lines marked .ln arrive on the stage's own clock, so the line
+     and the thing it names land together: staging, one thing at a time.
+     Without a script every line is printed. Under reduced motion every line
+     is printed and the stage holds the end of each beat. -->
+
+<!-- BEAT 01, ARRIVAL. "Create recognition without explaining the product."
+     Section 6, the node's onset in order: a faint vibration, a slight
+     amplitude increase, a soft pulse, and the nearby field responds. It plays
+     once, at the point's birth, and the point stays: section 25, a node that
+     was established remains. -->
 <section class="fr fr-arrive" id="arrive" data-frame="arrive">
- <h1 class="rv">Something runs the way you live.</h1>
- <p class="lead rv" style="--d:.15s">You feel it before you can explain it.</p>
- <div class="cta rv" style="--d:.3s"><a class="btn" href="#recognize">See it</a></div>
+ <h1 class="rv">You feel something before you can explain it.</h1>
+ <div class="cta rv" style="--d:.3s"><a class="btn" href="#name">See what happens</a></div>
  <div class="cap rv" style="--d:.45s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-arrive"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
- <p class="cap-b" id="cap-arrive">Each point of light is an address: one exact place in your body where
- a pattern sits. The faint ring holds all 112. The lines are patterns, running.
- Nothing of yours is in it yet.</p></div>
+ <p class="cap-b" id="cap-arrive">The point of light is a signal: something happening in you that has no
+ name yet. The faint ring around it is the field. In the Atuned model the ring
+ holds 112 addresses, and each address is one place in the body. Nothing of
+ yours is in it yet.</p></div>
 </section>
 
-<!-- BEAT 02, THE HUMAN TRUTH. "Make the visitor recognize repetition."
-     Motion: points connect. Each line lights one point on the stage, and on
-     "Same response" the six pull to one place. Section 69: SIGNAL, then
-     CONNECT, then PATTERN, repetition gathers. -->
+<!-- BEAT 02, NAME THE EXPERIENCE. "Introduce naming as agency." The six
+     words are the document's. A press names the point: it takes a ring, the
+     house's mark for a thing that is held, its shake halves and it pulses
+     once. The word stays on this page and is never stored. -->
+<section class="fr" id="name" data-frame="name">
+ <h2 class="rv">Name the feeling.</h2>
+ <div class="ans feel rv" style="--d:.15s" role="group" aria-label="Name the feeling">
+  <button type="button" data-f="stress" aria-pressed="false">Stress</button>
+  <button type="button" data-f="anger" aria-pressed="false">Anger</button>
+  <button type="button" data-f="fear" aria-pressed="false">Fear</button>
+  <button type="button" data-f="overwhelm" aria-pressed="false">Overwhelm</button>
+  <button type="button" data-f="grief" aria-pressed="false">Grief</button>
+  <button type="button" data-f="tension" aria-pressed="false">Tension</button>
+ </div>
+ <p class="say" id="named" role="status" aria-live="polite"></p>
+ <p class="m rv" style="--d:.3s">When you can name the experience, you can begin to change your
+ relationship with the experience.</p>
+ <div class="cap rv" style="--d:.45s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-name"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-name">The point is the feeling. Name the feeling and a ring forms round the
+ point, and its shake settles. The word you pick stays on this page.</p></div>
+</section>
+
+<!-- BEAT 03, SOMETHING HAPPENS. "Move from sensation to reaction." A
+     second point lands, the wave runs from it to the first, and the first
+     answers when the wave arrives. Each line lands with its event. -->
+<section class="fr" id="happens" data-frame="happens">
+ <p class="big rv">Something happens.</p>
+ <p class="big soft ln" data-at="1.0">You react.</p>
+ <p class="big ln" data-at="2.1">Sometimes the reaction happens before you choose it.</p>
+ <div class="cap rv" style="--d:.45s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-happens"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-happens">The new point is what happened. The wavy line is your reaction, running
+ from what happened to the feeling. A line that waves is a relationship that
+ moves.</p></div>
+</section>
+
+<!-- BEAT 04, AWARENESS FOLLOWS THE SIGNAL. "Make awareness the work." For
+     the first 2.4 seconds the feeling takes the light and everything else
+     gives some up. Then the wave starts to move and the light passes to it:
+     attention shifts from the node to the relationship. It holds there. -->
+<section class="fr" id="notice" data-frame="notice">
+ <p class="big rv">Notice what gets your attention.</p>
+ <p class="big soft ln" data-at="1.4">Notice what happens in your body.</p>
+ <p class="big soft ln" data-at="2.8">Stay with the sensation for a moment.</p>
+ <div class="cap rv" style="--d:.45s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-notice"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-notice">First the feeling brightens and the rest dims. That is where attention
+ went. Then the line between the two starts to move, and the light goes to the
+ line: attention moves from the feeling to the reaction.</p></div>
+</section>
+
+<!-- BEAT 05, THE REACTION REPEATS. The same wave fires again and again.
+     Each pass is quicker, the line keeps more of itself, pulls tighter and
+     carries a shadow, by the tension rule above. From the third pass the
+     feeling lights before the wave reaches it: the node anticipates. After
+     four passes it fires on the Field's half breath, 2.1 seconds, and does
+     not stop: automatic. -->
+<section class="fr" id="repeats" data-frame="repeats">
+ <p class="big rv">The reaction happens again.</p>
+ <p class="big soft ln" data-at="2.6">And again.</p>
+ <p class="lead ln" data-at="4.5">A response repeated often enough can start to feel automatic.</p>
+ <div class="cap rv" style="--d:.45s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-repeats"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
+ <p class="cap-b" id="cap-repeats">Each time the reaction runs, the line keeps more of itself: thicker,
+ tighter, quicker. From the third time the feeling lights up before the
+ reaction reaches it.</p></div>
+</section>
+
+<!-- BEAT 08, STORIES COMMINGLE, carried by the frame that was beat 02 of
+     the storyboard. "Separate nodes begin sharing pathways." The six lines
+     each light one point on the stage, and on the last line the six pull to
+     one place. The copy is the new document's, section 11. -->
 <section class="fr" id="recognize" data-frame="recognize">
- <p class="big rv">You know what you want.</p>
- <p class="big rv soft" style="--d:.2s">Something gets in the way.</p>
+ <p class="big rv">One story can connect to another.</p>
  <ul class="keep" id="keep">
   <li>You keep saying yes.</li>
   <li>You keep putting it off.</li>
@@ -686,7 +783,7 @@ a.ghost:hover{color:var(--ink)}
   <li>You keep trying to control it.</li>
   <li>You keep going back to the same thing.</li>
  </ul>
- <div class="same" id="same"><p class="big">Different situation.</p><p class="big">Same response.</p></div>
+ <div class="same" id="same"><p class="big">The stories begin to share a pathway.</p><p class="big">Separate reactions can become one repeating pattern.</p></div>
  <div class="cap rv" style="--d:.3s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-recognize"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
  <p class="cap-b" id="cap-recognize">Each lit point is one situation. The lines pull them to one place: the
  same response, every time. That is a pattern.</p></div>
@@ -789,13 +886,15 @@ a.ghost:hover{color:var(--ink)}
      The stage turns to the body the Body page draws, generated from the same
      tables by make-figure.js. "Do not convert sensation into diagnosis." -->
 <section class="fr" id="body" data-frame="body">
- <h2 class="rv">You feel it in your body.</h2>
+ <h2 class="rv">Where do you feel the reaction?</h2>
  <p class="felt rv" style="--d:.15s"><span style="transition-delay:.2s">Tight.</span><span style="transition-delay:.45s">Heavy.</span><span style="transition-delay:.7s">Hot.</span><span style="transition-delay:.95s">Numb.</span><span style="transition-delay:1.2s">Restless.</span><span style="transition-delay:1.45s">Pressured.</span><span style="transition-delay:1.7s">Nothing at all.</span></p>
  <p class="big rv" style="--d:.4s">All of that is information.</p>
  <div class="cap rv" style="--d:.6s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-body"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
  <p class="cap-b" id="cap-body">Seven colours, seven seats, from the base of the spine to the top of the
- head. A seat is one part of the body a pattern can settle in. The fine lines are
- nerves. The lit seat is where a pattern sits.</p></div>
+ head. In the Atuned model a seat is one part of the body a pattern can settle
+ in, and the lit seat is where one sits. The fine lines stand for nerves. It is
+ a map you check against what you feel. Nothing in your body is measured to
+ draw it.</p></div>
 </section>
 
 <!-- BEAT 20, RELEASE, told the way section 28 says the funnel can tell it:
@@ -948,14 +1047,20 @@ function layout(){
  DPR=Math.min(2,window.devicePixelRatio||1);
  cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);
  CX=W/2;CY=H/2;R=Math.min(W,H)*(W<520?0.40:0.38);SK=clamp(R/300,0.55,1.35);
- A.forEach(place);P.forEach(place);C.forEach(place);place(RN);place(K);CORE.x=CX;CORE.y=CY;
+ A.forEach(place);P.forEach(place);C.forEach(place);place(RN);place(K);place(SG);place(SR);CORE.x=CX;CORE.y=CY;
  draw(0);}
 
 /* what each frame asks of the Field. ring, net, pat: the alpha the addresses,
    the network's threads and its nodes ease toward; core and csc the core's
    strength and size; pul how strongly the pulses show. */
 var FR={
- arrive:   {ring:.20,net:.22,pat:.12,core:.0, csc:1,  pul:.6},
+ /* beats 01 to 05: a dark field, its ring a faint horizon on the breath, and
+    nothing else but the signal drawn by sig() below */
+ arrive:   {ring:.14,net:0,  pat:0,  core:.0, csc:1,  pul:0},
+ name:     {ring:.14,net:0,  pat:0,  core:.0, csc:1,  pul:0},
+ happens:  {ring:.14,net:0,  pat:0,  core:.0, csc:1,  pul:0},
+ notice:   {ring:.14,net:0,  pat:0,  core:.0, csc:1,  pul:0},
+ repeats:  {ring:.14,net:0,  pat:0,  core:.0, csc:1,  pul:0},
  recognize:{ring:.20,net:.06,pat:.04,core:.0, csc:1,  pul:.4},
  mirror:   {ring:.14,net:.04,pat:.03,core:.0, csc:1,  pul:.35},
  cascade:  {ring:.26,net:.06,pat:.12,core:.3, csc:.75,pul:.35},
@@ -1084,6 +1189,166 @@ function casc(el){
 function setCStep(s){if(s===cstep)return;cstep=s;
  cstepEls.forEach(function(li){li.classList.toggle('on',s==='all'||li.getAttribute('data-step')===s);});}
 
+/* ---------------- beats 01 to 05, the signal ----------------
+   Round RD. Two points and the wave between them, built from this page's
+   own parts and nothing new: placed by place(), the wave's spine drawn by
+   curve() from its tension, its pulses at the Field's rule, its timing off
+   env(), sm() and ioc() above, and the breath at 4.2 seconds.
+
+   SG is the feeling, SR is what happens, WV is the reaction between them.
+   Each carries its own state and the frame only sets targets, so leaving a
+   beat eases the state on rather than cutting it (section 25), and a point
+   that was born is never born twice.
+
+   The numbers, and what each one is for:
+     onset       section 6 in order. The point fades up over 1.2 s from 0.5 s,
+                 slow enough to be almost discovered. Its vibration starts
+                 at 0.3 px and grows to 0.9 px from 2.2 s: the slight
+                 amplitude increase. At 3.6 s the soft pulse, a ring out to
+                 38 px over 1.4 s on the ease that arrives. Then the nearby
+                 field answers: every address lights by its distance, late by
+                 that distance at 260 px a second, so the answer travels.
+                 After that one soft pulse per breath, 4.2 s: alive at rest,
+                 and quiet enough to watch forty times.
+     vibration   the Field's own, jitOff in ui/wheel.js: 9 Hz on one axis and
+                 11 Hz on the other, which never quite repeats. Named, both
+                 axes run at 9 Hz and the amplitude halves: a named feeling
+                 is a steadier signal.
+     the wave    a sine laid along the thread, pinned at both ends by a half
+                 sine envelope. Amplitude 3 px plus 3 when it vibrates plus 4
+                 times tension; 2.5 cycles plus 4.5 times tension, so
+                 a taut line is a tight one; it travels at the Field's pulse
+                 speed for its tension. Over 0.25 tension a shadow stroke
+                 widens under it. No blur, no filter.
+     beat 05     four passes, 2.2, 1.9 and 1.7 s apart, each crossing quicker
+                 (0.70, 0.55, 0.45, 0.38 s) and each leaving the line tighter
+                 and more of it kept. The feeling lights 0.12 then 0.22 s
+                 before the wave arrives on passes three and four: it
+                 anticipates. Then every 2.1 s, half the breath, for good.
+
+   Reduced motion gets each beat's end state, drawn once: the point named or
+   not, the wave formed, the attention on the line, the path established.
+   No pulse, no head, no travel. */
+var SIGF={arrive:1,name:1,happens:1,notice:1,repeats:1};
+var SG={t:.835,f:.44,x:0,y:0,a:0,vis:0,born:null,amp:0,att:0,glow:0,ring:0,named:'',pT:-99,next:0};
+var SR={t:.29,f:.46,x:0,y:0,a:0,vis:0,dim:1,sc:1,born:null,pT:-99};
+var WV={o:SR,i:SG,g:'wave',t:.15,tt:.15,a:0,born:null,prog:0,vib:0,mov:0,ph:0,hp:-1};
+var FS={};          /* what has fired since the frame was entered */
+var RP=[{at:.4, d:.70,lead:0,  tt:.30,rem:.60},
+        {at:2.6,d:.55,lead:0,  tt:.50,rem:.72},
+        {at:4.5,d:.45,lead:.12,tt:.65,rem:.84},
+        {at:6.2,d:.38,lead:.22,tt:.78,rem:.92}], RP_EVERY=2.1;
+function rpass(i){if(i<RP.length)return RP[i];var L=RP[RP.length-1];
+ return {at:L.at+RP_EVERY*(i-RP.length+1),d:L.d,lead:.25,tt:L.tt,rem:L.rem};}
+/* lands past its mark and settles: the overshoot curve, for a thing that
+   arrives with weight */
+function backOut(k){k=clamp(k,0,1);var c=1.70158;return 1+(c+1)*Math.pow(k-1,3)+c*Math.pow(k-1,2);}
+function fire(key){if(REDUCED||FS[key])return false;FS[key]=1;return true;}
+function sigPulse(){if(!REDUCED)SG.pT=now;}
+var lnEls={};
+[].slice.call(D.querySelectorAll('.fr')).forEach(function(fr){
+ lnEls[fr.getAttribute('data-frame')]=[].slice.call(fr.querySelectorAll('.ln'));});
+function lines(el){(lnEls[frame]||[]).forEach(function(l){
+ if(REDUCED||el>=+l.getAttribute('data-at'))l.classList.add('on');});}
+
+function sig(dt,kq){
+ var on=!!SIGF[frame], el=REDUCED?99:now-frameT;
+ if(on&&SG.born===null){SG.born=now;SG.next=now+3.6;}
+ if(on)lines(el);
+ var sb=REDUCED?99:(SG.born===null?0:now-SG.born);
+ SG.vis+=((on?1:0)-SG.vis)*kq;
+ SG.a=sm((sb-.5)/1.2)*(.62+.38*sm((sb-2.2)/1.2))*SG.vis;
+ var amp0=REDUCED||sb<.5?0:.3+.6*sm((sb-2.2)/1.2);
+ if(on&&!REDUCED&&now>=SG.next){sigPulse();while(SG.next<=now)SG.next+=4.2;}
+ /* what each beat asks for */
+ var att=0,srT=0,srDim=1,wvA=0,vib=0,mov=0,ttT=.15;
+ WV.hp=-1;
+ if(frame==='happens'||frame==='notice'||frame==='repeats'){
+  if(SR.born===null){SR.born=REDUCED?now-1:now+.25;WV.born=REDUCED?now-1:now+.55;}
+  srT=1;}
+ if(frame==='happens'){
+  wvA=.7;
+  if(el>=.25&&fire('ev'))SR.pT=now;
+  if(el>=.55&&el<1.15)WV.hp=ioc((el-.55)/.6);
+  if(el>=1.15&&fire('re'))sigPulse();}
+ else if(frame==='notice'){
+  /* the light on the feeling first, then on the line */
+  var sh=sm((el-2.4)/.8);
+  att=sm(el/.6)*(1-.7*sh); wvA=lerp(.55,1,sh); vib=sh; mov=sh; srDim=1-.45*att;}
+ else if(frame==='repeats'){
+  vib=1;mov=1;
+  var i=-1; while(rpass(i+1).at<=el&&i<4000)i++;
+  var prev=i>0?rpass(i-1):{tt:.15,rem:.6};
+  if(i<0){ttT=prev.tt;wvA=prev.rem;}
+  else{var P0=rpass(i),t=el-P0.at,k=sm((t-P0.d+.1)/.4);
+   if(fire('e'+i))SR.pT=now;
+   if(t<P0.d&&!REDUCED)WV.hp=ioc(t/P0.d);
+   if(t>=P0.d-P0.lead&&fire('r'+i))sigPulse();
+   ttT=lerp(prev.tt,P0.tt,REDUCED?1:k); wvA=lerp(prev.rem,P0.rem,REDUCED?1:k);}}
+ SR.vis+=(srT-SR.vis)*kq; SR.dim+=(srDim-SR.dim)*kq;
+ var sa=SR.born===null?0:now-SR.born;
+ SR.a=sm(sa/.26)*SR.vis*SR.dim; SR.sc=REDUCED?1:Math.max(0,backOut(sa/.26));
+ WV.prog=WV.born===null?0:ioc((now-WV.born)/.6);
+ WV.a+=(wvA-WV.a)*kq; WV.vib+=(vib-WV.vib)*kq; WV.mov+=(mov-WV.mov)*kq; WV.tt+=(ttT-WV.tt)*kq;
+ SG.att+=(att-SG.att)*kq;
+ SG.ring+=((on&&SG.named?1:0)-SG.ring)*kq;
+ SG.glow+=((on&&sb>3.6?1:0)-SG.glow)*kq;
+ SG.amp=amp0*(1+.8*SG.att)*(SG.named?.5:1);
+ /* the nearby field answers each pulse, nearest first */
+ if(SG.vis>.01){var k0=now-SG.pT, pk=frame==='arrive'?.42:.16;
+  A.forEach(function(a){var d=Math.hypot(a.x-SG.x,a.y-SG.y), w=Math.exp(-d/(R*.42)), v;
+   v=REDUCED?.16*w*SG.vis:pk*w*env(k0,d/260,.2,.1,1.1)*SG.vis;
+   if(v>a.lit)a.lit=v;});}}
+
+function wavePt(q,amp,cyc,ph,u){var v=1-u;
+ var x=v*v*q.x0+2*v*u*q.qx+u*u*q.x1, y=v*v*q.y0+2*v*u*q.qy+u*u*q.y1;
+ var dx=2*v*(q.qx-q.x0)+2*u*(q.x1-q.qx), dy=2*v*(q.qy-q.y0)+2*u*(q.y1-q.qy), l=Math.hypot(dx,dy)||1;
+ var o=amp*Math.sin(Math.PI*u)*Math.sin(TAU*cyc*u-ph);
+ return [x-dy/l*o,y+dx/l*o];}
+function wavePath(q,amp,cyc,ph,u0,u1){var n=Math.max(6,Math.ceil(72*(u1-u0)));g.beginPath();
+ for(var m=0;m<=n;m++){var p=wavePt(q,amp,cyc,ph,u0+(u1-u0)*m/n);if(m)g.lineTo(p[0],p[1]);else g.moveTo(p[0],p[1]);}}
+function drawSig(dt){
+ var br=REDUCED?1:0.82+0.18*Math.sin(TAU*now/4.2);
+ /* the reaction */
+ if(WV.a>.01&&WV.prog>.005){
+  var tt=WV.tt; WV.t=tt; var q=curve(WV);
+  var amp=(3+3*WV.vib+4*tt)*SK*(REDUCED?1:1+.15*WV.vib*Math.sin(TAU*now/2.1));
+  var cyc=2.5+4.5*tt, w=(1.1+1.1*tt)*SK, sp=16+68*Math.sqrt(tt);
+  if(!REDUCED&&dt)WV.ph+=dt*WV.mov*sp*cyc/q.len*TAU;
+  if(tt>.25){wavePath(q,amp,cyc,WV.ph,0,WV.prog);
+   g.strokeStyle=rgba(ACC,.12*(tt-.25)/.75*WV.a);g.lineWidth=w*(3+5*tt);g.stroke();}
+  wavePath(q,amp,cyc,WV.ph,0,WV.prog);
+  g.strokeStyle=rgba(ACC,WV.a*(.48+.40*tt));g.lineWidth=w;g.stroke();
+  if(!REDUCED&&WV.prog>.98&&WV.mov>.01){var per=96-48*tt;
+   g.save();g.lineCap='round';g.setLineDash([7,per-7]);g.lineDashOffset=-((CLK*sp)%per);
+   wavePath(q,amp,cyc,WV.ph,0,1);
+   g.strokeStyle=rgba(mix(ACC,WHITE,.42),WV.a*WV.mov*(.28+.72*tt));g.lineWidth=Math.max(1.2,w*.9);g.stroke();
+   g.restore();}
+  if(WV.hp>=0&&!REDUCED){var al=Math.min(1,WV.a+.3);
+   wavePath(q,amp,cyc,WV.ph,Math.max(0,WV.hp-.22),WV.hp);
+   g.strokeStyle=rgba(mix(ACC,WHITE,.25),.9*al);g.lineWidth=2*SK;g.lineCap='round';g.stroke();g.lineCap='butt';
+   var hd=wavePt(q,amp,cyc,WV.ph,WV.hp);g.beginPath();g.arc(hd[0],hd[1],3.2*SK,0,TAU);
+   g.fillStyle=rgba(mix(ACC,WHITE,.45),al);g.fill();}}
+ /* what happens: ink, the colour of the cascade's spark, because it comes
+    from outside */
+ if(SR.a>.01){var kr=(now-SR.pT)/1;
+  if(kr>=0&&kr<1&&!REDUCED){g.beginPath();g.arc(SR.x,SR.y,lerp(3,22,ease(kr))*SK,0,TAU);
+   g.strokeStyle=rgba(INK,.3*Math.pow(1-kr,1.5)*SR.a);g.lineWidth=1.2*SK;g.stroke();}
+  g.beginPath();g.arc(SR.x,SR.y,3.2*SK*SR.sc,0,TAU);g.fillStyle=rgba(INK,.85*SR.a);g.fill();}
+ /* the feeling */
+ if(SG.a>.01){
+  var ph0=1.3, nm=!!SG.named, j0=Math.sin(TAU*9*now+ph0)*SG.amp, j1=Math.sin(TAU*(nm?9:11)*now+(nm?ph0+1.57:1.7*ph0))*SG.amp;
+  var x=SG.x+j0, y=SG.y+j1, kp=(now-SG.pT)/1.4;
+  var kick=REDUCED?0:.28*env(now-SG.pT,0,.09,.03,.28), rc=(3.6+0.8*SG.att)*SK*(1+kick);
+  var fr=(44+30*SG.glow+20*SG.att)*SK, lf=g.createRadialGradient(x,y,0,x,y,fr);
+  lf.addColorStop(0,rgba(mix(ACC,WHITE,.2),(.10+.12*SG.glow+.16*SG.att)*SG.a*br));lf.addColorStop(1,rgba(ACC,0));
+  g.fillStyle=lf;g.beginPath();g.arc(x,y,fr,0,TAU);g.fill();
+  if(kp>=0&&kp<1&&!REDUCED){g.beginPath();g.arc(x,y,lerp(5,38,ease(kp))*SK,0,TAU);
+   g.strokeStyle=rgba(mix(ACC,WHITE,.3),.34*Math.pow(1-kp,1.5)*SG.a);g.lineWidth=1.3*SK;g.stroke();}
+  if(SG.ring>.01){g.beginPath();g.arc(x,y,rc+4.5*SK,0,TAU);
+   g.strokeStyle=rgba(ACC,.85*SG.ring*SG.a);g.lineWidth=1.3*SK;g.stroke();}
+  g.beginPath();g.arc(x,y,rc,0,TAU);g.fillStyle=rgba(mix(ACC,WHITE,.35),SG.a*(.8+.2*br));g.fill();}}
+
 function step2(dt){
  var f=FR[frame]||FR.arrive, el=now-frameT, kq=REDUCED?1:1-Math.exp(-dt*3.2);
  var br=REDUCED?1:0.82+0.18*Math.sin(TAU*now/4.2);
@@ -1093,12 +1358,12 @@ function step2(dt){
  CA+=((cs?1:0)-CA)*kq;
  /* which addresses are lit */
  A.forEach(function(a){a.litT=0;});
- if(frame==='arrive'){[0,2,4].forEach(function(j,q){if(REDUCED||now-born>0.5+0.8*q)REC[j].litT=1;});}
  if(frame==='recognize'||frame==='mirror'){for(var j=0;j<recN;j++)REC[j].litT=1;}
  if(kn&&kn.prog>=1)NEWA.litT=kn.na;
- var ringA=f.ring*(frame==='arrive'||frame==='recognize'||frame==='mirror'||frame==='cascade'?br:1);
+ var ringA=f.ring*(SIGF[frame]||frame==='recognize'||frame==='mirror'||frame==='cascade'?br:1);
  A.forEach(function(a){a.a+=(Math.max(ringA,a.litT)-a.a)*kq;a.lit+=(a.litT-a.lit)*kq;});
  if(cs)A.forEach(function(a,n){var v=cs.env[n]*cs.fade;if(v>a.lit)a.lit=v;});
+ sig(dt,kq);
  P.forEach(function(pt){pt.a+=(f.pat-pt.a)*kq;});
  C.forEach(function(cx){cx.a+=(f.pat-cx.a)*kq;});
  CORE.a+=(f.core-CORE.a)*kq; CORE.sc+=(f.csc-CORE.sc)*kq;
@@ -1197,7 +1462,9 @@ function draw(dt){
    gr.addColorStop(0,rgba(mix(cc,WHITE,.3),.55*a.lit*br));gr.addColorStop(1,rgba(cc,0));
    g.fillStyle=gr;g.beginPath();g.arc(a.x,a.y,18*SK,0,TAU);g.fill();}
   g.beginPath();g.arc(a.x,a.y,(2+1.6*a.lit)*SK,0,TAU);
-  g.fillStyle=rgba(a.lit>.01?mix(cc,WHITE,.25*a.lit):cc,Math.max(a.a,a.lit));g.fill();});
+  g.fillStyle=rgba(a.lit>.01?mix(cc,WHITE,.25*a.lit):cc,Math.max(a.a,a.lit)*(1-.5*SG.att));g.fill();});
+ /* beats 01 to 05: the feeling, what happens and the reaction between them */
+ drawSig(dt);
  /* the patterns and complexes, ring and not fill: the ground clears the lines
     under each one and then it is stroked, the Compass's node */
  function ringN(n,r,cc,a,w){if(a<.01)return;g.beginPath();g.arc(n.x,n.y,r,0,TAU);
@@ -1237,7 +1504,7 @@ D.addEventListener('visibilitychange',function(){D.hidden?stop():start();});
 var frames=[].slice.call(D.querySelectorAll('.fr'));
 var SHOW={body:'body',loop:'dial'};
 function setFrame(fr){
- if(fr===frame)return; frame=fr; frameT=now; step=''; cstep='';
+ if(fr===frame)return; frame=fr; frameT=now; step=''; cstep=''; FS={};
  stage.setAttribute('data-show',SHOW[fr]||'field');
  if(REDUCED){/* the end state of the frame, drawn once */
   for(var n=0;n<3;n++)step2(1);draw(0);}}
@@ -1280,10 +1547,10 @@ var SAY={yes:'That may be the pattern.',
  no:'Good. Now we know more.', again:'Disagreement is information.'};
 var mx=D.getElementById('mirror'), rdEl=D.getElementById('reading'), sayEl=D.getElementById('say'),
  wasEl=D.getElementById('was'), idx=0;
-[].slice.call(D.querySelectorAll('.ans button')).forEach(function(b){
+[].slice.call(D.querySelectorAll('#mirror .ans button')).forEach(function(b){
  b.addEventListener('click',function(){
   var a=b.getAttribute('data-a');
-  [].slice.call(D.querySelectorAll('.ans button')).forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+  [].slice.call(D.querySelectorAll('#mirror .ans button')).forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
   mx.setAttribute('data-m',a);
   sayEl.textContent=SAY[a];
   if(a==='yes')return;
@@ -1293,6 +1560,20 @@ var mx=D.getElementById('mirror'), rdEl=D.getElementById('reading'), sayEl=D.get
   idx=(idx+1)%RD.length;
   rdEl.classList.add('out');
   setTimeout(function(){rdEl.textContent=RD[idx];rdEl.classList.remove('out');},REDUCED?0:180);});});
+
+/* ---------------- beat 02, naming ----------------
+   A press names the point, a second press on the same word takes the name
+   back. The word is said back in the status line and nowhere else: it is
+   not stored and it leaves nothing on the page after it is closed. */
+var feelBtns=[].slice.call(D.querySelectorAll('#name .feel button')), namedEl=D.getElementById('named');
+feelBtns.forEach(function(b){
+ b.addEventListener('click',function(){
+  var on=b.getAttribute('aria-pressed')!=='true';
+  feelBtns.forEach(function(x){x.setAttribute('aria-pressed',x===b&&on?'true':'false');});
+  SG.named=on?b.textContent.trim().toLowerCase():'';
+  namedEl.textContent=on?'You named the feeling: '+SG.named+'.':'';
+  if(on)sigPulse();
+  if(REDUCED)draw(0);});});
 
 /* ---------------- the key, one press away ----------------
    Each key is printed in the markup, so a page with no script reads in full.
