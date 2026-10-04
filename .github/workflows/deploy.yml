@@ -39,6 +39,9 @@ on:
       - 'funnel/**'
       - 'tests/**'
       - 'tools/**'
+      # the feedback relay, functions/feedback.js. Without this line a change
+      # to the Function alone would never deploy.
+      - 'functions/**'
       - '.github/workflows/deploy.yml'
   workflow_dispatch:
 jobs:
@@ -87,6 +90,16 @@ jobs:
           for f in atuned-funnel atuned-quiz atuned-about atuned-buy; do
             test -s "funnel/dist/$f.html" || { echo "funnel/dist/$f.html missing or empty"; exit 1; }
           done
+      # THE FUNCTIONS ARE NOT STAGED, ON PURPOSE. `wrangler pages deploy deploy`
+      # builds Pages Functions from ./functions in the directory it runs in,
+      # which is the repository root, and never from inside the directory it
+      # uploads: read in wrangler 4.143's own source, where the path is
+      # path.join(process.cwd(), "functions"). So functions/feedback.js at the
+      # root becomes the /feedback route as it stands. Copying it into
+      # deploy/functions/ would route nothing and would publish the Function's
+      # source as a static file at /functions/feedback.js. The webhook address
+      # it relays to is not in that file or anywhere in this repository: it is
+      # the Pages variable DISCORD_FEEDBACK_WEBHOOK, set in the dashboard.
       - name: stage the site
         run: |
           rm -rf deploy && mkdir deploy

@@ -16,8 +16,11 @@
    copies of the engine with each of those rules broken, and must fail on
    every one. A gate that cannot fail is not a gate.
 
-   THE SURFACE, in Chromium, against a stubbed /v1/feedback so no request
-   leaves the machine. Help carries comment, question and something broken;
+   THE SURFACE, in Chromium, against a stubbed feedback route so no request
+   leaves the machine. The route is functions/feedback.js since 3 October and
+   the app posts to it by a relative address, which a file has no host for,
+   so the gate points FEEDBACK_URL at an absolute stub the way it points
+   AUTH_API; tests/discordfeedback.js holds the relative address over http. Help carries comment, question and something broken;
    the sheet switches between them and keeps the text; Send holds the entry
    on the device and says held when the server is down, carries the server's
    words when it refuses, and says sent only when it took it; the request
@@ -193,7 +196,7 @@ async function feedbackGate(browser,FILE,ok,booted){
   /* THE SERVER, STUBBED. Nothing leaves the machine: every request to the
      feedback route is answered here in whichever way the step asks for. */
   let mode='down'; const heard=[];
-  await pg.route('**/v1/feedback',route=>{
+  await pg.route('https://feedback.gate.invalid/feedback',route=>{
    const rq=route.request();
    heard.push({body:rq.postDataJSON(), auth:rq.headers()['authorization']||null});
    if(mode==='down')return route.abort('connectionrefused');
@@ -201,6 +204,7 @@ async function feedbackGate(browser,FILE,ok,booted){
     body:J({error:'feedback cannot be passed on yet'})});
    return route.fulfill({status:200,contentType:'application/json',body:J({ok:true})});});
   await pg.goto(FILE,{waitUntil:'load'}); await booted(pg);
+  await pg.evaluate(()=>{FEEDBACK_URL='https://feedback.gate.invalid/feedback';});
   const step=async fn=>pg.evaluate(fn);
   const said=()=>pg.evaluate(()=>{const L=(typeof MSG_LOG!=='undefined'&&MSG_LOG.length)?MSG_LOG[MSG_LOG.length-1]:null;
    return L?{msg:L.msg,kind:L.kind}:{msg:(document.getElementById('status')||{}).textContent||'',kind:null};});
