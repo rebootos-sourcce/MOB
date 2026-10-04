@@ -4557,8 +4557,28 @@ console.log('\n=== the three blocks stacked under the laws, round PP ===');
      than by throwing, which is what the gate is for */
   out.table=(typeof IX_BLOCKS!=='undefined')?IX_BLOCKS.length:0;
   if(!out.table)return out;
+  /* ROUND RB, THE ARCHETYPES ARE NESTED. His words: "the archetypes will be
+     buttons, and if I press on one, the question pops down." So a plate is on
+     the page only under the archetype that is open, and the block is read by
+     pressing every tile in turn, the way a person would reach every question,
+     and collecting each plate once by its row key. A pair sits under both of
+     its archetypes, so it is met twice and counted once. */
+  const AW=(()=>{
+   const base=document.getElementById('iqx-arch'); if(!base)return null;
+   const seen={}, text=[base.innerText]; let n=0, cells=true;
+   const keys=[...base.querySelectorAll('[data-iqarch]')].map(e=>e.getAttribute('data-iqarch'));
+   keys.forEach(k=>{
+    document.querySelector('#iqbody [data-iqarch="'+k+'"]').click();
+    const pn=document.querySelector('#iqx-arch [data-nest="iqarch"]:not([hidden])'); if(!pn)return;
+    text.push(pn.innerText);
+    pn.querySelectorAll('.iqx-ap').forEach(pl=>{const rk=pl.getAttribute('data-k'); if(seen[rk])return; seen[rk]=1;
+     pl.querySelectorAll('.iq-sl').forEach(x=>{n++; if(x.querySelectorAll('button.iq-n').length!==11)cells=false;});
+     pl.querySelectorAll('.iqx-dlb').forEach(x=>{n++; if(x.querySelectorAll('button').length!==2)cells=false;});});});
+   IQ_ARCH=null; renderIntake();
+   return {text:text.join(' ').replace(/\s+/g,' '), controls:n, cells:cells};})();
   IX_BLOCKS.forEach(b=>{
-   const el=host.querySelector('#iqx-'+b.id), t=el?(el.innerText||'').replace(/\s+/g,' '):'';
+   const el=host.querySelector('#iqx-'+b.id);
+   const t=(b.id==='arch'&&AW)?AW.text:el?(el.innerText||'').replace(/\s+/g,' '):'';
    /* THE ARCHETYPE BLOCK IS NOT THE SAME SHAPE, ROUND PQ. Every axes and acts
       row is still one eleven cell scale carrying its own q verbatim. An arch
       row is a dilemma (two buttons, .iqx-dlb, its scene is its q) or an
@@ -4570,8 +4590,8 @@ console.log('\n=== the three blocks stacked under the laws, round PP ===');
    const scaleEls=el?[...el.querySelectorAll('.iq-sl')]:[];
    const dilEls=el?[...el.querySelectorAll('.iqx-dlb')]:[];
    out.blocks.push({id:b.id, present:!!el, heading:el&&t.indexOf(b.nm)>=0,
-    scales:isArch?(scaleEls.length+dilEls.length):scaleEls.length, rows:b.rows.length,
-    cells:el?(scaleEls.every(s=>s.querySelectorAll('button.iq-n').length===11)
+    scales:isArch?(AW?AW.controls:0):scaleEls.length, rows:b.rows.length,
+    cells:isArch?!!(AW&&AW.cells):el?(scaleEls.every(s=>s.querySelectorAll('button.iq-n').length===11)
       &&dilEls.every(s=>s.querySelectorAll('button').length===2)):false,
     words:b.rows.filter(r=>isArch
       ?(r.type==='dilemma'?t.indexOf(r.scene.replace(/\s+/g,' '))<0
@@ -4588,8 +4608,13 @@ console.log('\n=== the three blocks stacked under the laws, round PP ===');
      mirror: the two marks and the two answers are the same distance either
      side of the plate's own centre, within a pixel. */
   out.nArch=IX_ARCH2.length;
-  out.plates=[...host.querySelectorAll('#iqx-arch .iqx-ap')].map((pl,i)=>{
-   const row=IX_ARCH2[i]||{}, figs=[...pl.querySelectorAll('.iqx-af')];
+  out.plates=IX_ARCH2.map(row=>{
+   /* opened under its first archetype, as a press would (round RB) */
+   const tile=document.querySelector('#iqbody [data-iqarch="'+row.a+'"]');
+   if(tile&&tile.getAttribute('aria-expanded')!=='true')tile.click();
+   const pl=document.querySelector('#iqx-arch [data-nest="iqarch"]:not([hidden]) .iqx-ap[data-k="'+row.k+'"]');
+   if(!pl)return {k:row.k};
+   const figs=[...pl.querySelectorAll('.iqx-af')];
    const marks=figs.map(f=>f.querySelector('.iqx-mk path')), q=pl.querySelector('.iqx-aq');
    const ansEl=pl.querySelector('.iqx-dlb')||pl.querySelector('.iqx-eol');
    const R=e=>e?e.getBoundingClientRect():null, pr=R(pl);
@@ -4605,6 +4630,30 @@ console.log('\n=== the three blocks stacked under the laws, round PP ===');
     mirror:mk.length===2&&btn.length===2&&Math.abs((mid-ctr(mk[0]))-(ctr(mk[1])-mid))<=1
      &&Math.abs((mid-ctr(btn[0]))-(ctr(btn[1])-mid))<=1&&Math.abs(ctr(btn[0])-ctr(mk[0]))<=1,
     qOnAxis:!!q&&Math.abs(ctr(R(q))-mid)<=1};});
+  IQ_ARCH=null; renderIntake();
+  /* THE NEST ITSELF, ROUND RB: one tile per archetype in ARCH, all shut on
+     arrival so no plate is drawn; a press opens that archetype's panel and
+     only its own questions; a press on another moves the one open panel; a
+     press on the open one shuts it; an answer keeps it open. And it is the
+     seats' own tile, so the two rows on this page are one control. */
+  out.nest=(()=>{
+   const q=s=>[...document.querySelectorAll(s)];
+   const ex=()=>q('#iqx-arch [data-iqarch][aria-expanded="true"]').map(e=>e.getAttribute('data-iqarch'));
+   const shown=()=>q('#iqx-arch [data-nest="iqarch"]:not([hidden]) .iqx-ap').map(e=>e.getAttribute('data-k')).sort().join();
+   const want=n=>IX_ARCH2.filter(r=>r.a===n||r.b===n).map(r=>r.k).sort().join();
+   const press=k=>document.querySelector('#iqbody [data-iqarch="'+k+'"]').click();
+   const o={tiles:q('#iqx-arch .iqa-tile[data-iqarch]').map(e=>e.getAttribute('data-iqarch')).sort().join(),
+    want:ARCH.map(a=>a.nm).sort().join(),
+    shutOnArrival:ex().length===0&&q('#iqx-arch .iqx-ap').filter(e=>e.getClientRects().length).length===0,
+    seatTile:IQ_VIEW!=='list'||!!document.querySelector('#iqbody .iqa-map .iqa-tile[data-seat]')};
+   const a=ARCH[0].nm, b=ARCH[1].nm;
+   press(a); o.first=ex().join()===a&&shown()===want(a)&&q('#iqx-arch [data-nest="iqarch"]:not([hidden])').length===1;
+   press(b); o.moved=ex().join()===b&&shown()===want(b);
+   const btn=document.querySelector('#iqx-arch [data-nest="iqarch"]:not([hidden]) [data-ixb="arch"]');
+   if(btn)btn.click(); o.answerKeeps=!!btn&&ex().join()===b;
+   press(b); o.shut=ex().length===0&&q('#iqx-arch [data-nest="iqarch"]:not([hidden])').length===0;
+   CURP.intake.more.arch={}; IQ_ARCH=null; renderIntake();
+   return o;})();
   /* a page missing the block it presses on fails the checks above by name and
      stops here, rather than throwing on a null */
   if(!host.querySelector('#iqx-axes .iq-n[data-ixk="Anger"][data-v="8"]'))return out;
@@ -4649,6 +4698,14 @@ console.log('\n=== the three blocks stacked under the laws, round PP ===');
   ok(bad('order').length===0,'and the order is the mark, the description, the question, then the answer, broken on '+JSON.stringify(bad('order')));
   ok(bad('mirror').length===0,'and the plate is a mirror: both marks and both answers sit the same distance either side of its centre, each answer under its own archetype, broken on '+JSON.stringify(bad('mirror')));
   ok(bad('qOnAxis').length===0,'and the question sits on the centre axis, off on '+JSON.stringify(bad('qOnAxis')));}
+ {const N=ix.nest||{};
+  ok(N.tiles&&N.tiles===N.want,'the archetypes are buttons, one per archetype in ARCH, round RB, '+N.tiles);
+  ok(N.shutOnArrival,'and on arrival every archetype is shut and no question is drawn');
+  ok(N.first,'a press on one opens its panel and only the questions that name it');
+  ok(N.moved,'a press on another moves the one open panel to it');
+  ok(N.answerKeeps,'an answer leaves its archetype open');
+  ok(N.shut,'and a press on the open one shuts it');
+  ok(N.seatTile,'and the archetype tile is the seat tile, one control on this page and not two');}
  ok(ix.pressed.stored===8&&ix.pressed.on,'a press records the answer and the cell stays pressed after the page redraws, '+JSON.stringify(ix.pressed));
  ok(/left/.test(ix.pressed.part),'and a half answered block says what is left, "'+ix.pressed.part+'"');
  ok(/^Loudest axis: Anger\./.test(ix.read)&&/Felt in the upper abdomen/.test(ix.read)&&/Its other end is Equanimity: /.test(ix.read),
@@ -4673,12 +4730,24 @@ console.log('\n=== the three blocks stacked under the laws, round PP ===');
   await new Promise(r=>setTimeout(r,400)); renderIntake();
   /* a control is an eleven cell scale or, for an archetype dilemma, its two
      buttons (.iqx-dlb), round PQ: see the note on the same count at 1600. */
-  const q=[...document.querySelectorAll('#iqbody .iqx .iq-sl')].length
-   +[...document.querySelectorAll('#iqbody .iqx .iqx-dlb')].length;
-  const over=[...document.querySelectorAll('#iqbody .iqx *')].filter(e=>{const r=e.getBoundingClientRect();return r.width&&r.right>innerWidth+1;}).length;
-  return {scales:q, want:IX_BLOCKS.reduce((n,b)=>n+b.rows.length,0), over:over,
-   w:document.documentElement.scrollWidth-innerWidth};});
+  /* round RB: the archetype questions are reached by pressing each
+     archetype, so each is counted once by its row key across every press,
+     and the right edge is checked in every one of those states */
+  const offRight=()=>[...document.querySelectorAll('#iqbody .iqx *')].filter(e=>{const r=e.getBoundingClientRect();return r.width&&r.right>innerWidth+1;}).length;
+  const flat=[...document.querySelectorAll('#iqbody .iqx:not(#iqx-arch) .iq-sl')].length;
+  const seen=new Set(); let over=offRight(), w=document.documentElement.scrollWidth-innerWidth;
+  const tiles=[...document.querySelectorAll('#iqx-arch [data-iqarch]')];
+  const tileBad=tiles.filter(e=>{const r=e.getBoundingClientRect(), n=e.querySelector('.iqa-tn');
+   return r.width<44||r.height<44||(n&&n.scrollWidth>n.clientWidth+1);}).map(e=>e.getAttribute('data-iqarch'));
+  tiles.map(e=>e.getAttribute('data-iqarch')).forEach(k=>{
+   document.querySelector('#iqbody [data-iqarch="'+k+'"]').click();
+   document.querySelectorAll('#iqx-arch [data-nest="iqarch"]:not([hidden]) .iqx-ap').forEach(pl=>{
+    if(pl.querySelector('.iq-sl,.iqx-dlb'))seen.add(pl.getAttribute('data-k'));});
+   over+=offRight(); w=Math.max(w,document.documentElement.scrollWidth-innerWidth);});
+  IQ_ARCH=null; renderIntake();
+  return {scales:flat+seen.size, want:IX_BLOCKS.reduce((n,b)=>n+b.rows.length,0), over:over, w:w, tileBad:tileBad};});
  ok(o.scales===o.want,'all of the questions are on the phone page, '+o.scales+' of '+o.want);
+ ok(o.tileBad&&o.tileBad.length===0,'and every archetype button is at least 44 by 44 with its whole name showing, short on '+JSON.stringify(o.tileBad));
  ok(o.over===0&&o.w<=2,'and none of them runs off the right edge, '+o.over+' elements, document '+o.w+' wide of the screen');
  await ph.close();
 }
