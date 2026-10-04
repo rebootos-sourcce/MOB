@@ -253,9 +253,17 @@ function ritPlanOk(p){
    ritual's minutes, every practice in the library once, so the two cannot
    disagree and no number is typed here */
 var RIT_TM_MAX=RIT_MIN_MAX;
+/* A WORKED EXAMPLE'S PLANS, held in memory and never in the store, round RB.
+   Every example opened this page on nothing, because ritPlanPut refuses one
+   and so the store never had a list under its id. engine/ritex.js builds each
+   example's plans and loadP hands them here, keyed by the scratch record's
+   id. Read only when the store has no list for the record, so a person's own
+   plans can never be shadowed by a demonstration's. */
+var RIT_EX={};
 function ritPlans(){
  if(!CURP||!CURP.id)return [];
  var a=ritSideAll()[CURP.id];
+ if(!Array.isArray(a)&&!ritOwn())a=RIT_EX[CURP.id];
  if(!Array.isArray(a))return [];
  return a.filter(ritPlanOk).map(function(p){
   return {id:p.id, steps:p.steps.slice(), when:p.when||'', where:p.where||'',
@@ -1026,7 +1034,11 @@ function ritActiveBody(act,today,building){
     it comes first on a phone (ritnone). This press is drawn for the one case
     the left column is not there to carry it, folded shut, and shell/head.html
     shows it only then (rv-addx). */
- out+=due.length?'':'<p class="rv-empty">'+(act.length?'Nothing due today.':'Nothing active yet.')+'</p>'
+ /* AND NOTHING ACTIVE SAYS NOTHING, round RB, his words on this page: "Get
+    rid of all the sec[ond] third tier text." Nothing active yet went; Nothing
+    due today stays, because with rituals running it is the one line that
+    says today is clear rather than that the list failed to draw. */
+ out+=due.length?'':(act.length?'<p class="rv-empty">Nothing due today.</p>':'')
   +((act.length||building)?'':'<div class="rv-acts rv-addx"><button type="button" class="btn pri" data-act="add">'+ritIc('plus')+'New ritual</button></div>');
  out+='<p class="rv-mean">A ritual is active from the day you start it until it ends or you stop it.</p>';
  out+=ritRowsHtml(due,today,act);
@@ -1391,9 +1403,13 @@ function ritNote(){
    and it leaves the right end free because each rail's fold control is pinned
    there, head.html beside .fl-hd. The meaning is said in the same place, which
    is the unpack rule: a word a person has to guess is a defect. */
+/* says may be empty, and then the head is its name alone, round RB: the two
+   menu heads on this page lost their lines to his "Get rid of all the
+   sec[ond] third tier text", and an empty span under the name would still
+   hold a line's height of nothing. */
 function flowHeadAt(id,nm,says,ic){
  var h=document.getElementById(id); if(!h)return;
- h.innerHTML='<span class="fl-nm">'+ritIc(ic)+esc(nm)+'</span><span class="fl-says">'+esc(says)+'</span>';}
+ h.innerHTML='<span class="fl-nm">'+ritIc(ic)+esc(nm)+'</span>'+(says?'<span class="fl-says">'+esc(says)+'</span>':'');}
 /* the right menu's head, kept under its own name because the Compass, the
    release and the gate all reach the Flow menu through it */
 function flowHead(nm,says,ic){flowHeadAt('flowhd',nm,says,ic);}
@@ -1448,8 +1464,8 @@ function ritRender(){
   chain:ritChainHtml(c,r,act), active:ritActiveHtml(act,today,building), building:building};
  P.stage=ritStageHtml(st,P);
  h.innerHTML='<div class="rel-card rit-card rv'+(arrive?' rv-arrive':'')+'">'+ritLayout(P)+'</div>';
- flowHeadAt('flownewhd','New','Start a ritual, or change one you already have.','plus');
- flowHead('Accountability','Whether you did what you set.','check');
+ flowHeadAt('flownewhd','New','','plus');
+ flowHead('Accountability','','check');
  /* THE INPUT AND WHAT IS SUGGESTED, BOTH, round QN. His words: "I not only want
     the input there but I want all the suggested ones." So Suggested sits under
     the input whether the builder is shut or open. The one time it goes is

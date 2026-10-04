@@ -59,7 +59,16 @@
 /* ---------------- beside the record ---------------- */
 var RIT_MORE_KEY='atuned-ritual-more';
 var RIT_MORE_CAP=4000;
-RIT.gview='today';
+/* THE CENTRE OPENS ON THE WEEK, round RB. His words: "The center area of the
+   ritual does not look like a calendar of what's running this week. It
+   should." The week was built in round QX and was there, one press away,
+   behind a Today that opened first and drew the same rings the right column's
+   Due today already draws. So the week is what the centre opens on whenever
+   something is running, and Today and This month stay one press away. With
+   nothing running there is no week to draw, so it opens on Today, which
+   carries the one press that starts a ritual. null is no choice made yet; a
+   press on a view is a choice and is kept. */
+RIT.gview=null;
 RIT.span='1m';
 RIT.sgGone=null;
 function ritMoreAll(){
@@ -293,7 +302,7 @@ function ritChalHtml(st,M){
 /* ---------------- the goals ---------------- */
 var RIT_GVIEW=[['today','Today'],['week','This week'],['month','This month']];
 function ritGoalsHtml(st,P){
- var v=RIT.gview; if(!RIT_GVIEW.some(function(x){return x[0]===v;}))v=RIT.gview='today';
+ var v=RIT.gview; if(!RIT_GVIEW.some(function(x){return x[0]===v;}))v=st.act.length?'week':'today';
  var M=ritMore(), body;
  if(v==='week')body=ritWeekHtml(st,M);
  else if(v==='month')body=ritMonthHtml(st,M);
@@ -480,8 +489,14 @@ function ritCalCss(){
   '.rv-wg{display:grid;grid-template-columns:minmax(96px,1.5fr) repeat(7,minmax(30px,1fr));gap:5px;align-items:center}',
   '.rv-wgh{display:flex;flex-direction:column;align-items:center;font-size:12px;color:var(--dim)}',
   '.rv-wgh b{font-size:14px;font-weight:600;color:var(--mid);font-variant-numeric:tabular-nums}',
-  '.rv-wgh.rv-now b{color:var(--ink)}',
-  '.rv-wgh.rv-now{color:var(--ink)}',
+  /* TODAY IS FOUND BEFORE IT IS READ, round RB, his "a calendar of what's
+     running this week". Today was a bolder date and a four pixel dot under
+     each cell, which at a glance is no mark at all: in the first shot of
+     Derek's week the dot read as a stray pixel. So the date sits in a filled
+     chip, the way a wall calendar rings a day, and each of today's cells
+     carries a ring of the same accent, so the column reads as one. */
+  '.rv-wgh.rv-now{color:var(--ink);font-weight:600}',
+  '.rv-wgh.rv-now b{color:var(--on-accent);background:var(--accent);border-radius:999px;min-width:26px;height:26px;padding:0 5px;display:inline-grid;place-items:center;margin-top:2px}',
   '.rv-wgn{display:flex;flex-direction:column;min-width:0;padding-left:8px;border-left:3px solid var(--c,transparent)}',
   /* a name wraps rather than being cut: a row whose ritual cannot be read
      is a row of squares */
@@ -493,7 +508,7 @@ function ritCalCss(){
   '.rv-wc-miss{background:none;outline:1.5px dashed var(--dim);outline-offset:-1.5px}',
   '.rv-wc-off{background:none;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--edge-2) 45%,transparent)}',
   '.rv-wc-none{background:none}',
-  '.rv-wc.rv-now::after{content:"";position:absolute;left:50%;bottom:-6px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--ink)}',
+  '.rv-wc.rv-now::after{content:"";position:absolute;inset:-4px;border-radius:10px;border:1.5px solid var(--accent);pointer-events:none}',
   '.rv-key .rv-k-off{border-radius:3px;border:1px solid var(--edge-2);background:none}',
   '.rv-key .rv-k-pre{border-radius:3px;border:0;background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--edge-2) 55%,transparent) 0 2px,transparent 2px 5px)}',
   /* the month */

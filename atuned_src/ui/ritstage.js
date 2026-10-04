@@ -331,12 +331,16 @@ function ritGoalHtml(st){
   h+='<div class="rv-why" style="--c:var(--accent)"><div class="rv-why-t"><span class="rv-lb">Your avatar wants to be</span>'
    +'<p class="rv-why-be">"'+esc(String(last.be).trim().replace(/^"+|"+$/g,''))+'"</p>'
    +'<p class="rv-why-p">Nothing held at four or more stands in the way of it yet.</p></div></div>';
- else h+='<p class="rv-empty">Your avatar has no goal written yet.</p>';
+ /* with no goal written the card says nothing in its place, round RB, his
+    words on this page: "Get rid of all the sec[ond] third tier text." The
+    card's own line above already says what goes here, so the card is never
+    a bare box, and the next mark below fills it whenever there is one. The
+    line under the next mark, that a mark is earned and never bought, went
+    with it: the same ruling, and the mark itself says how it is earned. */
  var m=st.L.next;
  if(m)h+='<div class="rv-nxm" style="--c:'+seatCol(m.b)+'"><span class="rv-nxi" aria-hidden="true">'
   +'<svg viewBox="0 0 24 24"><path d="'+m.ic+'"/></svg></span>'
-  +'<span class="rv-nxt"><span class="rv-lb">Next mark</span><b>'+esc(m.nm)+'</b><span>'+esc(m.d)+'</span></span></div>'
-  +'<p class="rv-mean rv-nxs">A mark is earned from your record, never bought.</p>';
+  +'<span class="rv-nxt"><span class="rv-lb">Next mark</span><b>'+esc(m.nm)+'</b><span>'+esc(m.d)+'</span></span></div>';
  return h+'</section>';}
 
 /* ---------------- did it work ---------------- */
@@ -490,7 +494,6 @@ function ritStageCss(){
   '.rv-nxt{display:flex;flex-direction:column;gap:2px;min-width:0}',
   '.rv-nxt b{font-size:15px;font-weight:600;color:var(--ink)}',
   '.rv-nxt>span:last-child{font-size:13.5px;line-height:1.5;color:var(--mid)}',
-  '.rv-nxs{margin:8px 0 0}',
   /* did it work, and keep or delete */
   '.rv-okl,.rv-kpl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}',
   '.rv-ok1,.rv-kp1{display:flex;flex-direction:column;gap:3px;padding:10px 12px;border-radius:12px;background:var(--panel-2);',
