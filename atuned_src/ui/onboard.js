@@ -784,7 +784,7 @@ function obRender(){
   /* ROUND QH: the body is the stage's now, the one figure every step moves,
      so the card carries the words and the figure stands beside them at a
      size a card could never give it. */
-  out=obCard('Welcome to a neurosomatic experience','This is you, and it is okay.',
+  out=obCard('Arrive','This is you, and it is okay.',
    '<p class="ob-p">No judgment. Nothing here grades you. This one is for you.</p>'
    +'<p class="ob-p ob-dim">A few minutes. One real thing to write. Nothing to fill in.</p>'
    /* THE PRIVACY LINE IS A FACT ABOUT THE BUILD AND NOT A PROMISE. One file,
@@ -1214,7 +1214,7 @@ function obMiniSay(pl,first,yes){
    +'. '+(pl.rest===1?'The other one waits':'The other '+pl.rest+' wait')+' for your next release.</p>';
  } else if(pl.inferred>0){
   out+='<p class="ob-p">'+(pl.inferred===n?(n===1?'This place comes':'All '+n+' come')
-    :pl.inferred+' of the '+n+' come')+' from where the feeling sits. Your words did not name '
+    :pl.inferred+' places of the '+n+' come')+' from where the feeling sits. Your words did not name '
    +(pl.inferred===1?'it':'them')+'.</p>';
  }
  out+='<p class="ob-p">'+(pl.rest>0?'That is ':rel+' is ')+pl.lines+' lines, '
