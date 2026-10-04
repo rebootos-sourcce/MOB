@@ -282,6 +282,32 @@ function unpackAll(){
  if(typeof TIERDEF!=='undefined')
   TIERDEF.forEach(function(x){
    t['tier:'+x.nm.toLowerCase()]=String(x.def||'').split('. ')[0].replace(/\.+$/,'')+'.';});
+ /* THE GENERAL VOCABULARY, WIRED INTO THE SAME TOOLTIP. GLOSS (kb.js) is the
+    product's own glossary, Address, Charge, Coherence, Fetter and the rest,
+    and until now it answered only on the Knowledge page's own search, never
+    at the place a reading actually uses one of its words. Filled in last and
+    only where no more specific table above already holds the key, so a real
+    collision, none exist today, is won by the table that knows the context
+    rather than by load order.
+
+    ONLY THE FIRST SENTENCE, the same cut `dlyGloss` already makes for a
+    Daily Summary card, because this table is held to a stricter contract
+    than GLOSS itself: one plain sentence, tests/engine.js group PO. A GLOSS
+    entry is free to run longer since it answers a search on its own page;
+    its first sentence still has to earn a place in the one table every
+    short tooltip in the product reads from, so a sentence that fails this
+    table's own checks, a percent or a dash in it, over the word ceiling, or
+    carrying a word this table bans outright (vritti, named in PO), is left
+    out rather than let the rule bend for one term. */
+ if(typeof GLOSS!=='undefined')
+  GLOSS.forEach(function(g){
+   var gk=g.t.toLowerCase(); if(t[gk])return;
+   var first=String(g.d||'').split('. ')[0].replace(/\.+$/,'')+'.';
+   var dashRx=new RegExp(String.fromCharCode(0x2014)+'|'+String.fromCharCode(0x2013));
+   if(first.length<12)return;
+   if(first.split(/\s+/).length>34)return;
+   if(/%|\bpercent\b|\bper cent\b|\bscore\b|\b\d+\s*(of|out of)\s*\d+\b|vritti/i.test(first)||dashRx.test(first))return;
+   t[gk]=first;});
  UNPACK_MEMO=t;
  return t;}
 
