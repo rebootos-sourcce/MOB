@@ -108,6 +108,28 @@ It first runs on two known bad copies of the app, one that never reads the
 link and one whose importer skips the boundary, and each must fail its check.
 Read the counts off the run.
 
+## Talk
+
+Talk draws the Source AI loop on the Story page as a thread. No engine
+function changed for it, so the gate is the page.
+
+    NODE_PATH=/opt/node22/lib/node_modules node tests/srcchat.js
+    SHOTS=dir ... node tests/srcchat.js                          and the pictures
+
+`tests/srcchat.js` holds that a reply is appended to the one entry on a line of
+its own, so a "not" in one turn does not reach into the next and a seat that
+comes back across turns is asked about; that only the newest Source AI turn
+carries words and an answer to an ask does not ask the same why again; that
+Move on still ends the asking; that Commit sends a reply still in the line and
+the entry keeps exactly the keys a box entry keeps, its `asked` a kind, a seat
+and an outcome and never a question's words, the same `asked` the same words
+typed in the box keep; that text added or edited in the box comes back as the
+thread; and at 390 by 844 under reduced motion, that the pulses stop, nothing
+scrolls sideways and the controls are tap sized. It first runs on two known bad
+copies of the page, one whose send joins with a space and one whose thread
+prints every question, and each must fail its check. Read the counts off the
+run.
+
 ## The front door
 
 The engine has one entrance and the three surfaces are separable, so each can be
