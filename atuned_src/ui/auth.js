@@ -81,8 +81,11 @@ function authForget(){ return authKeep(null); }
 /* One request. Resolves to {ok, status, body, late}, and never rejects. With
    blob set, a yes comes back as the bytes and not as parsed text, because the
    voice route answers audio; a no is still the server's json and still read
-   as one, so its error reaches authWhy the same way every other route's does. */
-function authCall(method,path,body,token,blob){
+   as one, so its error reaches authWhy the same way every other route's does.
+   base is the host the path is appended to, AUTH_API unless a caller names
+   another: the feedback relay is on the site's own host and not the Worker's,
+   and a second fetch for it would be a second seam. */
+function authCall(method,path,body,token,blob,base){
  return new Promise(function(done){
   var ctl=null, timer=null, over=false;
   var end=function(r){ if(over)return; over=true; clearTimeout(timer); done(r); };
@@ -97,7 +100,7 @@ function authCall(method,path,body,token,blob){
   var req;
   /* credentials omit: the session is the bearer header and nothing else, so no
      cookie of any host's is ever sent along with it. */
-  try{ req=fetch(AUTH_API+path,{method:method, headers:h,
+  try{ req=fetch((base===undefined?AUTH_API:base)+path,{method:method, headers:h,
    body:body?JSON.stringify(body):undefined, signal:ctl?ctl.signal:undefined,
    cache:'no-store', credentials:'omit'}); }
   catch(e){ end({ok:false, status:0, body:null}); return; }
@@ -113,12 +116,30 @@ function authCall(method,path,body,token,blob){
     function(){ return {ok:res.ok, status:res.status, body:null}; }); },
    function(){ return {ok:false, status:0, body:null}; })
   .then(end,function(){ end({ok:false, status:0, body:null}); });});}
+/* WHERE FEEDBACK GOES, 3 October. This posted to the reboot-os Worker's
+   /v1/feedback, which is a second deploy in a second repository and a cross
+   origin request. It goes to functions/feedback.js now, a Cloudflare Pages Function
+   that ships with atuned.world itself, so the address is relative and is the
+   site's own host wherever the site is deployed, preview or production. A var
+   so a gate can point it at a stub, exactly as AUTH_API is. */
+var FEEDBACK_URL='/feedback';
+/* A RELATIVE ADDRESS HAS NO HOST IN A FILE. Opened from disk, which is how
+   every handover build reaches the owner, "/feedback" resolves to the root of
+   the person's own drive, and the fetch fails as "could not reach the server",
+   which is false: the connection is fine and the server was never asked. So a
+   file copy is told the true reason before any request, and the entry is held
+   like any other no. An absolute FEEDBACK_URL, the gate's stub, is used as it
+   is. */
+function feedbackWhere(){
+ if(/^https?:\/\//.test(FEEDBACK_URL))return FEEDBACK_URL;
+ return /^https?:$/.test(location.protocol)?FEEDBACK_URL:'';}
 /* THE OUTBOX'S SENDER, 2 October. The owner: "the data gets dumped to
    Discord". The Discord webhook is never in this file: a webhook address lets
    whoever holds it post as the team, and anything here is read by everyone
-   who opens the file, so it is a Worker secret, DISCORD_WEBHOOK_URL, and the
-   Worker relays. This posts the outbox's own envelope, already validated by
-   obDrainAsync, to POST /v1/feedback and nothing else.
+   who opens the file, so it is a Cloudflare Pages variable,
+   DISCORD_FEEDBACK_WEBHOOK, and functions/feedback.js relays. This posts the
+   outbox's own envelope, already validated by obDrainAsync, to FEEDBACK_URL
+   and nothing else.
 
    NO TOKEN, EVEN WHEN SIGNED IN. The sheet says "nothing about who you are
    travels with it", and a bearer header would let the server join the words to
@@ -127,13 +148,18 @@ function authCall(method,path,body,token,blob){
 
    Resolves true on a yes and rejects with authWhy's sentence on a no, because
    obDrainAsync keeps the entry on a rejection and carries its message to the
-   status line. Until the route is deployed the server answers 404, and until
-   the secret is set it answers 503, and both are a held entry and a sentence,
-   never a loss. */
+   status line. Until the Function is deployed the site answers a post with
+   404 or 405, because a static host takes no posts, and until the variable is
+   set the Function answers 503 in its own words, and all three are a held
+   entry and a sentence, never a loss. */
 function authFeedback(e){
- return authCall('POST','/v1/feedback',e,null).then(function(r){
+ var at=feedbackWhere();
+ if(!at)return Promise.reject(new Error('This copy is opened from a file, and only '
+  +'the one at atuned.world can send.'));
+ return authCall('POST','',e,null,false,at).then(function(r){
   if(r.ok)return true;
-  throw new Error(r.status===404?'The server does not take these yet.':authWhy(r,'feedback')); });}
+  throw new Error(r.status===404||r.status===405?'The server does not take these yet.'
+   :authWhy(r,'feedback')); });}
 /* THE SERVER'S OWN WORDS, SET IN SENTENCE CASE. Its errors are lower case
    ("too many attempts. wait fifteen minutes"), and they are the true reason,
    so they are shown rather than rewritten. Rewriting them would also mean
