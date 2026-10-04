@@ -1,0 +1,307 @@
+/* ============================================================
+   DOMAIN TYPES. The funnel's own entities, plus the minimal reference
+   shapes of entities the funnel touches but does not own.
+
+   Read CLAUDE.md and PLAN.md section S/T in the main repo before wiring
+   any of this. Short version: the real product is one static HTML file
+   with a host-free engine (atuned_src/engine/*.js) that runs entirely in
+   the browser, plus one existing network seam, a Cloudflare Worker
+   (atuned-api.lance-o-powell.workers.dev, see atuned_src/ui/auth.js) that
+   already handles sign up, sign in and the stored plan field. There is no
+   Postgres or Supabase wired in anywhere yet; that is still the owner's
+   open call (DECISIONS.md, "Cloudflare vs Supabase"). The two TDDs this
+   scaffold was built from assume a Postgres/Supabase backend throughout.
+   Nothing here hard-codes that assumption: FunnelRepository is an
+   interface, sql/0001_funnel.sql is offered as the Postgres-flavoured
+   migration IF that is the path chosen, and every other adapter is written
+   so it can call the real existing engine file directly (named in each
+   adapter's own comment in adapters.ts) instead of re-implementing it.
+
+   WHAT THIS FILE OWNS. The funnel's own session, starter gift, usage
+   ledger and referral records: the things the TDDs call out as new,
+   nothing the main product's engine already owns. WHAT IT DOES NOT OWN.
+   Pattern, Evidence, Release, Reframe, Verification and the rest already
+   have a real shape in the shipped engine (engine/trace.js, engine/
+   practice.js, engine/compute.js, engine/journey.js). Reference types for
+   those are marked REFERENCE ONLY below: the funnel only needs to know
+   enough of their shape to pass IDs around, and the real shape stays
+   wherever the real engine already defines it.
+   ============================================================ */
+
+// ---------- canonical state machine states (see stateMachine.ts) ----------
+
+export type FunnelState =
+  | 'ARRIVE'
+  | 'RECOGNIZE'
+  | 'UNDERSTAND_ENOUGH'
+  | 'SIGNAL_TEST'
+  | 'AHA'
+  | 'BASELINE'
+  | 'READING'
+  | 'STORY'
+  | 'MIRROR'
+  | 'CONFIRM_CORRECT'
+  | 'ADDRESS'
+  | 'RELEASE'
+  | 'REFRAME'
+  | 'VERIFY'
+  | 'RITUAL'
+  | 'COLLECTION'
+  | 'ACCOUNT'
+  | 'PRACTICE'
+  | 'RETURN'
+  | 'SAFETY_STOP';
+
+// ---------- the funnel's own entities ----------
+
+export type FunnelSessionStatus = 'active' | 'completed' | 'stopped' | 'abandoned';
+
+export interface FunnelSession {
+  id: string;
+  anonymousId: string;
+  userId: string | null;
+  state: FunnelState;
+  status: FunnelSessionStatus;
+  selectedGroundId: string | null;
+  starterGiftId: string | null;
+  tutorialCompleted: boolean;
+  firstReleaseId: string | null;
+  verificationId: string | null;
+  /** optimistic concurrency: every persisted mutation increments this. */
+  version: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type StarterGiftStatus = 'pending' | 'active' | 'depleted' | 'cancelled';
+
+export interface StarterGift {
+  id: string;
+  funnelSessionId: string;
+  userId: string | null;
+  source: 'funnel';
+  selectedGroundId: string;
+  patternIds: string[];
+  granted: 100;
+  remaining: number;
+  issuedAt: string;
+  transferredAt: string | null;
+  status: StarterGiftStatus;
+}
+
+export type UsageOperation = 'OPEN_NEW_GROUND' | 'RERUN';
+
+/** Matches the four entitlement sources the TDDs name as distinct. */
+export type UsageSource =
+  | 'STARTER_GIFT'
+  | 'FREE_WEEKLY_BANK'
+  | 'REFERRAL_GRANT'
+  | 'PAID_MONTHLY_ALLOWANCE';
+
+export interface UsageLedgerEntry {
+  id: string;
+  userId: string;
+  source: UsageSource;
+  operation: UsageOperation;
+  patternId: string;
+  releaseId: string | null;
+  /** 1 for OPEN_NEW_GROUND, always 0 for RERUN. Never negative. */
+  amount: number;
+  balanceAfter: number;
+  idempotencyKey: string;
+  createdAt: string;
+}
+
+export type ReferralStatus =
+  | 'created'
+  | 'opened'
+  | 'signed_up'
+  | 'grant_issued'
+  | 'used'
+  | 'expired'
+  | 'cancelled';
+
+export interface Referral {
+  id: string;
+  inviterUserId: string;
+  inviteeUserId: string | null;
+  token: string;
+  status: ReferralStatus;
+  grantAmount: 25;
+  createdAt: string;
+  openedAt: string | null;
+  signedUpAt: string | null;
+  grantIssuedAt: string | null;
+}
+
+export interface TutorialProgress {
+  funnelSessionId: string;
+  userId: string | null;
+  startedAt: string | null;
+  patternSelected: boolean;
+  firstReleaseStarted: boolean;
+  firstReleaseCompleted: boolean;
+  verificationCompleted: boolean;
+  completedAt: string | null;
+}
+
+// ---------- tier / entitlement (see funnelConfig.ts for the real numbers) ----------
+
+export type PlanId = 'gift' | 'free' | 'tier1' | 'tier2' | 'tier3' | 'tier4';
+
+export interface Entitlement {
+  userId: string;
+  planId: PlanId;
+  newGroundLimit: number;
+  period: 'once' | 'week' | 'month';
+  leadCapability: boolean;
+  startedAt: string;
+  expiresAt: string | null;
+}
+
+/** Decision the entitlement adapter returns for ONE requested operation. */
+export interface EntitlementDecision {
+  operation: UsageOperation;
+  source: UsageSource;
+  amount: 0 | 1;
+  allowed: boolean;
+  reason?: string;
+}
+
+/* SIGHT DEPTH IS PART OF ENTITLEMENT TOO, deliberately, against the TDDs'
+   own section 25 ("reading visibility is not gated by tier") and the
+   Master TDD's closing line ("sight is not for sale, new ground is").
+   Round OK, 1 October, reversed exactly that principle: free sees the 112
+   addresses, domains, archetypes, laws and shadow; tier one adds
+   saboteurs; tier two adds complexes and the Kundalini; tier three and
+   four add hyper-complexes, character and the point cloud. The owner
+   reconfirmed it directly, round SD, 4 October: "don't change the
+   structure, don't change the staircase." So SightLevel exists here
+   because the real, live rule needs it, not because this document asked
+   for it; see PLAN.md section S/T for the full citation. */
+export type SightLevel = 'base' | 'saboteurs' | 'complexes' | 'hyperComplexes';
+
+export interface TierDefinition {
+  planId: PlanId;
+  priceUsd: number;
+  newGroundLimit: number;
+  period: 'once' | 'week' | 'month';
+  sight: SightLevel;
+  leadCapability: boolean;
+}
+
+// ---------- reference shapes only: the real shape lives in the shipped engine ----------
+
+/** REFERENCE ONLY. Real shape: engine/schema.js, a person's own profile. */
+export interface UserRef {
+  id: string;
+  email?: string;
+}
+
+/** REFERENCE ONLY. Real shape: whatever the Story/journal entry already is
+ *  in engine/journey.js and the profile's own story list. */
+export interface StoryRef {
+  id: string;
+  userId: string;
+  rawText: string;
+  createdAt: string;
+}
+
+/** REFERENCE ONLY. Real shape: engine/trace.js node of type "pattern" /
+ *  "pattern_candidate", or the Saboteur/complex a story maps to. */
+export interface PatternRef {
+  id: string;
+  status: 'candidate' | 'confirmed' | 'rejected' | 'archived';
+}
+
+/** REFERENCE ONLY. Real shape: whatever engine/compute.js releaseWork()
+ *  and engine/journey.js already return for one release. */
+export interface ReleaseRef {
+  id: string;
+  patternId: string;
+  status: 'started' | 'completed' | 'interrupted' | 'failed';
+}
+
+/** REFERENCE ONLY. Real shape: engine/journey.js releaseVerify() /
+ *  RV_ANSWERS in engine/practice.js. */
+export type VerificationStatus = 'improved' | 'changed' | 'unchanged' | 'worsened' | 'unclear';
+
+export interface VerificationRef {
+  id: string;
+  releaseId: string;
+  status: VerificationStatus;
+  userReport: string | null;
+}
+
+// ---------- events (append only; see funnelService.ts for emission points) ----------
+
+export type FunnelEventType =
+  | 'SESSION_STARTED'
+  | 'CONCERN_SELECTED'
+  | 'STARTER_GIFT_ISSUED'
+  | 'STARTER_GIFT_TRANSFERRED'
+  | 'ACCOUNT_ATTACHED'
+  | 'TUTORIAL_STARTED'
+  | 'TUTORIAL_COMPLETED'
+  | 'PATTERN_SELECTED'
+  | 'FIRST_PATTERN_OPENED'
+  | 'STORY_RECORDED'
+  | 'READING_CREATED'
+  | 'READING_CONFIRMED'
+  | 'READING_REJECTED'
+  | 'READING_CORRECTED'
+  | 'ADDRESS_SELECTED'
+  | 'RELEASE_PLANNED'
+  | 'RELEASE_STARTED'
+  | 'RELEASE_COMPLETED'
+  | 'RELEASE_INTERRUPTED'
+  | 'REFRAME_CREATED'
+  | 'VERIFICATION_RECORDED'
+  | 'RERUN_STARTED'
+  | 'RERUN_COMPLETED'
+  | 'GIFT_DEPLETED'
+  | 'FREE_BANK_STARTED'
+  | 'REFERRAL_CREATED'
+  | 'REFERRAL_OPENED'
+  | 'REFERRAL_SIGNUP'
+  | 'REFERRAL_GRANT_ISSUED'
+  | 'REFERRAL_GRANT_USED'
+  | 'PAYWALL_SHOWN'
+  | 'TIER_SELECTED'
+  | 'PAYMENT_STARTED'
+  | 'PAYMENT_COMPLETED'
+  | 'ENTITLEMENT_GRANTED'
+  | 'ENTITLEMENT_CHANGED'
+  | 'USAGE_CONSUMED'
+  | 'USAGE_RESTORED'
+  | 'RETURNED'
+  | 'SAFETY_STOPPED';
+
+export interface FunnelEvent {
+  id: string;
+  sessionId: string;
+  userId: string | null;
+  type: FunnelEventType;
+  data: Record<string, unknown>;
+  createdAt: string;
+}
+
+// ---------- small result/error types used across the service layer ----------
+
+export class FunnelError extends Error {
+  constructor(
+    public code:
+      | 'INVALID_TRANSITION'
+      | 'SESSION_NOT_FOUND'
+      | 'GIFT_ALREADY_TRANSFERRED'
+      | 'GIFT_NOT_FOUND'
+      | 'STALE_VERSION'
+      | 'ENTITLEMENT_DENIED'
+      | 'DUPLICATE_IDEMPOTENCY_KEY'
+      | 'SAFETY_STOP_ACTIVE',
+    message: string,
+  ) {
+    super(message);
+    this.name = 'FunnelError';
+  }
+}
