@@ -3207,7 +3207,10 @@ const pmn=await page.evaluate(async()=>{
  o.open=!!m&&!m.hidden&&document.getElementById('profbtn').getAttribute('aria-expanded')==='true';
  o.items=m?[...m.querySelectorAll('[role=menuitem]')].map(e=>e.textContent.trim()):[];
  o.sfx=m?(()=>{const b=m.querySelector('[data-pmsfx]');return b?{h:b.getBoundingClientRect().height,on:b.getAttribute('aria-checked')}:null;})():null;
- o.want=ACC_SECS.map(s=>s.nm).concat(['Message log','Settings']);
+ /* Discord feedback joined at 3 October; Join our Discord is a row only once
+    COMMUNITY_INVITE holds a real invite, so it is read off commInvite and not
+    assumed either way */
+ o.want=ACC_SECS.map(s=>s.nm).concat(['Discord feedback'],commInvite()?['Join our Discord']:[],['Message log','Settings']);
  o.tall=m?Math.min(...[...m.querySelectorAll('[role=menuitem]')].map(e=>e.getBoundingClientRect().height)):0;
  o.stillField=S.tab===TAB.FIELD;
  m.querySelector('[data-pms="billing"]').click(); await wait();

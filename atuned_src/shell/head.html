@@ -2399,6 +2399,9 @@ body:not(.tab-field) .pol2{display:none}
 .pm-it:hover,.pm-it:focus-visible{background:color-mix(in srgb,var(--c,var(--accent)) 14%,transparent);outline:none}
 .pm-it .ac-gl{display:inline-flex;width:22px;height:22px;color:var(--c,var(--accent))}
 .pm-it .ac-gl svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+/* Join our Discord is a link, because it leaves the app, and a link wears an
+   underline and the link colour unless told it is a row like the others */
+a.pm-it{text-decoration:none;box-sizing:border-box}
 .pm-sep{height:1px;margin:4px 6px;background:var(--edge)}
 .pm-all{font-weight:600}
 /* the Sound effects row is a switch: the track fills with the accent when on */
