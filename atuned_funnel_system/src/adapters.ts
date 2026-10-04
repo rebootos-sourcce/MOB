@@ -171,8 +171,12 @@ export interface ReleaseAdapter {
 
 /** Wire to atuned_src/engine/journey.js releaseVerify() and the five
  *  answers already defined in atuned_src/engine/practice.js RV_ANSWERS.
- *  Do not invent a sixth answer or collapse "unclear"/"unchanged" into
- *  one value; both TDDs and the real RV_ANSWERS table agree on five. */
+ *  Do not invent a sixth answer, and use the real engine's own five wire
+ *  values (VerificationStatus in domain.ts), not the TDDs' own English
+ *  paraphrase of them: both agree on the count and the five meanings, not
+ *  the spelling, and releaseVerify() refuses anything off its own list
+ *  (round SG found this directly: a first draft of this scaffold used the
+ *  English words and the real engine rejected every call). */
 export interface VerificationAdapter {
   verify(input: {
     releaseId: string;

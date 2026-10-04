@@ -246,9 +246,13 @@ export interface ReleaseRef {
   status: 'started' | 'completed' | 'interrupted' | 'failed';
 }
 
-/** REFERENCE ONLY. Real shape: engine/journey.js releaseVerify() /
- *  RV_ANSWERS in engine/practice.js. */
-export type VerificationStatus = 'improved' | 'changed' | 'unchanged' | 'worsened' | 'unclear';
+/** The real engine's own five answers, verbatim: `RV_ANSWERS` in
+ *  engine/practice.js (verified directly against the real engine.js round
+ *  SG; both Funnel TDDs instead paraphrase these in English, "I feel
+ *  different" / "Nothing changed" / etc., which is the right user-facing
+ *  copy but not this value's own wire shape). Kept exactly as the real
+ *  engine spells them so `releaseVerify()` never refuses a real call. */
+export type VerificationStatus = 'feel_different' | 'see_differently' | 'something_moved' | 'nothing_changed' | 'not_sure';
 
 export interface VerificationRef {
   id: string;

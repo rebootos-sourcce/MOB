@@ -44,7 +44,8 @@ npm install
 npm test
 ```
 
-22 tests, 0 failures, as of the round this was built.
+41 tests, 0 failures, as of the round this was built (round SG; see "What
+round SG wired" below for what moved the count from 22).
 
 ## What round SF fixed
 
@@ -93,6 +94,66 @@ verification, renewal/refund/chargeback handling and out-of-order event
 ordering are real, larger work, named as BLOCKED in `PLAN.md` section U); and
 the free/paid allowance carry-forward, retention and RPO/RTO decisions the
 new TDD's own section 48 says must never be invented by the receiving AI.
+
+## What round SG wired
+
+Round SF left every adapter as an interface with a comment naming the real
+file it should call. Round SG, 4 October, actually called those real files,
+in answer to "keep on the database wiring, it's got to be done today":
+
+- **`src/engineHost.ts`.** `atuned_src/engine/core.js` keeps its state (the
+  law and charge values for one person) in a module-level `const S = {...}`,
+  which `CLAUDE.md` itself names as "the impure core" and marks "deliberately
+  deferred." A plain `require('engine.js')` from a Node server would share
+  that one object across every concurrent user, which is a real
+  cross-person data leak, not a hypothetical one. `engineHost.ts` avoids it
+  without rewriting the engine: it compiles `engine.js` once with Node's
+  built-in `vm` module, then hands out a brand new, fully isolated copy of
+  that state for every call with `vm.createContext()`. `tests/engineHost.test.ts`
+  proves two of those isolated copies never see each other's data (one sets
+  a value, the other reads the default, not the set value).
+- **`src/realAdapters.ts`.** Real implementations, calling the real engine
+  through `engineHost.ts`, for the adapters round SF left as interfaces
+  only: `RealEntitlementAdapter` (reads the real `SIGHT`/`PLAN_PRICE` tables
+  rather than a hand-copied second list), `RealReleaseAdapter` (calls the
+  real `releaseWork`), `RealVerificationAdapter` (calls the real
+  `releaseVerify`), `RealSourceAdapter` (calls the real `srcTurn`), and
+  `RealIdentityAdapter` (a real HTTP client for the existing reboot-os
+  Worker). Calling the real engine, instead of guessing at its shape from
+  the TDDs, found two real bugs in this scaffold's own types before they
+  could reach anyone: the TDDs' own English words for a verification answer
+  ("improved," "changed," "unchanged," "worsened," "unclear") are not what
+  the shipped engine actually accepts; its real list, in `practice.js`
+  `RV_ANSWERS`, is five snake_case values (`feel_different`,
+  `see_differently`, `something_moved`, `nothing_changed`, `not_sure`), and
+  the real engine refused every call until `domain.ts`'s `VerificationStatus`
+  type was corrected to match. Separately, the real engine's address ids
+  must be actual numbers, not numeric-looking strings; `VerificationAdapter`
+  did not have a field for that at all, so one was added
+  (`addressIds?: number[]`), named as real, unfinished wiring rather than
+  silently defaulted and left unmentioned (see that file's own comment:
+  threading the real address id from the release step through to the verify
+  step is not done yet, and defaults to address 1 so the call is real rather
+  than skipped).
+- **`sql/sqlite_schema.sql` and `src/sqliteRepository.ts`.** The open call
+  named in "What this is not" below (Postgres/Supabase vs. the existing
+  Worker's own store) is still open; this is not a third option. It is a
+  real, fully working `FunnelRepository` against Node's own built-in
+  `node:sqlite`, built because neither of the two real options can be stood
+  up from inside this environment today (no Supabase account exists here;
+  the Worker's own source is not part of this checkout), and the Database
+  Production Completion TDD v2's own constraints (the atomic idempotency
+  claim, the gift/item row count, the referral grant race) needed to be
+  proven against an actual running database, not just asserted true in
+  TypeScript against an in-memory fake. `tests/sqliteRepository.test.ts`
+  runs against real, file-backed SQLite databases in a temp directory,
+  including two tests that fire genuinely concurrent writes with
+  `Promise.all` and check that the database's own constraints, not
+  application logic, let only one win.
+
+`npm test` now runs 41 tests (stateMachine 9, funnelService 13, engineHost
+4, realAdapters 8, sqliteRepository 7), 0 failures, read off the run rather
+than typed here from memory, per `CLAUDE.md`'s own rule on test counts.
 
 ## What this is not
 
@@ -154,17 +215,45 @@ step 5 says ("harden RLS before production").
 
 ## Suggested next steps for whoever attaches this
 
+Round SG moved steps 3 to 5 below from "implement" to "already real, finish
+the remaining named gaps." What is left:
+
 1. Decide the persistence target (Postgres/Supabase vs. the existing
-   Worker's own store): the one open call named above.
-2. Implement `FunnelRepository` against that choice.
-3. Implement `IdentityAdapter` against the existing reboot-os Worker (one new
-   endpoint).
-4. Implement `SourceAdapter`, `ReleaseAdapter`, `VerificationAdapter` by
-   requiring the real engine files, per the table above, not by
-   reimplementing their logic.
-5. Implement `EntitlementAdapter` against `engine/plan.js`, keeping
-   `funnelConfig.ts`'s numbers in sync with it (ideally generate one from the
-   other at build time).
+   Worker's own store): the one open call named above. `sqliteRepository.ts`
+   is real, proven, working code, not a submission for this slot; it exists
+   so the decision can be made on its own schedule without blocking proof
+   that the repository contract is correct.
+2. Once decided, either point a real Postgres/Worker-store implementation at
+   `sql/0001_funnel.sql`'s schema, or, if SQLite-on-D1 is the real answer,
+   confirm `sqliteRepository.ts` against Cloudflare D1's own SQLite dialect
+   (D1 is SQLite-compatible but not identical; this was built and tested
+   against Node's own `node:sqlite`, not D1 itself).
+3. **`IdentityAdapter`** (`src/realAdapters.ts`'s `RealIdentityAdapter`) is a
+   real, ready HTTP client. It needs exactly one thing to work: a
+   `POST /v1/auth/whoami` route added to the existing reboot-os Worker
+   (`atuned_src/ui/auth.js`'s `AUTH_API`) that takes a bearer token and
+   returns `{ userId }`. That route does not exist on the Worker today; this
+   repository cannot add it, since the Worker's own source is not part of
+   this checkout.
+4. **`SourceAdapter`, `ReleaseAdapter`, `VerificationAdapter`**
+   (`RealSourceAdapter`, `RealReleaseAdapter`, `RealVerificationAdapter`) call
+   the real engine functions, proven against the real `engine.js` via
+   `engineHost.ts`. Two real gaps remain, both named in `realAdapters.ts`'s
+   own comments rather than hidden: (a) these three adapters need a real
+   person's profile (`engine.S.law`/`S.charge`) passed in and the updated
+   profile persisted back out, through the `context.profile` /
+   `context.updatedProfile` convention documented there, and no server-side
+   profile store exists yet (today the profile lives only in each person's
+   own browser); (b) `RealVerificationAdapter` needs the real numeric
+   address id the release step worked, threaded through from
+   `RealReleaseAdapter`, which this round did not wire and defaulted to
+   address 1 instead of leaving broken.
+5. **`EntitlementAdapter`** (`RealEntitlementAdapter`) already reads the real
+   `SIGHT`/`PLAN_PRICE` tables straight off `engine.js` through
+   `engineHost.ts`, so there is no second copy of those numbers left to
+   drift. What remains is wiring its per-user state (today it always
+   returns the free tier) to wherever entitlements end up persisted, once
+   step 1 is decided.
 6. Implement `PaymentAdapter` against the real Stripe setup.
 7. Expose `FunnelService`'s methods through the application's own existing
    router (do not add a second HTTP framework, per the Master TDD's own
