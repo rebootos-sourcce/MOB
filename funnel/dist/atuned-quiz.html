@@ -2990,6 +2990,84 @@ function recipeSteps(ritual,tier){
  ritual.steps.forEach(function(s){var p=byK[s]; if(!p)return;
   (p.tier<=tier?on:held).push(s);});
  return {steps:on, held:held};}
+/* ============================================================
+   THE DAILY AFFIRMATIONS, A FIRST SLICE. Round QX, 3 October. His words:
+   "I should see three. Daily affirmations."
+
+   WHERE AN AFFIRMATION COMES FROM, in the order the Ritual page reads them
+   (ui/ritcal.js, ritAffirm):
+     first   the person's own avatar lines, the "who I want to be" half of
+             each pair, newest first. These are theirs and are quoted, never
+             paraphrased. The avatar page already asks for one of them to be
+             said out loud once a day (its "Say it" rule), so this is the same
+             act, offered on the Ritual page.
+     then    one line per pattern held at four or more, heaviest first, read
+             off this table by the pattern's name. Each line is the coherent
+             opposite of that pattern (CHILD's opp, engine/data/canon.js), said
+             as a claim about the body and not as a wish.
+
+   WHY A CLAIM ABOUT THE BODY. The glossary says it plainly: "An affirmation
+   does only the second and skips the first" (Letting go, gloss.js), and the
+   release card says "state the installation. Not as an affirmation, as a
+   somatic claim" (cards.js). So each line names a place or a posture the body
+   can check, the Somatic Truth Check's own test: said, it either opens or it
+   contracts.
+
+   FIRST DRAFT, AND HIS TO CHANGE. Nine lines, one per axis. This is content
+   and not code: a line can be rewritten here and nothing else moves. The key
+   is CHILD's nm, so a renamed axis is a line that stops being found, which
+   the flowtools gate (FT31) checks.
+   ============================================================ */
+var AFFIRM={
+ 'Fear':'My weight is down. The floor holds it.',
+ 'Anger':'The heat moves through. My hands stay open.',
+ 'Shame':'I take up the space I am standing in.',
+ 'Disgust':'What is here can stay here. My skin stays soft.',
+ 'Apathy':'There is charge in my arms, and I can spend it.',
+ 'Shock':'My feet are on the ground, and the ground is still.',
+ 'Sad':'My chest is open. What I lost made room.',
+ 'Surprise':'My shoulders are down. I can meet what comes.',
+ 'Anticipation':'I am here, below the heart, on this breath.'};
+/* where a person with nothing held starts: the three axes nearest the ground,
+   the same posture ritFor takes when nothing is read, the lightest place */
+var AFFIRM_START=['Fear','Shock','Anticipation'];
+
+/* ============================================================
+   THE DAILY CHALLENGES, AND THE ONE GAP IN THEM. Round QX. His words: "Three
+   challenges."
+
+   Most already exist. Every named saboteur in SABDEF (engine/data/kb.js)
+   carries an intervention, i, that is a challenge in shape: "Make one direct
+   request for connection." The Ritual page reads those first and writes
+   nothing over them.
+
+   What does not exist is a challenge for an INFERRED saboteur: a cluster the
+   library does not name, called by its seat and the agent noun for its
+   fetter (INFER_NOUN, canon.js), "the Root Mourner". On a person who has
+   written three stories these are often the heaviest running, measured on
+   the flowtools seed: two of its three. So this is the first slice of new
+   content: one challenge per fetter, nine, each a single act a body can do
+   today, and the moment it is for. First draft, and his to change.
+   ============================================================ */
+var CHALLENGE={
+ 'Fear':{act:'Do the one thing you flinched from today. Keep it small, and start before the reasons arrive.',
+  when:'Before something you would rather not do.'},
+ 'Anger':{act:'When the heat rises, wait five breaths before you answer. Then answer once.',
+  when:'When you feel heat in your face or your hands.'},
+ 'Shame':{act:'Let one person see one thing you would usually hide. Say it plainly, once.',
+  when:'When you want to hide what you did or who you are.'},
+ 'Disgust':{act:'Stay one minute longer with the thing you want to push away, and name what is there.',
+  when:'When you want to push something or someone away.'},
+ 'Apathy':{act:'Pick one task and finish it today, start to end, before you open anything else.',
+  when:'When nothing feels worth starting.'},
+ 'Shock':{act:'When you freeze, put both feet flat and name three things you can see. Then move one hand.',
+  when:'When your body goes still and your mind goes blank.'},
+ 'Sad':{act:'Name one thing you lost, out loud. Then do one thing with what is here now.',
+  when:'When the old loss comes back up.'},
+ 'Surprise':{act:'When something catches you off guard, drop your shoulders before you answer it.',
+  when:'When something lands that you did not see coming.'},
+ 'Anticipation':{act:'Catch yourself bracing for what has not happened. Breathe out, and do the next thing in front of you.',
+  when:'When you are already braced for the worst.'}};
 
 /* ============================================================
    PEOPLE. Twelve worked examples across the coherence scale, and four of the
@@ -3423,7 +3501,7 @@ var KB_KEY=function(s){return String(s||'').replace(/^[Tt]he\s+/,'').toLowerCase
 var SABDEF={"negotiator":{"c":"S01","d":"Argues against your own intentions. Always sounds reasonable. Never says stop forever, says stop today. The fear of discomfort is mild enough to be rationalized away. The happiness available from the easier option is just high enough to make the rationalization feel earned. Together they produce the internal diplomat who can talk you out of anything, not through force, but through the perfectly reasonable argument that now is not the right moment. The most dangerous saboteur in the system because it sounds exactly like you.","t":"The moment between intending to do the necessary thing and beginning to do it. The pause.","i":"Begin the action before the internal dialogue completes. Remove the pause. The Negotiator only has power in the gap between intention and motion. Close the gap.","q":"I can start tomorrow. / Just this once. / I've earned a break."},"controller":{"c":"S02","d":"Hypervigilance at the level of outcomes. The foundation of the Type A pattern. Not a personality trait, a fear response that has been running so long it looks like a management style. The fear underneath: something will go wrong, someone will get hurt, or the situation will fall apart if I release my grip. Self-control registers as 10. Anything less registers as loss. The delta between perceived control and actual control is the zone of active saboteur behavior. Anger layers in as a do-as-I-say mechanism, authority used to close the control gap quickly. Entitlement provides the justification: it is not just that I need to control this. It is that I am right to. Competition drives the adversarial edge, not just winning but not-losing, which is a different frequency entirely.","t":"The moment control begins to slip. Uncertainty in outcomes. Others not performing to expectation. Delegation without confirmation. Silence where confirmation should be.","i":"Control is a belief held under pressure. The person fails control the same way a person fails a landing, only if they quit. Recognize that the need to be in control and the experience of being out of control are both charges, not conditions. Neither is real. Locate the fear underneath. Release the fear. The need to control loses what it was standing on.","q":"If I don't control this, something will go wrong."},"victim":{"c":"S03","d":"Focuses on internal feelings and victim mentality for attention. Martyrdom.","t":"When accountability is required.","i":"Identify one thing within your control. Take one action on it.","q":"This keeps happening to me."},"perfectionist":{"c":"S04","d":"Continuous pressure to do better. Anxiety about imperfections in self and others.","t":"Before completion or release of work.","i":"Set a fixed completion time. Release at that time regardless of state.","q":"It is not good enough yet."},"pleaser":{"c":"S05","d":"Indirectly tries to gain acceptance by helping, pleasing, rescuing, or flattering.","t":"When there is potential for disapproval or when a boundary is needed.","i":"State a preference or limit once. Do not explain or apologize.","q":"My worth depends on making others happy."},"hyper achiever":{"c":"S06","d":"Dependent on constant performance for self-respect. Workaholic.","t":"When performance is not being measured or when rest is available.","i":"Rest without producing for one hour. No metrics.","q":"My worth is in my output."},"hyper rational":{"c":"S07","d":"Processes everything through logic. Impatient with emotional concerns.","t":"When emotional input is offered.","i":"Name the emotion present in the room before analyzing the problem.","q":"If I can't explain it, it isn't real."},"hyper vigilant":{"c":"S08","d":"Continuous anxiety about potential dangers. Constant risk management.","t":"When the environment changes or trust is required.","i":"Identify one thing that is safe. Hold that for 60 seconds.","q":"The threat is always just ahead."},"restless":{"c":"S09","d":"Constant search for new activities. Rarely at peace with the current moment.","t":"When the current situation becomes familiar or stable.","i":"Stay with the current thing for twice as long as the impulse to move suggests.","q":"The next thing will be better."},"stickler":{"c":"S10","d":"Perfectionism and need for order. Anxiety when standards are not met.","t":"When the environment or person deviates from the correct way.","i":"Identify one situation where your standard is serving your fear, not your values.","q":"There is a right way and a wrong way."},"judge":{"c":"S11","d":"Judges self and others. Replays past failures. The master saboteur, activates all others.","t":"When someone, including self, falls short of standard.","i":"Find one thing that is right about the situation being judged.","q":"Someone is responsible for this."},"deflector":{"c":"S12","d":"Does not own. Justification to avoid accountability.","t":"When direct accountability or personal disclosure is required.","i":"Stay with the direct question for 10 seconds before redirecting.","q":"If they knew the real me they would leave."},"dramatizer":{"c":"S13","d":"Amplifies the emotional intensity of situations to generate attention or movement.","t":"When intensity of feeling is present and an audience is available.","i":"Reduce the intensity of the next statement by half.","q":"My pain must be visible to matter."},"worrywart":{"c":"S14","d":"Runs continuous worst-case scenarios. Mistakes anxiety for planning.","t":"When the future is uncertain.","i":"Name the specific worst case. Name one action if it occurs.","q":"Worrying is preparation."},"loner":{"c":"S15","d":"Withdraws from contact as protection. Independence as defense, not a value. Fear of rejection co-mingling with shame of belonging at sufficient magnitude. The person does not experience themselves as afraid, they experience themselves as preferring solitude. Release the fear and sad nodes and the solitude remains if chosen, not if driven.","t":"When connection is available and would be beneficial.","i":"Make one direct request for connection.","q":"Needing others is weakness."},"people pleaser":{"c":"S16","d":"Approval-seeking at the expense of authenticity.","t":"When approval is uncertain or a boundary is needed.","i":"Identify the response that serves the relationship rather than the approval.","q":"If they don't like me I have failed."},"skeptic":{"c":"S17","d":"Defaults to distrust and doubt. Skepticism as protection against disappointment.","t":"When new information challenges the current model.","i":"Sit with the new information for 24 hours before dismissing it.","q":"Trust gets you hurt."},"dreamer":{"c":"S18","d":"Lives in possibility without building the bridge toward it. Avoids the friction of execution.","t":"When the gap between vision and current reality is visible.","i":"Identify one concrete step. Execute it today.","q":"Someday the conditions will be right."},"procrastinator":{"c":"S19","d":"Delays action on important tasks. Mistakes motion for progress.","t":"When the important task is clear and available.","i":"Begin. Not finish. Not plan. Begin. Three minutes.","q":"I work better under pressure."},"imposter":{"c":"S20","d":"Believes their competence is unearned and discoverable as fraud.","t":"When competence is being evaluated or recognition is offered.","i":"Identify one thing you know that the room does not. State it.","q":"They will find out I do not belong here."},"aggressor":{"c":"S21","d":"Uses anger and force to override resistance. Mistakes compliance for agreement.","t":"When authority is challenged or outcome is not proceeding as required.","i":"Pause 5 seconds. Name the fear underneath the anger before responding.","q":"Aggression gets results."},"martyr":{"c":"S22","d":"Sacrifices for others to generate obligation or moral authority.","t":"When sacrifice has been made and goes unrecognized.","i":"Identify whether the sacrifice was chosen or performed. If performed, stop.","q":"I give everything and receive nothing."},"cynic":{"c":"S23","d":"Undermines possibility through pre-emptive dismissal.","t":"When hope or enthusiasm is present in self or others.","i":"Identify one thing good about the situation being dismissed.","q":"Optimism is naive."},"manipulator":{"c":"S24","d":"Achieves outcomes indirectly through influence, withholding, or positioning.","t":"When the direct approach feels risky.","i":"State the actual need directly. Once. Without positioning.","q":"Direct requests make me vulnerable."},"overthinker":{"c":"S25","d":"Loops on decisions past the point of useful analysis.","t":"When a decision is required and the outcome is uncertain.","i":"Set a decision time limit. Decide at that limit. Do not extend it.","q":"More analysis will produce the right answer."},"escapist":{"c":"S26","d":"Uses pleasure, distraction, or movement to exit discomfort before it resolves.","t":"When the present moment is uncomfortable and an exit is available.","i":"Stay in the discomfort for two minutes. Name what is present.","q":"I just need to not feel this right now."},"avoider":{"c":"S33","d":"Declines the engagement before it can cost anything. Not fleeing discomfort the way the Escapist does, and not arguing the way the Negotiator does. Not present for it.","t":"When something asks to be dealt with and not dealing with it carries no immediate penalty.","i":"Name the thing being avoided out loud, then do the smallest piece of it.","q":"If I stay unaware, nothing can land on me."},"nihilist":{"c":"S27","d":"Removes the foundation of meaning as a pre-emptive strike against disappointment.","t":"When meaning is required to justify effort.","i":"Identify one action worth doing regardless of meaning. Do it.","q":"Nothing matters enough to sustain effort."},"innocent":{"c":"S28","d":"Maintains deliberate unawareness to avoid responsibility or conflict.","t":"When complexity, conflict, or moral weight is present.","i":"Name one thing you know that you are pretending not to know.","q":"I don't want to be involved."},"pessimist":{"c":"S29","d":"Pre-empts positive outcomes by building a case against them before they materialize.","t":"When a positive outcome is possible.","i":"Name the best thing that could really happen. Act from that.","q":"It will not work out."},"catastrophizer":{"c":"S30","d":"Pictures the worst outcome in every unknown. The Worrywart does this on a smaller scale. The Catastrophizer jumps from an ordinary unknown to a threat to survival.","t":"Any unresolved uncertainty.","i":"Describe the actual current situation without projection. Stay in the present tense.","q":"This will destroy everything."},"enabler":{"c":"S31","d":"Backs up the harmful patterns of others to keep the relationship or avoid conflict. Not the same as the Pleaser: the Enabler backs up behavior they know is harmful.","t":"When someone they care about is repeating a destructive pattern.","i":"Name what you see. Once. Without attachment to the response.","q":"If I say something they will leave."},"control freak":{"c":"S32","d":"The colloquial name for the Controller and Hyper-Vigilant composite at Type A intensity. Hypervigilance running on outcomes and on threat at the same time. The body is scanning forward (what could go wrong) and downward (am I in command of this) in continuous loop. Reads to other people as competence under pressure. Reads in the body as never landing. The same fear that drives Controller (something will go wrong if I release grip) and the same fear that drives Hyper-Vigilant (the threat is just ahead) co-mingle here at sufficient magnitude that they cannot be felt as separate. Distinct from Controller alone: Control Freak does not wait for the control gap to open before acting. Distinct from Hyper-Vigilant alone: Control Freak organizes the scan around its own agency, not around external monitoring. Type A is the social presentation. The somatic state is sustained sympathetic activation that the body has normalized as baseline.","t":"Any environment the person did not configure. Any outcome the person did not design. Any silence where confirmation should be.","i":"Lock the jaw, the shoulders, and the diaphragm for a count of five. Notice they were already locked. Release on the exhale. The drill shows the body can hold a state without scanning it. Repeat until the scan stops without being asked to.","q":"If I am not running this, no one is."}};
 var DOMDEF={"knowledge":{"n":"I","c":"pattern recognition, codification, teaching, symbolic thinking. The person who reads before being asked to. Somatic knowledge is true knowledge, once it's in the body, deception doesn't work on you. You can feel the lie before it forms a word.","x":"over-intellectualization, false certainty, knowledge as a barrier rather than a bridge."},"communication":{"n":"II","c":"bridging, translation, exact words, quick thinking. The connector, the person who translates between people, between ideas, between worlds.","x":"manipulation, saying one thing and then another, using what you know to get a hold over people."},"power":{"n":"III","c":"physical courage, holding your ground, guarding what matters. Force aimed at what is in the way, not at people.","x":"domination, violence without purpose, war as identity."},"imperium":{"n":"IV","c":"governance, structural authority, organizing chaos into function. sees how systems should be organized.","x":"domination, entitlement, autocracy."},"creation":{"n":"V","c":"building, executing, bringing vision into form. Always needed to make things. When you can't create it feels like disconnection, like the system is broken. Financial stress kills creativity not motivationally but anatomically: the survival charge consumes the current before it reaches the generative center. When the root clears, the sacral opens, the creative current flows again. Not as discipline. As a natural consequence of the channel being clear.","x":"perfectionism as paralysis, identity tied to output."},"dissolution":{"n":"VI","c":"deliberate dissolution, clearing what's false or finished, making space for what comes next. Sees what needs to end.","x":"destruction as identity, nihilism, chaos without rebuilding."},"love":{"n":"VII","c":"union, intimacy, the force that draws beings into genuine contact. Love as a state the person generates, not receives. Always knew what brings people together.","x":"codependency, possession, love as completion rather than addition."},"healing":{"n":"VIII","c":"directed intervention, active clearing, creating conditions in which restoration happens. Finds the broken thing in any room.","x":"rescuer complex, martyrdom, healing as identity."},"sacrifice":{"n":"IX","c":"voluntary descent, the chosen ordeal, sacrifice as the mechanism that produces insight unavailable any other way. The knowledge that comes from what was given up, not accumulated. The real use of experience: take in as much as you can, then let go of the names you gave it. Words illuminate, they don't contain.","x":"suffering as identity, the descent without return."},"justice":{"n":"X","c":"discernment of what's real and what's false. Accountability without cruelty. Moral disorder doesn't just feel wrong, it triggers the nervous system. When truth is a 10, anything less is somatic. You can feel the lie before it forms a word. If you lie, you knock your own nervous system off balance.","x":"rigid judgment, self-righteousness, justice as control."},"trickster":{"n":"XI","c":"disruption of rigid patterns, revealing what's hidden through inversion, innovation through disorder. Sees the absurdity in what everyone else treats as fixed.","x":"deception as lifestyle, instability mistaken for freedom."},"nature":{"n":"XII","c":"alignment with biological truth, growth through patience rather than force. Thinks in cycles rather than straight lines.","x":"rejection of structure, naturalism as escape from complexity."},"mystery":{"n":"XIII","c":"navigation of the unseen, death and rebirth as structural realities. Can hold darkness without being consumed. Always drawn to what's hidden.","x":"obsession with shadow, nihilism, identity built on the margin."},"duty":{"n":"XIV","c":"right action regardless of personal cost. Loyalty to what's true, not what's comfortable. Does the right thing even when no one is watching.","x":"rigidity, losing self in obligation, duty performed for an audience."},"play":{"n":"XV","c":"the generative state of pure engagement. Awe. Creativity for its own sake. Not the absence of seriousness, the intelligence serious people miss. Always able to find what's alive in something.","x":"avoidance through play, irresponsibility, lightness that refuses depth."},"death":{"n":"XVI","c":"completion. Endings held cleanly. The threshold kept, the thread cut when the thread is finished, presence with what's dying without flinching. Releases what's done so renewal has room.","x":"morbidity, clinging that refuses every ending, or dealing endings as power."},"fate":{"n":"XVII","c":"reads the pattern and its timing. Knows what must unfold and when to move. Acts at the right moment without forcing the thread.","x":"fatalism, abdication of choice, reading the pattern as an excuse to never act."},"guardian":{"n":"XVIII","c":"the watch kept. A perimeter held so what's inside can live. Protection without possession, sanctuary without walls that strangle.","x":"overprotection that smothers, vigilance that never rests, walls against life itself."},"provision":{"n":"XIX","c":"the one who makes sure there's enough, and not only for today. Supply held against a season nobody can see yet. The granary, the harvest, the wage. Provides for, rather than trades with.","x":"worth measured only in what's furnished, hoarding dressed as prudence, the provider who can't be provided for."}};
 var KB_RENAME={"descent":"Sacrifice","connection":"Love","exchange":"Communication","restoration":"Healing"};
-var GLOSS=[{"t":"Address","d":"One exact place in your body where a pattern sits. Every pattern has one. Release works at that place in the body, not on your thoughts."},{"t":"Allostatic load","d":"The wear on your body from stress that keeps switching on and never fully switches off. It builds up like interest on a debt nobody paid. Release brings it down by working on the addresses where that stress is held."},{"t":"Archetype","d":"One of 12 kinds of character you are born with. It is the third step down on the side of you that was there before life taught you anything: domains feed your blueprint, and your blueprint splits into archetypes. It is its own step, not another name for the blueprint. The patterns that run through it are stored in the body, at the nerve register of whichever seat they land on, the way any pattern is. The archetype itself is not one of those patterns. It has no address of its own, so there is nothing at one place to release. It is the shape the patterns run through, not a pattern you could point to. The work changes where it points, not what it is."},{"t":"Ascension","d":"When the world around you, and your own feelings, stop steering you. Things lose their grip because your survival patterns have stopped giving the orders. It is a way of running, not a finish line, so no number of releases counts you in."},{"t":"Attention","d":"Where you point your mind. It comes two ways: wide, taking everything in, or narrow, fixed on one thing. Attention steers. Will pushes."},{"t":"Aura","d":"A field around the body, said to come from the state of your nerves. This instrument does not measure it, and no instrument this product knows of does. Living tissue does give off very faint light. That light is real and comes from the cells' normal chemistry, but nobody has shown it carries the state of your nerves. The aura is kept here as a way to talk about how other people feel you, not as a reading."},{"t":"Awareness","d":"How far open the soul's window is. The wider it opens, the more of what is really there you take in."},{"t":"Biophoton field","d":"Very faint light given off by living tissue, too faint for your eyes to see. It is real, and labs have measured it since the 1950s. It comes from the cells' normal chemistry, not from the state of your nerves. This product does not claim it carries the aura, and nothing in the instrument reads it."},{"t":"Chakra","d":"A seat. In this model, a field you cannot touch, made by a bundle of nerves. There are seven, from the base of the spine to the top of the head. Seven, with one nerve bundle each, is a modern Western idea: older traditions count five, six, eight or more, and matching seats to nerve bundles dates from 1927. The word is kept because the work is done in it, not because anyone has measured a chakra."},{"t":"Charge","d":"Survival energy stuck at one place in the body. It gets stuck when a stress reaction starts and never gets to finish. When your attention reaches it, it feels like heat, pressure, tingling or weight."},{"t":"Clair","d":"A sense beyond the five: seeing, hearing, feeling or knowing something without eyes, ears, skin or working it out. The names are clairvoyance, clairaudience, clairsentience and claircognizance, and there are others. Soma breaks them apart. Clear the soma and they work together."},{"t":"Coherence","d":"When what you mean, what you do and what your body does all point the same way, with fewer parts of you pulling against each other. The instrument works it out from your answers. It does not measure your body. CQ is its number."},{"t":"Replacement state","d":"The quality a pattern was blocking, installed at the same address once the charge there is released. Where fear was held, trust. It shows up in what you do, what you feel and what your body does. It is not a general good feeling. It is the one quality this pattern kept out."},{"t":"Consciousness","d":"Energy that carries information, and you meet it two ways. At its widest it has no edges and no focus: infinite consciousness. At its narrowest it is you, aware, in one place. The same thing, seen through a wide opening or a small one."},{"t":"CQ","d":"Coherence Quotient, your coherence number. You answer questions on the 21 Laws of Moral Integrity, each scored 0 to 10, and CQ adds them up, out of 210. Nothing else goes into it. It starts at 0 and fills as you answer. The shadow never pulls it down. The shadow pulls on how you come across instead."},{"t":"Distortion","d":"What happens to what you mean when it passes through places in the body that carry charge. The message leaves whole and comes out bent, like a straight stick that looks bent in water. It is a word for that bending and not a separate number: it used to be the same reading as SQ under a second name."},{"t":"DQ","d":"Decoherence, the shadow number. All the weight held at all 112 addresses, added up, against the most they could hold. A high DQ reads as energy spent holding up parts of you that pull against each other."},{"t":"Drag","d":"Everything slowing your willpower down, added together. Fetters, clenched muscles, inflammation and addresses carrying charge all pull on the link between your mind, body and spirit, like a heavy bag you have to haul. Drag is why willpower runs out."},{"t":"Earth Star","d":"A point just outside the body, at the centre between your feet. It holds you to the ground the way an anchor holds a boat."},{"t":"Ego","d":"The mind stuck to the body. It is never quite here: it flips between thinking and feeling to get through the day, and fear does the steering. The ego is the mask your character wears. It is your DQ, every SQ that is running, and every pattern and every kind of awareness that comes with living as a body, all added up."},{"t":"Fetter","d":"A named pattern that sits at one address and fires when something matches it. There is one at every address, 112 in all: the ones in the body, plus four just outside it, two above the head and two below the feet. It fires when the match arrives, however long ago it was put there."},{"t":"Five paths","d":"Five ways into the work, each named for a teacher. Krishna, flow. Buddha, awareness. Christ, the body. Rama, alignment. Lao Tzu, the horizontal. All five end at the same Source, and the Anchor Principle runs under all of them."},{"t":"Hardened mask","d":"The part of what life taught you that does not wear off with time, with a big change in your life, or with most kinds of therapy. Only release at the address clears it. Habits you keep going by repeating them are different: a change in your life can clear those on its own."},{"t":"Hyper-complex","d":"A named group of saboteurs that run together as one. Heavier than a single saboteur, because each pattern in the group keeps the others going."},{"t":"Integrity","d":"All of your coherence, added up. It lifts your nervous system by keeping you inside your own moral lines. Integrity is a ship's hull. A hole in the hull lets the water in. It has to be whole, a hundred percent, for the hull to hold, and for CQ to hold. It is measured by how closely you keep the 21 Laws of Moral Integrity."},{"t":"Intention","d":"What you mean to happen. It is part willpower, part wanting, part drive. Moving toward something feels good. If you have not picked what you want, avoiding things takes its place."},{"t":"Justification mechanic","d":"The way the body protects its own patterns. Blaming, changing the subject and making excuses are a tag fighting back, the way your body fights a germ. The body guards the pattern because the truth feels too hard to face. Narcissism is this, turned all the way up."},{"t":"Karma","d":"What your thoughts and actions send out into the world, and what comes back to you because of them. It goes round, like an echo. It comes back so you can learn the lesson, get past it, and send it on so it never comes back again. Karma is cause and effect, bouncing between you and the world."},{"t":"Kosha","d":"One of six layers that everything you live through passes through, like light through six panes of coloured glass. The six are the body, energy, the mind, wisdom, bliss and language. Each one changes what passes through it."},{"t":"Kundalini","d":"Life energy stored at the base of the spine. It rises from there to the top of the head once enough addresses along the way are cleared, the way water runs once a pipe is unblocked."},{"t":"Letting go","d":"The release protocol. It does two things, in order. First it lowers the charge at an address. Then, while that place is still open, it installs the quality the pattern was blocking. An affirmation does only the second and skips the first."},{"t":"Limiting belief","d":"A tag that squeezes something big you lived through into a small label. Every time you say I am this, you make one. That is how labels work, not a judgment on you. The label is always smaller than what happened."},{"t":"Mask","d":"Built up distortion that has started to pass for who you are. It is what most people call their personality: patterns stored at addresses in the body, firing the way life trained them to. The mask is not who you are."},{"t":"Memory","d":"What is left when a vritti is taken as yours: what came in through your senses and your feelings, named as yours and stored in the body."},{"t":"Merkaba","d":"A spinning shape made of energy, used in the release protocol. Its top half spins left and its bottom half spins right. Spinning against each other, they shake up the flow at an address, and that opens it for release."},{"t":"Node","d":"Another word for an address: one exact place on the body's energy map. There are 112. Most are in the body. Four sit just outside it: the Earth Star, centred between your feet, the Gaia Gateway below it, the Sol Star just above your head, and the Stellar Gateway above that."},{"t":"Ojas","d":"A Sanskrit word meaning vigour. Life energy that builds up in meditation and wraps around you like a cocoon. It spins without you pushing it, wakes up the nervous system and lets stress out of the body. It is also the protocol for addresses too dense or too numb to feel, the ones at stage 4 and stage 5. It brings back enough feeling there for release to start."},{"t":"Perception","d":"How you take in what is around you and make sense of it. It turns raw energy into pictures, words and feelings you can understand."},{"t":"Plexus","d":"A bundle of nerves you could find in the body, like the solar plexus behind your stomach. The plexus is the wiring. The chakra is the field the wiring gives off. Trouble in the nerves shows up as trouble in the chakra."},{"t":"Presence","d":"How much of you other people can feel when you walk into a room."},{"t":"Primary node","d":"The main address carrying charge in a group of addresses around it. Clear it and the ones around it let go on their own. Work on the others without finding it, and only part of the charge comes out."},{"t":"Pure perception","d":"All the clairs working together, with nothing bending them. Thoughts still come. What changes is that every sense is open at once and they agree. It opens up as the soma gets lighter and the walls between the clairs come down."},{"t":"Reading-as-release","d":"Release that happens by reading. You read a Letting Go sequence, written the right way, and the body releases at the place the sequence names. Nothing to picture in your head. Reading the lines does both steps."},{"t":"Release","d":"Stored charge leaving the body through the nerves. You can feel it and see it: heat, shaking, tears, a change in your breathing. The pattern loses what was powering it."},{"t":"Resistance","d":"All the drag added together: every fetter, every address carrying charge, and every inflammation, all pushing back against the signal moving through you. Release is what brings it down. It does not change your CQ, which is the laws alone."},{"t":"Saboteur","d":"One of 33 named patterns of behavior, each one a fetter squeezed into a habit you keep repeating. Each has its own belief, its own place in the body and its own feeling."},{"t":"Self-unraveling state","d":"When enough gates have cleared, the body starts releasing by itself. The soma lets go without you running the protocol. This is how you know a release session worked: the body keeps releasing on its own, and not only the one address you worked on."},{"t":"Signal chain","d":"The loop everything runs through, every moment. It starts in the field of awareness around you and goes through your senses, your nerves, your brain, your thinking, how it relates to you, the three axes, your feelings, the rules you were raised with, the koshas and your archetypes, then back out to the field."},{"t":"Soma","d":"The field of energy your nervous system gives off, set by the state it is in. As soma builds up it becomes load, like weight in a backpack. Where soma fields overlap they break up what you can perceive and make walls your awareness cannot see through."},{"t":"Sol Star","d":"A point just above the top of your head. It is where you reach past your body and open out to the field around you."},{"t":"Source","d":"The field as it is before any pattern is put in. The bedrock under everything else. What is left when every pattern is cleared."},{"t":"Superego","d":"The part of the mind that guards what you were told. It is made of the stories and rules an adult handed down to you. It sits on the surface and protects those beliefs. The ego goes deeper, because the ego lives in the body."},{"t":"Tag","d":"The moment something that hit you hard gets a name and gets stored at an address. The name locks it in. From then on the body watches for anything that matches, and when it finds one, the pattern stored there fires."},{"t":"Two mechanics","d":"The two steps a full release needs, in this order. First, Release: the charge at the address goes down. Second, Embodied Truth: while the address is open, the quality the pattern was blocking is installed. Do the first without the second and the address is left with nothing to run instead."},{"t":"Vritti","d":"A ripple of what you sense and what you feel, coming in from outside. It travels along your nerves to your brain, where it is put together and noticed. Once you take it as yours, the vritti is what caves in the nerve, the chakra and your field of awareness."},{"t":"Willpower","d":"How much push you have to spend. It is an amount, not a kind of person. It works like a battery: sleep charges it each night, and pushing through resistance runs it down. More drag, less willpower. Release the charges and the drag drops, so willpower goes up. It has no reading of its own: will is intention with a direction, and anything dragging on it shows up as resistance, which is already read."}];
+var GLOSS=[{"t":"Address","d":"One exact place in your body where a pattern sits. Every pattern has one. Release works at that place in the body, not on your thoughts."},{"t":"Allostatic load","d":"The wear on your body from stress that keeps switching on and never fully switches off. It builds up like interest on a debt nobody paid. Release brings it down by working on the addresses where that stress is held."},{"t":"Archetype","d":"One of 12 kinds of character you are born with. Domains feed your blueprint, and your blueprint splits into the twelve archetypes, each its own step. An archetype has no address of its own, so there is nothing at one place to release. Release work changes where a pattern points, not what the archetype is."},{"t":"Ascension","d":"When the world around you, and your own feelings, stop steering you. Things lose their grip because your survival patterns have stopped giving the orders. It is a way of running, not a finish line, so no number of releases counts you in."},{"t":"Attention","d":"Where you point your mind. It comes two ways: wide, taking everything in, or narrow, fixed on one thing. Attention steers. Will pushes."},{"t":"Aura","d":"A field around the body, said to come from the state of your nerves. This instrument does not measure it, and neither does any other. Living tissue does give off a very faint light, from ordinary cell chemistry, but nobody has shown that light carries the state of your nerves. The word stays as a way to talk about how other people feel you, not as a reading."},{"t":"Awareness","d":"How far open the soul's window is. The wider it opens, the more of what is really there you take in."},{"t":"Biophoton field","d":"Very faint light given off by living tissue, too faint for your eyes to see. It is real, and labs have measured it since the 1950s. It comes from the cells' normal chemistry, not from the state of your nerves. This product does not claim it carries the aura, and nothing in the instrument reads it."},{"t":"Chakra","d":"A seat. In this model, a field you cannot touch, made by a bundle of nerves. There are seven, from the base of the spine to the top of the head, though that exact count is a modern Western idea from 1927; older traditions count five, six, eight or more. The word is kept because the work is done in it, not because anyone has measured one."},{"t":"Charge","d":"Survival energy stuck at one place in the body. It gets stuck when a stress reaction starts and never gets to finish. When your attention reaches it, it feels like heat, pressure, tingling or weight."},{"t":"Clair","d":"A sense beyond the five: seeing, hearing, feeling or knowing something without eyes, ears, skin or working it out. The names are clairvoyance, clairaudience, clairsentience and claircognizance, and there are others. Soma breaks them apart. Clear the soma and they work together."},{"t":"Coherence","d":"When what you mean, what you do and what your body does all point the same way, with fewer parts of you pulling against each other. The instrument works it out from your answers. It does not measure your body. CQ is its number."},{"t":"Replacement state","d":"The quality a pattern was blocking, installed at the same address once the charge there is released. Where fear was held, trust. It shows up in what you do, what you feel and what your body does. It is not a general good feeling. It is the one quality this pattern kept out."},{"t":"Consciousness","d":"Energy that carries information, and you meet it two ways. At its widest it has no edges and no focus: infinite consciousness. At its narrowest it is you, aware, in one place. The same thing, seen through a wide opening or a small one."},{"t":"CQ","d":"Coherence Quotient, your coherence number. You answer questions on the 21 Laws of Moral Integrity, each scored 0 to 10, and CQ adds them up, out of 210. Nothing else goes into it. It starts at 0 and fills as you answer. The shadow never pulls it down. The shadow pulls on how you come across instead."},{"t":"Distortion","d":"What happens to what you mean when it passes through places in the body that carry charge. The message leaves whole and comes out bent, like a straight stick that looks bent in water. It is a word for that bending and not a separate number: it used to be the same reading as SQ under a second name."},{"t":"DQ","d":"Decoherence, the shadow number. All the weight held at all 112 addresses, added up, against the most they could hold. A high DQ reads as energy spent holding up parts of you that pull against each other."},{"t":"Drag","d":"Everything slowing your willpower down, added together. Fetters, clenched muscles, inflammation and addresses carrying charge all pull on the link between your mind, body and spirit, like a heavy bag you have to haul. Drag is why willpower runs out."},{"t":"Earth Star","d":"A point just outside the body, at the centre between your feet. It holds you to the ground the way an anchor holds a boat."},{"t":"Ego","d":"The mind stuck to the body. It is never quite here: it flips between thinking and feeling to get through the day, and fear does the steering. The ego is the mask your character wears. It is your DQ, every SQ that is running, and every pattern and every kind of awareness that comes with living as a body, all added up."},{"t":"Fetter","d":"A named pattern that sits at one address and fires when something matches it. There is one at every address, 112 in all: the ones in the body, plus four just outside it, two above the head and two below the feet. It fires when the match arrives, however long ago it was put there."},{"t":"Five paths","d":"Five ways into the work, each named for a teacher. Krishna, flow. Buddha, awareness. Christ, the body. Rama, alignment. Lao Tzu, the horizontal. All five end at the same Source, and the Anchor Principle runs under all of them."},{"t":"Hardened mask","d":"The part of what life taught you that does not wear off with time, with a big change in your life, or with most kinds of therapy. Only release at the address clears it. Habits you keep going by repeating them are different: a change in your life can clear those on its own."},{"t":"Hyper-complex","d":"A named group of saboteurs that run together as one. Heavier than a single saboteur, because each pattern in the group keeps the others going."},{"t":"Integrity","d":"All of your coherence, added up. It lifts your nervous system by keeping you inside your own moral lines, the way a ship's hull has to be whole, a hundred percent, or the water gets in. It is measured by how closely you keep the 21 Laws of Moral Integrity."},{"t":"Intention","d":"What you mean to happen. It is part willpower, part wanting, part drive. Moving toward something feels good. If you have not picked what you want, avoiding things takes its place."},{"t":"Justification mechanic","d":"The way the body protects its own patterns. Blaming, changing the subject and making excuses are a tag fighting back, the way your body fights a germ. The body guards the pattern because the truth feels too hard to face. Narcissism is this, turned all the way up."},{"t":"Karma","d":"What your thoughts and actions send out into the world, and what comes back to you because of them. It goes round, like an echo. It comes back so you can learn the lesson, get past it, and send it on so it never comes back again. Karma is cause and effect, bouncing between you and the world."},{"t":"Kosha","d":"One of six layers that everything you live through passes through, like light through six panes of coloured glass. The six are the body, energy, the mind, wisdom, bliss and language. Each one changes what passes through it."},{"t":"Kundalini","d":"Life energy stored at the base of the spine. It rises from there to the top of the head once enough addresses along the way are cleared, the way water runs once a pipe is unblocked."},{"t":"Letting go","d":"The release protocol. It does two things, in order. First it lowers the charge at an address. Then, while that place is still open, it installs the quality the pattern was blocking. An affirmation does only the second and skips the first."},{"t":"Limiting belief","d":"A tag that squeezes something big you lived through into a small label. Every time you say I am this, you make one. That is how labels work, not a judgment on you. The label is always smaller than what happened."},{"t":"Mask","d":"Built up distortion that has started to pass for who you are. It is what most people call their personality: patterns stored at addresses in the body, firing the way life trained them to. The mask is not who you are."},{"t":"Memory","d":"What is left when a vritti is taken as yours: what came in through your senses and your feelings, named as yours and stored in the body."},{"t":"Merkaba","d":"A spinning shape made of energy, used in the release protocol. Its top half spins left and its bottom half spins right. Spinning against each other, they shake up the flow at an address, and that opens it for release."},{"t":"Node","d":"Another word for an address: one exact place on the body's energy map. There are 112. Most are in the body. Four sit just outside it: the Earth Star, centred between your feet, the Gaia Gateway below it, the Sol Star just above your head, and the Stellar Gateway above that."},{"t":"Ojas","d":"A Sanskrit word meaning vigour: life energy that builds up in meditation and wraps around you like a cocoon, spinning on its own to wake the nervous system and let stress out. It is also the protocol for an address too dense or too numb to feel, stage 4 or stage 5, bringing back enough feeling there for release to start."},{"t":"Perception","d":"How you take in what is around you and make sense of it. It turns raw energy into pictures, words and feelings you can understand."},{"t":"Plexus","d":"A bundle of nerves you could find in the body, like the solar plexus behind your stomach. The plexus is the wiring. The chakra is the field the wiring gives off. Trouble in the nerves shows up as trouble in the chakra."},{"t":"Presence","d":"How much of you other people can feel when you walk into a room."},{"t":"Primary node","d":"The main address carrying charge in a group of addresses around it. Clear it and the ones around it let go on their own. Work on the others without finding it, and only part of the charge comes out."},{"t":"Pure perception","d":"All the clairs working together, with nothing bending them. Thoughts still come. What changes is that every sense is open at once and they agree. It opens up as the soma gets lighter and the walls between the clairs come down."},{"t":"Reading-as-release","d":"Release that happens by reading. You read a Letting Go sequence, written the right way, and the body releases at the place the sequence names. Nothing to picture in your head. Reading the lines does both steps."},{"t":"Release","d":"Stored charge leaving the body through the nerves. You can feel it and see it: heat, shaking, tears, a change in your breathing. The pattern loses what was powering it."},{"t":"Resistance","d":"All the drag added together: every fetter, every address carrying charge, and every inflammation, all pushing back against the signal moving through you. Release is what brings it down. It does not change your CQ, which is the laws alone."},{"t":"Saboteur","d":"One of 33 named patterns of behavior, each one a fetter squeezed into a habit you keep repeating. Each has its own belief, its own place in the body and its own feeling."},{"t":"Self-unraveling state","d":"When enough gates have cleared, the body starts releasing by itself. The soma lets go without you running the protocol. This is how you know a release session worked: the body keeps releasing on its own, and not only the one address you worked on."},{"t":"Signal chain","d":"The loop everything runs through, every moment. It starts in the field of awareness around you and goes through your senses, your nerves, your brain, your thinking, how it relates to you, the three axes, your feelings, the rules you were raised with, the koshas and your archetypes, then back out to the field."},{"t":"Soma","d":"The field of energy your nervous system gives off, set by the state it is in. As soma builds up it becomes load, like weight in a backpack. Where soma fields overlap they break up what you can perceive and make walls your awareness cannot see through."},{"t":"Sol Star","d":"A point just above the top of your head. It is where you reach past your body and open out to the field around you."},{"t":"Source","d":"The field as it is before any pattern is put in. The bedrock under everything else. What is left when every pattern is cleared."},{"t":"Superego","d":"The part of the mind that guards what you were told. It is made of the stories and rules an adult handed down to you. It sits on the surface and protects those beliefs. The ego goes deeper, because the ego lives in the body."},{"t":"Tag","d":"The moment something that hit you hard gets a name and gets stored at an address. The name locks it in. From then on the body watches for anything that matches, and when it finds one, the pattern stored there fires."},{"t":"Two mechanics","d":"The two steps a full release needs, in this order. First, Release: the charge at the address goes down. Second, Embodied Truth: while the address is open, the quality the pattern was blocking is installed. Do the first without the second and the address is left with nothing to run instead."},{"t":"Vritti","d":"A ripple of what you sense and what you feel, coming in from outside. It travels along your nerves to your brain, where it is put together and noticed. Once you take it as yours, the vritti is what caves in the nerve, the chakra and your field of awareness."},{"t":"Willpower","d":"How much push you have to spend, not a kind of person. It works like a battery: sleep charges it, and pushing through resistance drains it. Release the charge stuck in your body and the drag drops, so willpower goes up. It has no reading of its own; what drags on it shows up as Resistance, which is already read."}];
 var HARM=[{"c":"E01","t":"All Is One","a":"nature","ch":"Chapter 19"},{"c":"E02","t":"All Is Motion","a":"nature","ch":"Chapter 19"},{"c":"E03","t":"Polarity","a":"nature","ch":"Chapter 19"},{"c":"E04","t":"All Fields Correspond","a":"nature","ch":"Chapter 19"},{"c":"E05","t":"Like Fields Attract","a":"nature","ch":"Chapter 19"},{"c":"E06","t":"Inspired Action","a":"nature","ch":"Chapter 19"},{"c":"E07","t":"Transmutation","a":"nature","ch":"Chapter 19"},{"c":"E08","t":"Cause & Effect","a":"nature","ch":"Chapter 19"},{"c":"E09","t":"Compensation","a":"nature","ch":"Chapter 19"},{"c":"E10","t":"Potential","a":"nature","ch":"Chapter 19"},{"c":"E11","t":"Relativity","a":"nature","ch":"Chapter 19"},{"c":"E12","t":"Rhythm","a":"nature","ch":"Chapter 19"},{"c":"E13","t":"Gender","a":"nature","ch":"Chapter 19"},{"c":"E14","t":"Form","a":"human","ch":"Chapter 19"},{"c":"E15","t":"Archetype","a":"human","ch":"Chapter 19"},{"c":"E16","t":"Biofield","a":"human","ch":"Chapter 19"},{"c":"E17","t":"Attunement","a":"human","ch":"Chapter 19"},{"c":"E18","t":"Perception","a":"human","ch":"Chapter 19"},{"c":"E19","t":"Intelligence","a":"human","ch":"Chapter 19"},{"c":"E20","t":"Pleasure & Pain","a":"human","ch":"Chapter 19"},{"c":"E21","t":"The Three Axes","a":"human","ch":"Chapter 19"},{"c":"E22","t":"Symbol","a":"human","ch":"Chapter 19"},{"c":"E23","t":"Identity","a":"human","ch":"Chapter 19"},{"c":"E24","t":"Choice","a":"human","ch":"Chapter 19"},{"c":"E25","t":"Ego","a":"human","ch":"Chapter 19"},{"c":"E26","t":"Intention","a":"human","ch":"Chapter 19"},{"c":"E27","t":"Action","a":"human","ch":"Chapter 19"},{"c":"E28","t":"Memory","a":"human","ch":"Chapter 19"},{"c":"E29","t":"Truth","a":"spirit","ch":"Chapter 19"},{"c":"E30","t":"Transparency","a":"spirit","ch":"Chapter 19"},{"c":"E31","t":"Unity","a":"spirit","ch":"Chapter 19"},{"c":"E32","t":"Awareness","a":"spirit","ch":"Chapter 19"},{"c":"E33","t":"Presence","a":"spirit","ch":"Chapter 19"},{"c":"E34","t":"Equanimity","a":"spirit","ch":"Chapter 19"},{"c":"E35","t":"Compassion","a":"spirit","ch":"Chapter 19"},{"c":"E36","t":"Forgiveness","a":"spirit","ch":"Chapter 19"},{"c":"E37","t":"Courage","a":"spirit","ch":"Chapter 19"},{"c":"E38","t":"Temperance","a":"spirit","ch":"Chapter 19"},{"c":"E39","t":"Duty","a":"spirit","ch":"Chapter 19"},{"c":"E40","t":"Accountability","a":"spirit","ch":"Chapter 19"},{"c":"E41","t":"Justice","a":"spirit","ch":"Chapter 19"},{"c":"E42","t":"Non-Harm","a":"spirit","ch":"Chapter 19"},{"c":"E43","t":"Responsibility","a":"spirit","ch":"Chapter 19"},{"c":"E44","t":"Humility","a":"spirit","ch":"Chapter 19"},{"c":"E45","t":"Generosity","a":"spirit","ch":"Chapter 19"},{"c":"E46","t":"Detachment","a":"spirit","ch":"Chapter 19"},{"c":"E47","t":"Patience","a":"spirit","ch":"Chapter 19"},{"c":"E48","t":"Aesthetic Beauty","a":"spirit","ch":"Chapter 19"},{"c":"E49","t":"Nature","a":"spirit","ch":"Chapter 19"},{"c":"E50","t":"Peace","a":"express","ch":"Chapter 19"},{"c":"E51","t":"Play","a":"express","ch":"Chapter 19"},{"c":"E52","t":"Curiosity","a":"express","ch":"Chapter 19"},{"c":"E53","t":"Creativity","a":"express","ch":"Chapter 19"},{"c":"E54","t":"Flow","a":"express","ch":"Chapter 19"},{"c":"E55","t":"Wonder","a":"express","ch":"Chapter 19"},{"c":"E56","t":"Order","a":"express","ch":"Chapter 19"},{"c":"E57","t":"Love","a":"express","ch":"Chapter 19"},{"c":"E58","t":"Purpose","a":"express","ch":"Chapter 19"},{"c":"E59","t":"Will","a":"express","ch":"Chapter 19"},{"c":"E60","t":"Fear · Safety","a":"emotion","ch":"Chapter 19"},{"c":"E61","t":"Anger · Calm","a":"emotion","ch":"Chapter 19"},{"c":"E62","t":"Shame · Worth","a":"emotion","ch":"Chapter 19"},{"c":"E63","t":"Disgust · Acceptance","a":"emotion","ch":"Chapter 19"},{"c":"E64","t":"Apathy · Joy","a":"emotion","ch":"Chapter 19"},{"c":"E65","t":"Shock","a":"emotion","ch":"Chapter 19"},{"c":"E66","t":"Sad · Happy","a":"emotion","ch":"Chapter 19"},{"c":"E67","t":"Surprise","a":"emotion","ch":"Chapter 19"},{"c":"E68","t":"Anticipation","a":"emotion","ch":"Chapter 19"},{"c":"E69","t":"Physical","a":"measure","ch":"Chapter 19"},{"c":"E70","t":"Intellectual","a":"measure","ch":"Chapter 19"},{"c":"E71","t":"Emotional","a":"measure","ch":"Chapter 19"},{"c":"E72","t":"Wisdom","a":"measure","ch":"Chapter 19"},{"c":"E73","t":"Adversity","a":"measure","ch":"Chapter 19"},{"c":"E74","t":"Coherence","a":"measure","ch":"Chapter 19"},{"c":"E75","t":"Meta- Awareness","a":"meta","ch":"Chapter 19"},{"c":"E76","t":"Coherence","a":"meta","ch":"Chapter 19"}];
 var HARM_AX={nature:'Laws of Nature',human:'Laws of Human Nature',spirit:'Laws of Moral Integrity',
  express:'Laws of Expression',emotion:'The nine architectures',measure:'The instruments',meta:'The frame'};
@@ -4350,6 +4428,32 @@ function unpackAll(){
  if(typeof TIERDEF!=='undefined')
   TIERDEF.forEach(function(x){
    t['tier:'+x.nm.toLowerCase()]=String(x.def||'').split('. ')[0].replace(/\.+$/,'')+'.';});
+ /* THE GENERAL VOCABULARY, WIRED INTO THE SAME TOOLTIP. GLOSS (kb.js) is the
+    product's own glossary, Address, Charge, Coherence, Fetter and the rest,
+    and until now it answered only on the Knowledge page's own search, never
+    at the place a reading actually uses one of its words. Filled in last and
+    only where no more specific table above already holds the key, so a real
+    collision, none exist today, is won by the table that knows the context
+    rather than by load order.
+
+    ONLY THE FIRST SENTENCE, the same cut `dlyGloss` already makes for a
+    Daily Summary card, because this table is held to a stricter contract
+    than GLOSS itself: one plain sentence, tests/engine.js group PO. A GLOSS
+    entry is free to run longer since it answers a search on its own page;
+    its first sentence still has to earn a place in the one table every
+    short tooltip in the product reads from, so a sentence that fails this
+    table's own checks, a percent or a dash in it, over the word ceiling, or
+    carrying a word this table bans outright (vritti, named in PO), is left
+    out rather than let the rule bend for one term. */
+ if(typeof GLOSS!=='undefined')
+  GLOSS.forEach(function(g){
+   var gk=g.t.toLowerCase(); if(t[gk])return;
+   var first=String(g.d||'').split('. ')[0].replace(/\.+$/,'')+'.';
+   var dashRx=new RegExp(String.fromCharCode(0x2014)+'|'+String.fromCharCode(0x2013));
+   if(first.length<12)return;
+   if(first.split(/\s+/).length>34)return;
+   if(/%|\bpercent\b|\bper cent\b|\bscore\b|\b\d+\s*(of|out of)\s*\d+\b|vritti/i.test(first)||dashRx.test(first))return;
+   t[gk]=first;});
  UNPACK_MEMO=t;
  return t;}
 
@@ -5373,7 +5477,14 @@ var LEX_SEATS=['root','sacral','solar','heart','throat','eye','crown','coherent'
    family of them. The validator refused every composite entry until this line
    existed, which is the validator working: a new provenance is declared here or
    it does not reach the table. */
-var LEX_SRC=['authored','canon','fold','composite'];
+/* TWO MORE, round QZ follow on, for pass three, lexSyn. `synonym` is a
+   different word for a headword's own reading and `antonym` is the negation of
+   a word whose opposite a headword already is. Both copy the headword's seat,
+   amount, fetter and charge name exactly, and both name the headword in
+   `from`. They are two sources rather than one because the second carries a
+   frame and the first does not, and a reviewer asking why "not safe" is in
+   the table must be told it is a negation and not a synonym of safe. */
+var LEX_SRC=['authored','canon','fold','composite','synonym','antonym'];
 var LEX_AMT_MAX=30;
 /* key -> {src, from, rule, cite}. Covers LEX exactly, in both directions, and
    the gate asserts that, because a provenance table with holes in it is worse
@@ -5390,9 +5501,11 @@ Object.keys(ADJ2CHG).forEach(function(k){
    reading the author never wrote. */
 function lexKeyOk(k){
  /* exactly the surface forms scanStory's normalisation can produce: lowercase
-    letters, apostrophes and single interior spaces. A key with a capital or a
-    comma in it can never match anything and is a dead row that looks live. */
- return typeof k==='string' && /^[a-z']+( [a-z']+)*$/.test(k);}
+    letters and single interior spaces. A key with a capital or a comma in it
+    can never match anything and is a dead row that looks live. An apostrophe
+    is refused too, since round QZ: normMap drops every apostrophe, so a key
+    carrying one could never be reached, which is the same dead row. */
+ return typeof k==='string' && /^[a-z]+( [a-z]+)*$/.test(k);}
 
 function lexRefuse(k,seat,amt,fet){
  var errs=[];
@@ -5574,6 +5687,375 @@ function lexFold(){
      flag that decides what the product is allowed to say out loud. */
   if(ADJ2CHG[k])chgAdd(f,ADJ2CHG[k],{src:'fold',from:k,rule:made[f].rule,cite:'corpus'});});
  out.generated=Object.keys(made).length;
+ return out;}
+
+/* ============================================================
+   PASS THREE, THE OTHER WORDS. Round QZ follow on, the owner's own bug
+   report: "I'm able to talk about painful situations and the sniffer's not
+   picking up because the sniffer is too specific... it needs to be fuzzier.
+   The rules need to be looser."
+
+   MEASURED BEFORE ANYTHING MOVED, proto/sniffer/fuzzy-measure.js over
+   proto/sniffer/fuzzy-corpus.js, which was written and frozen first:
+     119 lines of painful writing in ordinary words   42 lit, 35.3 percent
+     80 quiet lines, plain, warm and trap             7 lit, every one of them
+                                                       by a word already here
+     the owner's book, 7881 sentences                 93.1 percent read nothing
+   The misses sort into three kinds, and each is answered by one mechanism
+   below. None of them is a new way of matching: every entry this pass writes
+   is an ordinary key, found by scanStory's own rule, longest first.
+
+   1. A DIFFERENT WORD FOR THE SAME READING. worried where the table holds
+      anxious, crying where it holds sad, worn out where it holds exhausted.
+      LEXSYN, keyed by a word already in the table.
+   2. THE OPPOSITE, SAID NOT. "I don't feel safe" names the reading unsafe
+      already carries, through a word, safe, that the table rightly does not
+      hold, because safe on its own is not charge. LEXANT, keyed the same way,
+      and written out through a small fixed set of negating frames.
+   3. A FAMILY MEMBER, NAMED. "My dad passed" and "we lost the baby". LEXKIN.
+   (And a fourth, which is not here: an apostrophe. Every key in this file
+   that a person writes with one, dont, cant, didnt, was unreachable when
+   they typed it, because normMap kept the apostrophe. That is a rule of the
+   normalisation and it is fixed there, in sniff.js.)
+
+   A SYNONYM CHANGES THE WORD AND NOTHING ELSE, the fold's own contract. It
+   takes its headword's seat, amount, stated fetter and charge name, exactly,
+   so the only judgement in a row is which headword it means, and the
+   headword is chosen for meaning AND for weight: worried takes anxious and
+   not terrified. No amount is typed anywhere in this pass. A headword that
+   is an idiom in PHRASES rather than a key in LEX takes its row instead, and
+   the synonym is added to that row's words, so it keeps the idiom's label.
+
+   WHERE THE LINE IS DRAWN, which is the whole question. Too narrow does not
+   answer him and too wide lights quiet text, and a false positive in a
+   somatic reading costs more than a miss. So:
+     a word goes in bare only when, written by a person about their own day,
+       its ordinary sense IS the feeling. worried, terrified, heartbroken.
+     a word with a common quiet sense goes in only inside a frame that fixes
+       the sense. tired is a hike as often as a life, so it is read as "so
+       tired", "tired of" and "i am tired", never bare. mad is keen in one
+       country and furious in another, so it is read as "mad at" and "so mad".
+     a word that cannot be fixed by a short frame is refused by name in
+       LEXSYN_NO with the reason, the way LEX_FOLD_NO refuses a fold. down,
+       stuck, lost, broken, dead and passed are there. The refusals are data
+       so the next seat can argue with a row instead of rediscovering it.
+   ============================================================ */
+var LEXSYN={
+ /* fear, at the root */
+ scared:['fearful','spooked','frightening','scares me','scared me'],
+ terrified:['scared to death','scared stiff','terrifies me'],
+ panicked:['freaked out','freaking out','freak out','freaks me out'],
+ 'panic attack':['panic attacks','anxiety attack','anxiety attacks'],
+ anxious:['anxiety','worried','worry','worrying','worried sick','stressed',
+  'stressed out','so much stress','under stress','stressful','uneasy','apprehensive'],
+ nervous:['on edge','jittery','jumpy'],
+ dread:['dreaded','filled with dread'],
+ froze:['flinch','flinched','flinching','froze up','freeze up'],
+ shaking:['i shake','i shook','shook me','shaken','shaken up'],
+ trembling:['trembled','trembles'],
+ 'cannot breathe':['short of breath','hyperventilating','hyperventilated','gasping for air',
+  'struggling to breathe'],
+ /* being hurt by someone, at the root, because what it breaks is safety. The
+    headword is unsafe, which names Fear, and not terrified: the sentence
+    reports what happened, not how frightened the person was, so it takes the
+    plain word and its plain weight. */
+ unsafe:['abused','abuse','abusive','assaulted','molested','raped','rape','hit me','hits me',
+  'beat me','beats me','beat me up','slapped me','punched me','kicked me',
+  'threatened me','threatens me','in danger'],
+ /* anger, at the solar plexus */
+ angry:['annoyed','irritated','frustrated','frustrating','frustration','pissed off',
+  'mad at','so mad','really mad','got mad','mad with','lost my temper','losing my temper'],
+ furious:['enraged','outraged','incensed','fuming','irate','raging'],
+ shouted:['shouting','shouts at','screamed at','screams at','yells at','swore at','swears at',
+  'raised his voice','raised her voice','raised their voice','raises his voice',
+  'raises her voice','raises their voice'],
+ snapped:['snap at','snaps at','snapped at'],
+ 'lashed out':['lash out','lashing out','lashes out'],
+ slammed:['punched the wall','smashed','threw things'],
+ blamed:['accused','scapegoated','not my fault'],
+ /* exhaustion and overwhelm, at the solar plexus, Apathy where the headword
+    states it, on the owner's exhaustion ruling */
+ exhausted:['worn out','knackered','run down','tired out','dead tired','sleep deprived','frazzled'],
+ weary:['so tired','tired of','sick of','sick and tired','fed up','im tired','i am tired',
+  'feel tired','feeling tired','always tired','tired all the time','lethargic','listless'],
+ 'no energy':['no motivation','unmotivated','cant be bothered','could not be bothered',
+  'couldnt be bothered'],
+ 'running on empty':['running on fumes'],
+ overwhelmed:['swamped','overloaded','snowed under','going under',
+  'falling apart','fell apart','meltdown','had a breakdown','nervous breakdown',
+  'mental breakdown','breaking point','out of control','cant keep up','cannot keep up',
+  'too much to handle'],
+ /* self worth, at the solar plexus, the round GR family, Shame stated */
+ ashamed:['shameful'],
+ embarrassed:['embarrassing','self conscious'],
+ humiliated:['humiliation','humiliating me'],
+ stupid:['such an idiot','like an idiot','im an idiot','i am an idiot','feel foolish','felt foolish',
+  'so foolish'],
+ worthless:['such a failure','like a failure','im a failure','i am a failure','a total failure',
+  'feel a failure','a burden',
+  'unworthy','good for nothing','im useless','i am useless','feel useless','felt useless',
+  'feeling useless','feel so useless','im pathetic','i am pathetic','feel pathetic',
+  'like im nothing','like i am nothing','like dirt','like rubbish','waste of space'],
+ guilty:['guilt','blame myself','blaming myself','my fault'],
+ /* being judged, at the sacral, where criticised and laughed already sit */
+ criticised:['feel judged','felt judged','feeling judged','being judged','judged by','judging me',
+  'put me down','puts me down','belittled',
+  'belittling','shamed','insulted'],
+ laughed:['laughed at','mocked','mocking me','ridiculed','teased','bullied','bully','bullying',
+  'made fun of','make fun of','makes fun of','picked on'],
+ disgust:['disgusted','repulsed','revolted','sickened','makes me sick','made me sick'],
+ addicted:['binge eat','binge ate','binge eating','binge drinking','drinking too much',
+  'drink too much','drank too much'],
+ nauseous:['nausea','nauseated','queasy','feel sick','felt sick','feeling sick','threw up',
+  'throwing up','vomited'],
+ 'stomach knot':['knot in my stomach','knots in my stomach','stomach in knots',
+  'stomach dropped','pit of my stomach'],
+ /* grief, loss, loneliness and rejection, at the heart */
+ sad:['unhappy','upset','sorrow','sorrowful','gloomy','tearful','teary','cried','crying',
+  'cry','sobbing','sobbed','weeping','wept','in tears','burst into tears','feel down',
+  'feeling down','felt down','so down','been down','heavy hearted','heart sank'],
+ miserable:['depressed','depression','wretched'],
+ hopeless:['despair','despairing','no hope','lost hope','no way out','feel trapped','felt trapped',
+  'feeling trapped','so trapped','im trapped','i am trapped','i was trapped'],
+ defeated:['helpless','powerless','feel stuck','feeling stuck','felt stuck'],
+ heartbroken:['heartbreak','heartbreaking','devastated','gutted','broken hearted','brokenhearted',
+  'heartache'],
+ hurt:['wounded','stung','hurting','hurtful','let me down','let down','letting me down'],
+ grieving:['grieve','grieved','miss him','miss her','miss them','missing him','missing her'],
+ loss:['divorce','divorced','breakup','broke up with','we broke up','split up'],
+ 'no one came':['nobody came'],
+ 'i do not recognise myself':['dont recognise myself','dont recognize myself',
+  'dont know who i am anymore','do not know who i am anymore'],
+ died:['killed himself','killed herself','took his own life','took her own life'],
+ miscarriage:['lost the baby','lost our baby','lost my baby'],
+ rejected:['dumped me','got dumped','ghosted','left me for','left out','excluded','shut me out',
+  'pushed me away','pushes me away','stopped speaking to me','stopped talking to me',
+  'not speaking to me','not talking to me','wont speak to me','wont talk to me'],
+ abandoned:['deserted','walked out on','neglected','neglect'],
+ lonely:['lonesome','nobody to talk to','no one to talk to','no friends','friendless'],
+ unloved:['nobody loves me','no one loves me','uncared for'],
+ remorse:['regret','regrets','regretted','regretting','wish i hadnt','wish i had not'],
+ /* not heard, lied to, betrayed, at the throat */
+ ignored:['feel invisible','felt invisible','feeling invisible','im invisible','i am invisible',
+  'feel unseen','felt unseen','feeling unseen'],
+ dismissed:['invalidated','patronised','patronized','condescending','brushed off',
+  'brushed aside','talked down to','not taken seriously','undervalued','unappreciated',
+  'disrespected'],
+ 'nobody listened':['nobody listens','no one listens','no one listened','never listens',
+  'doesnt listen','dont listen to me','wont listen'],
+ interrupted:['talks over','talking over','talked right over','talks right over',
+  'cut me off','cuts me off','never lets me finish','wont let me finish',
+  'doesnt let me finish','never let me finish','never lets me speak','wont let me speak'],
+ 'shut me down':['told me to shut up','tells me to shut up','shuts me down'],
+ 'stayed quiet':['kept quiet','stayed silent','held my tongue','kept it to myself',
+  'bottled it up','bottle it up','bottling it up','swallowed it'],
+ betrayed:['backstabbed','double crossed','sold me out'],
+ cheated:['cheated on me','cheating on me','been cheating','was cheating','an affair','unfaithful'],
+ deceived:['manipulated','gaslit','gaslighted','gaslighting','tricked','conned'],
+ choked:['lump in my throat'],
+ tense:['went stiff','goes stiff','go stiff'],
+ /* numbness, meaning and the mind that will not stop, at the crown and eye */
+ numb:['numbed','dead inside','emotionless'],
+ disconnected:['nothing feels real','feels unreal','behind glass',
+  'dissociated','dissociating','dissociate'],
+ pointless:['no point','see no point','dont see the point','cant see the point','no purpose',
+  'purposeless','aimless'],
+ overthinking:['ruminating','rumination','racing thoughts','thoughts racing','mind racing',
+  'mind is racing','cant switch off','cant switch my brain off','cant turn my brain off',
+  'cant shut my brain off','second guessing','second guess','spiralling','spiraling',
+  'keep thinking about'],
+ replaying:['i replay','reliving','relive','flashbacks','flashback',
+  'keep going over'],
+ /* the idioms, whose rows keep their labels */
+ 'hated myself':['hate myself','hating myself'],
+ 'cannot sleep':['cant sleep','couldnt sleep','could not sleep'],
+ 'cannot trust':['cant trust','couldnt trust','could not trust']};
+
+/* THE OPPOSITES, said not. headword -> {frame set: [the plain word]}. The
+   plain word is never added on its own: safe is not charge and calm already
+   subtracts. Only the negated frames are written, so "i do not feel safe"
+   reaches unsafe through "not feel safe", and the longer key outranks calm
+   inside "not calm" exactly the way a phrase outranks the words inside it.
+   That precedence is the reason this works with no new rule: "i was not calm"
+   had been SUBTRACTING charge, measured, and now it reads as the anxiety it
+   reports.
+
+   THE FRAME SET IS PART OF THE ROW, because the words do not all negate the
+   same way:
+     is    a state that is the person's own. "not safe", "never happy",
+           "no longer calm". The widest set.
+     been  a state somebody else gives. "never felt loved", "not wanted",
+           "wasnt valued". Not "never X", because "i never loved him" says
+           the opposite of unloved.
+     feel  only after a feeling verb. "dont feel heard" and never "not
+           heard", because "i have not heard back" is a plumber.
+     self  okay, fine, alright, said by the person about the person. "im not
+           okay" and never bare "not okay", which is often about somebody
+           else's conduct and is anger, not hurt.
+     can   a thing the person cannot do. "cant relax", "couldnt sleep". */
+var LEXANT_FRAMES={
+ is:['not X','never X','no longer X','wasnt X','isnt X','arent X','werent X','not very X',
+  'never been X','not been X','not feel X','not feeling X','not felt X','dont feel X',
+  'didnt feel X','doesnt feel X','never feel X','never felt X','havent felt X',
+  'no longer feel X'],
+ been:['not X','wasnt X','werent X','never been X','not been X','not feel X','not feeling X',
+  'not felt X','dont feel X','didnt feel X','doesnt feel X','never feel X','never felt X',
+  'havent felt X','no longer feel X'],
+ feel:['not feel X','not feeling X','not felt X','dont feel X','didnt feel X','doesnt feel X',
+  'never feel X','never felt X','havent felt X','no longer feel X'],
+ self:['im not X','i am not X','i was not X','i wasnt X','not feeling X','not feel X',
+  'dont feel X','didnt feel X','not doing X','havent been X','not been X'],
+ can:['cant X','cannot X','can not X','couldnt X','could not X','unable to X','not able to X']};
+var LEXANT={
+ unsafe:{is:['safe'], been:['protected'], feel:['secure']},
+ anxious:{is:['calm','relaxed','at ease'], can:['relax']},
+ sad:{is:['happy']},
+ hurt:{self:['okay','ok','alright','fine']},
+ unloved:{been:['loved','cared for']},
+ unwanted:{been:['wanted']},
+ unheard:{feel:['heard','listened to']},
+ ignored:{feel:['seen','noticed']},
+ dismissed:{been:['valued','respected','appreciated','taken seriously']},
+ isolated:{been:['supported']},
+ 'not good enough':{feel:['good enough']},
+ worthless:{is:['worthy']},
+ 'no confidence':{is:['confident']},
+ hopeless:{is:['hopeful']},
+ weary:{is:['rested']},
+ 'cannot cope':{can:['cope']},
+ 'cannot breathe':{can:['breathe']},
+ distracted:{can:['focus','concentrate']},
+ overwhelmed:{can:['think straight']},
+ 'no energy':{can:['get out of bed']},
+ 'cannot sleep':{can:['sleep']},
+ 'cannot trust':{can:['trust']}};
+
+/* THE FAMILY. A person names who died or left, and "my dad passed" carries
+   no feeling word at all. The kin words are a closed list and the frames fix
+   the sense: "lost my keys" is not here because keys is not kin. */
+var LEXKIN=['mum','mom','mother','dad','father','husband','wife','son','daughter','brother',
+ 'sister','grandmother','grandfather','grandma','grandpa','nan','gran','partner','baby',
+ 'best friend','boyfriend','girlfriend','fiance','fiancee'];
+var LEXKIN_FRAMES={died:['my K passed'], loss:['lost my K'], grieving:['miss my K','missing my K']};
+
+/* THE REFUSALS, read this before adding to the tables above. Each is a word
+   that would have answered a line in the corpus and is refused because its
+   ordinary quiet sense is too common to read bare. A refused key never reaches
+   the table, and the gate asserts that. */
+var LEXSYN_NO={
+ tired:'a hike as often as a life. read only inside a frame: so tired, tired of, i am tired',
+ mad:'keen in one country and furious in another. read only as mad at, so mad',
+ useless:'the advice was useless says nothing about the writer. read only as i am useless and feel useless',
+ down:'down the road, down at the shops. read only as feel down, so down',
+ low:'low tide, low battery, a low price',
+ blue:'a colour first, and blue in the face is laughing',
+ stuck:'stuck in traffic. read only as feel stuck',
+ lost:'lost my keys, lost the match. read only as lost my and a family word, or lost hope',
+ passed:'passed the exam, passed the salt. read only as my and a family word and passed',
+ dead:'the battery is dead, dead tired. read only as dead inside',
+ broken:'the printer is broken. read only as broken hearted',
+ killed:'killed it at the gym, the cold killed the plants',
+ attacked:'felt attacked in an argument is defensive anger, not the root',
+ shattered:'exhausted in one country and devastated in another, two seats',
+ sorry:'said a hundred times a day for nothing',
+ hate:'i hate mondays. read only as hate myself',
+ sick:'off sick, a sick day. read only as feel sick, sick of, makes me sick',
+ cross:'cross the road, a cross on a form',
+ 'not okay':'that is not okay is usually about somebody else and reads as anger. read only as im not okay',
+ 'not heard':'i have not heard back from the plumber',
+ 'not seen':'i have not seen that film',
+ 'not sure':'i am not sure what time the shop closes',
+ 'wound up':'excited children are wound up',
+ suicide:'a person writing about their own thoughts of it is not bereaved, and died would read it as grief at the heart. read only as took his own life and took her own life, which are a death',
+ worries:'no worries is a pleasantry',
+ stress:'i want to stress that, a stress test. read only as stressed and so much stress',
+ 'put down':'put down the phone. read only as put me down',
+ binge:'binge watch a series. read only as binge eating and binge drinking',
+ dumped:'dumped the rubbish. read only as dumped me',
+ overlooked:'the room overlooked the bay',
+ 'pushed me':'pushed me to do better',
+ 'grabbed me':'the book really grabbed me',
+ 'used me':'used me as a reference',
+ replay:'watched the replay, i replayed the video for my son. read only as i replay',
+ cheating:'cheating at cards, cheating on a diet. read only as cheating on me',
+ 'didnt listen':'i did not listen to the radio. read only as he never listens and nobody listens',
+ edgy:'an edgy haircut, an edgy film',
+ invisible:'the invisible hand, invisible ink, invisible to direct sensing. read only as feel invisible and i am invisible',
+ unseen:'an unseen force. read only as feel unseen',
+ 'a failure':'a failure of the system. read only as such a failure, like a failure, i am a failure',
+ judged:'someone i judged smarter is the writer judging. read only as feel judged and being judged',
+ foolish:'people do foolish things. read only as feel foolish',
+ betray:'is the writer betraying, and betrayed is the person betrayed, a different reading',
+ 'break up':'break up a fight, break up the ice. read only as broke up with and split up',
+ trapped:'signal trapped beneath the tissue, trapped in traffic. read only as feel trapped and i am trapped',
+ stiff:'a stiff drink, stiff inelastic scar. read only as went stiff and goes stiff',
+ 'over and over':'pressing a button over and over. read only as keep going over',
+ 'zoned out':'zoned out in a dull meeting is boredom, and disconnected reads it at the crown',
+ 'stabbed in the back':'carries back, which the place rule refuses to seat, so the key could seat a refused place',
+ ill:'is i will once the apostrophe is gone, so it can never be a key'};
+
+/* run the pass. Headwords are resolved against the table as it stands after
+   canon and fold, and nothing this pass writes can be a headword for it,
+   which is how a generator quietly chains its own output: a synonym of a
+   synonym drifts a little further from the word that was meant each time. */
+function lexSyn(places){
+ var out={added:0,phrase:0,already:0,refused:{},from:{},rows:[]};
+ var heads=Object.keys(LEX), phr={};
+ PHRASES.forEach(function(r,ri){r[0].forEach(function(w){phr[w]=ri;});});
+ var phrWords=Object.keys(phr);
+ function has(hay,w){return (' '+hay+' ').indexOf(' '+w+' ')>=0;}
+ function refuse(k,why){if(!out.refused[k])out.refused[k]=why;}
+ function add(k,head,src,how){
+  if(LEXSYN_NO[k]){refuse(k,'refused by name: '+LEXSYN_NO[k]);return;}
+  if(LEX_FOLD_NO[k]){refuse(k,'refused by the fold: '+LEX_FOLD_NO[k]);return;}
+  if(!lexKeyOk(k)){refuse(k,'not a form the scanner can produce');return;}
+  var inLex=heads.indexOf(head)>=0, ri=phr[head];
+  if(!inLex&&ri===undefined){refuse(k,'its headword '+head+' is in neither LEX nor PHRASES');return;}
+  if(LEX[k]||phr[k]!==undefined){out.already++;return;}
+  /* a phrase is matched before any key and blocks what it overlaps, so a key
+     with a phrase inside it is a dead row, and a phrase with a phrase inside
+     it, or inside another, is read twice. A phrase containing a key is only
+     the phrase outranking its own words, which is the rule working. */
+  var eat=phrWords.filter(function(p){return has(k,p)||(!inLex&&has(p,k));});
+  if(eat.length){refuse(k,'overlaps the phrase '+eat[0]);return;}
+  /* and a new phrase would eat every key that contains it */
+  var kill=inLex?[]:heads.filter(function(h){return has(h,k);});
+  if(kill.length){refuse(k,'would eat the key '+kill[0]);return;}
+  /* a word inside the key that names a charge of its own is still read by
+     the adjective pass, which nothing blocks, so it must name the same
+     charge as the headword or the reading splits. */
+  var hc=ADJ2CHG[head]||null;
+  var clash=hc?k.split(' ').filter(function(w){return ADJ2CHG[w]&&ADJ2CHG[w]!==hc;}):[];
+  if(k.indexOf(' ')>0&&clash.length){refuse(k,'carries '+clash[0]+', which names '+ADJ2CHG[clash[0]]+' and not '+hc);return;}
+  /* a body word inside a key seats that body word for the place rule, 20.H2,
+     so a key may only carry a place the table already seats where its
+     headword sits. Otherwise this pass would move where a sensation lands. */
+  var seat=inLex?LEX[head][LEX_SEAT]:PHRASES[ri][1];
+  var pw=(places&&places.words||[]).filter(function(w){return has(k,w);});
+  var badp=pw.filter(function(w){return places.seat[w]!==seat;});
+  if(badp.length){refuse(k,'names the place '+badp[0]+', which the table seats at '+(places.seat[badp[0]]||'no seat')+' and not '+seat);return;}
+  if(inLex){
+   /* through the same boundary as every other entry. It cannot refuse here:
+      the key was checked above and every other value is copied off an entry
+      that already passed it, and the gate asserts the refusal list is empty,
+      so a refusal that did happen would not be silent. */
+   var e=LEX[head], meta={src:src,from:head,rule:how,cite:'judgement'};
+   var a=lexAdd(k,e[LEX_SEAT],e[LEX_AMT],e[LEX_FET]!=null?e[LEX_FET]:null,meta);
+   if(!a.ok){refuse(k,a.why);return;}
+   if(ADJ2CHG[head])chgAdd(k,ADJ2CHG[head],meta);
+   out.added++;
+  } else {
+   PHRASES[ri][0].push(k); phr[k]=ri; phrWords.push(k); out.phrase++;}
+  out.from[k]={head:head,src:src,rule:how,table:inLex?'LEX':'PHRASES'};
+  out.rows.push(k);}
+ Object.keys(LEXSYN).forEach(function(h){LEXSYN[h].forEach(function(k){add(k,h,'synonym','same reading');});});
+ Object.keys(LEXANT).forEach(function(h){Object.keys(LEXANT[h]).forEach(function(set){
+  var fr=LEXANT_FRAMES[set];
+  if(!fr){refuse(h+' '+set,'names a frame set that does not exist');return;}
+  LEXANT[h][set].forEach(function(w){fr.forEach(function(f){
+   add(f.replace('X',w),h,'antonym','not '+w+', '+set);});});});});
+ Object.keys(LEXKIN_FRAMES).forEach(function(h){LEXKIN_FRAMES[h].forEach(function(f){
+  LEXKIN.forEach(function(kw){add(f.replace('K',kw),h,'synonym','family, '+f);});});});
  return out;}
 /* lexFold is NOT run here, and the reason is load order. lexRefuse checks a
    stated fetter against CHARGES, and CHARGES is declared in core.js, which
@@ -13077,6 +13559,14 @@ function somaPlaces(){
    +' ('+ck.map(function(k){return cs[k];}).join('; ')+')';
   else out.phraseRefused[ph]='the codex does not name it';});
  return out;}
+/* PASS THREE RUNS HERE, round QZ follow on, and not beside the canon and the
+   fold above, because it needs the place words, which are declared just above,
+   and must finish before the place table below is derived from LEX. It is
+   handed the place table as it stands without it, and refuses any key that
+   would seat a place differently, so SOMA_PLACE comes out the same and the gate
+   asserts that against LEXSYNPLACES, the table as it stood before. */
+var LEXSYNPLACES=somaPlaces();
+var LEXSYNRUN=lexSyn({words:SOMA_PLACE_WORDS,seat:LEXSYNPLACES.seat});
 var SOMA_PLACE=somaPlaces();
 /* ============================================================
    THE NORMALISATION, AND THE INDEX BACK OUT OF IT.
@@ -13103,12 +13593,25 @@ var SOMA_PLACE=somaPlaces();
 
    Ported from proto/story4, where four prototypes each carried a copy.
    ============================================================ */
+/* THE APOSTROPHE IS DROPPED, round QZ follow on, and it was the cheapest
+   recall this file had. Measured before: "I can't cope" read nothing, "I
+   cant cope" read solar 26. Every key in the lexicon that a person writes with
+   an apostrophe, dont, cant, didnt, couldnt, wouldnt, havent, whats, im, is
+   typed without one, and normMap kept the one the person typed, so all of
+   them were unreachable from ordinary writing. A phone types the curly one,
+   which was turned into a SPACE, "can t", which was worse. lawNorm, the other
+   normalisation in this file, has always dropped apostrophes, and srcNegated's
+   own list is written dont and cant, so this makes the two readers agree
+   rather than inventing a third rule. Dropping a character moves no offset
+   the map cannot carry: map holds the raw index of every character kept. */
+var NORM_APOS=/['\u2018\u2019]/;
 function normMap(t){
  t=String(t||'');
  var body='',bm=[],i,c;
  for(i=0;i<t.length;i++){
   c=t.charAt(i).toLowerCase();
-  if(!/[a-z' ]/.test(c))c=' ';
+  if(NORM_APOS.test(c))continue;
+  if(!/[a-z ]/.test(c))c=' ';
   body+=c; bm.push(i);}
  var s=' ', map=[0], prev=true;
  for(i=0;i<body.length;i++){
@@ -13767,7 +14270,15 @@ function axisAddr(imprints,axis){
    rules that the field should move with the contract. */
 var LEXCOMP={resentment:['Anger','Apathy'], resentful:['Anger','Apathy'],
  bitter:['Anger','Apathy'], bitterness:['Anger','Apathy'], grudge:['Anger','Apathy'],
- begrudge:['Anger','Apathy'], embittered:['Anger','Apathy']};
+ begrudge:['Anger','Apathy'], embittered:['Anger','Apathy'],
+ /* THE VERB, round QZ follow on. "I resent having to carry everyone" read
+    nothing, measured, because the table held the noun and the adjective and
+    not the thing a person does. These are added HERE and not to pass three's
+    synonym table, because a synonym copies one fetter and this reading is
+    two, and lexComposite below already seats an unseated key off its
+    family's unanimous seat and floor, which is exactly what is wanted. */
+ resent:['Anger','Apathy'], resents:['Anger','Apathy'], resented:['Anger','Apathy'],
+ resenting:['Anger','Apathy']};
 
 /* A COMPOSITE KEY THE SCANNER CANNOT REACH IS A DEAD ROW, and three of these
    were. Found by the gate rather than by reading: `grudge`, `begrudge` and
@@ -14520,12 +15031,17 @@ var SRC_DIM_CUE={
   'husband','wife','boyfriend','girlfriend','mother','father','mum','mom','dad',
   'parents','son','daughter','brother','sister','friend','friends','family','kids',
   'child','children','teacher','client'],
- prediction:['will','wont',"won't","i'll","they'll","it'll",'going to','gonna',
+ /* WRITTEN WITHOUT APOSTROPHES since round QZ, because normMap drops them
+    and a cue with one could never be found. won't was already here as wont.
+    i'll comes back as ill, which is also the word for sick, so it is read
+    only before the verbs a prediction takes. */
+ prediction:['will','wont','theyll','itll','ill be','ill never','ill end up','ill lose',
+  'ill have to','ill always','going to','gonna',
   'expect','expected','expecting','what if','would happen','bound to'],
  belief:['i believe','i must','i have to','i should','if i','i always','i never',
   'people always','nobody ever'],
  meaning:['means','meant','mean that','says about me','proves','which means','what it means'],
- goal:['i want','i wanted','i wish','i need','i needed','i hope','i would like',"i'd like",
+ goal:['i want','i wanted','i wish','i need','i needed','i hope','i would like','id like',
   'trying to']};
 /* WHAT A PERSON DID, ported rather than written. VERPCUE already carries the
    engine's approach, avoidance and attachment cues (engine/verp.js), and the
@@ -17906,6 +18422,10 @@ if(typeof module!=='undefined'&&module.exports){
                   lexCanon:lexCanon, lexCanonWords:lexCanonWords,
                   lexFamilyFloor:lexFamilyFloor,
                   LEXCANONRUN:LEXCANONRUN, LEXFOLDRUN:LEXFOLDRUN,
+                  LEXSYN:LEXSYN, LEXANT:LEXANT, LEXANT_FRAMES:LEXANT_FRAMES,
+                  LEXKIN:LEXKIN, LEXKIN_FRAMES:LEXKIN_FRAMES, LEXSYN_NO:LEXSYN_NO,
+                  lexSyn:lexSyn, LEXSYNRUN:LEXSYNRUN, LEXSYNPLACES:LEXSYNPLACES,
+                  NORM_APOS:NORM_APOS,
                   pathOf:pathOf, seatOf:seatOf, SEATXY:SEATXY, PATHSEAT:PATHSEAT,
   /* birth */     sunSign:sunSign, moonSign:moonSign, risingSign:risingSign,
                   lifePath:lifePath, spiritual:spiritual, converge:converge,
