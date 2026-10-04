@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1608 e7c7d5b 2026-10-03 20:03"><head><meta charset="utf-8">
+<html lang="en" data-build="v1616 8ed8afb 2026-10-04 02:02"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -2400,6 +2400,9 @@ body:not(.tab-field) .pol2{display:none}
 .pm-it:hover,.pm-it:focus-visible{background:color-mix(in srgb,var(--c,var(--accent)) 14%,transparent);outline:none}
 .pm-it .ac-gl{display:inline-flex;width:22px;height:22px;color:var(--c,var(--accent))}
 .pm-it .ac-gl svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+/* Join our Discord is a link, because it leaves the app, and a link wears an
+   underline and the link colour unless told it is a row like the others */
+a.pm-it{text-decoration:none;box-sizing:border-box}
 .pm-sep{height:1px;margin:4px 6px;background:var(--edge)}
 .pm-all{font-weight:600}
 /* the Sound effects row is a switch: the track fills with the accent when on */
@@ -61914,8 +61917,11 @@ function authForget(){ return authKeep(null); }
 /* One request. Resolves to {ok, status, body, late}, and never rejects. With
    blob set, a yes comes back as the bytes and not as parsed text, because the
    voice route answers audio; a no is still the server's json and still read
-   as one, so its error reaches authWhy the same way every other route's does. */
-function authCall(method,path,body,token,blob){
+   as one, so its error reaches authWhy the same way every other route's does.
+   base is the host the path is appended to, AUTH_API unless a caller names
+   another: the feedback relay is on the site's own host and not the Worker's,
+   and a second fetch for it would be a second seam. */
+function authCall(method,path,body,token,blob,base){
  return new Promise(function(done){
   var ctl=null, timer=null, over=false;
   var end=function(r){ if(over)return; over=true; clearTimeout(timer); done(r); };
@@ -61930,7 +61936,7 @@ function authCall(method,path,body,token,blob){
   var req;
   /* credentials omit: the session is the bearer header and nothing else, so no
      cookie of any host's is ever sent along with it. */
-  try{ req=fetch(AUTH_API+path,{method:method, headers:h,
+  try{ req=fetch((base===undefined?AUTH_API:base)+path,{method:method, headers:h,
    body:body?JSON.stringify(body):undefined, signal:ctl?ctl.signal:undefined,
    cache:'no-store', credentials:'omit'}); }
   catch(e){ end({ok:false, status:0, body:null}); return; }
@@ -61946,12 +61952,30 @@ function authCall(method,path,body,token,blob){
     function(){ return {ok:res.ok, status:res.status, body:null}; }); },
    function(){ return {ok:false, status:0, body:null}; })
   .then(end,function(){ end({ok:false, status:0, body:null}); });});}
+/* WHERE FEEDBACK GOES, 3 October. This posted to the reboot-os Worker's
+   /v1/feedback, which is a second deploy in a second repository and a cross
+   origin request. It goes to functions/feedback.js now, a Cloudflare Pages Function
+   that ships with atuned.world itself, so the address is relative and is the
+   site's own host wherever the site is deployed, preview or production. A var
+   so a gate can point it at a stub, exactly as AUTH_API is. */
+var FEEDBACK_URL='/feedback';
+/* A RELATIVE ADDRESS HAS NO HOST IN A FILE. Opened from disk, which is how
+   every handover build reaches the owner, "/feedback" resolves to the root of
+   the person's own drive, and the fetch fails as "could not reach the server",
+   which is false: the connection is fine and the server was never asked. So a
+   file copy is told the true reason before any request, and the entry is held
+   like any other no. An absolute FEEDBACK_URL, the gate's stub, is used as it
+   is. */
+function feedbackWhere(){
+ if(/^https?:\/\//.test(FEEDBACK_URL))return FEEDBACK_URL;
+ return /^https?:$/.test(location.protocol)?FEEDBACK_URL:'';}
 /* THE OUTBOX'S SENDER, 2 October. The owner: "the data gets dumped to
    Discord". The Discord webhook is never in this file: a webhook address lets
    whoever holds it post as the team, and anything here is read by everyone
-   who opens the file, so it is a Worker secret, DISCORD_WEBHOOK_URL, and the
-   Worker relays. This posts the outbox's own envelope, already validated by
-   obDrainAsync, to POST /v1/feedback and nothing else.
+   who opens the file, so it is a Cloudflare Pages variable,
+   DISCORD_FEEDBACK_WEBHOOK, and functions/feedback.js relays. This posts the
+   outbox's own envelope, already validated by obDrainAsync, to FEEDBACK_URL
+   and nothing else.
 
    NO TOKEN, EVEN WHEN SIGNED IN. The sheet says "nothing about who you are
    travels with it", and a bearer header would let the server join the words to
@@ -61960,13 +61984,18 @@ function authCall(method,path,body,token,blob){
 
    Resolves true on a yes and rejects with authWhy's sentence on a no, because
    obDrainAsync keeps the entry on a rejection and carries its message to the
-   status line. Until the route is deployed the server answers 404, and until
-   the secret is set it answers 503, and both are a held entry and a sentence,
-   never a loss. */
+   status line. Until the Function is deployed the site answers a post with
+   404 or 405, because a static host takes no posts, and until the variable is
+   set the Function answers 503 in its own words, and all three are a held
+   entry and a sentence, never a loss. */
 function authFeedback(e){
- return authCall('POST','/v1/feedback',e,null).then(function(r){
+ var at=feedbackWhere();
+ if(!at)return Promise.reject(new Error('This copy is opened from a file, and only '
+  +'the one at atuned.world can send.'));
+ return authCall('POST','',e,null,false,at).then(function(r){
   if(r.ok)return true;
-  throw new Error(r.status===404?'The server does not take these yet.':authWhy(r,'feedback')); });}
+  throw new Error(r.status===404||r.status===405?'The server does not take these yet.'
+   :authWhy(r,'feedback')); });}
 /* THE SERVER'S OWN WORDS, SET IN SENTENCE CASE. Its errors are lower case
    ("too many attempts. wait fifteen minutes"), and they are the true reason,
    so they are shown rather than rewritten. Rewriting them would also mean
@@ -63061,7 +63090,7 @@ function accBilling(m){
    link only becomes a door when it is an https invite on one of Discord's own
    two invite hosts. Anything else, a typo or a link to some other site pasted
    here by mistake, stays a stub and never reaches a person as a link. */
-var COMMUNITY_INVITE='';
+var COMMUNITY_INVITE='https://discord.gg/VRP8NApj2d';
 function commInvite(){
  var u=String(COMMUNITY_INVITE||'').trim();
  return /^https:\/\/(discord\.gg|discord\.com\/invite)\/[A-Za-z0-9-]{2,64}\/?$/.test(u)?u:'';}
@@ -63289,6 +63318,30 @@ function profMenu(){
     +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 9.5h3l4-3.5v12l-4-3.5h-3z"/>'
     +'<path d="M15.2 9.2a4 4 0 010 5.6M17.6 7a7 7 0 010 10"/></svg></span>'
     +'<span>Sound effects</span><span class="pm-sw" aria-hidden="true"><i></i></span></button>':'')
+  /* DISCORD FEEDBACK, 3 October. His words: "Put Discord feedback in the
+     profile. And when a person selects it, it takes them to the feedback page,
+     that dumps the data into the customer service support on Discord. And they
+     can join the Discord channel." The feedback page is the one Help already
+     has, Write to us and the Community door on one surface, so this row opens
+     Help and the comment sheet over it rather than a second compose surface
+     that would need its own boundary, its own outbox and its own disclosure.
+     Shutting the sheet leaves the person on the page with the outbox line and
+     the join door. Help's own colour, because it opens Help. */
+  +'<button type="button" role="menuitem" class="pm-it" data-pmfb="1" style="--c:'+seatCol(accSec('help').b)+'">'
+  +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 5.5h15v10h-8l-4.5 3.5v-3.5H4.5z"/>'
+  +'<path d="M8.5 10.5h7"/></svg></span><span>Discord feedback</span></button>'
+  /* THE JOIN DOOR IS ONLY A ROW WHEN IT GOES SOMEWHERE. The invite link does
+     not exist yet: it is the owner's to make from his own Discord server, and
+     COMMUNITY_INVITE in the Help section above is the one place it is
+     written. Until it holds a real Discord invite, commInvite answers empty
+     and there is no row, because a menu item is a press and a press that says
+     "not open yet" is the dead button the stub rows on Help exist to avoid.
+     Help still carries the stub, which is where the reason fits. */
+  +(commInvite()?'<a role="menuitem" class="pm-it" href="'+esc(commInvite())+'" target="_blank" '
+   +'rel="noopener noreferrer" data-pmjoin="1" style="--c:'+seatCol(accSec('help').b)+'">'
+   +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 4.5h6v6M19.5 4.5l-8 8"/>'
+   +'<path d="M17.5 13.5v5a1 1 0 01-1 1h-11a1 1 0 01-1-1v-11a1 1 0 011-1h5"/></svg></span>'
+   +'<span>Join our Discord</span></a>':'')
   /* THE LOG IS REACHABLE WHEN NOTHING IS ON SCREEN. The dock shows for three
      seconds, so its Log button is only there while a message is, and a person
      who looked away needs a door that does not depend on timing. */
@@ -63308,6 +63361,12 @@ function profMenu(){
   var want=!sfxIsOn();
   sfxSwitch(want); sw.setAttribute('aria-checked',want?'true':'false');
   if(want&&typeof sfx==='function')sfx('kept');};
+ /* the page first and the sheet second, because setTab redraws Settings and
+    the sheet is the thing that must be on top when the press is over */
+ var fb=m.querySelector('[data-pmfb]');
+ if(fb)fb.onclick=function(){profMenuGo('help'); obCompose('comment');};
+ var jn=m.querySelector('[data-pmjoin]');
+ if(jn)jn.onclick=function(){profMenuShut();};
  var lg=m.querySelector('[data-pmlog]');
  if(lg)lg.onclick=function(){profMenuShut(); if(typeof msgLogOpen==='function')msgLogOpen();};
  var o=m.querySelector('[data-pmout]');
@@ -67878,50 +67937,19 @@ function loginSay(msg,kind,own){
 function loginBusy(on){
  var h=document.getElementById('login'); if(!h)return;
  h.querySelectorAll('.ob-acts .btn').forEach(function(b){ b.disabled=!!on; });}
-/* UNLOCK ALL SIGHT, A TESTING SWITCH, round OT, his words: "unlock all these
-   for me." It reads the top tier for the lock (ui/lock.js lockPlan) and is kept
-   in the browser's own store, so it holds across a reload and never travels on
-   the profile or to a server. It is a product boundary, as the lock is, and
-   not an entitlement: nothing about billing changes. */
-var DEV_SIGHT=null;
-function devSight(){
- if(DEV_SIGHT===null){ try{ DEV_SIGHT=STORE.get('devsight')==='on'; }catch(e){ DEV_SIGHT=false; } }
- return DEV_SIGHT;}
-function devSightSet(on){
- DEV_SIGHT=!!on;
- try{ STORE.set('devsight',on?'on':'off'); }catch(e){}
- if(typeof render==='function')render();}
-/* DEVELOPER OPTIONS, GATED BEHIND A FLAG NO SHIPPED CONTROL CAN SET, ROUND
-   RA. The comment here used to say "disclosed rather than always visible,"
-   and the disclosure was real: the block was a collapsed <details>, closed
-   by default. But collapsed is not gated. Every visitor to the login card
-   got the same markup, open to a click, and one of its three switches is
-   "Unlock all sight," which lockPlan() (ui/lock.js) turns into a real tier
-   four grant, stored in the browser so it survives a reload. A stranger
-   meeting the funnel never needed to see this to use the product, and the
-   label "Developer options" is itself an invitation to try the switch
-   under it. Reviewed round RA, paywall seat: "the one thing that matters
-   most... taking money behind a lock the product unlocks itself."
-
-   The fix keeps the control, because the team still needs it, and removes
-   it from anyone who has not already turned it on from a console: devtoolsOn()
-   reads a second flag, never written by any rendered control, so turning
-   the panel on at all takes the same console access self-editing a record
-   already does (the privacy note above this function already treats that
-   as the person's own device, not an attack). */
-function devtoolsOn(){
- try{ return STORE.get('devtools')==='on'; }catch(e){ return false; }}
-function loginDevOptions(){
- if(!devtoolsOn())return '';
- return '<details class="login-dev">'
-  +'<summary>Developer options</summary>'
-  +'<label class="login-sw"><input type="checkbox" id="devob"'
-  +(DEV_PLAY_ONBOARDING?' checked':'')+'> Onboarding</label>'
-  +'<label class="login-sw"><input type="checkbox" id="devtut"'
-  +(DEV_PLAY_TUTORIAL?' checked':'')+'> Tutorial</label>'
-  +'<label class="login-sw"><input type="checkbox" id="devsight"'
-  +(devSight()?' checked':'')+'> Unlock all sight</label>'
-  +'</details>';}
+/* DEVELOPER OPTIONS, DEACTIVATED IN FULL, ROUND RI. His words: "let's
+   deactivate the developer option." Round RA first gated the panel behind a
+   console-only flag so a stranger never saw it; this goes further and removes
+   the capability itself, not only its visibility, because a flag that still
+   grants a real tier four if anyone ever sets it (from a console, or a stray
+   value already sitting in an old browser's storage from before this round)
+   is still the thing the paywall seat warned against: "taking money behind a
+   lock the product unlocks itself." devSight() now always reads false, so
+   lockPlan() (ui/lock.js) never reads a free tier four from this path again,
+   whatever any browser's storage already holds. loginDevOptions() always
+   returns nothing: there is no panel left to disclose. */
+function devSight(){ return false; }
+function loginDevOptions(){ return ''; }
 function loginOpen(){
  var h=document.getElementById('login'); if(!h)return;
  LOGIN.open=true; LOGIN.reset=false; h.style.display='flex'; h.innerHTML=loginCard();
@@ -67952,13 +67980,7 @@ function loginWire(h){
   if(send)send.onclick=function(){ loginForgot(); };
   var rf=document.getElementById('loginresetf');
   if(rf)rf.onsubmit=function(e){ e.preventDefault(); loginForgot(); };
-  if(rm)rm.focus(); };
- var devob=document.getElementById('devob');
- if(devob)devob.onchange=function(){ DEV_PLAY_ONBOARDING=!!devob.checked; };
- var devtut=document.getElementById('devtut');
- if(devtut)devtut.onchange=function(){ DEV_PLAY_TUTORIAL=!!devtut.checked; };
- var devs=document.getElementById('devsight');
- if(devs)devs.onchange=function(){ devSightSet(!!devs.checked); };}
+  if(rm)rm.focus(); };}
 function loginClose(){
  var h=document.getElementById('login'); if(!h)return;
  LOGIN.open=false; h.style.display='none'; h.innerHTML='';}
@@ -70000,5 +70022,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004594054"></div>
+<div id="eof" hidden data-len="004596253"></div>
 </body></html>
