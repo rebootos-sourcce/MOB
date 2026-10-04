@@ -38,6 +38,23 @@
         nothing coming in, holds still under reduced motion and reads with no
         script, measured in the canvas's own pixels under a paused clock.
 
+   And the landing's one beat a person answers:
+
+     9  the signal test, his slide 03, sits after recognition and before
+        the mirror, asks his questions in his order, says back what was
+        picked or typed exactly as given, stores nothing, draws a point on
+        the body only for a place picked from the list, and reads in full
+        with no script.
+    10  reframe, his slide 17, sits after release and before verify, mirrors
+        whatever is typed exactly, never as markup, lets it be changed, and
+        refuses an empty answer by name rather than accepting it as one.
+    11  verify, his slide 19, sits right after reframe and before the loop,
+        tells the truth about having no baseline when the signal test was
+        never taken or found nothing, shows the signal test's own reading
+        when it was, and answers "Nothing changed" the same as the other
+        four: a real result, never a failure. Neither frame writes to
+        storage.
+
    NO COUNT IS TYPED INTO THIS FILE. Not the number of pages, not the number
    of questions, not the number of controls, not the number of seats. Every
    one of them is read off the run and printed. This repository has been
@@ -797,6 +814,226 @@ const PROBE = () => {
     ok(shape.labels.length > 0 && ns.labels.join('|') === shape.labels.join('|'),
       '@' + w + ': with no script the steps read ' + ns.labels.join(', ') + ', not ' + shape.labels.join(', '));
     await nctx.close();
+  }
+
+
+  /* ---------- the landing's signal test, his slide 03 ----------
+     ATUNED-Funnel-Signal-Story-Pattern-Release-Reframe-TDD-v1.md sections 8
+     and 9. Held against the page as a person walks it:
+
+       it sits after recognition (his slide 02) and before the mirror
+       his questions arrive one at a time, in his order, word for word in
+         the house's case
+       a typed answer comes back in quotation marks exactly as typed, markup
+         and all, and is never run as markup
+       nothing is written to any storage
+       a place picked from the list lights pixels on the body, and nothing
+         is drawn there before one is picked
+       nothing noticed for both words says so, in his own line
+       the card names no diagnosis
+       with no script the whole exercise prints in order
+
+     His questions are copied out of his document below, with YES and NO in
+     lower case and colour spelled the house's way, which are the two moves
+     the frame itself makes and names. They are a list, not a count. */
+  const SIG_YES = ['Where do you feel yes?', 'Does the sensation feel dense or flowing?',
+    'Is there a temperature?', 'Is there a colour?', 'Does the charge change?'];
+  const SIG_NO = ['Where does no land in your body?', 'Does no have a different quality from yes?',
+    'Is the temperature different?', 'Is the colour different?', 'Is the charge different?',
+    'How does the sensation make you feel?'];
+  const SIG_HIS = ['Think the word yes ten times.', 'Now think the word no ten times.',
+    'A word is lighter than air, yet the experience of a word can have a direct effect on what you notice in your body.',
+    'Words carry meaning, tone, memory, and association.',
+    'When you identify with a word, the word can become connected to a lived experience.',
+    'This will take about two minutes.', 'Find a quiet and calm space if you can.',
+    'When you are ready, move your awareness into your body.'];
+  /* lit pixels on the signal overlay, the canvas's own, never the page's */
+  const SIGLIT = () => {
+    const c = document.getElementById('sigc'); if (!c || !c.width) return -1;
+    const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let n = 0;
+    for (let i = 3; i < d.length; i += 4) if (d[i] > 40) n++;
+    return n;
+  };
+  for (const [w, hgt] of WIDTHS) {
+    for (const reduce of [false, true]) {
+      const tag = 'signal @' + w + (reduce ? ' reduced' : '');
+      console.log('\n--- the landing signal test @' + w + (reduce ? ', reduced motion' : '') + ' ---');
+      const sctx = await browser.newContext({ viewport: { width: w, height: hgt },
+        reducedMotion: reduce ? 'reduce' : 'no-preference' });
+      const sp = await sctx.newPage();
+      const serr = [], sreq = [];
+      sp.on('pageerror', e => serr.push(String(e && e.message || e)));
+      sp.on('request', r => { if (!/^(file:|data:|blob:|about:)/.test(r.url())) sreq.push(r.url()); });
+      await sp.goto('file://' + path.join(DIR, 'index.html'), { waitUntil: 'load' });
+      await sp.evaluate(() => document.fonts.ready);
+      const order = await sp.evaluate(() => [...document.querySelectorAll('.fr')].map(f => f.id));
+      const si = order.indexOf('signal');
+      ok(si > 0, tag + ': the landing has no signal frame');
+      ok(si === order.indexOf('recognize') + 1 && order.indexOf('mirror') === si + 1,
+        tag + ': the signal test is not between recognition and the mirror: ' + order.join(','));
+      await sp.evaluate(() => {
+        const el = document.getElementById('signal'), r = el.getBoundingClientRect();
+        const sh = innerWidth >= 900 ? 0 : document.getElementById('stage').getBoundingClientRect().height;
+        window.scrollTo({ top: scrollY + r.top - sh, behavior: 'instant' });
+      });
+      /* the frame is entered by scrolling, and the run waits for the stage to
+         take it rather than assuming it has */
+      let took = false;
+      for (let i = 0; i < 40 && !took; i++) {
+        took = await sp.evaluate(() => document.getElementById('stage').getAttribute('data-sig') === 'on');
+        if (!took) await sp.waitForTimeout(100);
+      }
+      ok(took, tag + ': scrolled to the signal test and the stage never took it up');
+      ok(await sp.evaluate(() => document.getElementById('stage').getAttribute('data-show')) === 'body',
+        tag + ': the signal test does not stand on the body');
+      const head = () => sp.evaluate(() => {
+        const h = document.querySelector('#sg h3, #sg .aha'); return h ? h.innerText.trim() : ''; });
+      const tap = async (sel) => { await sp.click('#sg ' + sel); await sp.waitForTimeout(60); };
+      ok(/Sit down/.test(await head()), tag + ': the card does not open on the instruction to sit');
+      await tap('[data-sg="go"]');
+      ok(await head() === SIG_HIS[0], tag + ': the yes step reads "' + await head() + '"');
+      await tap('[data-sg="go"]');
+      const lit0 = await sp.evaluate(SIGLIT);
+      const seen = [];
+      seen.push(await head()); await tap('[data-sg="pick"][data-v="Chest"]');
+      await sp.waitForTimeout(reduce ? 50 : 900);
+      const lit1 = await sp.evaluate(SIGLIT);
+      ok(lit1 > lit0 + 40, tag + ': picking a place lit nothing on the body (' + lit0 + ' then ' + lit1 + ' pixels)');
+      for (const v of ['Dense', 'Warm']) { seen.push(await head()); await tap('[data-sg="pick"][data-v="' + v + '"]'); }
+      seen.push(await head());
+      const typed = 'a dull <b>gold</b>';
+      await sp.fill('#sgtx', typed); await tap('[data-sg="own"]');
+      seen.push(await head()); await tap('[data-sg="pick"][data-v="It gets heavier"]');
+      ok(await head() === SIG_HIS[1], tag + ': the no step reads "' + await head() + '"');
+      await tap('[data-sg="go"]');
+      for (const v of ['Throat', 'Flowing', 'Cool', 'No colour', 'It gets lighter', 'Calm']) {
+        seen.push(await head()); await tap('[data-sg="pick"][data-v="' + v + '"]'); }
+      ok(JSON.stringify(seen) === JSON.stringify(SIG_YES.concat(SIG_NO)),
+        tag + ': the questions are not his, in his order: ' + JSON.stringify(seen));
+      const aha = await sp.evaluate(() => ({
+        head: (document.querySelector('#sg .aha') || {}).innerText || '',
+        cells: [...document.querySelectorAll('#sg .sg-rep [role=cell]')].map(c => c.textContent),
+        bold: document.querySelectorAll('#sg .sg-rep b').length,
+        text: document.getElementById('signal').innerText,
+        store: localStorage.length + sessionStorage.length }));
+      ok(/mind-body connection/.test(aha.head), tag + ': a noticed signal does not land the aha, it reads "' + aha.head + '"');
+      ok(aha.cells.indexOf('“' + typed + '”') >= 0 && aha.bold === 0,
+        tag + ': the typed colour is not said back exactly as typed, or was run as markup');
+      ok(aha.cells.indexOf('chest') >= 0 && aha.cells.indexOf('throat') >= 0,
+        tag + ': the places picked are not said back: ' + JSON.stringify(aha.cells));
+      for (const l of SIG_HIS.slice(2, 5))
+        ok(aha.text.indexOf(l) >= 0, tag + ': the aha is missing his line "' + l + '"');
+      ok(aha.store === 0, tag + ': the signal test wrote ' + aha.store + ' item(s) to storage');
+      ok(!/diagnos|disorder|symptom|cure|treatment/i.test(aha.text),
+        tag + ': the signal test names a diagnosis or a treatment');
+      /* again, noticing nothing for either word */
+      await tap('[data-sg="again"]'); await tap('[data-sg="go"]'); await tap('[data-sg="go"]');
+      await tap('[data-sg="pick"][data-v="Nothing I can notice"]');
+      ok(/^Now think the word no/.test(await head()),
+        tag + ': nothing noticed for yes still asks what yes felt like: "' + await head() + '"');
+      await tap('[data-sg="go"]'); await tap('[data-sg="pick"][data-v="Nothing I can notice"]');
+      const none = await sp.evaluate(() => document.getElementById('sg').innerText);
+      ok(/Nothing showed this time\./.test(none) && /No sensation is also information\./.test(none),
+        tag + ': nothing noticed is not said as a result, in his line');
+      /* the way past, from the first step */
+      await tap('[data-sg="again"]');
+      await tap('[data-sg="skip"]'); await sp.waitForTimeout(reduce ? 100 : 1200);
+      const past = await sp.evaluate(() => {
+        const m = document.getElementById('mirror').getBoundingClientRect();
+        return m.top < innerHeight * .6; });
+      ok(past, tag + ': the skip does not take a person past the signal test');
+      ok(serr.length === 0, tag + ': ' + serr.length + ' error(s): ' + serr.slice(0, 2).join(' | '));
+      ok(sreq.length === 0, tag + ': ' + sreq.length + ' outbound request(s)');
+      console.log('  ' + seen.length + ' questions in his order, overlay pixels ' + lit0 + ' before a place and '
+        + lit1 + ' after, storage ' + aha.store + ', errors ' + serr.length);
+      await sctx.close();
+    }
+    /* no script: the whole exercise, in order, as text */
+    const nctx = await browser.newContext({ viewport: { width: w, height: hgt }, javaScriptEnabled: false });
+    const np = await nctx.newPage();
+    await np.goto('file://' + path.join(DIR, 'index.html'), { waitUntil: 'load' });
+    const nt = await np.evaluate(() => (document.getElementById('signal') || {}).innerText || '');
+    let at = -1, inOrder = true;
+    for (const l of SIG_YES.concat(SIG_NO)) { const i = nt.indexOf(l); if (i <= at) inOrder = false; at = i; }
+    ok(inOrder, 'signal @' + w + ': with no script the questions do not print in his order');
+    for (const l of SIG_HIS)
+      ok(nt.indexOf(l) >= 0, 'signal @' + w + ': with no script his line is missing: "' + l + '"');
+    await nctx.close();
+  }
+
+  /* ---------- the landing's reframe and verify, his slides 17 and 19 ----------
+     Held against the page as a person walks it, same method the signal test
+     above uses: a real page, real clicks, nothing assumed from the markup. */
+  for (const [w, hgt] of WIDTHS) {
+    const tag = 'reframe/verify @' + w;
+    const rctx = await browser.newContext({ viewport: { width: w, height: hgt } });
+    const rp = await rctx.newPage();
+    const rerr = [];
+    rp.on('pageerror', e => rerr.push(String(e && e.message || e)));
+    await rp.goto('file://' + path.join(DIR, 'index.html'), { waitUntil: 'load' });
+    await rp.evaluate(() => document.fonts.ready);
+    const order = await rp.evaluate(() => [...document.querySelectorAll('.fr')].map(f => f.id));
+    const ri = order.indexOf('reframe'), vi = order.indexOf('verify');
+    ok(ri > 0 && ri === order.indexOf('release') + 1 && vi === ri + 1 && order.indexOf('loop') === vi + 1,
+      tag + ': the order is not release, reframe, verify, loop: ' + order.join(','));
+
+    /* reframe mirrors exactly what was typed, markup and all kept as text */
+    const typed = 'I can say <b>yes</b> & mean it, without the old weight';
+    await rp.fill('#rftx', typed);
+    await rp.click('#rf [data-rf="keep"]');
+    const said = await rp.evaluate(() => document.getElementById('rftext').textContent);
+    ok(said === typed, tag + ': the reframe is not mirrored exactly, it reads "' + said + '"');
+    const saidHtml = await rp.evaluate(() => document.getElementById('rftext').innerHTML);
+    ok(!/<b>/.test(saidHtml), tag + ': the typed reframe was run as markup, not said back as text');
+    await rp.click('#rf [data-rf="edit"]');
+    const back = await rp.evaluate(() => document.getElementById('rftx').value);
+    ok(back === typed, tag + ': changing it loses the words, the box now reads "' + back + '"');
+    await rp.fill('#rftx', '  ');
+    await rp.click('#rf [data-rf="keep"]');
+    const note = await rp.evaluate(() => document.getElementById('rfnote').textContent);
+    ok(/Write a few words first/.test(note), tag + ': an empty reframe is kept with nothing said: "' + note + '"');
+
+    /* verify, with no signal test taken on this page: honest about it */
+    const vfHonest = await rp.evaluate(() => document.getElementById('vf').innerText);
+    ok(/nothing to compare|skipped/i.test(vfHonest) && !/landed in the/i.test(vfHonest),
+      tag + ': verify invents a baseline with no signal test taken: "' + vfHonest + '"');
+    const store0 = await rp.evaluate(() => localStorage.length + sessionStorage.length);
+    await rp.click('#vfans [data-v="Nothing changed."]');
+    const say = await rp.evaluate(() => document.getElementById('vfsay').textContent);
+    ok(/answer too/i.test(say) && !/fail|wrong|incomplete|no result/i.test(say),
+      tag + ': "Nothing changed" does not read as a real result: "' + say + '"');
+    const store1 = await rp.evaluate(() => localStorage.length + sessionStorage.length);
+    ok(store0 === 0 && store1 === 0, tag + ': reframe or verify wrote ' + store1 + ' item(s) to storage');
+    ok(rerr.length === 0, tag + ': ' + rerr.length + ' error(s): ' + rerr.slice(0, 2).join(' | '));
+    console.log('  ' + tag + ': order held, reframe mirrored exactly, empty reframe refused, '
+      + 'verify honest with no baseline, "Nothing changed" answered as a result, storage ' + store1);
+    await rctx.close();
+  }
+  /* verify shows the signal test's own baseline when one exists, never a
+     second one invented for this frame */
+  {
+    const tag = 'reframe/verify, signal test taken first';
+    const bctx = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
+    const bp = await bctx.newPage();
+    await bp.goto('file://' + path.join(DIR, 'index.html'), { waitUntil: 'load' });
+    const tap = async (sel) => { await bp.click('#sg ' + sel); await bp.waitForTimeout(30); };
+    await tap('[data-sg="go"]'); await tap('[data-sg="go"]');
+    await tap('[data-sg="pick"][data-v="Chest"]'); await tap('[data-sg="pick"][data-v="Dense"]');
+    await tap('[data-sg="pick"][data-v="Warm"]'); await tap('[data-sg="pick"][data-v="Red"]');
+    await tap('[data-sg="pick"][data-v="It stays the same"]');
+    await bp.evaluate(() => {
+      const el = document.getElementById('verify'), r = el.getBoundingClientRect();
+      window.scrollTo({ top: scrollY + r.top, behavior: 'instant' });
+    });
+    let shown = '';
+    for (let i = 0; i < 40; i++) {
+      shown = await bp.evaluate(() => (document.getElementById('vf') || {}).innerText || '');
+      if (/chest/i.test(shown)) break;
+      await bp.waitForTimeout(60);
+    }
+    ok(/yes/i.test(shown) && /chest/i.test(shown) && /dense/i.test(shown),
+      tag + ': verify does not carry the signal test\'s own reading forward: "' + shown + '"');
+    await bctx.close();
   }
 
   /* ---------- the sendable build, if it has been made ---------- */
