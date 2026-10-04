@@ -137,6 +137,11 @@ function accAccount(){
    +'</form>'
    +accAct('No account yet','acnew',{btn:'Create account'}),
    'Your email and password go to the account server. Your stories and readings stay on this device.');
+ /* DEVELOPER OPTIONS, DEACTIVATED IN FULL, ROUND RI, the same ruling that
+    removed the login card's own panel (ui/login.js). This panel's second
+    home, the owner's own signed in account, is removed with it: devtoolsOn
+    no longer exists anywhere, and devSight() always reads false, so there
+    is nothing left here to disclose or to set. */
  /* THE NAME IS EDITED IN ONE PLACE, and since round JZ that place is Profiles,
     where the list it has to be unique in is on the same screen. This row said
     "Profile name" as an input, and two editors for one field is two answers to
@@ -284,6 +289,8 @@ function accSwitched(){
  PROF_BY[PEOPLE[0].nm]=CURP;
  mirrorYou();
  var sel=$('psel'); if(sel)sel.value='0';
+ /* a rename lands here too, and the bar's entry carries the name, round RB */
+ if(typeof pselOwnSync==='function')pselOwnSync();
  if(typeof IQ_OPEN!=='undefined')IQ_OPEN=null;
  syncCh(); if(typeof syncLw==='function')syncLw(); if(typeof syncSoul==='function')syncSoul();
  if(typeof applyUiPrefs==='function')applyUiPrefs();

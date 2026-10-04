@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1625 db55c18 2026-10-04 01:50"><head><meta charset="utf-8">
+<html lang="en" data-build="v1616 bd598b3 2026-10-04 02:46"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -874,7 +874,6 @@ body.rm .msgdock{transition:none}
 
 
 .spacer{flex:1 1 auto;min-width:8px}
-.toplab{font-family:var(--num);font-size:11px;font-weight:400;color:var(--dim);white-space:nowrap}
 
 /* ---------- buttons ---------- */
 .vt{background:transparent;border:1px solid var(--edge);border-radius:var(--r-s);
@@ -3695,9 +3694,20 @@ body.punch .card{border-color:transparent}
 .bmnote{font-size:12.5px;color:var(--dim);line-height:1.55;margin-top:5px;font-weight:300}
 
 /* ---------- select ---------- */
+/* SMALLER, ROUND RB. His words: "shrink down the size of that button. right
+   now, custom and the down arrow is taking up a lot of space." It was 190
+   pixels wide holding one word, because a closed select is as wide as its
+   longest option and the longest is a test case's role, which nobody sees
+   until the list opens. field-sizing:content sizes it to the entry that is
+   showing instead, so Profile takes the room of Profile and the bar gets the
+   rest back; the 190 pixel cap below still holds for a long name. A browser
+   without field-sizing keeps the old width, which is the old behaviour and
+   not a broken one. Type came down from 14 pixels to 13 and side padding
+   from 11 to 8; the height stays on the tap floor, because a thumb hits the
+   same target whatever the word inside it is. */
 select#psel{background:var(--panel-2);color:var(--ink);border:1px solid var(--edge);
- min-height:var(--tap);border-radius:var(--r-s);padding:8px 11px;font-family:var(--sans);font-size:14px;
- font-weight:400;cursor:pointer;max-width:262px}
+ min-height:var(--tap);border-radius:var(--r-s);padding:8px 8px;font-family:var(--sans);font-size:13px;
+ font-weight:400;cursor:pointer;max-width:262px;field-sizing:content}
 select#psel option{background:var(--panel);color:var(--ink);padding:5px}
 select#psel optgroup{background:var(--sunk);color:var(--dim);font-style:normal;
  font-size:12.5px;font-weight:600}
@@ -7632,7 +7642,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
     as the bar, so a name has the whole width before it is cut */
  .top .pload{top:calc(var(--tap) + 12px);left:8px;right:8px;min-width:0}
  /* the picker and its label leave the bar for the circle above */
- .top .toplab,.top #psel{display:none}
+ .top #psel{display:none}
  /* the strip is the main menu here, where the names are the point, so the
     fold's toggle leaves and a folded strip opens with its names */
  .top .tabnames-i{display:none}
@@ -8463,9 +8473,15 @@ body.rail2 .rbar:not(.rb-hashrow):not(.rb-waverow) .rb-row,body.rail2 .rbar::bef
   <div class="spacer"></div>
   <!-- "Whose field" is gone on the owner's ruling. It was a question the
        product asked itself out loud. The control is a profile picker, so it
-       says Profile. -->
-  <label for="psel" class="toplab">Profile</label>
-  <select id="psel"></select>
+       says Profile.
+       ROUND RB MOVED THE WORD INTO THE CONTROL. His words: "get rid of the
+       word profile and replace it, replace the word custom with the word
+       profile." The label beside the picker went and the own entry inside it
+       says Profile until the record has a name (pselOwnName, ui/personas.js).
+       The label was also the picker's accessible name, so aria-label carries
+       it now: a screen reader still hears what the control is, and then
+       whose profile is open. -->
+  <select id="psel" aria-label="Profile"></select>
   <!-- Density moved into the profile on the owner's ruling. It is a setting a
        person chooses once, and a setting chosen once does not earn three
        permanent buttons in the bar where the work happens. The profile opens
@@ -8500,14 +8516,21 @@ body.rail2 .rbar:not(.rb-hashrow):not(.rb-waverow) .rb-row,body.rail2 .rbar::bef
        then help, then the person. The three lighting buttons used to sit out
        in the bar as a permanent segmented control, which is a setting taking
        the width of a navigation item. They fold into one menu that names the
-       lighting it is currently on. -->
+       lighting it is currently on.
+       ROUND RB TOOK THE NAME OFF THE BUTTON. His words: "get rid of the word
+       dark for our lighting. I just want the icon." The word was not Dark's
+       own: it was whichever lighting is on, written by setLighting, so taking
+       it off for Dark alone would make the button grow a word the moment Snow
+       was chosen and shrink again on the way back. The icon is the button
+       now for all seven, and the lighting that is on is said where it already
+       was, the pressed mark in the menu, and in the button's accessible name,
+       which setLighting keeps current. -->
   <div class="gwrap" id="lightwrap">
    <button class="vt gbtn" id="lightbtn" type="button" aria-expanded="false"
-    aria-haspopup="true" title="Lighting">
+    aria-haspopup="true" title="Lighting, Dark" aria-label="Lighting, Dark">
     <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
      <circle cx="12" cy="12" r="4.2"/><path d="M12 3v2.4M12 18.6V21M3 12h2.4M18.6 12H21
       M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M18.4 5.6l-1.7 1.7M7.3 16.7l-1.7 1.7"/></svg>
-    <span class="n" id="lightnow">Dark</span>
     <svg class="chev" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
      <path d="M6 9.5l6 5.5 6-5.5"/></svg></button>
    <div class="gmenu" id="lightmenu" hidden>
@@ -30472,9 +30495,14 @@ try{window.__at&&window.__at('ui/tip.js');}catch(e){}
    is read once at load from the window, and a person who sets it in a console
    is in the position of one who edits their own record, said above. */
 var SIGHT_PLAN=(typeof window!=='undefined'&&window.SIGHT_PLAN)||null;
+/* THE SIGHT SWITCH IS GONE, ROUND RI. devSight() always reads false now
+   (ui/login.js), so the free tier four this read for the owner's own account
+   or a console flag can never fire again, whatever any browser's storage
+   already holds. */
 function lockPlan(){
  if(SIGHT_PLAN)return SIGHT_PLAN;
- if(typeof devSight==='function'&&devSight())return {tier:'four',status:'active'};
+ if(typeof devSight==='function'&&devSight())
+  return {tier:'four',status:'active'};
  return (typeof CURP!=='undefined'&&CURP&&CURP.plan)||null;}
 /* Whether this person may see a thing right now. Read at every call and never
    cached, because a plan can change under an open surface: a payment lands, a
@@ -60844,9 +60872,12 @@ function setLighting(k){
  ['themes','navthemes'].forEach(function(id){var seg=$(id);
   if(seg)seg.querySelectorAll('button').forEach(function(x,j){
    x.setAttribute('aria-pressed',LIGHTINGS[j]&&LIGHTINGS[j][0]===k);});});
- var nw=$('lightnow');
- if(nw){var e=LIGHTINGS.filter(function(t){return t[0]===k;})[0];
-  if(e)nw.textContent=e[1];}
+ /* the bar's button shows its icon only, round RB ("I just want the icon"),
+    so the lighting that is on is carried by its name for a screen reader and
+    its tooltip, and no longer printed beside the icon */
+ var lb=$('lightbtn');
+ if(lb){var e=LIGHTINGS.filter(function(t){return t[0]===k;})[0];
+  if(e){lb.setAttribute('aria-label','Lighting, '+e[1]); lb.title='Lighting, '+e[1];}}
  rebuildSwatches(); render();}
 LIGHTINGS.forEach(function(t,i){
  var b=document.createElement('button');b.type='button';
@@ -62700,6 +62731,11 @@ function accAccount(){
    +'</form>'
    +accAct('No account yet','acnew',{btn:'Create account'}),
    'Your email and password go to the account server. Your stories and readings stay on this device.');
+ /* DEVELOPER OPTIONS, DEACTIVATED IN FULL, ROUND RI, the same ruling that
+    removed the login card's own panel (ui/login.js). This panel's second
+    home, the owner's own signed in account, is removed with it: devtoolsOn
+    no longer exists anywhere, and devSight() always reads false, so there
+    is nothing left here to disclose or to set. */
  /* THE NAME IS EDITED IN ONE PLACE, and since round JZ that place is Profiles,
     where the list it has to be unique in is on the same screen. This row said
     "Profile name" as an input, and two editors for one field is two answers to
@@ -62847,6 +62883,8 @@ function accSwitched(){
  PROF_BY[PEOPLE[0].nm]=CURP;
  mirrorYou();
  var sel=$('psel'); if(sel)sel.value='0';
+ /* a rename lands here too, and the bar's entry carries the name, round RB */
+ if(typeof pselOwnSync==='function')pselOwnSync();
  if(typeof IQ_OPEN!=='undefined')IQ_OPEN=null;
  syncCh(); if(typeof syncLw==='function')syncLw(); if(typeof syncSoul==='function')syncSoul();
  if(typeof applyUiPrefs==='function')applyUiPrefs();
@@ -65013,8 +65051,32 @@ function lawsFor(p){ return p.law || LAWSET[p.nm] || {_:LAW_DEFAULT}; }
    example" is 188, so the words that carry the state would have been the
    part cut off. Every entry not loaded keeps its age and role, because that
    is what a person chooses by. */
+/* THE PERSON'S OWN ENTRY SAYS WHOSE IT IS, round RB. His words: "replace the
+   word custom with the word profile", and "where it says your own, it'll be
+   the person's name. Everyone underneath that is our test cases." It read
+   Custom, a word for a setting and not for a person, under a heading, Your
+   own, that was the only thing on the list saying the entry was theirs.
+
+   The name is the record's own, the one Profiles edits (accProfSave), read
+   off the record the entry loads (PROF_BY, the same pointer toYou and the
+   boot use). It is not the signed in email: an account carries no name, and
+   an address printed in the bar is an address on every screenshot. A record
+   still called You, which every blank one is, has no name yet and reads
+   Profile. Printed as typed, because title casing a name is a claim about
+   how the person spells it. */
+function pselOwnName(){
+ var own=(typeof PROF_BY!=='undefined')?PROF_BY[PEOPLE[0].nm]:null;
+ var nm=(own&&typeof own.name==='string')?own.name.trim():'';
+ return (nm&&nm!=='You')?nm:'Profile';}
+/* and the bar's entry is rewritten when the name or the record under it
+   changes: the list is built once, before the boot has pointed PROF_BY at the
+   stored record, so without this a named record read Profile until the first
+   switch of profile */
+function pselOwnSync(){
+ var o=document.querySelector('#psel option[value="0"]');
+ if(o)o.textContent=pselOwnName();}
 function pselName(p,up){
- if(p.you)return 'Custom';
+ if(p.you)return pselOwnName();
  return up?p.nm+', example':p.nm+', '+p.age+', '+p.role.replace(' · ICP','');}
 /* THE PICKER READS THE SAME CQ THE PROFILE WILL, AND IS SORTED BY IT.
    The examples were two groups by an accident of how they were added: the six
@@ -65031,27 +65093,37 @@ function pselName(p,up){
    needs the seed to exist before the first load, which seedIntake allows: it is
    idempotent and loadP calls it again for free.
 
-   The blank profile stays in its own group in front, because it is the
-   person's own and not an example. Nothing else changed about the select: the
-   value is still the index into PEOPLE, so loadP, the phone menu that reads
-   this element and every gate that loads by index are untouched. */
+   The blank profile stays in front, because it is the person's own and not an
+   example. Nothing else changed about the select: the value is still the
+   index into PEOPLE, so loadP, the phone menu that reads this element and
+   every gate that loads by index are untouched.
+
+   ROUND RB TOOK THE OWN ENTRY OUT OF ITS GROUP AND NAMED THE REST TEST CASES.
+   "I want to separate the users from our test users." The Your own heading
+   went, because the entry under it now carries the person's name and a
+   heading over one row saying whose it is says it twice. Every tier heading
+   now opens on Test cases, so no heading anywhere in the list can be read as
+   a group of real people: an optgroup cannot hold an optgroup, so the one
+   word that says these are ours rides on each tier instead of over them. The
+   phone loader reads these labels straight off the element, so it says the
+   same. */
 function personaCQ(p){
  seedIntake(p);
  var sc=iqScore({intake:{answers:p.intakeAnswers}});
  return SINAMES.reduce(function(a,l){return a+(sc[l]?sc[l].score:0);},0)/(SINAMES.length*10)*100;}
 (function(){var sel=$('psel');
  var mk=function(lab){var g=document.createElement('optgroup');g.label=lab;sel.appendChild(g);return g;};
- var gYou=null, ex=[];
+ var ex=[];
  PEOPLE.forEach(function(p,i){
   if(p.you){var o=document.createElement('option');o.value=i;o.textContent=pselName(p,false);
-   gYou=gYou||mk('Your own'); gYou.appendChild(o);}
+   sel.appendChild(o);}
   else ex.push({i:i,cq:personaCQ(p)});});
  /* a tie keeps the roster order, so the sort is stable on every engine */
  ex.sort(function(a,b){return a.cq-b.cq||a.i-b.i;});
  var g=null, gt=null;
  ex.forEach(function(e){
   var t=tierOf(e.cq).nm;
-  if(t!==gt){g=mk(t); gt=t;}
+  if(t!==gt){g=mk('Test cases, '+t); gt=t;}
   var o=document.createElement('option');o.value=e.i;
   o.textContent=pselName(PEOPLE[e.i],false); g.appendChild(o);});})();
 $('psel').addEventListener('change',function(e){loadP(+e.target.value);});
@@ -67899,15 +67971,19 @@ function loginBusy(on){
  h.querySelectorAll('.ob-acts .btn').forEach(function(b){ b.disabled=!!on; });}
 /* DEVELOPER OPTIONS, DEACTIVATED IN FULL, ROUND RI. His words: "let's
    deactivate the developer option." Round RA first gated the panel behind a
-   console-only flag so a stranger never saw it; this goes further and removes
-   the capability itself, not only its visibility, because a flag that still
-   grants a real tier four if anyone ever sets it (from a console, or a stray
-   value already sitting in an old browser's storage from before this round)
-   is still the thing the paywall seat warned against: "taking money behind a
-   lock the product unlocks itself." devSight() now always reads false, so
-   lockPlan() (ui/lock.js) never reads a free tier four from this path again,
-   whatever any browser's storage already holds. loginDevOptions() always
-   returns nothing: there is no panel left to disclose. */
+   console-only flag so a stranger never saw it; round RB then also opened it
+   for the owner's own signed in account (devOwner/DEV_OWNER, since removed
+   along with the rest of this mechanism); round RI goes further still and
+   removes the capability itself, not only its visibility, because a flag
+   that still grants a real tier four if anyone ever sets it (from a console,
+   or a stray value already sitting in an old browser's storage from before
+   this round) is still the thing the paywall seat warned against: "taking
+   money behind a lock the product unlocks itself." devSight() now always
+   reads false, so lockPlan() (ui/lock.js) never reads a free tier four from
+   this path again, whatever any browser's storage already holds.
+   loginDevOptions() always returns nothing: there is no panel left to
+   disclose, on the login card or on the owner's own account page
+   (ui/account.js, also cleaned up with this round). */
 function devSight(){ return false; }
 function loginDevOptions(){ return ''; }
 function loginOpen(){
@@ -69896,6 +69972,8 @@ step('the stored record',function(){
     session; this is it across one. mirrorYou and not saveYou, because nothing
     has changed yet and a boot has no business writing the store. */
  mirrorYou();
+ /* the bar's own entry names the record just pointed at, round RB */
+ if(typeof pselOwnSync==='function')pselOwnSync();
  syncCh(); syncLw(); syncSoul();
 });
 /* A RECORD CARRIED IN FROM THE QUIZ, round QZ, ui/panels.js recordLinkBoot.
@@ -69982,5 +70060,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004593474"></div>
+<div id="eof" hidden data-len="004598629"></div>
 </body></html>

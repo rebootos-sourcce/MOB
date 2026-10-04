@@ -506,9 +506,15 @@
   <div class="spacer"></div>
   <!-- "Whose field" is gone on the owner's ruling. It was a question the
        product asked itself out loud. The control is a profile picker, so it
-       says Profile. -->
-  <label for="psel" class="toplab">Profile</label>
-  <select id="psel"></select>
+       says Profile.
+       ROUND RB MOVED THE WORD INTO THE CONTROL. His words: "get rid of the
+       word profile and replace it, replace the word custom with the word
+       profile." The label beside the picker went and the own entry inside it
+       says Profile until the record has a name (pselOwnName, ui/personas.js).
+       The label was also the picker's accessible name, so aria-label carries
+       it now: a screen reader still hears what the control is, and then
+       whose profile is open. -->
+  <select id="psel" aria-label="Profile"></select>
   <!-- Density moved into the profile on the owner's ruling. It is a setting a
        person chooses once, and a setting chosen once does not earn three
        permanent buttons in the bar where the work happens. The profile opens
@@ -543,14 +549,21 @@
        then help, then the person. The three lighting buttons used to sit out
        in the bar as a permanent segmented control, which is a setting taking
        the width of a navigation item. They fold into one menu that names the
-       lighting it is currently on. -->
+       lighting it is currently on.
+       ROUND RB TOOK THE NAME OFF THE BUTTON. His words: "get rid of the word
+       dark for our lighting. I just want the icon." The word was not Dark's
+       own: it was whichever lighting is on, written by setLighting, so taking
+       it off for Dark alone would make the button grow a word the moment Snow
+       was chosen and shrink again on the way back. The icon is the button
+       now for all seven, and the lighting that is on is said where it already
+       was, the pressed mark in the menu, and in the button's accessible name,
+       which setLighting keeps current. -->
   <div class="gwrap" id="lightwrap">
    <button class="vt gbtn" id="lightbtn" type="button" aria-expanded="false"
-    aria-haspopup="true" title="Lighting">
+    aria-haspopup="true" title="Lighting, Dark" aria-label="Lighting, Dark">
     <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
      <circle cx="12" cy="12" r="4.2"/><path d="M12 3v2.4M12 18.6V21M3 12h2.4M18.6 12H21
       M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M18.4 5.6l-1.7 1.7M7.3 16.7l-1.7 1.7"/></svg>
-    <span class="n" id="lightnow">Dark</span>
     <svg class="chev" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
      <path d="M6 9.5l6 5.5 6-5.5"/></svg></button>
    <div class="gmenu" id="lightmenu" hidden>
