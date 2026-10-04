@@ -713,18 +713,26 @@ var LCOL_BESIDE='(min-width:1181px)';
    defaults open. The key is its own, the Compass's own pattern, so a person
    who shuts it on Flow keeps it shut on Flow and the Field's choice is
    untouched. */
+/* AND KNOWLEDGE HAS ITS OWN, round RB, his words: "on the knowledge start
+   with the left and right menus closed." The page is one centre column built
+   around the seven seats, so both columns start shut there, at every width:
+   on a phone they stack under the codex, and a reference a person came to
+   read should not end in two open rails of readings. Its own key, the
+   Compass's pattern, so a choice made on the Field does not open it here and
+   a person who opens it here keeps it open here. */
 function colKey(){
  if(typeof TAB==='undefined'||!S)return 'lcol';
  if(S.tab===TAB.COMPASS)return 'lcolc';
  if(S.tab===TAB.RITUAL)return 'lcolf';
+ if(S.tab===TAB.KNOW)return 'lcolk';
  return 'lcol'; }
 function colShut(){
  var beside=true; try{beside=matchMedia(LCOL_BESIDE).matches;}catch(e){}
  var k=colKey();
  /* only a store with nothing in it defaults, and what it defaults to is the
     surface's own answer: shut where the column is a rail, open where it is
-    the menu the surface is for */
- var dflt=(k==='lcolf')?false:beside;
+    the menu the surface is for, and shut at every width on Knowledge */
+ var dflt=(k==='lcolf')?false:(k==='lcolk')?true:beside;
  var shut=dflt;
  try{var got=STORE.get(k); shut=got?(got==='shut'):dflt;}catch(e){shut=false;}
  return shut;}
@@ -760,9 +768,19 @@ function railFoldPaint(shut){
  var say=shut?'Open the right column':'Close the right column';
  b.setAttribute('aria-expanded',shut?'false':'true');
  b.setAttribute('aria-label',say); fbTip(b,say);}
+/* THE RIGHT COLUMN'S KEY, PER SURFACE, round RB. One shared key opened the
+   right column on Knowledge whenever it was open anywhere, which is every
+   surface, since it defaults open. Knowledge carries its own key and its own
+   default, shut, on his ruling above colKey. Every other surface keeps the
+   one shared key and the default it always had, open. */
+function railKey(){
+ return (typeof TAB!=='undefined'&&S&&S.tab===TAB.KNOW)?'rcolk':'rcol';}
+function railShut(){
+ var k=railKey(), dflt=(k==='rcolk');
+ try{var got=STORE.get(k); return got?(got==='shut'):dflt;}catch(e){return false;}}
+function railTab(){ railFoldPaint(railShut()); }
 function railFold(){
- var shut=false; try{shut=STORE.get('rcol')==='shut';}catch(e){shut=false;}
- railFoldPaint(shut);
+ railFoldPaint(railShut());
  var b=$('rfold'); if(!b)return;
  /* the control is pinned over the rail's head, and once the rail has
     scrolled it takes the panel's ground, head.html beside .rfold */
@@ -771,7 +789,7 @@ function railFold(){
  b.onclick=function(){
   var now=!document.body.classList.contains('rshut');
   railFoldPaint(now);
-  try{STORE.set('rcol',now?'shut':'open');}catch(e){}
+  try{STORE.set(railKey(),now?'shut':'open');}catch(e){}
   if(!now&&typeof fitGrids==='function')requestAnimationFrame(fitGrids);};}
 
 /* ============================================================

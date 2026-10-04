@@ -1176,12 +1176,15 @@ function runAvatarDrill(){
     +'<em>'+(g2?(g2.clear?'clear':esc(String(g2.seat).toLowerCase())+', '+g2.load.toFixed(1))
       :'not resolved')+'</em></button>';});
   h+='</div>';
-  if(pg)h+='<p class="ad-p"><b>'+pg.done+' of '+pg.total+'</b> clear at the address behind '
+  /* a count against a total is a score, the standing ruling, round RB */
+  if(pg)h+='<p class="ad-p"><b>'+(pg.done===0?'None':pg.done===pg.total?'All of them':String(pg.done))+'</b> clear at the address behind '
    +'them. Read from what you have actually cleared, not from what you wrote.</p>';
  } else {
-  h+='<p class="ad-p">Nothing written yet. The journal asks for it in two questions: '
-   +'describe yourself on your best day, not what you achieved but how you were. Then the '
-   +'opposite.</p>';}
+  /* THE PROMISE WAS FALSE, round RB, S3 (BECOMING-AUDIT.md R11): no journal
+     prompt ever asked these two questions. The Avatar page is where a pair is
+     written, one seat at a time. */
+  h+='<p class="ad-p">Nothing written yet. Write it on the Avatar page, one seat at a time. '
+   +'Say how you are on your best day, and how you are on a bad one.</p>';}
  if(av.built){
   var d=avatarDaysLeft(av);
   h+='<p class="ad-p">Reviewed monthly. '+(avatarDue(av)?'Due now.':d+' days to the next one.')
@@ -1258,15 +1261,26 @@ function runPurposeDrill(){
   +'yours to protect and outside it is choice.</p>'
   +'<div class="ad-rows">'+PUR_SIDES.map(function(sd){
     var n=((pu.sides&&pu.sides[sd])||[]).filter(function(x){return x&&String(x).trim();}).length;
+    /* five marks a side, lit or not, and no count against the five or the
+       thirty, the standing ruling, round RB. The side's own name and meaning
+       come from the one table, PUR_SIDE_SAY. */
+    var say=(typeof PUR_SIDE_SAY!=='undefined'&&PUR_SIDE_SAY[sd])||{nm:sd,say:''};
     return '<div class="ad-r static'+(n>=PUR_PER_SIDE?' on':'')+'">'
-     +'<span class="ad-k">'+esc(sd)+'</span>'
-     +'<span class="ad-v">'+n+' of '+PUR_PER_SIDE+'</span></div>';}).join('')+'</div>'
-  +'<p class="ad-p">'+bc.filled+' of '+bc.of+' written. Thirty is not a lot to ask of a '
+     +'<span class="ad-k">'+esc(say.nm)+'</span>'
+     +'<span class="ad-v" aria-label="'+esc(n?n+' written':'none written')+'">'
+     +[0,1,2,3,4].map(function(i){return i<n?'\u25CF':'\u25CB';}).join(' ')+'</span></div>';}).join('')+'</div>'
+  +'<p class="ad-p">'+(bc.filled?'':'Nothing written on any side yet. ')+'Thirty is not a lot to ask of a '
   +'mirror you will hold for as long as this takes. A mirror half described shows half a '
   +'person.</p>'
-  +'<div class="ad-act"><button class="btn" id="puback">The avatar</button></div>';
+  +'<div class="ad-act"><button class="btn pri" id="puwrite">Write it</button>'
+  +'<button class="btn" id="puback">The avatar</button></div>';
  rdShell(h);
- var b=document.getElementById('puback'); if(b)b.onclick=runAvatarDrill;}
+ var b=document.getElementById('puback'); if(b)b.onclick=runAvatarDrill;
+ /* the writer, round RB, S3: the Avatar page's Purpose subtab */
+ var w=document.getElementById('puwrite'); if(w)w.onclick=function(){
+  if(typeof AV!=='undefined')AV.sub='purpose';
+  if(typeof rdClose==='function')rdClose();
+  setTab(TAB.INTAKE); if(typeof renderAvatar==='function')renderAvatar();};}
 
 /* ============================================================
    THE AGE LADDER, on screen.

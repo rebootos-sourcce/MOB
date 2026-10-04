@@ -3255,6 +3255,20 @@ body.punch .s-readbox,body.punch .s-out{background:var(--panel-2);border-color:t
  font-size:13px;font-weight:600}
 .sum-wrap.sg-slots .sg-day:empty::before{content:"slot: " attr(data-slot) " summary, under the story, above what to do"}
 /* folds, a nested group the person opens. The row carries a chevron. */
+/* THE LEAD ROW, round RB: the two halves stand at their own heights, and the
+   right half is a column of two cards, what to do and the drivers, so the
+   space beside a long reading is used rather than stretched. */
+.sg-lead2{align-items:start}
+.sg-side{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sg-side>.sg-todo{margin:0;gap:14px}
+.sg-side>.sg-todo .s-outrow{grid-template-columns:1fr;gap:10px}
+.sg-side>.sg-todo .s-out{padding:14px 16px;background:var(--panel-2)}
+.sg-side>.sg-drive>.sg-fold{margin-top:14px}
+/* and the row under it the same way: What is running pushed its fold to the
+   foot of a card stretched to What it costs, a hole of about 290 pixels at
+   1600 above All masks. Each card stands at its own height now. */
+.sg-two.sg-even{align-items:start}
+.sg-two.sg-even>.sg-card>.sg-fold:first-of-type{margin-top:14px}
 .sg-folds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start}
 .sg-fold{border:1px solid var(--edge);border-radius:var(--r-s);min-width:0;margin-top:14px}
 .sg-folds .sg-fold{margin-top:0;background:var(--panel)}
@@ -3283,7 +3297,8 @@ body.punch .s-readbox,body.punch .s-out{background:var(--panel-2);border-color:t
     marks, with the detail cards after them. */
  .sum-wrap{display:flex;flex-direction:column}
  .sum-wrap>.sg-lead{order:1}
- .sum-wrap>.sg-marks{order:2}
+ .sum-wrap>.sg-loop{order:2}
+ .sum-wrap>.sg-marks{order:3}
  .sum-wrap>.sg-day{order:3}
  .sum-wrap>.sg-todo{order:4}
  .sum-wrap>.sg-two:not(.sg-lead){order:5}

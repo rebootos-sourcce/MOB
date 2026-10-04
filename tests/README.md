@@ -130,6 +130,31 @@ copies of the page, one whose send joins with a space and one whose thread
 prints every question, and each must fail its check. Read the counts off the
 run.
 
+## Becoming S1 to S3, Knowledge by seat, Summary's lead row
+
+Round RB. Two gates.
+
+    node tests/engine.js                                         group RB
+    NODE_PATH=/opt/node22/lib/node_modules node tests/becoming.js
+
+Group RB is the boundary, headless: the avatar's ratings, starting weights and
+tags (`arch`, `load0`, `tags`) round trip on the record; a pair written before
+ids gets the same id on every load and two pairs with the same words get two;
+the monthly look moves the version only when the person says it changed; the
+side key is read across once and never again; and a wrong status, a version
+that is not whole, a rating off one to five, a weight for a pair not on the
+record, a value or a commitment past its cap are each refused by name. The
+silent empty string the boundary used to put in place of an over long value
+is gone.
+
+`tests/becoming.js` is the same in a real Chromium on the Avatar page, plus
+the Knowledge page (seven tiles in the Intake page's order, one seat open, a
+kind shown across all seven, both columns shut on arrival on their own keys,
+the Field's right column unmoved) and Summary (what to do beside the story at
+1600, after the story and before the drivers at 390). It first runs the read
+across on a record that already says it was done, which must move nothing.
+Read the counts off the run.
+
 ## The front door
 
 The engine has one entrance and the three surfaces are separable, so each can be

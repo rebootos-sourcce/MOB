@@ -7405,5 +7405,117 @@ g('RB · every worked example with a row runs rituals, written in the shapes the
  ok(E.ritexHas(E.blankProfile('b'))===false&&E.ritexHas(rec)===true,'a blank record carries no day log, a built one does');
 }
 
+g('RB · becoming S1 to S3: the avatar\'s own data on the record, its identity, and the purpose writer\'s caps');
+/* BECOMING-AUDIT.md section 11. S1: the ratings, the starting weights and the
+   tags travel with the record. S2: pair ids, name, title, description,
+   version, status. S3: the purpose and boundary caps refuse by name. Every
+   check is against the boundary, validateProfile, because that is the one
+   door everything a person can paste goes through. */
+{
+ const {avatarBlank,avatarStatus,avatarPairId,avatarEnsureIds,avatarNewId,avatarReview,
+        avatarMoveSide,avatarFill,AV_STATUS,AV_CAP,AV_ID,PUR_VAL_MAX,PUR_LINE_MAX,PUR_SIDE_SAY,
+        PUR_SIDES,purposeRefuse,blankProfile,saveProfile,validateProfile}=E;
+ const clone=o=>JSON.parse(JSON.stringify(o));
+ const errsOf=v=>(v.errs||[]).join(' | ');
+ const b=avatarBlank();
+ ok(b.version===1&&b.status==='draft'&&b.name===''&&b.description==='',
+  'a blank avatar is version one, a draft, with nothing written');
+ ok(JSON.stringify([b.arch,b.load0,b.tags])==='[{},{},{}]'&&b.movedAt===null,
+  'and carries empty ratings, weights and tags, and has read nothing across');
+ ok(AV_STATUS.join()==='draft,active,archived','three stored statuses, the document\'s own');
+ ok(avatarStatus({built:true})==='active'&&avatarStatus({built:false})==='draft',
+  'a record from before status reads its own built flag');
+ ok(avatarStatus({built:true,status:'archived'})==='archived','and a stored one wins');
+
+ /* ---- S2, IDS ---- */
+ const p1={be:'I rest properly',notbe:'I have not slept properly in weeks',seat:'Root'};
+ ok(avatarPairId(p1)===avatarPairId(clone(p1)),'an older pair\'s id is the same on every load');
+ ok(AV_ID.test(avatarPairId(p1)),'and is the shape of an id, '+avatarPairId(p1));
+ const twin={pairs:[clone(p1),clone(p1)]}; avatarEnsureIds(twin);
+ ok(twin.pairs[0].id&&twin.pairs[1].id&&twin.pairs[0].id!==twin.pairs[1].id,
+  'two pairs with the same words still get two ids, '+twin.pairs.map(x=>x.id).join(' and '));
+ const kept={pairs:[Object.assign(clone(p1),{id:'abc123'})]}; avatarEnsureIds(kept);
+ ok(kept.pairs[0].id==='abc123','an id already held is kept');
+ ok(avatarNewId(1e12,0.5)!==avatarNewId(1e12,0.25)&&AV_ID.test(avatarNewId()),'a new id is minted fresh');
+
+ /* ---- S2, THE REVIEW ---- */
+ const rv=avatarBlank(); rv.built=true;
+ avatarReview(rv,false,Date.UTC(2026,9,1));
+ ok(rv.version===1&&rv.reviewedAt==='2026-10-01T00:00:00.000Z','still true moves the review date and not the version');
+ avatarReview(rv,true,Date.UTC(2026,10,1));
+ ok(rv.version===2&&/2026-11-01/.test(rv.reviewedAt),'revised moves both, got version '+rv.version);
+
+ /* ---- S1, READ ACROSS ONCE ---- */
+ const mv=avatarBlank(); mv.pairs=[clone(p1)]; avatarEnsureIds(mv);
+ const side={arch:{Warrior:4,Nobody:3,Sage:9},load0:{'old words':4.5,'gone':3},
+  tags:{Root:{add:['Fear'],off:['Sad']}}};
+ const n=avatarMoveSide(mv,side,k=>k==='old words'?mv.pairs[0]:null,Date.UTC(2026,9,3));
+ ok(mv.arch.Warrior===4&&mv.arch.Sage===undefined,'a rating one to five comes across and nine does not');
+ ok(mv.load0[mv.pairs[0].id]===4.5&&Object.keys(mv.load0).length===1,
+  'a starting weight comes across against the pair\'s id, and one for a pair that is gone does not');
+ ok(mv.tags.Root&&mv.tags.Root.add[0]==='Fear'&&mv.tags.Root.off[0]==='Sad','the tags come across');
+ ok(n===4&&mv.movedAt==='2026-10-03T00:00:00.000Z','and the move is dated, '+n+' moved');
+ mv.arch={};
+ ok(avatarMoveSide(mv,side,()=>null)===0&&Object.keys(mv.arch).length===0,
+  'once dated it never reads across again, so a rating taken off stays off');
+
+ /* ---- THE BOUNDARY ---- */
+ const good=saveProfile(blankProfile('rb'));
+ good.avatar={built:true,at:'2026-09-01T00:00:00Z',reviewedAt:null,
+  pairs:[Object.assign(clone(p1),{id:'n1'}),{be:'I say it plainly',notbe:'My throat closes at the board',seat:'Throat'}],
+  name:'Diane, steady',title:'Founder who rests',description:'Someone who builds without burning down.',
+  version:3,status:'active',arch:{Warrior:2,Sage:5},load0:{n1:6.2},
+  tags:{Throat:{add:['Fear'],off:[]}},movedAt:'2026-10-01T00:00:00Z'};
+ good.purpose={soul:['freedom','wisdom','truth'],ego:['health','family','stability'],
+  sides:{partner:['I say when I need rest'],family:[],friends:[],community:[],coworkers:[],alone:['I keep my mornings']}};
+ const v=validateProfile(clone(good));
+ ok(v.ok,'a record carrying every new field loads, '+errsOf(v));
+ const A=v.ok?v.profile.avatar:{};
+ ok(A.name==='Diane, steady'&&A.title==='Founder who rests'&&A.version===3&&A.status==='active',
+  'its identity round trips');
+ ok(A.arch&&A.arch.Sage===5&&A.load0&&A.load0.n1===6.2&&A.tags.Throat.add[0]==='Fear',
+  'and the ratings, the weight and the tags travel with it, where an export used to drop them');
+ ok(A.pairs&&A.pairs[0].id==='n1'&&AV_ID.test(A.pairs[1].id||''),'a held id is kept and a missing one is given');
+ const again=validateProfile(clone(saveProfile(v.profile)));
+ ok(again.ok&&again.profile.avatar.pairs[1].id===A.pairs[1].id,'and the given one is the same after a second load');
+ /* refused by name, never cut */
+ const bad=[
+  ['a status that is not one of the three',o=>{o.avatar.status='evolving';},/avatar\.status/],
+  ['a version that is not a whole number',o=>{o.avatar.version=2.5;},/avatar\.version/],
+  ['a name past its cap',o=>{o.avatar.name='x'.repeat(AV_CAP.name+1);},/avatar\.name is \d+ characters/],
+  ['a description that is not text',o=>{o.avatar.description=7;},/avatar\.description is not text/],
+  ['a rating of six',o=>{o.avatar.arch.Sage=6;},/not one to five/],
+  ['a rating on no archetype',o=>{o.avatar.arch.Nobody=3;},/not an archetype/],
+  ['a weight for a pair not on the record',o=>{o.avatar.load0.zz9=2;},/not on this record/],
+  ['a weight past ten',o=>{o.avatar.load0.n1=12;},/not nought to ten/],
+  ['a tag on a place that is not a seat',o=>{o.avatar.tags.Knee={add:[],off:[]};},/not a seat/],
+  ['a tag list that is not words',o=>{o.avatar.tags.Throat.add=[3];},/not a list of words/],
+  ['two pairs with one id',o=>{o.avatar.pairs[1].id='n1';},/on two pairs/],
+  ['a pair id that is not an id',o=>{o.avatar.pairs[1].id='Not An Id!';},/not a pair id/],
+  ['a purpose value past its cap',o=>{o.purpose.soul[0]='x'.repeat(PUR_VAL_MAX);},/purpose\.soul\[0\] is 120 characters, and the most is 119/],
+  ['a commitment past its cap',o=>{o.purpose.sides.alone=['x'.repeat(PUR_LINE_MAX)];},/purpose\.sides\.alone\[0\] is 200 characters/],
+  ['a commitment that is not text',o=>{o.purpose.sides.alone=[5];},/purpose\.sides\.alone\[0\] is not text/]];
+ bad.forEach(c=>{const o=clone(good); c[1](o); const r=validateProfile(o);
+  ok(!r.ok&&c[2].test(errsOf(r)),c[0]+' is refused by name, '+errsOf(r));});
+ /* the silent empty string is gone, and nothing else became a refusal */
+ const blankCorner=clone(good); blankCorner.purpose.ego=['health',null,''];
+ ok(validateProfile(blankCorner).ok,'an unwritten corner, null or empty, still loads');
+ const older=clone(good); older.avatar={built:true,at:'2026-09-01T00:00:00Z',reviewedAt:null,
+  pairs:[{be:'I rest',notbe:'I do not sleep'}]};
+ const vo=validateProfile(older);
+ ok(vo.ok&&vo.profile.avatar.version===1&&vo.profile.avatar.status==='active'&&vo.profile.avatar.pairs[0].id,
+  'an older avatar loads, active because it was built, version one, with an id given');
+ ok(purposeRefuse('ok',PUR_VAL_MAX)===null&&purposeRefuse('',PUR_VAL_MAX)===null,'a short value and an empty one are fine');
+ /* the six sides, his names, each with its meaning */
+ ok(PUR_SIDES.every(k=>PUR_SIDE_SAY[k]&&PUR_SIDE_SAY[k].nm&&PUR_SIDE_SAY[k].say),
+  'every side has a name and a plain meaning beside it');
+ ok(PUR_SIDE_SAY.alone.nm==='Alone'&&PUR_SIDE_SAY.partner.nm==='Partner',
+  'and the names are his, not the document\'s Self and Relationship, which are his to choose (Q4)');
+ /* the fill, for a record already in memory */
+ const mem={built:true,pairs:[{be:'a',notbe:'b'}]}; avatarFill(mem);
+ ok(mem.version===1&&mem.status==='active'&&mem.pairs[0].id&&JSON.stringify(mem.arch)==='{}',
+  'an avatar held in memory from before gains the new fields and keeps what it had');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed =====');
 process.exit(F?1:0);
