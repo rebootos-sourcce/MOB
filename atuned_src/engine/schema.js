@@ -1744,6 +1744,15 @@ function pImport(txt){
  var o; try{ o=JSON.parse(txt); }catch(e){ IMPORT_ERR=['not valid JSON']; return null; }
  var v=validateProfile(o);
  if(!v.ok){ IMPORT_ERR=v.errs; return null; }
+ /* A RECORD THAT REACHED THIS BOUNDARY IS NEVER A BLANK FIRST RUN. The
+    onboarding tour exists for a person with nothing read yet; the quiz
+    link, a pasted record and a restored file all carry a real story
+    already, so the tour that asks "what brought you here" has nothing
+    left to ask. Without this, ui.onboarded stays false on every one of
+    these three routes, since none of them is obClose, the only other
+    place that sets it, and the next sign in reopens the tour on a person
+    who already answered it, outside this app, on the funnel. */
+ v.profile.ui.onboarded=true;
  var keepP=PROFILES.slice(), keepC=CURP;
  /* with no current profile there is nothing to restore to, so the rollback
     loads a blank rather than leaving the engine holding the rejected one. */
