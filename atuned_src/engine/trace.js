@@ -21,7 +21,9 @@
      pattern        derived   one node per address any story, line or
                               stored edge touches, read off NODES
      story supports pattern   derived, inferred. parseStory's imprints,
-                              re-read under the record's own soul (below)
+                              re-read under the record's own soul (below).
+                              user_confirmed where the entry's own ob.yes
+                              holds the address, the mirror card's Yes
      release, reframe         derived, observed. meter.unique grouped by
                               address and channel, the key meterKey makes
                               with no line. A truth channel is a reframe,
@@ -61,7 +63,9 @@ var TRACE_V=1;
 /* WHICH DERIVATION MADE A DERIVED GRAPH, TDD section 27's algorithm
    version. A graph read under one rule compared with one read under
    another is a change of rule, not a change in the person. */
-var TRACE_ALG=1;
+/* 2, 3 October: the mirror card's Yes is read as the person's confirmation
+   (yesOf in traceFromRecord). */
+var TRACE_ALG=2;
 
 /* TDD section 16, exactly. */
 var TRACE_NODE_TYPES=['story','impression','pattern','goal','behavior','protocol',
@@ -785,6 +789,38 @@ function traceFromRecord(p,intents){
   var r=traceEdgeAdd(g,ix,from,e,to,src,{attrs:attrs, nocycle:true});
   if(!r.ok)g.refused.push({derived:true, edge:from+' '+e+' '+to, why:r.why});};
 
+ /* THE PERSON'S OWN YES, read off the entry and never stored twice.
+
+    The mirror card in onboarding (ui/onboard.js, F4) asks Yes or Not me at
+    every address it shows and writes the answers onto the entry as ob.yes and
+    ob.no, which the boundary already checks (vEntryOb in engine/schema.js).
+    Nothing read them. So a person who pressed Yes at every address their
+    story lit read back, on loopRead and every surface over it, as having
+    confirmed nothing: measured 3 October, eight Yes answers, zero confirmed,
+    eight unanswered. That is the one place on the record a person has said
+    an inference is theirs, and the graph's word for that is user_confirmed.
+
+    A Yes on an edge the reading made promotes it, and the edge keeps that it
+    was inferred (TRACE_PROMOTE). A Yes on an address today's reading no
+    longer reaches, because the lexicon moved since, is still the person's
+    word about that story and that address, so it is held as user_confirmed
+    with nothing it was before. A Not me is NOT read here: the graph has no
+    provenance for a refusal, and a declined state is F11 and F16, the
+    owner's. It stays on the entry, where the boundary keeps it.
+
+    This is a change of derivation, so TRACE_ALG says so. */
+ var yesOf=function(sk,e){
+  var yes=(e&&e.ob&&Array.isArray(e.ob.yes))?e.ob.yes:[];
+  var at=(e&&typeof e.t==='string'&&!isNaN(new Date(e.t).getTime()))?e.t:undefined;
+  yes.forEach(function(a){
+   if(typeof a!=='number'||!BY[a])return;
+   var pk=node('pattern',String(a),'known',tracePatternAttrs(String(a)));
+   if(!pk)return;
+   var r=traceEdgeAdd(g,ix,sk,'supports',pk,'user_confirmed',{at:at, nocycle:true,
+    attrs:{derived:true, w:0, named:false, why:'the person answered Yes to this address for this story'}});
+   if(!r.ok){g.refused.push({derived:true, edge:sk+' supports '+pk, why:r.why}); return;}
+   r.edge.yes=true;});};
+
  /* THE STORIES, read under the record's own soul */
  var ents=(p.story&&Array.isArray(p.story.entries))?p.story.entries:[];
  var sids=traceStoryIds(p);
@@ -805,8 +841,8 @@ function traceFromRecord(p,intents){
      never hidden. */
   if(!e||e.lex!==LEX_VERSION)g.restated.push({story:sk, lex:(e&&e.lex)||null, now:LEX_VERSION});
   var im=reads[i];
-  if(im===null){g.gaps.push({kind:'no_text', story:sk, why:'the entry carries no text to read'}); return;}
-  if(im.err){g.gaps.push({kind:'unread', story:sk, why:'the sniffer could not read it: '+im.err}); return;}
+  if(im===null){g.gaps.push({kind:'no_text', story:sk, why:'the entry carries no text to read'}); yesOf(sk,e); return;}
+  if(im.err){g.gaps.push({kind:'unread', story:sk, why:'the sniffer could not read it: '+im.err}); yesOf(sk,e); return;}
   var by={}, order=[];
   im.forEach(function(x){
    if(x.node===null||x.node===undefined||!BY[x.node]){
@@ -823,7 +859,8 @@ function traceFromRecord(p,intents){
    var b=by[k];
    edge(sk,'supports',pk,'inferred',{derived:true, w:Math.round(b.amt*10)/10, named:b.named,
     why:b.named?'the words named '+b.fetter+' and the sniffer placed it here'
-     :'the seat was read and the address was chosen by the fallback, not by the words'});});});
+     :'the seat was read and the address was chosen by the fallback, not by the words'});});
+  yesOf(sk,e);});
 
  /* THE LINES OPENED. One node per address and channel, which is
     meterKey's own form with no line. */
