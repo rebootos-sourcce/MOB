@@ -1781,6 +1781,8 @@ step('the stored record',function(){
     session; this is it across one. mirrorYou and not saveYou, because nothing
     has changed yet and a boot has no business writing the store. */
  mirrorYou();
+ /* the bar's own entry names the record just pointed at, round RB */
+ if(typeof pselOwnSync==='function')pselOwnSync();
  syncCh(); syncLw(); syncSoul();
 });
 /* A RECORD CARRIED IN FROM THE QUIZ, round QZ, ui/panels.js recordLinkBoot.

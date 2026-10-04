@@ -172,15 +172,19 @@ function loginBusy(on){
  h.querySelectorAll('.ob-acts .btn').forEach(function(b){ b.disabled=!!on; });}
 /* DEVELOPER OPTIONS, DEACTIVATED IN FULL, ROUND RI. His words: "let's
    deactivate the developer option." Round RA first gated the panel behind a
-   console-only flag so a stranger never saw it; this goes further and removes
-   the capability itself, not only its visibility, because a flag that still
-   grants a real tier four if anyone ever sets it (from a console, or a stray
-   value already sitting in an old browser's storage from before this round)
-   is still the thing the paywall seat warned against: "taking money behind a
-   lock the product unlocks itself." devSight() now always reads false, so
-   lockPlan() (ui/lock.js) never reads a free tier four from this path again,
-   whatever any browser's storage already holds. loginDevOptions() always
-   returns nothing: there is no panel left to disclose. */
+   console-only flag so a stranger never saw it; round RB then also opened it
+   for the owner's own signed in account (devOwner/DEV_OWNER, since removed
+   along with the rest of this mechanism); round RI goes further still and
+   removes the capability itself, not only its visibility, because a flag
+   that still grants a real tier four if anyone ever sets it (from a console,
+   or a stray value already sitting in an old browser's storage from before
+   this round) is still the thing the paywall seat warned against: "taking
+   money behind a lock the product unlocks itself." devSight() now always
+   reads false, so lockPlan() (ui/lock.js) never reads a free tier four from
+   this path again, whatever any browser's storage already holds.
+   loginDevOptions() always returns nothing: there is no panel left to
+   disclose, on the login card or on the owner's own account page
+   (ui/account.js, also cleaned up with this round). */
 function devSight(){ return false; }
 function loginDevOptions(){ return ''; }
 function loginOpen(){
