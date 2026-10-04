@@ -107,8 +107,11 @@ async function flowGate(browser,FILE,ok,booted){
   ok(o.lkids.length===1&&o.lkids[0]==='flownew'&&o.rkids.length===1&&o.rkids[0]==='flowrail'
     &&o.lsec.length===0&&!o.rel,
    'FT3: '+tag+'each rail holds one panel on Flow and no rail section at all, '+JSON.stringify({l:o.lkids,r:o.rkids,lsec:o.lsec}));
-  ok(/New/.test(o.lhd)&&o.lhd.length>25&&/Accountability/.test(o.rhd)&&o.rhd.length>25&&/Ritual/.test(o.chd)&&o.chd.length>25,
-   'FT14: '+tag+'each column names its job and says in a sentence what it is, '+JSON.stringify([o.lhd,o.rhd,o.chd]));
+  /* round RB: the two side heads lost their lines to his "Get rid of all the
+     sec[ond] third tier text", so they are their names alone; the centre
+     still says in a sentence what a ritual is */
+  ok(o.lhd.trim()==='New'&&o.rhd.trim()==='Accountability'&&/Ritual/.test(o.chd)&&o.chd.length>25,
+   'FT14: '+tag+'each side column is named by its job alone and the centre says in a sentence what it is, '+JSON.stringify([o.lhd,o.rhd,o.chd]));
   ok(COLS.every(([job])=>g[job].col.l>=0&&g[job].col.r<=o.vw+1)&&o.sw<=o.cw,
    'FT12: '+tag+'every column sits inside the screen and the page does not scroll sideways, '+JSON.stringify({vw:o.vw,sw:o.sw,cw:o.cw}));
 
@@ -174,7 +177,9 @@ async function flowGate(browser,FILE,ok,booted){
    /* a start through the builder's own button clears its draft, so this does
       what that press does before it looks at the closed menu. (The builder
       no longer opens itself on a first visit, round QN; FT24 holds that.) */
-   RIT.sel={}; RIT.order=[]; RIT.add=false; ritRender();
+   /* the Active list is Goals' Today; with a ritual running the centre opens
+      on the week since round RB, so the list is asked for by its view */
+   RIT.sel={}; RIT.order=[]; RIT.add=false; RIT.gview='today'; ritRender();
    await new Promise(r=>setTimeout(r,200));
    const lc=document.getElementById('lcol');
    const shut=!!lc.querySelector('.rv-shut .rv-add')&&!lc.querySelector('#ritwhen');
@@ -230,8 +235,8 @@ async function flowGate(browser,FILE,ok,booted){
    away:!!document.querySelector('#flowside [data-act="go-ritual"]'),
    streak:(document.querySelector('#flowside .rv-mid b')||{}).textContent,
    made:document.querySelectorAll('#flowside [data-act="save"],#flowside #ritwhen').length}));
-  ok(/Nothing active yet/.test(e0.due)&&/Nothing to miss yet/.test(e0.miss)&&e0.add&&!e0.away&&e0.streak==='–'&&e0.made===0,
-   'FT8: with nothing active the tracker says so, offers the one press and not a second builder, and a zero streak is the house dash (round J13, COPY.md), not a bare 0, '+JSON.stringify(e0));
+  ok(e0.due===''&&/Nothing to miss yet/.test(e0.miss)&&e0.add&&!e0.away&&e0.streak==='–'&&e0.made===0,
+   'FT8: with nothing active the tracker offers the one press and no line above it (round RB), offers and not a second builder, and a zero streak is the house dash (round J13, COPY.md), not a bare 0, '+JSON.stringify(e0));
   await pg.evaluate(()=>document.querySelector('#flowside [data-act="add"]').click()); await wait(400);
   ok(await pg.evaluate(()=>S.tab===TAB.RITUAL&&!!document.querySelector('#lcol #ritwhen')),
    'FT8: the press opens the builder in the left column and goes nowhere, because there is nowhere to go');
@@ -405,7 +410,7 @@ async function flowGate(browser,FILE,ok,booted){
    if(go)go.click(); await wait(400);
    const plan=ritPlans().filter(p=>p.tc==='PE')[0]||null;
    const said=(document.getElementById('status')||{}).textContent||'';
-   setTab(TAB.RITUAL); await wait(400);
+   RIT.gview='today'; setTab(TAB.RITUAL); await wait(400);
    const due=[...document.querySelectorAll('#flowside .rv-act .rv-nm')].map(x=>x.textContent);
    const act=[...document.querySelectorAll('#rit .rv-item .rv-sub')].map(x=>x.textContent).filter(t=>/Toward Buddha/.test(t)).length;
    return {label, plan:!!plan, said, name:plan?ritName(plan.steps):'', due, act};});
@@ -601,7 +606,9 @@ async function flowGate(browser,FILE,ok,booted){
    'FT21: the figures over the cubes are counts of days and minutes worked out from the seed, '+JSON.stringify([lp.kept,lp.figs,seed.keptDays,seed.mins]));
 
   /* ---- FT25: a ritual's badge, its percent complete worked out here ---- */
-  const pc=await pg.evaluate(()=>{const rows=[...document.querySelectorAll('#rit .rv-act .rv-item')];
+  /* Today is first sight for these rings since round RB, so they tween in
+     from empty (crMotion) and are read once they have landed */
+  const pc=await pg.evaluate(async()=>{RIT.gview='today'; ritRender(); await new Promise(r=>setTimeout(r,1500)); const rows=[...document.querySelectorAll('#rit .rv-act .rv-item')];
    return rows.map(r=>({id:r.querySelector('.rv-log').getAttribute('data-id'), pill:(r.querySelector('.rv-pc .crb-v')||{}).textContent,
     glyph:!!r.querySelector('.rv-pc .crb-g svg'), tip:(r.querySelector('.rv-pc')||{getAttribute:()=>''}).getAttribute('data-tip')||'',
     word:[...r.querySelectorAll('.rv-sub .rv-tg')].length}));});
@@ -920,6 +927,27 @@ async function flowGate(browser,FILE,ok,booted){
   ok(JSON.stringify(wk.heads)===JSON.stringify(wk.want)&&JSON.stringify(wk.setOn)===JSON.stringify([1,3,5]),
    'FT30: '+tag+'This week is a calendar week, Monday first with each date, and a ritual set for Tuesday, Thursday and Saturday is drawn on those three days and no other, '+JSON.stringify(wk));
 
+  /* ---- FT33, round RB: a worked example runs rituals, and the page reads them ----
+     engine/ritex.js builds each example's plans and days with its own copy of
+     ritCovers, because the engine cannot call a renderer. This holds the two
+     to one answer: the page's own kept and missed count for every plan is the
+     engine's, and the centre opens on the week with every running ritual in
+     it. Then the person's own record is put back. */
+  const ex=await pg.evaluate(()=>{const out={};
+   ['Derek','Diane','Ana','James'].forEach(nm=>{
+    const p=PEOPLE.find(x=>x.nm===nm); loadP(PEOPLE.indexOf(p)); RIT.gview=null; setTab(TAB.RITUAL); ritRender();
+    const st=ritRead(), R=ritexBuild(p,Date.now());
+    const page=st.plans.reduce((a,q)=>{const r=ritRunRead(q,st.today); return {k:a.k+r.kept, m:a.m+r.missed};},{k:0,m:0});
+    const rows=[...document.querySelectorAll('#rit .rv-goals .rv-wg .rv-wgn b')].map(b=>b.textContent);
+    out[nm]={plans:st.plans.length, act:st.act.length, page, eng:R?{k:R.kept,m:R.missed}:null,
+     week:!!document.querySelector('#rit .rv-goals [data-v="week"][aria-pressed="true"]')&&st.act.every(q=>rows.indexOf(ritName(q.steps))>=0), today:!!document.querySelector('#rit .rv-wgh.rv-now'),
+     due:document.querySelectorAll('#flowside .rv-act .rv-log').length};});
+   loadP(0); setTab(TAB.RITUAL); ritRender(); return out;});
+  ok(['Derek','Diane','Ana'].every(n=>{const x=ex[n]; return x.plans>0&&x.act>0&&x.eng&&x.page.k===x.eng.k&&x.page.m===x.eng.m&&x.week&&x.today;})
+    &&new Set(['Derek','Diane','Ana'].map(n=>JSON.stringify(ex[n].page))).size===3,
+   'FT33: '+tag+'Derek, Diane and Ana each open on their own running rituals, the page counts the same kept and missed days the engine wrote, and the week holds every one with today marked, '+JSON.stringify(ex));
+  ok(ex.James.plans===0&&ex.James.eng===null&&!ex.James.week,'FT33: '+tag+'James said yes to nothing, opens on nothing, and so opens on Today and not an empty week, '+JSON.stringify(ex.James));
+
   /* ---- FT31: the content is real, and says where it came from ---- */
   const ct=await pg.evaluate(()=>{const miss=CHILD.filter(c=>!AFFIRM[c.nm]||!CHALLENGE[c.nm]).map(c=>c.nm);
    const lines=[].concat(Object.values(AFFIRM),Object.values(CHALLENGE).map(c=>c.act+' '+c.when));
@@ -959,7 +987,9 @@ async function flowGate(browser,FILE,ok,booted){
      note:pre?new RegExp(pre+' days? of this span before that are drawn blank').test(sec().innerText):!sec().querySelector('.rv-sparse'),
      cells:sec().querySelectorAll('.rv-sc').length===today-t0+1, wide:!!sec().querySelector('.rv-syr')===(today-t0+1>62), want:[kept,missed,pre], figs});}
    sec().querySelector('[data-act="rng"][data-v="1m"]').click();
-   loadP(PEOPLE.findIndex(x=>x.nm==='Marcus')); setTab(TAB.RITUAL); ritRender();
+   /* James, not Marcus: since round RB Marcus runs a ritual (engine/ritex.js)
+      and James, who says yes to nothing, is the example with no record */
+   loadP(PEOPLE.findIndex(x=>x.nm==='James')); setTab(TAB.RITUAL); ritRender();
    out.empty=/Nothing on your record yet/.test(sec().innerText)&&sec().querySelectorAll('.rv-sc-done,.rv-sc-miss').length===0;
    loadP(0); setTab(TAB.RITUAL); ritRender();
    return out;});

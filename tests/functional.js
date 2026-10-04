@@ -4838,7 +4838,9 @@ console.log('\n=== a teacher on the compass opens the behaviour complex and adds
   runPathDrill(own); await wait(100);
   const pb=document.querySelector('#rdrill .tcx');
   o.pathBox=pb?pb.getAttribute('data-tcx'):null; o.pathK=own.k;
-  setTab(TAB.RITUAL); await wait(400);
+  /* the Active list is Goals' Today, and with a ritual running the centre
+     opens on the week since round RB, so the list is asked for by its view */
+  RIT.gview='today'; setTab(TAB.RITUAL); await wait(400);
   o.row=[...document.querySelectorAll('#rit .rv-sub')].map(s=>s.textContent).filter(t=>/^Toward Buddha/.test(t)).length;
   /* a worked example saves nothing, and the panel says so and offers no button */
   loadP(PERSON('Gordon')); setTab(TAB.COMPASS); await wait(300);
