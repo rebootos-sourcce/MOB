@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1663 7cf16dc 2026-10-04 21:32"><head><meta charset="utf-8">
+<html lang="en" data-build="v1667 a6db43a 2026-10-04 21:35"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -5798,8 +5798,24 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     compass lane to keep clear. */
  /* and it keeps 12 of foot under it, the desktop's own, because accuracy
     lies level with it in the lower left, round LR, placed by that 12 */
- .fzoom{position:static;order:1;align-self:flex-end;margin:8px 22px 12px 12px}
+ .fzoom{position:static;order:2;align-self:flex-end;margin:8px 22px 12px 12px}
  .fzoom .fb-grp{flex-direction:row}
+ /* THE BAND PILL TAKES ITS OWN ROW ON A PHONE, ABOVE ACCURACY. Round OG put
+    it beside accuracy at a fixed left of 152, which is desktop arithmetic: on
+    a desktop zoom is in the far corner of a 900 wide stage. On a phone zoom
+    is in flow on that same line, so the line had to hold accuracy 132, the
+    pill up to 213 for Compounding, zoom 144, two gaps of 8 and the two 22
+    insets, 549 in all, and a 390 screen gives it 376. Measured on the build
+    at 390: "62% Gaining" lay under zoom out and zoom in, on every profile
+    and on a blank one, from 360 up to 480, and Compounding still did at 540.
+    The overlap moved with the length of the tier word, so no left value could
+    fix it. The pill goes in flow after the picture, at accuracy's own inset,
+    and zoom stays the last thing in the column, which is what accuracy's
+    bottom of 9 is measured against. Order 2 for both, because the pill is
+    ahead of the canvas in the markup and zoom is after it. The 3 of foot
+    puts 8 between the pill and accuracy, the 8 the desktop keeps between
+    them side by side, since accuracy is 50 high to zoom's 44. */
+ .railtop{position:static;order:2;align-self:flex-start;margin:8px 12px 3px 22px}
  /* Five blocks were absolutely positioned against a stage that is 900 wide
     on a desktop. At 390 they all landed on each other at the bottom of the
     wheel. On a phone the stage is a column: the canvas, then each block in
@@ -5898,7 +5914,6 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     last thing in the column, so it keeps its absolute corner and takes only
     zoom's own inset from the side. */
  .acc{left:22px}
- .railtop{left:162px}
  .howto{order:5;margin:12px 0 4px;max-width:none}
  .pol2{order:6;position:static;height:auto;margin:12px auto 0;justify-content:center}
  .pol2 svg{height:190px}
@@ -70730,5 +70745,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004656115"></div>
+<div id="eof" hidden data-len="004657309"></div>
 </body></html>
