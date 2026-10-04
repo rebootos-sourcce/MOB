@@ -1309,7 +1309,8 @@ addEventListener('click',function(e){
  if(!b)return;
  var k=b.getAttribute('data-start');
  if(k==='story'){setTab(TAB.STORY);render();
-  var ta=document.getElementById('sttext'); if(ta)ta.focus(); return;}
+  /* talking, the box a person writes in is the reply line */
+  var ta=document.getElementById('sttext')||document.getElementById('stcin'); if(ta)ta.focus(); return;}
  if(k==='nine'){runRecogniseDrill();return;}
  if(k==='ages'){runAgeDrill();return;}
  if(k==='avatar'){runAvatarDrill();return;}});

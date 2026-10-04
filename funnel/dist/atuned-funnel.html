@@ -1,7 +1,7 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Atuned</title>
-<meta name="description" content="See what's running you. Atuned listens to how you describe what is happening, shows you the patterns it notices, and lets you decide whether it is right.">
+<meta name="description" content="Instruments for the body you are running. Atuned listens to how you describe what is happening, shows you the patterns it notices, and lets you decide whether it is right.">
 <!-- tokens.css is generated from the app's own stylesheet by tools/tokens.py.
      It is linked and not copied, because a palette copied by hand is correct
      on the day it is copied and wrong afterwards. BUILD-single.sh inlines it
@@ -225,16 +225,19 @@ a{color:inherit}
 /* ---- the bar ---- */
 .top{display:flex;align-items:center;justify-content:space-between;gap:var(--g3);
  padding:10px var(--gut);position:relative;z-index:3}
+.top .brand{display:flex;flex-direction:column;gap:15px}
 .top .wm{font-size:22px}
-.top .tag{color:var(--mid);font-size:15px;margin-left:14px}
-.nav{display:flex;gap:6px;flex-wrap:wrap;font-size:15px}
+.top .pwr{color:var(--dim);font-size:12px;letter-spacing:.02em}
+.nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:15px}
 .nav a{display:inline-flex;align-items:center;justify-content:center;
  min-height:var(--tap);min-width:var(--tap);padding:0 10px;color:var(--mid);
  text-decoration:underline;text-decoration-color:var(--edge-2);
  text-underline-offset:5px;text-decoration-thickness:1px;
  transition:color var(--t-micro) var(--ease-out),text-decoration-color var(--t-micro) var(--ease-out)}
 .nav a:hover,.nav a:focus-visible{color:var(--ink);text-decoration-color:var(--ink)}
-.nav a.go{color:var(--ink);text-decoration-color:var(--accent)}
+.nav a.go{background:var(--accent);color:var(--on-accent);font-weight:600;
+ text-decoration:none;padding:0 18px;border-radius:999px}
+.nav a.go:hover,.nav a.go:focus-visible{color:var(--on-accent);box-shadow:0 0 0 5px rgba(126,184,212,.16)}
 
 /* ---- the stage and the story ---- */
 .story{position:relative}
@@ -503,8 +506,8 @@ a.ghost:hover{color:var(--ink)}
 </style></head><body>
 
 <header class="top">
- <div><span class="wm">At<span class="um">u</span>ned</span><span class="tag">See what's running you.</span></div>
- <nav class="nav" aria-label="Pages"><a href="atuned-about.html">About</a><a href="atuned-faq.html">Questions</a><a class="go" href="atuned-quiz.html">Start</a></nav>
+ <div class="brand"><span class="wm">At<span class="um">u</span>ned</span><span class="pwr">Powered by SOURCE OS</span></div>
+ <nav class="nav" aria-label="Pages"><a href="atuned-about.html">About</a><a href="atuned-faq.html">FAQ</a><a class="go" href="atuned-quiz.html">Take quiz</a></nav>
 </header>
 
 <main class="story">
@@ -676,15 +679,15 @@ a.ghost:hover{color:var(--ink)}
      "Same response" the six pull to one place. Section 69: SIGNAL, then
      CONNECT, then PATTERN, repetition gathers. -->
 <section class="fr" id="recognize" data-frame="recognize">
- <p class="big rv">You know what you want.</p>
- <p class="big rv soft" style="--d:.2s">Something gets in the way.</p>
+ <p class="big rv">You know you have something important to do.</p>
+ <p class="big rv soft" style="--d:.2s">Something stops your progress.</p>
  <ul class="keep" id="keep">
-  <li>You keep saying yes.</li>
-  <li>You keep putting it off.</li>
-  <li>You keep having the same argument.</li>
-  <li>You keep overthinking it.</li>
-  <li>You keep trying to control it.</li>
-  <li>You keep going back to the same thing.</li>
+  <li>You keep saying yes when you mean no.</li>
+  <li>You keep putting things off, watching them pile up.</li>
+  <li>You have the same argument, person to person.</li>
+  <li>You overthink and ruminate.</li>
+  <li>You're hyper vigilant, and need to be in control, or feel powerless.</li>
+  <li>You return to the same addiction.</li>
  </ul>
  <div class="same" id="same"><p class="big">Different situation.</p><p class="big">Same response.</p></div>
  <div class="cap rv" style="--d:.3s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-recognize"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
@@ -702,7 +705,7 @@ a.ghost:hover{color:var(--ink)}
      on this page reads the visitor. -->
 <section class="fr mx" id="mirror" data-frame="mirror" data-m="">
  <span class="eye rv">Example</span>
- <h2 class="rv">A story can hide a pattern.</h2>
+ <h2 class="rv">A story is a pattern of energy.</h2>
  <p class="said rv" style="--d:.15s">I <span class="w w1">keep</span> saying <span class="w w2">yes</span> when I <span class="w w3">don't want</span> to.</p>
  <ul class="parts rv" style="--d:1s" aria-label="The words, separated"><li>Yes</li><li>Don't want</li><li>Keep</li></ul>
  <ol class="chain rv" style="--d:1.2s" aria-label="The pattern, in order">
@@ -756,14 +759,14 @@ a.ghost:hover{color:var(--ink)}
      ATUNED conceptual model." So the frame says it is a model, in print, and
      the key never names a nerve as anything but a likeness. -->
 <section class="fr" id="cascade" data-frame="cascade">
- <h2 class="rv">A response can become a pattern.</h2>
- <p class="big rv soft" style="--d:.15s">A pattern can become a habit.</p>
+ <h2 class="rv">A response becomes a pattern.</h2>
+ <p class="big rv soft" style="--d:.15s">A pattern becomes behavior.</p>
  <ol class="steps rv" style="--d:.3s" id="csteps">
-  <li data-step="once"><b>Once</b><span>Something happens. Your body answers.</span></li>
-  <li data-step="again"><b>Again</b><span>The same answer comes back, quicker each time.</span></li>
-  <li data-step="own"><b>On its own</b><span>The answer starts with nothing new to answer, before you choose it.</span></li>
+  <li data-step="once"><b>First time</b><span>You react: you either overexpress or contract.</span></li>
+  <li data-step="again"><b>Second time</b><span>The response is repeated.</span></li>
+  <li data-step="own"><b>Third time</b><span>The response is automatic. The trigger is created and set.</span></li>
  </ol>
- <p class="m soft rv" style="--d:.45s">The picture is our own model of how a pattern forms.</p>
+ <p class="m soft rv" style="--d:.45s">The picture is our own model.</p>
  <div class="cap rv" style="--d:.6s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-cascade"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
  <p class="cap-b" id="cap-cascade">Something comes in from outside and lands on one point on the ring.
  That point is one place in your body, and it answers. The answer runs in along
@@ -777,7 +780,7 @@ a.ghost:hover{color:var(--ink)}
      Clusters. Connections. Network." The stage assembles the whole Field. -->
 <section class="fr" id="connect" data-frame="network">
  <h2 class="rv">Patterns connect.</h2>
- <p class="big rv soft" style="--d:.15s">What starts at work can show up at home.</p>
+ <p class="big rv soft" style="--d:.15s">What starts in childhood shows up in youth, adulthood and professional life.</p>
  <p class="m rv" style="--d:.3s">Atuned looks for the connections.</p>
  <div class="cap rv" style="--d:.45s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-connect"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
  <p class="cap-b" id="cap-connect">The outer ring is the 112 addresses, coloured by the part of the body
@@ -789,8 +792,8 @@ a.ghost:hover{color:var(--ink)}
      The stage turns to the body the Body page draws, generated from the same
      tables by make-figure.js. "Do not convert sensation into diagnosis." -->
 <section class="fr" id="body" data-frame="body">
- <h2 class="rv">You feel it in your body.</h2>
- <p class="felt rv" style="--d:.15s"><span style="transition-delay:.2s">Tight.</span><span style="transition-delay:.45s">Heavy.</span><span style="transition-delay:.7s">Hot.</span><span style="transition-delay:.95s">Numb.</span><span style="transition-delay:1.2s">Restless.</span><span style="transition-delay:1.45s">Pressured.</span><span style="transition-delay:1.7s">Nothing at all.</span></p>
+ <h2 class="rv">You can already feel it in your body.</h2>
+ <p class="felt rv" style="--d:.15s"><span style="transition-delay:.2s">Tight.</span><span style="transition-delay:.45s">Heavy.</span><span style="transition-delay:.7s">Hot.</span><span style="transition-delay:.95s">Numb.</span><span style="transition-delay:1.2s">Restless.</span><span style="transition-delay:1.45s">Pressured.</span><span style="transition-delay:1.7s">Disconnected.</span><span style="transition-delay:1.95s">Nothing at all.</span></p>
  <p class="big rv" style="--d:.4s">All of that is information.</p>
  <div class="cap rv" style="--d:.6s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-body"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
  <p class="cap-b" id="cap-body">Seven colours, seven seats, from the base of the spine to the top of the
@@ -805,7 +808,7 @@ a.ghost:hover{color:var(--ink)}
      below light in time with it. Then beat 21, verify. -->
 <section class="fr" id="release" data-frame="release">
  <h2 class="rv">Release disrupts the old pattern.</h2>
- <p class="big rv soft" style="--d:.15s">Reframe gives you a new sentence to practise.</p>
+ <p class="big rv soft" style="--d:.15s">Reframe points your compass in the new direction.</p>
  <ol class="steps rv" style="--d:.3s" id="steps">
   <li data-step="pattern"><b>Pattern</b><span>A repeated pattern forms, and its lines pull tight.</span></li>
   <li data-step="release"><b>Release</b><span>Release interrupts the flow. The lines go slack and the field opens.</span></li>
@@ -828,27 +831,23 @@ a.ghost:hover{color:var(--ink)}
 <section class="fr" id="loop" data-frame="loop">
  <h2 class="rv">Discover, play, flow, embody.</h2>
  <ul class="four rv" style="--d:.15s">
-  <li><i style="border-color:var(--throat)"></i><div><b>Discover</b><span>See what keeps happening.</span></div></li>
-  <li><i style="border-color:var(--sacral)"></i><div><b>Play</b><span>Test what you think you know.</span></div></li>
-  <li><i style="border-color:var(--heart)"></i><div><b>Flow</b><span>Release the charge: the weight a pattern leaves on one place in your body.</span></div></li>
-  <li><i style="border-color:var(--root)"></i><div><b>Embody</b><span>Make a different choice.</span></div></li>
+  <li><i style="border-color:var(--throat)"></i><div><b>Discover</b><span>See what patterns are running your life.</span></div></li>
+  <li><i style="border-color:var(--sacral)"></i><div><b>Play</b><span>See yourself clearly, and use recipes to improve your integrity.</span></div></li>
+  <li><i style="border-color:var(--heart)"></i><div><b>Flow</b><span>Release the charge and repeat the better behavior, then...</span></div></li>
+  <li><i style="border-color:var(--root)"></i><div><b>Embody</b><span>...become. Consume the knowledge that will help make this stick.</span></div></li>
  </ul>
- <p class="back rv" style="--d:.3s">Embody hands back to discover. Atuned remembers what you found, so
- next time you have somewhere to look.</p>
  <div class="cap rv" style="--d:.45s"><button type="button" class="cap-t" aria-expanded="false" aria-controls="cap-loop"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2"/><path d="M10 9v5.2"/><circle class="dot" cx="10" cy="6.1" r=".6"/></svg><span>Key</span></button>
  <p class="cap-b" id="cap-loop">The light goes round the four and never stops, because the loop has no end.</p></div>
 </section>
 
-<!-- BEATS 31 AND 32. "Not a diagnosis. Not a verdict. A map you can
-     question." And the transparency the TDD asks for, which the product
-     already keeps: the glossary in engine/data/kb.js says, row by row, what
-     is measured and what is a model. -->
+<!-- BEATS 31 AND 32, ROUND RV. "Not a diagnosis. Not a verdict." closes now
+     on his own line from FN2, already ruled in marketing/LINES.md: "The
+     software is the key and the roadmap. You are the door." The two hedge
+     sentences that used to follow it (established ideas, our own model,
+     still testing, the open tables) came out on his instruction, round RV:
+     he wants the page to assert rather than qualify itself here. -->
 <section class="fr" id="honest" data-frame="honest">
- <h2 class="rv">Not a diagnosis. Not a verdict. A map you can question.</h2>
- <p class="m rv" style="--d:.15s">Some of it rests on established ideas. Some is our own model. Some we
- are still testing.</p>
- <p class="m soft rv" style="--d:.3s">Every table the reading runs on is open inside the product, so you can
- check the work against your own life.</p>
+ <h2 class="rv">Not a diagnosis. Not a verdict. The software is the key and the roadmap. You are the door.</h2>
 </section>
 
 <!-- BEATS 33 AND 34, RETURN TO THE HUMAN, AND START. "Everything
@@ -858,18 +857,19 @@ a.ghost:hover{color:var(--ink)}
 <section class="fr fr-ret" id="start" data-frame="ret">
  <p class="big rv">You don't need to understand yourself first.</p>
  <p class="big rv soft" style="--d:.25s">Bring something real.</p>
+ <p class="big rv soft" style="--d:.35s">Being requires becoming.</p>
  <p class="wm end-wm rv" style="--d:.45s">At<span class="um">u</span>ned</p>
- <p class="end-tag rv" style="--d:.55s">See what's running you.</p>
- <div class="cta rv" style="--d:.65s"><a class="btn" href="atuned-quiz.html">Start</a><a class="ghost" href="atuned-about.html">Explore first</a></div>
- <p class="meta rv" style="--d:.75s">One question per screen. Stop and come back. Nothing you answer leaves your browser.</p>
+ <p class="end-tag rv" style="--d:.55s">Instruments for the body you are running.</p>
+ <div class="cta rv" style="--d:.65s"><a class="btn" href="atuned-quiz.html">Start coherence quiz</a><a class="ghost" href="atuned-faq.html">FAQ</a></div>
+ <p class="meta rv" style="--d:.75s">Nothing you answer leaves your browser.</p>
 </section>
 
 </div>
 </main>
 
 <footer class="foot">
- <nav class="nav" aria-label="Pages, again"><a href="atuned-about.html">About</a><a href="atuned-faq.html">Questions</a><a href="atuned-buy.html">Tiers</a><a class="go" href="atuned-quiz.html">Start</a></nav>
- <p>This page makes no request of any kind. It reads self report. A clinician reads a person, and those are different jobs.</p>
+ <nav class="nav" aria-label="Pages, again"><a href="atuned-about.html">About</a><a href="atuned-faq.html">FAQ</a><a href="atuned-buy.html">Tiers</a><a class="go" href="atuned-quiz.html">Take quiz</a></nav>
+ <p>&copy; 2026 Tula Unified LLC. All rights reserved.</p>
 </footer>
 
 <script>
