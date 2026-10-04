@@ -1083,13 +1083,30 @@ function sumFull(r){
      reading is a claim about the person and the story is the evidence for
      it, and evidence goes first. It stands on the first screen, left of the
      roots, and the phone reads it before them. */
-  +'<div class="sg-two sg-lead">'
+  /* THE LEAD ROW, REBUILT, round RB. His words: "The summary page layout is
+     abysmal. I'm not sure what happened here." Measured on Diane at 1600 with
+     three entries before touching it: the story card ran about 1750 pixels
+     and the drivers card beside it was stretched to match while its content
+     ended near 950, so the right half of the first two screens was a hole
+     about 750 pixels tall with one fold sitting at its foot. And What to do,
+     the only block on the page that says what a person can do, sat about 2730
+     pixels down, the best part of three screens under the reading.
+
+     So the row stops stretching and the right column carries two cards: what
+     to do first, where the hole was, and the drivers under it. The story
+     keeps the left and the first screen, which is the ruling above. Nothing
+     is removed and no sentence changes; the action moves up beside the
+     evidence it acts on. */
+  +'<div class="sg-two sg-lead sg-lead2">'
    +'<section class="sg-card sg-story" data-grp="story">'+told
     +'<div class="s-readbox sg-flat">'+story+'</div></section>'
-   +drv
+   +'<div class="sg-side">'+sgZone('todo','What to do',sumOutput(r),'sg-card')+drv+'</div>'
   +'</div>'
+  /* the patterns block follows the lead on every width. On a phone it was
+     lifted above the story by an order rule written before it existed. */
+  +(typeof sumLoopSlot==='function'?sumLoopSlot(r):'')
   +sumMarks(B,r)
-  +'<div class="sg-two">'
+  +'<div class="sg-two sg-even">'
    +'<section class="sg-card" data-grp="run">'+sgHead('run','What is running')
     +sumBlueprint()
     +'<div class="sg-gap">'+sumArch(r)+'</div>'
@@ -1104,8 +1121,6 @@ function sumFull(r){
     +sgFold('ig','Integrity over time',sumIg(r))
    +'</section>'
   +'</div>'
-  +sgZone('todo','What to do',sumOutput(r))
-  +(typeof sumLoopSlot==='function'?sumLoopSlot(r):'')
   +'<div class="sg-folds">'
    +sgFold('lens','Four lenses',sumLens(r,true))
    +(C?sgFold('conv','Birth comparison',sumConverge(C)):'')

@@ -7633,8 +7633,99 @@ function planWorth(patterns){
    arguments, so nothing here reaches for a document or a store.
    ============================================================ */
 const AV_MONTH=30*24*3600*1000;
+/* ============================================================
+   THE BECOMING SLICES S1 AND S2, round RB. ATUNED-becoming-system-TDD.md,
+   audited in BECOMING-AUDIT.md, whose section 11 orders the build. His words
+   at round RB: "The avatar page has a new TDD. It doesn't look like it was
+   ever updated or touched." It had not been: none of S1 to S4 was built.
+
+   S1. What the Avatar page writes now travels with the record. The archetype
+   ratings (arch), the weight each pair was written against (load0) and the
+   tags a person put on or took off (tags) lived under their own key in the
+   browser beside the record, so an export dropped them and another device
+   never saw them (R08). They are fields of the avatar now. The daily rule
+   stays beside the record until S7 makes it a ritual step, as the audit says.
+   movedAt says when the old key was read across, once, so a person who then
+   takes every rating off does not have them read back in on the next paint.
+
+   S2. Identity and bookkeeping the document's section 6.2 asks for: a name,
+   a title and a description the person writes; a version that moves only when
+   the person says they revised it; a status, draft, active or archived, which
+   is a declared fact (R06: evolving and integrated are readings and are never
+   stored); and an id on every pair, so a weight is kept against the pair and
+   not against its words, which changed meaning every time a word was fixed.
+
+   All additive inside schema version 2, the house's own precedent for the
+   practice objects and the bank of days: an older record has none of these
+   and is filled from this blank.
+   ============================================================ */
+const AV_STATUS=['draft','active','archived'];
+/* the caps on what a person writes, one place, read by the boundary and the
+   surface alike so the field and the refusal agree about the number */
+const AV_CAP={name:60, title:80, description:280, tag:60, tags:60};
 function avatarBlank(){
- return {built:false, at:null, reviewedAt:null, pairs:[]};}
+ return {built:false, at:null, reviewedAt:null, pairs:[],
+  name:'', title:'', description:'', version:1, status:'draft',
+  arch:{}, load0:{}, tags:{}, movedAt:null};}
+/* the status a record carries, or for one written before there was a status,
+   the one its own built flag already said */
+function avatarStatus(av){
+ if(av&&AV_STATUS.indexOf(av.status)>=0)return av.status;
+ return (av&&av.built)?'active':'draft';}
+/* A PAIR'S ID. A pair written before ids existed is given one that is the same
+   on every load, read off its own words and seat, so the weight kept against
+   it does not move to a new key each time the record is opened. Two pairs
+   with the same words take the next free suffix, in order. */
+function avatarHash(t){
+ var h=2166136261; t=String(t);
+ for(var i=0;i<t.length;i++){h^=t.charCodeAt(i); h=Math.imul(h,16777619);}
+ return (h>>>0).toString(36);}
+function avatarPairId(pr,taken){
+ var base='p'+avatarHash((pr.be||'')+'\n'+(pr.notbe||'')+'\n'+(pr.seat||'')), id=base, n=1;
+ while(taken&&taken[id]){n++; id=base+'x'+n;}
+ return id;}
+const AV_ID=/^[a-z0-9]{1,24}$/;
+/* every pair carries an id after this, and no two share one */
+function avatarEnsureIds(av){
+ if(!av||!Array.isArray(av.pairs))return av;
+ var taken={};
+ av.pairs.forEach(function(pr){if(pr&&typeof pr.id==='string'&&AV_ID.test(pr.id)&&!taken[pr.id])taken[pr.id]=1;
+  else if(pr)pr.id=null;});
+ av.pairs.forEach(function(pr){if(pr&&!pr.id){pr.id=avatarPairId(pr,taken); taken[pr.id]=1;}});
+ return av;}
+/* a new pair's id, minted at the moment of writing, never reused */
+function avatarNewId(now,rnd){
+ return 'n'+Math.floor(now||Date.now()).toString(36)+Math.floor((rnd==null?Math.random():rnd)*1679616).toString(36);}
+/* THE MONTHLY REVIEW, ANSWERED. avatarDue says a month has passed; this is
+   the person's answer. Still true moves the review date and nothing else.
+   Revised moves the version, because the version counts the times the person
+   said who they are becoming has changed, and nothing else may move it. */
+function avatarReview(av,revised,now){
+ if(!av)return av;
+ av.reviewedAt=new Date(now||Date.now()).toISOString();
+ if(revised)av.version=Math.max(1,(+av.version||1))+1;
+ return av;}
+/* the side key's entry for one profile, read across into the avatar, once.
+   keyOf maps the old text key of a pair to the pair, because the side key
+   kept weights against the pair's words. What is read across is only what the
+   avatar does not already hold, so a record that was written by a newer
+   build wins over the browser's older copy. Returns how many were moved. */
+function avatarMoveSide(av,e,keyOf,now){
+ if(!av||av.movedAt)return 0;
+ var n=0;
+ if(e&&typeof e==='object'){
+  if(e.arch&&typeof e.arch==='object')Object.keys(e.arch).forEach(function(k){
+   var v=e.arch[k]; if(av.arch[k]===undefined&&[1,2,3,4,5].indexOf(v)>=0){av.arch[k]=v; n++;}});
+  if(e.load0&&typeof e.load0==='object')Object.keys(e.load0).forEach(function(k){
+   var v=e.load0[k], pr=keyOf?keyOf(k):null;
+   if(pr&&pr.id&&av.load0[pr.id]===undefined&&typeof v==='number'&&v>=0&&v<=10){av.load0[pr.id]=v; n++;}});
+  if(e.tags&&typeof e.tags==='object')Object.keys(e.tags).forEach(function(b){
+   var t=e.tags[b]; if(!t||typeof t!=='object'||av.tags[b])return;
+   var keep=function(a){return (Array.isArray(a)?a:[]).filter(function(w){
+    return typeof w==='string'&&w.length>0&&w.length<=AV_CAP.tag;}).slice(0,AV_CAP.tags);};
+   av.tags[b]={add:keep(t.add), off:keep(t.off)}; n++;});}
+ av.movedAt=new Date(now||Date.now()).toISOString();
+ return n;}
 /* A PAIR IS WRITTEN AS A PAIR. The left side is a value and a value has no
    address. The right side is a sentence about a bad day, and a sentence about
    a bad day parses. That is why neither half is written alone. */
@@ -7686,6 +7777,31 @@ function avatarProgress(rows){
    ============================================================ */
 const PUR_SIDES=['partner','family','friends','community','coworkers','alone'];
 const PUR_PER_SIDE=5;
+/* THE CAPS, said once, round RB, S3. A value is a word or two and stays under
+   120 characters; a commitment is one sentence and stays under 200. The
+   boundary used to replace an over long value with an empty string and say
+   nothing (R10), which is a value the person thinks they wrote and the record
+   does not hold. It refuses by name now, and the field on the page stops at
+   the same number, so the refusal is never met by typing. */
+const PUR_VAL_MAX=120, PUR_LINE_MAX=200;
+/* THE SIX SIDES, IN HIS WORDS, round RB, S3. The stored keys are his ruling
+   (DECISIONS.md, the purpose map) and are identity, so they never rename. The
+   document's names, Self, Relationship and Work, are not used: "alone" and
+   "self" are not the same idea, and choosing between them is his (Q4). Each
+   label carries its plain meaning beside it, round PO, unpack every symbol. */
+const PUR_SIDE_SAY={
+ partner:{nm:'Partner',say:'the person you share a life with'},
+ family:{nm:'Family',say:'the people you were born or married into'},
+ friends:{nm:'Friends',say:'the people you chose'},
+ community:{nm:'Community',say:'the groups you belong to'},
+ coworkers:{nm:'Coworkers',say:'the people you work with or for'},
+ alone:{nm:'Alone',say:'you, with nobody else there'}};
+/* what is wrong with one value or one commitment, or null when nothing is.
+   The surface and the boundary both ask it, so they refuse the same thing. */
+function purposeRefuse(text,max){
+ if(typeof text!=='string')return 'is not text';
+ if(text.length>=max)return 'is '+text.length+' characters, and the most is '+(max-1);
+ return null;}
 const PUR_SOUL='Universal. Freedom, free will, knowledge, wisdom, that register.';
 const PUR_EGO='With a body attached. Health, fitness, financial stability, wealth, family.';
 function purposeBlank(){
@@ -8822,6 +8938,7 @@ function loadProfile(p){
  if(p.plan.base===undefined)p.plan.base=null;
  if(!p.avatar)p.avatar=avatarBlank();
  if(!Array.isArray(p.avatar.pairs))p.avatar.pairs=[];
+ avatarFill(p.avatar);
  if(!p.purpose)p.purpose=purposeBlank();
  /* a record from before the release lift has done no work since its answers,
     which is exactly what an empty map says */
@@ -9570,6 +9687,18 @@ function vEntry(errs,i,x){
   var ob=vEntryOb(errs,path+'.ob',x.ob);
   if(ob)q.ob=ob;}
  return q;}
+/* AN OLDER AVATAR GAINS WHAT THE BLANK CARRIES, round RB, and nothing it
+   already holds is touched. Called where a record is filled, so a profile in
+   memory from before this build reads like a new one. */
+function avatarFill(av){
+ if(!av)return av;
+ var b=avatarBlank(), st=avatarStatus(av);
+ Object.keys(b).forEach(function(k){if(av[k]===undefined)av[k]=b[k];});
+ av.status=st;
+ ['arch','load0','tags'].forEach(function(k){
+  if(!av[k]||typeof av[k]!=='object'||Array.isArray(av[k]))av[k]={};});
+ if(AV_STATUS.indexOf(av.status)<0)av.status=avatarStatus(av);
+ return avatarEnsureIds(av);}
 function validateProfile(o){
  var errs=[];
  if(!o||typeof o!=='object'||Array.isArray(o))return {ok:false, errs:['not an object']};
@@ -9796,11 +9925,70 @@ function validateProfile(o){
      if(x.seat!==undefined&&x.seat!==null){
       if(BANDS.indexOf(x.seat)>=0)q.seat=x.seat;
       else errs.push('avatar.pairs seat '+JSON.stringify(x.seat)+' is not a seat');}
+     /* THE PAIR'S ID, round RB, S2. Kept when it is one; refused by name when
+        it is something else, because a weight kept against a pair is found by
+        it. Missing is an older pair and is given one below. */
+     if(x.id!==undefined&&x.id!==null){
+      if(typeof x.id==='string'&&AV_ID.test(x.id))q.id=x.id;
+      else errs.push('avatar.pairs id '+JSON.stringify(x.id)+' is not a pair id');}
      return q;});
    if(p.avatar.pairs.length!==o.avatar.pairs.length)
     errs.push('avatar.pairs held '+(o.avatar.pairs.length-p.avatar.pairs.length)
-     +' entries that are not a written pair');}
-  else if(o.avatar.pairs!==undefined)errs.push('avatar.pairs is not a list');}
+     +' entries that are not a written pair');
+   var seenId={};
+   p.avatar.pairs.forEach(function(q){if(!q.id)return;
+    if(seenId[q.id])errs.push('avatar.pairs id '+q.id+' is on two pairs');
+    seenId[q.id]=1;});}
+  else if(o.avatar.pairs!==undefined)errs.push('avatar.pairs is not a list');
+  avatarEnsureIds(p.avatar);
+  /* WHO THE AVATAR IS, round RB, S2: three things the person writes, a
+     version and a status. Text is bounded and never edited; a wrong type or a
+     length past the cap is refused by name, never cut. */
+  ['name','title','description'].forEach(function(f){
+   var v=o.avatar[f]; if(v===undefined||v===null)return;
+   if(typeof v!=='string')errs.push('avatar.'+f+' is not text');
+   else if(v.length>AV_CAP[f])errs.push('avatar.'+f+' is '+v.length+' characters, and the most is '+AV_CAP[f]);
+   else p.avatar[f]=v;});
+  if(o.avatar.version!==undefined&&o.avatar.version!==null){
+   if(NUM(o.avatar.version)&&o.avatar.version>=1&&Math.floor(o.avatar.version)===o.avatar.version)p.avatar.version=o.avatar.version;
+   else errs.push('avatar.version '+JSON.stringify(o.avatar.version)+' is not a whole number from 1');}
+  if(o.avatar.status!==undefined&&o.avatar.status!==null){
+   if(AV_STATUS.indexOf(o.avatar.status)>=0)p.avatar.status=o.avatar.status;
+   else errs.push('avatar.status '+JSON.stringify(o.avatar.status)+' is not one of '+AV_STATUS.join(', '));}
+  else p.avatar.status=p.avatar.built?'active':'draft';
+  if(o.avatar.movedAt!==undefined&&o.avatar.movedAt!==null){
+   if(typeof o.avatar.movedAt==='string'&&!isNaN(new Date(o.avatar.movedAt).getTime()))p.avatar.movedAt=o.avatar.movedAt;
+   else errs.push('avatar.movedAt is not a date');}
+  /* WHAT THE AVATAR PAGE WRITES, round RB, S1, on the record at last. Each is
+     the shape ui/avatarui.js writes and nothing else: a rating is one to five
+     on an archetype that exists; a starting weight is nought to ten against a
+     pair on this record; a tag list is per seat. Anything else is refused by
+     name, which is the boundary's rule, and the read on the page stays as
+     strict as it was beside the record. */
+  var obj=function(v){return v&&typeof v==='object'&&!Array.isArray(v);};
+  if(o.avatar.arch!==undefined&&o.avatar.arch!==null){
+   if(!obj(o.avatar.arch))errs.push('avatar.arch is not an object');
+   else Object.keys(o.avatar.arch).forEach(function(k){var v=o.avatar.arch[k];
+    if(!ARCH.some(function(a){return a.nm===k;}))errs.push('avatar.arch names '+JSON.stringify(k)+', which is not an archetype');
+    else if([1,2,3,4,5].indexOf(v)<0)errs.push('avatar.arch.'+k+' is '+JSON.stringify(v)+', not one to five');
+    else p.avatar.arch[k]=v;});}
+  if(o.avatar.load0!==undefined&&o.avatar.load0!==null){
+   if(!obj(o.avatar.load0))errs.push('avatar.load0 is not an object');
+   else Object.keys(o.avatar.load0).forEach(function(k){var v=o.avatar.load0[k];
+    if(!p.avatar.pairs.some(function(q){return q.id===k;}))errs.push('avatar.load0 names pair '+JSON.stringify(k)+', which is not on this record');
+    else if(!NUM(v)||v<0||v>10)errs.push('avatar.load0.'+k+' is '+JSON.stringify(v)+', not nought to ten');
+    else p.avatar.load0[k]=v;});}
+  if(o.avatar.tags!==undefined&&o.avatar.tags!==null){
+   if(!obj(o.avatar.tags))errs.push('avatar.tags is not an object');
+   else Object.keys(o.avatar.tags).forEach(function(b){var t=o.avatar.tags[b];
+    if(BANDS.indexOf(b)<0){errs.push('avatar.tags names '+JSON.stringify(b)+', which is not a seat'); return;}
+    if(!obj(t)){errs.push('avatar.tags.'+b+' is not an object'); return;}
+    var q={add:[],off:[]}, bad=false;
+    ['add','off'].forEach(function(f){var a=t[f]; if(a===undefined)return;
+     if(!Array.isArray(a)||a.length>AV_CAP.tags||a.some(function(w){return typeof w!=='string'||!w.length||w.length>AV_CAP.tag;})){
+      errs.push('avatar.tags.'+b+'.'+f+' is not a list of words'); bad=true; return;}
+     q[f]=a.slice();});
+    if(!bad)p.avatar.tags[b]=q;});}}
  /* NULL IS MISSING, NOT WRONG. The rule is that a missing field is an older
     profile and is filled from the blank, and only a field of the wrong type or
     out of range is refused by name. These two tested `!==undefined`, so a
@@ -9817,8 +10005,14 @@ function validateProfile(o){
    if(o.purpose[f]===undefined)return;
    if(!Array.isArray(o.purpose[f])||o.purpose[f].length>3){
     errs.push('purpose.'+f+' is not three values'); return;}
-   p.purpose[f]=o.purpose[f].map(function(x){
-    return typeof x==='string'&&x.length<120?x:'';});
+   /* REFUSED BY NAME, round RB, S3. This replaced an over long value with an
+      empty string and said nothing (BECOMING-AUDIT.md R10). */
+   p.purpose[f]=o.purpose[f].map(function(x,i){
+    /* an unwritten corner is empty, however an older build wrote it */
+    if(x===null||x===undefined)return '';
+    var why=purposeRefuse(x,PUR_VAL_MAX);
+    if(why){errs.push('purpose.'+f+'['+i+'] '+why); return '';}
+    return x;});
    while(p.purpose[f].length<3)p.purpose[f].push('');});
   if(o.purpose.sides&&typeof o.purpose.sides==='object'){
    PUR_SIDES.forEach(function(sd){
@@ -9828,8 +10022,13 @@ function validateProfile(o){
     if(a.length>PUR_PER_SIDE){
      errs.push('purpose.sides.'+sd+' holds '+a.length+', which is more than '+PUR_PER_SIDE);
      return;}
-    p.purpose.sides[sd]=a.filter(function(x){
-     return typeof x==='string'&&x.length>0&&x.length<200;});});}
+    /* and a commitment the same way: an empty one is a slot nobody wrote
+       and is left out, a wrong one is refused by name rather than dropped */
+    p.purpose.sides[sd]=a.filter(function(x,i){
+     if(x==='')return false;
+     var why=purposeRefuse(x,PUR_LINE_MAX);
+     if(why){errs.push('purpose.sides.'+sd+'['+i+'] '+why); return false;}
+     return true;});});}
   else if(o.purpose.sides!==undefined)errs.push('purpose.sides is not an object');}
  else if(o.purpose!==undefined&&o.purpose!==null)errs.push('purpose is not an object');
  if(Array.isArray(o.rituals))p.rituals=o.rituals
@@ -10104,6 +10303,7 @@ function meterRun(p,keys,at){
  if(p.plan.base===undefined)p.plan.base=null;
  if(!p.avatar)p.avatar=avatarBlank();
  if(!Array.isArray(p.avatar.pairs))p.avatar.pairs=[];
+ avatarFill(p.avatar);
  if(!p.purpose)p.purpose=purposeBlank();
  var list=(keys||[]).filter(function(k){return typeof k==='string'&&k;});
  if(!list.length)return {added:0,repeated:0,fresh:[]};
@@ -17729,6 +17929,11 @@ if(typeof module!=='undefined'&&module.exports){
                  redoPop:redoPop, redoDepth:redoDepth, redoPeek:redoPeek,
                   undoPeek:undoPeek, undoClear:undoClear, UNDO_MAX:UNDO_MAX,
   /* avatar */   avatarBlank:avatarBlank, avatarValid:avatarValid, avatarDue:avatarDue,
+                 avatarStatus:avatarStatus, avatarPairId:avatarPairId, avatarEnsureIds:avatarEnsureIds,
+                 avatarNewId:avatarNewId, avatarReview:avatarReview, avatarMoveSide:avatarMoveSide,
+                 AV_STATUS:AV_STATUS, AV_CAP:AV_CAP, AV_ID:AV_ID,
+                 PUR_VAL_MAX:PUR_VAL_MAX, PUR_LINE_MAX:PUR_LINE_MAX, PUR_SIDE_SAY:PUR_SIDE_SAY,
+                 purposeRefuse:purposeRefuse, avatarFill:avatarFill,
                  avatarDaysLeft:avatarDaysLeft, avatarGap:avatarGap,
                  avatarProgress:avatarProgress, AV_MONTH:AV_MONTH,
   /* purpose */  purposeBlank:purposeBlank, purposeReady:purposeReady,
