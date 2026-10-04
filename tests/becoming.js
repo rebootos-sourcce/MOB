@@ -200,10 +200,15 @@ const wait=ms=>new Promise(r=>setTimeout(r,ms));
  await p.setViewportSize({width:390,height:844}); await wait(400);
  const ph=await p.evaluate(()=>{
   const r=s=>document.querySelector(s).getBoundingClientRect();
-  return {story:r('#sumbody .sg-story').bottom, todo:r('#sumbody .sg-todo').top, drive:r('#sumbody .sg-drive').top,
+  /* round RF: what you told it and the Reading are two cards, and on one
+     column what to do sits between them, so the action follows the person's
+     own words and no longer waits under the whole Reading */
+  return {told:r('#sumbody .sg-told').bottom, story:r('#sumbody .sg-story').top, storyEnd:r('#sumbody .sg-story').bottom,
+   todo:r('#sumbody .sg-todo').top, todoEnd:r('#sumbody .sg-todo').bottom, drive:r('#sumbody .sg-drive').top,
    loop:document.getElementById('sumloop')?r('#sumloop').top:null, who:r('#sumbody .sg-who').bottom};});
- ok(ph.todo>=ph.story&&ph.todo<ph.drive,'on a phone what to do follows the story and comes before the drivers, '+JSON.stringify(ph));
- ok(ph.loop===null||ph.loop>ph.story,'and the patterns no longer jump above the story');
+ ok(ph.todo>=ph.told&&ph.todoEnd<=ph.story&&ph.storyEnd<=ph.drive,
+  'on a phone: their words, then what to do, then the Reading, then the drivers, '+JSON.stringify(ph));
+ ok(ph.loop===null||ph.loop>ph.storyEnd,'and the patterns no longer jump above the story');
 
  ok(errs.length===0,'no page errors, '+errs.join(' | '));
  await b.close();
