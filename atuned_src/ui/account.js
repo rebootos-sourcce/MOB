@@ -487,7 +487,7 @@ function accBilling(m){
    link only becomes a door when it is an https invite on one of Discord's own
    two invite hosts. Anything else, a typo or a link to some other site pasted
    here by mistake, stays a stub and never reaches a person as a link. */
-var COMMUNITY_INVITE='';
+var COMMUNITY_INVITE='https://discord.gg/VRP8NApj2d';
 function commInvite(){
  var u=String(COMMUNITY_INVITE||'').trim();
  return /^https:\/\/(discord\.gg|discord\.com\/invite)\/[A-Za-z0-9-]{2,64}\/?$/.test(u)?u:'';}
@@ -715,6 +715,30 @@ function profMenu(){
     +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 9.5h3l4-3.5v12l-4-3.5h-3z"/>'
     +'<path d="M15.2 9.2a4 4 0 010 5.6M17.6 7a7 7 0 010 10"/></svg></span>'
     +'<span>Sound effects</span><span class="pm-sw" aria-hidden="true"><i></i></span></button>':'')
+  /* DISCORD FEEDBACK, 3 October. His words: "Put Discord feedback in the
+     profile. And when a person selects it, it takes them to the feedback page,
+     that dumps the data into the customer service support on Discord. And they
+     can join the Discord channel." The feedback page is the one Help already
+     has, Write to us and the Community door on one surface, so this row opens
+     Help and the comment sheet over it rather than a second compose surface
+     that would need its own boundary, its own outbox and its own disclosure.
+     Shutting the sheet leaves the person on the page with the outbox line and
+     the join door. Help's own colour, because it opens Help. */
+  +'<button type="button" role="menuitem" class="pm-it" data-pmfb="1" style="--c:'+seatCol(accSec('help').b)+'">'
+  +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 5.5h15v10h-8l-4.5 3.5v-3.5H4.5z"/>'
+  +'<path d="M8.5 10.5h7"/></svg></span><span>Discord feedback</span></button>'
+  /* THE JOIN DOOR IS ONLY A ROW WHEN IT GOES SOMEWHERE. The invite link does
+     not exist yet: it is the owner's to make from his own Discord server, and
+     COMMUNITY_INVITE in the Help section above is the one place it is
+     written. Until it holds a real Discord invite, commInvite answers empty
+     and there is no row, because a menu item is a press and a press that says
+     "not open yet" is the dead button the stub rows on Help exist to avoid.
+     Help still carries the stub, which is where the reason fits. */
+  +(commInvite()?'<a role="menuitem" class="pm-it" href="'+esc(commInvite())+'" target="_blank" '
+   +'rel="noopener noreferrer" data-pmjoin="1" style="--c:'+seatCol(accSec('help').b)+'">'
+   +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 4.5h6v6M19.5 4.5l-8 8"/>'
+   +'<path d="M17.5 13.5v5a1 1 0 01-1 1h-11a1 1 0 01-1-1v-11a1 1 0 011-1h5"/></svg></span>'
+   +'<span>Join our Discord</span></a>':'')
   /* THE LOG IS REACHABLE WHEN NOTHING IS ON SCREEN. The dock shows for three
      seconds, so its Log button is only there while a message is, and a person
      who looked away needs a door that does not depend on timing. */
@@ -734,6 +758,12 @@ function profMenu(){
   var want=!sfxIsOn();
   sfxSwitch(want); sw.setAttribute('aria-checked',want?'true':'false');
   if(want&&typeof sfx==='function')sfx('kept');};
+ /* the page first and the sheet second, because setTab redraws Settings and
+    the sheet is the thing that must be on top when the press is over */
+ var fb=m.querySelector('[data-pmfb]');
+ if(fb)fb.onclick=function(){profMenuGo('help'); obCompose('comment');};
+ var jn=m.querySelector('[data-pmjoin]');
+ if(jn)jn.onclick=function(){profMenuShut();};
  var lg=m.querySelector('[data-pmlog]');
  if(lg)lg.onclick=function(){profMenuShut(); if(typeof msgLogOpen==='function')msgLogOpen();};
  var o=m.querySelector('[data-pmout]');
