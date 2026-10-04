@@ -35,12 +35,13 @@ test('account attachment transfers the gift exactly once, even called twice', as
   const session = await startAndRecognize(service, 'anon_2');
   const { gift } = await service.selectGround(session.id, 'burnout');
 
-  const attached1 = await service.attachAccount(session.id, 'token_a');
+  const { credential } = await service.issueAttachmentChallenge(session.id);
+  const attached1 = await service.attachAccount(session.id, 'token_a', credential);
   const giftAfter1 = await adapters.repo.getGift(gift.id);
   assert.ok(giftAfter1?.transferredAt, 'gift should be transferred after first attach');
   assert.equal(giftAfter1?.userId, attached1.userId);
 
-  const attached2 = await service.attachAccount(attached1.id, 'token_a');
+  const attached2 = await service.attachAccount(attached1.id, 'token_a', credential);
   const giftAfter2 = await adapters.repo.getGift(gift.id);
   assert.equal(giftAfter2?.transferredAt, giftAfter1?.transferredAt, 'a second attach must not re-transfer');
   assert.equal(attached2.userId, attached1.userId);
@@ -51,10 +52,14 @@ test('attaching a gift already transferred to a different user is refused', asyn
   const service = new FunnelService(adapters);
   const session = await startAndRecognize(service, 'anon_3');
   await service.selectGround(session.id, 'grief');
-  await service.attachAccount(session.id, 'token_b'); // attaches to user_token_b
+  const first = await service.issueAttachmentChallenge(session.id);
+  await service.attachAccount(session.id, 'token_b', first.credential); // attaches to user_token_b
 
+  // a fresh challenge, so this checks the gift-ownership conflict itself
+  // and not the (separately tested) credential-reuse rejection
+  const second = await service.issueAttachmentChallenge(session.id);
   await assert.rejects(
-    () => service.attachAccount(session.id, 'token_c'),
+    () => service.attachAccount(session.id, 'token_c', second.credential),
     (err: unknown) => err instanceof FunnelError && err.code === 'GIFT_ALREADY_TRANSFERRED',
   );
 });
@@ -147,4 +152,66 @@ test('a payment webhook delivered twice grants entitlement exactly once', async 
   assert.equal(first.granted, true);
   const second = await service.handlePaymentWebhook('evt_1');
   assert.equal(second.granted, false, 'a repeated webhook delivery must be a no-op');
+});
+
+// ---------- the Database Production Completion TDD v2's own named corrections ----------
+
+test('the starter gift is backed by one row per pattern, not a bare array', async () => {
+  const adapters = buildFakeAdapters();
+  const service = new FunnelService(adapters);
+  const session = await startAndRecognize(service, 'anon_8');
+  const { gift } = await service.selectGround(session.id, 'money');
+
+  const items = adapters.repo.giftItems.get(gift.id);
+  assert.ok(items, 'gift items must exist');
+  assert.equal(items!.length, STARTER_GIFT_SIZE);
+  assert.equal(new Set(items!.map((i) => i.patternId)).size, STARTER_GIFT_SIZE, 'pattern ids must be unique');
+  assert.equal(new Set(items!.map((i) => i.position)).size, STARTER_GIFT_SIZE, 'positions must be unique');
+  assert.ok(gift.patternSetHash, 'the frozen set must carry a hash, so a later canon change cannot reinterpret it silently');
+});
+
+test('an idempotency key reused with a different request is rejected, not silently replayed', async () => {
+  const adapters = buildFakeAdapters();
+  const service = new FunnelService(adapters);
+  const session = await startAndRecognize(service, 'anon_9');
+  await service.selectGround(session.id, 'fear');
+
+  await service.requestRelease(session.id, 'pattern_1', { idempotencyKey: 'shared-key' });
+  await assert.rejects(
+    // same key, a different pattern: the request itself differs
+    () => service.requestRelease(session.id, 'pattern_2', { idempotencyKey: 'shared-key' }),
+    (err: unknown) => err instanceof FunnelError && err.code === 'IDEMPOTENCY_HASH_MISMATCH',
+  );
+});
+
+test('an attachment credential cannot be replayed once used', async () => {
+  const adapters = buildFakeAdapters();
+  const service = new FunnelService(adapters);
+  const session = await startAndRecognize(service, 'anon_10');
+  await service.selectGround(session.id, 'purpose');
+  const { credential } = await service.issueAttachmentChallenge(session.id);
+
+  await service.attachAccount(session.id, 'token_d', credential);
+
+  // a different session reusing the same credential string must not attach
+  const other = await startAndRecognize(service, 'anon_11');
+  await service.selectGround(other.id, 'purpose');
+  await service.issueAttachmentChallenge(other.id); // other has its own challenge
+  await assert.rejects(
+    () => service.attachAccount(other.id, 'token_e', credential),
+    (err: unknown) => err instanceof FunnelError && err.code === 'ATTACHMENT_CREDENTIAL_INVALID',
+  );
+});
+
+test('two concurrent referral-grant callbacks for the same referral issue the grant exactly once', async () => {
+  const adapters = buildFakeAdapters();
+  const service = new FunnelService(adapters);
+  const referral = await service.createReferral('inviter_2');
+  await service.openReferral(referral.token);
+
+  const [a, b] = await Promise.all([
+    service.issueReferralGrant(referral.token, 'invitee_2'),
+    service.issueReferralGrant(referral.token, 'invitee_2'),
+  ]);
+  assert.equal(a.grantIssuedAt, b.grantIssuedAt, 'a concurrent race must still land on one grant time');
 });

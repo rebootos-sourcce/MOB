@@ -437,7 +437,9 @@ function rbOn(p,bad){var c=cqRamp(bad?100-p:p),f=function(v){v/=255;return v<=.0
    not drawn on those two rows: a percent bar under seven columns and a wave
    would be three drawings of one number. */
 var RB_IC={cq:'<path d="M3 9c3-3.5 6 3.5 9 0s6 3.5 9 0M3 15c3-3.5 6 3.5 9 0s6 3.5 9 0"/>',
- dq:'<path d="M12 3.5a8.5 8.5 0 100 17 8.5 8.5 0 000-17M4.2 14.2h15.6"/>'};
+ dq:'<path d="M12 3.5a8.5 8.5 0 100 17 8.5 8.5 0 000-17M4.2 14.2h15.6"/>',
+ rad:'<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1'
+  +'M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>'};
 function rbIcon(k){var d=RB_IC[k]||(k&&QICON[k])||'';
  return d?'<svg class="rb-ic" viewBox="0 0 24 24" aria-hidden="true">'+d+'</svg>':'';}
 /* the seven seats' own numbers, root first. Shadow is the mean charge on the
@@ -513,7 +515,8 @@ function rbRow(q,nm,pct,raw,o){
  return '<button type="button" class="kb rbar'+cls+(read?'':' off')+'" data-q="'+q+'" data-w="'+p.toFixed(2)+'"'
   +(o.fk?' data-fk="'+o.fk+'"':'')+(o.bad?' data-bad="1"':'')
   +(sv?' data-s="'+sv.map(function(v){return v.toFixed(3);}).join(',')+'"':'')
-  +' style="--c:'+(read?rbCol(p,o.bad):'var(--dim)')+';--on:'+(read?rbOn(p,o.bad):'var(--ink)')+';--w:'+w+'%"'+(o.title?' title="'+esc(o.title)+'"':'')+'>'
+  +' style="--c:'+(read?rbCol(p,o.bad):'var(--dim)')+';--on:'+(read?rbOn(p,o.bad):'var(--ink)')+';--w:'+w+'%"'
+  +(o.title?' data-tip-k="'+esc(nm)+'" data-tip="'+esc(o.title)+'"':'')+'>'
   +'<span class="rb-t" aria-hidden="true"><i style="width:'+w+'%">'+pull+'</i><em class="rb-h"></em></span>'
   +inner
   +'<span class="rb-d" aria-hidden="true"></span>'
@@ -744,7 +747,11 @@ function addrRow(n,o){o=o||{};
  /* o.em and o.ink let a caller say something else at the right of the row,
     the Reading's direction word and seat name in round IT, without a third
     copy of this markup. Every caller that passes neither is unchanged. */
+ /* o.ana, round RB: the row also carries the Analytics trail's key, and the
+    trail's own handler opens it inside the trail (ui/analytics.js). The
+    address handler in ui.js leaves a row carrying it alone. */
  return '<button type="button" class="ad-r" data-addr="'+n.i+'" '
+  +(o.ana?'data-ana="addr|'+n.i+'" ':'')
   +'title="Open '+esc(n.k)+'">'+crbNode(n,'sm')
   +'<span>'+esc(n.k)+'</span><em'+(o.ink?' style="color:'+o.ink+'"':'')+'>'
   /* ROUND PO. When the right of the row is a seat, the seat says what it is. */

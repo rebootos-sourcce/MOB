@@ -514,7 +514,15 @@ function iqArtCss(){
      the pills and the labels share one three column grid, so their centres
      land on the same two verticals by construction. ---- */
   '#iqx-arch{--mk:56px;--gt:64px}',
-  '#iqx-arch .iqa-ph{justify-content:center;padding:16px 16px 8px}',
+  /* the block's own head only: an archetype's panel under the tiles is the
+     seats' panel and keeps their head, name then line, from the left */
+  '#iqx-arch>.iqa-ph{justify-content:center;padding:16px 16px 8px}',
+  /* twelve tiles are two rows of six, under the seat row's seven */
+  '#iqx-arch .iqa-list{padding:8px 0 0}',
+  '#iqx-arch .iqa-map{grid-template-columns:repeat(6,minmax(0,1fr))}',
+  /* the panel's head already opens the plates, so the first one does not
+     also take the forty that separates one plate from the next */
+  '#iqx-arch .iqx-ap:first-child{padding-top:16px}',
   '#iqx-arch .iqx-line{margin:0 auto;padding:0 16px 8px;text-align:center;max-width:62ch;text-wrap:balance}',
   '#iqx-arch .iqx-read{margin:8px auto 0;text-align:center;max-width:62ch}',
   '#iqx-arch .iqx-qs{gap:0;padding:8px 0 0}',
@@ -721,6 +729,9 @@ function iqArtCss(){
   ' .iqa .iqa-mid{grid-template-columns:1fr}',
   ' .iqa .iqa-gapn{display:none}',
   ' .iqa .iqa-map{gap:4px}',
+  /* and three rows of four on a phone, so the longest name, Caregiver, fits
+     its tile at the seat row's own type size */
+  ' #iqx-arch .iqa-map{grid-template-columns:repeat(4,minmax(0,1fr))}',
   ' .iqa .iqa-tile{padding:10px 2px 9px;gap:5px}',
   ' .iqa .iqa-tile .iqa-rg svg{width:44px;height:44px}',
   ' .iqa .iqa-tn{font-size:12px}',
@@ -766,7 +777,11 @@ function iqInHand(p){
  for(var i=0;i<o.length;i++)if(iqGot(p,o[i])<3)return o[i];
  return o[0];}
 /* the accordion's own words for a law, kept word for word */
-function iqLine(s,g){return s?'spread '+s.spread+', '+s.lean:g?(3-g)+' left':'unanswered';}
+/* ROUND RG. "spread 2.2" named a statistic and "2 left" counted nothing a
+   person could name. The spread is how far apart the three answers sit, and
+   what is left is questions, so each says so. */
+function iqLine(s,g){return s?'answers '+s.spread+' apart, '+s.lean
+ :g?(3-g)+((3-g)===1?' question left':' questions left'):'unanswered';}
 /* a law as Summary draws a thing: its own glyph in a ring. The ring is the
    page's grammar, written above at iqSegs: segments while it is being
    answered, one arc once it reads. Untouched is the track and a dim glyph,
@@ -792,9 +807,63 @@ function iqSeatStat(b,p,sc){
 function iqSeatRing(b,t,p,sc,px){
  var c=seatCol(b), body=t.done?iqScoreArc(c,t.mean/10,24,24,20,3.6)
   :iqSegs(t.L.map(function(x){var g=iqGot(p,x.li); return sc[x.l.nm]?1:g?.5:0;}),function(){return c;},24,24,20,3.6,14);
- return '<span class="iqa-rg" data-st="'+t.st+'" style="--c:'+c+'"><svg width="'+px+'" height="'+px+'" viewBox="0 0 48 48" aria-hidden="true">'
+ return iqNestRing(c,t.st,body,SEATGLYPH[b]||SEATGLYPH._,px);}
+/* ============================================================
+   THE NEST, ROUND RB. His words: "The intake page, the archetypes, these
+   things need to be nested. The questions, very similar to the chakra ones.
+   If I click on a chakra one, it shows me the questions underneath. As it
+   unfolds it, I want the archetypes to have the same behavior. So the
+   archetypes will be buttons, and if I press on one, the question pops down.
+   With this way, we're not scrolling infinitely."
+
+   So the seven seats' behaviour is the one written down here, and both the
+   seats and the twelve archetypes are drawn and wired through it, never a
+   second copy: a row of tiles, each one a press; the tile pressed opens its
+   own panel under the row and every other panel stays shut; a press on the
+   open tile shuts it. What a tile draws is the caller's (its ring, its pips,
+   its figure), and so is what "open" means, which is why the binding takes
+   two small functions rather than owning a variable.
+
+     o.grp   the data attribute that names the tile, data-seat or data-iqarch.
+             The archetypes do not take data-arch: Summary's own listener
+             already answers to that word.
+     o.key   what the tile is, by identity
+     o.pid   the id of its panel, which the tile names in aria-controls
+     o.on    whether it is the open one
+     o.st    0 untouched, 1 started, 2 read, the page's one ladder
+     o.c     its seat colour
+     o.nm    its name; o.line the one line under the name in its panel
+     o.say   what a screen reader hears after the name
+     o.ring  its ring, drawn by iqNestRing
+     o.pips  one state per question under it
+     o.fig   a figure under the pips, or nothing
+     o.next  the tile holding the next thing to answer */
+function iqNestRing(c,st,body,glyph,px){
+ return '<span class="iqa-rg" data-st="'+st+'" style="--c:'+c+'"><svg width="'+px+'" height="'+px+'" viewBox="0 0 48 48" aria-hidden="true">'
   +body+'<g transform="translate(15 15) scale(.75)" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" '
-  +(t.st?'stroke="'+c+'"':'style="stroke:var(--dim)"')+'>'+(SEATGLYPH[b]||SEATGLYPH._)+'</g></svg></span>';}
+  +(st?'stroke="'+c+'"':'style="stroke:var(--dim)"')+'>'+glyph+'</g></svg></span>';}
+function iqNestTile(o){
+ return '<button type="button" class="iqa-tile" data-'+o.grp+'="'+esc(o.key)+'" data-st="'+o.st+'" aria-expanded="'+o.on+'" '
+  +'aria-controls="'+o.pid+'" aria-label="'+esc(o.nm+', '+o.say)+'" style="--c:'+o.c+'">'+o.ring
+  +'<span class="iqa-tn">'+esc(o.nm)+'</span>'
+  +'<span class="iqa-tm" aria-hidden="true">'+o.pips.map(function(s){return '<i class="iqa-pip" data-st="'+s+'"></i>';}).join('')+'</span>'
+  +(o.fig||'')+(o.next?'<i class="iqa-nd" aria-hidden="true"></i>':'')+'</button>';}
+function iqNestPanel(o,body){
+ return '<section class="iqa-pn" id="'+o.pid+'" data-nest="'+o.grp+'" style="--c:'+o.c+'"'+(o.on?'':' hidden')+'>'
+  +'<div class="iqa-ph"><span class="iqa-shn">'+esc(o.nm)+'</span><span class="iqa-shl">'+esc(o.line)+'</span></div>'
+  +body+'</section>';}
+function iqNestHtml(label,items,bodyOf){
+ return '<div class="iqa-list"><div class="iqa-map" role="group" aria-label="'+esc(label)+'">'
+  +items.map(iqNestTile).join('')+'</div>'
+  +items.map(function(o){return iqNestPanel(o,bodyOf(o));}).join('')+'</div>';}
+/* isOpen(key) says whether that tile is the open one, open(key) opens it and
+   open('') shuts them all. The page rewrites its whole host on every press,
+   so the press is found again afterwards by what it is, never where it sat. */
+function iqNestBind(host,grp,isOpen,open){
+ host.querySelectorAll('[data-'+grp+']').forEach(function(el){el.onclick=function(){
+  var k=el.getAttribute('data-'+grp), was=isOpen(k);
+  open(was?'':k); IQ_ANIM=was?null:{nest:grp};
+  IQ_FOCUS='[data-'+grp+'="'+k+'"]'; renderIntake();};});}
 /* THE FIRST LAW STILL MISSING AN ANSWER, in body order. It is the next thing
    to do, and the page says so on the seat and on the row. */
 function iqNext(p){
@@ -866,7 +935,7 @@ function iqHeroRing(p,sc,cq){
  var o=iqBodyOrder(), vals=o.map(function(li){var g=iqGot(p,li); return sc[SI[li].nm]?1:g?.5:0;});
  var seg=iqSegs(vals,function(i){return seatCol(SI[o[i]].b);},48,48,40,6.5,5);
  return '<span class="iqa-hr"><svg viewBox="0 0 96 96" aria-hidden="true">'+seg+'</svg>'
-  +'<span class="iqa-hn"><b>'+(cq==null?'–':Math.round(cq))+'</b><i>CQ</i></span></span>';}
+  +'<span class="iqa-hn"><b>'+(cq==null?'–':Math.round(cq))+'</b><i class="tipu"'+unpAttr('cq',null,'CQ')+'>CQ</i></span></span>';}
 /* A SIMULATION, NOT A BEHAVIOUR, round OK. His words: "What if we do show CQ
    at 100 on starting? It shows the soul raw expression. And then as the input
    stuff, it comes down. I don't want that to actually happen. But I'm curious
@@ -914,23 +983,19 @@ function iqMoreHtml(p){
 
 /* ---------- A. The map, and the seat that is open ---------- */
 function iqViewList(p,Q,sc){
- var open=iqSeatOpen(p), nx=iqNext(p), tiles='', panels='';
+ var open=iqSeatOpen(p), nx=iqNext(p), items=[];
  IQ_SEATS.forEach(function(b,bi){
-  var t=iqSeatStat(b,p,sc), c=seatCol(b), on=(open===b); if(!t.L.length)return;
-  var isNext=(nx!=null&&SI[nx].b===b);
-  tiles+='<button type="button" class="iqa-tile" data-seat="'+esc(b)+'" data-st="'+t.st+'" aria-expanded="'+on+'" '
-   +'aria-controls="iqa-p'+bi+'" aria-label="'+esc(b)+', '+['not started','started','read'][t.st]+'" style="--c:'+c+'">'+iqSeatRing(b,t,p,sc,56)
-   +'<span class="iqa-tn">'+esc(b)+'</span>'
-   +'<span class="iqa-tm" aria-hidden="true">'+t.L.map(function(x){
-      var g=iqGot(p,x.li); return '<i class="iqa-pip" data-st="'+(sc[x.l.nm]?2:g?1:0)+'"></i>';}).join('')+'</span>'
-   +(t.done?'<b class="iqa-ts">'+t.mean.toFixed(1)+'</b>':'')
-   +(isNext?'<i class="iqa-nd" aria-hidden="true"></i>':'')+'</button>';
-  panels+='<section class="iqa-pn" id="iqa-p'+bi+'" style="--c:'+c+'"'+(on?'':' hidden')+'>'
-   +'<div class="iqa-ph"><span class="iqa-shn">'+esc(b)+'</span><span class="iqa-shl">'+esc(IQ_SEATLINE[b])+'</span></div>'
-   +'<div class="iqa-laws" role="group" aria-label="The laws in '+esc(b)+'">';
-  t.L.forEach(function(x){
+  var t=iqSeatStat(b,p,sc); if(!t.L.length)return;
+  items.push({grp:'seat', key:b, pid:'iqa-p'+bi, on:(open===b), st:t.st, c:seatCol(b), nm:b,
+   line:IQ_SEATLINE[b], say:['not started','started','read'][t.st], ring:iqSeatRing(b,t,p,sc,56),
+   pips:t.L.map(function(x){return sc[x.l.nm]?2:iqGot(p,x.li)?1:0;}),
+   fig:t.done?'<b class="iqa-ts">'+t.mean.toFixed(1)+'</b>':'',
+   next:(nx!=null&&SI[nx].b===b), t:t});});
+ return iqNestHtml('The seven seats',items,function(o){
+  var c=o.c, h='<div class="iqa-laws" role="group" aria-label="The laws in '+esc(o.key)+'">';
+  o.t.L.forEach(function(x){
    var s=sc[x.l.nm], g=iqGot(p,x.li), lo=(IQ_OPEN===x.li), st=s?2:g?1:0;
-   panels+='<button type="button" class="iqa-lawr" data-law="'+x.li+'" data-st="'+st+'" data-next="'+(nx===x.li?1:0)+'" '
+   h+='<button type="button" class="iqa-lawr" data-law="'+x.li+'" data-st="'+st+'" data-next="'+(nx===x.li?1:0)+'" '
     +'aria-expanded="'+lo+'" style="--c:'+c+'">'
     +iqLawBadge(x.l,s,g,'md')
     +'<span class="iqa-lx"><span class="iqa-lt">'+esc(x.l.nm)+(nx===x.li?'<span class="iqa-nx">Next</span>':'')+'</span>'
@@ -938,9 +1003,8 @@ function iqViewList(p,Q,sc){
     +'<span class="iqa-gw">'+iqGap(p,x.li,200)+'</span>'
     +'<span class="iqa-sv">'+(s?s.score.toFixed(1):'')+'</span>'
     +'<span class="iqa-chev">'+iqSvg(IQ_IC.chev)+'</span></button>';
-   if(lo)panels+='<div class="iq-law open iqa-open" style="--c:'+c+'">'+iqFramings(p,Q,x.li)+'</div>';});
-  panels+='</div></section>';});
- return '<div class="iqa-list"><div class="iqa-map" role="group" aria-label="The seven seats">'+tiles+'</div>'+panels+'</div>';}
+   if(lo)h+='<div class="iq-law open iqa-open" style="--c:'+c+'">'+iqFramings(p,Q,x.li)+'</div>';});
+  return h+'</div>';});}
 
 /* the twenty one as a row of rings grouped by seat: the map and the progress
    at once. C's picker, and B's on a phone. */
@@ -1048,6 +1112,9 @@ function iqViewOne(p,Q,sc){
    the same eleven cell scale, and nothing new is drawn. They are STACKED, all
    open, under the laws in all three views: the point of this round is to see
    the page at its full length, so nothing here is folded behind a press.
+   Round RB folded the archetypes, his words: "the archetypes will be
+   buttons, and if I press on one, the question pops down." See the note
+   above iqxArchNest. The axes and the actions are still stacked.
 
    The questions are data (engine/data/intakemore.js) and the record, the
    boundary and the read-out sentence are engine (engine/intakemore.js). This
@@ -1185,7 +1252,7 @@ function iqxArchCard(p,row){
    +'<div class="iqx-eo"><p class="iqx-eol"><span data-side="a">'+esc(cap(row.ta))+'</span>'+gt
    +'<span data-side="b">'+esc(cap(row.tb))+'</span></p>'
    +'<div class="iq-sl" role="group" aria-label="'+esc(cap(row.ta))+', or '+esc(row.tb)+'">'+nodes+'</div></div>';}
- return '<div class="iqx-ap" data-type="'+row.type+'" style="'+st+'">'
+ return '<div class="iqx-ap" data-type="'+row.type+'" data-k="'+esc(row.k)+'" style="'+st+'">'
   /* the line runs 0 fully a to 10 fully b, so a holds what b does not */
   +'<div class="iqx-pr">'+iqxFig(A,'a',v==null?0:(10-v)/10)+'<span class="iqx-sp" aria-hidden="true"></span>'
   +iqxFig(B,'b',v==null?0:v/10)+'</div>'
@@ -1204,6 +1271,56 @@ function iqxCard(p,id,row){
   h+='<button type="button" class="iq-n'+(near===n?' on':'')+'" data-ixb="'+id+'" data-ixk="'+esc(row.k)+'" data-v="'+n
    +'" style="--v:'+n+'" aria-pressed="'+(near===n)+'">'+n+'</button>';
  return h+'</div></div>';}
+/* THE ARCHETYPES, NESTED, ROUND RB. Eighteen plates stood open one under the
+   other, measured at 7,411 pixels on a 1,000 pixel screen, about seven and a
+   half screens of scrolling before the emotional axes. They are the seats'
+   nest now (iqNestHtml above): the twelve archetypes are twelve tiles, and a
+   press on one drops its own questions under the row.
+
+   A QUESTION IS A PAIR, SO IT LIVES UNDER BOTH OF ITS ARCHETYPES. Every row
+   puts two archetypes against each other and every archetype is in three
+   rows, so Warrior opens Warrior against Sage, Ruler and Innocent, and the
+   Warrior against Sage plate also opens under Sage. It is one answer either
+   way: a press under one is pressed under the other.
+
+   ONLY THE OPEN PANEL IS DRAWN. Every panel is in the document so a tile's
+   aria-controls names something, but a shut panel is empty, because drawing
+   all twelve would put every pair in the page twice.
+
+   SHUT ON ARRIVAL, WHERE THE SEATS OPEN ONE. The seats open on the seat of
+   the next law, because the laws are what a person came to answer and the
+   seat row is the first thing under the fold. This block sits under that,
+   and opening a second panel by default is the length this round exists to
+   take away.
+
+   THE TILES RUN CROWN TO ROOT, the order of the seat row above them, so the
+   colours run the same way twice; inside a seat they keep ARCH's own order. */
+var IQ_ARCH=null;
+function iqxArchOrder(){
+ var o=[]; IQ_SEATS.forEach(function(b){ARCH.forEach(function(A){if(A.b===b)o.push(A);});});
+ ARCH.forEach(function(A){if(o.indexOf(A)<0)o.push(A);}); return o;}
+function iqxArchRows(nm){return IX_ARCH2.filter(function(r){return r.a===nm||r.b===nm;});}
+/* what of a row this archetype holds: the a end is 0 and the b end is 10 */
+function iqxArchShare(row,nm,v){return row.a===nm?(10-v)/10:v/10;}
+function iqxArchNest(p){
+ var nx=null, items=iqxArchOrder().map(function(A,i){
+  var rows=iqxArchRows(A.nm), c=seatCol(A.b);
+  var vals=rows.map(function(r){return ixGet(p,'arch',r.k);});
+  var got=vals.filter(function(v){return v!=null;}).length, st=(rows.length&&got===rows.length)?2:got?1:0;
+  /* the ring is the page's own grammar: a segment per question while it is
+     being answered, then one arc once all three are in, and the arc is the
+     share of those three this archetype holds, the quantity the plate's own
+     mark already draws and the engine's tally sums (engine/intakemore.js) */
+  var share=st===2?vals.reduce(function(a,v,k){return a+iqxArchShare(rows[k],A.nm,v);},0)/rows.length:0;
+  var body=st===2?iqScoreArc(c,share,24,24,20,3.6)
+   :iqSegs(vals.map(function(v){return v!=null?1:0;}),function(){return c;},24,24,20,3.6,14);
+  if(nx==null&&got<rows.length)nx=A.nm;
+  return {grp:'iqarch', key:A.nm, pid:'iqa-a'+i, on:(IQ_ARCH===A.nm), st:st, c:c, nm:A.nm, line:A.v,
+   say:['not started','started','answered'][st], ring:iqNestRing(c,st,body,'<path d="'+A.ic+'"/>',56),
+   pips:vals.map(function(v){return v!=null?2:0;}), fig:'', rows:rows};});
+ items.forEach(function(o){o.next=(o.key===nx);});
+ return iqNestHtml('The archetypes',items,function(o){
+  return o.on?'<div class="iqx-qs">'+o.rows.map(function(row){return iqxArchCard(p,row);}).join('')+'</div>':'';});}
 function iqxHtml(p){
  ixFill(p);
  return IX_BLOCKS.map(function(b){
@@ -1212,7 +1329,8 @@ function iqxHtml(p){
    +'<div class="iqa-ph"><span class="iqa-shn">'+esc(b.nm)+'</span></div>'
    +'<p class="iqx-line">'+esc(b.line)+'</p>'
    +(say.head?'<p class="iqx-read" data-st="'+r.state+'"><b>'+esc(say.head)+'</b>'+(say.body?' '+esc(say.body):'')+'</p>':'')
-   +'<div class="iqx-qs">'+b.rows.map(function(row){return b.id==='arch'?iqxArchCard(p,row):iqxCard(p,b.id,row);}).join('')+'</div>'
+   +(b.id==='arch'?iqxArchNest(p)
+    :'<div class="iqx-qs">'+b.rows.map(function(row){return iqxCard(p,b.id,row);}).join('')+'</div>')
    +'</section>';}).join('')
   /* said once under the stack and not under each block: three copies of one
      sentence is the page explaining itself three times */
@@ -1270,7 +1388,7 @@ function renderIntake(){
     that closed pops once, and so does the cell that was pressed. */
  if(an){
   var at=an.who?host.querySelector('.iqa-whop:not([hidden])'):an.more?host.querySelector('.iqa-more:not([hidden])')
-   :an.seat?host.querySelector('.iqa-pn:not([hidden])'):an.law!=null?host.querySelector('.iqa-open'):null;
+   :an.nest?host.querySelector('[data-nest="'+an.nest+'"]:not([hidden])'):an.law!=null?host.querySelector('.iqa-open'):null;
   if(at)at.classList.add('iqa-in');}
  if(IQ_XPOP){var xe=host.querySelector(IQ_XPOP+'.on'); IQ_XPOP=null; if(xe)xe.classList.add('iqa-pop');}
  if(pu){
@@ -1296,11 +1414,11 @@ function renderIntake(){
    if(k.key==='Enter'||k.key===' '){k.preventDefault();go();}};});
  /* a seat tile opens its laws under the map, and pressing the open one puts
     them away. Opening one seat closes the law that was open in another. */
- host.querySelectorAll('[data-seat]').forEach(function(el){el.onclick=function(){
-  var b=el.getAttribute('data-seat'), was=iqSeatOpen(CURP);
-  if(was===b){IQ_SEAT=''; IQ_OPEN=null; IQ_ANIM=null;}
-  else{IQ_SEAT=b; IQ_OPEN=null; IQ_ANIM={seat:b};}
-  IQ_FOCUS='[data-seat="'+b+'"]'; renderIntake();};});
+ iqNestBind(host,'seat',function(b){return iqSeatOpen(CURP)===b;},
+  function(b){IQ_SEAT=b; IQ_OPEN=null;});
+ /* an archetype tile drops its own questions under the row, the same press
+    through the same binding, round RB */
+ iqNestBind(host,'iqarch',function(k){return IQ_ARCH===k;},function(k){IQ_ARCH=k||null;});
  host.querySelectorAll('[data-iqv]').forEach(function(el){el.onclick=function(){
   IQ_VIEW=el.getAttribute('data-iqv'); IQ_FOCUS='[data-iqv="'+IQ_VIEW+'"]'; renderIntake();};});
  /* walks the body order the strip shows, crown to root, not the table order */
@@ -1395,11 +1513,11 @@ function renderIntake(){
   if(!profOpen(PROFILES[pi].id)){
    status('Not opened. '+(PROF_ERR||['it was refused']).join('. ')+'.','fail');
    renderIntake();return;}
-  IQ_OPEN=null;IQ_SEAT=null;
+  IQ_OPEN=null;IQ_SEAT=null;IQ_ARCH=null;
   syncCh();syncLw();syncSoul();renderIntake();render();};
  var nb=document.getElementById('iqnew');
  if(nb)nb.onclick=function(){var n=prompt('Profile name','Profile '+(PROFILES.length+1));
-  if(n){pNew(n);loadProfile(CURP);IQ_OPEN=null;IQ_SEAT=null;syncCh();syncLw();syncSoul();renderIntake();render();}};
+  if(n){pNew(n);loadProfile(CURP);IQ_OPEN=null;IQ_SEAT=null;IQ_ARCH=null;syncCh();syncLw();syncSoul();renderIntake();render();}};
  var sb=document.getElementById('iqsave');
  /* The button used to read "Saved" whether or not anything was written. It
     reports what happened now, and the status region carries the detail. */

@@ -1468,8 +1468,12 @@ const TIERDEF=[
  {at:41, nm:'Oscillating',
   state:'Searching',
   soma:'Taking it all in and understanding it, and still stuck in your head.',
-  def:'Fifty is the median, the middle of the line. The field crosses it both ways, '
-     +'above it some days and below it on others.',
+  /* ROUND RG. This opened on "Fifty is the median, the middle of the line",
+     and the meaning table keeps a tier's first sentence, so the one place
+     Oscillating was defined said what fifty is and never what Oscillating
+     is. Same two facts, the meaning first. */
+  def:'The field crosses fifty, the median or middle of the line, both ways: above it some days '
+     +'and below it on others.',
   energy:'The day decides. What is running that morning sets the range.',
   toward:'Even. Consistency rather than intensity. The swing narrows before the number rises.'},
  {at:31, nm:'Incoherent',
@@ -1873,6 +1877,61 @@ IC_NEW['Ravana']='M5 3.6a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8M12 2.6a2.4 2.4 0 11
 IC_NEW['Shu and Hu']='M12 8.5a6 6 0 110 12 6 6 0 010-12M8.8 3v8.4M15.2 3v8.4M7 3h3.6M13.4 3h3.6';
 PATHS.forEach(function(p){p.ic=icOf(p.up); p.dic=icOf(p.dn);});
 
+/* ---- THE THREE POLES ON NO AXIS THAT ARE NOT PATHS ----
+   Round RB, his words: "On the compass, we're supposed to have 13 character
+   people, and we I still have the original eight." The roster is
+   DESIGN-teachers.md v2 section 2, fourteen poles for thirteen people, Jesus
+   at two, accepted at round PD. Eight are the axes above and three are the
+   paths that are not an axis read twice (Krishna, Rama, Lao Tzu). These are
+   the last three, in the paths' own shape so the panels draw all six alike.
+
+   NOT A ROW OF MIRROR, ON PURPOSE. An axis is a quality read at one seat and
+   its ring is that seat's reading. Akhenaten has no seat. Zoroaster and
+   Confucius have a home seat, where their law sits and what colours their
+   ring, and section 2 rules that a home seat "gives no position on an axis,
+   because Moses already holds the Throat's axis and a second teacher would
+   print the same number." Placing them on the figure is the needle's own
+   slice (T10 there), and the plan says why (PLAN.md section N).
+
+   NO CODEX LINE. The codex gives none of the three an upd or a dnd, so none
+   is written here; the panel a press opens is the behaviour pair in
+   engine/data/teachers_recipes.js. The opposites are the document's own
+   proposals, marked proposed, each with the text it names to check them
+   against. The keys are identity and are never reused. */
+const HOME_POLES=[
+ {k:'SA', q:'Light', up:'Akhenaten', dn:'Apep', home:null,
+  from:'proposed', src:'the nightly voyage texts, the Amduat and the Book of Gates'},
+ {k:'TU', q:'Truth', up:'Zoroaster', dn:'The Lie', home:'Throat',
+  from:'proposed', src:'Yasna 30 and 31'},
+ {k:'NA', q:'Nature', up:'Confucius', dn:'The farmer of Song', home:'Crown',
+  from:'proposed', src:'Mencius 2A2, and Analects 17.19'}];
+/* the marks. Zoroaster, Confucius and the Lie are the design's own, ported
+   from mockups/teachers/imprint.html. Apep and the farmer had none anywhere,
+   so they are drawn here, argued from what each one does, and are a first
+   draft. Same 24 unit grid, ring not fill. */
+/* Zoroaster and Confucius wear the mark of the law their quality names, the
+   Truth law's plumb line and the Nature law's stem, as the design drew them.
+   Read off SI rather than copied, so one mark cannot become two. */
+(function(){
+ function law(nm){for(var i=0;i<SI.length;i++)if(SI[i].nm===nm)return SI[i].ic; return null;}
+ IC_NEW['Zoroaster']=law('Truth');
+ IC_NEW['Confucius']=law('Nature');})();
+/* the Lie: the plumb line broken and turned aside on its way down */
+IC_NEW['The Lie']='M12 3v4l-3 3 6 4-3 3v4';
+/* Apep: the sun disc, and the serpent's open jaw closing over it from below.
+   Light taken in and nothing handed on, the inverse of Akhenaten's rays */
+IC_NEW['Apep']='M12 4.5a3 3 0 110 6 3 3 0 010-6M4 20c2.4-2.6 4.8-2.6 7.2 0s4.8 2.6 7.2 0M18.4 20c1.6-3.4.6-7.6-2.6-9.6M5.6 12.4c1.6-1.6 3.8-2.2 5.8-1.6';
+/* the farmer of Song: the shoot pulled clear of the ground, roots in the air
+   over the hole it came out of */
+IC_NEW['The farmer of Song']='M3 20h6.5M14.5 20H21M12 14.5V5.5M12 9c-2.2 0-3.6-1.3-3.6-3.2 2.2 0 3.6 1.3 3.6 3.2M12 7.6c2.2 0 3.6-1.3 3.6-3.2-2.2 0-3.6 1.3-3.6 3.2M12 14.5l-2 2.6M12 14.5l2 2.6M12 14.5v3';
+HOME_POLES.forEach(function(p){p.ic=icOf(p.up); p.dic=icOf(p.dn);});
+/* THE POLES THAT STAND ON NO AXIS, in the roster's order: the paths that are
+   not an axis read twice, then the three above. A path is an axis read twice
+   when its line is a mirror pair's own, the rule runPathDrill uses. */
+function compassOffAxis(){
+ return PATHS.filter(function(p){
+  return !MIRROR.some(function(m){return m.up===p.up&&m.upd===p.upd;});}).concat(HOME_POLES);}
+
 /* ============================================================
    WHAT EACH PHRASE OF A POLE MEANS. Round PO, UNPACK EVERY SYMBOL.
 
@@ -1957,11 +2016,13 @@ var POLE_MEANS={
 POLE_MEANS.AW=POLE_MEANS.PE; POLE_MEANS.BO=POLE_MEANS.IL;
 MIRROR.forEach(function(m){var pm=POLE_MEANS[m.k]; if(pm){m.upm=pm.up; m.dnm=pm.dn;}});
 PATHS.forEach(function(p){var pm=POLE_MEANS[p.k]; if(pm){p.upm=pm.up; p.dnm=pm.dn;}});
-/* a pole by its key, from the eight mirror axes or the five paths, or null */
+/* a pole by its key, from the eight mirror axes, the five paths or the three
+   poles on no axis, or null */
 function compassPoleOf(k){
  var i;
  for(i=0;i<MIRROR.length;i++)if(MIRROR[i].k===k)return MIRROR[i];
  for(i=0;i<PATHS.length;i++)if(PATHS[i].k===k)return PATHS[i];
+ for(i=0;i<HOME_POLES.length;i++)if(HOME_POLES[i].k===k)return HOME_POLES[i];
  return null;}
 /* a pole's phrases, each with its meaning, for one end. The phrases a pole has
    no meanings for come back as the codex line whole, so nothing is ever blank. */
@@ -2284,7 +2345,10 @@ var PRACTICE=[
    +'You are mapping, not fixing. When the system is clear all nine live around the heart. '
    +'Where you feel them now is where they are displaced to.'},
  {k:'box', nm:'Box Breathing', track:'Body', min:5, tier:1,
-  d:'Four and four, or eight and eight. The entry into a grounded state.',
+  /* ROUND RG. "Four and four, or eight and eight" was two numbers with no
+     unit and no action: four of what, done how. The how below says it, and
+     the short line now carries the same fact. */
+  d:'Breathe in, hold, breathe out, hold, for a count of four each, or eight when it is easy. The entry into a grounded state.',
   how:'Inhale, hold, exhale, hold, each for the same count. Four to start, eight when it is '
    +'easy. This regulates the autonomic nervous system and it is the door into every other '
    +'practice here.'},
@@ -2617,13 +2681,14 @@ var PAINREG=[
    second kind of row, so rc marks it, and the test that walks the round KQ
    rows skips rc rows rather than being edited to expect them.
 
-   THREE POLES HAVE NO PLACE ON THE COMPASS YET. Akhenaten, Zoroaster and
-   Confucius are rows 12 to 14 of the roster and the figure, MIRROR, PATHS and
-   BECOMING do not carry them until the roster change lands. Their recipes are
-   written now, so that landing them is a drawing task and not a writing one.
-   Until then recipeOf finds them and nothing on the Compass can open them, and
-   a ritual added from one of them carries no tc, because becomingOf answers
-   null for a pole it does not know and ritPlanOk would refuse the whole plan.
+   THREE POLES ARE ON THE COMPASS'S NAME PANELS AND NOT YET ON ITS FIGURE.
+   Akhenaten, Zoroaster and Confucius are rows 12 to 14 of the roster. Round RB
+   put them in HOME_POLES (engine/data/compass.js) and on the two name panels
+   beside the figure, where a press opens their row here. MIRROR, PATHS,
+   BECOMING and the needle still do not carry them (PLAN.md section N says
+   why). A ritual added from one of them carries no tc, because becomingOf
+   answers null for a pole it does not know and ritPlanOk would refuse the
+   whole plan.
 
    NO COUNT, NO SCORE, NO PERCENT. Nothing in this file is measured against a
    total. A behaviour is listed or it is not.
@@ -3501,7 +3566,7 @@ var KB_KEY=function(s){return String(s||'').replace(/^[Tt]he\s+/,'').toLowerCase
 var SABDEF={"negotiator":{"c":"S01","d":"Argues against your own intentions. Always sounds reasonable. Never says stop forever, says stop today. The fear of discomfort is mild enough to be rationalized away. The happiness available from the easier option is just high enough to make the rationalization feel earned. Together they produce the internal diplomat who can talk you out of anything, not through force, but through the perfectly reasonable argument that now is not the right moment. The most dangerous saboteur in the system because it sounds exactly like you.","t":"The moment between intending to do the necessary thing and beginning to do it. The pause.","i":"Begin the action before the internal dialogue completes. Remove the pause. The Negotiator only has power in the gap between intention and motion. Close the gap.","q":"I can start tomorrow. / Just this once. / I've earned a break."},"controller":{"c":"S02","d":"Hypervigilance at the level of outcomes. The foundation of the Type A pattern. Not a personality trait, a fear response that has been running so long it looks like a management style. The fear underneath: something will go wrong, someone will get hurt, or the situation will fall apart if I release my grip. Self-control registers as 10. Anything less registers as loss. The delta between perceived control and actual control is the zone of active saboteur behavior. Anger layers in as a do-as-I-say mechanism, authority used to close the control gap quickly. Entitlement provides the justification: it is not just that I need to control this. It is that I am right to. Competition drives the adversarial edge, not just winning but not-losing, which is a different frequency entirely.","t":"The moment control begins to slip. Uncertainty in outcomes. Others not performing to expectation. Delegation without confirmation. Silence where confirmation should be.","i":"Control is a belief held under pressure. The person fails control the same way a person fails a landing, only if they quit. Recognize that the need to be in control and the experience of being out of control are both charges, not conditions. Neither is real. Locate the fear underneath. Release the fear. The need to control loses what it was standing on.","q":"If I don't control this, something will go wrong."},"victim":{"c":"S03","d":"Focuses on internal feelings and victim mentality for attention. Martyrdom.","t":"When accountability is required.","i":"Identify one thing within your control. Take one action on it.","q":"This keeps happening to me."},"perfectionist":{"c":"S04","d":"Continuous pressure to do better. Anxiety about imperfections in self and others.","t":"Before completion or release of work.","i":"Set a fixed completion time. Release at that time regardless of state.","q":"It is not good enough yet."},"pleaser":{"c":"S05","d":"Indirectly tries to gain acceptance by helping, pleasing, rescuing, or flattering.","t":"When there is potential for disapproval or when a boundary is needed.","i":"State a preference or limit once. Do not explain or apologize.","q":"My worth depends on making others happy."},"hyper achiever":{"c":"S06","d":"Dependent on constant performance for self-respect. Workaholic.","t":"When performance is not being measured or when rest is available.","i":"Rest without producing for one hour. No metrics.","q":"My worth is in my output."},"hyper rational":{"c":"S07","d":"Processes everything through logic. Impatient with emotional concerns.","t":"When emotional input is offered.","i":"Name the emotion present in the room before analyzing the problem.","q":"If I can't explain it, it isn't real."},"hyper vigilant":{"c":"S08","d":"Continuous anxiety about potential dangers. Constant risk management.","t":"When the environment changes or trust is required.","i":"Identify one thing that is safe. Hold that for 60 seconds.","q":"The threat is always just ahead."},"restless":{"c":"S09","d":"Constant search for new activities. Rarely at peace with the current moment.","t":"When the current situation becomes familiar or stable.","i":"Stay with the current thing for twice as long as the impulse to move suggests.","q":"The next thing will be better."},"stickler":{"c":"S10","d":"Perfectionism and need for order. Anxiety when standards are not met.","t":"When the environment or person deviates from the correct way.","i":"Identify one situation where your standard is serving your fear, not your values.","q":"There is a right way and a wrong way."},"judge":{"c":"S11","d":"Judges self and others. Replays past failures. The master saboteur, activates all others.","t":"When someone, including self, falls short of standard.","i":"Find one thing that is right about the situation being judged.","q":"Someone is responsible for this."},"deflector":{"c":"S12","d":"Does not own. Justification to avoid accountability.","t":"When direct accountability or personal disclosure is required.","i":"Stay with the direct question for 10 seconds before redirecting.","q":"If they knew the real me they would leave."},"dramatizer":{"c":"S13","d":"Amplifies the emotional intensity of situations to generate attention or movement.","t":"When intensity of feeling is present and an audience is available.","i":"Reduce the intensity of the next statement by half.","q":"My pain must be visible to matter."},"worrywart":{"c":"S14","d":"Runs continuous worst-case scenarios. Mistakes anxiety for planning.","t":"When the future is uncertain.","i":"Name the specific worst case. Name one action if it occurs.","q":"Worrying is preparation."},"loner":{"c":"S15","d":"Withdraws from contact as protection. Independence as defense, not a value. Fear of rejection co-mingling with shame of belonging at sufficient magnitude. The person does not experience themselves as afraid, they experience themselves as preferring solitude. Release the fear and sad nodes and the solitude remains if chosen, not if driven.","t":"When connection is available and would be beneficial.","i":"Make one direct request for connection.","q":"Needing others is weakness."},"people pleaser":{"c":"S16","d":"Approval-seeking at the expense of authenticity.","t":"When approval is uncertain or a boundary is needed.","i":"Identify the response that serves the relationship rather than the approval.","q":"If they don't like me I have failed."},"skeptic":{"c":"S17","d":"Defaults to distrust and doubt. Skepticism as protection against disappointment.","t":"When new information challenges the current model.","i":"Sit with the new information for 24 hours before dismissing it.","q":"Trust gets you hurt."},"dreamer":{"c":"S18","d":"Lives in possibility without building the bridge toward it. Avoids the friction of execution.","t":"When the gap between vision and current reality is visible.","i":"Identify one concrete step. Execute it today.","q":"Someday the conditions will be right."},"procrastinator":{"c":"S19","d":"Delays action on important tasks. Mistakes motion for progress.","t":"When the important task is clear and available.","i":"Begin. Not finish. Not plan. Begin. Three minutes.","q":"I work better under pressure."},"imposter":{"c":"S20","d":"Believes their competence is unearned and discoverable as fraud.","t":"When competence is being evaluated or recognition is offered.","i":"Identify one thing you know that the room does not. State it.","q":"They will find out I do not belong here."},"aggressor":{"c":"S21","d":"Uses anger and force to override resistance. Mistakes compliance for agreement.","t":"When authority is challenged or outcome is not proceeding as required.","i":"Pause 5 seconds. Name the fear underneath the anger before responding.","q":"Aggression gets results."},"martyr":{"c":"S22","d":"Sacrifices for others to generate obligation or moral authority.","t":"When sacrifice has been made and goes unrecognized.","i":"Identify whether the sacrifice was chosen or performed. If performed, stop.","q":"I give everything and receive nothing."},"cynic":{"c":"S23","d":"Undermines possibility through pre-emptive dismissal.","t":"When hope or enthusiasm is present in self or others.","i":"Identify one thing good about the situation being dismissed.","q":"Optimism is naive."},"manipulator":{"c":"S24","d":"Achieves outcomes indirectly through influence, withholding, or positioning.","t":"When the direct approach feels risky.","i":"State the actual need directly. Once. Without positioning.","q":"Direct requests make me vulnerable."},"overthinker":{"c":"S25","d":"Loops on decisions past the point of useful analysis.","t":"When a decision is required and the outcome is uncertain.","i":"Set a decision time limit. Decide at that limit. Do not extend it.","q":"More analysis will produce the right answer."},"escapist":{"c":"S26","d":"Uses pleasure, distraction, or movement to exit discomfort before it resolves.","t":"When the present moment is uncomfortable and an exit is available.","i":"Stay in the discomfort for two minutes. Name what is present.","q":"I just need to not feel this right now."},"avoider":{"c":"S33","d":"Declines the engagement before it can cost anything. Not fleeing discomfort the way the Escapist does, and not arguing the way the Negotiator does. Not present for it.","t":"When something asks to be dealt with and not dealing with it carries no immediate penalty.","i":"Name the thing being avoided out loud, then do the smallest piece of it.","q":"If I stay unaware, nothing can land on me."},"nihilist":{"c":"S27","d":"Removes the foundation of meaning as a pre-emptive strike against disappointment.","t":"When meaning is required to justify effort.","i":"Identify one action worth doing regardless of meaning. Do it.","q":"Nothing matters enough to sustain effort."},"innocent":{"c":"S28","d":"Maintains deliberate unawareness to avoid responsibility or conflict.","t":"When complexity, conflict, or moral weight is present.","i":"Name one thing you know that you are pretending not to know.","q":"I don't want to be involved."},"pessimist":{"c":"S29","d":"Pre-empts positive outcomes by building a case against them before they materialize.","t":"When a positive outcome is possible.","i":"Name the best thing that could really happen. Act from that.","q":"It will not work out."},"catastrophizer":{"c":"S30","d":"Pictures the worst outcome in every unknown. The Worrywart does this on a smaller scale. The Catastrophizer jumps from an ordinary unknown to a threat to survival.","t":"Any unresolved uncertainty.","i":"Describe the actual current situation without projection. Stay in the present tense.","q":"This will destroy everything."},"enabler":{"c":"S31","d":"Backs up the harmful patterns of others to keep the relationship or avoid conflict. Not the same as the Pleaser: the Enabler backs up behavior they know is harmful.","t":"When someone they care about is repeating a destructive pattern.","i":"Name what you see. Once. Without attachment to the response.","q":"If I say something they will leave."},"control freak":{"c":"S32","d":"The colloquial name for the Controller and Hyper-Vigilant composite at Type A intensity. Hypervigilance running on outcomes and on threat at the same time. The body is scanning forward (what could go wrong) and downward (am I in command of this) in continuous loop. Reads to other people as competence under pressure. Reads in the body as never landing. The same fear that drives Controller (something will go wrong if I release grip) and the same fear that drives Hyper-Vigilant (the threat is just ahead) co-mingle here at sufficient magnitude that they cannot be felt as separate. Distinct from Controller alone: Control Freak does not wait for the control gap to open before acting. Distinct from Hyper-Vigilant alone: Control Freak organizes the scan around its own agency, not around external monitoring. Type A is the social presentation. The somatic state is sustained sympathetic activation that the body has normalized as baseline.","t":"Any environment the person did not configure. Any outcome the person did not design. Any silence where confirmation should be.","i":"Lock the jaw, the shoulders, and the diaphragm for a count of five. Notice they were already locked. Release on the exhale. The drill shows the body can hold a state without scanning it. Repeat until the scan stops without being asked to.","q":"If I am not running this, no one is."}};
 var DOMDEF={"knowledge":{"n":"I","c":"pattern recognition, codification, teaching, symbolic thinking. The person who reads before being asked to. Somatic knowledge is true knowledge, once it's in the body, deception doesn't work on you. You can feel the lie before it forms a word.","x":"over-intellectualization, false certainty, knowledge as a barrier rather than a bridge."},"communication":{"n":"II","c":"bridging, translation, exact words, quick thinking. The connector, the person who translates between people, between ideas, between worlds.","x":"manipulation, saying one thing and then another, using what you know to get a hold over people."},"power":{"n":"III","c":"physical courage, holding your ground, guarding what matters. Force aimed at what is in the way, not at people.","x":"domination, violence without purpose, war as identity."},"imperium":{"n":"IV","c":"governance, structural authority, organizing chaos into function. sees how systems should be organized.","x":"domination, entitlement, autocracy."},"creation":{"n":"V","c":"building, executing, bringing vision into form. Always needed to make things. When you can't create it feels like disconnection, like the system is broken. Financial stress kills creativity not motivationally but anatomically: the survival charge consumes the current before it reaches the generative center. When the root clears, the sacral opens, the creative current flows again. Not as discipline. As a natural consequence of the channel being clear.","x":"perfectionism as paralysis, identity tied to output."},"dissolution":{"n":"VI","c":"deliberate dissolution, clearing what's false or finished, making space for what comes next. Sees what needs to end.","x":"destruction as identity, nihilism, chaos without rebuilding."},"love":{"n":"VII","c":"union, intimacy, the force that draws beings into genuine contact. Love as a state the person generates, not receives. Always knew what brings people together.","x":"codependency, possession, love as completion rather than addition."},"healing":{"n":"VIII","c":"directed intervention, active clearing, creating conditions in which restoration happens. Finds the broken thing in any room.","x":"rescuer complex, martyrdom, healing as identity."},"sacrifice":{"n":"IX","c":"voluntary descent, the chosen ordeal, sacrifice as the mechanism that produces insight unavailable any other way. The knowledge that comes from what was given up, not accumulated. The real use of experience: take in as much as you can, then let go of the names you gave it. Words illuminate, they don't contain.","x":"suffering as identity, the descent without return."},"justice":{"n":"X","c":"discernment of what's real and what's false. Accountability without cruelty. Moral disorder doesn't just feel wrong, it triggers the nervous system. When truth is a 10, anything less is somatic. You can feel the lie before it forms a word. If you lie, you knock your own nervous system off balance.","x":"rigid judgment, self-righteousness, justice as control."},"trickster":{"n":"XI","c":"disruption of rigid patterns, revealing what's hidden through inversion, innovation through disorder. Sees the absurdity in what everyone else treats as fixed.","x":"deception as lifestyle, instability mistaken for freedom."},"nature":{"n":"XII","c":"alignment with biological truth, growth through patience rather than force. Thinks in cycles rather than straight lines.","x":"rejection of structure, naturalism as escape from complexity."},"mystery":{"n":"XIII","c":"navigation of the unseen, death and rebirth as structural realities. Can hold darkness without being consumed. Always drawn to what's hidden.","x":"obsession with shadow, nihilism, identity built on the margin."},"duty":{"n":"XIV","c":"right action regardless of personal cost. Loyalty to what's true, not what's comfortable. Does the right thing even when no one is watching.","x":"rigidity, losing self in obligation, duty performed for an audience."},"play":{"n":"XV","c":"the generative state of pure engagement. Awe. Creativity for its own sake. Not the absence of seriousness, the intelligence serious people miss. Always able to find what's alive in something.","x":"avoidance through play, irresponsibility, lightness that refuses depth."},"death":{"n":"XVI","c":"completion. Endings held cleanly. The threshold kept, the thread cut when the thread is finished, presence with what's dying without flinching. Releases what's done so renewal has room.","x":"morbidity, clinging that refuses every ending, or dealing endings as power."},"fate":{"n":"XVII","c":"reads the pattern and its timing. Knows what must unfold and when to move. Acts at the right moment without forcing the thread.","x":"fatalism, abdication of choice, reading the pattern as an excuse to never act."},"guardian":{"n":"XVIII","c":"the watch kept. A perimeter held so what's inside can live. Protection without possession, sanctuary without walls that strangle.","x":"overprotection that smothers, vigilance that never rests, walls against life itself."},"provision":{"n":"XIX","c":"the one who makes sure there's enough, and not only for today. Supply held against a season nobody can see yet. The granary, the harvest, the wage. Provides for, rather than trades with.","x":"worth measured only in what's furnished, hoarding dressed as prudence, the provider who can't be provided for."}};
 var KB_RENAME={"descent":"Sacrifice","connection":"Love","exchange":"Communication","restoration":"Healing"};
-var GLOSS=[{"t":"Address","d":"One exact place in your body where a pattern sits. Every pattern has one. Release works at that place in the body, not on your thoughts."},{"t":"Allostatic load","d":"The wear on your body from stress that keeps switching on and never fully switches off. It builds up like interest on a debt nobody paid. Release brings it down by working on the addresses where that stress is held."},{"t":"Archetype","d":"One of 12 kinds of character you are born with. Domains feed your blueprint, and your blueprint splits into the twelve archetypes, each its own step. An archetype has no address of its own, so there is nothing at one place to release. Release work changes where a pattern points, not what the archetype is."},{"t":"Ascension","d":"When the world around you, and your own feelings, stop steering you. Things lose their grip because your survival patterns have stopped giving the orders. It is a way of running, not a finish line, so no number of releases counts you in."},{"t":"Attention","d":"Where you point your mind. It comes two ways: wide, taking everything in, or narrow, fixed on one thing. Attention steers. Will pushes."},{"t":"Aura","d":"A field around the body, said to come from the state of your nerves. This instrument does not measure it, and neither does any other. Living tissue does give off a very faint light, from ordinary cell chemistry, but nobody has shown that light carries the state of your nerves. The word stays as a way to talk about how other people feel you, not as a reading."},{"t":"Awareness","d":"How far open the soul's window is. The wider it opens, the more of what is really there you take in."},{"t":"Biophoton field","d":"Very faint light given off by living tissue, too faint for your eyes to see. It is real, and labs have measured it since the 1950s. It comes from the cells' normal chemistry, not from the state of your nerves. This product does not claim it carries the aura, and nothing in the instrument reads it."},{"t":"Chakra","d":"A seat. In this model, a field you cannot touch, made by a bundle of nerves. There are seven, from the base of the spine to the top of the head, though that exact count is a modern Western idea from 1927; older traditions count five, six, eight or more. The word is kept because the work is done in it, not because anyone has measured one."},{"t":"Charge","d":"Survival energy stuck at one place in the body. It gets stuck when a stress reaction starts and never gets to finish. When your attention reaches it, it feels like heat, pressure, tingling or weight."},{"t":"Clair","d":"A sense beyond the five: seeing, hearing, feeling or knowing something without eyes, ears, skin or working it out. The names are clairvoyance, clairaudience, clairsentience and claircognizance, and there are others. Soma breaks them apart. Clear the soma and they work together."},{"t":"Coherence","d":"When what you mean, what you do and what your body does all point the same way, with fewer parts of you pulling against each other. The instrument works it out from your answers. It does not measure your body. CQ is its number."},{"t":"Replacement state","d":"The quality a pattern was blocking, installed at the same address once the charge there is released. Where fear was held, trust. It shows up in what you do, what you feel and what your body does. It is not a general good feeling. It is the one quality this pattern kept out."},{"t":"Consciousness","d":"Energy that carries information, and you meet it two ways. At its widest it has no edges and no focus: infinite consciousness. At its narrowest it is you, aware, in one place. The same thing, seen through a wide opening or a small one."},{"t":"CQ","d":"Coherence Quotient, your coherence number. You answer questions on the 21 Laws of Moral Integrity, each scored 0 to 10, and CQ adds them up, out of 210. Nothing else goes into it. It starts at 0 and fills as you answer. The shadow never pulls it down. The shadow pulls on how you come across instead."},{"t":"Distortion","d":"What happens to what you mean when it passes through places in the body that carry charge. The message leaves whole and comes out bent, like a straight stick that looks bent in water. It is a word for that bending and not a separate number: it used to be the same reading as SQ under a second name."},{"t":"DQ","d":"Decoherence, the shadow number. All the weight held at all 112 addresses, added up, against the most they could hold. A high DQ reads as energy spent holding up parts of you that pull against each other."},{"t":"Drag","d":"Everything slowing your willpower down, added together. Fetters, clenched muscles, inflammation and addresses carrying charge all pull on the link between your mind, body and spirit, like a heavy bag you have to haul. Drag is why willpower runs out."},{"t":"Earth Star","d":"A point just outside the body, at the centre between your feet. It holds you to the ground the way an anchor holds a boat."},{"t":"Ego","d":"The mind stuck to the body. It is never quite here: it flips between thinking and feeling to get through the day, and fear does the steering. The ego is the mask your character wears. It is your DQ, every SQ that is running, and every pattern and every kind of awareness that comes with living as a body, all added up."},{"t":"Fetter","d":"A named pattern that sits at one address and fires when something matches it. There is one at every address, 112 in all: the ones in the body, plus four just outside it, two above the head and two below the feet. It fires when the match arrives, however long ago it was put there."},{"t":"Five paths","d":"Five ways into the work, each named for a teacher. Krishna, flow. Buddha, awareness. Christ, the body. Rama, alignment. Lao Tzu, the horizontal. All five end at the same Source, and the Anchor Principle runs under all of them."},{"t":"Hardened mask","d":"The part of what life taught you that does not wear off with time, with a big change in your life, or with most kinds of therapy. Only release at the address clears it. Habits you keep going by repeating them are different: a change in your life can clear those on its own."},{"t":"Hyper-complex","d":"A named group of saboteurs that run together as one. Heavier than a single saboteur, because each pattern in the group keeps the others going."},{"t":"Integrity","d":"All of your coherence, added up. It lifts your nervous system by keeping you inside your own moral lines, the way a ship's hull has to be whole, a hundred percent, or the water gets in. It is measured by how closely you keep the 21 Laws of Moral Integrity."},{"t":"Intention","d":"What you mean to happen. It is part willpower, part wanting, part drive. Moving toward something feels good. If you have not picked what you want, avoiding things takes its place."},{"t":"Justification mechanic","d":"The way the body protects its own patterns. Blaming, changing the subject and making excuses are a tag fighting back, the way your body fights a germ. The body guards the pattern because the truth feels too hard to face. Narcissism is this, turned all the way up."},{"t":"Karma","d":"What your thoughts and actions send out into the world, and what comes back to you because of them. It goes round, like an echo. It comes back so you can learn the lesson, get past it, and send it on so it never comes back again. Karma is cause and effect, bouncing between you and the world."},{"t":"Kosha","d":"One of six layers that everything you live through passes through, like light through six panes of coloured glass. The six are the body, energy, the mind, wisdom, bliss and language. Each one changes what passes through it."},{"t":"Kundalini","d":"Life energy stored at the base of the spine. It rises from there to the top of the head once enough addresses along the way are cleared, the way water runs once a pipe is unblocked."},{"t":"Letting go","d":"The release protocol. It does two things, in order. First it lowers the charge at an address. Then, while that place is still open, it installs the quality the pattern was blocking. An affirmation does only the second and skips the first."},{"t":"Limiting belief","d":"A tag that squeezes something big you lived through into a small label. Every time you say I am this, you make one. That is how labels work, not a judgment on you. The label is always smaller than what happened."},{"t":"Mask","d":"Built up distortion that has started to pass for who you are. It is what most people call their personality: patterns stored at addresses in the body, firing the way life trained them to. The mask is not who you are."},{"t":"Memory","d":"What is left when a vritti is taken as yours: what came in through your senses and your feelings, named as yours and stored in the body."},{"t":"Merkaba","d":"A spinning shape made of energy, used in the release protocol. Its top half spins left and its bottom half spins right. Spinning against each other, they shake up the flow at an address, and that opens it for release."},{"t":"Node","d":"Another word for an address: one exact place on the body's energy map. There are 112. Most are in the body. Four sit just outside it: the Earth Star, centred between your feet, the Gaia Gateway below it, the Sol Star just above your head, and the Stellar Gateway above that."},{"t":"Ojas","d":"A Sanskrit word meaning vigour: life energy that builds up in meditation and wraps around you like a cocoon, spinning on its own to wake the nervous system and let stress out. It is also the protocol for an address too dense or too numb to feel, stage 4 or stage 5, bringing back enough feeling there for release to start."},{"t":"Perception","d":"How you take in what is around you and make sense of it. It turns raw energy into pictures, words and feelings you can understand."},{"t":"Plexus","d":"A bundle of nerves you could find in the body, like the solar plexus behind your stomach. The plexus is the wiring. The chakra is the field the wiring gives off. Trouble in the nerves shows up as trouble in the chakra."},{"t":"Presence","d":"How much of you other people can feel when you walk into a room."},{"t":"Primary node","d":"The main address carrying charge in a group of addresses around it. Clear it and the ones around it let go on their own. Work on the others without finding it, and only part of the charge comes out."},{"t":"Pure perception","d":"All the clairs working together, with nothing bending them. Thoughts still come. What changes is that every sense is open at once and they agree. It opens up as the soma gets lighter and the walls between the clairs come down."},{"t":"Reading-as-release","d":"Release that happens by reading. You read a Letting Go sequence, written the right way, and the body releases at the place the sequence names. Nothing to picture in your head. Reading the lines does both steps."},{"t":"Release","d":"Stored charge leaving the body through the nerves. You can feel it and see it: heat, shaking, tears, a change in your breathing. The pattern loses what was powering it."},{"t":"Resistance","d":"All the drag added together: every fetter, every address carrying charge, and every inflammation, all pushing back against the signal moving through you. Release is what brings it down. It does not change your CQ, which is the laws alone."},{"t":"Saboteur","d":"One of 33 named patterns of behavior, each one a fetter squeezed into a habit you keep repeating. Each has its own belief, its own place in the body and its own feeling."},{"t":"Self-unraveling state","d":"When enough gates have cleared, the body starts releasing by itself. The soma lets go without you running the protocol. This is how you know a release session worked: the body keeps releasing on its own, and not only the one address you worked on."},{"t":"Signal chain","d":"The loop everything runs through, every moment. It starts in the field of awareness around you and goes through your senses, your nerves, your brain, your thinking, how it relates to you, the three axes, your feelings, the rules you were raised with, the koshas and your archetypes, then back out to the field."},{"t":"Soma","d":"The field of energy your nervous system gives off, set by the state it is in. As soma builds up it becomes load, like weight in a backpack. Where soma fields overlap they break up what you can perceive and make walls your awareness cannot see through."},{"t":"Sol Star","d":"A point just above the top of your head. It is where you reach past your body and open out to the field around you."},{"t":"Source","d":"The field as it is before any pattern is put in. The bedrock under everything else. What is left when every pattern is cleared."},{"t":"Superego","d":"The part of the mind that guards what you were told. It is made of the stories and rules an adult handed down to you. It sits on the surface and protects those beliefs. The ego goes deeper, because the ego lives in the body."},{"t":"Tag","d":"The moment something that hit you hard gets a name and gets stored at an address. The name locks it in. From then on the body watches for anything that matches, and when it finds one, the pattern stored there fires."},{"t":"Two mechanics","d":"The two steps a full release needs, in this order. First, Release: the charge at the address goes down. Second, Embodied Truth: while the address is open, the quality the pattern was blocking is installed. Do the first without the second and the address is left with nothing to run instead."},{"t":"Vritti","d":"A ripple of what you sense and what you feel, coming in from outside. It travels along your nerves to your brain, where it is put together and noticed. Once you take it as yours, the vritti is what caves in the nerve, the chakra and your field of awareness."},{"t":"Willpower","d":"How much push you have to spend, not a kind of person. It works like a battery: sleep charges it, and pushing through resistance drains it. Release the charge stuck in your body and the drag drops, so willpower goes up. It has no reading of its own; what drags on it shows up as Resistance, which is already read."}];
+var GLOSS=[{"t":"Address","d":"One exact place in your body where a pattern sits. Every pattern has one. Release works at that place in the body, not on your thoughts."},{"t":"Allostatic load","d":"The wear on your body from stress that keeps switching on and never fully switches off. It builds up like interest on a debt nobody paid. In this model, release brings it down by working on the addresses where that stress is held. This instrument does not measure it."},{"t":"Archetype","d":"One of 12 kinds of character you are born with. Domains feed your blueprint, and your blueprint splits into the twelve archetypes, each its own step. An archetype has no address of its own, so there is nothing at one place to release. Release work changes where a pattern points, not what the archetype is."},{"t":"Ascension","d":"When the world around you, and your own feelings, stop steering you. Things lose their grip because your survival patterns have stopped giving the orders. It is a way of running, not a finish line, so no number of releases counts you in."},{"t":"Attention","d":"Where you point your mind. It comes two ways: wide, taking everything in, or narrow, fixed on one thing. Attention steers. Will pushes."},{"t":"Aura","d":"A field around the body, said to come from the state of your nerves. This instrument does not measure it, and neither does any other. Living tissue does give off a very faint light, from ordinary cell chemistry, but nobody has shown that light carries the state of your nerves. The word stays as a way to talk about how other people feel you, not as a reading."},{"t":"Awareness","d":"How far open the soul's window is. The wider it opens, the more of what is really there you take in."},{"t":"Biophoton field","d":"Very faint light given off by living tissue, too faint for your eyes to see. It is real, and labs have measured it since the 1950s. It comes from the cells' normal chemistry, not from the state of your nerves. This product does not claim it carries the aura, and nothing in the instrument reads it."},{"t":"Chakra","d":"A seat. In this model, a field you cannot touch, made by a bundle of nerves. There are seven, from the base of the spine to the top of the head, though that exact count is a modern Western idea from 1927; older traditions count five, six, eight or more. The word is kept because the work is done in it, not because anyone has measured one."},{"t":"Charge","d":"Survival energy stuck at one place in the body. It gets stuck when a stress reaction starts and never gets to finish. When your attention reaches it, it feels like heat, pressure, tingling or weight."},{"t":"Clair","d":"A sense beyond the five: seeing, hearing, feeling or knowing something without eyes, ears, skin or working it out. The names are clairvoyance, clairaudience, clairsentience and claircognizance, and there are others. Soma breaks them apart. Clear the soma and they work together."},{"t":"Coherence","d":"When what you mean, what you do and what your body does all point the same way, with fewer parts of you pulling against each other. The instrument works it out from your answers. It does not measure your body. CQ is its number."},{"t":"Replacement state","d":"The quality a pattern was blocking, installed at the same address once the charge there is released. Where fear was held, trust. It shows up in what you do, what you feel and what your body does. It is not a general good feeling. It is the one quality this pattern kept out."},{"t":"Consciousness","d":"Energy that carries information, and you meet it two ways. At its widest it has no edges and no focus: infinite consciousness. At its narrowest it is you, aware, in one place. The same thing, seen through a wide opening or a small one."},{"t":"CQ","d":"Coherence Quotient, your coherence number. You answer questions on the 21 Laws of Moral Integrity, each scored 0 to 10, and CQ adds them up, out of 210. Nothing else goes into it. It starts at 0 and fills as you answer. The shadow never pulls it down. The shadow pulls on how you come across instead."},{"t":"Distortion","d":"What happens to what you mean when it passes through places in the body that carry charge. The message leaves whole and comes out bent, like a straight stick that looks bent in water. It is a word for that bending and not a separate number: it used to be the same reading as SQ under a second name."},{"t":"DQ","d":"Decoherence, the shadow number. All the weight held at all 112 addresses, added up, against the most they could hold. A high DQ reads as energy spent holding up parts of you that pull against each other."},{"t":"Drag","d":"Everything slowing your willpower down, added together. Charge at your addresses and the saboteurs running on it pull on the link between mind, body and spirit, like a heavy bag. The instrument works it out from what you enter. It does not measure your muscles or any inflammation. In this model, drag is why willpower runs out."},{"t":"Earth Star","d":"A point just outside the body, at the centre between your feet. It holds you to the ground the way an anchor holds a boat."},{"t":"Ego","d":"The mind stuck to the body. It is never quite here: it flips between thinking and feeling to get through the day, and fear does the steering. The ego is the mask your character wears. It is your DQ, every SQ that is running, and every pattern and every kind of awareness that comes with living as a body, all added up."},{"t":"Fetter","d":"A named pattern that sits at one address and fires when something matches it. There is one at every address, 112 in all: the ones in the body, plus four just outside it, two above the head and two below the feet. It fires when the match arrives, however long ago it was put there."},{"t":"Five paths","d":"Five ways into the work, each named for a teacher. Krishna, flow. Buddha, awareness. Christ, the body. Rama, alignment. Lao Tzu, the horizontal. All five end at the same Source, and the Anchor Principle runs under all of them."},{"t":"Hardened mask","d":"The part of what life taught you that does not wear off with time or with a big change in your life. In this model, release at the address is what clears it. That is the model's claim. Nothing here has measured it. Habits you keep going by repeating them are different: a change in your life can clear those on its own."},{"t":"Hyper-complex","d":"A named group of saboteurs that run together as one. Heavier than a single saboteur, because each pattern in the group keeps the others going."},{"t":"Integrity","d":"All of your coherence, added up. It lifts your nervous system by keeping you inside your own moral lines, the way a ship's hull has to be whole, a hundred percent, or the water gets in. It is measured by how closely you keep the 21 Laws of Moral Integrity."},{"t":"Intention","d":"What you mean to happen. It is part willpower, part wanting, part drive. Moving toward something feels good. If you have not picked what you want, avoiding things takes its place."},{"t":"Justification mechanic","d":"The way the body protects its own patterns. Blaming, changing the subject and making excuses are a tag fighting back, the way your body fights a germ. The body guards the pattern because the truth feels too hard to face. Narcissism is this, turned all the way up."},{"t":"Karma","d":"What your thoughts and actions send out into the world, and what comes back to you because of them. It goes round, like an echo. It comes back so you can learn the lesson, get past it, and send it on so it never comes back again. Karma is cause and effect, bouncing between you and the world."},{"t":"Kosha","d":"One of six layers that everything you live through passes through, like light through six panes of coloured glass. The six are the body, energy, the mind, wisdom, bliss and language. Each one changes what passes through it."},{"t":"Kundalini","d":"Life energy stored at the base of the spine. It rises from there to the top of the head once enough addresses along the way are cleared, the way water runs once a pipe is unblocked."},{"t":"Letting go","d":"The release protocol. It does two things, in order. First it lowers the charge at an address. Then, while that place is still open, it installs the quality the pattern was blocking. An affirmation does only the second and skips the first."},{"t":"Limiting belief","d":"A tag that squeezes something big you lived through into a small label. Every time you say I am this, you make one. That is how labels work, not a judgment on you. The label is always smaller than what happened."},{"t":"Mask","d":"Built up distortion that has started to pass for who you are. It is what most people call their personality: patterns stored at addresses in the body, firing the way life trained them to. The mask is not who you are."},{"t":"Memory","d":"What is left when a vritti is taken as yours: what came in through your senses and your feelings, named as yours and stored in the body."},{"t":"Merkaba","d":"A spinning shape made of energy, used in the release protocol. Its top half spins left and its bottom half spins right. Spinning against each other, they shake up the flow at an address, and that opens it for release."},{"t":"Node","d":"Another word for an address: one exact place on the body's energy map. There are 112. Most are in the body. Four sit just outside it: the Earth Star, centred between your feet, the Gaia Gateway below it, the Sol Star just above your head, and the Stellar Gateway above that."},{"t":"Ojas","d":"A Sanskrit word meaning vigour: life energy that builds up in meditation and wraps around you like a cocoon, spinning on its own to wake the nervous system and let stress out. It is also the protocol for an address too dense or too numb to feel, stage 4 or stage 5, bringing back enough feeling there for release to start."},{"t":"Perception","d":"How you take in what is around you and make sense of it. It turns raw energy into pictures, words and feelings you can understand."},{"t":"Plexus","d":"A bundle of nerves you could find in the body, like the solar plexus behind your stomach. The plexus is the wiring. The chakra is the field the wiring gives off. Trouble in the nerves shows up as trouble in the chakra."},{"t":"Presence","d":"How much of you other people can feel when you walk into a room."},{"t":"Primary node","d":"The main address carrying charge in a group of addresses around it. Clear it and the ones around it let go on their own. Work on the others without finding it, and only part of the charge comes out."},{"t":"Pure perception","d":"All the clairs working together, with nothing bending them. Thoughts still come. What changes is that every sense is open at once and they agree. It opens up as the soma gets lighter and the walls between the clairs come down."},{"t":"Reading-as-release","d":"Release that happens by reading. You read a Letting Go sequence, written the right way, and the body releases at the place the sequence names. Nothing to picture in your head. Reading the lines does both steps."},{"t":"Release","d":"Stored charge leaving the body through the nerves. You can feel it and see it: heat, shaking, tears, a change in your breathing. The pattern loses what was powering it."},{"t":"Resistance","d":"All the drag added together: the charge held at every address, made heavier or lighter by what your stories show, pushing back against the signal moving through you. The instrument works it out from what you enter. It does not measure inflammation or anything else in your body. Release brings it down by lowering the charge it is made of. It does not change your CQ, which is the laws alone."},{"t":"Saboteur","d":"One of 33 named patterns of behavior, each one a fetter squeezed into a habit you keep repeating. Each has its own belief, its own place in the body and its own feeling."},{"t":"Self-unraveling state","d":"When enough gates have cleared, the body starts releasing by itself. The soma lets go without you running the protocol. This is how you know a release session worked: the body keeps releasing on its own, and not only the one address you worked on."},{"t":"Signal chain","d":"The loop everything runs through, every moment. It starts in the field of awareness around you and goes through your senses, your nerves, your brain, your thinking, how it relates to you, the three axes, your feelings, the rules you were raised with, the koshas and your archetypes, then back out to the field."},{"t":"Soma","d":"The field of energy your nervous system gives off, set by the state it is in. As soma builds up it becomes load, like weight in a backpack. Where soma fields overlap they break up what you can perceive and make walls your awareness cannot see through."},{"t":"Sol Star","d":"A point just above the top of your head. It is where you reach past your body and open out to the field around you."},{"t":"Source","d":"The field as it is before any pattern is put in. The bedrock under everything else. What is left when every pattern is cleared."},{"t":"Superego","d":"The part of the mind that guards what you were told. It is made of the stories and rules an adult handed down to you. It sits on the surface and protects those beliefs. The ego goes deeper, because the ego lives in the body."},{"t":"Tag","d":"The moment something that hit you hard gets a name and gets stored at an address. The name locks it in. From then on the body watches for anything that matches, and when it finds one, the pattern stored there fires."},{"t":"Two mechanics","d":"The two steps a full release needs, in this order. First, Release: the charge at the address goes down. Second, Embodied Truth: while the address is open, the quality the pattern was blocking is installed. Do the first without the second and the address is left with nothing to run instead."},{"t":"Vritti","d":"A ripple of what you sense and what you feel, coming in from outside. It travels along your nerves to your brain, where it is put together and noticed. Once you take it as yours, the vritti is what caves in the nerve, the chakra and your field of awareness."},{"t":"Willpower","d":"How much push you have to spend, not a kind of person. It works like a battery: sleep charges it, and pushing through resistance drains it. Release the charge stuck in your body and the drag drops, so willpower goes up. It has no reading of its own; what drags on it shows up as Resistance, which is already read."}];
 var HARM=[{"c":"E01","t":"All Is One","a":"nature","ch":"Chapter 19"},{"c":"E02","t":"All Is Motion","a":"nature","ch":"Chapter 19"},{"c":"E03","t":"Polarity","a":"nature","ch":"Chapter 19"},{"c":"E04","t":"All Fields Correspond","a":"nature","ch":"Chapter 19"},{"c":"E05","t":"Like Fields Attract","a":"nature","ch":"Chapter 19"},{"c":"E06","t":"Inspired Action","a":"nature","ch":"Chapter 19"},{"c":"E07","t":"Transmutation","a":"nature","ch":"Chapter 19"},{"c":"E08","t":"Cause & Effect","a":"nature","ch":"Chapter 19"},{"c":"E09","t":"Compensation","a":"nature","ch":"Chapter 19"},{"c":"E10","t":"Potential","a":"nature","ch":"Chapter 19"},{"c":"E11","t":"Relativity","a":"nature","ch":"Chapter 19"},{"c":"E12","t":"Rhythm","a":"nature","ch":"Chapter 19"},{"c":"E13","t":"Gender","a":"nature","ch":"Chapter 19"},{"c":"E14","t":"Form","a":"human","ch":"Chapter 19"},{"c":"E15","t":"Archetype","a":"human","ch":"Chapter 19"},{"c":"E16","t":"Biofield","a":"human","ch":"Chapter 19"},{"c":"E17","t":"Attunement","a":"human","ch":"Chapter 19"},{"c":"E18","t":"Perception","a":"human","ch":"Chapter 19"},{"c":"E19","t":"Intelligence","a":"human","ch":"Chapter 19"},{"c":"E20","t":"Pleasure & Pain","a":"human","ch":"Chapter 19"},{"c":"E21","t":"The Three Axes","a":"human","ch":"Chapter 19"},{"c":"E22","t":"Symbol","a":"human","ch":"Chapter 19"},{"c":"E23","t":"Identity","a":"human","ch":"Chapter 19"},{"c":"E24","t":"Choice","a":"human","ch":"Chapter 19"},{"c":"E25","t":"Ego","a":"human","ch":"Chapter 19"},{"c":"E26","t":"Intention","a":"human","ch":"Chapter 19"},{"c":"E27","t":"Action","a":"human","ch":"Chapter 19"},{"c":"E28","t":"Memory","a":"human","ch":"Chapter 19"},{"c":"E29","t":"Truth","a":"spirit","ch":"Chapter 19"},{"c":"E30","t":"Transparency","a":"spirit","ch":"Chapter 19"},{"c":"E31","t":"Unity","a":"spirit","ch":"Chapter 19"},{"c":"E32","t":"Awareness","a":"spirit","ch":"Chapter 19"},{"c":"E33","t":"Presence","a":"spirit","ch":"Chapter 19"},{"c":"E34","t":"Equanimity","a":"spirit","ch":"Chapter 19"},{"c":"E35","t":"Compassion","a":"spirit","ch":"Chapter 19"},{"c":"E36","t":"Forgiveness","a":"spirit","ch":"Chapter 19"},{"c":"E37","t":"Courage","a":"spirit","ch":"Chapter 19"},{"c":"E38","t":"Temperance","a":"spirit","ch":"Chapter 19"},{"c":"E39","t":"Duty","a":"spirit","ch":"Chapter 19"},{"c":"E40","t":"Accountability","a":"spirit","ch":"Chapter 19"},{"c":"E41","t":"Justice","a":"spirit","ch":"Chapter 19"},{"c":"E42","t":"Non-Harm","a":"spirit","ch":"Chapter 19"},{"c":"E43","t":"Responsibility","a":"spirit","ch":"Chapter 19"},{"c":"E44","t":"Humility","a":"spirit","ch":"Chapter 19"},{"c":"E45","t":"Generosity","a":"spirit","ch":"Chapter 19"},{"c":"E46","t":"Detachment","a":"spirit","ch":"Chapter 19"},{"c":"E47","t":"Patience","a":"spirit","ch":"Chapter 19"},{"c":"E48","t":"Aesthetic Beauty","a":"spirit","ch":"Chapter 19"},{"c":"E49","t":"Nature","a":"spirit","ch":"Chapter 19"},{"c":"E50","t":"Peace","a":"express","ch":"Chapter 19"},{"c":"E51","t":"Play","a":"express","ch":"Chapter 19"},{"c":"E52","t":"Curiosity","a":"express","ch":"Chapter 19"},{"c":"E53","t":"Creativity","a":"express","ch":"Chapter 19"},{"c":"E54","t":"Flow","a":"express","ch":"Chapter 19"},{"c":"E55","t":"Wonder","a":"express","ch":"Chapter 19"},{"c":"E56","t":"Order","a":"express","ch":"Chapter 19"},{"c":"E57","t":"Love","a":"express","ch":"Chapter 19"},{"c":"E58","t":"Purpose","a":"express","ch":"Chapter 19"},{"c":"E59","t":"Will","a":"express","ch":"Chapter 19"},{"c":"E60","t":"Fear · Safety","a":"emotion","ch":"Chapter 19"},{"c":"E61","t":"Anger · Calm","a":"emotion","ch":"Chapter 19"},{"c":"E62","t":"Shame · Worth","a":"emotion","ch":"Chapter 19"},{"c":"E63","t":"Disgust · Acceptance","a":"emotion","ch":"Chapter 19"},{"c":"E64","t":"Apathy · Joy","a":"emotion","ch":"Chapter 19"},{"c":"E65","t":"Shock","a":"emotion","ch":"Chapter 19"},{"c":"E66","t":"Sad · Happy","a":"emotion","ch":"Chapter 19"},{"c":"E67","t":"Surprise","a":"emotion","ch":"Chapter 19"},{"c":"E68","t":"Anticipation","a":"emotion","ch":"Chapter 19"},{"c":"E69","t":"Physical","a":"measure","ch":"Chapter 19"},{"c":"E70","t":"Intellectual","a":"measure","ch":"Chapter 19"},{"c":"E71","t":"Emotional","a":"measure","ch":"Chapter 19"},{"c":"E72","t":"Wisdom","a":"measure","ch":"Chapter 19"},{"c":"E73","t":"Adversity","a":"measure","ch":"Chapter 19"},{"c":"E74","t":"Coherence","a":"measure","ch":"Chapter 19"},{"c":"E75","t":"Meta- Awareness","a":"meta","ch":"Chapter 19"},{"c":"E76","t":"Coherence","a":"meta","ch":"Chapter 19"}];
 var HARM_AX={nature:'Laws of Nature',human:'Laws of Human Nature',spirit:'Laws of Moral Integrity',
  express:'Laws of Expression',emotion:'The nine architectures',measure:'The instruments',meta:'The frame'};
@@ -4469,7 +4534,24 @@ var UNPACK_BASE={
  'mask':'A mask is a way of showing up, such as Child or Teen, read from the weight held at a group of seats.',
  'axis':'An axis is a feeling and its opposite, such as fear and trust, and the instrument reads how much of the first is held and how much of the second is in place.',
  'cq':'CQ is your coherence number, built only from your answers on the laws.',
+ /* DQ stood as a bare label on the release clock. Round RG. */
+ 'dq':'DQ is your shadow weight: all the charge you carry, on every address, against the most your body could hold.',
  'coherence':'Coherence is when what you mean, what you do and what your body does point the same way.',
+ /* ROUND RG, the copy sweep. His words: "you read 62 above the oscillating
+    band. Your integrity is 6.2. Integrity is the hull. It's got to be human."
+    Integrity was printed as a figure on the Compass with no meaning anywhere
+    on that screen, and the rail's own tooltip defined it by two more terms.
+    The sentence is the law family's own phrasing, so the two cannot drift. */
+ 'integrity':'Integrity is how well you keep the laws: how often you do what each one asks, when it costs you, when nobody would know and on an ordinary day.',
+ /* Shadow weight was printed as a bare figure in the Summary reading and in
+    Analytics. It is DQ: every address summed against the most they could
+    hold (compute.js), so the sentence says that and nothing more. */
+ 'shadow weight':'Shadow weight is all the charge you carry, on every address, against the most your body could hold.',
+ /* Expression the reading, as against expression the numerology number,
+    which keeps the bare key above. Two meanings sat on one Summary page. */
+ 'field:expression':'Expression is the part of your coherence that gets past the charge you carry.',
+ /* the line every surface counts held from, BELOW THE LINE in compute.js */
+ 'the line':'The line is the point where the charge at one address reaches 4 and starts to cost your body.',
  /* YOUR PATTERNS, the trace graph's screen (ui/loopread.js, engine/loop.js).
     Each word below is a label that block prints, and its meaning is the
     graph's own: confirmed is a user_confirmed edge, unanswered is everything
@@ -7822,10 +7904,33 @@ const PLANS=[
  /* TIER FOUR IS NOT MORE OF THE SAME. It carries the same twelve hundred as
     tier three, so patterns do not separate them at all, and it sees what tier
     three sees: what tier four buys is the cohort lead suite. Ruled, and it is
-    the one rung with a price attached. */
- {k:'four',  nm:'Tier four',   per:'month', grant:1200, lead:true,
+    the one rung with a price attached.
+
+    AND IT IS CLOSED TO PURCHASE UNTIL THE SUITE EXISTS, built:false. Ruled at
+    round PK, 2 October, DECISIONS.md: "tier four is closed until built", with
+    the words the screen says in REVIEW-arch/TALLY.md ruling 9, "Opens with the
+    lead suite". The ruling was recorded and never reached the code: the tiers
+    page and the plan sheet both offered "Move to tier four" and a press went
+    to checkout at ninety nine dollars, for the same patterns and the same
+    sight as tier three and a roster ui/practitioner.js says plainly is not
+    there ("no sign in, no store and no grant"). The same flag the Kundalini
+    row of SIGHT carries, read the same way: the row is kept, so the ladder
+    still shows what is coming and at what price, and planBuyable is the one
+    answer to whether a checkout may be started for it. Opening it is one word
+    here, when the lead suite and its consent list are built. A record that
+    already says tier four, a worked example or a test account, still reads
+    tier four through planOf: this closes the door, it moves nobody. */
+ {k:'four',  nm:'Tier four',   per:'month', grant:1200, lead:true, built:false,
   d:'The same twelve hundred as tier three, and the cohort lead suite. Manage profiles, build rituals and build accountability for the people you lead.'}];
 const PLAN_BY={}; PLANS.forEach(function(p){PLAN_BY[p.k]=p;});
+/* WHETHER A CHECKOUT MAY BE STARTED FOR A TIER. Only a paid tier that exists
+   and is built. Free and the gift are never bought, and a key this build does
+   not know is not a thing to sell. Every press that could reach a payment page
+   asks this, at the one door they share (planOpen, ui/panels.js), and the
+   ladder carries it so a screen can say "not open yet" before anybody presses. */
+function planBuyable(k){
+ var p=PLAN_BY[k];
+ return !!(p&&p.k!=='free'&&p.k!=='gift'&&p.built!==false);}
 /* THE GIFT'S SIZE, NAMED ONCE. It is the gift row's grant above. planAllowance
    carried its own literal 100 in five places beside that row, which is the same
    number held twice and one edit away from two answers. */
@@ -7952,7 +8057,10 @@ function planLadder(pl){
    week:(p.per==='week')?p.grant:Math.round(p.grant/4),
    runs:Math.floor(p.grant/RUN_MIN), lead:!!p.lead, price:planPrice(p.k),
    sees:planSeesAt(p.k), adds:planAdds(p.k),
-   now:(p.k===now.k), up:(i>at&&p.k!=='free')};});}
+   /* up is where the rung sits against the one in force; buy is whether it
+      can be bought today. A closed rung is still a step up, and says so, and
+      carries no press. */
+   now:(p.k===now.k), up:(i>at&&p.k!=='free'), buy:planBuyable(p.k)};});}
 
 /* THE STATES A SUBSCRIPTION CAN BE IN, and what each one means for access.
    past_due keeps access, because cutting somebody off mid month over a card
@@ -8190,7 +8298,10 @@ function planUpgrade(pl){
  var now=planOf(pl);
  var i=PLANS.map(function(p){return p.k;}).indexOf(now.k);
  var nxt=null;
- for(var j=i+1;j<PLANS.length;j++){if(PLANS[j].k!=='gift'){nxt=PLANS[j];break;}}
+ /* the next rung that can be bought. A closed rung is not offered as the next
+    step, because the step this names becomes a "Move to" button, and a button
+    that opens a refusal is the dead press the house rules out. */
+ for(var j=i+1;j<PLANS.length;j++){if(PLANS[j].k!=='gift'&&planBuyable(PLANS[j].k)){nxt=PLANS[j];break;}}
  if(!nxt)return null;
  /* what the next rung lets a person see that this one does not, off SIGHT */
  var moreSight=planAdds(nxt.k);
@@ -8289,8 +8400,99 @@ function planWorth(patterns){
    arguments, so nothing here reaches for a document or a store.
    ============================================================ */
 const AV_MONTH=30*24*3600*1000;
+/* ============================================================
+   THE BECOMING SLICES S1 AND S2, round RB. ATUNED-becoming-system-TDD.md,
+   audited in BECOMING-AUDIT.md, whose section 11 orders the build. His words
+   at round RB: "The avatar page has a new TDD. It doesn't look like it was
+   ever updated or touched." It had not been: none of S1 to S4 was built.
+
+   S1. What the Avatar page writes now travels with the record. The archetype
+   ratings (arch), the weight each pair was written against (load0) and the
+   tags a person put on or took off (tags) lived under their own key in the
+   browser beside the record, so an export dropped them and another device
+   never saw them (R08). They are fields of the avatar now. The daily rule
+   stays beside the record until S7 makes it a ritual step, as the audit says.
+   movedAt says when the old key was read across, once, so a person who then
+   takes every rating off does not have them read back in on the next paint.
+
+   S2. Identity and bookkeeping the document's section 6.2 asks for: a name,
+   a title and a description the person writes; a version that moves only when
+   the person says they revised it; a status, draft, active or archived, which
+   is a declared fact (R06: evolving and integrated are readings and are never
+   stored); and an id on every pair, so a weight is kept against the pair and
+   not against its words, which changed meaning every time a word was fixed.
+
+   All additive inside schema version 2, the house's own precedent for the
+   practice objects and the bank of days: an older record has none of these
+   and is filled from this blank.
+   ============================================================ */
+const AV_STATUS=['draft','active','archived'];
+/* the caps on what a person writes, one place, read by the boundary and the
+   surface alike so the field and the refusal agree about the number */
+const AV_CAP={name:60, title:80, description:280, tag:60, tags:60};
 function avatarBlank(){
- return {built:false, at:null, reviewedAt:null, pairs:[]};}
+ return {built:false, at:null, reviewedAt:null, pairs:[],
+  name:'', title:'', description:'', version:1, status:'draft',
+  arch:{}, load0:{}, tags:{}, movedAt:null};}
+/* the status a record carries, or for one written before there was a status,
+   the one its own built flag already said */
+function avatarStatus(av){
+ if(av&&AV_STATUS.indexOf(av.status)>=0)return av.status;
+ return (av&&av.built)?'active':'draft';}
+/* A PAIR'S ID. A pair written before ids existed is given one that is the same
+   on every load, read off its own words and seat, so the weight kept against
+   it does not move to a new key each time the record is opened. Two pairs
+   with the same words take the next free suffix, in order. */
+function avatarHash(t){
+ var h=2166136261; t=String(t);
+ for(var i=0;i<t.length;i++){h^=t.charCodeAt(i); h=Math.imul(h,16777619);}
+ return (h>>>0).toString(36);}
+function avatarPairId(pr,taken){
+ var base='p'+avatarHash((pr.be||'')+'\n'+(pr.notbe||'')+'\n'+(pr.seat||'')), id=base, n=1;
+ while(taken&&taken[id]){n++; id=base+'x'+n;}
+ return id;}
+const AV_ID=/^[a-z0-9]{1,24}$/;
+/* every pair carries an id after this, and no two share one */
+function avatarEnsureIds(av){
+ if(!av||!Array.isArray(av.pairs))return av;
+ var taken={};
+ av.pairs.forEach(function(pr){if(pr&&typeof pr.id==='string'&&AV_ID.test(pr.id)&&!taken[pr.id])taken[pr.id]=1;
+  else if(pr)pr.id=null;});
+ av.pairs.forEach(function(pr){if(pr&&!pr.id){pr.id=avatarPairId(pr,taken); taken[pr.id]=1;}});
+ return av;}
+/* a new pair's id, minted at the moment of writing, never reused */
+function avatarNewId(now,rnd){
+ return 'n'+Math.floor(now||Date.now()).toString(36)+Math.floor((rnd==null?Math.random():rnd)*1679616).toString(36);}
+/* THE MONTHLY REVIEW, ANSWERED. avatarDue says a month has passed; this is
+   the person's answer. Still true moves the review date and nothing else.
+   Revised moves the version, because the version counts the times the person
+   said who they are becoming has changed, and nothing else may move it. */
+function avatarReview(av,revised,now){
+ if(!av)return av;
+ av.reviewedAt=new Date(now||Date.now()).toISOString();
+ if(revised)av.version=Math.max(1,(+av.version||1))+1;
+ return av;}
+/* the side key's entry for one profile, read across into the avatar, once.
+   keyOf maps the old text key of a pair to the pair, because the side key
+   kept weights against the pair's words. What is read across is only what the
+   avatar does not already hold, so a record that was written by a newer
+   build wins over the browser's older copy. Returns how many were moved. */
+function avatarMoveSide(av,e,keyOf,now){
+ if(!av||av.movedAt)return 0;
+ var n=0;
+ if(e&&typeof e==='object'){
+  if(e.arch&&typeof e.arch==='object')Object.keys(e.arch).forEach(function(k){
+   var v=e.arch[k]; if(av.arch[k]===undefined&&[1,2,3,4,5].indexOf(v)>=0){av.arch[k]=v; n++;}});
+  if(e.load0&&typeof e.load0==='object')Object.keys(e.load0).forEach(function(k){
+   var v=e.load0[k], pr=keyOf?keyOf(k):null;
+   if(pr&&pr.id&&av.load0[pr.id]===undefined&&typeof v==='number'&&v>=0&&v<=10){av.load0[pr.id]=v; n++;}});
+  if(e.tags&&typeof e.tags==='object')Object.keys(e.tags).forEach(function(b){
+   var t=e.tags[b]; if(!t||typeof t!=='object'||av.tags[b])return;
+   var keep=function(a){return (Array.isArray(a)?a:[]).filter(function(w){
+    return typeof w==='string'&&w.length>0&&w.length<=AV_CAP.tag;}).slice(0,AV_CAP.tags);};
+   av.tags[b]={add:keep(t.add), off:keep(t.off)}; n++;});}
+ av.movedAt=new Date(now||Date.now()).toISOString();
+ return n;}
 /* A PAIR IS WRITTEN AS A PAIR. The left side is a value and a value has no
    address. The right side is a sentence about a bad day, and a sentence about
    a bad day parses. That is why neither half is written alone. */
@@ -8342,6 +8544,31 @@ function avatarProgress(rows){
    ============================================================ */
 const PUR_SIDES=['partner','family','friends','community','coworkers','alone'];
 const PUR_PER_SIDE=5;
+/* THE CAPS, said once, round RB, S3. A value is a word or two and stays under
+   120 characters; a commitment is one sentence and stays under 200. The
+   boundary used to replace an over long value with an empty string and say
+   nothing (R10), which is a value the person thinks they wrote and the record
+   does not hold. It refuses by name now, and the field on the page stops at
+   the same number, so the refusal is never met by typing. */
+const PUR_VAL_MAX=120, PUR_LINE_MAX=200;
+/* THE SIX SIDES, IN HIS WORDS, round RB, S3. The stored keys are his ruling
+   (DECISIONS.md, the purpose map) and are identity, so they never rename. The
+   document's names, Self, Relationship and Work, are not used: "alone" and
+   "self" are not the same idea, and choosing between them is his (Q4). Each
+   label carries its plain meaning beside it, round PO, unpack every symbol. */
+const PUR_SIDE_SAY={
+ partner:{nm:'Partner',say:'the person you share a life with'},
+ family:{nm:'Family',say:'the people you were born or married into'},
+ friends:{nm:'Friends',say:'the people you chose'},
+ community:{nm:'Community',say:'the groups you belong to'},
+ coworkers:{nm:'Coworkers',say:'the people you work with or for'},
+ alone:{nm:'Alone',say:'you, with nobody else there'}};
+/* what is wrong with one value or one commitment, or null when nothing is.
+   The surface and the boundary both ask it, so they refuse the same thing. */
+function purposeRefuse(text,max){
+ if(typeof text!=='string')return 'is not text';
+ if(text.length>=max)return 'is '+text.length+' characters, and the most is '+(max-1);
+ return null;}
 const PUR_SOUL='Universal. Freedom, free will, knowledge, wisdom, that register.';
 const PUR_EGO='With a body attached. Health, fitness, financial stability, wealth, family.';
 function purposeBlank(){
@@ -8410,7 +8637,9 @@ function boundaryCross(text){
      pattern        derived   one node per address any story, line or
                               stored edge touches, read off NODES
      story supports pattern   derived, inferred. parseStory's imprints,
-                              re-read under the record's own soul (below)
+                              re-read under the record's own soul (below).
+                              user_confirmed where the entry's own ob.yes
+                              holds the address, the mirror card's Yes
      release, reframe         derived, observed. meter.unique grouped by
                               address and channel, the key meterKey makes
                               with no line. A truth channel is a reframe,
@@ -8450,7 +8679,9 @@ var TRACE_V=1;
 /* WHICH DERIVATION MADE A DERIVED GRAPH, TDD section 27's algorithm
    version. A graph read under one rule compared with one read under
    another is a change of rule, not a change in the person. */
-var TRACE_ALG=1;
+/* 2, 3 October: the mirror card's Yes is read as the person's confirmation
+   (yesOf in traceFromRecord). */
+var TRACE_ALG=2;
 
 /* TDD section 16, exactly. */
 var TRACE_NODE_TYPES=['story','impression','pattern','goal','behavior','protocol',
@@ -9174,6 +9405,38 @@ function traceFromRecord(p,intents){
   var r=traceEdgeAdd(g,ix,from,e,to,src,{attrs:attrs, nocycle:true});
   if(!r.ok)g.refused.push({derived:true, edge:from+' '+e+' '+to, why:r.why});};
 
+ /* THE PERSON'S OWN YES, read off the entry and never stored twice.
+
+    The mirror card in onboarding (ui/onboard.js, F4) asks Yes or Not me at
+    every address it shows and writes the answers onto the entry as ob.yes and
+    ob.no, which the boundary already checks (vEntryOb in engine/schema.js).
+    Nothing read them. So a person who pressed Yes at every address their
+    story lit read back, on loopRead and every surface over it, as having
+    confirmed nothing: measured 3 October, eight Yes answers, zero confirmed,
+    eight unanswered. That is the one place on the record a person has said
+    an inference is theirs, and the graph's word for that is user_confirmed.
+
+    A Yes on an edge the reading made promotes it, and the edge keeps that it
+    was inferred (TRACE_PROMOTE). A Yes on an address today's reading no
+    longer reaches, because the lexicon moved since, is still the person's
+    word about that story and that address, so it is held as user_confirmed
+    with nothing it was before. A Not me is NOT read here: the graph has no
+    provenance for a refusal, and a declined state is F11 and F16, the
+    owner's. It stays on the entry, where the boundary keeps it.
+
+    This is a change of derivation, so TRACE_ALG says so. */
+ var yesOf=function(sk,e){
+  var yes=(e&&e.ob&&Array.isArray(e.ob.yes))?e.ob.yes:[];
+  var at=(e&&typeof e.t==='string'&&!isNaN(new Date(e.t).getTime()))?e.t:undefined;
+  yes.forEach(function(a){
+   if(typeof a!=='number'||!BY[a])return;
+   var pk=node('pattern',String(a),'known',tracePatternAttrs(String(a)));
+   if(!pk)return;
+   var r=traceEdgeAdd(g,ix,sk,'supports',pk,'user_confirmed',{at:at, nocycle:true,
+    attrs:{derived:true, w:0, named:false, why:'the person answered Yes to this address for this story'}});
+   if(!r.ok){g.refused.push({derived:true, edge:sk+' supports '+pk, why:r.why}); return;}
+   r.edge.yes=true;});};
+
  /* THE STORIES, read under the record's own soul */
  var ents=(p.story&&Array.isArray(p.story.entries))?p.story.entries:[];
  var sids=traceStoryIds(p);
@@ -9194,8 +9457,8 @@ function traceFromRecord(p,intents){
      never hidden. */
   if(!e||e.lex!==LEX_VERSION)g.restated.push({story:sk, lex:(e&&e.lex)||null, now:LEX_VERSION});
   var im=reads[i];
-  if(im===null){g.gaps.push({kind:'no_text', story:sk, why:'the entry carries no text to read'}); return;}
-  if(im.err){g.gaps.push({kind:'unread', story:sk, why:'the sniffer could not read it: '+im.err}); return;}
+  if(im===null){g.gaps.push({kind:'no_text', story:sk, why:'the entry carries no text to read'}); yesOf(sk,e); return;}
+  if(im.err){g.gaps.push({kind:'unread', story:sk, why:'the sniffer could not read it: '+im.err}); yesOf(sk,e); return;}
   var by={}, order=[];
   im.forEach(function(x){
    if(x.node===null||x.node===undefined||!BY[x.node]){
@@ -9212,7 +9475,8 @@ function traceFromRecord(p,intents){
    var b=by[k];
    edge(sk,'supports',pk,'inferred',{derived:true, w:Math.round(b.amt*10)/10, named:b.named,
     why:b.named?'the words named '+b.fetter+' and the sniffer placed it here'
-     :'the seat was read and the address was chosen by the fallback, not by the words'});});});
+     :'the seat was read and the address was chosen by the fallback, not by the words'});});
+  yesOf(sk,e);});
 
  /* THE LINES OPENED. One node per address and channel, which is
     meterKey's own form with no line. */
@@ -9478,6 +9742,7 @@ function loadProfile(p){
  if(p.plan.base===undefined)p.plan.base=null;
  if(!p.avatar)p.avatar=avatarBlank();
  if(!Array.isArray(p.avatar.pairs))p.avatar.pairs=[];
+ avatarFill(p.avatar);
  if(!p.purpose)p.purpose=purposeBlank();
  /* a record from before the release lift has done no work since its answers,
     which is exactly what an empty map says */
@@ -10226,6 +10491,18 @@ function vEntry(errs,i,x){
   var ob=vEntryOb(errs,path+'.ob',x.ob);
   if(ob)q.ob=ob;}
  return q;}
+/* AN OLDER AVATAR GAINS WHAT THE BLANK CARRIES, round RB, and nothing it
+   already holds is touched. Called where a record is filled, so a profile in
+   memory from before this build reads like a new one. */
+function avatarFill(av){
+ if(!av)return av;
+ var b=avatarBlank(), st=avatarStatus(av);
+ Object.keys(b).forEach(function(k){if(av[k]===undefined)av[k]=b[k];});
+ av.status=st;
+ ['arch','load0','tags'].forEach(function(k){
+  if(!av[k]||typeof av[k]!=='object'||Array.isArray(av[k]))av[k]={};});
+ if(AV_STATUS.indexOf(av.status)<0)av.status=avatarStatus(av);
+ return avatarEnsureIds(av);}
 function validateProfile(o){
  var errs=[];
  if(!o||typeof o!=='object'||Array.isArray(o))return {ok:false, errs:['not an object']};
@@ -10452,11 +10729,70 @@ function validateProfile(o){
      if(x.seat!==undefined&&x.seat!==null){
       if(BANDS.indexOf(x.seat)>=0)q.seat=x.seat;
       else errs.push('avatar.pairs seat '+JSON.stringify(x.seat)+' is not a seat');}
+     /* THE PAIR'S ID, round RB, S2. Kept when it is one; refused by name when
+        it is something else, because a weight kept against a pair is found by
+        it. Missing is an older pair and is given one below. */
+     if(x.id!==undefined&&x.id!==null){
+      if(typeof x.id==='string'&&AV_ID.test(x.id))q.id=x.id;
+      else errs.push('avatar.pairs id '+JSON.stringify(x.id)+' is not a pair id');}
      return q;});
    if(p.avatar.pairs.length!==o.avatar.pairs.length)
     errs.push('avatar.pairs held '+(o.avatar.pairs.length-p.avatar.pairs.length)
-     +' entries that are not a written pair');}
-  else if(o.avatar.pairs!==undefined)errs.push('avatar.pairs is not a list');}
+     +' entries that are not a written pair');
+   var seenId={};
+   p.avatar.pairs.forEach(function(q){if(!q.id)return;
+    if(seenId[q.id])errs.push('avatar.pairs id '+q.id+' is on two pairs');
+    seenId[q.id]=1;});}
+  else if(o.avatar.pairs!==undefined)errs.push('avatar.pairs is not a list');
+  avatarEnsureIds(p.avatar);
+  /* WHO THE AVATAR IS, round RB, S2: three things the person writes, a
+     version and a status. Text is bounded and never edited; a wrong type or a
+     length past the cap is refused by name, never cut. */
+  ['name','title','description'].forEach(function(f){
+   var v=o.avatar[f]; if(v===undefined||v===null)return;
+   if(typeof v!=='string')errs.push('avatar.'+f+' is not text');
+   else if(v.length>AV_CAP[f])errs.push('avatar.'+f+' is '+v.length+' characters, and the most is '+AV_CAP[f]);
+   else p.avatar[f]=v;});
+  if(o.avatar.version!==undefined&&o.avatar.version!==null){
+   if(NUM(o.avatar.version)&&o.avatar.version>=1&&Math.floor(o.avatar.version)===o.avatar.version)p.avatar.version=o.avatar.version;
+   else errs.push('avatar.version '+JSON.stringify(o.avatar.version)+' is not a whole number from 1');}
+  if(o.avatar.status!==undefined&&o.avatar.status!==null){
+   if(AV_STATUS.indexOf(o.avatar.status)>=0)p.avatar.status=o.avatar.status;
+   else errs.push('avatar.status '+JSON.stringify(o.avatar.status)+' is not one of '+AV_STATUS.join(', '));}
+  else p.avatar.status=p.avatar.built?'active':'draft';
+  if(o.avatar.movedAt!==undefined&&o.avatar.movedAt!==null){
+   if(typeof o.avatar.movedAt==='string'&&!isNaN(new Date(o.avatar.movedAt).getTime()))p.avatar.movedAt=o.avatar.movedAt;
+   else errs.push('avatar.movedAt is not a date');}
+  /* WHAT THE AVATAR PAGE WRITES, round RB, S1, on the record at last. Each is
+     the shape ui/avatarui.js writes and nothing else: a rating is one to five
+     on an archetype that exists; a starting weight is nought to ten against a
+     pair on this record; a tag list is per seat. Anything else is refused by
+     name, which is the boundary's rule, and the read on the page stays as
+     strict as it was beside the record. */
+  var obj=function(v){return v&&typeof v==='object'&&!Array.isArray(v);};
+  if(o.avatar.arch!==undefined&&o.avatar.arch!==null){
+   if(!obj(o.avatar.arch))errs.push('avatar.arch is not an object');
+   else Object.keys(o.avatar.arch).forEach(function(k){var v=o.avatar.arch[k];
+    if(!ARCH.some(function(a){return a.nm===k;}))errs.push('avatar.arch names '+JSON.stringify(k)+', which is not an archetype');
+    else if([1,2,3,4,5].indexOf(v)<0)errs.push('avatar.arch.'+k+' is '+JSON.stringify(v)+', not one to five');
+    else p.avatar.arch[k]=v;});}
+  if(o.avatar.load0!==undefined&&o.avatar.load0!==null){
+   if(!obj(o.avatar.load0))errs.push('avatar.load0 is not an object');
+   else Object.keys(o.avatar.load0).forEach(function(k){var v=o.avatar.load0[k];
+    if(!p.avatar.pairs.some(function(q){return q.id===k;}))errs.push('avatar.load0 names pair '+JSON.stringify(k)+', which is not on this record');
+    else if(!NUM(v)||v<0||v>10)errs.push('avatar.load0.'+k+' is '+JSON.stringify(v)+', not nought to ten');
+    else p.avatar.load0[k]=v;});}
+  if(o.avatar.tags!==undefined&&o.avatar.tags!==null){
+   if(!obj(o.avatar.tags))errs.push('avatar.tags is not an object');
+   else Object.keys(o.avatar.tags).forEach(function(b){var t=o.avatar.tags[b];
+    if(BANDS.indexOf(b)<0){errs.push('avatar.tags names '+JSON.stringify(b)+', which is not a seat'); return;}
+    if(!obj(t)){errs.push('avatar.tags.'+b+' is not an object'); return;}
+    var q={add:[],off:[]}, bad=false;
+    ['add','off'].forEach(function(f){var a=t[f]; if(a===undefined)return;
+     if(!Array.isArray(a)||a.length>AV_CAP.tags||a.some(function(w){return typeof w!=='string'||!w.length||w.length>AV_CAP.tag;})){
+      errs.push('avatar.tags.'+b+'.'+f+' is not a list of words'); bad=true; return;}
+     q[f]=a.slice();});
+    if(!bad)p.avatar.tags[b]=q;});}}
  /* NULL IS MISSING, NOT WRONG. The rule is that a missing field is an older
     profile and is filled from the blank, and only a field of the wrong type or
     out of range is refused by name. These two tested `!==undefined`, so a
@@ -10473,8 +10809,14 @@ function validateProfile(o){
    if(o.purpose[f]===undefined)return;
    if(!Array.isArray(o.purpose[f])||o.purpose[f].length>3){
     errs.push('purpose.'+f+' is not three values'); return;}
-   p.purpose[f]=o.purpose[f].map(function(x){
-    return typeof x==='string'&&x.length<120?x:'';});
+   /* REFUSED BY NAME, round RB, S3. This replaced an over long value with an
+      empty string and said nothing (BECOMING-AUDIT.md R10). */
+   p.purpose[f]=o.purpose[f].map(function(x,i){
+    /* an unwritten corner is empty, however an older build wrote it */
+    if(x===null||x===undefined)return '';
+    var why=purposeRefuse(x,PUR_VAL_MAX);
+    if(why){errs.push('purpose.'+f+'['+i+'] '+why); return '';}
+    return x;});
    while(p.purpose[f].length<3)p.purpose[f].push('');});
   if(o.purpose.sides&&typeof o.purpose.sides==='object'){
    PUR_SIDES.forEach(function(sd){
@@ -10484,8 +10826,13 @@ function validateProfile(o){
     if(a.length>PUR_PER_SIDE){
      errs.push('purpose.sides.'+sd+' holds '+a.length+', which is more than '+PUR_PER_SIDE);
      return;}
-    p.purpose.sides[sd]=a.filter(function(x){
-     return typeof x==='string'&&x.length>0&&x.length<200;});});}
+    /* and a commitment the same way: an empty one is a slot nobody wrote
+       and is left out, a wrong one is refused by name rather than dropped */
+    p.purpose.sides[sd]=a.filter(function(x,i){
+     if(x==='')return false;
+     var why=purposeRefuse(x,PUR_LINE_MAX);
+     if(why){errs.push('purpose.sides.'+sd+'['+i+'] '+why); return false;}
+     return true;});});}
   else if(o.purpose.sides!==undefined)errs.push('purpose.sides is not an object');}
  else if(o.purpose!==undefined&&o.purpose!==null)errs.push('purpose is not an object');
  if(Array.isArray(o.rituals))p.rituals=o.rituals
@@ -10760,6 +11107,7 @@ function meterRun(p,keys,at){
  if(p.plan.base===undefined)p.plan.base=null;
  if(!p.avatar)p.avatar=avatarBlank();
  if(!Array.isArray(p.avatar.pairs))p.avatar.pairs=[];
+ avatarFill(p.avatar);
  if(!p.purpose)p.purpose=purposeBlank();
  var list=(keys||[]).filter(function(k){return typeof k==='string'&&k;});
  if(!list.length)return {added:0,repeated:0,fresh:[]};
@@ -11042,6 +11390,15 @@ function pImport(txt){
  var o; try{ o=JSON.parse(txt); }catch(e){ IMPORT_ERR=['not valid JSON']; return null; }
  var v=validateProfile(o);
  if(!v.ok){ IMPORT_ERR=v.errs; return null; }
+ /* A RECORD THAT REACHED THIS BOUNDARY IS NEVER A BLANK FIRST RUN. The
+    onboarding tour exists for a person with nothing read yet; the quiz
+    link, a pasted record and a restored file all carry a real story
+    already, so the tour that asks "what brought you here" has nothing
+    left to ask. Without this, ui.onboarded stays false on every one of
+    these three routes, since none of them is obClose, the only other
+    place that sets it, and the next sign in reopens the tour on a person
+    who already answered it, outside this app, on the funnel. */
+ v.profile.ui.onboarded=true;
  var keepP=PROFILES.slice(), keepC=CURP;
  /* with no current profile there is nothing to restore to, so the rollback
     loads a blank rather than leaving the engine holding the rejected one. */
@@ -12629,11 +12986,14 @@ function valueFeltRecord(P,ans,now){
    TWO STATES, NOT THREE, AND WHY. A pattern is confirmed when any edge that
    touches it is held as user_confirmed, which is the graph's own word for
    "the person said so" (TDD section 26), and unanswered otherwise. There is
-   no third state for a pattern the person turned down, because nothing on
-   the record can say that yet: the "not me" answer is F16, unbuilt, and
-   p.trace refuses any key but v, nodes and edges (validateTrace), so the
-   spec's p.trace.declined does not exist. Inventing it here would be a
-   schema change, and the schema is the owner's. What a person CAN decline
+   no third state for a pattern the person turned down. This paragraph said
+   nothing on the record could say that, and it stopped being true when the
+   onboarding mirror (F4) began writing Not me onto the entry as ob.no. It is
+   kept there and read by nothing: the graph has no provenance for a refusal,
+   p.trace refuses any key but v, nodes and edges (validateTrace), and what a
+   declined pattern should do to the reading is F16, the owner's call. The
+   Yes on the same card IS read, as user_confirmed, by traceFromRecord, so an
+   onboarded person's Yes answers arrive here as confirmed. What a person CAN decline
    today is a proposed practice (protocol_reject in engine/practice.js), so
    that is what declined lists, with the reason when one was recorded, and
    protocol_reject records none, so the reason is null and said to be null.
@@ -13252,7 +13612,9 @@ function iqScore(p){
      instrument cannot actually see. */
   out[l.nm]={score:Math.round(mean*10)/10, spread:Math.round(spread*10)/10,
    reliable: spread>=3,
-   lean: spread<3 ? 'even, within measurement noise'
+   /* "within measurement noise" was a lab word on a line a person reads.
+      The fact is the same and the words are his reader's. Round RG. */
+   lean: spread<3 ? 'too close together to show a lean'
        : v[0]>v[1] ? 'holds when it costs, slips when unseen'
        : 'holds when unseen, slips when it costs'};});
  return out;}
@@ -18385,6 +18747,11 @@ if(typeof module!=='undefined'&&module.exports){
                  redoPop:redoPop, redoDepth:redoDepth, redoPeek:redoPeek,
                   undoPeek:undoPeek, undoClear:undoClear, UNDO_MAX:UNDO_MAX,
   /* avatar */   avatarBlank:avatarBlank, avatarValid:avatarValid, avatarDue:avatarDue,
+                 avatarStatus:avatarStatus, avatarPairId:avatarPairId, avatarEnsureIds:avatarEnsureIds,
+                 avatarNewId:avatarNewId, avatarReview:avatarReview, avatarMoveSide:avatarMoveSide,
+                 AV_STATUS:AV_STATUS, AV_CAP:AV_CAP, AV_ID:AV_ID,
+                 PUR_VAL_MAX:PUR_VAL_MAX, PUR_LINE_MAX:PUR_LINE_MAX, PUR_SIDE_SAY:PUR_SIDE_SAY,
+                 purposeRefuse:purposeRefuse, avatarFill:avatarFill,
                  avatarDaysLeft:avatarDaysLeft, avatarGap:avatarGap,
                  avatarProgress:avatarProgress, AV_MONTH:AV_MONTH,
   /* purpose */  purposeBlank:purposeBlank, purposeReady:purposeReady,
@@ -18399,7 +18766,7 @@ if(typeof module!=='undefined'&&module.exports){
                  planState:planState, planOf:planOf, planSees:planSees,
                  planNextSight:planNextSight, planAllowance:planAllowance,
                  planWeeks:planWeeks, GIFT_N:GIFT_N, WEEK_MS:WEEK_MS,
-                 planUpgrade:planUpgrade, RUN_MAX:RUN_MAX, RUN_MIN:RUN_MIN,
+                 planUpgrade:planUpgrade, planBuyable:planBuyable, RUN_MAX:RUN_MAX, RUN_MIN:RUN_MIN,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  PLAN_PRICE:PLAN_PRICE, planPrice:planPrice, planLadder:planLadder,
@@ -18544,6 +18911,7 @@ if(typeof module!=='undefined'&&module.exports){
      is one plain sentence, and so a tool can read the same table the page does. */
                   unpackAll:unpackAll, unpackOf:unpackOf, unpackKey:unpackKey,
                   compassPoleOf:compassPoleOf, compassPoleLines:compassPoleLines, POLE_MEANS:POLE_MEANS,
+                  HOME_POLES:HOME_POLES, compassOffAxis:compassOffAxis,
   /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory,
                   wordsOf:wordsOf, unmarkedOf:unmarkedOf,
                   SOMA_SENSE:SOMA_SENSE, SOMA_PLACE_WORDS:SOMA_PLACE_WORDS, SOMA_PLACE_RULED:SOMA_PLACE_RULED, SOMA_PLACE:SOMA_PLACE, somaPlaces:somaPlaces,
@@ -18939,6 +19307,182 @@ if(typeof module!=='undefined'&&module.exports){
   CHAR_OSC_AMP0:CHAR_OSC_AMP0, CHAR_OSC_AMP1:CHAR_OSC_AMP1, CHAR_OSC_RATE0:CHAR_OSC_RATE0, CHAR_OSC_RATE1:CHAR_OSC_RATE1,
   CHAR_HEAT_FULL:CHAR_HEAT_FULL,
   CHAR_SEAT_LO:CHAR_SEAT_LO, CHAR_SEAT_FULL:CHAR_SEAT_FULL, CHAR_GROW_S:CHAR_GROW_S});}
+/* ============================================================
+   A WORKED EXAMPLE'S RITUALS. Round RB, 3 October, the owner's words: "For
+   profiles, I want these rituals to have different configurations for the
+   profile so I can see how it actually looks when it's being utilized."
+
+   WHAT WAS THERE, measured before this file was written. Every worked example
+   opened the Ritual page on zero plans and zero logged days: Derek, Diane and
+   the blank all read plans 0, act 0, log 0 on a fresh page. Two reasons, both
+   by design. The plans live beside the record under atuned-ritual-active,
+   keyed by the record's id (ui/ritual.js ritPlans), and ritPlanPut refuses a
+   worked example, because a demonstration is never stored. And exdepthFill
+   gives an example a bank and a vault but writes no day log. So every example
+   showed the same empty page, which is no demonstration of a ritual at all.
+
+   WHY NOT engine/practice.js. The brief named Goal, Protocol, Ritual and
+   PracticeEvent, and they were checked first. The Ritual page reads none of
+   them: it reads the plans beside the record and p.rituals, the day log, and
+   practice.js says in its own header that the cutover from that log to its
+   objects is NOT run, because two writers of one day is two truths. A history
+   written into practice objects would draw nothing on this page. So this file
+   writes the two shapes the page does read, and engine/pracex.js keeps the
+   practice objects the practitioner page reads. Each example's shape here is
+   the one PRACEX_HIST gives it there (Derek every day, Diane stops at the end,
+   Ana stops and starts, James and Gordon say yes to nothing), so the two pages
+   tell one story about one person.
+
+   WHAT IS AUTHORED AND WHAT IS READ, the discipline exdepth.js and pracex.js
+   set. Authored, per ritual: its practices, its seat, which weekdays, how
+   long it runs, how many days ago it started (and stopped, when it did), the
+   when and where, and one character per day it was due. Read, by the
+   product's own code: whether a day was due (the plan, the same arithmetic as
+   ritCovers), every streak, mark, percent, cube and count on the page
+   (ladderRead, ritRunRead, ritDaySegs, all off what is written here).
+
+   THE SHAPES ARE THE WRITERS' OWN. A plan is exactly what ritStartPlan pushes
+   and a day is exactly what ritEntryOf builds and ritMarkOn stamps, and every
+   day goes through vRitual, the boundary's own rule for a day, so a history
+   the product could not have written for a real person is a thrown error
+   naming the ritual. The start day carries an entry whether or not it was
+   kept, because ritStartPlan writes one the moment a ritual starts.
+
+   NEVER STORED. The day log goes onto the scratch record loadP keeps per
+   example (PROF_BY, ui/personas.js), which never joins PROFILES and is never
+   persisted, and the plans are handed back for the page to hold in memory.
+   HOST FREE: the moment is passed in.
+   ============================================================ */
+
+/* ONE ROW PER RITUAL.
+     k      the practices, in order, PRACTICE keys joined by +
+     b      the seat it is kept at, which colours its ring
+     on     the weekdays it is due, Monday 0, or null for every day
+     n      how many days it runs from the day it started, 0 for no end
+     back   how many days ago it started; today is 0
+     stop   how many days ago it was stopped, when it was
+     w, at  the when and the where, the builder's two fields
+     d      one character per day it was due, oldest first, from the day it
+            started to yesterday: c kept, m missed. A row shorter than the run
+            repeats, so a rhythm is written once.
+     end    the last due days before today, oldest first, written over the
+            tail of d. A rhythm that cycles cannot say how a run ends, and
+            whether the weekdays leave nine due days or eleven depends on the
+            day the page is opened, so "stopped for the last three" is said
+            here and not counted out by hand.
+     td     1 when today is already kept
+   A missed day is no entry at all, which is how the page reads one: a day it
+   was due with nothing done. */
+var RITEX_HIST={
+ Sofia:[
+  {k:'escan', b:'Throat', on:[0,2,4], n:0, back:20, w:'After the last client', at:'The car, before driving home', d:'cm'},
+  {k:'tu_plain', b:'Throat', on:null, n:7, back:4, w:'Before the first session', at:'Studio', d:'c', td:1}],
+ Diane:[
+  {k:'truth+slow', b:'Solar', on:null, n:14, back:12, w:'6:30, before the laptop', at:'Kitchen', d:'c', end:'mmm'},
+  {k:'sig', b:'Solar', on:[0,1,2,3,4], n:0, back:19, w:'Before the board call', at:'Office', d:'c', end:'mm'}],
+ Marcus:[
+  {k:'listen', b:'Throat', on:[0,1,2,3,4], n:14, back:6, w:'In the review', at:'Studio floor', d:'cc', td:1}],
+ Angela:[
+  {k:'box', b:'Root', on:null, n:0, back:18, w:'When I wake', at:'Bedroom', d:'cmcmmcc'},
+  {k:'heartpt', b:'Heart', on:[1,3,5], n:14, back:16, w:'Evening', at:'The hospital car park', d:'cmc'},
+  {k:'candle', b:'3rd Eye', on:null, n:7, back:30, w:'Late', at:'Living room', d:'cmmcm'}],
+ Derek:[
+  {k:'box+truth', b:'Solar', on:null, n:0, back:40, w:'6:00, before the run', at:'Garage', d:'c', td:1},
+  {k:'resist', b:'Root', on:[0,2,4], n:14, back:9, w:'After the walk', at:'Back step', d:'c'},
+  {k:'sysbreath', b:'Sacral', on:null, n:7, back:27, w:'Bed', at:'Bedroom', d:'c'}],
+ Ana:[
+  {k:'heartpt', b:'Heart', on:[1,3,5], n:0, back:25, w:'Before school run', at:'The park bench', d:'ccmmcmc'},
+  {k:'box', b:'Solar', on:null, n:7, back:3, w:'At three, when I wake', at:'Bed', d:'cm'},
+  {k:'noting', b:'Sacral', on:null, n:0, back:22, stop:9, w:'Lunch', at:'Kitchen', d:'ccmcm'}],
+ Tomas:[
+  {k:'box', b:'Root', on:null, n:1, back:0, w:'Morning', at:'The end of the street', d:''}],
+ Wren:[
+  {k:'hands', b:'Root', on:[0,1,2,3,4,5], n:0, back:36, w:'At the bench, first thing', at:'Workshop', d:'c', td:1},
+  {k:'na_tend', b:'Heart', on:[6], n:0, back:30, w:'Sunday morning', at:'Garden', d:'c'}],
+ Abraham:[
+  {k:'noting', b:'Throat', on:null, n:0, back:60, w:'Dawn', at:'The front room', d:'ccccccccccccccm', td:1},
+  {k:'observer', b:'Crown', on:[6], n:0, back:45, w:'Sunday', at:'The front room', d:'c'}],
+ 'Lance 15':[
+  {k:'box', b:'Root', on:null, n:7, back:5, w:'Before the laptop opens', at:'Desk', d:'cmm'}],
+ 'Lance 50':[
+  {k:'box', b:'Root', on:null, n:0, back:24, w:'Before the laptop opens', at:'Desk', d:'ccccmc'},
+  {k:'letmove', b:'Root', on:[0,2,4], n:14, back:10, w:'After lunch', at:'The walk with the dog', d:'cmc'}],
+ 'Lance 85':[
+  {k:'truth+box', b:'Solar', on:null, n:0, back:35, w:'Before the laptop opens', at:'Desk', d:'ccccccccccm', td:1},
+  {k:'meetit', b:'Solar', on:[0,1,2,3,4], n:14, back:12, w:'Before a design call', at:'Desk', d:'c'},
+  {k:'heartpt', b:'Heart', on:[5,6], n:0, back:20, w:'Weekend morning', at:'The back step', d:'c'}],
+ 'Lance 100':[
+  {k:'noting', b:'Root', on:null, n:0, back:50, w:'Dawn', at:'The back step', d:'c', td:1},
+  {k:'chakra', b:'Crown', on:[6], n:0, back:42, w:'Sunday', at:'The back step', d:'c'}]};
+
+/* the weekday of a day key, Monday 0, and whether a plan is due on a day:
+   ui/ritual.js ritWd and ritCovers, the same arithmetic, here because the
+   engine cannot call a renderer. tests/flowtools.js FT33 reads the page's own
+   kept and missed counts back against this file, so the two cannot drift. */
+function ritexWd(day){return ((day%7)+7+3)%7;}
+function ritexCovers(x,s,day,today){
+ if(day<s||day>today)return false;
+ if(x.on&&x.on.indexOf(ritexWd(day))<0)return false;
+ if(x.n&&day>=s+x.n)return false;
+ if(x.stop!=null&&day>=today-x.stop)return false;
+ return true;}
+/* a day key back to local noon on that day, ui/ritual.js ritDayIso, so a day
+   lands on the day it names in whatever zone the page runs in */
+function ritexIso(day,now){
+ var off=new Date(now).getTimezoneOffset()*60000;
+ return new Date(day*DAY_MS+off+12*3600000).toISOString();}
+function ritexMin(steps){
+ return steps.reduce(function(a,k){var pr=PRACTICE.filter(function(q){return q.k===k;})[0]; return a+(pr?pr.min:0);},0);}
+
+/* THE BUILD. Returns {plans, rituals, kept, missed} for the example, or null
+   for one with no row, and throws naming the ritual on anything the boundary
+   would refuse. Writes nothing: loadP puts the day log on the scratch record
+   and the plans where the page reads them. */
+function ritexBuild(p,now){
+ var rows=p&&RITEX_HIST[p.nm]; if(!rows)return null;
+ var today=pracDay(now), plans=[], log=[], kept=0, missed=0, stamp=new Date(now).toISOString();
+ rows.forEach(function(x,j){
+  var nm=p.nm+' '+x.k, steps=x.k.split('+');
+  steps.forEach(function(k){if(!RIT_STEP[k])throw new Error('ritex '+nm+': '+k+' names no practice');});
+  if(BANDS.indexOf(x.b)<0)throw new Error('ritex '+nm+': '+x.b+' is not a seat');
+  if(x.stop!=null&&x.stop>x.back)throw new Error('ritex '+nm+': stopped before it started');
+  var pr=PRACTICE.filter(function(q){return q.k===steps[0];})[0];
+  var s=today-x.back, from=x.back?ritexIso(s,now):stamp;
+  plans.push({id:'ex'+j+'_'+String(p.nm).replace(/\W+/g,'').toLowerCase(), steps:steps, when:x.w||'', where:x.at||'',
+   days:x.n, from:from, stop:x.stop!=null?ritexIso(today-x.stop,now):null, band:x.b, track:pr.track,
+   rel:null, tc:null, tags:[x.b], on:x.on?x.on.slice():null, tm:null});
+  var day=function(d,done){
+   var e={t:d===today?stamp:ritexIso(d,now), steps:steps.slice(), min:ritexMin(steps),
+    when:x.w||'', where:x.at||'', done:done, track:pr.track, band:x.b};
+   var errs=[]; vRitual(errs,log.length,e);
+   if(errs.length)throw new Error('ritex '+nm+': '+errs.join('; '));
+   log.push(e);};
+  var due=[], d;
+  for(d=s;d<today;d++)if(ritexCovers(x,s,d,today))due.push(d);
+  var end=x.end||'', cut=due.length-end.length, said={};
+  due.forEach(function(d,i){
+   said[d]=(i>=cut?end.charAt(i-cut):x.d.charAt(i%Math.max(1,x.d.length)))==='c';});
+  if(ritexCovers(x,s,today,today))said[today]=!!x.td;
+  for(d=s;d<=today;d++){
+   var on=!!said[d];
+   /* counted the way ritRunRead counts: today once it is kept, never as a
+      miss while it can still be kept. FT33 found the two a day apart on
+      Derek, who had kept today. */
+   if(d in said){if(on)kept++; else if(d<today)missed++;}
+   if(on)day(d,d===today?stamp:ritexIso(d,now));
+   /* the start day keeps its entry, as set, the one ritStartPlan writes */
+   else if(d===s)day(d,false);}});
+ /* oldest first, the order the product appends in */
+ log.sort(function(a,b){return Date.parse(a.t)-Date.parse(b.t);});
+ return {plans:plans, rituals:log, kept:kept, missed:missed};}
+
+/* whether a record already carries a day log, asked the way exdepthHas asks,
+   because the practitioner page can make an example's record before a load */
+function ritexHas(rec){return !!rec&&((rec.rituals||[]).length>0);}
+
+if(typeof module!=='undefined'&&module.exports){
+ Object.assign(module.exports,{RITEX_HIST:RITEX_HIST, ritexBuild:ritexBuild, ritexHas:ritexHas,
+  ritexCovers:ritexCovers, ritexWd:ritexWd});}
 
 </script>
 <script>
@@ -19701,7 +20245,8 @@ function viewRead(){
   +'Root sits at the base and the band climbs the right to Crown.</p></div>'
   +'<div><h3>The load at each seat</h3>'
   +'<p class="sm">The nine charges from your answers land on the 112 addresses, '
-  +'each one seated at a named plexus or nerve. Average load per seat, out of ten.</p>'
+  +'each one seated, in the Atuned model, at a named plexus or nerve. Average load '
+  +'per seat, out of ten.</p>'
   +'<ul class="seats">'+bandload.map(function(x){
     return '<li><b>'+esc(x.b)+'</b><span class="tr"><i style="width:'
      +(Math.min(100,x.v*10))+'%;background:'+cv(x.b)+'"></i></span><em>'

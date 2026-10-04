@@ -7,14 +7,17 @@
    ============================================================ */
 
 import type {
+  AttachmentChallenge,
   Entitlement,
   EntitlementDecision,
   FunnelEvent,
   FunnelSession,
+  IdempotencyClaim,
   PlanId,
   Referral,
   SightLevel,
   StarterGift,
+  StarterGiftItem,
   TutorialProgress,
   UsageLedgerEntry,
   UsageOperation,
@@ -60,12 +63,15 @@ export class FakeIdGenerator implements IdGenerator {
 export class InMemoryFunnelRepository implements FunnelRepository {
   sessions = new Map<string, FunnelSession>();
   gifts = new Map<string, StarterGift>();
+  giftItems = new Map<string, StarterGiftItem[]>();
   tutorials = new Map<string, TutorialProgress>();
   referrals = new Map<string, Referral>();
   referralsByToken = new Map<string, string>();
   events: FunnelEvent[] = [];
-  idempotencyKeys = new Set<string>();
+  eventSequences = new Map<string, number>();
+  idempotencyClaims = new Map<string, IdempotencyClaim>();
   usageBalances = new Map<string, number>();
+  attachmentChallenges = new Map<string, AttachmentChallenge>();
 
   async getSession(id: string): Promise<FunnelSession | null> {
     return this.sessions.get(id) ?? null;
@@ -82,8 +88,15 @@ export class InMemoryFunnelRepository implements FunnelRepository {
   async getGift(id: string): Promise<StarterGift | null> {
     return this.gifts.get(id) ?? null;
   }
-  async saveGift(gift: StarterGift): Promise<void> {
+  async saveGift(gift: StarterGift, items: StarterGiftItem[]): Promise<void> {
+    if (items.length !== gift.patternIds.length) {
+      throw new FunnelError(
+        'ENTITLEMENT_DENIED',
+        `gift ${gift.id}: ${items.length} item rows against ${gift.patternIds.length} pattern ids`,
+      );
+    }
     this.gifts.set(gift.id, gift);
+    this.giftItems.set(gift.id, items);
   }
 
   async getTutorial(sessionId: string): Promise<TutorialProgress | null> {
@@ -105,12 +118,50 @@ export class InMemoryFunnelRepository implements FunnelRepository {
   async appendEvent(event: FunnelEvent): Promise<void> {
     this.events.push(event);
   }
-
-  async hasIdempotencyKey(scope: string, key: string): Promise<boolean> {
-    return this.idempotencyKeys.has(`${scope}:${key}`);
+  async nextEventSequence(sessionId: string): Promise<number> {
+    const next = (this.eventSequences.get(sessionId) ?? 0) + 1;
+    this.eventSequences.set(sessionId, next);
+    return next;
   }
-  async recordIdempotencyKey(scope: string, key: string): Promise<void> {
-    this.idempotencyKeys.add(`${scope}:${key}`);
+
+  async claimIdempotencyKey(scopeKey: string, operation: string, idempotencyKey: string, requestHash: string) {
+    const compound = `${scopeKey}:${idempotencyKey}`;
+    const existing = this.idempotencyClaims.get(compound);
+    if (existing) {
+      if (existing.requestHash !== requestHash) {
+        throw new FunnelError(
+          'IDEMPOTENCY_HASH_MISMATCH',
+          `${idempotencyKey} was already used for a different request`,
+        );
+      }
+      return { claimed: false as const, existing };
+    }
+    // the in-memory Map set below is this fake's stand-in for an atomic
+    // "insert unique or return existing" database constraint; a real
+    // implementation needs a real unique index, not a read-then-write.
+    const claim: IdempotencyClaim = {
+      scopeKey,
+      operation,
+      idempotencyKey,
+      requestHash,
+      status: 'in_progress',
+      resultReference: null,
+      createdAt: new Date().toISOString(),
+      completedAt: null,
+    };
+    this.idempotencyClaims.set(compound, claim);
+    return { claimed: true as const };
+  }
+  async completeIdempotencyClaim(scopeKey: string, idempotencyKey: string, resultReference: string): Promise<void> {
+    const compound = `${scopeKey}:${idempotencyKey}`;
+    const existing = this.idempotencyClaims.get(compound);
+    if (!existing) return;
+    this.idempotencyClaims.set(compound, {
+      ...existing,
+      status: 'completed',
+      resultReference,
+      completedAt: new Date().toISOString(),
+    });
   }
 
   async appendUsageLedgerEntry(entry: UsageLedgerEntry): Promise<void> {
@@ -118,6 +169,18 @@ export class InMemoryFunnelRepository implements FunnelRepository {
   }
   async getUsageBalance(userId: string, source: UsageSource): Promise<number> {
     return this.usageBalances.get(`${userId}:${source}`) ?? 1000; // generous default for tests
+  }
+
+  async saveAttachmentChallenge(challenge: AttachmentChallenge): Promise<void> {
+    this.attachmentChallenges.set(challenge.sessionId, challenge);
+  }
+  async getAttachmentChallenge(sessionId: string): Promise<AttachmentChallenge | null> {
+    return this.attachmentChallenges.get(sessionId) ?? null;
+  }
+  async markAttachmentChallengeUsed(id: string): Promise<void> {
+    for (const [sessionId, c] of this.attachmentChallenges) {
+      if (c.id === id) this.attachmentChallenges.set(sessionId, { ...c, usedAt: new Date().toISOString() });
+    }
   }
 }
 

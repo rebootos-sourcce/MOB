@@ -2650,9 +2650,32 @@ function coneRead(){
   +esc(tierSay(r))+'</b>. Your position on this figure settles once all '
   +SI.length+' are in.</p>';
  var cq=Math.round(r.CQ);
- var band=cq>=60?'above the oscillating band':cq<=40?'below the oscillating band'
-  :'inside the oscillating band, where most people stand';
+ /* ROUND RG, THE COPY SWEEP. His words, about this paragraph: "you read 62
+    above the oscillating band. Your integrity is 6.2. Integrity is the hull.
+    It's got to be human... it has to be unpacked into what actually needs to
+    be changed."
+
+    Four misses, and each was a real one. "You read 62" never said what read
+    62. "The oscillating band" is forty to sixty on this figure and forty one
+    to fifty as a tier, so Diane at 59 read "inside the oscillating band" here
+    and Even on every other surface: one word, two meanings. "Your integrity
+    is 6.2" was a figure with no meaning on the screen. And nothing said what
+    to do. So: what the number is, where it sits in plain words, what
+    integrity is, and the one law with the most room, with what it asks. */
+ var band=cq>=60?'You sit above the middle band of the figure'
+  :cq<=40?'You sit below the middle band of the figure'
+  :'You sit in the middle band of the figure';
  var rising=r.Ig>=5;
+ /* THE LAW WITH THE MOST ROOM. CQ is the laws summed (cqSum), so the lowest
+    one has the most room to rise. weakL is the first of the lowest, so a tie
+    is said as a tie, and a field with every law level names none. */
+ var lo=S.law[r.weakL.nm], hi=Math.max.apply(null,SI.map(function(l){return S.law[l.nm];}));
+ var tied=SI.filter(function(l){return Math.abs(S.law[l.nm]-lo)<0.05;}).length;
+ var weak=(hi-lo<0.05)?''
+  :'<p class="cone-p">'+(tied>1?'<b>'+esc(r.weakL.nm)+'</b> is one of the '+tied+' laws you keep least. '
+    :'The law you keep least is <b>'+esc(r.weakL.nm)+'</b>. ')
+   +unpSay(r.weakL.nm,'law')+' Your coherence is built from your answers on the laws, '
+   +'so this one has the most room to rise.</p>';
  /* EVERY NUMBER SAYS WHAT IT IS OUT OF. His instruction, and this line broke
     it twice: "you read 88" and "integrity 9.3" with nothing to measure either
     against. Coherence runs nought to a hundred and integrity runs nought to
@@ -2663,13 +2686,19 @@ function coneRead(){
     is the shape he objected to and a repetition on top of it. The band already
     says where the number sits, so the number is said once and the sentence
     carries the meaning rather than the arithmetic. */
- return '<p class="cone-p">You read <b>'+cq+'</b>, '+band+'.</p>'
-  +'<p class="cone-p">Your integrity is <b>'+r.Ig.toFixed(1)+'</b>.</p>'
+ /* "CURRENTLY TURNING" CAME OFF. The direction is read from where integrity
+    sits, the top or the bottom half of its range, and not from a change over
+    time, so the sentence says what it is read from and claims no movement. */
+ return '<p class="cone-p">Your coherence is <b>'+cq+'</b>. '+unpSay('coherence')+' '
+  +band+', where most people swing between better days and worse ones.</p>'
+  +'<p class="cone-p">Your integrity is <b>'+r.Ig.toFixed(1)+'</b>. '+unpSay('integrity')+'</p>'
   +'<p class="cone-p">Integrity is the hull. A hole in it means the ship takes '
   +'on water, and everything above the waterline stops mattering. Integrity '
   +'raises coherence, coherence raises what you can hold to, and that raises '
-  +'integrity again. The loop turns both ways. Yours is currently turning '
-  +'<b>'+(rising?'up':'down')+'</b>.</p>'
+  +'integrity again. The loop turns both ways. Yours is turning '
+  +'<b>'+(rising?'up':'down')+'</b>, because your integrity is in the '
+  +(rising?'top':'bottom')+' half of its range.</p>'
+  +weak
   /* "You are floating the ship out of the water so that it can float" came
      off the end: a ship floats in water, so the sentence cannot be pictured,
      and the hull line above already carries the metaphor whole. */
@@ -2765,7 +2794,8 @@ function coneNames(side){
     its overlays and nothing else. Still .cn-nms and still .cn-nr, so every
     gate that finds a row by those names finds it where it was. */
  return '<div class="cn-pan cn-nms cn-nms-'+side+'" role="group" aria-label="Characters, '
-  +(side==='l'?'the first four axes':'the last four axes')+'">'
+  +(side==='l'?'the first half of the axes, and of the poles on no axis'
+    :'the second half of the axes, and of the poles on no axis')+'">'
   +half.map(function(x){
    /* the inverted pole is the seat token at an opacity, which is the brand's
       darker version of a token over the ground. coneDull's grey mix was a new
@@ -2798,7 +2828,45 @@ function coneNames(side){
     +'<span class="cn-nd">'+esc(x.m.dn)+'</span>'
     +'</span>'
     +'</button>';}).join('')
+  +cnOffAxis(side)
   +'</div>';}
+/* THE POLES ON NO AXIS, UNDER THE EIGHT. Round RB, his words: "On the
+   compass, we're supposed to have 13 character people, and we I still have
+   the original eight." The panels were built from MIRROR alone, so they named
+   eight axes and seven people. The roster (DESIGN-teachers.md v2 section 2) is
+   fourteen poles: the eight axes, then Krishna, Rama and Lao Tzu, then
+   Akhenaten, Zoroaster and Confucius, three a side in that order.
+
+   None of the six stands on an axis, so none has a position to ring. The
+   ring is drawn whole with no reading in it, and the caption above them says
+   why in the design's own words (mockups/teachers/imprint.html). The meaning
+   on the row is the pole's own line from engine/data/teachers_recipes.js, and
+   a press opens that row, the panel every other teacher opens. Not data-cnax:
+   that attribute is an axis index the figure aims at, and these have none. */
+function cnOffAxis(side){
+ var all=(typeof compassOffAxis==='function')?compassOffAxis():[];
+ if(!all.length)return '';
+ var cut=Math.ceil(all.length/2), half=side==='l'?all.slice(0,cut):all.slice(cut);
+ if(!half.length)return '';
+ return '<p class="cn-grp">Read across the field <i>no one seat, so no position</i></p>'
+  +half.map(function(p){
+   var c=seatCol(p.home||null), cd=/^#[0-9a-f]{6}$/i.test(c)?rgba(hx(c),.72):c;
+   var rc=(typeof recipeOf==='function')?recipeOf(p.k):null;
+   var tip=rc&&rc.line?rc.line+'.':'';
+   /* PATHS writes its quality in lower case, for the glossary's sentence
+      ("Krishna, flow"); a label on its own starts with a capital */
+   var q=String(p.q||''); q=q.charAt(0).toUpperCase()+q.slice(1);
+   return '<button type="button" class="cn-nr cn-off" data-cnpole="'+esc(p.k)+'" '
+    +'style="--ax:'+c+';--axd:'+cd+'" '
+    +'aria-label="'+esc(q)+': '+esc(p.up)+', opposite '+esc(p.dn)+'. No one seat, so no position on an axis." '
+    +(tip?'data-tip-k="'+esc(q)+'" data-tip="'+esc(tip)+'">':'title="Read '+esc(p.up)+', opposite '+esc(p.dn)+'">')
+    +'<span class="cn-pr">'+cnOrb(p.ic,false,true)+cnOrb(p.dic,true)+'</span>'
+    +'<span class="cn-tx">'
+    +'<span class="cn-nq">'+esc(q)+'</span>'
+    +'<span class="cn-nu">'+esc(p.up)+'</span>'
+    +'<span class="cn-nd">'+esc(p.dn)+'</span>'
+    +'</span>'
+    +'</button>';}).join('');}
 /* one rgb triple as a css colour, so a canvas colour can be handed to the
    sheet the same way a seat colour is */
 function rgbcss(c){return 'rgb('+c[0]+','+c[1]+','+c[2]+')';}
@@ -2807,13 +2875,16 @@ function rgbcss(c){return 'rgb('+c[0]+','+c[1]+','+c[2]+')';}
    a button and a button cannot hold one. Ring, never fill. The coherent
    pole's ring and pill are written by coneAxPaint off the axis's spring; the
    inversion's draws the track alone, broken, at the row's darker token. */
-function cnOrb(ic,inv){
- return '<span class="fb-orb cn-or'+(inv?' inv':'')+'">'
+/* bare is a coherent pole on no axis: its ring is whole and carries no
+   reading and no pill, because there is no position for either to say */
+function cnOrb(ic,inv,bare){
+ var plain=inv||bare;
+ return '<span class="fb-orb cn-or'+(inv?' inv':'')+(bare?' bare':'')+'">'
   +'<svg class="fb-arc" viewBox="0 0 40 40" aria-hidden="true">'
   +'<circle class="trk" cx="20" cy="20" r="18"/>'
-  +(inv?'':'<circle class="val" cx="20" cy="20" r="18" pathLength="100" stroke-dasharray="0 100"/>')
+  +(plain?'':'<circle class="val" cx="20" cy="20" r="18" pathLength="100" stroke-dasharray="0 100"/>')
   +'</svg><span class="fb-gl">'+fbSvg(ic)+'</span>'
-  +(inv?'':'<span class="fb-v" aria-hidden="true">\u2013</span>')+'</span>';}
+  +(plain?'':'<span class="fb-v" aria-hidden="true">\u2013</span>')+'</span>';}
 /* WHICH ROW IS LIT, updated from the tick rather than from a repaint. Redrawing
    the rail every frame would rebuild sixteen buttons sixty times a second and
    throw away the hover the person is currently on. */
@@ -3208,6 +3279,15 @@ function coneOpen(inTab){
    var m=MIRROR[i]; if(!m)return;
    coneAimAt(i);
    if(typeof runTeacherDrill==='function')runTeacherDrill(m,'up');};});
+ /* A POLE ON NO AXIS IS PRESSED, round RB. Nothing to aim at, so a press
+    only reads: a path opens its path drill, as its badge on the figure does,
+    and the three poles on no axis open theirs. Found by key, never by place. */
+ h.querySelectorAll('[data-cnpole]').forEach(function(b){
+  var k=b.getAttribute('data-cnpole');
+  b.onclick=function(){
+   var p=(typeof compassPoleOf==='function')?compassPoleOf(k):null; if(!p)return;
+   if(PATHS.indexOf(p)>=0){if(typeof runPathDrill==='function')runPathDrill(p);}
+   else if(typeof runHomePoleDrill==='function')runHomePoleDrill(p);};});
  coneNamesSync();
  /* the graph is a door onto the long version of itself. Ruled. */
  var gm=document.getElementById('cngomore'), gr=document.getElementById('cngraph');

@@ -57,7 +57,9 @@ function iqScore(p){
      instrument cannot actually see. */
   out[l.nm]={score:Math.round(mean*10)/10, spread:Math.round(spread*10)/10,
    reliable: spread>=3,
-   lean: spread<3 ? 'even, within measurement noise'
+   /* "within measurement noise" was a lab word on a line a person reads.
+      The fact is the same and the words are his reader's. Round RG. */
+   lean: spread<3 ? 'too close together to show a lean'
        : v[0]>v[1] ? 'holds when it costs, slips when unseen'
        : 'holds when unseen, slips when it costs'};});
  return out;}

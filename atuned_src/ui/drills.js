@@ -236,8 +236,13 @@ function runDrill(o){
   CHV.pick=m.nm; if(typeof uiSet==='function')uiSet('chmask',m.nm);
   chDrill(m); render();};});}
 
-function runLawDrill(l){
- if(!l)return;
+/* THE LAW'S CARD, AS MARKUP, round RB. runLawDrill shows it on its own and
+   Analytics shows the same card inside its trail (ui/analytics.js), so there
+   is one card and two doors, not two cards. o.ana marks the held rows so a
+   press on one stays inside the Analytics trail. */
+function runLawDrill(l){if(l)rdShell(lawDrillHtml(l));}
+function lawDrillHtml(l,o){
+ o=o||{};
  var v=S.law[l.nm], seg=W.filter(function(n){return n.b===l.b;});
  var hot=seg.filter(function(n){return n.sq>=4;});
  var sc=CURP?(iqScore(CURP)[l.nm]||null):null;
@@ -267,16 +272,22 @@ function runLawDrill(l){
      with a sentence after it starting in lower case. The intake prints the
      same two facts joined by a comma and reads correctly, so this joins them
      the same way. */
-  ? '<div class="pm-eye">From your diagnostic</div><p class="ad-p">Spread <b>'+sc.spread
-    +'</b>, '+sc.lean+'.</p>'
+  /* ROUND RG: "Spread" said what kind of number it was and not what it was. */
+  ? '<div class="pm-eye">From your diagnostic</div><p class="ad-p">Your three answers sit <b>'+sc.spread
+    +'</b> apart, '+sc.lean+'.</p>'
   : '<div class="pm-eye">Not measured</div><p class="ad-p">Not answered in the diagnostic, so '
     +'it defaults to '+v.toFixed(1)+'. Three questions would replace the guess.</p>';
  if(hot.length)h+='<div class="pm-eye">Held here</div><div class="ad-rows">'
-  +hot.slice(0,6).map(addrRow).join('')+'</div>';
- rdShell(h);}
+  +hot.slice(0,6).map(function(n){return addrRow(n,{ana:!!o.ana});}).join('')+'</div>';
+ return h;}
 
-function runNodeDrill(n){
- if(!n)return;
+/* THE ADDRESS CARD, AS MARKUP, round RB, for the same reason as the law's:
+   Analytics traces a pattern down to this card and must show this card, not
+   a second one. o.ana turns the Feeds chips into rows that climb back up the
+   chain, because a trace that can only go down is half a trace. */
+function runNodeDrill(n){if(n)rdShell(nodeDrillHtml(n));}
+function nodeDrillHtml(n,o){
+ o=o||{};
  var c=CHILD.filter(function(x){return x.nm===n.cf;})[0]||{};
  var r=computeSeen();
  var owners=[].concat(r.sups,r.hys,r.cxs,r.sabs).filter(function(o){return leaves(o).indexOf(n)>=0;});
@@ -304,14 +315,20 @@ function runNodeDrill(n){
     +'. '+((S.replace[c.nm]||0)>=4?'You have '+c.opp.toLowerCase()+' partly installed.'
       :c.opp+' is what fills this address once it is emptied.')
    :'A field address, with no poled axis under it. This one is an open ruling.')+'</p>'
+  /* in the Analytics trail, the feeling and the seat under this address are
+     the next two steps down, round RB */
+  +(o.ana&&typeof anaTraceRows==='function'?anaTraceRows(n):'')
   /* WHAT AN ADDRESS FEEDS IS WHAT IS RUNNING ON IT, so below tier one it is the
      lock's own panel: "nothing compounds from here" would be a false statement
      about an address that feeds a saboteur */
   +(lockSees('sab')
-   ?'<div class="pm-eye">Feeds'+(owners.length?' '+owners.length:'')+'</div><div class="pm-chips">'
+   ?(o.ana&&owners.length&&typeof anaPatRow==='function'
+    ?'<div class="pm-eye">Feeds '+owners.length+'</div><div class="ad-rows">'
+     +owners.slice(0,8).map(anaPatRow).join('')+'</div>'
+    :'<div class="pm-eye">Feeds'+(owners.length?' '+owners.length:'')+'</div><div class="pm-chips">'
     +(owners.length?owners.slice(0,8).map(function(o){
      return '<span class="pm-chip'+(o.over?' over':'')+'">'+esc(o.nm)+' '+o.w.toFixed(1)+'</span>';}).join('')
-    :'<span class="pm-chip">nothing compounds from here</span>')+'</div>'
+    :'<span class="pm-chip">nothing compounds from here</span>')+'</div>')
    :'<div class="pm-eye">Feeds</div>'+lockPanelHtml('sab',{brief:true}));
  h+=nodeStories(n);
  /* RUN THE PROTOCOL HERE. The reading ended at the reading: a person could see
@@ -328,7 +345,7 @@ function runNodeDrill(n){
  else
   h+='<p class="ad-p">Nothing is held here, so there is nothing to release. '
    +'The protocol opens once this address is carrying.</p>';
- rdShell(h);}
+ return h;}
 /* THE STORY AT THIS ADDRESS. Round JQ, his words: "And then seeing the story,
    the story is just the imprint associated with those, and you can run those
    from there." atomIndex in ui/wheel.js already reads which of a person's own
@@ -597,9 +614,14 @@ function runBalDrill(){
     The term is the copy seat's, not mine and not provisional: five phrasings
     of this one state were in the product and its sweep rules them down to
     "not read yet" as a value. It is the same string the strip now carries. */
+ /* A LEAN IS SAID, NEVER SCORED. A bare percent here ("19% outward") is the
+    same defect the dial's own tooltip already avoids (ui.js, axDial: "Leans
+    masculine.", "Leans feminine.", "Even.", no figure). Matched to that
+    established wording rather than inventing a second one. The real figures,
+    the two means it is computed from, still carry the arithmetic below. */
  var h='<div class="pm-eye">Balance</div><div class="ad-nm">'
   +(!b.read?'not read yet'
-    :b.lean===0?'even':(Math.abs(b.lean)*100).toFixed(0)+'% '+(b.lean>0?'outward':'inward'))+'</div>'
+    :b.lean===0?'even':'leans '+(b.lean>0?'outward':'inward'))+'</div>'
   +'<div class="pm-eye">How to read it</div><p class="ad-p">The nine axes split by the direction the '
   +'body takes under them. Four discharge outward, five withdraw inward. Four against five is not a '
   +'fair sum, so the means are what compare.'
@@ -873,6 +895,20 @@ function runPathDrill(p){
   +(typeof ritTeachHtml==='function'?ritTeachHtml(p.k):'');
  rdShell(h);
  if(typeof ritTeachWire==='function')ritTeachWire(function(){runPathDrill(p);});}
+/* AKHENATEN, ZOROASTER AND CONFUCIUS, round RB. They stand on no axis and are
+   not paths (HOME_POLES in engine/data/compass.js), so a press on one of their
+   names opens their behaviour panel, the same one every other teacher opens.
+   The codex gives them no line, so when the table has no row for one the
+   panel says the names and what is missing, and writes no line of its own. */
+function runHomePoleDrill(p){
+ if(!p)return;
+ var cx=(typeof ritComplexHtml==='function')?ritComplexHtml(p.k):'';
+ if(cx){rdShell(cx); ritComplexWire(function(){runHomePoleDrill(p);}); return;}
+ rdShell('<div class="pm-eye">'+esc(p.q)+'</div>'
+  +'<div class="ad-nm">'+(p.ic?'<svg class="ad-ic" viewBox="0 0 24 24" aria-hidden="true">'
+    +'<path d="'+p.ic+'"/></svg>':'')+esc(p.up)+'</div>'
+  +'<div class="ad-sub">opposite '+esc(p.dn)+'</div>'
+  +'<p class="ad-p">No behaviours are written for this teacher yet.</p>');}
 function runPoleDrill(end){
  var up=(end!=='dn'), r=compute();
  var h='<div class="pm-eye">'+(up?'The upward cone':'The downward cone')+'</div>'
@@ -1141,12 +1177,15 @@ function runAvatarDrill(){
     +'<em>'+(g2?(g2.clear?'clear':esc(String(g2.seat).toLowerCase())+', '+g2.load.toFixed(1))
       :'not resolved')+'</em></button>';});
   h+='</div>';
-  if(pg)h+='<p class="ad-p"><b>'+pg.done+' of '+pg.total+'</b> clear at the address behind '
+  /* a count against a total is a score, the standing ruling, round RB */
+  if(pg)h+='<p class="ad-p"><b>'+(pg.done===0?'None':pg.done===pg.total?'All of them':String(pg.done))+'</b> clear at the address behind '
    +'them. Read from what you have actually cleared, not from what you wrote.</p>';
  } else {
-  h+='<p class="ad-p">Nothing written yet. The journal asks for it in two questions: '
-   +'describe yourself on your best day, not what you achieved but how you were. Then the '
-   +'opposite.</p>';}
+  /* THE PROMISE WAS FALSE, round RB, S3 (BECOMING-AUDIT.md R11): no journal
+     prompt ever asked these two questions. The Avatar page is where a pair is
+     written, one seat at a time. */
+  h+='<p class="ad-p">Nothing written yet. Write it on the Avatar page, one seat at a time. '
+   +'Say how you are on your best day, and how you are on a bad one.</p>';}
  if(av.built){
   var d=avatarDaysLeft(av);
   h+='<p class="ad-p">Reviewed monthly. '+(avatarDue(av)?'Due now.':d+' days to the next one.')
@@ -1223,15 +1262,26 @@ function runPurposeDrill(){
   +'yours to protect and outside it is choice.</p>'
   +'<div class="ad-rows">'+PUR_SIDES.map(function(sd){
     var n=((pu.sides&&pu.sides[sd])||[]).filter(function(x){return x&&String(x).trim();}).length;
+    /* five marks a side, lit or not, and no count against the five or the
+       thirty, the standing ruling, round RB. The side's own name and meaning
+       come from the one table, PUR_SIDE_SAY. */
+    var say=(typeof PUR_SIDE_SAY!=='undefined'&&PUR_SIDE_SAY[sd])||{nm:sd,say:''};
     return '<div class="ad-r static'+(n>=PUR_PER_SIDE?' on':'')+'">'
-     +'<span class="ad-k">'+esc(sd)+'</span>'
-     +'<span class="ad-v">'+n+' of '+PUR_PER_SIDE+'</span></div>';}).join('')+'</div>'
-  +'<p class="ad-p">'+bc.filled+' of '+bc.of+' written. Thirty is not a lot to ask of a '
+     +'<span class="ad-k">'+esc(say.nm)+'</span>'
+     +'<span class="ad-v" aria-label="'+esc(n?n+' written':'none written')+'">'
+     +[0,1,2,3,4].map(function(i){return i<n?'\u25CF':'\u25CB';}).join(' ')+'</span></div>';}).join('')+'</div>'
+  +'<p class="ad-p">'+(bc.filled?'':'Nothing written on any side yet. ')+'Thirty is not a lot to ask of a '
   +'mirror you will hold for as long as this takes. A mirror half described shows half a '
   +'person.</p>'
-  +'<div class="ad-act"><button class="btn" id="puback">The avatar</button></div>';
+  +'<div class="ad-act"><button class="btn pri" id="puwrite">Write it</button>'
+  +'<button class="btn" id="puback">The avatar</button></div>';
  rdShell(h);
- var b=document.getElementById('puback'); if(b)b.onclick=runAvatarDrill;}
+ var b=document.getElementById('puback'); if(b)b.onclick=runAvatarDrill;
+ /* the writer, round RB, S3: the Avatar page's Purpose subtab */
+ var w=document.getElementById('puwrite'); if(w)w.onclick=function(){
+  if(typeof AV!=='undefined')AV.sub='purpose';
+  if(typeof rdClose==='function')rdClose();
+  setTab(TAB.INTAKE); if(typeof renderAvatar==='function')renderAvatar();};}
 
 /* ============================================================
    THE AGE LADDER, on screen.

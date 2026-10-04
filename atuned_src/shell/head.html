@@ -874,7 +874,6 @@ body.rm .msgdock{transition:none}
 
 
 .spacer{flex:1 1 auto;min-width:8px}
-.toplab{font-family:var(--num);font-size:11px;font-weight:400;color:var(--dim);white-space:nowrap}
 
 /* ---------- buttons ---------- */
 .vt{background:transparent;border:1px solid var(--edge);border-radius:var(--r-s);
@@ -1999,7 +1998,7 @@ body.punch .fb-v{background:var(--c);color:var(--on-flat);border-color:var(--c)}
    is still a button that opens its reading on the right; only where it sits
    and the shape it is drawn in changed. */
 .fdock{display:flex;flex-direction:column;align-items:stretch;gap:16px;min-width:0;position:relative;
- padding:4px 0 16px 20px;margin:0 0 12px;border-bottom:1px solid var(--edge)}
+ padding:4px 0 16px;margin:0 0 12px;border-bottom:1px solid var(--edge)}
 body:not(.tab-field) .fdock{display:none}
 /* CQ AND DQ, A PAIR. "Line those up so they don't look like a design element
    that's not quite designed right, but has a symmetry, and I do want the CQ
@@ -2538,8 +2537,12 @@ body:not(.tab-field) .lsec.lp-sec,.lsec.lp-sec.lp-none{display:none}
 @media (max-width:1000px){.sg-loop .lp{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:720px){.lp-figs{grid-template-columns:repeat(2,minmax(0,1fr))}
  .lp-chain li{grid-template-columns:70px minmax(0,1fr)}}
-/* ROOT ENERGETICS IS SET APART, on both rails. FV: "I want a slightly
-   different treatment for root energetics." Everything else on the rail is a
+/* ROOT ENERGETICS IS SET APART, and so is Energetic summary, which wears the
+   same class since they are one thing read two ways; both sat on separate
+   rails until 3 October, when Energetic summary moved to this one, and the
+   class carries them together without caring which rail either stands on.
+   FV: "I want a slightly different treatment for root energetics." Everything
+   else on the rail is a
    reading of the field; this is the birth, the one layer nothing a person does
    can move. So it sits on a panel of its own: the accent at six percent under
    it and a hairline of the accent round it, the same two moves the dock's
@@ -2603,8 +2606,10 @@ body.punch .lsec.re{box-shadow:none;background:var(--panel-2)}
 .rs-rm{font-size:12.5px;line-height:1.5;color:var(--mid);grid-column:2}
 /* ---- THE LEFT COLUMN'S FOLD. EZ in TASKS.md: "I want to be able to close up
    that column." ui/ui.js, colFold. The control sits in the top right corner
-   of the rail over Root energetics' header, which gives it the width a
-   section's chevron would otherwise run into, so it costs the rail no row. */
+   of the rail, absolute within #lpanel rather than sticky to the screen, so
+   it scrolls with the rail's own content and always overlaps whichever
+   section is physically first, which gives that section's header the width
+   a chevron would otherwise run into, so it costs the rail no row. */
 #lpanel{position:relative}
 .lfold{position:absolute;top:16px;right:8px;z-index:2;width:var(--tap);height:var(--tap);
  display:flex;align-items:center;justify-content:center;padding:0;border:0;border-radius:var(--r-xs);
@@ -2613,7 +2618,13 @@ body.punch .lsec.re{box-shadow:none;background:var(--panel-2)}
 .lfold:hover{background:var(--sunk);color:var(--ink)}
 .lfold svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .lfold .lf-ch{transform-box:fill-box;transform-origin:center;transition:transform var(--t-element) var(--ease-out)}
-.lsec[data-sec=energetics] .lsec-hd{padding-right:52px}
+/* THIS WAS KEYED TO data-sec=energetics, because Root Energetics used to be
+   the first section in #lpanel. 3 October: Energetic summary moved here from
+   the right rail and sits above it now, so the control sits over Energetic
+   summary's header instead, and the reserved width moved with it. Keyed to
+   the section standing under the control, not to a fixed position, so the
+   next section to lead this rail is the one that has to carry it next. */
+.lsec[data-sec=overlap] .lsec-hd{padding-right:52px}
 /* shut, the column is the control and nothing else. It keeps its panel, so
    the way back open is a thing on a surface rather than a button floating in
    the gutter, and the chevron turns to point the way the column will go. */
@@ -3244,6 +3255,65 @@ body.punch .s-readbox,body.punch .s-out{background:var(--panel-2);border-color:t
  font-size:13px;font-weight:600}
 .sum-wrap.sg-slots .sg-day:empty::before{content:"slot: " attr(data-slot) " summary, under the story, above what to do"}
 /* folds, a nested group the person opens. The row carries a chevron. */
+/* THE LEAD ROW, round RB: the two halves stand at their own heights, and the
+   right half is a column of two cards, what to do and the drivers, so the
+   space beside a long reading is used rather than stretched. */
+.sg-lead2{align-items:start}
+.sg-side{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sg-side>.sg-todo{margin:0;gap:14px}
+.sg-side>.sg-todo .s-outrow{grid-template-columns:1fr;gap:10px}
+.sg-side>.sg-todo .s-out{padding:14px 16px;background:var(--panel-2)}
+.sg-side>.sg-drive>.sg-fold{margin-top:14px}
+/* and the row under it the same way: What is running pushed its fold to the
+   foot of a card stretched to What it costs, a hole of about 290 pixels at
+   1600 above All masks. Each card stands at its own height now. */
+.sg-two.sg-even{align-items:start}
+.sg-two.sg-even>.sg-card>.sg-fold:first-of-type{margin-top:14px}
+/* ROUND RF, THE FLOW. The left half of the lead row is two cards now, what
+   you told it over the Reading, in a column wrapper with no look of its own.
+   On one column both wrappers dissolve and the four cards take the order a
+   person needs them in: their words, what to do, the Reading, the drivers.
+   Measured at 390 on Diane: What to do started 2.8 screens down, under
+   about 500 words, before this. */
+.sg-col{display:flex;flex-direction:column;gap:20px;min-width:0}
+.sg-told>.s-told{margin-bottom:0}
+@media (max-width:1100px){
+ .sg-lead2>.sg-col,.sg-lead2>.sg-side{display:contents}
+ .sg-lead2>.sg-col>.sg-told{order:1}
+ .sg-lead2>.sg-side>.sg-todo{order:2}
+ .sg-lead2>.sg-col>.sg-story{order:3}
+ .sg-lead2>.sg-side>.sg-drive{order:4}}
+/* THE PLATE ON ONE LINE where there is width for it. Name, then the band,
+   then where it goes, read left to right in the order the plate means them.
+   It stood as two rows with the band pushed to the far right and the middle
+   of the row empty, which spent a quarter of the first screen at 1600 on
+   three facts. */
+@media (min-width:1101px){
+ .sg-who .s-plate{grid-template-columns:auto auto minmax(0,1fr);column-gap:32px}
+ .sg-who .s-pl-l{grid-column:1;grid-row:1}
+ .sg-who .s-pl-r{grid-column:2;grid-row:1}
+ .sg-who .s-ptoward{grid-column:3;grid-row:1;margin-top:0;padding-left:28px;
+  border-left:1px solid var(--edge)}}
+/* TEXT A PERSON READS, AT THE READING SIZE. Measured on Diane at 1600 before
+   this: 80 per cent of the visible characters on this page were under 16px,
+   the house floor for body text, and that included their own words, every
+   meaning in the Reading, the line under each action and the drivers' own
+   sentences. Those come up to 16, and the line under an action to 14 in the
+   middle ink, because it is the reason for the button under it. Labels,
+   ring values and footnotes keep their sizes: they are scanned, not read.
+
+   And the Reading's claims lead by ink rather than by size. The meanings
+   stayed one step smaller to let the claim lead; at one size, the claim is
+   set in the full ink and the meaning in the middle ink, so the order of
+   importance survives without a meaning dropping under the floor. */
+.sum-wrap .s-story .s-p{color:var(--ink)}
+.sum-wrap .s-story .s-un{font-size:16px;color:var(--mid)}
+.sum-wrap .s-told-e p{font-size:16px}
+.sum-wrap .s-told-e time{font-size:12px}
+.sum-wrap .s-out-s{font-size:14px;color:var(--mid)}
+.sum-wrap .sg-m-t p{font-size:16px}
+.sum-wrap .sg-note{font-size:14px}
+.sum-wrap .sg-card .s-axes .s-p{font-size:16px}
 .sg-folds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start}
 .sg-fold{border:1px solid var(--edge);border-radius:var(--r-s);min-width:0;margin-top:14px}
 .sg-folds .sg-fold{margin-top:0;background:var(--panel)}
@@ -3272,7 +3342,8 @@ body.punch .s-readbox,body.punch .s-out{background:var(--panel-2);border-color:t
     marks, with the detail cards after them. */
  .sum-wrap{display:flex;flex-direction:column}
  .sum-wrap>.sg-lead{order:1}
- .sum-wrap>.sg-marks{order:2}
+ .sum-wrap>.sg-loop{order:2}
+ .sum-wrap>.sg-marks{order:3}
  .sum-wrap>.sg-day{order:3}
  .sum-wrap>.sg-todo{order:4}
  .sum-wrap>.sg-two:not(.sg-lead){order:5}
@@ -3695,9 +3766,20 @@ body.punch .card{border-color:transparent}
 .bmnote{font-size:12.5px;color:var(--dim);line-height:1.55;margin-top:5px;font-weight:300}
 
 /* ---------- select ---------- */
+/* SMALLER, ROUND RB. His words: "shrink down the size of that button. right
+   now, custom and the down arrow is taking up a lot of space." It was 190
+   pixels wide holding one word, because a closed select is as wide as its
+   longest option and the longest is a test case's role, which nobody sees
+   until the list opens. field-sizing:content sizes it to the entry that is
+   showing instead, so Profile takes the room of Profile and the bar gets the
+   rest back; the 190 pixel cap below still holds for a long name. A browser
+   without field-sizing keeps the old width, which is the old behaviour and
+   not a broken one. Type came down from 14 pixels to 13 and side padding
+   from 11 to 8; the height stays on the tap floor, because a thumb hits the
+   same target whatever the word inside it is. */
 select#psel{background:var(--panel-2);color:var(--ink);border:1px solid var(--edge);
- min-height:var(--tap);border-radius:var(--r-s);padding:8px 11px;font-family:var(--sans);font-size:14px;
- font-weight:400;cursor:pointer;max-width:262px}
+ min-height:var(--tap);border-radius:var(--r-s);padding:8px 8px;font-family:var(--sans);font-size:13px;
+ font-weight:400;cursor:pointer;max-width:262px;field-sizing:content}
 select#psel option{background:var(--panel);color:var(--ink);padding:5px}
 select#psel optgroup{background:var(--sunk);color:var(--dim);font-style:normal;
  font-size:12.5px;font-weight:600}
@@ -4622,15 +4704,98 @@ body.punch .ip.kid{background:color-mix(in srgb,var(--c) 68%,var(--panel-2))}
 .ab-b:hover circle{opacity:.95}
 .ab-b.on circle{stroke-width:2.8}
 .ana-laws{display:flex;gap:6px;align-items:flex-end;margin-top:11px;flex-wrap:wrap}
-.ana-lw{display:flex;flex-direction:column;align-items:center;gap:6px;width:40px}
+.ana-lw{display:flex;flex-direction:column;align-items:center;gap:6px;width:44px;min-height:var(--tap)}
 .ana-lw s{text-decoration:none;display:flex;align-items:flex-end;height:60px}
 .ana-lw u{display:block;width:20px;border-radius:3px 3px 0 0;text-decoration:none}
 .ana-lw span{font-size:11px;font-weight:600;color:var(--dim)}
 .ana-lw.shut u{opacity:.3}
 .ana-lw.shut span{color:var(--alarm)}
 .ana-strip{display:flex;gap:4px;align-items:flex-end;margin-top:11px;flex-wrap:wrap}
-.ana-px{display:flex;align-items:flex-end;height:50px}
+.ana-px{display:flex;align-items:flex-end;justify-content:center;width:44px;height:56px}
 .ana-px u{display:block;width:18px;border-radius:3px;text-decoration:none}
+/* THE BUBBLE LABELS ON THEIR OWN FILL, round RB. The fill runs to 82 per cent
+   of the seat colour and the label is ink, so on a light seat a white label
+   sat on a pale disc and failed a basic contrast check (REVIEW-mvp/TALLY.md,
+   the visual seat). A halo in the panel's own colour sits between the two,
+   so the label is read against the ground it was chosen for on every
+   lighting, whatever the disc underneath it is. */
+.ab-t,.ab-v{paint-order:stroke;stroke:var(--panel-2);stroke-width:3.2px;stroke-linejoin:round}
+.ab-b:focus-visible{outline:none}
+.ab-b:focus-visible circle{stroke-width:2.8}
+/* EVERY PRESS ON THE PAGE IS A BUTTON, round RB, so each takes the button
+   resets and the 44 pixel floor the tap gate holds */
+.ana-lw,.ana-px,.ana-g,.ana-g-h,.ana-g-r,.ana-tile,.ana-rung,.ana-bar,.ana-crumb{font:inherit;color:inherit;
+ cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ana-lw,.ana-px{background:none;border:0;padding:0;border-radius:var(--r-xs)}
+.ana-lw:hover,.ana-px:hover,.ana-g-h:hover,.ana-g-r:hover,.ana-bar:hover{background:var(--sunk)}
+.ana-lw:focus-visible,.ana-px:focus-visible,.ana-g:focus-visible,.ana-g-h:focus-visible,.ana-g-r:focus-visible,
+.ana-tile:focus-visible,.ana-rung:focus-visible,.ana-bar:focus-visible,.ana-crumb:focus-visible,
+.ab-acc[data-ana]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ab-acc[data-ana]{cursor:pointer;border-radius:var(--r-xs)}
+.ab-acc[data-ana]:hover b{color:var(--gold)}
+.ana-tele{margin-top:4px}
+.ana-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px;margin-top:9px}
+.ana-tile{display:flex;flex-direction:column;align-items:center;gap:7px;padding:12px 6px 10px;min-height:var(--tap);
+ border:1px solid var(--edge);border-radius:var(--r);background:var(--panel-2)}
+.ana-tile:hover{border-color:var(--edge-2)}
+.ana-tile-l{font-size:12.5px;font-weight:600;color:var(--ink);border-bottom:1px dotted var(--edge-2)}
+/* the grid. a column per seat, a row per feeling, both edges are doors */
+.ana-grid{display:grid;grid-template-columns:minmax(96px,auto) repeat(7,minmax(44px,1fr));gap:3px;
+ margin-top:9px;padding:12px;border:1px solid var(--edge);border-radius:var(--r);background:var(--panel-2)}
+.ana-g-c{display:block}
+.ana-g-h,.ana-g-r{display:flex;flex-direction:column;justify-content:center;gap:4px;min-height:var(--tap);
+ background:none;border:0;border-radius:var(--r-xs);padding:4px 5px}
+.ana-g-h{align-items:center;text-align:center;font-size:11.5px;font-weight:600;color:var(--dim)}
+.ana-g-r{align-items:flex-start;text-align:left;font-size:13px;color:var(--ink)}
+.ana-g-h i,.ana-g-r i{display:block;height:3px;border-radius:2px;max-width:100%}
+.ana-g-h i{align-self:stretch;margin:0 auto}
+.ana-g{min-height:var(--tap);min-width:44px;padding:0;border:1px solid var(--edge);border-radius:var(--r-xs)}
+.ana-g.held{box-shadow:inset 0 0 0 2px var(--c)}
+.ana-g:hover{border-color:var(--ink)}
+.ana-g-x{min-height:var(--tap);border-radius:var(--r-xs);opacity:.55;
+ background:repeating-linear-gradient(135deg,transparent 0 5px,var(--edge) 5px 6px)}
+/* the chain, ring by ring */
+.ana-rungs{display:flex;flex-wrap:wrap;align-items:center;gap:4px 2px;margin-top:9px}
+.ana-rung{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:var(--tap);min-height:var(--tap);
+ padding:8px 12px;border:1px solid var(--edge);border-radius:var(--r);background:var(--panel-2)}
+.ana-rung:hover{border-color:var(--edge-2)}
+.ana-rung b{font-family:var(--num);font-size:20px;font-weight:400;color:var(--ink);line-height:1.1}
+.ana-rung b .lk-mk,.ana-rung b svg{width:16px;height:16px}
+.ana-rung span{font-size:12px;color:var(--mid)}
+.ana-rung-s{color:var(--dim);font-size:16px;padding:0 2px}
+/* inside a card: the trail, the figure row, the splits */
+.ana-crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:2px 2px;margin:0 0 8px}
+.ana-crumb{min-height:var(--tap);padding:4px 10px;border:1px solid var(--edge);border-radius:999px;
+ background:none;font-size:12.5px;color:var(--mid);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ana-crumb:hover{color:var(--ink);border-color:var(--edge-2)}
+.ana-crumb-s{color:var(--dim);padding:0 3px}
+.ana-crumb-at{font-size:12.5px;font-weight:600;color:var(--ink);padding:0 4px}
+.ana-kv{display:flex;flex-wrap:wrap;gap:8px 14px;margin:4px 0 12px}
+.ana-kv>div{display:flex;flex-direction:column;gap:4px;min-width:44px}
+.ana-kv span{font-size:11px;font-weight:600;color:var(--dim)}
+.ana-kv b{font-family:var(--num);font-size:20px;font-weight:400;color:var(--ink);line-height:1.2}
+.ana-bars{display:flex;flex-direction:column;gap:2px;margin-top:6px}
+.ana-bar{display:grid;grid-template-columns:minmax(76px,30%) 1fr auto;gap:10px;align-items:center;width:100%;
+ min-height:var(--tap);padding:4px 6px;border:0;background:none;border-radius:var(--r-xs);text-align:left;font-size:13.5px}
+.ana-bar-n{color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ana-bar-t{display:block;height:8px;border-radius:4px;background:var(--sunk);overflow:hidden}
+.ana-bar-t i{display:block;height:100%;border-radius:4px}
+.ana-bar-f{font-size:12px;color:var(--dim);white-space:nowrap}
+.ana-dls{display:flex;flex-direction:column;gap:2px;margin:6px 0 10px}
+.ana-dl{display:grid;grid-template-columns:1fr auto minmax(86px,auto);gap:10px;align-items:baseline;
+ padding:5px 6px;border-bottom:1px solid var(--edge);font-size:13.5px;color:var(--mid)}
+.ana-dl b{font-family:var(--num);font-weight:400;color:var(--ink);font-variant-numeric:tabular-nums}
+.ana-dl em{font-style:normal;font-size:12px;color:var(--dim);text-align:right}
+/* ON A PHONE the feeling's name takes its own line over its row, so the
+   seven squares under it keep the 44 pixel floor across a 390 screen */
+@media (max-width:560px){
+ .ana-grid{grid-template-columns:repeat(7,minmax(0,1fr));padding:8px}
+ .ana-g-c{display:none}
+ .ana-g-r{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:flex-start;gap:10px;padding:6px 4px 2px}
+ .ana-g-r span{flex:0 0 auto}
+ .ana-g-h{padding:4px 1px;font-size:11px}
+ .ana-g,.ana-g-x{min-width:0}
+}
 
 /* ============================================================
    DRILL
@@ -5432,16 +5597,35 @@ body.tab-masksview #masksview{background:#0C0D12}
 .chp-stage{position:absolute;inset:0;overflow:hidden}
 .chp-cv{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:manipulation}
 .chp-cv.hit{cursor:pointer}
+/* THE ROOM'S COLOUR, round RB: the colour the aura gives off, as a pool behind
+   the figure, written by ui/character.js chAura. --aura is the colour as three
+   channels, the opacity is its strength and its breath, both set per frame,
+   and nothing here moves on its own. The pool sits a little below the middle
+   because the figure's light is weighted there. Wider than the stage so its
+   edge is never seen, and clipped by .chp. */
+.chp-aura{position:absolute;inset:-12%;pointer-events:none;opacity:0;will-change:opacity,transform;--aura:150,158,174;
+ background:radial-gradient(ellipse 34% 40% at 50% 52%,rgba(var(--aura),.7) 0%,rgba(var(--aura),.28) 46%,rgba(var(--aura),0) 100%),
+  radial-gradient(ellipse 70% 62% at 50% 54%,rgba(var(--aura),.2) 0%,rgba(var(--aura),0) 100%)}
+.chr-read+.chr-note{margin-top:12px}
 /* THE MASK ICONS, upper left, full colour. Each is a real button because each
    becomes a protocol, and 60 pixels, well over the 44 floor. */
 .chp-masks{position:absolute;left:20px;top:18px;display:flex;gap:12px;z-index:3}
+/* NO GLOW, round RB, his words: "the buttons on the upper left-hand side
+   have a glow around them. Turn that off. We don't have that anywhere else."
+   They had a coloured halo on hover and three on the pressed one, 30 and 62
+   pixels of blur in the mask's own colours, and a brightness filter on top.
+   They now take the Field bar's own disc (.fb-orb): the dark glass, its one
+   neutral drop shadow, and a lighter glass when hovered or pressed. The
+   pressed mask keeps the one hairline ring in its colour, which is an edge
+   and not a light, and its wash at full, so which mask is on still reads. */
 .chp-mk{position:relative;width:60px;height:60px;border-radius:50%;border:0;padding:0;cursor:pointer;
- background:rgba(14,16,22,.55);color:inherit;filter:saturate(1.05);
- transition:transform var(--t-element) var(--ease-out),box-shadow var(--t-element) var(--ease-out),filter var(--t-element) var(--ease-out)}
+ background:rgba(22,24,32,.74);color:inherit;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 6px 18px rgba(0,0,0,.30);
+ transition:transform var(--t-element) var(--ease-out),background-color var(--t-micro) var(--ease-out),box-shadow var(--t-element) var(--ease-out)}
 .chp-mk svg{position:absolute;inset:0;width:60px;height:60px;overflow:visible}
-.chp-mk:hover{transform:translateY(-1px);box-shadow:0 0 18px -4px var(--mc2)}
-.chp-mk[aria-pressed="true"]{transform:scale(1.08);filter:saturate(1.25) brightness(1.12);
- box-shadow:0 0 0 1px var(--mc1),0 0 30px -2px var(--mc2),0 0 62px -14px var(--mc1)}
+.chp-mk:hover{background:rgba(40,44,58,.86)}
+.chp-mk[aria-pressed="true"]{transform:scale(1.08);background:rgba(40,44,58,.86);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 6px 18px rgba(0,0,0,.30),0 0 0 1px var(--mc1)}
 .chp-mk[aria-pressed="true"] .wash{fill-opacity:1}
 .chp-mk:focus-visible,.chp-ob:focus-visible{outline:2px solid #EFEDE8;outline-offset:4px}
 /* THE OVERLAY TOGGLES, upper right. Ring icons, 44 pixels, lit when on and
@@ -5452,7 +5636,9 @@ body.tab-masksview #masksview{background:#0C0D12}
  transition:color var(--t-element) var(--ease-out),border-color var(--t-element) var(--ease-out),box-shadow var(--t-element) var(--ease-out)}
 .chp-ob svg{width:24px;height:24px}
 .chp-ob:hover{color:#EFEDE8;border-color:rgba(239,237,232,.4)}
-.chp-ob[aria-pressed="true"]{color:#EFEDE8;border-color:var(--mc1,#7EB8D4);box-shadow:0 0 0 1px var(--mc1,#7EB8D4),0 0 16px -4px var(--mc1,#7EB8D4)}
+/* and the same for the toggles: the coloured edge says on, the 16 pixel
+   halo it carried with it was the same glow and is gone */
+.chp-ob[aria-pressed="true"]{color:#EFEDE8;border-color:var(--mc1,#7EB8D4);box-shadow:0 0 0 1px var(--mc1,#7EB8D4)}
 body.punch .chp-mk,body.punch .chp-ob{box-shadow:none}
 @media (prefers-reduced-motion:reduce){.chp-mk,.chp-ob{transition:none}}
 @media (max-width:700px){
@@ -5798,8 +5984,24 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     compass lane to keep clear. */
  /* and it keeps 12 of foot under it, the desktop's own, because accuracy
     lies level with it in the lower left, round LR, placed by that 12 */
- .fzoom{position:static;order:1;align-self:flex-end;margin:8px 22px 12px 12px}
+ .fzoom{position:static;order:2;align-self:flex-end;margin:8px 22px 12px 12px}
  .fzoom .fb-grp{flex-direction:row}
+ /* THE BAND PILL TAKES ITS OWN ROW ON A PHONE, ABOVE ACCURACY. Round OG put
+    it beside accuracy at a fixed left of 152, which is desktop arithmetic: on
+    a desktop zoom is in the far corner of a 900 wide stage. On a phone zoom
+    is in flow on that same line, so the line had to hold accuracy 132, the
+    pill up to 213 for Compounding, zoom 144, two gaps of 8 and the two 22
+    insets, 549 in all, and a 390 screen gives it 376. Measured on the build
+    at 390: "62% Gaining" lay under zoom out and zoom in, on every profile
+    and on a blank one, from 360 up to 480, and Compounding still did at 540.
+    The overlap moved with the length of the tier word, so no left value could
+    fix it. The pill goes in flow after the picture, at accuracy's own inset,
+    and zoom stays the last thing in the column, which is what accuracy's
+    bottom of 9 is measured against. Order 2 for both, because the pill is
+    ahead of the canvas in the markup and zoom is after it. The 3 of foot
+    puts 8 between the pill and accuracy, the 8 the desktop keeps between
+    them side by side, since accuracy is 50 high to zoom's 44. */
+ .railtop{position:static;order:2;align-self:flex-start;margin:8px 12px 3px 22px}
  /* Five blocks were absolutely positioned against a stage that is 900 wide
     on a desktop. At 390 they all landed on each other at the bottom of the
     wheel. On a phone the stage is a column: the canvas, then each block in
@@ -5898,7 +6100,6 @@ body.tab-energy #eshelf{display:flex;flex-direction:column}
     last thing in the column, so it keeps its absolute corner and takes only
     zoom's own inset from the side. */
  .acc{left:22px}
- .railtop{left:162px}
  .howto{order:5;margin:12px 0 4px;max-width:none}
  .pol2{order:6;position:static;height:auto;margin:12px auto 0;justify-content:center}
  .pol2 svg{height:190px}
@@ -6487,6 +6688,16 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
  display:flex;align-items:center;gap:5px}
 .cn-nd{font-size:11.5px;font-weight:500;color:var(--axd);line-height:1.25;
  display:flex;align-items:center;gap:5px}
+/* THE POLES ON NO AXIS, round RB. Their ring is whole, at half the seat's
+   token, and holds no reading, which the caption over them says in words:
+   there is no seat, so there is no position. The caption is the quality
+   line's size and colour, so it recedes the way a label does. */
+.cn-or.bare .trk{stroke:color-mix(in srgb,var(--c) 50%,transparent)}
+.cn-grp{margin:4px 6px 0;font-size:11px;font-weight:500;line-height:1.3;
+ letter-spacing:.02em;color:var(--dim)}
+.cn-grp i{display:block;font-style:normal;font-weight:400}
+.cn-nms-r .cn-grp{text-align:right}
+.cone-fig.stk .cn-grp{grid-column:1 / -1;text-align:left}
 /* the icon sits on the figure side of its name, so the pair reads as one
    object, which is how the canvas drew it before the names moved out */
 .cn-gl{width:13px;height:13px;flex:0 0 13px;display:block}
@@ -7708,7 +7919,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
     as the bar, so a name has the whole width before it is cut */
  .top .pload{top:calc(var(--tap) + 12px);left:8px;right:8px;min-width:0}
  /* the picker and its label leave the bar for the circle above */
- .top .toplab,.top #psel{display:none}
+ .top #psel{display:none}
  /* the strip is the main menu here, where the names are the point, so the
     fold's toggle leaves and a folded strip opens with its names */
  .top .tabnames-i{display:none}
@@ -7905,41 +8116,18 @@ body.quiet .sp-pulse,body.rm .sp-pulse{display:none}
 
 
 /* ============================================================
-   THE SIX READINGS ON ONE WIRE, ui/railwire.js. Layout and paint only; every
-   number that moves is written by the script from a reading. The gutter
-   belongs to the column that stands beside the stage: a stacked rail on a
-   phone gives the bars the width back. The gutter itself is the left padding
-   of the one .fdock rule above, 20px, because a class is declared once.
+   RADIANCE, ui/railwire.js. The connecting wire that used to run beside
+   these bars is gone, his ruling, round RZ: "I don't know what that bar is
+   on the left-hand side, but it's taking up real estate. Kill it." It drew
+   real computed relationships, never explained anywhere a person could
+   find, so it read as decoration and cost a column of width for it. The
+   gutter it reserved, the left padding of .fdock above, is reclaimed there.
+   Radiance keeps its own row: an icon, a name and a tappable meaning.
    ============================================================ */
-.rw-bus{position:absolute;left:0;top:0;bottom:0;width:20px;pointer-events:none;opacity:0;
- transition:opacity var(--t-enter) var(--ease-enter) 200ms}
-.rw-bus.in{opacity:1}
-.rw-bus svg{position:absolute;left:0;top:0;overflow:visible}
-.rw-w{fill:none;stroke:var(--edge-2);stroke-width:1.4}
-.rw-ws{fill:none;stroke:var(--accent);stroke-linecap:round}
-.rw-tap{fill:none;stroke:var(--edge-2);stroke-width:1}
-.rw-n{fill:var(--panel);stroke-width:1.7}
-.rw-halo{fill:var(--accent);transform-box:fill-box;transform-origin:center;animation:rwhalo var(--t-breath) var(--ease-breath) infinite}
-@keyframes rwhalo{0%,100%{transform:scale(.88)}50%{transform:scale(1.14)}}
-body.quiet .rw-halo,body.rm .rw-halo{animation:none}
-@media (prefers-reduced-motion:reduce){.rw-halo{animation:none}}
-.rw-rn{fill:var(--panel);stroke:var(--accent);stroke-width:1.5}
-.rw-rc{fill:var(--accent)}
-/* a pulse is a dash eight pixels long, the Field's own scale, in the accent
-   whitened so it reads on every lighting, and it only ever has a transform
-   and an opacity written */
-.rw-p{position:absolute;left:0;top:0;width:2px;height:8px;margin:-4px 0 0 -1px;border-radius:2px;
- background:color-mix(in srgb,var(--accent) 55%,#fff);opacity:0;will-change:transform,opacity;pointer-events:none;
- box-shadow:0 0 6px color-mix(in srgb,var(--accent) 70%,transparent)}
-body.quiet .rw-p,body.rm .rw-p{display:none}
-body.quiet .rw-bus,body.rm .rw-bus{transition:none}
-@media (prefers-reduced-motion:reduce){.rw-p{display:none}.rw-bus{transition:none}}
-/* RADIANCE, the junction the three vitals run into. Not a control: nothing
-   here is pressed, so it takes no tap target. */
-.rw-rad{display:flex;justify-content:space-between;align-items:center;height:24px;padding:0 12px;
- font-size:11.5px;color:var(--mid);letter-spacing:.01em}
-.rw-rad b{font-family:var(--num);font-variant-numeric:tabular-nums;font-weight:600;color:var(--mid);font-size:12px}
-@media (max-width:1180px){.fdock{padding-left:0}.rw-bus,.rw-rad{display:none}}
+.rw-rad{display:flex;align-items:center;gap:8px;height:24px;padding:0 12px;
+ font-size:11.5px;color:var(--mid);letter-spacing:.01em;cursor:help}
+.rw-rad b{font-family:var(--num);font-variant-numeric:tabular-nums;font-weight:600;color:var(--mid);font-size:12px;margin-left:auto}
+.rw-rad:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
 
 
 /* ORIENTATION AND BALANCE, UNDER THE READINGS, round OM. One instrument: the
@@ -8001,8 +8189,7 @@ body.quiet .aw-c.on::after,body.rm .aw-c.on::after{animation:none;opacity:.7}
    the foot. Nothing here changes a gate: the page opens on option one and this
    sheet applies only under body.rail2, set from the address.
    ============================================================ */
-body.rail2 .fdock{padding-left:0}
-body.rail2 .rw-bus,body.rail2 .rw-rad{display:none}
+body.rail2 .rw-rad{display:none}
 body.rail2 .fdock .key{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 body.rail2 .fdock .keylo{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;border-top:0;margin-top:6px;padding-top:0}
 body.rail2 .fdock .keylo .rb-waverow{grid-column:1/-1}

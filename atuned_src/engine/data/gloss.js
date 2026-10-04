@@ -151,7 +151,24 @@ var UNPACK_BASE={
  'mask':'A mask is a way of showing up, such as Child or Teen, read from the weight held at a group of seats.',
  'axis':'An axis is a feeling and its opposite, such as fear and trust, and the instrument reads how much of the first is held and how much of the second is in place.',
  'cq':'CQ is your coherence number, built only from your answers on the laws.',
+ /* DQ stood as a bare label on the release clock. Round RG. */
+ 'dq':'DQ is your shadow weight: all the charge you carry, on every address, against the most your body could hold.',
  'coherence':'Coherence is when what you mean, what you do and what your body does point the same way.',
+ /* ROUND RG, the copy sweep. His words: "you read 62 above the oscillating
+    band. Your integrity is 6.2. Integrity is the hull. It's got to be human."
+    Integrity was printed as a figure on the Compass with no meaning anywhere
+    on that screen, and the rail's own tooltip defined it by two more terms.
+    The sentence is the law family's own phrasing, so the two cannot drift. */
+ 'integrity':'Integrity is how well you keep the laws: how often you do what each one asks, when it costs you, when nobody would know and on an ordinary day.',
+ /* Shadow weight was printed as a bare figure in the Summary reading and in
+    Analytics. It is DQ: every address summed against the most they could
+    hold (compute.js), so the sentence says that and nothing more. */
+ 'shadow weight':'Shadow weight is all the charge you carry, on every address, against the most your body could hold.',
+ /* Expression the reading, as against expression the numerology number,
+    which keeps the bare key above. Two meanings sat on one Summary page. */
+ 'field:expression':'Expression is the part of your coherence that gets past the charge you carry.',
+ /* the line every surface counts held from, BELOW THE LINE in compute.js */
+ 'the line':'The line is the point where the charge at one address reaches 4 and starts to cost your body.',
  /* YOUR PATTERNS, the trace graph's screen (ui/loopread.js, engine/loop.js).
     Each word below is a label that block prints, and its meaning is the
     graph's own: confirmed is a user_confirmed edge, unanswered is everything

@@ -471,6 +471,13 @@ set for: his "Tuesday, Thursday, Saturday" shows on those three days and no
 other. This month is each active ritual with where its span ends, and the
 month's counts.
 
+Round RB, his words: "The center area of the ritual does not look like a
+calendar of what's running this week. It should." So Goals opens on This week
+whenever a ritual is running, with today's date in a filled chip and today's
+cells ringed, and on Today when nothing is running, because an empty week
+draws nothing and Today carries the press that starts one. A view pressed is
+kept.
+
 Gate: `tests/flowtools.js`, `FT30:`.
 
 ### FT31. The affirmations and the challenges are real content and say where they came from.
@@ -500,6 +507,20 @@ those days blank, says how many, and counts none of them missed. A person with
 no record is told so.
 
 Gate: `tests/flowtools.js`, `FT32:`.
+
+### FT33. A worked example runs rituals, and the page reads them.
+
+His words, round RB: "For profiles, I want these rituals to have different
+configurations for the profile so I can see how it actually looks when it's
+being utilized." Every example opened this page on zero plans and zero days.
+`engine/ritex.js` writes each example's plans and day log in the shapes
+ritStartPlan and ritMarkOn write, every day through the boundary's vRitual,
+in memory only, and each example keeps the shape `engine/pracex.js` gives it
+on the practitioner page. The page's own kept and missed count for every plan
+is the engine's, the centre opens on the week with every running ritual in
+it, and an example with no row (James, Gordon, Rosa) still opens on nothing.
+
+Gate: `tests/flowtools.js`, `FT33:`.
 
 ## 5. Not built, and why
 
@@ -557,7 +578,7 @@ gap is not read as an oversight.
 
 | Rule | Gate |
 |---|---|
-| FT1 to FT32 | `tests/flowtools.js` |
+| FT1 to FT33 | `tests/flowtools.js` |
 | FT1, and every TAB integer | `tests/engine.js`, `tests/functional.js` |
 | FT6, FT12 | `tests/design.js`, `tools/monitor.js` |
 | FT10 | `tests/functional.js` |

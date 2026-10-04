@@ -125,12 +125,41 @@ function chOvSave(o){
 
 /* THE NUMBERS THE SCENE IS FED, read off the engine on every render and off
    nothing else. r is the reading render() just took. */
+/* WHAT RUNS AT EACH ADDRESS, round RB. The saboteurs and complexes are the
+   reading's own, r.sabs and r.cxs, which render() has already put through the
+   plan (sightR): a plan that cannot see saboteurs hands this two empty lists
+   and the page dims nothing and rings nothing. Each saboteur already names the
+   addresses it runs on (parts) and its weight, 0 to 10, which is the mean
+   charge of those addresses; nothing here re-derives it. The weight becomes
+   0 to 1 between CH_SAB_LO and CH_SAB_FULL: the weakest saboteur compute()
+   lets exist, 3.7, reads about a tenth, and 9.5 reads full. An address in two
+   saboteurs takes the heavier. A complex is two saboteurs, so its weight lands
+   on every address of both. lead is the addresses of the three heaviest
+   saboteurs, which are the ones drawn joined to the place they dim. who is the
+   heaviest saboteur and complex at each address, for the line under the
+   pointer. */
+var CH_SAB_LO=3, CH_SAB_FULL=9.5, CH_SAB_LINES=3;
+function chSabW(w){return clamp(((+w||0)-CH_SAB_LO)/(CH_SAB_FULL-CH_SAB_LO),0,1);}
+function chSabs(r,AF){
+ var sab=new Float32Array(112), cx=new Float32Array(112), who=[], lead=[], at={};
+ AF.forEach(function(a,j){at[a.i]=j;});
+ var unread=!r||!!r.unread, sabs=(!unread&&r.sabs)||[], cxs=(!unread&&r.cxs)||[];
+ sabs.forEach(function(s,rank){var v=chSabW(s.w);
+  (s.parts||[]).forEach(function(n){var j=at[n.i];if(j===undefined)return;
+   if(v>sab[j]){sab[j]=v;who[j]=who[j]||{};who[j].sab=s;}
+   if(rank<CH_SAB_LINES&&lead.indexOf(j)<0)lead.push(j);});});
+ cxs.forEach(function(c){var v=chSabW(c.w);
+  (c.parts||[]).forEach(function(s){(s.parts||[]).forEach(function(n){var j=at[n.i];if(j===undefined)return;
+   if(v>cx[j]){cx[j]=v;who[j]=who[j]||{};who[j].cx=c;}});});});
+ return {sab:sab, cx:cx, who:who, lead:lead};}
 function chData(r){
  var w={}; CHILD.forEach(function(c){w[c.nm]=+S.charge[c.nm]||0;});
  var AF=addrField(), ach=new Float32Array(112), SF=seatField();
  AF.forEach(function(a,j){ach[j]=a.sq/10;});
- var unread=!r||!!r.unread;
+ var unread=!r||!!r.unread, SB=chSabs(r,AF);
+ CHV.who=SB.who;
  return {w:w, ach:ach, ig:SF.map(function(s){return s.ig;}), unread:unread, mask:CHV.pick,
+  sab:SB.sab, cx:SB.cx, lead:SB.lead,
   coh:unread?0:clamp((+r.CQ||0)/100,0,1),
   /* VITALITY IS r.X, the figure the left menu prints beside the leaf. A reading
      nobody has made yet is unread, the menu prints a dash for it, and the torus
@@ -167,7 +196,7 @@ function chOvBtn(k,nm,d,ic,pressed){
 function chBuild(host){
  if(CHV.built&&host.querySelector('.chp-stage')&&CHV.sc)return;
  CHV.ov=chOvGet();
- host.innerHTML='<div class="chp"><div class="chp-stage" id="chpstage">'
+ host.innerHTML='<div class="chp"><div class="chp-aura" aria-hidden="true"></div><div class="chp-stage" id="chpstage">'
   +'<div class="chp-masks" role="group" aria-label="Masks">'+MASKS_READ.map(chMaskBtn).join('')+'</div>'
   +'<div class="chp-ovs" role="group" aria-label="Overlays">'
   +CH_OVERLAYS.map(function(x){return chOvBtn(x.k,x.nm,x.d,CH_IC[x.k],CHV.ov[x.k]);}).join('')
@@ -253,9 +282,13 @@ function chAnchor(){
 function chHoverText(j,seat){
  var sc=CHV.sc;
  if(j>=0){var a=CHC.addr()[j];
+  var wo=(CHV.who&&CHV.who[j])||null;
   return '<b>'+esc(a.k)+'</b>'+(a.plex?', '+esc(a.plex.toLowerCase()):'')+'. '
    +(a.fld?esc(a.b):esc(chSeatName(a.b))+' seat')+(a.c?', '+esc(a.c.toLowerCase())+' channel':'')
-   +'. Charge '+(sc.achT[j]*10).toFixed(1)+'.';}
+   +'. Charge '+(sc.achT[j]*10).toFixed(1)+'.'
+   /* round RB: what is running here, and what it does to the body */
+   +(wo&&wo.sab?' The saboteur '+esc(wo.sab.nm)+' runs here and dims the body at this place.':'')
+   +(wo&&wo.cx?' It is part of the complex '+esc(wo.cx.nm)+'.':'');}
  if(seat>=0){var st=CHC.seatState(sc,true),sh=st.st.sh[seat];
   return '<b>'+chSentence(chSeatWord(BANDS[seat])+' seat').replace(/\.$/,'')+'</b>, '+Math.round(sh*100)+' percent shadow. Press to trace it.';}
  /* nothing under the pointer is the empty value, a dash. The sentence that
@@ -352,7 +385,9 @@ function chRailHtml(r){
  h+='<div class="pm-eye chr-sp">Light and breath</div><div class="chr-read">'
   +'<div class="chr-row"><span>Coherence</span><b>'+(unread?'–':cq+'%')+'</b><i>'+esc(chSentence(charCohWord(unread?0:cq/100)))+' It lights the figure and sets how wide, bright and whole the field is.</i></div>'
   +'<div class="chr-row"><span>Vitality</span><b>'+(unread?'–':vt.toFixed(2))+'</b><i>'+esc(chVitWord(unread?0:vt))+' It sets how far and how fast the field breathes.</i></div>'
-  +'<div class="chr-row"><span>Decoherence</span><b>'+(unread?'–':dq+'%')+'</b><i>The shadow, all 112 addresses against the most they could hold. It opens the gaps.</i></div></div>';
+  +'<div class="chr-row"><span>Decoherence</span><b>'+(unread?'–':dq+'%')+'</b><i>The shadow, all 112 addresses against the most they could hold. It opens the gaps.</i></div></div>'
+  /* round RB: the glow behind the figure is a picture too, so it is said */
+  +(unread?'':'<p class="chr-note">The glow behind the figure is the colour your whole field gives off: every point\u2019s colour, mixed by how bright it is. It breathes with the field.</p>');
  /* the seven seats: root first as everywhere, each a button that traces it */
  h+='<div class="pm-eye chr-sp plain">The seven seats</div><div class="chr-seats">'
   +SF.map(function(s,k){var sh=charSmooth(CHAR_SEAT_LO,CHAR_SEAT_FULL,s.mean),word=sh<.25?'Open':sh<.6?'Loaded':'Closed';
@@ -362,8 +397,17 @@ function chRailHtml(r){
   +'</div><p class="chr-note">The bar is how closed the seat is, from the charge on its own addresses. Past about a third the field pinches there, runs slow and breaks up. An open seat swells.</p>';
  /* what the points are, which is the question the owner asked of the mockup */
  h+='<div class="pm-eye chr-sp">What the points are</div>'
-  +'<p class="ad-p">Each point round the body is one address. '+chPl(AF.filter(function(x){return !x.field;}).length,'address sits','addresses sit')
-  +' round the body at the height of its seat, going slowly round the spine. Four are field anchors, two above the head and two below the feet, drawn as rings. Size and brightness are the address’s charge, and a ring round a point is a charge above seven tenths.</p>'
+  /* NEVER THE LOWER COUNT. This printed the body's own share of the
+     addresses, which is the figure the house rule says is never put in front
+     of a person: the count stated is the whole set. Round RG. */
+  +'<p class="ad-p">Each point is one address, and there are '+AF.length
+  +'. Most sit round the body at the height of their seat, going slowly round the spine. '
+  +'Four are field anchors, two above the head and two below the feet, drawn as rings. Size and brightness are the address’s charge, and a ring round a point is a charge above seven tenths.</p>'
+  /* round RB: the saboteur's ring, the complex's second ring, the dimmed body
+     and the line, each said where it is drawn, with what a saboteur and a
+     complex are taken from the one table of meanings */
+  +(CHV.who&&CHV.who.some(function(x){return x&&x.sab;})?'<p class="ad-p">A ring in the seat\u2019s own colour marks a point where a saboteur runs. '+esc(unpackOf('saboteur'))
+   +' The body under a saboteur goes dark and grey by how heavy it is. The three heaviest saboteurs are drawn bold, each with a dotted line to the place on the body it dims, and a second ring outside a bold one means that saboteur is part of a complex. '+esc(unpackOf('complex'))+'</p>':'')
   +'<div class="chr-counts">'+SF.map(function(s){return '<span style="--sc:'+PAL[s.seat]+'"><i></i>'+esc(chSeatName(s.seat))+' <b>'+s.n+'</b></span>';}).join('')+'<span class="chr-anc"><i></i>Anchors <b>4</b></span></div>';
  h+='</div>';
  return h;}
@@ -412,11 +456,48 @@ function chFrame(ts){
    /* a person who asked for less motion gets one settled picture, drawn again
       only when something has changed it */
    if(!still||CHV.dirty){
-    var a=performance.now(); sc.render(); var ms=performance.now()-a;
+    var a=performance.now(); sc.render(); chAura(sc); var ms=performance.now()-a;
     CHV.perf.n++;CHV.perf.ms+=ms;if(ms>CHV.perf.max)CHV.perf.max=ms;CHV.dirty=false;
     if(!still&&raw>0&&raw<250)sc.govern(raw);}}
  }catch(e){CHV.raf=0;CHV.live=false;throw e;}
  CHV.raf=requestAnimationFrame(chFrame);}
+
+/* THE ROOM TAKES THE AURA'S COLOUR, round RB, his words: "similar to how
+   we're bringing in the red for the body in the background, I want the
+   background of the character to ... reflect the combination color that the
+   aura is radiating. And I want that dynamic." The Body's red is drawAura in
+   ui/wheel.js, pools of the darkest seat at a strength read off the reading.
+   This is the same idea with the page's own number: the colour is the scene's
+   aura (chcloud.js auraOf, every point's colour mixed by its brightness), and
+   the strength is coherence, so a compressed field sits in a faint grey room
+   and a lit one in its own colour. Nothing is drawn for a profile nobody has
+   read.
+
+   DYNAMIC, THREE WAYS, AND NONE OF THEM INVENTED HERE. The colour follows the
+   cloud, so a mask press, a story or a release moves it, eased over 1.4
+   seconds in the scene. The pool breathes on the torus's own phase (oscPh,
+   from Vitality through charOscillation), so the room and the field inhale on
+   the same beat: the Field's own wash breathes .82 to 1 and this one swings
+   between 12 and 32 percent of its strength as Vitality goes from nothing to
+   full, with a scale of 1.2 to 3.2 percent riding it. And it opens with the
+   page, because the strength reads the grown coherence.
+
+   WHAT IT COSTS. The colour is written only when it moves by three steps in a
+   channel, so the gradient is repainted a few times a second while the colour
+   is travelling and not at all once it has arrived. Every frame writes only
+   opacity and a scale, which the compositor does without a repaint. Under
+   reduced motion it is the settled colour at its middle strength, held. */
+var CHAU={el:null,key:''};
+function chAura(sc){
+ var el=CHAU.el;
+ if(!el||!el.isConnected){el=CHAU.el=document.querySelector('#masksview .chp-aura');CHAU.key='';}
+ if(!el||!sc.aura)return;
+ var key=sc.aura.map(function(v){return Math.round(v/3)*3;}).join(',');
+ if(key!==CHAU.key){CHAU.key=key;el.style.setProperty('--aura',key);}
+ var lvl=sc.unread?0:.2+.5*sc.c, still=!!sc._still, vit=sc.unread?0:sc.vit,
+  br=still?0:Math.sin((sc.oscPh||0)*Math.PI*2), sw=.12+.2*vit;
+ el.style.opacity=(lvl*(1-sw*.5+sw*.5*br)).toFixed(3);
+ el.style.transform=still?'none':'scale('+(1+(.012+.02*vit)*br).toFixed(4)+')';}
 
 /* THE REAL ENTRY. render() calls this on every press anywhere, so everything
    in it is cheap and idempotent: the numbers are handed to the scene, the

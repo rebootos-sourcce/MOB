@@ -19,11 +19,14 @@
    TWO STATES, NOT THREE, AND WHY. A pattern is confirmed when any edge that
    touches it is held as user_confirmed, which is the graph's own word for
    "the person said so" (TDD section 26), and unanswered otherwise. There is
-   no third state for a pattern the person turned down, because nothing on
-   the record can say that yet: the "not me" answer is F16, unbuilt, and
-   p.trace refuses any key but v, nodes and edges (validateTrace), so the
-   spec's p.trace.declined does not exist. Inventing it here would be a
-   schema change, and the schema is the owner's. What a person CAN decline
+   no third state for a pattern the person turned down. This paragraph said
+   nothing on the record could say that, and it stopped being true when the
+   onboarding mirror (F4) began writing Not me onto the entry as ob.no. It is
+   kept there and read by nothing: the graph has no provenance for a refusal,
+   p.trace refuses any key but v, nodes and edges (validateTrace), and what a
+   declined pattern should do to the reading is F16, the owner's call. The
+   Yes on the same card IS read, as user_confirmed, by traceFromRecord, so an
+   onboarded person's Yes answers arrive here as confirmed. What a person CAN decline
    today is a proposed practice (protocol_reject in engine/practice.js), so
    that is what declined lists, with the reason when one was recorded, and
    protocol_reject records none, so the reason is null and said to be null.

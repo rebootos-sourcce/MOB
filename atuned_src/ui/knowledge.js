@@ -11,8 +11,20 @@
    ranks are intensity. It deals from the person's own held
    addresses, so a card is a thing they are actually carrying.
    ============================================================ */
-/* opens on the universal laws, the first deck in KB_SECS since KT */
-var KB_Q='', KB_SEC='harm';
+/* OPENS ON THE CROWN, round RB. His words: "The embodied knowledge base, I
+   want the design to take its cue from the intake page... crown, third eye,
+   throat, heart, solar, sacral, root. Let's design it around that. That way,
+   all the content is in the center column." So the codex is read by seat, in
+   the Intake page's own order, crown down to root, and KB_SEAT is the seat
+   that is open. KB_SEC is now a second way in, by kind: 'all' while a seat is
+   being read, or one deck's key, which then shows that deck across all seven
+   seats in the same order. Exactly one of the two is pressed at a time, so the
+   page always says where a person is. It opened on the universal laws before
+   (KT); a seat's own page still lists the universal laws first. */
+var KB_Q='', KB_SEC='all', KB_SEAT='Crown';
+/* the seat order, the Intake page's, read from it where it is loaded */
+function kbSeatOrder(){
+ return (typeof IQ_SEATS!=='undefined')?IQ_SEATS:['Crown','3rd Eye','Throat','Heart','Solar','Sacral','Root'];}
 
 /* every searchable thing in the instrument, built from the engine tables.
    kind decides which drill a row opens. */
@@ -68,7 +80,28 @@ function kbPct(v){return Math.max(0,Math.min(100,Math.round((v||0)*10)));}
 function kbPct100(v){return Math.max(0,Math.min(100,Math.round((v||0)*100)));}
 function kbFind(a,nm){for(var i=0;i<a.length;i++)if(a[i].nm===nm)return a[i];return null;}
 
+/* EVERY DECK AT ONCE, for the seat pages and for a search across them. The
+   decks are built one at a time and joined, so a row is the same object it is
+   in its own deck and opens the same drill. */
 function kbRows(sec){
+ if(sec==='all'){var all=[];
+  KB_SECS.forEach(function(x){all=all.concat(kbRows(x[0]));});
+  return all;}
+ return kbRowsOf(sec).map(function(x){x.seats=kbSeatsOf(x); return x;});}
+/* WHICH SEATS A ROW IS FILED UNDER, round RB. Read off the row's own data,
+   never assigned for the page: an address, a law, an archetype, a child
+   emotion and a saboteur's architecture each name one seat; a mask is worn
+   over the seats it names and is filed under each; a gate is higher or lower
+   and so sits at the crown or the root, as its ring already did. A domain, an
+   intensity band, a pattern kind, a pole and a card that names no axis belong
+   to no one seat, and they say so in their own place under the seven rather
+   than being put in a seat that would be a guess. */
+function kbSeatsOf(x){
+ if(x.k==='mask')return ((x.o&&x.o.b)||[]).filter(function(b){return BANDS.indexOf(b)>=0;});
+ if(x.k==='dom'||x.k==='band'||x.k==='kind'||x.k==='pole'||x.k==='gloss')return [];
+ if(x.k==='axcard'&&!(x.o&&x.o.ax))return [];
+ return BANDS.indexOf(x.seat)>=0?[x.seat]:[];}
+function kbRowsOf(sec){
  /* computeSeen, not compute(): the live weight beside each saboteur here is
     which of them are running, which is the tier's (ui/lock.js) */
  var r=computeSeen(), out=[];
@@ -183,8 +216,14 @@ function kbRows(sec){
     instrument's own vocabulary rather than a reading about a person, so there
     is nothing for them to be a percent of and they carry none. */
  if(sec==='card'){
+  /* A CARD SITS WHERE ITS AXIS SITS, round RB. Every one of the printed cards
+     names the axis it releases, and the axis already has a seat, so the card
+     is filed there rather than at the Heart, which was a colour standing in
+     for "no seat" and would have put Anxiety in the wrong place on a page now
+     read by seat. */
   CARDSET.forEach(function(c){
-   out.push(kbRow('card', c.nm, 'release protocol', 'Heart',
+   var ch=c.ax?kbFind(CHILD,c.ax):null;
+   out.push(kbRow('card', c.nm, 'release protocol', (ch&&ch.seat)||'Heart',
     kbPct(S.charge[c.ax]), 'M5 3h14v18H5z M8 7h8 M8 11h8 M8 15h5', c));});
   AXCARD.forEach(function(c){
    var ch=c.ax?kbFind(CHILD,c.ax):null;
@@ -350,45 +389,102 @@ const KB_KIND={node:'Fetter',fetter:'Child emotion',sab:'Saboteur',
    passes when the heaviest thing is first. */
 var KB_SORT='order';
 
+/* WHAT A ROW SAYS UNDER ITS NAME ON A SEAT'S PAGE, round RB. The rule from
+   the decks holds: the fourth thing is never the heading said again. On a
+   page that is already a seat, a row whose family is that seat would print
+   the seat's name on every line, so each kind says the fact it has that the
+   seat cannot: an address its nerve, a child emotion where it is felt, an
+   archetype and a mask what they do, a universal law its family. */
+function kbSubIn(x){
+ var o=x.o||{};
+ if(x.k==='node')return o.n||x.s;
+ if(x.k==='fetter')return o.loc||'';
+ if(x.k==='arch')return o.v||'';
+ if(x.k==='mask')return o.v||'';
+ if(x.k==='harm')return x.fam||'';
+ if(x.k==='law')return '';
+ if(x.k==='card')return o.dom||x.s;
+ return x.s;}
+/* one row, the markup it always had, so the drills and the gates read it as
+   before. i is its place in the list the click handler holds. */
+function kbRowHtml(x,i,sub){
+ var seat=BANDS.indexOf(x.seat)>=0?x.seat:'Heart';
+ var c=x.col||seatCol(seat);
+ /* THE FIGURE TAKES THE INK COLOUR AND NOT THE SEAT'S. Measured against its
+    own ground: Root is 4.17 to 1 on the panel a row stands on when pointed
+    at, under the 4.5 a number needs. The ring already carries the seat. */
+ var cls=x.p==null?' off':(x.p?'':' z');
+ if(x.k==='node')return kbPoleRow(x,i,seat,c,sub);
+ return '<button type="button" class="kb-row" data-kbi="'+i+'" style="--c:'+c+'">'
+  +crBadge(seat, x.p||0, {size:'md', bare:true, color:c,
+     glyph:glyphPath(x.ic), title:x.t+(x.p?' · '+x.p+'%':'')})
+  +'<span class="kb-rt"><span class="kb-rn">'+esc(x.t)+'</span>'
+  +(sub?'<span class="kb-rs">'+esc(sub)+'</span>':'')+'</span>'
+  +'<span class="kb-rv'+cls+'">'+(x.p?x.p+'%':'–')+'</span>'
+  +'</button>';}
+/* THE SEAT'S RING ON ITS TILE. One arc, the share of the seat's addresses
+   carrying charge, which is the stack row's own figure, around the seat's
+   mark. No number on the tile: the figure is on the stack row inside. */
+function kbSeatRing(b,pct){
+ var r=22, C=2*Math.PI*r, f=Math.max(0,Math.min(100,pct||0))/100, col=seatCol(b);
+ return '<span class="kbs-rg"><svg viewBox="0 0 56 56" aria-hidden="true">'
+  +'<circle cx="28" cy="28" r="'+r+'" fill="none" stroke="rgba(128,128,128,.22)" stroke-width="4"/>'
+  +(f>0?'<circle cx="28" cy="28" r="'+r+'" fill="none" stroke="'+col+'" stroke-width="4" stroke-linecap="round" '
+   +'stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+(C*(1-f)).toFixed(1)+'" transform="rotate(-90 28 28)"/>':'')
+  +'<svg x="16" y="16" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="'+col+'" stroke-width="1.7" '
+  +'stroke-linecap="round" stroke-linejoin="round">'+(SEATGLYPH[b]||SEATGLYPH._)+'</svg></svg></span>';}
+/* the line under a seat's name, the Intake page's own, so a seat is
+   described one way across the product */
+function kbSeatLine(b){
+ return (typeof IQ_SEATLINE!=='undefined'&&IQ_SEATLINE[b])||'';}
+/* the deck a row came from, by its kind. Four kinds share the cards deck. */
+function kbDeckOf(x){
+ return ({node:'addr',fetter:'fetter',sab:'sab',law:'law',mask:'mask',dom:'dom',arch:'arch',
+  gate:'gate',seat:'seat',card:'card',axcard:'card',band:'card',kind:'card',pole:'card',harm:'harm'})[x.k]||x.k;}
+/* a seat's page lists the seat itself first, then the decks in KB_SECS order */
+function kbDeckOrder(){
+ return [['seat','The stack']].concat(KB_SECS.filter(function(d){return d[0]!=='seat';}));}
+
 function kbRender(){
  /* #knowbody, not #know. #know is the tab host and it also carries the folded
     games surface, which this function would otherwise overwrite. */
  var host=document.getElementById('knowbody'); if(!host)return;
- var q=KB_Q.trim().toLowerCase();
- var rows=kbRows(KB_SEC).filter(function(x){return kbMatch(x,q);});
- if(KB_SORT==='weight') rows=rows.slice().sort(function(a,b){
+ /* the seat tile and the seat panel are the Intake page's own, and its sheet
+    is injected when that page first draws, so it is asked for here too */
+ if(typeof iqArtCss==='function')iqArtCss();
+ var q=KB_Q.trim().toLowerCase(), SEATS=kbSeatOrder();
+ if(SEATS.indexOf(KB_SEAT)<0)KB_SEAT=SEATS[0];
+ var deck=(KB_SEC&&KB_SEC!=='all')?KB_SEC:null;
+ /* each deck is built once per paint and read from here after, because the
+    page asks for every deck several times over and each build reads the field */
+ var MEMO={}, rowsOf=function(k){
+  if(k==='all'){if(!MEMO.all){var all=[];KB_SECS.forEach(function(x){all=all.concat(rowsOf(x[0]));});MEMO.all=all;}return MEMO.all;}
+  return MEMO[k]||(MEMO[k]=kbRows(k));};
+ var bySeat=!deck&&!q;
+ var pool=rowsOf(deck||'all').filter(function(x){return kbMatch(x,q);});
+ if(KB_SORT==='weight') pool=pool.slice().sort(function(a,b){
   return (b.p==null?-1:b.p)-(a.p==null?-1:a.p);});
  /* the count across every deck, so search says what it found everywhere */
  var total=0, per={};
  KB_SECS.forEach(function(s){
-  var n=kbRows(s[0]).filter(function(x){return kbMatch(x,q);}).length;
+  var n=rowsOf(s[0]).filter(function(x){return kbMatch(x,q);}).length;
   per[s[0]]=n; total+=n;});
  /* and the glossary, which is not a deck and answers above the rows */
- var gl=q?kbRows('gloss').filter(function(x){return kbMatch(x,q);}):[];
+ var gl=q?rowsOf('gloss').filter(function(x){return kbMatch(x,q);}):[];
+ var share={};
+ rowsOf('seat').forEach(function(x){share[x.t]=x.p||0;});
 
- /* THE HEADER WAS EATING THE PAGE AND THE ROW COULD NOT BE REACHED PAST IT.
-
-    Measured on the shipping build: the codex's own header was 288 pixels at
-    1600 and 381 on a phone, and the app's chrome above it is another 104 and
-    267. So on a 844 pixel screen the header was 648 pixels, 77 percent of the
-    device, and one entry was visible below it.
-
-    Four separate attempts at the row were measured before this was, and all
-    four left the header alone. Every one of them put a better row on a phone
-    with nothing above the fold to see it in. The paragraph explaining that the
-    codex is open goes: it said the same thing on every one of eleven decks,
-    on every visit, forever. The twelve deck chips stop wrapping to two and
-    three rows and scroll sideways on one. The eyebrow, the deck's name and
-    what its percent means sit on one baseline.
-
-    154 pixels at 1600 and 226 on a phone. Twelve rows above the fold became
-    thirty nine, and one became six. */
- var h='<div class="kb-top">'
+ /* THE HEADER. What is open, said once: a seat's name and the Intake page's
+    line for it, or a deck's name and what its percent is of, or a search. */
+/* on a seat's page the panel under the map already names the seat and its
+    line, so the header names the page and not the seat a second time */
+ var title=q?'Search':deck?kbSecName(deck):'The seven seats';
+ var scale=q?'':deck?((KB_OF[deck]&&!kbUnread())?'The percent is '+KB_OF[deck]+'.':'')
+  :'Crown down to root, the order the Intake page reads in.';
+ var h='<div class="kb-top kbs">'
   +'<div class="kb-hdr"><div class="pm-eye">The codex</div>'
-  +'<h2 class="kb-h">'+esc(kbSecName(KB_SEC))+'</h2>'
-  +'<span class="kb-scale">'+rows.length+(q?' matching':' of them')
-  +(KB_SEC==='addr'?'. Each is a pattern against its opposite, with the weight of each. The bar shows which way you lean.'
-    :(KB_OF[KB_SEC]&&!kbUnread())?'. The percent is '+esc(KB_OF[KB_SEC])+'.':'')+'</span></div>'
+  +'<h2 class="kb-h">'+esc(title)+'</h2>'
+  +(scale?'<span class="kb-scale">'+esc(scale)+'</span>':'')+'</div>'
   +'<div class="kb-bar">'
   +'<input type="search" id="kbq" class="kb-q" placeholder="Search the codex" '
   +'value="'+esc(KB_Q)+'" aria-label="Search the knowledge base">'
@@ -398,14 +494,22 @@ function kbRender(){
   +' aria-pressed="'+(KB_SORT==='order')+'">In order</button>'
   +'<button type="button" class="kb-swb'+(KB_SORT==='weight'?' on':'')+'" data-kbs="weight"'
   +' aria-pressed="'+(KB_SORT==='weight')+'">By weight</button></span></div>'
-  +'<div class="kb-strip" role="tablist">'+KB_SECS.map(function(s){
-    return '<button type="button" role="tab" class="kb-t'+(KB_SEC===s[0]?' on':'')+'" data-kb="'+s[0]+'" '
-     +'aria-selected="'+(KB_SEC===s[0])+'">'+s[1]+' <b>'+(q?per[s[0]]:kbRows(s[0]).length)+'</b></button>';}).join('')
+  /* THE SEVEN SEATS, CROWN DOWN TO ROOT. The Intake page's map, the same
+     tile and the same order, so the two pages read as one instrument. */
+  +'<div class="iqa-map kbs-map" role="group" aria-label="The seven seats">'
+  +SEATS.map(function(b){var on=bySeat&&KB_SEAT===b;
+    return '<button type="button" class="iqa-tile kbs-tile" data-kbseat="'+esc(b)+'" data-st="'+(share[b]?2:0)+'" '
+     +'aria-pressed="'+on+'" aria-label="'+esc(b+', '+kbSeatLine(b))+'" style="--c:'+seatCol(b)+'">'
+     +kbSeatRing(b,share[b])+'<span class="iqa-tn">'+esc(b)+'</span></button>';}).join('')
+  +'</div>'
+  /* AND BY KIND, the second way in. A kind shows across all seven seats, in
+     the same order, so nothing moves out of the seat layout to be found. */
+  +'<div class="kb-strip" role="tablist" aria-label="By kind">'+KB_SECS.map(function(s){
+    return '<button type="button" role="tab" class="kb-t'+(deck===s[0]?' on':'')+'" data-kb="'+s[0]+'" '
+     +'aria-selected="'+(deck===s[0])+'">'+s[1]+' <b>'+(q?per[s[0]]:rowsOf(s[0]).length)+'</b></button>';}).join('')
   +'</div></div>';
 
- /* THE GLOSSARY ANSWERS FIRST AND ANSWERS ONCE. A name is glossed in one
-    table and the search shows it; nothing else on this page carries a
-    definition any more. */
+ /* THE GLOSSARY ANSWERS FIRST AND ANSWERS ONCE. */
  if(gl.length){
   h+='<div class="kb-gloss">';
   gl.slice(0,4).forEach(function(g){
@@ -413,40 +517,60 @@ function kbRender(){
     +'<p class="kb-gd">'+esc(g.o.d)+'</p></div>';});
   h+='</div>';}
 
- h+='<div class="kb-rg'+(KB_SEC==='addr'?' kbp-g':'')+'">';
- if(!rows.length) h+='<div class="rnone">Nothing here matches. The count beside each deck says where it is.</div>';
- var lastAx='';
- rows.forEach(function(x,i){
-  /* the axis break, so the flow is visible rather than implied. It is only
-     drawn in the deck's own order, because a sort by weight crosses the axes
-     by definition and a heading over a mixed run would be a lie. */
-  if(KB_SEC==='harm'&&KB_SORT==='order'&&!q&&x.axis&&x.axis!==lastAx){
-   lastAx=x.axis;
-   h+='<div class="kb-sec">'+esc(KB_AXHD[x.axis]||x.axis)+'</div>';}
-  var seat=BANDS.indexOf(x.seat)>=0?x.seat:'Heart';
-  var c=x.col||seatCol(seat);
-  /* THE FIGURE TAKES THE INK COLOUR AND NOT THE SEAT'S.
+ /* every row on the page, in the order drawn, so a press finds its row */
+ var shown=[];
+ function grid(rows,isPole){
+  if(!rows.length)return '';
+  return '<div class="kb-rg'+(isPole?' kbp-g':'')+'">'+rows.map(function(x){
+   var i=shown.length; shown.push(x);
+   var sub=kbSubIn(x);
+   /* a search crosses kinds, so a row says which kind it is */
+   if(q)sub=(KB_KIND[x.k]||x.k)+(sub?' · '+sub:'');
+   return kbRowHtml(x,i,sub);}).join('')+'</div>';}
+ /* rows deck by deck, each under its deck's name */
+ function byDeck(rows){
+  var o='';
+  /* A LAW IS LISTED ONCE ON A PAGE. The twenty one moral integrity laws are
+     also universal laws in the book's own list, so a seat's page printed
+     Unity twice, a screen apart. Where both decks are on the page the law
+     stands under Moral integrity, the deck the intake scores, and the
+     universal laws list keeps the ones that are only its own. */
+  if(rows.some(function(x){return x.k==='law';}))
+   rows=rows.filter(function(x){return !(x.k==='harm'&&x.axis==='spirit');});
+  kbDeckOrder().forEach(function(d){
+   var rs=rows.filter(function(x){return kbDeckOf(x)===d[0];});
+   if(!rs.length)return;
+   o+='<div class="kb-sec">'+esc(d[1])+'</div>'+grid(rs,d[0]==='addr');});
+  return o;}
+ function seatPanel(b,inner){
+  return '<section class="iqa-pn kbs-pn" data-kbpn="'+esc(b)+'" style="--c:'+seatCol(b)+'">'
+   +'<div class="iqa-ph"><span class="iqa-shn">'+esc(b)+'</span>'
+   +'<span class="iqa-shl">'+esc(kbSeatLine(b))+'</span></div>'+inner+'</section>';}
+ function across(inner){
+  return '<section class="iqa-pn kbs-pn kbs-any" data-kbpn="any">'
+   +'<div class="iqa-ph"><span class="iqa-shn">Across every seat</span>'
+   +'<span class="iqa-shl">held by no one seat</span></div>'+inner+'</section>';}
 
-     Measured against its own ground rather than against the page, which is
-     the only way this is ever caught: Root is 4.81 to 1 on the page and 4.17
-     on the panel, which is what the row stands on when a person points at it,
-     and a number needs 4.5. So the Root percent dropped below AA on hover.
-
-     It is the better design regardless. The ring already carries the seat
-     colour, so a coloured figure is the same channel used twice, and on the
-     moral integrity deck a high figure in a warm colour would read as an
-     alarm on a law that is being kept. Colour means the seat, once. */
-  var cls=x.p==null?' off':(x.p?'':' z');
-  /* the family comes back on a row whose section heading is not drawn */
-  var fam=(x.fam&&(KB_SORT==='weight'||q))?x.fam:x.s;
-  if(x.k==='node'){h+=kbPoleRow(x,i,seat,c,fam); return;}
-  h+='<button type="button" class="kb-row" data-kbi="'+i+'" style="--c:'+c+'">'
-   +crBadge(seat, x.p||0, {size:'md', bare:true, color:c,
-      glyph:glyphPath(x.ic), title:x.t+(x.p?' · '+x.p+'%':'')})
-   +'<span class="kb-rt"><span class="kb-rn">'+esc(x.t)+'</span>'
-   +(fam?'<span class="kb-rs">'+esc(q?(KB_KIND[x.k]||x.k)+' · '+fam:fam)+'</span>':'')+'</span>'
-   +'<span class="kb-rv'+cls+'">'+(x.p?x.p+'%':'–')+'</span>'
-   +'</button>';});
+ h+='<div class="kbs-body">';
+ if(bySeat){
+  /* ONE SEAT OPEN, everything filed under it, deck by deck. */
+  var mine=pool.filter(function(x){return x.seats.indexOf(KB_SEAT)>=0;});
+  h+=seatPanel(KB_SEAT,byDeck(mine));
+  /* and what belongs to no seat, one press away and named, never dropped */
+  var none=pool.filter(function(x){return !x.seats.length;});
+  if(none.length)h+='<details class="kbs-fold"'+(KB_ANY?' open':'')+'><summary><span>Across every seat</span>'
+   +'<span class="kbs-fs">domains, bands, kinds and poles</span></summary>'
+   +'<div class="kbs-fb">'+byDeck(none)+'</div></details>';
+ }else{
+  /* A KIND OR A SEARCH, laid out the same way: seat by seat, crown to root,
+     and what belongs to no seat last. A mask worn over two seats is in both. */
+  if(!pool.length)h+='<div class="rnone">Nothing here matches. The count beside each kind says where it is.</div>';
+  SEATS.forEach(function(b){
+   var rs=pool.filter(function(x){return x.seats.indexOf(b)>=0;});
+   if(!rs.length)return;
+   h+=seatPanel(b,deck?grid(rs,deck==='addr'):byDeck(rs));});
+  var none2=pool.filter(function(x){return !x.seats.length;});
+  if(none2.length)h+=across(deck?grid(none2,deck==='addr'):byDeck(none2));}
  h+='</div>';
 
  /* the deck sits under the base, because a card is the base at practice speed */
@@ -457,19 +581,69 @@ function kbRender(){
   +(deckSize()?'<b>'+deckSize()+'</b> cards in the deck.':'Nothing is held above the line yet, so the deck is empty.')+'</p>'
   +'<button class="btn pri" id="kbdeck"'+(deckSize()?'':' disabled')+'>Deal a card</button></div>';
 
- kbpCss();
+ kbpCss(); kbsCss();
  host.innerHTML=h;
  var qi=document.getElementById('kbq');
  if(qi){qi.oninput=function(){KB_Q=qi.value; kbRender();
    var e=document.getElementById('kbq'); if(e){e.focus(); try{e.setSelectionRange(e.value.length,e.value.length);}catch(err){}}};}
  host.querySelectorAll('[data-kb]').forEach(function(el){el.onclick=function(){
-  KB_SEC=el.getAttribute('data-kb'); kbRender();};});
+  var k=el.getAttribute('data-kb');
+  /* pressing the open kind again goes back to the seat it came from */
+  KB_SEC=(KB_SEC===k)?'all':k; kbRender();};});
+ host.querySelectorAll('[data-kbseat]').forEach(function(el){el.onclick=function(){
+  KB_SEAT=el.getAttribute('data-kbseat'); KB_SEC='all'; KB_Q=''; kbRender();};});
  host.querySelectorAll('[data-kbs]').forEach(function(el){el.onclick=function(){
   KB_SORT=el.getAttribute('data-kbs'); kbRender();};});
  host.querySelectorAll('[data-kbi]').forEach(function(el){el.onclick=function(){
-  kbOpen(rows[+el.getAttribute('data-kbi')]);};});
+  kbOpen(shown[+el.getAttribute('data-kbi')]);};});
+ var fd=host.querySelector('.kbs-fold');
+ if(fd)fd.addEventListener('toggle',function(){KB_ANY=fd.open;});
  var dk=document.getElementById('kbdeck');
  if(dk)dk.onclick=function(){deckDeal();};}
+/* whether the fold of what belongs to no seat was left open, kept through a
+   repaint because the page is rewritten whole on every press */
+var KB_ANY=false;
+/* the seat page's own sheet, injected beside kbpCss for the same reason */
+function kbsCss(){
+ if(document.getElementById('kbs-css'))return;
+ var st=document.createElement('style'); st.id='kbs-css';
+ st.textContent=[
+  '.kbs-map{margin:4px 0 2px}',
+  '.kbs-tile{min-height:92px}',
+  '.kbs-tile .kbs-rg{display:grid;place-items:center}',
+  '.kbs-tile .kbs-rg>svg{display:block;width:56px;height:56px}',
+  '.kbs-tile[aria-pressed="true"]{background:color-mix(in srgb,var(--c) 20%,var(--panel-2));box-shadow:inset 0 0 0 1.5px var(--c)}',
+  '.kbs-tile[aria-pressed="true"] .iqa-tn{color:var(--ink)}',
+  '.kbs-body{display:flex;flex-direction:column;gap:14px;margin-top:4px}',
+  '.kbs-pn{padding:8px 16px 14px}',
+  '.kbs-pn .kb-sec{color:color-mix(in srgb,var(--c) 58%,var(--dim))}',
+  '.kbs-pn .iqa-ph+.kb-sec{padding-top:4px}',
+  '.kbs-any{--c:var(--accent)}',
+  '.kbs-fold{border:1px solid var(--edge);border-radius:var(--r);background:var(--panel-2)}',
+  '.kbs-fold>summary{display:flex;align-items:center;gap:10px;min-height:var(--tap);padding:10px 16px;cursor:pointer;',
+  ' list-style:none;font-size:15px;font-weight:500;color:var(--ink)}',
+  '.kbs-fold>summary::-webkit-details-marker{display:none}',
+  '.kbs-fold>summary::before{content:"";flex:0 0 auto;width:7px;height:7px;border-right:1.6px solid var(--dim);',
+  ' border-bottom:1.6px solid var(--dim);transform:rotate(-45deg);margin:0 4px 0 2px;transition:transform .15s}',
+  '.kbs-fold[open]>summary::before{transform:rotate(45deg)}',
+  '.kbs-fs{font-size:13px;font-weight:400;color:var(--dim)}',
+  '.kbs-fb{padding:0 16px 14px}',
+  /* a track that can shrink below its longest line, or a nerve's long name
+     pushes the figure off the panel's edge on a phone, measured at 390 */
+  '.kbs .kb-rg,.kbs-body .kb-rg{grid-template-columns:repeat(3,minmax(0,1fr))}',
+  '.kbs-body .kb-rg.kbp-g{grid-template-columns:repeat(2,minmax(0,1fr))}',
+  '@media (max-width:1100px){.kbs-body .kb-rg{grid-template-columns:repeat(2,minmax(0,1fr))}}',
+  '@media (max-width:900px){.kbs-body .kb-rg.kbp-g{grid-template-columns:minmax(0,1fr)}}',
+  '@media (max-width:720px){.kbs-body .kb-rg{grid-template-columns:minmax(0,1fr)}}',
+  '@media (max-width:700px){',
+  ' .kbs-map{gap:4px}',
+  ' .kbs-tile{min-height:76px;padding:10px 2px 9px;gap:5px}',
+  ' .kbs-tile .kbs-rg>svg{width:40px;height:40px}',
+  ' .kbs-tile .iqa-tn{font-size:11.5px}',
+  ' .kbs-pn{padding:6px 8px 10px}',
+  ' .kbs-fb{padding:0 8px 10px}}'
+ ].join('\n');
+ document.head.appendChild(st);}
 
 /* the deck's own name, looked up by key and never by position, which is the
    rule this repository already carries for anything needing a tab's entry. */

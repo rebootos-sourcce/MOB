@@ -591,10 +591,13 @@ fieldPinch($('frend'),false);
    EZ in TASKS.md: States went to the head of the rail as Root energetics,
    "and I want that one to start closed." The finding above still holds, a
    closed header can read as an empty one, and it is answered differently
-   now: the section is the first thing in the rail and says what it holds in
-   its own name, where States sat fifth under a word nobody read as birth
-   data. Its key is energetics, not spirit, so nothing that remembered the
-   old section opens the new one by accident. */
+   now: the section says what it holds in its own name, where States sat
+   fifth under a word nobody read as birth data. Its key is energetics, not
+   spirit, so nothing that remembered the old section opens the new one by
+   accident. (It was the first thing in the rail until 3 October, when
+   Energetic summary moved above it from the right rail; both still open
+   closed, off the same empty left set below, so the move needed no entry
+   here.) */
 var OPENSEC={left:{}, right:{you:1}};
 /* which surfaces have already had their sections seeded, so a tab opens what
    it is about the first time and never argues with a person who closed it. */
@@ -710,18 +713,26 @@ var LCOL_BESIDE='(min-width:1181px)';
    defaults open. The key is its own, the Compass's own pattern, so a person
    who shuts it on Flow keeps it shut on Flow and the Field's choice is
    untouched. */
+/* AND KNOWLEDGE HAS ITS OWN, round RB, his words: "on the knowledge start
+   with the left and right menus closed." The page is one centre column built
+   around the seven seats, so both columns start shut there, at every width:
+   on a phone they stack under the codex, and a reference a person came to
+   read should not end in two open rails of readings. Its own key, the
+   Compass's pattern, so a choice made on the Field does not open it here and
+   a person who opens it here keeps it open here. */
 function colKey(){
  if(typeof TAB==='undefined'||!S)return 'lcol';
  if(S.tab===TAB.COMPASS)return 'lcolc';
  if(S.tab===TAB.RITUAL)return 'lcolf';
+ if(S.tab===TAB.KNOW)return 'lcolk';
  return 'lcol'; }
 function colShut(){
  var beside=true; try{beside=matchMedia(LCOL_BESIDE).matches;}catch(e){}
  var k=colKey();
  /* only a store with nothing in it defaults, and what it defaults to is the
     surface's own answer: shut where the column is a rail, open where it is
-    the menu the surface is for */
- var dflt=(k==='lcolf')?false:beside;
+    the menu the surface is for, and shut at every width on Knowledge */
+ var dflt=(k==='lcolf')?false:(k==='lcolk')?true:beside;
  var shut=dflt;
  try{var got=STORE.get(k); shut=got?(got==='shut'):dflt;}catch(e){shut=false;}
  return shut;}
@@ -757,9 +768,19 @@ function railFoldPaint(shut){
  var say=shut?'Open the right column':'Close the right column';
  b.setAttribute('aria-expanded',shut?'false':'true');
  b.setAttribute('aria-label',say); fbTip(b,say);}
+/* THE RIGHT COLUMN'S KEY, PER SURFACE, round RB. One shared key opened the
+   right column on Knowledge whenever it was open anywhere, which is every
+   surface, since it defaults open. Knowledge carries its own key and its own
+   default, shut, on his ruling above colKey. Every other surface keeps the
+   one shared key and the default it always had, open. */
+function railKey(){
+ return (typeof TAB!=='undefined'&&S&&S.tab===TAB.KNOW)?'rcolk':'rcol';}
+function railShut(){
+ var k=railKey(), dflt=(k==='rcolk');
+ try{var got=STORE.get(k); return got?(got==='shut'):dflt;}catch(e){return false;}}
+function railTab(){ railFoldPaint(railShut()); }
 function railFold(){
- var shut=false; try{shut=STORE.get('rcol')==='shut';}catch(e){shut=false;}
- railFoldPaint(shut);
+ railFoldPaint(railShut());
  var b=$('rfold'); if(!b)return;
  /* the control is pinned over the rail's head, and once the rail has
     scrolled it takes the panel's ground, head.html beside .rfold */
@@ -768,7 +789,7 @@ function railFold(){
  b.onclick=function(){
   var now=!document.body.classList.contains('rshut');
   railFoldPaint(now);
-  try{STORE.set('rcol',now?'shut':'open');}catch(e){}
+  try{STORE.set(railKey(),now?'shut':'open');}catch(e){}
   if(!now&&typeof fitGrids==='function')requestAnimationFrame(fitGrids);};}
 
 /* ============================================================
@@ -985,7 +1006,13 @@ function axDial(host,o){
      state is committed first, one read of the layout, so the fill grows out
      of the break the way a change does. */
   built=true; void host.offsetWidth;}
- host.title=o.title||'';
+ /* A NATIVE title NEVER SHOWS ON TOUCH AND IS UNRELIABLE ON HOVER. The same
+    tap-and-keyboard carrier the rest of the product reads from, data-tip,
+    not a second mechanism for this one dial. */
+ host.removeAttribute('title');
+ if(o.title){host.setAttribute('data-tip-k',(o.title.split('.')[0]||'').trim());
+  host.setAttribute('data-tip',o.title); host.setAttribute('tabindex','0');}
+ else{host.removeAttribute('data-tip'); host.removeAttribute('data-tip-k'); host.removeAttribute('tabindex');}
  var L=o.L, R=o.R, heavy=!o.read?0:(L.v>R.v?-1:R.v>L.v?1:0), diff=o.read?Math.abs(L.v-R.v):0;
  var col=heavy<0?L.c:R.c;
  /* the pole names only once there is a reading to name, so an unread dial
@@ -1657,7 +1684,8 @@ document.addEventListener('click',function(e){
  var axb=e.target.closest?e.target.closest('[data-axd]'):null;
  if(axb){axdSet(axb.getAttribute('data-axd'));return;}
  var row=e.target.closest?e.target.closest('.ad-r[data-addr]'):null;
- if(!row)return;
+ /* a row inside the Analytics trail is that trail's, round RB */
+ if(!row||row.hasAttribute('data-ana'))return;
  var n=BY[+row.getAttribute('data-addr')];
  if(!n)return;
  /* No render() here. runNodeDrill paints the drill itself, and on Analytics a
@@ -1771,6 +1799,8 @@ step('the stored record',function(){
     session; this is it across one. mirrorYou and not saveYou, because nothing
     has changed yet and a boot has no business writing the store. */
  mirrorYou();
+ /* the bar's own entry names the record just pointed at, round RB */
+ if(typeof pselOwnSync==='function')pselOwnSync();
  syncCh(); syncLw(); syncSoul();
 });
 /* A RECORD CARRIED IN FROM THE QUIZ, round QZ, ui/panels.js recordLinkBoot.

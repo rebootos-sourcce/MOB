@@ -50,14 +50,13 @@
                   the shipped ritual builder, which is the one writer of a
                   ritual.
 
-   WHAT IS NOT IN THE RECORD, said here and on nothing that claims otherwise.
-   The profile boundary, validateProfile, rebuilds every stored record from
-   the fields it names and drops the rest on the next load. It names no
-   archetype rating and no starting weight for a pair, so both live beside the
-   record under their own key in the same bound store, keyed by the profile's
-   id, with the rules of round JP and the tags of round KH beside them. They
-   survive a reload and do not travel with an export. Putting them in
-   the record is a schema change, which is the owner's (CLAUDE.md, Schema v2).
+   WHAT IS IN THE RECORD, round RB, Becoming slice S1. The archetype ratings,
+   the starting weight of each pair and the tags lived beside the record under
+   their own key, so they survived a reload and did not travel with an export.
+   They are fields of CURP.avatar now, named at the boundary (engine/schema.js)
+   and read across from the old key once (avatarMoveSide, engine/avatar.js).
+   The daily rule of round JP still lives beside the record, on the audit's
+   own order: it becomes a ritual step at S7, and moving it twice is waste.
    ============================================================ */
 /* ============================================================
    ROOT TO CROWN, round JP, 27 September. His words, and they are the
@@ -271,15 +270,26 @@ function avSideAll(){
   return (o&&typeof o==='object'&&!Array.isArray(o))?o:{};}catch(e){return {};}}
 function avSide(){
  var out={arch:{}, load0:{}, rule:{}, tags:{}};
+ /* THE RECORD FIRST, round RB, S1. The ratings, the weights and the tags are
+    the avatar's own fields now; the strict read stays exactly what it was
+    beside the record, so a value this page would never write is never shown. */
+ var av=(typeof CURP!=='undefined'&&CURP&&CURP.avatar)||null;
+ if(av){
+  avatarFill(av); avMove(av);
+  Object.keys(av.arch||{}).forEach(function(k){
+   if(avArchByName(k)&&AV_SCALE.indexOf(av.arch[k])>=0)out.arch[k]=av.arch[k];});
+  Object.keys(av.load0||{}).forEach(function(k){
+   var v=av.load0[k]; if(typeof v==='number'&&v>=0&&v<=10)out.load0[k]=v;});
+  Object.keys(av.tags||{}).forEach(function(b){
+   var t=av.tags[b]; if(BANDS.indexOf(b)<0||!t||typeof t!=='object')return;
+   var keep=function(a){return (Array.isArray(a)?a:[]).filter(function(w){return avLexOf(b,w)!==null;});};
+   out.tags[b]={add:keep(t.add), off:keep(t.off)};});}
  if(!avOwn())return out;
  var e=avSideAll()[CURP.id];
  if(!e||typeof e!=='object')return out;
- if(e.arch&&typeof e.arch==='object')Object.keys(e.arch).forEach(function(k){
-  if(avArchByName(k)&&AV_SCALE.indexOf(e.arch[k])>=0)out.arch[k]=e.arch[k];});
- if(e.load0&&typeof e.load0==='object')Object.keys(e.load0).forEach(function(k){
-  var v=e.load0[k]; if(typeof v==='number'&&v>=0&&v<=10)out.load0[k]=v;});
- /* a rule is one seat's practice for a set run of days. Same posture as the
-    two above: a rule that is not the shape avRuleSet writes is not a rule. */
+ /* a rule is one seat's practice for a set run of days. A rule that is not
+    the shape avRuleSet writes is not a rule. It stays beside the record until
+    S7 makes it a ritual step. */
  if(e.rule&&typeof e.rule==='object')Object.keys(e.rule).forEach(function(b){
   var r=e.rule[b];
   if(BANDS.indexOf(b)<0||!r||typeof r!=='object')return;
@@ -287,14 +297,35 @@ function avSide(){
   if(typeof r.from!=='string'||pracDay(r.from)===null)return;
   out.rule[b]={k:r.k, days:r.days, from:r.from,
    done:(Array.isArray(r.done)?r.done:[]).filter(function(d){return typeof d==='number'&&isFinite(d);})};});
- /* tags, round KH: per seat, the words a person added and the found ones they
-    took off. A word that is not in that seat's lexicon is not a tag and is
-    left out on the read, the same posture as a rule. */
- if(e.tags&&typeof e.tags==='object')Object.keys(e.tags).forEach(function(b){
-  var t=e.tags[b]; if(BANDS.indexOf(b)<0||!t||typeof t!=='object')return;
-  var keep=function(a){return (Array.isArray(a)?a:[]).filter(function(w){return avLexOf(b,w)!==null;});};
-  out.tags[b]={add:keep(t.add), off:keep(t.off)};});
  return out;}
+/* THE OLD KEY, READ ACROSS ONCE, round RB, S1. Only on the person's own
+   profile, only before the avatar says it has been done, and the key itself
+   is left where it is so an older build in the same browser still reads it.
+   A move that found something is saved and says so; one that could not be
+   saved says that, and is tried again on the next paint. */
+function avMove(av){
+ if(!av||av.movedAt||!avOwn())return;
+ var e=avSideAll()[CURP.id];
+ var keyOf=function(k){return (av.pairs||[]).filter(function(pr){return avKey(pr)===k;})[0]||null;};
+ var n=avatarMoveSide(av,e,keyOf);
+ if(!n)return;
+ pSave();
+ var sv=(typeof saveState==='function')?saveState():{ok:true};
+ if(!sv.ok){av.movedAt=null;
+  status('Your ratings and tags were not moved onto your record. Storage is full or blocked.','fail');}}
+/* A WRITE TO THE AVATAR ON THE RECORD, round RB. fn changes CURP.avatar; the
+   save is checked; a refused save puts back exactly what was there and the
+   status says why. True only when it was kept. */
+function avRecWrite(fn,ok){
+ if(!avOwn()){status('Nothing saved on a worked example.','fail');return false;}
+ var av=CURP.avatar=CURP.avatar||avatarBlank(); avatarFill(av);
+ var was=JSON.stringify(av);
+ fn(av); pSave();
+ var sv=(typeof saveState==='function')?saveState():{ok:true};
+ if(!sv.ok){CURP.avatar=JSON.parse(was);
+  status('Not saved. Storage is full or blocked, so this would not survive a reload.','fail');return false;}
+ if(ok)status(ok);
+ return true;}
 /* true only when the store took it. A store that was never bound, or that
    throws on quota or on a blocked origin, answers false and the caller says so. */
 function avSideWrite(fn){
@@ -570,7 +601,7 @@ function avState(){
     below tier one cannot see */
  var r=computeSeen(), side=avSide();
  var rows=(typeof avRows==='function')?avRows():[];
- rows.forEach(function(x,i){x.i=i; x.c=avClosure(x,side.load0[avKey(x.pair)]);});
+ rows.forEach(function(x,i){x.i=i; x.c=avClosure(x,side.load0[x.pair.id]);});
  /* A STORY SITS AT THE SEAT IT WAS WRITTEN AT, round JP, which is where its
     row and its tick are. The percent it carries is still read at the seat
     the sniffer hears it at, because that is where the load it is measured
@@ -1317,7 +1348,10 @@ function avDilHTML(){
 
    avSub('intake') is still understood and opens that face, so anything that
    learned the round JP name lands where the questions are now. */
-var AV_SUBS=[['becoming','Becoming'],['arch','Archetypes']];
+/* AND A THIRD, round RB, Becoming slice S3: Purpose, the document's layers B
+   and C on the one Avatar page, which is the audit's recommendation for Q7
+   (a layer of the page, not a fifth section of a four step loop). */
+var AV_SUBS=[['becoming','Becoming'],['purpose','Purpose'],['arch','Archetypes']];
 function avSub(k){
  if(k==='intake'){AV.sub='becoming'; AV.face='iq'; renderAvatar(); return;}
  if(!AV_SUBS.some(function(s){return s[0]===k;}))return;
@@ -1577,7 +1611,74 @@ var AV_CSS=[
  ' #avbody .av-ring.avh{width:100%;max-width:560px}}',
  '@media (max-width:600px){',
  ' .avs-sb{padding:0 12px;font-size:14px}.avs-subs{width:100%;justify-content:space-between}',
- ' .avh .av-slab{font-size:11px}.avs-q{font-size:16px}}'].join('\n');
+ ' .avh .av-slab{font-size:11px}.avs-q{font-size:16px}}',
+ /* WHO THE AVATAR IS, round RB, S2: one row beside the subtabs */
+ '.avs-top{display:flex;flex-wrap:wrap;gap:12px 20px;justify-content:space-between}',
+ '.avi{display:flex;align-items:center;flex-wrap:wrap;gap:10px 16px;min-width:0;flex:1 1 auto;justify-content:flex-end}',
+ '.avi-main{display:flex;align-items:center;gap:12px;min-width:0;flex:0 1 auto}',
+ '.avi-rvw{display:flex;align-items:center;flex-wrap:wrap;gap:8px}',
+ '.avi-mk{flex:0 0 auto;width:44px;height:44px;border-radius:50%;border:1.5px solid var(--accent);display:flex;align-items:center;justify-content:center;color:var(--accent)}',
+ '.avi-mk svg,.avi-add svg,.avi-pen svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}',
+ '.avi-t{display:flex;flex-direction:column;gap:2px;min-width:0;flex:0 1 auto;max-width:520px}',
+ '.avi-n{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}',
+ '.avi-n b{font-size:17px;font-weight:600;color:var(--ink)}',
+ '.avi-n em{font-style:normal;font-size:14px;color:var(--mid)}',
+ '.avi-d{font-size:14px;line-height:1.45;color:var(--mid)}',
+ '.avi-pen{flex:0 0 auto;width:var(--tap);height:var(--tap);border-radius:50%;border:1px solid var(--edge-2);background:none;color:var(--mid);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}',
+ '.avi-pen:hover{color:var(--ink);border-color:var(--accent)}',
+ '.avi-add{display:inline-flex;align-items:center;gap:10px;min-height:var(--tap);padding:0 18px 0 12px;border-radius:999px;border:1px dashed var(--edge-2);background:none;color:var(--mid);font:inherit;font-size:15px;cursor:pointer}',
+ '.avi-add:hover{color:var(--ink);border-color:var(--accent)}',
+ '.avi-rv{font-size:13px;color:var(--dim)}',
+ '.avi-due{color:var(--ink)}',
+ '.avi-rb{min-height:var(--tap)}',
+ '.avi-ed{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px 12px;flex:1 1 100%;padding:14px 16px;border-radius:var(--r-s);background:var(--sunk);border:1px solid var(--edge)}',
+ '.avi-f{display:flex;flex-direction:column;gap:5px;font-size:13px;color:var(--dim);min-width:0}',
+ '.avi-wide{grid-column:1/-1}',
+ '.avi-f input,.avi-f textarea{min-height:var(--tap);font:inherit;font-size:16px;color:var(--ink);background:var(--panel);border:1px solid var(--edge-2);border-radius:var(--r-s);padding:9px 12px;resize:vertical}',
+ '.avi-act{grid-column:1/-1;display:flex;gap:10px}',
+ /* PURPOSE, round RB, S3: the figure is the art and takes the left, the
+    fields are text and take the right, the house rule for a centre column */
+ '.avp{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,1fr);gap:28px;align-items:start;margin-top:8px}',
+ '.avp-art{min-width:0;display:flex;justify-content:center}',
+ '.avp-fig{width:100%;max-width:600px;height:auto;overflow:visible}',
+ '.avp-trk{fill:none;stroke:var(--edge-2);stroke-width:10;stroke-linecap:round;opacity:.55}',
+ '.avp-hit{fill:none;stroke:transparent;stroke-width:44;cursor:pointer;pointer-events:stroke}',
+ '.avp-side{cursor:pointer;outline:none}',
+ '.avp-side.on .avp-trk{stroke:var(--accent);opacity:.4}',
+ '.avp-side:focus-visible .avp-trk{stroke:var(--ink);opacity:.6}',
+ '.avp-tk{fill:var(--panel);stroke:var(--dim);stroke-width:1.6;stroke-dasharray:2 2.4}',
+ '.avp-tk.lit{stroke:var(--accent);stroke-width:2.6;stroke-dasharray:none}',
+ '.avp-sl{font-size:15px;fill:var(--mid);font-family:var(--sans)}',
+ '.avp-side.on .avp-sl{fill:var(--ink);font-weight:600}',
+ '.avp-tri{fill:color-mix(in srgb,var(--c) 7%,transparent);stroke:var(--c);stroke-width:1.8;stroke-linejoin:round}',
+ '.avp-cn{fill:var(--panel);stroke:var(--dim);stroke-width:1.6;stroke-dasharray:2.4 2.4}',
+ '.avp-cn.lit{stroke:var(--c);stroke-width:2.6;stroke-dasharray:none}',
+ '.avp-vl{font-size:14px;fill:var(--c);font-family:var(--sans);font-weight:500}',
+ '.avp-cl{font-size:13px;fill:var(--c);font-family:var(--sans);font-weight:600;letter-spacing:.02em}',
+ '.avp-btw{stroke:var(--accent);stroke-width:1.6;stroke-dasharray:3 4;fill:none}',
+ '.avp-col{min-width:0;display:flex;flex-direction:column;gap:16px}',
+ '.avp-note{margin:0;font-size:14px;color:var(--dim)}',
+ '.avp-blk{display:flex;flex-direction:column;gap:10px;padding:14px 16px;border-radius:var(--r-s);background:var(--sunk);border-left:2px solid var(--c,var(--accent))}',
+ '.avp-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}',
+ '.avp-h b{font-size:16px;font-weight:600;color:var(--ink)}',
+ '.avp-h span{font-size:14px;color:var(--dim)}',
+ '.avp-vals,.avp-lines{display:flex;flex-direction:column;gap:8px}',
+ '.avp-in{min-height:var(--tap);font:inherit;font-size:16px;color:var(--ink);background:var(--panel);border:1px solid var(--edge-2);border-radius:var(--r-s);padding:9px 12px;width:100%;box-sizing:border-box}',
+ '.avp-in:focus{border-color:var(--c,var(--accent));outline:none}',
+ '.avp-in:disabled{opacity:.85;cursor:default}',
+ '.avp-read{display:flex;flex-direction:column;gap:6px;padding:12px 16px;border-radius:var(--r-s);border:1px solid var(--edge)}',
+ '.avp-read p{margin:0;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;font-size:15px;color:var(--ink)}',
+ '.avp-read p span{font-size:13px;color:var(--dim);min-width:92px}',
+ '.avp-read .avp-btwl{display:block;color:var(--mid);font-size:14px;line-height:1.5;margin-top:4px}',
+ '.avp-bd{border-left-color:var(--accent)}',
+ '.avp-sides{display:flex;flex-wrap:wrap;gap:6px}',
+ '.avp-sb{min-height:var(--tap);padding:0 14px;border-radius:999px;border:1px solid var(--edge-2);background:var(--panel);color:var(--mid);font:inherit;font-size:14px;cursor:pointer}',
+ '.avp-sb.av-on{border-color:var(--accent);color:var(--ink);background:color-mix(in srgb,var(--accent) 14%,var(--panel))}',
+ '.avp-say{margin:0;font-size:14px;color:var(--mid)}',
+ '.avp-say b{color:var(--ink);font-weight:600;margin-right:4px}',
+ 'body.punch .avp-blk,body.punch .avp-read{border-color:transparent}',
+ '@media (max-width:1100px){.avp{grid-template-columns:minmax(0,1fr)}.avp-fig{max-width:520px}}',
+ '@media (max-width:600px){.avi{justify-content:flex-start}.avi-ed{grid-template-columns:minmax(0,1fr)}.avp-sl{font-size:17px}.avp-vl{font-size:16px}}'].join('\n');
 function avCss(){
  if(document.getElementById('avs-css'))return;
  var s=document.createElement('style'); s.id='avs-css'; s.textContent=AV_CSS;
@@ -1588,7 +1689,7 @@ function avHead(st){
  var h='<header class="av-hd avs-top"><div class="avs-subs" role="group" aria-label="Avatar">'
   +AV_SUBS.map(function(s){var on=AV.sub===s[0];
    return '<button type="button" class="avs-sb'+(on?' av-on':'')+'" aria-pressed="'+on+'" data-avsub="'+s[0]+'">'+s[1]+'</button>';}).join('')
-  +'</div></header>';
+  +'</div>'+avIdHTML()+'</header>';
  /* THE LINE IS GONE, round LV. What used to sit here in its place: the tag
     summary, above the ring rather than a paragraph explaining the ring. */
  if(AV.sub==='becoming')h+=avTagSummary(st);
@@ -1602,12 +1703,15 @@ function renderAvatar(){
     onto somebody else's avatar. */
  var who=S.who+'|'+(CURP&&CURP.id);
  if(AV.who!==who){AV.who=who; AV.arch=null; AV.trace=null; AV.q=null; AV.seat=null;
-  AV.ask={}; AV.drafts={}; AV.edit=null; AV.tag=null; AV.tagOpen=false; AV.tagQ='';}
+  AV.ask={}; AV.drafts={}; AV.edit=null; AV.tag=null; AV.tagOpen=false; AV.tagQ='';
+  AV.idEdit=false; AV.side=null;}
  if(!AV.sub)AV.sub='becoming';
  var st=avState(), h='<div class="av">'+avHead(st);
  if(AV.sub==='becoming'){
   h+=avHero(st)+'<div class="avh-under">'+avMenu(st)+'</div>';
   h+=avPairs(st)+'<div class="av-row2">'+avCycHTML(st)+avRitHTML(st)+'</div>'+avRunHTML(st);}
+ else if(AV.sub==='purpose'){
+  h+=avPurposeHTML();}
  else{
   var W2=avWheel(st);
   /* THE PARAGRAPH EXPLAINING WHAT THIS SECTION IS, AND HOW TO USE THE SCALE,
@@ -1648,7 +1752,10 @@ function avSig(){
  /* answers is keyed by index and is not always an array, so it is read whole */
  var ans=JSON.stringify((p.intake&&p.intake.answers)||{});
  var pl=(p.plan&&p.plan.tier)+':'+(p.plan&&p.plan.status);
- return [S.who, p.id, e.length, av.length, R.length, dn, s.toFixed(4), S.theme, ans, pl].join('|');}
+ /* the identity and the purpose map are the page's too since round RB */
+ var A=p.avatar||{}, idk=[A.name,A.title,A.description,A.version,A.reviewedAt].join('/');
+ var pu=JSON.stringify(p.purpose||{});
+ return [S.who, p.id, e.length, av.length, R.length, dn, s.toFixed(4), S.theme, ans, pl, idk, pu].join('|');}
 function avRefresh(){
  var host=document.getElementById('avbody');
  if(host&&(!host.firstChild||AV.sig!==avSig()))renderAvatar();
@@ -1720,6 +1827,7 @@ function avBind(host,st){
   var q=avQueue(x.gap.seat); if(!q.length)return;
   relPick(q.map(function(n){return n.i;})); avWatch(bb);});
  on('[data-avdil]',function(el){avDilemma(+el.dataset.avdil,+el.dataset.avdv);});
+ avIdBind(host); avPurBind(host);
  /* the boxes. The lit layer takes the text at once, because the textarea's
     own text is transparent and a layer that lagged would be a box that ate
     keystrokes. The reading under it waits for a pause, as the journal's does. */
@@ -1754,6 +1862,194 @@ function avBind(host,st){
      queue in it and asks the when and the where before it saves. */
   ritOpen(); RIT.sel={}; keys.forEach(function(k){RIT.sel[k]=true;}); RIT.all=true; ritRender();};}
 
+/* ============================================================
+   WHO THE AVATAR IS, round RB, Becoming slice S2, the document's layer A.
+   One row in the header beside the subtabs, which was empty space: the name
+   a person gives who they are becoming, a title, and one sentence. The
+   monthly review the engine has always counted (avatarDue) is answered here,
+   where the avatar is, rather than only in a drill nobody opens. "Still
+   true" moves the review date; "I changed it" moves the version too, and
+   nothing else does. A worked example shows what it carries and offers no
+   control, because nothing is saved on one.
+   ============================================================ */
+var AVI_PEN='<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>';
+var AVI_MK='<circle cx="12" cy="8" r="3.6"/><path d="M5 20c.8-4 3.5-6 7-6s6.2 2 7 6"/>';
+function avIdHTML(){
+ var av=(CURP&&CURP.avatar)||avatarBlank(), own=avOwn();
+ var nm=String(av.name||''), ti=String(av.title||''), de=String(av.description||'');
+ if(AV.idEdit&&own){
+  return '<div class="avi avi-ed" data-avidform>'
+   +'<label class="avi-f"><span>Name</span><input data-avid="name" maxlength="'+AV_CAP.name+'" value="'+esc(nm)+'" '
+   +'placeholder="What you call who you are becoming"></label>'
+   +'<label class="avi-f"><span>Title</span><input data-avid="title" maxlength="'+AV_CAP.title+'" value="'+esc(ti)+'" '
+   +'placeholder="A few words, if you want them"></label>'
+   +'<label class="avi-f avi-wide"><span>In one sentence</span><textarea data-avid="description" rows="2" maxlength="'+AV_CAP.description+'" '
+   +'placeholder="Who you are becoming, in your words">'+esc(de)+'</textarea></label>'
+   +'<div class="avi-act"><button type="button" class="btn pri" data-avidsave>Save</button>'
+   +'<button type="button" class="btn" data-avidcancel>Cancel</button></div></div>';}
+ var rv='';
+ if(av.built&&own){
+  rv=avatarDue(av)
+   ?'<span class="avi-rv avi-due">Your monthly look is due</span>'
+    +'<button type="button" class="btn avi-rb" data-avrev="same">Still true</button>'
+    +'<button type="button" class="btn avi-rb" data-avrev="changed">I changed it</button>'
+   :'<span class="avi-rv">Next monthly look in '+avatarDaysLeft(av)+' days</span>';}
+ if(!nm&&!de){
+  if(!own)return rv?'<div class="avi"><span class="avi-rvw">'+rv+'</span></div>':'';
+  return '<div class="avi"><button type="button" class="avi-add" data-avidedit>'+avSvg(AVI_MK)
+   +'<span>Name who you are becoming</span></button>'+(rv?'<span class="avi-rvw">'+rv+'</span>':'')+'</div>';}
+ return '<div class="avi"><span class="avi-main"><span class="avi-mk" aria-hidden="true">'+avSvg(AVI_MK)+'</span>'
+  +'<span class="avi-t"><span class="avi-n"><b>'+esc(nm||'Unnamed')+'</b>'+(ti?'<em>'+esc(ti)+'</em>':'')+'</span>'
+  +(de?'<span class="avi-d">'+esc(de)+'</span>':'')+'</span>'
+  +(own?'<button type="button" class="avi-pen" data-avidedit aria-label="Change who you are becoming" title="Change who you are becoming">'
+   +avSvg(AVI_PEN)+'</button>':'')+'</span>'+(rv?'<span class="avi-rvw">'+rv+'</span>':'')+'</div>';}
+function avIdBind(host){
+ host.querySelectorAll('[data-avidedit]').forEach(function(el){el.onclick=function(){
+  AV.idEdit=true; renderAvatar(); var f=host.querySelector('[data-avid="name"]'); if(f)f.focus();};});
+ host.querySelectorAll('[data-avidcancel]').forEach(function(el){el.onclick=function(){AV.idEdit=false; renderAvatar();};});
+ host.querySelectorAll('[data-avidsave]').forEach(function(el){el.onclick=function(){
+  var v={}; host.querySelectorAll('[data-avid]').forEach(function(f){v[f.dataset.avid]=String(f.value||'').trim();});
+  var bad=['name','title','description'].filter(function(k){return (v[k]||'').length>AV_CAP[k];})[0];
+  if(bad){status('Not saved. The '+bad+' is longer than '+AV_CAP[bad]+' characters.','fail');return;}
+  if(avRecWrite(function(av){av.name=v.name||''; av.title=v.title||''; av.description=v.description||'';},'Saved.')){
+   AV.idEdit=false; renderAvatar();}};});
+ host.querySelectorAll('[data-avrev]').forEach(function(el){el.onclick=function(){
+  var ch=el.dataset.avrev==='changed';
+  if(avRecWrite(function(av){avatarReview(av,ch);},
+   ch?'Saved. Your avatar has moved on, and the next look is in a month.':'Saved. The next look is in a month.'))renderAvatar();};});}
+
+/* ============================================================
+   PURPOSE, round RB, Becoming slice S3, the document's layers B and C on the
+   one Avatar page. BECOMING-AUDIT.md R11: the six values and the thirty
+   commitments were validated, stored, exported and read, and nothing in the
+   product could write them, so the "Purpose set" mark could not be earned by
+   using the product. This is the writer.
+
+   What it is made of, and what it is not:
+     the figure    his own description, the two pyramids with a gap of limbo
+                   between them (round HS, the redesign brief 13b), inside the
+                   boundary as the Field's segmented ring, six facets with
+                   five marks each, in the geometry the document draws: the
+                   self at the top, work at the bottom.
+     the values    free words, as ruled (DECISIONS.md, purpose): three for the
+                   spirit, three for the body. No ontology and no icon per
+                   value, because none exists (Q3) and inventing one is the
+                   thing the brief says not to do.
+     the readings  derived, never typed: purposeRead, exactly as ruled. "Six
+                   values in, three readings out, and a person may type none
+                   of the three." The document's typed Unified Purpose waits
+                   on Q2.
+     the sides     his six names, each with its meaning beside it, and the
+                   stored keys unchanged (Q4 stays his).
+     no count      a facet's five marks are lit or not. Nothing prints a
+                   number against thirty, the standing ruling.
+   ============================================================ */
+var AVP_ORDER=['alone','partner','friends','coworkers','community','family'];
+var AVP_ANG={alone:-90, partner:-30, friends:30, coworkers:90, community:150, family:210};
+function avpShort(t,n){t=String(t||''); return t.length>n?t.slice(0,n-1)+'…':t;}
+function avpFigure(pu,sel){
+ var cx=280, cy=262, R=204, crown=seatCol('Crown'), root=seatCol('Root');
+ var pt=function(r,deg){var a=deg*Math.PI/180; return [cx+r*Math.cos(a), cy+r*Math.sin(a)];};
+ var f=function(n){return n.toFixed(1);};
+ var arc=function(r,d0,d1){var a=pt(r,d0), b=pt(r,d1);
+  return 'M'+f(a[0])+' '+f(a[1])+'A'+r+' '+r+' 0 0 1 '+f(b[0])+' '+f(b[1]);};
+ var s='<svg class="avp-fig" viewBox="0 0 560 524" role="group" aria-label="Your purpose map: two triangles, and the six sides of the boundary around them">';
+ /* the boundary, six facets of five marks */
+ AVP_ORDER.forEach(function(k){
+  var c=AVP_ANG[k], on=sel===k, lines=((pu.sides&&pu.sides[k])||[]).filter(function(x){return x&&String(x).trim();});
+  var say=PUR_SIDE_SAY[k];
+  s+='<g class="avp-side'+(on?' on':'')+'" data-avside="'+k+'" role="button" tabindex="0" aria-pressed="'+on+'" '
+   +'aria-label="'+esc(say.nm+', '+say.say)+'">'
+   +'<path d="'+arc(R,c-27,c+27)+'" class="avp-hit"/>'
+   +'<path d="'+arc(R,c-26,c+26)+'" class="avp-trk"/>';
+  [-18,-9,0,9,18].forEach(function(o,i){var q=pt(R,c+o), lit=i<lines.length;
+   s+='<circle cx="'+f(q[0])+'" cy="'+f(q[1])+'" r="6" class="avp-tk'+(lit?' lit':'')+'"/>';});
+  var lp=pt(R+26,c), anc=Math.abs(Math.cos(c*Math.PI/180))<0.2?'middle':(Math.cos(c*Math.PI/180)>0?'start':'end');
+  s+='<text x="'+f(lp[0])+'" y="'+f(lp[1]+5)+'" text-anchor="'+anc+'" class="avp-sl">'+esc(say.nm)+'</text></g>';});
+ /* the two triangles, and the gap between them */
+ var up=[[280,128],[200,240],[360,240]], dn=[[200,284],[360,284],[280,396]];
+ var tri=function(P,col,vals,cls){
+  var o='<path d="M'+P.map(function(q){return q[0]+' '+q[1];}).join('L')+'Z" class="avp-tri '+cls+'" style="--c:'+col+'"/>';
+  P.forEach(function(q,i){var v=String(vals[i]||'').trim();
+   o+='<circle cx="'+q[0]+'" cy="'+q[1]+'" r="8" class="avp-cn'+(v?' lit':'')+'" style="--c:'+col+'"/>';});
+  return o;};
+ s+=tri(up,crown,pu.soul||[],'avp-up')+tri(dn,root,pu.ego||[],'avp-dn');
+ /* the values at their corners, short on the figure and whole in the fields */
+ var lab=function(q,v,anc,dy,col){v=String(v||'').trim(); if(!v)return '';
+  return '<text x="'+q[0]+'" y="'+(q[1]+dy)+'" text-anchor="'+anc+'" class="avp-vl" style="--c:'+col+'">'+esc(avpShort(v,anc==='middle'?20:13))+'</text>';};
+ var su=pu.soul||[], eg=pu.ego||[];
+ s+=lab([280,128],su[0],'middle',-18,crown)+lab([186,240],su[1],'end',5,crown)+lab([374,240],su[2],'start',5,crown);
+ s+=lab([186,284],eg[0],'end',5,root)+lab([374,284],eg[1],'start',5,root)+lab([280,396],eg[2],'middle',28,root);
+ var ready=purposeReady(pu);
+ s+='<text x="280" y="210" text-anchor="middle" class="avp-cl" style="--c:'+crown+'">Spirit</text>'
+  +'<text x="280" y="324" text-anchor="middle" class="avp-cl" style="--c:'+root+'">Body</text>';
+ if(ready)s+='<path d="M280 218V306" class="avp-btw"/>';
+ return s+'</svg>';}
+function avPurposeHTML(){
+ var pu=(CURP&&CURP.purpose)||purposeBlank(), own=avOwn();
+ var sel=(AV.side&&PUR_SIDES.indexOf(AV.side)>=0)?AV.side:AVP_ORDER[0];
+ var dis=own?'':' disabled';
+ var vals=function(k,ph,col){
+  return '<div class="avp-vals" style="--c:'+col+'">'+[0,1,2].map(function(i){
+   return '<input class="avp-in" data-avpv="'+k+'" data-i="'+i+'" data-avpk="'+k+i+'" maxlength="'+(PUR_VAL_MAX-1)+'" '
+    +'value="'+esc((pu[k]&&pu[k][i])||'')+'" placeholder="'+esc(ph[i])+'" aria-label="'+(k==='soul'?'Spirit':'Body')+' value '+(i+1)+'"'+dis+'>';}).join('')
+   +'</div>';};
+ var rd=purposeRead(pu), say=PUR_SIDE_SAY[sel], lines=(pu.sides&&pu.sides[sel])||[];
+ var h='<section class="avp">'
+  +'<div class="avp-art">'+avpFigure(pu,sel)+'</div>'
+  +'<div class="avp-col">'
+  +(own?'':'<p class="avp-note">A worked example. Nothing here is saved.</p>')
+  +'<div class="avp-blk" style="--c:'+seatCol('Crown')+'"><div class="avp-h"><b>Spirit</b><span>what moves you in the spirit</span></div>'
+  +vals('soul',['freedom','knowledge','wisdom'],seatCol('Crown'))+'</div>'
+  +'<div class="avp-blk" style="--c:'+seatCol('Root')+'"><div class="avp-h"><b>Body</b><span>what drives you on the earth</span></div>'
+  +vals('ego',['health','family','financial stability'],seatCol('Root'))+'</div>'
+  +(rd?'<div class="avp-read"><p><span>In the spirit</span><b>'+esc(rd.higher)+'</b></p>'
+    +'<p><span>On the earth</span><b>'+esc(rd.earthly)+'</b></p>'
+    +'<p class="avp-btwl">'+esc(rd.between)+'</p></div>':'')
+  +'<div class="avp-blk avp-bd"><div class="avp-h"><b>Boundary</b><span>what is yours to protect, side by side</span></div>'
+  +'<div class="avp-sides" role="group" aria-label="The six sides">'+AVP_ORDER.map(function(k){var on=k===sel;
+    return '<button type="button" class="avp-sb'+(on?' av-on':'')+'" data-avside="'+k+'" aria-pressed="'+on+'">'+esc(PUR_SIDE_SAY[k].nm)+'</button>';}).join('')+'</div>'
+  +'<p class="avp-say"><b>'+esc(say.nm)+'</b> '+esc(say.say)+'</p>'
+  +'<div class="avp-lines">'+[0,1,2,3,4].map(function(i){
+    return '<input class="avp-in" data-avpl="'+sel+'" data-i="'+i+'" data-avpk="'+sel+i+'" maxlength="'+(PUR_LINE_MAX-1)+'" '
+     +'value="'+esc(lines[i]||'')+'" placeholder="A line you keep" aria-label="'+esc(say.nm)+', line '+(i+1)+'"'+dis+'>';}).join('')+'</div>'
+  +'</div></div></section>';
+ return h;}
+/* one field kept. Values keep their corner; a side's lines close up, because
+   the boundary keeps only lines that were written. Refused by name past the
+   cap, which the field's own limit means is never met by typing. */
+function avPurSet(el){
+ if(!avOwn()){status('Nothing saved on a worked example.','fail');return false;}
+ var pu=CURP.purpose=CURP.purpose||purposeBlank(), v=String(el.value||'').trim();
+ var k=el.dataset.avpv||el.dataset.avpl, isVal=!!el.dataset.avpv, max=isVal?PUR_VAL_MAX:PUR_LINE_MAX;
+ var why=purposeRefuse(v,max);
+ if(why){status('Not saved. That '+(isVal?'value':'line')+' '+why+'.','fail');return false;}
+ var was=JSON.stringify(pu), wasReady=purposeReady(pu);
+ if(isVal){pu[k]=(pu[k]||['','','']).slice(); pu[k][+el.dataset.i]=v;}
+ else{
+  var host=el.closest('.avp-lines'), all=[];
+  if(host)host.querySelectorAll('[data-avpl="'+k+'"]').forEach(function(f){var t=String(f.value||'').trim(); if(t)all.push(t);});
+  pu.sides=pu.sides||purposeBlank().sides; pu.sides[k]=all.slice(0,PUR_PER_SIDE);}
+ pSave();
+ var sv=(typeof saveState==='function')?saveState():{ok:true};
+ if(!sv.ok){CURP.purpose=JSON.parse(was);
+  status('Not saved. Storage is full or blocked, so this would not survive a reload.','fail');return false;}
+ status(!wasReady&&purposeReady(pu)?'Saved. Six values in, and the three readings are out.':'Saved.');
+ return true;}
+function avPurBind(host){
+ host.querySelectorAll('[data-avside]').forEach(function(el){
+  var go=function(){AV.side=el.dataset.avside; renderAvatar();};
+  el.onclick=go;
+  el.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault(); go();}};});
+ host.querySelectorAll('[data-avpv],[data-avpl]').forEach(function(el){
+  el.onchange=function(){
+   if(!avPurSet(el))return;
+   /* the next field the person moved to keeps the caret through the repaint */
+   setTimeout(function(){var a=document.activeElement, k=a&&a.dataset?a.dataset.avpk:null;
+    renderAvatar();
+    if(k){var n=document.querySelector('[data-avpk="'+k+'"]'); if(n)n.focus();}},0);};
+  el.onkeydown=function(e){if(e.key==='Enter'){e.preventDefault(); el.blur();}};});}
+
 /* ---------------- the writes ----------------
    Each one says what happened through status(), and none of them claims a
    save it did not get. A pair goes into the record, so a refused save takes
@@ -1779,15 +2075,21 @@ function avSeatAdd(b){
  var d=avDraft(b), pr={be:d.be.trim(), notbe:d.notbe.trim(), seat:b};
  if(!avatarValid(pr))return;
  if(!avOwn()){status('Nothing saved on a worked example.','fail');return;}
- var av=CURP.avatar=CURP.avatar||avatarBlank(), was={built:av.built, at:av.at};
+ var av=CURP.avatar=CURP.avatar||avatarBlank(); avatarFill(av);
+ var was={built:av.built, at:av.at, status:av.status};
  var P=av.pairs, rows=avRows(), ed=(AV.edit!=null&&rows[AV.edit])?rows[AV.edit]:null;
  var at=ed?P.indexOf(ed.pair):-1, old=at>=0?P[at]:null;
+ /* an edited pair keeps its id, round RB, S2: it is the same line of the
+    avatar rewritten, and its weight is kept against it below; a new one is
+    minted one that no pair has held */
+ pr.id=old&&old.id?old.id:avatarNewId();
  if(old)P[at]=pr; else P.push(pr);
  av.built=true; if(!av.at)av.at=new Date().toISOString();
+ if(av.status==='draft')av.status='active';
  pSave();
  if(!statusSaved()){
   if(old)P[at]=old; else P.pop();
-  av.built=was.built; av.at=was.at; return;}
+  av.built=was.built; av.at=was.at; av.status=was.status; return;}
  var send=!old||old.notbe!==pr.notbe, p=parseStory(pr.notbe), k=p.imprints.length, msg;
  if(send&&k&&S.who===0){
   undoPush('adding a story to your avatar');
@@ -1816,10 +2118,12 @@ function avSeatAdd(b){
     story and starts again from the weight now. */
  compute();
  var rows2=avRows(), idx=old?at:rows2.length-1, row=rows2[idx];
- var kept=avSideWrite(function(e){
-  if(old)delete e.load0[avKey(old)];
-  if(row&&row.gap)e.load0[avKey(pr)]=row.gap.load;});
- if(!kept&&row&&row.gap)status('Saved. The starting weight was not kept, so this one reads from nothing done.','fail');
+ /* on the record since round RB, S1, against the pair's id */
+ var L=CURP.avatar.load0=CURP.avatar.load0||{}, wasL=L[pr.id];
+ if(row&&row.gap){L[pr.id]=row.gap.load; pSave();
+  var sv2=(typeof saveState==='function')?saveState():{ok:true};
+  if(!sv2.ok){if(wasL===undefined)delete L[pr.id]; else L[pr.id]=wasL;
+   status('Saved. The starting weight was not kept, so this one reads from nothing done.','fail');}}
  AV.drafts[b]={be:'',notbe:''}; AV.edit=null; AV.seat=b; AV.face='story'; AV.q=null;
  renderAvatar();}
 function avTake(i){
@@ -1828,31 +2132,32 @@ function avTake(i){
  if(!x)return;
  if(!avOwn()){status('Nothing saved on a worked example.','fail');return;}
  var P=CURP.avatar.pairs, j=P.indexOf(x.pair); if(j<0)return;
- var b=avSeatOf(x);
- P.splice(j,1); pSave();
- if(!statusSaved()){P.splice(j,0,x.pair); return;}
+ var b=avSeatOf(x), L=CURP.avatar.load0||{}, wasL=L[x.pair.id];
+ /* the weight goes with its pair in the same save, because the boundary
+    refuses a weight for a pair that is not on the record */
+ P.splice(j,1); if(x.pair.id)delete L[x.pair.id]; pSave();
+ if(!statusSaved()){P.splice(j,0,x.pair); if(wasL!==undefined)L[x.pair.id]=wasL; return;}
  /* the rule goes with the last story at its seat, because a rule is a
     commitment to a story and there is no story left to keep it for */
  var left=avRows().some(function(y){return avSeatOf(y)===b;});
- avSideWrite(function(e){delete e.load0[avKey(x.pair)]; if(b&&!left)delete e.rule[b];});
+ if(b&&!left)avSideWrite(function(e){delete e.rule[b];});
  AV.q=null; AV.edit=null; AV.tag=null; renderAvatar();}
-/* A TAG PUT ON OR TAKEN OFF, round KH. Kept beside the record, like the
-   rules and the ratings, so it survives a reload and does not travel with an
-   export; putting it in the record is a schema change, which is the owner's.
-   A word outside the seat's lexicon is refused before anything is written.
+/* A TAG PUT ON OR TAKEN OFF, round KH. On the record since round RB, S1, so
+   it travels with an export. A word outside the seat's lexicon is refused
+   before anything is written.
    Taking off a tag the sniffer found keeps it off, so the next story at the
    seat does not quietly put it back; putting it on again clears that. */
 function avTagSet(b,t,put,st){
  if(!avOwn()){status('Nothing saved on a worked example.','fail');return;}
  if(!avLexOf(b,t))return;
  var found=avFound(st,b).indexOf(t)>=0;
- var ok=avSideWrite(function(e){
+ var ok=avRecWrite(function(e){
   var T=e.tags[b]=e.tags[b]&&typeof e.tags[b]==='object'?e.tags[b]:{};
   T.add=(Array.isArray(T.add)?T.add:[]).filter(function(w){return w!==t;});
   T.off=(Array.isArray(T.off)?T.off:[]).filter(function(w){return w!==t;});
   if(put&&!found)T.add.push(t);
   if(!put&&found)T.off.push(t);});
- if(!ok){status('Not saved. Storage is full or blocked, so this session will not survive a reload.','fail');return;}
+ if(!ok)return;
  if(!put&&AV.tag===t)AV.tag=null;
  status(put?'Tagged '+avTagNm(t)+'.':avTagNm(t)+' taken off.');
  renderAvatar();}
@@ -1900,7 +2205,7 @@ function avRate(n){
  var a=avArchByName(AV.arch); if(!a)return;
  if(!avOwn()){status('Nothing saved on a worked example.','fail');return;}
  var was=avSide().arch[a.nm]||0, to=(was===n)?0:n;
- var ok=avSideWrite(function(e){if(to)e.arch[a.nm]=to; else delete e.arch[a.nm];});
- if(!ok){status('Not saved. Storage is full or blocked, so this session will not survive a reload.','fail');return;}
+ var ok=avRecWrite(function(e){if(to)e.arch[a.nm]=to; else delete e.arch[a.nm];});
+ if(!ok)return;
  status(to?'Saved. '+a.nm+' at '+to+'.':'Taken off. '+a.nm+' is not set.');
  renderAvatar();}

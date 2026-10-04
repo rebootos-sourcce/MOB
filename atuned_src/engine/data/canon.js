@@ -762,8 +762,12 @@ const TIERDEF=[
  {at:41, nm:'Oscillating',
   state:'Searching',
   soma:'Taking it all in and understanding it, and still stuck in your head.',
-  def:'Fifty is the median, the middle of the line. The field crosses it both ways, '
-     +'above it some days and below it on others.',
+  /* ROUND RG. This opened on "Fifty is the median, the middle of the line",
+     and the meaning table keeps a tier's first sentence, so the one place
+     Oscillating was defined said what fifty is and never what Oscillating
+     is. Same two facts, the meaning first. */
+  def:'The field crosses fifty, the median or middle of the line, both ways: above it some days '
+     +'and below it on others.',
   energy:'The day decides. What is running that morning sets the range.',
   toward:'Even. Consistency rather than intensity. The swing narrows before the number rises.'},
  {at:31, nm:'Incoherent',

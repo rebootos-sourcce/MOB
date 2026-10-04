@@ -2846,6 +2846,7 @@ const relrun=await page.evaluate(()=>{
  loadP(0); setTab(TAB.FIELD); render();
  {const ps=document.getElementById('psel');
   o.ownPicker=ps.options[ps.selectedIndex].textContent;
+  o.ownName=((PROF_BY[PEOPLE[0].nm]||{}).name||'').trim();
   o.caseBack=ps.querySelector('option[value="'+GORDON()+'"]').textContent;
   o.caseAge=PEOPLE[GORDON()].age;}
  const held=W.filter(n=>n.sq>=4).slice(0,3).map(n=>n.i);
@@ -2938,10 +2939,13 @@ ok(!/You are looking at/.test(relrun.refSaid)&&(relrun.refSaid.match(/[.!?](\s|$
 ok(/^Gordon\b/.test(relrun.refPicker)&&/example/.test(relrun.refPicker),
  'the picker names the case and marks it as an example while it is up, reads '
  +JSON.stringify(relrun.refPicker));
-ok(relrun.ownPicker==='Custom'&&!/example/.test(relrun.caseBack)
+/* round RB: the own entry reads Profile, his word for it, until the record
+   has a name, and then the name. It read Custom. */
+ok(relrun.ownPicker===((relrun.ownName&&relrun.ownName!=='You')?relrun.ownName:'Profile')
+ &&!/example/.test(relrun.caseBack)
  &&relrun.caseBack.indexOf('Gordon, '+relrun.caseAge+', ')===0,
- 'and on the person\'s own record it reads Custom and the case goes back to its age and role, '
- +JSON.stringify([relrun.ownPicker,relrun.caseBack]));
+ 'and on the person\'s own record it reads Profile or the record\'s name, and the case goes back to its age and role, '
+ +JSON.stringify([relrun.ownPicker,relrun.ownName,relrun.caseBack]));
 /* THE FIELD MOVES WITH THE IDENTITY, OR A STRANGER'S FIELD BECOMES YOURS.
    Measured before the fix: a person whose nine axes were all zero came out of a
    release run started on James carrying 50.6 of his charge, saved and
@@ -3289,7 +3293,11 @@ ok(/right hand sentence steers the release/.test(avat.pair)
 ok(/freedom, wisdom, truth/.test(avat.pur),'the higher centre is the sum of its corners');
 ok(/how you make money and how you find fulfilment/.test(avat.pur),
  'and the line between the two answers what it was ruled to answer');
-ok(/2 of 30 written/.test(avat.pur),'the boundary counts thirty');
+/* NO COUNT AGAINST THIRTY, round RB. This held "2 of 30 written", which is
+   a count against a total, the standing ruling against a score. A side shows
+   five marks, lit for each line written, and the side's own name. */
+ok(!/\d+ of (5|30)\b/.test(avat.pur)&&/Partner\s*\u25CF \u25CF \u25CB \u25CB \u25CB/.test(avat.pur),
+ 'the boundary shows five marks a side, two lit on the partner side, and no count against thirty');
 ok(/A mirror half described shows half a person/.test(avat.pur),
  'and says why thirty is not a lot to ask');
 
@@ -3940,10 +3948,14 @@ const tiers=await page.evaluate(async()=>{
  o.presses=g?[...g.querySelectorAll('[data-ptier]')].map(b=>b.getAttribute('data-ptier')):[];
  o.text=g?g.textContent.replace(/\s+/g,' '):'';
  o.same=g?(g.querySelector('.pt-same')||{}).textContent||'':'';
- o.rowSees={}; if(g)[...g.querySelectorAll('.pt-row')].forEach(r=>{
-  const k=(r.querySelector('[data-ptier]')||{getAttribute:()=>null}).getAttribute('data-ptier')
-   ||(r.classList.contains('on')?'free':null);
-  o.rowSees[k]=(r.querySelector('.pt-sees')||{}).textContent||'';});
+ /* rows by identity, data-pt, round RB: a closed rung carries no button, so
+    finding a row by its press found nothing for tier four */
+ o.rowSees={}; o.rowGo={}; if(g)[...g.querySelectorAll('.pt-row')].forEach(r=>{
+  const k=r.getAttribute('data-pt');
+  o.rowSees[k]=(r.querySelector('.pt-sees')||{}).textContent||'';
+  o.rowGo[k]=((r.querySelector('.pt-go')||{}).textContent||'').trim();
+  if(k==='four')o.rowLine4=(r.querySelector('.pt-d')||{}).textContent||'';});
+ o.closed4=(PLAN_BY.four.built===false);
  /* "Your plan" above keeps its state and Manage billing, and drops what the
     tiers below now carry, so nothing is said twice on one pane */
  const pane=document.querySelector('#settings .ac-pane');
@@ -3958,7 +3970,7 @@ const tiers=await page.evaluate(async()=>{
  const b2=g&&g.querySelector('[data-ptier="two"]'); if(b2)b2.click();
  o.called=called;
  /* the bars: tier four's ground equals tier three's, so the bars match */
- const w=k=>{const r=[...g.querySelectorAll('.pt-row')].find(x=>x.querySelector('[data-ptier="'+k+'"]'));
+ const w=k=>{const r=g.querySelector('.pt-row[data-pt="'+k+'"]');
   return r?r.querySelector('.pt-bar i').style.width:'';};
  o.bar3=w('three'); o.bar4=w('four');
  /* on tier two, the rows below carry no press */
@@ -3981,6 +3993,15 @@ const tiers=await page.evaluate(async()=>{
  called=null;
  const b3c=document.querySelector('#plantiers [data-ptier="three"]'); if(b3c)b3c.click();
  o.calledEnded=called;
+ /* A CLOSED TIER IS REFUSED AT THE DOOR, round RB, even by a caller that
+    forgot to ask: the host is never reached and the status line says why */
+ called=null;
+ planOpen('checkout','four');
+ o.called4=called;
+ o.status4=(document.getElementById('status').textContent||'').trim();
+ /* and a tier three person is offered no Move to tier four on the sheet */
+ CURP.plan={tier:'three',status:'active',granted:1200,carried:0,base:100,since:null,until:null};
+ profileSheet(); o.sheet3up=!!document.querySelector('#sheet #planup'); sheetShut();
  /* every control on the surface meets the touch floor */
  o.small=[...g2.querySelectorAll('button')].filter(b=>{const r=b.getBoundingClientRect();
   return r.width>0&&r.height<44;}).length;
@@ -3991,7 +4012,18 @@ ok(tiers.there,'Billing carries the tiers group');
 ok(JSON.stringify(tiers.rows)===JSON.stringify(['Free','Tier one','Tier two','Tier three','Tier four']),
  'one row per tier, in ladder order, the gift left out: '+JSON.stringify(tiers.rows));
 ok(JSON.stringify(tiers.now)==='["Free"]','the tier in force is marked, and only it: '+JSON.stringify(tiers.now));
-ok(tiers.presses.join()==='one,two,three,four','from free every paid tier has a press: '+tiers.presses.join());
+ok(tiers.presses.join()===(tiers.closed4?'one,two,three':'one,two,three,four'),
+ 'from free every paid tier that can be bought has a press: '+tiers.presses.join());
+/* TIER FOUR IS CLOSED UNTIL BUILT, round PK, enforced round RB */
+if(tiers.closed4){
+ ok(tiers.rowGo.four==='Opens with the lead suite','the closed rung says "Opens with the lead suite" where the press was: '+JSON.stringify(tiers.rowGo.four));
+ ok(/Not open yet/.test(tiers.rowLine4||'')&&/None of it is built/.test(tiers.rowLine4||''),
+  'and its line says it is not open and the suite is not built: '+JSON.stringify(tiers.rowLine4));
+ ok(tiers.called4===null,'a checkout for tier four never reaches the billing host: '+JSON.stringify(tiers.called4));
+ ok(/Tier four is not open yet/.test(tiers.status4)&&/Nothing was charged/.test(tiers.status4),
+  'and the status line says so, by name: '+JSON.stringify(tiers.status4));
+ ok(!tiers.sheet3up,'a person on tier three is offered no Move to tier four on the plan sheet');
+}
 ok(tiers.called&&tiers.called.what==='checkout'&&tiers.called.tier==='two',
  'a press goes through planOpen to the same seam as Move to, with its own tier: '+JSON.stringify(tiers.called));
 ok(/On every tier, free included/.test(tiers.same)&&/your 112 addresses/i.test(tiers.same)&&/rerunning anything already open/i.test(tiers.same),
@@ -4043,7 +4075,7 @@ ok(/Manage billing/.test(tiers.paneText)&&tiers.planman,'Your plan keeps Manage 
 ok(!tiers.planup,'and drops its own Move to, because the tiers below carry every press');
 ok((tiers.paneText.match(/On every tier/g)||[]).length===1,
  'what is on every tier is said once on the pane, not twice');
-ok(tiers.presses2.join()==='three,four','on tier two only three and four are offered: '+tiers.presses2.join());
+ok(tiers.presses2.join()===(tiers.closed4?'three':'three,four'),'on tier two only the buyable rungs above are offered: '+tiers.presses2.join());
 ok(JSON.stringify(tiers.now2)==='["Tier two"]','and tier two is the one marked');
 ok(tiers.called2&&tiers.called2.what==='portal'&&tiers.called2.tier===null,
  'on a live plan a press opens the portal, never a second checkout: '+JSON.stringify(tiers.called2));
@@ -4482,9 +4514,11 @@ for(const w of [[1600,1000],[390,844]]){
        reading carries EITHER a scale OR the band it sits in, said in words.
        Both satisfy a person. Only one satisfies a regular expression, which is
        why the regular expression was the wrong thing to assert. */
-    if(t===8&&!/unread/i.test(txt)&&/You read/i.test(txt)
+    /* round RG: the reading opens "Your coherence is" now, and the band is
+       said as the figure's middle band, so the guard follows the words */
+    if(t===8&&!/unread/i.test(txt)&&/Your coherence is/i.test(txt)
        &&!/\b\d{1,3}\s*(?:of|out of)\s*(?:10|100)\b/.test(txt)
-       &&!/oscillating band/i.test(txt))
+       &&!/middle band/i.test(txt))
      bad.push('tab 8: a reading with neither a scale nor a band to read it by');}
    return bad;},who);
   ok(hits.length===0,'no count against a total at '+w[0]+' for '+who
@@ -4557,8 +4591,28 @@ console.log('\n=== the three blocks stacked under the laws, round PP ===');
      than by throwing, which is what the gate is for */
   out.table=(typeof IX_BLOCKS!=='undefined')?IX_BLOCKS.length:0;
   if(!out.table)return out;
+  /* ROUND RB, THE ARCHETYPES ARE NESTED. His words: "the archetypes will be
+     buttons, and if I press on one, the question pops down." So a plate is on
+     the page only under the archetype that is open, and the block is read by
+     pressing every tile in turn, the way a person would reach every question,
+     and collecting each plate once by its row key. A pair sits under both of
+     its archetypes, so it is met twice and counted once. */
+  const AW=(()=>{
+   const base=document.getElementById('iqx-arch'); if(!base)return null;
+   const seen={}, text=[base.innerText]; let n=0, cells=true;
+   const keys=[...base.querySelectorAll('[data-iqarch]')].map(e=>e.getAttribute('data-iqarch'));
+   keys.forEach(k=>{
+    document.querySelector('#iqbody [data-iqarch="'+k+'"]').click();
+    const pn=document.querySelector('#iqx-arch [data-nest="iqarch"]:not([hidden])'); if(!pn)return;
+    text.push(pn.innerText);
+    pn.querySelectorAll('.iqx-ap').forEach(pl=>{const rk=pl.getAttribute('data-k'); if(seen[rk])return; seen[rk]=1;
+     pl.querySelectorAll('.iq-sl').forEach(x=>{n++; if(x.querySelectorAll('button.iq-n').length!==11)cells=false;});
+     pl.querySelectorAll('.iqx-dlb').forEach(x=>{n++; if(x.querySelectorAll('button').length!==2)cells=false;});});});
+   IQ_ARCH=null; renderIntake();
+   return {text:text.join(' ').replace(/\s+/g,' '), controls:n, cells:cells};})();
   IX_BLOCKS.forEach(b=>{
-   const el=host.querySelector('#iqx-'+b.id), t=el?(el.innerText||'').replace(/\s+/g,' '):'';
+   const el=host.querySelector('#iqx-'+b.id);
+   const t=(b.id==='arch'&&AW)?AW.text:el?(el.innerText||'').replace(/\s+/g,' '):'';
    /* THE ARCHETYPE BLOCK IS NOT THE SAME SHAPE, ROUND PQ. Every axes and acts
       row is still one eleven cell scale carrying its own q verbatim. An arch
       row is a dilemma (two buttons, .iqx-dlb, its scene is its q) or an
@@ -4570,8 +4624,8 @@ console.log('\n=== the three blocks stacked under the laws, round PP ===');
    const scaleEls=el?[...el.querySelectorAll('.iq-sl')]:[];
    const dilEls=el?[...el.querySelectorAll('.iqx-dlb')]:[];
    out.blocks.push({id:b.id, present:!!el, heading:el&&t.indexOf(b.nm)>=0,
-    scales:isArch?(scaleEls.length+dilEls.length):scaleEls.length, rows:b.rows.length,
-    cells:el?(scaleEls.every(s=>s.querySelectorAll('button.iq-n').length===11)
+    scales:isArch?(AW?AW.controls:0):scaleEls.length, rows:b.rows.length,
+    cells:isArch?!!(AW&&AW.cells):el?(scaleEls.every(s=>s.querySelectorAll('button.iq-n').length===11)
       &&dilEls.every(s=>s.querySelectorAll('button').length===2)):false,
     words:b.rows.filter(r=>isArch
       ?(r.type==='dilemma'?t.indexOf(r.scene.replace(/\s+/g,' '))<0
@@ -4588,8 +4642,13 @@ console.log('\n=== the three blocks stacked under the laws, round PP ===');
      mirror: the two marks and the two answers are the same distance either
      side of the plate's own centre, within a pixel. */
   out.nArch=IX_ARCH2.length;
-  out.plates=[...host.querySelectorAll('#iqx-arch .iqx-ap')].map((pl,i)=>{
-   const row=IX_ARCH2[i]||{}, figs=[...pl.querySelectorAll('.iqx-af')];
+  out.plates=IX_ARCH2.map(row=>{
+   /* opened under its first archetype, as a press would (round RB) */
+   const tile=document.querySelector('#iqbody [data-iqarch="'+row.a+'"]');
+   if(tile&&tile.getAttribute('aria-expanded')!=='true')tile.click();
+   const pl=document.querySelector('#iqx-arch [data-nest="iqarch"]:not([hidden]) .iqx-ap[data-k="'+row.k+'"]');
+   if(!pl)return {k:row.k};
+   const figs=[...pl.querySelectorAll('.iqx-af')];
    const marks=figs.map(f=>f.querySelector('.iqx-mk path')), q=pl.querySelector('.iqx-aq');
    const ansEl=pl.querySelector('.iqx-dlb')||pl.querySelector('.iqx-eol');
    const R=e=>e?e.getBoundingClientRect():null, pr=R(pl);
@@ -4605,6 +4664,30 @@ console.log('\n=== the three blocks stacked under the laws, round PP ===');
     mirror:mk.length===2&&btn.length===2&&Math.abs((mid-ctr(mk[0]))-(ctr(mk[1])-mid))<=1
      &&Math.abs((mid-ctr(btn[0]))-(ctr(btn[1])-mid))<=1&&Math.abs(ctr(btn[0])-ctr(mk[0]))<=1,
     qOnAxis:!!q&&Math.abs(ctr(R(q))-mid)<=1};});
+  IQ_ARCH=null; renderIntake();
+  /* THE NEST ITSELF, ROUND RB: one tile per archetype in ARCH, all shut on
+     arrival so no plate is drawn; a press opens that archetype's panel and
+     only its own questions; a press on another moves the one open panel; a
+     press on the open one shuts it; an answer keeps it open. And it is the
+     seats' own tile, so the two rows on this page are one control. */
+  out.nest=(()=>{
+   const q=s=>[...document.querySelectorAll(s)];
+   const ex=()=>q('#iqx-arch [data-iqarch][aria-expanded="true"]').map(e=>e.getAttribute('data-iqarch'));
+   const shown=()=>q('#iqx-arch [data-nest="iqarch"]:not([hidden]) .iqx-ap').map(e=>e.getAttribute('data-k')).sort().join();
+   const want=n=>IX_ARCH2.filter(r=>r.a===n||r.b===n).map(r=>r.k).sort().join();
+   const press=k=>document.querySelector('#iqbody [data-iqarch="'+k+'"]').click();
+   const o={tiles:q('#iqx-arch .iqa-tile[data-iqarch]').map(e=>e.getAttribute('data-iqarch')).sort().join(),
+    want:ARCH.map(a=>a.nm).sort().join(),
+    shutOnArrival:ex().length===0&&q('#iqx-arch .iqx-ap').filter(e=>e.getClientRects().length).length===0,
+    seatTile:IQ_VIEW!=='list'||!!document.querySelector('#iqbody .iqa-map .iqa-tile[data-seat]')};
+   const a=ARCH[0].nm, b=ARCH[1].nm;
+   press(a); o.first=ex().join()===a&&shown()===want(a)&&q('#iqx-arch [data-nest="iqarch"]:not([hidden])').length===1;
+   press(b); o.moved=ex().join()===b&&shown()===want(b);
+   const btn=document.querySelector('#iqx-arch [data-nest="iqarch"]:not([hidden]) [data-ixb="arch"]');
+   if(btn)btn.click(); o.answerKeeps=!!btn&&ex().join()===b;
+   press(b); o.shut=ex().length===0&&q('#iqx-arch [data-nest="iqarch"]:not([hidden])').length===0;
+   CURP.intake.more.arch={}; IQ_ARCH=null; renderIntake();
+   return o;})();
   /* a page missing the block it presses on fails the checks above by name and
      stops here, rather than throwing on a null */
   if(!host.querySelector('#iqx-axes .iq-n[data-ixk="Anger"][data-v="8"]'))return out;
@@ -4649,6 +4732,14 @@ console.log('\n=== the three blocks stacked under the laws, round PP ===');
   ok(bad('order').length===0,'and the order is the mark, the description, the question, then the answer, broken on '+JSON.stringify(bad('order')));
   ok(bad('mirror').length===0,'and the plate is a mirror: both marks and both answers sit the same distance either side of its centre, each answer under its own archetype, broken on '+JSON.stringify(bad('mirror')));
   ok(bad('qOnAxis').length===0,'and the question sits on the centre axis, off on '+JSON.stringify(bad('qOnAxis')));}
+ {const N=ix.nest||{};
+  ok(N.tiles&&N.tiles===N.want,'the archetypes are buttons, one per archetype in ARCH, round RB, '+N.tiles);
+  ok(N.shutOnArrival,'and on arrival every archetype is shut and no question is drawn');
+  ok(N.first,'a press on one opens its panel and only the questions that name it');
+  ok(N.moved,'a press on another moves the one open panel to it');
+  ok(N.answerKeeps,'an answer leaves its archetype open');
+  ok(N.shut,'and a press on the open one shuts it');
+  ok(N.seatTile,'and the archetype tile is the seat tile, one control on this page and not two');}
  ok(ix.pressed.stored===8&&ix.pressed.on,'a press records the answer and the cell stays pressed after the page redraws, '+JSON.stringify(ix.pressed));
  ok(/left/.test(ix.pressed.part),'and a half answered block says what is left, "'+ix.pressed.part+'"');
  ok(/^Loudest axis: Anger\./.test(ix.read)&&/Felt in the upper abdomen/.test(ix.read)&&/Its other end is Equanimity: /.test(ix.read),
@@ -4673,12 +4764,24 @@ console.log('\n=== the three blocks stacked under the laws, round PP ===');
   await new Promise(r=>setTimeout(r,400)); renderIntake();
   /* a control is an eleven cell scale or, for an archetype dilemma, its two
      buttons (.iqx-dlb), round PQ: see the note on the same count at 1600. */
-  const q=[...document.querySelectorAll('#iqbody .iqx .iq-sl')].length
-   +[...document.querySelectorAll('#iqbody .iqx .iqx-dlb')].length;
-  const over=[...document.querySelectorAll('#iqbody .iqx *')].filter(e=>{const r=e.getBoundingClientRect();return r.width&&r.right>innerWidth+1;}).length;
-  return {scales:q, want:IX_BLOCKS.reduce((n,b)=>n+b.rows.length,0), over:over,
-   w:document.documentElement.scrollWidth-innerWidth};});
+  /* round RB: the archetype questions are reached by pressing each
+     archetype, so each is counted once by its row key across every press,
+     and the right edge is checked in every one of those states */
+  const offRight=()=>[...document.querySelectorAll('#iqbody .iqx *')].filter(e=>{const r=e.getBoundingClientRect();return r.width&&r.right>innerWidth+1;}).length;
+  const flat=[...document.querySelectorAll('#iqbody .iqx:not(#iqx-arch) .iq-sl')].length;
+  const seen=new Set(); let over=offRight(), w=document.documentElement.scrollWidth-innerWidth;
+  const tiles=[...document.querySelectorAll('#iqx-arch [data-iqarch]')];
+  const tileBad=tiles.filter(e=>{const r=e.getBoundingClientRect(), n=e.querySelector('.iqa-tn');
+   return r.width<44||r.height<44||(n&&n.scrollWidth>n.clientWidth+1);}).map(e=>e.getAttribute('data-iqarch'));
+  tiles.map(e=>e.getAttribute('data-iqarch')).forEach(k=>{
+   document.querySelector('#iqbody [data-iqarch="'+k+'"]').click();
+   document.querySelectorAll('#iqx-arch [data-nest="iqarch"]:not([hidden]) .iqx-ap').forEach(pl=>{
+    if(pl.querySelector('.iq-sl,.iqx-dlb'))seen.add(pl.getAttribute('data-k'));});
+   over+=offRight(); w=Math.max(w,document.documentElement.scrollWidth-innerWidth);});
+  IQ_ARCH=null; renderIntake();
+  return {scales:flat+seen.size, want:IX_BLOCKS.reduce((n,b)=>n+b.rows.length,0), over:over, w:w, tileBad:tileBad};});
  ok(o.scales===o.want,'all of the questions are on the phone page, '+o.scales+' of '+o.want);
+ ok(o.tileBad&&o.tileBad.length===0,'and every archetype button is at least 44 by 44 with its whole name showing, short on '+JSON.stringify(o.tileBad));
  ok(o.over===0&&o.w<=2,'and none of them runs off the right edge, '+o.over+' elements, document '+o.w+' wide of the screen');
  await ph.close();
 }
@@ -4838,7 +4941,9 @@ console.log('\n=== a teacher on the compass opens the behaviour complex and adds
   runPathDrill(own); await wait(100);
   const pb=document.querySelector('#rdrill .tcx');
   o.pathBox=pb?pb.getAttribute('data-tcx'):null; o.pathK=own.k;
-  setTab(TAB.RITUAL); await wait(400);
+  /* the Active list is Goals' Today, and with a ritual running the centre
+     opens on the week since round RB, so the list is asked for by its view */
+  RIT.gview='today'; setTab(TAB.RITUAL); await wait(400);
   o.row=[...document.querySelectorAll('#rit .rv-sub')].map(s=>s.textContent).filter(t=>/^Toward Buddha/.test(t)).length;
   /* a worked example saves nothing, and the panel says so and offers no button */
   loadP(PERSON('Gordon')); setTab(TAB.COMPASS); await wait(300);
@@ -5424,7 +5529,10 @@ console.log('\n=== the orientation dial says nothing about an unread field ===')
    fill:!!(pb&&pb.querySelector('.fill')),
    mid:!!(pb&&pb.querySelector('.mid')),
    h:pb?Math.round(pb.getBoundingClientRect().height):0,
-   title:pb?pb.title:'', pol:pol?pol.textContent.trim().slice(0,60):''};
+   /* round RZ: this dial carries its tooltip as data-tip, not the native
+      title attribute, which axDial now removes outright on every build
+      (never on touch, unreliable on hover). Read the real carrier. */
+   title:pb?(pb.getAttribute('data-tip')||''):'', pol:pol?pol.textContent.trim().slice(0,60):''};
   loadP(PERSON('Gordon'));
   await new Promise(r=>setTimeout(r,260));
   const read={unread:!!compute().unread,
@@ -6493,16 +6601,17 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
  ok(re.nums.length>=4&&re.match,'and it carries the name\'s numerology, the same figures numerologyOf gives, '+JSON.stringify(re.nums));
  ok(re.blocks==='Energy,Psyche','the rail\'s first block is called Energy now, got '+re.blocks);
 
- /* FV. ROOT ENERGETICS READ ACROSS, at the very top of the right rail and
-    closed; the section set apart on both rails; a mark on every section
+ /* FV, MOVED TO THE LEFT RAIL 3 October. ROOT ENERGETICS READ ACROSS, at the
+    very top of the left rail now and closed; the section set apart, the
+    same tint Root Energetics wears below it; a mark on every section
     header; no root names on the matrix; Running as badges; and the core's
     feathers on Frames and Dial as well as the wheel. */
  const fv=await fp.evaluate(async()=>{loadP(PERSON('Tomas'));setTab(TAB.FIELD);render();
   const panel=document.getElementById('rootsum').closest('.panel');
-  const sec=document.querySelector('.lsec[data-rail=right][data-sec=overlap]');
-  /* the first section, and not the first child: since LO the rail's fold
-     control leads the panel, the way lfold leads the left one, and it is a
-     control and not a section */
+  const sec=document.querySelector('.lsec[data-rail=left][data-sec=overlap]');
+  /* the first section, and not the first child: the rail's own fold control,
+     lfold, leads the panel and is not a .lsec, so :scope>.lsec skips past it
+     to whatever section actually stands first */
   const first=panel.querySelector(':scope>.lsec');
   const closed=!sec.classList.contains('open');
   sec.querySelector('.lsec-hd').click();
@@ -6544,16 +6653,16 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   fviewSet('wheel');
   out.fe=fe;
   return out;});
- /* named Energetic Summary since GO, so the two rails no longer carry one
-    name for two sections; the left keeps Root Energetics, asserted above */
- ok(fv.first&&fv.closed&&fv.name==='Energetic summary','the summary is the right rail\'s first section, closed on arrival, '
+ /* named Energetic Summary since GO, so it still does not share Root
+    Energetics' name now that the two sit on the same rail, asserted above */
+ ok(fv.first&&fv.closed&&fv.name==='Energetic summary','the summary is the left rail\'s first section, closed on arrival, '
   +JSON.stringify({first:fv.first,closed:fv.closed,name:fv.name}));
  ok(fv.meets.length&&fv.meets.join()===fv.want.join(),'it leads with the meetings the engine finds, '+fv.meets.join(', '));
  ok(fv.lit.join()===fv.wantLit.join(),'each band lights exactly the systems that land there, '+fv.lit.join(' '));
  ok(fv.says&&fv.range===fv.wantRange,'each meeting says what it means, and the range carries every other reading, '+fv.range);
  ok(fv.noFigure,'and no probability or percentage is printed at the person');
  ok(/No birth data/.test(fv.blank)&&fv.blankGo,'a blank profile is told what unlocks it, with the door, '+fv.blank);
- ok(fv.tinted,'Root Energetics is set apart on both rails');
+ ok(fv.tinted,'Root Energetics and Energetic summary both carry the tinted panel');
  ok(!fv.bare.length,'every section header carries its mark, bare: '+fv.bare.join(', '));
  ok(fv.heads,'and every Root Energetics heading its system\'s');
  ok(!fv.mx,'the matrix carries no root names');
@@ -6937,14 +7046,14 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
   return {tab:S.tab===TAB.FIELD,lshut:document.body.classList.contains('lshut'),stored:STORE.get('lcol'),
    energetics:!document.querySelector('[data-sec=energetics]').classList.contains('open'),
    left:document.querySelector('[data-sec=energetics] .lsec-hd').textContent.trim(),
-   right:document.querySelector('[data-sec=overlap] .lsec-hd').textContent.trim(),
+   esum:document.querySelector('[data-sec=overlap] .lsec-hd').textContent.trim(),
    seats:lay('seats').getAttribute('aria-label'),gates:lay('gates').getAttribute('aria-label'),
    stale:names.filter(n=>/^(Seats|Gates)$/.test(n)),
    view:S.view,custom:LAYSET,ring:dv.getAttribute('stroke-dasharray'),
    togMark:F.querySelector('.fb-tog svg').innerHTML,foldMark:document.querySelector('#lfold svg').innerHTML};});
  ok(a.tab&&a.lshut&&a.stored===null,'a first visit at 1600 lands on the Field with the left column shut and nothing stored, '+JSON.stringify({lshut:a.lshut,stored:a.stored}));
  ok(a.energetics&&a.left==='Root Energetics','the left rail keeps Root Energetics, closed, '+a.left);
- ok(a.right==='Energetic summary','and the right rail\'s summary is the Energetic summary, so no two sections share a name, '+a.right);
+ ok(a.esum==='Energetic summary','and the summary keeps its own name, Energetic summary, so no two sections share one, '+a.esum);
  ok(a.seats==='Assemblage points'&&a.gates==='Action'&&!a.stale.length,'the bar says Assemblage points and Action, and neither old word, '+JSON.stringify([a.seats,a.gates,a.stale]));
  ok(a.view===3&&a.custom===null&&a.ring==='100.0 100','depth starts full, Blueprint, and its ring reads full, '+a.ring);
  ok(a.togMark!==a.foldMark,'the bar\'s fold and the column\'s fold wear two marks, since they now stand side by side');
@@ -7005,8 +7114,8 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
 console.log('\n=== the profile picker: grouped by tier, lowest first ===');
 {
  const pk=await page.evaluate(()=>{
-  const sel=document.getElementById('psel'), groups=[].map.call(sel.children,g=>({
-   label:g.label, opts:[].map.call(g.children,o=>+o.value)}));
+  const sel=document.getElementById('psel'), groups=[].map.call(sel.children,g=>g.tagName==='OPTGROUP'?{
+   label:g.label, opts:[].map.call(g.children,o=>+o.value)}:{own:true, you:!!PEOPLE[+g.value].you, label:g.textContent, opts:[+g.value]});
   /* the number a person sees for each, through the one door every example goes by */
   const keep=S.who, cq={};
   PEOPLE.forEach((p,i)=>{if(p.you)return; loadP(i); cq[i]=compute().CQ;});
@@ -7014,9 +7123,17 @@ console.log('\n=== the profile picker: grouped by tier, lowest first ===');
   return {groups,cq,tiers:TIERDEF.map(t=>t.nm),each:PEOPLE.map((p,i)=>p.you?null:{i,tier:tierOf(cq[i]).nm,nm:p.nm}).filter(Boolean),
    nExamples:PEOPLE.filter(p=>!p.you).length,
    words:[].map.call(sel.querySelectorAll('option'),o=>o.textContent)};});
- const own=pk.groups.filter(g=>g.label==='Your own'), tg=pk.groups.filter(g=>g.label!=='Your own');
- ok(pk.groups[0].label==='Your own'&&own.length===1&&own[0].opts.length===1,
-  'the blank profile stays in front, in a group of its own, got '+pk.groups.map(g=>g.label).join(', '));
+ /* round RB: the person's own entry sits in front with no heading over it,
+    and every heading after it opens on Test cases, so none of them reads as
+    a group of real people. It was a group of one called Your own. */
+ const own=pk.groups.filter(g=>g.own), tg=pk.groups.filter(g=>!g.own);
+ ok(pk.groups[0].own&&own.length===1&&own[0].opts.length===1&&own[0].you,
+  'the blank profile stays in front, on its own, got '+pk.groups.map(g=>g.label).join(', '));
+ const TC='Test cases, ';
+ ok(tg.length>0&&tg.every(g=>g.label.indexOf(TC)===0),
+  'every group heading after it says Test cases, got '+tg.map(g=>g.label).join(', '));
+ const heads0=tg.map(g=>g.label);
+ tg.forEach(g=>{g.label=g.label.slice(TC.length);});
  /* every group is a tier, once, and they run lowest band first */
  const order=pk.tiers.slice().reverse();
  const idx=tg.map(g=>order.indexOf(g.label));
@@ -7040,7 +7157,7 @@ console.log('\n=== the profile picker: grouped by tier, lowest first ===');
  const menu=await page.evaluate(()=>{const b=document.getElementById('ploadbtn'); if(!b)return null;
   b.click(); const m=document.getElementById('pload');
   const heads=[].map.call(m.querySelectorAll('.pl-g'),x=>x.textContent); b.click(); return heads;});
- ok(menu!==null&&menu.join('|')===pk.groups.map(g=>g.label).join('|'),
+ ok(menu!==null&&menu.join('|')===heads0.join('|'),
   'the phone menu lists the same groups in the same order, got '+(menu&&menu.join(', ')));
 }
 
@@ -7071,6 +7188,13 @@ await require('./locks.js').lockGate(browser,FILE,ok,booted);
    be run alone. */
 console.log('\n=== flow, one page of three columns: inputting new, the ritual, the accountability tracker ===');
 await require('./flowtools.js').flowGate(browser,FILE,ok,booted);
+
+/* THE ANALYTICS TRAIL, tests/anatrail.js, round RB. His words: "I should be
+   able to click on it and drill down deeper and trace all my patterns down to
+   the fetters." A file of its own so it can run alone, called here so a full
+   run holds it through the same code. */
+console.log('\n=== analytics: every figure a door, the chain walked down to the fetter and back ===');
+await require('./anatrail.js').anaTrailGate(browser,FILE,ok,booted);
 
 await browser.close();
 

@@ -180,6 +180,7 @@ function loadProfile(p){
  if(p.plan.base===undefined)p.plan.base=null;
  if(!p.avatar)p.avatar=avatarBlank();
  if(!Array.isArray(p.avatar.pairs))p.avatar.pairs=[];
+ avatarFill(p.avatar);
  if(!p.purpose)p.purpose=purposeBlank();
  /* a record from before the release lift has done no work since its answers,
     which is exactly what an empty map says */
@@ -928,6 +929,18 @@ function vEntry(errs,i,x){
   var ob=vEntryOb(errs,path+'.ob',x.ob);
   if(ob)q.ob=ob;}
  return q;}
+/* AN OLDER AVATAR GAINS WHAT THE BLANK CARRIES, round RB, and nothing it
+   already holds is touched. Called where a record is filled, so a profile in
+   memory from before this build reads like a new one. */
+function avatarFill(av){
+ if(!av)return av;
+ var b=avatarBlank(), st=avatarStatus(av);
+ Object.keys(b).forEach(function(k){if(av[k]===undefined)av[k]=b[k];});
+ av.status=st;
+ ['arch','load0','tags'].forEach(function(k){
+  if(!av[k]||typeof av[k]!=='object'||Array.isArray(av[k]))av[k]={};});
+ if(AV_STATUS.indexOf(av.status)<0)av.status=avatarStatus(av);
+ return avatarEnsureIds(av);}
 function validateProfile(o){
  var errs=[];
  if(!o||typeof o!=='object'||Array.isArray(o))return {ok:false, errs:['not an object']};
@@ -1154,11 +1167,70 @@ function validateProfile(o){
      if(x.seat!==undefined&&x.seat!==null){
       if(BANDS.indexOf(x.seat)>=0)q.seat=x.seat;
       else errs.push('avatar.pairs seat '+JSON.stringify(x.seat)+' is not a seat');}
+     /* THE PAIR'S ID, round RB, S2. Kept when it is one; refused by name when
+        it is something else, because a weight kept against a pair is found by
+        it. Missing is an older pair and is given one below. */
+     if(x.id!==undefined&&x.id!==null){
+      if(typeof x.id==='string'&&AV_ID.test(x.id))q.id=x.id;
+      else errs.push('avatar.pairs id '+JSON.stringify(x.id)+' is not a pair id');}
      return q;});
    if(p.avatar.pairs.length!==o.avatar.pairs.length)
     errs.push('avatar.pairs held '+(o.avatar.pairs.length-p.avatar.pairs.length)
-     +' entries that are not a written pair');}
-  else if(o.avatar.pairs!==undefined)errs.push('avatar.pairs is not a list');}
+     +' entries that are not a written pair');
+   var seenId={};
+   p.avatar.pairs.forEach(function(q){if(!q.id)return;
+    if(seenId[q.id])errs.push('avatar.pairs id '+q.id+' is on two pairs');
+    seenId[q.id]=1;});}
+  else if(o.avatar.pairs!==undefined)errs.push('avatar.pairs is not a list');
+  avatarEnsureIds(p.avatar);
+  /* WHO THE AVATAR IS, round RB, S2: three things the person writes, a
+     version and a status. Text is bounded and never edited; a wrong type or a
+     length past the cap is refused by name, never cut. */
+  ['name','title','description'].forEach(function(f){
+   var v=o.avatar[f]; if(v===undefined||v===null)return;
+   if(typeof v!=='string')errs.push('avatar.'+f+' is not text');
+   else if(v.length>AV_CAP[f])errs.push('avatar.'+f+' is '+v.length+' characters, and the most is '+AV_CAP[f]);
+   else p.avatar[f]=v;});
+  if(o.avatar.version!==undefined&&o.avatar.version!==null){
+   if(NUM(o.avatar.version)&&o.avatar.version>=1&&Math.floor(o.avatar.version)===o.avatar.version)p.avatar.version=o.avatar.version;
+   else errs.push('avatar.version '+JSON.stringify(o.avatar.version)+' is not a whole number from 1');}
+  if(o.avatar.status!==undefined&&o.avatar.status!==null){
+   if(AV_STATUS.indexOf(o.avatar.status)>=0)p.avatar.status=o.avatar.status;
+   else errs.push('avatar.status '+JSON.stringify(o.avatar.status)+' is not one of '+AV_STATUS.join(', '));}
+  else p.avatar.status=p.avatar.built?'active':'draft';
+  if(o.avatar.movedAt!==undefined&&o.avatar.movedAt!==null){
+   if(typeof o.avatar.movedAt==='string'&&!isNaN(new Date(o.avatar.movedAt).getTime()))p.avatar.movedAt=o.avatar.movedAt;
+   else errs.push('avatar.movedAt is not a date');}
+  /* WHAT THE AVATAR PAGE WRITES, round RB, S1, on the record at last. Each is
+     the shape ui/avatarui.js writes and nothing else: a rating is one to five
+     on an archetype that exists; a starting weight is nought to ten against a
+     pair on this record; a tag list is per seat. Anything else is refused by
+     name, which is the boundary's rule, and the read on the page stays as
+     strict as it was beside the record. */
+  var obj=function(v){return v&&typeof v==='object'&&!Array.isArray(v);};
+  if(o.avatar.arch!==undefined&&o.avatar.arch!==null){
+   if(!obj(o.avatar.arch))errs.push('avatar.arch is not an object');
+   else Object.keys(o.avatar.arch).forEach(function(k){var v=o.avatar.arch[k];
+    if(!ARCH.some(function(a){return a.nm===k;}))errs.push('avatar.arch names '+JSON.stringify(k)+', which is not an archetype');
+    else if([1,2,3,4,5].indexOf(v)<0)errs.push('avatar.arch.'+k+' is '+JSON.stringify(v)+', not one to five');
+    else p.avatar.arch[k]=v;});}
+  if(o.avatar.load0!==undefined&&o.avatar.load0!==null){
+   if(!obj(o.avatar.load0))errs.push('avatar.load0 is not an object');
+   else Object.keys(o.avatar.load0).forEach(function(k){var v=o.avatar.load0[k];
+    if(!p.avatar.pairs.some(function(q){return q.id===k;}))errs.push('avatar.load0 names pair '+JSON.stringify(k)+', which is not on this record');
+    else if(!NUM(v)||v<0||v>10)errs.push('avatar.load0.'+k+' is '+JSON.stringify(v)+', not nought to ten');
+    else p.avatar.load0[k]=v;});}
+  if(o.avatar.tags!==undefined&&o.avatar.tags!==null){
+   if(!obj(o.avatar.tags))errs.push('avatar.tags is not an object');
+   else Object.keys(o.avatar.tags).forEach(function(b){var t=o.avatar.tags[b];
+    if(BANDS.indexOf(b)<0){errs.push('avatar.tags names '+JSON.stringify(b)+', which is not a seat'); return;}
+    if(!obj(t)){errs.push('avatar.tags.'+b+' is not an object'); return;}
+    var q={add:[],off:[]}, bad=false;
+    ['add','off'].forEach(function(f){var a=t[f]; if(a===undefined)return;
+     if(!Array.isArray(a)||a.length>AV_CAP.tags||a.some(function(w){return typeof w!=='string'||!w.length||w.length>AV_CAP.tag;})){
+      errs.push('avatar.tags.'+b+'.'+f+' is not a list of words'); bad=true; return;}
+     q[f]=a.slice();});
+    if(!bad)p.avatar.tags[b]=q;});}}
  /* NULL IS MISSING, NOT WRONG. The rule is that a missing field is an older
     profile and is filled from the blank, and only a field of the wrong type or
     out of range is refused by name. These two tested `!==undefined`, so a
@@ -1175,8 +1247,14 @@ function validateProfile(o){
    if(o.purpose[f]===undefined)return;
    if(!Array.isArray(o.purpose[f])||o.purpose[f].length>3){
     errs.push('purpose.'+f+' is not three values'); return;}
-   p.purpose[f]=o.purpose[f].map(function(x){
-    return typeof x==='string'&&x.length<120?x:'';});
+   /* REFUSED BY NAME, round RB, S3. This replaced an over long value with an
+      empty string and said nothing (BECOMING-AUDIT.md R10). */
+   p.purpose[f]=o.purpose[f].map(function(x,i){
+    /* an unwritten corner is empty, however an older build wrote it */
+    if(x===null||x===undefined)return '';
+    var why=purposeRefuse(x,PUR_VAL_MAX);
+    if(why){errs.push('purpose.'+f+'['+i+'] '+why); return '';}
+    return x;});
    while(p.purpose[f].length<3)p.purpose[f].push('');});
   if(o.purpose.sides&&typeof o.purpose.sides==='object'){
    PUR_SIDES.forEach(function(sd){
@@ -1186,8 +1264,13 @@ function validateProfile(o){
     if(a.length>PUR_PER_SIDE){
      errs.push('purpose.sides.'+sd+' holds '+a.length+', which is more than '+PUR_PER_SIDE);
      return;}
-    p.purpose.sides[sd]=a.filter(function(x){
-     return typeof x==='string'&&x.length>0&&x.length<200;});});}
+    /* and a commitment the same way: an empty one is a slot nobody wrote
+       and is left out, a wrong one is refused by name rather than dropped */
+    p.purpose.sides[sd]=a.filter(function(x,i){
+     if(x==='')return false;
+     var why=purposeRefuse(x,PUR_LINE_MAX);
+     if(why){errs.push('purpose.sides.'+sd+'['+i+'] '+why); return false;}
+     return true;});});}
   else if(o.purpose.sides!==undefined)errs.push('purpose.sides is not an object');}
  else if(o.purpose!==undefined&&o.purpose!==null)errs.push('purpose is not an object');
  if(Array.isArray(o.rituals))p.rituals=o.rituals
@@ -1462,6 +1545,7 @@ function meterRun(p,keys,at){
  if(p.plan.base===undefined)p.plan.base=null;
  if(!p.avatar)p.avatar=avatarBlank();
  if(!Array.isArray(p.avatar.pairs))p.avatar.pairs=[];
+ avatarFill(p.avatar);
  if(!p.purpose)p.purpose=purposeBlank();
  var list=(keys||[]).filter(function(k){return typeof k==='string'&&k;});
  if(!list.length)return {added:0,repeated:0,fresh:[]};
@@ -1744,6 +1828,15 @@ function pImport(txt){
  var o; try{ o=JSON.parse(txt); }catch(e){ IMPORT_ERR=['not valid JSON']; return null; }
  var v=validateProfile(o);
  if(!v.ok){ IMPORT_ERR=v.errs; return null; }
+ /* A RECORD THAT REACHED THIS BOUNDARY IS NEVER A BLANK FIRST RUN. The
+    onboarding tour exists for a person with nothing read yet; the quiz
+    link, a pasted record and a restored file all carry a real story
+    already, so the tour that asks "what brought you here" has nothing
+    left to ask. Without this, ui.onboarded stays false on every one of
+    these three routes, since none of them is obClose, the only other
+    place that sets it, and the next sign in reopens the tour on a person
+    who already answered it, outside this app, on the funnel. */
+ v.profile.ui.onboarded=true;
  var keepP=PROFILES.slice(), keepC=CURP;
  /* with no current profile there is nothing to restore to, so the rollback
     loads a blank rather than leaving the engine holding the rejected one. */

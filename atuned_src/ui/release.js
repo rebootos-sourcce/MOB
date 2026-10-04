@@ -830,7 +830,7 @@ function relLive(){
 function relShade(dq,dq0){
  if(dq==null||dq0==null)return '';
  return '<div class="rel-clock">'
-  +'<div class="rel-fig"><span>DQ</span><b>'+dq.toFixed(2)+'</b></div>'
+  +'<div class="rel-fig"><span class="tipu"'+unpAttr('dq',null,'DQ')+'>DQ</span><b>'+dq.toFixed(2)+'</b></div>'
   +'<div class="rel-fig"><span>Down</span><b>'+Math.max(0,dq0-dq).toFixed(2)+'</b></div></div>';}
 /* ============================================================
    THE TWO COUNTS. His words, 27 September: "You should have a
@@ -919,12 +919,12 @@ function relTally(c,live){
     own at 390; five fit. */
  return '<div class="rel-clock rel-figs">'
   +fig('Remaining',c.left,c.left===1?'pattern':'patterns')
-  +(live&&live.dq!=null?'<div class="rel-fig"><span>DQ</span><b>'+live.dq.toFixed(2)+'</b></div>'
+  +(live&&live.dq!=null?'<div class="rel-fig"><span class="tipu"'+unpAttr('dq',null,'DQ')+'>DQ</span><b>'+live.dq.toFixed(2)+'</b></div>'
     +'<div class="rel-fig"><span>Down</span><b>'+Math.max(0,live.dq0-live.dq).toFixed(2)+'</b></div>':'')
   /* CQ and how far it has come up, round QQ, see CQ, COUNTED UP above */
-  +(live&&live.cq!=null?'<div class="rel-fig" id="relcq"><span>CQ</span><b>'+live.cq.toFixed(2)+'</b></div>'
+  +(live&&live.cq!=null?'<div class="rel-fig" id="relcq"><span class="tipu"'+unpAttr('cq',null,'CQ')+'>CQ</span><b>'+live.cq.toFixed(2)+'</b></div>'
     +'<div class="rel-fig" id="relcqup"><span>Up</span><b>'+Math.max(0,live.cq-live.cq0).toFixed(2)+'</b></div>'
-    :live&&live.cqUnread?'<div class="rel-fig" id="relcq"><span>CQ</span><b>\u2013</b></div>':'')
+    :live&&live.cqUnread?'<div class="rel-fig" id="relcq"><span class="tipu"'+unpAttr('cq',null,'CQ')+'>CQ</span><b>\u2013</b></div>':'')
   +'</div>'
   /* every figure on the row says what it is in the same place, round PO */
   +(live&&(live.dq!=null||live.cq!=null||live.cqUnread)?'<div class="rel-ct rel-figs-s" id="relfigmean">'
@@ -2938,6 +2938,10 @@ function relResults(){
  var _now=compute(), _mv=_now.EX-(RUN.ex0||0), _left=exHeadroom(_now.EX);
  out+='</div><div class="rel-note">Expression '
   +(Math.abs(_mv)<0.05?'did not move.':(_mv>0?'up ':'down ')+Math.abs(_mv).toFixed(1)+', now '+_now.EX.toFixed(1)+'.')
+  /* ROUND RG. Expression was printed here with a figure and no meaning, and
+     on Summary the same word is a numerology number. The table's sentence
+     for this one rides beside it. */
+  +' '+unpSay('expression','field')
   +' '+(_left<1.5
    ?'Release has about '+_left.toFixed(1)+' points left to give you. The laws '
     +'hold expression down from here, and there are twenty one of them. '

@@ -65,9 +65,14 @@
    is read once at load from the window, and a person who sets it in a console
    is in the position of one who edits their own record, said above. */
 var SIGHT_PLAN=(typeof window!=='undefined'&&window.SIGHT_PLAN)||null;
+/* THE SIGHT SWITCH IS GONE, ROUND RI. devSight() always reads false now
+   (ui/login.js), so the free tier four this read for the owner's own account
+   or a console flag can never fire again, whatever any browser's storage
+   already holds. */
 function lockPlan(){
  if(SIGHT_PLAN)return SIGHT_PLAN;
- if(typeof devSight==='function'&&devSight())return {tier:'four',status:'active'};
+ if(typeof devSight==='function'&&devSight())
+  return {tier:'four',status:'active'};
  return (typeof CURP!=='undefined'&&CURP&&CURP.plan)||null;}
 /* Whether this person may see a thing right now. Read at every call and never
    cached, because a plan can change under an open surface: a payment lands, a

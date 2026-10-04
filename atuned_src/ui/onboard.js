@@ -784,7 +784,7 @@ function obRender(){
   /* ROUND QH: the body is the stage's now, the one figure every step moves,
      so the card carries the words and the figure stands beside them at a
      size a card could never give it. */
-  out=obCard('Welcome to a neurosomatic experience','This is you, and it is okay.',
+  out=obCard('Arrive','This is you, and it is okay.',
    '<p class="ob-p">No judgment. Nothing here grades you. This one is for you.</p>'
    +'<p class="ob-p ob-dim">A few minutes. One real thing to write. Nothing to fill in.</p>'
    /* THE PRIVACY LINE IS A FACT ABOUT THE BUILD AND NOT A PROMISE. One file,
@@ -798,10 +798,30 @@ function obRender(){
   /* ASK. Picking is the advance in the mockup; kept here, with a Back for
      a person who taps the wrong one, which the mockup did not need because
      its chips fly back into the ring and this sheet's do not. */
+  /* THE INTAKE INVITATION, round RI. His own words: "we want to invite the
+     person. As they tour, one of the first things they do is stop at
+     intake. And fill that in as much as possible. It's self-identified, and
+     then the weights adjust it dynamically." The weighting is already real
+     and needs nothing added, iqApply already folds every answered law into
+     p.laws and S.law the moment it exists (engine/intake.js); what was
+     missing is purely this invitation. It sits on Ask and not on Welcome
+     above, because Ask is already the one card in this tour about saying who
+     you are, and a second paragraph on Welcome would crowd a card every
+     comment above it treats as finished. Pressing it ends the tour the same
+     way Skip does (CURP.ui.onboarded is set either way) and opens the real
+     page, named here the way the tab itself names it, Avatar, so the word
+     a person reads here is the word they land on. Nothing about this gates
+     anything: a person who answers three laws and leaves has a real partial
+     reading, not a failed one, the same rule Verification on the funnel
+     holds for "Nothing changed." */
   out=obCard('Ask','What brought you here?',
    '<p class="ob-p ob-dim">Pick the one that is closest. Nothing is locked in.</p>'
-   +obChips(OB_STARTS,'obpick',OB.pick,false),
-   '<button type="button" class="btn" data-ob="back">Back</button>');
+   +obChips(OB_STARTS,'obpick',OB.pick,false)
+   +'<p class="ob-p ob-dim ob-foot">There is also a longer self-check, in the Avatar tab. '
+   +'It asks how you actually act, not how you want to act. Answer what you want, in any order, '
+   +'and stop anytime: a few answered is still a real reading, not a failed one.</p>',
+   '<button type="button" class="btn" data-ob="intake">Open Avatar</button>'
+   +'<button type="button" class="btn" data-ob="back">Back</button>');
  }
  else if(s===2){
   /* SETTLE. His two lines, kept exactly as the mockup carries them
@@ -1214,7 +1234,7 @@ function obMiniSay(pl,first,yes){
    +'. '+(pl.rest===1?'The other one waits':'The other '+pl.rest+' wait')+' for your next release.</p>';
  } else if(pl.inferred>0){
   out+='<p class="ob-p">'+(pl.inferred===n?(n===1?'This place comes':'All '+n+' come')
-    :pl.inferred+' of the '+n+' come')+' from where the feeling sits. Your words did not name '
+    :pl.inferred+' places of the '+n+' come')+' from where the feeling sits. Your words did not name '
    +(pl.inferred===1?'it':'them')+'.</p>';
  }
  out+='<p class="ob-p">'+(pl.rest>0?'That is ':rel+' is ')+pl.lines+' lines, '
@@ -1316,6 +1336,12 @@ addEventListener('click',function(e){
   if(OB.read&&typeof ST_TEXT==='string'&&ST_TEXT===OB.text){ ST_TEXT=''; ST_PARSED=null; }
   OB.text=''; OB.read=null; OB.fixReads=[]; OB.fixes=[]; OB.ans={}; OB.plan=null;
   OB.commit={ok:false,why:'skip'}; OB.step=6; obRender(); return; }
+ if(k==='intake'){
+  /* closes the same way skip/done do, including the onboarded flag, and
+     then moves the running app to the real page: setTab is panels.js's own
+     and TAB.INTAKE is core.js's own, both load ahead of this file per
+     MANIFEST, so neither is a second definition of either. */
+  obClose(); if(typeof setTab==='function')setTab(TAB.INTAKE); return; }
  if(k==='mirrorno'){ var w=document.getElementById('obcorrwrap'); if(w)w.hidden=false;
   var ci=document.getElementById('obcorr'); if(ci)ci.focus(); return; }
  if(k==='mirroradjust'){ obAdjust(); return; }

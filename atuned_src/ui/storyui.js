@@ -252,7 +252,7 @@ function stRender(){
   +'</div>'
   /* ---- the release column. It keeps the id its rail section had. The
      analytics preview is last in it, closed, see stAnaHtml. ---- */
-  +'<div class="st-colx"><div class="st-rl" id="strel" aria-label="Release"></div>'+stAnaHtml()+'</div>'
+  +'<div class="st-colx"><div class="st-rl" id="strel" aria-label="Release"></div>'+stAnaHtml()+stLawHtml()+'</div>'
   +'</div>'
   /* WHAT A SCREEN READER HEARS IS WHAT SOURCE AI SAYS, ONCE. The column is
      rewritten on every keystroke, so a live column would read itself aloud
@@ -287,6 +287,7 @@ function stRender(){
  stPaintAll();
  stWire();
  stAnaWire();
+ stLawWire();
  var cl=document.getElementById('stclear');
  if(cl)cl.onclick=function(){ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;srcFresh();stRender();};
  var ap=document.getElementById('stapply');
@@ -305,7 +306,7 @@ function stRender(){
    sorted, which column has the room, which list is up, and whether the bank
    is open. Kept across a return to the tab, never saved.
    ============================================================ */
-var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:false};
+var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:false,law:false};
 /* the one width the page changes shape at is the one the product stacks its
    columns at, so the Story cannot be in three columns while the rails are
    already one. */
@@ -2063,6 +2064,143 @@ function stAnaPaint(){
   var bring=function(){var a=document.getElementById('ana'), at=a&&(a.querySelector('.ana-hot')||a);
    if(at&&at.scrollIntoView)at.scrollIntoView({block:'start'});};
   if(typeof requestAnimationFrame==='function')requestAnimationFrame(bring); else bring();};}
+
+
+/* ============================================================
+   THE LAWS, READ FROM THE SAME WORDS A STORY ALREADY GAVE. His own
+   instruction, 3 October: "wire that in... it should be easy because the
+   system is already done." It was. `sniffLaws` and `sniffGates`
+   (engine/sniff.js, built against SNIFFER_SPEC.md sections 6 and 8) already
+   read a story's text for which of the 21 laws of integrity reads as held or
+   let go, and for whether the words read as aware or reactive, attached or
+   detached, folded into one avoidance number. Both existed and were called
+   from exactly one place before this, the tutorial's own internal debug
+   object, which read a different field off the same contract and left the
+   rest on the floor.
+
+   THIS PANEL READS, IT DOES NOT SCORE, ON PURPOSE. The spec itself rules
+   that a violation "is not decorative, it is the actual input to the
+   coherence number" (section 6), and that is the next, separate step: moving
+   a person's own law answer, and therefore coherence itself, from what the
+   sniffer reads rather than what Intake asked. Every number that already
+   moves coherence in this product (the release lift above, lawLift) is
+   fitted first to a real measured anchor, his own CQ at 88 to 92. This has
+   no anchor yet, so it is not wired to that number tonight. Named here and
+   in PLAN.md as the deliberate next piece rather than guessed at with an
+   unfitted magnitude.
+
+   A REAL GAP, FOUND WHILE WIRING THIS IN AND NOT BEFORE. DECISIONS.md
+   settled this product's own 21 laws as SI (engine/data/canon.js) with
+   Responsibility and Accountability where the book, SNIFFER_SPEC.md and
+   the sniffer's own cue tables (LAWCUE, LAWVIO, engine/lexicon.js and
+   engine/sniff.js) still carry Wisdom and Ownership. The two names were
+   never reconciled. A hit on either is filtered out below rather than shown
+   against a law this product does not have, and Responsibility and
+   Accountability are left with no cue words to read a violation from at
+   all. Named rather than patched with invented wording, since writing the
+   cue phrases a real violation of either would sound like is a voice
+   decision on its own and not a side effect of wiring a panel in. */
+var ST_LAW_TOP=3;
+/* ONE PLAIN CLAUSE PER VIOLATION, so the word never stands alone (V23). Not
+   the spec's own phrasing, which runs to abstractions a ten year old has
+   not met (V21): "Folly and sophistry" and "Synthetic departure" are the
+   book's words for the law, not a sentence a person says about their own
+   day. Keyed by the exact violation string sniffLaws returns, which is
+   LAWVIO's own string, so a change there is a change here and not a second
+   table drifting from the first. */
+var ST_LAWSAY={
+ Deception:'saying something that was not quite true',
+ Opacity:'keeping something back that the other person never got to know',
+ Division:'treating some people as not one of us',
+ Reactivity:'snapping before you noticed you were upset',
+ Absence:'being somewhere else in your head while it happened',
+ Volatility:'your peace depending on things going right',
+ Indifference:'not caring what happened to someone else',
+ 'Self-abandonment':'putting yourself last until you stopped counting',
+ Resentment:'still holding it against someone',
+ Avoidance:'putting it off instead of facing it',
+ Overindulgence:'one more, past the point you meant to stop',
+ Betrayal:'saying you would and then not doing it',
+ Corruption:'bending what is fair to get what you wanted',
+ 'Cruelty and carelessness':'hurting someone, on purpose or without noticing',
+ 'Pride and grandiosity':'needing to be seen as better than everyone else',
+ 'Self-abasement':'making yourself smaller than you are',
+ 'Hoarding on giving':'holding back what you had room to give',
+ 'Entitlement on receiving':'expecting more than was offered',
+ Attachment:'needing it to go exactly one way',
+ 'Forcing or scattering':'pushing before its time, or giving up on it too soon',
+ Chaos:'noise piling on noise until nothing settled',
+ 'Synthetic departure':'pulled further from what your body actually needs'};
+var STLW={key:null,wins:null,gate:null};
+function stLawWins(){
+ var ents=(typeof CURP!=='undefined'&&CURP&&CURP.story&&CURP.story.entries)||[];
+ var now=Date.now(), key=S.who+'|'+ents.length+'|'+(ents.length?ents[ents.length-1].t:'')+'|'+Math.floor(now/36e5);
+ if(STLW.key===key)return STLW.wins;
+ var far=ST_ANA_WIN[ST_ANA_WIN.length-1][0], read=[];
+ ents.forEach(function(e){var at=Date.parse(e&&e.t);
+  if(!(at>=now-far*864e5)||typeof e.text!=='string')return;
+  var laws=(typeof sniffLaws==='function'?sniffLaws(e.text):[])
+   .filter(function(v){return SINAMES.indexOf(v.law)>=0;});
+  var gates=typeof sniffGates==='function'?sniffGates(e.text):null;
+  read.push({at:at,laws:laws,gates:gates});});
+ var wins=ST_ANA_WIN.map(function(w){var from=now-w[0]*864e5,by={},n=0;
+  read.forEach(function(r){if(r.at<from)return; n++;
+   r.laws.forEach(function(v){var k=v.law+'|'+v.violation, o=by[k]=by[k]||{law:v.law,violation:v.violation,n:0,score:0};
+    o.n++;o.score+=v.score;});});
+  var top=Object.keys(by).map(function(k){return by[k];})
+   .sort(function(a,b){return b.n-a.n||b.score-a.score||(a.law<b.law?-1:1);}).slice(0,ST_LAW_TOP);
+  return {say:w[1],entries:n,top:top};});
+ /* the gate reading is the most recent entry's own, never an average across
+    the window: an avoidance number is a reading of one story, not a trend,
+    and the upstream pair it was built from travels with it everywhere it is
+    shown, the spec's own rule 5 for this exact number (section 8). */
+ var withGate=read.filter(function(r){return r.gates&&r.gates.read;}).sort(function(a,b){return b.at-a.at;});
+ STLW={key:key,wins:wins,gate:withGate.length?withGate[0].gates:null};
+ return STLW.wins;}
+var ST_LAW_CHEV='M9 6l6 6-6 6';
+function stLawHtml(){
+ return '<details class="st-pan" id="stlaw"'+(STV.law?' open':'')+' style="display:block;flex:0 0 auto;padding:0">'
+  +'<summary style="display:flex;align-items:center;gap:8px;min-height:var(--tap);padding:0 16px;cursor:pointer;list-style:none">'
+  +'<svg id="stlawchev" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" style="flex:0 0 auto;fill:none;'
+  +'stroke:var(--dim);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform var(--t-micro) var(--ease-out);'
+  +'transform:rotate('+(STV.law?90:0)+'deg)"><path d="'+ST_LAW_CHEV+'"/></svg>'
+  +'<span class="st-eb">Laws</span><span class="st-tag">noticed</span></summary>'
+  +'<div id="stlawb" style="padding:0 16px 14px;font-size:13px;color:var(--mid)"></div></details>';}
+function stLawWire(){
+ var d=document.getElementById('stlaw'); if(!d)return;
+ d.addEventListener('toggle',function(){STV.law=d.open;
+  var c=document.getElementById('stlawchev'); if(c)c.style.transform='rotate('+(d.open?90:0)+'deg)';
+  if(d.open)stLawPaint();});
+ if(STV.law)stLawPaint();}
+function stLawRow(t){
+ var l=SI.filter(function(x){return x.nm===t.law;})[0], c=l?seatCol(l.b):'var(--dim)';
+ var ring=l?'<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" style="flex:0 0 auto;fill:none;stroke:'+c
+   +';stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round"><path d="'+l.ic+'"/></svg>'
+  :'<span class="st-ring" style="--c:'+c+'"></span>';
+ var say=ST_LAWSAY[t.violation]||t.violation.toLowerCase();
+ return '<div style="display:flex;align-items:flex-start;gap:8px;padding:5px 0">'+ring
+  +'<span style="flex:1 1 auto;min-width:0;color:var(--ink)">'+esc(t.law)
+  +'<span style="color:var(--dim)">, '+esc(say)+'</span></span>'
+  +'<em style="flex:0 0 auto;font-style:normal;font-size:12px;color:var(--dim)">in '+t.n+(t.n===1?' entry':' entries')+'</em></div>';}
+function stLawPaint(){
+ var b=document.getElementById('stlawb'); if(!b)return;
+ var o='<p class="st-none" style="margin:0 0 10px">From your own words, not a score: which of the 21 laws of '
+  +'integrity read as held or let go in what you wrote. Nothing here moves your coherence number yet.</p>';
+ stLawWins().forEach(function(w){
+  o+=stAnaHead(w.say,w.entries?w.entries+(w.entries===1?' entry':' entries'):'–');
+  if(!w.entries)o+='<p class="st-none" style="margin-top:4px">Nothing written.</p>';
+  else if(!w.top.length)o+='<p class="st-none" style="margin-top:4px">No law read as let go in these words.</p>';
+  else o+=w.top.map(stLawRow).join('');});
+ var g=STLW.gate;
+ if(g&&g.intentional){
+  o+=stAnaHead('Intention','your last entry');
+  /* NEVER THE AVOIDANCE NUMBER ALONE, the spec's own rule: it reads as a
+     character flaw without the two readings it was built from beside it. */
+  o+='<p style="margin:6px 0 2px">Avoidance reads <b>'+g.intentional.avoidance+' per cent</b> in your last entry, built '
+   +'from the two readings below it and never shown without them.</p>'
+   +'<p style="margin:2px 0">Aware against reactive, clean: <b>'+Math.round(g.aware*100)+' per cent</b>.</p>'
+   +'<p style="margin:2px 0">Detached against attached, clean: <b>'+Math.round(g.detached*100)+' per cent</b>.</p>';}
+ b.innerHTML=o;}
 
 /* ============================================================
    WHAT THE SNIFFER IS READING, SHOWN IN THE SENTENCE IT READ IT IN.

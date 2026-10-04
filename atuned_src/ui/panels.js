@@ -181,6 +181,7 @@ function setTab(i){
   var T=TABEXTRA[k]; if(T&&T.cls)document.body.classList.remove(T.cls);});
  document.body.classList.add(TABOF(i).cls);   /* by key, not by position */
  if(typeof colTab==='function')colTab();   /* the left column's own fold per surface */
+ if(typeof railTab==='function')railTab(); /* and the right's, round RB */
  /* THE TAB ARRIVES RATHER THAN APPEARING. Switching surfaces was a single
     frame cut: one host went to display:none and the next to flex, which gives
     the eye no direction to follow and no sense that anything moved rather than
@@ -548,9 +549,12 @@ function setLighting(k){
  ['themes','navthemes'].forEach(function(id){var seg=$(id);
   if(seg)seg.querySelectorAll('button').forEach(function(x,j){
    x.setAttribute('aria-pressed',LIGHTINGS[j]&&LIGHTINGS[j][0]===k);});});
- var nw=$('lightnow');
- if(nw){var e=LIGHTINGS.filter(function(t){return t[0]===k;})[0];
-  if(e)nw.textContent=e[1];}
+ /* the bar's button shows its icon only, round RB ("I just want the icon"),
+    so the lighting that is on is carried by its name for a screen reader and
+    its tooltip, and no longer printed beside the icon */
+ var lb=$('lightbtn');
+ if(lb){var e=LIGHTINGS.filter(function(t){return t[0]===k;})[0];
+  if(e){lb.setAttribute('aria-label','Lighting, '+e[1]); lb.title='Lighting, '+e[1];}}
  rebuildSwatches(); render();}
 LIGHTINGS.forEach(function(t,i){
  var b=document.createElement('button');b.type='button';
@@ -1245,6 +1249,19 @@ function planWire(){
  if(up)up.onclick=function(){planOpen('checkout',up.getAttribute('data-tier'));};
  if(man)man.onclick=function(){planOpen('portal',null);};}
 function planOpen(what,tier){
+ /* A CLOSED TIER IS REFUSED HERE, FIRST, whether or not billing is bound. No
+    screen offers a press for one (planLadder carries buy, planUpgrade skips
+    it), so this answers only a caller that forgot to ask. Round RB: tier four
+    went to a ninety nine dollar checkout for a lead suite that is not built.
+    Said by the tier's own name, so opening a second closed rung needs no new
+    sentence. The server is a separate repository and has to refuse the same
+    tier on its own; this stops the instrument from ever asking it to. */
+ if(what==='checkout'&&typeof planBuyable==='function'&&!planBuyable(tier)){
+  var row=(typeof PLAN_BY!=='undefined')?PLAN_BY[tier]:null;
+  status((row&&row.lead&&row.built===false)
+   ?row.nm+' is not open yet. It opens when the lead suite is built. Nothing was charged.'
+   :'That plan cannot be bought. Nothing was charged.','fail');
+  return;}
  /* The record store is the only thing that can mint a session, because a
     session needs a key and a key never comes near this file. When there is no
     store, this is not an error and not a silent no: it is a statement of where

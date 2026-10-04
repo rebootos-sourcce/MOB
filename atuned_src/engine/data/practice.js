@@ -25,7 +25,10 @@ var PRACTICE=[
    +'You are mapping, not fixing. When the system is clear all nine live around the heart. '
    +'Where you feel them now is where they are displaced to.'},
  {k:'box', nm:'Box Breathing', track:'Body', min:5, tier:1,
-  d:'Four and four, or eight and eight. The entry into a grounded state.',
+  /* ROUND RG. "Four and four, or eight and eight" was two numbers with no
+     unit and no action: four of what, done how. The how below says it, and
+     the short line now carries the same fact. */
+  d:'Breathe in, hold, breathe out, hold, for a count of four each, or eight when it is easy. The entry into a grounded state.',
   how:'Inhale, hold, exhale, hold, each for the same count. Four to start, eight when it is '
    +'easy. This regulates the autonomic nervous system and it is the door into every other '
    +'practice here.'},

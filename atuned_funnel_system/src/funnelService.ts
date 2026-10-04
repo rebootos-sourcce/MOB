@@ -20,12 +20,14 @@
    input type and call the matching method below.
    ============================================================ */
 
+import { createHash } from 'node:crypto';
 import type {
   Entitlement,
   FunnelEvent,
   FunnelSession,
   Referral,
   StarterGift,
+  StarterGiftItem,
   TutorialProgress,
   UsageLedgerEntry,
   VerificationStatus,
@@ -34,6 +36,22 @@ import { FunnelError } from './domain.js';
 import { assertTransition, canTransition } from './stateMachine.js';
 import { REFERRAL_GRANT_AMOUNT, STARTER_GIFT_SIZE } from './funnelConfig.js';
 import type { FunnelAdapters } from './adapters.js';
+
+/** A stable hash of whatever meaningfully distinguishes one idempotent
+ *  request from another with the same key. Not cryptographic in intent,
+ *  just collision-resistant enough to catch "same key, different request"
+ *  (Database Production Completion TDD v2, section 13). */
+function requestHash(parts: Record<string, unknown>): string {
+  return createHash('sha256').update(JSON.stringify(parts)).digest('hex');
+}
+
+function patternSetHash(patternIds: readonly string[]): string {
+  return createHash('sha256').update(JSON.stringify(patternIds)).digest('hex');
+}
+
+function giftItems(giftId: string, patternIds: readonly string[], createdAt: string): StarterGiftItem[] {
+  return patternIds.map((patternId, i) => ({ giftId, patternId, position: i, createdAt }));
+}
 
 export class FunnelService {
   constructor(private readonly a: FunnelAdapters) {}
@@ -144,11 +162,14 @@ export class FunnelService {
       patternIds,
       granted: STARTER_GIFT_SIZE,
       remaining: STARTER_GIFT_SIZE,
+      patternSetHash: patternSetHash(patternIds),
       issuedAt: now,
       transferredAt: null,
       status: 'active',
     };
-    await this.a.repo.saveGift(gift);
+    // the frozen set, one row per pattern: StarterGift.patternIds is a
+    // convenience projection of these rows, never the other way around
+    await this.a.repo.saveGift(gift, giftItems(gift.id, patternIds, now));
 
     const next = await this.advance(session, 'UNDERSTAND_ENOUGH', {
       selectedGroundId: groundId,
@@ -159,12 +180,36 @@ export class FunnelService {
     return { session: next, gift };
   }
 
+  // ---------- anonymous session security (sections 14-15) ----------
+
+  /** Called while still anonymous, before the person ever reaches a sign-in
+   *  screen. The raw credential goes to the browser and nowhere else; only
+   *  its hash is ever persisted, so a database read can never recover a
+   *  credential that would let someone else claim this session's gift. */
+  async issueAttachmentChallenge(sessionId: string): Promise<{ credential: string }> {
+    await this.mustGetSession(sessionId);
+    const credential = this.a.ids.next() + this.a.ids.next();
+    const now = this.a.clock.nowIso();
+    const expires = new Date(Date.parse(now) + 15 * 60 * 1000).toISOString(); // 15 minutes
+    await this.a.repo.saveAttachmentChallenge({
+      id: this.a.ids.next(),
+      sessionId,
+      credentialHash: createHash('sha256').update(credential).digest('hex'),
+      expiresAt: expires,
+      usedAt: null,
+      createdAt: now,
+    });
+    return { credential };
+  }
+
   // ---------- account attachment (Implementation TDD section 9, transaction in section 31) ----------
 
   /** Idempotent: calling this twice for the same session must not grant
    *  the gift twice, and must not throw on the second call once the first
-   *  has succeeded. */
-  async attachAccount(sessionId: string, authToken: string): Promise<FunnelSession> {
+   *  has succeeded. `credential` must be the one `issueAttachmentChallenge`
+   *  handed back to this same browser; a session id alone is never
+   *  sufficient proof of ownership (sections 14-15). */
+  async attachAccount(sessionId: string, authToken: string, credential: string): Promise<FunnelSession> {
     const session = await this.mustGetSession(sessionId);
     const userId = await this.a.identity.requireUserId(authToken);
 
@@ -173,6 +218,17 @@ export class FunnelService {
       if (gift?.transferredAt) {
         return session; // already attached and transferred; idempotent no-op
       }
+    }
+
+    const challenge = await this.a.repo.getAttachmentChallenge(sessionId);
+    if (!challenge) throw new FunnelError('SESSION_NOT_FOUND', 'no attachment challenge issued for this session');
+    if (challenge.usedAt) throw new FunnelError('ATTACHMENT_CREDENTIAL_INVALID', 'attachment credential already used');
+    if (Date.parse(challenge.expiresAt) < Date.parse(this.a.clock.nowIso())) {
+      throw new FunnelError('ATTACHMENT_CREDENTIAL_INVALID', 'attachment credential expired');
+    }
+    const presentedHash = createHash('sha256').update(credential).digest('hex');
+    if (presentedHash !== challenge.credentialHash) {
+      throw new FunnelError('ATTACHMENT_CREDENTIAL_INVALID', 'attachment credential does not match this session');
     }
 
     if (!session.starterGiftId) {
@@ -185,10 +241,11 @@ export class FunnelService {
     }
 
     const now = this.a.clock.nowIso();
+    await this.a.repo.markAttachmentChallengeUsed(challenge.id);
 
     if (!gift.transferredAt) {
       const transferred: StarterGift = { ...gift, userId, transferredAt: now };
-      await this.a.repo.saveGift(transferred);
+      await this.a.repo.saveGift(transferred, giftItems(gift.id, gift.patternIds, gift.issuedAt));
     }
 
     let tutorial = await this.a.repo.getTutorial(session.id);
@@ -323,9 +380,28 @@ export class FunnelService {
     const session = await this.mustGetSession(sessionId);
     const userId = session.userId ?? session.anonymousId;
 
-    const dupeScope = 'release';
-    if (await this.a.repo.hasIdempotencyKey(dupeScope, opts.idempotencyKey)) {
-      throw new FunnelError('DUPLICATE_IDEMPOTENCY_KEY', opts.idempotencyKey);
+    const dupeScope = `user:${userId}`;
+    const claim = await this.a.repo.claimIdempotencyKey(
+      dupeScope,
+      'release',
+      opts.idempotencyKey,
+      requestHash({ patternId }),
+    );
+    if (!claim.claimed) {
+      /* The production TDD's own preferred behavior for a byte-identical
+         retry is "same key + same request = same durable result," returning
+         the first call's own response rather than an error. This scaffold
+         takes the safer, simpler route instead: reject the repeat outright
+         and let the caller re-read state through getSession/getUsageBalance.
+         Doing the full same-result reconstruction needs the original
+         response's session and consumed-amount alongside resultReference,
+         which claimIdempotencyKey's row does not carry; name this as a
+         real simplification to close, not a silent deviation, if this
+         scaffold is kept rather than replaced at integration time. */
+      throw new FunnelError(
+        'DUPLICATE_IDEMPOTENCY_KEY',
+        `${opts.idempotencyKey} already ${claim.existing.status === 'completed' ? 'completed' : 'in progress'}`,
+      );
     }
 
     const alreadyOpened = await this.a.catalog.isAlreadyOpened(userId, patternId);
@@ -360,7 +436,7 @@ export class FunnelService {
       };
       await this.a.repo.appendUsageLedgerEntry(entry);
     }
-    await this.a.repo.recordIdempotencyKey(dupeScope, opts.idempotencyKey);
+    await this.a.repo.completeIdempotencyClaim(dupeScope, opts.idempotencyKey, release.id);
 
     /* State transition ownership: selectAddress() already moves the
        session ADDRESS -> RELEASE for the first-use journey. A rerun
@@ -447,13 +523,32 @@ export class FunnelService {
   }
 
   /** Issuing the grant twice for the same referral must not double the
-   *  25-pattern bonus. */
+   *  25-pattern bonus. The referral row's own uniqueness (one row per
+   *  referral) does not prove that by itself, section 5.5's own correction:
+   *  a referral row can exist exactly once and still be issued a grant
+   *  twice if two callbacks race past a plain status check. The atomic
+   *  claim below binds uniqueness to the grant operation itself, not to
+   *  the referral row. */
   async issueReferralGrant(token: string, inviteeUserId: string): Promise<Referral> {
     const referral = await this.a.repo.getReferralByToken(token);
     if (!referral) throw new FunnelError('SESSION_NOT_FOUND', `no referral for token ${token}`);
     if (referral.status === 'grant_issued' || referral.status === 'used') {
       return referral; // idempotent: grant already issued once
     }
+
+    const claim = await this.a.repo.claimIdempotencyKey(
+      `referral:${referral.id}`,
+      'referral_grant',
+      referral.id,
+      requestHash({ inviteeUserId }),
+    );
+    if (!claim.claimed) {
+      // another caller is issuing (or already issued) this exact referral's
+      // grant; re-read rather than issue a second one
+      const current = await this.a.repo.getReferralByToken(token);
+      return current ?? referral;
+    }
+
     const now = this.a.clock.nowIso();
     const granted: Referral = {
       ...referral,
@@ -463,22 +558,30 @@ export class FunnelService {
       grantIssuedAt: now,
     };
     await this.a.repo.saveReferral(granted);
+    await this.a.repo.completeIdempotencyClaim(`referral:${referral.id}`, referral.id, granted.id);
     return granted;
   }
 
   // ---------- payment webhook (section 33) ----------
 
   /** Must be safe to call twice with the same `eventId` (processor
-   *  retries webhooks). The second call is a no-op. */
+   *  retries webhooks). The second call is a no-op. The caller is
+   *  responsible for provider signature verification before this is ever
+   *  invoked (`PaymentAdapter`'s own doc comment); this method never
+   *  accepts a bare `verified: boolean` or a client-supplied userId/planId,
+   *  only an event id it resolves itself through the trusted adapter
+   *  (Database Production Completion TDD v2, section 5.2). */
   async handlePaymentWebhook(eventId: string): Promise<{ granted: boolean }> {
-    const scope = 'payment_webhook';
-    if (await this.a.repo.hasIdempotencyKey(scope, eventId)) {
+    const claim = await this.a.repo.claimIdempotencyKey('payment', 'payment_webhook', eventId, requestHash({ eventId }));
+    if (!claim.claimed) return { granted: false };
+
+    const resolved = await this.a.payment.resolveWebhookEvent(eventId);
+    if (!resolved) {
+      await this.a.repo.completeIdempotencyClaim('payment', eventId, 'no-op');
       return { granted: false };
     }
-    const resolved = await this.a.payment.resolveWebhookEvent(eventId);
-    if (!resolved) return { granted: false };
-    await this.a.entitlement.grant(resolved.userId, resolved.planId, 'payment');
-    await this.a.repo.recordIdempotencyKey(scope, eventId);
+    const entitlement = await this.a.entitlement.grant(resolved.userId, resolved.planId, 'payment');
+    await this.a.repo.completeIdempotencyClaim('payment', eventId, entitlement.userId);
     return { granted: true };
   }
 
@@ -494,6 +597,8 @@ export class FunnelService {
       sessionId: session.id,
       userId: session.userId,
       type,
+      sequence: await this.a.repo.nextEventSequence(session.id),
+      eventVersion: 1,
       data,
       createdAt: this.a.clock.nowIso(),
     };

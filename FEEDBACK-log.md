@@ -356,6 +356,80 @@ it and the shelf under them (FT21, FT28); the marks took the points TDD's slice
 0 in engine/ladder.js. Suggested cards wear their seat's colour and the seat's
 or the pattern's mark (FT27). Gate: tests/flowtools.js.
 
+## 2026-10-03 · owner · the archetypes, nested like the seats
+
+said: "The intake page, the archetypes, these things need to be nested. The
+questions, very similar to the chakra ones. If I click on a chakra one, it
+shows me the questions underneath. As it unfolds it, I want the archetypes to
+have the same behavior. So the archetypes will be buttons, and if I press on
+one, the question pops down. With this way, we're not scrolling infinitely."
+read: the eighteen archetype questions stood open one under the other. Measured
+on a blank profile at 1600 by 1000, the block was 7,411 pixels tall, about
+seven and a half screens, with 117 controls in it; at 390 it was 7,175.
+change: round RB, branch claude/intake-archetype-nest. The seat row's tile,
+panel and press were pulled out of the seat code into one nest (iqNestHtml,
+iqNestBind in ui/intakeui.js) and the archetypes are drawn through it: twelve
+tiles, shut on arrival, a press drops that archetype's own three questions
+under the row and shuts any other. A question names two archetypes, so it
+opens under both and is one answer either way. Collapsed, the block measured
+441 pixels at 1600 and 506 at 390, with twelve controls, the twelve tiles.
+The emotional axes and the action axes are still stacked. Gate:
+tests/functional.js, "the three blocks stacked under the laws".
+
+## 2026-10-03 · owner · Analytics, the trail and the telemetry
+
+said: "For analytics, um, I'm supposed to th- all the bubbles. I should be able
+to click on it and drill down deeper and trace all my patterns down to the
+fetters. And I want the analytics page to give me telemetry and have that
+telemetry broken out in as many dimensions as we can to see what's running and
+where. If I click on any analytics, I want it to give me a summary on the right
+side. And I just clicked on the word innocent under analytics. and it says
+innocent, built from one held address across root. We did our copy sweep, and
+it doesn't look like any of this stuff got touched."
+read: a bubble opened one card one level down and stopped. A hyper-complex
+jumped straight to its addresses, nothing on the card could be pressed, and
+only the seven bubble kinds had a card at all. The line he read counted every
+address under a pattern as held, which only the ones at 4 or more are, and the
+page's opening sentence called the held count "carrying". The What is running
+chart cut its list at sixteen in ring order, so a deep chain drew no saboteur
+in the blue its own key names.
+change: round RB. Every bubble, reading, square, ring count, law bar and
+session bar is a door into a trail in Selection: character, hyper-complex,
+complex, saboteur, fetter, feeling, each card listing its real parts and
+splitting what it runs on by seat and by feeling, with each step kept at the
+top and pressable to go back. Telemetry on the page: six readings, a seat by
+feeling grid of every address, and the chain counted ring by ring. The held
+counts are true, the chart shows the sixteen heaviest, and the bubble labels
+carry a halo for contrast. The address and law cards are the product's own
+(nodeDrillHtml and lawDrillHtml in ui/drills.js). Gate: tests/anatrail.js.
+
+## 2026-10-03 · owner · the paywall
+
+said: "we need to fix the paywall." After the round RA review graded the
+paywall seat lowest of ten, 46.
+read: three promises on the money path had nothing behind them. Tier four
+went to a 99 dollar checkout for a lead suite ui/practitioner.js says is not
+built, against his own round PK ruling, "tier four is closed until built". The
+buy page promised 25 patterns an invitation, and nothing in the product sends
+an invitation or grants one. The terms page called itself "a generic draft",
+which it is not, and left the ruled age (18, round PB) as a blank.
+change: round RB, branch claude/paywall-fix-rb. Tier four carries built:false
+in engine/plan.js and planBuyable answers whether a checkout may start; the
+tiers page shows "Opens with the lead suite" where the press was, the plan
+sheet offers no Move to it, and planOpen refuses it by name before any host is
+called. tools/stripe-setup.js no longer makes the tier four price by default.
+The referral sentence came off funnel/buy.html, and tests/funnel.js holds it
+off until a mechanism exists. TERMS.md: 18 filled, the sign up section says
+what ships (an email and a password of 8 to 200 characters), "generic"
+corrected in all three legal documents, and every unknown kept marked.
+Gates: tests/engine.js, tests/funnel.js (checked against the old page first:
+4 failed there, 0 here), tests/functional.js.
+open: the reboot-os server is a separate repository. Its stripe.js keeps four
+in TIER_PLAN and opens a checkout for it whenever STRIPE_PRICE_FOUR is set, so
+leaving that setting empty is what closes tier four on the server side. The referral needs a
+server to build (TASKS.md AK6). The terms still carry 9 placeholders and need
+a lawyer before they go live.
+
 ## Earlier, from FEEDBACK-alexander.md
 
 See that file. Its items are in TASKS.md.

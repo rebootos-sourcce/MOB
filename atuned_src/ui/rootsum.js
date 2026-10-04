@@ -2,8 +2,12 @@
    THE ENERGETIC SUMMARY, Root Energetics read across. Named Root
    Energetics until GO in TASKS.md, when the second section of that
    name on the other rail was the thing that confused him; the
-   left rail keeps the name. The summary at the head of the
-   right rail. FV in TASKS.md, his words: "When I open root
+   section below it on this rail keeps the name. Sat at the head of
+   the right rail from FV in TASKS.md until 3 October, his own words
+   then: "that's a spiritual energetics meaning anyway", moving it to
+   the head of the left rail instead, above Root Energetics, which is
+   where the comment below, written for the right rail, is now read
+   from the left one. FV in TASKS.md, his words: "When I open root
    energetics, I want a summary of that on the right hand side, also
    at the very top closed. But what I want source to do is to take a
    look at all the behavioral energetics where they overlap, because
@@ -11,11 +15,12 @@
    don't align is the kind of fuzziness of it, the other ways it can
    be expressed."
 
-   The left rail's Root Energetics lists what each system says. This
-   says what they say together, off rootOverlap in engine/overlap.js,
-   which is where the method and its honesty live: the only bridges
-   are the ones the traditions supply, and a meeting is weighed
-   against chance before it is called agreement. This file draws it.
+   Root Energetics, now the section below this one, lists what each
+   system says. This says what they say together, off rootOverlap in
+   engine/overlap.js, which is where the method and its honesty live:
+   the only bridges are the ones the traditions supply, and a meeting
+   is weighed against chance before it is called agreement. This file
+   draws it.
 
    THE MEETINGS LEAD, THE RANGE FOLLOWS, and both are the reading.
    A meeting is a theme two or more systems reach on their own, said

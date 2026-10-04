@@ -243,7 +243,7 @@ ok(/costs/.test(s1.lean),'and names which context holds');
 const p4=E.blankProfile('noise');
 p4.intake.answers[0]=6;p4.intake.answers[1]=5;p4.intake.answers[2]=6;
 const s2=E.iqScore(p4)[SI[0].nm];
-ok(!s2.reliable&&/noise/.test(s2.lean),'a spread under 3 is inside measurement noise');
+ok(!s2.reliable&&/no lean|to show a lean/.test(s2.lean),'a spread under 3 names no lean');
 
 g('11 · the sniffer');
 reset(3,0,6);
@@ -2562,11 +2562,25 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
   'and what the next rung lets you see, off the table, got '+up.say);
  ok(!/miss|lose|locked out|only/i.test(up.say),'never as what a person is short of');
  ok(planUpgrade({tier:'four',status:'active'})===null,'with nothing to sell at the top');
- /* tier three to tier four moves no ground and no sight: the step is the lead
-    suite alone, and the sentence says so without inventing a sight benefit */
+ /* TIER FOUR IS CLOSED UNTIL BUILT, round PK, enforced round RB. This used to
+    assert that tier three's next step was tier four, "the same ground", which
+    is what put a ninety nine dollar Move to under a person on tier three for a
+    lead suite that does not exist. A closed rung is not a next step. When the
+    suite is built and the row loses built:false, tier three's next step is tier
+    four again and the else branch holds the old sentence. */
  const up34=planUpgrade({tier:'three',status:'active'});
- ok(up34.to.k==='four'&&up34.ground===0&&up34.sight.length===0&&up34.say==='the same ground',
-  'tier three to four is the same ground and the same sight, said as that, got '+JSON.stringify(up34.say));
+ if(E.PLAN_BY.four.built===false)
+  ok(up34===null,'tier four is closed, so tier three is offered no next step, got '+JSON.stringify(up34&&up34.to.k));
+ else
+  ok(up34.to.k==='four'&&up34.ground===0&&up34.sight.length===0&&up34.say==='the same ground',
+   'tier three to four is the same ground and the same sight, said as that, got '+JSON.stringify(up34.say));
+ /* planBuyable is the one answer to whether a checkout may start */
+ ok(E.planBuyable('one')&&E.planBuyable('two')&&E.planBuyable('three'),'tiers one to three can be bought');
+ ok(E.planBuyable('four')===(E.PLAN_BY.four.built!==false),'tier four can be bought exactly when it is built');
+ ok(!E.planBuyable('free')&&!E.planBuyable('gift')&&!E.planBuyable('nonsense')&&!E.planBuyable(undefined),
+  'free, the gift and a key this build does not know are never bought');
+ /* closing a rung moves nobody: a record on tier four still reads tier four */
+ ok(E.planOf({tier:'four',status:'active'}).k==='four','a record already on tier four still reads tier four');
  /* A DIFFERENCE ONLY MEANS SOMETHING WHEN THE PERIODS MATCH. Free is ten a
     week and tier one is four hundred a month. Subtracting gave 390 more a
     month, which is arithmetic over two different units. */
@@ -5648,7 +5662,27 @@ g('J14 · the starter recipe for each teacher');
  /* the roster's three new poles are written before the Compass carries them,
     named here because their absence from MIRROR is the point */
  ok(['SA','TU','NA'].every(k=>!!recipeOf(k)&&!MIRROR.some(m=>m.k===k)&&!PATHS.some(p=>p.k===k)),
-  'Akhenaten, Zoroaster and Confucius have recipes ahead of their place on the Compass');
+  'Akhenaten, Zoroaster and Confucius have recipes and are on no axis and on no path');
+ /* ROUND RB, THE ROSTER ON THE COMPASS. His words: "we're supposed to have 13
+    character people, and we I still have the original eight." The panels draw
+    MIRROR and then compassOffAxis(), so the poles the Compass names must be
+    exactly the recipe table's poles, each once, and the people one fewer than
+    the poles because Jesus stands at two. Nothing here types a count. */
+ {const {HOME_POLES,compassOffAxis,compassPoleOf}=E;
+  const off=compassOffAxis(), named=MIRROR.map(m=>m.k).concat(off.map(p=>p.k));
+  ok(new Set(named).size===named.length,'no pole is named twice on the Compass, '+JSON.stringify(named));
+  ok(named.slice().sort().join()===keys.slice().sort().join(),
+   'the Compass names every pole of the roster and nothing else, named '+JSON.stringify(named)+' against '+JSON.stringify(keys));
+  const people=new Set(MIRROR.map(m=>m.up).concat(off.map(p=>p.up)));
+  ok(people.size===named.length-1&&people.size===new Set(TEACHER_RECIPES.map(r=>r.who)).size,
+   'the people are one fewer than the poles, Jesus at two, and they are the roster\'s people, saw '+people.size);
+  ok(!off.some(p=>p.k==='BO'||p.k==='AW'),'a path that is an axis read twice is not named a second time');
+  ok(HOME_POLES.every(p=>p.ic&&p.dic&&p.q&&p.up&&p.dn&&p.from==='proposed'&&/[A-Za-z]/.test(p.src)),
+   'each pole on no axis carries both marks, its words, and the source its opposite is to be checked against');
+  ok(HOME_POLES.every(p=>p.home===null||BANDS.indexOf(p.home)>=0),'a home seat is a seat this product measures');
+  ok(HOME_POLES.every(p=>compassPoleOf(p.k)===p),'compassPoleOf finds each of the three by key');
+  ok(compassPoleOf('TU').ic===E.SI.filter(l=>l.nm==='Truth')[0].ic&&compassPoleOf('NA').ic===E.SI.filter(l=>l.nm==='Nature')[0].ic,
+   'Zoroaster and Confucius wear the mark of the law their quality names, read and not copied');}
  ok(TEACHER_RECIPES.filter(r=>r.who==='Jesus').length===2,'Jesus stands at two poles and has two rows, one each');
  /* the three not found branches, which coverage showed nothing reached: an
     unknown pole, an unknown ritual id and a step the library no longer carries
@@ -5660,7 +5694,7 @@ g('J14 · the starter recipe for each teacher');
     compass data that the row did not follow is a named failure and not a drift */
  const drift=[];
  TEACHER_RECIPES.forEach(r=>{
-  const m=MIRROR.filter(x=>x.k===r.k)[0]||PATHS.filter(x=>x.k===r.k)[0]; if(!m)return;
+  const m=MIRROR.filter(x=>x.k===r.k)[0]||PATHS.filter(x=>x.k===r.k)[0]||E.HOME_POLES.filter(x=>x.k===r.k)[0]; if(!m)return;
   if(m.up!==r.who)drift.push(r.k+' who '+r.who+' vs '+m.up);
   if(m.dn!==r.opp)drift.push(r.k+' opp '+r.opp+' vs '+m.dn);
   if(String(m.q).toLowerCase()!==String(r.q).toLowerCase())drift.push(r.k+' q '+r.q+' vs '+m.q);});
@@ -5834,6 +5868,11 @@ g('NZ · the tiers side by side, read off the ladder and nothing else');
  const dead=planLadder({tier:'three',status:'canceled'});
  ok(dead.find(r=>r.now).k==='free','a cancelled tier three reads free here as everywhere, through planOf');
  ok(planLadder({tier:'four',status:'active'}).every(r=>!r.up),'at the top there is nothing to move up to');
+ /* buy is whether a rung can be bought today; up is only where it sits. A
+    closed rung is still above, and carries no press (ui/plans.js) */
+ ok(free.every(r=>r.buy===E.planBuyable(r.k)),'every row carries buy, read off planBuyable');
+ ok(free.find(r=>r.k==='four').up&&free.find(r=>r.k==='four').buy===(PLAN_BY.four.built!==false),
+  'from free tier four is above, and buyable only when built');
  /* SIGHT BY TIER. The row carries what the tier sees and what it adds over the
     rung below, both read off SIGHT, so the comparison types no tier. */
  ok(free.every(r=>JSON.stringify(r.adds.map(g=>g.k))===JSON.stringify(E.planAdds(r.k).map(g=>g.k))),
@@ -7333,6 +7372,168 @@ g('SB · the saboteur card is the same 33 as SABDEF, and its opposites are read 
  const orphans=SAB_LIB.filter(s=>!SAB33.some(r=>r[0]===s.nm));
  ok(orphans.every(s=>!SABDEF[KK(s.nm)]&&!SABCARD[KK(s.nm)]),
   'a SAB_LIB name outside the 33 gets no card row, '+JSON.stringify(orphans.map(s=>s.nm)));
+}
+
+g('RB · every worked example with a row runs rituals, written in the shapes the Ritual page reads');
+{
+ /* engine/ritex.js. Before it, every example opened the Ritual page on zero
+    plans and zero days. Each row is checked against a known answer worked out
+    from the table by hand, and every day goes through the boundary. */
+ const NOW=Date.parse('2026-10-03T12:00:00Z'), H=E.RITEX_HIST, today=E.pracDay(NOW);
+ const names=Object.keys(H);
+ ok(names.every(n=>E.PEOPLE.some(p=>p.nm===n)),'every row names a person in the roster, '+names.filter(n=>!E.PEOPLE.some(p=>p.nm===n)).join(', '));
+ const built={};
+ names.forEach(n=>{let R=null,thr='';
+  try{R=E.ritexBuild(E.PEOPLE.find(p=>p.nm===n),NOW);}catch(e){thr=e.message;}
+  built[n]=R;
+  ok(R&&!thr&&R.plans.length===H[n].length,n+' builds one plan per row, '+(thr||(R&&R.plans.length)));
+  if(!R)return;
+  const rec=E.blankProfile(n); rec.rituals=R.rituals;
+  const v=E.validateProfile(JSON.parse(JSON.stringify(rec)));
+  ok(v.ok&&v.profile.rituals.length===R.rituals.length,n+'\'s '+R.rituals.length+' days pass the boundary whole, '+(v.errs||[]).join('; '));});
+ const key=s=>s.join('+'), done=(R,k)=>R.rituals.filter(x=>key(x.steps)===k&&x.done).map(x=>E.pracDay(x.t));
+ /* Derek, box and truth every day for forty days and today: forty one days,
+    and the streak the ladder reads off them is at least that */
+ const D=built.Derek;
+ ok(done(D,'box+truth').length===41&&done(D,'box+truth').indexOf(today)>=0,'Derek kept his morning forty one days running, today included, '+done(D,'box+truth').length);
+ const rec=E.blankProfile('Derek'); rec.rituals=D.rituals;
+ ok(E.ladderRead(rec,NOW).streak.run>=41,'and the ladder reads a run of at least forty one, '+E.ladderRead(rec,NOW).streak.run);
+ /* Diane, every day for twelve days, the last three missed: nine kept, and
+    nothing at all on the three days she stopped */
+ const Di=built.Diane, dd=done(Di,'truth+slow');
+ ok(dd.length===9&&[1,2,3].every(b=>dd.indexOf(today-b)<0),'Diane kept nine and stopped for the last three, '+JSON.stringify(dd.map(d=>today-d)));
+ /* Ana stopped Noting nine days ago: no day on it after that */
+ const An=built.Ana, an=An.rituals.filter(x=>key(x.steps)==='noting').map(x=>today-E.pracDay(x.t));
+ ok(an.length>0&&an.every(b=>b>9)&&An.plans.find(p=>key(p.steps)==='noting').stop,'Ana\'s stopped ritual carries its stop and no day after it, '+JSON.stringify(an));
+ /* Tomas started today and has not done it: one entry, the start, not done */
+ const T=built.Tomas;
+ ok(T.rituals.length===1&&T.rituals[0].done===false&&E.pracDay(T.rituals[0].t)===today&&T.kept===0&&T.missed===0,'Tomas started today and the start is written undone, '+JSON.stringify(T.rituals));
+ /* weekdays are kept to: Wren's hands are never on a Sunday, his garden only on one */
+ const Wr=built.Wren;
+ ok(done(Wr,'hands').every(d=>E.ritexWd(d)!==6)&&done(Wr,'na_tend').every(d=>E.ritexWd(d)===6)&&done(Wr,'na_tend').length>=4,
+  'Wren\'s rituals land on their own weekdays and no other');
+ ok(JSON.stringify(E.ritexBuild(E.PEOPLE.find(p=>p.nm==='Ana'),NOW))===JSON.stringify(An),'the same moment builds the same history');
+ ok(E.ritexBuild({nm:'Nobody'},NOW)===null&&E.ritexBuild(E.PEOPLE.find(p=>p.nm==='James'),NOW)===null,'a person with no row has no rituals, and none is invented');
+ /* known bad: a step naming no practice is refused by name */
+ H.__rb={}; H.__rb=[{k:'box+nosuch', b:'Root', on:null, n:0, back:2, d:'c'}]; let thr='';
+ try{E.ritexBuild({nm:'__rb'},NOW);}catch(e){thr=e.message;}
+ H.__rb=[{k:'box', b:'Spleen', on:null, n:0, back:2, d:'c'}]; let thr2='';
+ try{E.ritexBuild({nm:'__rb'},NOW);}catch(e){thr2=e.message;}
+ delete H.__rb;
+ ok(/nosuch names no practice/.test(thr)&&/Spleen is not a seat/.test(thr2),'a row naming no practice or no seat is refused by name, '+thr+' / '+thr2);
+ ok(E.ritexHas(E.blankProfile('b'))===false&&E.ritexHas(rec)===true,'a blank record carries no day log, a built one does');
+}
+
+g('RB · becoming S1 to S3: the avatar\'s own data on the record, its identity, and the purpose writer\'s caps');
+/* BECOMING-AUDIT.md section 11. S1: the ratings, the starting weights and the
+   tags travel with the record. S2: pair ids, name, title, description,
+   version, status. S3: the purpose and boundary caps refuse by name. Every
+   check is against the boundary, validateProfile, because that is the one
+   door everything a person can paste goes through. */
+{
+ const {avatarBlank,avatarStatus,avatarPairId,avatarEnsureIds,avatarNewId,avatarReview,
+        avatarMoveSide,avatarFill,AV_STATUS,AV_CAP,AV_ID,PUR_VAL_MAX,PUR_LINE_MAX,PUR_SIDE_SAY,
+        PUR_SIDES,purposeRefuse,blankProfile,saveProfile,validateProfile}=E;
+ const clone=o=>JSON.parse(JSON.stringify(o));
+ const errsOf=v=>(v.errs||[]).join(' | ');
+ const b=avatarBlank();
+ ok(b.version===1&&b.status==='draft'&&b.name===''&&b.description==='',
+  'a blank avatar is version one, a draft, with nothing written');
+ ok(JSON.stringify([b.arch,b.load0,b.tags])==='[{},{},{}]'&&b.movedAt===null,
+  'and carries empty ratings, weights and tags, and has read nothing across');
+ ok(AV_STATUS.join()==='draft,active,archived','three stored statuses, the document\'s own');
+ ok(avatarStatus({built:true})==='active'&&avatarStatus({built:false})==='draft',
+  'a record from before status reads its own built flag');
+ ok(avatarStatus({built:true,status:'archived'})==='archived','and a stored one wins');
+
+ /* ---- S2, IDS ---- */
+ const p1={be:'I rest properly',notbe:'I have not slept properly in weeks',seat:'Root'};
+ ok(avatarPairId(p1)===avatarPairId(clone(p1)),'an older pair\'s id is the same on every load');
+ ok(AV_ID.test(avatarPairId(p1)),'and is the shape of an id, '+avatarPairId(p1));
+ const twin={pairs:[clone(p1),clone(p1)]}; avatarEnsureIds(twin);
+ ok(twin.pairs[0].id&&twin.pairs[1].id&&twin.pairs[0].id!==twin.pairs[1].id,
+  'two pairs with the same words still get two ids, '+twin.pairs.map(x=>x.id).join(' and '));
+ const kept={pairs:[Object.assign(clone(p1),{id:'abc123'})]}; avatarEnsureIds(kept);
+ ok(kept.pairs[0].id==='abc123','an id already held is kept');
+ ok(avatarNewId(1e12,0.5)!==avatarNewId(1e12,0.25)&&AV_ID.test(avatarNewId()),'a new id is minted fresh');
+
+ /* ---- S2, THE REVIEW ---- */
+ const rv=avatarBlank(); rv.built=true;
+ avatarReview(rv,false,Date.UTC(2026,9,1));
+ ok(rv.version===1&&rv.reviewedAt==='2026-10-01T00:00:00.000Z','still true moves the review date and not the version');
+ avatarReview(rv,true,Date.UTC(2026,10,1));
+ ok(rv.version===2&&/2026-11-01/.test(rv.reviewedAt),'revised moves both, got version '+rv.version);
+
+ /* ---- S1, READ ACROSS ONCE ---- */
+ const mv=avatarBlank(); mv.pairs=[clone(p1)]; avatarEnsureIds(mv);
+ const side={arch:{Warrior:4,Nobody:3,Sage:9},load0:{'old words':4.5,'gone':3},
+  tags:{Root:{add:['Fear'],off:['Sad']}}};
+ const n=avatarMoveSide(mv,side,k=>k==='old words'?mv.pairs[0]:null,Date.UTC(2026,9,3));
+ ok(mv.arch.Warrior===4&&mv.arch.Sage===undefined,'a rating one to five comes across and nine does not');
+ ok(mv.load0[mv.pairs[0].id]===4.5&&Object.keys(mv.load0).length===1,
+  'a starting weight comes across against the pair\'s id, and one for a pair that is gone does not');
+ ok(mv.tags.Root&&mv.tags.Root.add[0]==='Fear'&&mv.tags.Root.off[0]==='Sad','the tags come across');
+ ok(n===4&&mv.movedAt==='2026-10-03T00:00:00.000Z','and the move is dated, '+n+' moved');
+ mv.arch={};
+ ok(avatarMoveSide(mv,side,()=>null)===0&&Object.keys(mv.arch).length===0,
+  'once dated it never reads across again, so a rating taken off stays off');
+
+ /* ---- THE BOUNDARY ---- */
+ const good=saveProfile(blankProfile('rb'));
+ good.avatar={built:true,at:'2026-09-01T00:00:00Z',reviewedAt:null,
+  pairs:[Object.assign(clone(p1),{id:'n1'}),{be:'I say it plainly',notbe:'My throat closes at the board',seat:'Throat'}],
+  name:'Diane, steady',title:'Founder who rests',description:'Someone who builds without burning down.',
+  version:3,status:'active',arch:{Warrior:2,Sage:5},load0:{n1:6.2},
+  tags:{Throat:{add:['Fear'],off:[]}},movedAt:'2026-10-01T00:00:00Z'};
+ good.purpose={soul:['freedom','wisdom','truth'],ego:['health','family','stability'],
+  sides:{partner:['I say when I need rest'],family:[],friends:[],community:[],coworkers:[],alone:['I keep my mornings']}};
+ const v=validateProfile(clone(good));
+ ok(v.ok,'a record carrying every new field loads, '+errsOf(v));
+ const A=v.ok?v.profile.avatar:{};
+ ok(A.name==='Diane, steady'&&A.title==='Founder who rests'&&A.version===3&&A.status==='active',
+  'its identity round trips');
+ ok(A.arch&&A.arch.Sage===5&&A.load0&&A.load0.n1===6.2&&A.tags.Throat.add[0]==='Fear',
+  'and the ratings, the weight and the tags travel with it, where an export used to drop them');
+ ok(A.pairs&&A.pairs[0].id==='n1'&&AV_ID.test(A.pairs[1].id||''),'a held id is kept and a missing one is given');
+ const again=validateProfile(clone(saveProfile(v.profile)));
+ ok(again.ok&&again.profile.avatar.pairs[1].id===A.pairs[1].id,'and the given one is the same after a second load');
+ /* refused by name, never cut */
+ const bad=[
+  ['a status that is not one of the three',o=>{o.avatar.status='evolving';},/avatar\.status/],
+  ['a version that is not a whole number',o=>{o.avatar.version=2.5;},/avatar\.version/],
+  ['a name past its cap',o=>{o.avatar.name='x'.repeat(AV_CAP.name+1);},/avatar\.name is \d+ characters/],
+  ['a description that is not text',o=>{o.avatar.description=7;},/avatar\.description is not text/],
+  ['a rating of six',o=>{o.avatar.arch.Sage=6;},/not one to five/],
+  ['a rating on no archetype',o=>{o.avatar.arch.Nobody=3;},/not an archetype/],
+  ['a weight for a pair not on the record',o=>{o.avatar.load0.zz9=2;},/not on this record/],
+  ['a weight past ten',o=>{o.avatar.load0.n1=12;},/not nought to ten/],
+  ['a tag on a place that is not a seat',o=>{o.avatar.tags.Knee={add:[],off:[]};},/not a seat/],
+  ['a tag list that is not words',o=>{o.avatar.tags.Throat.add=[3];},/not a list of words/],
+  ['two pairs with one id',o=>{o.avatar.pairs[1].id='n1';},/on two pairs/],
+  ['a pair id that is not an id',o=>{o.avatar.pairs[1].id='Not An Id!';},/not a pair id/],
+  ['a purpose value past its cap',o=>{o.purpose.soul[0]='x'.repeat(PUR_VAL_MAX);},/purpose\.soul\[0\] is 120 characters, and the most is 119/],
+  ['a commitment past its cap',o=>{o.purpose.sides.alone=['x'.repeat(PUR_LINE_MAX)];},/purpose\.sides\.alone\[0\] is 200 characters/],
+  ['a commitment that is not text',o=>{o.purpose.sides.alone=[5];},/purpose\.sides\.alone\[0\] is not text/]];
+ bad.forEach(c=>{const o=clone(good); c[1](o); const r=validateProfile(o);
+  ok(!r.ok&&c[2].test(errsOf(r)),c[0]+' is refused by name, '+errsOf(r));});
+ /* the silent empty string is gone, and nothing else became a refusal */
+ const blankCorner=clone(good); blankCorner.purpose.ego=['health',null,''];
+ ok(validateProfile(blankCorner).ok,'an unwritten corner, null or empty, still loads');
+ const older=clone(good); older.avatar={built:true,at:'2026-09-01T00:00:00Z',reviewedAt:null,
+  pairs:[{be:'I rest',notbe:'I do not sleep'}]};
+ const vo=validateProfile(older);
+ ok(vo.ok&&vo.profile.avatar.version===1&&vo.profile.avatar.status==='active'&&vo.profile.avatar.pairs[0].id,
+  'an older avatar loads, active because it was built, version one, with an id given');
+ ok(purposeRefuse('ok',PUR_VAL_MAX)===null&&purposeRefuse('',PUR_VAL_MAX)===null,'a short value and an empty one are fine');
+ /* the six sides, his names, each with its meaning */
+ ok(PUR_SIDES.every(k=>PUR_SIDE_SAY[k]&&PUR_SIDE_SAY[k].nm&&PUR_SIDE_SAY[k].say),
+  'every side has a name and a plain meaning beside it');
+ ok(PUR_SIDE_SAY.alone.nm==='Alone'&&PUR_SIDE_SAY.partner.nm==='Partner',
+  'and the names are his, not the document\'s Self and Relationship, which are his to choose (Q4)');
+ /* the fill, for a record already in memory */
+ const mem={built:true,pairs:[{be:'a',notbe:'b'}]}; avatarFill(mem);
+ ok(mem.version===1&&mem.status==='active'&&mem.pairs[0].id&&JSON.stringify(mem.arch)==='{}',
+  'an avatar held in memory from before gains the new fields and keeps what it had');
 }
 
 console.log('\n===== '+P+' passed, '+F+' failed =====');

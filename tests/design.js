@@ -1190,6 +1190,11 @@ console.log('\n=== a sentence in a label class carries plain ===');
      fire('runAvatarDrill',[]);
      [...document.querySelectorAll('[data-avp]')].forEach(b=>
       fire('runAvPair',[+b.getAttribute('data-avp')]));
+     /* the three home poles (Akhenaten, Zoroaster, Confucius), round RB:
+        each opens the same behaviour panel every teacher opens, found by
+        key through compassPoleOf, never by place on the figure. */
+     if(typeof compassPoleOf==='function')['SA','TU','NA'].forEach(k=>
+      fire('runHomePoleDrill',[compassPoleOf(k)]));
     }finally{NAMES.forEach(k=>{window[k]=real[k];});
      if(keep&&typeof CURP!=='undefined'&&CURP){
       CURP.story=keep.story; CURP.avatar=keep.avatar;}}
