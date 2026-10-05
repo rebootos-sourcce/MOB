@@ -99,6 +99,37 @@ export {
   planIdForPriceId,
 } from './payment-boundary.js';
 
+// ---------- P2: cloud persistence boundary ----------
+
+export type {
+  D1Config,
+  SupabaseConfig,
+  CloudPersistenceConfig,
+  CloudConfigValidationFailure,
+  BackupManifest,
+  ManifestValidationFailure,
+  RetentionDeletionDue,
+  DataRetentionSchedule,
+} from './cloud-persistence.js';
+
+export {
+  validateCloudConfig,
+  validateBackupManifest,
+  buildRetentionSchedule,
+} from './cloud-persistence.js';
+
+// ---------- P2: practitioner access model ----------
+
+export type {
+  AccessDeniedReason,
+  PractitionerView,
+} from './practitioner-access.js';
+
+export {
+  checkPractitionerAccess,
+  buildPractitionerView,
+} from './practitioner-access.js';
+
 // ---------- contract constants ----------
 
 /** The only fragment prefix that carries a funnel handoff.

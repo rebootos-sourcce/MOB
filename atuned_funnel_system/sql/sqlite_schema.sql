@@ -155,6 +155,9 @@ create table if not exists idempotency_claims (
   request_hash      text not null,
   status            text not null default 'in_progress',
   result_reference  text,
+  -- Added in 0002_practitioner.sql (Postgres); here from the start.
+  -- ISO 8601 string; matches IDEMPOTENCY_LEASE_MS (5 minutes).
+  lease_expires_at  text not null,
   created_at        text not null,
   completed_at      text,
 
@@ -171,3 +174,35 @@ create table if not exists attachment_challenges (
   created_at       text not null
 );
 create index if not exists attachment_challenges_session_id_idx on attachment_challenges (session_id);
+
+-- ----------------------------------------------------------------
+-- From 0002_practitioner.sql: practitioner grants and revocations.
+-- SQLite dialect: uuid -> text, timestamptz -> text, no pg-specific
+-- constraints. Same structural rules; enforcement is application-side.
+-- ----------------------------------------------------------------
+
+create table if not exists practitioner_grants (
+  id                text primary key,
+  practitioner_id   text not null,
+  subject_user_id   text not null,
+  -- JSON array of scope strings, serialised by the repository layer.
+  granted_scopes    text not null,
+  expires_at        text,
+  consent_token     text not null,
+  granted_at        text not null
+);
+create index if not exists practitioner_grants_practitioner_id_idx
+  on practitioner_grants (practitioner_id);
+create index if not exists practitioner_grants_subject_user_id_idx
+  on practitioner_grants (subject_user_id);
+
+create table if not exists practitioner_grant_revocations (
+  id          text primary key,
+  grant_id    text not null references practitioner_grants(id),
+  revoked_at  text not null,
+  revoked_by  text not null,
+
+  check (revoked_by in ('subject','practitioner','system'))
+);
+create index if not exists practitioner_grant_revocations_grant_id_idx
+  on practitioner_grant_revocations (grant_id);

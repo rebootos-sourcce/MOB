@@ -324,10 +324,10 @@ export class SqliteFunnelRepository implements FunnelRepository {
       this.db
         .prepare(
           `insert into idempotency_claims
-            (scope_key, operation, idempotency_key, request_hash, status, created_at)
-           values (?,?,?,?,'in_progress',?)`,
+            (scope_key, operation, idempotency_key, request_hash, status, lease_expires_at, created_at)
+           values (?,?,?,?,'in_progress',?,?)`,
         )
-        .run(scopeKey, operation, idempotencyKey, requestHash, now);
+        .run(scopeKey, operation, idempotencyKey, requestHash, new Date(Date.now() + 5 * 60 * 1000).toISOString(), now);
       return { claimed: true };
     } catch (err) {
       if (!(err instanceof Error) || !/UNIQUE constraint failed/.test(err.message)) throw err;

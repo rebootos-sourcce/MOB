@@ -405,6 +405,55 @@ export interface AttachmentChallenge {
   createdAt: string;
 }
 
+// ---------- practitioner access model (P2) ----------
+
+/** The five data dimensions a practitioner can be granted sight of.
+ *  Raw story text, email address, and payment details are NEVER in scope;
+ *  adding them here is prohibited. See CLAUDE.md practitioner model. */
+export type PractitionerScope =
+  | 'somatic_readings'
+  | 'release_history'
+  | 'verification_history'
+  | 'story_summaries'
+  | 'funnel_progress';
+
+/** An explicit, time-bounded consent record granting one practitioner sight
+ *  of a subject's data within named scopes. Never a silent default.
+ *  Revocation is always possible; see PractitionerGrantRevocation. */
+export interface PractitionerGrant {
+  id: string;
+  practitionerId: string;
+  subjectUserId: string;
+  grantedScopes: PractitionerScope[];
+  /** ISO timestamp; null means no calendar expiry, but revocation still applies. */
+  expiresAt: string | null;
+  /** Verifiable token the subject confirmed when consenting. */
+  consentToken: string;
+  grantedAt: string;
+}
+
+/** Immutable record of a grant being revoked. Append-only; never delete or
+ *  update. A grant is live only when no revocation row references it. */
+export interface PractitionerGrantRevocation {
+  id: string;
+  grantId: string;
+  revokedAt: string;
+  /** Who initiated the revocation. */
+  revokedBy: 'subject' | 'practitioner' | 'system';
+}
+
+// ---------- data retention (P2) ----------
+
+/** How long one table's data is kept and how deletion happens. */
+export interface DataRetentionPolicy {
+  table: string;
+  /** ISO 8601 duration, e.g. "P90D" for 90 days. */
+  retainFor: string;
+  deletionMode: 'scheduled' | 'on_request';
+  /** "hard" = DELETE; "soft" = mark a deleted_at column. */
+  deletionStyle: 'hard' | 'soft';
+}
+
 // ---------- small result/error types used across the service layer ----------
 
 export class FunnelError extends Error {
@@ -439,7 +488,10 @@ export class FunnelError extends Error {
       | 'PAYMENT_EVENT_INVALID'
       | 'PAYMENT_EVENT_DUPLICATE'
       | 'STARTER_GIFT_ALREADY_TRANSFERRED'
-      | 'PRIVACY_POLICY_CONFLICT',
+      | 'PRIVACY_POLICY_CONFLICT'
+      | 'PRACTITIONER_ACCESS_DENIED'
+      | 'GRANT_REVOKED'
+      | 'GRANT_EXPIRED',
     message: string,
   ) {
     super(message);
