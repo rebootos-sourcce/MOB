@@ -134,8 +134,7 @@ function loginCard(mail){
   +'</form>'
   +'<p class="login-msg" id="loginmsg"></p>'
   +'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-go">Log in</button>'
-  +'<button type="button" class="btn" id="loginb-new">Create account</button>'
-  +'<button type="button" class="btn" id="loginb-skip">Guest</button></div>'
+  +'<button type="button" class="btn" id="loginb-new">Create account</button></div>'
   +loginDevOptions()
   +'</div></div>';}
 function loginResetCard(mail){
@@ -195,8 +194,6 @@ function loginWire(h){
  var f=h.querySelector('input'); if(f)f.focus();
  var go=document.getElementById('loginb-go'); if(go)go.onclick=loginGo;
  var nw=document.getElementById('loginb-new'); if(nw)nw.onclick=function(){ loginSubmit('signup'); };
- var sk=document.getElementById('loginb-skip');
- if(sk)sk.onclick=function(){ loginClose(); loginEnter(); };
  var form=document.getElementById('loginform');
  if(form)form.onsubmit=function(e){e.preventDefault(); loginGo();};
  var sug=document.getElementById('loginsug');

@@ -656,9 +656,7 @@ function relStep(){
  function next(){
   if(moved||tok!==RUN.tok)return; moved=true; clearTimeout(RUN.timer);
   if(!RUN.paused)relAdvance();}
- /* THE WELCOME IS NEVER SYNTHESISED. It is his recorded voice or it is
-    silence, whatever the voice switch says; see THE SCRIPT above. */
- if(st.kind!=='welcome'&&relVoiceOn()&&relSay(st,function(ms){
+ if(relVoiceOn()&&relSay(st,function(ms){
     if(tok!==RUN.tok)return;
     if(ms<raw*0.25){ clearTimeout(RUN.timer); RUN.timer=setTimeout(next,Math.max(0,est-ms)); return; }
     RUN.spokeMs+=ms; RUN.spokeW+=relWords(st.text);
@@ -1420,9 +1418,7 @@ function relToneRow(n){
    whether the words stay on this machine, said before the voice says a word. */
 function relVoiceRow(){
  if(typeof voiceCan!=='function'||!voiceCan()||typeof accTog!=='function')return '';
- var v=voicePick();
- return accTog('Voice','relvoice',relVoiceOn(),
-  !v?'':v.name+(v.localService?', on this machine':', a network service'));}
+ return accTog('Voice','relvoice',relVoiceOn(),'');}
 /* the studio voice's switch, under the voice's and only while the voice is on
    and a person is signed in, since it can do nothing otherwise. Its note is
    the same privacy line the voice row carries, cut to its facts: who says the
@@ -1432,7 +1428,7 @@ function relVoiceRow(){
 function relStudioRow(){
  if(!relVoiceOn()||typeof studioCan!=='function'||!studioCan()||typeof accTog!=='function')return '';
  if(typeof authSession!=='function'||!authSession())return '';
- return accTog('Studio voice','relstudio',!!(CURP&&CURP.ui&&CURP.ui.studio===true),
+ return accTog('Studio voice','relstudio',relStudioOn(),
   'ElevenLabs, a voice company, over the network. It gets each line and nothing about you.');}
 function relBuzzRow(){
  if(typeof buzzCan!=='function'||!buzzCan()||typeof accTog!=='function')return '';
@@ -2207,7 +2203,6 @@ function relCar(sp){
   +'<button type="button" id="relback" aria-label="Back">'+relIc('up')+'</button>'
   +'<button type="button" id="relnow" aria-pressed="true" aria-label="Now">'+relIc('now')+'</button>'
   +'<button type="button" id="relfwd" aria-label="Forward">'+relIc('down')+'</button></span></div>'
-  +relBankHtml()
   +'<div class="rel-cr-hint" id="relhv"></div></div>';}
 /* one line of the list. data-pile carries which pile a heavy mark is in, so
    the sheet can tint it and the word beside the ring can say it. col is the
@@ -2508,7 +2503,7 @@ function relGroupHtml(g,k){
  var t, s;
  if(g.b!=null&&g.ei===undefined){
   t='<span class="rel-gi-t" style="color:'+seatCol(g.b)+'">'+esc(g.b)+'</span>';
-  s=(typeof unpSay==='function')?unpSay(g.b,'seat'):'';}
+  s='';}
  else if(g.ei!=null){
   t='<span class="rel-gi-t">'+esc(relClip(g.text,140))+'</span>';
   s=relDay(g.t)?'Written '+esc(relDay(g.t)):'';}
@@ -2676,7 +2671,7 @@ function relRailP(){
 function relTop(right){
  var k=relStepNow();
  return '<div class="rel-top" id="reltop">'
-  +'<span class="rel-word">Release</span>'
+  +'<span class="rel-word"></span>'
   +'<div class="rel-rail" role="img" aria-label="Step '+(k+1)+' of '+REL_STEPS.length+', '+REL_STEPS[k]+'">'
   +'<span class="rel-trk"><i class="rel-fill" style="--p:'+relRailP().toFixed(3)+'"></i>'
   +REL_STEPS.map(function(_,i){return '<b class="rel-dot'+(i<k?' past':'')+(i===k?' on':'')+'"></b>';}).join('')+'</span>'
@@ -2987,8 +2982,6 @@ function relRender(){
     +'<div class="rel-dots">'+wl.map(function(_,i){return '<i class="'+(i<=RUN.line?'on':'')+'"></i>';}).join('')+'</div>'
     /* plain words, the JK ruling of the same day: "we want to speak to people
        as if they're 10". "Not in this build" was the engineering word for it. */
-    +(RUN.line===0?'<div class="rel-sub">His recorded voice reads this part. Until it is recorded, '
-      +'read it to yourself.'+(relVoiceOn()?' The app voice starts with the list.':'')+'</div>':'')
     +relClock()+'</div>'+relSws(relNow().n)});
  } else if(RUN.phase==='opening'){
   /* "Release and reframe" was the old name for the mechanic, two words where
@@ -3121,10 +3114,7 @@ function relRender(){
      Story and Seat toggle, centred, and under it the carousel of what is
      about to go, by story or by seat, each with its count. */
   relClosePlan();
-  var body='<div class="rel-hdt"><span class="seg" role="group" aria-label="Show what is picked by">'
-   +'<button type="button" data-relgrp="story" aria-pressed="'+(RUN.grp!=='seat')+'">Story</button>'
-   +'<button type="button" data-relgrp="seat" aria-pressed="'+(RUN.grp==='seat')+'">Seat</button></span></div>'
-   +relSetupCar();
+  var body=relSetupCar();
   /* NEW OR RERUN, 22.K17, as a pressed pair the way the dose picks are. The
      rerun's price is said before Run release is offered, because a person is
      entitled to see what a run costs before they begin it. */
@@ -3156,7 +3146,7 @@ function relRender(){
   /* and no switch for a run that cannot begin */
   if(!spent)body+=relSws(null);
   out=relShell({ph:'setup',col:col0,body:body,
-   right:'<button type="button" class="rel-x" id="relx" aria-label="Cancel">'+relIc('x')+'</button>',
+   right:'',
    /* THE BUTTON IS NOT THERE WHEN THERE IS NOTHING TO SPEND. A disabled Begin
       would be a control the panel is still offering, and the honest reading of
       a spent allowance is that this run does not exist yet. */
