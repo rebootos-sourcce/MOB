@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1743 840477b 2026-10-04 23:05"><head><meta charset="utf-8">
+<html lang="en" data-build="v1748 b8931be 2026-10-05 20:22"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -30991,13 +30991,12 @@ function speak(text,rate,onend,onfail){
 function speakStop(){ try{ if(voiceCan())speechSynthesis.cancel(); }catch(e){} studioStop(); }
 /* ============================================================
    THE STUDIO VOICE. The same line, rendered by ElevenLabs on the
-   server (ui/auth.js authVoice) and played here, behind the browser
-   voice and never in place of it: reboot-os 38_voice.js rules
-   "generated first, ElevenLabs later", free speech to find the
-   pacing and the paid voice to render a script whose timing is
-   proven. The release's timing is the four second spacing, ruled 27
-   September, and it holds whichever voice says the line, so this is
-   a switch a person turns on and not a default.
+   server (ui/auth.js authVoice) and played here. ElevenLabs is the
+   default when a session is active (ui/release.js relStudioOn); the
+   browser voice is the fallback when the server does not answer or
+   the person is not signed in. The release timing is the four second
+   spacing, ruled 27 September, and it holds whichever voice says the
+   line.
 
    THE SAME CONTRACT AS speak(), so the walker in ui/release.js needs
    nothing new: onend gets the milliseconds from the call to the end
@@ -50743,7 +50742,7 @@ function relVoiceOn(){
 function relStudioOn(){
  if(!relVoiceOn()||RUN.studioLost||typeof studioCan!=='function'||!studioCan())return false;
  if(typeof authSession!=='function'||!authSession())return false;
- return !!(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.studio===true);}
+ return true;}
 /* what each failure means for the run, in words. The server's own sentence
    for a 503 names a setting on the server, so it is not shown; a 401 is a
    sign in the server has ended, which ui/auth.js authCheck says on its own. */
@@ -73199,5 +73198,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004825143"></div>
+<div id="eof" hidden data-len="004824987"></div>
 </body></html>

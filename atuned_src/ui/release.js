@@ -594,7 +594,7 @@ function relVoiceOn(){
 function relStudioOn(){
  if(!relVoiceOn()||RUN.studioLost||typeof studioCan!=='function'||!studioCan())return false;
  if(typeof authSession!=='function'||!authSession())return false;
- return !!(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.studio===true);}
+ return true;}
 /* what each failure means for the run, in words. The server's own sentence
    for a 503 names a setting on the server, so it is not shown; a 401 is a
    sign in the server has ended, which ui/auth.js authCheck says on its own. */

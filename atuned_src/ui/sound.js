@@ -814,13 +814,12 @@ function speak(text,rate,onend,onfail){
 function speakStop(){ try{ if(voiceCan())speechSynthesis.cancel(); }catch(e){} studioStop(); }
 /* ============================================================
    THE STUDIO VOICE. The same line, rendered by ElevenLabs on the
-   server (ui/auth.js authVoice) and played here, behind the browser
-   voice and never in place of it: reboot-os 38_voice.js rules
-   "generated first, ElevenLabs later", free speech to find the
-   pacing and the paid voice to render a script whose timing is
-   proven. The release's timing is the four second spacing, ruled 27
-   September, and it holds whichever voice says the line, so this is
-   a switch a person turns on and not a default.
+   server (ui/auth.js authVoice) and played here. ElevenLabs is the
+   default when a session is active (ui/release.js relStudioOn); the
+   browser voice is the fallback when the server does not answer or
+   the person is not signed in. The release timing is the four second
+   spacing, ruled 27 September, and it holds whichever voice says the
+   line.
 
    THE SAME CONTRACT AS speak(), so the walker in ui/release.js needs
    nothing new: onend gets the milliseconds from the call to the end
