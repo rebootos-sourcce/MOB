@@ -284,6 +284,23 @@ export interface VerificationRef {
   userReport: string | null;
 }
 
+/** Structured receipt returned by funnelService.verify(). Wraps VerificationRef
+ *  with the session and timing context the caller needs in one place. The
+ *  service layer already had this data at the call site; this surfaces it
+ *  explicitly so callers do not have to fetch the session again just to get
+ *  the verificationId back. Section 9 of the Master Seam Implementation spec. */
+export interface VerificationReceipt {
+  verificationId: string;
+  releaseId: string;
+  sessionId: string;
+  /** The five engine answer values, verbatim. */
+  status: VerificationStatus;
+  verifiedAt: string;
+  notes: string | null;
+  /** The session after the state machine has advanced. */
+  session: FunnelSession;
+}
+
 // ---------- events (append only; see funnelService.ts for emission points) ----------
 
 export type FunnelEventType =

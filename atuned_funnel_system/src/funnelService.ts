@@ -31,6 +31,7 @@ import type {
   StarterGiftItem,
   TutorialProgress,
   UsageLedgerEntry,
+  VerificationReceipt,
   VerificationStatus,
 } from './domain.js';
 import { FunnelError } from './domain.js';
@@ -500,7 +501,7 @@ export class FunnelService {
     addressIds: number[],
     response: VerificationStatus,
     notes: string | null = null,
-  ): Promise<FunnelSession> {
+  ): Promise<VerificationReceipt> {
     const session = await this.mustGetSession(sessionId);
     if (!addressIds.length) {
       throw new FunnelError(
@@ -518,7 +519,15 @@ export class FunnelService {
     });
     const next = await this.advance(session, 'RITUAL', { verificationId: result.id });
     await this.emit(next, 'VERIFICATION_RECORDED', { releaseId, response });
-    return next;
+    return {
+      verificationId: result.id,
+      releaseId,
+      sessionId,
+      status: result.status,
+      verifiedAt: this.a.clock.nowIso(),
+      notes: notes ?? null,
+      session: next,
+    };
   }
 
   // ---------- referral (section 19) ----------

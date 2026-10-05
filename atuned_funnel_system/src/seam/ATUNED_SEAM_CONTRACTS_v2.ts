@@ -15,8 +15,8 @@
        → PROFILE RECORD         (engine/schema.js pImport/pSave)
        → EXISTING ENGINE        (engine/*.js, host free)
        → DOMAIN ORCHESTRATION   (funnelService.ts)
-       → GRAPH PROJECTION        (P1: seam/trace-bridge.ts, not yet built)
-       → REFLECTION VIEW MODEL   (P1: derived, read-only)
+       → GRAPH PROJECTION        (seam/trace-bridge.ts — built P1)
+       → REFLECTION VIEW MODEL   (seam/reflection-view.ts — built P1)
        → UI
    Never reverse this chain.
    ============================================================ */
@@ -48,6 +48,56 @@ export {
   attachFunnelContextToOnboarding,
   writeBridgeContextToAttributes,
 } from './onboarding-bridge.js';
+
+// ---------- P1: trace graph seam ----------
+
+export type {
+  TraceNodeType,
+  TraceEdgeType,
+  TraceProvenance,
+  TraceNode,
+  TraceEdge,
+  TraceGraph,
+  TraceNodeIntent,
+  TraceEdgeIntent,
+  TraceIntent,
+  TraceIndex,
+} from './trace-bridge.js';
+
+export {
+  projectRelease,
+  projectVerification,
+  projectFunnelActivity,
+  buildTraceIndex,
+  neighborsOf,
+  lookupNode,
+} from './trace-bridge.js';
+
+// ---------- P1: reflection view model ----------
+
+export type {
+  VerificationSummary,
+  ReleasedPatternView,
+  ReflectionView,
+} from './reflection-view.js';
+
+export { buildReflectionView } from './reflection-view.js';
+
+// ---------- P1: payment webhook boundary ----------
+
+export type {
+  WebhookPayload,
+  WebhookValidationResult,
+  WebhookValidationFailure,
+} from './payment-boundary.js';
+
+export {
+  validateWebhookPayload,
+  extractCustomerId,
+  extractPriceId,
+  registerPriceId,
+  planIdForPriceId,
+} from './payment-boundary.js';
 
 // ---------- contract constants ----------
 
