@@ -15,6 +15,8 @@ import type {
   IdempotencyClaim,
   PlanId,
   Referral,
+  ReleasePlanRef,
+  ReleaseRef,
   SightLevel,
   StarterGift,
   StarterGiftItem,
@@ -124,7 +126,13 @@ export class InMemoryFunnelRepository implements FunnelRepository {
     return next;
   }
 
-  async claimIdempotencyKey(scopeKey: string, operation: string, idempotencyKey: string, requestHash: string) {
+  async claimIdempotencyKey(
+    scopeKey: string,
+    operation: string,
+    idempotencyKey: string,
+    requestHash: string,
+    leaseExpiresAt: string = new Date(Date.now() + 5 * 60 * 1000).toISOString(),
+  ) {
     const compound = `${scopeKey}:${idempotencyKey}`;
     const existing = this.idempotencyClaims.get(compound);
     if (existing) {
@@ -146,6 +154,7 @@ export class InMemoryFunnelRepository implements FunnelRepository {
       requestHash,
       status: 'in_progress',
       resultReference: null,
+      leaseExpiresAt,
       createdAt: new Date().toISOString(),
       completedAt: null,
     };
@@ -224,21 +233,45 @@ export class FakeReadingAdapter implements ReadingAdapter {
 
 export class FakeReleaseAdapter implements ReleaseAdapter {
   private n = 0;
-  async executeRelease(patternId: string) {
+  async executeRelease(plan: ReleasePlanRef): Promise<ReleaseRef> {
     this.n += 1;
-    return { id: `release_${this.n}`, patternId, status: 'completed' as const };
+    return { id: `release_${this.n}`, patternId: plan.patternId, addressIds: plan.addressIds, status: 'completed' };
   }
-  async rerun(patternId: string) {
+  async rerun(plan: ReleasePlanRef): Promise<ReleaseRef> {
     this.n += 1;
-    return { id: `rerun_${this.n}`, patternId, status: 'completed' as const };
+    return { id: `rerun_${this.n}`, patternId: plan.patternId, addressIds: plan.addressIds, status: 'completed' };
   }
+}
+
+/** Build a minimal valid ReleasePlanRef for test use. */
+export function fakePlan(patternId: string, mode: ReleasePlanRef['mode'] = 'OPEN_NEW_GROUND'): ReleasePlanRef {
+  return {
+    patternId,
+    mode,
+    meterKeys: [`1:1:1`],
+    addressIds: [1],
+    channels: [1],
+    lineIds: [1],
+    planHash: `hash_${patternId}`,
+    engineVersion: 'fake',
+  };
 }
 
 export class FakeVerificationAdapter implements VerificationAdapter {
   private n = 0;
-  async verify(input: { releaseId: string; response: VerificationStatus }): Promise<VerificationRef> {
+  async verify(input: {
+    releaseId: string;
+    addressIds: number[];
+    response: VerificationStatus;
+    beforeReference: string | null;
+    afterReference: string | null;
+    notes: string | null;
+  }): Promise<VerificationRef> {
+    if (!input.addressIds || !input.addressIds.length) {
+      throw new FunnelError('VERIFICATION_ADDRESS_MISSING', `addressIds required for verification of ${input.releaseId}`);
+    }
     this.n += 1;
-    return { id: `verification_${this.n}`, releaseId: input.releaseId, status: input.response, userReport: null };
+    return { id: `verification_${this.n}`, releaseId: input.releaseId, status: input.response, userReport: input.notes };
   }
 }
 
@@ -263,7 +296,7 @@ export class FakeEntitlementAdapter implements EntitlementAdapter {
   async getSightLevel(): Promise<SightLevel> {
     return 'base';
   }
-  async grant(userId: string, planId: PlanId): Promise<Entitlement> {
+  async grant(userId: string, planId: PlanId, _source: 'referral' | 'payment' | 'gift'): Promise<Entitlement> {
     return {
       userId,
       planId,

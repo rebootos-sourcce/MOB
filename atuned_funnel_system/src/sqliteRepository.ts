@@ -341,6 +341,7 @@ export class SqliteFunnelRepository implements FunnelRepository {
         requestHash: row.request_hash as string,
         status: row.status as IdempotencyClaim['status'],
         resultReference: (row.result_reference as string | null) ?? null,
+        leaseExpiresAt: (row.lease_expires_at as string | null) ?? new Date(Date.now() + 5 * 60 * 1000).toISOString(),
         createdAt: row.created_at as string,
         completedAt: (row.completed_at as string | null) ?? null,
       };

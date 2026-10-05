@@ -18,6 +18,7 @@ import {
   FakeVerificationAdapter,
   FakeEntitlementAdapter,
   FakePaymentAdapter,
+  fakePlan,
 } from './test-doubles.js';
 
 /** A real SQLite file per test, in a throwaway temp directory, not
@@ -161,10 +162,12 @@ test('the full funnel invariant suite passes against the real database, not only
     const session = await startAndRecognize(service, 'anon_sqlite_full');
     await service.selectGround(session.id, 'fear');
 
-    const r1 = await service.requestRelease(session.id, 'pattern_1', { idempotencyKey: 'sqlite-k1' });
+    const r1 = await service.requestRelease(session.id, fakePlan('pattern_1'), { idempotencyKey: 'sqlite-k1' });
     assert.equal(r1.consumed, 1);
 
-    await assert.rejects(() => service.requestRelease(session.id, 'pattern_1', { idempotencyKey: 'sqlite-k1' }));
+    // same key + same plan = replay (not a throw); different key needed for duplication test
+    const r2 = await service.requestRelease(session.id, fakePlan('pattern_1'), { idempotencyKey: 'sqlite-k1' });
+    assert.equal(r2.releaseId, r1.releaseId, 'replay must return the same releaseId');
 
     const { credential } = await service.issueAttachmentChallenge(session.id);
     const attached = await service.attachAccount(session.id, 'real_token', credential);

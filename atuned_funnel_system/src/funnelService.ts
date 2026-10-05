@@ -26,6 +26,7 @@ import type {
   FunnelEvent,
   FunnelSession,
   Referral,
+  ReleasePlanRef,
   StarterGift,
   StarterGiftItem,
   TutorialProgress,
@@ -374,39 +375,55 @@ export class FunnelService {
 
   async requestRelease(
     sessionId: string,
-    patternId: string,
-    opts: { idempotencyKey: string } = { idempotencyKey: `${sessionId}:${patternId}` },
-  ): Promise<{ session: FunnelSession; releaseId: string; consumed: 0 | 1 }> {
+    plan: ReleasePlanRef,
+    opts: { idempotencyKey: string } = { idempotencyKey: `${sessionId}:${plan.patternId}` },
+  ): Promise<{ session: FunnelSession; releaseId: string; addressIds: number[]; consumed: 0 | 1 }> {
     const session = await this.mustGetSession(sessionId);
     const userId = session.userId ?? session.anonymousId;
 
+    if (!plan.meterKeys.length) {
+      throw new FunnelError('RELEASE_TARGET_MISSING', `plan for ${plan.patternId} has no meterKeys`);
+    }
+
     const dupeScope = `user:${userId}`;
+    const leaseExpiresAt = new Date(Date.parse(this.a.clock.nowIso()) + 5 * 60 * 1000).toISOString();
     const claim = await this.a.repo.claimIdempotencyKey(
       dupeScope,
       'release',
       opts.idempotencyKey,
-      requestHash({ patternId }),
+      requestHash({ patternId: plan.patternId, planHash: plan.planHash }),
+      leaseExpiresAt,
     );
     if (!claim.claimed) {
-      /* The production TDD's own preferred behavior for a byte-identical
-         retry is "same key + same request = same durable result," returning
-         the first call's own response rather than an error. This scaffold
-         takes the safer, simpler route instead: reject the repeat outright
-         and let the caller re-read state through getSession/getUsageBalance.
-         Doing the full same-result reconstruction needs the original
-         response's session and consumed-amount alongside resultReference,
-         which claimIdempotencyKey's row does not carry; name this as a
-         real simplification to close, not a silent deviation, if this
-         scaffold is kept rather than replaced at integration time. */
-      throw new FunnelError(
-        'DUPLICATE_IDEMPOTENCY_KEY',
-        `${opts.idempotencyKey} already ${claim.existing.status === 'completed' ? 'completed' : 'in progress'}`,
-      );
+      const { existing } = claim;
+      if (existing.status === 'completed' && existing.resultReference) {
+        // Same key + same request hash = replay the original durable result.
+        // resultReference is the releaseId from the first execution.
+        return {
+          session,
+          releaseId: existing.resultReference,
+          addressIds: plan.addressIds,
+          consumed: plan.mode === 'RERUN' ? 0 : 1,
+        };
+      }
+      if (existing.status === 'in_progress') {
+        const isStale = new Date(existing.leaseExpiresAt) < new Date(this.a.clock.nowIso());
+        if (!isStale) {
+          throw new FunnelError('IDEMPOTENCY_IN_PROGRESS', `${opts.idempotencyKey} is still in progress`);
+        }
+        // Stale lease: caller must search for a durable result before reclaiming.
+        // We do not reclaim here; throw so the caller can perform recovery.
+        throw new FunnelError(
+          'IDEMPOTENCY_RECOVERY_REQUIRED',
+          `${opts.idempotencyKey} has a stale lease; check for durable result before retrying`,
+        );
+      }
+      throw new FunnelError('DUPLICATE_IDEMPOTENCY_KEY', `${opts.idempotencyKey} already ${existing.status}`);
     }
 
-    const alreadyOpened = await this.a.catalog.isAlreadyOpened(userId, patternId);
+    const alreadyOpened = plan.mode === 'RERUN' || (await this.a.catalog.isAlreadyOpened(userId, plan.patternId));
     const operation = alreadyOpened ? 'RERUN' : 'OPEN_NEW_GROUND';
-    const decision = await this.a.entitlement.getDecision(userId, operation, patternId);
+    const decision = await this.a.entitlement.getDecision(userId, operation, plan.patternId);
     if (!decision.allowed) {
       throw new FunnelError('ENTITLEMENT_DENIED', decision.reason ?? `${operation} denied for ${userId}`);
     }
@@ -417,8 +434,8 @@ export class FunnelService {
 
     const release =
       operation === 'RERUN'
-        ? await this.a.release.rerun(patternId, {})
-        : await this.a.release.executeRelease(patternId, {});
+        ? await this.a.release.rerun(plan, {})
+        : await this.a.release.executeRelease(plan, {});
 
     if (amount === 1) {
       const balanceAfter = (await this.a.repo.getUsageBalance(userId, decision.source)) - 1;
@@ -427,7 +444,7 @@ export class FunnelService {
         userId,
         source: decision.source,
         operation,
-        patternId,
+        patternId: plan.patternId,
         releaseId: release.id,
         amount,
         balanceAfter,
@@ -451,6 +468,8 @@ export class FunnelService {
         .then(() => ({ ...session, firstReleaseId: release.id, version: session.version + 1 }));
     }
 
+    const patternId = plan.patternId;
+    const addressIds = release.addressIds.length ? release.addressIds : plan.addressIds;
     await this.emit(
       next,
       operation === 'RERUN' ? 'RERUN_STARTED' : 'RELEASE_STARTED',
@@ -459,11 +478,11 @@ export class FunnelService {
     await this.emit(
       next,
       operation === 'RERUN' ? 'RERUN_COMPLETED' : 'RELEASE_COMPLETED',
-      { patternId, releaseId: release.id },
+      { patternId, releaseId: release.id, addressIds },
     );
     if (amount === 1) await this.emit(next, 'USAGE_CONSUMED', { patternId, source: decision.source });
 
-    return { session: next, releaseId: release.id, consumed: amount };
+    return { session: next, releaseId: release.id, addressIds, consumed: amount };
   }
 
   async recordReframe(sessionId: string): Promise<FunnelSession> {
@@ -478,12 +497,20 @@ export class FunnelService {
   async verify(
     sessionId: string,
     releaseId: string,
+    addressIds: number[],
     response: VerificationStatus,
     notes: string | null = null,
   ): Promise<FunnelSession> {
     const session = await this.mustGetSession(sessionId);
+    if (!addressIds.length) {
+      throw new FunnelError(
+        'VERIFICATION_ADDRESS_MISSING',
+        `addressIds required for verification of release ${releaseId}; no address default is ever acceptable`,
+      );
+    }
     const result = await this.a.verification.verify({
       releaseId,
+      addressIds,
       response,
       beforeReference: null,
       afterReference: null,
@@ -536,11 +563,13 @@ export class FunnelService {
       return referral; // idempotent: grant already issued once
     }
 
+    const referralLeaseExpiresAt = new Date(Date.parse(this.a.clock.nowIso()) + 5 * 60 * 1000).toISOString();
     const claim = await this.a.repo.claimIdempotencyKey(
       `referral:${referral.id}`,
       'referral_grant',
       referral.id,
       requestHash({ inviteeUserId }),
+      referralLeaseExpiresAt,
     );
     if (!claim.claimed) {
       // another caller is issuing (or already issued) this exact referral's
@@ -572,7 +601,8 @@ export class FunnelService {
    *  only an event id it resolves itself through the trusted adapter
    *  (Database Production Completion TDD v2, section 5.2). */
   async handlePaymentWebhook(eventId: string): Promise<{ granted: boolean }> {
-    const claim = await this.a.repo.claimIdempotencyKey('payment', 'payment_webhook', eventId, requestHash({ eventId }));
+    const paymentLeaseExpiresAt = new Date(Date.parse(this.a.clock.nowIso()) + 5 * 60 * 1000).toISOString();
+    const claim = await this.a.repo.claimIdempotencyKey('payment', 'payment_webhook', eventId, requestHash({ eventId }), paymentLeaseExpiresAt);
     if (!claim.claimed) return { granted: false };
 
     const resolved = await this.a.payment.resolveWebhookEvent(eventId);

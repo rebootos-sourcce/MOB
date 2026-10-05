@@ -8,6 +8,20 @@ import {
   RealIdentityAdapter,
   type ProfileContext,
 } from '../src/realAdapters.js';
+import type { ReleasePlanRef } from '../src/domain.js';
+
+function fakeReleasePlan(patternId: string): ReleasePlanRef {
+  return {
+    patternId,
+    mode: 'OPEN_NEW_GROUND',
+    meterKeys: ['1:1:1'],
+    addressIds: [1],
+    channels: [1],
+    lineIds: [1],
+    planHash: `hash_${patternId}`,
+    engineVersion: 'test',
+  };
+}
 
 test('RealEntitlementAdapter reads the real, shipped SIGHT and price tables', () => {
   const adapter = new RealEntitlementAdapter();
@@ -27,7 +41,7 @@ test('RealEntitlementAdapter never charges a rerun', async () => {
 test('RealReleaseAdapter calls the real releaseWork and returns the updated profile', async () => {
   const adapter = new RealReleaseAdapter();
   const context: ProfileContext = { profile: { law: { Truth: 6 }, charge: {} } };
-  const release = await adapter.executeRelease('1:1', context);
+  const release = await adapter.executeRelease(fakeReleasePlan('pattern_1'), context);
   assert.equal(release.status, 'completed');
   assert.ok(release.id.startsWith('release_'));
   assert.ok(context.updatedProfile, 'the real adapter must hand back the updated profile');
@@ -38,6 +52,7 @@ test('RealVerificationAdapter calls the real, pure releaseVerify', async () => {
   const adapter = new RealVerificationAdapter();
   const result = await adapter.verify({
     releaseId: 'release_1',
+    addressIds: [1],
     response: 'something_moved',
     beforeReference: '1',
     afterReference: null,
@@ -53,6 +68,7 @@ test('RealVerificationAdapter surfaces a real refusal rather than swallowing it'
     // not one of RV_ANSWERS; the real engine itself must refuse this, not a fake
     adapter.verify({
       releaseId: 'release_2',
+      addressIds: [1],
       response: 'definitely-not-a-real-answer' as never,
       beforeReference: '1',
       afterReference: null,

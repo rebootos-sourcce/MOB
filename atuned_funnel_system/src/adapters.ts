@@ -81,17 +81,29 @@ export interface FunnelRepository {
    *  (scopeKey, idempotencyKey) with an insert-or-return-existing, or
    *  equivalent): the first caller gets `{claimed: true}` and proceeds; a
    *  concurrent or later caller with the SAME key and the SAME
-   *  requestHash gets `{claimed: false, existing}` and must return the
-   *  existing claim's own eventual result, never re-run the operation. A
-   *  caller with the same key and a DIFFERENT requestHash must be
-   *  rejected (FunnelError, a hash mismatch), never silently served either
-   *  result. */
+   *  requestHash gets `{claimed: false, existing}` and the caller MUST
+   *  replay the original durable result, never re-run the operation. A
+   *  caller with the same key and a DIFFERENT requestHash must throw
+   *  FunnelError('IDEMPOTENCY_HASH_MISMATCH', ...).
+   *
+   *  A claim that is in-progress with a LIVE lease returns `{claimed: false, existing}`
+   *  where `existing.status === 'in_progress'` and the caller throws
+   *  FunnelError('IDEMPOTENCY_IN_PROGRESS', ...).
+   *
+   *  A claim that is in-progress with a STALE lease returns
+   *  `{claimed: false, existing, staleRecovery: true}` and the caller must
+   *  search for a durable result before reclaiming. Section 14.3 of the
+   *  Master Seam spec. */
   claimIdempotencyKey(
     scopeKey: string,
     operation: string,
     idempotencyKey: string,
     requestHash: string,
-  ): Promise<{ claimed: true } | { claimed: false; existing: import('./domain.js').IdempotencyClaim }>;
+    leaseExpiresAt: string,
+  ): Promise<
+    | { claimed: true }
+    | { claimed: false; existing: import('./domain.js').IdempotencyClaim; staleRecovery?: boolean }
+  >;
   completeIdempotencyClaim(scopeKey: string, idempotencyKey: string, resultReference: string): Promise<void>;
 
   appendUsageLedgerEntry(entry: import('./domain.js').UsageLedgerEntry): Promise<void>;
@@ -163,10 +175,15 @@ export interface ReadingAdapter {
 
 /** Wire to the authoritative release engine: atuned_src/engine/compute.js
  *  (releaseWork, lawLift) and atuned_src/engine/journey.js. The funnel
- *  must not compute a release lift or a CQ delta itself. */
+ *  must not compute a release lift or a CQ delta itself.
+ *
+ *  Both methods must accept a full ReleasePlanRef (not just patternId) so
+ *  the real engine's meterKeys are used for execution and the real
+ *  addressIds are returned for verification threading. Section 11 of the
+ *  Master Seam Implementation spec. */
 export interface ReleaseAdapter {
-  executeRelease(patternId: string, context: Record<string, unknown>): Promise<ReleaseRef>;
-  rerun(patternId: string, context: Record<string, unknown>): Promise<ReleaseRef>;
+  executeRelease(plan: import('./domain.js').ReleasePlanRef, context: Record<string, unknown>): Promise<ReleaseRef>;
+  rerun(plan: import('./domain.js').ReleasePlanRef, context: Record<string, unknown>): Promise<ReleaseRef>;
 }
 
 /** Wire to atuned_src/engine/journey.js releaseVerify() and the five
@@ -178,8 +195,14 @@ export interface ReleaseAdapter {
  *  (round SG found this directly: a first draft of this scaffold used the
  *  English words and the real engine rejected every call). */
 export interface VerificationAdapter {
+  /** `addressIds` must carry the real address IDs from the preceding
+   *  releaseWork() call. The engine's own releaseVerify() takes a numeric
+   *  `addrs` array; a missing or empty addressIds is a hard error
+   *  (VERIFICATION_ADDRESS_MISSING), not a silent default to [1].
+   *  Section 19 of the Master Seam Implementation spec. */
   verify(input: {
     releaseId: string;
+    addressIds: number[];
     response: VerificationStatus;
     beforeReference: string | null;
     afterReference: string | null;

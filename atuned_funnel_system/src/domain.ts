@@ -243,7 +243,30 @@ export interface PatternRef {
 export interface ReleaseRef {
   id: string;
   patternId: string;
+  /** Real address IDs the engine worked, needed by releaseVerify(). */
+  addressIds: number[];
   status: 'started' | 'completed' | 'interrupted' | 'failed';
+}
+
+/** Full release plan derived from meterPlan()/meterRerunPlan(). The adapter
+ *  must carry all of these fields; a bare patternId string is insufficient
+ *  because releaseWork() takes meter keys, not a single pattern id, and
+ *  releaseVerify() needs the addressIds to thread verification correctly.
+ *  Section 11.2 of the Master Seam Implementation spec. */
+export interface ReleasePlanRef {
+  patternId: string;
+  mode: 'OPEN_NEW_GROUND' | 'RERUN';
+  /** Meter keys in `nodeId:channel:line` format. Authoritative for engine execution. */
+  meterKeys: string[];
+  /** Address IDs extracted from the meter keys (first component parsed as int).
+   *  Authoritative for verification threading. */
+  addressIds: number[];
+  channels: number[];
+  lineIds: number[];
+  /** SHA-256 of the sorted meterKeys array; verifies plan integrity. */
+  planHash: string;
+  /** engine.js build stamp at plan derivation time. */
+  engineVersion: string;
 }
 
 /** The real engine's own five answers, verbatim: `RV_ANSWERS` in
@@ -340,6 +363,10 @@ export interface IdempotencyClaim {
   requestHash: string;
   status: IdempotencyStatus;
   resultReference: string | null;
+  /** Lease expiry for in-progress claims. A claim past this time and still
+   *  in-progress is stale: check for a durable result before reclaiming.
+   *  Section 14.3 of the Master Seam Implementation spec. */
+  leaseExpiresAt: string;
   createdAt: string;
   completedAt: string | null;
 }
@@ -375,7 +402,27 @@ export class FunnelError extends Error {
       | 'DUPLICATE_IDEMPOTENCY_KEY'
       | 'SAFETY_STOP_ACTIVE'
       | 'ATTACHMENT_CREDENTIAL_INVALID'
-      | 'IDEMPOTENCY_HASH_MISMATCH',
+      | 'IDEMPOTENCY_HASH_MISMATCH'
+      | 'IDEMPOTENCY_IN_PROGRESS'
+      | 'IDEMPOTENCY_RECOVERY_REQUIRED'
+      | 'INVALID_HANDOFF'
+      | 'HANDOFF_EXPIRED'
+      | 'HANDOFF_ALREADY_CONSUMED'
+      | 'OWNERSHIP_DENIED'
+      | 'AUTH_REQUIRED'
+      | 'AUTH_ROUTE_UNAVAILABLE'
+      | 'USAGE_EXHAUSTED'
+      | 'PLAN_INVALID'
+      | 'PLAN_STALE'
+      | 'PROFILE_VERSION_CONFLICT'
+      | 'GRAPH_INTENT_REJECTED'
+      | 'GRAPH_SCHEMA_CONFLICT'
+      | 'RELEASE_TARGET_MISSING'
+      | 'VERIFICATION_ADDRESS_MISSING'
+      | 'PAYMENT_EVENT_INVALID'
+      | 'PAYMENT_EVENT_DUPLICATE'
+      | 'STARTER_GIFT_ALREADY_TRANSFERRED'
+      | 'PRIVACY_POLICY_CONFLICT',
     message: string,
   ) {
     super(message);

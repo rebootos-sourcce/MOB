@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { FunnelService } from '../src/funnelService.js';
 import { FunnelError } from '../src/domain.js';
 import { STARTER_GIFT_SIZE } from '../src/funnelConfig.js';
-import { buildFakeAdapters } from './test-doubles.js';
+import { buildFakeAdapters, fakePlan } from './test-doubles.js';
 
 /** ARRIVE -> RECOGNIZE is a plain presentation beat with no logic of its
  *  own (see advancePresentation in funnelService.ts); every test below
@@ -70,25 +70,25 @@ test('new ground consumes exactly one unit; a rerun of the same pattern consumes
   const session = await startAndRecognize(service, 'anon_4');
   await service.selectGround(session.id, 'fear');
 
-  const r1 = await service.requestRelease(session.id, 'pattern_1', { idempotencyKey: 'k1' });
+  const r1 = await service.requestRelease(session.id, fakePlan('pattern_1'), { idempotencyKey: 'k1' });
   assert.equal(r1.consumed, 1, 'first open of pattern_1 is new ground');
 
   adapters.catalog.markOpened(session.anonymousId, 'pattern_1');
-  const r2 = await service.requestRelease(session.id, 'pattern_1', { idempotencyKey: 'k2' });
+  const r2 = await service.requestRelease(session.id, fakePlan('pattern_1', 'RERUN'), { idempotencyKey: 'k2' });
   assert.equal(r2.consumed, 0, 'rerunning already-opened ground must never consume new ground');
 });
 
-test('a release request is rejected if the idempotency key has already been used', async () => {
+test('a completed idempotency key replays the original result on a second call', async () => {
   const adapters = buildFakeAdapters();
   const service = new FunnelService(adapters);
   const session = await startAndRecognize(service, 'anon_5');
   await service.selectGround(session.id, 'money');
 
-  await service.requestRelease(session.id, 'pattern_1', { idempotencyKey: 'dupe' });
-  await assert.rejects(
-    () => service.requestRelease(session.id, 'pattern_1', { idempotencyKey: 'dupe' }),
-    (err: unknown) => err instanceof FunnelError && err.code === 'DUPLICATE_IDEMPOTENCY_KEY',
-  );
+  const first = await service.requestRelease(session.id, fakePlan('pattern_1'), { idempotencyKey: 'dupe' });
+  // Same key + same request (same patternId + planHash) = replay the durable result, not a throw
+  const second = await service.requestRelease(session.id, fakePlan('pattern_1'), { idempotencyKey: 'dupe' });
+  assert.equal(second.releaseId, first.releaseId, 'second call with same key must replay the original releaseId');
+  assert.equal(second.consumed, first.consumed, 'second call must replay the original consumed amount');
 });
 
 test('a rejected reading returns to MIRROR rather than silently advancing', async () => {
@@ -176,10 +176,10 @@ test('an idempotency key reused with a different request is rejected, not silent
   const session = await startAndRecognize(service, 'anon_9');
   await service.selectGround(session.id, 'fear');
 
-  await service.requestRelease(session.id, 'pattern_1', { idempotencyKey: 'shared-key' });
+  await service.requestRelease(session.id, fakePlan('pattern_1'), { idempotencyKey: 'shared-key' });
   await assert.rejects(
-    // same key, a different pattern: the request itself differs
-    () => service.requestRelease(session.id, 'pattern_2', { idempotencyKey: 'shared-key' }),
+    // same key, a different pattern: the request itself (patternId + planHash) differs
+    () => service.requestRelease(session.id, fakePlan('pattern_2'), { idempotencyKey: 'shared-key' }),
     (err: unknown) => err instanceof FunnelError && err.code === 'IDEMPOTENCY_HASH_MISMATCH',
   );
 });

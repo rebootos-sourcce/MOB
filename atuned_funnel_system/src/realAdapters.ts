@@ -51,12 +51,14 @@ import type {
   Entitlement,
   EntitlementDecision,
   PlanId,
+  ReleasePlanRef,
   ReleaseRef,
   SightLevel,
   UsageOperation,
   VerificationRef,
   VerificationStatus,
 } from './domain.js';
+import { FunnelError } from './domain.js';
 import { TIER_LADDER } from './funnelConfig.js';
 import { freshEngine, staticEngine } from './engineHost.js';
 
@@ -158,24 +160,29 @@ function seedProfile(engine: ReturnType<typeof freshEngine>, profile: ProfileCon
 let releaseCounter = 0;
 
 export class RealReleaseAdapter implements ReleaseAdapter {
-  async executeRelease(patternId: string, context: ProfileContext): Promise<ReleaseRef> {
+  async executeRelease(plan: ReleasePlanRef, context: ProfileContext): Promise<ReleaseRef> {
     const engine = freshEngine();
     seedProfile(engine, context.profile);
-    // patternId's real shape in the shipped engine is "seat:gate" style
-    // address keys (see releaseWork's own `keys` parameter); accepted as
-    // given here rather than translated, since the real catalog's exact
-    // key format is PatternCatalogAdapter's concern, not this one's.
-    engine.releaseWork({ work: {} }, [patternId]);
+    // Use the full meter keys from the plan, not a bare patternId. The real
+    // engine's releaseWork() takes an array of "nodeId:channel:line" keys and
+    // groups them by seat using the first component; a single patternId string
+    // was never sufficient. Section 11 of the Master Seam spec.
+    engine.releaseWork({ work: {} }, plan.meterKeys);
     context.updatedProfile = { law: { ...engine.S.law }, charge: { ...engine.S.charge } };
     releaseCounter += 1;
-    return { id: `release_${releaseCounter}`, patternId, status: 'completed' };
+    return {
+      id: `release_${releaseCounter}`,
+      patternId: plan.patternId,
+      addressIds: plan.addressIds,
+      status: 'completed',
+    };
   }
 
-  async rerun(patternId: string, context: ProfileContext): Promise<ReleaseRef> {
+  async rerun(plan: ReleasePlanRef, context: ProfileContext): Promise<ReleaseRef> {
     // A rerun still runs the real release mechanics (the person still
     // experiences and benefits from it); only the entitlement layer, not
     // this adapter, is where "zero new ground" is enforced.
-    return this.executeRelease(patternId, context);
+    return this.executeRelease(plan, context);
   }
 }
 
@@ -184,28 +191,28 @@ export class RealReleaseAdapter implements ReleaseAdapter {
 export class RealVerificationAdapter implements VerificationAdapter {
   async verify(input: {
     releaseId: string;
+    addressIds: number[];
     response: VerificationStatus;
     beforeReference: string | null;
     afterReference: string | null;
     notes: string | null;
-    /** The real numeric address id(s) the release worked. Not part of the
-     *  shared `VerificationAdapter` interface today, found missing from it
-     *  only by actually calling the real engine (round SG): `releaseVerify`
-     *  requires `NUM(a)`, a real JS number, for every address in `addrs`,
-     *  a different id shape from `ReleaseAdapter`'s own `patternId` strings
-     *  (which `releaseWork`'s `keys` parameter instead parses as
-     *  `"seat:gate"` compounds, splitting on `:`). Threading a real address
-     *  id from the release step through to the verify step is real,
-     *  necessary wiring this round did not complete; defaulted to address
-     *  1 so the call is real and passing rather than left unverified. */
-    addressIds?: number[];
   }): Promise<VerificationRef> {
+    // P0 correctness fix: addressIds must come from the real release execution.
+    // The previous fallback to [1] was a correctness defect (section 19 of the
+    // Master Seam spec): it meant every verification ran against address 1
+    // regardless of which address the release actually worked. Removed.
+    if (!input.addressIds || !input.addressIds.length) {
+      throw new FunnelError(
+        'VERIFICATION_ADDRESS_MISSING',
+        `addressIds required for releaseVerify on release ${input.releaseId}; no default is acceptable`,
+      );
+    }
     const engine = freshEngine();
-    const rvAnswer = input.response; // RV_ANSWERS is the real engine's own list; VerificationStatus is kept aligned to it by hand, named in domain.ts
+    const rvAnswer = input.response; // RV_ANSWERS is the real engine's own list; VerificationStatus is kept aligned to it
     const result = engine.releaseVerify(
       engine.practiceBlank(),
       rvAnswer,
-      input.addressIds && input.addressIds.length ? input.addressIds : [1],
+      input.addressIds,
       {},
       new Date().toISOString(),
     );
@@ -255,21 +262,36 @@ export class RealIdentityAdapter implements IdentityAdapter {
   ) {}
 
   async requireUserId(authToken: string): Promise<string> {
-    if (!authToken) throw new Error('no auth token presented');
-    // THE ROUTE THIS CALLS DOES NOT EXIST ON THE WORKER YET. Every other
-    // route in this file's own header comment is real and live; this one
-    // (POST /v1/auth/whoami, bearer token in, { userId } out) is the one
-    // new endpoint the Worker's own maintainer still needs to add. This
-    // client is correct and ready the moment that route exists.
-    const res = await this.fetchImpl(`${this.authApi}/v1/auth/whoami`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${authToken}`, 'Content-Type': 'application/json' },
-    });
+    if (!authToken) throw new FunnelError('AUTH_REQUIRED', 'no auth token presented');
+    // RECONCILE BEFORE PRODUCTION. The Worker's real inspected routes are:
+    //   /v1/auth/signup, /v1/auth/signin, /v1/auth/forgot, /v1/auth/signout
+    //   /v1/billing/checkout, /v1/billing/portal, /v1/voice/synthesize
+    // None of them validates a bearer token and returns a userId.
+    // GET /v1/auth/whoami (with Authorization: Bearer <token>) is the correct
+    // contract (spec section 21); this client implements it and is ready the
+    // moment that route exists on the Worker. Until then this throws
+    // AUTH_ROUTE_UNAVAILABLE rather than silently failing (rule 23 of the
+    // Receiving AI Handshake: "DO NOT ASSUME whoami EXISTS").
+    let res: Response;
+    try {
+      res = await this.fetchImpl(`${this.authApi}/v1/auth/whoami`, {
+        method: 'GET',
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+    } catch (err) {
+      throw new FunnelError('AUTH_ROUTE_UNAVAILABLE', `GET /v1/auth/whoami unreachable: ${String(err)}`);
+    }
+    if (res.status === 404) {
+      throw new FunnelError(
+        'AUTH_ROUTE_UNAVAILABLE',
+        'GET /v1/auth/whoami returned 404; add this route to the Worker before enabling production identity checks',
+      );
+    }
     if (!res.ok) {
-      throw new Error(`identity check failed: ${res.status}`);
+      throw new FunnelError('AUTH_REQUIRED', `identity check failed: ${res.status}`);
     }
     const body = (await res.json()) as { userId?: string };
-    if (!body.userId) throw new Error('identity check returned no userId');
+    if (!body.userId) throw new FunnelError('AUTH_REQUIRED', 'identity check returned no userId');
     return body.userId;
   }
 }
