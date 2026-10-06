@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1749 5941c80 2026-10-05 22:32"><head><meta charset="utf-8">
+<html lang="en" data-build="v1750 1a025e6 2026-10-05 23:53"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -24201,6 +24201,103 @@ function lexComposite(){
 var LEXCOMPRUN=lexComposite();
 
 /* ============================================================
+   PASS FIVE, PROFANITY AND ABSTRACT DISTRESS. Recall over precision, which
+   is this pass's own stated stance and the opposite of the engine's baseline.
+   The owner's instruction: "make it oversensitive." A person who swears about
+   their day has named distress more plainly than any clinical term. A phrase
+   like "worst day" or "falling apart" may land on a surface that clinical
+   words miss entirely.
+
+   EVERY ENTRY IS AUTHORED, not derived. The seat, the amount and the optional
+   fetter are chosen here and are not computed from other tables. lexAdd skips
+   any key already in the table, so this pass never moves an existing entry:
+   it only fills what is missing.
+
+   SEATS FOLLOW THE SAME THEORY AS THE REST OF THE LEXICON. Profanity in the
+   context of distress is acute frustration, which is Anger at the solar
+   plexus. "Shitty" and "bitch" tilt toward shame and sit with the shame
+   family lexicon.js already built at sacral and solar. Abstract distress
+   phrases go where their emotional content lands: overwhelm and effortful
+   struggle at solar, emotional collapse at heart, fear and helplessness at
+   root.
+   ============================================================ */
+var LEXPROF={
+ /* PROFANITY */
+ 'fuck':['solar',20,'Anger'],
+ 'fucking':['solar',20,'Anger'],
+ 'fucked':['solar',22,'Anger'],
+ 'fucked up':['solar',24,'Anger'],
+ 'shit':['solar',18],
+ 'shitty':['solar',20,'Shame'],
+ 'damn':['solar',16],
+ 'crap':['solar',14],
+ 'bullshit':['solar',22,'Anger'],
+ 'bastard':['solar',20,'Anger'],
+ 'bitch':['sacral',18,'Shame'],
+ 'asshole':['solar',20,'Anger'],
+ /* ABSTRACT DISTRESS: general bad */
+ 'terrible':['solar',20],
+ 'awful':['solar',18],
+ 'horrible':['heart',20],
+ 'nightmare':['root',24],
+ /* ABSTRACT DISTRESS: overwhelm and effortful struggle */
+ 'unbearable':['solar',26,'Apathy'],
+ 'struggling':['solar',20,'Apathy'],
+ 'at my breaking point':['solar',26,'Apathy'],
+ 'breaking point':['solar',24,'Apathy'],
+ 'end of my rope':['solar',26,'Apathy'],
+ 'at my wits end':['solar',22,'Apathy'],
+ 'wits end':['solar',22,'Apathy'],
+ 'cant take it':['solar',24,'Apathy'],
+ 'cannot take it':['solar',24,'Apathy'],
+ 'can not take it':['solar',24,'Apathy'],
+ 'cant take this':['solar',24,'Apathy'],
+ 'cannot take this':['solar',24,'Apathy'],
+ 'cant do this anymore':['solar',24,'Apathy'],
+ 'cannot do this anymore':['solar',24,'Apathy'],
+ 'had enough':['solar',18],
+ 'have had enough':['solar',20],
+ 'over it':['solar',16],
+ 'done with this':['solar',16],
+ /* ABSTRACT DISTRESS: emotional collapse */
+ 'helpless':['root',22],
+ 'falling apart':['heart',24],
+ 'breaking down':['heart',22],
+ 'broken down':['heart',22],
+ 'losing it':['solar',24,'Anger'],
+ 'losing my mind':['eye',24],
+ 'going crazy':['solar',22],
+ 'messed up':['solar',20,'Anger'],
+ /* ABSTRACT DISTRESS: bad day phrases */
+ 'bad day':['solar',14],
+ 'rough day':['solar',16],
+ 'hard day':['solar',16],
+ 'tough day':['solar',16],
+ 'awful day':['solar',20],
+ 'horrible day':['solar',20],
+ 'terrible day':['solar',22],
+ 'shitty day':['solar',22],
+ 'worst day':['solar',24],
+ 'worst day ever':['solar',26],
+ 'worst day of my life':['solar',28],
+ 'fucked up day':['solar',24,'Anger'],
+ /* ABSTRACT DISTRESS: self-state */
+ 'not okay':['sacral',16],
+ 'not ok':['sacral',16]};
+function lexProf(){
+ var out={added:0,already:0,refused:[]};
+ Object.keys(LEXPROF).forEach(function(k){
+  var e=LEXPROF[k];
+  var a=lexAdd(k,e[0],e[1],e[2]!=null?e[2]:null,
+   {src:'authored',from:'LEXPROF profanity and abstract distress',
+    rule:'recall over precision, oversensitive by design',cite:'owner'});
+  if(a.ok&&!a.already)out.added++;
+  else if(a.ok&&a.already)out.already++;
+  else out.refused.push(k+': '+(a.why||'unknown'));});
+ return out;}
+var LEXPROFRUN=lexProf();
+
+/* ============================================================
    THE LEXICON VERSION, 19.B6. Every story entry is stamped with the
    lexicon that read it, so reading it again later is reproducible, or at
    least knowably not.
@@ -42107,7 +42204,7 @@ function srcPaint(){
     what the entry keeps at commit is identical whichever way it was shown.
     Only the markup is swapped, and the wiring below finds the same ids. */
  var cur=null;
- if(STV.chat){cur=srcChatCur(turn,heard,q,ask); srcChatSync(); srcChatNote(cur);
+ if(STV.chat){stChatCss(); cur=srcChatCur(turn,heard,q,ask); srcChatSync(); srcChatNote(cur);
   o=srcThread(turn,heard,cur,acts,why);}
  h.innerHTML=o;
  SRC_SHOWN=cur?cur.q:(turn.move==='pass'?'':q);
@@ -42360,6 +42457,20 @@ function srcChatWire(){
  if(ap&&SRC_CDRAFT.trim())ap.disabled=false;
  var sd=document.getElementById('stcsend');
  if(sd)sd.onclick=function(){srcChatSend(); cin.focus();};}
+/* TALK MODE OVERRIDES. The node-wire tree is replaced with a plain linear
+   reading: same items, same order, no dots and no wires, text from the left
+   edge. Injected once; srcPaint calls this when STV.chat is true. */
+function stChatCss(){
+ if(document.getElementById('st-chat-css'))return;
+ var st=document.createElement('style'); st.id='st-chat-css';
+ st.textContent=[
+  '.src-th .src-nd{display:none}',
+  '.src-th .src-tw{display:none}',
+  '.src-th .src-tn{padding:2px 0 8px 0}',
+  '.src-th .src-tn-past{padding-bottom:4px}',
+  '.src-th .src-me{max-width:none}'
+ ].join('\n');
+ document.head.appendChild(st);}
 /* THE THREAD. A row per turn, oldest at the top, each on its node, and under
    every node but the last the wire down to the next one. The newest Source
    AI row carries its words and the same controls the panel does, under the
@@ -62405,6 +62516,18 @@ function kbSubIn(x){
  if(x.k==='law')return '';
  if(x.k==='card')return o.dom||x.s;
  return x.s;}
+/* a short description for kinds that carry one in the engine tables. truncated
+   at 120 chars in JS; CSS clips further if the column is narrow. */
+function kbSnip(x){
+ var o=x.o||{}, s, d;
+ if(x.k==='sab'){s=SABDEF[KB_KEY(o.nm)]; d=(s&&s.d)||'';
+  return d.length>120?d.slice(0,117)+'...':d;}
+ if(x.k==='dom'){s=DOMDEF[KB_KEY(o.nm)]; d=(s&&s.c)||'';
+  return d.length>120?d.slice(0,117)+'...':d;}
+ if(x.k==='fetter')return o.addr||'';
+ if(x.k==='gloss'){d=(o&&o.d)||'';
+  return d.length>120?d.slice(0,117)+'...':d;}
+ return '';}
 /* one row, the markup it always had, so the drills and the gates read it as
    before. i is its place in the list the click handler holds. */
 function kbRowHtml(x,i,sub){
@@ -62414,12 +62537,14 @@ function kbRowHtml(x,i,sub){
     own ground: Root is 4.17 to 1 on the panel a row stands on when pointed
     at, under the 4.5 a number needs. The ring already carries the seat. */
  var cls=x.p==null?' off':(x.p?'':' z');
+ var snip=kbSnip(x);
  if(x.k==='node')return kbPoleRow(x,i,seat,c,sub);
  return '<button type="button" class="kb-row" data-kbi="'+i+'" style="--c:'+c+'">'
   +crBadge(seat, x.p||0, {size:'md', bare:true, color:c,
      glyph:glyphPath(x.ic), title:x.t+(x.p?' · '+x.p+'%':'')})
   +'<span class="kb-rt"><span class="kb-rn">'+esc(x.t)+'</span>'
-  +(sub?'<span class="kb-rs">'+esc(sub)+'</span>':'')+'</span>'
+  +(sub?'<span class="kb-rs">'+esc(sub)+'</span>':'')
+  +(snip?'<span class="kb-rd">'+esc(snip)+'</span>':'')+'</span>'
   +'<span class="kb-rv'+cls+'">'+(x.p?x.p+'%':'–')+'</span>'
   +'</button>';}
 /* THE SEAT'S RING ON ITS TILE. One arc, the share of the seat's addresses
@@ -62628,6 +62753,8 @@ function kbsCss(){
   '.kbs-fold[open]>summary::before{transform:rotate(45deg)}',
   '.kbs-fs{font-size:13px;font-weight:400;color:var(--dim)}',
   '.kbs-fb{padding:0 16px 14px}',
+  '.kb-rd{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;',
+  ' font-size:12px;color:var(--dim);line-height:1.35;margin-top:2px}',
   /* a track that can shrink below its longest line, or a nerve's long name
      pushes the figure off the panel's edge on a phone, measured at 390 */
   '.kbs .kb-rg,.kbs-body .kb-rg{grid-template-columns:repeat(3,minmax(0,1fr))}',
@@ -65903,7 +66030,8 @@ function accProfCss(){
    +'justify-content:center;min-height:var(--tap)}',
   /* the kind switch in the feedback sheet sat flush on the lead under it */
   '.ob-kinds{margin:2px 0 10px}',
-  '@media (max-width:520px){.pf-row{flex-wrap:wrap}.pf-row .pf-act{margin-left:auto}}'].join('\n');
+  '@media (max-width:520px){.pf-row{flex-wrap:wrap}.pf-row .pf-act{margin-left:auto}}',
+  '.ac-em{display:block;margin-top:3px;font-size:13px;color:var(--mid)}'].join('\n');
  document.head.appendChild(st);}
 
 /* ONTO THE PERSON'S OWN FIELD FIRST. A profile of their own is only ever
@@ -66182,6 +66310,7 @@ function renderAccount(){
  accProfCss();
  var m=(typeof meterRead==='function')?meterRead(CURP):null;
  var who=capName((CURP&&CURP.name)||'You');
+ var ses=(typeof authSession==='function')?authSession():null;
  var body;
  switch(ACC_OPEN){
   case 'profiles':body=accProfiles(); break;
@@ -66196,7 +66325,9 @@ function renderAccount(){
   /* plain: this is a person's own name, and title casing a name is a claim
      about how they spell it. de Vries is not De Vries. */
   +'<div class="ac-hd"><div class="pm-eye">Account</div>'
-  +'<h2 class="kb-h plain">'+esc(who)+'</h2></div>'
+  +'<h2 class="kb-h plain">'+esc(who)+'</h2>'
+  +(ses&&ses.email?'<span class="ac-em">'+esc(ses.email)+'</span>':'')
+  +'</div>'
   +'<div class="ac-body">'
   +'<nav class="ac-ix" aria-label="Account sections">'
   +ACC_SECS.map(function(s){
@@ -71173,6 +71304,9 @@ function loginEnter(){
     at the profile boundary on the next load, so the first run replayed on
     every launch */
  try{ seen=!!(CURP&&CURP.ui&&CURP.ui.onboarded); }catch(e){}
+ /* a signed-in account IS evidence of having completed the funnel: skip onboarding
+    for any returning user who has a live session, even on a fresh browser */
+ if(!seen&&typeof authSession==='function'&&authSession())seen=true;
  if(seen)return;
  obOpen(false);}
 /* THE BUTTON ITSELF ONLY NEEDS TO EXIST. ui/panels.js's own skip listener
@@ -73185,5 +73319,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004823855"></div>
+<div id="eof" hidden data-len="004829530"></div>
 </body></html>

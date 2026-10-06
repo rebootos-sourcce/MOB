@@ -1027,6 +1027,103 @@ function lexComposite(){
 var LEXCOMPRUN=lexComposite();
 
 /* ============================================================
+   PASS FIVE, PROFANITY AND ABSTRACT DISTRESS. Recall over precision, which
+   is this pass's own stated stance and the opposite of the engine's baseline.
+   The owner's instruction: "make it oversensitive." A person who swears about
+   their day has named distress more plainly than any clinical term. A phrase
+   like "worst day" or "falling apart" may land on a surface that clinical
+   words miss entirely.
+
+   EVERY ENTRY IS AUTHORED, not derived. The seat, the amount and the optional
+   fetter are chosen here and are not computed from other tables. lexAdd skips
+   any key already in the table, so this pass never moves an existing entry:
+   it only fills what is missing.
+
+   SEATS FOLLOW THE SAME THEORY AS THE REST OF THE LEXICON. Profanity in the
+   context of distress is acute frustration, which is Anger at the solar
+   plexus. "Shitty" and "bitch" tilt toward shame and sit with the shame
+   family lexicon.js already built at sacral and solar. Abstract distress
+   phrases go where their emotional content lands: overwhelm and effortful
+   struggle at solar, emotional collapse at heart, fear and helplessness at
+   root.
+   ============================================================ */
+var LEXPROF={
+ /* PROFANITY */
+ 'fuck':['solar',20,'Anger'],
+ 'fucking':['solar',20,'Anger'],
+ 'fucked':['solar',22,'Anger'],
+ 'fucked up':['solar',24,'Anger'],
+ 'shit':['solar',18],
+ 'shitty':['solar',20,'Shame'],
+ 'damn':['solar',16],
+ 'crap':['solar',14],
+ 'bullshit':['solar',22,'Anger'],
+ 'bastard':['solar',20,'Anger'],
+ 'bitch':['sacral',18,'Shame'],
+ 'asshole':['solar',20,'Anger'],
+ /* ABSTRACT DISTRESS: general bad */
+ 'terrible':['solar',20],
+ 'awful':['solar',18],
+ 'horrible':['heart',20],
+ 'nightmare':['root',24],
+ /* ABSTRACT DISTRESS: overwhelm and effortful struggle */
+ 'unbearable':['solar',26,'Apathy'],
+ 'struggling':['solar',20,'Apathy'],
+ 'at my breaking point':['solar',26,'Apathy'],
+ 'breaking point':['solar',24,'Apathy'],
+ 'end of my rope':['solar',26,'Apathy'],
+ 'at my wits end':['solar',22,'Apathy'],
+ 'wits end':['solar',22,'Apathy'],
+ 'cant take it':['solar',24,'Apathy'],
+ 'cannot take it':['solar',24,'Apathy'],
+ 'can not take it':['solar',24,'Apathy'],
+ 'cant take this':['solar',24,'Apathy'],
+ 'cannot take this':['solar',24,'Apathy'],
+ 'cant do this anymore':['solar',24,'Apathy'],
+ 'cannot do this anymore':['solar',24,'Apathy'],
+ 'had enough':['solar',18],
+ 'have had enough':['solar',20],
+ 'over it':['solar',16],
+ 'done with this':['solar',16],
+ /* ABSTRACT DISTRESS: emotional collapse */
+ 'helpless':['root',22],
+ 'falling apart':['heart',24],
+ 'breaking down':['heart',22],
+ 'broken down':['heart',22],
+ 'losing it':['solar',24,'Anger'],
+ 'losing my mind':['eye',24],
+ 'going crazy':['solar',22],
+ 'messed up':['solar',20,'Anger'],
+ /* ABSTRACT DISTRESS: bad day phrases */
+ 'bad day':['solar',14],
+ 'rough day':['solar',16],
+ 'hard day':['solar',16],
+ 'tough day':['solar',16],
+ 'awful day':['solar',20],
+ 'horrible day':['solar',20],
+ 'terrible day':['solar',22],
+ 'shitty day':['solar',22],
+ 'worst day':['solar',24],
+ 'worst day ever':['solar',26],
+ 'worst day of my life':['solar',28],
+ 'fucked up day':['solar',24,'Anger'],
+ /* ABSTRACT DISTRESS: self-state */
+ 'not okay':['sacral',16],
+ 'not ok':['sacral',16]};
+function lexProf(){
+ var out={added:0,already:0,refused:[]};
+ Object.keys(LEXPROF).forEach(function(k){
+  var e=LEXPROF[k];
+  var a=lexAdd(k,e[0],e[1],e[2]!=null?e[2]:null,
+   {src:'authored',from:'LEXPROF profanity and abstract distress',
+    rule:'recall over precision, oversensitive by design',cite:'owner'});
+  if(a.ok&&!a.already)out.added++;
+  else if(a.ok&&a.already)out.already++;
+  else out.refused.push(k+': '+(a.why||'unknown'));});
+ return out;}
+var LEXPROFRUN=lexProf();
+
+/* ============================================================
    THE LEXICON VERSION, 19.B6. Every story entry is stamped with the
    lexicon that read it, so reading it again later is reproducible, or at
    least knowably not.
