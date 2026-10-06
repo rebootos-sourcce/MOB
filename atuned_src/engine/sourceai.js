@@ -169,6 +169,7 @@ function srcHear(text,prior){
    is that the person leads. */
 function srcTurn(heard,state){
  var st=state||{};
+ if(st.text&&srcSafe(st.text))return {move:'safe'};
  if(!heard||(heard.unread&&!st.typed))return {move:'open'};
  if(st.passed)return {move:'pass'};
  if(!heard.asks)return {move:'listen'};
@@ -263,6 +264,16 @@ var SRC_FEEL_V=['felt','feel','feeling','feels'];
 var SRC_BODY_NOT=['back','hand','hands','face','head','arm','arms'];
 var SRC_FEEL_NOT=['like','that','as','in','at','on','for','about','when','if','it',
  'my','a','an','the','this'];
+/* SAFETY GATE. When the entry contains crisis or self-harm language, srcTurn
+   returns {move:'safe'} and the UI shows crisis resources rather than a
+   question. Recall over precision: a false positive costs one question not
+   asked; a missing match costs more. */
+var SRC_SAFE_PHRASES=['hurt myself','harm myself','kill myself','end my life',
+ 'take my own life','suicidal','suicide','self harm','self-harm',
+ 'cut myself','cutting myself','want to die'];
+function srcSafe(text){
+ var t=' '+(text||'').toLowerCase().replace(/[^a-z0-9 ]/g,' ')+' ';
+ return SRC_SAFE_PHRASES.some(function(p){return t.indexOf(p)>=0;});}
 function srcCue(src,c){return src.indexOf(' '+c+' ')>=0;}
 /* WHICH DIMENSIONS AN ENTRY ANSWERS. Returns each answered dimension with
    the cue that answered it, which is the because, and the open ones in the

@@ -905,7 +905,7 @@ function srcPaint(){
  /* a built question that quotes a word the person has since deleted is no
     longer true, so it goes and the walk's own question comes back */
  if(SRC_DQ&&SRC_DW&&ST_TEXT.indexOf(SRC_DW)<0){SRC_DQ='';SRC_DW='';}
- var turn=srcTurn(heard,{typed:!!ST_TEXT.trim(),passed:SRC_PASSED});
+ var turn=srcTurn(heard,{typed:!!ST_TEXT.trim(),passed:SRC_PASSED,text:ST_TEXT});
  /* THE LIVE MARK. A dot beside the name that breathes while Source AI is
     idle and holds lit while it is reading, see srcHearing. It is drawn and
     carries no word, because "thinking" printed on a scripted reader would be
@@ -942,7 +942,12 @@ function srcPaint(){
    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 5h15v10.5H10l-4.5 4v-4h-1z"/><path d="M10 8.6l-1.1 2.6M14.2 8.6l-1.1 2.6"/></svg>'
    +'</button></div>';
  var q=turn.move==='open'||turn.move==='listen'?srcQuestion():ask;
- if(turn.move==='open')
+ if(turn.move==='safe'){
+  o+='<div class="src-ask"><p class="src-open">What you have written describes a risk of harm. '
+   +'If you are in danger, call or text <strong>988</strong> (US Suicide and Crisis Lifeline) '
+   +'or text HOME to <strong>741741</strong> (Crisis Text Line). '
+   +'This instrument is still here when you are ready.</p></div>';}
+ else if(turn.move==='open')
   o+='<div class="src-ask">'+srcLand('src-open',q)+acts+'</div>';
  else if(turn.move==='ask'){
   o+=srcLand('src-q',ask,'--c:'+seatCol(turn.band))
@@ -967,7 +972,7 @@ function srcPaint(){
  /* the why, under whatever move was made, on every move that has heard a
     seat. It is not a question, so Move on does not silence it: moving on ends
     the asking, and the reason for a release is still true. */
- var why=turn.move==='open'?'':srcWhy(heard);
+ var why=(turn.move==='open'||turn.move==='safe')?'':srcWhy(heard);
  /* an id and no class: the shell carries no rule for it, and the design gate
     fails a class with no rule. Found by its id, the way the house finds a host. */
  if(why)o+='<div id="srcwhy" style="margin-top:14px"><span class="pm-eye">Why</span>'
@@ -991,7 +996,8 @@ function srcPaint(){
  /* a screen reader hears the opener, an ask, "Cool.", and while listening
     only a question the person pressed for. */
  var said=turn.move==='open'?q:(turn.move==='ask'?ask:(turn.move==='pass'?'Cool.'
-  :((SRC_DQ||SRC_QI>=0)?q:'')));
+  :(turn.move==='safe'?'What you have written describes a risk of harm. If you are in danger, call or text 988.'
+  :((SRC_DQ||SRC_QI>=0)?q:''))));
  /* talking, every turn Source AI takes is a line it says, once */
  if(cur)said=cur.q;
  var sy=document.getElementById('srcsay');
@@ -1273,7 +1279,12 @@ function srcThread(turn,heard,cur,acts,why){
 /* the one live Source AI row, in the panel's own markup for each move */
 function srcThreadNow(r,turn,heard,acts,why){
  var o='';
- if(turn.move==='ask')
+ if(turn.move==='safe')
+  o+='<p class="src-q">What you have written describes a risk of harm. '
+   +'If you are in danger, call or text 988 (US Suicide and Crisis Lifeline) '
+   +'or text HOME to 741741 (Crisis Text Line). '
+   +'This instrument is still here when you are ready.</p>';
+ else if(turn.move==='ask')
   o+=srcLand('src-q',r.q,'--c:'+seatCol(turn.band))
    +'<div class="src-row"><button type="button" class="btn" id="srcpass">Move on</button>'
    +'<span class="src-note">Answer below, or leave it.</span></div>';
