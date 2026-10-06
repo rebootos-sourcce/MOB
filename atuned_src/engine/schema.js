@@ -369,6 +369,8 @@ var STORE={get:function(){return null;}, set:function(){}}, STORE_BOUND=false;
 /* a host binds its own. exported, because module.exports captures the value of
    STORE and not the binding, so an outside caller cannot assign to it. */
 function bindStore(get,set){ STORE={get:get,set:set}; STORE_BOUND=true; return STORE; }
+var SYNC_PUSH=null;
+function bindSyncPush(fn){SYNC_PUSH=fn;}
 /* A DEVICE SETTING IS THE BROWSER'S, NOT THE PERSON'S RECORD.
 
    The sound switch was written onto the profile with uiSet, which saves the
@@ -513,7 +515,8 @@ function pNew(name){ var p=blankProfile(name); PROFILES.push(p); CURP=p; pPersis
    host decides what to say; this only reports what happened. */
 function pSave(){ if(!CURP)return false; saveProfile(CURP);
  if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
- return pPersist(); }
+ var ok=pPersist(); if(ok&&SYNC_PUSH)try{SYNC_PUSH();}catch(e){}
+ return ok; }
 /* checked before the push, so a history nobody can read does not grow */
 function pSnap(){ if(!CURP)return false;
  if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }

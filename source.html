@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1753 a8b393b 2026-10-06 01:29"><head><meta charset="utf-8">
+<html lang="en" data-build="v1755 e2aa6f8 2026-10-06 12:17"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -19250,6 +19250,8 @@ var STORE={get:function(){return null;}, set:function(){}}, STORE_BOUND=false;
 /* a host binds its own. exported, because module.exports captures the value of
    STORE and not the binding, so an outside caller cannot assign to it. */
 function bindStore(get,set){ STORE={get:get,set:set}; STORE_BOUND=true; return STORE; }
+var SYNC_PUSH=null;
+function bindSyncPush(fn){SYNC_PUSH=fn;}
 /* A DEVICE SETTING IS THE BROWSER'S, NOT THE PERSON'S RECORD.
 
    The sound switch was written onto the profile with uiSet, which saves the
@@ -19394,7 +19396,8 @@ function pNew(name){ var p=blankProfile(name); PROFILES.push(p); CURP=p; pPersis
    host decides what to say; this only reports what happened. */
 function pSave(){ if(!CURP)return false; saveProfile(CURP);
  if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
- return pPersist(); }
+ var ok=pPersist(); if(ok&&SYNC_PUSH)try{SYNC_PUSH();}catch(e){}
+ return ok; }
 /* checked before the push, so a history nobody can read does not grow */
 function pSnap(){ if(!CURP)return false;
  if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
@@ -24224,7 +24227,6 @@ var LEXCOMPRUN=lexComposite();
 var LEXPROF={
  /* PROFANITY */
  'fuck':['solar',20,'Anger'],
- 'fucking':['solar',20,'Anger'],
  'fucked':['solar',22,'Anger'],
  'fucked up':['solar',24,'Anger'],
  'shit':['solar',18],
@@ -24280,10 +24282,8 @@ var LEXPROF={
  'worst day':['solar',24],
  'worst day ever':['solar',26],
  'worst day of my life':['solar',28],
- 'fucked up day':['solar',24,'Anger'],
- /* ABSTRACT DISTRESS: self-state */
- 'not okay':['sacral',16],
- 'not ok':['sacral',16]};
+ 'fucked up day':['solar',24,'Anger']};
+ /* 'not okay' and 'not ok' are in LEXSYN_NO and must not be added here */
 function lexProf(){
  var out={added:0,already:0,refused:[]};
  Object.keys(LEXPROF).forEach(function(k){
@@ -24937,6 +24937,7 @@ function srcHear(text,prior){
    is that the person leads. */
 function srcTurn(heard,state){
  var st=state||{};
+ if(st.text&&srcSafe(st.text))return {move:'safe'};
  if(!heard||(heard.unread&&!st.typed))return {move:'open'};
  if(st.passed)return {move:'pass'};
  if(!heard.asks)return {move:'listen'};
@@ -25031,6 +25032,16 @@ var SRC_FEEL_V=['felt','feel','feeling','feels'];
 var SRC_BODY_NOT=['back','hand','hands','face','head','arm','arms'];
 var SRC_FEEL_NOT=['like','that','as','in','at','on','for','about','when','if','it',
  'my','a','an','the','this'];
+/* SAFETY GATE. When the entry contains crisis or self-harm language, srcTurn
+   returns {move:'safe'} and the UI shows crisis resources rather than a
+   question. Recall over precision: a false positive costs one question not
+   asked; a missing match costs more. */
+var SRC_SAFE_PHRASES=['hurt myself','harm myself','kill myself','end my life',
+ 'take my own life','suicidal','suicide','self harm','self-harm',
+ 'cut myself','cutting myself','want to die'];
+function srcSafe(text){
+ var t=' '+(text||'').toLowerCase().replace(/[^a-z0-9 ]/g,' ')+' ';
+ return SRC_SAFE_PHRASES.some(function(p){return t.indexOf(p)>=0;});}
 function srcCue(src,c){return src.indexOf(' '+c+' ')>=0;}
 /* WHICH DIMENSIONS AN ENTRY ANSWERS. Returns each answered dimension with
    the cue that answered it, which is the because, and the open ones in the
@@ -42120,7 +42131,7 @@ function srcPaint(){
  /* a built question that quotes a word the person has since deleted is no
     longer true, so it goes and the walk's own question comes back */
  if(SRC_DQ&&SRC_DW&&ST_TEXT.indexOf(SRC_DW)<0){SRC_DQ='';SRC_DW='';}
- var turn=srcTurn(heard,{typed:!!ST_TEXT.trim(),passed:SRC_PASSED});
+ var turn=srcTurn(heard,{typed:!!ST_TEXT.trim(),passed:SRC_PASSED,text:ST_TEXT});
  /* THE LIVE MARK. A dot beside the name that breathes while Source AI is
     idle and holds lit while it is reading, see srcHearing. It is drawn and
     carries no word, because "thinking" printed on a scripted reader would be
@@ -42157,7 +42168,12 @@ function srcPaint(){
    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 5h15v10.5H10l-4.5 4v-4h-1z"/><path d="M10 8.6l-1.1 2.6M14.2 8.6l-1.1 2.6"/></svg>'
    +'</button></div>';
  var q=turn.move==='open'||turn.move==='listen'?srcQuestion():ask;
- if(turn.move==='open')
+ if(turn.move==='safe'){
+  o+='<div class="src-ask"><p class="src-open">What you have written describes a risk of harm. '
+   +'If you are in danger, call or text <strong>988</strong> (US Suicide and Crisis Lifeline) '
+   +'or text HOME to <strong>741741</strong> (Crisis Text Line). '
+   +'This instrument is still here when you are ready.</p></div>';}
+ else if(turn.move==='open')
   o+='<div class="src-ask">'+srcLand('src-open',q)+acts+'</div>';
  else if(turn.move==='ask'){
   o+=srcLand('src-q',ask,'--c:'+seatCol(turn.band))
@@ -42182,7 +42198,7 @@ function srcPaint(){
  /* the why, under whatever move was made, on every move that has heard a
     seat. It is not a question, so Move on does not silence it: moving on ends
     the asking, and the reason for a release is still true. */
- var why=turn.move==='open'?'':srcWhy(heard);
+ var why=(turn.move==='open'||turn.move==='safe')?'':srcWhy(heard);
  /* an id and no class: the shell carries no rule for it, and the design gate
     fails a class with no rule. Found by its id, the way the house finds a host. */
  if(why)o+='<div id="srcwhy" style="margin-top:14px"><span class="pm-eye">Why</span>'
@@ -42206,7 +42222,8 @@ function srcPaint(){
  /* a screen reader hears the opener, an ask, "Cool.", and while listening
     only a question the person pressed for. */
  var said=turn.move==='open'?q:(turn.move==='ask'?ask:(turn.move==='pass'?'Cool.'
-  :((SRC_DQ||SRC_QI>=0)?q:'')));
+  :(turn.move==='safe'?'What you have written describes a risk of harm. If you are in danger, call or text 988.'
+  :((SRC_DQ||SRC_QI>=0)?q:''))));
  /* talking, every turn Source AI takes is a line it says, once */
  if(cur)said=cur.q;
  var sy=document.getElementById('srcsay');
@@ -42488,7 +42505,12 @@ function srcThread(turn,heard,cur,acts,why){
 /* the one live Source AI row, in the panel's own markup for each move */
 function srcThreadNow(r,turn,heard,acts,why){
  var o='';
- if(turn.move==='ask')
+ if(turn.move==='safe')
+  o+='<p class="src-q">What you have written describes a risk of harm. '
+   +'If you are in danger, call or text 988 (US Suicide and Crisis Lifeline) '
+   +'or text HOME to 741741 (Crisis Text Line). '
+   +'This instrument is still here when you are ready.</p>';
+ else if(turn.move==='ask')
   o+=srcLand('src-q',r.q,'--c:'+seatCol(turn.band))
    +'<div class="src-row"><button type="button" class="btn" id="srcpass">Move on</button>'
    +'<span class="src-note">Answer below, or leave it.</span></div>';
@@ -65150,6 +65172,7 @@ function authEnter(route,mail,pw){
      caller says "Signed in as" now, and the plan speaks after it only if the
      record changed. A second device is exactly this path. */
   authPlanRead();
+  authRecordPull(s.token);
   return {ok:true, kept:kept,
    say:(route==='signup'?'Account created. ':'')+'Signed in as '+s.email+'.'
     +(kept?'':' Storage is blocked in this browser, so the sign in ends on reload.')};});}
@@ -65210,6 +65233,7 @@ function authCheck(){
    /* the same answer carries the plan, so the boot check reads it without a
       second request */
    authPlanBack(back,r.body.billing);
+   authRecordPull(s.token);
    return 'ok';}
   if(r.status===401){
    authForget(); redraw();
@@ -65460,6 +65484,63 @@ function authPlanWait(n){
    if(n>1){ authPlanWait(n-1); return; }
    status('Stripe has not confirmed the payment yet. The plan shows here once it does, '
     +'so reload this page in a minute.','fail');});},AUTH_PLAN_WAIT_MS);}
+/* ============================================================
+   THE RECORD SEAM. D1 on the Worker holds one record per person
+   (kind='state', id='profile'). Every save pushes it. Every sign
+   in and boot check pulls it.
+
+   VERSION: a millisecond timestamp from Date.now(). On push the
+   Worker only writes when excluded.version > records.version, so
+   the most recent save wins across devices. The last pushed version
+   is kept in source.session.ver beside the session token, so a
+   pull only imports when the server carries a newer save.
+
+   THE PULL GOES THROUGH pImport. The same validated boundary a
+   pasted record goes through. Bad server data is refused by name
+   and the local record stays intact.
+
+   FIRE AND FORGET. Neither call blocks the UI. A failed push is
+   not retried here; the next save will push again with a newer
+   version. A failed pull is not surfaced; the sign in still lands.
+   ============================================================ */
+var AUTH_VER_KEY='source.session.ver';
+function authVerGet(){
+ try{ var v=parseInt(STORE.get(AUTH_VER_KEY)||'0',10); return isNaN(v)?0:v; }
+ catch(e){ return 0; }}
+function authVerSet(v){
+ try{ STORE.set(AUTH_VER_KEY,String(v)); }catch(e){}}
+function authRecordPull(token){
+ return authCall('GET','/v1/sync?since=0',null,token).then(function(r){
+  if(!r.ok||!r.body)return {ok:false};
+  var recs=Array.isArray(r.body.records)?r.body.records:[];
+  var rec=null;
+  for(var i=0;i<recs.length;i++){
+   if(recs[i].kind==='state'&&recs[i].id==='profile'){rec=recs[i];break;}}
+  if(!rec||rec.deleted||!rec.body)return {ok:true,found:false};
+  var srvVer=typeof rec.version==='number'?rec.version:0;
+  if(srvVer<=authVerGet())return {ok:true,found:true,imported:false};
+  var txt=typeof rec.body==='string'?rec.body:JSON.stringify(rec.body);
+  var imported=typeof pImport==='function'?pImport(txt):null;
+  if(imported){
+   authVerSet(srvVer);
+   if(typeof render==='function')render();
+   return {ok:true,found:true,imported:true};}
+  return {ok:true,found:true,imported:false};});}
+function authRecordSave(){
+ var s=authSession(); if(!s)return;
+ if(typeof CURP==='undefined'||!CURP)return;
+ if(typeof pExport!=='function')return;
+ var v=Date.now();
+ var body; try{ body=JSON.parse(pExport()); }catch(e){ return; }
+ authVerSet(v);
+ authCall('PUT','/v1/sync',{records:[{kind:'state',id:'profile',version:v,body:body}]},s.token)
+  .then(function(r){
+   if(r.ok&&r.body&&Array.isArray(r.body.stale)&&r.body.stale.length)
+    authRecordPull(s.token);});}
+/* Binds authRecordSave into the engine's post-save hook so every pSave()
+   that succeeds also pushes without each caller knowing about it. */
+function authBindSync(){
+ if(typeof bindSyncPush==='function')bindSyncPush(authRecordSave);}
 
 try{window.__at&&window.__at('ui/auth.js');}catch(e){}
 /* ============================================================
@@ -73032,6 +73113,13 @@ function loop(ts){
 try{ localStorage.getItem(PKEY);
  bindStore(function(k){return localStorage.getItem(k);},
            function(k,v){localStorage.setItem(k,v);}); }catch(e){}
+/* THE RECORD SYNC SEAM. bindSyncPush (engine/schema.js) fires after every
+   successful pSave; authBindSync (ui/auth.js) wires authRecordSave into it.
+   Bound here, the same moment the store is bound, so the two halves come up
+   together and the hook is set before any save can run. auth.js stays the one
+   file that calls fetch, because authRecordSave is the fetch side and it lives
+   there, not here. */
+authBindSync();
 /* THE PAYWALL SEAM, round NW, bound the same way bindStore is just above: the host hands the
    UI one function and the UI stays ignorant of what is on the other side of it. planOpen in
    ui/panels.js already calls PLAN_HOST(what,tier) and already says "Billing is not connected
@@ -73288,5 +73376,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004827499"></div>
+<div id="eof" hidden data-len="004832289"></div>
 </body></html>

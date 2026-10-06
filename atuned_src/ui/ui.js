@@ -1631,6 +1631,13 @@ function loop(ts){
 try{ localStorage.getItem(PKEY);
  bindStore(function(k){return localStorage.getItem(k);},
            function(k,v){localStorage.setItem(k,v);}); }catch(e){}
+/* THE RECORD SYNC SEAM. bindSyncPush (engine/schema.js) fires after every
+   successful pSave; authBindSync (ui/auth.js) wires authRecordSave into it.
+   Bound here, the same moment the store is bound, so the two halves come up
+   together and the hook is set before any save can run. auth.js stays the one
+   file that calls fetch, because authRecordSave is the fetch side and it lives
+   there, not here. */
+authBindSync();
 /* THE PAYWALL SEAM, round NW, bound the same way bindStore is just above: the host hands the
    UI one function and the UI stays ignorant of what is on the other side of it. planOpen in
    ui/panels.js already calls PLAN_HOST(what,tier) and already says "Billing is not connected

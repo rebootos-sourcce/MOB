@@ -209,6 +209,7 @@ function authEnter(route,mail,pw){
      caller says "Signed in as" now, and the plan speaks after it only if the
      record changed. A second device is exactly this path. */
   authPlanRead();
+  authRecordPull(s.token);
   return {ok:true, kept:kept,
    say:(route==='signup'?'Account created. ':'')+'Signed in as '+s.email+'.'
     +(kept?'':' Storage is blocked in this browser, so the sign in ends on reload.')};});}
@@ -269,6 +270,7 @@ function authCheck(){
    /* the same answer carries the plan, so the boot check reads it without a
       second request */
    authPlanBack(back,r.body.billing);
+   authRecordPull(s.token);
    return 'ok';}
   if(r.status===401){
    authForget(); redraw();
@@ -519,3 +521,60 @@ function authPlanWait(n){
    if(n>1){ authPlanWait(n-1); return; }
    status('Stripe has not confirmed the payment yet. The plan shows here once it does, '
     +'so reload this page in a minute.','fail');});},AUTH_PLAN_WAIT_MS);}
+/* ============================================================
+   THE RECORD SEAM. D1 on the Worker holds one record per person
+   (kind='state', id='profile'). Every save pushes it. Every sign
+   in and boot check pulls it.
+
+   VERSION: a millisecond timestamp from Date.now(). On push the
+   Worker only writes when excluded.version > records.version, so
+   the most recent save wins across devices. The last pushed version
+   is kept in source.session.ver beside the session token, so a
+   pull only imports when the server carries a newer save.
+
+   THE PULL GOES THROUGH pImport. The same validated boundary a
+   pasted record goes through. Bad server data is refused by name
+   and the local record stays intact.
+
+   FIRE AND FORGET. Neither call blocks the UI. A failed push is
+   not retried here; the next save will push again with a newer
+   version. A failed pull is not surfaced; the sign in still lands.
+   ============================================================ */
+var AUTH_VER_KEY='source.session.ver';
+function authVerGet(){
+ try{ var v=parseInt(STORE.get(AUTH_VER_KEY)||'0',10); return isNaN(v)?0:v; }
+ catch(e){ return 0; }}
+function authVerSet(v){
+ try{ STORE.set(AUTH_VER_KEY,String(v)); }catch(e){}}
+function authRecordPull(token){
+ return authCall('GET','/v1/sync?since=0',null,token).then(function(r){
+  if(!r.ok||!r.body)return {ok:false};
+  var recs=Array.isArray(r.body.records)?r.body.records:[];
+  var rec=null;
+  for(var i=0;i<recs.length;i++){
+   if(recs[i].kind==='state'&&recs[i].id==='profile'){rec=recs[i];break;}}
+  if(!rec||rec.deleted||!rec.body)return {ok:true,found:false};
+  var srvVer=typeof rec.version==='number'?rec.version:0;
+  if(srvVer<=authVerGet())return {ok:true,found:true,imported:false};
+  var txt=typeof rec.body==='string'?rec.body:JSON.stringify(rec.body);
+  var imported=typeof pImport==='function'?pImport(txt):null;
+  if(imported){
+   authVerSet(srvVer);
+   if(typeof render==='function')render();
+   return {ok:true,found:true,imported:true};}
+  return {ok:true,found:true,imported:false};});}
+function authRecordSave(){
+ var s=authSession(); if(!s)return;
+ if(typeof CURP==='undefined'||!CURP)return;
+ if(typeof pExport!=='function')return;
+ var v=Date.now();
+ var body; try{ body=JSON.parse(pExport()); }catch(e){ return; }
+ authVerSet(v);
+ authCall('PUT','/v1/sync',{records:[{kind:'state',id:'profile',version:v,body:body}]},s.token)
+  .then(function(r){
+   if(r.ok&&r.body&&Array.isArray(r.body.stale)&&r.body.stale.length)
+    authRecordPull(s.token);});}
+/* Binds authRecordSave into the engine's post-save hook so every pSave()
+   that succeeds also pushes without each caller knowing about it. */
+function authBindSync(){
+ if(typeof bindSyncPush==='function')bindSyncPush(authRecordSave);}

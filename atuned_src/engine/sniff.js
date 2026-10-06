@@ -1050,7 +1050,6 @@ var LEXCOMPRUN=lexComposite();
 var LEXPROF={
  /* PROFANITY */
  'fuck':['solar',20,'Anger'],
- 'fucking':['solar',20,'Anger'],
  'fucked':['solar',22,'Anger'],
  'fucked up':['solar',24,'Anger'],
  'shit':['solar',18],
@@ -1106,10 +1105,8 @@ var LEXPROF={
  'worst day':['solar',24],
  'worst day ever':['solar',26],
  'worst day of my life':['solar',28],
- 'fucked up day':['solar',24,'Anger'],
- /* ABSTRACT DISTRESS: self-state */
- 'not okay':['sacral',16],
- 'not ok':['sacral',16]};
+ 'fucked up day':['solar',24,'Anger']};
+ /* 'not okay' and 'not ok' are in LEXSYN_NO and must not be added here */
 function lexProf(){
  var out={added:0,already:0,refused:[]};
  Object.keys(LEXPROF).forEach(function(k){
