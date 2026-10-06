@@ -585,12 +585,13 @@ function relMMSS(sec){
 function relVoiceOn(){
  if(typeof voiceCan!=='function'||!voiceCan())return false;
  return !(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.voice===false);}
-/* THE STUDIO VOICE is a choice inside the voice, never a second voice switch:
-   with the voice off nothing is said by either. Signed in only, because the
-   server answers only a session, and switched on by the person, because the
-   browser voice is the default by ruling (ui/sound.js, THE STUDIO VOICE).
-   studioLost is this run giving up on it after a failure, so one dead server
-   costs one line and not one per line. A new run asks again. */
+/* THE STUDIO VOICE is the voice itself, not a second switch inside it:
+   ElevenLabs runs automatically whenever the voice is on, signed in only,
+   because the server answers only a session, with no further choice a
+   person makes between it and the browser's own (ruled: see relStudioRow's
+   removal below). studioLost is this run giving up on it after a failure,
+   so one dead server costs one line and not one per line. A new run asks
+   again. */
 function relStudioOn(){
  if(!relVoiceOn()||RUN.studioLost||typeof studioCan!=='function'||!studioCan())return false;
  if(typeof authSession!=='function'||!authSession())return false;
@@ -1414,26 +1415,20 @@ function relToneRow(n){
     line under the switches says what the two ears are hearing. */
  return accTog('Binaural tone','reltone',relToneOn(),hz?hz+' Hz':'',hz?seatCol(n.b):'');}
 /* the voice's own switch, and where there is no voice there is no switch.
-   Its note is the standing privacy line cut to its facts: which voice, and
-   whether the words stay on this machine, said before the voice says a word. */
+   Silence stays a choice a person can make for the whole run (DESIGN-
+   release.md section 7: a run must complete with no voice at all), so this
+   is the one switch that remains. */
 function relVoiceRow(){
  if(typeof voiceCan!=='function'||!voiceCan()||typeof accTog!=='function')return '';
  return accTog('Voice','relvoice',relVoiceOn(),'');}
-/* the studio voice's switch, under the voice's and only while the voice is on
-   and a person is signed in, since it can do nothing otherwise. Its note is
-   the same privacy line the voice row carries, cut to its facts: who says the
-   words and what they are given. ElevenLabs is a company name, so the note
-   says what it is in the same place (round PO). The Atüned server passes the
-   line on and keeps a count of characters, never the line. */
-function relStudioRow(){
- if(!relVoiceOn()||typeof studioCan!=='function'||!studioCan()||typeof accTog!=='function')return '';
- if(typeof authSession!=='function'||!authSession())return '';
- return accTog('Studio voice','relstudio',relStudioOn(),
-  'ElevenLabs, a voice company, over the network. It gets each line and nothing about you.');}
+/* THE STUDIO VOICE HAS NO SWITCH OF ITS OWN, ruled: ElevenLabs is the voice
+   itself whenever it can run, never a second choice inside the voice switch
+   above. Turning the voice off silences it the same as the browser's; there
+   is nothing left to toggle between the two, so relStudioRow is gone. */
 function relBuzzRow(){
  if(typeof buzzCan!=='function'||!buzzCan()||typeof accTog!=='function')return '';
  return accTog('Vibration','relbuzz',relBuzzOn(),'');}
-function relSwitches(n){return relVoiceRow()+relStudioRow()+relToneRow(n)+relBuzzRow();}
+function relSwitches(n){return relVoiceRow()+relToneRow(n)+relBuzzRow();}
 /* ============================================================
    THE LIST, IN FRONT OF THE PERSON. His words, 27 September: "For
    the letting go of believing list and the reframes, it needs to be
@@ -3243,25 +3238,11 @@ function relRender(){
  if((b=document.getElementById('reltone')))b.onclick=function(){uiSet('tone',!relToneOn());relRender();};
  /* the voice, off or on mid line: the line starts again in the new state, so
     a voice turned on is heard at once and a voice turned off never finishes a
-    sentence over silence */
+    sentence over silence. There is no second switch for studio inside it any
+    more: this one switch decides whether anything at all is said. */
  if((b=document.getElementById('relvoice')))b.onclick=function(){
   uiSet('voice',!relVoiceOn());
   var live=RUN.open&&!RUN.paused&&(RUN.phase==='welcome'||RUN.phase==='opening'||RUN.phase==='run'
     ||(RUN.phase==='done'&&RUN.cool<COOLING.length));
   if(live)relStep(); else {if(!relVoiceOn())speakStop(); relRender();}};
- /* the studio voice, the same way: the line starts again in the voice just
-    chosen. Turning it on asks again after a run gave up on it, because the
-    press is the person saying try it now. */
- if((b=document.getElementById('relstudio')))b.onclick=function(){
-  uiSet('studio',!(CURP&&CURP.ui&&CURP.ui.studio===true)); RUN.studioLost=false;
-  var live=RUN.open&&!RUN.paused&&(RUN.phase==='opening'||RUN.phase==='run'
-    ||(RUN.phase==='done'&&RUN.cool<COOLING.length));
-  if(live)relStep(); else relRender();};
  if((b=document.getElementById('relbuzz')))b.onclick=function(){uiSet('buzz',!relBuzzOn());relRender();};}
-/* THE LIST OF VOICES ARRIVES LATE. The panel names the voice before a word is
-   said, so when the browser finally names its voices the panel says it again. */
-(function(){
- try{ if(window.speechSynthesis&&'onvoiceschanged' in speechSynthesis)
-  speechSynthesis.addEventListener('voiceschanged',function(){
-   if(RUN.open&&RUN.phase==='idle')relRender();}); }catch(e){}
-})();

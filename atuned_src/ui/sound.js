@@ -772,18 +772,6 @@ function voicePick(){
  var pool=en.length?en:vs;
  var local=pool.filter(function(v){return v.localService;});
  return local[0]||pool[0]||null;}
-/* what the panel says about the voice, before the voice says anything */
-function voiceSay(){
- if(!voiceCan())return {ok:false,line:'This browser has no speech voice. The run reads on the screen.'};
- var v=voicePick();
- if(!v)return {ok:true,unknown:true,
-  line:'The browser has not named its voice yet, so this page cannot say whether the words stay '
-   +'on this machine. Turn the voice off and the run reads on the screen.'};
- if(v.localService)return {ok:true,local:true,v:v,
-  line:'The voice is '+v.name+', and it runs on this machine. The words go nowhere.'};
- return {ok:true,local:false,v:v,
-  line:'The voice is '+v.name+', and it is a network service. The words are sent to the browser '
-   +'vendor to be spoken. Turn the voice off and the run reads on the screen.'};}
 /* SAY ONE LINE, a sentence at a time. A long utterance is cut off part way on
    some Chrome voices, and a card line from the letting go cards runs to three
    sentences, so each sentence is its own utterance and the line ends when the
