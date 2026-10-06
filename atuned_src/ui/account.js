@@ -277,7 +277,8 @@ function accProfCss(){
    +'justify-content:center;min-height:var(--tap)}',
   /* the kind switch in the feedback sheet sat flush on the lead under it */
   '.ob-kinds{margin:2px 0 10px}',
-  '@media (max-width:520px){.pf-row{flex-wrap:wrap}.pf-row .pf-act{margin-left:auto}}'].join('\n');
+  '@media (max-width:520px){.pf-row{flex-wrap:wrap}.pf-row .pf-act{margin-left:auto}}',
+  '.ac-em{display:block;margin-top:3px;font-size:13px;color:var(--mid)}'].join('\n');
  document.head.appendChild(st);}
 
 /* ONTO THE PERSON'S OWN FIELD FIRST. A profile of their own is only ever
@@ -556,6 +557,7 @@ function renderAccount(){
  accProfCss();
  var m=(typeof meterRead==='function')?meterRead(CURP):null;
  var who=capName((CURP&&CURP.name)||'You');
+ var ses=(typeof authSession==='function')?authSession():null;
  var body;
  switch(ACC_OPEN){
   case 'profiles':body=accProfiles(); break;
@@ -570,7 +572,9 @@ function renderAccount(){
   /* plain: this is a person's own name, and title casing a name is a claim
      about how they spell it. de Vries is not De Vries. */
   +'<div class="ac-hd"><div class="pm-eye">Account</div>'
-  +'<h2 class="kb-h plain">'+esc(who)+'</h2></div>'
+  +'<h2 class="kb-h plain">'+esc(who)+'</h2>'
+  +(ses&&ses.email?'<span class="ac-em">'+esc(ses.email)+'</span>':'')
+  +'</div>'
   +'<div class="ac-body">'
   +'<nav class="ac-ix" aria-label="Account sections">'
   +ACC_SECS.map(function(s){

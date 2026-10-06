@@ -405,6 +405,18 @@ function kbSubIn(x){
  if(x.k==='law')return '';
  if(x.k==='card')return o.dom||x.s;
  return x.s;}
+/* a short description for kinds that carry one in the engine tables. truncated
+   at 120 chars in JS; CSS clips further if the column is narrow. */
+function kbSnip(x){
+ var o=x.o||{}, s, d;
+ if(x.k==='sab'){s=SABDEF[KB_KEY(o.nm)]; d=(s&&s.d)||'';
+  return d.length>120?d.slice(0,117)+'...':d;}
+ if(x.k==='dom'){s=DOMDEF[KB_KEY(o.nm)]; d=(s&&s.c)||'';
+  return d.length>120?d.slice(0,117)+'...':d;}
+ if(x.k==='fetter')return o.addr||'';
+ if(x.k==='gloss'){d=(o&&o.d)||'';
+  return d.length>120?d.slice(0,117)+'...':d;}
+ return '';}
 /* one row, the markup it always had, so the drills and the gates read it as
    before. i is its place in the list the click handler holds. */
 function kbRowHtml(x,i,sub){
@@ -414,12 +426,14 @@ function kbRowHtml(x,i,sub){
     own ground: Root is 4.17 to 1 on the panel a row stands on when pointed
     at, under the 4.5 a number needs. The ring already carries the seat. */
  var cls=x.p==null?' off':(x.p?'':' z');
+ var snip=kbSnip(x);
  if(x.k==='node')return kbPoleRow(x,i,seat,c,sub);
  return '<button type="button" class="kb-row" data-kbi="'+i+'" style="--c:'+c+'">'
   +crBadge(seat, x.p||0, {size:'md', bare:true, color:c,
      glyph:glyphPath(x.ic), title:x.t+(x.p?' · '+x.p+'%':'')})
   +'<span class="kb-rt"><span class="kb-rn">'+esc(x.t)+'</span>'
-  +(sub?'<span class="kb-rs">'+esc(sub)+'</span>':'')+'</span>'
+  +(sub?'<span class="kb-rs">'+esc(sub)+'</span>':'')
+  +(snip?'<span class="kb-rd">'+esc(snip)+'</span>':'')+'</span>'
   +'<span class="kb-rv'+cls+'">'+(x.p?x.p+'%':'–')+'</span>'
   +'</button>';}
 /* THE SEAT'S RING ON ITS TILE. One arc, the share of the seat's addresses
@@ -628,6 +642,8 @@ function kbsCss(){
   '.kbs-fold[open]>summary::before{transform:rotate(45deg)}',
   '.kbs-fs{font-size:13px;font-weight:400;color:var(--dim)}',
   '.kbs-fb{padding:0 16px 14px}',
+  '.kb-rd{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;',
+  ' font-size:12px;color:var(--dim);line-height:1.35;margin-top:2px}',
   /* a track that can shrink below its longest line, or a nerve's long name
      pushes the figure off the panel's edge on a phone, measured at 390 */
   '.kbs .kb-rg,.kbs-body .kb-rg{grid-template-columns:repeat(3,minmax(0,1fr))}',

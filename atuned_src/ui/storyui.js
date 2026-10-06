@@ -977,7 +977,7 @@ function srcPaint(){
     what the entry keeps at commit is identical whichever way it was shown.
     Only the markup is swapped, and the wiring below finds the same ids. */
  var cur=null;
- if(STV.chat){cur=srcChatCur(turn,heard,q,ask); srcChatSync(); srcChatNote(cur);
+ if(STV.chat){stChatCss(); cur=srcChatCur(turn,heard,q,ask); srcChatSync(); srcChatNote(cur);
   o=srcThread(turn,heard,cur,acts,why);}
  h.innerHTML=o;
  SRC_SHOWN=cur?cur.q:(turn.move==='pass'?'':q);
@@ -1230,6 +1230,20 @@ function srcChatWire(){
  if(ap&&SRC_CDRAFT.trim())ap.disabled=false;
  var sd=document.getElementById('stcsend');
  if(sd)sd.onclick=function(){srcChatSend(); cin.focus();};}
+/* TALK MODE OVERRIDES. The node-wire tree is replaced with a plain linear
+   reading: same items, same order, no dots and no wires, text from the left
+   edge. Injected once; srcPaint calls this when STV.chat is true. */
+function stChatCss(){
+ if(document.getElementById('st-chat-css'))return;
+ var st=document.createElement('style'); st.id='st-chat-css';
+ st.textContent=[
+  '.src-th .src-nd{display:none}',
+  '.src-th .src-tw{display:none}',
+  '.src-th .src-tn{padding:2px 0 8px 0}',
+  '.src-th .src-tn-past{padding-bottom:4px}',
+  '.src-th .src-me{max-width:none}'
+ ].join('\n');
+ document.head.appendChild(st);}
 /* THE THREAD. A row per turn, oldest at the top, each on its node, and under
    every node but the last the wire down to the next one. The newest Source
    AI row carries its words and the same controls the panel does, under the

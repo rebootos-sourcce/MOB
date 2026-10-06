@@ -273,6 +273,9 @@ function loginEnter(){
     at the profile boundary on the next load, so the first run replayed on
     every launch */
  try{ seen=!!(CURP&&CURP.ui&&CURP.ui.onboarded); }catch(e){}
+ /* a signed-in account IS evidence of having completed the funnel: skip onboarding
+    for any returning user who has a live session, even on a fresh browser */
+ if(!seen&&typeof authSession==='function'&&authSession())seen=true;
  if(seen)return;
  obOpen(false);}
 /* THE BUTTON ITSELF ONLY NEEDS TO EXIST. ui/panels.js's own skip listener
