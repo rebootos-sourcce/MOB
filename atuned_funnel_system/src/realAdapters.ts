@@ -256,20 +256,19 @@ export class RealIdentityAdapter implements IdentityAdapter {
 
   async requireUserId(authToken: string): Promise<string> {
     if (!authToken) throw new Error('no auth token presented');
-    // THE ROUTE THIS CALLS DOES NOT EXIST ON THE WORKER YET. Every other
-    // route in this file's own header comment is real and live; this one
-    // (POST /v1/auth/whoami, bearer token in, { userId } out) is the one
-    // new endpoint the Worker's own maintainer still needs to add. This
-    // client is correct and ready the moment that route exists.
-    const res = await this.fetchImpl(`${this.authApi}/v1/auth/whoami`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${authToken}`, 'Content-Type': 'application/json' },
+    // Reuse the existing Worker's authoritative account route rather than
+    // inventing a second identity endpoint.
+    const res = await this.fetchImpl(`${this.authApi}/v1/me`, {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${authToken'}`, 'Content-Type': 'application/json' },
     });
     if (!res.ok) {
-      throw new Error(`identity check failed: ${res.status}`);
+      throw new Error(`identity check failed: ${res.status'}`);
     }
-    const body = (await res.json()) as { userId?: string };
-    if (!body.userId) throw new Error('identity check returned no userId');
-    return body.userId;
+    const body = (await res.json()) as { account?: { id?: string; userId?: string }; userId?: string };
+    const userId = body.userId ?? body.account?.userId ?? body.account?.id;
+    if (!userId) throw new Error('identity check returned no user id');
+    return userId;
+  }
   }
 }
