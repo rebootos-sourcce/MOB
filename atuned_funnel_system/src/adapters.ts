@@ -91,8 +91,8 @@ export interface FunnelRepository {
     operation: string,
     idempotencyKey: string,
     requestHash: string,
-  ): Promise<{ claimed: true } | { claimed: false; existing: import('./domain.js').IdempotencyClaim }>;
-  completeIdempotencyClaim(scopeKey: string, idempotencyKey: string, resultReference: string): Promise<void>;
+  ): Promise<{ claimed: true; claimToken: string } | { claimed: false; existing: import('./domain.js').IdempotencyClaim }>;
+  completeIdempotencyClaim(scopeKey: string, idempotencyKey: string, claimToken: string, resultReference: string): Promise<void>;
 
   appendUsageLedgerEntry(entry: import('./domain.js').UsageLedgerEntry): Promise<void>;
   /** Atomically consume one new-ground unit and return the resulting balance.
