@@ -100,7 +100,8 @@ create table if not exists tutorial_progress (
 
 create table if not exists usage_ledger (
   id                text primary key,
-  user_id           text not null,
+  user_id           text,
+  funnel_session_id text references funnel_sessions(id),
   source            text not null,
   operation         text not null,
   pattern_id        text not null,
@@ -110,12 +111,19 @@ create table if not exists usage_ledger (
   idempotency_key   text not null,
   created_at        text not null,
 
+  check (user_id is not null or funnel_session_id is not null),
   check (source in ('STARTER_GIFT','FREE_WEEKLY_BANK','REFERRAL_GRANT','PAID_MONTHLY_ALLOWANCE')),
   check (operation in ('OPEN_NEW_GROUND','RERUN')),
   check (operation <> 'RERUN' or amount = 0),
   check (amount >= 0)
 );
-create unique index if not exists usage_ledger_idempotency_uq on usage_ledger (user_id, idempotency_key);
+create unique index if not exists usage_ledger_identity_idempotency_uq
+  on usage_ledger (
+    coalesce(user_id, '__anonymous__'),
+    coalesce(funnel_session_id, '__no_session__'),
+    idempotency_key
+  );
+create index if not exists usage_ledger_funnel_session_id_idx on usage_ledger (funnel_session_id);
 create index if not exists usage_ledger_user_id_idx on usage_ledger (user_id);
 
 create table if not exists referrals (
@@ -157,6 +165,9 @@ create table if not exists idempotency_claims (
   result_reference  text,
   created_at        text not null,
   completed_at      text,
+  claimed_at        text not null,
+  lease_expires_at  text,
+  claim_token       text not null,
 
   primary key (scope_key, idempotency_key),
   check (status in ('in_progress','completed'))
