@@ -167,10 +167,32 @@ export class InMemoryFunnelRepository implements FunnelRepository {
   async appendUsageLedgerEntry(entry: UsageLedgerEntry): Promise<void> {
     this.usageBalances.set(`${entry.userId}:${entry.source}`, entry.balanceAfter);
   }
+  async consumeUsage(entry: UsageLedgerEntry): Promise<number | null> {
+    if (entry.amount !== 1 || entry.operation !== 'OPEN_NEW_GROUND') throw new FunnelError('ENTITLEMENT_DENIED', 'invalid usage consumption');
+    if (entry.source === 'STARTER_GIFT') {
+      const gift = Array.from(this.gifts.values()).find((g) =>
+        g.funnelSessionId === entry.funnelSessionId &&
+        (entry.userId === null || g.userId === entry.userId) &&
+        g.remaining > 0 &&
+        (g.status === 'pending' || g.status === 'active'),
+      );
+      if (!gift) return null;
+      gift.remaining -= 1;
+      if (gift.remaining === 0) gift.status = 'depleted';
+      this.appendUsageLedgerEntry({ ...entry, balanceAfter: gift.remaining });
+      return gift.remaining;
+    }
+    const key = `${entry.userId}:${entry.source}`;
+    const current = this.usageBalances.get(key) ?? 1000;
+    if (current <= 0) return null;
+    const next = current - 1;
+    this.usageBalances.set(key, next);
+    this.appendUsageLedgerEntry({ ...entry, balanceAfter: next });
+    return next;
+  }
   async getUsageBalance(userId: string, source: UsageSource): Promise<number> {
     return this.usageBalances.get(`${userId}:${source}`) ?? 1000; // generous default for tests
   }
-
   async saveAttachmentChallenge(challenge: AttachmentChallenge): Promise<void> {
     this.attachmentChallenges.set(challenge.sessionId, challenge);
   }
