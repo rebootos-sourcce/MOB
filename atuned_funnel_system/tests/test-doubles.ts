@@ -99,6 +99,18 @@ export class InMemoryFunnelRepository implements FunnelRepository {
     this.giftItems.set(gift.id, items);
   }
 
+  async transferStarterGift(giftId: string, userId: string, transferredAt: string): Promise<'transferred'|'already_owned'|'owned_by_other'|'not_found'> {
+    const gift = this.gifts.get(giftId);
+    if (!gift) return 'not_found';
+    if (!gift.transferredAt) {
+      gift.userId = userId;
+      gift.transferredAt = transferredAt;
+      gift.status = gift.remaining === 0 ? 'depleted' : 'active';
+      return 'transferred';
+    }
+    return gift.userId === userId ? 'already_owned' : 'owned_by_other';
+  }
+
   async getTutorial(sessionId: string): Promise<TutorialProgress | null> {
     return this.tutorials.get(sessionId) ?? null;
   }
