@@ -203,7 +203,8 @@ export class SupabaseFunnelRepository implements FunnelRepository {
 
   async getUsageBalance(userId:string,source:UsageSource):Promise<number>{
     const rows:Row[]=await this.request(`usage_ledger?user_id=eq.${encodeURIComponent(userId)}&source=eq.${encodeURIComponent(source)}&select=balance_after&order=created_at.desc&limit=1`);
-    return rows.length?Number(rows[0].balance_after):0;
+    const row=rows[0];
+    return row ? Number(row.balance_after) : 0;
   }
 
   async saveAttachmentChallenge(c:AttachmentChallenge):Promise<void>{
