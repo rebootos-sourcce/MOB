@@ -25,7 +25,7 @@ export class SupabaseFunnelRepository implements FunnelRepository {
     if (!this.url || !this.key) throw new Error('Supabase URL and service role key are required');
   }
 
-  private headers(init?: HeadersInit): Headers {
+  private headers(init?: RequestInit['headers']): Headers {
     const h = new Headers(init);
     h.set('apikey', this.key);
     h.set('Authorization', `Bearer ${this.key}`);
