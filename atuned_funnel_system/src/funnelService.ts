@@ -423,20 +423,24 @@ export class FunnelService {
         : await this.a.release.executeRelease(patternId, {});
 
     if (amount === 1) {
-      const balanceAfter = (await this.a.repo.getUsageBalance(userId, decision.source)) - 1;
       const entry: UsageLedgerEntry = {
         id: this.a.ids.next(),
-        userId,
+        userId: session.userId,
+        funnelSessionId: session.id,
         source: decision.source,
         operation,
         patternId,
         releaseId: release.id,
         amount,
-        balanceAfter,
+        balanceAfter: 0,
         idempotencyKey: opts.idempotencyKey,
         createdAt: this.a.clock.nowIso(),
       };
-      await this.a.repo.appendUsageLedgerEntry(entry);
+      const balanceAfter = await this.a.repo.consumeUsage(entry);
+      if (balanceAfter === null) {
+        throw new FunnelError('ENTITLEMENT_DENIED', 'no usage remains for this source');
+      }
+      entry.balanceAfter = balanceAfter;
     }
     /* State transition ownership: selectAddress() already moves the
        session ADDRESS -> RELEASE for the first-use journey. A rerun
