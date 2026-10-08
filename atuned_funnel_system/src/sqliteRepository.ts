@@ -302,6 +302,22 @@ export class SqliteFunnelRepository implements FunnelRepository {
       );
   }
 
+  async getEvents(sessionId: string): Promise<FunnelEvent[]> {
+    const rows = this.db
+      .prepare('select * from funnel_events where session_id = ? order by sequence asc')
+      .all(sessionId) as Array<Record<string, unknown>>;
+    return rows.map((r) => ({
+      id: r.id as string,
+      sessionId: r.session_id as string,
+      userId: (r.user_id as string | null) ?? null,
+      type: r.type as FunnelEvent['type'],
+      sequence: Number(r.sequence),
+      eventVersion: Number(r.event_version),
+      data: JSON.parse(String(r.data || '{}')) as Record<string, unknown>,
+      createdAt: r.created_at as string,
+    }));
+  }
+
   async nextEventSequence(sessionId: string): Promise<number> {
     const row = this.db
       .prepare('select max(sequence) as m from funnel_events where session_id = ?')
