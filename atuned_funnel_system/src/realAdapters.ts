@@ -186,10 +186,9 @@ export class RealVerificationAdapter implements VerificationAdapter {
      *  requires `NUM(a)`, a real JS number, for every address in `addrs`,
      *  a different id shape from `ReleaseAdapter`'s own `patternId` strings
      *  (which `releaseWork`'s `keys` parameter instead parses as
-     *  `"seat:gate"` compounds, splitting on `:`). Threading a real address
-     *  id from the release step through to the verify step is real,
-     *  necessary wiring this round did not complete; defaulted to address
-     *  1 so the call is real and passing rather than left unverified. */
+     *  `"seat:gate"` compounds, splitting on `:`). The release-to-verify
+     *  numeric address bridge is explicit; this adapter refuses missing
+     *  `addressIds` rather than fabricating one. */
     addressIds?: number[];
   }): Promise<VerificationRef> {
     const engine = freshEngine();
