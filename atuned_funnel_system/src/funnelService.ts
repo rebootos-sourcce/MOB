@@ -388,16 +388,18 @@ export class FunnelService {
       requestHash({ patternId }),
     );
     if (!claim.claimed) {
-      /* The production TDD's own preferred behavior for a byte-identical
-         retry is "same key + same request = same durable result," returning
-         the first call's own response rather than an error. This scaffold
-         takes the safer, simpler route instead: reject the repeat outright
-         and let the caller re-read state through getSession/getUsageBalance.
-         Doing the full same-result reconstruction needs the original
-         response's session and consumed-amount alongside resultReference,
-         which claimIdempotencyKey's row does not carry; name this as a
-         real simplification to close, not a silent deviation, if this
-         scaffold is kept rather than replaced at integration time. */
+      if (claim.existing.status === 'completed' && claim.existing.resultReference) {
+        try {
+          const replay = JSON.parse(claim.existing.resultReference) as {
+            session: FunnelSession;
+            releaseId: string;
+            consumed: 0 | 1;
+          };
+          if (replay?.session?.id && replay.releaseId) return replay;
+        } catch {
+          // A malformed stored result is a protected server-side integrity failure.
+        }
+      }
       throw new FunnelError(
         'DUPLICATE_IDEMPOTENCY_KEY',
         `${opts.idempotencyKey} already ${claim.existing.status === 'completed' ? 'completed' : 'in progress'}`,
@@ -436,7 +438,11 @@ export class FunnelService {
       };
       await this.a.repo.appendUsageLedgerEntry(entry);
     }
-    await this.a.repo.completeIdempotencyClaim(dupeScope, opts.idempotencyKey, release.id);
+    await this.a.repo.completeIdempotencyClaim(
+      dupeScope,
+      opts.idempotencyKey,
+      JSON.stringify({ session: next, releaseId: release.id, consumed: amount }),
+    );
 
     /* State transition ownership: selectAddress() already moves the
        session ADDRESS -> RELEASE for the first-use journey. A rerun
