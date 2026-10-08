@@ -505,7 +505,7 @@ export class FunnelService {
           && event.data?.releaseId === releaseId
           && Array.isArray(event.data?.addressIds)) {
           resolvedAddressIds = (event.data.addressIds as unknown[]).filter(
-            (value): value is number => Number.isInteger(value) && value > 0,
+            (value): value is number => typeof value === 'number' && Number.isInteger(value) && value > 0,
           );
           break;
         }
