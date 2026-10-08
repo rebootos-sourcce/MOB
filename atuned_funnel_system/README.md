@@ -164,6 +164,8 @@ than typed here from memory, per `CLAUDE.md`'s own rule on test counts.
 The persistence target is now Supabase/Postgres. The live project has migrations `0001_funnel`, `0002_funnel_concurrency_functions`, and `0003_funnel_rls_hardening`. The nine funnel tables exist, RLS is enabled, and `anon` and `authenticated` have no table privileges. The concurrency functions are executable only by `service_role`.
 
 A real funnel session row was inserted, read back, and deleted through the Supabase REST boundary as a proof of the server-side repository path.
+The persistence block was reviewed three times after the live change: live migration history and schema, source migration parity, and final repository-tree/source-of-truth verification. The Supabase security advisor now reports the expected `RLS enabled, no policy` informational findings for these server-only tables; the important access check is the actual role grants, which are denied to `anon` and `authenticated`.
+
 
 The application is **not yet end to end wired**: the existing Cloudflare Worker has not yet exposed the funnel service methods, and the Worker does not yet construct the canonical `createSupabaseFunnelService(...)` runtime.
 
