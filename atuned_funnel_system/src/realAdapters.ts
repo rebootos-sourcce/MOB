@@ -31,6 +31,7 @@
    a second identity endpoint. The exact account-id field in the live response
    still needs one authenticated runtime proof.   ============================================================ */
 
+import { randomUUID } from 'node:crypto';
 import type {
   EntitlementAdapter,
   IdentityAdapter,
@@ -147,8 +148,6 @@ function seedProfile(engine: ReturnType<typeof freshEngine>, profile: ProfileCon
   }
 }
 
-let releaseCounter = 0;
-
 export class RealReleaseAdapter implements ReleaseAdapter {
   async executeRelease(patternId: string, context: ProfileContext): Promise<ReleaseRef> {
     const engine = freshEngine();
@@ -159,8 +158,12 @@ export class RealReleaseAdapter implements ReleaseAdapter {
     // key format is PatternCatalogAdapter's concern, not this one's.
     engine.releaseWork({ work: {} }, [patternId]);
     context.updatedProfile = { law: { ...engine.S.law }, charge: { ...engine.S.charge } };
-    releaseCounter += 1;
-    return { id: `release_${releaseCounter}`, patternId, status: 'completed' };
+    const rawAddress = String(patternId).split(':',1)[0];
+    const addressId = Number(rawAddress);
+    if (!Number.isInteger(addressId) || addressId < 1) {
+      throw new Error(`release pattern ${patternId} does not contain a real numeric address id`);
+    }
+    return { id: randomUUID(), patternId, addressIds: [addressId], status: 'completed' };
   }
 
   async rerun(patternId: string, context: ProfileContext): Promise<ReleaseRef> {
