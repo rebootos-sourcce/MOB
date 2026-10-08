@@ -164,6 +164,14 @@ than typed here from memory, per `CLAUDE.md`'s own rule on test counts.
 The persistence target is now Supabase/Postgres. The live project has migrations `0001_funnel`, `0002_funnel_concurrency_functions`, and `0003_funnel_rls_hardening`. The nine funnel tables exist, RLS is enabled, and `anon` and `authenticated` have no table privileges. The concurrency functions are executable only by `service_role`.
 
 A real funnel session row was inserted, read back, and deleted through the Supabase REST boundary as a proof of the server-side repository path.
+
+
+### Persistence concurrency block
+
+Migration `0004_funnel_repository_concurrency.sql` is applied to Supabase and source-controlled. It replaces the session read-then-write check with an atomic compare-and-swap function, makes attachment credentials single-use at the database boundary, adds a natural primary key to `starter_gift_items`, and removes the unsafe empty-ledger fallback of 1000.
+
+A live SQL contract check passed: create session, advance version, reject stale version, claim an attachment challenge once, reject the second claim, verify the starter-gift primary key, then clean up the test rows.
+
 The persistence block was reviewed three times after the live change: live migration history and schema, source migration parity, and final repository-tree/source-of-truth verification. The Supabase security advisor now reports the expected `RLS enabled, no policy` informational findings for these server-only tables; the important access check is the actual role grants, which are denied to `anon` and `authenticated`.
 
 
