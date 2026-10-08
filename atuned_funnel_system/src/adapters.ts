@@ -189,6 +189,7 @@ export interface VerificationAdapter {
     beforeReference: string | null;
     afterReference: string | null;
     notes: string | null;
+    addressIds?: number[];
   }): Promise<VerificationRef>;
 }
 
