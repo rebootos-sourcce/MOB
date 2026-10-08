@@ -112,7 +112,7 @@ function authFunnelStart(){
  var existing=funnelSession();
  if(existing)return Promise.resolve({ok:true,session:existing.session||null,reused:true});
  var anonymousId=funnelUuid();
- return authCall('POST','/v1/funnel/session',{anonymousId:null},null,false).then(function(r){
+ return authCall('POST','/v1/funnel/session',{anonymousId:anonymousId},null,false).then(function(r){
   /* The Worker intentionally creates the anonymous id. Keep the caller's id
      out of the request body so the browser cannot claim somebody else's id. */
   if(!r.ok)return {ok:false,status:r.status,body:r.body};
