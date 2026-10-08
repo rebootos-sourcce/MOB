@@ -591,6 +591,7 @@ function obLoopRows(){
     +'<span class="ob-loopr-s">'+esc(x.say)+'</span></li>';}).join('')+'</ol>';}
 function obOpen(replay){
  var h=document.getElementById('ob'); if(!h)return;
+ if(typeof authFunnelStart==='function')authFunnelStart();
  OB.open=true; OB.step=0; OB.replay=!!replay;
  OB.pick=null; OB.feel=null; OB.place=null;
  OB.text=''; OB.commit=null; OB.corr=''; OB.fixes=[];
