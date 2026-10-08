@@ -489,6 +489,7 @@ function authCheck(){
    profileSyncStart();
    return 'ok';}
   if(r.status===401){
+   profileSyncStop();
    authForget(); redraw();
    status('Signed out. The server has ended the sign in on this browser. Log in again from Account.','fail');
    return 'ended';}
