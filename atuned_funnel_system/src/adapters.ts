@@ -95,6 +95,11 @@ export interface FunnelRepository {
   completeIdempotencyClaim(scopeKey: string, idempotencyKey: string, resultReference: string): Promise<void>;
 
   appendUsageLedgerEntry(entry: import('./domain.js').UsageLedgerEntry): Promise<void>;
+  /** Atomically consume one new-ground unit and return the resulting balance.
+   *  The production implementation must debit the authoritative source
+   *  (starter gift row or usage bank) and append the ledger entry in one
+   *  database transaction. Return null when no unit is available. */
+  consumeUsage(entry: import('./domain.js').UsageLedgerEntry): Promise<number | null>;
   getUsageBalance(userId: string, source: import('./domain.js').UsageSource): Promise<number>;
 
   /** The anonymous-session attachment credential (sections 14-15). A
