@@ -129,6 +129,18 @@ function authFunnelRead(){
  if(token)return authCall('GET',path,null,token);
  return authCall('GET',path,null,null,false);
 }
+function authFunnelCheckpoint(patch){
+ var f=funnelSession(), s=authSession(), extra=f&&f.credential?{'x-funnel-credential':f.credential}:null;
+ if(!f||!f.id||!patch)return Promise.resolve({ok:false,status:0});
+ return authCall('PATCH','/v1/funnel/session/'+encodeURIComponent(f.id)+'/checkpoint',patch,s&&s.token,false,undefined,extra)
+  .then(function(r){
+   if(r.ok&&r.body&&r.body.session){
+    funnelKeep(Object.assign({},f,{session:r.body.session,userId:r.body.session.userId||f.userId||null}));
+    return {ok:true,session:r.body.session};
+   }
+   return {ok:false,status:r.status,body:r.body};
+  });
+}
 function authFunnelAttach(){
  var f=funnelSession(), s=authSession();
  if(!f||!s)return Promise.resolve({ok:false,status:0,body:null});
@@ -291,7 +303,7 @@ function profileSyncStop(){
    base is the host the path is appended to, AUTH_API unless a caller names
    another: the feedback relay is on the site's own host and not the Worker's,
    and a second fetch for it would be a second seam. */
-function authCall(method,path,body,token,blob,base){
+function authCall(method,path,body,token,blob,base,extraHeaders){
  return new Promise(function(done){
   var ctl=null, timer=null, over=false;
   var end=function(r){ if(over)return; over=true; clearTimeout(timer); done(r); };
@@ -303,6 +315,7 @@ function authCall(method,path,body,token,blob,base){
   var h={};
   if(body)h['Content-Type']='application/json';
   if(token)h.Authorization='Bearer '+token;
+  if(extraHeaders)Object.keys(extraHeaders).forEach(function(k){h[k]=extraHeaders[k];});
   var req;
   /* credentials omit: the session is the bearer header and nothing else, so no
      cookie of any host's is ever sent along with it. */
