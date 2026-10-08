@@ -9,6 +9,8 @@ test('the real engine.js file is found and loads', () => {
   assert.equal(typeof e.compute, 'function');
   assert.equal(typeof e.cqSum, 'function');
   assert.equal(typeof e.releaseWork, 'function');
+  assert.equal(typeof e.srcHear, 'function');
+  assert.equal(typeof e.srcPrior, 'function');
   assert.equal(typeof e.srcTurn, 'function');
   assert.ok(e.S, 'the real S state object must be present');
   assert.ok(Array.isArray(e.SIGHT) && e.SIGHT.length > 0, 'the real SIGHT table must be present');
