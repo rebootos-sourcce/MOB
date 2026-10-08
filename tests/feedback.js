@@ -216,7 +216,10 @@ async function feedbackGate(browser,FILE,ok,booted){
    loadP(0); ACC_OPEN='help'; setTab(TAB.SETTINGS); renderAccount(); await wait(200);
    o.rows=['achelpc','achelpq','achelpb'].map(id=>{const b=$(id); return b?Math.round(b.getBoundingClientRect().height):0;});
    const pane=document.querySelector('.ac-pane'); o.paneText=pane?pane.innerText:'';
-   o.door=!!$('accomm');
+   o.set=typeof COMMUNITY_INVITE!=='undefined'?String(COMMUNITY_INVITE||'').trim():'';
+   o.inv=typeof commInvite==='function'?commInvite():null;
+   {const l=$('accomm');
+    o.door=l?{href:l.getAttribute('href'),target:l.target,rel:l.rel,h:Math.round(l.getBoundingClientRect().height)}:null;}
    if(!$('achelpc'))return o;
    $('achelpc').click(); await wait(150);
    o.open=!$('sheet').hidden;
@@ -234,8 +237,23 @@ async function feedbackGate(browser,FILE,ok,booted){
    o.overflow=document.documentElement.scrollWidth>innerWidth+1;
    return o;});
   ok(a.rows.length===3&&a.rows.every(x=>x>=44),'Help carries comment, question and something broken, every button at the 44px floor'+at+', '+J(a.rows));
-  ok(!a.door&&/Talk to other people who use this\s*not open yet/.test(a.paneText),
-   'with no invite link the Discord row is a stub reading not open yet, and no link'+at);
+  /* THE DOOR FOLLOWS THE INVITE THE BUILD SHIPS, NEVER A COPY OF IT. This
+     check read "with no invite link the Discord row is a stub" from the day it
+     was written, when COMMUNITY_INVITE was empty, and went red on both widths
+     the day the owner pasted his real invite in. The product was right and
+     the gate was holding a copy of a setting, which is the same defect as a
+     count typed into a document. So the expectation is read off the page: set,
+     the row is a door to exactly what commInvite() returns; empty, it is the
+     stub. A set invite that commInvite() refuses fails here on purpose,
+     because then a build carrying his link has lost the doorway he asked for.
+     The stub is held further down with the invite taken away before Help
+     opens, so neither state rests on whichever one main happens to carry. */
+  ok(a.set
+    ? !!a.inv&&!!a.door&&a.door.href===a.inv&&a.door.target==='_blank'&&/noopener/.test(a.door.rel)
+      &&a.door.h>=44&&!/not open yet/.test(a.paneText)
+    : !a.door&&/Talk to other people who use this\s*not open yet/.test(a.paneText),
+   (a.set?'with the invite this build ships, the Discord row is a door to what commInvite() gives, in a new tab with noopener, at the 44px floor, and never reads not open yet'
+    :'with no invite in this build the Discord row is a stub reading not open yet, and no link')+at+', '+J({inv:a.inv,door:a.door}));
   ok(/Discord is a free chat app/.test(a.paneText),'and Discord is said in plain words beside it'+at);
   ok(a.open&&a.title==='Leave a comment','Leave a comment opens the sheet on a comment'+at+', '+a.title);
   ok(J(a.kinds)===J(['Comment:true','Question:false','Something broken:false'])&&a.kindH>=44,
@@ -316,6 +334,27 @@ async function feedbackGate(browser,FILE,ok,booted){
   ok(d.good&&d.good.href==='https://discord.gg/atunedGate'&&d.good.target==='_blank'&&/noopener/.test(d.good.rel)&&d.good.h>=44,
    'a Discord invite becomes a door that opens in a new tab, at the 44px floor'+at+', '+J(d.good));
   ok(!d.http&&!d.other&&!d.blank,'a plain http link, another site, or blank never becomes a door'+at);
+
+  /* THE STUB, WITH THE INVITE TAKEN AWAY BEFORE THE PANE OPENS. The door step
+     above swaps the invite under a pane that is already open. This is the
+     other order, the one a build shipped empty or wrong actually has: Settings
+     is left, the invite is set, and Help opens on it fresh. COMMUNITY_INVITE
+     is a var at the top of a concatenated classic script, so the assignment
+     lands on the same binding commInvite() reads, and inv is asserted empty
+     to show it did: if it ever stopped landing, the shipped invite would come
+     back, the row would be a door, and this fails instead of passing on
+     nothing. The malformed one is the boundary commInvite() exists for, so it
+     must come out as the same stub and never as a link to somewhere else. */
+  const stub=await step(async()=>{
+   const wait=ms=>new Promise(r=>setTimeout(r,ms));
+   const open=async v=>{
+    setTab(TAB.FIELD); COMMUNITY_INVITE=v; ACC_OPEN='help'; setTab(TAB.SETTINGS); await wait(80);
+    const row=[...document.querySelectorAll('.ac-pane .ac-row')].find(r=>/Talk to other people who use this/.test(r.textContent));
+    return {inv:commInvite(), txt:row?row.innerText:'', link:!!(row&&row.querySelector('a'))||!!document.getElementById('accomm')};};
+   return {empty:await open(''), bad:await open('http://evil.example/x')};});
+  for(const [k,how] of [['empty','with the invite cleared'],['bad','with a malformed invite, http://evil.example/x,']])
+   ok(stub[k].inv===''&&/Talk to other people who use this\s*not open yet/.test(stub[k].txt)&&!stub[k].link,
+    how+' before Help opens, the Discord row is a stub reading not open yet, and no link'+at+', '+J(stub[k]));
   ok(err.length===0,'no page errors'+at+', '+err.join(' | '));
   await ctx.close();}}
 module.exports={engineGate, engineSuite, feedbackGate};
