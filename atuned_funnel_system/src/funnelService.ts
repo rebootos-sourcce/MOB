@@ -493,6 +493,7 @@ export class FunnelService {
     releaseId: string,
     response: VerificationStatus,
     notes: string | null = null,
+    addressIds: number[] = [],
   ): Promise<FunnelSession> {
     const session = await this.mustGetSession(sessionId);
     const result = await this.a.verification.verify({
@@ -501,6 +502,7 @@ export class FunnelService {
       beforeReference: null,
       afterReference: null,
       notes,
+      addressIds,
     });
     const next = await this.advance(session, 'RITUAL', { verificationId: result.id });
     await this.emit(next, 'VERIFICATION_RECORDED', { releaseId, response });
