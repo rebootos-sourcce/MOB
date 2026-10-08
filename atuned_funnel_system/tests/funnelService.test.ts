@@ -88,7 +88,8 @@ test('a completed release request replays the exact durable result for the same 
   const second = await service.requestRelease(session.id, 'pattern_1', { idempotencyKey: 'dupe' });
 
   assert.deepEqual(second, first, 'a byte-identical retry must replay the original durable result');
-  assert.equal(adapters.repo.usageBalances.get(`anon_5:STARTER_GIFT`), 999, 'replay must not consume another unit');
+  const gift = await adapters.repo.getGift(session.starterGiftId!);
+  assert.equal(gift?.remaining, 99, 'replay must not consume another starter gift unit');
 });
 
 test('a rejected reading returns to MIRROR rather than silently advancing', async () => {
