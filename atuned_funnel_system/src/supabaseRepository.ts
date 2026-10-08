@@ -89,6 +89,11 @@ export class SupabaseFunnelRepository implements FunnelRepository {
       p_items:items.map(i=>({patternId:i.patternId,position:i.position,createdAt:i.createdAt}))});
   }
 
+  async transferStarterGift(giftId:string,userId:string,transferredAt:string):Promise<'transferred'|'already_owned'|'owned_by_other'|'not_found'>{
+    const result=await this.rpc('funnel_transfer_starter_gift',{p_gift_id:giftId,p_user_id:userId,p_transferred_at:transferredAt});
+    return String(result) as 'transferred'|'already_owned'|'owned_by_other'|'not_found';
+  }
+
   async getTutorial(id:string):Promise<TutorialProgress|null>{
     const r=this.one(await this.request(`tutorial_progress?funnel_session_id=eq.${encodeURIComponent(id)}&select=*`)); if(!r)return null;
     return {funnelSessionId:r.funnel_session_id,userId:r.user_id??null,startedAt:r.started_at??null,patternSelected:r.pattern_selected,
