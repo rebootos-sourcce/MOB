@@ -1,0 +1,19 @@
+{
+  "about": [
+    "The least number of passing checks each gate may report. tools/floors.js fails a gate whose log has no summary line, reports any failure, or counts fewer passes than its floor here. A gate that crashed, was cut off or was skipped therefore cannot pass.",
+    "Read off the baseline run at 869610b on 8 October (baseline/2026-10-08-869610b-summary.tsv holds its exit codes). engine 4678, funnel-package 44, boot 13, collide 383 and funnel 562 were read again on 8 October at 8f565af by the run that wrote this file. design 186 and functional 2273 are as the lead read them; functional reaches 2273 once its drifted test is repaired by another work package, and until then it reports one failure and fails here.",
+    "Raise a floor by editing this file on purpose, in the same change that adds the checks, from a green run. Never lower one to get green. Nothing writes this file."
+  ],
+  "floors": {
+    "engine": 4678,
+    "funnel-package": 44,
+    "boot": 13,
+    "collide": 383,
+    "funnel": 562,
+    "design": 186,
+    "functional": 2273
+  },
+  "no_count": {
+    "monitor": "all surfaces render"
+  }
+}

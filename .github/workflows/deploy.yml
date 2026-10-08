@@ -1,8 +1,8 @@
 name: deploy
 # atuned.world (1246, round LW). Builds the funnel and the engine and deploys
-# both to one Cloudflare Pages project on every push to the working branch,
-# the same shape reboot-os/.github/workflows/server.yml already uses for the
-# server: tests first, deploy only when the two secrets are present.
+# both to one Cloudflare Pages project, the same shape
+# reboot-os/.github/workflows/server.yml already uses for the server: tests
+# first, deploy only when the two secrets are present.
 #   secrets: CLOUDFLARE_API_TOKEN (Cloudflare Pages: Edit), CLOUDFLARE_ACCOUNT_ID
 #   Cloudflare side, his to do once: create a Pages project named "atuned" in
 #   the same account (dash.cloudflare.com, Workers & Pages, Create, Pages,
@@ -15,10 +15,30 @@ name: deploy
 # the handover rule in CLAUDE.md gives source.html when it is sent to him, so
 # that a build sent as one file and a build served as one file are the same
 # name. Deployed here unchanged: atuned-funnel.html, atuned-quiz.html,
-# atuned-about.html, atuned-buy.html and atuned.html land at the root of the
-# Pages project exactly as the funnel already built them, and atuned-funnel.html
-# is copied to index.html so atuned.world itself opens on the funnel, his
-# ruling round LW: "the landing page is the funnel... Atuned is a destination."
+# atuned-about.html, atuned-buy.html, atuned-faq.html and atuned.html land at
+# the root of the Pages project exactly as the funnel already built them, and
+# atuned-funnel.html is copied to index.html so atuned.world itself opens on
+# the funnel, his ruling round LW: "the landing page is the funnel... Atuned
+# is a destination."
+#
+# THE GATES HOLD BACK THE DEPLOY. Block 1 of the cleanup, 8 October. Until
+# then this file ran on a push to main only, ran the engine gate only, and
+# published over any other red gate, and nothing ran on a pull request. Now
+# every gate that can run on a GitHub runner is a job here, on every pull
+# request and before every deploy:
+#   gates-fast     the builds, engine, funnel package, voice, this file's own
+#                  lint, and the floors
+#   gates-browser  one job per browser gate, in parallel
+#   gates-pass     the one check branch protection will require
+#   deploy         needs gates-pass
+# tools/workflow-lint.py holds this file to that shape and runs in gates-fast,
+# so a change here that breaks the shape is red on its own pull request.
+#
+# ROLLBACK. Run this workflow by hand on main with rollback_ref set to a
+# commit main already carried. Every gate is skipped, that commit is checked
+# out, and the deploy job runs on it as it stands. The faster route is still
+# re-running the last good deploy run. A commit from before 3 October has no
+# FAQ page to stage, so a rollback that far back fails at the staging step.
 on:
   # 2 October: claude/laughing-feynman-xhfyj3 removed from this list. Every
   # push to it had been publishing a real, public, no-login preview link
@@ -44,16 +64,262 @@ on:
       - 'functions/**'
       - 'atuned_funnel_system/**'
       - '.github/workflows/deploy.yml'
+  # EVERY PULL REQUEST, WITH NO PATHS FILTER, ON PURPOSE. A required check
+  # that a paths filter skips never reports, so under branch protection a
+  # docs only pull request would sit pending for ever. pull_request runs the
+  # pull request's code with no secrets and a read only token, and the deploy
+  # job is skipped on it. NEVER pull_request_target: it runs with the
+  # secrets, and wrangler would publish a public preview of onboarding, the
+  # 2 October exposure above, which only the owner can delete.
+  pull_request:
   workflow_dispatch:
+    inputs:
+      rollback_ref:
+        description: 'Rollback only: a commit already on main, deployed as it is with every gate skipped. Leave empty to run the gates and deploy main.'
+        type: string
+        required: false
+        default: ''
+
+# The GitHub token reads the code and nothing else. A pull request's code runs
+# in the gate jobs, with no write and no secret.
+permissions:
+  contents: read
+
+# Every run step under bash with pipefail. GitHub's default shell has none, so
+# `node tests/engine.js | tee log` would read green on a red gate: a pipe
+# reports the exit code of its last command, which is tee. The deploy job's
+# steps have no pipe, so this changes nothing for them.
+defaults:
+  run:
+    shell: bash
+
 jobs:
-  deploy:
+  # The builds, then every gate that needs no browser. Skipped on a rollback.
+  gates-fast:
+    if: inputs.rollback_ref == ''
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      # tools/workflow-lint.py reads this file with PyYAML, which a runner's
+      # own python does not promise. Pinned, so it reads the same every time.
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: install PyYAML for the workflow lint
+        run: python3 -m pip install --disable-pip-version-check --no-input pyyaml==6.0.2
+      # tools/slim.py, which BUILD.sh runs, strips comments with
+      # `npx --no-install tsc` and refuses to let npx fetch a package named
+      # tsc from the registry, an unrelated ancient shim. Installed by its real
+      # name so node_modules/.bin/tsc exists. The deploy job below says more.
+      - name: install typescript for the delivery build's comment stripper
+        run: npm install --no-audit --no-fund --no-save typescript
+      # Each gate tees its output here, and tools/floors.js reads it back.
+      - name: make the gate log directory
+        run: mkdir -p "$RUNNER_TEMP/gates"
+      - name: funnel package gate
+        run: |
+          cd atuned_funnel_system
+          npm ci --no-audit --no-fund && npm test 2>&1 | tee "$RUNNER_TEMP/gates/funnel-package.log"
+      # The engine builds first: BUILD.sh runs tests/claims.js, which reads
+      # engine.js, and the quiz that funnel/BUILD-single.sh packs carries it.
+      - name: build, the engine first
+        run: ./atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh && ./funnel/BUILD-single.sh
+      - name: the funnel actually built
+        run: |
+          for f in atuned-funnel atuned-quiz atuned-about atuned-buy atuned-faq; do
+            test -s "funnel/dist/$f.html" || { echo "funnel/dist/$f.html missing or empty"; exit 1; }
+          done
+      - name: engine gate
+        run: node tests/engine.js 2>&1 | tee "$RUNNER_TEMP/gates/engine.log"
+      - name: voice check, his own objections as rules
+        run: python3 .claude/skills/atuned-voice/check.py --objections
+      - name: workflow lint, this file held to its own shape
+        run: python3 tools/workflow-lint.py && python3 tools/workflow-lint.py --self-test
+      # Another work package writes this gate. Until it lands there is nothing
+      # to run, and the step is skipped rather than failing on a missing file.
+      - name: no browser gate hardcodes the sandbox chromium
+        if: hashFiles('tests/chrome-path.js') != ''
+        run: node tests/chrome-path.js
+      # A gate that lost its tests still exits 0. The floors are in
+      # tests/floors.json and are raised on purpose, never lowered to get green.
+      - name: floors
+        run: node tools/floors.js --self-test && node tools/floors.js engine funnel-package
+
+  # One job per browser gate, in parallel, each on its own runner with the
+  # chromium that playwright 1.56.1 installs. CHROME carries its path, and a
+  # gate launches process.env.CHROME || '/opt/pw-browsers/...', the sandbox's
+  # own path, once the chrome path work package lands. Until then a gate that
+  # still hardcodes the sandbox path cannot launch here, and its job is red.
+  #
+  # REQUIRED OR NOT. boot, collide and funnel are required: a red one fails
+  # gates-pass and holds back the deploy. functional, design and monitor run
+  # and report but hold nothing back yet (continue-on-error), because none has
+  # a green run on a GitHub runner on record: functional carries a drifted
+  # test that another work package repairs, design's frame rate and fade
+  # timing checks are sensitive to load, and monitor has never run here. Each
+  # flips to required after three consecutive green CI runs, by a one line
+  # change by the lead: its required: false below becomes required: true.
+  # Never lower a floor, in a gate or in tests/floors.json, to get green.
+  gates-browser:
+    if: inputs.rollback_ref == ''
+    name: gates-browser (${{ matrix.gate }})
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ matrix.timeout }}
+    continue-on-error: ${{ !matrix.required }}
+    strategy:
+      # every gate reports, so one red gate does not hide what else is red
+      fail-fast: false
+      matrix:
+        include:
+          - gate: boot
+            required: true
+            timeout: 20
+            command: node tests/boot.js
+          - gate: collide
+            required: true
+            timeout: 20
+            command: node tests/collide.js
+          - gate: funnel
+            required: true
+            timeout: 20
+            command: node tests/funnel.js
+          - gate: functional
+            required: false
+            timeout: 45
+            command: node tests/functional.js
+          - gate: design
+            required: false
+            timeout: 20
+            command: node tests/design.js
+          - gate: monitor
+            required: false
+            timeout: 20
+            command: node tools/monitor.js
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: install typescript for the delivery build's comment stripper
+        run: npm install --no-audit --no-fund --no-save typescript
+      - name: install playwright 1.56.1 and its chromium
+        run: |
+          npm install -g --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: point the gates at that chromium
+        run: |
+          root="$(npm root -g)"
+          chrome="$(NODE_PATH="$root" node -e "console.log(require('playwright').chromium.executablePath())")"
+          test -x "$chrome" || { echo "playwright's chromium is not at '$chrome'"; exit 1; }
+          echo "NODE_PATH=$root" >> "$GITHUB_ENV"
+          echo "CHROME=$chrome" >> "$GITHUB_ENV"
+      - name: build, the engine first
+        run: ./atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh && ./funnel/BUILD-single.sh
+      - name: ${{ matrix.gate }} gate
+        run: |
+          mkdir -p "$RUNNER_TEMP/gates"
+          ${{ matrix.command }} 2>&1 | tee "$RUNNER_TEMP/gates/${{ matrix.gate }}.log"
+      - name: ${{ matrix.gate }} floor
+        run: node tools/floors.js ${{ matrix.gate }}
+
+  # THE ONE CHECK BRANCH PROTECTION WILL REQUIRE. It runs whatever happened
+  # above, always(), because branch protection counts a skipped check as
+  # passing: a gates-pass that skipped when a gate was cancelled would let the
+  # pull request through. A skipped or cancelled required job is a failure
+  # here. gates-browser reads success when its required legs passed, since a
+  # leg under continue-on-error that fails does not fail the matrix.
+  # Skipped on a rollback, which runs no gates.
+  gates-pass:
+    needs: [gates-fast, gates-browser]
+    if: always() && inputs.rollback_ref == ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: every required gate job succeeded
+        env:
+          FAST: ${{ needs.gates-fast.result }}
+          BROWSER: ${{ needs.gates-browser.result }}
+        run: |
+          echo "gates-fast: $FAST"
+          echo "gates-browser, whose required legs are boot, collide and funnel: $BROWSER"
+          if [ "$FAST" != success ] || [ "$BROWSER" != success ]; then
+            echo "FAIL a required gate job did not succeed. Skipped and cancelled count as failed."
+            exit 1
+          fi
+
+  # Publishes atuned.world, three ways in and no other:
+  #   a push to main whose gates passed;
+  #   a dispatch on main with no rollback_ref, whose gates passed;
+  #   a rollback, a dispatch with rollback_ref set, whose gates are skipped.
+  # !cancelled() and not always(): both let a skipped gates-pass through on a
+  # rollback, and only !cancelled() stops a cancelled run going on to publish.
+  # GitHub's own docs advise it over always() for anything that cannot be
+  # taken back.
+  # ONE DEPLOY AT A TIME. On 8 October two deploys overlapped and whichever
+  # finished last stayed live. cancel-in-progress is false, so a deploy half
+  # way through its upload is never cut off.
+  deploy:
+    needs: [gates-pass]
+    if: >-
+      ${{ !cancelled() && (
+      (github.event_name == 'workflow_dispatch' && inputs.rollback_ref != '') ||
+      (github.ref == 'refs/heads/main' && inputs.rollback_ref == '' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
+      needs.gates-pass.result == 'success')) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: pages-prod
+      cancel-in-progress: false
     env:
       CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
+      # A ROLLBACK RUNS FROM MAIN, TO A COMMIT MAIN ALREADY CARRIED. A rollback
+      # skips every gate, so this step is all that stands between the dispatch
+      # box and the live site: without it any branch or unreviewed commit
+      # would publish ungated. And the deploy step below publishes only from
+      # main, so a rollback dispatched on a branch would skip it and read
+      # green with nothing deployed. The compare API reads identical or behind
+      # exactly when the commit is on main, and then its merge base is that
+      # commit's full id: checked 8 October against main, two older main
+      # commits (behind), an unmerged branch (diverged) and an unknown commit
+      # (not found). The full id goes to the checkout, because actions/checkout
+      # does not take a short one, and because what was checked is then
+      # exactly what is published, even if rollback_ref named a branch that
+      # moves in between.
+      - name: a rollback runs from main, to a commit already on main
+        id: rollback
+        if: inputs.rollback_ref != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ROLLBACK_REF: ${{ inputs.rollback_ref }}
+        run: |
+          if [ "$GITHUB_REF" != refs/heads/main ]; then
+            echo "FAIL this rollback was dispatched on $GITHUB_REF. Dispatch it on main: the deploy step publishes only from main."
+            exit 1
+          fi
+          got="$(gh api "repos/$GITHUB_REPOSITORY/compare/main...$ROLLBACK_REF" --jq '.status + " " + .merge_base_commit.sha')" || got="unknown -"
+          status="${got%% *}"
+          sha="${got#* }"
+          case "$status" in
+            identical|behind)
+              if ! [[ "$sha" =~ ^[0-9a-f]{40}$ ]]; then
+                echo "FAIL compare read $status for $ROLLBACK_REF but gave no full commit id ($sha)."
+                exit 1
+              fi
+              echo "rolling back to $ROLLBACK_REF, commit $sha, which main already carried ($status)"
+              echo "sha=$sha" >> "$GITHUB_OUTPUT" ;;
+            *)
+              echo "FAIL $ROLLBACK_REF is not a commit on main (compare reads $status). A rollback goes only to a commit main already carried."
+              exit 1 ;;
+          esac
+      # The commit to publish: on a rollback the one the guard above checked,
+      # by its full id; otherwise empty, which is the commit this run started on.
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.rollback.outputs.sha }}
       - uses: actions/setup-node@v4
         with: { node-version: '22' }
       # tools/slim.py shells out to `npx --no-install tsc` to strip comments
@@ -81,17 +347,14 @@ jobs:
         run: node tests/engine.js
       - name: build the funnel
         run: ./funnel/BUILD-single.sh
-      # EVERY BROWSER GATE IN THIS REPOSITORY HARDCODES ONE PATH:
-      # /opt/pw-browsers/chromium-1194/chrome-linux/chrome. tests/collide.js,
-      # tests/design.js, tests/functional.js and tests/funnel.js all launch it
-      # by that literal string, which is this development sandbox's own
-      # Playwright install and does not exist on a GitHub Actions runner. None
-      # of them can run here as written. They are not skipped by oversight:
-      # every push to this branch is already gated in full, engine, collide,
-      # design, functional, funnel, boot and the voice check, inside the
-      # sandbox, before the push happens. This job re-runs only what is
-      # portable, the pure Node engine gate, and checks the funnel's own build
-      # produced its four files, so a broken build fails loud here too.
+      # THE BROWSER GATES RUN ABOVE NOW, in gates-browser, and this job needs
+      # them through gates-pass. Until 8 October they could not run on a
+      # runner at all, each hardcoding the sandbox's own chromium path, and
+      # this comment said so. The steps here are the deploy job as it stood,
+      # kept as they were: it re-runs the portable checks on the commit it
+      # publishes, which on a rollback are the only checks that commit gets,
+      # and checks the funnel's own build produced its files, so a broken
+      # build fails loud here too.
       - name: the funnel actually built
         run: |
           for f in atuned-funnel atuned-quiz atuned-about atuned-buy; do
@@ -107,6 +370,10 @@ jobs:
       # source as a static file at /functions/feedback.js. The webhook address
       # it relays to is not in that file or anywhere in this repository: it is
       # the Pages variable DISCORD_FEEDBACK_WEBHOOK, set in the dashboard.
+      #
+      # THE FAQ IS STAGED (M48, 8 October). atuned-faq.html is linked seven
+      # times from three live pages and was never copied, so every one of those
+      # links reached a missing page.
       - name: stage the site
         run: |
           rm -rf deploy && mkdir deploy
@@ -114,6 +381,7 @@ jobs:
           cp funnel/dist/atuned-quiz.html deploy/
           cp funnel/dist/atuned-about.html deploy/
           cp funnel/dist/atuned-buy.html deploy/
+          cp funnel/dist/atuned-faq.html deploy/
           cp source.html deploy/atuned.html
           cp funnel/dist/atuned-funnel.html deploy/index.html
       - name: install wrangler
