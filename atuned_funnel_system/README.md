@@ -53,6 +53,14 @@ round SG wired" below for what moved the count from 22).
 
 
 
+
+
+### Usage accounting block
+
+The live funnel TDD requires the first release before account creation, so usage accounting now carries both optional account identity and funnel-session identity. Migration `0005` makes `usage_ledger.user_id` nullable, adds `funnel_session_id`, and makes starter-gift consumption debit `starter_gifts.remaining` atomically while writing the ledger. Migration `0006` closes the same-key race by rechecking idempotency after the transaction lock.
+
+A live SQL proof consumed a 100-pattern anonymous starter gift to 99, then 98, then replayed the same idempotency key without a third ledger row; all test rows were removed afterward.
+
 ### Idempotency replay block\n\nReview pass 3 checked the final test against the fake entitlement source and corrected the balance assertion to the actual `STARTER_GIFT` ledger. The remaining limitation is execution: this environment cannot clone the repository over the network, so the full Node test suite was not re-run here; the live Supabase contract tests and static source checks were run instead.\n\nReview pass 2 checked the ordering and replay payload directly. The idempotency result is completed only after the release, usage entry, and first-release session mutation succeed; the replay path returns the stored session/release/consumed tuple without invoking any adapter. The test now checks both structural equality and a single usage debit.
 
 Release idempotency now replays the exact stored result for a completed, byte-identical request instead of rejecting a completed retry. The stored result includes the returned session, release id, and consumed amount, so a retry does not execute the release engine or debit usage again. A different request hash still fails closed, and an in-progress claim still fails closed rather than running a second release.
