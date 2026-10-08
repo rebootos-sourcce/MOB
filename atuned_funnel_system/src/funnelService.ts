@@ -468,12 +468,12 @@ export class FunnelService {
     await this.emit(
       next,
       operation === 'RERUN' ? 'RERUN_STARTED' : 'RELEASE_STARTED',
-      { patternId, releaseId: release.id },
+      { patternId, releaseId: release.id, addressIds: release.addressIds ?? [] },
     );
     await this.emit(
       next,
       operation === 'RERUN' ? 'RERUN_COMPLETED' : 'RELEASE_COMPLETED',
-      { patternId, releaseId: release.id },
+      { patternId, releaseId: release.id, addressIds: release.addressIds ?? [] },
     );
     if (amount === 1) await this.emit(next, 'USAGE_CONSUMED', { patternId, source: decision.source });
 
@@ -497,13 +497,30 @@ export class FunnelService {
     addressIds: number[] = [],
   ): Promise<FunnelSession> {
     const session = await this.mustGetSession(sessionId);
+    let resolvedAddressIds = addressIds;
+    if (!resolvedAddressIds.length) {
+      const events = await this.a.repo.getEvents(sessionId);
+      for (const event of events.slice().reverse()) {
+        if ((event.type === 'RELEASE_COMPLETED' || event.type === 'RELEASE_STARTED')
+          && event.data?.releaseId === releaseId
+          && Array.isArray(event.data?.addressIds)) {
+          resolvedAddressIds = (event.data.addressIds as unknown[]).filter(
+            (value): value is number => Number.isInteger(value) && value > 0,
+          );
+          break;
+        }
+      }
+    }
+    if (!resolvedAddressIds.length) {
+      throw new FunnelError('RELEASE_NOT_FOUND', `no numeric release address identity for ${releaseId}`);
+    }
     const result = await this.a.verification.verify({
       releaseId,
       response,
       beforeReference: null,
       afterReference: null,
       notes,
-      addressIds,
+      addressIds: resolvedAddressIds,
     });
     const next = await this.advance(session, 'RITUAL', { verificationId: result.id });
     await this.emit(next, 'VERIFICATION_RECORDED', { releaseId, response });
