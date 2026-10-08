@@ -112,12 +112,10 @@ export interface FunnelRepository {
 
 // ---------- identity ----------
 
-/** Wire to the existing reboot-os Worker (atuned_src/ui/auth.js,
- *  AUTH_API). That file is today's only network seam and already
- *  handles sign up, sign in, sign out and the forgotten-password route;
- *  it does not currently expose a server-callable "requireUserId" in the
- *  shape this interface wants, so a thin endpoint on the same Worker is
- *  the real piece of wiring work here, not a new identity system. */
+/** Wire to the existing reboot-os Worker identity boundary.
+ *  The current real adapter reuses GET /v1/me so a second identity
+ *  endpoint is not invented. The exact account-id field still requires
+ *  one live runtime proof at integration time. */
 export interface IdentityAdapter {
   /** Must return the server-validated user id, or throw, never trust a
    *  client-supplied id. */
