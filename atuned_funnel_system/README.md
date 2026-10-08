@@ -362,3 +362,10 @@ Verified live in Supabase:
 10. Production acceptance and rollback proof. Run the complete acceptance matrix against production-like infrastructure, then verify observability, rollback, and recovery procedures.
 
 The current package is therefore complete as a tested funnel domain and persistence subsystem, but the product as a whole is not yet complete.
+
+
+### Latest closed block: release verification identity
+
+The real release adapter now derives the numeric engine address from the actual \`seat:gate\` release key, returns it on \`ReleaseRef\`, and uses a UUID release id rather than a process-local counter. The release event persists the address ids. Verification reads the persisted release event when address ids are not supplied, and refuses to proceed when no trusted numeric identity exists.
+
+A funnel test now proves the release-to-verification path without passing address ids through the caller.
