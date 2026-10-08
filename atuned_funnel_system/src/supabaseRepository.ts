@@ -123,6 +123,14 @@ export class SupabaseFunnelRepository implements FunnelRepository {
       body:JSON.stringify({id:e.id,session_id:e.sessionId,user_id:e.userId,type:e.type,sequence:e.sequence,event_version:e.eventVersion,data:e.data,created_at:e.createdAt})});
   }
 
+  async getEvents(sessionId:string):Promise<FunnelEvent[]>{
+    const rows:Row[]=await this.request(`funnel_events?session_id=eq.${encodeURIComponent(sessionId)}&select=*&order=sequence.asc`);
+    return rows.map((r)=>({
+      id:r.id,sessionId:r.session_id,userId:r.user_id??null,type:r.type,
+      sequence:r.sequence,eventVersion:r.event_version,data:r.data??{},createdAt:r.created_at,
+    }));
+  }
+
   async nextEventSequence(sessionId:string):Promise<number>{
     return Number(await this.rpc('funnel_next_event_sequence',{p_session_id:sessionId}));
   }
