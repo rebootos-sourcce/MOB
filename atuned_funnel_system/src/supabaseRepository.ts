@@ -60,12 +60,17 @@ export class SupabaseFunnelRepository implements FunnelRepository {
 
   async saveSession(s:FunnelSession):Promise<void>{
     const existing=await this.getSession(s.id);
-    if(existing && existing.version>=s.version) throw new FunnelError('STALE_VERSION',`session ${s.id} stale write`);
-    await this.request('funnel_sessions',{method:'POST',
-      headers:{'Prefer':'resolution=merge-duplicates,return=minimal'},
-      body:JSON.stringify({id:s.id,anonymous_id:s.anonymousId,user_id:s.userId,state:s.state,status:s.status,
-        selected_ground_id:s.selectedGroundId,starter_gift_id:s.starterGiftId,tutorial_completed:s.tutorialCompleted,
-        first_release_id:s.firstReleaseId,verification_id:s.verificationId,version:s.version,created_at:s.createdAt,updated_at:s.updatedAt})});
+    const expectedVersion=existing?.version??null;
+    const ok=await this.rpc('funnel_save_session',{
+      p_session:{
+        id:s.id,anonymousId:s.anonymousId,userId:s.userId,state:s.state,status:s.status,
+        selectedGroundId:s.selectedGroundId,starterGiftId:s.starterGiftId,tutorialCompleted:s.tutorialCompleted,
+        firstReleaseId:s.firstReleaseId,verificationId:s.verificationId,version:s.version,
+        createdAt:s.createdAt,updatedAt:s.updatedAt,
+      },
+      p_expected_version:expectedVersion,
+    });
+    if(ok!==true) throw new FunnelError('STALE_VERSION',`session ${s.id} stale or conflicting write`);
   }
 
   async getGift(id:string):Promise<StarterGift|null>{
@@ -143,7 +148,7 @@ export class SupabaseFunnelRepository implements FunnelRepository {
 
   async getUsageBalance(userId:string,source:UsageSource):Promise<number>{
     const rows:Row[]=await this.request(`usage_ledger?user_id=eq.${encodeURIComponent(userId)}&source=eq.${encodeURIComponent(source)}&select=balance_after&order=created_at.desc&limit=1`);
-    return rows.length?Number(rows[0].balance_after):1000;
+    return rows.length?Number(rows[0].balance_after):0;
   }
 
   async saveAttachmentChallenge(c:AttachmentChallenge):Promise<void>{
@@ -157,7 +162,7 @@ export class SupabaseFunnelRepository implements FunnelRepository {
   }
 
   async markAttachmentChallengeUsed(id:string):Promise<void>{
-    await this.request(`attachment_challenges?id=eq.${encodeURIComponent(id)}`,{method:'PATCH',headers:{'Prefer':'return=minimal'},
-      body:JSON.stringify({used_at:new Date().toISOString()})});
+    const ok=await this.rpc('funnel_claim_attachment_challenge',{p_id:id});
+    if(ok!==true) throw new FunnelError('ATTACHMENT_CREDENTIAL_INVALID','attachment credential already used or expired');
   }
 }
