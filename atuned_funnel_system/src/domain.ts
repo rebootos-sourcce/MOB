@@ -335,6 +335,7 @@ export interface IdempotencyClaim {
   scopeKey: string;
   operation: string;
   idempotencyKey: string;
+  claimToken: string;
   /** A hash of the request's own meaningful fields. The same key with a
    *  different hash must be rejected, not silently replayed with new
    *  inputs. */
