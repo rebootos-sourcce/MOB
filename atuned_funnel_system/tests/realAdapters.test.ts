@@ -42,6 +42,7 @@ test('RealVerificationAdapter calls the real, pure releaseVerify', async () => {
     beforeReference: '1',
     afterReference: null,
     notes: 'felt lighter',
+    addressIds: [1],
   });
   assert.equal(result.status, 'something_moved');
   assert.equal(result.releaseId, 'release_1');
@@ -57,6 +58,7 @@ test('RealVerificationAdapter surfaces a real refusal rather than swallowing it'
       beforeReference: '1',
       afterReference: null,
       notes: null,
+      addressIds: [1],
     }),
   );
 });
@@ -70,7 +72,7 @@ test('RealSourceAdapter calls the real srcTurn and reads an empty story as unrea
   assert.equal(result.status, 'unknown');
 });
 
-test('RealIdentityAdapter calls the real auth host at the documented new route, with a bearer token', async () => {
+test('RealIdentityAdapter calls the existing /v1/me identity boundary, with a bearer token', async () => {
   let capturedUrl = '';
   let capturedHeaders: Record<string, string> = {};
   const fakeFetch = (async (url: string, init?: { headers?: Record<string, string> }) => {
@@ -86,7 +88,7 @@ test('RealIdentityAdapter calls the real auth host at the documented new route, 
   const adapter = new RealIdentityAdapter('https://atuned-api.lance-o-powell.workers.dev', fakeFetch);
   const userId = await adapter.requireUserId('tok_abc');
   assert.equal(userId, 'user_42');
-  assert.equal(capturedUrl, 'https://atuned-api.lance-o-powell.workers.dev/v1/auth/whoami');
+  assert.equal(capturedUrl, 'https://atuned-api.lance-o-powell.workers.dev/v1/me');
   assert.equal(capturedHeaders.Authorization, 'Bearer tok_abc');
 });
 
