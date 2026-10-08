@@ -36,6 +36,7 @@
    browser. A var so a gate can point it at a stub. */
 var AUTH_API='https://atuned-api.lance-o-powell.workers.dev';
 var AUTH_KEY='source.session';
+var FUNNEL_KEY='funnel.session';
 /* HOW LONG A REQUEST MAY TAKE BEFORE IT IS A FAILURE. A sign in runs a
    deliberately slow hash on the server, so this is generous, and it is still
    a ceiling: a request with none sits on "Checking with the server" for as
@@ -78,6 +79,69 @@ function authKeep(s){
  var txt=s?JSON.stringify(s):'';
  try{ STORE.set(AUTH_KEY,txt); return STORE.get(AUTH_KEY)===txt; }catch(e){ return false; }}
 function authForget(){ return authKeep(null); }
+/* THE FUNNEL SESSION, beside the auth session and never inside the profile.
+   The browser holds the one-time credential because it is the proof that this
+   browser created the anonymous journey. The server stores only its hash. */
+var FUNNEL_S=null, FUNNEL_READ=false;
+function funnelSession(){
+ if(!FUNNEL_READ&&typeof STORE_BOUND!=='undefined'&&STORE_BOUND){
+  FUNNEL_READ=true;
+  try{
+   var o=JSON.parse(STORE.get(FUNNEL_KEY)||'null');
+   if(o&&typeof o.id==='string'&&o.id&&typeof o.anonymousId==='string'&&o.anonymousId){
+    FUNNEL_S=o;
+   }
+  }catch(e){ FUNNEL_S=null; }
+ }
+ return FUNNEL_S;
+}
+function funnelKeep(s){
+ FUNNEL_S=s; FUNNEL_READ=true;
+ if(typeof STORE_BOUND==='undefined'||!STORE_BOUND)return false;
+ try{
+  var txt=s?JSON.stringify(s):'';
+  STORE.set(FUNNEL_KEY,txt);
+  return STORE.get(FUNNEL_KEY)===txt;
+ }catch(e){ return false; }
+}
+function funnelUuid(){
+ try{ if(typeof crypto!=='undefined'&&crypto.randomUUID)return crypto.randomUUID(); }catch(e){}
+ return 'anon_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2);
+}
+function authFunnelStart(){
+ var existing=funnelSession();
+ if(existing)return Promise.resolve({ok:true,session:existing.session||null,reused:true});
+ var anonymousId=funnelUuid();
+ return authCall('POST','/v1/funnel/session',{anonymousId:null},null,false).then(function(r){
+  /* The Worker intentionally creates the anonymous id. Keep the caller's id
+     out of the request body so the browser cannot claim somebody else's id. */
+  if(!r.ok)return {ok:false,status:r.status,body:r.body};
+  var b=r.body||{}, s=b.session;
+  if(!s||typeof s.id!=='string'||typeof b.credential!=='string')return {ok:false,status:r.status,body:null};
+  var state={session:s,id:s.id,anonymousId:s.anonymousId||anonymousId,credential:b.credential};
+  var kept=funnelKeep(state);
+  return {ok:true,session:s,reused:false,kept:kept};});
+}
+function authFunnelRead(){
+ var f=funnelSession(); if(!f)return Promise.resolve({ok:false,status:0,body:null});
+ var s=authSession();
+ var token=s&&s.token, path='/v1/funnel/session/'+encodeURIComponent(f.id);
+ if(token)return authCall('GET',path,null,token);
+ return authCall('GET',path,null,null,false);
+}
+function authFunnelAttach(){
+ var f=funnelSession(), s=authSession();
+ if(!f||!s)return Promise.resolve({ok:false,status:0,body:null});
+ return authCall('POST','/v1/funnel/session/'+encodeURIComponent(f.id)+'/attach',{credential:f.credential},s.token)
+  .then(function(r){
+   if(r.ok&&r.body&&r.body.session){
+    var next=Object.assign({},f,{session:r.body.session,userId:r.body.session.userId||s.email||null});
+    funnelKeep(next);
+   }
+   return r;
+  });
+}
+function authFunnelClear(){ return funnelKeep(null); }
 /* One request. Resolves to {ok, status, body, late}, and never rejects. With
    blob set, a yes comes back as the bytes and not as parsed text, because the
    voice route answers audio; a no is still the server's json and still read
@@ -205,6 +269,11 @@ function authEnter(route,mail,pw){
    return {ok:false, say:'The server answered without a sign in. Nothing changed.'};
   var s={token:b.token, email:typeof acc.email==='string'?acc.email:mail.toLowerCase()};
   var kept=authKeep(s);
+  /* the plan and the funnel session both use the same bearer boundary.
+     Funnel attachment is best effort here because the gift may not yet exist;
+     the explicit funnel attachment path remains available once a starter gift
+     has been issued. */
+  authFunnelAttach();
   /* the plan is read after the sign in is held, and not waited on: the
      caller says "Signed in as" now, and the plan speaks after it only if the
      record changed. A second device is exactly this path. */
