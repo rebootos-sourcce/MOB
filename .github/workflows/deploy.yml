@@ -42,6 +42,7 @@ on:
       # the feedback relay, functions/feedback.js. Without this line a change
       # to the Function alone would never deploy.
       - 'functions/**'
+      - 'atuned_funnel_system/**'
       - '.github/workflows/deploy.yml'
   workflow_dispatch:
 jobs:
@@ -68,6 +69,12 @@ jobs:
       # node_modules/.bin/tsc exists before slim.py ever asks for it.
       - name: install typescript for the delivery build's comment stripper
         run: npm install --no-audit --no-fund --no-save typescript
+      - name: test funnel system
+        run: |
+          cd atuned_funnel_system
+          npm install --no-audit --no-fund
+          npm test
+
       - name: build the engine
         run: ./atuned_src/BUILD.sh && ./atuned_src/BUILD-engine.sh
       - name: engine gate
