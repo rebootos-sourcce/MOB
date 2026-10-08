@@ -374,6 +374,7 @@ export class FunnelError extends Error {
       | 'SESSION_NOT_FOUND'
       | 'GIFT_ALREADY_TRANSFERRED'
       | 'GIFT_NOT_FOUND'
+      | 'RELEASE_NOT_FOUND'
       | 'STALE_VERSION'
       | 'ENTITLEMENT_DENIED'
       | 'DUPLICATE_IDEMPOTENCY_KEY'
