@@ -128,7 +128,7 @@ export class SupabaseFunnelRepository implements FunnelRepository {
   }
 
   async claimIdempotencyKey(scopeKey:string,operation:string,idempotencyKey:string,requestHash:string):
-    Promise<{claimed:true}|{claimed:false;existing:IdempotencyClaim}>{
+    Promise<{claimed:true;claimToken:string}|{claimed:false;existing:IdempotencyClaim}>{
     let result: Row;
     try {
       result=await this.rpc('funnel_claim_idempotency',{
