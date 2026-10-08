@@ -148,13 +148,11 @@ export class InMemoryFunnelRepository implements FunnelRepository {
       }
       return { claimed: false as const, existing };
     }
-    // the in-memory Map set below is this fake's stand-in for an atomic
-    // "insert unique or return existing" database constraint; a real
-    // implementation needs a real unique index, not a read-then-write.
     const claim: IdempotencyClaim = {
       scopeKey,
       operation,
       idempotencyKey,
+      claimToken: `claim_${this.idempotencyClaims.size + 1}`,
       requestHash,
       status: 'in_progress',
       resultReference: null,
@@ -162,12 +160,15 @@ export class InMemoryFunnelRepository implements FunnelRepository {
       completedAt: null,
     };
     this.idempotencyClaims.set(compound, claim);
-    return { claimed: true as const };
+    return { claimed: true as const, claimToken: claim.claimToken };
   }
-  async completeIdempotencyClaim(scopeKey: string, idempotencyKey: string, resultReference: string): Promise<void> {
+
+  async completeIdempotencyClaim(scopeKey: string, idempotencyKey: string, claimToken: string, resultReference: string): Promise<void> {
     const compound = `${scopeKey}:${idempotencyKey}`;
     const existing = this.idempotencyClaims.get(compound);
-    if (!existing) return;
+    if (!existing || existing.status !== 'in_progress' || existing.claimToken !== claimToken) {
+      throw new FunnelError('DUPLICATE_IDEMPOTENCY_KEY', `${idempotencyKey} claim is no longer owned`);
+    }
     this.idempotencyClaims.set(compound, {
       ...existing,
       status: 'completed',
@@ -175,6 +176,7 @@ export class InMemoryFunnelRepository implements FunnelRepository {
       completedAt: new Date().toISOString(),
     });
   }
+
 
   async appendUsageLedgerEntry(entry: UsageLedgerEntry): Promise<void> {
     this.usageBalances.set(`${entry.userId}:${entry.source}`, entry.balanceAfter);
