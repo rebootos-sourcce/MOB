@@ -16,6 +16,7 @@
    ============================================================ */
 
 import { DatabaseSync } from 'node:sqlite';
+import { randomUUID } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -315,50 +316,90 @@ export class SqliteFunnelRepository implements FunnelRepository {
     operation: string,
     idempotencyKey: string,
     requestHash: string,
-  ): Promise<{ claimed: true } | { claimed: false; existing: IdempotencyClaim }> {
-    const now = new Date().toISOString();
+  ): Promise<{ claimed: true; claimToken: string } | { claimed: false; existing: IdempotencyClaim }> {
+    const now = new Date();
+    const nowIso = now.toISOString();
+    const leaseIso = new Date(now.getTime() + 5 * 60_000).toISOString();
+    const claimToken = randomUUID();
     try {
-      // THE ATOMIC CLAIM. A single insert; the real primary key
-      // (scope_key, idempotency_key) is what makes a second, concurrent
-      // caller fail here rather than after a prior read ever ran.
       this.db
         .prepare(
           `insert into idempotency_claims
-            (scope_key, operation, idempotency_key, request_hash, status, created_at)
-           values (?,?,?,?,'in_progress',?)`,
+            (scope_key, operation, idempotency_key, request_hash, status, created_at, claimed_at, lease_expires_at, claim_token)
+           values (?,?,?,?, 'in_progress', ?, ?, ?, ?)`,
         )
-        .run(scopeKey, operation, idempotencyKey, requestHash, now);
-      return { claimed: true };
+        .run(scopeKey, operation, idempotencyKey, requestHash, nowIso, nowIso, leaseIso, claimToken);
+      return { claimed: true, claimToken };
     } catch (err) {
       if (!(err instanceof Error) || !/UNIQUE constraint failed/.test(err.message)) throw err;
       const row = this.db
         .prepare('select * from idempotency_claims where scope_key = ? and idempotency_key = ?')
         .get(scopeKey, idempotencyKey) as Record<string, unknown>;
-      const existing: IdempotencyClaim = {
-        scopeKey: row.scope_key as string,
-        operation: row.operation as string,
-        idempotencyKey: row.idempotency_key as string,
-        requestHash: row.request_hash as string,
-        status: row.status as IdempotencyClaim['status'],
-        resultReference: (row.result_reference as string | null) ?? null,
-        createdAt: row.created_at as string,
-        completedAt: (row.completed_at as string | null) ?? null,
-      };
-      if (existing.requestHash !== requestHash) {
+      if (String(row.request_hash) !== requestHash) {
         throw new FunnelError('IDEMPOTENCY_HASH_MISMATCH', `${idempotencyKey} was already used for a different request`);
       }
-      return { claimed: false, existing };
+      if (row.status === 'completed') {
+        return {
+          claimed: false,
+          existing: {
+            scopeKey: row.scope_key as string,
+            operation: row.operation as string,
+            idempotencyKey: row.idempotency_key as string,
+            claimToken: row.claim_token as string,
+            requestHash: row.request_hash as string,
+            status: row.status as IdempotencyClaim['status'],
+            resultReference: (row.result_reference as string | null) ?? null,
+            createdAt: row.created_at as string,
+            completedAt: (row.completed_at as string | null) ?? null,
+          },
+        };
+      }
+      const lease = row.lease_expires_at as string | null;
+      if (!lease || new Date(lease).getTime() <= now.getTime()) {
+        this.db
+          .prepare(
+            `update idempotency_claims
+                set operation = ?, claimed_at = ?, lease_expires_at = ?, claim_token = ?
+              where scope_key = ? and idempotency_key = ? and status = 'in_progress'`,
+          )
+          .run(operation, nowIso, leaseIso, claimToken, scopeKey, idempotencyKey);
+        return { claimed: true, claimToken };
+      }
+      return {
+        claimed: false,
+        existing: {
+          scopeKey: row.scope_key as string,
+          operation: row.operation as string,
+          idempotencyKey: row.idempotency_key as string,
+          claimToken: row.claim_token as string,
+          requestHash: row.request_hash as string,
+          status: row.status as IdempotencyClaim['status'],
+          resultReference: (row.result_reference as string | null) ?? null,
+          createdAt: row.created_at as string,
+          completedAt: (row.completed_at as string | null) ?? null,
+        },
+      };
     }
   }
 
-  async completeIdempotencyClaim(scopeKey: string, idempotencyKey: string, resultReference: string): Promise<void> {
-    this.db
+  async completeIdempotencyClaim(
+    scopeKey: string,
+    idempotencyKey: string,
+    claimToken: string,
+    resultReference: string,
+  ): Promise<void> {
+    const result = this.db
       .prepare(
-        `update idempotency_claims set status='completed', result_reference=?, completed_at=?
-         where scope_key=? and idempotency_key=?`,
+        `update idempotency_claims
+            set status='completed', result_reference=?, completed_at=?, lease_expires_at=null
+          where scope_key=? and idempotency_key=? and claim_token=? and status='in_progress'`,
       )
-      .run(resultReference, new Date().toISOString(), scopeKey, idempotencyKey);
+      .run(resultReference, new Date().toISOString(), scopeKey, idempotencyKey, claimToken);
+    if (result.changes !== 1) {
+      throw new FunnelError('DUPLICATE_IDEMPOTENCY_KEY', `${idempotencyKey} claim is no longer owned`);
+    }
   }
+
 
   // ---------- usage ledger ----------
 
@@ -366,12 +407,13 @@ export class SqliteFunnelRepository implements FunnelRepository {
     this.db
       .prepare(
         `insert into usage_ledger
-          (id, user_id, source, operation, pattern_id, release_id, amount, balance_after, idempotency_key, created_at)
-         values (?,?,?,?,?,?,?,?,?,?)`,
+          (id, user_id, funnel_session_id, source, operation, pattern_id, release_id, amount, balance_after, idempotency_key, created_at)
+         values (?,?,?,?,?,?,?,?,?,?,?)`,
       )
       .run(
         entry.id,
         entry.userId,
+        entry.funnelSessionId,
         entry.source,
         entry.operation,
         entry.patternId,
@@ -383,6 +425,55 @@ export class SqliteFunnelRepository implements FunnelRepository {
       );
   }
 
+  async consumeUsage(entry: UsageLedgerEntry): Promise<number | null> {
+    if (entry.amount !== 1 || entry.operation !== 'OPEN_NEW_GROUND') {
+      throw new FunnelError('ENTITLEMENT_DENIED', 'invalid usage consumption');
+    }
+
+    if (entry.source === 'STARTER_GIFT') {
+      const gift = this.db
+        .prepare(
+          `select id, remaining, status from starter_gifts
+             where funnel_session_id = ?
+               and (? is null or user_id = ?)
+               and status in ('pending','active')
+               and remaining > 0
+             order by issued_at
+             limit 1`,
+        )
+        .get(entry.funnelSessionId, entry.userId, entry.userId) as
+        | { id: string; remaining: number; status: string }
+        | undefined;
+      if (!gift) return null;
+
+      const next = gift.remaining - 1;
+      this.db.prepare(
+        `update starter_gifts
+            set remaining=?, status=case when ?=0 then 'depleted' else status end
+          where id=? and remaining=?`,
+      ).run(next, next, gift.id, gift.remaining);
+
+      const balanceAfter = Number(next);
+      this.appendUsageLedgerEntry({ ...entry, balanceAfter });
+      return balanceAfter;
+    }
+
+    const key = [entry.userId, entry.source].join(':');
+    const row = this.db
+      .prepare(
+        `select balance_after from usage_ledger
+          where user_id=? and source=?
+          order by created_at desc, rowid desc limit 1`,
+      )
+      .get(entry.userId, entry.source) as { balance_after: number } | undefined;
+    const current = row?.balance_after ?? 1000;
+    if (current <= 0) return null;
+    const balanceAfter = current - 1;
+    this.appendUsageLedgerEntry({ ...entry, balanceAfter });
+    return balanceAfter;
+  }
+
+
   async getUsageBalance(userId: string, source: UsageSource): Promise<number> {
     const row = this.db
       .prepare(
@@ -390,8 +481,31 @@ export class SqliteFunnelRepository implements FunnelRepository {
          order by created_at desc, rowid desc limit 1`,
       )
       .get(userId, source) as { balance_after: number } | undefined;
-    return row ? row.balance_after : 1000; // same generous default the in-memory fake uses when nothing has run yet
+    return row ? row.balance_after : 0;
   }
+
+  async transferStarterGift(
+    giftId: string,
+    userId: string,
+    transferredAt: string,
+  ): Promise<'transferred' | 'already_owned' | 'owned_by_other' | 'not_found'> {
+    const row = this.db
+      .prepare('select user_id, transferred_at, remaining from starter_gifts where id = ?')
+      .get(giftId) as { user_id: string | null; transferred_at: string | null; remaining: number } | undefined;
+    if (!row) return 'not_found';
+    if (!row.transferred_at) {
+      this.db
+        .prepare(
+          `update starter_gifts
+             set user_id=?, transferred_at=?, status=case when remaining=0 then 'depleted' else 'active' end
+           where id=? and transferred_at is null`,
+        )
+        .run(userId, transferredAt, giftId);
+      return 'transferred';
+    }
+    return row.user_id === userId ? 'already_owned' : 'owned_by_other';
+  }
+
 
   // ---------- attachment challenge ----------
 
