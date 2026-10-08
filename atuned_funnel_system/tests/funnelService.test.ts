@@ -81,8 +81,8 @@ test('new ground consumes exactly one unit; a rerun of the same pattern consumes
 test('a completed release request replays the exact durable result for the same idempotency key', async () => {
   const adapters = buildFakeAdapters();
   const service = new FunnelService(adapters);
-  const session = await startAndRecognize(service, 'anon_5');
-  await service.selectGround(session.id, 'money');
+  const started = await startAndRecognize(service, 'anon_5');
+  const { session } = await service.selectGround(started.id, 'money');
 
   const first = await service.requestRelease(session.id, 'pattern_1', { idempotencyKey: 'dupe' });
   const second = await service.requestRelease(session.id, 'pattern_1', { idempotencyKey: 'dupe' });
