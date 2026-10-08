@@ -224,27 +224,34 @@ export class RealVerificationAdapter implements VerificationAdapter {
 // ---------- source: real srcTurn ----------
 
 export class RealSourceAdapter implements SourceAdapter {
-  /** This is the real engine's own turn-taking decision (`srcTurn`), not a
-   *  fake. It is one real slice of the real Source pipeline
-   *  (`sniffLaws`/`parseStory` -> `srcHear` -> `srcTurn`), not the whole
-   *  chain: turning a raw story into the `heard` shape `srcTurn` expects is
-   *  a larger integration this pass did not complete, named rather than
-   *  silently done partially and called whole. */
   async analyzeStory(
     story: { id: string; userId: string; rawText: string; createdAt: string },
-    _context: Record<string, unknown>,
+    context: Record<string, unknown>,
   ): Promise<SourceAnalysisResult> {
     const engine = freshEngine();
-    const heard = { unread: story.rawText.trim().length === 0, asks: false, top: null };
-    const decision = engine.srcTurn(heard, {}) as { move: string };
+    const priorEntries = Array.isArray(context.priorEntries) ? context.priorEntries : [];
+    const prior = engine.srcPrior(priorEntries);
+    const heard = engine.srcHear(story.rawText, prior) as {
+      unread?: boolean;
+      seats?: Array<{ seat: string; band: string; rung: number }>;
+      top?: { seat: string; band: string; rung: number } | null;
+      asks?: boolean;
+    };
+    const decision = engine.srcTurn(heard, { typed: story.rawText.trim().length > 0 }) as {
+      move: string;
+      seat?: string;
+      band?: string;
+      rung?: number;
+    };
     return {
-      status: decision.move === 'listen' || decision.move === 'ask' ? 'inferred' : 'unknown',
+      status: heard.seats?.length ? 'observed' : 'unknown',
       candidatePatternId: null,
       evidenceIds: [story.id],
-      sourceVersion: 'engine.js:srcTurn',
+      sourceVersion: `engine.js:sourceai:${decision.move}`,
     };
   }
 }
+
 
 // ---------- identity: a real client for the real, already-live Worker ----------
 
