@@ -129,15 +129,26 @@ export class SupabaseFunnelRepository implements FunnelRepository {
 
   async claimIdempotencyKey(scopeKey:string,operation:string,idempotencyKey:string,requestHash:string):
     Promise<{claimed:true}|{claimed:false;existing:IdempotencyClaim}>{
-    const result=await this.rpc('funnel_claim_idempotency',{
-      p_scope_key:scopeKey,
-      p_operation:operation,
-      p_idempotency_key:idempotencyKey,
-      p_request_hash:requestHash,
-      p_now:new Date().toISOString(),
-      p_lease_seconds:300,
-    }) as Row;
-    if(result?.claimed===true) return {claimed:true};
+    let result: Row;
+    try {
+      result=await this.rpc('funnel_claim_idempotency',{
+        p_scope_key:scopeKey,
+        p_operation:operation,
+        p_idempotency_key:idempotencyKey,
+        p_request_hash:requestHash,
+        p_now:new Date().toISOString(),
+        p_lease_seconds:300,
+      }) as Row;
+    } catch (err) {
+      if (err instanceof Error && err.message.includes('IDEMPOTENCY_HASH_MISMATCH')) {
+        throw new FunnelError('IDEMPOTENCY_HASH_MISMATCH',`${idempotencyKey} was already used for a different request`);
+      }
+      throw err;
+    }
+    if(result?.claimed===true) {
+      if(typeof result.claimToken!=='string' || !result.claimToken) throw new Error('Supabase idempotency claim returned no fencing token');
+      return {claimed:true,claimToken:result.claimToken};
+    }
     return {
       claimed:false,
       existing:{
@@ -145,6 +156,7 @@ export class SupabaseFunnelRepository implements FunnelRepository {
         operation:String(result.operation),
         idempotencyKey:String(result.idempotencyKey),
         requestHash:String(result.requestHash),
+        claimToken:String(result.claimToken ?? ''),
         status:String(result.status) as IdempotencyClaim['status'],
         resultReference:result.resultReference??null,
         createdAt:String(result.createdAt),
@@ -154,10 +166,17 @@ export class SupabaseFunnelRepository implements FunnelRepository {
   }
 
 
-  async completeIdempotencyClaim(scopeKey:string,idempotencyKey:string,resultReference:string):Promise<void>{
-    await this.request(`idempotency_claims?scope_key=eq.${encodeURIComponent(scopeKey)}&idempotency_key=eq.${encodeURIComponent(idempotencyKey)}&status=eq.in_progress`,{
-      method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify({status:'completed',result_reference:resultReference,completed_at:new Date().toISOString(),lease_expires_at:null})});
+  async completeIdempotencyClaim(scopeKey:string,idempotencyKey:string,claimToken:string,resultReference:string):Promise<void>{
+    const ok=await this.rpc('funnel_complete_idempotency',{
+      p_scope_key:scopeKey,
+      p_idempotency_key:idempotencyKey,
+      p_claim_token:claimToken,
+      p_result_reference:resultReference,
+      p_completed_at:new Date().toISOString(),
+    });
+    if(ok!==true) throw new FunnelError('DUPLICATE_IDEMPOTENCY_KEY',`idempotency claim ${idempotencyKey} is no longer owned by this worker`);
   }
+
 
   async appendUsageLedgerEntry(e:UsageLedgerEntry):Promise<void>{
     await this.request('usage_ledger',{method:'POST',headers:{'Prefer':'return=minimal'},
