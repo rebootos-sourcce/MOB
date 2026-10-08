@@ -244,6 +244,8 @@ export interface PatternRef {
 export interface ReleaseRef {
   id: string;
   patternId: string;
+  /** Numeric engine address ids worked by the release. */
+  addressIds?: number[];
   status: 'started' | 'completed' | 'interrupted' | 'failed';
 }
 
