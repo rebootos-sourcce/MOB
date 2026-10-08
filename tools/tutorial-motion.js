@@ -56,7 +56,7 @@ const open=async p=>{
   if(typeof sheetShut==='function')sheetShut(); });
  await p.waitForTimeout(300);};
 (async()=>{
- const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
  for(const [w,h] of SIZES){
   const ctx={viewport:{width:w,height:h},isMobile:w<600,hasTouch:w<600};
   /* ---- the five steps at rest ---- */

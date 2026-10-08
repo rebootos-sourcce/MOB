@@ -4,7 +4,7 @@
 const {chromium}=require('playwright');
 const path=require('path'), fs=require('fs');
 const OUT=process.argv[2]||'mockups/practitioner-real';
-const CHROME='/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
+const CHROME=process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
 const booted=async p=>{try{await p.waitForFunction(
  ()=>document.body.classList.contains('booted'),null,{timeout:12000});}catch(e){}};
 /* fullPage:true measures the outer document, but this product's own body is

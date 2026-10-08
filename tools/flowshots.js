@@ -70,7 +70,7 @@ const BLANK=()=>{loadP(0); CURP.rituals=[]; CURP.history=[]; ritPlanPut([]); CUR
 
 (async()=>{
  fs.mkdirSync(OUT,{recursive:true});
- const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
  const errs=[];
  const open=async(W,H,phone)=>{
   const p=await b.newPage({viewport:{width:W,height:H},hasTouch:!!phone,isMobile:!!phone});

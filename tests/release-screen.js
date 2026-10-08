@@ -62,7 +62,7 @@ const ev=async(page,fn,arg)=>{try{return await page.evaluate(fn,arg);}catch(e){r
 const STORY='I am afraid I will be left. When she goes quiet I panic and try to control everything, and my chest goes tight.';
 
 (async()=>{
- const browser=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
  for(const [W,H] of [[1600,1000],[390,844]]){
   console.log('\n=== the release screen at '+W+' ===');
   const page=await browser.newPage({viewport:{width:W,height:H}});

@@ -13,7 +13,7 @@ const SIZES=[[1600,1000],[390,844]];
 fs.mkdirSync(OUT,{recursive:true});
 
 (async()=>{
- const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
 
  /* ---- OLD: the door, the gate (old onboarding step 2, the signal test),
     story (the Story tab, since the old onboarding never carried one) ---- */

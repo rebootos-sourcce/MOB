@@ -32,7 +32,7 @@ const SCALED=/(out of|\bof\s+\d|per cent|percent|%|\bof 10\b|\bof 100\b|days?|mi
 const SPAN=42;                 /* characters either side that count as near */
 
 (async()=>{
- const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
  const rows=[];
  for(const [w,h,wn] of [[1600,1000,'desktop'],[390,844,'phone']]){
   const p=await b.newPage({viewport:{width:w,height:h}});

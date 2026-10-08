@@ -14,7 +14,7 @@ const STORIES=[
  'My father never listened. I kept quiet and swallowed the anger for years, and I still feel ashamed when I speak up at work.',
  'I am afraid I will be left. When she goes quiet I panic and try to control everything, and my chest goes tight.'];
 (async()=>{
- const browser=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
  for(const [w,h] of [[1600,1000],[390,844]]){
   const page=await browser.newPage({viewport:{width:w,height:h}});
   const errs=[]; page.on('pageerror',e=>errs.push(e.message));

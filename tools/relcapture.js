@@ -15,7 +15,7 @@ const W=+(process.argv[3]||390), H=+(process.argv[4]||844);
 const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1';
 fs.mkdirSync(OUT,{recursive:true});
 (async()=>{
- const browser=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
  const page=await browser.newPage({viewport:{width:W,height:H}});
  await page.goto(FILE,{waitUntil:'load'});
  try{await page.waitForFunction(()=>document.body.classList.contains('booted'),null,{timeout:12000});}catch(e){}

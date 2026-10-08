@@ -33,7 +33,7 @@ const booted=async p=>{try{await p.waitForFunction(
    ()=>typeof enterOver!=='function'||enterOver(),null,{timeout:4000}); }catch(e){}};
 const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
 (async()=>{
-const browser=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
 /* BY NAME, NEVER BY POSITION. Seven checks in this file said loadP(8) and
    meant Gordon, the heaviest case in the roster. The roster grew to fifteen
    and 8 became Ana, so every one of them had been measuring the wrong person

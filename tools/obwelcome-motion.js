@@ -58,7 +58,7 @@ const readAll=PROBE=>{
   o[k]=v.trim()||'-';});
  return o;};
 (async()=>{
- const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
  for(const [w,h] of SIZES){
   const fdir=path.join(OUT,'frames-'+w); fs.rmSync(fdir,{recursive:true,force:true}); fs.mkdirSync(fdir,{recursive:true});
   const rows=[];
