@@ -201,11 +201,12 @@ export class RealVerificationAdapter implements VerificationAdapter {
     addressIds?: number[];
   }): Promise<VerificationRef> {
     const engine = freshEngine();
+    if (!input.addressIds?.length) throw new Error('verification requires real addressIds from the release');
     const rvAnswer = input.response; // RV_ANSWERS is the real engine's own list; VerificationStatus is kept aligned to it by hand, named in domain.ts
     const result = engine.releaseVerify(
       engine.practiceBlank(),
       rvAnswer,
-      input.addressIds && input.addressIds.length ? input.addressIds : [1],
+      input.addressIds,
       {},
       new Date().toISOString(),
     );
