@@ -4,6 +4,48 @@ Measured on this build, not remembered. Every number below came from running
 the thing. Where a measurement could not be trusted, the control experiment is
 named alongside it.
 
+## Baseline on main, 8 October, block 0 of the cleanup plan
+
+Ruled 8 October: main is the line. Before anything is ported onto it, every
+gate was run on main at `869610b` in a clean worktree, and this is what the
+run said. Read off `summary.tsv` and the per gate logs of that run, not
+remembered. Tags: `pre-cleanup` marks `869610b`; `fork-archive` marks the
+other line at `999476c`.
+
+    BUILD.sh             exit 0, 24s. source.html v1867 869610b, md5 prefix
+                         1835c35d, 4,836,020 bytes
+    BUILD-engine.sh      exit 0. engine host free
+    engine.js            4678 passed, 0 failed
+    funnel package       44 passed, 0 failed, after npm ci. The first run
+                         exited 2 before any test ran: @types/node was not
+                         installed in the fresh worktree. Environment, not
+                         code; CI must install before it tests
+    functional.js        2271 passed, 2 failed, 987s. Both failures are one
+                         test, tests/feedback.js:238, which asserts a stub
+                         Discord row when there is no invite link. Main has
+                         carried the real link at account.js:504 since the
+                         owner confirmed it, so the test drifted. Fix in
+                         block 1
+    collide.js           383 passed, 0 failed
+    design.js            186 passed, 0 failed, errors 0
+    monitor.js           all surfaces render, both widths, blank and loaded.
+                         MONITOR.log stamped 869610b (dirty, because the
+                         rebuild changed source.html). MONITOR.log is git
+                         ignored on main, so the stamp lives on the machine
+                         that ran it, not in the tree
+    funnel.js            562 passed, 0 failed
+    boot.js              13 passed, 0 failed
+    voice objections     exit 0
+    atuned-packed.html   repacked from this source.html, 2,256,841 bytes,
+                         md5 prefix 8145b4bf, unpack gate 878 passed, 0 failed
+
+What main does not have, measured the same day on the other line: the
+crisis check (988) is absent from main; the sign in crash in functional.js
+that the other line has since 5 October is absent from main, because main
+kept the Guest door. The full gap review behind the plan is
+`HANDOFF-GAPS-2026-10-08.md`; the 4.96 MB handoff artifact is retired and
+its edits recorded in `ARTIFACT-RETIRED-2026-10-08.md`.
+
 ## Shipped and measured, 27 September, late. Rounds IF to JO
 
 Added on his JX order to bring the documents up to what shipped. The block
