@@ -71,6 +71,7 @@ export interface FunnelRepository {
   getReferralByToken(token: string): Promise<import('./domain.js').Referral | null>;
 
   appendEvent(event: FunnelEvent): Promise<void>;
+  getEvents(sessionId: string): Promise<FunnelEvent[]>;
   /** The next `sequence` value for this session's event stream. Must be
    *  gap free and monotonic per session even under concurrent writers. */
   nextEventSequence(sessionId: string): Promise<number>;
