@@ -1,4 +1,7 @@
-# Atuned funnel system scaffold
+# Atuned funnel system
+
+**Current state:** the funnel schema is now applied to the live Supabase project, the Supabase repository has been proven with a real write/read/delete check, and client access to the funnel tables has been revoked. The application router is not yet calling `FunnelService` end to end.
+
 
 Built from three handoff documents: `ATUNED_Master_Application_Graph_Funnel_TDD_v1.md`,
 `ATUNED_Funnel_System_Implementation_TDD_v1.md` (both reviewed twice, `PLAN.md` section T,
@@ -28,8 +31,9 @@ be, until the decisions in "What this is not" below are made.
   idempotency and accounting rules both TDDs call non-negotiable (no duplicate
   starter gift, no rerun charge, no client-granted entitlement, no silent
   state jump).
-- `sql/0001_funnel.sql`: a Postgres-flavoured migration for the nine tables
-  the funnel owns, offered, not mandatory (see "What this is not").
+- `sql/0001_funnel.sql`: the initial Postgres migration for the nine tables the funnel owns.
+- `sql/0002_funnel_concurrency_functions.sql`: the live concurrency helpers for event sequencing and atomic starter-gift persistence.
+- `sql/0003_funnel_rls_hardening.sql`: the live RLS/client-privilege hardening migration.
 - `tests/`: in-memory fakes for every adapter, plus a state-machine suite and
   a service suite covering exactly the invariants above. `npm test` compiles
   and runs all of it with Node's own built-in test runner. No test framework
@@ -155,25 +159,21 @@ in answer to "keep on the database wiring, it's got to be done today":
 4, realAdapters 8, sqliteRepository 7), 0 failures, read off the run rather
 than typed here from memory, per `CLAUDE.md`'s own rule on test counts.
 
-## What this is not
+## What is wired now
 
-**Not wired to a real backend, because the product does not have one yet in
-the shape these TDDs assume.** Both source documents assume a Node/TypeScript
-service layer in front of Postgres/Supabase with row-level security. The real
-product today is one static HTML file (`source.html`) with a completely
-host-free engine (`atuned_src/engine/*.js`, enforced by `hostfree.py`, no
-`document`, `window`, `fetch` anywhere in it) and exactly one existing network
-seam: a Cloudflare Worker at `atuned-api.lance-o-powell.workers.dev`
-(`atuned_src/ui/auth.js`) that already handles sign up, sign in, sign out and
-reading back a person's plan. There is no Postgres or Supabase wired in
-anywhere. `DECISIONS.md` in the main repo still has "Cloudflare vs Supabase"
-open as the owner's own call.
+The persistence target is now Supabase/Postgres. The live project has migrations `0001_funnel`, `0002_funnel_concurrency_functions`, and `0003_funnel_rls_hardening`. The nine funnel tables exist, RLS is enabled, and `anon` and `authenticated` have no table privileges. The concurrency functions are executable only by `service_role`.
 
-So: `FunnelRepository` is an interface for exactly this reason. `sql/0001_funnel.sql`
-is the Postgres path, offered in case that is the direction chosen; if the
-existing Worker and its own store (D1, KV, Durable Objects, whatever it
-already uses) is kept instead, write a `FunnelRepository` implementation
-against that and nothing in `funnelService.ts` changes.
+A real funnel session row was inserted, read back, and deleted through the Supabase REST boundary as a proof of the server-side repository path.
+
+The application is **not yet end to end wired**: the existing Cloudflare Worker has not yet exposed the funnel service methods, and the Worker does not yet construct the canonical `createSupabaseFunnelService(...)` runtime.
+
+The remaining backend integration is therefore application wiring, not a persistence-provider decision.
+
+## What is not wired yet
+
+**The existing application router is not yet calling the funnel service.** Both source documents assume a Node/TypeScript service layer in front of Postgres/Supabase with row-level security. The current application remains a static HTML product with a host-free engine and an existing Cloudflare Worker network seam. Supabase is now the chosen persistence target for the funnel.
+
+`FunnelRepository` remains the application boundary. `SupabaseFunnelRepository` is the production persistence implementation; the SQLite repository remains a test/proof implementation and is not a competing production target.
 
 **Not a second Source, release or pattern engine.** `SourceAdapter`,
 `ReleaseAdapter` and `VerificationAdapter` are written as thin interfaces on
@@ -208,10 +208,7 @@ exist because of that live rule, against the two TDDs' own text. If whoever
 reads this disagrees that the staircase should stay, that is a question for
 the product owner, not something to silently resolve either way in code.
 
-**Not hardened.** The RLS policies in `sql/0001_funnel.sql` are a starting
-point, explicitly flagged in the file's own comments as needing a real
-hardening pass before production, exactly as the Implementation TDD's own
-step 5 says ("harden RLS before production").
+**RLS hardening is now applied.** `0003_funnel_rls_hardening.sql` removes the initial public read policies and revokes table privileges from `anon`, `authenticated`, and `public`. The funnel remains server-only through the service role. This is a stronger boundary than the initial `0001` policies and is now the live state.
 
 ## Suggested next steps for whoever attaches this
 
