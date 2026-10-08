@@ -55,7 +55,7 @@ round SG wired" below for what moved the count from 22).
 
 
 
-### Usage accounting block\n\nReview pass 2 checked the live schema, source migration, and repository RPC mapping. The live unique index now keys anonymous usage by session identity as well as account identity, and the repository sends both values. The consumption function is `SECURITY DEFINER`, uses an empty search path, and remains service-role-only.
+### Usage accounting block\n\nReview pass 3 re-ran the live usage proof after migration `0006`, verified the function is callable only by `service_role`, and verified the ledger identity/foreign-key constraints. The final proof again passed: 100 → 99 → 98, identical-key replay stays at 98, and only two ledger rows exist.\n\nReview pass 2 checked the live schema, source migration, and repository RPC mapping. The live unique index now keys anonymous usage by session identity as well as account identity, and the repository sends both values. The consumption function is `SECURITY DEFINER`, uses an empty search path, and remains service-role-only.
 
 The live funnel TDD requires the first release before account creation, so usage accounting now carries both optional account identity and funnel-session identity. Migration `0005` makes `usage_ledger.user_id` nullable, adds `funnel_session_id`, and makes starter-gift consumption debit `starter_gifts.remaining` atomically while writing the ledger. Migration `0006` closes the same-key race by rechecking idempotency after the transaction lock.
 
