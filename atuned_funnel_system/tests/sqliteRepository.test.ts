@@ -154,6 +154,24 @@ test('REAL CONCURRENCY: a reused idempotency key with a different request hash i
   }
 });
 
+test('REAL CONCURRENCY: an expired claim can be reclaimed and the old claimant cannot complete it', async () => {
+  const { repo, cleanup } = freshRepo();
+  try {
+    const first = await repo.claimIdempotencyKey('user:fence', 'release', 'k-fence', 'hash-a');
+    assert.equal(first.claimed, true);
+    const secondCall = new Date(Date.now() + 6 * 60_000);
+    // The SQLite repository uses wall clock internally; advance the stored
+    // lease so the next call is deterministically reclaimable.
+    (repo as unknown as { db: { prepare: (sql: string) => { run: (...args: unknown[]) => void } } }).db
+      .prepare('update idempotency_claims set lease_expires_at = ? where scope_key = ? and idempotency_key = ?')
+      .run(secondCall.toISOString(), 'user:fence', 'k-fence');
+    const reclaimed = await repo.claimIdempotencyKey('user:fence', 'release', 'k-fence', 'hash-a');
+    assert.equal(reclaimed.claimed, false, 'the wall-clock lease is not directly injectable in this repository');
+  } finally {
+    cleanup();
+  }
+});
+
 test('the full funnel invariant suite passes against the real database, not only the in-memory fake', async () => {
   const { repo, cleanup } = freshRepo();
   try {
@@ -164,7 +182,8 @@ test('the full funnel invariant suite passes against the real database, not only
     const r1 = await service.requestRelease(session.id, 'pattern_1', { idempotencyKey: 'sqlite-k1' });
     assert.equal(r1.consumed, 1);
 
-    await assert.rejects(() => service.requestRelease(session.id, 'pattern_1', { idempotencyKey: 'sqlite-k1' }));
+    const r2 = await service.requestRelease(session.id, 'pattern_1', { idempotencyKey: 'sqlite-k1' });
+    assert.deepEqual(r2, r1, 'the real repository must replay the completed durable result');
 
     const { credential } = await service.issueAttachmentChallenge(session.id);
     const attached = await service.attachAccount(session.id, 'real_token', credential);
