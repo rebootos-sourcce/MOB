@@ -57,8 +57,10 @@ PUSH_PATHS = ['atuned_src/**', 'funnel/**', 'tests/**', 'tools/**',
               'functions/**', 'atuned_funnel_system/**',
               '.github/workflows/deploy.yml']
 
-# gate: (command, required, timeout in minutes). Required legs hold back a
-# deploy. The others report and do not, until the lead flips them.
+# gate: (command, must be required, least timeout in minutes). A required leg
+# holds back a deploy. The others report and do not, until the lead flips one
+# to required, which this lint allows without an edit here; it refuses the
+# reverse for boot, collide and funnel.
 BROWSER = {
     'boot':       ('node tests/boot.js',       True,  20),
     'collide':    ('node tests/collide.js',    True,  20),
@@ -558,6 +560,11 @@ def find(texts, pattern, after=None):
     return None, None, None
 
 
+def plain(rx):
+    """a pattern as a person reads it, for a FAIL line"""
+    return re.sub(r'\\b', '', rx).replace('\\', '')
+
+
 def strings(v):
     if isinstance(v, str):
         yield v
@@ -582,7 +589,7 @@ class Lint:
     def ok(self, cond, msg):
         if cond:
             self.passed += 1
-        else:
+        elif msg not in self.fails:
             self.fails.append(msg)
         return cond
 
@@ -773,11 +780,11 @@ class Lint:
     def teed(self, where, texts, cmd_rx, log, after=None):
         """the gate runs, after `after`, with its output teed to its log"""
         p, m, step = find(texts, cmd_rx, after)
-        if not self.ok(p is not None, 'R2 %s does not run %s%s.' % (where, cmd_rx.replace('\\', ''), ' after the builds' if after else '')):
+        if not self.ok(p is not None, 'R2 %s does not run %s%s.' % (where, plain(cmd_rx), ' after the builds' if after else '')):
             return None
         line = m.string[m.start():].split('\n', 1)[0]
         self.ok(re.search(r'\|\s*tee\b[^\n]*\$\{?RUNNER_TEMP\}?/gates/' + re.escape(log) + r'\b', line) is not None,
-                'R5 %s does not tee %s to $RUNNER_TEMP/gates/%s, so tools/floors.js has nothing to read.' % (where, cmd_rx.replace('\\', ''), log))
+                'R5 %s does not tee %s to $RUNNER_TEMP/gates/%s, so tools/floors.js has nothing to read.' % (where, plain(cmd_rx), log))
         mk, _, _ = find(texts, r'mkdir -p\s+"?\$\{?RUNNER_TEMP\}?/gates\b')
         self.ok(mk is not None and mk <= p,
                 'R5 %s writes to $RUNNER_TEMP/gates before making it, and tee fails on a missing directory.' % where)
@@ -862,32 +869,35 @@ class Lint:
             g = str(leg.get('gate'))
             if g not in BROWSER:
                 continue
-            cmd, required, minutes = BROWSER[g]
+            cmd, must, minutes = BROWSER[g]
             where = 'gates-browser (%s)' % g
-            self.ok(leg.get('required') is required,
-                    'R2 %s has required: %r; it must be %r.' % (where, leg.get('required'), required))
+            required = leg.get('required')
+            self.ok(isinstance(required, bool) and (required or not must),
+                    'R2 %s has required: %r; it must be %s.' % (where, required, 'true' if must else 'true or false'))
+            required = bool(required)
             env = static_env(leg)
             try:
                 t = render(job.get('timeout-minutes'), env)
                 coe = render(job.get('continue-on-error', False), env)
             except ExprError:
                 t, coe = None, None
-            self.ok(t is not None and num(t) == minutes,
-                    'R2 %s has timeout-minutes %s; it must be %d.' % (where, tostr(t) or 'unset', minutes))
+            self.ok(t is not None and minutes <= num(t) <= 360,
+                    'R2 %s has timeout-minutes %s; it must be at least %d, and GitHub stops a job at 360.' % (where, tostr(t) or 'unset', minutes))
             self.ok(coe is not None and truthy(coe) == (not required),
                     'R2 %s has continue-on-error %s; it must be %s, which is continue-on-error: ${{ !matrix.required }}.' % (
                         where, tostr(coe), 'false' if required else 'true'))
             texts = run_texts(job, leg)
             built = self.common(where, job, texts, leg)
-            self.ok(find(texts, r'npm install -g\b[^\n]*\bplaywright@1\.56\.1\b')[0] is not None,
-                    'R2 %s does not install playwright@1.56.1 globally.' % where)
-            self.ok(find(texts, r'npx playwright install --with-deps chromium\b')[0] is not None,
-                    'R2 %s does not run npx playwright install --with-deps chromium.' % where)
-            self.ok(any('NODE_PATH' in t and 'npm root -g' in t and 'GITHUB_ENV' in t for _, _, t in texts),
-                    'R2 %s does not set NODE_PATH to $(npm root -g) through $GITHUB_ENV.' % where)
-            self.ok(any(re.search(r'\bCHROME\b', t) and 'chromium.executablePath()' in t and 'GITHUB_ENV' in t for _, _, t in texts),
-                    "R2 %s does not set CHROME to playwright's chromium.executablePath() through $GITHUB_ENV." % where)
             pg = self.teed(where, texts, re.escape(cmd) + r'\b', g + '.log', built)
+            before = lambda p: p is not None and (pg is None or p < pg)
+            self.ok(before(find(texts, r'npm install -g\b[^\n]*\bplaywright@1\.56\.1\b')[0]),
+                    'R2 %s does not install playwright@1.56.1 globally before the gate.' % where)
+            self.ok(before(find(texts, r'npx playwright install --with-deps chromium\b')[0]),
+                    'R2 %s does not run npx playwright install --with-deps chromium before the gate.' % where)
+            self.ok(any('NODE_PATH' in t and 'npm root -g' in t and 'GITHUB_ENV' in t and (pg is None or i < pg[0]) for i, _, t in texts),
+                    'R2 %s does not set NODE_PATH to $(npm root -g) through $GITHUB_ENV before the gate.' % where)
+            self.ok(any(re.search(r'\bCHROME\b', t) and 'chromium.executablePath()' in t and 'GITHUB_ENV' in t and (pg is None or i < pg[0]) for i, _, t in texts),
+                    "R2 %s does not set CHROME to playwright's chromium.executablePath() through $GITHUB_ENV before the gate." % where)
             fa = [a for a in self.floors_args(texts) if g in a[1]]
             if self.ok(fa, 'R5 %s does not run node tools/floors.js %s.' % (where, g)):
                 self.ok(pg is not None and fa[0][0] > pg, 'R5 %s checks its floor before the gate has run.' % where)
@@ -904,14 +914,6 @@ class Lint:
         st = steps_of(job)
         co = [i for i, s in enumerate(st) if str(s.get('uses', '')).startswith('actions/checkout@')]
         if self.ok(len(co) == 1, 'R2 deploy must check out exactly once.'):
-            ref = (st[co[0]].get('with') or {}).get('ref')
-            try:
-                on_rb = render(ref, Env({'inputs': {'rollback_ref': ROLLBACK}, 'github': {}}))
-                on_push = render(ref, Env({'inputs': {}, 'github': {}}))
-            except ExprError:
-                on_rb, on_push = None, 'x'
-            self.ok(tostr(on_rb) == ROLLBACK and tostr(on_push) == '',
-                    'R2 the deploy checkout must take ref: ${{ inputs.rollback_ref }}, which is the rollback commit on a rollback and empty, so the pushed commit, otherwise.')
             guard = None
             for s in st[:co[0]]:
                 try:
@@ -924,6 +926,20 @@ class Lint:
             g = (guard or {}).get('run', '')
             self.ok(guard is not None and 'refs/heads/main' in g and 'compare/main...' in g and 'exit 1' in g,
                     'R2 deploy has no guard, before its checkout and on a rollback only, that refuses a rollback dispatched off main or to a commit not on main.')
+            # On a rollback the checkout takes the commit asked for, or the full
+            # id the guard resolved it to; otherwise it is empty, which checks
+            # out the commit the run was started on.
+            ref = (st[co[0]].get('with') or {}).get('ref')
+            gid = str((guard or {}).get('id', '')).lower()
+            full = 'f' * 40
+            try:
+                on_rb = tostr(render(ref, Env({'inputs': {'rollback_ref': ROLLBACK}, 'github': {},
+                                               'steps': {gid: {'outputs': {'sha': full}}} if gid else {}})))
+                on_push = tostr(render(ref, Env({'inputs': {}, 'github': {}, 'steps': {}})))
+            except ExprError:
+                on_rb, on_push = None, 'x'
+            self.ok(on_rb in (ROLLBACK, full) and on_push == '',
+                    'R2 the deploy checkout must take the rollback commit on a rollback, ${{ inputs.rollback_ref }} or the full id its guard resolved, and be empty otherwise, which is the commit the run started on.')
         texts = run_texts(job)
         stage = [t for _, s, t in texts if 'mkdir deploy' in t]
         lines = [l.strip() for l in (stage[0] if stage else '').split('\n')]
@@ -967,6 +983,25 @@ class Lint:
                 continue
             self.ok(not any('secrets.' in s for s in strings(job)),
                     'R2 %s reads a secret, and a pull request runs its code in this job.' % jid)
+        for jid, job in self.jobs().items():
+            if not isinstance(job, dict):
+                continue
+            for s in steps_of(job):
+                coe = s.get('continue-on-error', False)
+                self.ok(coe is False or (isinstance(coe, str) and coe.strip().lower() == 'false'),
+                        'R2 %s step %r may fail without failing its job (continue-on-error).' % (jid, s.get('name', s.get('uses', ''))))
+                r = s.get('run')
+                if jid != 'deploy' and isinstance(r, str):
+                    self.ok(not re.search(r'\|\|\s*(?:true|:)\s*(?:$|[;)#])', r, re.M),
+                            'R2 %s step %r swallows a failure with || true.' % (jid, s.get('name', r.split('\n')[0][:40])))
+        conc = self.doc.get('concurrency')
+        if isinstance(conc, dict):
+            try:
+                cip = render(conc.get('cancel-in-progress', False),
+                             Env({'github': {'event_name': 'push', 'ref': MAIN}, 'inputs': {}, 'vars': {}}))
+            except ExprError:
+                cip = True
+            self.ok(not truthy(cip), 'R2 the workflow concurrency cancels a run in progress on a push to main, which can cut a deploy off half way.')
         dflt = ((self.doc.get('defaults') or {}).get('run') or {}).get('shell')
         for jid, job in self.jobs().items():
             if not isinstance(job, dict):
@@ -1195,6 +1230,12 @@ BREAKS = [
     ('gates-pass passes a skipped job', lambda d: _sub(d, 'gates-pass', r'exit 1', 'exit 1', 'exit 0')),
     ('every browser leg allowed to fail', lambda d: _job(d, 'gates-browser').__setitem__('continue-on-error', True)),
     ('fail-fast left on', lambda d: _job(d, 'gates-browser')['strategy'].pop('fail-fast')),
+    ('boot no longer required', lambda d: [l.update({'required': False}) for l in _job(d, 'gates-browser')['strategy']['matrix']['include'] if l.get('gate') == 'boot']),
+    ('functional cut to a 20 minute timeout', lambda d: [l.update({'timeout': 20}) for l in _job(d, 'gates-browser')['strategy']['matrix']['include'] if l.get('gate') == 'functional']),
+    ('the engine gate step allowed to fail', lambda d: _step(d, 'gates-fast', r'tests/engine\.js').__setitem__('continue-on-error', True)),
+    ('the voice check swallowed', lambda d: _sub(d, 'gates-fast', r'check\.py', '--objections', '--objections || true')),
+    ('a workflow concurrency that cancels', lambda d: d.__setitem__('concurrency', {'group': 'x', 'cancel-in-progress': True})),
+    ('chromium pointed at after the gate', lambda d: _job(d, 'gates-browser')['steps'].append(_job(d, 'gates-browser')['steps'].pop(4))),
     ('a browser gate dropped from the matrix', lambda d: _job(d, 'gates-browser')['strategy']['matrix']['include'].pop(0)),
     ('the build order reversed', lambda d: _sub(d, 'gates-fast', r'BUILD-engine', './atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh', './atuned_src/BUILD.sh && ./atuned_src/BUILD-engine.sh')),
     ('the engine gate not teed', lambda d: _sub(d, 'gates-fast', r'tests/engine\.js', 'engine.log', 'engine.txt')),
