@@ -124,7 +124,8 @@ export type UsageSource =
 
 export interface UsageLedgerEntry {
   id: string;
-  userId: string;
+  userId: string | null;
+  funnelSessionId: string | null;
   source: UsageSource;
   operation: UsageOperation;
   patternId: string;
