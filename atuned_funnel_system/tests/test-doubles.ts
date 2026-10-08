@@ -266,11 +266,11 @@ export class FakeReleaseAdapter implements ReleaseAdapter {
   private n = 0;
   async executeRelease(patternId: string) {
     this.n += 1;
-    return { id: `release_${this.n}`, patternId, status: 'completed' as const };
+    return { id: `release_${this.n}`, patternId, addressIds: [1], status: 'completed' as const };
   }
   async rerun(patternId: string) {
     this.n += 1;
-    return { id: `rerun_${this.n}`, patternId, status: 'completed' as const };
+    return { id: `rerun_${this.n}`, patternId, addressIds: [1], status: 'completed' as const };
   }
 }
 
