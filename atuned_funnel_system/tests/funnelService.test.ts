@@ -104,6 +104,7 @@ test('verification resolves release address identity from the persisted release 
     rawText: 'I felt afraid when I spoke.',
     createdAt: new Date().toISOString(),
   });
+  await service.advancePresentation(storyState.id, 'CONFIRM_CORRECT');
   const addressSession = await service.confirmOrCorrect(storyState.id, 'CONFIRM');
   const session = await service.selectAddress(addressSession.id, '1:1');
   const released = await service.requestRelease(session.id, '1:1', { idempotencyKey: 'verify-release' });
