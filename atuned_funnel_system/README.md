@@ -287,3 +287,37 @@ Review pass 3 tightened the verification boundary: the funnel service now accept
 8. Run `npm test` after every adapter lands; the fakes in `tests/test-doubles.ts`
    should be swapped for the real implementations in an integration pass once
    each adapter exists, not kept as the permanent test suite.
+
+## Current recursive execution state
+
+### Idempotency recovery block
+
+Migrations \`0009_recoverable_idempotency_claims\` and \`0010_idempotency_fencing_tokens\` are live.
+
+Claims now have a lease and a fencing token. An expired claim can be reclaimed. A late worker holding an old token cannot complete the reclaimed claim. Same hash is replayable. A different hash is rejected. The live Supabase proof covered first claim, unexpired duplicate, expiry recovery, stale completion rejection, current completion, completed replay, and hash mismatch.
+
+### SQLite proof repository block
+
+The SQLite schema and repository were brought up to the same contract as Supabase for anonymous usage, starter-gift consumption, starter-gift transfer, and fenced idempotency claims. The existing release replay test was corrected to assert durable replay rather than the old duplicate-error behavior.
+
+The SQLite suite has not been executed in this environment. The live Supabase proofs have been executed.
+
+### Current verification status
+
+The Supabase security advisor is clean. Only pre-traffic unused-index INFO notices remain in the performance advisor.
+
+The full TypeScript test suite is not yet runtime-verified from this environment because the repository cannot be cloned into the execution container. Source parity and live Supabase contract proofs have been run.
+
+### Remaining external integration boundaries
+
+The funnel package is not yet the application's live HTTP route owner. The repository currently does not contain the production Cloudflare Worker source, so route-level integration and deployment cannot be honestly marked complete here.
+
+Profile persistence remains owned by the existing browser profile system until a real server-side profile authority is selected.
+
+Entitlement state still needs a real per-user authority. The current real entitlement adapter intentionally does not invent one.
+
+Stripe payment operations still need the real payment adapter and verified webhook boundary.
+
+The real numeric release address still needs to be carried from release execution into verification.
+
+The funnel still needs one real end-to-end acceptance run through the actual client, Worker, identity, persistence, engine, entitlement, payment, and response path.
