@@ -256,13 +256,11 @@ the remaining named gaps." What is left:
    confirm `sqliteRepository.ts` against Cloudflare D1's own SQLite dialect
    (D1 is SQLite-compatible but not identical; this was built and tested
    against Node's own `node:sqlite`, not D1 itself).
-3. **`IdentityAdapter`** (`src/realAdapters.ts`'s `RealIdentityAdapter`) is a
-   real, ready HTTP client. It needs exactly one thing to work: a
-   `POST /v1/auth/whoami` route added to the existing reboot-os Worker
-   (`atuned_src/ui/auth.js`'s `AUTH_API`) that takes a bearer token and
-   returns `{ userId }`. That route does not exist on the Worker today; this
-   repository cannot add it, since the Worker's own source is not part of
-   this checkout.
+3. **`IdentityAdapter`** (`src/realAdapters.ts`'s `RealIdentityAdapter`) now
+   reuses the existing Worker's `GET /v1/me` boundary. The exact account-id
+   field in the live response still needs one runtime proof; the adapter
+   accepts `userId`, `account.userId`, or `account.id` without creating a
+   second identity endpoint.
 4. **`SourceAdapter`, `ReleaseAdapter`, `VerificationAdapter`**
    (`RealSourceAdapter`, `RealReleaseAdapter`, `RealVerificationAdapter`) call
    the real engine functions, proven against the real `engine.js` via
