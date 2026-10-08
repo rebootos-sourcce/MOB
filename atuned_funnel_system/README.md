@@ -329,6 +329,34 @@ The real numeric release address still needs to be carried from release executio
 The funnel still needs one real end-to-end acceptance run through the actual client, Worker, identity, persistence, engine, entitlement, payment, and response path.
 
 
+## Final production architecture state
+
+The production client path remains browser-first for the actual Atüned engine. The Worker is the authenticated transport and account boundary, and Supabase is the server-side funnel continuity and persistence authority.
+
+The Node `FunnelService` remains a tested domain/reference package. It is not mounted into the Cloudflare Worker, and it does not need to be in order for the shipped client journey to remain on the real engine. This is deliberate: the production Worker does not carry a second interpretation, release, or verification engine.
+
+The live production continuity seam now persists four milestones only:
+
+`selectedGroundId`
+`tutorialCompleted`
+`firstReleaseId`
+`verificationId`
+
+Those values are written through the existing session compare-and-swap persistence path. The client supplies a real engine release UUID and real verification evidence ID. The Worker never receives raw story interpretation data or private engine state through this seam.
+
+The client and Worker continuity block is merged and deployed. The Worker production branch and the MOB production branch both passed their post-merge build/deployment gates.
+
+### Final launch blockers
+
+Stripe account operations are still external to this repository. The production Worker intentionally still carries placeholder Stripe price IDs. The Stripe secret and webhook signing secret are not stored in source. Tier 4 is deliberately closed. A live Stripe connection, real price IDs, webhook registration, and one test purchase are still required before paid billing can be called operational.
+
+The remaining Stripe work is configuration and account work, not missing application architecture.
+
+The abstract PatternCatalogAdapter, ReadingAdapter, and server-side profile adapter in this repository remain reference-package work. They are not used as a second production intelligence path.
+
+The final product acceptance step is therefore a real user test of the deployed browser flow with Stripe connected:
+arrival, concern selection, story, Mirror, confirmation, release, verification, continuity reload, account attachment, and billing.
+
 ## Post CI completion state
 
 The recursive package block is now complete.
