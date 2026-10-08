@@ -29,7 +29,8 @@ test('RealReleaseAdapter calls the real releaseWork and returns the updated prof
   const context: ProfileContext = { profile: { law: { Truth: 6 }, charge: {} } };
   const release = await adapter.executeRelease('1:1', context);
   assert.equal(release.status, 'completed');
-  assert.ok(release.id.startsWith('release_'));
+  assert.match(release.id, /^[0-9a-f-]{36}$/);
+  assert.deepEqual(release.addressIds, [1]);
   assert.ok(context.updatedProfile, 'the real adapter must hand back the updated profile');
   assert.equal(typeof context.updatedProfile!.law.Truth, 'number');
 });
