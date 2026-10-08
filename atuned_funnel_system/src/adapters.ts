@@ -43,11 +43,9 @@ import type {
 
 // ---------- persistence ----------
 
-/** Wire to Supabase/Postgres, or to whatever store the existing
- *  reboot-os Worker already uses, for: funnel_sessions, starter_gifts,
- *  funnel_events, tutorial_progress, usage_ledger, referrals. See
- *  sql/0001_funnel.sql for the Postgres-flavoured shape, offered, not
- *  mandated: DECISIONS.md still has "Cloudflare vs Supabase" open. */
+/** Production persistence for the funnel is Supabase/Postgres.
+ *  The Cloudflare Worker remains the application transport boundary;
+ *  this interface isolates domain orchestration from persistence. */
 export interface FunnelRepository {
   getSession(id: string): Promise<FunnelSession | null>;
   /** Must reject with FunnelError('STALE_VERSION', ...) if `session.version`
