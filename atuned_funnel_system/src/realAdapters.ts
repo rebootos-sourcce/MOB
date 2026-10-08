@@ -27,17 +27,9 @@
    the one existing network seam once that seam is built).
 
    WHAT IS REAL BUT NOT NETWORK-TESTABLE FROM HERE. RealIdentityAdapter
-   calls the real, already-live reboot-os Worker (`atuned_src/ui/auth.js`'s
-   own AUTH_API), at a route that does not exist on it yet
-   (`/v1/auth/whoami`, named directly rather than guessed at: the Worker's
-   real routes, read from auth.js, are /v1/auth/signup, /v1/auth/signin,
-   /v1/auth/forgot, /v1/auth/signout, /v1/billing/checkout, /v1/billing/portal,
-   /v1/voice/synthesize; none of them validates a token and returns a user
-   id, which is exactly what requireUserId needs). This file is the correct,
-   real client for that route; the one new server endpoint is the Worker
-   maintainer's own next step, not something this repository can add since
-   the Worker's own source is not part of this checkout.
-   ============================================================ */
+   reuses the existing Worker's `GET /v1/me` boundary rather than inventing
+   a second identity endpoint. The exact account-id field in the live response
+   still needs one authenticated runtime proof.   ============================================================ */
 
 import type {
   EntitlementAdapter,
