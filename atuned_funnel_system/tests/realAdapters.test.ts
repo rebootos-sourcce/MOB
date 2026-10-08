@@ -63,6 +63,30 @@ test('RealVerificationAdapter surfaces a real refusal rather than swallowing it'
   );
 });
 
+test('RealSourceAdapter calls the real sourceai path for a non-empty story', async () => {
+  const adapter = new RealSourceAdapter();
+  const result = await adapter.analyzeStory(
+    { id: 'story_2', userId: 'user_1', rawText: 'I felt afraid when I had to speak.', createdAt: new Date().toISOString() },
+    { priorEntries: [] },
+  );
+  assert.equal(result.sourceVersion.startsWith('engine.js:sourceai:'), true);
+  assert.equal(result.evidenceIds[0], 'story_2');
+});
+
+test('RealVerificationAdapter refuses to fabricate an address when none is supplied', async () => {
+  const adapter = new RealVerificationAdapter();
+  await assert.rejects(
+    () => adapter.verify({
+      releaseId: 'release_3',
+      response: 'something_moved',
+      beforeReference: null,
+      afterReference: null,
+      notes: null,
+    }),
+    /requires real addressIds/,
+  );
+});
+
 test('RealSourceAdapter calls the real srcTurn and reads an empty story as unread', async () => {
   const adapter = new RealSourceAdapter();
   const result = await adapter.analyzeStory(
