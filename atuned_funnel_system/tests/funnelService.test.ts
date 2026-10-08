@@ -105,7 +105,7 @@ test('verification resolves release address identity from the persisted release 
     createdAt: new Date().toISOString(),
   });
   const addressSession = await service.confirmOrCorrect(storyState.id, 'CONFIRM');
-  const { session } = await service.selectAddress(addressSession.id, '1:1');
+  const session = await service.selectAddress(addressSession.id, '1:1');
   const released = await service.requestRelease(session.id, '1:1', { idempotencyKey: 'verify-release' });
   await service.recordReframe(released.session.id);
   const verified = await service.verify(released.session.id, released.releaseId, 'something_moved');
