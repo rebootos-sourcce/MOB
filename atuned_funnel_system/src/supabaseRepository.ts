@@ -142,8 +142,25 @@ export class SupabaseFunnelRepository implements FunnelRepository {
 
   async appendUsageLedgerEntry(e:UsageLedgerEntry):Promise<void>{
     await this.request('usage_ledger',{method:'POST',headers:{'Prefer':'return=minimal'},
-      body:JSON.stringify({id:e.id,user_id:e.userId,source:e.source,operation:e.operation,pattern_id:e.patternId,release_id:e.releaseId,
+      body:JSON.stringify({id:e.id,user_id:e.userId,funnel_session_id:e.funnelSessionId,source:e.source,operation:e.operation,pattern_id:e.patternId,release_id:e.releaseId,
         amount:e.amount,balance_after:e.balanceAfter,idempotency_key:e.idempotencyKey,created_at:e.createdAt})});
+  }
+
+  async consumeUsage(e:UsageLedgerEntry):Promise<number|null>{
+    if(e.amount!==1 || e.operation!=='OPEN_NEW_GROUND') throw new FunnelError('ENTITLEMENT_DENIED','invalid usage consumption');
+    const balance=await this.rpc('funnel_consume_usage',{
+      p_user_id:e.userId,
+      p_funnel_session_id:e.funnelSessionId,
+      p_source:e.source,
+      p_operation:e.operation,
+      p_pattern_id:e.patternId,
+      p_release_id:e.releaseId,
+      p_amount:e.amount,
+      p_idempotency_key:e.idempotencyKey,
+      p_entry_id:e.id,
+      p_created_at:e.createdAt,
+    });
+    return balance===null ? null : Number(balance);
   }
 
   async getUsageBalance(userId:string,source:UsageSource):Promise<number>{
