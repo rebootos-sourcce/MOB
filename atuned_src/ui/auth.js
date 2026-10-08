@@ -142,6 +142,146 @@ function authFunnelAttach(){
   });
 }
 function authFunnelClear(){ return funnelKeep(null); }
+var PROFILE_SYNC_ID='atuned.primary-profile';
+var PROFILE_SYNC_META_KEY='source.profile.sync';
+var PROFILE_SYNC_TIMER=null;
+var PROFILE_SYNC_BUSY=false;
+
+function profileSyncMeta(){
+ try{
+  var o=JSON.parse(STORE.get(PROFILE_SYNC_META_KEY)||'null');
+  return o&&typeof o==='object'?o:{accountId:null,version:0,hash:'',updated:null};
+ }catch(e){ return {accountId:null,version:0,hash:'',updated:null}; }
+}
+function profileSyncIdentity(){
+ var s=authSession();
+ return s&&((typeof s.accountId==='string'&&s.accountId)||String(s.email||'').toLowerCase())||'';
+}
+async function profileSyncHash(text){
+ try{
+  var bytes=new TextEncoder().encode(text);
+  var digest=await crypto.subtle.digest('SHA-256',bytes);
+  return Array.prototype.map.call(new Uint8Array(digest),function(b){
+   return ('0'+b.toString(16)).slice(-2);
+  }).join('');
+ }catch(e){ return String(text.length)+':'+text.slice(0,64); }
+}
+function profileSyncMetaSave(meta){
+ if(typeof STORE_BOUND==='undefined'||!STORE_BOUND)return false;
+ try{ STORE.set(PROFILE_SYNC_META_KEY,JSON.stringify(meta)); return true; }catch(e){ return false; }
+}
+function profileSyncEligible(){
+ return !!(authSession()&&typeof CURP!=='undefined'&&CURP&&typeof pExport==='function'
+  &&typeof pImport==='function'&&typeof S!=='undefined'&&(!S.who||S.who===0)
+  &&typeof profiles==='function');
+}
+function profileSyncReadRemote(){
+ var s=authSession();
+ if(!s)return Promise.resolve({ok:false,status:0,body:null});
+ return authCall('GET','/v1/sync',null,s.token).then(function(r){
+  if(!r.ok)return r;
+  var rows=(r.body&&Array.isArray(r.body.records))?r.body.records:[];
+  var found=null;
+  rows.forEach(function(x){
+   if(x&&x.kind==='state'&&x.id===PROFILE_SYNC_ID&&!x.deleted)found=x;
+  });
+  return {ok:true,status:r.status,body:found};
+ });
+}
+function profileSyncPush(profile,version){
+ var s=authSession();
+ if(!s)return Promise.resolve({ok:false,status:0,body:null});
+ return authCall('PUT','/v1/sync',{
+  records:[{kind:'state',id:PROFILE_SYNC_ID,version:version,body:profile,deleted:false}]
+ },s.token).then(function(r){
+  if(!r.ok)return r;
+  var kept=(r.body&&Array.isArray(r.body.kept))?r.body.kept:[];
+  var accepted=kept.some(function(x){
+   return x&&x.kind==='state'&&x.id===PROFILE_SYNC_ID&&x.version===version;
+  });
+  return {ok:accepted,status:r.status,body:r.body};
+ });
+}
+function profileSyncImport(remote,remoteVersion){
+ var text=JSON.stringify(remote);
+ var imported=pImport(text);
+ if(!imported)return {ok:false};
+ var list=profiles();
+ for(var i=list.length-1;i>=0;i--){
+  if(list[i]&&list[i].id===imported.id&&list[i]!==imported)list.splice(i,1);
+ }
+ return {ok:true,text:text,version:remoteVersion,updated:imported.updated||null};
+}
+function authProfileSync(){
+ if(PROFILE_SYNC_BUSY||!profileSyncEligible())return Promise.resolve({state:'skip'});
+ PROFILE_SYNC_BUSY=true;
+ var localText;
+ try{ localText=pExport(); }catch(e){PROFILE_SYNC_BUSY=false;return Promise.resolve({state:'refused'});}
+ var local;
+ try{ local=JSON.parse(localText); }catch(e){PROFILE_SYNC_BUSY=false;return Promise.resolve({state:'refused'});}
+ if(!local||typeof local!=='object'){PROFILE_SYNC_BUSY=false;return Promise.resolve({state:'refused'});}
+ return Promise.all([profileSyncHash(localText),profileSyncReadRemote()]).then(function(pair){
+  var localHash=pair[0], rr=pair[1], meta=profileSyncMeta(), identity=profileSyncIdentity();
+  var remote=rr.body&&rr.body.body&&typeof rr.body.body==='object'?rr.body.body:null;
+  var remoteVersion=rr.body&&Number.isInteger(rr.body.version)?rr.body.version:0;
+  if(!rr.ok){PROFILE_SYNC_BUSY=false;return {state:'retry',status:rr.status};}
+
+  /* First association with an account is deliberately conservative. */
+  if(meta.accountId!==identity){
+   if(remote){
+    var pulled=profileSyncImport(remote,remoteVersion);
+    if(!pulled.ok){PROFILE_SYNC_BUSY=false;return {state:'refused'};}
+    var remoteHash=await profileSyncHash(pulled.text);
+    profileSyncMetaSave({accountId:identity,version:remoteVersion,hash:remoteHash,updated:pulled.updated});
+    PROFILE_SYNC_BUSY=false;
+    if(typeof render==='function')render();
+    return {state:'pulled-first',version:remoteVersion};
+   }
+   profileSyncMetaSave({accountId:identity,version:0,hash:localHash,updated:local.updated||null});
+   PROFILE_SYNC_BUSY=false;
+   return {state:'associated',version:0};
+  }
+
+  if(remote){
+   var lu=local.updated?Date.parse(local.updated):0;
+   var ru=remote.updated?Date.parse(remote.updated):0;
+   if(ru>lu){
+    var pulled2=profileSyncImport(remote,remoteVersion);
+    if(!pulled2.ok){PROFILE_SYNC_BUSY=false;return {state:'refused'};}
+    var remoteHash2=await profileSyncHash(pulled2.text);
+    profileSyncMetaSave({accountId:identity,version:remoteVersion,hash:remoteHash2,updated:pulled2.updated});
+    PROFILE_SYNC_BUSY=false;
+    if(typeof render==='function')render();
+    return {state:'pulled',version:remoteVersion};
+   }
+  }
+
+  if(meta.hash===localHash&&remoteVersion===meta.version){
+   PROFILE_SYNC_BUSY=false;
+   return {state:'clean',version:meta.version};
+  }
+
+  var nextVersion=Math.max(meta.version||0,remoteVersion)+1;
+  return profileSyncPush(local,nextVersion).then(function(pr){
+   PROFILE_SYNC_BUSY=false;
+   if(!pr.ok)return {state:'retry',status:pr.status};
+   profileSyncMetaSave({accountId:identity,version:nextVersion,hash:localHash,updated:local.updated||null});
+   return {state:'pushed',version:nextVersion};
+  });
+ }).catch(function(){
+  PROFILE_SYNC_BUSY=false;
+  return {state:'retry'};
+ });
+}
+function profileSyncStart(){
+ if(PROFILE_SYNC_TIMER)clearInterval(PROFILE_SYNC_TIMER);
+ PROFILE_SYNC_TIMER=setInterval(function(){authProfileSync();},30000);
+ authProfileSync();
+}
+function profileSyncStop(){
+ if(PROFILE_SYNC_TIMER){clearInterval(PROFILE_SYNC_TIMER);PROFILE_SYNC_TIMER=null;}
+ PROFILE_SYNC_BUSY=false;
+}
 /* One request. Resolves to {ok, status, body, late}, and never rejects. With
    blob set, a yes comes back as the bytes and not as parsed text, because the
    voice route answers audio; a no is still the server's json and still read
@@ -267,7 +407,8 @@ function authEnter(route,mail,pw){
   if(!r.ok)return {ok:false, say:authWhy(r,route)};
   if(typeof b.token!=='string'||!b.token)
    return {ok:false, say:'The server answered without a sign in. Nothing changed.'};
-  var s={token:b.token, email:typeof acc.email==='string'?acc.email:mail.toLowerCase()};
+  var s={token:b.token, email:typeof acc.email==='string'?acc.email:mail.toLowerCase(),
+   accountId:typeof acc.id==='string'?acc.id:null};
   var kept=authKeep(s);
   /* the plan and the funnel session both use the same bearer boundary.
      Funnel attachment is best effort here because the gift may not yet exist;
@@ -278,6 +419,7 @@ function authEnter(route,mail,pw){
      caller says "Signed in as" now, and the plan speaks after it only if the
      record changed. A second device is exactly this path. */
   authPlanRead();
+  profileSyncStart();
   return {ok:true, kept:kept,
    say:(route==='signup'?'Account created. ':'')+'Signed in as '+s.email+'.'
     +(kept?'':' Storage is blocked in this browser, so the sign in ends on reload.')};});}
@@ -334,10 +476,14 @@ function authCheck(){
    if(typeof S!=='undefined'&&typeof TAB!=='undefined'&&S.tab===TAB.SETTINGS
     &&typeof renderAccount==='function')renderAccount(); };
   if(r.ok&&acc&&typeof acc.email==='string'){
-   if(acc.email!==s.email){ authKeep({token:s.token, email:acc.email}); redraw(); }
+   if(acc.email!==s.email||acc.id!==s.accountId){
+    s={token:s.token,email:acc.email,accountId:typeof acc.id==='string'?acc.id:null};
+    authKeep(s); redraw();
+   }
    /* the same answer carries the plan, so the boot check reads it without a
       second request */
    authPlanBack(back,r.body.billing);
+   profileSyncStart();
    return 'ok';}
   if(r.status===401){
    authForget(); redraw();
