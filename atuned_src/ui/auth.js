@@ -231,11 +231,12 @@ function authProfileSync(){
    if(remote){
     var pulled=profileSyncImport(remote,remoteVersion);
     if(!pulled.ok){PROFILE_SYNC_BUSY=false;return {state:'refused'};}
-    var remoteHash=await profileSyncHash(pulled.text);
-    profileSyncMetaSave({accountId:identity,version:remoteVersion,hash:remoteHash,updated:pulled.updated});
-    PROFILE_SYNC_BUSY=false;
-    if(typeof render==='function')render();
-    return {state:'pulled-first',version:remoteVersion};
+    return profileSyncHash(pulled.text).then(function(remoteHash){
+     profileSyncMetaSave({accountId:identity,version:remoteVersion,hash:remoteHash,updated:pulled.updated});
+     PROFILE_SYNC_BUSY=false;
+     if(typeof render==='function')render();
+     return {state:'pulled-first',version:remoteVersion};
+    });
    }
    profileSyncMetaSave({accountId:identity,version:0,hash:localHash,updated:local.updated||null});
    PROFILE_SYNC_BUSY=false;
@@ -248,11 +249,12 @@ function authProfileSync(){
    if(ru>lu){
     var pulled2=profileSyncImport(remote,remoteVersion);
     if(!pulled2.ok){PROFILE_SYNC_BUSY=false;return {state:'refused'};}
-    var remoteHash2=await profileSyncHash(pulled2.text);
-    profileSyncMetaSave({accountId:identity,version:remoteVersion,hash:remoteHash2,updated:pulled2.updated});
-    PROFILE_SYNC_BUSY=false;
-    if(typeof render==='function')render();
-    return {state:'pulled',version:remoteVersion};
+    return profileSyncHash(pulled2.text).then(function(remoteHash2){
+     profileSyncMetaSave({accountId:identity,version:remoteVersion,hash:remoteHash2,updated:pulled2.updated});
+     PROFILE_SYNC_BUSY=false;
+     if(typeof render==='function')render();
+     return {state:'pulled',version:remoteVersion};
+    });
    }
   }
 
