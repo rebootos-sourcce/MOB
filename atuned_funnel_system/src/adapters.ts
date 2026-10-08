@@ -59,6 +59,12 @@ export interface FunnelRepository {
    *  transaction: `patternIds.length` must always equal the item row count,
    *  per the Database Production Completion TDD v2, section 5.4. */
   saveGift(gift: StarterGift, items: import('./domain.js').StarterGiftItem[]): Promise<void>;
+  /** Atomically assigns an untransferred starter gift to one account. */
+  transferStarterGift(
+    giftId: string,
+    userId: string,
+    transferredAt: string,
+  ): Promise<'transferred' | 'already_owned' | 'owned_by_other' | 'not_found'>;
 
   getTutorial(sessionId: string): Promise<TutorialProgress | null>;
   saveTutorial(progress: TutorialProgress): Promise<void>;
