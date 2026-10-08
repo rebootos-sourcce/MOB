@@ -78,17 +78,17 @@ test('new ground consumes exactly one unit; a rerun of the same pattern consumes
   assert.equal(r2.consumed, 0, 'rerunning already-opened ground must never consume new ground');
 });
 
-test('a release request is rejected if the idempotency key has already been used', async () => {
+test('a completed release request replays the exact durable result for the same idempotency key', async () => {
   const adapters = buildFakeAdapters();
   const service = new FunnelService(adapters);
   const session = await startAndRecognize(service, 'anon_5');
   await service.selectGround(session.id, 'money');
 
-  await service.requestRelease(session.id, 'pattern_1', { idempotencyKey: 'dupe' });
-  await assert.rejects(
-    () => service.requestRelease(session.id, 'pattern_1', { idempotencyKey: 'dupe' }),
-    (err: unknown) => err instanceof FunnelError && err.code === 'DUPLICATE_IDEMPOTENCY_KEY',
-  );
+  const first = await service.requestRelease(session.id, 'pattern_1', { idempotencyKey: 'dupe' });
+  const second = await service.requestRelease(session.id, 'pattern_1', { idempotencyKey: 'dupe' });
+
+  assert.deepEqual(second, first, 'a byte-identical retry must replay the original durable result');
+  assert.equal(adapters.repo.usage.filter((x) => x.idempotencyKey === 'dupe').length, 1, 'replay must not consume another unit');
 });
 
 test('a rejected reading returns to MIRROR rather than silently advancing', async () => {
