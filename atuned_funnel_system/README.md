@@ -51,7 +51,12 @@ npm test
 41 tests, 0 failures, as of the round this was built (round SG; see "What
 round SG wired" below for what moved the count from 22).
 
-## What round SF fixed
+
+
+### Idempotency replay block
+
+Release idempotency now replays the exact stored result for a completed, byte-identical request instead of rejecting a completed retry. The stored result includes the returned session, release id, and consumed amount, so a retry does not execute the release engine or debit usage again. A different request hash still fails closed, and an in-progress claim still fails closed rather than running a second release.
+\n## What round SF fixed
 
 The Database Production Completion TDD v2's own "Pass 2: adversarial
 implementation review" named defects in "the prior implementation package."
