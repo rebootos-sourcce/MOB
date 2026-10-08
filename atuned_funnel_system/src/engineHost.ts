@@ -93,7 +93,10 @@ export interface EngineInstance {
     opt: unknown,
     now?: string,
   ) => { ok: boolean; P: unknown; ids?: string[]; errs?: string[] };
+  srcHear: (text: string, prior?: unknown) => unknown;
+  srcPrior: (entries: unknown[]) => unknown;
   srcTurn: (heard: unknown, state: unknown) => unknown;
+  srcAsk: (text: string, asked: unknown, context?: unknown) => unknown;
   SIGHT: unknown[];
   PLAN_PRICE: Record<string, number>;
   RV_ANSWERS: string[];
