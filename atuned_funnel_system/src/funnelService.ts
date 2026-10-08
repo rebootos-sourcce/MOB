@@ -243,9 +243,12 @@ export class FunnelService {
     const now = this.a.clock.nowIso();
     await this.a.repo.markAttachmentChallengeUsed(challenge.id);
 
-    if (!gift.transferredAt) {
-      const transferred: StarterGift = { ...gift, userId, transferredAt: now };
-      await this.a.repo.saveGift(transferred, giftItems(gift.id, gift.patternIds, gift.issuedAt));
+    const transfer = await this.a.repo.transferStarterGift(gift.id, userId, now);
+    if (transfer === 'owned_by_other') {
+      throw new FunnelError('GIFT_ALREADY_TRANSFERRED', `gift ${gift.id} already belongs to another user`);
+    }
+    if (transfer === 'not_found') {
+      throw new FunnelError('GIFT_NOT_FOUND', gift.id);
     }
 
     let tutorial = await this.a.repo.getTutorial(session.id);
