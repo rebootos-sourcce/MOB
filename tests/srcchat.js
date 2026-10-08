@@ -86,7 +86,7 @@ async function talk(p, nm) {
 }
 
 (async () => {
-  const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+  const browser = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
 
   console.log('\n=== known bad first: a send that joins with a space ===');
   {

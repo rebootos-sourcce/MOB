@@ -3,7 +3,7 @@
 const {chromium}=require('playwright');
 const path=require('path');
 const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1';
-const CHROME='/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
+const CHROME=process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
 const booted=async p=>{try{await p.waitForFunction(
  ()=>document.body.classList.contains('booted'),null,{timeout:12000});}catch(e){}};
 (async()=>{

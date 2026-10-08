@@ -46,7 +46,7 @@ const COUNT=()=>{
   hostHeight:Math.round(host.scrollHeight), scrollW:document.documentElement.scrollWidth};};
 (async()=>{
  fs.mkdirSync(OUT,{recursive:true});
- const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
  const res={};
  for(const [W,H] of [[1600,1000],[390,844]]){
   const p=await b.newPage({viewport:{width:W,height:H}});

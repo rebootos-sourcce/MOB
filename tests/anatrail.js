@@ -157,7 +157,7 @@ if(require.main===module){
  const {FULL_SIGHT}=require('./seed.js');
  (async()=>{
   const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1';
-  const browser=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+  const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
   let PASS=0,FAIL=0;
   const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
   const GORDON_FN=`window.GORDON=function(){for(var i=0;i<PEOPLE.length;i++)if(PEOPLE[i].nm==='Gordon')return i;throw new Error('Gordon is not in the roster any more');};`;

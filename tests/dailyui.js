@@ -69,7 +69,7 @@ const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=
 let PASS=0,FAIL=0;
 const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
 const booted=async p=>{try{await p.waitForFunction(()=>document.body.classList.contains('booted'),null,{timeout:15000});}catch(e){}};
-const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
 const fresh=async(w,h,ctx)=>{
  const c=ctx||await b.newContext({viewport:{width:w||1600,height:h||1000}});
  const p=await c.newPage(); const errs=[];

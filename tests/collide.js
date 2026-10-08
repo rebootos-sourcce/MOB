@@ -16,7 +16,7 @@ const booted=async p=>{try{await p.waitForFunction(
  catch(e){/* reduced motion clears it synchronously; a miss is not a failure */}};
 let PASS=0,FAIL=0;const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
 (async()=>{
-const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
 const p=await b.newPage({viewport:{width:1680,height:1020}});
 /* the wheel is measured with every layer on, tests/seed.js: the tier ruling
    of 1 October takes the chain off the wheel below tier one */

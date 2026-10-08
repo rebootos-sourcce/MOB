@@ -82,7 +82,7 @@ const SHRINK=`REL_WORD_S=0.0004;REL_GAP_S=0.001;REL_HEAD_S=0;REL_FRAME_S=0;`;
 const REAL_STORY='I felt tight in my chest when my boss yelled at me and I could not breathe.';
 
 (async()=>{
-const browser=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
 
 console.log('=== onboarding reaches a real release, through the real door, on a fresh profile ===');
 {
