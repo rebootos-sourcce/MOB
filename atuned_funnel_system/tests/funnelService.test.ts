@@ -96,8 +96,16 @@ test('verification resolves release address identity from the persisted release 
   const adapters = buildFakeAdapters();
   const service = new FunnelService(adapters);
   const started = await startAndRecognize(service, 'anon_verify');
-  const { session } = await service.selectGround(started.id, 'money');
-  await service.selectAddress(session.id, '1:1');
+  await service.selectGround(started.id, 'money');
+  const storyState = await service.recordStory(started.id, 'I felt afraid when I spoke.');
+  await service.analyzeAndMirror(storyState.id, {
+    id: 'verify_story',
+    userId: 'anon_verify',
+    rawText: 'I felt afraid when I spoke.',
+    createdAt: new Date().toISOString(),
+  });
+  const addressSession = await service.confirmOrCorrect(storyState.id, 'CONFIRM');
+  const { session } = await service.selectAddress(addressSession.id, '1:1');
   const released = await service.requestRelease(session.id, '1:1', { idempotencyKey: 'verify-release' });
   await service.recordReframe(released.session.id);
   const verified = await service.verify(released.session.id, released.releaseId, 'something_moved');
