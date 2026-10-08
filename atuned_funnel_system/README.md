@@ -170,7 +170,7 @@ A real funnel session row was inserted, read back, and deleted through the Supab
 
 Migration `0004_funnel_repository_concurrency.sql` is applied to Supabase and source-controlled. It replaces the session read-then-write check with an atomic compare-and-swap function, makes attachment credentials single-use at the database boundary, adds a natural primary key to `starter_gift_items`, and removes the unsafe empty-ledger fallback of 1000.
 
-A live SQL contract check passed: create session, advance version, reject stale version, claim an attachment challenge once, reject the second claim, verify the starter-gift primary key, then clean up the test rows.
+Review pass 2 checked the source migration, repository implementation, and live function definitions for parity. The SQL functions are `SECURITY DEFINER` with an empty search path and are executable only by `service_role`; the application repository calls the new RPCs and no longer performs the unsafe direct PATCH/read-before-write operations.\n\nA live SQL contract check passed: create session, advance version, reject stale version, claim an attachment challenge once, reject the second claim, verify the starter-gift primary key, then clean up the test rows.
 
 The persistence block was reviewed three times after the live change: live migration history and schema, source migration parity, and final repository-tree/source-of-truth verification. The Supabase security advisor now reports the expected `RLS enabled, no policy` informational findings for these server-only tables; the important access check is the actual role grants, which are denied to `anon` and `authenticated`.
 
