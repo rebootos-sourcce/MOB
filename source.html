@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v1743 840477b 2026-10-04 23:05"><head><meta charset="utf-8">
+<html lang="en" data-build="v1867 869610b 2026-10-08 21:14"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -28099,7 +28099,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* meter */    meterFirst:meterFirst,
   /* source ai */ SRC_ASK:SRC_ASK, SRC_ROOT:SRC_ROOT, SRC_ONCE:SRC_ONCE, SRC_NEG:SRC_NEG,
                  srcNegated:srcNegated, srcPrior:srcPrior, srcRung:srcRung,
-                 srcHear:srcHear, srcTurn:srcTurn,
+                 srcHear:srcHear, srcHear:srcHear, srcPrior:srcPrior, srcTurn:srcTurn,
                  SRC_DIM_ORDER:SRC_DIM_ORDER, SRC_DIM_CUE:SRC_DIM_CUE, SRC_DO:SRC_DO,
                  srcDims:srcDims, srcNext:srcNext,
                  SRC_KINDS:SRC_KINDS, SRC_OUTCOMES:SRC_OUTCOMES,
@@ -50424,7 +50424,12 @@ function relBudget(){
 /* speed is the seconds a line took on the old ticker. It is kept because the
    story panel still offers Slow, Steady and Quick through it, and it now sets
    the pace a run opens at, so that choice still means something. */
-var RUN={open:false,queue:[],plan:[],sec:0,idx:0,phase:'idle',speed:2.2,timer:null,
+function relRunId(){
+ try{if(typeof crypto!=='undefined'&&typeof crypto.randomUUID==='function')return 'release_'+crypto.randomUUID();}
+ catch(e){}
+ return 'release_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2);
+}
+var RUN={open:false,id:null,first:false,queue:[],plan:[],sec:0,idx:0,phase:'idle',speed:2.2,timer:null,
          paused:false,done:false,line:0,log:[],freed:0,
          pass:0,cool:0,tok:0,halted:false,
          dose:100,pace:1,spokeMs:0,spokeW:0,
@@ -50525,6 +50530,8 @@ function relOpp(n){
    the run off an entry it just committed passes one; any other run has no
    story behind it and its answer carries none. */
 function relPick(nodeIds,from){
+ RUN.id=relRunId();
+ RUN.first=!!(CURP&&CURP.meter&&!(Number(CURP.meter.relLines)>0));
  relHush();
  RUN.queue=nodeIds.map(function(i){return BY[i];}).filter(function(n){return n&&n.cf;});
  RUN.sec=0;RUN.idx=0;RUN.line=0;RUN.pass=0;RUN.cool=0;RUN.halted=false;
@@ -51264,8 +51271,11 @@ function relAnswer(k){
   if(typeof status==='function')status('Your answer was not kept. '+(r.errs[0]||''),'fail');
   return false;}
  CURP.practice=r.P; RUN.said=k;
- if(!pSave()&&typeof status==='function')
+ var saved=pSave();
+ if(!saved&&typeof status==='function')
   status('This browser would not save. Your answer is on this card and not on your record.','fail');
+ if(saved&&typeof authFunnelCheckpoint==='function'&&r.ids&&r.ids.length)
+  authFunnelCheckpoint({verificationId:String(r.ids[0])});
  if(RUN.open&&RUN.phase==='done')relRender();
  if(typeof loopRepaint==='function')loopRepaint();
  return true;}
@@ -51451,6 +51461,8 @@ function relCoolDown(){
  /* this pushed a snapshot by hand and then saved, which is pSnap plus pSave
     with one of the two writes done twice. */
  if(CURP){pSave();pSnap();}
+ if(RUN.first&&!RUN.rerun&&RUN.queue.length&&typeof authFunnelCheckpoint==='function')
+  authFunnelCheckpoint({firstReleaseId:RUN.id});
  /* A RUN THAT REACHED ITS END COUNTS AS THE DAY'S RITUAL, round KG, when a
     ritual is tracking one of these addresses. Here and nowhere else: this is
     after the worked example refusal, so a refused run marks nothing, and after
@@ -64892,6 +64904,7 @@ try{window.__at&&window.__at('ui/panels.js');}catch(e){}
    browser. A var so a gate can point it at a stub. */
 var AUTH_API='https://atuned-api.lance-o-powell.workers.dev';
 var AUTH_KEY='source.session';
+var FUNNEL_KEY='funnel.session';
 /* HOW LONG A REQUEST MAY TAKE BEFORE IT IS A FAILURE. A sign in runs a
    deliberately slow hash on the server, so this is generous, and it is still
    a ceiling: a request with none sits on "Checking with the server" for as
@@ -64922,7 +64935,7 @@ function authSession(){
   AUTH_READ=true;
   try{ var o=JSON.parse(STORE.get(AUTH_KEY)||'null');
    if(o&&typeof o.token==='string'&&o.token&&typeof o.email==='string')
-    AUTH_S={token:o.token, email:o.email}; }
+    AUTH_S={token:o.token, email:o.email, accountId:typeof o.accountId==='string'?o.accountId:null}; }
   catch(e){ AUTH_S=null; } }
  return AUTH_S;}
 /* True when the write landed, read back to prove it, the way storeSetAside in
@@ -64934,6 +64947,223 @@ function authKeep(s){
  var txt=s?JSON.stringify(s):'';
  try{ STORE.set(AUTH_KEY,txt); return STORE.get(AUTH_KEY)===txt; }catch(e){ return false; }}
 function authForget(){ return authKeep(null); }
+/* THE FUNNEL SESSION, beside the auth session and never inside the profile.
+   The browser holds the one-time credential because it is the proof that this
+   browser created the anonymous journey. The server stores only its hash. */
+var FUNNEL_S=null, FUNNEL_READ=false;
+function funnelSession(){
+ if(!FUNNEL_READ&&typeof STORE_BOUND!=='undefined'&&STORE_BOUND){
+  FUNNEL_READ=true;
+  try{
+   var o=JSON.parse(STORE.get(FUNNEL_KEY)||'null');
+   if(o&&typeof o.id==='string'&&o.id&&typeof o.anonymousId==='string'&&o.anonymousId){
+    FUNNEL_S=o;
+   }
+  }catch(e){ FUNNEL_S=null; }
+ }
+ return FUNNEL_S;
+}
+function funnelKeep(s){
+ FUNNEL_S=s; FUNNEL_READ=true;
+ if(typeof STORE_BOUND==='undefined'||!STORE_BOUND)return false;
+ try{
+  var txt=s?JSON.stringify(s):'';
+  STORE.set(FUNNEL_KEY,txt);
+  return STORE.get(FUNNEL_KEY)===txt;
+ }catch(e){ return false; }
+}
+function funnelUuid(){
+ try{ if(typeof crypto!=='undefined'&&crypto.randomUUID)return crypto.randomUUID(); }catch(e){}
+ return 'anon_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2);
+}
+function authFunnelStart(){
+ var existing=funnelSession();
+ if(existing)return Promise.resolve({ok:true,session:existing.session||null,reused:true});
+ var anonymousId=funnelUuid();
+ return authCall('POST','/v1/funnel/session',{anonymousId:anonymousId},null,false).then(function(r){
+  /* The Worker intentionally creates the anonymous id. Keep the caller's id
+     out of the request body so the browser cannot claim somebody else's id. */
+  if(!r.ok)return {ok:false,status:r.status,body:r.body};
+  var b=r.body||{}, s=b.session;
+  if(!s||typeof s.id!=='string'||typeof b.credential!=='string')return {ok:false,status:r.status,body:null};
+  var state={session:s,id:s.id,anonymousId:s.anonymousId||anonymousId,credential:b.credential};
+  var kept=funnelKeep(state);
+  return {ok:true,session:s,reused:false,kept:kept};});
+}
+function authFunnelRead(){
+ var f=funnelSession(); if(!f)return Promise.resolve({ok:false,status:0,body:null});
+ var s=authSession();
+ var token=s&&s.token, path='/v1/funnel/session/'+encodeURIComponent(f.id);
+ if(token)return authCall('GET',path,null,token);
+ return authCall('GET',path,null,null,false);
+}
+function authFunnelCheckpoint(patch){
+ var f=funnelSession(), s=authSession(), extra=f&&f.credential?{'x-funnel-credential':f.credential}:null;
+ if(!f||!f.id||!patch)return Promise.resolve({ok:false,status:0});
+ return authCall('PATCH','/v1/funnel/session/'+encodeURIComponent(f.id)+'/checkpoint',patch,s&&s.token,false,undefined,extra)
+  .then(function(r){
+   if(r.ok&&r.body&&r.body.session){
+    funnelKeep(Object.assign({},f,{session:r.body.session,userId:r.body.session.userId||f.userId||null}));
+    return {ok:true,session:r.body.session};
+   }
+   return {ok:false,status:r.status,body:r.body};
+  });
+}
+function authFunnelAttach(){
+ var f=funnelSession(), s=authSession();
+ if(!f||!s)return Promise.resolve({ok:false,status:0,body:null});
+ return authCall('POST','/v1/funnel/session/'+encodeURIComponent(f.id)+'/attach',{credential:f.credential},s.token)
+  .then(function(r){
+   if(r.ok&&r.body&&r.body.session){
+    var next=Object.assign({},f,{session:r.body.session,userId:r.body.session.userId||s.email||null});
+    funnelKeep(next);
+   }
+   return r;
+  });
+}
+function authFunnelClear(){ return funnelKeep(null); }
+var PROFILE_SYNC_ID='atuned.primary-profile';
+var PROFILE_SYNC_META_KEY='source.profile.sync';
+var PROFILE_SYNC_TIMER=null;
+var PROFILE_SYNC_BUSY=false;
+
+function profileSyncMeta(){
+ try{
+  var o=JSON.parse(STORE.get(PROFILE_SYNC_META_KEY)||'null');
+  return o&&typeof o==='object'?o:{accountId:null,version:0,hash:'',updated:null};
+ }catch(e){ return {accountId:null,version:0,hash:'',updated:null}; }
+}
+function profileSyncIdentity(){
+ var s=authSession();
+ return s&&((typeof s.accountId==='string'&&s.accountId)||String(s.email||'').toLowerCase())||'';
+}
+async function profileSyncHash(text){
+ try{
+  var bytes=new TextEncoder().encode(text);
+  var digest=await crypto.subtle.digest('SHA-256',bytes);
+  return Array.prototype.map.call(new Uint8Array(digest),function(b){
+   return ('0'+b.toString(16)).slice(-2);
+  }).join('');
+ }catch(e){ return String(text.length)+':'+text.slice(0,64); }
+}
+function profileSyncMetaSave(meta){
+ if(typeof STORE_BOUND==='undefined'||!STORE_BOUND)return false;
+ try{ STORE.set(PROFILE_SYNC_META_KEY,JSON.stringify(meta)); return true; }catch(e){ return false; }
+}
+function profileSyncEligible(){
+ return !!(authSession()&&typeof CURP!=='undefined'&&CURP&&typeof pExport==='function'
+  &&typeof pImport==='function'&&typeof S!=='undefined'&&(!S.who||S.who===0)
+  &&typeof profiles==='function');
+}
+function profileSyncReadRemote(){
+ var s=authSession();
+ if(!s)return Promise.resolve({ok:false,status:0,body:null});
+ return authCall('GET','/v1/sync',null,s.token).then(function(r){
+  if(!r.ok)return r;
+  var rows=(r.body&&Array.isArray(r.body.records))?r.body.records:[];
+  var found=null;
+  rows.forEach(function(x){
+   if(x&&x.kind==='state'&&x.id===PROFILE_SYNC_ID&&!x.deleted)found=x;
+  });
+  return {ok:true,status:r.status,body:found};
+ });
+}
+function profileSyncPush(profile,version){
+ var s=authSession();
+ if(!s)return Promise.resolve({ok:false,status:0,body:null});
+ return authCall('PUT','/v1/sync',{
+  records:[{kind:'state',id:PROFILE_SYNC_ID,version:version,body:profile,deleted:false}]
+ },s.token).then(function(r){
+  if(!r.ok)return r;
+  var kept=(r.body&&Array.isArray(r.body.kept))?r.body.kept:[];
+  var accepted=kept.some(function(x){
+   return x&&x.kind==='state'&&x.id===PROFILE_SYNC_ID&&x.version===version;
+  });
+  return {ok:accepted,status:r.status,body:r.body};
+ });
+}
+function profileSyncImport(remote,remoteVersion){
+ var text=JSON.stringify(remote);
+ var imported=pImport(text);
+ if(!imported)return {ok:false};
+ var list=profiles();
+ for(var i=list.length-1;i>=0;i--){
+  if(list[i]&&list[i].id===imported.id&&list[i]!==imported)list.splice(i,1);
+ }
+ return {ok:true,text:text,version:remoteVersion,updated:imported.updated||null};
+}
+function authProfileSync(){
+ if(PROFILE_SYNC_BUSY||!profileSyncEligible())return Promise.resolve({state:'skip'});
+ PROFILE_SYNC_BUSY=true;
+ var localText;
+ try{ localText=pExport(); }catch(e){PROFILE_SYNC_BUSY=false;return Promise.resolve({state:'refused'});}
+ var local;
+ try{ local=JSON.parse(localText); }catch(e){PROFILE_SYNC_BUSY=false;return Promise.resolve({state:'refused'});}
+ if(!local||typeof local!=='object'){PROFILE_SYNC_BUSY=false;return Promise.resolve({state:'refused'});}
+ return Promise.all([profileSyncHash(localText),profileSyncReadRemote()]).then(function(pair){
+  var localHash=pair[0], rr=pair[1], meta=profileSyncMeta(), identity=profileSyncIdentity();
+  var remote=rr.body&&rr.body.body&&typeof rr.body.body==='object'?rr.body.body:null;
+  var remoteVersion=rr.body&&Number.isInteger(rr.body.version)?rr.body.version:0;
+  if(!rr.ok){PROFILE_SYNC_BUSY=false;return {state:'retry',status:rr.status};}
+
+  /* First association with an account is deliberately conservative. */
+  if(meta.accountId!==identity){
+   if(remote){
+    var pulled=profileSyncImport(remote,remoteVersion);
+    if(!pulled.ok){PROFILE_SYNC_BUSY=false;return {state:'refused'};}
+    return profileSyncHash(pulled.text).then(function(remoteHash){
+     profileSyncMetaSave({accountId:identity,version:remoteVersion,hash:remoteHash,updated:pulled.updated});
+     PROFILE_SYNC_BUSY=false;
+     if(typeof render==='function')render();
+     return {state:'pulled-first',version:remoteVersion};
+    });
+   }
+   profileSyncMetaSave({accountId:identity,version:0,hash:localHash,updated:local.updated||null});
+   PROFILE_SYNC_BUSY=false;
+   return {state:'associated',version:0};
+  }
+
+  if(remote){
+   var lu=local.updated?Date.parse(local.updated):0;
+   var ru=remote.updated?Date.parse(remote.updated):0;
+   if(ru>lu){
+    var pulled2=profileSyncImport(remote,remoteVersion);
+    if(!pulled2.ok){PROFILE_SYNC_BUSY=false;return {state:'refused'};}
+    return profileSyncHash(pulled2.text).then(function(remoteHash2){
+     profileSyncMetaSave({accountId:identity,version:remoteVersion,hash:remoteHash2,updated:pulled2.updated});
+     PROFILE_SYNC_BUSY=false;
+     if(typeof render==='function')render();
+     return {state:'pulled',version:remoteVersion};
+    });
+   }
+  }
+
+  if(meta.hash===localHash&&remoteVersion===meta.version){
+   PROFILE_SYNC_BUSY=false;
+   return {state:'clean',version:meta.version};
+  }
+
+  var nextVersion=Math.max(meta.version||0,remoteVersion)+1;
+  return profileSyncPush(local,nextVersion).then(function(pr){
+   PROFILE_SYNC_BUSY=false;
+   if(!pr.ok)return {state:'retry',status:pr.status};
+   profileSyncMetaSave({accountId:identity,version:nextVersion,hash:localHash,updated:local.updated||null});
+   return {state:'pushed',version:nextVersion};
+  });
+ }).catch(function(){
+  PROFILE_SYNC_BUSY=false;
+  return {state:'retry'};
+ });
+}
+function profileSyncStart(){
+ if(PROFILE_SYNC_TIMER)clearInterval(PROFILE_SYNC_TIMER);
+ PROFILE_SYNC_TIMER=setInterval(function(){authProfileSync();},30000);
+ authProfileSync();
+}
+function profileSyncStop(){
+ if(PROFILE_SYNC_TIMER){clearInterval(PROFILE_SYNC_TIMER);PROFILE_SYNC_TIMER=null;}
+ PROFILE_SYNC_BUSY=false;
+}
 /* One request. Resolves to {ok, status, body, late}, and never rejects. With
    blob set, a yes comes back as the bytes and not as parsed text, because the
    voice route answers audio; a no is still the server's json and still read
@@ -64941,7 +65171,7 @@ function authForget(){ return authKeep(null); }
    base is the host the path is appended to, AUTH_API unless a caller names
    another: the feedback relay is on the site's own host and not the Worker's,
    and a second fetch for it would be a second seam. */
-function authCall(method,path,body,token,blob,base){
+function authCall(method,path,body,token,blob,base,extraHeaders){
  return new Promise(function(done){
   var ctl=null, timer=null, over=false;
   var end=function(r){ if(over)return; over=true; clearTimeout(timer); done(r); };
@@ -64953,6 +65183,7 @@ function authCall(method,path,body,token,blob,base){
   var h={};
   if(body)h['Content-Type']='application/json';
   if(token)h.Authorization='Bearer '+token;
+  if(extraHeaders)Object.keys(extraHeaders).forEach(function(k){h[k]=extraHeaders[k];});
   var req;
   /* credentials omit: the session is the bearer header and nothing else, so no
      cookie of any host's is ever sent along with it. */
@@ -65059,12 +65290,19 @@ function authEnter(route,mail,pw){
   if(!r.ok)return {ok:false, say:authWhy(r,route)};
   if(typeof b.token!=='string'||!b.token)
    return {ok:false, say:'The server answered without a sign in. Nothing changed.'};
-  var s={token:b.token, email:typeof acc.email==='string'?acc.email:mail.toLowerCase()};
+  var s={token:b.token, email:typeof acc.email==='string'?acc.email:mail.toLowerCase(),
+   accountId:typeof acc.id==='string'?acc.id:null};
   var kept=authKeep(s);
+  /* the plan and the funnel session both use the same bearer boundary.
+     Funnel attachment is best effort here because the gift may not yet exist;
+     the explicit funnel attachment path remains available once a starter gift
+     has been issued. */
+  authFunnelAttach();
   /* the plan is read after the sign in is held, and not waited on: the
      caller says "Signed in as" now, and the plan speaks after it only if the
      record changed. A second device is exactly this path. */
   authPlanRead();
+  profileSyncStart();
   return {ok:true, kept:kept,
    say:(route==='signup'?'Account created. ':'')+'Signed in as '+s.email+'.'
     +(kept?'':' Storage is blocked in this browser, so the sign in ends on reload.')};});}
@@ -65090,8 +65328,9 @@ function authForgot(mail){
    saying the session had already ended, which is the same result. */
 function authSignOut(){
  var s=authSession();
- if(!s)return Promise.resolve({ok:true, say:'Not signed in.'});
+ if(!s){profileSyncStop();return Promise.resolve({ok:true, say:'Not signed in.'});}
  return authCall('POST','/v1/auth/signout',null,s.token).then(function(r){
+  profileSyncStop();
   var gone=authForget();
   if(!gone)return {ok:false,
    say:'Signed out for this visit only. Storage would not take the change, so the sign in comes back on reload.'};
@@ -65121,12 +65360,17 @@ function authCheck(){
    if(typeof S!=='undefined'&&typeof TAB!=='undefined'&&S.tab===TAB.SETTINGS
     &&typeof renderAccount==='function')renderAccount(); };
   if(r.ok&&acc&&typeof acc.email==='string'){
-   if(acc.email!==s.email){ authKeep({token:s.token, email:acc.email}); redraw(); }
+   if(acc.email!==s.email||acc.id!==s.accountId){
+    s={token:s.token,email:acc.email,accountId:typeof acc.id==='string'?acc.id:null};
+    authKeep(s); redraw();
+   }
    /* the same answer carries the plan, so the boot check reads it without a
       second request */
    authPlanBack(back,r.body.billing);
+   profileSyncStart();
    return 'ok';}
   if(r.status===401){
+   profileSyncStop();
    authForget(); redraw();
    status('Signed out. The server has ended the sign in on this browser. Log in again from Account.','fail');
    return 'ended';}
@@ -70056,6 +70300,7 @@ function obLoopRows(){
     +'<span class="ob-loopr-s">'+esc(x.say)+'</span></li>';}).join('')+'</ol>';}
 function obOpen(replay){
  var h=document.getElementById('ob'); if(!h)return;
+ if(typeof authFunnelStart==='function')authFunnelStart();
  OB.open=true; OB.step=0; OB.replay=!!replay;
  OB.pick=null; OB.feel=null; OB.place=null;
  OB.text=''; OB.commit=null; OB.corr=''; OB.fixes=[];
@@ -70779,7 +71024,12 @@ addEventListener('click',function(e){
  if(!OB.open)return;
  var t=e.target&&e.target.closest?e.target:null; if(!t)return;
  var pk=t.closest?t.closest('[data-obpick]'):null;
- if(pk){ OB.pick=+pk.getAttribute('data-obpick'); OB.step=2; obRender(); return; }
+ if(pk){
+  OB.pick=+pk.getAttribute('data-obpick');
+  var ground=OB_STARTS[OB.pick];
+  if(ground&&typeof authFunnelCheckpoint==='function')authFunnelCheckpoint({selectedGroundId:ground.k});
+  OB.step=2; obRender(); return;
+ }
  var fe=t.closest?t.closest('[data-obfeel]'):null;
  if(fe){ OB.feel=+fe.getAttribute('data-obfeel'); OB.step=4; obRender(); return; }
  var pl=t.closest?t.closest('[data-obplace]'):null;
@@ -70821,7 +71071,10 @@ addEventListener('click',function(e){
   if(ids.length&&typeof relPick==='function')
    relPick(ids,(OB.commit&&OB.commit.ok&&OB.commit.t)?{story_t:OB.commit.t}:null);
   return;}
- if(k==='skip'||k==='done'){ obClose(); return; }});
+ if(k==='skip'||k==='done'){
+  if(k==='done'&&typeof authFunnelCheckpoint==='function')authFunnelCheckpoint({tutorialCompleted:true});
+  obClose(); return;
+ }});
 /* THE PREVIEW, round QH. On the Body step a chip under the pointer, or under
    keyboard focus, lights its own seat on the figure before it is pressed: the
    secondary action under the main one, so the word and the place are seen
@@ -73199,5 +73452,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="004825143"></div>
+<div id="eof" hidden data-len="004836020"></div>
 </body></html>
