@@ -13,7 +13,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* meter */    meterFirst:meterFirst,
   /* source ai */ SRC_ASK:SRC_ASK, SRC_ROOT:SRC_ROOT, SRC_ONCE:SRC_ONCE, SRC_NEG:SRC_NEG,
                  srcNegated:srcNegated, srcPrior:srcPrior, srcRung:srcRung,
-                 srcHear:srcHear, srcHear:srcHear, srcPrior:srcPrior, srcTurn:srcTurn, srcAsk:srcAsk,
+                 srcHear:srcHear, srcHear:srcHear, srcPrior:srcPrior, srcTurn:srcTurn,
                  SRC_DIM_ORDER:SRC_DIM_ORDER, SRC_DIM_CUE:SRC_DIM_CUE, SRC_DO:SRC_DO,
                  srcDims:srcDims, srcNext:srcNext,
                  SRC_KINDS:SRC_KINDS, SRC_OUTCOMES:SRC_OUTCOMES,
