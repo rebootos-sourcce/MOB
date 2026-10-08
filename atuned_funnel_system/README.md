@@ -57,7 +57,11 @@ round SG wired" below for what moved the count from 22).
 
 ### Usage accounting block
 
-### Starter gift transfer block\n\nReview pass 3 verified the live migration chain through `0007` and confirmed the transfer function is executable only by `service_role`. The live ownership proof also passed for first transfer, same-owner replay, and cross-owner rejection.\n\nReview pass 2 checked SQL, repository RPC mapping, and service ordering. The service no longer writes the gift object directly during attachment, so the ownership decision has one authoritative database path. The RPC is service-role-only and uses a row lock.
+### Starter gift transfer block
+
+### Real engine adapter block
+
+The Source adapter no longer reimplements the Source rules. The engine host now exposes the existing `srcHear`, `srcPrior`, and `srcTurn` functions from `atuned_src/engine/sourceai.js`, and `RealSourceAdapter` calls them on a fresh isolated engine instance. The identity adapter also reuses the existing Worker `GET /v1/me` boundary instead of the previously invented `/v1/auth/whoami` route.\n\nReview pass 3 verified the live migration chain through `0007` and confirmed the transfer function is executable only by `service_role`. The live ownership proof also passed for first transfer, same-owner replay, and cross-owner rejection.\n\nReview pass 2 checked SQL, repository RPC mapping, and service ordering. The service no longer writes the gift object directly during attachment, so the ownership decision has one authoritative database path. The RPC is service-role-only and uses a row lock.
 
 Migration `0007` adds an atomic ownership decision for starter gifts. Account attachment now marks the one-time challenge, then asks the database to transfer the gift under row lock. A second caller for the same owner is idempotent; a different owner receives `owned_by_other` and cannot overwrite the gift.\n\nReview pass 3 re-ran the live usage proof after migration `0006`, verified the function is callable only by `service_role`, and verified the ledger identity/foreign-key constraints. The final proof again passed: 100 → 99 → 98, identical-key replay stays at 98, and only two ledger rows exist.\n\nReview pass 2 checked the live schema, source migration, and repository RPC mapping. The live unique index now keys anonymous usage by session identity as well as account identity, and the repository sends both values. The consumption function is `SECURITY DEFINER`, uses an empty search path, and remains service-role-only.
 
