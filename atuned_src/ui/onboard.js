@@ -1315,7 +1315,12 @@ addEventListener('click',function(e){
  if(!OB.open)return;
  var t=e.target&&e.target.closest?e.target:null; if(!t)return;
  var pk=t.closest?t.closest('[data-obpick]'):null;
- if(pk){ OB.pick=+pk.getAttribute('data-obpick'); OB.step=2; obRender(); return; }
+ if(pk){
+  OB.pick=+pk.getAttribute('data-obpick');
+  var ground=OB_STARTS[OB.pick];
+  if(ground&&typeof authFunnelCheckpoint==='function')authFunnelCheckpoint({selectedGroundId:ground.k});
+  OB.step=2; obRender(); return;
+ }
  var fe=t.closest?t.closest('[data-obfeel]'):null;
  if(fe){ OB.feel=+fe.getAttribute('data-obfeel'); OB.step=4; obRender(); return; }
  var pl=t.closest?t.closest('[data-obplace]'):null;
@@ -1357,7 +1362,10 @@ addEventListener('click',function(e){
   if(ids.length&&typeof relPick==='function')
    relPick(ids,(OB.commit&&OB.commit.ok&&OB.commit.t)?{story_t:OB.commit.t}:null);
   return;}
- if(k==='skip'||k==='done'){ obClose(); return; }});
+ if(k==='skip'||k==='done'){
+  if(k==='done'&&typeof authFunnelCheckpoint==='function')authFunnelCheckpoint({tutorialCompleted:true});
+  obClose(); return;
+ }});
 /* THE PREVIEW, round QH. On the Body step a chip under the pointer, or under
    keyboard focus, lights its own seat on the figure before it is pressed: the
    secondary action under the main one, so the word and the place are seen

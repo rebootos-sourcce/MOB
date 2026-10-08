@@ -275,7 +275,12 @@ function relBudget(){
 /* speed is the seconds a line took on the old ticker. It is kept because the
    story panel still offers Slow, Steady and Quick through it, and it now sets
    the pace a run opens at, so that choice still means something. */
-var RUN={open:false,queue:[],plan:[],sec:0,idx:0,phase:'idle',speed:2.2,timer:null,
+function relRunId(){
+ try{if(typeof crypto!=='undefined'&&typeof crypto.randomUUID==='function')return 'release_'+crypto.randomUUID();}
+ catch(e){}
+ return 'release_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2);
+}
+var RUN={open:false,id:null,first:false,queue:[],plan:[],sec:0,idx:0,phase:'idle',speed:2.2,timer:null,
          paused:false,done:false,line:0,log:[],freed:0,
          pass:0,cool:0,tok:0,halted:false,
          dose:100,pace:1,spokeMs:0,spokeW:0,
@@ -376,6 +381,8 @@ function relOpp(n){
    the run off an entry it just committed passes one; any other run has no
    story behind it and its answer carries none. */
 function relPick(nodeIds,from){
+ RUN.id=relRunId();
+ RUN.first=!!(CURP&&CURP.meter&&!(Number(CURP.meter.relLines)>0));
  relHush();
  RUN.queue=nodeIds.map(function(i){return BY[i];}).filter(function(n){return n&&n.cf;});
  RUN.sec=0;RUN.idx=0;RUN.line=0;RUN.pass=0;RUN.cool=0;RUN.halted=false;
@@ -1115,8 +1122,11 @@ function relAnswer(k){
   if(typeof status==='function')status('Your answer was not kept. '+(r.errs[0]||''),'fail');
   return false;}
  CURP.practice=r.P; RUN.said=k;
- if(!pSave()&&typeof status==='function')
+ var saved=pSave();
+ if(!saved&&typeof status==='function')
   status('This browser would not save. Your answer is on this card and not on your record.','fail');
+ if(saved&&typeof authFunnelCheckpoint==='function'&&r.ids&&r.ids.length)
+  authFunnelCheckpoint({verificationId:String(r.ids[0])});
  if(RUN.open&&RUN.phase==='done')relRender();
  if(typeof loopRepaint==='function')loopRepaint();
  return true;}
@@ -1302,6 +1312,8 @@ function relCoolDown(){
  /* this pushed a snapshot by hand and then saved, which is pSnap plus pSave
     with one of the two writes done twice. */
  if(CURP){pSave();pSnap();}
+ if(RUN.first&&!RUN.rerun&&RUN.queue.length&&typeof authFunnelCheckpoint==='function')
+  authFunnelCheckpoint({firstReleaseId:RUN.id});
  /* A RUN THAT REACHED ITS END COUNTS AS THE DAY'S RITUAL, round KG, when a
     ritual is tracking one of these addresses. Here and nowhere else: this is
     after the worked example refusal, so a refused run marks nothing, and after
