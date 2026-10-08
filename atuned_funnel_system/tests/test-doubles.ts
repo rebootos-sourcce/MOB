@@ -130,6 +130,10 @@ export class InMemoryFunnelRepository implements FunnelRepository {
   async appendEvent(event: FunnelEvent): Promise<void> {
     this.events.push(event);
   }
+  async getEvents(sessionId: string): Promise<FunnelEvent[]> {
+    return this.events.filter((event) => event.sessionId === sessionId).sort((a, b) => a.sequence - b.sequence);
+  }
+
   async nextEventSequence(sessionId: string): Promise<number> {
     const next = (this.eventSequences.get(sessionId) ?? 0) + 1;
     this.eventSequences.set(sessionId, next);
