@@ -281,7 +281,7 @@ the remaining named gaps." What is left:
    returns the free tier) to wherever entitlements end up persisted, once
    step 1 is decided.
 6. Implement `PaymentAdapter` against the real Stripe setup.
-7. Expose `FunnelService`'s methods through the application's own existing
+Review pass 3 tightened the verification boundary: the funnel service now accepts optional real numeric `addressIds` and passes them through the adapter, while the real adapter refuses to fabricate address 1. The remaining address threading from release to verification is now explicit rather than silently wrong.\n\n7. Expose `FunnelService`'s methods through the application's own existing
    router (do not add a second HTTP framework, per the Master TDD's own
    rule).
 8. Run `npm test` after every adapter lands; the fakes in `tests/test-doubles.ts`
