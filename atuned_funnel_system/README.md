@@ -48,8 +48,12 @@ npm install
 npm test
 ```
 
-41 tests, 0 failures, as of the round this was built (round SG; see "What
-round SG wired" below for what moved the count from 22).
+Historical baseline: 41 tests, 0 failures at round SG.
+
+Current CI verification: 43 tests, 43 passed on GitHub Actions at commit
+`4fa88364ef260a11e19f867640638d6019ae86cb`. The same workflow also rebuilt
+the real engine, passed the engine gate, built the funnel, staged the site, and
+completed the Cloudflare Pages deployment.
 
 
 
@@ -306,7 +310,9 @@ The SQLite suite has not been executed in this environment. The live Supabase pr
 
 The Supabase security advisor is clean. Only pre-traffic unused-index INFO notices remain in the performance advisor.
 
-The full TypeScript test suite is not yet runtime-verified from this environment because the repository cannot be cloned into the execution container. Source parity and live Supabase contract proofs have been run.
+The full TypeScript test suite is now runtime-verified by GitHub Actions. The
+local execution container still cannot reach GitHub directly, but the hosted
+runner executed the complete 43-test suite.
 
 ### Remaining external integration boundaries
 
@@ -321,3 +327,38 @@ Stripe payment operations still need the real payment adapter and verified webho
 The real numeric release address still needs to be carried from release execution into verification.
 
 The funnel still needs one real end-to-end acceptance run through the actual client, Worker, identity, persistence, engine, entitlement, payment, and response path.
+
+
+## Post CI completion state
+
+The recursive package block is now complete.
+
+Verified on GitHub Actions:
+* 43 funnel tests passed.
+* The real engine rebuilt successfully.
+* The engine gate passed.
+* The funnel build passed.
+* The staged site build passed.
+* Cloudflare Pages deployment passed.
+
+Verified live in Supabase:
+* migrations \`0001\` through \`0010\` are applied.
+* security advisor is clean.
+* server-only RLS is explicit.
+* session CAS, attachment single-use, anonymous usage consumption, starter-gift transfer, and idempotency fencing were exercised against the live database.
+* funnel test data was cleaned after the proofs.
+
+### Remaining blocks
+
+1. Production Worker integration. The production Cloudflare Worker source is in the separate \`reboot-os\` repository, not this checkout. The current funnel package is therefore not yet mounted into the live Worker router.
+2. Identity runtime proof. \`RealIdentityAdapter\` now calls \`GET /v1/me\`, but the exact live account-id field still needs one authenticated runtime proof.
+3. Profile persistence. Release and Source adapters need the user's real profile snapshot and a durable server-side writeback path.
+4. Pattern catalog authority. A real \`PatternCatalogAdapter\` still needs to resolve the 100 starter patterns from the existing Atüned catalog rather than the test fake.
+5. Reading authority. A real \`ReadingAdapter\` still needs to use the existing onboarding reading/presentation path.
+6. Entitlement authority. \`RealEntitlementAdapter\` currently proves the real SIGHT and price tables but intentionally returns the Free entitlement. Per-user entitlement state needs the real server authority.
+7. Payment authority. The real Stripe checkout, webhook, portal, and lifecycle code exists outside this repository and must be merged and deployed through the production Worker before \`PaymentAdapter\` can be made real here.
+8. Release-to-verification identity. The actual numeric address IDs used by release must be persisted/threaded into verification.
+9. End-to-end client path. The funnel must be mounted into the actual client and Worker so one real user can complete concern selection, starter gift, tutorial, Source, release, verification, account attachment, and billing.
+10. Production acceptance and rollback proof. Run the complete acceptance matrix against production-like infrastructure, then verify observability, rollback, and recovery procedures.
+
+The current package is therefore complete as a tested funnel domain and persistence subsystem, but the product as a whole is not yet complete.
