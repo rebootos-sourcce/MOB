@@ -34,8 +34,8 @@ const SUMMARY = [
   /^\s*=====\s*(\d+) passed, (\d+) failed\s*=====\s*$/,
   /^\s*(\d+) passed, (\d+) failed\s*$/,
 ];
-const TAP_PASS = /^(?:#|ℹ) pass (\d+)\s*$/;   // tap, or the spec reporter's info mark
-const TAP_FAIL = /^(?:#|ℹ) fail (\d+)\s*$/;
+const TAP_PASS = /^(?:#|\u2139) pass (\d+)\s*$/;   // tap, or the spec reporter's info mark
+const TAP_FAIL = /^(?:#|\u2139) fail (\d+)\s*$/;
 const has = (o, k) => !!o && Object.prototype.hasOwnProperty.call(o, k);
 
 function lines(text) {
@@ -120,7 +120,7 @@ function selfTest() {
     ['node --test tap, a failure', 'tap', '# pass 43\n# fail 1\n', false],
     ['node --test tap, no fail line', 'tap', '# pass 44\n', false],
     ['node --test tap, too few', 'tap', '# pass 40\n# fail 0\n', false],
-    ['node --test spec reporter, good', 'tap', 'ℹ pass 44\nℹ fail 0\n', true],
+    ['node --test spec reporter, good', 'tap', '\u2139 pass 44\n\u2139 fail 0\n', true],
     ['the funnel gate summary, no bars', 'plain', '\n  562 passed, 0 failed\n', true],
     ['the funnel gate summary, one short', 'plain', '\n  561 passed, 0 failed\n', false],
     ['a no count gate with its line', 'mon', '-----\n  all surfaces render\n', true],
