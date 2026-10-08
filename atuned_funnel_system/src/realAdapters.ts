@@ -260,15 +260,14 @@ export class RealIdentityAdapter implements IdentityAdapter {
     // inventing a second identity endpoint.
     const res = await this.fetchImpl(`${this.authApi}/v1/me`, {
       method: 'GET',
-      headers: { Authorization: `Bearer ${authToken'}`, 'Content-Type': 'application/json' },
+      headers: { Authorization: `Bearer ${authToken}`, 'Content-Type': 'application/json' },
     });
     if (!res.ok) {
-      throw new Error(`identity check failed: ${res.status'}`);
+      throw new Error(`identity check failed: ${res.status}`);
     }
     const body = (await res.json()) as { account?: { id?: string; userId?: string }; userId?: string };
     const userId = body.userId ?? body.account?.userId ?? body.account?.id;
     if (!userId) throw new Error('identity check returned no user id');
     return userId;
-  }
   }
 }
