@@ -50,8 +50,8 @@ npm test
 
 Historical baseline: 41 tests, 0 failures at round SG.
 
-Current CI verification: 43 tests, 43 passed on GitHub Actions at commit
-`4fa88364ef260a11e19f867640638d6019ae86cb`. The same workflow also rebuilt
+Current CI verification: 44 tests, 44 passed on GitHub Actions at commit
+`153ccded8123aa0d9dec068fbffee184edd2e777`. The same workflow also rebuilt
 the real engine, passed the engine gate, built the funnel, staged the site, and
 completed the Cloudflare Pages deployment.
 
@@ -369,3 +369,9 @@ The current package is therefore complete as a tested funnel domain and persiste
 The real release adapter now derives the numeric engine address from the actual \`seat:gate\` release key, returns it on \`ReleaseRef\`, and uses a UUID release id rather than a process-local counter. The release event persists the address ids. Verification reads the persisted release event when address ids are not supplied, and refuses to proceed when no trusted numeric identity exists.
 
 A funnel test now proves the release-to-verification path without passing address ids through the caller.
+
+### Final package verification
+
+The latest GitHub Actions run passed the full 44-test funnel suite, rebuilt the real engine, passed the engine gate, rebuilt the funnel, staged the site, and completed the Cloudflare Pages deployment.
+
+The last local test failure was a test setup defect. It was corrected to follow the real MIRROR presentation transition before confirmation. No production logic was relaxed to make the test pass.
