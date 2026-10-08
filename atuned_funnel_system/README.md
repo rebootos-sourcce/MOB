@@ -53,7 +53,7 @@ round SG wired" below for what moved the count from 22).
 
 
 
-### Idempotency replay block
+### Idempotency replay block\n\nReview pass 2 checked the ordering and replay payload directly. The idempotency result is completed only after the release, usage entry, and first-release session mutation succeed; the replay path returns the stored session/release/consumed tuple without invoking any adapter. The test now checks both structural equality and a single usage debit.
 
 Release idempotency now replays the exact stored result for a completed, byte-identical request instead of rejecting a completed retry. The stored result includes the returned session, release id, and consumed amount, so a retry does not execute the release engine or debit usage again. A different request hash still fails closed, and an in-progress claim still fails closed rather than running a second release.
 \n## What round SF fixed
