@@ -67,7 +67,7 @@ function authSession(){
   AUTH_READ=true;
   try{ var o=JSON.parse(STORE.get(AUTH_KEY)||'null');
    if(o&&typeof o.token==='string'&&o.token&&typeof o.email==='string')
-    AUTH_S={token:o.token, email:o.email}; }
+    AUTH_S={token:o.token, email:o.email, accountId:typeof o.accountId==='string'?o.accountId:null}; }
   catch(e){ AUTH_S=null; } }
  return AUTH_S;}
 /* True when the write landed, read back to prove it, the way storeSetAside in
@@ -445,8 +445,9 @@ function authForgot(mail){
    saying the session had already ended, which is the same result. */
 function authSignOut(){
  var s=authSession();
- if(!s)return Promise.resolve({ok:true, say:'Not signed in.'});
+ if(!s){profileSyncStop();return Promise.resolve({ok:true, say:'Not signed in.'});}
  return authCall('POST','/v1/auth/signout',null,s.token).then(function(r){
+  profileSyncStop();
   var gone=authForget();
   if(!gone)return {ok:false,
    say:'Signed out for this visit only. Storage would not take the change, so the sign in comes back on reload.'};
