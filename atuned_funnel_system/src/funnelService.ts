@@ -438,12 +438,6 @@ export class FunnelService {
       };
       await this.a.repo.appendUsageLedgerEntry(entry);
     }
-    await this.a.repo.completeIdempotencyClaim(
-      dupeScope,
-      opts.idempotencyKey,
-      JSON.stringify({ session: next, releaseId: release.id, consumed: amount }),
-    );
-
     /* State transition ownership: selectAddress() already moves the
        session ADDRESS -> RELEASE for the first-use journey. A rerun
        requested later from PRACTICE must NOT walk the onboarding state
@@ -456,6 +450,12 @@ export class FunnelService {
         .saveSession({ ...session, firstReleaseId: release.id, version: session.version + 1, updatedAt: this.a.clock.nowIso() })
         .then(() => ({ ...session, firstReleaseId: release.id, version: session.version + 1 }));
     }
+
+    await this.a.repo.completeIdempotencyClaim(
+      dupeScope,
+      opts.idempotencyKey,
+      JSON.stringify({ session: next, releaseId: release.id, consumed: amount }),
+    );
 
     await this.emit(
       next,
