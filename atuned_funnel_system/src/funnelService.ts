@@ -461,6 +461,7 @@ export class FunnelService {
     await this.a.repo.completeIdempotencyClaim(
       dupeScope,
       opts.idempotencyKey,
+      claim.claimToken,
       JSON.stringify({ session: next, releaseId: release.id, consumed: amount }),
     );
 
@@ -573,7 +574,7 @@ export class FunnelService {
       grantIssuedAt: now,
     };
     await this.a.repo.saveReferral(granted);
-    await this.a.repo.completeIdempotencyClaim(`referral:${referral.id}`, referral.id, granted.id);
+    await this.a.repo.completeIdempotencyClaim(`referral:${referral.id}`, referral.id, claim.claimToken, granted.id);
     return granted;
   }
 
@@ -592,11 +593,11 @@ export class FunnelService {
 
     const resolved = await this.a.payment.resolveWebhookEvent(eventId);
     if (!resolved) {
-      await this.a.repo.completeIdempotencyClaim('payment', eventId, 'no-op');
+      await this.a.repo.completeIdempotencyClaim('payment', eventId, claim.claimToken, 'no-op');
       return { granted: false };
     }
     const entitlement = await this.a.entitlement.grant(resolved.userId, resolved.planId, 'payment');
-    await this.a.repo.completeIdempotencyClaim('payment', eventId, entitlement.userId);
+    await this.a.repo.completeIdempotencyClaim('payment', eventId, claim.claimToken, entitlement.userId);
     return { granted: true };
   }
 
