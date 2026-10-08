@@ -92,6 +92,18 @@ test('a completed release request replays the exact durable result for the same 
   assert.equal(gift?.remaining, 99, 'replay must not consume another starter gift unit');
 });
 
+test('verification resolves release address identity from the persisted release event', async () => {
+  const adapters = buildFakeAdapters();
+  const service = new FunnelService(adapters);
+  const started = await startAndRecognize(service, 'anon_verify');
+  const { session } = await service.selectGround(started.id, 'money');
+  await service.selectAddress(session.id, '1:1');
+  const released = await service.requestRelease(session.id, '1:1', { idempotencyKey: 'verify-release' });
+  await service.recordReframe(released.session.id);
+  const verified = await service.verify(released.session.id, released.releaseId, 'something_moved');
+  assert.equal(verified.state, 'RITUAL');
+});
+
 test('a rejected reading returns to MIRROR rather than silently advancing', async () => {
   const adapters = buildFakeAdapters();
   const service = new FunnelService(adapters);
