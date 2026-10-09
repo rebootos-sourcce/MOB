@@ -941,9 +941,22 @@ async function flowGate(browser,FILE,ok,booted){
    await pg.clock.setSystemTime(new Date(AT.getFullYear(),AT.getMonth(),AT.getDate()+i,12));
    const d=await pg.evaluate(()=>{RIT.gview='today'; ritRender(); const g=document.querySelector('#rit .rv-goals');
     const DAY=86400000, off=new Date().getTimezoneOffset()*60000, today=Math.floor((Date.now()-off)/DAY), wd=(new Date(today*DAY).getUTCDay()+6)%7;
-    /* the rows due today, worked out off the plans: active, and today one of its days */
-    const due=ritPlans().filter(p=>!p.stop&&(!p.on||p.on.indexOf(wd)>=0)).length;
-    const rows=g.querySelectorAll('.rv-item').length;
+    /* EVERY ACTIVE RITUAL, AND NOT ONLY THE ONES DUE TODAY. This counted the
+       rituals due today against every row drawn, so it failed on each day the
+       Tuesday, Thursday and Saturday ritual is not set for, and the page was
+       right: Today is the Active list (DESIGN-flow-tools.md FT30), and
+       ritActiveBody (ui/ritual.js) draws every active ritual, the ones due
+       today first and the rest under Other days, named by their days so
+       nobody reads them as missed (round LT, "DUE IS NOT ACTIVE"). So active
+       and due are both worked out here off the plans, and the rows are read
+       in order with the Other days head where it sits. */
+    const dk=t=>Math.floor((Date.parse(t)-off)/DAY);
+    const run=ritPlans().filter(p=>!p.stop&&(!p.days||today<dk(p.from)+p.days));
+    const set=p=>!p.on||p.on.indexOf(wd)>=0, nm=p=>ritName(p.steps);
+    const due=run.filter(set).map(nm).sort(), rest=run.filter(p=>!set(p)).map(nm).sort();
+    const seq=[...g.querySelectorAll('.rv-item .rv-nm, .rv-other')].map(e=>e.classList.contains('rv-other')?'|':e.textContent);
+    const cut=seq.indexOf('|'), rows=g.querySelectorAll('.rv-item').length;
+    const above=(cut<0?seq:seq.slice(0,cut)).sort(), below=(cut<0?[]:seq.slice(cut+1)).sort();
     RIT.gview='week'; ritRender(); const k=document.querySelector('#rit .rv-goals .rv-wg'), mon=today-wd;
     const hd=[...k.querySelectorAll('.rv-wgh')];
     const want=[0,1,2,3,4,5,6].map(i=>['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][i]+new Date((mon+i)*DAY+off+12*3600000).getDate());
@@ -951,14 +964,15 @@ async function flowGate(browser,FILE,ok,booted){
     const st=[...k.querySelectorAll('.rv-wc')].filter(c=>/^Box Breathing,/.test(c.getAttribute('aria-label')))
      .map(c=>c.className.match(/rv-wc-(\w+)/)[1]);
     RIT.gview='today'; ritRender();
-    return {page:new Date().toDateString(), pwd:ritWd(ritToday0()), wd, rows, due,
+    return {page:new Date().toDateString(), pwd:ritWd(ritToday0()), wd, rows, run:run.length, due, rest, above, below,
      heads:hd.map(h=>h.textContent), want, now:hd.findIndex(h=>h.classList.contains('rv-now')),
      setOn:st.map((s,i)=>s==='off'?-1:i).filter(i=>i>=0)};});
    seen.push(d.page);
    ok(d.wd===i&&d.pwd===i,
     'FT30: '+tag+'the clock is on '+WDF[i]+' for the page and for this test alike, '+JSON.stringify({page:d.page,pwd:d.pwd,wd:d.wd}));
-   ok(d.rows===d.due&&d.due>0,
-    'FT30: '+tag+'on '+WDF[i]+' Today holds the Active rows, '+JSON.stringify({page:d.page,rows:d.rows,due:d.due}));
+   ok(d.rows===d.run&&d.due.length>0&&JSON.stringify(d.above)===JSON.stringify(d.due)&&JSON.stringify(d.below)===JSON.stringify(d.rest),
+    'FT30: '+tag+'on '+WDF[i]+' Today holds every active ritual, the ones due today first and the rest under Other days, '
+    +JSON.stringify({page:d.page,rows:d.rows,run:d.run,due:d.due,rest:d.rest,above:d.above,below:d.below}));
    ok(JSON.stringify(d.heads)===JSON.stringify(d.want)&&d.now===i&&JSON.stringify(d.setOn)===JSON.stringify([1,3,5]),
     'FT30: '+tag+'on '+WDF[i]+' This week is a calendar week, Monday first with each date and today marked, and a ritual set for Tuesday, Thursday and Saturday is drawn on those three days and no other, '+JSON.stringify(d));
   }
