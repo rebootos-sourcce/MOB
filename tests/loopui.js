@@ -105,7 +105,7 @@ const BARE=function(root){
   ok(f.visible===1,'one patterns block on the Field screen, got '+f.visible);
   ok(f.next==='46','the Next names address 46, the one the words named, got '+f.next);
   ok(!/\bday\s*\d|\d+\s*days?\b|streak/i.test(f.text),'no day count and no streak in the block');
-  ok(/from your words/.test(f.text)&&/Not answered yet/.test(f.text),'the chain says where the pattern came from and that it is unanswered');
+  ok(/from your words/.test(f.text)&&/not said yes or no to this pattern yet/.test(f.text),'the chain says where the pattern came from and that it is unanswered');
 
   /* 3. the Next acts on the address it names */
   const pressed=await p.evaluate(()=>{var got=null, keep=window.relPick;
@@ -144,7 +144,7 @@ const BARE=function(root){
   ok(q.conf===2,'two patterns wear Confirmed, got '+q.conf);
   ok(/practice for Martyrdom\. No reason was recorded\./.test(q.text),'the declined practice names its pattern and says no reason was recorded');
   ok(/came due 3 times in a row/.test(q.text),'the miss run is said once, as a run');
-  ok(/You chose a practice for it/.test(q.text),'the chain says how 46 was confirmed');
+  ok(/You chose a practice to work on this pattern/.test(q.text),'the chain says how 46 was confirmed');
   ok(!/\bday\s*\d|\d+\s*days?\b|streak/i.test(q.text),'still no day count');
 
   /* 7. render is not slowed by the graph: the read is cached on the record */
