@@ -137,10 +137,23 @@ const BARE=function(root){
 
   /* 6. a record with practice on it */
   await p.evaluate(SETUP,true); await p.waitForTimeout(300);
+  /* PRACTISED IS READ OFF THE RECORD, NOT TYPED. This asserted 1, the one
+     completed event SETUP adds, and went red at both widths the day after it
+     landed: round RB (loadP, ritexBuild) gave every worked example a ritual
+     day log on CURP.rituals, and Angela's has days marked done. The product
+     was right and the test was stale. The meaning a person reads on the
+     label is "Practised counts the rituals on your record that were done",
+     and engine/trace.js makes a done day a practice event and a day with
+     done false none, so the figure is those days plus the one event. It
+     read 18 against the typed 1 at b2b7a03. SETUP resets practice and trace
+     and leaves the log, which is the record a person sees on Angela. */
   const q=await p.evaluate(()=>{var h=document.getElementById('loopside');
    var fig={}; h.querySelectorAll('.lp-f').forEach(function(x){fig[x.querySelector('.lp-fl').textContent.trim()]=x.querySelector('.lp-fv').textContent.trim();});
-   return {fig:fig, text:h.innerText, conf:h.querySelectorAll('.lp-st.lp-confirmed').length};});
-  ok(q.fig.Confirmed==='2'&&q.fig.Declined==='1'&&q.fig.Practised==='1','the counts read 2 confirmed, 1 declined, 1 practised, got '+JSON.stringify(q.fig));
+   var days=(CURP.rituals||[]).filter(function(x){return x&&typeof x==='object'&&x.done!==false;}).length;
+   return {fig:fig, days:days, text:h.innerText, conf:h.querySelectorAll('.lp-st.lp-confirmed').length};});
+  const prac=String(1+q.days);
+  ok(q.fig.Confirmed==='2'&&q.fig.Declined==='1'&&q.fig.Practised===prac,'the counts read 2 confirmed, 1 declined, '
+   +prac+' practised (the 1 event and the '+q.days+' ritual days the record holds done), got '+JSON.stringify(q.fig));
   ok(q.conf===2,'two patterns wear Confirmed, got '+q.conf);
   ok(/practice for Martyrdom\. No reason was recorded\./.test(q.text),'the declined practice names its pattern and says no reason was recorded');
   ok(/came due 3 times in a row/.test(q.text),'the miss run is said once, as a run');
