@@ -12,6 +12,9 @@
          engine's denied list, the counter's numbers are the engine's, the
          list never claims a seat was charged by a denied word alone, and
          the quiz never says it counted one.
+     S2  a charge word about someone else. The page draws exactly the
+         engine's others as set aside and not struck, the counter names
+         them, and the quiz makes no card of them and shows them back.
 
    Checked against a known bad case first, the standing rule: every check
    here was run against main's own build before the change and failed there
@@ -51,17 +54,18 @@ const type = async (p, t) => { await p.fill('#sttext', t); await p.waitForTimeou
    cover. Missing lists come back null, which is what main's build gives. */
 const story = p => p.evaluate(() => {
   const t = ST_TEXT, P = ST_PARSED, nm = normMap(t);
-  const quote = list => {
+  const quote = (list, from) => {
     if (!list) return null;
     const seen = {}, out = [];
     list.forEach(h => {
-      const a = nm.map[(h.negAt != null ? h.negAt : h.at) + 1], b = nm.map[h.at + String(h.t).length] + 1;
+      const a = nm.map[(h[from] != null ? h[from] : h.at) + 1], b = nm.map[h.at + String(h.t).length] + 1;
       if (seen[a]) return; seen[a] = 1; out.push(t.slice(a, b)); });
     return out; };
   return {
     text: t,
-    marks: [...document.querySelectorAll('#sthl mark')].map(m => ({ t: m.textContent, neg: m.classList.contains('neg') })),
-    denied: quote(P && P.denied),
+    marks: [...document.querySelectorAll('#sthl mark')].map(m => ({ t: m.textContent, neg: m.classList.contains('neg'), oth: m.classList.contains('oth') })),
+    denied: quote(P && P.denied, 'negAt'),
+    others: quote(P && P.others, 'whoAt'),
     ctr: (document.getElementById('stctrt') || {}).textContent || '',
     list: (document.getElementById('stimps') || {}).textContent || '',
     commit: (document.getElementById('stapply') || {}).textContent || ''
@@ -79,7 +83,7 @@ const story = p => p.evaluate(() => {
     const struck = s.marks.filter(m => m.neg).map(m => m.t);
     ok(!!s.denied && s.denied.join('|') === 'not angry', 'the engine lists the denied word on the parse: ' + JSON.stringify(s.denied));
     ok(!!s.denied && struck.join('|') === s.denied.join('|'), 'the struck marks are exactly the engine\'s denied words: ' + JSON.stringify(struck));
-    const kept = s.marks.filter(m => !m.neg).length, k = struck.length;
+    const kept = s.marks.filter(m => !m.neg && !m.oth).length, k = struck.length;
     const mk = s.ctr.match(/(\d+) kept/), mn = s.ctr.match(/(\d+) set aside after a no/);
     ok(!!mk && +mk[1] === kept, 'the counter\'s kept is the marks that count, ' + kept + ': ' + JSON.stringify(s.ctr));
     ok(!!mn && +mn[1] === k, 'and its set aside is the engine\'s denied count, ' + k + ', said in plain words: ' + JSON.stringify(s.ctr));
@@ -114,6 +118,41 @@ const story = p => p.evaluate(() => {
     ok(r.words.length > 0 && r.words.every(w => !/scared/.test(w)), 'no card quotes the denied word as one of the words it read: ' + JSON.stringify(r.words));
     ok(!/counts a word that comes after a no/.test(r.text), 'and no sentence says the reader counted it anyway');
     ok(/“not scared”/.test(r.text), 'the denied words are still shown back, in the person\'s own letters');
+    ok(!errs.length, 'no page errors on the quiz: ' + errs.join(' | '));
+    await cx.close();
+  }
+
+  console.log('\n=== S2 · someone else\'s charge is set aside on the page, and said so ===');
+  {
+    const p = await open(browser, 1600, 1000);
+    await type(p, 'He is furious. I was scared.');
+    const s = await story(p);
+    const set = s.marks.filter(m => m.oth).map(m => m.t);
+    ok(!!s.others && s.others.join('|') === 'He is furious', 'the engine lists the word about someone else on the parse: ' + JSON.stringify(s.others));
+    ok(!!s.others && set.join('|') === s.others.join('|') && !s.marks.some(m => m.oth && m.neg),
+      'the page draws exactly those as set aside, from the person to the word, and not struck: ' + JSON.stringify(s.marks));
+    const kept = s.marks.filter(m => !m.neg && !m.oth).length, mo = s.ctr.match(/(\d+) about someone else/), mk = s.ctr.match(/(\d+) kept/);
+    ok(!!mo && +mo[1] === set.length && !!mk && +mk[1] === kept,
+      'the counter keeps ' + kept + ' and sets ' + set.length + ' aside as about someone else: ' + JSON.stringify(s.ctr));
+    await type(p, 'He is furious.');
+    const d = await story(p);
+    ok(d.commit === 'Commit', 'someone else\'s charge alone gives Commit nothing to count: ' + JSON.stringify(d.commit));
+    ok(!p.errs.length, 'no page errors on the Story page: ' + p.errs.join(' | '));
+    await p.cx.close();
+
+    const cx = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
+    const q = await cx.newPage(); const errs = [];
+    q.on('pageerror', e => errs.push(String(e && e.message || e)));
+    await q.goto(QUIZ, { waitUntil: 'load' });
+    const r = await q.evaluate(() => {
+      const t = 'He was furious with me. I felt ashamed.';
+      const ps = parseStory(t), h = storyLit(ps, t, read(scored().p).reading);
+      const box = document.createElement('div'); box.innerHTML = h;
+      return { text: box.textContent, cards: [...box.querySelectorAll('.sab[data-card]')].map(c => c.getAttribute('data-card')),
+        words: [...box.querySelectorAll('.sab .sl')].map(e => e.textContent).filter(x => /^Your words:/.test(x)) };
+    });
+    ok(r.cards.indexOf('Anger') < 0 && r.words.every(w => !/furious/.test(w)), 'the quiz makes no card of his anger and quotes it on none: ' + JSON.stringify(r));
+    ok(/“He was furious”/.test(r.text), 'and it shows his words back, in the person\'s own letters, as not counted');
     ok(!errs.length, 'no page errors on the quiz: ' + errs.join(' | '));
     await cx.close();
   }

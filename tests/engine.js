@@ -5155,7 +5155,9 @@ g('39 · the sentence is read once, and the marks land on the letters');
  /* EVERY MARK IS ITS OWN HIT'S TEXT, read through the same normalisation. A
     mark may span punctuation the hit does not, which is the whole point, so
     they are compared normalised rather than literally. */
- const byText={}; p.hits.forEach(h=>{byText[String(h.t)]=1;});
+ /* every hit the scanner found, counted or set aside, S1 and S2: p.hits is
+    what counts, and a mark is drawn for a word read and set aside too */
+ const byText={}; E.storyHits(p).forEach(h=>{byText[String(h.t)]=1;});
  const stray=marks.filter(m=>!byText[normMap(story.slice(m.s,m.e)).s.trim()]);
  ok(stray.length===0,'each mark carries a stretch the scanner actually scored, '
   +stray.length+' do not'+(stray[0]?': '+JSON.stringify(story.slice(stray[0].s,stray[0].e)):''));
@@ -5163,7 +5165,7 @@ g('39 · the sentence is read once, and the marks land on the letters');
     or merged into the mark that covers it, which is the scanner's precedence:
     a phrase outranks the words inside it and an adjective on the same word as a
     placed term joins it rather than drawing twice. */
- const uncovered=p.hits.filter(h=>{
+ const uncovered=E.storyHits(p).filter(h=>{
   if(h.at==null)return false;
   const a=nm0=>nm0, want=String(h.t);
   return !marks.some(m=>normMap(story.slice(m.s,m.e)).s.indexOf(want)>=0);});
@@ -7435,6 +7437,76 @@ g('S1 · a word said with a no is kept, named as denied, and adds nothing to any
  const cry=srcHear("I can't stop crying.");
  ok(!cry.unread&&cry.seats.some(s=>s.seat==='heart'&&s.mentions===1&&s.negated===0),
   'and hears the crying in "I can\'t stop crying", which it used to drop as negated: '+JSON.stringify(cry.seats.map(s=>[s.seat,s.mentions,s.negated])));
+}
+
+g('S2 · a charge word about someone else is kept, listed, and never scored on the writer');
+/* REVIEW-sniffer-audit-2026-10-09.md, ruling 2 and package S2, and guard 2
+   of SNIFFER_SPEC.md, "never score another person", broken on main:
+   "he shouted at me" read Anger 24 at the solar plexus, exactly "I shouted at
+   him". A charge word whose clear subject in its own comma group is a third
+   person, with no first person between, is kept on the parse, flagged
+   other, naming who, listed in others, and scored nowhere. No subject, or a
+   first person subject, is the writer, which is what a journal is. An
+   unclear subject is held and says it is unclear. Held here as pairs and
+   named edges, never as a count. */
+{
+ const {parseStory,scanStory,marksOf,sniffAxes,srcHear}=E;
+ const sum=o=>Object.keys(o||{}).reduce((a,k)=>a+Math.abs(o[k]),0);
+ const oth=p=>(p&&p.others)||[];
+ const writer=t=>{const p=parseStory(t);return oth(p).length===0&&(p.denied||[]).length===0&&p.hits.length===scanStory(t).length&&sum(p.bands)>0;};
+ const held=(t,who)=>{const p=parseStory(t);
+  return oth(p).length>0&&oth(p).every(h=>h.other===true&&(!who||h.who===who))&&sum(p.bands)===0&&p.imprints.length===0
+   &&sum(p.charges)===0&&p.named.length===0&&sniffAxes(p).every(r=>r.shadow===0);};
+ const say=t=>{const p=parseStory(t);return JSON.stringify(t)+': bands '+JSON.stringify(p.bands)+', others '+JSON.stringify(oth(p).map(h=>[h.t,h.who]));};
+ /* the review's pairs, each of which read the same on main */
+ [['I shouted at him.','He shouted at me.','he'],['I am furious.','He is furious.','he'],['I lied to her.','She lied to me.','she']]
+  .forEach(([me,them,who])=>{
+   ok(JSON.stringify(parseStory(me).bands)!==JSON.stringify(parseStory(them).bands),'the pair differs, '+say(me)+' against '+say(them));
+   ok(writer(me),'the writer\'s own reads as before: '+say(me));
+   ok(held(them,who),'and the other person\'s is held out of every reading and names "'+who+'": '+say(them));});
+ /* the rule's edges, by name */
+ ok(writer('He made me furious.'),'a first person between the subject and the word reads the writer: '+say('He made me furious.'));
+ ok(writer('So angry.')&&writer('Terrified.')&&writer('Angry again, all day.'),'no subject is the writer, the shape of a journal');
+ ok(writer('It was terrifying.')&&writer('We were terrified.'),'"it" and "we" are not someone else');
+ ok(writer('He left and I was devastated.')&&writer('He left me devastated.'),'the writer after a third person, by "I" or by "me", is the writer');
+ ok(held('My mother was furious.','my mother'),'a family word opening its clause is someone else: '+say('My mother was furious.'));
+ ok(writer('I called my mother and was furious.'),'and the same word after a verb is who was spoken to, not who felt it: '+say('I called my mother and was furious.'));
+ const mf=parseStory('When my mother shouted I froze.');
+ ok(oth(mf).length===1&&oth(mf)[0].t==='shouted'&&mf.hits.some(h=>h.t==='froze'),
+  'one sentence, two people: her shouting is held and my freezing is read, '+say('When my mother shouted I froze.'));
+ ok(held('Then Sarah screamed at me.','sarah'),'a name opening a clause is someone else: '+say('Then Sarah screamed at me.'));
+ ok(writer('I went to London and felt terrified.'),'and a capital after a word like "to" is a place, not a person: '+say('I went to London and felt terrified.'));
+ const ha=parseStory('Her anger scared me.');
+ ok(oth(ha).length>=1&&sum(ha.bands)===0,'her anger is hers, and "her anger scared me" has her anger as its subject: '+say('Her anger scared me.'));
+ ok(writer('I saw his face and froze.'),'a possessive after a verb is what was seen, and the freezing is mine: '+say('I saw his face and froze.'));
+ ok(held('I made her cry.','her')&&held('I saw him crying.','him'),'a word straight after her or him is hers or his: '+say('I made her cry.'));
+ ok(held('My best friend was devastated.'),'a two word family name is one person: '+say('My best friend was devastated.'));
+ /* A LOSS IS THE WRITER'S, WHOEVER IT HAPPENED TO. The first cut of the
+    reader held "My father died" as someone else's, measured over the book
+    and the fuzzy corpus; told that, a bereaved person is told the worst
+    thing this product could say. */
+ ["My father died.","He killed himself last year.","My brother took his own life.","My wife divorced me.",
+  "I've been on my own since he died.","My father died and I feel ashamed."].forEach(t=>
+  ok(writer(t),'a death or a loss is the writer\'s, whoever it happened to: '+say(t)));
+ ok(Array.isArray(E.WHO_LOSS)&&E.WHO_LOSS.length>0&&E.WHO_LOSS.every(k=>E.LEX[k]&&E.LEX[k][E.LEX_SEAT]==='heart'),
+  'every loss head is a heart key in the lexicon, so the list cannot drift from the table: '
+  +JSON.stringify((E.WHO_LOSS||[]).filter(k=>!E.LEX[k]||E.LEX[k][E.LEX_SEAT]!=='heart')));
+ /* unclear is held, and says it is unclear */
+ const yu=parseStory('You feel so alone.');
+ ok(held('You feel so alone.')&&oth(yu).every(h=>h.unclear===true),'"you" is not clearly the writer, so it is held and marked unclear: '+say('You feel so alone.'));
+ ok(writer('I told you I was scared.'),'and "I" nearer the word than "you" is the writer');
+ /* the shipped gates' own stories keep reading the writer */
+ ok(writer('I was scared to call my mother. My chest went tight and I felt ashamed that I still flinch.'),'the funnel gate\'s story reads as it did');
+ ok(writer('Still afraid when he called.')&&writer('I am afraid of what he says next.'),'and the Talk gate\'s, where "he" comes after the word');
+ /* kept, listed, marked */
+ const hs=parseStory('He shouted at me.'), hm=marksOf('He shouted at me.',hs);
+ ok(hm.length===1&&hm[0].other===true&&hm[0].whoFrom===0,'the mark is kept, flagged other, and quotes from "He": '+JSON.stringify(hm.map(m=>[m.other,m.whoFrom])));
+ reset(3,0,6); const s0=JSON.stringify(S.charge); E.applyStory('He is furious.');
+ ok(JSON.stringify(S.charge)===s0,'committing it moves no charge on the writer\'s field');
+ ok(srcHear('He is furious.').unread,'and Source AI does not hear it as the writer\'s');
+ /* a denial is a denial whoever said it, and is listed once */
+ const hn=parseStory('He was not angry.');
+ ok((hn.denied||[]).length>0&&oth(hn).length===0,'a word said with a no is denied first and is not also listed as someone else\'s');
 }
 
 g('SB · the saboteur card is the same 33 as SABDEF, and its opposites are read off SAB33 and CHILD');
