@@ -525,3 +525,43 @@ defined by the canon rather than by an outcome. What **is** learnable is whether
 the reading is stable, whether it is reproducible, whether it agrees with a
 practitioner, and whether a person accepts it. Those are four different questions
 and only the first two can be measured without asking anybody anything.
+
+---
+
+## UPDATE · 9 OCTOBER 2026 · TESTS THE AUDIT REQUIRES, AND THE MEASUREMENT THAT CHANGES
+
+Source: `REVIEW-sniffer-audit-2026-10-09.md`. How to work: `HANDSHAKE-sniffer.md`.
+
+**The stability claim changes.** Section "Measured, before and after" holds that a
+vocabulary change lowers no existing reading, 0 over 9,431 book sentences. Denial and
+attribution are *meant* to lower some readings. The new claim, and the only one a
+semantic change may make, is: **every reading that went down contains a negator
+before a hit in its own clause, or a third person subject, found by a scan that does
+not call the new code, and no reading went up.** Print the counts and ten examples of
+each kind. Measure with `proto/sniffer/before-after.js`.
+
+**New tests, each written to fail on today's `main` first:**
+
+| Package | Test | Fails today because |
+|---|---|---|
+| S1 | each pair differs: "I was angry" / "I was not angry", "I am sad" / "I am not sad", "I am ashamed" / "I am no longer ashamed" | both read the same |
+| S1 | "I am not afraid. Afraid now." keeps the second sentence's charge | guards the sentence floor |
+| S1 | "I can't stop crying" is not a denial | guards the false negative negation brings |
+| S1 | a denied word is listed, struck, and adds nothing to axes, bands, charges or imprints | counted today |
+| S1 | the struck mark and the score agree on every pair above | they disagree today |
+| S2 | "I shouted at him" differs from "he shouted at me"; "he is furious" differs from "I am furious"; "she lied to me" differs from "I lied to her" | all identical today |
+| S2 | "he made me furious" reads the writer (a first person sits between) | guards the rule's edge |
+| S2 | an entry with no subject ("so angry", "terrified") reads the writer | guards a journal's normal shape |
+| S2 | a held third person hit is listed as about someone else | no such list today |
+| S3 | `sniffStory(t).saboteurs` equals `sniffSaboteurs(axes)` in length | sliced to six today |
+| S4 | no renderer prints "you said" beside an address the person did not name | not gated today |
+| consumers | the quiz sentence and the Story lane note no longer claim a negated word was counted | both claim it today |
+
+**Existing groups that must stay green and are most likely to move:** 11, 32, 33,
+34, 36d, QZ, and any group that asserts a reading for a sentence with "not", "no",
+"never" or a third person.
+
+**Failure table, updated.** Rows "negation is not read" and "attribution is not read"
+change from *question 3* and *question 4* to *package S1* and *package S2*. Row
+"intensity modifiers are not read" changes from *not specified* to *partial, a
+table exists, SB2b*. All other rows are unchanged.
