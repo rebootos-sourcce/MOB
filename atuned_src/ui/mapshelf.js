@@ -17,7 +17,7 @@ function renderShelf(r,seats,speed,stop,dom,loadedTot,marks){
      on the body every seat passes everything and the ring read 100%, a share
      printed off an empty field. It holds a dash until something is held.
      Round J13. */
-  +cr(K2B[dom.p.k], loadedTot?speed*100:0, {size:'lg',label:'flow',hot:false,raw:loadedTot?null:'\u2013'})
+  +cr(K2B[dom.p.k], loadedTot?speed*100:0, {size:'lg',label:'Flow',hot:false,raw:loadedTot?null:'\u2013'})
   +'<div class="pm-sub">'+(stop?('stops at the '+stop.p.n.toLowerCase())
     :(loadedTot?'passing every seat':'nothing held'))+'</div></div>'
   /* The label used to swap identity with the state, reading "Heaviest seat"

@@ -419,7 +419,7 @@ function renderAcc(r){
      It lies on the stage again, round LR, level with zoom in the lower left,
      and keeps the orb: zoom's circles beside it are 44, the orb's size. */
   +cr('Crown',un?0:a.pct,{size:'orb',raw:un?'\u2013':a.pct.toFixed(0),
-    label:'accuracy',hot:false})
+    label:'Accuracy',hot:false})
   +'</button>';
  var bt=document.getElementById('accbtn');
  if(bt)bt.onclick=function(){runAccDrill();};}

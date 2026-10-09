@@ -113,7 +113,7 @@ function anaRender(){
  out+='<div class="ab-hero">'
   /* the ring opens coherence in the trail, round RB: the laws that make it,
      weakest first */
-  +cr(r.darkB,r.unread?0:r.CQ,{size:'lg',label:'coherence',act:!r.unread,data:r.unread?'':'data-ana="met|cq"',
+  +cr(r.darkB,r.unread?0:r.CQ,{size:'lg',label:'Coherence',act:!r.unread,data:r.unread?'':'data-ana="met|cq"',
     /* HIGH COHERENCE IS THE GOOD END, so it never prints red. cr reddens
        anything past ninety, which is right for a charge and backwards for
        every reading whose high end is the one a person is working toward. */
