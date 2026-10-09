@@ -201,6 +201,7 @@ if(typeof module!=='undefined'&&module.exports){
                   sniffDepth:sniffDepth, sniffOffer:sniffOffer,
                   SPEC_POLE:SPEC_POLE, LEXCOMP:LEXCOMP, LAWVIO:LAWVIO,
                   lexComposite:lexComposite, LEXCOMPRUN:LEXCOMPRUN,
+                  LEXPROF:LEXPROF, lexProf:lexProf, LEXPROFRUN:LEXPROFRUN,
                   SAB_SHOW:SAB_SHOW, OFFER_MAX:OFFER_MAX,
                   GATE_BASE:GATE_BASE, GATE_STEP:GATE_STEP,
   /* the band edge. sabMember is the ramp itself and the gate asserts it is
