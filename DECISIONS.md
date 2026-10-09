@@ -2808,3 +2808,13 @@ The owner supplied a sniffer design and gap audit (8 October) and asked for a re
 - **The cheaper Mirror default:** one question per run, with a shared run key on its evidence rows so three rows are not read as three confirmations. Per-address answers wait for the owner.
 - **Points exist only as a ruling** (they only rise); nothing is built until accounts. "Sight is not for sale" stays reversed (1 October).
 - **Open and the owner's:** D1 to D7 in `REVIEW-audit-2026-10-09/pass3.md`, each with a default and a cost; the law divisor (E43); Joy, Surprise, Avoider versus Innocent.
+
+## The voice is ElevenLabs and there is no fallback, 9 October (P0)
+
+His words: "fix the 11 Labs voice. The audio is still defaulting to the Claude default voice, and I want that removed so that it, there's no fallback to it. Add that to your P0. It's a blocker." This repeats round NS ("swap out the voice, the Claude voice, with the 11 labs voice"). The "Claude default voice" is the browser's own built in speech, which the release used whenever the studio voice was off (its default), nobody was signed in, or the studio voice failed.
+
+- **The browser voice is deleted, not hidden.** No call into the browser's speech remains anywhere in the app or the funnel pages. `tests/voice.js` scans the source for it and plants a spy where it was; it fails if anything touches it.
+- **One switch, on by default, and the person's.** `Voice` in the release panel. The second switch ("Studio voice", off by default) is retired; `ui.studio` stays in the record only so older records load. The note beside the switch says who speaks and what they are given, before a word is spoken, as the privacy page already promises ("the voice that reads a release ... says what it sends where you use it").
+- **A line is spoken by ElevenLabs or it is not spoken, and the screen says why.** Signed out: the switch says "Sign in to hear it. Until then the run reads on the screen." Server refusing: the status line says the run reads on the screen, the server is asked once and not once per line, and the walker keeps the reading clock. Nothing else ever speaks.
+- **Defaults taken, each the owner's to overturn:** (1) the voice works for signed in people only, because the server needs an account to hold a daily budget against; a first visit that has not signed in reads on the screen. (2) The owner's own recorded welcome stays his, unchanged. (3) The daily budget is 20000 characters per account, a line already rendered is served from the cache and costs nothing.
+- **What only the owner can do for it to speak:** the ElevenLabs API key and the Voice ID, as two GitHub secrets on the Reboot-OS repository. Steps are in Reboot-OS pull request 13.

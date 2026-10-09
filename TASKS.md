@@ -33511,3 +33511,11 @@ Source: `REVIEW-audit-2026-10-09/` (five passes). Plan block: PLAN.md section W.
 - [ ] **P5-D, P5-C, P5-E, P5-A step 2. P2, public.** Today answers back, one run one answer, client doors for crash, export, delete, consent (pass 5).
 - [ ] **Block A, B, C. Public.** Privacy sentences kept true by a test, delete everywhere, designed sync (pass 3).
 - [ ] **Regenerate the committed build products** (`source.html`, `engine.js`, `atuned-packed.html`, `funnel/dist`) after the last merge so the publicly reachable files are current.
+
+## P0, 9 October: the voice is ElevenLabs and nothing else
+
+- [ ] **V1. P0. Worker route on main.** `POST /v1/voice/synthesize`, its meter (migration `0011_voice`), tests, deploy secret steps and a live smoke line. Reboot-OS pull request 13. Done when merged and the deploy is green.
+- [ ] **V2. P0. The app has no browser voice.** `ui/sound.js` and `ui/release.js` rewritten; `tests/voice.js` is a required gate. MOB pull request "voice only".
+- [ ] **V3. P0. Owner.** Add `ELEVENLABS_API_KEY` and `ELEVENLABS_VOICE_ID` as GitHub secrets on Reboot-OS, then re-run the `server` workflow. Until then the app is silent and says the voice is not switched on at the server.
+- [ ] **V4. P1. A first visit that is not signed in is silent.** Allow the first release a capped voice for a visit that holds a first visit pass (needs a per visit budget on the server).
+- [ ] **V5. P1. The voice has never been heard on the live site.** First real check is the owner's ears after V1 to V3; add a live render check to the deploy smoke once a test account exists.

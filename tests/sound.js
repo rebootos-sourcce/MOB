@@ -406,7 +406,6 @@ async function soundGate(browser,FILE,ok,booted){
  await pg.waitForTimeout(1600);
  const walk=async bite=>pg.evaluate(async bite=>{
   REL_WORD_S=0.0004; REL_GAP_S=0.001; REL_HEAD_S=0; REL_FRAME_S=0;
-  if(window.speechSynthesis)speechSynthesis.speak=function(u){ setTimeout(function(){ if(u.onend)u.onend({}); },1); };
   loadP(0); CHARGES.forEach(c=>{S.charge[c]=7;});
   CURP.ui.sfxoff=false; CURP.ui.quiet=false; CURP.ui.voice=false; CURP.ui.tone=false;
   var keepRoom=window.sfxRoomHeld;

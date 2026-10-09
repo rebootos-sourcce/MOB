@@ -45,9 +45,10 @@ function blankProfile(name){
      profile written before the ruling cannot have set by accident (the old
      sfx:false was the blank's own default and not a choice, so it is
      ignored and kept only so an older record still validates). studio is the
-     ElevenLabs voice in the release, off: the browser voice is the default by
-     ruling, and a voice that sends each line to a company over the network is
-     one a person chooses, never one they find already on. */
+     retired second switch for the ElevenLabs voice. ElevenLabs is now THE
+     voice (9 October, no fallback to a browser voice), so the one switch is
+     voice above, and studio is kept only so a record written before the
+     ruling still validates; nothing reads it. */
   ui:{quiet:false, model:false, tone:false, voice:true, buzz:false, practitioner:false, sfx:false, sfxoff:false, onboarded:false, tutorialSeen:false, paidWelcomed:false, studio:false},
   /* what the person said their type is, and what it wrote. null until stated. */
   seed:null,

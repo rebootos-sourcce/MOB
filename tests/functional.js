@@ -5019,12 +5019,14 @@ console.log('\n=== the welcome after paying shows once and says the loop ===');
  await tp.close();
 }
 
-console.log('\n=== the studio voice: opt in, signed in only, and a failure falls back out loud ===');
-/* The ElevenLabs path behind the browser voice (ui/sound.js, THE STUDIO VOICE).
-   The Worker is faked with a route, so the binary half of authCall is held by a
-   real request and a real Blob, and nothing leaves the machine. Then the walker's
-   seam, relSay, with authVoice and speak stubbed, because what is held there is
-   the decision and not the sound card. */
+console.log('\n=== the voice: ElevenLabs only, signed in only, and a failure is silence with a word, never another voice ===');
+/* The ElevenLabs path (ui/sound.js, THE STUDIO VOICE), which is the only voice
+   there is: the owner ruled on 9 October that the audio must not default to
+   the browser's own voice, and there is no fallback to it. The Worker is faked
+   with a route, so the binary half of authCall is held by a real request and a
+   real Blob, and nothing leaves the machine. Then the walker's seam, relSay,
+   with authVoice stubbed, because what is held there is the decision and not
+   the sound card. tests/voice.js holds the same contract end to end. */
 {
  const tp=await browser.newPage({viewport:{width:1600,height:1000}});
  const terr=[]; tp.on('pageerror',e=>terr.push(e.message));
@@ -5035,24 +5037,27 @@ console.log('\n=== the studio voice: opt in, signed in only, and a failure falls
   return r.fulfill({status:200,contentType:'audio/mpeg',body:Buffer.from([0x49,0x44,0x33,4])});});
  const o=await tp.evaluate(async()=>{
   const wait=ms=>new Promise(r=>setTimeout(r,ms));
-  loadP(0); const api0=AUTH_API, av0=authVoice, sp0=speak; AUTH_API='https://voice.stub.test';
+  /* a spy where the browser's own speech call is: nothing may reach it */
+  window.__ss=0; try{ if(window.speechSynthesis)speechSynthesis.speak=function(){window.__ss++;}; }catch(e){}
+  loadP(0); const api0=AUTH_API, av0=authVoice; AUTH_API='https://voice.stub.test';
   const out={};
   authForget();
-  out.outRow=relStudioRow(); out.outOn=relStudioOn(); out.outCall=await authVoice('I let go of fear.','list');
+  out.outRow=relVoiceRow(); out.outOn=relVoiceOn(); out.outSay=relSay({kind:'pass',text:'I let go of fear.'},function(){},function(){});
+  out.outCall=await authVoice('I let go of fear.','list');
   authKeep({token:'tok_test',email:'v@x.co'});
-  out.inRow=relStudioRow(); out.blankOn=relStudioOn();
+  out.inRow=relVoiceRow(); out.blankOn=relVoiceOn();
   out.real=await authVoice('I let go of fear.','list'); out.realSize=out.real.blob&&out.real.blob.size;
   out.refused=await authVoice('refused','list');
-  CURP.ui.studio=true; out.chosenOn=relStudioOn();
-  /* the server is not set up: the line is still said, in the browser voice, and the run says why */
-  const asked=[], said=[]; RUN.studioLost=false;
+  CURP.ui.voice=false; out.offOn=relVoiceOn(); out.offSay=relSay({kind:'pass',text:'I let go of fear.'},function(){},function(){});
+  CURP.ui.voice=true; out.chosenOn=relVoiceOn();
+  /* the server is not set up: the line is NOT said in any other voice, the run says why, and goes on at reading pace */
+  const asked=[]; let failed=0; RUN.studioLost=false;
   authVoice=function(t,s){ asked.push(s); return Promise.resolve({ok:false,status:503}); };
-  speak=function(t){ said.push(t); return true; };
-  relSay({kind:'pass',text:'I let go of fear.'},function(){},function(){}); await wait(30);
-  out.asked=asked.slice(); out.said=said.slice(); out.lost=RUN.studioLost;
+  relSay({kind:'pass',text:'I let go of fear.'},function(){},function(){failed++;}); await wait(30);
+  out.asked=asked.slice(); out.failed=failed; out.lost=RUN.studioLost;
   out.status=document.getElementById('status').textContent;
-  relSay({kind:'pass',text:'I let go of shame.'},function(){},function(){}); await wait(30);
-  out.askedAfter=asked.length; out.saidAfter=said.slice();
+  out.second=relSay({kind:'pass',text:'I let go of shame.'},function(){},function(){}); await wait(30);
+  out.askedAfter=asked.length;
   /* the frame is the slower style, the list the steadier one */
   RUN.studioLost=false; asked.length=0;
   relSay({kind:'cool',text:'Stop the work. Stay where you are.'},function(){},function(){}); await wait(30);
@@ -5062,20 +5067,24 @@ console.log('\n=== the studio voice: opt in, signed in only, and a failure falls
   authVoice=function(){ return new Promise(r=>setTimeout(()=>r({ok:true,blob:new Blob([new Uint8Array([0x49,0x44,0x33,4])],{type:'audio/mpeg'})}),60)); };
   speakStudio('I let go of fear.',1,'list',function(){fired++;},function(){fired++;}); speakStop(); await wait(150);
   out.lateEl=STUDIO.el; out.lateFired=fired;
-  authVoice=av0; speak=sp0; AUTH_API=api0; CURP.ui.studio=false; RUN.studioLost=false; authForget();
+  out.ss=window.__ss;
+  authVoice=av0; AUTH_API=api0; RUN.studioLost=false; authForget();
   return out;});
- ok(o.outRow===''&&o.outOn===false,'signed out there is no studio switch and no studio voice');
+ ok(o.outOn===false&&o.outSay===false,'signed out nothing is said: the voice is off and relSay answers false');
+ ok(/Sign in to hear it/.test(o.outRow)&&/reads on the screen/.test(o.outRow),'and the switch says why, in words, '+o.outRow.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim().slice(0,160));
  ok(o.outCall.ok===false&&o.outCall.status===401,'and authVoice answers locally without a request, '+JSON.stringify(o.outCall));
- ok(/Studio voice/.test(o.inRow)&&/ElevenLabs, a voice company/.test(o.inRow),'signed in, the switch shows and says who speaks the line');
- ok(o.blankOn===false,'and it is off until the person turns it on');
+ ok(/Voice/.test(o.inRow)&&/ElevenLabs, a voice company/.test(o.inRow),'signed in, the switch says who speaks the line');
+ ok(o.blankOn===true,'and the voice is on until the person turns it off');
  ok(o.real.ok===true&&o.realSize===4,'a yes from the server comes back as the audio bytes, '+JSON.stringify(o.real));
  ok(o.refused.ok===false&&o.refused.status===503,'a refusal comes back as its status, '+JSON.stringify(o.refused));
- ok(o.chosenOn===true,'chosen, the run uses it');
- ok(o.asked[0]==='list'&&o.said[0]==='I let go of fear.','a refused line is still said, in the browser voice, '+JSON.stringify(o));
- ok(o.lost===true&&/not switched on at the server/.test(o.status)&&!/ELEVENLABS/.test(o.status),'and the run says why in words, never the server setting, '+o.status);
- ok(o.askedAfter===1&&o.saidAfter[1]==='I let go of shame.','and the rest of the run goes straight to the browser voice');
+ ok(o.offOn===false&&o.offSay===false,'switched off, nothing is said and nothing is asked');
+ ok(o.chosenOn===true,'switched on again, the run uses it');
+ ok(o.asked[0]==='list'&&o.failed===1,'a refused line is reported once and is not said by anything else, '+JSON.stringify(o));
+ ok(o.lost===true&&/not switched on at the server/.test(o.status)&&/reads on the screen/.test(o.status)&&!/ELEVENLABS/.test(o.status),'the run says why in words, never the server setting, and says it reads on the screen, '+o.status);
+ ok(o.second===false&&o.askedAfter===1,'and the rest of the run does not ask again');
  ok(o.frame==='frame','the words around the list ask for the frame style');
  ok(o.lateEl===null&&o.lateFired===0,'a line that arrives after a stop never plays and never reports');
+ ok(o.ss===0,'the browser\'s own speech was called '+o.ss+' times, and it must be none');
  ok(terr.length===0,'no errors, '+terr.join(' | '));
  await tp.close();
 }

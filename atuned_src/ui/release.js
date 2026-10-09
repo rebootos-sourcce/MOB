@@ -606,33 +606,42 @@ function relMMSS(sec){
    the estimate is waited out, so a browser with no real voice runs
    at reading pace instead of racing to the cooldown.
    ============================================================ */
-function relVoiceOn(){
- if(typeof voiceCan!=='function'||!voiceCan())return false;
+/* THE VOICE IS ELEVENLABS AND THERE IS NO OTHER. The owner, 9 October: "the
+   audio is still defaulting to the Claude default voice, and I want that
+   removed so that there's no fallback to it." A line is spoken by the studio
+   voice (ui/sound.js, ui/auth.js authVoice, the Worker's /v1/voice/synthesize)
+   or it is not spoken and the screen says why. Nothing stands behind it.
+
+   relVoiceWanted is the person's switch, on unless they turned it off.
+   relVoiceCan is whether a line could be spoken right now: the server answers
+   only a signed in session, and the browser has to be able to play audio.
+   relVoiceOn is both, and it is what the walker and the onboarding promise
+   ask, so neither says "out loud" when nothing will be. studioLost is this
+   run giving up on the voice after a failure, so one dead server costs one
+   line and not one per line. A new run asks again. */
+function relVoiceWanted(){
  return !(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.voice===false);}
-/* THE STUDIO VOICE is a choice inside the voice, never a second voice switch:
-   with the voice off nothing is said by either. Signed in only, because the
-   server answers only a session, and switched on by the person, because the
-   browser voice is the default by ruling (ui/sound.js, THE STUDIO VOICE).
-   studioLost is this run giving up on it after a failure, so one dead server
-   costs one line and not one per line. A new run asks again. */
-function relStudioOn(){
- if(!relVoiceOn()||RUN.studioLost||typeof studioCan!=='function'||!studioCan())return false;
- if(typeof authSession!=='function'||!authSession())return false;
- return !!(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.studio===true);}
+function relVoiceCan(){
+ return typeof studioCan==='function'&&studioCan()
+  &&typeof authSession==='function'&&!!authSession();}
+function relVoiceOn(){ return relVoiceWanted()&&relVoiceCan(); }
 /* what each failure means for the run, in words. The server's own sentence
    for a 503 names a setting on the server, so it is not shown; a 401 is a
-   sign in the server has ended, which ui/auth.js authCheck says on its own. */
+   sign in the server has ended, which ui/auth.js authCheck says on its own.
+   Every one of them ends the same way, on the screen and never in another
+   voice. */
 function relStudioLostSay(st){
- if(st===503)return 'The studio voice is not switched on at the server yet, so this browser\'s voice reads the run.';
- if(st===429)return 'Today\'s studio voice lines are used up, so this browser\'s voice reads the rest of the run.';
- return 'The studio voice did not answer, so this browser\'s voice reads the rest of the run.';}
-/* SAY ONE STEP, in whichever voice is on. The list is the server's 'list'
-   style and everything around it is 'frame', the same split both apps
-   already make by saying the frame slower. A studio failure falls back to the
-   browser voice for this same line, so the line the person was waiting for is
-   still said, and then for the rest of the run. */
+ if(st===503)return 'The voice is not switched on at the server yet, so the run reads on the screen.';
+ if(st===429)return 'Today\'s voice lines are used up, so the rest of the run reads on the screen.';
+ if(st===401)return 'You were signed out, so the rest of the run reads on the screen.';
+ return 'The voice did not answer, so the rest of the run reads on the screen.';}
+/* SAY ONE STEP. The list is the server's 'list' style and everything around
+   it is 'frame', the same split both apps already make by saying the frame
+   slower. False means nothing is said and the walker waits out the reading
+   clock; a failure after the line started is told to onfail once, which the
+   walker also answers with the reading clock. */
 function relSay(st,onend,onfail){
- if(!relStudioOn())return speak(st.text,RUN.pace,onend,onfail);
+ if(!relVoiceOn()||RUN.studioLost)return false;
  var style=(st.kind==='head'||st.kind==='pass')?'list':'frame', tok=RUN.tok;
  return speakStudio(st.text,RUN.pace,style,onend,function(why){
   if(tok!==RUN.tok)return;
@@ -640,7 +649,7 @@ function relSay(st,onend,onfail){
   /* said and not redrawn: the switch still says what the person chose, and a
      redraw mid line would move the list under their eyes */
   status(relStudioLostSay(why),'fail');
-  if(!speak(st.text,RUN.pace,onend,onfail)&&onfail)onfail(why);});}
+  if(onfail)onfail(why);});}
 function relBuzzOn(){
  return !!(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.buzz)&&typeof buzzCan==='function'&&buzzCan();}
 function relHush(){
@@ -689,7 +698,7 @@ function relStep(){
     if(ms<gap){ clearTimeout(RUN.timer); RUN.timer=setTimeout(next,gap-ms); return; }
     next();},
    function(){
-    /* the browser refused the line. The run goes on at reading pace. */
+    /* the voice did not say the line. The run goes on at reading pace. */
     if(tok!==RUN.tok)return;
     clearTimeout(RUN.timer); RUN.timer=setTimeout(next,est);})){
   RUN.timer=setTimeout(next,est+9000);}
@@ -1444,34 +1453,29 @@ function relToneRow(n){
     hertz in the seat's colour, which tests/functional.js holds it to; the
     line under the switches says what the two ears are hearing. */
  return accTog('Binaural tone','reltone',relToneOn(),hz?hz+' Hz':'',hz?seatCol(n.b):'');}
-/* the voice's own switch, and where there is no voice there is no switch.
-   Its note is the standing privacy line cut to its facts: which voice, and
-   whether the words stay on this machine, said before the voice says a word. */
-function relVoiceRow(){
- if(typeof voiceCan!=='function'||!voiceCan()||typeof accTog!=='function')return '';
- var v=voicePick();
- return accTog('Voice','relvoice',relVoiceOn(),
-  !v?'':v.name+(v.localService?', on this machine':', a network service'));}
-/* the studio voice's switch, under the voice's and only while the voice is on
-   and a person is signed in, since it can do nothing otherwise. Its note is
-   the same privacy line the voice row carries, cut to its facts: who says the
-   words and what they are given. ElevenLabs is a company name, so the note
-   says what it is in the same place (round PO). The Atüned server passes the
-   line on and keeps a count of characters, never the line.
+/* the voice's own switch. Its note is the standing privacy line cut to its
+   facts, said before the voice says a word: who says it and what they are
+   given. ElevenLabs is a company name, so the note says what it is in the same
+   place (round PO). The Atüned server passes the line on and keeps a count of
+   characters, never the line.
 
    IT SAID "AND NOTHING ABOUT YOU", and that was false. A line is a pattern
    the person's own story put in this run, "that I am completely alone and
-   nothing is holding me", sent to ElevenLabs whole, so the note now says what
-   a line carries instead of denying it. */
-function relStudioRow(){
- if(!relVoiceOn()||typeof studioCan!=='function'||!studioCan()||typeof accTog!=='function')return '';
- if(typeof authSession!=='function'||!authSession())return '';
- return accTog('Studio voice','relstudio',!!(CURP&&CURP.ui&&CURP.ui.studio===true),
-  'ElevenLabs, a voice company, over the network. It gets each line, and each line names one of your patterns.');}
+   nothing is holding me", sent to ElevenLabs whole, so the note says what a
+   line carries instead of denying it. Signed out, or in a browser that cannot
+   play audio, the same row says why nothing will be heard, since a switch that
+   is on and silent with no word is the failure this row exists to prevent. */
+function relVoiceRow(){
+ if(typeof accTog!=='function')return '';
+ var note;
+ if(typeof studioCan!=='function'||!studioCan())note='This browser cannot play the voice. The run reads on the screen.';
+ else if(typeof authSession!=='function'||!authSession())note='Sign in to hear it. Until then the run reads on the screen.';
+ else note='ElevenLabs, a voice company, over the network. It gets each line, and each line names one of your patterns.';
+ return accTog('Voice','relvoice',relVoiceWanted(),note);}
 function relBuzzRow(){
  if(typeof buzzCan!=='function'||!buzzCan()||typeof accTog!=='function')return '';
  return accTog('Vibration','relbuzz',relBuzzOn(),'');}
-function relSwitches(n){return relVoiceRow()+relStudioRow()+relToneRow(n)+relBuzzRow();}
+function relSwitches(n){return relVoiceRow()+relToneRow(n)+relBuzzRow();}
 /* ============================================================
    THE LIST, IN FRONT OF THE PERSON. His words, 27 September: "For
    the letting go of believing list and the reframes, it needs to be
@@ -3310,25 +3314,11 @@ function relRender(){
  if((b=document.getElementById('reltone')))b.onclick=function(){uiSet('tone',!relToneOn());relRender();};
  /* the voice, off or on mid line: the line starts again in the new state, so
     a voice turned on is heard at once and a voice turned off never finishes a
-    sentence over silence */
+    sentence over silence. Turning it on asks again after a run gave up on it,
+    because the press is the person saying try it now. */
  if((b=document.getElementById('relvoice')))b.onclick=function(){
-  uiSet('voice',!relVoiceOn());
+  uiSet('voice',!relVoiceWanted()); RUN.studioLost=false;
   var live=RUN.open&&!RUN.paused&&(RUN.phase==='welcome'||RUN.phase==='opening'||RUN.phase==='run'
     ||(RUN.phase==='done'&&RUN.cool<COOLING.length));
-  if(live)relStep(); else {if(!relVoiceOn())speakStop(); relRender();}};
- /* the studio voice, the same way: the line starts again in the voice just
-    chosen. Turning it on asks again after a run gave up on it, because the
-    press is the person saying try it now. */
- if((b=document.getElementById('relstudio')))b.onclick=function(){
-  uiSet('studio',!(CURP&&CURP.ui&&CURP.ui.studio===true)); RUN.studioLost=false;
-  var live=RUN.open&&!RUN.paused&&(RUN.phase==='opening'||RUN.phase==='run'
-    ||(RUN.phase==='done'&&RUN.cool<COOLING.length));
-  if(live)relStep(); else relRender();};
+  if(live)relStep(); else {if(!relVoiceWanted())speakStop(); relRender();}};
  if((b=document.getElementById('relbuzz')))b.onclick=function(){uiSet('buzz',!relBuzzOn());relRender();};}
-/* THE LIST OF VOICES ARRIVES LATE. The panel names the voice before a word is
-   said, so when the browser finally names its voices the panel says it again. */
-(function(){
- try{ if(window.speechSynthesis&&'onvoiceschanged' in speechSynthesis)
-  speechSynthesis.addEventListener('voiceschanged',function(){
-   if(RUN.open&&RUN.phase==='idle')relRender();}); }catch(e){}
-})();

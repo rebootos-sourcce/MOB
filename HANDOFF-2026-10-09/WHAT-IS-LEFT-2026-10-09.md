@@ -29,6 +29,12 @@ Written after five review passes over your audit "Dev 1 to Dev 6". Every line wa
 - Failing checks that were already red (the Loop screen count and some labels).
 - Cosmetic packages (heads, menu, sound, rail), each only if finished and green.
 
+## Added by you, 9 October: P0, the voice
+
+- The browser's own voice is removed. The release is spoken by ElevenLabs or it is not spoken, and the screen says why. No fallback.
+- Built and in review. It cannot speak until you add two secrets (steps below).
+- Consequence: a first visit that has not signed in reads on the screen; the voice needs an account.
+
 ## Still to do before alpha is clean (P0 and P1, existing features)
 
 1. **First visit, server side (about 2 days).** Three more faults behind the header one: two ids are the wrong type for the database (needs a one-line type change in a new migration), nothing issues the starter gift so attaching a first visit to an account always fails, and the first-visit pass expires after 15 minutes. Default taken: change those two columns to text.
@@ -37,6 +43,8 @@ Written after five review passes over your audit "Dev 1 to Dev 6". Every line wa
 4. **Two wording fixes.** The PR 38 line "36 + 78 = 114" should say 5 sentences have both, so 109. The retired build note.
 
 ## Only you can do these (steps as if you were ten)
+
+0. **Give the app its voice (new, P0).** Open elevenlabs.io and sign in. Click your picture (top right), then **API Keys**, create a key, copy it. Then click **Voices**, open the voice you want, copy its **Voice ID**. Now open github.com, repository `rebootos-sourcce/Reboot-OS`, **Settings**, **Secrets and variables**, **Actions**, **New repository secret**. Add one called `ELEVENLABS_API_KEY` (paste the key) and one called `ELEVENLABS_VOICE_ID` (paste the id). Then open the **Actions** tab, pick **server**, and press **Run workflow**.
 
 1. **Turn off the second public copy and require the checks.** Open github.com and sign in. Open the repository `rebootos-sourcce/MOB`. Click **Settings** (top row, far right). In the left list click **Pages**; under "Build and deployment" click the source box and choose **None** (or **Unpublish site**). Then in the left list click **Branches**; click **Add branch ruleset** (or **Add rule**); name it `main`; target `main`; tick **Require a pull request before merging** and **Require status checks to pass**; add the check named `gates-pass`; click **Create**. Why: GitHub Pages published your repo with no checks at all, and nothing stops a red merge today.
 2. **Stripe, when you are ready to take money.** Four price ids, the secret key, the webhook secret, and switch on the customer portal. Until then the app says billing is built but paid checkout is off.
