@@ -121,9 +121,19 @@ function accAccount(){
     footers say that. Neither field is written to the record or the outbox;
     the session is kept by ui/auth.js under its own key in this browser. */
  var ses=(typeof authSession==='function')?authSession():null;
- var h=ses?accGroup('Sign in',
+ /* THE WAY OUT OF AN ACCOUNT, beside the way out of a browser. Signed in
+    only, because signed out there is no account here to delete. What the
+    press does is said in its confirm before anything is sent, and what it did
+    is the receipt below, read off the server's own answer (authGone,
+    ui/auth.js). The receipt is held in memory for this visit and never
+    stored: it names what the account was, and the account is gone. */
+ if(ses)ACC_GONE=null;
+ var h=(!ses&&ACC_GONE?'<div id="acgone">'+accGroup('Account deleted','',
+   ACC_GONE.map(function(l){return '<p>'+esc(l)+'</p>';}).join(''))+'</div>':'')
+  +(ses?accGroup('Sign in',
    accRow('Signed in as',ses.email)
-   +accAct('Sign out of this browser','acout',{btn:'Sign out'}),
+   +accAct('Sign out of this browser','acout',{btn:'Sign out'})
+   +accAct('Delete this account','acdelacc',{btn:'Delete',danger:true}),
    'Your stories and readings stay on this device. Signing in does not copy them anywhere.')
   :accGroup('Sign in',
    accStub('Signed in as','not signed in')
@@ -140,7 +150,7 @@ function accAccount(){
       which joins the topic picked and the marks to the account, so it is
       said here, where a person decides to sign in */
    'Your email and password go to our server, and what your first visit sent joins the account. '
-   +'Your stories and readings stay on this device.');
+   +'Your stories and readings stay on this device.'));
  /* DEVELOPER OPTIONS, DEACTIVATED IN FULL, ROUND RI, the same ruling that
     removed the login card's own panel (ui/login.js). This panel's second
     home, the owner's own signed in account, is removed with it: devtoolsOn
@@ -505,7 +515,8 @@ function accPrivacy(){
    'Delete removes this record from this browser now, and it cannot be undone. '
    +'Our server has no copy of it, so there is no other copy unless you made one. '
    +'Our server does keep your sign in, if you made one, and what your first '
-   +'visit sent. Delete does not reach those.');
+   +'visit sent. Delete does not reach those. Delete this account, under Account, '
+   +'removes the sign in.');
  return h;}
 
 /* ---------- 4.5 billing. almost entirely real, ported not rebuilt ---------- */
@@ -663,6 +674,7 @@ function accWire(){
  if(si)si.onsubmit=function(e){ e.preventDefault(); accEnter('signin'); };
  var an=$('acnew'); if(an)an.onclick=function(){ accEnter('signup'); };
  var ao=$('acout'); if(ao)ao.onclick=function(){ accSignOut(); };
+ var dz=$('acdelacc'); if(dz)dz.onclick=function(){ accAccountDelete(); };
  var gi=$('acgoiq'); if(gi)gi.onclick=function(){setTab(TAB.INTAKE);};
  var ob=$('acob'); if(ob)ob.onclick=function(){
   if(typeof sheetShut==='function')sheetShut();
@@ -726,9 +738,9 @@ function accWire(){
    not touch the status line and the order makes the sentence the last thing
    written. Both controls wait while a request is out, so a second press
    cannot send a second request under the first one's answer. */
-var ACC_BUSY=false;
+var ACC_BUSY=false, ACC_GONE=null;
 function accBusy(on){
- ['acgo','acnew','acout'].forEach(function(id){ var b=$(id); if(b)b.disabled=!!on; });}
+ ['acgo','acnew','acout','acdelacc'].forEach(function(id){ var b=$(id); if(b)b.disabled=!!on; });}
 function accEnter(route){
  if(ACC_BUSY||typeof authEnter!=='function')return false;
  var m=$('acmail'), pw=$('acpass');
@@ -891,6 +903,24 @@ function accSignOut(){
  status('Signing out.');
  authSignOut().then(function(r){
   ACC_BUSY=false; renderAccount(); status(r.say,r.ok?'ok':'fail'); });
+ return true;}
+/* DELETE THE ACCOUNT, the press. The confirm says the three things a person
+   needs before an act that cannot be undone: a paid plan stops today and not
+   at the month's end, the account goes from our server, and the record on
+   this device stays. Nothing is sent on a no. The request and every sentence
+   it can end in are ui/auth.js's, as sign in's are. */
+function accAccountDelete(){
+ if(ACC_BUSY||typeof authAccountDelete!=='function')return false;
+ var s=authSession(); if(!s)return false;
+ if(!confirm('Delete the account '+s.email+'?\n\nA paid plan is cancelled first, today, so nothing '
+  +'more is charged. Your email, password and sign in go from our server. It cannot be undone.'
+  +'\n\nThis record stays on this device.'))return false;
+ ACC_BUSY=true; accBusy(true);
+ status('Deleting the account.');
+ authAccountDelete().then(function(r){
+  ACC_BUSY=false;
+  if(r.ok)ACC_GONE=r.lines;
+  renderAccount(); status(r.say,(r.ok&&r.kept)?'ok':'fail'); });
  return true;}
 /* ONE WRITER FOR THE UI PREFERENCES ON THE PROFILE, so a missing ui object on
    an older profile is filled here rather than at nine call sites. */

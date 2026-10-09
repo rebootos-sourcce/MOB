@@ -97,7 +97,11 @@ function blankProfile(name){
      planAllowance reads that as the end of the gift. A literal 0 here was read
      as a period opened at nothing, charged the gift against the first free
      week, and read nought left for good. */
-  plan:{tier:'free', status:'', granted:0, carried:0, base:null, since:null, until:null},
+  /* ends is the day a stopped plan stops, null for one that renews. Stopping
+     on the payment page keeps the status active to the end of the paid month,
+     so without it a record read as if nothing had been pressed (ui/auth.js
+     authPlanTake says it, planFromServer in engine/plan.js writes it). */
+  plan:{tier:'free', status:'', granted:0, carried:0, base:null, since:null, until:null, ends:null},
   /* THE BECOMING HALF. Who you are becoming, what that is for, and what is
      yours to protect. Six values in on the purpose map and nothing derived is
      stored, because a derived value that is also stored is one that can
@@ -174,10 +178,12 @@ function loadProfile(p){
     one and not a broken one, so it opens with an empty list */
  if(!Array.isArray(p.meter.heavy))p.meter.heavy=[];
  /* an older record has no plan, which is a free record and not a broken one */
- if(!p.plan)p.plan={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null};
+ if(!p.plan)p.plan={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null,ends:null};
  /* a missing baseline is filled as missing. A 0 already on disk is left as
     written and read through the gift floor in planAllowance. */
  if(p.plan.base===undefined)p.plan.base=null;
+ /* and a record saved before ends existed renews, which is what it said */
+ if(p.plan.ends===undefined)p.plan.ends=null;
  if(!p.avatar)p.avatar=avatarBlank();
  if(!Array.isArray(p.avatar.pairs))p.avatar.pairs=[];
  avatarFill(p.avatar);
@@ -1138,7 +1144,7 @@ function validateProfile(o){
      a lifetime count cannot answer it. */
   var ba=vRange(errs,'plan.base',o.plan.base,0,1e7);
   if(ba!==null)p.plan.base=Math.floor(ba);
-  ['since','until'].forEach(function(f){
+  ['since','until','ends'].forEach(function(f){
    if(o.plan[f]===null||o.plan[f]===undefined)return;
    if(typeof o.plan[f]==='string'&&!isNaN(new Date(o.plan[f]).getTime()))p.plan[f]=o.plan[f];
    else errs.push('plan.'+f+' is not a date');});
@@ -1560,8 +1566,10 @@ function meterRun(p,keys,at){
  if(typeof p.meter.relLines!=='number')p.meter.relLines=0;
  if(typeof p.meter.truthLines!=='number')p.meter.truthLines=0;
  /* an older record has no plan, which is a free record and not a broken one */
- if(!p.plan)p.plan={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null};
+ if(!p.plan)p.plan={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null,ends:null};
  if(p.plan.base===undefined)p.plan.base=null;
+ /* and a record saved before ends existed renews, which is what it said */
+ if(p.plan.ends===undefined)p.plan.ends=null;
  if(!p.avatar)p.avatar=avatarBlank();
  if(!Array.isArray(p.avatar.pairs))p.avatar.pairs=[];
  avatarFill(p.avatar);

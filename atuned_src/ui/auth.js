@@ -553,6 +553,90 @@ function authSignOut(){
   if(r.ok||r.status===401)return {ok:true, say:'Signed out.'};
   return {ok:true, say:'Signed out on this browser. The server could not be reached, '
    +'so its copy of the session runs until it expires.'};});}
+/* ============================================================
+   DELETE THE ACCOUNT. The owner, 9 October: "If they want to quit the
+   software, that the cancellation." Nothing in the app called DELETE /v1/me
+   (REVIEW-audit-2026-10-09 pass3.md, section 3), so the only way out of an
+   account was to write to us. And the route itself stopped nothing at Stripe
+   (pass2.md W4), which is why this waited: a button on it would have deleted
+   the account and left the card being charged. The Worker stops any paid plan
+   first now, and refuses to delete anything if Stripe will not stop it
+   (reboot-os stripe.js stopForDelete, branch claude/paywall-worker).
+
+   IT SAYS WHAT THE SERVER SAYS IT DID, AND NOTHING MORE. A yes names what it
+   stopped and what it kept, and each of those becomes one line here. A server
+   from before that answer says only deleted, and is said to be one rather than
+   read as a stop it never claimed.
+
+   ON A YES the account's session, the first visit's session and the sync
+   marker go from this browser, because each names an account that no longer
+   exists, and a paid plan on the open record drops to free, because the
+   account that paid is gone. The record itself stays: it was never on the
+   server (the sync does not run, DECISIONS.md, "Profile sync, 9 October"), and
+   deleting a person's record because they closed an account is a second
+   delete they did not ask for. The receipt says where it is and how to remove
+   it.
+
+   ON A NO nothing here moves, so the same press is the retry, except a 401,
+   which is the server saying the sign in has ended, and it is ended here too
+   the way authCheck ends one. Resolves, never rejects. */
+function authAccountDelete(){
+ var s=authSession();
+ if(!s)return Promise.resolve({ok:false, say:'Not signed in, so there is no account here to delete.'});
+ return authCall('DELETE','/v1/me',null,s.token).then(function(r){
+  var b=(r.body&&typeof r.body==='object')?r.body:{};
+  if(r.ok&&b.deleted===true)return authGone(b);
+  if(r.status===401){ profileSyncStop(); authForget();
+   return {ok:false, say:'The server no longer knows this sign in, so it has ended here too. '
+    +'If the account was deleted a moment ago, it is gone. If not, log in again to delete it.'};}
+  if(r.late)return {ok:false, say:'The server did not answer in time. Press Delete again to find out '
+   +'whether the account is gone.'};
+  if(!r.status)return {ok:false, say:'Could not reach the server, so nothing was deleted. '
+   +'Check the connection and try again.'};
+  return {ok:false, say:authWhy(r,'delete')};});}
+/* The yes, laid onto this browser, and its receipt as lines. */
+function authGone(b){
+ profileSyncStop();
+ var kept=authForget();
+ authFunnelClear();
+ try{ if(typeof STORE_BOUND!=='undefined'&&STORE_BOUND)STORE.set(PROFILE_SYNC_META_KEY,''); }catch(e){}
+ var dropped=authPlanDrop();
+ var lines=[], stopped=(typeof b.stopped==='number')?b.stopped:null;
+ if(stopped===null)lines.push('The server did not say whether a paid plan was stopped. '
+  +'If you were paying, write to us under Help and we stop it.');
+ else if(stopped>0)lines.push('The paid plan is cancelled today, so nothing more is charged.');
+ if(b.billedElsewhere==='apple'||b.billedElsewhere==='google')
+  lines.push('A plan bought through '+(b.billedElsewhere==='apple'?'the App Store':'Google Play')
+   +' keeps charging until you cancel it there.');
+ lines.push('Removed from our server: your email, your password, your sign in on every device, '
+  +'and everything it held under the account.');
+ /* the server's own names for what it kept, each said once. A name this
+    build does not know is still said, in the server's word, because a thing
+    kept and not mentioned is the defect this receipt exists for */
+ var said={first_visit:'Kept on our server: what your first visit sent, which is a random code, '
+   +'the topic you picked and when you finished each step.',
+  activity_log:'Kept on our server: a dated list of when the account signed in and paid, '
+   +'under a random number and with no email.',
+  payment_history:'Kept by Stripe, the company that takes the card: its own record of your past payments.'};
+ (Array.isArray(b.kept)?b.kept:[]).forEach(function(k){
+  if(typeof k!=='string')return;
+  lines.push(said[k]||('Kept on our server: '+k.replace(/_/g,' ')+'.'));});
+ lines.push('This record is still on this device'+(dropped?', and its plan reads Free now':'')
+  +'. Delete it under Profiles to remove it here too.');
+ return {ok:true, kept:kept, lines:lines,
+  say:'The account is deleted.'+(kept?'':' Storage would not take the change, so the sign in comes back on reload.')};}
+/* THE PLAN ON THE OPEN RECORD, DROPPED TO FREE, quietly: the receipt says it.
+   authPlanTake(null) would say "the account signed in has no paid plan",
+   which is the wrong sentence after the person deleted it on purpose. The same
+   writer and the same boundary as every other plan write. */
+function authPlanDrop(){
+ if(typeof CURP==='undefined'||!CURP||typeof PROFILES==='undefined'||PROFILES.indexOf(CURP)<0)return false;
+ var r=planFromServer(CURP.plan,null,(CURP.meter&&CURP.meter.unique)||[]);
+ if(r.same)return false;
+ var v=validateProfile({v:SCHEMA_V, plan:r.plan});
+ if(!v.ok)return false;
+ CURP.plan=v.profile.plan; pSave();
+ return true;}
 /* THE BOOT CHECK. A stored session is asked about once per boot, and only
    when there is one: a person who never signed in makes no request at all,
    which is what tests/design.js gate 7 watches. The answer decides one thing.
@@ -741,6 +825,16 @@ function authPlanTake(b){
  else if(r.nowLive&&r.status==='past_due'&&r.wasStatus!=='past_due'){
   say='The last card payment for '+nm+' did not go through. The plan stays on while Stripe '
    +'tries the card again, and Manage billing replaces the card.'; kind='fail';}
+ /* STOPPED ON THE PAYMENT PAGE, and turned back on there. Neither moves the
+    tier, the status or the period, so neither was said: a person came back
+    from pressing stop to silence and a plan that read as running. Said as a
+    confirmation and not held, because it is the person's own choice and the
+    Billing page carries the day on its State row from here on. */
+ else if(r.nowLive&&r.ends&&r.ends!==r.wasEnds)
+  say=nm+' stops on '+planDay(r.ends)+'. It stays on until then, and Manage billing turns it back on.';
+ else if(r.nowLive&&!r.ends&&r.wasEnds){
+  var renews=planDay(r.plan.until);
+  say=nm+(renews?' renews on '+renews+'.':' renews each month again.');}
  /* held, because it takes something away, and a line that clears in two
     seconds is a change nobody was told about */
  else if(!r.nowLive&&r.wasLive){
@@ -818,6 +912,14 @@ function paidWelcomeOpen(){
 function authPlanBack(back,b){
  var took=authPlanTake(b);
  if(back==='cancelled'){ status('Checkout was closed before paying, so nothing was charged.'); return took; }
+ /* BACK FROM MANAGE BILLING. Stripe sends the browser back the moment a
+    plan is stopped, moved or a card replaced, and the webhook that tells the
+    server can land after it, so the first read here was usually the plan as it
+    was and the change was never said. Nothing changed on the first read is
+    read again a few times, quietly, and authPlanTake speaks when the change
+    lands. A person who only looked, or only replaced a card, changes nothing
+    a read can see, and the reads end without a word. */
+ if(back==='managed'){ if(took==='same')authPlanSettle(AUTH_PLAN_TRIES); return took; }
  if(back!=='done')return took;
  if(took==='not a record'){
   status('Payment finished. Open your own profile to see the plan on it.','fail'); return took;}
@@ -828,6 +930,10 @@ function authPlanBack(back,b){
  status('Payment finished. Waiting for Stripe to confirm it.');
  authPlanWait(AUTH_PLAN_TRIES);
  return took;}
+function authPlanSettle(n){
+ setTimeout(function(){
+  authPlanRead().then(function(x){
+   if(x.ok&&x.took==='same'&&n>1)authPlanSettle(n-1);});},AUTH_PLAN_WAIT_MS);}
 function authPlanWait(n){
  setTimeout(function(){
   authPlanRead().then(function(){
