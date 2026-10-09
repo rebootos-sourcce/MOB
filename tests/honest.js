@@ -49,6 +49,10 @@ const refuse = (p, on) => p.evaluate(on => {
   window.__no = on; }, on);
 const log = p => p.evaluate(() => MSG_LOG.map(m => ({ k: m.kind, m: m.msg })));
 const clearLog = p => p.evaluate(() => { MSG_LOG.length = 0; });
+/* a press, read as a press: on a build where Commit is disabled the press is a
+   no and the assertions after it say so, where page.click waited thirty
+   seconds and crashed the run on the base build instead of failing it */
+const press = (p, sel) => p.evaluate(s => { const b = document.querySelector(s); if (b && !b.disabled) { b.click(); return true; } return false; }, sel);
 
 (async () => {
   const browser = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
@@ -75,7 +79,7 @@ const clearLog = p => p.evaluate(() => { MSG_LOG.length = 0; });
   const n0 = (own(await saved(p)) || { story: { entries: [] } }).story.entries.length;
   await p.fill('#sttext', STORY); await p.waitForTimeout(700);
   await refuse(p, true); await clearLog(p);
-  await p.click('#stapply'); await p.waitForTimeout(700);
+  await press(p, '#stapply'); await p.waitForTimeout(700);
   let L = await log(p);
   ok(!L.some(x => /^Committed/.test(x.m)), 'Commit does not say Committed: ' + JSON.stringify(L.map(x => x.m)));
   ok(L.length && L[L.length - 1].k === 'fail', 'the last line carries the fail mark');
@@ -84,10 +88,10 @@ const clearLog = p => p.evaluate(() => { MSG_LOG.length = 0; });
   ok(!L.some(x => /Error\.$/.test(x.m)), 'no line ends on "Error."');
   ok((await box(p)) === STORY, 'the words are still in the box');
   const mem1 = await p.evaluate(() => CURP.story.entries.length);
-  await p.click('#stapply'); await p.waitForTimeout(300);
+  await press(p, '#stapply'); await p.waitForTimeout(300);
   ok((await p.evaluate(() => CURP.story.entries.length)) === mem1, 'a second press asks again and does not write the story twice');
   await refuse(p, false); await clearLog(p);
-  await p.click('#stapply'); await p.waitForTimeout(300);
+  await press(p, '#stapply'); await p.waitForTimeout(300);
   L = await log(p);
   ok(L.some(x => /^Committed/.test(x.m)), 'once the store works, the same press says Committed');
   await p.reload({ waitUntil: 'load' }); await booted(p); await story(p);
