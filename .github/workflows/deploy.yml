@@ -36,14 +36,18 @@ name: deploy
 # tools/workflow-lint.py holds this file to that shape and runs in gates-fast,
 # so a change here that breaks the shape is red on its own pull request.
 #
-# ROLLBACK. Run this workflow by hand on main with rollback_ref set to a commit
-# that was live: one Cloudflare Pages published to production from main. Every
-# gate is skipped, the guard in the deploy job checks the commit against
-# Cloudflare's own list and prints the deployment it matched, and the deploy
-# job publishes that commit as it stands. A commit from before 3 October has no
-# FAQ page to stage, so a rollback that far back fails at the staging step.
-# Re-running an older push run is not a rollback: its order check sees a newer
-# commit on main and publishes nothing.
+# ROLLBACK. Run this workflow by hand on main with rollback_ref set to the full
+# commit sha of a build that was live: one Cloudflare Pages published to
+# production from main. Every gate is skipped, the guard in the deploy job
+# checks the commit against Cloudflare's own list and prints the deployment it
+# matched, and the deploy job publishes that commit as it stands. A commit from
+# before 3 October has no FAQ page to stage, so a rollback that far back fails
+# at the staging step. Re-running an older push run is not a rollback: its
+# order check sees a newer commit on main and publishes nothing.
+#
+# A ROLLBACK IS A STOPGAP. The next push to main publishes main's tip over this
+# rollback. Revert the bad commit on main to make it stay. The guard writes
+# the same two sentences to the run page of every rollback dispatch.
 on:
   # 2 October: claude/laughing-feynman-xhfyj3 removed from this list. Every
   # push to it had been publishing a real, public, no-login preview link
@@ -57,18 +61,15 @@ on:
   # deployments already made tonight; only he can do that, from his own
   # Cloudflare dashboard. main is untouched by this change and still
   # deploys, same as before, and nothing pushes to main without his word.
+  # EVERY PUSH TO MAIN, WITH NO PATHS FILTER, 9 October. A push publishes only
+  # while its commit is the tip of main, and otherwise says "a newer commit is
+  # on main, its own run will deploy". Under a paths filter that was not true:
+  # a newer commit touching only docs or a rebuilt build stamp got no run, so
+  # the older code commit before it never went live. Now every commit on main
+  # gets its own run, and a docs only push republishes the same pages, which
+  # changes nothing a person sees.
   push:
     branches: [main]
-    paths:
-      - 'atuned_src/**'
-      - 'funnel/**'
-      - 'tests/**'
-      - 'tools/**'
-      # the feedback relay, functions/feedback.js. Without this line a change
-      # to the Function alone would never deploy.
-      - 'functions/**'
-      - 'atuned_funnel_system/**'
-      - '.github/workflows/deploy.yml'
   # EVERY PULL REQUEST, WITH NO PATHS FILTER, ON PURPOSE. A required check
   # that a paths filter skips never reports, so under branch protection a
   # docs only pull request would sit pending for ever. The deploy job is
@@ -90,7 +91,7 @@ on:
   workflow_dispatch:
     inputs:
       rollback_ref:
-        description: 'Rollback only: a commit Cloudflare Pages published to production from main, deployed as it is with every gate skipped. Leave empty to run the gates and deploy main.'
+        description: "Rollback only: the full commit sha of a build Cloudflare Pages published to production from main. It is published as it is, with every gate skipped, until the next push to main. Leave it empty for a normal run: every gate runs, and main's tip publishes if they pass."
         type: string
         required: false
         default: ''
@@ -377,9 +378,10 @@ jobs:
       # but takes them in the order their gates finish, not the order of the
       # commits, so an older commit whose gates ran long could publish over a
       # newer one. A push publishes only while its commit is still the tip of
-      # main; otherwise the newer commit's own run deploys it, and every step
-      # below is skipped. A rollback publishes an older commit on purpose and
-      # skips this check.
+      # main; otherwise the newer commit's own run deploys it if its gates
+      # pass, and every step below is skipped. Every push to main has a run,
+      # since the push trigger has no paths filter. A rollback publishes an
+      # older commit on purpose and skips this check.
       - name: this commit is still the tip of main
         id: order
         if: inputs.rollback_ref == ''
@@ -398,7 +400,7 @@ jobs:
             echo "this run's commit $GITHUB_SHA is the tip of main, so it publishes"
             echo "publish=true" >> "$GITHUB_OUTPUT"
           else
-            echo "a newer commit is on main, its own run will deploy (this run: $GITHUB_SHA, main: $tip)"
+            echo "a newer commit is on main, its own run will deploy (this run: $GITHUB_SHA, main: $tip). That run publishes only if its gates pass."
             echo "publish=false" >> "$GITHUB_OUTPUT"
           fi
       # Every step from here runs on a rollback, or when the order check said
@@ -413,13 +415,16 @@ jobs:
       # on a rollback, so this step is all that stands between the dispatch
       # box and the live site. Until 9 October it took any commit main had
       # ever carried, main's own red tip included, most of which were never
-      # live. Now the commit must be on main, by GitHub's compare, and
-      # Cloudflare Pages must list it among its most recent production
-      # deployments, 50 asked for, with its last stage a success. The step
-      # prints how many Cloudflare listed and which one matched, then checks
-      # out that commit by its full id, so what was checked is exactly what
-      # is published. A missing secret, an error from either service or no
-      # match is a refusal that says which.
+      # live. Now it takes only a full commit sha, never a branch name, which
+      # after the checkout only resolves as origin/<name>. The commit must be
+      # on main, by GitHub's compare, and listed by Cloudflare Pages as a
+      # production deployment whose last stage is deploy: success, the same
+      # filter wrangler itself uses. The list is read 25 to a page, a size
+      # Cloudflare is known to honour, for at most 6 pages, and the step
+      # prints how many deployments it read and which one matched. It then
+      # checks out that commit by its full sha, so what was checked is exactly
+      # what is published. A missing secret, an error from either service or
+      # no match is a refusal that says which.
       - name: a rollback runs from main, to a commit that was live
         id: rollback
         if: inputs.rollback_ref != ''
@@ -427,15 +432,19 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           ROLLBACK_REF: ${{ inputs.rollback_ref }}
         run: |
+          stopgap="The next push to main publishes main's tip over this rollback. Revert the bad commit on main to make it stay."
+          echo "$stopgap" >> "$GITHUB_STEP_SUMMARY"
+          echo "$stopgap"
           if [ "$GITHUB_REF" != refs/heads/main ]; then
             echo "FAIL this rollback was dispatched on $GITHUB_REF. Dispatch it on main."
             exit 1
           fi
-          case "$ROLLBACK_REF" in
-            -*) echo "FAIL rollback_ref '$ROLLBACK_REF' is not a commit."; exit 1 ;;
-          esac
+          if ! [[ "$ROLLBACK_REF" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "FAIL rollback_ref '$ROLLBACK_REF' is not a full commit sha. Give a full commit sha that was published; branch names are not accepted."
+            exit 1
+          fi
           sha="$(git rev-parse --verify --quiet "$ROLLBACK_REF^{commit}")" || {
-            echo "FAIL rollback_ref '$ROLLBACK_REF' names no commit in this repository."
+            echo "FAIL $ROLLBACK_REF is not a commit in this repository's history. Give a full commit sha that was published; branch names are not accepted."
             exit 1
           }
           status="$(gh api "repos/$GITHUB_REPOSITORY/compare/main...$sha" --jq .status)" || status="unknown, GitHub's compare could not be read"
@@ -449,27 +458,35 @@ jobs:
             echo "FAIL the Cloudflare secrets are not set, so the list of production deployments cannot be read."
             exit 1
           fi
-          body="$(curl -sS --fail-with-body -H "Authorization: Bearer $CF_TOKEN" \
-            "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/atuned/deployments?env=production&per_page=50")" || {
-            echo "FAIL Cloudflare's list of production deployments could not be read: ${body:0:300}"
-            exit 1
-          }
-          if [ "$(jq -r '.success' <<< "$body" 2>/dev/null)" != true ]; then
-            echo "FAIL Cloudflare did not answer with its list of production deployments: ${body:0:300}"
-            exit 1
-          fi
-          listed="$(jq -r '.result | length' <<< "$body")" || listed="no"
-          echo "Cloudflare Pages listed $listed production deployments"
-          match="$(jq -r --arg sha "$sha" '[.result[]? | select(.environment == "production" and .deployment_trigger.metadata.commit_hash == $sha and .latest_stage.status == "success")][0] // empty | .id + " of " + .created_on' <<< "$body")" || match=""
+          seen=0
+          match=""
+          page=1
+          while [ "$page" -le 6 ]; do
+            body="$(curl -sS --fail-with-body -H "Authorization: Bearer $CF_TOKEN" \
+              "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/atuned/deployments?env=production&per_page=25&page=$page")" || {
+              echo "FAIL Cloudflare's list of production deployments could not be read, page $page: ${body:0:300}"
+              exit 1
+            }
+            if [ "$(jq -r '.success' <<< "$body" 2>/dev/null)" != true ]; then
+              echo "FAIL Cloudflare did not answer with its list of production deployments, page $page: ${body:0:300}"
+              exit 1
+            fi
+            n="$(jq -r '.result | length' <<< "$body")"
+            seen=$((seen + n))
+            match="$(jq -r --arg sha "$sha" '[.result[]? | select(.environment == "production" and .deployment_trigger.metadata.commit_hash == $sha and .latest_stage.name == "deploy" and .latest_stage.status == "success")][0] // empty | .id + " of " + .created_on' <<< "$body")" || match=""
+            if [ -n "$match" ] || [ "$n" -eq 0 ]; then break; fi
+            page=$((page + 1))
+          done
+          echo "read $seen production deployments from Cloudflare Pages"
           if [ -z "$match" ]; then
-            echo "FAIL commit $sha has no successful deployment among the $listed most recent production deployments Cloudflare Pages listed. A rollback goes only to a commit that was live."
+            echo "FAIL commit $sha has no production deployment whose last stage is deploy: success among the $seen read. A rollback goes only to a commit that was live."
             exit 1
           fi
           echo "matched commit $sha to Cloudflare production deployment $match"
           git checkout --quiet --force --detach "$sha"
           test "$(git rev-parse HEAD)" = "$sha" || { echo "FAIL the checkout of $sha did not take."; exit 1; }
           echo "sha=$sha" >> "$GITHUB_OUTPUT"
-          echo "rolling back to $ROLLBACK_REF, commit $sha"
+          echo "rolling back to commit $sha"
       - uses: actions/setup-node@v4
         if: inputs.rollback_ref != '' || steps.order.outputs.publish == 'true'
         with: { node-version: '22' }
@@ -553,3 +570,29 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: npx wrangler pages deploy deploy --project-name=atuned --branch=main --commit-dirty=true
+
+      # PRODUCTION, CONFIRMED. wrangler exits 0 with "Deployment complete!
+      # However, we couldn't ascertain the final status" when it cannot read
+      # the stage, so its green alone does not say atuned.world changed. This
+      # reads Cloudflare's production list back for about two minutes and
+      # fails the job unless the newest production deployment is the commit
+      # just published, with its last stage deploy: success. On a rollback
+      # that is the commit the guard checked out.
+      - name: Cloudflare serves this commit in production
+        if: inputs.rollback_ref != '' || steps.order.outputs.publish == 'true'
+        run: |
+          published="$(git rev-parse HEAD)"
+          for try in 1 2 3 4 5 6 7 8 9 10 11 12; do
+            body="$(curl -sS --fail-with-body -H "Authorization: Bearer $CF_TOKEN" \
+              "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/atuned/deployments?env=production&per_page=25&page=1")" || body=""
+            newest="$(jq -r '[.result[]? | select(.environment == "production")] | max_by(.created_on) // empty | [(.deployment_trigger.metadata.commit_hash // "-"), (.latest_stage.name // "-"), (.latest_stage.status // "-"), (.id // "-"), (.url // "-")] | join(" ")' <<< "$body" 2>/dev/null)" || newest=""
+            read -r commit stage status id url <<< "$newest"
+            if [ "$commit" = "$published" ] && [ "$stage" = deploy ] && [ "$status" = success ]; then
+              echo "production is commit $published: Cloudflare deployment $id, $url"
+              exit 0
+            fi
+            echo "read $try: the newest production deployment reads ${newest:-nothing}; waiting for commit $published"
+            if [ "$try" -lt 12 ]; then sleep 10; fi
+          done
+          echo "FAIL after about two minutes the newest production deployment on Cloudflare Pages is not commit $published with its last stage deploy: success. The upload may have gone to a preview, or not finished. Last read: ${newest:-nothing}"
+          exit 1

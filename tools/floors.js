@@ -20,6 +20,14 @@
    and here its log must carry the one line it prints when every surface
    rendered.
 
+   EXPECTED RED HAS A CEILING, 9 October. The engine counts each expected red
+   as a pass, so turning a failing check into an expected red raises "passed"
+   and slips past a floor. "expected_red_max" in tests/floors.json caps the
+   count: above it fails, and a gate that prints an expected red count with
+   no ceiling fails too, so none is let off unseen. A summary with no
+   expected red clause, below the floor, says so by name. A floor of 0 is
+   "floor not set" and fails, so a placeholder never passes.
+
    It never writes a floor. Raising one is a deliberate edit to floors.json.
 
      node tools/floors.js [--dir DIR] [--floors FILE] [gate ...]
@@ -65,7 +73,7 @@ function summary(text) {
 }
 
 function judge(gate, dir, table) {
-  const fl = table.floors || {}, nc = table.no_count || {};
+  const fl = table.floors || {}, nc = table.no_count || {}, cap = table.expected_red_max || {};
   if (!has(fl, gate) && !has(nc, gate))
     return [false, gate + ': no floor in tests/floors.json. Add one on purpose, read off a green run.'];
   const log = path.join(dir, gate + '.log');
@@ -79,11 +87,25 @@ function judge(gate, dir, table) {
       : [false, gate + ': the line "' + want + '" is not in its log. It failed, crashed or was cut off.'];
   }
   const floor = fl[gate];
+  if (floor === 0)
+    return [false, gate + ': floor not set (0 in tests/floors.json). Set it from a clean full run, as printed.'];
   if (!Number.isInteger(floor) || floor < 1)
     return [false, gate + ': its floor in tests/floors.json is ' + JSON.stringify(floor) + ', not a whole number above zero.'];
   const s = summary(text);
   if (!s) return [false, gate + ': no summary line in its log. It crashed, was cut off, or never reached its end.'];
   if (s.fail > 0) return [false, gate + ': ' + s.line + '. Any failure fails.'];
+  const red = s.red === undefined ? null : s.red;
+  if (has(cap, gate)) {
+    const c = cap[gate];
+    if (!Number.isInteger(c) || c < 0)
+      return [false, gate + ': its expected red ceiling in tests/floors.json is ' + JSON.stringify(c) + ', not a whole number.'];
+    if (red !== null && red > c)
+      return [false, gate + ': ' + red + ' expected red, above its ceiling of ' + c + '. A check that should pass is being let off as expected red.'];
+    if (red === null && s.pass < floor)
+      return [false, gate + ': no expected red clause in its summary, and ' + s.pass + ' passed is below its floor of ' + floor + '. The expected red checks may be gone with their group.'];
+  } else if (red !== null) {
+    return [false, gate + ': prints ' + red + ' expected red and tests/floors.json gives it no ceiling (expected_red_max), so more could be let off unseen. Set one from a clean full run, as printed.'];
+  }
   if (s.pass < floor)
     return [false, gate + ': ' + s.pass + ' passed, below its floor of ' + floor + '. Checks were lost or did not run.'];
   return [true, gate + ': ' + s.pass + ' passed, 0 failed' + (s.red === null || s.red === undefined ? '' : ', ' + s.red + ' expected red') + ', floor ' + floor
@@ -105,7 +127,11 @@ function check(gates, dir, table) {
 
 /* ---- --self-test: known bad logs must fail and known good ones pass ---- */
 function selfTest() {
-  const T = { floors: { g: 10, tap: 44, plain: 562, zero: 0 }, no_count: { mon: 'all surfaces render' } };
+  const T = { floors: { g: 10, tap: 44, plain: 562, zero: 0, eng: 4689, nocap: 10, badcap: 10 },
+              expected_red_max: { g: 10, eng: 10, badcap: 'ten' },
+              no_count: { mon: 'all surfaces render' } };
+  // [name, gate, log, passes, words its message must carry]: a case that
+  // fails for some other reason than the one it names is not a pass.
   const CASES = [
     ['a summary at its floor', 'g', 'x\n===== 10 passed, 0 failed =====\n', true],
     ['a summary above its floor', 'g', '===== 12 passed, 0 failed =====', true],
@@ -115,7 +141,7 @@ function selfTest() {
     ['an empty log', 'g', '', false],
     ['no log at all, the gate was skipped', 'g', null, false],
     ['a gate with no floor recorded', 'nofloor', '===== 10 passed, 0 failed =====', false],
-    ['a floor of zero', 'zero', '===== 0 passed, 0 failed =====', false],
+    ['a floor of zero reads floor not set', 'zero', '===== 5 passed, 0 failed =====', false, 'floor not set'],
     ['the last summary is the one read', 'g', '===== 100 passed, 0 failed =====\nmore\n===== 5 passed, 0 failed =====', false],
     ['a summary quoted inside a line', 'g', '  ok   prints "===== 10 passed, 0 failed =====" at the end', false],
     ['a summary in colour', 'g', '\x1b[32m===== 10 passed, 0 failed =====\x1b[0m', true],
@@ -134,31 +160,52 @@ function selfTest() {
     // are counted after the failures, inside the bars.
     ['the engine summary with expected reds', 'g', 'x\n===== 4689 passed, 0 failed, 10 expected red =====\n', true],
     ['expected reds at the floor', 'g', '===== 10 passed, 0 failed, 10 expected red =====', true],
-    ['expected reds and a failure', 'g', '===== 4689 passed, 1 failed, 10 expected red =====', false],
-    ['expected reds, below the floor', 'g', '===== 9 passed, 0 failed, 3 expected red =====', false],
+    ['expected reds and a failure', 'g', '===== 4689 passed, 1 failed, 10 expected red =====', false, 'Any failure'],
+    ['expected reds, below the floor', 'g', '===== 9 passed, 0 failed, 3 expected red =====', false, 'below its floor'],
     ['an expected red summary quoted inside a test line', 'g', '  ok   prints "===== 10 passed, 0 failed, 10 expected red =====" at the end\n', false],
     ['an expected red clause with no count', 'g', '===== 10 passed, 0 failed, expected red =====', false],
+    // The ceiling on expected red, 9 October. eng stands for the engine with
+    // its floor at a clean run's count and its ceiling at that run's reds.
+    ['the CRISIS group deleted: fewer passes, 0 expected red', 'eng', '===== 4678 passed, 0 failed, 0 expected red =====', false, 'below its floor'],
+    ['one expected red lost', 'eng', '===== 4688 passed, 0 failed, 9 expected red =====', false, 'below its floor'],
+    ['11 expected red against a ceiling of 10', 'eng', '===== 4690 passed, 0 failed, 11 expected red =====', false, 'above its ceiling'],
+    ['exactly 10 expected red, at the ceiling', 'eng', '===== 4689 passed, 0 failed, 10 expected red =====', true],
+    ['the fix landed: 0 expected red, at the floor', 'eng', '===== 4689 passed, 0 failed, 0 expected red =====', true],
+    ['the old shape, no clause, below the floor', 'eng', '===== 4678 passed, 0 failed =====', false, 'no expected red clause'],
+    ['the old shape, no clause, at the floor', 'eng', '===== 4689 passed, 0 failed =====', true],
+    ['an engine summary quoted inside test output', 'eng', '  ok   prints "===== 4689 passed, 0 failed, 10 expected red =====" at the end\n', false, 'no summary line'],
+    ['expected reds and no ceiling set', 'nocap', '===== 10 passed, 0 failed, 2 expected red =====', false, 'no ceiling'],
+    ['a ceiling that is not a whole number', 'badcap', '===== 10 passed, 0 failed, 2 expected red =====', false, 'ceiling'],
   ];
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'floors-'));
   let bad = 0;
   try {
-    for (const [name, gate, text, want] of CASES) {
+    for (const [name, gate, text, want, says] of CASES) {
       const log = path.join(dir, gate + '.log');
       fs.rmSync(log, { force: true });
       if (text !== null) fs.writeFileSync(log, text);
       const [ok, msg] = judge(gate, dir, T);
-      const right = ok === want;
+      const said = !says || msg.includes(says);
+      const right = ok === want && said;
       if (!right) bad++;
-      console.log((right ? '  ok   ' : 'FAIL ') + name + ': ' + (ok ? 'passes' : 'fails') + (right ? '' : ', expected it to ' + (want ? 'pass' : 'fail')) + '. ' + msg);
+      console.log((right ? '  ok   ' : 'FAIL ') + name + ': ' + (ok ? 'passes' : 'fails')
+        + (ok === want ? '' : ', expected it to ' + (want ? 'pass' : 'fail'))
+        + (said ? '' : ', for another reason than "' + says + '"') + '. ' + msg);
     }
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
   let table = null;
   try { table = JSON.parse(fs.readFileSync(FLOORS, 'utf8')); } catch (e) { /* reported below */ }
-  const fl = (table && table.floors) || {};
-  const sound = table && Object.keys(fl).length && Object.values(fl).every(v => Number.isInteger(v) && v > 0);
+  const fl = (table && table.floors) || {}, cap = (table && table.expected_red_max) || {};
+  const unset = Object.keys(fl).filter(k => fl[k] === 0);
+  const sound = table && Object.keys(fl).length && !unset.length && Object.values(fl).every(v => Number.isInteger(v) && v > 0);
   if (!sound) bad++;
-  console.log((sound ? '  ok   ' : 'FAIL ') + 'tests/floors.json ' + (sound ? 'reads, and every floor is a whole number above zero' : 'is unreadable, empty, or holds a floor that is not a whole number above zero'));
-  console.log('\n===== ' + (CASES.length + 1 - bad) + ' passed, ' + bad + ' failed =====');
+  console.log((sound ? '  ok   ' : 'FAIL ') + 'tests/floors.json ' + (sound ? 'reads, and every floor is a whole number above zero'
+    : unset.length ? 'has floor not set (0) for ' + unset.join(', ')
+    : 'is unreadable, empty, or holds a floor that is not a whole number above zero'));
+  const capped = typeof cap === 'object' && !Array.isArray(cap) && Object.values(cap).every(v => Number.isInteger(v) && v >= 0);
+  if (!capped) bad++;
+  console.log((capped ? '  ok   ' : 'FAIL ') + 'tests/floors.json ' + (capped ? 'expected_red_max holds only whole numbers' : 'expected_red_max holds a ceiling that is not a whole number'));
+  console.log('\n===== ' + (CASES.length + 2 - bad) + ' passed, ' + bad + ' failed =====');
   return bad ? 1 : 0;
 }
 

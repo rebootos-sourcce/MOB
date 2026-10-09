@@ -10,8 +10,10 @@ cut of this lint could not see:
 
   R1  Triggers. pull_request with no paths filter, so a docs only pull request
       still gets the checks and a required check never sits pending. push to
-      main keeping its paths filter. workflow_dispatch with an optional string
-      input rollback_ref. Never pull_request_target, in any workflow here: it
+      main with no paths filter either, so every commit on main gets its own
+      run and "its own run will deploy" is true. workflow_dispatch with an
+      optional string input rollback_ref, whose description says an empty one
+      is a normal run. Never pull_request_target, in any workflow here: it
       would publish a public preview of onboarding, the 2 October exposure,
       which only the owner can delete.
   R2  Jobs. gates-fast. gates-browser, the required browser gates, one matrix
@@ -24,18 +26,21 @@ cut of this lint could not see:
       workflow env, is the one list of built pages, and gates-fast and deploy
       both check it.
   R4  The deploy job. A missing Cloudflare secret fails it. A push publishes
-      only while its commit is still the tip of main. A rollback publishes
-      only a commit on main that Cloudflare Pages published to production.
-      The deploy command names --branch=main, so a rollback reaches
-      production and not a preview.
+      only while its commit is still the tip of main. A rollback takes only a
+      full commit sha, on main, that Cloudflare Pages lists, a page at a time,
+      as a production deployment whose last stage is deploy: success, and it
+      says on the run page that the next push to main undoes it. The deploy
+      command names --branch=main, so a rollback reaches production and not a
+      preview. After the upload the job reads Cloudflare back and fails unless
+      the newest production deployment is the commit it just published.
   R5  Every gate tees its log under $RUNNER_TEMP/gates, under pipefail, and
       tools/floors.js holds each count to its floor in tests/floors.json.
   R6  Every ${{ }} expression parses, uses only functions and contexts GitHub
       allows where it sits, and names only needs, inputs, matrix keys and env
       variables that exist.
-  R7  Every job has a timeout. No run script has github.event, github.head_ref
-      or inputs interpolated into it. No action from outside actions/ and
-      github/.
+  R7  Every job has a timeout. No run script has github.event, github.head_ref,
+      github.base_ref, github.ref_name or inputs interpolated into it. No action
+      from outside actions/ and github/.
 
 Nothing that decides what runs or what is published is matched as text. A
 small evaluator of GitHub's expression language, below, runs the job
@@ -62,6 +67,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import urllib.parse
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WORKFLOW = os.path.join(ROOT, '.github', 'workflows', 'deploy.yml')
@@ -70,12 +76,6 @@ MAIN = 'refs/heads/main'
 PR_REF = 'refs/pull/1/merge'
 BRANCH = 'refs/heads/claude/some-branch'
 ROLLBACK = '8f565af'
-
-# The push paths filter as it stood at 8f565af. A path may be added. None may
-# go: a change under a removed path would reach main and never deploy.
-PUSH_PATHS = ['atuned_src/**', 'funnel/**', 'tests/**', 'tools/**',
-              'functions/**', 'atuned_funnel_system/**',
-              '.github/workflows/deploy.yml']
 
 # gate: (command, least timeout in minutes). Each runs exactly once, in
 # gates-browser, where a red run fails gates-pass and holds back the deploy, or
@@ -107,8 +107,16 @@ INSTALL_CMD = 'npm install --no-audit --no-fund wrangler@4'
 # commit id, and Cloudflare makes an upload production only when that branch
 # is the project's production branch. Read in wrangler 4.143.0's own source.
 DEPLOY_CMD = 'npx wrangler pages deploy deploy --project-name=atuned --branch=main --commit-dirty=true'
-CF_DEPLOYMENTS = ('https://api.cloudflare.com/client/v4/accounts/%s/pages/projects/atuned/'
-                  'deployments?env=production&per_page=50')
+# Cloudflare's list of the project's deployments. The stand-in curl below
+# answers at most 25 to a page whatever per_page asks for, because no larger
+# page size is known to be honoured, and the guard reads at most 6 pages.
+CF_PATH = '/client/v4/accounts/%s/pages/projects/atuned/deployments'
+CF_PAGE, CF_PAGES = 25, 6
+# A rollback is a stopgap, said where the person dispatching it reads.
+STOPGAP = ("The next push to main publishes main's tip over this rollback. "
+           "Revert the bad commit on main to make it stay.")
+FULL_SHA = 'Give a full commit sha that was published; branch names are not accepted.'
+UNTRUSTED = (['github', 'event'], ['github', 'head_ref'], ['github', 'base_ref'], ['github', 'ref_name'])
 STAGE_LINES = [
     'rm -rf deploy && mkdir deploy',
     'cp funnel/dist/atuned-funnel.html deploy/',
@@ -687,10 +695,15 @@ sys.exit(p.returncode)
 '''
 
 CURL_STUB = r'''#!/usr/bin/env python3
-# Answers only Cloudflare's list of the atuned project's deployments. Like
-# curl, it exits 22 on an HTTP error only when asked to fail, and otherwise
-# prints the error body and exits 0.
-import json, os, sys
+# Answers only Cloudflare's list of the atuned project's deployments: newest
+# first, a page at a time and never more than 25 to a page whatever per_page
+# asks for, since no larger page is known to be honoured. It returns every
+# environment whatever env asks for, since that is not known to be honoured
+# either: a script that trusts env=production alone takes a preview.
+# cf.json holds one answer, or a list with one answer per call, the last one
+# repeating. Like curl, it exits 22 on an HTTP error only when asked to fail,
+# and otherwise prints the error body and exits 0.
+import json, os, sys, urllib.parse
 d = os.environ['FAKE_DIR']
 args = sys.argv[1:]
 hdrs, urls, fail, i = [], [], False, 0
@@ -708,7 +721,13 @@ while i < len(args):
     elif not a.startswith('-'):
         urls.append(a)
     i += 1
-with open(os.path.join(d, 'curl.calls'), 'a') as f:
+log = os.path.join(d, 'curl.calls')
+try:
+    with open(log) as f:
+        n = sum(1 for _ in f)
+except OSError:
+    n = 0
+with open(log, 'a') as f:
     f.write(json.dumps({'headers': hdrs, 'urls': urls}) + '\n')
 def answer(code, text):
     sys.stdout.write(text)
@@ -716,20 +735,42 @@ def answer(code, text):
 def err(msg):
     return json.dumps({'success': False, 'errors': [{'code': 10000, 'message': msg}], 'messages': [], 'result': None})
 tok = os.environ.get('FAKE_CF_TOKEN', '')
-mode = os.environ.get('FAKE_CF', 'ok')
-if urls != [os.environ.get('FAKE_CF_URL', '')]:
-    answer(404, err('No route for %r' % (urls,)))
+acct = os.environ.get('FAKE_CF_ACCOUNT', '')
+if len(urls) != 1:
+    answer(400, err('one URL expected, given %r' % (urls,)))
+u = urllib.parse.urlsplit(urls[0])
+q = urllib.parse.parse_qs(u.query)
+if not acct or (u.scheme, u.netloc, u.path) != ('https', 'api.cloudflare.com', '/client/v4/accounts/%s/pages/projects/atuned/deployments' % acct):
+    answer(404, err('No route for %s' % urls[0]))
 if not tok or ('Authorization: Bearer ' + tok) not in hdrs:
     answer(403, err('Authentication error'))
+with open(os.path.join(d, 'cf.json')) as f:
+    spec = json.load(f)
+item = spec[min(n, len(spec) - 1)] if isinstance(spec, list) else spec
+mode = item if isinstance(item, str) else os.environ.get('FAKE_CF', 'ok')
 if mode == 'down':
     answer(500, err('Internal server error'))
 if mode == 'garbage':
     answer(502, '<html><body>502 Bad Gateway</body></html>\n')
-with open(os.path.join(d, 'cf.json')) as f:
-    body = json.load(f)
+body = item if isinstance(item, dict) else {}
+try:
+    page = int(q.get('page', ['1'])[0])
+    per = max(1, min(int(q.get('per_page', ['25'])[0]), 25))
+except ValueError:
+    answer(400, err('page and per_page must be numbers'))
+rows = list(body.get('result') or [])
+rows.sort(key=lambda r: r.get('created_on', ''), reverse=True)
+chunk = rows[(page - 1) * per:page * per] if page >= 1 else []
+out = dict(body, result=chunk, result_info={'page': page, 'per_page': per, 'count': len(chunk), 'total_count': len(rows)})
 if mode == 'refused':
-    body = dict(body, success=False, errors=[{'code': 8000000, 'message': 'refused'}])
-answer(200, json.dumps(body))
+    out.update(success=False, errors=[{'code': 8000000, 'message': 'refused'}])
+answer(200, json.dumps(out))
+'''
+
+# A stand-in for sleep that waits for nothing and writes down how long it was
+# asked to wait, so a retry's bound is measured and the lint stays fast.
+SLEEP_STUB = '''#!/bin/sh
+echo "$1" >> "$FAKE_DIR/sleep.calls"
 '''
 
 _TMP = []
@@ -739,16 +780,29 @@ _FIXTURE = []
 
 def tmproot():
     if not _TMP:
-        _TMP.append(tempfile.mkdtemp(prefix='workflow-lint-'))
-        atexit.register(shutil.rmtree, _TMP[0], True)
-        b = os.path.join(_TMP[0], 'bin')
-        os.makedirs(b)
-        for name, src in (('gh', GH_STUB), ('curl', CURL_STUB)):
-            p = os.path.join(b, name)
-            with open(p, 'w') as f:
-                f.write(src)
-            os.chmod(p, 0o755)
+        root = tempfile.mkdtemp(prefix='workflow-lint-')
+        atexit.register(shutil.rmtree, root, True)
+        make_root(root)
     return _TMP[0]
+
+
+def make_root(root):
+    """the stand-ins, in a fresh directory that the scratch repository and
+    every run's files go under"""
+    _TMP[:] = [root]
+    _FIXTURE.clear()
+    b = os.path.join(root, 'bin')
+    os.makedirs(b)
+    # The python stand-ins run under this interpreter, isolated and without
+    # site packages, so nothing on the machine's own path changes what they do.
+    for name, src in (('gh', GH_STUB), ('curl', CURL_STUB), ('sleep', SLEEP_STUB)):
+        p = os.path.join(b, name)
+        if src.startswith('#!/usr/bin/env python3\n'):
+            src = '#!%s -IS\n' % sys.executable + src.split('\n', 1)[1]
+        with open(p, 'w') as f:
+            f.write(src)
+        os.chmod(p, 0o755)
+    return root
 
 
 def base_env():
@@ -770,7 +824,7 @@ class Ran:
 def run_script(key, script, env, cwd=None, files=None, before=None, after=None):
     """script under GitHub's own bash, --noprofile --norc -eo pipefail, with a
     fresh $GITHUB_OUTPUT and $GITHUB_STEP_SUMMARY. Remembered by key."""
-    k = (key, script, tuple(sorted(env.items())), json.dumps(files, sort_keys=True))
+    k = (key, script, tuple(sorted((a, b) for a, b in env.items() if a not in ('FAKE_REPO',))), json.dumps(files, sort_keys=True))
     if k in _RUNS:
         return _RUNS[k]
     d = tempfile.mkdtemp(dir=tmproot())
@@ -800,8 +854,14 @@ def run_script(key, script, env, cwd=None, files=None, before=None, after=None):
         if '=' in line:
             a, b = line.split('=', 1)
             outputs[a.strip()] = b.strip()
+    def waited(text):
+        try:
+            return float(text)
+        except ValueError:
+            return float('inf')   # sleep with no number, or a unit: not a bounded wait this lint can add up
     calls = {'gh': [json.loads(l) for l in read('gh.calls').split('\n') if l],
              'curl': [json.loads(l) for l in read('curl.calls').split('\n') if l],
+             'sleep': [waited(l.strip()) for l in read('sleep.calls').split('\n') if l.strip()],
              'after': extra}
     r = Ran(code, out, outputs, read('summary'), calls)
     _RUNS[k] = r
@@ -846,16 +906,28 @@ def fixture():
 
 
 def cf_body(entries):
-    """Cloudflare's list of deployments: (commit, environment, last stage status)."""
-    return {'success': True, 'errors': [], 'messages': [],
-            'result': [{'id': 'dep-%d' % i, 'url': 'https://%d.atuned.pages.dev' % i,
-                        'environment': env, 'created_on': '2026-10-0%dT12:00:00Z' % (i + 1),
-                        'deployment_trigger': {'type': 'ad_hoc', 'metadata': {
-                            'branch': 'main' if env == 'production' else 'HEAD',
-                            'commit_hash': sha, 'commit_message': 'x', 'commit_dirty': True}},
-                        'latest_stage': {'name': 'deploy', 'status': status}, 'stages': []}
-                       for i, (sha, env, status) in enumerate(entries)],
-            'result_info': {'page': 1, 'per_page': 50, 'count': len(entries), 'total_count': len(entries)}}
+    """Cloudflare's list of deployments, newest first: (commit, environment, last
+    stage status) or (commit, environment, last stage status, last stage name).
+    Each is ten minutes older than the one before it."""
+    rows = []
+    for i, e in enumerate(entries):
+        sha, env, status = e[:3]
+        stage = e[3] if len(e) > 3 else 'deploy'
+        t = 9 * 24 * 60 - 10 * i   # minutes into October, so entry 0 is the newest
+        rows.append({'id': 'dep-%d' % i, 'url': 'https://%x.atuned.pages.dev' % (0x1000 + i),
+                     'environment': env,
+                     'created_on': '2026-10-%02dT%02d:%02d:00.%06dZ' % (t // 1440 + 1, t // 60 % 24, t % 60, 123456),
+                     'deployment_trigger': {'type': 'ad_hoc', 'metadata': {
+                         'branch': 'main' if env == 'production' else 'HEAD',
+                         'commit_hash': sha, 'commit_message': 'x', 'commit_dirty': True}},
+                     'latest_stage': {'name': stage, 'status': status}, 'stages': []})
+    return {'success': True, 'errors': [], 'messages': [], 'result': rows,
+            'result_info': {'page': 1, 'per_page': 25, 'count': len(rows), 'total_count': len(rows)}}
+
+
+def filler(n, start=0):
+    """n production deployments of commits that are not in the fixture"""
+    return [('%040x' % (0xc0ffee00 + start + i), 'production', 'success') for i in range(n)]
 
 
 def ctx_for(event, ref, rollback=None, tok='t', acct='a', sha='a' * 40):
@@ -871,8 +943,8 @@ def ctx_for(event, ref, rollback=None, tok='t', acct='a', sha='a' * 40):
 # ---------------------------------------------------------------------------
 
 class Lint:
-    def __init__(self, doc, root=ROOT):
-        self.doc, self.root = doc, root
+    def __init__(self, doc, root=ROOT, text=None):
+        self.doc, self.root, self.text = doc, root, text
         self.passed, self.fails = 0, []
 
     def ok(self, cond, msg):
@@ -936,16 +1008,21 @@ class Lint:
             push = on['push'] or {}
             self.ok(as_list(push.get('branches')) == ['main'] and 'branches-ignore' not in push and 'tags' not in push,
                     'R1 push must trigger on main and nothing else; found branches %r.' % (push.get('branches'),))
-            have = [str(p) for p in as_list(push.get('paths'))]
-            lost = [p for p in PUSH_PATHS if p not in have]
-            self.ok(not lost and 'paths-ignore' not in push,
-                    'R1 the push paths filter lost %s, so a change there would reach main and never deploy.' % (', '.join(lost) or 'its shape (paths-ignore)'))
+            self.ok(isinstance(push, dict) and 'paths' not in push and 'paths-ignore' not in push,
+                    'R1 push has a paths filter. A push to main that touches only docs or a built file then gets no run, so an older commit whose order check said "its own run will deploy" never goes live.')
         wd = on.get('workflow_dispatch') if 'workflow_dispatch' in on else False
         if self.ok(wd is not False, 'R1 no workflow_dispatch trigger, so there is no rollback route.'):
             inp = ((wd or {}).get('inputs') or {}).get('rollback_ref')
-            self.ok(isinstance(inp, dict) and inp.get('type') == 'string' and not inp.get('required')
-                    and inp.get('default', '') == '',
-                    'R1 workflow_dispatch has no optional string input rollback_ref with an empty default.')
+            if self.ok(isinstance(inp, dict) and inp.get('type') == 'string' and not inp.get('required')
+                       and inp.get('default', '') == '',
+                       'R1 workflow_dispatch has no optional string input rollback_ref with an empty default.'):
+                desc = ' '.join(str(inp.get('description', '')).split()).lower()
+                self.ok('full commit sha' in desc and 'empty' in desc and 'every gate runs' in desc and "main's tip publishes" in desc,
+                        "R1 the rollback_ref description must say it takes a full commit sha, and that left empty it is a normal run: every gate runs and main's tip publishes. A person who meant to roll back and left it empty republishes main.")
+        if self.text is not None:
+            said = ' '.join(' '.join(l.strip()[1:].split()) for l in self.text.split('\n') if l.strip().startswith('#'))
+            self.ok(' '.join(STOPGAP.split()) in said,
+                    'R1 no comment in the file says: %s' % STOPGAP)
 
     # R2, the job conditions, simulated -------------------------------------
     def simulate(self, event, ref, rollback, results, cancelled):
@@ -1061,6 +1138,8 @@ class Lint:
             return
         nd = needs_of(job)
         self.ok(all(g in nd for g in GATE_JOBS), 'R2 gates-pass does not need %s.' % ', '.join(g for g in GATE_JOBS if g not in nd))
+        rep = [n for n in nd if n.startswith('gates-report')]
+        self.ok(not rep, 'R2 gates-pass needs %s, a report only job, so a red report gate would hold back the deploy and every deploy waits for it.' % ', '.join(rep))
         self.ok(job.get('name') in (None, 'gates-pass'),
                 'R2 gates-pass is renamed %r; branch protection will require the check by the name gates-pass.' % job.get('name'))
         st = steps_of(job)
@@ -1156,13 +1235,8 @@ class Lint:
                 'R2 gates-fast does not run this lint, python3 tools/workflow-lint.py.')
         p, _, s = find(texts, r'node tests/chrome-path\.js\b')
         if self.ok(p is not None, 'R2 gates-fast does not run node tests/chrome-path.js.'):
-            try:
-                absent = condition(s.get('if'), static_env(files=set()))
-                present = condition(s.get('if'), static_env(files={'tests/chrome-path.js'}))
-            except ExprError:
-                absent, present = False, False
-            self.ok(absent and present,
-                    'R2 the chrome-path step must run whether or not tests/chrome-path.js exists. A gate that is skipped when its file is gone reads green, so it takes no if.')
+            self.ok('if' not in s,
+                    'R2 the chrome-path step has if: %s. It takes no if of any kind: one that skips it when its file is gone, or on a pull request, reads green.' % (s.get('if'),))
         fa = self.floors_args(texts)
         want = ['engine', 'funnel-package']
         hit = [a for a in fa if all(w in a[1] for w in want)]
@@ -1378,12 +1452,31 @@ class Lint:
                    'R4 deploy has no order check: one step with an id, before the checkout, on a push and never on a rollback, that reads the tip of main through gh api repos/$GITHUB_REPOSITORY/git/ref/heads/main.'):
             idx['order'] = order[0]
             self.r4_order(job, st[order[0]])
-        guard = [i for i, s in enumerate(st) if 'pages/projects/atuned/deployments' in str(s.get('run', ''))]
+        inst = [i for i, s in enumerate(st) if INSTALL_CMD in str(s.get('run', ''))]
+        if self.ok(len(inst) == 1, 'R4 deploy must run %s in exactly one step.' % INSTALL_CMD):
+            idx['install'] = inst[0]
+        dep = [i for i, s in enumerate(st) if 'wrangler pages deploy' in str(s.get('run', ''))]
+        if self.ok(len(dep) == 1, 'R4 deploy must run wrangler pages deploy in exactly one step.'):
+            d = st[dep[0]]
+            idx['deploy'] = dep[0]
+            self.ok(str(d.get('run', '')).strip() == DEPLOY_CMD,
+                    'R4 the deploy command is not exactly: %s. Without --branch=main, a rollback publishes a preview and atuned.world stays as it was.' % DEPLOY_CMD)
+            de = d.get('env') or {}
+            self.ok(de.get('CLOUDFLARE_API_TOKEN') == '${{ secrets.CLOUDFLARE_API_TOKEN }}' and de.get('CLOUDFLARE_ACCOUNT_ID') == '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}',
+                    'R4 the deploy step no longer passes the two Cloudflare secrets to wrangler.')
+        reads = [i for i, s in enumerate(st) if 'pages/projects/atuned/deployments' in str(s.get('run', ''))]
+        up = idx.get('deploy')
+        guard = [i for i in reads if up is None or i < up]
         if self.ok(len(guard) == 1 and guard[0] > ci and runs_on(st[guard[0]], rb) and not runs_on(st[guard[0]], push)
                    and st[guard[0]].get('id'),
                    "R4 deploy has no rollback guard: one step with an id, after the checkout, on a rollback and never on a push, that reads Cloudflare's production deployments."):
             idx['guard'] = guard[0]
             self.r4_guard(job, st[guard[0]])
+        confirm = [i for i in reads if up is not None and i > up]
+        if self.ok(len(confirm) == 1,
+                   "R4 deploy has no production check: one step after wrangler pages deploy that reads Cloudflare's production deployments back and fails unless the newest is the commit just published. wrangler exits 0 when it cannot tell."):
+            idx['confirm'] = confirm[0]
+            self.r4_confirm(job, st[confirm[0]])
         moves = [i for i, s in enumerate(st) if i not in (ci, idx.get('guard'))
                  and (str(s.get('uses', '')).startswith('actions/checkout@') or
                       re.search(r'\bgit\s+(?:checkout|switch|reset|restore|stash|pull|merge|rebase)\b', str(s.get('run', ''))))]
@@ -1399,20 +1492,25 @@ class Lint:
                     tostr(depth[0]) or 'unset', tostr(depth[1]) or 'unset'))
         self.ok(ref == ('', ''),
                 "R4 the deploy checkout takes ref %r. It must take none, the run's own commit: on a rollback the guard moves to the commit it verified, after verifying it." % (ref[0],))
-        inst = [i for i, s in enumerate(st) if INSTALL_CMD in str(s.get('run', ''))]
-        if self.ok(len(inst) == 1, 'R4 deploy must run %s in exactly one step.' % INSTALL_CMD):
-            idx['install'] = inst[0]
-        dep = [i for i, s in enumerate(st) if 'wrangler pages deploy' in str(s.get('run', ''))]
-        if self.ok(len(dep) == 1, 'R4 deploy must run wrangler pages deploy in exactly one step.'):
-            d = st[dep[0]]
-            idx['deploy'] = dep[0]
-            self.ok(str(d.get('run', '')).strip() == DEPLOY_CMD,
-                    'R4 the deploy command is not exactly: %s. Without --branch=main, a rollback publishes a preview and atuned.world stays as it was.' % DEPLOY_CMD)
-            de = d.get('env') or {}
-            self.ok(de.get('CLOUDFLARE_API_TOKEN') == '${{ secrets.CLOUDFLARE_API_TOKEN }}' and de.get('CLOUDFLARE_ACCOUNT_ID') == '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}',
-                    'R4 the deploy step no longer passes the two Cloudflare secrets to wrangler.')
-        if all(k in idx for k in ('secrets', 'order', 'guard', 'install', 'deploy')):
+        if all(k in idx for k in ('secrets', 'order', 'guard', 'install', 'deploy', 'confirm')):
             self.r4_walk(job, idx)
+
+    def cf_reads(self, who, calls, acct, tok, most=None):
+        """every read of Cloudflare names the production list and a page of at most 25, with the token"""
+        bad = []
+        for c in calls:
+            urls = c.get('urls') or []
+            u = urllib.parse.urlsplit(urls[0]) if len(urls) == 1 else None
+            q = urllib.parse.parse_qs(u.query) if u else {}
+            per = (q.get('per_page') or ['x'])[0]
+            if not (u and (u.netloc, u.path) == ('api.cloudflare.com', CF_PATH % acct) and q.get('env') == ['production']
+                    and per.isdigit() and 1 <= int(per) <= CF_PAGE and 'Authorization: Bearer ' + tok in c.get('headers', [])):
+                bad.append(urls)
+        self.ok(calls and not bad,
+                'R4 %s reads Cloudflare at %s. Every read must be https://api.cloudflare.com%s?env=production with per_page at most %d, a size Cloudflare is known to honour, and Authorization: Bearer with the token.' % (
+                    who, bad[0] if bad else 'nothing', CF_PATH % '$CF_ACCOUNT', CF_PAGE))
+        if most is not None:
+            self.ok(len(calls) <= most, 'R4 %s reads Cloudflare %d times; it must stop at %d pages.' % (who, len(calls), most))
 
     def r4_secrets(self, job, step):
         for tok, acct in (('t', 'a'), ('', 'a'), ('t', ''), ('', '')):
@@ -1451,29 +1549,41 @@ class Lint:
 
     def r4_guard(self, job, step):
         repo, sh, g = fixture()
-        live = cf_body([(sh['A'], 'production', 'success'), (sh['B'], 'production', 'failure'),
-                        (sh['C'], 'preview', 'success'), (sh['S'], 'production', 'success'),
-                        (sh['E'], 'production', 'success')])
-        dark = cf_body([e for e in [(sh['A'], 'production', 'success'), (sh['E'], 'preview', 'success')]])
+        P, Q, OK = 'production', 'preview', 'success'
+        live = cf_body([(sh['E'], P, OK), (sh['S'], P, OK), (sh['C'], Q, OK), (sh['B'], P, 'failure'), (sh['A'], P, OK)])
+        dark = cf_body([(sh['E'], Q, OK), (sh['A'], P, OK)])
+        staged = cf_body([(sh['A'], P, OK, 'build'), (sh['E'], P, OK)])
+        deep = cf_body(filler(39) + [(sh['A'], P, OK)] + filler(20, 39))
+        most = CF_PAGE * CF_PAGES
+        past = cf_body(filler(most + 9) + [(sh['A'], P, OK)])
+        short = cf_body(filler(30))
         cases = [
-            # name, rollback_ref, dispatched on, token, account, Cloudflare, list, GitHub down, publishes
-            ('a full commit id that was live', sh['A'], MAIN, 't', 'a', 'ok', live, False, 'A'),
-            ('a short commit id that was live', sh['A'][:9], MAIN, 't', 'a', 'ok', live, False, 'A'),
-            ('main, which is live now', 'main', MAIN, 't', 'a', 'ok', live, False, 'E'),
-            ('main, never published to production', 'main', MAIN, 't', 'a', 'ok', dark, False, None),
-            ('a commit whose production deploy failed', sh['B'], MAIN, 't', 'a', 'ok', live, False, None),
-            ('a commit published only as a preview', sh['C'], MAIN, 't', 'a', 'ok', live, False, None),
-            ('a commit on main never published', sh['D'], MAIN, 't', 'a', 'ok', live, False, None),
-            ('a commit off main that Cloudflare lists as production', sh['S'], MAIN, 't', 'a', 'ok', live, False, None),
-            ('a commit that does not exist', 'deadbeef', MAIN, 't', 'a', 'ok', live, False, None),
-            ('an option, not a commit', '--all', MAIN, 't', 'a', 'ok', live, False, None),
-            ('a rollback dispatched off main', sh['A'], BRANCH, 't', 'a', 'ok', live, False, None),
-            ('Cloudflare down', sh['A'], MAIN, 't', 'a', 'down', live, False, None),
-            ('Cloudflare answering with a page that is not JSON', sh['A'], MAIN, 't', 'a', 'garbage', live, False, None),
-            ('Cloudflare answering success: false', sh['A'], MAIN, 't', 'a', 'refused', live, False, None),
-            ('no Cloudflare token', sh['A'], MAIN, '', 'a', 'ok', live, False, None),
-            ('no Cloudflare account', sh['A'], MAIN, 't', '', 'ok', live, False, None),
-            ('GitHub compare down', sh['A'], MAIN, 't', 'a', 'ok', live, True, None),
+            # name, rollback_ref, dispatched on, token, account, Cloudflare, list, GitHub down, publishes, must say
+            ('a full commit sha that was live', sh['A'], MAIN, 't', 'a', 'ok', live, False, 'A', None),
+            ("main's tip by its full sha, live now", sh['E'], MAIN, 't', 'a', 'ok', live, False, 'E', None),
+            ("main's tip by its full sha, never published to production", sh['E'], MAIN, 't', 'a', 'ok', dark, False, None, None),
+            ('a commit 40 deep in the list, read a page at a time', sh['A'], MAIN, 't', 'a', 'ok', deep, False, 'A', None),
+            ('a commit %d deep, past the %d pages read' % (most + 10, CF_PAGES), sh['A'], MAIN, 't', 'a', 'ok', past, False, None, str(most)),
+            ('a commit never published, in a list of 30', sh['D'], MAIN, 't', 'a', 'ok', short, False, None, '30'),
+            ('a commit whose last stage is build: success', sh['A'], MAIN, 't', 'a', 'ok', staged, False, None, None),
+            ('a commit whose production deploy failed', sh['B'], MAIN, 't', 'a', 'ok', live, False, None, None),
+            ('a commit published only as a preview', sh['C'], MAIN, 't', 'a', 'ok', live, False, None, None),
+            ('a commit on main never published', sh['D'], MAIN, 't', 'a', 'ok', live, False, None, None),
+            ('a commit off main that Cloudflare lists as production', sh['S'], MAIN, 't', 'a', 'ok', live, False, None, None),
+            ('a short sha', sh['A'][:9], MAIN, 't', 'a', 'ok', live, False, None, FULL_SHA),
+            ('a branch name', 'main', MAIN, 't', 'a', 'ok', live, False, None, FULL_SHA),
+            ('a branch name with a slash', 'claude/some-branch', MAIN, 't', 'a', 'ok', live, False, None, FULL_SHA),
+            ('a full sha with a trailing space', sh['A'] + ' ', MAIN, 't', 'a', 'ok', live, False, None, FULL_SHA),
+            ('a full sha in capitals', sh['A'].upper(), MAIN, 't', 'a', 'ok', live, False, None, FULL_SHA),
+            ('an option, not a commit', '--all', MAIN, 't', 'a', 'ok', live, False, None, FULL_SHA),
+            ('a full sha that is no commit here', 'f' * 40, MAIN, 't', 'a', 'ok', live, False, None, FULL_SHA),
+            ('a rollback dispatched off main', sh['A'], BRANCH, 't', 'a', 'ok', live, False, None, None),
+            ('Cloudflare down', sh['A'], MAIN, 't', 'a', 'down', live, False, None, None),
+            ('Cloudflare answering with a page that is not JSON', sh['A'], MAIN, 't', 'a', 'garbage', live, False, None, None),
+            ('Cloudflare answering success: false', sh['A'], MAIN, 't', 'a', 'refused', live, False, None, None),
+            ('no Cloudflare token', sh['A'], MAIN, '', 'a', 'ok', live, False, None, None),
+            ('no Cloudflare account', sh['A'], MAIN, 't', '', 'ok', live, False, None, None),
+            ('GitHub compare down', sh['A'], MAIN, 't', 'a', 'ok', live, True, None, None),
         ]
         reset = lambda: g('checkout', '-q', '--force', 'main')
 
@@ -1483,18 +1593,24 @@ class Lint:
                 seen = (g('rev-parse', 'HEAD'), f.read())
             reset()
             return seen
-        for name, ref, on, tok, acct, mode, body, ghdown, pub in cases:
+        for name, ref, on, tok, acct, mode, body, ghdown, pub, say in cases:
             ctx = ctx_for('workflow_dispatch', on, ref, tok=tok, acct=acct, sha=sh['E'])
-            extra = {'FAKE_REPO': repo, 'FAKE_CF': mode, 'FAKE_CF_TOKEN': tok, 'FAKE_CF_URL': CF_DEPLOYMENTS % acct}
+            extra = {'FAKE_REPO': repo, 'FAKE_CF': mode, 'FAKE_CF_TOKEN': tok, 'FAKE_CF_ACCOUNT': acct}
             if ghdown:
                 extra['FAKE_GH_FAIL'] = '1'
             r = self.script(job, step, ctx, 'guard ' + name, extra=extra, cwd=repo,
                             files={'cf.json': body}, before=reset, after=here)
             head, tree = r.calls['after'] or ('', '')
+            self.ok(' '.join(STOPGAP.split()) in ' '.join(r.summary.split()),
+                    'R4 the rollback guard, given %s, does not write to the run page: %s' % (name, STOPGAP))
+            if say is not None:
+                self.ok(say in r.out, 'R4 the rollback guard, given %s, does not say "%s". It said: %s' % (name, say, last(r.out)))
             if pub is None:
                 self.ok(r.code != 0 and head == sh['E'] and 'sha' not in r.outputs,
                         'R4 the rollback guard, given %s, %s; it must refuse and leave the checkout where it was.' % (
                             name, 'exits 0' if r.code == 0 else 'moves the checkout to %s' % head[:9]))
+                if r.calls['curl']:
+                    self.cf_reads('the rollback guard, given %s,' % name, r.calls['curl'], acct, tok, CF_PAGES)
                 continue
             want = sh[pub]
             if not self.ok(r.code == 0 and head == want and tree == pub and r.outputs.get('sha') == want,
@@ -1502,10 +1618,42 @@ class Lint:
                                name, r.code, head[:9] or 'nothing', pub, want[:9], last(r.out))):
                 continue
             self.ok(want in r.out, 'R4 the rollback guard does not print the commit id it matched (%s).' % want[:9])
-            calls = r.calls['curl']
-            self.ok(len(calls) == 1 and calls[0]['urls'] == [CF_DEPLOYMENTS % acct]
-                    and 'Authorization: Bearer ' + tok in calls[0]['headers'],
-                    'R4 the rollback guard does not read %s once, with Authorization: Bearer and the token.' % (CF_DEPLOYMENTS % '$CF_ACCOUNT'))
+            self.cf_reads('the rollback guard, given %s,' % name, r.calls['curl'], acct, tok, CF_PAGES)
+
+    def r4_confirm(self, job, step):
+        """after the upload: is the newest production deployment the commit just published?"""
+        repo, sh, g = fixture()
+        E, D, P, Q, OK = sh['E'], sh['D'], 'production', 'preview', 'success'
+        b = lambda *e: cf_body(list(e))
+        cases = [
+            # name, Cloudflare's answer to each read in turn (the last repeats), confirms
+            ('live at the first read', [b((E, P, OK), (D, P, OK))], True),
+            ('live at the third read', [b((D, P, OK)), b((E, P, 'active'), (D, P, OK)), b((E, P, OK), (D, P, OK))], True),
+            ('Cloudflare down, then live', ['down', b((E, P, OK), (D, P, OK))], True),
+            ('still deploying when the wait runs out', [b((E, P, 'active'), (D, P, OK))], False),
+            ('its last stage build: success', [b((E, P, OK, 'build'), (D, P, OK))], False),
+            ('its production deploy failed', [b((E, P, 'failure'), (D, P, OK))], False),
+            ('the upload went to a preview', [b((E, Q, OK), (D, P, OK))], False),
+            ('this commit live once, another one newest', [b((D, P, OK), (E, P, OK))], False),
+            ('Cloudflare down throughout', ['down'], False),
+            ('Cloudflare answering with a page that is not JSON', ['garbage'], False),
+        ]
+        reset = lambda: g('checkout', '-q', '--force', 'main')
+        for name, answers, good in cases:
+            r = self.script(job, step, ctx_for('push', MAIN, sha=E), 'confirm ' + name,
+                            extra={'FAKE_CF_TOKEN': 't', 'FAKE_CF_ACCOUNT': 'a'}, cwd=repo,
+                            files={'cf.json': answers}, before=reset)
+            waited = sum(r.calls['sleep'])
+            if good:
+                if self.ok(r.code == 0, 'R4 the production check, with %s, exits %d; it must pass. It said: %s' % (name, r.code, last(r.out))):
+                    self.ok('dep-0' in r.out and 'https://1000.atuned.pages.dev' in r.out,
+                            'R4 the production check, with %s, does not print the id and URL of the deployment it confirmed.' % name)
+            else:
+                self.ok(r.code != 0, 'R4 the production check, with %s, exits 0; it must fail the job, or its green says atuned.world changed when it did not.' % name)
+            if name == 'still deploying when the wait runs out':
+                self.ok(60 <= waited <= 180,
+                        'R4 the production check waits %s seconds in all before it fails; it must keep reading for about two minutes, 60 to 180 seconds.' % waited)
+            self.cf_reads('the production check, with %s,' % name, r.calls['curl'], 'a', 't')
 
     def r4_walk(self, job, idx):
         """the deploy job's steps in order, on every path into it"""
@@ -1769,7 +1917,7 @@ class Lint:
                     except ExprError:
                         continue
                     bad = [c for c in (chain(n) for n in nodes(tree) if n[0] in ('ctx', 'prop', 'index'))
-                           if c and (c[0] == 'inputs' or c[:2] in (['github', 'event'], ['github', 'head_ref']))]
+                           if c and (c[0] == 'inputs' or c[:2] in UNTRUSTED)]
                     self.ok(not bad,
                             'R7 %s puts ${{ %s }} straight into its script, where a branch name or a pull request title becomes a command. Pass it through env: and quote it, "$NAME".' % (where, m.group(1).strip()))
             for where, u in uses:
@@ -1828,7 +1976,9 @@ def lint_file(path):
         print('FAIL ' + err)
         print('\n===== 0 passed, 1 failed =====')
         return 1
-    L = Lint(doc).run(others(path))
+    with open(path) as f:
+        text = f.read()
+    L = Lint(doc, text=text).run(others(path))
     for f in L.fails:
         print('FAIL ' + f)
     print('\n===== %d passed, %d failed =====' % (L.passed, len(L.fails)))
@@ -1877,12 +2027,24 @@ def _checkout(d):
 
 
 GUARD = r'pages/projects/atuned/deployments'
+CONFIRM = r'published="\$\(git rev-parse HEAD\)"'
+
+
+def _drop(d, rx):
+    st = _job(d, 'deploy')['steps']
+    st.remove(_step(d, 'deploy', rx))
+
+
+def _no_comments(text):
+    return '\n'.join(l for l in text.split('\n') if not l.strip().startswith('#'))
 ORDER = r'git/ref/heads/main'
 
 BREAKS = [
     ('a paths filter on pull_request', lambda d: _on(d).__setitem__('pull_request', {'paths': ['atuned_src/**']})),
     ('pull_request_target added', lambda d: _on(d).__setitem__('pull_request_target', None)),
-    ('the push paths filter dropped', lambda d: _on(d)['push'].pop('paths')),
+    ('a paths filter on push', lambda d: _on(d)['push'].__setitem__('paths', ['atuned_src/**', 'funnel/**'])),
+    ('rollback_ref described with no word on an empty input', lambda d: _on(d)['workflow_dispatch']['inputs']['rollback_ref'].__setitem__('description', 'Rollback only: a full commit sha.')),
+    ('no comment says a rollback lasts only until the next push', lambda d: None, _no_comments),
     ('rollback_ref made required', lambda d: _on(d)['workflow_dispatch']['inputs']['rollback_ref'].__setitem__('required', True)),
     ('deploy without needs', lambda d: _job(d, 'deploy').pop('needs')),
     ('deploy without concurrency', lambda d: _job(d, 'deploy').pop('concurrency')),
@@ -1893,6 +2055,7 @@ BREAKS = [
     ('gates-pass passes a skipped job', lambda d: _sub(d, 'gates-pass', r'exit 1', 'exit 1', 'exit 0')),
     ('gates-pass shows nothing on the run page', lambda d: _sub(d, 'gates-pass', r'exit 1', '"$GITHUB_STEP_SUMMARY"', '/dev/null')),
     ('gates-pass waits for gates-report', lambda d: _job(d, 'gates-pass')['needs'].append('gates-report')),
+    ('gates-pass waits for gates-report-summary', lambda d: _job(d, 'gates-pass')['needs'].append('gates-report-summary')),
     ('deploy waits for gates-report-summary', lambda d: _job(d, 'deploy').__setitem__('needs', ['gates-pass', 'gates-report-summary'])),
     ('every required leg allowed to fail', lambda d: _job(d, 'gates-browser').__setitem__('continue-on-error', True)),
     ('the report legs made required', lambda d: _job(d, 'gates-report').__setitem__('continue-on-error', False)),
@@ -1915,6 +2078,7 @@ BREAKS = [
     ('the engine gate not teed', lambda d: _sub(d, 'gates-fast', r'tests/engine\.js', 'engine.log', 'engine.txt')),
     ('no pipefail', lambda d: d['defaults']['run'].__setitem__('shell', 'sh')),
     ('the chrome-path step skipped when its file is gone', lambda d: _step(d, 'gates-fast', r'chrome-path').__setitem__('if', "hashFiles('tests/chrome-path.js') != ''")),
+    ('the chrome-path step skipped on a pull request', lambda d: _step(d, 'gates-fast', r'chrome-path').__setitem__('if', "github.event_name == 'push'")),
     ('the FAQ not staged', lambda d: _sub(d, 'deploy', r'mkdir deploy', 'cp funnel/dist/atuned-faq.html deploy/\n', '')),
     ('the FAQ dropped from FUNNEL_PAGES', lambda d: d['env'].__setitem__('FUNNEL_PAGES', d['env']['FUNNEL_PAGES'].replace(' atuned-faq', ''))),
     ('a page list typed into the deploy check', lambda d: _sub(d, 'deploy', r'test -s', '$FUNNEL_PAGES; do', 'atuned-funnel atuned-quiz atuned-about atuned-buy atuned-faq; do')),
@@ -1930,11 +2094,23 @@ BREAKS = [
     ('the rollback guard takes any commit on main', lambda d: _sub(d, 'deploy', GUARD, '[ -z "$match" ]', 'false')),
     ('the rollback guard takes a commit off main', lambda d: _sub(d, 'deploy', GUARD, 'identical|behind)', 'identical|behind|ahead|diverged)')),
     ('the rollback guard takes a failed deploy', lambda d: _sub(d, 'deploy', GUARD, ' and .latest_stage.status == "success"', '')),
+    ('the rollback guard takes a stage that is not deploy', lambda d: _sub(d, 'deploy', GUARD, ' and .latest_stage.name == "deploy"', '')),
+    ('the rollback guard reads one page only', lambda d: _sub(d, 'deploy', GUARD, 'page=$((page + 1))', 'break')),
+    ('the rollback guard asks for 50 to a page', lambda d: _sub(d, 'deploy', GUARD, 'per_page=25', 'per_page=50')),
+    ('the rollback guard reads every page there is', lambda d: _sub(d, 'deploy', GUARD, '[ "$page" -le 6 ]', 'true')),
+    ('the rollback guard takes a branch name or a short sha', lambda d: _sub(d, 'deploy', GUARD, '[[ "$ROLLBACK_REF" =~ ^[0-9a-f]{40}$ ]]', 'true')),
+    ('the rollback guard silent that the next push undoes it', lambda d: _sub(d, 'deploy', GUARD, '>> "$GITHUB_STEP_SUMMARY"', '> /dev/null')),
     ('the rollback guard takes a preview', lambda d: _sub(d, 'deploy', GUARD, '.environment == "production" and ', '')),
     ('the rollback guard ignores success: false', lambda d: _sub(d, 'deploy', GUARD, '!= true ]', '= nottrue ]')),
     ('the rollback guard runs off main', lambda d: _sub(d, 'deploy', GUARD, '!= refs/heads/main ]', '= refs/heads/nowhere ]')),
     ('the rollback guard publishes the dispatch commit', lambda d: _sub(d, 'deploy', GUARD, 'git checkout --quiet --force --detach "$sha"', ':')),
     ('a rollback checkout with no history', lambda d: _checkout(d).pop('with')),
+    ('no production check after the upload', lambda d: _drop(d, CONFIRM)),
+    ('the production check takes any commit', lambda d: _sub(d, 'deploy', CONFIRM, '[ "$commit" = "$published" ]', 'true')),
+    ('the production check takes a stage that is not deploy', lambda d: _sub(d, 'deploy', CONFIRM, '[ "$stage" = deploy ]', 'true')),
+    ('the production check reads once', lambda d: _sub(d, 'deploy', CONFIRM, 'for try in 1 2 3 4 5 6 7 8 9 10 11 12; do', 'for try in 1; do')),
+    ('the production check waits ten minutes', lambda d: _sub(d, 'deploy', CONFIRM, 'sleep 10', 'sleep 60')),
+    ('the production check reads previews too', lambda d: _sub(d, 'deploy', CONFIRM, 'env=production&', '')),
     ('the deploy checkout takes the rollback_ref unchecked', lambda d: _checkout(d)['with'].__setitem__('ref', '${{ inputs.rollback_ref }}')),
     ('a typo in a needs expression', lambda d: _step(d, 'gates-pass', r'.').__setitem__('env', {k: v.replace('gates-fast', 'gates-fat') for k, v in _step(d, 'gates-pass', r'.')['env'].items()})),
     ('an if that mixes ${{ }} with text', lambda d: _job(d, 'gates-fast').__setitem__('if', "${{ inputs.rollback_ref == '' }} && true")),
@@ -1943,10 +2119,34 @@ BREAKS = [
     ('a job with no timeout', lambda d: _job(d, 'gates-pass').pop('timeout-minutes')),
     ('rollback_ref interpolated into the guard', lambda d: _sub(d, 'deploy', GUARD, '"$ROLLBACK_REF^{commit}"', '"${{ inputs.rollback_ref }}^{commit}"')),
     ('a branch name interpolated into a run', lambda d: _job(d, 'gates-fast')['steps'].append({'name': 'x', 'run': 'echo "${{ github.head_ref }}"'})),
+    ('github.ref_name interpolated into a run', lambda d: _job(d, 'gates-fast')['steps'].append({'name': 'x', 'run': 'echo "${{ github.ref_name }}"'})),
+    ('github.base_ref interpolated into a run', lambda d: _job(d, 'gates-fast')['steps'].append({'name': 'x', 'run': 'echo "${{ github.base_ref }}"'})),
     ('a pull request title interpolated into a run', lambda d: _job(d, 'gates-fast')['steps'].append({'name': 'x', 'run': 'echo ${{ github.event.pull_request.title }}'})),
     ('an action from outside actions/ and github/', lambda d: _job(d, 'gates-fast')['steps'].append({'uses': 'someone/random-action@main'})),
     ('gh with no token', lambda d: _step(d, 'deploy', ORDER).pop('env')),
 ]
+
+
+_SELF = []
+
+
+def _worker(parent):
+    """a self-test worker: its own scratch repository under the parent's, so
+    two rollback guards never move the same checkout"""
+    make_root(tempfile.mkdtemp(dir=parent))
+
+
+def _judge_break(i):
+    name, brk, *on_text = BREAKS[i]
+    doc, text = _SELF
+    d = copy.deepcopy(doc)
+    try:
+        brk(d)
+        txt = on_text[0](text) if on_text else text
+    except (KeyError, IndexError, TypeError, AttributeError) as e:
+        return 'broken', '%s: %s' % (e.__class__.__name__, e)
+    L = Lint(d, text=txt).run()
+    return ('caught', L.fails[0]) if L.fails else ('passed', None)
 
 
 def self_test(path):
@@ -1954,8 +2154,10 @@ def self_test(path):
     if err:
         print('FAIL ' + err)
         return 1
+    with open(path) as f:
+        text = f.read()
     bad = 0
-    base = Lint(copy.deepcopy(doc)).run()
+    base = Lint(copy.deepcopy(doc), text=text).run()
     if base.fails:
         bad += 1
         print('FAIL the unbroken file is not clean, so no break below can be judged:')
@@ -1963,20 +2165,21 @@ def self_test(path):
             print('     ' + f)
     else:
         print('  ok   the unbroken file: %d checks, none failed' % base.passed)
-    for name, brk in BREAKS:
-        d = copy.deepcopy(doc)
-        try:
-            brk(d)
-        except (KeyError, IndexError, TypeError, AttributeError) as e:
-            bad += 1
-            print('FAIL break %r could not be applied (%s: %s); the file changed shape, update the break.' % (name, e.__class__.__name__, e))
-            continue
-        L = Lint(d).run()
-        if L.fails:
-            print('  ok   %s: caught, %s' % (name, L.fails[0]))
+    _SELF[:] = [doc, text]
+    try:
+        import multiprocessing
+        ctx = multiprocessing.get_context('fork')
+        with ctx.Pool(min(4, os.cpu_count() or 1), initializer=_worker, initargs=(tmproot(),)) as pool:
+            verdicts = pool.map(_judge_break, range(len(BREAKS)))
+    except (ImportError, ValueError, OSError):
+        verdicts = [_judge_break(i) for i in range(len(BREAKS))]
+    for (name, *_), (kind, first) in zip(BREAKS, verdicts):
+        if kind == 'caught':
+            print('  ok   %s: caught, %s' % (name, first))
         else:
             bad += 1
-            print('FAIL %s: the lint passed it' % name)
+            print('FAIL break %r could not be applied (%s); the file changed shape, update the break.' % (name, first)
+                  if kind == 'broken' else 'FAIL %s: the lint passed it' % name)
     print('\n===== %d passed, %d failed =====' % (len(BREAKS) + 1 - bad, bad))
     return 1 if bad else 0
 
