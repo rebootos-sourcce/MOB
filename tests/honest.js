@@ -56,6 +56,7 @@ const press = (p, sel) => p.evaluate(s => { const b = document.querySelector(s);
 
 (async () => {
   const browser = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+require('./net.js').guardBrowser(browser);
   const ctx = await browser.newContext({ viewport: { width: W, height: H } });
   /* the Worker host is cut, so nothing here waits on a network */
   await ctx.route(/workers\.dev/, r => r.abort('failed'));

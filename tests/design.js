@@ -20,6 +20,7 @@ const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
 
 (async()=>{
 const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+require('./net.js').guardBrowser(browser);
 /* every page measures the full reading, tests/seed.js: the tier ruling of 1
    October put the chain behind a plan and every persona is a free record */
 browser.newPage=(orig=>async function(...a){
@@ -1508,8 +1509,11 @@ console.log('\n=== the release runs to its end in silence, and says what it spea
      eye:(document.querySelector('#rel .pm-eye')||{}).textContent||''});};}
   window.__relSeen=[];
   const spoken=[];
-  if(window.speechSynthesis)speechSynthesis.speak=function(u){
-   spoken.push(u.text); setTimeout(function(){ if(u.onend)u.onend({}); },1);};
+  /* the studio voice stood in for, at its seam: a line could be spoken, and
+     it ends a moment after it starts. There is no other voice to stand in for. */
+  window.relVoiceCan=function(){ return true; };
+  window.speakStudio=function(t,rate,style,onend){
+   spoken.push(t); setTimeout(function(){ if(onend)onend(1); },1); return true;};
   loadP(0);
   CHARGES.forEach(c=>{S.charge[c]=7;});
   CURP.ui.voice=a.voice; CURP.ui.tone=false;
@@ -1569,8 +1573,8 @@ console.log('\n=== the release runs to its end in silence, and says what it spea
   ok(q.spoken.length===0&&q.bed.ctx==='none','and with the sound off nothing was spoken and no audio channel '
    +'was opened, '+q.spoken.length+' lines, context '+q.bed.ctx);
   console.log('  silent run  '+q.seen.length+' steps in '+q.ms+' ms, plan '+q.plan.join(' '));}
- /* AND WITH THE VOICE ON, WHAT IS SAID IS WHAT IS SHOWN. The browser's own
-    speak is stood in for, because a headless browser has no voice to hear,
+ /* AND WITH THE VOICE ON, WHAT IS SAID IS WHAT IS SHOWN. The studio voice is
+    stood in for at its seam, because a headless browser has no server to hear,
     and the stand in ends each line a moment after it starts, which the walker
     must treat as a line not spoken and wait out rather than race past. */
  const v=await walk(true,2);

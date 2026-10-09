@@ -64,6 +64,7 @@ const PLACEHOLDER=/\b(TODO|TBD|FIXME|lorem|ipsum|placeholder|undefined|NaN|null)
 
 (async()=>{
 const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+require('./net.js').guardBrowser(browser);
 
 for(const [W,H] of WIDTHS){
  const tag=W+': ';

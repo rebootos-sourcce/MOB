@@ -211,6 +211,7 @@ const btn = (s, t) => s.line.btns.find(b => b.text === t);
   if (SHOTS) fs.mkdirSync(SHOTS, { recursive: true });
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'storage-'));
   const browser = await chromium.launch({ executablePath: CHROME });
+require('./net.js').guardBrowser(browser);
   let saved = null, savedName = null;
 
   console.log('\n=== a first visit, no marker: nothing new, and the browser is asked once on the first save ===');

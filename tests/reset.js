@@ -168,6 +168,7 @@ function helpers() {
   if (hits !== 1) { stub.close(); console.log('\n===== ' + (n - fails.length) + ' passed, ' + fails.length + ' failed ====='); process.exit(1); }
 
   const browser = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+require('./net.js').guardBrowser(browser);
   const worker = [];
   const ctx = async (w, h) => {
     const cx = await browser.newContext({ viewport: { width: w, height: h } });

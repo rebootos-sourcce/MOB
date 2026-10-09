@@ -157,6 +157,7 @@ that renders there renders to somebody who has entered nothing. Both surfaces
 that print a reading now silence themselves on `r.unread` and show the four
 doors instead, and Summary empties itself on the way out so a hidden surface
 never sits in the document asserting a stale reading.
+And on 9 October he ruled the first arrival: a first time visitor, from the funnel's link or the first run closing, lands on Summary once, with their reading on it, and every open after that is wherever they left off (`tabLandFirst`, `tabKeep`, `tabRead` in `ui/panels.js`; `source.tab` and `source.landed` in the browser store, never the record). A device with no memory still opens on the Field, so this paragraph's ruling stands for it. `tests/landing.js` holds it.
 
 **The engine may not touch the host.** No `document`, `window`, `navigator`,
 `localStorage`, `fetch`, `new Image`. `hostfree.py` enforces it after

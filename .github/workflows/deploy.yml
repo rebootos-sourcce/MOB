@@ -193,6 +193,7 @@ jobs:
           - { gate: functional, timeout: 45, command: node tests/functional.js }
           - { gate: design, timeout: 20, command: node tests/design.js }
           - { gate: monitor, timeout: 20, command: node tools/monitor.js }
+          - { gate: voice, timeout: 20, command: node tests/voice.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -244,6 +245,7 @@ jobs:
           - { gate: reset, timeout: 20, command: node tests/reset.js }
           - { gate: storage, timeout: 20, command: node tests/storage.js }
           - { gate: firstrelease, timeout: 20, command: node tests/firstrelease.js }
+          - { gate: landing, timeout: 20, command: node tests/landing.js }
           - { gate: journey2, timeout: 20, command: node tests/journey2.js }
           - { gate: onboarding2, timeout: 20, command: node tests/onboarding2.js }
           - { gate: sniffpage, timeout: 20, command: node tests/sniffpage.js }

@@ -28,6 +28,7 @@ const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
 
 (async()=>{
 const b=await chromium.launch({executablePath:CHROME});
+require('./net.js').guardBrowser(b);
 const p=await b.newPage({viewport:{width:1600,height:1000}});
 await p.goto(FILE,{waitUntil:'load'}); await booted(p); await p.waitForTimeout(600);
 
