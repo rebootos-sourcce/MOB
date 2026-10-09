@@ -33,7 +33,7 @@ Written after five review passes over your audit "Dev 1 to Dev 6". Every line wa
 
 - The browser's own voice is removed. The release is spoken by ElevenLabs or it is not spoken, and the screen says why. No fallback.
 - Built and in review. It cannot speak until you add two secrets (steps below).
-- Consequence: a first visit that has not signed in reads on the screen; the voice needs an account.
+- No sign in is needed to hear it. The server limits each device, each network address and the whole day, so your ElevenLabs bill has a ceiling.
 
 ## Still to do before alpha is clean (P0 and P1, existing features)
 

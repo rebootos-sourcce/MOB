@@ -18,14 +18,15 @@
      1. the source never names the browser's speech calls, anywhere a person's
         browser could run them (atuned_src, the funnel pages);
      2. a spy stands where the browser's speech object is, and a whole release
-        is walked three ways, signed out, signed in against a server that
-        refuses, and signed in against a server that answers with audio. The
-        spy is touched by none of them, not once;
-     3. each way ends in words the person can read: signed out, the switch
-        says to sign in and the run reads on the screen; refused, the screen
-        says the run reads on the screen, once, and the server is asked once
-        and not once per line; answered, the server was asked with the
-        person's session and the line was handed to an audio element.
+        is walked three ways, signed out against a server that answers with
+        audio, signed out against a server that refuses, and signed in against
+        a server that answers. The spy is touched by none of them, not once;
+     3. each way ends in words the person can read, and none of them asks
+        for a sign in (the owner, 9 October: "I don't want it to have to sign
+        in or anything special"): a signed out person is heard through a
+        device code the browser makes and keeps; refused, the screen says the
+        run reads on the screen, once, and the server is asked once and not
+        once per line; signed in, the request carries the session instead.
 
    A GATE THAT PASSES BY NEVER RUNNING THE THING IS THE FAILURE THIS FILE
    EXISTS TO NOT REPEAT, so each way also checks that the run really did go to
@@ -131,6 +132,7 @@ const SPY = () => {
         await new Promise(r => setTimeout(r, 50));
       const out = { go: true, done: RUN.phase === 'done' && RUN.cool >= COOLING.length, row, wantedOn, canNow, onNow,
         status: (document.getElementById('status') || {}).textContent || '', lost: RUN.studioLost, audios, ss: window.__ssTouch,
+        devStored: (typeof STORE_BOUND !== 'undefined' && STORE_BOUND) ? STORE.get('source.voicedev') : null,
         lines: (RUN.plan || []).length };
       relClose();
       return out;
@@ -143,28 +145,33 @@ const SPY = () => {
     return { r, asked };
   }
 
-  const out = await runWay('signed out, voice on', { signed: false }, null);
-  ok(out.r.wantedOn === true && out.r.canNow === false && out.r.onNow === false, 'the switch is on and nothing can speak, so nothing does');
-  ok(/Sign in to hear it/.test(out.r.row) && /reads on the screen/.test(out.r.row), 'and the switch says why, in words: ' + out.r.row.slice(0, 140));
-  ok(out.asked.length === 0 && out.r.audios === 0, 'no request to the voice server and no audio element, ' + out.asked.length + ' requests');
+  /* a way sets the stage: who is signed in and what the server answers */
+  const ID = /^[A-Za-z0-9_-]{16,64}$/;
+  const anonHeard = await runWay('signed out, the server answers with audio', { signed: false }, r =>
+    r.fulfill({ status: 200, contentType: 'audio/wav', body: wav(60) }));
+  ok(anonHeard.r.wantedOn === true && anonHeard.r.canNow === true && anonHeard.r.onNow === true, 'the switch is on and nothing else is asked of the person: no sign in');
+  ok(/ElevenLabs, a voice company/.test(anonHeard.r.row) && !/Sign in/.test(anonHeard.r.row), 'and the switch says who speaks the line and never asks for a sign in: ' + anonHeard.r.row.slice(0, 140));
+  ok(anonHeard.asked.length > 1, 'every spoken line asked the server, ' + anonHeard.asked.length + ' requests');
+  ok(anonHeard.asked.every(a => a.auth === ''), 'none of them carried a session');
+  const bodies = anonHeard.asked.map(a => { try { return JSON.parse(a.body); } catch (e) { return {}; } });
+  ok(bodies.every(b => typeof b.text === 'string' && /^(list|frame)$/.test(b.style) && ID.test(b.device || '') && Object.keys(b).length === 3),
+    'each sent the line, its style and a device code, and nothing else');
+  ok(new Set(bodies.map(b => b.device)).size === 1 && anonHeard.r.devStored === bodies[0].device, 'the same device code every time, and kept in the browser');
+  ok(anonHeard.r.audios === anonHeard.asked.length, 'each answer was handed to an audio element, ' + anonHeard.r.audios + ' of ' + anonHeard.asked.length);
+  ok(anonHeard.r.lost === false, 'and the run never gave up on the voice: ' + anonHeard.r.status);
 
-  const refused = await runWay('signed in, the server refuses', { signed: true }, r =>
+  const refused = await runWay('signed out, the server refuses', { signed: false }, r =>
     r.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ error: 'the voice is not connected on this server yet: ELEVENLABS_API_KEY is not set' }) }));
-  ok(refused.r.onNow === true, 'signed in with the switch on, the voice is the one asked');
   ok(refused.asked.length === 1, 'a refusing server is asked once and not once per line, ' + refused.asked.length + ' requests');
   ok(refused.r.lost === true && /reads on the screen/.test(refused.r.status) && !/ELEVENLABS|API_KEY/.test(refused.r.status),
     'the screen says so in words and never the server setting: ' + refused.r.status);
   ok(refused.r.audios === 0, 'and no audio element was made');
 
-  const wavBytes = wav(60);
-  const heard = await runWay('signed in, the server answers with audio', { signed: true }, r =>
-    r.fulfill({ status: 200, contentType: 'audio/wav', body: wavBytes }));
-  ok(heard.asked.length > 1, 'every spoken line asked the server, ' + heard.asked.length + ' requests');
-  ok(heard.asked.length > 0 && heard.asked.every(a => a.auth === 'Bearer tok_test'), 'each carried the person\'s own session');
-  ok(heard.asked.every(a => { try { const b = JSON.parse(a.body); return typeof b.text === 'string' && /^(list|frame)$/.test(b.style) && Object.keys(b).length === 2; } catch (e) { return false; } }),
-    'and nothing but the line and its style was sent');
-  ok(heard.r.audios === heard.asked.length, 'each answer was handed to an audio element, ' + heard.r.audios + ' of ' + heard.asked.length);
-  ok(heard.r.lost === false, 'and the run never gave up on the voice: ' + heard.r.status);
+  const signed = await runWay('signed in, the server answers with audio', { signed: true }, r =>
+    r.fulfill({ status: 200, contentType: 'audio/wav', body: wav(60) }));
+  ok(signed.asked.length > 1 && signed.asked.every(a => a.auth === 'Bearer tok_test'), 'signed in, each request carries the person\'s own session, ' + signed.asked.length + ' requests');
+  ok(signed.asked.every(a => { try { const b = JSON.parse(a.body); return Object.keys(b).sort().join() === 'style,text'; } catch (e) { return false; } }),
+    'and sends no device code, only the line and its style');
 
   await browser.close();
   console.log('\n===== ' + PASS + ' passed, ' + FAIL + ' failed =====');

@@ -22,7 +22,7 @@ Read `CLAUDE.md` first. Its rules hold: never edit build products, no em dashes,
 
 ## P0 added by the owner, 9 October, after this file was first written
 
-**The voice is ElevenLabs and there is no fallback to the browser voice.** Blocker. See DECISIONS "The voice is ElevenLabs and there is no fallback" and TASKS V1 to V5. State: Worker route ported on `claude/voice-eleven` in Reboot-OS (pull request 13); the app change is `claude/voice-only` in MOB; `tests/voice.js` is a required gate. The owner must add two GitHub secrets (`ELEVENLABS_API_KEY`, `ELEVENLABS_VOICE_ID`) on Reboot-OS before it can speak. Do this before anything below.
+**The voice is ElevenLabs and there is no fallback to the browser voice.** Blocker. See DECISIONS "The voice is ElevenLabs and there is no fallback" and TASKS V1 to V5. State: Worker route ported on `claude/voice-eleven` in Reboot-OS (pull request 13); the app change is `claude/voice-only` in MOB; `tests/voice.js` is a required gate. The voice needs no sign in (his ruling; Reboot-OS pull request 14 holds the ceilings). The owner must add two GitHub secrets (`ELEVENLABS_API_KEY`, `ELEVENLABS_VOICE_ID`) on Reboot-OS before it can speak. Do this before anything below.
 
 ## Work that exists only on branches (pushed to origin as backups)
 

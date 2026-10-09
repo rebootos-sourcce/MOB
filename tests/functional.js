@@ -5019,20 +5019,23 @@ console.log('\n=== the welcome after paying shows once and says the loop ===');
  await tp.close();
 }
 
-console.log('\n=== the voice: ElevenLabs only, signed in only, and a failure is silence with a word, never another voice ===');
+console.log('\n=== the voice: ElevenLabs only, no sign in needed, and a failure is silence with a word, never another voice ===');
 /* The ElevenLabs path (ui/sound.js, THE STUDIO VOICE), which is the only voice
    there is: the owner ruled on 9 October that the audio must not default to
-   the browser's own voice, and there is no fallback to it. The Worker is faked
-   with a route, so the binary half of authCall is held by a real request and a
-   real Blob, and nothing leaves the machine. Then the walker's seam, relSay,
-   with authVoice stubbed, because what is held there is the decision and not
-   the sound card. tests/voice.js holds the same contract end to end. */
+   the browser's own voice, and there is no fallback to it, and then that it
+   must be automatic, with no sign in. The Worker is faked with a route, so the
+   binary half of authCall is held by a real request and a real Blob, and
+   nothing leaves the machine. Then the walker's seam, relSay, with authVoice
+   stubbed, because what is held there is the decision and not the sound card.
+   tests/voice.js holds the same contract end to end. */
 {
  const tp=await browser.newPage({viewport:{width:1600,height:1000}});
  const terr=[]; tp.on('pageerror',e=>terr.push(e.message));
  await tp.goto(FILE,{waitUntil:'load'}); await booted(tp);
+ const reqs=[];
  await tp.route('https://voice.stub.test/**',r=>{
   const b=JSON.parse(r.request().postData()||'{}');
+  reqs.push({auth:r.request().headers()['authorization']||'', body:b});
   if(b.text==='refused')return r.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:'the voice is not connected on this server yet: ELEVENLABS_API_KEY is not set'})});
   return r.fulfill({status:200,contentType:'audio/mpeg',body:Buffer.from([0x49,0x44,0x33,4])});});
  const o=await tp.evaluate(async()=>{
@@ -5042,11 +5045,14 @@ console.log('\n=== the voice: ElevenLabs only, signed in only, and a failure is 
   loadP(0); const api0=AUTH_API, av0=authVoice; AUTH_API='https://voice.stub.test';
   const out={};
   authForget();
-  out.outRow=relVoiceRow(); out.outOn=relVoiceOn(); out.outSay=relSay({kind:'pass',text:'I let go of fear.'},function(){},function(){});
-  out.outCall=await authVoice('I let go of fear.','list');
+  out.outRow=relVoiceRow(); out.outOn=relVoiceOn();
+  out.outCall=await authVoice('I let go of fear.','list'); out.outSize=out.outCall.blob&&out.outCall.blob.size;
+  out.dev=(typeof STORE!=='undefined'&&STORE_BOUND)?STORE.get('source.voicedev'):null;
+  out.outCall2=await authVoice('I let go of shame.','list');
   authKeep({token:'tok_test',email:'v@x.co'});
   out.inRow=relVoiceRow(); out.blankOn=relVoiceOn();
   out.real=await authVoice('I let go of fear.','list'); out.realSize=out.real.blob&&out.real.blob.size;
+  authForget();
   out.refused=await authVoice('refused','list');
   CURP.ui.voice=false; out.offOn=relVoiceOn(); out.offSay=relSay({kind:'pass',text:'I let go of fear.'},function(){},function(){});
   CURP.ui.voice=true; out.chosenOn=relVoiceOn();
@@ -5070,11 +5076,14 @@ console.log('\n=== the voice: ElevenLabs only, signed in only, and a failure is 
   out.ss=window.__ss;
   authVoice=av0; AUTH_API=api0; RUN.studioLost=false; authForget();
   return out;});
- ok(o.outOn===false&&o.outSay===false,'signed out nothing is said: the voice is off and relSay answers false');
- ok(/Sign in to hear it/.test(o.outRow)&&/reads on the screen/.test(o.outRow),'and the switch says why, in words, '+o.outRow.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim().slice(0,160));
- ok(o.outCall.ok===false&&o.outCall.status===401,'and authVoice answers locally without a request, '+JSON.stringify(o.outCall));
- ok(/Voice/.test(o.inRow)&&/ElevenLabs, a voice company/.test(o.inRow),'signed in, the switch says who speaks the line');
- ok(o.blankOn===true,'and the voice is on until the person turns it off');
+ ok(o.outOn===true&&/ElevenLabs, a voice company/.test(o.outRow),'signed out the voice is on and the switch says who speaks the line: no sign in is asked for');
+ ok(o.outCall.ok===true&&o.outSize===4,'and a signed out request is answered with the audio bytes, '+JSON.stringify(o.outCall));
+ const anon=reqs.filter(q=>!q.auth);
+ ok(anon.length>=2&&anon.every(q=>typeof q.body.device==='string'&&/^[A-Za-z0-9_-]{16,64}$/.test(q.body.device)&&Object.keys(q.body).sort().join()==='device,style,text'),'it sends the line, its style and a device code and nothing else, with no session, '+JSON.stringify(anon.slice(0,1)));
+ ok(anon.length>=2&&anon[0].body.device===anon[1].body.device&&o.dev===anon[0].body.device,'the same device code every time, and kept in the browser, '+o.dev);
+ ok(o.inRow.indexOf('ElevenLabs')>=0&&o.blankOn===true,'signed in, the same switch, on until the person turns it off');
+ const inn=reqs.filter(q=>q.auth);
+ ok(inn.length===1&&inn[0].auth==='Bearer tok_test'&&Object.keys(inn[0].body).sort().join()==='style,text','signed in it sends the session and no device code, '+JSON.stringify(inn[0]));
  ok(o.real.ok===true&&o.realSize===4,'a yes from the server comes back as the audio bytes, '+JSON.stringify(o.real));
  ok(o.refused.ok===false&&o.refused.status===503,'a refusal comes back as its status, '+JSON.stringify(o.refused));
  ok(o.offOn===false&&o.offSay===false,'switched off, nothing is said and nothing is asked');

@@ -613,8 +613,10 @@ function relMMSS(sec){
    or it is not spoken and the screen says why. Nothing stands behind it.
 
    relVoiceWanted is the person's switch, on unless they turned it off.
-   relVoiceCan is whether a line could be spoken right now: the server answers
-   only a signed in session, and the browser has to be able to play audio.
+   relVoiceCan is whether a line could be spoken right now: the browser has to
+   be able to play audio. There is no sign in test, the owner's ruling of 9
+   October ("I don't want it to have to sign in or anything special"): the
+   server holds a signed out person to a device code and a daily ceiling.
    relVoiceOn is both, and it is what the walker and the onboarding promise
    ask, so neither says "out loud" when nothing will be. studioLost is this
    run giving up on the voice after a failure, so one dead server costs one
@@ -622,8 +624,7 @@ function relMMSS(sec){
 function relVoiceWanted(){
  return !(typeof CURP!=='undefined'&&CURP&&CURP.ui&&CURP.ui.voice===false);}
 function relVoiceCan(){
- return typeof studioCan==='function'&&studioCan()
-  &&typeof authSession==='function'&&!!authSession();}
+ return typeof studioCan==='function'&&studioCan();}
 function relVoiceOn(){ return relVoiceWanted()&&relVoiceCan(); }
 /* what each failure means for the run, in words. The server's own sentence
    for a 503 names a setting on the server, so it is not shown; a 401 is a
@@ -1474,14 +1475,13 @@ function relToneRow(n){
    IT SAID "AND NOTHING ABOUT YOU", and that was false. A line is a pattern
    the person's own story put in this run, "that I am completely alone and
    nothing is holding me", sent to ElevenLabs whole, so the note says what a
-   line carries instead of denying it. Signed out, or in a browser that cannot
-   play audio, the same row says why nothing will be heard, since a switch that
-   is on and silent with no word is the failure this row exists to prevent. */
+   line carries instead of denying it. In a browser that cannot play audio the
+   same row says why nothing will be heard, since a switch that is on and
+   silent with no word is the failure this row exists to prevent. */
 function relVoiceRow(){
  if(typeof accTog!=='function')return '';
  var note;
  if(typeof studioCan!=='function'||!studioCan())note='This browser cannot play the voice. The run reads on the screen.';
- else if(typeof authSession!=='function'||!authSession())note='Sign in to hear it. Until then the run reads on the screen.';
  else note='ElevenLabs, a voice company, over the network. It gets each line, and each line names one of your patterns.';
  return accTog('Voice','relvoice',relVoiceWanted(),note);}
 function relBuzzRow(){
