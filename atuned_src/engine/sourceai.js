@@ -127,13 +127,16 @@ function srcHear(text,prior){
  var t=String(text||'');
  var out={unread:true, seats:[], top:null, root:null, asks:false};
  if(!t.trim())return out;
- var p=parseStory(t), nm=normMap(t), by={}, den={};
+ var p=parseStory(t), nm=normMap(t), by={}, den={}, oth={};
  /* THE ENGINE'S OWN FLAG, S1. Every word read, counted or said with a no,
     walked in order; a step the parse denied is counted as negated and never
-    heard, which is the rule this always ran, now asked once in sniffDeny. */
+    heard, which is the rule this always ran, now asked once in sniffDeny.
+    A word about someone else, S2, is not the writer's and is not walked at
+    all: no question is asked of a person about another person's anger. */
  (p.denied||[]).forEach(function(h){den[h.at]=1;});
+ (p.others||[]).forEach(function(h){oth[h.at]=1;});
  pathOf(storyHits(p)).steps.forEach(function(s){
-  if(!s.seat||s.coherent)return;
+  if(!s.seat||s.coherent||oth[s.at])return;
   var o=by[s.seat]=by[s.seat]||{seat:s.seat, band:K2BAND[s.seat],
    reading:Math.min(10,(p.bands[s.seat]||0)/3), mentions:0, negated:0, words:[]};
   if(den[s.at]){o.negated++;return;}
