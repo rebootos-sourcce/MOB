@@ -2,7 +2,7 @@
 
 Written so a new session, on any model, can pick up with no memory of this one.
 Read `WHAT-IS-LEFT-2026-10-09.md` (same folder) for the plain-words list the owner has.
-Read `CLAUDE.md` first. Its rules hold: never edit build products, no em dashes, never say 108.
+Read `CLAUDE.md` first. Its rules hold: never edit build products, no em dashes, the count stated to users is 112.
 
 ## The owner's standing rulings (short)
 
