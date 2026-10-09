@@ -7196,6 +7196,16 @@ await require('./flowtools.js').flowGate(browser,FILE,ok,booted);
 console.log('\n=== analytics: every figure a door, the chain walked down to the fetter and back ===');
 await require('./anatrail.js').anaTrailGate(browser,FILE,ok,booted);
 
+/* THE HEADS PACKAGE, 9 October: case, the tab tooltips and Help's build
+   stamp. Each is a file of its own that runs alone, called
+   here so a full run holds it through the same code. */
+console.log('\n=== no all caps anywhere, and a tooltip opens on a capital ===');
+await require('./casing.js').casingGate(browser,FILE,ok,booted);
+console.log('\n=== a tab\'s tooltip names the tab, then says what is there ===');
+await require('./tabtips.js').tabTipGate(browser,FILE,ok,booted);
+console.log('\n=== help says when this build was made, read off the build itself ===');
+await require('./helpstamp.js').helpStampGate(browser,FILE,ok,booted);
+
 await browser.close();
 
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
