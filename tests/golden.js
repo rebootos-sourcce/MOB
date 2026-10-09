@@ -41,6 +41,10 @@
         the marks the server keeps of it
      12 the same join, under the other way the server may issue the gift
 
+     F  THE FILE THE OWNER IS SENT
+     13 Create account from a downloaded copy, against the Worker's one
+        allowed origin
+
    THE SERVER IS A FAKE, AND NOTHING LEAVES THE MACHINE. The site is
    served on 127.0.0.1 the way atuned.world serves it, so the Worker's
    CORS rule (ALLOWED_ORIGIN, one origin) is modelled against a real
@@ -740,7 +744,40 @@ async function door(browser, SITE, cut, giftAt) {
     await O2.ctx.close();
   }
 
-  station(13, 'both doors: nothing else was reached');
+  /* THE FILE THE OWNER IS SENT. CLAUDE.md: every build goes to the owner as a
+     download, so it runs from a file, whose origin is null. The Worker's CORS
+     allows one origin, ALLOWED_ORIGIN = "https://atuned.world" in wrangler.toml
+     on Reboot-OS main, read 9 October, so a file copy cannot make an account.
+     The live host is routed to a fake that answers with that one origin, and
+     never reaches the real Worker. Green when the copy either makes the account
+     or says the true reason; today it blames the person's connection. */
+  station(13, 'F: Create account in the file the owner is sent');
+  {
+    const wf = fakeWorker('https://atuned.world', 'pick');
+    const cf = await browser.newContext({ viewport: { width: W, height: H } });
+    await cf.route('**/*', r => { const q = r.request(), u = q.url();
+      if (u.indexOf('file:') === 0) return r.continue();
+      if (/^https:\/\/[^/]*workers\.dev\//.test(u)) return r.fulfill(wf.handle(q.method(), u.replace(/^https:\/\/[^/]+/, API), q.headers(), q.postDataBuffer()));
+      cut.push(q.method() + ' ' + u.slice(0, 120)); return r.abort('blockedbyclient'); });
+    const pf = await cf.newPage();
+    const ferrs = []; pf.on('pageerror', e => ferrs.push(String(e && e.message || e)));
+    await pf.goto('file://' + path.join(tmp, 'atuned.html'), { waitUntil: 'load' });
+    await pf.waitForFunction(() => document.body.classList.contains('booted'), null, { timeout: 30000 }).catch(() => {});
+    await pf.fill('#loginmail', 'file.copy@example.com').catch(() => {});
+    await pf.fill('#loginpass', PW).catch(() => {});
+    await pf.click('#loginb-new', { timeout: 3000 }).catch(() => {});
+    await pf.waitForFunction(() => { const m = document.getElementById('loginmsg');
+      return !(typeof LOGIN !== 'undefined' && LOGIN.open) || (m && m.textContent && !/^Creating/.test(m.textContent)); }, null, { timeout: 20000 }).catch(() => {});
+    const f = await pf.evaluate(() => ({ open: !!(typeof LOGIN !== 'undefined' && LOGIN.open), msg: (document.getElementById('loginmsg') || {}).textContent || '',
+      held: !!(typeof authSession === 'function' && authSession()) }));
+    ok(wf.st.reqs.some(q => q.path === '/v1/auth/signup' && q.origin === 'null'), 'the press asks the server, from the null origin a file page sends');
+    xf(f.held || /file|atuned\.world/i.test(f.msg), 'E3f file copy account', 'a downloaded copy makes the account, or says the true reason it cannot: said '
+      + J(f.msg), 'the file he is sent says the connection is at fault and makes no account; only the copy at atuned.world can');
+    ok(ferrs.length === 0, 'no script error: ' + ferrs.slice(0, 2).join(' | '));
+    await cf.close();
+  }
+
+  station(14, 'every door: nothing else was reached');
   ok(cut.length === 0, 'nothing tried to reach any server but the stubs: ' + J(cut.slice(0, 3)));
   ok(site.strays.length === 0, 'and the pages asked their own site for nothing it does not ship: ' + J(site.strays.slice(0, 3)));
 
