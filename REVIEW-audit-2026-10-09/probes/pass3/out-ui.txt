@@ -1,0 +1,11 @@
+K signed OUT: saved=true {"persist":"no","armed":true,"n":1,"rose":true,"line":"set","marker":"{\"t\":1791529747412,\"n\":1,\"p\":1}","said":null,"onScreen":true,"signedIn":false,"atRisk":true}
+K signed IN : saved=true {"persist":"no","armed":true,"n":0,"rose":false,"line":null,"marker":null,"said":null,"onScreen":false,"signedIn":true,"atRisk":false}
+D Account, Privacy section, the Export and delete group:
+   
+D Account, signed in, the Sign in group:
+   Signed in as | probe@example.invalid | Sign out of this browser | Sign out | Your stories and readings stay on this device. Signing in does not copy them anywhere. | This Account | Open profile | You | Save, open or delete a profile | Open profiles | Identity | Name | not entered | Bor
+D delete press: confirm dialog = {"type":"confirm","message":"Delete You from this browser?\n\nThe identity, the 63 answers, the stories, the imprints and every snapshot go. It cannot be undone and there is no copy unless you made one."}
+D before {"profiles":1,"session":true,"funnel":true} after {"profiles":1,"name":"You","stories":0,"session":true,"funnel":true,"status":"You is deleted from this browser, the only place it was held. You is open."}
+D Worker requests during the delete: []
+S sign out: requests [{"method":"POST","path":"/v1/auth/signout","bytes":0}] left behind {"session":false,"funnel":true,"profiles":1,"syncMeta":null,"timer":false,"status":"Signed out."}
+exit 0

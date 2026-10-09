@@ -1,0 +1,48 @@
+  ok    the build carries AUTH_API once, so the served copy talks to the stub, found 1
+
+=== the link opens the screen, and the token leaves the address first, 1600 ===
+  ok    the reset link opens Set a new password and not the log in card, got "Set a new password"
+  ok    the token is off the address bar, got http://127.0.0.1:45423/atuned.html
+  ok    the held session is checked at boot, with a Referer, so the next line has a request to read: ["/v1/me http://127.0.0.1:45423/atuned.html"]
+  ok    no request at boot carries the token, in its address, its body or its Referer
+  ok    two password fields, each with a real label, got ["New password","New password again"]
+  ok    both ask a password manager for a new password, got ["new-password","new-password"]
+  ok    focus is on the first field, got ["loginnpw","INPUT"]
+  ok    the screen carries Save and a way back to log in, got ["Save","Back to log in"]
+  ok    the token is in no markup, no storage and no status line, got [false,[],false]
+  ok    every control is at least 44 pixels each way at 1600, got [{"t":"password","w":502,"h":44,"right":1051},{"t":"password","w":502,"h":44,"right":1051},{"t":"Save","w":69,"h":44,"right":617.78125},{"t":"Back to log in","w":125,"h":44,"right":752.171875}]
+  ok    two different passwords are refused here, on the card and the status line, got ["The two passwords do not match. Type the same one in both.","The two passwords do not match. Type the same one in both."]
+  ok    and nothing is sent for them
+  ok    a password under the server's floor is refused here, got "A password needs at least 8 characters."
+  ok    and nothing is sent for it either
+  ok    one press of Save sends one request, got 1
+  ok    to the confirm route, carrying the token and the new password and nothing else, got ["token","password"]
+  ok    a refused token says so in plain words and the screen stays, got ["Set a new password","This link has expired. Ask for a new one.","This link has expired. Ask for a new one."]
+  ok    with what was typed still in both fields, and Save ready again
+  ok    no network says so, holds, and keeps what was typed, got "Could not reach the server. Check the connection and try again."
+  ok    a rate limit says the server's own words and the screen stays, got "Too many attempts. Wait fifteen minutes."
+  ok    the press that succeeds sends one request too, got 1
+  ok    a yes says so in plain words, on the card and the status line, got ["New password saved","New password saved. Signed in as probe@example.invalid."]
+  ok    and signs the person in with the session the server sent, got {"token":"t-reset","email":"probe@example.invalid","accountId":"acc_probe"}
+  ok    the card shows the one next step, with focus on it, got [["Continue"],"Continue"]
+  ok    and the token is still in no markup, no storage and no status line, got [false,[],false]
+  ok    the new password reaches no storage
+  ok    Continue closes the card and goes on into the instrument
+
+=== the same screen at 390, the way back, and the forgotten password ===
+  ok    at 390 the link opens the screen and the address is clean, got "Set a new password"
+  ok    every control is at least 44 pixels each way and inside the screen at 390, got [{"t":"password","w":328,"h":44,"right":359},{"t":"password","w":328,"h":44,"right":359},{"t":"Save","w":69,"h":44,"right":99.78125},{"t":"Back to log in","w":125,"h":44,"right":234.171875}]
+  ok    and nothing scrolls sideways at 390
+  ok    Back to log in opens the log in card, got "Log in"
+  ok    the forgotten password says one sentence whether or not an account uses the address, got ["If an account uses that email, a link to set a new password is on its way.","If an account uses that email, a link to set a new password is on its way."]
+  ok    and each request reached the server, once, got ["probe@example.invalid","nobody@example.invalid"]
+
+=== the token in the hash, and a copy opened from disk ===
+  ok    a token after # opens the screen and leaves the address too, got ["Set a new password",""]
+  ok    a yes that carries no session is not said as a sign in: it sends the person to log in with the email filled, got ["Log in","New password saved. Log in with it.","probe@example.invalid",""]
+  ok    a copy opened from disk opens the screen and cleans the address, got ["Set a new password","2a869307f/scratchpad/audit-review/work/p3x-audit/source.html"]
+  ok    nothing reached the real server, got []
+  ok    no page errors across the walk: 
+
+===== 39 passed, 0 failed =====
+exit 0

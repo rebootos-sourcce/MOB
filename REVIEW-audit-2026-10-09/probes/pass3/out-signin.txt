@@ -1,0 +1,27 @@
+seed {"ok":true,"profiles":1,"exportBytes":3393,"typeofProfiles":"undefined","typeofPROFILES":"object"}
+pExport top keys ["v","id","name","created","updated","soul","axes","who","ui","seed","meter","plan","avatar","purpose","laws","intake","work","gates","story","rituals","history","practice","trace","summaries"]
+who keys ["first","middle","last","sex","sealed","born"] born keys ["date","time","place","zone","timeUnknown"]
+after boot t=5.4 {"typeofProfiles":"undefined","session":"none","curpName":"Zephyrine Quillfeather","stories":1,"eligible":false,"timer":false}
+authEnter -> {"ok":true,"kept":true,"say":"Signed in as probe@example.invalid."} t=5.4
+edit at t=35.5 (a second entry saved, pSave=true)
+direct authProfileSync() at t=50.5 -> {"state":"skip"}
+
+=== REQUEST LOG, mode signin ===
+t(s)  method path  | body bytes | name/first/middle/last | born date/time/place | story text/marker
+  5.4 POST  /v1/auth/signin                  |     64 | ---- | --- | -- keys=email,password
+  5.4 GET   /v1/me                           |      0 | ---- | --- | --
+non-Worker network: []
+page errors: []
+meta samples:
+  t=5.4 boot timer=true eligible=false stories=1 meta=null
+  t=10.4 tick timer=true eligible=false stories=1 meta=null
+  t=15.4 tick timer=true eligible=false stories=1 meta=null
+  t=20.4 tick timer=true eligible=false stories=1 meta=null
+  t=25.5 tick timer=true eligible=false stories=1 meta=null
+  t=30.5 tick timer=true eligible=false stories=1 meta=null
+  t=35.5 tick timer=true eligible=false stories=2 meta=null
+  t=40.5 tick timer=true eligible=false stories=2 meta=null
+  t=45.5 tick timer=true eligible=false stories=2 meta=null
+  t=50.5 tick timer=true eligible=false stories=2 meta=null
+  t=50.5 end timer=true eligible=false stories=2 meta=null
+exit 0
