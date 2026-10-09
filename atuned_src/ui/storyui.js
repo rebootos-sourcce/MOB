@@ -186,6 +186,17 @@ function stRender(){
      speaks once when a recording brings stars in, see stMic. */
   +'<p class="st-mask" id="stmask" role="note"'+(maskedRuns(ST_TEXT).length?'':' hidden')+'>'
    +esc(maskedSay(maskedRuns(ST_TEXT)))+'</p>'
+  /* WHAT WAS READ AND NOT COUNTED, said under the box it is in, S5 of the 9
+     October sniffer audit. A word said with a no and a word about someone
+     else are drawn set aside in the sentence, and an exclusion nobody can
+     read is a silent one. This is the place the page already says what the
+     reading cannot use, the stars line above, and it takes the same shape:
+     the engine's one sentence (asideOf, asideSay in engine/sniff.js), each
+     quote with what "not counted" means beside it, and nothing at all when
+     nothing was set aside. It is a sentence and not a count, so it is not
+     the counter round HS took off this place. */
+  +'<p class="st-mask" id="staside" role="note"'+(stAsideSay()?'':' hidden')+'>'
+   +esc(stAsideSay())+'</p>'
   /* THE COUNTER UNDER THE JOURNAL IS GONE. Round HS, his words: "under the
      left window it says two words zero tag get rid of that so it's never
      there" It read "2 words, 0 tagged". The word count is a number nobody
@@ -536,6 +547,7 @@ function stRefresh(){
   ap.textContent='Commit'+(ST_PARSED&&ST_PARSED.imprints.length?' '+ST_PARSED.imprints.length:'');}
  stRead();
  stMaskPaint();
+ stAsidePaint();
  stFocus('write');
  /* the highlight is refreshed with the count, not with the whole surface,
     because stRefresh exists so typing never loses the caret. */
@@ -548,6 +560,13 @@ function stMaskPaint(){
  var e=document.getElementById('stmask'); if(!e)return;
  var runs=maskedRuns(ST_TEXT);
  e.hidden=!runs.length; e.textContent=maskedSay(runs);}
+/* and the set aside line under it, S5, kept in step the same way. The text is
+   the engine's; this only says whether there is any. */
+function stAsideSay(){
+ return (ST_PARSED&&ST_TEXT&&ST_TEXT.trim()&&typeof asideSay==='function')?asideSay(asideOf(ST_TEXT,ST_PARSED)):'';}
+function stAsidePaint(){
+ var e=document.getElementById('staside'); if(!e)return;
+ var s=stAsideSay(); e.hidden=!s; e.textContent=s;}
 /* everything below the sentence, off the one read */
 function stPaintAll(){
  STC.sync(); stRelayout();
