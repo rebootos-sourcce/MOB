@@ -135,13 +135,29 @@ function tutLitNow(){
    if(off&&kept.length)add(kept[0].b); }}
  return {lit:lit, pick:null, mark:null};}
 
-/* a node's own fields, read exactly as the engine stores them: .b is the
-   seat the word lit (a band name, "Heart"), .k is the word itself, .cf is
-   the fetter family the word resolved to. Nothing here is invented. */
+/* THE PERSON'S OWN WORD, AND ONLY A NAME THE WORDS GAVE. S4 of the 9 October
+   sniffer audit, ruling 5. This read .k as "the word itself", and .k is the
+   ADDRESS name, so the card put an address in quotation marks as if the
+   person had written it: measured, "I was furious" printed around the word
+   "Pride", and "My father died last year" around the word "Martyrdom", the
+   exact corpse parseStory's own inferred flag was written to stop. And it
+   said "named" with the address's fetter whether or not the words named it.
+
+   Now the word is the person's own letters at that seat, off marksOf and
+   only what counts (not a word said with a no, not someone else's), and
+   "named" carries the fetter the words named, off a non inferred imprint,
+   or is not said. .b is the seat. Nothing here is invented. */
 function tutSeatLine(n){
  if(!n)return '';
- return 'at your <b>'+esc(n.b||'')+'</b>, around the word &ldquo;'+esc(n.k||'')
-  +'&rdquo;, named <b>'+esc(n.cf||'')+'</b>';}
+ var p=TUT.parsed, t=(TUT.commit&&TUT.commit.text)||TUT.text||'', ws=[];
+ if(p&&t&&typeof marksOf==='function')marksOf(t,p).forEach(function(m){
+  if(m.bn!==n.b||m.neg||m.other||m.coh)return;
+  var w=t.slice(m.s,m.e); if(ws.indexOf(w)<0)ws.push(w);});
+ var im=p?p.imprints.filter(function(x){return x.node===n.i&&!x.inferred&&x.fetter;})[0]:null;
+ return 'at your <b>'+esc(n.b||'')+'</b>'
+  +(ws.length?', around '+(ws.length>1?'the words ':'the word ')
+    +ws.slice(0,2).map(function(w){return '&ldquo;'+esc(w)+'&rdquo;';}).join(' and '):'')
+  +(im?', named <b>'+esc(im.fetter)+'</b>':'');}
 
 function tutRender(){
  var h=document.getElementById('tutorial'); if(!h)return;
@@ -164,10 +180,15 @@ function tutRender(){
      found, not just that the entry was kept. */
   if(!c||!c.ok||!c.k){
    /* HONEST EMPTY, the same rule the signal test already keeps: nothing
-      caught is a real answer, not a failure to paper over. */
-   body='<p class="ob-p">Nothing in that one lit anything the engine could '
+      caught is a real answer, not a failure to paper over. And a word read
+      and set aside is not nothing, S1 and S2: "He shouted at me" names a word
+      and holds it as someone else's, so the engine's own asideSay line says
+      what was set aside and why, the line the Story page prints. */
+   var aside=(TUT.parsed&&c&&c.text&&typeof asideSay==='function')?asideSay(asideOf(c.text,TUT.parsed)):'';
+   body=(aside?'<p class="ob-p">'+esc(aside)+'</p>'
+    :'<p class="ob-p">Nothing in that one lit anything the engine could '
     +'name. That happens, and it is not a problem with what you wrote. Some '
-    +'entries are quiet.</p>'
+    +'entries are quiet.</p>')
     +'<p class="ob-p ob-dim">Longer entries, or ones with a feeling named in '
     +'them, usually give it more to find. You can always write another in '
     +'the Story tab later.</p>';
@@ -218,9 +239,13 @@ function tutRender(){
   var go=!!(pl&&pl.ok);
   var body;
   if(off&&kept.length){
+   /* named only when the words named it, S4: an offer's axis can come from
+      an inferred imprint, the seat's modal fetter, which the words did not
+      name. Then it is the axis the engine read the seat as. */
+   var offNamed=!!(TUT.parsed&&TUT.parsed.imprints.some(function(x){return !x.inferred&&x.fetter===off.axis;}));
    body='<p class="ob-p">This entry is heavy enough to show up in your Field '
     +'as something to work with: at the <b>'+esc(off.region||off.address||'')
-    +'</b>, named <b>'+esc(off.axis)+'</b>'
+    +'</b>, '+(offNamed?'named':'read as')+' <b>'+esc(off.axis)+'</b>'
     +(off.replacement?', with <b>'+esc(off.replacement)+'</b> waiting as its replacement':'')
     +'.</p>'
     +'<p class="ob-p ob-dim">'+esc(off.because[0])+'</p>'

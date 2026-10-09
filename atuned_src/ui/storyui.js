@@ -1784,11 +1784,21 @@ function stListPaint(){
   ST_SEEN={};return;}
  var seen={};
  STC.lm.lanes.forEach(function(l){if(!l.imps||!l.imps.length)return;var c=seatCol(l.seat),pills=[],fold={};
+  /* AN AXIS NAMED IS NOT AN ADDRESS NAMED, S4 of the 9 October sniffer audit,
+     ruling 5. Every pill that was not inferred was titled "Named by the
+     words." over an address name, and the words never name an address: a
+     named imprint is the axis the words named, at an address the engine
+     picked by susceptibility, so "I was furious" titled Pride as named. A
+     stated imprint was worse: its node is only the seat's first address,
+     which does not carry the fetter, so "I am exhausted" printed Pride.
+     A stated imprint now folds to its fetter like an inferred one, because
+     it has no address of its own, and each title says what the words did. */
   l.imps.slice().sort(function(a,b){return b.amt-a.amt;}).forEach(function(im){
-   if(im.inferred){var fk=im.band+':'+im.fetter;
-    if(!fold[fk]){fold[fk]={label:STV.sort==='charge'?im.band:im.fetter,amt:0,inf:true,band:im.band};pills.push(fold[fk]);}
+   if(im.inferred||im.stated){var fk=(im.stated?'s:':'i:')+im.band+':'+im.fetter;
+    if(!fold[fk]){fold[fk]={label:STV.sort==='charge'?im.band:im.fetter,amt:0,inf:true,st:!!im.stated,
+     band:im.band,fet:im.fetter};pills.push(fold[fk]);}
     fold[fk].amt+=im.amt;}
-   else pills.push({label:im.name,amt:im.amt,inf:false,band:im.band});});
+   else pills.push({label:im.name,amt:im.amt,inf:false,band:im.band,fet:im.fetter});});
   /* THE "ONLY FROM" WARNING IS GONE, S1, because its case is. It was written
      for a seat charged by parseStory from words srcHear set aside, the two
      halves of the engine disagreeing. Since S1 a word said with a no charges
@@ -1802,7 +1812,9 @@ function stListPaint(){
    +'<div class="st-ghd"><b>'+sym+esc(l.label)+'</b>'+note+'</div><div class="st-pills">'
    +pills.map(function(q){var k=l.key+':'+q.label;seen[k]=1;
     return '<span class="st-pill'+(q.inf?' inf':'')+(ST_SEEN[k]?'':' new')+'" style="--c:'+seatCol(q.band)+'" '
-     +'title="'+(q.inf?'The seat was read. The words did not name this address.':'Named by the words.')+'">'
+     +'title="'+esc(q.st?'Your words named '+String(q.fet||'').toLowerCase()+'. This seat has no address for it, so the charge stays at the seat.'
+      :q.inf?'The seat was read. The words did not name this address.'
+      :'Your words named '+String(q.fet||'').toLowerCase()+'. The engine picked this address for it.')+'">'
      +'<span class="st-ring"></span>'+esc(q.label)+' <small>+'+(Math.round(q.amt*10)/10)+'</small></span>';}).join('')
    +'</div></div>';});
  ST_SEEN=seen; box.innerHTML=o;
