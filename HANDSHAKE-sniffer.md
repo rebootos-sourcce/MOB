@@ -91,7 +91,10 @@ people is 112; sentence case; mechanical, precise, physical metaphors.
 - **Sentence and clause boundaries.** `clauseFloor` and `wordsOf` already know them. A
   comma is not a sentence end for negation. "I am not afraid. Afraid now." must not
   carry the first "not" across the full stop. Reuse; do not write a third reader.
-- **Negation windows.** `SRC_NEG` and `SRC_NEG_W` (three words) live in `sourceai.js`.
+- **Negation windows.** `SRC_NEG` and `SRC_NEG_W` live in `engine/sourceai.js`. The
+  story reader's window is two words (`var SRC_NEG_W=2`, read at `b2b7a03` on 9
+  October; read the code, not this line). Three is the laws' own window, `LAW_NEG_W`
+  in `engine/sniff.js`, and the comment above `SRC_NEG` says why the two differ.
   "can't stop crying" has a negator and is not a denial. Name such frames and test them.
 - **Counts.** Do not type a count into a test, a comment or a document. Read it off the
   run. A hard-coded `loadP(8)` and "the twelve" above eleven items have both shipped.
