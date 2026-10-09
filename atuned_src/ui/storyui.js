@@ -186,6 +186,17 @@ function stRender(){
      speaks once when a recording brings stars in, see stMic. */
   +'<p class="st-mask" id="stmask" role="note"'+(maskedRuns(ST_TEXT).length?'':' hidden')+'>'
    +esc(maskedSay(maskedRuns(ST_TEXT)))+'</p>'
+  /* WHAT WAS READ AND NOT COUNTED, said under the box it is in, S5 of the 9
+     October sniffer audit. A word said with a no and a word about someone
+     else are drawn set aside in the sentence, and an exclusion nobody can
+     read is a silent one. This is the place the page already says what the
+     reading cannot use, the stars line above, and it takes the same shape:
+     the engine's one sentence (asideOf, asideSay in engine/sniff.js), each
+     quote with what "not counted" means beside it, and nothing at all when
+     nothing was set aside. It is a sentence and not a count, so it is not
+     the counter round HS took off this place. */
+  +'<p class="st-mask" id="staside" role="note"'+(stAsideSay()?'':' hidden')+'>'
+   +esc(stAsideSay())+'</p>'
   /* THE COUNTER UNDER THE JOURNAL IS GONE. Round HS, his words: "under the
      left window it says two words zero tag get rid of that so it's never
      there" It read "2 words, 0 tagged". The word count is a number nobody
@@ -387,29 +398,21 @@ function stBank(){
    same text, so the sentence, the chart and the list cannot disagree about
    which words were scored.
 
-   A NEGATED WORD IS SHOWN AS SET ASIDE. "I was not scared" is heard by
-   Source AI as negated, srcNegated, and parseStory still charges it. The two
-   halves of the engine disagree and round HX chose to show that rather than
-   pick a side for him: the mark runs back over the negator and is struck,
-   the bar is dashed, and the list says which words were the only ones.
-
-   THE SENTENCE BOUNDARY, THREADED IN, ROUND RA. srcNegated's own header
-   (engine/sourceai.js) names this exact gap: "floor is sniff.js's own
-   clauseFloor... srcHear passes it, and nothing else does." This was that
-   nothing else. Measured directly before this fix: "I am not afraid.
-   Afraid now." reads nm.s as " i am not afraid afraid now ", and the
-   chart's own check, called with no floor, read the second afraid as
-   negated, the same cross sentence bug round NQ already fixed for Source
-   AI's own reading. srcHear passes clauseFloor; this now does too, so the
-   sentence, the chart and the list go back to agreeing, including about
-   which sentence a negation stops at. */
+   A WORD SAID WITH A NO IS SHOWN AS SET ASIDE, AND IT IS SET ASIDE. Round
+   HX drew "I was not scared" struck while parseStory still charged it, and
+   showed that disagreement rather than pick a side. Package S1 of
+   REVIEW-sniffer-audit-2026-10-09.md picked: the engine flags the word
+   denied and counts it nowhere, and this reads that flag off marksOf, neg
+   and negFrom, and works nothing out again. It used to call srcNegated
+   itself over the path, a second reader of one rule, which is how the
+   picture and the score came to disagree. The mark still runs back over its
+   no and is struck, and the bar is still dashed. */
 var STR={t:null,marks:[],toks:[],heard:null};
 function stMarks(t,p){
- if(!p||!p.hits||!p.hits.length||typeof marksOf!=='function')return [];
- var marks=marksOf(t,p), nm=normMap(t), negAt={}, modAt={};
- p.path.steps.forEach(function(s){if(!s.seat||s.coherent)return;
-  if(srcNegated(nm.s,s.at,clauseFloor(t,nm,s.at))){var a=nm.map[s.at+1];if(a!=null)negAt[a]=1;}});
- p.hits.forEach(function(h){if(!h.mod)return;var a=nm.map[h.at+1];if(a!=null)modAt[a]={f:h.mod,w:h.modw};});
+ if(!p||typeof marksOf!=='function')return [];
+ var marks=marksOf(t,p), nm=normMap(t), modAt={};
+ if(!marks.length)return [];
+ storyHits(p).forEach(function(h){if(!h.mod)return;var a=nm.map[h.at+1];if(a!=null)modAt[a]={f:h.mod,w:h.modw};});
  /* a curly apostrophe, the mark a phone's own autocorrect writes, used to
     split "don't" into two tokens and leave the strike-through short of the
     negator. The class matches NORM_APOS (engine/sniff.js), the same marks
@@ -417,14 +420,15 @@ function stMarks(t,p){
  var toks=[],re=/[A-Za-z'‘’]+/g,m; while((m=re.exec(t)))toks.push({s:m.index,e:m.index+m[0].length,w:m[0]});
  var seen={};
  marks.forEach(function(k){
-  k.txt=t.slice(k.s,k.e); k.neg=!!negAt[k.s]; k.mod=modAt[k.s]||null;
+  /* neg, negFrom, other and whoFrom are marksOf's, the engine's flags, and are
+     not touched. oth is someone else's word, S2, drawn set aside and not
+     struck, because it is not a no. aside is either, and is what the chart
+     reads: a word read and not counted is drawn dashed, whichever it was. */
+  k.txt=t.slice(k.s,k.e); k.neg=!!k.neg; k.oth=!!k.other&&!k.neg; k.aside=k.neg||k.oth; k.mod=modAt[k.s]||null;
   var base=(k.bn||'coh')+':'+k.txt.toLowerCase(); seen[base]=(seen[base]||0)+1; k.key=base+':'+seen[base];
   k.depth=k.amt!=null?Math.min(1,Math.abs(k.amt)/PATHMAX):0.3;
   k.t0=-1; k.t1=-1;
-  toks.forEach(function(o,j){if(o.s>=k.s&&o.e<=k.e){if(k.t0<0)k.t0=j;k.t1=j;o.m=k;}});
-  /* the negator, found the way srcNegated finds it: within SRC_NEG_W words */
-  if(k.neg)for(var q=1;q<=SRC_NEG_W;q++){var d=toks[k.t0-q];
-   if(d&&SRC_NEG.indexOf(d.w.toLowerCase().replace(/['‘’]/g,''))>=0)k.negFrom=d.s;}});
+  toks.forEach(function(o,j){if(o.s>=k.s&&o.e<=k.e){if(k.t0<0)k.t0=j;k.t1=j;o.m=k;}});});
  marks.toks=toks;
  return marks;}
 function stRead(){
@@ -543,6 +547,7 @@ function stRefresh(){
   ap.textContent='Commit'+(ST_PARSED&&ST_PARSED.imprints.length?' '+ST_PARSED.imprints.length:'');}
  stRead();
  stMaskPaint();
+ stAsidePaint();
  stFocus('write');
  /* the highlight is refreshed with the count, not with the whole surface,
     because stRefresh exists so typing never loses the caret. */
@@ -555,6 +560,13 @@ function stMaskPaint(){
  var e=document.getElementById('stmask'); if(!e)return;
  var runs=maskedRuns(ST_TEXT);
  e.hidden=!runs.length; e.textContent=maskedSay(runs);}
+/* and the set aside line under it, S5, kept in step the same way. The text is
+   the engine's; this only says whether there is any. */
+function stAsideSay(){
+ return (ST_PARSED&&ST_TEXT&&ST_TEXT.trim()&&typeof asideSay==='function')?asideSay(asideOf(ST_TEXT,ST_PARSED)):'';}
+function stAsidePaint(){
+ var e=document.getElementById('staside'); if(!e)return;
+ var s=stAsideSay(); e.hidden=!s; e.textContent=s;}
 /* everything below the sentence, off the one read */
 function stPaintAll(){
  STC.sync(); stRelayout();
@@ -1318,7 +1330,7 @@ function stLaneModel(){
  ((heard&&heard.seats)||[]).forEach(function(s){rg[s.band]=s.rung;wds[s.band]=s.words;});
  var first={},cnt={};
  STR.marks.forEach(function(m){if(!m.bn)return;
-  if(first[m.bn]==null||m.t0<first[m.bn])first[m.bn]=m.t0; if(!m.neg)cnt[m.bn]=(cnt[m.bn]||0)+1;});
+  if(first[m.bn]==null||m.t0<first[m.bn])first[m.bn]=m.t0; if(!m.aside)cnt[m.bn]=(cnt[m.bn]||0)+1;});
  var seatW={}; BANDS.forEach(function(b){seatW[b]=p&&p.bands[ST_BKEY[b]]?p.bands[ST_BKEY[b]]:0;});
  var byBand={}; imps.forEach(function(im){(byBand[im.band]=byBand[im.band]||[]).push(im);});
  var lanes=[],keyOf;
@@ -1550,7 +1562,7 @@ function stDraw(){
   if(m.coh){g.fillStyle=rgba(STC.acc,.9);g.fillRect(x,H-STC.FLOOR+2-10*g1,x2-x,3);return;}
   var lk=STC.lm.keyOf(m),o=lk&&STC.lane[lk];if(!o)return;
   var c=stCol(m.bn),hh=Math.max(3,g1*(0.22+0.78*m.depth)*o.h*.82),base=o.y+o.h-1,al=o.a;
-  if(m.neg){g.strokeStyle=rgba(c,.55*al);g.setLineDash([2,2]);g.strokeRect(x+.5,base-hh+.5,x2-x-1,hh-1);g.setLineDash([]);}
+  if(m.aside){g.strokeStyle=rgba(c,.55*al);g.setLineDash([2,2]);g.strokeRect(x+.5,base-hh+.5,x2-x-1,hh-1);g.setLineDash([]);}
   else{g.fillStyle=rgba(c,al);g.fillRect(x,base-hh,x2-x,hh);
    /* a modifier's share of the bar is drawn lighter, so "really tight" shows
       how much of its height the "really" added */
@@ -1561,7 +1573,7 @@ function stDraw(){
  g.lineWidth=1.6;g.setLineDash([4,4]);
  for(var i=1;i<pts.length;i++){var a=pts[i-1],b2=pts[i],gg=Math.max(0,Math.min(1,b2.g));if(gg<.01)continue;
   var grd=g.createLinearGradient(a.x,a.y,b2.x,b2.y);
-  grd.addColorStop(0,rgba(a.c,a.m.neg?.3:.9));grd.addColorStop(1,rgba(b2.c,b2.m.neg?.3:.9));
+  grd.addColorStop(0,rgba(a.c,a.m.aside?.3:.9));grd.addColorStop(1,rgba(b2.c,b2.m.aside?.3:.9));
   g.strokeStyle=grd;g.beginPath();var mx=(b2.x-a.x)/2;g.moveTo(a.x,a.y);
   var N=18;for(var s2=1;s2<=Math.round(N*gg);s2++){var tt=s2/N,u=1-tt;
    var xx=u*u*u*a.x+3*u*u*tt*(a.x+mx)+3*u*tt*tt*(b2.x-mx)+tt*tt*tt*b2.x,
@@ -1579,16 +1591,16 @@ function stDraw(){
      canvas lets the lighting's own ground show through, on all seven. */
   g.save();g.globalCompositeOperation='destination-out';g.beginPath();g.arc(p.x,p.y,r,0,TAU);g.fill();g.restore();
   g.beginPath();g.arc(p.x,p.y,r,0,TAU);
-  if(p.m.neg)g.setLineDash([2,2]);g.strokeStyle=rgba(p.c,p.m.neg?.5:1);g.lineWidth=1.6;g.stroke();g.setLineDash([]);});
+  if(p.m.aside)g.setLineDash([2,2]);g.strokeStyle=rgba(p.c,p.m.aside?.5:1);g.lineWidth=1.6;g.stroke();g.setLineDash([]);});
  /* the words: the heaviest always, the rest where there is room */
- var kink=null;pts.forEach(function(p){if(!p.m.neg&&p.m.amt!=null&&(!kink||p.m.amt>kink.m.amt))kink=p;});
+ var kink=null;pts.forEach(function(p){if(!p.m.aside&&p.m.amt!=null&&(!kink||p.m.amt>kink.m.amt))kink=p;});
  var placed=[];g.font='500 12px Inter,system-ui,sans-serif';g.textAlign='center';g.textBaseline='bottom';
  pts.slice().sort(function(a,b){return (b===kink)-(a===kink)||b.m.depth-a.m.depth;}).forEach(function(p){
-  if(p.m.neg&&!wide)return; if(p!==kink&&!wide&&dx<12)return; if(p.g<.6)return;
+  if(p.m.aside&&!wide)return; if(p!==kink&&!wide&&dx<12)return; if(p.g<.6)return;
   var w=g.measureText(p.m.txt).width+6,x0=p.x-w/2,y1=p.y-6,y0=y1-14;
   if(x0<q.x0||x0+w>q.x1+2||y0<0)return;
   if(placed.some(function(r){return !(x0+w<r[0]||x0>r[2]||y1<r[1]||y0>r[3]);}))return;
-  placed.push([x0,y0,x0+w,y1]);g.fillStyle=p.m.neg?rgba(dim,.9):rgba(mixc(p.c,ink,.15),1);g.fillText(p.m.txt,p.x,y1);});
+  placed.push([x0,y0,x0+w,y1]);g.fillStyle=p.m.aside?rgba(dim,.9):rgba(mixc(p.c,ink,.15),1);g.fillText(p.m.txt,p.x,y1);});
  var N2=STR.toks.length;if(N2){var px=stXOf(N2-1)+dx;g.fillStyle=rgba(STC.acc,.55);g.fillRect(px,q.y0,1,H-q.y0-6);}
  g.restore();
  g.fillStyle=rgba(dim,1);g.font='12px Inter,system-ui,sans-serif';g.textAlign='left';g.textBaseline='middle';
@@ -1682,10 +1694,10 @@ function stDrawRing(){
   L.forEach(function(it,j){var a=S_.a0+(j+1)/(n+1)*(S_.a1-S_.a0),g1=Math.max(0,it.g),len=q.sp0+g1*(0.25+0.75*it.m.depth)*q.spL,
    ca=Math.cos(a),sa=Math.sin(a);if(g1<.01)return;
    g.beginPath();g.moveTo(q.cx+ca*q.sp0,q.cy+sa*q.sp0);g.lineTo(q.cx+ca*len,q.cy+sa*len);
-   if(it.m.neg){g.setLineDash([2*s,3*s]);g.strokeStyle=rgba(c,.45);}else{g.setLineDash([]);g.strokeStyle=rgba(c,1);}
+   if(it.m.aside){g.setLineDash([2*s,3*s]);g.strokeStyle=rgba(c,.45);}else{g.setLineDash([]);g.strokeStyle=rgba(c,1);}
    g.lineWidth=2.2*s;g.lineCap='round';g.stroke();g.setLineDash([]);
    /* a degree word's share of the spoke is drawn lighter, as on Lanes */
-   if(it.m.mod&&!it.m.neg){var base=q.sp0+g1*(0.25+0.75*it.m.depth/it.m.mod.f)*q.spL;
+   if(it.m.mod&&!it.m.aside){var base=q.sp0+g1*(0.25+0.75*it.m.depth/it.m.mod.f)*q.spL;
     g.beginPath();g.moveTo(q.cx+ca*base,q.cy+sa*base);g.lineTo(q.cx+ca*len,q.cy+sa*len);g.strokeStyle=rgba(mixc(c,ink,.6),1);g.lineWidth=3*s;g.stroke();}
    var age=(now-(it.at||0))/900;
    if(age<1&&!REDUCED){var rr=(6+10*age)*s;g.beginPath();g.arc(q.cx+ca*len,q.cy+sa*len,rr,0,TAU);g.strokeStyle=rgba(c,.5*(1-age));g.lineWidth=1.4*s;g.stroke();}});});
@@ -1722,7 +1734,7 @@ function stDrawStrip(){
   if(m.coh){g.fillStyle=rgba(acc,.9);g.fillRect(x,CH-20-12*g1,x2-x,3);return;}
   if(!m.bn)return;
   var l=stStripLane(m.bn),c=stCol(m.bn),hh=g1*(0.2+0.8*m.depth)*l.h*.9,base=l.y+l.h-1;
-  if(m.neg){g.strokeStyle=rgba(c,.55);g.setLineDash([2,2]);g.strokeRect(x+.5,base-hh+.5,x2-x-1,hh-1);g.setLineDash([]);return;}
+  if(m.aside){g.strokeStyle=rgba(c,.55);g.setLineDash([2,2]);g.strokeRect(x+.5,base-hh+.5,x2-x-1,hh-1);g.setLineDash([]);return;}
   g.fillStyle=rgba(c,1);g.fillRect(x,base-hh,x2-x,hh);
   if(m.mod){var hb=hh/m.mod.f;g.fillStyle=rgba(mixc(c,ink,.55),1);g.fillRect(x,base-hh,x2-x,hh-hb);}});
  var N=STR.toks.length;if(N){var px=stStripX(N-1)+dx;g.fillStyle=rgba(acc,.55);g.fillRect(px,q.y0,1,CH-q.y0-6);}
@@ -1754,8 +1766,18 @@ function stCtrPaint(){
  /* its own span, because the line also carries the view toggle and writing
     the whole line's text would take the three buttons off it */
  var e=document.getElementById('stctrt'); if(!e)return;
- var toks=STR.toks,tg=STR.marks.length,ng=STR.marks.filter(function(m){return m.neg;}).length;
- e.textContent=toks.length?(toks.length+' words read, '+tg+' kept'+(ng?', '+ng+' set aside as negated':'')):'';}
+ /* KEPT IS WHAT COUNTS, AND SET ASIDE IS THE ENGINE'S DENIED, S1. kept used
+    to count every mark, the struck ones with them, so "2 kept, 1 set aside"
+    said three words were read where two were. The flag is marksOf's, so
+    this number and the struck marks are one count. "Negated" was the one
+    word on the line a ten year old would ask about; "after a no" is the
+    same fact in words the person already has. */
+ /* AND SOMEONE ELSE'S, S2, from the same flags: a word the engine held as
+    about someone else is not kept and is not a no, so it has its own count */
+ var toks=STR.toks,ng=STR.marks.filter(function(m){return m.neg;}).length,
+  no=STR.marks.filter(function(m){return m.oth;}).length,tg=STR.marks.length-ng-no;
+ e.textContent=toks.length?(toks.length+' words read, '+tg+' kept'+(ng?', '+ng+' set aside after a no':'')
+  +(no?', '+no+' about someone else':'')):'';}
 
 /* ============================================================
    THE LIST, in the lanes' order, so a sort moves the chart and the list
@@ -1779,29 +1801,39 @@ function stListPaint(){
    :(STV.lastFound.length?'Your last entry is in the field and its addresses are queued in the release. The next entry gathers here.'
     :'You have not written anything yet. Whatever you write gets pulled apart and collected here.'))+'</p>';
   ST_SEEN={};return;}
- var heardB={};((STR.heard&&STR.heard.seats)||[]).forEach(function(s){heardB[s.band]=s;});
  var seen={};
  STC.lm.lanes.forEach(function(l){if(!l.imps||!l.imps.length)return;var c=seatCol(l.seat),pills=[],fold={};
+  /* AN AXIS NAMED IS NOT AN ADDRESS NAMED, S4 of the 9 October sniffer audit,
+     ruling 5. Every pill that was not inferred was titled "Named by the
+     words." over an address name, and the words never name an address: a
+     named imprint is the axis the words named, at an address the engine
+     picked by susceptibility, so "I was furious" titled Pride as named. A
+     stated imprint was worse: its node is only the seat's first address,
+     which does not carry the fetter, so "I am exhausted" printed Pride.
+     A stated imprint now folds to its fetter like an inferred one, because
+     it has no address of its own, and each title says what the words did. */
   l.imps.slice().sort(function(a,b){return b.amt-a.amt;}).forEach(function(im){
-   if(im.inferred){var fk=im.band+':'+im.fetter;
-    if(!fold[fk]){fold[fk]={label:STV.sort==='charge'?im.band:im.fetter,amt:0,inf:true,band:im.band};pills.push(fold[fk]);}
+   if(im.inferred||im.stated){var fk=(im.stated?'s:':'i:')+im.band+':'+im.fetter;
+    if(!fold[fk]){fold[fk]={label:STV.sort==='charge'?im.band:im.fetter,amt:0,inf:true,st:!!im.stated,
+     band:im.band,fet:im.fetter};pills.push(fold[fk]);}
     fold[fk].amt+=im.amt;}
-   else pills.push({label:im.name,amt:im.amt,inf:false,band:im.band});});
-  /* THE TWO HALVES OF THE ENGINE DISAGREE, AND IT IS SHOWN. A seat whose only
-     words were negated is charged by parseStory and set aside by srcHear. */
+   else pills.push({label:im.name,amt:im.amt,inf:false,band:im.band,fet:im.fetter});});
+  /* THE "ONLY FROM" WARNING IS GONE, S1, because its case is. It was written
+     for a seat charged by parseStory from words srcHear set aside, the two
+     halves of the engine disagreeing. Since S1 a word said with a no charges
+     no seat, so a lane here always has a word that counts, and a note that
+     said otherwise would be a false sentence. */
   var note;
-  if(STV.sort!=='charge'){
-   var only=!heardB[l.band]?STR.marks.filter(function(m){return m.bn===l.band&&m.neg;}):[];
-   note=only.length?'<em class="warn">only from '+only.map(function(m){
-     return '&ldquo;'+esc(ST_TEXT.slice(m.negFrom!=null?m.negFrom:m.s,m.e))+'&rdquo;';}).join(', ')+'</em>'
-    :'<em>'+pills.length+' pending</em>';}
+  if(STV.sort!=='charge')note='<em>'+pills.length+' pending</em>';
   else note='<em>at '+l.bands.map(srcSeatSay).join(', ')+'</em>';
   var sym=l.icon?stSvg(l.icon):'<span class="st-ring"></span>';
   o+='<div class="st-grp'+(STV.hot===l.key?' hot':'')+'" data-k="'+esc(l.key)+'" style="--c:'+c+'">'
    +'<div class="st-ghd"><b>'+sym+esc(l.label)+'</b>'+note+'</div><div class="st-pills">'
    +pills.map(function(q){var k=l.key+':'+q.label;seen[k]=1;
     return '<span class="st-pill'+(q.inf?' inf':'')+(ST_SEEN[k]?'':' new')+'" style="--c:'+seatCol(q.band)+'" '
-     +'title="'+(q.inf?'The seat was read. The words did not name this address.':'Named by the words.')+'">'
+     +'title="'+esc(q.st?'Your words named '+String(q.fet||'').toLowerCase()+'. This seat has no address for it, so the charge stays at the seat.'
+      :q.inf?'The seat was read. The words did not name this address.'
+      :'Your words named '+String(q.fet||'').toLowerCase()+'. The engine picked this address for it.')+'">'
      +'<span class="st-ring"></span>'+esc(q.label)+' <small>+'+(Math.round(q.amt*10)/10)+'</small></span>';}).join('')
    +'</div></div>';});
  ST_SEEN=seen; box.innerHTML=o;
@@ -2243,7 +2275,9 @@ function stLawPaint(){
    unchanged, and the characters in the layer are still exactly the box's. */
 function stHLHtml(txt){
  var p=ST_PARSED;
- if(!p||!p.hits.length)return esc(txt);
+ /* not p.hits alone: since S1 a story whose only word was said with a no
+    has no counted hit, and that word is still drawn, struck */
+ if(!p)return esc(txt);
  var marks=(STR.t===txt&&STR.marks.length)?STR.marks:stMarks(txt,p);
  if(!marks.length)return esc(txt);
  var out='',last=0;
@@ -2251,7 +2285,10 @@ function stHLHtml(txt){
   /* marksOf returns one mark per stretch of text, already sorted and already
      merged where a phrase covers the words inside it, so this walks forward
      and never has to decide precedence. That decision is the scanner's. */
-  var from=(m.neg&&m.negFrom!=null&&m.negFrom>=last)?m.negFrom:m.s;
+  /* a word said with a no runs back over its no, S1; a word about someone
+     else runs back over who it is about, S2, so the reason is on the letters */
+  var back=m.neg?m.negFrom:m.oth?m.whoFrom:null;
+  var from=(back!=null&&back>=last)?back:m.s;
   out+=esc(txt.slice(last,from))
    /* A HIT CARRIES A SEAT KEY, NOT A BAND NAME. LEX stores 'throat' and
       seatCol wants 'Throat', so every word used to resolve to the same
@@ -2260,7 +2297,7 @@ function stHLHtml(txt){
       K2BAND and put the answer in m.bn. A coherent hit has no seat, because
       it is not charge at an address, so it takes the accent the way an
       unseated hit always has here. */
-   +'<mark class="st-f'+(m.neg?' neg':'')+'" style="--c:'+(m.bn?seatCol(m.bn):'var(--accent)')+'"'
+   +'<mark class="st-f'+(m.neg?' neg':m.oth?' oth':'')+'" style="--c:'+(m.bn?seatCol(m.bn):'var(--accent)')+'"'
    +(m.label?' data-nm="'+esc(m.label)+'"':'')
    +(m.fet?' data-fet="'+esc(m.fet)+'"':'')
    +(m.amt!=null?' data-amt="'+esc(m.amt)+'"':'')

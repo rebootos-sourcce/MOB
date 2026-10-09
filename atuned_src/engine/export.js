@@ -189,6 +189,11 @@ if(typeof module!=='undefined'&&module.exports){
                   HOME_POLES:HOME_POLES, compassOffAxis:compassOffAxis,
   /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory,
                   wordsOf:wordsOf, unmarkedOf:unmarkedOf,
+                  sniffDeny:sniffDeny, NEG_NOT_DENY:NEG_NOT_DENY, storyHits:storyHits,
+                  asideOf:asideOf, asideSay:asideSay,
+                  sniffWho:sniffWho, whoOf:whoOf, WHO_ME:WHO_ME, WHO_SUBJ:WHO_SUBJ, WHO_POSS:WHO_POSS,
+                  WHO_OBJ:WHO_OBJ, WHO_YOU:WHO_YOU, WHO_DET:WHO_DET, WHO_OPEN:WHO_OPEN,
+                  WHO_LOSS:WHO_LOSS, whoLoss:whoLoss,
                   SOMA_SENSE:SOMA_SENSE, SOMA_PLACE_WORDS:SOMA_PLACE_WORDS, SOMA_PLACE_RULED:SOMA_PLACE_RULED, SOMA_PLACE:SOMA_PLACE, somaPlaces:somaPlaces,
                   LEX_VERSION:LEX_VERSION, LEXV_RE:LEXV_RE, lexVersion:lexVersion,
   /* THE OUTPUT CONTRACT, SNIFFER_SPEC.md section 10. sniffStory is the one
@@ -201,6 +206,7 @@ if(typeof module!=='undefined'&&module.exports){
                   sniffDepth:sniffDepth, sniffOffer:sniffOffer,
                   SPEC_POLE:SPEC_POLE, LEXCOMP:LEXCOMP, LAWVIO:LAWVIO,
                   lexComposite:lexComposite, LEXCOMPRUN:LEXCOMPRUN,
+                  LEXPROF:LEXPROF, lexProf:lexProf, LEXPROFRUN:LEXPROFRUN,
                   SAB_SHOW:SAB_SHOW, OFFER_MAX:OFFER_MAX,
                   GATE_BASE:GATE_BASE, GATE_STEP:GATE_STEP,
   /* the band edge. sabMember is the ramp itself and the gate asserts it is

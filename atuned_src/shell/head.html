@@ -4079,7 +4079,6 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-ghd b{color:var(--c);font-weight:600;display:flex;align-items:center;gap:7px}
 .st-ghd svg{width:15px;height:15px;fill:none;stroke:var(--c);stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round}
 .st-ghd em{font-style:normal;color:var(--dim);text-align:right}
-.st-ghd em.warn{color:var(--mid)}
 .st-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
 .st-pill{display:inline-flex;align-items:center;gap:7px;border:1px solid color-mix(in srgb,var(--c) 45%,transparent);
  border-radius:999px;padding:4px 11px 4px 8px;font-size:13.5px;min-height:30px;color:var(--ink)}
@@ -4120,6 +4119,11 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 /* the negated word, struck, with the negator inside the mark. See stMarks. */
 .st-f.neg{background:none;box-shadow:none;color:var(--dim);text-decoration:line-through;
  text-decoration-color:color-mix(in srgb,var(--c) 70%,transparent)}
+/* someone else's word, S2, set aside and not struck, because it is not a no:
+   dim, with a dotted line under it from the person it is about. Decoration
+   only, so the layer keeps the box's widths. See stMarks. */
+.st-f.oth{background:none;box-shadow:none;color:var(--dim);text-decoration:underline dotted;
+ text-decoration-color:color-mix(in srgb,var(--c) 70%,transparent);text-underline-offset:3px}
 /* RECORD IS RED, UNAMBIGUOUSLY, WHILE IT IS RECORDING. Round LV, his words:
    "The record button I want as a red record button. When I press it,
    there's an animation showing me that it's being recorded, and I want the

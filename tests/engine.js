@@ -5155,7 +5155,9 @@ g('39 · the sentence is read once, and the marks land on the letters');
  /* EVERY MARK IS ITS OWN HIT'S TEXT, read through the same normalisation. A
     mark may span punctuation the hit does not, which is the whole point, so
     they are compared normalised rather than literally. */
- const byText={}; p.hits.forEach(h=>{byText[String(h.t)]=1;});
+ /* every hit the scanner found, counted or set aside, S1 and S2: p.hits is
+    what counts, and a mark is drawn for a word read and set aside too */
+ const byText={}; E.storyHits(p).forEach(h=>{byText[String(h.t)]=1;});
  const stray=marks.filter(m=>!byText[normMap(story.slice(m.s,m.e)).s.trim()]);
  ok(stray.length===0,'each mark carries a stretch the scanner actually scored, '
   +stray.length+' do not'+(stray[0]?': '+JSON.stringify(story.slice(stray[0].s,stray[0].e)):''));
@@ -5163,7 +5165,7 @@ g('39 · the sentence is read once, and the marks land on the letters');
     or merged into the mark that covers it, which is the scanner's precedence:
     a phrase outranks the words inside it and an adjective on the same word as a
     placed term joins it rather than drawing twice. */
- const uncovered=p.hits.filter(h=>{
+ const uncovered=E.storyHits(p).filter(h=>{
   if(h.at==null)return false;
   const a=nm0=>nm0, want=String(h.t);
   return !marks.some(m=>normMap(story.slice(m.s,m.e)).s.indexOf(want)>=0);});
@@ -7333,6 +7335,213 @@ g('QZ · the sniffer reads other words for the same reading, and still reads not
   'and a refusal by the boundary is reported, not swallowed: '+(r3.refused.qzprobe||'it was not'));
  ok(JSON.stringify([LEXSYN,LEXANT])===keep&&Object.keys(LEX).length===n0&&E.LEX_SRC.indexOf('synonym')>=0,
   'and everything is put back, '+Object.keys(LEX).length+' entries');
+}
+
+g('S0 · the word pass: swearing and a bad day read, and the two known traps stay shut');
+/* REVIEW-sniffer-audit-2026-10-09.md, package S0. The old line's word pass,
+   94d328e, ported by hand onto main with the fix its own follow up 5ce3934
+   made: "not okay" and "not ok" are refused by name in LEXSYN_NO, and
+   "fucking" as a key closes the gap the QR group above holds open. Before the
+   port "I had a rough day" and "fuck this" read nothing at all, measured on
+   main's own build. What is held here is the contract, not a count: the
+   words read, every row lands exactly as written with its source named, no
+   row is a dead letter, the two traps stay shut, and running it again adds
+   nothing. */
+{
+ const {LEX,LEXMETA,LEXSYN_NO,PHRASES,LEX_SEAT,LEX_AMT,LEX_FET,parseStory,lexKeyOk}=E;
+ const LP=E.LEXPROF||{}, RUN=E.LEXPROFRUN||null, keys=Object.keys(LP);
+ ok(keys.length>0,'the word pass carries rows, '+keys.length);
+ /* the reported defect, by the words in it */
+ ['I had a rough day.','What a shitty day.','Fuck this.','This is bullshit.','I am struggling.',
+  'I cant take it anymore.','Worst day of my life.','I am at my wits end.','It was a nightmare.']
+  .forEach(t=>{const p=parseStory(t);
+   ok(p.imprints.length>0,JSON.stringify(t)+' reads, '+JSON.stringify(p.bands));});
+ /* every row is in the table exactly as written, and says where it came from */
+ const drift=keys.filter(k=>{const e=LP[k], l=LEX[k];
+  return !l||l[LEX_SEAT]!==e[0]||l[LEX_AMT]!==e[1]||String(l[LEX_FET]||null)!==String(e[2]||null);});
+ ok(keys.length>0&&drift.length===0,'every row lands in LEX as it is written, '+drift.length+' do not: '+drift.slice(0,5).join(', '));
+ const prov=keys.filter(k=>!LEXMETA[k]||LEXMETA[k].src!=='authored'||!/LEXPROF/.test(LEXMETA[k].from||''));
+ ok(keys.length>0&&prov.length===0,'each is marked authored and names the pass that wrote it, '+prov.length+' are not: '+prov.slice(0,5).join(', '));
+ ok(!!RUN&&RUN.refused.length===0,'nothing the pass carries was refused, so no row is a dead letter: '+JSON.stringify(RUN&&RUN.refused));
+ ok(!!RUN&&RUN.already===0&&RUN.added===keys.length,
+  'and no row repeats a key the table already held, so no row says a seat or an amount the table does not, '+JSON.stringify(RUN));
+ ok(keys.every(k=>lexKeyOk(k)),'every key is a form the scanner can produce');
+ ok(keys.every(k=>!PHRASES.some(r=>r[0].indexOf(k)>=0)),'and none is already an idiom row');
+ /* the two traps, by name */
+ ok(!('not okay' in LP)&&!('not ok' in LP)&&!LEX['not okay']&&!LEX['not ok'],
+  '"not okay" and "not ok" stay out: LEXSYN_NO refuses them by name and reads only "im not okay"');
+ ok(!('fucking' in LP)&&!LEX.fucking,'"fucking" is not a key: the QR group holds the gap the stars leave, and a key there would fill it');
+ const leaked=keys.filter(k=>LEXSYN_NO[k]);
+ ok(leaked.length===0,'no row is a word refused by name, '+leaked.join(', '));
+ /* run twice, add nothing; and the stamp is taken after the pass */
+ if(typeof E.lexProf==='function'){
+  const n0=Object.keys(LEX).length, r=E.lexProf();
+  ok(r.added===0&&r.refused.length===0&&Object.keys(LEX).length===n0,'a second run adds nothing, '+JSON.stringify(r));}
+ else ok(false,'lexProf is exported, so the pass can be run again and shown to add nothing');
+ ok(keys.length>0&&E.lexVersion()===E.LEX_VERSION,'the lexicon stamp is taken after the pass, so an entry read by these words says so');
+}
+
+g('S1 · a word said with a no is kept, named as denied, and adds nothing to any reading');
+/* REVIEW-sniffer-audit-2026-10-09.md, ruling 1 and package S1. Measured on
+   main before this: "I was not angry" read Anger 18 at the solar plexus, the
+   same as "I was angry", while the Story page drew the same word struck
+   through. The picture said set aside and the score counted it. A denied
+   word is now kept on the parse, flagged on its hit and listed in denied,
+   and it reaches no band, charge, weight, named fetter, imprint or axis.
+   Source AI, the Story page and the quiz read that flag; none of them works
+   negation out again. What is held is the contract and the named frames,
+   never a count. */
+{
+ const {parseStory,scanStory,marksOf,sniffAxes,sniffStory,srcHear,normMap}=E;
+ const sum=o=>Object.keys(o||{}).reduce((a,k)=>a+Math.abs(o[k]),0);
+ const den=p=>(p&&p.denied)||[];
+ const PAIRS=[['I was angry.','I was not angry.','angry','not'],
+  ['I am sad.','I am not sad.','sad','not'],
+  ['I am ashamed.','I am no longer ashamed.','ashamed','no']];
+ PAIRS.forEach(([yes,no,w,neg])=>{
+  const a=parseStory(yes), b=parseStory(no);
+  ok(JSON.stringify(a.bands)!==JSON.stringify(b.bands),
+   JSON.stringify(yes)+' and '+JSON.stringify(no)+' read differently, '+JSON.stringify(a.bands)+' against '+JSON.stringify(b.bands));
+  ok(sum(b.bands)===0&&b.imprints.length===0&&sum(b.charges)===0&&sum(b.weights)===0&&b.named.length===0,
+   'the denial adds nothing to bands, charges, weights, named or imprints: '+JSON.stringify({bands:b.bands,charges:b.charges,imps:b.imprints.length}));
+  ok(den(b).length>0&&den(b).every(h=>h.neg===true&&h.t===w&&h.negw===neg),
+   'and it is kept, flagged denied, naming its word and the "'+neg+'" that denied it: '+JSON.stringify(den(b).map(h=>[h.t,h.neg,h.negw])));
+  ok(!b.hits.some(h=>h.neg),'no denied hit is among the counted hits');
+  ok(sniffAxes(b).every(r=>r.shadow===0)&&sniffStory(no).offer.length===0,'no axis carries it and nothing is offered for release');
+  reset(3,0,6); const s0=JSON.stringify(S.charge); E.applyStory(no);
+  ok(JSON.stringify(S.charge)===s0,'committing it moves no charge on the field');
+  reset(3,0,6); E.applyStory(yes);
+  ok(JSON.stringify(S.charge)!==s0,'and committing the plain sentence still does');
+  const m=marksOf(no,b);
+  ok(m.length===1&&m[0].neg===true&&m[0].negFrom!=null&&no.slice(m[0].negFrom,m[0].e).indexOf(neg+' ')===0
+   &&no.slice(m[0].negFrom,m[0].e).slice(-w.length)===w,
+   'the mark is drawn struck, from the "'+neg+'" to the word, on the letters typed: '+(m[0]?JSON.stringify(no.slice(m[0].negFrom==null?m[0].s:m[0].negFrom,m[0].e)):'none'));
+ });
+ /* a full stop ends a no. clauseFloor's ruling, unchanged */
+ const fl=parseStory('I am not afraid. Afraid now.');
+ ok(JSON.stringify(fl.bands)===JSON.stringify(parseStory('Afraid now.').bands)&&den(fl).filter(h=>h.kind==='word').length===1,
+  'the first sentence denies its own afraid, and the second keeps its charge: '+JSON.stringify(fl.bands));
+ /* THE FRAMES THAT CARRY A NO AND ARE NOT A DENIAL, each by name. A word
+    that already holds its no inside it ("cant sleep", "im not okay") keeps
+    that no to itself, so the word after it is not denied by it. */
+ const NOTDEN=["I can't stop crying.","I couldn't stop shaking.","I never stopped worrying.","It never stops hurting.",
+  "I couldn't help crying.","I couldn't help but cry.","I can't sleep, terrified.","I'm not okay, terrified."];
+ NOTDEN.forEach(t=>{const p=parseStory(t);
+  ok(den(p).length===0&&p.hits.length===scanStory(t).length&&sum(p.bands)>0,
+   JSON.stringify(t)+' is not a denial: every hit counts, '+JSON.stringify(p.bands)+(den(p).length?', but denied '+den(p).map(h=>h.t).join(','):''));});
+ ok(Array.isArray(E.NEG_NOT_DENY)&&E.NEG_NOT_DENY.length>0&&E.NEG_NOT_DENY.every(w=>NOTDEN.some(t=>new RegExp("(n't|not|never|cannot) "+w+'\\b','i').test(t))),
+  'every frame word is named in one table and each has a sentence above: '+JSON.stringify(E.NEG_NOT_DENY));
+ /* A COHERENT WORD IS NEVER DENIED, and the reason is the ruling's own: a
+    denial never raises a reading, and denying a word that subtracts would. */
+ const coh=parseStory('I am not grateful.');
+ ok(den(coh).length===0&&coh.hits.some(h=>h.band==='coherent'),'a coherent word after a no still subtracts, the reading it had');
+ /* the sentence, the chart, the list and the score read one flag */
+ PAIRS.map(x=>[x[1],true]).concat([['I am not afraid. Afraid now.',true],['I was not scared but I was angry.',true],
+  ["I can't stop crying.",false],['Not sad, not angry, just tired of it.',true]]).forEach(([t,struck])=>{
+  const p=parseStory(t), m=marksOf(t,p), nm=normMap(t), at={};
+  den(p).forEach(h=>{at[nm.map[h.at+1]]=1;});
+  const bad=m.filter(k=>!k.coh&&(!!k.neg!==!!at[k.s]));
+  ok(bad.length===0&&m.some(k=>k.neg)===struck&&(den(p).length>0)===struck,
+   'every struck mark is a denied hit and every denied hit is struck, in '+JSON.stringify(t)
+   +(bad.length?': '+JSON.stringify(bad.map(k=>t.slice(k.s,k.e))):'')+(m.some(k=>k.neg)!==struck?', struck should be '+struck:''));});
+ /* Source AI hears what the score counts, from the same flag */
+ ok(srcHear('I was not angry.').unread,'Source AI does not hear a denied word');
+ const cry=srcHear("I can't stop crying.");
+ ok(!cry.unread&&cry.seats.some(s=>s.seat==='heart'&&s.mentions===1&&s.negated===0),
+  'and hears the crying in "I can\'t stop crying", which it used to drop as negated: '+JSON.stringify(cry.seats.map(s=>[s.seat,s.mentions,s.negated])));
+}
+
+g('S2 · a charge word about someone else is kept, listed, and never scored on the writer');
+/* REVIEW-sniffer-audit-2026-10-09.md, ruling 2 and package S2, and guard 2
+   of SNIFFER_SPEC.md, "never score another person", broken on main:
+   "he shouted at me" read Anger 24 at the solar plexus, exactly "I shouted at
+   him". A charge word whose clear subject in its own comma group is a third
+   person, with no first person between, is kept on the parse, flagged
+   other, naming who, listed in others, and scored nowhere. No subject, or a
+   first person subject, is the writer, which is what a journal is. An
+   unclear subject is held and says it is unclear. Held here as pairs and
+   named edges, never as a count. */
+{
+ const {parseStory,scanStory,marksOf,sniffAxes,srcHear}=E;
+ const sum=o=>Object.keys(o||{}).reduce((a,k)=>a+Math.abs(o[k]),0);
+ const oth=p=>(p&&p.others)||[];
+ const writer=t=>{const p=parseStory(t);return oth(p).length===0&&(p.denied||[]).length===0&&p.hits.length===scanStory(t).length&&sum(p.bands)>0;};
+ const held=(t,who)=>{const p=parseStory(t);
+  return oth(p).length>0&&oth(p).every(h=>h.other===true&&(!who||h.who===who))&&sum(p.bands)===0&&p.imprints.length===0
+   &&sum(p.charges)===0&&p.named.length===0&&sniffAxes(p).every(r=>r.shadow===0);};
+ const say=t=>{const p=parseStory(t);return JSON.stringify(t)+': bands '+JSON.stringify(p.bands)+', others '+JSON.stringify(oth(p).map(h=>[h.t,h.who]));};
+ /* the review's pairs, each of which read the same on main */
+ [['I shouted at him.','He shouted at me.','he'],['I am furious.','He is furious.','he'],['I lied to her.','She lied to me.','she']]
+  .forEach(([me,them,who])=>{
+   ok(JSON.stringify(parseStory(me).bands)!==JSON.stringify(parseStory(them).bands),'the pair differs, '+say(me)+' against '+say(them));
+   ok(writer(me),'the writer\'s own reads as before: '+say(me));
+   ok(held(them,who),'and the other person\'s is held out of every reading and names "'+who+'": '+say(them));});
+ /* the rule's edges, by name */
+ ok(writer('He made me furious.'),'a first person between the subject and the word reads the writer: '+say('He made me furious.'));
+ ok(writer('So angry.')&&writer('Terrified.')&&writer('Angry again, all day.'),'no subject is the writer, the shape of a journal');
+ ok(writer('It was terrifying.')&&writer('We were terrified.'),'"it" and "we" are not someone else');
+ ok(writer('He left and I was devastated.')&&writer('He left me devastated.'),'the writer after a third person, by "I" or by "me", is the writer');
+ ok(held('My mother was furious.','my mother'),'a family word opening its clause is someone else: '+say('My mother was furious.'));
+ ok(writer('I called my mother and was furious.'),'and the same word after a verb is who was spoken to, not who felt it: '+say('I called my mother and was furious.'));
+ const mf=parseStory('When my mother shouted I froze.');
+ ok(oth(mf).length===1&&oth(mf)[0].t==='shouted'&&mf.hits.some(h=>h.t==='froze'),
+  'one sentence, two people: her shouting is held and my freezing is read, '+say('When my mother shouted I froze.'));
+ ok(held('Then Sarah screamed at me.','sarah'),'a name opening a clause is someone else: '+say('Then Sarah screamed at me.'));
+ ok(writer('I went to London and felt terrified.'),'and a capital after a word like "to" is a place, not a person: '+say('I went to London and felt terrified.'));
+ const ha=parseStory('Her anger scared me.');
+ ok(oth(ha).length>=1&&sum(ha.bands)===0,'her anger is hers, and "her anger scared me" has her anger as its subject: '+say('Her anger scared me.'));
+ ok(writer('I saw his face and froze.'),'a possessive after a verb is what was seen, and the freezing is mine: '+say('I saw his face and froze.'));
+ ok(held('I made her cry.','her')&&held('I saw him crying.','him'),'a word straight after her or him is hers or his: '+say('I made her cry.'));
+ ok(held('My best friend was devastated.'),'a two word family name is one person: '+say('My best friend was devastated.'));
+ /* A LOSS IS THE WRITER'S, WHOEVER IT HAPPENED TO. The first cut of the
+    reader held "My father died" as someone else's, measured over the book
+    and the fuzzy corpus; told that, a bereaved person is told the worst
+    thing this product could say. */
+ ["My father died.","He killed himself last year.","My brother took his own life.","My wife divorced me.",
+  "I've been on my own since he died.","My father died and I feel ashamed."].forEach(t=>
+  ok(writer(t),'a death or a loss is the writer\'s, whoever it happened to: '+say(t)));
+ ok(Array.isArray(E.WHO_LOSS)&&E.WHO_LOSS.length>0&&E.WHO_LOSS.every(k=>E.LEX[k]&&E.LEX[k][E.LEX_SEAT]==='heart'),
+  'every loss head is a heart key in the lexicon, so the list cannot drift from the table: '
+  +JSON.stringify((E.WHO_LOSS||[]).filter(k=>!E.LEX[k]||E.LEX[k][E.LEX_SEAT]!=='heart')));
+ /* unclear is held, and says it is unclear */
+ const yu=parseStory('You feel so alone.');
+ ok(held('You feel so alone.')&&oth(yu).every(h=>h.unclear===true),'"you" is not clearly the writer, so it is held and marked unclear: '+say('You feel so alone.'));
+ ok(writer('I told you I was scared.'),'and "I" nearer the word than "you" is the writer');
+ /* the shipped gates' own stories keep reading the writer */
+ ok(writer('I was scared to call my mother. My chest went tight and I felt ashamed that I still flinch.'),'the funnel gate\'s story reads as it did');
+ ok(writer('Still afraid when he called.')&&writer('I am afraid of what he says next.'),'and the Talk gate\'s, where "he" comes after the word');
+ /* kept, listed, marked */
+ const hs=parseStory('He shouted at me.'), hm=marksOf('He shouted at me.',hs);
+ ok(hm.length===1&&hm[0].other===true&&hm[0].whoFrom===0,'the mark is kept, flagged other, and quotes from "He": '+JSON.stringify(hm.map(m=>[m.other,m.whoFrom])));
+ reset(3,0,6); const s0=JSON.stringify(S.charge); E.applyStory('He is furious.');
+ ok(JSON.stringify(S.charge)===s0,'committing it moves no charge on the writer\'s field');
+ ok(srcHear('He is furious.').unread,'and Source AI does not hear it as the writer\'s');
+ /* a denial is a denial whoever said it, and is listed once */
+ const hn=parseStory('He was not angry.');
+ ok((hn.denied||[]).length>0&&oth(hn).length===0,'a word said with a no is denied first and is not also listed as someone else\'s');
+}
+
+g('S3 · sniffStory returns every positive saboteur candidate, and the screen decides how many it shows');
+/* REVIEW-sniffer-audit-2026-10-09.md, package S3, the audit's 13.1.10.
+   sniffStory did sniffSaboteurs(axes).slice(0,SAB_SHOW): the domain layer
+   decided what a screen shows, so a seventh candidate was not merely not
+   drawn, it was not in the output for anything to read. SAB_SHOW stays, as
+   what a renderer slices to. No count is typed here: the bound is read off
+   SAB_SHOW and the candidates off sniffSaboteurs. */
+{
+ /* on a reset field, as group 11 reads: parseStory orders a seat's addresses
+    by susceptibility, which the field sets, so a story read after another
+    group's profile is read against that profile. Measured: the first
+    sentence chosen here ranked 13 candidates on a fresh field and 2 on this
+    one, so the sentence is chosen on the field it is read on. */
+ reset(3,0,6);
+ const t='I was afraid, sad, ashamed and numb.';
+ const all=E.sniffSaboteurs(E.sniffAxes(E.parseStory(t))), r=E.sniffStory(t);
+ ok(all.length>E.SAB_SHOW,'the story carries more candidates than a screen shows, '+all.length+' against '+E.SAB_SHOW);
+ ok(r.saboteurs.length===all.length,'sniffStory returns every positive candidate, '+r.saboteurs.length+' of '+all.length);
+ ok(JSON.stringify(r.saboteurs.map(s=>s.id))===JSON.stringify(all.map(s=>s.id)),'in the ranked order sniffSaboteurs gives');
+ ok(r.saboteurs.every(s=>s.confidence>0&&s.because.length>0),'each positive, each with its because');
+ ok(typeof E.SAB_SHOW==='number'&&E.SAB_SHOW>0,'and SAB_SHOW is still there for a screen to slice to, '+E.SAB_SHOW);
 }
 
 g('SB · the saboteur card is the same 33 as SABDEF, and its opposites are read off SAB33 and CHILD');

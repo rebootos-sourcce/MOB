@@ -1136,3 +1136,46 @@ points at on a body.
 fifth rung the spec's firing order does not name: `sups`, pairs of
 hyper-complexes. The five step descent chain in section 5 is the only candidate
 for it and the correspondence is not stated. It can wait.
+
+---
+
+## UPDATE · 9 OCTOBER 2026 · THE AUDIT, CHECKED, AND THE RULINGS THE SEATS MADE
+
+The owner supplied a technical design and gap audit dated 8 October. Every claim
+was checked against `main` at `f28aa36`; the table is in
+`REVIEW-sniffer-audit-2026-10-09.md`. The short version: the audit's failure list
+is right, it matches this document's own failure table, and it adds one finding
+that was not written down anywhere.
+
+**The picture and the score disagree.** The Story page draws a negated word struck
+through ("not sad"), and `parseStory` still charges it. Round HX chose to show that
+disagreement "rather than pick a side for him". It is a defect: a word shown as set
+aside should not move the body map. The funnel quiz carries the same disagreement
+in a sentence that says the reader "counted it anyway".
+
+**Rulings made by the seats**, because the owner's standing order is that the seats
+decide and ask only when blocked. Each is the smallest safe choice and is
+reversible:
+
+- **Question 3, denial.** A denied charge is kept and shown, and never scored.
+  The reading cannot go up on a denial and is not lowered by one either.
+- **Question 4, attribution.** A clear third person subject holds the charge word
+  out of the writer's field and lists it. No subject, or a first person subject,
+  is the writer. An unclear subject is held.
+- **Question 13, inferred address.** An explicit axis is not an explicit address.
+  No renderer prints that a person said they carry an address they did not name.
+- **Question 5, tense, and the modifier table.** Not changed for alpha. A modifier
+  table exists (`so` 1.35, `slightly` 0.6) and is narrow; "a bit" and "unbearably"
+  are not in it and `sniffAxes` does not read it. That is a partial feature, not a
+  missing one, and the audit's word "missing" is corrected here.
+
+**Not ruled, and not needed for alpha.** The five rulings in "What needs his
+ruling" (E43 and the divisor, whether release stops moving coherence, which address
+owns Joy, Avoider or Innocent, Surprise's somatic address) stay open. The output
+reports `CONFLICT` for each. The four missing canon files stay missing and are
+reported in `gaps.missing`; none is recreated from memory.
+
+**Order of work.** Word pass (S0), denial (S1), attribution (S2), full candidate
+list (S3), address wording audit (S4), visible held marks (S5). Post alpha: the
+route of the aggregate result into the Mirror, the Release Engine, verification and
+the Trace graph (SB5 to SB7), then tense and intensity (SB2b), then canon (SB3).
