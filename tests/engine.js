@@ -7323,6 +7323,50 @@ g('QZ · the sniffer reads other words for the same reading, and still reads not
   'and everything is put back, '+Object.keys(LEX).length+' entries');
 }
 
+g('S0 · the word pass: swearing and a bad day read, and the two known traps stay shut');
+/* REVIEW-sniffer-audit-2026-10-09.md, package S0. The old line's word pass,
+   94d328e, ported by hand onto main with the fix its own follow up 5ce3934
+   made: "not okay" and "not ok" are refused by name in LEXSYN_NO, and
+   "fucking" as a key closes the gap the QR group above holds open. Before the
+   port "I had a rough day" and "fuck this" read nothing at all, measured on
+   main's own build. What is held here is the contract, not a count: the
+   words read, every row lands exactly as written with its source named, no
+   row is a dead letter, the two traps stay shut, and running it again adds
+   nothing. */
+{
+ const {LEX,LEXMETA,LEXSYN_NO,PHRASES,LEX_SEAT,LEX_AMT,LEX_FET,parseStory,lexKeyOk}=E;
+ const LP=E.LEXPROF||{}, RUN=E.LEXPROFRUN||null, keys=Object.keys(LP);
+ ok(keys.length>0,'the word pass carries rows, '+keys.length);
+ /* the reported defect, by the words in it */
+ ['I had a rough day.','What a shitty day.','Fuck this.','This is bullshit.','I am struggling.',
+  'I cant take it anymore.','Worst day of my life.','I am at my wits end.','It was a nightmare.']
+  .forEach(t=>{const p=parseStory(t);
+   ok(p.imprints.length>0,JSON.stringify(t)+' reads, '+JSON.stringify(p.bands));});
+ /* every row is in the table exactly as written, and says where it came from */
+ const drift=keys.filter(k=>{const e=LP[k], l=LEX[k];
+  return !l||l[LEX_SEAT]!==e[0]||l[LEX_AMT]!==e[1]||String(l[LEX_FET]||null)!==String(e[2]||null);});
+ ok(keys.length>0&&drift.length===0,'every row lands in LEX as it is written, '+drift.length+' do not: '+drift.slice(0,5).join(', '));
+ const prov=keys.filter(k=>!LEXMETA[k]||LEXMETA[k].src!=='authored'||!/LEXPROF/.test(LEXMETA[k].from||''));
+ ok(keys.length>0&&prov.length===0,'each is marked authored and names the pass that wrote it, '+prov.length+' are not: '+prov.slice(0,5).join(', '));
+ ok(!!RUN&&RUN.refused.length===0,'nothing the pass carries was refused, so no row is a dead letter: '+JSON.stringify(RUN&&RUN.refused));
+ ok(!!RUN&&RUN.already===0&&RUN.added===keys.length,
+  'and no row repeats a key the table already held, so no row says a seat or an amount the table does not, '+JSON.stringify(RUN));
+ ok(keys.every(k=>lexKeyOk(k)),'every key is a form the scanner can produce');
+ ok(keys.every(k=>!PHRASES.some(r=>r[0].indexOf(k)>=0)),'and none is already an idiom row');
+ /* the two traps, by name */
+ ok(!('not okay' in LP)&&!('not ok' in LP)&&!LEX['not okay']&&!LEX['not ok'],
+  '"not okay" and "not ok" stay out: LEXSYN_NO refuses them by name and reads only "im not okay"');
+ ok(!('fucking' in LP)&&!LEX.fucking,'"fucking" is not a key: the QR group holds the gap the stars leave, and a key there would fill it');
+ const leaked=keys.filter(k=>LEXSYN_NO[k]);
+ ok(leaked.length===0,'no row is a word refused by name, '+leaked.join(', '));
+ /* run twice, add nothing; and the stamp is taken after the pass */
+ if(typeof E.lexProf==='function'){
+  const n0=Object.keys(LEX).length, r=E.lexProf();
+  ok(r.added===0&&r.refused.length===0&&Object.keys(LEX).length===n0,'a second run adds nothing, '+JSON.stringify(r));}
+ else ok(false,'lexProf is exported, so the pass can be run again and shown to add nothing');
+ ok(keys.length>0&&E.lexVersion()===E.LEX_VERSION,'the lexicon stamp is taken after the pass, so an entry read by these words says so');
+}
+
 g('SB · the saboteur card is the same 33 as SABDEF, and its opposites are read off SAB33 and CHILD');
 /* ROUND SB. The card kbSabBlock prints is composed copy, and composed copy is
    where a fact gets invented without anybody deciding to. Three things are
