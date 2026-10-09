@@ -78,7 +78,7 @@ const STORY='I felt tight in my chest when my boss yelled at me and I could not 
    promised exactly once on a card, except repeats, pace and stop, which are
    checked when promised. */
 const CLAIMS={
- voice:[['silent',/in silence|Nothing speaks|Nothing reads it out loud/],
+ voice:[['silent',/in silence|Nothing speaks|nothing reads it out loud/i],
         ['voiced',/out loud by the app voice/]],
  timer:[['none',/nothing counts down/i],
         ['rest',/rest for (\d+) minutes?, and a ring counts them down/]],
@@ -218,6 +218,14 @@ for(const [W,H] of [[1600,1000],[390,844]]){
   /* the live card is the one in the slot; a leaving ghost may sit beside it */
   const card=await page.evaluate(()=>(document.querySelector('#ob .obx-slot .ob-card')||{}).innerText||'');
   ok(/Begin the release/.test(card),tag+'the bridge offers the first release');
+  /* A PROMISE BELOW THE FOLD IS A BUTTON NOBODY PRESSES. The first cut of
+     the fixed card said one sentence more than the one it replaced, and at
+     390 by 844 that moved Begin the release from 834 to 860 on the three
+     place card. Read once the card has finished arriving. */
+  await page.waitForTimeout(1500);
+  const begin=await page.evaluate(()=>{const b=document.querySelector('#ob .obx-slot [data-ob="release"]');
+   if(!b)return null; const q=b.getBoundingClientRect(); return {bottom:Math.round(q.bottom),ih:innerHeight};});
+  ok(begin&&begin.bottom<=begin.ih,tag+'Begin the release sits inside the screen: '+JSON.stringify(begin));
   const r=await runFrom(page,'[data-ob="release"]');
   hold(tag,card,r,c);
   ok(errs.length===0,tag+'no page error: '+errs.slice(0,3).join(' | '));

@@ -69,7 +69,9 @@ function relPole(side){
    THE WELCOME is his recorded voice and nothing else. The recording
    is not in this build (DESIGN-release.md section 2, the audio
    ruling, is still his), so the welcome is read on the screen in
-   silence and the card says so in plain words. The synthetic voice never says a
+   silence, and with the voice on the screen says the voice starts
+   with the list. It names no recording to come, because a person
+   was told about one this build does not carry (M28). The synthetic voice never says a
    word of it, voice switch on or off, because a stand in for a
    person is the thing he just ruled out. When the recording lands it
    plays in this phase, and the lines below stay as what the screen
@@ -287,7 +289,8 @@ var RUN={open:false,id:null,first:false,queue:[],plan:[],sec:0,idx:0,phase:'idle
          t0:0,tEnd:0,pauseAt:0,pausedMs:0,tick:null,
          tally:null,hits:null,settleAt:0,settled:false,
          heavy:{},look:false,rerun:false,pick:[],studioLost:false,
-         ask:false,said:null,skip:false,storyT:null,grp:'story',gfocus:0,books:{}};
+         ask:false,said:null,skip:false,storyT:null,grp:'story',gfocus:0,books:{},
+         mini:false,doseHeld:null};
 /* THE RUN IS A PLAN OF THOUGHT LINES, ruled. One pattern is one thought line
    and the line targets the address by way of the channel, so a run is a list
    of address, channel and line, capped at RUN_MAX. It is built when the run is
@@ -376,11 +379,25 @@ function relNow(){
  return relAt(RUN.phase==='run'?RUN.idx:0)||{n:RUN.queue[0],ch:CHAN[0],line:0};}
 function relOpp(n){
  return (n&&(CHILD.filter(function(c){return c.nm===n.cf;})[0]||{}).opp)||'';}
-/* from, optional: { story_t }, the t of the story entry this run was planned
-   from, so the answer to What changed can name it. Only a door that planned
-   the run off an entry it just committed passes one; any other run has no
-   story behind it and its answer carries none. */
+/* from, optional: { story_t, mini }. story_t is the t of the story entry this
+   run was planned from, so the answer to What changed can name it. Only a door
+   that planned the run off an entry it just committed passes one; any other
+   run has no story behind it and its answer carries none.
+
+   mini says the run is the mini release a card has just promised, the one
+   onbMiniPlan planned for the onboarding bridge and the Day One tutorial.
+   Neither door said so before, so this opened their twelve lines at the dose
+   a person last picked, a hundred by default, and the screen after "Your
+   first release is 4 lines" said four hundred over 28 minutes (M28). A mini
+   run is said ONB_MINI_DOSE times a line, which is the ruled twelve lines
+   (engine/data/onboarding.js). The dose the person had is held and given back
+   to the next run that is not a mini one, because RUN.dose outlives a run and
+   a first release must not leave every later release at one line a block. */
 function relPick(nodeIds,from){
+ var mini=!!(from&&from.mini)&&typeof ONB_MINI_DOSE==='number';
+ if(mini&&!RUN.mini)RUN.doseHeld=RUN.dose;
+ if(!mini&&RUN.mini&&RUN.doseHeld!=null){RUN.dose=RUN.doseHeld; RUN.doseHeld=null;}
+ RUN.mini=mini; if(mini)RUN.dose=ONB_MINI_DOSE;
  RUN.id=relRunId();
  RUN.first=!!(CURP&&CURP.meter&&!(Number(CURP.meter.relLines)>0));
  relHush();
@@ -1440,12 +1457,17 @@ function relVoiceRow(){
    the same privacy line the voice row carries, cut to its facts: who says the
    words and what they are given. ElevenLabs is a company name, so the note
    says what it is in the same place (round PO). The Atüned server passes the
-   line on and keeps a count of characters, never the line. */
+   line on and keeps a count of characters, never the line.
+
+   IT SAID "AND NOTHING ABOUT YOU", and that was false. A line is a pattern
+   the person's own story put in this run, "that I am completely alone and
+   nothing is holding me", sent to ElevenLabs whole, so the note now says what
+   a line carries instead of denying it. */
 function relStudioRow(){
  if(!relVoiceOn()||typeof studioCan!=='function'||!studioCan()||typeof accTog!=='function')return '';
  if(typeof authSession!=='function'||!authSession())return '';
  return accTog('Studio voice','relstudio',!!(CURP&&CURP.ui&&CURP.ui.studio===true),
-  'ElevenLabs, a voice company, over the network. It gets each line and nothing about you.');}
+  'ElevenLabs, a voice company, over the network. It gets each line, and each line names one of your patterns.');}
 function relBuzzRow(){
  if(typeof buzzCan!=='function'||!buzzCan()||typeof accTog!=='function')return '';
  return accTog('Vibration','relbuzz',relBuzzOn(),'');}
@@ -2500,10 +2522,20 @@ function relClip(s,max){
  s=String(s||'').replace(/\s+/g,' ').trim(); if(s.length<=max)return s;
  var c=s.slice(0,max), sp=c.lastIndexOf(' ');
  return (sp>max*0.6?c.slice(0,sp):c).replace(/[\s,;:.]+$/,'')+'…';}
+/* WHETHER THIS SCREEN IS THE MINI RELEASE A CARD PROMISED. A rerun pressed on
+   it is a different run with its own plan, so it is not. */
+function relMiniNow(){return !!RUN.mini&&!RUN.rerun;}
+/* THE MINI RELEASE IS COUNTED IN THE CARD'S UNIT. A pattern here is one
+   release line said, his "25 left and right", so the reframe half is left
+   out and a hundred passes at one address read "200 patterns". The card one
+   screen before counts lines, both halves, said once, and printed "4 lines"
+   above a screen that printed 200 (M28). On the mini release every line of
+   the plan is counted and called a line, so the two screens say one number in
+   one word; every other release keeps his patterns. */
 function relGroups(mode){
- var per={}, dose=RUN.dose||0, G=[], by={};
+ var per={}, dose=RUN.dose||0, G=[], by={}, all=relMiniNow();
  (RUN.plan||[]).forEach(function(k){var b=String(k).split(':');
-  if(!/truth$/.test(b[1]||''))per[b[0]]=(per[b[0]]||0)+dose;});
+  if(all||!/truth$/.test(b[1]||''))per[b[0]]=(per[b[0]]||0)+dose;});
  (RUN.queue||[]).forEach(function(n){
   var key, g;
   if(mode==='seat')key='s:'+n.b;
@@ -2530,7 +2562,8 @@ function relGroupHtml(g,k){
   +(s?'<span class="rel-gi-s">'+s+'</span>':'')
   +'<span class="rel-gi-a">'+g.ns.map(function(n){
     return '<span style="color:'+seatCol(n.b)+'">'+esc(n.k)+'</span>';}).join('<i aria-hidden="true">·</i>')+'</span>'
-  +'<span class="rel-gi-c">'+(g.pats?'<b>'+g.pats+'</b>'+(g.pats===1?'pattern':'patterns'):'Not in this run')+'</span>'
+  +'<span class="rel-gi-c">'+(g.pats?'<b>'+g.pats+'</b>'+(relMiniNow()?(g.pats===1?'line':'lines')
+   :(g.pats===1?'pattern':'patterns')):'Not in this run')+'</span>'
   +'</button>';}
 function relSetupCar(){
  var mode=RUN.grp==='seat'?'seat':'story', G=relGroups(mode);
@@ -2544,7 +2577,9 @@ function relSetupCar(){
    +'<button type="button" id="relgdn" aria-label="Forward">'+relIc('down')+'</button></span>'
    +'<span class="rel-gat" id="relgat" aria-live="polite"></span></div>':'')
   +'<div class="rel-gsum"><b>'+q.length+'</b>'+(q.length===1?' address, ':' addresses, ')
-  +'<b>'+pats+'</b>'+(pats===1?' pattern':' patterns')+'. Each pattern is one line, said once.</div>';}
+  +'<b>'+pats+'</b>'+(relMiniNow()
+   ?(pats===1?' line':' lines')+'. Each line is said '+(RUN.dose===1?'once':RUN.dose+' times')+'.'
+   :(pats===1?' pattern':' patterns')+'. Each pattern is one line, said once.')+'</div>';}
 /* which group sits on the centre, the gradient on it, and the count under it */
 function relGcSync(G){
  var R=[].slice.call(G.querySelectorAll('.rel-gi')); if(!R.length)return;
@@ -2990,17 +3025,21 @@ function relRender(){
      carry that class, on purpose: .rel-speak and .rel-line mean "the line the
      voice is saying", tests/design.js holds every one of them to what the
      voice actually said, and this line is never said by the synthesiser. The
-     note says so on its first line, and says the voice starts at the list only
-     while the voice is on, because with it off that sentence is not true. */
+     note says the voice starts at the list, and only while the voice is on,
+     because with it off that sentence is not true. */
   var wl=relWelcome();
   out=relShell({ph:'welcome',col:col0,foot:openFoot,
    body:'<div class="rel-stage"><div class="pm-eye" aria-live="polite">Release, opening</div>'
     +'<div class="rel-human">'+esc(st.text)+'</div>'
     +'<div class="rel-dots">'+wl.map(function(_,i){return '<i class="'+(i<=RUN.line?'on':'')+'"></i>';}).join('')+'</div>'
-    /* plain words, the JK ruling of the same day: "we want to speak to people
-       as if they're 10". "Not in this build" was the engineering word for it. */
-    +(RUN.line===0?'<div class="rel-sub">His recorded voice reads this part. Until it is recorded, '
-      +'read it to yourself.'+(relVoiceOn()?' The app voice starts with the list.':'')+'</div>':'')
+    /* THE STAND IN IS GONE, M28. The note opened "His recorded voice reads
+       this part. Until it is recorded, read it to yourself.", which told a
+       person on their first release about a recording this build does not
+       carry, and it showed with the voice off too. It was the first thing
+       Angela read after a card that promised silence. What is left is the one
+       sentence that is true of this build: with the voice on, nothing speaks
+       until the list, and the voice starts there. */
+    +(RUN.line===0&&relVoiceOn()?'<div class="rel-sub">The app voice starts with the list.</div>':'')
     +relClock()+'</div>'+relSws(relNow().n)});
  } else if(RUN.phase==='opening'){
   /* "Release and reframe" was the old name for the mechanic, two words where
@@ -3154,16 +3193,22 @@ function relRender(){
   /* HOW MANY PATTERNS, RUN SPEED AND TIME, round LY: "dials that say time, run
      speed... number of patterns". Time is the length this exact plan will
      run, read off relSecFrom, the same clock the run shows once it starts. */
+  /* NO DOSE ON THE MINI RELEASE. The ruled size is twelve lines said once, and
+     the card before it says each line is said once, so a field offering a
+     hundred is a control that turns the promised run into another one; the
+     Patterns field here was how "4 lines" became four hundred (M28). The pace
+     and the time stay, because the card says the person sets the pace. A
+     release after this one opens with the dose back. */
   else body+='<div class="rel-fields">'
     +'<label class="rel-field"><span>Run speed</span><input type="number" id="relpace" min="0.5" max="2" step="0.1" value="'
      +RUN.pace+'"></label>'
-    +'<label class="rel-field"><span>Patterns</span><input type="number" id="reldose" min="1" max="'
-     +REL_DOSES[REL_DOSES.length-1]+'" step="1" value="'+RUN.dose+'"></label>'
+    +(relMiniNow()?'':'<label class="rel-field"><span>Patterns</span><input type="number" id="reldose" min="1" max="'
+     +REL_DOSES[REL_DOSES.length-1]+'" step="1" value="'+RUN.dose+'"></label>')
     +'<div class="rel-field"><span>Time</span><b class="rel-time">'+relMMSS(relSecFrom(null))+'</b></div>'
     /* his three, as quick picks on the same number */
-    +'<div class="rel-field"><span>Left and right</span><div class="seg" role="group" aria-label="Patterns, left and right">'
+    +(relMiniNow()?'':'<div class="rel-field"><span>Left and right</span><div class="seg" role="group" aria-label="Patterns, left and right">'
      +REL_DOSES.map(function(d){return '<button type="button" data-reldose="'+d+'" aria-pressed="'
-      +(RUN.dose===d)+'">'+d+'</button>';}).join('')+'</div></div>'
+      +(RUN.dose===d)+'">'+d+'</button>';}).join('')+'</div></div>')
     +'</div>';
   /* and no switch for a run that cannot begin */
   if(!spent)body+=relSws(null);
