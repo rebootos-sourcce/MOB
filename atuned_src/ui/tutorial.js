@@ -247,12 +247,23 @@ function tutRender(){
     +'<div class="ob-grid">'
     +[['Situation', c.text.length>60?c.text.slice(0,60)+'…':c.text],
       ['Story', im0?im0.fetter:'not named'],
-      ['Body response', kept[0]?kept[0].b:'not named'],
-      ['What it costs', off?off.because[0]:'not enough here yet to say']]
+      /* ONE WORD, THE PRODUCT'S OWN, WITH ITS MEANING ON IT. These read
+         "Body response" and "What it costs", and the voice gate failed both
+         as a figure's label of more than one word. The row prints a seat, and
+         seat is the name every other surface uses; "Body response" was a
+         second name for it. The last row prints how much charge one axis
+         carries and where, which is charge, and both words already have
+         their sentence in engine/data/gloss.js, so the meaning rides on the
+         label as the one tooltip and no new sentence is written. The carrier
+         is the b itself: a span inside it would take the value's ink from
+         .obx .ob-g span. */
+      ['Seat', kept[0]?kept[0].b:'not named'],
+      ['Charge', off?off.because[0]:'not enough here yet to say']]
      /* the body's row wears its seat's colour, the seat lit on the figure
         beside it (round QJ): the same place, said twice in one picture */
      .map(function(x,j){var sb=(j===2&&kept[0]&&BANDS.indexOf(kept[0].b)>=0)?kept[0].b:null;
-       return '<div class="ob-g'+(sb?' ob-g-seat" style="--c:'+seatCol(sb):'')+'"><b>'+esc(x[0])+'</b>'
+       var tip=unpAttr(x[0].toLowerCase(),null,x[0]);
+       return '<div class="ob-g'+(sb?' ob-g-seat" style="--c:'+seatCol(sb):'')+'"><b'+(tip?' class="tipu"'+tip:'')+'>'+esc(x[0])+'</b>'
        +'<span>'+esc(x[1])+'</span></div>';}).join('')
     +'</div>'
     +'<p class="ob-p ob-dim">This is not just this one moment. Something runs '
