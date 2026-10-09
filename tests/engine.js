@@ -7367,6 +7367,76 @@ g('S0 · the word pass: swearing and a bad day read, and the two known traps sta
  ok(keys.length>0&&E.lexVersion()===E.LEX_VERSION,'the lexicon stamp is taken after the pass, so an entry read by these words says so');
 }
 
+g('S1 · a word said with a no is kept, named as denied, and adds nothing to any reading');
+/* REVIEW-sniffer-audit-2026-10-09.md, ruling 1 and package S1. Measured on
+   main before this: "I was not angry" read Anger 18 at the solar plexus, the
+   same as "I was angry", while the Story page drew the same word struck
+   through. The picture said set aside and the score counted it. A denied
+   word is now kept on the parse, flagged on its hit and listed in denied,
+   and it reaches no band, charge, weight, named fetter, imprint or axis.
+   Source AI, the Story page and the quiz read that flag; none of them works
+   negation out again. What is held is the contract and the named frames,
+   never a count. */
+{
+ const {parseStory,scanStory,marksOf,sniffAxes,sniffStory,srcHear,normMap}=E;
+ const sum=o=>Object.keys(o||{}).reduce((a,k)=>a+Math.abs(o[k]),0);
+ const den=p=>(p&&p.denied)||[];
+ const PAIRS=[['I was angry.','I was not angry.','angry','not'],
+  ['I am sad.','I am not sad.','sad','not'],
+  ['I am ashamed.','I am no longer ashamed.','ashamed','no']];
+ PAIRS.forEach(([yes,no,w,neg])=>{
+  const a=parseStory(yes), b=parseStory(no);
+  ok(JSON.stringify(a.bands)!==JSON.stringify(b.bands),
+   JSON.stringify(yes)+' and '+JSON.stringify(no)+' read differently, '+JSON.stringify(a.bands)+' against '+JSON.stringify(b.bands));
+  ok(sum(b.bands)===0&&b.imprints.length===0&&sum(b.charges)===0&&sum(b.weights)===0&&b.named.length===0,
+   'the denial adds nothing to bands, charges, weights, named or imprints: '+JSON.stringify({bands:b.bands,charges:b.charges,imps:b.imprints.length}));
+  ok(den(b).length>0&&den(b).every(h=>h.neg===true&&h.t===w&&h.negw===neg),
+   'and it is kept, flagged denied, naming its word and the "'+neg+'" that denied it: '+JSON.stringify(den(b).map(h=>[h.t,h.neg,h.negw])));
+  ok(!b.hits.some(h=>h.neg),'no denied hit is among the counted hits');
+  ok(sniffAxes(b).every(r=>r.shadow===0)&&sniffStory(no).offer.length===0,'no axis carries it and nothing is offered for release');
+  reset(3,0,6); const s0=JSON.stringify(S.charge); E.applyStory(no);
+  ok(JSON.stringify(S.charge)===s0,'committing it moves no charge on the field');
+  reset(3,0,6); E.applyStory(yes);
+  ok(JSON.stringify(S.charge)!==s0,'and committing the plain sentence still does');
+  const m=marksOf(no,b);
+  ok(m.length===1&&m[0].neg===true&&m[0].negFrom!=null&&no.slice(m[0].negFrom,m[0].e).indexOf(neg+' ')===0
+   &&no.slice(m[0].negFrom,m[0].e).slice(-w.length)===w,
+   'the mark is drawn struck, from the "'+neg+'" to the word, on the letters typed: '+(m[0]?JSON.stringify(no.slice(m[0].negFrom==null?m[0].s:m[0].negFrom,m[0].e)):'none'));
+ });
+ /* a full stop ends a no. clauseFloor's ruling, unchanged */
+ const fl=parseStory('I am not afraid. Afraid now.');
+ ok(JSON.stringify(fl.bands)===JSON.stringify(parseStory('Afraid now.').bands)&&den(fl).filter(h=>h.kind==='word').length===1,
+  'the first sentence denies its own afraid, and the second keeps its charge: '+JSON.stringify(fl.bands));
+ /* THE FRAMES THAT CARRY A NO AND ARE NOT A DENIAL, each by name. A word
+    that already holds its no inside it ("cant sleep", "im not okay") keeps
+    that no to itself, so the word after it is not denied by it. */
+ const NOTDEN=["I can't stop crying.","I couldn't stop shaking.","I never stopped worrying.","It never stops hurting.",
+  "I couldn't help crying.","I couldn't help but cry.","I can't sleep, terrified.","I'm not okay, terrified."];
+ NOTDEN.forEach(t=>{const p=parseStory(t);
+  ok(den(p).length===0&&p.hits.length===scanStory(t).length&&sum(p.bands)>0,
+   JSON.stringify(t)+' is not a denial: every hit counts, '+JSON.stringify(p.bands)+(den(p).length?', but denied '+den(p).map(h=>h.t).join(','):''));});
+ ok(Array.isArray(E.NEG_NOT_DENY)&&E.NEG_NOT_DENY.length>0&&E.NEG_NOT_DENY.every(w=>NOTDEN.some(t=>new RegExp("(n't|not|never|cannot) "+w+'\\b','i').test(t))),
+  'every frame word is named in one table and each has a sentence above: '+JSON.stringify(E.NEG_NOT_DENY));
+ /* A COHERENT WORD IS NEVER DENIED, and the reason is the ruling's own: a
+    denial never raises a reading, and denying a word that subtracts would. */
+ const coh=parseStory('I am not grateful.');
+ ok(den(coh).length===0&&coh.hits.some(h=>h.band==='coherent'),'a coherent word after a no still subtracts, the reading it had');
+ /* the sentence, the chart, the list and the score read one flag */
+ PAIRS.map(x=>[x[1],true]).concat([['I am not afraid. Afraid now.',true],['I was not scared but I was angry.',true],
+  ["I can't stop crying.",false],['Not sad, not angry, just tired of it.',true]]).forEach(([t,struck])=>{
+  const p=parseStory(t), m=marksOf(t,p), nm=normMap(t), at={};
+  den(p).forEach(h=>{at[nm.map[h.at+1]]=1;});
+  const bad=m.filter(k=>!k.coh&&(!!k.neg!==!!at[k.s]));
+  ok(bad.length===0&&m.some(k=>k.neg)===struck&&(den(p).length>0)===struck,
+   'every struck mark is a denied hit and every denied hit is struck, in '+JSON.stringify(t)
+   +(bad.length?': '+JSON.stringify(bad.map(k=>t.slice(k.s,k.e))):'')+(m.some(k=>k.neg)!==struck?', struck should be '+struck:''));});
+ /* Source AI hears what the score counts, from the same flag */
+ ok(srcHear('I was not angry.').unread,'Source AI does not hear a denied word');
+ const cry=srcHear("I can't stop crying.");
+ ok(!cry.unread&&cry.seats.some(s=>s.seat==='heart'&&s.mentions===1&&s.negated===0),
+  'and hears the crying in "I can\'t stop crying", which it used to drop as negated: '+JSON.stringify(cry.seats.map(s=>[s.seat,s.mentions,s.negated])));
+}
+
 g('SB · the saboteur card is the same 33 as SABDEF, and its opposites are read off SAB33 and CHILD');
 /* ROUND SB. The card kbSabBlock prints is composed copy, and composed copy is
    where a fact gets invented without anybody deciding to. Three things are
