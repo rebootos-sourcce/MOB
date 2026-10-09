@@ -3,7 +3,7 @@
    THE FIRST WRITES TELL THE TRUTH. P1-H, block G1 of pass 4.
 
    mkdir -p /tmp/atuned-p1h && flock -o -w 600 -E 75 /tmp/atuned-browser.lock \
-     env NODE_PATH=/opt/node22/lib/node_modules PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers \
+     env NODE_PATH=/opt/node22/lib/node_modules PLAYWRIGHT_BROWSERS_PATH=$PW_DIR \
      TMPDIR=/tmp/atuned-p1h node tests/honest.js
    ATUNED_FILE=file    runs against another build, for checking the checker
    W=390 H=844         the phone
