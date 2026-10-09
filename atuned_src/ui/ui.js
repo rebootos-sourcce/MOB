@@ -277,7 +277,9 @@ function setZoom(z,ax,ay){
  layGesture();
  S.zoom=nz; reframe();
  S.panx += ax-(CX+wx*U); S.pany += ay-(CY+wy*U);
- reframe(); render();}
+ reframe(); render();
+ /* the room under the Field follows the zoom, ui/sound.js */
+ if(typeof atmZoom==='function')atmZoom(nz,WHEEL_ZOOM_MAX);}
 /* paintLegend is gone with the legend it wrote. Ruled 25 September (BA9), and
    the reason is at wheelLegend's old place in wheel.js. */
 cv.addEventListener('wheel',function(e){
@@ -314,8 +316,11 @@ cv.addEventListener('pointerup',function(e){
  cv.style.cursor='';
  if(TAP){var tp=TAP; TAP=null; if(tp.id===e.pointerId)hitPress(tp.h,tp.e); return;}
  if(PAN){var wasCore=PAN.core, moved=PAN.moved, px0=PAN.x, py0=PAN.y; PAN=null;
-  /* a press on the core that never moved is still a click on the core */
-  if(!moved&&wasCore){S.pin=null;runCoreDrill();render();}
+  /* a press on the core that never moved is still a click on the core. A
+     mouse or a pen already sounded it at the press, through hitPress; a
+     finger never reaches hitPress for the core, so a finger's tap on it was
+     the one silent press on the Field, and it sounds here */
+  if(!moved&&wasCore){if(e.pointerType==='touch'&&typeof sfx==='function')sfx('field');S.pin=null;runCoreDrill();render();}
   /* A FINGER TOUCHES A WIRE BY TAPPING IT, because a finger has no hover and
      the spark is otherwise an arrival of the pointer. A tap on bare canvas
      that lands on a thread sparks; a mouse already sparked on the way in. A
@@ -324,12 +329,18 @@ cv.addEventListener('pointerup',function(e){
   else if(!moved&&e.pointerType!=='mouse'&&wireOn(px0,py0)&&typeof sfx==='function')sfx('spark');
   if(moved){var Lm=loc(e);WIRE_AT=wireOn(Lm[0],Lm[1]);}
   return;}
- if(DRAG&&!DRAG.moved&&DRAG.node){var n=DRAG.node;DRAG=null;S.pin=null;runNodeDrill(n);render();return;}
+ /* A MOUSE PRESS ON AN ADDRESS THAT NEVER MOVED IS A TAP, and it sounds like
+    one. It arms the drag at the press and opens the drill here, so it never
+    reaches hitPress, and the Field press was silent on the one mark a person
+    presses most. A drag that moved is setting a value, not pressing, and
+    stays silent. */
+ if(DRAG&&!DRAG.moved&&DRAG.node){var n=DRAG.node;DRAG=null;if(typeof sfx==='function')sfx('field');S.pin=null;runNodeDrill(n);render();return;}
  DRAG=null;});
 cv.addEventListener('pointercancel',function(){PAN=null;DRAG=null;TAP=null;cv.style.cursor='';});
 /* double click puts the frame back, the same thing F does, because a person
    who has panned into a corner should not have to find a keyboard. */
-cv.addEventListener('dblclick',function(){S.zoom=1;S.panx=0;S.pany=0;reframe();render();});
+cv.addEventListener('dblclick',function(){S.zoom=1;S.panx=0;S.pany=0;reframe();render();
+ if(typeof atmZoom==='function')atmZoom(1,WHEEL_ZOOM_MAX);});
 cv.addEventListener('pointermove',function(e){
  /* two fingers down is the pinch's, and fieldPinch moves the frame */
  if(fieldFingers()>1)return;
