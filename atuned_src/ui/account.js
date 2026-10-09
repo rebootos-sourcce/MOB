@@ -389,7 +389,7 @@ function accDisplay(){
  h+=accGroup('Sound',
    (typeof bedCan==='function'&&bedCan())
     ? accTog('Sound effects','acsfx',sfxIsOn(),
-       'a short sound on a tab or a Field press, when something is kept, done or refused, when a release starts and ends, and when a timer ends. A crackle when the pointer meets a line on the Field, or on the Body zoomed in')
+       'a soft click when you press something and a faint tick when the mouse reaches a button. A tone when an overlay goes on or off, and a breath of air when a panel opens or shuts. A low hum while you zoom into the Field, louder the closer you go. A short sound when something is kept, done or refused, when a release starts and ends, and when a timer ends. A crackle when the pointer meets a line on the Field, or on the Body zoomed in')
     : accStub('Sound effects','this browser has no audio'),
    'Quiet turns them off too. A release has its own sound switches.');
  return h;}

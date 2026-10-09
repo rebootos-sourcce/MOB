@@ -1,8 +1,10 @@
 /* ============================================================
-   THE SEAT TONE, THE FOUR MARKS, THE FITTINGS AND THE VOICE. The
-   only file in the product that touches AudioContext or
-   speechSynthesis. The fittings are the interface's own sounds,
-   played through sfx(name) and off until a person turns them on.
+   THE SEAT TONE, THE FOUR MARKS, THE FITTINGS, THE ATMOSPHERE AND
+   THE VOICE. The only file in the product that touches AudioContext
+   or speechSynthesis. The fittings are the interface's own sounds
+   for its events, played through sfx(name). The atmosphere is the
+   soft layer under nearly every press, and the room under a zoom.
+   Both are on until a person turns them off, with one switch.
 
    hostfree.py names AudioContext and fails the build if engine/
    reaches for it, which is correct and must stay: a sound card is
@@ -359,13 +361,22 @@ function buzz(pat){
    started 4. So three moments are added and each is one sound for one press:
    tap on a tab, field on the Field's canvas, begin on Run release. A
    release ending is the existing done, played inside the room where it was
-   held off. What stays out is the rest: no hover, no slider, no sheet, no
-   tip, and no sound for the release wall, "Nothing left to open", which is a
-   state a person reads and not a press that was refused.
+   held off. And no sound for the release wall, "Nothing left to open", which
+   is a state a person reads and not a press that was refused.
 
-   ONE HOVER IS NOW IN, by name, and only one: the pointer arriving on a
-   tension line, the spark row below, which the owner asked for. It is an
-   arrival and not a hover held, so a pointer resting on a line is silent.
+   THE REST OF THE PRESSES ARE THE ATMOSPHERE'S NOW, below. This paragraph
+   used to say no hover, no sheet and no other press, and round OU and round
+   OV ruled that reading out, in his words: "I want everything to have a very
+   subtle atmospheric sound. Overlays, clicks, if I click on the field, if I
+   zoom in, this field sounds a little bit louder," and "Yeah, hover should
+   make sound." The fittings stay the events and keep their rows. The
+   atmosphere is their surroundings, a quieter family with a table of its
+   own, so this table does not grow past its bound to carry it.
+
+   ONE HOVER IS A FITTING, by name: the pointer arriving on a tension line,
+   the spark row below, which the owner asked for. It is an arrival and not a
+   hover held, so a pointer resting on a line is silent. Every other hover is
+   the atmosphere's tick.
 
    THE RELEASE'S ROOM, which this paragraph used to hold shut. A release is
    still its own room with its own switches and its own four marks, and a
@@ -467,8 +478,16 @@ var SFX=[
     longer, a body on G4 gliding up a whole tone over 50 ms, because a press
     on the field is arriving at a point on it, and up is arriving. The one
     place the owner asked for the sound to carry a little more: "if I click on
-    the field, if I zoom in, this field sounds a little bit louder." */
- {k:'field', at:'a press on the Field', max:220, ceil:0.13, gap:140,
+    the field, if I zoom in, this field sounds a little bit louder."
+
+    SO IT COMES UP WITH THE ZOOM. lift is the most it rises, in decibels, at
+    the Field's deepest zoom, and it rises with the zoom's own logarithm, so
+    each notch of the wheel adds the same step: 0 at 1x, 3 dB all the way in.
+    Three decibels is the smallest step most ears hear as louder and not as
+    the same. The ceiling is set for the press at full lift, and the gate
+    renders it there. The room under the zoom, in the atmosphere below, is
+    the other half of the same sentence. */
+ {k:'field', at:'a press on the Field', max:220, ceil:0.15, gap:140, lift:3,
   parts:[{w:'noise',bp:1900,q:1.2,at:0,a:1,r:12,pk:0.025},
    {w:'sine',f:392,f1:440,gl:50,p2:2,g2:0.08,at:2,a:6,r:150,pk:0.1,lp:1800}]},
  /* BEGIN. A release starting. The Run release press, and the only fitting
@@ -534,19 +553,29 @@ function sfxNoise(ac){
  for(var i=0;i<n;i++){ s=(Math.imul(s,1664525)+1013904223)>>>0; d[i]=s/2147483648-1; }
  ac.__sfxN=b; return b;}
 /* RENDER ONE ROW onto any context, live or offline. This is the only code that
-   builds a fitting, so what the gate measures offline is what plays. Returns
-   the time the last part ends. */
-function sfxRender(ac,out,x,t0){
- var end=t0;
+   builds a fitting, and the atmosphere's rows too, so what the gate measures
+   offline is what plays. gain, when it is given, scales every part's peak,
+   which is how the Field press comes up with the zoom without a second row.
+   Returns the time the last part ends. */
+function sfxRender(ac,out,x,t0,gain){
+ var end=t0, k=(gain>0)?gain:1;
  x.parts.forEach(function(p){
-  var t=t0+(p.at||0)/1000, ta=t+p.a/1000, th=ta+(p.h||0)/1000, te=th+p.r/1000;
-  var g=ac.createGain(), f=ac.createBiquadFilter(), src=[];
+  var t=t0+(p.at||0)/1000, ta=t+p.a/1000, th=ta+(p.h||0)/1000, te=th+p.r/1000, pk=p.pk*k;
+  var g=ac.createGain(), f=ac.createBiquadFilter(), src=[], tail=f;
   g.gain.setValueAtTime(0,t);
-  g.gain.linearRampToValueAtTime(p.pk,ta);
-  if(p.h)g.gain.setValueAtTime(p.pk,th);
+  g.gain.linearRampToValueAtTime(pk,ta);
+  if(p.h)g.gain.setValueAtTime(pk,th);
   g.gain.setTargetAtTime(0,th,p.r/5000);
   g.gain.setValueAtTime(0,te);
-  if(p.bp){ f.type='bandpass'; f.frequency.value=p.bp; f.Q.value=p.q||1; }
+  /* bp1 sweeps the band to a second centre over the part, which is how an air
+     swell leans one way: up on opening and down on closing. A band's skirts
+     reach a long way up on noise, so a part that carries both a band and a
+     lowpass runs the lowpass behind the band. No fitting carries both, so the
+     fittings render exactly as they did. */
+  if(p.bp){ f.type='bandpass'; f.frequency.setValueAtTime(p.bp,t);
+   if(p.bp1)f.frequency.exponentialRampToValueAtTime(p.bp1,te);
+   f.Q.value=p.q||1;
+   if(p.lp){ tail=ac.createBiquadFilter(); tail.type='lowpass'; tail.frequency.value=p.lp; tail.Q.value=0.7; f.connect(tail); }}
   else { f.type='lowpass'; f.frequency.value=p.lp||2400; f.Q.value=0.7; }
   if(p.w==='noise'){ var nb=ac.createBufferSource(); nb.buffer=sfxNoise(ac); nb.connect(g); src.push(nb); }
   else {
@@ -557,7 +586,7 @@ function sfxRender(ac,out,x,t0){
     o2.frequency.setValueAtTime(p.f*p.p2,t);
     if(p.f1)o2.frequency.exponentialRampToValueAtTime(p.f1*p.p2,t+(p.gl||0)/1000);
     g2.gain.value=p.g2||0.1; o2.connect(g2); g2.connect(g); src.push(o2); }}
-  g.connect(f); f.connect(out);
+  g.connect(f); tail.connect(out);
   src.forEach(function(s){ s.start(t); s.stop(te+0.02); });
   if(te>end)end=te;});
  return end;}
@@ -573,7 +602,7 @@ function sfxRender(ac,out,x,t0){
    could never see the case it exists for: the first cut of tests/sound.js
    found sound on load, from a page nobody had touched, for exactly that
    reason. The product's own flag is set only by a real event. */
-var SFX_PRESSED=false, SFX_DEAF=false, SFX_NAP=null, SFX_TOLD={}, SFX_LAST={}, SFX_RECENT=[], SFX_PLAYED=0;
+var SFX_PRESSED=false, SFX_DEAF=false, SFX_NAP=null, SFX_TOLD={}, SFX_LAST={}, SFX_RECENT=[], SFX_PLAYED=0, SFX_AT=0;
 function sfxGestured(){ return SFX_PRESSED; }
 /* INSIDE A RELEASE. Read off RUN rather than off the panel being open, because
    a panel left open at its setup is not a run. 'pick' is the one phase a run
@@ -684,11 +713,15 @@ function sfxOnPress(e){
   var t=e.target&&e.target.tagName;
   if(!(e.key==='Enter'||(e.key===' '&&t!=='INPUT'&&t!=='TEXTAREA')))return;}
  var w=sfxWhy();
+ /* a person who has just switched sound off, or entered a release, is not
+    left with the room under a zoom still sounding under them */
+ if(w&&typeof ATM_AMB!=='undefined'&&ATM_AMB)atmAmbKill();
  if(w==='off'||w==='quiet'||w==='no audio')return;
  /* opened here, inside the press, so the timer's end, which has no press in
     front of it, finds the audio already open on a browser that only allows
     it inside one */
  if((w===''||w==='release')&&sfxCtx())sfxNapLater(20000);
+ if(typeof atmWatch==='function')atmWatch();
  sfxMarksTake();}
 /* SAFARI WAKES A CONTEXT ON A CLICK OR A TOUCH END AND NOT ON A POINTER DOWN.
    WebKit counts the end of a press as the gesture that may start audio, so a
@@ -716,8 +749,12 @@ function sfx(name,room){
  if(SFX_RECENT.length>=SFX_BURST)return false;
  var ac=sfxCtx(); if(!ac)return false;
  try{
-  var end=sfxRender(ac,ac.destination,x,ac.currentTime+0.005);
-  SFX_LAST[x.k]=now; SFX_RECENT.push(now); SFX_PLAYED++;
+  var end=sfxRender(ac,ac.destination,x,ac.currentTime+0.005,sfxLiftOf(x));
+  SFX_LAST[x.k]=now; SFX_RECENT.push(now); SFX_PLAYED++; SFX_AT=now;
+  /* ONE SOUND PER PRESS. A fitting that sounds inside a press takes the
+     atmosphere's click for that press with it, the way a mark takes the
+     keep's place: the event is heard, and not its surroundings as well. */
+  if(typeof ATM_PEND!=='undefined'&&ATM_PEND)ATM_PEND.drop=true;
   /* the body half of the same fitting, at the same instants, and only where
      the person has the vibration switch on as well */
   if(x.buzz&&CURP.ui.buzz)buzz(x.buzz);
@@ -737,7 +774,440 @@ function sfxNapLater(ms){
   try{ var r=BED_AC.suspend(); if(r&&r.catch)r.catch(function(){}); }catch(e){}},ms);}
 /* what is sounding, for the gate */
 function sfxState(){
- return {why:sfxWhy(), played:SFX_PLAYED, ctx:BED_AC?BED_AC.state:'none', last:SFX_LAST};}
+ return {why:sfxWhy(), played:SFX_PLAYED, ctx:BED_AC?BED_AC.state:'none', last:SFX_LAST, lift:SFX_LIFT};}
+/* HOW FAR IN THE FIELD IS, 0 at 1x and 1 at its deepest zoom, on the zoom's
+   own logarithm, so every notch of the wheel is the same step. One reader for
+   the Field press and for the room under a zoom. */
+function sfxZoomL(s,max){ return (s>1.0005&&max>1)?Math.min(1,Math.log(s)/Math.log(max)):0; }
+function sfxFieldL(){
+ try{ if(typeof fieldZoom!=='function')return 0; var f=fieldZoom(); return sfxZoomL(f.s,f.max); }catch(e){ return 0; }}
+/* the gain a row plays at: 1, or for a row with a lift, up by lift decibels
+   at full zoom. The last one used is kept for the gate. */
+var SFX_LIFT=null;
+function sfxLiftOf(x){
+ if(!x.lift){ SFX_LIFT=null; return 1; }
+ var db=x.lift*sfxFieldL(); SFX_LIFT={k:x.k,db:db};
+ return Math.pow(10,db/20);}
+
+/* ============================================================
+   THE ATMOSPHERE. The third family, round OU and round OV, 1 October,
+   ported by hand from the sound map built that week on the other line
+   (74b1e8f) onto this one. His words: "I want everything to have a very
+   subtle atmospheric sound. Overlays, clicks, if I click on the field,
+   if I zoom in, this field sounds a little bit louder. You know, very
+   subtle sci-fi. Sounds nothing overwhelming." And: "Yeah, hover should
+   make sound."
+
+   WHAT IT IS. A quiet sound under nearly every press, a tone when an
+   overlay goes on or off, a breath of air when a sheet or a column
+   opens or shuts, a tick when a mouse arrives on a control, and a low
+   room under the Field that comes up as the picture comes closer and is
+   gone a second and a half after the zoom stops. The Field press is the
+   fitting above, field, and it comes up with the zoom by its own lift.
+
+   WHAT STAYS, every line of it read in sfxWhy and held by the same gate:
+
+     silence until a person presses something. Nothing here sounds on
+       load, and no hover ticks before the first press.
+     one switch. Sound effects, in the profile menu and in Settings,
+       Display, is on until the person turns it off, and this layer is
+       under that switch and has none of its own.
+     Quiet wins. A running release keeps its own room and is silent for
+       every sound here, which covers the first release too: it is read
+       by the app's voice and not scored. A browser with no Web Audio
+       gets none. One AudioContext, shared with the bed and the fittings.
+     a press is a press a person made. A click a script dispatched, the
+       product's own or a test's, is not one and sounds nothing, the rule
+       sfxOnPress already keeps.
+     nothing is carried by sound alone. Every sound here echoes something
+       the screen already shows: the circle that filled, the sheet that
+       opened, the control under the pointer, the picture that came
+       closer. A person who turns it off loses nothing.
+
+   ONE INSTRUMENT. The seven seat tones, FLOWSEAT in the engine, read
+   through seatHz, are the whole scale, 396 to 963 hertz, and the hover
+   tick is one octave over the 852. Every pitch here is one of those, so
+   a click, an overlay and the room all sound like one thing being
+   played. Retune FLOWSEAT and this retunes. Every voice is a sine and at
+   most one partial through a lowpass, or noise through a filter. Nothing
+   is a square, a saw or a chime.
+
+   FOUR RULES OF MEANING, the release family's and the fittings' own. Up
+   is arriving and down is leaving: an overlay going on rises and going
+   off falls, the air leans up on opening and down on shutting. Weight is
+   length and depth: the light click is the shortest and highest, the
+   heavy one the longest and lowest. Pitch is place: a layer's circle
+   rings the seat its layer belongs to, and one concept keeps one pitch
+   on every surface. And level is nearness: the room comes up with the
+   zoom.
+
+   THE LEVEL. ATM_DB is one table, in dBFS, the peak each sound is tuned
+   to, and ATM_MASTER multiplies every row and the room together, so one
+   number moves everything: 0.5 is 6 decibels down and 2 is 6 up. The
+   table was tuned on the other line under fittings half as loud as these,
+   and the fittings were doubled on 2 October because a person at a
+   working volume heard nothing, so every row here came up the same 6
+   decibels and the shapes did not move. The surroundings are never
+   louder than the events: every row sits under ATM_CEIL_DB, and the gate
+   holds the loudest of them under the quietest fitting it measures.
+
+   THE MAP. ATM_MAP is the one place that says which kind of control gets
+   which sound, and it is read by the listeners, not described by them.
+   Nothing hooks a control by hand. Three listeners at the window, in the
+   capture phase, for a click, a pointer arriving and a pointer moving,
+   read the roles and data attributes a control already carries. Two
+   hooks cover what has no control to read: the zoom, and a sheet.
+
+   ONE SOUND PER PRESS. A press that earns a fitting or an air swell gets
+   that sound and not also a click: the click waits one turn of the event
+   loop, and anything that sounds inside the press takes it. A press on
+   the switch that turns sound off is silent, because the click is judged
+   after the handler has run.
+
+   THE LIMITERS. Every sound has its own gap, and the layer as a whole
+   plays at most ATM_BURST in any second with ATM_SPACE between any two,
+   so a held key or a fast hand is a run of separate clicks and never a
+   smear. Hover has a limiter of its own and never counts against a
+   click: at most ATM_HOVER_PER_S ticks in a second, one per control per
+   ATM_HOVER_EACH, and none within ATM_HOVER_QUIET of any other sound. A
+   pointer that has not moved makes none: the layout moving a control
+   under a resting pointer is not the person arriving at it. Mouse and
+   pen only. A finger makes none, because a finger has no hover.
+
+   LEFT OUT, decided and not defaulted, and each is a question he can
+   reopen: typing, which would sound every key; a slider, which would
+   sound the whole length of a drag; a tip appearing, which is a hover
+   already; and a vibration under any of it, which on a phone would buzz
+   every tap. The fittings keep the vibration they already had.
+   ============================================================ */
+var ATM_MASTER=1;
+/* dBFS, per sound, the peak each row is tuned to at ATM_MASTER 1 */
+var ATM_DB={'click-light':-31,'click':-28,'click-heavy':-25,
+ 'overlay-on':-26,'overlay-off':-28,'air-open':-28,'air-close':-31,
+ 'hover':-38,'ambience':-27};
+/* no row and no room may peak over this, at any pitch, at ATM_MASTER 1 */
+var ATM_CEIL_DB=-24;
+var ATM_BURST=6, ATM_SPACE=40, ATM_HOVER_PER_S=4, ATM_HOVER_EACH=1500, ATM_HOVER_QUIET=250, ATM_HOVER_GAP=140;
+/* THE ROOM UNDER A ZOOM. Silent at 1x. It follows the zoom's level with a
+   time constant of ATM_AMB_TC, and brightens with it from ATM_AMB_LP0 to
+   ATM_AMB_LP1. A person who stops zooming holds it ATM_AMB_HOLD, lets it fall
+   with a time constant of ATM_AMB_FALL, and it is exactly zero ATM_AMB_END
+   after the last zoom input. It is never a bed under a person reading. */
+var ATM_AMB_TC=0.15, ATM_AMB_HOLD=0.4, ATM_AMB_FALL=0.2, ATM_AMB_END=1.5, ATM_AMB_LP0=520, ATM_AMB_LP1=2400;
+/* which seat's number a thing with no seat sounds at: the heart, the middle of
+   the seven, so it is neither high nor low */
+var ATM_NOSEAT='Heart';
+/* THE ROWS. The grammar is the fittings' own: parts, with a, h and r in
+   milliseconds, lp or bp in hertz. fr is a ratio of the row's pitch, so the
+   pitch is one number the caller or the table names, a seat. fr1 is where a
+   glide ends. pk is the part's weight against the row's level, 1 for the loud
+   one. max is the longest the row may run and gap the least time between two
+   of the same, ms. seat is the seat the pitch is read from, or null when the
+   caller names it. oct is an octave multiplier. Sine parts carry at most one
+   partial, p2 at g2 of the body, through a lowpass. A noise part is filtered
+   and is the only thing here that is not a pitch. */
+var ATM=[
+ /* CLICK, light, normal and heavy. A press as a tone and never a strike: the
+    attack is 9 to 12 ms, at the 10 ms line where an envelope stops reading as
+    a click, a hair of fall in the pitch as the press settles, and a short
+    decay. Light is the brow and the shortest, for a chip or a small switch;
+    normal is the heart, for a button; heavy is the sacral and the longest,
+    for a primary action and for anything that cannot be taken back. */
+ {k:'click-light', seat:'3rd Eye', oct:1, max:120, gap:45,
+  parts:[{w:'sine',fr:1,fr1:0.985,gl:30,p2:2,g2:0.14,at:0,a:9,r:55,pk:1,lp:2600}]},
+ {k:'click', seat:'Heart', oct:1, max:140, gap:60,
+  parts:[{w:'sine',fr:1,fr1:0.97,gl:35,p2:2,g2:0.12,at:0,a:10,r:75,pk:1,lp:2200}]},
+ {k:'click-heavy', seat:'Sacral', oct:1, max:200, gap:90,
+  parts:[{w:'sine',fr:1,fr1:0.97,gl:40,p2:1.5,g2:0.12,at:0,a:12,r:110,pk:1,lp:1500}]},
+ /* OVERLAY. The layer's own pitch, from its seat or its kind. On, a tone
+    that rises two semitones into the pitch and stays a moment; off, the same
+    pitch leaving, falling two semitones and gone. */
+ {k:'overlay-on', seat:null, oct:1, max:260, gap:120,
+  parts:[{w:'sine',fr:0.8909,fr1:1,gl:80,p2:2,g2:0.10,at:0,a:16,h:10,r:110,pk:1,lp:2400}]},
+ {k:'overlay-off', seat:null, oct:1, max:260, gap:120,
+  parts:[{w:'sine',fr:1,fr1:0.8909,gl:80,p2:2,g2:0.10,at:0,a:10,h:0,r:120,pk:1,lp:2000}]},
+ /* AIR. A sheet or a column opening or closing: band limited noise whose
+    centre leans one way. Opening is a 120 ms swell leaning up from 700 to
+    1500 hertz; closing is quicker, 40 ms, leaning down, and softer. The only
+    rows that are not a pitch. pk is set so a measured peak lands on the
+    table. */
+ {k:'air-open', seat:null, oct:1, max:340, gap:220,
+  parts:[{w:'noise',bp:700,bp1:1500,q:0.9,lp:1900,at:0,a:120,r:180,pk:2.60}]},
+ {k:'air-close', seat:null, oct:1, max:300, gap:220,
+  parts:[{w:'noise',bp:1500,bp1:650,q:0.9,lp:1700,at:0,a:40,r:200,pk:2.39}]},
+ /* HOVER. The faintest sound in the family: the brow's number an octave up,
+    a 4 ms attack and a 22 ms fall, 26 milliseconds in all. */
+ {k:'hover', seat:'3rd Eye', oct:2, max:60, gap:ATM_HOVER_GAP,
+  parts:[{w:'sine',fr:1,p2:0,g2:0,at:0,a:4,r:22,pk:0.87,lp:3000}]}];
+var ATM_BY={}; ATM.forEach(function(x){ATM_BY[x.k]=x;});
+/* THE PITCH OF A LAYER. Where a layer's circle names a seat, or a kind that
+   sits at one, this is the seat. One concept keeps one pitch on every
+   surface: the Field's saboteurs, the Body's and the Compass's are one
+   number. The chain climbs a seat per tier, the way the rail's stack does.
+   The Compass's seat shells are not here: each rings the seat it is, read
+   off BANDS, so a seat is never a table of its own. */
+var ATM_SEAT={
+ fb:{addresses:'Root', seats:'Sacral', laws:'Crown', gates:'Heart', shadow:'Root', stories:'Throat',
+  saboteurs:'Solar', complexes:'Heart', hyper:'3rd Eye', character:'Crown', archetypes:'Throat', domains:'3rd Eye'},
+ bm:{addr:'Root', masks:'Throat', pain:'Root', flow:'Sacral', sab:'Solar', cx:'Heart', hy:'3rd Eye'},
+ cn:{top:'Crown', shells:'Heart', flat:'Sacral', reg:'Throat', well:'Root', heat:'Solar', layers:'3rd Eye'}};
+/* THE MAP. First row a control matches wins. sel is what it matches, snd is
+   the row of ATM it sounds (overlay and air choose their direction from the
+   control's own state after the press), hover says whether a pointer
+   arriving on it ticks, attr and by say where an overlay reads its pitch. A
+   row with no sel is a hook: it names the function that calls it. */
+var ATM_MAP=[
+ {kind:'Field layer circle', sel:'[data-fb][aria-pressed]', snd:'overlay', attr:'data-fb', by:'fb', hover:true},
+ {kind:'Body layer circle', sel:'[data-bmov][aria-pressed]', snd:'overlay', attr:'data-bmov', by:'bm', hover:true},
+ {kind:'Compass overlay circle', sel:'[data-cn][aria-pressed]', snd:'overlay', attr:'data-cn', by:'cn', hover:true},
+ {kind:'Compass seat shell', sel:'[data-cnseat]', snd:'overlay', attr:'data-cnseat', by:'cs', hover:true},
+ {kind:'Column, bar or menu fold', sel:'#lfold,#rfold,#navtog,.fb-tog,[data-fb=fold],[data-fb=depth],[data-bmov=shut],[data-bmmk=tog],[data-bmsh=tog],[aria-haspopup]',
+  snd:'air', hover:true},
+ {kind:'Section header', sel:'.lsec-hd', snd:'click-light', hover:true},
+ {kind:'Primary, destructive or upgrade button', sel:'.btn.pri,.btn.dgr,.st-go,.lk-go', snd:'click-heavy', hover:true},
+ {kind:'Tab', sel:'[role=tab],.tabtop', snd:'click', hover:true},
+ {kind:'Switch, checkbox or radio', sel:'[role=switch],[role=menuitemcheckbox],[role=radio],[role=menuitemradio],input[type=checkbox],input[type=radio]',
+  snd:'click', hover:true},
+ {kind:'Chip, pill or pressed toggle', sel:'[aria-pressed],.st-rb,.cn-sb,.kb-swb,.rv-sp,.rv-tag2,.rv-wkd', snd:'click-light', hover:true},
+ {kind:'List row', sel:'.kb-row,.stk-r', snd:'click-light', hover:true},
+ {kind:'Button, link or menu item', sel:'button,[role=button],[role=menuitem],a[href],summary', snd:'click', hover:true},
+ {kind:'A press on the Field wheel, Frames or Dial', hook:'hitPress and the wheel\'s press paths in ui/ui.js', snd:'field', fitting:true},
+ {kind:'A sheet opening or closing', hook:'atmWatch, a MutationObserver on #sheet', snd:'air'},
+ {kind:'A zoom on the Field', hook:'atmZoom, from setZoom, fzAt and the reframes', snd:'ambience'},
+ {kind:'A pointer arriving on a control above', hook:'atmOnOver', snd:'hover'}];
+var ATM_ANY=ATM_MAP.filter(function(m){return m.sel;}).map(function(m){return m.sel;}).join(',');
+/* the pitch a seat name sounds at, off the one table the release reads */
+function atmHz(seat){
+ var h=null; try{ h=seatHz(seat); }catch(e){}
+ return h||639;}
+function atmLin(db){ return Math.pow(10,db/20); }
+/* A ROW BUILT FOR ONE SOUNDING. The only code that turns a row of ATM into
+   parts, so what the gate renders is what plays. o.seat names the pitch where
+   the row's own seat is null. A sine's weight is divided by one plus its
+   partial, so the table's decibels are the peak of the whole voice and not of
+   its body. */
+function atmRow(k,o){
+ o=o||{};
+ var x=ATM_BY[k]; if(!x)return null;
+ var hz=atmHz(o.seat||x.seat||ATM_NOSEAT)*(x.oct||1), db=ATM_DB[k], amp=atmLin(db)*ATM_MASTER;
+ return {k:k, max:x.max, gap:x.gap, hz:hz, db:db,
+  parts:x.parts.map(function(p){
+   var q={}, n; for(n in p)q[n]=p[n];
+   if(p.w==='sine'){
+    q.f=hz*(p.fr||1); if(p.fr1)q.f1=hz*p.fr1;
+    if(!p.p2)delete q.p2;
+    q.pk=amp*(p.pk||1)/(1+(p.p2?(p.g2||0.1):0));}
+   else q.pk=amp*p.pk;
+   return q;})};}
+/* what is sounding, for the gate */
+var ATM_LAST={}, ATM_RECENT=[], ATM_HOV=[], ATM_AT=0, ATM_PLAYED=0, ATM_PEND=null, ATM_WIRED=false;
+var ATM_ROW=null, ATM_PT={x:-99,y:-99}, ATM_HOVERED=null, ATM_OBS=null, ATM_AMB=null, ATM_AMB_T=null;
+/* PLAY ONE ROW, behind the same silence as everything and the burst limiter on
+   top. soft is the hover's: its own limiter, never counted against a click. */
+function atmPlay(k,o,soft){
+ var x=ATM_BY[k]; if(!x||sfxWhy())return false;
+ var now=Date.now();
+ if(now-(ATM_LAST[k]||-1e9)<x.gap)return false;
+ /* a fitting is the event and this is its surroundings: nothing here lands
+    within a breath of one */
+ if(now-SFX_AT<150)return false;
+ if(soft){
+  ATM_HOV=ATM_HOV.filter(function(t){return now-t<1000;});
+  if(ATM_HOV.length>=ATM_HOVER_PER_S||now-ATM_AT<ATM_HOVER_QUIET)return false;
+ }else{
+  ATM_RECENT=ATM_RECENT.filter(function(t){return now-t<1000;});
+  if(ATM_RECENT.length>=ATM_BURST)return false;
+  if(ATM_RECENT.length&&now-ATM_RECENT[ATM_RECENT.length-1]<ATM_SPACE)return false;}
+ var ac=sfxCtx(); if(!ac)return false;
+ try{
+  var row=atmRow(k,o), end=sfxRender(ac,ac.destination,row,ac.currentTime+0.005);
+  ATM_LAST[k]=now; ATM_AT=now; ATM_PLAYED++; ATM_ROW={k:k,hz:row.hz,db:row.db};
+  if(soft)ATM_HOV.push(now); else{ ATM_RECENT.push(now); if(ATM_PEND)ATM_PEND.drop=true; }
+  sfxNapLater(Math.max(0,(end-ac.currentTime))*1000+20000);
+  return k;
+ }catch(e){ return false; }}
+
+/* WHAT A PRESS LANDED ON, and which row of the map it belongs to. The nearest
+   control up the tree, so a press on an icon inside a circle is a press on the
+   circle. A control that is disabled, or locked, which the product marks with
+   aria-disabled, is not a press and sounds nothing here. */
+function atmTarget(t){
+ var el=(t&&t.closest)?t.closest(ATM_ANY):null;
+ if(!el||el.disabled||el.getAttribute('aria-disabled')==='true')return null;
+ for(var i=0;i<ATM_MAP.length;i++){
+  var m=ATM_MAP[i]; if(m.sel&&el.matches(m.sel))return {el:el,row:m};}
+ return null;}
+/* the seat an overlay sounds, by the surface it is on */
+function atmSeatFor(hit){
+ var v=hit.el.getAttribute(hit.row.attr), by=hit.row.by;
+ if(by==='cs'){ try{ return BANDS[+v]||ATM_NOSEAT; }catch(e){ return ATM_NOSEAT; } }
+ return (ATM_SEAT[by]&&ATM_SEAT[by][v])||ATM_NOSEAT;}
+/* the state attribute a directional sound reads, before the press and after */
+function atmStateOf(hit,el){ return el.getAttribute(hit.row.snd==='air'?'aria-expanded':'aria-pressed'); }
+/* THE CLICK LISTENER. Capture phase, so it runs ahead of the press's own
+   handler and reads the state the control was in. It schedules, and only when
+   a sound could be heard: a silent product schedules nothing at all. The
+   sound itself is chosen one turn later, after the handler, which is what
+   lets an overlay say whether it went on or off and lets a press that earned
+   a fitting or a swell give up its click. A control whose state did not move,
+   or that carries none, still answers the press, with a plain click. */
+function atmOnClick(e){
+ if(e&&e.isTrusted===false)return;
+ if(sfxWhy())return;
+ var hit=atmTarget(e.target); if(!hit)return;
+ var p={drop:false}, was=atmStateOf(hit,hit.el), by=hit.row.attr?hit.el.getAttribute(hit.row.attr):null;
+ ATM_PEND=p;
+ /* the context is opened here, inside the press, where every browser allows it */
+ sfxCtx();
+ setTimeout(function(){
+  if(ATM_PEND===p)ATM_PEND=null;
+  if(p.drop)return;
+  var s=hit.row.snd, el=hit.el;
+  if(s==='overlay'||s==='air'){
+   /* the circle may have been drawn again, so read the one that is there */
+   if(!el.isConnected&&hit.row.attr&&by!=null)
+    el=document.querySelector('['+hit.row.attr+'="'+by+'"]')||el;
+   var now=atmStateOf(hit,el);
+   if(now==null||now===was){ atmPlay('click'); return; }
+   var on=now==='true';
+   if(s==='overlay')atmPlay(on?'overlay-on':'overlay-off',{seat:atmSeatFor({el:el,row:hit.row})});
+   else atmPlay(on?'air-open':'air-close');
+   return;}
+  atmPlay(s);},0);}
+/* THE HOVER LISTENER. A tick for a pointer arriving at a control, mouse and
+   pen only, and only if the pointer actually travelled: Chrome says a pointer
+   arrived at whatever a layout put under it, with the same coordinates, and
+   that is not an arrival. pointermove keeps the last position; pointerover
+   compares against it. */
+function atmOnMove(e){ ATM_PT.x=e.clientX; ATM_PT.y=e.clientY; }
+function atmOnOver(e){
+ if(e&&e.isTrusted===false)return;
+ var pt=e.pointerType;
+ if(pt!=='mouse'&&pt!=='pen')return;
+ var x=e.clientX, y=e.clientY, moved=Math.abs(x-ATM_PT.x)+Math.abs(y-ATM_PT.y)>=1;
+ ATM_PT.x=x; ATM_PT.y=y;
+ if(!moved||e.buttons||sfxWhy())return;
+ var hit=atmTarget(e.target); if(!hit||!hit.row.hover)return;
+ /* from one part of a control to another is not arriving */
+ if(e.relatedTarget&&hit.el.contains(e.relatedTarget))return;
+ var now=Date.now();
+ if(ATM_HOVERED&&ATM_HOVERED.has(hit.el)&&now-ATM_HOVERED.get(hit.el)<ATM_HOVER_EACH)return;
+ if(atmPlay('hover',null,true)&&ATM_HOVERED)ATM_HOVERED.set(hit.el,now);}
+/* A SHEET. It has no control of its own to read, so its hidden attribute is
+   watched, and one swell is played each way. Armed on the first press and
+   again if the sheet was not yet in the document. */
+function atmWatch(){
+ if(ATM_OBS||typeof MutationObserver==='undefined')return;
+ var s=document.getElementById('sheet'); if(!s)return;
+ try{
+  ATM_OBS=new MutationObserver(function(list){
+   for(var i=0;i<list.length;i++){ var r=list[i];
+    if(r.attributeName!=='hidden')continue;
+    var open=!s.hidden, was=r.oldValue===null;
+    if(open===was)continue;
+    atmPlay(open?'air-open':'air-close');}});
+  ATM_OBS.observe(s,{attributes:true,attributeOldValue:true,attributeFilter:['hidden']});
+ }catch(e){ ATM_OBS=null; }}
+
+/* THE ROOM UNDER A ZOOM. A low bed that comes up as the field comes closer,
+   and goes as it goes. Two sines at the sacral and the heart and a breath of
+   noise, through one lowpass that opens with the zoom, so it is both a little
+   louder and a little brighter the closer you are. At 1x its target is zero.
+
+   Nothing is created until there is a zoom to sound, one chain is kept while
+   a person is zooming, and it is stopped ATM_AMB_END after the last input. The
+   level is smoothed by the audio clock and never by a timer, so a wheel that
+   sends sixty events a second moves it as gently as a wheel that sends five.
+   The one timer only takes the nodes down once the gain has already been
+   scheduled to zero. */
+function atmAmbTarget(L){
+ if(!(L>0))return {gain:0, lp:ATM_AMB_LP0};
+ return {gain:atmLin(ATM_DB.ambience)*ATM_MASTER*Math.pow(Math.min(1,L),0.75),
+  lp:ATM_AMB_LP0*Math.pow(ATM_AMB_LP1/ATM_AMB_LP0,Math.min(1,L))};}
+/* two seconds of seeded noise whose seam is cross faded, so it loops without a
+   click. The tail that would have followed the end is blended into the start. */
+function atmAmbNoise(ac){
+ if(ac.__atmN)return ac.__atmN;
+ var sr=ac.sampleRate, n=Math.round(sr*2), x=Math.round(sr*0.2), raw=new Float32Array(n+x), s=0x2545F491, i;
+ for(i=0;i<n+x;i++){ s=(Math.imul(s,1664525)+1013904223)>>>0; raw[i]=s/2147483648-1; }
+ var b=ac.createBuffer(1,n,sr), d=b.getChannelData(0);
+ for(i=0;i<n;i++)d[i]=raw[i];
+ for(i=0;i<x;i++){ var w=i/x; d[i]=raw[i]*Math.sin(w*Math.PI/2)+raw[n+i]*Math.cos(w*Math.PI/2); }
+ ac.__atmN=b; return b;}
+function atmAmbBuild(ac,out){
+ var t=ac.currentTime, g=ac.createGain(), lp=ac.createBiquadFilter(), src=[];
+ g.gain.setValueAtTime(0,t);
+ lp.type='lowpass'; lp.Q.value=0.5; lp.frequency.setValueAtTime(ATM_AMB_LP0,t);
+ [['Sacral',0.42],['Heart',0.23]].forEach(function(v){
+  var o=ac.createOscillator(), vg=ac.createGain();
+  o.type='sine'; o.frequency.setValueAtTime(atmHz(v[0]),t); vg.gain.value=v[1];
+  o.connect(vg); vg.connect(lp); o.start(t); src.push(o);});
+ var nb=ac.createBufferSource(), nf=ac.createBiquadFilter(), ng=ac.createGain();
+ nb.buffer=atmAmbNoise(ac); nb.loop=true;
+ nf.type='bandpass'; nf.frequency.value=900; nf.Q.value=0.6; ng.gain.value=0.69;
+ nb.connect(nf); nf.connect(ng); ng.connect(lp); nb.start(t); src.push(nb);
+ lp.connect(g); g.connect(out);
+ return {ac:ac, g:g, lp:lp, src:src, L:0, gain:0, fresh:true};}
+/* a zoom input at level L, at time t. Every input reschedules the whole of the
+   room's future from where it stands, so the last input is what the fall and
+   the end are measured from. */
+function atmAmbTo(h,L,t){
+ var T=atmAmbTarget(L), g=h.g.gain, f=h.lp.frequency;
+ g.cancelScheduledValues(t);
+ f.cancelScheduledValues(t);
+ /* the first input arrives at the instant the chain was built, and the cancel
+    above takes the chain's own first values with it. A target is approached
+    from wherever the parameter stands, which with nothing left scheduled is
+    its default of one, full scale, so the first cut on the other line opened
+    every zoom with a burst. Found by rendering it offline: the peak of the
+    whole render read minus 3 dBFS where the steady level was minus 40. */
+ if(h.fresh){ h.fresh=false; g.setValueAtTime(0,t); f.setValueAtTime(ATM_AMB_LP0,t); }
+ g.setTargetAtTime(T.gain,t,ATM_AMB_TC);
+ g.setTargetAtTime(0,t+ATM_AMB_HOLD,ATM_AMB_FALL);
+ g.setValueAtTime(0,t+ATM_AMB_END);
+ f.setTargetAtTime(T.lp,t,0.2);
+ h.L=L; h.gain=T.gain;}
+function atmAmbEnd(){
+ var h=ATM_AMB; ATM_AMB=null; clearTimeout(ATM_AMB_T);
+ if(!h)return;
+ try{ h.src.forEach(function(s){ try{ s.stop(); }catch(e){} }); h.g.disconnect(); }catch(e){}}
+/* hushed at once, for a person who switched sound off or entered a release
+   in the middle of a zoom */
+function atmAmbKill(){
+ var h=ATM_AMB; if(!h)return;
+ try{ var t=h.ac.currentTime; h.g.gain.cancelScheduledValues(t); h.g.gain.setTargetAtTime(0,t,0.03); }catch(e){}
+ clearTimeout(ATM_AMB_T); ATM_AMB_T=setTimeout(atmAmbEnd,300);}
+/* A ZOOM HAPPENED. s is the zoom and max is its ceiling, from setZoom and from
+   fzAt, the Field's two zooms; a reframe to 1x is a zoom to 1 and lowers the
+   room to nothing. Called for every change, silent or not, and says nothing
+   when the layer is silent. */
+function atmZoom(s,max){
+ var L=sfxZoomL(s,max);
+ if(sfxWhy()){ if(ATM_AMB)atmAmbKill(); return false; }
+ if(!ATM_AMB&&!(L>0))return false;
+ var ac=sfxCtx(); if(!ac)return false;
+ try{
+  if(!ATM_AMB)ATM_AMB=atmAmbBuild(ac,ac.destination);
+  atmAmbTo(ATM_AMB,L,ac.currentTime);
+  clearTimeout(ATM_AMB_T); ATM_AMB_T=setTimeout(atmAmbEnd,(ATM_AMB_END+0.15)*1000);
+  sfxNapLater((ATM_AMB_END+20)*1000);
+  return true;
+ }catch(e){ return false; }}
+/* what is sounding, for the gate */
+function atmState(){
+ return {why:sfxWhy(), played:ATM_PLAYED, last:ATM_LAST, wired:ATM_WIRED, row:ATM_ROW,
+  amb:ATM_AMB?{L:ATM_AMB.L, gain:ATM_AMB.gain, now:ATM_AMB.g.gain.value, lp:ATM_AMB.lp.frequency.value}:null};}
+function atmWire(){
+ if(ATM_WIRED)return;
+ try{
+  ATM_HOVERED=(typeof WeakMap==='function')?new WeakMap():null;
+  addEventListener('click',atmOnClick,true);
+  addEventListener('pointerover',atmOnOver,true);
+  addEventListener('pointermove',atmOnMove,{capture:true,passive:true});
+  ATM_WIRED=true;
+ }catch(e){}
+ atmWatch();}
+atmWire();
 
 /* ============================================================
    THE VOICE. Browser speech synthesis, and the one other thing in
