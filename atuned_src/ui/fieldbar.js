@@ -173,20 +173,26 @@ function fbReach(list,carry){
 function fbValues(r){
  var V={}, dash='–', carry=W.filter(function(n){return n.sq>=4;});
  var f1=function(x){var n=+x||0; return n>=0.05?n.toFixed(1):dash;}, pc=function(x){var n=Math.round(+x||0);return n>0?n+'%':dash;};
+ /* NO PERCENT ON THE HEADLINE READING, round PQ, his words: "No, it doesn't
+    need to be a percent. Just a number." CQ and DQ are the headline readings
+    and print bare here, as on the wheel's core and the Summary plate. The
+    shares below (gates, stories, archetypes, domains) are shares of a whole
+    and keep their sign. */
+ var nb=function(x){var n=Math.round(+x||0);return n>0?String(n):dash;};
  V.addresses={p:r.SQm*10,v:f1(r.SQm),c:seatCol(r.darkB),
   m:r.SQm>=0.05?'Ring and number: segment depth, SQ, at a weight of '+f1(r.SQm)+'. How deep the held charge sits.'
    :'Ring and number: segment depth, SQ. Nothing is carrying yet.'};
  V.seats={p:(r.darkV||0)*10,v:f1(r.darkV),c:seatCol(r.darkB),
   m:(r.darkV||0)>=0.05?'Ring and number: the heaviest assemblage point, '+r.darkB+', at a weight of '+f1(r.darkV)+'.'
    :'Ring and number: the heaviest assemblage point. Nothing is carrying yet.'};
- V.laws={p:r.CQ,v:pc(r.CQ),c:seatCol('Crown'),
+ V.laws={p:r.CQ,v:nb(r.CQ),c:seatCol('Crown'),
   m:'Ring and number: coherence, CQ, which is the laws summed.'};
  var G=verpRead(), hi=G.filter(function(g){return g.side==='higher';}).reduce(function(a,g){return a+g.pct;},0),
   anyG=G.some(function(g){return g.pct>0;});
  V.gates={p:anyG?hi:0,v:anyG?pc(hi):dash,c:seatCol('Heart'),
   m:anyG?'Ring and number: how much of what you wrote ran through awareness, detachment and intention.'
    :'No story has been read for action yet.'};
- V.shadow={p:r.DQ,v:pc(r.DQ),c:seatCol('Root'),
+ V.shadow={p:r.DQ,v:nb(r.DQ),c:seatCol('Root'),
   m:'Ring and number: shadow weight, DQ, the weight on all 112 addresses.'};
  var ai=atomIndex()||{}, traced=carry.length?carry.filter(function(n){return (ai[n.i]||[]).length;}).length/carry.length*100:0;
  V.stories={p:traced,v:carry.length?pc(traced):dash,c:'var(--accent)',

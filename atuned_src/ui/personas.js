@@ -251,7 +251,9 @@ function renderPol2(r){
  var H=360,Wd=104,top=30,bot=H-30,x=34;
  var rg=cqRange(r.CQ), cq=rg.cq, bandPts=rg.band;
  var t=REDUCED?0:S.t;
- var drift=REDUCED?0:(Math.sin(t*0.55)*0.62+Math.sin(t*0.23+1.1)*0.38);
+ /* one wander, rbDrift (ui/component.js), shared with the CQ edge of the
+    rail's pair bar, so the marker and the bar swing as one */
+ var drift=REDUCED?0:rbDrift(t);
  var live=cq+drift*(bandPts/2);
  var y=bot-(Math.max(0,Math.min(100,live))/100)*(bot-top);
  /* the marker is DRAWN at the undrifted position and MOVED from there */
@@ -419,7 +421,7 @@ function renderAcc(r){
      It lies on the stage again, round LR, level with zoom in the lower left,
      and keeps the orb: zoom's circles beside it are 44, the orb's size. */
   +cr('Crown',un?0:a.pct,{size:'orb',raw:un?'\u2013':a.pct.toFixed(0),
-    label:'accuracy',hot:false})
+    label:'Accuracy',hot:false})
   +'</button>';
  var bt=document.getElementById('accbtn');
  if(bt)bt.onclick=function(){runAccDrill();};}

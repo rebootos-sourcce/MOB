@@ -18,8 +18,8 @@
    the ruling enterStart carries for the wheel: a heading and a row slide 10px
    in and fade over 220ms, a tile comes up out of .8 scale with one overshoot
    to 1.06 over 260ms, all on the wheel's own ENTER_STAGGER of 62ms and done
-   inside the wheel's own ENTER_TOTAL. The six bars take the first six places
-   of the stagger, so the tiles start as the last bar is charging. The column
+   inside the wheel's own ENTER_TOTAL. The eight bars take the first eight
+   places of the stagger, so the tiles start as the last bar is charging. The column
    opens shut on a wide screen, so this is usually the person's first sight of
    it, and the bars' own sweep is started here if no render found them open.
    After the first time, opening the column or a section is a surface and not
@@ -82,20 +82,25 @@ function railFirstSight(){
  /* the bars, if they were not already started by a render that found the
     rail open */
  rbMotion([document.getElementById('key'),document.getElementById('keylo')]);
+ /* and the pairs, which find their elements and their widths only once the
+    column is open (ui/component.js, rbPairs) */
+ rbPairs();
  if(rbStill())return;
  var p=document.getElementById('lpanel');
- var items=rmVisible('.rblk,.lsec.re,.lsec:not(.re)>.lsec-hd,.tier1,.fdl,.rootlegend,.cap,.rootb,.ib,.aw-r,.ax',p);
- /* the six bars take the first six places of the stagger and what is under
-    them starts as the last bar is charging */
- var bar0=document.querySelector('#fdock .rbar'), top0=bar0?bar0.getBoundingClientRect().top:0;
+ var items=rmVisible('.rblk,.lsec.re,.lsec:not(.re)>.lsec-hd,.tier1,.rootlegend,.cap,.rootb,.ib,.aw-r',p);
+ /* the eight bars of the readings block, three of them pairs, take the first
+    eight places of the stagger and what is under them starts as the last bar
+    is charging */
+ var bar0=document.querySelector('#fdock .rbar,#fdock .rb2'), top0=bar0?bar0.getBoundingClientRect().top:0;
  var head=items.filter(function(it){return it.r.top<top0-2;});
  var rest=items.filter(function(it){return it.r.top>=top0-2;});
  rmCascade(head,ENTER_STAGGER,0,0);
- rmCascade(rest,ENTER_STAGGER,5,4);}
+ rmCascade(rest,ENTER_STAGGER,7,4);}
 /* THE COLUMN OPENING, after the first time. A surface, so 280 to 420 and not
    an entrance. */
 function railOpened(){
  if(!RM.seen){railFirstSight(); return;}
+ rbPairs();
  /* a render that found the column open has just given it its first sight */
  if(rbStill()||!rmRailOpen()||performance.now()-RM.seenAt<150)return;
  var kids=[]; Array.prototype.forEach.call(document.getElementById('lpanel').children,function(c){
@@ -105,5 +110,5 @@ function railOpened(){
    {duration:260,delay:Math.min(i,6)*40,easing:RM_OUT,fill:'backwards'});});}
 function railSection(sec,opening){
  if(!opening||rbStill()||!sec)return;
- var items=rmVisible('.sp-row,.sp-hd,.tier1,.ib,.rootb,.ax,.sp-map',sec).filter(function(it){return it.el.offsetParent;});
+ var items=rmVisible('.sp-row,.sp-hd,.tier1,.ib,.rootb,.sp-map',sec).filter(function(it){return it.el.offsetParent;});
  if(items.length)rmCascade(items,40,0,6);}

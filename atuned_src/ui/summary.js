@@ -576,12 +576,12 @@ function sumNum(r,bare){
  var N=numerologyOf(nm2,CURP);
  if(!N)return '';
  var rows=[
-  ['expression','Expression',N.expression,'every letter of the full name'],
-  ['soul','Soul urge',N.soul,'the vowels. what is wanted when nobody is asked'],
-  ['personality','Personality',N.personality,'the consonants. what arrives first']];
- if(N.lifePath!==null)rows.unshift(['lifePath','Life path',N.lifePath,'the birth date']);
- if(N.birthday!==null)rows.push(['birthday','Birthday',N.birthday,'the day of the month, unreduced']);
- if(N.maturity!==null)rows.push(['maturity','Maturity',N.maturity,'life path plus expression']);
+  ['expression','Expression',N.expression,'Every letter of the full name'],
+  ['soul','Soul urge',N.soul,'The vowels. What is wanted when nobody is asked'],
+  ['personality','Personality',N.personality,'The consonants. What arrives first']];
+ if(N.lifePath!==null)rows.unshift(['lifePath','Life path',N.lifePath,'The birth date']);
+ if(N.birthday!==null)rows.push(['birthday','Birthday',N.birthday,'The day of the month, unreduced']);
+ if(N.maturity!==null)rows.push(['maturity','Maturity',N.maturity,'Life path plus expression']);
  var out='<div class="s-numer">'+(bare?'':'<div class="pm-eye plain">Numerology, in full</div>')
   /* HS sweep: the name it was read off stays, because a person checks the
      spelling. The method sentence after it explained the arithmetic. */
@@ -635,7 +635,7 @@ function sumRender(){
 function sumUnread(r){
  var B=sumBirth(), rc=sumDrivers(B,r);
  var hero='<div class="sum-hero">'
-  +cr(r.darkB,0,{size:'lg',label:'coherence',raw:'–',hot:false,color:'var(--dim)'})
+  +cr(r.darkB,0,{size:'lg',label:'Coherence',raw:'–',hot:false,color:'var(--dim)'})
   /* ONE SLOT, ONE LABEL, the same correction as the analytics hero. The
      label said "Coherence, not read yet" and the line directly under it says
      the same thing in a full sentence, so the label was both changing with the
@@ -899,7 +899,7 @@ function sumPlate(r,B){
       headline and it still read 62%, measured 2 October by the visual review
       after the ruling had landed everywhere else. The ring keeps the share as
       its arc; only the sign goes. */
-   +cr(r.darkB,r.CQ,{size:'lg',label:'coherence',raw:String(Math.round(r.CQ)),hot:false,
+   +cr(r.darkB,r.CQ,{size:'lg',label:'Coherence',raw:String(Math.round(r.CQ)),hot:false,
       color:TIERCOL[r.tier]||undefined})
    /* and the word wears it too. A ring in one colour beside the same band
       printed in the body colour reads as two facts, not one. */

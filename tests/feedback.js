@@ -274,7 +274,7 @@ async function feedbackGate(browser,FILE,ok,booted){
   const b1=await said();
   const s1=await step(()=>{const q=JSON.parse(localStorage.getItem('source.outbox')||'[]');
    return {n:q.length, e:q[0], keys:q[0]?Object.keys(q[0]).sort():[], want:OB_KEYS.slice().sort(),
-    build:(typeof BUILD_ID!=='undefined'&&BUILD_ID)||'alpha', shut:document.getElementById('sheet').hidden,
+    build:(typeof accBuild==='function'&&accBuild().id)||'not stamped', shut:document.getElementById('sheet').hidden,
     row:(document.querySelector('.ac-pane')||{}).innerText||'', retry:!!document.getElementById('acobsend')};});
   ok(s1.n===1&&s1.e.kind==='comment'&&s1.e.body==='the release timer reads wrong on the phone',
    'Send holds the comment on this device'+at+', '+J(s1.e));
