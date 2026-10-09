@@ -1243,8 +1243,34 @@ function obMiniSay(pl,first,yes){
  }
  out+='<p class="ob-p">'+(pl.rest>0?'That is ':rel+' is ')+pl.lines+' lines, '
   +(n===1?'all at one place':(pl.lines/n)+' at each of '+places(n))+'. '+at+'</p>'
-  +'<p class="ob-p ob-dim">A line is one short sentence you follow in thought.</p>';
+  +'<p class="ob-p ob-dim">A line is one short sentence you follow in thought.</p>'
+  +obMiniHow();
  return out;}
+/* HOW THE RUN GOES, read off the release screen's own state and never typed
+   about it, M28. The bridge said "The lines are read in silence. Nothing
+   speaks and nothing counts down. You set the pace and how many times each
+   line repeats", written from tests/design.js's silent run, which is the voice
+   switched off by the gate and not the default. The screen after it opened
+   with the voice on (TASKS RF10, his "AI is reading the list"), a clock
+   counting the time left, the two minutes he ruled counted on a ring (JF),
+   and a dose of a hundred. Round PA rules that the onboarding's release
+   screens match what the software does, so this says what it does: the line
+   is said ONB_MINI_DOSE times, the voice is relVoiceOn, the very function the
+   walker asks, and the rest is REL_SETTLE_S. The Day One tutorial says the
+   same through obMiniSay, so both doors make one promise.
+
+   NO LONGER THAN THE SENTENCE IT REPLACED. A first cut also said where the
+   voice switch is, and at 390 by 844 that pushed Begin the release from 834
+   to 860, under the fold, on the three place card. The switch is on the
+   next screen under the run's time, so the card leaves it to the screen. */
+function obMiniHow(){
+ var d=(typeof ONB_MINI_DOSE==='number')?ONB_MINI_DOSE:1;
+ var voice=(typeof relVoiceOn==='function')&&relVoiceOn();
+ var m=(typeof REL_SETTLE_S==='number')?Math.round(REL_SETTLE_S/60):0;
+ return '<p class="ob-p">Each line is said '+(d===1?'once':d+' times')
+  +(voice?', out loud by the app voice.':', and nothing reads it out loud.')
+  +(m?' After the last line you rest for '+m+(m===1?' minute':' minutes')+', and a ring counts them down.':'')
+  +' You set the pace and can stop at any line.</p>';}
 /* WHY THERE IS NO RELEASE TO BEGIN, when the story read and the plan is still
    refused. Said once, plainly; the route is the button beside it. */
 function obMiniWhy(pl,yes){
@@ -1282,18 +1308,13 @@ function obBridgeCard(){
  if(pl&&pl.ok){
   var first=(typeof journeyRead==='function')?journeyRead(CURP).first:true;
   return obCard('Next',first?'Next is your first release.':'Next is a release.',
+   /* No second release is drawn here: the handoff is relPick and ui/release.js
+      owns every pixel of the run. How the run goes, voice, rest and pace, is
+      said inside obMiniSay by obMiniHow, off the run's own state. The round QG
+      sentence that stood here promised silence and no countdown over a run
+      that spoke and counted down (M28). */
    obPlanMarks(pl)
-   +obMiniSay(pl,first,true)
-   /* SILENCE IS STATED, round QG. The storyboard's fifth panel is a blue to
-      pink gradient ring the width of the screen with the word Release inside
-      it, a timer, and "Breathe with the field". None of that is drawn here and
-      no second release is drawn here either: the handoff is relPick and
-      ui/release.js owns every pixel of the run. What this card owes a person
-      is the one thing that panel does not say, which is that the run is
-      silent and they set its pace. tests/design.js already holds the release
-      to it: "the release runs to its end in silence." */
-   +'<p class="ob-p">The lines are read in silence. Nothing speaks and nothing counts down. '
-   +'You set the pace and how many times each line repeats, and you can stop at any line.</p>',
+   +obMiniSay(pl,first,true),
    '<button type="button" class="btn pri" data-ob="release">Begin the release</button>'
    +'<button type="button" class="btn" data-ob="done">Not now</button>');
  }
@@ -1361,9 +1382,11 @@ addEventListener('click',function(e){
   var pl=OB.plan||obMini(obYesSignal()), ids=(pl&&pl.ok)?pl.addrs:[];
   obClose();
   /* and the entry the mirror committed, so the answer to What changed after
-     this release names the story it came from */
+     this release names the story it came from, and mini, because this is the
+     run the card just promised and the release screen opens it at the ruled
+     size only when told so (M28) */
   if(ids.length&&typeof relPick==='function')
-   relPick(ids,(OB.commit&&OB.commit.ok&&OB.commit.t)?{story_t:OB.commit.t}:null);
+   relPick(ids,{mini:true,story_t:(OB.commit&&OB.commit.ok&&OB.commit.t)?OB.commit.t:null});
   return;}
  if(k==='skip'||k==='done'){
   if(k==='done'&&typeof authFunnelCheckpoint==='function')authFunnelCheckpoint({tutorialCompleted:true});

@@ -18,6 +18,17 @@
    addresses. The size is one number so one edit moves it, and the twelve is
    read off it times RUN_MIN, never typed a second time. */
 const ONB_MINI_ADDRS=3;
+/* HOW MANY TIMES THE MINI RELEASE SAYS EACH OF THOSE LINES, and it is once.
+   F5 capped the plan at twelve lines and handed it to a release screen that
+   then said every line at its own default dose of a hundred, so the run the
+   card called twelve lines said twelve hundred: 81:28 at three addresses
+   (REVIEW-onboarding/pass1/devops-qa.md, "Dose 1 is 12 lines, the ruled mini
+   release, but it needs a typed number") and 28:02 at one, where Angela left
+   (M28). Twelve lines spoken is the plan said once. ui/release.js opens a run
+   handed over by the onboarding or the Day One tutorial at this dose, and
+   both cards say it, so the count is this number times ONB_MINI_ADDRS times
+   RUN_MIN and is typed nowhere else. */
+const ONB_MINI_DOSE=1;
 /* THE FOUR CHANNELS A RUN SAYS AN ADDRESS DOWN, as meter keys: side then track,
    release first and reframe after, the order the release card walks them
    (CHAN in ui/release.js, which is the host's own copy of this list because the
