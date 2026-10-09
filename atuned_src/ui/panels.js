@@ -1127,7 +1127,10 @@ function profileSheet(){
   +'<p class="sh-p">How much fits on one screen. This scales the whole interface, not just the type.</p>'
   +'<div class="dens-list" id="densheet" style="margin-top:8px"></div></div>'
   +'<div class="sh-sec"><div class="pm-eye">Your record</div>'
-  +'<p class="sh-p">Everything is held in this browser. Nothing has left this device.</p>'
+  /* "Nothing has left this device" was false once a first visit had sent its
+     random code and topic (ui/auth.js authFunnelStart, authFunnelCheckpoint) */
+  +'<p class="sh-p">Your record is held in this browser. Your stories are not sent to us, '
+  +'and the name you enter never leaves this device.</p>'
   +'<div class="sh-row"><span>Snapshots on file</span><b>'+((CURP&&CURP.history&&CURP.history.length)||0)+'</b></div>'
   +'<div class="sh-row"><span>Storage</span><b>'+(STORE_BOUND?'writing':'blocked')+'</b></div>'
   /* THE BOUNDARY GETS ITS FIRST CALLER. validateProfile and pImport were built

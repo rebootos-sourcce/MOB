@@ -1204,7 +1204,10 @@ function viewDoor(){
  /* the two paragraphs share one cell, because .doorbd is two columns, words
     and buttons, and a third child squeezed the words into a sliver at 1600 */
  +'<div class="doorbd"><div>'
- +'<p>There is no account and no server, so nothing here can be fetched later by '
+ /* "There is no account and no server" stopped being true of the app when
+    accounts shipped. What stays true is this page's own fact: it makes no
+    request, which tests/funnel.js counts. */
+ +'<p>This page sends nothing to any server, so nothing here can be fetched later by '
  +'anybody, including us. What you save is a profile in the instrument\'s own '
  +'format, and Atuned\'s loader takes it as it stands: your coherence, the '
  +'21 law values, the nine charges, and every address they landed on.'
