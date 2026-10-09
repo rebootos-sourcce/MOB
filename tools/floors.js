@@ -11,7 +11,9 @@
    least the floor tests/floors.json gives that gate.
 
    The summary lines it knows, each read off a real run:
-     ===== N passed, M failed =====   engine, boot, collide, design, functional
+     ===== N passed, M failed =====   boot, collide, design, functional
+     ===== N passed, M failed, R expected red =====
+                                      engine, since its CRISIS group, 9 October
        N passed, M failed             tests/funnel.js
      # pass N  and  # fail M          node --test, the funnel package
    A gate in "no_count" (monitor) prints no count; its exit code is the check,
@@ -30,8 +32,10 @@
 const fs = require('fs'), path = require('path'), os = require('os');
 
 const FLOORS = path.join(__dirname, '..', 'tests', 'floors.json');
+// The expected red count is the gate's own and is carried into the line
+// printed here as it stands. It is not a pass or a failure to this file.
 const SUMMARY = [
-  /^\s*=====\s*(\d+) passed, (\d+) failed\s*=====\s*$/,
+  /^\s*=====\s*(\d+) passed, (\d+) failed(?:, (\d+) expected red)?\s*=====\s*$/,
   /^\s*(\d+) passed, (\d+) failed\s*$/,
 ];
 const TAP_PASS = /^(?:#|\u2139) pass (\d+)\s*$/;   // tap, or the spec reporter's info mark
@@ -48,7 +52,7 @@ function summary(text) {
   lines(text).forEach((l, i) => {
     for (const rx of SUMMARY) {
       const m = l.match(rx);
-      if (m) { last = { pass: +m[1], fail: +m[2], line: l.trim(), at: i }; break; }
+      if (m) { last = { pass: +m[1], fail: +m[2], red: m[3] === undefined ? null : +m[3], line: l.trim(), at: i }; break; }
     }
     let m = l.match(TAP_PASS);
     if (m) tp = { n: +m[1], at: i, line: l.trim() };
@@ -82,7 +86,7 @@ function judge(gate, dir, table) {
   if (s.fail > 0) return [false, gate + ': ' + s.line + '. Any failure fails.'];
   if (s.pass < floor)
     return [false, gate + ': ' + s.pass + ' passed, below its floor of ' + floor + '. Checks were lost or did not run.'];
-  return [true, gate + ': ' + s.pass + ' passed, 0 failed, floor ' + floor
+  return [true, gate + ': ' + s.pass + ' passed, 0 failed' + (s.red === null || s.red === undefined ? '' : ', ' + s.red + ' expected red') + ', floor ' + floor
     + (s.pass > floor ? '. ' + (s.pass - floor) + ' above it: raise the floor on purpose when that is the new normal.' : '.')];
 }
 
@@ -126,6 +130,14 @@ function selfTest() {
     ['a no count gate with its line', 'mon', '-----\n  all surfaces render\n', true],
     ['a no count gate that failed', 'mon', '-----\n  2 FAILING: a | b\n', false],
     ['a no count gate, empty log', 'mon', '', false],
+    // tests/engine.js since its CRISIS group, 9 October: the reds it expects
+    // are counted after the failures, inside the bars.
+    ['the engine summary with expected reds', 'g', 'x\n===== 4689 passed, 0 failed, 10 expected red =====\n', true],
+    ['expected reds at the floor', 'g', '===== 10 passed, 0 failed, 10 expected red =====', true],
+    ['expected reds and a failure', 'g', '===== 4689 passed, 1 failed, 10 expected red =====', false],
+    ['expected reds, below the floor', 'g', '===== 9 passed, 0 failed, 3 expected red =====', false],
+    ['an expected red summary quoted inside a test line', 'g', '  ok   prints "===== 10 passed, 0 failed, 10 expected red =====" at the end\n', false],
+    ['an expected red clause with no count', 'g', '===== 10 passed, 0 failed, expected red =====', false],
   ];
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'floors-'));
   let bad = 0;

@@ -5,7 +5,8 @@ GitHub Actions rejects a bad expression only when the workflow runs, and a
 workflow that runs but gates the wrong thing is never rejected at all. On 8
 October deploy.yml ran on a push to main only, ran the engine gate only, and
 published atuned.world whatever else was red. This file holds it to block 1 of
-the cleanup:
+the cleanup, as patched on 9 October after two reviews found what the first
+cut of this lint could not see:
 
   R1  Triggers. pull_request with no paths filter, so a docs only pull request
       still gets the checks and a required check never sits pending. push to
@@ -13,35 +14,54 @@ the cleanup:
       input rollback_ref. Never pull_request_target, in any workflow here: it
       would publish a public preview of onboarding, the 2 October exposure,
       which only the owner can delete.
-  R2  Jobs. gates-fast; gates-browser, a matrix with one job per browser gate;
-      gates-pass, the one check branch protection will require; deploy, which
-      needs gates-pass and publishes only from main, or on a rollback dispatch
-      that skips every gate. One deploy at a time.
-  R3  The FAQ page is staged for the live site (M48).
-  R4  The deploy secrets guard and the deploy command are unchanged.
+  R2  Jobs. gates-fast. gates-browser, the required browser gates, one matrix
+      leg each. gates-report, the browser gates that report and hold nothing
+      back yet. gates-pass, the one check branch protection will require.
+      gates-report-summary, which shows each report only leg's result and
+      warns on every one that is not green. deploy, which needs gates-pass and
+      never waits for gates-report.
+  R3  The FAQ page is staged for the live site (M48). FUNNEL_PAGES, in the
+      workflow env, is the one list of built pages, and gates-fast and deploy
+      both check it.
+  R4  The deploy job. A missing Cloudflare secret fails it. A push publishes
+      only while its commit is still the tip of main. A rollback publishes
+      only a commit on main that Cloudflare Pages published to production.
+      The deploy command names --branch=main, so a rollback reaches
+      production and not a preview.
   R5  Every gate tees its log under $RUNNER_TEMP/gates, under pipefail, and
       tools/floors.js holds each count to its floor in tests/floors.json.
   R6  Every ${{ }} expression parses, uses only functions and contexts GitHub
       allows where it sits, and names only needs, inputs, matrix keys and env
       variables that exist.
+  R7  Every job has a timeout. No run script has github.event, github.head_ref
+      or inputs interpolated into it. No action from outside actions/ and
+      github/.
 
-The job conditions are not matched as text. A small evaluator of GitHub's
-expression language, below, runs them against every event this workflow can
-see, and the gates-pass step is run in bash against every combination of job
-results. Checking what a condition does, not what it looks like.
+Nothing that decides what runs or what is published is matched as text. A
+small evaluator of GitHub's expression language, below, runs the job
+conditions against every event this workflow can see. The run scripts are run
+in bash, as the runner runs them: gates-pass against every combination of job
+results; the deploy job's secrets check, its order check and its rollback
+guard against stand-ins for gh and curl and a real git repository built for
+the purpose; gates-report-summary against a stand-in list of this run's jobs.
+Then the deploy job's steps are walked in order on every path into it.
+Checking what a script does, not what it looks like.
 
     python3 tools/workflow-lint.py [path]      one FAIL line per broken check, exit 1
     python3 tools/workflow-lint.py --self-test break the file one way at a time,
                                                in memory, and prove each break fails
 """
+import atexit
 import copy
 import glob
 import json
 import math
 import os
 import re
+import shutil
 import subprocess
 import sys
+import tempfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WORKFLOW = os.path.join(ROOT, '.github', 'workflows', 'deploy.yml')
@@ -57,29 +77,38 @@ PUSH_PATHS = ['atuned_src/**', 'funnel/**', 'tests/**', 'tools/**',
               'functions/**', 'atuned_funnel_system/**',
               '.github/workflows/deploy.yml']
 
-# gate: (command, must be required, least timeout in minutes). A required leg
-# holds back a deploy. The others report and do not, until the lead flips one
-# to required, which this lint allows without an edit here; it refuses the
-# reverse for boot, collide and funnel.
+# gate: (command, least timeout in minutes). Each runs exactly once, in
+# gates-browser, where a red run fails gates-pass and holds back the deploy, or
+# in gates-report, which reports and holds nothing back. boot, collide and
+# funnel must sit in gates-browser. The others may move there by a one line
+# change, which this lint allows without an edit here.
 BROWSER = {
-    'boot':       ('node tests/boot.js',       True,  20),
-    'collide':    ('node tests/collide.js',    True,  20),
-    'funnel':     ('node tests/funnel.js',     True,  20),
-    'functional': ('node tests/functional.js', False, 45),
-    'design':     ('node tests/design.js',     False, 20),
-    'monitor':    ('node tools/monitor.js',    False, 20),
+    'boot':       ('node tests/boot.js',       20),
+    'collide':    ('node tests/collide.js',    20),
+    'funnel':     ('node tests/funnel.js',     20),
+    'functional': ('node tests/functional.js', 45),
+    'design':     ('node tests/design.js',     20),
+    'monitor':    ('node tools/monitor.js',    20),
 }
-GATE_JOBS = ['gates-fast', 'gates-browser']
+ALWAYS_REQUIRED = ('boot', 'collide', 'funnel')
+GATE_JOBS = ['gates-fast', 'gates-browser']             # what gates-pass needs
+MATRIX_JOBS = ['gates-browser', 'gates-report']
+JOBS = ['gates-fast', 'gates-browser', 'gates-report', 'gates-pass',
+        'gates-report-summary', 'deploy']
+UNWAITED = ['gates-report', 'gates-report-summary']     # never in deploy's needs
 BUILDS = [r'\./atuned_src/BUILD-engine\.sh\b', r'\./atuned_src/BUILD\.sh\b',
           r'\./funnel/BUILD-single\.sh\b']
 FUNNEL_PAGES = ['atuned-funnel', 'atuned-quiz', 'atuned-about', 'atuned-buy',
                 'atuned-faq']
 
-# R4, exactly as they stood at 8f565af.
-GUARD_INSTALL = "env.CF_TOKEN != '' && env.CF_ACCOUNT != ''"
-GUARD_DEPLOY = "github.ref == 'refs/heads/main' && env.CF_TOKEN != '' && env.CF_ACCOUNT != ''"
 INSTALL_CMD = 'npm install --no-audit --no-fund wrangler@4'
-DEPLOY_CMD = 'npx wrangler pages deploy deploy --project-name=atuned --commit-dirty=true'
+# --branch=main: without it wrangler names the upload's branch from
+# `git rev-parse --abbrev-ref HEAD`, which reads HEAD after a checkout of a
+# commit id, and Cloudflare makes an upload production only when that branch
+# is the project's production branch. Read in wrangler 4.143.0's own source.
+DEPLOY_CMD = 'npx wrangler pages deploy deploy --project-name=atuned --branch=main --commit-dirty=true'
+CF_DEPLOYMENTS = ('https://api.cloudflare.com/client/v4/accounts/%s/pages/projects/atuned/'
+                  'deployments?env=production&per_page=50')
 STAGE_LINES = [
     'rm -rf deploy && mkdir deploy',
     'cp funnel/dist/atuned-funnel.html deploy/',
@@ -90,7 +119,9 @@ STAGE_LINES = [
     'cp funnel/dist/atuned-funnel.html deploy/index.html',
 ]
 FAQ_LINE = 'cp funnel/dist/atuned-faq.html deploy/'
-
+WARN = '::warning title=Gate not required yet::'
+NEWER = 'a newer commit is on main, its own run will deploy'
+ACTION_OWNERS = ('actions/', 'github/')
 
 # ---------------------------------------------------------------------------
 # GitHub's expression language: enough of it to parse every expression in a
@@ -577,6 +608,265 @@ def strings(v):
 
 
 # ---------------------------------------------------------------------------
+# Running a step's script here as the runner runs it. gh and curl are
+# stand-ins that answer only the endpoints deploy.yml calls, from files this
+# lint writes; anything else is the error the real service would give. jq is
+# the real one, so every --jq filter in the file is run as written.
+# ---------------------------------------------------------------------------
+
+GH_STUB = r'''#!/usr/bin/env python3
+import json, os, subprocess, sys
+d = os.environ['FAKE_DIR']
+args = sys.argv[1:]
+with open(os.path.join(d, 'gh.calls'), 'a') as f:
+    f.write(json.dumps(args) + '\n')
+if not os.environ.get('GH_TOKEN'):
+    sys.stderr.write('gh: To use GitHub CLI in a GitHub Actions workflow, set the GH_TOKEN environment variable.\n')
+    sys.exit(4)
+if not args or args[0] != 'api':
+    sys.stderr.write('stand-in gh: only gh api is answered here\n')
+    sys.exit(1)
+jq, ep, i = None, None, 1
+while i < len(args):
+    a = args[i]
+    if a in ('--jq', '-q'):
+        jq = args[i + 1] if i + 1 < len(args) else ''
+        i += 2
+    elif a.startswith('--jq='):
+        jq = a[5:]
+        i += 1
+    elif a in ('--paginate', '--silent', '--include', '-i'):
+        i += 1
+    elif a in ('-H', '--header', '-X', '--method', '-f', '-F', '--field', '--raw-field'):
+        i += 2
+    elif a.startswith('-'):
+        sys.stderr.write('stand-in gh: unknown flag %s\n' % a)
+        sys.exit(1)
+    else:
+        ep = a if ep is None else ep
+        i += 1
+if os.environ.get('FAKE_GH_FAIL'):
+    sys.stderr.write('gh: Server Error (HTTP 502)\n')
+    sys.exit(1)
+repo = os.environ.get('GITHUB_REPOSITORY', '')
+ep = (ep or '').lstrip('/').split('?')[0]
+def git(*a):
+    return subprocess.run(['git', '-C', os.environ.get('FAKE_REPO', '.')] + list(a), capture_output=True, text=True)
+body = None
+cmp = 'repos/%s/compare/main...' % repo
+if ep == 'repos/%s/git/ref/heads/main' % repo:
+    body = {'ref': 'refs/heads/main', 'object': {'type': 'commit', 'sha': os.environ.get('FAKE_TIP') or None}}
+elif ep == 'repos/%s/actions/runs/%s/jobs' % (repo, os.environ.get('GITHUB_RUN_ID', '')):
+    with open(os.path.join(d, 'jobs.json')) as f:
+        body = json.load(f)
+elif ep.startswith(cmp):
+    h = git('rev-parse', '--verify', '--quiet', ep[len(cmp):] + '^{commit}')
+    m = git('rev-parse', '--verify', '--quiet', 'refs/heads/main^{commit}')
+    if h.returncode == 0 and m.returncode == 0:
+        h, m = h.stdout.strip(), m.stdout.strip()
+        if h == m:
+            st = 'identical'
+        elif git('merge-base', '--is-ancestor', h, m).returncode == 0:
+            st = 'behind'
+        elif git('merge-base', '--is-ancestor', m, h).returncode == 0:
+            st = 'ahead'
+        else:
+            st = 'diverged'
+        body = {'status': st, 'merge_base_commit': {'sha': git('merge-base', m, h).stdout.strip()}}
+if body is None:
+    sys.stderr.write('gh: Not Found (HTTP 404)\n')
+    sys.exit(1)
+text = json.dumps(body)
+if jq is None:
+    sys.stdout.write(text + '\n')
+    sys.exit(0)
+p = subprocess.run(['jq', '-r', jq], input=text, capture_output=True, text=True)
+sys.stdout.write(p.stdout)
+sys.stderr.write(p.stderr)
+sys.exit(p.returncode)
+'''
+
+CURL_STUB = r'''#!/usr/bin/env python3
+# Answers only Cloudflare's list of the atuned project's deployments. Like
+# curl, it exits 22 on an HTTP error only when asked to fail, and otherwise
+# prints the error body and exits 0.
+import json, os, sys
+d = os.environ['FAKE_DIR']
+args = sys.argv[1:]
+hdrs, urls, fail, i = [], [], False, 0
+while i < len(args):
+    a = args[i]
+    if a in ('-H', '--header'):
+        hdrs.append(args[i + 1] if i + 1 < len(args) else '')
+        i += 2
+        continue
+    if a in ('-o', '--output', '-w', '--write-out', '-X', '--request', '-d', '--data', '-A', '--user-agent'):
+        i += 2
+        continue
+    if a in ('--fail', '--fail-with-body') or (a.startswith('-') and not a.startswith('--') and 'f' in a[1:]):
+        fail = True
+    elif not a.startswith('-'):
+        urls.append(a)
+    i += 1
+with open(os.path.join(d, 'curl.calls'), 'a') as f:
+    f.write(json.dumps({'headers': hdrs, 'urls': urls}) + '\n')
+def answer(code, text):
+    sys.stdout.write(text)
+    sys.exit(22 if fail and code >= 400 else 0)
+def err(msg):
+    return json.dumps({'success': False, 'errors': [{'code': 10000, 'message': msg}], 'messages': [], 'result': None})
+tok = os.environ.get('FAKE_CF_TOKEN', '')
+mode = os.environ.get('FAKE_CF', 'ok')
+if urls != [os.environ.get('FAKE_CF_URL', '')]:
+    answer(404, err('No route for %r' % (urls,)))
+if not tok or ('Authorization: Bearer ' + tok) not in hdrs:
+    answer(403, err('Authentication error'))
+if mode == 'down':
+    answer(500, err('Internal server error'))
+if mode == 'garbage':
+    answer(502, '<html><body>502 Bad Gateway</body></html>\n')
+with open(os.path.join(d, 'cf.json')) as f:
+    body = json.load(f)
+if mode == 'refused':
+    body = dict(body, success=False, errors=[{'code': 8000000, 'message': 'refused'}])
+answer(200, json.dumps(body))
+'''
+
+_TMP = []
+_RUNS = {}
+_FIXTURE = []
+
+
+def tmproot():
+    if not _TMP:
+        _TMP.append(tempfile.mkdtemp(prefix='workflow-lint-'))
+        atexit.register(shutil.rmtree, _TMP[0], True)
+        b = os.path.join(_TMP[0], 'bin')
+        os.makedirs(b)
+        for name, src in (('gh', GH_STUB), ('curl', CURL_STUB)):
+            p = os.path.join(b, name)
+            with open(p, 'w') as f:
+                f.write(src)
+            os.chmod(p, 0o755)
+    return _TMP[0]
+
+
+def base_env():
+    root = tmproot()
+    return {'PATH': os.path.join(root, 'bin') + os.pathsep + os.environ.get('PATH', '/usr/bin:/bin'),
+            'HOME': root, 'LANG': 'C.UTF-8', 'GIT_CONFIG_NOSYSTEM': '1',
+            'GITHUB_REPOSITORY': 'o/r', 'GITHUB_RUN_ID': '4242', 'GITHUB_RUN_ATTEMPT': '1',
+            'GITHUB_EVENT_NAME': 'push', 'GITHUB_REF': MAIN, 'GITHUB_SHA': 'a' * 40}
+
+
+class Ran:
+    def __init__(self, code, out, outputs, summary, calls):
+        self.code, self.out, self.outputs, self.summary, self.calls = code, out, outputs, summary, calls
+
+    def lines(self):
+        return [l.strip() for l in self.out.split('\n')]
+
+
+def run_script(key, script, env, cwd=None, files=None, before=None, after=None):
+    """script under GitHub's own bash, --noprofile --norc -eo pipefail, with a
+    fresh $GITHUB_OUTPUT and $GITHUB_STEP_SUMMARY. Remembered by key."""
+    k = (key, script, tuple(sorted(env.items())), json.dumps(files, sort_keys=True))
+    if k in _RUNS:
+        return _RUNS[k]
+    d = tempfile.mkdtemp(dir=tmproot())
+    for name, data in (files or {}).items():
+        with open(os.path.join(d, name), 'w') as f:
+            f.write(data if isinstance(data, str) else json.dumps(data))
+    full = dict(base_env(), **env)
+    full.update(FAKE_DIR=d, GITHUB_OUTPUT=os.path.join(d, 'output'), GITHUB_STEP_SUMMARY=os.path.join(d, 'summary'))
+    if before:
+        before()
+    try:
+        p = subprocess.run(['bash', '--noprofile', '--norc', '-eo', 'pipefail', '-c', script],
+                           env=full, cwd=cwd, capture_output=True, text=True, timeout=60)
+        code, out = p.returncode, p.stdout + p.stderr
+    except (OSError, subprocess.TimeoutExpired) as e:
+        code, out = -1, str(e)
+    extra = after() if after else None
+
+    def read(name):
+        try:
+            with open(os.path.join(d, name)) as f:
+                return f.read()
+        except OSError:
+            return ''
+    outputs = {}
+    for line in read('output').split('\n'):
+        if '=' in line:
+            a, b = line.split('=', 1)
+            outputs[a.strip()] = b.strip()
+    calls = {'gh': [json.loads(l) for l in read('gh.calls').split('\n') if l],
+             'curl': [json.loads(l) for l in read('curl.calls').split('\n') if l],
+             'after': extra}
+    r = Ran(code, out, outputs, read('summary'), calls)
+    _RUNS[k] = r
+    return r
+
+
+def last(out):
+    ls = [l for l in out.strip().split('\n') if l.strip()]
+    return ls[-1].strip()[:160] if ls else 'nothing'
+
+
+GIT_ENV = {'GIT_AUTHOR_NAME': 'lint', 'GIT_AUTHOR_EMAIL': 'lint@example.invalid',
+           'GIT_COMMITTER_NAME': 'lint', 'GIT_COMMITTER_EMAIL': 'lint@example.invalid',
+           'GIT_AUTHOR_DATE': '2026-10-09T12:00:00Z', 'GIT_COMMITTER_DATE': '2026-10-09T12:00:00Z'}
+
+
+def fixture():
+    """A repository like the one a rollback checks out: main is A B C D E, E its
+    tip, and the branch side carries S, made off B and never merged. Each
+    commit writes its own letter to f.txt, so the tree says which is out."""
+    if not _FIXTURE:
+        r = os.path.join(tmproot(), 'repo')
+        os.makedirs(r)
+        env = dict(base_env(), **GIT_ENV)
+
+        def g(*a):
+            return subprocess.run(['git', '-C', r] + list(a), env=env, capture_output=True,
+                                  text=True, check=True).stdout.strip()
+        g('init', '-q', '-b', 'main')
+        sh = {}
+        for n in 'ABCDES':
+            if n == 'S':
+                g('checkout', '-q', '-b', 'side', sh['B'])
+            with open(os.path.join(r, 'f.txt'), 'w') as f:
+                f.write(n)
+            g('add', 'f.txt')
+            g('commit', '-q', '-m', n)
+            sh[n] = g('rev-parse', 'HEAD')
+        g('checkout', '-q', 'main')
+        _FIXTURE.append((r, sh, g))
+    return _FIXTURE[0]
+
+
+def cf_body(entries):
+    """Cloudflare's list of deployments: (commit, environment, last stage status)."""
+    return {'success': True, 'errors': [], 'messages': [],
+            'result': [{'id': 'dep-%d' % i, 'url': 'https://%d.atuned.pages.dev' % i,
+                        'environment': env, 'created_on': '2026-10-0%dT12:00:00Z' % (i + 1),
+                        'deployment_trigger': {'type': 'ad_hoc', 'metadata': {
+                            'branch': 'main' if env == 'production' else 'HEAD',
+                            'commit_hash': sha, 'commit_message': 'x', 'commit_dirty': True}},
+                        'latest_stage': {'name': 'deploy', 'status': status}, 'stages': []}
+                       for i, (sha, env, status) in enumerate(entries)],
+            'result_info': {'page': 1, 'per_page': 50, 'count': len(entries), 'total_count': len(entries)}}
+
+
+def ctx_for(event, ref, rollback=None, tok='t', acct='a', sha='a' * 40):
+    return {'github': {'event_name': event, 'ref': ref, 'repository': 'o/r', 'sha': sha, 'token': 'ghs_lint'},
+            'inputs': {'rollback_ref': rollback} if event == 'workflow_dispatch' else {},
+            'secrets': {'CLOUDFLARE_API_TOKEN': tok, 'CLOUDFLARE_ACCOUNT_ID': acct},
+            'vars': {}, 'matrix': {}, 'needs': {}, 'steps': {}, 'env': {}, 'job': {},
+            'runner': {'temp': '/tmp'}, 'strategy': {}}
+
+
+# ---------------------------------------------------------------------------
 # The checks
 # ---------------------------------------------------------------------------
 
@@ -584,7 +874,6 @@ class Lint:
     def __init__(self, doc, root=ROOT):
         self.doc, self.root = doc, root
         self.passed, self.fails = 0, []
-        self.pass_cache = {}
 
     def ok(self, cond, msg):
         if cond:
@@ -596,6 +885,40 @@ class Lint:
     def jobs(self):
         j = self.doc.get('jobs')
         return j if isinstance(j, dict) else {}
+
+    def job(self, jid):
+        j = self.jobs().get(jid)
+        return j if isinstance(j, dict) else None
+
+    def step_env(self, job, step, ctx):
+        """the env a step's script sees, as GitHub merges it: workflow, job, step"""
+        env, out = Env(ctx), {}
+        for d in (self.doc.get('env'), job.get('env'), step.get('env')):
+            if isinstance(d, dict):
+                for k, v in d.items():
+                    out[str(k)] = tostr(render(v, env))
+        return out
+
+    def script(self, job, step, ctx, key, extra=None, **kw):
+        """run one step's script with the env it would see under ctx"""
+        try:
+            text = tostr(render(step.get('run'), Env(ctx)))
+            env = self.step_env(job, step, ctx)
+        except ExprError as e:
+            return Ran(1, 'expression error: %s' % e, {}, '', {'gh': [], 'curl': [], 'after': None})
+        env.update({'GITHUB_REF': ctx['github']['ref'], 'GITHUB_EVENT_NAME': ctx['github']['event_name'],
+                    'GITHUB_SHA': ctx['github'].get('sha', 'a' * 40)})
+        env.update(extra or {})
+        return run_script(key, text, env, **kw)
+
+    def closure(self, jid):
+        seen, todo = set(), [jid]
+        while todo:
+            for n in needs_of(self.job(todo.pop()) or {}):
+                if n not in seen:
+                    seen.add(n)
+                    todo.append(n)
+        return seen
 
     # R1 -------------------------------------------------------------------
     def r1_triggers(self, other_workflows):
@@ -624,11 +947,11 @@ class Lint:
                     and inp.get('default', '') == '',
                     'R1 workflow_dispatch has no optional string input rollback_ref with an empty default.')
 
-    # R2, simulated ---------------------------------------------------------
+    # R2, the job conditions, simulated -------------------------------------
     def simulate(self, event, ref, rollback, results, cancelled):
         jobs, out, pending = self.jobs(), {}, list(self.jobs())
         inputs = {'rollback_ref': rollback} if event == 'workflow_dispatch' else {}
-        github = {'event_name': event, 'ref': ref, 'repository': 'o/r'}
+        github = {'event_name': event, 'ref': ref, 'repository': 'o/r', 'sha': 'a' * 40, 'token': 'ghs_lint'}
         guard = 0
         while pending and guard < 100:
             guard += 1
@@ -651,94 +974,90 @@ class Lint:
                 if not runs:
                     out[jid] = 'skipped'
                 elif jid == 'gates-pass':
-                    out[jid] = self.run_pass(job, ctx, status, nres)
+                    out[jid] = self.run_pass(job, ctx, nres)
                 else:
                     out[jid] = 'cancelled' if cancelled else results.get(jid, 'success')
         return out
 
-    def run_pass(self, job, ctx, status, nres):
+    def pass_run(self, job, ctx):
         st = steps_of(job)
         if len(st) != 1 or not isinstance(st[0].get('run'), str):
-            # malformed, already failed below; judge it as an honest one would
-            return 'success' if all(r == 'success' for r in nres.values()) else 'failure'
-        env = Env(ctx, status)
-        try:
-            script = tostr(render(st[0]['run'], env))
-            envs = {}
-            for d in (self.doc.get('env') or {}, job.get('env') or {}, st[0].get('env') or {}):
-                for k, v in d.items():
-                    envs[str(k)] = tostr(render(v, env))
-        except ExprError:
-            return 'failure'
-        key = (script, tuple(sorted(envs.items())))
-        if key not in self.pass_cache:
-            base = {'PATH': os.environ.get('PATH', '/usr/bin:/bin'),
-                    'GITHUB_REF': ctx['github']['ref'], 'GITHUB_EVENT_NAME': ctx['github']['event_name']}
-            try:
-                p = subprocess.run(['bash', '--noprofile', '--norc', '-eo', 'pipefail', '-c', script],
-                                   env=dict(base, **envs), capture_output=True, text=True, timeout=30)
-                self.pass_cache[key] = 'success' if p.returncode == 0 else 'failure'
-            except (OSError, subprocess.TimeoutExpired):
-                self.pass_cache[key] = 'failure'
-        return self.pass_cache[key]
+            return None
+        c = dict(ctx_for(ctx['github']['event_name'], ctx['github']['ref']), **ctx)
+        return self.script(job, st[0], c, 'gates-pass')
+
+    def run_pass(self, job, ctx, nres):
+        r = self.pass_run(job, ctx)
+        if r is None:   # malformed, failed below; judged as an honest one would be
+            return 'success' if all(v == 'success' for v in nres.values()) else 'failure'
+        return 'success' if r.code == 0 else 'failure'
 
     def r2_conditions(self):
         jobs = self.jobs()
-        missing = [j for j in GATE_JOBS + ['gates-pass', 'deploy'] if j not in jobs]
+        missing = [j for j in JOBS if j not in jobs]
         if not self.ok(not missing, 'R2 missing job%s %s, so the run conditions cannot be checked.' % ('s' if len(missing) > 1 else '', ', '.join(missing))):
             return
-        OKR = {'gates-fast': 'success', 'gates-browser': 'success'}
-        RED_F = {'gates-fast': 'failure', 'gates-browser': 'success'}
-        RED_B = {'gates-fast': 'success', 'gates-browser': 'failure'}
-        GONE_B = {'gates-fast': 'success', 'gates-browser': 'cancelled'}
-        RAN = 'ran'
+        def res(fast='success', browser='success', report='success'):
+            return {'gates-fast': fast, 'gates-browser': browser, 'gates-report': report}
+        OKR, RAN, SK = res(), 'ran', 'skipped'
+        ALL = {'gates-fast': RAN, 'gates-browser': RAN, 'gates-report': RAN, 'gates-report-summary': RAN}
+        NONE = {'gates-fast': SK, 'gates-browser': SK, 'gates-report': SK, 'gates-pass': SK, 'gates-report-summary': SK}
         scenarios = [
             ('a pull request', 'pull_request', PR_REF, None, OKR, False,
-             {'gates-fast': RAN, 'gates-browser': RAN, 'gates-pass': 'success', 'deploy': 'skipped'}),
-            ('a pull request with a red fast gate', 'pull_request', PR_REF, None, RED_F, False,
-             {'gates-pass': 'failure', 'deploy': 'skipped'}),
-            ('a pull request with a red browser gate', 'pull_request', PR_REF, None, RED_B, False,
-             {'gates-pass': 'failure', 'deploy': 'skipped'}),
+             dict(ALL, **{'gates-pass': 'success', 'deploy': SK})),
+            ('a pull request with a red fast gate', 'pull_request', PR_REF, None, res(fast='failure'), False,
+             {'gates-pass': 'failure', 'gates-report-summary': RAN, 'deploy': SK}),
+            ('a pull request with a red browser gate', 'pull_request', PR_REF, None, res(browser='failure'), False,
+             {'gates-pass': 'failure', 'deploy': SK}),
+            ('a pull request with a red report gate', 'pull_request', PR_REF, None, res(report='failure'), False,
+             {'gates-pass': 'success', 'gates-report-summary': RAN, 'deploy': SK}),
             ('a pull request, cancelled', 'pull_request', PR_REF, None, OKR, True,
-             {'gates-pass': 'failure', 'deploy': 'skipped'}),
+             {'gates-pass': 'failure', 'deploy': SK}),
             ('a push to main', 'push', MAIN, None, OKR, False,
-             {'gates-fast': RAN, 'gates-browser': RAN, 'gates-pass': 'success', 'deploy': RAN}),
-            ('a push to main with a red fast gate', 'push', MAIN, None, RED_F, False,
-             {'gates-pass': 'failure', 'deploy': 'skipped'}),
-            ('a push to main with a red browser gate', 'push', MAIN, None, RED_B, False,
-             {'gates-pass': 'failure', 'deploy': 'skipped'}),
-            ('a push to main with a cancelled browser gate', 'push', MAIN, None, GONE_B, False,
-             {'gates-pass': 'failure', 'deploy': 'skipped'}),
+             dict(ALL, **{'gates-pass': 'success', 'deploy': RAN})),
+            ('a push to main with a red fast gate', 'push', MAIN, None, res(fast='failure'), False,
+             {'gates-pass': 'failure', 'deploy': SK}),
+            ('a push to main with a red browser gate', 'push', MAIN, None, res(browser='failure'), False,
+             {'gates-pass': 'failure', 'deploy': SK}),
+            ('a push to main with a cancelled browser gate', 'push', MAIN, None, res(browser='cancelled'), False,
+             {'gates-pass': 'failure', 'deploy': SK}),
+            ('a push to main with a red report gate', 'push', MAIN, None, res(report='failure'), False,
+             {'gates-pass': 'success', 'gates-report-summary': RAN, 'deploy': RAN}),
+            ('a push to main with a cancelled report gate', 'push', MAIN, None, res(report='cancelled'), False,
+             {'gates-pass': 'success', 'gates-report-summary': RAN, 'deploy': RAN}),
             ('a push to main, cancelled', 'push', MAIN, None, OKR, True,
-             {'deploy': 'skipped'}),
+             {'deploy': SK}),
             ('a push to a branch', 'push', BRANCH, None, OKR, False,
-             {'deploy': 'skipped'}),
+             {'deploy': SK}),
             ('a dispatch on main with no rollback_ref', 'workflow_dispatch', MAIN, '', OKR, False,
-             {'gates-fast': RAN, 'gates-browser': RAN, 'gates-pass': 'success', 'deploy': RAN}),
-            ('a dispatch on main with no rollback_ref and a red gate', 'workflow_dispatch', MAIN, '', RED_B, False,
-             {'gates-pass': 'failure', 'deploy': 'skipped'}),
+             dict(ALL, **{'gates-pass': 'success', 'deploy': RAN})),
+            ('a dispatch on main with no rollback_ref and a red gate', 'workflow_dispatch', MAIN, '', res(browser='failure'), False,
+             {'gates-pass': 'failure', 'deploy': SK}),
             ('a dispatch on a branch with no rollback_ref', 'workflow_dispatch', BRANCH, '', OKR, False,
-             {'gates-fast': RAN, 'gates-pass': 'success', 'deploy': 'skipped'}),
+             {'gates-fast': RAN, 'gates-pass': 'success', 'deploy': SK}),
             ('a rollback dispatch', 'workflow_dispatch', MAIN, ROLLBACK, OKR, False,
-             {'gates-fast': 'skipped', 'gates-browser': 'skipped', 'gates-pass': 'skipped', 'deploy': RAN}),
+             dict(NONE, deploy=RAN)),
             ('a rollback dispatch on a branch', 'workflow_dispatch', BRANCH, ROLLBACK, OKR, False,
-             {'gates-fast': 'skipped', 'gates-browser': 'skipped', 'deploy': RAN}),
+             dict(NONE, deploy=RAN)),
             ('a rollback dispatch, cancelled', 'workflow_dispatch', MAIN, ROLLBACK, OKR, True,
-             {'deploy': 'skipped'}),
+             {'deploy': SK}),
         ]
         for name, event, ref, rb, results, cancelled, expect in scenarios:
             got = self.simulate(event, ref, rb, results, cancelled)
             for jid, want in expect.items():
-                g = got.get(jid, 'skipped')
-                hit = (g != 'skipped') if want == RAN else (g == want)
+                g = got.get(jid, SK)
+                hit = (g != SK) if want == RAN else (g == want)
                 self.ok(hit, 'R2 on %s, %s is %s; it must be %s.' % (
-                    name, jid, 'run' if g not in ('skipped',) and want in (RAN, 'skipped') else g,
+                    name, jid, 'run' if g != SK and want in (RAN, SK) else g,
                     'run' if want == RAN else want))
+        up = self.closure('deploy')
+        self.ok('gates-pass' in up and not (set(UNWAITED) & up),
+                'R2 deploy waits for %s. It must need gates-pass and never gates-report or gates-report-summary, which hold nothing back, so a deploy never waits for them.' % (', '.join(sorted(up)) or 'nothing'))
 
     # R2, gates-pass's own step against every combination of results --------
     def r2_pass_step(self):
-        job = self.jobs().get('gates-pass')
-        if not isinstance(job, dict):
+        job = self.job('gates-pass')
+        if not job:
             return
         nd = needs_of(job)
         self.ok(all(g in nd for g in GATE_JOBS), 'R2 gates-pass does not need %s.' % ', '.join(g for g in GATE_JOBS if g not in nd))
@@ -748,17 +1067,23 @@ class Lint:
         if not self.ok(len(st) == 1 and isinstance(st[0].get('run'), str) and 'uses' not in st[0],
                        'R2 gates-pass must be a single run step.'):
             return
-        ctx = {'github': {'event_name': 'pull_request', 'ref': PR_REF}, 'inputs': {}, 'vars': {}}
         results = ['success', 'failure', 'cancelled', 'skipped']
         for a in results:
             for b in results:
-                nres = {'gates-fast': a, 'gates-browser': b}
-                for n in nd:
-                    nres.setdefault(n, 'success')
-                c = dict(ctx, needs={n: {'result': r, 'outputs': {}} for n, r in nres.items()})
-                got = self.run_pass(job, c, {'cancelled': False, 'needs_ok': False, 'needs_failed': False}, nres)
+                nres = {n: 'success' for n in nd}
+                nres.update({'gates-fast': a, 'gates-browser': b})
+                ctx = {'github': {'event_name': 'pull_request', 'ref': PR_REF}, 'inputs': {}, 'vars': {},
+                       'needs': {n: {'result': r, 'outputs': {}} for n, r in nres.items()}}
+                r = self.pass_run(job, ctx)
                 want = 'success' if a == b == 'success' else 'failure'
+                got = 'success' if r.code == 0 else 'failure'
                 self.ok(got == want, 'R2 the gates-pass step reads %s when gates-fast is %s and gates-browser is %s; a skipped or cancelled required job is a failure.' % (got, a, b))
+                for n in nd:
+                    v = nres.get(n)
+                    self.ok(any(l.startswith(n) and re.search(r'\b%s\b' % v, l) for l in r.lines()),
+                            'R2 gates-pass does not print a line naming %s and its result (%s).' % (n, v))
+                    self.ok(re.search(r'^\|\s*%s\s*\|\s*%s\s*\|\s*$' % (re.escape(n), v), r.summary, re.M) is not None,
+                            'R2 gates-pass does not write the row | %s | %s | to $GITHUB_STEP_SUMMARY, so the run page does not show it.' % (n, v))
 
     # R2 and R5, what each gate job runs, in what order ----------------------
     def common(self, where, job, texts, leg=None):
@@ -812,8 +1137,8 @@ class Lint:
             self.ok(n in known, 'R5 %s checks the floor of %s, which tests/floors.json does not name.' % (where, n))
 
     def r2_fast(self):
-        job = self.jobs().get('gates-fast')
-        if not isinstance(job, dict):
+        job = self.job('gates-fast')
+        if not job:
             return
         texts = run_texts(job)
         built = self.common('gates-fast', job, texts)
@@ -835,9 +1160,9 @@ class Lint:
                 absent = condition(s.get('if'), static_env(files=set()))
                 present = condition(s.get('if'), static_env(files={'tests/chrome-path.js'}))
             except ExprError:
-                absent, present = True, False
-            self.ok(not absent and present,
-                    "R2 the chrome-path step must run only when the file exists: if: hashFiles('tests/chrome-path.js') != ''.")
+                absent, present = False, False
+            self.ok(absent and present,
+                    'R2 the chrome-path step must run whether or not tests/chrome-path.js exists. A gate that is skipped when its file is gone reads green, so it takes no if.')
         fa = self.floors_args(texts)
         want = ['engine', 'funnel-package']
         hit = [a for a in fa if all(w in a[1] for w in want)]
@@ -845,130 +1170,408 @@ class Lint:
             self.ok(pe is not None and hit[0][0] > pe, 'R5 gates-fast checks the floors before the gates have run.')
             self.floors_known('gates-fast', hit[0][1])
         self.ok(os.path.isfile(os.path.join(self.root, 'tools', 'floors.js')), 'R5 tools/floors.js does not exist.')
-        p, m, s = find(texts, r'test -s\b')
-        txt = s.get('run', '') if s else ''
-        self.ok(p is not None and 'funnel/dist/' in txt and all(re.search(r'\b%s\b' % re.escape(f), txt) for f in FUNNEL_PAGES),
-                'R2 gates-fast does not check that the funnel built all of %s, the FAQ page included.' % ', '.join(FUNNEL_PAGES))
-        if p is not None and built is not None:
-            self.ok(p > built, 'R2 gates-fast checks the funnel built before building it.')
 
-    def r2_browser(self):
-        job = self.jobs().get('gates-browser')
-        if not isinstance(job, dict):
-            return
-        strat = job.get('strategy') or {}
-        self.ok(strat.get('fail-fast') is False,
-                'R2 gates-browser does not set fail-fast: false, so one red gate cancels the others and hides what else is red.')
-        ls = legs(job)
-        if not self.ok(ls, 'R2 gates-browser has no matrix.'):
-            return
-        names = [str(l.get('gate')) for l in ls]
-        self.ok(sorted(names) == sorted(BROWSER),
-                'R2 gates-browser runs %s; it must run each of %s once.' % (', '.join(names), ', '.join(BROWSER)))
-        for leg in ls:
-            g = str(leg.get('gate'))
-            if g not in BROWSER:
+    def r2_matrix(self):
+        seen = {}
+        for jid in MATRIX_JOBS:
+            job = self.job(jid)
+            if not job:
                 continue
-            cmd, must, minutes = BROWSER[g]
-            where = 'gates-browser (%s)' % g
-            required = leg.get('required')
-            self.ok(isinstance(required, bool) and (required or not must),
-                    'R2 %s has required: %r; it must be %s.' % (where, required, 'true' if must else 'true or false'))
-            required = bool(required)
-            env = static_env(leg)
-            try:
-                t = render(job.get('timeout-minutes'), env)
-                coe = render(job.get('continue-on-error', False), env)
-            except ExprError:
-                t, coe = None, None
-            self.ok(t is not None and minutes <= num(t) <= 360,
-                    'R2 %s has timeout-minutes %s; it must be at least %d, and GitHub stops a job at 360.' % (where, tostr(t) or 'unset', minutes))
-            self.ok(coe is not None and truthy(coe) == (not required),
-                    'R2 %s has continue-on-error %s; it must be %s, which is continue-on-error: ${{ !matrix.required }}.' % (
-                        where, tostr(coe), 'false' if required else 'true'))
-            texts = run_texts(job, leg)
-            built = self.common(where, job, texts, leg)
-            pg = self.teed(where, texts, re.escape(cmd) + r'\b', g + '.log', built)
-            before = lambda p: p is not None and (pg is None or p < pg)
-            self.ok(before(find(texts, r'npm install -g\b[^\n]*\bplaywright@1\.56\.1\b')[0]),
-                    'R2 %s does not install playwright@1.56.1 globally before the gate.' % where)
-            self.ok(before(find(texts, r'npx playwright install --with-deps chromium\b')[0]),
-                    'R2 %s does not run npx playwright install --with-deps chromium before the gate.' % where)
-            self.ok(any('NODE_PATH' in t and 'npm root -g' in t and 'GITHUB_ENV' in t and (pg is None or i < pg[0]) for i, _, t in texts),
-                    'R2 %s does not set NODE_PATH to $(npm root -g) through $GITHUB_ENV before the gate.' % where)
-            self.ok(any(re.search(r'\bCHROME\b', t) and 'chromium.executablePath()' in t and 'GITHUB_ENV' in t and (pg is None or i < pg[0]) for i, _, t in texts),
-                    "R2 %s does not set CHROME to playwright's chromium.executablePath() through $GITHUB_ENV before the gate." % where)
-            fa = [a for a in self.floors_args(texts) if g in a[1]]
-            if self.ok(fa, 'R5 %s does not run node tools/floors.js %s.' % (where, g)):
-                self.ok(pg is not None and fa[0][0] > pg, 'R5 %s checks its floor before the gate has run.' % where)
-                self.floors_known(where, [g])
-
-    # R2, R3, R4, the deploy job --------------------------------------------
-    def r2_deploy(self):
-        job = self.jobs().get('deploy')
-        if not self.ok(isinstance(job, dict), 'R2 there is no deploy job.'):
-            return
-        self.ok('gates-pass' in needs_of(job), 'R2 deploy does not need gates-pass, so it can publish over a red gate.')
-        self.ok(job.get('concurrency') == {'group': 'pages-prod', 'cancel-in-progress': False},
-                'R2 deploy does not set concurrency { group: pages-prod, cancel-in-progress: false }, so two deploys can overlap and whichever finishes last stays live.')
-        st = steps_of(job)
-        co = [i for i, s in enumerate(st) if str(s.get('uses', '')).startswith('actions/checkout@')]
-        if self.ok(len(co) == 1, 'R2 deploy must check out exactly once.'):
-            guard = None
-            for s in st[:co[0]]:
+            strat = job.get('strategy') or {}
+            self.ok(strat.get('fail-fast') is False,
+                    'R2 %s does not set fail-fast: false, so one red gate cancels the others and hides what else is red.' % jid)
+            ls = legs(job)
+            if not self.ok(ls, 'R2 %s has no matrix.' % jid):
+                continue
+            for leg in ls:
+                g = str(leg.get('gate'))
+                seen.setdefault(g, []).append(jid)
+                where = '%s (%s)' % (jid, g)
+                env = static_env(leg)
                 try:
-                    rb = condition(s.get('if'), Env({'inputs': {'rollback_ref': ROLLBACK}, 'github': {'ref': MAIN}}))
-                    push = condition(s.get('if'), Env({'inputs': {}, 'github': {'ref': MAIN}}))
+                    name = tostr(render(job.get('name'), env)) if job.get('name') is not None else None
+                    t = render(job.get('timeout-minutes'), env)
+                    coe = render(job.get('continue-on-error', False), env)
                 except ExprError:
+                    name, t, coe = None, None, None
+                self.ok(name == where,
+                        'R2 %s is named %r. It must be named %s, from name: %s (${{ matrix.gate }}): gates-report-summary finds each leg by that name.' % (where, name, where, jid))
+                if g not in BROWSER:
                     continue
-                if rb and not push:
-                    guard = s
-            g = (guard or {}).get('run', '')
-            self.ok(guard is not None and 'refs/heads/main' in g and 'compare/main...' in g and 'exit 1' in g,
-                    'R2 deploy has no guard, before its checkout and on a rollback only, that refuses a rollback dispatched off main or to a commit not on main.')
-            # On a rollback the checkout takes the commit asked for, or the full
-            # id the guard resolved it to; otherwise it is empty, which checks
-            # out the commit the run was started on.
-            ref = (st[co[0]].get('with') or {}).get('ref')
-            gid = str((guard or {}).get('id', '')).lower()
-            full = 'f' * 40
+                cmd, minutes = BROWSER[g]
+                self.ok(t is not None and minutes <= num(t) <= 360,
+                        'R2 %s has timeout-minutes %s; it must be at least %d, and GitHub stops a job at 360.' % (where, tostr(t) or 'unset', minutes))
+                if jid == 'gates-browser':
+                    self.ok(coe is not None and not truthy(coe),
+                            'R2 %s has continue-on-error %s. gates-browser holds the required gates, so a red one must fail gates-pass; a gate that only reports goes in gates-report.' % (where, tostr(coe)))
+                else:
+                    self.ok(coe is not None and truthy(coe),
+                            'R2 %s has continue-on-error %s; it must be true. gates-report only reports, and nothing that publishes waits for it.' % (where, tostr(coe)))
+                texts = run_texts(job, leg)
+                built = self.common(where, job, texts, leg)
+                pg = self.teed(where, texts, re.escape(cmd) + r'\b', g + '.log', built)
+                before = lambda p: p is not None and (pg is None or p < pg)
+                self.ok(before(find(texts, r'npm install -g\b[^\n]*\bplaywright@1\.56\.1\b')[0]),
+                        'R2 %s does not install playwright@1.56.1 globally before the gate.' % where)
+                self.ok(before(find(texts, r'npx playwright install --with-deps chromium\b')[0]),
+                        'R2 %s does not run npx playwright install --with-deps chromium before the gate.' % where)
+                self.ok(any('NODE_PATH' in t and 'npm root -g' in t and 'GITHUB_ENV' in t and (pg is None or i < pg[0]) for i, _, t in texts),
+                        'R2 %s does not set NODE_PATH to $(npm root -g) through $GITHUB_ENV before the gate.' % where)
+                self.ok(any(re.search(r'\bCHROME\b', t) and 'chromium.executablePath()' in t and 'GITHUB_ENV' in t and (pg is None or i < pg[0]) for i, _, t in texts),
+                        "R2 %s does not set CHROME to playwright's chromium.executablePath() through $GITHUB_ENV before the gate." % where)
+                fa = [a for a in self.floors_args(texts) if g in a[1]]
+                if self.ok(fa, 'R5 %s does not run node tools/floors.js %s.' % (where, g)):
+                    self.ok(pg is not None and fa[0][0] > pg, 'R5 %s checks its floor before the gate has run.' % where)
+                    self.floors_known(where, [g])
+        self.ok(sorted(seen) == sorted(BROWSER) and all(len(v) == 1 for v in seen.values()),
+                'R2 the browser gates run are %s; each of %s must run exactly once, in gates-browser or in gates-report.' % (
+                    ', '.join('%s in %s' % (g, ' and '.join(v)) for g, v in sorted(seen.items())) or 'none', ', '.join(BROWSER)))
+        for g in ALWAYS_REQUIRED:
+            self.ok(seen.get(g) == ['gates-browser'],
+                    'R2 %s runs in %s; it must run in gates-browser, where a red run holds back the deploy.' % (g, ' and '.join(seen.get(g, [])) or 'neither'))
+
+    # R2, the report only legs, shown and warned on -------------------------
+    def r2_report_summary(self):
+        job, rep = self.job('gates-report-summary'), self.job('gates-report')
+        if not job or not rep:
+            return
+        self.ok('gates-report' in needs_of(job),
+                'R2 gates-report-summary does not need gates-report, so it can run before the legs it reports have finished.')
+        perms = job.get('permissions')
+        self.ok(isinstance(perms, dict) and str(perms.get('actions')) == 'read',
+                'R2 gates-report-summary does not have permissions: actions: read, which the list of this run\'s jobs needs.')
+        st = [s for s in steps_of(job) if isinstance(s.get('run'), str) and re.search(r'\bgh api\b', s['run'])]
+        if not self.ok(st, "R2 gates-report-summary does not read this run's jobs with gh api."):
+            return
+        step, legs_ = st[0], []
+        for leg in legs(rep) or []:
             try:
-                on_rb = tostr(render(ref, Env({'inputs': {'rollback_ref': ROLLBACK}, 'github': {},
-                                               'steps': {gid: {'outputs': {'sha': full}}} if gid else {}})))
-                on_push = tostr(render(ref, Env({'inputs': {}, 'github': {}, 'steps': {}})))
+                n = tostr(render(rep['name'], static_env(leg))) if rep.get('name') is not None else \
+                    'gates-report (%s)' % ', '.join(tostr(v) for v in leg.values())
             except ExprError:
-                on_rb, on_push = None, 'x'
-            self.ok(on_rb in (ROLLBACK, full) and on_push == '',
-                    'R2 the deploy checkout must take the rollback commit on a rollback, ${{ inputs.rollback_ref }} or the full id its guard resolved, and be empty otherwise, which is the commit the run started on.')
-        texts = run_texts(job)
-        stage = [t for _, s, t in texts if 'mkdir deploy' in t]
+                n = 'gates-report'
+            legs_.append((str(leg.get('gate')), n))
+        if not legs_:
+            return
+        verdicts = ['failure', 'success', 'cancelled', 'timed_out', 'skipped']
+        mixed = {g: verdicts[i % len(verdicts)] for i, (g, _) in enumerate(legs_)}
+        green = {g: 'success' for g, _ in legs_}
+
+        def jobs_json(results, with_legs=True):
+            js = [{'name': 'gates-fast', 'status': 'completed', 'conclusion': 'success'},
+                  {'name': 'gates-browser (boot)', 'status': 'completed', 'conclusion': 'failure'},
+                  {'name': 'gates-pass', 'status': 'completed', 'conclusion': 'failure'},
+                  {'name': 'gates-report-summary', 'status': 'in_progress', 'conclusion': None}]
+            if with_legs:
+                js += [{'name': n, 'status': 'completed', 'conclusion': results[g]} for g, n in legs_]
+            return {'total_count': len(js), 'jobs': js}
+        ctx = ctx_for('push', MAIN)
+        for name, results in (('mixed results', mixed), ('every leg green', green)):
+            r = self.script(job, step, ctx, 'summary ' + name, files={'jobs.json': jobs_json(results)})
+            if not self.ok(r.code == 0, 'R2 gates-report-summary, given %s, exits %d (%s); it only reports, and must exit 0.' % (name, r.code, last(r.out))):
+                continue
+            warned = [l for l in r.lines() if l.startswith('::warning')]
+            want = [WARN + '%s %s' % (g, v) for g, v in sorted(results.items()) if v != 'success']
+            self.ok(sorted(warned) == sorted(want),
+                    'R2 gates-report-summary, given %s, warns %s; it must warn exactly %s.' % (name, warned or 'nothing', want or 'nothing'))
+            for g, v in results.items():
+                self.ok(re.search(r'^\|\s*%s\s*\|\s*%s\s*\|\s*$' % (re.escape(g), v), r.summary, re.M) is not None,
+                        'R2 gates-report-summary does not write the row | %s | %s | to $GITHUB_STEP_SUMMARY.' % (g, v))
+                self.ok(any(g in l and re.search(r'\b%s\b' % v, l) and not l.startswith('::') for l in r.lines()),
+                        'R2 gates-report-summary does not print a line naming %s and its result (%s).' % (g, v))
+            self.ok(any('repos/o/r/actions/runs/4242/jobs' in c for c in r.calls['gh']),
+                    "R2 gates-report-summary does not read repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/jobs.")
+        for name, extra, files in (('GitHub down', {'FAKE_GH_FAIL': '1'}, {'jobs.json': jobs_json(green)}),
+                                   ('a list with no gates-report leg', {}, {'jobs.json': jobs_json(green, False)})):
+            r = self.script(job, step, ctx, 'summary ' + name, extra=extra, files=files)
+            self.ok(r.code != 0, 'R2 gates-report-summary, given %s, exits 0; a report it could not make must fail loud.' % name)
+
+    # R3, one list of built pages, checked in both places -------------------
+    def r3_pages(self):
+        wenv = self.doc.get('env') if isinstance(self.doc.get('env'), dict) else {}
+        pages = str(wenv.get('FUNNEL_PAGES', '')).split()
+        self.ok(all(p in pages for p in FUNNEL_PAGES) and len(set(pages)) == len(pages),
+                'R3 the workflow env FUNNEL_PAGES must name %s, once each. gates-fast and deploy both check that one list, so a page is added in one place.' % ', '.join(FUNNEL_PAGES))
+        pages = pages or FUNNEL_PAGES
+        for jid in ('gates-fast', 'deploy'):
+            job = self.job(jid)
+            if not job:
+                continue
+            texts = run_texts(job)
+            built = find(texts, BUILDS[2])[0]
+            p, m, s = find(texts, r'test -s\b')
+            if not self.ok(p is not None, 'R3 %s does not check that the funnel built its pages.' % jid):
+                continue
+            self.ok(built is not None and p > built, 'R3 %s checks the funnel built before building it.' % jid)
+            cases = [('every page built', {}, pages, 0)]
+            cases += [('%s missing' % q, {q: None}, pages, 1) for q in pages]
+            cases += [('%s empty' % pages[0], {pages[0]: ''}, pages, 1),
+                      ('FUNNEL_PAGES empty', {}, [], 1),
+                      ('a page added to FUNNEL_PAGES and not built', {}, pages + ['atuned-new'], 1)]
+            for name, odd, listed, want in cases:
+                built_here = {q: odd.get(q, '<!doctype html>') for q in pages if odd.get(q, 'x') is not None}
+                key = 'pages %s %s' % (jid, json.dumps(built_here, sort_keys=True))
+                d = os.path.join(tmproot(), 'pages', str(abs(hash(key))))
+                if not os.path.isdir(d):
+                    os.makedirs(os.path.join(d, 'funnel', 'dist'))
+                    for q, text in built_here.items():
+                        with open(os.path.join(d, 'funnel', 'dist', q + '.html'), 'w') as f:
+                            f.write(text)
+                ctx = ctx_for('push', MAIN)
+                try:
+                    env = self.step_env(job, s, ctx)
+                except ExprError:
+                    env = {}
+                env['FUNNEL_PAGES'] = ' '.join(listed)
+                r = run_script(key, tostr(render(s.get('run'), Env(ctx))), env, cwd=d)
+                self.ok((r.code == 0) == (want == 0),
+                        'R3 the %s check that the funnel built exits %d with %s; it must %s.' % (
+                            jid, r.code, name, 'pass' if want == 0 else 'fail'))
+        job = self.job('deploy')
+        stage = [t for _, s, t in run_texts(job)] if job else []
+        stage = [t for t in stage if 'mkdir deploy' in t]
         lines = [l.strip() for l in (stage[0] if stage else '').split('\n')]
         if self.ok(stage, 'R3 deploy has no staging step.'):
             self.ok(all(l in lines for l in STAGE_LINES),
                     'R3 the staging step lost %s.' % ', '.join(l for l in STAGE_LINES if l not in lines))
             self.ok(FAQ_LINE in lines,
                     'R3 the staging step does not run %s, and the FAQ is linked seven times from three live pages (M48).' % FAQ_LINE)
+            lost = [q for q in pages if 'cp funnel/dist/%s.html deploy/' % q not in lines]
+            self.ok(not lost, 'R3 FUNNEL_PAGES names %s, which the staging step does not copy, so it is checked and never published.' % ', '.join(lost))
+
+    # R4, the deploy job ----------------------------------------------------
+    def r4_deploy(self):
+        job = self.job('deploy')
+        if not self.ok(job is not None, 'R2 there is no deploy job.'):
+            return
+        self.ok('gates-pass' in needs_of(job), 'R2 deploy does not need gates-pass, so it can publish over a red gate.')
+        self.ok(job.get('concurrency') == {'group': 'pages-prod', 'cancel-in-progress': False},
+                'R2 deploy does not set concurrency { group: pages-prod, cancel-in-progress: false }, so two deploys can overlap and whichever finishes last stays live.')
+        texts = run_texts(job)
+        built = self.common('deploy', job, texts)
+        self.ok(find(texts, r'node tests/engine\.js\b', built)[0] is not None,
+                'R2 deploy does not run node tests/engine.js after its builds, which on a rollback is the only gate the commit gets.')
         env = job.get('env') or {}
         self.ok(env.get('CF_TOKEN') == '${{ secrets.CLOUDFLARE_API_TOKEN }}' and env.get('CF_ACCOUNT') == '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}',
                 'R4 the deploy job no longer maps CF_TOKEN and CF_ACCOUNT from the two Cloudflare secrets.')
-        inst = [s for s in st if INSTALL_CMD in str(s.get('run', ''))]
-        self.ok(len(inst) == 1 and str(inst[0].get('if', '')).strip() == GUARD_INSTALL,
-                'R4 the wrangler install step is not guarded by exactly: %s' % GUARD_INSTALL)
-        dep = [s for s in st if 'wrangler pages deploy' in str(s.get('run', ''))]
+        st = steps_of(job)
+        push, rb = ctx_for('push', MAIN), ctx_for('workflow_dispatch', MAIN, ROLLBACK)
+
+        def runs_on(s, ctx):
+            try:
+                return condition(s.get('if'), Env(dict(ctx, env=self.step_env(job, {}, ctx))))
+            except ExprError:
+                return None
+        co = [i for i, s in enumerate(st) if str(s.get('uses', '')).startswith('actions/checkout@')]
+        if not self.ok(len(co) == 1, 'R2 deploy must check out exactly once.'):
+            return
+        ci = co[0]
+        idx = {'checkout': ci}
+        secrets = [i for i, s in enumerate(st[:ci]) if isinstance(s.get('run'), str)
+                   and runs_on(s, push) and runs_on(s, rb)]
+        if self.ok(secrets, 'R4 deploy has no step, before its checkout and on every path, that fails the job when CLOUDFLARE_API_TOKEN or CLOUDFLARE_ACCOUNT_ID is not set.'):
+            idx['secrets'] = secrets[0]
+            self.r4_secrets(job, st[secrets[0]])
+        order = [i for i, s in enumerate(st) if 'git/ref/heads/main' in str(s.get('run', ''))]
+        if self.ok(len(order) == 1 and order[0] < ci and runs_on(st[order[0]], push) and not runs_on(st[order[0]], rb)
+                   and st[order[0]].get('id'),
+                   'R4 deploy has no order check: one step with an id, before the checkout, on a push and never on a rollback, that reads the tip of main through gh api repos/$GITHUB_REPOSITORY/git/ref/heads/main.'):
+            idx['order'] = order[0]
+            self.r4_order(job, st[order[0]])
+        guard = [i for i, s in enumerate(st) if 'pages/projects/atuned/deployments' in str(s.get('run', ''))]
+        if self.ok(len(guard) == 1 and guard[0] > ci and runs_on(st[guard[0]], rb) and not runs_on(st[guard[0]], push)
+                   and st[guard[0]].get('id'),
+                   "R4 deploy has no rollback guard: one step with an id, after the checkout, on a rollback and never on a push, that reads Cloudflare's production deployments."):
+            idx['guard'] = guard[0]
+            self.r4_guard(job, st[guard[0]])
+        moves = [i for i, s in enumerate(st) if i not in (ci, idx.get('guard'))
+                 and (str(s.get('uses', '')).startswith('actions/checkout@') or
+                      re.search(r'\bgit\s+(?:checkout|switch|reset|restore|stash|pull|merge|rebase)\b', str(s.get('run', ''))))]
+        self.ok(not moves, 'R4 deploy step %s changes the checked out commit outside the rollback guard, so what is published is not what was checked.' % moves)
+        w = st[ci].get('with') or {}
+        try:
+            depth = (render(w.get('fetch-depth', 1), Env(rb)), render(w.get('fetch-depth', 1), Env(push)))
+            ref = (tostr(render(w.get('ref'), Env(rb))), tostr(render(w.get('ref'), Env(push))))
+        except ExprError:
+            depth, ref = (None, None), ('x', 'x')
+        self.ok(depth[0] is not None and num(depth[0]) == 0 and depth[1] is not None and num(depth[1]) == 1,
+                'R4 the deploy checkout fetches depth %s on a rollback and %s on a push. It must fetch the whole history on a rollback (0), which the guard resolves rollback_ref in, and one commit otherwise (1).' % (
+                    tostr(depth[0]) or 'unset', tostr(depth[1]) or 'unset'))
+        self.ok(ref == ('', ''),
+                "R4 the deploy checkout takes ref %r. It must take none, the run's own commit: on a rollback the guard moves to the commit it verified, after verifying it." % (ref[0],))
+        inst = [i for i, s in enumerate(st) if INSTALL_CMD in str(s.get('run', ''))]
+        if self.ok(len(inst) == 1, 'R4 deploy must run %s in exactly one step.' % INSTALL_CMD):
+            idx['install'] = inst[0]
+        dep = [i for i, s in enumerate(st) if 'wrangler pages deploy' in str(s.get('run', ''))]
         if self.ok(len(dep) == 1, 'R4 deploy must run wrangler pages deploy in exactly one step.'):
-            d = dep[0]
-            self.ok(str(d.get('if', '')).strip() == GUARD_DEPLOY, 'R4 the deploy step is not guarded by exactly: %s' % GUARD_DEPLOY)
-            self.ok(str(d.get('run', '')).strip() == DEPLOY_CMD, 'R4 the deploy command is not exactly: %s' % DEPLOY_CMD)
+            d = st[dep[0]]
+            idx['deploy'] = dep[0]
+            self.ok(str(d.get('run', '')).strip() == DEPLOY_CMD,
+                    'R4 the deploy command is not exactly: %s. Without --branch=main, a rollback publishes a preview and atuned.world stays as it was.' % DEPLOY_CMD)
             de = d.get('env') or {}
             self.ok(de.get('CLOUDFLARE_API_TOKEN') == '${{ secrets.CLOUDFLARE_API_TOKEN }}' and de.get('CLOUDFLARE_ACCOUNT_ID') == '${{ secrets.CLOUDFLARE_ACCOUNT_ID }}',
                     'R4 the deploy step no longer passes the two Cloudflare secrets to wrangler.')
-            for tok, acct, ref, want in (('t', 'a', MAIN, True), ('', 'a', MAIN, False), ('t', '', MAIN, False), ('t', 'a', BRANCH, False)):
+        if all(k in idx for k in ('secrets', 'order', 'guard', 'install', 'deploy')):
+            self.r4_walk(job, idx)
+
+    def r4_secrets(self, job, step):
+        for tok, acct in (('t', 'a'), ('', 'a'), ('t', ''), ('', '')):
+            r = self.script(job, step, ctx_for('push', MAIN, tok=tok, acct=acct), 'secrets')
+            gone = [n for n, v in (('CLOUDFLARE_API_TOKEN', tok), ('CLOUDFLARE_ACCOUNT_ID', acct)) if not v]
+            if not gone:
+                self.ok(r.code == 0, 'R4 the deploy secrets check fails with both secrets set (%s).' % last(r.out))
+            else:
+                self.ok(r.code != 0 and all(n in r.out for n in gone),
+                        'R4 the deploy secrets check, with %s not set, exits %d%s. It must fail the job and name the secret: a deploy that skips reads green with nothing published.' % (
+                            ' and '.join(gone), r.code, '' if r.code else ' and the job reads green'))
+
+    def order_run(self, job, step, tip):
+        ctx = ctx_for('push', MAIN)
+        head = ctx['github']['sha']
+        extra = {'FAKE_TIP': {'same': head, 'newer': 'b' * 40, 'null': ''}.get(tip, '')}
+        if tip == 'down':
+            extra['FAKE_GH_FAIL'] = '1'
+        return self.script(job, step, ctx, 'order ' + tip, extra=extra)
+
+    def r4_order(self, job, step):
+        for tip, want in (('same', 'true'), ('newer', 'false'), ('down', None), ('null', None)):
+            r = self.order_run(job, step, tip)
+            name = {'same': 'main still at this commit', 'newer': 'a newer commit on main',
+                    'down': 'GitHub down', 'null': 'main read as null'}[tip]
+            if want is None:
+                self.ok(r.code != 0, 'R4 the order check, with %s, exits 0; it cannot tell whether this commit is the newest, so it must fail.' % name)
+                continue
+            self.ok(r.code == 0 and r.outputs.get('publish') == want,
+                    'R4 the order check, with %s, exits %d and sets publish=%s; it must exit 0 and set publish=%s.' % (
+                        name, r.code, r.outputs.get('publish', 'nothing'), want))
+            if want == 'false':
+                self.ok(NEWER in r.out, 'R4 the order check, with a newer commit on main, does not print "%s".' % NEWER)
+            self.ok(any(c[:2] == ['api', 'repos/o/r/git/ref/heads/main'] for c in r.calls['gh']),
+                    'R4 the order check does not read repos/$GITHUB_REPOSITORY/git/ref/heads/main.')
+
+    def r4_guard(self, job, step):
+        repo, sh, g = fixture()
+        live = cf_body([(sh['A'], 'production', 'success'), (sh['B'], 'production', 'failure'),
+                        (sh['C'], 'preview', 'success'), (sh['S'], 'production', 'success'),
+                        (sh['E'], 'production', 'success')])
+        dark = cf_body([e for e in [(sh['A'], 'production', 'success'), (sh['E'], 'preview', 'success')]])
+        cases = [
+            # name, rollback_ref, dispatched on, token, account, Cloudflare, list, GitHub down, publishes
+            ('a full commit id that was live', sh['A'], MAIN, 't', 'a', 'ok', live, False, 'A'),
+            ('a short commit id that was live', sh['A'][:9], MAIN, 't', 'a', 'ok', live, False, 'A'),
+            ('main, which is live now', 'main', MAIN, 't', 'a', 'ok', live, False, 'E'),
+            ('main, never published to production', 'main', MAIN, 't', 'a', 'ok', dark, False, None),
+            ('a commit whose production deploy failed', sh['B'], MAIN, 't', 'a', 'ok', live, False, None),
+            ('a commit published only as a preview', sh['C'], MAIN, 't', 'a', 'ok', live, False, None),
+            ('a commit on main never published', sh['D'], MAIN, 't', 'a', 'ok', live, False, None),
+            ('a commit off main that Cloudflare lists as production', sh['S'], MAIN, 't', 'a', 'ok', live, False, None),
+            ('a commit that does not exist', 'deadbeef', MAIN, 't', 'a', 'ok', live, False, None),
+            ('an option, not a commit', '--all', MAIN, 't', 'a', 'ok', live, False, None),
+            ('a rollback dispatched off main', sh['A'], BRANCH, 't', 'a', 'ok', live, False, None),
+            ('Cloudflare down', sh['A'], MAIN, 't', 'a', 'down', live, False, None),
+            ('Cloudflare answering with a page that is not JSON', sh['A'], MAIN, 't', 'a', 'garbage', live, False, None),
+            ('Cloudflare answering success: false', sh['A'], MAIN, 't', 'a', 'refused', live, False, None),
+            ('no Cloudflare token', sh['A'], MAIN, '', 'a', 'ok', live, False, None),
+            ('no Cloudflare account', sh['A'], MAIN, 't', '', 'ok', live, False, None),
+            ('GitHub compare down', sh['A'], MAIN, 't', 'a', 'ok', live, True, None),
+        ]
+        reset = lambda: g('checkout', '-q', '--force', 'main')
+
+        def here():
+            """where the guard left the checkout and the tree it left, then back to main"""
+            with open(os.path.join(repo, 'f.txt')) as f:
+                seen = (g('rev-parse', 'HEAD'), f.read())
+            reset()
+            return seen
+        for name, ref, on, tok, acct, mode, body, ghdown, pub in cases:
+            ctx = ctx_for('workflow_dispatch', on, ref, tok=tok, acct=acct, sha=sh['E'])
+            extra = {'FAKE_REPO': repo, 'FAKE_CF': mode, 'FAKE_CF_TOKEN': tok, 'FAKE_CF_URL': CF_DEPLOYMENTS % acct}
+            if ghdown:
+                extra['FAKE_GH_FAIL'] = '1'
+            r = self.script(job, step, ctx, 'guard ' + name, extra=extra, cwd=repo,
+                            files={'cf.json': body}, before=reset, after=here)
+            head, tree = r.calls['after'] or ('', '')
+            if pub is None:
+                self.ok(r.code != 0 and head == sh['E'] and 'sha' not in r.outputs,
+                        'R4 the rollback guard, given %s, %s; it must refuse and leave the checkout where it was.' % (
+                            name, 'exits 0' if r.code == 0 else 'moves the checkout to %s' % head[:9]))
+                continue
+            want = sh[pub]
+            if not self.ok(r.code == 0 and head == want and tree == pub and r.outputs.get('sha') == want,
+                           'R4 the rollback guard, given %s, exits %d at %s; it must exit 0 with commit %s checked out and sha=%s in its outputs. It said: %s' % (
+                               name, r.code, head[:9] or 'nothing', pub, want[:9], last(r.out))):
+                continue
+            self.ok(want in r.out, 'R4 the rollback guard does not print the commit id it matched (%s).' % want[:9])
+            calls = r.calls['curl']
+            self.ok(len(calls) == 1 and calls[0]['urls'] == [CF_DEPLOYMENTS % acct]
+                    and 'Authorization: Bearer ' + tok in calls[0]['headers'],
+                    'R4 the rollback guard does not read %s once, with Authorization: Bearer and the token.' % (CF_DEPLOYMENTS % '$CF_ACCOUNT'))
+
+    def r4_walk(self, job, idx):
+        """the deploy job's steps in order, on every path into it"""
+        st = steps_of(job)
+        sid = {k: str(st[i].get('id', '')).lower() for k, i in idx.items()}
+        paths = [
+            # name, event, rollback_ref, token, account, main's tip, guard passes
+            ('a push to main', 'push', None, 't', 'a', 'same', True),
+            ('a push to main that a newer commit has overtaken', 'push', None, 't', 'a', 'newer', True),
+            ('a push to main with no token', 'push', None, '', 'a', 'same', True),
+            ('a push to main with no account', 'push', None, 't', '', 'same', True),
+            ('a dispatch on main with no rollback_ref', 'workflow_dispatch', '', 't', 'a', 'same', True),
+            ('a rollback the guard passes', 'workflow_dispatch', ROLLBACK, 't', 'a', 'same', True),
+            ('a rollback the guard refuses', 'workflow_dispatch', ROLLBACK, 't', 'a', 'same', False),
+            ('a rollback with no token', 'workflow_dispatch', ROLLBACK, '', 'a', 'same', True),
+        ]
+        for name, event, rb, tok, acct, tip, guard_ok in paths:
+            ctx = ctx_for(event, MAIN, rb, tok=tok, acct=acct)
+            try:
+                env = self.step_env(job, {}, ctx)
+            except ExprError:
+                env = {}
+            steps, ran, failed = {}, [], False
+            for i, s in enumerate(st):
+                c = dict(ctx, env=env, steps=steps)
                 try:
-                    got = condition(d.get('if'), Env({'env': {'CF_TOKEN': tok, 'CF_ACCOUNT': acct}, 'github': {'ref': ref}}))
+                    go = condition(s.get('if'), Env(c, {'cancelled': False, 'needs_ok': not failed, 'needs_failed': failed}))
                 except ExprError:
-                    got = None
-                self.ok(got is want, 'R4 the deploy step %s with token %s, account %s, on %s.' % (
-                    'runs' if got else 'does not run', 'set' if tok else 'unset', 'set' if acct else 'unset', ref))
+                    go = False
+                outcome, outputs = 'skipped', {}
+                if go:
+                    ran.append(i)
+                    outcome = 'success'
+                    if i == idx['secrets']:
+                        r = self.script(job, s, ctx_for('push', MAIN, tok=tok, acct=acct), 'secrets')
+                        outcome = 'success' if r.code == 0 else 'failure'
+                    elif i == idx['order']:
+                        r = self.order_run(job, s, tip)
+                        outcome, outputs = ('success' if r.code == 0 else 'failure'), r.outputs
+                    elif i == idx['guard']:
+                        outcome, outputs = ('success', {'sha': 'f' * 40}) if guard_ok else ('failure', {})
+                    failed = failed or outcome == 'failure'
+                if s.get('id'):
+                    steps[str(s['id']).lower()] = {'outputs': outputs, 'outcome': outcome, 'conclusion': outcome}
+            result = 'failure' if failed else 'success'
+            published = idx['deploy'] in ran
+            names = lambda ix: ', '.join(repr(st[i].get('name', st[i].get('uses', i))) for i in ix)
+            if tip == 'newer':
+                later = [i for i in ran if i > idx['order']]
+                self.ok(not later and result == 'success',
+                        'R4 on %s, %s run after the order check said a newer commit is on main; every later step must be skipped.' % (name, names(later) or 'the job fails'))
+                continue
+            if not (tok and acct):
+                self.ok(not published and result == 'failure',
+                        'R4 on %s, the deploy job %s; it must fail, so the run is red.' % (name, 'publishes' if published else 'reads %s with nothing published' % result))
+                continue
+            if rb and not guard_ok:
+                self.ok(not published and result == 'failure',
+                        'R4 on %s, the deploy job %s; it must fail and publish nothing.' % (name, 'publishes' if published else 'reads %s' % result))
+                continue
+            self.ok(published and idx['install'] in ran and result == 'success',
+                    'R4 on %s, the deploy step %s; it must publish.' % (name, 'runs' if published else 'is skipped'))
+            skipped = [i for i in range(len(st)) if i not in ran and i != (idx['order'] if rb else idx['guard'])]
+            self.ok(not skipped, 'R4 on %s, %s skipped.' % (name, names(skipped)))
+            if rb:
+                self.ok(idx['order'] not in ran, 'R4 on %s, the order check runs; a rollback publishes an older commit on purpose.' % name)
 
     # R2, safety that is not any one requirement ----------------------------
     def r2_hygiene(self):
@@ -1014,19 +1617,25 @@ class Lint:
                 shell = s.get('shell') or jdflt or dflt
                 self.ok(shell == 'bash' or re.search(r'\bset -[a-z]*o pipefail\b', r) or (shell and 'pipefail' in str(shell)),
                         'R5 %s step %r pipes under a shell with no pipefail, so a red gate piped into tee reads green.' % (jid, s.get('name', r.split('\n')[0][:40])))
+        for jid, job in self.jobs().items():
+            if not isinstance(job, dict):
+                continue
+            for s in steps_of(job):
+                r = s.get('run')
+                if isinstance(r, str) and re.search(r'\bgh\s+api\b', r):
+                    e = dict(job.get('env') or {}, **(s.get('env') or {}))
+                    self.ok(e.get('GH_TOKEN') == '${{ github.token }}',
+                            'R2 %s step %r calls gh with no GH_TOKEN: ${{ github.token }}, and gh on a runner refuses to run without it.' % (jid, s.get('name', '')))
 
     def r2_paths_exist(self):
-        for jid in GATE_JOBS:
-            job = self.jobs().get(jid)
-            if not isinstance(job, dict):
+        for jid in ('gates-fast', 'gates-browser', 'gates-report', 'deploy'):
+            job = self.job(jid)
+            if not job:
                 continue
             for leg in (legs(job) or [None]):
                 for i, s, t in run_texts(job, leg):
-                    cond = str(s.get('if', ''))
                     for m in re.finditer(r'(?:\bnode|\bpython3)\s+((?:\./)?[\w./-]+\.(?:js|py))\b|(\./[\w./-]+\.sh)\b', t):
                         p = m.group(1) or m.group(2)
-                        if "hashFiles('%s')" % p.lstrip('./') in cond:
-                            continue
                         self.ok(os.path.isfile(os.path.join(self.root, p)),
                                 'R2 %s runs %s, which does not exist.' % (jid, p))
 
@@ -1053,15 +1662,14 @@ class Lint:
                 self.ok(False, 'R6 %s: %r does not parse: %s.' % (where, text.strip(), e))
                 return
             ctxs, funcs = allowed
-            good = True
             for n in nodes(tree):
                 if n[0] == 'call':
                     name = n[1]
                     lo, hi = FUNCS.get(name, (0, 99))
-                    good &= self.ok(name in FUNCS, 'R6 %s: %s() is not a GitHub function.' % (where, name))
-                    good &= self.ok(name not in STATUS or name in funcs, 'R6 %s: %s() works only in an if.' % (where, name))
-                    good &= self.ok(name != 'hashfiles' or name in funcs, 'R6 %s: hashFiles() works only in a step.' % where)
-                    good &= self.ok(lo <= len(n[2]) <= hi, 'R6 %s: %s() given %d arguments.' % (where, name, len(n[2])))
+                    self.ok(name in FUNCS, 'R6 %s: %s() is not a GitHub function.' % (where, name))
+                    self.ok(name not in STATUS or name in funcs, 'R6 %s: %s() works only in an if.' % (where, name))
+                    self.ok(name != 'hashfiles' or name in funcs, 'R6 %s: hashFiles() works only in a step.' % where)
+                    self.ok(lo <= len(n[2]) <= hi, 'R6 %s: %s() given %d arguments.' % (where, name, len(n[2])))
                 c = chain(n) if n[0] in ('ctx', 'prop', 'index') else None
                 if not c:
                     continue
@@ -1135,16 +1743,54 @@ class Lint:
                 if s.get('id'):
                     earlier.add(str(s['id']).lower())
 
+    # R7 -------------------------------------------------------------------
+    def r7_hardening(self):
+        for jid, job in self.jobs().items():
+            if not isinstance(job, dict):
+                continue
+            for leg in (legs(job) or [None]):
+                try:
+                    t = render(job.get('timeout-minutes'), static_env(leg))
+                except ExprError:
+                    t = None
+                self.ok(t is not None and 1 <= num(t) <= 360,
+                        'R7 %s%s has no timeout-minutes, so a hung step holds a runner for six hours.' % (jid, ' (%s)' % leg.get('gate') if leg else ''))
+            uses = [('job', job['uses'])] if 'uses' in job else []
+            for i, s in enumerate(steps_of(job)):
+                where = '%s step %r' % (jid, s.get('name', s.get('uses', i)))
+                if 'uses' in s:
+                    uses.append((where, s['uses']))
+                r = s.get('run')
+                if not isinstance(r, str):
+                    continue
+                for m in INLINE.finditer(r):
+                    try:
+                        tree = Parser(m.group(1)).parse()
+                    except ExprError:
+                        continue
+                    bad = [c for c in (chain(n) for n in nodes(tree) if n[0] in ('ctx', 'prop', 'index'))
+                           if c and (c[0] == 'inputs' or c[:2] in (['github', 'event'], ['github', 'head_ref']))]
+                    self.ok(not bad,
+                            'R7 %s puts ${{ %s }} straight into its script, where a branch name or a pull request title becomes a command. Pass it through env: and quote it, "$NAME".' % (where, m.group(1).strip()))
+            for where, u in uses:
+                self.ok(str(u).startswith(ACTION_OWNERS),
+                        'R7 %s uses %s, an action from outside actions/ and github/, which runs its own owner\'s code with this job\'s token.' % (where, u))
+
     def run(self, other_workflows=()):
+        gone = [t for t in ('bash', 'git', 'jq') if not shutil.which(t)]
+        self.ok(not gone, 'R4 %s not on PATH, so the scripts that decide what is published cannot be run here; every R4 line below is unproven until it is.' % ', '.join(gone))
         self.r1_triggers(other_workflows)
         self.r2_conditions()
         self.r2_pass_step()
         self.r2_fast()
-        self.r2_browser()
-        self.r2_deploy()
+        self.r2_matrix()
+        self.r2_report_summary()
+        self.r3_pages()
+        self.r4_deploy()
         self.r2_hygiene()
         self.r2_paths_exist()
         self.r6_expressions()
+        self.r7_hardening()
         return self
 
 
@@ -1216,6 +1862,23 @@ def _sub(d, j, rx, old, new):
     s['run'] = s['run'].replace(old, new)
 
 
+def _legs(d, j):
+    return _job(d, j)['strategy']['matrix']['include']
+
+
+def _move(d, gate, src, dst):
+    leg = [l for l in _legs(d, src) if l.get('gate') == gate][0]
+    _legs(d, src).remove(leg)
+    _legs(d, dst).append(leg)
+
+
+def _checkout(d):
+    return [s for s in steps_of(_job(d, 'deploy')) if str(s.get('uses', '')).startswith('actions/checkout@')][0]
+
+
+GUARD = r'pages/projects/atuned/deployments'
+ORDER = r'git/ref/heads/main'
+
 BREAKS = [
     ('a paths filter on pull_request', lambda d: _on(d).__setitem__('pull_request', {'paths': ['atuned_src/**']})),
     ('pull_request_target added', lambda d: _on(d).__setitem__('pull_request_target', None)),
@@ -1228,28 +1891,61 @@ BREAKS = [
     ('gates-fast runs on a rollback', lambda d: _job(d, 'gates-fast').pop('if')),
     ('gates-pass without always()', lambda d: _job(d, 'gates-pass').__setitem__('if', "inputs.rollback_ref == ''")),
     ('gates-pass passes a skipped job', lambda d: _sub(d, 'gates-pass', r'exit 1', 'exit 1', 'exit 0')),
-    ('every browser leg allowed to fail', lambda d: _job(d, 'gates-browser').__setitem__('continue-on-error', True)),
+    ('gates-pass shows nothing on the run page', lambda d: _sub(d, 'gates-pass', r'exit 1', '"$GITHUB_STEP_SUMMARY"', '/dev/null')),
+    ('gates-pass waits for gates-report', lambda d: _job(d, 'gates-pass')['needs'].append('gates-report')),
+    ('deploy waits for gates-report-summary', lambda d: _job(d, 'deploy').__setitem__('needs', ['gates-pass', 'gates-report-summary'])),
+    ('every required leg allowed to fail', lambda d: _job(d, 'gates-browser').__setitem__('continue-on-error', True)),
+    ('the report legs made required', lambda d: _job(d, 'gates-report').__setitem__('continue-on-error', False)),
+    ('boot moved to gates-report', lambda d: _move(d, 'boot', 'gates-browser', 'gates-report')),
+    ('a gate in both matrices', lambda d: _legs(d, 'gates-browser').append(dict(_legs(d, 'gates-report')[0]))),
     ('fail-fast left on', lambda d: _job(d, 'gates-browser')['strategy'].pop('fail-fast')),
-    ('boot no longer required', lambda d: [l.update({'required': False}) for l in _job(d, 'gates-browser')['strategy']['matrix']['include'] if l.get('gate') == 'boot']),
-    ('functional cut to a 20 minute timeout', lambda d: [l.update({'timeout': 20}) for l in _job(d, 'gates-browser')['strategy']['matrix']['include'] if l.get('gate') == 'functional']),
+    ('the report legs renamed', lambda d: _job(d, 'gates-report').__setitem__('name', 'report ${{ matrix.gate }}')),
+    ('functional cut to a 20 minute timeout', lambda d: [l.update({'timeout': 20}) for j in MATRIX_JOBS for l in _legs(d, j) if l.get('gate') == 'functional']),
+    ('the report summary only when every leg passed', lambda d: _job(d, 'gates-report-summary').__setitem__('if', "inputs.rollback_ref == ''")),
+    ('the report warnings dropped', lambda d: _sub(d, 'gates-report-summary', r'gh api', WARN, '')),
+    ('the report summary without actions: read', lambda d: _job(d, 'gates-report-summary').pop('permissions')),
+    ('the report summary green when it read nothing', lambda d: _sub(d, 'gates-report-summary', r'gh api', 'exit 1', 'exit 0')),
     ('the engine gate step allowed to fail', lambda d: _step(d, 'gates-fast', r'tests/engine\.js').__setitem__('continue-on-error', True)),
     ('the voice check swallowed', lambda d: _sub(d, 'gates-fast', r'check\.py', '--objections', '--objections || true')),
     ('a workflow concurrency that cancels', lambda d: d.__setitem__('concurrency', {'group': 'x', 'cancel-in-progress': True})),
     ('chromium pointed at after the gate', lambda d: _job(d, 'gates-browser')['steps'].append(_job(d, 'gates-browser')['steps'].pop(4))),
-    ('a browser gate dropped from the matrix', lambda d: _job(d, 'gates-browser')['strategy']['matrix']['include'].pop(0)),
+    ('a browser gate dropped from the matrix', lambda d: _legs(d, 'gates-browser').pop(0)),
     ('the build order reversed', lambda d: _sub(d, 'gates-fast', r'BUILD-engine', './atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh', './atuned_src/BUILD.sh && ./atuned_src/BUILD-engine.sh')),
+    ('the deploy job builds BUILD.sh first', lambda d: _sub(d, 'deploy', r'BUILD-engine', './atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh', './atuned_src/BUILD.sh && ./atuned_src/BUILD-engine.sh')),
     ('the engine gate not teed', lambda d: _sub(d, 'gates-fast', r'tests/engine\.js', 'engine.log', 'engine.txt')),
     ('no pipefail', lambda d: d['defaults']['run'].__setitem__('shell', 'sh')),
-    ('the chrome-path step run unconditionally', lambda d: _step(d, 'gates-fast', r'chrome-path').pop('if')),
+    ('the chrome-path step skipped when its file is gone', lambda d: _step(d, 'gates-fast', r'chrome-path').__setitem__('if', "hashFiles('tests/chrome-path.js') != ''")),
     ('the FAQ not staged', lambda d: _sub(d, 'deploy', r'mkdir deploy', 'cp funnel/dist/atuned-faq.html deploy/\n', '')),
-    ('the FAQ not checked', lambda d: _sub(d, 'gates-fast', r'test -s', ' atuned-faq', '')),
+    ('the FAQ dropped from FUNNEL_PAGES', lambda d: d['env'].__setitem__('FUNNEL_PAGES', d['env']['FUNNEL_PAGES'].replace(' atuned-faq', ''))),
+    ('a page list typed into the deploy check', lambda d: _sub(d, 'deploy', r'test -s', '$FUNNEL_PAGES; do', 'atuned-funnel atuned-quiz atuned-about atuned-buy atuned-faq; do')),
+    ('an empty page list passing', lambda d: _sub(d, 'gates-fast', r'test -s', 'test -n "$FUNNEL_PAGES"', 'true')),
+    ('the deploy command without --branch=main', lambda d: _sub(d, 'deploy', r'wrangler pages deploy', ' --branch=main', '')),
     ('the deploy command changed', lambda d: _sub(d, 'deploy', r'wrangler pages deploy', ' --commit-dirty=true', '')),
-    ('the secrets guard dropped', lambda d: _step(d, 'deploy', r'wrangler pages deploy').__setitem__('if', "github.ref == 'refs/heads/main'")),
-    ('the deploy checkout ignores rollback_ref', lambda d: [s.pop('with', None) for s in steps_of(_job(d, 'deploy')) if str(s.get('uses', '')).startswith('actions/checkout@')]),
+    ('a missing secret skips instead of failing', lambda d: _sub(d, 'deploy', r'CLOUDFLARE_ACCOUNT_ID', 'exit 1', 'exit 0')),
+    ('the secrets check dropped for the old skip', lambda d: [_job(d, 'deploy')['steps'].pop(0)] + [
+        s.__setitem__('if', "env.CF_TOKEN != '' && env.CF_ACCOUNT != ''") for s in steps_of(_job(d, 'deploy')) if 'wrangler' in str(s.get('run', ''))]),
+    ('the order check publishes an older commit', lambda d: _sub(d, 'deploy', ORDER, 'publish=false', 'publish=true')),
+    ('the order check green when it read nothing', lambda d: _sub(d, 'deploy', ORDER, 'exit 1', 'exit 0')),
+    ('the deploy step ignores the order check', lambda d: _step(d, 'deploy', r'wrangler pages deploy').pop('if')),
+    ('the rollback guard takes any commit on main', lambda d: _sub(d, 'deploy', GUARD, '[ -z "$match" ]', 'false')),
+    ('the rollback guard takes a commit off main', lambda d: _sub(d, 'deploy', GUARD, 'identical|behind)', 'identical|behind|ahead|diverged)')),
+    ('the rollback guard takes a failed deploy', lambda d: _sub(d, 'deploy', GUARD, ' and .latest_stage.status == "success"', '')),
+    ('the rollback guard takes a preview', lambda d: _sub(d, 'deploy', GUARD, '.environment == "production" and ', '')),
+    ('the rollback guard ignores success: false', lambda d: _sub(d, 'deploy', GUARD, '!= true ]', '= nottrue ]')),
+    ('the rollback guard runs off main', lambda d: _sub(d, 'deploy', GUARD, '!= refs/heads/main ]', '= refs/heads/nowhere ]')),
+    ('the rollback guard publishes the dispatch commit', lambda d: _sub(d, 'deploy', GUARD, 'git checkout --quiet --force --detach "$sha"', ':')),
+    ('a rollback checkout with no history', lambda d: _checkout(d).pop('with')),
+    ('the deploy checkout takes the rollback_ref unchecked', lambda d: _checkout(d)['with'].__setitem__('ref', '${{ inputs.rollback_ref }}')),
     ('a typo in a needs expression', lambda d: _step(d, 'gates-pass', r'.').__setitem__('env', {k: v.replace('gates-fast', 'gates-fat') for k, v in _step(d, 'gates-pass', r'.')['env'].items()})),
     ('an if that mixes ${{ }} with text', lambda d: _job(d, 'gates-fast').__setitem__('if', "${{ inputs.rollback_ref == '' }} && true")),
     ('a secret read in a gate job', lambda d: _job(d, 'gates-fast').__setitem__('env', {'T': '${{ secrets.CLOUDFLARE_API_TOKEN }}'})),
     ('write permission', lambda d: d.__setitem__('permissions', {'contents': 'write'})),
+    ('a job with no timeout', lambda d: _job(d, 'gates-pass').pop('timeout-minutes')),
+    ('rollback_ref interpolated into the guard', lambda d: _sub(d, 'deploy', GUARD, '"$ROLLBACK_REF^{commit}"', '"${{ inputs.rollback_ref }}^{commit}"')),
+    ('a branch name interpolated into a run', lambda d: _job(d, 'gates-fast')['steps'].append({'name': 'x', 'run': 'echo "${{ github.head_ref }}"'})),
+    ('a pull request title interpolated into a run', lambda d: _job(d, 'gates-fast')['steps'].append({'name': 'x', 'run': 'echo ${{ github.event.pull_request.title }}'})),
+    ('an action from outside actions/ and github/', lambda d: _job(d, 'gates-fast')['steps'].append({'uses': 'someone/random-action@main'})),
+    ('gh with no token', lambda d: _step(d, 'deploy', ORDER).pop('env')),
 ]
 
 
