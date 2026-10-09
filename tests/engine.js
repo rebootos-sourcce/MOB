@@ -7517,7 +7517,13 @@ g('S3 · sniffStory returns every positive saboteur candidate, and the screen de
    what a renderer slices to. No count is typed here: the bound is read off
    SAB_SHOW and the candidates off sniffSaboteurs. */
 {
- const t='I was angry, scared, ashamed, sick to my stomach, numb, shocked and dreading it.';
+ /* on a reset field, as group 11 reads: parseStory orders a seat's addresses
+    by susceptibility, which the field sets, so a story read after another
+    group's profile is read against that profile. Measured: the first
+    sentence chosen here ranked 13 candidates on a fresh field and 2 on this
+    one, so the sentence is chosen on the field it is read on. */
+ reset(3,0,6);
+ const t='I was afraid, sad, ashamed and numb.';
  const all=E.sniffSaboteurs(E.sniffAxes(E.parseStory(t))), r=E.sniffStory(t);
  ok(all.length>E.SAB_SHOW,'the story carries more candidates than a screen shows, '+all.length+' against '+E.SAB_SHOW);
  ok(r.saboteurs.length===all.length,'sniffStory returns every positive candidate, '+r.saboteurs.length+' of '+all.length);
