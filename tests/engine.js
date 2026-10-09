@@ -6930,6 +6930,18 @@ g('PO · unpack every symbol: the meaning table and the pole meanings');
  /* the two anatomy words among the seat spots carry a sentence that names them */
  ok(E.FLOWSEAT.filter(s=>/notch|sternum/i.test(s.seat)).every(s=>T['spot:'+s.k]&&T['spot:'+s.k].toLowerCase().indexOf(s.seat.replace(/^the /,'').toLowerCase())>=0),
   'every anatomy word among the seat spots has a sentence naming it');
+ /* THE PRODUCT'S OWN GLOSSARY REACHES THE TOOLTIP, round RW (cf20a9d). GLOSS
+    answered only on the Knowledge page's own search until unpackAll() took a
+    last pass over it, so a word only GLOSS defines, Awareness or Drag, was
+    printed with no meaning on it. Nothing held that pass. It sits behind a
+    typeof guard, so a build that loses kb.js, or a pass that is deleted,
+    leaves every check above green and every one of those words bare, measured
+    on a scratch engine before this was trusted. The words it leaves out are
+    printed, so a refusal is read off the run rather than assumed. */
+ {const first=g=>String(g.d||'').split('. ')[0].replace(/\.+$/,'')+'.';
+  const via=E.GLOSS.filter(g=>T[g.t.toLowerCase()]===first(g)), left=E.GLOSS.filter(g=>!T[g.t.toLowerCase()]);
+  ok(via.length>0,'the glossary reaches the meaning table: '+via.length+' GLOSS words carry their own first sentence, '
+   +'and these carry none: '+JSON.stringify(left.map(g=>g.t)));}
  ok(unpackOf('Brow','seat')===T['seat:3rd eye']&&unpackKey('Virgo','sign')==='sign:virgo'&&unpackOf('nothing at all')==='',
   'the lookup folds case, reads Brow as the 3rd Eye, and returns nothing for a term it does not hold');
  /* the sentence a family builds reads off the table it describes, so it cannot drift */
