@@ -94,6 +94,7 @@ BROWSER = {
     'reset':         ('node tests/reset.js', 20),
     'storage':       ('node tests/storage.js', 20),
     'firstrelease':  ('node tests/firstrelease.js', 20),
+    'landing':       ('node tests/landing.js', 20),
     'voice':         ('node tests/voice.js', 20),
     'journey2':      ('node tests/journey2.js', 20),
     'onboarding2':   ('node tests/onboarding2.js', 20),
