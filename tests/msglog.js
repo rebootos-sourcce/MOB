@@ -39,7 +39,12 @@ const msgAt=async w=>{
   await wait(150);
   let r=dock.getBoundingClientRect(), top=document.querySelector('.top').getBoundingClientRect();
   o.shown=getComputedStyle(dock).display!=='none'&&st.textContent==='Saved for the gate.';
-  o.bottom=r.bottom>innerHeight*0.85&&r.bottom<=innerHeight&&r.top>top.bottom;
+  /* THE FLOOR IS THE FOOT OF THE SCREEN, OR THE TOP OF THE STORAGE LINE WHEN
+     THAT IS UP. A guest's browser may refuse to keep the record, and the line
+     that says so stands at the foot with its own room, so a message rests on
+     it and never under it (ui/keep.js). */
+  const kl=document.getElementById('keepline'), floor=(kl&&!kl.hidden&&getComputedStyle(kl).display!=='none')?kl.getBoundingClientRect().top:innerHeight;
+  o.bottom=r.bottom>floor-innerHeight*0.15&&r.bottom<=floor&&r.top>top.bottom;
   o.inside=r.left>=0&&r.right<=innerWidth;
   o.keepH=$('msgkeep').getBoundingClientRect().height; o.logH=$('msglogbtn').getBoundingClientRect().height;
   /* the status line must not sit in the bar any more: the bar is exactly as tall with a message up */
