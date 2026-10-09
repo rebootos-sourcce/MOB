@@ -7321,6 +7321,15 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
 .obx .ob-foot::before{content:'';flex:0 0 18px;height:1px;background:currentColor;opacity:.6}
 /* the actions: the way forward is a real object, the way back is quiet */
 .obx .ob-acts{margin-top:34px;gap:12px;align-items:center}
+/* THE WAY FORWARD STAYS ON THE SCREEN. A card that grows past the screen, the
+   bridge to the first release does at 390 wide once it says the run, the
+   gift and what a pattern is, scrolls inside its own column, and its button
+   used to sit below the fold where nobody presses it. The actions stick to the
+   foot of that column, on the sheet's own dark, so they are always in reach
+   whatever the card says. When the card fits, nothing sticks and nothing moves. */
+.obx .ob-scroll .ob-acts{position:sticky;bottom:0;z-index:2;margin-top:18px;
+ padding:18px 0 calc(8px + env(safe-area-inset-bottom,0px));
+ background:linear-gradient(to top,rgb(6,6,8) 62%,rgba(6,6,8,0))}
 .obx .btn{min-height:48px;padding:0 22px;font-size:15px}
 .obx .btn:active{scale:.97}
 .obx .btn.pri{min-height:54px;padding:0 26px 0 30px;display:inline-flex;align-items:center;gap:14px;font-size:15.5px;
