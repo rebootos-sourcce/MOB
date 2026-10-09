@@ -150,7 +150,7 @@ worktrees do not carry `proto/`, read it by `git show origin/main:proto/sniffer/
 
 Also measure the false negative that negation brings. "I can't stop crying" has a
 negator before a charge word and is not a denial. If the corpus shows this kind of
-loss, add the verb frames ("can't stop", "couldn't help", "can't stop") as named
+loss, add the verb frames ("can't stop", "couldn't help") as named
 exceptions, each with a test, before the change is accepted.
 
 ## 6 · The consumer sweep
