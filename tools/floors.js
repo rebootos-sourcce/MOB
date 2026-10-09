@@ -105,7 +105,11 @@ function check(gates, dir, table) {
 
 /* ---- --self-test: known bad logs must fail and known good ones pass ---- */
 function selfTest() {
-  const T = { floors: { g: 10, tap: 44, plain: 562, zero: 0 }, no_count: { mon: 'all surfaces render' } };
+  const T = { floors: { g: 10, tap: 44, plain: 562, zero: 0, eng: 4689, nocap: 10, badcap: 10 },
+              expected_red_max: { g: 10, eng: 10, badcap: 'ten' },
+              no_count: { mon: 'all surfaces render' } };
+  // [name, gate, log, passes, words its message must carry]: a case that
+  // fails for some other reason than the one it names is not a pass.
   const CASES = [
     ['a summary at its floor', 'g', 'x\n===== 10 passed, 0 failed =====\n', true],
     ['a summary above its floor', 'g', '===== 12 passed, 0 failed =====', true],
@@ -115,7 +119,7 @@ function selfTest() {
     ['an empty log', 'g', '', false],
     ['no log at all, the gate was skipped', 'g', null, false],
     ['a gate with no floor recorded', 'nofloor', '===== 10 passed, 0 failed =====', false],
-    ['a floor of zero', 'zero', '===== 0 passed, 0 failed =====', false],
+    ['a floor of zero reads floor not set', 'zero', '===== 5 passed, 0 failed =====', false, 'floor not set'],
     ['the last summary is the one read', 'g', '===== 100 passed, 0 failed =====\nmore\n===== 5 passed, 0 failed =====', false],
     ['a summary quoted inside a line', 'g', '  ok   prints "===== 10 passed, 0 failed =====" at the end', false],
     ['a summary in colour', 'g', '\x1b[32m===== 10 passed, 0 failed =====\x1b[0m', true],
@@ -134,22 +138,37 @@ function selfTest() {
     // are counted after the failures, inside the bars.
     ['the engine summary with expected reds', 'g', 'x\n===== 4689 passed, 0 failed, 10 expected red =====\n', true],
     ['expected reds at the floor', 'g', '===== 10 passed, 0 failed, 10 expected red =====', true],
-    ['expected reds and a failure', 'g', '===== 4689 passed, 1 failed, 10 expected red =====', false],
-    ['expected reds, below the floor', 'g', '===== 9 passed, 0 failed, 3 expected red =====', false],
+    ['expected reds and a failure', 'g', '===== 4689 passed, 1 failed, 10 expected red =====', false, 'Any failure'],
+    ['expected reds, below the floor', 'g', '===== 9 passed, 0 failed, 3 expected red =====', false, 'below its floor'],
     ['an expected red summary quoted inside a test line', 'g', '  ok   prints "===== 10 passed, 0 failed, 10 expected red =====" at the end\n', false],
     ['an expected red clause with no count', 'g', '===== 10 passed, 0 failed, expected red =====', false],
+    // The ceiling on expected red, 9 October. eng stands for the engine with
+    // its floor at a clean run's count and its ceiling at that run's reds.
+    ['the CRISIS group deleted: fewer passes, 0 expected red', 'eng', '===== 4678 passed, 0 failed, 0 expected red =====', false, 'below its floor'],
+    ['one expected red lost', 'eng', '===== 4688 passed, 0 failed, 9 expected red =====', false, 'below its floor'],
+    ['11 expected red against a ceiling of 10', 'eng', '===== 4690 passed, 0 failed, 11 expected red =====', false, 'above its ceiling'],
+    ['exactly 10 expected red, at the ceiling', 'eng', '===== 4689 passed, 0 failed, 10 expected red =====', true],
+    ['the fix landed: 0 expected red, at the floor', 'eng', '===== 4689 passed, 0 failed, 0 expected red =====', true],
+    ['the old shape, no clause, below the floor', 'eng', '===== 4678 passed, 0 failed =====', false, 'no expected red clause'],
+    ['the old shape, no clause, at the floor', 'eng', '===== 4689 passed, 0 failed =====', true],
+    ['an engine summary quoted inside test output', 'eng', '  ok   prints "===== 4689 passed, 0 failed, 10 expected red =====" at the end\n', false, 'no summary line'],
+    ['expected reds and no ceiling set', 'nocap', '===== 10 passed, 0 failed, 2 expected red =====', false, 'no ceiling'],
+    ['a ceiling that is not a whole number', 'badcap', '===== 10 passed, 0 failed, 2 expected red =====', false, 'ceiling'],
   ];
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'floors-'));
   let bad = 0;
   try {
-    for (const [name, gate, text, want] of CASES) {
+    for (const [name, gate, text, want, says] of CASES) {
       const log = path.join(dir, gate + '.log');
       fs.rmSync(log, { force: true });
       if (text !== null) fs.writeFileSync(log, text);
       const [ok, msg] = judge(gate, dir, T);
-      const right = ok === want;
+      const said = !says || msg.includes(says);
+      const right = ok === want && said;
       if (!right) bad++;
-      console.log((right ? '  ok   ' : 'FAIL ') + name + ': ' + (ok ? 'passes' : 'fails') + (right ? '' : ', expected it to ' + (want ? 'pass' : 'fail')) + '. ' + msg);
+      console.log((right ? '  ok   ' : 'FAIL ') + name + ': ' + (ok ? 'passes' : 'fails')
+        + (ok === want ? '' : ', expected it to ' + (want ? 'pass' : 'fail'))
+        + (said ? '' : ', for another reason than "' + says + '"') + '. ' + msg);
     }
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
   let table = null;
