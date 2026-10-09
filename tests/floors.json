@@ -7,6 +7,7 @@
   ],
   "expected_red_max": {
     "engine": 10,
+    "golden": 5,
     "storage": 0
   },
   "floors": {
@@ -30,6 +31,7 @@
     "release-percent": 8,
     "unpack": 878,
     "recordlink": 60,
+    "golden": 111,
     "valuefelt": 7,
     "claims": 107,
     "discordfeedback": 59,

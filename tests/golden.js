@@ -678,8 +678,8 @@ async function door(browser, SITE, cut, giftAt) {
   ok(!!(plan && plan.ok && plan.lines > 0), 'it plans a release from the yes rows: ' + J(plan && { lines: plan.lines, addrs: plan.addrs }));
   await O.click('[data-ob="release"]');
   await po2.waitForFunction(() => typeof RUN !== 'undefined' && RUN.open, null, { timeout: 8000 }).catch(() => {});
-  ok(await O.click('#relstudio'), 'signed in, the release card offers the studio voice, and it is pressed', 'no studio voice switch');
-  ok(await po2.evaluate(() => !!(CURP && CURP.ui && CURP.ui.studio === true)), 'and the switch turns it on for this record');
+  ok(await po2.evaluate(() => !!document.getElementById('relvoice')), 'signed in, the release card offers the one Voice switch', 'no voice switch');
+  ok(await po2.evaluate(() => typeof relVoiceOn === 'function' && relVoiceOn() === true), 'and it is on without a press, so a release is spoken by the studio voice and by nothing else');
   await po2.evaluate(SHRINK);
   await po2.evaluate(() => { const d = document.getElementById('reldose'); if (d) { d.value = '1'; d.dispatchEvent(new Event('change')); } });
   await O.click('#relgo');
