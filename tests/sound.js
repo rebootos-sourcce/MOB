@@ -1270,6 +1270,7 @@ if(require.main===module){
   try{ await p.waitForFunction(()=>typeof enterOver!=='function'||enterOver(),null,{timeout:4000}); }catch(e){}};
  (async()=>{
   const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+require('./net.js').guardBrowser(browser);
   console.log('\n=== the fittings: the interface\'s own sounds ===');
   try{ await soundGate(browser,FILE,ok,booted); }
   catch(e){ FAIL++; console.log('  FAIL the gate threw: '+e.stack); }

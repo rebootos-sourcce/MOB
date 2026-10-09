@@ -192,6 +192,7 @@ function hold(tag,card,r,opts){
 
 (async()=>{
 const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+require('./net.js').guardBrowser(browser);
 
 for(const [W,H] of [[1600,1000],[390,844]]){
  for(const c of [{all:false,voice:true,signed:true},{all:true,voice:false,signed:true}]){
