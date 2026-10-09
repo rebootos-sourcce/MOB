@@ -570,20 +570,27 @@ function authReset(pw,again){
 function authSignOut(){
  var s=authSession();
  if(!s){profileSyncStop();return Promise.resolve({ok:true, say:'Not signed in.'});}
- /* The first visit's pass is named in the same request so the server ends it too: it lasts seven
-    days, and the next person on a shared computer must not be handed this one's first visit
-    (reboot-os funnel.js endPass). It is dropped from this browser whatever the server says. */
+ /* Name this browser's pass so the Worker can end it. A 200 from the sign-out
+    route only proves that the account session ended: the Worker separately
+    reports whether Supabase ended the first-visit pass. */
  var f=funnelSession();
- var body=(f&&f.id&&f.credential)?{funnel:{id:f.id,credential:f.credential}}:null;
+ var namedPass=!!(f&&f.id&&f.credential);
+ var body=namedPass?{funnel:{id:f.id,credential:f.credential}}:null;
  return authCall('POST','/v1/auth/signout',body,s.token).then(function(r){
   profileSyncStop();
   var gone=authForget(), visit=authFunnelClear();
   if(!gone)return {ok:false,
    say:'Signed out for this visit only. Storage would not take the change, so the sign in comes back on reload.'};
   var cleared=visit?'':' The first visit\'s code could not be removed from this browser.';
-  if(r.ok||r.status===401)return {ok:true, say:'Signed out.'+cleared};
-  return {ok:true, say:'Signed out on this browser. The server could not be reached, '
-   +'so its copy of the session runs until it expires.'+cleared};});}
+  if(r.ok&&namedPass&&!(r.body&&r.body.funnel&&r.body.funnel.ended===true)){
+   return {ok:true, say:'Signed out on this browser. The server could not confirm that the first visit pass ended, so it may remain available until it expires.'+cleared};
+  }
+  if(r.ok||(!namedPass&&r.status===401))return {ok:true, say:'Signed out.'+cleared};
+  if(r.status===401&&namedPass){
+   return {ok:true, say:'Signed out on this browser. The server session was already ended, so it could not confirm that the first visit pass ended; it may remain available until it expires.'+cleared};
+  }
+  return {ok:true, say:'Signed out on this browser. The server could not confirm that the first visit pass ended, '
+   +'so it may remain available until it expires.'+cleared};});}
 /* ============================================================
    DELETE THE ACCOUNT. The owner, 9 October: "If they want to quit the
    software, that the cancellation." Nothing in the app called DELETE /v1/me
