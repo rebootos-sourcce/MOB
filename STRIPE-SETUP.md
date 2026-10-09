@@ -1,5 +1,10 @@
 # Setting up Stripe, step by step
 
+> **Replaced on 9 October 2026 by `STRIPE-GO-LIVE.md`.** The secrets and price ids
+> now go into GitHub secrets, not a terminal and not `wrangler.toml`, and the server
+> checks them against Stripe after every deploy. Follow that page. This one is kept
+> for the record.
+
 Stripe is the company that takes the card. Atüned never sees a card number:
 when somebody presses "Move to tier one", the app asks our server for a
 Stripe page, and Stripe asks for the card there.

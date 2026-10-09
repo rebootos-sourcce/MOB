@@ -108,6 +108,34 @@ It first runs on two known bad copies of the app, one that never reads the
 link and one whose importer skips the boundary, and each must fail its check.
 Read the counts off the run.
 
+## Quitting
+
+The two ways out of a paid account, the owner's words of 9 October: "If they
+want to quit the software, that the cancellation." Two gates.
+
+    node tests/engine.js                                         group NZ3
+    NODE_PATH=/opt/node22/lib/node_modules node tests/quit.js
+    SHOTS=dir ... node tests/quit.js                             and the pictures
+
+Group NZ3 is the read back, headless: a plan stopped on Stripe's page keeps its
+tier, status and period, so `planFromServer` carries the day it ends as
+`plan.ends`, the host is told it is new, a server too old to send it moves
+nothing, and `validateProfile` keeps a date there and refuses anything else by
+name.
+
+`tests/quit.js` is both routes in a real Chromium against a stub of the
+Worker's own shapes (reboot-os `test/billing.test.mjs`, branch
+`claude/paywall-worker`), with the real host refused and counted. The return
+from Manage billing is read again while the webhook lands and says the day the
+plan stops; Billing carries it on the State row; turning it back on says it
+renews. Delete this account is there only while signed in, its confirm says
+what goes and what stays, one press sends one DELETE with no body, a yes ends
+the sign in, the first visit's session and the sync marker, drops a paid plan
+on the record to free, keeps the record, and lists what the server said it
+stopped and kept; a refusal, an ended sign in and no network each say what
+happened and keep what they should. It failed on the build before the change.
+Read the counts off the run.
+
 ## Talk
 
 Talk draws the Source AI loop on the Story page as a thread. No engine

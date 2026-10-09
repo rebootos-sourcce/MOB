@@ -337,9 +337,18 @@ function planFromServer(prev,b,unique){
    status:(typeof pv.status==='string')?pv.status:'', wasStatus:(typeof pv.status==='string')?pv.status:''};}
  var paid=!!(b&&typeof b==='object'&&PLAN_BY[b.tier]&&b.tier!=='free'&&b.tier!=='gift');
  var next;
- if(!paid)next={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null};
+ if(!paid)next={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null,ends:null};
  else {
   var since=(typeof b.since==='string')?b.since:null, until=(typeof b.until==='string')?b.until:null;
+  /* THE DAY A STOPPED PLAN STOPS. Stopping on the payment page leaves tier,
+     status and period exactly where they were until the month runs out, so
+     same read true and the host said nothing to a person who had just
+     pressed stop. ends is the one field that moves, so it is compared below
+     with the rest. A server from before it sends no such key, and that is
+     read as what the record already held rather than as a plan that renews,
+     so an older server cannot clear a day a newer one wrote. It is not a new
+     period, so base and the grant are untouched by it. */
+  var ends=('ends' in b)?((typeof b.ends==='string')?b.ends:null):(pv.ends==null?null:pv.ends);
   var fresh=(pv.tier!==b.tier)||((pv.since==null?null:pv.since)!==since);
   var n=Array.isArray(unique)?unique.length:Number(unique); if(!isFinite(n)||n<0)n=0;
   /* in the blank's own key order (schema.js), so a record written here and
@@ -347,12 +356,13 @@ function planFromServer(prev,b,unique){
   next={tier:b.tier, status:(typeof b.status==='string')?b.status:'',
    granted:fresh?0:(pv.granted||0), carried:fresh?0:(pv.carried||0),
    base:fresh?Math.max(GIFT_N,Math.floor(n)):(pv.base==null?null:pv.base),
-   since:since, until:until};}
+   since:since, until:until, ends:ends};}
  var eq=function(k){return (pv[k]==null?null:pv[k])===(next[k]==null?null:next[k]);};
  var was=planOf(prev), now=planOf(next);
- return {plan:next, same:['tier','status','since','until'].every(eq),
+ return {plan:next, same:['tier','status','since','until','ends'].every(eq),
   was:was.k, now:now.k, wasLive:planState(prev)==='live', nowLive:planState(next)==='live',
-  status:next.status, wasStatus:(typeof pv.status==='string')?pv.status:''};}
+  status:next.status, wasStatus:(typeof pv.status==='string')?pv.status:'',
+  ends:next.ends, wasEnds:(pv.ends==null?null:pv.ends)};}
 /* ============================================================
    SIGHT, READ OFF SIGHT. Everything below is arithmetic over the one table at
    the top of this file and a plan record, and none of it knows what a surface

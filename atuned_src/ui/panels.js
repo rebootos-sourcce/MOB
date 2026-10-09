@@ -1251,11 +1251,19 @@ function planSection(m,o){
     is paid by the year, and printed "Paid for the year." to monthly payers
     while it read the tier alone */
  var yr=planYear(t.k,pl);
+ /* A STOPPED PLAN SAYS THE DAY IT ENDS, on the State row a pending or ended
+    plan already uses, because stopping on the payment page keeps the plan on
+    to the end of the paid month: the status stays active, and this panel read
+    exactly as it did before the person pressed stop. ends is that day, read
+    back from the server (planFromServer, engine/plan.js). The value says
+    "ends" beside "ended" below, one word for one fact at two times. */
+ var ends=(st==='live'&&pl&&pl.ends)?planDay(pl.ends):'';
  var h='<div class="sh-sec"><div class="pm-eye">Your plan</div>'
   +'<div class="sh-row"><span>On</span><b>'+esc(t.nm)+'</b></div>'
   +(st==='pending'
     ? '<div class="sh-row"><span>State</span><b>not confirmed</b></div>'
-    : (st==='ended'?'<div class="sh-row"><span>State</span><b>ended</b></div>':''))
+    : (st==='ended'?'<div class="sh-row"><span>State</span><b>ended</b></div>'
+    : (ends?'<div class="sh-row"><span>State</span><b>ends '+esc(ends)+'</b></div>':'')))
   +'<div class="sh-row"><span>New ground</span><b>'+esc(al.say)+'</b></div>'
   /* WHAT THE PLAN SHOWS, off SIGHT (engine/plan.js). It said everything while
      sight was not for sale, ruled back on 1 October. */
@@ -1301,6 +1309,14 @@ function planSection(m,o){
   +'carries no customer number.</p>'
   +'</div>';
  return h;}
+/* A DAY THE PLAN NAMES, as a person writes a date: 9 Nov 2026, the same form
+   the profile list prints (accWhen, ui/account.js), in the person's own time
+   zone because the moment Stripe stops a plan is a moment on their clock.
+   Empty for anything that is not a date, so a sentence built on it can tell. */
+function planDay(iso){
+ var d=new Date(iso); if(!iso||isNaN(d.getTime()))return '';
+ try{ return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); }
+ catch(e){ return d.toISOString().slice(0,10); }}
 /* THE SEAM. Two host functions and nothing else. A build with no store bound
    has nowhere to send anybody, and says so rather than opening a dead page. */
 function planWire(){

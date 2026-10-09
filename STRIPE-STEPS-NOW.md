@@ -1,5 +1,10 @@
 # Stripe, what is done, what is left, and the steps for him
 
+> **Replaced on 9 October 2026 by `STRIPE-GO-LIVE.md`.** The secrets and price ids
+> now go into GitHub secrets, not a terminal and not `wrangler.toml`, and the server
+> checks them against Stripe after every deploy. Follow that page. This one is kept
+> for the record.
+
 Written 1 October 2026, round OU. His words: "we still need to wire Stripe. So I
 need the steps for those, like I'm nine."
 

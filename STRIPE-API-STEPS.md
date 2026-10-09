@@ -1,5 +1,10 @@
 # Let me set up Stripe for you. Steps for a nine year old.
 
+> **Replaced on 9 October 2026 by `STRIPE-GO-LIVE.md`.** The secrets and price ids
+> now go into GitHub secrets, not a terminal and not `wrangler.toml`, and the server
+> checks them against Stripe after every deploy. Follow that page. This one is kept
+> for the record.
+
 **What this does.** Stripe is the company that takes the card. Instead of you clicking
 to make four products, I make them by talking to Stripe's computer. You do five small
 things once. Then I do the rest.
