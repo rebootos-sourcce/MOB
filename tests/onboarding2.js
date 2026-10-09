@@ -55,6 +55,11 @@
         a copy where the answer becomes a trace edge, and the first cut of
         this step, which stored a skip as a sixth value.
 
+     6  THE ACCOUNT HEADER, ported from ab691ec on the old line. Signed in,
+        the header carries the account's email under the profile name;
+        signed out, it carries the name alone. The same commit's bypass of
+        the opening is not here: it is parked, see TASKS.md.
+
    WHAT IT DOES NOT CLAIM. No distress detector exists anywhere in this
    engine, and this file does not pretend otherwise: see the J0 check near
    the foot, which reports the gap rather than papering over it, the same
@@ -753,6 +758,41 @@ console.log('\n=== a record the boundary refuses at boot is reported, and kept, 
  ok(disk.some(p=>p.name==='Kept'&&JSON.stringify(p)===JSON.stringify(JSON.parse(seeded)[0])),
   'and the refused record is still on the disk, byte for byte the same, beside the blank');
  ok(r.names.indexOf('Kept')<0,'and it is never loaded or shown');
+ ok(errs.length===0,'no script error: '+errs.slice(0,3).join(' | '));
+ await page.close();
+}
+
+console.log('\n=== the Account header names the account signed in (ab691ec, ported) ===');
+/* The Account page's header named the profile and never the account it is
+   signed in under, and the email stood only on the Account section's own row,
+   so Security and Billing, which describe the account, did not say which one.
+   Billing is read here for that reason.
+
+   The session is put in place with authKeep, the one writer a real sign in
+   uses, and the server is pointed at a port nothing listens on, so nothing
+   leaves this machine: the header reads the held session and asks nobody.
+   The name is read off the page's own rule, capName of the open profile's
+   name, so this checks where the email sits and not what a profile is called.
+
+   Checked against main before the port, where the signed in check fails on no
+   email, and against the port, where both pass. */
+{
+ const page=await browser.newPage({viewport:{width:1600,height:1000}});
+ const errs=[]; page.on('pageerror',e=>errs.push(e.message));
+ await page.goto(FILE+'?dev=1',{waitUntil:'load'}); await booted(page);
+ const hd=await page.evaluate(mail=>{AUTH_API='http://127.0.0.1:1';
+  authKeep({token:'t-header',email:mail,accountId:'acc_header'});
+  ACC_OPEN='billing'; setTab(TAB.SETTINGS); render(); renderAccount();
+  const want=capName((CURP&&CURP.name)||'You');
+  const h=document.querySelector('#settings .ac-hd'), e=h&&h.querySelector('h2+.ac-em');
+  const out={want:want, name:h&&(h.querySelector('h2')||{}).textContent, em:e?e.textContent:null};
+  authForget(); renderAccount();
+  const h2=document.querySelector('#settings .ac-hd');
+  out.outName=h2&&(h2.querySelector('h2')||{}).textContent; out.outEm=!!(h2&&h2.querySelector('.ac-em'));
+  return out;},'header@example.invalid');
+ ok(hd.name===hd.want&&hd.em==='header@example.invalid',
+  'signed in, the Account header carries the profile name and, under it, the account: '+JSON.stringify(hd));
+ ok(hd.outName===hd.want&&!hd.outEm,'signed out, it carries the name alone, with no empty line under it');
  ok(errs.length===0,'no script error: '+errs.slice(0,3).join(' | '));
  await page.close();
 }

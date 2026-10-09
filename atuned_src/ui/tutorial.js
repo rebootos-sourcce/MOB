@@ -292,11 +292,12 @@ addEventListener('click',function(e){
  if(k==='commit'){ tutCommit(); return; }
  if(k==='next'){ TUT.step++; tutRender(); return; }
  if(k==='release'){
-  /* the plan's addresses, never every address the entry read (F5) */
+  /* the plan's addresses, never every address the entry read (F5), and mini,
+     so the release opens at the size this card just said (M28) */
   var pl=TUT.plan||(typeof obMini==='function'?obMini(obImprints(TUT.parsed)):null), ids=(pl&&pl.ok)?pl.addrs:[];
   tutClose();
   if(ids.length&&typeof relPick==='function')
-   relPick(ids,(TUT.commit&&TUT.commit.ok&&TUT.commit.t)?{story_t:TUT.commit.t}:null);
+   relPick(ids,{mini:true,story_t:(TUT.commit&&TUT.commit.ok&&TUT.commit.t)?TUT.commit.t:null});
   return;}
  if(k==='field'){ tutClose(); if(typeof setTab==='function'&&typeof TAB!=='undefined')setTab(TAB.FIELD); return; }
  if(k==='ritual'){ tutClose(); if(typeof setTab==='function'&&typeof TAB!=='undefined')setTab(TAB.RITUAL); return; }

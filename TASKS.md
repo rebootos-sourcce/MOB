@@ -33478,3 +33478,19 @@ His words: "yeah, wire it in." Then, hitting the auto-mode classifier's own bloc
 **Verified after every single merge, not once at the end.** `BUILD-engine.sh` (host free, 740 to 762 exports across the run) and `BUILD.sh` (107/0 every time) after every merge; `tests/engine.js` after every merge (4574 climbing to 4678, every new block's own name printed and counted, never just the total trusted). Browser gates run standalone, not mid-sweep, after two genuine false alarms: `tests/recordlink.js` and `tests/funnel.js` each timed out once while another merge's build was running at the same time, and each passed clean, 60/0 and 562/0, the moment it ran alone, so the timeout was this container's own load and not a regression. Chased rather than assumed either way, per the house rule on reproducing a failure before trusting it. Full suite at the end of the sweep: `tests/unpack.js` 878/0, `tests/becoming.js` 36/0, `tests/collide.js` 383/0, `tests/boot.js` 13/0, `tests/claims.js` 107/0, `tests/engine.js` 4678/0; `tests/functional.js` and `tests/design.js` run standalone and reported once both finish.
 
 **What this does not do.** It does not re-review the copy or the UX any of these 19 branches shipped; each was already independently verified and reported in its own round (RB through RZ, named above). This round's own job was narrower and is the only thing it claims: land the real diffs, resolve what actually conflicts by reading both sides rather than guessing, and prove the merged tree still gates clean.
+
+## Seat finding, 9 October. P1-E: the returning account bypass, parked
+
+Found while porting `ab691ec` from the other line onto main, and ruled P2 by the
+lead the same day. The Account header email from that commit is ported; the
+bypass is not.
+
+- [ ] **PB1. P2. Returning account bypass of the opening, parked at
+      `claude/p1e-bypass-parked` (`743df63`).** Blocked on: profile sync is
+      dead code on main (`ui/auth.js:189` `typeof profiles==='function'` is
+      never true; `authProfileSync` always skips and would throw at `:222`).
+      Do not enable it as is: it uploads the whole profile, which contradicts
+      the privacy words. Needs a sync and consent design first.
+- [ ] **PB2. P2. A refused pull says nothing to the person** (`ui/auth.js:246`,
+      `:264`). `authProfileSync` returns `{state:'refused'}` when `pImport`
+      does not take the record the server sent, and no `status()` line says so.

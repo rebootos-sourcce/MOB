@@ -433,23 +433,8 @@ const btn = (s, t) => s.line.btns.find(b => b.text === t);
           const o = getComputedStyle(e).overflowY; if ((o === 'auto' || o === 'scroll' || e === document.body || e === document.documentElement)
             && e.scrollHeight > e.clientHeight) e.scrollTop = e.scrollHeight; }); }); await calm(pg); }
         const c = await covered(pg);
-        /* STORY'S OWN FLOOR, expected red at 1600 by 700 and nowhere else.
-           The Story page's middle column gives the Imprints panel a fixed
-           half of its height (.st-ch, flex 0 0 50%, in shell/head.html), and
-           in an app shorter than about 645px its view icons spill below it
-           and the pending list (#stls) is drawn over them. That happens with
-           no line at all in a 1366 by 657 window. The line's room takes a
-           1600 by 700 window to 611px, under that floor, so the three icons
-           are named here as red, owned by the Story layout, and only when
-           what covers them is #stls: anything under the line still fails. */
-        const story = b => /^button\.st-ico ".*" at \d+px under #stls$/.test(b);
-        const floor = size === '1600 by 700' && nm === 'Story';
-        const bad = floor ? c.bad.filter(b => !story(b)) : c.bad;
-        ok(c.n > 0 && bad.length === 0, size + ', ' + nm + (end ? ', scrolled to the end' : '') + ': each of '
-          + c.n + ' visible controls takes a press at its centre' + (bad.length ? ': ' + bad.join('; ') : ''));
-        if (floor) xf(!c.bad.some(story), size + ', ' + nm + (end ? ', scrolled to the end' : '')
-          + ': the Story view icons take a press, and they do not while Story is under its own floor: '
-          + (c.bad.filter(story).join('; ') || 'they do now'));
+        ok(c.n > 0 && c.bad.length === 0, size + ', ' + nm + (end ? ', scrolled to the end' : '') + ': each of '
+          + c.n + ' visible controls takes a press at its centre' + (c.bad.length ? ': ' + c.bad.join('; ') : ''));
       }
     }
     /* and Dismiss gives the room back */

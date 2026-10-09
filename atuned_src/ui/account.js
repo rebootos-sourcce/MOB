@@ -281,7 +281,12 @@ function accProfCss(){
    +'justify-content:center;min-height:var(--tap)}',
   /* the kind switch in the feedback sheet sat flush on the lead under it */
   '.ob-kinds{margin:2px 0 10px}',
-  '@media (max-width:520px){.pf-row{flex-wrap:wrap}.pf-row .pf-act{margin-left:auto}}'].join('\n');
+  '@media (max-width:520px){.pf-row{flex-wrap:wrap}.pf-row .pf-act{margin-left:auto}}',
+  /* the account under the profile name in the page's own header. Wrapped and
+     never clipped: an email is one unbroken word with no place to break, and
+     the profile menu's own copy of it ends in an ellipsis, which hides the
+     end of a long one, the part after the @ that tells two accounts apart */
+  '.ac-hd .ac-em{display:block;margin-top:3px;font-size:13px;color:var(--mid);overflow-wrap:anywhere}'].join('\n');
  document.head.appendChild(st);}
 
 /* ONTO THE PERSON'S OWN FIELD FIRST. A profile of their own is only ever
@@ -581,6 +586,7 @@ function renderAccount(){
  accProfCss();
  var m=(typeof meterRead==='function')?meterRead(CURP):null;
  var who=capName((CURP&&CURP.name)||'You');
+ var ses=(typeof authSession==='function')?authSession():null;
  var body;
  switch(ACC_OPEN){
   case 'profiles':body=accProfiles(); break;
@@ -595,7 +601,15 @@ function renderAccount(){
   /* plain: this is a person's own name, and title casing a name is a claim
      about how they spell it. de Vries is not De Vries. */
   +'<div class="ac-hd"><div class="pm-eye">Account</div>'
-  +'<h2 class="kb-h plain">'+esc(who)+'</h2></div>'
+  +'<h2 class="kb-h plain">'+esc(who)+'</h2>'
+  /* AND THE ACCOUNT IT IS SIGNED IN UNDER, ab691ec on the old line. The header
+     named the profile and never the account, and the email stood only on the
+     Account section's own row, so Security and Billing, which describe the
+     account, did not say which one. A browser can hold several profiles under
+     one sign in, so the name alone does not answer it. Signed out there is no
+     account to name and no line is drawn, rather than an empty one. */
+  +(ses&&ses.email?'<span class="ac-em">'+esc(ses.email)+'</span>':'')
+  +'</div>'
   +'<div class="ac-body">'
   +'<nav class="ac-ix" aria-label="Account sections">'
   +ACC_SECS.map(function(s){

@@ -324,6 +324,42 @@ for(const w of [[1680,1020],[1440,960],[1280,900],[1180,820],[2560,1400]]){
  ok(off.length===0,tag+': labels off the canvas: '+off.join(', '));
  if(off.length)console.log('  '+tag+': clipped '+off.join(', '));}}
 
+/* ============================================================
+   THE STORY PAGE ON A SHORT WINDOW. Every visible control takes a press.
+
+   The Imprints panel in the Story page's middle column was given a fixed half
+   of the column (.st-ch, flex 0 0 50%). In a window shorter than about 645px
+   its own content was taller than that half, the three view icons at the foot
+   of it spilled out under the panel, and the list below (#stls) was drawn over
+   them, so a press landed on the list. A 1366 by 657 laptop is that window.
+   Found by tests/storage.js, which had to name it expected red until now.
+   Measured as a press at each control's centre, the way a hand lands, and not
+   as a rectangle compared with a rectangle.
+   ============================================================ */
+console.log('\n=== Story: every visible control takes a press, short windows too ===');
+for(const w of [[1366,657],[1280,600],[1600,700],[1600,1000],[390,844]]){
+ await p.setViewportSize({width:w[0],height:w[1]});await p.waitForTimeout(200);
+ await p.evaluate(()=>{loadP(0);setTab(TAB.STORY);render();});await p.waitForTimeout(400);
+ await p.fill('#sttext','I keep replaying what she said and I am furious and ashamed.');await p.waitForTimeout(500);
+ const r=await p.evaluate(()=>{
+  const vw=innerWidth,vh=innerHeight,out={n:0,bad:[]};
+  const clipped=(el,x,y)=>{for(let a=el.parentElement;a&&a!==document.documentElement;a=a.parentElement){
+   const cs=getComputedStyle(a);if(cs.overflowX==='visible'&&cs.overflowY==='visible')continue;
+   const q=a.getBoundingClientRect();if(x<q.left||x>q.right||y<q.top||y>q.bottom)return true;}return false;};
+  document.querySelectorAll('button,a[href],input,select,textarea').forEach(el=>{
+   const cs=getComputedStyle(el);if(cs.visibility==='hidden'||cs.pointerEvents==='none'||cs.display==='none')return;
+   const q=el.getBoundingClientRect();if(q.width<1||q.height<1)return;
+   const x=q.left+q.width/2,y=q.top+q.height/2;
+   if(x<0||y<0||x>=vw||y>=vh||clipped(el,x,y))return;
+   out.n++;
+   const h=document.elementFromPoint(x,y);
+   if(h!==el&&!el.contains(h))out.bad.push((el.id?'#'+el.id:el.tagName.toLowerCase()+'.'+String(el.className).split(' ')[0])
+    +' "'+(el.textContent||el.value||'').trim().slice(0,18)+'" at '+Math.round(y)+'px under '+(h?(h.id?'#'+h.id:h.tagName.toLowerCase()):'nothing'));});
+  return out;});
+ ok(r.n>0&&r.bad.length===0,'Story at '+w[0]+' by '+w[1]+': each of '+r.n+' visible controls takes a press at its centre'
+  +(r.bad.length?': '+r.bad.join('; '):''));}
+await p.setViewportSize({width:1680,height:1020});await p.waitForTimeout(160);
+
 await b.close();
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
 process.exit(FAIL?1:0);})();
