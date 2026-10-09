@@ -565,3 +565,58 @@ each kind. Measure with `proto/sniffer/before-after.js`.
 change from *question 3* and *question 4* to *package S1* and *package S2*. Row
 "intensity modifiers are not read" changes from *not specified* to *partial, a
 table exists, SB2b*. All other rows are unchanged.
+
+## UPDATE · 9 OCTOBER 2026 · S0 TO S5, AS BUILT ON `claude/p1a-sniffer`
+
+What landed, what each reader does, and what it still does not read. Numbers are
+read off the runs named beside them and are dated by this heading.
+
+**The parse.** `parseStory(text).hits` is now what counts. A hit said with a no is
+flagged `neg` (with `negw`, `negAt`) and listed in `denied`; a hit about someone else
+is flagged `other` (with `who`, `whoAt`, and `unclear` for "you") and listed in
+`others`. Neither reaches a band, charge, weight, named fetter, imprint, path, axis,
+offer, Source AI question or the field. `storyHits(p)` is every hit, counted or set
+aside, and is what `marksOf`, `unmarkedOf` and `srcDims` read. `asideOf` and
+`asideSay` are the one sentence every surface prints for what was not counted.
+
+**Denial, S1.** `sniffDeny` asks `srcNegated` (two word window, `clauseFloor` at a
+sentence end). Two named floor rules, each of which only stops a no: a word already
+read keeps its own no ("cant sleep", "im not okay"), and `NEG_NOT_DENY` (stop, stops,
+stopped, help) after a no is a can't stop frame. A coherent word is never denied.
+
+**Whose charge, S2.** `sniffWho` reads back through the hit's comma group, nearest
+first: a first person is the writer; he, she, they are someone else; a person
+(`LEXKIN`, `SRC_DIM_CUE.contact`), a possessive or a name opening its clause is
+someone else; "you" opening a clause is unclear; his, her, their, him, them straight
+before the word make it theirs. `WHO_LOSS`: a death or a loss is the writer's
+whoever it happened to.
+
+**Measured** (scratch `measure-s12.js`, checked first on the same build both sides
+and on two broken copies; corpora: `book.txt` in the session scratchpad, 7,096 sentences by `before-after.js`'s own split (not in the git object store; the 9,431 above was not reproduced from this file), the PEOPLE
+voices, every string literal in `tests/engine.js`, the fuzzy corpus):
+
+| Run | Sentences | Lowered | A no before a hit | A third person | Unexplained | Raised |
+| --- | --- | --- | --- | --- | --- | --- |
+| main against S0, `before-after.js` | 7,096 book | 0 (2 changed) | | | | |
+| S0 against S1 | 10,106 | 33 | 33 | 1 | 0 | 0 |
+| S1 against S2 | 10,171 | 75 | 2 | 75 | 0 | 0 |
+| S0 against the branch tip | 10,178 | 109 | 36 | 78 | 0 | 0 |
+
+The corpus grows by run because the tests' own literals are part of it. Of the S2
+lowerings, 13 are held only for an unclear "you", 12 of them the book's generic
+"you", and 12 of the 196 fuzzy corpus lines lose a reading for being done to ("he
+screamed at me", "she lied to my face"), which is the ruling as written. Compared
+with `srcNegated` alone, the two S1 floor rules kept 5 hits it would have denied,
+all can't stop frames ("i could not stop going over it", group 11's own sentence);
+the "a word keeps its own no" rule fired on no corpus sentence, only on the held
+test sentences.
+
+**Failure table, updated again.**
+
+| What | Status after this branch |
+| --- | --- |
+| negation is not read | read, S1. Still: a no reaches across a comma ("I didn't sleep, exhausted" denies exhausted), by the comma ruling |
+| attribution is not read | read, S2, on the story path. Still: the law path (`sniffLaws`) fires "she lied to me" on the writer; a name that opens its sentence reads as the writer's ("Sarah screamed at me"); a possessive after a verb reads as the writer's ("I saw his chest was tight"), where one opening its clause is held ("His chest was tight") |
+| a coherent word after a no | still subtracts ("I am not grateful"), because denying it would raise a reading |
+| being done to | held by the ruling ("he screamed at me"), so its charge reaches the reading only when the person writes how it landed |
+| inferred licenses printing an address name | the Story page titles and the tutorial card no longer say the words named an address, S4, gated in `tests/sniffpage.js` |
