@@ -615,8 +615,8 @@ function runBalDrill(){
     of this one state were in the product and its sweep rules them down to
     "not read yet" as a value. It is the same string the strip now carries. */
  /* A LEAN IS SAID, NEVER SCORED. A bare percent here ("19% outward") is the
-    same defect the dial's own tooltip already avoids (ui.js, axDial: "Leans
-    masculine.", "Leans feminine.", "Even.", no figure). Matched to that
+    same defect the bar's own sentence already avoids (ui.js, renderBal: "It
+    leans masculine.", "It leans feminine.", "It is even.", no figure). Matched to that
     established wording rather than inventing a second one. The real figures,
     the two means it is computed from, still carry the arithmetic below. */
  var h='<div class="pm-eye">Balance</div><div class="ad-nm">'
@@ -634,9 +634,12 @@ function runBalDrill(){
      to one. "Too little held" was one of the five. */
   +(b.read?'':' Neither side reaches 1, so no direction is named. '
     +'Write what happened and both sides move.')+'</p>'
+  /* THE TICK LEFT THE STRIP with the dial, round RB, ported in the P3 menu
+     pass: a mark with no word beside it is the standalone symbol round PC
+     ruled out. The balance bar's own sentence says it in words now, so this
+     line says where it went and no longer points at a tick nobody can see. */
   +(SXN?'<div class="pm-eye">Sex at birth</div><p class="ad-p">You gave <b>'+SXN+'</b>. It is stored '
-    +'and marked on the strip, and it does not enter the arithmetic. The distance between the tick '
-    +'and the marker is the reading, not a verdict.</p>':'')
+    +'and said in the balance bar\'s own sentence, and it does not enter the arithmetic.</p>':'')
   +'<div class="pm-eye">Outward</div><div class="ad-rows">'
   +OUTWARD.map(function(c){return row(c,S.charge[c]||0,'Solar');}).join('')+'</div>'
   +'<div class="pm-eye">Inward</div><div class="ad-rows">'

@@ -784,17 +784,21 @@
          readings now, on the same left edge, at the same height, in the same
          ink, and they are rewritten by the same render. The ids are the ones
          every gate already reads: #polbar is orientation, benign against
-         malignant, #bal is balance, masculine against feminine, and #axpick
-         is the switch for the two designs of both. One mechanic, FJ in
-         TASKS.md, and so one place. -->
+         malignant, and #bal is balance, masculine against feminine. One
+         mechanic, FJ in TASKS.md, and so one place. -->
+    <!-- AND THEY ARE BARS, round RB, ported in the P3 menu pass. His words:
+         "This stack of elements should all be bar style with the symbolic icon
+         and the text inside of the bar itself to maximize space." The headings
+         over them, the pole names under them and the switch between two dial
+         designs are gone: each is one pair bar (rbPair, ui/component.js), its
+         marks, words and shares inside it, the same height and track as every
+         bar above. Orientation is no door, so it is a carrier a keyboard
+         reaches; balance opens its reading. The ids are kept because every
+         gate reads them. -->
     <div class="fdial" id="fdial">
-     <div class="fdl"><svg class="fdl-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 6.4l2.4 5.6L12 17.6 9.6 12z"/></svg>Orientation</div>
-     <div class="polbar" id="polbar"></div>
-     <div class="fdl"><svg class="fdl-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M6 20h12M4.5 8.5h15"/><path d="M4.5 8.5l-2 5a2.6 2.6 0 004 0zM19.5 8.5l-2 5a2.6 2.6 0 004 0z"/></svg>Balance</div>
+     <div class="polbar" id="polbar" role="img" tabindex="0" aria-label="Orientation. Benign against malignant."></div>
      <button type="button" class="bal" id="bal"
       aria-label="Balance. Masculine against feminine. Opens the reading."></button>
-     <div class="ax-pick" id="axpick" role="radiogroup"
-      aria-label="Two designs for orientation and balance. The one picked draws both."></div>
     </div>
    </div>
    <!-- SPIRIT, THEN PSYCHE. Ruled 26 September, CH in TASKS.md: "I want to

@@ -423,35 +423,61 @@ function rbOn(p,bad){var c=cqRamp(bad?100-p:p),f=function(v){v/=255;return v<=.0
      o.pull   the share of the fill the shadow is holding down. Coherence is
               scaled by what the shadow leaves, so a hatched band along the
               fill's foot says how much of it is not getting through.
-     o.hash   Decoherence as the seven seats, root to crown, round OM. His
-              words: "for shadow, have hashes for each of the shadow chakra
-              colors. And have those bars moving. Vertically." Each hash is
-              one seat in its own colour and stands as high as the charge on
-              that seat's addresses against what they could hold, so the
-              seven heights average to the percent the row prints.
      o.wave   Flow as a sine wave, round OM. His words: "Let's use an actual
               sine wave. When a person's sine wave is healthy, it ranges full
               spectrum zero to one. Otherwise, we get to show how choppy it
               is. By the weights of the chakra." o.wave is the seven seat
               passes, root to crown, the numbers flSeats() already keeps and
               Flow is the product of. rbWave draws them (below).
-   THE GATE'S SIX ROWS STAY SIX. A row that draws a hash or a wave is still a
-   button, still .rbar with its data-q, its --c and --w, its 44px floor at
-   least, and still carries .rb-t i at its figure's width. The fill is only
-   not drawn on those two rows: a percent bar under seven columns and a wave
-   would be three drawings of one number. */
+     o.col    the bar's own colour, where the colour is the element it
+              reflects and not its figure, round OT, his words: "I want their
+              colors to be representative of the elements that they reflect
+              ... Vitality to me is energy. Energy is yellow. Awareness is
+              Indigo will is blue." The three take the seat colours that carry
+              those three, Solar, the 3rd Eye and Throat, from seatCol, so a
+              lighting that moves the seats moves the bars with them. A bar
+              with no o.col keeps the ramp by its figure, round OG.
+
+   ROUND RB, EVERY ROW IS ONE BAR. His words: "every single element looks
+   completely different ... This stack of elements should all be bar style
+   with the symbolic icon and the text inside of the bar itself to maximize
+   space." So the wave no longer takes a taller row of its own with no fill
+   under it: Flow is a 44px bar like the others, filled to its figure, and the
+   wave rides inside it between the name and the number. The seven
+   decoherence hashes went with the same ruling and with round PC's "a solid
+   bar of color": decoherence shares one bar with coherence now, rbPair below,
+   and a hash row inside a pole would be a second drawing of the figure the
+   pole already fills to. Where the shadow sits seat by seat is still the
+   Decoherence reading's own list, and the wheel's.
+
+   EVERY WORD CARRIES ITS MEANING, round PO. The one word on a bar is the
+   carrier of its sentence, read off the meaning table (engine/data/gloss.js,
+   the rail context) and never written here, so the tooltip, the screen
+   reader's name and the gate all read the same sentence. */
 var RB_IC={cq:'<path d="M3 9c3-3.5 6 3.5 9 0s6 3.5 9 0M3 15c3-3.5 6 3.5 9 0s6 3.5 9 0"/>',
  dq:'<path d="M12 3.5a8.5 8.5 0 100 17 8.5 8.5 0 000-17M4.2 14.2h15.6"/>',
  rad:'<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1'
   +'M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>'};
-function rbIcon(k){var d=RB_IC[k]||(k&&QICON[k])||'';
+/* THE HALO AND THE PITCHFORK, round OT, his words: "benign malignant, I want a
+   halo and a pitchfork." They are the compass's own two ends, GL_HALO and
+   GL_FORK below, read when a bar is drawn and not when this file loads,
+   because those two are declared further down it. One thing, one mark. A key
+   that is already markup, a seat's or a pole's own glyph, is drawn as it is. */
+function rbIcon(k){
+ var d=(k&&k.charAt(0)==='<')?k:k==='halo'?'<path d="'+GL_HALO+'"/>':k==='fork'?'<path d="'+GL_FORK+'"/>'
+  :(RB_IC[k]||(k&&QICON[k])||'');
  return d?'<svg class="rb-ic" viewBox="0 0 24 24" aria-hidden="true">'+d+'</svg>':'';}
-/* the seven seats' own numbers, root first. Shadow is the mean charge on the
-   seat's addresses over ten, so the mean of the seven is DQ over a hundred.
-   Pass is flSeats().pass, and Flow is their product. */
-function rbSeatShadow(){return BANDS.map(function(b){
- var sg=W.filter(function(n){return n.b===b;}); if(!sg.length)return 0;
- return Math.max(0,Math.min(1,sg.reduce(function(a,n){return a+n.sq;},0)/sg.length/10));});}
+/* THE INK OVER AN ELEMENT'S COLOUR, by the colour's own luminance, the rule
+   rbOn keeps for the ramp. A hex in, one of the same two inks out. */
+function rbLum(hex){var h=String(hex||'').replace('#',''); if(h.length===3)h=h.replace(/(.)/g,'$1$1');
+ var f=function(i){var v=parseInt(h.substr(i,2),16)/255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4);};
+ return h.length===6?.2126*f(0)+.7152*f(2)+.0722*f(4):0;}
+function rbOnHex(hex){return rbLum(hex)>.32?'#0B0D10':'#F6F4EF';}
+/* ONE WORD AND ITS SENTENCE, read off the table. A word the table has no
+   sentence for says nothing rather than a guess, and the gate calls it bare. */
+function rbSay(word){return (typeof unpackOf==='function')?unpackOf(word,'rail'):'';}
+/* the seven seats' passes, root first. Pass is flSeats().pass, and Flow is
+   their product. */
 function rbSeatPass(){var by={};
  flSeats().forEach(function(x){by[K2B[x.p.k]]=x.pass;});
  return BANDS.map(function(b){return Math.max(0,Math.min(1,by[b]===undefined?1:by[b]));});}
@@ -467,13 +493,6 @@ function rbSeatPass(){var by={};
    side of it are not. Nothing is random: the same person draws the same
    wave. Seven paths, one a seat, in the seat's own colour. */
 var RB_WV={W:216,H:34,N:84};
-/* A SEAT CARRYING HALF OF WHAT IT COULD HOLD STANDS FULL HEIGHT. The seven
-   marks average to DQ over a hundred, and a person at 11 has seven marks at
-   about a tenth of the column, which is honest and is also a row of ticks
-   nobody can tell apart. A declared gain of two spends the whole column on
-   the half of the scale people actually live on, and the row's tooltip says
-   so. Nothing is clipped that a person can carry: a seat past half reads full. */
-var RB_GAIN=2;
 function rbWavePts(pass){
  var W0=RB_WV.W,H0=RB_WV.H,N=RB_WV.N,cum=[],c=1,i;
  for(i=0;i<7;i++){c*=pass[i];cum.push(c);}
@@ -503,6 +522,11 @@ function rbWaveHtml(pass,rate){
   +'<animate attributeName="opacity" dur="'+per+'s" repeatCount="indefinite" values="'+vals+'" keyTimes="0;.143;.286;.429;.571;.714;.857;1"/></circle>';
  return '<span class="rb-wave" aria-hidden="true"><svg viewBox="0 0 '+W0+' '+H0+'" preserveAspectRatio="none">'
   +'<g class="wb">'+bands+'</g><path class="wm" d="M0 '+(H0/2)+'H'+W0+'"/>'+segs+bead+'</svg></span>';}
+/* THE SPOKEN NAME. A bar is read once to a screen reader, the way it is seen:
+   its word, its figure or that nothing is read yet, then the same sentence
+   the tooltip carries, then what pressing it does. */
+function rbAria(nm,raw,read,say,does){
+ return nm+', '+(read&&raw&&raw!=='–'?raw:read?'zero':'not read yet')+'. '+(say?say+' ':'')+(does||'');}
 function rbRow(q,nm,pct,raw,o){
  o=o||{};
  var p=Math.max(0,Math.min(100,+pct||0)), read=!o.unread, w=read?p.toFixed(2):'0';
@@ -510,17 +534,16 @@ function rbRow(q,nm,pct,raw,o){
  var pull=(read&&o.pull>0.003)?'<s class="rb-pull" style="width:'+(Math.min(1,o.pull)*100).toFixed(1)+'%"></s>':'';
  var cl=function(v){return Math.max(0,Math.min(1,+v||0));};
  var sv=null, inner='', cls='';
- if(read&&o.hash&&o.hash.length===7){sv=o.hash.map(function(v){return cl(v*RB_GAIN);}); cls=' rb-hashrow';
-  inner='<span class="rb-hash" aria-hidden="true">'+sv.map(function(v,i){
-   return '<s style="--k:'+seatCol(BANDS[i])+';--q:'+i+'"><b style="transform:scaleY('+v.toFixed(3)+')"><u></u></b></s>';}).join('')+'</span>';}
- else if(o.wave&&o.wave.length===7){cls=' rb-waverow';
+ if(o.wave&&o.wave.length===7){cls=' rb-wavein';
   if(read){sv=o.wave.map(cl); inner=rbWaveHtml(sv,o.rate);}
   else inner='<span class="rb-wave" aria-hidden="true"><svg viewBox="0 0 '+RB_WV.W+' '+RB_WV.H+'"><path class="wm" d="M0 '+(RB_WV.H/2)+'H'+RB_WV.W+'"/></svg></span>';}
+ var c=read?(o.col||rbCol(p,o.bad)):'var(--dim)', on=read?(o.col?rbOnHex(o.col):rbOn(p,o.bad)):'var(--ink)';
  return '<button type="button" class="kb rbar'+cls+(read?'':' off')+'" data-q="'+q+'" data-w="'+p.toFixed(2)+'"'
   +(o.fk?' data-fk="'+o.fk+'"':'')+(o.bad?' data-bad="1"':'')
   +(sv?' data-s="'+sv.map(function(v){return v.toFixed(3);}).join(',')+'"':'')
-  +' style="--c:'+(read?rbCol(p,o.bad):'var(--dim)')+';--on:'+(read?rbOn(p,o.bad):'var(--ink)')+';--w:'+w+'%"'
-  +(o.title?' data-tip-k="'+esc(nm)+'" data-tip="'+esc(o.title)+'"':'')+'>'
+  +' style="--c:'+c+';--on:'+on+';--w:'+w+'%"'
+  +(o.title?' data-tip-k="'+esc(nm)+'" data-tip="'+esc(o.title)+'"':'')
+  +' aria-label="'+esc(rbAria(nm,raw,read,o.title,'Opens the reading.'))+'">'
   +'<span class="rb-t" aria-hidden="true"><i style="width:'+w+'%">'+pull+'</i><em class="rb-h"></em></span>'
   +inner
   +'<span class="rb-d" aria-hidden="true"></span>'
@@ -528,18 +551,16 @@ function rbRow(q,nm,pct,raw,o){
   +'<span class="rb-row rb-over" aria-hidden="true">'+cells+'</span></button>';}
 /* THE BARS RUN AT THE FIELD'S OWN RATE. pulseRate in ui/wheel.js is the one
    clock every thread on the Field runs on, and it is the Shadow layer's: DQ
-   sets how fast, and its slow breath sets how far the speed swings. A bar's
-   light sweeps at that rate, and the shadow's own fill breathes by that
-   amplitude, so a person carrying more shadow sees the rail run faster and
-   the shadow bar lean in and out, and a record with none sees them steady.
-   Three custom properties on the dock, written when a reading is and never
-   per frame: the sweep and the breath are CSS, an opacity and a transform. */
+   sets how fast. A bar's light sweeps at that rate, so a person carrying more
+   shadow sees the rail run faster, and a record with none sees it steady.
+   The shadow's own breath used to be a CSS swing on the decoherence row; the
+   row is half of the CQ and DQ pair since round RB, and the breath is the
+   swing of its edge (rbPair). One custom property on the dock, written when a
+   reading is and never per frame. */
 function rbRate(r){
  var d=document.getElementById('fdock'); if(!d)return;
  var dq=clamp((+(r&&r.DQ)||0)/100,0,1);
- d.style.setProperty('--rate',lerp(PUL_LO,PUL_HI,dq).toFixed(3));
- d.style.setProperty('--amp',(PUL_WAVE*dq*2.2).toFixed(3));
- d.style.setProperty('--wave',(1/PUL_WAVE_HZ).toFixed(2)+'s');}
+ d.style.setProperty('--rate',lerp(PUL_LO,PUL_HI,dq).toFixed(3));}
 /* ============================================================
    WHAT A BAR DOES, ONE LANGUAGE. Three verbs and no others, every one of them
    an opacity or a transform except the fill's own width, which the gate reads
@@ -548,8 +569,8 @@ function rbRate(r){
      arrive   the first time the rail is seen, once per session: each row
               slides 10px in from the left and fades over 260ms, on the
               wheel's own ENTER_STAGGER, as its fill sweeps from empty.
-     rest     a light travels the fill at the Field's rate, and the shadow
-              leans on the shadow wave. CSS, nothing in a frame.
+     rest     a light travels the fill at the Field's rate. CSS, nothing in a
+              frame. The pairs' edges swing on the Field's clock (rbPair).
      move     a reading that changes. The fill tweens. A head, the fill's
               leading edge, throws past it on a rise and settles, and on a fall
               just follows, so a gain has energy and a loss has weight. A
@@ -566,12 +587,12 @@ function rbRate(r){
 
    THE TICK IS THE FIELD'S. rbTick runs inside loop() in ui/ui.js and writes
    nothing at all when no bar is moving, so a still rail costs the page no
-   script. The six rows each own a record, RBMO, keyed by host and position
+   script. The single rows each own a record, RBMO, keyed by host and position
    because the markup is rewritten on every render and the record has to
    outlive the element it is painted on.
    ============================================================ */
 var RBMO={}, RB_LIVE=false, RB_WHO=null;
-var RB_ENTER=260, RB_HEAD=700, RB_CHIP=2400, RB_GHOST=2400, RB_SEAT=55;
+var RB_ENTER=260, RB_HEAD=700, RB_CHIP=2400, RB_GHOST=2400;
 function rbStill(){var c=document.body.classList;return !!REDUCED||c.contains('quiet')||c.contains('rm');}
 function rbE3(x){return x<=0?0:x>=1?1:1-Math.pow(1-x,3);}
 /* WHAT CHANGED, SAID ONCE AND LET GO. The hairline where the fill stood and
@@ -620,14 +641,10 @@ function rbPaint(m,now){
  if(m.n0!==null&&m.n1!==null){var txt=(m.n0+(m.n1-m.n0)*e).toFixed(m.dp)+m.suf;
   el.querySelectorAll('.rb-v').forEach(function(pv){pv.textContent=txt;});}
  if(m.s1){
-  /* the seven hashes rise or fall on the same stagger the bars take, seat by
-     seat from the root; the wave is redrawn between the old passes and the
-     new on the row's own ease, and its bead waits until it has settled */
-  var cs=el.querySelectorAll('.rb-hash b'), wv=el.querySelector('.rb-wave');
-  if(cs.length)for(var q=0;q<cs.length&&q<m.s1.length;q++){
-   var kk=(now-m.t0-q*RB_SEAT)/m.dur, ec=kk<=0?0:kk>=1?1:1-Math.pow(1-kk,3), s0=m.s0?m.s0[q]:m.s1[q];
-   cs[q].style.transform='scaleY('+(s0+(m.s1[q]-s0)*ec).toFixed(3)+')';}
-  else if(wv&&m.s0&&m.s1!==m.s0){
+  /* the wave is redrawn between the old passes and the new on the row's own
+     ease, and its bead waits until it has settled */
+  var wv=el.querySelector('.rb-wave');
+  if(wv&&m.s0&&m.s1!==m.s0){
    var ps=m.s1.map(function(v,q){return m.s0[q]+(v-m.s0[q])*e;}), D=rbWaveD(ps), segs=wv.querySelectorAll('path.wv');
    for(var z=0;z<segs.length&&z<7;z++)segs[z].setAttribute('d',D.seg[z]);
    var bd=wv.querySelector('.rb-bead'); if(bd)bd.style.opacity=e<1?'0':'';}}
@@ -669,8 +686,6 @@ function rbMotion(hosts){
     if(m.s1&&sv&&m.s1.length===sv.length)nm.s0=m.s0.map(function(v,q){return v+(m.s1[q]-v)*e;});
     nm.dir=to>m.w1+.05?1:to<m.w1-.05?-1:0;
     nm.span=Math.max(ENTER_SPAN,nm.dir?RB_HEAD:0);}
-   /* the seven hashes stagger root to crown, so the row runs on until the last */
-   if(sv&&!still&&el.querySelector('.rb-hash'))nm.span=Math.max(nm.span,ENTER_SPAN+6*RB_SEAT);
    /* a figure that moved, and not the first sight of one and not a different
       person's, says so */
    if(m&&!arrival){
@@ -693,6 +708,168 @@ function rbMotion(hosts){
   afterBoot(go);}
  else go();
 }
+/* ============================================================
+   TWO FIELDS ON ONE BAR, ported from round RB onto this line in the P3 menu
+   pass. His words, round RB: "Coherence, decoherence is CQ and DQ is on the
+   same bar. As opposing colors with the termination gradient as the
+   oscillating the numbers that the user oscillates. That's the same mechanic
+   for CQDQ. It's the same mechanic for orientation. That's the same mechanic
+   for benign and malignant. It's data driven. And those are opposing fields
+   that need to be balanced." Round PC before it: "a solid bar of color with
+   two opposing colors and an oscillating termination point." Round OX: "let
+   a gradient drive that. And let the boundary be the oscillation range."
+
+   ONE COMPONENT. rbPair draws every pair on the rail, and it is rbRow's
+   shell: the same 44px height, the same track, the same radius and inset
+   edge, the same 12px inset for the words, the same marks. A pole is a
+   colour pressing in from its own end of the bar, with its mark, its one
+   word and its figure inside the bar at that end. Where the colour stops it
+   does not stop on a line: it fades over the stretch the reading swings
+   through, and the edge travels that stretch, so the termination is the
+   oscillation the owner asked to see, and the width of the fade is the
+   range, which is his "let the boundary be the oscillation range". A notch at
+   the top and the foot stays where the figure is now, so the number printed
+   and the place it is drawn are one place.
+
+   TWO SHAPES OF PAIR, ONE DRAWING.
+     whole   the two poles are shares of one whole and meet at one point:
+             benign against malignant, masculine against feminine. The two
+             colours cross fade over the swing.
+     apart   the two poles are separate figures out of 100 each: CQ and DQ.
+             DQ is not 100 less CQ (engine/compute.js, ruled), so each colour
+             runs in from its own end to its own figure, the stretch between
+             them is the bare track, and where they overlap both colours are
+             laid down, which is a field contested. A bar that forced the two
+             to meet would draw a figure the engine does not compute.
+
+   WHAT SWINGS, AND WHY IT IS NOT INVENTED. Every swing is a figure the Field
+   already moves by, on the Field's own clock, S.t:
+     CQ          cqRange (ui/personas.js), the band coherence wanders in, the
+                 one the compass marker beside the wheel already rides, on the
+                 same drift (rbDrift), so the rail and the marker swing as one.
+     DQ          the shadow's own breath, PUL_WAVE times DQ at PUL_WAVE_HZ, the
+                 swing the wheel's pulses already breathe by (ui/wheel.js,
+                 pulseRate). A light shadow barely moves; a heavy one surges.
+     orientation the field's half of the lean is a function of coherence, so
+                 it swings as coherence does, through the same drift, scaled by
+                 the share the field holds against the story (leanRead's own
+                 trust). A coherence that never dips under fifty never leans
+                 the field malignant, and that pole holds still.
+     balance     nothing in the engine moves it between readings, so it holds
+                 still. A swing with no number under it would be decoration.
+
+   THE WORDS. Each pole's word is one word, the rail's own, and its sentence is
+   the meaning table's (rbSay). A pole that is its own reading is its own
+   door, half the bar each, and carries its word, its sentence and its spoken
+   name on that half. A pair that is one reading, orientation or balance, is
+   carried by its host, which says the pair's sentence and both poles'. A
+   zero is a dash, the house's rule for a figure (V8 in the voice skill), and
+   is spoken as zero.
+
+   COST. The fills and the notches are transforms on layers of their own,
+   written in pixels at half pixel steps, so a frame of swing is three
+   compositor moves and no paint. The widths of the fades are written when a
+   reading is, never per frame. rbPairTick runs in the Field's loop and only
+   while the rail is open.
+
+   STILL. Reduced motion, Quiet and Rm get the figures where they are: no
+   sweep in, no swing, the fades at their widths.
+   ============================================================ */
+var RB2={}, RB2_ON=false, RB2_MINF=0.5;
+/* the compass marker's own wander, lifted so the two are one function */
+function rbDrift(t){return Math.sin(t*0.55)*0.62+Math.sin(t*0.23+1.1)*0.38;}
+/* a figure as the bar prints it: a whole percent, and a zero is a dash */
+function rbPct(v){var n=Math.round(+v||0); return n>0?n+'%':'–';}
+function rbPair(k,o){
+ var L=o.L, R=o.R, read=!!o.read;
+ function pole(P,side){
+  var x='<span class="rb2-x"><span class="rb2-n">'+esc(P.nm)+'</span><b class="rb2-v">'+(read?esc(rbPct(P.v)):'–')+'</b></span>';
+  return '<span class="rb2-p '+side+'" style="--pc:'+P.c+'" aria-hidden="true">'+(side==='l'?rbIcon(P.ic)+x:x+rbIcon(P.ic))+'</span>';}
+ /* a pole with its own reading is its own door, half the bar each, both at
+    the 44px floor; a pair that is one reading is pressed as one, by its host */
+ function key(P,side){
+  if(!P.q)return '';
+  var say=(rbSay(P.nm)+(P.note?' '+P.note:'')).trim();
+  return '<button type="button" class="kb rb2-k '+side+'" data-q="'+P.q+'"'
+   +(P.fk?' data-fk="'+P.fk+'"':'')+' style="--pc:'+P.c+'"'
+   +' data-tip-k="'+esc(P.nm)+'" data-tip="'+esc(say)+'"'
+   +' aria-label="'+esc(rbAria(P.nm,read?rbPct(P.v):'–',read,say,'Opens the reading.'))+'"></button>';}
+ return '<span class="rb2'+(read?'':' off')+(o.whole?' whole':'')+'" data-pair="'+k+'" style="--lc:'+L.c+';--rc:'+R.c+'">'
+  +'<span class="rb2-t" aria-hidden="true"><i class="rb2-l"></i><i class="rb2-r"></i>'
+  +'<em class="rb2-now l"></em>'+(o.whole?'':'<em class="rb2-now r"></em>')+'</span>'
+  +pole(L,'l')+pole(R,'r')+key(L,'l')+key(R,'r')+'</span>';}
+/* WHAT A HOST CARRIES for a pair that is one reading: its own sentence, then
+   each pole's word and sentence, then the lean in words, never as a score.
+   The same string is the tooltip's body and, with the figures said first, the
+   spoken name. */
+function rbPairSays(pairWord,o,lean){
+ var s=[rbSay(pairWord),rbSay(o.L.nm),rbSay(o.R.nm)].filter(Boolean).join(' ');
+ return (s+(lean?' '+lean:'')).trim();}
+function rbPairAria(pairWord,o,say,does){
+ var f=function(P){return P.nm+' '+(o.read?(Math.round(+P.v||0)>0?Math.round(P.v)+' per cent':'zero'):'not read yet');};
+ return pairWord+'. '+f(o.L)+', '+f(o.R)+'. '+say+(does?' '+does:'');}
+/* a reading arrives. o is rbPair's own spec, with each pole's v, its swing
+   sw(t) as an offset from v in the same units, and fw, the width that swing
+   covers. Called by render() for each pair it writes. */
+function rbPairSet(k,o){
+ var m=RB2[k], now=performance.now(), still=rbStill();
+ var lv=o.read?clamp(+o.L.v||0,0,100):0, rv=o.read?clamp(o.whole?100-lv:(+o.R.v||0),0,100):0;
+ if(!m){RB2[k]=m={k:k,seen:false,l0:0,l1:lv,r0:0,r1:rv,t0:now,dur:ENTER_SPAN,last:{}};}
+ else if(Math.abs(m.l1-lv)>.05||Math.abs(m.r1-rv)>.05){
+  /* from wherever it had got to, so a second change mid sweep turns */
+  var e=rbE3((now-m.t0)/m.dur);
+  m.l0=m.l0+(m.l1-m.l0)*e; m.r0=m.r0+(m.r1-m.r0)*e; m.l1=lv; m.r1=rv; m.t0=now;
+  if(still||!m.seen){m.l0=lv;m.r0=rv;}}
+ m.o=o; m.read=!!o.read; m.whole=!!o.whole;}
+/* where each element of the bar goes, and which figures it prints. Writes
+   nothing that has not moved half a pixel. */
+function rbPairPaint(m,now){
+ var el=m.el; if(!el)return;
+ var e=rbE3((now-m.t0)/m.dur), lv=m.l0+(m.l1-m.l0)*e, rv=m.r0+(m.r1-m.r0)*e;
+ /* the figures count with the sweep and are written once more as it lands,
+    so what the bar says is the reading and never a frame on the way to it */
+ if(m.read&&(e<1||m.last.txt!==e)){m.last.txt=e; var vs=el.querySelectorAll('.rb2-v');
+  if(vs[0])vs[0].textContent=rbPct(e<1?lv:m.o.L.v); if(vs[1])vs[1].textContent=rbPct(e<1?rv:(m.whole?100-m.o.L.v:m.o.R.v));}
+ if(!m.read)return;
+ var o=m.o, still=rbStill(), t=S.t;
+ var sl=(!still&&o.L.sw)?o.L.sw(t):0, sr=(!still&&o.R.sw)?o.R.sw(t):0;
+ /* a whole pair has one meeting point, so its right pole follows the left's
+    swing; each still sweeps in from its own end on first sight */
+ var pl=clamp(lv+sl,0,100), pr=clamp(100-rv+(m.whole?sl:-sr),0,100);
+ var W0=m.wpx||0, px=function(v){return Math.round(v*W0/100*2)/2;};
+ var put=function(sel,key,x){var v=px(x); if(m.last[key]===v)return; m.last[key]=v;
+  var n=el.querySelector(sel); if(n)n.style.transform='translate3d('+v+'px,0,0)';};
+ put('.rb2-l','l',pl+m.fl/2-100);
+ put('.rb2-r','r',pr-m.fr/2);
+ put('.rb2-now.l','tl',lv);
+ if(!m.whole)put('.rb2-now.r','tr',100-rv);}
+/* the rail's pairs found again after a render or the column opening: each
+   one takes its element, its width and its fades, and the first sight of
+   each sweeps in from its own ends, one after the other in reading order */
+function rbPairs(){
+ var now=performance.now(), still=rbStill(), dock=document.getElementById('fdock');
+ RB2_ON=!!(dock&&dock.offsetParent&&S.tab===TAB.FIELD);
+ var rows=dock?[].slice.call(dock.querySelectorAll('.rbar,.rb2')).filter(function(x){return x.offsetParent;}):[];
+ rows.sort(function(a,b){return a.getBoundingClientRect().top-b.getBoundingClientRect().top;});
+ Object.keys(RB2).forEach(function(k){var m=RB2[k];
+  var el=dock?dock.querySelector('.rb2[data-pair="'+k+'"]'):null;
+  if(!el||!el.offsetParent){m.el=null;return;}
+  if(m.el!==el){m.el=el; m.last={};}
+  m.wpx=el.offsetWidth;
+  var o=m.o;
+  m.fl=Math.max(RB2_MINF,(o.L.fw||0)); m.fr=m.whole?m.fl:Math.max(RB2_MINF,(o.R.fw||0));
+  el.style.setProperty('--fl',(m.fl*m.wpx/100).toFixed(1)+'px');
+  el.style.setProperty('--fr',(m.fr*m.wpx/100).toFixed(1)+'px');
+  if(!m.seen){m.seen=true;
+   if(still||!m.read){m.l0=m.l1;m.r0=m.r1;m.t0=now;}
+   else{var i=Math.max(0,rows.indexOf(el));
+    m.l0=0; m.r0=0; m.dur=ENTER_SPAN;
+    if(isBooted())m.t0=now+Math.min(i,8)*ENTER_STAGGER;
+    else{m.t0=Infinity; afterBoot(function(){m.t0=performance.now()+Math.min(i,8)*ENTER_STAGGER;});}}}
+  rbPairPaint(m,isFinite(m.t0)?now:-1);});}
+function rbPairTick(now){
+ if(!RB2_ON)return;
+ for(var k in RB2){var m=RB2[k]; if(m.el)rbPairPaint(m,now);}}
 /* ============================================================
    THE FOUR THAT MOVE THROUGH A PERSON, DRAWN.
 
