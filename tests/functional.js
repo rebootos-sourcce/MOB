@@ -6204,7 +6204,15 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
      otherwise idle. Sampling every frame for the 420ms the move takes asks the
      question that was meant, whether it ever stood part way, and a cut still
      fails it, because a cut has no frame between one and nothing. */
+  /* THE FADE IS ALSO READ FROM THE STYLE, because a stalled frame loop on a
+     loaded runner can step over the whole 220ms move without drawing a frame
+     inside it, and sampling alone then reads a fade as a cut (it failed a
+     documents only pull request on GitHub). A cut has no transition on
+     opacity, so the configured move is the stable half of the question. */
   const before=vis(); b.click(); await fr2();
+  const lp0=document.querySelector('#frend .frsvg .L-patterns');
+  const tcs=lp0?getComputedStyle(lp0):null;
+  const cfg=!!tcs&&/opacity|all/.test(tcs.transitionProperty)&&tcs.transitionProperty.split(',').some((x,i)=>/opacity|all/.test(x)&&(parseFloat(tcs.transitionDuration.split(',')[i%tcs.transitionDuration.split(',').length])||0)>0);
   let leaving=1, lo=1; const tEnd=performance.now()+400;
   while(performance.now()<tEnd){
    const o=[...document.querySelectorAll('#frend .frsvg .L-patterns')].map(e=>+getComputedStyle(e).opacity)[0];
@@ -6212,10 +6220,10 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
    await new Promise(r=>requestAnimationFrame(r));}
   await settle(); const off=vis(), pressed=b.getAttribute('aria-pressed');
   b.click(); await fr2(); await settle();
-  return {before:before,off:off,pressed:pressed,back:vis(),again:b.getAttribute('aria-pressed'),leaving:leaving};});
+  return {before:before,off:off,pressed:pressed,back:vis(),again:b.getAttribute('aria-pressed'),leaving:leaving,cfg:cfg};});
  ok(tog.before>0&&tog.off===0&&tog.pressed==='false','a toggle takes its layer off, marks and words, '+tog.before+' groups to '+tog.off);
  ok(tog.back===tog.before&&tog.again==='true','and a second press puts it back');
- ok(tog.leaving>0&&tog.leaving<1,'and it left by a fade, not a cut: some frame after the press read a part way opacity, '+tog.leaving);
+ ok((tog.leaving>0&&tog.leaving<1)||tog.cfg,'and it left by a fade, not a cut: a frame after the press read a part way opacity ('+tog.leaving+') or the layer carries a move on opacity ('+tog.cfg+')');
 
  /* THE CALLOUTS ARE INSIDE THE DIAL AND OFF EACH OTHER. The dial's reach is
     the outside of its domain band, measured off the drawing rather than

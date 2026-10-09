@@ -756,7 +756,10 @@ function persistNow(){
  saveProfile(CURP);
  if(PROFILES.indexOf(CURP)<0){
   status('Not saved. This profile is not in the record list.'); return;}
- if(!pPersist())status('Not saved. '+(saveState().err||'storage refused the write')+'.');}
+ /* "Not saved. Error." was this line, with no fail mark: the exception's own
+    name read out to the person, and the line was neither held on screen nor
+    counted as a failure. statusSaved is the one wording for a refused save. */
+ if(!pPersist())statusSaved();}
 /* a debounce with no flush loses whatever is in flight when the tab closes,
    and never reports it, because the write never reaches the store at all. */
 if(typeof addEventListener==='function')['pagehide','visibilitychange'].forEach(function(ev){

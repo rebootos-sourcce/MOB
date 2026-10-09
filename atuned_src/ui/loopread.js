@@ -71,10 +71,16 @@ function lpChain(x){
  if(x.said&&x.said.n){
   var said=RV_ANSWERS.filter(function(k){return x.said.by[k];}).map(function(k){
    return '"'+RV_SAY[k]+'" after '+lpPlural(x.said.by[k],'release','releases');});
-  if(said.length)st.push(['After','You said '+said.join(', ')+'.']);}
- st.push(['Answer',x.state==='confirmed'
-  ?(x.by==='protocol'?'You chose a practice for it':'You said yes to it')
-  :'Not answered yet']);
+  if(said.length)st.push(['After','Asked what changed, you said '+said.join(', ')+'.']);}
+ /* WHICH QUESTION EACH LINE ANSWERS, pass 4. This step read "Answer: Not
+    answered yet" directly under "After: You said I see it differently", so a
+    person who had just answered was told they had not. Two questions: what
+    changed after a release, above, and whether this pattern is theirs, here,
+    which is the yes the state beside the name counts. Each line now names its
+    own, in the glossary's words for confirmed and unanswered. */
+ st.push(['Yours',x.state==='confirmed'
+  ?(x.by==='protocol'?'You chose a practice to work on this pattern.':'You said yes, this pattern is yours.')
+  :'You have not said yes or no to this pattern yet.']);
  return '<ol class="lp-chain" aria-label="Why chain">'+st.map(function(s){
   return '<li><span class="lp-cl">'+s[0]+'</span><span class="lp-cv">'+s[1]+'</span></li>';}).join('')+'</ol>';}
 
