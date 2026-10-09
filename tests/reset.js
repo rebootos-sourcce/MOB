@@ -92,6 +92,9 @@ const stub = http.createServer((req, res) => {
         return send(400, { error: 'a token and a password of 8 to 200 characters are required' });
       if (mode === 'dead') return send(400, { error: 'this link has expired. ask for a new one' });
       if (mode === 'many') return send(429, { error: 'too many attempts. wait fifteen minutes' });
+      /* a yes with no session in it, which the Worker does not send today:
+         the password changed, and nothing may claim a sign in */
+      if (mode === 'bare') return send(200, { ok: true, account: { email: ACC.email } });
       return send(200, { token: 't-reset', account: ACC });
     }
     if (k === 'POST /v1/auth/forgot') return send(200, { ok: true });
@@ -125,7 +128,8 @@ function helpers() {
       pw: pw.map(i => ({ id: i.id, val: i.value, label: lab(i), auto: i.getAttribute('autocomplete') })),
       msg: m ? m.textContent : null, msgKind: m ? m.getAttribute('data-kind') : null,
       status: s ? s.textContent : '', statusKind: s ? s.getAttribute('data-kind') : null,
-      focus: a ? (a.id || a.textContent.trim()) : '', focusTag: a ? a.tagName : '',
+      focus: a ? a.id : '', focusText: a ? a.textContent.trim() : '', focusTag: a ? a.tagName : '',
+      text: h ? h.innerText : '',
       saveOn: !!save && !save.disabled, buttons: btns().map(b => b.textContent.trim()),
       store, inLog: !!needle && log.indexOf(needle) >= 0,
       inDom: !!needle && document.documentElement.outerHTML.indexOf(needle) >= 0,
@@ -247,9 +251,10 @@ function helpers() {
     c = await pg.evaluate(t => __card(t), T);
     ok(posts().length === before + 1, 'the press that succeeds sends one request too, got ' + (posts().length - before));
     ok(c.open && c.head === 'New password saved' && c.status === 'New password saved. Signed in as probe@example.invalid.'
-      && c.statusKind === 'ok' && c.msg === c.status, 'a yes says so in plain words, on the card and the status line, got ' + J([c.head, c.status]));
+      && c.statusKind === 'ok' && c.text.indexOf('Signed in as probe@example.invalid.') >= 0,
+      'a yes says so in plain words, on the card and the status line, got ' + J([c.head, c.status]));
     ok(/"token":"t-reset"/.test(c.session) && c.session.indexOf('t-old') < 0, 'and signs the person in with the session the server sent, got ' + c.session.slice(0, 80));
-    ok(c.buttons.join() === 'Continue' && c.focus === 'Continue', 'the card shows the one next step, with focus on it, got ' + J([c.buttons, c.focus]));
+    ok(c.buttons.join() === 'Continue' && c.focusText === 'Continue', 'the card shows the one next step, with focus on it, got ' + J([c.buttons, c.focusText]));
     ok(!c.inDom && !c.store.length && !c.inLog, 'and the token is still in no markup, no storage and no status line, got ' + J([c.inDom, c.store, c.inLog]));
     const pwStored = await pg.evaluate(() => { let h = false; for (let i = 0; i < localStorage.length; i++) {
       if ((localStorage.getItem(localStorage.key(i)) || '').indexOf('new-password-1') >= 0) h = true; } return h; });
@@ -306,6 +311,13 @@ function helpers() {
     await pg.goto(BASE + '/atuned.html#reset=' + T, { waitUntil: 'load' }); await booted(pg);
     let c = await pg.evaluate(t => __card(t), T);
     ok(c.open && c.head === 'Set a new password' && c.href.indexOf(T) < 0 && c.hash === '', 'a token after # opens the screen and leaves the address too, got ' + J([c.head, c.hash]));
+    mode = 'bare';
+    await pg.evaluate(() => __press('Save', 'new-password-3', 'new-password-3'));
+    c = await pg.evaluate(t => __card(t), T);
+    const mail = await pg.evaluate(() => (document.querySelector('#login input[type=email]') || {}).value || '');
+    ok(c.open && c.head === 'Log in' && c.msg === 'New password saved. Log in with it.' && mail === 'probe@example.invalid' && c.session === '',
+      'a yes that carries no session is not said as a sign in: it sends the person to log in with the email filled, got ' + J([c.head, c.msg, mail, c.session]));
+    mode = 'good';
     const D = tok();
     await pg.goto('about:blank');
     await pg.goto('file://' + SRC + '?reset=' + D, { waitUntil: 'load' }); await booted(pg);
