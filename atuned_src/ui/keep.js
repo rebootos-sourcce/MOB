@@ -179,10 +179,30 @@ function keepFile(){
  if(KEEP.line==='save')keepHide();
  return true;}
 
-/* THE LINE. One at a time, fixed to the bottom like the message dock and on
-   its layer (94), so it never covers the first run or the door, and stacked
-   above the dock whenever the dock is up so the two never overlap. It holds
-   until it is dismissed or answered. The words are a polite live region. */
+/* THE LINE. One at a time, fixed to the bottom on the message dock's layer
+   (94), so it never covers the first run or the door. It holds until it is
+   dismissed or answered. The words are a polite live region.
+
+   AND IT STANDS IN ROOM OF ITS OWN. It first reserved nothing under itself,
+   and a review measured controls at the foot of a page that could not scroll
+   further sitting under it: a press there landed on the storage notice. So while it shows, the instrument stops short of it by its
+   own height (--keep-h, measured, keepPlace) and nothing is ever under it.
+   Which box stops short is read off the layout and never off a breakpoint:
+   where .app is fixed (a wide screen) .app takes the room off its foot, and
+   where .app is in the flow (a narrow one) body is the box that scrolls, so
+   body takes it, and a page scrolled to its end ends above the line. The
+   other things fixed to the foot, the dock, its log, the Field's tool sheet
+   and the phone's tip sheet, stand on top of the room instead of under the
+   line, so the line never moves and the room never jumps.
+
+   AND IT STEPS ASIDE FOR THE CRISIS LINES WHEN THEY EXIST. They are parked
+   until the MVP beta, so nothing carries the id #srcsafe today and the last
+   rule below is inert. It is here so the belt is already in place the day
+   they land: a z-index on their controls cannot lift them over this line,
+   because .app is fixed at z-index 1 and nothing inside it climbs out. While
+   #srcsafe is in the document the line is not drawn and its room goes with
+   it. A storage notice is not what a person reading those lines needs to
+   see. */
 function keepCss(){
  if(document.getElementById('keep-css'))return;
  var st=document.createElement('style'); st.id='keep-css';
@@ -198,13 +218,23 @@ function keepCss(){
   '.keep-a{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin-left:auto}',
   '.keepline .sh-impmsg{flex:1 1 100%;margin:0 12px 6px 0}',
   '.sh-imp .keep-n{margin:0 0 10px;color:var(--ink)}',
-  '.sh-imp .keep-n+.sh-act{margin:0 0 14px}'].join('\n');
+  '.sh-imp .keep-n+.sh-act{margin:0 0 14px}',
+  'html.keep-fix .app{bottom:var(--keep-h)}',
+  'html.keep-flow body{height:calc(100% - var(--keep-h))}',
+  'html.keep-on .msgdock,html.keep-on .msglog,html.keep-on #fbpanel.sheet,',
+  'html.keep-on body.tip-sheet .tip{bottom:calc(var(--keep-h) + 4px)}',
+  'html:has(#srcsafe) #keepline{display:none}'].join('\n');
  document.head.appendChild(st);}
+/* the room: the line's own height, the 14 pixels it stands off the foot and
+   6 more of air, plus the phone's safe area. Measured off the line as drawn,
+   so a line the crisis belt has taken off the page keeps no room at all. */
 function keepPlace(){
- var l=document.getElementById('keepline'); if(!l)return;
- var d=document.getElementById('msgdock');
- var up=(d&&d.classList.contains('on')&&!d.classList.contains('out'))?d.getBoundingClientRect().height+8:0;
- l.style.bottom='calc('+(14+Math.round(up))+'px + env(safe-area-inset-bottom,0px))';}
+ var root=document.documentElement, l=document.getElementById('keepline'), h=0;
+ if(l&&!l.hidden)h=l.getBoundingClientRect().height;
+ if(!h){ root.classList.remove('keep-on','keep-fix','keep-flow'); root.style.removeProperty('--keep-h'); return; }
+ var app=document.querySelector('.app'), fixed=!!app&&getComputedStyle(app).position==='fixed';
+ root.style.setProperty('--keep-h','calc('+Math.ceil(h+20)+'px + env(safe-area-inset-bottom,0px))');
+ root.classList.add('keep-on'); root.classList.toggle('keep-fix',fixed); root.classList.toggle('keep-flow',!fixed);}
 function keepEl(){
  var el=document.getElementById('keepline'); if(el)return el;
  if(!document.body)return null;
@@ -213,9 +243,10 @@ function keepEl(){
  el.innerHTML='<p class="keep-t" id="keeplinet" role="status" aria-live="polite"></p>'
   +'<div class="keep-a" id="keeplinea"></div>';
  document.body.appendChild(el);
- var d=document.getElementById('msgdock');
- try{ if(d&&typeof MutationObserver==='function')
-  new MutationObserver(keepPlace).observe(d,{attributes:true,childList:true,subtree:true,characterData:true}); }catch(e){}
+ /* the line changes height as its words wrap, as it is shown and hidden, and
+    as the crisis belt takes it off the page and puts it back; the window
+    changes which box takes the room */
+ try{ if(typeof ResizeObserver==='function')new ResizeObserver(keepPlace).observe(el); }catch(e){}
  window.addEventListener('resize',keepPlace);
  return el;}
 function keepShow(kind){
@@ -231,8 +262,9 @@ function keepShow(kind){
    :'<button type="button" class="btn" id="keepsave">Save as a file</button>')
   +'<button type="button" class="msg-b" id="keepx">Dismiss</button>';
  if(lost){ var m=document.createElement('p'); m.id='kpimpmsg'; m.className='sh-p sh-impmsg'; el.appendChild(m); }
- el.hidden=false; keepPlace();
+ el.hidden=false;
  t.textContent=lost?KEEP_SAY_LOST:KEEP_SAY_SAVE;
+ keepPlace();
  /* the one importer, under this line's own ids, so a restore here is the
     same boundary and the same failure words as the account area's */
  if(lost)recordImportWire('kp');
@@ -244,6 +276,7 @@ function keepHide(){
  el.hidden=true; KEEP.line=null;
  var t=$('keeplinet'), a=$('keeplinea'), m=$('kpimpmsg');
  if(t)t.textContent=''; if(a)a.innerHTML=''; if(m)m.remove();
+ keepPlace();
  if(had&&document.body)document.body.focus();}
 
 /* THE ACCOUNT AREA'S HALF, drawn inside recordImportHtml so it sits beside

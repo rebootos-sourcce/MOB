@@ -31,7 +31,18 @@
      the browser cleared its copy, offers the import, writes nothing over the
      marker, and a saved file puts the record back;
      with no marker, nothing new appears;
-     a signed in person is not asked, not shown and not marked here.
+     a signed in person is not asked, not shown and not marked here;
+     and the line covers nothing: with it up, every visible button, link,
+     input and select on the Story page and three other tabs, at 1600 by
+     1000, 1600 by 700, 390 by 844 and 390 by 600 (the phone with its
+     keyboard open), takes a press at its own centre; and Dismiss gives the
+     reserved room back.
+
+   WHY THE LAST PART EXISTS. The line is fixed to the foot of the screen, and
+   it first reserved no room under itself. A review measured it on a page
+   that could not scroll further: controls at the foot sat under it, and a
+   press there landed on the storage notice. The crisis lines are parked
+   until the MVP beta; when they land they get their own check here.
 
    No count is typed into this file. Read the counts off the run.
    ============================================================ */
@@ -42,8 +53,13 @@ const SRC = process.env.STORAGE_HTML ? path.resolve(process.env.STORAGE_HTML) : 
 const CHROME = process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
 const SHOTS = process.env.SHOTS || '';
 
-let n = 0; const fails = [];
+let n = 0, XF = 0; const fails = [];
 const ok = (c, m) => { n++; if (!c) fails.push(m); console.log((c ? '  ok    ' : '  FAIL  ') + m); };
+/* expected red: a defect that is known, owned elsewhere and named. It is
+   printed on every run and never counted as a pass, and the day it goes green
+   it is a FAIL until the xf is turned back into an ok. */
+const xf = (c, m) => { if (c) { n++; fails.push(m); console.log('  FAIL  expected red went green, make it an ok: ' + m); }
+  else { XF++; console.log('  red   ' + m); } };
 const booted = pg => pg.waitForFunction(() => typeof isBooted === 'function' && isBooted(), null, { timeout: 30000 });
 const settle = (pg, ms) => pg.waitForTimeout(ms || 300);
 const shot = async (pg, nm) => { if (SHOTS) { await pg.screenshot({ path: path.join(SHOTS, nm) }); console.log('  shot  ' + nm); } };
@@ -142,6 +158,49 @@ const clearRecord = async pg => {
   return pg.evaluate(() => { localStorage.removeItem(PKEY);
     return localStorage.getItem(typeof KEEP_KEY !== 'undefined' ? KEEP_KEY : 'source.profiles.saved'); });
 };
+/* EVERY CONTROL A PERSON CAN SEE, AND WHAT A PRESS AT ITS CENTRE LANDS ON.
+   Visible means drawn, not hidden, taking pointer events, with its centre on
+   the screen and inside every box that clips it (a control scrolled out of
+   its own panel is not on the screen even when its rectangle is). The line's
+   own controls are left out: the question is what the line covers. A press
+   that lands on anything but the control or something inside it is named,
+   with what it landed on, so a failure says which control and under what. */
+const covered = (pg, scope) => pg.evaluate(scope => {
+  const vw = innerWidth, vh = innerHeight, line = document.getElementById('keepline');
+  const root = scope ? document.querySelector(scope) : document;
+  const name = e => !e ? 'nothing' : (line && line.contains(e)) ? '#keepline'
+    : e.id ? '#' + e.id : e.tagName.toLowerCase() + (typeof e.className === 'string' && e.className ? '.' + e.className.trim().split(/\s+/)[0] : '');
+  const clipped = (el, x, y) => { for (let a = el.parentElement; a && a !== document.documentElement; a = a.parentElement) {
+    const cs = getComputedStyle(a); if (cs.overflowX === 'visible' && cs.overflowY === 'visible') continue;
+    const r = a.getBoundingClientRect(); if (x < r.left || x > r.right || y < r.top || y > r.bottom) return true; } return false; };
+  const out = { n: 0, bad: [] };
+  if (!root) return out;
+  root.querySelectorAll('button,a[href],input,select').forEach(el => {
+    if (line && line.contains(el)) return;
+    const cs = getComputedStyle(el); if (cs.visibility === 'hidden' || cs.pointerEvents === 'none') return;
+    const r = el.getBoundingClientRect(); if (r.width < 1 || r.height < 1) return;
+    const x = r.left + r.width / 2, y = r.top + r.height / 2;
+    if (x < 0 || y < 0 || x >= vw || y >= vh || clipped(el, x, y)) return;
+    out.n++;
+    const h = document.elementFromPoint(x, y);
+    if (h !== el && !el.contains(h)) out.bad.push(name(el) + ' "' + (el.textContent || el.value || '').trim().slice(0, 20)
+      + '" at ' + Math.round(y) + 'px under ' + name(h)); });
+  return out; }, scope || null);
+/* nothing else on top: the message dock, a tooltip and a focused control's tip
+   are their own overlays, raised by the setup and not by the line */
+const calm = async pg => { await pg.mouse.move(2, 2);
+  await pg.evaluate(() => { if (typeof msgHide === 'function') msgHide(); if (typeof TIP !== 'undefined' && TIP.hide) TIP.hide();
+    if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); });
+  await settle(pg, 200); };
+const lineUp = pg => pg.evaluate(() => { const l = document.getElementById('keepline');
+  if (!l || l.hidden) return 0; const r = l.getBoundingClientRect(); return getComputedStyle(l).display === 'none' ? 0 : r.height; });
+/* the room kept under the instrument: how far the app (on a wide screen) or
+   the scrolling body (on a narrow one) stops short of the foot of the screen */
+const reserved = pg => pg.evaluate(() => { const a = document.querySelector('.app');
+  const fixed = a && getComputedStyle(a).position === 'fixed';
+  return Math.round(innerHeight - (fixed ? a.getBoundingClientRect().bottom : document.body.getBoundingClientRect().bottom)); });
+const TABS = [['STORY', 'Story'], ['INTAKE', 'Avatar'], ['FIELD', 'Field'], ['SETTINGS', 'Account']];
+const SIZES = [[1600, 1000], [1600, 700], [390, 844], [390, 600]];
 const big = b => b.w >= 44 && b.h >= 44;
 const fits = s => !!s.line.box && s.line.box.l >= 0 && s.line.box.r <= s.vw + 0.5 && s.line.box.t >= 0
   && s.line.box.b <= s.vh + 0.5 && s.sw <= s.vw;
@@ -354,8 +413,61 @@ const btn = (s, t) => s.line.btns.find(b => b.text === t);
     await cx.close();
   }
 
+  /* THE LINE COVERS NOTHING. Each size from a fresh boot, the line raised the
+     way a person raises it (a no from the browser, then a story), then each
+     tab twice: as it opens, and with every scroller run to its end, which is
+     the page that cannot scroll further where the defect was measured. */
+  for (const [w, h] of SIZES) {
+    const size = w + ' by ' + h;
+    console.log('\n=== the line covers nothing: ' + size + ' ===');
+    const { cx, pg, errs } = await fresh(browser, 'no', w, h);
+    await open(pg);
+    await commit(pg, STORY1); await settle(pg, 500);
+    for (const [k, nm] of TABS) {
+      await pg.evaluate(k => { setTab(TAB[k]); if (k === 'SETTINGS') { ACC_OPEN = 'privacy'; renderAccount(); } render(); }, k);
+      await settle(pg, 400); await calm(pg);
+      const up = await lineUp(pg);
+      ok(up > 0, size + ', ' + nm + ': the line is up for this check, ' + Math.round(up) + 'px tall');
+      for (const end of [false, true]) {
+        if (end) { await pg.evaluate(() => { document.querySelectorAll('body,html,.app *').forEach(e => {
+          const o = getComputedStyle(e).overflowY; if ((o === 'auto' || o === 'scroll' || e === document.body || e === document.documentElement)
+            && e.scrollHeight > e.clientHeight) e.scrollTop = e.scrollHeight; }); }); await calm(pg); }
+        const c = await covered(pg);
+        /* STORY'S OWN FLOOR, expected red at 1600 by 700 and nowhere else.
+           The Story page's middle column gives the Imprints panel a fixed
+           half of its height (.st-ch, flex 0 0 50%, in shell/head.html), and
+           in an app shorter than about 645px its view icons spill below it
+           and the pending list (#stls) is drawn over them. That happens with
+           no line at all in a 1366 by 657 window. The line's room takes a
+           1600 by 700 window to 611px, under that floor, so the three icons
+           are named here as red, owned by the Story layout, and only when
+           what covers them is #stls: anything under the line still fails. */
+        const story = b => /^button\.st-ico ".*" at \d+px under #stls$/.test(b);
+        const floor = size === '1600 by 700' && nm === 'Story';
+        const bad = floor ? c.bad.filter(b => !story(b)) : c.bad;
+        ok(c.n > 0 && bad.length === 0, size + ', ' + nm + (end ? ', scrolled to the end' : '') + ': each of '
+          + c.n + ' visible controls takes a press at its centre' + (bad.length ? ': ' + bad.join('; ') : ''));
+        if (floor) xf(!c.bad.some(story), size + ', ' + nm + (end ? ', scrolled to the end' : '')
+          + ': the Story view icons take a press, and they do not while Story is under its own floor: '
+          + (c.bad.filter(story).join('; ') || 'they do now'));
+      }
+    }
+    /* and Dismiss gives the room back */
+    await calm(pg);
+    const up = await lineUp(pg), room = await reserved(pg);
+    ok(up > 0 && room >= up, size + ': while the line is up, the room under the instrument is kept, '
+      + room + 'px for a ' + Math.round(up) + 'px line');
+    const kx = await pg.$('#keepx');
+    if (kx && await kx.isVisible()) await kx.click();
+    await settle(pg, 300);
+    const gone = await lineUp(pg), back = await reserved(pg);
+    ok(gone === 0 && back === 0, size + ': Dismiss takes the line away and gives the room back, ' + back + 'px kept');
+    ok(errs.length === 0, 'nothing threw: ' + errs.slice(0, 2).join(' | '));
+    await cx.close();
+  }
+
   await browser.close();
   fs.rmSync(tmp, { recursive: true, force: true });
-  console.log('\n===== ' + (n - fails.length) + ' passed, ' + fails.length + ' failed =====');
+  console.log('\n===== ' + (n - fails.length) + ' passed, ' + fails.length + ' failed, ' + XF + ' expected red =====');
   process.exit(fails.length ? 1 : 0);
 })().catch(e => { console.error(e); process.exit(1); });
