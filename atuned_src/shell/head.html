@@ -4003,7 +4003,12 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
  background:color-mix(in srgb,var(--ink) 3%,transparent);border:1px solid var(--edge);
  border-radius:var(--r-s);padding:14px 16px}
 .st-jr{flex:1 1 0}
-.st-ch{flex:0 0 50%}
+.st-ch{flex:0 0 auto;min-height:50%}
+/* THE IMPRINTS PANEL TAKES HALF THE COLUMN AT LEAST, AND ALL ITS OWN CONTENT
+   WHEN THAT IS MORE. It was a fixed half, so in a window under about 645px
+   its three view icons spilled out under it and the list below was drawn
+   over them (tests/collide.js, Story on a short window). The list is the one
+   that gives way: it has min-height 0 and scrolls on its own. */
 .st-ls{flex:1 1 0}
 .st-eb{font-size:12px;font-weight:600;color:var(--dim)}
 .st-tag{font-size:12px;color:var(--dim);margin-right:auto;white-space:nowrap}
