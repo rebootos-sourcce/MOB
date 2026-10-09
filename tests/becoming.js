@@ -34,7 +34,7 @@ const booted=async p=>{try{await p.waitForFunction(()=>document.body.classList.c
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 
 (async()=>{
- const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
  const p=await b.newPage({viewport:{width:1600,height:1000}});
  const errs=[]; p.on('pageerror',e=>errs.push(String(e.message)));
  await p.goto(FILE); await booted(p); await wait(300);

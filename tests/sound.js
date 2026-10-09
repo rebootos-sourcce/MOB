@@ -523,7 +523,7 @@ if(require.main===module){
    await p.waitForTimeout(120); }catch(e){}
   try{ await p.waitForFunction(()=>typeof enterOver!=='function'||enterOver(),null,{timeout:4000}); }catch(e){}};
  (async()=>{
-  const browser=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+  const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
   console.log('\n=== the fittings: the interface\'s own sounds ===');
   try{ await soundGate(browser,FILE,ok,booted); }
   catch(e){ FAIL++; console.log('  FAIL the gate threw: '+e.stack); }

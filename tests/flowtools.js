@@ -39,10 +39,23 @@ const path=require('path');
 const COLS=[['input','lcol','flownew'],['ritual','stage','rit'],['tracker','rcol','flowrail']];
 
 async function flowGate(browser,FILE,ok,booted){
+ /* EVERY PAGE THIS FILE OPENS RUNS ON ONE FIXED DATE, and no check here reads
+    the real clock. FT30 passed on Thursday 8 October 2026 and failed on Friday
+    9 October with the source unchanged: the round QX seed sets a ritual for
+    Tuesday, Thursday and Saturday, and the check asked the real clock what day
+    it was, so the gate answered for the weekday it was run on and not for the
+    product. Monday 23 February 2026 at local noon: a Monday so the week loop
+    in the QX group walks Monday to Sunday in order, in a 28 day month so that
+    week runs across a month end into 1 March, and noon so a run of a few
+    minutes never crosses midnight. install and not setFixedTime, so the clock
+    still runs from there: the release's settle count (ui/release.js) is two
+    reads of Date.now, and on a clock that never moves it would never settle. */
+ const AT=new Date(2026,1,23,12);
+ const newPage=async o=>{const pg=await browser.newPage(o); await pg.clock.install({time:AT}); return pg;};
  /* ---- FT1, FT2, FT3, FT4, FT5, FT6, FT12, FT13, FT14: the page, both widths ---- */
  for(const [W,H] of [[1600,1000],[390,844]]){
   const phone=W<600, tag='@'+W+' ';
-  const pg=await browser.newPage({viewport:{width:W,height:H},hasTouch:phone,isMobile:phone});
+  const pg=await newPage({viewport:{width:W,height:H},hasTouch:phone,isMobile:phone});
   const err=[]; pg.on('pageerror',e=>err.push(e.message));
   /* a group that throws is a failure with a name, not a crash that hides the
      groups after it. This is what lets the gate be run against a build from
@@ -220,7 +233,7 @@ async function flowGate(browser,FILE,ok,booted){
 
  /* ---- FT8, FT7, FT9, FT13, FT14: empty states, the reads, the writes ---- */
  {
-  const pg=await browser.newPage({viewport:{width:1600,height:1000}});
+  const pg=await newPage({viewport:{width:1600,height:1000}});
   const err=[]; pg.on('pageerror',e=>err.push(e.message));
   await pg.goto(FILE,{waitUntil:'load'}); await booted(pg); await pg.waitForTimeout(500);
   const wait=ms=>pg.waitForTimeout(ms||260);
@@ -430,7 +443,7 @@ async function flowGate(browser,FILE,ok,booted){
     field's own places (W) and the practice table. The page is asked only what
     it shows. */
  {
-  const pg=await browser.newPage({viewport:{width:1600,height:1000}});
+  const pg=await newPage({viewport:{width:1600,height:1000}});
   const err=[]; pg.on('pageerror',e=>err.push(e.message));
   await pg.goto(FILE,{waitUntil:'load'}); await booted(pg); await pg.waitForTimeout(500);
   const wait=ms=>pg.waitForTimeout(ms||300);
@@ -696,7 +709,7 @@ async function flowGate(browser,FILE,ok,booted){
  }
  /* FT23, stillness: the same page for a person who asked their system for less motion */
  {
-  const pg=await browser.newPage({viewport:{width:1600,height:1000},reducedMotion:'reduce'});
+  const pg=await newPage({viewport:{width:1600,height:1000},reducedMotion:'reduce'});
   try{
   await pg.goto(FILE,{waitUntil:'load'}); await booted(pg); await pg.waitForTimeout(400);
   const still=await pg.evaluate(async()=>{loadP(0); setTab(TAB.RITUAL); await new Promise(r=>setTimeout(r,400));
@@ -710,7 +723,7 @@ async function flowGate(browser,FILE,ok,booted){
     stranger's first visit; James is a worked example from the roster, read
     only, whose heaviest seat also holds a place, which is the doubled card. */
  {
-  const pg=await browser.newPage({viewport:{width:1600,height:1000}});
+  const pg=await newPage({viewport:{width:1600,height:1000}});
   const err=[]; pg.on('pageerror',e=>err.push(e.message));
   await pg.goto(FILE,{waitUntil:'load'}); await booted(pg); await pg.waitForTimeout(400);
   try{
@@ -783,7 +796,7 @@ async function flowGate(browser,FILE,ok,booted){
  /* FT24 on a phone: with nothing active the column that starts one is first,
     and with one running the stack is back to the ritual, the tracker, then new */
  {
-  const pg=await browser.newPage({viewport:{width:390,height:844},hasTouch:true,isMobile:true});
+  const pg=await newPage({viewport:{width:390,height:844},hasTouch:true,isMobile:true});
   await pg.goto(FILE,{waitUntil:'load'}); await booted(pg); await pg.waitForTimeout(400);
   try{
   const top=()=>pg.evaluate(()=>{const t=id=>Math.round(document.getElementById(id).getBoundingClientRect().top);
@@ -809,7 +822,7 @@ async function flowGate(browser,FILE,ok,booted){
     seed's days and the tables, never asked of the page's own reads. */
  for(const [W,H] of [[1600,1000],[390,844]]){
   const phone=W<600, tag='@'+W+' ';
-  const pg=await browser.newPage({viewport:{width:W,height:H},hasTouch:phone,isMobile:phone});
+  const pg=await newPage({viewport:{width:W,height:H},hasTouch:phone,isMobile:phone});
   const err=[]; pg.on('pageerror',e=>err.push(e.message));
   await pg.goto(FILE,{waitUntil:'load'}); await booted(pg); await pg.waitForTimeout(400);
   try{
@@ -896,15 +909,14 @@ async function flowGate(browser,FILE,ok,booted){
   const gl=await pg.evaluate(()=>{RIT.gview='today'; ritRender(); const g=document.querySelector('#rit .rv-goals');
    const af=[...g.querySelectorAll('.rv-aff .rv-af1')].map(x=>x.querySelector('.rv-afq').textContent);
    const ch=[...g.querySelectorAll('.rv-chal .rv-af1')].map(x=>({nm:x.querySelector('.rv-chn').childNodes[0].textContent, act:x.querySelector('.rv-afq').textContent}));
-   /* the rows due today, worked out off the plans: active, and today one of its days */
-   const DAY=86400000, off=new Date().getTimezoneOffset()*60000, today=Math.floor((Date.now()-off)/DAY), wd=(new Date(today*DAY).getUTCDay()+6)%7;
-   const due=ritPlans().filter(p=>!p.stop&&(!p.on||p.on.indexOf(wd)>=0)).length;
-   return {views:[...g.querySelectorAll('[data-act="gview"]')].map(b=>b.textContent), rows:g.querySelectorAll('.rv-item').length, due,
+   return {views:[...g.querySelectorAll('[data-act="gview"]')].map(b=>b.textContent),
     af, ch, pairs:CURP.avatar.pairs.map(p=>p.be).reverse()};});
   const wantAf=gl.pairs.map(b=>'"'+b+'"');
-  ok(JSON.stringify(gl.views)===JSON.stringify(['Today','This week','This month'])&&gl.rows===gl.due&&gl.due>0&&gl.af.length===3
+  /* the Active rows are held on all seven days in the loop below, not here,
+     because here is one day and the rows turn on which day it is */
+  ok(JSON.stringify(gl.views)===JSON.stringify(['Today','This week','This month'])&&gl.af.length===3
     &&JSON.stringify(gl.af.slice(0,2))===JSON.stringify(wantAf)&&gl.ch.length>=1,
-   'FT30: '+tag+'Goals is Today, This week and This month; Today holds the Active rows, three affirmations with your own avatar lines first, newest first, and the challenges, '+JSON.stringify(gl));
+   'FT30: '+tag+'Goals is Today, This week and This month; Today holds three affirmations with your own avatar lines first, newest first, and the challenges, '+JSON.stringify(gl));
   const sd=await pg.evaluate(async()=>{const r0=CURP.rituals.length, k0=ladderRead(CURP,Date.now()).streak.run;
    const b=document.querySelector('#rit .rv-aff [data-act="said"]'); b.click(); await new Promise(r=>setTimeout(r,250));
    const on=document.querySelector('#rit .rv-aff [data-act="said"]').getAttribute('aria-pressed');
@@ -914,18 +926,58 @@ async function flowGate(browser,FILE,ok,booted){
     rit:CURP.rituals.length-r0, streak:ladderRead(CURP,Date.now()).streak.run-k0};});
   ok(sd.on==='true'&&/^Said\./.test(sd.said)&&sd.off==='false'&&sd.rit===0&&sd.streak===0,
    'FT30: '+tag+'an affirmation is marked said for today and taken off with the same press, and it is not a kept ritual day: the record and the streak do not move, '+JSON.stringify(sd));
-  const wk=await pg.evaluate(()=>{RIT.gview='week'; ritRender(); const g=document.querySelector('#rit .rv-goals .rv-wg');
-   const DAY=86400000, off=new Date().getTimezoneOffset()*60000, today=Math.floor((Date.now()-off)/DAY);
-   const wd=d=>(new Date(d*DAY).getUTCDay()+6)%7, mon=today-wd(today);
-   const heads=[...g.querySelectorAll('.rv-wgh')].map(h=>h.textContent);
-   const want=[0,1,2,3,4,5,6].map(i=>['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][i]+new Date((mon+i)*DAY+off+12*3600000).getDate());
-   /* the Tuesday, Thursday and Saturday row: set on exactly those three */
-   const cells=[...g.querySelectorAll('.rv-wc')].filter(c=>/^Box Breathing,/.test(c.getAttribute('aria-label')));
-   const st=cells.map(c=>c.className.match(/rv-wc-(\w+)/)[1]);
-   RIT.gview='today'; ritRender();
-   return {heads, want, st, setOn:st.map((s,i)=>s==='off'?-1:i).filter(i=>i>=0)};});
-  ok(JSON.stringify(wk.heads)===JSON.stringify(wk.want)&&JSON.stringify(wk.setOn)===JSON.stringify([1,3,5]),
-   'FT30: '+tag+'This week is a calendar week, Monday first with each date, and a ritual set for Tuesday, Thursday and Saturday is drawn on those three days and no other, '+JSON.stringify(wk));
+  /* ---- FT30 ON EVERY DAY OF ONE WEEK ----
+     The seed holds a ritual set for Tuesday, Thursday and Saturday, so Today's
+     rows and This week's marks turn on the weekday, and asked on one day they
+     hold that day only: this is the check that passed on a Thursday and
+     failed on the Friday after. So the page's clock is walked through the
+     frozen week, Monday 23 February to Sunday 1 March, across a month end,
+     and both views are asked on all seven. The page's own weekday is read back
+     beside this test's, so a clock that did not move the page fails here by
+     name and does not pass seven times on one day. Then the clock is put back
+     for the groups after. */
+  const WDF=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'], seen=[];
+  for(let i=0;i<7;i++){
+   await pg.clock.setSystemTime(new Date(AT.getFullYear(),AT.getMonth(),AT.getDate()+i,12));
+   const d=await pg.evaluate(()=>{RIT.gview='today'; ritRender(); const g=document.querySelector('#rit .rv-goals');
+    const DAY=86400000, off=new Date().getTimezoneOffset()*60000, today=Math.floor((Date.now()-off)/DAY), wd=(new Date(today*DAY).getUTCDay()+6)%7;
+    /* EVERY ACTIVE RITUAL, AND NOT ONLY THE ONES DUE TODAY. This counted the
+       rituals due today against every row drawn, so it failed on each day the
+       Tuesday, Thursday and Saturday ritual is not set for, and the page was
+       right: Today is the Active list (DESIGN-flow-tools.md FT30), and
+       ritActiveBody (ui/ritual.js) draws every active ritual, the ones due
+       today first and the rest under Other days, named by their days so
+       nobody reads them as missed (round LT, "DUE IS NOT ACTIVE"). So active
+       and due are both worked out here off the plans, and the rows are read
+       in order with the Other days head where it sits. */
+    const dk=t=>Math.floor((Date.parse(t)-off)/DAY);
+    const run=ritPlans().filter(p=>!p.stop&&(!p.days||today<dk(p.from)+p.days));
+    const set=p=>!p.on||p.on.indexOf(wd)>=0, nm=p=>ritName(p.steps);
+    const due=run.filter(set).map(nm).sort(), rest=run.filter(p=>!set(p)).map(nm).sort();
+    const seq=[...g.querySelectorAll('.rv-item .rv-nm, .rv-other')].map(e=>e.classList.contains('rv-other')?'|':e.textContent);
+    const cut=seq.indexOf('|'), rows=g.querySelectorAll('.rv-item').length;
+    const above=(cut<0?seq:seq.slice(0,cut)).sort(), below=(cut<0?[]:seq.slice(cut+1)).sort();
+    RIT.gview='week'; ritRender(); const k=document.querySelector('#rit .rv-goals .rv-wg'), mon=today-wd;
+    const hd=[...k.querySelectorAll('.rv-wgh')];
+    const want=[0,1,2,3,4,5,6].map(i=>['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][i]+new Date((mon+i)*DAY+off+12*3600000).getDate());
+    /* the Tuesday, Thursday and Saturday row: set on exactly those three */
+    const st=[...k.querySelectorAll('.rv-wc')].filter(c=>/^Box Breathing,/.test(c.getAttribute('aria-label')))
+     .map(c=>c.className.match(/rv-wc-(\w+)/)[1]);
+    RIT.gview='today'; ritRender();
+    return {page:new Date().toDateString(), pwd:ritWd(ritToday0()), wd, rows, run:run.length, due, rest, above, below,
+     heads:hd.map(h=>h.textContent), want, now:hd.findIndex(h=>h.classList.contains('rv-now')),
+     setOn:st.map((s,i)=>s==='off'?-1:i).filter(i=>i>=0)};});
+   seen.push(d.page);
+   ok(d.wd===i&&d.pwd===i,
+    'FT30: '+tag+'the clock is on '+WDF[i]+' for the page and for this test alike, '+JSON.stringify({page:d.page,pwd:d.pwd,wd:d.wd}));
+   ok(d.rows===d.run&&d.due.length>0&&JSON.stringify(d.above)===JSON.stringify(d.due)&&JSON.stringify(d.below)===JSON.stringify(d.rest),
+    'FT30: '+tag+'on '+WDF[i]+' Today holds every active ritual, the ones due today first and the rest under Other days, '
+    +JSON.stringify({page:d.page,rows:d.rows,run:d.run,due:d.due,rest:d.rest,above:d.above,below:d.below}));
+   ok(JSON.stringify(d.heads)===JSON.stringify(d.want)&&d.now===i&&JSON.stringify(d.setOn)===JSON.stringify([1,3,5]),
+    'FT30: '+tag+'on '+WDF[i]+' This week is a calendar week, Monday first with each date and today marked, and a ritual set for Tuesday, Thursday and Saturday is drawn on those three days and no other, '+JSON.stringify(d));
+  }
+  console.log('  FT30 '+tag+'the page read its clock as '+seen.join(', '));
+  await pg.clock.setSystemTime(AT);
 
   /* ---- FT33, round RB: a worked example runs rituals, and the page reads them ----
      engine/ritex.js builds each example's plans and days with its own copy of
@@ -1030,7 +1082,7 @@ if(require.main===module){
  const {FULL_SIGHT}=require('./seed.js');
  (async()=>{
   const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1';
-  const browser=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+  const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
   let PASS=0,FAIL=0;
   const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
   /* the Field's own left column starts shut on his ruling, and a gate that

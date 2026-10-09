@@ -106,7 +106,7 @@ const PROBE = () => {
 
 (async () => {
   const browser = await chromium.launch(
-    { executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+    { executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
 
   console.log('\n=== funnel gate ===');
   console.log('  pages found: ' + PAGES.length + ' (' + PAGES.join(', ') + ')');

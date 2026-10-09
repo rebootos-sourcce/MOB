@@ -41,7 +41,7 @@ const path=require('path'), fs=require('fs'), cp=require('child_process');
 
 const FILE=path.resolve(process.argv[2]||path.join(__dirname,'..','source.html'));
 const OUT=path.resolve(process.argv[3]||path.join(__dirname,'..','.copypass.json'));
-const CHROME='/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
+const CHROME=process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
 const sh=c=>{try{return cp.execSync(c,{encoding:'utf8'}).trim();}catch(e){return '?';}};
 
 /* WHOSE PROFILE THE LOADED READINGS COME FROM, and the sheet says so beside

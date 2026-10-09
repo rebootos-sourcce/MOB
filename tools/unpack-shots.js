@@ -7,7 +7,7 @@ const path=require('path'), fs=require('fs');
 const FILE=path.resolve(process.argv[2]||'source.html'), OUT=process.argv[3]||'mockups/unpack', TAG=process.argv[4]||'after';
 (async()=>{
  fs.mkdirSync(OUT,{recursive:true});
- const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
  for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
   const c=await b.newContext({viewport:{width:w,height:h},deviceScaleFactor:1,isMobile:w<600,hasTouch:w<600});
   const p=await c.newPage();

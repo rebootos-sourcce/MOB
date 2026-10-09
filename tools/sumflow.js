@@ -26,7 +26,7 @@ const path=require('path'), fs=require('fs');
 const OUT=process.argv[2]||'shots/sumflow';
 const W=+(process.argv[3]||1600), H=+(process.argv[4]||1000);
 const NAMES=(process.argv[5]||'Gordon,Diane,Wren').split(',');
-const CHROME='/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
+const CHROME=process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
 (async()=>{
  fs.mkdirSync(OUT,{recursive:true});
  const b=await chromium.launch({executablePath:fs.existsSync(CHROME)?CHROME:undefined});

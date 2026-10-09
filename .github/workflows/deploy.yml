@@ -1,8 +1,8 @@
 name: deploy
 # atuned.world (1246, round LW). Builds the funnel and the engine and deploys
-# both to one Cloudflare Pages project on every push to the working branch,
-# the same shape reboot-os/.github/workflows/server.yml already uses for the
-# server: tests first, deploy only when the two secrets are present.
+# both to one Cloudflare Pages project, the same shape
+# reboot-os/.github/workflows/server.yml already uses for the server: tests
+# first, then the deploy.
 #   secrets: CLOUDFLARE_API_TOKEN (Cloudflare Pages: Edit), CLOUDFLARE_ACCOUNT_ID
 #   Cloudflare side, his to do once: create a Pages project named "atuned" in
 #   the same account (dash.cloudflare.com, Workers & Pages, Create, Pages,
@@ -15,10 +15,39 @@ name: deploy
 # the handover rule in CLAUDE.md gives source.html when it is sent to him, so
 # that a build sent as one file and a build served as one file are the same
 # name. Deployed here unchanged: atuned-funnel.html, atuned-quiz.html,
-# atuned-about.html, atuned-buy.html and atuned.html land at the root of the
-# Pages project exactly as the funnel already built them, and atuned-funnel.html
-# is copied to index.html so atuned.world itself opens on the funnel, his
-# ruling round LW: "the landing page is the funnel... Atuned is a destination."
+# atuned-about.html, atuned-buy.html, atuned-faq.html and atuned.html land at
+# the root of the Pages project exactly as the funnel already built them, and
+# atuned-funnel.html is copied to index.html so atuned.world itself opens on
+# the funnel, his ruling round LW: "the landing page is the funnel... Atuned
+# is a destination."
+#
+# THE GATES HOLD BACK THE DEPLOY. Block 1 of the cleanup, 8 October, patched 9
+# October after two reviews. Until then this file ran on a push to main only,
+# ran the engine gate only, and published over any other red gate, and nothing
+# ran on a pull request. Now every browser and fast gate the deploy depends on
+# is a job here, on every pull request and before every deploy:
+#   gates-fast            the builds, engine, funnel package, voice, the
+#                         chromium path scan, this file's own lint, the floors
+#   gates-browser         the required browser gates, one job each
+#   gates-report          the browser gates that report and hold nothing back
+#   gates-pass            the one check branch protection will require
+#   gates-report-summary  every report only gate's result, on the run page
+#   deploy                needs gates-pass, and never waits for gates-report
+# tools/workflow-lint.py holds this file to that shape and runs in gates-fast,
+# so a change here that breaks the shape is red on its own pull request.
+#
+# ROLLBACK. Run this workflow by hand on main with rollback_ref set to the full
+# commit sha of a build that was live: one Cloudflare Pages published to
+# production from main. Every gate is skipped, the guard in the deploy job
+# checks the commit against Cloudflare's own list and prints the deployment it
+# matched, and the deploy job publishes that commit as it stands. A commit from
+# before 3 October has no FAQ page to stage, so a rollback that far back fails
+# at the staging step. Re-running an older push run is not a rollback: its
+# order check sees a newer commit on main and publishes nothing.
+#
+# A ROLLBACK IS A STOPGAP. The next push to main publishes main's tip over this
+# rollback. Revert the bad commit on main to make it stay. The guard writes
+# the same two sentences to the run page of every rollback dispatch.
 on:
   # 2 October: claude/laughing-feynman-xhfyj3 removed from this list. Every
   # push to it had been publishing a real, public, no-login preview link
@@ -32,29 +61,434 @@ on:
   # deployments already made tonight; only he can do that, from his own
   # Cloudflare dashboard. main is untouched by this change and still
   # deploys, same as before, and nothing pushes to main without his word.
+  # EVERY PUSH TO MAIN, WITH NO PATHS FILTER, 9 October. A push publishes only
+  # while its commit is the tip of main, and otherwise says "a newer commit is
+  # on main, its own run will deploy". Under a paths filter that was not true:
+  # a newer commit touching only docs or a rebuilt build stamp got no run, so
+  # the older code commit before it never went live. Now every commit on main
+  # gets its own run, and a docs only push republishes the same pages, which
+  # changes nothing a person sees.
   push:
     branches: [main]
-    paths:
-      - 'atuned_src/**'
-      - 'funnel/**'
-      - 'tests/**'
-      - 'tools/**'
-      # the feedback relay, functions/feedback.js. Without this line a change
-      # to the Function alone would never deploy.
-      - 'functions/**'
-      - 'atuned_funnel_system/**'
-      - '.github/workflows/deploy.yml'
+  # EVERY PULL REQUEST, WITH NO PATHS FILTER, ON PURPOSE. A required check
+  # that a paths filter skips never reports, so under branch protection a
+  # docs only pull request would sit pending for ever. The deploy job is
+  # skipped on a pull request, and the token is read only.
+  #
+  # WHAT THIS FILE CANNOT HOLD BACK. A pull request from a fork runs with no
+  # secrets. A pull request from a branch of this repository, which is every
+  # agent branch, does not: it runs that branch's own copy of this file, with
+  # the repository's secrets available to it, so an edit to this file on a
+  # branch decides for itself what that branch's run does. Nothing written
+  # here can stop that. What stops it is the owner's setting on GitHub:
+  # branch protection on main requiring gates-pass, and a required review for
+  # any change under .github/.
+  #
+  # NEVER pull_request_target: it runs with the secrets on a pull request's
+  # code, and wrangler would publish a public preview of onboarding, the 2
+  # October exposure above, which only the owner can delete.
+  pull_request:
   workflow_dispatch:
+    inputs:
+      rollback_ref:
+        description: "Rollback only: the full commit sha of a build Cloudflare Pages published to production from main. It is published as it is, with every gate skipped, until the next push to main. Leave it empty for a normal run: every gate runs, and main's tip publishes if they pass."
+        type: string
+        required: false
+        default: ''
+
+# The GitHub token reads the code and nothing else. A pull request's code runs
+# in the gate jobs, with no write.
+permissions:
+  contents: read
+
+# Every run step under bash with pipefail. GitHub's default shell has none, so
+# `node tests/engine.js | tee log` would read green on a red gate: a pipe
+# reports the exit code of its last command, which is tee.
+defaults:
+  run:
+    shell: bash
+
+# The pages the funnel build must produce, one list. gates-fast and deploy
+# both check it, and the staging step copies each, so a page is added here.
+env:
+  FUNNEL_PAGES: atuned-funnel atuned-quiz atuned-about atuned-buy atuned-faq
+
 jobs:
-  deploy:
+  # The builds, then every gate that needs no browser. Skipped on a rollback.
+  gates-fast:
+    if: inputs.rollback_ref == ''
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      # tools/workflow-lint.py reads this file with PyYAML, which a runner's
+      # own python does not promise. Pinned, so it reads the same every time.
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: install PyYAML for the workflow lint
+        run: python3 -m pip install --disable-pip-version-check --no-input pyyaml==6.0.2
+      # tools/slim.py, which BUILD.sh runs, strips comments with
+      # `npx --no-install tsc` and refuses to let npx fetch a package named
+      # tsc from the registry, an unrelated ancient shim. Installed by its real
+      # name so node_modules/.bin/tsc exists. The deploy job below says more.
+      - name: install typescript for the delivery build's comment stripper
+        run: npm install --no-audit --no-fund --no-save typescript
+      # Each gate tees its output here, and tools/floors.js reads it back.
+      - name: make the gate log directory
+        run: mkdir -p "$RUNNER_TEMP/gates"
+      - name: funnel package gate
+        run: |
+          cd atuned_funnel_system
+          npm ci --no-audit --no-fund && npm test 2>&1 | tee "$RUNNER_TEMP/gates/funnel-package.log"
+      # The engine builds first: BUILD.sh runs tests/claims.js, which reads
+      # engine.js, and the quiz that funnel/BUILD-single.sh packs carries it.
+      - name: build, the engine first
+        run: ./atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh && ./funnel/BUILD-single.sh
+      # An empty list must fail, or a lost FUNNEL_PAGES would check nothing.
+      - name: the funnel actually built
+        run: |
+          test -n "$FUNNEL_PAGES" || { echo "FUNNEL_PAGES is empty, so there is nothing to check"; exit 1; }
+          for f in $FUNNEL_PAGES; do
+            test -s "funnel/dist/$f.html" || { echo "funnel/dist/$f.html missing or empty"; exit 1; }
+          done
+      - name: engine gate
+        run: node tests/engine.js 2>&1 | tee "$RUNNER_TEMP/gates/engine.log"
+      - name: voice check, his own objections as rules
+        run: python3 .claude/skills/atuned-voice/check.py --objections
+      - name: workflow lint, this file held to its own shape
+        run: python3 tools/workflow-lint.py && python3 tools/workflow-lint.py --self-test
+      # It runs whether or not the file is there. A missing file fails here,
+      # where a skipped step would read green.
+      - name: no browser gate hardcodes the sandbox chromium
+        run: node tests/chrome-path.js
+      # A gate that lost its tests still exits 0. The floors are in
+      # tests/floors.json and are raised on purpose, never lowered to get green.
+      - name: floors
+        run: node tools/floors.js --self-test && node tools/floors.js engine funnel-package
+
+  # The required browser gates, one job each, in parallel, each on its own
+  # runner with the chromium that playwright 1.56.1 installs. CHROME carries
+  # its path, and every gate launches process.env.CHROME, which
+  # tests/chrome-path.js in gates-fast holds them to. A red one fails
+  # gates-pass and holds back the deploy.
+  #
+  # ONE LINE PER GATE, SO A GATE MOVES BY ONE LINE. functional and design sit
+  # in gates-report below until each has three consecutive green CI runs, then
+  # the lead moves its line up into this list. Never lower a floor, in a gate
+  # or in tests/floors.json, to get green.
+  gates-browser:
+    if: inputs.rollback_ref == ''
+    name: gates-browser (${{ matrix.gate }})
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ matrix.timeout }}
+    strategy:
+      # every gate reports, so one red gate does not hide what else is red
+      fail-fast: false
+      matrix:
+        include:
+          - { gate: boot, timeout: 20, command: node tests/boot.js }
+          - { gate: collide, timeout: 20, command: node tests/collide.js }
+          - { gate: funnel, timeout: 20, command: node tests/funnel.js }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: install typescript for the delivery build's comment stripper
+        run: npm install --no-audit --no-fund --no-save typescript
+      - name: install playwright 1.56.1 and its chromium
+        run: |
+          npm install -g --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: point the gates at that chromium
+        run: |
+          root="$(npm root -g)"
+          chrome="$(NODE_PATH="$root" node -e "console.log(require('playwright').chromium.executablePath())")"
+          test -x "$chrome" || { echo "playwright's chromium is not at '$chrome'"; exit 1; }
+          echo "NODE_PATH=$root" >> "$GITHUB_ENV"
+          echo "CHROME=$chrome" >> "$GITHUB_ENV"
+      - name: build, the engine first
+        run: ./atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh && ./funnel/BUILD-single.sh
+      - name: ${{ matrix.gate }} gate
+        run: |
+          mkdir -p "$RUNNER_TEMP/gates"
+          ${{ matrix.command }} 2>&1 | tee "$RUNNER_TEMP/gates/${{ matrix.gate }}.log"
+      - name: ${{ matrix.gate }} floor
+        run: node tools/floors.js ${{ matrix.gate }}
+
+  # REPORT ONLY. These run on every pull request and push, and nothing that
+  # publishes waits for them: gates-pass does not need this job, so deploy
+  # never waits for functional, the slowest gate. A red leg shows red in the
+  # run's job list and as a warning from gates-report-summary, below. None has
+  # a green run on a GitHub runner on record yet: functional runs
+  # tests/feedback.js, whose drifted test was repaired on 9 October and has
+  # not run here since, design's frame rate and fade timing checks are
+  # sensitive to load, and monitor has never run here. The same steps as
+  # gates-browser, so a line moves between them as it is.
+  gates-report:
+    if: inputs.rollback_ref == ''
+    name: gates-report (${{ matrix.gate }})
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ matrix.timeout }}
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { gate: functional, timeout: 45, command: node tests/functional.js }
+          - { gate: design, timeout: 20, command: node tests/design.js }
+          - { gate: monitor, timeout: 20, command: node tools/monitor.js }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - name: install typescript for the delivery build's comment stripper
+        run: npm install --no-audit --no-fund --no-save typescript
+      - name: install playwright 1.56.1 and its chromium
+        run: |
+          npm install -g --no-audit --no-fund playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: point the gates at that chromium
+        run: |
+          root="$(npm root -g)"
+          chrome="$(NODE_PATH="$root" node -e "console.log(require('playwright').chromium.executablePath())")"
+          test -x "$chrome" || { echo "playwright's chromium is not at '$chrome'"; exit 1; }
+          echo "NODE_PATH=$root" >> "$GITHUB_ENV"
+          echo "CHROME=$chrome" >> "$GITHUB_ENV"
+      - name: build, the engine first
+        run: ./atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh && ./funnel/BUILD-single.sh
+      - name: ${{ matrix.gate }} gate
+        run: |
+          mkdir -p "$RUNNER_TEMP/gates"
+          ${{ matrix.command }} 2>&1 | tee "$RUNNER_TEMP/gates/${{ matrix.gate }}.log"
+      - name: ${{ matrix.gate }} floor
+        run: node tools/floors.js ${{ matrix.gate }}
+
+  # THE ONE CHECK BRANCH PROTECTION WILL REQUIRE. It runs whatever happened
+  # above, always(), because branch protection counts a skipped check as
+  # passing: a gates-pass that skipped when a gate was cancelled would let the
+  # pull request through. A skipped or cancelled required job is a failure
+  # here. Each job's result goes to the log and to the run page.
+  # Skipped on a rollback, which runs no gates.
+  gates-pass:
+    needs: [gates-fast, gates-browser]
+    if: always() && inputs.rollback_ref == ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: every required gate job succeeded
+        env:
+          FAST: ${{ needs.gates-fast.result }}
+          BROWSER: ${{ needs.gates-browser.result }}
+        run: |
+          {
+            echo "| required gate job | result |"
+            echo "|---|---|"
+            echo "| gates-fast | $FAST |"
+            echo "| gates-browser | $BROWSER |"
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "gates-fast: $FAST"
+          echo "gates-browser: $BROWSER"
+          if [ "$FAST" != success ] || [ "$BROWSER" != success ]; then
+            echo "FAIL a required gate job did not succeed. Skipped and cancelled count as failed."
+            exit 1
+          fi
+
+  # A RED REPORT ONLY GATE MUST NOT DISAPPEAR. needs gives one result for a
+  # whole matrix, so each leg's own result is read from this run's list of
+  # jobs, written to the run page as a table, and raised as a warning when it
+  # is not success. Nothing waits for this job. It fails only when it cannot
+  # read the list, which is a report it could not make.
+  gates-report-summary:
+    needs: [gates-report]
+    if: always() && inputs.rollback_ref == ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: read
+    steps:
+      - name: every report only gate, with its result
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          legs="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/jobs" --paginate \
+            --jq '.jobs[] | select(.name | startswith("gates-report (")) | (.name | ltrimstr("gates-report (") | rtrimstr(")")) + " " + (.conclusion // .status)')" || {
+            echo "FAIL this run's list of jobs could not be read, so the report only gates cannot be shown."
+            exit 1
+          }
+          if [ -z "$legs" ]; then
+            echo "FAIL no gates-report job is in this run's list of jobs."
+            exit 1
+          fi
+          {
+            echo "| report only gate, not required yet | result |"
+            echo "|---|---|"
+          } >> "$GITHUB_STEP_SUMMARY"
+          while read -r gate result; do
+            echo "gates-report ($gate): $result"
+            echo "| $gate | $result |" >> "$GITHUB_STEP_SUMMARY"
+            if [ "$result" != success ]; then
+              echo "::warning title=Gate not required yet::$gate $result"
+            fi
+          done <<< "$legs"
+
+  # Publishes atuned.world, three ways in and no other:
+  #   a push to main whose gates passed;
+  #   a dispatch on main with no rollback_ref, whose gates passed;
+  #   a rollback, a dispatch with rollback_ref set, whose gates are skipped.
+  # !cancelled() and not always(): both let a skipped gates-pass through on a
+  # rollback, and only !cancelled() stops a cancelled run going on to publish.
+  # GitHub's own docs advise it over always() for anything that cannot be
+  # taken back.
+  # ONE DEPLOY AT A TIME. On 8 October two deploys overlapped and whichever
+  # finished last stayed live. cancel-in-progress is false, so a deploy half
+  # way through its upload is never cut off.
+  deploy:
+    needs: [gates-pass]
+    if: >-
+      ${{ !cancelled() && (
+      (github.event_name == 'workflow_dispatch' && inputs.rollback_ref != '') ||
+      (github.ref == 'refs/heads/main' && inputs.rollback_ref == '' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
+      needs.gates-pass.result == 'success')) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    concurrency:
+      group: pages-prod
+      cancel-in-progress: false
     env:
       CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
+      # A MISSING SECRET FAILS THE DEPLOY. Until 9 October the publish steps
+      # skipped without the secrets and the job read green with nothing
+      # published, which on a rollback is a false success at the worst moment.
+      - name: the Cloudflare secrets are set
+        run: |
+          missing=""
+          if [ -z "$CF_TOKEN" ]; then missing=" CLOUDFLARE_API_TOKEN"; fi
+          if [ -z "$CF_ACCOUNT" ]; then missing="$missing CLOUDFLARE_ACCOUNT_ID"; fi
+          if [ -n "$missing" ]; then
+            echo "FAIL a repository secret is not set:$missing. atuned.world cannot be published without it. Set it on GitHub under the repository's Settings, Secrets and variables, Actions."
+            exit 1
+          fi
+          echo "both Cloudflare secrets are set"
+      # DEPLOYS LAND IN ORDER. The concurrency group runs one deploy at a time
+      # but takes them in the order their gates finish, not the order of the
+      # commits, so an older commit whose gates ran long could publish over a
+      # newer one. A push publishes only while its commit is still the tip of
+      # main; otherwise the newer commit's own run deploys it if its gates
+      # pass, and every step below is skipped. Every push to main has a run,
+      # since the push trigger has no paths filter. A rollback publishes an
+      # older commit on purpose and skips this check.
+      - name: this commit is still the tip of main
+        id: order
+        if: inputs.rollback_ref == ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tip="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq .object.sha)" || {
+            echo "FAIL the tip of main could not be read, so this run cannot tell whether it is the newest."
+            exit 1
+          }
+          if ! [[ "$tip" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "FAIL the tip of main read as '$tip', which is not a commit id."
+            exit 1
+          fi
+          if [ "$tip" = "$GITHUB_SHA" ]; then
+            echo "this run's commit $GITHUB_SHA is the tip of main, so it publishes"
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "a newer commit is on main, its own run will deploy (this run: $GITHUB_SHA, main: $tip). That run publishes only if its gates pass."
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+          fi
+      # Every step from here runs on a rollback, or when the order check said
+      # publish, and on nothing else. The whole history is fetched on a
+      # rollback only, about 1.3 GB on 9 October, because the guard resolves
+      # rollback_ref in it; a push checks out its one commit.
       - uses: actions/checkout@v4
+        if: inputs.rollback_ref != '' || steps.order.outputs.publish == 'true'
+        with:
+          fetch-depth: ${{ inputs.rollback_ref != '' && '0' || '1' }}
+      # A ROLLBACK GOES ONLY TO A COMMIT THAT WAS LIVE. Every gate is skipped
+      # on a rollback, so this step is all that stands between the dispatch
+      # box and the live site. Until 9 October it took any commit main had
+      # ever carried, main's own red tip included, most of which were never
+      # live. Now it takes only a full commit sha, never a branch name, which
+      # after the checkout only resolves as origin/<name>. The commit must be
+      # on main, by GitHub's compare, and listed by Cloudflare Pages as a
+      # production deployment whose last stage is deploy: success, the same
+      # filter wrangler itself uses. The list is read 25 to a page, a size
+      # Cloudflare is known to honour, for at most 6 pages, and the step
+      # prints how many deployments it read and which one matched. It then
+      # checks out that commit by its full sha, so what was checked is exactly
+      # what is published. A missing secret, an error from either service or
+      # no match is a refusal that says which.
+      - name: a rollback runs from main, to a commit that was live
+        id: rollback
+        if: inputs.rollback_ref != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ROLLBACK_REF: ${{ inputs.rollback_ref }}
+        run: |
+          stopgap="The next push to main publishes main's tip over this rollback. Revert the bad commit on main to make it stay."
+          echo "$stopgap" >> "$GITHUB_STEP_SUMMARY"
+          echo "$stopgap"
+          if [ "$GITHUB_REF" != refs/heads/main ]; then
+            echo "FAIL this rollback was dispatched on $GITHUB_REF. Dispatch it on main."
+            exit 1
+          fi
+          if ! [[ "$ROLLBACK_REF" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "FAIL rollback_ref '$ROLLBACK_REF' is not a full commit sha. Give a full commit sha that was published; branch names are not accepted."
+            exit 1
+          fi
+          sha="$(git rev-parse --verify --quiet "$ROLLBACK_REF^{commit}")" || {
+            echo "FAIL $ROLLBACK_REF is not a commit in this repository's history. Give a full commit sha that was published; branch names are not accepted."
+            exit 1
+          }
+          status="$(gh api "repos/$GITHUB_REPOSITORY/compare/main...$sha" --jq .status)" || status="unknown, GitHub's compare could not be read"
+          case "$status" in
+            identical|behind) ;;
+            *)
+              echo "FAIL commit $sha is not on main (compare reads $status). A rollback goes only to a commit main carried."
+              exit 1 ;;
+          esac
+          if [ -z "$CF_TOKEN" ] || [ -z "$CF_ACCOUNT" ]; then
+            echo "FAIL the Cloudflare secrets are not set, so the list of production deployments cannot be read."
+            exit 1
+          fi
+          seen=0
+          match=""
+          page=1
+          while [ "$page" -le 6 ]; do
+            body="$(curl -sS --fail-with-body -H "Authorization: Bearer $CF_TOKEN" \
+              "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/atuned/deployments?env=production&per_page=25&page=$page")" || {
+              echo "FAIL Cloudflare's list of production deployments could not be read, page $page: ${body:0:300}"
+              exit 1
+            }
+            if [ "$(jq -r '.success' <<< "$body" 2>/dev/null)" != true ]; then
+              echo "FAIL Cloudflare did not answer with its list of production deployments, page $page: ${body:0:300}"
+              exit 1
+            fi
+            n="$(jq -r '.result | length' <<< "$body")"
+            seen=$((seen + n))
+            match="$(jq -r --arg sha "$sha" '[.result[]? | select(.environment == "production" and .deployment_trigger.metadata.commit_hash == $sha and .latest_stage.name == "deploy" and .latest_stage.status == "success")][0] // empty | .id + " of " + .created_on' <<< "$body")" || match=""
+            if [ -n "$match" ] || [ "$n" -eq 0 ]; then break; fi
+            page=$((page + 1))
+          done
+          echo "read $seen production deployments from Cloudflare Pages"
+          if [ -z "$match" ]; then
+            echo "FAIL commit $sha has no production deployment whose last stage is deploy: success among the $seen read. A rollback goes only to a commit that was live."
+            exit 1
+          fi
+          echo "matched commit $sha to Cloudflare production deployment $match"
+          git checkout --quiet --force --detach "$sha"
+          test "$(git rev-parse HEAD)" = "$sha" || { echo "FAIL the checkout of $sha did not take."; exit 1; }
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          echo "rolling back to commit $sha"
       - uses: actions/setup-node@v4
+        if: inputs.rollback_ref != '' || steps.order.outputs.publish == 'true'
         with: { node-version: '22' }
       # tools/slim.py shells out to `npx --no-install tsc` to strip comments
       # from the delivery build, deliberately refusing to let npx reach the
@@ -68,33 +502,32 @@ jobs:
       # the actual `typescript` package, installed here by its real name so
       # node_modules/.bin/tsc exists before slim.py ever asks for it.
       - name: install typescript for the delivery build's comment stripper
+        if: inputs.rollback_ref != '' || steps.order.outputs.publish == 'true'
         run: npm install --no-audit --no-fund --no-save typescript
       - name: test funnel system
+        if: inputs.rollback_ref != '' || steps.order.outputs.publish == 'true'
         run: |
           cd atuned_funnel_system
           npm install --no-audit --no-fund
           npm test
-
-      - name: build the engine
-        run: ./atuned_src/BUILD.sh && ./atuned_src/BUILD-engine.sh
+      # The engine first, as in the gate jobs: tests/claims.js, which BUILD.sh
+      # runs, reads engine.js, and so does the quiz the funnel build packs.
+      - name: build, the engine first
+        if: inputs.rollback_ref != '' || steps.order.outputs.publish == 'true'
+        run: ./atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh && ./funnel/BUILD-single.sh
       - name: engine gate
+        if: inputs.rollback_ref != '' || steps.order.outputs.publish == 'true'
         run: node tests/engine.js
-      - name: build the funnel
-        run: ./funnel/BUILD-single.sh
-      # EVERY BROWSER GATE IN THIS REPOSITORY HARDCODES ONE PATH:
-      # /opt/pw-browsers/chromium-1194/chrome-linux/chrome. tests/collide.js,
-      # tests/design.js, tests/functional.js and tests/funnel.js all launch it
-      # by that literal string, which is this development sandbox's own
-      # Playwright install and does not exist on a GitHub Actions runner. None
-      # of them can run here as written. They are not skipped by oversight:
-      # every push to this branch is already gated in full, engine, collide,
-      # design, functional, funnel, boot and the voice check, inside the
-      # sandbox, before the push happens. This job re-runs only what is
-      # portable, the pure Node engine gate, and checks the funnel's own build
-      # produced its four files, so a broken build fails loud here too.
+      # THE BROWSER GATES RUN ABOVE, in gates-browser, and this job needs them
+      # through gates-pass. The steps here re-run the portable checks on the
+      # commit they publish, which on a rollback are the only checks that
+      # commit gets, and check the funnel built every page in FUNNEL_PAGES,
+      # the same list gates-fast checks.
       - name: the funnel actually built
+        if: inputs.rollback_ref != '' || steps.order.outputs.publish == 'true'
         run: |
-          for f in atuned-funnel atuned-quiz atuned-about atuned-buy; do
+          test -n "$FUNNEL_PAGES" || { echo "FUNNEL_PAGES is empty, so there is nothing to check"; exit 1; }
+          for f in $FUNNEL_PAGES; do
             test -s "funnel/dist/$f.html" || { echo "funnel/dist/$f.html missing or empty"; exit 1; }
           done
       # THE FUNCTIONS ARE NOT STAGED, ON PURPOSE. `wrangler pages deploy deploy`
@@ -107,21 +540,59 @@ jobs:
       # source as a static file at /functions/feedback.js. The webhook address
       # it relays to is not in that file or anywhere in this repository: it is
       # the Pages variable DISCORD_FEEDBACK_WEBHOOK, set in the dashboard.
+      #
+      # THE FAQ IS STAGED (M48, 8 October). atuned-faq.html is linked seven
+      # times from three live pages and was never copied, so every one of those
+      # links reached a missing page.
       - name: stage the site
+        if: inputs.rollback_ref != '' || steps.order.outputs.publish == 'true'
         run: |
           rm -rf deploy && mkdir deploy
           cp funnel/dist/atuned-funnel.html deploy/
           cp funnel/dist/atuned-quiz.html deploy/
           cp funnel/dist/atuned-about.html deploy/
           cp funnel/dist/atuned-buy.html deploy/
+          cp funnel/dist/atuned-faq.html deploy/
           cp source.html deploy/atuned.html
           cp funnel/dist/atuned-funnel.html deploy/index.html
       - name: install wrangler
-        if: env.CF_TOKEN != '' && env.CF_ACCOUNT != ''
+        if: inputs.rollback_ref != '' || steps.order.outputs.publish == 'true'
         run: npm install --no-audit --no-fund wrangler@4
+      # --branch=main, BECAUSE A ROLLBACK IS A DETACHED CHECKOUT. Without it
+      # wrangler names the upload's branch from `git rev-parse --abbrev-ref
+      # HEAD`, which reads HEAD after the guard checks out a commit id, and
+      # Cloudflare makes an upload production only when that branch is the
+      # project's production branch: read in wrangler 4.143.0's own source.
+      # So a rollback published a preview and left atuned.world as it was.
       - name: deploy to Cloudflare Pages
-        if: github.ref == 'refs/heads/main' && env.CF_TOKEN != '' && env.CF_ACCOUNT != ''
+        if: inputs.rollback_ref != '' || steps.order.outputs.publish == 'true'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx wrangler pages deploy deploy --project-name=atuned --commit-dirty=true
+        run: npx wrangler pages deploy deploy --project-name=atuned --branch=main --commit-dirty=true
+
+      # PRODUCTION, CONFIRMED. wrangler exits 0 with "Deployment complete!
+      # However, we couldn't ascertain the final status" when it cannot read
+      # the stage, so its green alone does not say atuned.world changed. This
+      # reads Cloudflare's production list back for about two minutes and
+      # fails the job unless the newest production deployment is the commit
+      # just published, with its last stage deploy: success. On a rollback
+      # that is the commit the guard checked out.
+      - name: Cloudflare serves this commit in production
+        if: inputs.rollback_ref != '' || steps.order.outputs.publish == 'true'
+        run: |
+          published="$(git rev-parse HEAD)"
+          for try in 1 2 3 4 5 6 7 8 9 10 11 12; do
+            body="$(curl -sS --fail-with-body -H "Authorization: Bearer $CF_TOKEN" \
+              "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/atuned/deployments?env=production&per_page=25&page=1")" || body=""
+            newest="$(jq -r '[.result[]? | select(.environment == "production")] | max_by(.created_on) // empty | [(.deployment_trigger.metadata.commit_hash // "-"), (.latest_stage.name // "-"), (.latest_stage.status // "-"), (.id // "-"), (.url // "-")] | join(" ")' <<< "$body" 2>/dev/null)" || newest=""
+            read -r commit stage status id url <<< "$newest"
+            if [ "$commit" = "$published" ] && [ "$stage" = deploy ] && [ "$status" = success ]; then
+              echo "production is commit $published: Cloudflare deployment $id, $url"
+              exit 0
+            fi
+            echo "read $try: the newest production deployment reads ${newest:-nothing}; waiting for commit $published"
+            if [ "$try" -lt 12 ]; then sleep 10; fi
+          done
+          echo "FAIL after about two minutes the newest production deployment on Cloudflare Pages is not commit $published with its last stage deploy: success. The upload may have gone to a preview, or not finished. Last read: ${newest:-nothing}"
+          exit 1

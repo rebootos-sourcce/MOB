@@ -10,6 +10,9 @@ const {S,CHILD,CHARGES,SI,SINAMES,BANDS,W,NODES,DOMAINS,ARCH,MASKS,MASKS_READ,SA
 let P=0,F=0,GRP='';
 const g=n=>{GRP=n;console.log('\n'+n);};
 const ok=(c,m)=>{if(c){P++}else{F++;console.log('  FAIL  '+m)}};
+/* expected red: true is a FAIL, so a fix that lands cannot go unnoticed */
+let XF=0;
+const xf=(c,m)=>{if(c){F++;console.log('  FAIL  expected red went green, remove the xf: '+m)}else{P++;XF++}};
 const near=(a,b,t,m)=>ok(Math.abs(a-b)<=t,m+'  ('+a+' vs '+b+' +/-'+t+')');
 
 /* every test starts from the same field */
@@ -7536,5 +7539,19 @@ g('RB · becoming S1 to S3: the avatar\'s own data on the record, its identity, 
   'an avatar held in memory from before gains the new fields and keeps what it had');
 }
 
-console.log('\n===== '+P+' passed, '+F+' failed =====');
+g('CRISIS · srcSafe trips on self harm and not on everyday uses of the same words');
+/* all expected red on main: block 2a ports srcSafe from e2aa6f8 and must fix it */
+{
+ const srcSafe=E.srcSafe;
+ const TRIP=['I want to die','I keep thinking about killing myself','I am ending my life tonight',
+  'I have been hurting myself again','I wanna die','everyone would be better off without me',
+  'I am going to kill myself'];
+ const NOT=['I cut myself a slice of bread','I made myself a cup of tea after work','I hurt my knee at the gym'];
+ ok(TRIP.length>=7&&NOT.length>=3,
+  'the crisis list keeps at least 7 that trip and 3 that do not, has '+TRIP.length+' and '+NOT.length);
+ TRIP.forEach(t=>xf(typeof srcSafe==='function'&&srcSafe(t)===true,'srcSafe trips on '+JSON.stringify(t)));
+ NOT.forEach(t=>xf(typeof srcSafe==='function'&&srcSafe(t)===false,'srcSafe does not trip on '+JSON.stringify(t)));
+}
+
+console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');
 process.exit(F?1:0);

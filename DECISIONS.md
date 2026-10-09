@@ -2763,3 +2763,19 @@ public launch. Open for him, not blocking: Stripe price ids and secrets, and boo
 - **A Discord feedback and community connection, asked for round PW.** A feedback form posting to a Discord channel, and a Discord invite/connection surfaced to users so they can reach the community. Not yet built; see the reply to round PW in `TASKS.md` for what it needs from him to set up.
 - **Google OAuth is wanted**, round PW, becomes a build item.
 - **Clinician and counsel review of the safety copy: explicitly not now.** Round PW, "not getting... not yet." Stays open, just not active.
+
+## Cleanup round, 8 to 9 October: main is the line, and the defaults taken
+
+Ruled by the owner, 8 October: main is the one line of the product, the foundation is made stable first, cosmetics come last. His words: "we need a organization and cleanup. On the main line and to pull everything in that is the most recent and up to date." The other line (`claude/laughing-feynman-xhfyj3`, tagged `fork-archive` in the notes at `999476c`) is carried onto main by hand, one piece at a time, each piece gated. Round PD still holds: the team decides and asks one question at most, only when blocked. Each default below was taken by the team in that round, is written here so it can be overruled, and is not a ruling.
+
+- **Main is the line.** The plan is `GAME-PLAN-main-cleanup.md`; the open work is `MVP-OPEN-ITEMS-2026-10-08.md`; the review behind both is `HANDOFF-GAPS-2026-10-08.md`.
+- **The name never leaves the device.** Not a new default: it is the standing ruling above ("The name never leaves"). Applied to the sync design and to every sentence a person reads.
+- **The modelling switch is removed and the policies stand.** The policies say no model is trained on stories and research sharing is off and not offered at launch. The "Improve the Models" switch read by nothing, so it is gone from the source. Overruled only by the owner.
+- **Schema version 2 keeps being written.** Version 1 still loads. Taken as the default so the sync design is not blocked; the owner's schema v2 ruling stays open.
+- **The crisis check is recall first, and a one way pause.** It shows 988 and 741741 where a question would be, never locks the person out, and always lets them keep writing. A false positive costs one question not asked. The phrase list awaits clinician review, which the owner has ruled "explicitly not now" (round PW).
+- **Retention after delete is 24 months**, as the owner already accepted. Enforced, not re-asked.
+- **"Diagnostic" leaves everything a person reads.** The word stays only in internal identifiers. The FDA wellness line is the reason; the product is a self report instrument, not a medical device.
+- **The first visit sends a random code, the topic picked, and finish marks.** Never a story, never a name. The privacy words say so in plain sentences (round of 9 October, `tests/copy.js` holds them).
+- **A rollback is a stopgap.** The fast route is a `workflow_dispatch` with `rollback_ref`, which publishes a commit Cloudflare already ran in production, with the gates skipped, until the next push to main publishes main's tip. A revert pull request makes it stay. Tested 8 October by re-running the last good deploy.
+- **Merging is the lead's, with gates green.** Merge only when every gate is green on the merged commit. The one exception is design gate 13's frame rate check and the fade timing check, each passing when re-run alone, both lines pasted in the pull request. Never a whole gate, never a check the diff touches.
+- **Open, and the owner's:** the MOB repository is public and GitHub Pages is on (`has_pages: true`); the default taken is to make the repository private and switch Pages off, which only the owner can do. Branch protection on `main` (a GitHub setting) is also the owner's.

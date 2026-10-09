@@ -19,7 +19,7 @@ const booted=async p=>{try{await p.waitForFunction(
 const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
 
 (async()=>{
-const browser=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
 /* every page measures the full reading, tests/seed.js: the tier ruling of 1
    October put the chain behind a plan and every persona is a free record */
 browser.newPage=(orig=>async function(...a){

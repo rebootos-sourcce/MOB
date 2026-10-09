@@ -18,7 +18,7 @@ const booted=async p=>{try{await p.waitForFunction(
 fs.mkdirSync(OUT,{recursive:true});
 
 (async()=>{
- const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
  for(const [w,h] of SIZES){
   const c=await b.newContext({viewport:{width:w,height:h},isMobile:w<600,hasTouch:w<600});
   const p=await c.newPage();

@@ -112,7 +112,7 @@ const PROFILES=['blank','Derek','Sofia'];
 
 (async()=>{
  const T=loadTable(), tkeys=Object.keys(T);
- const b=LOADV?{close:async()=>{}}:await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const b=LOADV?{close:async()=>{}}:await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
  const missed=[];
  let surfaces=[];            /* {w, who, surface, out, tips} */
  if(LOADV)surfaces=JSON.parse(fs.readFileSync(LOADV,'utf8'));

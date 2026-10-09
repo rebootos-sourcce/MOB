@@ -1,0 +1,23 @@
+{
+  "about": [
+    "The least number of passing checks each gate may report. tools/floors.js fails a gate whose log has no summary line, reports any failure, or counts fewer passes than its floor here. A gate that crashed, was cut off or was skipped therefore cannot pass.",
+    "Read off the full run at ff68bf3 on 9 October (engine 4689 with 10 expected red, funnel-package 44, boot 13, collide 383, funnel 562, design 186). Functional is 2306 passed plus 11 failed in that run, 2317 checks; the 11 were the seat tone tests failing under load, so its floor is the 2317 total and is confirmed by the first clean CI run.",
+    "Raise a floor by editing this file on purpose, in the same change that adds the checks, from a green run. Never lower one to get green. Nothing writes this file.",
+    "expected_red_max is the most expected red a gate may print. tools/floors.js fails a gate above its ceiling, and fails a gate that prints an expected red count with no ceiling here, so a failing check cannot be let off as expected red unseen. Added empty on 9 October: the lead sets each value from a clean full run, as printed, and until then the engine's floor step fails by name. It drops to 0 in the change that turns the expected reds green."
+  ],
+  "expected_red_max": {
+    "engine": 10
+  },
+  "floors": {
+    "engine": 4689,
+    "funnel-package": 44,
+    "boot": 13,
+    "collide": 383,
+    "funnel": 562,
+    "design": 186,
+    "functional": 2317
+  },
+  "no_count": {
+    "monitor": "all surfaces render"
+  }
+}

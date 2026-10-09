@@ -29,7 +29,7 @@
 const fs=require('fs'), path=require('path'), os=require('os'), http=require('http');
 const {execFileSync}=require('child_process');
 const {chromium}=require('playwright');
-const CHROME='/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
+const CHROME=process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
 const ROOT=process.cwd();
 const FILE=path.resolve(process.env.ATUNED_FILE||'source.html');
 

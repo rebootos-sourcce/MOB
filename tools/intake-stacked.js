@@ -18,7 +18,7 @@ const SRC=process.env.SRC?path.resolve(process.env.SRC):path.resolve('source.htm
 const booted=async p=>{try{await p.waitForFunction(()=>document.body.classList.contains('booted'),null,{timeout:12000});}catch(e){}};
 (async()=>{
  fs.mkdirSync(OUT,{recursive:true});
- const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
  const res={};
  for(const [W,H] of [[1600,1000],[390,844]]){
   for(const who of ['stranger','loaded']){
