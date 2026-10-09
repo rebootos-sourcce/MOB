@@ -144,6 +144,11 @@ function fakeWorker(origin, giftAt) {
     createdAt: s.createdAt, updatedAt: s.updatedAt });
   const billing = a => { const e = st.ent[a.id]; return e ? { tier: e.tier, status: e.status, since: e.since, until: e.until, store: 'stripe' } : null; };
   function handle(method, url, headers, raw) {
+    const res = route(method, url, headers, raw);
+    st.reqs[st.reqs.length - 1].status = res.status;
+    return res;
+  }
+  function route(method, url, headers, raw) {
     const u = new URL(url), p = u.pathname;
     let body = null; try { body = raw ? JSON.parse(raw) : null; } catch (e) { body = null; }
     const m = /^Bearer\s+(.+)$/i.exec(headers.authorization || '');
@@ -634,8 +639,10 @@ async function door(browser, SITE, cut, giftAt) {
   ok(fsO.length === 1, 'the first run made one first visit session on the server, ' + fsO.length);
   const attaches = wo.reqs('POST', /^\/v1\/funnel\/session\/[^/]+\/attach$/);
   ok(attaches.length >= 1 && attaches.every(q => q.me === accO.id), 'the app asked the server to join it to the account, with the sign in, '
-    + attaches.length + ' asks', 'their first visit stays anonymous on the server, so nothing they do in it reaches the account they just made');
-  ok(fsO.length === 1 && !!accO.id && fsO[0].userId === accO.id, 'and the server holds it on the account, userId ' + J(fsO[0] && fsO[0].userId));
+    + attaches.length + ' asks, answered ' + J(attaches.map(q => q.status)), 'their first visit stays anonymous on the server, so nothing they do in it reaches the account they just made');
+  /* the server here issues the starter gift at the first mark (W3's second
+     option), so a join asked before the pick is refused and has to be asked
+     again: whether it was is read at the end of the first run, below */
   xf(wo.reqs('GET', /^\/v1\/funnel\/session\/[^/]+$/).length > 0, 'E2 read back', 'the app reads its first visit back from the server (authFunnelRead has no caller)',
     'a second device, or this browser after its storage is cleared, starts the first visit again from the beginning');
 
@@ -701,6 +708,10 @@ async function door(browser, SITE, cut, giftAt) {
     'the account cannot tell that the first release happened');
   ok(!!fso.verificationId && evO.some(e => String(e.id) === String(fso.verificationId)), 'and the answer to What changed, by id and never by value, ' + J(fso.verificationId));
   ok(fso.tutorialCompleted === true, 'and that the first run was finished', 'the server reads the first run as never finished, for everybody who finishes it');
+  ok(!!accO.id && fso.userId === accO.id, 'and by then the server holds the first visit on the account they made at the door, userId ' + J(fso.userId),
+    'their first visit stays anonymous on the server, so nothing they did in it reaches the account they made');
+  const joins = wo.reqs('POST', /^\/v1\/funnel\/session\/[^/]+\/attach$/), yes = joins.findIndex(q => q.status === 200);
+  ok(yes >= 0 && yes === joins.length - 1, 'and the app stopped asking once it was joined: ' + joins.length + ' asks, answered ' + J(joins.map(q => q.status)));
   const marks = wo.reqs('PATCH', /\/checkpoint$/);
   ok(marks.length > 0 && marks.every(q => q.me === accO.id), 'every mark carried the sign in: ' + marks.length + ' marks');
   ok(Object.values(wo.st.fun).length === 1, 'and the walk made one first visit session, not one per reload');
