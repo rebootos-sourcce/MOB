@@ -384,3 +384,39 @@ inspectable, and this system's whole defence is that it shows its work.
 | `ENGINE.json` | saboteurs with bands, axes with addresses, archetypes, domains, formulas |
 | `reviews/canon.json` | every ruling, with dates and provenance |
 | `handoff/ATUNED_SPEC.json` | the app-facing ruled subset |
+
+---
+
+## 14 · Updates
+
+### 9 October 2026 · guard status on `main` at `f28aa36`
+
+The owner's audit of 8 October was checked line by line against the code. Full
+result in `REVIEW-sniffer-audit-2026-10-09.md`; agent rules in
+`HANDSHAKE-sniffer.md`. What changes in this spec:
+
+| Guard (section 11) | Status on `main` | Change in alpha |
+|---|---|---|
+| 1 · No diagnosis | Holds | None |
+| 2 · Never score another person | **Broken.** "he shouted at me" reads Anger on the writer, the same as "I shouted at him". | Package S2: a clear third person subject is held, listed as about someone else, not scored |
+| 3 · Two readings per axis | Holds. `shadow` and `coherent` are separate. | None |
+| 4 · Band edges are ramps | Holds, gated (group 33) | None |
+| 5 · Upstream shown with avoidance | Holds | None |
+| 6 · Surprise fires no saboteur | Holds, gated | None |
+| 7 · Resistance acts on Expression | Holds | None |
+| 8 · The estimator is an estimator | Holds | None |
+
+Two behaviours the spec did not name, now named:
+
+- **Denial.** A negated charge word is not a positive admission and is not
+  erased. It is kept as a *named and denied* mark, adds nothing to any axis, and is
+  shown to the person. Package S1. A seat ruling, reversible by the owner.
+- **Output.** `sniffStory` returns every positive saboteur candidate; the screen
+  chooses how many to show. Package S3. Address provenance stays explicit: an
+  axis the person named is not an address the person named.
+
+Not changed, recorded so nobody builds it by accident: tense, intensity words and
+the frame layer wait for a held set; the aggregate result's route into the Mirror,
+the Release Engine and the Trace graph is post-alpha (blocks SB5 to SB7 in the
+review). Open canon questions in section 12 are unchanged and remain `CONFLICT` or
+`UNREAD` in the output.

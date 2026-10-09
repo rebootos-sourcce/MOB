@@ -71,8 +71,30 @@ var TUT_N=5;
 /* the rail's names: the storyboard's own, this file's header, in order */
 var TUT_STEPNM=['Journal','Discover','Understand','Release','Flow'];
 
+/* THE JOURNEY RECORD ON THIS DOOR, F13. The Day One tutorial is the other
+   door into the first release, so on a first run it writes the same record
+   the onboarding sheet writes (engine/journey.js): that it started, the story
+   it read, and the hand off, with the meter's counts at that moment. After the
+   release, the end of the first run is the onboarding stage's end card
+   whichever door led there, so a first run whose release has landed, or whose
+   hand off came from this door and never ran, is put back on that stage. A
+   replay from Settings writes nothing and resumes nothing, as before. */
+function tutJourney(replay){
+ TUT.rec=false;
+ if(replay||typeof journeyRead!=='function'||typeof CURP==='undefined'||!CURP)return false;
+ if(typeof S!=='undefined'&&S.who!==0)return false;
+ var jr=journeyRead(CURP);
+ if(jr.at==='end'||(jr.at==='next'&&jr.door==='tutorial'))return true;
+ if(!jr.first)return false;
+ TUT.rec=true;
+ var r=journeyLog(CURP,'tutorial_started',null,{door:'tutorial'});
+ if(!r.ok&&typeof obJyFail==='function')obJyFail(r.why);
+ if(!pSave()&&typeof status==='function')
+  status('This browser would not save. If the page reloads, the first run starts over.','fail');
+ return false;}
 function tutOpen(replay){
  var h=document.getElementById('tutorial'); if(!h)return;
+ if(tutJourney(!!replay)&&typeof obOpen==='function'){ obOpen(false); return; }
  TUT.open=true; TUT.step=0; TUT.text=''; TUT.commit=null; TUT.deep=null; TUT.replay=!!replay; TUT.parsed=null; TUT.plan=null;
  TUT.shown=-1;
  if(TUT.leaveT){ clearTimeout(TUT.leaveT); TUT.leaveT=null; }
@@ -135,13 +157,29 @@ function tutLitNow(){
    if(off&&kept.length)add(kept[0].b); }}
  return {lit:lit, pick:null, mark:null};}
 
-/* a node's own fields, read exactly as the engine stores them: .b is the
-   seat the word lit (a band name, "Heart"), .k is the word itself, .cf is
-   the fetter family the word resolved to. Nothing here is invented. */
+/* THE PERSON'S OWN WORD, AND ONLY A NAME THE WORDS GAVE. S4 of the 9 October
+   sniffer audit, ruling 5. This read .k as "the word itself", and .k is the
+   ADDRESS name, so the card put an address in quotation marks as if the
+   person had written it: measured, "I was furious" printed around the word
+   "Pride", and "My father died last year" around the word "Martyrdom", the
+   exact corpse parseStory's own inferred flag was written to stop. And it
+   said "named" with the address's fetter whether or not the words named it.
+
+   Now the word is the person's own letters at that seat, off marksOf and
+   only what counts (not a word said with a no, not someone else's), and
+   "named" carries the fetter the words named, off a non inferred imprint,
+   or is not said. .b is the seat. Nothing here is invented. */
 function tutSeatLine(n){
  if(!n)return '';
- return 'at your <b>'+esc(n.b||'')+'</b>, around the word &ldquo;'+esc(n.k||'')
-  +'&rdquo;, named <b>'+esc(n.cf||'')+'</b>';}
+ var p=TUT.parsed, t=(TUT.commit&&TUT.commit.text)||TUT.text||'', ws=[];
+ if(p&&t&&typeof marksOf==='function')marksOf(t,p).forEach(function(m){
+  if(m.bn!==n.b||m.neg||m.other||m.coh)return;
+  var w=t.slice(m.s,m.e); if(ws.indexOf(w)<0)ws.push(w);});
+ var im=p?p.imprints.filter(function(x){return x.node===n.i&&!x.inferred&&x.fetter;})[0]:null;
+ return 'at your <b>'+esc(n.b||'')+'</b>'
+  +(ws.length?', around '+(ws.length>1?'the words ':'the word ')
+    +ws.slice(0,2).map(function(w){return '&ldquo;'+esc(w)+'&rdquo;';}).join(' and '):'')
+  +(im?', named <b>'+esc(im.fetter)+'</b>':'');}
 
 function tutRender(){
  var h=document.getElementById('tutorial'); if(!h)return;
@@ -164,10 +202,15 @@ function tutRender(){
      found, not just that the entry was kept. */
   if(!c||!c.ok||!c.k){
    /* HONEST EMPTY, the same rule the signal test already keeps: nothing
-      caught is a real answer, not a failure to paper over. */
-   body='<p class="ob-p">Nothing in that one lit anything the engine could '
+      caught is a real answer, not a failure to paper over. And a word read
+      and set aside is not nothing, S1 and S2: "He shouted at me" names a word
+      and holds it as someone else's, so the engine's own asideSay line says
+      what was set aside and why, the line the Story page prints. */
+   var aside=(TUT.parsed&&c&&c.text&&typeof asideSay==='function')?asideSay(asideOf(c.text,TUT.parsed)):'';
+   body=(aside?'<p class="ob-p">'+esc(aside)+'</p>'
+    :'<p class="ob-p">Nothing in that one lit anything the engine could '
     +'name. That happens, and it is not a problem with what you wrote. Some '
-    +'entries are quiet.</p>'
+    +'entries are quiet.</p>')
     +'<p class="ob-p ob-dim">Longer entries, or ones with a feeling named in '
     +'them, usually give it more to find. You can always write another in '
     +'the Story tab later.</p>';
@@ -218,9 +261,13 @@ function tutRender(){
   var go=!!(pl&&pl.ok);
   var body;
   if(off&&kept.length){
+   /* named only when the words named it, S4: an offer's axis can come from
+      an inferred imprint, the seat's modal fetter, which the words did not
+      name. Then it is the axis the engine read the seat as. */
+   var offNamed=!!(TUT.parsed&&TUT.parsed.imprints.some(function(x){return !x.inferred&&x.fetter===off.axis;}));
    body='<p class="ob-p">This entry is heavy enough to show up in your Field '
     +'as something to work with: at the <b>'+esc(off.region||off.address||'')
-    +'</b>, named <b>'+esc(off.axis)+'</b>'
+    +'</b>, '+(offNamed?'named':'read as')+' <b>'+esc(off.axis)+'</b>'
     +(off.replacement?', with <b>'+esc(off.replacement)+'</b> waiting as its replacement':'')
     +'.</p>'
     +'<p class="ob-p ob-dim">'+esc(off.because[0])+'</p>'
@@ -229,6 +276,7 @@ function tutRender(){
     +'to work with exactly that. This one is real: pressing Begin opens it '
     +'on what this entry just wrote.</p>'
     +(go?obMiniSay(pl,typeof journeyRead==='function'?journeyRead(CURP).first:true)
+     +(typeof obGiftSay==='function'?obGiftSay(pl):'')
      :(typeof obMiniWhy==='function'&&obMiniWhy(pl)?'<p class="ob-p">'+obMiniWhy(pl)+'</p>':''));
   }else{
    body='<p class="ob-p">This particular entry did not carry enough charge '
@@ -281,6 +329,12 @@ function tutCommit(){
  TUT.commit=r;
  if(r.ok){
   TUT.deep=(typeof sniffStory==='function')?sniffStory(r.text):null;
+  /* F13: that a story was given and how much it read, never its words */
+  if(TUT.rec&&typeof journeyLog==='function'){
+   [['story_submitted',{words:v.trim().split(/\s+/).filter(Boolean).length}],['story_signal_generated',{found:r.k}]]
+    .forEach(function(x){var q=journeyLog(CURP,x[0],null,x[1]); if(!q.ok&&typeof obJyFail==='function')obJyFail(q.why);});
+   if(!pSave()&&typeof status==='function')
+    status('This browser would not save. If the page reloads, the first run starts over.','fail');}
  }
  TUT.step=1; tutRender();}
 
@@ -295,6 +349,9 @@ addEventListener('click',function(e){
   /* the plan's addresses, never every address the entry read (F5), and mini,
      so the release opens at the size this card just said (M28) */
   var pl=TUT.plan||(typeof obMini==='function'?obMini(obImprints(TUT.parsed)):null), ids=(pl&&pl.ok)?pl.addrs:[];
+  /* F13: the hand off, written the way the onboarding sheet writes its own */
+  if(TUT.rec&&ids.length&&typeof obHandOff==='function')
+   obHandOff(pl,'tutorial',(TUT.commit&&TUT.commit.ok)?TUT.commit.t:null);
   tutClose();
   if(ids.length&&typeof relPick==='function')
    relPick(ids,{mini:true,story_t:(TUT.commit&&TUT.commit.ok&&TUT.commit.t)?TUT.commit.t:null});

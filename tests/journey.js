@@ -1,8 +1,11 @@
-/* Journey gate, the read half. engine/journey.js and engine/data/onboarding.js:
-   journeyRead and onbMiniPlan, the two pure reads F5 in
-   REVIEW-funnel/FINAL-SPEC.md lands from 3869d96. The record half of that
-   commit (runs, log, gift counter, integrity answers, claim) is F13 and its
-   suites land with it.
+/* Journey gate. engine/journey.js and engine/data/onboarding.js: journeyRead
+   and onbMiniPlan, the two pure reads F5 in REVIEW-funnel/FINAL-SPEC.md landed
+   from 3869d96, and the record half of that commit, F13: the walk a reload
+   resumes from, the log, the gift's counter, what the first release made, and
+   the claim packet with its boundary. The suites for the record are ported
+   from 3869d96's own and adapted to what landed: the per run list and the
+   integrity answers did not come across, so their suites did not either.
+   tests/journey2.js walks the same record in a real browser.
 
    Run from tests/engine.js by one line, with that file's own ok() and g(), or
    on its own: node tests/journey.js. Headless, from the repo root.
@@ -20,9 +23,42 @@
 const fs=require('fs'), path=require('path'), vm=require('vm');
 const ROOT=process.cwd();
 const ENGINE_FILE=path.resolve(ROOT,process.env.ENGINE||'engine.js');
+const TDD_FILE=path.resolve(ROOT,'ATUNED-onboarding-first-experience-TDD.md');
 const DAY=86400000, T0=Date.now();
 const at=d=>new Date(T0+d*DAY).toISOString();
 const J=x=>JSON.stringify(x);
+const clone=x=>JSON.parse(JSON.stringify(x));
+
+/* THE EVENT LIST IS READ OFF THE TDD, not typed here. A list typed twice is
+   two lists that drift, and the document is the specification. The extractor
+   is checked against a count it must find before anything is compared. */
+const TDD=fs.existsSync(TDD_FILE)?fs.readFileSync(TDD_FILE,'utf8'):'';
+function tddEvents(){
+ const m=/^# 46\. Required Events\s*$/m.exec(TDD); if(!m)return null;
+ const rest=TDD.slice(m.index+m[0].length), s=rest.indexOf('```text'); if(s<0)return null;
+ const e=rest.indexOf('```',s+7);
+ return rest.slice(s+7,e).split('\n').map(l=>l.trim()).filter(Boolean);}
+/* what the boundary says about a record */
+function verdict(E,o){const v=E.validateProfile(o); return {ok:v.ok, errs:v.errs||[], v:v};}
+/* a walked record: a first run that picked a starting point, wrote and
+   committed a story, handed off to a release and had it land, twelve lines of
+   new ground at three addresses, and answered What changed. Built through the
+   engine's own writers, the way the sheet builds it. */
+function walked(E){
+ const p=E.blankProfile('Walked');
+ const ids=addrs(E,3), T=at(-1), ST=at(-1);
+ E.journeyLog(p,'tutorial_started',null,{door:'onboarding'},T);
+ E.journeyWalk(p,'ask',{},T);
+ E.journeyLog(p,'ground_selected','anxiety',null,T);
+ E.journeyGiftIssue(p,'app',T);
+ p.story.entries.push({t:ST,text:'I felt tight in my chest when my boss yelled at me.',imprints:5,bands:{},
+  ob:{pick:0,feel:1,place:3,yes:ids.slice(),no:[]}});
+ E.journeyWalk(p,'release',{pick:0,feel:1,place:3,t:ST,base:{lines:p.meter.lines,unique:p.meter.unique.length}},T);
+ const keys=E.meterPlan(p,ids,E.ONB_CHANS,12); E.meterRun(p,keys);
+ const r=E.releaseVerify(p.practice,'something_moved',ids,{story_t:ST},T); p.practice=r.P;
+ /* and the save that follows a release moves the counter, as saveProfile does */
+ E.journeyGiftSync(p);
+ return {p:p, ids:ids, ST:ST};}
 
 /* a person who has opened three addresses across the four channels, which is
    twelve lines of new ground, so the gift is at twelve of a hundred. Addresses
@@ -55,9 +91,24 @@ read(E,ok){
  const before=J(l); E.journeyRead(l); ok(J(l)===before,'a read writes nothing');
  let threw=null; [undefined,null,{},{story:null},{meter:null},{story:{entries:'x'}}].forEach(x=>{try{E.journeyRead(x);}catch(e){threw=e.message;}});
  ok(!threw,'and it does not throw on a record that is missing parts: '+threw);
- /* NOTHING IS STORED. The port lands no record field, so the blank and the
-    boundary are exactly what they were. */
- ok(!('journey' in E.blankProfile('b')),'the blank profile carries no journey field: the record half is F13');
+ /* THE BLANK IS UNTOUCHED. F13 landed the record, and a record carries one
+    only from the first write onto it, so a profile that never meets the first
+    run is byte for byte what it was before the journey existed. */
+ ok(!('journey' in E.blankProfile('b')),'the blank profile carries no journey until one is walked');
+ /* THE FOURTH STAGE, AND WHERE A RELOAD RESUMES. A hand off whose release
+    landed is released and resumes at the end card; one whose release never
+    ran resumes at the card that offers it. */
+ const w=walked(E).p, rw=E.journeyRead(w);
+ ok(rw.stage==='released'&&rw.first===false&&rw.landed===true,'a first run whose release landed reads released: '+J({s:rw.stage,l:rw.landed}));
+ ok(rw.at==='end','and it resumes at the end card: '+rw.at);
+ const h=clone(w); h.meter.lines=h.journey.walk.base.lines;
+ const rh=E.journeyRead(h);
+ ok(rh.landed===false&&rh.at==='next'&&rh.stage!=='released','a hand off whose release never ran resumes at the card that offers it: '+J({at:rh.at,s:rh.stage}));
+ const a=E.blankProfile('a'); E.journeyWalk(a,'feel',{pick:3},at(-1));
+ ok(E.journeyRead(a).at==='feel'&&E.journeyRead(a).first===true,'any other station resumes at itself');
+ ok(E.journeyRead(E.blankProfile('n')).at===null,'and no walk is no resume');
+ const leg=fixture(E,3); leg.journey={v:1,walk:null,gift:null,log:[]};
+ ok(E.journeyRead(leg).stage==='continuing','a record in use before the walk existed is still continuing, never released');
 },
 
 mini(E,ok){
@@ -233,6 +284,293 @@ verify(E,ok){
   ok(row.state==='unanswered','and an answer about a release does not confirm the pattern');}
  const L1=E.loopRead(fixture(E,0));
  ok(L1.patterns.every(x=>x.said.n===0),'a record with no answer shows none');
+},
+
+/* ============================================================
+   F13, THE RECORD. Ported from 3869d96's suites and adapted.
+   ============================================================ */
+tables(E,ok){
+ const ev=tddEvents();
+ ok(ev&&ev.length>=20,'the extractor found the events in TDD section 46, '+(ev&&ev.length));
+ ok(ev&&J(E.JOURNEY_EVENTS)===J(ev),'the engine carries the TDD\'s events, in its order, no more and no fewer: '
+  +(ev?E.JOURNEY_EVENTS.length+' against '+ev.length:'none read'));
+ ok(E.JOURNEY_EVENTS.every(x=>/^[a-z]+(_[a-z]+)*$/.test(x)),'every event is lower snake case');
+ ok(new Set(E.JOURNEY_EVENTS).size===E.JOURNEY_EVENTS.length,'no event is listed twice');
+ ok(E.JOURNEY_V===1&&E.JOURNEY_LOG_MAX>0,'the record has its own version and a ceiling on its log');
+ /* the stations: the sheet's eight, then the hand off and the end card */
+ ok(E.JOURNEY_WALK.length===10&&E.JOURNEY_WALK[0]==='arrive'&&E.JOURNEY_WALK.slice(-2).join()==='release,end',
+  'the first run has its stations in order, the sheet first and the release after: '+E.JOURNEY_WALK.join());
+ ok(E.JOURNEY_DOORS.join()==='onboarding,tutorial','and two doors into it');
+ ok(E.GIFT_N===100,'the gift is a hundred');
+ /* the claim's two lists name every key a walked record has, between them */
+ const keys=Object.keys(E.blankProfile('k')).concat(['journey']), S=E.JOURNEY_CLAIM_SEND, N=E.JOURNEY_CLAIM_NEVER;
+ ok(keys.every(k=>S.indexOf(k)>=0||N.indexOf(k)>=0),
+  'every top level key of the record is ruled in or out of a claim: '+keys.filter(k=>S.indexOf(k)<0&&N.indexOf(k)<0).join());
+ ok(S.concat(N).every(k=>keys.indexOf(k)>=0),'and a claim names no key the record does not have: '+S.concat(N).filter(k=>keys.indexOf(k)<0).join());
+ ok(!S.some(k=>N.indexOf(k)>=0),'and no key is on both lists');
+ ok(['who','name','id','plan','ui'].every(k=>N.indexOf(k)>=0),'who, name, id, plan and ui never cross');
+},
+
+record(E,ok){
+ const b=E.blankProfile('b');
+ ok(J(E.journeyBlank())===J({v:1,walk:null,gift:null,log:[]}),'the blank journey is empty');
+ const r0=E.validateProfile(clone(b));
+ ok(r0.ok&&!('journey' in r0.profile),'a record with no journey loads with none, and gains none at the boundary');
+ const nul=clone(b); nul.journey=null;
+ ok(E.validateProfile(nul).ok,'and so does one carrying null');
+ const v1=clone(b); v1.v=1;
+ ok(E.validateProfile(v1).ok,'a version 1 record still loads');
+ /* export, import, export is identical, with everything the journey holds */
+ const p=walked(E).p;
+ const o1=J(p), v=E.validateProfile(JSON.parse(o1));
+ ok(v.ok,'a walked record loads: '+J(v.errs));
+ if(v.ok){
+  const o2=J(v.profile), v2=E.validateProfile(JSON.parse(o2));
+  ok(v2.ok&&J(v2.profile)===o2,'export, import, export is identical');
+  ok(J(v.profile.journey)===J(p.journey),'and the journey comes back exactly as it went in');}
+ /* a writer fills a missing journey rather than throwing */
+ const f=E.blankProfile('f');
+ ok(E.journeyLog(f,'tutorial_started',null,null,at(-1)).ok&&f.journey&&f.journey.log.length===1,'a writer gives a record its journey on the first write');
+},
+
+boundary(E,ok){
+ const base=clone(walked(E).p);
+ ok(E.validateProfile(clone(base)).ok,'the walked record loads, so every refusal below is the change and not the record');
+ const C=(name,f,part)=>{const o=clone(base); f(o);
+  const r=verdict(E,o);
+  ok(!r.ok&&r.errs.some(e=>e.indexOf(part)>=0),name+', refused naming '+J(part)+': '+J(r.errs.slice(0,2)));};
+ C('an unknown key under journey',o=>{o.journey.extra=1;},'journey may not carry extra');
+ C('a journey that is not an object',o=>{o.journey=[];},'journey is not an object');
+ C('a journey version this build does not read',o=>{o.journey.v=2;},'not a journey version this build reads');
+ /* the log */
+ C('a log line outside the events',o=>{o.journey.log.push({seq:o.journey.log.length+1,type:'bought_it',at:at(-1),ref:null,d:{}});},'is not an event type: bought_it');
+ C('a log with a gap in its numbers',o=>{o.journey.log[1].seq=9;},'journey.log[1].seq is not the next number');
+ C('a log line with free text in its detail',o=>{o.journey.log[0].d={note:'I cried at the board meeting'};},'journey.log[0].d.note is free text');
+ C('a log line with a free text reference',o=>{o.journey.log[0].ref='the story I wrote';},'journey.log[0].ref is not a key into the record');
+ C('a log line with an unknown key',o=>{o.journey.log[0].text='x';},'journey.log[0] may not carry text');
+ C('a log line with a detail key that is not a word',o=>{o.journey.log[0].d={'Not A Key':1};},'journey.log[0].d may not carry Not A Key');
+ C('a log line with too many details',o=>{o.journey.log[0].d={a:1,b:1,c:1,d:1,e:1,f:1,g:1};},'journey.log[0].d holds 7 values, more than 6');
+ C('a log line dated in the future',o=>{o.journey.log[0].at=at(40);},'journey.log[0].at is ahead of the clock');
+ C('a log over its cap',o=>{o.journey.log=[];for(let i=0;i<E.JOURNEY_LOG_MAX+1;i++)o.journey.log.push({seq:i+1,type:'tier_viewed',at:at(-1),ref:null,d:{}});},'journey.log is full');
+ C('a log that is not a list',o=>{o.journey.log={};},'journey.log is not a list');
+ C('a log line that is not an object',o=>{o.journey.log=[7];},'journey.log[0] is not an object');
+ /* the gift */
+ C('a gift from somewhere it was not issued',o=>{o.journey.gift.src='shop';},'journey.gift.src is not funnel or app');
+ C('a gift counter that does not add up',o=>{o.journey.gift.remaining=99;},'which do not make 100');
+ C('a gift counter that has used more than it was given',o=>{o.journey.gift.used=101;o.journey.gift.remaining=0;},'journey.gift.used is 101');
+ C('an unknown key on the gift',o=>{o.journey.gift.tier='four';},'journey.gift may not carry tier');
+ C('a gift that is not an object',o=>{o.journey.gift=5;},'journey.gift is not an object');
+ C('a gift counter with no number in it',o=>{delete o.journey.gift.granted;},'journey.gift.granted is not a whole number');
+ /* the walk */
+ C('a walk at a station that does not exist',o=>{o.journey.walk.step='checkout';},'journey.walk.step is not a station of the first run: checkout');
+ C('a walk through a door that does not exist',o=>{o.journey.walk.door='quiz';},'journey.walk.door is not onboarding or tutorial');
+ C('a walk with a starting point that is not one of the twelve',o=>{o.journey.walk.pick=12;},'journey.walk.pick is not a position in its list of 12');
+ C('a walk with a feeling below Not sure',o=>{o.journey.walk.feel=-2;},'journey.walk.feel is not a position');
+ C('a walk with a body place that is not whole',o=>{o.journey.walk.place=1.5;},'journey.walk.place is not a position');
+ C('a walk answer naming no node',o=>{o.journey.walk.ans={'999999':'yes'};},'journey.walk.ans names no node: 999999');
+ C('a walk answer that is not yes or no',o=>{o.journey.walk.ans={[E.W.filter(x=>x.cf)[0].i]:'maybe'};},'is not yes or no');
+ C('a walk draft that is not text',o=>{o.journey.walk.text=42;},'journey.walk.text is not a string');
+ C('a walk correction that is not text',o=>{o.journey.walk.fixes=[3];},'journey.walk.fixes[0] is not a string');
+ C('a walk with a committed entry that is not a date',o=>{o.journey.walk.t='yesterday';},'journey.walk.t is not a date');
+ C('a hand off with nothing to read the release against',o=>{o.journey.walk.base=null;},'journey.walk.base is missing at release');
+ C('a base that is not whole',o=>{o.journey.walk.base.lines=-1;},'journey.walk.base.lines is -1');
+ C('a base with a key it does not carry',o=>{o.journey.walk.base.cost=3;},'journey.walk.base may not carry cost');
+ C('a walk with an unknown key',o=>{o.journey.walk.mood='x';},'journey.walk may not carry mood');
+ C('a walk that is not an object',o=>{o.journey.walk='arrive';},'journey.walk is not an object');
+ C('a walk with no date',o=>{delete o.journey.walk.at;},'journey.walk.at is not a date');
+ /* the boundary called on its own: the defaults it documents */
+ {const e1=[]; const d1=E.journeyValidate(e1,undefined);
+  ok(e1.length===0&&J(d1)===J(E.journeyBlank()),'called with nothing it reads the blank and says nothing');
+  const e2=[]; E.journeyValidate(e2,'x'); ok(e2.join()==='journey is not an object','a string is refused under the default name: '+e2.join());
+  const e4=[]; E.journeyValidate(e4,{log:[{seq:1,type:'tier_viewed',at:at(2),ref:null,d:{}}]},'journey',{now:T0+5*DAY});
+  ok(e4.length===0,'a clock handed in is the clock the dates are read against');}
+ /* a refusal is the whole record and never a partial one */
+ const bad=clone(base); bad.journey.walk.step='checkout';
+ ok(E.validateProfile(bad).profile===undefined,'a refused record returns no profile to load');
+ /* a clean record is never refused for what the journey is allowed to hold */
+ const g1=clone(base); g1.journey.gift.src='funnel';
+ ok(E.validateProfile(g1).ok,'a gift issued by the funnel is a gift');
+ const g2=clone(base); g2.journey.log=[{seq:1,type:'tier_viewed',at:at(-1),ref:'2026-10-01T09:00:00.000Z',d:{n:3,kind:'free',seen:true}}];
+ ok(E.validateProfile(g2).ok,'a log line may reference an entry by its date and carry counts, words and flags');
+ const g3=clone(base); g3.journey.walk={step:'story',door:'onboarding',pick:0,feel:-1,place:-1,ans:{},
+  text:'Half a story, typed and not yet committed',fixes:['and in my jaw'],t:null,base:null,at:at(-1)};
+ ok(E.validateProfile(g3).ok,'a walk holding a draft and a correction is a good record');
+},
+
+log(E,ok){
+ const p=E.blankProfile('log');
+ const a=E.journeyLog(p,'tutorial_started',null,null,at(-1));
+ ok(a.ok&&a.entry.seq===1&&a.entry.type==='tutorial_started'&&a.entry.ref===null,'a first line is number one: '+J(a));
+ const b=E.journeyLog(p,'story_submitted','2026-10-01T09:00:00.000Z',{words:3},at(-1));
+ ok(b.ok&&b.entry.seq===2,'and the next is two');
+ ok(p.journey.log.map(e=>e.seq).join()==='1,2','the log is gapless');
+ ok(E.journeyLogged(p,'story_submitted')&&!E.journeyLogged(p,'tier_viewed'),'a writer can ask whether a kind of line is already there');
+ const n=p.journey.log.length;
+ [['an event not in the set',()=>E.journeyLog(p,'bought_it',null,null,at(-1)),'not an event type'],
+  ['a detail that is words',()=>E.journeyLog(p,'tier_viewed',null,{note:'I want to stop'},at(-1)),'is free text'],
+  ['a reference that is a sentence',()=>E.journeyLog(p,'tier_viewed','my whole story',null,at(-1)),'not a key into the record'],
+  ['a moment in the future',()=>E.journeyLog(p,'tier_viewed',null,null,at(60)),'ahead of the clock']]
+  .forEach(x=>{const r=x[1](); ok(r.ok===false&&r.why.indexOf(x[2])>=0,x[0]+' is refused naming '+J(x[2])+': '+J(r.why));});
+ ok(p.journey.log.length===n,'and a refused line writes nothing');
+ /* the cap, refused by name and never evicting the oldest */
+ const q=E.blankProfile('full');
+ for(let i=0;i<E.JOURNEY_LOG_MAX;i++)E.journeyLog(q,'tier_viewed',null,null,at(-1));
+ ok(q.journey.log.length===E.JOURNEY_LOG_MAX,'the log fills to its cap, '+q.journey.log.length);
+ const first=J(q.journey.log[0]);
+ const over=E.journeyLog(q,'tier_viewed',null,null,at(-1));
+ ok(over.ok===false&&/journey\.log is full/.test(over.why),'one more is refused as full: '+J(over.why));
+ ok(q.journey.log.length===E.JOURNEY_LOG_MAX&&J(q.journey.log[0])===first,'and the oldest line is still there');
+ ok(E.validateProfile(clone(q)).ok,'a full log is a record that loads');
+ ok(E.journeyLog(null,'tier_viewed').ok===false,'no record is refused and does not throw');
+ /* every event in the set can be written, so the closed set is one a caller can use whole */
+ const all=E.blankProfile('all');
+ ok(E.JOURNEY_EVENTS.map(t=>E.journeyLog(all,t,null,null,at(-1)).ok).every(Boolean),'every one of the '+E.JOURNEY_EVENTS.length+' events can be logged');
+},
+
+walk(E,ok){
+ const p=E.blankProfile('walk');
+ const r=E.journeyWalk(p,'body',{pick:4,feel:-1},at(-1));
+ ok(r.ok&&p.journey.walk.step==='body'&&p.journey.walk.pick===4&&p.journey.walk.feel===-1&&p.journey.walk.place===null,
+  'a walk is written whole: '+J(p.journey.walk));
+ ok(p.journey.walk.door==='onboarding'&&J(p.journey.walk.ans)==='{}'&&p.journey.walk.text===null,'and a field the caller did not name is empty');
+ const keep=J(p.journey.walk);
+ [['a station that does not exist',()=>E.journeyWalk(p,'checkout',{},at(-1)),'is not a station'],
+  ['a starting point out of the list',()=>E.journeyWalk(p,'ask',{pick:99},at(-1)),'journey.walk.pick'],
+  ['an answer naming no node',()=>E.journeyWalk(p,'mirror',{ans:{'999999':'yes'}},at(-1)),'names no node'],
+  ['a hand off with no base',()=>E.journeyWalk(p,'release',{t:at(-1)},at(-1)),'base is missing']]
+  .forEach(x=>{const q=x[1](); ok(q.ok===false&&q.why.indexOf(x[2])>=0,x[0]+' is refused naming '+J(x[2])+': '+J(q.why));});
+ ok(J(p.journey.walk)===keep,'and every refusal left the walk as it was');
+ ok(E.journeyWalk(null,'arrive').ok===false,'no record is refused and does not throw');
+ /* the draft is held until it is committed, and a later write without it clears it */
+ E.journeyWalk(p,'story',{pick:4,text:'I keep taking care of everybody'},at(-1));
+ ok(p.journey.walk.text==='I keep taking care of everybody','the words typed and not yet committed are kept word for word');
+ E.journeyWalk(p,'next',{pick:4,t:at(-1)},at(-1));
+ ok(p.journey.walk.text===null,'and a walk written without them, at Commit, holds none');
+ ok(E.validateProfile(clone(p)).ok,'a walked record loads');
+},
+
+gift(E,ok){
+ const p=fixture(E,3);
+ const rd0=E.journeyGiftRead(p);
+ ok(rd0.granted===100&&rd0.used===12&&rd0.remaining===88&&rd0.issued===false&&rd0.spent===false,
+  'before it is issued the counter still reads off the meter: '+J(rd0));
+ ok(E.journeyGiftIssue(p,'cart',at(-4)).ok===false,'a gift from nowhere known is refused');
+ const i=E.journeyGiftIssue(p,'app',at(-4));
+ ok(i.ok&&i.issued&&p.journey.gift.granted===100&&p.journey.gift.used===12&&p.journey.gift.remaining===88&&p.journey.gift.src==='app',
+  'issued, it is a counter of a hundred with twelve used: '+J(p.journey.gift));
+ ok(p.journey.log.some(e=>e.type==='starter_gift_issued'),'and the issue is on the log');
+ const again=E.journeyGiftIssue(p,'funnel',at(-3));
+ ok(again.ok&&again.issued===false&&p.journey.gift.src==='app'&&p.journey.gift.at===at(-4),'a second issue changes nothing');
+ ok(p.journey.log.filter(e=>e.type==='starter_gift_issued').length===1,'and logs nothing');
+ {const ng=E.blankProfile('ng'); ok(E.journeyGiftSync(ng)===null&&!ng.journey,'syncing a gift that was never issued issues nothing');}
+ ok(E.journeyGiftIssue(null,'app').ok===false,'no record is refused');
+ /* THE COUNTER COUNTS. A release opens new ground and the next save moves the
+    stored counter in the same write, through saveProfile, the one writer
+    every save goes through. */
+ const c=E.blankProfile('counts'); E.journeyGiftIssue(c,'app',at(-2));
+ ok(c.journey.gift.used===0&&c.journey.gift.remaining===100,'a new gift has used nothing: '+J(c.journey.gift));
+ const ids=addrs(E,3), keys=E.meterPlan(c,ids,E.ONB_CHANS,12); E.meterRun(c,keys);
+ ok(E.journeyGiftRead(c).used===12&&E.journeyGiftRead(c).drift===true,'after a release the meter has moved and the stored counter has not yet');
+ E.loadProfile(c); E.saveProfile(c);
+ ok(c.journey.gift.used===12&&c.journey.gift.remaining===88&&E.journeyGiftRead(c).drift===false,
+  'and the save writes it: twelve used, eighty eight left, no drift: '+J(c.journey.gift));
+ E.loadProfile(E.blankProfile('after the counter'));
+ /* THE COUNTER CANNOT GRANT. The allowance counts the meter and the gift row. */
+ const before=E.planAllowance(p.plan,p.meter.unique.length,E.meterGiftAt(p),at(0));
+ p.journey.gift.granted=5000; p.journey.gift.used=0; p.journey.gift.remaining=5000;
+ const after=E.planAllowance(p.plan,p.meter.unique.length,E.meterGiftAt(p),at(0));
+ ok(J(before)===J(after),'no value on the counter moves planAllowance: '+before.left+' then '+after.left);
+ ok(E.meterBudget(p,at(0)).left===before.left,'nor the budget a run is planned against');
+ const rd=E.journeyGiftRead(p);
+ ok(rd.granted===100&&rd.remaining===E.planAllowance(p.plan,p.meter.unique.length,null,at(0)).left,
+  'the derived counter equals planAllowance\'s own while the gift lasts');
+ ok(rd.drift===true,'a stored counter that disagrees with the meter is reported as drift');
+ E.journeyGiftSync(p);
+ ok(E.journeyGiftRead(p).drift===false&&p.journey.gift.granted===100&&p.journey.gift.used===12,'and sync writes it back from the meter and from nowhere else');
+ /* spending it all */
+ const s=E.blankProfile('spent'); const many=addrs(E,30);
+ E.meterRun(s,E.meterPlan(s,many,E.ONB_CHANS,100));
+ const rs=E.journeyGiftRead(s);
+ ok(s.meter.unique.length===100&&rs.spent===true&&rs.remaining===0&&rs.used===100,'a hundred lines opened is the gift spent: '+J(rs));
+},
+
+made(E,ok){
+ const {p,ids,ST}=walked(E);
+ const before=J(p), m=E.journeyMade(p);
+ ok(J(p)===before,'reading what was made writes nothing');
+ ok(m.ok&&m.lines===12&&m.fresh===12,'the first release made twelve lines of new ground: '+J({l:m.lines,f:m.fresh}));
+ ok(m.ok&&J(m.addrs)===J(ids),'at the three places it opened, in the order it opened them: '+J(m.addrs));
+ ok(m.ok&&m.entry&&m.entry.t===ST&&m.entry.read===5&&m.entry.yes===3&&m.entry.no===0,'and it names the story the mirror committed: '+J(m.entry&&{t:m.entry.t,r:m.entry.read,y:m.entry.yes}));
+ ok(m.ok&&m.said==='something_moved','and what the person said changed: '+m.said);
+ ok(m.ok&&m.gift.used===12&&m.gift.remaining===88,'and the gift as it now counts: '+J(m.gift));
+ /* not landed, and no hand off */
+ const h=clone(p); h.meter.lines=h.journey.walk.base.lines;
+ ok(E.journeyMade(h).ok===false&&E.journeyMade(h).why==='not landed','a hand off whose release never ran made nothing');
+ ok(E.journeyMade(E.blankProfile('n')).why==='no hand off'&&E.journeyMade(null).ok===false,'and a record with no hand off says so, and does not throw');
+ /* an answer about another story is not this release's */
+ const o=clone(p); o.practice.evidence.forEach(e=>{e.story_t=at(-30);});
+ ok(E.journeyMade(o).said===null,'an answer about a different story is not counted as this one\'s');
+ /* a base that is not zero: only what came after the hand off is this release's */
+ const b4=clone(p); b4.journey.walk.base={lines:4,unique:4};
+ const m4=E.journeyMade(b4);
+ ok(m4.ok&&m4.lines===8&&m4.fresh===8&&J(m4.addrs)===J(ids.slice(1)),'only the lines after the hand off are counted, at the places they opened: '+J({l:m4.lines,a:m4.addrs}));
+ /* the story deleted later: the release still reads, with no entry */
+ const d=clone(p); d.story.entries=[];
+ const md=E.journeyMade(d);
+ ok(md.ok&&md.entry===null&&md.lines===12,'a story deleted since still leaves what the release made');
+},
+
+claim(E,ok){
+ const {p}=walked(E);
+ p.name='Mariam Okonkwo'; p.who.first='Mariam'; p.who.last='Okonkwo'; p.who.sex='f';
+ p.who.born={date:'1988-04-17',time:'06:42',place:'Lagos',zone:'Africa/Lagos',timeUnknown:false};
+ p.plan.tier='three'; p.plan.status='active'; p.plan.granted=1200;
+ const before=J(p);
+ const r=E.journeyClaim(p,at(-1));
+ ok(r.ok&&r.claim.kind==='atuned.claim'&&r.claim.v===1&&r.claim.schema===E.SCHEMA_V&&r.claim.at===at(-1),'a claim is a packet with its kind, version and moment: '+J(r.errs||Object.keys(r.claim)));
+ ok(J(p)===before,'building it does not touch the record');
+ if(!r.ok)return;
+ const body=r.claim.body, text=J(r.claim);
+ ok(body.story.entries.length===1&&/tight in my chest/.test(body.story.entries[0].text),'the story crosses, text included');
+ ok(body.axes&&body.laws&&body.intake&&body.meter&&body.summaries&&body.practice&&body.journey,'and the analytic and summary data do');
+ ok(body.journey.walk.step==='release'&&body.journey.gift.used===12&&body.journey.log.length>0,'and the journey does, walk, counter and log');
+ ['who','name','id','ui','plan','created','updated','v'].forEach(k=>ok(!(k in body),k+' is not in the body'));
+ ['1988-04-17','06:42','Lagos','Africa/Lagos','Mariam','Okonkwo'].forEach(s=>ok(text.indexOf(s)<0,'"'+s+'" is nowhere in the packet: birth data and the name stay'));
+ ok(Object.keys(body).every(k=>E.JOURNEY_CLAIM_SEND.indexOf(k)>=0),'the body holds only keys the claim is allowed to carry');
+ /* what the end card is drawn from is what the packet carries */
+ ok(J(E.journeyMade(body))===J(E.journeyMade(p)),'what the first release made reads the same off the packet as off the record');
+ /* pure, and shares nothing */
+ ok(J(E.journeyClaim(p,at(-1)))===J(r),'the same record and the same moment give the same packet');
+ body.story.entries[0].text='changed'; body.meter.unique.push('x');
+ ok(/tight in my chest/.test(p.story.entries[0].text)&&p.meter.unique.length===12,'and editing the packet cannot move the person\'s record');
+ /* the claim's own boundary */
+ const good=E.journeyClaim(p,at(-1)).claim;
+ const gc=E.journeyClaimCheck(good,at(0));
+ ok(gc.ok&&J(Object.keys(gc.body).sort())===J(Object.keys(good.body).sort()),'a good claim passes its own boundary and comes back with the parts it carried: '+J(gc.errs));
+ const C=(name,f,part)=>{const c=clone(good); f(c);
+  const k=E.journeyClaimCheck(c,at(0));
+  ok(k.ok===false&&k.errs.some(e=>e.indexOf(part)>=0),name+', refused naming '+J(part)+': '+J((k.errs||[]).slice(0,2)));};
+ C('a claim carrying the birth data',c=>{c.body.who={born:{date:'1988-04-17'}};},'claim.body.who is not carried by a claim');
+ C('a claim carrying the name',c=>{c.body.name='Mariam';},'claim.body.name is not carried by a claim');
+ C('a claim carrying an id',c=>{c.body.id='p1';},'claim.body.id is not carried by a claim');
+ C('a claim carrying a plan',c=>{c.body.plan={tier:'four'};},'claim.body.plan is not carried by a claim');
+ C('a claim carrying a switch set',c=>{c.body.ui={};},'claim.body.ui is not carried by a claim');
+ C('a claim carrying a key nobody named',c=>{c.body.secrets={};},'claim.body may not carry secrets');
+ C('a claim of the wrong kind',c=>{c.kind='record';},'claim.kind is not atuned.claim');
+ C('a claim of a version it does not read',c=>{c.v=2;},'claim.v is 2');
+ C('a claim from a schema that does not exist',c=>{c.schema=9;},'claim.schema is 9');
+ C('a claim dated in the future',c=>{c.at=at(50);},'claim.at is ahead of the clock');
+ C('a claim with a key beside its body',c=>{c.extra=1;},'claim may not carry extra');
+ C('a claim with no body',c=>{c.body=null;},'claim.body is not an object');
+ C('a claim with a charge of 9999',c=>{c.body.axes.Fear={held:9999,opp:0};},'claim.body: axes.Fear.held is 9999');
+ C('a claim with a bad journey inside it',c=>{c.body.journey.walk.step='checkout';},'claim.body: journey.walk.step');
+ ok(E.journeyClaimCheck(null,at(0)).ok===false&&E.journeyClaimCheck([],at(0)).ok===false,'no claim and a list are refused and do not throw');
+ ok(J(good)===J(E.journeyClaim(p,at(-1)).claim),'and the refusals above did not change the packet they were made from');
+ const badp=clone(p); badp.axes.Fear={held:9999,opp:0};
+ const bc=E.journeyClaim(badp,at(0));
+ ok(bc.ok===false&&bc.errs.some(e=>e.indexOf('axes.Fear.held')>=0),'a record the boundary refuses makes no claim, and says why: '+J(bc.errs));
+ ok(E.journeyClaim(null,at(0)).ok===false,'no record makes none');
+ ok(!/fetch|XMLHttpRequest/.test(E.journeyClaim.toString()),'the packet is built and nothing here sends it');
 }};
 
 /* ============================================================
@@ -258,7 +596,7 @@ const MUTANTS=[
  {suite:'mini', what:'the inferred are counted only among those taken',
   from:"var found=cand.length, foundInf=cand.filter(", to:"var found=cand.length, foundInf=cand.slice(0,3).filter("},
  {suite:'read', what:'a record in use reads as a first run',
-  from:"var stage=prior?'continuing':(entries.length?'storied':'new');", to:"var stage=entries.length?'storied':'new';"},
+  from:"var stage=landed?'released':(prior?'continuing':(entries.length?'storied':'new'));", to:"var stage=landed?'released':(entries.length?'storied':'new');"},
  {suite:'verify', what:'a verification becomes a trace edge, so nothing changed reads as support',
   from:"if(e.pattern_id&&!prIsVerify(e))put('evidence'", to:"if(e.pattern_id)put('evidence'"},
  {suite:'verify', what:'the boundary accepts any value on a verification',
@@ -270,7 +608,46 @@ const MUTANTS=[
  {suite:'verify', what:'Your patterns does not count the answers',
   from:"row.said.n++;", to:""},
  {suite:'verify', what:'an answer is counted as evidence for the pattern',
-  from:"var t=typeOf(e.from), src=node[e.from];", to:"var t=typeOf(e.from), src=node[e.from]; if(row.said.n)row.evFor=row.said.n;"}];
+  from:"var t=typeOf(e.from), src=node[e.from];", to:"var t=typeOf(e.from), src=node[e.from]; if(row.said.n)row.evFor=row.said.n;"},
+ /* F13, the record */
+ {suite:'tables', what:'an event is renamed',
+  from:"'funnel_started','ground_selected',", to:"'funnel_began','ground_selected',"},
+ {suite:'boundary', what:'the record skips the journey boundary',
+  from:"p.journey=journeyValidate(errs,o.journey,'journey');", to:"p.journey=o.journey;"},
+ {suite:'boundary', what:'a log may skip a number',
+  from:"if(x.seq!==i+1)errs.push(path+'.seq is not the next number');", to:""},
+ {suite:'boundary', what:'a log line may be any event',
+  from:"if(JOURNEY_EVENTS.indexOf(x.type)<0)errs.push(", to:"if(false)errs.push("},
+ {suite:'boundary', what:'a log detail may be free text',
+  from:"else errs.push(path+'.d.'+k+' is free text and not a count or a word');", to:"else d[k]=v;"},
+ {suite:'boundary', what:'a gift counter need not add up',
+  from:"if(gr!==null&&us!==null&&rm!==null&&us+rm!==gr)", to:"if(false)"},
+ {suite:'boundary', what:'a walk may stand at any station',
+  from:"if(JOURNEY_WALK.indexOf(w.step)<0)errs.push(", to:"if(false)errs.push("},
+ {suite:'boundary', what:'a walk answer may name any node',
+  from:"if(String(n)!==k||!BY[n]){errs.push(", to:"if(false){errs.push("},
+ {suite:'log', what:'the log is not capped',
+  from:"if(j.log.length>=JOURNEY_LOG_MAX)", to:"if(false)"},
+ {suite:'walk', what:'a draft outlives the commit that should clear it',
+  from:"var errs=[], x=Object.assign({},w||{},{step:step, at:jyAt(now)});", to:"var errs=[], x=Object.assign({},(p.journey&&p.journey.walk)||{},w||{},{step:step, at:jyAt(now)});"},
+ {suite:'gift', what:'a save never moves the stored counter, so it does not count',
+  from:"if(p.journey&&p.journey.gift)journeyGiftSync(p);", to:""},
+ {suite:'gift', what:'the counter reads nothing used',
+  from:"var used=Math.min(GIFT_N,n);", to:"var used=0;"},
+ {suite:'read', what:'a landed release resumes at the start',
+  from:"if(at==='release'||at==='end')at=landed?'end':'next';", to:"if(at==='release'||at==='end')at=null;"},
+ {suite:'read', what:'a release is taken as landed without reading the meter',
+  from:"var landed=!!(w&&w.base&&(+m.lines||0)>w.base.lines);", to:"var landed=!!(w&&w.base);"},
+ {suite:'made', what:'what was made counts the lines from before the hand off',
+  from:"var lines=(+m.lines||0)-w.base.lines;", to:"var lines=(+m.lines||0);"},
+ {suite:'made', what:'an answer about another story is taken as this one\'s',
+  from:"return !w.t||x.story_t===w.t;", to:"return true;"},
+ {suite:'claim', what:'the claim carries the birth data',
+  from:"var JOURNEY_CLAIM_SEND=['soul',", to:"var JOURNEY_CLAIM_SEND=['who','soul',"},
+ {suite:'claim', what:'a claim takes a body part it never carries',
+  from:"if(JOURNEY_CLAIM_NEVER.indexOf(k)>=0)errs.push('claim.body.'+k+' is not carried by a claim');", to:"if(false)errs.push('x');"},
+ {suite:'claim', what:'a claim skips the profile boundary',
+  from:"var rec=Object.assign({v:c.schema},c.body);\n var v=validateProfile(rec);", to:"var rec=Object.assign({v:c.schema},c.body);\n var v={ok:true,profile:rec};"}];
 
 function load(src){
  const ctx={module:{exports:{}}, console:console};

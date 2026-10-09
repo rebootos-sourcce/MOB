@@ -435,6 +435,172 @@ function wordsOf(t,nm){
   var j=s.indexOf(' ',k+1); if(j<0||j===k+1)continue;
   out.push({at:k, w:s.slice(k+1,j), s:nm.map[k+1], e:nm.map[j-1]+1, c:c, g:g});}
  return out;}
+/* ============================================================
+   A WORD SAID WITH A NO, package S1 of REVIEW-sniffer-audit-2026-10-09.md,
+   ruling 1. Measured on main before this: "I was not angry" read Anger 18 at
+   the solar plexus, exactly "I was angry", while the Story page drew the same
+   word struck through. A negated charge word is not a positive admission and
+   is not erased either: the hit is kept, flagged neg, and parseStory lists it
+   in denied and counts it nowhere.
+
+   NOT A THIRD NEGATION READER. srcNegated (engine/sourceai.js) decides, with
+   its own list and its own two word window, cut at a sentence end by
+   clauseFloor, which is exactly what Source AI has always asked. This only
+   moves the floor that call is given, for two named reasons, and both only
+   ever stop a no from reaching a word:
+     a word already read keeps its own no. "cant sleep", "im not okay",
+       "nobody listens" are read as charge with the no inside them, so the no
+       is theirs and the word after it is not denied by it. Measured: "I
+       can't sleep, terrified" denied terrified before this.
+     a can't stop frame is not a denial. A no straight before one of
+       NEG_NOT_DENY says the thing would not stop: "I can't stop crying",
+       "it never stops hurting", "I couldn't help crying". Each has a test.
+   A comma does not end a no, which is leanNorm's ruling and clauseFloor's,
+   so "I was not, honestly, angry" is denied. The cost of that ruling is
+   measured and reported with the change, not hidden here.
+
+   A COHERENT WORD IS NEVER DENIED. A denial must never raise a reading, and
+   denying a word that subtracts would. "I am not grateful" subtracts as it
+   always did; that is a known gap, written in TDD-sniffer.md, and not made
+   worse here.
+
+   The hit keeps negw, the no it saw, and negAt, that word's leading space in
+   nm.s, so a mark and a list can quote from the no to the word on the letters
+   typed. srcNegated is the decision; this only finds which word it saw. */
+var NEG_NOT_DENY=['stop','stops','stopped','help'];
+function sniffDeny(t,nm,hits){
+ var ws=null, cuts=[];
+ hits.forEach(function(h){
+  if(h.band==='coherent')return;
+  if(!ws){ws=wordsOf(t,nm);
+   /* every place a no is already spoken for: the end of each word read, and
+      the end of each can't stop frame. Kept as the trailing space, which is
+      the next word's leading one, so the window starts on the next word. */
+   hits.forEach(function(o){cuts.push({at:o.at,end:o.at+1+String(o.t).length});});
+   for(var i=0;i+1<ws.length;i++)
+    if(ws[i].c===ws[i+1].c&&SRC_NEG.indexOf(ws[i].w)>=0&&NEG_NOT_DENY.indexOf(ws[i+1].w)>=0)
+     cuts.push({at:ws[i].at,end:ws[i+1].at+1+ws[i+1].w.length});}
+  var f=clauseFloor(t,nm,h.at);
+  cuts.forEach(function(c){if(c.at<h.at&&c.end<=h.at&&c.end>f)f=c.end;});
+  if(!srcNegated(nm.s,h.at,f))return;
+  var win=ws.filter(function(w){return w.at<h.at&&w.at>=Math.max(f,0);}).slice(-SRC_NEG_W);
+  var ng=win.filter(function(w){return SRC_NEG.indexOf(w.w)>=0;})[0]||null;
+  h.neg=true; h.negw=ng?ng.w:null; h.negAt=ng?ng.at:null;});}
+/* ============================================================
+   WHOSE CHARGE, package S2 of REVIEW-sniffer-audit-2026-10-09.md, ruling 2,
+   and guard 2 of SNIFFER_SPEC.md, "never score another person". Measured on
+   main before this: "he shouted at me" read Anger 24 at the solar plexus,
+   exactly "I shouted at him", and "he is furious" exactly "I am furious".
+
+   THE RULE, AS RULED. A charge word whose clear subject in its own comma
+   group is a third person, with no first person between that subject and the
+   word, is held: the hit is kept, flagged other with who it was, parseStory
+   lists it in others and counts it nowhere. No subject, or a first person
+   subject, is the writer, which is what a journal is. An unclear subject is
+   held too, and flagged unclear, so a page can say it is unclear rather than
+   say it is someone else's.
+
+   HOW A SUBJECT IS FOUND, read backward from the word through its own comma
+   group (wordsOf's g), nearest first, so the first person or third person
+   met first decides:
+     a first person (WHO_ME)    the writer, and the read stops. "he made me
+                                furious" is the writer's.
+     he, she, they (WHO_SUBJ)   someone else. These are subjects by their
+                                form, wherever they stand.
+     a person, opening a clause someone else, when the phrase opens its clause:
+                                the group's first word, or after a word in
+                                WHO_OPEN ("and", "when", "then", "like").
+                                A person is a word in LEXKIN or in Source AI's
+                                own contact cues, SRC_DIM_CUE.contact, read
+                                from there and not retyped, with its "my",
+                                "the" or "her" in front. After a verb it is who
+                                was spoken to, "I called my mother and was
+                                furious", and the read steps past it, its "my"
+                                with it.
+     his, her, their opening    someone else's: "her anger scared me".
+       a clause
+     a name opening a clause    a capital that does not start its sentence,
+                                after a word in WHO_OPEN or at a comma: "then
+                                Sarah screamed". A capital after "to" is a
+                                place. A name that starts its sentence cannot
+                                be told from any other first word, and is read
+                                as the writer's, which is named in GAPS.
+     you, opening a clause      unclear: generic "you" is often the writer and
+                                sometimes not, so it is held and says so.
+   And straight before the word, his, her, their, him or them makes it theirs:
+   "her anger", "I made her cry", "I saw him crying".
+
+   A DENIAL IS A DENIAL WHOEVER SAID IT. A hit sniffDeny flagged is not read
+   again here, so it is listed once. A coherent word is never held, for the
+   reason S1 gives: holding a word that subtracts would raise a reading.
+
+   A LOSS IS THE WRITER'S, WHOEVER IT HAPPENED TO. Measured on the first cut
+   of this reader: "My father died and I feel ashamed" lost its grief at the
+   heart, and "I've been on my own since he died" fell from 50 to 22, because
+   "my father" and "he" are the subjects of "died". The ruling is about
+   another person's feelings and doings, "he is furious", "he shouted at me".
+   A death or a loss is neither: it happens to the one who is gone and the
+   charge the lexicon gives it, grief at the heart, is carried by the one left.
+   lexicon.js wrote its grief and loss block for exactly this, "a father
+   dying" read as nothing before it. So a hit in WHO_LOSS, or a synonym or
+   fold of one by LEXMETA.from ("killed himself", "took his own life",
+   "funerals", "divorced"), is never held. Told that a father's death is
+   about someone else, a bereaved person would be told the worst thing this
+   product could say. The list is the heads of that block and of the
+   grieving family, and the gate holds each one as a heart key.
+
+   NOT A CLINICAL CLAIM AND NOT A MODEL. It is a few grammar words and two
+   tables the engine already has, and every hold names the word that decided
+   it in who, so a person and a reviewer can both see why. */
+var WHO_ME=['i','im','ive','id','me','my','mine','myself','we','us','our','ours','ourselves','weve'];
+var WHO_SUBJ=['he','she','they','hes','shes','theyre','theyve','theyll','theyd','hed'];
+var WHO_POSS=['his','her','their'];
+var WHO_OBJ=['him','them'];
+var WHO_YOU=['you','youre','youve','youd','youll'];
+var WHO_DET=['my','his','her','their','our','your','the','a','an'];
+var WHO_OPEN=['and','but','then','when','while','because','cause','so','after','before','until','till',
+ 'as','if','since','or','that','though','although','once','whenever','where','why','how','like',
+ 'now','today','yesterday','tonight','again','also','just','still','even','suddenly','finally','later'];
+var WHO_LOSS=['died','death','dying','passed away','grief','mourning','mourn','bereaved','loss','funeral',
+ 'buried','widowed','miscarriage','stillborn','grieving'];
+function whoLoss(h){
+ var m=LEXMETA[h.t];
+ return WHO_LOSS.indexOf(h.t)>=0||!!(m&&m.from&&WHO_LOSS.indexOf(m.from)>=0);}
+function whoPerson(w){
+ if(WHO_SUBJ.indexOf(w)>=0||WHO_POSS.indexOf(w)>=0||WHO_OBJ.indexOf(w)>=0)return false;
+ return LEXKIN.indexOf(w)>=0||SRC_DIM_CUE.contact.indexOf(w)>=0;}
+/* a phrase starting at word k opens its clause: the first word of its comma
+   group, or straight after a word that opens a clause */
+function whoOpens(ws,k){return k===0||ws[k-1].g!==ws[k].g||WHO_OPEN.indexOf(ws[k-1].w)>=0;}
+function whoOf(t,ws,i){
+ var g=ws[i].g, j, w, k;
+ if(i>0&&ws[i-1].g===g&&(WHO_POSS.indexOf(ws[i-1].w)>=0||WHO_OBJ.indexOf(ws[i-1].w)>=0))
+  return {k:i-1,j:i-1};
+ for(j=i-1;j>=0&&ws[j].g===g;j--){
+  w=ws[j].w;
+  if(WHO_ME.indexOf(w)>=0)return null;
+  if(WHO_SUBJ.indexOf(w)>=0)return {k:j,j:j};
+  if(whoPerson(w)){
+   k=j;
+   if(k>0&&ws[k-1].g===g&&LEXKIN.indexOf(ws[k-1].w+' '+w)>=0)k--;
+   if(k>0&&ws[k-1].g===g&&WHO_DET.indexOf(ws[k-1].w)>=0)k--;
+   if(whoOpens(ws,k))return {k:k,j:j};
+   j=k; continue;}
+  if(WHO_POSS.indexOf(w)>=0&&whoOpens(ws,j))return {k:j,j:j};
+  if(WHO_YOU.indexOf(w)>=0&&whoOpens(ws,j))return {k:j,j:j,unclear:true};
+  if(j>0&&ws[j-1].c===ws[j].c&&/^[A-Z][a-z]+$/.test(t.slice(ws[j].s,ws[j].e))&&whoOpens(ws,j))
+   return {k:j,j:j};}
+ return null;}
+function sniffWho(t,nm,hits){
+ var ws=null, byAt=null;
+ hits.forEach(function(h){
+  if(h.band==='coherent'||h.neg||whoLoss(h))return;
+  if(!ws){ws=wordsOf(t,nm); byAt={}; ws.forEach(function(w,i){byAt[w.at]=i;});}
+  var i=byAt[h.at]; if(i===undefined)return;
+  var r=whoOf(t,ws,i); if(!r)return;
+  h.other=true; h.whoAt=ws[r.k].at;
+  h.who=ws.slice(r.k,r.j+1).map(function(x){return x.w;}).join(' ');
+  if(r.unclear)h.unclear=true;});}
 function scanStory(text){
  var nm=normMap(text), src=nm.s;
  var hits=[];
@@ -537,6 +703,13 @@ function scanStory(text){
    h.place=best.w; h.placeAt=best.at;
    if(best.seat!==h.band){h.was=h.band; h.band=best.seat;}});}
  hits.sort(function(a,b){return a.at-b.at;});
+ /* A WORD SAID WITH A NO, S1, see sniffDeny above. The scanner says what is
+    around a word, the way it already says the degree word and the place
+    word; parseStory decides what counts. */
+ sniffDeny(text,nm,hits);
+ /* AND WHOSE IT IS, S2, see sniffWho above. After the denial, so a word said
+    with a no is listed once, as denied. */
+ sniffWho(text,nm,hits);
  return hits;}
 /* ============================================================
    THE PATH.
@@ -636,7 +809,15 @@ function pathOf(hits){
   kink:end(kink), floor:end(floor)};}
 
 function parseStory(text){
- var hits=scanStory(text), byBand={}, byChg={}, imprints=[];
+ /* WHAT COUNTS, AND WHAT IS KEPT BESIDE IT, S1. A hit said with a no goes to
+    denied and nowhere else, so it reaches no band, charge, weight, named
+    fetter, imprint or path, and every reader of hits below and of this
+    result's hits sees only what counts. It is kept, not erased: marksOf
+    draws it struck and the Story page names it. */
+ var all=scanStory(text), hits=[], denied=[], others=[], byBand={}, byChg={}, imprints=[];
+ /* AND A HIT ABOUT SOMEONE ELSE GOES TO others, S2, by the same rule: kept,
+    listed, and counted nowhere. A denied hit is never also in others. */
+ all.forEach(function(h){(h.neg?denied:h.other?others:hits).push(h);});
  hits.forEach(function(h){
   if(h.band&&h.band!=='coherent'){ byBand[h.band]=(byBand[h.band]||0)+h.amt; }
   if(h.charge){ byChg[h.charge]=(byChg[h.charge]||0)+1; }});
@@ -727,7 +908,8 @@ function parseStory(text){
  var named=Object.keys(nm).sort(function(a,b){return nm[b]-nm[a];});
  return {hits:hits, bands:byBand, charges:byChg, named:named, weights:nm, imprints:imprints,
   path:pathOf(hits),
-  words:hits.filter(function(h){return h.kind!=='adj';}).length};}
+  words:hits.filter(function(h){return h.kind!=='adj';}).length,
+  denied:denied, others:others};}
 /* ============================================================
    THE MARKS. Every hit, placed back on the letters a person typed.
 
@@ -748,17 +930,32 @@ function parseStory(text){
 
    Ported from proto/story4 unchanged in behaviour. None of the four designs'
    look comes with it: this returns data and the page decides what to draw.
+
+   A WORD SAID WITH A NO IS STILL A MARK, S1, and it carries neg and negFrom,
+   the letter its no starts on, so a page strikes it from the no without
+   working negation out again. The flag is the engine's, from sniffDeny, so
+   the sentence, the chart, the list and the score read one answer.
    ============================================================ */
+/* EVERY HIT THE SCANNER FOUND, counted or set aside. parseStory's own hits
+   are only what counts; a reader that must show or quote every word read,
+   marksOf, unmarkedOf, srcHear and srcDims, asks here, so there is one
+   answer to which lists make up the whole. */
+function storyHits(p){
+ return p?(p.hits||[]).concat(p.denied||[],p.others||[]):[];}
 function marksOf(t,p){
- if(!p||!p.hits||!p.hits.length)return [];
+ var all=storyHits(p);
+ if(!all.length)return [];
  var nm=normMap(t), raw=[];
- p.hits.forEach(function(h){
+ all.forEach(function(h){
   if(h.at==null)return;
   var a=h.at+1, b=h.at+String(h.t).length;
   if(a>=nm.map.length||b>=nm.map.length)return;
   raw.push({s:nm.map[a], e:nm.map[b]+1, kind:h.kind, band:h.band||null,
    amt:(h.amt==null?null:h.amt), label:h.label||null, charge:h.charge||null,
-   fet:h.fet||null, coh:h.band==='coherent'});});
+   fet:h.fet||null, coh:h.band==='coherent',
+   neg:!!h.neg, negFrom:(h.neg&&h.negAt!=null&&nm.map[h.negAt+1]!=null)?nm.map[h.negAt+1]:null,
+   other:!!h.other, unclear:!!h.unclear,
+   whoFrom:(h.other&&h.whoAt!=null&&nm.map[h.whoAt+1]!=null)?nm.map[h.whoAt+1]:null});});
  raw.sort(function(a,b){return a.s-b.s||(b.e-b.s)-(a.e-a.s);});
  var keep=[], last=-1;
  raw.forEach(function(m){
@@ -773,6 +970,39 @@ function marksOf(t,p){
   keep.push(m); last=m.e;});
  keep.forEach(function(m,i){m.i=i;});
  return keep;}
+/* WHAT WAS READ AND NOT COUNTED, quoted in the letters the person typed, each
+   stretch once. Said with a no (S1), from its no to its word. About someone
+   else (S2), from the person to the word, and unclear apart from it, because
+   "you" may be the writer. Off marksOf, so a quote is exactly what the page
+   sets aside. */
+function asideOf(t,p){
+ t=String(t||'');
+ var out={denied:[],others:[],unclear:[]};
+ marksOf(t,p).forEach(function(m){
+  var l=m.neg?out.denied:m.other?(m.unclear?out.unclear:out.others):null; if(!l)return;
+  var from=m.neg?m.negFrom:m.whoFrom;
+  var q=t.slice(from!=null?from:m.s,m.e);
+  if(l.indexOf(q)<0)l.push(q);});
+ return out;}
+/* THE SENTENCES, ONE COPY, for every surface that shows a story's reading,
+   the way maskedSay is for hidden words. Each says what was not counted and
+   why in the same sentence, the unpack ruling, in words a ten year old has,
+   V21, and where the person can change it, the one thing to write. Empty
+   when nothing was set aside, so a caller prints it or prints nothing. */
+function asideList(q){
+ q=q.map(function(x){return '“'+x+'”';});
+ return q.length<3?q.join(' and '):q.slice(0,-1).join(', ')+' and '+q[q.length-1];}
+function asideSay(a){
+ a=a||{}; var out=[], d=a.denied||[], o=a.others||[], u=a.unclear||[];
+ if(d.length)out.push(asideList(d)+(d.length===1?' is not counted, because you said no to it.'
+  :' are not counted, because you said no to them.'));
+ if(o.length)out.push(asideList(o)+(o.length===1?' is not counted, because it is about someone else. '
+  +'Write how it landed on you, and that can be counted.'
+  :' are not counted, because they are about someone else. Write how each one landed on you, and that can be counted.'));
+ if(u.length)out.push(asideList(u)+(u.length===1?' is not counted, because it may not be about you. '
+  +'Write it with I if it is yours.'
+  :' are not counted, because they may not be about you. Write them with I if they are yours.'));
+ return out.join(' ');}
 /* ============================================================
    WHAT READ AS NOTHING, 20.H6. The complement of marksOf.
 
@@ -788,9 +1018,9 @@ function marksOf(t,p){
    clause: a mark ends it, and so does a sentence end, by wordsOf's rule. A
    word a mark touches at all is read, so a phrase's own words never come
    back here. A place word that seated a sensation, 20.H2, is read too: it
-   scored nothing itself and it decided where the charge landed. A negated
-   word is still a mark, because the sniffer does not read negation and this
-   reports the sniffer, not what Source AI hears.
+   scored nothing itself and it decided where the charge landed. A word said
+   with a no is read too, S1: it was read, named and set aside, which is not
+   the same as passed over, and it is still a mark.
 
    It is reporting and nothing else. No reading moves, nothing is scored,
    and nothing leaves the device: the count 19.D8 wants across people is
@@ -799,7 +1029,7 @@ function marksOf(t,p){
 function unmarkedOf(t,p){
  t=String(t||'');
  var marks=marksOf(t,p), ws=wordsOf(t), out=[], cur=null, read=0, placed={};
- ((p&&p.hits)||[]).forEach(function(h){if(h.placeAt!=null)placed[h.placeAt]=1;});
+ storyHits(p).forEach(function(h){if(h.placeAt!=null)placed[h.placeAt]=1;});
  ws.forEach(function(w){
   var hit=placed[w.at]||marks.some(function(m){return m.s<w.e&&m.e>w.s;});
   if(hit){read++; cur=null; return;}
@@ -842,9 +1072,12 @@ function applyStory(text){
 
    WHAT THIS LAYER DOES NOT DO, stated so nobody has to discover it:
      it does not mutate. applyStory is still the only function that mutates.
-     it does not score another person. there is no subject model, so every hit
-       lands on the writer, which satisfies guard 2 by having no mechanism
-       rather than by a rule. a frame layer would need the rule.
+     it does not score another person. That line used to say there was no
+       subject model, so every hit landed on the writer, and "he shouted at
+       me" proved it broke guard 2. Since S2 parseStory holds a word whose
+       clear subject is someone else in others, so nothing this layer reads
+       off hits or imprints can carry it. The law path below reads its own
+       copy of the text and is not yet held the same way, said there.
      it emits no clinical label. guard 1 is a translation column and never an
        equals sign, so no mode name reaches this output as a condition.
      it names no diagnosis and the gate asserts that too.
@@ -1027,6 +1260,112 @@ function lexComposite(){
 var LEXCOMPRUN=lexComposite();
 
 /* ============================================================
+   PASS FIVE, PROFANITY AND ABSTRACT DISTRESS. Recall over precision, which
+   is this pass's own stated stance and the opposite of the engine's baseline.
+   The owner's instruction: "make it oversensitive." A person who swears about
+   their day has named distress more plainly than any clinical term. A phrase
+   like "worst day" or "rough day" may land on a surface that clinical words
+   miss entirely.
+
+   PORTED BY HAND FROM THE OLD LINE, 94d328e, with its own follow up, 5ce3934,
+   applied, round S0 of REVIEW-sniffer-audit-2026-10-09.md. Six of the old
+   rows are not here, each for a reason the gate holds:
+     fucking         a key here fills the gap the QR group holds open: stars
+                     between "really" and "furious" must read differently
+                     from the word typed in, and with this key they read the
+                     same. fuck and fucked still carry the family.
+     not okay, ok    refused by name in LEXSYN_NO (lexicon.js): "that is not
+                     okay" is usually about somebody else's conduct. Only "im
+                     not okay" reads, through LEXANT.
+     helpless        main's synonym pass already seats it at the heart, off
+                     defeated. lexAdd refuses a move, and a row here asking
+                     for the root would be a row that never lands.
+     falling apart   the same, at the solar plexus, off overwhelmed.
+     breaking point  the same seat, solar, at 26 off overwhelmed. lexAdd keeps
+                     the row it has, so a row here saying 24 would be a row
+                     saying an amount the table does not hold.
+
+   EVERY ENTRY IS AUTHORED, not derived. The seat, the amount and the optional
+   fetter are chosen here and are not computed from other tables. lexAdd never
+   moves an existing entry, and the gate asserts that this pass met none.
+
+   SEATS FOLLOW THE SAME THEORY AS THE REST OF THE LEXICON. Profanity in the
+   context of distress is acute frustration, which is Anger at the solar
+   plexus. "Shitty" and "bitch" tilt toward shame and sit with the shame
+   family lexicon.js already built at sacral and solar. Abstract distress
+   phrases go where their emotional content lands: overwhelm and effortful
+   struggle at solar, emotional collapse at heart, fear at root.
+   ============================================================ */
+var LEXPROF={
+ /* PROFANITY */
+ 'fuck':['solar',20,'Anger'],
+ 'fucked':['solar',22,'Anger'],
+ 'fucked up':['solar',24,'Anger'],
+ 'shit':['solar',18],
+ 'shitty':['solar',20,'Shame'],
+ 'damn':['solar',16],
+ 'crap':['solar',14],
+ 'bullshit':['solar',22,'Anger'],
+ 'bastard':['solar',20,'Anger'],
+ 'bitch':['sacral',18,'Shame'],
+ 'asshole':['solar',20,'Anger'],
+ /* ABSTRACT DISTRESS: general bad */
+ 'terrible':['solar',20],
+ 'awful':['solar',18],
+ 'horrible':['heart',20],
+ 'nightmare':['root',24],
+ /* ABSTRACT DISTRESS: overwhelm and effortful struggle */
+ 'unbearable':['solar',26,'Apathy'],
+ 'struggling':['solar',20,'Apathy'],
+ 'at my breaking point':['solar',26,'Apathy'],
+ 'end of my rope':['solar',26,'Apathy'],
+ 'at my wits end':['solar',22,'Apathy'],
+ 'wits end':['solar',22,'Apathy'],
+ 'cant take it':['solar',24,'Apathy'],
+ 'cannot take it':['solar',24,'Apathy'],
+ 'can not take it':['solar',24,'Apathy'],
+ 'cant take this':['solar',24,'Apathy'],
+ 'cannot take this':['solar',24,'Apathy'],
+ 'cant do this anymore':['solar',24,'Apathy'],
+ 'cannot do this anymore':['solar',24,'Apathy'],
+ 'had enough':['solar',18],
+ 'have had enough':['solar',20],
+ 'over it':['solar',16],
+ 'done with this':['solar',16],
+ /* ABSTRACT DISTRESS: emotional collapse */
+ 'breaking down':['heart',22],
+ 'broken down':['heart',22],
+ 'losing it':['solar',24,'Anger'],
+ 'losing my mind':['eye',24],
+ 'going crazy':['solar',22],
+ 'messed up':['solar',20,'Anger'],
+ /* ABSTRACT DISTRESS: bad day phrases */
+ 'bad day':['solar',14],
+ 'rough day':['solar',16],
+ 'hard day':['solar',16],
+ 'tough day':['solar',16],
+ 'awful day':['solar',20],
+ 'horrible day':['solar',20],
+ 'terrible day':['solar',22],
+ 'shitty day':['solar',22],
+ 'worst day':['solar',24],
+ 'worst day ever':['solar',26],
+ 'worst day of my life':['solar',28],
+ 'fucked up day':['solar',24,'Anger']};
+function lexProf(){
+ var out={added:0,already:0,refused:[]};
+ Object.keys(LEXPROF).forEach(function(k){
+  var e=LEXPROF[k];
+  var a=lexAdd(k,e[0],e[1],e[2]!=null?e[2]:null,
+   {src:'authored',from:'LEXPROF profanity and abstract distress',
+    rule:'recall over precision, oversensitive by design',cite:'owner'});
+  if(a.ok&&!a.already)out.added++;
+  else if(a.ok&&a.already)out.already++;
+  else out.refused.push(k+': '+(a.why||'unknown'));});
+ return out;}
+var LEXPROFRUN=lexProf();
+
+/* ============================================================
    THE LEXICON VERSION, 19.B6. Every story entry is stamped with the
    lexicon that read it, so reading it again later is reproducible, or at
    least knowably not.
@@ -1049,7 +1388,9 @@ var LEXCOMPRUN=lexComposite();
 
    WHAT IT DOES NOT COVER, said so nobody has to discover it: a change to
    scanStory's or parseStory's own rules with no change to a table moves no
-   table, so it does not move this. The node table W is not the lexicon and
+   table, so it does not move this. S1 and S2 of the 9 October sniffer audit
+   are such changes: an entry committed before them reads again with its
+   denied and someone else's words left out, under the same stamp. The node table W is not the lexicon and
    is not in it either. Same version means the same words land the same
    way; it does not promise the same addresses.
 
@@ -1097,7 +1438,15 @@ var LEX_VERSION=lexVersion();
    This is the single biggest known weakness of the law table and it is handled
    here rather than left. It is still not subject handling: "she lied to me"
    fires Truth on the writer, and that is guard 2's problem, named in
-   DESIGN-sniffer.md and not solved by this pass. */
+   DESIGN-sniffer.md and not solved by this pass.
+
+   STILL OPEN AFTER S2, AND WHY IT WAS NOT CLOSED WITH THE SAME READER. The
+   story path holds someone else's words since S2 (sniffWho, above scanStory).
+   This path matches on lawNorm's own copy, which puts a '|' at every sentence
+   end, so its offsets are not normMap's and wordsOf cannot be laid over them
+   without a second offset map. Building that map is a new reader of the text,
+   which is the risk the review said not to take for alpha. The gap is named in
+   TDD-sniffer.md and is held there, not here. */
 var LAW_NEG=['not','no','never','nobody','none','cannot','cant','did',
  'didnt','dont','wont','wasnt','isnt','havent','hasnt','couldnt','wouldnt','refuse','refused'];
 var LAW_NEG_W=3;
@@ -1190,6 +1539,20 @@ function sniffAxes(p){
    shadow[f]+=each;
    (cited[f]=cited[f]||[]).push('"'+h.t+'" is the composite Anger and Apathy, split');});});
  p.hits.forEach(function(h){if(h.band==='coherent')coh+=Math.abs(h.amt||0);});
+ /* A DENIED WORD IS EVIDENCE OF NOTHING, AND IS STILL CITED, S1. p.hits are
+    only what counts, so no denied word reaches a shadow above. An axis the
+    text named and said no to is not "nothing reached it": it was read and
+    set aside, and its because says so with the person's own words. */
+ var said={}, theirs={};
+ (p.denied||[]).forEach(function(h){
+  var f=h.fet||(h.charge?CHG2FET[h.charge]:null); if(!f||shadow[f]===undefined)return;
+  var q='"'+(h.negw?h.negw+' ':'')+h.t+'"', l=said[f]=said[f]||[];
+  if(l.indexOf(q)<0)l.push(q);});
+ /* and the same for a word about someone else, S2: read, held, cited */
+ (p.others||[]).forEach(function(h){
+  var f=h.fet||(h.charge?CHG2FET[h.charge]:null); if(!f||shadow[f]===undefined)return;
+  var q='"'+h.t+'" said of '+(h.who||'someone else'), l=theirs[f]=theirs[f]||[];
+  if(l.indexOf(q)<0)l.push(q);});
  var out=[];
  CHARGES.forEach(function(c){
   var s=Math.round(Math.min(10,shadow[c])*10)/10;
@@ -1204,6 +1567,8 @@ function sniffAxes(p){
    address:axisAddr(p.imprints,c),
    region:SPEC_POLE[c]?SPEC_POLE[c].addr:null,
    because: s>0?(cited[c]||[]).slice(0,3)
+    :said[c]?['the text said no to it, '+said[c].slice(0,3).join(' and ')+', so nothing is counted']
+    :theirs[c]?['the text gives it to someone else, '+theirs[c].slice(0,3).join(' and ')+', so nothing is counted on the writer']
     :['nothing in the text reached this axis'],
    coherentBecause: k>0
     ?['the text carries '+k+' of coherent language, not apportioned by axis']
@@ -1480,7 +1845,12 @@ function sniffStory(text){
  var axes=sniffAxes(p);
  return {
   axes:      axes,
-  saboteurs: sniffSaboteurs(axes).slice(0,SAB_SHOW),
+  /* EVERY POSITIVE CANDIDATE, S3 of the 9 October sniffer audit. This was
+     sliced to SAB_SHOW here, so the domain layer decided what a screen shows
+     and a seventh candidate was not in the output for anything to read.
+     SAB_SHOW is what a renderer slices to; no screen renders this list yet,
+     the tutorial reads only offer. */
+  saboteurs: sniffSaboteurs(axes),
   laws:      sniffLaws(text),
   flow:      sniffFlow(text),
   gates:     sniffGates(text),

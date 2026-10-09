@@ -65,8 +65,14 @@ var OB_AUTO=false;
    record carries their positions on every entry onboarding commits (ob.pick,
    ob.feel, ob.place), so the profile boundary has to know how long each list
    is, and the boundary is engine and may not read a table that lives here. */
-/* nsteps is 8: arrive, ask, settle, feel, body, story, mirror, bridge. */
-var OB_NSTEPS=8;
+/* nsteps is 8: arrive, ask, settle, feel, body, story, mirror, bridge. It is
+   read off the journey's own stations (JOURNEY_WALK, engine/data/onboarding.js),
+   the eight before the hand off, so the rail and the record a reload resumes
+   from can never count the sheet differently. */
+var OB_NSTEPS=JOURNEY_WALK.indexOf('release');
+/* THE END CARD, F13: one station past the sheet's eight, after the first
+   release has landed. It is not a ninth dot on the rail; the rail reads done. */
+var OB_END=JOURNEY_WALK.indexOf('end');
 var OB={open:false, step:0, replay:false,
  pick:null, feel:null, place:null,
  text:'', commit:null, corr:'', fixes:[],
@@ -75,7 +81,12 @@ var OB={open:false, step:0, replay:false,
  read:null, fixReads:[], ans:{}, more:{},
  /* the first release's plan, read off the yes rows above (F5). Derived on
     the bridge and never stored: the record keeps ob.yes, not the plan. */
- plan:null};
+ plan:null,
+ /* F13. rec: this open writes the journey record, which is true on a first run
+    and never on a replay from Settings. door: which door the first release
+    went through, which decides what its plan is read from. made: what the
+    first release made, read off the claim packet for the end card. */
+ rec:false, door:'onboarding', made:null, draftT:null, failSaid:false};
 
 /* ============================================================
    THE SKIN, ROUND QG. "Redesign this in our field compass or body style.
@@ -418,6 +429,9 @@ function obLitNow(){
   OB.fixReads.forEach(function(f){f.groups.forEach(function(g){if(lit.indexOf(g.seat)<0)lit.push(g.seat);});});}
  if(s===7&&OB.plan&&OB.plan.ok)
   OB.plan.addrs.forEach(function(i){var b=BY[i]&&BY[i].b; if(b&&lit.indexOf(b)<0)lit.push(b);});
+ /* the end card lights the seats the release actually opened, F13 */
+ if(s===OB_END&&OB.made&&OB.made.ok)
+  OB.made.addrs.forEach(function(i){var b=BY[i]&&BY[i].b; if(b&&lit.indexOf(b)<0)lit.push(b);});
  if(pick&&lit.indexOf(pick)<0)lit.push(pick);
  /* THE MIRROR KEEPS THE TAP, round QH. Its own copy says "You tapped your
     chest, at your Heart seat. Your words put weight at other seats ... Both
@@ -596,6 +610,10 @@ function obOpen(replay){
  OB.pick=null; OB.feel=null; OB.place=null;
  OB.text=''; OB.commit=null; OB.corr=''; OB.fixes=[];
  OB.read=null; OB.fixReads=[]; OB.ans={}; OB.more={}; OB.plan=null;
+ OB.door='onboarding'; OB.made=null; OB.failSaid=false;
+ if(OB.draftT){ clearTimeout(OB.draftT); OB.draftT=null; }
+ /* F13: a first run resumes where its walk stands, or starts its record */
+ obBegin(!!replay);
  OB.shown=-1;
  if(OB.leaveT){ clearTimeout(OB.leaveT); OB.leaveT=null; }
  h.classList.remove('ob-leaving');
@@ -624,21 +642,39 @@ function obPushOut(h){
   if(r)r.animate([{opacity:getComputedStyle(r).opacity},{opacity:0,scale:String((parseFloat(getComputedStyle(r).scale)||1)*1.12)}],
    {duration:420,easing:'cubic-bezier(.4,0,1,1)',fill:'forwards'});
  }catch(e){}}
-function obClose(){
+/* how is why the sheet is going: 'release' is the hand off to the first
+   release, which is not the end of the first run, so the run is not marked
+   finished and the walk stays where the hand off put it; 'done' is the bridge's
+   Not now or Go in; 'end' is the end card's Go in; anything else is a leave
+   (Not now on the stage, Escape, Open Avatar), which ends the first run the way
+   it always has. */
+function obClose(how){
  var h=document.getElementById('ob'); if(!h)return;
+ var station=JOURNEY_WALK[OB.step]||null, keep=(how==='release');
  OB.open=false; h.classList.add('ob-leaving');
  document.body.classList.remove('ob-on');
+ if(OB.draftT){ clearTimeout(OB.draftT); OB.draftT=null; }
  obPushOut(h);
  /* LEFT BEFORE COMMIT. Nothing was written, and the words are not lost:
     they are still the Story tab's pending text, ST_TEXT, where the Commit
     button there can keep them. Said once, so a person who pressed Escape on
     the mirror is not left to assume the story was saved. */
- var left=OB.read&&!OB.commit&&OB.text&&typeof ST_TEXT==='string'&&ST_TEXT===OB.text;
+ var left=!keep&&OB.read&&!OB.commit&&OB.text&&typeof ST_TEXT==='string'&&ST_TEXT===OB.text;
  OB.leaveT=setTimeout(function(){ OB.leaveT=null; if(OB.open)return;
   h.style.display='none'; h.classList.remove('ob-leaving','obx','obx-lit'); h.innerHTML=''; },OB_LEAVE_MS);
- /* EVERY WRITE THAT CAN FAIL REPORTS, unchanged lesson. */
- try{
+ /* EVERY WRITE THAT CAN FAIL REPORTS, unchanged lesson. The hand off saved
+    its own walk before it got here and reports its own failure. */
+ if(!keep)try{
   if(CURP){ if(!CURP.ui||typeof CURP.ui!=='object')CURP.ui={}; CURP.ui.onboarded=true;
+   /* THE FIRST RUN ENDS HERE, F13. A draft nobody committed does not outlive
+      a leave: the words are the Story tab's pending text for this visit, as
+      the line below says, and are not kept on the record. The log says where
+      the person went in from. */
+   if(OB.rec){
+    var w=CURP.journey&&CURP.journey.walk;
+    if(w&&(w.text||w.fixes.length))journeyWalk(CURP,w.step,Object.assign({},w,{text:null,fixes:[]}));
+    if(how==='done'||station==='end')obJy('tutorial_completed');
+    obJy('software_entered',station);}
    if(!pSave()&&typeof status==='function')
     status('This browser would not save. The first run will open again.','fail'); }
  }catch(e){
@@ -646,6 +682,147 @@ function obClose(){
    status('This browser would not save. The first run will open again.','fail'); }
  if(typeof render==='function')render();
  if(left&&typeof status==='function')status('Nothing committed. Your words wait in the Story tab.');}
+
+/* ============================================================
+   THE JOURNEY RECORD, THE HOST'S HALF. F13. engine/journey.js decides and
+   validates; this says what the sheet did, as it does it, and puts a person
+   back where they were after a reload.
+
+   A FIRST RUN ONLY. A replay from Settings is somebody walking the sheet
+   again, and it writes no journey and resumes nothing, exactly as before. A
+   record that is not a first run and has no walk (a person who was here before
+   the walk existed) is not given one either.
+
+   WHAT IS WRITTEN, each where it happens: the start, the starting point and
+   the gift it issues, the story and its reading, a correction, the answers at
+   Commit, the hand off to the release, the release landing and what was said
+   about it, and the end. The walk is written on every card the sheet draws,
+   so the record always says where the person stands. No word of the story is
+   in the log; the walk holds the draft only until it is committed.
+   ============================================================ */
+function obBegin(replay){
+ OB.rec=false;
+ if(replay||typeof journeyRead!=='function'||typeof CURP==='undefined'||!CURP)return;
+ if(typeof S!=='undefined'&&S.who!==0)return;
+ var jr=journeyRead(CURP);
+ if(!jr.first&&!jr.at)return;
+ OB.rec=true;
+ if(jr.at){ obResume(jr); return; }
+ obJy('tutorial_started',null,{door:'onboarding'});}
+/* ONE LOG LINE. A refusal is a write that failed, so it is said, once a sheet,
+   and the reason goes to the console for whoever has to find the writer. */
+function obJy(type,ref,d){
+ if(!OB.rec||typeof journeyLog!=='function'||!CURP)return false;
+ var r=journeyLog(CURP,type,ref===undefined?null:ref,d||null);
+ if(!r.ok)obJyFail(r.why);
+ return r.ok;}
+function obJyFail(why){
+ try{ console.warn('first run record refused: '+why); }catch(e){}
+ if(!OB.failSaid&&typeof status==='function'){ OB.failSaid=true;
+  status('Part of this first run was not written to your record.','fail'); }}
+function obSave(){
+ if(pSave())return true;
+ if(!OB.failSaid&&typeof status==='function'){ OB.failSaid=true;
+  status('This browser would not save. If the page reloads, the first run starts over.','fail'); }
+ return false;}
+/* WHAT THE WALK HOLDS AT THE STEP IN HAND. The three taps always. The words
+   typed and not yet committed, until Commit. The mirror's answers and the
+   corrections on the mirror. The committed entry from Commit on, and on the
+   end card the hand off's base, so the card can still be read. */
+function obWalkData(){
+ var w={door:OB.door, pick:OB.pick, feel:OB.feel, place:OB.place}, s=OB.step;
+ var was=(CURP&&CURP.journey&&CURP.journey.walk)||null;
+ if(s<=6&&!(OB.commit&&OB.commit.ok)&&OB.text)w.text=OB.text;
+ if(s===6){ w.ans=Object.assign({},OB.ans); w.fixes=OB.fixes.slice(); }
+ if(s>=7&&OB.commit&&OB.commit.ok&&OB.commit.t)w.t=OB.commit.t;
+ if(s===OB_END&&was){ w.t=was.t; w.base=was.base; w.door=was.door; }
+ return w;}
+function obWalkSave(){
+ if(!OB.rec||!CURP||typeof journeyWalk!=='function')return;
+ if(typeof S!=='undefined'&&S.who!==0)return;
+ var name=JOURNEY_WALK[OB.step]; if(!name)return;
+ var r=journeyWalk(CURP,name,obWalkData());
+ if(!r.ok){ obJyFail(r.why); return; }
+ obSave();}
+/* THE STORY'S WORDS AS THEY ARE TYPED, kept on the walk half a second after
+   the last key, so a reload never costs a person the sentence they were in. */
+function obDraft(v){
+ OB.text=v;
+ if(!OB.rec)return;
+ if(OB.draftT)clearTimeout(OB.draftT);
+ OB.draftT=setTimeout(function(){ OB.draftT=null; if(OB.open&&OB.step===5)obWalkSave(); },500);}
+/* A CORRECTION, READ, in the order the card shows it, so a reload rebuilds
+   exactly the rows the person was answering. obAdjust reads through this. */
+function obFixRead(v){
+ var p=null; try{ p=parseStory(v); }catch(e){}
+ var seen={}; obAllRows().forEach(function(r){seen[r.n.i]=1;});
+ var groups=obReadOf(p,'f'+OB.fixReads.length,seen);
+ OB.fixReads.push({t:v, groups:groups, any:!!(p&&p.imprints&&p.imprints.length)});}
+/* THE COMMITTED ENTRY, BACK ON THE CARD. Read off the entry the mirror wrote:
+   its words, read again by the same parser, its corrections, and its yes and
+   no, so the card before the release plans what it planned before the reload. */
+function obFromEntry(t){
+ var ents=(CURP&&CURP.story&&Array.isArray(CURP.story.entries))?CURP.story.entries:[], e=null;
+ ents.forEach(function(x){ if(t&&x&&x.t===t)e=x; });
+ if(!e){ OB.commit={ok:false, why:'skip'}; return; }
+ var ob=e.ob||{};
+ OB.text=String(e.text||'');
+ var p=null; try{ p=parseStory(OB.text); }catch(x){}
+ OB.parsed=p; OB.read=obReadOf(p,'s',{});
+ OB.fixes=[]; OB.fixReads=[];
+ (Array.isArray(ob.fixes)?ob.fixes:[]).forEach(function(v){ OB.fixes.push(v); obFixRead(v); });
+ OB.ans={};
+ (ob.yes||[]).forEach(function(i){OB.ans[i]='yes';}); (ob.no||[]).forEach(function(i){OB.ans[i]='no';});
+ OB.commit={ok:true, k:+e.imprints||0, t:e.t, text:OB.text};}
+/* PUT THE PERSON BACK WHERE THE WALK STANDS. jr is journeyRead's answer, which
+   has already read a hand off through: landed is the end card, not landed is
+   the card that offers the release again. */
+function obResume(jr){
+ var w=CURP.journey.walk;
+ OB.door=w.door||'onboarding';
+ OB.pick=w.pick; OB.feel=w.feel; OB.place=w.place;
+ var at=jr.at, i=JOURNEY_WALK.indexOf(at);
+ if(at==='mirror'){
+  OB.text=w.text||'';
+  if(OB.text){
+   ST_TEXT=OB.text; ST_PARSED=parseStory(OB.text);
+   OB.read=obReadOf(ST_PARSED,'s',{});
+   w.fixes.forEach(function(v){ OB.fixes.push(v); obFixRead(v); });
+   OB.ans=Object.assign({},w.ans);
+  } else OB.commit={ok:false, why:'skip'};}
+ else if(at==='next')obFromEntry(w.t);
+ else if(at==='end')obEndLog();
+ else if(w.text)OB.text=w.text;
+ OB.step=(i<0)?0:i;}
+/* THE RELEASE LANDED, said once on the log, with what was said about it. */
+function obEndLog(){
+ var m=(typeof journeyMade==='function')?journeyMade(CURP):null;
+ if(!m||!m.ok)return;
+ if(!journeyLogged(CURP,'first_release_completed'))obJy('first_release_completed',null,{lines:m.lines,fresh:m.fresh});
+ if(m.said&&!journeyLogged(CURP,'post_release_observation'))obJy('post_release_observation',null,{said:m.said});}
+/* THE GIFT ON THE CARD BEFORE A RELEASE, ruled a counter of a hundred (round
+   OX, ruling 3). The sentence is the allowance's own (planAllowance's say, the
+   one Billing prints), so the gift has one wording, and it is said only while
+   the gift lasts. The release's own count is the plan's. */
+function obGiftSay(pl){
+ if(!pl||!pl.ok||typeof meterBudget!=='function'||!CURP)return '';
+ var al=meterBudget(CURP).allow; if(!al||!al.inGift)return '';
+ return '<p class="ob-p">You have '+esc(al.say)+'. This release opens '+pl.lines+' of them. '
+  +'<span class="ob-dim">A pattern is one line you have not said before.</span></p>';}
+/* AFTER THE FIRST RELEASE, BACK TO THE FIRST RUN. Done on the release card is
+   how a first release ends in the room, and the end card is what follows it.
+   Read off the record and not off the release card: the walk says a hand off
+   happened and the meter says it landed, so nothing in ui/release.js reports
+   it. Build a ritual and Run another are a person choosing what comes next,
+   so the end card waits for the next visit instead. */
+function obAfterRelease(){
+ if(OB.open||typeof CURP==='undefined'||!CURP||(CURP.ui&&CURP.ui.onboarded))return;
+ if(typeof RUN!=='undefined'&&RUN.open)return;
+ if(typeof journeyRead!=='function'||journeyRead(CURP).at!=='end')return;
+ obOpen(false);}
+addEventListener('click',function(e){
+ var t=e.target&&e.target.closest?e.target.closest('#relclose'):null;
+ if(t)setTimeout(obAfterRelease,0);});
 
 /* ---- the card shell. nsteps carries over tutorial.js's own pattern,
    because a sheet of a fixed four steps is no longer the only one. ---- */
@@ -689,7 +866,13 @@ function obCard(eye,title,body,acts){
   +'</div></div></div>';}
 /* THE RAIL. Eight stations, the run so far filled, the step in hand named in
    words beside it, so the rail says how far along without anybody counting. */
-function obRail(h){ obRailAt(h,OB.step,OB_NSTEPS,OB_STEPNM); }
+function obRail(h){
+ if(OB.step<OB_NSTEPS){ obRailAt(h,OB.step,OB_NSTEPS,OB_STEPNM); return; }
+ /* THE END CARD IS PAST THE RAIL, F13: every station walked, none in hand */
+ obRailAt(h,OB_NSTEPS-1,OB_NSTEPS,OB_STEPNM);
+ h.querySelectorAll('.obx-rail .ob-dot').forEach(function(d){ d.classList.remove('on'); d.classList.add('past'); });
+ var rl=h.querySelector('.obx-rail'); if(rl)rl.setAttribute('aria-valuetext','Every step done');
+ var t=h.querySelector('.obx-step'); if(t)t.innerHTML='<span class="obx-stepn">Every step done</span>';}
 /* the rail for any run on this stage: the step, how many, and their names */
 function obRailAt(h,s,n,nm){
  h.querySelectorAll('.obx-rail .ob-dot').forEach(function(d,i){
@@ -906,6 +1089,9 @@ function obRender(){
  else if(s===6){
   out=obMirrorCard();
  }
+ else if(s===OB_END){
+  out=obEndCard();
+ }
  else {
   out=obBridgeCard();
  }
@@ -917,14 +1103,18 @@ function obRender(){
  var ta=document.getElementById('obtext');
  var obMask=function(){var m=document.getElementById('obmask'); if(!m||!ta)return;
   var runs=maskedRuns(ta.value); m.hidden=!runs.length; m.textContent=maskedSay(runs);};
- if(ta){ta.value=OB.text; ta.oninput=function(){
-   var go=document.getElementById('obdone'); if(go)go.disabled=(ta.value.trim().split(/\s+/).filter(Boolean).length<3);
-   obMask();};
-  obMask(); ta.focus({preventScroll:true});}
+ /* Done reads the box as it stands, so words already in it, after Back or a
+    reload, free it at once rather than after the next key */
+ var obGo=function(){var go=document.getElementById('obdone');
+  if(go&&ta)go.disabled=(ta.value.trim().split(/\s+/).filter(Boolean).length<3);};
+ if(ta){ta.value=OB.text; ta.oninput=function(){ obGo(); obMask(); obDraft(ta.value); };
+  obGo(); obMask(); ta.focus({preventScroll:true});}
  else if(moved&&!arrive){ var hd=card&&card.querySelector('.ob-h'); if(hd)hd.focus({preventScroll:true}); }
  var ci=document.getElementById('obcorr');
  if(ci){ci.oninput=function(){OB.corr=ci.value;};}
- var f=card&&card.querySelector('.ob-scroll'); if(f&&moved)f.scrollTop=0;}
+ var f=card&&card.querySelector('.ob-scroll'); if(f&&moved)f.scrollTop=0;
+ /* F13: the record says where the person stands, on every card drawn */
+ obWalkSave();}
 
 /* ============================================================
    THE MIRROR. Built only from what the person gave: the pick, the feel and
@@ -1132,13 +1322,24 @@ function obMirrorCard(){
     +' seat. Your words put weight at other seats, shown below. Both are kept as they are.</p>';
   groups.forEach(function(g){lines+=obGroup(g);});
  }
- else if(OB.text)
+ /* A WORD READ AND NOT COUNTED IS NOT NOTHING, S1 and S2 of the 9 October
+    sniffer audit. "He shouted at me" names a word and sets it aside as about
+    someone else, so "nothing the engine could name" would be false there. The
+    engine's own sentence says what was set aside and why, the line the Story
+    page and the quiz print. */
+ var obAside=function(t){var p=null; try{p=parseStory(t);}catch(e){} return p?asideSay(asideOf(t,p)):'';};
+ var asideMain=OB.text?obAside(OB.text):'';
+ if(!groups.length&&asideMain)
+  lines+='<p class="ob-p ob-dim">'+esc(asideMain)+'</p>';
+ else if(!groups.length&&OB.text)
   lines+='<p class="ob-p ob-dim">Nothing in that one lit anything the engine could name. '
    +'That happens, and it is not a problem with what you wrote.</p>';
  OB.fixReads.forEach(function(f){
   lines+='<p class="ob-p">You added: <b>&ldquo;'+esc(f.t)+'&rdquo;</b></p>';
+  var fa=obAside(f.t);
   if(f.groups.length)f.groups.forEach(function(g){lines+=obGroup(g);});
   else if(f.any)lines+='<p class="ob-p ob-dim">That reads at places already shown above.</p>';
+  else if(fa)lines+='<p class="ob-p ob-dim">'+esc(fa)+'</p>';
   else lines+='<p class="ob-p ob-dim">Nothing in that one lit anything the engine could name.</p>';});
  var body=lines
   +'<div class="ob-acts" style="margin-top:4px"><button type="button" class="btn" data-ob="mirrorno">Correct it</button></div>'
@@ -1160,10 +1361,10 @@ function obAdjust(){
  var ta=document.getElementById('obcorr'); if(!ta)return;
  var v=ta.value.trim(); if(!v)return;
  OB.fixes.push(v);
- var p=null; try{ p=parseStory(v); }catch(e){}
- var seen={}; obAllRows().forEach(function(r){seen[r.n.i]=1;});
- var groups=obReadOf(p,'f'+OB.fixReads.length,seen);
- OB.fixReads.push({t:v, groups:groups, any:!!(p&&p.imprints&&p.imprints.length)});
+ /* the read itself is obFixRead, so a reload rebuilds the same rows (F13) */
+ obFixRead(v);
+ var fr=OB.fixReads[OB.fixReads.length-1];
+ if(OB.rec)obJy('story_adjustment_submitted',null,{found:fr.groups.reduce(function(a,g){return a+g.rows.length;},0)});
  ta.value=''; OB.corr='';
  obRender();}
 
@@ -1302,9 +1503,14 @@ function obPlanMarks(pl){
     +'<span class="ob-plan-v">'+ln+(ln===1?' line':' lines')+'</span></div>';}).join('')
   +'</div>';}
 function obBridgeCard(){
- var c=OB.commit, yes=(c&&c.ok)?obYesSignal():[];
+ /* THE TUTORIAL'S DOOR, back on this card after a reload, F13: its entry has
+    no yes rows, so its plan is read off what the story read, as the tutorial's
+    own Release card reads it. Every other door plans from the yes rows. */
+ var tut=(OB.door==='tutorial');
+ var c=OB.commit, yes=(c&&c.ok&&!tut)?obYesSignal():[];
  /* the plan reads the yes rows, F4's answers, never the raw story read */
- var pl=OB.plan=(c&&c.ok&&c.k&&yes.length)?obMini(yes):null;
+ var pl=OB.plan=tut?((c&&c.ok&&c.k)?obMini(obImprints(OB.parsed)):null)
+  :((c&&c.ok&&c.k&&yes.length)?obMini(yes):null);
  if(pl&&pl.ok){
   var first=(typeof journeyRead==='function')?journeyRead(CURP).first:true;
   return obCard('Next',first?'Next is your first release.':'Next is a release.',
@@ -1314,7 +1520,8 @@ function obBridgeCard(){
       sentence that stood here promised silence and no countdown over a run
       that spoke and counted down (M28). */
    obPlanMarks(pl)
-   +obMiniSay(pl,first,true),
+   +obMiniSay(pl,first,!tut)
+   +obGiftSay(pl),
    '<button type="button" class="btn pri" data-ob="release">Begin the release</button>'
    +'<button type="button" class="btn" data-ob="done">Not now</button>');
  }
@@ -1334,6 +1541,87 @@ function obBridgeCard(){
 /* the bridge's empty body, split by why it is empty: nothing read, or read
    and nothing said yes to. Same title slot, the value carries the state. */
 
+/* ============================================================
+   THE END OF THE FIRST RUN, F13. The TDD, section 33: "The tutorial should
+   end by showing the user what just happened": you said, it noticed, you
+   tested, you worked with it, you observed. This card is that, after the
+   first release has landed, and it is drawn from the claim packet
+   (journeyClaim, engine/journey.js), the one function that decides what is
+   handed over when the record goes to an account. So what a person is shown
+   as theirs is exactly what would cross, and the gate holds the two equal.
+
+   Every figure is read off journeyMade over the packet: the story the mirror
+   committed, how many places it touched and how many the person said yes to,
+   the lines the release opened and at how many places, the answer to What
+   changed in the release card's own words, and the gift's counter, in the
+   allowance's own sentence. Nothing is typed here that the record does not
+   hold. One way on, Go in, because a person who has just finished does not
+   need a choice; the stage's Not now is hidden on this card.
+
+   WHAT THE CARD DOES NOT SAY: anything about where the packet goes. Nothing in
+   this build sends it, and the sentences about what leaves the device belong
+   to the privacy copy, not to this card.
+   ============================================================ */
+function obEndRow(lbl,val,seat){
+ return '<div class="ob-g'+(seat?' ob-g-seat" style="--c:'+seatCol(seat):'')+'"><b>'+esc(lbl)+'</b>'
+  +'<span>'+val+'</span></div>';}
+/* the seats the release opened, each with the new lines it opened there, in
+   the house chip grammar the card before it uses (obPlanMarks), so the before
+   and the after are the same picture. The counts are the record's, per
+   address, so a release ended early is drawn as it ran and not divided evenly. */
+function obMadeMarks(m){
+ var by=[], ix={}, tot=0;
+ m.addrs.forEach(function(i){var b=BY[i]&&BY[i].b, n=(m.per&&m.per[i])||0; if(!b||!n)return;
+  if(ix[b]==null){ix[b]=by.length; by.push({b:b,n:0});}
+  by[ix[b]].n+=n; tot+=n;});
+ if(!by.length)return '';
+ return '<div class="ob-plan">'+by.map(function(x){
+   return '<div class="ob-plan-i">'+obSeatMark(x.b,tot?x.n/tot:null,'ob-mk-p')
+    +'<b class="ob-plan-n">'+esc(x.b)+'</b>'
+    +'<span class="ob-plan-v">'+x.n+(x.n===1?' line':' lines')+'</span></div>';}).join('')
+  +'</div>';}
+function obEndCard(){
+ var pkt=null, m=null;
+ try{ pkt=journeyClaim(JSON.parse(JSON.stringify(CURP))); }catch(e){ pkt=null; }
+ if(pkt&&pkt.ok)m=journeyMade(pkt.claim.body);
+ else{
+  /* a record that does not pass its own boundary makes no packet. Said, and
+     the card is read off the record itself so the person still sees it. The
+     boundary's reason is a path into the record and means nothing to a
+     person, so it goes to the console for whoever has to find the writer. */
+  try{ console.warn('journeyClaim refused: '+((pkt&&pkt.errs&&pkt.errs[0])||'no packet')); }catch(x){}
+  if(typeof status==='function')status('Your record did not pass its own check, so what you made could not be packaged.','fail');
+  m=journeyMade(CURP);}
+ OB.made=m;
+ /* reached only if the end card is drawn for a release the record does not
+    hold, which the read in journeyRead stops; said plainly if it happens */
+ if(!m||!m.ok)return obCard('Kept','Nothing written yet.',
+  '<p class="ob-p">The release is not on your record, so there is nothing to show here.</p>',
+  '<button type="button" class="btn pri" data-ob="endin">Go in</button>');
+ var e=m.entry, rows='', places=function(k){return k+(k===1?' place':' places');};
+ if(e&&e.text)rows+=obEndRow('Wrote','&ldquo;'+esc(obQuote(e.text))+'&rdquo;');
+ if(e&&e.read)rows+=obEndRow('Read','Your story touched '+places(e.read)+' in your body.'
+  +(e.yes?' You said yes to '+e.yes+'.':''));
+ var s0=null; m.addrs.forEach(function(i){if(!s0&&BY[i])s0=BY[i].b;});
+ rows+=obEndRow('Released',m.lines+(m.lines===1?' line':' lines')+' at '+places(m.addrs.length)+'.',s0);
+ if(m.said&&RV_SAY[m.said])rows+=obEndRow('Answered','You said: '+esc(RV_SAY[m.said])+'.');
+ var gift='';
+ if(m.gift&&!m.gift.spent&&typeof planAllowance==='function'){
+  var al=planAllowance(null,m.gift.used);
+  if(al&&al.inGift)gift='<p class="ob-p"><b>Gift.</b> You have '+esc(al.say)+'. '
+   +'<span class="ob-dim">A pattern is one line you have not said before.</span></p>';}
+ /* the seat names on the marks, each unpacked in one sentence (round PO), and
+    only the seats this release opened: a definition of a word the card does
+    not print would be reading the dictionary at the person */
+ var seats=[]; m.addrs.forEach(function(i){var b=BY[i]&&BY[i].b; if(b&&seats.indexOf(b)<0)seats.push(b);});
+ var means=seats.map(obSeatMean).filter(Boolean).join(' ');
+ return obCard('Kept','Here is what you made.',
+  '<div class="ob-grid">'+rows+'</div>'
+  +obMadeMarks(m)
+  +(means?'<p class="ob-p ob-dim">'+esc(means)+'</p>':'')
+  +gift,
+  '<button type="button" class="btn pri" data-ob="endin">Go in</button>');}
+
 /* ---- one listener for the whole sheet ---- */
 addEventListener('click',function(e){
  if(!OB.open)return;
@@ -1343,6 +1631,10 @@ addEventListener('click',function(e){
   OB.pick=+pk.getAttribute('data-obpick');
   var ground=OB_STARTS[OB.pick];
   if(ground&&typeof authFunnelCheckpoint==='function')authFunnelCheckpoint({selectedGroundId:ground.k});
+  /* F13: the pick is on the log by its key, and it issues the gift, once
+     (TDD section 10, "immediately after selecting the starting point") */
+  if(ground&&OB.rec){ obJy('ground_selected',ground.k);
+   var gi=journeyGiftIssue(CURP,'app'); if(!gi.ok)obJyFail(gi.why); }
   OB.step=2; obRender(); return;
  }
  var fe=t.closest?t.closest('[data-obfeel]'):null;
@@ -1380,7 +1672,12 @@ addEventListener('click',function(e){
   /* the plan's addresses, out of the yes rows only: never every address
      the story read (F5), and never one the person did not say yes to (F4) */
   var pl=OB.plan||obMini(obYesSignal()), ids=(pl&&pl.ok)?pl.addrs:[];
-  obClose();
+  /* F13, THE HAND OFF. The walk records it, with what the meter holds at
+     this moment, which is how the record will know the release landed; the
+     first run is not over, so the sheet steps aside without marking it
+     finished, and a reload before the release runs comes back to this card. */
+  if(OB.rec&&ids.length)obHandOff(pl,OB.door,(OB.commit&&OB.commit.ok)?OB.commit.t:null);
+  obClose(OB.rec?'release':undefined);
   /* and the entry the mirror committed, so the answer to What changed after
      this release names the story it came from, and mini, because this is the
      run the card just promised and the release screen opens it at the ruled
@@ -1388,10 +1685,24 @@ addEventListener('click',function(e){
   if(ids.length&&typeof relPick==='function')
    relPick(ids,{mini:true,story_t:(OB.commit&&OB.commit.ok&&OB.commit.t)?OB.commit.t:null});
   return;}
+ if(k==='endin'){ obClose('end'); return; }
  if(k==='skip'||k==='done'){
   if(k==='done'&&typeof authFunnelCheckpoint==='function')authFunnelCheckpoint({tutorialCompleted:true});
-  obClose(); return;
+  obClose(k); return;
  }});
+/* THE HAND OFF, WRITTEN, F13, for either door. The gift is issued here if no
+   pick issued it, the log says the first release started, and the walk holds
+   the meter's two counts at this moment. One save, and a failed one is said. */
+function obHandOff(pl,door,t){
+ if(!CURP||typeof journeyWalk!=='function')return false;
+ var m=CURP.meter||{}, w=(CURP.journey&&CURP.journey.walk)||{};
+ var gi=journeyGiftIssue(CURP,'app'); if(!gi.ok)obJyFail(gi.why);
+ var lg=journeyLog(CURP,'first_release_started',null,{lines:pl.lines,places:pl.addrs.length});
+ if(!lg.ok)obJyFail(lg.why);
+ var r=journeyWalk(CURP,'release',{door:door, pick:w.pick, feel:w.feel, place:w.place, t:t,
+  base:{lines:+m.lines||0, unique:Array.isArray(m.unique)?m.unique.length:0}});
+ if(!r.ok){ obJyFail(r.why); return false; }
+ return obSave();}
 /* THE PREVIEW, round QH. On the Body step a chip under the pointer, or under
    keyboard focus, lights its own seat on the figure before it is pressed: the
    secondary action under the main one, so the word and the place are seen
@@ -1434,6 +1745,10 @@ function obStoryDone(){
  ST_TEXT=v; ST_PARSED=v.trim()?parseStory(v):null;
  OB.commit=null; OB.read=obReadOf(ST_PARSED,'s',{});
  OB.fixReads=[]; OB.fixes=[]; OB.ans={}; OB.more={}; OB.plan=null;
+ /* F13: that a story was given and how much it read, never its words. The
+    reading's count is parseStory's imprints, read the way the mirror reads it. */
+ if(OB.rec){ obJy('story_submitted',null,{words:v.trim().split(/\s+/).filter(Boolean).length});
+  obJy('story_signal_generated',null,{found:(ST_PARSED&&ST_PARSED.imprints)?ST_PARSED.imprints.length:0}); }
  OB.step=6; obRender();}
 
 /* ---- the one commit this sheet makes, through the real path: stCommit,
@@ -1457,6 +1772,10 @@ function obCommit(){
    ent.ob={pick:OB.pick,feel:OB.feel,place:OB.place,
     yes:obYes().map(function(n){return n.i;}),no:obNo().map(function(n){return n.i;})};
    if(OB.fixes.length)ent.ob.fixes=OB.fixes.slice();
+   /* F13: how many places were confirmed and how many refused, by count */
+   if(OB.rec){
+    if(ent.ob.yes.length)obJy('story_signal_confirmed',null,{yes:ent.ob.yes.length});
+    if(ent.ob.no.length)obJy('story_signal_rejected',null,{no:ent.ob.no.length});}
    if(!pSave()&&typeof status==='function')
     status('This browser would not save. The story is in the field and its answers are not.','fail');}
  }catch(e){}
