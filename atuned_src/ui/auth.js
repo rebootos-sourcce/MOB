@@ -38,6 +38,7 @@
 var AUTH_API='https://atuned-api.lance-o-powell.workers.dev';
 var AUTH_KEY='source.session';
 var FUNNEL_KEY='funnel.session';
+var VOICE_DEV_KEY='source.voicedev';
 /* HOW LONG A REQUEST MAY TAKE BEFORE IT IS A FAILURE. A sign in runs a
    deliberately slow hash on the server, so this is generous, and it is still
    a ceiling: a request with none sits on "Checking with the server" for as
@@ -704,12 +705,21 @@ function authPlanCheckout(tier){
   if(typeof url!=='string'||!url)
    return {ok:false, say:'The server answered without a checkout page. Nothing has changed.'};
   return {ok:true, url:url};});}
-/* THE STUDIO VOICE, one line of audio from the reboot-os Worker's
+/* THE VOICE, one line of audio from the reboot-os Worker's
    POST /v1/voice/synthesize, which asks ElevenLabs with a key that lives only
    on the server. D17 in QUESTIONS.md is why it goes this way round: a key in
    this file is a key every person who opens the file can read and spend, so
-   this side holds nothing but the person's own session, exactly as checkout
-   does.
+   this side holds nothing but a random code of its own, plus the person's
+   session when there is one.
+
+   IT NEEDS NO SIGN IN. The owner, 9 October: "the 11 Labs voice should be
+   automatic. I don't want it to have to sign in or anything special." So a
+   signed out person sends a device code, a random string this browser makes
+   once and keeps, and the server holds each device, each network address and
+   the whole server to a daily ceiling. A signed in person sends the session
+   instead and is held to the account's. The code is in the body, not a header,
+   so the preflight the server already answers is the only one there is. It is
+   not a name, an email or a record, and the server keeps only its hash.
 
    style is the server's word for which kind of line it is, 'list' for the
    release and reframe statements and 'frame' for the words around them. The
@@ -719,12 +729,21 @@ function authPlanCheckout(tier){
    Resolves {ok, blob} or {ok:false, status}. The status is handed back rather
    than a sentence, because the server's own words for a 503 name a server
    setting, and that is not a sentence for the person; ui/release.js says what
-   each status means for the run. Signed out answers locally with status 401,
-   the server's own answer to no session, without a request. */
+   each status means for the run. */
+var VOICE_DEV='';
+function authVoiceDevice(){
+ if(VOICE_DEV)return VOICE_DEV;
+ var ok=function(v){ return typeof v==='string'&&/^[A-Za-z0-9_-]{16,64}$/.test(v); };
+ try{ if(typeof STORE_BOUND!=='undefined'&&STORE_BOUND){
+  var o=STORE.get(VOICE_DEV_KEY); if(ok(o)){ VOICE_DEV=o; return o; } } }catch(e){}
+ var v=funnelUuid(); if(!ok(v))v='dev_'+Date.now().toString(36)+Math.random().toString(36).slice(2,12);
+ VOICE_DEV=v;
+ try{ if(typeof STORE_BOUND!=='undefined'&&STORE_BOUND)STORE.set(VOICE_DEV_KEY,v); }catch(e){}
+ return v;}
 function authVoice(text,style){
- var s=authSession();
- if(!s)return Promise.resolve({ok:false, status:401});
- return authCall('POST','/v1/voice/synthesize',{text:text, style:style||'list'},s.token,true).then(function(r){
+ var s=authSession(), b={text:text, style:style||'list'};
+ if(!s)b.device=authVoiceDevice();
+ return authCall('POST','/v1/voice/synthesize',b,s?s.token:null,true).then(function(r){
   if(r.ok&&r.body&&typeof r.body.size==='number'&&r.body.size>0)return {ok:true, blob:r.body};
   return {ok:false, status:r.ok?502:r.status, late:!!r.late};});}
 /* MANAGE BILLING, the second half of the same seam. The server asks Stripe for a Customer

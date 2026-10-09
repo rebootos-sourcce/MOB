@@ -178,6 +178,7 @@ async function appGate(ok){
  await new Promise(r=>srv.listen(0,'127.0.0.1',r));
  const BASE='http://127.0.0.1:'+srv.address().port;
  const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+require('./net.js').guardBrowser(browser);
  const booted=async p=>{try{await p.waitForFunction(()=>document.body.classList.contains('booted'),null,{timeout:12000});}catch(e){}
   try{ await p.waitForTimeout(600);
    await p.evaluate(()=>{ if(typeof OB!=='undefined'&&OB.open&&typeof obClose==='function')obClose(); });

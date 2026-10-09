@@ -54,6 +54,7 @@ const booted=async p=>{
 
 (async()=>{
  const browser=await chromium.launch({executablePath:CHROME});
+require('./net.js').guardBrowser(browser);
  const ctx=await browser.newContext({viewport:{width:1600,height:1000}});
  const pg=await ctx.newPage();
  await pg.addInitScript(()=>{window.SIGHT_PLAN=null;});

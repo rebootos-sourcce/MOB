@@ -483,7 +483,6 @@ async function soundGate(browser,FILE,ok,booted){
  await pg.waitForTimeout(1600);
  const walk=async bite=>pg.evaluate(async bite=>{
   REL_WORD_S=0.0004; REL_GAP_S=0.001; REL_HEAD_S=0; REL_FRAME_S=0;
-  if(window.speechSynthesis)speechSynthesis.speak=function(u){ setTimeout(function(){ if(u.onend)u.onend({}); },1); };
   loadP(0); CHARGES.forEach(c=>{S.charge[c]=7;});
   CURP.ui.sfxoff=false; CURP.ui.quiet=false; CURP.ui.voice=false; CURP.ui.tone=false;
   var keepRoom=window.sfxRoomHeld;
@@ -1195,7 +1194,6 @@ async function atmGate(browser,FILE,ok,booted){
  await fresh();
  const runGo=await pg.evaluate(()=>{
   REL_WORD_S=0.0004; REL_GAP_S=0.001; REL_HEAD_S=0; REL_FRAME_S=0;
-  if(window.speechSynthesis)speechSynthesis.speak=function(u){ setTimeout(function(){ if(u.onend)u.onend({}); },1); };
   loadP(0); CHARGES.forEach(c=>{S.charge[c]=7;});
   CURP.ui.sfxoff=false; CURP.ui.quiet=false; CURP.ui.voice=false; CURP.ui.tone=false;
   relPick(compute().carrying.slice(0,1).map(n=>n.i));
@@ -1272,6 +1270,7 @@ if(require.main===module){
   try{ await p.waitForFunction(()=>typeof enterOver!=='function'||enterOver(),null,{timeout:4000}); }catch(e){}};
  (async()=>{
   const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+require('./net.js').guardBrowser(browser);
   console.log('\n=== the fittings: the interface\'s own sounds ===');
   try{ await soundGate(browser,FILE,ok,booted); }
   catch(e){ FAIL++; console.log('  FAIL the gate threw: '+e.stack); }

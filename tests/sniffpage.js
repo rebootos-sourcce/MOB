@@ -82,6 +82,7 @@ const story = p => p.evaluate(() => {
 
 (async () => {
   const browser = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+require('./net.js').guardBrowser(browser);
 
   console.log('\n=== S1 · the Story page draws, counts and lists what the engine counted ===');
   {

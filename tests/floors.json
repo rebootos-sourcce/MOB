@@ -32,7 +32,9 @@
     "recordlink": 60,
     "valuefelt": 7,
     "claims": 107,
-    "discordfeedback": 59
+    "discordfeedback": 59,
+    "voice": 28,
+    "landing": 15
   },
   "no_count": {
     "monitor": "all surfaces render"

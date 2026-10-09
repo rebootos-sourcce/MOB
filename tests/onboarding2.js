@@ -88,6 +88,7 @@ const REAL_STORY='I felt tight in my chest when my boss yelled at me and I could
 
 (async()=>{
 const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+require('./net.js').guardBrowser(browser);
 
 console.log('=== onboarding reaches a real release, through the real door, on a fresh profile ===');
 {

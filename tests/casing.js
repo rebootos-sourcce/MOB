@@ -131,6 +131,7 @@ if(require.main===module){
    await p.waitForTimeout(120); }catch(e){}};
  (async()=>{
   const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+require('./net.js').guardBrowser(browser);
   console.log('\n=== no all caps anywhere, and a tooltip opens on a capital ===');
   try{ await casingGate(browser,FILE,ok,booted); }
   catch(e){ FAIL++; console.log('  FAIL the gate threw: '+e.stack); }

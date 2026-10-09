@@ -81,6 +81,52 @@ $('allLaw').addEventListener('input',function(e){toYou();
  SINAMES.forEach(function(l){S.law[l]=+e.target.value;});syncLw();saveYou();render();});
 
 /* ---- tabs and depths ---- */
+/* ============================================================
+   WHERE A PERSON WAS, AND THE ONE FIRST LANDING. The owner, 9 October: "when
+   a first time user goes from the funnel to the questions to the app, I want
+   them to start on the summary screen. For the first time after that, it'll
+   just be persistent to wherever they left off. But we want to give them
+   right away information on their summary reading."
+
+   Two device facts, kept in the browser's own store and never in the record,
+   because where somebody was looking is about this screen and not about them:
+   source.tab, the last surface, written by every setTab and read once by the
+   boot; and source.landed, set the first time a person is sent to Summary.
+   The send happens at the two doors a first visitor comes through, a record
+   arriving in a link from the funnel (recordLinkBoot) and the first run
+   closing (obClose), and happens once per device. A person who has landed
+   once opens on wherever they left off, and a device that has never had
+   either fact opens on the Field, as it always did.
+
+   Settings and the practitioner page are never remembered: Settings has no
+   door of its own, and the practitioner page is a switch a person may have
+   turned off since. Analytics and Games are folded surfaces, so what is kept
+   is the tab that carries them (TABREAL). A store that is blocked or throws
+   costs the memory and never the start up. */
+var TAB_KEY='source.tab', TAB_LANDED_KEY='source.landed';
+function tabKnown(k){
+ var all=[].concat(typeof TABDEF!=='undefined'?TABDEF:[], typeof TABEXTRA!=='undefined'?TABEXTRA:[]);
+ return all.some(function(t){ return t&&t.k===k; });}
+function tabKeepable(k){
+ return typeof k==='number'&&k!==TAB.SETTINGS&&k!==TAB.PRACTITIONER&&tabKnown(k);}
+function tabKeep(i){
+ try{
+  if(typeof STORE_BOUND==='undefined'||!STORE_BOUND)return;
+  var k=TABREAL(i); if(tabKeepable(k))STORE.set(TAB_KEY,String(k));
+ }catch(e){}}
+function tabRead(){
+ try{
+  if(typeof STORE_BOUND==='undefined'||!STORE_BOUND)return null;
+  var raw=STORE.get(TAB_KEY); if(raw===null||raw===undefined||raw==='')return null;
+  var k=parseInt(raw,10); return (String(k)===String(raw)&&tabKeepable(k))?k:null;
+ }catch(e){ return null; }}
+function tabLandFirst(){
+ try{
+  if(typeof STORE_BOUND==='undefined'||!STORE_BOUND)return false;
+  if(STORE.get(TAB_LANDED_KEY))return false;
+  STORE.set(TAB_LANDED_KEY,'1');
+ }catch(e){ return false; }
+ setTab(TAB.SUMMARY); return true;}
 function setTab(i){
  /* A FOLDED SURFACE RESOLVES TO ITS PARENT. Analytics and Games came off the
     bar and their hosts moved inside Summary and Knowledge, so an integer that
@@ -116,6 +162,7 @@ function setTab(i){
     ui/practitioner.js pracLeave empties both. */
  if(S.tab===TAB.PRACTITIONER&&i!==TAB.PRACTITIONER&&typeof pracLeave==='function')pracLeave();
  S.tab=i; S.pin=null;
+ if(typeof tabKeep==='function')tabKeep(S.tab);
  /* THE HOSTS ARE SHOWN FROM BOTH TABLES. This walked TABDEF alone and
     Settings was shown and hidden by hand below, which held while Settings was
     the only surface with no door. At KT Games came off the bar into TABEXTRA
@@ -1104,6 +1151,9 @@ function recordLinkBoot(){
      drawing fault and not a refused load, and the line still says it loaded */
   try{ recordLanded(); }
   catch(e){ try{ if(window.console)console.error('[atuned] redraw after a linked record',e); }catch(e2){} }
+  /* THE FIRST ARRIVAL FROM THE FUNNEL LANDS ON SUMMARY, once per device, so the
+     first thing a person sees is their own reading. See tabLandFirst. */
+  try{ tabLandFirst(); }catch(e){}
   recordLinkSay('Loaded '+(np.name||'the record')+' from the link. Nothing else was touched.'+still,
    still?'fail':'');
   return np;});}

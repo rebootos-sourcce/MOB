@@ -2808,3 +2808,23 @@ The owner supplied a sniffer design and gap audit (8 October) and asked for a re
 - **The cheaper Mirror default:** one question per run, with a shared run key on its evidence rows so three rows are not read as three confirmations. Per-address answers wait for the owner.
 - **Points exist only as a ruling** (they only rise); nothing is built until accounts. "Sight is not for sale" stays reversed (1 October).
 - **Open and the owner's:** D1 to D7 in `REVIEW-audit-2026-10-09/pass3.md`, each with a default and a cost; the law divisor (E43); Joy, Surprise, Avoider versus Innocent.
+
+## The voice is ElevenLabs and there is no fallback, 9 October (P0)
+
+His words: "fix the 11 Labs voice. The audio is still defaulting to the Claude default voice, and I want that removed so that it, there's no fallback to it. Add that to your P0. It's a blocker." This repeats round NS ("swap out the voice, the Claude voice, with the 11 labs voice"). The "Claude default voice" is the browser's own built in speech, which the release used whenever the studio voice was off (its default), nobody was signed in, or the studio voice failed.
+
+- **The browser voice is deleted, not hidden.** No call into the browser's speech remains anywhere in the app or the funnel pages. `tests/voice.js` scans the source for it and plants a spy where it was; it fails if anything touches it.
+- **One switch, on by default, and the person's.** `Voice` in the release panel. The second switch ("Studio voice", off by default) is retired; `ui.studio` stays in the record only so older records load. The note beside the switch says who speaks and what they are given, before a word is spoken, as the privacy page already promises ("the voice that reads a release ... says what it sends where you use it").
+- **A line is spoken by ElevenLabs or it is not spoken, and the screen says why.** Signed out: the switch says "Sign in to hear it. Until then the run reads on the screen." Server refusing: the status line says the run reads on the screen, the server is asked once and not once per line, and the walker keeps the reading clock. Nothing else ever speaks.
+- **No sign in. Ruled by him the same day: "the 11 Labs voice should be automatic. I don't want it to have to sign in or anything special."** The first cut made the voice need an account, to protect his ElevenLabs bill. It now works for everyone, and the bill is protected another way: the browser makes a random device code once and keeps it; the server holds each device to 20000 characters of new synthesis a day, each network address to 60000 (hashed with the day, so it cannot be followed), and the whole server to 300000 (his ceiling). A signed in person is held to the account's 20000 instead. A line already rendered is served from the cache and costs nothing. All five numbers are plain settings on the Worker he can change without a code change.
+- **Defaults taken, each his to overturn:** (1) his own recorded welcome stays his, unchanged. (2) The three ceilings above. (3) A person with the voice on and no sign in sends each line to ElevenLabs through our server; the switch beside the voice says so before a word is spoken, as the privacy page promises.
+- **What only the owner can do for it to speak:** the ElevenLabs API key and the Voice ID, as two GitHub secrets on the Reboot-OS repository. Steps are in Reboot-OS pull request 13.
+
+## Where a first visitor lands, and where they left off, 9 October
+
+His words: "when a first time user goes from the funnel to the questions to the app, I want them to start on the summary screen. For the first time after that, it'll just be persistent to wherever they left off. But we want to give them right away information on their summary reading."
+
+- **First arrival lands on Summary, once per device.** Two doors send it: the record arriving in a link from the funnel, and the first run closing. Summary shows the reading at once.
+- **Every open after that is where the person left off.** The last surface is kept in the browser's own store, not the record. Settings and the practitioner page are never remembered. A device with no memory still opens on the Field (the 19 September ruling stands for it).
+- **Held by `tests/landing.js`**, which fails on the build from before this change.
+- **Also on 9 October, his ruling: the cosmetic mockup picks are dropped.** The left menu A to D, story layouts E to H, onboarding round 2, the teachers panel, masks by tier, Summary readout and Compass layout B are not being built. The next round starts by cleaning up the interface and menus: removing what is exposed and does nothing that matters. His feedback drives it.

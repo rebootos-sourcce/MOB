@@ -150,6 +150,7 @@ async function refuseCase(browser, file, payload) {
   if (SHOTS) fs.mkdirSync(SHOTS, { recursive: true });
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'reclink-'));
   const browser = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+require('./net.js').guardBrowser(browser);
   const html = fs.readFileSync(SRC, 'utf8');
 
   console.log('\n=== the quiz builds the link ===');

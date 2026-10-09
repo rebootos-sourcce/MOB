@@ -103,6 +103,7 @@ if(require.main===module){
  const ok=(c,m)=>{ if(c){PASS++; console.log('  ok   '+m);} else {FAIL++; console.log('  FAIL '+m);} };
  (async()=>{
   const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+require('./net.js').guardBrowser(browser);
   const ctx=await browser.newContext({viewport:{width:1600,height:1000}});
   const page=await ctx.newPage(); const err=[]; page.on('pageerror',e=>err.push(e.message));
   await page.goto(FILE,{waitUntil:'load'});
