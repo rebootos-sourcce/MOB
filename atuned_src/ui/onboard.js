@@ -1690,7 +1690,15 @@ addEventListener('click',function(e){
   if(ids.length&&typeof relPick==='function')
    relPick(ids,{mini:true,story_t:(OB.commit&&OB.commit.ok&&OB.commit.t)?OB.commit.t:null});
   return;}
- if(k==='endin'){ obClose('end'); return; }
+ /* THE END CARD IS WHERE THE FIRST RUN FINISHES for everybody who ran its
+    release, so the server is told here as well as at the bridge's done
+    below. Only that one sent tutorialCompleted, and the bridge's Not now and
+    Go in are the ways out for somebody who did not run the release, so
+    tests/golden.js found the server reading the first run as never finished
+    for every person who finished it the whole way. */
+ if(k==='endin'){
+  if(typeof authFunnelCheckpoint==='function')authFunnelCheckpoint({tutorialCompleted:true});
+  obClose('end'); return; }
  if(k==='skip'||k==='done'){
   if(k==='done'&&typeof authFunnelCheckpoint==='function')authFunnelCheckpoint({tutorialCompleted:true});
   obClose(k); return;
