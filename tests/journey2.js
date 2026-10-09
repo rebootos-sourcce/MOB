@@ -69,6 +69,14 @@ for(const [W,H] of WIDTHS){
  const tag=W+': ';
  console.log('\n=== the first run, end to end, at '+W+' by '+H+' ===');
  const ctx=await browser.newContext({viewport:{width:W,height:H}});
+ /* A GATE NEVER REACHES THE REAL SERVER. The first visit funnel calls the
+    Worker, and on a runner with a network that call went out for real: from a
+    file page its origin is null, which the Worker refuses by design, so the
+    browser logged a CORS error that is the test's and not the product's, and
+    every run would also have made a real session in the production store.
+    The Worker's host is cut here, and what the page does when its server is
+    unreachable is exactly what the first run is meant to survive. */
+ await ctx.route(/workers\.dev/,r=>r.abort('failed'));
  const page=await ctx.newPage();
  const errs=[], cerrs=[];
  page.on('pageerror',e=>errs.push(e.message));
@@ -300,6 +308,7 @@ console.log('\n=== the tutorial door: the same record, the same resume, the same
 {
  const tag='tutorial: ';
  const ctx=await browser.newContext({viewport:{width:1600,height:1000}});
+ await ctx.route(/workers\.dev/,r=>r.abort('failed'));
  const page=await ctx.newPage();
  const errs=[]; page.on('pageerror',e=>errs.push(e.message));
  const click=async(sel)=>{try{await page.click(sel,{timeout:4000}); await page.waitForTimeout(90); return true;}
