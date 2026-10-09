@@ -260,8 +260,8 @@ async function feedbackGate(browser,FILE,ok,booted){
    'the sheet offers the three kinds with comment pressed, at the 44px floor'+at+', '+J(a.kinds)+' '+a.kindH);
   ok(a.switched==='Ask a question'&&a.kept==='the release timer reads wrong on the phone'&&a.back==='Leave a comment',
    'switching the kind keeps what was typed'+at+', '+J({switched:a.switched,kept:a.kept}));
-  ok(a.warn&&/Discord/.test(a.disclose)&&/Nothing about who you are/.test(a.disclose),
-   'the sheet says where it goes and that nothing about the person goes with it, before anybody types'+at);
+  ok(a.warn&&/Discord/.test(a.disclose)&&/Your name and email are not attached/.test(a.disclose)&&/the day, the app version/.test(a.disclose),
+   'the sheet says where it goes, what travels with it, and that the name and email do not, before anybody types'+at);
   ok(!a.overflow,'no sideways scroll with the sheet open'+at);
   /* nothing past here can be measured without the sheet, so a build with no
      comment door stops this width on a named failure and not on a stack */

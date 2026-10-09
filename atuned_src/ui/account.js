@@ -136,7 +136,11 @@ function accAccount(){
    +'<button class="btn pri" id="acgo" type="submit">Continue</button></div>'
    +'</form>'
    +accAct('No account yet','acnew',{btn:'Create account'}),
-   'Your email and password go to the account server. Your stories and readings stay on this device.');
+   /* authFunnelAttach sends the first visit's credential on every sign in,
+      which joins the topic picked and the marks to the account, so it is
+      said here, where a person decides to sign in */
+   'Your email and password go to our server, and what your first visit sent joins the account. '
+   +'Your stories and readings stay on this device.');
  /* DEVELOPER OPTIONS, DEACTIVATED IN FULL, ROUND RI, the same ruling that
     removed the login card's own panel (ui/login.js). This panel's second
     home, the owner's own signed in account, is removed with it: devtoolsOn
@@ -247,7 +251,7 @@ function accProfiles(){
       :'<button class="btn" type="button" data-pfo="'+esc(x.id)+'" aria-label="Open '+esc(x.name)+'">Open</button>')
      +'<button class="btn dgr" type="button" data-pfd="'+esc(x.id)+'" aria-label="Delete '+esc(x.name)+'">Delete</button>'
      +'</span></div>';}).join(''),
-   'Held in this browser and nowhere else. Delete cannot be undone and there is '
+   'Held in this browser. Delete cannot be undone and there is '
    +'no copy unless you made one.');
  h+=accGroup('Start a new profile',
    '<form id="acpnewf" class="ac-row ac-edit pf-edit" novalidate>'
@@ -427,7 +431,24 @@ function accPrivacy(){
  var h='<p class="ac-lead">We never sell anybody’s data. Ever.</p>';
  h+=accGroup('What is held here',
    ACC_HELD.map(function(x){return accRow(x[0],x[1]);}).join(''),
-   'Held in this browser and nowhere else.');
+   /* "Held in this browser and nowhere else" was false twice: the plan row is
+      read off the server, and the topic picked on a first visit is sent there.
+      The name half is DECISIONS.md, "The name never leaves". */
+   'Held in this browser. Your stories are not sent to us, and the name you '
+   +'enter never leaves this device.');
+ /* WHAT IS SENT, read off ui/auth.js on 9 October and held by tests/copy.js,
+    which also fails on any key the walk sends that its SENDS table does not
+    name. authFunnelStart sends the code, authFunnelCheckpoint the topic and
+    the three marks (tutorialCompleted, firstReleaseId, verificationId, the
+    last an id and never the answer), authFunnelAttach joins them at sign in.
+    Every other send says so at its own control. */
+ h+=accGroup('What is sent','',
+   'A first visit sends our server a random code made for this browser and the '
+   +'topic you pick under What brought you here. After that it sends a mark when '
+   +'you finish the opening, finish your first release, or answer What changed. '
+   +'What you answered is not sent. A sign in sends your email and password and '
+   +'joins those marks to your account. Feedback, dictation, the voice that reads '
+   +'a release, and payment each say what they send where you use them.');
  h+=accGroup('This device',
    accRow('Snapshots on file',snaps,{num:true})
    +accRow('Storage',STORE_BOUND?'writing':'blocked'),
@@ -444,12 +465,11 @@ function accPrivacy(){
    'Nobody sees this but you. A practitioner can see it only after you say yes. '
    +'Each yes is listed here by name, with what they see and the date you gave '
    +'it, and one press on the row takes it back.');
- h+=accGroup('Improve the Models',
-   accTog('Use my stories to refine the reading','acmodel',
-     !!(CURP&&CURP.ui&&CURP.ui.model)),
-   'Off unless you turn it on. What would be used is the story with nothing '
-   +'that identifies you attached, and the record and the story are never held '
-   +'together. Saying no keeps the product whole.');
+ /* THE MODEL SWITCH IS GONE, WP2a-4. It was drawn, it wrote ui.model, and
+    nothing read ui.model: no story trains any model and research sharing is
+    not offered at launch, so a switch promising either was a control with no
+    effect. The field stays in the blank profile (engine/schema.js) so a saved
+    profile that carries it still loads. */
  /* LOAD IS THE THIRD CONTROL OF THIS SET, AND IT HAD NO DOOR AT ALL.
     The importer was written inside profileSheet in ui/panels.js and nothing in
     the app opens profileSheet: measured in the built product, the token appears
@@ -473,9 +493,14 @@ function accPrivacy(){
  accGroup('Export and delete',
    accAct('Export this record','acexp',{btn:'Copy'})
    +accAct('Delete this record','acdel',{btn:'Delete',danger:true}),
-   'Delete removes this record from this browser now. There is no store yet, '
-   +'so there is nowhere else it could be and nothing else to ask. It cannot '
-   +'be undone and there is no copy unless you made one.');
+   /* "There is no store yet" stopped being true when the server shipped: it
+      holds the sign in and the first visit's code, topic and marks, and this
+      button reaches neither. The record itself is not there, because the sync
+      in ui/auth.js never runs. */
+   'Delete removes this record from this browser now, and it cannot be undone. '
+   +'Our server has no copy of it, so there is no other copy unless you made one. '
+   +'Our server does keep your sign in, if you made one, and what your first '
+   +'visit sent. Delete does not reach those.');
  return h;}
 
 /* ---------- 4.5 billing. almost entirely real, ported not rebuilt ---------- */
@@ -639,8 +664,6 @@ function accWire(){
     because what a person hears is the state and not the write. */
  if(sx)sx.onclick=function(){var want=!sfxIsOn();
   sfxSwitch(want); if(want&&typeof sfx==='function')sfx('kept'); renderAccount();};
- var mo=$('acmodel');
- if(mo)mo.onclick=function(){uiSet('model',!(CURP.ui&&CURP.ui.model)); renderAccount();};
  var pr=$('acprac');
  /* a device setting and not a profile write: see pracOn in ui/practitioner.js */
  if(pr)pr.onclick=function(){pracSwitch(!pracOn()); renderAccount();};
@@ -853,9 +876,11 @@ function applyUiPrefs(){
     old flag is read until the device has been asked. */
  if(typeof pracPaint==='function')pracPaint();}
 /* DELETE IS A REAL CONTROL AND IT SAYS EXACTLY WHAT IT DID. It removes this
-   record from this browser. There is no store, so it does not claim to have
-   deleted anything from anywhere else, because that would be a lie about the
-   one thing a person most needs the truth about. */
+   record from this browser. The server holds no copy of the record, and what
+   it does hold, the sign in and the first visit's marks, this does not touch,
+   so it does not claim to have deleted anything from anywhere else, because
+   that would be a lie about the one thing a person most needs the truth
+   about. */
 /* ONE DELETE, TWO DOORS. This was its own splice, and it had two faults the
    profiles section would have copied: the list was cut before the write was
    known to land, so a refused write reported "Could not write" over a list
@@ -980,9 +1005,13 @@ function obSheet(){
      lands and who can read it there, before anybody types. Whether that channel
      is private to the team or open to the community is the owner's to set, and
      "anyone who can read that channel" is true either way. */
+  /* "Nothing about who you are travels with it" was false: the envelope
+     (obSend, below) carries the day, the build, the screen and obBand's
+     coherence band. It says what does travel, and what does not. */
   +'<p class="sh-p dim">Kept on this device first, then sent to a channel on our '
-  +'Discord server. Anyone who can read that channel can read it. Nothing about '
-  +'who you are travels with it.</p>';
+  +'Discord server. Anyone who can read that channel can read it. It goes with '
+  +'the day, the app version, phone or computer, and whether your coherence reads '
+  +'low, middle or high. Your name and email are not attached.</p>';
  return h;}
 function obWire(){
  document.querySelectorAll('[data-obq]').forEach(function(b){

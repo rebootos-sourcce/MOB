@@ -335,7 +335,10 @@ a.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
      lookup, error reports, the morning note) are not listed. The draft itself
      is not linked: it carries a warning that it must not go live until
      counsel has read it. When it does, link it here and re-read this answer
-     against it, line by line. -->
+     against it, line by line.
+     One row is not in the draft and is read off ui/auth.js instead, WP2a-4:
+     the first visit, which sends without being chosen (authFunnelStart and
+     authFunnelCheckpoint), so "only when you choose them" was false. -->
 <section id="information">
  <div class="hd"><h2>What happens to my information?</h2></div>
  <div class="bd">
@@ -344,8 +347,13 @@ a.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
   nobody at Atüned can read it.</p>
   <p class="m">The free test makes no request at all, and a story typed into it is
   never saved.</p>
-  <p class="m q">Some things leave, and only when you choose them:</p>
+  <p class="m q">Some things leave. The first one happens on its own, and the rest
+  only when you choose them:</p>
   <ul class="out">
+   <li><b>A first visit.</b> A random code made for this browser and the topic you
+   pick for why you came, such as grief or money, sent to our server. Later, a mark
+   when you finish the opening, your first release and each answer about what
+   changed. Never your stories or your name.</li>
    <li><b>An account.</b> Your sign in details, if you make one.</li>
    <li><b>Help.</b> A message you send us, posted to a channel on our Discord server.</li>
    <li><b>Dictation.</b> Your speech, which your browser's maker turns into text.</li>
