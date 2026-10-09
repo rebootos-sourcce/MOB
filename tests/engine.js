@@ -5947,6 +5947,44 @@ g('NZ2 · the plan the server holds, laid onto a record');
  ok(Object.keys(b.plan).every(k=>outs[1].profile.plan[k]===b.plan[k]),'and comes out of it unchanged, field by field');
 }
 
+g('NZ3 · a plan stopped on the payment page says the day it ends, and is still on until then');
+/* The owner, 9 October: "If they want to quit the software, that the
+   cancellation." Stopping a plan on Stripe's page keeps it active to the end
+   of the paid month, so the status stayed active and nothing on the record
+   moved: a person who had just pressed stop came back to a plan that read as
+   if it simply ran on. The server now sends ends, the day it stops
+   (reboot-os store.js billingOf), and the record carries it. */
+{
+ const {planFromServer,planOf,planState,validateProfile,SCHEMA_V,blankProfile}=E;
+ const free={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null,ends:null};
+ const S1='2026-10-01T00:00:00.000Z', U1='2026-11-01T00:00:00.000Z';
+ const many=n=>new Array(n).fill(0).map((_,i)=>'k'+i);
+ ok(blankProfile().plan.ends===null,'a blank record has no end day, got '+JSON.stringify(blankProfile().plan));
+ const on=planFromServer(free,{tier:'one',status:'active',since:S1,until:U1,ends:null},many(140));
+ ok(on.plan.ends===null&&on.ends===null,'a plan that renews has no end day');
+ /* stopped on the payment page: the tier, the status and the period do not
+    move, and that is exactly why the end day has to */
+ const stop=planFromServer(on.plan,{tier:'one',status:'active',since:S1,until:U1,ends:U1},many(150));
+ ok(!stop.same,'a stop is a change a person can see, so the host speaks on it');
+ ok(stop.plan.ends===U1&&stop.ends===U1&&stop.wasEnds===null,'the record carries the day it ends, and the host is told it is new');
+ ok(stop.nowLive&&planOf(stop.plan).k==='one'&&planState(stop.plan)==='live','and it is still tier one, in force, until that day');
+ ok(stop.plan.base===on.plan.base,'a stop is not a new period, so the allowance is not refilled');
+ /* turned back on before the day: the end day goes, and that is a change too */
+ const back=planFromServer(stop.plan,{tier:'one',status:'active',since:S1,until:U1,ends:null},many(160));
+ ok(!back.same&&back.plan.ends===null&&back.wasEnds===U1,'turning it back on clears the end day');
+ /* a server from before ends sends no such field, and nothing is made up */
+ const old=planFromServer(on.plan,{tier:'one',status:'active',since:S1,until:U1},many(150));
+ ok(old.same&&old.plan.ends===null,'a server that sends no end day leaves the record as it was');
+ /* the boundary holds it: a date or null, refused by name otherwise */
+ const v=validateProfile({v:SCHEMA_V, plan:stop.plan});
+ ok(v.ok&&v.profile.plan.ends===U1,'validateProfile keeps the end day, got '+JSON.stringify(v.errs));
+ const bad=validateProfile({v:SCHEMA_V, plan:Object.assign({},stop.plan,{ends:'soon'})});
+ ok(!bad.ok&&bad.errs.some(e=>/plan\.ends is not a date/.test(e)),'and refuses one that is not a date, by name, got '+JSON.stringify(bad.errs));
+ /* an older record has no ends at all, and loads as one that renews */
+ const older=validateProfile({v:SCHEMA_V, plan:{tier:'one',status:'active',granted:0,carried:0,base:120,since:S1,until:U1}});
+ ok(older.ok&&older.profile.plan.ends===null,'a record saved before this loads with no end day');
+}
+
 g('OB1 · 19.B6, every entry carries the lexicon that read it');
 /* PRIORITY.md 19.B6: "Every story entry stamped with the lexicon version
    that read it, so reading it again later is reproducible." The version is a
