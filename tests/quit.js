@@ -276,13 +276,13 @@ const stub = http.createServer((req, res) => {
     const CRED = 'cred_signout_' + 'x'.repeat(32);
     const so = async (withVisit, api, passId) => {
       const before = seen.length;
-      const o = await pg.evaluate(async ([withVisit, api, cred]) => {
+      const o = await pg.evaluate(async ([withVisit, api, cred, passId]) => {
         if (api) AUTH_API = api;
         authKeep({ token: 't-signout', email: 'quit@example.invalid', accountId: 'acc_quit' });
         if (withVisit) funnelKeep({ id: passId || 'fs_signout', anonymousId: 'anon_signout', credential: cred, userId: 'acc_quit' }); else funnelKeep(null);
         const r = await authSignOut();
         return { r, ses: authSession(), kept: localStorage.getItem('funnel.session') || '' };
-      }, [withVisit, api, CRED]);
+      }, [withVisit, api, CRED, passId]);
       const call = seen.slice(before).find(x => x.u === '/v1/auth/signout');
       let body = null; try { body = call && call.raw ? JSON.parse(call.raw) : null; } catch (e) { body = 'unparseable'; }
       await pg.evaluate(a => { AUTH_API = a; }, API);
