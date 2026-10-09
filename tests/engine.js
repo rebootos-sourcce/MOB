@@ -7509,6 +7509,23 @@ g('S2 · a charge word about someone else is kept, listed, and never scored on t
  ok((hn.denied||[]).length>0&&oth(hn).length===0,'a word said with a no is denied first and is not also listed as someone else\'s');
 }
 
+g('S3 · sniffStory returns every positive saboteur candidate, and the screen decides how many it shows');
+/* REVIEW-sniffer-audit-2026-10-09.md, package S3, the audit's 13.1.10.
+   sniffStory did sniffSaboteurs(axes).slice(0,SAB_SHOW): the domain layer
+   decided what a screen shows, so a seventh candidate was not merely not
+   drawn, it was not in the output for anything to read. SAB_SHOW stays, as
+   what a renderer slices to. No count is typed here: the bound is read off
+   SAB_SHOW and the candidates off sniffSaboteurs. */
+{
+ const t='I was angry, scared, ashamed, sick to my stomach, numb, shocked and dreading it.';
+ const all=E.sniffSaboteurs(E.sniffAxes(E.parseStory(t))), r=E.sniffStory(t);
+ ok(all.length>E.SAB_SHOW,'the story carries more candidates than a screen shows, '+all.length+' against '+E.SAB_SHOW);
+ ok(r.saboteurs.length===all.length,'sniffStory returns every positive candidate, '+r.saboteurs.length+' of '+all.length);
+ ok(JSON.stringify(r.saboteurs.map(s=>s.id))===JSON.stringify(all.map(s=>s.id)),'in the ranked order sniffSaboteurs gives');
+ ok(r.saboteurs.every(s=>s.confidence>0&&s.because.length>0),'each positive, each with its because');
+ ok(typeof E.SAB_SHOW==='number'&&E.SAB_SHOW>0,'and SAB_SHOW is still there for a screen to slice to, '+E.SAB_SHOW);
+}
+
 g('SB · the saboteur card is the same 33 as SABDEF, and its opposites are read off SAB33 and CHILD');
 /* ROUND SB. The card kbSabBlock prints is composed copy, and composed copy is
    where a fact gets invented without anybody deciding to. Three things are
