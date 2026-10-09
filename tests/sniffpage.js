@@ -15,6 +15,9 @@
      S2  a charge word about someone else. The page draws exactly the
          engine's others as set aside and not struck, the counter names
          them, and the quiz makes no card of them and shows them back.
+     S4  no surface that prints an address read from a story says the
+         person said or named it, or quotes it as their word, unless the
+         story holds it.
 
    Checked against a known bad case first, the standing rule: every check
    here was run against main's own build before the change and failed there
@@ -154,6 +157,113 @@ const story = p => p.evaluate(() => {
     ok(r.cards.indexOf('Anger') < 0 && r.words.every(w => !/furious/.test(w)), 'the quiz makes no card of his anger and quotes it on none: ' + JSON.stringify(r));
     ok(/“He was furious”/.test(r.text), 'and it shows his words back, in the person\'s own letters, as not counted');
     ok(!errs.length, 'no page errors on the quiz: ' + errs.join(' | '));
+    await cx.close();
+  }
+
+  console.log('\n=== S4 · no screen says the person said or named an address they did not ===');
+  {
+    /* THE RULE, made mechanical. An address is a name in the 112 table,
+       NODES[].k, read off the page and never typed here. A surface fails
+       when, for an address the story's own letters do not contain, it
+         quotes it as the person's word        “Pride”
+         says the person or the words named it  you named Pride, your words
+                                                named Pride, you said Pride
+         titles its pill as named by the words  title "Named by the words."
+                                                on a pill reading Pride
+       Ruling 5 of the review: an explicit axis is not an explicit address.
+       Five surfaces print an address read from a story: the Story page's
+       pending list, the Day One tutorial's first card, the quiz's story
+       cards, the onboarding mirror's rows and the Imprints page's pending
+       pills. Each is driven through its own renderer with the same stories. */
+    const STORIES = ['I was furious.', 'I am exhausted.', 'My father died last year.',
+      'I was scared and my chest went tight.', 'I am exhausted and furious.'];
+    const CLAIM = /(you named|you said|your words named|named by (the|your) words)\s+(.{0,60})/ig;
+    /* AXES is the nine axis names. Three of them, Fear, Shame and Anger, are
+       also address names, and "your words named anger" is a true sentence
+       about the axis, so a named-claim never counts those three as an
+       address. A quote still does: a quoted word must be the person's own. */
+    let AXES = [];
+    const judge = (ADDR, story, text, pills) => {
+      const low = story.toLowerCase(), bad = [];
+      const foreign = a => low.indexOf(a.toLowerCase()) < 0;
+      const named = ADDR.filter(a => AXES.indexOf(a.toLowerCase()) < 0);
+      (text.match(/[“"]([^”"]{2,60})[”"]/g) || []).forEach(q => {
+        const w = q.slice(1, -1).trim();
+        if (ADDR.some(a => a.toLowerCase() === w.toLowerCase() && foreign(a))) bad.push('quotes ' + q + ' as the person\'s word'); });
+      let m; CLAIM.lastIndex = 0;
+      while ((m = CLAIM.exec(text))) { const after = m[3];
+        named.forEach(a => { if (foreign(a) && after.toLowerCase().indexOf(a.toLowerCase()) === 0) bad.push('says "' + m[1] + ' ' + a + '"'); }); }
+      /* a pill's title names its object or it names the pill: "Named by the
+         words." claims the label, "Your words named anger" claims anger */
+      (pills || []).forEach(pl => {
+        if (/named by (the|your) words\s*\.?\s*$/i.test(pl.title)
+          && ADDR.some(a => foreign(a) && pl.text.toLowerCase().indexOf(a.toLowerCase()) >= 0))
+          bad.push('pill "' + pl.text + '" titled "' + pl.title + '"');
+        let k; CLAIM.lastIndex = 0;
+        while ((k = CLAIM.exec(pl.title))) { const after = k[3];
+          named.forEach(a => { if (foreign(a) && after.toLowerCase().indexOf(a.toLowerCase()) === 0) bad.push('pill title says "' + k[1] + ' ' + a + '"'); }); } });
+      return bad; };
+
+    const p = await open(browser, 1600, 1000);
+    const ADDR = await p.evaluate(() => NODES.filter(n => n.k).map(n => n.k));
+    AXES = await p.evaluate(() => CHARGES.map(c => c.toLowerCase()));
+    ok(ADDR.length > 0, 'the address names are read off the page\'s own table, ' + ADDR.length);
+    /* checked on a known bad case first: a pill titled the way main titles it */
+    const known = judge(ADDR, 'I was furious.', '', [{ text: 'Pride +1.5', title: 'Named by the words.' }]);
+    ok(known.length === 1, 'the check catches a known bad pill: ' + JSON.stringify(known));
+    ok(judge(ADDR, 'I felt pride.', 'You wrote “pride”.', []).length === 0, 'and passes a word the person did write');
+    ok(judge(ADDR, 'I was furious.', '', [{ text: 'Pride +1.5', title: 'Your words named anger. The engine picked this address for it.' }]).length === 0,
+      'and passes a title that names what the words named, not the address');
+    ok(judge(ADDR, 'I was furious.', 'around the word “Pride”', []).length === 1, 'and catches an address quoted as the person\'s word');
+    ok(judge(ADDR, 'I was furious.', 'You named Pride.', []).length === 1, 'and catches "you named" an address the story does not hold');
+    for (const t of STORIES) {
+      await type(p, t);
+      const story = await p.evaluate(() => ({
+        list: (document.getElementById('stimps') || {}).textContent || '',
+        pills: [...document.querySelectorAll('#stimps .st-pill')].map(e => ({ text: e.textContent, title: e.getAttribute('title') || '' })) }));
+      const a = judge(ADDR, t, story.list, story.pills);
+      ok(a.length === 0, 'Story page list, ' + JSON.stringify(t) + ': ' + (a.join('; ') || 'clean'));
+      const other = await p.evaluate(tt => {
+        const ps = parseStory(tt);
+        const ob = (typeof obReadOf === 'function') ? obReadOf(ps, 'story', {}).map(obGroup).join('') : '';
+        const box = document.createElement('div'); box.innerHTML = ob;
+        ST_TEXT = tt; ST_PARSED = ps;
+        const ghosts = (typeof impGhosts === 'function') ? impGhosts() : [];
+        return { ob: box.textContent, ghosts: ghosts.length };
+      }, t);
+      const b = judge(ADDR, t, other.ob, []);
+      ok(b.length === 0, 'onboarding mirror rows, ' + JSON.stringify(t) + ': ' + (b.join('; ') || 'clean'));
+    }
+    /* the Imprints page's pending pills, through its own renderer */
+    await type(p, 'I was furious.');
+    await p.evaluate(() => { const e = document.getElementById('stbank'); if (e) e.click(); });
+    await p.waitForTimeout(300);
+    const ip = await p.evaluate(() => [...document.querySelectorAll('.ip.ghost')].map(e => ({ text: e.textContent, title: e.getAttribute('title') || '' })));
+    const c = judge(ADDR, 'I was furious.', ip.map(x => x.title).join(' '), ip);
+    ok(c.length === 0, 'Imprints page pending pills: ' + (c.join('; ') || 'clean, ' + ip.length + ' pills'));
+    await p.cx.close();
+
+    /* the Day One tutorial, through its real commit, one fresh page a story */
+    for (const t of STORIES) {
+      const q = await open(browser, 1600, 1000);
+      await q.evaluate(() => tutorialOpen(true)); await q.waitForTimeout(400);
+      await q.fill('#tuttext', t); await q.click('[data-tut="commit"]'); await q.waitForTimeout(400);
+      const card = await q.evaluate(() => (document.getElementById('tutorial') || {}).textContent || '');
+      const d = judge(ADDR, t, card, []);
+      ok(d.length === 0 && card.length > 0, 'Day One tutorial first card, ' + JSON.stringify(t) + ': ' + (d.join('; ') || 'clean'));
+      ok(!q.errs.length, 'no page errors in the tutorial: ' + q.errs.join(' | '));
+      await q.cx.close();
+    }
+
+    /* the quiz's story cards */
+    const cx = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
+    const qz = await cx.newPage(); await qz.goto(QUIZ, { waitUntil: 'load' });
+    for (const t of STORIES) {
+      const txt = await qz.evaluate(tt => { const ps = parseStory(tt), h = storyLit(ps, tt, read(scored().p).reading);
+        const box = document.createElement('div'); box.innerHTML = h; return box.textContent; }, t);
+      const e = judge(ADDR, t, txt, []);
+      ok(e.length === 0, 'quiz story cards, ' + JSON.stringify(t) + ': ' + (e.join('; ') || 'clean'));
+    }
     await cx.close();
   }
 
