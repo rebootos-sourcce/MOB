@@ -2784,3 +2784,7 @@ Ruled by the owner, 8 October: main is the one line of the product, the foundati
 
 - **The 988 and 741741 crisis check is deferred to the MVP beta.** The owner, 9 October: "I don't give two shits about the emergency hotline stuff... We'll save it for the MVP beta." Built and parked, not deleted: branches `claude/b2a-crisis` and `claude/b2a-crisis2` hold the engine function, the Story page, nine more boxes and `tests/crisis.js`. Nothing of it is on main. The ten `xf` cases in `tests/engine.js` stay expected red, and the floors file caps expected red at 10, so they cannot be forgotten. This supersedes the default "crisis check is recall first" in the entry above until the beta; the phrase list still awaits clinician review (round PW).
 - **Consequence the team recorded once, for the owner's information:** until the beta, the live app shows no crisis line to a person who writes about hurting themselves.
+
+## Profile sync, 9 October
+
+A seat finding (P1-E), not a ruling. The profile sync on main is dead code: `profileSyncEligible` in `ui/auth.js:189` asks `typeof profiles==='function'`, which is never true, so `authProfileSync` always skips and would throw at `:222` if it ran. It must not be switched on as is, because it uploads the whole profile, stories included, which contradicts the privacy words; it needs a sync and consent design first. The returning account bypass of the opening that depends on it is parked at `claude/p1e-bypass-parked` (`743df63`), `TASKS.md` PB1.
