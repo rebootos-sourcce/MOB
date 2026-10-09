@@ -435,6 +435,57 @@ function wordsOf(t,nm){
   var j=s.indexOf(' ',k+1); if(j<0||j===k+1)continue;
   out.push({at:k, w:s.slice(k+1,j), s:nm.map[k+1], e:nm.map[j-1]+1, c:c, g:g});}
  return out;}
+/* ============================================================
+   A WORD SAID WITH A NO, package S1 of REVIEW-sniffer-audit-2026-10-09.md,
+   ruling 1. Measured on main before this: "I was not angry" read Anger 18 at
+   the solar plexus, exactly "I was angry", while the Story page drew the same
+   word struck through. A negated charge word is not a positive admission and
+   is not erased either: the hit is kept, flagged neg, and parseStory lists it
+   in denied and counts it nowhere.
+
+   NOT A THIRD NEGATION READER. srcNegated (engine/sourceai.js) decides, with
+   its own list and its own two word window, cut at a sentence end by
+   clauseFloor, which is exactly what Source AI has always asked. This only
+   moves the floor that call is given, for two named reasons, and both only
+   ever stop a no from reaching a word:
+     a word already read keeps its own no. "cant sleep", "im not okay",
+       "nobody listens" are read as charge with the no inside them, so the no
+       is theirs and the word after it is not denied by it. Measured: "I
+       can't sleep, terrified" denied terrified before this.
+     a can't stop frame is not a denial. A no straight before one of
+       NEG_NOT_DENY says the thing would not stop: "I can't stop crying",
+       "it never stops hurting", "I couldn't help crying". Each has a test.
+   A comma does not end a no, which is leanNorm's ruling and clauseFloor's,
+   so "I was not, honestly, angry" is denied. The cost of that ruling is
+   measured and reported with the change, not hidden here.
+
+   A COHERENT WORD IS NEVER DENIED. A denial must never raise a reading, and
+   denying a word that subtracts would. "I am not grateful" subtracts as it
+   always did; that is a known gap, written in TDD-sniffer.md, and not made
+   worse here.
+
+   The hit keeps negw, the no it saw, and negAt, that word's leading space in
+   nm.s, so a mark and a list can quote from the no to the word on the letters
+   typed. srcNegated is the decision; this only finds which word it saw. */
+var NEG_NOT_DENY=['stop','stops','stopped','help'];
+function sniffDeny(t,nm,hits){
+ var ws=null, cuts=[];
+ hits.forEach(function(h){
+  if(h.band==='coherent')return;
+  if(!ws){ws=wordsOf(t,nm);
+   /* every place a no is already spoken for: the end of each word read, and
+      the end of each can't stop frame. Kept as the trailing space, which is
+      the next word's leading one, so the window starts on the next word. */
+   hits.forEach(function(o){cuts.push({at:o.at,end:o.at+1+String(o.t).length});});
+   for(var i=0;i+1<ws.length;i++)
+    if(ws[i].c===ws[i+1].c&&SRC_NEG.indexOf(ws[i].w)>=0&&NEG_NOT_DENY.indexOf(ws[i+1].w)>=0)
+     cuts.push({at:ws[i].at,end:ws[i+1].at+1+ws[i+1].w.length});}
+  var f=clauseFloor(t,nm,h.at);
+  cuts.forEach(function(c){if(c.at<h.at&&c.end<=h.at&&c.end>f)f=c.end;});
+  if(!srcNegated(nm.s,h.at,f))return;
+  var win=ws.filter(function(w){return w.at<h.at&&w.at>=Math.max(f,0);}).slice(-SRC_NEG_W);
+  var ng=win.filter(function(w){return SRC_NEG.indexOf(w.w)>=0;})[0]||null;
+  h.neg=true; h.negw=ng?ng.w:null; h.negAt=ng?ng.at:null;});}
 function scanStory(text){
  var nm=normMap(text), src=nm.s;
  var hits=[];
@@ -537,6 +588,10 @@ function scanStory(text){
    h.place=best.w; h.placeAt=best.at;
    if(best.seat!==h.band){h.was=h.band; h.band=best.seat;}});}
  hits.sort(function(a,b){return a.at-b.at;});
+ /* A WORD SAID WITH A NO, S1, see sniffDeny above. The scanner says what is
+    around a word, the way it already says the degree word and the place
+    word; parseStory decides what counts. */
+ sniffDeny(text,nm,hits);
  return hits;}
 /* ============================================================
    THE PATH.
@@ -636,7 +691,13 @@ function pathOf(hits){
   kink:end(kink), floor:end(floor)};}
 
 function parseStory(text){
- var hits=scanStory(text), byBand={}, byChg={}, imprints=[];
+ /* WHAT COUNTS, AND WHAT IS KEPT BESIDE IT, S1. A hit said with a no goes to
+    denied and nowhere else, so it reaches no band, charge, weight, named
+    fetter, imprint or path, and every reader of hits below and of this
+    result's hits sees only what counts. It is kept, not erased: marksOf
+    draws it struck and the Story page names it. */
+ var all=scanStory(text), hits=[], denied=[], byBand={}, byChg={}, imprints=[];
+ all.forEach(function(h){(h.neg?denied:hits).push(h);});
  hits.forEach(function(h){
   if(h.band&&h.band!=='coherent'){ byBand[h.band]=(byBand[h.band]||0)+h.amt; }
   if(h.charge){ byChg[h.charge]=(byChg[h.charge]||0)+1; }});
@@ -727,7 +788,8 @@ function parseStory(text){
  var named=Object.keys(nm).sort(function(a,b){return nm[b]-nm[a];});
  return {hits:hits, bands:byBand, charges:byChg, named:named, weights:nm, imprints:imprints,
   path:pathOf(hits),
-  words:hits.filter(function(h){return h.kind!=='adj';}).length};}
+  words:hits.filter(function(h){return h.kind!=='adj';}).length,
+  denied:denied};}
 /* ============================================================
    THE MARKS. Every hit, placed back on the letters a person typed.
 
@@ -748,17 +810,30 @@ function parseStory(text){
 
    Ported from proto/story4 unchanged in behaviour. None of the four designs'
    look comes with it: this returns data and the page decides what to draw.
+
+   A WORD SAID WITH A NO IS STILL A MARK, S1, and it carries neg and negFrom,
+   the letter its no starts on, so a page strikes it from the no without
+   working negation out again. The flag is the engine's, from sniffDeny, so
+   the sentence, the chart, the list and the score read one answer.
    ============================================================ */
+/* EVERY HIT THE SCANNER FOUND, counted or set aside. parseStory's own hits
+   are only what counts; a reader that must show or quote every word read,
+   marksOf, unmarkedOf, srcHear and srcDims, asks here, so there is one
+   answer to which lists make up the whole. */
+function storyHits(p){
+ return p?(p.hits||[]).concat(p.denied||[]):[];}
 function marksOf(t,p){
- if(!p||!p.hits||!p.hits.length)return [];
+ var all=storyHits(p);
+ if(!all.length)return [];
  var nm=normMap(t), raw=[];
- p.hits.forEach(function(h){
+ all.forEach(function(h){
   if(h.at==null)return;
   var a=h.at+1, b=h.at+String(h.t).length;
   if(a>=nm.map.length||b>=nm.map.length)return;
   raw.push({s:nm.map[a], e:nm.map[b]+1, kind:h.kind, band:h.band||null,
    amt:(h.amt==null?null:h.amt), label:h.label||null, charge:h.charge||null,
-   fet:h.fet||null, coh:h.band==='coherent'});});
+   fet:h.fet||null, coh:h.band==='coherent',
+   neg:!!h.neg, negFrom:(h.neg&&h.negAt!=null&&nm.map[h.negAt+1]!=null)?nm.map[h.negAt+1]:null});});
  raw.sort(function(a,b){return a.s-b.s||(b.e-b.s)-(a.e-a.s);});
  var keep=[], last=-1;
  raw.forEach(function(m){
@@ -773,6 +848,30 @@ function marksOf(t,p){
   keep.push(m); last=m.e;});
  keep.forEach(function(m,i){m.i=i;});
  return keep;}
+/* WHAT WAS READ AND NOT COUNTED, S1, quoted in the letters the person typed:
+   each stretch said with a no, from its no to its word, once. Off marksOf,
+   so a quote is exactly what the page strikes. */
+function asideOf(t,p){
+ t=String(t||'');
+ var out={denied:[]};
+ marksOf(t,p).forEach(function(m){
+  if(!m.neg)return;
+  var q=t.slice(m.negFrom!=null?m.negFrom:m.s,m.e);
+  if(out.denied.indexOf(q)<0)out.denied.push(q);});
+ return out;}
+/* THE SENTENCE, ONE COPY, for every surface that shows a story's reading, the
+   way maskedSay is for hidden words. Plain words per the ten year old ruling,
+   and the label not counted carries its meaning in the same sentence, per the
+   unpack ruling. Empty when nothing was set aside, so a caller prints it or
+   prints nothing. */
+function asideList(q){
+ q=q.map(function(x){return '“'+x+'”';});
+ return q.length<3?q.join(' and '):q.slice(0,-1).join(', ')+' and '+q[q.length-1];}
+function asideSay(a){
+ var d=(a&&a.denied)||[]; if(!d.length)return '';
+ var one=d.length===1;
+ return asideList(d)+(one?' is':' are')+' not counted. You said no to '+(one?'it':'them')
+  +', so '+(one?'it adds':'they add')+' nothing to your reading.';}
 /* ============================================================
    WHAT READ AS NOTHING, 20.H6. The complement of marksOf.
 
@@ -788,9 +887,9 @@ function marksOf(t,p){
    clause: a mark ends it, and so does a sentence end, by wordsOf's rule. A
    word a mark touches at all is read, so a phrase's own words never come
    back here. A place word that seated a sensation, 20.H2, is read too: it
-   scored nothing itself and it decided where the charge landed. A negated
-   word is still a mark, because the sniffer does not read negation and this
-   reports the sniffer, not what Source AI hears.
+   scored nothing itself and it decided where the charge landed. A word said
+   with a no is read too, S1: it was read, named and set aside, which is not
+   the same as passed over, and it is still a mark.
 
    It is reporting and nothing else. No reading moves, nothing is scored,
    and nothing leaves the device: the count 19.D8 wants across people is
@@ -799,7 +898,7 @@ function marksOf(t,p){
 function unmarkedOf(t,p){
  t=String(t||'');
  var marks=marksOf(t,p), ws=wordsOf(t), out=[], cur=null, read=0, placed={};
- ((p&&p.hits)||[]).forEach(function(h){if(h.placeAt!=null)placed[h.placeAt]=1;});
+ storyHits(p).forEach(function(h){if(h.placeAt!=null)placed[h.placeAt]=1;});
  ws.forEach(function(w){
   var hit=placed[w.at]||marks.some(function(m){return m.s<w.e&&m.e>w.s;});
   if(hit){read++; cur=null; return;}
@@ -1155,7 +1254,9 @@ var LEXPROFRUN=lexProf();
 
    WHAT IT DOES NOT COVER, said so nobody has to discover it: a change to
    scanStory's or parseStory's own rules with no change to a table moves no
-   table, so it does not move this. The node table W is not the lexicon and
+   table, so it does not move this. S1 and S2 of the 9 October sniffer audit
+   are such changes: an entry committed before them reads again with its
+   denied and someone else's words left out, under the same stamp. The node table W is not the lexicon and
    is not in it either. Same version means the same words land the same
    way; it does not promise the same addresses.
 
@@ -1296,6 +1397,15 @@ function sniffAxes(p){
    shadow[f]+=each;
    (cited[f]=cited[f]||[]).push('"'+h.t+'" is the composite Anger and Apathy, split');});});
  p.hits.forEach(function(h){if(h.band==='coherent')coh+=Math.abs(h.amt||0);});
+ /* A DENIED WORD IS EVIDENCE OF NOTHING, AND IS STILL CITED, S1. p.hits are
+    only what counts, so no denied word reaches a shadow above. An axis the
+    text named and said no to is not "nothing reached it": it was read and
+    set aside, and its because says so with the person's own words. */
+ var said={};
+ (p.denied||[]).forEach(function(h){
+  var f=h.fet||(h.charge?CHG2FET[h.charge]:null); if(!f||shadow[f]===undefined)return;
+  var q='"'+(h.negw?h.negw+' ':'')+h.t+'"', l=said[f]=said[f]||[];
+  if(l.indexOf(q)<0)l.push(q);});
  var out=[];
  CHARGES.forEach(function(c){
   var s=Math.round(Math.min(10,shadow[c])*10)/10;
@@ -1310,6 +1420,7 @@ function sniffAxes(p){
    address:axisAddr(p.imprints,c),
    region:SPEC_POLE[c]?SPEC_POLE[c].addr:null,
    because: s>0?(cited[c]||[]).slice(0,3)
+    :said[c]?['the text said no to it, '+said[c].slice(0,3).join(' and ')+', so nothing is counted']
     :['nothing in the text reached this axis'],
    coherentBecause: k>0
     ?['the text carries '+k+' of coherent language, not apportioned by axis']

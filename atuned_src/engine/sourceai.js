@@ -63,13 +63,16 @@ var SRC_ASK=7, SRC_ROOT=10;
 /* one mention is heard and never questioned, whatever the word weighs. */
 var SRC_ONCE=6;
 
-/* NEGATION, WHICH THE SNIFFER DOES NOT READ. "I was not angry" and "I was
-   angry" parse to the same seat and the same amount, measured. A reading can
-   live with that because the charge is small and the person can undo it. A
-   question cannot: asking somebody why they are angry after they wrote that
-   they are not is the false positive this seat was told costs more than a
-   miss. So a mention counts toward a question only when neither of the two
-   words before it is a negation.
+/* NEGATION. This was "NEGATION, WHICH THE SNIFFER DOES NOT READ": "I was not
+   angry" and "I was angry" parsed to the same seat and the same amount, and
+   Source AI was the one reader that set the first aside. Since S1 of
+   REVIEW-sniffer-audit-2026-10-09.md the sniffer reads it with this same
+   call: sniffDeny in engine/sniff.js asks srcNegated, flags the hit, and
+   parseStory counts it nowhere. srcHear reads that flag and no longer asks
+   here itself, so the question and the score cannot disagree. Asking somebody
+   why they are angry after they wrote that they are not is the false
+   positive this seat was told costs more than a miss. So a mention counts
+   only when neither of the two words before it is a negation.
 
    The window is two words and not the three the laws use, and "did" is not in
    the list. Measured on the owner's book: the three word window dropped
@@ -124,12 +127,16 @@ function srcHear(text,prior){
  var t=String(text||'');
  var out={unread:true, seats:[], top:null, root:null, asks:false};
  if(!t.trim())return out;
- var p=parseStory(t), nm=normMap(t), src=nm.s, by={};
- p.path.steps.forEach(function(s){
+ var p=parseStory(t), nm=normMap(t), by={}, den={};
+ /* THE ENGINE'S OWN FLAG, S1. Every word read, counted or said with a no,
+    walked in order; a step the parse denied is counted as negated and never
+    heard, which is the rule this always ran, now asked once in sniffDeny. */
+ (p.denied||[]).forEach(function(h){den[h.at]=1;});
+ pathOf(storyHits(p)).steps.forEach(function(s){
   if(!s.seat||s.coherent)return;
   var o=by[s.seat]=by[s.seat]||{seat:s.seat, band:K2BAND[s.seat],
    reading:Math.min(10,(p.bands[s.seat]||0)/3), mentions:0, negated:0, words:[]};
-  if(srcNegated(src,s.at,clauseFloor(t,nm,s.at))){o.negated++;return;}
+  if(den[s.at]){o.negated++;return;}
   o.mentions++;
   /* the person's own letters, through the same map marksOf uses, so what is
      quoted back is what they typed and not the lowercased copy. */
@@ -286,8 +293,11 @@ function srcDims(text){
     person felt. Biased this way on purpose: counting a dimension as answered
     when it was not costs one question not asked, and counting it open when
     it was answered is the over-questioning the document's failure tests
-    name. */
- p.hits.forEach(function(h){
+    name. Every word read, storyHits, and not only what counts: "I was not
+    angry" says how a person felt, and since S1 the parse keeps that word
+    in denied rather than in hits, so reading hits alone would ask a person
+    how they felt straight after they said. */
+ storyHits(p).forEach(function(h){
   if(sense.indexOf(h.t)>=0)return;
   if(place.some(function(w){return (' '+h.t+' ').indexOf(' '+w+' ')>=0;}))return;
   say('feeling',h.t);});
@@ -302,7 +312,7 @@ function srcDims(text){
  /* what the person did */
  ['intent','averse','attach'].forEach(function(g){
   (VERPCUE[g]||[]).forEach(function(c){if(srcCue(src,c))say('behaviour',c);});});
- p.hits.forEach(function(h){
+ storyHits(p).forEach(function(h){
   if(h.kind==='phrase'&&SRC_DO_IDIOM.indexOf(h.label)>=0)say('behaviour',h.t);});
  ws.forEach(function(w,i){
   if(w!=='i')return;
