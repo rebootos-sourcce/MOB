@@ -1083,7 +1083,12 @@ function obRender(){
       dictation types straight into this box and filters the same way */
    +'<p class="st-mask" id="obmask" role="note" hidden></p>',
    '<button type="button" class="btn pri" id="obdone" data-ob="storydone" disabled>Done</button>'
-   +'<button type="button" class="btn" data-ob="storyskip">I would rather not say</button>'
+   /* SKIP, the verb for what this does: it clears any pending read and goes
+      on to the next step with no story. It read "I would rather not say",
+      five words in the person's voice on a button, from the round PP mockup
+      and never ruled, and the brief's button rule flagged it. Skip is the
+      word the tutorial already uses for the same act. */
+   +'<button type="button" class="btn" data-ob="storyskip">Skip</button>'
    +'<button type="button" class="btn" data-ob="back">Back</button>');
  }
  else if(s===6){
