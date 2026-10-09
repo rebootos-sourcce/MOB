@@ -576,12 +576,12 @@ function sumNum(r,bare){
  var N=numerologyOf(nm2,CURP);
  if(!N)return '';
  var rows=[
-  ['expression','Expression',N.expression,'every letter of the full name'],
-  ['soul','Soul urge',N.soul,'the vowels. what is wanted when nobody is asked'],
-  ['personality','Personality',N.personality,'the consonants. what arrives first']];
- if(N.lifePath!==null)rows.unshift(['lifePath','Life path',N.lifePath,'the birth date']);
- if(N.birthday!==null)rows.push(['birthday','Birthday',N.birthday,'the day of the month, unreduced']);
- if(N.maturity!==null)rows.push(['maturity','Maturity',N.maturity,'life path plus expression']);
+  ['expression','Expression',N.expression,'Every letter of the full name'],
+  ['soul','Soul urge',N.soul,'The vowels. What is wanted when nobody is asked'],
+  ['personality','Personality',N.personality,'The consonants. What arrives first']];
+ if(N.lifePath!==null)rows.unshift(['lifePath','Life path',N.lifePath,'The birth date']);
+ if(N.birthday!==null)rows.push(['birthday','Birthday',N.birthday,'The day of the month, unreduced']);
+ if(N.maturity!==null)rows.push(['maturity','Maturity',N.maturity,'Life path plus expression']);
  var out='<div class="s-numer">'+(bare?'':'<div class="pm-eye plain">Numerology, in full</div>')
   /* HS sweep: the name it was read off stays, because a person checks the
      spelling. The method sentence after it explained the arithmetic. */

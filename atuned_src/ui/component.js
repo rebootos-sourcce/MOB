@@ -251,7 +251,11 @@ function cr(band,pct,o){
     that names the paint is worse than none. With a label it names the thing;
     without one it says nothing, and the name printed beside the ring does
     the job. DESIGN-tooltip-copy.md, example 5. */
- var title=o.title||(o.label?o.label+', '+val:'');
+ /* AND IT OPENS ON A CAPITAL, like any line a person reads. Most labels are
+    written lower case because the same word sits mid sentence elsewhere, so
+    the title read "shadow weight, 54". tests/casing.js holds it. */
+ var lab=o.label?String(o.label):'';
+ var title=o.title||(lab?lab.charAt(0).toUpperCase()+lab.slice(1)+', '+val:'');
  var tag=o.act?'button':'span';
  /* and no attribute at all when there is nothing to say: an empty title still
     matches the tooltip's [title] carrier and would eat the hover of the row
