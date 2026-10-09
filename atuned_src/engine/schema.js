@@ -274,6 +274,10 @@ function saveProfile(p){
   if(LAW_UNSET[l.nm]&&S.law[l.nm]===LAW_SEED[l.nm])return;
   p.laws[l.nm]=S.law[l.nm]; LAW_UNSET[l.nm]=false;});
  gatesSave(p);
+ /* THE GIFT'S COUNTER MOVES IN THE SAME WRITE AS THE METER, F13. Every save
+    comes through here, the release's included, so the stored counter is never
+    a save behind the ground it counts (journeyGiftSync, engine/journey.js). */
+ if(p.journey&&p.journey.gift)journeyGiftSync(p);
  p.updated=new Date().toISOString(); p.v=SCHEMA_V;
  return p;}
 /* a snapshot is what Analytics plots. derived only, never inputs.
@@ -1353,6 +1357,13 @@ function validateProfile(o){
     keeps the blank. The name is handed in for the one rule about it. */
  if(o.summaries!==undefined&&o.summaries!==null)
   p.summaries=dlyValidate(errs,o.summaries,'summaries',{names:dlyNamesOf(p)});
+ /* THE JOURNEY, F13, through its own boundary (journeyValidate, engine/journey.js),
+    into the same errs, so one bad log line or one bad walk refuses the whole
+    record and pImport stays atomic. It is not in the blank: a record that never
+    walked the first run carries none and gains none here, so every such record
+    reads back exactly as it went in. */
+ if(o.journey!==undefined&&o.journey!==null)
+  p.journey=journeyValidate(errs,o.journey,'journey');
  return errs.length?{ok:false, errs:errs}:{ok:true, profile:p};}
 
 /* Atomic. Nothing is pushed and CURP is not moved until the profile has

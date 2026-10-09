@@ -71,8 +71,30 @@ var TUT_N=5;
 /* the rail's names: the storyboard's own, this file's header, in order */
 var TUT_STEPNM=['Journal','Discover','Understand','Release','Flow'];
 
+/* THE JOURNEY RECORD ON THIS DOOR, F13. The Day One tutorial is the other
+   door into the first release, so on a first run it writes the same record
+   the onboarding sheet writes (engine/journey.js): that it started, the story
+   it read, and the hand off, with the meter's counts at that moment. After the
+   release, the end of the first run is the onboarding stage's end card
+   whichever door led there, so a first run whose release has landed, or whose
+   hand off came from this door and never ran, is put back on that stage. A
+   replay from Settings writes nothing and resumes nothing, as before. */
+function tutJourney(replay){
+ TUT.rec=false;
+ if(replay||typeof journeyRead!=='function'||typeof CURP==='undefined'||!CURP)return false;
+ if(typeof S!=='undefined'&&S.who!==0)return false;
+ var jr=journeyRead(CURP);
+ if(jr.at==='end'||(jr.at==='next'&&jr.door==='tutorial'))return true;
+ if(!jr.first)return false;
+ TUT.rec=true;
+ var r=journeyLog(CURP,'tutorial_started',null,{door:'tutorial'});
+ if(!r.ok&&typeof obJyFail==='function')obJyFail(r.why);
+ if(!pSave()&&typeof status==='function')
+  status('This browser would not save. If the page reloads, the first run starts over.','fail');
+ return false;}
 function tutOpen(replay){
  var h=document.getElementById('tutorial'); if(!h)return;
+ if(tutJourney(!!replay)&&typeof obOpen==='function'){ obOpen(false); return; }
  TUT.open=true; TUT.step=0; TUT.text=''; TUT.commit=null; TUT.deep=null; TUT.replay=!!replay; TUT.parsed=null; TUT.plan=null;
  TUT.shown=-1;
  if(TUT.leaveT){ clearTimeout(TUT.leaveT); TUT.leaveT=null; }
@@ -229,6 +251,7 @@ function tutRender(){
     +'to work with exactly that. This one is real: pressing Begin opens it '
     +'on what this entry just wrote.</p>'
     +(go?obMiniSay(pl,typeof journeyRead==='function'?journeyRead(CURP).first:true)
+     +(typeof obGiftSay==='function'?obGiftSay(pl):'')
      :(typeof obMiniWhy==='function'&&obMiniWhy(pl)?'<p class="ob-p">'+obMiniWhy(pl)+'</p>':''));
   }else{
    body='<p class="ob-p">This particular entry did not carry enough charge '
@@ -281,6 +304,12 @@ function tutCommit(){
  TUT.commit=r;
  if(r.ok){
   TUT.deep=(typeof sniffStory==='function')?sniffStory(r.text):null;
+  /* F13: that a story was given and how much it read, never its words */
+  if(TUT.rec&&typeof journeyLog==='function'){
+   [['story_submitted',{words:v.trim().split(/\s+/).filter(Boolean).length}],['story_signal_generated',{found:r.k}]]
+    .forEach(function(x){var q=journeyLog(CURP,x[0],null,x[1]); if(!q.ok&&typeof obJyFail==='function')obJyFail(q.why);});
+   if(!pSave()&&typeof status==='function')
+    status('This browser would not save. If the page reloads, the first run starts over.','fail');}
  }
  TUT.step=1; tutRender();}
 
@@ -295,6 +324,9 @@ addEventListener('click',function(e){
   /* the plan's addresses, never every address the entry read (F5), and mini,
      so the release opens at the size this card just said (M28) */
   var pl=TUT.plan||(typeof obMini==='function'?obMini(obImprints(TUT.parsed)):null), ids=(pl&&pl.ok)?pl.addrs:[];
+  /* F13: the hand off, written the way the onboarding sheet writes its own */
+  if(TUT.rec&&ids.length&&typeof obHandOff==='function')
+   obHandOff(pl,'tutorial',(TUT.commit&&TUT.commit.ok)?TUT.commit.t:null);
   tutClose();
   if(ids.length&&typeof relPick==='function')
    relPick(ids,{mini:true,story_t:(TUT.commit&&TUT.commit.ok&&TUT.commit.t)?TUT.commit.t:null});

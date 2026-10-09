@@ -352,6 +352,17 @@ if(typeof module!=='undefined'&&module.exports){
                   ONB_MINI_ADDRS:ONB_MINI_ADDRS, ONB_MINI_DOSE:ONB_MINI_DOSE, ONB_CHANS:ONB_CHANS,
                   OB_STARTS:OB_STARTS, OB_FEELS:OB_FEELS, OB_PLACES:OB_PLACES,
                   journeyRead:journeyRead, onbMiniPlan:onbMiniPlan,
+  /* the journey record itself, F13: its tables, its boundary, its writers,
+     what the first release made, and the claim packet with its boundary */
+                  JOURNEY_V:JOURNEY_V, JOURNEY_EVENTS:JOURNEY_EVENTS, JOURNEY_LOG_MAX:JOURNEY_LOG_MAX,
+                  JOURNEY_SRC:JOURNEY_SRC, JOURNEY_WALK:JOURNEY_WALK, JOURNEY_DOORS:JOURNEY_DOORS,
+                  JOURNEY_CLAIM_SEND:JOURNEY_CLAIM_SEND, JOURNEY_CLAIM_NEVER:JOURNEY_CLAIM_NEVER,
+                  JOURNEY_CLAIM_V:JOURNEY_CLAIM_V,
+                  journeyBlank:journeyBlank, journeyValidate:journeyValidate,
+                  journeyLog:journeyLog, journeyLogged:journeyLogged, journeyWalk:journeyWalk,
+                  journeyGiftRead:journeyGiftRead, journeyGiftSync:journeyGiftSync,
+                  journeyGiftIssue:journeyGiftIssue, journeyMade:journeyMade,
+                  journeyClaim:journeyClaim, journeyClaimCheck:journeyClaimCheck,
                   releaseVerify:releaseVerify, releaseVerifyAt:releaseVerifyAt,
                   RV_METRIC:RV_METRIC, RV_ANSWERS:RV_ANSWERS, RV_SAY:RV_SAY,
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
