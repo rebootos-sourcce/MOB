@@ -1134,8 +1134,10 @@ function railTop(r){
     high chip centred against a 44 high word, so its top sat seven pixels
     below the word's and neither matched the boxed 44 high cells every other
     readout on the Field sits in. The ring and the word share one box now. */
+ /* a bare number, round PQ: "No, it doesn't need to be a percent. Just a
+    number." The ring still draws the share; the figure is the reading. */
  e.innerHTML='<span class="rt-cell">'+cr(r.darkB, r.unread?0:r.CQ, {size:'sm', label:'Coherence',
-   raw:r.unread?'\u2013':undefined, hot:false, color:tcol||undefined})
+   raw:r.unread||Math.round(r.CQ)<=0?'\u2013':String(Math.round(r.CQ)), hot:false, color:tcol||undefined})
   /* THE TIER IS A CONTROL WHEREVER IT LIVES. Taking the word off the Field
      centre was ruled, and it took the only tappable route to the definition
      with it: there was exactly one tier control in the product and it was the

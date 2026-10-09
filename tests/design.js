@@ -1616,6 +1616,37 @@ console.log('\n=== the release runs to its end in silence, and says what it spea
  await rp.close();
 }
 
+console.log('\n=== the headline coherence is a number, not a percent ===');
+/* ROUND PQ, his words: "No, it doesn't need to be a percent. Just a number."
+   Recorded in DECISIONS.md for the headline CQ and DQ wherever they stand:
+   the rings, the glass bar, the Summary tile, the Compass centre. The Summary
+   plate and the wheel's core already read bare. On the Field the glass bar's
+   Laws circle (CQ) and Decoherence circle (DQ) and the ring at the foot of
+   the stage (CQ, with its band) still printed 62% and 11%. Held here on
+   Marcus, whose figures are neither empty nor whole: each prints the bare
+   whole number the reading rounds to, and on an unread field a dash. */
+{
+ const pq=await browser.newPage({viewport:{width:1600,height:1000}});
+ await pq.goto(FILE,{waitUntil:'load'}); await booted(pq); await pq.waitForTimeout(700);
+ const read=()=>pq.evaluate(async nm=>{
+  loadP(PEOPLE.findIndex(x=>x.nm===nm)); setTab(TAB.FIELD); render();
+  await new Promise(r=>setTimeout(r,ENTER_SPAN+12*ENTER_STAGGER+300));
+  const R=compute(), t=s=>{const e=document.querySelector(s); return e?e.textContent.trim():null;};
+  return {laws:t('#fbar [data-fb=laws] .fb-v'), shadow:t('#fbar [data-fb=shadow] .fb-v'), ring:t('#railtop .cr .v'),
+   cq:String(Math.round(R.CQ)), dq:String(Math.round(R.DQ)), unread:!!R.unread};},'Marcus');
+ const m=await read();
+ ok(!m.unread&&m.laws===m.cq,'PQ: the glass bar\'s Laws circle prints CQ bare, '+m.laws+' against '+m.cq);
+ ok(m.shadow===m.dq,'PQ: the Decoherence circle prints DQ bare, '+m.shadow+' against '+m.dq);
+ ok(m.ring===m.cq,'PQ: the ring at the foot of the stage prints CQ bare, '+m.ring+' against '+m.cq);
+ const u=await pq.evaluate(async()=>{loadP(0); setTab(TAB.FIELD); render();
+  await new Promise(r=>setTimeout(r,400));
+  const t=s=>{const e=document.querySelector(s); return e?e.textContent.trim():null;};
+  return {unread:!!compute().unread, laws:t('#fbar [data-fb=laws] .fb-v'), shadow:t('#fbar [data-fb=shadow] .fb-v'), ring:t('#railtop .cr .v')};});
+ ok(u.unread&&[u.laws,u.shadow,u.ring].every(v=>v==='–'),'PQ: and an unread field prints a dash in all three, '+JSON.stringify(u));
+ console.log('  Marcus laws '+m.laws+'  shadow '+m.shadow+'  ring '+m.ring+'   unread '+[u.laws,u.shadow,u.ring].join(' '));
+ await pq.close();
+}
+
 await browser.close();
 console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
 process.exit(FAIL?1:0);
