@@ -126,6 +126,14 @@ function selfTest() {
     ['a no count gate with its line', 'mon', '-----\n  all surfaces render\n', true],
     ['a no count gate that failed', 'mon', '-----\n  2 FAILING: a | b\n', false],
     ['a no count gate, empty log', 'mon', '', false],
+    // tests/engine.js since its CRISIS group, 9 October: the reds it expects
+    // are counted after the failures, inside the bars.
+    ['the engine summary with expected reds', 'g', 'x\n===== 4689 passed, 0 failed, 10 expected red =====\n', true],
+    ['expected reds at the floor', 'g', '===== 10 passed, 0 failed, 10 expected red =====', true],
+    ['expected reds and a failure', 'g', '===== 4689 passed, 1 failed, 10 expected red =====', false],
+    ['expected reds, below the floor', 'g', '===== 9 passed, 0 failed, 3 expected red =====', false],
+    ['an expected red summary quoted inside a test line', 'g', '  ok   prints "===== 10 passed, 0 failed, 10 expected red =====" at the end\n', false],
+    ['an expected red clause with no count', 'g', '===== 10 passed, 0 failed, expected red =====', false],
   ];
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'floors-'));
   let bad = 0;
