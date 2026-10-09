@@ -89,7 +89,7 @@ async function devSkipAsks(browser, file) {
 
 (async () => {
   if (!fs.existsSync(SRC)) { console.log('source.html is missing: run ./atuned_src/BUILD.sh'); process.exit(1); }
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({ executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
   const errs = [];
 
   console.log('KNOWN BAD COPY FIRST: a door check that cannot see the door');
