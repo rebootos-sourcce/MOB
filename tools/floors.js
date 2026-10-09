@@ -20,6 +20,14 @@
    and here its log must carry the one line it prints when every surface
    rendered.
 
+   EXPECTED RED HAS A CEILING, 9 October. The engine counts each expected red
+   as a pass, so turning a failing check into an expected red raises "passed"
+   and slips past a floor. "expected_red_max" in tests/floors.json caps the
+   count: above it fails, and a gate that prints an expected red count with
+   no ceiling fails too, so none is let off unseen. A summary with no
+   expected red clause, below the floor, says so by name. A floor of 0 is
+   "floor not set" and fails, so a placeholder never passes.
+
    It never writes a floor. Raising one is a deliberate edit to floors.json.
 
      node tools/floors.js [--dir DIR] [--floors FILE] [gate ...]
@@ -65,7 +73,7 @@ function summary(text) {
 }
 
 function judge(gate, dir, table) {
-  const fl = table.floors || {}, nc = table.no_count || {};
+  const fl = table.floors || {}, nc = table.no_count || {}, cap = table.expected_red_max || {};
   if (!has(fl, gate) && !has(nc, gate))
     return [false, gate + ': no floor in tests/floors.json. Add one on purpose, read off a green run.'];
   const log = path.join(dir, gate + '.log');
@@ -79,11 +87,25 @@ function judge(gate, dir, table) {
       : [false, gate + ': the line "' + want + '" is not in its log. It failed, crashed or was cut off.'];
   }
   const floor = fl[gate];
+  if (floor === 0)
+    return [false, gate + ': floor not set (0 in tests/floors.json). Set it from a clean full run, as printed.'];
   if (!Number.isInteger(floor) || floor < 1)
     return [false, gate + ': its floor in tests/floors.json is ' + JSON.stringify(floor) + ', not a whole number above zero.'];
   const s = summary(text);
   if (!s) return [false, gate + ': no summary line in its log. It crashed, was cut off, or never reached its end.'];
   if (s.fail > 0) return [false, gate + ': ' + s.line + '. Any failure fails.'];
+  const red = s.red === undefined ? null : s.red;
+  if (has(cap, gate)) {
+    const c = cap[gate];
+    if (!Number.isInteger(c) || c < 0)
+      return [false, gate + ': its expected red ceiling in tests/floors.json is ' + JSON.stringify(c) + ', not a whole number.'];
+    if (red !== null && red > c)
+      return [false, gate + ': ' + red + ' expected red, above its ceiling of ' + c + '. A check that should pass is being let off as expected red.'];
+    if (red === null && s.pass < floor)
+      return [false, gate + ': no expected red clause in its summary, and ' + s.pass + ' passed is below its floor of ' + floor + '. The expected red checks may be gone with their group.'];
+  } else if (red !== null) {
+    return [false, gate + ': prints ' + red + ' expected red and tests/floors.json gives it no ceiling (expected_red_max), so more could be let off unseen. Set one from a clean full run, as printed.'];
+  }
   if (s.pass < floor)
     return [false, gate + ': ' + s.pass + ' passed, below its floor of ' + floor + '. Checks were lost or did not run.'];
   return [true, gate + ': ' + s.pass + ' passed, 0 failed' + (s.red === null || s.red === undefined ? '' : ', ' + s.red + ' expected red') + ', floor ' + floor
@@ -173,11 +195,17 @@ function selfTest() {
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
   let table = null;
   try { table = JSON.parse(fs.readFileSync(FLOORS, 'utf8')); } catch (e) { /* reported below */ }
-  const fl = (table && table.floors) || {};
-  const sound = table && Object.keys(fl).length && Object.values(fl).every(v => Number.isInteger(v) && v > 0);
+  const fl = (table && table.floors) || {}, cap = (table && table.expected_red_max) || {};
+  const unset = Object.keys(fl).filter(k => fl[k] === 0);
+  const sound = table && Object.keys(fl).length && !unset.length && Object.values(fl).every(v => Number.isInteger(v) && v > 0);
   if (!sound) bad++;
-  console.log((sound ? '  ok   ' : 'FAIL ') + 'tests/floors.json ' + (sound ? 'reads, and every floor is a whole number above zero' : 'is unreadable, empty, or holds a floor that is not a whole number above zero'));
-  console.log('\n===== ' + (CASES.length + 1 - bad) + ' passed, ' + bad + ' failed =====');
+  console.log((sound ? '  ok   ' : 'FAIL ') + 'tests/floors.json ' + (sound ? 'reads, and every floor is a whole number above zero'
+    : unset.length ? 'has floor not set (0) for ' + unset.join(', ')
+    : 'is unreadable, empty, or holds a floor that is not a whole number above zero'));
+  const capped = typeof cap === 'object' && !Array.isArray(cap) && Object.values(cap).every(v => Number.isInteger(v) && v >= 0);
+  if (!capped) bad++;
+  console.log((capped ? '  ok   ' : 'FAIL ') + 'tests/floors.json ' + (capped ? 'expected_red_max holds only whole numbers' : 'expected_red_max holds a ceiling that is not a whole number'));
+  console.log('\n===== ' + (CASES.length + 2 - bad) + ' passed, ' + bad + ' failed =====');
   return bad ? 1 : 0;
 }
 
