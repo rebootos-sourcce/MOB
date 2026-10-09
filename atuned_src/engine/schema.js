@@ -1027,7 +1027,15 @@ function validateProfile(o){
  if(o.story&&typeof o.story==='object'){
   if(Array.isArray(o.story.entries))p.story.entries=o.story.entries
    .map(function(x,i){return vEntry(errs,i,x);}).filter(Boolean);
-  else if(o.story.entries!==undefined)errs.push('story.entries is not a list');}
+  else if(o.story.entries!==undefined)errs.push('story.entries is not a list');
+  /* THE STORY PAGE'S DRAFT, the words typed and not yet committed. Only
+     entries crossed here, so a draft written to the record was dropped on the
+     next load and a reload emptied the box (pass 4). The person's own text,
+     checked as a string and never capped, for the reason vEntry gives; an
+     empty one is no draft. Missing is an older record and has none. */
+  if(o.story.draft!==undefined&&o.story.draft!==null){
+   var sd=vStr(errs,'story.draft',o.story.draft);
+   if(sd!==null&&sd.trim())p.story.draft=sd;}}
  else if(o.story!==undefined&&o.story!==null)errs.push('story is not an object');
  if(o.meter&&typeof o.meter==='object'){
   var mp=vRange(errs,'meter.lines',o.meter.lines,0,1e9);

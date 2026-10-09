@@ -65,6 +65,7 @@ function stMark(k,word,term,cls,tail){
 /* ---- the journal ---- */
 function stRender(){
  var h=document.getElementById('story'); if(!h) return;
+ stDraftBack();
  var p=ST_PARSED;
  var out='<div class="st-flow" id="stflow" data-focus="'+STV.focus+'">'
   /* ---- the write column: the journal, with Source AI inside it ---- */
@@ -300,7 +301,10 @@ function stRender(){
  stAnaWire();
  stLawWire();
  var cl=document.getElementById('stclear');
- if(cl)cl.onclick=function(){ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;srcFresh();stRender();};
+ /* Clear writes at once rather than in half a second, so a reload straight
+    after it never brings the words back */
+ if(cl)cl.onclick=function(){ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;srcFresh();
+  stDraft();if(STV.draftT)stDraftSave();stRender();};
  var ap=document.getElementById('stapply');
  /* a reply still in the line is the person's words, so Commit sends it first
     rather than committing the entry without it */
@@ -317,7 +321,8 @@ function stRender(){
    sorted, which column has the room, which list is up, and whether the bank
    is open. Kept across a return to the tab, never saved.
    ============================================================ */
-var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:false,law:false};
+var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:false,law:false,
+ unsaved:null,draftT:null,draftFail:false};
 /* the one width the page changes shape at is the one the product stacks its
    columns at, so the Story cannot be in three columns while the rails are
    already one. */
@@ -481,12 +486,21 @@ function stCommit(){
   status('Nothing committed on a worked example.','fail');
   return {ok:false,why:'example'};}
  var kept=stFound(), k=ST_PARSED.imprints.length, bands=ST_PARSED.bands;
+ /* A PRESS AFTER THE BROWSER REFUSED THE LAST ONE ASKS IT AGAIN, AND WRITES
+    NOTHING TWICE. A refused save leaves the entry in this session and the
+    words in the box (below), so the same words pressed again are the same
+    entry: applying them again would put a second entry on the record and the
+    charge on the field twice. Keyed on the refused entry's date and its exact
+    words, so a story that is typed again on purpose another time is a new
+    entry, as it always was. */
+ var es0=(CURP&&CURP.story&&CURP.story.entries)||[], last=es0[es0.length-1];
+ var again=!!(STV.unsaved&&last&&last.t===STV.unsaved&&last.text===ST_TEXT);
  /* NO READING MOVES ON AN ENTRY THAT FOUND NOTHING, 21.I1. applyStory also
     pulls every charge down on coherent language even when k is 0, so calling
     it here would still move the field on words the sniffer read as nothing
     in particular. The entry is kept; the field is not touched at all, and
     undoPush only runs for the branch that can actually be undone. */
- if(k){
+ if(k&&!again){
   /* the field is about to change and until now there was no way back */
   undoPush('committing the story');
   applyStory(ST_TEXT); verpApply(ST_TEXT); leanApply(ST_TEXT);
@@ -501,8 +515,10 @@ function stCommit(){
      guard above sees to it, so this mirrors and writes the way every slider
      does. */
   saveYou();}
- var entT=null;
+ var entT=null, saved=true;
  if(CURP){CURP.story=CURP.story||{entries:[]};
+  if(again)entT=last.t;
+  else{
   /* lex, the lexicon that read it, 19.B6, so a later reading can say whether
      it is reading these words the way they were read at the time. asked,
      what Source AI asked while it was written, 20.H5: a kind and a seat for
@@ -516,8 +532,42 @@ function stCommit(){
      name it on the answer to What changed (relPick's from). STV.lastT sits
      beside STV.lastFound because they are one fact: what the last commit
      found, and which entry found it. */
-  entT=ent.t;
-  pSave();pSnap();}
+  entT=ent.t;}
+  /* the draft these words were is taken off in the same write that puts the
+     entry on, so a reload never offers back a story already committed. Only
+     when it is these words: onboarding and the tutorial commit their own text
+     through here, and a half written story waiting on the Story page is not
+     theirs to clear. */
+  var wasDraft=CURP.story.draft===ST_TEXT;
+  if(wasDraft)delete CURP.story.draft;
+  stDraftStop();
+  /* THE COMMIT SAID "Committed" WHETHER OR NOT ANYTHING WAS SAVED, pass 4,
+     probe 6. pSave's answer was dropped, so with a store that refused every
+     write the line read "Committed. 4 imprints written to the field." and a
+     reload took the entry, the meter and the evidence away. The answer is
+     read now and nothing below claims what it did not get. */
+  saved=pSave();
+  /* AND THE DEBOUNCED WRITE saveYou SET GOING ABOVE IS THIS SAME WRITE.
+     persistNow writes CURP after saveProfile, which is what pSave just did, so
+     the timer could only write it again; and on a refusing store it fired 400
+     ms after this line and put its own "Not saved. Error." over the commit's
+     report, which is the line probe 6 then read off the release. */
+  if(typeof YOU_T!=='undefined'&&YOU_T){clearTimeout(YOU_T);YOU_T=null;}
+  if(saved){pSnap(); STV.unsaved=null;}
+  else{ STV.unsaved=entT; if(wasDraft)CURP.story.draft=ST_TEXT; }}
+ /* NOT SAVED: THE ENTRY STAYS IN THIS SESSION AND THE WORDS STAY IN THE BOX.
+    The same answer relAnswer and obCommit give a refused save, the write kept
+    in memory and said to be off the record, so onboarding's first run still
+    reaches its release in a browser that keeps nothing. What this adds is the
+    box: clearing it would leave the person's words only in an entry a reload
+    throws away, and the words are the one thing here that cannot be made
+    again. A press on the same words asks the browser again, see again above. */
+ if(!saved){
+  STV.lastFound=kept; STV.lastT=entT;
+  toYou();syncCh();if(typeof stRender==='function')stRender();render();
+  status('This browser would not save. The entry is on this page and not on your record. '
+   +'Your words are still in the box, so copy them before you reload.','fail');
+  return {ok:true,k:k,kept:kept,bands:bands,text:ST_TEXT,t:entT,saved:false};}
  /* a new entry is a new conversation, so moving on from the last one does
     not silence the next. */
  var text=ST_TEXT;
@@ -536,10 +586,47 @@ function stCommit(){
   :'Kept. Nothing here read as charge, so nothing moved.')
   +(hid?' '+hid+(hid===1?' word':' words')+' hidden behind stars by dictation could not be read.':''));
  if(typeof sfx==='function')sfx('kept');
- return {ok:true,k:k,kept:kept,bands:bands,text:text,t:entT};}
+ return {ok:true,k:k,kept:kept,bands:bands,text:text,t:entT,saved:true};}
+
+/* ============================================================
+   THE DRAFT IS KEPT ON THE RECORD, the way the first run keeps its own
+   (engine/journey.js, the walk's text; ui/onboard.js, obDraft). Pass 4 typed
+   106 characters on the Story page, reloaded, and the box was empty: TDD
+   section 47, "No user input should be silently discarded."
+
+   It sits on the person's own record beside the entries it will become, so
+   deleting the record deletes it, and it is checked at the boundary as the
+   string it is (engine/schema.js). The record copy follows the box the moment
+   the text changes, so a redraw inside the half second never brings back
+   words that were just deleted; only the write waits, half a second after
+   the last change, as obDraft does. A worked example is not a record and is
+   never written. Commit and Clear take it off.
+   ============================================================ */
+function stDraft(){
+ if(!CURP||!CURP.story||(typeof S!=='undefined'&&S.who!==0))return;
+ var v=(ST_TEXT&&ST_TEXT.trim())?ST_TEXT:null;
+ if((CURP.story.draft||null)===v)return;
+ if(v===null)delete CURP.story.draft; else CURP.story.draft=v;
+ stDraftStop(); STV.draftT=setTimeout(stDraftSave,500);}
+function stDraftStop(){ if(STV.draftT){clearTimeout(STV.draftT); STV.draftT=null;} }
+/* a refusal is said once until a save lands again, because a line on every
+   pause in typing would bury the box it is about */
+function stDraftSave(){
+ stDraftStop();
+ var ok=pSave();
+ if(!ok&&!STV.draftFail&&typeof status==='function')
+  status('This browser would not save. Your words are in the box and not on your record, so copy them before you reload.','fail');
+ STV.draftFail=!ok;}
+/* back into the box when the box is empty, which is a reload or a commit of
+   somebody else's words through stCommit */
+function stDraftBack(){
+ if(ST_TEXT||!CURP||!CURP.story||typeof CURP.story.draft!=='string')return;
+ if(typeof S!=='undefined'&&S.who!==0)return;
+ ST_TEXT=CURP.story.draft; ST_PARSED=ST_TEXT.trim()?parseStory(ST_TEXT):null;}
 
 /* refresh only what the text moves, so typing never loses the caret */
 function stRefresh(){
+ stDraft();
  var keep=document.getElementById('sttext'), pos=keep?keep.selectionStart:0;
  /* the counter is gone, see stRender: nothing is written into .st-ct */
  var ap=document.getElementById('stapply');
@@ -2395,7 +2482,7 @@ function stMic(){
    if(e.results[i].isFinal) fin+=t; else live+=t;}
   if(fin) heard=(heard+' '+fin).trim();
   ST_TEXT=(heard+' '+live).trim();
-  ST_PARSED=ST_TEXT?parseStory(ST_TEXT):null; stRender();
+  ST_PARSED=ST_TEXT?parseStory(ST_TEXT):null; stDraft(); stRender();
   var hid=maskedRuns(heard).length;
   if(fin&&hid>hidAt){
    status('Dictation hid '+(hid-hidAt===1?'a word':(hid-hidAt)+' words')
