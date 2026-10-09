@@ -951,7 +951,10 @@ function sheetShut(){var s=$('sheet'); if(s)s.hidden=true;}
    ============================================================ */
 function recordImportHtml(p){
  p=p||'sh';
+ /* the only copy, M9: where the record lives, or that the browser cleared it,
+    said beside the control that answers it. ui/keep.js owns the words. */
  return '<div class="sh-imp">'
+  +(typeof keepNoteHtml==='function'?keepNoteHtml(p):'')
   +'<p class="sh-p">Took the reading on the web? Load the record you saved and it '
   +'continues from there. Nothing is fetched: the file is the handoff.</p>'
   +'<textarea id="'+p+'imp" class="sh-ta" rows="3" spellcheck="false" '
@@ -977,6 +980,8 @@ function recordImportWire(p,after){
   if(!np){ var e=(typeof importError==='function'&&importError())||['it was refused'];
    impSay('Not loaded. '+e.join('. ')+'.',1); return; }
   recordLanded();
+  /* a record put back answers a cleared store, ui/keep.js */
+  if(typeof keepLanded==='function')keepLanded();
   if(typeof status==='function')status('Record loaded.');
   /* THE HOST REDRAWS FIRST AND THE MESSAGE IS WRITTEN AFTER IT.
      The account area prints the record's own name, so it has to redraw on a
@@ -988,6 +993,7 @@ function recordImportWire(p,after){
   if(typeof after==='function')after(np);
   impSay('Loaded '+(np.name||'the record')+'. Nothing else was touched.');};
  var ig;
+ if((ig=$(p+'keepsave'))&&typeof keepFile==='function')ig.onclick=function(){keepFile();};
  if((ig=$(p+'impgo')))ig.onclick=function(){impRun(($(p+'imp')||{}).value||'');};
  if((ig=$(p+'impf')))ig.onclick=function(){var f=$(p+'impfile'); if(f)f.click();};
  if((ig=$(p+'impfile')))ig.onchange=function(){

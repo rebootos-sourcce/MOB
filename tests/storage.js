@@ -130,6 +130,18 @@ const account = pg => pg.evaluate(() => {
     save: sv ? { text: sv.textContent.trim(), w: r.width, h: r.height } : null,
     file: !!document.getElementById('acimpf') };
 });
+/* WHAT A BROWSER CLEARING THE STORE LOOKS LIKE. It happens while the app is
+   shut, so every write the person already made has landed. A story commit
+   queues a debounced write of the field (persistYou, 400ms) that pagehide
+   flushes, and clearing the key inside that window had the closing page write
+   the record straight back: the first cut of this gate measured exactly that
+   and read it as the boot writing over the marker. So the pending write is
+   let land first, and only then is the record key taken out from under it. */
+const clearRecord = async pg => {
+  await pg.waitForFunction(() => typeof YOU_T === 'undefined' || !YOU_T, null, { timeout: 5000 }).catch(() => null);
+  return pg.evaluate(() => { localStorage.removeItem(PKEY);
+    return localStorage.getItem(typeof KEEP_KEY !== 'undefined' ? KEEP_KEY : 'source.profiles.saved'); });
+};
 const big = b => b.w >= 44 && b.h >= 44;
 const fits = s => !!s.line.box && s.line.box.l >= 0 && s.line.box.r <= s.vw + 0.5 && s.line.box.t >= 0
   && s.line.box.b <= s.vh + 0.5 && s.sw <= s.vw;
@@ -240,8 +252,7 @@ const btn = (s, t) => s.line.btns.find(b => b.text === t);
     ok(s.calls === 1, 'a new session asks once again, read ' + s.calls + ' asks');
 
     /* the browser clears the record and leaves the marker */
-    const mark0 = await pg.evaluate(() => { localStorage.removeItem(PKEY);
-      return localStorage.getItem(typeof KEEP_KEY !== 'undefined' ? KEEP_KEY : 'source.profiles.saved'); });
+    const mark0 = await clearRecord(pg);
     ok(!!mark0, 'the marker is there before the store is cleared, ' + mark0);
     await reload(pg);
     s = await state(pg);
@@ -312,7 +323,7 @@ const btn = (s, t) => s.line.btns.find(b => b.text === t);
     const { cx, pg, errs } = await fresh(browser, 'no', 390, 844);
     await open(pg);
     await commit(pg, STORY1); await settle(pg);
-    await pg.evaluate(() => localStorage.removeItem(PKEY));
+    await clearRecord(pg);
     await open(pg, false);
     await pg.waitForFunction(() => { const m = document.getElementById('loginmsg'); return m && m.textContent; }, null, { timeout: 6000 }).catch(() => null);
     const s = await state(pg);
@@ -333,8 +344,9 @@ const btn = (s, t) => s.line.btns.find(b => b.text === t);
     const signed = await pg.evaluate(() => typeof authSession === 'function' && !!authSession());
     ok(signed, 'the session is held for this case');
     ok(s.calls === 0 && !s.line.shown && s.mark === null, 'nothing is asked, shown or marked: ' + s.calls + ' asks, marker ' + s.mark);
-    await pg.evaluate(() => { localStorage.setItem(typeof KEEP_KEY !== 'undefined' ? KEEP_KEY : 'source.profiles.saved',
-      JSON.stringify({ t: Date.now(), n: 1, p: 1 })); localStorage.removeItem(PKEY); });
+    await pg.evaluate(() => localStorage.setItem(typeof KEEP_KEY !== 'undefined' ? KEEP_KEY : 'source.profiles.saved',
+      JSON.stringify({ t: Date.now(), n: 1, p: 1 })));
+    await clearRecord(pg);
     await reload(pg);
     s = await state(pg);
     ok(!s.line.shown && !LINE_LOST.test(s.line.text), 'an empty store under a session is not read as a loss here');
