@@ -7248,6 +7248,8 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
 .obx[data-step="5"]{--k:5;--fs:.94;--fo:.62;--ro:.7;--ax:26vw}
 .obx[data-step="6"]{--k:6;--fs:1;--fo:1;--ro:.86;--ax:27vw}
 .obx[data-step="7"]{--k:7;--fs:.96;--fo:.92;--ro:1;--ax:27vw}
+/* the end card, F13, past the sheet: it stands where the card before the release stood */
+.obx[data-step="9"]{--k:7;--fs:.96;--fo:.92;--ro:1;--ax:27vw}
 /* ---- the top: the wordmark, the rail, the way out ---- */
 .obx-top{position:absolute;left:0;right:0;top:0;z-index:4;height:76px;display:flex;align-items:center;
  justify-content:space-between;padding:0 32px}
@@ -7275,7 +7277,7 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
  transition:color var(--t-micro) var(--ease-out),border-color var(--t-micro) var(--ease-out)}
 .obx-x:hover{color:var(--ink);border-color:color-mix(in srgb,var(--ink) 34%,transparent)}
 /* the two steps that carry their own way out do not need a second one */
-.obx[data-step="0"] .obx-x,.obx[data-step="7"] .obx-x{visibility:hidden}
+.obx[data-step="0"] .obx-x,.obx[data-step="7"] .obx-x,.obx[data-step="9"] .obx-x{visibility:hidden}
 /* ---- the words: a column, not a card ---- */
 /* the words start clear of the ring at its widest, the hero pose: its centre
    at 27vw and its radius .53 of the body's height, and a margin past it */
@@ -7366,7 +7368,7 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
 @media(max-width:899px){
  .obx{--fh:min(38vh,300px);--ax:50vw;--ay:calc(70px + var(--fh) * .4706);--st:calc(70px + var(--fh) + 8px)}
  .obx[data-step="1"],.obx[data-step="2"],.obx[data-step="3"],.obx[data-step="5"],
- .obx[data-step="6"],.obx[data-step="7"]{--fs:.5;--ax:50vw;--ay:calc(62px + var(--fh) * .2353);
+ .obx[data-step="6"],.obx[data-step="7"],.obx[data-step="9"]{--fs:.5;--ax:50vw;--ay:calc(62px + var(--fh) * .2353);
   --st:calc(62px + var(--fh) * .5 + 6px)}
  .obx[data-step="2"]{--fo:.42}
  .obx[data-step="4"]{--fs:1;--ax:50vw;--ay:calc(70px + var(--fh) * .4706)}
@@ -7405,7 +7407,7 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
  .obx-fn b{font-size:12px}
  .obx-fn i{display:none}
  /* the emblem is too small to carry a name, and the card names every seat */
- .obx[data-step="5"] .obx-fn,.obx[data-step="6"] .obx-fn,.obx[data-step="7"] .obx-fn{opacity:0}}
+ .obx[data-step="5"] .obx-fn,.obx[data-step="6"] .obx-fn,.obx[data-step="7"] .obx-fn,.obx[data-step="9"] .obx-fn{opacity:0}}
 /* REDUCED MOTION GETS THE END STATE. The poses still apply; nothing travels
    to them. A light that carries a reading still shows, at once. */
 @media (prefers-reduced-motion:reduce){

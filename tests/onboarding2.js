@@ -383,7 +383,14 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
  ok(back.id===kept.id&&back.n===kept.n&&back.text===kept.text,
   'the same profile comes back after a reload, with the same story, '+back.n+' entries of '+kept.n);
  ok(back.ob===kept.ob,'and every yes, no and correction comes back as written: '+back.ob);
- ok(back.onboarded,'the record still says onboarding was finished');
+ /* F13 MOVED WHERE THE FIRST RUN ENDS. It ended at the hand off to the
+    release, so this asserted the record said onboarding was finished. It ends
+    on the end card now (ui/onboard.js obEndCard), after the release, so a
+    record whose release landed and whose end card was never closed is not
+    finished, and says it is at its end. tests/journey2.js walks the rest. */
+ const jr=await page.evaluate(()=>(typeof journeyRead==='function'&&CURP)?journeyRead(CURP):null);
+ ok(!back.onboarded&&!!jr&&jr.at==='end'&&jr.landed,'the record says the first run reached its end card and has not been closed yet: '
+  +JSON.stringify(jr&&{at:jr.at,landed:jr.landed,onboarded:back.onboarded}));
  const vback=await page.evaluate(()=>((CURP&&CURP.practice&&CURP.practice.evidence)||[])
   .map(e=>({m:e.metric,v:e.value,p:e.pattern_id,s:e.story_t})));
  ok(vback.length>0&&JSON.stringify(vback)===JSON.stringify(said.ev.map(e=>({m:e.m,v:e.v,p:e.p,s:e.s}))),
@@ -391,8 +398,10 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
  await page.waitForSelector('#loginb-skip',{timeout:8000}).catch(()=>{});
  if(await page.$('#loginb-skip'))await page.click('#loginb-skip');
  await page.waitForTimeout(300);
- const replay=await page.evaluate(()=>!!(typeof OB!=='undefined'&&OB.open));
- ok(!replay,'and the welcome sheet does not replay on the next visit');
+ /* and the next visit opens that end card, never the welcome again (F13) */
+ const replay=await page.evaluate(()=>({open:!!(typeof OB!=='undefined'&&OB.open),step:OB.step,end:OB_END}));
+ ok(replay.open&&replay.step===replay.end,'and the welcome sheet does not replay on the next visit: the end of the first run opens, '
+  +JSON.stringify(replay));
  /* YOUR PATTERNS, after the reload, on the Field's own rail: the answer is
     on each released pattern's row as what the person said, and the graph
     counts it as evidence for nothing. Every row is listed so the check does

@@ -3,12 +3,21 @@
    record, and nothing here touches a host. engine/journey.js is
    what reads them.
 
-   PORTED, NOT REBUILT, from 3869d96 on worktree-agent-ad7f4b5294abbc82c,
-   and only the two rows the first release's size needs (F5 in
-   REVIEW-funnel/FINAL-SPEC.md). The rest of that file, the journey
-   record's version, its event list, its ceilings and the ten integrity
-   questions, is the journey record (F13) and lands with it: a table
-   for a record nothing stores yet is a second answer waiting to drift.
+   PORTED, NOT REBUILT, from 3869d96 on worktree-agent-ad7f4b5294abbc82c.
+   The first two rows came across with F5 (the first release's size).
+   The journey record's tables (F13) came across with the record itself,
+   at the foot of this file: its version, its event list, its ceiling and
+   the stations of the first run. Two parts of that file did not, and the
+   reason is said once here so nobody goes looking for them:
+
+     the ten integrity questions   they need screens of their own (slice O7)
+                                   and the owner picks the ten laws from the
+                                   twenty one (round PA), so a table of ten
+                                   would be a second answer to an open
+                                   ruling. Kept at 3869d96.
+     the five channel stem         the first release's own sentence, round
+                                   OX ruling 8, which belongs to the release
+                                   screen and its package, not to this one.
    ============================================================ */
 
 /* THE MINI RELEASE'S SIZE, in addresses and not in lines. Ruled, round PA,
@@ -58,3 +67,49 @@ var OB_PLACES=[{k:'pelvis',n:'Pelvis',b:'Root'},{k:'belly',n:'Belly',b:'Sacral'}
  {k:'stomach',n:'Stomach',b:'Solar'},{k:'chest',n:'Chest',b:'Heart'},
  {k:'throat',n:'Throat',b:'Throat'},{k:'forehead',n:'Forehead',b:'3rd Eye'},
  {k:'head',n:'Head',b:'Crown'}];
+
+/* ---------------- the journey record, F13 ---------------- */
+/* THE JOURNEY RECORD'S OWN VERSION, like PRACTICE_SCHEMA_V and TRACE_V. It is
+   not SCHEMA_V and moving it does not move that. */
+const JOURNEY_V=1;
+/* THE EVENTS OF THE ONBOARDING TDD, SECTION 46, as a closed set, lower snake
+   case, in the document's order. The gate reads the list off the document
+   (tests/journey.js) and holds this one equal to it, so it is never typed twice
+   in a way that can drift. An event outside it is refused by name at the
+   boundary, so a typo is a refusal and never a silent new kind. Not every
+   event has a writer yet: the set is what a record may carry, and which of
+   them this build writes is said beside each writer in ui/onboard.js. */
+const JOURNEY_EVENTS=[
+ 'funnel_started','ground_selected','starter_gift_issued','account_created',
+ 'tutorial_started','story_submitted','story_signal_generated',
+ 'story_signal_confirmed','story_signal_rejected','story_adjustment_submitted',
+ 'story_signal_updated','somatic_setup_started','first_release_started',
+ 'pattern_released','first_release_completed','post_release_observation',
+ 'integrity_assessment_started','integrity_question_answered',
+ 'integrity_assessment_completed','archetype_assessment_started',
+ 'archetype_question_answered','archetype_assessment_completed',
+ 'tutorial_completed','software_entered','pattern_rerun','free_practice_started',
+ 'referral_started','new_ground_limit_reached','tier_viewed','tier_selected',
+ 'payment_completed'];
+/* THE LOG'S CEILING. Over it a line is refused by name rather than evicting the
+   oldest, which is obQueue's rule in engine/outbox.js and for the same reason:
+   a log that forgets its beginning cannot say what a person did on the way in.
+   A first run writes about fifteen lines, so five hundred is not reached by
+   anybody walking the product. One number, so a ruling on it is one edit. */
+const JOURNEY_LOG_MAX=500;
+/* WHERE THE GIFT WAS ISSUED. The app issues it when a starting point is picked
+   (TDD section 10, "immediately after selecting the starting point"). The
+   funnel is the other origin the TDD names; nothing in this build writes it,
+   and a record that carries it is still a good record. */
+const JOURNEY_SRC=['funnel','app'];
+/* THE STATIONS OF THE FIRST RUN, in order, which is where a reload puts a
+   person back. The first eight are the onboarding sheet's own steps, the ones
+   its rail draws (OB_NSTEPS in ui/onboard.js is read off this list, never
+   typed beside it). release is the hand off to the first release, and end is
+   the card after it that shows what the person made. */
+const JOURNEY_WALK=['arrive','ask','settle','feel','body','story','mirror','next','release','end'];
+/* THE TWO DOORS INTO THE FIRST RELEASE: the onboarding sheet, and the Day One
+   tutorial (ui/tutorial.js). The walk says which, because the two plan the
+   release from different lists: the sheet from the places the person said yes
+   to, the tutorial from what the story read. */
+const JOURNEY_DOORS=['onboarding','tutorial'];
