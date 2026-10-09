@@ -1845,7 +1845,12 @@ function sniffStory(text){
  var axes=sniffAxes(p);
  return {
   axes:      axes,
-  saboteurs: sniffSaboteurs(axes).slice(0,SAB_SHOW),
+  /* EVERY POSITIVE CANDIDATE, S3 of the 9 October sniffer audit. This was
+     sliced to SAB_SHOW here, so the domain layer decided what a screen shows
+     and a seventh candidate was not in the output for anything to read.
+     SAB_SHOW is what a renderer slices to; no screen renders this list yet,
+     the tutorial reads only offer. */
+  saboteurs: sniffSaboteurs(axes),
   laws:      sniffLaws(text),
   flow:      sniffFlow(text),
   gates:     sniffGates(text),
