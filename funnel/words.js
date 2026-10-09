@@ -33,7 +33,7 @@ const argOf = f => { const i = process.argv.indexOf(f); return i < 0 ? null : pr
 
 (async () => {
   const browser = await chromium.launch(
-    { executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+    { executablePath: process.env.CHROME || '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
   const out = {};
 
   for (const p of PAGES) {

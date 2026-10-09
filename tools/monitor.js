@@ -65,7 +65,7 @@ const FLOOR_CANVAS=60;
  const subject=sh('git -C '+path.dirname(FILE)+' log -1 --pretty=%s');
  const dirty=sh('git -C '+path.dirname(FILE)+' status --porcelain')?'DIRTY':'clean';
  const rows=[], fails=[];
- const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
 
  /* the noscript guard, checked first because it is the cheapest and it is the
     one that prevents the failure mode that has already cost a mayday. */

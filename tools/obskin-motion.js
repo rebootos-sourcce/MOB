@@ -47,7 +47,7 @@ const MOVES=[
    document.querySelector('[data-ob=mirrorcommit]').click(); }]];
 
 (async()=>{
- const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
  for(const [w,h] of SIZES){
   /* ---- one: real time ---- */
   {const vdir=path.join(OUT,'vid-'+w); fs.mkdirSync(vdir,{recursive:true});

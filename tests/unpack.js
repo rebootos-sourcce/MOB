@@ -86,7 +86,7 @@ function scan(arg){
  return {missing:false,found:found};}
 
 (async()=>{
-const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
 const sentences=Object.keys(T).map(k=>T[k]);
 const run=(p,sel,rules)=>p.evaluate(scan,{sel,rules,table:T,sentences});
 
