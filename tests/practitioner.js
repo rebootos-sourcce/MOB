@@ -139,6 +139,29 @@ ok(detail.seatTop===detail.top,'the heaviest seat, opened from its arc, leads wi
 ok(/[Pp]udendal|[Ii]liac|[Vv]agus|[Cc]eliac|[Ss]ciatic/.test(detail.addrs),
  'at least one real nerve name prints among the held addresses');
 ok(detail.addrs.indexOf('not built yet')<0,'the held-address list is not a stub');
+/* THE UNPACK RULE ON THIS PAGE, the other fix in round PT2 (ps-practitioner
+   5191c99, on main as ded9adc). A design review found the tier word printed
+   bare, "Reads severe today", and the seat named with nothing beside it, which
+   round PO's rule fails as a gate and not as a preference. Nothing held the
+   fix: with unp() swapped back to esc() on the row and the ring, and the seat
+   sentence emptied, every check above stays green, measured on a scratch build
+   before this was trusted. Each sentence is read off unpackOf, so a check
+   cannot pass on a tip that says something the table does not. */
+const unpacked=await p.evaluate(()=>{
+ var tier=function(u){return !!u&&unpackOf(u.textContent,'tier').length>=12
+  &&u.getAttribute('data-tip')===unpackOf(u.textContent,'tier');};
+ var rows=[].map.call(document.querySelectorAll('#prac .pr-client'),function(r){
+  return {nm:(r.textContent.match(/^\S+/)||[''])[0],
+   ok:[].some.call(r.querySelectorAll('.tipu'),tier)};});
+ var seat=pracRead(PEOPLE[PRAC_SEL]).loaded[0].b;
+ return {rows:rows, n:rows.length, ring:tier(document.querySelector('#prac .pr-ringtier .tipu')),
+  seat:seat, seatSay:((document.querySelector('#rdrill .ad-p')||{}).textContent||''), seatWant:unpackOf(seat,'seat')};});
+ok(unpacked.n>=10&&unpacked.rows.every(r=>r.ok),
+ 'every client row carries its tier word\'s own meaning on the word, bare on: '
+ +JSON.stringify(unpacked.rows.filter(r=>!r.ok).map(r=>r.nm)));
+ok(unpacked.ring,'the tier word in the ring carries its own meaning on the word');
+ok(unpacked.seatWant.length>=12&&unpacked.seatSay===unpacked.seatWant,
+ 'the seat drill prints what the '+unpacked.seat+' seat is beside its name, got "'+unpacked.seatSay+'"');
 /* this card reads structure only: PRACTITIONER-STORY.md 4.1, the story is
    the one thing that never crosses without its own separate yes */
 const storyText=await p.evaluate(()=>(CURP&&CURP.story&&CURP.story.entries||[]).length);
