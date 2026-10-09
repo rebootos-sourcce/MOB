@@ -232,12 +232,21 @@ function tutRender(){
    body='<p class="ob-p">With nothing named yet, there is no chain to draw '
     +'from this one. The next entry that lands somewhere will have one.</p>';
   }else{
+   /* THE STORY IS THE FETTER THE READING PUT HERE, never the address's own.
+      This printed kept[0].cf, the fetter the ADDRESS carries in the 112
+      table, and the two part on a stated word: "I am exhausted." reads as
+      apathy, stated, and parseStory seats it at the solar seat's first
+      address, Pride, whose own fetter is anger. So the card said Story,
+      Anger, over a cost line about the Apathy axis. The imprint that put
+      kept[0] on this card carries what the words gave, the same list
+      tutSeatLine reads on the card before. */
+   var im0=(kept[0]&&TUT.parsed)?TUT.parsed.imprints.filter(function(x){return x.node===kept[0].i&&x.fetter;})[0]:null;
    body='<p class="ob-p">A situation can trigger a story. The story can move '
     +'the body. The body can shape behaviour. The behaviour can repeat the '
     +'situation.</p>'
     +'<div class="ob-grid">'
     +[['Situation', c.text.length>60?c.text.slice(0,60)+'…':c.text],
-      ['Story', kept[0]?kept[0].cf:'not named'],
+      ['Story', im0?im0.fetter:'not named'],
       ['Body response', kept[0]?kept[0].b:'not named'],
       ['What it costs', off?off.because[0]:'not enough here yet to say']]
      /* the body's row wears its seat's colour, the seat lit on the figure
