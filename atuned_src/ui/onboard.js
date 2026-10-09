@@ -788,10 +788,13 @@ function obRender(){
   out=obCard('Arrive','This is you, and it is okay.',
    '<p class="ob-p">No judgment. Nothing here grades you. This one is for you.</p>'
    +'<p class="ob-p ob-dim">A few minutes. One real thing to write. Nothing to fill in.</p>'
-   /* THE PRIVACY LINE IS A FACT ABOUT THE BUILD AND NOT A PROMISE. One file,
-      no network: the storyboard's three fragments say it three times, so it
-      is said once, as the thing that is actually true. */
-   +'<p class="ob-p ob-foot">Nothing you write leaves this device.</p>',
+   /* THE PRIVACY LINE IS A FACT ABOUT THE BUILD AND NOT A PROMISE. It said
+      "Nothing you write leaves this device" while obOpen had just sent a
+      random code (authFunnelStart) and the next card sends the topic picked
+      (authFunnelCheckpoint), so it says what goes, here, before the pick.
+      tests/copy.js holds it. */
+   +'<p class="ob-p ob-foot">Your story and your name stay on this device. Our server gets a '
+   +'random code for this browser, the topic you pick next, and which steps you finish.</p>',
    '<button type="button" class="btn pri" data-ob="next">Come in</button>'
    +'<button type="button" class="btn" data-ob="skip">Not now</button>');
  }

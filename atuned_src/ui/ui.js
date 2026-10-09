@@ -1628,9 +1628,15 @@ function loop(ts){
    pPersist() refused every write and every save in the shipped app reported
    a failure it had caused. Nothing was ever written. The functional gate now
    saves, reloads and reads back. */
+/* AND A WRITE OF THE RECORD THAT LANDED IS SEEN HERE, the one place every
+   profile write passes, after setItem has returned. ui/keep.js keeps its
+   marker and asks the browser to keep the storage from it. Its own guard
+   swallows anything it throws, so a save that landed is never reported as
+   one that failed because of what happened after it. */
 try{ localStorage.getItem(PKEY);
  bindStore(function(k){return localStorage.getItem(k);},
-           function(k,v){localStorage.setItem(k,v);}); }catch(e){}
+           function(k,v){localStorage.setItem(k,v);
+            if(k===PKEY&&typeof keepWrote==='function'){ try{ keepWrote(); }catch(e){} }}); }catch(e){}
 /* THE PAYWALL SEAM, round NW, bound the same way bindStore is just above: the host hands the
    UI one function and the UI stays ignorant of what is on the other side of it. planOpen in
    ui/panels.js already calls PLAN_HOST(what,tier) and already says "Billing is not connected
@@ -1739,7 +1745,12 @@ step('first profile',function(){loadP(0);});
 step('the stored record',function(){
  try{ PROFILES=pStore(); }catch(e){ PROFILES=[]; }
  var blank=!PROFILES.length;
- if(blank){ pNew('You'); }
+ /* A STORE THE BROWSER CLEARED IS NOT A FIRST VISIT, M9. A marker over an
+    empty store says a record was saved here and is gone, so the blank is
+    made in memory and nothing is written over the evidence until the person
+    writes something; ui/keep.js says so once the boot sheet lifts and offers
+    the import. With no marker this is exactly the first visit it always was. */
+ if(blank){ if(typeof keepLost==='function'&&keepLost())keepBlank('You'); else pNew('You'); }
  /* AN EMPTY LIST IS TWO DIFFERENT THINGS, AND ONLY ONE OF THEM IS SILENT.
     A first visit gets a blank "You" and nothing to say. A store pStore could
     not read also arrives here as an empty list, and it used to get the same
@@ -1858,6 +1869,12 @@ step('login',function(){
     login (z-index 9999), so the door is already standing when it lifts. The
     developer button on the sheet closes it again: see panels.js. */
  try{ loginBoot(); }catch(e){}});
+/* THE ONLY COPY, M9, ui/keep.js. Last of the steps, so every write before it
+   is the boot's and every write after it is the person's: the first of those
+   asks the browser to keep the storage, and a store found cleared is said
+   here, once the sheet lifts. Its own step, so a throw costs the notice and
+   not the start up. */
+step('the only copy',function(){ if(typeof keepBoot==='function')keepBoot(); });
 /* THE FRAME LOOP IS NOT OPTIONAL AND IS STARTED LAST, outside the steps, so
    that even a start up which lost several pieces still paints. A loop that
    throws would stop itself on the first frame, so the body is guarded rather

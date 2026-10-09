@@ -951,7 +951,10 @@ function sheetShut(){var s=$('sheet'); if(s)s.hidden=true;}
    ============================================================ */
 function recordImportHtml(p){
  p=p||'sh';
+ /* the only copy, M9: where the record lives, or that the browser cleared it,
+    said beside the control that answers it. ui/keep.js owns the words. */
  return '<div class="sh-imp">'
+  +(typeof keepNoteHtml==='function'?keepNoteHtml(p):'')
   +'<p class="sh-p">Took the reading on the web? Load the record you saved and it '
   +'continues from there. Nothing is fetched: the file is the handoff.</p>'
   +'<textarea id="'+p+'imp" class="sh-ta" rows="3" spellcheck="false" '
@@ -977,6 +980,8 @@ function recordImportWire(p,after){
   if(!np){ var e=(typeof importError==='function'&&importError())||['it was refused'];
    impSay('Not loaded. '+e.join('. ')+'.',1); return; }
   recordLanded();
+  /* a record put back answers a cleared store, ui/keep.js */
+  if(typeof keepLanded==='function')keepLanded();
   if(typeof status==='function')status('Record loaded.');
   /* THE HOST REDRAWS FIRST AND THE MESSAGE IS WRITTEN AFTER IT.
      The account area prints the record's own name, so it has to redraw on a
@@ -988,6 +993,7 @@ function recordImportWire(p,after){
   if(typeof after==='function')after(np);
   impSay('Loaded '+(np.name||'the record')+'. Nothing else was touched.');};
  var ig;
+ if((ig=$(p+'keepsave'))&&typeof keepFile==='function')ig.onclick=function(){keepFile();};
  if((ig=$(p+'impgo')))ig.onclick=function(){impRun(($(p+'imp')||{}).value||'');};
  if((ig=$(p+'impf')))ig.onclick=function(){var f=$(p+'impfile'); if(f)f.click();};
  if((ig=$(p+'impfile')))ig.onchange=function(){
@@ -1127,7 +1133,10 @@ function profileSheet(){
   +'<p class="sh-p">How much fits on one screen. This scales the whole interface, not just the type.</p>'
   +'<div class="dens-list" id="densheet" style="margin-top:8px"></div></div>'
   +'<div class="sh-sec"><div class="pm-eye">Your record</div>'
-  +'<p class="sh-p">Everything is held in this browser. Nothing has left this device.</p>'
+  /* "Nothing has left this device" was false once a first visit had sent its
+     random code and topic (ui/auth.js authFunnelStart, authFunnelCheckpoint) */
+  +'<p class="sh-p">Your record is held in this browser. Your stories are not sent to us, '
+  +'and the name you enter never leaves this device.</p>'
   +'<div class="sh-row"><span>Snapshots on file</span><b>'+((CURP&&CURP.history&&CURP.history.length)||0)+'</b></div>'
   +'<div class="sh-row"><span>Storage</span><b>'+(STORE_BOUND?'writing':'blocked')+'</b></div>'
   /* THE BOUNDARY GETS ITS FIRST CALLER. validateProfile and pImport were built

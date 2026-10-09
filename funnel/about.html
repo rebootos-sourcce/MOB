@@ -326,8 +326,11 @@ a.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
   <p class="m">You write what happened, in your own words. The engine reads the
   charge out of the words and, in the Atüned model, lands it at a named plexus or
   a named nerve. Then it hands you the order to take it apart in.</p>
-  <p class="m">It runs as one file in your browser. No account, no server, and no
-  request of any kind while you use it.</p>
+  <!-- WP2a-4: "No account, no server, and no request of any kind while you use
+       it" stopped being true when accounts and the first visit's code shipped
+       (ui/auth.js). tests/copy.js holds this page to what is true. -->
+  <p class="m">It runs as one file in your browser. Your stories are not sent to
+  us, and an account is yours to make or skip.</p>
   <ul class="nots">
    <li><b>Not a coach.</b> It has no opinion about your life.</li>
    <li><b>Not a guide.</b> It reads what is running, not who is running it.</li>
