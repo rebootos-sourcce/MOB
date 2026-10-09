@@ -34,7 +34,8 @@
     "claims": 107,
     "discordfeedback": 59,
     "voice": 28,
-    "landing": 15
+    "landing": 15,
+    "quit": 71
   },
   "no_count": {
     "monitor": "all surfaces render"

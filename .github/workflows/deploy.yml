@@ -246,6 +246,7 @@ jobs:
           - { gate: storage, timeout: 20, command: node tests/storage.js }
           - { gate: firstrelease, timeout: 20, command: node tests/firstrelease.js }
           - { gate: landing, timeout: 20, command: node tests/landing.js }
+          - { gate: quit, timeout: 20, command: node tests/quit.js }
           - { gate: journey2, timeout: 20, command: node tests/journey2.js }
           - { gate: onboarding2, timeout: 20, command: node tests/onboarding2.js }
           - { gate: sniffpage, timeout: 20, command: node tests/sniffpage.js }
