@@ -11,7 +11,8 @@
    and neither of them holds a request of its own.
 
    WHAT IT DOES AND DOES NOT CARRY. Sign up, sign in, the forgotten password
-   request and sign out, against the four routes the reboot-os Worker serves.
+   request, the new password its link sets, and sign out, against the routes
+   the reboot-os Worker serves for them.
    It does not sync. Every story, reading and imprint stays in this browser
    exactly as before. One field of a profile is written from here and nothing
    else is: the plan, read back off the account by authPlanTake at the foot of
@@ -406,6 +407,12 @@ function authFieldsWhy(mail,pw,isNew){
  if(!mail)return 'Enter an email address.';
  if(!AUTH_MAIL.test(mail)||mail.length>254)return 'The email address is not complete.';
  if(pw===undefined)return '';
+ return authPwWhy(pw,isNew);}
+/* The password half, on its own because the reset screen has a password and
+   no email. One copy of the bounds and of their sentences, so a new account
+   and a new password cannot drift apart: the Worker holds signup and reset
+   to the same 8 to MAX_PASSWORD. */
+function authPwWhy(pw,isNew){
  if(!pw)return 'Enter a password.';
  if(pw.length>AUTH_PW_MAX)return 'A password can be at most '+AUTH_PW_MAX+' characters.';
  if(isNew&&pw.length<AUTH_PW_MIN)return 'A password needs at least '+AUTH_PW_MIN+' characters.';
@@ -414,6 +421,7 @@ function authFieldsWhy(mail,pw,isNew){
    account, so one function carries both. Resolves {ok, kept, say}: say is the
    sentence to show, and kept is false when the browser would not hold the
    session, which is still a sign in and is said as one that ends on reload. */
+var AUTH_UNKEPT=' Storage is blocked in this browser, so the sign in ends on reload.';
 function authEnter(route,mail,pw){
  var bad=authFieldsWhy(mail,pw,route==='signup');
  if(bad)return Promise.resolve({ok:false, say:bad});
@@ -422,22 +430,31 @@ function authEnter(route,mail,pw){
   if(!r.ok)return {ok:false, say:authWhy(r,route)};
   if(typeof b.token!=='string'||!b.token)
    return {ok:false, say:'The server answered without a sign in. Nothing changed.'};
-  var s={token:b.token, email:typeof acc.email==='string'?acc.email:mail.toLowerCase(),
-   accountId:typeof acc.id==='string'?acc.id:null};
-  var kept=authKeep(s);
-  /* the plan and the funnel session both use the same bearer boundary.
-     Funnel attachment is best effort here because the gift may not yet exist;
-     the explicit funnel attachment path remains available once a starter gift
-     has been issued. */
-  authFunnelAttach();
-  /* the plan is read after the sign in is held, and not waited on: the
-     caller says "Signed in as" now, and the plan speaks after it only if the
-     record changed. A second device is exactly this path. */
-  authPlanRead();
-  profileSyncStart();
-  return {ok:true, kept:kept,
-   say:(route==='signup'?'Account created. ':'')+'Signed in as '+s.email+'.'
-    +(kept?'':' Storage is blocked in this browser, so the sign in ends on reload.')};});}
+  var held=authHold(b,mail);
+  return {ok:true, kept:held.kept,
+   say:(route==='signup'?'Account created. ':'')+'Signed in as '+held.s.email+'.'
+    +(held.kept?'':AUTH_UNKEPT)};});}
+/* A SESSION THE SERVER HANDED BACK, HELD, and everything a sign in starts.
+   Out of authEnter because a reset answers the same {token, account} and is a
+   sign in too: a copy of these lines in the reset path would be the first
+   place a step added here later went missing. b carries a token; mail is the
+   address typed, used only when the server did not name one. */
+function authHold(b,mail){
+ var acc=b.account||{};
+ var s={token:b.token, email:typeof acc.email==='string'?acc.email:String(mail||'').toLowerCase(),
+  accountId:typeof acc.id==='string'?acc.id:null};
+ var kept=authKeep(s);
+ /* the plan and the funnel session both use the same bearer boundary.
+    Funnel attachment is best effort here because the gift may not yet exist;
+    the explicit funnel attachment path remains available once a starter gift
+    has been issued. */
+ authFunnelAttach();
+ /* the plan is read after the sign in is held, and not waited on: the
+    caller says "Signed in as" now, and the plan speaks after it only if the
+    record changed. A second device is exactly this path. */
+ authPlanRead();
+ profileSyncStart();
+ return {s:s, kept:kept};}
 /* THE FORGOTTEN PASSWORD SAYS WHAT THE SERVER SAYS, AND NO MORE. The server
    answers the same whether or not the address has an account, on purpose, so
    that this form cannot be used to find out who has one. The sentence here is
@@ -452,6 +469,73 @@ function authForgot(mail){
   if(r.ok)return {ok:true,
    say:'If an account uses that email, a link to set a new password is on its way.'};
   return {ok:false, say:authWhy(r,'forgot')};});}
+/* THE LINK THAT MAIL CARRIES, open item M3. The Worker mails
+   <APP_URL>/?reset=<token> and confirms it at POST /v1/auth/reset, and until
+   this nothing read it: the link opened the plain Log in card, so the one way
+   back into a record for somebody who had forgotten the password led to the
+   door that asks for it.
+
+   OFF THE ADDRESS WHILE THIS FILE IS PARSED, BEFORE ANY REQUEST. The token
+   opens the account for an hour. Left on the address it goes into history,
+   into the Referer of every request the page sends, and into any picture of
+   the address bar, and the boot sends requests early: with a session held,
+   the first line of the login step is authCheck asking /v1/me, and the
+   onboarding behind it asks the funnel for a session (ui/onboard.js), and
+   tests/reset.js read the token off both their Referers before this was
+   here. Taken anywhere after that first line, it would already have left.
+   So it is taken at load, which is before every boot step, and held only in
+   the var below. Never in the store, never on a profile, never on the status
+   line: authWhy repeats the server's words, and the server never repeats a
+   token.
+
+   The query is what the Worker sends; the hash is read too, because a mail
+   client or a shortener can move a parameter there. Only reset= comes out of
+   either, so ?dev=1 survives, and a record link after #r= is never parsed,
+   because its payload is not a query string and rewriting it could cut it. */
+var AUTH_RESET_T='';
+function authResetTake(){
+ var t='';
+ try{
+  var q=new URLSearchParams(location.search||''), h=String(location.hash||''), hq=null, moved=false;
+  if(q.has('reset')){ t=q.get('reset')||''; q.delete('reset'); moved=true; }
+  if(h.indexOf('#r=')!==0&&/(^#|&)reset=/.test(h)){
+   hq=new URLSearchParams(h.slice(1)); t=t||hq.get('reset')||''; hq.delete('reset'); moved=true; }
+  if(moved){
+   var rest=q.toString(), hr=hq?hq.toString():h.slice(1);
+   history.replaceState(history.state,'',location.pathname+(rest?'?'+rest:'')+(hr?'#'+hr:'')); } }
+ catch(e){}
+ return t;}
+AUTH_RESET_T=authResetTake();
+function authResetHeld(){ return !!AUTH_RESET_T; }
+function authResetDrop(){ AUTH_RESET_T=''; }
+/* SAVE THE NEW PASSWORD. Refused here first when the server would refuse it,
+   with the same bounds and sentences as a new account, plus the one rule a
+   second field adds. A yes from the Worker is a sign in: it has ended every
+   session the account had, on every device, and answers a fresh one, so the
+   person is signed in here and nothing about the password is kept.
+
+   The token is spent on a yes and only then. On a no it is kept with the
+   screen, because a dropped connection or a rate limit has not used it, and
+   pressing Save again is the whole of the retry. A refused token stays held
+   too, which costs one more refusal at most, and the server's words for it
+   already say what to do.
+
+   A yes with no session in it is the server saying the password changed and
+   naming no sign in, which the Worker never does today. It is said as what it
+   is, a saved password and a log in still to do, rather than as a sign in. */
+function authReset(pw,again){
+ var bad=authPwWhy(pw,true)||(pw!==again?'The two passwords do not match. Type the same one in both.':'');
+ if(bad)return Promise.resolve({ok:false, say:bad});
+ return authCall('POST','/v1/auth/reset',{token:AUTH_RESET_T, password:pw}).then(function(r){
+  var b=r.body||{}, acc=b.account||{};
+  if(!r.ok)return {ok:false, say:authWhy(r,'reset')};
+  authResetDrop();
+  if(typeof b.token!=='string'||!b.token)
+   return {ok:true, signed:false, email:typeof acc.email==='string'?acc.email:'',
+    say:'New password saved. Log in with it.'};
+  var held=authHold(b,'');
+  var who=(held.s.email?'Signed in as '+held.s.email+'.':'Signed in.')+(held.kept?'':AUTH_UNKEPT);
+  return {ok:true, signed:true, kept:held.kept, who:who, say:'New password saved. '+who};});}
 /* SIGN OUT ENDS IT HERE WHATEVER THE SERVER SAYS. A person who pressed Sign
    out on a train has asked for this browser to stop being signed in, and
    refusing that because the server is out of reach would keep a session they

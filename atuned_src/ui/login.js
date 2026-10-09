@@ -153,6 +153,78 @@ function loginResetCard(mail){
   +'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-send">Send the link</button>'
   +'<button type="button" class="btn" id="loginb-back">Back to log in</button></div>'
   +'</div></div>';}
+/* SET A NEW PASSWORD, the screen the mailed link opens (open item M3, the
+   token is taken off the address by authResetTake in ui/auth.js). Before it
+   the link opened the Log in card above, which asks for the password the
+   person has just said they do not have. The same card as the two above, so
+   it reads as one door and not a third one. The token never enters this
+   markup: ui/auth.js holds it and hands it straight to the request.
+
+   Save is the form's own submit button, with the message line and the
+   actions inside the form, so Enter in either field saves. A form with two
+   fields and no submit button is never submitted by Enter, which is why the
+   Log in card's own onsubmit does not run; that card is left as it is.
+
+   The floor is said before it can be broken, off the one constant the check
+   reads, so the sentence and the refusal cannot disagree. */
+function loginNewCard(){
+ return '<div class="ob-card login-card" role="dialog" aria-modal="true" aria-label="Set a new password">'
+  +'<div class="ob-wash" aria-hidden="true"></div>'
+  +'<div class="ob-scroll">'
+  +'<span class="pm-eye">Password reset</span>'
+  +'<h2 class="ob-h">Set a new password</h2>'
+  +'<p class="ob-p">Type the new password twice. It needs at least '+AUTH_PW_MIN+' characters. '
+  +'Saving it signs you in here and signs you out on every other device.</p>'
+  +'<form id="loginnewf" novalidate>'
+  +'<div class="login-row"><label class="login-l" for="loginnpw">New password</label>'
+  +'<input type="password" id="loginnpw" autocomplete="new-password"></div>'
+  +'<div class="login-row"><label class="login-l" for="loginnpw2">New password again</label>'
+  +'<input type="password" id="loginnpw2" autocomplete="new-password"></div>'
+  +'<p class="login-msg" id="loginmsg"></p>'
+  +'<div class="ob-acts"><button type="submit" class="btn pri" id="loginb-save">Save</button>'
+  +'<button type="button" class="btn" id="loginb-back">Back to log in</button></div>'
+  +'</form>'
+  +'</div></div>';}
+/* The yes, held on the card until the person moves on. A line on the status
+   bar alone would sit under this full screen card and clear in seconds, so a
+   person who had just got back into their account could miss being told. */
+function loginNewDoneCard(who){
+ return '<div class="ob-card login-card" role="dialog" aria-modal="true" aria-label="New password saved">'
+  +'<div class="ob-wash" aria-hidden="true"></div>'
+  +'<div class="ob-scroll">'
+  +'<span class="pm-eye">Password reset</span>'
+  +'<h2 class="ob-h">New password saved</h2>'
+  +'<p class="ob-p">'+esc(who)+'</p>'
+  +'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-on">Continue</button></div>'
+  +'</div></div>';}
+function loginNewOpen(){
+ var h=document.getElementById('login'); if(!h)return;
+ LOGIN.open=true; LOGIN.reset=false; h.style.display='flex'; h.innerHTML=loginNewCard();
+ var f=document.getElementById('loginnewf');
+ if(f)f.onsubmit=function(e){ e.preventDefault(); loginNewSave(); };
+ /* going back lets go of the token: the screen does not come back without
+    the link, and the link still works until it is used or its hour is up */
+ var back=document.getElementById('loginb-back');
+ if(back)back.onclick=function(){ authResetDrop(); h.innerHTML=loginCard(); loginWire(h); };
+ var p=document.getElementById('loginnpw'); if(p)p.focus();}
+/* One request per press, behind the same busy flag as Log in. The card stays
+   open on every no with both fields as they were typed, and changes only on
+   the server's yes, because a card that moved on first and refused after
+   would have claimed a password the server never took. */
+function loginNewSave(){
+ if(LOGIN.busy)return;
+ var a=document.getElementById('loginnpw'), b=document.getElementById('loginnpw2');
+ LOGIN.busy=true; loginBusy(true);
+ loginSay('Saving the new password.','',true);
+ authReset(a?a.value:'',b?b.value:'').then(function(r){
+  LOGIN.busy=false; loginBusy(false);
+  var h=document.getElementById('login');
+  if(!r.ok){ loginSay(r.say,'fail'); return; }
+  if(!r.signed){ if(h){ h.innerHTML=loginCard(r.email); loginWire(h); } loginSay(r.say,'ok'); return; }
+  if(h)h.innerHTML=loginNewDoneCard(r.who);
+  status(r.say,r.kept?'ok':'fail');
+  var on=document.getElementById('loginb-on');
+  if(on){ on.onclick=function(){ loginClose(); loginEnter(); }; on.focus(); } });}
 /* THE CARD SAYS IT, AND SO DOES STATUS. status() is the one writer every
    result goes through, and it is the live region a screen reader hears; but
    the status line sits in the top bar, under this card, which covers the
@@ -255,6 +327,11 @@ function loginForgot(){
    when nothing is held, so the gates, which never sign in, make none. */
 function loginBoot(){
  if(typeof authCheck==='function')authCheck();
+ /* A RESET LINK GOES FIRST, ahead of the developer skip and a held session:
+    the person followed a link to set a password, and skipping the door or
+    walking them in as whoever this browser last held would leave that
+    request unanswered. The token is already off the address by now. */
+ if(typeof authResetHeld==='function'&&authResetHeld()){ loginNewOpen(); return; }
  if(DEV_SKIP)return;
  if(typeof authSession==='function'&&authSession()){ loginEnter(); return; }
  loginOpen();}
