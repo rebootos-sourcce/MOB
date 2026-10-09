@@ -3,7 +3,7 @@
    THE ONLY COPY, IN A REAL BROWSER. Open item M9, WP2a-6.
 
    mkdir -p /tmp/atuned-wp2a6 && flock -o -w 600 -E 75 /tmp/atuned-browser.lock \
-     env NODE_PATH=/opt/node22/lib/node_modules PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers \
+     env NODE_PATH=/opt/node22/lib/node_modules PLAYWRIGHT_BROWSERS_PATH=$PW_DIR \
      TMPDIR=/tmp/atuned-wp2a6 node tests/storage.js
    SHOTS=dir           also writes the screenshots a person looks at
    STORAGE_HTML=file   runs against another build, for checking the checker
