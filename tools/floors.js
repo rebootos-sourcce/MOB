@@ -45,6 +45,10 @@ const FLOORS = path.join(__dirname, '..', 'tests', 'floors.json');
 const SUMMARY = [
   /^\s*=====\s*(\d+) passed, (\d+) failed(?:, (\d+) expected red)?\s*=====\s*$/,
   /^\s*(\d+) passed, (\d+) failed\s*$/,
+  // the shapes the other gates print: three bars (practitioner), a name and a
+  // colon before the counts, with or without bars (copy, unpack)
+  /^\s*={3,}\s*(\d+) passed, (\d+) failed\s*={3,}\s*$/,
+  /^\s*(?:={3,}\s*)?[A-Za-z][\w -]*?:\s*(\d+) passed, (\d+) failed(?:\s*={3,})?\s*$/,
 ];
 const TAP_PASS = /^(?:#|\u2139) pass (\d+)\s*$/;   // tap, or the spec reporter's info mark
 const TAP_FAIL = /^(?:#|\u2139) fail (\d+)\s*$/;
@@ -152,6 +156,12 @@ function selfTest() {
     ['node --test tap, too few', 'tap', '# pass 40\n# fail 0\n', false],
     ['node --test spec reporter, good', 'tap', '\u2139 pass 44\n\u2139 fail 0\n', true],
     ['the funnel gate summary, no bars', 'plain', '\n  562 passed, 0 failed\n', true],
+    ['three bars, practitioner', 'plain', '=== 562 passed, 0 failed ===', true],
+    ['a name and a colon, copy', 'plain', 'copy: 562 passed, 0 failed', true],
+    ['a name, a colon and bars, unpack', 'plain', '===== unpack gate: 562 passed, 0 failed =====', true],
+    ['a name and a colon, one short', 'plain', 'copy: 561 passed, 0 failed', false],
+    ['a name and a colon, with a failure', 'plain', 'copy: 562 passed, 1 failed', false],
+    ['a name and a colon quoted inside a line', 'plain', '  ok   prints copy: 562 passed, 0 failed at the end', false],
     ['the funnel gate summary, one short', 'plain', '\n  561 passed, 0 failed\n', false],
     ['a no count gate with its line', 'mon', '-----\n  all surfaces render\n', true],
     ['a no count gate that failed', 'mon', '-----\n  2 FAILING: a | b\n', false],

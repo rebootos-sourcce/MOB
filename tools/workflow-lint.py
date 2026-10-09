@@ -89,6 +89,23 @@ BROWSER = {
     'functional': ('node tests/functional.js', 45),
     'design':     ('node tests/design.js',     20),
     'monitor':    ('node tools/monitor.js',    20),
+# the tests that guard the alpha work, report only until three green runs
+    'copy':          ('node tests/copy.js', 20),
+    'reset':         ('node tests/reset.js', 20),
+    'storage':       ('node tests/storage.js', 20),
+    'firstrelease':  ('node tests/firstrelease.js', 20),
+    'journey2':      ('node tests/journey2.js', 20),
+    'onboarding2':   ('node tests/onboarding2.js', 20),
+    'sniffpage':     ('node tests/sniffpage.js', 20),
+    'srcchat':       ('node tests/srcchat.js', 20),
+    'practitioner':  ('node tests/practitioner.js', 20),
+    'release-screen': ('node tests/release-screen.js', 20),
+    'release-percent': ('node tests/release-percent.js', 20),
+    'unpack':        ('node tests/unpack.js', 20),
+    'recordlink':    ('node tests/recordlink.js', 20),
+    'valuefelt':     ('node tests/valuefelt.js', 20),
+    'claims':        ('node tests/claims.js', 20),
+    'discordfeedback': ('node tests/discordfeedback.js', 20),
 }
 ALWAYS_REQUIRED = ('boot', 'collide', 'funnel')
 GATE_JOBS = ['gates-fast', 'gates-browser']             # what gates-pass needs
