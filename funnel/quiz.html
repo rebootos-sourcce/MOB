@@ -334,9 +334,12 @@ var MISSING=[];
 /* the reading's last layer names where a release starts and what a release
    is, off relQueueOf and unpackOf. An engine without them is an older engine,
    and a reading that said nothing is carrying because a function was missing
-   would be a lie, so it is refused here with the rest. */
+   would be a lie, so it is refused here with the rest. The story's last line
+   says what was read and not counted, off asideOf and asideSay, S1, and an
+   engine without them would print a card for a word said with a no. */
 if(typeof SINAMES==='undefined'||typeof read!=='function'
- ||typeof relQueueOf!=='function'||typeof unpackOf!=='function')MISSING.push('engine.js');
+ ||typeof relQueueOf!=='function'||typeof unpackOf!=='function'
+ ||typeof asideOf!=='function'||typeof asideSay!=='function')MISSING.push('engine.js');
 if(typeof QQ==='undefined')MISSING.push('questions.js');
 if(typeof RING==='undefined')MISSING.push('ring.js');
 /* the ring's seat order is the engine's band order or it is drawing the
@@ -953,13 +956,11 @@ var MORE={};       /* charge -> 1 when its card shows every address */
 function marked(){ for(var k in MARK)if(MARK[k])return true; return false; }
 
 /* the words, quoted as they were typed. marksOf maps the scanner's offsets
-   back onto the letters, so a quote is exactly what was scored. A word read
-   after a no is quoted with the no in front of it, so the person can see
-   what the reader did with it. */
+   back onto the letters, so a quote is exactly what was scored. A word said
+   with a no is never quoted here: since S1 it is not scored, and asideOf in
+   engine/sniff.js quotes it, with its no, in the line that says so. */
 function storyQuote(t,m){
- var a=m.s;
- if(m.neg){ var pre=t.slice(0,a).match(/(?:[A-Za-z']+[^A-Za-z']+){1,2}$/); if(pre)a-=pre[0].length; }
- return '“'+t.slice(a,m.e)+'”';}
+ return '“'+t.slice(m.s,m.e)+'”';}
 function storyQuotes(t,ms){
  var seen={}, out=[];
  ms.forEach(function(m){ var q=storyQuote(t,m), k=q.toLowerCase();
@@ -993,16 +994,17 @@ function storyRow(n){
   +'</div>';}
 
 function storyLit(ps,t,r){
- /* A WORD AFTER A NO IS STILL CHARGED, AND THAT IS SHOWN. "I was not scared"
-    lights Fear, measured, because parseStory does not read negation and
-    srcNegated does. The app's Story page shows the same disagreement rather
-    than picking a side, round HX, and this does it the same way: the quote
-    carries the no, and one sentence says the reader counted it anyway. */
- var nm=normMap(t), negAt={};
- ps.hits.forEach(function(h){ if(h.band==='coherent')return;
-  if(srcNegated(nm.s,h.at)){ var a=nm.map[h.at+1]; if(a!=null)negAt[a]=1; } });
- var marks=marksOf(t,ps).filter(function(m){return !m.coh;});
- marks.forEach(function(m){ m.neg=!!negAt[m.s]; });
+ /* A WORD SAID WITH A NO IS NOT COUNTED, AND THAT IS SAID. This page used to
+    light Fear on "I was not scared" and print that "the reader counts a word
+    that comes after a no", because parseStory did not read negation and this
+    worked it out again with srcNegated, with no sentence floor. Since S1 of
+    REVIEW-sniffer-audit-2026-10-09.md the engine flags the word, parseStory
+    counts it nowhere, and marksOf carries the flag. So no card quotes it as
+    a word it read, and one line, the engine's own asideSay, the same
+    sentence the app's Story page prints, says it was not counted. */
+ var marks=marksOf(t,ps).filter(function(m){return !m.coh&&!m.neg;});
+ var aside=asideSay(asideOf(t,ps));
+ var asideP=aside?'<p class="sm">'+esc(aside)+'</p>':'';
 
  /* NAMED AGAINST INFERRED DECIDES WHAT MAY BE PRINTED. parseStory marks an
     imprint inferred when the words reached a seat and the address was picked
@@ -1077,7 +1079,6 @@ function storyLit(ps,t,r){
    +'<div class="fam">At the '+esc(listOf(seats))+' seat'+(seats.length>1?'s':'')
    +'. Your words named it.</div>';
   if(ws.length)h+='<div class="sl"><b>Your words:</b> '+esc(storyQuotes(t,ws).join(', '))+'.'
-   +(ws.some(function(m){return m.neg;})?' The reader counts a word that comes after a no.':'')
    +'</div>';
   /* WHAT IT DOES AND WHAT IT TOUCHES ARE ON THE ROWS NOW. They were each
      address's d and a joined across all four, which, once an address could
@@ -1127,10 +1128,10 @@ function storyLit(ps,t,r){
   +'<div class="sabs">'+cards.map(card).join('')+'</div>'
   +(asks?'<p class="sm">What you mark Yes or Not me stays on this page with your story. '
    +'It is not saved and it is not in your record.</p>':'')
-  +(seatSay?'<p class="sm">'+seatSay+'</p>':'');
- else if(so.length)h+='<p class="sm lede">'+seatSay+'</p>'
+  +(seatSay?'<p class="sm">'+seatSay+'</p>':'')+asideP;
+ else if(so.length)h+='<p class="sm lede">'+seatSay+'</p>'+asideP
   +'<p class="sm">Write where you felt it, and what it was, and the reader can name it.</p>';
- else h+='<p class="lede">Keep writing, or write where you felt it.</p>';
+ else h+=asideP+'<p class="lede">Keep writing, or write where you felt it.</p>';
  h+='</div></section>'
   /* the same scope box the reading carries, saying the same kind of thing:
      what this read and what it did not. */

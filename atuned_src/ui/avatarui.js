@@ -410,7 +410,9 @@ function avHeard(notbe){
    panel; since round KH a tag is how a person finds an entry here. */
 function avParsed(t){
  if(AV.pc[t])return AV.pc[t];
- var p=parseStory(t), m=marksOf(t,p);
+ /* what was scored, and only that: since S1 marksOf also carries a word said
+    with a no, flagged neg, which was read and not scored, so it is not bold */
+ var p=parseStory(t), m=marksOf(t,p).filter(function(k){return !k.neg;});
  return (AV.pc[t]={marks:m});}
 function avQuote(e,marks){
  var t=e.text, sorted=marks.slice().sort(function(a,b){return a.s-b.s;});

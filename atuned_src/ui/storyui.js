@@ -387,29 +387,21 @@ function stBank(){
    same text, so the sentence, the chart and the list cannot disagree about
    which words were scored.
 
-   A NEGATED WORD IS SHOWN AS SET ASIDE. "I was not scared" is heard by
-   Source AI as negated, srcNegated, and parseStory still charges it. The two
-   halves of the engine disagree and round HX chose to show that rather than
-   pick a side for him: the mark runs back over the negator and is struck,
-   the bar is dashed, and the list says which words were the only ones.
-
-   THE SENTENCE BOUNDARY, THREADED IN, ROUND RA. srcNegated's own header
-   (engine/sourceai.js) names this exact gap: "floor is sniff.js's own
-   clauseFloor... srcHear passes it, and nothing else does." This was that
-   nothing else. Measured directly before this fix: "I am not afraid.
-   Afraid now." reads nm.s as " i am not afraid afraid now ", and the
-   chart's own check, called with no floor, read the second afraid as
-   negated, the same cross sentence bug round NQ already fixed for Source
-   AI's own reading. srcHear passes clauseFloor; this now does too, so the
-   sentence, the chart and the list go back to agreeing, including about
-   which sentence a negation stops at. */
+   A WORD SAID WITH A NO IS SHOWN AS SET ASIDE, AND IT IS SET ASIDE. Round
+   HX drew "I was not scared" struck while parseStory still charged it, and
+   showed that disagreement rather than pick a side. Package S1 of
+   REVIEW-sniffer-audit-2026-10-09.md picked: the engine flags the word
+   denied and counts it nowhere, and this reads that flag off marksOf, neg
+   and negFrom, and works nothing out again. It used to call srcNegated
+   itself over the path, a second reader of one rule, which is how the
+   picture and the score came to disagree. The mark still runs back over its
+   no and is struck, and the bar is still dashed. */
 var STR={t:null,marks:[],toks:[],heard:null};
 function stMarks(t,p){
- if(!p||!p.hits||!p.hits.length||typeof marksOf!=='function')return [];
- var marks=marksOf(t,p), nm=normMap(t), negAt={}, modAt={};
- p.path.steps.forEach(function(s){if(!s.seat||s.coherent)return;
-  if(srcNegated(nm.s,s.at,clauseFloor(t,nm,s.at))){var a=nm.map[s.at+1];if(a!=null)negAt[a]=1;}});
- p.hits.forEach(function(h){if(!h.mod)return;var a=nm.map[h.at+1];if(a!=null)modAt[a]={f:h.mod,w:h.modw};});
+ if(!p||typeof marksOf!=='function')return [];
+ var marks=marksOf(t,p), nm=normMap(t), modAt={};
+ if(!marks.length)return [];
+ storyHits(p).forEach(function(h){if(!h.mod)return;var a=nm.map[h.at+1];if(a!=null)modAt[a]={f:h.mod,w:h.modw};});
  /* a curly apostrophe, the mark a phone's own autocorrect writes, used to
     split "don't" into two tokens and leave the strike-through short of the
     negator. The class matches NORM_APOS (engine/sniff.js), the same marks
@@ -417,14 +409,12 @@ function stMarks(t,p){
  var toks=[],re=/[A-Za-z'‘’]+/g,m; while((m=re.exec(t)))toks.push({s:m.index,e:m.index+m[0].length,w:m[0]});
  var seen={};
  marks.forEach(function(k){
-  k.txt=t.slice(k.s,k.e); k.neg=!!negAt[k.s]; k.mod=modAt[k.s]||null;
+  /* neg and negFrom are marksOf's, the engine's flag, and are not touched */
+  k.txt=t.slice(k.s,k.e); k.neg=!!k.neg; k.mod=modAt[k.s]||null;
   var base=(k.bn||'coh')+':'+k.txt.toLowerCase(); seen[base]=(seen[base]||0)+1; k.key=base+':'+seen[base];
   k.depth=k.amt!=null?Math.min(1,Math.abs(k.amt)/PATHMAX):0.3;
   k.t0=-1; k.t1=-1;
-  toks.forEach(function(o,j){if(o.s>=k.s&&o.e<=k.e){if(k.t0<0)k.t0=j;k.t1=j;o.m=k;}});
-  /* the negator, found the way srcNegated finds it: within SRC_NEG_W words */
-  if(k.neg)for(var q=1;q<=SRC_NEG_W;q++){var d=toks[k.t0-q];
-   if(d&&SRC_NEG.indexOf(d.w.toLowerCase().replace(/['‘’]/g,''))>=0)k.negFrom=d.s;}});
+  toks.forEach(function(o,j){if(o.s>=k.s&&o.e<=k.e){if(k.t0<0)k.t0=j;k.t1=j;o.m=k;}});});
  marks.toks=toks;
  return marks;}
 function stRead(){
@@ -1754,8 +1744,14 @@ function stCtrPaint(){
  /* its own span, because the line also carries the view toggle and writing
     the whole line's text would take the three buttons off it */
  var e=document.getElementById('stctrt'); if(!e)return;
- var toks=STR.toks,tg=STR.marks.length,ng=STR.marks.filter(function(m){return m.neg;}).length;
- e.textContent=toks.length?(toks.length+' words read, '+tg+' kept'+(ng?', '+ng+' set aside as negated':'')):'';}
+ /* KEPT IS WHAT COUNTS, AND SET ASIDE IS THE ENGINE'S DENIED, S1. kept used
+    to count every mark, the struck ones with them, so "2 kept, 1 set aside"
+    said three words were read where two were. The flag is marksOf's, so
+    this number and the struck marks are one count. "Negated" was the one
+    word on the line a ten year old would ask about; "after a no" is the
+    same fact in words the person already has. */
+ var toks=STR.toks,ng=STR.marks.filter(function(m){return m.neg;}).length,tg=STR.marks.length-ng;
+ e.textContent=toks.length?(toks.length+' words read, '+tg+' kept'+(ng?', '+ng+' set aside after a no':'')):'';}
 
 /* ============================================================
    THE LIST, in the lanes' order, so a sort moves the chart and the list
@@ -1779,7 +1775,6 @@ function stListPaint(){
    :(STV.lastFound.length?'Your last entry is in the field and its addresses are queued in the release. The next entry gathers here.'
     :'You have not written anything yet. Whatever you write gets pulled apart and collected here.'))+'</p>';
   ST_SEEN={};return;}
- var heardB={};((STR.heard&&STR.heard.seats)||[]).forEach(function(s){heardB[s.band]=s;});
  var seen={};
  STC.lm.lanes.forEach(function(l){if(!l.imps||!l.imps.length)return;var c=seatCol(l.seat),pills=[],fold={};
   l.imps.slice().sort(function(a,b){return b.amt-a.amt;}).forEach(function(im){
@@ -1787,14 +1782,13 @@ function stListPaint(){
     if(!fold[fk]){fold[fk]={label:STV.sort==='charge'?im.band:im.fetter,amt:0,inf:true,band:im.band};pills.push(fold[fk]);}
     fold[fk].amt+=im.amt;}
    else pills.push({label:im.name,amt:im.amt,inf:false,band:im.band});});
-  /* THE TWO HALVES OF THE ENGINE DISAGREE, AND IT IS SHOWN. A seat whose only
-     words were negated is charged by parseStory and set aside by srcHear. */
+  /* THE "ONLY FROM" WARNING IS GONE, S1, because its case is. It was written
+     for a seat charged by parseStory from words srcHear set aside, the two
+     halves of the engine disagreeing. Since S1 a word said with a no charges
+     no seat, so a lane here always has a word that counts, and a note that
+     said otherwise would be a false sentence. */
   var note;
-  if(STV.sort!=='charge'){
-   var only=!heardB[l.band]?STR.marks.filter(function(m){return m.bn===l.band&&m.neg;}):[];
-   note=only.length?'<em class="warn">only from '+only.map(function(m){
-     return '&ldquo;'+esc(ST_TEXT.slice(m.negFrom!=null?m.negFrom:m.s,m.e))+'&rdquo;';}).join(', ')+'</em>'
-    :'<em>'+pills.length+' pending</em>';}
+  if(STV.sort!=='charge')note='<em>'+pills.length+' pending</em>';
   else note='<em>at '+l.bands.map(srcSeatSay).join(', ')+'</em>';
   var sym=l.icon?stSvg(l.icon):'<span class="st-ring"></span>';
   o+='<div class="st-grp'+(STV.hot===l.key?' hot':'')+'" data-k="'+esc(l.key)+'" style="--c:'+c+'">'
@@ -2243,7 +2237,9 @@ function stLawPaint(){
    unchanged, and the characters in the layer are still exactly the box's. */
 function stHLHtml(txt){
  var p=ST_PARSED;
- if(!p||!p.hits.length)return esc(txt);
+ /* not p.hits alone: since S1 a story whose only word was said with a no
+    has no counted hit, and that word is still drawn, struck */
+ if(!p)return esc(txt);
  var marks=(STR.t===txt&&STR.marks.length)?STR.marks:stMarks(txt,p);
  if(!marks.length)return esc(txt);
  var out='',last=0;
