@@ -1,0 +1,7 @@
+  note app/1600/loaded/delete:confirm no confirm was asked, so its words were not read here
+  note app/390/loaded/delete:confirm no confirm was asked, so its words were not read here
+
+sent during the walk: POST /v1/funnel/session, PATCH /v1/funnel/session/:id/checkpoint
+
+copy: 149 passed, 0 failed
+exit 0

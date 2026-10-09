@@ -1,0 +1,7 @@
+side keys checked: ["atuned-avatar-side","atuned-ritual-active","atuned-ritual-more"]
+pExport() carries a side-store entry: false
+accProfDelete returned true; status line: "You is deleted from this browser, the only place it was held. You is open."
+keys that STILL hold the deleted profile's entry afterwards: ["atuned-ritual-more"]
+all localStorage keys after: ["atuned-avatar-side","atuned-ritual-active","atuned-ritual-more","source.profiles","source.profiles.device","source.profiles.saved"]
+import twice then delete once: {"importedOnce":true,"importedTwice":true,"profilesBeforeDelete":3,"copiesWithThatId":3,"deleteReturned":true,"copiesLeftWithThatId":2,"namesLeft":["Dupe Probe","Dupe Probe"]}
+exit 0

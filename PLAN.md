@@ -858,3 +858,27 @@ His instruction: "keep on the database wiring, it's got to be done, today, it's 
 **Verified, same strict sense section U's own report used.** `npm test` from `atuned_funnel_system/`: 41/41 passing (stateMachine 9, funnelService 13, engineHost 4, realAdapters 8, sqliteRepository 7, each count read off the run itself). This is real engine integration, tested, and a real database, tested; it is still not the production Postgres/Worker decision, which stays open exactly as section U left it.
 
 **Still open, unchanged by this round:** the Postgres-vs-Worker-store decision itself (his call). **Still named rather than silently done:** a server-side profile store (today a person's law/charge values live only in their own browser; `realAdapters.ts`'s `context.profile`/`context.updatedProfile` convention is where that connects once one exists), the one new `POST /v1/auth/whoami` endpoint the existing Worker needs for `RealIdentityAdapter` to run for real (the Worker's own source is not part of this checkout, so this repository cannot add it), and threading a release's real address id into its own verification call.
+
+## W. Audit Dev 1 to 6 (seven pass), reviewed five times, 9 October
+
+The owner's engineering audit was read five times against main at `b2b7a03`, each pass by a
+separate seat, and every claim was probed rather than trusted. All five passes, the brief, and the
+probe scripts are in `REVIEW-audit-2026-10-09/`. The plain-words list for the owner is
+`HANDOFF-2026-10-09/WHAT-IS-LEFT-2026-10-09.md`; the state for the next session is
+`HANDOFF-2026-10-09/NEXT-SESSION.md`. It did not interrupt the build in flight.
+
+Blocks, in order. ALPHA means existing features complete and bug free; PUBLIC means before a public launch.
+
+- **CI0 to CI6 (pass 1).** Land PR 39 (done), close the ungated ways to ship (owner: Pages off, require `gates-pass`), one build with one stamp and a hash record, keep the evidence, prove what is live, coverage and floors, words and measurement. ALPHA.
+- **W1 to W6 (pass 2, the Worker).** W1 the checkpoint CORS fix (done). W3 the first-visit data path with migration 0015 (ALPHA). W5 live proof in CI (ALPHA). W2 store routes and error hygiene, W4 delete everywhere, W6 hardening (PUBLIC).
+- **Block A, B, C (pass 3, privacy and sync).** A makes every sentence true and keeps it true (client only, 3 to 4 days). B account delete everywhere (needs real Stripe first). C a designed, consented sync (needs the owner's answers; never before A).
+- **G0 to G8 (pass 4, the golden journey).** One Chromium test that walks the first visit and fails if any link is cut. G0, G1 and G5 are ALPHA (about 4.5 days); the rest PUBLIC. G0 and G1 are building now.
+- **P5-F, P5-B, P5-A step 1 (pass 5, small engine fixes, ALPHA).** Duplicate import makes three profiles with one id; a ritual day dated in the future is accepted and can earn "Ninety days"; deleting a local profile leaves `atuned-ritual-more` behind. Then P5-D, P5-C, P5-E and P5-A step 2 (PUBLIC).
+
+Corrections the review made to the audit: profile sync does not run on main (dead code, see
+DECISIONS "Profile sync, 9 October"); the older practice, becoming, summary and points audits were
+stale on arrival; "sight is not for sale" was reversed by the owner on 1 October; "36 + 78" overlaps
+by 5 sentences, so the figure is 109.
+
+Owner decisions, each with a default and a cost, are D1 to D7 in `REVIEW-audit-2026-10-09/pass3.md`
+and the five owner questions at the foot of `pass5.md`. None stops ALPHA.

@@ -2799,3 +2799,12 @@ The owner supplied a sniffer design and gap audit (8 October) and asked for a re
 - **Tense, intensity words and the frame layer wait.** Not in alpha. Tense and intensity are specified; the frame layer needs a held set that does not exist yet.
 - **The route of the aggregate result into the Mirror, the Release Engine, verification and the Trace graph is after alpha.** The Story page works today from the parser; the aggregate is used by the Day One tutorial only.
 - **Still the owner's, and reported as conflict or unread until ruled:** the law divisor (E43), where Joy sits, where Surprise sits, Avoider versus Innocent, how a stance entry that names no feeling is read, and the four canon files that are missing from the repository.
+
+## Audit Dev 1 to 6, 9 October: what the five reviews settled
+
+- **The audit's profile sync findings (P0-03, P0-04, B11.1 to B11.3) rest on a premise main contradicts.** Sync does not run. They become real on the day sync is switched on, so they are filed under the sync design block, not under alpha.
+- **"Skipped" is not stored as a verification state.** `engine/practice.js:150-160` refuses it on purpose; the audit's ask is recorded as a default taken, with its cost, until the owner says otherwise.
+- **P0-06 (the golden journey) gates alpha only as G0, G1 and G5.** The rest of the chain is public-launch work. Default taken.
+- **The cheaper Mirror default:** one question per run, with a shared run key on its evidence rows so three rows are not read as three confirmations. Per-address answers wait for the owner.
+- **Points exist only as a ruling** (they only rise); nothing is built until accounts. "Sight is not for sale" stays reversed (1 October).
+- **Open and the owner's:** D1 to D7 in `REVIEW-audit-2026-10-09/pass3.md`, each with a default and a cost; the law divisor (E43); Joy, Surprise, Avoider versus Innocent.

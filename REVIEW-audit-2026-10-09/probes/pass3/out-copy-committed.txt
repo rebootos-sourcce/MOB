@@ -1,0 +1,59 @@
+FAIL app/1600/blank/settings:profiles "Held in this browser and nowhere else"
+FAIL app/1600/blank/settings:privacy "Improve The Models"
+FAIL app/1600/blank/settings:privacy "refine the reading"
+FAIL app/1600/blank/settings:privacy "no store"
+FAIL app/1600/blank/settings:privacy "Held in this browser and nowhere else"
+FAIL app/1600/blank/settings:privacy missing one plain sentence naming what a first visit sends
+FAIL app/1600/blank/settings:privacy missing one sentence naming that the name never leaves the device
+FAIL app/1600/blank/delete "no store"
+FAIL app/1600/blank/delete missing the delete screen says what our server still keeps
+FAIL app/1600/blank/sheet:profile "Nothing has left this device"
+FAIL app/1600/blank/sheet:profile "Everything is held in this browser"
+FAIL app/1600/blank/sheet:feedback "Nothing about who you are travels"
+FAIL app/1600/blank/onboarding:0 "Nothing you write leaves this device"
+FAIL app/1600/blank/onboarding:1 "Nothing you write leaves this device"
+FAIL app/1600/loaded/settings:profiles "Held in this browser and nowhere else"
+FAIL app/1600/loaded/settings:privacy "Improve The Models"
+FAIL app/1600/loaded/settings:privacy "refine the reading"
+FAIL app/1600/loaded/settings:privacy "no store"
+FAIL app/1600/loaded/settings:privacy "Held in this browser and nowhere else"
+FAIL app/1600/loaded/settings:privacy missing one plain sentence naming what a first visit sends
+FAIL app/1600/loaded/settings:privacy missing one sentence naming that the name never leaves the device
+FAIL app/1600/loaded/delete "no store"
+FAIL app/1600/loaded/delete missing the delete screen says what our server still keeps
+  note app/1600/loaded/delete:confirm no confirm was asked, so its words were not read here
+FAIL app/1600/loaded/sheet:profile "Nothing has left this device"
+FAIL app/1600/loaded/sheet:profile "Everything is held in this browser"
+FAIL app/1600/loaded/sheet:feedback "Nothing about who you are travels"
+FAIL app/390/blank/settings:profiles "Held in this browser and nowhere else"
+FAIL app/390/blank/settings:privacy "Improve The Models"
+FAIL app/390/blank/settings:privacy "refine the reading"
+FAIL app/390/blank/settings:privacy "no store"
+FAIL app/390/blank/settings:privacy "Held in this browser and nowhere else"
+FAIL app/390/blank/settings:privacy missing one plain sentence naming what a first visit sends
+FAIL app/390/blank/settings:privacy missing one sentence naming that the name never leaves the device
+FAIL app/390/blank/delete "no store"
+FAIL app/390/blank/delete missing the delete screen says what our server still keeps
+FAIL app/390/blank/sheet:profile "Nothing has left this device"
+FAIL app/390/blank/sheet:profile "Everything is held in this browser"
+FAIL app/390/blank/sheet:feedback "Nothing about who you are travels"
+FAIL app/390/blank/onboarding:0 "Nothing you write leaves this device"
+FAIL app/390/blank/onboarding:1 "Nothing you write leaves this device"
+FAIL app/390/loaded/settings:profiles "Held in this browser and nowhere else"
+FAIL app/390/loaded/settings:privacy "Improve The Models"
+FAIL app/390/loaded/settings:privacy "refine the reading"
+FAIL app/390/loaded/settings:privacy "no store"
+FAIL app/390/loaded/settings:privacy "Held in this browser and nowhere else"
+FAIL app/390/loaded/settings:privacy missing one plain sentence naming what a first visit sends
+FAIL app/390/loaded/settings:privacy missing one sentence naming that the name never leaves the device
+FAIL app/390/loaded/delete "no store"
+FAIL app/390/loaded/delete missing the delete screen says what our server still keeps
+  note app/390/loaded/delete:confirm no confirm was asked, so its words were not read here
+FAIL app/390/loaded/sheet:profile "Nothing has left this device"
+FAIL app/390/loaded/sheet:profile "Everything is held in this browser"
+FAIL app/390/loaded/sheet:feedback "Nothing about who you are travels"
+
+sent during the walk: POST /v1/funnel/session, PATCH /v1/funnel/session/:id/checkpoint
+
+copy: 117 passed, 52 failed
+exit 1
