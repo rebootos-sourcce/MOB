@@ -1194,7 +1194,6 @@ async function atmGate(browser,FILE,ok,booted){
  await fresh();
  const runGo=await pg.evaluate(()=>{
   REL_WORD_S=0.0004; REL_GAP_S=0.001; REL_HEAD_S=0; REL_FRAME_S=0;
-  if(window.speechSynthesis)speechSynthesis.speak=function(u){ setTimeout(function(){ if(u.onend)u.onend({}); },1); };
   loadP(0); CHARGES.forEach(c=>{S.charge[c]=7;});
   CURP.ui.sfxoff=false; CURP.ui.quiet=false; CURP.ui.voice=false; CURP.ui.tone=false;
   relPick(compute().carrying.slice(0,1).map(n=>n.i));
