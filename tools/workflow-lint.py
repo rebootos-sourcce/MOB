@@ -80,8 +80,8 @@ ROLLBACK = '8f565af'
 # gate: (command, least timeout in minutes). Each runs exactly once, in
 # gates-browser, where a red run fails gates-pass and holds back the deploy, or
 # in gates-report, which reports and holds nothing back. boot, collide and
-# funnel must sit in gates-browser. The others may move there by a one line
-# change, which this lint allows without an edit here.
+# funnel, functional, design and monitor must sit in gates-browser. The rest may move
+# there by a one line change, which this lint allows without an edit here.
 BROWSER = {
     'boot':       ('node tests/boot.js',       20),
     'collide':    ('node tests/collide.js',    20),
@@ -89,8 +89,27 @@ BROWSER = {
     'functional': ('node tests/functional.js', 45),
     'design':     ('node tests/design.js',     20),
     'monitor':    ('node tools/monitor.js',    20),
+# the tests that guard the alpha work, report only until three green runs
+    'copy':          ('node tests/copy.js', 20),
+    'reset':         ('node tests/reset.js', 20),
+    'storage':       ('node tests/storage.js', 20),
+    'firstrelease':  ('node tests/firstrelease.js', 20),
+    'journey2':      ('node tests/journey2.js', 20),
+    'onboarding2':   ('node tests/onboarding2.js', 20),
+    'sniffpage':     ('node tests/sniffpage.js', 20),
+    'srcchat':       ('node tests/srcchat.js', 20),
+    'practitioner':  ('node tests/practitioner.js', 20),
+    'release-screen': ('node tests/release-screen.js', 20),
+    'release-percent': ('node tests/release-percent.js', 20),
+    'unpack':        ('node tests/unpack.js', 20),
+    'recordlink':    ('node tests/recordlink.js', 20),
+    'valuefelt':     ('node tests/valuefelt.js', 20),
+    'claims':        ('node tests/claims.js', 20),
+    'discordfeedback': ('node tests/discordfeedback.js', 20),
 }
-ALWAYS_REQUIRED = ('boot', 'collide', 'funnel')
+# functional, design and monitor joined on 9 October after four green runs on main; a
+# later one line edit that moves any of them back to gates-report must fail here
+ALWAYS_REQUIRED = ('boot', 'collide', 'funnel', 'functional', 'design', 'monitor')
 GATE_JOBS = ['gates-fast', 'gates-browser']             # what gates-pass needs
 MATRIX_JOBS = ['gates-browser', 'gates-report']
 JOBS = ['gates-fast', 'gates-browser', 'gates-report', 'gates-pass',
@@ -2060,6 +2079,9 @@ BREAKS = [
     ('every required leg allowed to fail', lambda d: _job(d, 'gates-browser').__setitem__('continue-on-error', True)),
     ('the report legs made required', lambda d: _job(d, 'gates-report').__setitem__('continue-on-error', False)),
     ('boot moved to gates-report', lambda d: _move(d, 'boot', 'gates-browser', 'gates-report')),
+    ('functional moved to gates-report', lambda d: _move(d, 'functional', 'gates-browser', 'gates-report')),
+    ('design moved to gates-report', lambda d: _move(d, 'design', 'gates-browser', 'gates-report')),
+    ('monitor moved to gates-report', lambda d: _move(d, 'monitor', 'gates-browser', 'gates-report')),
     ('a gate in both matrices', lambda d: _legs(d, 'gates-browser').append(dict(_legs(d, 'gates-report')[0]))),
     ('fail-fast left on', lambda d: _job(d, 'gates-browser')['strategy'].pop('fail-fast')),
     ('the report legs renamed', lambda d: _job(d, 'gates-report').__setitem__('name', 'report ${{ matrix.gate }}')),
