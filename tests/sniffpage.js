@@ -18,6 +18,9 @@
      S4  no surface that prints an address read from a story says the
          person said or named it, or quotes it as their word, unless the
          story holds it.
+     S5  what was read and not counted reaches the person on the Story
+         page, under the box, in the engine's one sentence, each with what
+         it means beside it, at both widths, and is gone when nothing is.
 
    Checked against a known bad case first, the standing rule: every check
    here was run against main's own build before the change and failed there
@@ -265,6 +268,36 @@ const story = p => p.evaluate(() => {
       ok(e.length === 0, 'quiz story cards, ' + JSON.stringify(t) + ': ' + (e.join('; ') || 'clean'));
     }
     await cx.close();
+  }
+
+  console.log('\n=== S5 · what was read and not counted is said on the Story page, with its meaning beside it ===');
+  for (const [w, h] of [[1600, 1000], [390, 844]]) {
+    const p = await open(browser, w, h);
+    const T = 'I was not angry. He is furious. You feel so alone. I was scared.';
+    await type(p, T);
+    const look = () => p.evaluate(() => {
+      const e = document.getElementById('staside'), r = e ? e.getBoundingClientRect() : null;
+      return { text: e ? e.textContent : null, hidden: e ? e.hidden : null, w: r ? r.width : 0, h: r ? r.height : 0,
+        role: e ? e.getAttribute('role') : null, engine: asideSay(asideOf(ST_TEXT, ST_PARSED)),
+        sw: document.documentElement.scrollWidth, vw: innerWidth };
+    });
+    const s = await look();
+    ok(s.text !== null && !s.hidden && s.w > 0 && s.h > 0 && s.role === 'note',
+      '@' + w + ': the note is on the Story page, drawn, as a note: ' + JSON.stringify({ hidden: s.hidden, w: s.w, h: s.h, role: s.role }));
+    ok(s.text === s.engine && s.engine.length > 0, '@' + w + ': it is the engine\'s own sentence, one copy for every surface');
+    ok(/“not angry” is not counted, because you said no to it\./.test(s.text),
+      '@' + w + ': the word said with a no, in the person\'s letters, with what not counted means beside it');
+    ok(/“He is furious” is not counted, because it is about someone else\. Write how it landed on you/.test(s.text),
+      '@' + w + ': the word about someone else, with why and what to write instead');
+    ok(/“You feel so alone” is not counted, because it may not be about you\. Write it with I if it is yours\./.test(s.text),
+      '@' + w + ': the unclear one, said as unclear, never as someone else\'s');
+    ok(!/scared/.test(s.text), '@' + w + ': a word that counts is not in it');
+    ok(s.sw <= s.vw, '@' + w + ': no sideways scroll, ' + s.sw + ' of ' + s.vw);
+    await type(p, 'I was scared.');
+    const q = await look();
+    ok(q.hidden === true && q.text === '', '@' + w + ': with nothing set aside the note is gone, not an empty box');
+    ok(!p.errs.length, '@' + w + ': no page errors: ' + p.errs.join(' | '));
+    await p.cx.close();
   }
 
   await browser.close();
