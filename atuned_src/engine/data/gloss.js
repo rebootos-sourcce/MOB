@@ -154,6 +154,27 @@ var UNPACK_BASE={
  /* DQ stood as a bare label on the release clock. Round RG. */
  'dq':'DQ is your shadow weight: all the charge you carry, on every address, against the most your body could hold.',
  'coherence':'Coherence is when what you mean, what you do and what your body does point the same way.',
+ /* THE FIELD'S LEFT MENU, round RB and the P3 menu pass. Every reading on the
+    rail is one bar with its mark and its one word inside it, and the word is a
+    carrier of its sentence here, read with the rail context so a word that
+    means something else on another page (flow the loop station, will the
+    battery in GLOSS, awareness the soul's window) keeps that meaning there. CQ
+    and DQ are the two bare keys above, which the rail reads as they are. Each
+    sentence says what the engine computes: vitality, awareness and will are
+    compute() X, Y and Z, radiance the root of their squares, flow the seats'
+    passes multiplied, orientation leanRead, balance the outward and inward
+    means of balance(). */
+ 'rail:vitality':'Vitality is how much energy you have left once apathy and the charge you carry have taken their share.',
+ 'rail:awareness':'Awareness is how strong what you mean is, and how little of it gets bent on the way out.',
+ 'rail:will':'Will is how much of your integrity gets through the charge you are carrying.',
+ 'rail:radiance':'Radiance is vitality, awareness and will put together, and it sets how bright the field behind the wheel is.',
+ 'rail:flow':'Flow is how much gets from the base of your spine to the top of your head, each seat passing on part of what it gets.',
+ 'rail:orientation':'Orientation is which way the charge you hold leans, toward costing you nothing or toward taking something from you.',
+ 'rail:benign':'Benign is charge you hold that is not costing you anything.',
+ 'rail:malignant':'Malignant is charge you hold that is taking something from you.',
+ 'rail:balance':'Balance is which way your body moves under what you feel, out toward the world or in toward yourself.',
+ 'rail:masculine':'Masculine is energy given a shape and a direction and sent outward, and it does not mean men.',
+ 'rail:feminine':'Feminine is energy held and taken inward, and it does not mean women.',
  /* ROUND RG, the copy sweep. His words: "you read 62 above the oscillating
     band. Your integrity is 6.2. Integrity is the hull. It's got to be human."
     Integrity was printed as a figure on the Compass with no meaning anywhere
