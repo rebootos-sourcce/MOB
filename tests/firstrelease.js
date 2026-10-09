@@ -94,16 +94,16 @@ function promises(t){
 const STANDIN=/recorded voice|until it is recorded|placeholder|lorem|\bTODO\b|\bTBD\b/i;
 
 /* RECORD EVERY SCREEN. relRender is wrapped the way tests/design.js wraps it,
-   and speak is wrapped so what the voice was handed is known. The browser's
-   own speak is stood in for, because a headless browser has no voice to hear;
-   the stand in ends each line a moment after it starts. A full screen is read
+   and the studio voice, the only voice there is, is stood in for at its seam
+   so what it was handed is known: a headless browser has no server to hear,
+   and the stand in ends each line a moment after it starts. A full screen is read
    once per phase, address and the first two passes, which is every distinct
    screen the run draws without reading a thousand copies of the same one. */
 const ARM=()=>{
  window.__said=[]; window.__steps=[]; window.__shots=[];
- if(window.speechSynthesis)speechSynthesis.speak=function(u){setTimeout(function(){if(u.onend)u.onend({});},1);};
- if(typeof speak==='function'&&!window.__sp){const o=speak; window.__sp=1;
-  window.speak=function(t){window.__said.push(String(t)); return o.apply(this,arguments);};}
+ if(typeof speakStudio==='function'&&!window.__sp){window.__sp=1;
+  window.speakStudio=function(t,rate,style,onend){window.__said.push(String(t));
+   setTimeout(function(){ if(onend)onend(1); },1); return true;};}
  if(!window.__rr){const o=relRender; window.__rr=1;
   window.relRender=function(){o();
    const st=(typeof relCur==='function')?relCur():null;
@@ -192,9 +192,10 @@ function hold(tag,card,r,opts){
 
 (async()=>{
 const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+require('./net.js').guardBrowser(browser);
 
 for(const [W,H] of [[1600,1000],[390,844]]){
- for(const c of [{all:false,voice:true},{all:true,voice:false}]){
+ for(const c of [{all:false,voice:true,signed:true},{all:true,voice:false,signed:true}]){
   const tag=W+', yes to '+(c.all?'every place':'one place')+', voice '+(c.voice?'on':'off')+': ';
   console.log('\n=== the onboarding\'s first release at '+W+', yes to '+(c.all?'every place':'one place')+', voice '+(c.voice?'on':'off')+' ===');
   const ctx=await browser.newContext({viewport:{width:W,height:H}});
@@ -213,7 +214,10 @@ for(const [W,H] of [[1600,1000],[390,844]]){
    if(all){ while((b=document.querySelector('[data-obmore]')))b.click();
     while((b=document.querySelector('[data-obans="yes"][aria-pressed="false"]')))b.click(); }
    else { b=document.querySelector('[data-obans="yes"]'); if(b)b.click(); }},c.all);
-  await page.evaluate(v=>{CURP.ui=CURP.ui||{}; CURP.ui.voice=v;},c.voice);
+  await page.evaluate(a=>{CURP.ui=CURP.ui||{}; CURP.ui.voice=a.voice;
+   /* signed in is stood in for at relVoiceCan, the one question the voice asks
+      of the session; tests/voice.js holds the real composition */
+   if(a.signed)window.relVoiceCan=function(){return true;};},{voice:c.voice,signed:c.signed});
   await page.click('[data-ob="mirrorcommit"]'); await page.waitForTimeout(120);
   /* the live card is the one in the slot; a leaving ghost may sit beside it */
   const card=await page.evaluate(()=>(document.querySelector('#ob .obx-slot .ob-card')||{}).innerText||'');
@@ -238,7 +242,7 @@ console.log('\n=== the Day One tutorial\'s first release, the other door into th
  const errs=[]; page.on('pageerror',e=>errs.push(e.message));
  await page.goto(FILE+'?dev=1',{waitUntil:'load'}); await booted(page);
  await page.evaluate(()=>{ if(typeof OB!=='undefined'&&OB.open&&typeof obClose==='function')obClose();
-  loadP(0); CURP.ui=CURP.ui||{}; CURP.ui.tutorialSeen=false; CURP.ui.voice=true; tutorialOpen(true); });
+  loadP(0); CURP.ui=CURP.ui||{}; CURP.ui.tutorialSeen=false; CURP.ui.voice=true; window.relVoiceCan=function(){return true;}; tutorialOpen(true); });
  await page.fill('#tuttext',STORY);
  await page.click('[data-tut="commit"]'); await page.waitForTimeout(80);
  await page.click('#tutorial .obx-slot [data-tut="next"]'); await page.waitForTimeout(80);

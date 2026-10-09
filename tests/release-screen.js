@@ -63,6 +63,7 @@ const STORY='I am afraid I will be left. When she goes quiet I panic and try to 
 
 (async()=>{
  const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+require('./net.js').guardBrowser(browser);
  for(const [W,H] of [[1600,1000],[390,844]]){
   console.log('\n=== the release screen at '+W+' ===');
   const page=await browser.newPage({viewport:{width:W,height:H}});

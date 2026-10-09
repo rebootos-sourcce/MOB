@@ -94,6 +94,7 @@ BROWSER = {
     'reset':         ('node tests/reset.js', 20),
     'storage':       ('node tests/storage.js', 20),
     'firstrelease':  ('node tests/firstrelease.js', 20),
+    'voice':         ('node tests/voice.js', 20),
     'journey2':      ('node tests/journey2.js', 20),
     'onboarding2':   ('node tests/onboarding2.js', 20),
     'sniffpage':     ('node tests/sniffpage.js', 20),
@@ -108,8 +109,10 @@ BROWSER = {
     'discordfeedback': ('node tests/discordfeedback.js', 20),
 }
 # functional, design and monitor joined on 9 October after four green runs on main; a
-# later one line edit that moves any of them back to gates-report must fail here
-ALWAYS_REQUIRED = ('boot', 'collide', 'funnel', 'functional', 'design', 'monitor')
+# later one line edit that moves any of them back to gates-report must fail here. voice
+# joined the same day, on the owner's P0: there is no fallback to a browser voice, and a
+# gate that holds that must hold back the deploy from its first run
+ALWAYS_REQUIRED = ('boot', 'collide', 'funnel', 'functional', 'design', 'monitor', 'voice')
 GATE_JOBS = ['gates-fast', 'gates-browser']             # what gates-pass needs
 MATRIX_JOBS = ['gates-browser', 'gates-report']
 JOBS = ['gates-fast', 'gates-browser', 'gates-report', 'gates-pass',

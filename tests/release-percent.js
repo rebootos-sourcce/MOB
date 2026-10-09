@@ -29,6 +29,7 @@ const booted=async p=>{
 
 (async()=>{
  const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+require('./net.js').guardBrowser(browser);
  const page=await browser.newPage({viewport:{width:1600,height:1000}});
  const errs=[];
  page.on('pageerror',e=>errs.push('PAGEERROR: '+e.message));

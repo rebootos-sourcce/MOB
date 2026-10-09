@@ -193,6 +193,7 @@ jobs:
           - { gate: functional, timeout: 45, command: node tests/functional.js }
           - { gate: design, timeout: 20, command: node tests/design.js }
           - { gate: monitor, timeout: 20, command: node tools/monitor.js }
+          - { gate: voice, timeout: 20, command: node tests/voice.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

@@ -1,7 +1,7 @@
 /* ============================================================
    THE SEAT TONE, THE FOUR MARKS, THE FITTINGS, THE ATMOSPHERE AND
    THE VOICE. The only file in the product that touches AudioContext
-   or speechSynthesis. The fittings are the interface's own sounds
+   or plays the voice. The fittings are the interface's own sounds
    for its events, played through sfx(name). The atmosphere is the
    soft layer under nearly every press, and the room under a zoom.
    Both are on until a person turns them off, with one switch.
@@ -1210,94 +1210,37 @@ function atmWire(){
 atmWire();
 
 /* ============================================================
-   THE VOICE. Browser speech synthesis, and the one other thing in
-   the product besides the bed that makes a sound.
+   THE VOICE IS ELEVENLABS AND THERE IS NO OTHER. The owner, 9 October:
+   "fix the 11 Labs voice. The audio is still defaulting to the Claude
+   default voice, and I want that removed so that there's no fallback to
+   it." This file used to carry the browser's own built in speech as the
+   default voice, and as the fallback when the studio voice failed. It is
+   gone, all of it: no call into the browser's speech, no list of browser
+   voices, no sentence about whether a browser voice runs on this machine.
 
-   It is the temporary voice, ruled (TASKS RF12): his own recording
-   is the one asset that cannot be generated and it is not in this
-   build. Everything a voice says is also on the screen at the same
-   moment, so turning it off loses nothing.
-
-   WHERE THE WORDS GO, which a page cannot prove and so has to say.
-   Safari and Firefox speak on the device. Chrome and Edge offer
-   both, and their best voices are servers. localService is the
-   platform's own answer, so a local voice is preferred and the one
-   picked is named, with where it runs, before it says a word
-   (DESIGN-release.md section 3). A synthesis request leaves through
-   the browser's own process, so no request log on any page can see
-   it, and tests/design.js gate 7 stays green either way. That is
-   why the sentence exists.
-
-   The list is read fresh at every pick rather than cached, because
-   every browser that loads its voices late returns an empty list on
-   the first call (TASKS RF11).
+   So there are two outcomes for a line and only two. It is spoken by the
+   studio voice below, or it is not spoken and the screen says so in
+   words. A line that fails is never handed to anything else. Everything
+   a voice says is also on the screen, so a line that is not spoken
+   loses nothing but the sound. tests/voice.js holds this: it plants a
+   spy where the browser's speech call was and fails if anything calls
+   it, and it scans the source for the name.
    ============================================================ */
-function voiceCan(){
- try{ return !!(window.speechSynthesis&&window.SpeechSynthesisUtterance); }catch(e){ return false; }}
-function voiceList(){
- try{ return (voiceCan()&&speechSynthesis.getVoices())||[]; }catch(e){ return []; }}
-function voicePick(){
- var vs=voiceList(); if(!vs.length)return null;
- var en=vs.filter(function(v){return /^en/i.test(v.lang||'');});
- var pool=en.length?en:vs;
- var local=pool.filter(function(v){return v.localService;});
- return local[0]||pool[0]||null;}
-/* what the panel says about the voice, before the voice says anything */
-function voiceSay(){
- if(!voiceCan())return {ok:false,line:'This browser has no speech voice. The run reads on the screen.'};
- var v=voicePick();
- if(!v)return {ok:true,unknown:true,
-  line:'The browser has not named its voice yet, so this page cannot say whether the words stay '
-   +'on this machine. Turn the voice off and the run reads on the screen.'};
- if(v.localService)return {ok:true,local:true,v:v,
-  line:'The voice is '+v.name+', and it runs on this machine. The words go nowhere.'};
- return {ok:true,local:false,v:v,
-  line:'The voice is '+v.name+', and it is a network service. The words are sent to the browser '
-   +'vendor to be spoken. Turn the voice off and the run reads on the screen.'};}
-/* SAY ONE LINE, a sentence at a time. A long utterance is cut off part way on
-   some Chrome voices, and a card line from the letting go cards runs to three
-   sentences, so each sentence is its own utterance and the line ends when the
-   last one does. onend gets the milliseconds it took. onfail is told once if
-   the browser refused, and the caller decides what silence means. */
-function speak(text,rate,onend,onfail){
- if(!voiceCan())return false;
- var parts=String(text||'').match(/[^.!?]+[.!?]*/g)||[String(text||'')];
- parts=parts.map(function(s){return s.trim();}).filter(function(s){return s;});
- if(!parts.length)return false;
- var v=voicePick(), t0=Date.now(), over=false;
- try{
-  if(speechSynthesis.speaking||speechSynthesis.pending)speakStop();
-  /* the studio voice is not speechSynthesis, so the test above cannot see it,
-     and a switch from it mid line would otherwise say the line twice at once */
-  studioStop();
-  parts.forEach(function(s,i){
-   var u=new SpeechSynthesisUtterance(s);
-   if(v){u.voice=v; u.lang=v.lang;}
-   u.rate=Math.max(0.5,Math.min(1.8,0.9*(rate||1))); u.pitch=0.95; u.volume=1;
-   if(i===parts.length-1)u.onend=function(){ if(over)return; over=true;
-    if(onend)onend(Date.now()-t0); };
-   u.onerror=function(e){ if(over)return; over=true;
-    if(onfail)onfail((e&&e.error)||'error'); };
-   speechSynthesis.speak(u);});
-  return true;
- }catch(e){ return false; }}
-function speakStop(){ try{ if(voiceCan())speechSynthesis.cancel(); }catch(e){} studioStop(); }
+function speakStop(){ studioStop(); }
 /* ============================================================
-   THE STUDIO VOICE. The same line, rendered by ElevenLabs on the
-   server (ui/auth.js authVoice) and played here, behind the browser
-   voice and never in place of it: reboot-os 38_voice.js rules
-   "generated first, ElevenLabs later", free speech to find the
-   pacing and the paid voice to render a script whose timing is
-   proven. The release's timing is the four second spacing, ruled 27
-   September, and it holds whichever voice says the line, so this is
-   a switch a person turns on and not a default.
+   THE STUDIO VOICE. One line, rendered by ElevenLabs on the server
+   (ui/auth.js authVoice) and played here. It is the only voice. There
+   is nothing behind it: when it cannot answer, the caller says so and
+   the line is not spoken. The release's timing is the four second
+   spacing, ruled 27 September, and it holds whether or not a line is
+   spoken, because the walker waits out the clock for any line that was
+   not.
 
-   THE SAME CONTRACT AS speak(), so the walker in ui/release.js needs
-   nothing new: onend gets the milliseconds from the call to the end
+   THE CONTRACT the walker in ui/release.js relies on: onend gets the milliseconds from the call to the end
    of the sound, onfail is told once. The milliseconds include the
-   wait for the server on purpose, for the reason speak() includes the
-   browser's own: the walker spaces lines start to start, and a wait
-   it was not told about would push every line late by that much.
+   wait for the server on purpose: the walker spaces lines start to
+   start, and a wait it was not told about would push every line late
+   by that much.
 
    A LATE LINE NEVER PLAYS. Every call and every stop moves STUDIO.seq,
    and audio that arrives for a seq that has moved is dropped, so a
@@ -1331,7 +1274,7 @@ function speakStudio(text,rate,style,onend,onfail){
   try{ url=URL.createObjectURL(r.blob); el=new Audio(url); }catch(e){ clearTimeout(wait); lose(0); return; }
   STUDIO.el=el; STUDIO.url=url;
   /* the server renders at the voice's own speed and pace is applied here,
-     the way speak() applies it to the browser voice, so one render serves
+     so one render serves
      every pace and the server's cache keeps answering */
   el.playbackRate=Math.max(0.5,Math.min(1.8,rate||1));
   el.onplaying=function(){ clearTimeout(wait); };

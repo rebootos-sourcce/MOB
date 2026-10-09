@@ -1083,6 +1083,7 @@ if(require.main===module){
  (async()=>{
   const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1';
   const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+require('./net.js').guardBrowser(browser);
   let PASS=0,FAIL=0;
   const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
   /* the Field's own left column starts shut on his ruling, and a gate that
