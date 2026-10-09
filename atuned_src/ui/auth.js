@@ -112,7 +112,7 @@ function funnelUuid(){
 }
 function authFunnelStart(){
  var existing=funnelSession();
- if(existing)return Promise.resolve({ok:true,session:existing.session||null,reused:true});
+ if(existing){ authFunnelJoin(); return Promise.resolve({ok:true,session:existing.session||null,reused:true}); }
  var anonymousId=funnelUuid();
  return authCall('POST','/v1/funnel/session',{anonymousId:anonymousId},null,false).then(function(r){
   /* The Worker intentionally creates the anonymous id. Keep the caller's id
@@ -122,7 +122,27 @@ function authFunnelStart(){
   if(!s||typeof s.id!=='string'||typeof b.credential!=='string')return {ok:false,status:r.status,body:null};
   var state={session:s,id:s.id,anonymousId:s.anonymousId||anonymousId,credential:b.credential};
   var kept=funnelKeep(state);
+  authFunnelJoin();
   return {ok:true,session:s,reused:false,kept:kept};});
+}
+/* JOINED TO THE ACCOUNT ONCE BOTH EXIST, WHICHEVER CAME FIRST. The join was
+   tried at sign in and nowhere else, and the first visit's session is made by
+   onboarding, which opens behind the door. So a person who pressed Create
+   account at the door, the ordinary way in, was signed in before the session
+   existed: the one try found nothing to join, and the session stayed anonymous
+   for good. tests/golden.js walked it and the server held userId null after
+   the whole first run. So the join is asked again wherever it can newly
+   succeed: when the session is made or found, and after each mark, because
+   the Worker refuses a session with no starter gift and will issue that gift
+   either with the session or at the first mark (REVIEW-audit-2026-10-09
+   pass2.md W3), and a no for that reason must not be the last word. A session
+   already joined is never sent again, and one ask is out at a time. */
+var FUNNEL_JOINING=false;
+function authFunnelJoin(){
+ var f=funnelSession(), s=authSession();
+ if(!f||!s||f.userId||FUNNEL_JOINING)return Promise.resolve({ok:false,status:0,body:null,asked:false});
+ FUNNEL_JOINING=true;
+ return authFunnelAttach().then(function(r){ FUNNEL_JOINING=false; return r; });
 }
 function authFunnelRead(){
  var f=funnelSession(); if(!f)return Promise.resolve({ok:false,status:0,body:null});
@@ -137,7 +157,11 @@ function authFunnelCheckpoint(patch){
  return authCall('PATCH','/v1/funnel/session/'+encodeURIComponent(f.id)+'/checkpoint',patch,s&&s.token,false,undefined,extra)
   .then(function(r){
    if(r.ok&&r.body&&r.body.session){
-    funnelKeep(Object.assign({},f,{session:r.body.session,userId:r.body.session.userId||f.userId||null}));
+    /* read again now, not the copy taken before the request: a join that
+       landed while this mark was out has already written its userId */
+    var g=funnelSession()||f;
+    funnelKeep(Object.assign({},g,{session:r.body.session,userId:r.body.session.userId||g.userId||null}));
+    authFunnelJoin();
     return {ok:true,session:r.body.session};
    }
    return {ok:false,status:r.status,body:r.body};
@@ -149,7 +173,7 @@ function authFunnelAttach(){
  return authCall('POST','/v1/funnel/session/'+encodeURIComponent(f.id)+'/attach',{credential:f.credential},s.token)
   .then(function(r){
    if(r.ok&&r.body&&r.body.session){
-    var next=Object.assign({},f,{session:r.body.session,userId:r.body.session.userId||s.email||null});
+    var next=Object.assign({},funnelSession()||f,{session:r.body.session,userId:r.body.session.userId||s.email||null});
     funnelKeep(next);
    }
    return r;
@@ -446,10 +470,10 @@ function authHold(b,mail){
   accountId:typeof acc.id==='string'?acc.id:null};
  var kept=authKeep(s);
  /* the plan and the funnel session both use the same bearer boundary.
-    Funnel attachment is best effort here because the gift may not yet exist;
-    the explicit funnel attachment path remains available once a starter gift
-    has been issued. */
- authFunnelAttach();
+    Funnel attachment is best effort here because the session or its gift may
+    not exist yet; authFunnelJoin asks again when the session is made and
+    after each mark, so this is the first ask and not the only one. */
+ authFunnelJoin();
  /* the plan is read after the sign in is held, and not waited on: the
     caller says "Signed in as" now, and the plan speaks after it only if the
     record changed. A second device is exactly this path. */

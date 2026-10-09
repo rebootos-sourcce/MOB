@@ -106,6 +106,7 @@ BROWSER = {
     'release-percent': ('node tests/release-percent.js', 20),
     'unpack':        ('node tests/unpack.js', 20),
     'recordlink':    ('node tests/recordlink.js', 20),
+    'golden':        ('node tests/golden.js', 20),
     'valuefelt':     ('node tests/valuefelt.js', 20),
     'claims':        ('node tests/claims.js', 20),
     'discordfeedback': ('node tests/discordfeedback.js', 20),
