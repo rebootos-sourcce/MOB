@@ -33,7 +33,8 @@
     "valuefelt": 7,
     "claims": 107,
     "discordfeedback": 59,
-    "voice": 28
+    "voice": 28,
+    "landing": 15
   },
   "no_count": {
     "monitor": "all surfaces render"

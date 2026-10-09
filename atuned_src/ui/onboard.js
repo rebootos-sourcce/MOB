@@ -680,6 +680,9 @@ function obClose(how){
  }catch(e){
   if(typeof status==='function')
    status('This browser would not save. The first run will open again.','fail'); }
+ /* THE FIRST RUN ENDED, so the first landing is the person's own reading on
+    Summary, once per device. See tabLandFirst in ui/panels.js. */
+ if(!keep&&typeof tabLandFirst==='function'){ try{ tabLandFirst(); }catch(e){} }
  if(typeof render==='function')render();
  if(left&&typeof status==='function')status('Nothing committed. Your words wait in the Story tab.');}
 
