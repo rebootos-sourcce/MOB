@@ -389,7 +389,7 @@ function accDisplay(){
  h+=accGroup('Sound',
    (typeof bedCan==='function'&&bedCan())
     ? accTog('Sound effects','acsfx',sfxIsOn(),
-       'a short sound on a tab or a Field press, when something is kept, done or refused, when a release starts and ends, and when a timer ends. A crackle when the pointer meets a line on the Field, or on the Body zoomed in')
+       'a soft click when you press something and a faint tick when the mouse reaches a button. A tone when an overlay goes on or off, and a breath of air when a panel opens or shuts. A low hum while you zoom into the Field, louder the closer you go. A short sound when something is kept, done or refused, when a release starts and ends, and when a timer ends. A crackle when the pointer meets a line on the Field, or on the Body zoomed in')
     : accStub('Sound effects','this browser has no audio'),
    'Quiet turns them off too. A release has its own sound switches.');
  return h;}
@@ -574,11 +574,30 @@ function accHelp(){
    nq?'What you wrote is kept here until the server takes it, and nothing is '
     +'thrown away while it waits.'
    :'Nothing waiting.');
+ /* WHEN IT WAS MADE, M89. The policies' own dates wait on M64, whose drafts
+    still read a placeholder, so no date is written for them here. The day
+    this file was built is true, and it is read off the stamp, never typed. */
+ var bs=accBuild();
  h+=accGroup('This build',
-   accRow('Build',(typeof BUILD_ID!=='undefined'&&BUILD_ID)||'not stamped')
-   +accRow('Version',(typeof VERSION!=='undefined'&&VERSION)||'alpha'),
+   accRow('Updated',bs.day||'–')
+   +accRow('Build',bs.id||'not stamped')
+   +accRow('Version',bs.ver||'not stamped'),
    'Quote this when you report something.');
  return h;}
+/* THE BUILD STAMP, READ WHERE BUILD.sh WRITES IT. Help asked for BUILD_ID and
+   VERSION, two names nothing in the product defines, so every build printed
+   "not stamped" and "alpha" over a root element carrying the real stamp, and
+   every piece of feedback went out marked alpha. The stamp is
+   "v<commits> <commit> <yyyy-mm-dd hh:mm>" in UTC, so the day is printed in
+   UTC as well, or it would read a day early west of Greenwich. */
+function accBuild(){
+ var s=''; try{s=document.documentElement.getAttribute('data-build')||'';}catch(e){}
+ var m=/^(v\d+) ([0-9a-f]{4,40}) (\d{4})-(\d{2})-(\d{2}) \d{2}:\d{2}$/.exec(s);
+ if(!m)return {ver:'',id:'',day:''};
+ var day='';
+ try{day=new Date(Date.UTC(+m[3],+m[4]-1,+m[5])).toLocaleDateString('en-GB',
+  {day:'numeric',month:'short',year:'numeric',timeZone:'UTC'});}catch(e){}
+ return {ver:m[1],id:m[2],day:day};}
 
 /* ---------- the surface ---------- */
 function renderAccount(){
@@ -1075,7 +1094,7 @@ function obSend(){
  var r=compute();
  var e={kind:OB_KIND, at:new Date().toISOString().slice(0,10), body:body,
   answers:OB_ANS, band:obBand(r),
-  build:(typeof BUILD_ID!=='undefined'&&BUILD_ID)||'alpha',
+  build:accBuild().id||'not stamped',
   platform:(window.innerWidth<720?'phone':'desktop'),
   viewport:(window.innerWidth<720?'narrow':'wide')};
  var q=obQueue(e);

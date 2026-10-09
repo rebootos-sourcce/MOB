@@ -205,8 +205,18 @@ binds `localStorage`.
                                offline under its ceiling and its cap, silent
                                off, under Quiet, before a press and inside a
                                release, each proven against a broken engine.
+                               It also holds the atmosphere, round OU and OV:
+                               the control map against every control on every
+                               tab, every row at every pitch measured for peak,
+                               rms, length, low and high energy and centroid,
+                               the room under a zoom, hover, and the limiters,
+                               through real presses and a real pointer.
                                Also called at the end of functional.js.
                                Read the count off the run.
+    node tools/soundmap.js     SOUND-MAP.md, rendered from the same code, one
+                               line per event; --wav DIR also writes each sound
+                               as a wav to listen to. Rerun after any change to
+                               the sounds and commit SOUND-MAP.md.
     node tests/msglog.js       the bottom message dock: three seconds, Keep, the
                                last fifty in a log, a failure never swallowed.
     node tests/protocol.js     a release's cross, End on every phase, and End

@@ -18,14 +18,20 @@
    part of it is wired to the data and moves on the Field's own clock.
 
    WHAT MOVES, ALL OF IT IN THE RAIL AND ALL OF IT FROM A READING.
-     the bars        a light travels each fill at the Field's rate; the shadow
-                     leans on the shadow wave; Decoherence is seven hashes that
-                     rise and fall with the charge on their seats and breathe;
-                     Flow is a wave with a bead on it; a reading that moves
-                     throws its head, leaves its hairline and says by how much
-                     (ui/component.js)
-     the wire        the six readings hang on one wire whose pulses run at the
-                     Field's rate (ui/railwire.js)
+     the bars        every element of the readings block is one bar, round RB:
+                     a light travels each single fill at the Field's rate;
+                     Flow carries its wave with a bead on it inside its bar; a
+                     reading that moves throws its head, leaves its hairline
+                     and says by how much; and the three pairs, CQ against
+                     DQ, benign against malignant, masculine against feminine,
+                     press in from their own ends and meet on an edge that
+                     swings by the figure each swings by (ui/component.js,
+                     rbRow and rbPair)
+     the wire        GONE, rounds RZ and RB. The six readings hung on a
+                     vertical wire down the dock's left edge, and nothing on it
+                     said what it was. His words, RZ: "I don't know what that
+                     bar is on the left-hand side, but it's taking up real
+                     estate. Kill it." ui/railwire.js went with it.
      the circles     every domain, root and archetype is a disc with a ring
                      carrying the number the engine computes for it, and the
                      ones that carry real weight breathe; a chosen one closes
@@ -34,8 +40,8 @@
                      so a tile and the address it acts on are bright together
                      and dim together. They are on the same clock as the wheel
                      and they touch nothing of it.
-     the dials       orientation and balance take the bars' light, so the
-                     whole block is one instrument on one clock
+     the pairs       orientation and balance are bars, not dials, and swing
+                     on the same clock as the wheel (rbPairTick)
      the map         the four systems and what meets what, drawn from the same
                      call the right rail reads, with a pulse on each strong
                      meeting at the Field's rate
@@ -51,8 +57,8 @@
    archetype's ring is its share of what the blueprint expresses, r.aff[j],
    against the strongest. Both are the numbers the wheel is drawn from.
 
-   STILL. Reduced motion, body.quiet and body.rm draw every ring, every
-   hash and the map at their figures and none of the breath.
+   STILL. Reduced motion, body.quiet and body.rm draw every ring and the map
+   at their figures and none of the breath.
    ============================================================ */
 var RL={dq:0};
 function rlCalm(){return rbStill();}
@@ -201,9 +207,9 @@ function rlMeetHtml(sp,nm){
  var fb=document.getElementById('fbar');
  if(!fb)return;
  function rowOf(ev){var o=ev.target.closest&&ev.target.closest('[data-fb]'); if(!o)return null;
-  return document.querySelectorAll('#fdock .rbar[data-fk="'+o.getAttribute('data-fb')+'"]');}
+  return document.querySelectorAll('#fdock [data-fk="'+o.getAttribute('data-fb')+'"]');}
  function lightRows(ev){var rows=rowOf(ev); if(rows)rows.forEach(function(b){b.classList.add('rb-hot');});}
- function dimRows(){document.querySelectorAll('#fdock .rbar.rb-hot').forEach(function(b){b.classList.remove('rb-hot');});}
+ function dimRows(){document.querySelectorAll('#fdock .rb-hot').forEach(function(b){b.classList.remove('rb-hot');});}
  fb.addEventListener('pointerover',lightRows); fb.addEventListener('focusin',lightRows);
  fb.addEventListener('pointerout',dimRows); fb.addEventListener('focusout',dimRows);})();
 

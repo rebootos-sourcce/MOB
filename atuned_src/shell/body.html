@@ -439,7 +439,7 @@
    aria-label="Fold the menu" title="Fold the menu to its icons, or open it again">
   <div class="secbar" id="secbar" role="group" aria-label="Sections">
    <button type="button" class="secb" data-sec="discover" aria-pressed="false"
-    title="Discover. Your story, your avatar, your intake and your summary."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.8 12c2.4-4.2 5.5-6.3 9.2-6.3s6.8 2.1 9.2 6.3c-2.4 4.2-5.5 6.3-9.2 6.3S5.2 16.2 2.8 12z"/><circle cx="12" cy="12" r="2.9"/></svg><span class="sn">Discover</span></button>
+    title="Discover. Story, Avatar, Summary, Intake and Analytics."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.8 12c2.4-4.2 5.5-6.3 9.2-6.3s6.8 2.1 9.2 6.3c-2.4 4.2-5.5 6.3-9.2 6.3S5.2 16.2 2.8 12z"/><circle cx="12" cy="12" r="2.9"/></svg><span class="sn">Discover</span></button>
    <button type="button" class="secb" data-sec="play" aria-pressed="true"
     title="Play. Field, Body, Compass and Character."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M10.2 8.6l5.2 3.4-5.2 3.4z"/></svg><span class="sn">Play</span></button>
    <button type="button" class="secb" data-sec="flow" aria-pressed="false"
@@ -458,25 +458,40 @@
    <button type="button" class="secb" data-sec="practitioner" aria-pressed="false" style="display:none"
     title="Practitioner. Your clients."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="3"/><path d="M2.6 19.2a5.4 5.4 0 0110.8 0M15.6 8h5.8M15.6 12h5.8M15.6 16h3.8"/></svg><span class="sn">Practitioner</span></button>
   </div>
+  <!-- A TAB'S TOOLTIP NAMES THE TAB, THEN SAYS WHAT IS THERE. M92, the UX
+       seat's call, on round PD's "the seats decide". Every title here was the
+       label again, "Story" over a button reading Story, and pressing a section
+       hands focus to a tab, which opens that title as the tab's definition. So
+       the panel opened on a word the person was already looking at.
+
+       The rule, one for every tab: the name, a full stop, then one short
+       sentence saying what a person does or finds on that page. The name stays
+       first because a folded menu shows icons only, and there the title is the
+       only place the name is visible. It never says Open, because pressing any
+       tab opens it, and a line that says so says nothing.
+
+       A section's title names every tab in its group, the way Play's always
+       has. Discover's still listed four tabs after Analytics came back as a
+       fifth. tests/tabtips.js holds both and fails by name. -->
   <div id="tabbar" style="display:flex;gap:5px;flex-wrap:wrap">
    <div class="tabgrp" data-sec="discover" role="group" aria-label="Discover"><span class="tabgrp-hd" aria-hidden="true">Discover</span>
-    <button type="button" class="vt tabtop" data-tabk="0" aria-pressed="false" title="Story"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8.5L18 7v13.5H6z"/><path d="M14.5 3.5V7H18M9 11h6M9 14h6M9 17h3.5"/></svg><span class="n">Story</span></button>
-    <button type="button" class="vt tabtop" data-tabk="5" aria-pressed="false" title="Avatar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="9.2" r="2.7"/><path d="M7.4 18.2c.9-2.6 2.5-3.9 4.6-3.9s3.7 1.3 4.6 3.9"/></svg><span class="n">Avatar</span></button>
-    <button type="button" class="vt tabtop" data-tabk="1" aria-pressed="false" title="Summary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6h15M4.5 12h11M4.5 18h7"/></svg><span class="n">Summary</span></button>
-    <button type="button" class="vt tabtop" data-tabk="13" aria-pressed="false" title="Intake"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h14v15H5z"/><path d="M8.5 9h7M8.5 12h7M8.5 15h4"/><circle cx="6.6" cy="9" r=".5"/><circle cx="6.6" cy="12" r=".5"/><circle cx="6.6" cy="15" r=".5"/></svg><span class="n">Intake</span></button>
+    <button type="button" class="vt tabtop" data-tabk="0" aria-pressed="false" title="Story. Write what happened, in your own words."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h8.5L18 7v13.5H6z"/><path d="M14.5 3.5V7H18M9 11h6M9 14h6M9 17h3.5"/></svg><span class="n">Story</span></button>
+    <button type="button" class="vt tabtop" data-tabk="5" aria-pressed="false" title="Avatar. Say who you are becoming, and see how far you have come."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="9.2" r="2.7"/><path d="M7.4 18.2c.9-2.6 2.5-3.9 4.6-3.9s3.7 1.3 4.6 3.9"/></svg><span class="n">Avatar</span></button>
+    <button type="button" class="vt tabtop" data-tabk="1" aria-pressed="false" title="Summary. Everything read so far, and what to do first."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 6h15M4.5 12h11M4.5 18h7"/></svg><span class="n">Summary</span></button>
+    <button type="button" class="vt tabtop" data-tabk="13" aria-pressed="false" title="Intake. Answer the questions about you."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h14v15H5z"/><path d="M8.5 9h7M8.5 12h7M8.5 15h4"/><circle cx="6.6" cy="9" r=".5"/><circle cx="6.6" cy="12" r=".5"/><circle cx="6.6" cy="15" r=".5"/></svg><span class="n">Intake</span></button>
     <!-- ANALYTICS, RIGHT AFTER SUMMARY, round LV: "story, avatar, summary,
          analytics." Integer 4, TAB.ANALYTICS, unfolded from Summary on the
          Games template. engine/core.js has the ruling in full. -->
-    <button type="button" class="vt tabtop" data-tabk="4" aria-pressed="false" title="Analytics"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 20V10M11 20V4M17.5 20v-7"/></svg><span class="n">Analytics</span></button>
+    <button type="button" class="vt tabtop" data-tabk="4" aria-pressed="false" title="Analytics. Follow each pattern down to what holds it in place."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 20V10M11 20V4M17.5 20v-7"/></svg><span class="n">Analytics</span></button>
    </div>
    <div class="tabgrp" data-sec="play" role="group" aria-label="Play"><span class="tabgrp-hd" aria-hidden="true">Play</span>
-    <button type="button" class="vt tabtop" data-tabk="2" aria-pressed="true" title="Field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="5.6"/><circle cx="12" cy="12" r="2"/></svg><span class="n">Field</span></button>
-    <button type="button" class="vt tabtop" data-tabk="3" aria-pressed="false" title="Body"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/></svg><span class="n">Body</span></button>
-    <button type="button" class="vt tabtop" data-tabk="8" aria-pressed="false" title="Compass"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M15.2 8.8l-1.9 4.5-4.5 1.9 1.9-4.5z"/></svg><span class="n">Compass</span></button>
-    <button type="button" class="vt tabtop" data-tabk="11" aria-pressed="false" title="Character"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h16v4.5a8 8 0 01-16 0zM8.2 11.4h2.6M13.2 11.4h2.6"/></svg><span class="n">Character</span></button>
+    <button type="button" class="vt tabtop" data-tabk="2" aria-pressed="true" title="Field. Everything you carry, on one wheel."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="12" r="5.6"/><circle cx="12" cy="12" r="2"/></svg><span class="n">Field</span></button>
+    <button type="button" class="vt tabtop" data-tabk="3" aria-pressed="false" title="Body. Each place in your body, and what is held there."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.8" r="2.1"/><path d="M12 8.2v7M12 15.2l-3.2 5.6M12 15.2l3.2 5.6M6.2 10.4h11.6"/></svg><span class="n">Body</span></button>
+    <button type="button" class="vt tabtop" data-tabk="8" aria-pressed="false" title="Compass. Where you sit on each quality, from clean to upside down."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M15.2 8.8l-1.9 4.5-4.5 1.9 1.9-4.5z"/></svg><span class="n">Compass</span></button>
+    <button type="button" class="vt tabtop" data-tabk="11" aria-pressed="false" title="Character. The masks read so far, and the character they make together."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h16v4.5a8 8 0 01-16 0zM8.2 11.4h2.6M13.2 11.4h2.6"/></svg><span class="n">Character</span></button>
    </div>
    <div class="tabgrp" data-sec="flow" role="group" aria-label="Flow"><span class="tabgrp-hd" aria-hidden="true">Flow</span>
-    <button type="button" class="vt tabtop" data-tabk="10" aria-pressed="false" title="Ritual"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.4c.9 2.9 4.6 4.9 4.6 9.3a4.6 4.6 0 0 1-9.2 0c0-2.3 1.1-3.7 2.3-4.8.3 1.5 1 2.4 2 2.7-.5-2.8 0-5.1.3-7.2z"/><path d="M8 21h8"/></svg><span class="n">Ritual</span></button>
+    <button type="button" class="vt tabtop" data-tabk="10" aria-pressed="false" title="Ritual. Build a ritual, do it, and see what you kept."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.4c.9 2.9 4.6 4.9 4.6 9.3a4.6 4.6 0 0 1-9.2 0c0-2.3 1.1-3.7 2.3-4.8.3 1.5 1 2.4 2 2.7-.5-2.8 0-5.1.3-7.2z"/><path d="M8 21h8"/></svg><span class="n">Ritual</span></button>
     <!-- ACCOUNTABILITY HAS NO BUTTON, round QF. It is the right column of the
          Ritual page, not a page beside it: "Right side of the menu is for the
          accountability tracker." Integer 14 is folded onto 10 in core.js, so
@@ -485,13 +500,13 @@
          to TABDEF, so a button left here would fail the run. -->
    </div>
    <div class="tabgrp" data-sec="embody" role="group" aria-label="Embody"><span class="tabgrp-hd" aria-hidden="true">Embody</span>
-    <button type="button" class="vt tabtop" data-tabk="6" aria-pressed="false" title="Knowledge"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5.6c3.1-.8 6-.4 8.5 1.3v12.8c-2.5-1.6-5.4-2-8.5-1.2zM20.5 5.6c-3.1-.8-6-.4-8.5 1.3v12.8c2.5-1.6 5.4-2 8.5-1.2z"/></svg><span class="n">Knowledge</span></button>
+    <button type="button" class="vt tabtop" data-tabk="6" aria-pressed="false" title="Knowledge. Look up what any part of this system means."><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 5.6c3.1-.8 6-.4 8.5 1.3v12.8c-2.5-1.6-5.4-2-8.5-1.2zM20.5 5.6c-3.1-.8-6-.4-8.5 1.3v12.8c2.5-1.6 5.4-2 8.5-1.2z"/></svg><span class="n">Knowledge</span></button>
    </div>
    <!-- shut inline for the reason given on its section button above; on a
         phone the menu shows every group under its heading, so the group has
         to be shut as well as the section -->
    <div class="tabgrp" data-sec="practitioner" role="group" aria-label="Practitioner" style="display:none"><span class="tabgrp-hd" aria-hidden="true">Practitioner</span>
-    <button type="button" class="vt tabtop" data-tabk="12" aria-pressed="false" title="Clients"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.6" cy="6.5" r="1.9"/><circle cx="5.6" cy="12" r="1.9"/><circle cx="5.6" cy="17.5" r="1.9"/><path d="M10.2 6.5h9.6M10.2 12h9.6M10.2 17.5h9.6"/></svg><span class="n">Clients</span></button>
+    <button type="button" class="vt tabtop" data-tabk="12" aria-pressed="false" title="Clients. The people who have let you see their reading."><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.6" cy="6.5" r="1.9"/><circle cx="5.6" cy="12" r="1.9"/><circle cx="5.6" cy="17.5" r="1.9"/><path d="M10.2 6.5h9.6M10.2 12h9.6M10.2 17.5h9.6"/></svg><span class="n">Clients</span></button>
    </div>
   </div>
   <!-- THE MAIN MENU'S LIGHTING. GF, his words: "move the colour profiles like
@@ -769,17 +784,21 @@
          readings now, on the same left edge, at the same height, in the same
          ink, and they are rewritten by the same render. The ids are the ones
          every gate already reads: #polbar is orientation, benign against
-         malignant, #bal is balance, masculine against feminine, and #axpick
-         is the switch for the two designs of both. One mechanic, FJ in
-         TASKS.md, and so one place. -->
+         malignant, and #bal is balance, masculine against feminine. One
+         mechanic, FJ in TASKS.md, and so one place. -->
+    <!-- AND THEY ARE BARS, round RB, ported in the P3 menu pass. His words:
+         "This stack of elements should all be bar style with the symbolic icon
+         and the text inside of the bar itself to maximize space." The headings
+         over them, the pole names under them and the switch between two dial
+         designs are gone: each is one pair bar (rbPair, ui/component.js), its
+         marks, words and shares inside it, the same height and track as every
+         bar above. Orientation is no door, so it is a carrier a keyboard
+         reaches; balance opens its reading. The ids are kept because every
+         gate reads them. -->
     <div class="fdial" id="fdial">
-     <div class="fdl"><svg class="fdl-ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 6.4l2.4 5.6L12 17.6 9.6 12z"/></svg>Orientation</div>
-     <div class="polbar" id="polbar"></div>
-     <div class="fdl"><svg class="fdl-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M6 20h12M4.5 8.5h15"/><path d="M4.5 8.5l-2 5a2.6 2.6 0 004 0zM19.5 8.5l-2 5a2.6 2.6 0 004 0z"/></svg>Balance</div>
+     <div class="polbar" id="polbar" role="img" tabindex="0" aria-label="Orientation. Benign against malignant."></div>
      <button type="button" class="bal" id="bal"
       aria-label="Balance. Masculine against feminine. Opens the reading."></button>
-     <div class="ax-pick" id="axpick" role="radiogroup"
-      aria-label="Two designs for orientation and balance. The one picked draws both."></div>
     </div>
    </div>
    <!-- SPIRIT, THEN PSYCHE. Ruled 26 September, CH in TASKS.md: "I want to
