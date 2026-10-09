@@ -653,10 +653,17 @@ async function door(browser, SITE, cut, giftAt) {
   station(11, 'O: the first release through onboarding, with the studio voice');
   const ob = () => po2.evaluate(() => ({ open: !!(typeof OB !== 'undefined' && OB.open), step: typeof OB !== 'undefined' ? OB.step : null,
     card: (document.querySelector('#ob .ob-card') || {}).innerText || '' }));
-  let o = await ob();
+  let o = await ob(), joinedAtPick = null;
   for (let guard = 0; guard < 14 && o.open && o.step < 7; guard++) {
     if (o.step === 0 || o.step === 2) await O.click('[data-ob="next"]');
-    else if (o.step === 1) await O.click('[data-obpick="0"]');
+    else if (o.step === 1) {
+      await O.click('[data-obpick="0"]');
+      /* the pick is the first mark, and here it is what lets the server join
+         the session, so the join is read now: a person who stops after the
+         pick must not be left anonymous until some later screen asks again */
+      const t0 = Date.now();
+      while (Date.now() - t0 < 4000 && !(Object.values(wo.st.fun)[0] || {}).userId) await po2.waitForTimeout(150);
+      joinedAtPick = (Object.values(wo.st.fun)[0] || {}).userId || null; }
     else if (o.step === 3) await O.click('[data-obfeel="1"]');
     else if (o.step === 4) await O.click('[data-obplace="3"]');
     else if (o.step === 5) { await po2.fill('#obtext', STORY); await po2.dispatchEvent('#obtext', 'input'); await O.click('#obdone'); }
@@ -712,7 +719,9 @@ async function door(browser, SITE, cut, giftAt) {
     'the account cannot tell that the first release happened');
   ok(!!fso.verificationId && evO.some(e => String(e.id) === String(fso.verificationId)), 'and the answer to What changed, by id and never by value, ' + J(fso.verificationId));
   ok(fso.tutorialCompleted === true, 'and that the first run was finished', 'the server reads the first run as never finished, for everybody who finishes it');
-  ok(!!accO.id && fso.userId === accO.id, 'and by then the server holds the first visit on the account they made at the door, userId ' + J(fso.userId),
+  ok(!!accO.id && joinedAtPick === accO.id, 'from the first mark on, the server holds the first visit on the account they made at the door, userId '
+    + J(joinedAtPick), 'somebody who stops after picking a starting point stays anonymous on the server');
+  ok(!!accO.id && fso.userId === accO.id, 'and still does at the end of the first run, userId ' + J(fso.userId),
     'their first visit stays anonymous on the server, so nothing they did in it reaches the account they made');
   const joins = wo.reqs('POST', /^\/v1\/funnel\/session\/[^/]+\/attach$/), yes = joins.findIndex(q => q.status === 200);
   ok(yes >= 0 && yes === joins.length - 1, 'and the app stopped asking once it was joined: ' + joins.length + ' asks, answered ' + J(joins.map(q => q.status)));

@@ -40,18 +40,20 @@ const MUT = [
   { k: 'M3', what: 'the first visit is never joined to an account made at the door (the fix reverted)',
     cut: [['function authFunnelJoin(){', 'function authFunnelJoin(){return Promise.resolve({ok:false,asked:false});']],
     fail: /FAIL  the app asked the server to join it to the account/ },
-  { k: 'M4', what: 'the join is asked when the session is made and never again (half the fix)',
+  { k: 'M4', what: 'the join is not asked again after a mark (half the fix: joined only when a screen reopens)',
     cut: [['    authFunnelJoin();\n    return {ok:true,session:r.body.session};', '    return {ok:true,session:r.body.session};']],
-    fail: /FAIL  and by then the server holds the first visit on the account/ },
+    fail: /FAIL  from the first mark on, the server holds the first visit on the account/ },
   { k: 'M5', what: 'the end card closes the first run without telling the server (the fix reverted)',
     cut: [["if(typeof authFunnelCheckpoint==='function')authFunnelCheckpoint({tutorialCompleted:true});\n  obClose('end'); return; }", "obClose('end'); return; }"]],
     fail: /FAIL  and that the first run was finished/ },
   { k: 'M6', what: 'a release never lifts the laws at its seat',
     cut: [['function releaseWork(p,keys){', 'function releaseWork(p,keys){var c=cqSum();return {laws:{},cq0:c,cq1:c,n:0};']],
     fail: /FAIL  the release lifted it/ },
-  { k: 'M7', what: 'the plan read back from Stripe is never saved',
+  /* on paying, the welcome card's own save writes the plan too, so nothing is
+     lost there and the walk says so; on cancelling no other save follows */
+  { k: 'M7', what: 'a plan read back from Stripe is never saved by the read itself',
     cut: [['CURP.plan=v.profile.plan;\n var saved=pSave();', 'CURP.plan=v.profile.plan;\n var saved=true;']],
-    fail: /FAIL  after a reload the saved record carries tier one/ },
+    fail: /FAIL  after a reload the saved record reads ended, and free is in force/ },
   { k: 'M8', what: 'Summary prints CQ cut down rather than rounded',
     cut: [["['coherence', r.darkB, r.CQ, String(Math.round(r.CQ))", "['coherence', r.darkB, r.CQ, String(Math.floor(r.CQ))"],
           ["+cr(r.darkB,r.CQ,{size:'lg',label:'Coherence',raw:String(Math.round(r.CQ))", "+cr(r.darkB,r.CQ,{size:'lg',label:'Coherence',raw:String(Math.floor(r.CQ))"]],
@@ -60,7 +62,7 @@ const want = process.argv.slice(2);
 const pick = want.length ? MUT.filter(m => want.indexOf(m.k) >= 0) : MUT;
 if (want.length && pick.length !== want.length) { console.log('FAIL no such mutant: ' + want.filter(k => !MUT.some(m => m.k === k)).join(' ')); process.exit(2); }
 const walk = (file, name) => {
-  const r = spawnSync('flock', ['-o', '-w', '900', '-E', '75', '/tmp/atuned-browser.lock', 'node', 'tests/golden.js'],
+  const r = spawnSync('flock', ['-o', '-w', '3600', '-E', '75', '/tmp/atuned-browser.lock', 'node', 'tests/golden.js'],
     { env: Object.assign({}, process.env, { ATUNED_FILE: file }), encoding: 'utf8', maxBuffer: 64 << 20 });
   const log = (r.stdout || '') + (r.stderr || '');
   fs.writeFileSync(path.join(OUT, name + '.log'), log);
@@ -88,8 +90,11 @@ for (const m of pick) {
   const line = (r.log.split('\n').filter(l => m.fail.test(l))[0] || '').trim();
   const caught = r.code === 1 && !!line;
   if (!caught) bad++;
-  console.log(m.k + '  ' + (caught ? 'ok    ' : 'FAIL  ') + m.what);
-  console.log('      ' + (line || 'the named check did not fail') + '\n      ' + r.sum + (r.code === 75 ? ' (lock never came free: NOT RUN)' : ''));
+  /* a walk that never got the browser proved nothing either way: it fails
+     this script, and says NOT RUN rather than that the check missed */
+  const tag = caught ? 'ok      ' : r.code === 75 ? 'NOT RUN ' : 'FAIL    ';
+  console.log(m.k + '  ' + tag + m.what);
+  console.log('      ' + (r.code === 75 ? 'the browser lock never came free' : line || 'the named check did not fail') + '\n      ' + r.sum);
 }
 console.log('\nlogs in ' + OUT);
 console.log('===== ' + (pick.length + 1 - bad) + ' passed, ' + bad + ' failed =====');
