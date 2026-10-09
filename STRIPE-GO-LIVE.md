@@ -302,7 +302,10 @@ ElevenLabs for each line, so the key never goes near the app.
    **Create API Key** (or **+ Create Key**).
 3. Give it a name, `Atuned server`. If it asks which parts the key may use,
    turn on **Text to Speech** at least. Click **Create**. Copy the key. It is
-   shown once.
+   shown once. **The real key starts with `sk_`.** The list on that page also
+   shows a shorter "API key ID" for each key. That is only its label, and
+   ElevenLabs refuses it with "API key ID used as API key". If what you
+   copied does not start with `sk_`, make a new key and copy again.
 4. Now the voice. Click **Voices** in the left menu, then **My Voices** (not
    sure of the exact tab name). Find the voice you want for releases. Click
    the **...** beside it, then **Copy voice ID**. A voice id is a short run of
