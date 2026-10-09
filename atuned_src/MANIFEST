@@ -82,6 +82,7 @@ ui/knowledge.js
 ui/record.js
 ui/games.js
 ui/panels.js
+ui/keep.js
 ui/auth.js
 ui/plans.js
 ui/account.js
