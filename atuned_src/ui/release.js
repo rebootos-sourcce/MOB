@@ -1131,7 +1131,11 @@ function relEndNote(){
 function relAskHtml(){
  if(!RUN.ask)return '';
  if(RUN.said||RUN.skip)return '<div class="rel-ask" id="relask"><div class="pm-eye">What changed?</div>'
-  +'<div class="rel-sub" id="relsaid">'+(RUN.said?'You said: '+esc(RV_SAY[RUN.said]||RUN.said)+'. Kept on your record.'
+  /* "Kept on your record" was printed whatever pSave answered, so a refused
+     answer was reported refused in the line above the card and kept on the
+     card itself. relAnswer says which. */
+  +'<div class="rel-sub" id="relsaid">'+(RUN.said?'You said: '+esc(RV_SAY[RUN.said]||RUN.said)+'. '
+    +(RUN.saidSaved===false?'This browser would not save it, so it is not on your record.':'Kept on your record.')
    :'Skipped. Nothing was recorded.')+'</div></div>';
  return '<div class="rel-ask" id="relask"><div class="pm-eye" id="relaskh">What changed?</div>'
   +'<div class="seg" role="group" aria-labelledby="relaskh">'+RV_ANSWERS.map(function(k){
@@ -1148,7 +1152,7 @@ function relAnswer(k){
   if(typeof status==='function')status('Your answer was not kept. '+(r.errs[0]||''),'fail');
   return false;}
  CURP.practice=r.P; RUN.said=k;
- var saved=pSave();
+ var saved=pSave(); RUN.saidSaved=saved;
  if(!saved&&typeof status==='function')
   status('This browser would not save. Your answer is on this card and not on your record.','fail');
  if(saved&&typeof authFunnelCheckpoint==='function'&&r.ids&&r.ids.length)
@@ -1337,7 +1341,15 @@ function relCoolDown(){
    if(f)RUN.firsts.push(f);});}
  /* this pushed a snapshot by hand and then saved, which is pSnap plus pSave
     with one of the two writes done twice. */
- if(CURP){pSave();pSnap();}
+ /* AND ITS ANSWER WAS DROPPED, pass 4, probe 6: with a store that refused
+    every write a finished release said nothing at all, and a reload took the
+    meter, the lines and the field back. Said here, in the words relAnswer
+    gives the answer on the same card, because the run did happen and is on
+    the card, and it is not on the record. */
+ RUN.saved=true;
+ if(CURP){RUN.saved=pSave();pSnap();}
+ if(!RUN.saved&&typeof status==='function')
+  status('This browser would not save. The release is on this card and not on your record, so a reload loses it.','fail');
  if(RUN.first&&!RUN.rerun&&RUN.queue.length&&typeof authFunnelCheckpoint==='function')
   authFunnelCheckpoint({firstReleaseId:RUN.id});
  /* A RUN THAT REACHED ITS END COUNTS AS THE DAY'S RITUAL, round KG, when a
@@ -1372,7 +1384,7 @@ function relCoolDown(){
  /* WHAT CHANGED IS ASKED FROM HERE, after the write and only after it: a run
     refused on a worked example returned above and is never asked, and a run
     that wrote is asked once, on the finished card, with nothing chosen. */
- RUN.ask=!!(CURP&&RUN.queue.length); RUN.said=null; RUN.skip=false;
+ RUN.ask=!!(CURP&&RUN.queue.length); RUN.said=null; RUN.saidSaved=null; RUN.skip=false;
  relMark(RUN.halted?'halt':'close');
  /* THE RUN HAS ENDED, SOUNDED ONCE, AFTER THE WRITE LANDED. Here and not at the
     top: a run refused on a worked example returns above and never reaches

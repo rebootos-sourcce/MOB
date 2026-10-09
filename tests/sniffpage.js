@@ -17,7 +17,9 @@
          them, and the quiz makes no card of them and shows them back.
      S4  no surface that prints an address read from a story says the
          person said or named it, or quotes it as their word, unless the
-         story holds it.
+         story holds it. And the Day One tutorial's chain card names, as the
+         story, a fetter this story's own reading carries at the seat it
+         prints, never the address's own fetter in its place.
      S5  what was read and not counted reaches the person on the Story
          page, under the box, in the engine's one sentence, each with what
          it means beside it, at both widths, and is gone when nothing is.
@@ -246,6 +248,33 @@ const story = p => p.evaluate(() => {
     ok(c.length === 0, 'Imprints page pending pills: ' + (c.join('; ') || 'clean, ' + ip.length + ' pills'));
     await p.cx.close();
 
+    /* AND THE TUTORIAL'S SECOND CARD, the chain. Its Story row printed
+       kept[0].cf, the fetter the ADDRESS carries in the 112 table, and not
+       the fetter this story's reading put there. The two part on a stated
+       word: "I am exhausted." is read as apathy, stated, and parseStory seats
+       it at the solar seat's first address, Pride, whose own fetter is anger.
+       So the card said Story, Anger, over a cost line about the Apathy axis,
+       on the card that explains what the person's words did. Made
+       mechanical: the Story row names a fetter one of this story's own
+       imprints carries, at the seat the next row prints, or says not named.
+       Rows are read by what they hold and the seat as the row after Story,
+       so a relabelled seat row does not blind it. */
+    const chainBad = (rows, ims) => {
+      const i = rows.findIndex(r => r.k === 'Story');
+      if (i < 0) return rows.length ? ['no Story row on a card that drew a chain'] : [];
+      const v = rows[i].v, seat = rows[i + 1] ? rows[i + 1].v : null;
+      if (v === 'not named') return [];
+      return ims.some(m => m.fetter === v && m.band === seat) ? []
+        : ['Story reads ' + JSON.stringify(v) + ' at ' + JSON.stringify(seat) + ', and this story carries '
+          + JSON.stringify(ims.map(m => m.fetter + ' at ' + m.band))]; };
+    const EXH = [{ fetter: 'Apathy', band: 'Solar' }];
+    ok(chainBad([{ k: 'Story', v: 'Anger' }, { k: '', v: 'Solar' }], EXH).length === 1,
+      'the chain check catches the address\'s own fetter printed for a stated word: the known bad case');
+    ok(chainBad([{ k: 'Story', v: 'Apathy' }, { k: '', v: 'Solar' }], EXH).length === 0,
+      'and passes the fetter the words stated, at the seat it sits at');
+    ok(chainBad([{ k: 'Story', v: 'Apathy' }, { k: '', v: 'Heart' }], EXH).length === 1,
+      'and catches a carried fetter printed beside a seat it does not sit at');
+
     /* the Day One tutorial, through its real commit, one fresh page a story */
     for (const t of STORIES) {
       const q = await open(browser, 1600, 1000);
@@ -254,6 +283,15 @@ const story = p => p.evaluate(() => {
       const card = await q.evaluate(() => (document.getElementById('tutorial') || {}).textContent || '');
       const d = judge(ADDR, t, card, []);
       ok(d.length === 0 && card.length > 0, 'Day One tutorial first card, ' + JSON.stringify(t) + ': ' + (d.join('; ') || 'clean'));
+      await q.click('[data-tut="next"]'); await q.waitForTimeout(400);
+      const ch = await q.evaluate(() => ({
+        rows: [...document.querySelectorAll('#tutorial .ob-g')].filter(e => !e.closest('.obx-ghost'))
+          .map(e => ({ k: ((e.querySelector('b') || {}).textContent || '').trim(),
+            v: ((e.querySelector(':scope > span') || {}).textContent || '').trim() })),
+        ims: ((TUT.parsed && TUT.parsed.imprints) || []).map(m => ({ fetter: m.fetter, band: m.band })) }));
+      const e2 = chainBad(ch.rows, ch.ims);
+      ok(e2.length === 0 && ch.rows.length > 0, 'Day One tutorial second card, ' + JSON.stringify(t) + ': '
+        + (e2.join('; ') || (ch.rows.length ? 'clean' : 'no chain drawn')));
       ok(!q.errs.length, 'no page errors in the tutorial: ' + q.errs.join(' | '));
       await q.cx.close();
     }
