@@ -82,6 +82,7 @@ const stub = http.createServer((req, res) => {
       if (auth === 'Bearer t-quit' || auth === 'Bearer t-stuck') return me(live(null));
       return send(401, { error: 'sign in' });
     }
+    if (k === 'POST /v1/auth/signout') return auth === 'Bearer t-signout' ? send(200, { ok: true }) : send(401, { error: 'sign in' });
     if (k === 'DELETE /v1/me') {
       const d = DEL[auth];
       return d ? send(d[0], d[1]) : send(401, { error: 'sign in' });
@@ -260,6 +261,37 @@ const stub = http.createServer((req, res) => {
     const off = await no('t-quit', 'http://127.0.0.1:1');
     ok(off.ses && off.ses.token === 't-quit' && /Could not reach the server/.test(off.said[0]) && /nothing was deleted/i.test(off.said[0]),
       tag + 'no network keeps the sign in and says nothing was deleted, got ' + JSON.stringify(off.said));
+
+    /* ---- 5 · SIGNING OUT ENDS THE FIRST VISIT'S PASS, HERE AND ON THE SERVER ----
+       The Worker keeps a first visit's pass for seven days so a person who comes back that week still
+       joins their visit to their account, and ends it early when sign out names it (reboot-os
+       funnel.js endPass), so a longer pass is not left behind for the next person on a shared
+       computer. Nothing in the app named it, so the pass outlived the sign out. */
+    const CRED = 'cred_signout_' + 'x'.repeat(32);
+    const so = async (withVisit, api) => {
+      const before = seen.length;
+      const o = await pg.evaluate(async ([withVisit, api, cred]) => {
+        if (api) AUTH_API = api;
+        authKeep({ token: 't-signout', email: 'quit@example.invalid', accountId: 'acc_quit' });
+        if (withVisit) funnelKeep({ id: 'fs_signout', anonymousId: 'anon_signout', credential: cred, userId: 'acc_quit' }); else funnelKeep(null);
+        const r = await authSignOut();
+        return { r, ses: authSession(), kept: localStorage.getItem('funnel.session') || '' };
+      }, [withVisit, api, CRED]);
+      const call = seen.slice(before).find(x => x.u === '/v1/auth/signout');
+      let body = null; try { body = call && call.raw ? JSON.parse(call.raw) : null; } catch (e) { body = 'unparseable'; }
+      await pg.evaluate(a => { AUTH_API = a; }, API);
+      return Object.assign(o, { call, body });
+    };
+    const so1 = await so(true);
+    ok(so1.call && so1.call.auth === 'Bearer t-signout', tag + 'signing out told the server, with the session');
+    ok(so1.body && so1.body.funnel && so1.body.funnel.id === 'fs_signout' && so1.body.funnel.credential === CRED,
+      tag + 'and named the first visit\'s pass so the server can end it, got ' + JSON.stringify(so1.body && so1.body.funnel ? { id: so1.body.funnel.id, hasCredential: !!so1.body.funnel.credential } : so1.body));
+    ok(!so1.ses && so1.kept === '', tag + 'the sign in and the first visit\'s session are both gone from this browser, got ' + JSON.stringify([!!so1.ses, so1.kept.slice(0, 40)]));
+    const so2 = await so(false);
+    ok(so2.call && (so2.body === null || !so2.body.funnel), tag + 'with no first visit on this device nothing about one is sent, got ' + JSON.stringify(so2.body));
+    ok(!so2.ses && so2.r && so2.r.ok, tag + 'and the sign out still ends the sign in');
+    const so3 = await so(true, 'http://127.0.0.1:1');
+    ok(!so3.ses && so3.kept === '', tag + 'with no network the sign in and the first visit still end here, got ' + JSON.stringify([!!so3.ses, so3.kept.slice(0, 40)]));
 
     ok(errs.length === 0, tag + 'no page errors, ' + errs.slice(0, 2).join(' | '));
     await cx.close();

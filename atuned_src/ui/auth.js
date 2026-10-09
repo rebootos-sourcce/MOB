@@ -570,14 +570,20 @@ function authReset(pw,again){
 function authSignOut(){
  var s=authSession();
  if(!s){profileSyncStop();return Promise.resolve({ok:true, say:'Not signed in.'});}
- return authCall('POST','/v1/auth/signout',null,s.token).then(function(r){
+ /* The first visit's pass is named in the same request so the server ends it too: it lasts seven
+    days, and the next person on a shared computer must not be handed this one's first visit
+    (reboot-os funnel.js endPass). It is dropped from this browser whatever the server says. */
+ var f=funnelSession();
+ var body=(f&&f.id&&f.credential)?{funnel:{id:f.id,credential:f.credential}}:null;
+ return authCall('POST','/v1/auth/signout',body,s.token).then(function(r){
   profileSyncStop();
-  var gone=authForget();
+  var gone=authForget(), visit=authFunnelClear();
   if(!gone)return {ok:false,
    say:'Signed out for this visit only. Storage would not take the change, so the sign in comes back on reload.'};
-  if(r.ok||r.status===401)return {ok:true, say:'Signed out.'};
+  var cleared=visit?'':' The first visit\'s code could not be removed from this browser.';
+  if(r.ok||r.status===401)return {ok:true, say:'Signed out.'+cleared};
   return {ok:true, say:'Signed out on this browser. The server could not be reached, '
-   +'so its copy of the session runs until it expires.'};});}
+   +'so its copy of the session runs until it expires.'+cleared};});}
 /* ============================================================
    DELETE THE ACCOUNT. The owner, 9 October: "If they want to quit the
    software, that the cancellation." Nothing in the app called DELETE /v1/me
