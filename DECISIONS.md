@@ -2779,3 +2779,14 @@ Ruled by the owner, 8 October: main is the one line of the product, the foundati
 - **A rollback is a stopgap.** The fast route is a `workflow_dispatch` with `rollback_ref`, which publishes a commit Cloudflare already ran in production, with the gates skipped, until the next push to main publishes main's tip. A revert pull request makes it stay. Tested 8 October by re-running the last good deploy.
 - **Merging is the lead's, with gates green.** Merge only when every gate is green on the merged commit. The one exception is design gate 13's frame rate check and the fade timing check, each passing when re-run alone, both lines pasted in the pull request. Never a whole gate, never a check the diff touches.
 - **Open, and the owner's:** the MOB repository is public and GitHub Pages is on (`has_pages: true`); the default taken is to make the repository private and switch Pages off, which only the owner can do. Branch protection on `main` (a GitHub setting) is also the owner's.
+
+## Sniffer, 9 October: the audit checked, and the defaults the seats took
+
+The owner supplied a sniffer design and gap audit (8 October) and asked for a review, a strategy, handshake notes and an entry in the sniffer documents. All of it is in `REVIEW-sniffer-audit-2026-10-09.md` and `HANDSHAKE-sniffer.md`. These are seat rulings, taken because the owner's order is that the seats decide and ask only when blocked. The owner may overturn any of them.
+
+- **A denial is kept and shown, and never scored.** "I was not angry" stays in the entry as a named and denied mark and adds nothing to any reading. This ends a disagreement that was already on the Story page, where the word is drawn struck and the score still counts it.
+- **Another person's action is held out of the writer's field.** A clear third person subject holds the charge word out, lists it as about someone else, and never scores it on the writer. No subject, or a first person subject, is the writer. This is guard 2 of the sniffer spec, "never score another person", which was broken.
+- **An axis the person named is not an address the person named.** No screen says the person said they carry an address they did not name.
+- **Tense, intensity words and the frame layer wait.** Not in alpha. Tense and intensity are specified; the frame layer needs a held set that does not exist yet.
+- **The route of the aggregate result into the Mirror, the Release Engine, verification and the Trace graph is after alpha.** The Story page works today from the parser; the aggregate is used by the Day One tutorial only.
+- **Still the owner's, and reported as conflict or unread until ruled:** the law divisor (E43), where Joy sits, where Surprise sits, Avoider versus Innocent, how a stance entry that names no feeling is read, and the four canon files that are missing from the repository.
