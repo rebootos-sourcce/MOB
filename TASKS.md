@@ -33494,3 +33494,20 @@ bypass is not.
 - [ ] **PB2. P2. A refused pull says nothing to the person** (`ui/auth.js:246`,
       `:264`). `authProfileSync` returns `{state:'refused'}` when `pImport`
       does not take the record the server sent, and no `status()` line says so.
+
+## Audit Dev 1 to 6, consolidated, 9 October
+
+Source: `REVIEW-audit-2026-10-09/` (five passes). Plan block: PLAN.md section W.
+
+- [x] **CI0. P1.** PR 39 merged (`8b22950`): sixteen more tests run on every change; functional, design and monitor are required.
+- [ ] **CI1. P1. Owner.** GitHub Pages off and `gates-pass` required on `main`. Steps are in `HANDOFF-2026-10-09/WHAT-IS-LEFT-2026-10-09.md`.
+- [ ] **CI2 to CI6. P1.** One stable build stamp, a hash record, evidence kept per run, a live check after deploy, the last tests, two wording fixes (pass 1).
+- [ ] **W3. P0 for alpha.** Migration 0015 in the Worker repo: two id columns to text, issue the starter gift, renew the first-visit pass (pass 2).
+- [ ] **W5. P0 for alpha.** Live proof in CI for the first-visit path (pass 2).
+- [ ] **G0, G1, G5. P1.** The golden journey test and its failure matrix; `claude/p1h-golden` is building G0 and G1 (pass 4).
+- [ ] **P5-F. P2 (alpha for duplicates).** Importing one record twice must not add a profile; unknown keys refused by name (pass 5).
+- [ ] **P5-B. P1 for the boundary.** Refuse a ritual day later than now plus one day; "Thirty days" must survive deleting one day (pass 5).
+- [ ] **P5-A step 1. P1.** One table of side keys read by `accForget`; deleting a profile leaves none (pass 5).
+- [ ] **P5-D, P5-C, P5-E, P5-A step 2. P2, public.** Today answers back, one run one answer, client doors for crash, export, delete, consent (pass 5).
+- [ ] **Block A, B, C. Public.** Privacy sentences kept true by a test, delete everywhere, designed sync (pass 3).
+- [ ] **Regenerate the committed build products** (`source.html`, `engine.js`, `atuned-packed.html`, `funnel/dist`) after the last merge so the publicly reachable files are current.

@@ -1,0 +1,22 @@
+A (shipped, profiles undefined): profileSyncEligible() = false
+A profileSyncImport(own export, 1) -> {"threw":"ReferenceError: profiles is not defined"}
+A PROFILES before/after: 1 -> 2  ids ["1zh8pu"] -> ["1zh8pu","1zh8pu"]
+B 1 first call, no remote record -> {"state":"pushed","version":1}  requests: ["GET /v1/sync","PUT /v1/sync (2581 bytes, name=Y story=Y)"]  meta: {"accountId":"acc_probe","version":1,"hash":"faaa1c7b9a8359b2c51d1e8c31b28887cba639de8e969c495cc4698a4e18f8af","updated":"2026-10-09T07:05:15.208Z"}  profiles=1 stories=1 remoteVersion=1
+B 2 second call, nothing changed -> {"state":"pushed","version":2}  requests: ["GET /v1/sync","PUT /v1/sync (2581 bytes, name=Y story=Y)"]  meta: {"accountId":"acc_probe","version":2,"hash":"5dd4ba3af0d4127659619ad678049c5605d623c9296bec5c4a092d7610dd4ea2","updated":"2026-10-09T07:05:15.278Z"}  profiles=1 stories=1 remoteVersion=2
+B 3 an edit (second story), then call -> {"state":"pushed","version":3}  requests: ["GET /v1/sync","PUT /v1/sync (2698 bytes, name=Y story=Y)"]  meta: {"accountId":"acc_probe","version":3,"hash":"41a67ad44c4d7eb093beb3e52431325ebed4428e5b5ffc70983135008ad8d16e","updated":"2026-10-09T07:05:15.320Z"}  profiles=1 stories=2 remoteVersion=3
+B the remote record holds: name="Zephyrine Quillfeather" who={"first":"Zephyrine","middle":"","last":"Quillfeather","sex":"","sealed":"","born":{"date":"1984-03-02","time":"","place":"Reykjavik","zone":"","timeUnknown":false}} stories=["My father shouted at me on the porch at ","Second entry about the kitchen."]
+B 4 clean again, nothing changed -> {"state":"pushed","version":4}  requests: ["GET /v1/sync","PUT /v1/sync (2698 bytes, name=Y story=Y)"]  meta: {"accountId":"acc_probe","version":4,"hash":"07e7295b6410d50b844c93f171c628843d415c0e5cd9cefd0178746de30fc776","updated":"2026-10-09T07:05:15.371Z"}  profiles=1 stories=2 remoteVersion=4
+B 5 local delete (accProfDelete), then call -> {"state":"pushed","version":5}  requests: ["GET /v1/sync","PUT /v1/sync (2308 bytes, name=n story=n)"]  meta: {"accountId":"acc_probe","version":5,"hash":"d0e1d94d6e1726d2c5f83f49e6c8a8b20c9958a5f5a60de8a4d3b073711b1a45","updated":"2026-10-09T07:05:15.510Z"}  profiles=1 stories=0 remoteVersion=5
+B after the local delete and the next call: profiles=1 ids=["689lup"] name="You" stories=0
+B2 two calls with a profile already full and an empty server: [{"state":"pushed","version":1},{"state":"pushed","version":2}] PUT requests=2 server holds=["state/atuned.primary-profile"] local meta says version=2 hash set=true
+E pExport() size, characters (Worker cap per record body is 200000):
+  blank profile 3359
+  1 stories, 1 snapshots: 4752
+  5 stories, 5 snapshots: 10307
+  10 stories, 10 snapshots: 17263
+  25 stories, 25 snapshots: 38143
+  50 stories, 50 snapshots: 72943
+  100 stories, 100 snapshots: 142543
+  200 stories, 200 snapshots: 281743
+  300 stories, 300 snapshots: 420943
+exit 0
