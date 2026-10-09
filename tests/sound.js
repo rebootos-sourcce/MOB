@@ -1028,10 +1028,14 @@ async function atmGate(browser,FILE,ok,booted){
  await probe('');
  /* a tab on the bar, by its real button: the bar's own fitting, tap, and no click under it */
  await fresh(); await pg.waitForTimeout(150);
- const tb=await pg.evaluate(()=>{ const b=[...document.querySelectorAll('.tabtop')].filter(x=>x.offsetParent&&x.getAttribute('aria-pressed')==='false')[0];
-  if(!b)return null; b.setAttribute('data-atmpick','1'); return {p:atmState().played, t:SFX_LAST.tap||0}; });
+ const tpick=await pg.evaluate(()=>{ const b=[...document.querySelectorAll('.tabtop')].filter(x=>x.offsetParent&&x.getAttribute('aria-pressed')==='false')[0];
+  if(!b)return false; b.setAttribute('data-atmpick','1'); return true; });
+ /* the pointer comes to rest on the tab first, so its hover tick is not
+    counted as part of the press */
+ if(tpick){ await settle('[data-atmpick="1"]'); await fresh(); }
+ const tb=tpick?await pg.evaluate(()=>({p:atmState().played, t:SFX_LAST.tap||0})):null;
  let tabr=null;
- if(tb){ await pg.click('[data-atmpick="1"]'); await pg.waitForTimeout(100);
+ if(tb){ await press(); await pg.waitForTimeout(100);
   tabr=await pg.evaluate(tb=>{ const b=document.querySelector('[data-atmpick]'); if(b)b.removeAttribute('data-atmpick');
    return {atm:atmState().played-tb.p, tap:(SFX_LAST.tap||0)>tb.t}; },tb); }
  ok(tabr&&tabr.tap&&tabr.atm===0,'a real press on a tab sounds the bar\'s own fitting, tap, and no click under it, one sound per press, '+JSON.stringify(tabr));
