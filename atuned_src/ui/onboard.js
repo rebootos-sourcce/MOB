@@ -1129,13 +1129,24 @@ function obMirrorCard(){
     +' seat. Your words put weight at other seats, shown below. Both are kept as they are.</p>';
   groups.forEach(function(g){lines+=obGroup(g);});
  }
- else if(OB.text)
+ /* A WORD READ AND NOT COUNTED IS NOT NOTHING, S1 and S2 of the 9 October
+    sniffer audit. "He shouted at me" names a word and sets it aside as about
+    someone else, so "nothing the engine could name" would be false there. The
+    engine's own sentence says what was set aside and why, the line the Story
+    page and the quiz print. */
+ var obAside=function(t){var p=null; try{p=parseStory(t);}catch(e){} return p?asideSay(asideOf(t,p)):'';};
+ var asideMain=OB.text?obAside(OB.text):'';
+ if(!groups.length&&asideMain)
+  lines+='<p class="ob-p ob-dim">'+esc(asideMain)+'</p>';
+ else if(!groups.length&&OB.text)
   lines+='<p class="ob-p ob-dim">Nothing in that one lit anything the engine could name. '
    +'That happens, and it is not a problem with what you wrote.</p>';
  OB.fixReads.forEach(function(f){
   lines+='<p class="ob-p">You added: <b>&ldquo;'+esc(f.t)+'&rdquo;</b></p>';
+  var fa=obAside(f.t);
   if(f.groups.length)f.groups.forEach(function(g){lines+=obGroup(g);});
   else if(f.any)lines+='<p class="ob-p ob-dim">That reads at places already shown above.</p>';
+  else if(fa)lines+='<p class="ob-p ob-dim">'+esc(fa)+'</p>';
   else lines+='<p class="ob-p ob-dim">Nothing in that one lit anything the engine could name.</p>';});
  var body=lines
   +'<div class="ob-acts" style="margin-top:4px"><button type="button" class="btn" data-ob="mirrorno">Correct it</button></div>'

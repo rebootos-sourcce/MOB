@@ -410,9 +410,10 @@ function avHeard(notbe){
    panel; since round KH a tag is how a person finds an entry here. */
 function avParsed(t){
  if(AV.pc[t])return AV.pc[t];
- /* what was scored, and only that: since S1 marksOf also carries a word said
-    with a no, flagged neg, which was read and not scored, so it is not bold */
- var p=parseStory(t), m=marksOf(t,p).filter(function(k){return !k.neg;});
+ /* what was scored, and only that: since S1 and S2 marksOf also carries a
+    word said with a no, flagged neg, and a word about someone else, flagged
+    other, each read and not scored, so neither is bold */
+ var p=parseStory(t), m=marksOf(t,p).filter(function(k){return !k.neg&&!k.other;});
  return (AV.pc[t]={marks:m});}
 function avQuote(e,marks){
  var t=e.text, sorted=marks.slice().sort(function(a,b){return a.s-b.s;});
@@ -794,9 +795,12 @@ function avHL(t){
  if(!marks.length)return esc(t);
  var out='', last=0;
  marks.forEach(function(m){
-  var from=(m.neg&&m.negFrom!=null&&m.negFrom>=last)?m.negFrom:m.s;
+  /* the Story page's own placement, stHLHtml: back over the no, or over who
+     it is about, S2 */
+  var back=m.neg?m.negFrom:m.oth?m.whoFrom:null;
+  var from=(back!=null&&back>=last)?back:m.s;
   if(from<last)return;
-  out+=esc(t.slice(last,from))+'<mark class="st-f'+(m.neg?' neg':'')+'" style="--c:'
+  out+=esc(t.slice(last,from))+'<mark class="st-f'+(m.neg?' neg':m.oth?' oth':'')+'" style="--c:'
    +(m.bn?seatCol(m.bn):'var(--accent)')+'">'+esc(t.slice(from,m.e))+'</mark>';
   last=m.e;});
  return out+esc(t.slice(last));}

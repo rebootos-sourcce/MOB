@@ -1002,7 +1002,9 @@ function storyLit(ps,t,r){
     counts it nowhere, and marksOf carries the flag. So no card quotes it as
     a word it read, and one line, the engine's own asideSay, the same
     sentence the app's Story page prints, says it was not counted. */
- var marks=marksOf(t,ps).filter(function(m){return !m.coh&&!m.neg;});
+ /* AND A WORD ABOUT SOMEONE ELSE, S2, the same way: no card, and the same
+    asideSay line says so, with what the person can write instead. */
+ var marks=marksOf(t,ps).filter(function(m){return !m.coh&&!m.neg&&!m.other;});
  var aside=asideSay(asideOf(t,ps));
  var asideP=aside?'<p class="sm">'+esc(aside)+'</p>':'';
 
