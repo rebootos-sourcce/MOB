@@ -388,6 +388,33 @@ require('./net.js').guardBrowser(browser);
    'the row keeps what moves and the session\'s size is on the plate: '+JSON.stringify([qr.figs,qr.plate]));
   if(W===1600)ok(qr.figB!=null&&qr.footT!=null&&qr.figB<=qr.footT,'at 1600 by 1000 the readings end above the controls: '+qr.figB+' against '+qr.footT);
   }catch(e){ok(false,'round QR could not run: '+e.message.split('\n')[0]);}
+  /* P0: a refused release save must not manufacture server evidence,
+     ritual completion, or a misleading early-stop notice. */
+  const saveFault=await ev(page,()=>{
+   var ids=(RUN.pick||[]).slice(0,1).map(function(n){return n.i;});
+   if(!ids.length)return {error:'no selected address'};
+   relPick(ids);
+   RUN.dose=4; RUN.plan=relPlan(); RUN.phase='run'; RUN.idx=Math.min(1,RUN.plan.length-1);
+   RUN.pass=0; RUN.paused=true; RUN.halted=true; RUN.reach=null; RUN.done=false;
+   RUN.rerun=false; RUN.open=true; RUN.first=true;
+   var ps=pSaveSnap, cp=authFunnelCheckpoint, rit=ritRelDone, calls={checkpoint:0,ritual:0};
+   var thrown=null, out=null;
+   pSaveSnap=function(){return false;};
+   authFunnelCheckpoint=function(){calls.checkpoint++;return Promise.resolve({ok:true});};
+   ritRelDone=function(){calls.ritual++;return 1;};
+   try{
+    relCoolDown();
+    out={saved:RUN.saved, ask:RUN.ask, ritualDone:RUN.ritDone, calls:calls,
+     status:(document.getElementById('status')||{}).textContent||'', halted:RUN.halted};
+   }catch(e){thrown=String(e&&e.message||e);}
+   finally{pSaveSnap=ps;authFunnelCheckpoint=cp;ritRelDone=rit;relTicker(false);}
+   return thrown?{error:thrown}:out;
+  });
+  ok(!saveFault.error&&saveFault.saved===false,'a refused save stays marked unsaved: '+JSON.stringify(saveFault));
+  ok(!saveFault.error&&saveFault.calls.checkpoint===0&&saveFault.calls.ritual===0&&saveFault.ritualDone===0&&saveFault.ask===false,
+   'failed release cannot checkpoint, finish a ritual, or ask for an answer: '+JSON.stringify(saveFault));
+  ok(!saveFault.error&&/would not save/i.test(saveFault.status),'stopping an unsaved run does not overwrite the save failure notice: '+JSON.stringify(saveFault.status));
+
   /* and the app comes back when it closes */
   const back=await ev(page,()=>{relClose(); return {app:getComputedStyle(document.querySelector('.app')).visibility,
    cls:document.body.classList.contains('rel-on')};});
