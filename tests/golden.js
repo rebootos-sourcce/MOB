@@ -459,8 +459,11 @@ async function door(browser, SITE, cut, giftAt) {
      Import now starts the same anonymous first-visit session before account
      creation, so this route is present in the funnel without sending the
      record's story or name. */
-  ok(Object.keys(wq.st.fun).length > 0, 'E1q funnel arrival: quiz-imported records start a first-visit session',
-    'nothing on our server says this account came through the quiz, so the funnel cannot be counted from quiz to account to payment');
+  const quizSessionCreates = wq.reqs('POST', /^\/v1\/funnel\/session$/);
+  ok(Object.keys(wq.st.fun).length === 1 && quizSessionCreates.length === 1,
+    'E1q funnel arrival: the quiz-imported record creates exactly one first-visit session');
+  ok(quizSessionCreates.every(q => q.body && Object.keys(q.body).sort().join(',') === 'anonymousId'),
+    'E1q privacy: quiz arrival sends only the random journey identifier, never story or name');
   /* the record itself stays in the browser, on the standing privacy ruling:
      sync is dead code and must not be turned on (HANDOFF NEXT-SESSION) */
   xf(wq.reqs('PUT', /^\/v1\/sync$/).length > 0, 'E19 record on the account', 'the reading is kept on the account, so another device that signs in has it',
