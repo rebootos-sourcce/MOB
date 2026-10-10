@@ -180,6 +180,8 @@ function authFunnelAttach(){
   });
 }
 function authFunnelClear(){ return funnelKeep(null); }
+/* Owner ruling in DECISIONS.md: profile sync is not part of alpha. The stored profile contains identity, birth details and story entries. Keep this false until privacy copy, consent and retention are approved together. */
+var PROFILE_SYNC_ENABLED=false;
 var PROFILE_SYNC_ID='atuned.primary-profile';
 var PROFILE_SYNC_META_KEY='source.profile.sync';
 var PROFILE_SYNC_TIMER=null;
@@ -209,7 +211,7 @@ function profileSyncMetaSave(meta){
  try{ STORE.set(PROFILE_SYNC_META_KEY,JSON.stringify(meta)); return true; }catch(e){ return false; }
 }
 function profileSyncEligible(){
- return !!(authSession()&&typeof CURP!=='undefined'&&CURP&&typeof pExport==='function'
+ return !!(PROFILE_SYNC_ENABLED&&authSession()&&typeof CURP!=='undefined'&&CURP&&typeof pExport==='function'
   &&typeof pImport==='function'&&typeof S!=='undefined'&&(!S.who||S.who===0)
   &&typeof profiles==='function');
 }
@@ -314,9 +316,14 @@ function authProfileSync(){
  });
 }
 function profileSyncStart(){
+ /* A dormant adapter is not permission to transfer a profile. This call stays
+    in the auth path so enabling sync later has one owner, but alpha never polls
+    or sends a profile until its privacy and consent design is approved. */
+ if(!PROFILE_SYNC_ENABLED){profileSyncStop();return false;}
  if(PROFILE_SYNC_TIMER)clearInterval(PROFILE_SYNC_TIMER);
  PROFILE_SYNC_TIMER=setInterval(function(){authProfileSync();},30000);
  authProfileSync();
+ return true;
 }
 function profileSyncStop(){
  if(PROFILE_SYNC_TIMER){clearInterval(PROFILE_SYNC_TIMER);PROFILE_SYNC_TIMER=null;}
