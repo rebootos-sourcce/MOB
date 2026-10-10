@@ -6589,10 +6589,17 @@ g('OG1 · the rerun puts the heavy lines back where they sit, round OG');
   ok(got!==null&&got.meter.heavy.join()===p.meter.heavy.join(),'an import keeps the heavy marks, '+(got&&got.meter.heavy.length));
   const out=JSON.parse(pExport());
   ok(out.meter.heavy.join()===p.meter.heavy.join(),'and an export carries them');
+  const beforeSameId=profiles().length;
   const again=pImport(JSON.stringify(out));
-  ok(again!==null&&again.meter.heavy.join()===p.meter.heavy.join(),'and a second import of that export is the same list');
+  ok(again!==null&&again.meter.heavy.join()===p.meter.heavy.join()&&profiles().length===beforeSameId,
+   'a byte-equivalent same-ID re-import reuses the existing profile without a duplicate');
   ok(meterRerunOrder(again,[7,9],CH,RUN_MAX).join()===meterRerunOrder(p,[7,9],CH,RUN_MAX).join(),
    'so the rerun the imported record says is the rerun the original said');
+  const conflict=JSON.parse(JSON.stringify(out)); conflict.name='same ID, different content';
+  const beforeConflict=profiles().length, beforeConflictExport=pExport();
+  ok(pImport(JSON.stringify(conflict))===null&&profiles().length===beforeConflict
+    &&pExport()===beforeConflictExport&&/same ID already exists with different content/.test(String(E.importError())),
+   'a conflicting same-ID import is refused without replacing or duplicating the local profile');
   const bad=JSON.parse(JSON.stringify(out)); bad.meter.heavy.push(K(7,'Llimit',44));
   const before=profiles().length;
   ok(pImport(JSON.stringify(bad))===null&&profiles().length===before,'a heavy mark on a line never opened refuses the whole import and pushes nothing');
