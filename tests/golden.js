@@ -591,8 +591,9 @@ async function door(browser, SITE, cut, giftAt) {
   await page.evaluate(() => { const b = document.querySelector('[data-acs="account"]'); if (b) b.click(); });
   await page.waitForTimeout(250);
   ok(await Q.click('#acout'), 'Sign out is there to press');
-  const out = await Q.waitSaid(/^ok\|Signed out\.$/, 6000);
-  ok(!!out, 'and it says it signed out, ' + J(out));
+  const out = await Q.waitSaid(/^ok\|Signed out on this browser\./, 6000);
+  ok(!!out && /server could not confirm that the first visit pass ended/.test(out),
+    'and it says sign-in ended locally but the first-visit pass was not confirmed, ' + J(out));
   ok(wq.reqs('POST', /^\/v1\/auth\/signout$/).length === 1, 'and the server was told');
   await Q.reload();
   ok(await page.evaluate(() => !!(typeof LOGIN !== 'undefined' && LOGIN.open)), 'after a reload the door stands again: nobody is signed in here');
