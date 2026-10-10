@@ -537,13 +537,21 @@ function pSnap(){ if(!CURP)return false;
    row so a later retry cannot silently save a phantom duplicate. */
 function pSaveSnap(){
  if(!CURP)return false;
- saveProfile(CURP);
- if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
- var history=Array.isArray(CURP.history)?CURP.history:(CURP.history=[]);
- var n=history.length;
- history.push(snapshot(CURP));
- if(!pPersist()){ history.length=n; return false; }
- return true;
+ var history=null, n=null;
+ try{
+  saveProfile(CURP);
+  if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
+  history=Array.isArray(CURP.history)?CURP.history:(CURP.history=[]);
+  n=history.length;
+  var row=snapshot(CURP);
+  history.push(row);
+  if(!pPersist()){ history.length=n; return false; }
+  return true;
+ }catch(e){
+  if(history&&n!==null)history.length=n;
+  SAVE_OK=false; SAVE_ERR=(e&&e.name)||'error';
+  return false;
+ }
 }
 function pExport(){ return JSON.stringify(CURP?saveProfile(CURP):null,null,1); }
 /* ============================================================
