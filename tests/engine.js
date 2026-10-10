@@ -5374,6 +5374,18 @@ g('41 · the twenty one on every history row, and a record from before still loa
  ok(writes===1&&removes===1,'rollback removes the newly created key, writes '+writes+', removes '+removes);
  ok(freshMem['source.profiles']===undefined,'an absent durable key stays absent after rollback');
  ok(rec.history.length===silentHistoryN,'the failed first write rolls back the staged snapshot');
+ /* A storage adapter may write partial bytes and then throw; rollback must
+    recover from the partial side effect rather than trusting throw semantics. */
+ writes=0;
+ bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{
+  writes++;
+  if(writes===1){mem[k]='partial write';throw new Error('QuotaExceededError after partial mutation');}
+  mem[k]=String(v);
+ });
+ ok(pSaveSnap()===false,'a partial write followed by an exception is refused');
+ ok(writes===2,'a partial write is followed by one rollback write, got '+writes);
+ ok(mem['source.profiles']===savedText,'a partial write that throws restores the previous durable bytes');
+ ok(rec.history.length===silentHistoryN,'a partial write that throws rolls the staged snapshot back');
  bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
  /* A non-throwing adapter that writes truncated bytes is different from a
     no-op adapter: readback must fail and the previous durable record restored. */
