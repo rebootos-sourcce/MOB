@@ -603,6 +603,8 @@ async function door(browser, SITE, cut, giftAt) {
   const bodiesQ = wq.st.reqs.map(q => q.raw + ' ' + q.path).join('\n');
   ok(bodiesQ.indexOf('tight in my chest') < 0 && bodiesQ.indexOf(goneName || 'Web reading') < 0,
     'and on the whole walk no request carried a word of the story or the record\'s name');
+  ok(wq.reqs('GET', /^\/v1\/sync$/).length === 0 && wq.reqs('PUT', /^\/v1\/sync$/).length === 0,
+    'profile sync is outside alpha, so sign-in neither reads nor sends the profile');
   ok(Q.errs.length === 0 && Q.cerrs.length === 0, 'no script or console error on this door: ' + Q.errs.concat(Q.cerrs).slice(0, 3).join(' | '));
   await Q.ctx.close();
 
@@ -730,6 +732,8 @@ async function door(browser, SITE, cut, giftAt) {
   ok(Object.values(wo.st.fun).length === 1, 'and the walk made one first visit session, not one per reload');
   const bodiesO = wo.st.reqs.map(q => q.raw + ' ' + q.path).join('\n');
   ok(bodiesO.indexOf('tight in my chest') < 0, 'no request on this door carried a word of the story, the studio voice\'s lines aside');
+  ok(wo.reqs('GET', /^\/v1\/sync$/).length === 0 && wo.reqs('PUT', /^\/v1\/sync$/).length === 0,
+    'the onboarding door does not read or send the profile while sync is outside alpha');
   ok(O.errs.length === 0 && O.cerrs.length === 0, 'no script or console error on this door: ' + O.errs.concat(O.cerrs).slice(0, 3).join(' | '));
   await O.ctx.close();
 
@@ -749,6 +753,8 @@ async function door(browser, SITE, cut, giftAt) {
     const a2 = Object.values(w2.st.acc)[0] || {}, f2 = Object.values(w2.st.fun);
     ok(f2.length === 1 && !!a2.id && f2[0].userId === a2.id, 'before the first press the first visit is on the account, userId ' + J(f2[0] && f2[0].userId),
       'their first visit stays anonymous on the server');
+    ok(w2.reqs('GET', /^\/v1\/sync$/).length === 0 && w2.reqs('PUT', /^\/v1\/sync$/).length === 0,
+      'account creation does not read or send the profile while sync is outside alpha');
     ok(O2.errs.length === 0, 'no script error: ' + O2.errs.slice(0, 2).join(' | '));
     await O2.ctx.close();
   }
