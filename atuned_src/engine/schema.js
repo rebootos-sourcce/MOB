@@ -529,6 +529,22 @@ function pSave(){ if(!CURP)return false; saveProfile(CURP);
 function pSnap(){ if(!CURP)return false;
  if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
  CURP.history.push(snapshot(CURP)); return pPersist(); }
+/* COMMIT A RECORD AND ITS SNAPSHOT IN ONE STORE WRITE. A finished release
+   changes the working state and then snapshots it. Calling pSave followed
+   by pSnap wrote twice: the first write could land while the second failed,
+   leaving a release without its history row. Save the current engine state,
+   stage one snapshot, and write once. If storage refuses, remove the staged
+   row so a later retry cannot silently save a phantom duplicate. */
+function pSaveSnap(){
+ if(!CURP)return false;
+ saveProfile(CURP);
+ if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
+ var history=Array.isArray(CURP.history)?CURP.history:(CURP.history=[]);
+ var n=history.length;
+ history.push(snapshot(CURP));
+ if(!pPersist()){ history.length=n; return false; }
+ return true;
+}
 function pExport(){ return JSON.stringify(CURP?saveProfile(CURP):null,null,1); }
 /* ============================================================
    THE BOUNDARY. Everything above this line trusts its input
