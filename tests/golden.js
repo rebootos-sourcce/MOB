@@ -464,10 +464,14 @@ async function door(browser, SITE, cut, giftAt) {
     'E1q funnel arrival: the quiz-imported record creates exactly one first-visit session');
   ok(quizSessionCreates.every(q => q.body && Object.keys(q.body).sort().join(',') === 'anonymousId'),
     'E1q privacy: quiz arrival sends only the random journey identifier, never story or name');
-  /* the record itself stays in the browser, on the standing privacy ruling:
-     sync is dead code and must not be turned on (HANDOFF NEXT-SESSION) */
-  xf(wq.reqs('PUT', /^\/v1\/sync$/).length > 0, 'E19 record on the account', 'the reading is kept on the account, so another device that signs in has it',
-    'sign in on a phone and the quiz reading is not there; it lives only in the browser that opened the link (his privacy ruling, held on purpose until sync is designed)');
+  /* Alpha privacy is a positive acceptance gate, not an expected-red item.
+     The record stays local; the anonymous funnel gets checkpoints only. */
+  const profileEndpoints = wq.st.reqs.filter(q => /(?:^|\/)(?:sync|profile)(?:\/|$)/i.test(q.path));
+  const storySent = wq.st.reqs.some(q => String(q.raw || '').includes(STORY));
+  ok(profileEndpoints.length === 0,
+    'E19 privacy: no profile or sync endpoint receives the imported record');
+  ok(!storySent,
+    'E1q privacy: raw story text never crosses the Worker boundary');
 
   station(5, 'Q: the first release, from the Story page');
   await Q.tab(0);
