@@ -5361,6 +5361,17 @@ g('41 · the twenty one on every history row, and a record from before still loa
  ok(writes===1,'the silent storage drop had one write attempt, got '+writes);
  ok(rec.history.length===silentHistoryN,'a readback mismatch rolls the staged snapshot back');
  ok(mem['source.profiles']===savedText,'the no-op store leaves the prior durable record untouched');
+ /* A non-throwing adapter that writes truncated bytes is different from a
+    no-op adapter: readback must fail and the previous durable record restored. */
+ writes=0;
+ bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{
+  writes++;
+  mem[k]=writes===1?String(v).slice(0,-1):String(v);
+ });
+ ok(pSaveSnap()===false,'a corrupt but non-throwing write is refused by readback');
+ ok(writes===2,'a corrupt write is followed by one rollback write, got '+writes);
+ ok(mem['source.profiles']===savedText,'the corrupt write restores the previous durable record');
+ ok(rec.history.length===silentHistoryN,'the corrupt write removes the staged snapshot from memory');
  bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
  const one=lawSeries(back,'Patience');
  ok(one.n===1&&one.before===2&&one.last===7&&one.dir===null,
