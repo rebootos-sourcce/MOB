@@ -220,7 +220,18 @@ function fakeWorker(origin, giftAt) {
       return json(200, { account: { id: me.id, research_id: me.research_id, plan: me.plan, email: me.email },
         consent: { share: false, at: null, v: 1 }, records: 0, entitlement: null, billing: billing(me) });
     }
-    if (method === 'POST' && p === '/v1/auth/signout') { delete st.tok[m[1]]; return json(200, { ok: true }); }
+    if (method === 'POST' && p === '/v1/auth/signout') {
+      delete st.tok[m[1]];
+      /* Mirror the production Worker contract: ending the account login and
+         ending the named anonymous first-visit pass are separate results. */
+      if (body && body.funnel) {
+        const s = st.fun[body.funnel.id];
+        const ended = !!(s && s.credential === body.funnel.credential);
+        if (ended) s.passEnded = true;
+        return json(200, { ok: true, funnel: { ended } });
+      }
+      return json(200, { ok: true });
+    }
     if (method === 'POST' && p === '/v1/billing/checkout') {
       const tier = String(body && body.tier || '');
       if (['one', 'two', 'three'].indexOf(tier) < 0) return err(400, 'that tier cannot be bought');
