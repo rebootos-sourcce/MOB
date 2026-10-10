@@ -5347,6 +5347,15 @@ g('41 · the twenty one on every history row, and a record from before still loa
  ok(writes===1,'the refused atomic save made one write attempt, got '+writes);
  ok(rec.history.length===historyN,'a failed atomic save removes its staged snapshot');
  ok(mem['source.profiles']===savedText,'the failed write leaves the prior stored record unchanged');
+ /* A storage adapter that silently drops a write is still a failed save:
+    success requires reading the exact serialized record back. */
+ writes=0;
+ bindStore(k=>mem[k]===undefined?null:mem[k],()=>{writes++;});
+ const silentHistoryN=rec.history.length;
+ ok(pSaveSnap()===false,'a silent storage drop is refused by readback');
+ ok(writes===1,'the silent storage drop had one write attempt, got '+writes);
+ ok(rec.history.length===silentHistoryN,'a readback mismatch rolls the staged snapshot back');
+ ok(mem['source.profiles']===savedText,'the no-op store leaves the prior durable record untouched');
  bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
  const one=lawSeries(back,'Patience');
  ok(one.n===1&&one.before===2&&one.last===7&&one.dir===null,
