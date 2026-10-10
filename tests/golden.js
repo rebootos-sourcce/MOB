@@ -129,11 +129,10 @@ function silentWav() {
   b.writeUInt32LE(rate * 2, 28); b.writeUInt16LE(2, 32); b.writeUInt16LE(16, 34); b.write('data', 36);
   b.writeUInt32LE(data, 40); return b;
 }
-/* THE STARTER GIFT. The real funnel_attach_session refuses a session with no
-   starter gift (gift_not_found, 409), and today nothing on the server issues
-   one: REVIEW-audit-2026-10-09/pass2.md W3 says it will be issued either when
-   the session is made or at the first selectedGroundId checkpoint. giftAt
-   picks which, so the app is held to joining the account under either. */
+/* THE STARTER GIFT. The current Worker permits a first-visit session to
+   attach before a starting ground exists. The gift is issued on session
+   creation or at the selected-ground checkpoint, depending on this test mode.
+   Keep this fake aligned with that contract rather than an obsolete 409 path. */
 function fakeWorker(origin, giftAt) {
   const st = { acc: {}, byMail: {}, tok: {}, fun: {}, ent: {}, reqs: [], deleted: [] };
   let seq = 0; const mint = p => p + '_' + (++seq).toString(36) + Math.random().toString(36).slice(2, 10);
@@ -198,7 +197,6 @@ function fakeWorker(origin, giftAt) {
         if (!me) return err(401, 'sign in first');
         if (!body || body.credential !== s.credential) return err(401, 'the funnel credential is invalid, expired, or already used');
         if (s.userId && s.userId !== me.id) return err(403, 'this funnel session is owned by another account');
-        if (!s.gift) return err(409, 'this funnel session has no starter gift to attach');
         s.userId = me.id; s.version++; s.updatedAt = now();
         return json(200, { session: pub(s) });
       }
@@ -455,15 +453,19 @@ async function door(browser, SITE, cut, giftAt) {
   const accHd = await page.evaluate(() => { const h = document.querySelector('#settings .ac-hd'); return h ? h.innerText : ''; });
   ok(accHd.toLowerCase().indexOf(String(landed).toLowerCase()) >= 0 && accHd.indexOf(MAILQ) >= 0,
     'the account page names the reading open and the account it is signed in under, ' + J(accHd.replace(/\s+/g, ' ')));
-  /* THE SERVER'S SIDE. A record that arrives by link skips onboarding, and
-     onboarding is the only caller of authFunnelStart, so the server never
-     hears that this account came through the funnel. */
-  xf(Object.keys(wq.st.fun).length > 0, 'E1q funnel arrival', 'the server keeps a first visit session for a person who arrived from the quiz',
-    'nothing on our server says this account came through the quiz, so the funnel cannot be counted from quiz to account to payment');
-  /* the record itself stays in the browser, on the standing privacy ruling:
-     sync is dead code and must not be turned on (HANDOFF NEXT-SESSION) */
-  xf(wq.reqs('PUT', /^\/v1\/sync$/).length > 0, 'E19 record on the account', 'the reading is kept on the account, so another device that signs in has it',
-    'sign in on a phone and the quiz reading is not there; it lives only in the browser that opened the link (his privacy ruling, held on purpose until sync is designed)');
+  /* THE SERVER'S SIDE. The quiz record skips onboarding, so this door must
+     create its metadata-only first-visit session itself and then join it to the
+     account. The profile remains on this device under the standing privacy rule. */
+  const quizSessions = Object.values(wq.st.fun);
+  const quizAccount = Object.values(wq.st.acc).find(a => a.email === MAILQ);
+  ok(quizSessions.length === 1, 'the quiz-import door creates exactly one first-visit session: ' + quizSessions.length);
+  ok(!!quizAccount && quizSessions[0].userId === quizAccount.id,
+    'the session opened from the quiz is attached to the account that signed in');
+  const quizReads = wq.reqs('GET', /^\/v1\/funnel\/session\/[^/]+$/);
+  ok(quizReads.some(q => q.status === 200 && !!q.cred),
+    'the app reads its first visit back with the issued credential after creation');
+  ok(wq.reqs('PUT', /^\/v1\/sync$/).length === 0,
+    'profile sync remains off; the server session contains no profile copy');
 
   station(5, 'Q: the first release, from the Story page');
   await Q.tab(0);
@@ -696,11 +698,9 @@ async function door(browser, SITE, cut, giftAt) {
   const attaches = wo.reqs('POST', /^\/v1\/funnel\/session\/[^/]+\/attach$/);
   ok(attaches.length >= 1 && attaches.every(q => q.me === accO.id), 'the app asked the server to join it to the account, with the sign in, '
     + attaches.length + ' asks, answered ' + J(attaches.map(q => q.status)), 'their first visit stays anonymous on the server, so nothing they do in it reaches the account they just made');
-  /* the server here issues the starter gift at the first mark (W3's second
-     option), so a join asked before the pick is refused and has to be asked
-     again: whether it was is read at the end of the first run, below */
-  xf(wo.reqs('GET', /^\/v1\/funnel\/session\/[^/]+$/).length > 0, 'E2 read back', 'the app reads its first visit back from the server (authFunnelRead has no caller)',
-    'a second device, or this browser after its storage is cleared, starts the first visit again from the beginning');
+  const firstVisitReads = wo.reqs('GET', /^\/v1\/funnel\/session\/[^/]+$/);
+  ok(firstVisitReads.some(q => q.status === 200 && q.auth && !!q.cred),
+    'the account door reads the saved first visit back with its session credential');
 
   station(11, 'O: the first release through onboarding, with the studio voice');
   const ob = () => po2.evaluate(() => ({ open: !!(typeof OB !== 'undefined' && OB.open), step: typeof OB !== 'undefined' ? OB.step : null,
