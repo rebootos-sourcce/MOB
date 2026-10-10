@@ -679,22 +679,30 @@ function authGone(b){
  try{ if(typeof STORE_BOUND!=='undefined'&&STORE_BOUND)STORE.set(PROFILE_SYNC_META_KEY,''); }catch(e){}
  var dropped=authPlanDrop();
  var lines=[], stopped=(typeof b.stopped==='number')?b.stopped:null;
- if(stopped===null)lines.push('The server did not say whether a paid plan was stopped. '
-  +'If you were paying, write to us under Help and we stop it.');
- else if(stopped>0)lines.push('The paid plan is cancelled today, so nothing more is charged.');
- if(b.billedElsewhere==='apple'||b.billedElsewhere==='google')
-  lines.push('A plan bought through '+(b.billedElsewhere==='apple'?'the App Store':'Google Play')
-   +' keeps charging until you cancel it there.');
- lines.push('Removed from our server: your email, your password, your sign in on every device, '
-  +'and everything it held under the account.');
- /* the server's own names for what it kept, each said once. A name this
-    build does not know is still said, in the server's word, because a thing
-    kept and not mentioned is the defect this receipt exists for */
- var said={first_visit:'Kept on our server: your first-visit record, linked by a random account ID. '
-   +'It includes the topic you picked and when you finished each step.',
-  activity_log:'Kept on our server: a dated list of when the account signed in and paid, '
-   +'linked by that random account ID and with no email.',
-  payment_history:'Kept by Stripe, the company that takes the card: its own record of your past payments.'};
+if(stopped===null)lines.push('The server did not say whether a paid plan was stopped. '
+ +'If you were paying, write to us under Help and we stop it.');
+else if(stopped>0)lines.push('The paid plan is cancelled today, so nothing more is charged.');
+if(b.billedElsewhere==='apple'||b.billedElsewhere==='google')
+ lines.push('A plan bought through '+(b.billedElsewhere==='apple'?'the App Store':'Google Play')
+  +' keeps charging until you cancel it there.');
+lines.push('Removed from our server: your email, your password, your sign in on every device, '
+ +'and everything it held under the account.');
+var retentionDate=null;
+if(typeof b.retentionUntil==='string'&&Number.isFinite(Date.parse(b.retentionUntil)))
+ retentionDate=new Date(Date.parse(b.retentionUntil)).toISOString().slice(0,10);
+var retentionNote=function(){
+ if(!retentionDate)return ' The server did not return a removal date; contact support to confirm when this record will be removed.';
+ if(b.retentionMarked===true)return ' It is scheduled for removal on '+retentionDate+'.';
+ return ' The target removal date is '+retentionDate+', but cleanup in the first-visit store is still pending. The server will retry, and removal may happen later.';
+};
+/* the server's own names for what it kept, each said once. The date and
+   pending state are part of the receipt, not hidden in a privacy page. */
+var said={first_visit:'Kept on our server: your first-visit record, linked by a random account ID. '
+  +'It may include the topic and starting ground you selected, step completion, and whether a first release or verification was recorded.'
+  +retentionNote(),
+ activity_log:'Kept on our server: a dated list of when the account signed in and paid, '
+  +'linked by that random account ID and with no email.'+retentionNote(),
+ payment_history:'Kept by Stripe, the company that takes the card: its own record of your past payments.'};
  (Array.isArray(b.kept)?b.kept:[]).forEach(function(k){
   if(typeof k!=='string')return;
   lines.push(said[k]||('Kept on our server: '+k.replace(/_/g,' ')+'.'));});
