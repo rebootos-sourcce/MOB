@@ -149,9 +149,9 @@ function authFunnelStart(){
    for good. tests/golden.js walked it and the server held userId null after
    the whole first run. So the join is asked again wherever it can newly
    succeed: when the session is made or found, and after each mark, because
-   the Worker refuses a session with no starter gift and will issue that gift
-   either with the session or at the first mark (REVIEW-audit-2026-10-09
-   pass2.md W3), and a no for that reason must not be the last word. A session
+   the Worker permits the visit to attach before a starting ground is selected.
+   The gift is issued with the session or at the selected-ground checkpoint.
+   A failed attachment can be retried when state changes. A session
    already joined is never sent again, and one ask is out at a time. */
 var FUNNEL_JOINING=false;
 function authFunnelJoin(){
