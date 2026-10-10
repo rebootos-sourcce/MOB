@@ -5911,6 +5911,22 @@ console.log('\n=== the seat tone is binaural, and it is the seat\'s own ===');
  const kept=()=>tp.evaluate(()=>{try{var me=JSON.parse(localStorage.getItem(PKEY)||'[]')
   .filter(function(r){return r.id===CURP.id;})[0]; return me&&me.ui?me.ui.tone:null;}
   catch(e){return 'unreadable';}});
+ /* The switch writes through the profile's normal save path. Wait for both the
+    rendered control and the persisted preference; a fixed 150 ms delay allowed
+    the next reload to race this save on a slow runner and cascade eleven false
+    tone failures from one missed state transition. */
+ const toneSaved=async expected=>tp.waitForFunction(expected=>{
+  var b=document.getElementById('reltone'), me=null;
+  try{me=JSON.parse(localStorage.getItem(PKEY)||'[]').filter(function(r){return r.id===CURP.id;})[0];}
+  catch(e){}
+  return !!(b&&b.getAttribute('aria-checked')===String(expected)
+    &&me&&me.ui&&me.ui.tone===expected);
+ },expected,{timeout:3000});
+ const bedOnWait=async hz=>tp.waitForFunction(hz=>{
+  var s=bedState();
+  return s.on&&s.ctx==='running'&&(hz===null||s.carrier===hz);
+ },hz==null?null:hz,{timeout:3000});
+ const bedOffWait=async()=>tp.waitForFunction(()=>!bedState().on,null,{timeout:3000});
  /* waits for the oscillators themselves to land, rather than for a number of
     milliseconds, because the audio clock and the page clock are two clocks */
  const lands=async(l,r)=>{try{await tp.waitForFunction(a=>{var s=bedState();
@@ -5946,7 +5962,7 @@ console.log('\n=== the seat tone is binaural, and it is the seat\'s own ===');
  await tp.evaluate(()=>relClose());
  /* ON, BY A PRESS, SAVED THROUGH THE ONE WRITER, AND NOTHING SOUNDS YET */
  await pick();
- await tp.click('#reltone'); await tp.waitForTimeout(150);
+ await tp.click('#reltone'); await toneSaved(true);
  const s1=await sw(), b1=await bed(), k1=await kept();
  const said1=await tp.evaluate(()=>document.getElementById('status').textContent);
  ok(s1&&s1.checked==='true'&&k1===true,'a press turns it on and it is saved to the record, '
@@ -5959,7 +5975,7 @@ console.log('\n=== the seat tone is binaural, and it is the seat\'s own ===');
  const s2=await sw();
  ok(s2&&s2.checked==='true','remembered across a reload, '+JSON.stringify(s2));
  /* BEGIN IS THE PRESS THAT OPENS THE CHANNEL, and the tone is the first seat's */
- await tp.click('#relgo'); await tp.waitForTimeout(150);
+ await tp.click('#relgo'); await bedOnWait(null);
  await tp.evaluate(()=>clearInterval(RUN.timer));
  const want=await tp.evaluate(()=>RUN.queue.map(function(n){return {b:n.b,hz:seatHz(n.b),col:seatCol(n.b)};}));
  const b2=await bed(), s3=await sw();
@@ -5996,21 +6012,21 @@ console.log('\n=== the seat tone is binaural, and it is the seat\'s own ===');
   var tm=a.effect.getComputedTiming(); return tm.iterations>1&&tm.duration<334;}).length);
  ok(flash===0,'and nothing on the card repeats faster than three times a second, '+flash+' do');
  /* PAUSE SILENCES IT, RESUME BRINGS IT BACK, AND THE SWITCH NEVER MOVES */
- await tp.click('#relpause'); await tp.waitForTimeout(120);
+ await tp.click('#relpause'); await bedOffWait();
  const b6=await bed(), s6=await sw();
  ok(!b6.on&&s6.checked==='true'&&s6.hz==='','Pause silences the tone and leaves the switch on, '
   +JSON.stringify([b6.on,s6]));
- await tp.click('#relpause'); await tp.waitForTimeout(120);
+ await tp.click('#relpause'); await bedOnWait(want[1].hz);
  const b7=await bed();
  ok(b7.on&&b7.carrier===want[1].hz,'and Resume brings back the seat the card is on, '+JSON.stringify(b7));
  /* OFF MID RUN, WITHOUT LEAVING THE RUN. The case the switch is on the card
     for: somebody finds it on, in a quiet room, halfway through. */
- await tp.click('#reltone'); await tp.waitForTimeout(150);
+ await tp.click('#reltone'); await toneSaved(false); await bedOffWait();
  const b8=await bed(), k8=await kept(), r8=await tp.evaluate(()=>({open:RUN.open,phase:RUN.phase}));
  ok(!b8.on&&k8===false&&r8.open&&r8.phase==='run',
   'turned off mid run the tone stops, the record says off, and the run goes on, '
   +JSON.stringify([b8.on,k8,r8]));
- await tp.click('#reltone'); await tp.waitForTimeout(150);
+ await tp.click('#reltone'); await toneSaved(true); await bedOnWait(want[1].hz);
  const b9=await bed();
  ok(b9.on&&b9.carrier===want[1].hz,'and turned back on it returns at the seat the card is on, '
   +JSON.stringify(b9));
