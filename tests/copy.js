@@ -91,6 +91,7 @@ const REQUIRED=[
    it can reach. */
 const SENDS=[
  ['POST', /\/v1\/funnel\/session$/, ['anonymousId']],
+ ['GET', /\/v1\/funnel\/session\/[^/]+$/, []],
  ['PATCH', /\/v1\/funnel\/session\/[^/]+\/checkpoint$/, ['selectedGroundId','tutorialCompleted','firstReleaseId','verificationId']],
  ['POST', /\/v1\/funnel\/session\/[^/]+\/attach$/, ['credential']]];
 

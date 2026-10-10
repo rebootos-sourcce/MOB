@@ -129,11 +129,10 @@ function silentWav() {
   b.writeUInt32LE(rate * 2, 28); b.writeUInt16LE(2, 32); b.writeUInt16LE(16, 34); b.write('data', 36);
   b.writeUInt32LE(data, 40); return b;
 }
-/* THE STARTER GIFT. The real funnel_attach_session refuses a session with no
-   starter gift (gift_not_found, 409), and today nothing on the server issues
-   one: REVIEW-audit-2026-10-09/pass2.md W3 says it will be issued either when
-   the session is made or at the first selectedGroundId checkpoint. giftAt
-   picks which, so the app is held to joining the account under either. */
+/* THE STARTER GIFT. The current Worker permits a first-visit session to
+   attach before a starting ground exists. The gift is issued on session
+   creation or at the selected-ground checkpoint, depending on this test mode.
+   Keep this fake aligned with that contract rather than an obsolete 409 path. */
 function fakeWorker(origin, giftAt) {
   const st = { acc: {}, byMail: {}, tok: {}, fun: {}, ent: {}, reqs: [], deleted: [] };
   let seq = 0; const mint = p => p + '_' + (++seq).toString(36) + Math.random().toString(36).slice(2, 10);
@@ -192,13 +191,12 @@ function fakeWorker(origin, giftAt) {
       const credOk = rec.cred && rec.cred === s.credential;
       if (method === 'GET' && !fm[2]) {
         if (me) return s.userId === me.id ? json(200, { session: pub(s) }) : err(403, 'this funnel session is not yours');
-        return credOk ? json(200, { session: pub(s) }) : err(401, 'a valid funnel credential is required');
+        return credOk && !s.ended ? json(200, { session: pub(s) }) : err(401, 'a valid funnel credential is required');
       }
       if (method === 'POST' && fm[2] === '/attach') {
         if (!me) return err(401, 'sign in first');
         if (!body || body.credential !== s.credential) return err(401, 'the funnel credential is invalid, expired, or already used');
         if (s.userId && s.userId !== me.id) return err(403, 'this funnel session is owned by another account');
-        if (!s.gift) return err(409, 'this funnel session has no starter gift to attach');
         s.userId = me.id; s.version++; s.updatedAt = now();
         return json(200, { session: pub(s) });
       }
@@ -220,7 +218,13 @@ function fakeWorker(origin, giftAt) {
       return json(200, { account: { id: me.id, research_id: me.research_id, plan: me.plan, email: me.email },
         consent: { share: false, at: null, v: 1 }, records: 0, entitlement: null, billing: billing(me) });
     }
-    if (method === 'POST' && p === '/v1/auth/signout') { delete st.tok[m[1]]; return json(200, { ok: true }); }
+    if (method === 'POST' && p === '/v1/auth/signout') {
+      const pass = body && body.funnel, visit = pass && st.fun[pass.id];
+      const ended = !!(visit && typeof pass.credential === 'string' && pass.credential === visit.credential && !visit.ended);
+      if (ended) visit.ended = true;
+      delete st.tok[m[1]];
+      return json(200, Object.assign({ ok: true }, pass ? { funnel: { ended: ended } } : {}));
+    }
     if (method === 'POST' && p === '/v1/billing/checkout') {
       const tier = String(body && body.tier || '');
       if (['one', 'two', 'three'].indexOf(tier) < 0) return err(400, 'that tier cannot be bought');
@@ -413,6 +417,12 @@ async function door(browser, SITE, cut, giftAt) {
     return l && /from the link/.test(l.textContent) ? l.textContent : null; }, null, { timeout: 12000 }).then(h => h.jsonValue(), () => null);
   ok(!!landed && landed !== 'no step', 'the app opens on the link and loads the record, ' + J(landed), 'the app opens empty');
   ok(/^Loaded .+ from the link\./.test(doorLine || ''), 'the door says so where the person is looking, ' + J(doorLine), 'no word that the reading arrived');
+  const funnelStart = await page.evaluate(() => {
+    if (typeof RECORD_FUNNEL === 'undefined' || !RECORD_FUNNEL) return null;
+    return RECORD_FUNNEL.then(r => ({ ok: !!r.ok, readBack: !!r.readBack, readStatus: r.readStatus, skipped: !!r.skipped }));
+  });
+  ok(!!funnelStart && funnelStart.ok && funnelStart.readBack && funnelStart.readStatus === 200,
+    'the quiz door creates and reads back its metadata-only session before account creation');
   let L = await Q.live(), sv = await Q.saved();
   ok(!!sv.rec && sv.rec.id === L.id && sv.rec.name === landed, 'it is saved as its own record, and is the one open: ' + J(sv.rec && sv.rec.name));
   ok(await page.evaluate(() => location.hash === ''), 'and the record is off the address bar');
@@ -455,15 +465,19 @@ async function door(browser, SITE, cut, giftAt) {
   const accHd = await page.evaluate(() => { const h = document.querySelector('#settings .ac-hd'); return h ? h.innerText : ''; });
   ok(accHd.toLowerCase().indexOf(String(landed).toLowerCase()) >= 0 && accHd.indexOf(MAILQ) >= 0,
     'the account page names the reading open and the account it is signed in under, ' + J(accHd.replace(/\s+/g, ' ')));
-  /* THE SERVER'S SIDE. A record that arrives by link skips onboarding, and
-     onboarding is the only caller of authFunnelStart, so the server never
-     hears that this account came through the funnel. */
-  xf(Object.keys(wq.st.fun).length > 0, 'E1q funnel arrival', 'the server keeps a first visit session for a person who arrived from the quiz',
-    'nothing on our server says this account came through the quiz, so the funnel cannot be counted from quiz to account to payment');
-  /* the record itself stays in the browser, on the standing privacy ruling:
-     sync is dead code and must not be turned on (HANDOFF NEXT-SESSION) */
-  xf(wq.reqs('PUT', /^\/v1\/sync$/).length > 0, 'E19 record on the account', 'the reading is kept on the account, so another device that signs in has it',
-    'sign in on a phone and the quiz reading is not there; it lives only in the browser that opened the link (his privacy ruling, held on purpose until sync is designed)');
+  /* THE SERVER'S SIDE. The quiz record skips onboarding, so this door must
+     create its metadata-only first-visit session itself and then join it to the
+     account. The profile remains on this device under the standing privacy rule. */
+  const quizSessions = Object.values(wq.st.fun);
+  const quizAccount = Object.values(wq.st.acc).find(a => a.email === MAILQ);
+  ok(quizSessions.length === 1, 'the quiz-import door creates exactly one first-visit session: ' + quizSessions.length);
+  ok(!!quizAccount && quizSessions[0].userId === quizAccount.id,
+    'the session opened from the quiz is attached to the account that signed in');
+  const quizReads = wq.reqs('GET', /^\/v1\/funnel\/session\/[^/]+$/);
+  ok(quizReads.some(q => q.status === 200 && !!q.cred),
+    'the app reads its first visit back with the issued credential after creation');
+  ok(wq.reqs('PUT', /^\/v1\/sync$/).length === 0,
+    'profile sync remains off; the server session contains no profile copy');
 
   station(5, 'Q: the first release, from the Story page');
   await Q.tab(0);
@@ -696,11 +710,9 @@ async function door(browser, SITE, cut, giftAt) {
   const attaches = wo.reqs('POST', /^\/v1\/funnel\/session\/[^/]+\/attach$/);
   ok(attaches.length >= 1 && attaches.every(q => q.me === accO.id), 'the app asked the server to join it to the account, with the sign in, '
     + attaches.length + ' asks, answered ' + J(attaches.map(q => q.status)), 'their first visit stays anonymous on the server, so nothing they do in it reaches the account they just made');
-  /* the server here issues the starter gift at the first mark (W3's second
-     option), so a join asked before the pick is refused and has to be asked
-     again: whether it was is read at the end of the first run, below */
-  xf(wo.reqs('GET', /^\/v1\/funnel\/session\/[^/]+$/).length > 0, 'E2 read back', 'the app reads its first visit back from the server (authFunnelRead has no caller)',
-    'a second device, or this browser after its storage is cleared, starts the first visit again from the beginning');
+  const firstVisitReads = wo.reqs('GET', /^\/v1\/funnel\/session\/[^/]+$/);
+  ok(firstVisitReads.some(q => q.status === 200 && q.auth && !!q.cred),
+    'the account door reads the saved first visit back with its session credential');
 
   station(11, 'O: the first release through onboarding, with the studio voice');
   const ob = () => po2.evaluate(() => ({ open: !!(typeof OB !== 'undefined' && OB.open), step: typeof OB !== 'undefined' ? OB.step : null,
@@ -806,6 +818,20 @@ async function door(browser, SITE, cut, giftAt) {
     ok(w2.reqs('GET', /^\/v1\/sync$/).length === 0 && w2.reqs('PUT', /^\/v1\/sync$/).length === 0,
       'account creation does not read or send the profile while sync is outside alpha');
     ok(O2.errs.length === 0, 'no script error: ' + O2.errs.slice(0, 2).join(' | '));
+    const receipt = await O2.page.evaluate(() => authGone({
+      stopped:0, retentionUntil:'2028-10-10T00:00:00.000Z', retentionMarked:true,
+      kept:['first_visit','activity_log']
+    }));
+    ok(receipt.lines.some(line => /first-visit record/.test(line) && /removal on 2028-10-10/.test(line)),
+      'the deletion receipt states the first-visit record removal date: ' + J(receipt.lines));
+    ok(receipt.lines.some(line => /dated list/.test(line) && /removal on 2028-10-10/.test(line)),
+      'the deletion receipt states the activity-log removal date: ' + J(receipt.lines));
+    const pendingReceipt = await O2.page.evaluate(() => authGone({
+      stopped:0, retentionUntil:'2028-10-10T00:00:00.000Z', retentionMarked:false, retentionPending:true,
+      kept:['first_visit']
+    }));
+    ok(pendingReceipt.lines.some(line => /cleanup in the first-visit store is still pending/.test(line)),
+      'the deletion receipt does not claim remote retention is confirmed when marking is pending');
     await O2.ctx.close();
   }
 
@@ -835,9 +861,10 @@ async function door(browser, SITE, cut, giftAt) {
       return !(typeof LOGIN !== 'undefined' && LOGIN.open) || (m && m.textContent && !/^Creating/.test(m.textContent)); }, null, { timeout: 20000 }).catch(() => {});
     const f = await pf.evaluate(() => ({ open: !!(typeof LOGIN !== 'undefined' && LOGIN.open), msg: (document.getElementById('loginmsg') || {}).textContent || '',
       held: !!(typeof authSession === 'function' && authSession()) }));
-    ok(wf.st.reqs.some(q => q.path === '/v1/auth/signup' && q.origin === 'null'), 'the press asks the server, from the null origin a file page sends');
-    xf(f.held || /file|atuned\.world/i.test(f.msg), 'E3f file copy account', 'a downloaded copy makes the account, or says the true reason it cannot: said '
-      + J(f.msg), 'the file he is sent says the connection is at fault and makes no account; only the copy at atuned.world can');
+    ok(!wf.st.reqs.some(q => q.path === '/v1/auth/signup' && q.origin === 'null'),
+      'a downloaded copy does not send signup from an unsupported origin');
+    ok(!f.held && /downloaded copy|runs offline|no account request was sent/i.test(f.msg),
+      'the account door explains why sign in is unavailable in the downloaded copy: ' + J(f.msg));
     ok(ferrs.length === 0, 'no script error: ' + ferrs.slice(0, 2).join(' | '));
     await cf.close();
   }

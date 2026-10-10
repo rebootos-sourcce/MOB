@@ -1105,6 +1105,18 @@ function recordLinkTake(){
  try{ history.replaceState(history.state,'',location.pathname+location.search); cleared=true; }
  catch(e){ try{ location.hash=''; cleared=true; }catch(e2){} }
  return {text:h.slice(3), cleared:cleared};}
+/* A quiz-imported record skips onboarding, but its hosted visit still needs
+   the same anonymous funnel session. This sends only a random browser id and
+   public checkpoints through auth.js; stories, names and pattern keys remain
+   local. A downloaded standalone copy has no hosted origin and stays offline. */
+var RECORD_FUNNEL=null;
+function recordLinkFunnelStart(){
+ var standalone=false;
+ try{standalone=location.protocol==='file:'||location.origin==='null';}catch(e){standalone=true;}
+ if(standalone||typeof authFunnelStart!=='function')return Promise.resolve({ok:false,skipped:true});
+ return Promise.resolve().then(function(){return authFunnelStart();})
+  .catch(function(){return {ok:false,status:0};});
+}
 /* Resolves, never rejects, with the profile pImport returned or null, and
    importError() saying why on a null, which is pImport's own contract. */
 function recordLinkInflate(bytes){
@@ -1156,6 +1168,9 @@ function recordLinkBoot(){
   try{ tabLandFirst(); }catch(e){}
   recordLinkSay('Loaded '+(np.name||'the record')+' from the link. Nothing else was touched.'+still,
    still?'fail':'');
+  /* Tracking is best effort. A network failure must not undo a valid local
+     import or prevent the person from using the record they brought. */
+  RECORD_FUNNEL=recordLinkFunnelStart();
   return np;});}
 function profileSheet(){
  var r=compute(), m=(typeof meterRead==='function')?meterRead(CURP):null;

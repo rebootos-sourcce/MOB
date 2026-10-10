@@ -110,20 +110,36 @@ function funnelUuid(){
  try{ if(typeof crypto!=='undefined'&&crypto.randomUUID)return crypto.randomUUID(); }catch(e){}
  return 'anon_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2);
 }
+/* Read back the session after attempting its account attachment. The server
+   remains the authority; the browser keeps only the public row and the private
+   credential returned when this browser created the anonymous session. */
+function authFunnelStartFinish(result){
+ return Promise.resolve().then(function(){return authFunnelJoin();})
+  .catch(function(){return {ok:false,status:0};})
+  .then(function(join){
+   result.joined=!!(join&&join.ok);
+   return authFunnelRead().then(function(r){
+    result.readBack=!!(r&&r.ok&&r.body&&r.body.session);
+    result.readStatus=(r&&r.status)||0;
+    if(result.readBack)result.session=r.body.session;
+    return result;
+   }).catch(function(){result.readBack=false;result.readStatus=0;return result;});
+  });
+}
 function authFunnelStart(){
  var existing=funnelSession();
- if(existing){ authFunnelJoin(); return Promise.resolve({ok:true,session:existing.session||null,reused:true}); }
+ if(existing)return authFunnelStartFinish({ok:true,session:existing.session||null,reused:true});
  var anonymousId=funnelUuid();
  return authCall('POST','/v1/funnel/session',{anonymousId:anonymousId},null,false).then(function(r){
-  /* The Worker intentionally creates the anonymous id. Keep the caller's id
-     out of the request body so the browser cannot claim somebody else's id. */
+  /* The Worker creates the session id. Only a random browser id crosses this
+     boundary; the record, story, name and patterns stay in this browser. */
   if(!r.ok)return {ok:false,status:r.status,body:r.body};
   var b=r.body||{}, s=b.session;
   if(!s||typeof s.id!=='string'||typeof b.credential!=='string')return {ok:false,status:r.status,body:null};
   var state={session:s,id:s.id,anonymousId:s.anonymousId||anonymousId,credential:b.credential};
   var kept=funnelKeep(state);
-  authFunnelJoin();
-  return {ok:true,session:s,reused:false,kept:kept};});
+  return authFunnelStartFinish({ok:true,session:s,reused:false,kept:kept});
+ });
 }
 /* JOINED TO THE ACCOUNT ONCE BOTH EXIST, WHICHEVER CAME FIRST. The join was
    tried at sign in and nowhere else, and the first visit's session is made by
@@ -133,9 +149,9 @@ function authFunnelStart(){
    for good. tests/golden.js walked it and the server held userId null after
    the whole first run. So the join is asked again wherever it can newly
    succeed: when the session is made or found, and after each mark, because
-   the Worker refuses a session with no starter gift and will issue that gift
-   either with the session or at the first mark (REVIEW-audit-2026-10-09
-   pass2.md W3), and a no for that reason must not be the last word. A session
+   the Worker permits the visit to attach before a starting ground is selected.
+   The gift is issued with the session or at the selected-ground checkpoint.
+   A failed attachment can be retried when state changes. A session
    already joined is never sent again, and one ask is out at a time. */
 var FUNNEL_JOINING=false;
 function authFunnelJoin(){
@@ -146,10 +162,22 @@ function authFunnelJoin(){
 }
 function authFunnelRead(){
  var f=funnelSession(); if(!f)return Promise.resolve({ok:false,status:0,body:null});
- var s=authSession();
- var token=s&&s.token, path='/v1/funnel/session/'+encodeURIComponent(f.id);
- if(token)return authCall('GET',path,null,token);
- return authCall('GET',path,null,null,false);
+ var s=authSession(), token=s&&s.token, path='/v1/funnel/session/'+encodeURIComponent(f.id);
+ var extra=f.credential?{'x-funnel-credential':f.credential}:null;
+ var remember=function(r){
+  if(r&&r.ok&&r.body&&r.body.session){
+   var session=r.body.session;
+   funnelKeep(Object.assign({},f,{session:session,userId:session.userId||f.userId||null}));
+  }
+  return r;
+ };
+ /* An account token is preferred once attached. If this first visit is still
+    anonymous, the Worker correctly refuses the account read; retry only with
+    this browser's credential, never with an untrusted session id alone. */
+ return authCall('GET',path,null,token||null,false,undefined,extra).then(function(r){
+  if((r&&r.ok)||!token||!f.credential)return remember(r);
+  return authCall('GET',path,null,null,false,undefined,extra).then(remember);
+ });
 }
 function authFunnelCheckpoint(patch){
  var f=funnelSession(), s=authSession(), extra=f&&f.credential?{'x-funnel-credential':f.credential}:null;
@@ -457,6 +485,10 @@ var AUTH_UNKEPT=' Storage is blocked in this browser, so the sign in ends on rel
 function authEnter(route,mail,pw){
  var bad=authFieldsWhy(mail,pw,route==='signup');
  if(bad)return Promise.resolve({ok:false, say:bad});
+ /* A file copy is deliberately offline. Do not make a request from origin
+    null and then tell the person that the server or their connection failed. */
+ try{if(typeof location!=='undefined'&&location.protocol==='file:')
+  return Promise.resolve({ok:false,say:'This downloaded copy runs offline. Sign in requires the hosted app. No account request was sent.'});}catch(e){}
  return authCall('POST','/v1/auth/'+route,{email:mail, password:pw}).then(function(r){
   var b=r.body||{}, acc=b.account||{};
   if(!r.ok)return {ok:false, say:authWhy(r,route)};
@@ -647,22 +679,30 @@ function authGone(b){
  try{ if(typeof STORE_BOUND!=='undefined'&&STORE_BOUND)STORE.set(PROFILE_SYNC_META_KEY,''); }catch(e){}
  var dropped=authPlanDrop();
  var lines=[], stopped=(typeof b.stopped==='number')?b.stopped:null;
- if(stopped===null)lines.push('The server did not say whether a paid plan was stopped. '
-  +'If you were paying, write to us under Help and we stop it.');
- else if(stopped>0)lines.push('The paid plan is cancelled today, so nothing more is charged.');
- if(b.billedElsewhere==='apple'||b.billedElsewhere==='google')
-  lines.push('A plan bought through '+(b.billedElsewhere==='apple'?'the App Store':'Google Play')
-   +' keeps charging until you cancel it there.');
- lines.push('Removed from our server: your email, your password, your sign in on every device, '
-  +'and everything it held under the account.');
- /* the server's own names for what it kept, each said once. A name this
-    build does not know is still said, in the server's word, because a thing
-    kept and not mentioned is the defect this receipt exists for */
- var said={first_visit:'Kept on our server: your first-visit record, linked by a random account ID. '
-   +'It includes the topic you picked and when you finished each step.',
-  activity_log:'Kept on our server: a dated list of when the account signed in and paid, '
-   +'linked by that random account ID and with no email.',
-  payment_history:'Kept by Stripe, the company that takes the card: its own record of your past payments.'};
+if(stopped===null)lines.push('The server did not say whether a paid plan was stopped. '
+ +'If you were paying, write to us under Help and we stop it.');
+else if(stopped>0)lines.push('The paid plan is cancelled today, so nothing more is charged.');
+if(b.billedElsewhere==='apple'||b.billedElsewhere==='google')
+ lines.push('A plan bought through '+(b.billedElsewhere==='apple'?'the App Store':'Google Play')
+  +' keeps charging until you cancel it there.');
+lines.push('Removed from our server: your email, your password, your sign in on every device, '
+ +'and everything it held under the account.');
+var retentionDate=null;
+if(typeof b.retentionUntil==='string'&&Number.isFinite(Date.parse(b.retentionUntil)))
+ retentionDate=new Date(Date.parse(b.retentionUntil)).toISOString().slice(0,10);
+var retentionNote=function(){
+ if(!retentionDate)return ' The server did not return a removal date; contact support to confirm when this record will be removed.';
+ if(b.retentionMarked===true)return ' It is scheduled for removal on '+retentionDate+'.';
+ return ' The target removal date is '+retentionDate+', but cleanup in the first-visit store is still pending. The server will retry, and removal may happen later.';
+};
+/* the server's own names for what it kept, each said once. The date and
+   pending state are part of the receipt, not hidden in a privacy page. */
+var said={first_visit:'Kept on our server: your first-visit record, linked by a random account ID. '
+  +'It may include the topic and starting ground you selected, step completion, and whether a first release or verification was recorded.'
+  +retentionNote(),
+ activity_log:'Kept on our server: a dated list of when the account signed in and paid, '
+  +'linked by that random account ID and with no email.'+retentionNote(),
+ payment_history:'Kept by Stripe, the company that takes the card: its own record of your past payments.'};
  (Array.isArray(b.kept)?b.kept:[]).forEach(function(k){
   if(typeof k!=='string')return;
   lines.push(said[k]||('Kept on our server: '+k.replace(/_/g,' ')+'.'));});
