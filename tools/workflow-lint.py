@@ -107,15 +107,16 @@ BROWSER = {
     'unpack':        ('node tests/unpack.js', 20),
     'recordlink':    ('node tests/recordlink.js', 20),
     'golden':        ('node tests/golden.js', 20),
+    'alpha-journey': ('ATUNED_ALPHA_QUIZ_ONLY=1 node tests/golden.js', 20),
     'valuefelt':     ('node tests/valuefelt.js', 20),
     'claims':        ('node tests/claims.js', 20),
     'discordfeedback': ('node tests/discordfeedback.js', 20),
 }
-# functional, design and monitor joined on 9 October after four green runs on main; a
-# later one line edit that moves any of them back to gates-report must fail here. voice
-# joined the same day, on the owner's P0: there is no fallback to a browser voice, and a
-# gate that holds that must hold back the deploy from its first run
-ALWAYS_REQUIRED = ('boot', 'collide', 'funnel', 'functional', 'design', 'monitor', 'voice')
+# P0 Alpha acceptance: move to the blocking browser matrix, and mutation-test each
+# one so a future refactor cannot silently return it to report-only.
+ALWAYS_REQUIRED = ('boot', 'collide', 'funnel', 'functional', 'design', 'monitor', 'voice',
+                   'storage', 'firstrelease', 'journey2', 'onboarding2', 'release-screen',
+                   'alpha-journey')
 GATE_JOBS = ['gates-fast', 'gates-browser']             # what gates-pass needs
 MATRIX_JOBS = ['gates-browser', 'gates-report']
 JOBS = ['gates-fast', 'gates-browser', 'gates-report', 'gates-pass',
@@ -2088,6 +2089,12 @@ BREAKS = [
     ('functional moved to gates-report', lambda d: _move(d, 'functional', 'gates-browser', 'gates-report')),
     ('design moved to gates-report', lambda d: _move(d, 'design', 'gates-browser', 'gates-report')),
     ('monitor moved to gates-report', lambda d: _move(d, 'monitor', 'gates-browser', 'gates-report')),
+    ('storage moved to gates-report', lambda d: _move(d, 'storage', 'gates-browser', 'gates-report')),
+    ('firstrelease moved to gates-report', lambda d: _move(d, 'firstrelease', 'gates-browser', 'gates-report')),
+    ('journey2 moved to gates-report', lambda d: _move(d, 'journey2', 'gates-browser', 'gates-report')),
+    ('onboarding2 moved to gates-report', lambda d: _move(d, 'onboarding2', 'gates-browser', 'gates-report')),
+    ('release-screen moved to gates-report', lambda d: _move(d, 'release-screen', 'gates-browser', 'gates-report')),
+    ('alpha-journey moved to gates-report', lambda d: _move(d, 'alpha-journey', 'gates-browser', 'gates-report')),
     ('a gate in both matrices', lambda d: _legs(d, 'gates-browser').append(dict(_legs(d, 'gates-report')[0]))),
     ('fail-fast left on', lambda d: _job(d, 'gates-browser')['strategy'].pop('fail-fast')),
     ('the report legs renamed', lambda d: _job(d, 'gates-report').__setitem__('name', 'report ${{ matrix.gate }}')),
