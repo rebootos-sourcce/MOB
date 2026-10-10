@@ -6605,10 +6605,14 @@ g('OG1 · the rerun puts the heavy lines back where they sit, round OG');
   ok(meterRerunOrder(again,[7,9],CH,RUN_MAX).join()===meterRerunOrder(p,[7,9],CH,RUN_MAX).join(),
    'so the rerun the imported record says is the rerun the original said');
   const conflict=JSON.parse(JSON.stringify(out)); conflict.name='same ID, different content';
-  const beforeConflict=profiles().length, beforeConflictExport=pExport();
-  ok(pImport(JSON.stringify(conflict))===null&&profiles().length===beforeConflict
-    &&pExport()===beforeConflictExport&&/same ID already exists with different content/.test(String(E.importError())),
-   'a conflicting same-ID import is refused without replacing or duplicating the local profile');
+  const beforeConflictList=JSON.stringify(profiles()), beforeConflictDisk=mem[E.PKEY];
+  const beforeConflictCurrent=E.current(), beforeConflictRecord=JSON.stringify(beforeConflictCurrent);
+  const conflictResult=pImport(JSON.stringify(conflict)), conflictError=String(E.importError());
+  ok(conflictResult===null&&/same ID already exists with different content/.test(conflictError),
+   'a conflicting same-ID payload is refused by name: '+conflictError);
+  ok(JSON.stringify(profiles())===beforeConflictList&&E.current()===beforeConflictCurrent
+    &&JSON.stringify(E.current())===beforeConflictRecord&&mem[E.PKEY]===beforeConflictDisk,
+   'refusing a conflicting same-ID payload leaves the list, active profile and durable store unchanged');
   const bad=JSON.parse(JSON.stringify(out)); bad.meter.heavy.push(K(7,'Llimit',44));
   const before=profiles().length;
   ok(pImport(JSON.stringify(bad))===null&&profiles().length===before,'a heavy mark on a line never opened refuses the whole import and pushes nothing');
