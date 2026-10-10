@@ -5361,6 +5361,20 @@ g('41 · the twenty one on every history row, and a record from before still loa
  ok(writes===1,'the silent storage drop had one write attempt, got '+writes);
  ok(rec.history.length===silentHistoryN,'a readback mismatch rolls the staged snapshot back');
  ok(mem['source.profiles']===savedText,'the no-op store leaves the prior durable record untouched');
+ /* If there was no prior durable profile key, a corrupt write must remove the
+    newly created key on rollback rather than replacing absence with an empty list. */
+ const freshMem={}; let removes=0;
+ bindStore(k=>freshMem[k]===undefined?null:freshMem[k],(k,v)=>{freshMem[k]=String(v);},
+   k=>{removes++;delete freshMem[k];});
+ writes=0;
+ bindStore(k=>freshMem[k]===undefined?null:freshMem[k],(k,v)=>{
+  writes++; freshMem[k]=String(v).slice(0,-1);
+ },k=>{removes++;delete freshMem[k];});
+ ok(pSaveSnap()===false,'a corrupt write with no previous profile is refused');
+ ok(writes===1&&removes===1,'rollback removes the newly created key, writes '+writes+', removes '+removes);
+ ok(freshMem['source.profiles']===undefined,'an absent durable key stays absent after rollback');
+ ok(rec.history.length===silentHistoryN,'the failed first write rolls back the staged snapshot');
+ bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
  /* A non-throwing adapter that writes truncated bytes is different from a
     no-op adapter: readback must fail and the previous durable record restored. */
  writes=0;
