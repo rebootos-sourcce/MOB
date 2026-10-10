@@ -500,9 +500,15 @@ function pPersist(){
  if(STORE_UNREAD&&!STORE_UNREAD.key){ SAVE_OK=false; SAVE_ERR='UnreadableStore'; return false; }
  /* the records the boundary would not read go back untouched, at the end, so
     a save never costs a person data this version happens not to understand. */
- var all=PROFILES.concat(STORE_KEPT);
- try{ STORE.set(PKEY,JSON.stringify(all)); SAVE_OK=true; SAVE_ERR=null; }
- catch(e){ SAVE_OK=false; SAVE_ERR=(e&&e.name)||'error'; }
+ var all=PROFILES.concat(STORE_KEPT), payload=JSON.stringify(all);
+ try{
+  STORE.set(PKEY,payload);
+  /* Storage APIs normally throw on a refused write, but a host adapter can
+     silently ignore one. A save is successful only when the exact serialized
+     record can be read back through the same boundary. */
+  if(STORE.get(PKEY)!==payload){ SAVE_OK=false; SAVE_ERR='ReadbackMismatch'; return false; }
+  SAVE_OK=true; SAVE_ERR=null;
+ }catch(e){ SAVE_OK=false; SAVE_ERR=(e&&e.name)||'error'; }
  return SAVE_OK; }
 function saveState(){ return {ok:SAVE_OK, err:SAVE_ERR}; }
 function pNew(name){ var p=blankProfile(name); PROFILES.push(p); CURP=p; pPersist(); profMark(p); return p; }
@@ -529,6 +535,30 @@ function pSave(){ if(!CURP)return false; saveProfile(CURP);
 function pSnap(){ if(!CURP)return false;
  if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
  CURP.history.push(snapshot(CURP)); return pPersist(); }
+/* COMMIT A RECORD AND ITS SNAPSHOT IN ONE STORE WRITE. A finished release
+   changes the working state and then snapshots it. Calling pSave followed
+   by pSnap wrote twice: the first write could land while the second failed,
+   leaving a release without its history row. Save the current engine state,
+   stage one snapshot, and write once. If storage refuses, remove the staged
+   row so a later retry cannot silently save a phantom duplicate. */
+function pSaveSnap(){
+ if(!CURP)return false;
+ var history=null, n=null;
+ try{
+  saveProfile(CURP);
+  if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
+  history=Array.isArray(CURP.history)?CURP.history:(CURP.history=[]);
+  n=history.length;
+  var row=snapshot(CURP);
+  history.push(row);
+  if(!pPersist()){ history.length=n; return false; }
+  return true;
+ }catch(e){
+  if(history&&n!==null)history.length=n;
+  SAVE_OK=false; SAVE_ERR=(e&&e.name)||'error';
+  return false;
+ }
+}
 function pExport(){ return JSON.stringify(CURP?saveProfile(CURP):null,null,1); }
 /* ============================================================
    THE BOUNDARY. Everything above this line trusts its input

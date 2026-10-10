@@ -1597,7 +1597,12 @@ g('18b \u00b7 undo');
     full functional run before this: 53.0 units of a reference case's charge in
     the person's own record, upstream of the release the guard watches. */
  /* two records, moved between through the boundary, because that is the only
-    route a headless host has to the pointer the app moves with loadP. */
+    route a headless host has to the pointer the app moves with loadP. The
+    preceding persistence regression deliberately leaves a no-op storage
+    adapter installed, so this scenario binds a real per-test store rather
+    than relying on a writer that discards data. */
+ const undoMem={};
+ E.bindStore(k=>undoMem[k]===undefined?null:undoMem[k],(k,v)=>{undoMem[k]=String(v);});
  const recA=E.pImport(JSON.stringify(E.blankProfile('history A')));
  ok(!!recA,'the harness can put a record in front of the engine');
  E.undoPush('a change on A');
@@ -5285,7 +5290,7 @@ g('41 · the twenty one on every history row, and a record from before still loa
    boundary refuses a bad law row by name; and a release pushes a law up the
    series while a lower answer pulls it down. */
 {
- const {bindStore,pImport,pSave,pSnap,pStore,storeRefused,loadProfile,lawSeries,
+ const {bindStore,pImport,pSave,pSnap,pSaveSnap,pStore,storeRefused,loadProfile,lawSeries,
         validateProfile,saveProfile,blankProfile,snapLaws,meterRun,meterKey,
         releaseWork,lawNow,LAW_WAS,current}=E;
  const mem={}; bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
@@ -5316,11 +5321,15 @@ g('41 · the twenty one on every history row, and a record from before still loa
  ok(os.n===0&&os.before===2&&os.of===2&&os.first===null&&os.dir===null,
   'and a series over it says both rows predate the record of each law, not that the law read nothing, before '+os.before);
 
- /* LOADED AND SNAPSHOT AS THE APP DOES IT, through pImport, pSave and pSnap,
-    which are the calls every surface makes. */
+ /* LOADED AND SNAPSHOT AS THE APP DOES IT. A release must persist its
+    profile update and history row in one store write, or neither may claim
+    the run is fully saved. */
  const rec=pImport(OLD);
  ok(rec&&current()===rec,'the older record opens as the current one');
- ok(pSave()&&pSnap(),'and it saves and takes a snapshot');
+ let writes=0;
+ bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{writes++;mem[k]=String(v);});
+ ok(typeof pSaveSnap==='function'&&pSaveSnap(),'the atomic release save succeeds');
+ ok(writes===1,'release and snapshot use one store write, got '+writes);
  let back=fromDisk('pold0001');
  ok(back&&back.history.length===3,'three rows on the disk after one snapshot, '+(back&&back.history.length));
  ok(back&&!('lawNow' in back.history[0])&&!('lawNow' in back.history[1]),
@@ -5334,6 +5343,25 @@ g('41 · the twenty one on every history row, and a record from before still loa
  ok(row&&row.lawNow.Unity===null&&row.lawNow.Courage===null,
   'and a law nobody answered is null, not the six it is seeded with');
  near(row?lawSum(row):-1,row?row.cq:0,0.06,'the row reconciles: its laws over 210 are its own cq');
+ /* A refused write must not leave a staged snapshot sitting in memory: a
+    later successful save would otherwise duplicate a run that never saved. */
+ const savedText=mem['source.profiles'], historyN=rec.history.length;
+ writes=0;
+ bindStore(k=>mem[k]===undefined?null:mem[k],()=>{writes++;throw new Error('QuotaExceededError');});
+ ok(pSaveSnap()===false,'an atomic release save reports a refused write');
+ ok(writes===1,'the refused atomic save made one write attempt, got '+writes);
+ ok(rec.history.length===historyN,'a failed atomic save removes its staged snapshot');
+ ok(mem['source.profiles']===savedText,'the failed write leaves the prior stored record unchanged');
+ /* A storage adapter that silently drops a write is still a failed save:
+    success requires reading the exact serialized record back. */
+ writes=0;
+ bindStore(k=>mem[k]===undefined?null:mem[k],()=>{writes++;});
+ const silentHistoryN=rec.history.length;
+ ok(pSaveSnap()===false,'a silent storage drop is refused by readback');
+ ok(writes===1,'the silent storage drop had one write attempt, got '+writes);
+ ok(rec.history.length===silentHistoryN,'a readback mismatch rolls the staged snapshot back');
+ ok(mem['source.profiles']===savedText,'the no-op store leaves the prior durable record untouched');
+ bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
  const one=lawSeries(back,'Patience');
  ok(one.n===1&&one.before===2&&one.last===7&&one.dir===null,
   'the series has one point and says so, before '+one.before+', points '+one.n);
