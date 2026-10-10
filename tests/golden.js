@@ -513,6 +513,7 @@ async function door(browser, SITE, cut, giftAt) {
       resolvers.forEach(resolve => resolve());
       const results = await Promise.all([first,second]);
       return {requests,concurrentRequests,ok:results.every(r=>r.ok),
+        reused:results.map(r=>r.reused),
         ids:results.map(r=>r.session&&r.session.id)};
     } finally {
       window.authCall = saved.authCall;
@@ -523,8 +524,9 @@ async function door(browser, SITE, cut, giftAt) {
     }
   });
   ok(startRace.requests===1 && startRace.concurrentRequests===1 && startRace.ok
-    && startRace.ids.length===2 && startRace.ids[0]===startRace.ids[1],
-    'concurrent session starts coalesce to one anonymous create, '+J(startRace));
+    && startRace.ids.length===2 && startRace.ids[0]===startRace.ids[1]
+    && startRace.reused[0]===false && startRace.reused[1]===true,
+    'concurrent session starts share one create and mark the follower reused, '+J(startRace));
 
   station(5, 'Q: the first release, from the Story page');
   await Q.tab(0);
