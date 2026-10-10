@@ -455,15 +455,65 @@ async function door(browser, SITE, cut, giftAt) {
   const accHd = await page.evaluate(() => { const h = document.querySelector('#settings .ac-hd'); return h ? h.innerText : ''; });
   ok(accHd.toLowerCase().indexOf(String(landed).toLowerCase()) >= 0 && accHd.indexOf(MAILQ) >= 0,
     'the account page names the reading open and the account it is signed in under, ' + J(accHd.replace(/\s+/g, ' ')));
-  /* THE SERVER'S SIDE. A record that arrives by link skips onboarding, and
-     onboarding is the only caller of authFunnelStart, so the server never
-     hears that this account came through the funnel. */
-  xf(Object.keys(wq.st.fun).length > 0, 'E1q funnel arrival', 'the server keeps a first visit session for a person who arrived from the quiz',
-    'nothing on our server says this account came through the quiz, so the funnel cannot be counted from quiz to account to payment');
-  /* the record itself stays in the browser, on the standing privacy ruling:
-     sync is dead code and must not be turned on (HANDOFF NEXT-SESSION) */
-  xf(wq.reqs('PUT', /^\/v1\/sync$/).length > 0, 'E19 record on the account', 'the reading is kept on the account, so another device that signs in has it',
-    'sign in on a phone and the quiz reading is not there; it lives only in the browser that opened the link (his privacy ruling, held on purpose until sync is designed)');
+  /* P0 acceptance: an accepted quiz import starts one anonymous journey session.
+     The record itself remains local. Only the random anonymous ID and later
+     completion checkpoints may cross the Worker boundary. */
+  const quizSessionCreates = wq.reqs('POST', /^\/v1\/funnel\/session$/);
+  ok(Object.keys(wq.st.fun).length === 1 && quizSessionCreates.length === 1,
+    'E1q funnel arrival: the quiz-imported record creates exactly one first-visit session');
+  ok(quizSessionCreates.every(q => q.body && Object.keys(q.body).sort().join(',') === 'anonymousId'),
+    'E1q privacy: quiz arrival sends only the random journey identifier, never story or name');
+  ok(quizSessionCreates.every(q => typeof q.body.anonymousId === 'string' && q.body.anonymousId.length > 0),
+    'E1q contract: session start includes a nonempty anonymous journey identifier');
+  const profileEndpoints = wq.st.reqs.filter(q => /(?:^|\/)(?:sync|profile)(?:\/|$)/i.test(q.path));
+  const storySent = wq.st.reqs.some(q => String(q.raw || '').includes(STORY));
+  ok(profileEndpoints.length === 0,
+    'E19 privacy: no profile or sync endpoint receives the imported record');
+  ok(!storySent,
+    'E1q privacy: raw story text never crosses the Worker boundary');
+
+  /* Slow-response race: two valid entrypoints must share one create request. */
+  const startRace = await page.evaluate(async () => {
+    const saved = {
+      authCall: window.authCall,
+      funnelSession: window.funnelSession,
+      funnelKeep: window.funnelKeep,
+      authFunnelJoin: window.authFunnelJoin,
+      starting: window.FUNNEL_STARTING,
+    };
+    let requests = 0; const resolvers = [];
+    try {
+      window.FUNNEL_STARTING = null;
+      window.funnelSession = () => null;
+      window.funnelKeep = () => true;
+      window.authFunnelJoin = () => Promise.resolve({ok:false,asked:false});
+      window.authCall = (method, path, body) => {
+        requests++;
+        return new Promise(resolve => {
+          resolvers.push(() => resolve({
+            ok:true, status:201,
+            body:{session:{id:'race-session-'+requests,anonymousId:body.anonymousId},credential:'test-credential'}
+          }));
+        });
+      };
+      const first = window.authFunnelStart();
+      const second = window.authFunnelStart();
+      const concurrentRequests = requests;
+      resolvers.forEach(resolve => resolve());
+      const results = await Promise.all([first,second]);
+      return {requests,concurrentRequests,ok:results.every(r=>r.ok),
+        ids:results.map(r=>r.session&&r.session.id)};
+    } finally {
+      window.authCall = saved.authCall;
+      window.funnelSession = saved.funnelSession;
+      window.funnelKeep = saved.funnelKeep;
+      window.authFunnelJoin = saved.authFunnelJoin;
+      window.FUNNEL_STARTING = saved.starting;
+    }
+  });
+  ok(startRace.requests===1 && startRace.concurrentRequests===1 && startRace.ok
+    && startRace.ids.length===2 && startRace.ids[0]===startRace.ids[1],
+    'concurrent session starts coalesce to one anonymous create, '+J(startRace));
 
   station(5, 'Q: the first release, from the Story page');
   await Q.tab(0);
@@ -529,6 +579,34 @@ async function door(browser, SITE, cut, giftAt) {
   ok(num(top) === round, 'the Field\'s top bar prints it, ' + J(top) + ' against ' + round);
   ok(num(key) === round, 'the Field\'s left key prints it, ' + J(key) + ' against ' + round);
   ok(num(sum1) === round, 'Summary prints it, ' + J(sum1) + ' against ' + round);
+
+  /* The Alpha gate stops after the accepted quiz-to-first-release walk.
+     Billing, cross-device profile sync, and downloaded-file account creation
+     remain outside this required slice; the complete golden walk still runs
+     separately as a report-only integration check. */
+  if (process.env.ATUNED_ALPHA_QUIZ_ONLY === '1') {
+    const bodiesAlpha = wq.st.reqs.map(q => q.raw + ' ' + q.path).join('\n');
+    ok(bodiesAlpha.indexOf('tight in my chest') < 0,
+      'Alpha privacy: the imported story never crosses the Worker boundary');
+    ok(wq.reqs('GET', /^\/v1\/sync$/).length === 0 && wq.reqs('PUT', /^\/v1\/sync$/).length === 0,
+      'Alpha privacy: profile sync remains disabled');
+    ok(cut.length === 0, 'Alpha walk reached only the local fake Worker: ' + J(cut.slice(0, 3)));
+    ok(site.strays.length === 0, 'Alpha pages requested only shipped same-origin assets: ' + J(site.strays.slice(0, 3)));
+    await Q.ctx.close();
+    await browser.close();
+    site.srv.close();
+    fs.rmSync(tmp, { recursive: true, force: true });
+    console.log('\n=== the Alpha quiz-door stations, at ' + W + ' by ' + H + ', ' + Math.round((Date.now() - T0) / 1000) + 's ===');
+    ST.forEach(s => console.log('  ' + String(s.n).padEnd(3) + (s.fail || s.red ? 'CUT ' : 'PASS') + '  ' + s.name
+      + '  (' + s.pass + ' ok' + (s.fail ? ', ' + s.fail + ' failed' : '') + (s.red ? ', ' + s.red + ' expected red' : '') + ')'
+      + (s.sees.length ? '\n        the person sees: ' + s.sees.join('; ') : '')));
+    console.log('\n=== expected red, not wired yet ===');
+    if (!XF.length) console.log('  none');
+    XF.forEach(x => console.log('  ' + x.edge + ' (station ' + x.st + '): ' + x.m
+      + '\n        the person sees: ' + x.sees));
+    console.log('\n===== ' + P + ' passed, ' + F + ' failed, ' + R + ' expected red =====');
+    process.exit(F ? 1 : 0);
+  }
 
   station(7, 'Q: pay, and the return from Stripe reads the plan back');
   const accQ = Object.values(wq.st.acc)[0] || {};
