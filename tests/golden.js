@@ -236,7 +236,14 @@ function fakeWorker(origin, giftAt) {
       if (!body || typeof body.text !== 'string' || !body.text.trim()) return err(400, 'a line is required');
       return { status: 200, headers: Object.assign({ 'content-type': 'audio/wav' }, cors), body: silentWav() };
     }
-    if (method === 'DELETE' && p === '/v1/me') { st.deleted.push(me.id); return json(200, { deleted: true, at: now() }); }
+    if (method === 'DELETE' && p === '/v1/me') {
+      st.deleted.push(me.id);
+      delete st.tok[m[1]];
+      delete st.byMail[me.email];
+      delete st.acc[me.id];
+      delete st.ent[me.id];
+      return json(200, { deleted: true, at: now(), stopped: 0, billedElsewhere: null, kept: ['first_visit', 'activity_log'] });
+    }
     return err(404, 'not found');
   }
   /* what Stripe's webhook would have told the Worker */
@@ -585,11 +592,54 @@ async function door(browser, SITE, cut, giftAt) {
   ok(wq.reqs('POST', /^\/v1\/auth\/signout$/).length === 1, 'and the server was told');
   await Q.reload();
   ok(await page.evaluate(() => !!(typeof LOGIN !== 'undefined' && LOGIN.open)), 'after a reload the door stands again: nobody is signed in here');
-  await Q.click('#loginb-skip');
-  /* the server side of quitting: the Worker serves DELETE /v1/me and nothing in the app calls it */
-  xf(wq.reqs('DELETE', /^\/v1\/me$/).length > 0 || await page.evaluate(() => /delete (my|the|this) account/i.test(document.body.innerText)),
-    'E20 account delete', 'the app offers to delete the account on the server (DELETE /v1/me has no caller)',
-    'they can cancel and delete the record here, but their sign in and first visit marks stay on our server until they write to us');
+  /* E20, now a positive end-to-end assertion. Sign back into the same account,
+     open its real Account section, and take the server-delete path. The fake
+     Worker removes the account and session like the route contract; first-visit
+     and dated audit facts remain by design and are named in the receipt. */
+  await page.fill('#loginmail', accQ.email);
+  await page.fill('#loginpass', PW);
+  ok(await Q.click('#loginb-go'), 'after sign out, the account door offers Log in');
+  const signedBack = await page.waitForFunction(email =>
+    typeof LOGIN !== 'undefined' && !LOGIN.open && typeof authSession === 'function'
+      && !!authSession() && authSession().email === email,
+    accQ.email, { timeout: 8000 }).then(() => true, () => false);
+  /* Read the actual record after the log-in submit rather than trusting the click. */
+  const nowSignedIn = await page.evaluate(() => {
+    const s = typeof authSession === 'function' ? authSession() : null;
+    return { email: s && s.email, id: s && s.accountId };
+  });
+  ok(signedBack && nowSignedIn.email === accQ.email && nowSignedIn.id === accQ.id,
+    'the same account is signed back in before deletion, ' + J(nowSignedIn));
+  await Q.click('#profbtn'); await Q.click('[data-pms="account"]');
+  await page.waitForTimeout(250);
+  ok(!!await page.$('#acdelacc'), 'the signed-in Account section exposes Delete this account');
+  const deleteCountBefore = wq.reqs('DELETE', /^\/v1\/me$/).length;
+  ok(await Q.click('#acdelacc'), 'Delete this account is there to press');
+  const gone = await Q.waitSaid(/^ok\|The account is deleted\./, 6000);
+  const deleteRequests = wq.reqs('DELETE', /^\/v1\/me$/);
+  const deleteReq = deleteRequests[deleteRequests.length - 1];
+  ok(!!gone, 'the status confirms the server account delete, ' + J(gone));
+  ok(deleteRequests.length === deleteCountBefore + 1 && deleteReq.me === accQ.id
+      && deleteReq.auth && deleteReq.raw === '',
+    'the browser sent one authenticated DELETE /v1/me with no request body for the right account');
+  ok(wq.st.deleted.includes(accQ.id) && !wq.st.acc[accQ.id] && !wq.st.byMail[accQ.email]
+      && !Object.values(wq.st.tok).includes(accQ.id),
+    'the server mock removed the account, email lookup and sign-in token');
+  const deleteLocal = await page.evaluate(() => ({
+    session: localStorage.getItem('source.session') || '',
+    funnel: localStorage.getItem('funnel.session') || '',
+    signedIn: !!(typeof authSession === 'function' && authSession()),
+    rec: typeof CURP !== 'undefined' && CURP ? CURP.id : null,
+    receipt: (document.getElementById('acgone') || {}).innerText || ''
+  }));
+  ok(!deleteLocal.session && !deleteLocal.funnel && !deleteLocal.signedIn,
+    'account deletion clears this browser sign-in and first-visit credential');
+  ok(/first-visit record, linked by a random account ID/i.test(deleteLocal.receipt)
+      && /dated list of when the account signed in and paid/i.test(deleteLocal.receipt)
+      && /linked by that random account ID and with no email/i.test(deleteLocal.receipt),
+    'the receipt names the first-visit record, its random account-ID link, and the dated audit data retained on the server');
+  ok(/This record is still on this device/i.test(deleteLocal.receipt) && deleteLocal.rec,
+    'the receipt is clear that the local record stays and remains available to delete separately');
   sv = await Q.saved();
   const goneName = sv.rec && sv.rec.name, goneId = sv.rec && sv.rec.id;
   await Q.click('#profbtn'); await Q.click('[data-pms="privacy"]');

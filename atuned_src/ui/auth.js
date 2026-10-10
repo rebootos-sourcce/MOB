@@ -658,10 +658,10 @@ function authGone(b){
  /* the server's own names for what it kept, each said once. A name this
     build does not know is still said, in the server's word, because a thing
     kept and not mentioned is the defect this receipt exists for */
- var said={first_visit:'Kept on our server: what your first visit sent, which is a random code, '
-   +'the topic you picked and when you finished each step.',
+ var said={first_visit:'Kept on our server: your first-visit record, linked by a random account ID. '
+   +'It includes the topic you picked and when you finished each step.',
   activity_log:'Kept on our server: a dated list of when the account signed in and paid, '
-   +'under a random number and with no email.',
+   +'linked by that random account ID and with no email.',
   payment_history:'Kept by Stripe, the company that takes the card: its own record of your past payments.'};
  (Array.isArray(b.kept)?b.kept:[]).forEach(function(k){
   if(typeof k!=='string')return;
