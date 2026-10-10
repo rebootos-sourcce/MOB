@@ -224,7 +224,7 @@ const stub = http.createServer((req, res) => {
     ok(q.kept, tag + 'and the record itself stays on this device, the same profile, still open');
     ok(q.plan === 'free' && q.rec === 'free', tag + 'the paid plan on the record drops to free, because the account that paid is gone, got ' + q.rec);
     ok(/paid plan is cancelled/i.test(q.gone), tag + 'the receipt says the paid plan is cancelled, got ' + q.gone.slice(0, 200));
-    ok(/first visit/.test(q.gone) && /random code/.test(q.gone), tag + 'it says what the first visit sent is kept');
+    ok(/first-visit record/.test(q.gone) && /linked by a random account ID/.test(q.gone), tag + 'it says the first-visit record remains linked to a random account ID');
     ok(/no email/.test(q.gone), tag + 'it says the dated log is kept, under no email');
     ok(/Stripe/.test(q.gone) && /past payments/.test(q.gone), tag + 'it says Stripe keeps its record of past payments, and who Stripe is');
     ok(/still on this device/.test(q.gone) && /Profiles/.test(q.gone), tag + 'and that the record is still on this device, with where to delete it');
