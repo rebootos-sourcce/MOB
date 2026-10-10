@@ -194,6 +194,8 @@ jobs:
           - { gate: design, timeout: 20, command: node tests/design.js }
           - { gate: monitor, timeout: 20, command: node tools/monitor.js }
           - { gate: voice, timeout: 20, command: node tests/voice.js }
+          # Alpha acceptance gates: durability and the accepted quiz/release path.
+          - { gate: alpha-journey, timeout: 20, command: ATUNED_ALPHA_QUIZ_ONLY=1 node tests/golden.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -223,14 +225,13 @@ jobs:
   # REPORT ONLY. These run on every pull request and push, and nothing that
   # publishes waits for them: gates-pass does not need this job. A red leg shows
   # red in the run's job list and as a warning from gates-report-summary, below.
-  # These are the tests that guard the alpha work (the privacy words, the
-  # password reset, the guest's record, the first release, the journey, the
-  # sniffer's page, the practitioner page, the unpack rule) and that no CI
-  # job ran before 9 October. Each moves up into gates-browser by a one line
-  # change after three consecutive green runs here. functional, design and
-  # monitor were in this job until they had them: green on f28aa36, 49e0d13,
-  # d27b3e7 and b2b7a03, and they moved up on 9 October. The same steps as
-  # gates-browser, so a line moves between them as it is.
+  # P0 Alpha acceptance coverage (save durability, first release, journey,
+  # onboarding verification, release failure handling, and the quiz-to-first-
+  # release walk) lives in gates-browser. Keep the full golden integration walk
+  # here because it also covers deferred cross-device sync and file-copy cases;
+  # expected-red findings must not be allowed to determine Alpha readiness.
+  # Other report-only checks are promoted only after a separate decision and
+  # repeatable green evidence.
   gates-report:
     if: inputs.rollback_ref == ''
     name: gates-report (${{ matrix.gate }})
