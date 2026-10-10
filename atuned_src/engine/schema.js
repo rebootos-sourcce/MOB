@@ -500,9 +500,15 @@ function pPersist(){
  if(STORE_UNREAD&&!STORE_UNREAD.key){ SAVE_OK=false; SAVE_ERR='UnreadableStore'; return false; }
  /* the records the boundary would not read go back untouched, at the end, so
     a save never costs a person data this version happens not to understand. */
- var all=PROFILES.concat(STORE_KEPT);
- try{ STORE.set(PKEY,JSON.stringify(all)); SAVE_OK=true; SAVE_ERR=null; }
- catch(e){ SAVE_OK=false; SAVE_ERR=(e&&e.name)||'error'; }
+ var all=PROFILES.concat(STORE_KEPT), payload=JSON.stringify(all);
+ try{
+  STORE.set(PKEY,payload);
+  /* Storage APIs normally throw on a refused write, but a host adapter can
+     silently ignore one. A save is successful only when the exact serialized
+     record can be read back through the same boundary. */
+  if(STORE.get(PKEY)!==payload){ SAVE_OK=false; SAVE_ERR='ReadbackMismatch'; return false; }
+  SAVE_OK=true; SAVE_ERR=null;
+ }catch(e){ SAVE_OK=false; SAVE_ERR=(e&&e.name)||'error'; }
  return SAVE_OK; }
 function saveState(){ return {ok:SAVE_OK, err:SAVE_ERR}; }
 function pNew(name){ var p=blankProfile(name); PROFILES.push(p); CURP=p; pPersist(); profMark(p); return p; }
