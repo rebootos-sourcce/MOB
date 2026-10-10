@@ -1597,7 +1597,12 @@ g('18b \u00b7 undo');
     full functional run before this: 53.0 units of a reference case's charge in
     the person's own record, upstream of the release the guard watches. */
  /* two records, moved between through the boundary, because that is the only
-    route a headless host has to the pointer the app moves with loadP. */
+    route a headless host has to the pointer the app moves with loadP. The
+    preceding persistence regression deliberately leaves a no-op storage
+    adapter installed, so this scenario binds a real per-test store rather
+    than relying on a writer that discards data. */
+ const undoMem={};
+ E.bindStore(k=>undoMem[k]===undefined?null:undoMem[k],(k,v)=>{undoMem[k]=String(v);});
  const recA=E.pImport(JSON.stringify(E.blankProfile('history A')));
  ok(!!recA,'the harness can put a record in front of the engine');
  E.undoPush('a change on A');
