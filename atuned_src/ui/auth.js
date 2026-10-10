@@ -110,20 +110,36 @@ function funnelUuid(){
  try{ if(typeof crypto!=='undefined'&&crypto.randomUUID)return crypto.randomUUID(); }catch(e){}
  return 'anon_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2);
 }
+/* Read back the session after attempting its account attachment. The server
+   remains the authority; the browser keeps only the public row and the private
+   credential returned when this browser created the anonymous session. */
+function authFunnelStartFinish(result){
+ return Promise.resolve().then(function(){return authFunnelJoin();})
+  .catch(function(){return {ok:false,status:0};})
+  .then(function(join){
+   result.joined=!!(join&&join.ok);
+   return authFunnelRead().then(function(r){
+    result.readBack=!!(r&&r.ok&&r.body&&r.body.session);
+    result.readStatus=(r&&r.status)||0;
+    if(result.readBack)result.session=r.body.session;
+    return result;
+   }).catch(function(){result.readBack=false;result.readStatus=0;return result;});
+  });
+}
 function authFunnelStart(){
  var existing=funnelSession();
- if(existing){ authFunnelJoin(); return Promise.resolve({ok:true,session:existing.session||null,reused:true}); }
+ if(existing)return authFunnelStartFinish({ok:true,session:existing.session||null,reused:true});
  var anonymousId=funnelUuid();
  return authCall('POST','/v1/funnel/session',{anonymousId:anonymousId},null,false).then(function(r){
-  /* The Worker intentionally creates the anonymous id. Keep the caller's id
-     out of the request body so the browser cannot claim somebody else's id. */
+  /* The Worker creates the session id. Only a random browser id crosses this
+     boundary; the record, story, name and patterns stay in this browser. */
   if(!r.ok)return {ok:false,status:r.status,body:r.body};
   var b=r.body||{}, s=b.session;
   if(!s||typeof s.id!=='string'||typeof b.credential!=='string')return {ok:false,status:r.status,body:null};
   var state={session:s,id:s.id,anonymousId:s.anonymousId||anonymousId,credential:b.credential};
   var kept=funnelKeep(state);
-  authFunnelJoin();
-  return {ok:true,session:s,reused:false,kept:kept};});
+  return authFunnelStartFinish({ok:true,session:s,reused:false,kept:kept});
+ });
 }
 /* JOINED TO THE ACCOUNT ONCE BOTH EXIST, WHICHEVER CAME FIRST. The join was
    tried at sign in and nowhere else, and the first visit's session is made by
@@ -146,10 +162,22 @@ function authFunnelJoin(){
 }
 function authFunnelRead(){
  var f=funnelSession(); if(!f)return Promise.resolve({ok:false,status:0,body:null});
- var s=authSession();
- var token=s&&s.token, path='/v1/funnel/session/'+encodeURIComponent(f.id);
- if(token)return authCall('GET',path,null,token);
- return authCall('GET',path,null,null,false);
+ var s=authSession(), token=s&&s.token, path='/v1/funnel/session/'+encodeURIComponent(f.id);
+ var extra=f.credential?{'x-funnel-credential':f.credential}:null;
+ var remember=function(r){
+  if(r&&r.ok&&r.body&&r.body.session){
+   var session=r.body.session;
+   funnelKeep(Object.assign({},f,{session:session,userId:session.userId||f.userId||null}));
+  }
+  return r;
+ };
+ /* An account token is preferred once attached. If this first visit is still
+    anonymous, the Worker correctly refuses the account read; retry only with
+    this browser's credential, never with an untrusted session id alone. */
+ return authCall('GET',path,null,token||null,false,undefined,extra).then(function(r){
+  if((r&&r.ok)||!token||!f.credential)return remember(r);
+  return authCall('GET',path,null,null,false,undefined,extra).then(remember);
+ });
 }
 function authFunnelCheckpoint(patch){
  var f=funnelSession(), s=authSession(), extra=f&&f.credential?{'x-funnel-credential':f.credential}:null;
