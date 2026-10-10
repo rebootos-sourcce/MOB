@@ -485,6 +485,10 @@ var AUTH_UNKEPT=' Storage is blocked in this browser, so the sign in ends on rel
 function authEnter(route,mail,pw){
  var bad=authFieldsWhy(mail,pw,route==='signup');
  if(bad)return Promise.resolve({ok:false, say:bad});
+ /* A file copy is deliberately offline. Do not make a request from origin
+    null and then tell the person that the server or their connection failed. */
+ try{if(typeof location!=='undefined'&&location.protocol==='file:')
+  return Promise.resolve({ok:false,say:'This downloaded copy runs offline. Sign in requires the hosted app. No account request was sent.'});}catch(e){}
  return authCall('POST','/v1/auth/'+route,{email:mail, password:pw}).then(function(r){
   var b=r.body||{}, acc=b.account||{};
   if(!r.ok)return {ok:false, say:authWhy(r,route)};
