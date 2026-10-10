@@ -1395,7 +1395,7 @@ function relCoolDown(){
     this line, so a refusal is heard as the refusal and not as a finish. The
     room argument lets it through the release's own hold. */
  if(typeof sfx==='function')sfx('done',true);
- if(RUN.halted&&reach<planN&&typeof status==='function')
+ if(RUN.saved&&RUN.halted&&reach<planN&&typeof status==='function')
   status(RUN.rerun?'Rerun ended early. A rerun costs nothing.'
    :'Release ended early. You were charged only for the lines you reached.');
  syncCh();relRender();render();
