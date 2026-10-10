@@ -1556,7 +1556,8 @@ function loop(ts){
 try{ localStorage.getItem(PKEY);
  bindStore(function(k){return localStorage.getItem(k);},
            function(k,v){localStorage.setItem(k,v);
-            if(k===PKEY&&typeof keepWrote==='function'){ try{ keepWrote(); }catch(e){} }}); }catch(e){}
+            if(k===PKEY&&typeof keepWrote==='function'){ try{ keepWrote(); }catch(e){} }},
+           function(k){localStorage.removeItem(k);}); }catch(e){}
 /* THE PAYWALL SEAM, round NW, bound the same way bindStore is just above: the host hands the
    UI one function and the UI stays ignorant of what is on the other side of it. planOpen in
    ui/panels.js already calls PLAN_HOST(what,tier) and already says "Billing is not connected
