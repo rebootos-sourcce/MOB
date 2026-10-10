@@ -1851,6 +1851,15 @@ function meterFirst(p,key,label,at){
 function profMark(p){ try{ if(p&&p.id)devSet('open',p.id); }catch(e){} }
 
 var IMPORT_ERR=null;
+/* Stable comparison is used only for identity collisions at the import
+   boundary. Key order in pasted JSON is not semantic, but different field
+   values under the same profile ID must never replace the local record. */
+function importStable(v){
+ if(Array.isArray(v))return '['+v.map(importStable).join(',')+']';
+ if(v&&typeof v==='object')return '{'+Object.keys(v).filter(function(k){return v[k]!==undefined;}).sort()
+  .map(function(k){return JSON.stringify(k)+':'+importStable(v[k]);}).join(',')+'}';
+ return JSON.stringify(v);
+}
 function pImport(txt){
  IMPORT_ERR=null;
  var o; try{ o=JSON.parse(txt); }catch(e){ IMPORT_ERR=['not valid JSON']; return null; }
@@ -1865,6 +1874,21 @@ function pImport(txt){
     place that sets it, and the next sign in reopens the tour on a person
     who already answered it, outside this app, on the funnel. */
  v.profile.ui.onboarded=true;
+ /* Imports are idempotent by profile ID only when the complete normalized
+    profile matches. A conflicting file reusing an ID is refused before any
+    engine state or stored profile can be replaced. */
+ var existing=null;
+ for(var i=0;i<PROFILES.length;i++)if(PROFILES[i]&&PROFILES[i].id===v.profile.id){existing=PROFILES[i];break;}
+ if(existing){
+  if(importStable(saveProfile(existing))!==importStable(saveProfile(v.profile))){
+   IMPORT_ERR=['a profile with this ID already exists with different content']; return null;
+  }
+  var oldProfiles=PROFILES.slice(), oldCurrent=CURP;
+  try{ loadProfile(existing); }
+  catch(e){ PROFILES=oldProfiles; CURP=oldCurrent; loadProfile(oldCurrent||blankProfile('unnamed'));
+   IMPORT_ERR=['could not load existing profile: '+((e&&e.message)||'error')]; return null; }
+  CURP=existing; profMark(existing); return existing;
+ }
  var keepP=PROFILES.slice(), keepC=CURP;
  /* with no current profile there is nothing to restore to, so the rollback
     loads a blank rather than leaving the engine holding the rejected one. */
