@@ -379,7 +379,7 @@ var PROFILES=[], CURP=null;
 var STORE={get:function(){return null;}, set:function(){}}, STORE_BOUND=false;
 /* a host binds its own. exported, because module.exports captures the value of
    STORE and not the binding, so an outside caller cannot assign to it. */
-function bindStore(get,set){ STORE={get:get,set:set}; STORE_BOUND=true; return STORE; }
+function bindStore(get,set,remove){ STORE={get:get,set:set,remove:remove}; STORE_BOUND=true; return STORE; }
 /* A DEVICE SETTING IS THE BROWSER'S, NOT THE PERSON'S RECORD.
 
    The sound switch was written onto the profile with uiSet, which saves the
@@ -510,6 +510,14 @@ function pPersist(){
  function restorePrior(){
   try{
    var current=STORE.get(PKEY);
+   if(prior===null||prior===undefined){
+    if(current===null||current===undefined)return true;
+    if(typeof STORE.remove!=='function'){ SAVE_ERR='RollbackUnavailable'; return false; }
+    STORE.remove(PKEY);
+    current=STORE.get(PKEY);
+    if(current!==null&&current!==undefined){ SAVE_ERR='RollbackMismatch'; return false; }
+    return true;
+   }
    if(current===prior)return true;
    STORE.set(PKEY,restoreValue);
    if(STORE.get(PKEY)!==restoreValue){ SAVE_ERR='RollbackMismatch'; return false; }
