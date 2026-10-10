@@ -1347,10 +1347,19 @@ function relCoolDown(){
     meter, the lines and the field back. Said here, in the words relAnswer
     gives the answer on the same card, because the run did happen and is on
     the card, and it is not on the record. */
- RUN.saved=true;
- if(CURP){RUN.saved=pSave();pSnap();}
+ RUN.saved=true; RUN.snapshotSaved=true;
+ if(CURP){
+  /* Either complete profile write can land the release: pSnap persists the
+     same profile after adding history. Keep the release and snapshot results
+     separate so a failed second write does not hide a successful first one. */
+  var releaseSaved=pSave(), snapshotSaved=pSnap();
+  RUN.saved=!!(releaseSaved||snapshotSaved);
+  RUN.snapshotSaved=!!snapshotSaved;
+ }
  if(!RUN.saved&&typeof status==='function')
   status('This browser would not save. The release is on this card and not on your record, so a reload loses it.','fail');
+ else if(RUN.saved&&!RUN.snapshotSaved&&typeof status==='function')
+  status('The release was saved, but its history snapshot was not. This run may be missing from history after reload.','fail');
  if(RUN.first&&!RUN.rerun&&RUN.queue.length&&typeof authFunnelCheckpoint==='function')
   authFunnelCheckpoint({firstReleaseId:RUN.id});
  /* A RUN THAT REACHED ITS END COUNTS AS THE DAY'S RITUAL, round KG, when a
