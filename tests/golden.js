@@ -634,9 +634,10 @@ async function door(browser, SITE, cut, giftAt) {
   }));
   ok(!deleteLocal.session && !deleteLocal.funnel && !deleteLocal.signedIn,
     'account deletion clears this browser sign-in and first-visit credential');
-  ok(/what your first visit sent/i.test(deleteLocal.receipt)
-      && /dated list of when the account signed in and paid/i.test(deleteLocal.receipt),
-    'the receipt names first-visit and dated audit data retained on the server');
+  ok(/first-visit record, linked by a random account ID/i.test(deleteLocal.receipt)
+      && /dated list of when the account signed in and paid/i.test(deleteLocal.receipt)
+      && /linked by that random account ID and with no email/i.test(deleteLocal.receipt),
+    'the receipt names the first-visit record, its random account-ID link, and the dated audit data retained on the server');
   ok(/This record is still on this device/i.test(deleteLocal.receipt) && deleteLocal.rec,
     'the receipt is clear that the local record stays and remains available to delete separately');
   sv = await Q.saved();
