@@ -455,15 +455,20 @@ async function door(browser, SITE, cut, giftAt) {
   const accHd = await page.evaluate(() => { const h = document.querySelector('#settings .ac-hd'); return h ? h.innerText : ''; });
   ok(accHd.toLowerCase().indexOf(String(landed).toLowerCase()) >= 0 && accHd.indexOf(MAILQ) >= 0,
     'the account page names the reading open and the account it is signed in under, ' + J(accHd.replace(/\s+/g, ' ')));
-  /* THE SERVER'S SIDE. A record that arrives by link skips onboarding, and
-     onboarding is the only caller of authFunnelStart, so the server never
-     hears that this account came through the funnel. */
-  xf(Object.keys(wq.st.fun).length > 0, 'E1q funnel arrival', 'the server keeps a first visit session for a person who arrived from the quiz',
-    'nothing on our server says this account came through the quiz, so the funnel cannot be counted from quiz to account to payment');
-  /* the record itself stays in the browser, on the standing privacy ruling:
-     sync is dead code and must not be turned on (HANDOFF NEXT-SESSION) */
-  xf(wq.reqs('PUT', /^\/v1\/sync$/).length > 0, 'E19 record on the account', 'the reading is kept on the account, so another device that signs in has it',
-    'sign in on a phone and the quiz reading is not there; it lives only in the browser that opened the link (his privacy ruling, held on purpose until sync is designed)');
+  /* P0 acceptance: an accepted quiz import starts one anonymous journey session.
+     The record itself remains local. Only the random anonymous ID and later
+     completion checkpoints may cross the Worker boundary. */
+  const quizSessionCreates = wq.reqs('POST', /^\/v1\/funnel\/session$/);
+  ok(Object.keys(wq.st.fun).length === 1 && quizSessionCreates.length === 1,
+    'E1q funnel arrival: the quiz-imported record creates exactly one first-visit session');
+  ok(quizSessionCreates.every(q => q.body && Object.keys(q.body).sort().join(',') === 'anonymousId'),
+    'E1q privacy: quiz arrival sends only the random journey identifier, never story or name');
+  const profileEndpoints = wq.st.reqs.filter(q => /(?:^|\/)(?:sync|profile)(?:\/|$)/i.test(q.path));
+  const storySent = wq.st.reqs.some(q => String(q.raw || '').includes(STORY));
+  ok(profileEndpoints.length === 0,
+    'E19 privacy: no profile or sync endpoint receives the imported record');
+  ok(!storySent,
+    'E1q privacy: raw story text never crosses the Worker boundary');
 
   station(5, 'Q: the first release, from the Story page');
   await Q.tab(0);
