@@ -530,6 +530,34 @@ async function door(browser, SITE, cut, giftAt) {
   ok(num(key) === round, 'the Field\'s left key prints it, ' + J(key) + ' against ' + round);
   ok(num(sum1) === round, 'Summary prints it, ' + J(sum1) + ' against ' + round);
 
+  /* The Alpha gate stops after the accepted quiz-to-first-release walk.
+     Billing, cross-device profile sync, and downloaded-file account creation
+     remain outside this required slice; the complete golden walk still runs
+     separately as a report-only integration check. */
+  if (process.env.ATUNED_ALPHA_QUIZ_ONLY === '1') {
+    const bodiesAlpha = wq.st.reqs.map(q => q.raw + ' ' + q.path).join('\n');
+    ok(bodiesAlpha.indexOf('tight in my chest') < 0,
+      'Alpha privacy: the imported story never crosses the Worker boundary');
+    ok(wq.reqs('GET', /^\/v1\/sync$/).length === 0 && wq.reqs('PUT', /^\/v1\/sync$/).length === 0,
+      'Alpha privacy: profile sync remains disabled');
+    ok(cut.length === 0, 'Alpha walk reached only the local fake Worker: ' + J(cut.slice(0, 3)));
+    ok(site.strays.length === 0, 'Alpha pages requested only shipped same-origin assets: ' + J(site.strays.slice(0, 3)));
+    await Q.ctx.close();
+    await browser.close();
+    site.srv.close();
+    fs.rmSync(tmp, { recursive: true, force: true });
+    console.log('\n=== the Alpha quiz-door stations, at ' + W + ' by ' + H + ', ' + Math.round((Date.now() - T0) / 1000) + 's ===');
+    ST.forEach(s => console.log('  ' + String(s.n).padEnd(3) + (s.fail || s.red ? 'CUT ' : 'PASS') + '  ' + s.name
+      + '  (' + s.pass + ' ok' + (s.fail ? ', ' + s.fail + ' failed' : '') + (s.red ? ', ' + s.red + ' expected red' : '') + ')'
+      + (s.sees.length ? '\n        the person sees: ' + s.sees.join('; ') : '')));
+    console.log('\n=== expected red, not wired yet ===');
+    if (!XF.length) console.log('  none');
+    XF.forEach(x => console.log('  ' + x.edge + ' (station ' + x.st + '): ' + x.m
+      + '\n        the person sees: ' + x.sees));
+    console.log('\n===== ' + P + ' passed, ' + F + ' failed, ' + R + ' expected red =====');
+    process.exit(F ? 1 : 0);
+  }
+
   station(7, 'Q: pay, and the return from Stripe reads the plan back');
   const accQ = Object.values(wq.st.acc)[0] || {};
   await Q.click('#profbtn'); await Q.click('[data-pms="billing"]');
