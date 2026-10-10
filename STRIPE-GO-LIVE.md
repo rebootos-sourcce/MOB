@@ -299,7 +299,7 @@ does not open new checkout**.
 
 **Open paid checkout only after the owner approves launch.** Change
 `STRIPE_BILLING_ENABLED = "0"` to `STRIPE_BILLING_ENABLED = "1"` in
-`atuned/server/wrangler.toml), make a reviewed commit, merge it, and let the
+`atuned/server/wrangler.toml`, make a reviewed commit, merge it, and let the
 server deployment finish. This switch is configuration, not a GitHub secret.
 The live smoke should then say
 `paid checkout switch is on; Stripe Checkout URL returned (not opened or paid)`.
