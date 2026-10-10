@@ -526,9 +526,17 @@ function pSave(){ if(!CURP)return false; saveProfile(CURP);
  if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
  return pPersist(); }
 /* checked before the push, so a history nobody can read does not grow */
-function pSnap(){ if(!CURP)return false;
+function pSnap(){
+ if(!CURP)return false;
  if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
- CURP.history.push(snapshot(CURP)); return pPersist(); }
+ /* A failed write must not leave an unsaved snapshot in memory. Otherwise a
+    later unrelated save can make a refused snapshot appear to have landed. */
+ var before=CURP.history.length;
+ CURP.history.push(snapshot(CURP));
+ if(pPersist())return true;
+ CURP.history.length=before;
+ return false;
+}
 function pExport(){ return JSON.stringify(CURP?saveProfile(CURP):null,null,1); }
 /* ============================================================
    THE BOUNDARY. Everything above this line trusts its input
