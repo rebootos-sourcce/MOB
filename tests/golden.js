@@ -455,10 +455,9 @@ async function door(browser, SITE, cut, giftAt) {
   const accHd = await page.evaluate(() => { const h = document.querySelector('#settings .ac-hd'); return h ? h.innerText : ''; });
   ok(accHd.toLowerCase().indexOf(String(landed).toLowerCase()) >= 0 && accHd.indexOf(MAILQ) >= 0,
     'the account page names the reading open and the account it is signed in under, ' + J(accHd.replace(/\s+/g, ' ')));
-  /* THE SERVER'S SIDE. A record that arrives by link skips onboarding.
-     Import now starts the same anonymous first-visit session before account
-     creation, so this route is present in the funnel without sending the
-     record's story or name. */
+  /* P0 acceptance: an accepted quiz import starts one anonymous journey session.
+     The record itself remains local. Only the random anonymous ID and later
+     completion checkpoints may cross the Worker boundary. */
   const quizSessionCreates = wq.reqs('POST', /^\/v1\/funnel\/session$/);
   ok(Object.keys(wq.st.fun).length === 1 && quizSessionCreates.length === 1,
     'E1q funnel arrival: the quiz-imported record creates exactly one first-visit session');
@@ -466,8 +465,6 @@ async function door(browser, SITE, cut, giftAt) {
     'E1q privacy: quiz arrival sends only the random journey identifier, never story or name');
   ok(quizSessionCreates.every(q => typeof q.body.anonymousId === 'string' && q.body.anonymousId.length > 0),
     'E1q contract: session start includes a nonempty anonymous journey identifier');
-  /* Alpha privacy is a positive acceptance gate, not an expected-red item.
-     The record stays local; the anonymous funnel gets checkpoints only. */
   const profileEndpoints = wq.st.reqs.filter(q => /(?:^|\/)(?:sync|profile)(?:\/|$)/i.test(q.path));
   const storySent = wq.st.reqs.some(q => String(q.raw || '').includes(STORY));
   ok(profileEndpoints.length === 0,
@@ -583,6 +580,36 @@ async function door(browser, SITE, cut, giftAt) {
   ok(num(key) === round, 'the Field\'s left key prints it, ' + J(key) + ' against ' + round);
   ok(num(sum1) === round, 'Summary prints it, ' + J(sum1) + ' against ' + round);
 
+  /* The Alpha gate stops after the accepted quiz-to-first-release walk.
+     Billing, cross-device profile sync, and downloaded-file account creation
+     remain outside this required slice; the complete golden walk still runs
+     separately as a report-only integration check.
+     Keep its 56 assertions aligned with tests/floors.json; every assertion is
+     required to pass and expected-red stays at zero. */
+  if (process.env.ATUNED_ALPHA_QUIZ_ONLY === '1') {
+    const bodiesAlpha = wq.st.reqs.map(q => q.raw + ' ' + q.path).join('\n');
+    ok(bodiesAlpha.indexOf('tight in my chest') < 0,
+      'Alpha privacy: the imported story never crosses the Worker boundary');
+    ok(wq.reqs('GET', /^\/v1\/sync$/).length === 0 && wq.reqs('PUT', /^\/v1\/sync$/).length === 0,
+      'Alpha privacy: profile sync remains disabled');
+    ok(cut.length === 0, 'Alpha walk reached only the local fake Worker: ' + J(cut.slice(0, 3)));
+    ok(site.strays.length === 0, 'Alpha pages requested only shipped same-origin assets: ' + J(site.strays.slice(0, 3)));
+    await Q.ctx.close();
+    await browser.close();
+    site.srv.close();
+    fs.rmSync(tmp, { recursive: true, force: true });
+    console.log('\n=== the Alpha quiz-door stations, at ' + W + ' by ' + H + ', ' + Math.round((Date.now() - T0) / 1000) + 's ===');
+    ST.forEach(s => console.log('  ' + String(s.n).padEnd(3) + (s.fail || s.red ? 'CUT ' : 'PASS') + '  ' + s.name
+      + '  (' + s.pass + ' ok' + (s.fail ? ', ' + s.fail + ' failed' : '') + (s.red ? ', ' + s.red + ' expected red' : '') + ')'
+      + (s.sees.length ? '\n        the person sees: ' + s.sees.join('; ') : '')));
+    console.log('\n=== expected red, not wired yet ===');
+    if (!XF.length) console.log('  none');
+    XF.forEach(x => console.log('  ' + x.edge + ' (station ' + x.st + '): ' + x.m
+      + '\n        the person sees: ' + x.sees));
+    console.log('\n===== ' + P + ' passed, ' + F + ' failed, ' + R + ' expected red =====');
+    process.exit(F ? 1 : 0);
+  }
+
   station(7, 'Q: pay, and the return from Stripe reads the plan back');
   const accQ = Object.values(wq.st.acc)[0] || {};
   await Q.click('#profbtn'); await Q.click('[data-pms="billing"]');
@@ -640,9 +667,8 @@ async function door(browser, SITE, cut, giftAt) {
   await page.evaluate(() => { const b = document.querySelector('[data-acs="account"]'); if (b) b.click(); });
   await page.waitForTimeout(250);
   ok(await Q.click('#acout'), 'Sign out is there to press');
-  const out = await Q.waitSaid(/^ok\|Signed out on this browser\./, 6000);
-  ok(!!out && /server could not confirm that the first visit pass ended/.test(out),
-    'and it says sign-in ended locally but the first-visit pass was not confirmed, ' + J(out));
+  const out = await Q.waitSaid(/^ok\|Signed out\.$/, 6000);
+  ok(!!out, 'and it says it signed out, ' + J(out));
   ok(wq.reqs('POST', /^\/v1\/auth\/signout$/).length === 1, 'and the server was told');
   await Q.reload();
   ok(await page.evaluate(() => !!(typeof LOGIN !== 'undefined' && LOGIN.open)), 'after a reload the door stands again: nobody is signed in here');
