@@ -20,10 +20,13 @@ What each word means, once:
 Cloudflare each have their own email and password. Logging in to one does not
 log you in to another.
 
-**Before you start.** This needs the server update of 9 October to be merged
-(branch `claude/paywall-worker` in `reboot-os`). The team merges it. You can
-tell it is in: in step 8, the list of steps has one called
-**live Stripe setup check**. If that name is not there, it is not merged yet.
+**Current release rule, 10 October.** The server update is merged. New checkout
+is controlled by `STRIPE_BILLING_ENABLED` in `atuned/server/wrangler.toml`.
+Production keeps it at `0` until Stripe's live key, all prices, webhook and
+portal are verified and the owner approves launch. A Stripe key alone does not
+open checkout. The live smoke checks this boundary after each deployment.
+The **live Stripe setup check** verifies Stripe configuration; it does not
+change the release switch.
 
 **Websites move their buttons.** These steps were checked against what
 Stripe, ElevenLabs and GitHub looked like in October 2026. Where a step says
@@ -50,6 +53,14 @@ About forty minutes for test mode. Twenty for live.
    account). If it asks to make one, say yes and call it `Atuned test`.
 
 Stay in test mode until Part B.
+
+**Part A checkout is blocked until staging exists.** There is no separate
+staging Worker in this setup yet. Do not put test Stripe keys into the
+`reboot-os` main deployment or try a test-card purchase at `atuned.world`.
+That address uses the production Worker. The switch keeps checkout closed
+there. Steps 1 through 7 are preparation only. Steps 8 and 9 in Part A need
+a dedicated staging Worker with its own test secrets and the switch set to
+`1`. That staging environment is still an owner setup task.
 
 ### Step 2. Make the four tiers
 
@@ -181,6 +192,10 @@ Stripe keeps it shut until you save its settings once.
 
 ### Step 8. Put the secrets into GitHub, and run the check
 
+**Choose the right environment first.** In Part A, stop here until the
+staging Worker exists. Do not follow the main-branch steps below with test
+keys. In Part B, follow these steps with the live values.
+
 1. Open a new tab and go to **github.com/rebootos-sourcce/reboot-os**. Not
    `MOB`. The other one, `reboot-os`. Sign in to GitHub if it asks.
 2. In the row of tabs near the top (Code, Issues, Pull requests, Actions ...),
@@ -277,14 +292,24 @@ all again, and it all gets new ids.
    **Update secret** to paste the live value over the test one. Then
    **Run workflow**.
 
-**How to know it worked.** The **live Stripe setup check** step now says
-**live mode** where it said test mode. If one price is still a test price, it
-says so by name: "it is a test price and the key is a live key".
+**How to know the configuration check worked.** The **live Stripe setup
+check** says **live mode**. If a price is still a test price, it names that
+price. Passing this check proves the key, prices, webhook and portal; **it
+does not open new checkout**.
 
-Then do **step 9** once with a real card of your own, on Tier one, and
-delete that account at the end. To give yourself the money back: in Stripe,
-click **Payments** in the left menu, click the payment, and press
-**Refund** at the top right.
+**Open paid checkout only after the owner approves launch.** Change
+`STRIPE_BILLING_ENABLED = "0"` to `STRIPE_BILLING_ENABLED = "1"` in
+`atuned/server/wrangler.toml), make a reviewed commit, merge it, and let the
+server deployment finish. This switch is configuration, not a GitHub secret.
+The live smoke should then say
+`paid checkout switch is on; Stripe Checkout URL returned (not opened or paid)`.
+The smoke does not follow the URL or charge a card. If that assertion fails,
+set the switch back to `0` and deploy again.
+
+Only after that checkout smoke passes should you do **step 9** once with a
+real card of your own, on Tier one, and delete that account at the end. To give
+yourself the money back: in Stripe, click **Payments** in the left menu, click
+the payment, and press **Refund** at the top right.
 
 ---
 
@@ -356,12 +381,15 @@ replace the card in Manage billing.
 - **Stop taking real money, keep practising:** in step 8, use **Update
   secret** to put the six test values back, and **Run workflow**. The check
   says test mode again.
-- **Turn payments off completely:** go to **dash.cloudflare.com** (a separate
-  login), click **Workers & Pages**, click **atuned-api**, then **Settings**,
-  then **Variables and Secrets** (not sure of the exact name). Delete
-  **STRIPE_SECRET_KEY**. Every Move to button then says billing is not
-  connected, and nobody can pay. Also delete the GitHub secret of the same
-  name, or the next deploy puts it back.
+- **Stop new checkout but keep existing subscriptions manageable:** change
+  `STRIPE_BILLING_ENABLED = "1"` back to `"0"` in
+  `atuned/server/wrangler.toml`, make a reviewed commit, merge it, and let the
+  deployment finish. New checkout returns 503. The Stripe key stays in place
+  so existing subscribers can still use **Manage billing**.
+- **Emergency disable the Stripe integration:** if the secret is compromised
+  or Stripe must be disconnected immediately, remove `STRIPE_SECRET_KEY`
+  from both the Cloudflare Worker and GitHub Actions secrets. This also stops
+  the customer portal. Re-add and validate it before normal billing resumes.
 - **Stop Stripe sending news:** Stripe, **Developers**, **Webhooks**, click
   the webhook, **...** at the top right, **Disable** (or **Delete**).
 - **Turn the voice off:** delete the GitHub secret **ELEVENLABS_API_KEY**,
