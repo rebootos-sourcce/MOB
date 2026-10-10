@@ -1880,7 +1880,12 @@ function pImport(txt){
  var existing=null;
  for(var i=0;i<PROFILES.length;i++)if(PROFILES[i]&&PROFILES[i].id===v.profile.id){existing=PROFILES[i];break;}
  if(existing){
-  if(importStable(saveProfile(existing))!==importStable(saveProfile(v.profile))){
+  var existingComparable=saveProfile(existing), incomingComparable=saveProfile(v.profile);
+  /* Import always marks the arriving record onboarded by product rule. Apply
+     the same normalization to the comparison copy only; never alter the
+     already stored object merely to decide whether this is a duplicate. */
+  if(existingComparable.ui&&incomingComparable.ui)existingComparable.ui.onboarded=true;
+  if(importStable(existingComparable)!==importStable(incomingComparable)){
    IMPORT_ERR=['a profile with this ID already exists with different content']; return null;
   }
   var oldProfiles=PROFILES.slice(), oldCurrent=CURP;
