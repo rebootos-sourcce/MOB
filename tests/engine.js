@@ -6587,6 +6587,15 @@ g('OG1 · the rerun puts the heavy lines back where they sit, round OG');
   const p=fixture(); meterHeavy(p,[K(7,'Llimit',2),K(7,'Rtruth',1),K(9,'Ltruth',2)]);
   const got=pImport(JSON.stringify(p));
   ok(got!==null&&got.meter.heavy.join()===p.meter.heavy.join(),'an import keeps the heavy marks, '+(got&&got.meter.heavy.length));
+  /* Import owns the rule that an imported record has completed onboarding.
+     Exercise the edge where the same ID already exists locally but that one
+     field still says false: same identity is reused, normalized, and saved. */
+  got.ui.onboarded=false;
+  const onboardingWire=pExport(), countBeforeOnboarding=profiles().length;
+  const onboardingAgain=pImport(onboardingWire);
+  ok(onboardingAgain===got&&got.ui.onboarded===true&&profiles().length===countBeforeOnboarding
+    &&JSON.parse(pExport()).ui.onboarded===true,
+    'same-ID reimport persists onboarding normalization without duplicating the profile');
   const out=JSON.parse(pExport());
   ok(out.meter.heavy.join()===p.meter.heavy.join(),'and an export carries them');
   const beforeSameId=profiles().length;
