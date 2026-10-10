@@ -500,15 +500,38 @@ function pPersist(){
  if(STORE_UNREAD&&!STORE_UNREAD.key){ SAVE_OK=false; SAVE_ERR='UnreadableStore'; return false; }
  /* the records the boundary would not read go back untouched, at the end, so
     a save never costs a person data this version happens not to understand. */
- var all=PROFILES.concat(STORE_KEPT), payload=JSON.stringify(all);
+ var all=PROFILES.concat(STORE_KEPT), payload=JSON.stringify(all), prior;
+ /* Read old durable bytes before attempting a replacement. This lets the
+    engine restore the prior snapshot if an adapter writes corrupt bytes and
+    then returns without throwing. */
+ try{ prior=STORE.get(PKEY); }
+ catch(e){ SAVE_OK=false; SAVE_ERR=(e&&e.name)||'ReadBeforeWrite'; return false; }
+ var restoreValue=(prior===null||prior===undefined)?'[]':prior;
+ function restorePrior(){
+  try{
+   var current=STORE.get(PKEY);
+   if(current===prior)return true;
+   STORE.set(PKEY,restoreValue);
+   if(STORE.get(PKEY)!==restoreValue){ SAVE_ERR='RollbackMismatch'; return false; }
+   return true;
+  }catch(e){ SAVE_ERR='RollbackFailed'; return false; }
+ }
  try{
   STORE.set(PKEY,payload);
-  /* Storage APIs normally throw on a refused write, but a host adapter can
-     silently ignore one. A save is successful only when the exact serialized
-     record can be read back through the same boundary. */
-  if(STORE.get(PKEY)!==payload){ SAVE_OK=false; SAVE_ERR='ReadbackMismatch'; return false; }
+  /* A silent ignore is failure. A non-throwing but corrupt write is also
+     failure and must not replace the prior durable profile. */
+  if(STORE.get(PKEY)!==payload){
+   SAVE_OK=false; SAVE_ERR='ReadbackMismatch';
+   restorePrior();
+   return false;
+  }
   SAVE_OK=true; SAVE_ERR=null;
- }catch(e){ SAVE_OK=false; SAVE_ERR=(e&&e.name)||'error'; }
+ }catch(e){
+  SAVE_OK=false; SAVE_ERR=(e&&e.name)||'error';
+  /* set() can mutate storage before an adapter throws, or readback itself can
+     fail after the write. Restore only if the durable bytes actually changed. */
+  restorePrior();
+ }
  return SAVE_OK; }
 function saveState(){ return {ok:SAVE_OK, err:SAVE_ERR}; }
 function pNew(name){ var p=blankProfile(name); PROFILES.push(p); CURP=p; pPersist(); profMark(p); return p; }
