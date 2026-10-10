@@ -464,6 +464,8 @@ async function door(browser, SITE, cut, giftAt) {
     'E1q funnel arrival: the quiz-imported record creates exactly one first-visit session');
   ok(quizSessionCreates.every(q => q.body && Object.keys(q.body).sort().join(',') === 'anonymousId'),
     'E1q privacy: quiz arrival sends only the random journey identifier, never story or name');
+  ok(quizSessionCreates.every(q => typeof q.body.anonymousId === 'string' && q.body.anonymousId.length > 0),
+    'E1q contract: session start includes a nonempty anonymous journey identifier');
   /* Alpha privacy is a positive acceptance gate, not an expected-red item.
      The record stays local; the anonymous funnel gets checkpoints only. */
   const profileEndpoints = wq.st.reqs.filter(q => /(?:^|\/)(?:sync|profile)(?:\/|$)/i.test(q.path));
