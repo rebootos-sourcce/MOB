@@ -583,7 +583,9 @@ async function door(browser, SITE, cut, giftAt) {
   /* The Alpha gate stops after the accepted quiz-to-first-release walk.
      Billing, cross-device profile sync, and downloaded-file account creation
      remain outside this required slice; the complete golden walk still runs
-     separately as a report-only integration check. */
+     separately as a report-only integration check.
+     Keep its 56 assertions aligned with tests/floors.json; every assertion is
+     required to pass and expected-red stays at zero. */
   if (process.env.ATUNED_ALPHA_QUIZ_ONLY === '1') {
     const bodiesAlpha = wq.st.reqs.map(q => q.raw + ' ' + q.path).join('\n');
     ok(bodiesAlpha.indexOf('tight in my chest') < 0,
