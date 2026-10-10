@@ -411,6 +411,12 @@ async function door(browser, SITE, cut, giftAt) {
     return l && /from the link/.test(l.textContent) ? l.textContent : null; }, null, { timeout: 12000 }).then(h => h.jsonValue(), () => null);
   ok(!!landed && landed !== 'no step', 'the app opens on the link and loads the record, ' + J(landed), 'the app opens empty');
   ok(/^Loaded .+ from the link\./.test(doorLine || ''), 'the door says so where the person is looking, ' + J(doorLine), 'no word that the reading arrived');
+  const funnelStart = await page.evaluate(() => {
+    if (typeof RECORD_FUNNEL === 'undefined' || !RECORD_FUNNEL) return null;
+    return RECORD_FUNNEL.then(r => ({ ok: !!r.ok, readBack: !!r.readBack, readStatus: r.readStatus, skipped: !!r.skipped }));
+  });
+  ok(!!funnelStart && funnelStart.ok && funnelStart.readBack && funnelStart.readStatus === 200,
+    'the quiz door creates and reads back its metadata-only session before account creation');
   let L = await Q.live(), sv = await Q.saved();
   ok(!!sv.rec && sv.rec.id === L.id && sv.rec.name === landed, 'it is saved as its own record, and is the one open: ' + J(sv.rec && sv.rec.name));
   ok(await page.evaluate(() => location.hash === ''), 'and the record is off the address bar');
