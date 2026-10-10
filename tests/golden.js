@@ -455,9 +455,10 @@ async function door(browser, SITE, cut, giftAt) {
   const accHd = await page.evaluate(() => { const h = document.querySelector('#settings .ac-hd'); return h ? h.innerText : ''; });
   ok(accHd.toLowerCase().indexOf(String(landed).toLowerCase()) >= 0 && accHd.indexOf(MAILQ) >= 0,
     'the account page names the reading open and the account it is signed in under, ' + J(accHd.replace(/\s+/g, ' ')));
-  /* THE SERVER'S SIDE. A record that arrives by link skips onboarding, and
-     onboarding is the only caller of authFunnelStart, so the server never
-     hears that this account came through the funnel. */
+  /* THE SERVER'S SIDE. A record that arrives by link skips onboarding.
+     Import now starts the same anonymous first-visit session before account
+     creation, so this route is present in the funnel without sending the
+     record's story or name. */
   ok(Object.keys(wq.st.fun).length > 0, 'E1q funnel arrival: quiz-imported records start a first-visit session',
     'nothing on our server says this account came through the quiz, so the funnel cannot be counted from quiz to account to payment');
   /* the record itself stays in the browser, on the standing privacy ruling:
