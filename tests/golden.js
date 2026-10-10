@@ -482,7 +482,7 @@ async function door(browser, SITE, cut, giftAt) {
       authFunnelJoin: window.authFunnelJoin,
       starting: window.FUNNEL_STARTING,
     };
-    let requests = 0, resolveRequest;
+    let requests = 0; const resolvers = [];
     try {
       window.FUNNEL_STARTING = null;
       window.funnelSession = () => null;
@@ -491,16 +491,16 @@ async function door(browser, SITE, cut, giftAt) {
       window.authCall = (method, path, body) => {
         requests++;
         return new Promise(resolve => {
-          resolveRequest = () => resolve({
+          resolvers.push(() => resolve({
             ok:true, status:201,
-            body:{session:{id:'race-session',anonymousId:body.anonymousId},credential:'test-credential'}
-          });
+            body:{session:{id:'race-session-'+requests,anonymousId:body.anonymousId},credential:'test-credential'}
+          }));
         });
       };
       const first = window.authFunnelStart();
       const second = window.authFunnelStart();
       const concurrentRequests = requests;
-      resolveRequest();
+      resolvers.forEach(resolve => resolve());
       const results = await Promise.all([first,second]);
       return {requests,concurrentRequests,ok:results.every(r=>r.ok),
         ids:results.map(r=>r.session&&r.session.id)};
