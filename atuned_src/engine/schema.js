@@ -1893,7 +1893,7 @@ function pImport(txt){
   if(existingComparable.ui)existingComparable.ui.onboarded=true;
   if(incomingComparable.ui)incomingComparable.ui.onboarded=true;
   if(importStable(existingComparable)!==importStable(incomingComparable)){
-   IMPORT_ERR=['a profile with this ID already exists with different content']; return null;
+   IMPORT_ERR=['same ID already exists with different content']; return null;
   }
   var oldProfiles=PROFILES.slice(), oldCurrent=CURP;
   var oldOnboarded=existing.ui?existing.ui.onboarded:undefined;
