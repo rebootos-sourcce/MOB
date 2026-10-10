@@ -1,9 +1,9 @@
 # Verification gates
 
-Four gates. One is headless and runs in under a tenth of a second. Three drive a
-real Chromium, not a DOM stub. A stub resolves elements by id regardless of tree
-position, so it reports green on a broken document, and it cannot see CSS at all.
-Both of those have shipped regressions before.
+The suite mixes headless checks with real Chromium, not just a DOM stub. A stub
+resolves elements by id regardless of tree position, so it reports green on a
+broken document, and it cannot see CSS at all. Both of those have shipped
+regressions before.
 
 ## The engine gate
 
@@ -12,14 +12,14 @@ contract rather than today's numbers, so a legitimate tuning change passes and a
 broken invariant does not.
 
     ./atuned_src/BUILD-engine.sh
-    node tests/engine.js       279 checks in 22 groups
+    node tests/engine.js
 
-The 17 groups: data integrity, determinism, the poled binary (jouissance begins
+Coverage includes data integrity, determinism, the poled binary (jouissance begins
 at 6), monotonicity, CQ bounds and ceiling, saboteur charge ranges are bands and
 not floors, the six gates multiply resistance, the lean, schema round trip,
 partial intake scoring, the sniffer, the expression deficit model, accuracy,
 the chain compounding in order, every persona computing, the front door, the host
-seam, and the path.
+seam, and the path. Read the current check and group totals from the test output.
 
 `BUILD-engine.sh` then runs `atuned_src/hostfree.py`, which strips comments and
 string literals and fails on `document`, `window`, `navigator`, `localStorage`,
@@ -207,12 +207,12 @@ binds `localStorage`.
 ## The browser gates
 
     npm install playwright
-    node tests/design.js       17 checks · shell, one surface per tab, CSS coverage,
+    node tests/design.js       shell, one surface per tab, CSS coverage,
                                11px type floor, no all-caps
-    node tests/functional.js   262 checks · 10 personas x 5 tabs x 4 depths x 7 layers,
+    node tests/functional.js   the defined persona, tab, depth and layer matrix,
                                drills, figure fallback, zero JS errors
-    node tests/collide.js      40 checks · zero overlapping wheel nameplates,
-                               every persona x every depth
+    node tests/collide.js      zero overlapping wheel nameplates,
+                               every defined persona x every depth
     node tests/unpack.js       round PO, unpack every symbol: on the Summary reading,
                                the blueprint card, the sign chips, the left rail and
                                every pole on the Compass, a seeded term with no
@@ -314,7 +314,7 @@ nothing at all.
 
     node tools/simulate-path.js [stories] [seed]     default 4000, seeded
 
-Roughly 18 assertions per story: determinism, case and punctuation invariance,
+Each generated story is checked for determinism, case and punctuation invariance,
 unknown words at the ends not moving the route, reversal reversing the route and
 flipping the direction while preserving the distance, a different order being a
 different route, joined stories concatenating, the geometry not contradicting
