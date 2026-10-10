@@ -473,6 +473,49 @@ async function door(browser, SITE, cut, giftAt) {
   ok(!storySent,
     'E1q privacy: raw story text never crosses the Worker boundary');
 
+  /* Slow-response race: two valid entrypoints must share one create request. */
+  const startRace = await page.evaluate(async () => {
+    const saved = {
+      authCall: window.authCall,
+      funnelSession: window.funnelSession,
+      funnelKeep: window.funnelKeep,
+      authFunnelJoin: window.authFunnelJoin,
+      starting: window.FUNNEL_STARTING,
+    };
+    let requests = 0, resolveRequest;
+    try {
+      window.FUNNEL_STARTING = null;
+      window.funnelSession = () => null;
+      window.funnelKeep = () => true;
+      window.authFunnelJoin = () => Promise.resolve({ok:false,asked:false});
+      window.authCall = (method, path, body) => {
+        requests++;
+        return new Promise(resolve => {
+          resolveRequest = () => resolve({
+            ok:true, status:201,
+            body:{session:{id:'race-session',anonymousId:body.anonymousId},credential:'test-credential'}
+          });
+        });
+      };
+      const first = window.authFunnelStart();
+      const second = window.authFunnelStart();
+      const concurrentRequests = requests;
+      resolveRequest();
+      const results = await Promise.all([first,second]);
+      return {requests,concurrentRequests,ok:results.every(r=>r.ok),
+        ids:results.map(r=>r.session&&r.session.id)};
+    } finally {
+      window.authCall = saved.authCall;
+      window.funnelSession = saved.funnelSession;
+      window.funnelKeep = saved.funnelKeep;
+      window.authFunnelJoin = saved.authFunnelJoin;
+      window.FUNNEL_STARTING = saved.starting;
+    }
+  });
+  ok(startRace.requests===1 && startRace.concurrentRequests===1 && startRace.ok
+    && startRace.ids.length===2 && startRace.ids[0]===startRace.ids[1],
+    'concurrent session starts coalesce to one anonymous create, '+J(startRace));
+
   station(5, 'Q: the first release, from the Story page');
   await Q.tab(0);
   const cq0 = (await Q.live()).CQ;
