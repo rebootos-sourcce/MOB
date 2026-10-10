@@ -458,7 +458,7 @@ async function door(browser, SITE, cut, giftAt) {
   /* THE SERVER'S SIDE. A record that arrives by link skips onboarding, and
      onboarding is the only caller of authFunnelStart, so the server never
      hears that this account came through the funnel. */
-  xf(Object.keys(wq.st.fun).length > 0, 'E1q funnel arrival', 'the server keeps a first visit session for a person who arrived from the quiz',
+  ok(Object.keys(wq.st.fun).length > 0, 'E1q funnel arrival: quiz-imported records start a first-visit session',
     'nothing on our server says this account came through the quiz, so the funnel cannot be counted from quiz to account to payment');
   /* the record itself stays in the browser, on the standing privacy ruling:
      sync is dead code and must not be turned on (HANDOFF NEXT-SESSION) */
