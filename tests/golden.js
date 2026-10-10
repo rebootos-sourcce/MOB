@@ -856,6 +856,20 @@ async function door(browser, SITE, cut, giftAt) {
   }
 
   station(14, 'every door: nothing else was reached');
+  const receipt = await Q.page.evaluate(() => authGone({
+    stopped:0, retentionUntil:'2028-10-10T00:00:00.000Z', retentionMarked:true,
+    kept:['first_visit','activity_log']
+  }));
+  ok(receipt.lines.some(line => /first-visit record/.test(line) && /removal on 2028-10-10/.test(line)),
+    'the deletion receipt states the first-visit record removal date: ' + J(receipt.lines));
+  ok(receipt.lines.some(line => /dated list/.test(line) && /removal on 2028-10-10/.test(line)),
+    'the deletion receipt states the activity-log removal date: ' + J(receipt.lines));
+  const pendingReceipt = await O.page.evaluate(() => authGone({
+    stopped:0, retentionUntil:'2028-10-10T00:00:00.000Z', retentionMarked:false, retentionPending:true,
+    kept:['first_visit']
+  }));
+  ok(pendingReceipt.lines.some(line => /cleanup in the first-visit store is still pending/.test(line)),
+    'the deletion receipt does not claim remote retention is confirmed when marking is pending');
   ok(cut.length === 0, 'nothing tried to reach any server but the stubs: ' + J(cut.slice(0, 3)));
   ok(site.strays.length === 0, 'and the pages asked their own site for nothing it does not ship: ' + J(site.strays.slice(0, 3)));
 
