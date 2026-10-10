@@ -42,3 +42,17 @@ Already-set decisions are not reopened: profile sync off, billing off, crisis de
 No merge or production deployment is authorized by this document. All PRs above remain drafts while checks or acceptance evidence are incomplete. Each block must have a failing reproduction where feasible, a smallest complete patch, two recorded review passes, targeted and full affected tests, build/CI evidence, remaining-risk notes, and an updated final SHA before it can be closed.
 
 **Readiness summary:** P0-A pending; P0-B pending final functional gate; P0-C pending CI after fixture correction; P1-A pending CI and owner-approved manifest; P1-B/P1-D not started; P1-C implementation review pending Cloudflare diagnosis; P1-E needs one-publisher/release-manifest verification.
+
+
+## Execution addendum — 10 October 2026, 14:00 PDT
+
+### Current dependency state
+- P0-B [PR #56](https://github.com/rebootos-sourcce/MOB/pull/56) completed 30 check-runs on `4770c474364a6df2c034cc8e23dd6ac346c475da`. Required functional, fast and gate checks passed; the deploy job was skipped.
+- P0-C [PR #57](https://github.com/rebootos-sourcce/MOB/pull/57) completed 30 check-runs on `a6a2fea416de80054ef9df9aff78a181b5b330d9`. Required functional, fast and gate checks passed; the deploy job was skipped.
+- P0-A [PR #59](https://github.com/rebootos-sourcce/MOB/pull/59) is stacked on P0-B's branch `dev7/p0-quiz-first-visit-session`. This makes the next run validate both the fix and blocking gate in the same merge result. The previous red run against `main` remains useful evidence that the gate detects the missing behavior, but it is not the acceptance run for the stacked PR.
+- P0-A minimum floor is 56 assertions, expected-red ceiling 0. The last measured run before stacking reported 54 passed, 2 failed; after stacking the required outcome is 56/56 pass.
+- P1-A [Reboot-OS PR #35](https://github.com/rebootos-sourcce/Reboot-OS/pull/35) now passes its repository-owned server, schema, and smoke checks on the current corrected branch. The external `Workers Builds: atuned-os` check remains failed and needs build-provider diagnosis. No deployment was attempted.
+- P1-B [Reboot-OS PR #36](https://github.com/rebootos-sourcce/Reboot-OS/pull/36) is a draft contract inventory only; it does not enable profile sync or alter the runtime schema.
+
+### Release rule
+No merge or production deployment is authorized until P0-A's stacked check is green, P1-A's external build failure is resolved, and each block has current-SHA verification and two review passes.
