@@ -403,9 +403,10 @@ require('./net.js').guardBrowser(browser);
    authFunnelCheckpoint=function(){calls.checkpoint++;return Promise.resolve({ok:true});};
    ritRelDone=function(){calls.ritual++;return 1;};
    try{
+    var logStart=typeof MSG_LOG!=='undefined'?MSG_LOG.length:0;
     relCoolDown();
     out={saved:RUN.saved, ask:RUN.ask, ritualDone:RUN.ritDone, calls:calls,
-     status:(document.getElementById('status')||{}).textContent||'', halted:RUN.halted};
+     status:typeof MSG_LOG!=='undefined'?MSG_LOG.slice(logStart).map(function(m){return m.msg||'';}).join('|'):(document.getElementById('status')||{}).textContent||'', halted:RUN.halted};
    }catch(e){thrown=String(e&&e.message||e);}
    finally{pSaveSnap=ps;authFunnelCheckpoint=cp;ritRelDone=rit;relTicker(false);}
    return thrown?{error:thrown}:out;
