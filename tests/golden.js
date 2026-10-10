@@ -847,9 +847,10 @@ async function door(browser, SITE, cut, giftAt) {
       return !(typeof LOGIN !== 'undefined' && LOGIN.open) || (m && m.textContent && !/^Creating/.test(m.textContent)); }, null, { timeout: 20000 }).catch(() => {});
     const f = await pf.evaluate(() => ({ open: !!(typeof LOGIN !== 'undefined' && LOGIN.open), msg: (document.getElementById('loginmsg') || {}).textContent || '',
       held: !!(typeof authSession === 'function' && authSession()) }));
-    ok(wf.st.reqs.some(q => q.path === '/v1/auth/signup' && q.origin === 'null'), 'the press asks the server, from the null origin a file page sends');
-    xf(f.held || /file|atuned\.world/i.test(f.msg), 'E3f file copy account', 'a downloaded copy makes the account, or says the true reason it cannot: said '
-      + J(f.msg), 'the file he is sent says the connection is at fault and makes no account; only the copy at atuned.world can');
+    ok(!wf.st.reqs.some(q => q.path === '/v1/auth/signup' && q.origin === 'null'),
+      'a downloaded copy does not send signup from an unsupported origin');
+    ok(!f.held && /downloaded copy|runs offline|no account request was sent/i.test(f.msg),
+      'the account door explains why sign in is unavailable in the downloaded copy: ' + J(f.msg));
     ok(ferrs.length === 0, 'no script error: ' + ferrs.slice(0, 2).join(' | '));
     await cf.close();
   }
