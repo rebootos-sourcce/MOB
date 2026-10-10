@@ -196,6 +196,11 @@ jobs:
           - { gate: voice, timeout: 20, command: node tests/voice.js }
           # Alpha acceptance gates: durability and the accepted quiz/release path.
           - { gate: alpha-journey, timeout: 20, command: ATUNED_ALPHA_QUIZ_ONLY=1 node tests/golden.js }
+          - { gate: storage, timeout: 20, command: node tests/storage.js }
+          - { gate: firstrelease, timeout: 20, command: node tests/firstrelease.js }
+          - { gate: journey2, timeout: 20, command: node tests/journey2.js }
+          - { gate: onboarding2, timeout: 20, command: node tests/onboarding2.js }
+          - { gate: release-screen, timeout: 20, command: node tests/release-screen.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -244,16 +249,11 @@ jobs:
         include:
           - { gate: copy, timeout: 20, command: node tests/copy.js }
           - { gate: reset, timeout: 20, command: node tests/reset.js }
-          - { gate: storage, timeout: 20, command: node tests/storage.js }
-          - { gate: firstrelease, timeout: 20, command: node tests/firstrelease.js }
           - { gate: landing, timeout: 20, command: node tests/landing.js }
           - { gate: quit, timeout: 20, command: node tests/quit.js }
-          - { gate: journey2, timeout: 20, command: node tests/journey2.js }
-          - { gate: onboarding2, timeout: 20, command: node tests/onboarding2.js }
           - { gate: sniffpage, timeout: 20, command: node tests/sniffpage.js }
           - { gate: srcchat, timeout: 20, command: node tests/srcchat.js }
           - { gate: practitioner, timeout: 20, command: node tests/practitioner.js }
-          - { gate: release-screen, timeout: 20, command: node tests/release-screen.js }
           - { gate: release-percent, timeout: 20, command: node tests/release-percent.js }
           - { gate: unpack, timeout: 20, command: node tests/unpack.js }
           - { gate: recordlink, timeout: 20, command: node tests/recordlink.js }
