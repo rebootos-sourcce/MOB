@@ -169,20 +169,20 @@ require('./net.js').guardBrowser(browser);
   const rec=await ev(page,()=>{var want=relHeavyKeys();
    /* Refuse only the snapshot write. The preceding profile write must still
       count as a saved release, and the failed snapshot must roll back in memory. */
-   var historyBefore=CURP.history.length, set=STORE.set, writes=0;
-   STORE.set=function(k,v){writes++;if(writes===2){var e=new Error('injected snapshot write refusal');e.name='QuotaExceededError';throw e;}
+   var historyBefore=CURP.history.length, set=STORE.set, writes=0, failedAt=0;
+   STORE.set=function(k,v){writes++;if(writes===2){failedAt=writes;var e=new Error('injected snapshot write refusal');e.name='QuotaExceededError';throw e;}
     return set.call(STORE,k,v);};
    try{RUN.halted=false; RUN.idx=RUN.plan.length; relCoolDown();}
    finally{STORE.set=set;}
    var held=(CURP.meter&&CURP.meter.heavy)||[], st=document.getElementById('status');
    var log=(typeof MSG_LOG!=='undefined'?MSG_LOG.map(function(m){return m.msg;}).join(' '):'');
    return {want:want,kept:want.filter(function(k){return held.indexOf(k)>=0;}).length,phase:RUN.phase,
-    saved:RUN.saved,snapshotSaved:RUN.snapshotSaved,writes:writes,historyBefore:historyBefore,
+    saved:RUN.saved,snapshotSaved:RUN.snapshotSaved,writes:writes,failedAt:failedAt,historyBefore:historyBefore,
     historyAfter:CURP.history.length,status:st?st.textContent:'',log:log};});
   /* a mark is kept per line key and a pass is one more saying of the same
      line (round OG), so marks on one block fold into its one key */
   ok(rec.want.length>=1&&rec.kept===rec.want.length,'every mark, bank and shadow alike, is kept on the record as a heavy line: '+JSON.stringify(rec));
-  ok(rec.writes===2&&rec.saved===true&&rec.snapshotSaved===false,
+  ok(rec.failedAt===2&&rec.writes>=2&&rec.saved===true&&rec.snapshotSaved===false,
    'a saved release remains saved when only its history snapshot write fails: '+JSON.stringify(rec));
   ok(rec.historyAfter===rec.historyBefore&&/history snapshot was not/i.test(rec.status+' '+rec.log),
    'a refused snapshot is removed from memory and explained to the user: '+JSON.stringify(rec));
