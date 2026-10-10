@@ -1880,14 +1880,18 @@ function pImport(txt){
  var existing=null;
  for(var i=0;i<PROFILES.length;i++)if(PROFILES[i]&&PROFILES[i].id===v.profile.id){existing=PROFILES[i];break;}
  if(existing){
-  var existingComparable=saveProfile(existing), incomingComparable=o;
-  /* Compare the current canonical export with the actual imported wire
-     object. Comparing a second validated profile here would run migrations
-     twice and turn older-but-valid shapes into false identity conflicts.
-     Import always marks the arriving record onboarded; normalize that one
-     field on the comparison copies only. */
+  /* Compare two detached, once-normalized records. saveProfile() is an
+     engine writer: it reads the active working state and mutates its argument,
+     so using it here could copy another profile's state into the collision
+     candidate. validateProfile() produces a detached, bounded record without
+     moving the active profile. */
+  var existingValidation=validateProfile(existing);
+  if(!existingValidation.ok){ IMPORT_ERR=['the existing profile cannot be normalized for identity comparison']; return null; }
+  var existingComparable=existingValidation.profile, incomingComparable=v.profile;
+  /* Import always completes onboarding; normalize that product-owned field
+     on the comparison copies only. Neither stored nor incoming data is changed. */
   if(existingComparable.ui)existingComparable.ui.onboarded=true;
-  if(incomingComparable.ui&&typeof incomingComparable.ui==='object')incomingComparable.ui.onboarded=true;
+  if(incomingComparable.ui)incomingComparable.ui.onboarded=true;
   if(importStable(existingComparable)!==importStable(incomingComparable)){
    IMPORT_ERR=['a profile with this ID already exists with different content']; return null;
   }
