@@ -191,7 +191,7 @@ function fakeWorker(origin, giftAt) {
       const credOk = rec.cred && rec.cred === s.credential;
       if (method === 'GET' && !fm[2]) {
         if (me) return s.userId === me.id ? json(200, { session: pub(s) }) : err(403, 'this funnel session is not yours');
-        return credOk ? json(200, { session: pub(s) }) : err(401, 'a valid funnel credential is required');
+        return credOk && !s.ended ? json(200, { session: pub(s) }) : err(401, 'a valid funnel credential is required');
       }
       if (method === 'POST' && fm[2] === '/attach') {
         if (!me) return err(401, 'sign in first');
@@ -218,7 +218,13 @@ function fakeWorker(origin, giftAt) {
       return json(200, { account: { id: me.id, research_id: me.research_id, plan: me.plan, email: me.email },
         consent: { share: false, at: null, v: 1 }, records: 0, entitlement: null, billing: billing(me) });
     }
-    if (method === 'POST' && p === '/v1/auth/signout') { delete st.tok[m[1]]; return json(200, { ok: true }); }
+    if (method === 'POST' && p === '/v1/auth/signout') {
+      const pass = body && body.funnel, visit = pass && st.fun[pass.id];
+      const ended = !!(visit && typeof pass.credential === 'string' && pass.credential === visit.credential && !visit.ended);
+      if (ended) visit.ended = true;
+      delete st.tok[m[1]];
+      return json(200, Object.assign({ ok: true }, pass ? { funnel: { ended: ended } } : {}));
+    }
     if (method === 'POST' && p === '/v1/billing/checkout') {
       const tier = String(body && body.tier || '');
       if (['one', 'two', 'three'].indexOf(tier) < 0) return err(400, 'that tier cannot be bought');
