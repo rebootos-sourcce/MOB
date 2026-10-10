@@ -1889,10 +1889,21 @@ function pImport(txt){
    IMPORT_ERR=['a profile with this ID already exists with different content']; return null;
   }
   var oldProfiles=PROFILES.slice(), oldCurrent=CURP;
+  var oldOnboarded=existing.ui?existing.ui.onboarded:undefined;
+  if(existing.ui)existing.ui.onboarded=true;
   try{ loadProfile(existing); }
-  catch(e){ PROFILES=oldProfiles; CURP=oldCurrent; loadProfile(oldCurrent||blankProfile('unnamed'));
-   IMPORT_ERR=['could not load existing profile: '+((e&&e.message)||'error')]; return null; }
-  CURP=existing; profMark(existing); return existing;
+  catch(e){
+   if(existing.ui&&oldOnboarded!==undefined)existing.ui.onboarded=oldOnboarded;
+   PROFILES=oldProfiles; CURP=oldCurrent; loadProfile(oldCurrent||blankProfile('unnamed'));
+   IMPORT_ERR=['could not load existing profile: '+((e&&e.message)||'error')]; return null;
+  }
+  CURP=existing;
+  if(oldOnboarded!==true&&!pPersist()){
+   if(existing.ui&&oldOnboarded!==undefined)existing.ui.onboarded=oldOnboarded;
+   PROFILES=oldProfiles; CURP=oldCurrent; loadProfile(oldCurrent||blankProfile('unnamed'));
+   IMPORT_ERR=['could not save existing profile: '+(SAVE_ERR||'error')]; return null;
+  }
+  profMark(existing); return existing;
  }
  var keepP=PROFILES.slice(), keepC=CURP;
  /* with no current profile there is nothing to restore to, so the rollback
