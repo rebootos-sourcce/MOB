@@ -1,14 +1,15 @@
 {
   "about": [
     "The least number of passing checks each gate may report. tools/floors.js fails a gate whose log has no summary line, reports any failure, or counts fewer passes than its floor here. A gate that crashed, was cut off or was skipped therefore cannot pass.",
-    "Read off the full runs on 9 October: engine 5002 with 10 expected red, collide 388, boot 13, funnel 562, design 186, functional 2317, and the guard tests of the alpha work as each printed on b2b7a03 (copy 149, reset 39, storage 120, firstrelease 121, journey2 143, onboarding2 211, sniffpage 71, srcchat 33, practitioner 60, release-screen 145, release-percent 8, unpack 878, recordlink 60, valuefelt 7, claims 107, discordfeedback 59). funnel-package is 44. functional, design and monitor were report only until four green runs on main and are required from 9 October.",
+    "Read off the full runs on 9 October: engine 5002 with 10 expected red, collide 388, boot 13, funnel 562, design 186, functional 2317, and the guard tests of the alpha work as each printed on b2b7a03 (copy 149, reset 39, storage 120, firstrelease 121, journey2 143, onboarding2 211, sniffpage 71, srcchat 33, practitioner 60, release-screen 145, release-percent 8, unpack 878, recordlink 60, valuefelt 7, claims 107, discordfeedback 59). funnel-package is 44. functional, design and monitor were report only until four green runs on main and are required from 9 October. Alpha quiz-journey starts with a floor of 1 for its first measured clean run; raise it to the observed assertion count before accepting the gate.",
     "Raise a floor by editing this file on purpose, in the same change that adds the checks, from a green run. Never lower one to get green. Nothing writes this file.",
     "expected_red_max is the most expected red a gate may print. tools/floors.js fails a gate above its ceiling, and fails a gate that prints an expected red count with no ceiling here, so a failing check cannot be let off as expected red unseen. Added empty on 9 October: the lead sets each value from a clean full run, as printed, and until then the engine's floor step fails by name. It drops to 0 in the change that turns the expected reds green."
   ],
   "expected_red_max": {
     "engine": 10,
     "golden": 5,
-    "storage": 0
+    "storage": 0,
+    "alpha-journey": 0
   },
   "floors": {
     "engine": 5002,
@@ -37,7 +38,8 @@
     "discordfeedback": 59,
     "voice": 28,
     "landing": 15,
-    "quit": 87
+    "quit": 87,
+    "alpha-journey": 1
   },
   "no_count": {
     "monitor": "all surfaces render"
