@@ -110,11 +110,17 @@ function funnelUuid(){
  try{ if(typeof crypto!=='undefined'&&crypto.randomUUID)return crypto.randomUUID(); }catch(e){}
  return 'anon_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2);
 }
+/* Concurrent entrypoints may race before the first session is persisted. Share the
+   in-flight create promise, then clear it on either outcome. This complements
+   the persisted-session check below: reloads reuse durable state; concurrent
+   calls reuse the same network operation. */
+var FUNNEL_STARTING=null;
 function authFunnelStart(){
  var existing=funnelSession();
  if(existing){ authFunnelJoin(); return Promise.resolve({ok:true,session:existing.session||null,reused:true}); }
+ if(FUNNEL_STARTING)return FUNNEL_STARTING.then(function(r){ return Object.assign({},r,{reused:true}); });
  var anonymousId=funnelUuid();
- return authCall('POST','/v1/funnel/session',{anonymousId:anonymousId},null,false).then(function(r){
+ var request=authCall('POST','/v1/funnel/session',{anonymousId:anonymousId},null,false).then(function(r){
   /* The Worker intentionally creates the anonymous id. Keep the caller's id
      out of the request body so the browser cannot claim somebody else's id. */
   if(!r.ok)return {ok:false,status:r.status,body:r.body};
@@ -124,6 +130,16 @@ function authFunnelStart(){
   var kept=funnelKeep(state);
   authFunnelJoin();
   return {ok:true,session:s,reused:false,kept:kept};});
+ var shared;
+ shared=request.then(function(r){
+  if(FUNNEL_STARTING===shared)FUNNEL_STARTING=null;
+  return r;
+ },function(){
+  if(FUNNEL_STARTING===shared)FUNNEL_STARTING=null;
+  return {ok:false,status:0,body:null};
+ });
+ FUNNEL_STARTING=shared;
+ return shared;
 }
 /* JOINED TO THE ACCOUNT ONCE BOTH EXIST, WHICHEVER CAME FIRST. The join was
    tried at sign in and nowhere else, and the first visit's session is made by
