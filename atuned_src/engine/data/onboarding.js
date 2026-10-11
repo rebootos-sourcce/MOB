@@ -65,6 +65,15 @@ var OB_STARTS=[
  {k:'relationships',n:'Relationships'},{k:'pain',n:'Pain'},
  {k:'selfworth',n:'Self-worth'},{k:'purpose',n:'Purpose'},{k:'money',n:'Money'},
  {k:'other',n:'Something else'}];
+
+/* GIFT NATURE IS NOT THE STARTING POINT. The starting point answers what
+   brought the person here; this choice decides the focus of the 100-pattern
+   starter set. Keep the six categories independent of the twelve starts so
+   a person can choose grief as the gift while beginning from purpose. */
+var OB_GIFT_NATURES=[
+ {k:'anxiety',n:'Anxiety'},{k:'overwhelm',n:'Overwhelm'},
+ {k:'burnout',n:'Burnout'},{k:'depression',n:'Depression'},
+ {k:'grief',n:'Grief'},{k:'sadness',n:'Sadness'}];
 /* THE SIX FEELING WORDS, the same six the mockup's FEELS carries. Neither
    set is tinted to a seat: a feeling is not one place in the body, and
    tinting it that way would be a claim this sheet has not earned. */
