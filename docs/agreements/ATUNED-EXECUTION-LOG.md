@@ -23,6 +23,22 @@
 
 **Measurements:** 1 charter added; README/register/build handoff linked; PR #66 gate last observed at 28 successful plus 1 in progress; Reboot-OS PR #35 external Cloudflare check failed; owner-approved stable pattern IDs = 0; legal artifacts approved for publication = 0.
 
+## Block 6 — KPI operating contract
+
+**Result:** Created `ATUNED-KPI-REGISTER.md` and connected it to the README reading order, document register, Canonical Source of Truth Charter, Event and Measurement Dictionary, and Agreements Build Handoff.
+
+The register separates the north-star Core Journey Completion Rate from supporting product, engagement, data-integrity, privacy, reliability and business measures. It defines numerator/denominator, cohort windows, source prerequisites, owner roles, cadence, target approach and the response to a miss. Hard safety and data-integrity gates are kept separate from improvement KPIs. Conversion and repeat-practice targets require a baseline and explicit owner approval; the register does not manufacture numeric growth goals.
+
+Added the proposed `core_journey_completed` event and `core_journey_completion_rate` metric to the Event and Measurement Dictionary. The event is derived only after the same journey's release, saved reframe, verification/practice state, updated-state persistence and trace references pass authoritative read-back. It means workflow completion, not psychological efficacy. The event and instrumentation remain unimplemented/unverified until the exact-build work is completed.
+
+**Correctness pass:** Checked KPI denominators and cohort maturity, stable journey IDs, idempotency, test-traffic exclusions, source-of-truth references, and alignment with the current event definitions.
+
+**Adversarial pass:** Explicitly prevented missing telemetry being shown as zero, stopped local button/counter state from becoming authoritative success, kept raw story/Mirror/reframe/transcript content out of analytics, and preserved zero-tolerance gates for prohibited first-visit payload fields, duplicate usage, missing consent evidence, false success and unapproved gift issuance. No product/clinical outcome claims are inferred from engagement.
+
+**Known status:** KPI definitions are drafted. Event instrumentation, source-of-truth sinks, dashboard, named owners, trustworthy baseline and numeric performance targets have not been verified. The exact-head agreement workflow must be rechecked after these edits; previous green runs are stale for the current branch head.
+
+**Measurements:** 1 KPI register added; 1 proposed core-journey event and 1 KPI metric added to the Event Dictionary; README/register/charter/handoff references updated; hard safety gate targets specified; baseline = not established; live KPI dashboard verified = no.
+
 ## Block 5 — final cross-workstream status sync
 
 **Snapshot:** 11 October 2026, after the current-head CI recheck.
