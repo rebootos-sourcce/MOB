@@ -1599,8 +1599,7 @@ function obBridgeCard(){
    Every figure is read off journeyMade over the packet: the story the mirror
    committed, how many places it touched and how many the person said yes to,
    the lines the release opened and at how many places, the answer to What
-   changed in the release card's own words, and the gift's counter, in the
-   allowance's own sentence. Nothing is typed here that the record does not
+   changed in the release card's own words, and, only when the active bank is verified and installed, the gift's counter. Nothing is typed here that the record does not
    hold. One way on, Go in, because a person who has just finished does not
    need a choice; the stage's Not now is hidden on this card.
 
@@ -1652,7 +1651,7 @@ function obEndCard(){
  rows+=obEndRow('Released',m.lines+(m.lines===1?' line':' lines')+' at '+places(m.addrs.length)+'.',s0);
  if(m.said&&RV_SAY[m.said])rows+=obEndRow('Answered','You said: '+esc(RV_SAY[m.said])+'.');
  var gift='';
- if(m.gift&&!m.gift.spent&&typeof planAllowance==='function'){
+ if(OB&&OB.giftReady===true&&m.gift&&!m.gift.spent&&typeof planAllowance==='function'){
   var al=planAllowance(null,m.gift.used);
   if(al&&al.inGift)gift='<p class="ob-p"><b>Gift.</b> You have '+esc(al.say)+'. '
    +'<span class="ob-dim">A pattern is one line you have not said before.</span></p>';}
