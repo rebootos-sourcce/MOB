@@ -101,9 +101,10 @@ for(const [W,H] of WIDTHS){
     meets the door again, so every reload comes back through it. */
  const door=async()=>{await booted(page);
   const g=await page.$('#loginb-skip'); if(g){await click('#loginb-skip'); await page.waitForTimeout(350);}
-  /* Test-only Worker response. Persist its session just as authFunnelCheckpoint does. */
+  /* Test-only Worker response supplies a bare ID, not a validated snapshot.
+     Reloads are read from this same fixture; the local meter must remain uncredited. */
   await page.evaluate(()=>{
-   window.authFunnelCheckpoint=patch=>{
+   const persist=patch=>{
     const current=typeof funnelSession==='function'?funnelSession():null;
     const session=Object.assign({},current&&current.session||{},patch,{
      starterGiftId:'fixture-approved-frozen-gift'
@@ -112,10 +113,20 @@ for(const [W,H] of WIDTHS){
      id:current&&current.id||'funnel-fixture',
      anonymousId:current&&current.anonymousId||'anonymous-fixture',
      credential:current&&current.credential||'c'.repeat(64),
-     session
+     session,giftVerified:false
     });
     if(typeof funnelKeep==='function')funnelKeep(fixture);
-    return Promise.resolve({ok:true,session});
+    return {session,gift:null,giftVerified:false};
+   };
+   window.authFunnelCheckpoint=patch=>{
+    const body=persist(patch);
+    return Promise.resolve({ok:true,session:body.session,gift:null,giftVerified:false});
+   };
+   window.authFunnelRead=()=>{
+    const current=typeof funnelSession==='function'?funnelSession():null;
+    return Promise.resolve({ok:!!(current&&current.session),status:200,body:{
+     session:current&&current.session,gift:null,giftVerified:false
+    }});
    };
   });};
  const reload=async()=>{await page.waitForTimeout(250); await page.reload({waitUntil:'load'}); await door();};
@@ -173,12 +184,10 @@ for(const [W,H] of WIDTHS){
   pick:OB.pick,nature:OB.giftNature,confirmed:OB.giftConfirmed,ready:OB.giftReady,
   session:(typeof funnelSession==='function'&&funnelSession()&&funnelSession().session)||null
  }));
- ok(restored.pick===0&&restored.nature==='anxiety'&&restored.confirmed&&restored.ready,
-  tag+'the server-saved nature and gift confirmation survive reload: '+J(restored));
- const GIFT=await page.evaluate(()=>typeof GIFT_N==='number'?GIFT_N:null);
- ok(!!(j&&j.gift&&j.gift.granted===GIFT&&j.gift.used===0&&j.gift.remaining===GIFT&&j.gift.src==='app'),
-  tag+'the server-confirmed synthetic gift is mirrored to a counter of '+GIFT+' with nothing used: '+J(j&&j.gift));
- ok(logged(j,'starter_gift_issued'),tag+'and the issue is on the log');
+ ok(restored.pick===0&&restored.nature==='anxiety'&&restored.confirmed&&!restored.ready,
+  tag+'the saved nature survives reload but a bare gift ID does not mark the local bank ready: '+J(restored));
+ ok(!(j&&j.gift)&&!logged(j,'starter_gift_issued'),
+  tag+'no local allowance or issue log is created without the approved bank adapter: '+J(j&&j.gift));
 
  /* ---- 4. settle, feel, body, and a reload on the story ---- */
  await click('[data-ob="next"]'); await click('[data-obfeel="1"]'); await click('[data-obplace="3"]');

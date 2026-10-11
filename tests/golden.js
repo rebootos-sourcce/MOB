@@ -191,8 +191,9 @@ function fakeWorker(origin, giftMode) {
       if (!s) return err(404, 'funnel session not found');
       const credOk = rec.cred && rec.cred === s.credential;
       if (method === 'GET' && !fm[2]) {
-        if (me) return s.userId === me.id ? json(200, { session: pub(s) }) : err(403, 'this funnel session is not yours');
-        return credOk ? json(200, { session: pub(s) }) : err(401, 'a valid funnel credential is required');
+        const giftVerified = !s.gift;
+        if (me) return s.userId === me.id ? json(200, { session: pub(s), gift:null, giftVerified }) : err(403, 'this funnel session is not yours');
+        return credOk ? json(200, { session: pub(s), gift:null, giftVerified }) : err(401, 'a valid funnel credential is required');
       }
       if (method === 'POST' && fm[2] === '/attach') {
         if (!me) return err(401, 'sign in first');
@@ -201,8 +202,8 @@ function fakeWorker(origin, giftMode) {
         /* Account attachment is allowed without a gift. The server must never
            mint a phantom set merely to make attachment succeed. */
         s.userId = me.id; s.version++; s.updatedAt = now();
-        return json(200, { session: pub(s), gift: s.gift ? { id: s.gift, ready: true } : null,
-          note: s.gift ? null : 'joined. no frozen 100-pattern set is available' });
+        return json(200, { session: pub(s), gift:null, giftVerified:!s.gift,
+          note: s.gift ? 'test double does not provide a validated frozen snapshot' : 'joined. no frozen 100-pattern set is available' });
       }
       if (method === 'PATCH' && fm[2] === '/checkpoint') {
         const owner = me && s.userId === me.id;
@@ -219,7 +220,7 @@ function fakeWorker(origin, giftMode) {
            this test double. The default and no-set mode fail closed. */
         if (giftMode === 'mapped' && s.selectedGroundId && s.giftNatureId && !s.gift) s.gift = mint('gift');
         s.version++; s.updatedAt = now();
-        return json(200, { session: pub(s) });
+        return json(200, { session: pub(s), gift:null, giftVerified:!s.gift });
       }
     }
     if (!me && /^\/v1\/(me|billing|auth\/signout|voice)/.test(p)) return err(401, 'sign in first');
@@ -492,6 +493,62 @@ async function door(browser, SITE, cut, giftMode) {
     'E19 privacy: no profile or sync endpoint receives the imported record');
   ok(!storySent,
     'E1q privacy: raw story text never crosses the Worker boundary');
+
+  /* Read-back contract: exact ordered IDs, hashes and source metadata are
+     validated; duplicates and category mismatch fail closed. The snapshot is
+     returned to the caller, not cached in the local funnel-session record. */
+  const snapshotRoundTrip = await page.evaluate(async () => {
+    const saved = {authCall:window.authCall, authSession:window.authSession,
+      funnelSession:window.funnelSession, funnelKeep:window.funnelKeep,
+      authFunnelJoin:window.authFunnelJoin};
+    let state={id:'snapshot-session',anonymousId:'anonymous-snapshot',credential:'c'.repeat(64),
+      session:{id:'snapshot-session',selectedGroundId:'anxiety',giftNatureId:'grief',starterGiftId:'fixture-gift'}};
+    let response;
+    const makeResponse = duplicate => {
+      const ids=Array.from({length:100},(_,i)=>'fixture-pattern-'+String(i).padStart(3,'0'));
+      const patterns=ids.map((id,i)=>({patternId:id,position:i,patternText:'Fixture sentence '+i+'.',
+        sourceKey:'fixture:'+i,sourceKind:'blueprint',nodeId:'node-'+(i%10),side:'left',
+        phase:'release',channel:'believing',lineIndex:i%50,patternHash:'a'.repeat(64)}));
+      if(duplicate){ids[99]=ids[0];patterns[99].patternId=ids[0];}
+      return {session:{id:'snapshot-session',selectedGroundId:'anxiety',giftNatureId:'grief',starterGiftId:'fixture-gift'},
+        giftVerified:true,gift:{id:'fixture-gift',ready:true,selectedGroundId:'anxiety',giftNatureId:'grief',
+        granted:100,items:100,itemCount:100,remaining:100,patternSetVersion:'set-v1',patternCatalogVersion:'catalog-v1',
+        patternSetHash:'b'.repeat(64),catalogHash:'c'.repeat(64),patternIds:ids,patterns}};
+    };
+    try {
+      window.authSession=()=>null;
+      window.funnelSession=()=>state;
+      window.funnelKeep=next=>{state=next;return true;};
+      window.authFunnelJoin=()=>Promise.resolve({ok:false,asked:false});
+      response=makeResponse(false);
+      window.authCall=()=>Promise.resolve({ok:true,status:200,body:response});
+      const checkpoint=await window.authFunnelCheckpoint({selectedGroundId:'anxiety',giftNatureId:'grief'});
+      const checkpointOk=checkpoint.ok&&checkpoint.giftVerified&&checkpoint.gift.patternIds.length===100
+        &&checkpoint.gift.patternIds[99]==='fixture-pattern-099'&&state.giftVerified===true&&!state.gift;
+      response=makeResponse(false);
+      const read=await window.authFunnelRead();
+      const reloadOk=read.ok&&read.body.giftVerified&&read.body.gift.patternIds.length===100
+        &&read.body.gift.patternIds[0]==='fixture-pattern-000'&&read.body.gift.patternIds[99]==='fixture-pattern-099'
+        &&state.session.starterGiftId==='fixture-gift'&&!state.gift;
+      response=makeResponse(true);
+      const bad=await window.authFunnelRead();
+      const duplicateRejected=bad.ok&&bad.body.giftVerified===false&&bad.body.gift===null&&state.giftVerified===false;
+      const mismatch=makeResponse(false); mismatch.gift.giftNatureId='anxiety';
+      const mismatchRejected=window.authFunnelGiftReadback(mismatch).giftVerified===false;
+      const noGift=window.authFunnelGiftReadback({session:{id:'no-gift',starterGiftId:null},gift:null,giftVerified:true});
+      return {checkpointOk,reloadOk,duplicateRejected,mismatchRejected,noGiftVerified:noGift.giftVerified===true};
+    } finally {
+      window.authCall=saved.authCall;window.authSession=saved.authSession;
+      window.funnelSession=saved.funnelSession;window.funnelKeep=saved.funnelKeep;
+      window.authFunnelJoin=saved.authFunnelJoin;
+    }
+  });
+  ok(snapshotRoundTrip.checkpointOk,
+    'checkpoint exposes only a complete, ordered server gift snapshot, '+J(snapshotRoundTrip));
+  ok(snapshotRoundTrip.reloadOk,
+    'reload read-back returns all 100 exact ordered IDs without caching the text bank, '+J(snapshotRoundTrip));
+  ok(snapshotRoundTrip.duplicateRejected&&snapshotRoundTrip.mismatchRejected&&snapshotRoundTrip.noGiftVerified,
+    'duplicate IDs and category mismatch fail closed while verified no-gift remains distinct, '+J(snapshotRoundTrip));
 
   /* Slow-response race: two valid entrypoints must share one create request. */
   const startRace = await page.evaluate(async () => {

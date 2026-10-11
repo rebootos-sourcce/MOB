@@ -129,14 +129,15 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
   authFunnelCheckpoint=patch=>Promise.resolve({ok:true,session:{
    selectedGroundId:patch.selectedGroundId,giftNatureId:patch.giftNatureId,
    starterGiftId:'fixture-approved-frozen-gift'
-  }});
+  },gift:{id:'fixture-approved-frozen-gift',ready:true},giftVerified:true});
  });
  await page.click('[data-obgift="4"]'); await page.waitForTimeout(80);   /* grief */
  st=await step(); ok(st.step===2,'gift-nature choice advances into settle, step '+st.step);
  const chosenGiftNature=await page.evaluate(()=>({nature:OB.giftNature,ready:OB.giftReady,
-  gift:CURP&&CURP.journey&&CURP.journey.gift||null}));
+  confirmed:OB.giftConfirmed,gift:CURP&&CURP.journey&&CURP.journey.gift||null}));
  ok(chosenGiftNature.nature==='grief','the selected gift nature is distinct from the starting point, got '+chosenGiftNature.nature);
- ok(chosenGiftNature.ready&&chosenGiftNature.gift,'the local gift counter follows only the synthetic server confirmation');
+ ok(chosenGiftNature.confirmed&&!chosenGiftNature.ready&&!chosenGiftNature.gift,
+  'a server gift ID does not mint a local allowance before the approved bank adapter exists');
 
  await page.click('[data-ob="next"]'); await page.waitForTimeout(80);     /* settle -> feel */
  st=await step(); ok(st.step===3,'feel, step '+st.step);

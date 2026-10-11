@@ -144,7 +144,17 @@ function funnelUuid(){
 var FUNNEL_STARTING=null;
 function authFunnelStart(){
  var existing=funnelSession();
- if(existing){ authFunnelJoin(); return Promise.resolve({ok:true,session:existing.session||null,reused:true}); }
+ if(existing){
+  return authFunnelJoin().then(function(){
+   return authFunnelRead().then(function(r){
+    if(r&&r.ok&&r.body&&r.body.session)
+     return {ok:true,session:r.body.session,gift:r.body.gift||null,giftVerified:r.body.giftVerified===true,reused:true};
+    return {ok:true,session:existing.session||null,gift:null,giftVerified:false,reused:true,readbackOk:false};
+   });
+  }).catch(function(){
+   return {ok:true,session:existing.session||null,gift:null,giftVerified:false,reused:true,readbackOk:false};
+  });
+ }
  if(FUNNEL_STARTING)return FUNNEL_STARTING.then(function(r){ return Object.assign({},r,{reused:true}); });
  var anonymousId=funnelUuid();
  var request=authCall('POST','/v1/funnel/session',{anonymousId:anonymousId},null,false).then(function(r){
@@ -169,18 +179,10 @@ function authFunnelStart(){
  FUNNEL_STARTING=shared;
  return shared;
 }
-/* JOINED TO THE ACCOUNT ONCE BOTH EXIST, WHICHEVER CAME FIRST. The join was
-   tried at sign in and nowhere else, and the first visit's session is made by
-   onboarding, which opens behind the door. So a person who pressed Create
-   account at the door, the ordinary way in, was signed in before the session
-   existed: the one try found nothing to join, and the session stayed anonymous
-   for good. tests/golden.js walked it and the server held userId null after
-   the whole first run. So the join is asked again wherever it can newly
-   succeed: when the session is made or found, and after each mark, because
-   the Worker refuses a session with no starter gift and will issue that gift
-   either with the session or at the first mark (REVIEW-audit-2026-10-09
-   pass2.md W3), and a no for that reason must not be the last word. A session
-   already joined is never sent again, and one ask is out at a time. */
+/* JOINED TO THE ACCOUNT WHENEVER BOTH EXIST. A first visit may begin before
+   sign-in, so session creation can precede account creation. Attachment is
+   allowed with or without an eligible gift set; a gift snapshot is a separate
+   read-back and never creates a local meter allowance. */
 var FUNNEL_JOINING=false;
 function authFunnelJoin(){
  var f=funnelSession(), s=authSession();
@@ -188,25 +190,85 @@ function authFunnelJoin(){
  FUNNEL_JOINING=true;
  return authFunnelAttach().then(function(r){ FUNNEL_JOINING=false; return r; });
 }
+/* A SERVER GIFT ID IS NOT A CLIENT BANK. Validate the complete read-back
+   at the network seam, but do not install it into the local meter. The server
+   catalog carries six verb channels; the local meter carries four tracks.
+   Stable IDs and an owner-approved deterministic adapter are still required. */
+function authFunnelGiftReadback(body){
+ var session=body&&body.session;
+ if(!session||typeof session.id!=='string'||!session.id)return {gift:null,giftVerified:false};
+ var giftId=session.starterGiftId;
+ if(giftId===null||giftId===undefined||giftId===''){
+  return {gift:null,giftVerified:body.giftVerified===true&&(body.gift===null||body.gift===undefined)};
+ }
+ if(typeof giftId!=='string'||!giftId||body.giftVerified!==true)return {gift:null,giftVerified:false};
+ var gift=body.gift;
+ if(!gift||typeof gift!=='object'||Array.isArray(gift)||gift.id!==giftId)return {gift:null,giftVerified:false};
+ var ids=Array.isArray(gift.patternIds)?gift.patternIds:[];
+ var patterns=Array.isArray(gift.patterns)?gift.patterns:[];
+ var channelKind={believing:'blueprint',perceiving:'archetype',thinking:'mask',
+  behaving:'saboteur',acting:'complex',feeling:'fetter'};
+ var rowsValid=patterns.length===100&&patterns.every(function(p,i){
+  return !!p&&typeof p.patternId==='string'&&p.patternId===ids[i]&&p.position===i
+   &&typeof p.patternText==='string'&&p.patternText.trim().length>0
+   &&typeof p.sourceKey==='string'&&p.sourceKey.length>0
+   &&p.sourceKind===channelKind[p.channel]
+   &&typeof p.nodeId==='string'&&p.nodeId.length>0
+   &&(p.side==='left'||p.side==='right')&&(p.phase==='release'||p.phase==='reframe')
+   &&Object.prototype.hasOwnProperty.call(channelKind,p.channel)
+   &&Number.isInteger(p.lineIndex)&&p.lineIndex>=0&&p.lineIndex<50
+   &&typeof p.patternHash==='string'&&/^[0-9a-f]{64}$/.test(p.patternHash);
+ });
+ var complete=gift.ready===true
+  &&typeof session.selectedGroundId==='string'&&session.selectedGroundId.length>0
+  &&typeof session.giftNatureId==='string'&&session.giftNatureId.length>0
+  &&gift.selectedGroundId===session.selectedGroundId&&gift.giftNatureId===session.giftNatureId
+  &&gift.granted===100&&gift.items===100&&gift.itemCount===100
+  &&Number.isInteger(gift.remaining)&&gift.remaining>=0&&gift.remaining<=100
+  &&typeof gift.patternSetVersion==='string'&&gift.patternSetVersion.length>0
+  &&typeof gift.patternCatalogVersion==='string'&&gift.patternCatalogVersion.length>0
+  &&typeof gift.patternSetHash==='string'&&/^[0-9a-f]{64}$/.test(gift.patternSetHash)
+  &&typeof gift.catalogHash==='string'&&/^[0-9a-f]{64}$/.test(gift.catalogHash)
+  &&ids.length===100&&ids.every(function(id){return typeof id==='string'&&id.length>0;})
+  &&new Set(ids).size===100&&rowsValid;
+ return complete?{gift:gift,giftVerified:true}:{gift:null,giftVerified:false};
+}
 function authFunnelRead(){
  var f=funnelSession(); if(!f)return Promise.resolve({ok:false,status:0,body:null});
  var s=authSession();
  var token=s&&s.token, path='/v1/funnel/session/'+encodeURIComponent(f.id);
- if(token)return authCall('GET',path,null,token);
- return authCall('GET',path,null,null,false);
+ var request=token?authCall('GET',path,null,token):authCall('GET',path,null,null,false);
+ return request.then(function(r){
+  if(r.ok&&r.body&&r.body.session){
+   var checked=authFunnelGiftReadback(r.body);
+   r.body.gift=checked.gift; r.body.giftVerified=checked.giftVerified;
+   var g=funnelSession()||f;
+   funnelKeep(Object.assign({},g,{session:r.body.session,
+    userId:r.body.session.userId||g.userId||null,giftVerified:checked.giftVerified}));
+  }
+  return r;
+ });
 }
 function authFunnelCheckpoint(patch){
- var f=funnelSession(), s=authSession(), extra=f&&f.credential?{'x-funnel-credential':f.credential}:null;
- if(!f||!f.id||!patch)return Promise.resolve({ok:false,status:0});
+ if(!patch)return Promise.resolve({ok:false,status:0,body:null});
+ var f=funnelSession();
+ if(!f||!f.id){
+  return authFunnelStart().then(function(start){
+   if(!start||!start.ok)return {ok:false,status:start&&start.status||0,body:start&&start.body||null};
+   return authFunnelCheckpoint(patch);
+  }).catch(function(){return {ok:false,status:0,body:null};});
+ }
+ var s=authSession(), extra=f.credential?{'x-funnel-credential':f.credential}:null;
  return authCall('PATCH','/v1/funnel/session/'+encodeURIComponent(f.id)+'/checkpoint',patch,s&&s.token,false,undefined,extra)
   .then(function(r){
    if(r.ok&&r.body&&r.body.session){
-    /* read again now, not the copy taken before the request: a join that
-       landed while this mark was out has already written its userId */
+    var checked=authFunnelGiftReadback(r.body);
+    r.body.gift=checked.gift; r.body.giftVerified=checked.giftVerified;
     var g=funnelSession()||f;
-    funnelKeep(Object.assign({},g,{session:r.body.session,userId:r.body.session.userId||g.userId||null}));
+    funnelKeep(Object.assign({},g,{session:r.body.session,userId:r.body.session.userId||g.userId||null,
+     giftVerified:checked.giftVerified}));
     authFunnelJoin();
-    return {ok:true,session:r.body.session};
+    return {ok:true,status:r.status,session:r.body.session,gift:checked.gift,giftVerified:checked.giftVerified};
    }
    return {ok:false,status:r.status,body:r.body};
   });
@@ -217,7 +279,10 @@ function authFunnelAttach(){
  return authCall('POST','/v1/funnel/session/'+encodeURIComponent(f.id)+'/attach',{credential:f.credential},s.token)
   .then(function(r){
    if(r.ok&&r.body&&r.body.session){
-    var next=Object.assign({},funnelSession()||f,{session:r.body.session,userId:r.body.session.userId||s.email||null});
+    var checked=authFunnelGiftReadback(r.body);
+    r.body.gift=checked.gift; r.body.giftVerified=checked.giftVerified;
+    var next=Object.assign({},funnelSession()||f,{session:r.body.session,userId:r.body.session.userId||s.email||null,
+     giftVerified:checked.giftVerified});
     funnelKeep(next);
    }
    return r;

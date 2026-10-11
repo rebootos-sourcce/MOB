@@ -796,7 +796,8 @@ function obResume(jr){
    if(OB_STARTS[OB.pick]&&OB_STARTS[OB.pick].k===savedSession.selectedGroundId){
     OB.giftNature=savedSession.giftNatureId;
     OB.giftConfirmed=true;
-    OB.giftReady=!!savedSession.starterGiftId;
+    /* A gift ID does not prove that the approved content bank is installed. */
+    OB.giftReady=false;
    }
   }
  }
@@ -1697,12 +1698,10 @@ addEventListener('click',function(e){
        &&r.session.giftNatureId===nature.k
        &&OB.pick===giftGroundIndex&&OB.giftNature===nature.k){
       OB.giftConfirmed=true;
-      OB.giftReady=!!r.session.starterGiftId;
-      /* A local allowance is mirrored only if the Worker confirmed a starter
-         gift. Save immediately so a reload cannot lose that issued counter. */
-      if(OB.giftReady&&OB.rec){
-       var gi=journeyGiftIssue(CURP,'app'); if(!gi.ok)obJyFail(gi.why);
-      }
+      /* A verified server snapshot is not yet a usable MOB meter bank.
+         Six server verb channels do not map to four meter tracks without an
+         owner-approved deterministic adapter. Never mint local allowance here. */
+      OB.giftReady=false;
       if(OB.rec)obSave();
       return;
      }
@@ -1779,16 +1778,12 @@ addEventListener('click',function(e){
   if(k==='done'&&typeof authFunnelCheckpoint==='function')authFunnelCheckpoint({tutorialCompleted:true});
   obClose(k); return;
  }});
-/* THE HAND OFF, WRITTEN, F13, for either door. A new local gift counter is
-   created only if the server confirmed an eligible frozen set; the existing
-   account allowance remains untouched when no set is available. The log says
-   the first release started, and the walk holds the meter's two counts. */
+/* THE HAND OFF, WRITTEN, F13, for either door. Starter-gift issuance is
+   disabled until an owner-approved adapter maps exact server IDs into the
+   active MOB bank. The log records the release handoff without minting credit. */
 function obHandOff(pl,door,t){
  if(!CURP||typeof journeyWalk!=='function')return false;
  var m=CURP.meter||{}, w=(CURP.journey&&CURP.journey.walk)||{};
- if(OB.giftReady||(CURP.journey&&CURP.journey.gift)){
-  var gi=journeyGiftIssue(CURP,'app'); if(!gi.ok)obJyFail(gi.why);
- }
  var lg=journeyLog(CURP,'first_release_started',null,{lines:pl.lines,places:pl.addrs.length});
  if(!lg.ok)obJyFail(lg.why);
  var r=journeyWalk(CURP,'release',{door:door, pick:w.pick, feel:w.feel, place:w.place, t:t,
