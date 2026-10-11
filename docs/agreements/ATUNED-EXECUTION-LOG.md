@@ -23,6 +23,23 @@
 
 **Measurements:** 1 charter added; README/register/build handoff linked; PR #66 gate last observed at 28 successful plus 1 in progress; Reboot-OS PR #35 external Cloudflare check failed; owner-approved stable pattern IDs = 0; legal artifacts approved for publication = 0.
 
+## Block 5 — final cross-workstream status sync
+
+**Snapshot:** 11 October 2026, after the current-head CI recheck.
+
+- Canonical charter is added and linked from the README, document register and build handoff. PR #67's description now names the current branch head and differentiates the current workflow from prior green history.
+- PR #67 head before this log-only commit: `010ed5996d44fdae7cf605f9949f40d8cd1b00fe`; exact-head run [#38183584374](https://github.com/rebootos-sourcce/MOB/actions/runs/38183584374) was queued. This log update creates a newer head, so its own exact-head run must be observed before calling the updated pack green.
+- MOB PR #66 remains draft/open at `61174502691d1bc353a479604b35bbf5c6d53187`. Run [#38182154741](https://github.com/rebootos-sourcce/MOB/actions/runs/38182154741) shows 29 successful jobs and one queued aggregate `gates-pass`, no failures visible. Final conclusion not yet available.
+- Reboot-OS PR #35 remains draft/open at `74755057c54e11a82580b6c387f258f40a75f9fc`. Repository-owned checks succeeded; the external Cloudflare check failed in build [3ac5f30c-a112-436e-9d5d-f2c1be36b161](https://dash.cloudflare.com/b34a8a4f24d5ac71f7b386c240a6da90/workers/services/view/atuned-os/production/builds/3ac5f30c-a112-436e-9d5d-f2c1be36b161). The latest evidence was added to diagnosis issue [#37](https://github.com/rebootos-sourcce/Reboot-OS/issues/37) and PR #35's description. Root cause remains unknown pending authenticated Cloudflare log access.
+- Static review covered all 17 Markdown files in the PR's changed-file list for top-level heading and final newline. The five changed files checked in this batch had 24 relative-link occurrences, including 15 links targeting agreement-pack documents; no unresolved agreement-pack targets were found.
+- P0 gift catalog issue [#58](https://github.com/rebootos-sourcce/MOB/issues/58) remains open. Owner-approved production stable pattern IDs = 0. Production gift issuance remains disabled. Retention scope and legal wording remain blocked as already documented.
+
+**Review pass 1:** Cross-checked file links, branch SHA, exact-head workflow references, active PR metadata and the external check-run record.
+
+**Review pass 2:** Confirmed the current status wording does not imply CI success for a queued workflow, does not treat repository checks as a Cloudflare pass, does not infer gift readiness from snapshot validation, and does not convert owner intent into deployment evidence.
+
+**Measurements:** 17 Markdown artifacts; 5 current-batch files rechecked; 24 relative-link occurrences parsed; 15 internal agreement targets; 0 unresolved agreement-pack targets; PR #66 aggregate gate queued; PR #35 external Cloudflare check failed; production pattern IDs approved = 0; consumer legal artifacts approved for publication = 0.
+
 ## Block 0 — inventory and live evidence
 
 > Historical snapshot: Blocks 0–3 preserve their original observations. Block 4 is the later live refresh and supersedes any conflicting prior PR head or workflow status below.
