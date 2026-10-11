@@ -240,3 +240,15 @@ Timestamp: 2026-10-11 02:53 UTC
   2. The full golden fake Worker returned no named-pass result on sign out while the actual Worker implementation returns `funnel: { ended }`. The old test therefore asserted a failure notice on a successful pass-end. The fixture now models the actual contract and the regression verifies the named pass was ended.
 - Source of the Worker sign-out contract: `Reboot-OS/atuned/server/src/index.js`, route `POST /v1/auth/signout`, calls `endPass(env, b.funnel.id, b.funnel.credential)` and returns its result.
 - New current candidate is awaiting all required jobs. Alpha assertion floor remains provisional at 56; measure the clean current Alpha summary, then raise the floor and update the gate document in the same patch. Pass 2 remains pending.
+
+
+### Pass-1 follow-through on current branch heads
+
+Timestamp: 2026-10-11 02:54 UTC
+
+- MOB #56 head is now `dbee38e8751a798071a5092b117e8d05ec49c37a`, latest run [38106517329](https://github.com/rebootos-sourcce/MOB/actions/runs/38106517329).
+- Integrated #59 head is now `79e6e83efb67d144241b95066247758482efa1ef`, latest run [38106536609](https://github.com/rebootos-sourcce/MOB/actions/runs/38106536609).
+- Those newest runs were queued when checked. The prior integrated run [38106319574](https://github.com/rebootos-sourcce/MOB/actions/runs/38106319574) targets the previous head and cannot sign off the current candidate.
+- P0-C's current-head run [38106092787](https://github.com/rebootos-sourcce/MOB/actions/runs/38106092787) has the fast gate green and 13 of 27 jobs complete; no failures observed at that checkpoint.
+- The current P0-B branch now includes the durable rollback regression and corrected sign-out expectation; the integrated branch carries both plus the blocking Alpha matrix.
+- Pass 1 fixes are committed. Pass 2 source review is underway, but it will not be recorded as closed until current candidate checks are examined and any new findings are patched. No P0 is closed yet.
