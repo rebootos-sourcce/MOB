@@ -198,9 +198,18 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
    var g=d&&d.closest('.ac-grp'); return g?g.innerText:null;});
   if(del==null)fail(at('delete'),'missing the group that holds Delete');
   else hold('app',at('delete'),del,'delete');
-  if(await p.$('#acdel')){await p.click('#acdel').catch(()=>{}); await p.waitForTimeout(300);}
+  const delButton=await p.$('#acdel');
+  if(!delButton){fail(at('delete:confirm'),'missing #acdel control; confirmation cannot be tested');}
+  else {
+   const visible=await delButton.isVisible().catch(()=>false);
+   if(!visible)fail(at('delete:confirm'),'#acdel exists but is not visible');
+   else {
+    try { await delButton.click({timeout:3000}); await p.waitForTimeout(300); }
+    catch(e){fail(at('delete:confirm'),'could not activate #acdel: '+String(e.message||e).slice(0,180));}
+   }
+  }
   dialogs.forEach(m=>hold('app',at('delete:confirm'),m));
-  if(!dialogs.length)console.log('  note '+at('delete:confirm')+' no confirm was asked, so its words were not read here');
+  if(!dialogs.length)fail(at('delete:confirm'),'Delete activation produced no browser confirmation; assertion not exercised');
 
   /* the profile sheet, which nothing opens today, opened here so its words
      are still held; and the feedback sheet, where a person decides to send */
