@@ -506,7 +506,7 @@ async function door(browser, SITE, cut, giftAt) {
         return new Promise(resolve => {
           resolvers.push(() => resolve({
             ok:true, status:201,
-            body:{session:{id:'race-session-'+requests,anonymousId:body.anonymousId},credential:'test-credential'}
+            body:{session:{id:'race-session-'+requests,anonymousId:body.anonymousId},credential:'test-credential'.padEnd(64,'0')}
           }));
         });
       };
@@ -548,7 +548,7 @@ async function door(browser, SITE, cut, giftAt) {
         if (requests === 1) return Promise.reject(new Error('simulated network rejection'));
         return Promise.resolve({ok:true,status:201,body:{
           session:{id:'retry-session',anonymousId:'retry-anonymous'},
-          credential:'retry-credential'
+          credential:'retry-credential'.padEnd(64,'0')
         }});
       };
       const failed = await window.authFunnelStart();
@@ -584,7 +584,7 @@ async function door(browser, SITE, cut, giftAt) {
       window.authFunnelJoin = () => { joins++; return Promise.resolve({ok:false}); };
       window.authCall = () => Promise.resolve({ok:true,status:201,body:{
         session:{id:'not-persisted-session',anonymousId:'not-persisted-anonymous'},
-        credential:'not-persisted-credential'
+        credential:'not-persisted-credential'.padEnd(64,'0')
       }});
       const result = await window.authFunnelStart();
       return {ok:result.ok,kept:result.kept,joins,startingCleared:window.FUNNEL_STARTING===null};
@@ -634,6 +634,40 @@ async function door(browser, SITE, cut, giftAt) {
     && funnelKeepRollback.removes===0 && funnelKeepRollback.priorDurable
     && funnelKeepRollback.priorMemory,
     'a corrupt funnel-session write is refused and prior bytes and memory are restored, '+J(funnelKeepRollback));
+
+  /* A 201 is not enough when its session identifier or one-time credential
+     cannot be used by the Worker contract. Refuse malformed credentials before
+     storing them or attempting to join the account. */
+  const malformedSessionResponse = await page.evaluate(async () => {
+    const saved = {authCall:window.authCall, funnelSession:window.funnelSession,
+      funnelKeep:window.funnelKeep, authFunnelJoin:window.authFunnelJoin,
+      starting:window.FUNNEL_STARTING};
+    let keeps = 0, joins = 0, results = [];
+    const replies = [
+      {session:{id:'',anonymousId:'bad-id'},credential:'c'.repeat(64)},
+      {session:{id:'short-credential-session',anonymousId:'bad-credential'},credential:'too-short'}
+    ];
+    try {
+      window.funnelSession = () => null;
+      window.funnelKeep = () => { keeps++; return true; };
+      window.authFunnelJoin = () => { joins++; return Promise.resolve({ok:false}); };
+      for (const reply of replies) {
+        window.FUNNEL_STARTING = null;
+        window.authCall = () => Promise.resolve({ok:true,status:201,body:reply});
+        const result = await window.authFunnelStart();
+        results.push({ok:result.ok, startingCleared:window.FUNNEL_STARTING===null});
+      }
+      return {results,keeps,joins};
+    } finally {
+      window.authCall = saved.authCall; window.funnelSession = saved.funnelSession;
+      window.funnelKeep = saved.funnelKeep; window.authFunnelJoin = saved.authFunnelJoin;
+      window.FUNNEL_STARTING = saved.starting;
+    }
+  });
+  ok(malformedSessionResponse.results.length===2
+    && malformedSessionResponse.results.every(r=>r.ok===false&&r.startingCleared)
+    && malformedSessionResponse.keeps===0&&malformedSessionResponse.joins===0,
+    'empty session IDs and short credentials are refused before persistence or join, '+J(malformedSessionResponse));
 
   station(5, 'Q: the first release, from the Story page');
   await Q.tab(0);
