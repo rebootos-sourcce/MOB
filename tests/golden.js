@@ -222,8 +222,8 @@ function fakeWorker(origin, giftAt) {
     }
     if (method === 'POST' && p === '/v1/auth/signout') {
       delete st.tok[m[1]];
-      /* Mirror the production Worker contract: ending the account login and
-         ending the named anonymous first-visit pass are separate results. */
+      /* Match the Worker contract: account sign out and first-visit pass end
+         are separate effects; only confirm the latter for the named credential. */
       if (body && body.funnel) {
         const s = st.fun[body.funnel.id];
         const ended = !!(s && s.credential === body.funnel.credential);
@@ -600,6 +600,41 @@ async function door(browser, SITE, cut, giftAt) {
     && failedSessionPersistence.joins===0 && failedSessionPersistence.startingCleared,
     'a session that cannot be persisted is a truthful failure and is not joined, '+J(failedSessionPersistence));
 
+  /* A failed session write must restore the existing durable bytes, not only
+     the in-memory reference. Simulate a store that corrupts the first write
+     but accepts the rollback write. */
+  const funnelKeepRollback = await page.evaluate(() => {
+    const saved = {store:window.STORE, bound:window.STORE_BOUND,
+      session:window.FUNNEL_S, read:window.FUNNEL_READ};
+    const key = window.FUNNEL_KEY;
+    const priorState = {id:'prior-session',anonymousId:'prior-anonymous',
+      credential:'prior-credential',session:{id:'prior-session'}};
+    const priorText = JSON.stringify(priorState);
+    const data = {[key]:priorText};
+    let writes = 0, removes = 0;
+    try {
+      window.STORE_BOUND = true;
+      window.STORE = {
+        get(k) { return Object.prototype.hasOwnProperty.call(data,k) ? data[k] : null; },
+        set(k,v) { writes++; data[k] = writes===1 ? String(v).slice(0,-1) : String(v); },
+        remove(k) { removes++; delete data[k]; }
+      };
+      window.FUNNEL_S = priorState;
+      window.FUNNEL_READ = true;
+      const kept = window.funnelKeep({id:'new-session',anonymousId:'new-anonymous',
+        credential:'new-credential',session:{id:'new-session'}});
+      return {kept,writes,removes,priorDurable:data[key]===priorText,
+        priorMemory:window.FUNNEL_S===priorState && window.FUNNEL_READ===true};
+    } finally {
+      window.STORE = saved.store; window.STORE_BOUND = saved.bound;
+      window.FUNNEL_S = saved.session; window.FUNNEL_READ = saved.read;
+    }
+  });
+  ok(funnelKeepRollback.kept===false && funnelKeepRollback.writes===2
+    && funnelKeepRollback.removes===0 && funnelKeepRollback.priorDurable
+    && funnelKeepRollback.priorMemory,
+    'a corrupt funnel-session write is refused and prior bytes and memory are restored, '+J(funnelKeepRollback));
+
   station(5, 'Q: the first release, from the Story page');
   await Q.tab(0);
   const cq0 = (await Q.live()).CQ;
@@ -751,10 +786,13 @@ async function door(browser, SITE, cut, giftAt) {
   await page.evaluate(() => { const b = document.querySelector('[data-acs="account"]'); if (b) b.click(); });
   await page.waitForTimeout(250);
   ok(await Q.click('#acout'), 'Sign out is there to press');
-  const out = await Q.waitSaid(/^ok\|Signed out on this browser\./, 6000);
-  ok(!!out && /server could not confirm that the first visit pass ended/.test(out),
-    'and it says sign-in ended locally but the first-visit pass was not confirmed, ' + J(out));
-  ok(wq.reqs('POST', /^\/v1\/auth\/signout$/).length === 1, 'and the server was told');
+  const out = await Q.waitSaid(/^ok\|Signed out\.$/, 6000);
+  const signoutReqs = wq.reqs('POST', /^\/v1\/auth\/signout$/);
+  ok(!!out, 'the server confirmed sign out and first-visit pass end, ' + J(out));
+  ok(signoutReqs.length === 1 && !!(signoutReqs[0].body && signoutReqs[0].body.funnel)
+    && wq.st.fun[signoutReqs[0].body.funnel.id]
+    && wq.st.fun[signoutReqs[0].body.funnel.id].passEnded === true,
+    'the named first-visit credential was sent once and the fake Worker confirms it ended');
   await Q.reload();
   ok(await page.evaluate(() => !!(typeof LOGIN !== 'undefined' && LOGIN.open)), 'after a reload the door stands again: nobody is signed in here');
   /* E20, now a positive end-to-end assertion. Sign back into the same account,

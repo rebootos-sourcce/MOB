@@ -99,7 +99,24 @@ function funnelSession(){
 }
 function funnelKeep(s){
  if(typeof STORE_BOUND==='undefined'||!STORE_BOUND)return false;
- var previous=FUNNEL_S, previousRead=FUNNEL_READ;
+ var previous=FUNNEL_S, previousRead=FUNNEL_READ, prior;
+ /* A failed read means we cannot establish what rollback must preserve. */
+ try{ prior=STORE.get(FUNNEL_KEY); }catch(e){ return false; }
+ function restorePrior(){
+  try{
+   var current=STORE.get(FUNNEL_KEY);
+   if(prior===null||prior===undefined){
+    if(current===null||current===undefined)return true;
+    if(typeof STORE.remove!=='function')return false;
+    STORE.remove(FUNNEL_KEY);
+    current=STORE.get(FUNNEL_KEY);
+    return current===null||current===undefined;
+   }
+   if(current===prior)return true;
+   STORE.set(FUNNEL_KEY,prior);
+   return STORE.get(FUNNEL_KEY)===prior;
+  }catch(e){ return false; }
+ }
  try{
   var txt=s?JSON.stringify(s):'';
   STORE.set(FUNNEL_KEY,txt);
@@ -108,8 +125,10 @@ function funnelKeep(s){
    return true;
   }
  }catch(e){}
- /* Do not keep an unpersisted credential in memory as if it survived reload.
-    Preserve the prior session if a clear/write could not be verified. */
+ /* A non-throwing corrupt write or a partial-write exception must not destroy
+    the previous visit credential. Never report success until the exact bytes
+    read back, and keep the prior in-memory state on refusal. */
+ restorePrior();
  FUNNEL_S=previous; FUNNEL_READ=previousRead;
  return false;
 }
