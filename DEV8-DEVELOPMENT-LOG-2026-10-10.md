@@ -252,3 +252,14 @@ Timestamp: 2026-10-11 02:54 UTC
 - P0-C's current-head run [38106092787](https://github.com/rebootos-sourcce/MOB/actions/runs/38106092787) has the fast gate green and 13 of 27 jobs complete; no failures observed at that checkpoint.
 - The current P0-B branch now includes the durable rollback regression and corrected sign-out expectation; the integrated branch carries both plus the blocking Alpha matrix.
 - Pass 1 fixes are committed. Pass 2 source review is underway, but it will not be recorded as closed until current candidate checks are examined and any new findings are patched. No P0 is closed yet.
+
+
+### Second source pass and latest integrated head
+
+Timestamp: 2026-10-11 02:56 UTC
+
+- A second contract review found the client accepted an empty session ID and credentials shorter than the server's 32-character minimum. P0-B now refuses both before durable write or account join, using the same contract the Worker relies on for reading and ending the pass. A browser regression covers both malformed responses.
+- Latest P0-B head: `1a65df18e3173fd9310df4236d51dd3b4bc831ad`. Latest observed current-head workflow(s): [38106706994](https://github.com/rebootos-sourcce/MOB/actions/runs/38106706994) (queued), [38106517329](https://github.com/rebootos-sourcce/MOB/actions/runs/38106517329) (queued).
+- Latest integrated P0 candidate head: `543e53be3e851eee5cfcd855bc7bf950c7fe345e`. Latest observed current-head workflow(s): [38106724247](https://github.com/rebootos-sourcce/MOB/actions/runs/38106724247) (queued).
+- Latest P0-C standalone run [38106092787](https://github.com/rebootos-sourcce/MOB/actions/runs/38106092787) has a green fast gate, including **5,038 engine assertions passed, 0 failed, 10 pre-existing expected-red**, and funnel package **44 passed, 0 failed**. Browser and additional report gates were still running at last poll. This is P0-C source-branch evidence only, not final integrated evidence.
+- Pass-2 review continues on the same fixed candidate. No P0 may close until current integrated jobs are green, Alpha's actual summary is measured, the floor is raised without lowering existing floors, any floor/doc change is rerun, and independent pass 2 finds no remaining must-fix issue. No merge or deploy.
