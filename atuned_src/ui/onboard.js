@@ -74,7 +74,7 @@ var OB_NSTEPS=JOURNEY_WALK.indexOf('release');
    release has landed. It is not a ninth dot on the rail; the rail reads done. */
 var OB_END=JOURNEY_WALK.indexOf('end');
 var OB={open:false, step:0, replay:false,
- pick:null, feel:null, place:null, giftNature:null, choosingGiftNature:false,
+ pick:null, feel:null, place:null, giftNature:null, choosingGiftNature:false, giftSaving:false, giftResult:null,
  text:'', commit:null, corr:'', fixes:[],
  /* the mirror's read of the story before it is committed, each
     correction's read, and one answer per address: yes or no, by node id */
@@ -1004,7 +1004,11 @@ function obRender(){
      anything: a person who answers three laws and leaves has a real partial
      reading, not a failed one, the same rule Verification on the funnel
      holds for "Nothing changed." */
-  if(OB.choosingGiftNature){
+  if(OB.giftSaving){
+   out=obCard('Gift','Checking your starter set.',
+    '<p class="ob-p ob-dim">Checking whether a frozen 100-pattern set is available for this focus.</p>',
+    '');
+  } else if(OB.choosingGiftNature){
    out=obCard('Gift','What would help most right now?',
     '<p class="ob-p ob-dim">Choose the focus for your first 100 patterns. It can be different from what brought you here.</p>'
     +obChips(OB_GIFT_NATURES,'obgift',OB.giftNature,false),
@@ -1039,7 +1043,11 @@ function obRender(){
    +'<p class="ob-p">Notice what is here.</p>'
    +'<div class="ob-loopw">'+obLoopRing()+obLoopRows()+'</div>'
    +'<p class="ob-p ob-dim">Four parts, and the fourth goes back to the first. '
-   +'You are about to walk one turn of it.</p>',
+   +'You are about to walk one turn of it.</p>'
+   +(OB.giftResult==='unavailable'?'<p class="ob-p ob-dim">No approved set is available for this focus yet. You can continue without a gift.</p>':'')
+   +(OB.giftResult==='unverified'?'<p class="ob-p ob-dim">A starter set could not be verified, so none was added. You can continue without a gift.</p>':'')
+   +(OB.giftResult==='issued'?'<p class="ob-p ob-dim">Your first 100 patterns are ready for '+esc(OB_GIFT_NATURES.find(function(x){return x.k===OB.giftNature;})?.n||OB.giftNature)+'.</p>':''),
+
    '<button type="button" class="btn pri" data-ob="next">Continue</button>'
    +'<button type="button" class="btn" data-ob="back">Back</button>');
  }
@@ -1656,12 +1664,26 @@ addEventListener('click',function(e){
  if(gn){
   var nature=OB_GIFT_NATURES[+gn.getAttribute('data-obgift')];
   var ground=OB_STARTS[OB.pick];
-  if(!nature||!ground)return;
-  OB.giftNature=nature.k; OB.choosingGiftNature=false;
-  if(typeof authFunnelCheckpoint==='function')
-   authFunnelCheckpoint({selectedGroundId:ground.k,giftNatureId:nature.k});
-  if(OB.rec){var gi=journeyGiftIssue(CURP,'app',undefined,nature.k); if(!gi.ok)obJyFail(gi.why);}
-  OB.step=2; obRender(); return;
+  if(!nature||!ground||OB.giftSaving)return;
+  OB.giftNature=nature.k; OB.giftSaving=true; OB.giftResult=null; obRender();
+  var request;
+  try{
+   request=(typeof authFunnelCheckpoint==='function')
+    ?authFunnelCheckpoint({selectedGroundId:ground.k,giftNatureId:nature.k})
+    :Promise.resolve({ok:false,status:0});
+  }catch(err){request=Promise.resolve({ok:false,status:0});}
+  Promise.resolve(request).then(function(r){
+   OB.giftSaving=false;
+   if(r&&r.ok&&r.session&&r.session.starterGiftId){
+    OB.giftResult='issued';
+    if(OB.rec){var gi=journeyGiftIssue(CURP,'app',undefined,nature.k); if(!gi.ok)obJyFail(gi.why);}
+   } else OB.giftResult=r&&r.ok?'unavailable':'unverified';
+   OB.choosingGiftNature=false; OB.step=2; obRender();
+  },function(){
+   OB.giftSaving=false; OB.giftResult='unverified';
+   OB.choosingGiftNature=false; OB.step=2; obRender();
+  });
+  return;
  }
  var fe=t.closest?t.closest('[data-obfeel]'):null;
  if(fe){ OB.feel=+fe.getAttribute('data-obfeel'); OB.step=4; obRender(); return; }
@@ -1681,7 +1703,7 @@ addEventListener('click',function(e){
  if(k==='giftSkip'){
   var ground=OB_STARTS[OB.pick];
   if(ground&&typeof authFunnelCheckpoint==='function')authFunnelCheckpoint({selectedGroundId:ground.k});
-  OB.choosingGiftNature=false; OB.giftNature=null; OB.step=2; obRender(); return;
+  OB.choosingGiftNature=false; OB.giftNature=null; OB.giftResult='skipped'; OB.step=2; obRender(); return;
  }
  if(k==='storydone'){ obStoryDone(); return; }
  if(k==='storyskip'){
@@ -1735,7 +1757,7 @@ addEventListener('click',function(e){
 function obHandOff(pl,door,t){
  if(!CURP||typeof journeyWalk!=='function')return false;
  var m=CURP.meter||{}, w=(CURP.journey&&CURP.journey.walk)||{};
- if(OB.giftNature){var gi=journeyGiftIssue(CURP,'app',undefined,OB.giftNature); if(!gi.ok)obJyFail(gi.why);}
+ if(OB.giftResult==='issued'&&OB.giftNature){var gi=journeyGiftIssue(CURP,'app',undefined,OB.giftNature); if(!gi.ok)obJyFail(gi.why);}
  var lg=journeyLog(CURP,'first_release_started',null,{lines:pl.lines,places:pl.addrs.length});
  if(!lg.ok)obJyFail(lg.why);
  var r=journeyWalk(CURP,'release',{door:door, pick:w.pick, feel:w.feel, place:w.place, t:t,
