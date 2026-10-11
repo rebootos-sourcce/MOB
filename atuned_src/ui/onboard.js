@@ -74,7 +74,7 @@ var OB_NSTEPS=JOURNEY_WALK.indexOf('release');
    release has landed. It is not a ninth dot on the rail; the rail reads done. */
 var OB_END=JOURNEY_WALK.indexOf('end');
 var OB={open:false, step:0, replay:false,
- pick:null, feel:null, place:null,
+ pick:null, feel:null, place:null, giftNature:null, choosingGiftNature:false,
  text:'', commit:null, corr:'', fixes:[],
  /* the mirror's read of the story before it is committed, each
     correction's read, and one answer per address: yes or no, by node id */
@@ -1004,6 +1004,13 @@ function obRender(){
      anything: a person who answers three laws and leaves has a real partial
      reading, not a failed one, the same rule Verification on the funnel
      holds for "Nothing changed." */
+  if(OB.choosingGiftNature){
+   out=obCard('Gift','What would help most right now?',
+    '<p class="ob-p ob-dim">Choose the focus for your first 100 patterns. It can be different from what brought you here.</p>'
+    +obChips(OB_GIFT_NATURES,'obgift',OB.giftNature,false),
+    '<button type="button" class="btn" data-ob="giftSkip">Continue without a gift</button>'
+    +'<button type="button" class="btn" data-ob="back">Back</button>');
+  } else {
   out=obCard('Ask','What brought you here?',
    '<p class="ob-p ob-dim">Pick the one that is closest. Nothing is locked in.</p>'
    +obChips(OB_STARTS,'obpick',OB.pick,false)
@@ -1012,6 +1019,7 @@ function obRender(){
    +'and stop anytime: a few answered is still a real reading, not a failed one.</p>',
    '<button type="button" class="btn" data-ob="intake">Open Avatar</button>'
    +'<button type="button" class="btn" data-ob="back">Back</button>');
+  }
  }
  else if(s===2){
   /* SETTLE. His two lines, kept exactly as the mockup carries them
@@ -1638,11 +1646,21 @@ addEventListener('click',function(e){
  if(pk){
   OB.pick=+pk.getAttribute('data-obpick');
   var ground=OB_STARTS[OB.pick];
-  if(ground&&typeof authFunnelCheckpoint==='function')authFunnelCheckpoint({selectedGroundId:ground.k});
-  /* F13: the pick is on the log by its key, and it issues the gift, once
-     (TDD section 10, "immediately after selecting the starting point") */
-  if(ground&&OB.rec){ obJy('ground_selected',ground.k);
-   var gi=journeyGiftIssue(CURP,'app'); if(!gi.ok)obJyFail(gi.why); }
+  /* Keep the existing 12-point context. The 6-category gift choice follows it
+     as a separate decision; the server receives both fields together so a
+     racing pair of checkpoint requests cannot lose the selected gift nature. */
+  if(ground&&OB.rec)obJy('ground_selected',ground.k);
+  OB.giftNature=null; OB.choosingGiftNature=true; obRender(); return;
+ }
+ var gn=t.closest?t.closest('[data-obgift]'):null;
+ if(gn){
+  var nature=OB_GIFT_NATURES[+gn.getAttribute('data-obgift')];
+  var ground=OB_STARTS[OB.pick];
+  if(!nature||!ground)return;
+  OB.giftNature=nature.k; OB.choosingGiftNature=false;
+  if(typeof authFunnelCheckpoint==='function')
+   authFunnelCheckpoint({selectedGroundId:ground.k,giftNatureId:nature.k});
+  if(OB.rec){var gi=journeyGiftIssue(CURP,'app',undefined,nature.k); if(!gi.ok)obJyFail(gi.why);}
   OB.step=2; obRender(); return;
  }
  var fe=t.closest?t.closest('[data-obfeel]'):null;
@@ -1659,7 +1677,12 @@ addEventListener('click',function(e){
  var b=t.closest?t.closest('[data-ob]'):null; if(!b)return;
  var k=b.getAttribute('data-ob');
  if(k==='next'){ OB.step++; obRender(); return; }
- if(k==='back'){ OB.step=Math.max(0,OB.step-1); obRender(); return; }
+ if(k==='back'){ if(OB.choosingGiftNature){OB.choosingGiftNature=false; obRender(); return;} OB.step=Math.max(0,OB.step-1); obRender(); return; }
+ if(k==='giftSkip'){
+  var ground=OB_STARTS[OB.pick];
+  if(ground&&typeof authFunnelCheckpoint==='function')authFunnelCheckpoint({selectedGroundId:ground.k});
+  OB.choosingGiftNature=false; OB.giftNature=null; OB.step=2; obRender(); return;
+ }
  if(k==='storydone'){ obStoryDone(); return; }
  if(k==='storyskip'){
   /* a story read on an earlier Done and then withdrawn is not left pending */
@@ -1712,7 +1735,7 @@ addEventListener('click',function(e){
 function obHandOff(pl,door,t){
  if(!CURP||typeof journeyWalk!=='function')return false;
  var m=CURP.meter||{}, w=(CURP.journey&&CURP.journey.walk)||{};
- var gi=journeyGiftIssue(CURP,'app'); if(!gi.ok)obJyFail(gi.why);
+ if(OB.giftNature){var gi=journeyGiftIssue(CURP,'app',undefined,OB.giftNature); if(!gi.ok)obJyFail(gi.why);}
  var lg=journeyLog(CURP,'first_release_started',null,{lines:pl.lines,places:pl.addrs.length});
  if(!lg.ok)obJyFail(lg.why);
  var r=journeyWalk(CURP,'release',{door:door, pick:w.pick, feel:w.feel, place:w.place, t:t,
