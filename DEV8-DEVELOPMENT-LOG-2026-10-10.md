@@ -263,3 +263,28 @@ Timestamp: 2026-10-11 02:56 UTC
 - Latest integrated P0 candidate head: `543e53be3e851eee5cfcd855bc7bf950c7fe345e`. Latest observed current-head workflow(s): [38106724247](https://github.com/rebootos-sourcce/MOB/actions/runs/38106724247) (queued).
 - Latest P0-C standalone run [38106092787](https://github.com/rebootos-sourcce/MOB/actions/runs/38106092787) has a green fast gate, including **5,038 engine assertions passed, 0 failed, 10 pre-existing expected-red**, and funnel package **44 passed, 0 failed**. Browser and additional report gates were still running at last poll. This is P0-C source-branch evidence only, not final integrated evidence.
 - Pass-2 review continues on the same fixed candidate. No P0 may close until current integrated jobs are green, Alpha's actual summary is measured, the floor is raised without lowering existing floors, any floor/doc change is rerun, and independent pass 2 finds no remaining must-fix issue. No merge or deploy.
+
+
+## Final P0 validation checkpoint
+
+Timestamp: 2026-10-11 04:44 UTC
+
+### Integrated candidate and gates
+- Exact final tested candidate for this acceptance pass: `59a91176df50cfe9db81924c4463762a81886fbb` on MOB PR #59.
+- Post-floor run: [38111452439](https://github.com/rebootos-sourcce/MOB/actions/runs/38111452439), completed with run conclusion `success`.
+- Required `gates-pass`: success. Required current-head browser gates all succeeded, including functional, storage, firstrelease, journey2, onboarding2, release-screen, boot, collide, funnel, design, monitor, voice, and Alpha.
+- Alpha result on the exact candidate: **61 passed, 0 failed, 0 expected-red; floor 61**. The prior provisional floor 56 was raised to 61 and the gate document updated in the same commit `59a91176df50cfe9db81924c4463762a81886fbb`. `expected_red_max.alpha-journey` remains zero. No floor was lowered.
+- `gates-fast`: success. Engine: 5,038 passed, 0 failed, 10 previously allowed expected-red; funnel package: 44 passed, 0 failed.
+- Report-only `golden` and `recordlink` passed in this run. The `copy` report-only leg remained at 147 passed, 0 explicit failed, below its existing floor of 149. Its two skipped checks are both delete-confirm text captures at 1600 and 390 widths; the harness says no confirm dialog was raised. The floor was not lowered and this report-only gap does not participate in `gates-pass`. Track as test-coverage follow-up, not as an Alpha required-gate failure.
+- PR workflow's `deploy` job was skipped, as expected on a pull request. The main-branch workflow deploys automatically after a successful `gates-pass`; merging #59 would therefore cause a production deployment after main's gates pass.
+
+### Review and source findings
+- Source-level review pass 1 and pass 2 completed. Must-fix findings were patched with regression tests: durable rollback on corrupt/partial funnel write, correct server-confirmed sign-out contract, malformed session ID/credential refusal, malformed stored-session refusal, and in-memory profile restoration on failed release save.
+- No unresolved GitHub review threads were found on #59, and no separate human reviewer approval is recorded. The two reviews were performed as separate source-review passes in this execution, not represented as distinct human/agent identities.
+- Remaining follow-up, nonblocking for the Alpha slice: cross-tab coalescing/server idempotency after a lost anonymous-session create response; report-only copy test's skipped delete-confirm capture. Neither sends story/profile data, and no server migration or scope expansion was made.
+- Profile sync remains off; billing remains off; no unapproved starter grant activated.
+
+### Current disposition
+- P0 implementation and acceptance validation are green on exact candidate `59a91176df50cfe9db81924c4463762a81886fbb`; the PR has not been merged.
+- Do not merge casually: because merge to main triggers the main workflow's production deployment path, get explicit approval for that combined merge/deploy step.
+- P1 order remains: MOB #60 identity-safe import after P0 integration; then Reboot-OS #34 retention/deletion subject to the separate Cloudflare build issue; #35 starter catalog stays disabled until an exact 100-ID owner-approved list exists; #36 browser/server profile contract mapping before any profile sync.
