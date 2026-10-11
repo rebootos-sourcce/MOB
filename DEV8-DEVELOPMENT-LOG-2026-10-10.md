@@ -214,3 +214,16 @@ Timestamp: 2026-10-11 02:45 UTC
 
 ### Gate status
 At this checkpoint: 0 P0 closed, 0 product PRs merged, 0 deployments. All current-head CI listed above is still queued or in progress. Next: finish independent reviews while CI runs, build one candidate containing #57 + latest #56 + refreshed #59, run two gap passes with fixes, raise the measured Alpha floor, rerun the full required matrix on the final SHA, then make the go/no-go decision.
+
+## Integrated P0 candidate checkpoint
+
+Timestamp: 2026-10-11 02:49 UTC
+
+- Integrated source commit: `4c53efbf1d082e2a64ea9ca1ff13e7fad19e9878`.
+- Commit combines current P0-C source from #57 (`53458961d46ba1e400db68160d79ada31f3b85c6`), current P0-B source from #56 (`3c316233145d16f183197ede060db481c8486bbb`), and P0-A gate configuration from #59. It also carries the current fake Worker sign-out behavior required by the updated sign-out contract test.
+- PR #59 now targets `main` and has the integrated commit as its head. GitHub reports it mergeable, but it is not being merged until the exact candidate is green and both gap passes complete.
+- Integrated required workflow: [38106319574](https://github.com/rebootos-sourcce/MOB/actions/runs/38106319574), queued at this checkpoint.
+- Candidate explicitly keeps the Alpha floor at 56 only as a provisional historical floor. The clean result must be read from the Alpha gate log. Since #56 added the rejected-create retry and non-persisted-credential tests, update the floor to the measured count after this run and rerun the full matrix on the new SHA.
+- Independent integration pass 1 is checking the release save/funnel checkpoint seam, concurrent session creation, rejection/retry, durable session persistence, privacy boundaries, and that deferred profile sync and billing remain outside Alpha. Pass 2 and final SHA validation are not complete.
+
+State remains **P0 OPEN**. No product PR merged and no deployment attempted.
