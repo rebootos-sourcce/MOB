@@ -9,7 +9,7 @@
 ### Current live repository anchors
 - MOB `main`: `1c9811978834b1017ad9ca24199949aaddb0c5ee`.
 - Reboot-OS `main`: `40ba888508de76c2dcfa0d7851fbdd29b38d0b3e`.
-- MOB PR #59: open, unmerged, non-draft; head `59a91176df50cfe9db81924c4463762a81886fbb`, base `main` at the current MOB main SHA. Historical required run #38111452439 is green on that exact head.
+- MOB PR #59: open, unmerged, non-draft; head `59a91176df50cfe9db81924c4463762a81886fbb`, base `main` at the current MOB main SHA. Run #38111452439 has a successful required `gates-pass`, but its report-only copy job failed at 147/149 on that exact head; therefore #59 is not fully green against the copy acceptance condition. PR #65's current synthetic merge test run is green with 151/151 copy checks on the candidate merge result.
 - MOB PR #65: open, draft, unmerged; head `5c388cd48d2c1254967028271c20515cc149ebcd`, based on PR #59 head. Current run #38148880267 completed with all 31 jobs successful. Copy gate: **151 passed, 0 failed; floor 151**. The prior run #38140249561 on older SHA `d6f7b291eb008fdf263b5b4a73b40b8b0ca13211` reported 147 passed, 2 failed; superseded by the newer exact-head run.
 - Reboot-OS PR #35: open, draft, unmerged; head `363fe7fbd846ae5823c960b07240e50715b51fef`, based on PR #34's retention branch at `75f5c1409e8fb8ebbc639feea438e36a4e3774f3`. Keep dependency explicit; do not casually retarget/rebase.
 - Reboot-OS PR #34 and #36 remain open/draft. PR #35 remains stacked on #34.
@@ -21,12 +21,12 @@
 ### Block A — Refresh and validate handoff
 - Read the Dev9-to-Dev10 handshake, original Dev9 executive handshake, read-first bundle guide, and recursive P0 handshake from the Library.
 - Refreshed live main SHAs, PR metadata/head/base, issue #58/#37, current workflow runs/jobs, PR changed files, and review records.
-- Confirmed PR #59's recorded head still matches the previously validated exact SHA and the required workflow run is green. No merge authorization or human GitHub approval was found.
+- Confirmed PR #59's recorded head still matches the previously validated exact SHA. Workflow #38111452439 has 31 jobs, with one report-only failure: `gates-report (copy)`; required `gates-pass` succeeded. This distinction is material. No merge authorization or human GitHub approval was found.
 
 ### Block B — Copy/delete confirmation gate (#65)
 - Inspected the actual source handler in `atuned_src/ui/account.js`: `#acdel` wires to `accDelete()`, which calls `accProfDelete(CURP.id)`; `accProfDelete` asks a native `confirm()` with the profile name and browser scope before deletion.
 - Reviewed the test patch in `tests/copy.js`: it creates/opens a persisted profile for the loaded case, observes native dialogs, checks cancel preserves the profile/current profile, and checks the accepted delete path.
-- Verified latest exact-head workflow #38148880267: 31 jobs completed successfully; copy gate 151/151, floor 151. The earlier failing run was on a superseded head.
+- Verified latest exact-head workflow #38148880267: 31 jobs completed successfully; copy gate 151/151, floor 151. The earlier failing run was on a superseded head. The exact #59 head's run #38111452439 separately still reports the old copy gate as 147/149; #65's synthetic merge run validates the updated gate on the proposed combined result, but no branch merge has occurred.
 - Internal gap pass 1 (implementation vs acceptance): test exercises the real persisted profile deletion path, cancel and accept, and desktop/mobile viewports; floor was not lowered.
 - Internal gap pass 2 (adversarial): verified the current run is on the current PR head and includes the copy job plus required `gates-pass`. No review submissions exist on PR #65; internal review is not human GitHub approval.
 - Result: **technical gate PASS on current #65 head; PR still open/draft and not merged.** Do not claim product P0 is closed.
@@ -44,7 +44,7 @@
 
 ### Pass 1 — implementation-to-contract
 - #65 current copy gate meets/exceeds its current floor and exercises cancel/accept. Its scope is test-only; this does not itself fix application behavior if future evidence proves the handler broken.
-- #59 still has historical exact-head validation; any head change invalidates that evidence.
+- #59 still has historical exact-head validation; any head change invalidates that evidence. Its run #38111452439 is not fully green: the report-only copy job failed 147/149 even though required `gates-pass` succeeded. #65's green synthetic merge run does not rewrite that historical run or merge either PR.
 - #35 has green repository-owned checks on its current head, but the catalog's production set is intentionally unseeded and the ground-selection rule is unresolved.
 - The global active-set query in migration 0017 does not filter membership by `selected_ground_id`. This must be reconciled against an explicit owner decision: one universal set versus a ground-specific set.
 - External Cloudflare Workers Builds remains red. Do not bypass it or misstate it as a repository-owned test failure.
@@ -89,7 +89,7 @@ These are task assignments, not claims that persistent autonomous agents ran.
 ## 5. Measurements, values, ratings, confidence and blockers
 - #65 copy gate: **151 passed / 0 failed; floor 151; PASS on SHA `5c388cd48d2c1254967028271c20515cc149ebcd`**.
 - #65 workflow: **31 jobs; all successful** on run #38148880267. PR is still draft/unmerged.
-- #59 required run #38111452439: success on exact SHA `59a91176df50cfe9db81924c4463762a81886fbb`; merge remains unauthorized.
+- #59 run #38111452439 on exact SHA `59a91176df50cfe9db81924c4463762a81886fbb`: required `gates-pass` SUCCESS; report-only copy job FAIL at 147/149. #65 synthetic merge run #38148880267 on updated test branch: 31/31 jobs successful, copy 151/151, floor 151. Merge remains unauthorized.
 - #35 repository gate: **137 passed / 0 failed / 0 skipped**; smoke **840 / 0 failures**; crosswalk negative controls PASS on SHA `363fe7fbd846ae5823c960b07240e50715b51fef`.
 - Crosswalk: **150 candidates; 150 exact ID/title matches; 143 with source records; 55 multi-run; 7 without explicit indexed source runs; 43 missing kind/verb; 13 Say-layer entries; 0 approved IDs**.
 - External Cloudflare check: **FAIL**, build `02a085ab-5e03-4e0e-93ca-675f40a6aa4c`; cause **UNVERIFIED / BLOCKED** pending authenticated logs.
