@@ -114,8 +114,20 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
  st=await step(); ok(st.step===1,'ask, step '+st.step);
  const starts=await page.evaluate(()=>document.querySelectorAll('[data-obpick]').length);
  ok(starts===12,'the twelve starting points, got '+starts);
- await page.click('[data-obpick="2"]'); await page.waitForTimeout(80);    /* overwhelm, picking is the advance */
- st=await step(); ok(st.step===2,'picking a starting point is the advance, into settle, step '+st.step);
+ await page.click('[data-obpick="2"]'); await page.waitForTimeout(80);    /* choose the onboarding context */
+ st=await step(); ok(st.step===1&&st.h==='What would help most right now?',
+  'the chosen starting point leads to the separate gift choice, step '+st.step+' title '+st.h);
+ const giftChoices=await page.evaluate(()=>document.querySelectorAll('[data-obgift]').length);
+ ok(giftChoices===6,'the gift has six independent categories, got '+giftChoices);
+ await page.click('[data-obgift="3"]'); await page.waitForTimeout(80);  /* Depression */
+ st=await step(); ok(st.step===2,'choosing the gift nature advances into settle, step '+st.step);
+ const gift=await page.evaluate(()=>({nature:CURP.journey&&CURP.journey.gift&&CURP.journey.gift.giftNatureId,
+  issued:!!(CURP.journey&&CURP.journey.gift), pick:OB_STARTS[OB.pick]&&OB_STARTS[OB.pick].k,
+  selected:OB.giftNature}));
+ ok(gift.pick==='overwhelm'&&gift.selected==='depression',
+  'the gift focus stays separate from the onboarding ground: '+JSON.stringify(gift));
+ if(OB.rec) ok(gift.issued&&gift.nature==='depression',
+  'the local starter gift records the chosen category: '+JSON.stringify(gift));
 
  await page.click('[data-ob="next"]'); await page.waitForTimeout(80);     /* settle -> feel */
  st=await step(); ok(st.step===3,'feel, step '+st.step);
