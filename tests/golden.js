@@ -495,7 +495,7 @@ async function door(browser, SITE, cut, giftMode) {
     'E1q privacy: raw story text never crosses the Worker boundary');
 
   /* Read-back contract: exact ordered IDs, hashes and source metadata are
-     validated; duplicates and category mismatch fail closed. The snapshot is
+     validated; duplicates, category mismatches and unsupported IDs fail closed. The snapshot is
      returned to the caller, not cached in the local funnel-session record. */
   const snapshotRoundTrip = await page.evaluate(async () => {
     const saved = {authCall:window.authCall, authSession:window.authSession,
@@ -535,8 +535,17 @@ async function door(browser, SITE, cut, giftMode) {
       const duplicateRejected=bad.ok&&bad.body.giftVerified===false&&bad.body.gift===null&&state.giftVerified===false;
       const mismatch=makeResponse(false); mismatch.gift.giftNatureId='anxiety';
       const mismatchRejected=window.authFunnelGiftReadback(mismatch).giftVerified===false;
+      const invalidGround=makeResponse(false);
+      invalidGround.session.selectedGroundId='unsupported-ground';
+      invalidGround.gift.selectedGroundId='unsupported-ground';
+      const invalidGroundRejected=window.authFunnelGiftReadback(invalidGround).giftVerified===false;
+      const invalidNature=makeResponse(false);
+      invalidNature.session.giftNatureId='selfworth';
+      invalidNature.gift.giftNatureId='selfworth';
+      const invalidNatureRejected=window.authFunnelGiftReadback(invalidNature).giftVerified===false;
       const noGift=window.authFunnelGiftReadback({session:{id:'no-gift',starterGiftId:null},gift:null,giftVerified:true});
-      return {checkpointOk,reloadOk,duplicateRejected,mismatchRejected,noGiftVerified:noGift.giftVerified===true};
+      return {checkpointOk,reloadOk,duplicateRejected,mismatchRejected,invalidGroundRejected,invalidNatureRejected,
+        noGiftVerified:noGift.giftVerified===true};
     } finally {
       window.authCall=saved.authCall;window.authSession=saved.authSession;
       window.funnelSession=saved.funnelSession;window.funnelKeep=saved.funnelKeep;
@@ -547,8 +556,9 @@ async function door(browser, SITE, cut, giftMode) {
     'checkpoint exposes only a complete, ordered server gift snapshot, '+J(snapshotRoundTrip));
   ok(snapshotRoundTrip.reloadOk,
     'reload read-back returns all 100 exact ordered IDs without caching the text bank, '+J(snapshotRoundTrip));
-  ok(snapshotRoundTrip.duplicateRejected&&snapshotRoundTrip.mismatchRejected&&snapshotRoundTrip.noGiftVerified,
-    'duplicate IDs and category mismatch fail closed while verified no-gift remains distinct, '+J(snapshotRoundTrip));
+  ok(snapshotRoundTrip.duplicateRejected&&snapshotRoundTrip.mismatchRejected
+    &&snapshotRoundTrip.invalidGroundRejected&&snapshotRoundTrip.invalidNatureRejected&&snapshotRoundTrip.noGiftVerified,
+    'duplicates, category mismatch and unsupported IDs fail closed while verified no-gift remains distinct, '+J(snapshotRoundTrip));
 
   /* Slow-response race: two valid entrypoints must share one create request. */
   const startRace = await page.evaluate(async () => {
