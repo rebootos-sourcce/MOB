@@ -854,6 +854,40 @@ console.log('\n=== J0, the distress gap, reported rather than papered over ===')
   'confirmed: no distress detector exists in this build (the gap is real, not assumed)');
 }
 
+console.log('\n=== no mapped starter set means no local gift grant ===');
+{
+ const page=await browser.newPage({viewport:{width:1600,height:1000}});
+ const errs=[]; page.on('pageerror',e=>errs.push(e.message));
+ await page.goto(FILE,{waitUntil:'load'}); await booted(page);
+ await page.waitForSelector('#loginb-skip',{timeout:8000}); await page.click('#loginb-skip'); await page.waitForTimeout(180);
+ await page.click('[data-ob="next"]'); await page.waitForTimeout(80);
+ await page.click('[data-obpick="8"]'); await page.waitForTimeout(80);
+ await page.evaluate(()=>{
+  if(typeof authFunnelCheckpoint!=='function')throw new Error('authFunnelCheckpoint is unavailable');
+  window.authFunnelCheckpoint=function(patch){
+   window.__missingSetPatch=patch;
+   return Promise.resolve({ok:true,session:{starterGiftId:null}});
+  };
+ });
+ await page.click('[data-obgift="0"]'); await page.waitForTimeout(120);
+ const result=await page.evaluate(()=>({
+  step:OB.step,result:OB.giftResult,ground:OB_STARTS[OB.pick]&&OB_STARTS[OB.pick].k,
+  nature:OB.giftNature,gift:CURP.journey&&CURP.journey.gift,
+  patch:window.__missingSetPatch,
+  card:(document.querySelector('.ob-card')||{}).innerText||''
+ }));
+ ok(result.step===2&&result.result==='unavailable',
+  'an unmapped category moves on without claiming a grant: '+JSON.stringify({step:result.step,result:result.result}));
+ ok(!result.gift,
+  'no local 100-pattern gift is created without a server gift ID: '+JSON.stringify(result.gift));
+ ok(result.patch&&result.patch.selectedGroundId==='selfworth'&&result.patch.giftNatureId==='anxiety',
+  'both independent choices are checkpointed together: '+JSON.stringify(result.patch));
+ ok(/No approved set is available for this focus yet/.test(result.card),
+  'the user is told no approved set was issued: '+result.card);
+ ok(errs.length===0,'no script error on the fail-closed path: '+errs.slice(0,3).join(' | '));
+ await page.close();
+}
+
 console.log('\n'+PASS+' passed, '+FAIL+' failed');
 await browser.close();
 process.exit(FAIL?1:0);
