@@ -5410,8 +5410,8 @@ g('41 · the twenty one on every history row, and a record from before still loa
   'failed first-write rollback attempts exactly one write and one removal, '+brokenWrites+'/'+brokenRemoves);
  ok(typeof brokenRollbackMem['source.profiles']==='string',
   'failed rollback leaves its uncertain durable state visible for recovery, not claimed restored');
- ok(saveState().ok===false&&/RollbackFailed/.test(saveState().err||''),
-  'failed rollback is reported as RollbackFailed, '+JSON.stringify(saveState()));
+ ok(E.saveState().ok===false&&/RollbackFailed/.test(E.saveState().err||''),
+  'failed rollback is reported as RollbackFailed, '+JSON.stringify(E.saveState()));
  bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
  const one=lawSeries(back,'Patience');
  ok(one.n===1&&one.before===2&&one.last===7&&one.dir===null,
