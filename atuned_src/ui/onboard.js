@@ -1752,9 +1752,10 @@ addEventListener('click',function(e){
   if(k==='done'&&typeof authFunnelCheckpoint==='function')authFunnelCheckpoint({tutorialCompleted:true});
   obClose(k); return;
  }});
-/* THE HAND OFF, WRITTEN, F13, for either door. The gift is issued here if no
-   pick issued it, the log says the first release started, and the walk holds
-   the meter's two counts at this moment. One save, and a failed one is said. */
+/* THE HAND OFF, WRITTEN, F13, for either door. A category-specific gift is
+   recorded here only after the server confirmed its frozen set. This fallback
+   is idempotent; it cannot manufacture a local 100-pattern grant on missing or
+   unverifiable server inventory. The log and walk keep the release transition. */
 function obHandOff(pl,door,t){
  if(!CURP||typeof journeyWalk!=='function')return false;
  var m=CURP.meter||{}, w=(CURP.journey&&CURP.journey.walk)||{};
