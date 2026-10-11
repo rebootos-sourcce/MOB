@@ -3,6 +3,12 @@
 **Status:** Requirements contract only. The documentation branch does not implement application code or approve public release.  
 **Recipients:** Build owner, QA, product owner, privacy/legal reviewer.
 
+## Canonical source-of-truth rule
+
+Start with [ATUNED-CANONICAL-SOURCE-OF-TRUTH-CHARTER.md](ATUNED-CANONICAL-SOURCE-OF-TRUTH-CHARTER.md). It defines the authority and evidence required for product, implementation, deployment, privacy, legal and pattern-catalog claims. It does not replace domain sources. Owner policy comes from the latest explicit root `DECISIONS.md` ruling. Current code behavior requires exact source and path-relevant tests. Deployed behavior requires exact-version traces and storage/vendor evidence. Legal publication requires owner fact confirmation and qualified counsel approval.
+
+A draft PR, green subset, mocked test or older SHA is not current-head proof. Record required, failed, skipped and in-progress jobs. Report external provider checks separately even when repository-owned CI is green. Keep unknowns blocked rather than filling them by inference.
+
 ## 1. Scope
 
 Implement and prove the controls needed for accurate Terms, Privacy, Consumer Health Data notice (if applicable), Privacy Breakdown, consent evidence, legal routes, billing disclosures, request handling and deletion. Use the source Markdown and existing renderer. Do not hand-edit generated HTML.
