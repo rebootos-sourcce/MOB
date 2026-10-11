@@ -29,6 +29,7 @@
 - Verified latest exact-head workflow #38148880267: 31 jobs completed successfully; copy gate 151/151, floor 151. The earlier failing run was on a superseded head. The exact #59 head's run #38111452439 separately still reports the old copy gate as 147/149; #65's synthetic merge run validates the updated gate on the proposed combined result, but no branch merge has occurred.
 - Internal gap pass 1 (implementation vs acceptance): test exercises the real persisted profile deletion path, cancel and accept, and desktop/mobile viewports; floor was not lowered.
 - Internal gap pass 2 (adversarial): verified the current run is on the current PR head and includes the copy job plus required `gates-pass`. No review submissions exist on PR #65; internal review is not human GitHub approval.
+- Reconciled PR #65's description with the actual diff: it changes both `tests/copy.js` and `tests/floors.json`, raising the floor from 149 to 151 because the added assertions increase the check count. Updated the PR body to state this accurately.
 - Result: **technical gate PASS on current #65 head; PR still open/draft and not merged.** Do not claim product P0 is closed.
 
 ### Block C — Starter catalog evidence and #35
@@ -38,6 +39,7 @@
 - Remaining data gaps: 43 rows missing source kind/verb; 13 `Say` entries map to the source `cluster` layer and are not a seventh release channel; 150/150 rows lack stable user-facing pattern IDs, side, phase, completed release/reframe line split, and approved membership; zero owner-approved rows.
 - Re-verified PR #35 workflow #38148772486: server/migration-backed suite 137 passed, 0 failed, 0 skipped; crosswalk consistency/negative controls passed; browser smoke/screenshots 840 passed, 0 failed.
 - Re-verified external Cloudflare check failure and added an evidence update to issue #37 comment #6111014083. The failure is separate from repository-owned tests and remains unclassified until authenticated dashboard logs are available.
+- Added issue #58 comment #6111022772 documenting the contract gap: migration 0017 selects the globally active set without filtering by `selected_ground_id`, so the current implementation only satisfies a universal-set rule. It cannot be treated as ground-specific until the owner decides and code/tests follow that contract.
 - Result: **source evidence improved; no valid 100-item manifest exists.** Do not generate IDs, select the first 100, activate migration 0017, or issue a gift.
 
 ## 2. Two-pass gap review and remaining risks
