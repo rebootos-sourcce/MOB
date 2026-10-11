@@ -94,6 +94,7 @@ If a field is unavailable, mark it unknown and keep the corresponding claim unve
 | Product claims versus observed data flows | [Product Truth and Data-Flow Matrix](ATUNED-PRODUCT-TRUTH-DATA-FLOW-MATRIX.md) |
 | Open product decisions | [Owner Decision Register](ATUNED-OWNER-DECISION-REGISTER.md) and root `DECISIONS.md` |
 | Event names, data fields and measurement meaning | [Event and Measurement Dictionary](ATUNED-EVENT-MEASUREMENT-DICTIONARY.md) |
+| KPI formulas, owners, baseline rules and targets | [KPI Register](ATUNED-KPI-REGISTER.md); proposed metrics remain unverified until exact implementation evidence exists |
 | Retention and deletion behavior | [Data Retention Schedule](ATUNED-DATA-RETENTION-SCHEDULE.md), [Deletion/Restore Runbook](ATUNED-ACCOUNT-DELETION-AND-RESTORE-RUNBOOK.md) and [Data Subject Request Runbook](ATUNED-DATA-SUBJECT-REQUEST-RUNBOOK.md) |
 | Legal publication blockers | Root legal Markdown, [Counsel Review Packet](ATUNED-COUNSEL-REVIEW-PACKET.md) and [Build Handoff](ATUNED-AGREEMENTS-BUILD-HANDOFF.md) |
 | Latest work performed and evidence | [Execution Log](ATUNED-EXECUTION-LOG.md) |
