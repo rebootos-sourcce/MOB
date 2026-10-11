@@ -357,12 +357,14 @@ console.log('\n=== the tutorial door: the same record, the same resume, the same
  ok(!!(j&&j.log.some(e=>e.type==='story_submitted')&&j.log.every(e=>J(e).indexOf('chest')<0)),tag+'the story is on the log, and no word of it');
  await click('[data-tut="next"]'); await click('[data-tut="next"]');
  const card=await page.evaluate(()=>(document.querySelector('#tutorial .ob-card')||{}).innerText||'');
- ok(/You have \d+ patterns left of the \d+ you were given\. This release opens \d+ of them/.test(card),
-  tag+'the Release card says what is left of the gift and what this release opens');
+ ok(!/You have \d+ patterns left of the \d+ you were given/.test(card)
+    &&/No starter set has been issued for this tutorial/.test(card),
+  tag+'the tutorial does not promise a starter gift without a separate support choice and server confirmation');
  await click('[data-tut="release"]'); await page.waitForTimeout(200);
  j=await rec();
  ok(!!(j&&j.walk&&j.walk.step==='release'&&j.walk.door==='tutorial'&&j.walk.base&&j.walk.t),tag+'the hand off is on the walk, by door: '+J(j&&j.walk&&{s:j.walk.step,d:j.walk.door}));
- ok(!!(j&&j.gift&&j.gift.used===0)&&!!(j&&j.log.some(e=>e.type==='first_release_started')),tag+'the gift is issued and the start of the release is logged');
+ ok(!(j&&j.gift),tag+'the tutorial does not mint a local gift without the ground/nature/server-approved set');
+ ok(!!(j&&j.log.some(e=>e.type==='first_release_started')),tag+'the start of the release is logged independently of gift eligibility');
  await page.reload({waitUntil:'load'}); await door();
  const back=await page.evaluate(()=>({open:!!(typeof OB!=='undefined'&&OB.open),step:typeof OB!=='undefined'?OB.step:null,
   door:typeof OB!=='undefined'?OB.door:null, plan:(typeof OB!=='undefined'&&OB.plan&&OB.plan.ok)?OB.plan.lines:null,
