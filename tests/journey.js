@@ -467,6 +467,13 @@ gift(E,ok){
  ok(p.journey.log.filter(e=>e.type==='starter_gift_issued').length===1,'and logs nothing');
  {const ng=E.blankProfile('ng'); ok(E.journeyGiftSync(ng)===null&&!ng.journey,'syncing a gift that was never issued issues nothing');}
  ok(E.journeyGiftIssue(null,'app').ok===false,'no record is refused');
+ const allGiftNatures=['anxiety','overwhelm','burnout','depression','grief','sadness'];
+ allGiftNatures.forEach(function(nature,i){
+  const testProfile=E.blankProfile('gift-nature-'+i);
+  const issued=E.journeyGiftIssue(testProfile,'app',at(-2),nature);
+  ok(issued.ok&&issued.issued&&issued.gift.giftNatureId===nature,
+   'the fixed gift nature is accepted and stored: '+nature);
+ });
  /* THE COUNTER COUNTS. A release opens new ground and the next save moves the
     stored counter in the same write, through saveProfile, the one writer
     every save goes through. */
