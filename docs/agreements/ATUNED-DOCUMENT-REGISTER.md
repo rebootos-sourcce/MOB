@@ -28,6 +28,7 @@
 | ATUNED-PRODUCT-TRUTH-DATA-FLOW-MATRIX.md | Contract-to-fact matrix, data locations, proof gaps | Draft; implementation unverified where stated |
 | ATUNED-OWNER-DECISION-REGISTER.md | Explicit owner choices and blockers | Open decisions preserved |
 | ATUNED-EVENT-MEASUREMENT-DICTIONARY.md | Canonical event and measurement spec | Specification only; instrumentation unverified |
+| ATUNED-KPI-REGISTER.md | KPI formulas, denominators, owners, review cadence, target-setting and corrective actions | Draft definitions; instrumentation and baseline unverified |
 | ATUNED-PROCESSOR-AND-DPA-REGISTER.md | Vendor and contract verification | Candidate processors listed for verification, not asserted as all active |
 | ATUNED-DATA-RETENTION-SCHEDULE.md | Data classes, proposed retention behavior and proof requirements | No unverified retention promise authorized |
 | ATUNED-DATA-SUBJECT-REQUEST-RUNBOOK.md | Request intake, verification, execution, response and evidence | Operational capability unverified |
@@ -48,6 +49,8 @@
 - MOB PR #67: https://github.com/rebootos-sourcce/MOB/pull/67. The prior head `b473d75a6369c453736401de30ee2d766987335d` passed 30/30 jobs in run #38170329312. The charter and alignment changes were committed afterward; validate the latest branch head before calling the revised pack green.
 - Reboot-OS PR #35: https://github.com/rebootos-sourcce/Reboot-OS/pull/35. Current PR metadata head `74755057c54e11a82580b6c387f258f40a75f9fc`, draft/open. Repository-owned server and smoke workflows passed, but the external `Workers Builds: atuned-os` check failed on this SHA at 2026-10-11T22:53:44Z. Latest build detail: [Cloudflare build 3ac5f30c-a112-436e-9d5d-f2c1be36b161](https://dash.cloudflare.com/b34a8a4f24d5ac71f7b386c240a6da90/workers/services/view/atuned-os/production/builds/3ac5f30c-a112-436e-9d5d-f2c1be36b161). Issue #37 remains open; root cause is not available in GitHub annotations.
 - Reboot-OS issue #37: https://github.com/rebootos-sourcce/Reboot-OS/issues/37. Open; external Workers Builds check lacks a root cause in GitHub annotations and needs authenticated dashboard investigation.
+
+The KPI Register separates hard safety/data-integrity release gates from performance targets that require a measured baseline and explicit owner approval. KPI definitions do not mean instrumentation exists or has passed validation.
 
 ## Register acceptance rule
 
