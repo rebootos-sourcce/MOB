@@ -166,3 +166,24 @@ Every agent must perform focused cross-pollination when a neighboring contract o
 **P0-B #56, acceptance evidence requested:** the patch demonstrates a concurrent-start coalescing test, but pass 1 requested direct proof for reload reuse of the persisted session, non-OK/rejected session creation, retry after a rejected in-flight request, and no story/profile payload. Point to existing current-head tests or add missing cases. Review comment: https://github.com/rebootos-sourcce/MOB/pull/56#issuecomment-6104544317
 
 **Decision:** both findings remain open. Do not mark either P0 complete until patch owners respond, tests cover the contracts, and the two review passes are recorded on current SHAs. P0 remains open; #59 remains blocked until the integrated candidate exists.
+
+
+## Execution checkpoint: P0 patch work in progress
+
+**P0-C #57**
+- New head: `ce866d466921319f7d5c79cdc0f54f7256b10954`.
+- Added an engine regression proving a failed rollback remains `SAVE_OK=false` and reports `RollbackFailed`; the test does not claim that corrupt durable bytes were restored.
+- Confirmed the production browser host in `atuned_src/ui/ui.js` passes `localStorage.removeItem` as the store adapter's third argument. The remaining failure test deliberately simulates an adapter whose remove operation throws.
+- Workflow run [38105941384](https://github.com/rebootos-sourcce/MOB/actions/runs/38105941384) was queued at last check. Do not close P0-C before it completes and pass 2 is recorded.
+
+**P0-B #56**
+- New head: `3c316233145d16f183197ede060db481c8486bbb`.
+- Updated `funnelKeep` to preserve prior in-memory state if a credential write cannot be verified, and updated `authFunnelStart` to return failure and avoid account-join attempts if the new session credential was not durably kept.
+- Added regressions for rejected create followed by retry and for a server-created session whose local credential cannot be persisted. The existing quiz-import test reloads before asserting only one session was created.
+- Workflow run [38105955324](https://github.com/rebootos-sourcce/MOB/actions/runs/38105955324) was queued at last check. Do not close P0-B before it completes and pass 2 is recorded.
+
+**P0-A #59**
+- Still open and based on the previous #56 head. Do not retarget or accept it as integration evidence yet.
+- When #56 and #57 are integrated, refresh the Alpha gate and its documented assertion count to reflect the newly added #56 tests. Keep expected-red at zero and preserve existing floors.
+
+**Review state:** pass 1 findings were patched with regression coverage and the PR discussions updated. Pass 2 is pending the new CI results. No P0 is closed, no PR merged, no deployment performed.
