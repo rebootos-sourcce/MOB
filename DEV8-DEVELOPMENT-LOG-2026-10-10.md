@@ -187,3 +187,30 @@ Every agent must perform focused cross-pollination when a neighboring contract o
 - When #56 and #57 are integrated, refresh the Alpha gate and its documented assertion count to reflect the newly added #56 tests. Keep expected-red at zero and preserve existing floors.
 
 **Review state:** pass 1 findings were patched with regression coverage and the PR discussions updated. Pass 2 is pending the new CI results. No P0 is closed, no PR merged, no deployment performed.
+
+
+## P0 concurrent execution checkpoint
+
+Timestamp: 2026-10-11 02:45 UTC
+
+### P0-C #57
+- Current source head: `53458961d46ba1e400db68160d79ada31f3b85c6`.
+- First current-head workflow `38105941384` failed in the engine gate because the newly added test called bare `saveState()`; the test API exposes `E.saveState()`. The assertion is corrected in the current source head.
+- Fresh workflow: [38106092787](https://github.com/rebootos-sourcce/MOB/actions/runs/38106092787), queued at this checkpoint. The failure on the previous SHA is not treated as evidence for the corrected SHA.
+- Source review confirms production browser persistence binds `localStorage.removeItem` as the store adapter's removal operation.
+- Cross-contract protection is in the release path: the first-release checkpoint, ritual completion, and "what changed" prompt require a confirmed save. A release-screen regression simulates a refused save and checks these side effects do not occur.
+- Independent pass 2 remains open pending fresh CI and combined-candidate verification.
+
+### P0-B #56
+- Current PR head: `3c316233145d16f183197ede060db481c8486bbb`.
+- Fresh current-head workflow: [38105974863](https://github.com/rebootos-sourcce/MOB/actions/runs/38105974863), queued at this checkpoint. Run [38105955324](https://github.com/rebootos-sourcce/MOB/actions/runs/38105955324) was triggered from an earlier commit and is not used as final-head evidence.
+- The current change adds a retry regression after rejected session creation, a non-persisted-credential failure regression, and preserves the existing reload-reuse and identifier-only privacy assertions. The session credential is not treated as kept until a durable write/readback succeeds.
+- Independent pass 2 remains open pending fresh CI and combined-candidate verification.
+
+### P0-A #59 integration findings
+- #59 remains open and not mergeable. Its base is the quiz-arrival branch but the PR metadata still shows the older base commit `4770c474364a6df2c034cc8e23dd6ac346c475da`, not current #56 head. Refresh/reconcile after the P0-B and P0-C workstreams settle.
+- The Alpha-only test floor is still `56`; that count was measured before the two latest #56 assertions were added. Run the Alpha slice on the combined candidate, read the actual clean assertion count, then raise the floor and update the document in the same patch. Keep `expected_red_max=0` and preserve all existing floors.
+- Integration order remains #57, #56, then #59. Do not use separate branch checks as final integration proof.
+
+### Gate status
+At this checkpoint: 0 P0 closed, 0 product PRs merged, 0 deployments. All current-head CI listed above is still queued or in progress. Next: finish independent reviews while CI runs, build one candidate containing #57 + latest #56 + refreshed #59, run two gap passes with fixes, raise the measured Alpha floor, rerun the full required matrix on the final SHA, then make the go/no-go decision.
