@@ -166,7 +166,11 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
   await c.route('**/*',route);
   const p=await c.newPage();
   await p.addInitScript(require('./seed.js').FULL_SIGHT);
-  const dialogs=[]; p.on('dialog',d=>{dialogs.push(d.message());d.dismiss().catch(()=>{});});
+  let dialogAction='dismiss';
+  const dialogs=[]; p.on('dialog',d=>{
+   dialogs.push({type:d.type(),message:d.message(),action:dialogAction});
+   (dialogAction==='accept'?d.accept():d.dismiss()).catch(()=>{});
+  });
   const errs=[]; p.on('pageerror',e=>errs.push(e.message));
   await p.goto(FILE);
   try{await p.waitForFunction(()=>document.body.classList.contains('booted'),null,{timeout:12000});}
@@ -192,23 +196,26 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
    await p.evaluate(k=>{ACC_OPEN=k;renderAccount();},k); await p.waitForTimeout(250);
    hold('app',at('settings:'+k),await p.evaluate(harvest,'#settings'),k==='privacy'?'privacy':null);}
 
-  /* the delete screen: reselect the intended profile after the tab and Settings sweep.
-     Those are read-only copy checks; the destructive action must still be tested
-     against a live, resolvable profile so the confirmation path is actually reached. */
+  /* The demo persona in PEOPLE is not a persisted profile. Create or open a
+     real PROFILES record so this destructive path exercises the engine boundary. */
+  let targetId=null;
   if(who==='loaded'){
    const state=await p.evaluate(()=>{
-    const i=PEOPLE.findIndex(x=>x.nm==='Derek');
-    if(i>=0)loadP(i);
+    let target=PROFILES.find(x=>x&&x.name==='Derek');
+    if(target)target=profOpen(target.id);
+    else target=profCreate('Derek');
     setTab(TAB.SETTINGS); ACC_OPEN='privacy'; renderAccount();
     const p=CURP;
-    return {target:i,curp:!!p,name:p&&p.name,id:p&&p.id,
+    return {curp:!!p,name:p&&p.name,id:p&&p.id,
      inProfiles:!!p&&PROFILES.indexOf(p)>=0,found:!!p&&!!profFind(p.id)};
    });
-   if(!state.curp||!state.inProfiles||!state.found)
-    fail('app/'+wn+'/'+who+'/delete:setup','loaded profile selection invalid: '+JSON.stringify(state));
+   if(!state.curp||!state.inProfiles||!state.found){
+    fail('app/'+wn+'/'+who+'/delete:setup','could not create/open a persisted test profile: '+JSON.stringify(state));
+   }else targetId=state.id;
    await p.waitForTimeout(250);
   }else{
    await p.evaluate(()=>{ACC_OPEN='privacy';renderAccount();}); await p.waitForTimeout(250);
+   targetId=await p.evaluate(()=>CURP&&CURP.id||null);
   }
   const del=await p.evaluate(()=>{var d=document.getElementById('acdel');
    var g=d&&d.closest('.ac-grp'); return g?g.innerText:null;});
@@ -220,12 +227,25 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
    const visible=await delButton.isVisible().catch(()=>false);
    if(!visible)fail(at('delete:confirm'),'#acdel exists but is not visible');
    else {
-    try { await delButton.click({timeout:3000}); await p.waitForTimeout(300); }
+    const before=dialogs.length;
+    try { await delButton.click({timeout:3000}); await p.waitForTimeout(100); }
     catch(e){fail(at('delete:confirm'),'could not activate #acdel: '+String(e.message||e).slice(0,180));}
+    if(dialogs.length===before)fail(at('delete:confirm'),'Delete activation produced no browser confirmation; assertion not exercised');
+    const afterCancel=await p.evaluate(id=>({exists:!!profFind(id),current:CURP&&CURP.id}),targetId);
+    if(!afterCancel.exists)fail(at('delete:cancel'),'cancel removed the profile instead of preserving it');
+    if(afterCancel.current!==targetId)fail(at('delete:cancel'),'cancel changed the open profile');
+    if(who==='loaded'&&targetId){
+     dialogAction='accept';
+     const acceptedBefore=dialogs.length;
+     try { await p.click('#acdel',{timeout:3000}); await p.waitForTimeout(150); }
+     catch(e){fail(at('delete:accept'),'could not activate Delete a second time: '+String(e.message||e).slice(0,180));}
+     if(dialogs.length===acceptedBefore)fail(at('delete:accept'),'second Delete activation produced no browser confirmation');
+     const removed=await p.evaluate(id=>!profFind(id),targetId);
+     if(!removed)fail(at('delete:accept'),'accept did not remove the selected profile');
+    }
    }
   }
-  dialogs.forEach(m=>hold('app',at('delete:confirm'),m));
-  if(!dialogs.length)fail(at('delete:confirm'),'Delete activation produced no browser confirmation; assertion not exercised');
+  dialogs.forEach(m=>hold('app',at('delete:confirm'),m.message));
 
   /* the profile sheet, which nothing opens today, opened here so its words
      are still held; and the feedback sheet, where a person decides to send */
