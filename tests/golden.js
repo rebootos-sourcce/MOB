@@ -557,6 +557,38 @@ async function door(browser, SITE, cut, giftAt) {
     && failedStartRetry.startingCleared,
     'rejected session creation stays failed and a later retry succeeds, '+J(failedStartRetry));
 
+  /* A server-created session is not success if its credential cannot be
+     durably kept in this browser. The caller must receive a failed result. */
+  const failedSessionPersistence = await page.evaluate(async () => {
+    const saved = {
+      authCall: window.authCall, funnelSession: window.funnelSession,
+      funnelKeep: window.funnelKeep, authFunnelJoin: window.authFunnelJoin,
+      starting: window.FUNNEL_STARTING
+    };
+    let joins = 0;
+    try {
+      window.FUNNEL_STARTING = null;
+      window.funnelSession = () => null;
+      window.funnelKeep = () => false;
+      window.authFunnelJoin = () => { joins++; return Promise.resolve({ok:false}); };
+      window.authCall = () => Promise.resolve({ok:true,status:201,body:{
+        session:{id:'not-persisted-session',anonymousId:'not-persisted-anonymous'},
+        credential:'not-persisted-credential'
+      }});
+      const result = await window.authFunnelStart();
+      return {ok:result.ok,kept:result.kept,joins,startingCleared:window.FUNNEL_STARTING===null};
+    } finally {
+      window.authCall = saved.authCall;
+      window.funnelSession = saved.funnelSession;
+      window.funnelKeep = saved.funnelKeep;
+      window.authFunnelJoin = saved.authFunnelJoin;
+      window.FUNNEL_STARTING = saved.starting;
+    }
+  });
+  ok(failedSessionPersistence.ok===false && failedSessionPersistence.kept===false
+    && failedSessionPersistence.joins===0 && failedSessionPersistence.startingCleared,
+    'a session that cannot be persisted is a truthful failure and is not joined, '+J(failedSessionPersistence));
+
   station(5, 'Q: the first release, from the Story page');
   await Q.tab(0);
   const cq0 = (await Q.live()).CQ;
