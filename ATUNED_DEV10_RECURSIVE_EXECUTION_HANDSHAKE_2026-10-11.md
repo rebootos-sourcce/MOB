@@ -11,7 +11,7 @@
 - Reboot-OS `main`: `40ba888508de76c2dcfa0d7851fbdd29b38d0b3e`.
 - MOB PR #59: open, unmerged, non-draft; head `59a91176df50cfe9db81924c4463762a81886fbb`, base `main` at the current MOB main SHA. Run #38111452439 has a successful required `gates-pass`, but its report-only copy job failed at 147/149 on that exact head; therefore #59 is not fully green against the copy acceptance condition. PR #65's current synthetic merge test run is green with 151/151 copy checks on the candidate merge result.
 - MOB PR #65: open, draft, unmerged; head `5c388cd48d2c1254967028271c20515cc149ebcd`, based on PR #59 head. Current run #38148880267 completed with all 31 jobs successful. Copy gate: **151 passed, 0 failed; floor 151**. The prior run #38140249561 on older SHA `d6f7b291eb008fdf263b5b4a73b40b8b0ca13211` reported 147 passed, 2 failed; superseded by the newer exact-head run.
-- Reboot-OS PR #35: open, draft, unmerged; head `363fe7fbd846ae5823c960b07240e50715b51fef`, based on PR #34's retention branch at `75f5c1409e8fb8ebbc639feea438e36a4e3774f3`. Keep dependency explicit; do not casually retarget/rebase.
+- Reboot-OS PR #35: open, draft, unmerged; head `fb0a8702e6157f5e1b242fdda5ae83e1c2c07bc6`, based on PR #34's retention branch at `75f5c1409e8fb8ebbc639feea438e36a4e3774f3`. This latest head adds a source-review worklist. Run #38154696264 is queued; earlier green tests apply to the prior head `363fe7fbd846ae5823c960b07240e50715b51fef` only. Keep dependency explicit; do not casually retarget/rebase.
 - Reboot-OS PR #34 and #36 remain open/draft. PR #35 remains stacked on #34.
 - MOB issue #58 remains open and P0/Alpha-blocking.
 - Reboot-OS issue #37 remains open. External Cloudflare check failed on current PR #35 head; build ID `02a085ab-5e03-4e0e-93ca-675f40a6aa4c`. GitHub exposes no actual failing log/annotation.
@@ -33,13 +33,14 @@
 - Result: **technical gate PASS on current #65 head; PR still open/draft and not merged.** Do not claim product P0 is closed.
 
 ### Block C — Starter catalog evidence and #35
-- Re-read the candidate crosswalk and source inventory from the current PR #35 head.
+- Re-read the candidate crosswalk and source inventory from the then-current PR #35 head and created `atuned/docs/release-pattern-source-review-worklist-2026-10-11.md` on the PR #35 branch. It contains all 150 candidate index nodes, source record IDs and word counts, source-kind/verb/channel hints, separate canonical fetter join IDs, and explicit unresolved flags. It deliberately does not duplicate autobiographical source text or invent sentence splits.
 - Candidate crosswalk: 150 candidate index nodes; 150/150 exact node-ID/title matches against the clean index; 143 candidates have at least one explicit source record; 55 have multiple source runs; 7 lack explicit indexed source records.
 - Source links: 236 source records total (156 from 2026 dictation, 26 PDF A, 54 PDF B), 29,009 words. The existing `cleaned` fields total 4,433, but this is **not** a verified count of unique sentence-level release patterns.
 - Remaining data gaps: 43 rows missing source kind/verb; 13 `Say` entries map to the source `cluster` layer and are not a seventh release channel; 150/150 rows lack stable user-facing pattern IDs, side, phase, completed release/reframe line split, and approved membership; zero owner-approved rows.
-- Re-verified PR #35 workflow #38148772486: server/migration-backed suite 137 passed, 0 failed, 0 skipped; crosswalk consistency/negative controls passed; browser smoke/screenshots 840 passed, 0 failed.
+- On the prior PR #35 head `363fe7fbd846ae5823c960b07240e50715b51fef`, workflow #38148772486 passed: server/migration-backed suite 137 passed, 0 failed, 0 skipped; crosswalk consistency/negative controls passed; browser smoke/screenshots 840 passed, 0 failed. This evidence is not yet current for the new worklist commit; exact-head run #38154696264 is queued.
 - Re-verified external Cloudflare check failure and added an evidence update to issue #37 comment #6111014083. The failure is separate from repository-owned tests and remains unclassified until authenticated dashboard logs are available.
 - Added issue #58 comment #6111022772 documenting the contract gap: migration 0017 selects the globally active set without filtering by `selected_ground_id`, so the current implementation only satisfies a universal-set rule. It cannot be treated as ground-specific until the owner decides and code/tests follow that contract.
+- Independent worklist integrity review: 150 rows / 150 unique index-node IDs; 150/150 title+ID matches; 236 source-record references are all unique; 143 candidates have source records; 7 do not; zero approved IDs, release sentences, or reframe sentences. Two gap passes found no identity conflation in the generated table; remaining content gaps are explicit.
 - Result: **source evidence improved; no valid 100-item manifest exists.** Do not generate IDs, select the first 100, activate migration 0017, or issue a gift.
 
 ## 2. Two-pass gap review and remaining risks
@@ -99,4 +100,4 @@ These are task assignments, not claims that persistent autonomous agents ran.
 - Internal review ratings: pass 1 = PASS; pass 2 = PASS with remaining external/product blockers. Human PR review = UNVERIFIED/not present.
 - Confidence in the recorded live GitHub state: **0.97**. Confidence that P0 is complete: **0.00**; it is not complete.
 - Release guardrails: merge, deploy, migration 0017, profile sync, billing and production gift issuance all **NOT AUTHORIZED**.
-- **Exact next action:** continue the source-record-to-sentence candidate mapping for issue #58; keep unresolved line splits and semantics explicit, then present a traceable membership proposal for the owner's universal-vs-ground-specific decision. In parallel, the Cloudflare dashboard operator must retrieve the real failure log for issue #37.
+- **Exact next action:** continue the source-record-to-sentence candidate mapping using the new review worklist. First wait for run #38154696264 and verify it on the exact new PR #35 head; then inspect source records line by line, preserve unresolved splits and semantics, and present a traceable membership proposal for the owner's universal-vs-ground-specific decision. In parallel, the Cloudflare dashboard operator must retrieve the real failure log for issue #37.
