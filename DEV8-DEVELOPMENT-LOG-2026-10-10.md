@@ -155,3 +155,14 @@ Every agent must perform focused cross-pollination when a neighboring contract o
 - #63 development-log check run `38103503296`: all completed jobs reported success at last inspection; browser functional gate was still in progress. Recheck before claiming the log PR is fully green.
 - P0 block remains **OPEN**. Separate branch success is not final integration proof.
 
+
+
+### Dev 8 live review update: gap pass 1
+
+**#63 log checks:** workflow run [38103503296](https://github.com/rebootos-sourcce/MOB/actions/runs/38103503296) has now completed its listed browser functional gate successfully. At the latest check, `gates-pass` was still queued. Recheck before marking the log PR fully green.
+
+**P0-C #57, must-fix review finding:** the new `bindStore(get,set,remove)` contract leaves `remove` optional, but restoring the absent-key state after a corrupt/silent write requires removal. If a host adapter lacks `remove`, the code returns `RollbackUnavailable` and does not claim success, but the corrupt key may remain durable. Inventory each real adapter, provide and test removal where supported, or reject the unsafe transaction before mutation. Add a no-prior-key test using the actual adapter contract and a rollback-failure test. Review comment: https://github.com/rebootos-sourcce/MOB/pull/57#issuecomment-6104544121
+
+**P0-B #56, acceptance evidence requested:** the patch demonstrates a concurrent-start coalescing test, but pass 1 requested direct proof for reload reuse of the persisted session, non-OK/rejected session creation, retry after a rejected in-flight request, and no story/profile payload. Point to existing current-head tests or add missing cases. Review comment: https://github.com/rebootos-sourcce/MOB/pull/56#issuecomment-6104544317
+
+**Decision:** both findings remain open. Do not mark either P0 complete until patch owners respond, tests cover the contracts, and the two review passes are recorded on current SHAs. P0 remains open; #59 remains blocked until the integrated candidate exists.
