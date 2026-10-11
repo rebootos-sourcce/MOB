@@ -5399,6 +5399,20 @@ g('41 · the twenty one on every history row, and a record from before still loa
  ok(mem['source.profiles']===savedText,'the corrupt write restores the previous durable record');
  ok(rec.history.length===silentHistoryN,'the corrupt write removes the staged snapshot from memory');
  bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
+ /* A failed rollback is not a save. Exercise an adapter whose removal fails
+    after a corrupt first write, and assert the engine exposes uncertainty. */
+ const brokenRollbackMem={}; let brokenWrites=0, brokenRemoves=0;
+ bindStore(k=>brokenRollbackMem[k]===undefined?null:brokenRollbackMem[k],(k,v)=>{
+  brokenWrites++; brokenRollbackMem[k]=String(v).slice(0,-1);
+ },k=>{brokenRemoves++;throw new Error('remove denied');});
+ ok(pSaveSnap()===false,'a corrupt first write with failed rollback remains a failed save');
+ ok(brokenWrites===1&&brokenRemoves===1,
+  'failed first-write rollback attempts exactly one write and one removal, '+brokenWrites+'/'+brokenRemoves);
+ ok(typeof brokenRollbackMem['source.profiles']==='string',
+  'failed rollback leaves its uncertain durable state visible for recovery, not claimed restored');
+ ok(saveState().ok===false&&/RollbackFailed/.test(saveState().err||''),
+  'failed rollback is reported as RollbackFailed, '+JSON.stringify(saveState()));
+ bindStore(k=>mem[k]===undefined?null:mem[k],(k,v)=>{mem[k]=String(v);});
  const one=lawSeries(back,'Patience');
  ok(one.n===1&&one.before===2&&one.last===7&&one.dir===null,
   'the series has one point and says so, before '+one.before+', points '+one.n);
