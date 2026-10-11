@@ -119,15 +119,29 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
   'the chosen starting point leads to the separate gift choice, step '+st.step+' title '+st.h);
  const giftChoices=await page.evaluate(()=>document.querySelectorAll('[data-obgift]').length);
  ok(giftChoices===6,'the gift has six independent categories, got '+giftChoices);
- await page.click('[data-obgift="3"]'); await page.waitForTimeout(80);  /* Depression */
+ await page.evaluate(()=>{
+  window.__giftNaturePatch=null;
+  if(typeof authFunnelCheckpoint!=='function')throw new Error('authFunnelCheckpoint is unavailable');
+  const original=authFunnelCheckpoint;
+  window.authFunnelCheckpoint=function(patch){
+   if(patch&&patch.giftNatureId){
+    window.__giftNaturePatch=patch;
+    return Promise.resolve({ok:true,session:{starterGiftId:'gift-test-100'}});
+   }
+   return original.apply(this,arguments);
+  };
+ });
+ await page.click('[data-obgift="3"]'); await page.waitForTimeout(120);  /* Depression */
  st=await step(); ok(st.step===2,'choosing the gift nature advances into settle, step '+st.step);
  const gift=await page.evaluate(()=>({nature:CURP.journey&&CURP.journey.gift&&CURP.journey.gift.giftNatureId,
   issued:!!(CURP.journey&&CURP.journey.gift), pick:OB_STARTS[OB.pick]&&OB_STARTS[OB.pick].k,
-  selected:OB.giftNature, record:OB.rec}));
+  selected:OB.giftNature, record:OB.rec, patch:window.__giftNaturePatch}));
  ok(gift.pick==='overwhelm'&&gift.selected==='depression',
   'the gift focus stays separate from the onboarding ground: '+JSON.stringify(gift));
+ ok(gift.patch&&gift.patch.selectedGroundId==='overwhelm'&&gift.patch.giftNatureId==='depression',
+  'the server receives the two distinct choices together: '+JSON.stringify(gift.patch));
  if(gift.record) ok(gift.issued&&gift.nature==='depression',
-  'the local starter gift records the chosen category: '+JSON.stringify(gift));
+  'the server-confirmed local starter gift records the chosen category: '+JSON.stringify(gift));
 
  await page.click('[data-ob="next"]'); await page.waitForTimeout(80);     /* settle -> feel */
  st=await step(); ok(st.step===3,'feel, step '+st.step);
