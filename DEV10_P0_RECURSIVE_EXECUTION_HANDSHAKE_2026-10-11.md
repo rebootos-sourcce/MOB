@@ -126,3 +126,15 @@ Keep all of the following unchanged until their individual approvals and evidenc
 - [ ] Record only observed facts as verified; label assumptions, stale evidence and unavailable data clearly.
 
 **Current disposition:** P0 remains open. PR #65 successfully exposed a previously silent gap and is now failing closed at the exact two loaded-profile delete-confirmation assertions. No release or production side effects were performed.
+
+
+## 7. Fresh execution delta after this handshake was drafted
+
+Checked again at approximately 13:02 UTC on 11 October 2026:
+
+- PR #65 follow-up commit: `59cfad2a2b04cd769647e5ee8eaa8298c5ff0a94`. It reselects the intended seeded profile immediately before the delete-confirmation check and asserts that the profile object exists, belongs to `PROFILES`, and resolves through `profFind`. It remains test-only.
+- Latest run for that exact SHA: [Actions run 38141525062](https://github.com/rebootos-sourcce/MOB/actions/runs/38141525062). The workflow was queued and all 28 jobs were queued at the latest retrieval. **No pass or failure conclusion is available yet.** The prior run 38140249561 failed the copy gate as documented above.
+- The Reboot-OS PR #35 head remains `6f1f96c9dfd33de1d1914efa4136ce162c4b28f8`. Comparing its recorded base SHA `11f34225ab031ccaedf539e866e63319c10df117` to the PR head shows 46 commits ahead and 0 behind. Comparing current `main` `40ba888508de76c2dcfa0d7851fbdd29b38d0b3e` to that head shows 57 commits ahead and 0 behind. The branch includes broad integration work; do not merge it as a shortcut to closing issue #58.
+- Issue #37 remains open. Its recorded external Cloudflare Workers Builds evidence points to build `e138ba23-db2f-4003-a60b-be189e0934dc` on an earlier PR #35 head `8019c2688f234531fb76be5f1f25a9d84c47fe47`. The issue says GitHub has no actual build error logs. This is stale-head evidence, not proof of the current head's failure details. Authenticated Cloudflare build logs or a current check are still needed.
+- The source inventory file on PR #35 independently confirms the seven candidate nodes without explicitly indexed source runs: `And let him go of judging Arabic`, `Competition`, `Give Up`, `project success`, `Feeling emotionally weak`, `Insecure to ask for what I want`, and `I'm going to have nothing joyful clearly`. Preserve them as unresolved; do not invent provenance or approve them into the gift.
+- The new addendum itself is on PR #64's documentation branch at commit `2e3f9f6cb1455e2b841b64e559836b2c9e146c83`. PR #64 remains draft/open and unmerged.
