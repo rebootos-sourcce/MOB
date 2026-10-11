@@ -398,6 +398,7 @@ require('./net.js').guardBrowser(browser);
    RUN.pass=0; RUN.paused=true; RUN.halted=true; RUN.reach=null; RUN.done=false;
    RUN.rerun=false; RUN.open=true; RUN.first=true;
    var ps=pSaveSnap, cp=authFunnelCheckpoint, rit=ritRelDone, calls={checkpoint:0,ritual:0};
+   var beforeRecord=JSON.stringify(CURP);
    var thrown=null, out=null;
    pSaveSnap=function(){return false;};
    authFunnelCheckpoint=function(){calls.checkpoint++;return Promise.resolve({ok:true});};
@@ -406,6 +407,7 @@ require('./net.js').guardBrowser(browser);
     var logStart=typeof MSG_LOG!=='undefined'?MSG_LOG.length:0;
     relCoolDown();
     out={saved:RUN.saved, ask:RUN.ask, ritualDone:RUN.ritDone, calls:calls,
+     recordRestored:JSON.stringify(CURP)===beforeRecord,
      status:typeof MSG_LOG!=='undefined'?MSG_LOG.slice(logStart).map(function(m){return m.msg||'';}).join('|'):(document.getElementById('status')||{}).textContent||'', halted:RUN.halted};
    }catch(e){thrown=String(e&&e.message||e);}
    finally{pSaveSnap=ps;authFunnelCheckpoint=cp;ritRelDone=rit;relTicker(false);}
@@ -414,6 +416,8 @@ require('./net.js').guardBrowser(browser);
   ok(!saveFault.error&&saveFault.saved===false,'a refused save stays marked unsaved: '+JSON.stringify(saveFault));
   ok(!saveFault.error&&saveFault.calls.checkpoint===0&&saveFault.calls.ritual===0&&saveFault.ritualDone===0&&saveFault.ask===false,
    'failed release cannot checkpoint, finish a ritual, or ask for an answer: '+JSON.stringify(saveFault));
+  ok(!saveFault.error&&saveFault.recordRestored===true,
+   'failed release restores the in-memory profile so a later unrelated save cannot commit its changes: '+JSON.stringify(saveFault.recordRestored));
   ok(!saveFault.error&&/would not save/i.test(saveFault.status),'stopping an unsaved run does not overwrite the save failure notice: '+JSON.stringify(saveFault.status));
 
   /* and the app comes back when it closes */

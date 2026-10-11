@@ -1168,6 +1168,11 @@ function relAskSkip(){
  if(RUN.open&&RUN.phase==='done')relRender();}
 function relCoolDown(){
  if(RUN.done)return;
+ /* Until the one durable write succeeds, treat every release mutation as
+    tentative. If it fails, restore the in-memory profile too, otherwise a
+    later unrelated save could persist the failed release without its history. */
+ var recordBefore=null, recordObject=CURP;
+ try{ if(recordObject)recordBefore=JSON.stringify(recordObject); }catch(e){recordBefore=null;}
  /* where the walker stood, read before the phase moves off the list */
  var tally=relCounts();
  var planN=(RUN.plan||[]).length, reach=RUN.halted?relReach():planN;
@@ -1351,8 +1356,17 @@ function relCoolDown(){
     two writes and ignored the second result, so the record could say the run
     saved when its snapshot had not. pSaveSnap stages both and writes once. */
  RUN.saved=!!(CURP&&typeof pSaveSnap==='function'&&pSaveSnap());
+ if(!RUN.saved&&recordObject&&recordBefore!==null&&CURP===recordObject){
+  try{
+   var previous=JSON.parse(recordBefore);
+   Object.keys(CURP).forEach(function(k){delete CURP[k];});
+   Object.keys(previous).forEach(function(k){CURP[k]=previous[k];});
+   RUN.recordRestored=true;
+  }catch(e){ RUN.recordRestored=false; }
+ }
  if(!RUN.saved&&typeof status==='function')
-  status('This browser would not save. The release is on this card and not on your record, so a reload loses it.','fail');
+  status('This browser would not save. The release is on this card and not on your record, so a reload loses it.'
+   +(RUN.recordRestored===false?' Reload before continuing because this reading could not be restored in memory.':''),'fail');
  /* The server must not count a release the local record failed to keep. */
  if(RUN.saved&&RUN.first&&!RUN.rerun&&RUN.queue.length&&typeof authFunnelCheckpoint==='function')
   authFunnelCheckpoint({firstReleaseId:RUN.id});
