@@ -12,7 +12,7 @@ Two independent blockers remain:
 1. MOB PR #59 is the integrated P0-A/B/C candidate. It remains open and unmerged. Its recorded full validation applies only to head `59a91176df50cfe9db81924c4463762a81886fbb`; do not reuse that validation as proof for another SHA.
 2. MOB issue #58 remains a separate P0 / Alpha blocker. There are still zero owner-approved stable pattern IDs for the exact 100-pattern gift.
 
-A focused test-only diagnostic PR #65 was created. Its CI confirms the copy gate's missing delete-confirmation checks rather than closing the gap. Keep the required copy floor at 149.
+A focused test-only PR #65 now fixes the invalid persisted-profile test setup and proves cancel/accept behavior. Run 38144157676 passed the full 28-job matrix; copy measured 151 passed, 0 failed against the prior floor 149. The floor has now been deliberately raised to 151 in commit 151ce8ec92cd274d947bca41362e439a932c3a09. Its fresh full matrix is run 38148435093 and was queued/in progress at the last check. Do not call the floor-151 candidate validated until that exact-SHA run succeeds.
 
 ## 1. Live GitHub state verified in this continuation
 
@@ -30,24 +30,18 @@ A focused test-only diagnostic PR #65 was created. Its CI confirms the copy gate
 
 - URL: https://github.com/rebootos-sourcce/MOB/pull/65
 - State: open, draft, unmerged.
-- Head: `d6f7b291eb008fdf263b5b4a73b40b8b0ca13211`.
-- Base: `dev7/p0-alpha-gates-20261010`, which points to PR #59 head `59a91176df50cfe9db81924c4463762a81886fbb`.
-- Scope: one file, `tests/copy.js`; no app or release configuration changes.
-- CI run: https://github.com/rebootos-sourcce/MOB/actions/runs/38140249561
-- Verified copy job outcome: **147 passed, 2 failed**. At 1600px and 390px in the loaded-profile case, the test reported: `Delete activation produced no browser confirmation; assertion not exercised`. This is the intended fail-closed result, not a pass.
-- Other jobs observed in that run were passing, with the functional job still in progress at the last retrieved snapshot. Refresh run state before reporting a final matrix.
+- Head: `151ce8ec92cd274d947bca41362e439a932c3a09` (latest).
+- Base: `dev7/p0-alpha-gates-20261010`, pointing to PR #59 head `59a91176df50cfe9db81924c4463762a81886fbb`.
+- Scope: test-only changes in `tests/copy.js` and `tests/floors.json`; no application or production configuration changes.
+- Passing predecessor run: [Actions run 38144157676](https://github.com/rebootos-sourcce/MOB/actions/runs/38144157676), all 31 checks successful, including `gates-pass`; copy measured 151 passed, 0 failed, with floor 149.
+- The new commit intentionally raises the copy floor from 149 to 151. Fresh exact-head run [38148435093](https://github.com/rebootos-sourcce/MOB/actions/runs/38148435093) was queued/in progress at last check.
+- PR remains open, draft and unmerged. Wait for the floor-151 exact-SHA run before treating the test block as final.
 
 ### Delete-confirmation investigation
 
-Live source in `atuned_src/ui/account.js` wires `#acdel` to `accDelete()`, which calls `accProfDelete(CURP.id)`. That function returns before calling `confirm()` when the current profile is absent or `profFind(id)` fails. The loaded-profile test path is therefore the immediate focus. This is a supported code-path hypothesis, not yet a proven final root cause.
+Live source confirms the application calls `accProfDelete(CURP.id)`, which returns before `confirm()` if the current profile is not in persisted `PROFILES`. The test selected “Derek” from the demo `PEOPLE` list, not from the persisted profile store. The logged setup had `curp: true`, `inProfiles: false`, and `found: false`; the missing dialog was a test-fixture defect, not evidence of a broken application confirmation handler.
 
-Next diagnostic steps:
-
-1. Inspect the current profile selection and identity immediately before `#acdel` is clicked in the loaded-profile test.
-2. Confirm `CURP` exists, its ID resolves through `profFind`, and it is present in `PROFILES`. Re-select the intended seeded profile after the tab/settings traversal if the test flow has displaced it.
-3. Keep the dialog listener attached before click. Capture the exact dialog text and dismiss it without allowing destructive deletion.
-4. Run the copy gate at both 1600px and 390px for blank and loaded profiles. Required result is at least 149 passing checks with 0 failures; do not reduce the floor or count an unexercised assertion.
-5. Update PR #65 with a narrow regression test and rerun CI. Do not merge it separately or declare the P0 closed merely because the count reaches 149.
+The test correction now creates or opens a persisted profile, verifies the profile is resolvable, captures the dialog, asserts cancel preserves both the profile and current selection, then accepts the dialog and asserts the selected profile is removed. It passed at 1600px and 390px with 151 passed, 0 failed. The floor is deliberately raised to 151; validate that floor against run 38148435093 before closing this block.
 
 ### MOB issue #58: catalog and exact 100-pattern gift
 
@@ -118,23 +112,36 @@ Keep all of the following unchanged until their individual approvals and evidenc
 - [ ] Read the primary `DEV9_EXECUTIVE_HANDSHAKE_2026-10-11.md` and this addendum.
 - [ ] Refresh MOB main, PR #59, PR #65, issue #58, issue #48 and their exact SHAs.
 - [ ] Refresh Reboot-OS main, PR #35, PR #34, PR #36 and issue #37; record base/head divergence and live CI.
-- [ ] Inspect PR #65 copy-job logs and current run 38140249561 status. Start with the loaded-profile identity immediately before delete.
-- [ ] Keep the 149 copy floor and require 0 failures on both viewport widths.
+- [x] Inspect PR #65 copy-job logs; invalid fixture root cause identified and test-only fix passed in run 38144157676.
+- [ ] Verify the new floor-151 exact-head matrix in run 38148435093. Copy must report at least 151 passed, 0 failures at both 1600px and 390px.
 - [ ] Continue independent catalog provenance work while waiting for the owner selection-rule and exact-100-ID approvals.
 - [ ] Run both independent gap-review passes for every repaired P0, patch findings and rerun the final exact-SHA matrix.
 - [ ] Obtain owner release go/no-go before any merge that can deploy.
 - [ ] Record only observed facts as verified; label assumptions, stale evidence and unavailable data clearly.
 
-**Current disposition:** P0 remains open. PR #65 successfully exposed a previously silent gap and is now failing closed at the exact two loaded-profile delete-confirmation assertions. No release or production side effects were performed.
+**Current disposition:** P0 remains open. The delete-confirmation test setup defect is repaired and measured at 151/0; the raised floor of 151 awaits exact-head full-matrix confirmation. No merge, production migration, production deployment, profile sync, billing activation, or starter-gift issuance occurred.
 
 
-## 7. Fresh execution delta after this handshake was drafted
+## 7. Fresh execution delta — 11 October 2026, 14:45 UTC
 
-Checked again at approximately 13:02 UTC on 11 October 2026:
+- PR #65 test-only fix at `850b0bd95ff893fba27b34ae6627aab5eef381b7` passed [run 38144157676](https://github.com/rebootos-sourcce/MOB/actions/runs/38144157676): all 31 workflow checks completed successfully, `gates-pass` succeeded, and `tests/copy.js` measured **151 passed, 0 failed** against floor 149. The copy log confirms the floor checker itself passed.
+- The measured new normal is now recorded deliberately: `tests/floors.json` was raised from 149 to 151 in commit `151ce8ec92cd274d947bca41362e439a932c3a09`. New exact-head run [38148435093](https://github.com/rebootos-sourcce/MOB/actions/runs/38148435093) was queued/in progress at this snapshot. This is the current next action; do not reuse the predecessor run as proof for the floor-151 commit.
+- PR #65 current state: open, draft, unmerged; head `151ce8ec92cd274d947bca41362e439a932c3a09`; base `dev7/p0-alpha-gates-20261010` at `59a91176df50cfe9db81924c4463762a81886fbb`.
+- PR #59 remains open and unmerged at `59a91176df50cfe9db81924c4463762a81886fbb`. Its exact-SHA full run [38111452439](https://github.com/rebootos-sourcce/MOB/actions/runs/38111452439) remains successful historical evidence: Alpha 61/0/0, floor 61; `gates-pass` green. Do not merge without explicit owner go/no-go because merging to `main` can deploy.
+- PR #35 remains open, draft and unmerged at `6f1f96c9dfd33de1d1914efa4136ce162c4b28f8`, base `alpha/p1-account-retention-24-months-20261010` at `11f34225ab031ccaedf539e866e63319c10df117`. Two repository smoke runs on the exact head succeeded: [38116782303](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38116782303) and [38116780241](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38116780241).
+- The exact-head external check `Workers Builds: atuned-os` still fails. Current build ID: `a0da5d74-33a1-4a6d-9144-37fe7a1d4902`; [Cloudflare build detail](https://dash.cloudflare.com/b34a8a4f24d5ac71f7b386c240a6da90/workers/services/view/atuned-os/production/builds/a0da5d74-33a1-4a6d-9144-37fe7a1d4902). The check provides no diagnostic annotation or first failing log in GitHub. I added this exact-head evidence to [issue #37](https://github.com/rebootos-sourcce/Reboot-OS/issues/37). A Cloudflare-authenticated operator is still required to classify the failure; no bypass is authorized.
+- Issue #58 remains open and P0/Alpha-blocking. The evidence inventory remains 150 candidate rows, 143 with explicit source runs, 7 without, 43 with missing source kind/verb, 13 `Say` rows that do not map directly to the six release channels, and zero owner-approved candidate IDs. The current implementation still selects a single globally active set without using `selected_ground_id`; the October 1/4 TDDs support ground-specific selection, but the final product rule and exact 100 IDs still need explicit owner approval. No production manifest is created, migration 0017 remains unapplied, and gifts remain inactive.
+- No merge, production deployment, profile sync, paid billing, or production gift issuance occurred.
 
-- PR #65 follow-up commit: `59cfad2a2b04cd769647e5ee8eaa8298c5ff0a94`. It reselects the intended seeded profile immediately before the delete-confirmation check and asserts that the profile object exists, belongs to `PROFILES`, and resolves through `profFind`. It remains test-only.
-- Latest run for that exact SHA: [Actions run 38141525062](https://github.com/rebootos-sourcce/MOB/actions/runs/38141525062). The workflow was queued and all 28 jobs were queued at the latest retrieval. **No pass or failure conclusion is available yet.** The prior run 38140249561 failed the copy gate as documented above.
-- The Reboot-OS PR #35 head remains `6f1f96c9dfd33de1d1914efa4136ce162c4b28f8`. Comparing its recorded base SHA `11f34225ab031ccaedf539e866e63319c10df117` to the PR head shows 46 commits ahead and 0 behind. Comparing current `main` `40ba888508de76c2dcfa0d7851fbdd29b38d0b3e` to that head shows 57 commits ahead and 0 behind. The branch includes broad integration work; do not merge it as a shortcut to closing issue #58.
-- Issue #37 remains open. Its recorded external Cloudflare Workers Builds evidence points to build `e138ba23-db2f-4003-a60b-be189e0934dc` on an earlier PR #35 head `8019c2688f234531fb76be5f1f25a9d84c47fe47`. The issue says GitHub has no actual build error logs. This is stale-head evidence, not proof of the current head's failure details. Authenticated Cloudflare build logs or a current check are still needed.
-- The source inventory file on PR #35 independently confirms the seven candidate nodes without explicitly indexed source runs: `And let him go of judging Arabic`, `Competition`, `Give Up`, `project success`, `Feeling emotionally weak`, `Insecure to ask for what I want`, and `I'm going to have nothing joyful clearly`. Preserve them as unresolved; do not invent provenance or approve them into the gift.
-- The new addendum itself is on PR #64's documentation branch at commit `2e3f9f6cb1455e2b841b64e559836b2c9e146c83`. PR #64 remains draft/open and unmerged.
+## 8. Exact pickup from this checkpoint
+
+1. Refresh GitHub live state again before edits. First inspect run `38148435093` on exact SHA `151ce8ec92cd274d947bca41362e439a932c3a09`. If it passes, confirm copy `151 passed, 0 failed, floor 151`, all required jobs pass, and `gates-pass` is green. If it fails, inspect the failing job log before editing.
+2. Keep PR #65 test-only. Complete two independent review passes: test validity and fixture isolation first; adversarial deletion/cancel behavior, both viewports, floor integrity, and generated-source boundary second. Patch any must-fix findings and rerun exact-SHA CI.
+3. Continue issue #58 source provenance and candidate reconciliation without inventing sentence text, IDs, channel, side, phase or manifest membership. Preserve the seven source-unlinked nodes as unresolved. Record every source namespace explicitly.
+4. Obtain the owner ruling for universal identical gift versus ground-specific 100-item gift. Earlier TDDs support ground-specific; do not treat that prior intent as authorization. Then present the traceable candidate inventory for approval of exactly 100 stable IDs.
+5. Keep PR #35 blocked from merge/activation until the ground-selection contract, exact approved inventory, immutable 100-item readback and migration-backed tests are complete, and the external Cloudflare failure is diagnosed.
+6. Update issue #37 only with exact-head evidence. A Cloudflare-authenticated operator must capture the first actual failed step/log and classify source/build, service/repository binding, permissions, configuration or secrets. Do not infer the cause from a red check alone.
+7. Reconcile PR #59 exact head/base/reviews/checks before any release decision. It remains the integrated P0-A/B/C candidate; do not merge PR #56 or #57 separately ahead of it.
+8. Preserve both independent gap-review passes, existing thresholds (Alpha 61; copy 151), and all release controls in the primary Dev9 handshake. Do not merge/deploy or apply migration 0017 without explicit owner go/no-go.
+
+**Current disposition:** the first execution block is complete and has passed at floor 149; the follow-up floor-151 matrix is pending. Catalog P0 and the external Cloudflare build remain blockers. The Dev9 handshake remains primary for the 12 role seats, settled product decisions, detailed commands, scope and release rules; this addendum is the latest execution snapshot.
