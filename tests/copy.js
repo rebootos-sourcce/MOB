@@ -231,6 +231,10 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
     try { await delButton.click({timeout:3000}); await p.waitForTimeout(100); }
     catch(e){fail(at('delete:confirm'),'could not activate #acdel: '+String(e.message||e).slice(0,180));}
     if(dialogs.length===before)fail(at('delete:confirm'),'Delete activation produced no browser confirmation; assertion not exercised');
+    const cancelDialogs=dialogs.slice(before);
+    const cancelConfirm=cancelDialogs.find(d=>d.type==='confirm'&&/^Delete .+ from this browser\?/.test(d.message));
+    if(!cancelConfirm)fail(at('delete:confirm'),'expected a native profile-delete confirmation naming the profile and browser scope');
+    else if(cancelConfirm.action!=='dismiss')fail(at('delete:cancel'),'the first delete confirmation was not dismissed');
     const afterCancel=await p.evaluate(id=>({exists:!!profFind(id),current:CURP&&CURP.id}),targetId);
     if(!afterCancel.exists)fail(at('delete:cancel'),'cancel removed the profile instead of preserving it');
     if(afterCancel.current!==targetId)fail(at('delete:cancel'),'cancel changed the open profile');
@@ -240,6 +244,10 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
      try { await p.click('#acdel',{timeout:3000}); await p.waitForTimeout(150); }
      catch(e){fail(at('delete:accept'),'could not activate Delete a second time: '+String(e.message||e).slice(0,180));}
      if(dialogs.length===acceptedBefore)fail(at('delete:accept'),'second Delete activation produced no browser confirmation');
+     const acceptDialogs=dialogs.slice(acceptedBefore);
+     const acceptConfirm=acceptDialogs.find(d=>d.type==='confirm'&&/^Delete .+ from this browser\?/.test(d.message));
+     if(!acceptConfirm)fail(at('delete:accept'),'expected a native profile-delete confirmation naming the profile and browser scope');
+     else if(acceptConfirm.action!=='accept')fail(at('delete:accept'),'the second delete confirmation was not accepted');
      const removed=await p.evaluate(id=>!profFind(id),targetId);
      if(!removed)fail(at('delete:accept'),'accept did not remove the selected profile');
     }
