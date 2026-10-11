@@ -176,31 +176,38 @@ The 13 seats remain coordinated responsibilities from the primary Dev9 handshake
 
 
 
-## 10. Execution delta after crosswalk hardening — 11 October 2026, 14:48 UTC
+## 10. Execution delta after crosswalk hardening and stack reconciliation — 11 October 2026, 14:51 UTC
 
 ### MOB PR #65: floor-151 validation
 
 - Exact head: `151ce8ec92cd274d947bca41362e439a932c3a09`.
 - Fresh full workflow: [38148435093](https://github.com/rebootos-sourcce/MOB/actions/runs/38148435093), still in progress at last refresh.
 - Copy job `114496605865` completed successfully: **151 passed, 0 failed, floor 151**. The floor checker reports `ok copy: 151 passed, 0 failed, floor 151`.
-- Other checks were mixed completed-success/in-progress at last refresh; the overall required matrix and `gates-pass` are not yet complete. Wait for exact-head completion before closing this block.
+- At last refresh, all other completed jobs were green. Two browser jobs remained in progress: `gates-browser (functional)` and `gates-browser (onboarding2)`. `gates-report-summary` succeeded, but `gates-pass` had not yet appeared/completed. Do not call the exact-head matrix complete until the final required aggregator is green.
+- Independent review found one possible assertion-hardening follow-up: the test confirms a dialog appears and proves cancel/accept outcomes, but it does not yet explicitly assert the native dialog type and the expected profile-delete wording. Review this before declaring the test block fully closed; do not alter the app handler without evidence.
 
-### Reboot-OS PR #35: source taxonomy validator hardening
+### Reboot-OS PR #35: validator hardening and stack reconciliation
 
-- New exact head: `08cf44802fda2430bc802cccb0963ddaf0b431b0`, branch `alpha/p1-fixed-pattern-gift-contract-20261010`.
-- Changed only `atuned/test/tools/release_pattern_crosswalk.py`. The validator now rejects unsupported populated `rawObjectKind` values, checks the seven-layer source-kind/source-verb pairing, and checks that the declared source verb-to-layer mapping matches the settled taxonomy. Two new negative controls were added, taking the count from 3/3 to 5/5.
-- This is a source-evidence validator improvement only. It does not fill missing kinds/verbs, turn `Say` into a seventh release channel, split source runs into approved sentence records, select membership, or create a production manifest.
-- PR #35 remains draft/open/unmerged; its current recorded base is `alpha/p1-account-retention-24-months-20261010` at `11f34225ab031ccaedf539e866e63319c10df117`. GitHub currently reports `mergeable: false`; do not merge. Reconcile the base/merge state before any future release decision.
-- Fresh workflows [38148607215](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38148607215) and [38148610077](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38148610077) were queued on the exact new head at last refresh. Prior green smoke runs apply only to the previous SHA.
-- The exact-head external `Workers Builds: atuned-os` check remains failed on build `a0da5d74-33a1-4a6d-9144-37fe7a1d4902`. Issue #37 now has the exact-head check and build link. Actual failure classification still requires authenticated Cloudflare logs.
+- The source-kind validator change is in commit `08cf44802fda2430bc802cccb0963ddaf0b431b0`; it rejects unsupported populated `rawObjectKind` values, validates the seven-layer source-kind/source-verb mapping, and adds two negative controls (5/5 expected). It does not assign missing fields or approve any production IDs.
+- The current retention base branch is `alpha/p1-account-retention-24-months-20261010` at `75f5c1409e8fb8ebbc639feea438e36a4e3774f3`. It had six commits missing from the catalog head and no overlapping changed paths.
+- I reconciled the stack with a merge commit: `363fe7fbd846ae5823c960b07240e50715b51fef`, parents `08cf448...` and `75f5c140...`. The merged tree preserves all eight catalog-side changed paths plus the six retention-side changes. The live compare against the current base reports **48 ahead, 0 behind**.
+- Fresh exact-head server workflow [38148768933](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38148768933) completed successfully. Smoke workflows [38148768941](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38148768941) and [38148772486](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38148772486) were still in progress at last refresh.
+- The external `Workers Builds: atuned-os` check is in progress on this exact head, build ID `02a085ab-5e03-4e0e-93ca-675f40a6aa4c`: [Cloudflare build detail](https://dash.cloudflare.com/b34a8a4f24d5ac71f7b386c240a6da90/workers/services/view/atuned-os/production/builds/02a085ab-5e03-4e0e-93ca-675f40a6aa4c). The previous exact-head check failed on the old head; wait for the current result and still require actual diagnostics if it fails.
+- PR #35 remains draft/open/unmerged. No migration or gift activation is authorized.
 
-### Source inventory analysis
+### Source inventory analysis and owner decision
 
-The crosswalk at `b83bd76e72ee1b7479ecaf879bb20e9e52093fce` was checked against its three linked corpus files. There are 236 candidate-linked source records (156 2026 dictation, 26 PDF A, 54 PDF B), 29,009 words, and 4,433 summed `cleaned` field counts. This is not a count of unique approved sentence-level patterns. The source intake explicitly preserves the unresolved choice between using a whole run per topic and splitting it into lines. That decision remains open; the exact 100 IDs remain unapproved.
+The crosswalk at `b83bd76e72ee1b7479ecaf879bb20e9e52093fce` was checked against its three linked corpus files. There are 236 candidate-linked source records (156 2026 dictation, 26 PDF A, 54 PDF B), 29,009 words, and 4,433 summed `cleaned` field counts. This is not a count of unique approved sentence-level patterns. The source intake explicitly preserves the unresolved choice between using a whole run per topic and splitting it into lines.
 
-### Current next steps
+MOB `DECISIONS.md` on main still says a new person gets 100 patterns and one pattern is one sentence, but it does not settle whether membership is universal or ground-specific. Earlier October 1/4 funnel TDDs support ground-specific selection. The owner must confirm that rule or explicitly override it, and then approve the exact 100 stable IDs. No manifest exists; no IDs are owner-approved.
 
-1. Poll run 38148435093 until all jobs and `gates-pass` complete. If any job fails, inspect its log before making another patch.
-2. Poll Reboot-OS runs 38148607215 and 38148610077. Verify the new source taxonomy negative controls and full gate on exact head `08cf448...`; then check current external status again.
-3. Reconcile PR #35's `mergeable: false` state and base relationship without merging or applying migrations.
-4. Keep issue #58 open until source-run granularity, selection policy and exact approved 100 IDs are resolved. Keep issue #37 open until actual Cloudflare diagnostics are available.
+### Exact next pickup
+
+1. Refresh run 38148435093 until all jobs and `gates-pass` finish. If it passes, record exact-head success at copy floor 151. Then complete the independent assertion review for dialog type/message and rerun if the test changes.
+2. Refresh PR #35 workflows 38148768933, 38148768941 and 38148772486 and exact-head external check build `02a085ab-5e03-4e0e-93ca-675f40a6aa4c`. Server passed; smoke and Cloudflare were still running at last check.
+3. If the external Cloudflare check fails, get authenticated build logs and classify the actual failure; do not infer the cause or bypass it.
+4. Continue source provenance only. Do not invent sentence text, IDs, source kind, channel, side, phase, or membership. Keep source-run granularity and gift selection policy explicitly unresolved until approved.
+5. Keep PR #59 open/unmerged and refresh its exact SHA/checks before release. Do not merge #56 or #57 separately ahead of it.
+6. No merge, production deployment, production migration 0017, profile sync, paid billing, or production gift issuance without explicit owner go/no-go and all acceptance evidence.
+
+**Current disposition:** P0 remains open. Copy coverage is measured at 151/0 against floor 151, but the full matrix is still running. The catalog validator is hardened and the PR stack is reconciled; fresh smoke and Cloudflare results remain pending. The exact 100-pattern product contract remains an independent blocker.
