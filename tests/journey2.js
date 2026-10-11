@@ -17,16 +17,16 @@
         at the card before the release, after handing off to a release that
         never ran, and on the end card, the person is put back exactly there
         with what they had given, and no typed word is lost.
-     3  THE GIFT COUNTS AND SHOWS. The gift is a counter of a hundred (round
-        OX, ruling 3). It is issued when a starting point is picked, the card
-        before the release says what is left of it and what the release
-        opens, and after the release the counter has moved by exactly the new
-        ground opened, on the screen and on the record.
+     3  NO UNVERIFIED STARTER GIFT. A saved support choice and a bare
+        starterGiftId do not create a journey gift or authorize gift copy.
+        The first release remains usable on the existing meter allowance,
+        while starter-gift copy stays hidden until a bank is verified and
+        installed.
      4  THE CLAIM PACKAGES WHAT THE PERSON MADE. After the first release the
         end card shows what was made, the story, what was read, what was
-        released, the answer to What changed and the gift, and every figure on
-        it is the claim packet's (journeyClaim), which carries no name and no
-        birth data. Go in ends the first run and it never opens again.
+        released and the answer to What changed. Every figure is read from the
+        claim packet (journeyClaim), which carries no name and no birth data.
+        Go in ends the first run and it never opens again.
      5  NOTHING IS BROKEN ON THE WAY. No script error, no console error from
         the product, no placeholder word on any card, and every control on the
         end card does something and is at least 44 by 44.
@@ -187,7 +187,7 @@ for(const [W,H] of WIDTHS){
  ok(restored.pick===0&&restored.nature==='anxiety'&&restored.confirmed&&!restored.ready,
   tag+'the saved nature survives reload but a bare gift ID does not mark the local bank ready: '+J(restored));
  ok(!(j&&j.gift)&&!logged(j,'starter_gift_issued'),
-  tag+'no local allowance or issue log is created without the approved bank adapter: '+J(j&&j.gift));
+  tag+'no journey gift record or issue log exists without the approved bank adapter: '+J(j&&j.gift));
 
  /* ---- 4. settle, feel, body, and a reload on the story ---- */
  await click('[data-ob="next"]'); await click('[data-obfeel="1"]'); await click('[data-obplace="3"]');
@@ -233,16 +233,15 @@ for(const [W,H] of WIDTHS){
    const b=document.querySelector('[data-obans="'+A[n]+'"][data-obi="'+n+'"]'); if(b&&b.getAttribute('aria-pressed')!=='true')b.click();});},ans0);}
  await placeholders('mirror'); await shot('mirror');
 
- /* ---- 6. commit, the card before the release, and the gift on it ---- */
+ /* ---- 6. commit, the card before the release, and fail-closed gift copy ---- */
  await click('[data-ob="mirrorcommit"]'); s=await st();
  ok(s.step===7,tag+'Commit leads to the card before the release, step '+s.step);
  const plan=await page.evaluate(()=>(typeof OB!=='undefined'&&OB.plan)?JSON.parse(JSON.stringify(OB.plan)):null);
  const size=await page.evaluate(()=>(typeof ONB_MINI_ADDRS==='number'&&typeof RUN_MIN==='number')?ONB_MINI_ADDRS*RUN_MIN:null);
+ const allowanceBefore=await page.evaluate(()=>meterBudget(CURP).allow.left);
  ok(!!(plan&&plan.ok&&plan.lines===size),tag+'the first release is the ruled '+size+' lines: '+J(plan&&{l:plan.lines,a:plan.addrs}));
- ok(new RegExp('You have '+GIFT+' patterns left of the '+GIFT+' you were given').test(s.card),
-  tag+'the card says what is left of the gift, read off the counter: '+((s.card.match(/You have [^.]*given/)||['none'])[0]));
- ok(!!plan&&new RegExp('This release opens '+plan.lines+' of them').test(s.card),tag+'and how many of them this release opens');
- ok(/A pattern is one line you have not said before/.test(s.card),tag+'and what a pattern is, beside the word (round PO)');
+ ok(!/You have \d+ patterns left of the \d+ you were given|This release opens \d+ of them/.test(s.card),
+  tag+'the card does not display starter-gift copy while the active bank is uninstalled');
  j=await rec();
  ok(logged(j,'story_signal_confirmed'),tag+'the yes answers are on the log as confirmed');
  ok(!!(j&&j.walk&&j.walk.step==='next'&&j.walk.text===null&&j.walk.t),tag+'the walk stands at the card before the release, holding the entry and no draft: '+J(j&&j.walk&&{s:j.walk.step,t:!!j.walk.t,x:j.walk.text}));
@@ -301,12 +300,13 @@ for(const [W,H] of WIDTHS){
  ok(!!m&&new RegExp('\\b'+m.lines+' lines at '+m.addrs.length+' places\\b').test(s.card),tag+'it says what was released, read off the packet: '+J(m&&{l:m.lines,a:m.addrs.length}));
  ok(!!m&&m.entry&&new RegExp('You said yes to '+m.entry.yes+'\\b').test(s.card),tag+'and how many places the person said yes to: '+J(m&&m.entry&&m.entry.yes));
  ok(/You said: Something moved/.test(s.card),tag+'and the answer to What changed, in the release card\'s own words');
- ok(!!m&&m.gift.used===size&&m.gift.remaining===GIFT-size,tag+'the gift counter has counted the release: '+J(m&&m.gift));
- ok(!!m&&new RegExp('You have '+(GIFT-size)+' patterns left of the '+GIFT+' you were given').test(s.card),
-  tag+'and the card shows it moved: '+((s.card.match(/You have [^.]*given/)||['none'])[0]));
- ok(!!made&&made.left===GIFT-size,tag+'and it agrees with the allowance a run is charged against: '+(made&&made.left));
+ ok(!!made&&Number.isInteger(made.left)&&made.left===allowanceBefore-size,
+  tag+'the existing meter allowance charges only the newly opened lines, starting '+allowanceBefore+' and leaving '+(allowanceBefore-size)+': '+(made&&made.left));
+ ok(!/You have \d+ patterns left of the \d+ you were given|\bGift\.\s*You have/i.test(s.card),
+  tag+'the end card does not label the existing meter allowance as a starter gift');
  j=await rec();
- ok(!!(j&&j.gift&&j.gift.used===size&&j.gift.remaining===GIFT-size),tag+'and the stored counter on the record moved in the same write: '+J(j&&j.gift));
+ ok(!(j&&j.gift)&&!logged(j,'starter_gift_issued'),
+  tag+'the completed journey still has no starter-gift record or issue log: '+J(j&&j.gift));
  ok(logged(j,'first_release_completed')&&logged(j,'post_release_observation'),tag+'the log says the first release landed and what was observed');
  ok(!!made&&made.keys&&['who','name','id','ui','plan'].every(k=>made.keys.indexOf(k)<0),tag+'the packet carries no name, birth data, id, switches or plan: '+J(made&&made.keys));
  ok(!!made&&made.txt&&made.txt.indexOf('"'+made.name+'"')<0,tag+'and the profile\'s name is nowhere in it');
