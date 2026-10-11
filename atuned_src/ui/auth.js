@@ -98,13 +98,20 @@ function funnelSession(){
  return FUNNEL_S;
 }
 function funnelKeep(s){
- FUNNEL_S=s; FUNNEL_READ=true;
  if(typeof STORE_BOUND==='undefined'||!STORE_BOUND)return false;
+ var previous=FUNNEL_S, previousRead=FUNNEL_READ;
  try{
   var txt=s?JSON.stringify(s):'';
   STORE.set(FUNNEL_KEY,txt);
-  return STORE.get(FUNNEL_KEY)===txt;
- }catch(e){ return false; }
+  if(STORE.get(FUNNEL_KEY)===txt){
+   FUNNEL_S=s; FUNNEL_READ=true;
+   return true;
+  }
+ }catch(e){}
+ /* Do not keep an unpersisted credential in memory as if it survived reload.
+    Preserve the prior session if a clear/write could not be verified. */
+ FUNNEL_S=previous; FUNNEL_READ=previousRead;
+ return false;
 }
 function funnelUuid(){
  try{ if(typeof crypto!=='undefined'&&crypto.randomUUID)return crypto.randomUUID(); }catch(e){}
@@ -128,8 +135,9 @@ function authFunnelStart(){
   if(!s||typeof s.id!=='string'||typeof b.credential!=='string')return {ok:false,status:r.status,body:null};
   var state={session:s,id:s.id,anonymousId:s.anonymousId||anonymousId,credential:b.credential};
   var kept=funnelKeep(state);
+  if(!kept)return {ok:false,status:0,body:null,kept:false};
   authFunnelJoin();
-  return {ok:true,session:s,reused:false,kept:kept};});
+  return {ok:true,session:s,reused:false,kept:true};});
  var shared;
  shared=request.then(function(r){
   if(FUNNEL_STARTING===shared)FUNNEL_STARTING=null;
