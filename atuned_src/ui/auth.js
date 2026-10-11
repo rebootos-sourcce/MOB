@@ -194,6 +194,9 @@ function authFunnelJoin(){
    at the network seam, but do not install it into the local meter. The server
    catalog carries six verb channels; the local meter carries four tracks.
    Stable IDs and an owner-approved deterministic adapter are still required. */
+var AUTH_FUNNEL_GROUND_IDS=['anxiety','anger','overwhelm','burnout','grief','fear',
+ 'relationships','pain','selfworth','purpose','money','other'];
+var AUTH_FUNNEL_GIFT_NATURE_IDS=['anxiety','overwhelm','burnout','depression','grief','sadness'];
 function authFunnelGiftReadback(body){
  var session=body&&body.session;
  if(!session||typeof session.id!=='string'||!session.id)return {gift:null,giftVerified:false};
@@ -220,8 +223,8 @@ function authFunnelGiftReadback(body){
    &&typeof p.patternHash==='string'&&/^[0-9a-f]{64}$/.test(p.patternHash);
  });
  var complete=gift.ready===true
-  &&typeof session.selectedGroundId==='string'&&session.selectedGroundId.length>0
-  &&typeof session.giftNatureId==='string'&&session.giftNatureId.length>0
+  &&typeof session.selectedGroundId==='string'&&AUTH_FUNNEL_GROUND_IDS.indexOf(session.selectedGroundId)!==-1
+  &&typeof session.giftNatureId==='string'&&AUTH_FUNNEL_GIFT_NATURE_IDS.indexOf(session.giftNatureId)!==-1
   &&gift.selectedGroundId===session.selectedGroundId&&gift.giftNatureId===session.giftNatureId
   &&gift.granted===100&&gift.items===100&&gift.itemCount===100
   &&Number.isInteger(gift.remaining)&&gift.remaining>=0&&gift.remaining<=100
