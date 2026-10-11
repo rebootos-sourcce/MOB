@@ -145,3 +145,32 @@ Keep all of the following unchanged until their individual approvals and evidenc
 8. Preserve both independent gap-review passes, existing thresholds (Alpha 61; copy 151), and all release controls in the primary Dev9 handshake. Do not merge/deploy or apply migration 0017 without explicit owner go/no-go.
 
 **Current disposition:** the first execution block is complete and has passed at floor 149; the follow-up floor-151 matrix is pending. Catalog P0 and the external Cloudflare build remain blockers. The Dev9 handshake remains primary for the 12 role seats, settled product decisions, detailed commands, scope and release rules; this addendum is the latest execution snapshot.
+
+
+## 9. Active role-seat ledger at the current checkpoint
+
+The 13 seats remain coordinated responsibilities from the primary Dev9 handshake. These are task assignments and evidence owners, not a claim that separate autonomous agents are continuously running.
+
+| Seat | Current block | State / required result |
+|---|---|---|
+| 0. Project Manager / Release Strategist | Keep one ordered P0 tracker and update this handshake. | Active. PR #65's first copy block passed; floor-151 run is pending. Issue #58 and Cloudflare remain open blockers. No merge/deploy authorization. |
+| 1. Foundation Architect / Source-of-Truth Steward | Review identity boundaries between source run, index node, canonical fetter, final pattern ID, and user gift membership. | Active review. No namespace collapse or positional IDs. Keep the ground-selection rule as an explicit owner decision. |
+| 2. Engine / Parser / Domain | Validate one-sentence pattern semantics against the imported Let Go source and six-channel release contract. | Source intake states whole-run versus split-lines remains unresolved. Do not transform source runs into approved patterns by assumption. |
+| 3. Browser UI / State / Journey | Repair the delete-confirmation harness without changing app behavior. | First test correction passed at 151/0 on predecessor commit. The deliberate floor raise to 151 is awaiting run 38148435093 on the exact new SHA. |
+| 4. Worker / Storage / Auth / Billing / Voice | Review gift issuance, immutable set membership, transfer/readback and fail-closed behavior. | Migration 0017 remains unapplied. The current issue in migration 0017 is global active-set selection without filtering on `selected_ground_id`. Keep billing off. |
+| 5. Security / Privacy | Verify no story/profile payloads are introduced by the test fix or catalog flow. | No app or production configuration was changed by PR #65. Keep profile sync disabled and preserve the source disclosure/data boundary. |
+| 6. QA / Release Evidence | Track exact-SHA CI, floors, required versus report-only jobs, and two independent review passes. | Active. Run 38144157676 passed all 31 checks and copy 151/0 against floor 149. Verify floor-151 run 38148435093 before closing this block. |
+| 7. Infrastructure / Cloudflare | Reconcile Reboot-OS repository smoke versus external Workers Builds. | External check fails on exact PR #35 head. Current build `a0da5d74-33a1-4a6d-9144-37fe7a1d4902`; issue #37 updated with exact-head evidence. Needs authenticated Cloudflare log access. |
+| 8. UI/UX | Check deletion confirmation, cancellation, accepted deletion and responsive viewports. | Current test explicitly checks cancellation preserves the profile and acceptance removes the persisted profile, at 1600px and 390px. Re-review after the floor-151 run. |
+| 9. Creative Director | Protect the user's own wording and preserve separation of original source text from edited or transformed copy. | Active dependency review for the catalog. Do not rewrite transcription artifacts in place. |
+| 10. Art Director / Visual Systems | Avoid unrelated visual scope while P0 integrity work is active. | No visual changes in this batch. Keep 390px/1600px validation for touched surfaces. |
+| 11. Content / Editorial | Keep user-facing privacy/delete copy consistent with actual deletion scope and server data retention. | No copy change in this batch. Delete confirmation says it removes this browser profile and names the local data it deletes. |
+| 12. Data / Product Contract Steward | Reconcile candidate inventory and source runs without inventing sentence IDs or manifest membership. | Crosswalk audit at exact file revisions found 236 explicit candidate-linked source records: 156 from 2026 dictation, 26 PDF A, 54 PDF B; 29,009 words; existing `cleaned` fields sum to 4,433. This count is not a validated count of unique sentence-level patterns. The source-level decision on whole run versus line split is still open. Evidence comment added to [MOB issue #58](https://github.com/rebootos-sourcce/MOB/issues/58). |
+
+### Review status for this execution batch
+
+- **Pass 1, implementation/contract:** the prior copy failure was traced to the test choosing a demo persona from `PEOPLE` instead of a persisted record in `PROFILES`. The test now creates or opens a persisted record and exercises both cancel and accept paths.
+- **Pass 2, adversarial/release:** the predecessor matrix proved the loaded profile is deleted only after acceptance and preserved on cancellation, with 151 passed and 0 failed. The floor was raised deliberately to 151. The exact-head full matrix for the floor change remains in progress; this pass is not closed until it succeeds.
+- **Catalog contract:** crosswalk validation is evidence-integrity validation, not owner approval. No final sentence manifest exists; no production IDs are approved.
+- **Infrastructure:** external Cloudflare failure is current and exact-head, but the underlying cause is unknown without the authenticated build logs.
+
