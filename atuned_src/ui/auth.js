@@ -90,7 +90,8 @@ function funnelSession(){
   FUNNEL_READ=true;
   try{
    var o=JSON.parse(STORE.get(FUNNEL_KEY)||'null');
-   if(o&&typeof o.id==='string'&&o.id&&typeof o.anonymousId==='string'&&o.anonymousId){
+   if(o&&typeof o.id==='string'&&o.id&&typeof o.anonymousId==='string'&&o.anonymousId
+    &&typeof o.credential==='string'&&o.credential.length>=32){
     FUNNEL_S=o;
    }
   }catch(e){ FUNNEL_S=null; }

@@ -669,6 +669,35 @@ async function door(browser, SITE, cut, giftAt) {
     && malformedSessionResponse.keeps===0&&malformedSessionResponse.joins===0,
     'empty session IDs and short credentials are refused before persistence or join, '+J(malformedSessionResponse));
 
+  /* Stored funnel state is untrusted, too. A reload must not reuse an
+     anonymous ID without the one-time credential the Worker requires. */
+  const malformedStoredSessions = await page.evaluate(() => {
+    const saved = {store:window.STORE,bound:window.STORE_BOUND,
+      session:window.FUNNEL_S,read:window.FUNNEL_READ};
+    const key=window.FUNNEL_KEY;
+    const values=[
+      JSON.stringify({id:'stored-missing-credential',anonymousId:'stored-anon'}),
+      JSON.stringify({id:'stored-short-credential',anonymousId:'stored-anon',credential:'short'})
+    ];
+    let index=0;
+    try {
+      window.STORE_BOUND=true;
+      window.STORE={get(k){return k===key?values[index]:null;},
+        set(){},remove(){}};
+      const results=[];
+      for(index=0;index<values.length;index++){
+        window.FUNNEL_S=null; window.FUNNEL_READ=false;
+        results.push(window.funnelSession()===null);
+      }
+      return {ignored:results.length===2&&results.every(Boolean),results};
+    } finally {
+      window.STORE=saved.store; window.STORE_BOUND=saved.bound;
+      window.FUNNEL_S=saved.session; window.FUNNEL_READ=saved.read;
+    }
+  });
+  ok(malformedStoredSessions.ignored,
+    'reload ignores stored funnel sessions with missing or short credentials, '+J(malformedStoredSessions));
+
   station(5, 'Q: the first release, from the Story page');
   await Q.tab(0);
   const cq0 = (await Q.live()).CQ;
