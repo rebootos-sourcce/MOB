@@ -122,3 +122,36 @@ These are accountable review seats. This log does not claim that a particular nu
 ## Release decision
 
 **Alpha is not yet declared ready.** The P0 focused PRs have successful required test runs and the current #61 validation head has a successful listed gate matrix, but that validation branch is closed and unmerged, and the final mainline candidate has not been established. The separate Worker build issue and owner-approved production starter set remain outside those green results. No production deployment is claimed.
+
+
+## Active project-manager order and two-pass closeout protocol
+
+**This section supersedes any ambiguous reading of the next actions above. Do not advance blocks until the active block passes both gap-review rounds and the exact candidate's required checks are green.**
+
+### Block 1 execution queue: all P0s
+
+1. **P0-C, release persistence, PR #57.** Finish the independent review of atomic profile/history writes. Cover missing prior key, silent/corrupt write, partial write then throw, adapter remove support, and rollback failure. Patch must-fix findings and add regression tests.
+2. **P0-B, first-visit session/funnel, PR #56.** Finish independent review of privacy, exactly-once session creation, concurrent starts, reload reuse, and truthful failure. Patch must-fix findings and add regression tests.
+3. **P0 integration candidate.** Integrate the focused #56/#57 changes in a controlled sequence. After each integration change, refresh the candidate SHA and required gates. Do not treat two separate green branches as proof that the combined candidate is green.
+4. **P0-A, blocking Alpha acceptance, PR #59.** Reconcile its base after #56/#57 are integrated. Fix conflicts and any gate gaps. Run Alpha journey acceptance plus all required suites against the exact integrated candidate.
+5. **Closeout gate.** No P0 closes until the combined candidate has passed gap review pass 1, fixes, gap review pass 2, fixes, and a fresh complete required test run. Keep #61 as historical validation only. No merge/deploy based on stale evidence.
+
+### Required two-pass review for every agent block
+
+- **Primary pass:** owner states contracts changed, adds/updates regression tests, and supplies exact SHA plus test run.
+- **Gap pass 1:** independent reviewer tries to disprove the implementation. Check behavior, races, privacy/security, data integrity, rollback, retry, accessibility where relevant, and adjacent interfaces. Classify every finding as must-fix now, linked follow-up, or backlog.
+- **Patch:** fix all must-fix items inside the block and add regression coverage. Do not mix unrelated redesign into the blocker.
+- **Gap pass 2:** a reviewer other than the patch author checks every fix and searches for new gaps introduced by the fix. Record either findings or an evidence-based no-additional-findings result.
+- **Re-test:** run targeted regression and all required gates on the new exact SHA. Any code change invalidates the previous run as final-candidate evidence.
+- **Project-manager signoff:** update dependency ledger, SHA, evidence links, unresolved risks, and go/no-go. Only then advance.
+
+Every agent must perform focused cross-pollination when a neighboring contract overlaps. A cross-insight needs a concrete behavior/test and expected value; otherwise record no additional improvement found. Tools must not be represented as separate human agents unless identity evidence supports that claim.
+
+### Active status at this checkpoint
+
+- #56 current head `4770c474364a6df2c034cc8e23dd6ac346c475da`, open and mergeable.
+- #57 current head `f522bbb3a7aa92536ac090c177c1cbc1ceed5ad6`, open, draft, and mergeable.
+- #59 current head `199bf88fbfb76085429dc6d22883971835c31418`, dirty/unmergeable and based on #56's branch. It must be reconciled against the final integrated candidate.
+- #63 development-log check run `38103503296`: all completed jobs reported success at last inspection; browser functional gate was still in progress. Recheck before claiming the log PR is fully green.
+- P0 block remains **OPEN**. Separate branch success is not final integration proof.
+
