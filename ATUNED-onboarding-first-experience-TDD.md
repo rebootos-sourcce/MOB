@@ -347,23 +347,38 @@ The system should feel as though it has received an address.
 
 # 10. Personalized Starter Gift
 
-Immediately after selecting the starting point, issue a personalized starter set.
+After the person chooses one of the twelve starting points, ask a separate question about the focus of their starter gift. The two answers serve different purposes and must not overwrite each other.
 
-Message:
+Prompt:
+
+**What would help most right now?**
+
+Support text:
+
+Choose the focus for your first 100 patterns. It can be different from what brought you here.
+
+The recipient can choose one of six fixed gift categories:
+
+1. Anxiety (`anxiety`)
+2. Overwhelm (`overwhelm`)
+3. Burnout (`burnout`)
+4. Depression (`depression`)
+5. Grief (`grief`)
+6. Sadness (`sadness`)
+
+The twelve starting points stay unchanged. `selected_ground_id` answers what brought the person into the experience. `gift_nature_id` says which approved starter set they chose to receive.
+
+The server must save both answers together. It may issue a gift only when an active, frozen, source-reviewed set of exactly 100 unique patterns is mapped to the selected gift category. The gift records both the onboarding ground and the gift nature, as well as the set version and exact ordered pattern membership. Do not choose a generic set, infer a category mapping from similar labels, or fall back to the first available set.
+
+Do not say the gift is ready unless the server confirms a gift was issued. If no approved set exists for the selected category, do not create a local or server-side grant. Tell the person no approved set is available yet and let them continue without a gift. A person can also choose to continue without a gift on the choice screen.
+
+Message after a confirmed grant:
 
 **Your first 100 patterns are ready.**
 
-The 100 patterns must be relevant to the selected starting ground.
+The starter gift becomes the user's actual pattern bank. The user should be able to use those exact patterns immediately.
 
-Do not give the user a generic set.
-
-The starter gift becomes the user's actual pattern bank.
-
-The user should be able to use those patterns immediately.
-
-When the user creates an account, the funnel state transfers directly into the account.
-
-There should be no manual export or import.
+When the user creates an account, the funnel state transfers directly into the account. There should be no manual export or import.
 
 ## Starter Gift Object
 
@@ -372,7 +387,9 @@ StarterGift:
   id
   user_id
   source: funnel
-  selected_ground
+  selected_ground_id
+  gift_nature_id
+  starter_set_version
   pattern_ids[]
   granted: 100
   remaining
@@ -386,7 +403,8 @@ StarterGift:
 ```yaml
 FunnelActivation:
   session_id
-  selected_ground
+  selected_ground_id
+  gift_nature_id
   starter_gift_id
   selected_pattern_ids[]
   user_input
@@ -394,9 +412,7 @@ FunnelActivation:
   created_at
 ```
 
-Reruns of already-opened ground cost zero.
-
-The user should not be charged again to revisit something they have already opened.
+Reruns of already-opened ground cost zero. The user should not be charged again to revisit something they have already opened.
 
 ---
 
