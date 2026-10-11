@@ -275,7 +275,13 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
     await p.waitForTimeout(120);
     if(r!=='ok'){console.log('  note '+at('onboarding:'+s)+' does not render without the cards before it ('+r+')');continue;}
     hold('app',at('onboarding:'+s),await p.evaluate(harvest,'#ob'));
-    if(s===1&&await p.$('#ob [data-obpick]')){await p.click('#ob [data-obpick]').catch(()=>{}); await p.waitForTimeout(400);}}
+    if(s===1&&await p.$('#ob [data-obpick]')){
+     await p.click('#ob [data-obpick]').catch(()=>{}); await p.waitForTimeout(150);
+     if(await p.$('#ob [data-obgift]')){
+      hold('app',at('onboarding:gift-nature'),await p.evaluate(harvest,'#ob'));
+      await p.click('#ob [data-obgift]').catch(()=>{}); await p.waitForTimeout(400);
+     }
+    }}
    await p.evaluate(()=>{try{obClose();}catch(e){}});}
   if(errs.length)console.log('  note '+at('')+' page errors: '+errs.slice(0,3).join(' | '));
   await c.close();}}
