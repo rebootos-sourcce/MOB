@@ -1,6 +1,6 @@
 # Alpha Gate Integration Check
 
-Status date: 11 October 2026. P0 integration is in progress. No P0 is closed, no product PR has been merged for this candidate, and no deployment has been made.
+Status date: 11 October 2026. P0 integration is in progress. The first integrated candidate passed all required gates; the report-only copy gate remains below its existing floor and is being investigated separately. No product PR has been merged for this candidate, and no deployment has been made.
 
 ## Integrated candidate
 
@@ -8,7 +8,7 @@ This branch is assembled from the current P0-C release-persistence patch (#57), 
 
 ## Required result
 
-The blocking browser matrix must pass on one exact candidate, including the Alpha-only quiz-to-first-release journey, storage, first release, journey reload, onboarding verification, and release-screen failure handling. The Alpha-only run must report zero failures and zero expected-red. The current floor of 56 is provisional historical evidence; this integrated candidate must be measured, then the floor and this document updated to the observed clean assertion count. Never lower an existing floor.
+The blocking browser matrix must pass on one exact candidate, including the Alpha-only quiz-to-first-release journey, storage, first release, journey reload, onboarding verification, and release-screen failure handling. The Alpha-only run must report zero failures and zero expected-red. The integrated candidate `1d3fbabb8ae37ff7bc2040afe7fefb02232f8852` measured **61 passed, 0 failed, 0 expected-red** in [run 38107187227](https://github.com/rebootos-sourcce/MOB/actions/runs/38107187227). The Alpha floor is now 61, and the expected-red ceiling remains 0. This was an initial clean measurement; final acceptance requires a fresh complete required matrix after this floor update on the new exact SHA. Never lower an existing floor.
 
 The full golden integration walk remains report-only for explicitly deferred cleared-storage and downloaded-file cases. Those results must remain visible and must not be confused with Alpha readiness. All other required checks, including the workflow-lint mutation tests, must pass.
 
