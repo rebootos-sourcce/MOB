@@ -2,7 +2,7 @@
 
 **Snapshot date:** 11 October 2026  
 **Repository source:** rebootos-sourcce/MOB, default branch main  
-**Purpose:** Canonical inventory for the agreement package. A listed file is not thereby approved.
+**Purpose:** Canonical inventory for the agreement package. Read [ATUNED-CANONICAL-SOURCE-OF-TRUTH-CHARTER.md](ATUNED-CANONICAL-SOURCE-OF-TRUTH-CHARTER.md) first for source authority, conflict handling and evidence standards. A listed file is not thereby approved.
 
 ## Source inventory
 
@@ -24,6 +24,7 @@
 
 | Artifact | Purpose | State |
 |---|---|---|
+| ATUNED-CANONICAL-SOURCE-OF-TRUTH-CHARTER.md | Defines source authority, evidence rules, conflict resolution and change control | Added in this batch; exact-head validation pending |
 | ATUNED-PRODUCT-TRUTH-DATA-FLOW-MATRIX.md | Contract-to-fact matrix, data locations, proof gaps | Draft; implementation unverified where stated |
 | ATUNED-OWNER-DECISION-REGISTER.md | Explicit owner choices and blockers | Open decisions preserved |
 | ATUNED-EVENT-MEASUREMENT-DICTIONARY.md | Canonical event and measurement spec | Specification only; instrumentation unverified |
@@ -42,9 +43,10 @@
 ## Repository and PR evidence recorded during this review
 
 - MOB PR #59: https://github.com/rebootos-sourcce/MOB/pull/59. **Merged 11 October 2026 at 19:44:41 UTC** as main commit `ed5eca344836e852f117a5b573059e5e1cf1e3ab`, from exact tested head `74279113003ca02c3675be04cf8d7bff651008b9`. Run 38157593102 recorded 30/30 jobs successful, Alpha journey 61/61, and copy 151/151. This validates the merged candidate's repository tests; current production deployment/live smoke must still be verified separately.
-- MOB PR #66: https://github.com/rebootos-sourcce/MOB/pull/66. Refreshed 11 October at 19:26 UTC; draft/open, head 27eb858d62fd7dc5257197d3ee9431599cd5b6f2, base 74279113003ca02c3675be04cf8d7bff651008b9. Run 38168042535 had journey2 failed and functional still in progress at the observed fetch. Recheck before treating any status as final.
+- MOB PR #66: https://github.com/rebootos-sourcce/MOB/pull/66. Current PR metadata head `61174502691d1bc353a479604b35bbf5c6d53187`, draft/open. Exact-head workflow [#38182154741](https://github.com/rebootos-sourcce/MOB/actions/runs/38182154741) last fetched with 28 successful jobs and `gates-browser (functional)` in progress; do not report full-gate success until that job and the aggregate gate finish.
 - MOB issue #58: https://github.com/rebootos-sourcce/MOB/issues/58. Open; no owner-approved production gift catalog/set established in this evidence.
-- Reboot-OS PR #35: https://github.com/rebootos-sourcce/Reboot-OS/pull/35. Refreshed 11 October at 19:26 UTC; draft/open at head 32ad3b086679669b3571f4567aad49e60b6c222e; base alpha/p1-account-retention-24-months-20261010 at 75f5c1409e8fb8ebbc639feea438e36a4e3774f3. Server-owned CI/smoke evidence is separate from the external Cloudflare failure and production/live checks.
+- MOB PR #67: https://github.com/rebootos-sourcce/MOB/pull/67. The prior head `b473d75a6369c453736401de30ee2d766987335d` passed 30/30 jobs in run #38170329312. The charter and alignment changes were committed afterward; validate the latest branch head before calling the revised pack green.
+- Reboot-OS PR #35: https://github.com/rebootos-sourcce/Reboot-OS/pull/35. Current PR metadata head `74755057c54e11a82580b6c387f258f40a75f9fc`, draft/open. Repository-owned server and smoke workflows passed, but the external `Workers Builds: atuned-os` check failed on this SHA at 2026-10-11T22:53:44Z. Latest build detail: [Cloudflare build 3ac5f30c-a112-436e-9d5d-f2c1be36b161](https://dash.cloudflare.com/b34a8a4f24d5ac71f7b386c240a6da90/workers/services/view/atuned-os/production/builds/3ac5f30c-a112-436e-9d5d-f2c1be36b161). Issue #37 remains open; root cause is not available in GitHub annotations.
 - Reboot-OS issue #37: https://github.com/rebootos-sourcce/Reboot-OS/issues/37. Open; external Workers Builds check lacks a root cause in GitHub annotations and needs authenticated dashboard investigation.
 
 ## Register acceptance rule
