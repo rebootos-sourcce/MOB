@@ -123,21 +123,38 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
  ok(giftNatures.length===6,'six separate gift-nature choices, got '+giftNatures.length);
  ok(JSON.stringify(giftNatures.map(x=>x.key))===JSON.stringify(['anxiety','overwhelm','burnout','depression','grief','sadness']),
   'gift choices match the server contract, got '+JSON.stringify(giftNatures.map(x=>x.key)));
- /* This file-backed UI test cannot contact the Worker, so explicitly model a
-    synthetic server-confirmed set here. This fixture never seeds production data. */
+ /* The file-backed UI test cannot contact the Worker. Model a returned gift ID
+    whose snapshot readback is unverified; an ID alone must not imply a usable set. */
  await page.evaluate(()=>{
   authFunnelCheckpoint=patch=>Promise.resolve({ok:true,session:{
    selectedGroundId:patch.selectedGroundId,giftNatureId:patch.giftNatureId,
-   starterGiftId:'fixture-approved-frozen-gift'
-  },gift:{id:'fixture-approved-frozen-gift',ready:true},giftVerified:true});
+   starterGiftId:'fixture-gift-with-unverified-snapshot'
+  },gift:null,giftVerified:false});
  });
  await page.click('[data-obgift="4"]'); await page.waitForTimeout(80);   /* grief */
  st=await step(); ok(st.step===2,'gift-nature choice advances into settle, step '+st.step);
  const chosenGiftNature=await page.evaluate(()=>({nature:OB.giftNature,ready:OB.giftReady,
-  confirmed:OB.giftConfirmed,gift:CURP&&CURP.journey&&CURP.journey.gift||null}));
+  confirmed:OB.giftConfirmed,verified:OB.giftReadbackVerified,snapshotReady:OB.giftSnapshotReady,
+  gift:CURP&&CURP.journey&&CURP.journey.gift||null}));
  ok(chosenGiftNature.nature==='grief','the selected gift nature is distinct from the starting point, got '+chosenGiftNature.nature);
- ok(chosenGiftNature.confirmed&&!chosenGiftNature.ready&&!chosenGiftNature.gift,
-  'a server gift ID does not mint a local allowance before the approved bank adapter exists');
+ ok(chosenGiftNature.confirmed&&!chosenGiftNature.verified&&!chosenGiftNature.snapshotReady
+   &&!chosenGiftNature.ready&&!chosenGiftNature.gift,
+  'an unverified server gift ID does not mint a local allowance or count as a verified bank');
+ await page.click('[data-ob="back"]'); await page.waitForTimeout(80);
+ st=await step(); ok(st.step===1,'the saved gift-status card can be revisited, step '+st.step);
+ const unknownGiftCopy=await page.evaluate(()=>[...document.querySelectorAll('#ob .ob-p')].map(el=>el.textContent).join(' '));
+ ok(unknownGiftCopy.includes('could not verify whether a fixed starter set is available'),
+  'unverified readback is described as unknown rather than as a confirmed absence');
+ ok(unknownGiftCopy.includes('No starter patterns have been added to your release allowance'),
+  'the card truthfully states no local allowance was added');
+ ok(!unknownGiftCopy.includes('No approved fixed set is available'),
+  'an unverified snapshot is not mislabeled as a verified no-set result');
+ await page.evaluate(()=>{OB.giftReadbackVerified=true;OB.giftSnapshotReady=true;obRender();});
+ const serverReadyCopy=await page.evaluate(()=>[...document.querySelectorAll('#ob .ob-p')].map(el=>el.textContent).join(' '));
+ ok(serverReadyCopy.includes('not installed in your release bank yet'),
+  'a verified server snapshot is distinguished from an installed local bank');
+ ok(!serverReadyCopy.includes('No approved fixed set is available'),
+  'a verified server snapshot is not mislabeled as a missing approved set');
 
  await page.click('[data-ob="next"]'); await page.waitForTimeout(80);     /* settle -> feel */
  st=await step(); ok(st.step===3,'feel, step '+st.step);
