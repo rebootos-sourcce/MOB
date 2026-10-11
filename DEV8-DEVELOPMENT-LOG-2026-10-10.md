@@ -227,3 +227,16 @@ Timestamp: 2026-10-11 02:49 UTC
 - Independent integration pass 1 is checking the release save/funnel checkpoint seam, concurrent session creation, rejection/retry, durable session persistence, privacy boundaries, and that deferred profile sync and billing remain outside Alpha. Pass 2 and final SHA validation are not complete.
 
 State remains **P0 OPEN**. No product PR merged and no deployment attempted.
+
+## Pass 1 fixes and refreshed candidate
+
+Timestamp: 2026-10-11 02:53 UTC
+
+- P0-B latest head: `dbee38e8751a798071a5092b117e8d05ec49c37a`; workflow [38106517329](https://github.com/rebootos-sourcce/MOB/actions/runs/38106517329), queued.
+- Integrated P0 candidate latest head: `79e6e83efb67d144241b95066247758482efa1ef`; workflow [38106536609](https://github.com/rebootos-sourcce/MOB/actions/runs/38106536609), queued.
+- P0-C current head workflow [38106092787](https://github.com/rebootos-sourcce/MOB/actions/runs/38106092787) has its fast gate green and 12 of 27 jobs completed at this checkpoint. No failures observed yet; browser/report checks continue.
+- Independent integration pass 1 required two fixes before final review:
+  1. `funnelKeep()` had restored only the in-memory reference after a corrupt/partial write, not the previous durable bytes. It now saves previous bytes before mutation and attempts verified restoration or key removal on failure; a browser regression corrupts the first write and verifies previous durable bytes and memory are preserved.
+  2. The full golden fake Worker returned no named-pass result on sign out while the actual Worker implementation returns `funnel: { ended }`. The old test therefore asserted a failure notice on a successful pass-end. The fixture now models the actual contract and the regression verifies the named pass was ended.
+- Source of the Worker sign-out contract: `Reboot-OS/atuned/server/src/index.js`, route `POST /v1/auth/signout`, calls `endPass(env, b.funnel.id, b.funnel.credential)` and returns its result.
+- New current candidate is awaiting all required jobs. Alpha assertion floor remains provisional at 56; measure the clean current Alpha summary, then raise the floor and update the gate document in the same patch. Pass 2 remains pending.
