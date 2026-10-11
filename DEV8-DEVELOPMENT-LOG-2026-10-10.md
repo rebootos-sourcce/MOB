@@ -288,3 +288,10 @@ Timestamp: 2026-10-11 04:44 UTC
 - P0 implementation and acceptance validation are green on exact candidate `59a91176df50cfe9db81924c4463762a81886fbb`; the PR has not been merged.
 - Do not merge casually: because merge to main triggers the main workflow's production deployment path, get explicit approval for that combined merge/deploy step.
 - P1 order remains: MOB #60 identity-safe import after P0 integration; then Reboot-OS #34 retention/deletion subject to the separate Cloudflare build issue; #35 starter catalog stays disabled until an exact 100-ID owner-approved list exists; #36 browser/server profile contract mapping before any profile sync.
+
+
+## Executive handshake reference
+
+Executive handoff: [EXECUTIVE-HANDSHAKE-2026-10-11.md](https://github.com/rebootos-sourcce/MOB/blob/dev8/development-log-20261010/EXECUTIVE-HANDSHAKE-2026-10-11.md).
+
+The handoff records the integrated P0 candidate `59a91176df50cfe9db81924c4463762a81886fbb`, the successful required post-floor matrix in [run 38111452439](https://github.com/rebootos-sourcce/MOB/actions/runs/38111452439), Alpha at 61/0/0 with floor 61, and the unchanged report-only copy floor exception (147 against 149). PR #59 remains open because merge to `main` activates the gated production deployment path. Explicit release approval is outstanding.
