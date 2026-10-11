@@ -204,7 +204,13 @@ for(const [W,H] of [[1600,1000],[390,844]]){
   await page.goto(FILE,{waitUntil:'load'}); await booted(page);
   await page.waitForSelector('#loginb-skip',{timeout:8000}); await page.click('#loginb-skip'); await page.waitForTimeout(300);
   await page.click('[data-ob="next"]'); await page.waitForTimeout(80);
+  /* Synthetic server approval is test-only; this offline UI suite never seeds production. */
+  await page.evaluate(()=>{window.authFunnelCheckpoint=patch=>Promise.resolve({ok:true,session:{
+   selectedGroundId:patch.selectedGroundId,giftNatureId:patch.giftNatureId,
+   starterGiftId:'fixture-approved-frozen-gift'
+  }});});
   await page.click('[data-obpick="2"]'); await page.waitForTimeout(80);
+  await page.click('[data-obgift="0"]'); await page.waitForTimeout(80);
   await page.click('[data-ob="next"]'); await page.waitForTimeout(80);
   await page.click('[data-obfeel="0"]'); await page.waitForTimeout(80);
   await page.click('[data-obplace="3"]'); await page.waitForTimeout(80);

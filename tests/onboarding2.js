@@ -114,8 +114,29 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
  st=await step(); ok(st.step===1,'ask, step '+st.step);
  const starts=await page.evaluate(()=>document.querySelectorAll('[data-obpick]').length);
  ok(starts===12,'the twelve starting points, got '+starts);
- await page.click('[data-obpick="2"]'); await page.waitForTimeout(80);    /* overwhelm, picking is the advance */
- st=await step(); ok(st.step===2,'picking a starting point is the advance, into settle, step '+st.step);
+ await page.click('[data-obpick="2"]'); await page.waitForTimeout(80);    /* overwhelm */
+ st=await step(); ok(st.step===1,'choosing a starting point opens the separate gift choice, step '+st.step);
+ const giftNatures=await page.evaluate(()=>[...document.querySelectorAll('[data-obgift]')].map(el=>({
+  key:OB_GIFT_NATURES[+el.getAttribute('data-obgift')].k,
+  label:el.querySelector('.ob-seat-n').textContent
+ })));
+ ok(giftNatures.length===6,'six separate gift-nature choices, got '+giftNatures.length);
+ ok(JSON.stringify(giftNatures.map(x=>x.key))===JSON.stringify(['anxiety','overwhelm','burnout','depression','grief','sadness']),
+  'gift choices match the server contract, got '+JSON.stringify(giftNatures.map(x=>x.key)));
+ /* This file-backed UI test cannot contact the Worker, so explicitly model a
+    synthetic server-confirmed set here. This fixture never seeds production data. */
+ await page.evaluate(()=>{
+  authFunnelCheckpoint=patch=>Promise.resolve({ok:true,session:{
+   selectedGroundId:patch.selectedGroundId,giftNatureId:patch.giftNatureId,
+   starterGiftId:'fixture-approved-frozen-gift'
+  }});
+ });
+ await page.click('[data-obgift="4"]'); await page.waitForTimeout(80);   /* grief */
+ st=await step(); ok(st.step===2,'gift-nature choice advances into settle, step '+st.step);
+ const chosenGiftNature=await page.evaluate(()=>({nature:OB.giftNature,ready:OB.giftReady,
+  gift:CURP&&CURP.journey&&CURP.journey.gift||null}));
+ ok(chosenGiftNature.nature==='grief','the selected gift nature is distinct from the starting point, got '+chosenGiftNature.nature);
+ ok(chosenGiftNature.ready&&chosenGiftNature.gift,'the local gift counter follows only the synthetic server confirmation');
 
  await page.click('[data-ob="next"]'); await page.waitForTimeout(80);     /* settle -> feel */
  st=await step(); ok(st.step===3,'feel, step '+st.step);

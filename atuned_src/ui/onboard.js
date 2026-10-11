@@ -74,7 +74,7 @@ var OB_NSTEPS=JOURNEY_WALK.indexOf('release');
    release has landed. It is not a ninth dot on the rail; the rail reads done. */
 var OB_END=JOURNEY_WALK.indexOf('end');
 var OB={open:false, step:0, replay:false,
- pick:null, feel:null, place:null,
+ pick:null, giftNature:null, giftConfirmed:false, giftReady:false, feel:null, place:null,
  text:'', commit:null, corr:'', fixes:[],
  /* the mirror's read of the story before it is committed, each
     correction's read, and one answer per address: yes or no, by node id */
@@ -607,7 +607,7 @@ function obOpen(replay){
  var h=document.getElementById('ob'); if(!h)return;
  if(typeof authFunnelStart==='function')authFunnelStart();
  OB.open=true; OB.step=0; OB.replay=!!replay;
- OB.pick=null; OB.feel=null; OB.place=null;
+ OB.pick=null; OB.giftNature=null; OB.giftConfirmed=false; OB.giftReady=false; OB.feel=null; OB.place=null;
  OB.text=''; OB.commit=null; OB.corr=''; OB.fixes=[];
  OB.read=null; OB.fixReads=[]; OB.ans={}; OB.more={}; OB.plan=null;
  OB.door='onboarding'; OB.made=null; OB.failSaid=false;
@@ -784,6 +784,22 @@ function obResume(jr){
  var w=CURP.journey.walk;
  OB.door=w.door||'onboarding';
  OB.pick=w.pick; OB.feel=w.feel; OB.place=w.place;
+ /* The server session is the durable source for the immutable gift choice. A
+    reload must not forget a saved nature or let the person attempt to replace it. */
+ var savedFunnel=typeof funnelSession==='function'?funnelSession():null;
+ var savedSession=savedFunnel&&savedFunnel.session;
+ if(savedSession&&savedSession.selectedGroundId&&savedSession.giftNatureId){
+  var savedGroundIndex=OB_STARTS.findIndex(function(g){return g.k===savedSession.selectedGroundId;});
+  var savedNature=OB_GIFT_NATURES.some(function(n){return n.k===savedSession.giftNatureId;});
+  if(savedGroundIndex>=0&&savedNature){
+   if(OB.pick==null)OB.pick=savedGroundIndex;
+   if(OB_STARTS[OB.pick]&&OB_STARTS[OB.pick].k===savedSession.selectedGroundId){
+    OB.giftNature=savedSession.giftNatureId;
+    OB.giftConfirmed=true;
+    OB.giftReady=!!savedSession.starterGiftId;
+   }
+  }
+ }
  var at=jr.at, i=JOURNEY_WALK.indexOf(at);
  if(at==='mirror'){
   OB.text=w.text||'';
@@ -1004,14 +1020,35 @@ function obRender(){
      anything: a person who answers three laws and leaves has a real partial
      reading, not a failed one, the same rule Verification on the funnel
      holds for "Nothing changed." */
-  out=obCard('Ask','What brought you here?',
-   '<p class="ob-p ob-dim">Pick the one that is closest. Nothing is locked in.</p>'
-   +obChips(OB_STARTS,'obpick',OB.pick,false)
-   +'<p class="ob-p ob-dim ob-foot">There is also a longer self-check, in the Avatar tab. '
-   +'It asks how you actually act, not how you want to act. Answer what you want, in any order, '
-   +'and stop anytime: a few answered is still a real reading, not a failed one.</p>',
-   '<button type="button" class="btn" data-ob="intake">Open Avatar</button>'
-   +'<button type="button" class="btn" data-ob="back">Back</button>');
+  var pickedGround=OB.pick!=null&&OB.pick>=0?OB_STARTS[OB.pick]:null;
+  if(!pickedGround){
+   out=obCard('Ask','What brought you here?',
+    '<p class="ob-p ob-dim">Pick the one that is closest. Nothing is locked in.</p>'
+    +obChips(OB_STARTS,'obpick',OB.pick,false)
+    +'<p class="ob-p ob-dim ob-foot">There is also a longer self-check, in the Avatar tab. '
+    +'It asks how you actually act, not how you want to act. Answer what you want, in any order, '
+    +'and stop anytime: a few answered is still a real reading, not a failed one.</p>',
+    '<button type="button" class="btn" data-ob="intake">Open Avatar</button>'
+    +'<button type="button" class="btn" data-ob="back">Back</button>');
+  }else if(OB.giftConfirmed&&OB.giftNature){
+   var selectedNature=OB_GIFT_NATURES.find(function(n){return n.k===OB.giftNature;});
+   out=obCard('Ask','Your support choice is saved',
+    '<p class="ob-p">Your starting point is <b>'+esc(pickedGround.n)+'</b>.</p>'
+    +'<p class="ob-p">Your support choice is <b>'+esc(selectedNature?selectedNature.n:OB.giftNature)+'</b>.</p>'
+    +(OB.giftReady
+      ?'<p class="ob-p ob-dim">The server confirmed a starter-gift record for this choice.</p>'
+      :'<p class="ob-p ob-dim">No approved fixed set is available for this choice yet. You can continue without a starter set.</p>'),
+    '<button type="button" class="btn pri" data-ob="next">Continue</button>');
+  }else{
+   out=obCard('Ask','What kind of support would help?',
+    '<p class="ob-p">Your starting point is <b>'+esc(pickedGround.n)+'</b>.</p>'
+    +'<p class="ob-p ob-dim">This is a separate choice. Pick the kind of support you want the starter set to focus on.</p>'
+    +obChips(OB_GIFT_NATURES,'obgift',-1,false)
+    +(OB.replay
+      ?'<p class="ob-p ob-dim ob-foot">Replay mode does not change the original starter-set choice.</p>'
+      :'<p class="ob-p ob-dim ob-foot">We only add a starter set when a fixed, approved set of 100 patterns is available. You can continue even if no matching set is available.</p>'),
+    '<button type="button" class="btn" data-ob="groundback">Change starting point</button>');
+  }
  }
  else if(s===2){
   /* SETTLE. His two lines, kept exactly as the mockup carries them
@@ -1636,13 +1673,48 @@ addEventListener('click',function(e){
  var t=e.target&&e.target.closest?e.target:null; if(!t)return;
  var pk=t.closest?t.closest('[data-obpick]'):null;
  if(pk){
-  OB.pick=+pk.getAttribute('data-obpick');
-  var ground=OB_STARTS[OB.pick];
-  if(ground&&typeof authFunnelCheckpoint==='function')authFunnelCheckpoint({selectedGroundId:ground.k});
-  /* F13: the pick is on the log by its key, and it issues the gift, once
-     (TDD section 10, "immediately after selecting the starting point") */
-  if(ground&&OB.rec){ obJy('ground_selected',ground.k);
-   var gi=journeyGiftIssue(CURP,'app'); if(!gi.ok)obJyFail(gi.why); }
+  var groundIndex=+pk.getAttribute('data-obpick');
+  if(!Number.isInteger(groundIndex)||groundIndex<0||groundIndex>=OB_STARTS.length)return;
+  OB.pick=groundIndex; OB.giftNature=null; OB.giftConfirmed=false; OB.giftReady=false;
+  OB.step=1; obRender(); return;
+ }
+ var giftPick=t.closest?t.closest('[data-obgift]'):null;
+ if(giftPick){
+  var natureIndex=+giftPick.getAttribute('data-obgift');
+  /* Capture the ground index in this click's scope. The earlier ground click's
+     local variable does not survive into this separate event callback. */
+  var giftGroundIndex=OB.pick;
+  var ground=OB_STARTS[giftGroundIndex], nature=OB_GIFT_NATURES[natureIndex];
+  if(!ground||!nature)return;
+  OB.giftNature=nature.k; OB.giftConfirmed=false; OB.giftReady=false;
+  /* Save both choices together. The server's gift contract is fail-closed;
+     no client-side fallback may create a gift when an approved frozen set is absent. */
+  if(!OB.replay&&typeof authFunnelCheckpoint==='function'){
+   var checkpoint=authFunnelCheckpoint({selectedGroundId:ground.k,giftNatureId:nature.k});
+   if(checkpoint&&typeof checkpoint.then==='function'){
+    checkpoint.then(function(r){
+     if(r.ok&&r.session&&r.session.selectedGroundId===ground.k
+       &&r.session.giftNatureId===nature.k
+       &&OB.pick===giftGroundIndex&&OB.giftNature===nature.k){
+      OB.giftConfirmed=true;
+      OB.giftReady=!!r.session.starterGiftId;
+      /* A local allowance is mirrored only if the Worker confirmed a starter
+         gift. Save immediately so a reload cannot lose that issued counter. */
+      if(OB.giftReady&&OB.rec){
+       var gi=journeyGiftIssue(CURP,'app'); if(!gi.ok)obJyFail(gi.why);
+      }
+      if(OB.rec)obSave();
+      return;
+     }
+     if(!r.ok&&r.status&&typeof status==='function')
+      status('We could not confirm your starter-set choice. You can continue, but do not assume a starter set was added.','fail');
+    },function(){
+     if(typeof status==='function')
+      status('We could not confirm your starter-set choice. You can continue without a starter set.','fail');
+    });
+   }
+  }
+  if(OB.rec)obJy('ground_selected',ground.k);
   OB.step=2; obRender(); return;
  }
  var fe=t.closest?t.closest('[data-obfeel]'):null;
@@ -1659,6 +1731,7 @@ addEventListener('click',function(e){
  var b=t.closest?t.closest('[data-ob]'):null; if(!b)return;
  var k=b.getAttribute('data-ob');
  if(k==='next'){ OB.step++; obRender(); return; }
+ if(k==='groundback'){ OB.pick=null; OB.giftNature=null; obRender(); return; }
  if(k==='back'){ OB.step=Math.max(0,OB.step-1); obRender(); return; }
  if(k==='storydone'){ obStoryDone(); return; }
  if(k==='storyskip'){
@@ -1706,13 +1779,16 @@ addEventListener('click',function(e){
   if(k==='done'&&typeof authFunnelCheckpoint==='function')authFunnelCheckpoint({tutorialCompleted:true});
   obClose(k); return;
  }});
-/* THE HAND OFF, WRITTEN, F13, for either door. The gift is issued here if no
-   pick issued it, the log says the first release started, and the walk holds
-   the meter's two counts at this moment. One save, and a failed one is said. */
+/* THE HAND OFF, WRITTEN, F13, for either door. A new local gift counter is
+   created only if the server confirmed an eligible frozen set; the existing
+   account allowance remains untouched when no set is available. The log says
+   the first release started, and the walk holds the meter's two counts. */
 function obHandOff(pl,door,t){
  if(!CURP||typeof journeyWalk!=='function')return false;
  var m=CURP.meter||{}, w=(CURP.journey&&CURP.journey.walk)||{};
- var gi=journeyGiftIssue(CURP,'app'); if(!gi.ok)obJyFail(gi.why);
+ if(OB.giftReady||(CURP.journey&&CURP.journey.gift)){
+  var gi=journeyGiftIssue(CURP,'app'); if(!gi.ok)obJyFail(gi.why);
+ }
  var lg=journeyLog(CURP,'first_release_started',null,{lines:pl.lines,places:pl.addrs.length});
  if(!lg.ok)obJyFail(lg.why);
  var r=journeyWalk(CURP,'release',{door:door, pick:w.pick, feel:w.feel, place:w.place, t:t,

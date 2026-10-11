@@ -265,8 +265,9 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
   if(fb){await p.waitForTimeout(250); hold('app',at('sheet:feedback'),await p.evaluate(harvest,'#sheet-card'));
    await p.evaluate(()=>sheetShut());}
 
-  /* every onboarding card, counted off its own dots. The topic is picked by
-     a real press, so the pick is really sent through the stub. */
+  /* Every onboarding card is read from its rendered state. The ground is
+     picked by a real press, then the separate gift-nature card is checked too;
+     the backend approval path is exercised by onboarding2.js and golden.js. */
   if(who==='blank'){
    const n=await p.evaluate(()=>{obOpen(true);OB.step=0;obRender();return document.querySelectorAll('#ob .ob-dot').length;});
    if(!n)fail(at('onboarding'),'missing its step dots, so its cards cannot be counted');
@@ -275,7 +276,13 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
     await p.waitForTimeout(120);
     if(r!=='ok'){console.log('  note '+at('onboarding:'+s)+' does not render without the cards before it ('+r+')');continue;}
     hold('app',at('onboarding:'+s),await p.evaluate(harvest,'#ob'));
-    if(s===1&&await p.$('#ob [data-obpick]')){await p.click('#ob [data-obpick]').catch(()=>{}); await p.waitForTimeout(400);}}
+    if(s===1&&await p.$('#ob [data-obpick]')){
+     await p.click('#ob [data-obpick]').catch(()=>{}); await p.waitForTimeout(180);
+     const giftCount=await p.evaluate(()=>document.querySelectorAll('#ob [data-obgift]').length);
+     if(giftCount!==6)fail(at('onboarding:gift-nature'),'expected six gift-nature choices, got '+giftCount);
+     hold('app',at('onboarding:gift-nature'),await p.evaluate(harvest,'#ob'));
+     await p.click('#ob [data-obgift]').catch(()=>{}); await p.waitForTimeout(250);
+    }}
    await p.evaluate(()=>{try{obClose();}catch(e){}});}
   if(errs.length)console.log('  note '+at('')+' page errors: '+errs.slice(0,3).join(' | '));
   await c.close();}}

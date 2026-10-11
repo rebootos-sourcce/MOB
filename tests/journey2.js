@@ -100,7 +100,24 @@ for(const [W,H] of WIDTHS){
  /* THROUGH THE DOOR, as a guest, which is the request-free way in. A reload
     meets the door again, so every reload comes back through it. */
  const door=async()=>{await booted(page);
-  const g=await page.$('#loginb-skip'); if(g){await click('#loginb-skip'); await page.waitForTimeout(350);}};
+  const g=await page.$('#loginb-skip'); if(g){await click('#loginb-skip'); await page.waitForTimeout(350);}
+  /* Test-only Worker response. Persist its session just as authFunnelCheckpoint does. */
+  await page.evaluate(()=>{
+   window.authFunnelCheckpoint=patch=>{
+    const current=typeof funnelSession==='function'?funnelSession():null;
+    const session=Object.assign({},current&&current.session||{},patch,{
+     starterGiftId:'fixture-approved-frozen-gift'
+    });
+    const fixture=Object.assign({},current||{},{
+     id:current&&current.id||'funnel-fixture',
+     anonymousId:current&&current.anonymousId||'anonymous-fixture',
+     credential:current&&current.credential||'c'.repeat(64),
+     session
+    });
+    if(typeof funnelKeep==='function')funnelKeep(fixture);
+    return Promise.resolve({ok:true,session});
+   };
+  });};
  const reload=async()=>{await page.waitForTimeout(250); await page.reload({waitUntil:'load'}); await door();};
  /* FROM WHEREVER THE SHEET IS, ON TO A STEP, the way a person would press it.
     Used after a reload that did not resume, so the walk can go on and every
@@ -111,7 +128,7 @@ for(const [W,H] of WIDTHS){
    if(!s.open){await page.evaluate(()=>{if(typeof obOpen==='function')obOpen(false);}); await page.waitForTimeout(150); s=await st();}
    if(s.step>=to)return s;
    if(s.step===0||s.step===2)await click('[data-ob="next"]');
-   else if(s.step===1)await click('[data-obpick="0"]');
+   else if(s.step===1){await click('[data-obpick="0"]');await click('[data-obgift="0"]');}
    else if(s.step===3)await click('[data-obfeel="1"]');
    else if(s.step===4)await click('[data-obplace="3"]');
    else if(s.step===5){await page.fill('#obtext',STORY); await page.dispatchEvent('#obtext','input'); await click('#obdone');}
@@ -140,15 +157,27 @@ for(const [W,H] of WIDTHS){
  ok(s.open&&s.step===1,tag+'a reload on the starting point resumes on it, not at the start: open '+s.open+' step '+s.step);
  s=await driveTo(1);
 
- /* ---- 3. the pick issues the gift ---- */
+ /* ---- 3. select a starting ground, then a separate gift nature ---- */
  await click('[data-obpick="0"]'); s=await st();
- ok(s.step===2,tag+'picking a starting point moves on, step '+s.step);
+ ok(s.step===1,tag+'picking a starting point opens the gift-nature choice, step '+s.step);
+ await click('[data-obgift="0"]'); s=await st();
+ ok(s.step===2,tag+'choosing a gift nature moves into settle, step '+s.step);
  j=await rec();
  const gp=await page.evaluate(()=>(typeof OB_STARTS!=='undefined'&&OB_STARTS[0])?OB_STARTS[0].k:null);
- ok(!!(j&&j.log.some(e=>e.type==='ground_selected'&&e.ref===gp)),tag+'the pick is on the log by its key, '+gp);
+ ok(!!(j&&j.log.some(e=>e.type==='ground_selected'&&e.ref===gp)),tag+'the starting ground is on the log by its key, '+gp);
+ /* The durable session, not a stale in-memory selection, restores the nature
+    choice and gift-confirmation state after a real reload. */
+ await reload(); s=await st();
+ ok(s.open&&s.step===2,tag+'reload resumes after the gift-nature choice, step '+s.step);
+ const restored=await page.evaluate(()=>({
+  pick:OB.pick,nature:OB.giftNature,confirmed:OB.giftConfirmed,ready:OB.giftReady,
+  session:(typeof funnelSession==='function'&&funnelSession()&&funnelSession().session)||null
+ }));
+ ok(restored.pick===0&&restored.nature==='anxiety'&&restored.confirmed&&restored.ready,
+  tag+'the server-saved nature and gift confirmation survive reload: '+J(restored));
  const GIFT=await page.evaluate(()=>typeof GIFT_N==='number'?GIFT_N:null);
  ok(!!(j&&j.gift&&j.gift.granted===GIFT&&j.gift.used===0&&j.gift.remaining===GIFT&&j.gift.src==='app'),
-  tag+'the gift is issued at the pick, a counter of '+GIFT+' with nothing used: '+J(j&&j.gift));
+  tag+'the server-confirmed synthetic gift is mirrored to a counter of '+GIFT+' with nothing used: '+J(j&&j.gift));
  ok(logged(j,'starter_gift_issued'),tag+'and the issue is on the log');
 
  /* ---- 4. settle, feel, body, and a reload on the story ---- */

@@ -129,12 +129,10 @@ function silentWav() {
   b.writeUInt32LE(rate * 2, 28); b.writeUInt16LE(2, 32); b.writeUInt16LE(16, 34); b.write('data', 36);
   b.writeUInt32LE(data, 40); return b;
 }
-/* THE STARTER GIFT. The real funnel_attach_session refuses a session with no
-   starter gift (gift_not_found, 409), and today nothing on the server issues
-   one: REVIEW-audit-2026-10-09/pass2.md W3 says it will be issued either when
-   the session is made or at the first selectedGroundId checkpoint. giftAt
-   picks which, so the app is held to joining the account under either. */
-function fakeWorker(origin, giftAt) {
+/* THE STARTER GIFT. Account attachment may succeed without a gift. This
+   mock only grants in explicit synthetic mapped mode, after both distinct
+   choices are saved; none mode proves the no-set path issues no local gift. */
+function fakeWorker(origin, giftMode) {
   const st = { acc: {}, byMail: {}, tok: {}, fun: {}, ent: {}, reqs: [], deleted: [] };
   let seq = 0; const mint = p => p + '_' + (++seq).toString(36) + Math.random().toString(36).slice(2, 10);
   const cors = { 'access-control-allow-origin': origin, 'access-control-allow-headers': 'authorization, content-type, x-funnel-credential',
@@ -143,7 +141,8 @@ function fakeWorker(origin, giftAt) {
   const err = (status, m) => json(status, { error: m });
   const now = () => new Date().toISOString();
   const pub = s => ({ id: s.id, anonymousId: s.anonymousId, userId: s.userId || null, state: 'open', status: 'active',
-    selectedGroundId: s.selectedGroundId || null, starterGiftId: null, tutorialCompleted: !!s.tutorialCompleted,
+    selectedGroundId: s.selectedGroundId || null, giftNatureId: s.giftNatureId || null,
+    starterGiftId: s.gift || null, tutorialCompleted: !!s.tutorialCompleted,
     firstReleaseId: s.firstReleaseId || null, verificationId: s.verificationId || null, version: s.version,
     createdAt: s.createdAt, updatedAt: s.updatedAt });
   const billing = a => { const e = st.ent[a.id]; return e ? { tier: e.tier, status: e.status, since: e.since, until: e.until, store: 'stripe' } : null; };
@@ -180,8 +179,9 @@ function fakeWorker(origin, giftAt) {
     if (method === 'POST' && p === '/v1/funnel/session') {
       const id = body && body.anonymousId;
       if (typeof id !== 'string' || id.length < 8 || id.length > 200 || !/^[A-Za-z0-9._:-]+$/.test(id)) return err(400, 'a valid anonymous session id is required');
-      const s = { id: mint('fs'), anonymousId: id, credential: mint('c').padEnd(64, '0'), version: 1, createdAt: now(), updatedAt: now(),
-        gift: giftAt === 'create' ? mint('gift') : null };
+      const s = { id: mint('fs'), anonymousId: id, credential: mint('c').padEnd(64, '0'),
+        selectedGroundId: null, giftNatureId: null, tutorialCompleted: false,
+        firstReleaseId: null, verificationId: null, version: 1, createdAt: now(), updatedAt: now(), gift: null };
       st.fun[s.id] = s;
       return json(201, { session: pub(s), credential: s.credential });
     }
@@ -198,19 +198,26 @@ function fakeWorker(origin, giftAt) {
         if (!me) return err(401, 'sign in first');
         if (!body || body.credential !== s.credential) return err(401, 'the funnel credential is invalid, expired, or already used');
         if (s.userId && s.userId !== me.id) return err(403, 'this funnel session is owned by another account');
-        if (!s.gift) return err(409, 'this funnel session has no starter gift to attach');
+        /* Account attachment is allowed without a gift. The server must never
+           mint a phantom set merely to make attachment succeed. */
         s.userId = me.id; s.version++; s.updatedAt = now();
-        return json(200, { session: pub(s) });
+        return json(200, { session: pub(s), gift: s.gift ? { id: s.gift, ready: true } : null,
+          note: s.gift ? null : 'joined. no frozen 100-pattern set is available' });
       }
       if (method === 'PATCH' && fm[2] === '/checkpoint') {
         const owner = me && s.userId === me.id;
         if (!owner && !credOk) return err(me ? 403 : 401, 'a valid funnel credential is required');
-        const allowed = ['selectedGroundId', 'tutorialCompleted', 'firstReleaseId', 'verificationId'];
+        const allowed = ['selectedGroundId', 'giftNatureId', 'tutorialCompleted', 'firstReleaseId', 'verificationId'];
         if (!body || typeof body !== 'object' || !Object.keys(body).length || Object.keys(body).some(k => allowed.indexOf(k) < 0)) return err(400, 'unknown funnel checkpoint field');
-        for (const k of ['selectedGroundId', 'firstReleaseId', 'verificationId'])
+        const giftNatures = ['anxiety','overwhelm','burnout','depression','grief','sadness'];
+        if ('giftNatureId' in body && body.giftNatureId !== null && !giftNatures.includes(body.giftNatureId))
+          return err(400, 'invalid giftNatureId');
+        for (const k of ['selectedGroundId', 'giftNatureId', 'firstReleaseId', 'verificationId'])
           if (k in body && s[k] && s[k] !== body[k]) return err(409, 'the ' + k + ' is already recorded');
         allowed.forEach(k => { if (k in body) s[k] = body[k]; });
-        if (giftAt === 'pick' && body.selectedGroundId && !s.gift) s.gift = mint('gift');
+        /* Only the synthetic mapped mode represents an approved frozen set in
+           this test double. The default and no-set mode fail closed. */
+        if (giftMode === 'mapped' && s.selectedGroundId && s.giftNatureId && !s.gift) s.gift = mint('gift');
         s.version++; s.updatedAt = now();
         return json(200, { session: pub(s) });
       }
@@ -295,8 +302,8 @@ function cqOf(rec) {
 const num = s => { const m = /-?\d+(?:\.\d+)?/.exec(String(s || '')); return m ? +m[0] : null; };
 
 /* ---------------- one browser context, one fake Worker, the guard ---------------- */
-async function door(browser, SITE, cut, giftAt) {
-  const worker = fakeWorker(SITE, giftAt || 'pick');
+async function door(browser, SITE, cut, giftMode) {
+  const worker = fakeWorker(SITE, giftMode || 'mapped');
   const ctx = await browser.newContext({ viewport: { width: W, height: H } });
   const stubPage = (title, btn) => '<!doctype html><meta charset="utf-8"><title>' + title + '</title><body><h1>' + title
     + '</h1><button id="go">' + btn + '</button></body>';
@@ -962,26 +969,28 @@ async function door(browser, SITE, cut, giftAt) {
   const attaches = wo.reqs('POST', /^\/v1\/funnel\/session\/[^/]+\/attach$/);
   ok(attaches.length >= 1 && attaches.every(q => q.me === accO.id), 'the app asked the server to join it to the account, with the sign in, '
     + attaches.length + ' asks, answered ' + J(attaches.map(q => q.status)), 'their first visit stays anonymous on the server, so nothing they do in it reaches the account they just made');
-  /* the server here issues the starter gift at the first mark (W3's second
-     option), so a join asked before the pick is refused and has to be asked
-     again: whether it was is read at the end of the first run, below */
+  /* Account attachment is independent of starter-gift eligibility. The
+     selected ground and gift nature are saved as separate fields; a set is
+     returned only by this test double's explicit synthetic mapped mode. */
   xf(wo.reqs('GET', /^\/v1\/funnel\/session\/[^/]+$/).length > 0, 'E2 read back', 'the app reads its first visit back from the server (authFunnelRead has no caller)',
     'a second device, or this browser after its storage is cleared, starts the first visit again from the beginning');
 
   station(11, 'O: the first release through onboarding, with the studio voice');
   const ob = () => po2.evaluate(() => ({ open: !!(typeof OB !== 'undefined' && OB.open), step: typeof OB !== 'undefined' ? OB.step : null,
     card: (document.querySelector('#ob .ob-card') || {}).innerText || '' }));
-  let o = await ob(), joinedAtPick = null;
+  let o = await ob(), userAtGiftChoice = null;
   for (let guard = 0; guard < 14 && o.open && o.step < 7; guard++) {
     if (o.step === 0 || o.step === 2) await O.click('[data-ob="next"]');
     else if (o.step === 1) {
       await O.click('[data-obpick="0"]');
-      /* the pick is the first mark, and here it is what lets the server join
-         the session, so the join is read now: a person who stops after the
-         pick must not be left anonymous until some later screen asks again */
+      await O.click('[data-obgift="0"]');
+      /* The session is allowed onto the account without a gift. The selected
+         gift nature is separately checkpointed, and this synthetic mapped
+         fixture grants a set only after both keys have been recorded. */
       const t0 = Date.now();
-      while (Date.now() - t0 < 4000 && !(Object.values(wo.st.fun)[0] || {}).userId) await po2.waitForTimeout(150);
-      joinedAtPick = (Object.values(wo.st.fun)[0] || {}).userId || null; }
+      while (Date.now() - t0 < 4000 && (!(Object.values(wo.st.fun)[0] || {}).userId ||
+             (Object.values(wo.st.fun)[0] || {}).giftNatureId !== 'anxiety')) await po2.waitForTimeout(150);
+      userAtGiftChoice = (Object.values(wo.st.fun)[0] || {}).userId || null; }
     else if (o.step === 3) await O.click('[data-obfeel="1"]');
     else if (o.step === 4) await O.click('[data-obplace="3"]');
     else if (o.step === 5) { await po2.fill('#obtext', STORY); await po2.dispatchEvent('#obtext', 'input'); await O.click('#obdone'); }
@@ -1033,12 +1042,17 @@ async function door(browser, SITE, cut, giftAt) {
     'with no law answered CQ is 0 before and after, in the app and in the recount, and no lift was counted: ' + LO.CQ);
   const fso = Object.values(wo.st.fun)[0] || {};
   ok(!!fso.selectedGroundId, 'the server holds the starting point picked, ' + J(fso.selectedGroundId));
+  ok(fso.giftNatureId === 'anxiety', 'the selected support category is stored separately, ' + J(fso.giftNatureId));
+  const giftChoiceWrites = wo.reqs('PATCH', /\/checkpoint$/).filter(q => q.body && 'giftNatureId' in q.body);
+  ok(giftChoiceWrites.some(q => q.body.selectedGroundId === 'anxiety' && q.body.giftNatureId === 'anxiety'),
+    'the client sends both distinct selection fields together, ' + J(giftChoiceWrites.map(q => q.body)));
+  ok(!!fso.gift, 'the synthetic approved-set fixture grants only after both selections exist');
   ok(!!fso.firstReleaseId && fso.firstReleaseId === run.id, 'and the first release, by its id, ' + J(fso.firstReleaseId),
     'the account cannot tell that the first release happened');
   ok(!!fso.verificationId && evO.some(e => String(e.id) === String(fso.verificationId)), 'and the answer to What changed, by id and never by value, ' + J(fso.verificationId));
   ok(fso.tutorialCompleted === true, 'and that the first run was finished', 'the server reads the first run as never finished, for everybody who finishes it');
-  ok(!!accO.id && joinedAtPick === accO.id, 'from the first mark on, the server holds the first visit on the account they made at the door, userId '
-    + J(joinedAtPick), 'somebody who stops after picking a starting point stays anonymous on the server');
+  ok(!!accO.id && userAtGiftChoice === accO.id, 'the first visit remains attached to the account through gift-nature selection, userId '
+    + J(userAtGiftChoice), 'the first visit stays anonymous on the server');
   ok(!!accO.id && fso.userId === accO.id, 'and still does at the end of the first run, userId ' + J(fso.userId),
     'their first visit stays anonymous on the server, so nothing they did in it reaches the account they made');
   const joins = wo.reqs('POST', /^\/v1\/funnel\/session\/[^/]+\/attach$/), yes = joins.findIndex(q => q.status === 200);
@@ -1053,11 +1067,10 @@ async function door(browser, SITE, cut, giftAt) {
   ok(O.errs.length === 0 && O.cerrs.length === 0, 'no script or console error on this door: ' + O.errs.concat(O.cerrs).slice(0, 3).join(' | '));
   await O.ctx.close();
 
-  /* THE OTHER W3 OPTION: the server issues the gift with the session, so the
-     join can happen at once. Only the join is walked here. */
-  station(12, 'O: the same join, if the server issues the gift with the session');
+  /* NO APPROVED SET: account attachment still succeeds, but no gift is issued. */
+  station(12, 'O: account attachment without an approved frozen gift set');
   {
-    const O2 = await door(browser, SITE, cut, 'create');
+    const O2 = await door(browser, SITE, cut, 'none');
     const w2 = O2.worker;
     await O2.page.goto(SITE + '/atuned.html', { waitUntil: 'load' });
     await O2.booted();
@@ -1067,8 +1080,23 @@ async function door(browser, SITE, cut, giftAt) {
     await O2.page.waitForFunction(() => typeof OB !== 'undefined' && OB.open, null, { timeout: 15000 }).catch(() => {});
     await O2.page.waitForTimeout(800);
     const a2 = Object.values(w2.st.acc)[0] || {}, f2 = Object.values(w2.st.fun);
-    ok(f2.length === 1 && !!a2.id && f2[0].userId === a2.id, 'before the first press the first visit is on the account, userId ' + J(f2[0] && f2[0].userId),
+    ok(f2.length === 1 && !!a2.id && f2[0].userId === a2.id, 'the first visit is attached to the account without needing a starter gift, userId ' + J(f2[0] && f2[0].userId),
       'their first visit stays anonymous on the server');
+    ok(f2[0].gift === null && !f2[0].selectedGroundId && !f2[0].giftNatureId,
+      'no gift or choice is fabricated when neither choice nor approved set exists');
+    await O2.click('[data-ob="next"]');
+    await O2.click('[data-obpick="2"]');
+    await O2.click('[data-obgift="4"]');
+    const tNoGift=Date.now();
+    while(Date.now()-tNoGift<4000 && f2[0].giftNatureId!=='grief') await O2.page.waitForTimeout(100);
+    const localNoGift=await O2.page.evaluate(()=>({
+      step:OB.step,ready:OB.giftReady,
+      gift:CURP&&CURP.journey&&CURP.journey.gift||null
+    }));
+    ok(f2[0].selectedGroundId==='overwhelm'&&f2[0].giftNatureId==='grief',
+      'no-set path still stores the two separate choices');
+    ok(localNoGift.step===2&&!localNoGift.ready&&!localNoGift.gift,
+      'onboarding continues but no local 100-pattern gift is issued without server approval');
     ok(w2.reqs('GET', /^\/v1\/sync$/).length === 0 && w2.reqs('PUT', /^\/v1\/sync$/).length === 0,
       'account creation does not read or send the profile while sync is outside alpha');
     ok(O2.errs.length === 0, 'no script error: ' + O2.errs.slice(0, 2).join(' | '));
@@ -1084,7 +1112,7 @@ async function door(browser, SITE, cut, giftAt) {
      or says the true reason; today it blames the person's connection. */
   station(13, 'F: Create account in the file the owner is sent');
   {
-    const wf = fakeWorker('https://atuned.world', 'pick');
+    const wf = fakeWorker('https://atuned.world', 'mapped');
     const cf = await browser.newContext({ viewport: { width: W, height: H } });
     await cf.route('**/*', r => { const q = r.request(), u = q.url();
       if (u.indexOf('file:') === 0) return r.continue();
