@@ -242,6 +242,8 @@ for(const [W,H] of WIDTHS){
  ok(!!(plan&&plan.ok&&plan.lines===size),tag+'the first release is the ruled '+size+' lines: '+J(plan&&{l:plan.lines,a:plan.addrs}));
  ok(!/You have \d+ patterns left of the \d+ you were given|This release opens \d+ of them/.test(s.card),
   tag+'the card does not display starter-gift copy while the active bank is uninstalled');
+ ok(!/\bGift\.\s*You have/i.test(s.card),
+  tag+'the pre-release card also omits the generic Gift counter while the active bank is uninstalled');
  j=await rec();
  ok(logged(j,'story_signal_confirmed'),tag+'the yes answers are on the log as confirmed');
  ok(!!(j&&j.walk&&j.walk.step==='next'&&j.walk.text===null&&j.walk.t),tag+'the walk stands at the card before the release, holding the entry and no draft: '+J(j&&j.walk&&{s:j.walk.step,t:!!j.walk.t,x:j.walk.text}));
