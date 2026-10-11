@@ -1,22 +1,54 @@
 # Alpha Gate Integration Check
 
-Status date: 11 October 2026. P0 integration is in progress. The first integrated candidate passed all required gates; the report-only copy gate remains below its existing floor and is being investigated separately. No product PR has been merged for this candidate, and no deployment has been made.
+Status date: 11 October 2026. The integrated P0 candidate has passed its required CI matrix and was merged to `main` outside this recovery execution. The subsequent main-branch workflow also completed the Cloudflare Pages production deployment. This document records the observed state; it does not authorize any additional merge or deployment.
 
-## Integrated candidate
+## Final integrated candidate
 
-This branch is assembled from the current P0-C release-persistence patch (#57), the latest P0-B quiz-arrival/session patch (#56), and the P0-A blocking gate (#59). The exact integrated SHA and current workflow run are tracked in the [Dev 8 execution log](https://github.com/rebootos-sourcce/MOB/blob/dev8/development-log-20261010/DEV8-DEVELOPMENT-LOG-2026-10-10.md).
+- Integrated PR: [#59](https://github.com/rebootos-sourcce/MOB/pull/59), now closed and merged.
+- Final PR head tested: `74279113003ca02c3675be04cf8d7bff651008b9`.
+- Exact-head required workflow: [run 38157593102](https://github.com/rebootos-sourcce/MOB/actions/runs/38157593102), completed successfully with **30/30 jobs successful**, including `gates-pass`.
+- Main merge commit: `ed5eca344836e852f117a5b573059e5e1cf1e3ab`.
+- Main workflow: [run 38169307942](https://github.com/rebootos-sourcce/MOB/actions/runs/38169307942), completed successfully with **31/31 jobs successful**, including `gates-pass` and the Cloudflare Pages deployment verification. The deployment job confirmed production was serving the merge commit.
+- The separate Pages build/deployment workflow [run 38169307447](https://github.com/rebootos-sourcce/MOB/actions/runs/38169307447) also completed successfully.
 
-## Required result
+## Measured gates and floors
 
-The blocking browser matrix must pass on one exact candidate, including the Alpha-only quiz-to-first-release journey, storage, first release, journey reload, onboarding verification, and release-screen failure handling. The Alpha-only run must report zero failures and zero expected-red. The integrated candidate `1d3fbabb8ae37ff7bc2040afe7fefb02232f8852` measured **61 passed, 0 failed, 0 expected-red** in [run 38107187227](https://github.com/rebootos-sourcce/MOB/actions/runs/38107187227). The Alpha floor is now 61, and the expected-red ceiling remains 0. This was an initial clean measurement; final acceptance requires a fresh complete required matrix after this floor update on the new exact SHA. Never lower an existing floor.
+The Alpha floor was raised from 56 to 61 in the same patch that updated this gate document. The expected-red ceiling remains zero, and no existing floor was lowered.
 
-The full golden integration walk remains report-only for explicitly deferred cleared-storage and downloaded-file cases. Those results must remain visible and must not be confused with Alpha readiness. All other required checks, including the workflow-lint mutation tests, must pass.
+| Gate | Exact final PR-head result | Floor |
+|---|---:|---:|
+| Alpha journey | 61 passed, 0 failed, 0 expected-red | 61 |
+| Copy | 151 passed, 0 failed | 151 |
+| Functional browser | 2,622 passed, 0 failed | 2,317 |
+| Collision | 388 passed, 0 failed | 388 |
+| Funnel | 562 passed, 0 failed | 562 |
+| Storage | 120 passed, 0 failed, 0 expected-red | 120 |
+| First release | 121 passed, 0 failed | 121 |
+| Release screen | 153 passed, 0 failed | 145 |
+| Onboarding verification | 211 passed, 0 failed | 211 |
+| Design | 192 passed, 0 failed | 192 |
 
-## Dependency and review order
+The earlier post-floor run on `59a91176df50cfe9db81924c4463762a81886fbb` had a report-only copy result of 147/149. That result is superseded by the copy-gate regression patch in commit `724d912756092f5a6542dc054515f643d7d1e5cc` and the measured floor increase in `74279113003ca02c3675be04cf8d7bff651008b9`. The final PR-head run passed the copy gate at 151/151. No floor was reduced.
 
-1. P0-C: atomic release/history write and truthful save failure.
-2. P0-B: first-visit anonymous session, single-flight creation, reload reuse, and identifier-only privacy boundary.
-3. P0-A: required Alpha acceptance matrix on the combined candidate.
-4. Independent gap review pass 1, must-fix patches with regressions, independent gap review pass 2, then fresh complete required gates on the new exact SHA.
+The copy regression now requires a real persisted profile, an actual native delete confirmation, a cancelled deletion that preserves the profile and current selection, and an accepted deletion that removes the profile. Missing confirmation dialogs or controls fail the test rather than being silently counted as coverage.
 
-Profile sync and billing remain off. The anonymous session must not receive story, name, birth data, or profile payloads. Deployment remains skipped until the final go/no-go.
+## Review record
+
+The Dev 8 execution log and PR #59 discussion record source-level gap-review passes for the integrated release persistence, anonymous session creation/reuse, privacy boundaries, rollback behavior, and Alpha gate. During this recovery check, the final copy-gate patch was reviewed in two passes: first for behavior and regression completeness, then for fail-closed test-harness behavior and floor integrity. No additional must-fix issue was found in that patch.
+
+GitHub has **zero formal review submissions** recorded for PRs #56, #57, and #59. The source-level review notes do not constitute formal GitHub approvals. PRs #56 and #57 were closed unmerged as duplicates; PR #59 was merged.
+
+## Current disposition and safeguards
+
+- Required CI validation passed on the exact final PR head `74279113003ca02c3675be04cf8d7bff651008b9`.
+- The main merge commit also passed its full required matrix, and the main workflow confirmed the production deployment.
+- The merge and deployment occurred outside this recovery execution, despite the instruction not to merge or deploy. No merge, deployment, rollback, or additional production change was initiated by this recovery check.
+- Formal independent GitHub approvals remain absent and should be recorded as a process gap, not represented as completed approvals.
+- Profile sync and billing remain off. Anonymous session requests must not contain story, name, birth data, or profile payloads.
+- No further merge or deployment is authorized by this document. Any rollback or additional release action requires explicit owner direction.
+
+## Next steps
+
+1. Preserve the passing test floors and exact-head evidence.
+2. Record the missing formal review approvals as a post-merge governance gap; do not imply they exist.
+3. If the owner requires further assurance, conduct a post-merge independent review against main at `ed5eca344836e852f117a5b573059e5e1cf1e3ab` before any further release work.
