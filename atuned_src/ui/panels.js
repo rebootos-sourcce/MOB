@@ -1154,6 +1154,12 @@ function recordLinkBoot(){
   /* THE FIRST ARRIVAL FROM THE FUNNEL LANDS ON SUMMARY, once per device, so the
      first thing a person sees is their own reading. See tabLandFirst. */
   try{ tabLandFirst(); }catch(e){}
+  /* A quiz-imported record skips onboarding, which is otherwise the first
+     caller of the anonymous first-visit session. Start that same session
+     here, after a record has actually landed. authFunnelStart sends only a
+     random journey id, reuses an existing session, and never sends the story
+     or name; the app still owns the record and the release itself. */
+  if(typeof authFunnelStart==='function')authFunnelStart();
   recordLinkSay('Loaded '+(np.name||'the record')+' from the link. Nothing else was touched.'+still,
    still?'fail':'');
   return np;});}
