@@ -155,6 +155,7 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
   'a verified server snapshot is distinguished from an installed local bank');
  ok(!serverReadyCopy.includes('No approved fixed set is available'),
   'a verified server snapshot is not mislabeled as a missing approved set');
+ await page.click('[data-ob="next"]'); await page.waitForTimeout(80);
 
  await page.click('[data-ob="next"]'); await page.waitForTimeout(80);     /* settle -> feel */
  st=await step(); ok(st.step===3,'feel, step '+st.step);
