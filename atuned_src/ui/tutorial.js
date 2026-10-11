@@ -296,7 +296,7 @@ function tutRender(){
     +'to work with exactly that. This one is real: pressing Begin opens it '
     +'on what this entry just wrote.</p>'
     +(go?obMiniSay(pl,typeof journeyRead==='function'?journeyRead(CURP).first:true)
-     +((CURP&&CURP.journey&&CURP.journey.gift&&CURP.journey.gift.granted>0&&typeof obGiftSay==='function')
+     +((typeof OB!=='undefined'&&OB.giftReady===true&&typeof obGiftSay==='function')
        ?obGiftSay(pl)
        :'<p class="ob-p ob-dim">No starter set has been issued for this tutorial. You can still try this release. Starter sets require a separate support choice and server confirmation.</p>')
      :(typeof obMiniWhy==='function'&&obMiniWhy(pl)?'<p class="ob-p">'+obMiniWhy(pl)+'</p>':''));

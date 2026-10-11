@@ -825,7 +825,7 @@ function obEndLog(){
    one Billing prints), so the gift has one wording, and it is said only while
    the gift lasts. The release's own count is the plan's. */
 function obGiftSay(pl){
- if(!pl||!pl.ok||typeof meterBudget!=='function'||!CURP)return '';
+ if(!OB||OB.giftReady!==true||!pl||!pl.ok||typeof meterBudget!=='function'||!CURP)return '';
  var al=meterBudget(CURP).allow; if(!al||!al.inGift)return '';
  return '<p class="ob-p">You have '+esc(al.say)+'. This release opens '+pl.lines+' of them. '
   +'<span class="ob-dim">A pattern is one line you have not said before.</span></p>';}
