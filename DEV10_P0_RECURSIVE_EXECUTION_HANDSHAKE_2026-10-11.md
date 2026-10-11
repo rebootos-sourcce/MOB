@@ -184,7 +184,7 @@ The 13 seats remain coordinated responsibilities from the primary Dev9 handshake
 - Fresh full workflow: [38148435093](https://github.com/rebootos-sourcce/MOB/actions/runs/38148435093), still in progress at last refresh.
 - Copy job `114496605865` completed successfully: **151 passed, 0 failed, floor 151**. The floor checker reports `ok copy: 151 passed, 0 failed, floor 151`.
 - At last refresh, all other completed jobs were green. Two browser jobs remained in progress: `gates-browser (functional)` and `gates-browser (onboarding2)`. `gates-report-summary` succeeded, but `gates-pass` had not yet appeared/completed. Do not call the exact-head matrix complete until the final required aggregator is green.
-- Independent review found one possible assertion-hardening follow-up: the test confirms a dialog appears and proves cancel/accept outcomes, but it does not yet explicitly assert the native dialog type and the expected profile-delete wording. Review this before declaring the test block fully closed; do not alter the app handler without evidence.
+- Second-pass review found that the test did not explicitly assert native dialog type and delete-scope wording. This was patched in the latest head `5c388cd48d2c1254967028271c20515cc149ebcd`: the test now requires a native `confirm` with `Delete … from this browser?`, verifies dismiss on the cancel path and accept on the destructive path, and still checks profile preservation/removal. Fresh run 38148880267 is queued; do not close the block until its exact-head full matrix passes.
 
 ### Reboot-OS PR #35: validator hardening and stack reconciliation
 
@@ -211,3 +211,30 @@ MOB `DECISIONS.md` on main still says a new person gets 100 patterns and one pat
 6. No merge, production deployment, production migration 0017, profile sync, paid billing, or production gift issuance without explicit owner go/no-go and all acceptance evidence.
 
 **Current disposition:** P0 remains open. Copy coverage is measured at 151/0 against floor 151, but the full matrix is still running. The catalog validator is hardened and the PR stack is reconciled; fresh smoke and Cloudflare results remain pending. The exact 100-pattern product contract remains an independent blocker.
+
+
+## 11. Latest pickup delta — 11 October 2026, 14:52 UTC
+
+### PR #65 current head and run queue
+
+- Current head: `5c388cd48d2c1254967028271c20515cc149ebcd`; base remains `dev7/p0-alpha-gates-20261010` at `59a91176df50cfe9db81924c4463762a81886fbb`.
+- Changed paths remain test-only: `tests/copy.js` and `tests/floors.json`.
+- The current test now asserts native dialog type and the profile-delete scope message, then checks that cancellation dismisses and preserves the profile, and acceptance deletes the profile. Copy floor remains **151**.
+- Latest exact-head full matrix [38148880267](https://github.com/rebootos-sourcce/MOB/actions/runs/38148880267) is queued, with some report jobs beginning. The prior floor-151 run [38148435093](https://github.com/rebootos-sourcce/MOB/actions/runs/38148435093) remains in progress on previous head `151ce8e...`; copy passed 151/0, but its full matrix has not completed. Do not treat the predecessor as validation for the new assertions.
+
+### PR #35 current head and run queue
+
+- Current head: `363fe7fbd846ae5823c960b07240e50715b51fef`; base branch tip `75f5c1409e8fb8ebbc639feea438e36a4e3774f3`; live compare remains 48 ahead, 0 behind. PR #35 is open, draft, unmerged, and currently reports mergeable.
+- Server workflow [38148768933](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38148768933) passed on this exact head: 137 tests, 137 passed, 0 failed.
+- Smoke runs [38148768941](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38148768941) and [38148772486](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38148772486) remain in progress.
+- External Cloudflare check failed on this exact head: build `02a085ab-5e03-4e0e-93ca-675f40a6aa4c`. Issue #37 now records the failure and current build link. The actual cause still requires authenticated Cloudflare logs.
+
+### End-of-batch decision and stop conditions
+
+1. Wait for exact-head run 38148880267 and both PR #35 smoke workflows; inspect failures before any further patch.
+2. If PR #65's new full matrix passes, finish the two-pass review, then keep the PR open/draft until the integrated release decision.
+3. If PR #35 smoke passes, record that only repository-owned validation passed. The external Cloudflare failure still blocks merge.
+4. Obtain the owner decision for universal versus ground-specific starter-gift membership and the exact 100 IDs. Until then, no production manifest, migration 0017 application or gift issuance.
+5. Do not merge or deploy PR #59, #65 or #35 without fresh exact-SHA evidence and explicit owner go/no-go.
+
+**Current disposition:** P0 remains open. The delete confirmation test is strengthened and floor 151 is retained, but the latest matrix is queued. The catalog branch is rebased through a conflict-free merge commit and server tests pass; smoke remains in progress and Cloudflare remains red. Product approval of the exact 100-pattern gift is still outstanding.
