@@ -174,3 +174,33 @@ The 13 seats remain coordinated responsibilities from the primary Dev9 handshake
 - **Catalog contract:** crosswalk validation is evidence-integrity validation, not owner approval. No final sentence manifest exists; no production IDs are approved.
 - **Infrastructure:** external Cloudflare failure is current and exact-head, but the underlying cause is unknown without the authenticated build logs.
 
+
+
+## 10. Execution delta after crosswalk hardening — 11 October 2026, 14:48 UTC
+
+### MOB PR #65: floor-151 validation
+
+- Exact head: `151ce8ec92cd274d947bca41362e439a932c3a09`.
+- Fresh full workflow: [38148435093](https://github.com/rebootos-sourcce/MOB/actions/runs/38148435093), still in progress at last refresh.
+- Copy job `114496605865` completed successfully: **151 passed, 0 failed, floor 151**. The floor checker reports `ok copy: 151 passed, 0 failed, floor 151`.
+- Other checks were mixed completed-success/in-progress at last refresh; the overall required matrix and `gates-pass` are not yet complete. Wait for exact-head completion before closing this block.
+
+### Reboot-OS PR #35: source taxonomy validator hardening
+
+- New exact head: `08cf44802fda2430bc802cccb0963ddaf0b431b0`, branch `alpha/p1-fixed-pattern-gift-contract-20261010`.
+- Changed only `atuned/test/tools/release_pattern_crosswalk.py`. The validator now rejects unsupported populated `rawObjectKind` values, checks the seven-layer source-kind/source-verb pairing, and checks that the declared source verb-to-layer mapping matches the settled taxonomy. Two new negative controls were added, taking the count from 3/3 to 5/5.
+- This is a source-evidence validator improvement only. It does not fill missing kinds/verbs, turn `Say` into a seventh release channel, split source runs into approved sentence records, select membership, or create a production manifest.
+- PR #35 remains draft/open/unmerged; its current recorded base is `alpha/p1-account-retention-24-months-20261010` at `11f34225ab031ccaedf539e866e63319c10df117`. GitHub currently reports `mergeable: false`; do not merge. Reconcile the base/merge state before any future release decision.
+- Fresh workflows [38148607215](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38148607215) and [38148610077](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38148610077) were queued on the exact new head at last refresh. Prior green smoke runs apply only to the previous SHA.
+- The exact-head external `Workers Builds: atuned-os` check remains failed on build `a0da5d74-33a1-4a6d-9144-37fe7a1d4902`. Issue #37 now has the exact-head check and build link. Actual failure classification still requires authenticated Cloudflare logs.
+
+### Source inventory analysis
+
+The crosswalk at `b83bd76e72ee1b7479ecaf879bb20e9e52093fce` was checked against its three linked corpus files. There are 236 candidate-linked source records (156 2026 dictation, 26 PDF A, 54 PDF B), 29,009 words, and 4,433 summed `cleaned` field counts. This is not a count of unique approved sentence-level patterns. The source intake explicitly preserves the unresolved choice between using a whole run per topic and splitting it into lines. That decision remains open; the exact 100 IDs remain unapproved.
+
+### Current next steps
+
+1. Poll run 38148435093 until all jobs and `gates-pass` complete. If any job fails, inspect its log before making another patch.
+2. Poll Reboot-OS runs 38148607215 and 38148610077. Verify the new source taxonomy negative controls and full gate on exact head `08cf448...`; then check current external status again.
+3. Reconcile PR #35's `mergeable: false` state and base relationship without merging or applying migrations.
+4. Keep issue #58 open until source-run granularity, selection policy and exact approved 100 IDs are resolved. Keep issue #37 open until actual Cloudflare diagnostics are available.
