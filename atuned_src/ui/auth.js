@@ -151,7 +151,7 @@ function authFunnelStart(){
      out of the request body so the browser cannot claim somebody else's id. */
   if(!r.ok)return {ok:false,status:r.status,body:r.body};
   var b=r.body||{}, s=b.session;
-  if(!s||typeof s.id!=='string'||typeof b.credential!=='string')return {ok:false,status:r.status,body:null};
+  if(!s||typeof s.id!=='string'||!s.id||typeof b.credential!=='string'||b.credential.length<32)return {ok:false,status:r.status,body:null};
   var state={session:s,id:s.id,anonymousId:s.anonymousId||anonymousId,credential:b.credential};
   var kept=funnelKeep(state);
   if(!kept)return {ok:false,status:0,body:null,kept:false};
