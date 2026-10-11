@@ -50,7 +50,7 @@ function walked(E){
  E.journeyLog(p,'tutorial_started',null,{door:'onboarding'},T);
  E.journeyWalk(p,'ask',{},T);
  E.journeyLog(p,'ground_selected','anxiety',null,T);
- E.journeyGiftIssue(p,'app',T);
+ E.journeyGiftIssue(p,'app',T,'anxiety');
  p.story.entries.push({t:ST,text:'I felt tight in my chest when my boss yelled at me.',imprints:5,bands:{},
   ob:{pick:0,feel:1,place:3,yes:ids.slice(),no:[]}});
  E.journeyWalk(p,'release',{pick:0,feel:1,place:3,t:ST,base:{lines:p.meter.lines,unique:p.meter.unique.length}},T);
@@ -454,20 +454,23 @@ gift(E,ok){
  const rd0=E.journeyGiftRead(p);
  ok(rd0.granted===100&&rd0.used===12&&rd0.remaining===88&&rd0.issued===false&&rd0.spent===false,
   'before it is issued the counter still reads off the meter: '+J(rd0));
- ok(E.journeyGiftIssue(p,'cart',at(-4)).ok===false,'a gift from nowhere known is refused');
- const i=E.journeyGiftIssue(p,'app',at(-4));
- ok(i.ok&&i.issued&&p.journey.gift.granted===100&&p.journey.gift.used===12&&p.journey.gift.remaining===88&&p.journey.gift.src==='app',
+ ok(E.journeyGiftIssue(p,'cart',at(-4),'anxiety').ok===false,'a gift from nowhere known is refused');
+ ok(E.journeyGiftIssue(p,'app',at(-4)).ok===false,'a new gift cannot be issued without a chosen nature');
+ ok(E.journeyGiftIssue(p,'app',at(-4),'selfworth').ok===false,'an onboarding ground is not a gift category');
+ const i=E.journeyGiftIssue(p,'app',at(-4),'anxiety');
+ ok(i.ok&&i.issued&&p.journey.gift.granted===100&&p.journey.gift.used===12&&p.journey.gift.remaining===88&&p.journey.gift.src==='app'&&p.journey.gift.giftNatureId==='anxiety',
   'issued, it is a counter of a hundred with twelve used: '+J(p.journey.gift));
  ok(p.journey.log.some(e=>e.type==='starter_gift_issued'),'and the issue is on the log');
- const again=E.journeyGiftIssue(p,'funnel',at(-3));
+ const again=E.journeyGiftIssue(p,'funnel',at(-3),'anxiety');
  ok(again.ok&&again.issued===false&&p.journey.gift.src==='app'&&p.journey.gift.at===at(-4),'a second issue changes nothing');
+ ok(E.journeyGiftIssue(p,'app',at(-2),'grief').ok===false,'a gift nature cannot change once the gift is issued');
  ok(p.journey.log.filter(e=>e.type==='starter_gift_issued').length===1,'and logs nothing');
  {const ng=E.blankProfile('ng'); ok(E.journeyGiftSync(ng)===null&&!ng.journey,'syncing a gift that was never issued issues nothing');}
  ok(E.journeyGiftIssue(null,'app').ok===false,'no record is refused');
  /* THE COUNTER COUNTS. A release opens new ground and the next save moves the
     stored counter in the same write, through saveProfile, the one writer
     every save goes through. */
- const c=E.blankProfile('counts'); E.journeyGiftIssue(c,'app',at(-2));
+ const c=E.blankProfile('counts'); E.journeyGiftIssue(c,'app',at(-2),'grief');
  ok(c.journey.gift.used===0&&c.journey.gift.remaining===100,'a new gift has used nothing: '+J(c.journey.gift));
  const ids=addrs(E,3), keys=E.meterPlan(c,ids,E.ONB_CHANS,12); E.meterRun(c,keys);
  ok(E.journeyGiftRead(c).used===12&&E.journeyGiftRead(c).drift===true,'after a release the meter has moved and the stored counter has not yet');
