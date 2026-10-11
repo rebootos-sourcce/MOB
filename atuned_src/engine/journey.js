@@ -116,7 +116,8 @@ function jyLog(errs,x,i,nowMs){
  return {seq:x.seq, type:x.type, at:at, ref:ref, d:d};}
 
 /* ---------------- the gift, as the owner's counter ---------------- */
-var JY_GIFT_KEYS=['at','src','granted','used','remaining'];
+var JY_GIFT_NATURES=['anxiety','overwhelm','burnout','depression','grief','sadness'];
+var JY_GIFT_KEYS=['at','src','granted','used','remaining','giftNatureId'];
 function jyGift(errs,g,nowMs){
  var path='journey.gift';
  if(g===null||g===undefined)return null;
@@ -124,6 +125,11 @@ function jyGift(errs,g,nowMs){
  vKeys(errs,path,g,JY_GIFT_KEYS);
  var at=jyDate(errs,path+'.at',g.at,nowMs);
  if(JOURNEY_SRC.indexOf(g.src)<0)errs.push(path+'.src is not funnel or app');
+ var nature=null;
+ if(g.giftNatureId!==undefined&&g.giftNatureId!==null){
+  if(JY_GIFT_NATURES.indexOf(g.giftNatureId)<0)errs.push(path+'.giftNatureId is not one of the six gift categories');
+  else nature=g.giftNatureId;
+ }
  var gr=jyInt(errs,path+'.granted',g.granted,0,1e6);
  var us=jyInt(errs,path+'.used',g.used,0,gr===null?1e6:gr);
  var rm=jyInt(errs,path+'.remaining',g.remaining,0,1e6);
@@ -133,7 +139,7 @@ function jyGift(errs,g,nowMs){
  if(gr!==null&&us!==null&&rm!==null&&us+rm!==gr)
   errs.push(path+'.remaining is '+rm+' and used is '+us+', which do not make '+gr);
  if(at===null||gr===null||us===null||rm===null)return null;
- return {at:at, src:g.src, granted:gr, used:us, remaining:rm};}
+ return {at:at, src:g.src, granted:gr, used:us, remaining:rm, giftNatureId:nature};}
 
 /* ---------------- the walk: where the first run stands ---------------- */
 /* WHAT A RELOAD NEEDS TO PUT A PERSON BACK WHERE THEY WERE, and nothing else.
@@ -259,6 +265,7 @@ function journeyGiftRead(p){
  var used=Math.min(GIFT_N,n);
  return {granted:GIFT_N, used:used, remaining:GIFT_N-used, spent:used>=GIFT_N,
   issued:!!g, at:g?g.at:null, src:g?g.src:null,
+  giftNatureId:g?(g.giftNatureId||null):null,
   drift:!!g&&(g.used!==used||g.remaining!==GIFT_N-used)};}
 /* WRITE THE COUNTER'S USED AND REMAINING from the meter. The one place the
    stored half is written, so it is the one place that can be wrong, and
@@ -271,14 +278,20 @@ function journeyGiftSync(p){
  return g;}
 /* ISSUE THE GIFT, ONCE. A record has one gift, so a second call changes nothing
    and says so. src is where it was issued: the funnel, or the app. */
-function journeyGiftIssue(p,src,now){
+function journeyGiftIssue(p,src,now,giftNatureId){
  if(!p)return {ok:false, why:'no record'};
  if(JOURNEY_SRC.indexOf(src)<0)return {ok:false, why:'journey.gift.src is not funnel or app'};
+ if(JY_GIFT_NATURES.indexOf(giftNatureId)<0)
+  return {ok:false, why:'journey.gift.giftNatureId must be one of anxiety, overwhelm, burnout, depression, grief, sadness'};
  var j=jyEnsure(p);
- if(j.gift)return {ok:true, issued:false, gift:j.gift};
+ if(j.gift){
+  if(j.gift.giftNatureId&&j.gift.giftNatureId!==giftNatureId)
+   return {ok:false, why:'journey.gift.giftNatureId is already recorded'};
+  return {ok:true, issued:false, gift:j.gift};
+ }
  var r=journeyGiftRead(p);
- j.gift={at:jyAt(now), src:src, granted:r.granted, used:r.used, remaining:r.remaining};
- var lg=journeyLog(p,'starter_gift_issued',null,{granted:r.granted},now);
+ j.gift={at:jyAt(now), src:src, granted:r.granted, used:r.used, remaining:r.remaining, giftNatureId:giftNatureId};
+ var lg=journeyLog(p,'starter_gift_issued',null,{granted:r.granted,gift_nature_id:giftNatureId},now);
  return {ok:true, issued:true, gift:j.gift, logged:lg.ok};}
 /* THE COUNTER SPACE, ruled "we can use that counter space for other things",
    is not built: no other thing has been named to count, and a writer nothing
