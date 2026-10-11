@@ -192,8 +192,24 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
    await p.evaluate(k=>{ACC_OPEN=k;renderAccount();},k); await p.waitForTimeout(250);
    hold('app',at('settings:'+k),await p.evaluate(harvest,'#settings'),k==='privacy'?'privacy':null);}
 
-  /* the delete screen: the group that holds Delete, and the confirm it asks */
-  await p.evaluate(()=>{ACC_OPEN='privacy';renderAccount();}); await p.waitForTimeout(250);
+  /* the delete screen: reselect the intended profile after the tab and Settings sweep.
+     Those are read-only copy checks; the destructive action must still be tested
+     against a live, resolvable profile so the confirmation path is actually reached. */
+  if(who==='loaded'){
+   const state=await p.evaluate(()=>{
+    const i=PEOPLE.findIndex(x=>x.nm==='Derek');
+    if(i>=0)loadP(i);
+    setTab(TAB.SETTINGS); ACC_OPEN='privacy'; renderAccount();
+    const p=CURP;
+    return {target:i,curp:!!p,name:p&&p.name,id:p&&p.id,
+     inProfiles:!!p&&PROFILES.indexOf(p)>=0,found:!!p&&!!profFind(p.id)};
+   });
+   if(!state.curp||!state.inProfiles||!state.found)
+    fail('app/'+wn+'/'+who+'/delete:setup','loaded profile selection invalid: '+JSON.stringify(state));
+   await p.waitForTimeout(250);
+  }else{
+   await p.evaluate(()=>{ACC_OPEN='privacy';renderAccount();}); await p.waitForTimeout(250);
+  }
   const del=await p.evaluate(()=>{var d=document.getElementById('acdel');
    var g=d&&d.closest('.ac-grp'); return g?g.innerText:null;});
   if(del==null)fail(at('delete'),'missing the group that holds Delete');
