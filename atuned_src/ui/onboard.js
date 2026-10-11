@@ -74,7 +74,8 @@ var OB_NSTEPS=JOURNEY_WALK.indexOf('release');
    release has landed. It is not a ninth dot on the rail; the rail reads done. */
 var OB_END=JOURNEY_WALK.indexOf('end');
 var OB={open:false, step:0, replay:false,
- pick:null, giftNature:null, giftConfirmed:false, giftReady:false, feel:null, place:null,
+ pick:null, giftNature:null, giftConfirmed:false, giftReadbackVerified:false,
+  giftSnapshotReady:false, giftReady:false, feel:null, place:null,
  text:'', commit:null, corr:'', fixes:[],
  /* the mirror's read of the story before it is committed, each
     correction's read, and one answer per address: yes or no, by node id */
@@ -607,7 +608,9 @@ function obOpen(replay){
  var h=document.getElementById('ob'); if(!h)return;
  if(typeof authFunnelStart==='function')authFunnelStart();
  OB.open=true; OB.step=0; OB.replay=!!replay;
- OB.pick=null; OB.giftNature=null; OB.giftConfirmed=false; OB.giftReady=false; OB.feel=null; OB.place=null;
+ OB.pick=null; OB.giftNature=null; OB.giftConfirmed=false;
+  OB.giftReadbackVerified=false; OB.giftSnapshotReady=false; OB.giftReady=false;
+  OB.feel=null; OB.place=null;
  OB.text=''; OB.commit=null; OB.corr=''; OB.fixes=[];
  OB.read=null; OB.fixReads=[]; OB.ans={}; OB.more={}; OB.plan=null;
  OB.door='onboarding'; OB.made=null; OB.failSaid=false;
@@ -788,6 +791,9 @@ function obResume(jr){
     reload must not forget a saved nature or let the person attempt to replace it. */
  var savedFunnel=typeof funnelSession==='function'?funnelSession():null;
  var savedSession=savedFunnel&&savedFunnel.session;
+ OB.giftReadbackVerified=!!(savedFunnel&&savedFunnel.giftVerified===true);
+ OB.giftSnapshotReady=!!(OB.giftReadbackVerified&&savedSession&&savedSession.starterGiftId);
+ OB.giftReady=false;
  if(savedSession&&savedSession.selectedGroundId&&savedSession.giftNatureId){
   var savedGroundIndex=OB_STARTS.findIndex(function(g){return g.k===savedSession.selectedGroundId;});
   var savedNature=OB_GIFT_NATURES.some(function(n){return n.k===savedSession.giftNatureId;});
@@ -1033,12 +1039,17 @@ function obRender(){
     +'<button type="button" class="btn" data-ob="back">Back</button>');
   }else if(OB.giftConfirmed&&OB.giftNature){
    var selectedNature=OB_GIFT_NATURES.find(function(n){return n.k===OB.giftNature;});
+   var giftStateCopy=OB.giftReady===true
+    ?'The fixed starter set is installed in your release bank for this choice.'
+    :OB.giftReadbackVerified!==true
+     ?'Your support choice was saved, but we could not verify whether a fixed starter set is available. You can continue without one. No starter patterns have been added to your release allowance.'
+     :OB.giftSnapshotReady===true
+      ?'The server verified a fixed set for this choice, but it is not installed in your release bank yet. You can continue without one. No starter patterns have been added to your release allowance.'
+      :'No approved fixed set is available for this choice yet. You can continue without a starter set.';
    out=obCard('Ask','Your support choice is saved',
     '<p class="ob-p">Your starting point is <b>'+esc(pickedGround.n)+'</b>.</p>'
     +'<p class="ob-p">Your support choice is <b>'+esc(selectedNature?selectedNature.n:OB.giftNature)+'</b>.</p>'
-    +(OB.giftReady
-      ?'<p class="ob-p ob-dim">The server confirmed a starter-gift record for this choice.</p>'
-      :'<p class="ob-p ob-dim">No approved fixed set is available for this choice yet. You can continue without a starter set.</p>'),
+    +'<p class="ob-p ob-dim">'+esc(giftStateCopy)+'</p>',
     '<button type="button" class="btn pri" data-ob="next">Continue</button>');
   }else{
    out=obCard('Ask','What kind of support would help?',
@@ -1675,7 +1686,8 @@ addEventListener('click',function(e){
  if(pk){
   var groundIndex=+pk.getAttribute('data-obpick');
   if(!Number.isInteger(groundIndex)||groundIndex<0||groundIndex>=OB_STARTS.length)return;
-  OB.pick=groundIndex; OB.giftNature=null; OB.giftConfirmed=false; OB.giftReady=false;
+  OB.pick=groundIndex; OB.giftNature=null; OB.giftConfirmed=false;
+  OB.giftReadbackVerified=false; OB.giftSnapshotReady=false; OB.giftReady=false;
   OB.step=1; obRender(); return;
  }
  var giftPick=t.closest?t.closest('[data-obgift]'):null;
@@ -1686,7 +1698,8 @@ addEventListener('click',function(e){
   var giftGroundIndex=OB.pick;
   var ground=OB_STARTS[giftGroundIndex], nature=OB_GIFT_NATURES[natureIndex];
   if(!ground||!nature)return;
-  OB.giftNature=nature.k; OB.giftConfirmed=false; OB.giftReady=false;
+  OB.giftNature=nature.k; OB.giftConfirmed=false; OB.giftReadbackVerified=false;
+   OB.giftSnapshotReady=false; OB.giftReady=false;
   /* Save both choices together. The server's gift contract is fail-closed;
      no client-side fallback may create a gift when an approved frozen set is absent. */
   if(!OB.replay&&typeof authFunnelCheckpoint==='function'){
@@ -1697,6 +1710,9 @@ addEventListener('click',function(e){
        &&r.session.giftNatureId===nature.k
        &&OB.pick===giftGroundIndex&&OB.giftNature===nature.k){
       OB.giftConfirmed=true;
+      OB.giftReadbackVerified=r.giftVerified===true;
+      OB.giftSnapshotReady=OB.giftReadbackVerified&&!!r.session.starterGiftId
+       &&!!(r.gift&&r.gift.ready===true);
       /* A verified server snapshot is not yet a usable MOB meter bank.
          Six server verb channels do not map to four meter tracks without an
          owner-approved deterministic adapter. Never mint local allowance here. */
