@@ -4,7 +4,28 @@
 **Branch:** docs/agreements-readiness-20261011  
 **Scope:** Documentation, contract alignment and build handoff only. No app code, migration, deployment, production billing, profile sync or gift issuance was performed.
 
+## Block 4 — canonical source-of-truth charter and exact-head refresh
+
+**Result:** Added `ATUNED-CANONICAL-SOURCE-OF-TRUTH-CHARTER.md` and connected it to the README reading order, document register and build handoff. The charter separates owner intent, source-code behavior, deployed behavior, CI status, legal approval and catalog identity. It is an authority/index document, not a replacement for domain-owning sources.
+
+**Current evidence at the latest refresh on 11 October 2026:**
+
+- MOB PR #67 is draft/open. Prior head `b473d75a6369c453736401de30ee2d766987335d` passed 30/30 jobs in run [#38170329312](https://github.com/rebootos-sourcce/MOB/actions/runs/38170329312). The charter and alignment updates were committed after that tested head, so the prior green run does not validate this revised pack. The latest head must pass its own workflow.
+- MOB PR #66 is draft/open at metadata SHA `61174502691d1bc353a479604b35bbf5c6d53187`. Exact-head workflow [#38182154741](https://github.com/rebootos-sourcce/MOB/actions/runs/38182154741) last showed 28 successful jobs and one in-progress functional browser job. The full gate is not yet established as green.
+- Reboot-OS PR #35 is draft/open at metadata SHA `74755057c54e11a82580b6c387f258f40a75f9fc`. Repository-owned server and smoke checks succeeded. The exact-SHA external Cloudflare `Workers Builds: atuned-os` check failed. Latest build detail: [3ac5f30c-a112-436e-9d5d-f2c1be36b161](https://dash.cloudflare.com/b34a8a4f24d5ac71f7b386c240a6da90/workers/services/view/atuned-os/production/builds/3ac5f30c-a112-436e-9d5d-f2c1be36b161); open diagnosis issue [#37](https://github.com/rebootos-sourcce/Reboot-OS/issues/37). GitHub annotations do not reveal the first failed build step, so root cause is unknown.
+- MOB issue [#58](https://github.com/rebootos-sourcce/MOB/issues/58) remains open. No owner-approved production stable pattern IDs or exact 100-item manifest are established. The backend six-verb channel space and client four-track meter still lack a deterministic source-backed adapter and consumption rule. Production issuance and local allowance remain disabled.
+- Retention remains owner-recorded at 24 months after deletion; affected record/store scope and implementation remain unverified. Terms/Privacy draft wording about a 90-day restorable backup remains in conflict. Do not re-ask the already-recorded period or publish a resolved claim before engineering scope evidence and counsel-approved wording.
+- First-visit metadata-only behavior, model-training/research-off policy, and the anonymous voice-to-ElevenLabs ruling are owner/source records, not proof of every deployed data path.
+
+**Correctness pass:** Cross-checked the charter against the owner decision register, data-flow matrix, build handoff, live PR metadata and exact-head workflow/check-run sources.
+
+**Adversarial pass:** Rejected false-green inference from stale PR heads; separated repository-owned green checks from the failing external Cloudflare check; and confirmed that snapshot validation is not proof of an active client meter adapter. No merge, deployment, production migration, billing/profile-sync activation, sensitive-data test or production gift issuance was performed.
+
+**Measurements:** 1 charter added; README/register/build handoff linked; PR #66 gate last observed at 28 successful plus 1 in progress; Reboot-OS PR #35 external Cloudflare check failed; owner-approved stable pattern IDs = 0; legal artifacts approved for publication = 0.
+
 ## Block 0 — inventory and live evidence
+
+> Historical snapshot: Blocks 0–3 preserve their original observations. Block 4 is the later live refresh and supersedes any conflicting prior PR head or workflow status below.
 
 - Latest refresh: MOB PR #59 was merged into `main` at `ed5eca344836e852f117a5b573059e5e1cf1e3ab` at 19:44:41 UTC; the earlier “open, unmerged” note in this dated historical log is superseded.
 - MOB PR #66 is open/draft at head `8ca3aeae4609bf200a87cc90a89bade1cd5a9a07`, based on that merged main commit; exact-head run [38169513590](https://github.com/rebootos-sourcce/MOB/actions/runs/38169513590) was queued at the latest refresh. Older run 38168042535 targets the stale head `27eb858d62fd7dc5257197d3ee9431599cd5b6f2` and remains in progress in the fetched response, so it is not current-head final evidence.
