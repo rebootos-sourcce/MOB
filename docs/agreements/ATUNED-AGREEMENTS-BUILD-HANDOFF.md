@@ -32,6 +32,11 @@ Implement and prove the controls needed for accurate Terms, Privacy, Consumer He
 | BH-13 | Mobile/desktop, accessibility, private-window and direct-route tests cover all required notices and controls | Broken/inaccessible legal/consent route remains a release blocker | Exact-head browser run and annotated evidence |
 | BH-14 | Release report records exact repo/branch/head SHA, run URLs, conclusions, skipped gates and measured assertions | No generic “all green” wording when checks are skipped or failed | Evidence manifest and reviewer sign-off |
 | BH-15 | No production migration, deployment, billing/profile sync activation or gift issuance without separate explicit owner authorization | Protected operation remains disabled without authorization | Owner decision record and deployment/secret/feature-flag evidence |
+| BH-16 | KPI reports use the versioned KPI Register and Event Dictionary, authoritative event sources, fixed denominators and declared cohort windows. Hard safety/data-integrity gates display separately from performance targets. | Missing or invalid source data shows NOT INSTRUMENTED or BLOCKED, never zero/success; no performance target is promoted without a baseline and recorded owner approval. | Schema/event tests; source read-back; duplicate/denominator/cohort tests; synthetic traffic excluded; dashboard/report carries exact build and schema versions; review owner assigned |
+
+## KPI acceptance
+
+Use [ATUNED-KPI-REGISTER.md](ATUNED-KPI-REGISTER.md) with the [Event and Measurement Dictionary](ATUNED-EVENT-MEASUREMENT-DICTIONARY.md). Do not ship or advertise a KPI dashboard as trustworthy until its event paths, source of truth, denominator, idempotency, privacy exclusions and read-back tests have passed on the exact candidate build. The proposed `core_journey_completed` event must not fire until the required release, reframe, verification/practice states, updated-state persistence and trace references are verified. Conversion and repeat-use targets require measured baselines and recorded owner approval; consent, privacy, quota and false-success measures remain independent hard gates.
 
 ## 3. Exact test journeys
 
