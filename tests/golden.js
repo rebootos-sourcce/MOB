@@ -518,6 +518,45 @@ async function door(browser, SITE, cut, giftAt) {
     && startRace.ids.length===2 && startRace.ids[0]===startRace.ids[1],
     'concurrent session starts coalesce to one anonymous create, '+J(startRace));
 
+  /* A rejected create must resolve as failure and clear the in-flight slot,
+     so a later retry can create a session instead of inheriting a stuck promise. */
+  const failedStartRetry = await page.evaluate(async () => {
+    const saved = {
+      authCall: window.authCall, funnelSession: window.funnelSession,
+      funnelKeep: window.funnelKeep, authFunnelJoin: window.authFunnelJoin,
+      starting: window.FUNNEL_STARTING
+    };
+    let requests = 0;
+    try {
+      window.FUNNEL_STARTING = null;
+      window.funnelSession = () => null;
+      window.funnelKeep = () => true;
+      window.authFunnelJoin = () => Promise.resolve({ok:false,asked:false});
+      window.authCall = () => {
+        requests++;
+        if (requests === 1) return Promise.reject(new Error('simulated network rejection'));
+        return Promise.resolve({ok:true,status:201,body:{
+          session:{id:'retry-session',anonymousId:'retry-anonymous'},
+          credential:'retry-credential'
+        }});
+      };
+      const failed = await window.authFunnelStart();
+      const retry = await window.authFunnelStart();
+      return {requests,failedOk:failed.ok,retryOk:retry.ok,retryId:retry.session&&retry.session.id,
+        startingCleared:window.FUNNEL_STARTING===null};
+    } finally {
+      window.authCall = saved.authCall;
+      window.funnelSession = saved.funnelSession;
+      window.funnelKeep = saved.funnelKeep;
+      window.authFunnelJoin = saved.authFunnelJoin;
+      window.FUNNEL_STARTING = saved.starting;
+    }
+  });
+  ok(failedStartRetry.requests===2 && failedStartRetry.failedOk===false
+    && failedStartRetry.retryOk===true && failedStartRetry.retryId==='retry-session'
+    && failedStartRetry.startingCleared,
+    'rejected session creation stays failed and a later retry succeeds, '+J(failedStartRetry));
+
   station(5, 'Q: the first release, from the Story page');
   await Q.tab(0);
   const cq0 = (await Q.live()).CQ;
