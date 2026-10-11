@@ -908,6 +908,7 @@ function obRailAt(h,s,n,nm){
    seat over a faint wash of it, never the solid accent slab ... which was the
    brightest thing on the screen and pulled the eye off the question." Same
    fix, same values, so the two surfaces press the same way. */
+function obGiftName(k){for(var i=0;i<OB_GIFT_NATURES.length;i++)if(OB_GIFT_NATURES[i].k===k)return OB_GIFT_NATURES[i].n;return k||'';}
 function obChips(items,attr,sel,withNotSure){
  return '<div class="ob-seats'+(items.some(function(x){return x.b;})?' ob-seats-mk':'')+'">'
   +items.map(function(x,i){
@@ -1046,7 +1047,7 @@ function obRender(){
    +'You are about to walk one turn of it.</p>'
    +(OB.giftResult==='unavailable'?'<p class="ob-p ob-dim">No approved set is available for this focus yet. You can continue without a gift.</p>':'')
    +(OB.giftResult==='unverified'?'<p class="ob-p ob-dim">A starter set could not be verified, so none was added. You can continue without a gift.</p>':'')
-   +(OB.giftResult==='issued'?'<p class="ob-p ob-dim">Your first 100 patterns are ready for '+esc(OB_GIFT_NATURES.find(function(x){return x.k===OB.giftNature;})?.n||OB.giftNature)+'.</p>':''),
+   +(OB.giftResult==='issued'?'<p class="ob-p ob-dim">Your first 100 patterns are ready for '+esc(obGiftName(OB.giftNature))+'.</p>':''),
 
    '<button type="button" class="btn pri" data-ob="next">Continue</button>'
    +'<button type="button" class="btn" data-ob="back">Back</button>');
