@@ -123,10 +123,10 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
  st=await step(); ok(st.step===2,'choosing the gift nature advances into settle, step '+st.step);
  const gift=await page.evaluate(()=>({nature:CURP.journey&&CURP.journey.gift&&CURP.journey.gift.giftNatureId,
   issued:!!(CURP.journey&&CURP.journey.gift), pick:OB_STARTS[OB.pick]&&OB_STARTS[OB.pick].k,
-  selected:OB.giftNature}));
+  selected:OB.giftNature, record:OB.rec}));
  ok(gift.pick==='overwhelm'&&gift.selected==='depression',
   'the gift focus stays separate from the onboarding ground: '+JSON.stringify(gift));
- if(OB.rec) ok(gift.issued&&gift.nature==='depression',
+ if(gift.record) ok(gift.issued&&gift.nature==='depression',
   'the local starter gift records the chosen category: '+JSON.stringify(gift));
 
  await page.click('[data-ob="next"]'); await page.waitForTimeout(80);     /* settle -> feel */
