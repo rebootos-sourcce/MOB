@@ -379,7 +379,7 @@ var PROFILES=[], CURP=null;
 var STORE={get:function(){return null;}, set:function(){}}, STORE_BOUND=false;
 /* a host binds its own. exported, because module.exports captures the value of
    STORE and not the binding, so an outside caller cannot assign to it. */
-function bindStore(get,set){ STORE={get:get,set:set}; STORE_BOUND=true; return STORE; }
+function bindStore(get,set,remove){ STORE={get:get,set:set,remove:remove}; STORE_BOUND=true; return STORE; }
 /* A DEVICE SETTING IS THE BROWSER'S, NOT THE PERSON'S RECORD.
 
    The sound switch was written onto the profile with uiSet, which saves the
@@ -500,9 +500,46 @@ function pPersist(){
  if(STORE_UNREAD&&!STORE_UNREAD.key){ SAVE_OK=false; SAVE_ERR='UnreadableStore'; return false; }
  /* the records the boundary would not read go back untouched, at the end, so
     a save never costs a person data this version happens not to understand. */
- var all=PROFILES.concat(STORE_KEPT);
- try{ STORE.set(PKEY,JSON.stringify(all)); SAVE_OK=true; SAVE_ERR=null; }
- catch(e){ SAVE_OK=false; SAVE_ERR=(e&&e.name)||'error'; }
+ var all=PROFILES.concat(STORE_KEPT), payload=JSON.stringify(all), prior;
+ /* Read old durable bytes before attempting a replacement. This lets the
+    engine restore the prior snapshot if an adapter writes corrupt bytes and
+    then returns without throwing. */
+ try{ prior=STORE.get(PKEY); }
+ catch(e){ SAVE_OK=false; SAVE_ERR=(e&&e.name)||'ReadBeforeWrite'; return false; }
+ var restoreValue=(prior===null||prior===undefined)?'[]':prior;
+ function restorePrior(){
+  try{
+   var current=STORE.get(PKEY);
+   if(prior===null||prior===undefined){
+    if(current===null||current===undefined)return true;
+    if(typeof STORE.remove!=='function'){ SAVE_ERR='RollbackUnavailable'; return false; }
+    STORE.remove(PKEY);
+    current=STORE.get(PKEY);
+    if(current!==null&&current!==undefined){ SAVE_ERR='RollbackMismatch'; return false; }
+    return true;
+   }
+   if(current===prior)return true;
+   STORE.set(PKEY,restoreValue);
+   if(STORE.get(PKEY)!==restoreValue){ SAVE_ERR='RollbackMismatch'; return false; }
+   return true;
+  }catch(e){ SAVE_ERR='RollbackFailed'; return false; }
+ }
+ try{
+  STORE.set(PKEY,payload);
+  /* A silent ignore is failure. A non-throwing but corrupt write is also
+     failure and must not replace the prior durable profile. */
+  if(STORE.get(PKEY)!==payload){
+   SAVE_OK=false; SAVE_ERR='ReadbackMismatch';
+   restorePrior();
+   return false;
+  }
+  SAVE_OK=true; SAVE_ERR=null;
+ }catch(e){
+  SAVE_OK=false; SAVE_ERR=(e&&e.name)||'error';
+  /* set() can mutate storage before an adapter throws, or readback itself can
+     fail after the write. Restore only if the durable bytes actually changed. */
+  restorePrior();
+ }
  return SAVE_OK; }
 function saveState(){ return {ok:SAVE_OK, err:SAVE_ERR}; }
 function pNew(name){ var p=blankProfile(name); PROFILES.push(p); CURP=p; pPersist(); profMark(p); return p; }
@@ -529,6 +566,30 @@ function pSave(){ if(!CURP)return false; saveProfile(CURP);
 function pSnap(){ if(!CURP)return false;
  if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
  CURP.history.push(snapshot(CURP)); return pPersist(); }
+/* COMMIT A RECORD AND ITS SNAPSHOT IN ONE STORE WRITE. A finished release
+   changes the working state and then snapshots it. Calling pSave followed
+   by pSnap wrote twice: the first write could land while the second failed,
+   leaving a release without its history row. Save the current engine state,
+   stage one snapshot, and write once. If storage refuses, remove the staged
+   row so a later retry cannot silently save a phantom duplicate. */
+function pSaveSnap(){
+ if(!CURP)return false;
+ var history=null, n=null;
+ try{
+  saveProfile(CURP);
+  if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
+  history=Array.isArray(CURP.history)?CURP.history:(CURP.history=[]);
+  n=history.length;
+  var row=snapshot(CURP);
+  history.push(row);
+  if(!pPersist()){ history.length=n; return false; }
+  return true;
+ }catch(e){
+  if(history&&n!==null)history.length=n;
+  SAVE_OK=false; SAVE_ERR=(e&&e.name)||'error';
+  return false;
+ }
+}
 function pExport(){ return JSON.stringify(CURP?saveProfile(CURP):null,null,1); }
 /* ============================================================
    THE BOUNDARY. Everything above this line trusts its input

@@ -1168,6 +1168,11 @@ function relAskSkip(){
  if(RUN.open&&RUN.phase==='done')relRender();}
 function relCoolDown(){
  if(RUN.done)return;
+ /* Until the one durable write succeeds, treat every release mutation as
+    tentative. If it fails, restore the in-memory profile too, otherwise a
+    later unrelated save could persist the failed release without its history. */
+ var recordBefore=null, recordObject=CURP;
+ try{ if(recordObject)recordBefore=JSON.stringify(recordObject); }catch(e){recordBefore=null;}
  /* where the walker stood, read before the phase moves off the list */
  var tally=relCounts();
  var planN=(RUN.plan||[]).length, reach=RUN.halted?relReach():planN;
@@ -1347,11 +1352,23 @@ function relCoolDown(){
     meter, the lines and the field back. Said here, in the words relAnswer
     gives the answer on the same card, because the run did happen and is on
     the card, and it is not on the record. */
- RUN.saved=true;
- if(CURP){RUN.saved=pSave();pSnap();}
+ /* THE RELEASE AND ITS HISTORY ARE ONE SAVE. pSave followed by pSnap used
+    two writes and ignored the second result, so the record could say the run
+    saved when its snapshot had not. pSaveSnap stages both and writes once. */
+ RUN.saved=!!(CURP&&typeof pSaveSnap==='function'&&pSaveSnap());
+ if(!RUN.saved&&recordObject&&recordBefore!==null&&CURP===recordObject){
+  try{
+   var previous=JSON.parse(recordBefore);
+   Object.keys(CURP).forEach(function(k){delete CURP[k];});
+   Object.keys(previous).forEach(function(k){CURP[k]=previous[k];});
+   RUN.recordRestored=true;
+  }catch(e){ RUN.recordRestored=false; }
+ }
  if(!RUN.saved&&typeof status==='function')
-  status('This browser would not save. The release is on this card and not on your record, so a reload loses it.','fail');
- if(RUN.first&&!RUN.rerun&&RUN.queue.length&&typeof authFunnelCheckpoint==='function')
+  status('This browser would not save. The release is on this card and not on your record, so a reload loses it.'
+   +(RUN.recordRestored===false?' Reload before continuing because this reading could not be restored in memory.':''),'fail');
+ /* The server must not count a release the local record failed to keep. */
+ if(RUN.saved&&RUN.first&&!RUN.rerun&&RUN.queue.length&&typeof authFunnelCheckpoint==='function')
   authFunnelCheckpoint({firstReleaseId:RUN.id});
  /* A RUN THAT REACHED ITS END COUNTS AS THE DAY'S RITUAL, round KG, when a
     ritual is tracking one of these addresses. Here and nowhere else: this is
@@ -1360,7 +1377,7 @@ function relCoolDown(){
     through this same function with halted set, and "a stopped run does not
     count" is the rule avWatch already keeps for a rule's day, so halted marks
     nothing. A card closed mid run goes to relClose and never arrives here. */
- RUN.ritDone=(!RUN.halted&&typeof ritRelDone==='function')
+ RUN.ritDone=(!RUN.halted&&RUN.saved&&typeof ritRelDone==='function')
   ?(ritRelDone(RUN.queue.map(function(n){return n.i;}))||0):0;
  /* and the after, once the write and the save have landed. A mark the run
     earned is one the ladder reads now and did not read before, so it is
@@ -1385,14 +1402,14 @@ function relCoolDown(){
  /* WHAT CHANGED IS ASKED FROM HERE, after the write and only after it: a run
     refused on a worked example returned above and is never asked, and a run
     that wrote is asked once, on the finished card, with nothing chosen. */
- RUN.ask=!!(CURP&&RUN.queue.length); RUN.said=null; RUN.saidSaved=null; RUN.skip=false;
+ RUN.ask=!!(CURP&&RUN.queue.length&&RUN.saved); RUN.said=null; RUN.saidSaved=null; RUN.skip=false;
  relMark(RUN.halted?'halt':'close');
  /* THE RUN HAS ENDED, SOUNDED ONCE, AFTER THE WRITE LANDED. Here and not at the
     top: a run refused on a worked example returns above and never reaches
     this line, so a refusal is heard as the refusal and not as a finish. The
     room argument lets it through the release's own hold. */
  if(typeof sfx==='function')sfx('done',true);
- if(RUN.halted&&reach<planN&&typeof status==='function')
+ if(RUN.saved&&RUN.halted&&reach<planN&&typeof status==='function')
   status(RUN.rerun?'Rerun ended early. A rerun costs nothing.'
    :'Release ended early. You were charged only for the lines you reached.');
  syncCh();relRender();render();

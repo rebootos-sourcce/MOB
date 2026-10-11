@@ -90,7 +90,8 @@ function funnelSession(){
   FUNNEL_READ=true;
   try{
    var o=JSON.parse(STORE.get(FUNNEL_KEY)||'null');
-   if(o&&typeof o.id==='string'&&o.id&&typeof o.anonymousId==='string'&&o.anonymousId){
+   if(o&&typeof o.id==='string'&&o.id&&typeof o.anonymousId==='string'&&o.anonymousId
+    &&typeof o.credential==='string'&&o.credential.length>=32){
     FUNNEL_S=o;
    }
   }catch(e){ FUNNEL_S=null; }
@@ -98,32 +99,75 @@ function funnelSession(){
  return FUNNEL_S;
 }
 function funnelKeep(s){
- FUNNEL_S=s; FUNNEL_READ=true;
  if(typeof STORE_BOUND==='undefined'||!STORE_BOUND)return false;
+ var previous=FUNNEL_S, previousRead=FUNNEL_READ, prior;
+ /* A failed read means we cannot establish what rollback must preserve. */
+ try{ prior=STORE.get(FUNNEL_KEY); }catch(e){ return false; }
+ function restorePrior(){
+  try{
+   var current=STORE.get(FUNNEL_KEY);
+   if(prior===null||prior===undefined){
+    if(current===null||current===undefined)return true;
+    if(typeof STORE.remove!=='function')return false;
+    STORE.remove(FUNNEL_KEY);
+    current=STORE.get(FUNNEL_KEY);
+    return current===null||current===undefined;
+   }
+   if(current===prior)return true;
+   STORE.set(FUNNEL_KEY,prior);
+   return STORE.get(FUNNEL_KEY)===prior;
+  }catch(e){ return false; }
+ }
  try{
   var txt=s?JSON.stringify(s):'';
   STORE.set(FUNNEL_KEY,txt);
-  return STORE.get(FUNNEL_KEY)===txt;
- }catch(e){ return false; }
+  if(STORE.get(FUNNEL_KEY)===txt){
+   FUNNEL_S=s; FUNNEL_READ=true;
+   return true;
+  }
+ }catch(e){}
+ /* A non-throwing corrupt write or a partial-write exception must not destroy
+    the previous visit credential. Never report success until the exact bytes
+    read back, and keep the prior in-memory state on refusal. */
+ restorePrior();
+ FUNNEL_S=previous; FUNNEL_READ=previousRead;
+ return false;
 }
 function funnelUuid(){
  try{ if(typeof crypto!=='undefined'&&crypto.randomUUID)return crypto.randomUUID(); }catch(e){}
  return 'anon_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2);
 }
+/* Concurrent entrypoints may race before the first session is persisted. Share the
+   in-flight create promise, then clear it on either outcome. This complements
+   the persisted-session check below: reloads reuse durable state; concurrent
+   calls reuse the same network operation. */
+var FUNNEL_STARTING=null;
 function authFunnelStart(){
  var existing=funnelSession();
  if(existing){ authFunnelJoin(); return Promise.resolve({ok:true,session:existing.session||null,reused:true}); }
+ if(FUNNEL_STARTING)return FUNNEL_STARTING.then(function(r){ return Object.assign({},r,{reused:true}); });
  var anonymousId=funnelUuid();
- return authCall('POST','/v1/funnel/session',{anonymousId:anonymousId},null,false).then(function(r){
+ var request=authCall('POST','/v1/funnel/session',{anonymousId:anonymousId},null,false).then(function(r){
   /* The Worker intentionally creates the anonymous id. Keep the caller's id
      out of the request body so the browser cannot claim somebody else's id. */
   if(!r.ok)return {ok:false,status:r.status,body:r.body};
   var b=r.body||{}, s=b.session;
-  if(!s||typeof s.id!=='string'||typeof b.credential!=='string')return {ok:false,status:r.status,body:null};
+  if(!s||typeof s.id!=='string'||!s.id||typeof b.credential!=='string'||b.credential.length<32)return {ok:false,status:r.status,body:null};
   var state={session:s,id:s.id,anonymousId:s.anonymousId||anonymousId,credential:b.credential};
   var kept=funnelKeep(state);
+  if(!kept)return {ok:false,status:0,body:null,kept:false};
   authFunnelJoin();
-  return {ok:true,session:s,reused:false,kept:kept};});
+  return {ok:true,session:s,reused:false,kept:true};});
+ var shared;
+ shared=request.then(function(r){
+  if(FUNNEL_STARTING===shared)FUNNEL_STARTING=null;
+  return r;
+ },function(){
+  if(FUNNEL_STARTING===shared)FUNNEL_STARTING=null;
+  return {ok:false,status:0,body:null};
+ });
+ FUNNEL_STARTING=shared;
+ return shared;
 }
 /* JOINED TO THE ACCOUNT ONCE BOTH EXIST, WHICHEVER CAME FIRST. The join was
    tried at sign in and nowhere else, and the first visit's session is made by

@@ -220,7 +220,18 @@ function fakeWorker(origin, giftAt) {
       return json(200, { account: { id: me.id, research_id: me.research_id, plan: me.plan, email: me.email },
         consent: { share: false, at: null, v: 1 }, records: 0, entitlement: null, billing: billing(me) });
     }
-    if (method === 'POST' && p === '/v1/auth/signout') { delete st.tok[m[1]]; return json(200, { ok: true }); }
+    if (method === 'POST' && p === '/v1/auth/signout') {
+      delete st.tok[m[1]];
+      /* Match the Worker contract: account sign out and first-visit pass end
+         are separate effects; only confirm the latter for the named credential. */
+      if (body && body.funnel) {
+        const s = st.fun[body.funnel.id];
+        const ended = !!(s && s.credential === body.funnel.credential);
+        if (ended) s.passEnded = true;
+        return json(200, { ok: true, funnel: { ended } });
+      }
+      return json(200, { ok: true });
+    }
     if (method === 'POST' && p === '/v1/billing/checkout') {
       const tier = String(body && body.tier || '');
       if (['one', 'two', 'three'].indexOf(tier) < 0) return err(400, 'that tier cannot be bought');
@@ -455,15 +466,237 @@ async function door(browser, SITE, cut, giftAt) {
   const accHd = await page.evaluate(() => { const h = document.querySelector('#settings .ac-hd'); return h ? h.innerText : ''; });
   ok(accHd.toLowerCase().indexOf(String(landed).toLowerCase()) >= 0 && accHd.indexOf(MAILQ) >= 0,
     'the account page names the reading open and the account it is signed in under, ' + J(accHd.replace(/\s+/g, ' ')));
-  /* THE SERVER'S SIDE. A record that arrives by link skips onboarding, and
-     onboarding is the only caller of authFunnelStart, so the server never
-     hears that this account came through the funnel. */
-  xf(Object.keys(wq.st.fun).length > 0, 'E1q funnel arrival', 'the server keeps a first visit session for a person who arrived from the quiz',
-    'nothing on our server says this account came through the quiz, so the funnel cannot be counted from quiz to account to payment');
-  /* the record itself stays in the browser, on the standing privacy ruling:
-     sync is dead code and must not be turned on (HANDOFF NEXT-SESSION) */
-  xf(wq.reqs('PUT', /^\/v1\/sync$/).length > 0, 'E19 record on the account', 'the reading is kept on the account, so another device that signs in has it',
-    'sign in on a phone and the quiz reading is not there; it lives only in the browser that opened the link (his privacy ruling, held on purpose until sync is designed)');
+  /* THE SERVER'S SIDE. A record that arrives by link skips onboarding.
+     Import now starts the same anonymous first-visit session before account
+     creation, so this route is present in the funnel without sending the
+     record's story or name. */
+  const quizSessionCreates = wq.reqs('POST', /^\/v1\/funnel\/session$/);
+  ok(Object.keys(wq.st.fun).length === 1 && quizSessionCreates.length === 1,
+    'E1q funnel arrival: the quiz-imported record creates exactly one first-visit session');
+  ok(quizSessionCreates.every(q => q.body && Object.keys(q.body).sort().join(',') === 'anonymousId'),
+    'E1q privacy: quiz arrival sends only the random journey identifier, never story or name');
+  ok(quizSessionCreates.every(q => typeof q.body.anonymousId === 'string' && q.body.anonymousId.length > 0),
+    'E1q contract: session start includes a nonempty anonymous journey identifier');
+  /* Alpha privacy is a positive acceptance gate, not an expected-red item.
+     The record stays local; the anonymous funnel gets checkpoints only. */
+  const profileEndpoints = wq.st.reqs.filter(q => /(?:^|\/)(?:sync|profile)(?:\/|$)/i.test(q.path));
+  const storySent = wq.st.reqs.some(q => String(q.raw || '').includes(STORY));
+  ok(profileEndpoints.length === 0,
+    'E19 privacy: no profile or sync endpoint receives the imported record');
+  ok(!storySent,
+    'E1q privacy: raw story text never crosses the Worker boundary');
+
+  /* Slow-response race: two valid entrypoints must share one create request. */
+  const startRace = await page.evaluate(async () => {
+    const saved = {
+      authCall: window.authCall,
+      funnelSession: window.funnelSession,
+      funnelKeep: window.funnelKeep,
+      authFunnelJoin: window.authFunnelJoin,
+      starting: window.FUNNEL_STARTING,
+    };
+    let requests = 0; const resolvers = [];
+    try {
+      window.FUNNEL_STARTING = null;
+      window.funnelSession = () => null;
+      window.funnelKeep = () => true;
+      window.authFunnelJoin = () => Promise.resolve({ok:false,asked:false});
+      window.authCall = (method, path, body) => {
+        requests++;
+        return new Promise(resolve => {
+          resolvers.push(() => resolve({
+            ok:true, status:201,
+            body:{session:{id:'race-session-'+requests,anonymousId:body.anonymousId},credential:'test-credential'.padEnd(64,'0')}
+          }));
+        });
+      };
+      const first = window.authFunnelStart();
+      const second = window.authFunnelStart();
+      const concurrentRequests = requests;
+      resolvers.forEach(resolve => resolve());
+      const results = await Promise.all([first,second]);
+      return {requests,concurrentRequests,ok:results.every(r=>r.ok),
+        ids:results.map(r=>r.session&&r.session.id)};
+    } finally {
+      window.authCall = saved.authCall;
+      window.funnelSession = saved.funnelSession;
+      window.funnelKeep = saved.funnelKeep;
+      window.authFunnelJoin = saved.authFunnelJoin;
+      window.FUNNEL_STARTING = saved.starting;
+    }
+  });
+  ok(startRace.requests===1 && startRace.concurrentRequests===1 && startRace.ok
+    && startRace.ids.length===2 && startRace.ids[0]===startRace.ids[1],
+    'concurrent session starts coalesce to one anonymous create, '+J(startRace));
+
+  /* A rejected create must resolve as failure and clear the in-flight slot,
+     so a later retry can create a session instead of inheriting a stuck promise. */
+  const failedStartRetry = await page.evaluate(async () => {
+    const saved = {
+      authCall: window.authCall, funnelSession: window.funnelSession,
+      funnelKeep: window.funnelKeep, authFunnelJoin: window.authFunnelJoin,
+      starting: window.FUNNEL_STARTING
+    };
+    let requests = 0;
+    try {
+      window.FUNNEL_STARTING = null;
+      window.funnelSession = () => null;
+      window.funnelKeep = () => true;
+      window.authFunnelJoin = () => Promise.resolve({ok:false,asked:false});
+      window.authCall = () => {
+        requests++;
+        if (requests === 1) return Promise.reject(new Error('simulated network rejection'));
+        return Promise.resolve({ok:true,status:201,body:{
+          session:{id:'retry-session',anonymousId:'retry-anonymous'},
+          credential:'retry-credential'.padEnd(64,'0')
+        }});
+      };
+      const failed = await window.authFunnelStart();
+      const retry = await window.authFunnelStart();
+      return {requests,failedOk:failed.ok,retryOk:retry.ok,retryId:retry.session&&retry.session.id,
+        startingCleared:window.FUNNEL_STARTING===null};
+    } finally {
+      window.authCall = saved.authCall;
+      window.funnelSession = saved.funnelSession;
+      window.funnelKeep = saved.funnelKeep;
+      window.authFunnelJoin = saved.authFunnelJoin;
+      window.FUNNEL_STARTING = saved.starting;
+    }
+  });
+  ok(failedStartRetry.requests===2 && failedStartRetry.failedOk===false
+    && failedStartRetry.retryOk===true && failedStartRetry.retryId==='retry-session'
+    && failedStartRetry.startingCleared,
+    'rejected session creation stays failed and a later retry succeeds, '+J(failedStartRetry));
+
+  /* A server-created session is not success if its credential cannot be
+     durably kept in this browser. The caller must receive a failed result. */
+  const failedSessionPersistence = await page.evaluate(async () => {
+    const saved = {
+      authCall: window.authCall, funnelSession: window.funnelSession,
+      funnelKeep: window.funnelKeep, authFunnelJoin: window.authFunnelJoin,
+      starting: window.FUNNEL_STARTING
+    };
+    let joins = 0;
+    try {
+      window.FUNNEL_STARTING = null;
+      window.funnelSession = () => null;
+      window.funnelKeep = () => false;
+      window.authFunnelJoin = () => { joins++; return Promise.resolve({ok:false}); };
+      window.authCall = () => Promise.resolve({ok:true,status:201,body:{
+        session:{id:'not-persisted-session',anonymousId:'not-persisted-anonymous'},
+        credential:'not-persisted-credential'.padEnd(64,'0')
+      }});
+      const result = await window.authFunnelStart();
+      return {ok:result.ok,kept:result.kept,joins,startingCleared:window.FUNNEL_STARTING===null};
+    } finally {
+      window.authCall = saved.authCall;
+      window.funnelSession = saved.funnelSession;
+      window.funnelKeep = saved.funnelKeep;
+      window.authFunnelJoin = saved.authFunnelJoin;
+      window.FUNNEL_STARTING = saved.starting;
+    }
+  });
+  ok(failedSessionPersistence.ok===false && failedSessionPersistence.kept===false
+    && failedSessionPersistence.joins===0 && failedSessionPersistence.startingCleared,
+    'a session that cannot be persisted is a truthful failure and is not joined, '+J(failedSessionPersistence));
+
+  /* A failed session write must restore the existing durable bytes, not only
+     the in-memory reference. Simulate a store that corrupts the first write
+     but accepts the rollback write. */
+  const funnelKeepRollback = await page.evaluate(() => {
+    const saved = {store:window.STORE, bound:window.STORE_BOUND,
+      session:window.FUNNEL_S, read:window.FUNNEL_READ};
+    const key = window.FUNNEL_KEY;
+    const priorState = {id:'prior-session',anonymousId:'prior-anonymous',
+      credential:'prior-credential',session:{id:'prior-session'}};
+    const priorText = JSON.stringify(priorState);
+    const data = {[key]:priorText};
+    let writes = 0, removes = 0;
+    try {
+      window.STORE_BOUND = true;
+      window.STORE = {
+        get(k) { return Object.prototype.hasOwnProperty.call(data,k) ? data[k] : null; },
+        set(k,v) { writes++; data[k] = writes===1 ? String(v).slice(0,-1) : String(v); },
+        remove(k) { removes++; delete data[k]; }
+      };
+      window.FUNNEL_S = priorState;
+      window.FUNNEL_READ = true;
+      const kept = window.funnelKeep({id:'new-session',anonymousId:'new-anonymous',
+        credential:'new-credential',session:{id:'new-session'}});
+      return {kept,writes,removes,priorDurable:data[key]===priorText,
+        priorMemory:window.FUNNEL_S===priorState && window.FUNNEL_READ===true};
+    } finally {
+      window.STORE = saved.store; window.STORE_BOUND = saved.bound;
+      window.FUNNEL_S = saved.session; window.FUNNEL_READ = saved.read;
+    }
+  });
+  ok(funnelKeepRollback.kept===false && funnelKeepRollback.writes===2
+    && funnelKeepRollback.removes===0 && funnelKeepRollback.priorDurable
+    && funnelKeepRollback.priorMemory,
+    'a corrupt funnel-session write is refused and prior bytes and memory are restored, '+J(funnelKeepRollback));
+
+  /* A 201 is not enough when its session identifier or one-time credential
+     cannot be used by the Worker contract. Refuse malformed credentials before
+     storing them or attempting to join the account. */
+  const malformedSessionResponse = await page.evaluate(async () => {
+    const saved = {authCall:window.authCall, funnelSession:window.funnelSession,
+      funnelKeep:window.funnelKeep, authFunnelJoin:window.authFunnelJoin,
+      starting:window.FUNNEL_STARTING};
+    let keeps = 0, joins = 0, results = [];
+    const replies = [
+      {session:{id:'',anonymousId:'bad-id'},credential:'c'.repeat(64)},
+      {session:{id:'short-credential-session',anonymousId:'bad-credential'},credential:'too-short'}
+    ];
+    try {
+      window.funnelSession = () => null;
+      window.funnelKeep = () => { keeps++; return true; };
+      window.authFunnelJoin = () => { joins++; return Promise.resolve({ok:false}); };
+      for (const reply of replies) {
+        window.FUNNEL_STARTING = null;
+        window.authCall = () => Promise.resolve({ok:true,status:201,body:reply});
+        const result = await window.authFunnelStart();
+        results.push({ok:result.ok, startingCleared:window.FUNNEL_STARTING===null});
+      }
+      return {results,keeps,joins};
+    } finally {
+      window.authCall = saved.authCall; window.funnelSession = saved.funnelSession;
+      window.funnelKeep = saved.funnelKeep; window.authFunnelJoin = saved.authFunnelJoin;
+      window.FUNNEL_STARTING = saved.starting;
+    }
+  });
+  ok(malformedSessionResponse.results.length===2
+    && malformedSessionResponse.results.every(r=>r.ok===false&&r.startingCleared)
+    && malformedSessionResponse.keeps===0&&malformedSessionResponse.joins===0,
+    'empty session IDs and short credentials are refused before persistence or join, '+J(malformedSessionResponse));
+
+  /* Stored funnel state is untrusted, too. A reload must not reuse an
+     anonymous ID without the one-time credential the Worker requires. */
+  const malformedStoredSessions = await page.evaluate(() => {
+    const saved = {store:window.STORE,bound:window.STORE_BOUND,
+      session:window.FUNNEL_S,read:window.FUNNEL_READ};
+    const key=window.FUNNEL_KEY;
+    const values=[
+      JSON.stringify({id:'stored-missing-credential',anonymousId:'stored-anon'}),
+      JSON.stringify({id:'stored-short-credential',anonymousId:'stored-anon',credential:'short'})
+    ];
+    let index=0;
+    try {
+      window.STORE_BOUND=true;
+      window.STORE={get(k){return k===key?values[index]:null;},
+        set(){},remove(){}};
+      const results=[];
+      for(index=0;index<values.length;index++){
+        window.FUNNEL_S=null; window.FUNNEL_READ=false;
+        results.push(window.funnelSession()===null);
+      }
+      return {ignored:results.length===2&&results.every(Boolean),results};
+    } finally {
+      window.STORE=saved.store; window.STORE_BOUND=saved.bound;
+      window.FUNNEL_S=saved.session; window.FUNNEL_READ=saved.read;
+    }
+  });
+  ok(malformedStoredSessions.ignored,
+    'reload ignores stored funnel sessions with missing or short credentials, '+J(malformedStoredSessions));
 
   station(5, 'Q: the first release, from the Story page');
   await Q.tab(0);
@@ -530,6 +763,35 @@ async function door(browser, SITE, cut, giftAt) {
   ok(num(key) === round, 'the Field\'s left key prints it, ' + J(key) + ' against ' + round);
   ok(num(sum1) === round, 'Summary prints it, ' + J(sum1) + ' against ' + round);
 
+  /* The Alpha gate stops after the accepted quiz-to-first-release walk.
+     Billing, cross-device profile sync, and downloaded-file account creation
+     remain outside this required slice; the complete golden walk still runs
+     separately as a report-only integration check.
+     Keep tests/floors.json at the observed clean assertion count; expected-red stays at zero. */
+  if (process.env.ATUNED_ALPHA_QUIZ_ONLY === '1') {
+    const bodiesAlpha = wq.st.reqs.map(q => q.raw + ' ' + q.path).join('\n');
+    ok(bodiesAlpha.indexOf('tight in my chest') < 0,
+      'Alpha privacy: the imported story never crosses the Worker boundary');
+    ok(wq.reqs('GET', /^\/v1\/sync$/).length === 0 && wq.reqs('PUT', /^\/v1\/sync$/).length === 0,
+      'Alpha privacy: profile sync remains disabled');
+    ok(cut.length === 0, 'Alpha walk reached only the local fake Worker: ' + J(cut.slice(0, 3)));
+    ok(site.strays.length === 0, 'Alpha pages requested only shipped same-origin assets: ' + J(site.strays.slice(0, 3)));
+    await Q.ctx.close();
+    await browser.close();
+    site.srv.close();
+    fs.rmSync(tmp, { recursive: true, force: true });
+    console.log('\n=== the Alpha quiz-door stations, at ' + W + ' by ' + H + ', ' + Math.round((Date.now() - T0) / 1000) + 's ===');
+    ST.forEach(s => console.log('  ' + String(s.n).padEnd(3) + (s.fail || s.red ? 'CUT ' : 'PASS') + '  ' + s.name
+      + '  (' + s.pass + ' ok' + (s.fail ? ', ' + s.fail + ' failed' : '') + (s.red ? ', ' + s.red + ' expected red' : '') + ')'
+      + (s.sees.length ? '\n        the person sees: ' + s.sees.join('; ') : '')));
+    console.log('\n=== expected red, not wired yet ===');
+    if (!XF.length) console.log('  none');
+    XF.forEach(x => console.log('  ' + x.edge + ' (station ' + x.st + '): ' + x.m
+      + '\n        the person sees: ' + x.sees));
+    console.log('\n===== ' + P + ' passed, ' + F + ' failed, ' + R + ' expected red =====');
+    process.exit(F ? 1 : 0);
+  }
+
   station(7, 'Q: pay, and the return from Stripe reads the plan back');
   const accQ = Object.values(wq.st.acc)[0] || {};
   await Q.click('#profbtn'); await Q.click('[data-pms="billing"]');
@@ -588,8 +850,12 @@ async function door(browser, SITE, cut, giftAt) {
   await page.waitForTimeout(250);
   ok(await Q.click('#acout'), 'Sign out is there to press');
   const out = await Q.waitSaid(/^ok\|Signed out\.$/, 6000);
-  ok(!!out, 'and it says it signed out, ' + J(out));
-  ok(wq.reqs('POST', /^\/v1\/auth\/signout$/).length === 1, 'and the server was told');
+  const signoutReqs = wq.reqs('POST', /^\/v1\/auth\/signout$/);
+  ok(!!out, 'the server confirmed sign out and first-visit pass end, ' + J(out));
+  ok(signoutReqs.length === 1 && !!(signoutReqs[0].body && signoutReqs[0].body.funnel)
+    && wq.st.fun[signoutReqs[0].body.funnel.id]
+    && wq.st.fun[signoutReqs[0].body.funnel.id].passEnded === true,
+    'the named first-visit credential was sent once and the fake Worker confirms it ended');
   await Q.reload();
   ok(await page.evaluate(() => !!(typeof LOGIN !== 'undefined' && LOGIN.open)), 'after a reload the door stands again: nobody is signed in here');
   /* E20, now a positive end-to-end assertion. Sign back into the same account,

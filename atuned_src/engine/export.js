@@ -275,7 +275,7 @@ if(typeof module!=='undefined'&&module.exports){
      history row reaches the disk by. They were browser globals and nothing
      headless could drive them, so the one write that grows the record had no
      gate of its own. */
-                  pSave:pSave, pSnap:pSnap, pNew:pNew,
+                  pSave:pSave, pSnap:pSnap, pSaveSnap:pSaveSnap, pNew:pNew,
                   saveState:saveState,
                   validateProfile:validateProfile, loadProfile:loadProfile,
                   blankProfile:blankProfile,
