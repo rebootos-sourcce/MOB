@@ -8,7 +8,7 @@
 
 | Workstream | Exact evidence | Current status |
 |---|---|---|
-| Master index | [Draft PR #69](https://github.com/rebootos-sourcce/MOB/pull/69), branch `docs/atuned-master-index-20261012`; current pre-update head `9d4c60bfd06102422e766d35b7fe619d3c3fb4de` | OPEN / DRAFT; documentation only |
+| Master index | [Draft PR #69](https://github.com/rebootos-sourcce/MOB/pull/69), branch `docs/atuned-master-index-20261012` | OPEN / DRAFT; documentation only; refresh the live PR head before acting |
 | MOB client | [PR #66](https://github.com/rebootos-sourcce/MOB/pull/66), head `9280501683d07867c72bc582cba62fe9aed00d49`; [run #38199490611](https://github.com/rebootos-sourcce/MOB/actions/runs/38199490611) | 30/30 jobs passed; functional browser gate 2,622/2,622. PR remains OPEN / DRAFT; no deploy from this pull-request run |
 | Reboot-OS gift contract | [PR #35](https://github.com/rebootos-sourcce/Reboot-OS/pull/35), head `4d57161c16fc7382cec1552eaeb59da91028640d`; [server #38271445824](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38271445824), [push gate #38271445831](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38271445831), [PR gate #38271453636](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38271453636) | Repository-owned gates all passed on this SHA; PR remains OPEN / DRAFT |
 | External Cloudflare check | [Check #114886960394](https://github.com/rebootos-sourcce/Reboot-OS/runs/114886960394); build ID `f6612baf-bd07-41da-b9b1-6ba0629d3d27` | FAILED; zero annotations, first failed step unknown without authenticated dashboard logs |
@@ -40,6 +40,7 @@ Every new thread must follow this order:
 | Area | Current known location | Authority / purpose | Current status |
 |---|---|---|---|
 | Cross-functional backlog | [MOB issue #48](https://github.com/rebootos-sourcce/MOB/issues/48) | Priority, dependencies, P0–P3, release blockers | Active; refresh before each task |
+| Implementation audit | [ATUNED_IMPLEMENTATION_AUDIT.md](https://github.com/rebootos-sourcce/MOB/blob/docs/atuned-master-index-20261012/ATUNED_IMPLEMENTATION_AUDIT.md) | Requirement-to-code/test/evidence mapping, measured status, next action | Created on PR #69 branch; requires exact-head CI and review |
 | Product decisions | `MOB/DECISIONS.md` (confirm exact path/current revision) | Current explicit product scope and locked decisions | Path/reference must be verified in repository |
 | Main client and funnel | [rebootos-sourcce/MOB](https://github.com/rebootos-sourcce/MOB) | Canonical browser/client code under `atuned_src/`; client tests and Pages workflow | P0 integrated; P1 onboarding branch open |
 | Worker/server | [rebootos-sourcce/Reboot-OS](https://github.com/rebootos-sourcce/Reboot-OS) | Worker, server routes, migrations, runtime integration, packaged UI | Server code exists; external Cloudflare build gate unresolved |
@@ -172,7 +173,7 @@ The current accessible evidence identifies the following gaps that must be close
 3. **Manuscript authority:** inventory all Mechanics of Being manuscript PDFs and editable sources, record versions and dates, designate the current canonical version, and map each chapter/concept to the canon and product modules. Preserve historical versions.
 4. **Library register:** inventory relevant Library files and prior handoff packages, deduplicate by content/hash rather than filename alone, and identify which files are current, superseded, reference-only, or unverified.
 5. **Repository completeness:** inventory all repositories accessible to the project, including private repositories, branches, docs, generated artifacts, and release workflows. Current known repositories are MOB, Reboot-OS, and MOB-Manuscript; verify whether more exist.
-6. **Implementation audit:** create/refresh `ATUNED_IMPLEMENTATION_AUDIT.md` mapping every requirement to owner, code path, table, API, tests, status, conflict, required change, migration, and acceptance evidence.
+6. **Implementation audit:** maintain [`ATUNED_IMPLEMENTATION_AUDIT.md`](https://github.com/rebootos-sourcce/MOB/blob/docs/atuned-master-index-20261012/ATUNED_IMPLEMENTATION_AUDIT.md), mapping priority requirements to code, persistence, tests, status, conflicts, migrations and acceptance evidence. Its first pass is committed on PR #69 and remains under review.
 7. **Decision register:** consolidate explicit owner decisions, unresolved questions, dates, and links to the source conversation/issue. No repeated decisions should be asked again when an authoritative ruling already exists.
 8. **Backlog reconciliation:** compare `MOB #48`, `MOB #58`, Reboot-OS `THE_LOG.md`, repository roadmap/task files, open issues/PRs, and handshake documents. Retain stable item IDs; do not delete historical entries.
 9. **Ownership map:** name the responsible workstream and reviewer for each P0/P1 item. Do not imply that agents or independent reviewers ran unless evidence exists.
@@ -193,7 +194,7 @@ The current accessible evidence identifies the following gaps that must be close
 1. Verify and record the exact canonical URLs for the three public-facing sites and their deployed source repositories.
 2. Inventory the full `MOB-Manuscript` repository and the latest Mechanics of Being source files in the Library.
 3. Reconcile `MOB #48`, `MOB #58`, `Reboot-OS THE_LOG.md`, and the active handshakes into one non-duplicated P0–P3 backlog.
-4. Generate the implementation audit and acceptance denominator, then publish evidence-based progress values per workstream.
+4. Review and refine the implementation audit acceptance rows and denominators, then report evidence-based progress separately for each workstream.
 5. Continue P0 work: Cloudflare root cause, end-to-end persistence, and approved canonical gift inventory.
 
 **Release posture:** MVP Alpha is not release-ready until the current blockers are closed and verified. Keep billing, profile sync, production migrations, gift activation, and gift issuance off. No merge or deployment is authorized by this index.
