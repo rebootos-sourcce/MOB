@@ -122,10 +122,6 @@ function blankProfile(name){
   work:{},
   gates:{verp:{aware:0,detach:0,intent:0,ignore:0,attach:0,averse:0},
          lean:{benign:0,malignant:0}},   /* the cost multiplier, v2 */
-  /* New records must not inherit the pre-contract implicit 100-pattern
-     allowance. Old saved records without giftAccess remain legacy-compatible;
-     onboarding/tutorial may never silently mint a bank that is not installed. */
-  journey:{v:1, walk:null, gift:null, log:[], giftAccess:'uninstalled'},
   story:{entries:[]}, rituals:[], history:[],
   /* THE PRACTICE OBJECTS, engine/practice.js. Additive: an older record has
      none and is filled from this blank, and no SCHEMA_V bump, which is the
