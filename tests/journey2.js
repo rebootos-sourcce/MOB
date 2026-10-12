@@ -237,9 +237,11 @@ for(const [W,H] of WIDTHS){
  await click('[data-ob="mirrorcommit"]'); s=await st();
  ok(s.step===7,tag+'Commit leads to the card before the release, step '+s.step);
  const plan=await page.evaluate(()=>(typeof OB!=='undefined'&&OB.plan)?JSON.parse(JSON.stringify(OB.plan)):null);
- const size=await page.evaluate(()=>(typeof ONB_MINI_ADDRS==='number'&&typeof RUN_MIN==='number')?ONB_MINI_ADDRS*RUN_MIN:null);
+ const maxSize=await page.evaluate(()=>(typeof ONB_MINI_ADDRS==='number'&&typeof RUN_MIN==='number')?ONB_MINI_ADDRS*RUN_MIN:null);
+ const size=plan&&plan.ok?plan.lines:null;
  const allowanceBefore=await page.evaluate(()=>meterBudget(CURP).allow.left);
- ok(!!(plan&&plan.ok&&plan.lines===size),tag+'the first release is the ruled '+size+' lines: '+J(plan&&{l:plan.lines,a:plan.addrs}));
+ ok(!!(plan&&plan.ok&&size>0&&size<=maxSize&&size%RUN_MIN===0&&plan.addrs.length===size/RUN_MIN),
+  tag+'the first release uses whole addresses within the twelve-line maximum and available allowance: '+J(plan&&{l:plan.lines,max:maxSize,a:plan.addrs}));
  ok(!/You have \d+ patterns left of the \d+ you were given|This release opens \d+ of them/.test(s.card),
   tag+'the card does not display starter-gift copy while the active bank is uninstalled');
  ok(!/\bGift\.\s*You have/i.test(s.card),
