@@ -4,6 +4,23 @@
 **Status:** Initial working index; cross-repository and website inventory is not yet complete.  
 **Purpose:** First stop for every engineering thread. This index points to the authority for decisions, code, content, backlog, and release evidence. It must be updated when work changes.
 
+## Current verified checkpoint — 12 October 2026 UTC
+
+| Workstream | Exact evidence | Current status |
+|---|---|---|
+| Master index | [Draft PR #69](https://github.com/rebootos-sourcce/MOB/pull/69), branch `docs/atuned-master-index-20261012`; current pre-update head `9d4c60bfd06102422e766d35b7fe619d3c3fb4de` | OPEN / DRAFT; documentation only |
+| MOB client | [PR #66](https://github.com/rebootos-sourcce/MOB/pull/66), head `9280501683d07867c72bc582cba62fe9aed00d49`; [run #38199490611](https://github.com/rebootos-sourcce/MOB/actions/runs/38199490611) | 30/30 jobs passed; functional browser gate 2,622/2,622. PR remains OPEN / DRAFT; no deploy from this pull-request run |
+| Reboot-OS gift contract | [PR #35](https://github.com/rebootos-sourcce/Reboot-OS/pull/35), head `4d57161c16fc7382cec1552eaeb59da91028640d`; [server #38271445824](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38271445824), [push gate #38271445831](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38271445831), [PR gate #38271453636](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38271453636) | Repository-owned gates all passed on this SHA; PR remains OPEN / DRAFT |
+| External Cloudflare check | [Check #114886960394](https://github.com/rebootos-sourcce/Reboot-OS/runs/114886960394); build ID `f6612baf-bd07-41da-b9b1-6ba0629d3d27` | FAILED; zero annotations, first failed step unknown without authenticated dashboard logs |
+| Canonical starter gift | [MOB issue #58](https://github.com/rebootos-sourcce/MOB/issues/58) | 0 owner-approved stable IDs out of required 100; no active production manifest; migrations 0017/0018 not applied |
+| Persisted Alpha journey | Required browser → Worker → Supabase write/read/reload path | 0/1 independently verified for the current release; UNVERIFIED |
+
+These are separate evidence measures, not a combined completion percentage. Do not infer release readiness from green repository tests alone.
+
+## Continuity rule — required in every future handshake
+
+Put the link to this master index in the **opening section** of every executive and next-thread handshake, before the task queue. Require the next thread to read it first, then the current backlog, then the handshakes; refresh GitHub exact-head evidence before editing. At handoff time, update the index/log with changed SHAs and test evidence, produce both handshake documents, and include them plus supporting notes in one verified ZIP. Do not claim autonomous agents ran unless they actually did.
+
 ## 1. Start here
 
 Every new thread must follow this order:
@@ -34,10 +51,10 @@ Every new thread must follow this order:
 | Starter-gift catalog | [MOB issue #58](https://github.com/rebootos-sourcce/MOB/issues/58); [Reboot-OS PR #35](https://github.com/rebootos-sourcce/Reboot-OS/pull/35) | Stable pattern IDs, sentence-level provenance, frozen 100-item set, issuance snapshot | Blocked: 0 owner-approved stable IDs; no production manifest |
 | Onboarding gift choice | [MOB PR #66](https://github.com/rebootos-sourcce/MOB/pull/66) | Separate starting ground from gift nature; pass gift snapshot to client | Open/draft/unmerged; latest recorded exact-head CI was green, but integration and catalog are not production-ready |
 | Cloudflare external build | [Reboot-OS issue #37](https://github.com/rebootos-sourcce/Reboot-OS/issues/37) | Diagnose recurring `Workers Builds: atuned-os` failure | Blocked pending authenticated first-error logs |
-| Public product site | ATÜNED.world (domain referenced in investor draft; confirm live URL and owner) | Product-facing site and acquisition path | URL, deployed commit, analytics and links need live verification |
-| Founder / method site | `lancepowell.art` (referenced in source material) | The Mechanics of Being source material and public-facing method | Need verify live pages, current canonical URL, and linkage to ATÜNED |
-| The Mechanics of Being | Existing Library source manuscripts, including `Mechanics_of_Being_v65.pdf` and newer versions | Authoritative method/book content, concepts, definitions and source canon | Multiple versions exist; create a version/authority register before treating any one PDF as final |
-| Manuscript repository | [MOB-Manuscript](https://github.com/rebootos-sourcce/MOB-Manuscript) | Manuscript content and revision history | Private repository accessible; root README not found at the time of this audit; inventory contents next |
+| Public product site / demo endpoint | Canonical domain is intentionally not printed here because the previously flagged domain is prohibited for use | Product-facing acquisition/demo path | Current approved product URL, deployment SHA, analytics and legal links remain UNVERIFIED; do not link or open the prohibited domain |
+| Founder / art site | `lancepowell.art` | Public art portfolio is discoverable; not yet verified as the authoritative Mechanics of Being method site | Confirm whether it is intentionally cross-linked to ATÜNED and which pages are canonical |
+| The Mechanics of Being | ChatGPT Library has at least v45, v58 and v65 PDFs; `Mechanics_of_Being_v65.pdf` is the highest version located in this search | Method/book content, concepts, definitions and source canon | v65 is latest located, not confirmed as final canonical edition; register dates, hashes, editable sources and authority decision |
+| Manuscript repository | [MOB-Manuscript](https://github.com/rebootos-sourcce/MOB-Manuscript) | Private GitHub repository named for The Mechanics of Being | Root inventory currently shows only `.gitattributes` (66 bytes) and `index.html` (5,901,968 bytes); latest returned commit is `dc7ba522d5a38c60b27973e3fed4576cee06e9b7` dated 31 May 2026. Treat HTML as a publication artifact until content blocks are mapped to editable source |
 | Agreements / source-of-truth charter | Agreements documentation branch referenced in prior handoff | Source authority and engineering collaboration rules | Link and exact file path need verification |
 
 ### Known runtime boundary
@@ -150,7 +167,7 @@ Refresh every state above from GitHub before acting; this snapshot can become st
 
 The current accessible evidence identifies the following gaps that must be closed by inventory, not guesswork:
 
-1. **Site URL register:** confirm canonical live URLs for Reboot-OS, ATÜNED, and The Mechanics of Being. `ATUNED.world` and `lancepowell.art` are referenced in project source material, but live ownership, current destination, page inventory, and deployment SHA have not yet been verified. Do not substitute an unrelated website with a similar name.
+1. **Site URL register:** confirm canonical live URLs for Reboot-OS, ATÜNED, and The Mechanics of Being. One previously identified candidate domain is explicitly prohibited because it resolves to an unrelated product; do not link or open it. The approved ATÜNED production/demo URL is not yet verified. `lancepowell.art` is a discoverable art portfolio, but its role as the authoritative Mechanics of Being method site is unverified.
 2. **Website-to-repository map:** identify the source repository, deploy workflow, target domain, analytics, forms, privacy/terms links, and current production SHA for every site.
 3. **Manuscript authority:** inventory all Mechanics of Being manuscript PDFs and editable sources, record versions and dates, designate the current canonical version, and map each chapter/concept to the canon and product modules. Preserve historical versions.
 4. **Library register:** inventory relevant Library files and prior handoff packages, deduplicate by content/hash rather than filename alone, and identify which files are current, superseded, reference-only, or unverified.
