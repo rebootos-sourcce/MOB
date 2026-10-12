@@ -2452,7 +2452,10 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
  /* ALLOWANCE. The gift is spent first and spent once, and spend is never
     stored: it is the unique count against what was granted, so they cannot
     drift apart. */
- ok(planAllowance(t1,0).inGift&&planAllowance(t1,0).left===100,'a new record is all gift');
+ const noGift=planAllowance({tier:'free',status:'',base:null},0,null,'2026-10-11T00:00:00.000Z',false);
+ ok(planAllowance(t1,0).inGift&&planAllowance(t1,0).left===100
+   &&!noGift.inGift&&noGift.left===PLAN_BY.free.grant,
+  'legacy calls keep their gift, while an explicit no-set entitlement receives only the free grant');
  ok(planAllowance(t1,40).left===60,'and the gift is spent by opening new ground');
  ok(planAllowance(t1,100).inGift===false,'then it is gone');
  ok(planAllowance({tier:'one',status:'active',granted:400,base:100},150).left===350,
