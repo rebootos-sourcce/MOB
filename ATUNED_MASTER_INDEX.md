@@ -276,3 +276,48 @@ The supplied build log proves the configured external build ran `npx wrangler pr
 **Required Cloudflare dashboard correction (not yet applied):** in the `atuned-os` Workers Builds settings, set the root directory to `atuned/server` and the build/deploy command to `npm run deploy` only after confirming that the existing production Worker intended for this app is `atuned-api`. Do not add a `previews` block merely to make the wrong preview command pass. Then trigger a controlled build and verify the deployed Worker/health endpoint. No dashboard settings, production deployment, or production migration have been changed by this documentation update.
 
 **Current status:** repository route/config inventory documented; Cloudflare dashboard settings remain an operator action requiring authenticated dashboard access. Keep issue [Reboot-OS #37](https://github.com/rebootos-sourcce/Reboot-OS/issues/37) open until a successful build and target verification are recorded.
+
+
+## Cloudflare deployment path and operator checklist — refreshed 12 October 2026
+
+**Start here before touching dashboard settings:** [Reboot-OS issue #37](https://github.com/rebootos-sourcce/Reboot-OS/issues/37) and [Reboot-OS PR #35](https://github.com/rebootos-sourcce/Reboot-OS/pull/35). The owner reported both `atuned-api` and `atuned-os` working during DEV 21/22. Preserve that as owner-reported verification, but do not treat it as proof that the currently failing external build check is green: the latest documented Cloudflare check is still a separate failure. Recheck current exact-head evidence before asking for dashboard work.
+
+### Paths and target identifiers
+
+- Worker source root: `atuned/server/`
+- Wrangler configuration: `atuned/server/wrangler.toml`
+- Worker entry point: `atuned/server/src/index.js`
+- Server package scripts: `atuned/server/package.json`; deploy script is `npm run deploy` (`wrangler deploy`)
+- Public health route: `GET /v1/health`
+- Runtime canon routes needing security review: `GET /v1/canon` and `GET /v1/canon/:table`
+- Public-canon regression tests: `atuned/server/test/canon-public.test.mjs`
+- Runtime canon source database: `atuned/data/canon.sqlite` (separate from protected `canon_vault.sqlite`)
+- Candidate Worker names observed in checks: `atuned-api` (name in checked-in Wrangler config) and `atuned-os` (external Cloudflare Workers Builds check)
+- Cloudflare build history/check: build `0caff241-0bd3-453e-a86d-985e0b839726`; older historical build `f6612baf-bd07-41da-b9b1-6ba0629d3d27`. These are historical identifiers; always inspect the latest failing build first.
+- Cloudflare project/service dashboard link recorded in the check: [atuned-os build](https://dash.cloudflare.com/b34a8a4f24d5ac71f7b386c240a6da90/workers/services/view/atuned-os/production/builds/0caff241-0bd3-453e-a86d-985e0b839726).
+
+### Cloudflare procedure — do not guess or bypass
+
+1. Open [Reboot-OS #37](https://github.com/rebootos-sourcce/Reboot-OS/issues/37) and refresh PR #35's exact head and external check.
+2. If the latest external check is green and the owner confirms both endpoints are healthy, record the new evidence and do not ask for unnecessary dashboard changes.
+3. If it is red, sign in to Cloudflare and open **Workers & Pages**. Select the exact service named by the failed check, currently recorded as `atuned-os`, and open its latest failed build.
+4. Read and record the **first actual failing step and error** before changing anything. GitHub has previously exposed zero annotations, so do not infer the cause from a red badge alone.
+5. Compare the service's repository, branch, root directory, build command, and required secret bindings with the intended app. The checked-in config points to `atuned-api` under `atuned/server/`; do not assume `atuned-api`, `atuned-os`, and Pages project `atuned` are interchangeable.
+6. Only if the owner/operator confirms `atuned-api` is the intended target, evaluate root `atuned/server` and command `npm run deploy`. Do not change production settings just to silence a preview command; do not add a `previews` block without evidence it is the correct fix.
+7. Run a controlled build and verify the intended service plus `/v1/health`. Keep the external check visible until the new build passes.
+8. Do not expose secrets in issue comments/logs. Do not merge, deploy manually, run migrations, import the protected vault, enable billing/profile sync, or activate gifts as part of diagnosis.
+
+### Additional active paths to carry forward
+
+- Master index: `ATUNED_MASTER_INDEX.md` (this file; mandatory first read).
+- Implementation audit: `ATUNED_IMPLEMENTATION_AUDIT.md`.
+- Decisions: `DECISIONS.md`.
+- Execution evidence: `ATUNED_EXECUTION_REFRESH_2026-10-12.md`.
+- Cross-functional tracker: [MOB issue #48](https://github.com/rebootos-sourcce/MOB/issues/48).
+- Fixed-bank catalog blocker: [MOB issue #58](https://github.com/rebootos-sourcce/MOB/issues/58).
+- Client gift-nature separation: [MOB PR #66](https://github.com/rebootos-sourcce/MOB/pull/66).
+- Server gift/public-canon guard: [Reboot-OS PR #35](https://github.com/rebootos-sourcce/Reboot-OS/pull/35).
+- Source gateway references: `source_http.py`, `source_client.js`, their healed variants; missing dependency `source_service.SourceService` must be recovered, not guessed. Do not port before server-authenticated identity and negative-access tests exist.
+- Protected source database: `canon_vault.sqlite`, SHA-256 `9c2cd7b610c1e7b1d056646047988b67d0f52368139952bcc2782b930056915e`; keep local/server-side and do not put its corpus in the public client or import it without explicit approval.
+
+**Handoff rule:** every executive handshake and next-thread handshake must link to this index near the top and repeat the Cloudflare paths, current evidence status, and the exact operator checklist. Keep this index on the docs PR branch until approved; do not link to a nonexistent `main` copy as if it were merged.
