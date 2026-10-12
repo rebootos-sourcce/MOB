@@ -52,6 +52,7 @@ var JY_KEY=/^[a-z][a-z0-9_]{0,31}$/;
 var JY_REF=/^[A-Za-z0-9_:.\-]{1,64}$/;
 var JY_VAL=/^[a-z0-9_]{1,32}$/;
 var JY_DAY=86400000;
+var JY_GIFT_ACCESS=['legacy','uninstalled'];
 
 function journeyBlank(){
  return {v:JOURNEY_V, walk:null, gift:null, log:[]};}
@@ -68,6 +69,17 @@ function jyMs(now){
 function jyEnsure(p){
  if(!p.journey||typeof p.journey!=='object'||Array.isArray(p.journey))p.journey=journeyBlank();
  return p.journey;}
+/* A no-set onboarding must persist that the old implicit gift is unavailable.
+   Missing state stays legacy for records written before the explicit contract. */
+function journeySetGiftAccess(p,access){
+ if(!p)return {ok:false, why:'no record'};
+ if(JY_GIFT_ACCESS.indexOf(access)<0)return {ok:false, why:'journey gift access is not supported'};
+ var j=jyEnsure(p);
+ if(access==='uninstalled'&&j.gift)return {ok:false, why:'an issued legacy gift must be preserved'};
+ if(j.giftAccess==='uninstalled'&&access==='legacy')
+  return {ok:false, why:'an uninstalled gift bank cannot be re-enabled without an approved adapter'};
+ j.giftAccess=access;
+ return {ok:true, giftAccess:access};}
 /* a whole number in range, refused and never clamped. vRange treats a missing
    value as fine, which is right for an optional field and wrong for a field a
    shape requires, so this one does not. */
@@ -205,11 +217,16 @@ function journeyValidate(errs,o,path,ctx){
  var P=journeyBlank(), c=ctx||{}, nowMs=jyMs(c.now), base=path||'journey';
  if(o===undefined||o===null)return P;
  if(typeof o!=='object'||Array.isArray(o)){errs.push(base+' is not an object'); return P;}
- vKeys(errs,base,o,['v','walk','gift','log']);
+ vKeys(errs,base,o,['v','walk','gift','log','giftAccess']);
  if(o.v!==undefined&&o.v!==JOURNEY_V)
   errs.push(base+'.v is '+JSON.stringify(o.v)+', not a journey version this build reads ('+JOURNEY_V+')');
  P.walk=jyWalk(errs,o.walk,nowMs);
  P.gift=jyGift(errs,o.gift,nowMs);
+ if(o.giftAccess!==undefined){
+  if(JY_GIFT_ACCESS.indexOf(o.giftAccess)<0)
+   errs.push(base+'.giftAccess is not one of '+JY_GIFT_ACCESS.join(', '));
+  else P.giftAccess=o.giftAccess;
+ }
  if(o.log!==undefined&&o.log!==null){
   if(!Array.isArray(o.log))errs.push(base+'.log is not a list');
   else if(o.log.length>JOURNEY_LOG_MAX)
@@ -275,6 +292,8 @@ function journeyGiftIssue(p,src,now){
  if(!p)return {ok:false, why:'no record'};
  if(JOURNEY_SRC.indexOf(src)<0)return {ok:false, why:'journey.gift.src is not funnel or app'};
  var j=jyEnsure(p);
+ if(j.giftAccess==='uninstalled')
+  return {ok:false, why:'local starter gift is disabled until an approved bank is installed'};
  if(j.gift)return {ok:true, issued:false, gift:j.gift};
  var r=journeyGiftRead(p);
  j.gift={at:jyAt(now), src:src, granted:r.granted, used:r.used, remaining:r.remaining};
