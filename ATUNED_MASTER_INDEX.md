@@ -321,3 +321,11 @@ The supplied build log proves the configured external build ran `npx wrangler pr
 - Protected source database: `canon_vault.sqlite`, SHA-256 `9c2cd7b610c1e7b1d056646047988b67d0f52368139952bcc2782b930056915e`; keep local/server-side and do not put its corpus in the public client or import it without explicit approval.
 
 **Handoff rule:** every executive handshake and next-thread handshake must link to this index near the top and repeat the Cloudflare paths, current evidence status, and the exact operator checklist. Keep this index on the docs PR branch until approved; do not link to a nonexistent `main` copy as if it were merged.
+
+
+### Current handoff files — 12 October 2026
+- [Executive handshake](ATUNED_EXECUTIVE_HANDSHAKE_2026-10-12_EXECUTION.md)
+- [Next-thread handshake](ATUNED_NEXT_THREAD_HANDSHAKE_2026-10-12_EXECUTION.md)
+- [Execution log](ATUNED_EXECUTION_LOG_2026-10-12_CLOUDFLARE_INDEX.md)
+
+These are on the same draft docs branch as this index. Refresh the PR #69 head and its exact-head workflow before relying on the final bundle; none of these documentation commits is a merge or production release.
