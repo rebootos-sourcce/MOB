@@ -213,3 +213,66 @@ The current accessible evidence identifies the following gaps that must be close
 8. Keep all PRs draft. No merge, production deployment/migration, billing/profile sync, gift activation or issuance without explicit owner approval.
 
 **Release posture:** MVP Alpha is not release-ready until the current blockers are closed and verified. Keep billing, profile sync, production migrations, gift activation, and gift issuance off. No merge or deployment is authorized by this index.
+
+
+## API and deployment map — audited 12 October 2026
+
+**Source of truth for route inventory:** [Reboot-OS Worker route table at PR #35 head `702c0be4a9cc1d7b98ec2865a3335143dd470d0a`](https://github.com/rebootos-sourcce/Reboot-OS/blob/702c0be4a9cc1d7b98ec2865a3335143dd470d0a/atuned/server/src/index.js). The following 35 HTTP routes were extracted from the checked-in route table. This is a code inventory, not proof that the external deployment is live or reachable.
+
+- **Worker repository:** [Reboot-OS](https://github.com/rebootos-sourcce/Reboot-OS)
+- **Worker root:** `atuned/server/`
+- **Entrypoint:** `atuned/server/src/index.js`
+- **Wrangler config:** `atuned/server/wrangler.toml`
+- **Package scripts:** `atuned/server/package.json`; `npm test`, `npm run deploy` (maps to `wrangler deploy`)
+- **Configured Worker name:** `atuned-api`
+- **Configured D1 binding/database:** `DB` → `atuned`
+- **Configured Pages/app project:** `atuned` (separate from the Worker)
+- **Known API base used by server workflow smoke tests:** `https://atuned-api.lance-o-powell.workers.dev` — must be treated as a configured test target, not independent proof of production/domain mapping.
+- **Application origin configured in Worker:** `https://atuned.world`
+- **Secrets:** service keys and private credentials belong in Cloudflare/GitHub secrets, never this index or browser code.
+
+### Exact HTTP routes
+
+- `POST /v1/auth/signup`
+- `POST /v1/auth/signin`
+- `POST /v1/auth/forgot`
+- `POST /v1/auth/reset`
+- `POST /v1/auth/signout`
+- `GET /v1/me`
+- `POST /v1/funnel/session`
+- `GET /v1/funnel/session/:id`
+- `POST /v1/funnel/session/:id/attach`
+- `PATCH /v1/funnel/session/:id/checkpoint`
+- `POST /v1/purchase`
+- `POST /v1/billing/checkout`
+- `POST /v1/billing/portal`
+- `POST /v1/voice/synthesize`
+- `POST /v1/billing/webhook`
+- `GET /v1/health`
+- `GET /v1/version`
+- `POST /v1/crash`
+- `GET /v1/export`
+- `GET /admin`
+- `GET /v1/admin/account`
+- `GET /v1/admin/crashes`
+- `POST /v1/admin/plan`
+- `POST /v1/admin/delete`
+- `GET /v1/push/key`
+- `PUT /v1/push`
+- `DELETE /v1/push`
+- `POST /v1/store/apple`
+- `POST /v1/store/google`
+- `DELETE /v1/me`
+- `PUT /v1/consent`
+- `PUT /v1/sync`
+- `GET /v1/sync`
+- `GET /v1/canon`
+- `GET /v1/canon/:table`
+
+### Cloudflare build failure and fix status
+
+The supplied build log proves the configured external build ran `npx wrangler preview` from repository root `/`; Wrangler then failed because no `previews` block was configured. Repository Wrangler config is at `atuned/server/wrangler.toml`, names the Worker `atuned-api`, and the server package deploy script is `wrangler deploy`. Both `atuned-api` and `atuned-os` passed non-deploying dry-run packaging tests, so those results do **not** identify which production service is correct.
+
+**Required Cloudflare dashboard correction (not yet applied):** in the `atuned-os` Workers Builds settings, set the root directory to `atuned/server` and the build/deploy command to `npm run deploy` only after confirming that the existing production Worker intended for this app is `atuned-api`. Do not add a `previews` block merely to make the wrong preview command pass. Then trigger a controlled build and verify the deployed Worker/health endpoint. No dashboard settings, production deployment, or production migration have been changed by this documentation update.
+
+**Current status:** repository route/config inventory documented; Cloudflare dashboard settings remain an operator action requiring authenticated dashboard access. Keep issue [Reboot-OS #37](https://github.com/rebootos-sourcce/Reboot-OS/issues/37) open until a successful build and target verification are recorded.
