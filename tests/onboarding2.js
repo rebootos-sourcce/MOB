@@ -317,8 +317,8 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
  ok(mini.chans&&JSON.stringify(mini.chans.onb)===JSON.stringify(mini.chans.rel),
   'the engine plans down the same four channels the release card walks, in the same order: '+JSON.stringify(mini.chans));
  ok(mini.yes.length>3,'the person said yes to more than three addresses, so the cap has something to cut: '+mini.yes.length);
- ok(mini.pl&&mini.pl.ok&&mini.pl.lines===Math.min(mini.size,Math.floor(mini.allowance/RUN_MIN)*RUN_MIN)
-   &&mini.pl.lines%RUN_MIN===0&&mini.pl.addrs.length===mini.pl.lines/RUN_MIN,
+ ok(mini.pl&&mini.pl.ok&&mini.pl.lines===Math.min(mini.size,Math.floor(mini.allowance/4)*4)
+   &&mini.pl.lines%4===0&&mini.pl.addrs.length===mini.pl.lines/4,
   'the bridge plans up to twelve lines, capped by allowance in whole addresses: '+JSON.stringify(mini.pl&&{a:mini.pl.addrs,l:mini.pl.lines,allowance:mini.allowance}));
  ok(mini.pl&&mini.pl.addrs.every(i=>mini.yes.indexOf(i)>=0),'and every planned address is one the person said yes to, none invented: '+JSON.stringify(mini.pl&&mini.pl.addrs));
  ok(mini.pl&&mini.no.length>0&&mini.pl.addrs.every(i=>mini.no.indexOf(i)<0),'and none is one they said no to');
