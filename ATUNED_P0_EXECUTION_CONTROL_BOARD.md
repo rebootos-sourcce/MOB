@@ -34,7 +34,7 @@ Cross-review: G checks all branch/CI claims; H checks that no open P0 work is om
 ## Block B — Source recovery and six approved 100-pattern banks
 Known baseline (reconfirm before relying on it): source review queue has 560 rows; 376 transcript records and 184 archived-PDF records; 24 PDF locators ambiguous; 210 multiline transcript records need sentence-boundary review; zero stable user-facing pattern IDs and zero owner-approved rows/bank members. These are source locators, not approved pattern IDs.
 Acceptance:
-- [ ] Search Library and prior handoffs for original “100 patterns/recipes” appendix and The Attuned assets; recover original files rather than recreate them.
+- [x] Searched the current Library and handoff bundle for the original “100 patterns/recipes” appendix and The Attuned source assets. No authoritative 100-item appendix was located in the searched source compilation/Mechanics v65 material; continue source recovery if more original assets surface, and do not recreate the bank.
 - [ ] Reconcile every candidate to a physical source location and exact source text.
 - [ ] Resolve all ambiguous PDF locators and sentence boundaries without invented splits.
 - [ ] Assign stable IDs only to individually reviewed, traceable statements.
@@ -68,16 +68,16 @@ Cross-review: C reviews snapshot correctness; G runs journeys and failure inject
 
 ## Block E — Canon integrity, migrations and protected-data boundaries
 Acceptance:
-- [ ] Recover the canonical fingerprint generator/source of truth before changing fingerprint semantics.
-- [ ] Add a same-row-count, changed-content regression test and prove the public route rejects drift.
-- [ ] Verify every public table is on the frozen allowlist and its runtime data matches the expected fingerprint.
-- [ ] Confirm the protected vault remains private across list and table routes, including manifest tampering and new-table attempts.
+- [x] Recovered the established fingerprint source, `atuned/test/tools/canon.py`; it hashes sorted-key JSON with `ensure_ascii=False` using SHA-256 and truncates to 16 hex characters. Reproduced the BANDS manifest fingerprint `a40ba9c5e1dfb8d3`.
+- [x] Same-row-count content mutation regression is present in Reboot-OS PR #35 (`test/canon-public.test.mjs`); current exact-head server suite passed 147/147. The test alters BANDS content without changing row count and expects fail-closed 404.
+- [x] Current PR #35 server tests exercise the frozen runtime allowlist and fail-closed fingerprint reads; the exact-head server suite passed 147/147. Semantic/source-authority classification is separate and remains open.
+- [ ] Confirm the protected vault remains private across list and table routes, including manifest tampering and new-table attempts. Explicitly adjudicate `RARE`: it is in the current public fingerprint allowlist (4 rows) and must not be treated as owner-approved merely because the hash matches.
 - [ ] Review migrations 0016–0018 for ordering, grants, RLS, rollback and cross-repo compatibility.
 - [ ] Do not apply migrations to production or import the protected vault without explicit approval.
 Cross-review: C reviews catalog freeze/issuance SQL; G reviews public endpoint behavior; independent review confirms no fingerprint algorithm was guessed.
 
 ## Block F — Cloudflare build and service target
-Known evidence from the handoff: uploaded logs for build f6612baf-bd07-41da-b9b1-6ba0629d3d27 show initialization and clone succeeded, then Cloudflare ran `npx wrangler preview` from repository root `/`; Wrangler 4.149.0 failed because config lacked a `previews` block. This is the immediate failing command, not proof that adding that block is correct. The Worker source/config are under `atuned/server/`; config names `atuned-api`; package deploy script is `npm run deploy`. Both candidate Workers passed non-deploying dry-run packaging tests. The intended production Worker must be confirmed by an authenticated operator.
+Historical evidence: build `f6612baf-bd07-41da-b9b1-6ba0629d3d27` reached `npx wrangler preview` from repository root `/` and failed because Wrangler 4.149.0 had no `previews` block. Treat that as the first error for that historical build only, not a diagnosis of the latest build. At current PR #35 head `a72c3ae6f45817e0069ea17dc4b69ac9065b1708`, external check [#115048003713](https://github.com/rebootos-sourcce/Reboot-OS/runs/115048003713) failed on Cloudflare build `d310ee28-0feb-49fe-a326-ea7babfea0d4`; the first failing step remains unknown without authenticated dashboard logs. Checked-in Wrangler config names `atuned-api`, while the external check targets `atuned-os`; verify the intended service, root and command before changing settings.
 Acceptance:
 - [ ] Confirm intended Worker/service in authenticated Cloudflare.
 - [ ] Confirm repo binding, root directory, build command, permissions and required secrets.
@@ -106,13 +106,16 @@ Acceptance:
 - [ ] Keep PRs draft/unmerged and production untouched absent explicit owner approval.
 - [ ] Declare P0 closed only when all P0 acceptance criteria pass; otherwise report the exact blocked criterion.
 
-## Current verified references at board creation
-- MOB docs/index PR #69: https://github.com/rebootos-sourcce/MOB/pull/69 — prior exact-head run #38307609404 succeeded; recheck latest head before treating as current.
-- MOB client gift PR #66: https://github.com/rebootos-sourcce/MOB/pull/66 — earlier run #38199490611 passed 30/30 jobs, but exact current head must be refreshed.
-- Reboot-OS gift/canon PR #35: https://github.com/rebootos-sourcce/Reboot-OS/pull/35 — run #38283606361 passed on the previously checked head; refresh exact current head and external Cloudflare result.
-- MOB source/gift tracking issue #58: https://github.com/rebootos-sourcce/MOB/issues/58
-- Reboot-OS Cloudflare blocker #37: https://github.com/rebootos-sourcce/Reboot-OS/issues/37
-- No production migration, deployment, vault import, gift issuance, billing/profile-sync activation, or test-floor reduction is authorized by this board.
+## Latest live exact-head checkpoint — 12 October 2026, 23:26 UTC
+
+**Live evidence captured 12 October 2026, 23:26 UTC (before this docs commit).** Refresh after each new head.
+- MOB PR #69 head `04fbf2f23a2bb0b3960747ff0a9f5d78b275a097`; [workflow #38320866562](https://github.com/rebootos-sourcce/MOB/actions/runs/38320866562): 28/29 checks succeeded, the functional browser job was still in progress. This documentation commit creates a new head and requires a new exact-head run.
+- MOB PR #66 head `fc7033fb24ec9ed94e2f63563e723b82603b2e68`; [workflow #38322094250](https://github.com/rebootos-sourcce/MOB/actions/runs/38322094250): 28 checks were queued at capture; no result on this head was yet available.
+- Reboot-OS PR #35 head `a72c3ae6f45817e0069ea17dc4b69ac9065b1708`; [repository gate/smoke #38320730236](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38320730236) and [server suite #38320726029](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38320726029) succeeded; the server suite reported 147/147 tests passed. The external [Cloudflare check](https://github.com/rebootos-sourcce/Reboot-OS/runs/115048003713) failed on build `d310ee28-0feb-49fe-a326-ea7babfea0d4`; authenticated first-error logs remain required.
+- Gift-nature selection is resolved in `DECISIONS.md`: one of six natures selects its own versioned 100-pattern bank, independent of the twelve starting grounds. The bank contents are not approved: stable user-facing pattern IDs = 0; owner-approved rows = 0; selected manifest rows = 0 of the 560-row review queue.
+- Canon content-hash enforcement and a same-row-count mutation regression are present on Reboot-OS PR #35. The source generator in `atuned/test/tools/canon.py` uses SHA-256 over sorted-key, UTF-8, non-ASCII-preserving JSON and truncates to 16 hex characters. The BANDS fixture reproduces `a40ba9c5e1dfb8d3`; the current 147-test suite passed. The 127-table semantic/source-authority classification and `RARE` table's public suitability remain open.
+- The current MOB client explicitly refuses to create local synthetic gift allowance when no approved adapter/bank is installed. Six server channels to four client meter tracks and the complete browser → Worker → Supabase readback journey remain unverified; do not invent a mapping or activate a gift.
+
 
 ## Execution log
 Append a dated cycle record here after each build/review pass: exact SHA(s), changes, tests, independent reviewer/findings, gaps opened/closed, and next block executed.

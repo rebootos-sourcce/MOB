@@ -12,14 +12,20 @@
 
 ## Exact state and limits
 - MOB PR #69: draft/open/unmerged. Master index updated with Cloudflare paths, operator procedure, supporting docs and required handoff links. This new commit must receive its own exact-head CI; earlier green docs runs do not validate this commit.
-- MOB PR #66: last recorded head `9280501683d07867c72bc582cba62fe9aed00d49`; 30/30 jobs and 2,622 browser assertions passed on the recorded run. Still draft/open/unmerged.
-- Reboot-OS PR #35: last documented head `39cde03898543aca4e4d3a33774095117a8526f7`; 147/147 server tests and 840/840 smoke assertions passed on recorded exact-head runs. Still draft/open/unmerged.
-- Cloudflare: owner reported both `atuned-api` and `atuned-os` worked in DEV 21/22. Separate external `Workers Builds: atuned-os` failure remains in repository evidence; the most recently documented failed build is `0caff241-0bd3-453e-a86d-985e0b839726`. Treat owner verification and the failing check as separate pieces of evidence; refresh both before action.
+- MOB PR #66: current head `fc7033fb24ec9ed94e2f63563e723b82603b2e68`; workflow [#38322094250](https://github.com/rebootos-sourcce/MOB/actions/runs/38322094250) had 28 checks queued at capture. Prior 30/30 result is historical to an older SHA. Still draft/open/unmerged.
+- Reboot-OS PR #35: current head `a72c3ae6f45817e0069ea17dc4b69ac9065b1708`; repository gate/smoke #38320730236 succeeded and server run #38320726029 passed 147/147. Still draft/open/unmerged; the external Cloudflare check is failed.
+- Cloudflare: current external `Workers Builds: atuned-os` check [#115048003713](https://github.com/rebootos-sourcce/Reboot-OS/runs/115048003713) failed on build `d310ee28-0feb-49fe-a326-ea7babfea0d4`. GitHub does not expose the first failed step; an authenticated operator must capture the actual build log. The old build `0caff241-0bd3-453e-a86d-985e0b839726` is historical.
 - Worker config path: `atuned/server/wrangler.toml`; config names `atuned-api`. Source root: `atuned/server/`; entry: `atuned/server/src/index.js`; deployment script in `atuned/server/package.json` is `npm run deploy`; health route is `GET /v1/health`.
 - Runtime canon paths: `GET /v1/canon`, `GET /v1/canon/:table`; regression test `atuned/server/test/canon-public.test.mjs`; runtime source `atuned/data/canon.sqlite`. Protected `canon_vault.sqlite` is separate and must not be imported or exposed without explicit approval.
 - Gift decision: six gift natures are separate from starting ground; each nature requires its own fixed 100-pattern bank. Stable owner-approved IDs remain 0; no bank may be activated or issued.
 - Current-release browser → Worker → Supabase persisted write/read/reload remains not independently verified for the current release. Backend evidence on main is not browser-level evidence for the unmerged PR.
 - Source gateway files `source_http.py`, `source_client.js`, and healed variants were recovered; missing `source_service.SourceService` and a trusted account identity boundary block integration.
+
+## Live content/canon state
+- The source selection rule is settled: six gift natures are separate from twelve starting grounds; no pattern IDs or rows have owner approval. The 560-row queue remains unapproved.
+- PR #35 now includes actual content-fingerprint verification and a same-row-count mutation regression, with 147/147 server tests passing. Continue independent classification of all 127 public runtime entries and explicit review of `RARE` (four rows) before treating the public allowlist as approved.
+- MOB PR #69 pre-update head `04fbf2f23a2bb0b3960747ff0a9f5d78b275a097` had 28/29 checks passed with functional browser gate in progress. This docs checkpoint creates a new head; refresh exact-head CI.
+- Browser-to-Worker-to-Supabase readback remains 0/1 independently verified; client must not use local synthetic gift allowance or an unapproved six-to-four channel adapter.
 
 ## Cloudflare procedure (only if latest check is red)
 1. Refresh PR #35 exact head and external Cloudflare check first. If green and health is confirmed, record it and skip dashboard changes.

@@ -32,3 +32,27 @@
 
 ## Hard boundary
 No PR merge, production deploy, migrations 0017/0018, billing/profile-sync activation, protected-vault import, gift activation/issuance, or reduced test floors.
+
+
+## Execution cycle — live CI and cross-contract review (12 October 2026, 23:26 UTC)
+
+### Exact-head evidence
+- MOB PR #69 pre-update head `04fbf2f23a2bb0b3960747ff0a9f5d78b275a097`: workflow [#38320866562](https://github.com/rebootos-sourcce/MOB/actions/runs/38320866562) had 28/29 checks complete-success and the functional browser job in progress. This documentation commit invalidates that SHA for final status; refresh after this commit.
+- MOB PR #66 current head `fc7033fb24ec9ed94e2f63563e723b82603b2e68`: workflow [#38322094250](https://github.com/rebootos-sourcce/MOB/actions/runs/38322094250) was 28 checks queued at capture. No new-head success is claimed.
+- Reboot-OS PR #35 current head `a72c3ae6f45817e0069ea17dc4b69ac9065b1708`: repository gate/smoke [#38320730236](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38320730236) succeeded; server workflow [#38320726029](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38320726029) passed 147/147 tests. External check [#115048003713](https://github.com/rebootos-sourcce/Reboot-OS/runs/115048003713) failed on Cloudflare build `d310ee28-0feb-49fe-a326-ea7babfea0d4`. GitHub exposes no first failed step.
+
+### Verified implementation changes and cross-review
+- Recovered the exact source fingerprint contract in `atuned/test/tools/canon.py`: SHA-256 over UTF-8 JSON using sorted keys and `ensure_ascii=False`, truncated to 16 hex characters. Reproduced the committed BANDS fingerprint `a40ba9c5e1dfb8d3` locally.
+- PR #35 now computes content fingerprints on table reads. Its canon test mutates BANDS content while preserving the row count and expects the route to fail closed. This implementation is present and current server CI is green; it does not close the whole canon block. All 127 tables still need source-authority/public-suitability review, especially `RARE`, which is in the current public allowlist (4 rows).
+- Cross-repository review confirms MOB validates returned gift snapshots and explicitly does not mint local synthetic allowance without a supported, owner-approved adapter. Server and client channel/pole/phase contracts have not been proven end-to-end; do not invent a six-channel to four-track mapping. Browser → Worker → Supabase persisted readback after reload remains 0/1 independently verified.
+- The available Library/master-source/manuscript search did not surface an authoritative 100-pattern/recipes appendix in the searched source compilation/Mechanics v65 material. The 560-row review queue remains at zero stable product IDs, zero owner-approved rows, and zero selected manifest members; no bank was fabricated or approved.
+- The owner selection rule is already in MOB `DECISIONS.md`: gift nature (one of six) is separate from starting ground (one of twelve), and nature selects the versioned bank. Issue #58's old universal-vs-ground selection question is superseded; item-level source approval remains open.
+
+### Next executable actions
+1. Refresh PR #69 CI against the new documentation commit SHA; refresh PR #66 after its queued run executes.
+2. Obtain authenticated Cloudflare logs for build `d310ee28-0feb-49fe-a326-ea7babfea0d4`; capture the first failing step before editing service/root/command.
+3. Independently inspect the public allowlist and adjudicate `RARE` source authority. Preserve the separate protected SQLite vault; do not import it.
+4. Continue source-line normalization and approval workflow without assigning stable IDs or bank membership by row order.
+5. Define the client/server mapping and prove the full persisted non-production browser journey only after the required content/contract approvals are ready.
+
+**Boundary maintained:** no PR merge, deployment, migration, vault import, gift activation/issuance, billing/profile sync, production data change, or reduction of test floors.
