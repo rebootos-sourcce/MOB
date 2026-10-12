@@ -4,15 +4,15 @@
 **Status:** Working index; cross-repository and website inventory remains partly incomplete. Fresh evidence is in [ATUNED Execution Refresh](ATUNED_EXECUTION_REFRESH_2026-10-12.md); where older snapshots conflict, the refreshed checkpoint controls.  
 **Purpose:** First stop for every engineering thread. This index points to the authority for decisions, code, content, backlog, and release evidence. It must be updated when work changes.
 
-[P0 Execution Backlog — block-by-block closure and exit tests](P0_EXECUTION_BACKLOG_2026-10-12.md) is the active execution contract. Update its existing blocks when new gaps are found; do not create duplicate plans or restart discovery.
+[ATUNED P0 Execution Control Board](ATUNED_P0_EXECUTION_CONTROL_BOARD.md) is the active acceptance ledger; [P0 Block Execution Notes](ATUNED_P0_BLOCK_EXECUTION_NOTES_2026-10-12.md) records dependencies and stop/continue rules. Update these existing files as gaps are found; do not create duplicate plans or restart discovery.
 
 ## Current verified checkpoint — 12 October 2026 UTC
 
 | Workstream | Exact evidence | Current status |
 |---|---|---|
-| Master index | [Draft PR #69](https://github.com/rebootos-sourcce/MOB/pull/69), branch `docs/atuned-master-index-20261012`; pre-update head `04fbf2f23a2bb0b3960747ff0a9f5d78b275a097`; [run #38320866562](https://github.com/rebootos-sourcce/MOB/actions/runs/38320866562) | 28/29 checks passed; functional browser job was still running at capture. This checkpoint commit creates a new head and needs its own exact-head workflow | OPEN / DRAFT. No merge or deploy |
-| MOB client | [PR #66](https://github.com/rebootos-sourcce/MOB/pull/66), head `fc7033fb24ec9ed94e2f63563e723b82603b2e68`; [run #38322094250](https://github.com/rebootos-sourcce/MOB/actions/runs/38322094250) | 28 checks were queued at capture; current-head result pending. Prior green run was on an older SHA and is historical | OPEN / DRAFT; refresh exact-head results before any integration or merge decision |
-| Reboot-OS gift contract + public canon guard | [PR #35](https://github.com/rebootos-sourcce/Reboot-OS/pull/35), head `a72c3ae6f45817e0069ea17dc4b69ac9065b1708`; [server #38320726029](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38320726029), [gate/smoke #38320730236](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38320730236) | Server suite 147/147 passed; repository gate/smoke passed. Content fingerprint enforcement and same-row-count regression are present. Draft/open/unmerged; production steps not run |
+| Master index | [Draft PR #69](https://github.com/rebootos-sourcce/MOB/pull/69), branch `docs/atuned-master-index-20261012`; pre-correction head `30450dbab002692c9a3d84fb649e9cd234e65411`; [run #38322742197](https://github.com/rebootos-sourcce/MOB/actions/runs/38322742197) | At capture, all 28 checks were queued on that head. This table/link correction creates a new head; refresh its exact-head run. No merge or deployment |
+| MOB client | [PR #66](https://github.com/rebootos-sourcce/MOB/pull/66), head `fc7033fb24ec9ed94e2f63563e723b82603b2e68`; [run #38322094250](https://github.com/rebootos-sourcce/MOB/actions/runs/38322094250) | 28 checks were queued at capture; current-head result pending. Older green evidence is historical. Open/draft; do not integrate without exact-head evidence |
+| Reboot-OS gift contract + public canon guard | [PR #35](https://github.com/rebootos-sourcce/Reboot-OS/pull/35), head `a72c3ae6f45817e0069ea17dc4b69ac9065b1708`; [server #38320726029](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38320726029), [gate/smoke #38320730236](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38320730236) | Server suite 147/147 passed; repository gate/smoke passed. Same-row-count content fingerprint enforcement and regression are present. Draft/open/unmerged; no production changes |
 | External Cloudflare check | `Workers Builds: atuned-os`, build [d310ee28-0feb-49fe-a326-ea7babfea0d4](https://dash.cloudflare.com/b34a8a4f24d5ac71f7b386c240a6da90/workers/services/view/atuned-os/production/builds/d310ee28-0feb-49fe-a326-ea7babfea0d4), GitHub check [#115048003713](https://github.com/rebootos-sourcce/Reboot-OS/runs/115048003713) | **FAILED** on current PR #35 head. First failing step not included in GitHub check. Authenticated Cloudflare logs required; do not bypass or infer cause |
 | Canonical starter gift | [MOB issue #58](https://github.com/rebootos-sourcce/MOB/issues/58) | 0 owner-approved stable IDs out of required 100; no active production manifest; migrations 0017/0018 not applied |
 | Persisted Alpha journey | Required browser → Worker → Supabase write/read/reload path | 0/1 independently verified for the current release; UNVERIFIED |
@@ -339,7 +339,7 @@ These are on the same draft docs branch as this index. Refresh the PR #69 head a
 
 
 ### Latest continuation work
-- Implementation audit and code acceptance plan: [ATUNED_IMPLEMENTATION_AUDIT.md](ATUNED_IMPLEMENTATION_AUDIT.md), updated in commit `14ff5e11e7368c227df6f62b77fb9769c1baaa08`.
+- Implementation audit and code acceptance plan: [ATUNED_IMPLEMENTATION_AUDIT.md](ATUNED_IMPLEMENTATION_AUDIT.md), updated in checkpoint commit `30450dbab002692c9a3d84fb649e9cd234e65411`.
 - Executive handshake: [ATUNED_EXECUTIVE_HANDSHAKE_2026-10-12_EXECUTION.md](ATUNED_EXECUTIVE_HANDSHAKE_2026-10-12_EXECUTION.md).
 - Next-thread handshake: [ATUNED_NEXT_THREAD_HANDSHAKE_2026-10-12_EXECUTION.md](ATUNED_NEXT_THREAD_HANDSHAKE_2026-10-12_EXECUTION.md).
 - Execution log: [ATUNED_EXECUTION_LOG_2026-10-12_CLOUDFLARE_INDEX.md](ATUNED_EXECUTION_LOG_2026-10-12_CLOUDFLARE_INDEX.md).
