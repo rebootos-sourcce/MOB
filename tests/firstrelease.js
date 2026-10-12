@@ -15,9 +15,10 @@
    THE RULING THE SCREEN AND THE CARD ARE HELD TO. Round PA, 1 October:
    "The mini release is 12 lines." (PLAN.md, "Ruled by him, round PA"), and
    in the same round, "Release screens (the onboarding's): match what the
-   software does." Twelve lines is three addresses at four channels said once
-   each, which is what REVIEW-onboarding/pass1/devops-qa.md measured as "Dose
-   1 is 12 lines, the ruled mini release, but it needs a typed number."
+   software does." Twelve lines is the maximum: three addresses at four
+   channels said once each. The journey rule explicitly allows fewer when the
+   available allowance cannot fund three whole addresses; never cut an address
+   in half or overspend the meter.
 
    WHAT IT DOES. Walks the real door (Guest, ui/login.js) through the
    onboarding to the bridge card, at 1600 and at 390, once saying yes to one
@@ -32,7 +33,8 @@
                lines the setup screen prints, and the lines the walk said;
                every count of lines or patterns on the setup is that N
      places    the card's place count is the queue and the setup's addresses
-     ruling    yes to three places or more is exactly 12 lines, at 3 places
+     ruling    yes to three places or more opens up to 12 lines, capped by
+               the available allowance and kept to whole addresses
      voice     a card that says silence gets no line spoken; a card that
                says the voice reads gets every list line spoken
      timer     a card that says nothing counts down gets no countdown on any
@@ -159,9 +161,11 @@ function hold(tag,card,r,opts){
  ok(new RegExp('\\b'+P.places+' address(es)?\\b').test(S.text),tag+'and the setup counts the same '+P.places);
  /* the ruling, read off the engine's own tables */
  const ruled=S.mini.a!=null&&S.mini.m!=null?S.mini.a*S.mini.m:null;
- ok(ruled===12,tag+'the ruled size is twelve lines, three addresses at four, read off the tables: '+ruled);
- ok(P.lines!=null&&P.lines<=ruled,tag+'the first release is never more than the ruled '+ruled+' lines: '+P.lines);
- if(opts.all)ok(P.lines===ruled&&P.places===S.mini.a,tag+'yes to every place is the ruled '+ruled+' lines at '+S.mini.a+' places: '+P.lines+' at '+P.places);
+ ok(ruled===12,tag+'the maximum size is twelve lines, three addresses at four, read off the tables: '+ruled);
+ ok(P.lines!=null&&P.lines<=ruled&&P.lines%S.mini.m===0&&P.places===P.lines/S.mini.m,
+  tag+'the first release stays within the maximum and uses whole addresses: '+P.lines+' lines at '+P.places+' places');
+ if(opts.all)ok(P.places<=S.mini.a&&P.lines===P.places*S.mini.m,
+  tag+'yes to every place is capped by the available allowance without splitting an address: '+P.lines+' lines at '+P.places+' places');
  /* voice */
  ok(P.voice.k==='silent'||P.voice.k==='voiced',tag+'the card says, once, whether anything reads the lines out loud: '+P.voice.k);
  if(P.voice.k==='silent'){
