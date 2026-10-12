@@ -169,7 +169,7 @@ Android/iOS builds, signing, and store packaging are not release blockers unless
 | Item | Current recorded state | Next action |
 |---|---|---|
 | [MOB #48](https://github.com/rebootos-sourcce/MOB/issues/48) | Cross-functional P0–P3 tracker | Keep as the master backlog; update before and after work |
-| [MOB #58](https://github.com/rebootos-sourcce/MOB/issues/58) | Open P0 issue for canonical sentence inventory and 100-pattern gift | Recover corpus, resolve contract, build auditable inventory |
+| [MOB #58](https://github.com/rebootos-sourcce/MOB/issues/58) | Open P0 issue for canonical sentence inventory and 100-pattern gift | Vault and source artifacts recovered and hash-checked. Continue sentence-boundary review, stable ID assignment, authority/channel/side/phase validation, and explicit approval; no active manifest |
 | [MOB PR #66](https://github.com/rebootos-sourcce/MOB/pull/66) | Open/draft; recorded head `9280501683d07867c72bc582cba62fe9aed00d49`; 30/30 jobs passed | Continue client integration; verify latest head before relying on this status |
 | [Reboot-OS PR #35](https://github.com/rebootos-sourcce/Reboot-OS/pull/35) | Open/draft; head `39cde03898543aca4e4d3a33774095117a8526f7`; server 147/147 passed; smoke 840 passed / 0 failed; 44 screenshot surfaces; external `atuned-os` Cloudflare build failed (current build `0caff241-0bd3-453e-a86d-985e0b839726`) | Obtain authenticated first-failure build logs, resolve actual cause, preserve draft/no production changes |
 | [Reboot-OS #37](https://github.com/rebootos-sourcce/Reboot-OS/issues/37) | Open infrastructure blocker | Authenticated operator captures first actual Cloudflare error |
@@ -204,7 +204,7 @@ The current accessible evidence identifies the following gaps that must be close
 ## 9. Immediate next actions
 
 1. Finish current Reboot-OS PR #35 smoke gates [#38279998550](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38279998550) and [#38280005952](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38280005952); the exact-head server suite [#38279998569](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38279998569) has passed 147/147.
-2. Resolve Cloudflare failure [#114914821653](https://github.com/rebootos-sourcce/Reboot-OS/runs/114914821653), build `29417e44-e113-4b57-bbd2-0a882e388e65`, through authenticated first-error logs. GitHub exposes 0 annotations and no failed-step detail. Do not bypass.
+2. Resolve the current Cloudflare failure on build `0caff241-0bd3-453e-a86d-985e0b839726` from authenticated first-error logs. GitHub exposes 0 annotations and no failed-step detail. Read-only probes show `atuned-api` health 200 and `atuned-os` health 404; use this as a target-mismatch clue, not proof of cause. Do not bypass.
 3. Refresh current PR #69 head and corresponding workflow; each documentation commit triggers a new gate, so don't rely on prior SHA results.
 4. Recover the original `canon_vault.sqlite` and standalone Source gateway/client/service files from the previous workspace. Do not recreate them.
 5. Classify all 127 runtime manifest entries, especially `RARE` (“the vault patterns”), before any protected import.
@@ -217,7 +217,7 @@ The current accessible evidence identifies the following gaps that must be close
 
 ## API and deployment map — audited 12 October 2026
 
-**Source of truth for route inventory:** [Reboot-OS Worker route table at PR #35 head `702c0be4a9cc1d7b98ec2865a3335143dd470d0a`](https://github.com/rebootos-sourcce/Reboot-OS/blob/702c0be4a9cc1d7b98ec2865a3335143dd470d0a/atuned/server/src/index.js). The following 35 HTTP routes were extracted from the checked-in route table. This is a code inventory, not proof that the external deployment is live or reachable.
+**Source of truth for route inventory:** [Reboot-OS Worker route table at PR #35 head `39cde03898543aca4e4d3a33774095117a8526f7`](https://github.com/rebootos-sourcce/Reboot-OS/blob/39cde03898543aca4e4d3a33774095117a8526f7/atuned/server/src/index.js). The following 35 HTTP routes were extracted from the checked-in route table. This is a code inventory, not proof that the external deployment is live or reachable.
 
 - **Worker repository:** [Reboot-OS](https://github.com/rebootos-sourcce/Reboot-OS)
 - **Worker root:** `atuned/server/`
