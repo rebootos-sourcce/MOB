@@ -365,6 +365,14 @@ console.log('\n=== the tutorial door: the same record, the same resume, the same
  ok(open,tag+'the switch opens the tutorial on a first run');
  let j=await rec();
  ok(!!(j&&j.log.some(e=>e.type==='tutorial_started'&&e.d&&e.d.door==='tutorial')),tag+'its start is on the log, with the door it came through');
+ const tutorialGiftGate=await page.evaluate(()=>({
+  access:CURP&&CURP.journey&&CURP.journey.giftAccess,
+  inGift:typeof meterBudget==='function'?meterBudget(CURP).allow.inGift:null
+ }));
+ ok(tutorialGiftGate.access==='uninstalled',
+  tag+'a genuinely new tutorial-first profile explicitly disables the implicit gift until its bank is installed: '+J(tutorialGiftGate));
+ ok(tutorialGiftGate.inGift===false,
+  tag+'tutorial-first allowance cannot consume a phantom local 100-pattern grant: '+J(tutorialGiftGate));
  await page.fill('#tuttext',STORY); await click('[data-tut="commit"]');
  j=await rec();
  ok(!!(j&&j.log.some(e=>e.type==='story_submitted')&&j.log.every(e=>J(e).indexOf('chest')<0)),tag+'the story is on the log, and no word of it');
