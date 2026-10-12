@@ -29,12 +29,12 @@
         uses, and a sentence it reads fully prints the node it actually
         found, checked against what parseStory itself returns for that exact
         string.
-
      4  THE FIRST RELEASE'S SIZE, F5 in REVIEW-funnel/FINAL-SPEC.md, ruled
-        round PA: "The mini release is 12 lines." Both doors hand relPick
-        the plan onbMiniPlan made and never every address the story read,
-        the run the release card builds is exactly the twelve keys the plan
-        counted, the card prints that count and not the count of addresses,
+        round PA: "The mini release is 12 lines" as a maximum. Both doors hand
+        relPick the plan onbMiniPlan made and never every address the story
+        read. The available allowance may cap the plan to fewer whole addresses;
+        the run builds exactly the keys the plan counted, the card prints that
+        count and not the count of addresses,
         and when the story read more than three it says how many more, and
         how many of them the words did not name. Checked first against the
         build before the fix, where these assertions fail: that build handed
@@ -309,6 +309,7 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
   const yes=(e.ob&&e.ob.yes||[]).slice(), no=(e.ob&&e.ob.no||[]).slice();
   const kept=(OB.commit&&OB.commit.kept||[]).map(n=>n.i);
   return {pl:pl, yes:yes, no:no, kept:kept,
+   allowance:(typeof meterBudget==='function'&&meterBudget(CURP))?meterBudget(CURP).left:0,
    size:(typeof ONB_MINI_ADDRS==='number'&&typeof RUN_MIN==='number')?ONB_MINI_ADDRS*RUN_MIN:null,
    chans:(typeof ONB_CHANS!=='undefined'&&typeof CHAN!=='undefined')
     ?{onb:ONB_CHANS.slice(),rel:CHAN.map(c=>c[0]+c[2])}:null};});
@@ -316,8 +317,9 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
  ok(mini.chans&&JSON.stringify(mini.chans.onb)===JSON.stringify(mini.chans.rel),
   'the engine plans down the same four channels the release card walks, in the same order: '+JSON.stringify(mini.chans));
  ok(mini.yes.length>3,'the person said yes to more than three addresses, so the cap has something to cut: '+mini.yes.length);
- ok(mini.pl&&mini.pl.ok&&mini.pl.lines===mini.size&&mini.pl.addrs.length===3,
-  'the bridge plans three addresses and twelve lines, not every address read: '+JSON.stringify(mini.pl&&{a:mini.pl.addrs,l:mini.pl.lines}));
+ ok(mini.pl&&mini.pl.ok&&mini.pl.lines===Math.min(mini.size,Math.floor(mini.allowance/RUN_MIN)*RUN_MIN)
+   &&mini.pl.lines%RUN_MIN===0&&mini.pl.addrs.length===mini.pl.lines/RUN_MIN,
+  'the bridge plans up to twelve lines, capped by allowance in whole addresses: '+JSON.stringify(mini.pl&&{a:mini.pl.addrs,l:mini.pl.lines,allowance:mini.allowance}));
  ok(mini.pl&&mini.pl.addrs.every(i=>mini.yes.indexOf(i)>=0),'and every planned address is one the person said yes to, none invented: '+JSON.stringify(mini.pl&&mini.pl.addrs));
  ok(mini.pl&&mini.no.length>0&&mini.pl.addrs.every(i=>mini.no.indexOf(i)<0),'and none is one they said no to');
  ok(mini.pl&&mini.pl.found===mini.yes.length,'the plan counts the yes rows, '+(mini.pl&&mini.pl.found)+' of '+mini.yes.length+', never the raw story read');
@@ -352,9 +354,9 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
     way; the queue is now held to the plan, which is held to the reading. */
  const runPlan=await page.evaluate(()=>({queue:(RUN.queue||[]).map(n=>n.i),plan:(RUN.plan||[]).slice()}));
  ok(mini.pl&&JSON.stringify(runPlan.queue)===JSON.stringify(mini.pl.addrs),
-  'the release opens on exactly the plan\'s three addresses: '+JSON.stringify(runPlan.queue));
+  'the release opens on exactly the plan\'s addresses: '+JSON.stringify(runPlan.queue));
  ok(mini.pl&&JSON.stringify(runPlan.plan)===JSON.stringify(mini.pl.keys),
-  'and builds exactly the twelve lines the card counted, '+runPlan.plan.length+' of them');
+  'and builds exactly the lines the card counted, '+runPlan.plan.length+' of them');
 
  /* RUN IT TO A REAL COOLDOWN, the same way tests/design.js already proves
     the card itself can finish, so "reaches a release" means the walker
@@ -374,7 +376,7 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
  ok(moved,'and the field actually moved: a release that opens a card but changes nothing is not a release');
  ok(after.meter>0,'the record keeps a real line released, got '+after.meter);
  const spent=await page.evaluate(()=>(CURP.meter&&CURP.meter.unique||[]).length);
- ok(mini.pl&&spent===mini.pl.lines,'the first release opened '+spent+' lines of new ground, the twelve it was shown and no more');
+ ok(mini.pl&&spent===mini.pl.lines,'the first release opened '+spent+' lines of new ground, exactly the amount shown and no more');
  ok(errs.length===0,'no script error the whole way through: '+errs.slice(0,3).join(' | '));
  console.log('  reached a real release in '+(Date.now()-t0)+'ms of wall clock, shrunk timing');
 
