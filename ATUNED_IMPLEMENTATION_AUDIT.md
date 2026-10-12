@@ -78,3 +78,23 @@ Recovered Source gateway/client files exist in Library (original and healed vari
 5. Re-run the controlled browser → Worker → Supabase persisted write/read/reload journey on the current release branch.
 6. Inspect the D1 canon manifest and prove no protected table can be returned through public canon routes; do not seed the full vault yet.
 7. Add this index link at the top of every next-thread and executive handshake, and package the next handoff as one validated ZIP.
+
+
+## Continuation execution checkpoint — index/handshake wiring
+**Updated:** 12 October 2026 UTC. This addendum supersedes only the documentation-routing status above; refresh all code and CI heads before making release claims.
+
+- Master index: [ATUNED_MASTER_INDEX.md](https://github.com/rebootos-sourcce/MOB/blob/docs/atuned-master-index-20261012/ATUNED_MASTER_INDEX.md), latest observed commit `7df74664beda5c9a9b56556e5b7e7bff61beca1a`.
+- Executive handshake: [ATUNED_EXECUTIVE_HANDSHAKE_2026-10-12_EXECUTION.md](https://github.com/rebootos-sourcce/MOB/blob/docs/atuned-master-index-20261012/ATUNED_EXECUTIVE_HANDSHAKE_2026-10-12_EXECUTION.md).
+- Next-thread handshake: [ATUNED_NEXT_THREAD_HANDSHAKE_2026-10-12_EXECUTION.md](https://github.com/rebootos-sourcce/MOB/blob/docs/atuned-master-index-20261012/ATUNED_NEXT_THREAD_HANDSHAKE_2026-10-12_EXECUTION.md).
+- Execution log: [ATUNED_EXECUTION_LOG_2026-10-12_CLOUDFLARE_INDEX.md](https://github.com/rebootos-sourcce/MOB/blob/docs/atuned-master-index-20261012/ATUNED_EXECUTION_LOG_2026-10-12_CLOUDFLARE_INDEX.md).
+- All four files are on draft docs PR #69. PR head was refreshed to `7df74664beda5c9a9b56556e5b7e7bff61beca1a`; workflow lookup did not return a PR-triggered run for that SHA at the time of this check. Do not treat CI as passed until a run is associated with the final head.
+- A single verified ZIP is still required; don't claim it exists until created and tested.
+
+## Code work to resume after head/CI refresh
+1. **Canon integrity:** public routes currently compare a frozen manifest fingerprint and expected row count, then query table rows. A same-row-count content change can evade a count-only guard if the manifest metadata remains unchanged. Add a deterministic content fingerprint generated from canonical row data at build/import time; verify it against the approved frozen value before any public table read. Define canonical serialization/order and null/encoding behavior explicitly, then test content drift with unchanged row count, row additions/deletions, metadata drift, and unknown/protected-like tables. Preserve current fail-closed behavior and do not include protected vault rows.
+2. **Catalog authority:** no approved stable pattern IDs exist. Keep starter-set activation blocked. Any set freeze must validate exactly 100 unique approved IDs, a stable catalog version, source locators, content hashes, category, and server-side assignment semantics. Never derive the bank by selecting the first 100 queue rows.
+3. **Meter contract:** six server release channels must map explicitly to four client meter tracks. Specify deterministic rules, store the mapping version with the immutable issued snapshot, and test duplicate/retry/concurrent calls so reruns cannot charge twice.
+4. **Persistence:** distinguish earlier main-branch backend smoke from the unmerged current release. Verify create → choose ground + nature → snapshot → attach/account → reload → read back snapshot and usage on an approved disposable non-production environment.
+5. **Cloudflare:** honor owner-reported DEV21/22 success, but refresh the current external build check. If red, obtain first failing log step from authenticated dashboard; don't change target/root/command on hypothesis.
+
+Safety: no merge, deployment, migration 0017/0018, protected-vault import, billing/profile sync, or gift activation without explicit approval.
