@@ -84,15 +84,14 @@ function tutJourney(replay){
  if(replay||typeof journeyRead!=='function'||typeof CURP==='undefined'||!CURP)return false;
  if(typeof S!=='undefined'&&S.who!==0)return false;
  var jr=journeyRead(CURP);
- if(jr.at==='end'||(jr.at==='next'&&jr.door==='tutorial'))return true;
- if(!jr.first)return false;
  var m=CURP.meter||{};
  var unique=Array.isArray(m.unique)?m.unique.length:0;
  var issuedGift=!!(CURP.journey&&CURP.journey.gift);
- /* Mirror onboarding's fail-closed boundary: a genuinely new, unused record
-    cannot consume the implicit legacy 100 until a frozen bank and meter
-    adapter exist. Existing issued/consumed gifts remain untouched. */
- if(!issuedGift&&unique===0&&!m.first
+ /* Resume checks used to return above the gift guard, leaving a tutorial-first
+    record with a saved step but no local bank on the implicit legacy allowance.
+    Gate any genuinely first-run, unused record before either a new start or a
+    resume, while preserving existing issued gifts and all continuing records. */
+ if(jr.first&&!issuedGift&&unique===0&&!m.first
   &&typeof journeySetGiftAccess==='function'
   &&(!CURP.journey||CURP.journey.giftAccess!=='uninstalled')){
   var gate=journeySetGiftAccess(CURP,'uninstalled');
@@ -101,6 +100,8 @@ function tutJourney(replay){
     status('This browser would not save. The starter bank is not installed yet.','fail');
   }else if(typeof obJyFail==='function')obJyFail(gate.why);
  }
+ if(jr.at==='end'||(jr.at==='next'&&jr.door==='tutorial'))return true;
+ if(!jr.first)return false;
  TUT.rec=true;
  var r=journeyLog(CURP,'tutorial_started',null,{door:'tutorial'});
  if(!r.ok&&typeof obJyFail==='function')obJyFail(r.why);
