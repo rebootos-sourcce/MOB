@@ -1,71 +1,53 @@
 # ATÜNED Public Runtime Canon Exposure Audit
 
-**Snapshot:** 12 October 2026 UTC  
+**Refresh:** 12 October 2026 UTC  
 **Code PR:** [Reboot-OS #35](https://github.com/rebootos-sourcce/Reboot-OS/pull/35)  
-**Code head at this snapshot:** `702c0be4a9cc1d7b98ec2865a3335143dd470d0a`  
-**State:** Patch and regression test committed to the existing draft branch. Exact-head repository tests are queued at the last refresh; the external Cloudflare check failed again. No merge, production deploy, production migration or gift activation occurred.
+**Current code head:** `39cde03898543aca4e4d3a33774095117a8526f7`  
+**State:** Patch remains draft/open/unmerged. Exact-head server and smoke gates passed. External Cloudflare `Workers Builds: atuned-os` still fails. No production merge/deploy/migration, protected import, or gift activation was performed.
 
 ## Finding
 
-Before this patch, `atuned/server/src/index.js` exposed both `GET /v1/canon` and `GET /v1/canon/:table` as public routes. The catalog route returned all rows from `canon_manifest`; the table route returned rows for any name present in that manifest. `CANON_TIER` was empty, so absent entries defaulted to tier 0.
+Before this patch, `GET /v1/canon` returned the public runtime manifest and `GET /v1/canon/:table` could read any table named in that manifest. `CANON_TIER` was empty, so absent entries defaulted to tier zero. The source migration is generated from `atuned/data/canon.sqlite` and is separate from the protected `canon_vault.sqlite` reviewed here.
 
-The runtime migration is generated from `atuned/data/canon.sqlite`. The protected `canon_vault.sqlite` described by local review docs is separate and was not found in the current workspace, Library search or checked repositories. This audit does **not** claim the protected vault was inspected or that a live vault leak was established.
+No current leak of the recovered protected vault is established. It was not shown to be the database behind the runtime public routes, and it has not been imported. The current finding is a public-runtime boundary and content-classification gap, not proof of an active protected-vault disclosure.
 
-## Cross-check
+## What the patch protects
 
-| Evidence | Result |
-|---|---|
-| `atuned/data/canon_tables/manifest.json`, original blob SHA `9cc010fac9b46e27e90594167de3ed5cdf89c680` | 127 entries |
-| `atuned/server/migrations/0001_canon.sql`, original blob SHA `c1dd46a58836422295ae976da6314ef5031d1d53` | 127 inserted manifest entries |
-| Name/fingerprint comparison | 127/127 matched; 0 mismatches |
-| Owner-approved content classification of current runtime entries | Not established |
-| Direct inspection of protected `canon_vault.sqlite` | Not possible in this workspace |
+PR #35 freezes the current 127 runtime table names, manifest fingerprints, and declared row counts. Catalog reads omit names or metadata that are not in the frozen inventory; direct reads fail closed for unknown/changed entries and for an unexpected live row count. Regression tests cover an unlisted protected-like table, additive row-count drift, and metadata fingerprint drift.
 
-This cross-check verifies the current runtime table inventory metadata only. It is not evidence that each row is approved, privacy-classified or equivalent to the protected source vault.
-
-## Patch applied on PR #35
-
-Files changed:
-
-- `atuned/server/src/index.js`
-- `atuned/server/test/canon-public.test.mjs`
-
-The Worker now holds a frozen inventory of the 127 currently known runtime table names, their manifest fingerprints and declared row counts. The public catalog omits entries that are absent from this inventory or whose fingerprint/count metadata differs. A direct table read returns a generic 404 for unlisted or metadata-drifted entries. Before returning table rows, the Worker checks the actual row count against the frozen expected count and returns 404 on mismatch.
-
-Regression test cases cover:
-
-1. A new protected-like table added to the manifest is omitted from the public catalog and cannot be read.
-2. An extra row added to an existing table without a matching manifest update causes a 404.
-3. A changed fingerprint for an existing table hides it from the catalog and blocks the table read.
-
-The first exact-head smoke attempt failed because the new test fixture used nonexistent `i` and `value` columns for `canon_RARE`. Generated migration inspection confirmed the table columns are `b`, `q`, and `w`. The test was corrected and committed. The current exact-head server suite has passed 147/147; the smoke gates remain in progress. The latest Cloudflare check failed again, and its first failing step is not available through the GitHub check payload.
+Source manifest versus generated migration: 127/127 names, fingerprints, and declared counts matched in the checked inventory. This is metadata consistency, not a semantic approval of table contents. Because the patch uses a short fingerprint copied from source metadata and a row-count check, it does not independently detect all same-row-count content changes where metadata was not refreshed. Strengthen the generation/import path to recompute content hashes before any new source material is eligible for runtime.
 
 ## Current exact-head validation
 
-Current Reboot-OS PR #35 head: `702c0be4a9cc1d7b98ec2865a3335143dd470d0a`.
+- [Server workflow #38283599925](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38283599925): **147 tests passed, 0 failed** on `39cde03898543aca4e4d3a33774095117a8526f7`.
+- [Smoke workflow #38283606361](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38283606361): **840 passed, 0 failed**; voice surface and both evidence-only source locator self-tests passed; source and PDF line locator index artifacts built; 44 screenshot surfaces captured.
+- The server workflow successfully dry-ran `wrangler deploy --dry-run` under both candidate names `atuned-api` and `atuned-os`. It did not deploy. A read-only health GET returned HTTP 200 at `https://atuned-api.lance-o-powell.workers.dev/v1/health` and 404 at `https://atuned-os.lance-o-powell.workers.dev/v1/health`. This supports checking the Cloudflare service-name/root/config alignment but is not proof of the build-failure cause.
+- The external Cloudflare check failed for build [0caff241-0bd3-453e-a86d-985e0b839726](https://dash.cloudflare.com/b34a8a4f24d5ac71f7b386c240a6da90/workers/services/view/atuned-os/production/builds/0caff241-0bd3-453e-a86d-985e0b839726). GitHub exposes zero annotations and no first failed step; an authenticated operator must obtain the actual build log. Do not bypass the check.
 
-- [Server run #38279998569](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38279998569): queued at last refresh.
-- [Smoke run #38279998550](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38279998550): queued at last refresh.
-- [Smoke run #38280005952](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38280005952): queued at last refresh.
-- [Cloudflare check #114914821653](https://github.com/rebootos-sourcce/Reboot-OS/runs/114914821653): failed; build [29417e44-e113-4b57-bbd2-0a882e388e65](https://dash.cloudflare.com/b34a8a4f24d5ac71f7b386c240a6da90/workers/services/view/atuned-os/production/builds/29417e44-e113-4b57-bbd2-0a882e388e65); GitHub exposes 0 annotations and no first failing step. Authenticated dashboard logs are required.
+## Protected vault recovery — verified locally, not deployed
 
-The earlier smoke failure is a confirmed test-fixture defect, corrected in the present head. Do not describe the current patch as passing until the current run completes.
+The earlier handoff statement that the SQLite vault was missing is superseded. A paginated Library inventory across 808 items located `canon_vault.sqlite` (3,346,432 bytes; SHA-256 `9c2cd7b610c1e7b1d056646047988b67d0f52368139952bcc2782b930056915e`). It was opened in read-only mode and returned `PRAGMA integrity_check = ok`, no foreign-key violations, no orphan statement/source/block references, and no block item-count mismatches.
 
-## Important limits
+Counts verified from the database: 2,900 canonical limiting-belief statements (all sniff-eligible), 2,700 canonical embodied truths (excluded from sniff matching), 72 exact-duplicate groups, 496 topics, four source records, 58 limiting blocks, 54 truth blocks and 52 paired 50/50 blocks. Its 2,900 FTS rows map to the 2,900 eligible limiting statements through rowid. Raw source-file size, MD5 and SHA-256 matched the vault metadata for all four recoverable source artifacts.
 
-The manifest fingerprint is a 16-character value copied from canonical source metadata; the Worker does not recompute a full content hash. The row-count check catches additive row changes when stored metadata is unchanged, but an in-place value replacement that preserves row count and leaves the manifest SHA stale would not be detected by these checks alone. The import/build process must recalculate and verify data fingerprints, and must not hand-edit generated SQL or runtime rows.
+**Isolation rule:** preserve this vault as protected local/server-side source. Do not bundle its statement corpus or FTS index into the public client, import it into runtime tables, or write it to production/Supabase without source-authority classification, authenticated access controls, owner approval, and negative tests proving public endpoints cannot return it.
 
-The existing runtime manifest contains `RARE`, described as “the vault patterns”, with four records. That description requires explicit owner/source-authority review. It does not prove the table came from the separate protected SQLite vault, and its current presence is not owner approval of any additional source material.
+## Current remaining risk
+
+1. All 127 current runtime entries still require source-authority and public-suitability classification, explicitly including `RARE` (“the vault patterns”). That label alone does not prove it was imported from this recovered database.
+2. Strengthen public-canon verification so source/build code recomputes full content hashes rather than relying only on a short manifest fingerprint and row count.
+3. No fixed starter-gift bank is approved: the 560-row work queue still contains zero stable product pattern IDs, zero owner-approved rows, zero reviewed line splits, and zero selected manifest members. The 100-per-nature requirement is not yet content-complete.
+4. The current-release browser → Worker → Supabase write/read/reload journey remains 0/1 independently verified.
+5. The recovered local gateway imports `source_service.SourceService`, which was not found in the Library or current Reboot-OS server source directory. It also lacks a complete trusted account-identity contract. It is not ready to deploy or port as-is.
 
 ## Remaining acceptance conditions
 
-Before any protected source import or production activation:
+1. Obtain and resolve the current Cloudflare build’s first failing log step.
+2. Preserve exact-head server, smoke and negative-access tests; investigate the target mismatch without bypassing Cloudflare checks.
+3. Classify the 127 runtime table entries, resolve the `RARE` authority, and implement full content-fingerprint validation in the build/import path.
+4. Keep the recovered vault local/server-only until access isolation is proven and import is explicitly approved.
+5. Review source lines into stable, source-grounded IDs, sentence boundaries and correct release/reframe metadata; obtain explicit approval before creating or activating each exact 100-item category bank.
+6. Prove a persisted current-release journey on a disposable, approved non-production environment.
 
-1. Recover the original protected database and provenance artifacts. Do not reconstruct the vault.
-2. Classify the semantics and source authority of all 127 current runtime tables, including `RARE`.
-3. Complete CI on the exact current PR #35 head and diagnose Cloudflare failures from authenticated first-error logs.
-4. Keep regression tests proving unlisted tables, metadata drift and additive row-count drift are not served.
-5. Prove current-release browser → Worker → Supabase persistence and readback/reload on an approved non-production target.
-6. Obtain explicit owner approval for stable pattern IDs and each fixed 100-pattern starter bank before creating an active manifest.
-
-**Confidence:** 0.96 that the manifest/migration metadata matched before patch and the patch adds a fail-closed boundary for unlisted tables, metadata drift and additive row-count changes. Protected-vault isolation overall remains unverified pending recovery, semantic review and exact-head tests.
+**Measurements:** 127/127 metadata entries matched; 147/147 server tests passed; 840/840 smoke assertions passed; 44 screenshots captured; protected vault integrity passed; all four source hashes matched; 0 approved gift IDs.  
+**Confidence:** 0.98 in the local vault integrity/source-hash checks and the observed repository test outcomes; deployed isolation and overall release readiness remain unverified.
