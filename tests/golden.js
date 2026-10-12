@@ -906,6 +906,8 @@ async function door(browser, SITE, cut, giftAt) {
     'the receipt names the first-visit record, its random account-ID link, and the dated audit data retained on the server');
   ok(/This record is still on this device/i.test(deleteLocal.receipt) && deleteLocal.rec,
     'the receipt is clear that the local record stays and remains available to delete separately');
+  ok(!/everything it held under the account/i.test(deleteLocal.receipt),
+    'the deletion receipt does not overstate what was removed or retained');
   sv = await Q.saved();
   const goneName = sv.rec && sv.rec.name, goneId = sv.rec && sv.rec.id;
   await Q.click('#profbtn'); await Q.click('[data-pms="privacy"]');
@@ -1071,6 +1073,25 @@ async function door(browser, SITE, cut, giftAt) {
       'their first visit stays anonymous on the server');
     ok(w2.reqs('GET', /^\/v1\/sync$/).length === 0 && w2.reqs('PUT', /^\/v1\/sync$/).length === 0,
       'account creation does not read or send the profile while sync is outside alpha');
+    const scheduledReceipt = await O2.page.evaluate(() => authGone({
+      stopped:0, retentionUntil:'2028-10-10T00:00:00.000Z', retentionMarked:true,
+      kept:['first_visit','activity_log']
+    }));
+    ok(scheduledReceipt.lines.some(line => /first-visit record/.test(line) && /scheduled for removal on 2028-10-10/.test(line)),
+      'the deletion receipt states the first-visit record removal date: ' + J(scheduledReceipt.lines));
+    ok(scheduledReceipt.lines.some(line => /dated list/.test(line) && /scheduled for removal on 2028-10-10/.test(line)),
+      'the deletion receipt states the activity-log removal date: ' + J(scheduledReceipt.lines));
+    const pendingReceipt = await O2.page.evaluate(() => authGone({
+      stopped:0, retentionUntil:'2028-10-10T00:00:00.000Z', retentionMarked:false,
+      kept:['first_visit']
+    }));
+    ok(pendingReceipt.lines.some(line => /cleanup in the first-visit store is still pending/.test(line)),
+      'the deletion receipt does not claim remote retention is confirmed when marking is pending');
+    const missingReceipt = await O2.page.evaluate(() => authGone({
+      stopped:0, kept:['first_visit']
+    }));
+    ok(missingReceipt.lines.some(line => /server did not return a removal date; contact support/.test(line)),
+      'the deletion receipt is truthful when the backend has not returned a retention deadline');
     ok(O2.errs.length === 0, 'no script error: ' + O2.errs.slice(0, 2).join(' | '));
     await O2.ctx.close();
   }
