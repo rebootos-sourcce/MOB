@@ -3,7 +3,7 @@
 **Snapshot:** 12 October 2026 UTC  
 **Code PR:** [Reboot-OS #35](https://github.com/rebootos-sourcce/Reboot-OS/pull/35)  
 **Code head at this snapshot:** `702c0be4a9cc1d7b98ec2865a3335143dd470d0a`  
-**State:** Patch and regression test committed to the existing draft branch. Exact-head CI is queued; Cloudflare check is in progress. No merge, production deploy, production migration or gift activation occurred.
+**State:** Patch and regression test committed to the existing draft branch. Exact-head repository tests are queued at the last refresh; the external Cloudflare check failed again. No merge, production deploy, production migration or gift activation occurred.
 
 ## Finding
 
@@ -38,7 +38,7 @@ Regression test cases cover:
 2. An extra row added to an existing table without a matching manifest update causes a 404.
 3. A changed fingerprint for an existing table hides it from the catalog and blocks the table read.
 
-The first exact-head smoke attempt failed because the new test fixture used nonexistent `i` and `value` columns for `canon_RARE`. Generated migration inspection confirmed the table columns are `b`, `q`, and `w`. The test was corrected and committed. Current exact-head tests have not completed yet; older runs do not validate the corrected SHA.
+The first exact-head smoke attempt failed because the new test fixture used nonexistent `i` and `value` columns for `canon_RARE`. Generated migration inspection confirmed the table columns are `b`, `q`, and `w`. The test was corrected and committed. Current exact-head tests have not completed yet; older runs do not validate the corrected SHA. The latest Cloudflare check failed again, and its first failing step is not available through the GitHub check payload.
 
 ## Current exact-head validation
 
@@ -47,7 +47,7 @@ Current Reboot-OS PR #35 head: `702c0be4a9cc1d7b98ec2865a3335143dd470d0a`.
 - [Server run #38279998569](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38279998569): queued at last refresh.
 - [Smoke run #38279998550](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38279998550): queued at last refresh.
 - [Smoke run #38280005952](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38280005952): queued at last refresh.
-- [Cloudflare check #114914708641](https://github.com/rebootos-sourcce/Reboot-OS/runs/114914708641): in progress at last refresh.
+- [Cloudflare check #114914821653](https://github.com/rebootos-sourcce/Reboot-OS/runs/114914821653): failed; build [29417e44-e113-4b57-bbd2-0a882e388e65](https://dash.cloudflare.com/b34a8a4f24d5ac71f7b386c240a6da90/workers/services/view/atuned-os/production/builds/29417e44-e113-4b57-bbd2-0a882e388e65); GitHub exposes 0 annotations and no first failing step. Authenticated dashboard logs are required.
 
 The earlier smoke failure is a confirmed test-fixture defect, corrected in the present head. Do not describe the current patch as passing until the current run completes.
 
