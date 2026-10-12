@@ -713,6 +713,17 @@ function obBegin(replay){
  var jr=journeyRead(CURP);
  if(!jr.first&&!jr.at)return;
  OB.rec=true;
+ var m=CURP.meter||{};
+ var unique=Array.isArray(m.unique)?m.unique.length:0;
+ var issuedGift=!!(CURP.journey&&CURP.journey.gift);
+ /* A genuinely new, unused record cannot spend the implicit legacy 100 while
+    the approved server bank has no local meter adapter. Existing issued gifts survive. */
+ if(!issuedGift&&unique===0&&!m.first
+  &&typeof journeySetGiftAccess==='function'
+  &&(!CURP.journey||CURP.journey.giftAccess!=='uninstalled')){
+  var gate=journeySetGiftAccess(CURP,'uninstalled');
+  if(gate.ok)obSave(); else obJyFail(gate.why);
+ }
  if(jr.at){ obResume(jr); return; }
  obJy('tutorial_started',null,{door:'onboarding'});}
 /* ONE LOG LINE. A refusal is a write that failed, so it is said, once a sheet,
