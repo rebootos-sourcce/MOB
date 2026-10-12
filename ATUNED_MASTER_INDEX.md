@@ -329,3 +329,12 @@ The supplied build log proves the configured external build ran `npx wrangler pr
 - [Execution log](ATUNED_EXECUTION_LOG_2026-10-12_CLOUDFLARE_INDEX.md)
 
 These are on the same draft docs branch as this index. Refresh the PR #69 head and its exact-head workflow before relying on the final bundle; none of these documentation commits is a merge or production release.
+
+
+### Latest continuation work
+- Implementation audit and code acceptance plan: [ATUNED_IMPLEMENTATION_AUDIT.md](ATUNED_IMPLEMENTATION_AUDIT.md), updated in commit `14ff5e11e7368c227df6f62b77fb9769c1baaa08`.
+- Executive handshake: [ATUNED_EXECUTIVE_HANDSHAKE_2026-10-12_EXECUTION.md](ATUNED_EXECUTIVE_HANDSHAKE_2026-10-12_EXECUTION.md).
+- Next-thread handshake: [ATUNED_NEXT_THREAD_HANDSHAKE_2026-10-12_EXECUTION.md](ATUNED_NEXT_THREAD_HANDSHAKE_2026-10-12_EXECUTION.md).
+- Execution log: [ATUNED_EXECUTION_LOG_2026-10-12_CLOUDFLARE_INDEX.md](ATUNED_EXECUTION_LOG_2026-10-12_CLOUDFLARE_INDEX.md).
+- The current public-canon implementation freezes manifest SHA/row-count metadata, but the route does not independently recompute the actual table content fingerprint on read. A same-row-count mutation of canon table contents may therefore evade the current check if the manifest remains unchanged. Treat this as a code-review finding to fix with the source fingerprint's exact canonicalization algorithm and regression tests; do not invent a replacement hash format.
+- Current docs PR #69 head was `14ff5e11e7368c227df6f62b77fb9769c1baaa08` at last refresh. Workflow lookup returned no PR-triggered run for that SHA; recheck after the next documentation commit.
