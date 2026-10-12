@@ -103,6 +103,18 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
  await page.waitForTimeout(300);
  const opened=await page.evaluate(()=>!!(typeof OB!=='undefined'&&OB.open));
  ok(opened,'a fresh profile meets the onboarding sheet behind the real door');
+ const initialGiftGate=await page.evaluate(()=>{
+  const budget=typeof meterBudget==='function'?meterBudget(CURP):null;
+  const read=typeof meterRead==='function'?meterRead(CURP):null;
+  return {access:CURP&&CURP.journey&&CURP.journey.giftAccess,budget:budget,read:read};
+ });
+ ok(initialGiftGate.access==='uninstalled',
+  'fresh onboarding persists an explicit no-set state before the first release');
+ ok(initialGiftGate.budget&&initialGiftGate.budget.allow
+   &&initialGiftGate.budget.allow.inGift===false&&initialGiftGate.budget.left===10,
+  'without an installed bank, the meter grants only the normal ten-pattern free allowance');
+ ok(initialGiftGate.read&&initialGiftGate.read.giftLeft===0&&!initialGiftGate.read.inGift,
+  'the meter readout does not claim an uninstalled 100-pattern gift');
 
  const step=async()=>page.evaluate(()=>({h:(document.querySelector('.ob-h')||{}).textContent,
   step:OB.step,dots:document.querySelectorAll('.ob-dot').length}));
