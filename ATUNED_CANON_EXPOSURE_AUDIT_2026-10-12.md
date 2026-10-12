@@ -38,7 +38,7 @@ Regression test cases cover:
 2. An extra row added to an existing table without a matching manifest update causes a 404.
 3. A changed fingerprint for an existing table hides it from the catalog and blocks the table read.
 
-The first exact-head smoke attempt failed because the new test fixture used nonexistent `i` and `value` columns for `canon_RARE`. Generated migration inspection confirmed the table columns are `b`, `q`, and `w`. The test was corrected and committed. Current exact-head tests have not completed yet; older runs do not validate the corrected SHA. The latest Cloudflare check failed again, and its first failing step is not available through the GitHub check payload.
+The first exact-head smoke attempt failed because the new test fixture used nonexistent `i` and `value` columns for `canon_RARE`. Generated migration inspection confirmed the table columns are `b`, `q`, and `w`. The test was corrected and committed. The current exact-head server suite has passed 147/147; the smoke gates remain in progress. The latest Cloudflare check failed again, and its first failing step is not available through the GitHub check payload.
 
 ## Current exact-head validation
 
