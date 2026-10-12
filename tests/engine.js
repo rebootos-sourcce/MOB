@@ -2492,6 +2492,10 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
     gate. These rows read the blank itself. */
  {
   const nb=E.blankProfile('gift gate');
+  ok(nb.journey&&nb.journey.giftAccess==='uninstalled',
+   'a newly created profile does not inherit the implicit legacy 100-pattern allowance');
+  ok(E.meterBudget(nb).allow.inGift===false,
+   'a new profile cannot spend a phantom local gift before an approved bank is installed');
   ok(nb.plan.base===null,'a new record opens no period, so base is null and not 0, got '
    +JSON.stringify(nb.plan.base));
   const d1=planAllowance(nb.plan,PLAN_BY.gift.grant);
