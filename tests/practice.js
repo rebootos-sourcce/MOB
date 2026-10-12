@@ -533,7 +533,8 @@ SUITES.persistence=function(E,ok,say){
  const txt=E.pExport(), n0=E.profiles().length;
  const back=E.pImport(txt);
  ok(!!back&&J(back.practice)===J(W),'export and import compose: the practice object comes back exactly');
- ok(E.profiles().length===n0+1,'the import is pushed once');
+ ok(back===me&&E.profiles().length===n0,
+  'an identical same-ID import reuses the existing profile without pushing a duplicate');
  /* atomic refusal */
  const cur=E.current(), list=E.profiles().slice(), disk=mem[E.PKEY];
  const badRec=JSON.parse(txt); badRec.practice.outcomes[0].evidence_ids=[];
@@ -550,6 +551,10 @@ SUITES.persistence=function(E,ok,say){
  ok(E.pImport(J(pv))===null,'a practice schema from the future is refused');
  /* an older record, and one that bypassed the boundary */
  const old=JSON.parse(txt); delete old.practice; old.v=1;
+ /* This is a legacy-format fixture, not a conflicting attempt to overwrite
+    the current record under the same ID. Give it its own identity so the
+    test exercises v1 migration/defaulting rather than collision rules. */
+ old.id=String(old.id)+'-legacy-fixture';
  const ob=E.pImport(J(old));
  ok(!!ob&&J(ob.practice)===J(E.practiceBlank()),'an older record imports with the blank practice');
  const raw=E.blankProfile('raw'); delete raw.practice; E.loadProfile(raw);
