@@ -697,15 +697,22 @@ function authGone(b){
  if(b.billedElsewhere==='apple'||b.billedElsewhere==='google')
   lines.push('A plan bought through '+(b.billedElsewhere==='apple'?'the App Store':'Google Play')
    +' keeps charging until you cancel it there.');
- lines.push('Removed from our server: your email, your password, your sign in on every device, '
-  +'and everything it held under the account.');
+ lines.push('Removed from our server: your email, your password, and your sign in on every device.');
+ var retentionDate=null;
+ if(typeof b.retentionUntil==='string'&&Number.isFinite(Date.parse(b.retentionUntil)))
+  retentionDate=new Date(Date.parse(b.retentionUntil)).toISOString().slice(0,10);
+ var retentionNote=function(){
+  if(!retentionDate)return ' The server did not return a removal date; contact support to confirm when this record will be removed.';
+  if(b.retentionMarked===true)return ' It is scheduled for removal on '+retentionDate+'.';
+  return ' The target removal date is '+retentionDate+', but cleanup in the first-visit store is still pending. The server will retry, and removal may happen later.';
+};
  /* the server's own names for what it kept, each said once. A name this
     build does not know is still said, in the server's word, because a thing
     kept and not mentioned is the defect this receipt exists for */
  var said={first_visit:'Kept on our server: your first-visit record, linked by a random account ID. '
-   +'It includes the topic you picked and when you finished each step.',
+   +'It includes the topic you picked and when you finished each step.'+retentionNote(),
   activity_log:'Kept on our server: a dated list of when the account signed in and paid, '
-   +'linked by that random account ID and with no email.',
+   +'linked by that random account ID and with no email.'+retentionNote(),
   payment_history:'Kept by Stripe, the company that takes the card: its own record of your past payments.'};
  (Array.isArray(b.kept)?b.kept:[]).forEach(function(k){
   if(typeof k!=='string')return;
