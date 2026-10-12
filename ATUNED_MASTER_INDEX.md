@@ -4,6 +4,8 @@
 **Status:** Working index; cross-repository and website inventory remains partly incomplete. Fresh evidence is in [ATUNED Execution Refresh](ATUNED_EXECUTION_REFRESH_2026-10-12.md); where older snapshots conflict, the refreshed checkpoint controls.  
 **Purpose:** First stop for every engineering thread. This index points to the authority for decisions, code, content, backlog, and release evidence. It must be updated when work changes.
 
+[P0 Execution Backlog — block-by-block closure and exit tests](P0_EXECUTION_BACKLOG_2026-10-12.md) is the active execution contract. Update its existing blocks when new gaps are found; do not create duplicate plans or restart discovery.
+
 ## Current verified checkpoint — 12 October 2026 UTC
 
 | Workstream | Exact evidence | Current status |
