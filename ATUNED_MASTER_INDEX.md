@@ -311,3 +311,10 @@ These are on the same draft docs branch as this index. Refresh the PR #69 head a
 
 - [Cloudflare read-only probe report](ATUNED_CLOUDFLARE_READONLY_PROBE_2026-10-13.md): exact-head CI confirmed `atuned-api /v1/health` = HTTP 200 and `atuned-os /v1/health` = HTTP 404; both Wrangler dry-runs succeeded without deploying. Authenticated dashboard configuration, single Pages publisher ownership, and the failed external build remain unresolved. P0 remains open.
 - Documentation workflow #38423556852 passed all 30 jobs on the current exact head `d0a6c6379c8caa0afb584489732f222b43b657ad` (30/30 successful jobs): [workflow evidence](https://github.com/rebootos-sourcce/MOB/actions/runs/38423556852). PR #69 remains draft/open/unmerged. This validates repository checks for the documentation head only; it does not clear the Cloudflare build failure or production blockers.
+
+
+## MVP Alpha KPI source of truth — 13 October 2026
+The KPI framework is tracked in [ATUNED_MVP_ALPHA_KPI_FRAMEWORK_2026-10-13.md](ATUNED_MVP_ALPHA_KPI_FRAMEWORK_2026-10-13.md). Apple App Analytics and Human Interface Guidelines are reference frameworks, not direct numerical benchmarks for ATÜNED. Proposed numeric targets require owner approval; all metrics must state numerator, denominator, cohort/window, exact test/build/commit, and status. Raw reflection text is not to be logged by default.
+
+**KPI/P0 state:** A0-02 persisted browser → intended Worker → storage write/read/reload remains OPEN (0/1 independently verified); A0-08 gift banks remain OPEN (0 approved stable IDs recorded in the 560-row queue, no active manifest); A0-09 six server gift-nature channels to four client meter tracks remains UNVERIFIED; A0-10 one authoritative Pages publisher and verified API/domain mapping remains OPEN. P0 is NOT CLOSED.
+
