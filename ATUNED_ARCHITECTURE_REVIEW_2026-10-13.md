@@ -9,6 +9,20 @@ The main architecture problem is not only the Wrangler preview error. The reposi
 
 The code-level map is complete enough to name every application layer and its intended data path. Live-release closure is blocked by five explicit decisions/proofs: one Pages publisher, the intended role/branch of atuned-os, the actual ATUNED_API binding, gift-content approval, and current-release persisted end-to-end verification. Those are bounded open items, not reasons to restart discovery.
 
+## Protected vault artifact found and checked (read-only)
+
+The protected artifact is present in the ChatGPT Library at `/canon_vault.sqlite`; it is not present in the checked Reboot-OS GitHub tree. On 13 October 2026, the Library copy was materialized for read-only SQLite inspection and then closed without writes.
+
+- File size: 3,346,432 bytes.
+- SHA-256: `9c2cd7b610c1e7b1d056646047988b67d0f52368139952bcc2782b930056915e`.
+- `PRAGMA integrity_check`: `ok`.
+- `PRAGMA foreign_key_check`: 0 violations.
+- 12 tables; 4 source metadata records; 5,600 statement rows: 2,900 limiting beliefs and 2,700 embodied truths.
+- FTS5 sniff index: 2,900 limiting-belief rows; 72 exact-duplicate groups with 144 duplicate-member rows; 496 topics; 112 structured card blocks.
+- Vault metadata marks the source records immutable and the vault version `1.0.0-local`.
+
+This confirms the protected vault artifact exists and is structurally readable. It remains a local/Library staging artifact, not the runtime `atuned/data/canon.sqlite` and not a production/Supabase import. These counts do not approve those statements as the six user-facing gift banks. Do not re-create or upload a replacement copy; keep the original protected file and source provenance intact.
+
 ## Five review passes plus independent cross-check
 
 | Pass | Question | Evidence reviewed | Result |
@@ -60,7 +74,7 @@ flowchart TD
 | First-visit funnel / starter gift | Reboot-OS: server/src/funnel.js and /v1/funnel/session routes; Supabase RPCs; MOB onboarding/journey/schema changes in PR #66 | The server returns gift and giftVerified in the session read; selectedGroundId is distinct from giftNatureId | Current selection rule is clear; approved fixed banks are not. Do not generate, freeze, or issue a fake bank. |
 | Transformation engine and release UI | MOB: atuned_src/engine/sniff.js, sourceai.js, schema.js, journey.js; atuned_src/ui/onboard.js, storyui.js, release.js; current main plus candidate PR #66 | Runs in the browser; local profile/release state is used by the engine, with server paths separate | Source AI is not a currently deployed /v1/source service. Do not route user stories to a nonexistent API. |
 | Reboot-OS component modules | Reboot-OS: atuned/src/00_head.html through 53_nav.js, then build tool into atuned/build/atuned.html | Web/Capacitor shell outputs | Keep source modules as inputs and generated HTML as build output; don't treat root index.html as equivalent without a comparison. |
-| Runtime canon | Reboot-OS: atuned/data/canon.sqlite, atuned/data/canon_tables/*.json and manifest, migration 0001 | D1 tables and GET /v1/canon endpoints, guarded on the PR #35 candidate | Integrity/hash checks are not source-owner approval. The protected vault is a separate object and must stay separate. |
+| Runtime canon | Reboot-OS: atuned/data/canon.sqlite, atuned/data/canon_tables/*.json and manifest, migration 0001 | D1 tables and GET /v1/canon endpoints, guarded on the PR #35 candidate | Integrity/hash checks are not source-owner approval. The protected vault is present in the ChatGPT Library at `/canon_vault.sqlite`; its read-only integrity and counts are recorded in the Protected vault section above. It remains separate from runtime canon and must stay separate. |
 | Native shell | Reboot-OS: atuned/shell/, Capacitor config, native privacy manifest, shell.yml | iOS / Android shell artifacts | Reuses the built product HTML. Store distribution is a different path from Pages. |
 | Root-level HTML files | Reboot-OS: index.html (5.69 MB in the tree), reboot_os_v29.html, Source_OS_v29.html, source_os_v151.html, MOB_Complete_v35_Art.html | No active production build path established for these as a group | Treat as legacy/prototype or unclassified until hashes, build provenance, and intended role are recorded. Do not use them as release input by filename alone. |
 
@@ -89,7 +103,7 @@ flowchart TD
 - In the MOB engine, journal/story text is parsed by the local sniff engine; Source AI computes explainable questions/measurements; the release screen uses the release engine and schema to plan and commit the release. The code states that this engine has no host and reads the user's own current text/profile facts; no /v1/source/* Worker routes are registered.
 - Reboot-OS's product is built from its own atuned/src modules. It is not the same source tree as MOB's atuned_src modules, so the files must be compared and integrated deliberately rather than mixed by filename.
 - GET /v1/canon and GET /v1/canon/:table currently expose the frozen allowlisted runtime canon on the PR #35 candidate. Eight unresolved/proposed/vault-labeled tables are omitted; 119 others remain allowlisted and still require source-authority/public-suitability review.
-- canon.sqlite is the runtime canon. canon_vault.sqlite, when verified in its original artifact location, is the protected source/retrieval vault. The runtime migration and a manifest label such as “the vault patterns” do not establish that the protected vault was imported or approved.
+- canon.sqlite is the runtime canon. canon_vault.sqlite is the protected source/retrieval vault verified in the ChatGPT Library; the runtime migration and a manifest label such as “the vault patterns” do not establish that it was imported or approved. The runtime migration and a manifest label such as “the vault patterns” do not establish that the protected vault was imported or approved.
 
 #### D. Voice, billing, stores, push, and scheduled work
 
