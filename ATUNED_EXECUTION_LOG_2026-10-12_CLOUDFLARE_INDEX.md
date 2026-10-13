@@ -56,3 +56,14 @@ No PR merge, production deploy, migrations 0017/0018, billing/profile-sync activ
 5. Define the client/server mapping and prove the full persisted non-production browser journey only after the required content/contract approvals are ready.
 
 **Boundary maintained:** no PR merge, deployment, migration, vault import, gift activation/issuance, billing/profile sync, production data change, or reduction of test floors.
+
+
+## Execution cycle — draft public-canon quarantine (12 October 2026, 18:43 PDT)
+
+- Reboot-OS PR #35 commits `a45ff79b57595c2dba6ff5fbebe5387f878b55a0`, `9a1949b061d3e0c8758c700867ef654758e221b9`, and `48313941da1338e2cd0ec1d5d9cd4d9b2d5c6bdf` exclude eight explicitly proposed/unresolved/vault-labeled tables from the public allowlist: `INFERRED`, `SPLITPROP`, `SPLITASK`, `LADDERASK`, `DICTSTRUCT`, `ARCH12`, `LAWSX`, `RARE`. Their source-manifest rows and JSON are unchanged; this is a reversible draft quarantine pending review. `canon-public.test.mjs` asserts each is absent and returns 404. Public allowlist 119; a fingerprint drift of BANDS reduces the list to 118.
+- Parent server suite on `9a1949b061d3e0c8758c700867ef654758e221b9` passed 147/147. Latest head `48313941da1338e2cd0ec1d5d9cd4d9b2d5c6bdf` has server and smoke runs in progress at capture. No exact-head pass claim yet.
+- Cloudflare previous build `4493054d-55c0-4cef-8edf-8d002103aaeb` failed; newer build `0b27be84-ebb9-4d97-b20b-eba999fdcebc` was in progress. The live probes found `atuned-api` HTTP 200 and `atuned-os` HTTP 404, a target-alignment clue but not the first build failure. No dashboard change was made.
+- MOB PR #66 workflow #38322094250 and PR #69 pre-update workflow #38322940378 completed successfully on their recorded heads. This documentation update requires a new exact-head run on PR #69.
+- Boundaries maintained: no PR merge, production deploy/migration, protected-vault import, gift activation/issuance, billing/profile-sync activation, production data mutation, or test-floor reduction.
+
+**Still open:** current-head Reboot-OS CI; authenticated Cloudflare first-error diagnosis; source-authority review of the remaining 119 public canon entries; stable product IDs / owner-approved gift patterns (0/560); and current-release persisted first-visit journey (0/1).

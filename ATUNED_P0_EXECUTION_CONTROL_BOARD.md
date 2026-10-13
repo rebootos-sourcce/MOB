@@ -71,13 +71,13 @@ Acceptance:
 - [x] Recovered the established fingerprint source, `atuned/test/tools/canon.py`; it hashes sorted-key JSON with `ensure_ascii=False` using SHA-256 and truncates to 16 hex characters. Reproduced the BANDS manifest fingerprint `a40ba9c5e1dfb8d3`.
 - [x] Same-row-count content mutation regression is present in Reboot-OS PR #35 (`test/canon-public.test.mjs`); current exact-head server suite passed 147/147. The test alters BANDS content without changing row count and expects fail-closed 404.
 - [x] Current PR #35 server tests exercise the frozen runtime allowlist and fail-closed fingerprint reads; the exact-head server suite passed 147/147. Semantic/source-authority classification is separate and remains open.
-- [ ] Confirm the protected vault remains private across list and table routes, including manifest tampering and new-table attempts. Explicitly adjudicate `RARE`: it is in the current public fingerprint allowlist (4 rows) and must not be treated as owner-approved merely because the hash matches.
+- [ ] Confirm the protected vault remains private across list and table routes, including manifest tampering and new-table attempts. Eight proposed/unresolved/vault-labeled source entries are now excluded from public routes; preserve these negative tests. The actual protected vault remains separate and unimported, and the other 119 allowlisted entries still need source-authority review.
 - [ ] Review migrations 0016–0018 for ordering, grants, RLS, rollback and cross-repo compatibility.
 - [ ] Do not apply migrations to production or import the protected vault without explicit approval.
 Cross-review: C reviews catalog freeze/issuance SQL; G reviews public endpoint behavior; independent review confirms no fingerprint algorithm was guessed.
 
 ## Block F — Cloudflare build and service target
-Historical evidence: build `f6612baf-bd07-41da-b9b1-6ba0629d3d27` reached `npx wrangler preview` from repository root `/` and failed because Wrangler 4.149.0 had no `previews` block. Treat that as the first error for that historical build only, not a diagnosis of the latest build. At current PR #35 head `a72c3ae6f45817e0069ea17dc4b69ac9065b1708`, external check [#115048003713](https://github.com/rebootos-sourcce/Reboot-OS/runs/115048003713) failed on Cloudflare build `d310ee28-0feb-49fe-a326-ea7babfea0d4`; the first failing step remains unknown without authenticated dashboard logs. Checked-in Wrangler config names `atuned-api`, while the external check targets `atuned-os`; verify the intended service, root and command before changing settings.
+Historical evidence: build `f6612baf-bd07-41da-b9b1-6ba0629d3d27` failed at `npx wrangler preview` from root `/` because Wrangler 4.149.0 had no `previews` block; that is not a diagnosis of the latest build. The completed external check on PR #35 head `9a1949b061d3e0c8758c700867ef654758e221b9` failed on `4493054d-55c0-4cef-8edf-8d002103aaeb` ([check](https://github.com/rebootos-sourcce/Reboot-OS/runs/115087663682)). The newer build `0b27be84-ebb9-4d97-b20b-eba999fdcebc` is in progress. No first-failure detail is available; authenticated logs remain required. Config names `atuned-api`, while the external check targets `atuned-os`; do not change the target or command on hypothesis.
 Acceptance:
 - [ ] Confirm intended Worker/service in authenticated Cloudflare.
 - [ ] Confirm repo binding, root directory, build command, permissions and required secrets.
@@ -106,16 +106,17 @@ Acceptance:
 - [ ] Keep PRs draft/unmerged and production untouched absent explicit owner approval.
 - [ ] Declare P0 closed only when all P0 acceptance criteria pass; otherwise report the exact blocked criterion.
 
-## Latest live exact-head checkpoint — 12 October 2026, 23:26 UTC
+## Latest live exact-head checkpoint
 
-**Live evidence captured 12 October 2026, 23:26 UTC (before this docs commit).** Refresh after each new head.
-- MOB PR #69 head `04fbf2f23a2bb0b3960747ff0a9f5d78b275a097`; [workflow #38320866562](https://github.com/rebootos-sourcce/MOB/actions/runs/38320866562): 28/29 checks succeeded, the functional browser job was still in progress. This documentation commit creates a new head and requires a new exact-head run.
-- MOB PR #66 head `fc7033fb24ec9ed94e2f63563e723b82603b2e68`; [workflow #38322094250](https://github.com/rebootos-sourcce/MOB/actions/runs/38322094250): 28 checks were queued at capture; no result on this head was yet available.
-- Reboot-OS PR #35 head `a72c3ae6f45817e0069ea17dc4b69ac9065b1708`; [repository gate/smoke #38320730236](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38320730236) and [server suite #38320726029](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38320726029) succeeded; the server suite reported 147/147 tests passed. The external [Cloudflare check](https://github.com/rebootos-sourcce/Reboot-OS/runs/115048003713) failed on build `d310ee28-0feb-49fe-a326-ea7babfea0d4`; authenticated first-error logs remain required.
-- Gift-nature selection is resolved in `DECISIONS.md`: one of six natures selects its own versioned 100-pattern bank, independent of the twelve starting grounds. The bank contents are not approved: stable user-facing pattern IDs = 0; owner-approved rows = 0; selected manifest rows = 0 of the 560-row review queue.
-- Canon content-hash enforcement and a same-row-count mutation regression are present on Reboot-OS PR #35. The source generator in `atuned/test/tools/canon.py` uses SHA-256 over sorted-key, UTF-8, non-ASCII-preserving JSON and truncates to 16 hex characters. The BANDS fixture reproduces `a40ba9c5e1dfb8d3`; the current 147-test suite passed. The 127-table semantic/source-authority classification and `RARE` table's public suitability remain open.
-- The current MOB client explicitly refuses to create local synthetic gift allowance when no approved adapter/bank is installed. Six server channels to four client meter tracks and the complete browser → Worker → Supabase readback journey remain unverified; do not invent a mapping or activate a gift.
+**Live exact-head checkpoint — 12 October 2026, 18:43 PDT.** Point-in-time status; refresh before acting.
+- MOB PR #69: head `bfc5108f5b32f071006f7af4facefc61ab6189f0`; workflow [#38322940378](https://github.com/rebootos-sourcce/MOB/actions/runs/38322940378) completed successfully. This documentation update creates a newer head and requires its own exact-head workflow.
+- MOB PR #66: head `fc7033fb24ec9ed94e2f63563e723b82603b2e68`; workflow [#38322094250](https://github.com/rebootos-sourcce/MOB/actions/runs/38322094250) completed successfully. This is repository CI, not gift approval or current-release persistence proof.
+- Reboot-OS PR #35: latest head `48313941da1338e2cd0ec1d5d9cd4d9b2d5c6bdf`. Its server and two smoke checks are in progress. Parent `9a1949b061d3e0c8758c700867ef654758e221b9` passed the server suite 147/147, but its smoke checks had not completed.
+- External Cloudflare: previous completed build `4493054d-55c0-4cef-8edf-8d002103aaeb` failed ([check](https://github.com/rebootos-sourcce/Reboot-OS/runs/115087663682)). Newer build `0b27be84-ebb9-4d97-b20b-eba999fdcebc` is in progress. If it fails, authenticated Cloudflare logs are still required to identify the first failed step.
+- Public canon: 119 entries remain in the draft public allowlist; 8 manifest entries are excluded from public routes pending authority/status review: `INFERRED`, `SPLITPROP`, `SPLITASK`, `LADDERASK`, `DICTSTRUCT`, `ARCH12`, `LAWSX`, and `RARE`. Their source records are preserved. Do not infer that all 119 remaining entries have owner approval.
+- Gift bank: six gift natures remain separate from starting ground. Stable product IDs = 0; owner-approved rows = 0; selected manifest members = 0/560. The six-channel to four-track mapping and persisted browser → Worker → Supabase journey remain open.
 
+P0 remains open. No release or production action is authorized.
 
 ## Execution log
 Append a dated cycle record here after each build/review pass: exact SHA(s), changes, tests, independent reviewer/findings, gaps opened/closed, and next block executed.

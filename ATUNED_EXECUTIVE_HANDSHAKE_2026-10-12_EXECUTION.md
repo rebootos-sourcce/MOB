@@ -11,10 +11,10 @@
 6. Read this executive handshake and then `ATUNED_NEXT_THREAD_HANDSHAKE_2026-10-12_EXECUTION.md`.
 
 ## Exact state and limits
-- MOB PR #69: draft/open/unmerged. Master index updated with Cloudflare paths, operator procedure, supporting docs and required handoff links. This new commit must receive its own exact-head CI; earlier green docs runs do not validate this commit.
-- MOB PR #66: current head `fc7033fb24ec9ed94e2f63563e723b82603b2e68`; workflow [#38322094250](https://github.com/rebootos-sourcce/MOB/actions/runs/38322094250) had 28 checks queued at capture. Prior 30/30 result is historical to an older SHA. Still draft/open/unmerged.
-- Reboot-OS PR #35: current head `a72c3ae6f45817e0069ea17dc4b69ac9065b1708`; repository gate/smoke #38320730236 succeeded and server run #38320726029 passed 147/147. Still draft/open/unmerged; the external Cloudflare check is failed.
-- Cloudflare: current external `Workers Builds: atuned-os` check [#115048003713](https://github.com/rebootos-sourcce/Reboot-OS/runs/115048003713) failed on build `d310ee28-0feb-49fe-a326-ea7babfea0d4`. GitHub does not expose the first failed step; an authenticated operator must capture the actual build log. The old build `0caff241-0bd3-453e-a86d-985e0b839726` is historical.
+- MOB PR #69: pre-update head `bfc5108f5b32f071006f7af4facefc61ab6189f0`; workflow #38322940378 completed successfully. This documentation update creates a new head that needs fresh exact-head CI.
+- MOB PR #66: head `fc7033fb24ec9ed94e2f63563e723b82603b2e68`; workflow #38322094250 completed successfully. Still draft/open/unmerged.
+- Reboot-OS PR #35: current head `48313941da1338e2cd0ec1d5d9cd4d9b2d5c6bdf`; parent server suite passed 147/147; current server/smoke checks are in progress. Last completed external build `4493054d-55c0-4cef-8edf-8d002103aaeb` failed; newer build `0b27be84-ebb9-4d97-b20b-eba999fdcebc` is in progress.
+- Cloudflare: latest build `0b27be84-ebb9-4d97-b20b-eba999fdcebc` is in progress after prior failure `4493054d-55c0-4cef-8edf-8d002103aaeb`. If it fails, an authenticated operator must capture the first failed step.
 - Worker config path: `atuned/server/wrangler.toml`; config names `atuned-api`. Source root: `atuned/server/`; entry: `atuned/server/src/index.js`; deployment script in `atuned/server/package.json` is `npm run deploy`; health route is `GET /v1/health`.
 - Runtime canon paths: `GET /v1/canon`, `GET /v1/canon/:table`; regression test `atuned/server/test/canon-public.test.mjs`; runtime source `atuned/data/canon.sqlite`. Protected `canon_vault.sqlite` is separate and must not be imported or exposed without explicit approval.
 - Gift decision: six gift natures are separate from starting ground; each nature requires its own fixed 100-pattern bank. Stable owner-approved IDs remain 0; no bank may be activated or issued.
@@ -22,10 +22,10 @@
 - Source gateway files `source_http.py`, `source_client.js`, and healed variants were recovered; missing `source_service.SourceService` and a trusted account identity boundary block integration.
 
 ## Live content/canon state
-- The source selection rule is settled: six gift natures are separate from twelve starting grounds; no pattern IDs or rows have owner approval. The 560-row queue remains unapproved.
-- PR #35 now includes actual content-fingerprint verification and a same-row-count mutation regression, with 147/147 server tests passing. Continue independent classification of all 127 public runtime entries and explicit review of `RARE` (four rows) before treating the public allowlist as approved.
-- MOB PR #69 pre-update head `04fbf2f23a2bb0b3960747ff0a9f5d78b275a097` had 28/29 checks passed with functional browser gate in progress. This docs checkpoint creates a new head; refresh exact-head CI.
-- Browser-to-Worker-to-Supabase readback remains 0/1 independently verified; client must not use local synthetic gift allowance or an unapproved six-to-four channel adapter.
+- The gift selection rule remains settled, but the 560-row source queue has 0 stable IDs, 0 approved rows, and 0 selected members.
+- PR #35 now excludes eight explicitly proposed/unresolved/vault-labeled tables from public routes. 119 remain allowlisted, with semantic/source-authority review open. Parent server suite passed 147/147; latest-head checks are in progress.
+- MOB #66 and #69 recorded-head workflows completed successfully; this documentation update requires a new exact-head workflow for #69.
+- Browser-to-Worker-to-Supabase readback remains 0/1 independently verified; do not use local synthetic gift allowance or an unapproved six-to-four channel adapter.
 
 ## Cloudflare procedure (only if latest check is red)
 1. Refresh PR #35 exact head and external Cloudflare check first. If green and health is confirmed, record it and skip dashboard changes.
