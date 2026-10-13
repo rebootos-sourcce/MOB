@@ -168,6 +168,17 @@ jobs:
       - name: floors
         run: node tools/floors.js --self-test && node tools/floors.js engine funnel-package
 
+      - name: upload built website and engine artifacts for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: atuned-alpha-build-${{ github.sha }}
+          path: |
+            source.html
+            engine.js
+            funnel/dist/*.html
+          if-no-files-found: error
+          retention-days: 14
+
   # The required browser gates, one job each, in parallel, each on its own
   # runner with the chromium that playwright 1.56.1 installs. CHROME carries
   # its path, and every gate launches process.env.CHROME, which
