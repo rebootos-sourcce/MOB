@@ -11,13 +11,13 @@
 
 | Workstream | Exact evidence | Current status |
 |---|---|---|
-| Architecture map | [Architecture review](ATUNED_ARCHITECTURE_REVIEW_2026-10-13.md), report commit [0956c4f](https://github.com/rebootos-sourcce/MOB/commit/0956c4f5dfc27ae5f94d032321141da47f899cce) | Six independent review passes plus final cross-check documented. Source map complete; live Cloudflare target/publisher confirmation open. |
+| Architecture map | [Architecture review](ATUNED_ARCHITECTURE_REVIEW_2026-10-13.md), report commit [0956c4f](https://github.com/rebootos-sourcce/MOB/commit/a7ba1091fecb675217b8bff7137c517ed1b74a1f) | Six independent review passes plus final cross-check documented. Source map and relevant branch-diff register complete; live Cloudflare target/publisher confirmation open. |
 | MOB client | [PR #66](https://github.com/rebootos-sourcce/MOB/pull/66), head `fc7033fb24ec9ed94e2f63563e723b82603b2e68`; [workflow #38322094250](https://github.com/rebootos-sourcce/MOB/actions/runs/38322094250) | Exact recorded-head CI succeeded; PR remains draft/open/unmerged. Does not prove gift approval or persisted E2E. |
 | Reboot-OS gift contract + public canon guard | [PR #35](https://github.com/rebootos-sourcce/Reboot-OS/pull/35), head `48313941da1338e2cd0ec1d5d9cd4d9b2d5c6bdf); [server workflow #38333447700](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38333447700); [smoke #38333450875](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38333450875); [smoke #38333447634](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38333447634) | Server tests passed 147/147; both smoke jobs passed. PR remains draft/open and is stacked on PR #34. External Cloudflare check is still failed. |
 | Cloudflare Workers Build | [Failed build `0b27be84-ebb9-4d97-b20b-eba999fdcebc`](https://dash.cloudflare.com/b34a8a4f24d5ac71f7b386c240a6da90/workers/services/view/atuned-os/production/builds/0b27be84-ebb9-4d97-b20b-eba999fdcebc) and [server health probes](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38333447700) | Log confirms failed command `npx wrangler preview` stopped because `previews` was missing. Later settings screenshot shows `npx wrangler deploy`, root `/`, no build command. This mismatch must be resolved; no guess-based change. Read-only probes: `atuned-api /v1/health = 200`; `atuned-os /v1/health = 404`. |
 | Cloudflare Pages production publisher | [MOB deploy workflow](https://github.com/rebootos-sourcce/MOB/blob/main/.github/workflows/deploy.yml) and [Reboot-OS web workflow](https://github.com/rebootos-sourcce/Reboot-OS/blob/main/.github/workflows/web.yml) | **P0 risk:** both workflows publish different root bundles to Pages project `atuned`, branch `main`. Verify account bindings and designate one production publisher before further live site deploys. |
 | Backend/API target | [Reboot-OS Wrangler config](https://github.com/rebootos-sourcce/Reboot-OS/blob/alpha/p1-fixed-pattern-gift-contract-20261010/atuned/server/wrangler.toml) | Source configuration names `atuned-api` under `atuned/server/`; dashboard service `atuned-os` is separate and not confirmed to be the API. Actual `ATUNED_API` Pages variable remains unverified. |
-| Canonical starter gift / protected vault | [MOB issue #58](https://github.com/rebootos-sourcce/MOB/issues/58), [Reboot-OS PR #35](https://github.com/rebootos-sourcce/Reboot-OS/pull/35), Library `/canon_vault.sqlite` | Vault found and checked read-only 13 Oct: 3,346,432 bytes, SHA-256 `9c2cd7b610c1e7b1d056646047988b67d0f52368139952bcc2782b930056915e`, integrity `ok`, 0 FK violations, 2,900 limiting beliefs + 2,700 truths, 72 duplicate groups, 496 topics. Runtime canon is separate; no production/Supabase import. Gift catalog still has 560 review rows, 0 stable product IDs, 0 owner-approved rows, 0 selected members and no active manifest. |
+| Canonical starter gift / protected vault | [MOB issue #58](https://github.com/rebootos-sourcce/MOB/issues/58), [Reboot-OS PR #35](https://github.com/rebootos-sourcce/Reboot-OS/pull/35), Library `/canon_vault.sqlite` | Vault found and checked read-only 13 Oct: 3,346,432 bytes, SHA-256 `9c2cd7b610c1e7b1d056646047988b67d0f52368139952bcc2782b930056915e`, integrity `ok`, 0 FK violations, and all four original source files' sizes/MD5/SHA-256 match vault metadata. Contains 2,900 limiting beliefs + 2,700 truths, 72 duplicate groups, 496 topics. Runtime canon is separate; no production/Supabase import. Gift catalog still has 560 review rows, 0 stable product IDs, 0 owner-approved rows, 0 selected members and no active manifest. |
 | Persisted Alpha journey | Browser → correct Worker → Supabase/D1 write/read/reload | 0/1 current-release journeys independently verified. Reboot-OS config sets `PROFILE_SYNC_ENABLED=0`, so profile sync routes are intentionally disabled in that config. |
 | P0 closure | [P0 control board](ATUNED_P0_EXECUTION_CONTROL_BOARD.md) and [coordinated P0–P3 tracker #48](https://github.com/rebootos-sourcce/MOB/issues/48) | **OPEN.** Green tests do not resolve the Pages publisher collision, Cloudflare target, source approvals, six-channel/four-track mapping, or persisted E2E proof. |
 
@@ -45,7 +45,7 @@ Every new thread must follow this order:
 
 This section supersedes the historical 12 October checkpoints retained elsewhere in this document. Refresh these exact refs before any new code or production action.
 
-- MOB PR #69/docs branch: report commit `0956c4f5dfc27ae5f94d032321141da47f899cce` adds the cross-repository architecture review. This master-index update creates another new head; its own exact-head CI must be checked before calling the docs branch green.
+- MOB PR #69/docs branch: report commit `a7ba1091fecb675217b8bff7137c517ed1b74a1f` adds the cross-repository architecture review. This master-index update creates another new head; its own exact-head CI must be checked before calling the docs branch green.
 - MOB PR #66: head `fc7033fb24ec9ed94e2f63563e723b82603b2e68`; workflow #38322094250 succeeded. PR is draft/open/unmerged.
 - Reboot-OS PR #35: head `48313941da1338e2cd0ec1d5d9cd4d9b2d5c6bdf`; server passed 147/147, smoke #38333450875 and #38333447634 succeeded. PR is draft/open/unmerged and based on PR #34's retention branch, so the stack must be reconciled before promotion.
 - Cloudflare Workers Build `0b27be84-ebb9-4d97-b20b-eba999fdcebc` failed. The uploaded log shows `npx wrangler preview` as the command and a missing `previews` block as the first error. A later screenshot shows `npx wrangler deploy`; that is a different configuration snapshot, not evidence the failed run is fixed.
@@ -74,7 +74,7 @@ This section supersedes the historical 12 October checkpoints retained elsewhere
 | Running engineering log | [Reboot-OS `atuned/docs/THE_LOG.md`](https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/docs/THE_LOG.md) | Numbered decisions, backlog items, closure history, generated counts | Existing; update it rather than creating a competing log |
 | Reboot-OS prototype | [Reboot-OS README](https://github.com/rebootos-sourcce/Reboot-OS/blob/main/README.md), [ARCHITECTURE.md](https://github.com/rebootos-sourcce/Reboot-OS/blob/main/ARCHITECTURE.md), [DATA.md](https://github.com/rebootos-sourcce/Reboot-OS/blob/main/DATA.md), [ROADMAP.md](https://github.com/rebootos-sourcce/Reboot-OS/blob/main/ROADMAP.md) | Single-file prototype map, data blocks, product roadmap | Docs describe v28; verify current build/version before relying on counts |
 | Canonical source corpus / protected vault | Library: `canon_vault.sqlite`, `CANON_VAULT_REVIEW_2026-10-07.md`, the 560-row review queue and four raw source files | Original vault recovered and verified locally in read-only mode: 3,346,432 bytes; SHA-256 `9c2cd7b610c1e7b1d056646047988b67d0f52368139952bcc2782b930056915e`; integrity `ok`; 2,900 limiting beliefs and 2,700 embodied truths. All four source-file size/MD5/SHA-256 values match their vault metadata. Not imported into runtime or Supabase |
-| Runtime canon database | Reboot-OS [`0001_canon.sql`](https://github.com/rebootos-sourcce/Reboot-OS/blob/alpha/p1-fixed-pattern-gift-contract-20261010/atuned/server/migrations/0001_canon.sql), generated from `data/canon.sqlite` | Source manifest ↔ generated migration matched 127/127 names, fingerprints and declared row counts; 0 mismatches. Metadata consistency is not content approval or proof about missing protected vault |
+| Runtime canon database | Reboot-OS [`0001_canon.sql`](https://github.com/rebootos-sourcce/Reboot-OS/blob/alpha/p1-fixed-pattern-gift-contract-20261010/atuned/server/migrations/0001_canon.sql), generated from `data/canon.sqlite` | Source manifest ↔ generated migration matched 127/127 names, fingerprints and declared row counts; 0 mismatches. Metadata consistency is not content approval or proof that the protected vault has been imported |
 | Canon review | `CANON_VAULT_REVIEW_2026-10-07.md` in ChatGPT Library | Evidence for protected corpus, provenance and duplicate policy | Verified document; local staging vault is not proof of production data |
 | Canon application closure | ChatGPT Library: `CANON_APPLICATION_CLOSURE_BLOCK_2026-10-07.md` | Existing Source → candidate retrieval → user-confirm/correct/reject → immutable decision → pattern authority/release gate | Local implementation is reported tested (including 12/12 source-closure tests and 61/61 server tests); production deployment/state is not proven. Compare and reuse before rebuilding |
 | Local Source wiring artifact and reports | Library: `atuned_source_wired_v2.html`, `source_http.py`, `source_client.js`, plus separately hashed `source_http_healed.py` and `source_client_healed.js`; see [execution refresh](ATUNED_EXECUTION_REFRESH_2026-10-12.md) | Gateway/client files recovered, but `source_http.py` imports missing `source_service.SourceService`; no equivalent file found in Library or current Reboot-OS server source. Original gateway has broad CORS and a health snapshot; healed version improves transport guards but still relies on a client-provided scope unless paired with trusted server-side identity. Worker has no `/v1/source/*` routes | Keep as differential-port reference, not deployable code. Recover missing service/adjudication dependency and define server-verified identity/ownership before integration |
@@ -191,10 +191,13 @@ Android/iOS builds, signing, and store packaging are not release blockers unless
 | Item | Current recorded state | Next action |
 |---|---|---|
 | [MOB #48](https://github.com/rebootos-sourcce/MOB/issues/48) | Cross-functional P0–P3 tracker | Keep as the master backlog; update before and after work |
-| [MOB #58](https://github.com/rebootos-sourcce/MOB/issues/58) | Open P0 issue for canonical sentence inventory and 100-pattern gift | Vault and source artifacts recovered and hash-checked. Continue sentence-boundary review, stable ID assignment, authority/channel/side/phase validation, and explicit approval; no active manifest |
-| [MOB PR #66](https://github.com/rebootos-sourcce/MOB/pull/66) | Open/draft; recorded head `9280501683d07867c72bc582cba62fe9aed00d49`; 30/30 jobs passed | Continue client integration; verify latest head before relying on this status |
-| [Reboot-OS PR #35](https://github.com/rebootos-sourcce/Reboot-OS/pull/35) | Open/draft; current head `48313941da1338e2cd0ec1d5d9cd4d9b2d5c6bdf`; parent server suite 147/147 passed; latest server/smoke checks running; eight source-manifest entries are quarantined from public routes | Preserve draft; keep quarantine; obtain external build logs if current Cloudflare build fails; no production changes |
-| [Reboot-OS #37](https://github.com/rebootos-sourcce/Reboot-OS/issues/37) | Open infrastructure blocker | Authenticated operator captures first actual Cloudflare error |
+| [MOB #58](https://github.com/rebootos-sourcce/MOB/issues/58) | Open P0 issue for canonical sentence inventory and 100-pattern gift | Protected vault exists in Library and its SQLite integrity plus all four source-file hashes were verified read-only. Continue sentence boundaries, stable IDs, authority/channel/side/phase validation, and owner approval; no active manifest |
+| [MOB PR #66](https://github.com/rebootos-sourcce/MOB/pull/66) | Open/draft; head `fc7033fb24ec9ed94e2f63563e723b82603b2e68`; workflow #38322094250 succeeded | Candidate for separate gift-nature selection; CI does not approve the six banks or prove persisted end-to-end behavior |
+| [Reboot-OS PR #35](https://github.com/rebootos-sourcce/Reboot-OS/pull/35) | Open/draft; head `48313941da1338e2cd0ec1d5d9cd4d9b2d5c6bdf`; server passed 147/147 and both smoke runs passed; external `atuned-os` Workers Build failed | Keep draft and eight-table quarantine; resolve PR #34 stack, Pages publishing collision, and actual Cloudflare service target before promotion |
+| [Reboot-OS #37](https://github.com/rebootos-sourcce/Reboot-OS/issues/37) | Open infrastructure blocker; uploaded log identifies `npx wrangler preview` and missing `previews` block; later screenshot shows `npx wrangler deploy` | Confirm actual service/root/branch, the atuned-api versus atuned-os role, Pages publisher ownership, and `ATUNED_API`; don't add a previews block or retry blindly |
+| [MOB PR #68](https://github.com/rebootos-sourcce/MOB/pull/68) | Open/draft; branch `recovery/p0-retention-receipt-20261012`; 3 commits ahead, none behind; workflow #38220044415 succeeded | Current narrow retention-receipt candidate; cross-review with Reboot-OS PR #34 before promotion |
+| [MOB PR #65](https://github.com/rebootos-sourcce/MOB/pull/65) | Open/draft; copy/delete-confirm gate change; workflow #38148880267 succeeded; base is `dev7/p0-alpha-gates-20261010` | Stacked on an unmerged P0 candidate; selectively port to current main if still needed rather than merging the base blindly |
+| [MOB PR #60](https://github.com/rebootos-sourcce/MOB/pull/60) | Open/draft; identity-safe profile import; branch is 10 ahead and 1 behind main; workflow #38093746343 succeeded | Review the schema delta against Reboot-OS PR #36; this branch is a candidate, not production authority |
 
 Refresh every state above from GitHub before acting; this snapshot can become stale.
 
@@ -203,7 +206,7 @@ Refresh every state above from GitHub before acting; this snapshot can become st
 The current accessible evidence identifies the following gaps that must be closed by inventory, not guesswork:
 
 1. **Site URL register:** confirm canonical live URLs for Reboot-OS, ATÜNED, and The Mechanics of Being. One previously identified candidate domain is explicitly prohibited because it resolves to an unrelated product; do not link or open it. The approved ATÜNED production/demo URL is not yet verified. `lancepowell.art` is a discoverable art portfolio, but its role as the authoritative Mechanics of Being method site is unverified.
-2. **Website-to-repository map:** identify the source repository, deploy workflow, target domain, analytics, forms, privacy/terms links, and current production SHA for every site.
+2. **Website-to-repository map:** the 13 October architecture review maps source/build pathways for MOB and Reboot-OS and identifies a potential dual-publisher collision at Pages project `atuned`. Still confirm account bindings, domain mapping, analytics/forms/privacy links, and exact production SHA before calling the live map complete.
 3. **Manuscript authority:** inventory all Mechanics of Being manuscript PDFs and editable sources, record versions and dates, designate the current canonical version, and map each chapter/concept to the canon and product modules. Preserve historical versions.
 4. **Library register:** inventory relevant Library files and prior handoff packages, deduplicate by content/hash rather than filename alone, and identify which files are current, superseded, reference-only, or unverified.
 5. **Repository completeness:** inventory all repositories accessible to the project, including private repositories, branches, docs, generated artifacts, and release workflows. Current known repositories are MOB, Reboot-OS, and MOB-Manuscript; verify whether more exist.
@@ -225,109 +228,46 @@ The current accessible evidence identifies the following gaps that must be close
 
 ## 9. Immediate next actions
 
-1. Finish current Reboot-OS PR #35 smoke gates [#38279998550](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38279998550) and [#38280005952](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38280005952); the exact-head server suite [#38279998569](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38279998569) has passed 147/147.
-2. Resolve the current Cloudflare failure on build `0caff241-0bd3-453e-a86d-985e0b839726` from authenticated first-error logs. GitHub exposes 0 annotations and no failed-step detail. Read-only probes show `atuned-api` health 200 and `atuned-os` health 404; use this as a target-mismatch clue, not proof of cause. Do not bypass.
-3. Refresh current PR #69 head and corresponding workflow; each documentation commit triggers a new gate, so don't rely on prior SHA results.
-4. The protected `canon_vault.sqlite` is already present in the ChatGPT Library and was checked read-only on 13 October; preserve that original file and do not recreate or import it. Separately recover the missing standalone Source gateway/client/service dependency; do not guess it.
-5. Keep eight proposed/unresolved/vault-labeled entries (`INFERRED`, `SPLITPROP`, `SPLITASK`, `LADDERASK`, `DICTSTRUCT`, `ARCH12`, `LAWSX`, `RARE`) excluded from public responses pending review. Classify the remaining 119 allowlisted entries and verify protected-vault separation before any import.
-6. Continue the 560-row source queue with sentence-boundary review, stable IDs, provenance and owner approval. Build fixed 100-item banks only from approved records.
-7. Define/test the server-bank-to-four-track meter mapping and persisted browser → Worker → Supabase journey on an approved non-production target.
-8. Keep all PRs draft. No merge, production deployment/migration, billing/profile sync, gift activation or issuance without explicit owner approval.
+1. **Resolve production publishing ownership.** MOB and Reboot-OS both have workflows that publish distinct website roots to Cloudflare Pages project `atuned`, branch `main`. Verify the actual account/project bindings and designate exactly one production publisher. The architecture report recommends keeping MOB as root funnel publisher while Reboot-OS's product output remains artifact/preview until deliberately integrated; this recommendation has not been applied.
+2. **Resolve Cloudflare Worker identity.** The failed `atuned-os` build log ran `npx wrangler preview` and failed because the selected Wrangler config had no `previews` block. A later screenshot shows `npx wrangler deploy`, root `/`, no build command. Do not change `atuned-os` to use `atuned/server` or retry an alpha branch as Production until service purpose, repository, branch and root are confirmed. The backend's checked-in Worker is `atuned-api`; read-only current PR #35 probes report `atuned-api /v1/health = 200` and `atuned-os /v1/health = 404`.
+3. **Verify Pages → API binding.** Confirm the Reboot-OS Pages variable `ATUNED_API` points to the intended `atuned-api` HTTPS origin and matches CORS/CSP. The actual variable value is not visible in repository source.
+4. **Refresh docs CI.** PR #69's architecture report, index and board were updated after its last green workflow. Check the latest branch head and its own run; do not reuse an older workflow as evidence for this new head.
+5. **Continue the gift bank gate.** The original protected vault is already in the ChatGPT Library; the SQLite file and all four source-file size/MD5/SHA-256 values were verified read-only. Do not request or recreate a duplicate. The production gift queue remains 560 rows, zero stable product IDs, zero owner-approved rows, zero selected entries. Finish sentence boundaries and source classification; prepare exactly six separately versioned 100-item banks only after explicit owner approval.
+6. **Close remaining P0 data contracts.** Review the 119 remaining runtime public-canon entries for source authority/public suitability; define the tested six-server-channel to four-client-track mapping; prove browser → intended Worker → Supabase/D1 write → read → reload on approved non-production data.
+7. **Promote components, not entire old branches.** Use main as the deployment-intended base; compare selected changes from PRs #65/#66/#68/#60 and divergent dev7 branches against current main. Preserve the ancestry of Reboot-OS PR #35 on PR #34. Review the detailed branch freshness and backlog register in [the architecture review](ATUNED_ARCHITECTURE_REVIEW_2026-10-13.md).
+8. Keep PRs draft until required review and exact-head tests pass. No merge, production deploy/migration, billing/profile-sync enablement, gift activation or issuance without explicit owner approval.
 
-**Release posture:** MVP Alpha is not release-ready until the current blockers are closed and verified. Keep billing, profile sync, production migrations, gift activation, and gift issuance off. No merge or deployment is authorized by this index.
+**Release posture:** MVP Alpha is not release-ready. The architecture map is complete at repository/configuration level; live production routing remains open pending single-publisher choice, authenticated Cloudflare target verification, approved gift banks, channel mapping, and persisted end-to-end proof.
 
+## API and deployment map — refreshed 13 October 2026
 
-## API and deployment map — audited 12 October 2026
+The route inventory is extracted from the Reboot-OS [Worker entry point at PR #35 head](https://github.com/rebootos-sourcce/Reboot-OS/blob/48313941da1338e2cd0ec1d5d9cd4d9b2d5c6bdf/atuned/server/src/index.js). The server defines 35 routes. The full route list and pathway descriptions are in [ATUNED Architecture Review](ATUNED_ARCHITECTURE_REVIEW_2026-10-13.md). This is a code inventory, not proof every route is active in Production.
 
-**Source of truth for route inventory:** [Reboot-OS Worker route table at PR #35 head `39cde03898543aca4e4d3a33774095117a8526f7`](https://github.com/rebootos-sourcce/Reboot-OS/blob/39cde03898543aca4e4d3a33774095117a8526f7/atuned/server/src/index.js). The following 35 HTTP routes were extracted from the checked-in route table. This is a code inventory, not proof that the external deployment is live or reachable.
+### Service register: names are not interchangeable
 
-- **Worker repository:** [Reboot-OS](https://github.com/rebootos-sourcce/Reboot-OS)
-- **Worker root:** `atuned/server/`
-- **Entrypoint:** `atuned/server/src/index.js`
-- **Wrangler config:** `atuned/server/wrangler.toml`
-- **Package scripts:** `atuned/server/package.json`; `npm test`, `npm run deploy` (maps to `wrangler deploy`)
-- **Configured Worker name:** `atuned-api`
-- **Configured D1 binding/database:** `DB` → `atuned`
-- **Configured Pages/app project:** `atuned` (separate from the Worker)
-- **Known API base used by server workflow smoke tests:** `https://atuned-api.lance-o-powell.workers.dev` — must be treated as a configured test target, not independent proof of production/domain mapping.
-- **Application origin configured in Worker:** `https://atuned.world`
-- **Secrets:** service keys and private credentials belong in Cloudflare/GitHub secrets, never this index or browser code.
+| Object | Repo/config path | Expected job | Current evidence |
+|---|---|---|---|
+| Cloudflare Pages project `atuned` | MOB `.github/workflows/deploy.yml`; Reboot-OS `.github/workflows/web.yml` | Public website | **P0 publishing collision risk:** both workflows publish different root bundles to project `atuned`, branch `main`. Verify account binding and assign one publisher. |
+| Worker `atuned-api` | Reboot-OS `atuned/server/wrangler.toml`, entry `atuned/server/src/index.js` | API, D1, Supabase RPCs, scheduled work and provider proxies | PR #35 read-only health probe returned HTTP 200 at `/v1/health`. Production/domain mapping still needs readback. |
+| Worker Builds service `atuned-os` | Cloudflare dashboard, repository Reboot-OS; settings screenshots show root `/`, no build command, deploy command `npx wrangler deploy` | **Unresolved role**; dashboard mentions static-assets-only trigger limitation | Failed build used `npx wrangler preview` and stopped on missing `previews`; later UI shows `deploy`. Probe at `/v1/health` returned 404. Do not assume this is the API or repoint it to the backend. |
+| Pages variable `ATUNED_API` | Reboot-OS `.github/workflows/web.yml` and `atuned/test/tools/web.py` | Inject API origin into product HTML and CSP | Actual value not visible in source. Confirm it names the intended `atuned-api` origin and matches Worker CORS. |
+| `atuned.world` custom domain | Pages domain configuration | Public root, which MOB describes as the funnel | Live domain-to-deployment binding not independently read from authenticated Cloudflare. Confirm actual account/domain/prod commit. |
 
-### Exact HTTP routes
+### Cloudflare build failure and safety rule
 
-- `POST /v1/auth/signup`
-- `POST /v1/auth/signin`
-- `POST /v1/auth/forgot`
-- `POST /v1/auth/reset`
-- `POST /v1/auth/signout`
-- `GET /v1/me`
-- `POST /v1/funnel/session`
-- `GET /v1/funnel/session/:id`
-- `POST /v1/funnel/session/:id/attach`
-- `PATCH /v1/funnel/session/:id/checkpoint`
-- `POST /v1/purchase`
-- `POST /v1/billing/checkout`
-- `POST /v1/billing/portal`
-- `POST /v1/voice/synthesize`
-- `POST /v1/billing/webhook`
-- `GET /v1/health`
-- `GET /v1/version`
-- `POST /v1/crash`
-- `GET /v1/export`
-- `GET /admin`
-- `GET /v1/admin/account`
-- `GET /v1/admin/crashes`
-- `POST /v1/admin/plan`
-- `POST /v1/admin/delete`
-- `GET /v1/push/key`
-- `PUT /v1/push`
-- `DELETE /v1/push`
-- `POST /v1/store/apple`
-- `POST /v1/store/google`
-- `DELETE /v1/me`
-- `PUT /v1/consent`
-- `PUT /v1/sync`
-- `GET /v1/sync`
-- `GET /v1/canon`
-- `GET /v1/canon/:table`
+The uploaded log for build `0b27be84-ebb9-4d97-b20b-eba999fdcebc` proves the command was `npx wrangler preview` and Wrangler 4.149.0 failed because no `previews` block was in the selected config. The later screenshot has a different command (`npx wrangler deploy`). This is a configuration snapshot mismatch to reconcile, not a reason to add `previews` blindly.
 
-### Cloudflare build failure and fix status
+Checked-in `atuned/server/wrangler.toml` names the API Worker `atuned-api`, and `atuned/server/package.json` sets `npm run deploy` to `wrangler deploy`. **These are instructions for the API service only. They are not proof that the separate `atuned-os` static-assets service should use root `atuned/server`.**
 
-The supplied build log proves the configured external build ran `npx wrangler preview` from repository root `/`; Wrangler then failed because no `previews` block was configured. Repository Wrangler config is at `atuned/server/wrangler.toml`, names the Worker `atuned-api`, and the server package deploy script is `wrangler deploy`. Both `atuned-api` and `atuned-os` passed non-deploying dry-run packaging tests, so those results do **not** identify which production service is correct.
+Do not edit Cloudflare settings or retry a Production build until the operator confirms the exact service, source repository, production branch, root directory, command, asset bindings, and domain. Do not add a preview block just to silence the failed command. No dashboard setting or production deployment was changed by this review.
 
-**Required Cloudflare dashboard correction (not yet applied):** in the `atuned-os` Workers Builds settings, set the root directory to `atuned/server` and the build/deploy command to `npm run deploy` only after confirming that the existing production Worker intended for this app is `atuned-api`. Do not add a `previews` block merely to make the wrong preview command pass. Then trigger a controlled build and verify the deployed Worker/health endpoint. No dashboard settings, production deployment, or production migration have been changed by this documentation update.
+### Publishing rule to close
 
-**Current status:** repository route/config inventory documented; Cloudflare dashboard settings remain an operator action requiring authenticated dashboard access. Keep issue [Reboot-OS #37](https://github.com/rebootos-sourcce/Reboot-OS/issues/37) open until a successful build and target verification are recorded.
-
-
-## Cloudflare deployment path and operator checklist — refreshed 12 October 2026
-
-**Start here before touching dashboard settings:** [Reboot-OS issue #37](https://github.com/rebootos-sourcce/Reboot-OS/issues/37) and [Reboot-OS PR #35](https://github.com/rebootos-sourcce/Reboot-OS/pull/35). The owner reported both `atuned-api` and `atuned-os` working during DEV 21/22. Preserve that as owner-reported verification, but do not treat it as proof that the currently failing external build check is green: the latest documented Cloudflare check is still a separate failure. Recheck current exact-head evidence before asking for dashboard work.
-
-### Paths and target identifiers
-
-- Worker source root: `atuned/server/`
-- Wrangler configuration: `atuned/server/wrangler.toml`
-- Worker entry point: `atuned/server/src/index.js`
-- Server package scripts: `atuned/server/package.json`; deploy script is `npm run deploy` (`wrangler deploy`)
-- Public health route: `GET /v1/health`
-- Runtime canon routes needing security review: `GET /v1/canon` and `GET /v1/canon/:table`
-- Public-canon regression tests: `atuned/server/test/canon-public.test.mjs`
-- Runtime canon source database: `atuned/data/canon.sqlite` (separate from protected `canon_vault.sqlite`)
-- Candidate Worker names observed in checks: `atuned-api` (name in checked-in Wrangler config) and `atuned-os` (external Cloudflare Workers Builds check)
-- Cloudflare build history/check: build `0caff241-0bd3-453e-a86d-985e0b839726`; older historical build `f6612baf-bd07-41da-b9b1-6ba0629d3d27`. These are historical identifiers; always inspect the latest failing build first.
-- Cloudflare project/service dashboard link recorded in the check: [atuned-os build](https://dash.cloudflare.com/b34a8a4f24d5ac71f7b386c240a6da90/workers/services/view/atuned-os/production/builds/0caff241-0bd3-453e-a86d-985e0b839726).
-
-### Cloudflare procedure — do not guess or bypass
-
-1. Open [Reboot-OS #37](https://github.com/rebootos-sourcce/Reboot-OS/issues/37) and refresh PR #35's exact head and external check.
-2. If the latest external check is green and the owner confirms both endpoints are healthy, record the new evidence and do not ask for unnecessary dashboard changes.
-3. If it is red, sign in to Cloudflare and open **Workers & Pages**. Select the exact service named by the failed check, currently recorded as `atuned-os`, and open its latest failed build.
-4. Read and record the **first actual failing step and error** before changing anything. GitHub has previously exposed zero annotations, so do not infer the cause from a red badge alone.
-5. Compare the service's repository, branch, root directory, build command, and required secret bindings with the intended app. The checked-in config points to `atuned-api` under `atuned/server/`; do not assume `atuned-api`, `atuned-os`, and Pages project `atuned` are interchangeable.
-6. Only if the owner/operator confirms `atuned-api` is the intended target, evaluate root `atuned/server` and command `npm run deploy`. Do not change production settings just to silence a preview command; do not add a `previews` block without evidence it is the correct fix.
-7. Run a controlled build and verify the intended service plus `/v1/health`. Keep the external check visible until the new build passes.
-8. Do not expose secrets in issue comments/logs. Do not merge, deploy manually, run migrations, import the protected vault, enable billing/profile sync, or activate gifts as part of diagnosis.
+1. Confirm whether both repositories are connected to the same Cloudflare account and Pages project.
+2. Assign exactly one Production publisher for Pages project `atuned`, branch `main`.
+3. Keep a single artifact that includes the approved root funnel and the product app at its approved named path. If the product must remain in its own build, publish it as artifact/preview until integration is deliberately designed.
+4. Confirm `ATUNED_API` and verify the public route after deployment.
+5. Read back the actual production deployment commit and test the expected root and app URLs. A successful GitHub job alone does not prove the live website output is correct.
 
 ### Additional active paths to carry forward
 
@@ -353,10 +293,15 @@ The supplied build log proves the configured external build ran `npx wrangler pr
 These are on the same draft docs branch as this index. Refresh the PR #69 head and its exact-head workflow before relying on the final bundle; none of these documentation commits is a merge or production release.
 
 
-### Latest continuation work
-- Implementation audit and code acceptance plan: [ATUNED_IMPLEMENTATION_AUDIT.md](ATUNED_IMPLEMENTATION_AUDIT.md), updated in checkpoint commit `30450dbab002692c9a3d84fb649e9cd234e65411`.
-- Executive handshake: [ATUNED_EXECUTIVE_HANDSHAKE_2026-10-12_EXECUTION.md](ATUNED_EXECUTIVE_HANDSHAKE_2026-10-12_EXECUTION.md).
-- Next-thread handshake: [ATUNED_NEXT_THREAD_HANDSHAKE_2026-10-12_EXECUTION.md](ATUNED_NEXT_THREAD_HANDSHAKE_2026-10-12_EXECUTION.md).
-- Execution log: [ATUNED_EXECUTION_LOG_2026-10-12_CLOUDFLARE_INDEX.md](ATUNED_EXECUTION_LOG_2026-10-12_CLOUDFLARE_INDEX.md).
-- **Canon execution update (current PR #35 head `48313941da1338e2cd0ec1d5d9cd4d9b2d5c6bdf`):** runtime content fingerprints and same-row-count mutation regression remain. The parent server suite passed 147/147; current-head checks are running. The public allowlist was reduced from 127 to 119 entries by excluding eight manifest entries whose descriptions mark them proposed, unresolved, not yet dictated, or vault-labeled. This reversible quarantine does not approve the remaining 119 entries; source-authority review and external Cloudflare remain open.
-- **Live CI before this docs commit:** PR #69 head `bfc5108f5b32f071006f7af4facefc61ab6189f0`, workflow #38322940378, completed successfully; PR #66 head `fc7033fb24ec9ed94e2f63563e723b82603b2e68`, workflow #38322094250, completed successfully. This docs update creates a newer PR #69 head and requires its own run.
+### Latest continuation work — 13 October 2026
+
+- [Architecture review](ATUNED_ARCHITECTURE_REVIEW_2026-10-13.md), report commit `a7ba1091fecb675217b8bff7137c517ed1b74a1f`: six independent architecture passes, pathway maps, 35-route inventory, Cloudflare service register, selected branch-diff matrix, P0/P1 gap ledger, and archive/backlog rules.
+- Protected `/canon_vault.sqlite` exists in the ChatGPT Library. Read-only SQLite check: integrity `ok`, 0 foreign-key violations, SHA-256 `9c2cd7b610c1e7b1d056646047988b67d0f52368139952bcc2782b930056915e`; all four raw source file sizes/MD5/SHA-256 values match the vault source metadata exactly. Contents remain separate and unimported.
+- Reboot-OS PR #35 head `48313941da1338e2cd0ec1d5d9cd4d9b2d5c6bdf`: server workflow #38333447700 passed 147/147; smoke workflows #38333450875 and #38333447634 succeeded; Cloudflare Workers Build `atuned-os` failed on `0b27be84-ebb9-4d97-b20b-eba999fdcebc`.
+- MOB PR #66 head `fc7033fb24ec9ed94e2f63563e723b82603b2e68`: workflow #38322094250 succeeded. PR remains draft.
+- Reboot-OS PR #35 is based on PR #34's retention branch. Resolve the stack, verify the service target and single Pages publisher before promotion.
+- **Current branch rule:** prefer main as the deployment-intended base; compare selected changes from divergent P0/P1 branches in the architecture report. Do not replace main with a whole old branch merely because it has a green historical workflow.
+- **Current release state:** 119 runtime canon entries remain allowlisted but not all source-authority reviewed; gift queue remains 0 approved stable IDs out of 560; channel mapping and current-release persisted browser → Worker → storage reload remain unverified.
+- PR #69's latest documentation updates are newer than the last recorded green docs workflow. Refresh the current PR head and verify checks for that exact head.
+- No merge, production deployment, migration, billing/profile sync enablement, gift activation/issuance, or production data mutation was performed.
+
