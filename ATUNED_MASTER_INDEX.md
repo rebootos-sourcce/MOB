@@ -310,4 +310,4 @@ These are on the same draft docs branch as this index. Refresh the PR #69 head a
 ### Latest read-only Cloudflare probe — 13 October 2026
 
 - [Cloudflare read-only probe report](ATUNED_CLOUDFLARE_READONLY_PROBE_2026-10-13.md): exact-head CI confirmed `atuned-api /v1/health` = HTTP 200 and `atuned-os /v1/health` = HTTP 404; both Wrangler dry-runs succeeded without deploying. Authenticated dashboard configuration, single Pages publisher ownership, and the failed external build remain unresolved. P0 remains open.
-- Documentation workflow #38394102864 passed all 30 jobs on checkpoint commit `190893ee076c5254480d094839bf5db55a677d4b`; the newly added probe report creates a newer docs head and therefore needs its own exact-head workflow.
+- Documentation workflow #38423556852 passed all 30 jobs on the current exact head `d0a6c6379c8caa0afb584489732f222b43b657ad` (30/30 successful jobs): [workflow evidence](https://github.com/rebootos-sourcce/MOB/actions/runs/38423556852). PR #69 remains draft/open/unmerged. This validates repository checks for the documentation head only; it does not clear the Cloudflare build failure or production blockers.
