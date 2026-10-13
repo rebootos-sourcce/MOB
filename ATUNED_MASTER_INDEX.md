@@ -338,3 +338,8 @@ The KPI framework is tracked in [ATUNED_MVP_ALPHA_KPI_FRAMEWORK_2026-10-13.md](A
 - Exact-head workflows refreshed for MOB #69, #70, #66 and Reboot-OS #35, #38; all reported repository workflow success at their current heads. This does not independently verify external Cloudflare routing or production deployment.
 - Alpha artifact #11833758292 was downloaded and inspected. All seven expected files are present and non-empty; `engine.js` parses with Node; six HTML files pass basic document-marker checks. ZIP SHA-256: `408417e7acdbcfdefc01eacbad4e195deff6775e68d7aa1c01e5bb55de20ab44`.
 - P0 remains OPEN: current-release persisted E2E 0/1; owner-approved stable gift IDs 0; six-to-four meter mapping unverified; Cloudflare publisher/API/domain binding unresolved; migrations/rollback and public-canon provenance review remain incomplete. No production mutation or merge occurred.
+
+
+### Cycle 4 follow-up — external Cloudflare check still failing
+
+- Current Reboot-OS PR #38 head `8f4b722a600f9eed489b92786204916d3587d2e3`: local `web` workflow succeeds, but external `Workers Builds: atuned-os` check #115557166260 fails on build `c047ef31-f5b5-43a7-b36b-ad3a16df7e7c`; the check has zero annotations and exposes no first-error log. [Build details](https://dash.cloudflare.com/b34a8a4f24d5ac71f7b386c240a6da90/workers/services/view/atuned-os/production/builds/c047ef31-f5b5-43a7-b36b-ad3a16df7e7c). Authorized operator evidence is required; no speculative config patch.
