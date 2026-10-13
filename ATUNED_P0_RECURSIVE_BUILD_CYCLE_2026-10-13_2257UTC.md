@@ -56,3 +56,14 @@ The current PR #38 head `8f4b722a600f9eed489b92786204916d3587d2e3` has two check
 - External `Workers Builds: atuned-os`: **failure**, check run #115557166260, build `c047ef31-f5b5-43a7-b36b-ad3a16df7e7c`; annotations count is 0. [Cloudflare build details](https://dash.cloudflare.com/b34a8a4f24d5ac71f7b386c240a6da90/workers/services/view/atuned-os/production/builds/c047ef31-f5b5-43a7-b36b-ad3a16df7e7c).
 
 The public check payload supplies the build/service IDs but no first-error output. The workflow patch changes only `.github/workflows/web.yml` and removes the competing Pages publish step while keeping build/artifact upload. This does not explain or repair the separate Workers Builds failure. Required next evidence: authorized operator retrieves the first failing Cloudflare build log and confirms service/account/domain/API bindings. Do not change Wrangler configuration speculatively.
+
+
+## Follow-up check — PR #35 confirms split external target outcomes
+
+At current Reboot-OS PR #35 head `e35dd50dd72913f5cf47b7f7ad12c79bd6802753`, four check runs are present:
+- `server` workflow #38473170941: success.
+- `smoke` workflow #38473176431: success.
+- External `Workers Builds: atuned-api`: success for a **preview** build `f58c7387-2bbf-4060-a579-ae666d2ca488` under `previews/docs-p0-release-evidence-matrix-20261013`.
+- External `Workers Builds: atuned-os`: **failure** for production build `b9148ff9-4c07-49f4-8926-1e6d77d7c851`, zero annotations.
+
+This proves the external checks are targeting different service/environment paths and have different outcomes; it does not prove which hostname the production Pages app calls. The intended Pages `ATUNED_API` value and authenticated routing remain unverified. Do not treat the successful preview as a production pass.
