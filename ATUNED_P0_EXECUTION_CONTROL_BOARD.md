@@ -130,3 +130,27 @@ P0 remains open. No release or production action is authorized.
 
 ## Execution log
 Append a dated cycle record here after each build/review pass: exact SHA(s), changes, tests, independent reviewer/findings, gaps opened/closed, and next block executed.
+
+
+## Execution cycle — 13 October 2026 (recursive gap review)
+**Cycle result: P0 remains OPEN.** This entry supersedes older checkpoint statements where exact heads or workflow runs differ; refresh the live branch and check state again before any merge.
+
+### Refreshed source-of-truth work
+- Master index: `ATUNED_MASTER_INDEX.md` on `docs/atuned-master-index-20261012`; source file blob before this cycle: `0066817066c67c674a7abf61cfebf31fce7f1c61`.
+- P0 board: `ATUNED_P0_EXECUTION_CONTROL_BOARD.md`; source file blob before this cycle: `777fb87c1b978af9c1ab0affc224c9640b7f4fbf`.
+- Current P0 evidence still identifies the Pages publishing collision: MOB `.github/workflows/deploy.yml` and Reboot-OS `.github/workflows/web.yml` both can publish different output trees to Pages project `atuned`, branch `main`.
+- MOB is the previously documented proven publisher, but authenticated Cloudflare account/domain/service binding still requires an operator with dashboard access. Do not publish as a way to discover ownership.
+- Worker configuration calls the API Worker `atuned-api`; the separate Cloudflare service `atuned-os` and its build command remain unresolved. A previous build ran `npx wrangler preview` and failed because `previews` was missing; a later settings snapshot showed `npx wrangler deploy`. These are conflicting configuration observations, not proof of repair.
+- Persisted browser → intended Worker → storage write/read/reload remains 0/1 independently verified.
+- Gift bank remains blocked on source/owner approval: 560 review rows, 0 stable approved IDs, 0 selected manifest members, no active manifest. Six server gift-nature channels to four client meter tracks remains unverified.
+- KPI framework added to the canonical docs branch; see `ATUNED_MVP_ALPHA_KPI_FRAMEWORK_2026-10-13.md`. Targets are proposed unless explicitly marked as a hard safety/data-integrity gate.
+
+### Executed / next safe actions
+1. Add KPI framework and explicit OPEN/UNVERIFIED state to the master index.
+2. Preserve the exact blockers in the P0 board and tie each to an acceptance test and external dependency.
+3. Open a reviewable change to disable the duplicate Reboot-OS Pages publisher while preserving build/artifact validation; do not merge it or deploy without review and owner approval.
+4. Run exact-head checks after documentation/workflow changes and record the result.
+5. For persistence and gift approval, proceed only with non-production test fixtures and owner-approved catalog data. Do not infer approvals, fabricate IDs, activate gifts, run production migrations, or mutate production data.
+
+### P0 exit decision
+P0 may be declared complete only after: one publisher and authenticated route mapping are verified; current-release persistence is independently proven; the six-to-four mapping and approved frozen gift manifests pass; consent/user agency/deletion/accessibility gates have evidence; and no critical Sev-0/Sev-1 issue remains. Any gate not supported by current exact-head evidence stays OPEN/BLOCKED/UNVERIFIED. This cycle does not claim P0 completion.
