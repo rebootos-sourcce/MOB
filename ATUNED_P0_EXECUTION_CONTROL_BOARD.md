@@ -196,3 +196,8 @@ P0 may be declared complete only after: one publisher and authenticated route ma
 
 - PR #38 current head `8f4b722a600f9eed489b92786204916d3587d2e3`: repository `web` workflow #38473125019 passes, but external `Workers Builds: atuned-os` check #115557166260 fails for build `c047ef31-f5b5-43a7-b36b-ad3a16df7e7c`; zero annotations. [Cloudflare build details](https://dash.cloudflare.com/b34a8a4f24d5ac71f7b386c240a6da90/workers/services/view/atuned-os/production/builds/c047ef31-f5b5-43a7-b36b-ad3a16df7e7c).
 - The public check payload has no first-error detail. Authorized Cloudflare operator must provide build logs and confirm account/service/domain/API bindings. Do not guess a Wrangler fix. P0 remains blocked on external deployment binding and persisted E2E.
+
+
+### Cycle 4 follow-up — PR #35 external service split
+
+- Current PR #35 head `e35dd50dd72913f5cf47b7f7ad12c79bd6802753`: server #38473170941 and smoke #38473176431 pass. External `Workers Builds: atuned-api` succeeds only on preview build `f58c7387-2bbf-4060-a579-ae666d2ca488`; external `Workers Builds: atuned-os` fails on production build `b9148ff9-4c07-49f4-8926-1e6d77d7c851` (zero annotations). This confirms split service/environment outcomes, not production routing. The intended Pages `ATUNED_API` value still requires authorized confirmation.
