@@ -161,3 +161,13 @@ P0 may be declared complete only after: one publisher and authenticated route ma
 - [Cycle report](ATUNED_P0_RECURSIVE_EXECUTION_CYCLE_2026-10-13_1213PDT.md) records fresh PR #70/#38 findings and confirms current blockers.
 - Exact-head workflow #38452748917 was queued at query time; this documentation change and the new index/board commits require fresh checks.
 - No code was merged, deployed, or changed in production. P0 remains open pending current-release persistence E2E, Cloudflare ownership/configuration, approved gift manifests, six-to-four mapping, migration/privacy review, and exact-head acceptance evidence.
+
+
+## Recursive build cycle 2 — 13 October 2026 UTC
+
+- [Cycle 2 report](ATUNED_P0_RECURSIVE_BUILD_CYCLE_2026-10-13_1945UTC.md) records exact-head results for the Alpha build artifact, duplicate publisher mitigation, and documentation CI.
+- MOB PR #70 head `a47fe148e92cf6e628c0a128a09cb58c47dde9de`: workflow #38438059206 completed 31/31 jobs successfully, including `gates-fast`, required browser matrix and `gates-pass`. Artifact uploaded: `atuned-alpha-build-ef6369312ff166defbe7002f475c30a3cc0d06a4` (2,829,342 bytes; SHA-256 `408417e7acdbcfdefc01eacbad4e195deff6775e68d7aa1c01e5bb55de20ab44`). Internal ZIP member inventory remains unverified by direct inspection.
+- MOB PR #69 docs head `f8906555623f6403f9bbe78a40a743a7a46c1605`: workflow #38453296307 completed successfully.
+- Reboot-OS PR #38 head `70252de086bf36696b832f79c7734c9bf3841e1b` removes the Pages deploy action while retaining build and artifact upload. However, external Workers Builds check #115487951398 failed on build `dd4ebc77-57dc-4535-8357-3e91f5f85824`. This check is separate from the removed Pages deploy action; authenticated Cloudflare first-error/configuration evidence remains required.
+- No merge, production deployment, migration, vault import, gift activation, billing/profile-sync activation, or production data change occurred.
+- P0 remains OPEN: current-release persisted E2E 0/1; owner-approved stable gift IDs 0; six-to-four meter mapping unverified; live Cloudflare publisher/API/domain mapping unverified.
