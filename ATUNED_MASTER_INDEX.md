@@ -305,3 +305,9 @@ These are on the same draft docs branch as this index. Refresh the PR #69 head a
 - PR #69's latest documentation updates are newer than the last recorded green docs workflow. Refresh the current PR head and verify checks for that exact head.
 - No merge, production deployment, migration, billing/profile sync enablement, gift activation/issuance, or production data mutation was performed.
 
+
+
+### Latest read-only Cloudflare probe — 13 October 2026
+
+- [Cloudflare read-only probe report](ATUNED_CLOUDFLARE_READONLY_PROBE_2026-10-13.md): exact-head CI confirmed `atuned-api /v1/health` = HTTP 200 and `atuned-os /v1/health` = HTTP 404; both Wrangler dry-runs succeeded without deploying. Authenticated dashboard configuration, single Pages publisher ownership, and the failed external build remain unresolved. P0 remains open.
+- Documentation workflow #38394102864 passed all 30 jobs on checkpoint commit `190893ee076c5254480d094839bf5db55a677d4b`; the newly added probe report creates a newer docs head and therefore needs its own exact-head workflow.
