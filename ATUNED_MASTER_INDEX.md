@@ -343,3 +343,8 @@ The KPI framework is tracked in [ATUNED_MVP_ALPHA_KPI_FRAMEWORK_2026-10-13.md](A
 ### Cycle 4 follow-up — external Cloudflare check still failing
 
 - Current Reboot-OS PR #38 head `8f4b722a600f9eed489b92786204916d3587d2e3`: local `web` workflow succeeds, but external `Workers Builds: atuned-os` check #115557166260 fails on build `c047ef31-f5b5-43a7-b36b-ad3a16df7e7c`; the check has zero annotations and exposes no first-error log. [Build details](https://dash.cloudflare.com/b34a8a4f24d5ac71f7b386c240a6da90/workers/services/view/atuned-os/production/builds/c047ef31-f5b5-43a7-b36b-ad3a16df7e7c). Authorized operator evidence is required; no speculative config patch.
+
+
+### Cycle 4 follow-up — separate API preview and OS production outcomes
+
+- Reboot-OS PR #35 current head has successful server/smoke workflows, successful external `atuned-api` preview build `f58c7387-2bbf-4060-a579-ae666d2ca488`, and failed external `atuned-os` production build `b9148ff9-4c07-49f4-8926-1e6d77d7c851` with zero annotations. A preview success does not establish production routing or the deployed Pages `ATUNED_API` value. Authorized Cloudflare confirmation remains required.
