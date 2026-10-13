@@ -77,15 +77,24 @@ Acceptance:
 Cross-review: C reviews catalog freeze/issuance SQL; G reviews public endpoint behavior; independent review confirms no fingerprint algorithm was guessed.
 
 ## Block F — Cloudflare build and service target
-Historical evidence: build `f6612baf-bd07-41da-b9b1-6ba0629d3d27` failed at `npx wrangler preview` from root `/` because Wrangler 4.149.0 had no `previews` block; that is not a diagnosis of the latest build. The completed external check on PR #35 head `9a1949b061d3e0c8758c700867ef654758e221b9` failed on `4493054d-55c0-4cef-8edf-8d002103aaeb` ([check](https://github.com/rebootos-sourcce/Reboot-OS/runs/115087663682)). The newer build `0b27be84-ebb9-4d97-b20b-eba999fdcebc` is in progress. No first-failure detail is available; authenticated logs remain required. Config names `atuned-api`, while the external check targets `atuned-os`; do not change the target or command on hypothesis.
+
+**Current evidence, 13 October 2026 UTC:** the uploaded build `0b27be84-ebb9-4d97-b20b-eba999fdcebc` executed `npx wrangler preview` and failed because the Wrangler config had no `previews` block. The later Cloudflare settings screenshot shows `npx wrangler deploy`, root directory `/`, and no build command, so the screenshot is a different settings snapshot from the failed run. The current source config names the backend Worker `atuned-api` in `atuned/server/wrangler.toml`; the dashboard/build service named `atuned-os` is a separate target. Reboot-OS PR #35 read-only health probes reported `atuned-api /v1/health = HTTP 200`, `atuned-os /v1/health = HTTP 404`.
+
+**Additional P0 collision risk:** MOB `.github/workflows/deploy.yml` and Reboot-OS `.github/workflows/web.yml` both publish distinct root website outputs to Pages project `atuned`, branch `main`. Account bindings must be confirmed, but the repository-level configuration permits one deploy to replace the other. Do not publish again until a single production publisher is designated and the API/domain bindings are verified.
+
 Acceptance:
 - [ ] Confirm intended Worker/service in authenticated Cloudflare.
-- [ ] Confirm repo binding, root directory, build command, permissions and required secrets.
-- [ ] If atuned-api is confirmed, validate root `atuned/server` and `npm run deploy` with a controlled build.
-- [ ] Do not add a previews block merely to silence the current command.
-- [ ] Re-run external check and verify the intended service’s health endpoint.
-- [ ] No production deploy until explicitly authorized.
-Cross-review: A checks that evidence matches exact head; G validates server contract and health after operator action.
+- [ ] Confirm repository binding, production branch, preview rules, root directory, deploy command, asset configuration, permissions, and required secrets.
+- [ ] Resolve the duplicate Pages publisher: designate one production owner for project `atuned` and branch `main`; verify the actual Cloudflare account/project binding for both repositories.
+- [ ] Confirm the intended root route is the funnel and the app is available at its approved named path; ensure one deployment cannot accidentally replace the other product entrypoint.
+- [ ] Confirm Reboot-OS Pages repository variable `ATUNED_API` points to the intended HTTPS origin for `atuned-api` and matches the browser CSP/CORS settings.
+- [ ] Classify `atuned-os` as a static app/preview/production service and document its intended domain, root, repository, and branch. Do not assume it is the API.
+- [ ] If `atuned-api` is the intended backend, validate root `atuned/server` and `npm run deploy` with a controlled, non-production build first.
+- [ ] Do not add a `previews` block merely to silence the failed command.
+- [ ] Re-run the external check and verify intended host output and `/v1/health` only after service ownership and branch rules are confirmed.
+- [ ] No production deploy, migration, or data mutation until explicitly authorized.
+
+Cross-review: A checks exact-head and deployment evidence; G validates app/API route contracts and health; independent reviewer verifies Pages publisher uniqueness and no accidental root overwrite.
 
 ## Block G — Cross-repository contract and regression review
 Acceptance:
@@ -108,13 +117,14 @@ Acceptance:
 
 ## Latest live exact-head checkpoint
 
-**Live exact-head checkpoint — 12 October 2026, 18:43 PDT.** Point-in-time status; refresh before acting.
+**Historical exact-head checkpoint — 12 October 2026, 18:43 PDT.** Superseded by the 13 October refresh in ATUNED_MASTER_INDEX.md and ATUNED_ARCHITECTURE_REVIEW_2026-10-13.md; use this only as historical context.
 - MOB PR #69: head `bfc5108f5b32f071006f7af4facefc61ab6189f0`; workflow [#38322940378](https://github.com/rebootos-sourcce/MOB/actions/runs/38322940378) completed successfully. This documentation update creates a newer head and requires its own exact-head workflow.
 - MOB PR #66: head `fc7033fb24ec9ed94e2f63563e723b82603b2e68`; workflow [#38322094250](https://github.com/rebootos-sourcce/MOB/actions/runs/38322094250) completed successfully. This is repository CI, not gift approval or current-release persistence proof.
-- Reboot-OS PR #35: latest head `48313941da1338e2cd0ec1d5d9cd4d9b2d5c6bdf`. Its server and two smoke checks are in progress. Parent `9a1949b061d3e0c8758c700867ef654758e221b9` passed the server suite 147/147, but its smoke checks had not completed.
-- External Cloudflare: previous completed build `4493054d-55c0-4cef-8edf-8d002103aaeb` failed ([check](https://github.com/rebootos-sourcce/Reboot-OS/runs/115087663682)). Newer build `0b27be84-ebb9-4d97-b20b-eba999fdcebc` is in progress. If it fails, authenticated Cloudflare logs are still required to identify the first failed step.
+- Reboot-OS PR #35: head `48313941da1338e2cd0ec1d5d9cd4d9b2d5c6bdf`; exact-head server suite passed 147/147 and both smoke workflows passed (runs #38333447700, #38333450875, #38333447634). The external Cloudflare check remains failed.
+- External Cloudflare: build `0b27be84-ebb9-4d97-b20b-eba999fdcebc` failed. The first error is now known: Cloudflare ran `npx wrangler preview`, and Wrangler reported a missing `previews` block. Later settings show `npx wrangler deploy`, so confirm current config and intended target rather than retrying the old command.
 - Public canon: 119 entries remain in the draft public allowlist; 8 manifest entries are excluded from public routes pending authority/status review: `INFERRED`, `SPLITPROP`, `SPLITASK`, `LADDERASK`, `DICTSTRUCT`, `ARCH12`, `LAWSX`, and `RARE`. Their source records are preserved. Do not infer that all 119 remaining entries have owner approval.
 - Gift bank: six gift natures remain separate from starting ground. Stable product IDs = 0; owner-approved rows = 0; selected manifest members = 0/560. The six-channel to four-track mapping and persisted browser → Worker → Supabase journey remain open.
+- Site architecture: two repository workflows publish different root bundles to Pages project `atuned`, branch `main`. Treat as a P0 publishing-collision risk until one publisher is designated and account bindings are checked.
 
 P0 remains open. No release or production action is authorized.
 
