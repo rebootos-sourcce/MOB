@@ -47,3 +47,12 @@ Node `--check` passes for `engine.js`. All six HTML documents contain doctype, o
 
 No PR merged; no production deployment, migration, protected-vault import, gift activation/issuance, billing/profile-sync activation, or production data mutation performed.
 P0 remains OPEN.
+
+
+## Follow-up check — current PR #38 external build
+
+The current PR #38 head `8f4b722a600f9eed489b92786204916d3587d2e3` has two check runs:
+- Repository `web` workflow #38473125019: success.
+- External `Workers Builds: atuned-os`: **failure**, check run #115557166260, build `c047ef31-f5b5-43a7-b36b-ad3a16df7e7c`; annotations count is 0. [Cloudflare build details](https://dash.cloudflare.com/b34a8a4f24d5ac71f7b386c240a6da90/workers/services/view/atuned-os/production/builds/c047ef31-f5b5-43a7-b36b-ad3a16df7e7c).
+
+The public check payload supplies the build/service IDs but no first-error output. The workflow patch changes only `.github/workflows/web.yml` and removes the competing Pages publish step while keeping build/artifact upload. This does not explain or repair the separate Workers Builds failure. Required next evidence: authorized operator retrieves the first failing Cloudflare build log and confirms service/account/domain/API bindings. Do not change Wrangler configuration speculatively.
