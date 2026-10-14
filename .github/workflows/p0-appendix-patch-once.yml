@@ -38,7 +38,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: appendix-navigation-browser-proof
-          path: .lookdev-ci-artifacts/
+          path: lookdev-ci-artifacts/
           if-no-files-found: warn
       - name: commit only canonical source edit to draft branch
         env:
