@@ -210,3 +210,13 @@ The same deterministic edits were tested against the retrieved root source in me
 2. Run syntax/runtime checks and test every control, reset, and JSON export.
 3. Inspect existing Field A/B source and screenshots side-by-side, then replace illustrative stand-ins with source-grounded previews where feasible.
 4. Record any failures and patch the workbench before treating prototype 0.1 as browser-accepted.
+
+
+### Workbench recursive patch pass
+- Refined the 390px mode to present one full-width candidate at a time rather than compressing all three cards into narrow columns.
+- Deferred object-URL revocation after JSON export to reduce the chance of interrupting the download.
+- Re-fetched the updated workbench from GitHub. Current workbench blob SHA: `a57d9955590b90f15333e88bdca77db8d9982015`.
+- JavaScript parse check using the V8 parser: **PASS**.
+- Static markup checks: **PASS** — 32 IDs, no duplicate IDs, one script block, one style block, three candidate directions, responsive metadata, reduced-motion declarations, reset/export handlers, and no external asset/runtime imports detected.
+- Workflow run `38605345102` is still running at the last poll: 18 jobs in progress, 10 queued, zero failed jobs observed. This is not terminal CI and does not test browser behavior of the new workbench specifically.
+- **Still open:** real browser render, desktop/mobile screenshots, interactive smoke tests, keyboard/accessibility pass, and wiring real Field A/B artifacts into the comparison. Keep the workbench exploratory and isolated.
