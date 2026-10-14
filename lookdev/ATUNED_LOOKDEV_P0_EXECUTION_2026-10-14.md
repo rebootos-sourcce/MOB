@@ -141,3 +141,43 @@ The source explains that `over` counts real `requestAnimationFrame` gaps over 17
 4. **Targeted browser proof:** root source was statically inspected from the blob API, but no local browser launch, fresh screenshot capture, or console/network capture was performed in this execution.
 
 Production and canonical source remain unchanged.
+
+
+## Recursive execution update — 2026-10-14
+
+### B0 — Source and CI trace
+- Confirmed working branch head before this update: `93b8944a87a900e3ef6d795744acf326c4b13612`; root `index.html` blob remains `24dea9c95112fe83073e58ef4cb14d7eb5de9928`.
+- Issue #75 remains open. PR #74 remains draft/unmerged.
+- Workflow run `38601838177` is still `in_progress` at the latest poll. The latest job snapshot shows the functional browser gate still running and no failed jobs observed. This is not terminal CI.
+- The Git blob read returns the full root HTML (5,898,347 characters). Uploading the rewritten 5.9 MB blob through the GitHub connector failed at transport level (`h2 protocol error: error reading a body from connection`). No root HTML write was made.
+
+### B1 — Deterministic patch path prepared
+Added `lookdev/patch_appendix_navigation.mjs`, a guarded local patcher for P0-1. It has read-only `--check` and explicit `--apply` modes, requires exact source matches, changes only the five intended copy/navigation/target regions, then checks duplicate IDs, A–F section uniqueness, data-target resolution, fragment href resolution, and appendix-count consistency before writing.
+
+The same deterministic edits were tested against the retrieved root source in memory:
+- Changed five intended source regions; no unrelated regions were altered by the transformation.
+- Post-transform element IDs: no duplicates detected.
+- Appendix section IDs present exactly once: A, B, C, D, E, F.
+- Side navigation contains A–F; contents contains A–F.
+- No unresolved static fragment hrefs. One templated runtime target expression (`${e.target.id}`) is intentionally excluded from static target checking.
+- Pattern Catalog is now assigned the planned Appendix F identity in the transformed candidate.
+
+**Important:** the transformed root HTML has not been written to Git because the 5.9 MB blob upload failed. The source defect remains OPEN until the patcher is run against a checkout and the resulting root file is committed. Do not mark P0-1 complete on the basis of the in-memory transformation.
+
+### Remaining gaps / next execution
+1. Commit the patcher and this updated record on the isolated lookdev branch.
+2. Run `node lookdev/patch_appendix_navigation.mjs --check` then `--apply` in a byte-capable checkout; review the resulting focused `index.html` diff and commit it.
+3. Poll the new workflow run to terminal and triage all failures.
+4. Run targeted real-browser navigation acceptance at 1600px and 390px; capture A–F direct-fragment, active-state, keyboard/focus, console, network, and screenshot evidence.
+5. Run the documented Field B measurement harness repeatedly for Gordon/1600; preserve raw results before deciding whether the 49.9 ms outlier repeats.
+6. Inspect matched Core/A/B visual evidence and complete the consolidated cross-functional decision record. No reviewer/agent feedback is claimed until actually obtained.
+
+### Updated ledger
+| ID | Symptom | Severity | Evidence | Patch | Verification | Status |
+|---|---|---|---|---|---|---|
+| P0-1 | Duplicate `appendix-a`; Pattern Catalog absent from nav/TOC | P0 | Root blob static audit; issue #75 | Guarded patcher prepared; root write still blocked by large-blob transport | In-memory transformed source passed static checks; checkout/browser proof pending | OPEN |
+| P0-2 | Field B Strata/Gordon/1600 frame gap ~49.9 ms | P0 | `proto/field-b/cost.json` | None yet | Repeat real harness runs required | OPEN |
+| P0-3 | No accepted Look A/B selection | P0 | Candidate HTML, historical screenshots and measurement artifacts inventoried | None | Matched Core/A/B captures and owner decision required | OPEN |
+| P0-4 | Runtime, accessibility, network, interaction and isolation proof incomplete | P0 | Static audit only | None | Real browser evidence required | OPEN |
+
+**Safety:** no production deployment, merge, live data change, or production configuration change performed.
