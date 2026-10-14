@@ -29,7 +29,7 @@ jobs:
           node - <<'NODE'
           const fs=require('node:fs');
           const s=fs.readFileSync('lookdev/workbench.html','utf8');
-          const ids=[...s.matchAll(/\\bid="([^"]+)"/g)].map(m=>m[1]);
+          const ids=[...s.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);
           const dup=ids.filter((id,i)=>ids.indexOf(id)!==i);
           const areas=['Fonts / Typography','Logo / Wordmark','Colors','Icons','UI Elements','Copy Elements','Story','Taglines','Motion','Sound','Innovation'];
           if(dup.length) throw new Error('Duplicate IDs: '+[...new Set(dup)].join(', '));
