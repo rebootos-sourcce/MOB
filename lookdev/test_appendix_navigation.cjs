@@ -44,16 +44,30 @@ const assert = require('node:assert/strict');
       if (viewport.width === 1600) {
         const navGroup = page.locator('nav .nav-group[data-group="5"]');
         const toggle = navGroup.locator('button.nav-mv-toggle');
+        await toggle.evaluate(el => {
+          window.__navEvents = [];
+          for (const type of ['keydown', 'keyup', 'click']) {
+            el.addEventListener(type, e => window.__navEvents.push({ type, key: e.key || null, defaultPrevented: e.defaultPrevented }), true);
+          }
+        });
+        const beforeClickProbe = await toggle.getAttribute('aria-expanded');
+        await toggle.evaluate(el => el.click());
+        const afterClickProbe = await toggle.getAttribute('aria-expanded');
+        await toggle.evaluate(el => el.click());
         const beforeKeyboard = await toggle.getAttribute('aria-expanded');
         await toggle.focus();
         await page.keyboard.press('Enter');
         const afterEnter = await toggle.getAttribute('aria-expanded');
+        const keyEvents = await page.evaluate(() => window.__navEvents || []);
         report.diagnostics ||= [];
         report.diagnostics.push({
           viewport: viewport.width,
           phase: 'appendix-toggle-enter',
+          beforeClickProbe,
+          afterClickProbe,
           beforeKeyboard,
           afterEnter,
+          keyEvents,
           toggleCount: await navGroup.locator('button.nav-mv-toggle').count(),
           tagName: await toggle.evaluate(el => el.tagName),
           disabled: await toggle.isDisabled(),
