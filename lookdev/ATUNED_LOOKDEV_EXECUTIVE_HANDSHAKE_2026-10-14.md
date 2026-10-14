@@ -62,7 +62,7 @@ Do not reorder pages, create alternate page taxonomies, or replace the guide wit
 - Palette selection was patched to apply shared background, surface, accent, ink, muted, line, and accent-ink tokens across the guide, while keeping the palette specimen and token readout synchronized.
 - Palette labels were changed to “Earth palette study” and “Jewel palette study” to avoid implying separate full brand directions.
 - Page order was preserved.
-- SHA-256 of the local reviewed HTML: `f94b2dac4cf6daa91bcb2cb7e3ebdf46389a162fb4ab0650f80ccb6b2cf139cd`.
+- SHA-256 of the local reviewed HTML: `9e96f0bdb51b381291e44ab47fbacfe319728c2a3dc21f8bc56e944fec9e4614`.
 - This file was written and statically reviewed. Real-browser visual regression and interaction acceptance have **not** yet been verified. Do not claim them complete.
 
 ## Immediate next execution block
@@ -115,7 +115,7 @@ Do not reorder pages, create alternate page taxonomies, or replace the guide wit
 - At the end of every round, update **Start Here index, sitemap/trace, execution ledger, detailed execution record, and this handshake**. Verify that all links and current SHA references resolve.
 
 ### Latest verified brand guide browser QA
-- Local reviewed HTML SHA-256: `f94b2dac4cf6daa91bcb2cb7e3ebdf46389a162fb4ab0650f80ccb6b2cf139cd`; 84,640 bytes.
+- Local reviewed HTML SHA-256: `9e96f0bdb51b381291e44ab47fbacfe319728c2a3dc21f8bc56e944fec9e4614`; 85,640 bytes.
 - Chromium Headless 144.0.7559.96 rendered the exact source bytes in an isolated document because direct file/localhost navigation is blocked in the runtime.
 - All 11 pages were captured at 1600×1000 and 390×844.
 - Tabs, three global palettes, light/dark computed colors, exact-law search, motion search, reduced-motion toggle, audio opt-in and four sample buttons were exercised. Mobile page width stayed 390px; horizontal navigation scroll reaches Innovation; no JavaScript exceptions/console errors in the trusted-interaction smoke pass.
@@ -167,7 +167,7 @@ Do not reorder pages, create alternate page taxonomies, or replace the guide wit
 - Current branch head has advanced since previous status snapshots; always re-fetch refs before acting.
 
 ### Lookdev browser QA artifact
-- Local reviewed guide SHA-256: `f94b2dac4cf6daa91bcb2cb7e3ebdf46389a162fb4ab0650f80ccb6b2cf139cd`.
+- Local reviewed guide SHA-256: `9e96f0bdb51b381291e44ab47fbacfe319728c2a3dc21f8bc56e944fec9e4614`.
 - QA package: `ATUNED_LOOKDEV_BROWSER_QA_2026-10-14.zip` (local downloadable artifact). All 11 pages captured at desktop 1600×1000 and mobile 390×844.
 - The reviewed guide is still not committed to GitHub. Full keyboard-only, contrast and screen-reader acceptance remains open.
 
@@ -179,3 +179,10 @@ The cross-repository [ATÜNED Master Index](https://github.com/rebootos-sourcce/
 The inherited task references an embedded `CORE_REFERENCE.html` and a 12-tab workspace (Story, Avatar, Summary, Intake, Analytics, Field, Body, Compass, Character, Ritual, Knowledge, Clients). Neither exact source was found in the current attachments or the current lookdev branch tree. Root `main/index.html` is the 5.9MB “The Mechanics of Being, Lance Powell” chapter/appendix document; the owner-supplied guide is an 11-tab look-development artifact. These must not be conflated.
 
 **Blocking dependency:** locate the exact handoff artifact containing `CORE_REFERENCE.html`, preserve its provenance/hash, compare its embedded bytes against the candidate source, and establish the governing 12-tab source before completing the workspace-to-source map or editing that workspace.
+
+
+## Latest local guide regression patch — 2026-10-14
+
+The reviewed 11-page guide's current local SHA-256 is `9e96f0bdb51b381291e44ab47fbacfe319728c2a3dc21f8bc56e944fec9e4614` (85,640 bytes). In addition to global palette behavior, the local guide now makes Mirror responses set a selected state and accessible feedback, synchronizes the sound opt-in button label when the checkbox is disabled, and lightens Earth muted text to `#d0c4b4`. `node --check` passes; Chromium smoke checks pass for all 11 tabs, all 3 palettes, light/dark toggle, exact law search, motion filter/group/replay/reduced-motion, sound opt-in and four samples, Mirror response states, and 390px no-overflow document layout. All 11 pages have desktop and mobile screenshots in the local QA zip.
+
+Contrast note: Earth muted text against surface is 5.00:1 after patch. Earth/Jewel accent against surface is 3.37:1 / 3.68:1; full usage audit remains open, and those colors must not be used as normal text on those surfaces without adjustment. Full keyboard-only and screen-reader acceptance and owner visual approval remain open. The guide is still not committed to the branch.
