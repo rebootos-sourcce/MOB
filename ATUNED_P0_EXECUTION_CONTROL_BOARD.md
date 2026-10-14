@@ -252,3 +252,11 @@ A full comparison of Reboot-OS `NODEREG.json`, `PMFPOS`, `PMFALIAS`, and `FLOWSE
 - Reconfirmed exact-head successes: Reboot-OS PR #47 run [#38512729513](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38512729513), PR #46 run [#38513391386](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38513391386), MOB PR #66 run [#38322094250] (all 30 listed jobs pass), and MOB PR #69 run [#38515801145] (all listed jobs pass on its pre-refresh head). The #69 handshake/index refresh will need a new exact-head run.
 - Out-of-scope: MOB PR #74 branch `lookdev/p0-execution-20261014`; its functional gate failure is not part of this engineering-only P0 run and must not pull the build into lookdev.
 - Owner/admin gates remain unchanged: approved gift content and mapping, authorized Supabase migration/lifecycle proof, authenticated Cloudflare publisher/service confirmation, and human accessibility/release acceptance.
+
+
+## Latest engineering delta — 14 October 2026 UTC
+
+- **Workflow security PR #53:** head `938bbc628bf035b79c12a08179d2ef17ca7b400e`; added regression assertions against `pull_request_target`, `write-all`, and additional `contents: write` permissions. Exact-head push #38646477095 and pull_request #38646483356 both failed before steps; issue #51 tracks administrator-level runner diagnosis.
+- **Geometry PR #52:** head `8b34a7c787a1eca93d77c798e6324493988763ee`; geometry source audit is now wired into `.github/workflows/gate.yml`. Cross-review found and fixed a real test-tool defect: `PMFALIAS` uses JavaScript object syntax and cannot be parsed by `json.loads`. The replacement parser is non-evaluating and its exact five-alias fixture passed locally. Exact-head push #38646345109 and pull_request #38646353600 both failed before steps, so the audit is not CI-verified.
+- **MOB documentation handshake:** PR #69 head `3d0b3b62e76a7e00dd6d66dbc8993662519b2daf`, run #38645821317 was 26/28 jobs successful at last poll; functional and recordlink were still active. Recheck before relying on that head's CI result.
+- The updated continuation handshake is `ATUNED_EXECUTIVE_HANDSHAKE_2026-10-14_P0_ENGINEERING.md`. It explicitly excludes lookdev and preserves owner/admin release gates.

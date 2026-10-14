@@ -368,3 +368,11 @@ The KPI framework is tracked in [ATUNED_MVP_ALPHA_KPI_FRAMEWORK_2026-10-13.md](A
 ### Cycle 4 follow-up — separate API preview and OS production outcomes
 
 - Reboot-OS PR #35 current head has successful server/smoke workflows, successful external `atuned-api` preview build `f58c7387-2bbf-4060-a579-ae666d2ca488`, and failed external `atuned-os` production build `b9148ff9-4c07-49f4-8926-1e6d77d7c851` with zero annotations. A preview success does not establish production routing or the deployed Pages `ATUNED_API` value. Authorized Cloudflare confirmation remains required.
+
+
+## Latest engineering delta — 14 October 2026 UTC
+
+- Reboot-OS PR #53 head is now `938bbc628bf035b79c12a08179d2ef17ca7b400e`. Its workflow regression script checks least-privilege permissions, forbids `pull_request_target` and `write-all`, requires exactly one `contents: write` permission, and validates rollback-tag guards. Exact-head push run [#38646477095](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38646477095) and pull-request run [#38646483356](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38646483356) both failed before steps. Draft status is not the cause; issue [#51](https://github.com/rebootos-sourcce/Reboot-OS/issues/51) contains the admin evidence.
+- Reboot-OS PR #52 head is now `8b34a7c787a1eca93d77c798e6324493988763ee`. The geometry source audit is wired into the gate; its PMFALIAS parser was corrected after cross-review found that the source is JavaScript object syntax, not JSON. The exact source-literal parser check passed locally. Exact-head push [#38646345109](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38646345109) and pull_request [#38646353600](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38646353600) both failed before steps, so CI has not executed the audit.
+- MOB PR #69 documentation refresh at prior head `3d0b3b62e76a7e00dd6d66dbc8993662519b2daf` is under a live 28-job workflow [#38645821317](https://github.com/rebootos-sourcce/MOB/actions/runs/38645821317); at last poll, 26 jobs had passed and functional/recordlink jobs were still in progress. Do not call it complete until the aggregate gate finishes.
+- The current [engineering continuation handshake](ATUNED_EXECUTIVE_HANDSHAKE_2026-10-14_P0_ENGINEERING.md) is refreshed with these exact heads and keeps all lookdev work excluded.
