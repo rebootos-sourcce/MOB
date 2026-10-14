@@ -1,11 +1,27 @@
 # ATÜNED Master Index
 **Version:** 0.3  
-**Last reconciled:** 13 October 2026 UTC  
+**Last reconciled:** 14 October 2026 UTC  
 **Status:** Architecture review recorded; live production publisher/service ownership still requires authenticated Cloudflare confirmation. P0 remains open.  
 **Purpose:** First stop for every engineering thread. This index points to the authority for decisions, code, content, deployment, backlog, and release evidence.
 
 [ATUNED Architecture Review — 13 October 2026](ATUNED_ARCHITECTURE_REVIEW_2026-10-13.md) is the current cross-repository site and deployment map. It contains the six-pass review, path diagrams, 35-route inventory, source-of-truth map, branch freshness register, gap ledger, and archive/backlog rules.  
 [ATUNED P0 Execution Control Board](ATUNED_P0_EXECUTION_CONTROL_BOARD.md) remains the active acceptance ledger; [P0 Block Execution Notes](ATUNED_P0_BLOCK_EXECUTION_NOTES_2026-10-12.md) records dependencies and stop/continue rules. The architecture map is complete at repository/configuration level, not at authenticated live-production level.
+
+## Current execution refresh — 14 October 2026 UTC
+
+**P0 remains OPEN.** Reboot-OS main is `233b5c3acc3d7396e3bd1a861319689aa4a9d60e`; PRs #43 and #44 merged topology and release-documentation corrections without runtime or production-data changes.
+
+- **Reduced motion:** Reboot-OS PR #46 is draft/open; exact-head gate #38513391386 passed on `2eae6b7c07d57d9979eb8f4ea462801730e1f055`. Human keyboard/screen-reader and remaining-motion review is still required.
+- **Publisher:** Reboot-OS PR #47 is draft/open; gate #38512729513 passed on `a43aae252811b00b082b8c7be55320b4204a8006`. Main still has the conditional Pages deploy in `Reboot-OS/.github/workflows/web.yml`; MOB main also deploys Pages project `atuned`. The mitigation is not active until reviewed and merged, and the canonical publisher/account/domain/rollback path still needs authenticated operator confirmation.
+- **Gift validator:** Reboot-OS PR #48 current head `dde8eaefaa3d9a02f0f02e0072f291418b081ab3`. Its prior passing gate predates the cross-bank duplicate-ID test. Current gate #38514559152 failed before any steps were recorded; the log is unavailable. Current-head test acceptance is unverified.
+- **Source/lifecycle audit:** Reboot-OS PR #45 is draft/open and now records a read-only live-lifecycle finding. On connected Supabase ATUNED ref `tuvpjbduarteszwkdmuu`, 4,992/4,992 funnel sessions are `ARRIVE/active`; 4,412 were not updated in the prior 24 hours. Six starter gifts exist (five active, one pending); all six share one `pattern_set_hash`, and the inspected table lacks a gift-nature/catalog-version selector. These rows may be fixtures or real sessions; safe provenance and non-production lifecycle verification are required. Do not mutate production to normalize counts.
+- **Database boundary:** live migration inventory ends at 0015; 0016–0018 and expected catalog/set/mapping tables are absent. Existing relevant tables have RLS and restrictive anon/authenticated deny policies; the current security advisor returned zero lints. This does not establish lifecycle correctness or future-table security.
+- **Content:** 560 source-review rows; zero stable final pattern IDs and zero owner-approved bank rows. Six 100-item banks, item-level provenance/approval, and the stable six-nature-to-four-track mapping remain open.
+- **Geometry:** canonical topology is 112 = 108 body + 2 above + 2 below. Four legacy root/earth-core position keys remain outside the canonical register; anchors 110 Stellar Gateway and 112 Gaia Gateway lack measured positions/aliases. No approved geometry crosswalk is established.
+- **CI interpretation:** latest Reboot-OS #45/#48 gate attempts failed before steps were recorded and logs are unavailable. Do not classify these as code-test failures or passes. Investigate runner startup, then require exact-head CI.
+- **Release boundary:** human accessibility/privacy review, non-production migration/rollback proof, persisted browser→Worker→database→reload acceptance, provider verification, and explicit release authorization remain mandatory.
+
+The full additive execution record is in [the P0 control board](ATUNED_P0_EXECUTION_CONTROL_BOARD.md) and the Reboot-OS [recursive execution audit](https://github.com/rebootos-sourcce/Reboot-OS/blob/docs/p0-recursive-execution-audit-20261014/atuned/docs/P0-RECURSIVE-EXECUTION-AUDIT-2026-10-14.md). No production migration, data write, deployment, gift issuance/activation, profile-sync activation, or billing activation was performed by this cycle.
 
 ## Current verified checkpoint — 13 October 2026 UTC
 
