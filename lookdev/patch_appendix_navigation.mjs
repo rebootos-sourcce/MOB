@@ -44,10 +44,21 @@ replaceExactlyOnce(
   "Pattern Catalog id and label");
 replaceExactlyOnce("var isActive = link.getAttribute('href') === '#' + id",
   "var isActive = link.getAttribute('data-target') === id", "scroll-spy active state");
-replaceExactlyOnce(`  btn.addEventListener('keydown', function(ev){
-    if(ev.key==='Enter'||ev.key===' '){ ev.preventDefault(); btn.click(); }
-  });
-`, "", "remove duplicate native-button keyboard activation");
+{
+  // The canonical source has varied whitespace around this handler across revisions.
+  // Remove exactly one matching native-button keydown shim; native buttons already
+  // synthesize click on Enter/Space, so this shim can double-activate the toggle.
+  const pattern = /[ \\t]*btn\\.addEventListener\\('keydown', function\\(ev\\)\\{\\s*if\\(ev\\.key==='Enter'\\|\\|ev\\.key===' '\\)\\{\\s*ev\\.preventDefault\\(\\);\\s*btn\\.click\\(\\);\\s*\\}\\s*\\}\\);\\s*/g;
+  const matches = [...html.matchAll(pattern)];
+  if (matches.length === 1) {
+    html = html.replace(pattern, "");
+    edits.push({ label: "remove duplicate native-button keyboard activation", status: "patched" });
+  } else if (matches.length === 0 && !html.includes("if(ev.key==='Enter'||ev.key===' ')")) {
+    edits.push({ label: "remove duplicate native-button keyboard activation", status: "already-applied" });
+  } else {
+    throw new Error("remove duplicate native-button keyboard activation: expected one handler, found " + matches.length);
+  }
+}
 
 function validate(document) {
   const ids = [...document.matchAll(/\bid\s*=\s*(["'])(.*?)\1/g)].map(m => m[2]);
