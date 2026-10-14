@@ -1,6 +1,6 @@
-# ATÜNED Look Development — Executive Handshake
+# ATÜNED Look Dev — Executive Handshake
 **Updated:** 2026-10-14  
-**Workstream:** Brand look development only  
+**Workstream:** ATÜNED Look Dev / brand look development only  
 **Current source artifact:** `ATUNED_LOOKDEV_BRAND_GUIDE_REVIEWED_V2_2026-10-13.html` supplied by the owner; reviewed in three passes this thread.  
 **Do not substitute:** the earlier generic three-direction workbench. It was not aligned to the brief and is not the primary artifact.
 
