@@ -111,3 +111,33 @@ The side navigation and contents use `data-target="appendix-a"`, so the target i
 - Browser acceptance: **open**; repository CI browser gates are running but are not a substitute for targeted acceptance of the appendix fix.
 - P0 navigation defect: **open, issue #75**.
 - Production: **untouched**.
+
+
+## Third recursive pass — measurement artifacts and CI
+Parsed the checked-in measurement JSON rather than treating screenshot filenames as proof.
+
+### Field A measurement coverage
+- Both viewport datasets are present: 390px and 1600px.
+- Each dataset lists 15 profiles and eight depth/view records (A–D repeated twice).
+- The current artifact's maximum seat label character count is 7. This is only a data-shape summary; it does not establish visual legibility or clipping.
+
+### Field B transition budget
+The existing `proto/field-b/cost.json` reports a specific outlier for `gordon-1600`, the explicitly tested heaviest roster profile:
+- Strata: mean paint time about 1.82 ms, worst paint time about 2.10 ms
+- Real-frame transition: worst frame gap about 49.9 ms, with 1 frame over the 17.5 ms budget out of 21 measured frames
+- Other recorded state/direction entries show 0 frames over budget and 23 measured frames
+
+The source explains that `over` counts real `requestAnimationFrame` gaps over 17.5 ms. This is a **performance/frame-budget outlier**, not a geometry overflow. It needs a rerun to distinguish a repeatable Strata transition problem from runner/compositor noise before choosing Field B. The measurement source and artifact are present, but this execution did not launch the local Playwright harness.
+
+### CI status
+- Prior PR workflow run `38601381970`: last observed 18 jobs succeeded and 10 remained in progress; no failed jobs were reported at that observation.
+- After the latest execution-record commit, workflow run `38601838177` started. Its first observation showed 13 jobs in progress and 15 queued, with no conclusions yet. It must be polled to completion; do not treat queued/running jobs as passing.
+- The current PR workflow is triggered by the documentation branch. Its results exercise the repository's gates, but they do not verify the proposed Appendix F patch because that patch has not been applied.
+
+### Updated open blockers
+1. **Appendix navigation collision:** duplicate `appendix-a` target; tracked in issue #75; fix not applied.
+2. **Field B Strata timing outlier:** rerun `proto/field-b/shoot.js` on Gordon at 1600px, compare repeated frame-gap measurements, and record disposition.
+3. **Look selection:** no approved Look A/B mapping; visual screenshot comparison and owner acceptance remain open.
+4. **Targeted browser proof:** root source was statically inspected from the blob API, but no local browser launch, fresh screenshot capture, or console/network capture was performed in this execution.
+
+Production and canonical source remain unchanged.
