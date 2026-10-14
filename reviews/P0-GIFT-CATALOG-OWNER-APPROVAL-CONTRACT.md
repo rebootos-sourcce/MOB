@@ -15,20 +15,21 @@ For each of the six gift natures, record:
 - Reviewed side/category, phase, and release-vs-reframe classification where applicable.
 - Explicit human decision for missing or ambiguous source runs, locators, or unsupported channels/verbs.
 - Reviewer, approval date, version, and checksum of the frozen bank.
-- Deterministic mapping from each nature to the four client tracks, including tie-break/fallback behavior.
+- Deterministic mapping from each gift nature to the four client tracks, including tie-break/fallback behavior, if that is the intended product contract.
+- A separate explicit contract for any server action/verb channels and their client-track mapping. Do not conflate action channels with gift natures merely because both currently have six values.
 
 ## Validation rules
 
 A bank is not ready unless all pass:
 
 1. Exactly 100 unique stable IDs per nature; no generated placeholders.
-2. No duplicate IDs within/across natures unless explicitly permitted by the contract.
+2. No duplicate stable IDs within or across the six nature banks. A pattern set belongs to exactly one nature; mapping-version changes may revise a nature's mapping but may not reassign the same frozen set to another nature.
 3. Every item has non-empty text and a resolvable source locator.
 4. Provenance ambiguities have recorded human decisions; no silent first-match selection.
 5. Source-kind/action values belong to the approved finite contract.
 6. Release/reframe and phase fields derive from reviewed evidence.
 7. Owner approval is tied to a specific checksum/version.
-8. All six natures map deterministically to one of four tracks under explicit tested rules.
+8. The nature-to-track mapping is deterministic and tested where required by the product contract. If the runtime also has six server action/verb channels, validate that mapping separately; no implicit identity-by-count or overloaded key is allowed.
 9. Tests reject missing/duplicate IDs, unknown nature/track values, unapproved versions, and incomplete banks.
 10. Unapproved banks cannot be activated, issued, or attached to live accounts.
 
@@ -45,7 +46,8 @@ Re-verify these findings against the current source revision before release. Do 
 - [ ] Resolve source-run and provenance ambiguities.
 - [ ] Approve the finite source-kind/action vocabulary.
 - [ ] Approve release/reframe and phase classifications.
-- [ ] Approve the six-to-four track mapping and tie-break rules.
+- [ ] Confirm whether the four-track mapping is keyed by gift nature, server action/verb channel, or both; document distinct source keys and schemas.
+- [ ] Approve each required mapping independently, including tie-break/fallback rules, unknown-key behavior, and regression tests.
 - [ ] Approve versioning, replacement, revocation, and rollback behavior.
 - [ ] Confirm unapproved/withdrawn content cannot be issued or resurrected.
 
@@ -60,4 +62,4 @@ Re-verify these findings against the current source revision before release. Do 
 
 ## Release rule
 
-Engineering may prepare schemas, validators, synthetic fixtures, and tests. Engineering must not invent production IDs, fill missing content, decide ambiguous source classifications, or mark a bank approved. P0 remains blocked until all owner decisions and evidence are complete.
+Engineering may prepare schemas, validators, synthetic fixtures, and tests. Engineering must not invent production IDs, fill missing content, decide ambiguous source classifications, or mark a bank approved. Cross-nature reuse of a frozen set is forbidden. Nature keys and action/verb channel keys must remain distinct unless the approved contract explicitly defines a relationship. P0 remains blocked until all owner decisions and evidence are complete.
