@@ -236,7 +236,7 @@ The owner clarified that this workstream is the existing look-development HTML a
 
 ### Local artifact and evidence
 - Reviewed file: `ATUNED_LOOKDEV_WORKBENCH_REVIEWED_2026-10-14.html`
-- SHA-256: `f94b2dac4cf6daa91bcb2cb7e3ebdf46389a162fb4ab0650f80ccb6b2cf139cd`
+- SHA-256: `9e96f0bdb51b381291e44ab47fbacfe319728c2a3dc21f8bc56e944fec9e4614`
 - Patch exists as a local downloadable artifact; this execution record does not claim that the reviewed HTML has been committed to this repository branch.
 - Real-browser screenshots and interaction/accessibility acceptance remain pending.
 - The literal Brand Dev 3/4/5 folder transcripts were not returned by exact-title search; related creative-source specifications were retrieved. Do not mark those literal folder reviews complete.
@@ -261,7 +261,7 @@ The owner clarified that this workstream is the existing look-development HTML a
 These are committed on `lookdev/p0-execution-20261014`. Future threads must read in that order, then refresh exact branch head, canonical source, PR/issue and CI state. The index and ledger carry all unresolved tasks forward; update all four documents before ending a round.
 
 ### Browser QA actually performed
-- Exact local reviewed HTML: `ATUNED_LOOKDEV_WORKBENCH_REVIEWED_2026-10-14.html`; 84,640 bytes; SHA-256 `f94b2dac4cf6daa91bcb2cb7e3ebdf46389a162fb4ab0650f80ccb6b2cf139cd`.
+- Exact local reviewed HTML: `ATUNED_LOOKDEV_WORKBENCH_REVIEWED_2026-10-14.html`; 85,640 bytes; SHA-256 `9e96f0bdb51b381291e44ab47fbacfe319728c2a3dc21f8bc56e944fec9e4614`.
 - Runtime: Chromium Headless 144.0.7559.96. The source bytes were injected into an isolated blank document because this environment blocks `file://` and localhost navigation. This tests the rendered HTML/JS/CSS but not deployment hosting.
 - Captured every guide page at 1600×1000 and 390×844. Desktop/mobile screenshot hashes and browser reports are stored locally under `/mnt/data/atuned_qa/`; package has not been committed to GitHub.
 - Verified: all 11 page tabs activate; all 3 palettes update shared background/surface/accent/ink/muted/line tokens; light/dark toggle changes computed colors; exact law search “All Is One” returns 1 of 76; motion filter returns 2 of 103 source names; reduced-motion toggle changes state; audio opt-in and four sample buttons respond to trusted browser mouse input; mobile document width stays 390px and the horizontally scrollable nav reaches Innovation; no JS exceptions or console errors were recorded in the trusted-interaction smoke pass.
@@ -290,3 +290,13 @@ These are committed on `lookdev/p0-execution-20261014`. Future threads must read
 12. Retry retrieval of literal Brand Dev 3/4/5 folders; never fabricate their contents.
 
 No production merge, deployment, or production configuration change was performed.
+
+
+## Brand guide interaction/contrast regression update — 2026-10-14
+
+- Current local guide: `ATUNED_LOOKDEV_WORKBENCH_REVIEWED_2026-10-14.html`, 85,640 bytes, SHA-256 `9e96f0bdb51b381291e44ab47fbacfe319728c2a3dc21f8bc56e944fec9e4614`.
+- Additional local fixes: Mirror choice controls now display a preview evidence-state result and expose `aria-pressed`; disabling sound preview restores the button label; Earth muted token is now `#d0c4b4` for 5.00:1 contrast against Earth surface.
+- Inline JS syntax check passes. Chromium Headless smoke pass covers 11 tabs; three global palettes; theme toggle; law search (1/76); motion search/group/replay/reduced-motion; sound opt-in, disable-label state, and four sample controls; Mirror response states; mobile width 390px. No JS exceptions/console errors in the trusted-interaction pass.
+- Screenshots for all 11 pages at 1600×1000 and 390×844 are bundled in local `ATUNED_LOOKDEV_BROWSER_QA_2026-10-14.zip`.
+- Contrast check flags Earth/Jewel accent on surface at 3.37:1/3.68:1 if used for normal text; per-component audit remains open. Full keyboard-only, screen-reader and owner visual acceptance remain open.
+- Guide transfer into the repository remains open; local SHA must be verified after transfer.
