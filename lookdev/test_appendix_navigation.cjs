@@ -110,8 +110,15 @@ const assert = require('node:assert/strict');
         // reach its destination instead of sampling the first animation frame.
         await page.waitForFunction(() => {
           const el = document.getElementById('appendix-f');
-          return !!el && Math.abs(el.getBoundingClientRect().top) < 160;
-        }, { timeout: 5000 });
+          if (!el) return false;
+          const sample = { y: Math.round(window.scrollY), top: Math.round(el.getBoundingClientRect().top) };
+          const previous = window.__appendixScrollSample;
+          const same = previous && previous.y === sample.y && previous.top === sample.top;
+          window.__appendixStableFrames = same && Math.abs(sample.top) < 160
+            ? (window.__appendixStableFrames || 0) + 1 : 0;
+          window.__appendixScrollSample = sample;
+          return Math.abs(sample.top) < 160 && window.__appendixStableFrames >= 3;
+        }, null, { timeout: 5000 });
         const clicked = await page.evaluate(() => {
           const el = document.getElementById('appendix-f');
           return { scrollY: Math.round(scrollY), offsetTop: Math.round(el.getBoundingClientRect().top) };
