@@ -48,6 +48,23 @@ const assert = require('node:assert/strict');
         await toggle.focus();
         await page.keyboard.press('Enter');
         const afterEnter = await toggle.getAttribute('aria-expanded');
+        report.diagnostics ||= [];
+        report.diagnostics.push({
+          viewport: viewport.width,
+          phase: 'appendix-toggle-enter',
+          beforeKeyboard,
+          afterEnter,
+          toggleCount: await navGroup.locator('button.nav-mv-toggle').count(),
+          tagName: await toggle.evaluate(el => el.tagName),
+          disabled: await toggle.isDisabled(),
+          visible: await toggle.isVisible(),
+          focusedAfterActivation: await toggle.evaluate(el => el === document.activeElement),
+          ariaControls: await toggle.getAttribute('aria-controls'),
+          groupExpanded: await navGroup.getAttribute('aria-expanded'),
+          groupClass: await navGroup.getAttribute('class'),
+          childLinks: await navGroup.locator('a[data-target]').count(),
+          childLinksVisible: await navGroup.locator('a[data-target]').evaluateAll(els => els.map(el => ({ target: el.getAttribute('data-target'), hidden: el.hidden, display: getComputedStyle(el).display, visibility: getComputedStyle(el).visibility })))
+        });
         assert.notEqual(afterEnter, beforeKeyboard, 'Enter toggles appendix side-nav group');
         await page.keyboard.press('Space');
         const afterSpace = await toggle.getAttribute('aria-expanded');
