@@ -181,3 +181,32 @@ The same deterministic edits were tested against the retrieved root source in me
 | P0-4 | Runtime, accessibility, network, interaction and isolation proof incomplete | P0 | Static audit only | None | Real browser evidence required | OPEN |
 
 **Safety:** no production deployment, merge, live data change, or production configuration change performed.
+
+
+## Workbench implementation pass — 14 October 2026
+
+**Built:** `lookdev/workbench.html`  
+**Commit:** `e2b985fce2ade6effec64322409b342b465dc01a`  
+**File blob SHA:** `4dac5dbe445746eb90b3e149e4a5ae1ee99ff252`  
+**Review URL:** https://github.com/rebootos-sourcce/MOB/blob/lookdev/p0-execution-20261014/lookdev/workbench.html
+
+### Included in prototype 0.1
+- Three side-by-side directions: Core language, Warm clarity, Quiet signal.
+- Accent palette, corner radius, layout density, typography feel, motion intensity, signal glow, reduced-motion toggle.
+- Desktop/mobile comparison control, overview/detail/quiet sample states, selected-look indicator.
+- Live token snapshot and session measurements.
+- Reset and JSON export controls.
+- Responsive CSS, visible keyboard focus, status announcement, and prefers-reduced-motion handling.
+- Single self-contained HTML file; no external assets or runtime imports detected by static string scan.
+
+### Verification boundary
+- **Verified:** file exists on the isolated lookdev branch; fetched back from GitHub; HTML opening/closing tags, viewport metadata, three direction names, one style block, one script block, export/reset handlers, and reduced-motion declarations detected.
+- **Not verified:** actual browser launch, JavaScript syntax/runtime, screenshot rendering, control-by-control behavior, keyboard/screen-reader acceptance, mobile browser layout, or automated CI result for this commit.
+- This is a look-development workbench prototype, not a production look selection. The three cards are deliberately authored exploration directions, not confirmed faithful reproductions of the canonical Core or the existing Field A/B prototypes.
+- No canonical `index.html` changes, merge, deployment, or production writes were performed.
+
+### Next recursive work
+1. Obtain an actual rendered browser preview and capture desktop 1600px and mobile 390px screenshots.
+2. Run syntax/runtime checks and test every control, reset, and JSON export.
+3. Inspect existing Field A/B source and screenshots side-by-side, then replace illustrative stand-ins with source-grounded previews where feasible.
+4. Record any failures and patch the workbench before treating prototype 0.1 as browser-accepted.
