@@ -89,3 +89,60 @@ Do not reorder pages, create alternate page taxonomies, or replace the guide wit
 - **Next step:** browser-based verification, then patch the next confirmed gap.
 
 **Confidence:** 0.98 in the stated supplied-HTML structure and local patch; 0.70 in the broader creative north star from retrieved source documents; 0.25 that the literal Brand Dev 3/4/5 folders were fully inspected, because exact transcript/folder artifacts were not returned by current file search.
+
+
+---
+
+## Mandatory AI continuation protocol — reinforced 2026-10-14
+
+### Read-first navigation
+**Every round starts here, then follows this exact order:**
+1. [ATÜNED Dev Start Here / Working Index](ATUNED_DEV_START_HERE.md)
+2. [Repository Sitemap and Source Trace](ATUNED_REPO_SITEMAP_TRACE_2026-10-14.md)
+3. [Execution Ledger — done vs open](ATUNED_DEV_EXECUTION_LEDGER_2026-10-14.md)
+4. This handshake.
+5. [Detailed P0 Execution Record](ATUNED_LOOKDEV_P0_EXECUTION_2026-10-14.md)
+6. Refresh current repository branch head, `main/index.html` SHA, issue #75, PR #74 and workflow runs. Read the exact source bytes and trace imports/call sites; do not trust old status text over current source evidence.
+7. Search for **ATUNED BRAND DEV 5**, **ATUNED BRAND DEV 4**, and **ATUNED BRAND DEV 3** in the conversation/project library. Review each source three passes: goals/decisions; page-level visual requirements; gaps/conflicts against current artifact. The last recursive library scan covered 851 entries over 9 pages and found no literal folder/transcript matches. This remains a retrieval blocker; do not claim direct review until the artifacts are actually available.
+
+### Done vs open discipline
+- Every task needs one of: **VERIFIED**, **PARTIAL**, **OPEN**, or **BLOCKED**, with exact evidence, source revision, test conditions, artifact path/hash, and next action.
+- Do not silently drop an open item between handshakes. Every incomplete task in the execution ledger must be carried forward into the next handshake and index.
+- Do not count CI jobs that are running/queued as passing. A green documentation workflow does not validate an uncommitted app fix.
+- Do not report an in-memory patch as a source change. Do not claim a browser test, visual review, or agent review that did not happen.
+- At the end of every round, update **Start Here index, sitemap/trace, execution ledger, detailed execution record, and this handshake**. Verify that all links and current SHA references resolve.
+
+### Latest verified brand guide browser QA
+- Local reviewed HTML SHA-256: `f94b2dac4cf6daa91bcb2cb7e3ebdf46389a162fb4ab0650f80ccb6b2cf139cd`; 84,640 bytes.
+- Chromium Headless 144.0.7559.96 rendered the exact source bytes in an isolated document because direct file/localhost navigation is blocked in the runtime.
+- All 11 pages were captured at 1600×1000 and 390×844.
+- Tabs, three global palettes, light/dark computed colors, exact-law search, motion search, reduced-motion toggle, audio opt-in and four sample buttons were exercised. Mobile page width stayed 390px; horizontal navigation scroll reaches Innovation; no JavaScript exceptions/console errors in the trusted-interaction smoke pass.
+- Still open: commit the reviewed guide into this branch; rerun QA against committed bytes; comprehensive keyboard activation/focus test; contrast and screen-reader audit; sound disable/mute/state consistency; complete motion replay/group checks; owner visual approval.
+- Screenshot hashes and raw browser reports are local under `/mnt/data/atuned_qa/` and not yet committed to the repository.
+
+### Carry-forward P0 and source tasks — all remain listed
+1. **P0-1 appendix collision — OPEN:** root `index.html` still has duplicate `appendix-a`; issue #75 open. Commit actual Appendix F patch and run direct-fragment, nav state, keyboard and mobile browser tests.
+2. **P0-2 Field B Strata — OPEN:** stored Gordon/1600 frame gap ~49.9ms; repeat harness runs and root-cause conclusion missing.
+3. **P0-3 Core/A/B — OPEN:** fresh matched 1600px/390px screenshots and explicit evidence-backed selection missing.
+4. **P0-4 application runtime/a11y/isolation — OPEN:** exact source browser tests, console/network, reset/restore/export, reduced motion, accessibility and isolation proof missing.
+5. **Canonical source/provenance — PARTIAL:** source path and Git blob SHA known; local byte-level verification and comparison with supplied `CORE_REFERENCE.html` missing.
+6. **Dependency trace — PARTIAL:** Field A/B references and token source known; full `engine.js` call graph, mutable state, storage/network and asset/font trace missing.
+7. **Tokens — PARTIAL:** `atuned_src/shell/head.html` → `tools/tokens.py` → `funnel/tokens.css`; run generator and verify deterministic output in checkout.
+8. **Workspace/source mapping — OPEN:** map Story, Avatar, Summary, Intake, Analytics, Field, Body, Compass, Character, Ritual, Knowledge and Clients to source components and real-vs-preview behavior; explicitly document Diagnostic → Summary.
+9. **KPI acceptance — OPEN:** threshold approvals, test procedures, measured results and missing-telemetry caveats.
+10. **Cross-functional decision log — OPEN:** evidence-backed keep/change/reject across creative/art direction, UX, motion, sound, copy, brand and engineering.
+11. **Literal Brand Dev 3/4/5 source retrieval — BLOCKED:** exact folder/transcript artifacts not found in Library pagination; retry when available.
+12. **CI state — PARTIAL:** workflow `38601838177` completed successfully but was documentation-only; `38605345102` last observed in progress and `38606254578` queued. Refresh current branch-head runs.
+13. **Production safety — VERIFIED:** no production merge, deploy, or production configuration change was performed.
+
+### Immediate execution order
+1. Byte-capable checkout and provenance/source comparison.
+2. Apply and commit appendix fix on isolated branch; focused static and browser tests.
+3. Poll exact-head CI to terminal.
+4. Repeat Field B measurement and capture matched Core/A/B screenshots.
+5. Run full application runtime/a11y/network/isolation tests.
+6. Complete source map, KPI evidence and cross-functional decision log.
+7. Transfer the reviewed guide to GitHub via a reliable byte-capable path; verify SHA; rerun desktop/mobile browser acceptance.
+8. Update all continuity documents with evidence and remaining gaps before handing off.
+
+**Safety boundary remains:** no production merge/deployment or changes to production `index.html` without explicit authorization and completed release gates.
