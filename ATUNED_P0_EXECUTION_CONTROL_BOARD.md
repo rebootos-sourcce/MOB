@@ -235,6 +235,7 @@ Connected Supabase project `ATUNED`, ref `tuvpjbduarteszwkdmuu`:
 5. **F — publisher/service:** the Reboot-OS mitigation PR is not merged and the duplicate Pages publisher remains configured on both main branches. The external `Workers Builds: atuned-os` check continues to fail without actionable job logs; an authenticated operator must inspect the provider's first failing step and verify the intended service/root/build command. Do not treat this check as proof of a live outage or bypass it.
 6. **G — cross-review / CI:** current Reboot-OS PR #45 and #48 gate attempts are failing before any steps are recorded; no test results can be inferred. Investigate runner startup/log availability, then rerun on the exact current head and cross-review validator failure cases and lifecycle assumptions.
 7. **H — release:** human accessibility/privacy review, approved content, migration/rollback evidence, persisted browser→Worker→database→reload verification, publisher confirmation, and explicit release authorization remain required.
+8. **CI infrastructure:** Reboot-OS issue [#51](https://github.com/rebootos-sourcce/Reboot-OS/issues/51) tracks repeated smoke jobs failing before runner startup (no steps/logs). Exact-head test acceptance is blocked until runner startup is restored.
 
 No production write, migration, deployment, gift activation/issuance, profile-sync activation, or billing activation was performed during this cycle.
 
