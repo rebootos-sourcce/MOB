@@ -44,8 +44,8 @@ replaceExactlyOnce(
   "Pattern Catalog id and label");
 replaceExactlyOnce("var isActive = link.getAttribute('href') === '#' + id",
   "var isActive = link.getAttribute('data-target') === id", "scroll-spy active state");
-replaceExactlyOnce("const sections = document.querySelectorAll('[id]');",
-  "const sections = Array.from(document.querySelectorAll('[id]')).filter(s => document.querySelector('nav a[data-target=\\\"' + s.id + '\\\"]'));",
+replaceExactlyOnce("var spyTargets = document.querySelectorAll('.chapter, #cover, #toc, .mv-header')",
+  "var spyTargets = Array.from(document.querySelectorAll('.chapter, #cover, #toc, .mv-header')).filter(s => document.querySelector('nav a[data-target=\\\"' + s.id + '\\\"]'))",
   "limit scroll-spy to navigable section targets");
 {
   // The source button's explicit keydown handler calls preventDefault() and then
@@ -79,7 +79,7 @@ function validate(document) {
   if (!document.includes("Six appendices.") || !document.includes("6 appendices")) throw new Error("Appendix count copy is inconsistent.");
   if (!document.includes('data-target="appendix-f"') || !document.includes('<span class="toc-row-num">F</span>')) throw new Error("Appendix F is missing from navigation or contents.");
   if (!document.includes("var isActive = link.getAttribute('data-target') === id")) throw new Error("Scroll-spy must match nav data-targets to section IDs.");
-  if (!document.includes("const sections = Array.from(document.querySelectorAll('[id]')).filter(s => document.querySelector('nav a[data-target=\\\"' + s.id + '\\\"]'));")) throw new Error("Scroll-spy must observe only IDs that have navigation links.");
+  if (!document.includes("var spyTargets = Array.from(document.querySelectorAll('.chapter, #cover, #toc, .mv-header')).filter(s => document.querySelector('nav a[data-target=\\\"' + s.id + '\\\"]'))")) throw new Error("Scroll-spy must observe only IDs that have navigation links.");
   if (!/btn\.addEventListener\(\s*['"]keydown['"]/.test(document)) throw new Error("Explicit keyboard activation handler is missing.");
   return { idCount: ids.length, duplicateIds: duplicates, appendixIds, dataTargetCount: targets.length, fragmentHrefCount: fragments.length };
 }
