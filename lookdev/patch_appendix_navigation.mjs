@@ -49,7 +49,7 @@ replaceExactlyOnce("var isActive = link.getAttribute('href') === '#' + id",
   // btn.click(). That prevents the browser's native activation, so this is not
   // a double-activation shim. Removing it broke keyboard activation in Chromium.
   // Preserve the handler and validate that it remains present.
-  if (/btn\\.addEventListener\\(\\s*['"]keydown['"]/.test(html)) {
+  if (/btn\.addEventListener\(\s*['"]keydown['"]/.test(html)) {
     edits.push({ label: "preserve explicit appendix keyboard activation", status: "preserved" });
   } else {
     throw new Error("Expected explicit keyboard activation handler; refusing to write.");
@@ -76,7 +76,7 @@ function validate(document) {
   if (!document.includes("Six appendices.") || !document.includes("6 appendices")) throw new Error("Appendix count copy is inconsistent.");
   if (!document.includes('data-target="appendix-f"') || !document.includes('<span class="toc-row-num">F</span>')) throw new Error("Appendix F is missing from navigation or contents.");
   if (!document.includes("var isActive = link.getAttribute('data-target') === id")) throw new Error("Scroll-spy must match nav data-targets to section IDs.");
-  if (!/btn\\.addEventListener\\(\\s*['"]keydown['"]/.test(document)) throw new Error("Explicit keyboard activation handler is missing.");
+  if (!/btn\.addEventListener\(\s*['"]keydown['"]/.test(document)) throw new Error("Explicit keyboard activation handler is missing.");
   return { idCount: ids.length, duplicateIds: duplicates, appendixIds, dataTargetCount: targets.length, fragmentHrefCount: fragments.length };
 }
 const validation = validate(html);
