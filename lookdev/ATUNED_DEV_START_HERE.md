@@ -27,7 +27,7 @@
 - Do not use the generic three-direction workbench as the primary brand guide.
 
 ### B. Application P0 blockers
-1. **P0-1 Appendix collision:** open, issue #75. Root `index.html` still contains duplicate `appendix-a`; guarded patcher exists but actual source patch not committed.
+1. **P0-1 Appendix collision:** partial, issue #75 open. Appendix F identity/contents/nav patch is committed on the isolated branch (`f32cf203381b4a19419f26718e778c8c9e6b1cd9`, root blob `adb84d9f4c96ae2b568b547b47a28eb682ec1298`). Static IDs pass; browser acceptance failed on keyboard toggle. A guarded patcher now addresses native-button double activation and scroll-spy target matching; corrected run `38609326592` was queued at last poll.
 2. **P0-2 Field B Strata:** open. Stored Gordon/1600 worst frame gap ~49.9ms, one frame above 17.5ms; repeat runs and root-cause determination missing.
 3. **P0-3 Core/A/B selection:** open. Need matched fresh screenshots at 1600px and 390px, review matrix, and recorded selection.
 4. **P0-4 runtime/accessibility/isolation:** open. CI success is not targeted proof for the appendix fix or all runtime requirements.
