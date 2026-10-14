@@ -48,7 +48,7 @@ replaceExactlyOnce("var isActive = link.getAttribute('href') === '#' + id",
   // The canonical source has varied whitespace around this handler across revisions.
   // Remove exactly one matching native-button keydown shim; native buttons already
   // synthesize click on Enter/Space, so this shim can double-activate the toggle.
-  const pattern = /[ \\t]*btn\\.addEventListener\\('keydown', function\\(ev\\)\\{\\s*if\\(ev\\.key==='Enter'\\|\\|ev\\.key===' '\\)\\{\\s*ev\\.preventDefault\\(\\);\\s*btn\\.click\\(\\);\\s*\\}\\s*\\}\\);\\s*/g;
+  const pattern = /[ \t]*btn\.addEventListener\('keydown', function\(ev\)\{\s*if\(ev\.key==='Enter'\|\|ev\.key===' '\)\{\s*ev\.preventDefault\(\);\s*btn\.click\(\);\s*\}\s*\}\);\s*/g;
   const matches = [...html.matchAll(pattern)];
   if (matches.length === 1) {
     html = html.replace(pattern, "");
