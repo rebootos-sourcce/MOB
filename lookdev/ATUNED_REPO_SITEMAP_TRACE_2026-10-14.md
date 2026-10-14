@@ -9,7 +9,7 @@
 
 | Area | Source/path | Role | State / caution |
 |---|---|---|---|
-| Canonical app | `index.html` on `main` | Production application entry | Git blob `24dea9c95112fe83073e58ef4cb14d7eb5de9928`; statically inspected; do not edit in lookdev branch without a scoped application fix. |
+| Canonical app | `index.html` on `main` | Production application entry | Main Git blob `24dea9c95112fe83073e58ef4cb14d7eb5de9928`; branch root blob `adb84d9f4c96ae2b568b547b47a28eb682ec1298` includes the scoped Appendix F patch. Main remains unchanged. |
 | Field A prototype | `proto/field-a/index.html` | Candidate visual prototype | Blob `fc36c42bd44aca5b2dde2200d1879ae3d6dc89f3`; imports shared `../../engine.js`. |
 | Field A measures | `proto/field-a/measure-field.js`, `proto/field-a/measure-field.json` | Measurement generator and saved output | Historical output; re-run and record runtime/source commit before accepting. |
 | Field B prototype | `proto/field-b/index.html` | Candidate visual prototype | Blob `d2013e3a00fac76049697d3c59f4aa97c9ef89e3`; imports generated tokens, shared engine, and ring module. |
@@ -38,7 +38,7 @@
 - 103 anchors, 16 buttons, one input, one iframe.
 - Duplicate target belongs to original Appendix A “The Coherent Opposite Library” and appended “Appendix A — The Pattern Catalog”.
 - Proposed correction: preserve original `#appendix-a`; rename Pattern Catalog to Appendix F and `id="appendix-f"`; reconcile TOC, side navigation, appendix counts and cross-links.
-- Static transform checked in memory: no duplicate IDs; A–F section IDs once each; A–F present in TOC and nav; no unresolved static fragment hrefs. This is not a committed patch or browser acceptance.
+- Static transform checked in memory: no duplicate IDs; A–F section IDs once each; A–F present in TOC and nav; no unresolved static fragment hrefs. The source patch is committed on the isolated branch. However, the first targeted browser acceptance run failed on keyboard toggle behavior; the scroll-spy comparison and duplicate native-button keyboard handler are being corrected. Do not close P0-1 until corrected browser acceptance passes.
 
 ## 3. Candidate prototype dependency trace
 
