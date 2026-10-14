@@ -42,6 +42,8 @@ replaceExactlyOnce(
   '<div id="appendix-a" class="chapter">\n<div class="chapter-header">\n  <div class="chapter-eyebrow">Appendix A</div>\n  <h2 class="chapter-title">The Pattern Catalog</h2>',
   '<div id="appendix-f" class="chapter">\n<div class="chapter-header">\n  <div class="chapter-eyebrow">Appendix F</div>\n  <h2 class="chapter-title">The Pattern Catalog</h2>',
   "Pattern Catalog id and label");
+replaceExactlyOnce("var isActive = link.getAttribute('href') === '#' + id",
+  "var isActive = link.getAttribute('data-target') === id", "scroll-spy active state");
 
 function validate(document) {
   const ids = [...document.matchAll(/\bid\s*=\s*(["'])(.*?)\1/g)].map(m => m[2]);
@@ -62,6 +64,7 @@ function validate(document) {
   if (missingFragments.length) throw new Error("Unresolved fragment hrefs: " + missingFragments.join(", "));
   if (!document.includes("Six appendices.") || !document.includes("6 appendices")) throw new Error("Appendix count copy is inconsistent.");
   if (!document.includes('data-target="appendix-f"') || !document.includes('<span class="toc-row-num">F</span>')) throw new Error("Appendix F is missing from navigation or contents.");
+  if (!document.includes("var isActive = link.getAttribute('data-target') === id")) throw new Error("Scroll-spy must match nav data-targets to section IDs.");
   return { idCount: ids.length, duplicateIds: duplicates, appendixIds, dataTargetCount: targets.length, fragmentHrefCount: fragments.length };
 }
 const validation = validate(html);
