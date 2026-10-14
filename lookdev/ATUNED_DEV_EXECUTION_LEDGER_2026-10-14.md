@@ -10,7 +10,7 @@
 
 ### Look-development guide browser run
 - Artifact: local `ATUNED_LOOKDEV_WORKBENCH_REVIEWED_2026-10-14.html`.
-- SHA-256: `f94b2dac4cf6daa91bcb2cb7e3ebdf46389a162fb4ab0650f80ccb6b2cf139cd`; 84,640 bytes.
+- SHA-256: `9e96f0bdb51b381291e44ab47fbacfe319728c2a3dc21f8bc56e944fec9e4614`; 85,640 bytes.
 - Runtime: Chromium Headless 144.0.7559.96; source HTML written into an isolated blank page because the execution environment blocks `file://` and localhost URLs. The rendered DOM/script/style bytes came from the exact local file. This is a real Chromium render, but not a test of the eventual hosted path.
 - Screenshots: all 11 pages at 1600×1000 and 390×844 captured locally. Per-image SHA-256 and file names are in `/mnt/data/atuned_qa/desktop_pages.json` and `/mnt/data/atuned_qa/report.json`; downloadable QA package is a local artifact, not yet committed.
 - Verified in browser: all 11 tabs activate; all three palettes update shared CSS tokens; light/dark toggle changes computed background/foreground; exact law search for “All Is One” returns 1/76; motion filter returns 2/103 source names; reduced-motion toggle state changes; sound opt-in control toggles; four sound sample controls are clickable after enabling preview audio; mobile document width remains 390px; nav has horizontal overflow (685px content within 390px viewport) and can scroll to expose Innovation; no JavaScript exceptions or console errors in the trusted-interaction smoke pass.
@@ -70,3 +70,12 @@ Browser workflow `38608899960` **failed** at keyboard operation. Source inspecti
 ## Source trace correction — master index and CORE_REFERENCE gap
 
 The cross-repository Master Index exists on the separate `docs/atuned-master-index-20261012` branch (blob `4080c5f851bf483b1408f818280ab78f45dc2107`), with linked Architecture Review (blob `3a31664e7a43b7c5ad1d16f5ef134d780ba2062c`) and P0 Execution Control Board (blob `4e8d74f00f785dc08ddd471302ec43ca90b27c8d`). Start Here and Sitemap now link these sources. The exact `CORE_REFERENCE.html` handoff artifact and the 12-tab workspace source remain unidentified in current attachments/repository paths; source identity is a blocking dependency, not something to infer from the root application or 11-page brand guide.
+
+
+## Local guide patch — 2026-10-14 late pass
+
+- Latest local guide SHA-256: `9e96f0bdb51b381291e44ab47fbacfe319728c2a3dc21f8bc56e944fec9e4614`; 85,640 bytes. `node --check` passes for its inline JavaScript.
+- Mirror buttons now set selected state (`aria-pressed`) and show confirmation/challenge/correction feedback. Sound checkbox disable now changes the button label back to `Enable preview audio`. Browser smoke tests passed these behaviors, motion grouping/replay/reduced-motion state, all 11 tabs, three global palettes, theme toggle, law search, and sound opt-in/sample controls. No JS exceptions or console errors recorded in the trusted-interaction pass.
+- Screenshots for all 11 pages exist at 1600×1000 and 390×844. Updated evidence bundle: local `ATUNED_LOOKDEV_BROWSER_QA_2026-10-14.zip`.
+- Contrast pair check: ink/background, ink/surface, muted/background, muted/surface, and accent-ink/accent-fill pass 4.5:1 in all three palettes after the Earth muted-token adjustment. Accent/surface ratios are 3.37:1 (Earth) and 3.68:1 (Jewel); confirm these are used only for non-text marks or adjust if used for text. Full component-level audit remains open.
+- Guide still not committed to GitHub; byte-capable transfer and hash verification remain open.
