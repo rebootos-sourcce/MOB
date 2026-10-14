@@ -78,3 +78,14 @@ No PR merge, production deploy, migrations 0017/0018, billing/profile-sync activ
 - Read-only live Supabase check: migrations through 0015 only; six starter gifts (five active, one pending). Migration 0017 would demote all six absent approved legacy backfill. No migration or production write performed.
 - Source queue remains 560 rows, zero owner-approved rows/stable IDs, 24 ambiguous PDF locators, 210 transcript boundary reviews, 154 missing indexNodeIds, and 107 repeated text-hash groups across 266 rows. Hash repeats are not deletion authority.
 - No merge, production deployment, protected-vault import, gift activation, billing/profile-sync enablement, or production mutation occurred. P0 remains OPEN.
+
+
+## Recursive build cycle 6 — 14 October 2026 UTC
+
+- Docs/control head `498bc5791d03197bedc9120e96067c1b3a5a8ea6` passed [workflow #38652917919](https://github.com/rebootos-sourcce/MOB/actions/runs/38652917919), 30/30 jobs. MOB owner-contract head `280c16cfd927f640c7ea7bba84e0ca8034dadc61` passed [#38652146233](https://github.com/rebootos-sourcce/MOB/actions/runs/38652146233), 30/30.
+- Gate convergence: PR #35/#53/#47 share gate blob `42e7858efe173d5c9f27d56614199bc19239f641`; permission test blob `b4bd5cd0b4454d86d280a45b0b7b4c4fa35075b3`; publisher guard blob `366603d0aa8daa5a9c59aaf03ad352b8e329c228`. Static simulation passed 12 checks per branch. Reboot-OS exact-head runs remain no-step failures.
+- PR #35 migration 0017 now blocks non-pending legacy gifts without frozen 100-item snapshots before status normalization; SQLSTATE 55000. Live state remains five active, one pending; no migration applied.
+- PR #48 validator remains unexecuted at head `a67529d9541a2b2ccd2a051a35fc54548da1102f`; PR #52 geometry at `780d7d72b0dacbd0a5ed2775cf19162b76181177`; PR #46 reduced motion at `975faa2e016c4c65be6161050ad0531409c43710`. Their exact-head workflows fail before steps.
+- Publisher guard now scans all nine workflow files and finds no Pages-specific publishing markers. The shared gate includes all `.github/workflows/**` changes, P1 dry-runs and locator artifacts, generated log counts, read-only test permissions, and CAS last-green tag updates.
+- Source queue remains 560 records, zero approved rows/stable IDs, 24 ambiguous PDF locators, 210 transcript boundary reviews, 154 missing indexNodeIds, and 107 repeated hash groups covering 266 rows. No content promoted.
+- No merge, deployment, production migration/write, protected-vault import, gift activation, billing/profile-sync enablement, or production mutation. P0 remains OPEN.

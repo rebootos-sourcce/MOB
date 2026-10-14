@@ -70,3 +70,15 @@ P0 is closed only when every acceptance criterion is supported by current eviden
 - Single Pages publisher, Cloudflare account/service/domain and `ATUNED_API` bindings remain unverified. Do not deploy.
 
 Next executable actions: verify the new docs head's own workflow; continue source-locator review; inspect exact-head workflow job payloads without retrying; prepare migration/backfill rehearsal only in a disposable environment; obtain owner decisions for bank contents and mapping; complete persisted browser → Worker → storage write/read/reload proof. Keep all PRs draft and P0 open until evidence is complete.
+
+
+## Latest continuation checkpoint — 14 October 2026 UTC
+
+**Continue from cycle 6 in `ATUNED_MASTER_INDEX.md`; P0 is still OPEN.** Do not reset the plan or merge draft PRs.
+
+1. Prior docs head `498bc5791d03197bedc9120e96067c1b3a5a8ea6` passed 30/30 in [workflow #38652917919](https://github.com/rebootos-sourcce/MOB/actions/runs/38652917919). Owner-contract head `280c16cfd927f640c7ea7bba84e0ca8034dadc61` passed 30/30 in [#38652146233](https://github.com/rebootos-sourcce/MOB/actions/runs/38652146233). This cycle's new docs head needs its own exact-head run.
+2. Reboot-OS P1/P0/publisher branches now share a converged gate: all workflow files trigger the gate; global and smoke permissions are read-only; only `move-last-green` gets `contents: write`; P1 Worker dry-runs and source/PDF locator artifacts remain; publisher guard scans all workflows. Static source checks pass, but Reboot-OS workflows still fail before steps with `steps=null`, `logs_url=null`.
+3. PR #35 migration 0017 now aborts with SQLSTATE 55000 before demotion if a non-pending legacy gift lacks a valid frozen 100-item snapshot. Live database still has five active and one pending gift with the new version fields absent. Keep migration 0017 unapplied until reviewed backfill or separately approved demotion.
+4. Source queue: 560 rows; zero owner approvals/stable IDs; 24 ambiguous PDF locators; 210 transcript boundary reviews; 154 missing indexNodeIds. Preserve all source IDs and locators; repeated hashes are not deletion authority.
+5. Keep six gift natures, four client meter tracks, and six server action/verb channels separate. Full persisted browser → Worker → storage write/read/reload and owner approval of the nature-to-track adapter remain open.
+6. Publisher/API/domain binding, geometry crosswalk IDs 43/110/112, reduced-motion runtime test, validator test, and Reboot-OS runner startup remain open. No production deployment, migration, vault import, gift activation, or data mutation occurred.

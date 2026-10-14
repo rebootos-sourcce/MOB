@@ -79,3 +79,17 @@ Immediate order:
 5. Keep PRs draft and production untouched until owner decisions and the release acceptance evidence are complete.
 
 Latest current heads, exact run URLs, static-only findings, and remaining P0 gaps are recorded in the cycle 5 section of the master index. No merge, deploy, migration, vault import, gift activation, billing/profile-sync enablement, or production mutation occurred.
+
+
+## Recursive build cycle 6 — 14 October 2026 UTC
+
+**P0 OPEN; do not reset or merge.** The prior documentation head `498bc5791d03197bedc9120e96067c1b3a5a8ea6` passed [workflow #38652917919](https://github.com/rebootos-sourcce/MOB/actions/runs/38652917919), 30/30 jobs. MOB owner-contract head `280c16cfd927f640c7ea7bba84e0ca8034dadc61` passed [#38652146233](https://github.com/rebootos-sourcce/MOB/actions/runs/38652146233), 30/30. This cycle 6 documentation commit requires a fresh exact-head run.
+
+Latest hardening:
+- PR #35 branch head `fc276839ce56b85dd76472ac8d57111ed688a236`: migration 0017 preflight raises SQLSTATE 55000 before status normalization if any non-pending legacy gift lacks a frozen 100-item snapshot. The live state is five active, one pending; migration remains unapplied pending reviewed backfill/demotion.
+- PR #35/#53/#47 branches share gate blob `42e7858efe173d5c9f27d56614199bc19239f641`, permission-test blob `b4bd5cd0b4454d86d280a45b0b7b4c4fa35075b3`, and publisher-guard blob `366603d0aa8daa5a9c59aaf03ad352b8e329c228`. The gate watches all workflow-file changes, keeps the only write scope in the guarded rollback-tag job, preserves P1 dry-runs/artifacts, and scans all workflows for Pages publishing.
+- Exact-head Reboot-OS runs still fail before steps: #35 [#38654883997](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38654883997), #53 [#38654900105](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38654900105), #47 [#38654917099](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38654917099). No test execution or acceptance is claimed.
+- PR #48 validator head `a67529d9541a2b2ccd2a051a35fc54548da1102f`, PR #52 geometry head `780d7d72b0dacbd0a5ed2775cf19162b76181177`, and PR #46 reduced-motion head `975faa2e016c4c65be6161050ad0531409c43710` remain unexecuted due the same runner issue.
+- Source queue remains 560 rows, zero approved rows/production IDs, 24 ambiguous PDF locators, 210 transcript boundary reviews, and 154 missing indexNodeIds. No content was promoted.
+
+Next order: verify this new docs head; keep Reboot-OS PRs draft while an authorized admin diagnoses runner assignment; continue source-locator review without inventing IDs; obtain owner approval for the nature-to-track adapter; prove current-release persisted browser → Worker → storage continuity; rehearse migration/backfill in a disposable environment; verify Cloudflare publisher/account/domain/API ownership. No production changes occurred.
