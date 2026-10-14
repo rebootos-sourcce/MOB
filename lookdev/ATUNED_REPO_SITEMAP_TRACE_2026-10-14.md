@@ -5,6 +5,13 @@
 **Branch context:** `lookdev/p0-execution-20261014`  
 **Purpose:** fast source orientation for future AI sessions. Paths and hashes below are trace points, not a substitute for fetching the exact current revision.
 
+## 0. Master index and cross-repository authority
+
+- [ATÜNED Master Index](https://github.com/rebootos-sourcce/MOB/blob/docs/atuned-master-index-20261012/ATUNED_MASTER_INDEX.md), branch `docs/atuned-master-index-20261012`, blob SHA `4080c5f851bf483b1408f818280ab78f45dc2107`. It is not present on `main`; use the exact docs-branch link until merged.
+- [Architecture Review](https://github.com/rebootos-sourcce/MOB/blob/docs/atuned-master-index-20261012/ATUNED_ARCHITECTURE_REVIEW_2026-10-13.md), blob SHA `3a31664e7a43b7c5ad1d16f5ef134d780ba2062c`.
+- [P0 Execution Control Board](https://github.com/rebootos-sourcce/MOB/blob/docs/atuned-master-index-20261012/ATUNED_P0_EXECUTION_CONTROL_BOARD.md), blob SHA `4e8d74f00f785dc08ddd471302ec43ca90b27c8d`.
+- The master index is cross-repository/release authority; this lookdev sitemap is the focused MOB source trace. Neither replaces the other.
+
 ## 1. Entry-point map
 
 | Area | Source/path | Role | State / caution |
@@ -70,7 +77,7 @@ The supplied task list says the application exposes these 12 top-level tabs:
 11. Knowledge
 12. Clients
 
-Do not equate this list with the 11-page look-development guide. Build a source-backed map for each tab: canonical source function/component, interactions/data source, corresponding guide page (if any), and whether the workspace representation is real functionality or preview-only. Explicitly document **Diagnostic → Summary** as a semantic mapping, not as identical labels. This map is still a required task; do not infer one-to-one correspondence from names.
+Do not equate this list with the 11-page look-development guide or assume the list belongs to root `main/index.html` without proving it. Root `main/index.html` is titled “The Mechanics of Being, Lance Powell” and uses chapter/appendix navigation groups; the owner-supplied guide has 11 tabs. The exact 12-tab source has not been identified in the currently attached artifacts or repository path scan. This is a source-of-truth discrepancy and a P0 dependency. Locate the precise source artifact/commit before building the mapping. Then map each tab: canonical source function/component, interactions/data source, corresponding guide page (if any), and whether the workspace representation is real functionality or preview-only. Explicitly document **Diagnostic → Summary** as a semantic mapping, not as identical labels. This map is still a required task; do not infer one-to-one correspondence from names.
 
 ## 5. Brand guide sitemap — fixed order
 
@@ -100,3 +107,12 @@ Do not equate this list with the 11-page look-development guide. Build a source-
 8. For every screenshot/measurement, record source commit, command, browser/runtime, viewport, artifact path and hash.
 9. Run one acceptance block, patch the confirmed issue, re-run focused checks, then review for new gaps before moving to the next block.
 10. Update this sitemap and the execution ledger whenever paths, dependencies, source SHAs or acceptance states change.
+
+
+## 7. Source-of-truth discrepancy: CORE_REFERENCE and 12-tab source
+
+- The inherited task refers to an embedded `CORE_REFERENCE.html` inside a supplied handoff artifact and a separate source with 12 top-level tabs (Story, Avatar, Summary, Intake, Analytics, Field, Body, Compass, Character, Ritual, Knowledge, Clients).
+- Current conversation attachments contain the owner-supplied 11-page brand guide and the reviewed local guide; the current branch tree does not contain a `CORE_REFERENCE.html` file.
+- `main/index.html` is a 5.9MB “The Mechanics of Being, Lance Powell” document with chapter and appendix navigation. It is not the 11-page guide and has not been proven to be the 12-tab workspace referenced in the inherited task.
+- Therefore the canonical-source-vs-CORE_REFERENCE byte comparison and 12-tab source mapping remain **OPEN / BLOCKED BY SOURCE IDENTIFICATION**. Do not infer that these are the same source.
+- Next action: locate the exact handoff artifact containing `CORE_REFERENCE.html`, record artifact hash/provenance, compare its embedded bytes with the current candidate source, and establish the governing version before editing the 12-tab workspace.
