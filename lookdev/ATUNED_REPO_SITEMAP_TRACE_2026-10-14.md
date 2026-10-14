@@ -27,7 +27,7 @@
 | Generated tokens | `funnel/tokens.css` | Shared generated CSS token output | Blob `4a2f6ff14639a0389c3192200703d389b1538103`; do not hand-edit. |
 | Token generator | `tools/tokens.py` | Rebuilds `funnel/tokens.css` from shell source | Blob `db04b2d61bec42d2d6a1d5be667a80a0d717901d`. |
 | Appendix patcher | `lookdev/patch_appendix_navigation.mjs` | Guarded check/apply patch for duplicate appendix target | Blob `0daf99082075c2d4fd9dfe9c2b718c2261bac103`; transformation passed in-memory static checks; actual source patch still open. |
-| Lookdev guide | local `ATUNED_LOOKDEV_WORKBENCH_REVIEWED_2026-10-14.html` | Owner's 11-page brand guide with global palette patch | SHA-256 `f94b2dac4cf6daa91bcb2cb7e3ebdf46389a162fb4ab0650f80ccb6b2cf139cd`; local only at this point, not yet in repo. |
+| Lookdev guide | local `ATUNED_LOOKDEV_WORKBENCH_REVIEWED_2026-10-14.html` | Owner's 11-page brand guide with global palette patch | SHA-256 `9e96f0bdb51b381291e44ab47fbacfe319728c2a3dc21f8bc56e944fec9e4614`; local only at this point, not yet in repo. |
 | Issue | [#75](https://github.com/rebootos-sourcce/MOB/issues/75) | Appendix navigation defect tracking | Open. |
 | PR | [#74](https://github.com/rebootos-sourcce/MOB/pull/74) | Documentation/trace handoff | Draft, open, unmerged; not an application fix. |
 
@@ -45,7 +45,7 @@
 - 103 anchors, 16 buttons, one input, one iframe.
 - Duplicate target belongs to original Appendix A “The Coherent Opposite Library” and appended “Appendix A — The Pattern Catalog”.
 - Proposed correction: preserve original `#appendix-a`; rename Pattern Catalog to Appendix F and `id="appendix-f"`; reconcile TOC, side navigation, appendix counts and cross-links.
-- Static transform checked in memory: no duplicate IDs; A–F section IDs once each; A–F present in TOC and nav; no unresolved static fragment hrefs. The source patch is committed on the isolated branch. However, the first targeted browser acceptance run failed on keyboard toggle behavior; the scroll-spy comparison and duplicate native-button keyboard handler are being corrected. Do not close P0-1 until corrected browser acceptance passes.
+- Static transform checked in memory: no duplicate IDs; A–F section IDs once each; A–F present in TOC and nav; no unresolved static fragment hrefs. The source patch is committed on the isolated branch. First targeted browser acceptance failed on keyboard toggle behavior; the guarded patcher now removes the duplicate native-button keydown handler and fixes scroll-spy comparison. Corrected workflow `38609326592` remained queued at last poll. Do not close P0-1 until corrected browser acceptance passes.
 
 ## 3. Candidate prototype dependency trace
 
@@ -116,3 +116,8 @@ Do not equate this list with the 11-page look-development guide or assume the li
 - `main/index.html` is a 5.9MB “The Mechanics of Being, Lance Powell” document with chapter and appendix navigation. It is not the 11-page guide and has not been proven to be the 12-tab workspace referenced in the inherited task.
 - Therefore the canonical-source-vs-CORE_REFERENCE byte comparison and 12-tab source mapping remain **OPEN / BLOCKED BY SOURCE IDENTIFICATION**. Do not infer that these are the same source.
 - Next action: locate the exact handoff artifact containing `CORE_REFERENCE.html`, record artifact hash/provenance, compare its embedded bytes with the current candidate source, and establish the governing version before editing the 12-tab workspace.
+
+
+## Latest guide interaction patch
+
+The local 11-page guide now has Mirror response buttons that set an explicit preview status and `aria-pressed`, and the sound opt-in checkbox synchronizes the enable button label when disabled. Earth palette muted token was changed to `#d0c4b4`; core token contrast pairs now meet 4.5:1 for normal text. The accent token on Earth/Jewel surfaces remains below 4.5:1 and requires per-component usage review. Updated local guide SHA-256: `9e96f0bdb51b381291e44ab47fbacfe319728c2a3dc21f8bc56e944fec9e4614`. Browser QA zip is a local artifact and the guide is not yet committed to this repository branch.
