@@ -79,3 +79,35 @@ A second source pass read the complete Field A and Field B HTML and the shared g
 
 ## Exact next action
 Use an authenticated local checkout or CI artifact to access the canonical 5.9 MB root HTML and shared engine, run the documented Field A/B measurement scripts, inspect screenshot artifacts, then launch the exact checked-out source in a real browser at 1600px and 390px. Record all commands and outputs before changing any visual code. Preserve Core and all production targets.
+
+
+## Second recursive pass — canonical HTML and navigation defect
+The blob API successfully returned the complete root HTML into the analysis pass (5,898,347 characters). This corrects the earlier connector-only limitation: source text is now inspectable, although no local browser/runtime was launched from this environment.
+
+Static inventory of the root source:
+- Title: `The Mechanics of Being, Lance Powell`
+- 16 inline script blocks; 11 inline style blocks
+- 16 buttons, 103 anchors, one input, one iframe
+- 434 element IDs; one duplicated ID value found: `appendix-a`
+- 53 inline `onclick` attributes and 35 `addEventListener` calls
+- 10 `aria-label` attributes, zero `aria-live` attributes detected
+- No `TODO`, `FIXME`, `HACK`, `console.log`, or `debugger` strings detected by the simple source scan
+- No external script/link imports detected in the root HTML; this is not a network capture
+
+### New P0 defect logged
+Issue [#75 — Fix duplicate appendix-a target and complete appendix navigation](https://github.com/rebootos-sourcce/MOB/issues/75) records the confirmed defect.
+
+Two different sections use `id="appendix-a"`:
+1. Appendix A — The Coherent Opposite Library
+2. A second section titled Appendix A — The Pattern Catalog at the end of the document
+
+The side navigation and contents use `data-target="appendix-a"`, so the target is ambiguous. The contents summary says “Four appendices”; navigation includes A–E and an additional technical diagram, while the Pattern Catalog is absent from the contents. The intended correction is to retain the original A target, make the Pattern Catalog Appendix F with `id="appendix-f"`, add E/F to the contents, add F to side navigation, and reconcile counts.
+
+**Patch attempt outcome:** an attempted rewrite of the 5.9 MB root blob failed at the connector transport layer. No HTML source edit was made. The defect is tracked with concrete repro and patch steps; do not report it as fixed.
+
+### Updated P0 state
+- Source bytes/text: **retrieved through Git blob API**; local checkout/hash verification remains open.
+- Static source audit: **completed first pass**; duplicate appendix target is a confirmed defect.
+- Browser acceptance: **open**; repository CI browser gates are running but are not a substitute for targeted acceptance of the appendix fix.
+- P0 navigation defect: **open, issue #75**.
+- Production: **untouched**.
