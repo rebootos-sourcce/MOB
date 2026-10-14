@@ -22,7 +22,7 @@
 - **CI interpretation:** latest Reboot-OS #45/#48 gate attempts failed before steps were recorded and logs are unavailable. Do not classify these as code-test failures or passes. Investigate runner startup, then require exact-head CI.
 - **Release boundary:** human accessibility/privacy review, non-production migration/rollback proof, persisted browser→Worker→database→reload acceptance, provider verification, and explicit release authorization remain mandatory.
 
-The full additive execution record is in [the P0 control board](ATUNED_P0_EXECUTION_CONTROL_BOARD.md) and the Reboot-OS [recursive execution audit](https://github.com/rebootos-sourcce/Reboot-OS/blob/docs/p0-recursive-execution-audit-20261014/atuned/docs/P0-RECURSIVE-EXECUTION-AUDIT-2026-10-14.md). No production migration, data write, deployment, gift issuance/activation, profile-sync activation, or billing activation was performed by this cycle.
+The full additive execution record is in [the P0 control board](ATUNED_P0_EXECUTION_CONTROL_BOARD.md), the Reboot-OS [recursive execution audit](https://github.com/rebootos-sourcce/Reboot-OS/blob/docs/p0-recursive-execution-audit-20261014/atuned/docs/P0-RECURSIVE-EXECUTION-AUDIT-2026-10-14.md), and the [source traceability register](https://github.com/rebootos-sourcce/Reboot-OS/blob/docs/p0-recursive-execution-audit-20261014/atuned/docs/P0-SOURCE-TRACEABILITY-REGISTER-2026-10-14.md). No production migration, data write, deployment, gift issuance/activation, profile-sync activation, or billing activation was performed by this cycle.
 
 ## Current verified checkpoint — 13 October 2026 UTC
 
