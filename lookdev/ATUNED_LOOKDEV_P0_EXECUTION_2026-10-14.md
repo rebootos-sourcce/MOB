@@ -246,3 +246,47 @@ The owner clarified that this workstream is the existing look-development HTML a
 2. Browser-render and capture all 11 pages at desktop and mobile sizes.
 3. Smoke-test navigation, palette changes, theme toggle, icon filtering, copy controls, motion controls/reduced motion, and opt-in sound controls.
 4. Patch confirmed visual/interaction defects, repeat review, and update both the execution record and executive handshake.
+
+
+---
+
+## Continuity system + real-browser lookdev QA — 2026-10-14
+
+### Required starting files
+- [Start Here / open-task index](ATUNED_DEV_START_HERE.md)
+- [Repository sitemap and source trace](ATUNED_REPO_SITEMAP_TRACE_2026-10-14.md)
+- [Current execution ledger](ATUNED_DEV_EXECUTION_LEDGER_2026-10-14.md)
+- [Executive handshake](ATUNED_LOOKDEV_EXECUTIVE_HANDSHAKE_2026-10-14.md)
+
+These are committed on `lookdev/p0-execution-20261014`. Future threads must read in that order, then refresh exact branch head, canonical source, PR/issue and CI state. The index and ledger carry all unresolved tasks forward; update all four documents before ending a round.
+
+### Browser QA actually performed
+- Exact local reviewed HTML: `ATUNED_LOOKDEV_WORKBENCH_REVIEWED_2026-10-14.html`; 84,640 bytes; SHA-256 `f94b2dac4cf6daa91bcb2cb7e3ebdf46389a162fb4ab0650f80ccb6b2cf139cd`.
+- Runtime: Chromium Headless 144.0.7559.96. The source bytes were injected into an isolated blank document because this environment blocks `file://` and localhost navigation. This tests the rendered HTML/JS/CSS but not deployment hosting.
+- Captured every guide page at 1600×1000 and 390×844. Desktop/mobile screenshot hashes and browser reports are stored locally under `/mnt/data/atuned_qa/`; package has not been committed to GitHub.
+- Verified: all 11 page tabs activate; all 3 palettes update shared background/surface/accent/ink/muted/line tokens; light/dark toggle changes computed colors; exact law search “All Is One” returns 1 of 76; motion filter returns 2 of 103 source names; reduced-motion toggle changes state; audio opt-in and four sample buttons respond to trusted browser mouse input; mobile document width stays 390px and the horizontally scrollable nav reaches Innovation; no JS exceptions or console errors were recorded in the trusted-interaction smoke pass.
+- Not complete: comprehensive keyboard-only acceptance; contrast ratios and screen-reader audit; full motion replay/group interaction review; sound disable/mute and state consistency across every state; owner visual approval; testing the committed/hosted artifact.
+- A prior synthetic DOM click produced browser AudioContext autoplay warnings; this was a test-method limitation. A subsequent trusted mouse gesture enabled audio and activated sample buttons with no warning in that acceptance pass.
+
+### Current state corrections
+- Workflow `38601838177` completed successfully, but it tested the documentation-only PR head and does not validate the missing root application patch.
+- `38605345102` was last observed in progress; `38606254578` was last observed queued. Refresh exact current branch-head workflows before claiming CI terminal status.
+- Issue #75 remains open; `index.html` is still unchanged by this workstream. The guarded patcher's in-memory pass is not the application fix.
+- The reviewed guide HTML remains a local artifact; the GitHub Contents API path did not contain it. It must be transferred through a reliable byte-capable route and hash-verified after fetch.
+- Recursive Library pagination covered 851 items over 9 pages; literal “ATUNED BRAND DEV 3/4/5” folder/transcript names were not found. Direct review of those literal folders remains blocked by retrieval, not marked done.
+
+### Still-open blockers — carry forward without dropping
+1. Canonical source byte-level checkout and comparison with supplied `CORE_REFERENCE.html`.
+2. Commit actual Appendix F navigation patch, focused diff, static tests, targeted browser acceptance.
+3. Repeat Field B Gordon/1600 Strata measurement and determine outlier repeatability.
+4. Matched fresh Core/A/B screenshots at 1600px and 390px; evidence-backed direction decision.
+5. Exact application browser QA, accessibility, network, reset/restore/export and Core/A/B isolation.
+6. Full dependency trace for `engine.js`, all assets/fonts/network/state dependencies; verify token regeneration from `atuned_src/shell/head.html` via `tools/tokens.py`.
+7. Source-backed map for all 12 top-level tabs; document Diagnostic → Summary semantic mapping and production vs workspace-only preview.
+8. Approve KPI thresholds, define procedures, run tests and preserve unmeasured status where no telemetry exists.
+9. Consolidated cross-functional keep/change/reject decision log.
+10. Commit the reviewed 11-page brand guide, rerun QA on committed bytes, complete keyboard/contrast/accessibility and owner visual review.
+11. Refresh CI/PR/issue state and update the index, sitemap, ledger, handshake.
+12. Retry retrieval of literal Brand Dev 3/4/5 folders; never fabricate their contents.
+
+No production merge, deployment, or production configuration change was performed.
