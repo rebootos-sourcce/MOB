@@ -9,6 +9,8 @@
 
 ## Current execution refresh — 14 October 2026 UTC
 
+**Continuation handshake:** [ATÜNED Executive Handshake — P0 Engineering Continuation](ATUNED_EXECUTIVE_HANDSHAKE_2026-10-14_P0_ENGINEERING.md). This is the exact scope and status document for the next thread; engineering-only, no lookdev.
+
 **P0 remains OPEN.** Reboot-OS main is `233b5c3acc3d7396e3bd1a861319689aa4a9d60e`; PRs #43 and #44 merged topology and release-documentation corrections without runtime or production-data changes.
 
 - **Reduced motion:** Reboot-OS PR #46 is draft/open; exact-head gate #38513391386 passed on `2eae6b7c07d57d9979eb8f4ea462801730e1f055`. Human keyboard/screen-reader and remaining-motion review is still required.
