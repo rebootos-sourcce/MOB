@@ -1,0 +1,58 @@
+# ATÜNED Dev — Execution Ledger / Open Work
+
+**Updated:** 2026-10-14  
+**Repository:** `rebootos-sourcce/MOB`  
+**Branch:** `lookdev/p0-execution-20261014`  
+**Status:** ACTIVE; no production merge/deploy.  
+**Status vocabulary:** VERIFIED = directly tested with evidence; PARTIAL = some prerequisites complete; OPEN = acceptance not met; BLOCKED = current execution cannot safely proceed.
+
+## Latest verified evidence
+
+### Look-development guide browser run
+- Artifact: local `ATUNED_LOOKDEV_WORKBENCH_REVIEWED_2026-10-14.html`.
+- SHA-256: `f94b2dac4cf6daa91bcb2cb7e3ebdf46389a162fb4ab0650f80ccb6b2cf139cd`; 84,640 bytes.
+- Runtime: Chromium Headless 144.0.7559.96; source HTML written into an isolated blank page because the execution environment blocks `file://` and localhost URLs. The rendered DOM/script/style bytes came from the exact local file. This is a real Chromium render, but not a test of the eventual hosted path.
+- Screenshots: all 11 pages at 1600×1000 and 390×844 captured locally. Per-image SHA-256 and file names are in `/mnt/data/atuned_qa/desktop_pages.json` and `/mnt/data/atuned_qa/report.json`; downloadable QA package is a local artifact, not yet committed.
+- Verified in browser: all 11 tabs activate; all three palettes update shared CSS tokens; light/dark toggle changes computed background/foreground; exact law search for “All Is One” returns 1/76; motion filter returns 2/103 source names; reduced-motion toggle state changes; sound opt-in control toggles; four sound sample controls are clickable after enabling preview audio; mobile document width remains 390px; nav has horizontal overflow (685px content within 390px viewport) and can scroll to expose Innovation; no JavaScript exceptions or console errors in the trusted-interaction smoke pass.
+- Important caveats: a separate scripted audio click produced Chrome autoplay warnings because a programmatic DOM click is not a trusted user gesture. A subsequent real CDP mouse gesture enabled preview audio and sample controls without warnings in the captured pass. Keyboard focus order was sampled, but a full keyboard-only acceptance pass (tab/shift-tab, enter/space activation, focus visibility on every control) is still open. Contrast ratios, screen reader behavior, and visual approval are not complete.
+- Visual review of desktop contact sheet completed; no gross clipping was visible at sampled widths. This is not owner approval or full pixel/accessibility acceptance.
+- Source remains local only: reviewed HTML has **not** been committed to this branch.
+
+## Task ledger
+
+| ID | Work item | Status | Evidence / exact state | Exit criteria / next action |
+|---|---|---|---|---|
+| D-01 | Create mandatory start index | VERIFIED | `lookdev/ATUNED_DEV_START_HERE.md` created in this branch | Keep first-read instructions and open list current every round. |
+| D-02 | Create repository sitemap/source trace | VERIFIED | `lookdev/ATUNED_REPO_SITEMAP_TRACE_2026-10-14.md` created in this branch | Extend whenever paths, dependencies, source SHAs or mappings change. |
+| D-03 | Review supplied 11-page brand guide three times | VERIFIED (source review) | Structure, page order, global palette bug and misleading Earth/Jewel direction framing reviewed; local patch applied | Continue visual/source fidelity review; do not treat source review as acceptance. |
+| D-04 | Commit reviewed guide to branch | OPEN | HTML exists locally only; GitHub Contents API cannot read local files; no repository artifact found at intended path | Transfer exact 84,640-byte artifact through a reliable byte-capable path; verify SHA-256 after fetch. Do not substitute generic workbench. |
+| D-05 | Browser-render guide at desktop/mobile | PARTIAL | Chromium screenshots captured for all 11 pages at 1600×1000 and 390×844; hashes stored in local reports | Bundle evidence; repeat against branch-committed artifact after D-04. |
+| D-06 | Full guide interactions/accessibility | PARTIAL | Tabs, palettes, theme, exact law search, motion filter/reduced-motion toggle, sound opt-in/sample controls tested | Complete keyboard-only acceptance, contrast calculations, accessible names/state, screen-reader review, all copy controls and motion replay/group behavior. |
+| P0-1 | Fix duplicate appendix navigation target | OPEN | Root `index.html` Git blob `24dea9c95112fe83073e58ef4cb14d7eb5de9928`; issue #75 open. Patcher blob `0daf99082075c2d4fd9dfe9c2b718c2261bac103`; in-memory transformed source passed static checks. Root source remains unchanged. | Run patcher from byte-capable checkout; focused diff; commit source patch on isolated branch; run direct-fragment, active-nav, keyboard and mobile browser acceptance. |
+| P0-2 | Repeat Field B Strata measurement | OPEN | `proto/field-b/cost.json` blob `6aeff297eb300407702a5e499c873a306beb9e0e`; Gordon/1600 Strata gapWorst ≈49.9ms, over=1, gaps=21; mobile Gordon has no over-budget gap in stored data. | Repeat `NODE_PATH=$(npm root -g) node proto/field-b/shoot.js` multiple times; preserve raw logs/requests, source SHA and conditions; decide repeatability/root cause. |
+| P0-3 | Select Core vs Look A vs Look B | OPEN | Candidate Field A/B pages and historic screenshots inventoried; no approved A/B assignment or fresh matched comparison. | Capture matched Core/A/B at 1600px and 390px, same content/states; assess hierarchy, density, legibility, clipping, transition, accessibility and performance; record explicit decision and trade-offs. |
+| P0-4 | Runtime/accessibility/network/isolation acceptance for application | OPEN | Static root audit only for canonical app. The guide browser run is a separate artifact and does not satisfy this item. | Run exact checkout in browser; collect console/network, keyboard, reduced-motion, reset/restore/export, responsive, isolation evidence; hash screenshots and logs. |
+| S-01 | Verify canonical source locally and preserve provenance | PARTIAL | Root source path and Git blob SHA identified; local byte-for-byte checkout/hash still not established. | Obtain byte-capable checkout; record commit, Git blob SHA, local SHA-256, size, provenance and differences from supplied `CORE_REFERENCE.html`. |
+| S-02 | Trace shared engine and source dependencies | PARTIAL | Field A/B imports known; root HTML static audit done. `engine.js` large-file connector fetch was empty. | Local trace all imports/call sites, mutable state, network/storage behavior, font/image dependencies, reset/restore/export and Core/A/B isolation. |
+| S-03 | Trace token source/generator | PARTIAL | Source `atuned_src/shell/head.html`; generator `tools/tokens.py`; generated `funnel/tokens.css` SHA known. | Run documented generator in checkout; verify deterministic output/diff and consumer behavior. Never hand-edit generated CSS. |
+| S-04 | Workspace-to-source mapping | OPEN | User-supplied list of 12 tabs recorded in sitemap; source-backed per-tab mapping is not done. | For Story, Avatar, Summary, Intake, Analytics, Field, Body, Compass, Character, Ritual, Knowledge, Clients: map source component, data/events, production-vs-preview, and matching lookdev page. Explicitly document Diagnostic → Summary without equating names. |
+| S-05 | KPI acceptance evidence | OPEN | Thresholds not all approved; no complete test results/evidence register. | Approve thresholds; define method/source per KPI; execute; record values, failure criteria and gaps; keep unmeasured KPIs explicitly unmeasured. |
+| S-06 | Cross-functional creative decision log | OPEN | No complete consolidated keep/change/reject log with evidence. | Record art/creative direction, UX, motion, sound, copy, brand and engineering findings with artifact/commit evidence and rationale. |
+| R-01 | CI/PR state | PARTIAL | Run `38601838177` completed success, but was on documentation-only branch. Run `38605345102` was last observed in progress; `38606254578` queued at last check. PR #74 draft/open/unmerged. | Refresh all current runs and require terminal status for exact current head; do not use green docs CI as proof of app fixes. |
+| R-02 | Review literal Brand Dev 3/4/5 artifacts | BLOCKED BY RETRIEVAL | Recursive Library list returned 851 items over 9 pages; no exact title/folder matches for “ATUNED BRAND DEV 3/4/5”. Related creative documents and handshakes were found. | Retry when source folders become available; do not claim direct folder review until retrieved. |
+
+## Ordered execution plan — continue without re-planning
+
+1. **Repository/source recovery:** retrieve the exact canonical bytes in a local checkout; verify source provenance and compare with supplied `CORE_REFERENCE.html`.
+2. **P0-1 patch:** run `node lookdev/patch_appendix_navigation.mjs --check`, then `--apply`; inspect only intended changes; commit on isolated branch.
+3. **P0-1 acceptance:** static unique-ID/fragment tests plus browser desktop/mobile direct links, active state, keyboard and nav tests.
+4. **CI:** poll current branch-head workflows to terminal; inspect all failures.
+5. **P0-2:** repeat Field B measurement harness and preserve raw evidence.
+6. **P0-3:** fresh matched Core/A/B screenshots and evidence-backed selection.
+7. **P0-4/S-02/S-03:** exact-source runtime, dependency/network, accessibility and isolation tests.
+8. **S-04/S-05/S-06:** source map, KPI register, cross-functional decision log.
+9. **D-04/D-05/D-06:** transfer reviewed brand guide into repo, re-run browser QA on committed artifact, finish keyboard/contrast/a11y review.
+10. Update this ledger, sitemap, start index and executive handshake before ending the round.
+
+## Safety
+No production merge, deployment, or production configuration change was performed. No independent agent run is claimed. Green CI is not treated as proof of untested app behavior.
