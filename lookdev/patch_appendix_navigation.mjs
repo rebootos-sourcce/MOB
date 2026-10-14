@@ -44,6 +44,10 @@ replaceExactlyOnce(
   "Pattern Catalog id and label");
 replaceExactlyOnce("var isActive = link.getAttribute('href') === '#' + id",
   "var isActive = link.getAttribute('data-target') === id", "scroll-spy active state");
+replaceExactlyOnce(`  btn.addEventListener('keydown', function(ev){
+    if(ev.key==='Enter'||ev.key===' '){ ev.preventDefault(); btn.click(); }
+  });
+`, "", "remove duplicate native-button keyboard activation");
 
 function validate(document) {
   const ids = [...document.matchAll(/\bid\s*=\s*(["'])(.*?)\1/g)].map(m => m[2]);
@@ -65,6 +69,7 @@ function validate(document) {
   if (!document.includes("Six appendices.") || !document.includes("6 appendices")) throw new Error("Appendix count copy is inconsistent.");
   if (!document.includes('data-target="appendix-f"') || !document.includes('<span class="toc-row-num">F</span>')) throw new Error("Appendix F is missing from navigation or contents.");
   if (!document.includes("var isActive = link.getAttribute('data-target') === id")) throw new Error("Scroll-spy must match nav data-targets to section IDs.");
+  if (document.includes("if(ev.key==='Enter'||ev.key===' ')")) throw new Error("Native button keyboard activation must not be double-wired.");
   return { idCount: ids.length, duplicateIds: duplicates, appendixIds, dataTargetCount: targets.length, fragmentHrefCount: fragments.length };
 }
 const validation = validate(html);
