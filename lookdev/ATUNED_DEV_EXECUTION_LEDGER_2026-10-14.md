@@ -26,6 +26,18 @@
 - Not production-deployed, not merged, and not an approved replacement for the reviewed brand-guide HTML.
 - Latest workbench source commit: `970338f2a0607594bba7c834a7580e402cf31fac`; acceptance workflow commit: `e2975d32578b1143bcd7c43a03ee9c88f68865c2`.
  
+## Recursive execution refresh — 2026-10-14 (source reconciliation + P0-1 retry)
+
+- The Appendix browser run `38630520731` failed after the Enter/Space toggle assertions passed. Its failure was the immediate assertion after a smooth-scroll click: the test sampled Appendix F's position before smooth scrolling had finished. The next test revision waits for the target to enter the expected viewport band before asserting. Commit: `86295851cb82348d5a1d43c64b3e4ac5d42db06c`; test blob `429a36ed7da541f3a53be4c75db2871384141a77`. The new targeted workflow `38633567193` is queued. This is a test stabilization hypothesis pending rerun, not a pass.
+- Library source candidates were materialized locally and SHA-256 verified:
+  - `ATUNED_MVP_Recursive_Final(1).html`: 4,962,481 bytes; SHA-256 `293d2307fcaabe888fe9dd5d42e7950ae4cfc97d90962976110f9f58fe2b844c`.
+  - `atuned_source_wired_v3_healed.html`: 4,851,061 bytes; SHA-256 `44a59f2e2a726cee9705cd639d8190806f72bce4cb23a03e2c86e0ed7950d27b`.
+  - `atuned_dev3_mob_trace_wired_2026-10-07.html`: 4,837,896 bytes; SHA-256 `e2c410b391e5ef208302703b4985e20b96c15ba62eb2283b0f30d048d43ff9ce`.
+  - Additional variants `atuned.html`, `atuned(3).html`, and `atuned-quiz.html` also materialized and hashed.
+- Correction to the prior recovery interpretation: these Library candidates do **not** match the inherited 12-tab list (Story, Avatar, Summary, Intake, Analytics, Field, Body, Compass, Character, Ritual, Knowledge, Clients). Their actual TAB identity definitions begin Story, Summary, Field, Energy, Analytics, Intake, Know, Games, Compass, Settings, Ritual, Masks, Practitioner, with some variants appending Questions and Account. None contains a literal `CORE_REFERENCE.html` reference. They are useful historical candidates, not the confirmed canonical workspace or Core reference. Do not map them as authoritative or replace the missing source with them.
+- GitHub code search for `CORE_REFERENCE.html` in `rebootos-sourcce/MOB` returned zero matches. Source identification therefore remains blocked pending the exact inherited handoff/source artifact.
+- Current CI backlog still contains many queued runs. No production merge/deployment was performed.
+
 ## Task ledger
 
 | ID | Work item | Status | Evidence / exact state | Exit criteria / next action |
