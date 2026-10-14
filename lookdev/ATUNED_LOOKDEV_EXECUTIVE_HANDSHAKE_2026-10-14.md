@@ -146,3 +146,25 @@ Do not reorder pages, create alternate page taxonomies, or replace the guide wit
 8. Update all continuity documents with evidence and remaining gaps before handing off.
 
 **Safety boundary remains:** no production merge/deployment or changes to production `index.html` without explicit authorization and completed release gates.
+
+
+## Latest source/acceptance correction — 2026-10-14
+
+### P0-1 is patched but not closed
+- Commit `f32cf203381b4a19419f26718e778c8c9e6b1cd9` modifies `index.html` only on `lookdev/p0-execution-20261014`.
+- Branch root blob: `adb84d9f4c96ae2b568b547b47a28eb682ec1298`. Main root blob remains `24dea9c95112fe83073e58ef4cb14d7eb5de9928`.
+- The branch patch renames the second Appendix A Pattern Catalog to Appendix F, adds E/F to contents and F to side navigation, and reconciles appendix count copy.
+- Static validation from the guarded patcher reported zero duplicate IDs and unique A–F section IDs.
+- Browser workflow `38608899960` failed. Failure exposed two related defects: native nav buttons were wired for keyboard activation both natively and by a custom keydown handler, and the scroll-spy compared `href` while nav items use `data-target`.
+- The guarded patcher now includes fixes for both. Workflow `38609326592` was queued at last poll; it has not been marked successful. Issue #75 remains open until corrected browser evidence passes.
+- This is an isolated branch source patch, not a production deployment or merge.
+
+### CI and source status
+- Latest checked workflow `38601838177` completed successfully for an earlier documentation-only head; it does not prove the application fix.
+- Newer workflows `38609326592` and `38609335352` were queued at the latest observation. Refresh them against the current branch head before claiming terminal CI.
+- Current branch head has advanced since previous status snapshots; always re-fetch refs before acting.
+
+### Lookdev browser QA artifact
+- Local reviewed guide SHA-256: `f94b2dac4cf6daa91bcb2cb7e3ebdf46389a162fb4ab0650f80ccb6b2cf139cd`.
+- QA package: `ATUNED_LOOKDEV_BROWSER_QA_2026-10-14.zip` (local downloadable artifact). All 11 pages captured at desktop 1600×1000 and mobile 390×844.
+- The reviewed guide is still not committed to GitHub. Full keyboard-only, contrast and screen-reader acceptance remains open.
