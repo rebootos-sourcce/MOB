@@ -101,8 +101,15 @@ const assert = require('node:assert/strict');
           assert.equal(await toggle.getAttribute('aria-expanded'), 'true', 'appendix side-nav can be reopened by keyboard');
         }
         const sideLink = navGroup.locator('a[data-target="appendix-f"]');
+        // Force a fresh intersection transition: direct #appendix-f navigation may already
+        // place F inside the observer band before the click, so a fixed wait alone is flaky.
+        await page.locator('#cover').evaluate(el => el.scrollIntoView({ behavior: 'instant', block: 'start' }));
+        await page.waitForTimeout(250);
         await sideLink.click();
-        await page.waitForTimeout(800);
+        await page.waitForFunction(() => {
+          const link = document.querySelector('nav a[data-target="appendix-f"]');
+          return !!link && link.classList.contains('act');
+        }, { timeout: 5000 });
         const active = await sideLink.evaluate(el => el.classList.contains('act'));
         const clicked = await page.evaluate(() => {
           const el = document.getElementById('appendix-f');
