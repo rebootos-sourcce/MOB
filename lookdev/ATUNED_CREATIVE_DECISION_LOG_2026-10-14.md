@@ -35,3 +35,10 @@ These role definitions were read from `.claude/agents/creative-director.md`, `br
 ## Closure rule
 
 No P0 closes from intent, commit, or queued CI. Require exact-head test result, inspected evidence artifact, source hash, and recorded limitations. Keep the PR draft/open. Do not merge or deploy until release gates pass.
+
+
+## Current evidence refresh — 2026-10-14 19:45 UTC
+
+- Field B repeatability passed in [run 38625541558](https://github.com/rebootos-sourcce/MOB/actions/runs/38625541558): 3 runs, 72 rows, zero over-budget gaps above 17.5 ms, maximum 16.8 ms; Gordon/1600/Strata 16.7/16.8/16.7 ms. Zero off-machine requests in each request log. Historical 49.9 ms outlier not reproduced; root cause still unknown.
+- Field A/B capture passed in [run 38625672498](https://github.com/rebootos-sourcce/MOB/actions/runs/38625672498): both widths 1600 and 390, zero console/page errors, zero external requests, no horizontal overflow. A is more explanatory and longer; B makes four ring strategies easier to compare and is shorter, but both remain text-heavy. This is not an owner-approved selection and does not compare Core.
+- Appendix [run 38625732509](https://github.com/rebootos-sourcce/MOB/actions/runs/38625732509) failed keyboard activation after static checks passed. Enter left `aria-expanded=false`; seven child links were visible while group state was false. Diagnostic run [38626123555](https://github.com/rebootos-sourcce/MOB/actions/runs/38626123555) is queued to print bounded source snippets. Issue #75 remains open. No production merge/deploy.
