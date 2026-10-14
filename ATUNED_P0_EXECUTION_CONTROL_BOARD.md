@@ -237,3 +237,9 @@ Connected Supabase project `ATUNED`, ref `tuvpjbduarteszwkdmuu`:
 7. **H — release:** human accessibility/privacy review, approved content, migration/rollback evidence, persisted browser→Worker→database→reload verification, publisher confirmation, and explicit release authorization remain required.
 
 No production write, migration, deployment, gift activation/issuance, profile-sync activation, or billing activation was performed during this cycle.
+
+
+
+### Geometry cross-check — full runtime acceptance, 14 October
+
+A full comparison of Reboot-OS `NODEREG.json`, `PMFPOS`, `PMFALIAS`, and `FLOWSEAT` applied the actual runtime rules (coordinate 0–100, known band seat, vertical distance ≤25, explicit aliases). It found **105/112 canonical IDs accepted as measured positions**, **7/112 refused**, and **4 orphan position keys**. Refused IDs: 43 Resentment (Solar) (no position); 107 Self-Exclusion (y=90, Crown seat≈2.79); 108 Endless Seeking (y=93.5, Crown seat≈2.79); 109 Soul Star (y=101); 110 Stellar Gateway (no position); 111 Earth Star (y=-1.5); 112 Gaia Gateway (no position). The four orphan keys are the paired Root Terminal Anchor and Earth Core Resonance positions. This expands the earlier anchor-only gap: geometry acceptance must cover every canonical ID, not only external anchors. Do not invent positions, aliases, exclusions, or relax the seat-distance rule without the owner/art-direction crosswalk.
