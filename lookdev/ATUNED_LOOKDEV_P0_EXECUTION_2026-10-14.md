@@ -300,3 +300,15 @@ No production merge, deployment, or production configuration change was performe
 - Screenshots for all 11 pages at 1600×1000 and 390×844 are bundled in local `ATUNED_LOOKDEV_BROWSER_QA_2026-10-14.zip`.
 - Contrast check flags Earth/Jewel accent on surface at 3.37:1/3.68:1 if used for normal text; per-component audit remains open. Full keyboard-only, screen-reader and owner visual acceptance remain open.
 - Guide transfer into the repository remains open; local SHA must be verified after transfer.
+
+
+## Execution refresh — 2026-10-14 18:15 UTC
+
+- Live Issue #75 remains OPEN: https://github.com/rebootos-sourcce/MOB/issues/75.
+- Appendix source patch is on isolated branch `lookdev/p0-execution-20261014`; branch root `index.html` blob is `adb84d9f4c96ae2b568b547b47a28eb682ec1298`. Static check previously reported 434 IDs, zero duplicates, A–F targets once, 106 data targets, and zero static fragment hrefs. Main/production remains unchanged.
+- Browser run [38608899960](https://github.com/rebootos-sourcce/MOB/actions/runs/38608899960) failed at keyboard toggle acceptance: Enter left `aria-expanded=false`.
+- Follow-up run [38609326592](https://github.com/rebootos-sourcce/MOB/actions/runs/38609326592) failed earlier in patcher validation: the keyboard-handler removal pattern did not match the source, so browser tests were skipped and no artifacts were produced.
+- Corrective patcher change committed as `08402497a48986aa50a61229136e864681e97fe7`; patcher blob SHA `dae9298e2c7dc2fd6032242a128934b9636a76b5`. It replaces the whitespace-fragile exact string with a whitespace-tolerant regex and still requires exactly one match or a proven already-applied state. The regex source was re-fetched and inspected. **No passing run has yet been verified for this commit.** Refresh Actions and inspect the next run before further source changes.
+- Field B stored evidence re-fetched: `proto/field-b/cost.json` blob `6aeff297eb300407702a5e499c873a306beb9e0e`; Gordon/1600/Strata remains a single stored outlier at `gapWorst≈49.9ms`, `over=1`, `gaps=21`. This is historical data, not a repeat measurement. `requests.log` blob `9475387168d699b0a6cdfd62743fdb80aea45b49` records zero off-machine requests in the old harness run. Repeated performance runs remain OPEN.
+- Canonical root HTML and `engine.js` connector fetches still return empty content for large blobs. Byte-capable checkout/source trace remains blocked. The uploaded continuity ZIP contains plans and prior records, not the missing canonical workspace source or the local brand-guide artifact; the exact reviewed HTML and QA package described in prior records are not mounted in this thread.
+- Next actions: verify Actions run for commit `08402497a48986aa50a61229136e864681e97fe7`; if static validation passes, inspect browser acceptance and artifacts. Then continue source recovery, repeated Field B measurements, matched Core/A/B captures, guide transfer/accessibility QA, source-tab map, KPI register, creative decision log, and exact Brand Dev 3/4/5 retrieval. Do not merge/deploy.
