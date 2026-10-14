@@ -7,13 +7,15 @@
 ## Mandatory read order — every round
 
 1. **This file:** current priorities and source map.
-2. [Executive handshake](ATUNED_LOOKDEV_EXECUTIVE_HANDSHAKE_2026-10-14.md): scope, decisions, constraints, carry-over rules.
-3. [Repository sitemap and source trace](ATUNED_REPO_SITEMAP_TRACE_2026-10-14.md): canonical entry points, dependencies, prototypes, evidence paths.
-4. [Execution ledger](ATUNED_DEV_EXECUTION_LEDGER_2026-10-14.md): status of every task, evidence, SHA, blockers, next action.
-5. Re-read the current source at the exact branch/commit recorded in the ledger; do not rely on old summaries.
-6. Search the conversation/project library for **ATUNED BRAND DEV 5**, **ATUNED BRAND DEV 4**, and **ATUNED BRAND DEV 3**. Review each three times: (a) decisions/goals, (b) visual/page requirements, (c) gaps/conflicts. If literal source folders are unavailable, record that limitation rather than pretending to have reviewed them.
-7. Inspect the master index and relevant source files before describing any asset/token/icon/motion/sound as canonical.
-8. Before ending the round, update this index, sitemap/trace if mappings changed, execution ledger, and executive handshake. All incomplete work must remain in the carry-forward list.
+2. [ATÜNED Master Index](https://github.com/rebootos-sourcce/MOB/blob/docs/atuned-master-index-20261012/ATUNED_MASTER_INDEX.md) on the separate docs branch (not merged to main): cross-repository source/deployment authority. Exact blob SHA `4080c5f851bf483b1408f818280ab78f45dc2107`.
+3. [Architecture Review](https://github.com/rebootos-sourcce/MOB/blob/docs/atuned-master-index-20261012/ATUNED_ARCHITECTURE_REVIEW_2026-10-13.md) and [P0 Execution Control Board](https://github.com/rebootos-sourcce/MOB/blob/docs/atuned-master-index-20261012/ATUNED_P0_EXECUTION_CONTROL_BOARD.md): wider system trace and release gates.
+4. [Executive handshake](ATUNED_LOOKDEV_EXECUTIVE_HANDSHAKE_2026-10-14.md): scope, decisions, constraints, carry-over rules.
+5. [Repository sitemap and source trace](ATUNED_REPO_SITEMAP_TRACE_2026-10-14.md): canonical entry points, dependencies, prototypes, evidence paths.
+6. [Execution ledger](ATUNED_DEV_EXECUTION_LEDGER_2026-10-14.md): status of every task, evidence, SHA, blockers, next action.
+7. Re-read the current source at the exact branch/commit recorded in the ledger; do not rely on old summaries.
+8. Search the conversation/project library for **ATUNED BRAND DEV 5**, **ATUNED BRAND DEV 4**, and **ATUNED BRAND DEV 3**. Review each three times: (a) decisions/goals, (b) visual/page requirements, (c) gaps/conflicts. If literal source folders are unavailable, record that limitation rather than pretending to have reviewed them.
+9. Inspect the master index and relevant source files before describing any asset/token/icon/motion/sound as canonical.
+10. Before ending the round, update this index, sitemap/trace if mappings changed, execution ledger, and executive handshake. All incomplete work must remain in the carry-forward list.
 
 ## Current workstreams
 
