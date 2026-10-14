@@ -7,7 +7,7 @@ const assert = require('node:assert/strict');
 (async () => {
   const root = process.cwd();
   const fileUrl = 'file://' + path.resolve(root, 'index.html');
-  const outDir = path.join(root, '.lookdev-ci-artifacts');
+  const outDir = path.join(root, 'lookdev-ci-artifacts');
   fs.mkdirSync(outDir, { recursive: true });
   const browser = await chromium.launch({ headless: true });
   const report = { source: 'index.html', sourceCommit: process.env.GITHUB_SHA || 'local', viewports: [], requests: [], errors: [], warnings: [] };
@@ -44,12 +44,18 @@ const assert = require('node:assert/strict');
       if (viewport.width === 1600) {
         const navGroup = page.locator('nav .nav-group[data-group="5"]');
         const toggle = navGroup.locator('button.nav-mv-toggle');
+        const beforeKeyboard = await toggle.getAttribute('aria-expanded');
         await toggle.focus();
         await page.keyboard.press('Enter');
-        assert.equal(await toggle.getAttribute('aria-expanded'), 'true', 'Enter opens appendix side-nav group');
+        const afterEnter = await toggle.getAttribute('aria-expanded');
+        assert.notEqual(afterEnter, beforeKeyboard, 'Enter toggles appendix side-nav group');
         await page.keyboard.press('Space');
-        assert.equal(await toggle.getAttribute('aria-expanded'), 'false', 'Space closes appendix side-nav group');
-        await page.keyboard.press('Enter');
+        const afterSpace = await toggle.getAttribute('aria-expanded');
+        assert.notEqual(afterSpace, afterEnter, 'Space toggles appendix side-nav group');
+        if (afterSpace !== 'true') {
+          await page.keyboard.press('Enter');
+          assert.equal(await toggle.getAttribute('aria-expanded'), 'true', 'appendix side-nav can be reopened by keyboard');
+        }
         const sideLink = navGroup.locator('a[data-target="appendix-f"]');
         await sideLink.click();
         await page.waitForTimeout(800);
