@@ -79,6 +79,19 @@ const assert = require('node:assert/strict');
           childLinks: await navGroup.locator('a[data-target]').count(),
           childLinksVisible: await navGroup.locator('a[data-target]').evaluateAll(els => els.map(el => ({ target: el.getAttribute('data-target'), hidden: el.hidden, display: getComputedStyle(el).display, visibility: getComputedStyle(el).visibility })))
         });
+        console.log('[APPENDIX_TOGGLE_DIAGNOSTIC] ' + JSON.stringify({
+          beforeClickProbe, afterClickProbe, beforeKeyboard, afterEnter,
+          navGroupExpanded: await navGroup.getAttribute('aria-expanded'),
+          toggleExpanded: await toggle.getAttribute('aria-expanded'),
+          toggleTag: await toggle.evaluate(el => el.tagName),
+          toggleDisabled: await toggle.isDisabled(),
+          toggleVisible: await toggle.isVisible(),
+          toggleText: await toggle.innerText(),
+          ariaControls: await toggle.getAttribute('aria-controls'),
+          childLinks: await navGroup.locator('a[data-target]').count(),
+          childLinksVisible: await navGroup.locator('a[data-target]').evaluateAll(els => els.map(el => ({target:el.getAttribute('data-target'), hidden:el.hidden, display:getComputedStyle(el).display, visibility:getComputedStyle(el).visibility}))),
+          keyEvents
+        }));
         assert.notEqual(afterEnter, beforeKeyboard, 'Enter toggles appendix side-nav group');
         await page.keyboard.press('Space');
         const afterSpace = await toggle.getAttribute('aria-expanded');
