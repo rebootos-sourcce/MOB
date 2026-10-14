@@ -48,12 +48,12 @@ replaceExactlyOnce("var isActive = link.getAttribute('href') === '#' + id",
   // The canonical source has varied whitespace around this handler across revisions.
   // Remove exactly one matching native-button keydown shim; native buttons already
   // synthesize click on Enter/Space, so this shim can double-activate the toggle.
-  const pattern = /[ \t]*btn\.addEventListener\(\s*'keydown'\s*,\s*function\s*\(\s*ev\s*\)\s*\{\s*if\s*\(\s*ev\.key\s*===\s*'Enter'\s*\|\|\s*ev\.key\s*===\s*' '\s*\)\s*\{\s*ev\.preventDefault\(\)\s*;\s*btn\.click\(\)\s*;\s*\}\s*\}\s*\)\s*;\s*/g;
+  const pattern = /[ \t]*btn\.addEventListener\(\s*['"]keydown['"]\s*,[\s\S]{0,500}?\}\s*\)\s*;[ \t]*/g;
   const matches = [...html.matchAll(pattern)];
   if (matches.length === 1) {
     html = html.replace(pattern, "");
     edits.push({ label: "remove duplicate native-button keyboard activation", status: "patched" });
-  } else if (matches.length === 0 && !html.includes("if(ev.key==='Enter'||ev.key===' ')")) {
+  } else if (matches.length === 0 && !/btn\.addEventListener\(\s*['"]keydown['"]/.test(html)) {
     edits.push({ label: "remove duplicate native-button keyboard activation", status: "already-applied" });
   } else {
     throw new Error("remove duplicate native-button keyboard activation: expected one handler, found " + matches.length);
@@ -80,7 +80,7 @@ function validate(document) {
   if (!document.includes("Six appendices.") || !document.includes("6 appendices")) throw new Error("Appendix count copy is inconsistent.");
   if (!document.includes('data-target="appendix-f"') || !document.includes('<span class="toc-row-num">F</span>')) throw new Error("Appendix F is missing from navigation or contents.");
   if (!document.includes("var isActive = link.getAttribute('data-target') === id")) throw new Error("Scroll-spy must match nav data-targets to section IDs.");
-  if (document.includes("if(ev.key==='Enter'||ev.key===' ')")) throw new Error("Native button keyboard activation must not be double-wired.");
+  if (/btn\.addEventListener\(\s*['"]keydown['"]/.test(document)) throw new Error("Native button keyboard activation must not be double-wired.");
   return { idCount: ids.length, duplicateIds: duplicates, appendixIds, dataTargetCount: targets.length, fragmentHrefCount: fragments.length };
 }
 const validation = validate(html);
