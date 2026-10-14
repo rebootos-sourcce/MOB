@@ -25,6 +25,20 @@ jobs:
         run: |
           npm install --prefix /tmp/lookdev-pw playwright@1.56.1
           /tmp/lookdev-pw/node_modules/.bin/playwright install --with-deps chromium
+      - name: print bounded nav keyboard source diagnostic
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          lines = Path("index.html").read_text(encoding="utf-8").splitlines()
+          hits = [i for i, line in enumerate(lines) if "keydown" in line.lower() or "nav-mv-toggle" in line]
+          shown = set()
+          for i in hits:
+              for j in range(max(0, i-3), min(len(lines), i+5)):
+                  if j not in shown:
+                      print(f"{j+1}: {lines[j][:700]}")
+                      shown.add(j)
+              print("---")
+          PY
       - name: apply guarded appendix patch and validate static targets
         run: |
           node lookdev/patch_appendix_navigation.mjs --apply
