@@ -1,0 +1,39 @@
+name: one-time P0 appendix patch (draft branch only)
+on:
+  push:
+    branches:
+      - lookdev/p0-execution-20261014
+    paths:
+      - .github/workflows/p0-appendix-patch-once.yml
+permissions:
+  contents: write
+jobs:
+  patch:
+    if: contains(github.event.head_commit.message, '[run-appendix-patcher]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: lookdev/p0-execution-20261014
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: apply guarded appendix patch and validate static targets
+        run: |
+          node lookdev/patch_appendix_navigation.mjs --apply
+          node lookdev/patch_appendix_navigation.mjs --check
+      - name: commit only canonical source edit to draft branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- index.html
+          if git diff --cached --quiet; then
+            echo "Guarded patch produced no source diff."
+            exit 0
+          fi
+          git commit -m "fix: make appendix navigation targets unique"
+          git push origin HEAD:refs/heads/lookdev/p0-execution-20261014
