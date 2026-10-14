@@ -201,3 +201,39 @@ P0 may be declared complete only after: one publisher and authenticated route ma
 ### Cycle 4 follow-up — PR #35 external service split
 
 - Current PR #35 head `e35dd50dd72913f5cf47b7f7ad12c79bd6802753`: server #38473170941 and smoke #38473176431 pass. External `Workers Builds: atuned-api` succeeds only on preview build `f58c7387-2bbf-4060-a579-ae666d2ca488`; external `Workers Builds: atuned-os` fails on production build `b9148ff9-4c07-49f4-8926-1e6d77d7c851` (zero annotations). This confirms split service/environment outcomes, not production routing. The intended Pages `ATUNED_API` value still requires authorized confirmation.
+
+
+## Recursive execution refresh — 14 October 2026 UTC
+
+This section is an additive current-evidence snapshot. It does not close any acceptance block or authorize production actions.
+
+### Reconciled repository / CI state
+
+- Reboot-OS main includes merged PR #43 (canonical topology) and #44 (release evidence/gift-bank contract), latest recorded main commit `233b5c3acc3d7396e3bd1a861319689aa4a9d60e`.
+- Reboot-OS PR #46 (reduced motion) is draft/open. Exact-head gate #38513391386 passed on `2eae6b7c07d57d9979eb8f4ea462801730e1f055`; human keyboard/screen-reader and full remaining-motion review remain open.
+- Reboot-OS PR #47 (single-publisher mitigation) is draft/open. Exact-head gate #38512729513 passed on `a43aae252811b00b082b8c7be55320b4204a8006`. It removes the Reboot-OS Pages deploy only on its unmerged branch. Main still contains the conditional Pages deploy in `.github/workflows/web.yml`; MOB main also contains a Pages deploy in `.github/workflows/deploy.yml`. Do not merge/deploy until the authorized operator confirms the canonical publisher, account, domain, and rollback path.
+- Reboot-OS PR #48 adds a fail-closed gift-bank validator. Its prior exact-head gate #38513706304 passed before the cross-bank duplicate-ID regression test was added. The current PR head is `dde8eaefaa3d9a02f0f02e0072f291418b081ab3`; gate #38514559152 failed before any steps were recorded. The subsequent rerun also failed before steps, and logs were unavailable. Treat current-head CI as **unverified**, not as a demonstrated test failure or a pass. Stop retrying until runner/workflow startup can be diagnosed.
+- Reboot-OS PR #45 now records the live lifecycle query below. Current exact-head gate attempts also failed before any steps were recorded; do not infer that its code or docs tests ran. Recheck a new exact head when the CI startup issue is diagnosable.
+- MOB PR #69 remains draft/open/unmerged. Its master index and this board are navigation/evidence documents, not approval to merge or deploy.
+
+### New live lifecycle finding — aggregate-only, read-only
+
+Connected Supabase project `ATUNED`, ref `tuvpjbduarteszwkdmuu`:
+
+- 4,992 `funnel_sessions` rows; all 4,992 have `state='ARRIVE'` and `status='active'`. 4,412 have `updated_at` older than 24 hours; none is older than seven days.
+- Six `starter_gifts` rows: five active, one pending. All six share one distinct `pattern_set_hash`. Five active rows have `transferred_at` populated; the pending row does not.
+- The inspected `starter_gifts` schema has no gift-nature or catalog-version selector column.
+- Existing relevant tables have RLS enabled and restrictive deny policies for `anon` and `authenticated`; the current security advisor result returned zero lints. This does not prove the absent future catalog/set/mapping tables or live lifecycle correctness.
+- These aggregate counts cannot distinguish synthetic/fixture traffic from real user records. Do not mutate production to normalize the counts. An approved provenance check and non-production end-to-end lifecycle proof are required. The shared hash and missing nature selector do not prove the six-nature-specific bank rule is implemented.
+
+### Current dependency blockers / next executable actions
+
+1. **B — source and content:** 560 source-review queue rows; 0 stable final pattern IDs and 0 owner-approved rows. Resolve 24 ambiguous PDF locators and 210 transcript sentence-boundary cases; do not synthesize or auto-select the first 100 rows.
+2. **C — backend snapshot:** migrations 0016–0018 and catalog/set/mapping tables remain absent from the connected live project. Review migration sequence and privileges; prove apply/rollback only in non-production after the approved bank/schema/mapping artifacts exist.
+3. **D — client mapping:** owner-approved six-nature-to-four-track stable-ID mapping is absent. The current six production gift records sharing one hash require provenance clarification, not a production repair.
+4. **E — canon/geometry/privacy:** canonical topology is 112 (108 body + 2 above + 2 below). In Reboot-OS `atuned/src/40_the-archetypes.js`, four legacy root/earth-core position keys remain outside the canonical register, while canonical anchors 110 (Stellar Gateway) and 112 (Gaia Gateway) lack measured positions/aliases. No owner-approved geometry crosswalk was found. Preserve the gap; do not invent coordinates or map legacy keys by name.
+5. **F — publisher/service:** the Reboot-OS mitigation PR is not merged and the duplicate Pages publisher remains configured on both main branches. The external `Workers Builds: atuned-os` check continues to fail without actionable job logs; an authenticated operator must inspect the provider's first failing step and verify the intended service/root/build command. Do not treat this check as proof of a live outage or bypass it.
+6. **G — cross-review / CI:** current Reboot-OS PR #45 and #48 gate attempts are failing before any steps are recorded; no test results can be inferred. Investigate runner startup/log availability, then rerun on the exact current head and cross-review validator failure cases and lifecycle assumptions.
+7. **H — release:** human accessibility/privacy review, approved content, migration/rollback evidence, persisted browser→Worker→database→reload verification, publisher confirmation, and explicit release authorization remain required.
+
+No production write, migration, deployment, gift activation/issuance, profile-sync activation, or billing activation was performed during this cycle.
