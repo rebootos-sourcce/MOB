@@ -5,6 +5,8 @@ on:
       - lookdev/p0-execution-20261014
     paths:
       - .github/workflows/p0-appendix-patch-once.yml
+      - lookdev/patch_appendix_navigation.mjs
+      - lookdev/test_appendix_navigation.cjs
 permissions:
   contents: write
 jobs:
@@ -19,10 +21,25 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: install isolated Playwright runtime
+        run: |
+          npm install --prefix /tmp/lookdev-pw playwright@1.56.1
+          /tmp/lookdev-pw/node_modules/.bin/playwright install --with-deps chromium
       - name: apply guarded appendix patch and validate static targets
         run: |
           node lookdev/patch_appendix_navigation.mjs --apply
           node lookdev/patch_appendix_navigation.mjs --check
+      - name: run appendix navigation browser acceptance at desktop and mobile
+        env:
+          NODE_PATH: /tmp/lookdev-pw/node_modules
+        run: node lookdev/test_appendix_navigation.cjs
+      - name: upload browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: appendix-navigation-browser-proof
+          path: .lookdev-ci-artifacts/
+          if-no-files-found: warn
       - name: commit only canonical source edit to draft branch
         env:
           GH_TOKEN: ${{ github.token }}
