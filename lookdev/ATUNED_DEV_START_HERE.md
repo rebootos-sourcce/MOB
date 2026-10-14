@@ -22,10 +22,10 @@
 ### A. Brand look-development guide
 - Owner-supplied guide: `ATUNED_LOOKDEV_BRAND_GUIDE_REVIEWED_V2_2026-10-13.html`.
 - Reviewed local artifact: `ATUNED_LOOKDEV_WORKBENCH_REVIEWED_2026-10-14.html`.
-- Local SHA-256: `f94b2dac4cf6daa91bcb2cb7e3ebdf46389a162fb4ab0650f80ccb6b2cf139cd`.
+- Local SHA-256: `9e96f0bdb51b381291e44ab47fbacfe319728c2a3dc21f8bc56e944fec9e4614`.
 - Fixed page order: Fonts/Typography → Logo/Wordmark → Colors → Icons → UI Elements → Copy Elements → Story → Taglines → Motion → Sound → Innovation.
 - A local Chromium run now verifies all 11 tabs can be activated, global palette tokens change, light/dark mode changes computed colors, mobile document width remains 390px, and no JS exceptions/console errors were recorded in that pass.
-- Still open: real human-equivalent keyboard/focus acceptance; search correctness/expectations; sound gesture/autoplay verification; accessibility/contrast review; commit reviewed HTML to this branch; screenshots for all 11 pages at desktop and mobile; source-fidelity cross-review.
+- Still open: commit reviewed HTML to this branch; full keyboard-only/screen-reader acceptance; owner visual approval; component-by-component contrast audit (Earth/Jewel accent on surface is below 4.5:1 if used as text); source-fidelity cross-review. Latest local pass also wired Mirror confirmation/challenge/correction feedback and fixed sound-enable label consistency. QA package: local `ATUNED_LOOKDEV_BROWSER_QA_2026-10-14.zip`.
 - Do not use the generic three-direction workbench as the primary brand guide.
 
 ### B. Application P0 blockers
