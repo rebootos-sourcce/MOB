@@ -18,6 +18,14 @@
 - Visual review of desktop contact sheet completed; no gross clipping was visible at sampled widths. This is not owner approval or full pixel/accessibility acceptance.
 - Source remains local only: reviewed HTML has **not** been committed to this branch.
 
+### Lookahead workbench — build in branch, browser acceptance pending
+- Source: [lookdev/workbench.html](https://github.com/rebootos-sourcce/MOB/blob/lookdev/p0-execution-20261014/lookdev/workbench.html), isolated on the draft branch.
+- Current features: eleven canonical review areas in the required brand-guide order; per-area review status and decision/evidence notes; shared-token palette/typography controls; desktop/mobile preview sizing; reduced-motion control; export of the session JSON including all eleven review records. The tool explicitly does not write to Core.
+- Guarded static check of the current source: 11 review tabs; 11 review-area descriptions; JSON export payload present; duplicate HTML IDs = 0; old invented “Warm clarity / Quiet signal” labels removed.
+- Browser acceptance workflow: [lookdev-workbench.yml](https://github.com/rebootos-sourcce/MOB/blob/lookdev/p0-execution-20261014/.github/workflows/lookdev-workbench.yml). It checks desktop/mobile tab activation, review-state persistence, shared accent control, reduced motion, and exported JSON. Latest run is queued due to the current Actions backlog; browser acceptance is **OPEN**, not passed.
+- Not production-deployed, not merged, and not an approved replacement for the reviewed brand-guide HTML.
+- Latest workbench source commit: `970338f2a0607594bba7c834a7580e402cf31fac`; acceptance workflow commit: `e2975d32578b1143bcd7c43a03ee9c88f68865c2`.
+ 
 ## Task ledger
 
 | ID | Work item | Status | Evidence / exact state | Exit criteria / next action |
