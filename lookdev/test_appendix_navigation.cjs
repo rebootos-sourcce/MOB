@@ -106,6 +106,12 @@ const assert = require('node:assert/strict');
         await page.locator('#cover').evaluate(el => el.scrollIntoView({ behavior: 'instant', block: 'start' }));
         await page.waitForTimeout(250);
         await sideLink.click();
+        // The source intentionally uses smooth scrolling. Wait for the target to
+        // reach its destination instead of sampling the first animation frame.
+        await page.waitForFunction(() => {
+          const el = document.getElementById('appendix-f');
+          return !!el && Math.abs(el.getBoundingClientRect().top) < 160;
+        }, { timeout: 5000 });
         const clicked = await page.evaluate(() => {
           const el = document.getElementById('appendix-f');
           return { scrollY: Math.round(scrollY), offsetTop: Math.round(el.getBoundingClientRect().top) };
