@@ -98,10 +98,12 @@ Do not reorder pages, create alternate page taxonomies, or replace the guide wit
 ### Read-first navigation
 **Every round starts here, then follows this exact order:**
 1. [ATÜNED Dev Start Here / Working Index](ATUNED_DEV_START_HERE.md)
-2. [Repository Sitemap and Source Trace](ATUNED_REPO_SITEMAP_TRACE_2026-10-14.md)
-3. [Execution Ledger — done vs open](ATUNED_DEV_EXECUTION_LEDGER_2026-10-14.md)
-4. This handshake.
-5. [Detailed P0 Execution Record](ATUNED_LOOKDEV_P0_EXECUTION_2026-10-14.md)
+2. [ATÜNED Master Index](https://github.com/rebootos-sourcce/MOB/blob/docs/atuned-master-index-20261012/ATUNED_MASTER_INDEX.md) on docs branch (not merged; blob `4080c5f851bf483b1408f818280ab78f45dc2107`).
+3. [Architecture Review](https://github.com/rebootos-sourcce/MOB/blob/docs/atuned-master-index-20261012/ATUNED_ARCHITECTURE_REVIEW_2026-10-13.md) and [P0 Execution Control Board](https://github.com/rebootos-sourcce/MOB/blob/docs/atuned-master-index-20261012/ATUNED_P0_EXECUTION_CONTROL_BOARD.md).
+4. [Repository Sitemap and Source Trace](ATUNED_REPO_SITEMAP_TRACE_2026-10-14.md)
+5. [Execution Ledger — done vs open](ATUNED_DEV_EXECUTION_LEDGER_2026-10-14.md)
+6. This handshake.
+7. [Detailed P0 Execution Record](ATUNED_LOOKDEV_P0_EXECUTION_2026-10-14.md)
 6. Refresh current repository branch head, `main/index.html` SHA, issue #75, PR #74 and workflow runs. Read the exact source bytes and trace imports/call sites; do not trust old status text over current source evidence.
 7. Search for **ATUNED BRAND DEV 5**, **ATUNED BRAND DEV 4**, and **ATUNED BRAND DEV 3** in the conversation/project library. Review each source three passes: goals/decisions; page-level visual requirements; gaps/conflicts against current artifact. The last recursive library scan covered 851 entries over 9 pages and found no literal folder/transcript matches. This remains a retrieval blocker; do not claim direct review until the artifacts are actually available.
 
@@ -128,7 +130,7 @@ Do not reorder pages, create alternate page taxonomies, or replace the guide wit
 5. **Canonical source/provenance — PARTIAL:** source path and Git blob SHA known; local byte-level verification and comparison with supplied `CORE_REFERENCE.html` missing.
 6. **Dependency trace — PARTIAL:** Field A/B references and token source known; full `engine.js` call graph, mutable state, storage/network and asset/font trace missing.
 7. **Tokens — PARTIAL:** `atuned_src/shell/head.html` → `tools/tokens.py` → `funnel/tokens.css`; run generator and verify deterministic output in checkout.
-8. **Workspace/source mapping — OPEN:** map Story, Avatar, Summary, Intake, Analytics, Field, Body, Compass, Character, Ritual, Knowledge and Clients to source components and real-vs-preview behavior; explicitly document Diagnostic → Summary.
+8. **Workspace/source mapping — BLOCKED BY SOURCE IDENTIFICATION:** locate the exact 12-tab workspace source and embedded `CORE_REFERENCE.html` first. Current attachments have the 11-page guide; root `main/index.html` is a separate chapter/appendix document. Then map Story, Avatar, Summary, Intake, Analytics, Field, Body, Compass, Character, Ritual, Knowledge and Clients to source components and real-vs-preview behavior; explicitly document Diagnostic → Summary.
 9. **KPI acceptance — OPEN:** threshold approvals, test procedures, measured results and missing-telemetry caveats.
 10. **Cross-functional decision log — OPEN:** evidence-backed keep/change/reject across creative/art direction, UX, motion, sound, copy, brand and engineering.
 11. **Literal Brand Dev 3/4/5 source retrieval — BLOCKED:** exact folder/transcript artifacts not found in Library pagination; retry when available.
@@ -168,3 +170,12 @@ Do not reorder pages, create alternate page taxonomies, or replace the guide wit
 - Local reviewed guide SHA-256: `f94b2dac4cf6daa91bcb2cb7e3ebdf46389a162fb4ab0650f80ccb6b2cf139cd`.
 - QA package: `ATUNED_LOOKDEV_BROWSER_QA_2026-10-14.zip` (local downloadable artifact). All 11 pages captured at desktop 1600×1000 and mobile 390×844.
 - The reviewed guide is still not committed to GitHub. Full keyboard-only, contrast and screen-reader acceptance remains open.
+
+
+## Source identity correction — 2026-10-14
+
+The cross-repository [ATÜNED Master Index](https://github.com/rebootos-sourcce/MOB/blob/docs/atuned-master-index-20261012/ATUNED_MASTER_INDEX.md) exists on a separate docs branch, not on `main`; its current blob SHA is `4080c5f851bf483b1408f818280ab78f45dc2107`. The Start Here index now links it, the architecture review and P0 control board.
+
+The inherited task references an embedded `CORE_REFERENCE.html` and a 12-tab workspace (Story, Avatar, Summary, Intake, Analytics, Field, Body, Compass, Character, Ritual, Knowledge, Clients). Neither exact source was found in the current attachments or the current lookdev branch tree. Root `main/index.html` is the 5.9MB “The Mechanics of Being, Lance Powell” chapter/appendix document; the owner-supplied guide is an 11-tab look-development artifact. These must not be conflated.
+
+**Blocking dependency:** locate the exact handoff artifact containing `CORE_REFERENCE.html`, preserve its provenance/hash, compare its embedded bytes against the candidate source, and establish the governing 12-tab source before completing the workspace-to-source map or editing that workspace.
