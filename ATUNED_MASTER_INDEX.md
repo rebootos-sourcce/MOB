@@ -394,3 +394,44 @@ The KPI framework is tracked in [ATUNED_MVP_ALPHA_KPI_FRAMEWORK_2026-10-13.md](A
 - Reboot-OS PR #52 head is now `8b34a7c787a1eca93d77c798e6324493988763ee`. The geometry source audit is wired into the gate; its PMFALIAS parser was corrected after cross-review found that the source is JavaScript object syntax, not JSON. The exact source-literal parser check passed locally. Exact-head push [#38646345109](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38646345109) and pull_request [#38646353600](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38646353600) both failed before steps, so CI has not executed the audit.
 - MOB PR #69 documentation refresh at prior head `3d0b3b62e76a7e00dd6d66dbc8993662519b2daf` is under a live 28-job workflow [#38645821317](https://github.com/rebootos-sourcce/MOB/actions/runs/38645821317); at last poll, 26 jobs had passed and functional/recordlink jobs were still in progress. Do not call it complete until the aggregate gate finishes.
 - The current [engineering continuation handshake](ATUNED_EXECUTIVE_HANDSHAKE_2026-10-14_P0_ENGINEERING.md) is refreshed with these exact heads and keeps all lookdev work excluded.
+
+
+## Recursive build cycle 5 — 14 October 2026 UTC
+
+**P0 remains OPEN.** This section supersedes earlier same-day head/run notes where they differ. No merge, deployment, production migration, protected-vault import, gift activation, billing/profile-sync enablement, or production data mutation occurred.
+
+### Block A — exact-head evidence
+- Before this refresh, PR #69 documentation workflow [#38650695161](https://github.com/rebootos-sourcce/MOB/actions/runs/38650695161) passed all 30 jobs at exact head `d1fc54c7dbd6b25e3604fc57b80ffbdcbb768e4f`. That result is valid for that head only; this documentation commit requires its own exact-head run before Block A closes.
+- PR #73 owner-approval contract head `280c16cfd927f640c7ea7bba84e0ca8034dadc61`; workflow [#38652146233](https://github.com/rebootos-sourcce/MOB/actions/runs/38652146233) remains in progress, with the functional and onboarding2 browser jobs still running at the last check.
+
+### Current Reboot-OS engineering heads
+| Workstream | Exact head | Exact-head evidence | Current interpretation |
+|---|---|---|---|
+| PR #35 gift contract / migrations | `4406bf1d7d38655d03f4b4653e4510aad47ad72f` | [#38652445955](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38652445955) | Smoke failed before steps; no tests executed. PR remains stacked on draft PR #34. |
+| PR #47 single Pages publisher | `b7d9f613f4d6a8951d6ce86de8649acb6b006d55` | [#38652450859](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38652450859) | Smoke failed before steps; no tests executed. Artifact-only workflow and publisher guard are combined with least-privilege permissions and guarded last-green tag logic. |
+| PR #48 gift-bank validator | `513d098dbddc1ce0acd8906dbae753bdd9381ff1` | [#38652656758](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38652656758) | Smoke failed before steps; no tests executed. Validator now rejects duplicate JSON object keys, cross-bank stable-ID reuse, and schema attempts to enable cross-bank reuse; local-vs-cross-bank diagnostics are distinct. |
+| PR #52 geometry crosswalk | `5ad705ad987ace6aee311f6e7d8a3f3e9980e628` | [#38646353600](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38646353600) | Pull and push runs failed before steps; source-level checks confirmed 113 measured positions and four expected legacy orphans; no coordinates changed. |
+| PR #53 workflow permissions | `88de1de769b4aec70ab415c9e976119c5d70734a` | [#38652441780](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38652441780) | Smoke failed before steps; no tests executed. Static source simulation passes, including the sole `contents: write` scope being confined to `move-last-green`. |
+| PR #49 public canon | `b757ae5d35cd9f42286c4de2a8f25d889d9eec54` | [#38514518771](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38514518771) | Historical exact-head run failed before steps; 119 allowlisted runtime entries still need source-authority review. |
+| PR #46 reduced motion | `2eae6b7c07d57d9979eb8f4ea462801730e1f055` | [#38513391386](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38513391386) | Historical exact-head gate passed; human accessibility review remains open. |
+
+The repeated Reboot-OS failures have the same infrastructure signature: `smoke` ends with `steps=null` and `logs_url=null`, and the rollback-tag job is skipped. They are neither application-test failures nor passes. The latest runner evidence is recorded in [issue #51](https://github.com/rebootos-sourcce/Reboot-OS/issues/51). No further retries were issued.
+
+### Block B — source inventory
+- Queue: 560 records (376 2026 transcript, 184 archived PDF); zero owner-approved rows, zero stable production IDs, zero reviewed line splits, zero reviewed release/reframe classifications.
+- 24 PDF locators remain ambiguous; 210 transcript records need sentence-boundary review; 154 rows lack `indexNodeId` (124 transcript, 30 PDF).
+- 107 repeated source-text hash groups cover 266 rows (55 two-row groups and 52 three-row groups). These are review leads, not permission to delete records or collapse provenance. Preserve sourceRecordId and every source locator.
+
+### Blocks C–E — gift contracts, client mapping, canon and migration safety
+- PR #35 adds a versioned gift-nature mapping guard with a transaction-scoped advisory lock; a frozen starter set belongs to exactly one gift nature. The six-nature-to-four-client-track mapping is separate from the six server action/verb channels and remains unapproved/unverified.
+- MOB PR #66 client behavior remains fail-closed: a verified server snapshot is not marked usable by the four-track meter until an owner-approved adapter exists. Current-release browser → Worker → storage write/read/reload remains unverified.
+- Live Supabase project `tuvpjbduarteszwkdmuu` has applied migrations through `0015_first_visit_reaches_the_account`; 0016–0018 are absent. `starter_gifts` has 6 rows (5 active, 1 pending). Migration 0017 adds null frozen-set version fields and demotes legacy gifts without valid 100-item snapshots; as written, all 6 existing gifts would become pending absent an approved backfill. This user-visible impact is recorded on [MOB issue #58](https://github.com/rebootos-sourcce/MOB/issues/58). No migration was applied.
+- Geometry IDs 43, 110, and 112 remain unresolved pending an approved crosswalk. The protected canon vault remains private and unimported.
+
+### Block F — publishing
+- PR #47 removes Reboot-OS's second Pages deployment and keeps its web output as an artifact, while retaining a guard and least-privilege workflow checks.
+- Authenticated Cloudflare confirmation is still required for the canonical Pages publisher, account/project binding, `atuned-os` service purpose, domain/root route, and `ATUNED_API` origin. Do not deploy or mutate dashboard configuration speculatively.
+
+### Blocks G–H — cross-review and closure
+- Static source-level simulations of the workflow permission/tag guards passed on current PR #35, #47 and #53 files; this is not a substitute for CI. Their exact-head workflows have not executed test steps.
+- Keep all PRs draft. P0 closure requires approved source-backed banks, the explicit channel/track contract, current-release persisted end-to-end proof, migration/rollback proof, and verified production publisher/API/domain ownership. The refreshed docs head must also pass its own workflow.

@@ -56,3 +56,17 @@ Detailed step-by-step requirements and exit evidence are in [P0 Block Execution 
 
 ## Completion standard
 P0 is closed only when every acceptance criterion is supported by current evidence or an authorized exception. A green workflow, documentation update, or candidate pattern list alone is not sufficient.
+
+
+## Latest continuation checkpoint — 14 October 2026 UTC
+
+**State: P0 OPEN; continue execution, do not reset the plan.** Start by reading `ATUNED_MASTER_INDEX.md`, then `ATUNED_P0_EXECUTION_CONTROL_BOARD.md`, then this handshake. The cycle 5 section in the master index is the current exact-head ledger and supersedes older same-day status where SHAs differ.
+
+- MOB PR #69's prior head `d1fc54c7dbd6b25e3604fc57b80ffbdcbb768e4f` passed 30/30 jobs in [workflow #38650695161](https://github.com/rebootos-sourcce/MOB/actions/runs/38650695161). Any new docs commit requires its own exact-head workflow.
+- Reboot-OS PRs #35, #47, #48, #52 and #53 contain continued guard/contract fixes, but their latest exact-head workflows fail before test steps with no logs. Treat tests as UNEXECUTED, not failed/passed. Do not issue retries while the runner-startup investigation is open in [issue #51](https://github.com/rebootos-sourcce/Reboot-OS/issues/51).
+- Source queue remains 560 records, zero approved rows/stable production IDs, 24 ambiguous PDF locators, 210 transcript sentence-boundary reviews, and 154 missing indexNodeIds.
+- Live Supabase migrations stop at 0015. Existing gifts are 5 active and 1 pending; 0017 would put all six into pending without a reviewed backfill. Do not apply migrations.
+- The six nature banks must remain separate; no frozen set can be reused across natures. Keep gift-nature mapping distinct from server action/verb-channel mapping to four client tracks.
+- Single Pages publisher, Cloudflare account/service/domain and `ATUNED_API` bindings remain unverified. Do not deploy.
+
+Next executable actions: verify the new docs head's own workflow; continue source-locator review; inspect exact-head workflow job payloads without retrying; prepare migration/backfill rehearsal only in a disposable environment; obtain owner decisions for bank contents and mapping; complete persisted browser → Worker → storage write/read/reload proof. Keep all PRs draft and P0 open until evidence is complete.

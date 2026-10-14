@@ -65,3 +65,17 @@ These may remain open only because they require authorized external action or de
 
 ## Safety / release boundary
 No merge, production deployment, live migration, production data mutation, protected vault import, billing/profile-sync activation, or gift activation/issuance was authorized or performed in this execution cycle. Draft branches stay draft until their own exact-head evidence and relevant owner/operator acceptance gates pass.
+
+
+## Current continuation delta — 14 October 2026 UTC
+
+P0 remains OPEN. Read the latest recursive build cycle in `ATUNED_MASTER_INDEX.md` and `ATUNED_P0_EXECUTION_CONTROL_BOARD.md` before changing a branch. The last green docs workflow passed 30/30 at the prior head `d1fc54c7dbd6b25e3604fc57b80ffbdcbb768e4f`; the new docs commit needs a new exact-head run.
+
+Immediate order:
+1. Let the current MOB #69 docs workflow settle; refresh the exact head/run ledger and verify the new docs head.
+2. Do not retry Reboot-OS workflows while they fail before runner assignment. Latest evidence is in Reboot-OS issue #51.
+3. Continue source review without generating production IDs or approving content. The 560-row queue has zero approved rows and 24 ambiguous PDF locators.
+4. Keep migrations 0016–0018 unapplied. Live state is 5 active / 1 pending gifts; migration 0017 would demote all six without a reviewed backfill.
+5. Keep PRs draft and production untouched until owner decisions and the release acceptance evidence are complete.
+
+Latest current heads, exact run URLs, static-only findings, and remaining P0 gaps are recorded in the cycle 5 section of the master index. No merge, deploy, migration, vault import, gift activation, billing/profile-sync enablement, or production mutation occurred.

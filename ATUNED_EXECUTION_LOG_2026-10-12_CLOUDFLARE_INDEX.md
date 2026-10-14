@@ -67,3 +67,14 @@ No PR merge, production deploy, migrations 0017/0018, billing/profile-sync activ
 - Boundaries maintained: no PR merge, production deploy/migration, protected-vault import, gift activation/issuance, billing/profile-sync activation, production data mutation, or test-floor reduction.
 
 **Still open:** current-head Reboot-OS CI; authenticated Cloudflare first-error diagnosis; source-authority review of the remaining 119 public canon entries; stable product IDs / owner-approved gift patterns (0/560); and current-release persisted first-visit journey (0/1).
+
+
+## Recursive build cycle 5 — 14 October 2026 UTC
+
+- MOB PR #69 docs workflow #38650695161 passed 30/30 on prior exact head `d1fc54c7dbd6b25e3604fc57b80ffbdcbb768e4f`. The new docs commit must pass its own workflow before Block A closes.
+- Reboot-OS PR #48 hardened the validator against cross-bank ID reuse, schema bypass, duplicate JSON keys, and ambiguous local-vs-cross-bank diagnostics. Latest head `513d098dbddc1ce0acd8906dbae753bdd9381ff1`; [workflow #38652656758](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38652656758) failed before steps.
+- Reboot-OS PRs #35/#47/#53 received the latest cross-review of gift-set ownership, single-publisher protection, least-privilege token scope, and rollback-tag race guards. Their latest runs fail before steps; static source simulations passed, but CI acceptance remains unverified.
+- MOB PR #73 owner-approval contract now forbids frozen-set reuse across natures and separates gift-nature keys from server action/verb-channel keys. Its workflow #38652146233 remains in progress at last poll.
+- Read-only live Supabase check: migrations through 0015 only; six starter gifts (five active, one pending). Migration 0017 would demote all six absent approved legacy backfill. No migration or production write performed.
+- Source queue remains 560 rows, zero owner-approved rows/stable IDs, 24 ambiguous PDF locators, 210 transcript boundary reviews, 154 missing indexNodeIds, and 107 repeated text-hash groups across 266 rows. Hash repeats are not deletion authority.
+- No merge, production deployment, protected-vault import, gift activation, billing/profile-sync enablement, or production mutation occurred. P0 remains OPEN.
