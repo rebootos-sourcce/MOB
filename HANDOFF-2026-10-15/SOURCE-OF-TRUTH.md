@@ -77,10 +77,32 @@ Reported facts that this session could not verify itself are marked so.
 
 ## The voice
 
-Reported historical result, not a current claim: voice-connect run
-37970159266 on 9 October 17:59 UTC ended green at every step, including
-"ask the live server for a line", which exits 0 only on real audio. The
-probe cannot run today (Reboot-OS Actions blocked). Not re-verified.
+Verified again on 15 October 22:19 UTC, the first run after the budget was
+raised: voice-probe run 38816357647 on Reboot-OS main, on a real runner,
+"ask the live voice route what it needs: success". The earlier result,
+voice-connect run 37970159266 on 9 October 17:59 UTC, green at every step
+including "ask the live server for a line", still stands as the last time
+real audio came back.
+
+## GitHub Actions, after the budget
+
+The owner raised the Actions budget at about 22:15 UTC. Reboot-OS runs
+now get runners: the voice probe above, the KPI totals and Cloudflare read
+back workflows, and the reruns on PR 54's head (`a39fdfb`): server, shell,
+retention and the packaged UI build green; the gate red on its own browser
+path (Chromium installed at `/opt/pw-browsers` for the quick smoke, the
+voice surface gate then looking in Playwright's default cache), fixed on
+the branch as `91a4180` by making the path the job's for every step.
+
+## The KPI ladder, first read
+
+Run 38816712806, 22:23 UTC, counts only, from the live database: sessions
+opened 6,867 (6,866 in the last 7 days), ground chosen 14, tutorial done 6,
+first release 6, release checked 4, joined to an account 5, completed 0,
+safety stops 0. The first rung counts machines (a session is made on every
+first open, and crawlers and automated checks open the page); the human
+rungs start at "ground chosen". `KPI-READ-2026-10-15.md` beside this file
+reads them out.
 
 ## The `atuned-os` Cloudflare build
 
@@ -95,11 +117,34 @@ probe cannot run today (Reboot-OS Actions blocked). Not re-verified.
   `cloudflare-inspect.yml`: the token is Pages only. It lists no Workers,
   sees no zones, and every Workers, Workers Builds and custom domain call
   answers "No access" or "Authentication error". So `atuned-os` cannot be
-  inspected or deleted from MOB. The Reboot-OS token can (it deploys
-  Workers), but Reboot-OS Actions is budget blocked. The workflow keeps a
-  guarded delete step for the day either changes: it refuses unless the
-  Worker is named exactly `atuned-os`, has no route, no custom domain and no
-  binding that `atuned-api` lacks.
+  inspected or deleted from MOB. The workflow keeps a guarded delete step
+  for the day that changes: it refuses unless the Worker is named exactly
+  `atuned-os`, has no route, no custom domain and no binding that
+  `atuned-api` lacks.
+- **Read with Reboot-OS's own token at 22:23 UTC** (the budget was raised at
+  22:15), by `.github/workflows/cloudflare-readback.yml` on branch
+  `claude/kpi-and-cloudflare-readback`, run 38816712758:
+  - `atuned-os` is a Worker, created 28 September, last deployed 15 October
+    04:57:01 UTC by wrangler under the owner's email, two seconds before
+    `atuned-api`'s own deployment at 04:57:21 and on the same minute as the
+    14 October ones. That is the Workers Builds connection deploying it on
+    every Reboot-OS push, which is why the check carries its name.
+  - It has **no bindings at all** (no database, no secrets, no variables),
+    where `atuned-api` has 27. It has no custom domain: the account wide
+    custom domain list is empty. workers.dev is on for it.
+  - **Not verifiable with either token:** zone routes on atuned.world. The
+    Reboot-OS token sees the zone but "No access" on its routes; MOB's sees
+    no zone. So whether `atuned-os` intercepts any path on atuned.world is
+    the one fact the dashboard alone can show, and the directive's rule
+    (verify dependencies before deleting) keeps the delete with the owner:
+    dash.cloudflare.com, Workers and Pages, `atuned-os`, Settings, Domains
+    and Routes. If that list is empty, Settings, bottom, Delete.
+  - The same read showed the Reboot-OS token **cannot read Pages at all**
+    ("Authentication error" on the project), so with the current tokens
+    Reboot-OS could not publish over atuned.world even by hand. The
+    boundary holds by token scope as well as by the disabled workflow.
+  - Fourteen Workers exist in the account. One is named exactly `atuned`
+    (2 September); it is not `atuned-os`, and nothing here touches it.
 - **Owner action, in order:** dash.cloudflare.com, Workers and Pages, open
   `atuned-os` (not `atuned`, not `atuned-api`). Read Settings: Builds (which
   repository, which branch, root directory), Domains and Routes (must be
