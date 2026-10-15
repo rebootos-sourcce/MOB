@@ -89,3 +89,38 @@ No PR merge, production deploy, migrations 0017/0018, billing/profile-sync activ
 - Publisher guard now scans all nine workflow files and finds no Pages-specific publishing markers. The shared gate includes all `.github/workflows/**` changes, P1 dry-runs and locator artifacts, generated log counts, read-only test permissions, and CAS last-green tag updates.
 - Source queue remains 560 records, zero approved rows/stable IDs, 24 ambiguous PDF locators, 210 transcript boundary reviews, 154 missing indexNodeIds, and 107 repeated hash groups covering 266 rows. No content promoted.
 - No merge, deployment, production migration/write, protected-vault import, gift activation, billing/profile-sync enablement, or production mutation. P0 remains OPEN.
+
+
+## Recursive execution cycle 7 — 14 October 2026
+
+### Block A documentation gate
+- The previous documentation refresh workflow, [MOB run 38655142330](https://github.com/rebootos-sourcce/MOB/actions/runs/38655142330), has completed successfully: 30/30 jobs passed. This validates that documentation commit's repository gates only; it does not accept the separate Reboot-OS code branches.
+- This cycle records the latest exact heads and explicitly separates source/static evidence from unexecuted runtime acceptance.
+
+### Current exact heads and gate state
+- P1 frozen gift contract PR #35: `bfb1ea1e72a7ccbc01e9ae9bc4462109f1e89e8b`.
+- Least-privilege gate PR #53: `5ccb35d259cd23ae77bbb618654ca86459cacdc0`.
+- Single Pages publisher guard PR #47: `50aa9cbafaa5734f571a89d12e2c93e0da99da51`.
+- Gift-bank validator PR #48: `eb1e9025c5b7ffff49043e0ec56297dcea980d10`.
+- Public canon allowlist PR #49: `ab6de04bd7412d25a81b1606488cc6d52e611258`.
+- Geometry audit PR #52: `780d7d72b0dacbd0a5ed2775cf19162b76181177`.
+- Exact-head Actions runs for #35, #53, #47, #49, and #48 each produced a failed `smoke` job with an empty step list; the privileged rollback-pointer job was skipped where applicable. No test command ran, so these are runner/Actions startup failures—not code-test failures and not passes. Continue tracking repository-level diagnosis in [issue #51](https://github.com/rebootos-sourcce/Reboot-OS/issues/51).
+
+### Latest static acceptance boundaries
+- Gate workflow/publisher/permissions contracts are converged across the P1, gate, and publisher branches; static cross-branch checks pass 8/8 per branch. The permission regression script now also rejects unsafe permission syntax and asserts gate self-protection (all-workflow path filters, publisher guard, Worker dry-runs, source/PDF locator artifacts, and generated log counts).
+- Public canon inventory has 119 allowlisted tables with zero SHA, row-count, shape, or description mismatches against the source manifest; all eight quarantined entries remain excluded. Endpoint/runtime tests are not accepted until executed.
+- Gift-bank validator rejects noncanonical classification values and noncanonical/duplicate provenance field requirements. Structural source checks do not establish owner approval or real-bank readiness.
+- Migration 0017 preflights existing active/non-pending gifts and raises SQLSTATE 55000 when the frozen 100-item snapshot is absent. A disposable PostgreSQL regression covers rollback and explicit pending demotion; production remains untouched.
+- Source review queue remains 560 rows: zero owner-approved rows, zero stable production IDs; 24 ambiguous PDF locators, 154 missing `indexNodeId` values, 210 transcript boundary reviews, and 107 repeated-hash groups (266 rows). Repeated hashes are review leads, not deletion authority.
+- Geometry source audit preserves 112 stable node IDs, 113 source position keys, four documented legacy orphans, and unresolved semantic/runtime cases. No coordinates or topology changed.
+
+### Unclosed acceptance gates / safety
+1. Restore or diagnose GitHub Actions runner execution and obtain passing exact-head runs before accepting or merging the affected PRs.
+2. Resolve ID 43 and the browser-observed packaged geometry behavior for ID 108; no inferred coordinate repair.
+3. Complete source provenance, stable IDs, manifest membership, and explicit owner approval before gift-bank promotion.
+4. Obtain authorized confirmation of the canonical Cloudflare account, domain, service, and API origin before publisher changes or deployment.
+5. Prove full current-release browser → Worker → storage write/read/reload E2E. MOB client tests alone do not establish Worker connectivity.
+6. Confirm the six gift natures-to-four client tracks adapter with the owner; keep server action/verb channels distinct.
+7. Production Supabase remains at migration 0015; migrations 0016–0018 are unapplied. No production writes, migrations, deployments, vault imports, gift activation, or profile-sync/billing enablement occurred.
+
+**Status:** documentation gate passed; source/static evidence improved; P0 closure remains blocked on actual exact-head runtime CI, owner approvals, authorized infrastructure confirmation, and end-to-end proof. All listed Reboot-OS PRs remain draft/open/unmerged.
