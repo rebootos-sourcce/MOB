@@ -7,7 +7,7 @@
   ],
   "expected_red_max": {
     "engine": 10,
-    "golden": 5,
+    "golden": 2,
     "storage": 0,
     "alpha-journey": 0
   },
