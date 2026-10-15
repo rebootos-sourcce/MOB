@@ -9,6 +9,9 @@
 # `atuned` is never touched: the script name is compared whole.
 name: cloudflare inspect
 on:
+  push:
+    branches: [claude/cloudflare-inspect]
+    paths: ['.github/workflows/cloudflare-inspect.yml']
   workflow_dispatch:
     inputs:
       delete_atuned_os:
@@ -22,7 +25,8 @@ jobs:
     env:
       CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-      WANT_DELETE: ${{ github.event.inputs.delete_atuned_os }}
+      # on a push this file decides; on a hand start the input does
+      WANT_DELETE: ${{ github.event.inputs.delete_atuned_os || 'no' }}
     steps:
       - name: the token itself
         run: |
