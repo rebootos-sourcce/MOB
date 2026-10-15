@@ -1573,7 +1573,7 @@ function meterRerun(p,keys){
      the way meterRun writes it. Without it a rerun would restart that count
      and take weeks of allowance from somebody for using the free route. */
   var now=new Date().toISOString();
-  if(!m.giftAt&&(m.unique||[]).length>=GIFT_N)m.giftAt=meterGiftAt(p)||now;
+  if(meterGiftEnabled(p)&&!m.giftAt&&(m.unique||[]).length>=GIFT_N)m.giftAt=meterGiftAt(p)||now;
   m.lines=(+m.lines||0)+said.length; m.last=now;
   if(!m.first)m.first=now;}
  return {added:0, repeated:said.length, fresh:[], refused:refused, rerun:true};}
@@ -1604,14 +1604,24 @@ function meterRerun(p,keys){
    the weeks it was owed since are counted from there. meterRun stamps that
    same value on the next run, before it moves last, so the count never
    restarts. */
+function meterGiftEnabled(p){
+ var j=(p&&p.journey)||null;
+ /* No explicit state means an old record whose implicit gift must keep working. */
+ if(!j||j.giftAccess===undefined||j.giftAccess==='legacy')return true;
+ return false;
+}
 function meterGiftAt(p){
  var m=(p&&p.meter)||null; if(!m)return null;
  if(m.giftAt)return m.giftAt;
- return ((m.unique||[]).length>=GIFT_N&&m.last)?m.last:null;}
+ return (meterGiftEnabled(p)&&(m.unique||[]).length>=GIFT_N&&m.last)?m.last:null;}
 function meterBudget(p,now){
  var m=(p&&p.meter)||null;
+ var giftEnabled=meterGiftEnabled(p);
+ var anchor=meterGiftAt(p);
+ /* Without a gift, free-tier banking begins on the first actual use, not at 100. */
+ if(!giftEnabled&&!anchor&&m&&m.first)anchor=m.first;
  var a=(typeof planAllowance==='function')
-   ? planAllowance((p&&p.plan)||null,((m&&m.unique)||[]).length,meterGiftAt(p),now) : null;
+   ? planAllowance((p&&p.plan)||null,((m&&m.unique)||[]).length,anchor,now,giftEnabled) : null;
  var left=(a&&a.left!=null)?Math.max(0,Math.floor(a.left)):0;
  return {left:left, cap:Math.min(RUN_MAX,left), allow:a};}
 /* `at`, optional, is the moment the run happened, an ISO string. Missing is
@@ -1640,7 +1650,8 @@ function meterRun(p,keys,at){
  if(!list.length)return {added:0,repeated:0,fresh:[]};
  var have={},added=0,repeated=0,fresh=[];
  /* whether the gift was already spent before this run, read before the push */
- var spentBefore=p.meter.unique.length>=GIFT_N;
+ var giftEnabled=meterGiftEnabled(p);
+ var spentBefore=giftEnabled&&p.meter.unique.length>=GIFT_N;
  p.meter.unique.forEach(function(k){have[k]=1;});
  list.forEach(function(k){ if(have[k]){repeated++;} else {have[k]=1;p.meter.unique.push(k);fresh.push(k);added++;} });
  var now=(typeof at==='string'&&!isNaN(Date.parse(at)))?at:new Date().toISOString();
@@ -1648,7 +1659,7 @@ function meterRun(p,keys,at){
     this run, it ran out now. If it ran out before the stamp existed, the date
     it has been read at is kept, read through meterGiftAt before last moves,
     so the count of weeks never restarts. */
- if(!p.meter.giftAt&&p.meter.unique.length>=GIFT_N)
+ if(giftEnabled&&!p.meter.giftAt&&p.meter.unique.length>=GIFT_N)
   p.meter.giftAt=(spentBefore&&meterGiftAt(p))||now;
  if(!p.meter.first)p.meter.first=now;
  p.meter.lines+=list.length; p.meter.last=now;
@@ -1868,7 +1879,8 @@ function meterRead(p,now){
  var mk=markersFor(est);
  return {lines:m.lines, unique:uniq, first:m.first, last:m.last,
   /* the gift is 100 of new ground, ruled. reruns never spend it. */
-  giftLeft:Math.max(0,GIFT_N-uniq), inGift:uniq<GIFT_N,
+  giftLeft:meterGiftEnabled(p)?Math.max(0,GIFT_N-uniq):0,
+  inGift:meterGiftEnabled(p)&&uniq<GIFT_N,
   age:age===null?null:Math.round(age*10)/10,
   estimate:est,
   estimateLow:est===null?null:Math.round(est*(1-PAT_SWING)),

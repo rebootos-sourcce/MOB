@@ -433,7 +433,7 @@ function planNextSight(pl){
    spent once, because it is a gift and not a monthly grant. Spend is never
    stored: it is always the unique count minus what has been granted, so the
    two cannot drift. */
-function planAllowance(pl,uniqueCount,giftAt,now){
+function planAllowance(pl,uniqueCount,giftAt,now,giftEnabled){
  /* IT TAKES A COUNT, AND IT NOW SAYS SO RATHER THAN TRUSTING IT.
 
     Two shapes of the same word live in this codebase and they are easy to
@@ -457,7 +457,11 @@ function planAllowance(pl,uniqueCount,giftAt,now){
  var n=Array.isArray(uniqueCount)?uniqueCount.length:uniqueCount;
  n=Number(n); if(!isFinite(n))n=0;
  var used=Math.max(0,n);
- var giftLeft=Math.max(0,GIFT_N-used);
+ /* Omitted giftEnabled is legacy-compatible for existing direct callers.
+    The record-backed meter passes an explicit entitlement decision. */
+ var giftAvailable=giftEnabled!==false;
+ var giftEnd=giftAvailable?GIFT_N:0;
+ var giftLeft=giftAvailable?Math.max(0,GIFT_N-used):0;
  if(giftLeft>0)return {source:'gift', left:giftLeft, of:GIFT_N, inGift:true,
   base:0, spent:used, runs:Math.floor(giftLeft/RUN_MIN), weeks:0,
   /* what it is of, in words. "92 of the gift left" says ninety two of what. */
@@ -487,7 +491,7 @@ function planAllowance(pl,uniqueCount,giftAt,now){
     for, so a baseline under the gift's end, written by anybody, charges the
     gift twice. The stored value is left as written. */
  var stored=(pl&&pl.base!=null&&isFinite(pl.base))?Number(pl.base):null;
- var base=Math.max(GIFT_N,stored===null?GIFT_N:stored);
+ var base=Math.max(giftEnd,stored===null?giftEnd:stored);
  var spent=Math.max(0,used-base-Math.max(0,(pl&&pl.carried)||0));
  /* FREE BANKS, RULED IN DECISIONS: "the grant banks, the surface says it is
     banking". Nothing in a one file build starts a new week, so free was ten
@@ -501,7 +505,7 @@ function planAllowance(pl,uniqueCount,giftAt,now){
     sits past the gift's end had a period written by the record store, and the
     store that wrote it writes the next one. */
  var weeks=1, total=granted;
- if(t.k==='free'&&base===GIFT_N){ weeks=planWeeks(giftAt,now); total=granted*weeks; }
+ if(t.k==='free'&&base===giftEnd){ weeks=planWeeks(giftAt,now); total=granted*weeks; }
  var left=Math.max(0,total-spent);
  /* HOW MANY RUNS THAT IS, which is the unit a person actually acts in. Counted
     against the smallest run and not the largest: a run costs the minimum for

@@ -29,12 +29,12 @@
         uses, and a sentence it reads fully prints the node it actually
         found, checked against what parseStory itself returns for that exact
         string.
-
      4  THE FIRST RELEASE'S SIZE, F5 in REVIEW-funnel/FINAL-SPEC.md, ruled
-        round PA: "The mini release is 12 lines." Both doors hand relPick
-        the plan onbMiniPlan made and never every address the story read,
-        the run the release card builds is exactly the twelve keys the plan
-        counted, the card prints that count and not the count of addresses,
+        round PA: "The mini release is 12 lines" as a maximum. Both doors hand
+        relPick the plan onbMiniPlan made and never every address the story
+        read. The available allowance may cap the plan to fewer whole addresses;
+        the run builds exactly the keys the plan counted, the card prints that
+        count and not the count of addresses,
         and when the story read more than three it says how many more, and
         how many of them the words did not name. Checked first against the
         build before the fix, where these assertions fail: that build handed
@@ -103,6 +103,18 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
  await page.waitForTimeout(300);
  const opened=await page.evaluate(()=>!!(typeof OB!=='undefined'&&OB.open));
  ok(opened,'a fresh profile meets the onboarding sheet behind the real door');
+ const initialGiftGate=await page.evaluate(()=>{
+  const budget=typeof meterBudget==='function'?meterBudget(CURP):null;
+  const read=typeof meterRead==='function'?meterRead(CURP):null;
+  return {access:CURP&&CURP.journey&&CURP.journey.giftAccess,budget:budget,read:read};
+ });
+ ok(initialGiftGate.access==='uninstalled',
+  'fresh onboarding persists an explicit no-set state before the first release');
+ ok(initialGiftGate.budget&&initialGiftGate.budget.allow
+   &&initialGiftGate.budget.allow.inGift===false&&initialGiftGate.budget.left===10,
+  'without an installed bank, the meter grants only the normal ten-pattern free allowance');
+ ok(initialGiftGate.read&&initialGiftGate.read.giftLeft===0&&!initialGiftGate.read.inGift,
+  'the meter readout does not claim an uninstalled 100-pattern gift');
 
  const step=async()=>page.evaluate(()=>({h:(document.querySelector('.ob-h')||{}).textContent,
   step:OB.step,dots:document.querySelectorAll('.ob-dot').length}));
@@ -114,8 +126,48 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
  st=await step(); ok(st.step===1,'ask, step '+st.step);
  const starts=await page.evaluate(()=>document.querySelectorAll('[data-obpick]').length);
  ok(starts===12,'the twelve starting points, got '+starts);
- await page.click('[data-obpick="2"]'); await page.waitForTimeout(80);    /* overwhelm, picking is the advance */
- st=await step(); ok(st.step===2,'picking a starting point is the advance, into settle, step '+st.step);
+ await page.click('[data-obpick="2"]'); await page.waitForTimeout(80);    /* overwhelm */
+ st=await step(); ok(st.step===1,'choosing a starting point opens the separate gift choice, step '+st.step);
+ const giftNatures=await page.evaluate(()=>[...document.querySelectorAll('[data-obgift]')].map(el=>({
+  key:OB_GIFT_NATURES[+el.getAttribute('data-obgift')].k,
+  label:el.querySelector('.ob-seat-n').textContent
+ })));
+ ok(giftNatures.length===6,'six separate gift-nature choices, got '+giftNatures.length);
+ ok(JSON.stringify(giftNatures.map(x=>x.key))===JSON.stringify(['anxiety','overwhelm','burnout','depression','grief','sadness']),
+  'gift choices match the server contract, got '+JSON.stringify(giftNatures.map(x=>x.key)));
+ /* The file-backed UI test cannot contact the Worker. Model a returned gift ID
+    whose snapshot readback is unverified; an ID alone must not imply a usable set. */
+ await page.evaluate(()=>{
+  authFunnelCheckpoint=patch=>Promise.resolve({ok:true,session:{
+   selectedGroundId:patch.selectedGroundId,giftNatureId:patch.giftNatureId,
+   starterGiftId:'fixture-gift-with-unverified-snapshot'
+  },gift:null,giftVerified:false});
+ });
+ await page.click('[data-obgift="4"]'); await page.waitForTimeout(80);   /* grief */
+ st=await step(); ok(st.step===2,'gift-nature choice advances into settle, step '+st.step);
+ const chosenGiftNature=await page.evaluate(()=>({nature:OB.giftNature,ready:OB.giftReady,
+  confirmed:OB.giftConfirmed,verified:OB.giftReadbackVerified,snapshotReady:OB.giftSnapshotReady,
+  gift:CURP&&CURP.journey&&CURP.journey.gift||null}));
+ ok(chosenGiftNature.nature==='grief','the selected gift nature is distinct from the starting point, got '+chosenGiftNature.nature);
+ ok(chosenGiftNature.confirmed&&!chosenGiftNature.verified&&!chosenGiftNature.snapshotReady
+   &&!chosenGiftNature.ready&&!chosenGiftNature.gift,
+  'an unverified server gift ID does not mint a local allowance or count as a verified bank');
+ await page.click('[data-ob="back"]'); await page.waitForTimeout(80);
+ st=await step(); ok(st.step===1,'the saved gift-status card can be revisited, step '+st.step);
+ const unknownGiftCopy=await page.evaluate(()=>[...document.querySelectorAll('#ob .ob-p')].map(el=>el.textContent).join(' '));
+ ok(unknownGiftCopy.includes('could not verify whether a fixed starter set is available'),
+  'unverified readback is described as unknown rather than as a confirmed absence');
+ ok(unknownGiftCopy.includes('No starter patterns have been added to your release allowance'),
+  'the card truthfully states no local allowance was added');
+ ok(!unknownGiftCopy.includes('No approved fixed set is available'),
+  'an unverified snapshot is not mislabeled as a verified no-set result');
+ await page.evaluate(()=>{OB.giftReadbackVerified=true;OB.giftSnapshotReady=true;obRender();});
+ const serverReadyCopy=await page.evaluate(()=>[...document.querySelectorAll('#ob .ob-p')].map(el=>el.textContent).join(' '));
+ ok(serverReadyCopy.includes('not installed in your release bank yet'),
+  'a verified server snapshot is distinguished from an installed local bank');
+ ok(!serverReadyCopy.includes('No approved fixed set is available'),
+  'a verified server snapshot is not mislabeled as a missing approved set');
+ await page.click('[data-ob="next"]'); await page.waitForTimeout(80);
 
  await page.click('[data-ob="next"]'); await page.waitForTimeout(80);     /* settle -> feel */
  st=await step(); ok(st.step===3,'feel, step '+st.step);
@@ -257,6 +309,7 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
   const yes=(e.ob&&e.ob.yes||[]).slice(), no=(e.ob&&e.ob.no||[]).slice();
   const kept=(OB.commit&&OB.commit.kept||[]).map(n=>n.i);
   return {pl:pl, yes:yes, no:no, kept:kept,
+   allowance:(typeof meterBudget==='function'&&meterBudget(CURP))?meterBudget(CURP).left:0,
    size:(typeof ONB_MINI_ADDRS==='number'&&typeof RUN_MIN==='number')?ONB_MINI_ADDRS*RUN_MIN:null,
    chans:(typeof ONB_CHANS!=='undefined'&&typeof CHAN!=='undefined')
     ?{onb:ONB_CHANS.slice(),rel:CHAN.map(c=>c[0]+c[2])}:null};});
@@ -264,8 +317,9 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
  ok(mini.chans&&JSON.stringify(mini.chans.onb)===JSON.stringify(mini.chans.rel),
   'the engine plans down the same four channels the release card walks, in the same order: '+JSON.stringify(mini.chans));
  ok(mini.yes.length>3,'the person said yes to more than three addresses, so the cap has something to cut: '+mini.yes.length);
- ok(mini.pl&&mini.pl.ok&&mini.pl.lines===mini.size&&mini.pl.addrs.length===3,
-  'the bridge plans three addresses and twelve lines, not every address read: '+JSON.stringify(mini.pl&&{a:mini.pl.addrs,l:mini.pl.lines}));
+ ok(mini.pl&&mini.pl.ok&&mini.pl.lines===Math.min(mini.size,Math.floor(mini.allowance/4)*4)
+   &&mini.pl.lines%4===0&&mini.pl.addrs.length===mini.pl.lines/4,
+  'the bridge plans up to twelve lines, capped by allowance in whole addresses: '+JSON.stringify(mini.pl&&{a:mini.pl.addrs,l:mini.pl.lines,allowance:mini.allowance}));
  ok(mini.pl&&mini.pl.addrs.every(i=>mini.yes.indexOf(i)>=0),'and every planned address is one the person said yes to, none invented: '+JSON.stringify(mini.pl&&mini.pl.addrs));
  ok(mini.pl&&mini.no.length>0&&mini.pl.addrs.every(i=>mini.no.indexOf(i)<0),'and none is one they said no to');
  ok(mini.pl&&mini.pl.found===mini.yes.length,'the plan counts the yes rows, '+(mini.pl&&mini.pl.found)+' of '+mini.yes.length+', never the raw story read');
@@ -300,9 +354,9 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
     way; the queue is now held to the plan, which is held to the reading. */
  const runPlan=await page.evaluate(()=>({queue:(RUN.queue||[]).map(n=>n.i),plan:(RUN.plan||[]).slice()}));
  ok(mini.pl&&JSON.stringify(runPlan.queue)===JSON.stringify(mini.pl.addrs),
-  'the release opens on exactly the plan\'s three addresses: '+JSON.stringify(runPlan.queue));
+  'the release opens on exactly the plan\'s addresses: '+JSON.stringify(runPlan.queue));
  ok(mini.pl&&JSON.stringify(runPlan.plan)===JSON.stringify(mini.pl.keys),
-  'and builds exactly the twelve lines the card counted, '+runPlan.plan.length+' of them');
+  'and builds exactly the lines the card counted, '+runPlan.plan.length+' of them');
 
  /* RUN IT TO A REAL COOLDOWN, the same way tests/design.js already proves
     the card itself can finish, so "reaches a release" means the walker
@@ -322,7 +376,7 @@ console.log('=== onboarding reaches a real release, through the real door, on a 
  ok(moved,'and the field actually moved: a release that opens a card but changes nothing is not a release');
  ok(after.meter>0,'the record keeps a real line released, got '+after.meter);
  const spent=await page.evaluate(()=>(CURP.meter&&CURP.meter.unique||[]).length);
- ok(mini.pl&&spent===mini.pl.lines,'the first release opened '+spent+' lines of new ground, the twelve it was shown and no more');
+ ok(mini.pl&&spent===mini.pl.lines,'the first release opened '+spent+' lines of new ground, exactly the amount shown and no more');
  ok(errs.length===0,'no script error the whole way through: '+errs.slice(0,3).join(' | '));
  console.log('  reached a real release in '+(Date.now()-t0)+'ms of wall clock, shrunk timing');
 

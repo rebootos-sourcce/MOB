@@ -2421,7 +2421,10 @@ console.log('\n=== the opening, round PS: arrive, the twelve, settle, feel, body
   await new Promise(r=>setTimeout(r,60));
   o.steps.push(document.querySelector('.ob-h').textContent);
   o.starts=document.querySelectorAll('[data-obpick]').length;
-  document.querySelector('[data-obpick="3"]').click();           /* burnout, picking is the advance */
+  document.querySelector('[data-obpick="3"]').click();           /* burnout */
+  await new Promise(r=>setTimeout(r,60));
+  o.steps.push(document.querySelector('.ob-h').textContent);     /* gift-nature choice */
+  document.querySelector('[data-obgift="0"]').click();             /* separate anxiety gift nature */
   await new Promise(r=>setTimeout(r,60));
   o.steps.push(document.querySelector('.ob-h').textContent);     /* settle */
   document.querySelector('[data-ob=next]').click();
@@ -2463,7 +2466,7 @@ console.log('\n=== the opening, round PS: arrive, the twelve, settle, feel, body
   return o;});
  ok(ob.opened,'the opening opens');
  ok(ob.dots===8,'eight steps on the dots, arrive through the bridge, got '+ob.dots);
- ok(ob.steps.length===8,'eight headings walked, got '+ob.steps.length);
+ ok(ob.steps.length===9,'nine screens include the gift-nature choice while the journey still has eight steps, got '+ob.steps.length);
  ok(ob.starts===12,'the twelve starting points, got '+ob.starts);
  ok(ob.feels===7,'six feeling words and Not sure, got '+ob.feels);
  ok(ob.places===8,'seven body places and Not sure, got '+ob.places);

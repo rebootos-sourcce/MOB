@@ -65,6 +65,12 @@ var OB_STARTS=[
  {k:'relationships',n:'Relationships'},{k:'pain',n:'Pain'},
  {k:'selfworth',n:'Self-worth'},{k:'purpose',n:'Purpose'},{k:'money',n:'Money'},
  {k:'other',n:'Something else'}];
+/* THE STARTING POINT AND GIFT NATURE ARE SEPARATE CONTRACTS. Do not shrink or
+   repurpose the twelve starting points above to make room for these choices. */
+var OB_GIFT_NATURES=[
+ {k:'anxiety',n:'Anxiety'},{k:'overwhelm',n:'Overwhelm'},
+ {k:'burnout',n:'Burnout'},{k:'depression',n:'Depression'},
+ {k:'grief',n:'Grief'},{k:'sadness',n:'Sadness'}];
 /* THE SIX FEELING WORDS, the same six the mockup's FEELS carries. Neither
    set is tinted to a seat: a feeling is not one place in the body, and
    tinting it that way would be a claim this sheet has not earned. */

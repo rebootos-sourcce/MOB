@@ -242,7 +242,9 @@ ENCOUNTER
  ↓
 SELECT_GROUND
  ↓
-STARTER_GIFT_ISSUED
+SELECT_GIFT_NATURE
+ ↓
+ISSUE_STARTER_GIFT_IF_APPROVED_SET_EXISTS
  ↓
 ACCOUNT_CREATED
  ↓
@@ -347,19 +349,21 @@ The system should feel as though it has received an address.
 
 # 10. Personalized Starter Gift
 
-Immediately after selecting the starting point, issue a personalized starter set.
+After the user selects a starting point, ask for a separate gift-nature choice.
 
-Message:
+Preserve all twelve starting points. The six gift-nature choices are anxiety, overwhelm, burnout, depression, grief, and sadness. They are not diagnoses and do not replace the selected starting ground.
+
+Record the starting ground as `selectedGroundId` and the gift nature as `giftNatureId`. Keep those fields separate. The selected gift nature determines which fixed set is eligible; the starting ground remains separate journey context.
+
+Issue a starter set only when its mapping is deterministic and points to a frozen set of exactly 100 unique, stable pattern IDs, with source provenance and explicit owner approval for every included ID. Do not select the first 100 candidate rows, fall back to a global set, infer approval from candidate presence, or create a production manifest before approval.
+
+If no eligible approved set exists, do not issue a gift and do not show the ready message below. Account creation and onboarding must still succeed without a starter gift.
+
+Only after the server confirms an eligible frozen set may the app show:
 
 **Your first 100 patterns are ready.**
 
-The 100 patterns must be relevant to the selected starting ground.
-
-Do not give the user a generic set.
-
-The starter gift becomes the user's actual pattern bank.
-
-The user should be able to use those patterns immediately.
+The starter gift becomes the user's actual pattern bank only after the approved set is issued. The user should be able to use those patterns immediately.
 
 When the user creates an account, the funnel state transfers directly into the account.
 

@@ -84,6 +84,22 @@ function tutJourney(replay){
  if(replay||typeof journeyRead!=='function'||typeof CURP==='undefined'||!CURP)return false;
  if(typeof S!=='undefined'&&S.who!==0)return false;
  var jr=journeyRead(CURP);
+ var m=CURP.meter||{};
+ var unique=Array.isArray(m.unique)?m.unique.length:0;
+ var issuedGift=!!(CURP.journey&&CURP.journey.gift);
+ /* Resume checks used to return above the gift guard, leaving a tutorial-first
+    record with a saved step but no local bank on the implicit legacy allowance.
+    Gate any genuinely first-run, unused record before either a new start or a
+    resume, while preserving existing issued gifts and all continuing records. */
+ if(jr.first&&!issuedGift&&unique===0&&!m.first
+  &&typeof journeySetGiftAccess==='function'
+  &&(!CURP.journey||CURP.journey.giftAccess!=='uninstalled')){
+  var gate=journeySetGiftAccess(CURP,'uninstalled');
+  if(gate.ok){
+   if(!pSave()&&typeof status==='function')
+    status('This browser would not save. The starter bank is not installed yet.','fail');
+  }else if(typeof obJyFail==='function')obJyFail(gate.why);
+ }
  if(jr.at==='end'||(jr.at==='next'&&jr.door==='tutorial'))return true;
  if(!jr.first)return false;
  TUT.rec=true;
@@ -296,7 +312,9 @@ function tutRender(){
     +'to work with exactly that. This one is real: pressing Begin opens it '
     +'on what this entry just wrote.</p>'
     +(go?obMiniSay(pl,typeof journeyRead==='function'?journeyRead(CURP).first:true)
-     +(typeof obGiftSay==='function'?obGiftSay(pl):'')
+     +((typeof OB!=='undefined'&&OB.giftReady===true&&typeof obGiftSay==='function')
+       ?obGiftSay(pl)
+       :'<p class="ob-p ob-dim">No starter set has been issued for this tutorial. You can still try this release. Starter sets require a separate support choice and server confirmation.</p>')
      :(typeof obMiniWhy==='function'&&obMiniWhy(pl)?'<p class="ob-p">'+obMiniWhy(pl)+'</p>':''));
   }else{
    body='<p class="ob-p">This particular entry did not carry enough charge '

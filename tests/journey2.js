@@ -17,16 +17,16 @@
         at the card before the release, after handing off to a release that
         never ran, and on the end card, the person is put back exactly there
         with what they had given, and no typed word is lost.
-     3  THE GIFT COUNTS AND SHOWS. The gift is a counter of a hundred (round
-        OX, ruling 3). It is issued when a starting point is picked, the card
-        before the release says what is left of it and what the release
-        opens, and after the release the counter has moved by exactly the new
-        ground opened, on the screen and on the record.
+     3  NO UNVERIFIED STARTER GIFT. A saved support choice and a bare
+        starterGiftId do not create a journey gift or authorize gift copy.
+        The first release remains usable on the existing meter allowance,
+        while starter-gift copy stays hidden until a bank is verified and
+        installed.
      4  THE CLAIM PACKAGES WHAT THE PERSON MADE. After the first release the
         end card shows what was made, the story, what was read, what was
-        released, the answer to What changed and the gift, and every figure on
-        it is the claim packet's (journeyClaim), which carries no name and no
-        birth data. Go in ends the first run and it never opens again.
+        released and the answer to What changed. Every figure is read from the
+        claim packet (journeyClaim), which carries no name and no birth data.
+        Go in ends the first run and it never opens again.
      5  NOTHING IS BROKEN ON THE WAY. No script error, no console error from
         the product, no placeholder word on any card, and every control on the
         end card does something and is at least 44 by 44.
@@ -100,7 +100,35 @@ for(const [W,H] of WIDTHS){
  /* THROUGH THE DOOR, as a guest, which is the request-free way in. A reload
     meets the door again, so every reload comes back through it. */
  const door=async()=>{await booted(page);
-  const g=await page.$('#loginb-skip'); if(g){await click('#loginb-skip'); await page.waitForTimeout(350);}};
+  const g=await page.$('#loginb-skip'); if(g){await click('#loginb-skip'); await page.waitForTimeout(350);}
+  /* Test-only Worker response supplies a bare ID, not a validated snapshot.
+     Reloads are read from this same fixture; the local meter must remain uncredited. */
+  await page.evaluate(()=>{
+   const persist=patch=>{
+    const current=typeof funnelSession==='function'?funnelSession():null;
+    const session=Object.assign({},current&&current.session||{},patch,{
+     starterGiftId:'fixture-approved-frozen-gift'
+    });
+    const fixture=Object.assign({},current||{},{
+     id:current&&current.id||'funnel-fixture',
+     anonymousId:current&&current.anonymousId||'anonymous-fixture',
+     credential:current&&current.credential||'c'.repeat(64),
+     session,giftVerified:false
+    });
+    if(typeof funnelKeep==='function')funnelKeep(fixture);
+    return {session,gift:null,giftVerified:false};
+   };
+   window.authFunnelCheckpoint=patch=>{
+    const body=persist(patch);
+    return Promise.resolve({ok:true,session:body.session,gift:null,giftVerified:false});
+   };
+   window.authFunnelRead=()=>{
+    const current=typeof funnelSession==='function'?funnelSession():null;
+    return Promise.resolve({ok:!!(current&&current.session),status:200,body:{
+     session:current&&current.session,gift:null,giftVerified:false
+    }});
+   };
+  });};
  const reload=async()=>{await page.waitForTimeout(250); await page.reload({waitUntil:'load'}); await door();};
  /* FROM WHEREVER THE SHEET IS, ON TO A STEP, the way a person would press it.
     Used after a reload that did not resume, so the walk can go on and every
@@ -111,7 +139,7 @@ for(const [W,H] of WIDTHS){
    if(!s.open){await page.evaluate(()=>{if(typeof obOpen==='function')obOpen(false);}); await page.waitForTimeout(150); s=await st();}
    if(s.step>=to)return s;
    if(s.step===0||s.step===2)await click('[data-ob="next"]');
-   else if(s.step===1)await click('[data-obpick="0"]');
+   else if(s.step===1){await click('[data-obpick="0"]');await click('[data-obgift="0"]');}
    else if(s.step===3)await click('[data-obfeel="1"]');
    else if(s.step===4)await click('[data-obplace="3"]');
    else if(s.step===5){await page.fill('#obtext',STORY); await page.dispatchEvent('#obtext','input'); await click('#obdone');}
@@ -140,16 +168,26 @@ for(const [W,H] of WIDTHS){
  ok(s.open&&s.step===1,tag+'a reload on the starting point resumes on it, not at the start: open '+s.open+' step '+s.step);
  s=await driveTo(1);
 
- /* ---- 3. the pick issues the gift ---- */
+ /* ---- 3. select a starting ground, then a separate gift nature ---- */
  await click('[data-obpick="0"]'); s=await st();
- ok(s.step===2,tag+'picking a starting point moves on, step '+s.step);
+ ok(s.step===1,tag+'picking a starting point opens the gift-nature choice, step '+s.step);
+ await click('[data-obgift="0"]'); s=await st();
+ ok(s.step===2,tag+'choosing a gift nature moves into settle, step '+s.step);
  j=await rec();
  const gp=await page.evaluate(()=>(typeof OB_STARTS!=='undefined'&&OB_STARTS[0])?OB_STARTS[0].k:null);
- ok(!!(j&&j.log.some(e=>e.type==='ground_selected'&&e.ref===gp)),tag+'the pick is on the log by its key, '+gp);
- const GIFT=await page.evaluate(()=>typeof GIFT_N==='number'?GIFT_N:null);
- ok(!!(j&&j.gift&&j.gift.granted===GIFT&&j.gift.used===0&&j.gift.remaining===GIFT&&j.gift.src==='app'),
-  tag+'the gift is issued at the pick, a counter of '+GIFT+' with nothing used: '+J(j&&j.gift));
- ok(logged(j,'starter_gift_issued'),tag+'and the issue is on the log');
+ ok(!!(j&&j.log.some(e=>e.type==='ground_selected'&&e.ref===gp)),tag+'the starting ground is on the log by its key, '+gp);
+ /* The durable session, not a stale in-memory selection, restores the nature
+    choice and gift-confirmation state after a real reload. */
+ await reload(); s=await st();
+ ok(s.open&&s.step===2,tag+'reload resumes after the gift-nature choice, step '+s.step);
+ const restored=await page.evaluate(()=>({
+  pick:OB.pick,nature:OB.giftNature,confirmed:OB.giftConfirmed,ready:OB.giftReady,
+  session:(typeof funnelSession==='function'&&funnelSession()&&funnelSession().session)||null
+ }));
+ ok(restored.pick===0&&restored.nature==='anxiety'&&restored.confirmed&&!restored.ready,
+  tag+'the saved nature survives reload but a bare gift ID does not mark the local bank ready: '+J(restored));
+ ok(!(j&&j.gift)&&!logged(j,'starter_gift_issued'),
+  tag+'no journey gift record or issue log exists without the approved bank adapter: '+J(j&&j.gift));
 
  /* ---- 4. settle, feel, body, and a reload on the story ---- */
  await click('[data-ob="next"]'); await click('[data-obfeel="1"]'); await click('[data-obplace="3"]');
@@ -195,16 +233,19 @@ for(const [W,H] of WIDTHS){
    const b=document.querySelector('[data-obans="'+A[n]+'"][data-obi="'+n+'"]'); if(b&&b.getAttribute('aria-pressed')!=='true')b.click();});},ans0);}
  await placeholders('mirror'); await shot('mirror');
 
- /* ---- 6. commit, the card before the release, and the gift on it ---- */
+ /* ---- 6. commit, the card before the release, and fail-closed gift copy ---- */
  await click('[data-ob="mirrorcommit"]'); s=await st();
  ok(s.step===7,tag+'Commit leads to the card before the release, step '+s.step);
  const plan=await page.evaluate(()=>(typeof OB!=='undefined'&&OB.plan)?JSON.parse(JSON.stringify(OB.plan)):null);
- const size=await page.evaluate(()=>(typeof ONB_MINI_ADDRS==='number'&&typeof RUN_MIN==='number')?ONB_MINI_ADDRS*RUN_MIN:null);
- ok(!!(plan&&plan.ok&&plan.lines===size),tag+'the first release is the ruled '+size+' lines: '+J(plan&&{l:plan.lines,a:plan.addrs}));
- ok(new RegExp('You have '+GIFT+' patterns left of the '+GIFT+' you were given').test(s.card),
-  tag+'the card says what is left of the gift, read off the counter: '+((s.card.match(/You have [^.]*given/)||['none'])[0]));
- ok(!!plan&&new RegExp('This release opens '+plan.lines+' of them').test(s.card),tag+'and how many of them this release opens');
- ok(/A pattern is one line you have not said before/.test(s.card),tag+'and what a pattern is, beside the word (round PO)');
+ const maxSize=await page.evaluate(()=>(typeof ONB_MINI_ADDRS==='number'&&typeof RUN_MIN==='number')?ONB_MINI_ADDRS*RUN_MIN:null);
+ const size=plan&&plan.ok?plan.lines:null;
+ const allowanceBefore=await page.evaluate(()=>meterBudget(CURP).allow.left);
+ ok(!!(plan&&plan.ok&&size>0&&size<=maxSize&&size%4===0&&plan.addrs.length===size/4),
+  tag+'the first release uses whole addresses within the twelve-line maximum and available allowance: '+J(plan&&{l:plan.lines,max:maxSize,a:plan.addrs}));
+ ok(!/You have \d+ patterns left of the \d+ you were given|This release opens \d+ of them/.test(s.card),
+  tag+'the card does not display starter-gift copy while the active bank is uninstalled');
+ ok(!/\bGift\.\s*You have/i.test(s.card),
+  tag+'the pre-release card also omits the generic Gift counter while the active bank is uninstalled');
  j=await rec();
  ok(logged(j,'story_signal_confirmed'),tag+'the yes answers are on the log as confirmed');
  ok(!!(j&&j.walk&&j.walk.step==='next'&&j.walk.text===null&&j.walk.t),tag+'the walk stands at the card before the release, holding the entry and no draft: '+J(j&&j.walk&&{s:j.walk.step,t:!!j.walk.t,x:j.walk.text}));
@@ -263,12 +304,13 @@ for(const [W,H] of WIDTHS){
  ok(!!m&&new RegExp('\\b'+m.lines+' lines at '+m.addrs.length+' places\\b').test(s.card),tag+'it says what was released, read off the packet: '+J(m&&{l:m.lines,a:m.addrs.length}));
  ok(!!m&&m.entry&&new RegExp('You said yes to '+m.entry.yes+'\\b').test(s.card),tag+'and how many places the person said yes to: '+J(m&&m.entry&&m.entry.yes));
  ok(/You said: Something moved/.test(s.card),tag+'and the answer to What changed, in the release card\'s own words');
- ok(!!m&&m.gift.used===size&&m.gift.remaining===GIFT-size,tag+'the gift counter has counted the release: '+J(m&&m.gift));
- ok(!!m&&new RegExp('You have '+(GIFT-size)+' patterns left of the '+GIFT+' you were given').test(s.card),
-  tag+'and the card shows it moved: '+((s.card.match(/You have [^.]*given/)||['none'])[0]));
- ok(!!made&&made.left===GIFT-size,tag+'and it agrees with the allowance a run is charged against: '+(made&&made.left));
+ ok(!!made&&Number.isInteger(made.left)&&made.left===allowanceBefore-size,
+  tag+'the existing meter allowance charges only the newly opened lines, starting '+allowanceBefore+' and leaving '+(allowanceBefore-size)+': '+(made&&made.left));
+ ok(!/You have \d+ patterns left of the \d+ you were given|\bGift\.\s*You have/i.test(s.card),
+  tag+'the end card does not label the existing meter allowance as a starter gift');
  j=await rec();
- ok(!!(j&&j.gift&&j.gift.used===size&&j.gift.remaining===GIFT-size),tag+'and the stored counter on the record moved in the same write: '+J(j&&j.gift));
+ ok(!(j&&j.gift)&&!logged(j,'starter_gift_issued'),
+  tag+'the completed journey still has no starter-gift record or issue log: '+J(j&&j.gift));
  ok(logged(j,'first_release_completed')&&logged(j,'post_release_observation'),tag+'the log says the first release landed and what was observed');
  ok(!!made&&made.keys&&['who','name','id','ui','plan'].every(k=>made.keys.indexOf(k)<0),tag+'the packet carries no name, birth data, id, switches or plan: '+J(made&&made.keys));
  ok(!!made&&made.txt&&made.txt.indexOf('"'+made.name+'"')<0,tag+'and the profile\'s name is nowhere in it');
@@ -323,17 +365,27 @@ console.log('\n=== the tutorial door: the same record, the same resume, the same
  ok(open,tag+'the switch opens the tutorial on a first run');
  let j=await rec();
  ok(!!(j&&j.log.some(e=>e.type==='tutorial_started'&&e.d&&e.d.door==='tutorial')),tag+'its start is on the log, with the door it came through');
+ const tutorialGiftGate=await page.evaluate(()=>({
+  access:CURP&&CURP.journey&&CURP.journey.giftAccess,
+  inGift:typeof meterBudget==='function'?meterBudget(CURP).allow.inGift:null
+ }));
+ ok(tutorialGiftGate.access==='uninstalled',
+  tag+'a genuinely new tutorial-first profile explicitly disables the implicit gift until its bank is installed: '+J(tutorialGiftGate));
+ ok(tutorialGiftGate.inGift===false,
+  tag+'tutorial-first allowance cannot consume a phantom local 100-pattern grant: '+J(tutorialGiftGate));
  await page.fill('#tuttext',STORY); await click('[data-tut="commit"]');
  j=await rec();
  ok(!!(j&&j.log.some(e=>e.type==='story_submitted')&&j.log.every(e=>J(e).indexOf('chest')<0)),tag+'the story is on the log, and no word of it');
  await click('[data-tut="next"]'); await click('[data-tut="next"]');
  const card=await page.evaluate(()=>(document.querySelector('#tutorial .ob-card')||{}).innerText||'');
- ok(/You have \d+ patterns left of the \d+ you were given\. This release opens \d+ of them/.test(card),
-  tag+'the Release card says what is left of the gift and what this release opens');
+ ok(!/You have \d+ patterns left of the \d+ you were given/.test(card)
+    &&/No starter set has been issued for this tutorial/.test(card),
+  tag+'the tutorial does not promise a starter gift without a separate support choice and server confirmation');
  await click('[data-tut="release"]'); await page.waitForTimeout(200);
  j=await rec();
  ok(!!(j&&j.walk&&j.walk.step==='release'&&j.walk.door==='tutorial'&&j.walk.base&&j.walk.t),tag+'the hand off is on the walk, by door: '+J(j&&j.walk&&{s:j.walk.step,d:j.walk.door}));
- ok(!!(j&&j.gift&&j.gift.used===0)&&!!(j&&j.log.some(e=>e.type==='first_release_started')),tag+'the gift is issued and the start of the release is logged');
+ ok(!(j&&j.gift),tag+'the tutorial does not mint a local gift without the ground/nature/server-approved set');
+ ok(!!(j&&j.log.some(e=>e.type==='first_release_started')),tag+'the start of the release is logged independently of gift eligibility');
  await page.reload({waitUntil:'load'}); await door();
  const back=await page.evaluate(()=>({open:!!(typeof OB!=='undefined'&&OB.open),step:typeof OB!=='undefined'?OB.step:null,
   door:typeof OB!=='undefined'?OB.door:null, plan:(typeof OB!=='undefined'&&OB.plan&&OB.plan.ok)?OB.plan.lines:null,
