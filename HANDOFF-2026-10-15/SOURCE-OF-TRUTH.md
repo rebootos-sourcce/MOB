@@ -35,8 +35,9 @@ Reported facts that this session could not verify itself are marked so.
   main commits; nothing from Reboot-OS ever landed there.
 - The merge of MOB PR 76 (`018bb70`, documents, agents and a test floor; no
   application source) started deploy run 38813550850 on main at 21:52 UTC.
-  When it finishes, production carries a fresh build of the same source
-  under the new stamp. Its result is recorded in the session report.
+  It finished green at every step, including "Cloudflare serves this commit
+  in production". So atuned.world now serves `018bb70`: the same application
+  source as `ed5eca3`, built fresh, under the new stamp.
 
 ## The boundary, as of 15 October 20:57 UTC
 
