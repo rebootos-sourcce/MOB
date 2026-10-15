@@ -50,14 +50,23 @@ Reported facts that this session could not verify itself are marked so.
   Actions budget is preventing further use." A rerun of the gate at 20:58
   died the same way. These are not test failures: nothing executed.
 - **MOB is running.** Run 38806051770 (deploy workflow, pull request event
-  for PR 76) started 20:57 UTC with 30 jobs on real runners, steps
-  executing. So the block is not account wide in the same moment, or the
-  limit moved between 20:56 and 20:57. The owner's step stands either way.
-- **Owner action, exact:** github.com, profile picture, Settings, Billing
-  and plans, Spending limits, Actions: read the limit and the usage, raise
-  the limit. If `rebootos-sourcce` is an organisation, the same page from
-  the organisation's Settings. Then rerun the Reboot-OS gate and confirm
-  its job shows steps and a runner name.
+  for PR 76) started 20:57 UTC with 30 jobs on real runners and finished
+  green. A fresh Reboot-OS dispatch at 21:25 (voice probe, run 38809741929)
+  queued and then died with the same budget annotation.
+- **Why they differ, verified:** `rebootos-sourcce/MOB` is public and
+  `rebootos-sourcce/Reboot-OS` is private (GitHub API, 21:26 UTC). GitHub
+  meters Actions minutes on private repositories only, so an exhausted
+  spending limit stops Reboot-OS and leaves MOB running. The owner is a user
+  account, not an organisation.
+- **Owner action, exact:** sign in to github.com as `rebootos-sourcce`,
+  click the profile picture at the top right, Settings, then in the left
+  column Billing and plans, then Spending limits. Under Actions, read the
+  monthly usage against the limit and raise the limit (or wait for the
+  monthly reset). Then start any Reboot-OS workflow and confirm its job
+  shows a runner name and steps. Making Reboot-OS public would also lift it,
+  but that is a separate decision: the repository holds the server and the
+  second application, and nothing in it should be a secret, yet it was made
+  private on purpose.
 
 ## The voice
 
