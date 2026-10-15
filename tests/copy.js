@@ -73,7 +73,11 @@ const BANNED=[
  ['app', /\beverything\b[^.]{0,20}\b(?:held|kept|stays?|stored)\b[^.]{0,12}\b(?:this|your) (?:device|browser)\b/i,
   'the plan is read off the server and the first visit marks are held there'],
  ['app', /\b(?:held|kept|stored|stays?)\b[^.]{0,40}\bnowhere else\b/i, 'the plan and the first visit marks are also on the server'],
- ['app', /\bnothing about who you are travels\b/i, 'feedback carries the coherence band, the day, the version and the screen']];
+ ['app', /\bnothing about who you are travels\b/i, 'feedback carries the coherence band, the day, the version and the screen'],
+ /* a clinical word, 15 October, the owner's non clinical ruling: the instrument
+    asks questions and reads answers, it does not diagnose, and a card that said
+    "From your diagnostic" claimed a clinic it is not */
+ ['app', /\bdiagnos(?:tic|tics|is|ed|e)\b/i, 'the instrument asks questions and does not diagnose']];
 
 /* THE REQUIRED SENTENCES. [surface, [patterns that must all sit in one
    sentence], what it must say]. Held by sentence, so two halves on two

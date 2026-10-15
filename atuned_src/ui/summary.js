@@ -885,8 +885,19 @@ function sumNameBlock(B,fallback){
  var line=(CURP&&CURP.who&&CURP.who.line)?'<div class="s-pwho">'+esc(CURP.who.line)+'</div>':'';
  var full=(B.full&&B.full!==first)?'<div class="s-pwho">'+esc(B.full)+'</div>':'';
  return first?'<div class="s-pname">'+esc(first)+'</div>'+full+line:'';}
+/* HOW MUCH HAS BEEN MEASURED, AS ONE WORD. 15 October, under the owner's 14
+   October ruling: no bare score on a daily surface. The plate's ring used to
+   print the coherence figure; it prints this word now, read off accuracy(),
+   which is the fit's own estimate of how much of the reading is in: the laws
+   answered, the addresses carrying, the expression read. The figure and the
+   range it swings in sit one tap down, in the core drill the ring opens.
+   tests/golden.js holds the ladder, so a fourth word cannot appear unseen. */
+function accWord(a){
+ if(!a||!(a.pct>0))return '';
+ return a.pct<45?'early':a.pct<70?'partial':'full';}
 function sumPlate(r,B){
  var t=TIER_BY[r.tier]||null;
+ var aw=(typeof accuracy==='function')?accWord(accuracy(r)):'';
  return '<div class="s-plate">'
   +'<div class="s-pl-l">'+sumNameBlock(B,true)+'</div>'
   +'<div class="s-pl-r">'
@@ -899,7 +910,13 @@ function sumPlate(r,B){
       headline and it still read 62%, measured 2 October by the visual review
       after the ruling had landed everywhere else. The ring keeps the share as
       its arc; only the sign goes. */
-   +cr(r.darkB,r.CQ,{size:'lg',label:'Coherence',raw:String(Math.round(r.CQ)),hot:false,
+   /* AND THEN THE NUMBER WENT TOO, 15 October, the 14 October ruling being
+      the later one: the ring draws the share as its arc, the pill says how
+      much has been measured, and the ring is a button to the core drill,
+      where the figure sits with its range. The click router at the foot of
+      this file sends any button it does not know to runCoreDrill. */
+   +cr(r.darkB,r.CQ,{size:'lg',label:'Coherence',raw:aw||'–',hot:false,act:true,data:'data-gl="core"',
+      title:'Coherence, '+(aw?aw+' reading':'not read yet')+'. Opens the figure and its range.',
       color:TIERCOL[r.tier]||undefined})
    /* and the word wears it too. A ring in one colour beside the same band
       printed in the body colour reads as two facts, not one. */

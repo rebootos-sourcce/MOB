@@ -458,9 +458,12 @@ async function door(browser, SITE, cut, giftAt) {
 
   station(4, 'Q: the reading reaches Summary and the account');
   await Q.tab(1);
+  /* 15 October, the owner's 14 October ruling: the plate prints how much has
+     been measured, one of three words, and never the figure. The figure sits
+     one tap down in the core drill with its range. */
   const sumCQ = await Q.settled('#sum .cr[title^="Coherence"] .v');
-  ok(num(sumCQ) === Math.round(cqArrive), 'Summary prints the quiz\'s coherence, ' + J(sumCQ) + ' against ' + Math.round(cqArrive),
-    'Summary does not show the reading they brought from the quiz');
+  ok(/^(early|partial|full)$/.test(sumCQ) && num(sumCQ) == null, 'Summary prints how much of the quiz\'s reading is in, as a word and not the figure: ' + J(sumCQ),
+    'Summary prints the bare coherence figure, or a word outside the ladder');
   await Q.click('#profbtn'); await Q.click('[data-pms="account"]');
   await page.waitForTimeout(250);
   const accHd = await page.evaluate(() => { const h = document.querySelector('#settings .ac-hd'); return h ? h.innerText : ''; });
@@ -761,7 +764,7 @@ async function door(browser, SITE, cut, giftAt) {
   const round = Math.round(L1.CQ);
   ok(num(top) === round, 'the Field\'s top bar prints it, ' + J(top) + ' against ' + round);
   ok(num(key) === round, 'the Field\'s left key prints it, ' + J(key) + ' against ' + round);
-  ok(num(sum1) === round, 'Summary prints it, ' + J(sum1) + ' against ' + round);
+  ok(/^(early|partial|full)$/.test(sum1) && num(sum1) == null, 'Summary prints how much is measured, not the figure: ' + J(sum1));
 
   /* The Alpha gate stops after the accepted quiz-to-first-release walk.
      Billing, cross-device profile sync, and downloaded-file account creation
@@ -1102,8 +1105,9 @@ async function door(browser, SITE, cut, giftAt) {
     const f = await pf.evaluate(() => ({ open: !!(typeof LOGIN !== 'undefined' && LOGIN.open), msg: (document.getElementById('loginmsg') || {}).textContent || '',
       held: !!(typeof authSession === 'function' && authSession()) }));
     ok(wf.st.reqs.some(q => q.path === '/v1/auth/signup' && q.origin === 'null'), 'the press asks the server, from the null origin a file page sends');
-    xf(f.held || /file|atuned\.world/i.test(f.msg), 'E3f file copy account', 'a downloaded copy makes the account, or says the true reason it cannot: said '
-      + J(f.msg), 'the file he is sent says the connection is at fault and makes no account; only the copy at atuned.world can');
+    /* E3f, closed 15 October: authWhy names the downloaded copy as the reason */
+    ok(f.held || /downloaded copy/i.test(f.msg) && /atuned\.world/i.test(f.msg), 'E3f: a downloaded copy makes the account, or says the true reason it cannot: said '
+      + J(f.msg));
     ok(ferrs.length === 0, 'no script error: ' + ferrs.slice(0, 2).join(' | '));
     await cf.close();
   }

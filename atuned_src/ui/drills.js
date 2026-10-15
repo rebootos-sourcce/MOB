@@ -273,9 +273,13 @@ function lawDrillHtml(l,o){
      same two facts joined by a comma and reads correctly, so this joins them
      the same way. */
   /* ROUND RG: "Spread" said what kind of number it was and not what it was. */
-  ? '<div class="pm-eye">From your diagnostic</div><p class="ad-p">Your three answers sit <b>'+sc.spread
+  /* "DIAGNOSTIC" IS A CLINICAL WORD AND IT WAS ON THE SCREEN. 15 October,
+     under the owner's non clinical ruling: the instrument does not diagnose,
+     it asks questions, so the eyebrow names the answers. tests/copy.js bans
+     the word on every app surface now. */
+  ? '<div class="pm-eye">From your answers</div><p class="ad-p">Your three answers sit <b>'+sc.spread
     +'</b> apart, '+sc.lean+'.</p>'
-  : '<div class="pm-eye">Not measured</div><p class="ad-p">Not answered in the diagnostic, so '
+  : '<div class="pm-eye">Not measured</div><p class="ad-p">Not answered in the questions, so '
     +'it defaults to '+v.toFixed(1)+'. Three questions would replace the guess.</p>';
  if(hot.length)h+='<div class="pm-eye">Held here</div><div class="ad-rows">'
   +hot.slice(0,6).map(function(n){return addrRow(n,{ana:!!o.ana});}).join('')+'</div>';
@@ -404,9 +408,17 @@ addEventListener('click',function(e){
    how the number was reached and not what it says. */
 function runCoreDrill(){
  var r=compute();
+ /* THE FIGURE LIVES HERE, ONE TAP DOWN, WITH ITS RANGE. 15 October, under
+    the owner's 14 October ruling: no bare score on a daily surface. The
+    Summary plate prints how much has been measured and opens this, where the
+    number sits beside the range it swings in (cqRange, the same range the
+    Field's key draws), so nobody reads 62 without its plus or minus. */
+ var rg=r.unread?null:cqRange(r.CQ);
  var h='<div class="pm-eye">The core</div>'
   +'<div class="ad-nm">'+(r.unread?'not read yet'
     :'CQ '+Math.round(r.CQ)+', '+tierSay(r).toLowerCase())+'</div>'
+  +(rg?'<p class="ad-p">The reading swings between <b>'+Math.round(rg.lo)+'</b> and <b>'
+    +Math.round(rg.hi)+'</b>. The figure is the middle of that range, not a mark out of a hundred.</p>':'')
   +'<div class="pm-eye">What coherence is</div><p class="ad-p">'
   +'Coherence is the alignment between the world around you, what arrives from '
   +'it, the way you read what arrives, the intention behind it, and the action '

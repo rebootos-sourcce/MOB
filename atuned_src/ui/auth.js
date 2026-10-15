@@ -471,6 +471,16 @@ function authSay(s){
    wrong, and a taken email has a route the server cannot name. */
 function authWhy(r,route){
  if(r.late)return 'The server did not answer in time. Try again.';
+ /* A DOWNLOADED COPY IS TOLD THE TRUE REASON. Golden E3f, closed 15 October:
+    a file page sends the null origin, the server turns it away before any
+    answer arrives, and this line blamed the person's connection, which was
+    fine. feedbackWhere makes the same protocol check for the outbox. */
+ /* The outbox is not an account route: a file copy with an absolute feedback
+    address can send, and feedbackWhere already names the true reason when
+    it cannot, so the sentence below is for the account, billing and reset
+    routes only. */
+ if(!r.status&&route!=='feedback'&&!/^https?:$/.test(location.protocol))
+  return 'This is a downloaded copy, and the server turns a downloaded copy away. Only the copy at atuned.world can make an account or sign in.';
  if(!r.status)return 'Could not reach the server. Check the connection and try again.';
  if(route==='signin'&&r.status===401)return 'No account matches that email and password.';
  if(route==='signup'&&r.status===409)return 'An account already uses that email. Log in instead.';

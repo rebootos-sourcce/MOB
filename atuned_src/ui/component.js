@@ -780,10 +780,17 @@ var RB2={}, RB2_ON=false, RB2_MINF=0.5;
 function rbDrift(t){return Math.sin(t*0.55)*0.62+Math.sin(t*0.23+1.1)*0.38;}
 /* a figure as the bar prints it: a whole percent, and a zero is a dash */
 function rbPct(v){var n=Math.round(+v||0); return n>0?n+'%':'–';}
+/* A HEADLINE READING PRINTS BARE. Round PQ, his words: "No, it doesn't need
+   to be a percent. Just a number." The CQ and DQ key under the wheel still
+   printed 62% and 11% on 15 October, the last place they did. A pole marked
+   bare prints the whole number; a share of a whole (the balance, the lean)
+   keeps its sign, because a share is a percent. */
+function rbBare(v){var n=Math.round(+v||0); return n>0?String(n):'–';}
+function rbVal(P,v){return P&&P.bare?rbBare(v):rbPct(v);}
 function rbPair(k,o){
  var L=o.L, R=o.R, read=!!o.read;
  function pole(P,side){
-  var x='<span class="rb2-x"><span class="rb2-n">'+esc(P.nm)+'</span><b class="rb2-v">'+(read?esc(rbPct(P.v)):'–')+'</b></span>';
+  var x='<span class="rb2-x"><span class="rb2-n">'+esc(P.nm)+'</span><b class="rb2-v">'+(read?esc(rbVal(P,P.v)):'–')+'</b></span>';
   return '<span class="rb2-p '+side+'" style="--pc:'+P.c+'" aria-hidden="true">'+(side==='l'?rbIcon(P.ic)+x:x+rbIcon(P.ic))+'</span>';}
  /* a pole with its own reading is its own door, half the bar each, both at
     the 44px floor; a pair that is one reading is pressed as one, by its host */
@@ -793,7 +800,7 @@ function rbPair(k,o){
   return '<button type="button" class="kb rb2-k '+side+'" data-q="'+P.q+'"'
    +(P.fk?' data-fk="'+P.fk+'"':'')+' style="--pc:'+P.c+'"'
    +' data-tip-k="'+esc(P.nm)+'" data-tip="'+esc(say)+'"'
-   +' aria-label="'+esc(rbAria(P.nm,read?rbPct(P.v):'–',read,say,'Opens the reading.'))+'"></button>';}
+   +' aria-label="'+esc(rbAria(P.nm,read?rbVal(P,P.v):'–',read,say,'Opens the reading.'))+'"></button>';}
  return '<span class="rb2'+(read?'':' off')+(o.whole?' whole':'')+'" data-pair="'+k+'" style="--lc:'+L.c+';--rc:'+R.c+'">'
   +'<span class="rb2-t" aria-hidden="true"><i class="rb2-l"></i><i class="rb2-r"></i>'
   +'<em class="rb2-now l"></em>'+(o.whole?'':'<em class="rb2-now r"></em>')+'</span>'
@@ -806,7 +813,7 @@ function rbPairSays(pairWord,o,lean){
  var s=[rbSay(pairWord),rbSay(o.L.nm),rbSay(o.R.nm)].filter(Boolean).join(' ');
  return (s+(lean?' '+lean:'')).trim();}
 function rbPairAria(pairWord,o,say,does){
- var f=function(P){return P.nm+' '+(o.read?(Math.round(+P.v||0)>0?Math.round(P.v)+' per cent':'zero'):'not read yet');};
+ var f=function(P){return P.nm+' '+(o.read?(Math.round(+P.v||0)>0?Math.round(P.v)+(P.bare?'':' per cent'):'zero'):'not read yet');};
  return pairWord+'. '+f(o.L)+', '+f(o.R)+'. '+say+(does?' '+does:'');}
 /* a reading arrives. o is rbPair's own spec, with each pole's v, its swing
    sw(t) as an offset from v in the same units, and fw, the width that swing
@@ -829,7 +836,7 @@ function rbPairPaint(m,now){
  /* the figures count with the sweep and are written once more as it lands,
     so what the bar says is the reading and never a frame on the way to it */
  if(m.read&&(e<1||m.last.txt!==e)){m.last.txt=e; var vs=el.querySelectorAll('.rb2-v');
-  if(vs[0])vs[0].textContent=rbPct(e<1?lv:m.o.L.v); if(vs[1])vs[1].textContent=rbPct(e<1?rv:(m.whole?100-m.o.L.v:m.o.R.v));}
+  if(vs[0])vs[0].textContent=rbVal(m.o.L,e<1?lv:m.o.L.v); if(vs[1])vs[1].textContent=rbVal(m.o.R,e<1?rv:(m.whole?100-m.o.L.v:m.o.R.v));}
  if(!m.read)return;
  var o=m.o, still=rbStill(), t=S.t;
  var sl=(!still&&o.L.sw)?o.L.sw(t):0, sr=(!still&&o.R.sw)?o.R.sw(t):0;
