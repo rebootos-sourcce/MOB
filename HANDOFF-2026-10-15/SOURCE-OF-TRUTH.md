@@ -99,9 +99,13 @@ probe cannot run today (Reboot-OS Actions blocked). Not re-verified.
 
 ## Reboot-OS PR 54
 
-Head after this session's push: `a5d635c` on
-`copy-system-mirror-sweep-2026-10-14`, a draft, unmerged, base `main`.
-The commit restores parsing and boot (five source lines, both build files
-rebuilt, `build.py --check` passes byte for byte). The full smoke then runs
-to its end and reports 19 failures; the list, with causes and fixes as they
-land, is `PR54-TRIAGE-2026-10-15.md` in this folder.
+Head after this session's two pushes: `a39fdfb` on
+`copy-system-mirror-sweep-2026-10-14`, a draft, unmerged, base `main`
+(read back from the GitHub API at 21:33 UTC). The first commit, `a5d635c`,
+restores parsing and boot (five source lines, both build files rebuilt,
+`build.py --check` passes byte for byte); the full smoke then ran to its end
+with 19 failures. The second, `a39fdfb`, resolves all 19 and the three that
+surfaced behind them: locally `SMOKE TEST PASS 840 FAIL 0`, `ALL GREEN`,
+exit 0. The list, with causes and where each fix landed, is
+`PR54-TRIAGE-2026-10-15.md` in this folder. CI has not run on either
+commit: the budget above. The local run is the evidence until it does.
