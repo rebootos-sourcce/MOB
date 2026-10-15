@@ -26,11 +26,17 @@ Reported facts that this session could not verify itself are marked so.
 - No Reboot-OS publish since: `web.yml` run 38020152941 (10 October) failed
   at "publish to Pages"; run 38473125019 (13 October) was a pull request
   event with no publish step; no run since. The workflow is now disabled.
-- **Not verified from here:** the Pages project's own deployment list and
-  the custom domain binding, which need a Cloudflare token this session does
-  not hold. The owner can confirm at dash.cloudflare.com, Workers and Pages,
-  `atuned`, Deployments: the newest production row should name MOB commit
-  `ed5eca3`.
+- **Verified from Cloudflare itself, 21:59 UTC**, by
+  `.github/workflows/cloudflare-inspect.yml` (run 38813881872), which reads
+  the account with the deploy job's own token: Pages project `atuned`,
+  production branch `main`, domains `atuned.pages.dev` and `atuned.world`,
+  canonical and latest production deployment both commit `ed5eca3`, created
+  11 October 21:03 UTC. The last eight production deployments are all MOB
+  main commits; nothing from Reboot-OS ever landed there.
+- The merge of MOB PR 76 (`018bb70`, documents, agents and a test floor; no
+  application source) started deploy run 38813550850 on main at 21:52 UTC.
+  When it finishes, production carries a fresh build of the same source
+  under the new stamp. Its result is recorded in the session report.
 
 ## The boundary, as of 15 October 20:57 UTC
 
@@ -84,9 +90,15 @@ probe cannot run today (Reboot-OS Actions blocked). Not re-verified.
   `name = "atuned-api"`). The `atuned-api` build on the same commits passes.
   ChatGPT's control board (MOB PR 69) records `atuned-os /v1/health` as 404
   and `atuned-api /v1/health` as 200 on 13 October.
-- Not verified from here: its repository and branch linkage, routes,
-  secrets, domains, and whether anything depends on it. This session has no
-  Cloudflare access.
+- Tried from here, 21:59 UTC, with MOB's Cloudflare token through
+  `cloudflare-inspect.yml`: the token is Pages only. It lists no Workers,
+  sees no zones, and every Workers, Workers Builds and custom domain call
+  answers "No access" or "Authentication error". So `atuned-os` cannot be
+  inspected or deleted from MOB. The Reboot-OS token can (it deploys
+  Workers), but Reboot-OS Actions is budget blocked. The workflow keeps a
+  guarded delete step for the day either changes: it refuses unless the
+  Worker is named exactly `atuned-os`, has no route, no custom domain and no
+  binding that `atuned-api` lacks.
 - **Owner action, in order:** dash.cloudflare.com, Workers and Pages, open
   `atuned-os` (not `atuned`, not `atuned-api`). Read Settings: Builds (which
   repository, which branch, root directory), Domains and Routes (must be
