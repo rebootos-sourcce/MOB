@@ -128,3 +128,95 @@ Next order: verify this new docs head; keep Reboot-OS PRs draft while an authori
 7. Production Supabase remains at migration 0015; migrations 0016–0018 are unapplied. No production writes, migrations, deployments, vault imports, gift activation, or profile-sync/billing enablement occurred.
 
 **Status:** documentation gate passed; source/static evidence improved; P0 closure remains blocked on actual exact-head runtime CI, owner approvals, authorized infrastructure confirmation, and end-to-end proof. All listed Reboot-OS PRs remain draft/open/unmerged.
+
+
+## Executive continuation handshake — 14 October 2026, latest refresh
+
+**State:** P0 OPEN. This continuation section is the operating plan for the next thread. Read `ATUNED_MASTER_INDEX.md` FIRST, then this handshake, then `ATUNED_P0_EXECUTION_CONTROL_BOARD.md`. The index is the current navigation/ledger authority; reconcile all live heads and workflow runs before acting because older cycle entries below are historical.
+
+### Verified starting point
+
+- Reboot-OS issue [#51 — smoke jobs failing before runner startup](https://github.com/rebootos-sourcce/Reboot-OS/issues/51) remains open. Latest inspected run [#38646483356](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38646483356) for the least-privilege branch has a failed `smoke` job with no recorded steps/log URL; rollback-tag job skipped. The validator run [#38514915008](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38514915008) and audit run [#38604682980](https://github.com/rebootos-sourcce/Reboot-OS/actions/runs/38604682980) show the same startup signature. Do not call these test failures or passes; do not retry until new runner/admin evidence exists.
+- Reboot-OS issue [#37 — Cloudflare Workers Builds](https://github.com/rebootos-sourcce/Reboot-OS/issues/37) remains open. Prior evidence conflicts between `npx wrangler preview` (fails due missing `previews` config) and a later settings snapshot showing `npx wrangler deploy`. Authenticated operator readback of live settings and first-error logs is mandatory; no speculative config edits.
+- PR #53 has a source-level least-privilege correction: workflow default `contents: read`, test job read-only, and isolated success-dependent `move-last-green` job with guarded compare-and-swap tag update. Main still has workflow-wide `contents: write`; the mitigation is not active until normal review/merge. Keep the PR draft until its exact-head gate executes and passes.
+- PR #48 gift validator, PR #49 public canon, PR #45 recursive audit, and PR #52 geometry crosswalk remain draft. Latest inspected runs do not establish exact-head test acceptance. PR #46 reduced-motion and PR #47 publisher-guard have historical exact-head green runs, but still require human accessibility and authenticated publisher/domain acceptance respectively.
+- The canonical source-review queue remains 560 rows: 376 transcript and 184 PDF rows; 24 ambiguous PDF locators; 154 missing `indexNodeId`; 210 transcript boundary-review records; 107 repeated-hash groups covering 266 rows. Zero owner-approved rows and zero stable production IDs. Duplicate hashes are review leads, not deletion permission.
+- Supabase ATUNED ref `tuvpjbduarteszwkdmuu` was last read through migration 0015; migrations 0016–0018 were absent. Live gift state last recorded as five active and one pending. Migration 0017 preflight must not be bypassed; reviewed backfill/demotion decision is required before any authorized live migration.
+- Geometry static source audit: 112 canonical IDs, 113 position keys, 105/112 accepted by current geometry rule, seven unresolved/refused IDs (43, 107–112), and four legacy orphan keys. ID 108's measured position is source-present but exceeds the current reach rule; packaged-browser evidence is missing. Do not invent coordinates or semantic aliases.
+- Public canon static audit: 119 allowlisted tables and eight excluded/quarantined entries. Static fingerprints are not endpoint/runtime acceptance and do not imply source-owner approval.
+- No merge, production deploy, live migration, protected-vault import, gift activation/issuance, billing/profile-sync activation, or production-data mutation was performed.
+
+### Next-run strategy and blocks
+
+**Execution rule:** work independently and recursively where safe; do not wait for the user to repeat “continue.” For every block, record exact source/head, changed files, command/test actually run, output, cross-review, remaining gaps, and next dependency. Close a block only with acceptance evidence on the exact current head.
+
+**Block A — Index-first state reconciliation**
+1. Read this Master Index first; then this handshake and the P0 board.
+2. Refresh exact heads/status of Reboot-OS PRs #34, #35, #45–#49, #52, #53 and MOB PRs #66, #69, #73, #74. #74/lookdev is excluded from engineering execution.
+3. Fetch current checks for each head; classify each as exact-head pass, exact-head executed failure, startup failure/no-step, stale evidence, or not run.
+4. Refresh the index and control board only when the facts change. Do not trigger docs workflows without an acceptance reason.
+
+**Block B — Actions startup root cause**
+1. Keep issue #51 the single source of truth; issue #50 is closed as duplicate.
+2. Require authorized admin to inspect Actions enablement, allowed-actions policy, hosted-runner entitlement/billing/spending cap, runner groups/concurrency and GitHub service health.
+3. Once a runner is actually assigned, run one exact-head gate for PR #45 and PR #48 first, then other affected current heads.
+4. Preserve step logs, test totals and artifacts; repair real failures, rerun only affected tests, and repeat on the new exact head.
+5. Do not treat queue pressure as established cause; queue was reported drained in the latest index refresh.
+
+**Block C — Security and workflow gates**
+1. Review PR #53 permission boundaries and publisher guard across current branches. Main's broad write token remains a concrete gap until the reviewed change is accepted.
+2. Ensure all workflow configuration changes trigger the gate, repository-controlled smoke steps are read-only, and only the guarded rollback-tag job writes.
+3. Keep PR #47's single-publisher mitigation draft until exact-head gate evidence and authorized Cloudflare publisher ownership are both established.
+4. Do not merge, bypass checks, or move the rollback tag manually.
+
+**Block D — Gift source recovery and approval**
+1. Resolve the 24 ambiguous PDF locators, then the 154 missing indexNodeId records, then 210 transcript boundary reviews, in that order.
+2. Cross-reference every candidate to exact source location/text; repeated hashes may identify duplicates but cannot authorize deletion or consolidation.
+3. Do not invent stable IDs, synthesize text, or select the first 100 rows.
+4. Obtain owner-approved provenance/schema/classification and six separate 100-item immutable banks. Record approval references and hashes.
+5. Independently cross-review the validator's duplicate/canonicality/provenance fail-closed rules. No real bank exists until evidence and owner approval are complete.
+
+**Block E — Gift snapshot / migration safety**
+1. Reconcile PR #35 and migrations 0016–0018 against current main and MOB contract.
+2. Test snapshot immutability, exactly 100 unique approved entries, wrong-nature/missing-bank failures, replay, mutation, ordering, reload and account attachment in non-production fixtures.
+3. Preserve the 0017 preflight that stops active legacy gifts without a frozen snapshot. Do not silently demote the five active gifts.
+4. Confirm intended Supabase target and migration 0015 state; rehearse forward/rollback on disposable non-production Postgres.
+5. No production migration or data mutation without explicit authorization.
+
+**Block F — Browser/server mapping and persistence**
+1. Keep six gift natures, four client meter tracks, and six server action/verb channels distinct.
+2. Obtain owner-approved semantic mapping; do not infer by matching names or counts.
+3. Prove current-release browser → intended Worker → Supabase write → read → reload, including attach, idempotent retry, duplicate prevention, correct usage counts and no resurrection after deletion.
+4. Client tests alone are not Worker connectivity evidence. Use an approved non-production target until production testing is explicitly authorized.
+
+**Block G — Public canon and geometry**
+1. Execute PR #49 endpoint tests for unknown/quarantined tables, row-count/fingerprint drift, content mutation and deterministic ordering on exact head.
+2. Keep protected `canon_vault.sqlite` private and unimported; preserve negative tests for excluded entries.
+3. Execute geometry source-consistency and packaged-browser runtime tests on exact head. Resolve ID 43 semantic collision and IDs 107–112 with authoritative source evidence; do not invent coordinates, aliases or exclusions.
+4. Cross-review source fingerprints, allowlist, parser safety and browser output.
+
+**Block H — Cloudflare and publisher ownership**
+1. Authorized operator captures first failing log and reads back repository binding, production branch, root directory, build/deploy/preview commands, account, Worker/service, domain, secrets/permissions and rollback target.
+2. Resolve conflicting `preview` vs `deploy` evidence and confirm whether `atuned-os` is a preview/static service or production target. `atuned-api` is the Worker named in checked-in `atuned/server/wrangler.toml`; do not assume the services are interchangeable.
+3. Verify which repository owns Pages project `atuned` and prevent two different root bundles from publishing to the same project/branch.
+4. No configuration save, secret edit, deploy or check bypass until the owner confirms intended topology.
+
+**Block I — Human acceptance and release closure**
+1. Complete keyboard, screen-reader, mobile and remaining-motion review.
+2. Complete privacy/consent/log/artifact review, deletion/no-resurrection lifecycle proof, and independent cross-repository contract review.
+3. Reconcile every acceptance criterion against exact current SHAs and actual executed evidence; list owner/admin blockers explicitly.
+4. Keep all affected PRs draft while acceptance is incomplete. Declare P0 closed only after all required gates pass and explicit release authorization is recorded.
+
+### Stop conditions and handoff format
+
+Stop only for an actual external dependency: authenticated GitHub admin access, authenticated Cloudflare access, owner decisions/approvals, or explicit release authorization. Continue safe source-level analysis and non-production test design while waiting. Never manufacture green status.
+
+At the end of each run report:
+- Blocks completed and exact evidence;
+- patches/commits and affected branches;
+- tests actually executed vs not executed;
+- defects found and fixed;
+- open owner/admin blockers;
+- next block to execute.
+
+**Current release decision: BLOCKED / P0 OPEN.** This is an engineering continuation, not a release approval.
