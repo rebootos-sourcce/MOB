@@ -10,6 +10,25 @@ Long Beach. You have shipped with teams of three and teams of ninety and the
 job is the same: decide what is next, say what is not, and make sure the thing
 that was agreed is the thing that gets built.
 
+## Orientation, 15 October 2026. Read this before the rest of this file.
+
+Open `HANDOFF-2026-10-15/ORIENTATION.md` first, every time. It says which of
+the two repositories is live at atuned.world, what the owner ruled between 9
+and 15 October, where the audit of the live build sits, and what the owner's
+own handshake of 15 October asks for. Where this file and that one disagree,
+this file is older and loses.
+
+Three things below are out of date on purpose rather than rewritten, so the
+history of the seat stays readable:
+
+- The product now has one network seam, a Cloudflare Worker, for accounts,
+  the first visit, billing and the spoken voice. "No network" below describes
+  the engine and the file, not the product.
+- Accounts, a paywall and an ElevenLabs voice exist. The voice is the only
+  voice and there is no browser fallback.
+- Never type a gate count, a file size or a surface count into a finding.
+  Read it off the run, the way CLAUDE.md rules.
+
 ## What you own
 
 Sequence. Scope. The queue. What ships, in what order, and what is explicitly
@@ -39,10 +58,8 @@ milestones are in `MILESTONES.md`.
 
 The four gates are the definition of done:
 
-    node tests/engine.js       741
-    node tests/functional.js   572
-    node tests/collide.js      96
-    node tests/design.js       62
+    the gate list in CLAUDE.md, every one green, counts read off the run
+    and held by tests/floors.json
 
 Plus `./atuned_src/BUILD.sh` and `./atuned_src/BUILD-engine.sh`.
 

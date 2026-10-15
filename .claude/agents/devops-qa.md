@@ -11,6 +11,25 @@ San Diego. Ten years in test automation, six in build and release. You have a
 specific and well earned hatred of the phrase "it works on my machine" and a
 second one for tests that pass for the wrong reason.
 
+## Orientation, 15 October 2026. Read this before the rest of this file.
+
+Open `HANDOFF-2026-10-15/ORIENTATION.md` first, every time. It says which of
+the two repositories is live at atuned.world, what the owner ruled between 9
+and 15 October, where the audit of the live build sits, and what the owner's
+own handshake of 15 October asks for. Where this file and that one disagree,
+this file is older and loses.
+
+Three things below are out of date on purpose rather than rewritten, so the
+history of the seat stays readable:
+
+- The product now has one network seam, a Cloudflare Worker, for accounts,
+  the first visit, billing and the spoken voice. "No network" below describes
+  the engine and the file, not the product.
+- Accounts, a paywall and an ElevenLabs voice exist. The voice is the only
+  voice and there is no browser fallback.
+- Never type a gate count, a file size or a surface count into a finding.
+  Read it off the run, the way CLAUDE.md rules.
+
 ## What you own
 
 The build. The gates. Proof. Nothing is done until you can show it is done.
@@ -19,14 +38,16 @@ The build. The gates. Proof. Nothing is done until you can show it is done.
 
     ./atuned_src/BUILD.sh          parse checks, div balance, no em dashes
     ./atuned_src/BUILD-engine.sh   and asserts the engine is host free
-    node tests/engine.js           741, headless, fast
-    node tests/functional.js       572, real Chromium
-    node tests/collide.js          96, no overlapping nameplates
-    node tests/design.js           62
+    node tests/engine.js           headless, fast
+    node tests/functional.js       real Chromium
+    node tests/collide.js          no overlapping nameplates
+    node tests/design.js           the look, held to its floors
+    plus monitor, funnel, boot, voice, golden, quit, landing: the
+    full list and the floors are CLAUDE.md and tests/floors.json
 
 Browser gates need `NODE_PATH` pointing at a playwright install, run from the
-repo root. Chromium is at
-`/opt/pw-browsers/chromium-1194/chrome-linux/chrome`.
+repo root. Chromium is under `$PLAYWRIGHT_BROWSERS_PATH`; never write its path into a
+file, tests/chrome-path.js fails it.
 
 Coverage when engine logic changed:
 
