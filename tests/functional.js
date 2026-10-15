@@ -3656,9 +3656,14 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
   return o;},API);
  await sp.close();
  await new Promise(r=>stub.close(r));
- const reach='Could not reach the server. Check the connection and try again.';
+ /* THIS GATE RUNS THE APP FROM A FILE. Golden E3f, closed 15 October: on a
+    file page the account routes name the downloaded copy as the reason the
+    server did not answer, because a file page's null origin is turned away
+    before any answer, whatever the network is doing. The hosted copy keeps
+    "Could not reach the server. Check the connection and try again." */
+ const reach='This is a downloaded copy, and the server turns a downloaded copy away. Only the copy at atuned.world can make an account or sign in.';
  ok(o.form&&o.noUser,'the Account section carries the sign in form and Create account, and there is no username field');
- ok(o.off[0]===reach&&o.off[1]==='fail','no network says so and holds, got '+JSON.stringify(o.off));
+ ok(o.off[0]===reach&&o.off[1]==='fail','no network on a file page says it is the downloaded copy, and holds, got '+JSON.stringify(o.off));
  ok(o.offAgain&&o.offTyped,'and the form comes back usable, with what was typed still in it');
  ok(o.wrong[0]==='No account matches that email and password.'&&o.wrong[1]==='fail',
   'a wrong password is refused without saying which field was wrong, got '+JSON.stringify(o.wrong));

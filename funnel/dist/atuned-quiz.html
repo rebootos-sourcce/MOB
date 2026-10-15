@@ -260,7 +260,7 @@ button.lnk:hover,a.lnk:hover{color:var(--ink)}
  border:0;border-radius:9px;padding:16px 32px;font:inherit;font-size:18px;
  font-weight:600;min-height:54px;cursor:pointer;text-decoration:none;margin-top:26px}
 .pri:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
-.eye{display:block;font-size:11.5px;letter-spacing:.17em;text-transform:uppercase;
+.eye{display:block;font-size:11.5px;letter-spacing:.01em;
  color:var(--accent);margin:0 0 10px}
 
 /* ---- the reading ---- */
@@ -280,7 +280,7 @@ button.lnk:hover,a.lnk:hover{color:var(--ink)}
 .tierbox{margin-top:20px;border:1px solid var(--edge-2);border-radius:10px;
  background:var(--panel);padding:16px 18px}
 .tierbox dl{margin:0;display:grid;gap:14px}
-.tierbox dt{font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;
+.tierbox dt{font-size:11.5px;letter-spacing:.01em;
  color:var(--dim)}
 .tierbox dd{margin:4px 0 0}
 .two{display:grid;gap:30px}
@@ -4537,6 +4537,27 @@ var UNPACK_BASE={
  /* DQ stood as a bare label on the release clock. Round RG. */
  'dq':'DQ is your shadow weight: all the charge you carry, on every address, against the most your body could hold.',
  'coherence':'Coherence is when what you mean, what you do and what your body does point the same way.',
+ /* THE FIELD'S LEFT MENU, round RB and the P3 menu pass. Every reading on the
+    rail is one bar with its mark and its one word inside it, and the word is a
+    carrier of its sentence here, read with the rail context so a word that
+    means something else on another page (flow the loop station, will the
+    battery in GLOSS, awareness the soul's window) keeps that meaning there. CQ
+    and DQ are the two bare keys above, which the rail reads as they are. Each
+    sentence says what the engine computes: vitality, awareness and will are
+    compute() X, Y and Z, radiance the root of their squares, flow the seats'
+    passes multiplied, orientation leanRead, balance the outward and inward
+    means of balance(). */
+ 'rail:vitality':'Vitality is how much energy you have left once apathy and the charge you carry have taken their share.',
+ 'rail:awareness':'Awareness is how strong what you mean is, and how little of it gets bent on the way out.',
+ 'rail:will':'Will is how much of your integrity gets through the charge you are carrying.',
+ 'rail:radiance':'Radiance is vitality, awareness and will put together, and it sets how bright the field behind the wheel is.',
+ 'rail:flow':'Flow is how much gets from the base of your spine to the top of your head, each seat passing on part of what it gets.',
+ 'rail:orientation':'Orientation is which way the charge you hold leans, toward costing you nothing or toward taking something from you.',
+ 'rail:benign':'Benign is charge you hold that is not costing you anything.',
+ 'rail:malignant':'Malignant is charge you hold that is taking something from you.',
+ 'rail:balance':'Balance is which way your body moves under what you feel, out toward the world or in toward yourself.',
+ 'rail:masculine':'Masculine is energy given a shape and a direction and sent outward, and it does not mean men.',
+ 'rail:feminine':'Feminine is energy held and taken inward, and it does not mean women.',
  /* ROUND RG, the copy sweep. His words: "you read 62 above the oscillating
     band. Your integrity is 6.2. Integrity is the hull. It's got to be human."
     Integrity was printed as a figure on the Compass with no meaning anywhere
@@ -4729,12 +4750,21 @@ function unpackOf(term,ctx){
    record, and nothing here touches a host. engine/journey.js is
    what reads them.
 
-   PORTED, NOT REBUILT, from 3869d96 on worktree-agent-ad7f4b5294abbc82c,
-   and only the two rows the first release's size needs (F5 in
-   REVIEW-funnel/FINAL-SPEC.md). The rest of that file, the journey
-   record's version, its event list, its ceilings and the ten integrity
-   questions, is the journey record (F13) and lands with it: a table
-   for a record nothing stores yet is a second answer waiting to drift.
+   PORTED, NOT REBUILT, from 3869d96 on worktree-agent-ad7f4b5294abbc82c.
+   The first two rows came across with F5 (the first release's size).
+   The journey record's tables (F13) came across with the record itself,
+   at the foot of this file: its version, its event list, its ceiling and
+   the stations of the first run. Two parts of that file did not, and the
+   reason is said once here so nobody goes looking for them:
+
+     the ten integrity questions   they need screens of their own (slice O7)
+                                   and the owner picks the ten laws from the
+                                   twenty one (round PA), so a table of ten
+                                   would be a second answer to an open
+                                   ruling. Kept at 3869d96.
+     the five channel stem         the first release's own sentence, round
+                                   OX ruling 8, which belongs to the release
+                                   screen and its package, not to this one.
    ============================================================ */
 
 /* THE MINI RELEASE'S SIZE, in addresses and not in lines. Ruled, round PA,
@@ -4744,6 +4774,17 @@ function unpackOf(term,ctx){
    addresses. The size is one number so one edit moves it, and the twelve is
    read off it times RUN_MIN, never typed a second time. */
 const ONB_MINI_ADDRS=3;
+/* HOW MANY TIMES THE MINI RELEASE SAYS EACH OF THOSE LINES, and it is once.
+   F5 capped the plan at twelve lines and handed it to a release screen that
+   then said every line at its own default dose of a hundred, so the run the
+   card called twelve lines said twelve hundred: 81:28 at three addresses
+   (REVIEW-onboarding/pass1/devops-qa.md, "Dose 1 is 12 lines, the ruled mini
+   release, but it needs a typed number") and 28:02 at one, where Angela left
+   (M28). Twelve lines spoken is the plan said once. ui/release.js opens a run
+   handed over by the onboarding or the Day One tutorial at this dose, and
+   both cards say it, so the count is this number times ONB_MINI_ADDRS times
+   RUN_MIN and is typed nowhere else. */
+const ONB_MINI_DOSE=1;
 /* THE FOUR CHANNELS A RUN SAYS AN ADDRESS DOWN, as meter keys: side then track,
    release first and reframe after, the order the release card walks them
    (CHAN in ui/release.js, which is the host's own copy of this list because the
@@ -4784,6 +4825,52 @@ var OB_PLACES=[{k:'pelvis',n:'Pelvis',b:'Root'},{k:'belly',n:'Belly',b:'Sacral'}
  {k:'stomach',n:'Stomach',b:'Solar'},{k:'chest',n:'Chest',b:'Heart'},
  {k:'throat',n:'Throat',b:'Throat'},{k:'forehead',n:'Forehead',b:'3rd Eye'},
  {k:'head',n:'Head',b:'Crown'}];
+
+/* ---------------- the journey record, F13 ---------------- */
+/* THE JOURNEY RECORD'S OWN VERSION, like PRACTICE_SCHEMA_V and TRACE_V. It is
+   not SCHEMA_V and moving it does not move that. */
+const JOURNEY_V=1;
+/* THE EVENTS OF THE ONBOARDING TDD, SECTION 46, as a closed set, lower snake
+   case, in the document's order. The gate reads the list off the document
+   (tests/journey.js) and holds this one equal to it, so it is never typed twice
+   in a way that can drift. An event outside it is refused by name at the
+   boundary, so a typo is a refusal and never a silent new kind. Not every
+   event has a writer yet: the set is what a record may carry, and which of
+   them this build writes is said beside each writer in ui/onboard.js. */
+const JOURNEY_EVENTS=[
+ 'funnel_started','ground_selected','starter_gift_issued','account_created',
+ 'tutorial_started','story_submitted','story_signal_generated',
+ 'story_signal_confirmed','story_signal_rejected','story_adjustment_submitted',
+ 'story_signal_updated','somatic_setup_started','first_release_started',
+ 'pattern_released','first_release_completed','post_release_observation',
+ 'integrity_assessment_started','integrity_question_answered',
+ 'integrity_assessment_completed','archetype_assessment_started',
+ 'archetype_question_answered','archetype_assessment_completed',
+ 'tutorial_completed','software_entered','pattern_rerun','free_practice_started',
+ 'referral_started','new_ground_limit_reached','tier_viewed','tier_selected',
+ 'payment_completed'];
+/* THE LOG'S CEILING. Over it a line is refused by name rather than evicting the
+   oldest, which is obQueue's rule in engine/outbox.js and for the same reason:
+   a log that forgets its beginning cannot say what a person did on the way in.
+   A first run writes about fifteen lines, so five hundred is not reached by
+   anybody walking the product. One number, so a ruling on it is one edit. */
+const JOURNEY_LOG_MAX=500;
+/* WHERE THE GIFT WAS ISSUED. The app issues it when a starting point is picked
+   (TDD section 10, "immediately after selecting the starting point"). The
+   funnel is the other origin the TDD names; nothing in this build writes it,
+   and a record that carries it is still a good record. */
+const JOURNEY_SRC=['funnel','app'];
+/* THE STATIONS OF THE FIRST RUN, in order, which is where a reload puts a
+   person back. The first eight are the onboarding sheet's own steps, the ones
+   its rail draws (OB_NSTEPS in ui/onboard.js is read off this list, never
+   typed beside it). release is the hand off to the first release, and end is
+   the card after it that shows what the person made. */
+const JOURNEY_WALK=['arrive','ask','settle','feel','body','story','mirror','next','release','end'];
+/* THE TWO DOORS INTO THE FIRST RELEASE: the onboarding sheet, and the Day One
+   tutorial (ui/tutorial.js). The walk says which, because the two plan the
+   release from different lists: the sheet from the places the person said yes
+   to, the tutorial from what the story read. */
+const JOURNEY_DOORS=['onboarding','tutorial'];
 
 /* ============================================================
    THE SIX AXES. Three higher gates and three lower gates. This is
@@ -8119,9 +8206,18 @@ function planFromServer(prev,b,unique){
    status:(typeof pv.status==='string')?pv.status:'', wasStatus:(typeof pv.status==='string')?pv.status:''};}
  var paid=!!(b&&typeof b==='object'&&PLAN_BY[b.tier]&&b.tier!=='free'&&b.tier!=='gift');
  var next;
- if(!paid)next={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null};
+ if(!paid)next={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null,ends:null};
  else {
   var since=(typeof b.since==='string')?b.since:null, until=(typeof b.until==='string')?b.until:null;
+  /* THE DAY A STOPPED PLAN STOPS. Stopping on the payment page leaves tier,
+     status and period exactly where they were until the month runs out, so
+     same read true and the host said nothing to a person who had just
+     pressed stop. ends is the one field that moves, so it is compared below
+     with the rest. A server from before it sends no such key, and that is
+     read as what the record already held rather than as a plan that renews,
+     so an older server cannot clear a day a newer one wrote. It is not a new
+     period, so base and the grant are untouched by it. */
+  var ends=('ends' in b)?((typeof b.ends==='string')?b.ends:null):(pv.ends==null?null:pv.ends);
   var fresh=(pv.tier!==b.tier)||((pv.since==null?null:pv.since)!==since);
   var n=Array.isArray(unique)?unique.length:Number(unique); if(!isFinite(n)||n<0)n=0;
   /* in the blank's own key order (schema.js), so a record written here and
@@ -8129,12 +8225,13 @@ function planFromServer(prev,b,unique){
   next={tier:b.tier, status:(typeof b.status==='string')?b.status:'',
    granted:fresh?0:(pv.granted||0), carried:fresh?0:(pv.carried||0),
    base:fresh?Math.max(GIFT_N,Math.floor(n)):(pv.base==null?null:pv.base),
-   since:since, until:until};}
+   since:since, until:until, ends:ends};}
  var eq=function(k){return (pv[k]==null?null:pv[k])===(next[k]==null?null:next[k]);};
  var was=planOf(prev), now=planOf(next);
- return {plan:next, same:['tier','status','since','until'].every(eq),
+ return {plan:next, same:['tier','status','since','until','ends'].every(eq),
   was:was.k, now:now.k, wasLive:planState(prev)==='live', nowLive:planState(next)==='live',
-  status:next.status, wasStatus:(typeof pv.status==='string')?pv.status:''};}
+  status:next.status, wasStatus:(typeof pv.status==='string')?pv.status:'',
+  ends:next.ends, wasEnds:(pv.ends==null?null:pv.ends)};}
 /* ============================================================
    SIGHT, READ OFF SIGHT. Everything below is arithmetic over the one table at
    the top of this file and a plan record, and none of it knows what a surface
@@ -9607,9 +9704,10 @@ function blankProfile(name){
      profile written before the ruling cannot have set by accident (the old
      sfx:false was the blank's own default and not a choice, so it is
      ignored and kept only so an older record still validates). studio is the
-     ElevenLabs voice in the release, off: the browser voice is the default by
-     ruling, and a voice that sends each line to a company over the network is
-     one a person chooses, never one they find already on. */
+     retired second switch for the ElevenLabs voice. ElevenLabs is now THE
+     voice (9 October, no fallback to a browser voice), so the one switch is
+     voice above, and studio is kept only so a record written before the
+     ruling still validates; nothing reads it. */
   ui:{quiet:false, model:false, tone:false, voice:true, buzz:false, practitioner:false, sfx:false, sfxoff:false, onboarded:false, tutorialSeen:false, paidWelcomed:false, studio:false},
   /* what the person said their type is, and what it wrote. null until stated. */
   seed:null,
@@ -9659,7 +9757,11 @@ function blankProfile(name){
      planAllowance reads that as the end of the gift. A literal 0 here was read
      as a period opened at nothing, charged the gift against the first free
      week, and read nought left for good. */
-  plan:{tier:'free', status:'', granted:0, carried:0, base:null, since:null, until:null},
+  /* ends is the day a stopped plan stops, null for one that renews. Stopping
+     on the payment page keeps the status active to the end of the paid month,
+     so without it a record read as if nothing had been pressed (ui/auth.js
+     authPlanTake says it, planFromServer in engine/plan.js writes it). */
+  plan:{tier:'free', status:'', granted:0, carried:0, base:null, since:null, until:null, ends:null},
   /* THE BECOMING HALF. Who you are becoming, what that is for, and what is
      yours to protect. Six values in on the purpose map and nothing derived is
      stored, because a derived value that is also stored is one that can
@@ -9736,10 +9838,12 @@ function loadProfile(p){
     one and not a broken one, so it opens with an empty list */
  if(!Array.isArray(p.meter.heavy))p.meter.heavy=[];
  /* an older record has no plan, which is a free record and not a broken one */
- if(!p.plan)p.plan={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null};
+ if(!p.plan)p.plan={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null,ends:null};
  /* a missing baseline is filled as missing. A 0 already on disk is left as
     written and read through the gift floor in planAllowance. */
  if(p.plan.base===undefined)p.plan.base=null;
+ /* and a record saved before ends existed renews, which is what it said */
+ if(p.plan.ends===undefined)p.plan.ends=null;
  if(!p.avatar)p.avatar=avatarBlank();
  if(!Array.isArray(p.avatar.pairs))p.avatar.pairs=[];
  avatarFill(p.avatar);
@@ -9836,6 +9940,10 @@ function saveProfile(p){
   if(LAW_UNSET[l.nm]&&S.law[l.nm]===LAW_SEED[l.nm])return;
   p.laws[l.nm]=S.law[l.nm]; LAW_UNSET[l.nm]=false;});
  gatesSave(p);
+ /* THE GIFT'S COUNTER MOVES IN THE SAME WRITE AS THE METER, F13. Every save
+    comes through here, the release's included, so the stored counter is never
+    a save behind the ground it counts (journeyGiftSync, engine/journey.js). */
+ if(p.journey&&p.journey.gift)journeyGiftSync(p);
  p.updated=new Date().toISOString(); p.v=SCHEMA_V;
  return p;}
 /* a snapshot is what Analytics plots. derived only, never inputs.
@@ -9930,7 +10038,7 @@ var PROFILES=[], CURP=null;
 var STORE={get:function(){return null;}, set:function(){}}, STORE_BOUND=false;
 /* a host binds its own. exported, because module.exports captures the value of
    STORE and not the binding, so an outside caller cannot assign to it. */
-function bindStore(get,set){ STORE={get:get,set:set}; STORE_BOUND=true; return STORE; }
+function bindStore(get,set,remove){ STORE={get:get,set:set,remove:remove}; STORE_BOUND=true; return STORE; }
 /* A DEVICE SETTING IS THE BROWSER'S, NOT THE PERSON'S RECORD.
 
    The sound switch was written onto the profile with uiSet, which saves the
@@ -10051,9 +10159,46 @@ function pPersist(){
  if(STORE_UNREAD&&!STORE_UNREAD.key){ SAVE_OK=false; SAVE_ERR='UnreadableStore'; return false; }
  /* the records the boundary would not read go back untouched, at the end, so
     a save never costs a person data this version happens not to understand. */
- var all=PROFILES.concat(STORE_KEPT);
- try{ STORE.set(PKEY,JSON.stringify(all)); SAVE_OK=true; SAVE_ERR=null; }
- catch(e){ SAVE_OK=false; SAVE_ERR=(e&&e.name)||'error'; }
+ var all=PROFILES.concat(STORE_KEPT), payload=JSON.stringify(all), prior;
+ /* Read old durable bytes before attempting a replacement. This lets the
+    engine restore the prior snapshot if an adapter writes corrupt bytes and
+    then returns without throwing. */
+ try{ prior=STORE.get(PKEY); }
+ catch(e){ SAVE_OK=false; SAVE_ERR=(e&&e.name)||'ReadBeforeWrite'; return false; }
+ var restoreValue=(prior===null||prior===undefined)?'[]':prior;
+ function restorePrior(){
+  try{
+   var current=STORE.get(PKEY);
+   if(prior===null||prior===undefined){
+    if(current===null||current===undefined)return true;
+    if(typeof STORE.remove!=='function'){ SAVE_ERR='RollbackUnavailable'; return false; }
+    STORE.remove(PKEY);
+    current=STORE.get(PKEY);
+    if(current!==null&&current!==undefined){ SAVE_ERR='RollbackMismatch'; return false; }
+    return true;
+   }
+   if(current===prior)return true;
+   STORE.set(PKEY,restoreValue);
+   if(STORE.get(PKEY)!==restoreValue){ SAVE_ERR='RollbackMismatch'; return false; }
+   return true;
+  }catch(e){ SAVE_ERR='RollbackFailed'; return false; }
+ }
+ try{
+  STORE.set(PKEY,payload);
+  /* A silent ignore is failure. A non-throwing but corrupt write is also
+     failure and must not replace the prior durable profile. */
+  if(STORE.get(PKEY)!==payload){
+   SAVE_OK=false; SAVE_ERR='ReadbackMismatch';
+   restorePrior();
+   return false;
+  }
+  SAVE_OK=true; SAVE_ERR=null;
+ }catch(e){
+  SAVE_OK=false; SAVE_ERR=(e&&e.name)||'error';
+  /* set() can mutate storage before an adapter throws, or readback itself can
+     fail after the write. Restore only if the durable bytes actually changed. */
+  restorePrior();
+ }
  return SAVE_OK; }
 function saveState(){ return {ok:SAVE_OK, err:SAVE_ERR}; }
 function pNew(name){ var p=blankProfile(name); PROFILES.push(p); CURP=p; pPersist(); profMark(p); return p; }
@@ -10080,6 +10225,30 @@ function pSave(){ if(!CURP)return false; saveProfile(CURP);
 function pSnap(){ if(!CURP)return false;
  if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
  CURP.history.push(snapshot(CURP)); return pPersist(); }
+/* COMMIT A RECORD AND ITS SNAPSHOT IN ONE STORE WRITE. A finished release
+   changes the working state and then snapshots it. Calling pSave followed
+   by pSnap wrote twice: the first write could land while the second failed,
+   leaving a release without its history row. Save the current engine state,
+   stage one snapshot, and write once. If storage refuses, remove the staged
+   row so a later retry cannot silently save a phantom duplicate. */
+function pSaveSnap(){
+ if(!CURP)return false;
+ var history=null, n=null;
+ try{
+  saveProfile(CURP);
+  if(PROFILES.indexOf(CURP)<0){ SAVE_OK=false; SAVE_ERR='NotARecord'; return false; }
+  history=Array.isArray(CURP.history)?CURP.history:(CURP.history=[]);
+  n=history.length;
+  var row=snapshot(CURP);
+  history.push(row);
+  if(!pPersist()){ history.length=n; return false; }
+  return true;
+ }catch(e){
+  if(history&&n!==null)history.length=n;
+  SAVE_OK=false; SAVE_ERR=(e&&e.name)||'error';
+  return false;
+ }
+}
 function pExport(){ return JSON.stringify(CURP?saveProfile(CURP):null,null,1); }
 /* ============================================================
    THE BOUNDARY. Everything above this line trusts its input
@@ -10585,7 +10754,15 @@ function validateProfile(o){
  if(o.story&&typeof o.story==='object'){
   if(Array.isArray(o.story.entries))p.story.entries=o.story.entries
    .map(function(x,i){return vEntry(errs,i,x);}).filter(Boolean);
-  else if(o.story.entries!==undefined)errs.push('story.entries is not a list');}
+  else if(o.story.entries!==undefined)errs.push('story.entries is not a list');
+  /* THE STORY PAGE'S DRAFT, the words typed and not yet committed. Only
+     entries crossed here, so a draft written to the record was dropped on the
+     next load and a reload emptied the box (pass 4). The person's own text,
+     checked as a string and never capped, for the reason vEntry gives; an
+     empty one is no draft. Missing is an older record and has none. */
+  if(o.story.draft!==undefined&&o.story.draft!==null){
+   var sd=vStr(errs,'story.draft',o.story.draft);
+   if(sd!==null&&sd.trim())p.story.draft=sd;}}
  else if(o.story!==undefined&&o.story!==null)errs.push('story is not an object');
  if(o.meter&&typeof o.meter==='object'){
   var mp=vRange(errs,'meter.lines',o.meter.lines,0,1e9);
@@ -10688,7 +10865,7 @@ function validateProfile(o){
      a lifetime count cannot answer it. */
   var ba=vRange(errs,'plan.base',o.plan.base,0,1e7);
   if(ba!==null)p.plan.base=Math.floor(ba);
-  ['since','until'].forEach(function(f){
+  ['since','until','ends'].forEach(function(f){
    if(o.plan[f]===null||o.plan[f]===undefined)return;
    if(typeof o.plan[f]==='string'&&!isNaN(new Date(o.plan[f]).getTime()))p.plan[f]=o.plan[f];
    else errs.push('plan.'+f+' is not a date');});
@@ -10915,6 +11092,13 @@ function validateProfile(o){
     keeps the blank. The name is handed in for the one rule about it. */
  if(o.summaries!==undefined&&o.summaries!==null)
   p.summaries=dlyValidate(errs,o.summaries,'summaries',{names:dlyNamesOf(p)});
+ /* THE JOURNEY, F13, through its own boundary (journeyValidate, engine/journey.js),
+    into the same errs, so one bad log line or one bad walk refuses the whole
+    record and pImport stays atomic. It is not in the blank: a record that never
+    walked the first run carries none and gains none here, so every such record
+    reads back exactly as it went in. */
+ if(o.journey!==undefined&&o.journey!==null)
+  p.journey=journeyValidate(errs,o.journey,'journey');
  return errs.length?{ok:false, errs:errs}:{ok:true, profile:p};}
 
 /* Atomic. Nothing is pushed and CURP is not moved until the profile has
@@ -11103,8 +11287,10 @@ function meterRun(p,keys,at){
  if(typeof p.meter.relLines!=='number')p.meter.relLines=0;
  if(typeof p.meter.truthLines!=='number')p.meter.truthLines=0;
  /* an older record has no plan, which is a free record and not a broken one */
- if(!p.plan)p.plan={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null};
+ if(!p.plan)p.plan={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null,ends:null};
  if(p.plan.base===undefined)p.plan.base=null;
+ /* and a record saved before ends existed renews, which is what it said */
+ if(p.plan.ends===undefined)p.plan.ends=null;
  if(!p.avatar)p.avatar=avatarBlank();
  if(!Array.isArray(p.avatar.pairs))p.avatar.pairs=[];
  avatarFill(p.avatar);
@@ -11481,31 +11667,290 @@ function linkUnwrap(s){
  return out;}
 
 /* ============================================================
-   THE JOURNEY, THE READ HALF. Where a new person is on the way in,
-   and what their first release is, both read off the record and
-   neither stored.
+   THE JOURNEY. What a new person has done on the way in, where they
+   are on it, what their first release is, and what is handed over
+   when the record goes to an account.
 
-   PORTED FROM 3869d96 (worktree-agent-ad7f4b5294abbc82c), whose base
-   7b2941b is about two hundred commits behind this branch. Two
-   functions came across: onbMiniPlan whole and unchanged in body, and
-   journeyRead cut to the part the current record can answer. That
-   file also held the journey record itself (runs, a log, the gift's
-   stored counter, the ten integrity answers, the claim packet), and
-   that is F13 in REVIEW-funnel/FINAL-SPEC.md, a schema addition with
-   its own boundary. It is not landed here, so nothing in this file
-   reads or writes p.journey, and validateProfile is untouched.
+   PORTED FROM 3869d96 (worktree-agent-ad7f4b5294abbc82c). F5 brought
+   the read half across (onbMiniPlan, journeyRead). This is F13, the
+   record itself, rebuilt over today's schema rather than merged: the
+   log, the gift's counter, the claim packet and its boundary, and one
+   part that file did not have, the walk, which is where a person is in
+   the first run so a reload puts them back there. Three parts of that
+   file did not come across and the reason for each is said where it
+   would have been: the per run list (journeyRun needed three hook lines
+   in ui/release.js, which is the first release package's file), the
+   ten integrity answers (they need their own screens and an open ruling),
+   and the claim stamp (it is written when a claim lands at an account,
+   and nothing in this build sends one).
 
-   HOST FREE. No document, no store, no network, and no writer. Every
-   function here takes the record and returns an answer, and the record
-   is the same object afterwards byte for byte (tests/journey.js holds
-   that on every call).
+   HOST FREE. No document, no store, no network. Every writer here takes
+   the record and either changes it completely or refuses by name and
+   changes nothing, the way meterRun and practiceDo do, so a caller never
+   has to put anything back. The host binds storage and saves.
 
-   NO SCHEMA_V BUMP, and none is needed. releaseVerify below is the one
-   function here that builds something to store, and it stores it as
-   practice evidence, which the boundary already guards; its one new field,
-   story_t, is additive and optional and an older record reads as null.
-   It is still pure: it returns a new practice object and the caller saves.
+   WHAT IS STORED AND WHAT IS DERIVED, said once. Stored: the walk, the
+   log, and the gift's counter. Derived and never stored: the stage, where
+   a reload resumes, whether the first release has landed, what it made,
+   and the whole of the mini release's plan.
+
+   THE ONE STORED DERIVED VALUE IS THE GIFT'S USED AND REMAINING, because
+   the owner ruled the gift a counter (round OX, ruling 3). They are what
+   the counter said when the record was last saved: saveProfile calls
+   journeyGiftSync on every save, so the counter moves in the same write as
+   the meter that moved it. The allowance never reads them: planAllowance
+   counts meter.unique and GIFT_N, and journeyGiftRead reports the counter
+   it derives from the same two, with `drift` naming a stored counter that
+   disagrees. So the record carries the counter the owner asked for and
+   still cannot grant itself a pattern by being edited.
+
+   NO SCHEMA_V BUMP. The journey is additive: a record without one has
+   walked nothing, and v1 and v2 records still load. It has its own
+   version, JOURNEY_V, like practice and trace. It is not in the blank
+   profile: a record carries a journey from the first write onto it, so
+   every record that never meets the first run is byte for byte what it
+   was. releaseVerify below stores its answer as practice evidence, which
+   the boundary already guards.
    ============================================================ */
+
+/* the three shapes a free key may take, so no free text can ride in under a
+   known name: an id, a reference into the record (an entry's date, a starting
+   point's key), and a value in a log line's detail. */
+var JY_KEY=/^[a-z][a-z0-9_]{0,31}$/;
+var JY_REF=/^[A-Za-z0-9_:.\-]{1,64}$/;
+var JY_VAL=/^[a-z0-9_]{1,32}$/;
+var JY_DAY=86400000;
+
+function journeyBlank(){
+ return {v:JOURNEY_V, walk:null, gift:null, log:[]};}
+
+/* A MOMENT AS THE CALLER GIVES IT, an ISO string or a number of milliseconds or
+   nothing. The engine reads no clock it was not handed except as the default
+   for a caller that gave none, so every test can pin one. */
+function jyAt(now){
+ if(typeof now==='string')return now;
+ return new Date(NUM(now)?now:Date.now()).toISOString();}
+function jyMs(now){
+ var t=typeof now==='string'?new Date(now).getTime():(NUM(now)?now:Date.now());
+ return NUM(t)?t:Date.now();}
+function jyEnsure(p){
+ if(!p.journey||typeof p.journey!=='object'||Array.isArray(p.journey))p.journey=journeyBlank();
+ return p.journey;}
+/* a whole number in range, refused and never clamped. vRange treats a missing
+   value as fine, which is right for an optional field and wrong for a field a
+   shape requires, so this one does not. */
+function jyInt(errs,path,v,lo,hi){
+ if(!NUM(v)||v%1!==0){errs.push(path+' is not a whole number'); return null;}
+ if(v<lo||v>hi){errs.push(path+' is '+v+', outside '+lo+' to '+hi); return null;}
+ return v;}
+/* A DATE THAT PARSES, AND IS NOT FROM THE FUTURE. A day of slack, because a
+   phone's clock and a laptop's differ by minutes and a zone is not a fault, and
+   no more than that: a stamp a week ahead was written by something else. */
+function jyDate(errs,path,t,nowMs){
+ if(vDate(errs,path,t)===null)return null;
+ if(new Date(t).getTime()>nowMs+JY_DAY){errs.push(path+' is ahead of the clock'); return null;}
+ return t;}
+
+/* ---------------- one log line ---------------- */
+var JY_LOG_KEYS=['seq','type','at','ref','d'];
+function jyLog(errs,x,i,nowMs){
+ var path='journey.log['+i+']';
+ if(!x||typeof x!=='object'||Array.isArray(x)){errs.push(path+' is not an object'); return null;}
+ vKeys(errs,path,x,JY_LOG_KEYS);
+ if(x.seq!==i+1)errs.push(path+'.seq is not the next number');
+ if(JOURNEY_EVENTS.indexOf(x.type)<0)errs.push(path+'.type is not an event type: '+String(x.type).slice(0,40));
+ var at=jyDate(errs,path+'.at',x.at,nowMs);
+ /* NO FREE TEXT IN THE LOG. A log that held words would be a second copy of the
+    story, and it is the part of the record an analytics seam would be pointed at
+    first. A reference is a key into the record and a detail is a small closed
+    object of whole numbers, true or false, and short lower case words. */
+ var ref=null;
+ if(x.ref!==null&&x.ref!==undefined){
+  if(NUM(x.ref)&&x.ref%1===0&&x.ref>=0&&x.ref<=1e9)ref=x.ref;
+  else if(typeof x.ref==='string'&&JY_REF.test(x.ref))ref=x.ref;
+  else errs.push(path+'.ref is not a key into the record');}
+ var d={};
+ if(x.d!==null&&x.d!==undefined){
+  if(typeof x.d!=='object'||Array.isArray(x.d))errs.push(path+'.d is not an object');
+  else{
+   var ks=Object.keys(x.d);
+   if(ks.length>6)errs.push(path+'.d holds '+ks.length+' values, more than 6');
+   ks.forEach(function(k){
+    var v=x.d[k];
+    if(!JY_KEY.test(k)){errs.push(path+'.d may not carry '+k.slice(0,40)); return;}
+    if(typeof v==='boolean'||(NUM(v)&&v%1===0&&v>=0&&v<=1e9)||(typeof v==='string'&&JY_VAL.test(v)))d[k]=v;
+    else errs.push(path+'.d.'+k+' is free text and not a count or a word');});}}
+ if(at===null)return null;
+ return {seq:x.seq, type:x.type, at:at, ref:ref, d:d};}
+
+/* ---------------- the gift, as the owner's counter ---------------- */
+var JY_GIFT_KEYS=['at','src','granted','used','remaining'];
+function jyGift(errs,g,nowMs){
+ var path='journey.gift';
+ if(g===null||g===undefined)return null;
+ if(typeof g!=='object'||Array.isArray(g)){errs.push(path+' is not an object'); return null;}
+ vKeys(errs,path,g,JY_GIFT_KEYS);
+ var at=jyDate(errs,path+'.at',g.at,nowMs);
+ if(JOURNEY_SRC.indexOf(g.src)<0)errs.push(path+'.src is not funnel or app');
+ var gr=jyInt(errs,path+'.granted',g.granted,0,1e6);
+ var us=jyInt(errs,path+'.used',g.used,0,gr===null?1e6:gr);
+ var rm=jyInt(errs,path+'.remaining',g.remaining,0,1e6);
+ /* the counter has to add up to itself. It is a record of what was written
+    and not a second authority, so the one thing the boundary can hold is that
+    the two halves are the whole. */
+ if(gr!==null&&us!==null&&rm!==null&&us+rm!==gr)
+  errs.push(path+'.remaining is '+rm+' and used is '+us+', which do not make '+gr);
+ if(at===null||gr===null||us===null||rm===null)return null;
+ return {at:at, src:g.src, granted:gr, used:us, remaining:rm};}
+
+/* ---------------- the walk: where the first run stands ---------------- */
+/* WHAT A RELOAD NEEDS TO PUT A PERSON BACK WHERE THEY WERE, and nothing else.
+   The station; the three taps, as positions in the onboarding sheet's own
+   lists, under the same rule vEntryOb holds them to on a committed entry; the
+   mirror's answers by node id; the words typed but not yet committed, which
+   are cleared the moment they are committed or the person leaves; the entry
+   the mirror committed, by its date; and, from the hand off on, what the
+   meter held at that moment, which is how the record knows the first release
+   has landed without a hook in the release card.
+
+   THE DRAFT IS THE ONE FREE TEXT HERE, AND IT IS THE PERSON'S OWN, held only
+   until Commit. It is kept so a reload does not throw away a story that was
+   half written (TDD section 47: "No user input should be silently
+   discarded"). It sits on the person's own record, where the entry it becomes
+   will sit, so deleting the record deletes it too, which a side key would not.
+   No ceiling is invented for it, for the reason vEntry gives for the text. */
+var JY_WALK_KEYS=['step','door','pick','feel','place','ans','text','fixes','t','base','at'];
+function jyWalk(errs,w,nowMs){
+ var path='journey.walk';
+ if(w===null||w===undefined)return null;
+ if(typeof w!=='object'||Array.isArray(w)){errs.push(path+' is not an object'); return null;}
+ var bad=errs.length;
+ vKeys(errs,path,w,JY_WALK_KEYS);
+ if(JOURNEY_WALK.indexOf(w.step)<0)errs.push(path+'.step is not a station of the first run: '+String(w.step).slice(0,40));
+ var door=(w.door===undefined||w.door===null)?'onboarding':w.door;
+ if(JOURNEY_DOORS.indexOf(door)<0)errs.push(path+'.door is not onboarding or tutorial');
+ var q={step:w.step, door:door, pick:null, feel:null, place:null, ans:{}, text:null, fixes:[], t:null, base:null, at:null};
+ [['pick',OB_STARTS,false],['feel',OB_FEELS,true],['place',OB_PLACES,true]].forEach(function(f){
+  var v=w[f[0]];
+  if(v===undefined||v===null)return;
+  if(typeof v!=='number'||v!==Math.floor(v)||(v<0&&!(f[2]&&v===-1))||v>=f[1].length){
+   errs.push(path+'.'+f[0]+' is not a position in its list of '+f[1].length
+    +(f[2]?' or -1 for Not sure':'')+': '+v);
+   return;}
+  q[f[0]]=v;});
+ if(w.ans!==undefined&&w.ans!==null){
+  if(typeof w.ans!=='object'||Array.isArray(w.ans))errs.push(path+'.ans is not an object');
+  else Object.keys(w.ans).forEach(function(k){
+   var n=+k, v=w.ans[k];
+   if(String(n)!==k||!BY[n]){errs.push(path+'.ans names no node: '+k.slice(0,40)); return;}
+   if(v!=='yes'&&v!=='no'){errs.push(path+'.ans.'+k+' is not yes or no'); return;}
+   q.ans[k]=v;});}
+ if(w.text!==undefined&&w.text!==null)q.text=vStr(errs,path+'.text',w.text);
+ if(w.fixes!==undefined&&w.fixes!==null){
+  if(!Array.isArray(w.fixes))errs.push(path+'.fixes is not a list');
+  else w.fixes.forEach(function(s,j){
+   var v=vStr(errs,path+'.fixes['+j+']',s);
+   if(v!==null)q.fixes.push(v);});}
+ if(w.t!==undefined&&w.t!==null)q.t=jyDate(errs,path+'.t',w.t,nowMs);
+ if(w.base!==undefined&&w.base!==null){
+  var b=w.base, bp=path+'.base';
+  if(typeof b!=='object'||Array.isArray(b))errs.push(bp+' is not an object');
+  else{
+   vKeys(errs,bp,b,['lines','unique']);
+   var bl=jyInt(errs,bp+'.lines',b.lines,0,1e9), bu=jyInt(errs,bp+'.unique',b.unique,0,1e9);
+   if(bl!==null&&bu!==null)q.base={lines:bl, unique:bu};}}
+ /* a hand off with nothing to measure the release against is not a hand off */
+ if((w.step==='release'||w.step==='end')&&!q.base&&errs.length===bad)
+  errs.push(path+'.base is missing at '+w.step+', so the release cannot be read against it');
+ q.at=jyDate(errs,path+'.at',w.at,nowMs);
+ return errs.length>bad?null:q;}
+
+/* ---------------- the boundary ---------------- */
+/* THE JOURNEY'S OWN BOUNDARY, into the same errs as every other part, so one bad
+   field refuses the whole record and pImport stays atomic. ctx may carry the
+   clock a gate wants the dates read against. */
+function journeyValidate(errs,o,path,ctx){
+ var P=journeyBlank(), c=ctx||{}, nowMs=jyMs(c.now), base=path||'journey';
+ if(o===undefined||o===null)return P;
+ if(typeof o!=='object'||Array.isArray(o)){errs.push(base+' is not an object'); return P;}
+ vKeys(errs,base,o,['v','walk','gift','log']);
+ if(o.v!==undefined&&o.v!==JOURNEY_V)
+  errs.push(base+'.v is '+JSON.stringify(o.v)+', not a journey version this build reads ('+JOURNEY_V+')');
+ P.walk=jyWalk(errs,o.walk,nowMs);
+ P.gift=jyGift(errs,o.gift,nowMs);
+ if(o.log!==undefined&&o.log!==null){
+  if(!Array.isArray(o.log))errs.push(base+'.log is not a list');
+  else if(o.log.length>JOURNEY_LOG_MAX)
+   errs.push(base+'.log is full: '+o.log.length+' entries, and the cap is '+JOURNEY_LOG_MAX);
+  else P.log=o.log.map(function(x,i){return jyLog(errs,x,i,nowMs);}).filter(Boolean);}
+ return P;}
+
+/* ---------------- the log ---------------- */
+/* ONE LINE, REFUSED BY NAME OR WRITTEN WHOLE. The check is the boundary's own,
+   so a line that could be written is a line that will load, and a log this
+   function made can never be the reason a record is refused at the next boot. */
+function journeyLog(p,type,ref,d,now){
+ if(!p)return {ok:false, why:'no record'};
+ var j=jyEnsure(p);
+ if(j.log.length>=JOURNEY_LOG_MAX)
+  return {ok:false, why:'journey.log is full: '+j.log.length+' entries, and the cap is '+JOURNEY_LOG_MAX};
+ var errs=[], e=jyLog(errs,{seq:j.log.length+1,type:type,at:jyAt(now),ref:ref===undefined?null:ref,d:d||{}},
+  j.log.length,Date.now());
+ if(errs.length)return {ok:false, why:errs[0]};
+ j.log.push(e);
+ return {ok:true, entry:e};}
+/* whether a kind of line is already on the log, for a writer that logs once */
+function journeyLogged(p,type){
+ var lg=(p&&p.journey&&Array.isArray(p.journey.log))?p.journey.log:[];
+ return lg.some(function(e){return e&&e.type===type;});}
+
+/* ---------------- the walk ---------------- */
+/* WRITE WHERE THE FIRST RUN STANDS, whole, through the boundary's own check, or
+   refuse by name and change nothing. w is the rest of the walk; a field it does
+   not name is empty, so a caller always says the whole of what it knows. */
+function journeyWalk(p,step,w,now){
+ if(!p)return {ok:false, why:'no record'};
+ var errs=[], x=Object.assign({},w||{},{step:step, at:jyAt(now)});
+ var q=jyWalk(errs,x,Date.now());
+ if(errs.length)return {ok:false, why:errs[0]};
+ jyEnsure(p).walk=q;
+ return {ok:true, walk:q};}
+
+/* ---------------- the gift ---------------- */
+/* WHAT THE COUNTER SAYS, AS READ OFF THE METER. granted is the gift row's own
+   size and used is the new ground opened, capped at it, because meter.unique is
+   what planAllowance counts and a second count is a second answer. A stored
+   counter is reported beside it and `drift` says when the two disagree. */
+function journeyGiftRead(p){
+ var m=(p&&p.meter)||{}, n=Array.isArray(m.unique)?m.unique.length:0;
+ var g=(p&&p.journey&&p.journey.gift)||null;
+ var used=Math.min(GIFT_N,n);
+ return {granted:GIFT_N, used:used, remaining:GIFT_N-used, spent:used>=GIFT_N,
+  issued:!!g, at:g?g.at:null, src:g?g.src:null,
+  drift:!!g&&(g.used!==used||g.remaining!==GIFT_N-used)};}
+/* WRITE THE COUNTER'S USED AND REMAINING from the meter. The one place the
+   stored half is written, so it is the one place that can be wrong, and
+   saveProfile calls it on every save, so it lands in the same write as the
+   meter it reads. A gift never issued is not issued here. */
+function journeyGiftSync(p){
+ if(!p||!p.journey||!p.journey.gift)return null;
+ var r=journeyGiftRead(p), g=p.journey.gift;
+ g.granted=r.granted; g.used=r.used; g.remaining=r.remaining;
+ return g;}
+/* ISSUE THE GIFT, ONCE. A record has one gift, so a second call changes nothing
+   and says so. src is where it was issued: the funnel, or the app. */
+function journeyGiftIssue(p,src,now){
+ if(!p)return {ok:false, why:'no record'};
+ if(JOURNEY_SRC.indexOf(src)<0)return {ok:false, why:'journey.gift.src is not funnel or app'};
+ var j=jyEnsure(p);
+ if(j.gift)return {ok:true, issued:false, gift:j.gift};
+ var r=journeyGiftRead(p);
+ j.gift={at:jyAt(now), src:src, granted:r.granted, used:r.used, remaining:r.remaining};
+ var lg=journeyLog(p,'starter_gift_issued',null,{granted:r.granted},now);
+ return {ok:true, issued:true, gift:j.gift, logged:lg.ok};}
+/* THE COUNTER SPACE, ruled "we can use that counter space for other things",
+   is not built: no other thing has been named to count, and a writer nothing
+   calls is a control with no button. 3869d96 carried one (journeyGiftExtra). */
 
 /* ---------------- the read ---------------- */
 /* WHERE THE PERSON IS, derived off the record and never stored.
@@ -11515,21 +11960,35 @@ function linkUnwrap(s){
    as a first run. A record with a story and none of those reads `storied`, and
    a record with nothing reads `new`. Both of the last two are a first run.
 
-   WHAT THE PORT LEFT BEHIND, said so a caller does not assume it. The original
-   had a fourth stage, `released`, which needs the run log F13 stores, so that a
-   record released inside onboarding can be told from one that was in use
-   before onboarding existed. Without the log the two read the same, and both
-   read `continuing`, which is the conservative answer: neither is a first run.
-   The count of releases is unknown for the same reason, and `runs.known` says
-   so rather than reporting a nought nobody counted. When F13 lands it fills
-   runs from the log and restores `released`; no caller of `first` changes. */
+   `released` is the fourth stage, back with the walk (F13). It is a record
+   whose first run handed off to a release and whose meter has moved since the
+   hand off: the release landed. It is read off the walk's base and the meter,
+   so nothing in the release card has to report it. A record that was in use
+   before the walk existed has no base and still reads `continuing`.
+
+   WHERE A RELOAD RESUMES, `at`, is the walk's station, with the one station
+   that depends on what happened after it read through: a hand off whose
+   release landed resumes at the end card, and one whose release never ran
+   resumes at the card that offers it again. No walk is no resume.
+
+   The count of releases is still unknown for a record with lines spoken, and
+   `runs.known` says so rather than reporting a nought nobody counted: the per
+   run list needs the release card to report each run, and that card is
+   another package's (3869d96 carried it as journeyRun and three hook lines). */
 function journeyRead(p){
  var m=(p&&p.meter)||{}, entries=(p&&p.story&&Array.isArray(p.story.entries))?p.story.entries:[];
+ var j=(p&&p.journey&&typeof p.journey==='object')?p.journey:null, w=(j&&j.walk)||null;
+ var landed=!!(w&&w.base&&(+m.lines||0)>w.base.lines);
  var prior=!!(m.first||(p&&p.intake&&p.intake.completedAt)
   ||(p&&Array.isArray(p.rituals)&&p.rituals.length));
- var stage=prior?'continuing':(entries.length?'storied':'new');
+ var stage=landed?'released':(prior?'continuing':(entries.length?'storied':'new'));
+ var at=w?w.step:null;
+ if(at==='release'||at==='end')at=landed?'end':'next';
+ var log=(j&&Array.isArray(j.log))?j.log:[];
  return {stage:stage, first:stage==='new'||stage==='storied',
-  runs:{n:0, known:(+m.lines||0)===0}};}
+  runs:{n:0, known:(+m.lines||0)===0},
+  at:at, door:w?w.door:null, landed:landed, gift:journeyGiftRead(p),
+  events:log.length, logFull:log.length>=JOURNEY_LOG_MAX};}
 
 /* ---------------- the mini release's plan ---------------- */
 /* THE PLAN FOR A FIRST RELEASE, in whole addresses, and it writes nothing.
@@ -11591,6 +12050,117 @@ function onbMiniPlan(p,signal,now){
  return {ok:true, addrs:ids, keys:keys, lines:keys.length,
   inferred:take.filter(function(c){return c.inferred;}).length, cap:cap,
   found:found, foundInferred:foundInf, rest:found-ids.length};}
+
+/* ---------------- what the first release made ---------------- */
+/* THE FIRST RUN'S RESULT, READ OFF THE RECORD AND NEVER STORED. Everything the
+   end card says is here, so a reload on that card says exactly what it said
+   before the reload, and the gate can hold it without a browser.
+
+   The release is read against the walk's base, the meter as it stood at the
+   hand off: lines is how far meter.lines moved since, fresh how much new
+   ground was opened, and addrs the places that ground is at, read off the keys
+   meterRun appended after the base, in the order they were opened, with per
+   the new lines at each (so a release ended early is counted as it ran). So the
+   card names the places the release actually opened, which is the plan unless
+   the person ran something else first, and then it is that. entry is the
+   story the mirror committed, with what the reading found and how many places
+   the person said yes and no to. said is the answer to What changed, read off
+   the practice evidence the release card wrote for that entry, or null when
+   nothing was answered (a skip records nothing, see RV_METRIC). gift is the
+   counter.
+
+   p may be a profile or a claim's body: both carry the same parts. */
+function journeyMade(p){
+ var w=(p&&p.journey&&p.journey.walk)||null;
+ if(!w||!w.base)return {ok:false, why:'no hand off'};
+ var m=(p&&p.meter)||{}, uq=Array.isArray(m.unique)?m.unique:[];
+ var lines=(+m.lines||0)-w.base.lines;
+ if(!(lines>0))return {ok:false, why:'not landed'};
+ var fresh=Math.max(0,uq.length-w.base.unique), addrs=[], per={};
+ uq.slice(w.base.unique).forEach(function(k){
+  var i=+String(k).split(':')[0];
+  if(!NUM(i)||!BY[i])return;
+  if(addrs.indexOf(i)<0)addrs.push(i);
+  per[i]=(per[i]||0)+1;});
+ var ents=(p.story&&Array.isArray(p.story.entries))?p.story.entries:[], e=null;
+ ents.forEach(function(x){if(x&&w.t&&x.t===w.t)e=x;});
+ var ob=(e&&e.ob)||null;
+ var entry=e?{t:e.t, text:String(e.text||''), read:+e.imprints||0,
+  yes:(ob&&Array.isArray(ob.yes))?ob.yes.length:0, no:(ob&&Array.isArray(ob.no))?ob.no.length:0}:null;
+ var said=null;
+ addrs.forEach(function(a){
+  if(said)return;
+  var got=releaseVerifyAt(p.practice||null,a).filter(function(x){return !w.t||x.story_t===w.t;});
+  if(got.length)said=got[got.length-1].value;});
+ return {ok:true, entry:entry, lines:lines, fresh:fresh, addrs:addrs, per:per, said:said, gift:journeyGiftRead(p)};}
+
+/* ---------------- the claim ---------------- */
+/* WHAT IS PASSED OVER AT SIGN UP. Ruled, round OX, ruling 1: the account is
+   created after the first release, and all the data from the person's input is
+   passed over. This is the packet, built as a pure function. It sends nothing:
+   the network call is the sign in seam's, ui/auth.js, and this build's sign up
+   does not call it yet. The first run's end card is drawn from it, so what a
+   person is shown as theirs is exactly what would cross.
+
+   WHAT CROSSES AND WHAT NEVER DOES, as two tables that must between them name
+   every top level key the blank profile has, so a field added to the record
+   later cannot cross by default: the gate fails until somebody puts it in one
+   list or the other. The analytic and summary data cross, and so does the
+   story, text included, on round OX's words ("all the data from their input
+   gets passed over").
+
+   BIRTH DATA NEVER CROSSES, and with it the name: `who` holds the name parts,
+   the sex and the birth moment, and DECISIONS.md rules the name never leaves
+   the device. `name` and `id` stay for the same reason, `ui` is this browser's
+   own switches, and `plan` is written by the processor and never by a record.
+   A claim carrying any of them is refused by name at its own boundary.
+
+   It does not touch the record it reads. It reads it through validateProfile,
+   which builds a fresh object, so what is returned shares nothing with the live
+   profile and a caller that edits the packet cannot move the person's data. */
+var JOURNEY_CLAIM_SEND=['soul','axes','laws','seed','intake','work','gates','story',
+ 'rituals','history','meter','avatar','purpose','practice','trace','summaries','journey'];
+var JOURNEY_CLAIM_NEVER=['v','id','name','created','updated','who','ui','plan'];
+var JOURNEY_CLAIM_V=1;
+function journeyClaim(record,now){
+ var v=validateProfile(record);
+ if(!v.ok)return {ok:false, errs:v.errs.slice(0,5)};
+ /* the counter in the packet is the meter's, on the packet's own copy, so a
+    record read between a release and its save still hands over a true count */
+ journeyGiftSync(v.profile);
+ var body={};
+ JOURNEY_CLAIM_SEND.forEach(function(k){
+  if(v.profile[k]!==undefined)body[k]=JSON.parse(JSON.stringify(v.profile[k]));});
+ return {ok:true, claim:{kind:'atuned.claim', v:JOURNEY_CLAIM_V, schema:SCHEMA_V,
+  at:jyAt(now), body:body}};}
+/* THE CLAIM'S BOUNDARY, for whatever receives one: the same posture as
+   validateProfile and built on it. A key outside the packet is refused by name,
+   and so is every one the claim never carries, and then the body goes through
+   the profile boundary itself, so a charge of 9999 or an unknown seat in a
+   claim is refused exactly as it is in an import and for the same reason. A
+   claim that fails changes nothing, because this reads and returns. */
+function journeyClaimCheck(c,now){
+ var errs=[], nowMs=jyMs(now);
+ if(!c||typeof c!=='object'||Array.isArray(c))return {ok:false, errs:['claim is not an object']};
+ vKeys(errs,'claim',c,['kind','v','schema','at','body']);
+ if(c.kind!=='atuned.claim')errs.push('claim.kind is not atuned.claim');
+ if(c.v!==JOURNEY_CLAIM_V)errs.push('claim.v is '+JSON.stringify(c.v)+', not a claim version this build reads ('+JOURNEY_CLAIM_V+')');
+ if(!NUM(c.schema)||c.schema%1!==0||c.schema<1||c.schema>SCHEMA_V)
+  errs.push('claim.schema is '+JSON.stringify(c.schema)+', not 1 to '+SCHEMA_V);
+ jyDate(errs,'claim.at',c.at,nowMs);
+ if(!c.body||typeof c.body!=='object'||Array.isArray(c.body)){
+  errs.push('claim.body is not an object');
+  return {ok:false, errs:errs};}
+ Object.keys(c.body).forEach(function(k){
+  if(JOURNEY_CLAIM_NEVER.indexOf(k)>=0)errs.push('claim.body.'+k+' is not carried by a claim');
+  else if(JOURNEY_CLAIM_SEND.indexOf(k)<0)errs.push('claim.body may not carry '+k);});
+ if(errs.length)return {ok:false, errs:errs};
+ var rec=Object.assign({v:c.schema},c.body);
+ var v=validateProfile(rec);
+ if(!v.ok)return {ok:false, errs:v.errs.map(function(e){return 'claim.body: '+e;})};
+ var body={};
+ Object.keys(c.body).forEach(function(k){body[k]=v.profile[k];});
+ return {ok:true, body:body};}
 
 /* ---------------- what changed, after a release ---------------- */
 /* THE ANSWER TO "WHAT CHANGED?", written as evidence, one record per address
@@ -14272,6 +14842,172 @@ function wordsOf(t,nm){
   var j=s.indexOf(' ',k+1); if(j<0||j===k+1)continue;
   out.push({at:k, w:s.slice(k+1,j), s:nm.map[k+1], e:nm.map[j-1]+1, c:c, g:g});}
  return out;}
+/* ============================================================
+   A WORD SAID WITH A NO, package S1 of REVIEW-sniffer-audit-2026-10-09.md,
+   ruling 1. Measured on main before this: "I was not angry" read Anger 18 at
+   the solar plexus, exactly "I was angry", while the Story page drew the same
+   word struck through. A negated charge word is not a positive admission and
+   is not erased either: the hit is kept, flagged neg, and parseStory lists it
+   in denied and counts it nowhere.
+
+   NOT A THIRD NEGATION READER. srcNegated (engine/sourceai.js) decides, with
+   its own list and its own two word window, cut at a sentence end by
+   clauseFloor, which is exactly what Source AI has always asked. This only
+   moves the floor that call is given, for two named reasons, and both only
+   ever stop a no from reaching a word:
+     a word already read keeps its own no. "cant sleep", "im not okay",
+       "nobody listens" are read as charge with the no inside them, so the no
+       is theirs and the word after it is not denied by it. Measured: "I
+       can't sleep, terrified" denied terrified before this.
+     a can't stop frame is not a denial. A no straight before one of
+       NEG_NOT_DENY says the thing would not stop: "I can't stop crying",
+       "it never stops hurting", "I couldn't help crying". Each has a test.
+   A comma does not end a no, which is leanNorm's ruling and clauseFloor's,
+   so "I was not, honestly, angry" is denied. The cost of that ruling is
+   measured and reported with the change, not hidden here.
+
+   A COHERENT WORD IS NEVER DENIED. A denial must never raise a reading, and
+   denying a word that subtracts would. "I am not grateful" subtracts as it
+   always did; that is a known gap, written in TDD-sniffer.md, and not made
+   worse here.
+
+   The hit keeps negw, the no it saw, and negAt, that word's leading space in
+   nm.s, so a mark and a list can quote from the no to the word on the letters
+   typed. srcNegated is the decision; this only finds which word it saw. */
+var NEG_NOT_DENY=['stop','stops','stopped','help'];
+function sniffDeny(t,nm,hits){
+ var ws=null, cuts=[];
+ hits.forEach(function(h){
+  if(h.band==='coherent')return;
+  if(!ws){ws=wordsOf(t,nm);
+   /* every place a no is already spoken for: the end of each word read, and
+      the end of each can't stop frame. Kept as the trailing space, which is
+      the next word's leading one, so the window starts on the next word. */
+   hits.forEach(function(o){cuts.push({at:o.at,end:o.at+1+String(o.t).length});});
+   for(var i=0;i+1<ws.length;i++)
+    if(ws[i].c===ws[i+1].c&&SRC_NEG.indexOf(ws[i].w)>=0&&NEG_NOT_DENY.indexOf(ws[i+1].w)>=0)
+     cuts.push({at:ws[i].at,end:ws[i+1].at+1+ws[i+1].w.length});}
+  var f=clauseFloor(t,nm,h.at);
+  cuts.forEach(function(c){if(c.at<h.at&&c.end<=h.at&&c.end>f)f=c.end;});
+  if(!srcNegated(nm.s,h.at,f))return;
+  var win=ws.filter(function(w){return w.at<h.at&&w.at>=Math.max(f,0);}).slice(-SRC_NEG_W);
+  var ng=win.filter(function(w){return SRC_NEG.indexOf(w.w)>=0;})[0]||null;
+  h.neg=true; h.negw=ng?ng.w:null; h.negAt=ng?ng.at:null;});}
+/* ============================================================
+   WHOSE CHARGE, package S2 of REVIEW-sniffer-audit-2026-10-09.md, ruling 2,
+   and guard 2 of SNIFFER_SPEC.md, "never score another person". Measured on
+   main before this: "he shouted at me" read Anger 24 at the solar plexus,
+   exactly "I shouted at him", and "he is furious" exactly "I am furious".
+
+   THE RULE, AS RULED. A charge word whose clear subject in its own comma
+   group is a third person, with no first person between that subject and the
+   word, is held: the hit is kept, flagged other with who it was, parseStory
+   lists it in others and counts it nowhere. No subject, or a first person
+   subject, is the writer, which is what a journal is. An unclear subject is
+   held too, and flagged unclear, so a page can say it is unclear rather than
+   say it is someone else's.
+
+   HOW A SUBJECT IS FOUND, read backward from the word through its own comma
+   group (wordsOf's g), nearest first, so the first person or third person
+   met first decides:
+     a first person (WHO_ME)    the writer, and the read stops. "he made me
+                                furious" is the writer's.
+     he, she, they (WHO_SUBJ)   someone else. These are subjects by their
+                                form, wherever they stand.
+     a person, opening a clause someone else, when the phrase opens its clause:
+                                the group's first word, or after a word in
+                                WHO_OPEN ("and", "when", "then", "like").
+                                A person is a word in LEXKIN or in Source AI's
+                                own contact cues, SRC_DIM_CUE.contact, read
+                                from there and not retyped, with its "my",
+                                "the" or "her" in front. After a verb it is who
+                                was spoken to, "I called my mother and was
+                                furious", and the read steps past it, its "my"
+                                with it.
+     his, her, their opening    someone else's: "her anger scared me".
+       a clause
+     a name opening a clause    a capital that does not start its sentence,
+                                after a word in WHO_OPEN or at a comma: "then
+                                Sarah screamed". A capital after "to" is a
+                                place. A name that starts its sentence cannot
+                                be told from any other first word, and is read
+                                as the writer's, which is named in GAPS.
+     you, opening a clause      unclear: generic "you" is often the writer and
+                                sometimes not, so it is held and says so.
+   And straight before the word, his, her, their, him or them makes it theirs:
+   "her anger", "I made her cry", "I saw him crying".
+
+   A DENIAL IS A DENIAL WHOEVER SAID IT. A hit sniffDeny flagged is not read
+   again here, so it is listed once. A coherent word is never held, for the
+   reason S1 gives: holding a word that subtracts would raise a reading.
+
+   A LOSS IS THE WRITER'S, WHOEVER IT HAPPENED TO. Measured on the first cut
+   of this reader: "My father died and I feel ashamed" lost its grief at the
+   heart, and "I've been on my own since he died" fell from 50 to 22, because
+   "my father" and "he" are the subjects of "died". The ruling is about
+   another person's feelings and doings, "he is furious", "he shouted at me".
+   A death or a loss is neither: it happens to the one who is gone and the
+   charge the lexicon gives it, grief at the heart, is carried by the one left.
+   lexicon.js wrote its grief and loss block for exactly this, "a father
+   dying" read as nothing before it. So a hit in WHO_LOSS, or a synonym or
+   fold of one by LEXMETA.from ("killed himself", "took his own life",
+   "funerals", "divorced"), is never held. Told that a father's death is
+   about someone else, a bereaved person would be told the worst thing this
+   product could say. The list is the heads of that block and of the
+   grieving family, and the gate holds each one as a heart key.
+
+   NOT A CLINICAL CLAIM AND NOT A MODEL. It is a few grammar words and two
+   tables the engine already has, and every hold names the word that decided
+   it in who, so a person and a reviewer can both see why. */
+var WHO_ME=['i','im','ive','id','me','my','mine','myself','we','us','our','ours','ourselves','weve'];
+var WHO_SUBJ=['he','she','they','hes','shes','theyre','theyve','theyll','theyd','hed'];
+var WHO_POSS=['his','her','their'];
+var WHO_OBJ=['him','them'];
+var WHO_YOU=['you','youre','youve','youd','youll'];
+var WHO_DET=['my','his','her','their','our','your','the','a','an'];
+var WHO_OPEN=['and','but','then','when','while','because','cause','so','after','before','until','till',
+ 'as','if','since','or','that','though','although','once','whenever','where','why','how','like',
+ 'now','today','yesterday','tonight','again','also','just','still','even','suddenly','finally','later'];
+var WHO_LOSS=['died','death','dying','passed away','grief','mourning','mourn','bereaved','loss','funeral',
+ 'buried','widowed','miscarriage','stillborn','grieving'];
+function whoLoss(h){
+ var m=LEXMETA[h.t];
+ return WHO_LOSS.indexOf(h.t)>=0||!!(m&&m.from&&WHO_LOSS.indexOf(m.from)>=0);}
+function whoPerson(w){
+ if(WHO_SUBJ.indexOf(w)>=0||WHO_POSS.indexOf(w)>=0||WHO_OBJ.indexOf(w)>=0)return false;
+ return LEXKIN.indexOf(w)>=0||SRC_DIM_CUE.contact.indexOf(w)>=0;}
+/* a phrase starting at word k opens its clause: the first word of its comma
+   group, or straight after a word that opens a clause */
+function whoOpens(ws,k){return k===0||ws[k-1].g!==ws[k].g||WHO_OPEN.indexOf(ws[k-1].w)>=0;}
+function whoOf(t,ws,i){
+ var g=ws[i].g, j, w, k;
+ if(i>0&&ws[i-1].g===g&&(WHO_POSS.indexOf(ws[i-1].w)>=0||WHO_OBJ.indexOf(ws[i-1].w)>=0))
+  return {k:i-1,j:i-1};
+ for(j=i-1;j>=0&&ws[j].g===g;j--){
+  w=ws[j].w;
+  if(WHO_ME.indexOf(w)>=0)return null;
+  if(WHO_SUBJ.indexOf(w)>=0)return {k:j,j:j};
+  if(whoPerson(w)){
+   k=j;
+   if(k>0&&ws[k-1].g===g&&LEXKIN.indexOf(ws[k-1].w+' '+w)>=0)k--;
+   if(k>0&&ws[k-1].g===g&&WHO_DET.indexOf(ws[k-1].w)>=0)k--;
+   if(whoOpens(ws,k))return {k:k,j:j};
+   j=k; continue;}
+  if(WHO_POSS.indexOf(w)>=0&&whoOpens(ws,j))return {k:j,j:j};
+  if(WHO_YOU.indexOf(w)>=0&&whoOpens(ws,j))return {k:j,j:j,unclear:true};
+  if(j>0&&ws[j-1].c===ws[j].c&&/^[A-Z][a-z]+$/.test(t.slice(ws[j].s,ws[j].e))&&whoOpens(ws,j))
+   return {k:j,j:j};}
+ return null;}
+function sniffWho(t,nm,hits){
+ var ws=null, byAt=null;
+ hits.forEach(function(h){
+  if(h.band==='coherent'||h.neg||whoLoss(h))return;
+  if(!ws){ws=wordsOf(t,nm); byAt={}; ws.forEach(function(w,i){byAt[w.at]=i;});}
+  var i=byAt[h.at]; if(i===undefined)return;
+  var r=whoOf(t,ws,i); if(!r)return;
+  h.other=true; h.whoAt=ws[r.k].at;
+  h.who=ws.slice(r.k,r.j+1).map(function(x){return x.w;}).join(' ');
+  if(r.unclear)h.unclear=true;});}
 function scanStory(text){
  var nm=normMap(text), src=nm.s;
  var hits=[];
@@ -14374,6 +15110,13 @@ function scanStory(text){
    h.place=best.w; h.placeAt=best.at;
    if(best.seat!==h.band){h.was=h.band; h.band=best.seat;}});}
  hits.sort(function(a,b){return a.at-b.at;});
+ /* A WORD SAID WITH A NO, S1, see sniffDeny above. The scanner says what is
+    around a word, the way it already says the degree word and the place
+    word; parseStory decides what counts. */
+ sniffDeny(text,nm,hits);
+ /* AND WHOSE IT IS, S2, see sniffWho above. After the denial, so a word said
+    with a no is listed once, as denied. */
+ sniffWho(text,nm,hits);
  return hits;}
 /* ============================================================
    THE PATH.
@@ -14473,7 +15216,15 @@ function pathOf(hits){
   kink:end(kink), floor:end(floor)};}
 
 function parseStory(text){
- var hits=scanStory(text), byBand={}, byChg={}, imprints=[];
+ /* WHAT COUNTS, AND WHAT IS KEPT BESIDE IT, S1. A hit said with a no goes to
+    denied and nowhere else, so it reaches no band, charge, weight, named
+    fetter, imprint or path, and every reader of hits below and of this
+    result's hits sees only what counts. It is kept, not erased: marksOf
+    draws it struck and the Story page names it. */
+ var all=scanStory(text), hits=[], denied=[], others=[], byBand={}, byChg={}, imprints=[];
+ /* AND A HIT ABOUT SOMEONE ELSE GOES TO others, S2, by the same rule: kept,
+    listed, and counted nowhere. A denied hit is never also in others. */
+ all.forEach(function(h){(h.neg?denied:h.other?others:hits).push(h);});
  hits.forEach(function(h){
   if(h.band&&h.band!=='coherent'){ byBand[h.band]=(byBand[h.band]||0)+h.amt; }
   if(h.charge){ byChg[h.charge]=(byChg[h.charge]||0)+1; }});
@@ -14564,7 +15315,8 @@ function parseStory(text){
  var named=Object.keys(nm).sort(function(a,b){return nm[b]-nm[a];});
  return {hits:hits, bands:byBand, charges:byChg, named:named, weights:nm, imprints:imprints,
   path:pathOf(hits),
-  words:hits.filter(function(h){return h.kind!=='adj';}).length};}
+  words:hits.filter(function(h){return h.kind!=='adj';}).length,
+  denied:denied, others:others};}
 /* ============================================================
    THE MARKS. Every hit, placed back on the letters a person typed.
 
@@ -14585,17 +15337,32 @@ function parseStory(text){
 
    Ported from proto/story4 unchanged in behaviour. None of the four designs'
    look comes with it: this returns data and the page decides what to draw.
+
+   A WORD SAID WITH A NO IS STILL A MARK, S1, and it carries neg and negFrom,
+   the letter its no starts on, so a page strikes it from the no without
+   working negation out again. The flag is the engine's, from sniffDeny, so
+   the sentence, the chart, the list and the score read one answer.
    ============================================================ */
+/* EVERY HIT THE SCANNER FOUND, counted or set aside. parseStory's own hits
+   are only what counts; a reader that must show or quote every word read,
+   marksOf, unmarkedOf, srcHear and srcDims, asks here, so there is one
+   answer to which lists make up the whole. */
+function storyHits(p){
+ return p?(p.hits||[]).concat(p.denied||[],p.others||[]):[];}
 function marksOf(t,p){
- if(!p||!p.hits||!p.hits.length)return [];
+ var all=storyHits(p);
+ if(!all.length)return [];
  var nm=normMap(t), raw=[];
- p.hits.forEach(function(h){
+ all.forEach(function(h){
   if(h.at==null)return;
   var a=h.at+1, b=h.at+String(h.t).length;
   if(a>=nm.map.length||b>=nm.map.length)return;
   raw.push({s:nm.map[a], e:nm.map[b]+1, kind:h.kind, band:h.band||null,
    amt:(h.amt==null?null:h.amt), label:h.label||null, charge:h.charge||null,
-   fet:h.fet||null, coh:h.band==='coherent'});});
+   fet:h.fet||null, coh:h.band==='coherent',
+   neg:!!h.neg, negFrom:(h.neg&&h.negAt!=null&&nm.map[h.negAt+1]!=null)?nm.map[h.negAt+1]:null,
+   other:!!h.other, unclear:!!h.unclear,
+   whoFrom:(h.other&&h.whoAt!=null&&nm.map[h.whoAt+1]!=null)?nm.map[h.whoAt+1]:null});});
  raw.sort(function(a,b){return a.s-b.s||(b.e-b.s)-(a.e-a.s);});
  var keep=[], last=-1;
  raw.forEach(function(m){
@@ -14610,6 +15377,39 @@ function marksOf(t,p){
   keep.push(m); last=m.e;});
  keep.forEach(function(m,i){m.i=i;});
  return keep;}
+/* WHAT WAS READ AND NOT COUNTED, quoted in the letters the person typed, each
+   stretch once. Said with a no (S1), from its no to its word. About someone
+   else (S2), from the person to the word, and unclear apart from it, because
+   "you" may be the writer. Off marksOf, so a quote is exactly what the page
+   sets aside. */
+function asideOf(t,p){
+ t=String(t||'');
+ var out={denied:[],others:[],unclear:[]};
+ marksOf(t,p).forEach(function(m){
+  var l=m.neg?out.denied:m.other?(m.unclear?out.unclear:out.others):null; if(!l)return;
+  var from=m.neg?m.negFrom:m.whoFrom;
+  var q=t.slice(from!=null?from:m.s,m.e);
+  if(l.indexOf(q)<0)l.push(q);});
+ return out;}
+/* THE SENTENCES, ONE COPY, for every surface that shows a story's reading,
+   the way maskedSay is for hidden words. Each says what was not counted and
+   why in the same sentence, the unpack ruling, in words a ten year old has,
+   V21, and where the person can change it, the one thing to write. Empty
+   when nothing was set aside, so a caller prints it or prints nothing. */
+function asideList(q){
+ q=q.map(function(x){return '“'+x+'”';});
+ return q.length<3?q.join(' and '):q.slice(0,-1).join(', ')+' and '+q[q.length-1];}
+function asideSay(a){
+ a=a||{}; var out=[], d=a.denied||[], o=a.others||[], u=a.unclear||[];
+ if(d.length)out.push(asideList(d)+(d.length===1?' is not counted, because you said no to it.'
+  :' are not counted, because you said no to them.'));
+ if(o.length)out.push(asideList(o)+(o.length===1?' is not counted, because it is about someone else. '
+  +'Write how it landed on you, and that can be counted.'
+  :' are not counted, because they are about someone else. Write how each one landed on you, and that can be counted.'));
+ if(u.length)out.push(asideList(u)+(u.length===1?' is not counted, because it may not be about you. '
+  +'Write it with I if it is yours.'
+  :' are not counted, because they may not be about you. Write them with I if they are yours.'));
+ return out.join(' ');}
 /* ============================================================
    WHAT READ AS NOTHING, 20.H6. The complement of marksOf.
 
@@ -14625,9 +15425,9 @@ function marksOf(t,p){
    clause: a mark ends it, and so does a sentence end, by wordsOf's rule. A
    word a mark touches at all is read, so a phrase's own words never come
    back here. A place word that seated a sensation, 20.H2, is read too: it
-   scored nothing itself and it decided where the charge landed. A negated
-   word is still a mark, because the sniffer does not read negation and this
-   reports the sniffer, not what Source AI hears.
+   scored nothing itself and it decided where the charge landed. A word said
+   with a no is read too, S1: it was read, named and set aside, which is not
+   the same as passed over, and it is still a mark.
 
    It is reporting and nothing else. No reading moves, nothing is scored,
    and nothing leaves the device: the count 19.D8 wants across people is
@@ -14636,7 +15436,7 @@ function marksOf(t,p){
 function unmarkedOf(t,p){
  t=String(t||'');
  var marks=marksOf(t,p), ws=wordsOf(t), out=[], cur=null, read=0, placed={};
- ((p&&p.hits)||[]).forEach(function(h){if(h.placeAt!=null)placed[h.placeAt]=1;});
+ storyHits(p).forEach(function(h){if(h.placeAt!=null)placed[h.placeAt]=1;});
  ws.forEach(function(w){
   var hit=placed[w.at]||marks.some(function(m){return m.s<w.e&&m.e>w.s;});
   if(hit){read++; cur=null; return;}
@@ -14679,9 +15479,12 @@ function applyStory(text){
 
    WHAT THIS LAYER DOES NOT DO, stated so nobody has to discover it:
      it does not mutate. applyStory is still the only function that mutates.
-     it does not score another person. there is no subject model, so every hit
-       lands on the writer, which satisfies guard 2 by having no mechanism
-       rather than by a rule. a frame layer would need the rule.
+     it does not score another person. That line used to say there was no
+       subject model, so every hit landed on the writer, and "he shouted at
+       me" proved it broke guard 2. Since S2 parseStory holds a word whose
+       clear subject is someone else in others, so nothing this layer reads
+       off hits or imprints can carry it. The law path below reads its own
+       copy of the text and is not yet held the same way, said there.
      it emits no clinical label. guard 1 is a translation column and never an
        equals sign, so no mode name reaches this output as a condition.
      it names no diagnosis and the gate asserts that too.
@@ -14864,6 +15667,112 @@ function lexComposite(){
 var LEXCOMPRUN=lexComposite();
 
 /* ============================================================
+   PASS FIVE, PROFANITY AND ABSTRACT DISTRESS. Recall over precision, which
+   is this pass's own stated stance and the opposite of the engine's baseline.
+   The owner's instruction: "make it oversensitive." A person who swears about
+   their day has named distress more plainly than any clinical term. A phrase
+   like "worst day" or "rough day" may land on a surface that clinical words
+   miss entirely.
+
+   PORTED BY HAND FROM THE OLD LINE, 94d328e, with its own follow up, 5ce3934,
+   applied, round S0 of REVIEW-sniffer-audit-2026-10-09.md. Six of the old
+   rows are not here, each for a reason the gate holds:
+     fucking         a key here fills the gap the QR group holds open: stars
+                     between "really" and "furious" must read differently
+                     from the word typed in, and with this key they read the
+                     same. fuck and fucked still carry the family.
+     not okay, ok    refused by name in LEXSYN_NO (lexicon.js): "that is not
+                     okay" is usually about somebody else's conduct. Only "im
+                     not okay" reads, through LEXANT.
+     helpless        main's synonym pass already seats it at the heart, off
+                     defeated. lexAdd refuses a move, and a row here asking
+                     for the root would be a row that never lands.
+     falling apart   the same, at the solar plexus, off overwhelmed.
+     breaking point  the same seat, solar, at 26 off overwhelmed. lexAdd keeps
+                     the row it has, so a row here saying 24 would be a row
+                     saying an amount the table does not hold.
+
+   EVERY ENTRY IS AUTHORED, not derived. The seat, the amount and the optional
+   fetter are chosen here and are not computed from other tables. lexAdd never
+   moves an existing entry, and the gate asserts that this pass met none.
+
+   SEATS FOLLOW THE SAME THEORY AS THE REST OF THE LEXICON. Profanity in the
+   context of distress is acute frustration, which is Anger at the solar
+   plexus. "Shitty" and "bitch" tilt toward shame and sit with the shame
+   family lexicon.js already built at sacral and solar. Abstract distress
+   phrases go where their emotional content lands: overwhelm and effortful
+   struggle at solar, emotional collapse at heart, fear at root.
+   ============================================================ */
+var LEXPROF={
+ /* PROFANITY */
+ 'fuck':['solar',20,'Anger'],
+ 'fucked':['solar',22,'Anger'],
+ 'fucked up':['solar',24,'Anger'],
+ 'shit':['solar',18],
+ 'shitty':['solar',20,'Shame'],
+ 'damn':['solar',16],
+ 'crap':['solar',14],
+ 'bullshit':['solar',22,'Anger'],
+ 'bastard':['solar',20,'Anger'],
+ 'bitch':['sacral',18,'Shame'],
+ 'asshole':['solar',20,'Anger'],
+ /* ABSTRACT DISTRESS: general bad */
+ 'terrible':['solar',20],
+ 'awful':['solar',18],
+ 'horrible':['heart',20],
+ 'nightmare':['root',24],
+ /* ABSTRACT DISTRESS: overwhelm and effortful struggle */
+ 'unbearable':['solar',26,'Apathy'],
+ 'struggling':['solar',20,'Apathy'],
+ 'at my breaking point':['solar',26,'Apathy'],
+ 'end of my rope':['solar',26,'Apathy'],
+ 'at my wits end':['solar',22,'Apathy'],
+ 'wits end':['solar',22,'Apathy'],
+ 'cant take it':['solar',24,'Apathy'],
+ 'cannot take it':['solar',24,'Apathy'],
+ 'can not take it':['solar',24,'Apathy'],
+ 'cant take this':['solar',24,'Apathy'],
+ 'cannot take this':['solar',24,'Apathy'],
+ 'cant do this anymore':['solar',24,'Apathy'],
+ 'cannot do this anymore':['solar',24,'Apathy'],
+ 'had enough':['solar',18],
+ 'have had enough':['solar',20],
+ 'over it':['solar',16],
+ 'done with this':['solar',16],
+ /* ABSTRACT DISTRESS: emotional collapse */
+ 'breaking down':['heart',22],
+ 'broken down':['heart',22],
+ 'losing it':['solar',24,'Anger'],
+ 'losing my mind':['eye',24],
+ 'going crazy':['solar',22],
+ 'messed up':['solar',20,'Anger'],
+ /* ABSTRACT DISTRESS: bad day phrases */
+ 'bad day':['solar',14],
+ 'rough day':['solar',16],
+ 'hard day':['solar',16],
+ 'tough day':['solar',16],
+ 'awful day':['solar',20],
+ 'horrible day':['solar',20],
+ 'terrible day':['solar',22],
+ 'shitty day':['solar',22],
+ 'worst day':['solar',24],
+ 'worst day ever':['solar',26],
+ 'worst day of my life':['solar',28],
+ 'fucked up day':['solar',24,'Anger']};
+function lexProf(){
+ var out={added:0,already:0,refused:[]};
+ Object.keys(LEXPROF).forEach(function(k){
+  var e=LEXPROF[k];
+  var a=lexAdd(k,e[0],e[1],e[2]!=null?e[2]:null,
+   {src:'authored',from:'LEXPROF profanity and abstract distress',
+    rule:'recall over precision, oversensitive by design',cite:'owner'});
+  if(a.ok&&!a.already)out.added++;
+  else if(a.ok&&a.already)out.already++;
+  else out.refused.push(k+': '+(a.why||'unknown'));});
+ return out;}
+var LEXPROFRUN=lexProf();
+
+/* ============================================================
    THE LEXICON VERSION, 19.B6. Every story entry is stamped with the
    lexicon that read it, so reading it again later is reproducible, or at
    least knowably not.
@@ -14886,7 +15795,9 @@ var LEXCOMPRUN=lexComposite();
 
    WHAT IT DOES NOT COVER, said so nobody has to discover it: a change to
    scanStory's or parseStory's own rules with no change to a table moves no
-   table, so it does not move this. The node table W is not the lexicon and
+   table, so it does not move this. S1 and S2 of the 9 October sniffer audit
+   are such changes: an entry committed before them reads again with its
+   denied and someone else's words left out, under the same stamp. The node table W is not the lexicon and
    is not in it either. Same version means the same words land the same
    way; it does not promise the same addresses.
 
@@ -14934,7 +15845,15 @@ var LEX_VERSION=lexVersion();
    This is the single biggest known weakness of the law table and it is handled
    here rather than left. It is still not subject handling: "she lied to me"
    fires Truth on the writer, and that is guard 2's problem, named in
-   DESIGN-sniffer.md and not solved by this pass. */
+   DESIGN-sniffer.md and not solved by this pass.
+
+   STILL OPEN AFTER S2, AND WHY IT WAS NOT CLOSED WITH THE SAME READER. The
+   story path holds someone else's words since S2 (sniffWho, above scanStory).
+   This path matches on lawNorm's own copy, which puts a '|' at every sentence
+   end, so its offsets are not normMap's and wordsOf cannot be laid over them
+   without a second offset map. Building that map is a new reader of the text,
+   which is the risk the review said not to take for alpha. The gap is named in
+   TDD-sniffer.md and is held there, not here. */
 var LAW_NEG=['not','no','never','nobody','none','cannot','cant','did',
  'didnt','dont','wont','wasnt','isnt','havent','hasnt','couldnt','wouldnt','refuse','refused'];
 var LAW_NEG_W=3;
@@ -15027,6 +15946,20 @@ function sniffAxes(p){
    shadow[f]+=each;
    (cited[f]=cited[f]||[]).push('"'+h.t+'" is the composite Anger and Apathy, split');});});
  p.hits.forEach(function(h){if(h.band==='coherent')coh+=Math.abs(h.amt||0);});
+ /* A DENIED WORD IS EVIDENCE OF NOTHING, AND IS STILL CITED, S1. p.hits are
+    only what counts, so no denied word reaches a shadow above. An axis the
+    text named and said no to is not "nothing reached it": it was read and
+    set aside, and its because says so with the person's own words. */
+ var said={}, theirs={};
+ (p.denied||[]).forEach(function(h){
+  var f=h.fet||(h.charge?CHG2FET[h.charge]:null); if(!f||shadow[f]===undefined)return;
+  var q='"'+(h.negw?h.negw+' ':'')+h.t+'"', l=said[f]=said[f]||[];
+  if(l.indexOf(q)<0)l.push(q);});
+ /* and the same for a word about someone else, S2: read, held, cited */
+ (p.others||[]).forEach(function(h){
+  var f=h.fet||(h.charge?CHG2FET[h.charge]:null); if(!f||shadow[f]===undefined)return;
+  var q='"'+h.t+'" said of '+(h.who||'someone else'), l=theirs[f]=theirs[f]||[];
+  if(l.indexOf(q)<0)l.push(q);});
  var out=[];
  CHARGES.forEach(function(c){
   var s=Math.round(Math.min(10,shadow[c])*10)/10;
@@ -15041,6 +15974,8 @@ function sniffAxes(p){
    address:axisAddr(p.imprints,c),
    region:SPEC_POLE[c]?SPEC_POLE[c].addr:null,
    because: s>0?(cited[c]||[]).slice(0,3)
+    :said[c]?['the text said no to it, '+said[c].slice(0,3).join(' and ')+', so nothing is counted']
+    :theirs[c]?['the text gives it to someone else, '+theirs[c].slice(0,3).join(' and ')+', so nothing is counted on the writer']
     :['nothing in the text reached this axis'],
    coherentBecause: k>0
     ?['the text carries '+k+' of coherent language, not apportioned by axis']
@@ -15317,7 +16252,12 @@ function sniffStory(text){
  var axes=sniffAxes(p);
  return {
   axes:      axes,
-  saboteurs: sniffSaboteurs(axes).slice(0,SAB_SHOW),
+  /* EVERY POSITIVE CANDIDATE, S3 of the 9 October sniffer audit. This was
+     sliced to SAB_SHOW here, so the domain layer decided what a screen shows
+     and a seventh candidate was not in the output for anything to read.
+     SAB_SHOW is what a renderer slices to; no screen renders this list yet,
+     the tutorial reads only offer. */
+  saboteurs: sniffSaboteurs(axes),
   laws:      sniffLaws(text),
   flow:      sniffFlow(text),
   gates:     sniffGates(text),
@@ -15395,13 +16335,16 @@ var SRC_ASK=7, SRC_ROOT=10;
 /* one mention is heard and never questioned, whatever the word weighs. */
 var SRC_ONCE=6;
 
-/* NEGATION, WHICH THE SNIFFER DOES NOT READ. "I was not angry" and "I was
-   angry" parse to the same seat and the same amount, measured. A reading can
-   live with that because the charge is small and the person can undo it. A
-   question cannot: asking somebody why they are angry after they wrote that
-   they are not is the false positive this seat was told costs more than a
-   miss. So a mention counts toward a question only when neither of the two
-   words before it is a negation.
+/* NEGATION. This was "NEGATION, WHICH THE SNIFFER DOES NOT READ": "I was not
+   angry" and "I was angry" parsed to the same seat and the same amount, and
+   Source AI was the one reader that set the first aside. Since S1 of
+   REVIEW-sniffer-audit-2026-10-09.md the sniffer reads it with this same
+   call: sniffDeny in engine/sniff.js asks srcNegated, flags the hit, and
+   parseStory counts it nowhere. srcHear reads that flag and no longer asks
+   here itself, so the question and the score cannot disagree. Asking somebody
+   why they are angry after they wrote that they are not is the false
+   positive this seat was told costs more than a miss. So a mention counts
+   only when neither of the two words before it is a negation.
 
    The window is two words and not the three the laws use, and "did" is not in
    the list. Measured on the owner's book: the three word window dropped
@@ -15456,12 +16399,19 @@ function srcHear(text,prior){
  var t=String(text||'');
  var out={unread:true, seats:[], top:null, root:null, asks:false};
  if(!t.trim())return out;
- var p=parseStory(t), nm=normMap(t), src=nm.s, by={};
- p.path.steps.forEach(function(s){
-  if(!s.seat||s.coherent)return;
+ var p=parseStory(t), nm=normMap(t), by={}, den={}, oth={};
+ /* THE ENGINE'S OWN FLAG, S1. Every word read, counted or said with a no,
+    walked in order; a step the parse denied is counted as negated and never
+    heard, which is the rule this always ran, now asked once in sniffDeny.
+    A word about someone else, S2, is not the writer's and is not walked at
+    all: no question is asked of a person about another person's anger. */
+ (p.denied||[]).forEach(function(h){den[h.at]=1;});
+ (p.others||[]).forEach(function(h){oth[h.at]=1;});
+ pathOf(storyHits(p)).steps.forEach(function(s){
+  if(!s.seat||s.coherent||oth[s.at])return;
   var o=by[s.seat]=by[s.seat]||{seat:s.seat, band:K2BAND[s.seat],
    reading:Math.min(10,(p.bands[s.seat]||0)/3), mentions:0, negated:0, words:[]};
-  if(srcNegated(src,s.at,clauseFloor(t,nm,s.at))){o.negated++;return;}
+  if(den[s.at]){o.negated++;return;}
   o.mentions++;
   /* the person's own letters, through the same map marksOf uses, so what is
      quoted back is what they typed and not the lowercased copy. */
@@ -15618,8 +16568,11 @@ function srcDims(text){
     person felt. Biased this way on purpose: counting a dimension as answered
     when it was not costs one question not asked, and counting it open when
     it was answered is the over-questioning the document's failure tests
-    name. */
- p.hits.forEach(function(h){
+    name. Every word read, storyHits, and not only what counts: "I was not
+    angry" says how a person felt, and since S1 the parse keeps that word
+    in denied rather than in hits, so reading hits alone would ask a person
+    how they felt straight after they said. */
+ storyHits(p).forEach(function(h){
   if(sense.indexOf(h.t)>=0)return;
   if(place.some(function(w){return (' '+h.t+' ').indexOf(' '+w+' ')>=0;}))return;
   say('feeling',h.t);});
@@ -15634,7 +16587,7 @@ function srcDims(text){
  /* what the person did */
  ['intent','averse','attach'].forEach(function(g){
   (VERPCUE[g]||[]).forEach(function(c){if(srcCue(src,c))say('behaviour',c);});});
- p.hits.forEach(function(h){
+ storyHits(p).forEach(function(h){
   if(h.kind==='phrase'&&SRC_DO_IDIOM.indexOf(h.label)>=0)say('behaviour',h.t);});
  ws.forEach(function(w,i){
   if(w!=='i')return;
@@ -18738,7 +19691,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* meter */    meterFirst:meterFirst,
   /* source ai */ SRC_ASK:SRC_ASK, SRC_ROOT:SRC_ROOT, SRC_ONCE:SRC_ONCE, SRC_NEG:SRC_NEG,
                  srcNegated:srcNegated, srcPrior:srcPrior, srcRung:srcRung,
-                 srcHear:srcHear, srcTurn:srcTurn,
+                 srcHear:srcHear, srcHear:srcHear, srcPrior:srcPrior, srcTurn:srcTurn,
                  SRC_DIM_ORDER:SRC_DIM_ORDER, SRC_DIM_CUE:SRC_DIM_CUE, SRC_DO:SRC_DO,
                  srcDims:srcDims, srcNext:srcNext,
                  SRC_KINDS:SRC_KINDS, SRC_OUTCOMES:SRC_OUTCOMES,
@@ -18914,6 +19867,11 @@ if(typeof module!=='undefined'&&module.exports){
                   HOME_POLES:HOME_POLES, compassOffAxis:compassOffAxis,
   /* sniffer */   scanStory:scanStory, normMap:normMap, maskedRuns:maskedRuns, maskedSay:maskedSay, clauseFloor:clauseFloor, marksOf:marksOf, parseStory:parseStory, applyStory:applyStory,
                   wordsOf:wordsOf, unmarkedOf:unmarkedOf,
+                  sniffDeny:sniffDeny, NEG_NOT_DENY:NEG_NOT_DENY, storyHits:storyHits,
+                  asideOf:asideOf, asideSay:asideSay,
+                  sniffWho:sniffWho, whoOf:whoOf, WHO_ME:WHO_ME, WHO_SUBJ:WHO_SUBJ, WHO_POSS:WHO_POSS,
+                  WHO_OBJ:WHO_OBJ, WHO_YOU:WHO_YOU, WHO_DET:WHO_DET, WHO_OPEN:WHO_OPEN,
+                  WHO_LOSS:WHO_LOSS, whoLoss:whoLoss,
                   SOMA_SENSE:SOMA_SENSE, SOMA_PLACE_WORDS:SOMA_PLACE_WORDS, SOMA_PLACE_RULED:SOMA_PLACE_RULED, SOMA_PLACE:SOMA_PLACE, somaPlaces:somaPlaces,
                   LEX_VERSION:LEX_VERSION, LEXV_RE:LEXV_RE, lexVersion:lexVersion,
   /* THE OUTPUT CONTRACT, SNIFFER_SPEC.md section 10. sniffStory is the one
@@ -18926,6 +19884,7 @@ if(typeof module!=='undefined'&&module.exports){
                   sniffDepth:sniffDepth, sniffOffer:sniffOffer,
                   SPEC_POLE:SPEC_POLE, LEXCOMP:LEXCOMP, LAWVIO:LAWVIO,
                   lexComposite:lexComposite, LEXCOMPRUN:LEXCOMPRUN,
+                  LEXPROF:LEXPROF, lexProf:lexProf, LEXPROFRUN:LEXPROFRUN,
                   SAB_SHOW:SAB_SHOW, OFFER_MAX:OFFER_MAX,
                   GATE_BASE:GATE_BASE, GATE_STEP:GATE_STEP,
   /* the band edge. sabMember is the ramp itself and the gate asserts it is
@@ -18994,7 +19953,7 @@ if(typeof module!=='undefined'&&module.exports){
      history row reaches the disk by. They were browser globals and nothing
      headless could drive them, so the one write that grows the record had no
      gate of its own. */
-                  pSave:pSave, pSnap:pSnap, pNew:pNew,
+                  pSave:pSave, pSnap:pSnap, pSaveSnap:pSaveSnap, pNew:pNew,
                   saveState:saveState,
                   validateProfile:validateProfile, loadProfile:loadProfile,
                   blankProfile:blankProfile,
@@ -19074,9 +20033,20 @@ if(typeof module!=='undefined'&&module.exports){
                   dlyResolve:dlyResolve, dlySeal:dlySeal, dlyDayOpen:dlyDayOpen, dlyWhy:dlyWhy,
   /* the first release's size and where a person is on the way in,
      engine/data/onboarding.js and engine/journey.js. Reads only. */
-                  ONB_MINI_ADDRS:ONB_MINI_ADDRS, ONB_CHANS:ONB_CHANS,
+                  ONB_MINI_ADDRS:ONB_MINI_ADDRS, ONB_MINI_DOSE:ONB_MINI_DOSE, ONB_CHANS:ONB_CHANS,
                   OB_STARTS:OB_STARTS, OB_FEELS:OB_FEELS, OB_PLACES:OB_PLACES,
                   journeyRead:journeyRead, onbMiniPlan:onbMiniPlan,
+  /* the journey record itself, F13: its tables, its boundary, its writers,
+     what the first release made, and the claim packet with its boundary */
+                  JOURNEY_V:JOURNEY_V, JOURNEY_EVENTS:JOURNEY_EVENTS, JOURNEY_LOG_MAX:JOURNEY_LOG_MAX,
+                  JOURNEY_SRC:JOURNEY_SRC, JOURNEY_WALK:JOURNEY_WALK, JOURNEY_DOORS:JOURNEY_DOORS,
+                  JOURNEY_CLAIM_SEND:JOURNEY_CLAIM_SEND, JOURNEY_CLAIM_NEVER:JOURNEY_CLAIM_NEVER,
+                  JOURNEY_CLAIM_V:JOURNEY_CLAIM_V,
+                  journeyBlank:journeyBlank, journeyValidate:journeyValidate,
+                  journeyLog:journeyLog, journeyLogged:journeyLogged, journeyWalk:journeyWalk,
+                  journeyGiftRead:journeyGiftRead, journeyGiftSync:journeyGiftSync,
+                  journeyGiftIssue:journeyGiftIssue, journeyMade:journeyMade,
+                  journeyClaim:journeyClaim, journeyClaimCheck:journeyClaimCheck,
                   releaseVerify:releaseVerify, releaseVerifyAt:releaseVerifyAt,
                   RV_METRIC:RV_METRIC, RV_ANSWERS:RV_ANSWERS, RV_SAY:RV_SAY,
   /* util */      clamp:clamp, leaves:(typeof leaves==='function'?leaves:null)
@@ -19866,9 +20836,12 @@ var MISSING=[];
 /* the reading's last layer names where a release starts and what a release
    is, off relQueueOf and unpackOf. An engine without them is an older engine,
    and a reading that said nothing is carrying because a function was missing
-   would be a lie, so it is refused here with the rest. */
+   would be a lie, so it is refused here with the rest. The story's last line
+   says what was read and not counted, off asideOf and asideSay, S1, and an
+   engine without them would print a card for a word said with a no. */
 if(typeof SINAMES==='undefined'||typeof read!=='function'
- ||typeof relQueueOf!=='function'||typeof unpackOf!=='function')MISSING.push('engine.js');
+ ||typeof relQueueOf!=='function'||typeof unpackOf!=='function'
+ ||typeof asideOf!=='function'||typeof asideSay!=='function')MISSING.push('engine.js');
 if(typeof QQ==='undefined')MISSING.push('questions.js');
 if(typeof RING==='undefined')MISSING.push('ring.js');
 /* the ring's seat order is the engine's band order or it is drawing the
@@ -20485,13 +21458,11 @@ var MORE={};       /* charge -> 1 when its card shows every address */
 function marked(){ for(var k in MARK)if(MARK[k])return true; return false; }
 
 /* the words, quoted as they were typed. marksOf maps the scanner's offsets
-   back onto the letters, so a quote is exactly what was scored. A word read
-   after a no is quoted with the no in front of it, so the person can see
-   what the reader did with it. */
+   back onto the letters, so a quote is exactly what was scored. A word said
+   with a no is never quoted here: since S1 it is not scored, and asideOf in
+   engine/sniff.js quotes it, with its no, in the line that says so. */
 function storyQuote(t,m){
- var a=m.s;
- if(m.neg){ var pre=t.slice(0,a).match(/(?:[A-Za-z']+[^A-Za-z']+){1,2}$/); if(pre)a-=pre[0].length; }
- return '“'+t.slice(a,m.e)+'”';}
+ return '“'+t.slice(m.s,m.e)+'”';}
 function storyQuotes(t,ms){
  var seen={}, out=[];
  ms.forEach(function(m){ var q=storyQuote(t,m), k=q.toLowerCase();
@@ -20525,16 +21496,19 @@ function storyRow(n){
   +'</div>';}
 
 function storyLit(ps,t,r){
- /* A WORD AFTER A NO IS STILL CHARGED, AND THAT IS SHOWN. "I was not scared"
-    lights Fear, measured, because parseStory does not read negation and
-    srcNegated does. The app's Story page shows the same disagreement rather
-    than picking a side, round HX, and this does it the same way: the quote
-    carries the no, and one sentence says the reader counted it anyway. */
- var nm=normMap(t), negAt={};
- ps.hits.forEach(function(h){ if(h.band==='coherent')return;
-  if(srcNegated(nm.s,h.at)){ var a=nm.map[h.at+1]; if(a!=null)negAt[a]=1; } });
- var marks=marksOf(t,ps).filter(function(m){return !m.coh;});
- marks.forEach(function(m){ m.neg=!!negAt[m.s]; });
+ /* A WORD SAID WITH A NO IS NOT COUNTED, AND THAT IS SAID. This page used to
+    light Fear on "I was not scared" and print that "the reader counts a word
+    that comes after a no", because parseStory did not read negation and this
+    worked it out again with srcNegated, with no sentence floor. Since S1 of
+    REVIEW-sniffer-audit-2026-10-09.md the engine flags the word, parseStory
+    counts it nowhere, and marksOf carries the flag. So no card quotes it as
+    a word it read, and one line, the engine's own asideSay, the same
+    sentence the app's Story page prints, says it was not counted. */
+ /* AND A WORD ABOUT SOMEONE ELSE, S2, the same way: no card, and the same
+    asideSay line says so, with what the person can write instead. */
+ var marks=marksOf(t,ps).filter(function(m){return !m.coh&&!m.neg&&!m.other;});
+ var aside=asideSay(asideOf(t,ps));
+ var asideP=aside?'<p class="sm">'+esc(aside)+'</p>':'';
 
  /* NAMED AGAINST INFERRED DECIDES WHAT MAY BE PRINTED. parseStory marks an
     imprint inferred when the words reached a seat and the address was picked
@@ -20609,7 +21583,6 @@ function storyLit(ps,t,r){
    +'<div class="fam">At the '+esc(listOf(seats))+' seat'+(seats.length>1?'s':'')
    +'. Your words named it.</div>';
   if(ws.length)h+='<div class="sl"><b>Your words:</b> '+esc(storyQuotes(t,ws).join(', '))+'.'
-   +(ws.some(function(m){return m.neg;})?' The reader counts a word that comes after a no.':'')
    +'</div>';
   /* WHAT IT DOES AND WHAT IT TOUCHES ARE ON THE ROWS NOW. They were each
      address's d and a joined across all four, which, once an address could
@@ -20659,10 +21632,10 @@ function storyLit(ps,t,r){
   +'<div class="sabs">'+cards.map(card).join('')+'</div>'
   +(asks?'<p class="sm">What you mark Yes or Not me stays on this page with your story. '
    +'It is not saved and it is not in your record.</p>':'')
-  +(seatSay?'<p class="sm">'+seatSay+'</p>':'');
- else if(so.length)h+='<p class="sm lede">'+seatSay+'</p>'
+  +(seatSay?'<p class="sm">'+seatSay+'</p>':'')+asideP;
+ else if(so.length)h+='<p class="sm lede">'+seatSay+'</p>'+asideP
   +'<p class="sm">Write where you felt it, and what it was, and the reader can name it.</p>';
- else h+='<p class="lede">Keep writing, or write where you felt it.</p>';
+ else h+=asideP+'<p class="lede">Keep writing, or write where you felt it.</p>';
  h+='</div></section>'
   /* the same scope box the reading carries, saying the same kind of thing:
      what this read and what it did not. */
@@ -20736,7 +21709,10 @@ function viewDoor(){
  /* the two paragraphs share one cell, because .doorbd is two columns, words
     and buttons, and a third child squeezed the words into a sliver at 1600 */
  +'<div class="doorbd"><div>'
- +'<p>There is no account and no server, so nothing here can be fetched later by '
+ /* "There is no account and no server" stopped being true of the app when
+    accounts shipped. What stays true is this page's own fact: it makes no
+    request, which tests/funnel.js counts. */
+ +'<p>This page sends nothing to any server, so nothing here can be fetched later by '
  +'anybody, including us. What you save is a profile in the instrument\'s own '
  +'format, and Atuned\'s loader takes it as it stands: your coherence, the '
  +'21 law values, the nine charges, and every address they landed on.'

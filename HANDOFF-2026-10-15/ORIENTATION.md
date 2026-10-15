@@ -64,12 +64,13 @@ re-probed, and no deploy fires. Local runs are the only evidence available.
   an account made at the door, and ends its pass on sign out (MOB PR 46, 47).
 - **The golden journey** (`tests/golden.js`) walks quiz, record, account,
   reading, release, CQ, pay, cancel, delete. Its quiz-only form is a required
-  gate ("alpha-journey", floor 61). Two findings stay as expected red on a
-  fresh build of main today (E2, the first visit is never read back; E3f, a
-  downloaded copy blames the connection). The three others the 9 October
-  notes named (E1q, E19, E20) were closed by `1d48f78` and `ed5eca3`, and
-  `tests/floors.json` still allowed five, which would let three new failures
-  pass unseen. It allows two now.
+  gate ("alpha-journey", floor 61). One finding stays as expected red on a
+  fresh build of main (E2, the first visit is never read back into the app).
+  E3f, a downloaded copy blaming the connection, was closed on 15 October:
+  the copy now says the server turns a downloaded copy away. The three
+  others the 9 October notes named (E1q, E19, E20) were closed by `1d48f78`
+  and `ed5eca3`, and `tests/floors.json` still allowed five, which would let
+  new failures pass unseen. It allows one now.
 
 ## 4. The owner's rulings, 9 to 15 October, in his words where he gave them
 

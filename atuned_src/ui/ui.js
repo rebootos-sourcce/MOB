@@ -1190,10 +1190,10 @@ function render(){
   var cr0=r.unread?null:cqRange(r.CQ), half=cr0?(cr0.hi-cr0.lo)/2:0;
   var dq=clamp((+r.DQ||0)/100,0,1), amp=(+r.DQ||0)*PUL_WAVE*dq;
   var spec={read:!r.unread, whole:false,
-   L:{nm:'CQ',ic:'cq',c:'var(--accent)',v:r.unread?0:r.CQ,q:'cq',fk:'laws',
+   L:{nm:'CQ',ic:'cq',c:'var(--accent)',v:r.unread?0:r.CQ,q:'cq',fk:'laws',bare:true,
     sw:half>0.05?function(t){return rbDrift(t)*half;}:null, fw:cr0?cr0.hi-cr0.lo:0,
     note:r.unread?'Not read yet.':'The edge of the blue moves through the range your coherence swings in, and the notches mark where it stands now.'},
-   R:{nm:'DQ',ic:'dq',c:seatCol('Root'),v:r.unread?0:r.DQ,q:'dq',fk:'shadow',
+   R:{nm:'DQ',ic:'dq',c:seatCol('Root'),v:r.unread?0:r.DQ,q:'dq',fk:'shadow',bare:true,
     sw:amp>0.05?function(t){return amp*Math.sin(t*TAU*PUL_WAVE_HZ);}:null, fw:2*amp,
     note:r.unread?'Not read yet.':'The edge of the red breathes with your shadow, and the notches mark where it stands now.'}};
   $('key').innerHTML=rbPair('cqdq',spec);
