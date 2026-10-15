@@ -100,7 +100,7 @@ h1 .um::after{left:.34em}
 
 p{margin:16px 0 0}
 section{margin-top:56px;padding-top:30px;border-top:1px solid var(--edge)}
-.eye{display:block;font-size:11.5px;letter-spacing:.17em;text-transform:uppercase;
+.eye{display:block;font-size:11.5px;letter-spacing:.01em;
  color:var(--accent);margin:0 0 10px}
 h2{font-size:27px;line-height:1.18;margin:0;letter-spacing:-.018em;font-weight:600}
 h3{font-size:17px;margin:0;font-weight:600}
@@ -146,7 +146,7 @@ h3{font-size:17px;margin:0;font-weight:600}
 .three{display:grid;gap:1px;margin:24px 0 0;background:var(--edge);
  border:1px solid var(--edge);border-radius:var(--r-s);overflow:hidden}
 .three div{background:var(--panel);padding:15px 17px}
-.three b{display:block;font-size:12px;letter-spacing:.11em;text-transform:uppercase;
+.three b{display:block;font-size:12px;letter-spacing:.01em;
  color:var(--dim);font-weight:600}
 .three span{display:block;margin-top:5px;color:var(--ink);font-size:16px}
 
@@ -158,8 +158,8 @@ h3{font-size:17px;margin:0;font-weight:600}
  background:var(--edge);border:1px solid var(--edge);border-radius:var(--r-s);
  overflow:hidden}
 .figs li{background:var(--panel);padding:14px 16px 15px}
-.figs em{display:block;font-style:normal;font-size:11.5px;letter-spacing:.14em;
- text-transform:uppercase;color:var(--dim);font-weight:600}
+.figs em{display:block;font-style:normal;font-size:11.5px;letter-spacing:.01em;
+ color:var(--dim);font-weight:600}
 .figs strong{display:block;font-family:var(--num);font-variant-numeric:tabular-nums;
  font-size:21px;font-weight:600;margin-top:3px;letter-spacing:-.01em}
 .figs span{display:block;color:var(--mid);font-size:15.5px;margin-top:4px}
@@ -475,8 +475,11 @@ a.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
   <p class="m">You write what happened, in your own words. The engine reads the
   charge out of the words and, in the Atüned model, lands it at a named plexus or
   a named nerve. Then it hands you the order to take it apart in.</p>
-  <p class="m">It runs as one file in your browser. No account, no server, and no
-  request of any kind while you use it.</p>
+  <!-- WP2a-4: "No account, no server, and no request of any kind while you use
+       it" stopped being true when accounts and the first visit's code shipped
+       (ui/auth.js). tests/copy.js holds this page to what is true. -->
+  <p class="m">It runs as one file in your browser. Your stories are not sent to
+  us, and an account is yours to make or skip.</p>
   <ul class="nots">
    <li><b>Not a coach.</b> It has no opinion about your life.</li>
    <li><b>Not a guide.</b> It reads what is running, not who is running it.</li>
