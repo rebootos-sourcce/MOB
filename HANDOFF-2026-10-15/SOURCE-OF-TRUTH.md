@@ -26,11 +26,18 @@ Reported facts that this session could not verify itself are marked so.
 - No Reboot-OS publish since: `web.yml` run 38020152941 (10 October) failed
   at "publish to Pages"; run 38473125019 (13 October) was a pull request
   event with no publish step; no run since. The workflow is now disabled.
-- **Not verified from here:** the Pages project's own deployment list and
-  the custom domain binding, which need a Cloudflare token this session does
-  not hold. The owner can confirm at dash.cloudflare.com, Workers and Pages,
-  `atuned`, Deployments: the newest production row should name MOB commit
-  `ed5eca3`.
+- **Verified from Cloudflare itself, 21:59 UTC**, by
+  `.github/workflows/cloudflare-inspect.yml` (run 38813881872), which reads
+  the account with the deploy job's own token: Pages project `atuned`,
+  production branch `main`, domains `atuned.pages.dev` and `atuned.world`,
+  canonical and latest production deployment both commit `ed5eca3`, created
+  11 October 21:03 UTC. The last eight production deployments are all MOB
+  main commits; nothing from Reboot-OS ever landed there.
+- The merge of MOB PR 76 (`018bb70`, documents, agents and a test floor; no
+  application source) started deploy run 38813550850 on main at 21:52 UTC.
+  It finished green at every step, including "Cloudflare serves this commit
+  in production". So atuned.world now serves `018bb70`: the same application
+  source as `ed5eca3`, built fresh, under the new stamp.
 
 ## The boundary, as of 15 October 20:57 UTC
 
@@ -70,10 +77,32 @@ Reported facts that this session could not verify itself are marked so.
 
 ## The voice
 
-Reported historical result, not a current claim: voice-connect run
-37970159266 on 9 October 17:59 UTC ended green at every step, including
-"ask the live server for a line", which exits 0 only on real audio. The
-probe cannot run today (Reboot-OS Actions blocked). Not re-verified.
+Verified again on 15 October 22:19 UTC, the first run after the budget was
+raised: voice-probe run 38816357647 on Reboot-OS main, on a real runner,
+"ask the live voice route what it needs: success". The earlier result,
+voice-connect run 37970159266 on 9 October 17:59 UTC, green at every step
+including "ask the live server for a line", still stands as the last time
+real audio came back.
+
+## GitHub Actions, after the budget
+
+The owner raised the Actions budget at about 22:15 UTC. Reboot-OS runs
+now get runners: the voice probe above, the KPI totals and Cloudflare read
+back workflows, and the reruns on PR 54's head (`a39fdfb`): server, shell,
+retention and the packaged UI build green; the gate red on its own browser
+path (Chromium installed at `/opt/pw-browsers` for the quick smoke, the
+voice surface gate then looking in Playwright's default cache), fixed on
+the branch as `91a4180` by making the path the job's for every step.
+
+## The KPI ladder, first read
+
+Run 38816712806, 22:23 UTC, counts only, from the live database: sessions
+opened 6,867 (6,866 in the last 7 days), ground chosen 14, tutorial done 6,
+first release 6, release checked 4, joined to an account 5, completed 0,
+safety stops 0. The first rung counts machines (a session is made on every
+first open, and crawlers and automated checks open the page); the human
+rungs start at "ground chosen". `KPI-READ-2026-10-15.md` beside this file
+reads them out.
 
 ## The `atuned-os` Cloudflare build
 
@@ -84,9 +113,38 @@ probe cannot run today (Reboot-OS Actions blocked). Not re-verified.
   `name = "atuned-api"`). The `atuned-api` build on the same commits passes.
   ChatGPT's control board (MOB PR 69) records `atuned-os /v1/health` as 404
   and `atuned-api /v1/health` as 200 on 13 October.
-- Not verified from here: its repository and branch linkage, routes,
-  secrets, domains, and whether anything depends on it. This session has no
-  Cloudflare access.
+- Tried from here, 21:59 UTC, with MOB's Cloudflare token through
+  `cloudflare-inspect.yml`: the token is Pages only. It lists no Workers,
+  sees no zones, and every Workers, Workers Builds and custom domain call
+  answers "No access" or "Authentication error". So `atuned-os` cannot be
+  inspected or deleted from MOB. The workflow keeps a guarded delete step
+  for the day that changes: it refuses unless the Worker is named exactly
+  `atuned-os`, has no route, no custom domain and no binding that
+  `atuned-api` lacks.
+- **Read with Reboot-OS's own token at 22:23 UTC** (the budget was raised at
+  22:15), by `.github/workflows/cloudflare-readback.yml` on branch
+  `claude/kpi-and-cloudflare-readback`, run 38816712758:
+  - `atuned-os` is a Worker, created 28 September, last deployed 15 October
+    04:57:01 UTC by wrangler under the owner's email, two seconds before
+    `atuned-api`'s own deployment at 04:57:21 and on the same minute as the
+    14 October ones. That is the Workers Builds connection deploying it on
+    every Reboot-OS push, which is why the check carries its name.
+  - It has **no bindings at all** (no database, no secrets, no variables),
+    where `atuned-api` has 27. It has no custom domain: the account wide
+    custom domain list is empty. workers.dev is on for it.
+  - **Not verifiable with either token:** zone routes on atuned.world. The
+    Reboot-OS token sees the zone but "No access" on its routes; MOB's sees
+    no zone. So whether `atuned-os` intercepts any path on atuned.world is
+    the one fact the dashboard alone can show, and the directive's rule
+    (verify dependencies before deleting) keeps the delete with the owner:
+    dash.cloudflare.com, Workers and Pages, `atuned-os`, Settings, Domains
+    and Routes. If that list is empty, Settings, bottom, Delete.
+  - The same read showed the Reboot-OS token **cannot read Pages at all**
+    ("Authentication error" on the project), so with the current tokens
+    Reboot-OS could not publish over atuned.world even by hand. The
+    boundary holds by token scope as well as by the disabled workflow.
+  - Fourteen Workers exist in the account. One is named exactly `atuned`
+    (2 September); it is not `atuned-os`, and nothing here touches it.
 - **Owner action, in order:** dash.cloudflare.com, Workers and Pages, open
   `atuned-os` (not `atuned`, not `atuned-api`). Read Settings: Builds (which
   repository, which branch, root directory), Domains and Routes (must be

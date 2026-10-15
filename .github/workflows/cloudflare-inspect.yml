@@ -1,0 +1,136 @@
+# Read the Cloudflare account the way the deploy job does, with the same
+# token, and print what the dashboard would show: which commit the Pages
+# project `atuned` serves in production, which Workers exist, and what the
+# Worker named exactly `atuned-os` is bound to (routes, custom domains,
+# bindings by name, never a value). Nothing here changes anything unless the
+# run is started with delete_atuned_os set to the word yes, and even then the
+# delete step refuses unless the inspection found no route, no custom domain
+# and no binding that `atuned-api` lacks. A name that merely resembles
+# `atuned` is never touched: the script name is compared whole.
+name: cloudflare inspect
+on:
+  push:
+    branches: [claude/cloudflare-inspect]
+    paths: ['.github/workflows/cloudflare-inspect.yml']
+  workflow_dispatch:
+    inputs:
+      delete_atuned_os:
+        description: "type yes to delete the Worker named exactly atuned-os, only when the inspection clears it"
+        required: false
+        default: "no"
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      # on a push this file decides; on a hand start the input does
+      WANT_DELETE: ${{ github.event.inputs.delete_atuned_os || 'no' }}
+    steps:
+      - name: the token itself
+        run: |
+          set -e
+          curl -sS "https://api.cloudflare.com/client/v4/user/tokens/verify" \
+            -H "Authorization: Bearer $CF_TOKEN" | jq '{success, status: .result.status, errors}'
+      - name: pages project atuned, production
+        run: |
+          set -e
+          curl -sS "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/atuned" \
+            -H "Authorization: Bearer $CF_TOKEN" > pages.json
+          jq '{success, errors,
+               name: .result.name,
+               production_branch: .result.production_branch,
+               domains: .result.domains,
+               source: .result.source,
+               canonical: {id: .result.canonical_deployment.id,
+                           created: .result.canonical_deployment.created_on,
+                           url: .result.canonical_deployment.url,
+                           branch: .result.canonical_deployment.deployment_trigger.metadata.branch,
+                           commit: .result.canonical_deployment.deployment_trigger.metadata.commit_hash,
+                           message: .result.canonical_deployment.deployment_trigger.metadata.commit_message},
+               latest: {id: .result.latest_deployment.id,
+                        created: .result.latest_deployment.created_on,
+                        environment: .result.latest_deployment.environment,
+                        branch: .result.latest_deployment.deployment_trigger.metadata.branch,
+                        commit: .result.latest_deployment.deployment_trigger.metadata.commit_hash}}' pages.json
+          echo "--- last eight production deployments"
+          curl -sS "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/atuned/deployments?env=production&per_page=8" \
+            -H "Authorization: Bearer $CF_TOKEN" | \
+            jq -r '.result[]? | "\(.created_on)  \(.deployment_trigger.metadata.commit_hash[0:7])  \(.deployment_trigger.metadata.branch)  \(.latest_stage.name)/\(.latest_stage.status)  \(.deployment_trigger.metadata.commit_message[0:60])"'
+      - name: every worker in the account
+        run: |
+          set -e
+          curl -sS "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/workers/scripts" \
+            -H "Authorization: Bearer $CF_TOKEN" > scripts.json
+          jq '{success, errors, workers: [.result[]? | {id, created_on, modified_on}]}' scripts.json
+          echo "--- custom domains on workers (account wide)"
+          curl -sS "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/workers/domains" \
+            -H "Authorization: Bearer $CF_TOKEN" | jq '{success, errors, domains: [.result[]? | {hostname, service, environment, zone_name}]}'
+          echo "--- zones this token can see, and their worker routes"
+          curl -sS "https://api.cloudflare.com/client/v4/zones?per_page=20" \
+            -H "Authorization: Bearer $CF_TOKEN" > zones.json
+          jq '{success, errors, zones: [.result[]? | {id, name, status}]}' zones.json
+          for z in $(jq -r '.result[]?.id' zones.json); do
+            echo "routes in zone $z:"
+            curl -sS "https://api.cloudflare.com/client/v4/zones/$z/workers/routes" \
+              -H "Authorization: Bearer $CF_TOKEN" | jq '{success, errors, routes: [.result[]? | {pattern, script}]}'
+          done
+      - name: the worker named exactly atuned-os, and atuned-api beside it
+        run: |
+          set -e
+          for s in atuned-os atuned-api; do
+            echo "=== $s"
+            curl -sS "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/workers/scripts/$s/settings" \
+              -H "Authorization: Bearer $CF_TOKEN" > "settings-$s.json"
+            jq '{success, errors, bindings: [.result.bindings[]? | {type, name}], compatibility_date: .result.compatibility_date, usage_model: .result.usage_model}' "settings-$s.json"
+            echo "--- subdomain (workers.dev) state"
+            curl -sS "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/workers/scripts/$s/subdomain" \
+              -H "Authorization: Bearer $CF_TOKEN" | jq '{success, errors, result}'
+            echo "--- last deployments"
+            curl -sS "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/workers/scripts/$s/deployments" \
+              -H "Authorization: Bearer $CF_TOKEN" | jq '{success, errors, deployments: [.result.deployments[]? | {id, created_on, source, author_email, message: .annotations["workers/message"], trigger: .annotations["workers/triggered_by"]}] | .[0:5]}'
+            echo "--- workers builds config, if the api exposes it"
+            curl -sS "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/builds/workers/$s/config" \
+              -H "Authorization: Bearer $CF_TOKEN" | jq '{success, errors, result}' || true
+            echo "--- workers builds history, if the api exposes it"
+            curl -sS "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/builds/workers/$s/builds?per_page=3" \
+              -H "Authorization: Bearer $CF_TOKEN" | jq '{success, errors, result}' || true
+          done
+      - name: decide whether atuned-os can go
+        id: decide
+        run: |
+          set -e
+          exists=$(jq -r '[.result[]? | select(.id=="atuned-os")] | length' scripts.json)
+          if [ "$exists" != "1" ]; then echo "no worker named exactly atuned-os exists"; echo "clear=no" >> "$GITHUB_OUTPUT"; exit 0; fi
+          domains=$(curl -sS "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/workers/domains" -H "Authorization: Bearer $CF_TOKEN" | jq '[.result[]? | select(.service=="atuned-os")] | length')
+          routes=0
+          for z in $(jq -r '.result[]?.id' zones.json); do
+            n=$(curl -sS "https://api.cloudflare.com/client/v4/zones/$z/workers/routes" -H "Authorization: Bearer $CF_TOKEN" | jq '[.result[]? | select(.script=="atuned-os")] | length')
+            routes=$((routes + n))
+          done
+          os_bind=$(jq -r '[.result.bindings[]? | .name] | sort | .[]' settings-atuned-os.json)
+          api_bind=$(jq -r '[.result.bindings[]? | .name] | sort | .[]' settings-atuned-api.json)
+          only_os=$(comm -23 <(echo "$os_bind") <(echo "$api_bind") | tr '\n' ' ')
+          echo "custom domains on atuned-os: $domains"
+          echo "zone routes to atuned-os: $routes"
+          echo "bindings atuned-os has that atuned-api lacks: [${only_os}]"
+          if [ "$domains" = "0" ] && [ "$routes" = "0" ] && [ -z "${only_os// }" ]; then
+            echo "CLEAR: atuned-os has no route, no custom domain and nothing atuned-api lacks"
+            echo "clear=yes" >> "$GITHUB_OUTPUT"
+          else
+            echo "NOT CLEAR: atuned-os is bound to something; it stays"
+            echo "clear=no" >> "$GITHUB_OUTPUT"
+          fi
+      - name: delete atuned-os, only when asked and only when clear
+        if: ${{ env.WANT_DELETE == 'yes' && steps.decide.outputs.clear == 'yes' }}
+        run: |
+          set -e
+          curl -sS -X DELETE "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/workers/scripts/atuned-os?force=true" \
+            -H "Authorization: Bearer $CF_TOKEN" | jq '{success, errors}'
+          echo "--- workers now"
+          curl -sS "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/workers/scripts" \
+            -H "Authorization: Bearer $CF_TOKEN" | jq '[.result[]? | .id]'
+          echo "--- pages project atuned, production, after"
+          curl -sS "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/pages/projects/atuned" \
+            -H "Authorization: Bearer $CF_TOKEN" | jq '{commit: .result.canonical_deployment.deployment_trigger.metadata.commit_hash, domains: .result.domains}'
