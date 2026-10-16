@@ -19,7 +19,21 @@ let bad=0;
   await pg.goto('file://'+path.join(DIR,file)+'?'+q);await pg.waitForTimeout(250);
   if(hold!==undefined){await pg.evaluate(t=>window.__hold(t),hold);await pg.waitForTimeout(60);}
   await pg.screenshot({path:path.join(OUT,name),fullPage:!!full});await pg.close();}
+ /* the release moment, close up: a clip round the replayed ring at five instants, joined into one strip */
+ async function strip(file,v){const T=[0,450,700,950,1400],frames=[];
+  for(const t of T){const pg=await b.newPage({viewport:{width:1600,height:1000},deviceScaleFactor:3});
+   pg.on('pageerror',e=>{bad++;console.log('PAGE ERROR',file,e.message);});
+   await pg.goto('file://'+path.join(DIR,file)+'?p=1');await pg.waitForTimeout(250);
+   await pg.evaluate(t=>window.__hold(t),t);await pg.waitForTimeout(60);
+   const r=await pg.evaluate(()=>{const g=document.querySelector('.ar[data-id="'+P.last+'"]:not(.tick)');const b=g.getBoundingClientRect();return {x:b.left+b.width/2,y:b.top+b.height/2};});
+   const buf=await pg.screenshot({clip:{x:r.x-60,y:r.y-60,width:120,height:120}});frames.push(buf.toString('base64'));await pg.close();}
+  const q=await b.newPage({viewport:{width:1100,height:300}});
+  await q.setContent('<body style="margin:0;background:#090A0E;display:flex;gap:8px;padding:12px;font:13px system-ui;color:#B4B0A8">'
+   +frames.map((f,i)=>'<figure style="margin:0;text-align:center"><img width="200" height="200" src="data:image/png;base64,'+f+'"><figcaption style="margin-top:6px">'+T[i]+' ms</figcaption></figure>').join('')+'</body>');
+  await q.screenshot({path:path.join(OUT,v+'-replay-strip.png'),fullPage:true});await q.close();}
+ if(process.env.STRIP_ONLY){for(const f of FILES)await strip(f,f.slice(0,2));await b.close();process.exit(bad?1:0);}
  for(const f of FILES){const v=f.slice(0,2);
+  await strip(f,v);
   for(const p of [0,1,2]){
    await shot(f,1600,1000,'p='+p,v+'-p'+p+'-1600.png');
    await shot(f,390,844,'p='+p,v+'-p'+p+'-390.png');}
