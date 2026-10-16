@@ -34,11 +34,24 @@ function pracDay(t){
    been done on yet. done===undefined means an older entry predating the
    field, read as done, same reading ritIsDone (ui/ritual.js) gives it; only
    done===false is excluded. */
-function pracDays(p){
+/* A DAY THAT HAS NOT HAPPENED IS NOT A DAY PRACTISED. Seven entries dated 30
+   to 36 days ahead read Streak 7, live, and earned First run, Seven days and
+   Sixty minutes, measured on f7188cba, from a device clock set ahead or an
+   imported record. markDays below already refused them and this did not, so
+   the shelf showed three marks it could not date. TDD v3 10.2 gives the rule:
+   a day no more than one day after now counts, the slack the Daily Summary
+   allows a person who flew west and back. Ignored and never refused, because
+   refusing at the boundary would set the whole record aside over one clock
+   error. Every count of days and minutes in this file asks this one test. */
+function pracSoon(d,today){return d!==null&&(today===null||d<=today+1);}
+function pracDays(p,now){return pracDaysAt(p,pracDay(now||Date.now()));}
+/* the same list against a day key rather than a moment, for a mark test that
+   is handed the streak and not the moment */
+function pracDaysAt(p,today){
  var seen={}, out=[];
  ((p&&p.rituals)||[]).forEach(function(x){
   if(x&&x.done===false)return;
-  var k=pracDay(x&&x.t); if(k===null||seen[k])return; seen[k]=1; out.push(k);});
+  var k=pracDay(x&&x.t); if(!pracSoon(k,today)||seen[k])return; seen[k]=1; out.push(k);});
  return out.sort(function(a,b){return b-a;});}
 
 /* THE STREAK, AND WHY TODAY IS NOT REQUIRED.
@@ -50,8 +63,8 @@ function pracDays(p){
    the length of what was lost is still reported, because the thing a person
    built is not deleted by having stopped. */
 function streakRead(p,now){
- var days=pracDays(p), today=pracDay(now||Date.now());
- if(!days.length||today===null)return {run:0, live:false, last:null, best:0, days:0};
+ var days=pracDays(p,now), today=pracDay(now||Date.now());
+ if(!days.length||today===null)return {run:0, live:false, last:null, best:0, days:0, today:today};
  /* THE RUN HALVES, IT DOES NOT RESET. Ruled, Bible 1133:
     Math.max(1, Math.ceil(s/2)) with one grace day.
 
@@ -78,7 +91,7 @@ function streakRead(p,now){
  var best=1,cur=1; for(var j=1;j<days.length;j++){
   if(days[j]===days[j-1]-1){cur++; if(cur>best)best=cur;} else cur=1;}
  var gap=today-days[0];
- return {run:run, live:gap<=1, last:days[0], best:best, days:days.length, gap:gap};}
+ return {run:run, live:gap<=1, last:days[0], best:best, days:days.length, gap:gap, today:today};}
 
 /* GROUND COUNTED LINES, AND CALLED THEM ADDRESSES. p.meter.unique holds one
    entry per line ever opened, address:channel:line (HEAVY_KEY, schema.js), so
@@ -105,7 +118,7 @@ function meterGroundCount(m){
    tier ladder charges for. clear is how many addresses are held at the far
    pole right now, and it is the only one of the four that can go down, which
    is correct: it is a state and not a tally. */
-function ledgerRead(p){
+function ledgerRead(p,now){
  /* MINUTES PRACTISED WAS MINUTES PLANNED, and it was the one label in the
     product claiming what the data did not carry. Select the twenty minute scan,
     press save, close the tab, and the ledger read twenty minutes practised.
@@ -116,11 +129,14 @@ function ledgerRead(p){
     rather than discarded, because a person's history is not ours to delete over
     a schema change. Only entries written from here on can be planned and not
     yet done. */
- var mins=0, plan=0, doneN=0;
+ /* and an entry dated past tomorrow is not practised (pracSoon, above): it
+    earned First run and Sixty minutes off a day that had not come. It still
+    counts as planned, which is all a day ahead can be. */
+ var mins=0, plan=0, doneN=0, today=pracDay(now||Date.now());
  ((p&&p.rituals)||[]).forEach(function(x){
   var m=(x&&+x.min)||0; plan+=m;
   var done=(x&&x.done!==undefined)?!!x.done:true;
-  if(done){mins+=m; doneN++;}});
+  if(done&&pracSoon(pracDay(x&&x.t),today)){mins+=m; doneN++;}});
  var m=(p&&p.meter)||{};
  var clear=0, carry=0;
  ((p&&p.axes)&&CHILD.forEach(function(c){
@@ -201,11 +217,12 @@ function intentionRead(p,now){
    Nothing new is stored. A mark's date is derived by markDays below, off the
    same record, the way the TDD's own drawer dates one (9.1). */
 var BACK_GAP=14;
-function pracTracks(p){
+function pracTracks(p,today){
  var by={}, seen={};
  ((typeof PRACTICE!=='undefined'&&PRACTICE)||[]).forEach(function(x){if(x&&x.track)by[x.k]=x.track;});
  ((p&&p.rituals)||[]).forEach(function(x){
   if(!x||x.done===false||!Array.isArray(x.steps))return;
+  if(today!==undefined&&!pracSoon(pracDay(x.t),today))return;
   x.steps.forEach(function(k){if(by[k])seen[by[k]]=1;});});
  var all={}; Object.keys(by).forEach(function(k){all[by[k]]=1;});
  return {done:Object.keys(seen).length, all:Object.keys(all).length};}
@@ -237,11 +254,11 @@ var MARKS=[
  {k:'tracks', fam:'Practice', b:'Root', nm:'Every track run',
   d:'A ritual marked done in every track the practice library carries.',
   ic:'M12 3v18 M3 12h18 M6 6l12 12',
-  t:function(l,s,p){var t=pracTracks(p); return t.all>0&&t.done>=t.all;}},
+  t:function(l,s,p){var t=pracTracks(p,s.today); return t.all>0&&t.done>=t.all;}},
  {k:'back', fam:'Practice', b:'Root', nm:'Came back',
   d:'Two weeks or more away, then a day of practice. Coming back is the practice too.',
   ic:'M9 5L4 10l5 5 M4 10h10a5 5 0 010 10h-4',
-  t:function(l,s,p){return pracBack(pracDays(p));}},
+  t:function(l,s,p){return pracBack(pracDaysAt(p,s.today));}},
  /* ground */
  {k:'ten', fam:'Ground', b:'Throat', nm:'Ten addresses',
   d:'Ten distinct addresses opened. Not ten runs. Ten places.',
@@ -297,7 +314,7 @@ var MARKS=[
    what they are doing. Everything past it is deliberately not returned, so no
    caller can render a checklist of a person's unfinished self. */
 function ladderRead(p,now){
- var l=ledgerRead(p), s=streakRead(p,now), got=[], left=[];
+ var l=ledgerRead(p,now), s=streakRead(p,now), got=[], left=[];
  MARKS.forEach(function(m){
   var ok=false; try{ok=!!m.t(l,s,p);}catch(e){ok=false;}
   (ok?got:left).push(m);});

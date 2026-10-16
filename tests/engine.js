@@ -3069,6 +3069,33 @@ console.log('\n27 · the ladder');
    'markDays dates First run on the oldest day, Seven days on the seventh and Sixty minutes on the sixth, '+JSON.stringify(md));
   ok(Object.keys(md).every(k=>MARKS.find(m=>m.k===k).fam==='Practice'),'only practice marks are dated');
   ok(Object.keys(markDays(blankProfile('L'),NOW)).length===0,'a blank profile has no dated mark');}
+
+ /* BLOCK 1, THE RECORD TELLS THE TRUTH, 16 October. The owner's rule: "it is
+    never lying to you". Each check below failed on f7188cba and names the
+    lie it closes. */
+
+ /* L3. A DAY THAT HAS NOT HAPPENED IS NOT A DAY PRACTISED. Seven rituals
+    dated 30 to 36 days ahead read Streak 7, live, and earned First run,
+    Seven days and Sixty minutes. TDD v3 10.2: no more than one day after
+    now. Tomorrow is the known good case and still counts. */
+ {const fut=mk([-30,-31,-32,-33,-34,-35,-36]), sF=streakRead(fut,NOW), LF=ladderRead(fut,NOW);
+  ok(sF.days===0&&sF.run===0&&!sF.live,
+   'days dated a month ahead are not days practised, got '+JSON.stringify({days:sF.days,run:sF.run,live:sF.live}));
+  ok(LF.earned.length===0,'and earn no mark, got '+LF.earned.map(m=>m.k).join(','));
+  ok(LF.ledger.minutes===0&&LF.ledger.done===0,'and put no minutes practised on the ledger, got '+LF.ledger.minutes);
+  ok(LF.ledger.planned===70,'while they still count as planned, got '+LF.ledger.planned);
+  ok(E.pracDays(fut,NOW).length===0,'pracDays agrees, got '+E.pracDays(fut,NOW).length);
+  ok(streakRead(mk([-1]),NOW).days===1,'and tomorrow, the one day of slack, still counts');
+  ok(streakRead(mk([-2]),NOW).days===0,'the day after it does not');
+  /* the track mark and the dated marks read the same rule */
+  const tracks=[...new Set(E.PRACTICE.map(x=>x.track).filter(Boolean))], tf=blankProfile('L');
+  tracks.forEach((t,i)=>{const k=E.PRACTICE.find(x=>x.track===t).k; tf.rituals.push({t:day(-30-i),min:5,steps:[k]});});
+  ok(!ladderRead(tf,NOW).earned.some(m=>m.k==='tracks'),'Every track run is not earned off days ahead');
+  /* and the day list that markDays dates against agrees with the one the
+     marks are tested on, so a mark on the shelf always has a date */
+  const mix=mk([0,1,2,3,4,5,-20,-21]), md=E.markDays(mix,NOW), LM=ladderRead(mix,NOW);
+  ok(LM.earned.filter(m=>m.fam==='Practice').every(m=>md[m.k]!==undefined),
+   'every practice mark earned is one markDays can date, earned '+LM.earned.filter(m=>m.fam==='Practice').map(m=>m.k)+' dated '+Object.keys(md));}
 }
 
 console.log('\n27c · a save never costs a person data, and a drain never leaks');
