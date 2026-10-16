@@ -103,6 +103,8 @@ require('./net.js').guardBrowser(browser);
 
   console.log('\n-- a release with a store that refuses --');
   await p.evaluate(SHRINK);
+  const rec0 = own(await saved(p)) || {};
+  const axes0 = JSON.stringify(rec0.axes || null), meter0 = JSON.stringify(rec0.meter || null), hist0 = (rec0.history || []).length;
   await refuse(p, true); await clearLog(p);
   await p.evaluate(() => { const g = document.getElementById('strun'); if (g && !g.disabled) g.click(); }); await p.waitForTimeout(300);
   await p.evaluate(() => { const d = document.getElementById('reldose'); if (d) { d.value = '1'; d.dispatchEvent(new Event('change')); } });
@@ -112,11 +114,53 @@ require('./net.js').guardBrowser(browser);
   L = await log(p);
   ok(L.some(x => x.k === 'fail' && /would not save/.test(x.m) && /release/.test(x.m)), 'the release says it was not saved, with the fail mark: ' + JSON.stringify(L.map(x => x.m)));
   ok(!L.some(x => /Error\.$/.test(x.m)), 'no line ends on "Error."');
-  await clearLog(p);
+  /* A REFUSED RELEASE IS NOT ASKED WHAT CHANGED, since ed5eca3 (11 October,
+     the atomic release save): the run is rolled back in memory, so an answer
+     would be evidence about a release the record does not hold. relCoolDown
+     sets RUN.ask only when RUN.saved. Until 16 October this probe pressed an
+     answer here and read #relsaid, a card that cannot appear on this path, so
+     it read "" and was red for the wrong reason with no job running it. */
   await p.evaluate(() => { const x = document.getElementById('relrest'); if (x) x.click(); }); await p.waitForTimeout(150);
+  const asked = await p.evaluate(() => ({ ask: RUN.ask, card: !!document.getElementById('relask'), btn: !!document.querySelector('[data-relsaid]') }));
+  ok(!asked.ask && !asked.card && !asked.btn, 'a release the browser would not save is not asked What changed: ' + JSON.stringify(asked));
+  await p.evaluate(() => { try { relClose && relClose(); } catch (e) {} }); await p.waitForTimeout(200);
+  await refuse(p, false);
+  /* THE ROLLBACK REACHES THE READING, 16 October. relCoolDown restored CURP
+     and left S, which compute() and saveProfile read, at the released charge,
+     so the next ordinary save wrote the refused release onto the record with
+     no release in its history. Read off the saved record after a save and a
+     reload, never off a live variable. */
+  ok(await p.evaluate(() => pSave()), 'an ordinary save after the refused release lands');
+  await p.reload({ waitUntil: 'load' }); await booted(p);
+  const rec2 = own(await saved(p)) || {};
+  ok(JSON.stringify(rec2.axes || null) === axes0, 'and the record still holds the charge the refused release did not take off it');
+  ok(JSON.stringify(rec2.meter || null) === meter0 && (rec2.history || []).length === hist0,
+    'and its meter and its history are as they were before the release: ' + JSON.stringify({ meter: (rec2.meter || {}).lines, history: (rec2.history || []).length, before: hist0 }));
+  await p.evaluate(SHRINK);
+
+  /* THE ANSWER ITSELF REFUSED. The rule the old probe meant still has a
+     path: the release lands, and the store refuses only the answer. relAnswer
+     then keeps it on the card, says so with the fail mark, and the card must
+     never read "Kept on your record". */
+  console.log('\n-- the answer to What changed, refused --');
+  await clearLog(p);
+  await story(p);
+  await p.evaluate(() => { const g = document.getElementById('strun'); if (g && !g.disabled) g.click(); }); await p.waitForTimeout(300);
+  await p.evaluate(() => { const d = document.getElementById('reldose'); if (d) { d.value = '1'; d.dispatchEvent(new Event('change')); } });
+  const done2 = await p.waitForFunction(() => typeof RUN !== 'undefined' && RUN.phase === 'done' && RUN.cool >= COOLING.length, null, { timeout: 90000 }).then(() => true, () => false);
+  const run2 = await p.evaluate(() => { const g = document.getElementById('strun');
+    return { phase: RUN.phase, saved: RUN.saved, queue: (RUN.queue || []).length, open: RUN.open, tab: S.tab,
+      strun: g ? { disabled: g.disabled, text: g.textContent.trim().slice(0, 60) } : null }; });
+  ok(done2 && run2.saved === true, 'a release with a working store runs to its end and is saved: ' + JSON.stringify(run2));
+  await p.evaluate(() => { const x = document.getElementById('relrest'); if (x) x.click(); }); await p.waitForTimeout(150);
+  ok(await p.evaluate(() => RUN.ask === true && !!document.querySelector('[data-relsaid="not_sure"]')), 'and it is asked What changed');
+  await refuse(p, true); await clearLog(p);
   await p.evaluate(() => { const b = document.querySelector('[data-relsaid="not_sure"]'); if (b) b.click(); }); await p.waitForTimeout(250);
   const said = await p.evaluate(() => { const e = document.getElementById('relsaid'); return e ? e.textContent : ''; });
-  ok(said && !/Kept on your record/.test(said), 'an answer the browser would not save is not shown as kept: ' + JSON.stringify(said));
+  ok(said && !/Kept on your record/.test(said) && /would not save/.test(said), 'an answer the browser would not save is not shown as kept: ' + JSON.stringify(said));
+  L = await log(p);
+  ok(L.some(x => x.k === 'fail' && /would not save/.test(x.m) && /answer/i.test(x.m)), 'and the status line says so with the fail mark: ' + JSON.stringify(L.map(x => x.m)));
+  ok(!L.some(x => /Error\.$/.test(x.m)), 'no line ends on "Error."');
   await p.evaluate(() => { try { relClose && relClose(); } catch (e) {} });
   await refuse(p, false);
 

@@ -53,6 +53,9 @@ async function deviceGate(browser,FILE,ok,booted){
  ok(a.door&&a.tab&&a.clients&&a.host,
   'and the Practitioner section is in the bar, opens, and its Clients tab is the surface that opens, '+JSON.stringify({door:a.door,tab:a.tab,clients:a.clients,host:a.host}));
  ok(a.dev===true&&a.profBefore===a.profAfter,'the setting is in the device store and the profile was not written, '+JSON.stringify({dev:a.dev,same:a.profBefore===a.profAfter}));
+ /* the setting has left the page before the reload, tests/persist.js */
+ ok(await require('./persist.js').persisted(pg,()=>{try{return JSON.parse(localStorage.getItem('source.profiles.device')||'{}').practitioner===true;}catch(e){return false;}}),
+  'the setting reached the browser before the reload');
  await pg.reload({waitUntil:'load'}); await booted(pg);
  const k=await pg.evaluate(()=>({on:pracOn(), door:getComputedStyle(document.querySelector('#secbar .secb[data-sec="practitioner"]')).display!=='none'}));
  ok(k.on&&k.door,'and a reload keeps it, '+JSON.stringify(k));

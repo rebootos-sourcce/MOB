@@ -191,6 +191,31 @@ await section('a worked example',async()=>{
   await p.evaluate(nm=>{loadP(PEOPLE.findIndex(function(x){return x.nm===nm;}));setTab(TAB.SUMMARY);render();},nm); await p.waitForTimeout(250);
   const d=await dup('#sumbody');
   ok(d.length===0,nm+': no sentence is printed twice on the Summary: '+JSON.stringify(d.map(s=>s.slice(0,60))));}
+ /* ONE RECORD'S OPEN ROWS NEVER OPEN ANOTHER'S, 16 October. The check above
+    went red on 4c6185d and green again on f7188cb with no fix: it read
+    James's Summary after five other records, and whether one of their first
+    rows was also one of his depended on which patterns their stories happened
+    to place. Held here by construction instead: every row on the others is
+    opened the way a person opens one, James is loaded, and his open rows must
+    be exactly the ones he opens on a fresh page. The overlap is asserted
+    first, so this cannot pass because nothing was shared. */
+ const openRows=()=>p.evaluate(()=>Array.prototype.filter.call(document.querySelectorAll('#sumbody details.lp-p'),function(d){return d.open;}).map(function(d){return d.dataset.lpk;}));
+ const allRows=()=>p.evaluate(()=>Array.prototype.map.call(document.querySelectorAll('#sumbody details.lp-p'),function(d){return d.dataset.lpk;}));
+ const show=nm=>p.evaluate(nm=>{loadP(PEOPLE.findIndex(function(x){return x.nm===nm;}));setTab(TAB.SUMMARY);render();},nm);
+ await show('James'); await p.waitForTimeout(250);
+ const j0=await openRows(), jAll=await allRows();
+ const opened={};
+ for(const nm of ['Sofia','Diane','Marcus','Angela','Derek']){
+  await show(nm); await p.waitForTimeout(250);
+  (await p.evaluate(()=>Array.prototype.map.call(document.querySelectorAll('#sumbody details.lp-p'),function(d){d.open=true;return d.dataset.lpk;}))).forEach(k=>{opened[k]=1;});
+  await p.waitForTimeout(250);}
+ const shared=jAll.filter(k=>opened[k]&&j0.indexOf(k)<0);
+ ok(shared.length>0,'the other records open rows James also carries, so the next check has something to catch: '+JSON.stringify(shared.slice(0,4)));
+ await show('James'); await p.waitForTimeout(250);
+ const j1=await openRows();
+ ok(j0.length===1&&JSON.stringify(j1)===JSON.stringify(j0),'and James opens only his own rows after them: '+JSON.stringify({own:j0,now:j1}));
+ const dj=await dup('#sumbody');
+ ok(dj.length===0,'and his Summary still prints no sentence twice: '+JSON.stringify(dj.map(s=>s.slice(0,60))));
  ok(errs.length===0,'no page errors: '+JSON.stringify(errs.slice(0,3)));
  await c.close();});
 console.log('\n=== nothing read yet ===');

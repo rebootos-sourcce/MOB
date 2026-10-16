@@ -1361,6 +1361,15 @@ function relCoolDown(){
    var previous=JSON.parse(recordBefore);
    Object.keys(CURP).forEach(function(k){delete CURP[k];});
    Object.keys(previous).forEach(function(k){CURP[k]=previous[k];});
+   /* AND THE WORKING STATE WITH IT, 16 October. compute() and saveProfile
+      read S, not CURP, so restoring CURP alone left S.charge at the released
+      values: the page read the release as landed, and the next unrelated
+      save wrote that charge onto the record with no release in its history.
+      Measured before this line: 3 charged addresses on the record, a refused
+      release, one ordinary save, a reload, and 0 charged with 0 releases.
+      loadProfile rebuilds S from the restored record, so the card keeps the
+      run and the record and the reading both stay where they were. */
+   loadProfile(CURP);
    RUN.recordRestored=true;
   }catch(e){ RUN.recordRestored=false; }
  }

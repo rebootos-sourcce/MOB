@@ -111,6 +111,18 @@ BROWSER = {
     'valuefelt':     ('node tests/valuefelt.js', 20),
     'claims':        ('node tests/claims.js', 20),
     'discordfeedback': ('node tests/discordfeedback.js', 20),
+# 16 October: run by no job until tools/orphans.js named them, report only
+# until three green runs like every gate new to CI
+    'honest':        ('node tests/honest.js', 20),
+    'dailyui':       ('node tests/dailyui.js', 20),
+    'becoming':      ('node tests/becoming.js', 20),
+    'loopui':        ('node tests/loopui.js', 20),
+    'personas-tier': ('node tests/personas-tier.js', 20),
+    'valuefeltui':   ('node tests/valuefeltui.js', 20),
+# the record tells the truth, achievements Block 1 (tests/record.js): the
+# words on the record's surfaces, read on the real renderers. Report only
+# until three green runs, like the alpha guards above.
+    'record':        ('node tests/record.js', 20),
 }
 # P0 Alpha acceptance: move to the blocking browser matrix, and mutation-test each
 # one so a future refactor cannot silently return it to report-only.
@@ -1263,6 +1275,17 @@ class Lint:
         if self.ok(p is not None, 'R2 gates-fast does not run node tests/chrome-path.js.'):
             self.ok('if' not in s,
                     'R2 the chrome-path step has if: %s. It takes no if of any kind: one that skips it when its file is gone, or on a pull request, reads green.' % (s.get('if'),))
+        p, _, s = find(texts, r'node tools/orphans\.js(?! --self-test)\b')
+        if self.ok(p is not None, 'R2 gates-fast does not run node tools/orphans.js, so a test file no job runs is never red.'):
+            self.ok('if' not in s and 'continue-on-error' not in s,
+                    'R2 the orphans step has if: %s or continue-on-error: %s. It takes neither: a skipped or forgiven orphan check reads green.' % (s.get('if'), s.get('continue-on-error')))
+            self.ok(os.path.isfile(os.path.join(self.root, 'tools', 'orphans.js')), 'R2 tools/orphans.js does not exist.')
+        p, _, s = find(texts, r'node tools/products\.js(?! --self-test)\b')
+        if self.ok(p is not None, 'R2 gates-fast does not run node tools/products.js, so a committed build product can fall behind its source unseen.'):
+            self.ok(built is not None and p > built, 'R2 gates-fast checks the build products before the build has run, so there is nothing fresh to compare them with.')
+            self.ok('if' not in s and 'continue-on-error' not in s,
+                    'R2 the products step has if: %s or continue-on-error: %s. It takes neither: a skipped or forgiven products check reads green.' % (s.get('if'), s.get('continue-on-error')))
+            self.ok(os.path.isfile(os.path.join(self.root, 'tools', 'products.js')), 'R2 tools/products.js does not exist.')
         fa = self.floors_args(texts)
         want = ['engine', 'funnel-package']
         hit = [a for a in fa if all(w in a[1] for w in want)]
@@ -2108,12 +2131,24 @@ BREAKS = [
     ('a workflow concurrency that cancels', lambda d: d.__setitem__('concurrency', {'group': 'x', 'cancel-in-progress': True})),
     ('chromium pointed at after the gate', lambda d: _job(d, 'gates-browser')['steps'].append(_job(d, 'gates-browser')['steps'].pop(4))),
     ('a browser gate dropped from the matrix', lambda d: _legs(d, 'gates-browser').pop(0)),
+    # a report leg dropped by name, the record gate, which ran nowhere in CI for
+    # one pull request because its matrix line and this table disagreed
+    ('the record gate dropped from gates-report', lambda d: _legs(d, 'gates-report').remove(
+        [l for l in _legs(d, 'gates-report') if l.get('gate') == 'record'][0])),
     ('the build order reversed', lambda d: _sub(d, 'gates-fast', r'BUILD-engine', './atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh', './atuned_src/BUILD.sh && ./atuned_src/BUILD-engine.sh')),
     ('the deploy job builds BUILD.sh first', lambda d: _sub(d, 'deploy', r'BUILD-engine', './atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh', './atuned_src/BUILD.sh && ./atuned_src/BUILD-engine.sh')),
     ('the engine gate not teed', lambda d: _sub(d, 'gates-fast', r'tests/engine\.js', 'engine.log', 'engine.txt')),
     ('no pipefail', lambda d: d['defaults']['run'].__setitem__('shell', 'sh')),
     ('the chrome-path step skipped when its file is gone', lambda d: _step(d, 'gates-fast', r'chrome-path').__setitem__('if', "hashFiles('tests/chrome-path.js') != ''")),
     ('the chrome-path step skipped on a pull request', lambda d: _step(d, 'gates-fast', r'chrome-path').__setitem__('if', "github.event_name == 'push'")),
+    ('the orphans check dropped', lambda d: _job(d, 'gates-fast')['steps'].remove(_step(d, 'gates-fast', r'tools/orphans\.js'))),
+    ('the orphans check skipped on a pull request', lambda d: _step(d, 'gates-fast', r'tools/orphans\.js').__setitem__('if', "github.event_name == 'push'")),
+    ('the orphans check allowed to fail', lambda d: _step(d, 'gates-fast', r'tools/orphans\.js').__setitem__('continue-on-error', True)),
+    ('the orphans check reduced to its self test', lambda d: _sub(d, 'gates-fast', r'tools/orphans\.js', ' && node tools/orphans.js', '')),
+    ('the products check dropped', lambda d: _job(d, 'gates-fast')['steps'].remove(_step(d, 'gates-fast', r'tools/products\.js'))),
+    ('the products check skipped on a pull request', lambda d: _step(d, 'gates-fast', r'tools/products\.js').__setitem__('if', "github.event_name == 'push'")),
+    ('the products check allowed to fail', lambda d: _step(d, 'gates-fast', r'tools/products\.js').__setitem__('continue-on-error', True)),
+    ('the products check reduced to its self test', lambda d: _sub(d, 'gates-fast', r'tools/products\.js', ' && node tools/products.js', '')),
     ('the FAQ not staged', lambda d: _sub(d, 'deploy', r'mkdir deploy', 'cp funnel/dist/atuned-faq.html deploy/\n', '')),
     ('the FAQ dropped from FUNNEL_PAGES', lambda d: d['env'].__setitem__('FUNNEL_PAGES', d['env']['FUNNEL_PAGES'].replace(' atuned-faq', ''))),
     ('a page list typed into the deploy check', lambda d: _sub(d, 'deploy', r'test -s', '$FUNNEL_PAGES; do', 'atuned-funnel atuned-quiz atuned-about atuned-buy atuned-faq; do')),
