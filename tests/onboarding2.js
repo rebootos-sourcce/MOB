@@ -917,7 +917,7 @@ console.log('\n=== Is this a crisis, on the welcome and after it (16 October) ==
      words, the pill and Not now each keep four pixels of air. Checked
      against the build before the move, where the pill sat 60 to 104 pixels
      down at 390. */
-  const row=await page.evaluate(()=>{const bar=document.querySelector('#ob .obx-top').getBoundingClientRect();
+  const rowFit=await page.evaluate(()=>{const bar=document.querySelector('#ob .obx-top').getBoundingClientRect();
    const sel={mark:'#ob .obx-mark',track:'#ob .obx-track',step:'#ob .obx-step',crx:'#ob .obx-crx',x:'#ob .obx-x'}, box={};
    for(const k in sel){const e=document.querySelector(sel[k]); if(!e)continue; const q=e.getBoundingClientRect();
     if(q.width&&q.height&&getComputedStyle(e).visibility!=='hidden')box[k]={l:q.left,r:q.right,t:q.top,b:q.bottom};}
@@ -925,7 +925,7 @@ console.log('\n=== Is this a crisis, on the welcome and after it (16 October) ==
    for(let i=0;i<ks.length;i++)for(let j=i+1;j<ks.length;j++){const A=box[ks[i]],B=box[ks[j]];
     if(!(A.r+4<=B.l||A.l>=B.r+4||A.b<=B.t||A.t>=B.b))tight.push(ks[i]+'/'+ks[j]);}
    return {inRow:!!box.crx&&box.crx.t>=bar.top&&box.crx.b<=bar.bottom, x:!!box.x, tight};});
-  ok(row.inRow&&row.x&&!row.tight.length,'in the bar\'s own row beside Not now, every item with room around it'+at+', '+JSON.stringify(row));
+  ok(rowFit.inRow&&rowFit.x&&!rowFit.tight.length,'in the bar\'s own row beside Not now, every item with room around it'+at+', '+JSON.stringify(rowFit));
   await page.click('[data-ob="back"]'); await page.waitForTimeout(400);
 
   await page.click('#ob .obx-crx'); await page.waitForTimeout(150);
