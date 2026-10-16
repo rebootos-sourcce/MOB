@@ -36,8 +36,19 @@ Reported facts that this session could not verify itself are marked so.
 - The merge of MOB PR 76 (`018bb70`, documents, agents and a test floor; no
   application source) started deploy run 38813550850 on main at 21:52 UTC.
   It finished green at every step, including "Cloudflare serves this commit
-  in production". So atuned.world now serves `018bb70`: the same application
+  in production". So atuned.world served `018bb70`: the same application
   source as `ed5eca3`, built fresh, under the new stamp.
+- **Then the P0 fixes, 23:38 UTC.** MOB PR 78 merged as `4845f0d`; deploy run
+  38823934780 green at every step, "Cloudflare serves this commit in
+  production" success. atuned.world serves `4845f0d` now: the downloaded
+  copy says why it cannot sign in, "diagnostic" is off the screen, the CQ
+  and DQ key prints bare numbers, the Summary plate prints how much is
+  measured and opens the figure with its range one tap down, the privacy
+  draft names the first visit. Every gate green on that build (functional
+  2622, golden 136 with one expected red, alpha journey 61, copy 151, design
+  192, and the rest as the pull request records). PR 77 (`3e094f0`, the
+  Cloudflare inspection workflow and this file) merged and deployed before
+  it.
 
 ## The boundary, as of 15 October 20:57 UTC
 
@@ -92,7 +103,32 @@ back workflows, and the reruns on PR 54's head (`a39fdfb`): server, shell,
 retention and the packaged UI build green; the gate red on its own browser
 path (Chromium installed at `/opt/pw-browsers` for the quick smoke, the
 voice surface gate then looking in Playwright's default cache), fixed on
-the branch as `91a4180` by making the path the job's for every step.
+the branch as `91a4180` by making the path the job's for every step. Gate
+green on `91a4180` at 22:40 UTC (runs 38816882946 and 38816876956): Block 6
+of the owner's handshake is closed. PR 54 stays a draft, unmerged.
+
+## Stripe, wired at 23:32 UTC
+
+The owner pasted `STRIPE_SECRET_KEY` (test mode) into Reboot-OS's GitHub
+secrets at about 23:10 UTC. Reboot-OS PR 56 (`6f2d1bf`, merged) added
+`stripe-setup.yml`, which made the three buyable tiers as prices under
+lookup keys `atuned_tier_one`, `_two`, `_three`, the webhook endpoint at the
+server's `/v1/billing/webhook` with the five events, a tagged customer portal
+configuration, and put the key and the webhook signing secret into the
+Worker (run 38823542810). `server.yml` now reads the price ids and the
+portal configuration back from Stripe at every deploy when the GitHub
+secrets are empty, and `createPortal` names the configuration. The deploy on
+main (run 38824097767) was green at every step, and its live Stripe check
+printed: "live Stripe setup check passed, test mode: three prices, the
+webhook with all five events, and the customer portal". Checkout stays
+closed: `STRIPE_BILLING_ENABLED` is `0` in `wrangler.toml`, and opening it
+waits for the live key and the owner's word, because a test key open to
+strangers would let anyone "pay" with a test card. Tier four has no price,
+by the standing rule.
+
+Reboot-OS PR 55 (`adf61cd`, merged) removed the Pages publish step from
+`web.yml` for good and added the read only `kpi-totals.yml` and
+`cloudflare-readback.yml` workflows.
 
 ## The KPI ladder, first read
 
@@ -165,5 +201,24 @@ restores parsing and boot (five source lines, both build files rebuilt,
 with 19 failures. The second, `a39fdfb`, resolves all 19 and the three that
 surfaced behind them: locally `SMOKE TEST PASS 840 FAIL 0`, `ALL GREEN`,
 exit 0. The list, with causes and where each fix landed, is
-`PR54-TRIAGE-2026-10-15.md` in this folder. CI has not run on either
-commit: the budget above. The local run is the evidence until it does.
+`PR54-TRIAGE-2026-10-15.md` in this folder. A third commit, `91a4180`,
+fixed the gate workflow's browser path, and the gate ran green on it at
+22:40 UTC. Block 6 is closed; the merge waits on the owner's word and on the
+D1 canon re-seed noted in the triage.
+
+## The gift bank, verified against the owner's research handshake
+
+`GIFT-BANK-VERIFIED-2026-10-15.md` beside this file. Short form: every path
+and pull request the handshake names exists where it says (the inventory and
+crosswalk on Reboot-OS branch `alpha/p1-fixed-pattern-gift-contract-20261010`,
+not on `main`; the validator on `feat/p0-gift-bank-validator-20261014`; the
+12 October ruling in MOB `DECISIONS.md` on `docs/atuned-master-index-20261012`).
+The six bank files exist in no branch of either repository and not in Drive.
+The content that exists is the LET GO corpus (376 transcript and 184 PDF
+source records, 239 index nodes, 150 candidates), the 11,700 belief lines of
+the cards, and the Little Books volumes (nine pairs each for anxiety,
+burnout and grief). Decision taken: build six candidate banks from the
+corpus, anxiety first, each delivered for the owner's approval in the
+validator's format; nothing issued until all six are approved and readback
+is proven. The gift does not block alpha: a stranger still gets 100 releases
+from the general catalogue.
