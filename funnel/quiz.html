@@ -206,9 +206,13 @@ button.act:focus-visible,a.act:focus-visible{outline:2px solid var(--ink);outlin
    CRISIS_LINES, so this page and the app cannot say two different things.
    The button is quiet in the sticky top, so it is on every state of the page;
    the panel is one card over the page, and every control is at the floor. ---- */
+/* THE OUTLINE IS INK, NOT --edge-2, 16 October, the app's rule from the review
+   of these screens (atuned_src/shell/head.html .crx-open): the edge colour
+   left the pill's border all but gone, so the button read as loose words.
+   Fifty per cent ink, colourless, measured off this page's own pixels. */
 .crxq{flex:0 0 auto;min-height:var(--tap);padding:0 14px;border-radius:999px;background:transparent;
- font:inherit;font-size:13px;color:var(--mid);border:1px solid var(--edge-2);cursor:pointer}
-.crxq:hover{color:var(--ink)}
+ font:inherit;font-size:13px;color:var(--mid);border:1px solid color-mix(in srgb,var(--ink) 50%,transparent);cursor:pointer}
+.crxq:hover{color:var(--ink);border-color:color-mix(in srgb,var(--ink) 70%,transparent)}
 .crxq:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .crxp{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;
  padding:16px;background:rgba(6,6,8,.8)}
@@ -224,6 +228,15 @@ button.act:focus-visible,a.act:focus-visible{outline:2px solid var(--ink);outlin
 .crxp-go,.crxp-acts{display:flex;gap:8px;flex-wrap:wrap}
 .crxp-acts{margin-top:16px}
 .crxp .act{min-height:var(--tap);padding:10px 16px;font-size:15px}
+/* pills, as the app's panel draws them: here only, in the panel and on the
+   Story door, because every other button on this page is a rounded
+   rectangle by its own rule and reshaping them all is not this change */
+.crxp .act,.crxq-row .act{border-radius:999px}
+/* the line Talk it through leaves above the box, and the way back to the
+   numbers beside it; on a phone the button wraps under the line */
+.crxq-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-top:12px}
+.crxq-row .sm{flex:1 1 240px;margin:0}
+.crxq-row .act{min-height:var(--tap);padding:10px 16px;font-size:15px}
 /* ---- the story. One box, the same panel as a card, and the type at body
    size, because a person writing about their week at 14 pixels is squinting
    at their own sentence. ---- */
@@ -1189,7 +1202,11 @@ function viewStory(){
   +(sigSay()?'<p class="sm">Before the questions you noticed '+esc(sigSay())
     +'. If it is the same moment, write that in too.</p>':'')
   /* Talk it through, from the crisis panel: the box says what it is for */
-  +(CRX.talk?'<p class="sm" id="crxqsay">'+esc(CRISIS_SAY.story)+'</p>':'')
+  /* and Reach someone now beside it, as the app has: Talk it through must
+     never be a door that closes on the numbers. It opens the same panel on
+     them, and reads nothing in the box. */
+  +(CRX.talk?'<div class="crxq-row"><p class="sm" id="crxqsay">'+esc(CRISIS_SAY.story)+'</p>'
+    +'<button type="button" class="act" data-crx="reachnow">'+esc(CRISIS_SAY.reach)+'</button></div>':'')
   +'<textarea class="storyta" id="storytx" spellcheck="false" aria-label="What happened" '
   +'placeholder="What happened, and where you felt it.">'+esc(STORY)+'</textarea>'
   +'<div class="acts stacts">'
@@ -1524,9 +1541,11 @@ function crxCard(){
    /* NOT CRISIS_SAY.journal. The app says "Talk it through opens your
       journal. No person reads it." under this question, and here it would be
       wrong: Talk it through on this page goes to this page's own story box,
-      and there is no journal on the quiz. This page makes no request at all,
-      so nobody reads the box either, but half a true line is not printed. */
-   :'<p class="crxp-p">'+esc(CRISIS_SAY.q)+'</p>')
+      and there is no journal on the quiz. CRISIS_SAY.quiz is this page's own
+      line, true here: where the button goes, and that the page sends nothing,
+      which tests/funnel.js proves by counting its requests. */
+   :'<p class="crxp-p">'+esc(CRISIS_SAY.q)+'</p>'
+    +'<p class="crxp-p">'+esc(CRISIS_SAY.quiz)+'</p>')
   +'<div class="crxp-acts">'
   +(reach?'':'<button type="button" class="act go" data-crx="reach">'+esc(CRISIS_SAY.reach)+'</button>')
   +'<button type="button" class="act" data-crx="talk">'+esc(CRISIS_SAY.talk)+'</button>'
@@ -1554,6 +1573,9 @@ function crxTalk(){
  var t=document.getElementById('storytx'); if(t)t.focus();}
 (function(){ var b=document.getElementById('crxq'); if(b){ b.textContent=CRISIS_SAY.open; b.onclick=crxOpen; } })();
 document.addEventListener('click',function(e){
+ /* the Story door opens the panel straight on the numbers */
+ var rn=e.target&&e.target.closest?e.target.closest('[data-crx="reachnow"]'):null;
+ if(rn&&!CRX.open){ crxOpen(); CRX.view='reach'; crxPaint(); return; }
  if(!CRX.open)return;
  var h=document.getElementById('crxqp'); if(e.target===h){ crxShut(); return; }
  var b=e.target&&e.target.closest?e.target.closest('[data-crx]'):null; if(!b)return;

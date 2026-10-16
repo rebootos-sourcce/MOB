@@ -8466,6 +8466,8 @@ g('CRISIS · the button a person presses: three numbers, each with its sentence 
   'the panel says where else 988 answers and what to use anywhere else, got '+JSON.stringify(S.where));
  ok(S.journal==='Talk it through opens your journal. No person reads it.',
   'and says where Talk it through goes and who reads it, got '+JSON.stringify(S.journal));
+ ok(S.quiz==='Talk it through opens the story box on this page. This page sends nothing anywhere.',
+  'and the quiz says where its own Talk it through goes, with no claim about who reads it, got '+JSON.stringify(S.quiz));
  ok(S.story==='It is always a story. Write what is happening, or what happened.',
   'and the Story line names the present as well as the past, got '+JSON.stringify(S.story));
  ok(S.open==='Is this a crisis?'&&S.h==='Tell me about it.'&&S.reach==='Reach someone now'&&S.talk==='Talk it through',

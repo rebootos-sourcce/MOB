@@ -117,7 +117,11 @@ const REQUIRED=[
  /* and the question's own view, the app's only: where Talk it through goes
     and who reads it (a claim tests/onboarding2.js holds true of the build) */
  ['crisis-ask', [/\bTalk it through opens your journal\.$/], 'where Talk it through goes'],
- ['crisis-ask', [/\bNo person reads it\.$/], 'that no person reads the journal']];
+ ['crisis-ask', [/\bNo person reads it\.$/], 'that no person reads the journal'],
+ /* the quiz's question view: where its Talk it through goes, and only what
+    tests/funnel.js proves about the page, that it sends nothing */
+ ['crisis-quizask', [/\bTalk it through opens the story box on this page\.$/], 'where the quiz\'s Talk it through goes'],
+ ['crisis-quizask', [/\bThis page sends nothing anywhere\.$/], 'that the quiz page sends nothing']];
 
 /* WHAT MAY LEAVE DURING THE WALK. [method, path, the body keys it may carry],
    read off ui/auth.js. The walk never signs in, so these are the only routes
@@ -356,6 +360,7 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
   /* the quiz's copy of the crisis panel, held to the same sentences */
   if(await p.$('#crxq')){
    await p.click('#crxq'); await p.waitForTimeout(150);
+   hold('funnel','funnel/'+wn+'/'+f+':crisis:ask',await p.evaluate(harvest,'#crxqp'),'crisis-quizask');
    await p.click('#crxqp [data-crx="reach"]'); await p.waitForTimeout(150);
    hold('funnel','funnel/'+wn+'/'+f+':crisis',await p.evaluate(harvest,'#crxqp'),'crisis');
    await p.keyboard.press('Escape'); await p.waitForTimeout(100);}

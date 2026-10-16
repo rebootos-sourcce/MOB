@@ -6772,10 +6772,14 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
 /* at the foot the bar gains a third button, so it may wrap on a phone and
    Clear and Commit stay together at the right */
 .st-bar.st-bar-crx{flex-wrap:wrap}
-/* and when it wraps, the door goes last, onto its own line: first shot at 390
-   it took Clear's line and left Commit alone underneath, which split the pair
-   a person finishes with */
-@media(max-width:640px){.st-bar.st-bar-crx .st-crxbar{order:3}}
+/* ONE DOOR ON A PHONE, 16 October, from the art director's re-check: at 390
+   the two Reach someone now buttons stood about 245 pixels apart, the same
+   words twice on one screen. The one by the line stays, because it is on the
+   first screen when Talk it through lands (tests/onboarding2.js holds that it
+   is inside the viewport at 390); the one in the Commit row goes. An earlier
+   cut wrapped it onto Clear's line and left Commit alone underneath, so the
+   pair a person finishes with is held side by side as well. */
+@media(max-width:640px){.st-bar.st-bar-crx .st-crxbar{display:none}}
 .login-dev summary{font-size:12.5px;color:var(--dim);cursor:pointer;
  list-style:none}
 .login-dev summary::-webkit-details-marker{display:none}

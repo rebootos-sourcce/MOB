@@ -981,15 +981,22 @@ console.log('\n=== Is this a crisis, on the welcome and after it (16 October) ==
   /* THE WAY BACK TO THE NUMBERS, from the review of these screens: Talk it
      through used to leave the person on the full Story page with no way back
      to the three numbers. Reach someone now stands beside the line and beside
-     Commit, and opens the same panel on the numbers. Checked against the
-     build before the doors, where it fails here, on no door. */
+     Commit, and opens the same panel on the numbers. On a phone only the one
+     by the line shows (the art director's re-check: the same words twice,
+     about 245 pixels apart), and it must be on the first screen as Talk it
+     through lands, with no scroll. Checked against the build before the
+     doors, where it fails here, on no door. */
+  const narrow=w<=640;
   const doors=await page.evaluate(()=>[...document.querySelectorAll('[data-crisis="reachnow"]')].map(b=>{
     const r=b.getBoundingClientRect();
     return {t:b.textContent, h:Math.round(r.height), on:r.width>0&&r.height>0&&r.right<=innerWidth,
-     row:!!b.closest('.st-crxrow'), bar:!!b.closest('.st-bar')&&!!b.parentNode.querySelector('#stapply')};}));
-  ok(doors.length===2&&doors.every(d=>d.t==='Reach someone now'&&d.on&&d.h>=44)
-   &&doors.some(d=>d.row)&&doors.some(d=>d.bar),
-   'Reach someone now stands beside the line and beside Commit, at the floor'+at+', '+JSON.stringify(doors));
+     seen:r.top>=0&&r.bottom<=innerHeight,
+     row:!!b.closest('.st-crxrow'), bar:!!b.closest('.st-bar')&&!!b.parentNode.querySelector('#stapply')};}).filter(d=>d.on));
+  ok(narrow
+   ?(doors.length===1&&doors[0].row&&doors[0].seen&&doors[0].t==='Reach someone now'&&doors[0].h>=44)
+   :(doors.length===2&&doors.every(d=>d.t==='Reach someone now'&&d.h>=44)&&doors.some(d=>d.row)&&doors.some(d=>d.bar)),
+   (narrow?'Reach someone now stands beside the line, on the first screen, and only there':'Reach someone now stands beside the line and beside Commit')
+   +', at the floor'+at+', '+JSON.stringify(doors));
   /* and the door never splits Clear from Commit: the first cut wrapped at 390
      with the door on Clear's line and Commit alone below it */
   const pair=await page.evaluate(()=>{const c=document.getElementById('stclear'), m=document.getElementById('stapply');
@@ -998,8 +1005,8 @@ console.log('\n=== Is this a crisis, on the welcome and after it (16 October) ==
   ok(pair&&pair.sameLine&&pair.order,'with Clear and Commit still side by side, Commit last'+at+', '+JSON.stringify(pair));
   /* a missing door is a named failure and not a thirty second click timeout
      that ends the run before the checks after it */
-  if(await page.$('.st-bar [data-crisis="reachnow"]'))
-   await page.click('.st-bar [data-crisis="reachnow"]');
+  const doorSel=narrow?'.st-crxrow [data-crisis="reachnow"]':'.st-bar [data-crisis="reachnow"]';
+  if(await page.$(doorSel))await page.click(doorSel);
   await page.waitForTimeout(150);
   const back=await page.evaluate(()=>{const c=document.getElementById('crisis');
    return {open:!c.hidden, h:(c.querySelector('#crxh')||{}).textContent,
@@ -1007,9 +1014,9 @@ console.log('\n=== Is this a crisis, on the welcome and after it (16 October) ==
   ok(back.open&&back.h==='Reach someone now'&&back.hrefs.indexOf('tel:988')>=0,
    'and it opens the panel straight on the numbers'+at+', '+JSON.stringify(back));
   await page.keyboard.press('Escape'); await page.waitForTimeout(150);
-  const stay=await page.evaluate(()=>({shut:document.getElementById('crisis').hidden, story:S.tab===TAB.STORY,
+  const stay=await page.evaluate(sel=>({shut:document.getElementById('crisis').hidden, story:S.tab===TAB.STORY,
    line:!!document.getElementById('stcrisis'),
-   back:!!(document.activeElement&&document.activeElement.matches('.st-bar [data-crisis="reachnow"]'))}));
+   back:!!(document.activeElement&&document.activeElement.matches(sel))}),doorSel);
   ok(stay.shut&&stay.story&&stay.line&&stay.back,
    'Escape puts the person back on the Story page, the line still there, focus on the door'+at+', '+JSON.stringify(stay));
 

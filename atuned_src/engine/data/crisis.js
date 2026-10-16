@@ -88,5 +88,11 @@ const CRISIS_SAY={
  talk:'Talk it through',
  close:'Close',
  journal:'Talk it through opens your journal. No person reads it.',
+ /* the quiz's own line under the question, 16 October. The app's journal
+    line is wrong there, so the quiz says where its Talk it through goes, its
+    story box, and the one thing that is proven about that page: it makes no
+    request at all (tests/funnel.js counts requests on the quiz, source and
+    built, and fails on one). It does not say who reads anything. */
+ quiz:'Talk it through opens the story box on this page. This page sends nothing anywhere.',
  where:'988 also works in Canada. Elsewhere, call your local emergency number.',
  story:'It is always a story. Write what is happening, or what happened.'};
