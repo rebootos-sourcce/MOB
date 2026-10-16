@@ -1039,10 +1039,14 @@ console.log('\n=== the floor band says where to go and gives the door to it (16 
    return {w, p, says:w?unpackOf(w,'rail'):null};});
   ok(lean.w&&lean.says&&lean.p.indexOf(lean.says)>lean.p.indexOf('Your energy leans'),
    'the reading says what '+lean.w+' means in the same sentence run'+at+', '+JSON.stringify(lean.p.slice(0,200)));
-  await page.locator('.s-ptoward [data-crisis="open"]').scrollIntoViewIfNeeded();
-  if(SHOTS){ await page.mouse.move(0,0); await page.waitForTimeout(200);
-   await page.screenshot({path:path.join(SHOTS,'crisis-floor-'+w+'.png')}); }
-  await page.click('.s-ptoward [data-crisis="open"]'); await page.waitForTimeout(150);
+  /* a missing button is a named failure above and below, never a click
+     timeout that ends the run before the rest of the block */
+  if(plate.b){
+   await page.locator('.s-ptoward [data-crisis="open"]').scrollIntoViewIfNeeded();
+   if(SHOTS){ await page.mouse.move(0,0); await page.waitForTimeout(200);
+    await page.screenshot({path:path.join(SHOTS,'crisis-floor-'+w+'.png')}); }
+   await page.click('.s-ptoward [data-crisis="open"]'); await page.waitForTimeout(150);
+  }
   const opened=await page.evaluate(()=>({open:!document.getElementById('crisis').hidden,
    h:(document.getElementById('crxh')||{}).textContent}));
   ok(opened.open&&opened.h==='Tell me about it.','and it opens the same panel'+at+', '+JSON.stringify(opened));

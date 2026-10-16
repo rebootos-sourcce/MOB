@@ -6741,10 +6741,16 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
 .crx-acts{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
 /* the button, quiet: the same pill as the stage's Not now, so it reads as a
    way out of the flow and never as the next step in it */
+/* THE OUTLINE IS 40 PER CENT INK, 16 October, from the review of these
+   screens. At 16 per cent it measured about 1.5 to 1 against the stage, so
+   the pill's edge all but vanished and the button read as loose words. Forty
+   per cent is about 3.4 to 1, past the 3 to 1 a control's boundary needs,
+   still without colour, so it stays quiet and stays findable. The hover goes
+   up with it, or it would be fainter than the rest state. */
 .crx-open{min-height:var(--tap);padding:0 16px;border-radius:999px;background:transparent;font:inherit;
- font-size:13px;color:var(--mid);border:1px solid color-mix(in srgb,var(--ink) 16%,transparent);cursor:pointer;
+ font-size:13px;color:var(--mid);border:1px solid color-mix(in srgb,var(--ink) 40%,transparent);cursor:pointer;
  transition:color var(--t-micro) var(--ease-out),border-color var(--t-micro) var(--ease-out)}
-.crx-open:hover{color:var(--ink);border-color:color-mix(in srgb,var(--ink) 34%,transparent)}
+.crx-open:hover{color:var(--ink);border-color:color-mix(in srgb,var(--ink) 60%,transparent)}
 .crx-line{margin:14px 0 0}
 /* UNDER THE FLOOR BAND'S DIRECTION it is the next step, so it takes the size,
    the ink and the panel of the page's own .btn, the Run a release beside it.
