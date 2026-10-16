@@ -424,6 +424,10 @@ button.yna:focus-visible,button.more:focus-visible{outline:2px solid var(--ink);
 .close p{font-size:23px;line-height:1.38;margin:0;letter-spacing:-.01em}
 .close .last{color:var(--accent)}
 .foot{margin-top:40px;font-size:13px;color:var(--dim)}
+/* the two legal links sit in the door's foot line, 16 October. A link in a
+   sentence is held to the 24 pixel pointer floor by tests/funnel.js, and a
+   13 pixel line box is under it, so the link carries its own line box */
+.foot a{color:var(--mid);display:inline-block;min-height:24px;line-height:24px}
 @media(min-width:760px){
  .sabs{grid-template-columns:1fr 1fr}
 }
@@ -22012,7 +22016,8 @@ function viewOpen(){
  +'<button class="pri" id="go">'+(done?'Carry on':'Start')+'</button>'
  +(done?'<div class="under"><button class="lnk" id="restart">Start again from the top</button></div>':'')
  +'<p class="foot">Nothing you answer leaves this browser. This page makes no '
- +'request of any kind.</p></div>';}
+ +'request of any kind. <a href="privacy.html">Privacy</a> and <a href="terms.html">Terms</a> '
+ +'say what the app does with what you give it.</p></div>';}
 
 /* THE SIGNAL, three short screens: where, what happens there, and what was
    noticed said back. Every string built from what the person typed goes

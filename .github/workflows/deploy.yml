@@ -110,8 +110,11 @@ defaults:
 
 # The pages the funnel build must produce, one list. gates-fast and deploy
 # both check it, and the staging step copies each, so a page is added here.
+# privacy, terms and consumer-health-data joined it on 16 October: the legal
+# pages sat in funnel/legal/, which this file never staged, so atuned.world
+# served no policy at all.
 env:
-  FUNNEL_PAGES: atuned-funnel atuned-quiz atuned-about atuned-buy atuned-faq
+  FUNNEL_PAGES: atuned-funnel atuned-quiz atuned-about atuned-buy atuned-faq privacy terms consumer-health-data
 
 jobs:
   # The builds, then every gate that needs no browser. Skipped on a rollback.
@@ -608,6 +611,13 @@ jobs:
       # THE FAQ IS STAGED (M48, 8 October). atuned-faq.html is linked seven
       # times from three live pages and was never copied, so every one of those
       # links reached a missing page.
+      #
+      # THE LEGAL PAGES ARE STAGED, 16 October, under their own names, so
+      # atuned.world/privacy, /terms and /consumer-health-data answer: Pages
+      # serves privacy.html at /privacy and redirects /privacy.html there. The
+      # app links the bare addresses and the funnel links the .html names, and
+      # both land. tests/funnel.js runs this step's own lines into a scratch
+      # folder and fails if either page is missing from what it stages.
       - name: stage the site
         if: inputs.rollback_ref != '' || steps.order.outputs.publish == 'true'
         run: |
@@ -617,6 +627,9 @@ jobs:
           cp funnel/dist/atuned-about.html deploy/
           cp funnel/dist/atuned-buy.html deploy/
           cp funnel/dist/atuned-faq.html deploy/
+          cp funnel/dist/privacy.html deploy/
+          cp funnel/dist/terms.html deploy/
+          cp funnel/dist/consumer-health-data.html deploy/
           cp source.html deploy/atuned.html
           cp funnel/dist/atuned-funnel.html deploy/index.html
       - name: install wrangler
