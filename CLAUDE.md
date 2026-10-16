@@ -413,6 +413,13 @@ account from this one if it might be, and where on the page the next
 button or field actually sits. Never assume he is already looking at the
 right screen.
 
+## Emmy, the owner's personal agent. Added 16 October.
+
+She is a read only reviewer (product manager, development supervisor, taste-maker). Her definition is
+`.claude/agents/emmy.md` and her library is `.claude/emmy/`. Read `.claude/emmy/MOB-NOTES.md` before using
+her: it lists where her library is stale or in conflict, and in every case this file and `DECISIONS.md` win.
+Her files are copied unchanged from the master copy, so edit the notes and not her files.
+
 ## Records
 
 `MILESTONES.md` is the sequenced plan, scrubbed by five disciplines, and it
