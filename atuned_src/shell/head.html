@@ -7374,7 +7374,11 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
  .obx-rail{position:static;translate:none;flex:0 1 auto;min-width:0}
  .obx-track{width:clamp(48px,calc(100vw - 330px),150px)}
  .obx .ob-dot{width:5px;height:5px}
- .obx-top .obx-crx{margin:0 0 0 auto;padding:0 10px;font-size:12px;white-space:nowrap}
+ .obx-top .obx-crx{margin:0 0 0 auto;padding:0 10px;font-size:12px;white-space:nowrap;
+  /* the bar's ground is lighter here, under the crown's wash: forty per cent
+     ink read 2.52 to 1 against it off the rendered pixels, so the outline
+     takes fifty, still without colour, for the same 3.4 to 1 as elsewhere */
+  border-color:color-mix(in srgb,var(--ink) 50%,transparent)}
  .obx-x{flex:0 0 auto}
  .obx-slot{left:0;top:var(--st)}
  .obx .ob-scroll{padding:14px 20px 28px}

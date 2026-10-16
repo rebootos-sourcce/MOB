@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v251 010e8756 2026-10-16 13:40"><head><meta charset="utf-8">
+<html lang="en" data-build="v252 bc30c332 2026-10-16 14:01"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -7374,7 +7374,11 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
  .obx-rail{position:static;translate:none;flex:0 1 auto;min-width:0}
  .obx-track{width:clamp(48px,calc(100vw - 330px),150px)}
  .obx .ob-dot{width:5px;height:5px}
- .obx-top .obx-crx{margin:0 0 0 auto;padding:0 10px;font-size:12px;white-space:nowrap}
+ .obx-top .obx-crx{margin:0 0 0 auto;padding:0 10px;font-size:12px;white-space:nowrap;
+  /* the bar's ground is lighter here, under the crown's wash: forty per cent
+     ink read 2.52 to 1 against it off the rendered pixels, so the outline
+     takes fifty, still without colour, for the same 3.4 to 1 as elsewhere */
+  border-color:color-mix(in srgb,var(--ink) 50%,transparent)}
  .obx-x{flex:0 0 auto}
  .obx-slot{left:0;top:var(--st)}
  .obx .ob-scroll{padding:14px 20px 28px}
@@ -77527,5 +77531,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005086277"></div>
+<div id="eof" hidden data-len="005086570"></div>
 </body></html>
