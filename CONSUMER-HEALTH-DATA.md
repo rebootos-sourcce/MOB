@@ -1,76 +1,86 @@
-# Consumer health data privacy policy
+# Consumer health data
 
-> **Warning. Read this first.** This is a draft. An AI wrote it for Atüned, from the owner's own rulings, and no lawyer has read it yet. It is not legal advice. A lawyer who knows Washington and Nevada law must review it before anyone relies on it, and it must not go live until they have. It is a proposed separate page, at atuned.world/consumer-health-data. Washington's law asks for a separate policy behind its own link on the home page, and says it may carry nothing else. So this page holds only what that law asks for, and the general policy holds the rest. Every [PLACEHOLDER] is a fact only the owner can supply. Every [CHECK] is a statement to test against the build, or a point a lawyer must rule on, before this goes live. Every [PROPOSED] is something the owner has decided or the draft recommends, which a lawyer must confirm.
-
-Draft of 1 October 2026. Effective from: [PLACEHOLDER: the date this page goes live].
+Last changed 16 October 2026.
 
 ## 1. Who this is from, and what it covers
 
-Tula Unified LLC ("we") makes Atüned. Address: 1634 West 39th Place, Los Angeles, California 90062, United States. Contact: hello@atuned.world.
+Tula Unified LLC makes Atüned, at 1634 West 39th Place, Los Angeles, California 90062, United States. Contact: hello@atuned.world.
 
-This page is our consumer health data privacy policy under Washington's My Health My Data Act and Nevada's consumer health data law (Senate Bill 370). It covers consumer health data we collect from a person in Washington or Nevada. Consumer health data means personal information that identifies a person's past, present or future physical or mental health. [CHECK: Connecticut has similar rules. A lawyer says whether this page should name it, and whether other states now need to be added.]
+This page is for people who live in Washington or Nevada. It is our consumer health data policy under Washington's My Health My Data Act and Nevada's consumer health data law. Consumer health data means information that can say something about a person's body or mind, now, before or later.
 
-Our general [Privacy policy](privacy.html) covers everything else.
+The [Privacy](privacy.html) page covers everything else.
 
-## 2. What consumer health data we collect, and why
+## 2. What we collect, and why
 
-We collect it only when you create an account, and only what is listed here. Before that, everything you enter stays on your device and we do not collect it.
+Most of what you enter never reaches us. Your name, your birth details, your stories, your answers and your readings stay on your device.
 
-| What we collect | Why |
+This is what can reach us, or pass through our server:
+
+| What | Why |
 |---|---|
-| The stories you wrote, exactly as you typed them [CHECK: the owner has not finally ruled that stories are sent. See the privacy policy, section 4.] | To keep a copy you can recover, and to show it back to you |
-| Your answers to the questions about how you act | To show you the reading you asked for |
-| The readings the engine made from your stories and answers: imprints, releases, summaries and snapshots of your field | To show you the reading you asked for, and to keep it recoverable |
-| The avatar and purpose you set | To show you your own avatar and keep it recoverable |
+| The topic you pick on a first visit, such as anxiety, grief or pain | To join your first visit, and the free patterns that come with it, to your account if you make one |
+| A mark when you finish the opening, finish your first release, or answer What changed. Never what you answered. | The same |
+| Each line the voice speaks in a release. A line names one of your patterns. | To say the line out loud. Our server passes it to ElevenLabs and does not keep it. |
+| What you write when you send a comment, a question or a report from Help, if it says something about your health | So our team can read it |
 
-We do not collect your name, sex, or the date, time and place of your birth. They stay on your device. We do not collect your location. The place of birth is text you typed, and it stays on your device.
-
-We use this data for the two reasons in the table and for nothing else. We do not use it to train or refine any model.
+We use it for those reasons and nothing else. We do not use it to train any model.
 
 ## 3. Where it comes from
 
-From you, and only from you. The app sends it when you create an account. The readings are made by the engine from what you gave it. We collect no consumer health data from anyone else, and buy none.
+From you, and only from you. We buy none, and collect none from anyone else.
 
-## 4. Who we share it with
+## 4. Who gets it
 
-We do not sell your consumer health data. We do not share it with any third party or affiliate. We have no affiliates. [CHECK: confirm.]
+We do not sell consumer health data. We do not give it to any other company for its own use, and we have no affiliates.
 
-A company that handles it for us, and for no one else, is not a third party under the law. [CHECK: a lawyer confirms this reading.] The one that does is Cloudflare, which hosts our server and database in the United States. It holds your record locked, and we hold the key. Stripe, which takes payment, receives no consumer health data. The company that sends our password reset email receives your recovery email address and nothing else.
+These companies handle it for us, and only to run Atüned:
 
-If you dictate, your browser may send your voice to its maker to turn it into text. That is between you and your browser. We never receive it.
+- **Cloudflare** runs our server, so everything above passes through it.
+- **Supabase** holds the topic and the marks from your first visit.
+- **ElevenLabs** gets each line the voice speaks, and nothing that names you.
+- **Discord** holds what you send from Help, in a channel our team reads.
 
-If we ever want to share consumer health data with anyone, we will ask for your separate, written consent first, and we will change this page first.
+If you press Record to speak a story, your browser's maker turns the sound into text. Chrome sends it to Google and Edge sends it to Microsoft. We never get the sound.
 
-## 5. Consent
+## 5. Your choice
 
-We ask for your consent before we collect your consumer health data. You give it by ticking the box when you create an account. You can take it back at any time, from Settings, or by deleting the account. [CHECK: whether the law needs this consent to be its own box, apart from the box that accepts the Terms. The draft recommends its own box.]
+The opening says what it sends before you pick a topic. Picking a topic is your choice. Press Not now and no topic is sent. Turn Voice off in the release panel and no line goes to ElevenLabs.
 
 ## 6. Your rights
 
 You may:
 
-- confirm whether we collect your consumer health data, and have access to it
-- have a list of every third party and affiliate we shared it with or sold it to. The list is empty, because we have shared it with none and sold none.
-- take back your consent
-- have your consumer health data deleted
+- ask whether we hold your consumer health data, and get a copy of it
+- get the list of companies that got it. The list is in section 4.
+- take back a yes you gave
+- have it deleted
 
-**Deleting.** When you delete your account, your data leaves our live system at once. We tell the companies that handle it for us to delete it as well. A locked copy stays in our backups for 90 days, and is overwritten after that. The law allows up to six months for backups. [CHECK: a lawyer confirms the period and that the backup copy is out of use.] Within the 90 days you may ask us to restore the account, and we will, as the general Privacy policy sets out in section 9.
+**Deleting.** Settings, Account, Delete this account deletes your first visit at Supabase along with the account. If you never made an account, your first visit sits under a random code and nothing that names you, so we cannot tell which one is yours.
 
 ## 7. How to use a right, and how to appeal
 
-Use Settings, Privacy, or write to hello@atuned.world. We may ask you to prove who you are, so we do not hand your record to someone else.
+Write to hello@atuned.world. We may ask you to show the account is yours, so we never hand your data to someone else. We answer within 45 days. If we need longer, we tell you why, and take at most 45 days more.
 
-We answer within 45 days. If we need more time we may take another 45, and we will tell you why. [PROPOSED: the draft answers in 30 days.] [CHECK: confirm the deadlines in each state.]
-
-If we refuse a request, you may appeal. Write to hello@atuned.world, say you are appealing, and we will answer within 45 days of receiving it, and tell you why. If we refuse the appeal, you may take it to your state's Attorney General. In Washington that is at atg.wa.gov. In Nevada it is at ag.nv.gov. [CHECK: confirm each state's appeal route.]
+If we say no, you may appeal. Write to hello@atuned.world and say you are appealing. We answer within 45 days and say why. If we still say no, you may take it to your state's Attorney General: in Washington at atg.wa.gov, and in Nevada at ag.nv.gov.
 
 ## 8. Location
 
-We do not use any location to collect consumer health data. We do not draw a virtual boundary around any health care place.
+We do not collect your location. We do not draw a line around any place where people get health care.
 
 ## 9. Changes and contact
 
-We may change this page. The date at the top changes with it. If a change is material, we will email you and show a notice in the app before it takes effect. [PLACEHOLDER: days]
+When this page changes, the date at the top changes. Before we collect anything new, we change this page first.
 
-Contact: hello@atuned.world
+Email: hello@atuned.world
 Post: Tula Unified LLC, 1634 West 39th Place, Los Angeles, California 90062, United States
+
+<!--
+FOR THE OWNER AND FOR COUNSEL, NOT RENDERED. funnel/legal/render.py drops this
+block. Rewritten 16 October against the code: the draft said stories, answers
+and readings are collected at account creation, and profile sync is off (MOB
+ui/auth.js PROFILE_SYNC_ENABLED false, Worker PROFILE_SYNC_ENABLED "0"), so
+none of that reaches the server. What does reach it is the first visit topic,
+which can name a mental health state. Open for counsel: whether the notice on
+the first onboarding card is the consent Washington asks for, and whether
+Connecticut or another state now needs naming.
+-->

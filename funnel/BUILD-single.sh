@@ -17,6 +17,9 @@
 #                                  funnel/dist/atuned-quiz.html
 #                                  funnel/dist/atuned-about.html
 #                                  funnel/dist/atuned-buy.html
+#                                  funnel/dist/atuned-faq.html
+#                                  funnel/dist/privacy.html, terms.html and
+#                                  consumer-health-data.html
 #
 # IT BUILT TWO OF THE FOUR AND dist HELD FOUR. about and buy were in dist from
 # an older run of this script, so the two pages nobody rebuilt were the two
@@ -48,7 +51,15 @@ ring = (here/'ring.js').read_text(encoding='utf-8')
 # one of them opens alone.
 OUT = {'index.html':'atuned-funnel.html', 'quiz.html':'atuned-quiz.html',
        'about.html':'atuned-about.html',  'buy.html':'atuned-buy.html',
-       'faq.html':'atuned-faq.html'}
+       'faq.html':'atuned-faq.html',
+       # THE THREE LEGAL PAGES KEEP THEIR OWN NAMES, 16 October. They are
+       # rendered by funnel/legal/render.py and served at atuned.world/privacy,
+       # /terms and /consumer-health-data, the addresses the app, Stripe and
+       # every funnel footer link. A download named atuned-privacy.html would
+       # need a second name on the site, and a page with two names is two
+       # pages that drift.
+       'privacy.html':'privacy.html', 'terms.html':'terms.html',
+       'consumer-health-data.html':'consumer-health-data.html'}
 # THE DOOR TO THE APP. quiz.html links ../source.html, the built instrument one
 # directory up in the repository, because there is no hosted address yet and a
 # made up one is a dead link. A file sent on its own has no directory above it,

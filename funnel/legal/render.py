@@ -1,43 +1,48 @@
 #!/usr/bin/env python3
-"""Renders PRIVACY-POLICY.md, TERMS.md and CONSUMER-HEALTH-DATA.md into three static funnel pages.
+"""Renders PRIVACY-POLICY.md, TERMS.md and CONSUMER-HEALTH-DATA.md into three funnel pages.
 
-    python3 funnel/legal/render.py            writes privacy.html, terms.html and consumer-health-data.html in funnel/legal/
-    python3 funnel/legal/render.py --wired    writes the same three in funnel/
+    python3 funnel/legal/render.py     writes privacy.html, terms.html and consumer-health-data.html in funnel/
 
-THE PAGES LIVE IN funnel/legal/ AND NOT IN funnel/, ON PURPOSE. Two things read
-every .html file at the top of funnel/ by directory listing and not by a list:
-funnel/BUILD-single.sh, which stops with "no dist name for ['privacy.html']: add
-it to OUT" on any page it does not know, and tests/funnel.js, which gates every
-page it finds. A page dropped into funnel/ before it is wired breaks the deploy
-build. Measured on 1 October 2026 against a copy of the script. The subfolder is
-outside both listings, so nothing changes until somebody wires the pages.
-
---wired is the wiring. It writes the same pages one folder up, with sibling links
-written the way every other funnel page writes them (index.html, buy.html) and
-with the one line BUILD-single.sh asserts every page carries, the link to
-tokens.css. LEGAL-IA.md lists the rest of the wiring.
+THE PAGES ARE WIRED, 16 October, on the owner's word: "Yes, we need a privacy
+policy. It's very important to us." Until then they were written here, in
+funnel/legal/, because two things read every .html file at the top of funnel/
+by directory listing: funnel/BUILD-single.sh, which stopped on any page it had
+no dist name for, and tests/funnel.js, which gates every page it finds. A page
+in funnel/ before it was wired broke the deploy build. So the subfolder held
+drafts nobody could reach, and .github/workflows/deploy.yml staged nothing
+under it: atuned.world served no policy and nothing linked to one. Now the
+pages land in funnel/ beside index.html, BUILD-single.sh names them in OUT,
+tests/funnel.js gates them like any other page, and the deploy stages them at
+/privacy, /terms and /consumer-health-data.
 
 The markdown is the source. Edit PRIVACY-POLICY.md, TERMS.md or
-CONSUMER-HEALTH-DATA.md, run this, and commit both. A page edited by hand drifts from the document counsel reviewed.
+CONSUMER-HEALTH-DATA.md, run this, run funnel/BUILD-single.sh, and commit all
+of it. A page edited by hand drifts from the document it was rendered from.
+
+A NOTE FOR COUNSEL IS AN HTML COMMENT IN THE MARKDOWN, AND IT IS DROPPED HERE.
+The drafts carried their open legal questions inline as [PLACEHOLDER], [CHECK]
+and [PROPOSED] marks, which was right for a draft and is wrong on a page a
+person relies on: a public policy that says "[CHECK: the app does not send the
+record yet]" says nothing true about what the app sends. The questions are kept
+in a comment block at the foot of each document, and a mark left in the prose
+stops this script, so a draft line can never reach the live site.
 
 No network, no external font, no script in the output.
 """
 import html
 import pathlib
 import re
-import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
-WIRED = '--wired' in sys.argv
-OUTDIR = ROOT / 'funnel' if WIRED else ROOT / 'funnel' / 'legal'
-UP = '' if WIRED else '../'   # where the sibling funnel pages are, from the page
+OUTDIR = ROOT / 'funnel'
+UP = ''   # the sibling funnel pages sit beside the page
 
 PAGES = [
     ('PRIVACY-POLICY.md', 'privacy.html', 'Privacy policy', 'Privacy',
      'What Atüned keeps on your device, what leaves it and when, who sees it, and how to delete it.'),
     ('TERMS.md', 'terms.html', 'Terms', 'Terms',
-     'The terms for using Atüned: what it is and is not, accounts, plans and billing, and what you own.'),
-    ('CONSUMER-HEALTH-DATA.md', 'consumer-health-data.html', 'Consumer health data privacy policy', 'Consumer health data',
+     'The terms for using Atüned: what it is and is not, who can use it, your account, and what you own.'),
+    ('CONSUMER-HEALTH-DATA.md', 'consumer-health-data.html', 'Consumer health data', 'Consumer health data',
      'What consumer health data Atüned collects from people in Washington and Nevada, why, who handles it, and the rights you have over it.'),
 ]
 LEGAL_PAGES = ('privacy.html', 'terms.html', 'consumer-health-data.html')
@@ -171,6 +176,9 @@ def inline(s):
             href = UP + href if href not in LEGAL_PAGES else href
         return '<a href="%s">%s</a>' % (href, m.group(1))
     s = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', link, s)
+    # an address a person is told to write to is a link that opens their mail,
+    # so "write to hello@atuned.world" is one press and not a copy by hand
+    s = re.sub(r'(?<![\w.@/:])([\w.+-]+@[\w-]+(?:\.[\w-]+)*\.[a-z]{2,})', r'<a href="mailto:\1">\1</a>', s)
     s = re.sub(r'\[PLACEHOLDER:([^\]]*)\]', r'<mark class="ph">[PLACEHOLDER:\1]</mark>', s)
     s = re.sub(r'\[PROPOSED:([^\]]*)\]', r'<mark class="pr">[PROPOSED:\1]</mark>', s)
     s = re.sub(r'\[CHECK:([^\]]*)\]', r'<mark class="ck">[CHECK:\1]</mark>', s)
@@ -238,14 +246,16 @@ def render_body(md):
         while i < len(lines) and lines[i].strip() and not re.match(r'(#|>|- |\||\d+\.\s)', lines[i]):
             buf.append(lines[i].rstrip())
             i += 1
-        cls = ' class="stamp"' if (not seen_h2 and buf[0].startswith('Draft of')) else ''
+        cls = ' class="stamp"' if (not seen_h2 and buf[0].startswith(('Draft of', 'Last changed'))) else ''
         out.append('<p%s>%s</p>' % (cls, '<br>'.join(inline(b) for b in buf)))
     return title, '\n'.join(out)
 
 
 def page(title, short, desc, body, fname):
+    # the funnel's own footer labels, word for word, so this page does not say
+    # "Questions" where every other page says "FAQ"
     others = [('index.html', 'What it reads'), ('about.html', 'About'),
-              ('faq.html', 'Questions'), ('buy.html', 'Tiers'), ('quiz.html', 'Start')]
+              ('faq.html', 'FAQ'), ('buy.html', 'Tiers'), ('quiz.html', 'Take quiz')]
     legal = [('privacy.html', 'Privacy'), ('terms.html', 'Terms'), ('consumer-health-data.html', 'Consumer health data')]
 
     def nav(cur):
@@ -262,16 +272,15 @@ def page(title, short, desc, body, fname):
     m = re.search(r'<link rel="icon"[^>]*>', (ROOT / 'funnel' / 'about.html').read_text(encoding='utf-8'))
     assert m, 'funnel/about.html carries no icon link to copy'
     icon = m.group(0) + '\n'
-    # the line BUILD-single.sh asserts every page carries. Present only when wired.
-    tok = '<link rel="stylesheet" href="tokens.css">\n' if WIRED else ''
+    # the line BUILD-single.sh asserts every page carries, and inlines
+    tok = '<link rel="stylesheet" href="tokens.css">\n'
     return """<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<!-- DRAFT. Generated by funnel/legal/render.py from the markdown document of
-     the same name. Do not edit this file: edit the markdown and render again.
-     The noindex line below is for the draft. Take it out, and the draft warning
-     with it, only when counsel has reviewed the text and every [PLACEHOLDER] is
-     filled, every [CHECK] resolved and every [PROPOSED] confirmed. See
-     LEGAL-IA.md, "Before the pages go live". -->
+<!-- Generated by funnel/legal/render.py from the markdown document of the
+     same name. Do not edit this file: edit the markdown and render again.
+     noindex stays until counsel has read the text: the page is public and
+     linked from every funnel page and the app, and it is not offered to
+     search engines before then. -->
 <meta name="robots" content="noindex">
 <title>Atüned, %(short)s</title>
 <meta name="description" content="%(desc)s">
@@ -300,6 +309,10 @@ def main():
     OUTDIR.mkdir(parents=True, exist_ok=True)
     for md, fname, _title, short, desc in PAGES:
         src = (ROOT / md).read_text(encoding='utf-8')
+        src = re.sub(r'<!--.*?-->', '', src, flags=re.S)
+        left = re.findall(r'\[(?:PLACEHOLDER|CHECK|PROPOSED):', src)
+        assert not left, md + ' still carries ' + str(len(left)) + ' draft mark(s) in its prose: move each into the comment block at its foot'
+        assert not re.search(r'^>', src, flags=re.M), md + ' still opens a draft warning'
         title, body = render_body(src)
         out = page(title, short, desc, body, fname)
         (OUTDIR / fname).write_text(out, encoding='utf-8')
