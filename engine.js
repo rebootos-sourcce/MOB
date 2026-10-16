@@ -9270,6 +9270,15 @@ function traceFromRecord(p,intents){
    This touches the cross-compatibility contract with SOURCE, so the bump is
    flagged for his ruling in REVIEW-source.md. */
 var SCHEMA_V=2, PKEY='source.profiles';
+/* WHAT AN AXIS HOLDS BEFORE ANYTHING IS ENTERED, and the one place it is
+   said. blankProfile wrote 0 here while loadProfile filled a missing axis
+   with 3 and seed.js measured the seed against 3, so one quantity had two
+   answers and a third reader trusting the wrong one. Measured at e9ca1ae:
+   read() of a profile with axes:{} gave unread false, 107 addresses
+   carrying and DQ 13.6, from charge nobody entered, where the boundary
+   (validateProfile, which starts from blankProfile) fills the same gap
+   with 0. Every reader of the blank reads this. */
+const AXIS_BLANK=0;
 function blankProfile(name){
  var p={v:SCHEMA_V, id:'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),
   name:name||'New profile', created:new Date().toISOString(), updated:null,
@@ -9391,7 +9400,7 @@ function blankProfile(name){
     laws beside it are correctly null, meaning not yet measured, and the charge
     was not given the same honesty. Nobody entered a 3. Zero is the only value
     that is true of a person who has said nothing. */
- CHILD.forEach(function(c){p.axes[c.nm]={held:0,opp:0};});
+ CHILD.forEach(function(c){p.axes[c.nm]={held:AXIS_BLANK,opp:0};});
  SI.forEach(function(l){p.laws[l.nm]=null;});        /* null = not yet measured */
  /* the trace graph's stored half, engine/trace.js. Only what cannot be
     derived from the record lives here; everything else is read off it. */
@@ -9466,8 +9475,11 @@ function loadProfile(p){
  ixFill(p);
  S.doms=(p.soul.doms||[0]).slice(); S.arcs=(p.soul.arcs||[0,1]).slice();
  S.roots=(p.soul.roots||[]).slice(); buildSoul();
+ /* a missing axis is an axis nobody entered, so it opens at the blank and
+    not at the 3 this used to type, which read a record with axes:{} as a
+    person carrying on all nine (AXIS_BLANK, above) */
  CHILD.forEach(function(c){var a=p.axes[c.nm]||{};
-  S.charge[c.nm]=a.held!=null?a.held:3; S.replace[c.nm]=a.opp||0;});
+  S.charge[c.nm]=a.held!=null?a.held:AXIS_BLANK; S.replace[c.nm]=a.opp||0;});
  /* an old name's score is carried across rather than dropped back to the
     default a person never entered (LAW_WAS, above) */
  var LAWWAS=LAW_WAS;
@@ -19421,7 +19433,7 @@ if(typeof module!=='undefined'&&module.exports){
                   LEAN_TRUST_HALF:LEAN_TRUST_HALF, LEAN_MIN_CH:LEAN_MIN_CH,
   /* the door */  read:read, input:input, throughput:throughput, output:output,
                   gatesClear:gatesClear, gatesLoad:gatesLoad, gatesSave:gatesSave,
-  /* schema */    blankProfile:blankProfile, loadProfile:loadProfile,
+  /* schema */    blankProfile:blankProfile, AXIS_BLANK:AXIS_BLANK, loadProfile:loadProfile,
                   saveProfile:saveProfile, snapshot:snapshot, LAW_DEFAULT:LAW_DEFAULT,
   /* the twenty one on every history row, the one law over time a graph reads,
      and the renames both the loader and the boundary read */
