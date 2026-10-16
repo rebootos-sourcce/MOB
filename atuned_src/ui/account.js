@@ -851,6 +851,15 @@ function profMenu(){
   +'<button type="button" role="menuitem" class="pm-it" data-pmlog="1">'
   +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6.5h14M5 12h14M5 17.5h9"/></svg></span>'
   +'<span>Message log</span></button>'
+  /* IS THIS A CRISIS, after the first run, 16 October. The welcome carries
+     the button and is met once, so the same press has to be somewhere a
+     person can still reach on any day, and the menu on every screen's top bar
+     is that place. The same words and the same panel, ui/crisis.js; the ring
+     is a closed circle with a mark through its centre, stroked, never filled. */
+  +'<button type="button" role="menuitem" class="pm-it" data-pmcrisis="1">'
+  +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/>'
+  +'<path d="M12 7.5v5.5M12 16.2v.3"/></svg></span>'
+  +'<span>'+esc(CRISIS_SAY.open)+'</span></button>'
   +'<button type="button" role="menuitem" class="pm-it pm-all" data-pms="">'
   +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/>'
   +'<path d="M12 3.5v2.2M12 18.3v2.2M3.5 12h2.2M18.3 12h2.2M6 6l1.6 1.6M16.4 16.4L18 18M18 6l-1.6 1.6M7.6 16.4L6 18"/></svg></span>'
@@ -891,6 +900,11 @@ function profMenu(){
  if(jn)jn.onclick=function(){profMenuShut();};
  var lg=m.querySelector('[data-pmlog]');
  if(lg)lg.onclick=function(){profMenuShut(); if(typeof msgLogOpen==='function')msgLogOpen();};
+ /* the menu shuts first and focus goes to the profile button, so closing the
+    panel puts a keyboard back on the control the menu hung from */
+ var cr=m.querySelector('[data-pmcrisis]');
+ if(cr)cr.onclick=function(){profMenuShut(); var pb=document.getElementById('profbtn'); if(pb)pb.focus();
+  if(typeof crisisOpen==='function')crisisOpen();};
  var o=m.querySelector('[data-pmout]');
  if(o)o.onclick=function(){profMenuShut(); if(typeof accSignOut==='function')accSignOut();};
  var r=b.getBoundingClientRect();

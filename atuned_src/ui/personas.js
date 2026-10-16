@@ -537,7 +537,7 @@ function pselName(p,up){
    The examples were two groups by an accident of how they were added: the six
    ICPs under Examples and everyone else under More examples. Ruled round PL
    (J12): "Fix all of the profiles. By tier." So the group heading is the
-   coherence tier, Collapsed first and Mastery last, and inside a tier the
+   coherence tier, Contracted first and Mastery last, and inside a tier the
    lowest CQ comes first, which gives one run from the floor of the scale to
    the ceiling with the person's name and role unchanged on each row.
 

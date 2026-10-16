@@ -471,7 +471,7 @@ function runCoreDrill(){
    +(r.PULL>=0.005?', with the shadow taking <b>'+Math.round(r.PULL*100)+' per cent</b>':''))+'.</p>'
   +'<div class="pm-eye">The read</div><p class="ad-p">'
   /* benign is null while CQ is still filling, and the clause waits with it */
-  +(r.benign===null?'':'The field is <b>'
+  +(r.benign===null?'':'Your energy is <b>'
     +(r.benign?'expanding':'contracting '+r.malig+'%')+'</b>. ')+'Radiance <b>'
   +(r.radiance*100).toFixed(0)+'%</b>. The field is the geometry of that '
   +'radiance. It is harmonic, so patterns sit at registers rather than '
@@ -1430,7 +1430,7 @@ function runCompassDrill(){
  var h='<div class="pm-eye">The compass</div><div class="ad-nm">'
   +(r.unread?'not read yet':'CQ '+Math.round(cq)+', '+tierSay(r).toLowerCase())+'</div>'
   +'<div class="pm-eye">How to read it</div><p class="ad-p">The line runs 0 at the base to 100 at the crown, and the word changes every ten points. '
-  +'Above '+MEDIAN+' the field builds more than it costs. Below '+MEDIAN+' it costs more than it builds. '
+  +'Above '+MEDIAN+' your energy builds more than it costs. Below '+MEDIAN+' it costs more than it builds. '
   +MEDIAN_LO+' to '+MEDIAN_HI+' is the median range, where the reading crosses the line in both directions'
   +(medianRange(cq)&&!r.unread&&r.complete?', and that is where this one sits':'')+'. '
   /* "THE SWING, 11 POINTS" IS GONE FROM HERE TOO. Ruled as a class rather
@@ -1455,7 +1455,7 @@ function runCompassDrill(){
   +(me.soma?'<div class="pm-eye">The state</div><p class="ad-p"><b>'
     +esc(me.state)+'.</b> '+esc(me.soma)+'</p>':'')
   +'<div class="pm-eye">How it shows up</div><p class="ad-p">'+esc(me.energy)+'</p>'
-  +'<div class="pm-eye">Where it goes</div><p class="ad-p">'+esc(me.toward)+'</p>';
+  +'<div class="pm-eye">Where it goes</div><p class="ad-p">'+esc(me.toward)+'</p>'+crisisFloor(me);
  h+='<div class="pm-eye">The whole scale</div><div class="ad-rows">'
   +TIERDEF.map(function(t){
     return '<div class="ad-r static'+(t.nm===r.tier&&!r.unread?' on':'')+'" title="'+esc(t.soma||t.def)+'">'
@@ -1523,10 +1523,10 @@ function runSpDrill(kind,val){
   means=[unpackOf('design'),/^\d\/\d$/.test(String(val))?unpackOf('profile'):''];
   /* the comparison reads CQ against the median, which a CQ still filling
      cannot answer: it would call every Generator's field contracting */
-  extra=!r.complete?'A '+val+'. Coherence is still filling, so the field has no direction to compare yet.'
+  extra=!r.complete?'A '+val+'. Coherence is still filling, so your energy has no direction to compare yet.'
    :'A '+val+' at CQ <b>'+Math.round(r.CQ)+'</b>. '
    +((val==='Generator'||val==='Manifesting Generator')===(r.CQ>=50)
-     ?'Type and field point the same way.':'Type and field point differently.');
+     ?'Type and energy point the same way.':'Type and energy point differently.');
  } else if(kind==='auth'){
   t='Authority'; sub='where the decision lands';
   runs='the body signal this person is meant to decide from, rather than the mind';
@@ -1546,7 +1546,7 @@ function runSpDrill(kind,val){
     +means.filter(Boolean).map(esc).join(' ')+'</p>':'')
   +'<div class="pm-eye">How it runs through you</div>'
   +'<p class="ad-p">'+(runs||'no behaviour on file')+'</p>'
-  +(extra?'<div class="pm-eye">Against your field</div><p class="ad-p">'+extra+'</p>':''));}
+  +(extra?'<div class="pm-eye">Against your energy</div><p class="ad-p">'+extra+'</p>':''));}
 
 /* ============================================================
    THE NUMEROLOGY DRILL. One number, what it was reduced from, and

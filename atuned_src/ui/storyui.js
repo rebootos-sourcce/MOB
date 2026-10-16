@@ -170,6 +170,21 @@ function stRender(){
      is still ST_TEXT and a reply is appended to it, see srcChatSend, so the
      big box steps aside rather than standing beside a copy of itself, and
      Talk pressed again puts it back holding every reply as its own line. */
+  /* IS THIS A CRISIS, TALK IT THROUGH, 16 October (ui/crisis.js). His words:
+     "It's always a story." The person chose to talk it through, so the box
+     says what it is for in one line above it, until the entry is committed.
+     A note and not the box's own text: words put in the box would be read
+     and committed as if the person had typed them. */
+  /* AND THE WAY BACK TO THE NUMBERS, from the review of these screens: Talk it
+     through landed on the full Story page and the three numbers were behind a
+     panel that had shut, with no way back to them short of the profile menu.
+     Reach someone now stands beside this line and beside Commit while the
+     line is up, and opens the same panel on the numbers (crisisReach,
+     ui/crisis.js). It is only a door: nothing here reads the box. A sibling
+     of the line and not inside it, so the line's own words stay its words. */
+  +(STV.crisis&&!STV.chat?'<div class="st-crxrow">'
+    +'<p class="st-mask st-crisis" id="stcrisis" role="note">'+esc(CRISIS_SAY.story)+'</p>'
+    +crisisReachBtn('st-crxline')+'</div>':'')
   +(STV.chat
    ?'<div class="src-cmp"><textarea id="stcin" class="src-cin" rows="2" spellcheck="false" '
     +'aria-label="Your reply" placeholder="Write back. Enter sends.">'+esc(SRC_CDRAFT)+'</textarea>'
@@ -207,7 +222,10 @@ function stRender(){
      keeps the two buttons at the right edge where the counter pushed them.
      The prototype this page is ported from put a word count back here, and
      it stays out: the ruling is his and names this exact place. */
-  +'<div class="st-bar">'
+  +'<div class="st-bar'+(STV.crisis&&!STV.chat?' st-bar-crx':'')+'">'
+   /* the second door, at the foot, where the person finishes: see the crisis
+      line above. Left of the spacer, so Clear and Commit keep their edge. */
+   +(STV.crisis&&!STV.chat?crisisReachBtn('st-crxbar'):'')
    +'<span class="st-ct" aria-hidden="true"></span>'
    +'<button class="btn" id="stclear">Clear</button>'
    +'<button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
@@ -322,7 +340,7 @@ function stRender(){
    is open. Kept across a return to the tab, never saved.
    ============================================================ */
 var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:false,law:false,
- unsaved:null,draftT:null,draftFail:false};
+ unsaved:null,draftT:null,draftFail:false,crisis:false};
 /* the one width the page changes shape at is the one the product stacks its
    columns at, so the Story cannot be in three columns while the rails are
    already one. */
@@ -576,6 +594,8 @@ function stCommit(){
     with Run on it: widening it there would push Run off the first screen,
     which is the one thing layout H exists to stop. */
  STV.focus=stPhone()?'write':'release';
+ /* the crisis line has said what the box is for, and the box has been used */
+ STV.crisis=false;
  toYou();syncCh();if(typeof stRender==='function')stRender();render();
  /* A STORY KEPT WITH STARS IN IT SAYS SO, round QR. The person may choose
     not to type the hidden words, and the entry is still theirs; it is kept

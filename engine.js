@@ -975,18 +975,18 @@ const TIERCOL={
  'Incoherent':  '#CFAB64',   /* warm, a caution and not an alarm */
  'Corrupt':     '#CF8958',
  'Severe':      '#B58379',   /* chroma coming out. numb is less present, not louder */
- 'Collapsed':   '#A48986'};  /* the colour nearly gone. the floor is quiet */
+ 'Contracted':  '#A48986'};  /* the colour nearly gone. the floor is quiet */
 const TIERDEF=[
  {at:91, nm:'Mastery',
   state:'Sovereign',
   soma:'Everything in you is clear and standing straight. Nothing from the past is left to work through.',
-  def:'The field builds far more than it costs. Almost nothing is held.',
+  def:'Your energy builds far more than it costs. Almost nothing is held.',
   energy:'Intention and action arrive together. There is no gap left to manage.',
   toward:'Hold it. The work here is maintenance, and what you can now carry for other people.'},
  {at:81, nm:'Embodied',
   state:'Coherent',
   soma:'What happens around you and what happens in you move together, with nothing rubbing. Always moving.',
-  def:'The field builds more than it costs, with real load still in it.',
+  def:'Your energy builds more than it costs, with real load still in it.',
   energy:'You recover fast. A charge lands and clears instead of staying.',
   toward:'Mastery. Close the laws still shut, and clear what is still holding a week later.'},
  {at:71, nm:'Compounding',
@@ -998,13 +998,13 @@ const TIERDEF=[
  {at:61, nm:'Gaining',
   state:'Tuned',
   soma:'Finding the places you get stuck and fixing them. Practical, and set on getting it done.',
-  def:'The field builds more than it spends, and the margin is thin.',
+  def:'Your energy builds more than it spends, and the margin is thin.',
   energy:'Forward on most days, and one hard week takes it back.',
   toward:'Compounding. Same seat, same address, repeated, until the load there stops returning.'},
  {at:51, nm:'Even',
   state:'Receptive',
   soma:'Exhausted by the old way and aware that it is broken.',
-  def:'The field breaks even and sits just above the line.',
+  def:'Your energy breaks even and sits just above the line.',
   energy:'What you build holds about as often as it slips.',
   toward:'Gaining. One address cleared entirely beats four reduced.'},
  {at:41, nm:'Oscillating',
@@ -1014,14 +1014,14 @@ const TIERDEF=[
      and the meaning table keeps a tier's first sentence, so the one place
      Oscillating was defined said what fifty is and never what Oscillating
      is. Same two facts, the meaning first. */
-  def:'The field crosses fifty, the median or middle of the line, both ways: above it some days '
+  def:'Your energy crosses fifty, the median or middle of the line, both ways: above it some days '
      +'and below it on others.',
   energy:'The day decides. What is running that morning sets the range.',
   toward:'Even. Consistency rather than intensity. The swing narrows before the number rises.'},
  {at:31, nm:'Incoherent',
   state:'Frustrated',
   soma:'Caught between the weight in your body and the odd moment of seeing clearly.',
-  def:'The field costs more than it builds. Charge is held at more addresses than are clearing.',
+  def:'Your energy costs more than it builds. Charge is held at more addresses than are clearing.',
   energy:'Effort goes in and less comes out. You are working, and the work is going into holding.',
   toward:'Oscillating, which starts at 41. Take the heaviest seat first. One address cleared where the load actually sits moves this further than ten cleared anywhere else.'},
  {at:21, nm:'Corrupt',
@@ -1033,7 +1033,7 @@ const TIERDEF=[
  {at:11, nm:'Severe',
   state:'Numb',
   soma:'Numbing or distracting yourself to get through. The body is starting to shut down.',
-  def:'Most of the field is carrying. Very little is clear.',
+  def:'Most of your energy is carrying. Very little is clear.',
   energy:'Ordinary demands read as threats. Capacity is spent before the day starts.',
   /* "OFF THE FLOOR" COMES OUT. Ruled. Every other tier's direction names the
      next band and what to do to reach it. This one named where the person was
@@ -1042,12 +1042,32 @@ const TIERDEF=[
      a person is least able to hear it that way. The instruction underneath was
      already right and is kept word for word. */
   toward:'Corrupt, and it is reached one address at a time. One seat, one address, one line. Not a programme.'},
- {at:0, nm:'Collapsed',
+ /* CONTRACTED, NOT COLLAPSED, 16 October. His words: "I don't [like] the band
+    name, like collapsed ... the energy wants to expand, not collapse." The
+    product already says expanding and contracting for the direction a reading
+    moves (r.benign, ui/summary.js), so the floor takes the word for that
+    direction, and the word says it can open again where collapsed said it
+    had fallen. The state, Fragmented, and what the band says are unchanged.
+    A history row an older build wrote under the old word is renamed at the
+    boundary (validateProfile, engine/schema.js), so no record prints it
+    again. The Reboot-OS application carries its own copy of this table and is
+    not this repository's to change. */
+ {at:0, nm:'Contracted',
   state:'Fragmented',
   soma:'Taken over by what happened before and was never worked through. The body drags with its full weight.',
-  def:'The field is fully loaded. Nothing is clearing.',
+  def:'Your energy is fully loaded. Nothing is clearing.',
   energy:'Flat. Not calm, out of charge.',
-  toward:'Weight off, and not alone. A reading this low is not a thing to manage by yourself, and the instrument will not pretend otherwise.'}];
+  /* WEIGHT COMES OFF WITH ANOTHER PERSON, 16 October, from the review of the
+     crisis screens. The line before it, "Weight off, and not alone. A reading
+     this low is not a thing to manage by yourself, and the instrument will
+     not pretend otherwise.", said a person should not be alone with this and
+     then offered nobody: no number, no button, only the sentence. It was a
+     seat's draft (b6f58ba1, 18 September, whose message marks the copy as a
+     draft and the wording as the owner's call), not his words, and neither
+     DECISIONS.md nor BIBLE.md carries it, so Emmy's line replaces it. The
+     way to reach that person is the crisis button the renderers put directly
+     under this sentence for this band (crisisFloor, ui/crisis.js). */
+  toward:'Weight comes off with another person.'}];
 /* one lookup, so the band table stops being copied into renderers */
 const TIER_BY={}; TIERDEF.forEach(function(t){TIER_BY[t.nm]=t;});
 /* the median, and the width of the swing around it. named once, because three
@@ -1657,7 +1677,7 @@ function darkRead(mal01, CQ){
   /* which step of the descent, and only while both conditions hold */
   step:!dark?null:(CQ<11?DESCENT[2]:(CQ<21?DESCENT[1]:DESCENT[0])),
   refer:dark&&CQ<11,
-  say:!dark?'':'The shape is malignant and the field is decoherent at the same time. '
+  say:!dark?'':'The shape is malignant and your energy is decoherent at the same time. '
    +'That pair is what the descent describes. It is a reading of what is running, not of who is running it.'};}
 /* Which circle a descent has reached. Depth follows coherence, so
    the ladder is read off the same number everything else is. */
@@ -2757,7 +2777,7 @@ const PEOPLE=[
     Four reference cases added on the owner's ruling, because the roster sat in
     the middle and the vocabulary at the ends had never been looked at with a
     real field behind it. Two at the floor and two near the ceiling, and the
-    pairs are the point: 2 and 10 are both Collapsed, 92 and 98 are both Mastery.
+    pairs are the point: 2 and 10 are both Contracted, 92 and 98 are both Mastery.
     If one word has to carry both ends of each pair, the word is doing no work.
 
     The charge vectors were solved against compute() rather than invented, and
@@ -2770,7 +2790,7 @@ const PEOPLE=[
     were never re-solved, so they read 25.9, 45.6, 91.3 and 89.2: the floor pair
     sat in two different bands, one of them the median, and the ceiling pair in
     two. Measured again on 2 October (J12). Tomas is solved again to 3.8 and
-    reads Collapsed. Nkem was solved to 14.5, Severe, and was cut with the
+    reads Contracted. Nkem was solved to 14.5, Severe, and was cut with the
     ladder in round QD.
     Wren (91.1, Mastery) and Abraham (89.1, Embodied) are left where they are.
     Abraham carries a held shame of 5.4 and six installed poles near 5, which
@@ -2861,7 +2881,7 @@ const LAWSET={
     then 30.8 on screen, Incoherent, beside a field carrying 77 addresses.
     Nkem, solved to 10, read the median. The shape of each table is kept (what
     the person still does is the highest thing in it) and the level is the new
-    solve. Tomas 3.8, Collapsed. */
+    solve. Tomas 3.8, Contracted. */
  Tomas:  {_:.124, Courage:.5, Truth:.7, Patience:.6, Duty:2, 'Non-Harm':2.2},
  Wren:   {_:9.221, Patience:9.4, Temperance:9.2, 'Aesthetic Beauty':9.6, Forgiveness:6.8},
  Abraham:{_:8.702, Equanimity:9.7, Justice:9.8, Humility:9.5, Presence:9.6, Temperance:9.4},
@@ -4413,6 +4433,104 @@ const JOURNEY_WALK=['arrive','ask','settle','feel','body','story','mirror','next
    release from different lists: the sheet from the places the person said yes
    to, the tutorial from what the story read. */
 const JOURNEY_DOORS=['onboarding','tutorial'];
+/* ============================================================
+   THE CRISIS BUTTON'S WORDS AND NUMBERS, 16 October. His words: "Maybe [the
+   crisis check] belongs in the pop-up, the welcome. Maybe it's an option. Is
+   this a crisis? Hit that button. Tell me about it. Do you need immediate
+   emergency contact, or would you like to talk it through? It's always a
+   story."
+
+   A BUTTON THE PERSON PRESSES, AND NOT A DETECTOR. On 9 October he deferred
+   the automatic check, a phrase list reading what a person writes (parked on
+   claude/b2a-crisis and claude/b2a-crisis2, not merged), and J0 in
+   ui/onboard.js stays open for exactly that. Nothing here reads a word
+   anybody types. It is three numbers and the sentences around them, shown
+   when somebody says, by pressing, that this is a crisis.
+
+   HERE AND NOT IN A RENDERER, because two surfaces print it: the app's panel
+   (ui/crisis.js) and the funnel's quiz page, which carries engine.js and no
+   ui module. One table, so a number corrected once is corrected on both, the
+   rule funnel/quiz.html states for the engine it references rather than
+   copies.
+
+   EACH NUMBER CARRIES ITS NAME, round PO's unpack rule: a bare 741741 is a
+   symbol. Each row opens on the number and the service it reaches (nm), then
+   says how to use it and who is there, in short sentences, from the review of
+   these screens on 16 October: one long sentence per number buried the name
+   of the service in its middle. 911 is named by what it sends, police, fire
+   or an ambulance, the same shape as the other two, because "911. If you are
+   in danger now." would have left the one number with no meaning beside it.
+   tests/copy.js holds each line so none can be cut without the gate failing.
+
+   WHERE THEY ANSWER. 988 answers in the United States and in Canada; 741741
+   and 911 are the United States (911 is Canada's too). The panel no longer
+   says "These are US numbers", which told a Canadian their 988 did not
+   work; it says where 988 also works and what to use anywhere else.
+
+   go is the row's links, [what the button says, the address]. tel: and sms:
+   open the phone's own dialler or messages on a phone; on a desktop the
+   number is still in the sentence as plain text, so nothing depends on the
+   link working. sms: carries the keyword as ?&body=, 16 October: Android
+   reads ?body=, older iOS reads &body= and took ?body=HOME as part of the
+   number or dropped it, and ?&body= is the one form both read. A phone that
+   ignores it still opens the right number, and the sentence says what to
+   type.
+
+   THE KEYWORD IS IN SENTENCE CASE. The brief asked for "text HOME", and the
+   service prints it in capitals, but all caps is ruled out of copy and the
+   voice gate fails it. The line takes any case, so the sentence says "the
+   word home", which a person can type as read, and the link still sends HOME
+   for them. The button is "Text 741741", the same shape as "Text 988"
+   beside it.
+   ============================================================ */
+/* ONE FILLED BUTTON, 16 October, from the review of these screens. Every link
+   in the numbers view was the same outlined pill, so a person who had just
+   asked to reach somebody met six equal choices and no first one. Call 988 is
+   the first: it answers a call or a text at any hour for anything short of
+   danger now, which 911 is for. The third place in a go entry marks it, and
+   it is data and not a renderer's choice so the app and the quiz fill the
+   same button. Exactly one entry in the table carries it. */
+const CRISIS_LINES=[
+ {k:'988', nm:'Suicide and Crisis Lifeline', go:[['Call 988','tel:988',true],['Text 988','sms:988']],
+  say:'988, Suicide and Crisis Lifeline. Call or text, any hour. A trained person answers.'},
+ {k:'741741', nm:'Crisis Text Line', go:[['Text 741741','sms:741741?&body=HOME']],
+  say:'741741, Crisis Text Line. Text the word home. A trained person writes back.'},
+ {k:'911', nm:'police, fire or an ambulance', go:[['Call 911','tel:911']],
+  say:'911, police, fire or an ambulance. If you are in danger now.'}];
+/* THE PANEL'S WORDS, once, so the app and the quiz say the same thing. open is
+   the button; h and q are his two lines as the build was asked for them; the
+   two choices are verbs for what each does; journal is the line under the
+   question that says where Talk it through goes and who sees it; where is the
+   line under the numbers; story is the first line the Story box shows after
+   Talk it through, his "It's always a story" said as a fact and then the one
+   thing to do, which since 16 October names the present too: a person in a
+   crisis is often writing about what is happening, not what happened.
+
+   NO PERSON READS IT, and it is a claim about this build that has to stay
+   true. Checked 16 October: the journal is kept in this browser, profile sync
+   is off (PROFILE_SYNC_ENABLED, ui/auth.js, "not part of alpha"), and no call
+   the app makes carries an entry: the voice is given the release's own
+   lines, never the box. DECISIONS.md's privacy ruling expects the story to
+   leave the device one day ("The thing that leaves the device is the story
+   itself"), and a practitioner can be granted sight; the day either ships,
+   this line is wrong. tests/onboarding2.js fails while the line is printed
+   and sync is on, so that day cannot pass quietly. */
+const CRISIS_SAY={
+ open:'Is this a crisis?',
+ h:'Tell me about it.',
+ q:'Do you need to reach someone right now, or would you like to talk it through?',
+ reach:'Reach someone now',
+ talk:'Talk it through',
+ close:'Close',
+ journal:'Talk it through opens your journal. No person reads it.',
+ /* the quiz's own line under the question, 16 October. The app's journal
+    line is wrong there, so the quiz says where its Talk it through goes, its
+    story box, and the one thing that is proven about that page: it makes no
+    request at all (tests/funnel.js counts requests on the quiz, source and
+    built, and fails on one). It does not say who reads anything. */
+ quiz:'Talk it through opens the story box on this page. This page sends nothing anywhere.',
+ where:'988 also works in Canada. Elsewhere, call your local emergency number.',
+ story:'It is always a story. Write what is happening, or what happened.'};
 /* ============================================================
    THE PERCENT. One formula and one table for every score, weight and measure
    a person reads, so that "6.2" becomes "62%" by one rule everywhere and not
@@ -10944,9 +11062,17 @@ function validateProfile(o){
   var q={t:typeof x.t==='string'?x.t:new Date().toISOString(),
    dark:typeof x.dark==='string'?x.dark:'Heart',
    /* null is a row written while CQ was still filling, and it stays null:
-      defaulting it to Collapsed would put the lowest word on the scale on
-      somebody who had only not finished the intake. */
-   tier:(typeof x.tier==='string'||x.tier===null)?x.tier:'Collapsed',
+      defaulting it to the floor band would put the lowest word on the scale
+      on somebody who had only not finished the intake. */
+   /* THE FLOOR BAND WAS RENAMED, 16 October, Collapsed to Contracted (canon.js
+      TIERDEF). A row keeps the word and not a lookup, so a row an older build
+      wrote still said Collapsed: the record would print the word he ruled out,
+      and ui/record.js would report "the tier read collapsed and now reads
+      contracted", a move between two names for one band. Renamed here, where
+      every row is rebuilt, so the old word never reaches a renderer. It is
+      the same band under its new name, not a value clamped into range. */
+   tier:x.tier==='Collapsed'?'Contracted'
+    :(typeof x.tier==='string'||x.tier===null)?x.tier:'Contracted',
    arch:typeof x.arch==='string'?x.arch:''};
   [['m',0,CQ_MODEL],['cq',0,100],['dq',0,1e4],['sq',0,10],['pole',0,10],['jq',0,10],['rad',0,10],
    ['loaded',0,1e4],['sab',0,1e4],['cx',0,1e4],['hy',0,1e4],['ch',0,1e4]].forEach(function(f){
@@ -17194,9 +17320,9 @@ function converge(name,r){
     field contracting made an unanswered intake read as disagreement. */
  var fieldOpen=(r.benign===null||r.benign===undefined);
  if(!fieldOpen){
-  if(initiating===!!r.benign) agree.push('birth mode '+e.sunMode+' matches a field that is '
+  if(initiating===!!r.benign) agree.push('birth mode '+e.sunMode+' matches your energy, which is '
     +(r.benign?'expanding':'contracting'));
-  else differ.push('birth mode '+e.sunMode+' against a field that is '+(r.benign?'expanding':'contracting'));}
+  else differ.push('birth mode '+e.sunMode+' against your energy, which is '+(r.benign?'expanding':'contracting'));}
  /* The fourth comparison used to read a Human Design type that was the
     birth hour modulo five. Now that the type is honestly unresolved
     there is nothing to compare, so it goes in a third bucket. A gap is
@@ -17207,12 +17333,12 @@ function converge(name,r){
  if(!e.rising)open.push('the ascendant, which needs '+(e.needsTime?'a birth time':'a birthplace'));
  /* the design gate is real and independent of the field, so it can be
     compared: a design line of 1 or 4 is an inward profile. */
- if(fieldOpen)open.push('the direction of the field, which needs all '+SI.length+' laws answered');
+ if(fieldOpen)open.push('the direction of your energy, which needs all '+SI.length+' laws answered');
  else if(e.hd.design){
   var inward=(e.hd.design.line===1||e.hd.design.line===4);
-  if(inward===!r.benign)agree.push('design line '+e.hd.design.line+' and a field that is '
-    +(r.benign?'expanding':'contracting')+' point the same way');
-  else differ.push('design line '+e.hd.design.line+' against a field that is '
+  if(inward===!r.benign)agree.push('design line '+e.hd.design.line+' and your energy, which is '
+    +(r.benign?'expanding':'contracting')+', point the same way');
+  else differ.push('design line '+e.hd.design.line+' against your energy, which is '
     +(r.benign?'expanding':'contracting'));}
  var n=agree.length+differ.length;
  return {e:e, agree:agree, differ:differ, open:open,
@@ -20176,6 +20302,8 @@ if(typeof module!=='undefined'&&module.exports){
                   ONB_MINI_ADDRS:ONB_MINI_ADDRS, ONB_MINI_DOSE:ONB_MINI_DOSE, ONB_CHANS:ONB_CHANS,
                   OB_STARTS:OB_STARTS, OB_FEELS:OB_FEELS, OB_PLACES:OB_PLACES,
                   journeyRead:journeyRead, onbMiniPlan:onbMiniPlan,
+  /* the crisis button's numbers and words, engine/data/crisis.js. Reads only. */
+                  CRISIS_LINES:CRISIS_LINES, CRISIS_SAY:CRISIS_SAY,
   /* the journey record itself, F13: its tables, its boundary, its writers,
      what the first release made, and the claim packet with its boundary */
                   JOURNEY_V:JOURNEY_V, JOURNEY_EVENTS:JOURNEY_EVENTS, JOURNEY_LOG_MAX:JOURNEY_LOG_MAX,
