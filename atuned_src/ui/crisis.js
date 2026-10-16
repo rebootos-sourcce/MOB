@@ -55,9 +55,10 @@ function crisisReachBtn(cls){
   +'aria-haspopup="dialog">'+esc(CRISIS_SAY.reach)+'</button>';}
 function crisisFloor(t){
  return t&&t.at===0?'<p class="crx-line">'+crisisBtn('crx-near')+'</p>':'';}
-/* ONE SCREEN, TWO VIEWS. ask is his two lines and the two choices; reach is
-   the three numbers, each with its sentence, and the line that says they are
-   US numbers. Talk it through and Close are on both, so whichever a person
+/* ONE SCREEN, TWO VIEWS. ask is his two lines, the line that says where Talk
+   it through goes and that no person reads it, and the two choices; reach is
+   the three numbers, each with its name, and the line that says where else
+   988 answers. Talk it through and Close are on both, so whichever a person
    is looking at, the way on and the way out are on it. */
 function crisisCard(){
  var reach=CRISIS.view==='reach';
@@ -70,7 +71,8 @@ function crisisCard(){
         return '<a class="btn crx-tel'+(g[2]?' pri':'')+'" href="'+esc(g[1])+'">'+esc(g[0])+'</a>';}).join('')
       +'</div></li>';}).join('')+'</ul>'
     +'<p class="crx-p crx-dim">'+esc(CRISIS_SAY.where)+'</p>'
-   :'<p class="crx-p">'+esc(CRISIS_SAY.q)+'</p>')
+   :'<p class="crx-p">'+esc(CRISIS_SAY.q)+'</p>'
+    +'<p class="crx-p crx-dim">'+esc(CRISIS_SAY.journal)+'</p>')
   +'<div class="crx-acts">'
   +(reach?'':'<button type="button" class="btn pri" data-crisis="reach">'+esc(CRISIS_SAY.reach)+'</button>')
   +'<button type="button" class="btn" data-crisis="talk">'+esc(CRISIS_SAY.talk)+'</button>'

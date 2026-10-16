@@ -872,6 +872,15 @@ console.log('\n=== Is this a crisis, on the welcome and after it (16 October) ==
   ok(ask.open&&ask.modal&&ask.top,'pressed, one panel opens on top of the door, a labelled modal dialog'+at);
   ok(ask.h==='Tell me about it.'&&/Do you need to reach someone right now, or would you like to talk it through\?/.test(ask.text),
    'it says "Tell me about it." and asks the one question'+at+', '+JSON.stringify(ask.text));
+  /* WHERE TALK IT THROUGH GOES, AND WHO READS IT, 16 October. The line says
+     "No person reads it", which is true of this build only while the journal
+     stays on the device: profile sync off, and no request carries an entry.
+     So the line and the switch are read together, and the day sync is turned
+     on with this line still printed, this fails and somebody rewrites it. */
+  const jr=await page.evaluate(()=>({line:/Talk it through opens your journal\. No person reads it\./.test(document.getElementById('crisis').innerText),
+   sync:typeof PROFILE_SYNC_ENABLED==='undefined'?'missing':PROFILE_SYNC_ENABLED}));
+  ok(jr.line&&jr.sync===false,'under the question it says Talk it through opens the journal and no person reads it, '
+   +'and that is true: profile sync is off'+at+', '+JSON.stringify(jr));
   ok(JSON.stringify(ask.btns)==='["Reach someone now","Talk it through","Close"]','with the two choices and a way out'+at+', '+JSON.stringify(ask.btns));
   ok(await inPanel(),'focus moves into the panel'+at);
   await shot(page,'crisis-ask-'+w);
@@ -914,9 +923,12 @@ console.log('\n=== Is this a crisis, on the welcome and after it (16 October) ==
   ok(reach.h==='Reach someone now'&&reach.focus&&reach.stage,'Reach someone now shows the numbers in the same panel, over the stage'+at);
   ok(['tel:988','sms:988','sms:741741?body=HOME','tel:911'].every(x=>reach.hrefs.indexOf(x)>=0),
    'as tel: and sms: links: 988 to call and to text, 741741 with home in the message, and 911'+at+', '+JSON.stringify(reach.hrefs));
-  ok(/Call or text 988 to reach the Suicide and Crisis Lifeline/.test(reach.text)&&/Text the word home to 741741 to reach the Crisis Text Line/.test(reach.text)
-   &&/Call 911 if you are in danger now/.test(reach.text)&&/These are US numbers\. Outside the US, call your local emergency number\./.test(reach.text),
-   'each number with its sentence, and the line that says they are US numbers'+at);
+  ok(/988, Suicide and Crisis Lifeline\. Call or text, any hour\. A trained person answers\./.test(reach.text)
+   &&/741741, Crisis Text Line\. Text the word home\. A trained person writes back\./.test(reach.text)
+   &&/911, police, fire or an ambulance\. If you are in danger now\./.test(reach.text)
+   &&/988 also works in Canada\. Elsewhere, call your local emergency number\./.test(reach.text)
+   &&!/\bUS numbers\b/.test(reach.text),
+   'each number opens on its name, and the line under them says where else 988 answers'+at+', '+JSON.stringify(reach.text));
   ok(reach.tall>=44&&reach.fits,'every link and button at the floor, the whole panel on one screen'+at+', '+JSON.stringify({tall:reach.tall,fits:reach.fits}));
   /* ONE FILLED BUTTON, and it is Call 988: read off the painted backgrounds,
      so a class that styles nothing cannot pass it. The pointer leaves first:
@@ -947,7 +959,7 @@ console.log('\n=== Is this a crisis, on the welcome and after it (16 October) ==
    line:(document.getElementById('stcrisis')||{}).textContent||null, empty:(document.getElementById('sttext')||{}).value===''}));
   ok(talk.shut&&!talk.ob&&talk.story&&talk.box&&talk.empty,
    'Talk it through lands in the Story box, open, focused and empty'+at+', '+JSON.stringify(talk));
-  ok(talk.line==='It is always a story. Write what happened, in your own words.','with one line above it saying what it is for'+at+', '+talk.line);
+  ok(talk.line==='It is always a story. Write what is happening, or what happened.','with one line above it saying what it is for'+at+', '+talk.line);
   await shot(page,'crisis-story-'+w);
   /* THE WAY BACK TO THE NUMBERS, from the review of these screens: Talk it
      through used to leave the person on the full Story page with no way back

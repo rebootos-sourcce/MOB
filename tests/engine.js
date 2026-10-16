@@ -8426,16 +8426,28 @@ g('CRISIS · the button a person presses: three numbers, each with its sentence 
 {
  const L=E.CRISIS_LINES||[], S=E.CRISIS_SAY||{};
  ok(L.map(l=>l.k).join()==='988,741741,911','the three numbers, in order, got '+L.map(l=>l.k).join());
+ /* EACH ROW OPENS ON ITS NUMBER AND NAMES ITS SERVICE, 16 October, from the
+    review of these screens: one long sentence per number became the number,
+    its name, and short sentences after it. Held as hard as before: the
+    number is the first thing, the service's name follows it, every sentence
+    ends, and none runs past eight words. */
  L.forEach(l=>{
-  ok(new RegExp('\\b'+l.k+'\\b').test(l.say)&&/\.$/.test(l.say)&&l.say.split('. ').length===1,
-   l.k+' is named in its own one sentence: '+JSON.stringify(l.say));
+  const parts=l.say.replace(/\.$/,'').split(/\.\s+/);
+  ok(l.say.indexOf(l.k)===0&&typeof l.nm==='string'&&l.nm.length>0&&l.say.indexOf(l.nm)>l.k.length-1
+   &&/\.$/.test(l.say)&&parts.length>=2&&parts.every(s=>s.split(/\s+/).length<=8),
+   l.k+' opens on its number and names its service, in short sentences: '+JSON.stringify(l.say));
   ok(l.go.length>0&&l.go.every(g=>/^(tel|sms):/.test(g[1])&&g[1].replace(/^(tel|sms):/,'').split('?')[0]===l.k),
    l.k+' links only to itself, by tel: or sms:, '+JSON.stringify(l.go));});
  ok(L.some(l=>l.go.some(g=>g[1]==='tel:988'))&&L.some(l=>l.go.some(g=>g[1]==='sms:988')),'988 is both a call and a text');
  /* one filled button in the numbers view, 16 October, and it is Call 988 */
  const pri=[].concat(...L.map(l=>l.go)).filter(g=>g[2]===true);
  ok(pri.length===1&&pri[0][1]==='tel:988','exactly one link is the filled one, and it is Call 988, got '+JSON.stringify(pri));
- ok(/\bUS\b/.test(S.where||'')&&/local emergency number/.test(S.where||''),'the panel says they are US numbers and what to use elsewhere');
+ ok(/^988 also works in Canada\./.test(S.where||'')&&/\bElsewhere, call your local emergency number\.$/.test(S.where||''),
+  'the panel says where else 988 answers and what to use anywhere else, got '+JSON.stringify(S.where));
+ ok(S.journal==='Talk it through opens your journal. No person reads it.',
+  'and says where Talk it through goes and who reads it, got '+JSON.stringify(S.journal));
+ ok(S.story==='It is always a story. Write what is happening, or what happened.',
+  'and the Story line names the present as well as the past, got '+JSON.stringify(S.story));
  ok(S.open==='Is this a crisis?'&&S.h==='Tell me about it.'&&S.reach==='Reach someone now'&&S.talk==='Talk it through',
   'the button and the panel carry the words as ruled');
  ok(!/—/.test(JSON.stringify([L,S])),'and no em dash anywhere in them');

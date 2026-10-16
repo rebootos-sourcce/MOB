@@ -6760,8 +6760,8 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
 /* on the stage it joins Not now on the right; the rail is out of the flow, so
    the auto margin is what keeps the two of them off the rail in the middle */
 .obx-top .obx-crx{margin-left:auto;margin-right:10px}
-/* at 390 it hangs over the stage's ring, so it carries the stage's own dark
-   behind its words and the ticks never run through the letters */
+/* on a narrow screen the ring's top reaches the bar, so the pill carries the
+   stage's own dark behind its words and the ticks never run through them */
 .obx-crx{background:color-mix(in srgb,rgb(6,6,8) 82%,transparent)}
 /* the Story box's own line after Talk it through, above the box it is about */
 .st-crisis{margin:0 0 10px;color:var(--ink)}
@@ -7362,9 +7362,20 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
  .obx-step{font-size:11.5px}
  .obx-stepn{display:none}
  .obx-x{padding:0 14px}
- /* no room beside the rail at this width, so the crisis button hangs just
-    under the bar on the right, clear of the words, on every step */
- .obx-top .obx-crx{position:absolute;top:60px;right:16px;margin:0;padding:0 12px;font-size:12.5px}
+ /* THE CRISIS BUTTON IS IN THE BAR'S ROW AT THIS WIDTH TOO, 16 October,
+    from the review of these screens. It hung under the bar on the right,
+    over the ring beside the avatar's head, which read as part of the drawing
+    and put a button where the eye goes for the figure. The row makes room
+    instead: the rail leaves the middle and sits after the wordmark, its
+    track shrinks with the screen and its dots go to five pixels, and the
+    button and Not now take the right. Measured on every step at 390 and 360,
+    nothing in the row touches anything else (tests/onboarding2.js). */
+ .obx-top{justify-content:flex-start;gap:8px}
+ .obx-rail{position:static;translate:none;flex:0 1 auto;min-width:0}
+ .obx-track{width:clamp(48px,calc(100vw - 330px),150px)}
+ .obx .ob-dot{width:5px;height:5px}
+ .obx-top .obx-crx{margin:0 0 0 auto;padding:0 10px;font-size:12px;white-space:nowrap}
+ .obx-x{flex:0 0 auto}
  .obx-slot{left:0;top:var(--st)}
  .obx .ob-scroll{padding:14px 20px 28px}
  .obx .obx-in{margin:0;max-width:none;font-size:16px}

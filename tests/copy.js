@@ -96,19 +96,28 @@ const REQUIRED=[
  ['delete', [/\bour server\b/i, /\bfirst visit\b/i],
   'the delete screen says what our server still keeps'],
  /* THE CRISIS PANEL'S NUMBERS, 16 October (engine/data/crisis.js). A number
-    nobody explains is a symbol, and a deleted sentence here is a person in
-    trouble left with a bare 741741, so each number is held with what it
-    reaches, in one sentence, and the line that says they are US numbers is
-    held with what to do outside the US. Read off the app's panel and the
-    quiz's copy of it. */
- ['crisis', [/\bCall or text 988\b/, /\bSuicide and Crisis Lifeline\b/, /\btrained person answers\b/],
-  'the sentence that says 988 is the Suicide and Crisis Lifeline, to call or text'],
- ['crisis', [/\bText the word home to 741741\b/, /\bCrisis Text Line\b/, /\btrained person writes back\b/],
-  'the sentence that says texting home to 741741 reaches the Crisis Text Line'],
- ['crisis', [/\bCall 911\b/, /\bin danger now\b/, /\bpolice, fire or an ambulance\b/],
-  'the sentence that says 911 is for danger now'],
- ['crisis', [/\bThese are US numbers\b/], 'the line that says they are US numbers'],
- ['crisis', [/\bOutside the US\b/, /\blocal emergency number\b/], 'what to call outside the US']];
+    nobody explains is a symbol, and a deleted line here is a person in
+    trouble left with a bare 741741, so each number is held with the name of
+    what it reaches, how to use it and who is there, and the line under them
+    is held with what to call anywhere else. Read off the app's panel and the
+    quiz's copy of it. Since the review of these screens each number reads as
+    its name and short sentences, so each part is held in its own sentence,
+    to its full stop. Not from the sentence's start: a button's label carries
+    no full stop, so the splitter runs "Call 988" into the next line. */
+ ['crisis', [/\b988, Suicide and Crisis Lifeline\.$/], '988 named as the Suicide and Crisis Lifeline'],
+ ['crisis', [/\bCall or text, any hour\.$/], 'how to reach 988, by call or text at any hour'],
+ ['crisis', [/\bA trained person answers\.$/], 'who answers 988'],
+ ['crisis', [/\b741741, Crisis Text Line\.$/], '741741 named as the Crisis Text Line'],
+ ['crisis', [/\bText the word home\.$/], 'what to text 741741'],
+ ['crisis', [/\bA trained person writes back\.$/], 'who writes back from 741741'],
+ ['crisis', [/\b911, police, fire or an ambulance\.$/], '911 named by what it sends'],
+ ['crisis', [/\bIf you are in danger now\.$/], 'when 911 is the one'],
+ ['crisis', [/\b988 also works in Canada\.$/], 'where else 988 answers'],
+ ['crisis', [/\bElsewhere, call your local emergency number\.$/], 'what to call anywhere else'],
+ /* and the question's own view, the app's only: where Talk it through goes
+    and who reads it (a claim tests/onboarding2.js holds true of the build) */
+ ['crisis-ask', [/\bTalk it through opens your journal\.$/], 'where Talk it through goes'],
+ ['crisis-ask', [/\bNo person reads it\.$/], 'that no person reads the journal']];
 
 /* WHAT MAY LEAVE DURING THE WALK. [method, path, the body keys it may carry],
    read off ui/auth.js. The walk never signs in, so these are the only routes
@@ -154,11 +163,15 @@ function hold(scope,surface,text,need){
  if(good.length)fail('self','a true privacy line is called banned: '+JSON.stringify(good));
  if(quiz.length)fail('self','the quiz line, true on the quiz, is called banned: '+JSON.stringify(quiz));
  if(!missing('privacy','Held in this browser and nowhere else.').length)fail('self','an empty privacy footer is not called incomplete');
- if(missing('crisis','Call 988. Text 741741. Call 911.').length!==5)fail('self','bare crisis numbers are not called incomplete');
+ const NCRX=REQUIRED.filter(r=>r[0]==='crisis').length;
+ if(missing('crisis','Call 988. Text 741741. Call 911.').length!==NCRX)fail('self','bare crisis numbers are not called incomplete');
+ if(missing('crisis','988, Suicide and Crisis Lifeline. Call or text, any hour. A trained person answers. '
+  +'741741, Crisis Text Line. Text the word home. A trained person writes back. '
+  +'911, police, fire or an ambulance. If you are in danger now. '
+  +'988 also works in Canada. Elsewhere, call your local emergency number.').length)fail('self','the whole crisis panel is called incomplete');
  if(missing('crisis','Call or text 988 to reach the Suicide and Crisis Lifeline, where a trained person answers at any hour. '
-  +'Text the word home to 741741 to reach the Crisis Text Line, where a trained person writes back at any hour. '
-  +'Call 911 if you are in danger now, for police, fire or an ambulance. '
-  +'These are US numbers. Outside the US, call your local emergency number.').length)fail('self','the whole crisis panel is called incomplete');
+  +'These are US numbers. Outside the US, call your local emergency number.').length!==NCRX)
+  fail('self','the panel before the review, with no name opening any line, is not called incomplete on every row');
  if(missing('privacy','A first visit sends our server a random code, the topic you pick and whether you finish. The name you enter never leaves this device.').length)
   fail('self','a complete privacy footer is called incomplete');
  if(FAIL>before){console.log('the checker failed its own known cases, so nothing below is trusted');process.exit(1);}
@@ -309,6 +322,9 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
    crisisOpen(); CRISIS.view='reach'; crisisPaint(); return true;});
   if(!cx)fail(at('crisis'),'missing the crisis panel');
   else {await p.waitForTimeout(150); hold('app',at('crisis'),await p.evaluate(harvest,'#crisis'),'crisis');
+   /* and its question view, where the journal line is */
+   await p.evaluate(()=>{CRISIS.view='ask'; crisisPaint();}); await p.waitForTimeout(100);
+   hold('app',at('crisis:ask'),await p.evaluate(harvest,'#crisis'),'crisis-ask');
    await p.evaluate(()=>crisisShut());}
 
   /* every onboarding card, counted off its own dots. The topic is picked by
