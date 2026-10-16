@@ -16,6 +16,9 @@
 const {chromium}=require('playwright');
 const path=require('path');
 const FILE='file://'+path.resolve(process.env.ATUNED_FILE||'source.html')+'?dev=1';
+/* every gate launches the chromium CI installs, named by CHROME, and the
+   sandbox's own only when CHROME is unset (tests/chrome-path.js holds this) */
+const CHROME=process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
 let PASS=0,FAIL=0;
 const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
 const booted=async p=>{
@@ -28,7 +31,7 @@ const booted=async p=>{
 const ev=async(pg,fn,arg)=>{try{return await pg.evaluate(fn,arg);}catch(e){return {err:String(e&&e.message||e)};}};
 
 (async()=>{
- const browser=await chromium.launch();
+ const browser=await chromium.launch({executablePath:CHROME});
  const cx=await browser.newContext({viewport:{width:1600,height:1000}});
  const pg=await cx.newPage(); const errs=[]; pg.on('pageerror',e=>errs.push(e.message));
  await pg.goto(FILE,{waitUntil:'load'}); await booted(pg);
