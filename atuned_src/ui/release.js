@@ -3253,7 +3253,10 @@ function relRender(){
      Patterns field here was how "4 lines" became four hundred (M28). The pace
      and the time stay, because the card says the person sets the pace. A
      release after this one opens with the dose back. */
-  else body+='<div class="rel-fields">'
+  /* the pace, the patterns and the switches set a run, so on a worked example,
+     where no run begins (showOnly, ruled 16 October), they are not offered:
+     the voice switch there was a preference save the example refused */
+  else if(!showOnly())body+='<div class="rel-fields">'
     +'<label class="rel-field"><span>Run speed</span><input type="number" id="relpace" min="0.5" max="2" step="0.1" value="'
      +RUN.pace+'"></label>'
     +(relMiniNow()?'':'<label class="rel-field"><span>Patterns</span><input type="number" id="reldose" min="1" max="'
@@ -3265,7 +3268,7 @@ function relRender(){
       +(RUN.dose===d)+'">'+d+'</button>';}).join('')+'</div></div>')
     +'</div>';
   /* and no switch for a run that cannot begin */
-  if(!spent)body+=relSws(null);
+  if(!spent&&!showOnly())body+=relSws(null);
   out=relShell({ph:'setup',col:col0,body:body,
    right:'<button type="button" class="rel-x" id="relx" aria-label="Cancel">'+relIc('x')+'</button>',
    /* THE BUTTON IS NOT THERE WHEN THERE IS NOTHING TO SPEND. A disabled Begin

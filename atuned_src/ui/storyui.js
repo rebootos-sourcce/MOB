@@ -1887,13 +1887,17 @@ var ST_SEEN={};
 function stListPaint(){
  var hd=document.getElementById('stlshd'), box=document.getElementById('stimps'); if(!hd||!box)return;
  if(STV.list==='vault'){stVaultPaint(hd,box);return;}
- var p=ST_PARSED,n=p?p.imprints.length:0,o='';
+ /* the person's own draft is not read onto a worked example's page */
+ var p=showOnly()?null:ST_PARSED,n=p?p.imprints.length:0,o='';
  hd.textContent='Pending imprints, by '+ST_SORTS.filter(function(s){return s[0]===STV.sort;})[0][1].toLowerCase();
  /* THE EMPTY STATE SAYS WHAT IS TRUE. After a commit the box is empty and the
     person has just written, so "you have not written anything yet" would be
     the false empty state ui/imprints.js already records. */
  if(!n){
-  box.innerHTML='<p class="st-none">'+(ST_TEXT.trim()
+  /* a worked example has no journal to gather from (showOnly, ruled 16
+     October), so the line does not invite writing that cannot happen */
+  box.innerHTML='<p class="st-none">'+(showOnly()?'Nothing is pending. On your own profile, what you write gathers here.'
+   :ST_TEXT.trim()
    ?'Nothing in this entry reads as held yet. Keep writing, or write where you felt it.'
    :(STV.lastFound.length?'Your last entry is in the field and its addresses are queued in the release. The next entry gathers here.'
     :'You have not written anything yet. Whatever you write gets pulled apart and collected here.'))+'</p>';

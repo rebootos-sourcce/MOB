@@ -40,8 +40,10 @@
 
    CHECKED AGAINST A KNOWN BAD BUILD FIRST, the standing rule: the same build
    with showRefuse made to answer false (the guard removed) fails group 3 for
-   every example at every tier, and the build from before the guard
-   (origin/main at 920d7ed2) fails groups 2, 3 and 4.
+   every example at every tier (435 passed, 410 failed on the first run),
+   and the build from before the guard (origin/main at 920d7ed2) stops at
+   its first example and exits non zero, because it has no preview line to
+   read.
    ============================================================ */
 const path=require('path');
 const {chromium}=require('playwright');
