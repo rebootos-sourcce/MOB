@@ -7914,6 +7914,47 @@ g('PLATE WORD · early, partial or full follows how much was answered, never how
  ok(wmono&&wl===3,'the word climbs the ladder as the laws are answered and never steps back, ending at full');
 }
 
+g('OWN WORD · a second emotion word never erases a stated one, each keeps its own charge on its own seat');
+/* parseStory read every seat against one wanted map for the whole text, so at
+   e9ca1ae "I am exhausted and furious" applied {"Anger":10.8} and left Apathy
+   at 0, against the ruling that exhaustion sits at the solar plexus and is
+   not anger, and "I am exhausted and terrified" named Perfectionism, Force
+   and Rigidity at the solar plexus as findings, inferred false. */
+{
+ const fresh=()=>{E.loadProfile(E.blankProfile('own'));};
+ const apply=s=>{fresh();return E.applyStory(s).applied||{};};
+ const alone=apply('I am exhausted').Apathy;
+ const ef=apply('I am exhausted and furious');
+ ok(ef.Apathy>0&&ef.Anger>0,'"exhausted and furious" keeps both, Apathy and Anger, '+JSON.stringify(ef));
+ const et=apply('I am exhausted and terrified');
+ ok(Math.abs((et.Apathy||0)-alone)<0.05,'"exhausted and terrified" keeps the exhaustion whole as Apathy, '
+  +(et.Apathy||0)+' against '+alone+' alone');
+ fresh();
+ const im=E.parseStory('I am exhausted and terrified').imprints;
+ const solar=im.filter(i=>i.from==='solar'), root=im.filter(i=>i.from==='root');
+ ok(solar.length>0&&solar.every(i=>i.fetter==='Apathy'),'and the solar plexus reads Apathy and nothing else, '
+  +JSON.stringify(solar.map(i=>i.fetter+':'+i.name)));
+ ok(!im.some(i=>/Perfectionism|Force|Rigidity/.test(i.name)&&i.inferred===false),
+  'no address the person never named is printed as a finding off the terror elsewhere');
+ ok(root.length>0&&root.every(i=>i.fetter==='Fear'),'the terror stays Fear at the root, '+JSON.stringify(root.map(i=>i.fetter)));
+ /* and in a field already carrying, where susceptibility reorders the seats,
+    the stated Apathy no longer names the root */
+ E.loadProfile(E.blankProfile('own2')); ['I am so tired','I feel numb and flat'].forEach(s=>E.applyStory(s)); E.compute();
+ const im2=E.parseStory('I am exhausted and terrified').imprints.filter(i=>i.from==='root');
+ ok(im2.every(i=>i.fetter==='Fear'),'on a carrying field the root still reads Fear only, '+JSON.stringify(im2.map(i=>i.fetter+':'+i.name)));
+ /* four words at four seats, each naming its own */
+ fresh();
+ const four=E.parseStory('I was afraid, sad, ashamed and numb.').imprints;
+ const by=k=>[...new Set(four.filter(i=>i.from===k).map(i=>i.fetter))].join(',');
+ ok(by('root')==='Fear'&&by('heart')==='Sad'&&by('solar')==='Shame'&&by('sacral')==='Apathy',
+  'afraid, sad, ashamed and numb each land on their own fetter at their own seat, root '+by('root')
+  +' heart '+by('heart')+' solar '+by('solar')+' sacral '+by('sacral'));
+ /* one word alone reads exactly as it did */
+ fresh();
+ const one=E.parseStory('I am angry').imprints;
+ ok(one.length===4&&one.every(i=>i.fetter==='Anger'&&i.from==='solar'),'a lone anger word is still four Anger addresses at the solar plexus');
+}
+
 g('SEED SHARE · the share of the field that is still the seed is measured from the real blank');
 /* seedShare measured the seed from a blank of 3 after the blank moved to 0,
    so at e9ca1ae an ESTJ seed plus one story read 0.36 where the seed put
