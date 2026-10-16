@@ -20,6 +20,7 @@ engine/data/intakemore.js
 engine/data/gloss.js
 engine/data/onboarding.js
 engine/data/crisis.js
+engine/pct.js
 engine/verp.js
 engine/lexicon.js
 engine/core.js

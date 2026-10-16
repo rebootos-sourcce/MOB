@@ -11,6 +11,7 @@ if(typeof module!=='undefined'&&module.exports){
                   APC:APC, APC_REL:APC_REL, APC_EMB:APC_EMB,
                   SABDEF:SABDEF, SABCARD:SABCARD, DOMDEF:DOMDEF, GLOSS:GLOSS, HARM:HARM,
   /* meter */    meterFirst:meterFirst,
+  /* percent */  PCT_KIND:PCT_KIND, PCT_DASH:PCT_DASH, pct:pct, fmtPct:fmtPct, pctMove:pctMove,
   /* source ai */ SRC_ASK:SRC_ASK, SRC_ROOT:SRC_ROOT, SRC_ONCE:SRC_ONCE, SRC_NEG:SRC_NEG,
                  srcNegated:srcNegated, srcPrior:srcPrior, srcRung:srcRung,
                  srcHear:srcHear, srcHear:srcHear, srcPrior:srcPrior, srcTurn:srcTurn,
