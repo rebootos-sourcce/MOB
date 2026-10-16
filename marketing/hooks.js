@@ -37,7 +37,7 @@
    BUYERS.md level 1 is not a market and marketing at it is unkind: "buying
    this means destroying the trauma identity they rely on to survive". So no
    hook has a floor of 1. A person reading at level 1 is served DOOR_OUT
-   below, which is TIERDEF's own direction for the Collapsed band and not a
+   below, which is TIERDEF's own direction for the floor band, Contracted, and not a
    piece of copy written for this file.
 
    Levels 2 and 3 are a different refusal and a weaker one. They are not
@@ -241,7 +241,7 @@ const HOOKS = [
     hook: 'Nothing tastes like much and you have stopped saying so. What if flat had a place in your body you could point to?',
     proof: 'The sacral outflow, aspect joy, distortion self denial. The engine holds the clinical correspondences for the architectures internally and does not print them at the person. The reason is written beside the code.',
     objection: 'I think this is depression and an app should not be reading it.',
-    answered: 'It should not and it does not. There is no diagnosis anywhere in the output. A reading at the bottom of the scale is routed to the standing direction for that band: weight off, and not alone.',
+    answered: 'It should not and it does not. There is no diagnosis anywhere in the output. A reading at the bottom of the scale is routed to the standing direction for that band: weight comes off with another person.',
     art: {
       ink: '--sacral',
       figure: 'A full palette of the seven seat colours, all present, all at ten percent opacity except one.',
@@ -392,15 +392,15 @@ const CLEAR = {
 
    BUYERS.md: nought percent, actively repelled, because buying this means
    destroying the identity they are using to survive. The words below are
-   TIERDEF's own direction for the Collapsed band, carried verbatim, because
+   TIERDEF's own direction for the floor band, Contracted, carried verbatim, because
    the right thing to say here already exists in the product and writing a
    second version of it in a marketing file is how two voices start. */
 const DOOR_OUT = {
   id: 'H00', charge: null, seat: null, n: null,
   floor: null, register: 'dosed',
-  hook: 'Weight off, and not alone. A reading this low is not a thing to manage by yourself, and the instrument will not pretend otherwise.',
+  hook: 'Weight comes off with another person.',
   isHook: false,
-  src: 'engine, TIERDEF Collapsed toward, verbatim. BUYERS.md level 1.'
+  src: 'engine, TIERDEF Contracted toward, verbatim. BUYERS.md level 1.'
 };
 
 /* ------------------------------------------------------------
