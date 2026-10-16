@@ -220,7 +220,7 @@ if short:
     P('- **Card lines held for naming a second nature:** %d. Same ruling.' % sum(1 for x in card_held if x['reason'].startswith('names another nature')))
     only_head = sum(1 for x in own_held if x['reason'].startswith('filed under a heading'))
     if only_head:
-        P('- **Your own lines held only because their heading names another nature:** %d. The sentence itself names %s and nothing else. If you rule that a heading may not hold a line back, these come back.' % (only_head, NAT))
+        P('- **Your own lines held only because their heading names another nature:** %d. The sentence itself names %s and nothing else. If you rule that a heading may not hold a line back, %s back.' % (only_head, NAT, 'it comes' if only_head == 1 else 'these come'))
     P('- **New dictation.** A short session of %s lines from you would close it in your own words, which is what the gift promises. It needs %d more lines that pass the same rules.' % (NAT, short))
     P('- The Little Books do not help as they are: their charge lines are long shared lists, and none qualifies.')
     P('')
