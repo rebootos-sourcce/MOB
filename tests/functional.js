@@ -2893,7 +2893,7 @@ const relrun=await page.evaluate(()=>{
   /* BA9. What the refusal said, and what the picker says while the case is
      up: the sentence he struck carried both, and they went to two places. */
   var st=document.getElementById('status'), ps=document.getElementById('psel');
-  o.refSaid=st.textContent||''; o.refKind=st.getAttribute('data-kind');
+  o.refSaid=st.textContent||''; o.refKind=st.getAttribute('data-kind'); o.refLine=showLine('release');
   o.refPicker=ps.options[ps.selectedIndex].textContent;
   RUN.done=false; RUN.phase='pick'; RUN.queue=[]; RUN.plan=[]; RUN.log=[];}
  /* and now the person's own, which is the path that actually runs */
@@ -2986,10 +2986,17 @@ ok(relrun.refCarry,'and does not empty its carrying addresses');
    version that stood above the Field as unnecessary text. The state it also
    carried is on the picker for as long as the case is up, and goes when the
    case does. */
-ok(relrun.refKind==='fail'&&/worked example/.test(relrun.refSaid),
- 'the refusal reports as a failure and names its reason, said '+JSON.stringify(relrun.refSaid));
-ok(!/You are looking at/.test(relrun.refSaid)&&(relrun.refSaid.match(/[.!?](\s|$)/g)||[]).length===1,
- 'in one sentence, not the struck one');
+/* AND FROM 16 OCTOBER IT IS A PREVIEW, NOT A FAILURE. A worked example is
+   show only and is the product's own preview of what the tiers do (engine/
+   showonly.js, DECISIONS.md): the refusal is the one preview line, in the
+   plain kind that fades, saying what the release would do on the person's
+   own profile. It is three short sentences where BA9's wall was one, because
+   the line now carries what the press would do and what their plan shows, and
+   it no longer holds on screen in the fail colour, which is what he struck. */
+ok(relrun.refKind!=='fail'&&/worked example/.test(relrun.refSaid)&&relrun.refSaid===relrun.refLine,
+ 'the refusal is the preview line, plain and not a failure, and names its reason, said '+JSON.stringify(relrun.refSaid));
+ok(!/You are looking at/.test(relrun.refSaid)&&(relrun.refSaid.match(/[.!?](\s|$)/g)||[]).length<=3,
+ 'in short sentences, not the struck one');
 ok(/^Gordon\b/.test(relrun.refPicker)&&/example/.test(relrun.refPicker),
  'the picker names the case and marks it as an example while it is up, reads '
  +JSON.stringify(relrun.refPicker));
@@ -3162,7 +3169,12 @@ console.log('\n=== the record file has a door, and it opens on the record contro
  const dr=await door.evaluate(()=>{
   const o={};
   /* a real record, carried the way a person carries one: as a file */
+  /* off the person's own record carrying Gordon's charge: a worked example
+     is show only from 16 October and pExport refuses one (engine/showonly.js),
+     because its record carries the tier four plan loadP stamps on it */
   loadP(GORDON());
+  const bc=Object.assign({},S.charge), br=Object.assign({},S.replace);
+  loadP(0); CHARGES.forEach(k=>{S.charge[k]=bc[k]; S.replace[k]=br[k];});
   const rec=pExport();
   const want=compute();
   o.wantCQ=+want.CQ.toFixed(2); o.wantHeld=want.loaded.length;
