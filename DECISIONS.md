@@ -2828,3 +2828,18 @@ His words: "when a first time user goes from the funnel to the questions to the 
 - **Every open after that is where the person left off.** The last surface is kept in the browser's own store, not the record. Settings and the practitioner page are never remembered. A device with no memory still opens on the Field (the 19 September ruling stands for it).
 - **Held by `tests/landing.js`**, which fails on the build from before this change.
 - **Also on 9 October, his ruling: the cosmetic mockup picks are dropped.** The left menu A to D, story layouts E to H, onboarding round 2, the teachers panel, masks by tier, Summary readout and Compass layout B are not being built. The next round starts by cleaning up the interface and menus: removing what is exposed and does nothing that matters. His feedback drives it.
+
+## Every score a person reads is a percent, 16 October
+
+His words: "Instead of 0.0, site wide, we need to convert those numbers into percent. I think it's a more natural language for people to understand. So we need to create a framework and a formula and to make sure that all of our elements are percent-based. If it says 6.2, then we should change that to percent. If it's 112 patterns, just leave it alone. Or, sorry, chakras, leave it alone."
+
+- **One formula and one table.** `pct(kind, value) = clamp(round(100 * (value - lo) / (hi - lo)), 0, 100)`, with lo and hi per kind in `PCT_KIND`, `atuned_src/engine/pct.js`, each citing the engine line that bounds it. `fmtPct` prints `62%`, and a figure that rounds to nothing, or an unread profile, prints the en dash and never `0%`. The rule, the registry and the one cap are in `HANDOFF-2026-10-15/PERCENT-FRAMEWORK-2026-10-16.md`; every place a number is printed is in `PERCENT-INVENTORY-2026-10-16.md`.
+- **The percent printed is the fill of the ring or bar drawn for that quantity.** What is read and what is drawn agree.
+- **A change is said as before and after:** "CQ moved from 58% to 61% since last session", never "up 3".
+- **Counts stay counts:** addresses, patterns, stories, days, items, answers, laws, the nine axes, the seats and their names, tier numbers, prices, versions, dates, ids, coordinates and geometry.
+- **The "points" unit goes.** The headroom (`exHeadroom`) is on expression's 0 to 100, so "3.0 points of your coherence" is 3%, and under 1% no sentence is printed.
+- **CQ and DQ print as N% everywhere.**
+- **This supersedes:** round PQ, 2 October ("No, it doesn't need to be a percent. Just a number.") for CQ and DQ; the 9 October no percent ruling recorded by the golden seat; the 15 October P0 item that took percent signs off the screen; and MOB PR 83 (merged 16 October), which rounded weights to whole numbers.
+- **The 14 October "no raw scores" ruling stands and is satisfied:** a percent of a defined maximum is not a raw score.
+- **Phase 1 changes no screen.** It adds the engine file, its gate and the two documents. Phase 2 moves the renderers and flips the tests that hold the old forms.
+- **Open, the lead's or his:** the one cap (several entries summed at one address, capped at 10); which of two archetype figures the person reads; whether the Summary plate returns to a percent on a quiz only record; inputs answered on 0 to 10 stay as they are (default taken).
