@@ -28,6 +28,19 @@
    ============================================================ */
 var LP={memo:null, sig:'', all:false, open:{}, wired:false};
 
+/* WHICH RECORD A ROW'S OPEN STATE BELONGS TO, 16 October. LP.open was one
+   map keyed by pattern alone, and the toggle that fires when a first row is
+   drawn open wrote into it, so every record opened its first row on every
+   other record that carries the same pattern. Measured on 4c6185d: after
+   Sofia, Diane, Marcus, Angela and Derek, James opened Pride as well as his
+   own first row, and Summary printed his unanswered line twice. Keyed by the
+   record now, the way the undo stack and S.rec already are; a worked example
+   has no id and is keyed by its place in the roster. */
+function lpWho(){
+ var p=(typeof CURP!=='undefined')?CURP:null;
+ return p&&p.id?'r:'+p.id:'w:'+((typeof S!=='undefined'&&S.who!=null)?S.who:'');}
+function lpOpen(w){return LP.open[w]||(LP.open[w]={});}
+
 /* the parts of the record traceFromRecord reads, and nothing else */
 function loopSig(p){
  if(!p)return '';
@@ -85,9 +98,10 @@ function lpChain(x){
   return '<li><span class="lp-cl">'+s[0]+'</span><span class="lp-cv">'+s[1]+'</span></li>';}).join('')+'</ol>';}
 
 function lpRow(x,i){
- var open=LP.open[x.key]!==undefined?LP.open[x.key]:i===0;
+ var w=lpWho(), was=lpOpen(w)[x.key];
+ var open=was!==undefined?was:i===0;
  var seat=x.seat?unp(String(x.seat).toLowerCase(),x.seat+' seat','seat'):'';
- return '<details class="lp-p" data-lpk="'+esc(x.key)+'"'+(open?' open':'')+'>'
+ return '<details class="lp-p" data-lpk="'+esc(x.key)+'" data-lpw="'+esc(w)+'"'+(open?' open':'')+'>'
   +'<summary><span class="lp-pn"><b>'+esc(x.name)+'</b>'+(seat?'<em>'+seat+'</em>':'')+'</span>'
   +'<span class="lp-st lp-'+x.state+'">'+(x.state==='confirmed'?'Confirmed':'Unanswered')+'</span></summary>'
   +lpChain(x)+'</details>';}
@@ -159,7 +173,10 @@ function loopRepaint(){
 function loopWire(){
  if(LP.wired)return; LP.wired=true;
  document.addEventListener('toggle',function(ev){var d=ev.target;
-  if(d&&d.getAttribute&&d.getAttribute('data-lpk'))LP.open[d.getAttribute('data-lpk')]=d.open;},true);
+  /* the record is read off the row, never off CURP at the time the event
+     arrives, because the toggle is queued and the record may have moved */
+  if(d&&d.getAttribute&&d.getAttribute('data-lpk'))
+   lpOpen(d.getAttribute('data-lpw')||lpWho())[d.getAttribute('data-lpk')]=d.open;},true);
  document.addEventListener('click',function(ev){
   var b=ev.target&&ev.target.closest?ev.target.closest('[data-lprel],[data-lpall]'):null;
   if(!b)return;

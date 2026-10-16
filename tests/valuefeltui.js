@@ -195,6 +195,8 @@ require('./net.js').guardBrowser(browser);
 
   ok(errs.length === 0, 'no page errors: ' + JSON.stringify(errs));
   await browser.close();
-  console.log('\n' + (n - fails.length) + ' of ' + n + ' passed');
+  /* the house summary shape, so tools/floors.js can hold this gate to a
+     floor. "N of M passed" matched none of its lines. */
+  console.log('\n===== ' + (n - fails.length) + ' passed, ' + fails.length + ' failed =====');
   process.exit(fails.length ? 1 : 0);
 })().catch(e => { console.error(e); process.exit(1); });
