@@ -8,10 +8,11 @@
 # and no binding that `atuned-api` lacks. A name that merely resembles
 # `atuned` is never touched: the script name is compared whole.
 name: cloudflare inspect
+# Hand start only. A push to a branch runs that branch's own copy of this file
+# with the account token, and this file can delete a Worker, so the push
+# trigger that used to run it from claude/cloudflare-inspect is gone. The
+# Reboot-OS workflow lint (PR 63) refuses the old shape.
 on:
-  push:
-    branches: [claude/cloudflare-inspect]
-    paths: ['.github/workflows/cloudflare-inspect.yml']
   workflow_dispatch:
     inputs:
       delete_atuned_os:
