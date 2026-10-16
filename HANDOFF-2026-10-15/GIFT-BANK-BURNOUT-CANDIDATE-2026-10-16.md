@@ -219,7 +219,7 @@ These are not your words. They are lines from the "50 Limiting Beliefs" cards, e
 
 - **Whether card lines may be in a gift bank at all.** 90 of these 100 are not your words. If not, the bank is 10 lines, and it waits for dictation.
 - **If they may: whether the card form stands.** It reads "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am ...", with the card's full stop. Changing it to your own "I'm letting go of" form would be a rewrite, so it is not done without your ruling.
-- Which lines to strike. Name the row numbers; they are swapped for reserve lines under a new version and a new hash.
+- Which lines to strike. Name the row numbers. They are swapped for reserve lines under a new version and a new hash.
 
 ## How you approve
 
