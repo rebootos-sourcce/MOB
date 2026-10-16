@@ -164,8 +164,34 @@ function lawWork(nm){
  return (w&&w.on===S.law[nm]&&w.n>0)?w.n:0;}
 /* a law as CQ reads it: the answer, and what the releases since have added */
 function lawNow(nm){return lawLift(S.law[nm],lawWork(nm));}
-/* CQ on its own, for the callers that need it without the whole reading */
-function cqSum(){return SINAMES.reduce((a,l)=>a+(lawIn(l)?lawNow(l):0),0)/210*100;}
+/* CQ on its own, for the callers that need it without the whole reading.
+   open is what an unanswered law counts, and every caller but cqSpan passes
+   none, so it is the 0 the ruling gives it. cqSpan asks what the figure
+   would be if every open law landed at ten, through this same sum, so the
+   two ends of the range are the engine's arithmetic and never a copy of it. */
+function cqSum(open){return SINAMES.reduce((a,l)=>a+(lawIn(l)?lawNow(l):(open||0)),0)/210*100;}
+/* ============================================================
+   WHERE THE FINISHED CQ CAN STILL LAND, read off what is unanswered.
+
+   The core drill said "The reading swings between lo and hi. The figure is
+   the middle of that range" off cqRange (ui/personas.js), which is a band
+   drawn round the figure alone and knows nothing about how many laws are in.
+   Measured at e9ca1ae: with 1 law answered at 10 the drill said CQ swings
+   between 0 and 18 and that the figure was the middle, where the middle of
+   that was 8.9 against a CQ of 5 and the finished figure can land anywhere
+   from 5 to 100.
+
+   lo is the figure with every open law at its lowest, which is the figure
+   now, because an open law counts nothing. hi is every open law at ten. When
+   every law is in the two are one number. enough is false while most laws
+   are still open (fewer than half answered), and then the drill says there
+   are not enough answers to give a range at all, because a range that covers
+   most of the scale says nothing a person can use.
+   ============================================================ */
+function cqSpan(){
+ var of=SINAMES.length, answered=SINAMES.filter(lawIn).length;
+ return {lo:cqSum(), hi:cqSum(10), answered:answered, of:of,
+  complete:answered===of, enough:answered*2>=of};}
 /* WHAT A RELEASE WRITES INTO THE LAWS. keys are the patterns of new ground the
    meter has just recorded, so a rerun passes none and moves nothing. Each key's
    address names a seat, and every answered law at that seat counts them. A law
@@ -598,6 +624,64 @@ function accuracy(r,prof){
  var band=5.7*0.5 + (1-cov)*6 + (1-sig)*8 + deg*4 + (1-rel)*1.2 + (1-exq)*3;
  return {pct:pct, band:band, exq:exq, sig:sig, cov:meas, rel:Math.round(rel*100), relN:rel,
   held:held, inst:inst, deg:deg, signal:Math.round(sig*100)};}
+
+/* ============================================================
+   HOW MUCH OF THE INSTRUMENT HAS BEEN ANSWERED OR WRITTEN, and nothing about
+   how high any of it reads.
+
+   The Summary plate's early, partial or full word was read off accuracy().pct
+   above, and that figure is a fit of how trustworthy the reading is, not a
+   count of what was measured. Two of its terms read the answers themselves:
+   exq is the expression fill, which is the laws' own mean at each band, and
+   held counts addresses at 4 or more, which is how heavy the stories were. So
+   it rose with how high the answers were. Measured at e9ca1ae (probe p4): all
+   21 laws answered at 10 read 56.0, partial; all 21 answered at 1 read 39.8,
+   early; no law and five heavy stories read 46.1, partial, above the person
+   who had answered everything honestly low. And a blank read 20.8, of which
+   10.8 was the default 6 sitting in every unanswered law.
+
+   accuracy() stays as it is, because the stage's Accuracy ring and its drill
+   print that fit and name its causes, and that is a different question. This
+   answers the plate's question only, from counts:
+
+     laws     the laws answered, lawIn's count, which is the reading's own
+     entries  the stories written, every entry, whatever it read
+
+   pct is 80 for the intake and 20 for the story, so the laws carry four
+   fifths: they are the measurement, and a story is evidence for it. The story
+   side is whole at ten entries, the ladder's own Ten stories rung
+   (engine/ladder.js, "the field is being read from your own words"), so
+   CS_STORY_N names the same ten and a story past it adds nothing here.
+   Neither side reads a value, so the same counts give the same figure whether
+   every answer is 1 or 10, and one more answer or one more story can never
+   lower it.
+   ============================================================ */
+const CS_LAWW=80, CS_STORYW=20, CS_STORY_N=10;
+function accCover(r,prof){
+ var P=prof||CURP, of=SINAMES.length;
+ var laws=(r&&typeof r.answered==='number')?r.answered:SINAMES.filter(lawIn).length;
+ var ents=(P&&P.story&&Array.isArray(P.story.entries))?P.story.entries.length:0;
+ var pct=CS_LAWW*laws/of + CS_STORYW*Math.min(ents,CS_STORY_N)/CS_STORY_N;
+ return {pct:pct, laws:laws, of:of, entries:ents, complete:laws>=of};}
+/* THE WORD, ON THAT SCALE. The old lines, 45 and 70, were drawn on
+   accuracy()'s mix, which starts at a floor of 10 and needs the field to be
+   carrying to reach 70, so neither means anything here and both are redrawn
+   from the two counts:
+
+     full     every law answered, and only then. That is the one point the
+              CQ figure stops moving (compute's complete), so the plate can
+              never say full while the core drill still says the figure has
+              room to move. The intake alone is 80 on this scale, so no
+              number of stories reaches it without the laws.
+     partial  40 or more, half the intake's 80: about half the laws with no
+              story yet, or six of the 21 with the story side whole.
+     early    anything entered short of that.
+     ''       nothing answered and nothing written, which accWord has always
+              printed as the dash. */
+const CS_PARTIAL=CS_LAWW/2;
+function accCoverWord(c){
+ if(!c||!(c.pct>0))return '';
+ return c.complete?'full':c.pct<CS_PARTIAL?'early':'partial';}
 
 /* ============================================================
    THE CHILD PATTERN. WHICH READING THIS IS, AND WHY IT IS AN ASSUMPTION.

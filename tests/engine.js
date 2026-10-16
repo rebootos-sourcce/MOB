@@ -7877,6 +7877,270 @@ g('RB · becoming S1 to S3: the avatar\'s own data on the record, its identity, 
   'an avatar held in memory from before gains the new fields and keeps what it had');
 }
 
+g('PLATE WORD · early, partial or full follows how much was answered, never how high');
+/* The Summary plate's word was read off accuracy().pct, which carries the
+   expression fill and the held count, so it measured the answers' height:
+   at e9ca1ae every law at 10 read partial, every law at 1 read early, and five
+   stories with no law read partial. It reads accCover now (engine/compute.js). */
+{
+ const has=typeof E.accCover==='function'&&typeof E.accCoverWord==='function';
+ ok(has,'accCover and accCoverWord exist, the plate word has its own measure');
+ const cover=(lawVal,nLaws,nStories)=>{
+  const p=E.blankProfile('cover');
+  if(nLaws){p.laws={};SINAMES.slice(0,nLaws).forEach(l=>p.laws[l]=lawVal);}
+  for(let i=0;i<(nStories||0);i++)p.story.entries.push({t:'2026-10-16T00:00:0'+(i%10)+'Z',text:'I am furious'});
+  const r=E.read(p).reading;
+  return has?E.accCover(r,p):{pct:NaN};};
+ const word=c=>has?E.accCoverWord(c):'?';
+ ok(word(cover(null,0,0))==='','a blank profile has no word, got '+JSON.stringify(word(cover(null,0,0))));
+ const hi=cover(10,21,0), lo=cover(1,21,0), zero=cover(0,21,0);
+ ok(word(hi)==='full'&&word(lo)==='full'&&word(zero)==='full',
+  'every law answered reads full whether the answers are 10, 1 or 0, got '+[word(hi),word(lo),word(zero)].join(','));
+ ok(hi.pct===lo.pct&&lo.pct===zero.pct,'and the measure is the same figure at all three, '+[hi.pct,lo.pct,zero.pct].join(','));
+ const st=cover(null,0,5);
+ ok(word(st)==='early'&&st.pct<lo.pct,'five stories and no law read early, below every law answered low, '+word(st)+' '+st.pct);
+ ok(word(cover(10,1,0))==='early','one law answered at 10 is early, not full, got '+word(cover(10,1,0)));
+ ok(word(cover(10,20,10))!=='full','twenty laws and ten stories are not full while a law is still open, got '+word(cover(10,20,10)));
+ /* monotone in each count, and indifferent to the height */
+ let last=-1, mono=true;
+ for(let n=0;n<=21;n++){const c=cover(n%2?9:2,n,0); if(!(c.pct>=last))mono=false; last=c.pct;}
+ ok(mono,'answering one more law never lowers the measure, laws at alternating heights');
+ last=-1; mono=true;
+ for(let n=0;n<=14;n++){const c=cover(3,7,n); if(!(c.pct>=last))mono=false; last=c.pct;}
+ ok(mono,'writing one more story never lowers the measure');
+ const order=['','early','partial','full'];
+ let wl=0, wmono=true;
+ for(let n=0;n<=21;n++){const w=order.indexOf(word(cover(5,n,0))); if(w<wl)wmono=false; wl=w;}
+ ok(wmono&&wl===3,'the word climbs the ladder as the laws are answered and never steps back, ending at full');
+}
+
+g('CQ SPAN · the range on a partial intake is where the finished figure can still land');
+/* The core drill drew cqRange round the figure alone, so at e9ca1ae 1 law
+   answered at 10 read "swings between 0 and 18, the figure is the middle",
+   with CQ 5 and a finished figure anywhere from 5 to 100. cqSpan reads both
+   ends off cqSum with every open law at nothing and at ten. */
+{
+ const has=typeof E.cqSpan==='function';
+ ok(has,'cqSpan exists');
+ const span=(n,v)=>{const p=E.blankProfile('span');p.laws={};SINAMES.slice(0,n).forEach(l=>p.laws[l]=v);
+  const r=E.read(p).reading; return {r, s:has?E.cqSpan():null};};
+ const a=span(1,10);
+ ok(a.s&&Math.abs(a.s.lo-a.r.CQ)<1e-9,'the low end is the figure now, an open law counting nothing, '+(a.s&&a.s.lo)+' against '+a.r.CQ);
+ ok(a.s&&Math.abs(a.s.hi-100)<1e-9,'one law at 10 and twenty open can still finish at 100, '+(a.s&&a.s.hi));
+ ok(a.s&&a.s.enough===false&&a.s.answered===1&&a.s.of===SINAMES.length,'and with most laws open there are not enough answers to give a range, '+JSON.stringify(a.s));
+ const b=span(12,5);
+ const want=a.s?(12*5+(SINAMES.length-12)*10)/210*100:NaN;
+ ok(b.s&&b.s.enough&&!b.s.complete&&Math.abs(b.s.hi-want)<1e-9&&Math.abs(b.s.lo-b.r.CQ)<1e-9,
+  'twelve laws at 5: enough to give a range, from the figure now to every open law at ten, '+JSON.stringify(b.s));
+ const c=span(SINAMES.length,7);
+ ok(c.s&&c.s.complete&&Math.abs(c.s.lo-c.s.hi)<1e-9&&Math.abs(c.s.lo-c.r.CQ)<1e-9,'every law in, the two ends are the figure');
+ ok(Math.abs(E.cqSum()-c.r.CQ)<1e-9,'and cqSum with nothing passed is CQ exactly as before');
+ /* the swing only narrows as laws come in */
+ let wide=Infinity, narrows=true;
+ for(let n=0;n<=SINAMES.length;n++){const s=span(n,6).s; if(!s)break; const w=s.hi-s.lo; if(w>wide+1e-9)narrows=false; wide=w;}
+ ok(has&&narrows,'answering a law never widens where the figure can land');
+}
+
+g('OWN WORD · a second emotion word never erases a stated one, each keeps its own charge on its own seat');
+/* parseStory read every seat against one wanted map for the whole text, so at
+   e9ca1ae "I am exhausted and furious" applied {"Anger":10.8} and left Apathy
+   at 0, against the ruling that exhaustion sits at the solar plexus and is
+   not anger, and "I am exhausted and terrified" named Perfectionism, Force
+   and Rigidity at the solar plexus as findings, inferred false. */
+{
+ const fresh=()=>{E.loadProfile(E.blankProfile('own'));};
+ const apply=s=>{fresh();return E.applyStory(s).applied||{};};
+ const alone=apply('I am exhausted').Apathy;
+ const ef=apply('I am exhausted and furious');
+ ok(ef.Apathy>0&&ef.Anger>0,'"exhausted and furious" keeps both, Apathy and Anger, '+JSON.stringify(ef));
+ const et=apply('I am exhausted and terrified');
+ ok(Math.abs((et.Apathy||0)-alone)<0.05,'"exhausted and terrified" keeps the exhaustion whole as Apathy, '
+  +(et.Apathy||0)+' against '+alone+' alone');
+ fresh();
+ const im=E.parseStory('I am exhausted and terrified').imprints;
+ const solar=im.filter(i=>i.from==='solar'), root=im.filter(i=>i.from==='root');
+ ok(solar.length>0&&solar.every(i=>i.fetter==='Apathy'),'and the solar plexus reads Apathy and nothing else, '
+  +JSON.stringify(solar.map(i=>i.fetter+':'+i.name)));
+ ok(!im.some(i=>/Perfectionism|Force|Rigidity/.test(i.name)&&i.inferred===false),
+  'no address the person never named is printed as a finding off the terror elsewhere');
+ ok(root.length>0&&root.every(i=>i.fetter==='Fear'),'the terror stays Fear at the root, '+JSON.stringify(root.map(i=>i.fetter)));
+ /* and in a field already carrying, where susceptibility reorders the seats,
+    the stated Apathy no longer names the root */
+ E.loadProfile(E.blankProfile('own2')); ['I am so tired','I feel numb and flat'].forEach(s=>E.applyStory(s)); E.compute();
+ const im2=E.parseStory('I am exhausted and terrified').imprints.filter(i=>i.from==='root');
+ ok(im2.every(i=>i.fetter==='Fear'),'on a carrying field the root still reads Fear only, '+JSON.stringify(im2.map(i=>i.fetter+':'+i.name)));
+ /* four words at four seats, each naming its own */
+ fresh();
+ const four=E.parseStory('I was afraid, sad, ashamed and numb.').imprints;
+ const by=k=>[...new Set(four.filter(i=>i.from===k).map(i=>i.fetter))].join(',');
+ ok(by('root')==='Fear'&&by('heart')==='Sad'&&by('solar')==='Shame'&&by('sacral')==='Apathy',
+  'afraid, sad, ashamed and numb each land on their own fetter at their own seat, root '+by('root')
+  +' heart '+by('heart')+' solar '+by('solar')+' sacral '+by('sacral'));
+ /* one word alone reads exactly as it did */
+ fresh();
+ const one=E.parseStory('I am angry').imprints;
+ ok(one.length===4&&one.every(i=>i.fetter==='Anger'&&i.from==='solar'),'a lone anger word is still four Anger addresses at the solar plexus');
+}
+
+g('SEED SHARE · the share of the field that is still the seed is measured from the real blank');
+/* seedShare measured the seed from a blank of 3 after the blank moved to 0,
+   so at e9ca1ae an ESTJ seed plus one story read 0.36 where the seed put
+   26.80 of 37.07 units on the axes. */
+{
+ const sum=p=>CHARGES.reduce((a,c)=>a+p.axes[c].held,0);
+ const p=E.blankProfile('seed'); E.seedApply(p,'ESTJ');
+ const seeded=sum(p);
+ ok(E.seedShare(p)===1,'a seed nobody has moved is all seed, got '+E.seedShare(p));
+ /* raise every axis by a known amount, so the seed's share of the units is exact */
+ CHARGES.forEach(c=>{p.axes[c].held=Math.min(10,p.axes[c].held+1);});
+ const added=sum(p)-seeded, want=Math.round(seeded/(seeded+added)*100)/100;
+ ok(E.seedShare(p)===want,'with every axis raised, the share is the seed\'s units over all the units, '
+  +E.seedShare(p)+' against '+want);
+ const q=E.blankProfile('seed2'); E.seedApply(q,'ESTJ');
+ E.read(q,{story:'I was furious at work today, my jaw clenched, I could not stop shaking',write:true});
+ const qs=sum(q), seedUnits=CHARGES.reduce((a,c)=>a+Math.min(q.seed.axes[c],q.axes[c].held),0);
+ ok(Math.abs(E.seedShare(q)-seedUnits/qs)<0.1,'after one story the line agrees with the units the seed still holds, '
+  +E.seedShare(q)+' against '+(seedUnits/qs).toFixed(2));
+ const empty=E.blankProfile('noseedaxes'); empty.axes={}; E.seedApply(empty,'INFP');
+ ok(E.seedShare(empty)===1&&CHARGES.every(c=>empty.axes[c].opp===0),'a seed onto a record with no axes builds them from the blank');
+}
+
+g('ONE BLANK · a missing axis loads at the same blank the boundary fills');
+/* loadProfile filled a missing axis with 3 and validateProfile with 0, so at
+   e9ca1ae read() of a profile with axes:{} gave unread false, 107 addresses
+   carrying and DQ 13.6 from charge nobody entered. */
+{
+ const p=E.blankProfile('noaxes'); p.axes={};
+ const r=E.read(p).reading;
+ ok(r.unread===true,'a profile with no axes reads as unread, like a blank one, got unread '+r.unread);
+ ok(r.under===0&&r.DQ===0,'and nothing carries on it, under '+r.under+' DQ '+r.DQ);
+ const b=E.read(E.blankProfile('blank')).reading;
+ ok(r.DQ===b.DQ&&r.under===b.under&&r.unread===b.unread,'it reads exactly as a blank profile reads');
+ const v=E.validateProfile(Object.assign(E.blankProfile('v'),{axes:{}}));
+ ok(v.ok&&CHARGES.every(c=>v.profile.axes[c].held===E.AXIS_BLANK),
+  'the boundary fills every missing axis with AXIS_BLANK, the same constant');
+ ok(typeof E.AXIS_BLANK==='number'&&CHARGES.every(c=>E.blankProfile('k').axes[c].held===E.AXIS_BLANK),
+  'and the blank profile is written from it');
+ /* one axis present, the rest missing: the present one is kept as written */
+ const one=E.blankProfile('one'); one.axes={Anger:{held:5,opp:0}};
+ E.loadProfile(one);
+ ok(S.charge.Anger===5&&CHARGES.filter(c=>c!=='Anger').every(c=>S.charge[c]===E.AXIS_BLANK),
+  'a partial axes block keeps what it holds and opens the rest at the blank');
+}
+
+g('PCT · one formula and one registry for every score a person reads (engine/pct.js)');
+/* Ruled 16 October: every 0.0 figure becomes a percent, and the percent is the
+   fill of the ring drawn for it. These hold the formula at both ends of every
+   kind, the dash where a figure rounds to nothing, the citation each range
+   rests on, and that no roster person's reading falls outside the range its
+   kind claims, which is the one way this table could lie without throwing. */
+{
+ const {PCT_KIND,PCT_DASH,pct,fmtPct,pctMove}=E;
+ const fs=require('fs'), path=require('path');
+ const kinds=Object.keys(PCT_KIND||{});
+ ok(typeof pct==='function'&&typeof fmtPct==='function'&&typeof pctMove==='function'&&kinds.length>0,
+  'the registry and its three functions are exported, '+kinds.length+' kinds');
+ ok(PCT_DASH==='–','the dash is the en dash every surface already prints');
+ kinds.forEach(k=>{
+  const K=PCT_KIND[k], span=K.hi-K.lo, mid=K.lo+span/2;
+  ok(typeof K.lo==='number'&&typeof K.hi==='number'&&isFinite(K.lo)&&isFinite(K.hi)&&K.hi>K.lo,
+   k+': lo and hi are numbers and hi is above lo, '+K.lo+' to '+K.hi);
+  ok(pct(k,K.lo)===0&&fmtPct(k,K.lo)===PCT_DASH,k+': at lo it is 0 and prints the dash, '+fmtPct(k,K.lo));
+  ok(pct(k,K.hi)===100&&fmtPct(k,K.hi)==='100%',k+': at hi it is 100 and prints 100%, '+fmtPct(k,K.hi));
+  ok(pct(k,mid)===50&&fmtPct(k,mid)==='50%',k+': halfway it is 50%, '+fmtPct(k,mid));
+  ok(pct(k,K.lo-span)===0&&fmtPct(k,K.lo-span)===PCT_DASH,k+': below lo it stays at 0, '+pct(k,K.lo-span));
+  ok(pct(k,K.hi+span*3)===100,k+': above hi it stays at 100, '+pct(k,K.hi+span*3));
+  ok([NaN,Infinity,null,undefined,'',true,'six'].every(v=>pct(k,v)===null&&fmtPct(k,v)===PCT_DASH),
+   k+': nothing that is not a number reads as a figure');
+  ok(fmtPct(k,K.hi,{unread:true})===PCT_DASH&&pctMove(k,K.lo,K.hi,{unread:true})===null,
+   k+': an unread profile prints the dash even at hi, because a default is not a reading');
+  /* monotone and whole, across the range and a span either side */
+  let prev=-1, mono=true, whole=true, zeroPct=false;
+  for(let i=0;i<=120;i++){const v=K.lo-span+i*(3*span/120), p=pct(k,v);
+   if(p<prev)mono=false; prev=p; if(!Number.isInteger(p)||p<0||p>100)whole=false;
+   if(fmtPct(k,v)==='0%')zeroPct=true;}
+  ok(mono,k+': the percent never falls as the value rises');
+  ok(whole,k+': every percent is a whole number from 0 to 100');
+  ok(!zeroPct,k+': nothing ever prints 0%');
+  /* THE CITATION. The fragment is read out of the cited file, so a clamp that
+     moves fails here by name rather than leaving the table wrong. */
+  const f=path.resolve('atuned_src',K.src||'');
+  const body=(K.src&&fs.existsSync(f))?fs.readFileSync(f,'utf8'):'';
+  ok(!!K.src&&!!body,k+': cites a source file that exists, '+K.src);
+  ok(typeof K.find==='string'&&K.find.length>=12&&body.indexOf(K.find)>=0,
+   k+': and the bound it cites is still written there, '+JSON.stringify(K.find));
+  ok(typeof K.say==='string'&&K.say.length>3,k+': says in words what it measures');
+  ok(!K.cap||(K.p99&&typeof K.p99.n==='number'),k+': a cap carries what it was measured on');});
+ ok(pct('weight',6.2)===62&&fmtPct('weight',6.2)==='62%'&&fmtPct('cq',58.4)==='58%'&&fmtPct('vitality',0.17)==='17%',
+  'the ruling\'s own example: a weight of 6.2 reads 62%, CQ 58.4 reads 58%, vitality 0.17 reads 17%');
+ ok(fmtPct('law',0.04)===PCT_DASH&&fmtPct('law',0.05)==='1%','a figure that rounds to nothing is the dash, the first whole percent is not');
+ let threw='';
+ try{pct('weigth',5);}catch(e){threw=e.message;}
+ ok(/weigth/.test(threw),'a misspelt kind is refused by name, never read as a figure: '+threw);
+ /* A CHANGE IS BEFORE AND AFTER */
+ const mv=pctMove('cq',58.2,61.4), same=pctMove('cq',58.2,58.4), down=pctMove('dq',22,19);
+ ok(mv&&mv.from==='58%'&&mv.to==='61%'&&mv.moved&&mv.up,'a move is said from 58% to 61%, '+JSON.stringify(mv));
+ ok(same&&!same.moved&&same.from===same.to,'a move too small to show is no move, '+JSON.stringify(same));
+ ok(down&&down.moved&&!down.up&&down.to==='19%','and a fall is a fall, '+JSON.stringify(down));
+ ok(pctMove('cq',NaN,50)===null&&pctMove('cq',50,undefined)===null,'a move with an end missing is not a move');
+
+ /* THE ROSTER NEVER LEAVES THE RANGE ITS KIND CLAIMS. The clamp makes the
+    printed percent safe whatever comes in; this checks the honest part, the
+    raw share before the clamp, for every quantity the engine computes, on
+    every person in PEOPLE. A kind whose range is too narrow fails here with
+    the person and the value. */
+ const raw=(k,v)=>{const K=PCT_KIND[k];return 100*(v-K.lo)/(K.hi-K.lo);};
+ const out=[], seen={}, capSeen={};
+ const put=(k,v,who)=>{if(v===null||v===undefined||!isFinite(v))return;
+  seen[k]=(seen[k]||0)+1; const r=raw(k,v);
+  if(PCT_KIND[k].cap){(capSeen[k]=capSeen[k]||[]).push(r);return;}
+  if(r<-1e-9||r>100+1e-9)out.push(k+' '+who+' '+v);};
+ PEOPLE.forEach(p=>{
+  S.doms=p.doms?p.doms.slice():[p.dom]; S.arcs=p.arcs?p.arcs.slice():[p.a1,p.a2];
+  S.roots=p.roots?p.roots.slice():[]; buildSoul();
+  CHARGES.forEach(c=>{S.charge[c]=(p.c&&p.c[c])||0; S.replace[c]=(p.rep&&p.rep[c])||0;});
+  const LS=LAWSET[p.nm]||{_:E.LAW_DEFAULT};
+  SINAMES.forEach(l=>S.law[l]=(LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:E.LAW_DEFAULT)); lawsIn();
+  const x=compute(), who=p.nm;
+  put('cq',x.CQ,who); put('dq',x.DQ,who); put('expression',x.EX,who);
+  put('expression',E.exHeadroom(x.EX),who);
+  SINAMES.forEach(l=>put('law',S.law[l],who));
+  CHARGES.forEach(c=>{put('charge',S.charge[c],who); put('installed',S.replace[c],who);});
+  E.W.forEach(n=>{put('held',n.held,who); put('installed',n.rep,who); put('weight',n.sq,who);
+   put('pole',n.pole,who); put('overshoot',n.jq,who); put('pull',E.leverPull(n.sq),who);});
+  NODES.forEach(n=>put('weight',n.sq,who));
+  put('weight',x.SQm,who); put('weight',x.darkV,who); x.maskRing.forEach(m=>put('weight',m.w,who));
+  [].concat(x.sabs,x.cxs,x.hys,x.sups).forEach(o=>{put('chain',o.w,who); if(o.score)put('match',o.score,who);});
+  put('pole',x.poleMean,who); put('overshoot',x.JQ,who); put('distortion',x.dist,who);
+  put('integrity',x.Ig,who); put('intention',x.It,who);
+  put('vitality',x.X,who); put('awareness',x.Y,who); put('will',x.Z,who); put('radiance',x.radiance,who);
+  put('energy',(x.X+x.Y+x.Z)/3,who); put('pull',x.PULL,who);
+  (x.aff||[]).forEach(v=>put('affinity',v,who));
+  put('shape',x.outward,who); put('control',x.organized,who);
+  if(x.malig!==null&&x.malig!==undefined){put('lean',x.malig,who); put('lean',100-x.malig,who);}
+  E.BANDS.forEach(b=>{const g=E.W.filter(n=>n.b===b), m=g.reduce((a,n)=>a+n.sq,0)/g.length;
+   put('axis',E.mirrorAt(m,E.bandIg(b)),who);});
+  E.verpRead().forEach(v=>put('gate',v.pct,who));
+  try{const iq=E.iqScore({laws:{},intake:p.intake||{}}); Object.keys(iq||{}).forEach(l=>put('spread',iq[l].spread,who));}catch(e){}
+  try{put('accuracy',E.accuracy(x,{laws:Object.assign({},LS)}).pct,who);}catch(e){}
+  /* what the story puts at an address, one entry and summed */
+  const im=(E.parseStory(p.says||'').imprints)||[], by={}, pill={};
+  im.forEach(m=>{put('atom',m.amt,who); by[m.node]=(by[m.node]||0)+m.amt;
+   const key=m.inferred?('f|'+m.band+'|'+m.fetter):('n|'+m.node); pill[key]=(pill[key]||0)+m.amt;});
+  Object.values(by).concat(Object.values(pill)).forEach(v=>put('atomsum',v,who));});
+ ok(out.length===0,'no roster reading falls outside the range its kind claims, '+out.length+' do'
+  +(out.length?': '+out.slice(0,6).join('; '):''));
+ const engineKinds=['cq','dq','expression','law','charge','installed','held','weight','chain','pole','overshoot',
+  'distortion','integrity','intention','vitality','awareness','will','radiance','energy','pull','affinity','axis'];
+ const unseen=engineKinds.filter(k=>!seen[k]);
+ ok(unseen.length===0,'and every kind the engine computes was actually measured on the roster, missing '+JSON.stringify(unseen));
+ /* A CAP HOLDS THE ROSTER IT WAS MEASURED ON: at least 99 in a hundred of its
+    observed values sit inside it, which is what the 99th percentile means. */
+ kinds.filter(k=>PCT_KIND[k].cap).forEach(k=>{
+  const a=capSeen[k]||[], inside=a.filter(r=>r<=100+1e-9).length;
+  ok(a.length>0&&inside/a.length>=0.99,k+': the cap holds '+inside+' of '+a.length+' roster values');});
+}
+
 g('CRISIS · srcSafe trips on self harm and not on everyday uses of the same words');
 /* all expected red on main: block 2a ports srcSafe from e2aa6f8 and must fix it */
 {
