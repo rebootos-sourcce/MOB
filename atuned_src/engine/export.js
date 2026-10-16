@@ -143,7 +143,7 @@ if(typeof module!=='undefined'&&module.exports){
                   LEAN_TRUST_HALF:LEAN_TRUST_HALF, LEAN_MIN_CH:LEAN_MIN_CH,
   /* the door */  read:read, input:input, throughput:throughput, output:output,
                   gatesClear:gatesClear, gatesLoad:gatesLoad, gatesSave:gatesSave,
-  /* schema */    blankProfile:blankProfile, loadProfile:loadProfile,
+  /* schema */    blankProfile:blankProfile, AXIS_BLANK:AXIS_BLANK, loadProfile:loadProfile,
                   saveProfile:saveProfile, snapshot:snapshot, LAW_DEFAULT:LAW_DEFAULT,
   /* the twenty one on every history row, the one law over time a graph reads,
      and the renames both the loader and the boundary read */

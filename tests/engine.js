@@ -7914,6 +7914,29 @@ g('PLATE WORD · early, partial or full follows how much was answered, never how
  ok(wmono&&wl===3,'the word climbs the ladder as the laws are answered and never steps back, ending at full');
 }
 
+g('ONE BLANK · a missing axis loads at the same blank the boundary fills');
+/* loadProfile filled a missing axis with 3 and validateProfile with 0, so at
+   e9ca1ae read() of a profile with axes:{} gave unread false, 107 addresses
+   carrying and DQ 13.6 from charge nobody entered. */
+{
+ const p=E.blankProfile('noaxes'); p.axes={};
+ const r=E.read(p).reading;
+ ok(r.unread===true,'a profile with no axes reads as unread, like a blank one, got unread '+r.unread);
+ ok(r.under===0&&r.DQ===0,'and nothing carries on it, under '+r.under+' DQ '+r.DQ);
+ const b=E.read(E.blankProfile('blank')).reading;
+ ok(r.DQ===b.DQ&&r.under===b.under&&r.unread===b.unread,'it reads exactly as a blank profile reads');
+ const v=E.validateProfile(Object.assign(E.blankProfile('v'),{axes:{}}));
+ ok(v.ok&&CHARGES.every(c=>v.profile.axes[c].held===E.AXIS_BLANK),
+  'the boundary fills every missing axis with AXIS_BLANK, the same constant');
+ ok(typeof E.AXIS_BLANK==='number'&&CHARGES.every(c=>E.blankProfile('k').axes[c].held===E.AXIS_BLANK),
+  'and the blank profile is written from it');
+ /* one axis present, the rest missing: the present one is kept as written */
+ const one=E.blankProfile('one'); one.axes={Anger:{held:5,opp:0}};
+ E.loadProfile(one);
+ ok(S.charge.Anger===5&&CHARGES.filter(c=>c!=='Anger').every(c=>S.charge[c]===E.AXIS_BLANK),
+  'a partial axes block keeps what it holds and opens the rest at the blank');
+}
+
 g('CRISIS · srcSafe trips on self harm and not on everyday uses of the same words');
 /* all expected red on main: block 2a ports srcSafe from e2aa6f8 and must fix it */
 {
