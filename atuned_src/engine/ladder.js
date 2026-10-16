@@ -62,6 +62,12 @@ function pracDaysAt(p,today){
    today and yesterday's streak continues. Miss a whole day and it is over, and
    the length of what was lost is still reported, because the thing a person
    built is not deleted by having stopped. */
+/* WHAT THE STREAK IS, said once and read by every surface that prints one,
+   so the Compass and the Accountability column cannot explain it two ways.
+   It said "a ritual on the record", and since 21.J2 only a ritual marked
+   done is a day. */
+var STREAK_MEANS='Streak is your current run of days with a ritual marked done. '
+ +'One skipped day is forgiven and a longer gap halves it.';
 function streakRead(p,now){
  var days=pracDays(p,now), today=pracDay(now||Date.now());
  if(!days.length||today===null)return {run:0, live:false, last:null, best:0, days:0, today:today};
@@ -91,6 +97,23 @@ function streakRead(p,now){
  var best=1,cur=1; for(var j=1;j<days.length;j++){
   if(days[j]===days[j-1]-1){cur++; if(cur>best)best=cur;} else cur=1;}
  var gap=today-days[0];
+ /* THE HALVING LANDS ON THE GAP, NOT ON THE RETURN. Ten days in a row ending
+    twenty days ago read Streak 10 on the Ritual page and 10 days on the
+    Compass, and the day the person came back and practised it read 5, so the
+    one act the streak exists to reward was the act that lowered it. Measured
+    on f7188cba. The rule above is unchanged: a gap of three or more halves
+    what was standing, once. It is applied the moment the gap is three days
+    long, so the figure on screen is the figure that stands, and practising
+    today keeps it and tomorrow adds one. Practising never lowers the number
+    a person sees.
+
+    It is still a figure that falls after an absence, and TDD v3 10.6 names
+    that tension rather than hiding it: the halving was ruled (Bible 1133) and
+    costed, it pays nothing, no mark reads it, and days practised sits beside
+    it and never falls. The drop is the rule working and is not shown as a
+    mistake or explained as an absence (DESIGN-ladder anti design 5): the
+    surfaces say what the streak is, and the date of the last day practised. */
+ if(gap>2)run=Math.max(1,Math.ceil(run/2));
  return {run:run, live:gap<=1, last:days[0], best:best, days:days.length, gap:gap, today:today};}
 
 /* GROUND COUNTED LINES, AND CALLED THEM ADDRESSES. p.meter.unique holds one

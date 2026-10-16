@@ -3096,6 +3096,30 @@ console.log('\n27 · the ladder');
   const mix=mk([0,1,2,3,4,5,-20,-21]), md=E.markDays(mix,NOW), LM=ladderRead(mix,NOW);
   ok(LM.earned.filter(m=>m.fam==='Practice').every(m=>md[m.k]!==undefined),
    'every practice mark earned is one markDays can date, earned '+LM.earned.filter(m=>m.fam==='Practice').map(m=>m.k)+' dated '+Object.keys(md));}
+
+ /* L4. PRACTISING NEVER LOWERS THE STREAK A PERSON SEES. Ten days in a row
+    ending twenty days ago read 10, and practising today read 5. The halving
+    lands on the gap now, so the lapsed figure is 5 and today keeps it.
+    Then every day set the roster's cadences could make: adding today to it
+    never lowers the run. Checked against f7188cba first, where the first
+    two fail and the sweep finds the drop. */
+ {const ten=[20,21,22,23,24,25,26,27,28,29];
+  const a=streakRead(mk(ten),NOW), b=streakRead(mk([0].concat(ten)),NOW);
+  ok(a.run===5,'a run of ten that lapsed twenty days ago stands at five, got '+a.run);
+  ok(b.run>=a.run,'and practising today does not lower it, '+a.run+' then '+b.run);
+  ok(a.best===10&&a.days===10,'while the longest row and the days practised still say ten, got '+a.best+' and '+a.days);
+  ok(streakRead(mk([2,3,4,5]),NOW).run===4,'a gap of two days is the grace day and halves nothing yet');
+  let drops=[];
+  for(let seed=1;seed<=400;seed++){
+   let x=seed, days=[];
+   const rnd=()=>{x=(x*1103515245+12345)%2147483648; return x/2147483648;};
+   for(let d=1;d<60;d++)if(rnd()<0.45)days.push(d);
+   if(!days.length)continue;
+   const r0=streakRead(mk(days),NOW).run, r1=streakRead(mk([0].concat(days)),NOW).run;
+   if(r1<r0)drops.push({seed,r0,r1});}
+  ok(drops.length===0,'over 400 day sets, practising today never lowers the streak, drops '+JSON.stringify(drops.slice(0,3)));
+  ok(typeof E.STREAK_MEANS==='string'&&/marked done/.test(E.STREAK_MEANS)&&/halves/.test(E.STREAK_MEANS),
+   'the streak carries one meaning, and it says a day is a ritual marked done and a long gap halves it');}
 }
 
 console.log('\n27c · a save never costs a person data, and a drain never leaks');
