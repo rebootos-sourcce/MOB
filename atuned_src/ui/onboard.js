@@ -980,7 +980,9 @@ function obRender(){
       (authFunnelCheckpoint), so it says what goes, here, before the pick.
       tests/copy.js holds it. */
    +'<p class="ob-p ob-foot">Your story and your name stay on this device. Our server gets a '
-   +'random code for this browser, the topic you pick next, and which steps you finish.</p>',
+   +'random code for this browser, the topic you pick next, and which steps you finish. '
+   /* the full pages, on the card that says what is sent, 16 October */
+   +legalLink('privacy')+' and '+legalLink('terms')+' say the rest.</p>',
    '<button type="button" class="btn pri" data-ob="next">Come in</button>'
    +'<button type="button" class="btn" data-ob="skip">Not now</button>');
  }

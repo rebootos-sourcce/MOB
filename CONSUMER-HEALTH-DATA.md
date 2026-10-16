@@ -6,7 +6,7 @@ Last changed 16 October 2026.
 
 Tula Unified LLC makes Atüned, at 1634 West 39th Place, Los Angeles, California 90062, United States. Contact: hello@atuned.world.
 
-This page is for people who live in Washington or Nevada. It is our consumer health data policy under Washington's My Health My Data Act and Nevada's consumer health data law. Consumer health data means information that can say something about a person's body or mind, now, before or later.
+People who live in Washington or Nevada have extra rights over their consumer health data, under Washington's My Health My Data Act and Nevada's consumer health data law. Consumer health data means information that can say something about a person's body or mind, now, before or later.
 
 The [Privacy](privacy.html) page covers everything else.
 

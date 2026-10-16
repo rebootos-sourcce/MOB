@@ -94,7 +94,35 @@ const REQUIRED=[
  ['privacy', [/\bname\b/i, /\bnever leaves this device\b/i],
   'one sentence naming that the name never leaves the device'],
  ['delete', [/\bour server\b/i, /\bfirst visit\b/i],
-  'the delete screen says what our server still keeps']];
+  'the delete screen says what our server still keeps'],
+ /* THE PUBLIC PAGES, 16 October, served at atuned.world/privacy and /terms.
+    The draft said the release voice went to "the browser's maker" while every
+    line went to ElevenLabs, and it named none of the companies below. Each
+    company that gets anything is named, and the terms hold the owner's own
+    line, "we're not a clinician", and the US crisis numbers. */
+ ['privacy-page', [/\bElevenLabs\b/, /\bvoice\b/i, /\bline\b/i],
+  'one sentence naming ElevenLabs and the voice lines it gets'],
+ ['privacy-page', [/\bname\b/i, /\bnever leaves this device\b/i],
+  'one sentence naming that the name never leaves the device'],
+ ['privacy-page', [/\bfirst visit\b/i, /\bsends?\b/i, /\bserver\b/i, /\brandom code\b/i, /\btopic\b/i],
+  'one plain sentence naming what a first visit sends'],
+ ['privacy-page', [/\bCloudflare\b/, /\bserver\b/i], 'Cloudflare, which runs the server'],
+ ['privacy-page', [/\bSupabase\b/, /\bfirst visit\b/i], 'Supabase, which holds the first visit'],
+ ['privacy-page', [/\bResend\b/, /\bemail\b/i], 'Resend, which sends the reset email'],
+ ['privacy-page', [/\bDiscord\b/, /\bHelp\b/], 'Discord, where what is sent from Help goes'],
+ ['privacy-page', [/\bStripe\b/, /\bcard\b/i], 'Stripe, which takes the card'],
+ ['terms-page', [/\bnot a clinician\b/i], 'the owner\'s line, we are not a clinician'],
+ ['terms-page', [/\bnot a substitute for care\b/i], 'that it is not a substitute for care'],
+ ['terms-page', [/\bcall or text 988\b/i], 'the 988 line, call or text'],
+ /* "Text HOME to 741741" is the line's own wording, said in sentence case
+    because the voice gate holds every word in capitals; the keyword is not
+    case sensitive */
+ ['terms-page', [/\btext\b[^.]{0,20}\bhome to 741741\b/i], 'the Crisis Text Line'],
+ ['terms-page', [/\b911\b/, /\bdanger\b/i], '911 for danger now'],
+ ['terms-page', [/\bnumbers\b/i, /\bUnited States\b/], 'that the numbers are United States numbers'],
+ ['terms-page', [/\bpaid plans are not open yet\b/i], 'that paid plans are not open yet']];
+/* which funnel page answers to which set above, by the name the stage serves */
+const PAGE_NEED={'privacy.html':'privacy-page','terms.html':'terms-page'};
 
 /* WHAT MAY LEAVE DURING THE WALK. [method, path, the body keys it may carry],
    read off ui/auth.js. The walk never signs in, so these are the only routes
@@ -142,6 +170,12 @@ function hold(scope,surface,text,need){
  if(!missing('privacy','Held in this browser and nowhere else.').length)fail('self','an empty privacy footer is not called incomplete');
  if(missing('privacy','A first visit sends our server a random code, the topic you pick and whether you finish. The name you enter never leaves this device.').length)
   fail('self','a complete privacy footer is called incomplete');
+ /* the old draft's voice row, which named the browser's maker and not
+    ElevenLabs, must be called incomplete on the public page */
+ if(missing('privacy-page','The words being spoken go to the browser\'s maker. The name you enter never leaves this device.').indexOf('one sentence naming ElevenLabs and the voice lines it gets')<0)
+  fail('self','a privacy page that does not name ElevenLabs is not called incomplete');
+ if(missing('terms-page','We are not a clinician, and no clinician is involved.').indexOf('the owner\'s line, we are not a clinician')>=0)
+  fail('self','the terms line we are not a clinician is not found');
  if(FAIL>before){console.log('the checker failed its own known cases, so nothing below is trusted');process.exit(1);}
  PASS++;}
 
@@ -310,7 +344,7 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
  for(const f of pages){
   const p=await c.newPage();
   await p.goto('file://'+path.join(DIST,f),{waitUntil:'load'}); await p.waitForTimeout(500);
-  hold('funnel','funnel/'+wn+'/'+f,await p.evaluate(harvest,null));
+  hold('funnel','funnel/'+wn+'/'+f,await p.evaluate(harvest,null),PAGE_NEED[f]||null);
   const states=await p.evaluate(()=>{if(typeof render!=='function'||typeof STATE==='undefined')return [];
    var s=[], re=/STATE==='(\w+)'/g, m; while((m=re.exec(String(render))))s.push(m[1]);
    s.push('read'); return s.filter(function(x,i){return s.indexOf(x)===i;});});

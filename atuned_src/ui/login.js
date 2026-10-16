@@ -136,6 +136,11 @@ function loginCard(mail){
   +'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-go">Log in</button>'
   +'<button type="button" class="btn" id="loginb-new">Create account</button>'
   +'<button type="button" class="btn" id="loginb-skip">Guest</button></div>'
+  /* THE DOOR'S LEGAL LINE, 16 October. The first place a person can make an
+     account, so the two pages that say what an account sends and keeps are
+     linked here, before the press (legalLink, ui/account.js). */
+  +'<p class="login-legal">Read '+legalLink('privacy')+' and '+legalLink('terms')
+  +' before you make an account.</p>'
   +loginDevOptions()
   +'</div></div>';}
 function loginResetCard(mail){

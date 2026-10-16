@@ -127,7 +127,7 @@ Atüned is for people aged 18 and over. It is not made for children. If we learn
 
 Wherever you live, you may ask us what we hold about you, ask for a copy, ask us to correct it, and ask us to delete it. You may take back a yes you gave, at any time. We will not treat you worse for asking. Use the controls in section 8, or write to hello@atuned.world.
 
-**If you live in the European Economic Area or the United Kingdom,** the General Data Protection Regulation (GDPR) gives you these rights, and also the right to object to how we use your data and to have it as a file you can take elsewhere. You may complain to the data protection authority where you live. In the United Kingdom that is the Information Commissioner's Office, at ico.org.uk. The European Data Protection Board lists the rest at edpb.europa.eu.
+**If you live in the European Economic Area or the United Kingdom,** the General Data Protection Regulation gives you these rights, and also the right to object to how we use your data and to have it as a file you can take elsewhere. You may complain to the data protection authority where you live. In the United Kingdom that is the Information Commissioner's Office, at ico.org.uk. The European Data Protection Board lists the rest at edpb.europa.eu.
 
 **If you live in California,** the California Consumer Privacy Act gives you the right to know what we collect, to delete it, to correct it, and to limit how we use sensitive information. We already use it only to run Atüned. We do not sell personal information and do not share it for ads. Your browser may send a Do Not Track signal. We run no tracking, so there is nothing for it to stop.
 

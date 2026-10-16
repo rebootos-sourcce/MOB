@@ -134,7 +134,8 @@ function accAccount(){
    accRow('Signed in as',ses.email)
    +accAct('Sign out of this browser','acout',{btn:'Sign out'})
    +accAct('Delete this account','acdelacc',{btn:'Delete',danger:true}),
-   'Your stories and readings stay on this device. Signing in does not copy them anywhere.')
+   'Your stories and readings stay on this device. Signing in does not copy them anywhere. '
+   +legalLink('privacy')+' and '+legalLink('terms')+' say the rest.')
   :accGroup('Sign in',
    accStub('Signed in as','not signed in')
    +'<form id="acsignin" novalidate>'
@@ -150,7 +151,8 @@ function accAccount(){
       which joins the topic picked and the marks to the account, so it is
       said here, where a person decides to sign in */
    'Your email and password go to our server, and what your first visit sent joins the account. '
-   +'Your stories and readings stay on this device.'));
+   +'Your stories and readings stay on this device. '
+   +legalLink('privacy')+' and '+legalLink('terms')+' say the rest.'));
  /* DEVELOPER OPTIONS, DEACTIVATED IN FULL, ROUND RI, the same ruling that
     removed the login card's own panel (ui/login.js). This panel's second
     home, the owner's own signed in account, is removed with it: devtoolsOn
@@ -429,6 +431,28 @@ function accSecurity(){
       per concept. The design lives in DECISIONS.md, not on this screen. */
    ses?'':'Every row here waits on sign in.');}
 
+/* ---------- the two legal pages ---------- */
+/* PRIVACY AND TERMS, 16 October. The owner: "Yes, we need a privacy policy.
+   It's very important to us. Transparency is important to us. We also need our
+   terms." The pages were drafted on 1 October and never staged, so the app had
+   nothing to link and linked nothing. They are served now at atuned.world, by
+   the deploy's stage step, from funnel/legal/render.py.
+
+   THE ADDRESS IS ABSOLUTE, ON PURPOSE. This app is also one file a person
+   downloads and opens from a folder, where a relative "privacy" resolves to
+   their own drive, the same trap feedbackWhere in ui/auth.js names for the
+   outbox. A link is a page the person chooses to open, not a request this
+   file makes, so tests/design.js gate 7 sees nothing until it is pressed.
+
+   ONE LABEL EACH, Privacy and Terms, and they are the words the funnel's own
+   footers use, one word per concept. A new tab, so the record stays open
+   behind it. */
+var LEGAL_PAGES={privacy:['Privacy','https://atuned.world/privacy'],
+ terms:['Terms','https://atuned.world/terms']};
+function legalLink(k){
+ var x=LEGAL_PAGES[k];
+ return '<a class="legal-a" href="'+x[1]+'" target="_blank" rel="noopener noreferrer">'+x[0]+'</a>';}
+
 /* ---------- 4.4 privacy. the one section here that is not generic ---------- */
 var ACC_HELD=[
  ['The identity and birth moment','name, sex, date, time and place'],
@@ -464,6 +488,17 @@ function accPrivacy(){
    +'What you answered is not sent. A sign in sends your email and password and '
    +'joins those marks to your account. Feedback, dictation, the voice that reads '
    +'a release, and payment each say what they send where you use them.');
+ /* THE FULL PAGES, beside the short version above. A row is the action row
+    the community door already is, a link dressed as the button, because a
+    press here opens a page and changes nothing on this device. */
+ h+=accGroup('The full pages',
+   '<div class="ac-row ac-act"><span class="ac-rl">What we keep, what leaves this device, '
+   +'and which companies get it</span><a class="btn" id="acprivacy" href="'+LEGAL_PAGES.privacy[1]
+   +'" target="_blank" rel="noopener noreferrer">'+LEGAL_PAGES.privacy[0]+'</a></div>'
+   +'<div class="ac-row ac-act"><span class="ac-rl">What Atüned is and is not, and the rules '
+   +'for using it</span><a class="btn" id="acterms" href="'+LEGAL_PAGES.terms[1]
+   +'" target="_blank" rel="noopener noreferrer">'+LEGAL_PAGES.terms[0]+'</a></div>',
+   'Both open on atuned.world in a new tab.');
  h+=accGroup('This device',
    accRow('Snapshots on file',snaps,{num:true})
    +accRow('Storage',STORE_BOUND?'writing':'blocked'),

@@ -14,7 +14,7 @@ The [Privacy](privacy.html) page is part of these terms. It says what leaves you
 
 We are not a clinician, and no clinician is involved in Atüned. It is not therapy. It is not medicine. A reading is not a diagnosis. Atüned is not medical care. It does not diagnose, treat or prevent any disease or condition.
 
-It is not a substitute for care. It does not replace a doctor, a therapist or any other licensed professional. The FDA, the United States agency that checks medical products, has not reviewed it, and no reading has been tested in a clinical trial. If you are under care, stay under it. Nothing Atüned shows you is a reason to stop a treatment or change a dose.
+It is not a substitute for care. It does not replace a doctor, a therapist or any other licensed professional. No government agency that checks medical products has reviewed it, and no reading has been tested in a clinical trial. If you are under care, stay under it. Nothing Atüned shows you is a reason to stop a treatment or change a dose.
 
 Atüned reads only what you type and what you answer. It cannot see your body. Words like chest or throat say where a feeling sits. Nothing is scanned or measured.
 
@@ -25,7 +25,7 @@ Atüned is not an emergency service. Nobody reads what you write as you write it
 If you are thinking about ending your life, or you do not feel safe, reach a person now. These numbers are for the United States:
 
 - Call or text 988 for the Suicide and Crisis Lifeline, or chat at 988lifeline.org.
-- Text HOME to 741741 for the Crisis Text Line.
+- Text the word home to 741741 for the Crisis Text Line.
 - Call 911 if you or someone near you is in danger right now.
 
 Outside the United States, call your local emergency number.
