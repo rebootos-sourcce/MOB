@@ -1103,9 +1103,13 @@ function obWire(){
    refused joined that reason, so the sentence now carries d.dropped, the
    boundary's or the relay's own words, and falls back to the old one only for
    a drain that named none. */
-function obGone(d){
- var w=String(d.dropped||'it carried something that identifies a person').trim();
+/* the boundary writes its reasons lower case so they can sit inside a longer
+   sentence, and the status line is sentence case, so each one is set here */
+function obSentence(w){
+ w=String(w||'').trim();
  return w.charAt(0).toUpperCase()+w.slice(1)+(/[.?]$/.test(w)?'':'.');}
+function obGone(d){
+ return obSentence(d.dropped||'it carried something that identifies a person');}
 function obSaid(d){
  var many=d.refused>1?d.refused+' waiting entries were':'One waiting entry was';
  var dropped=d.refused?' '+many+' taken out and not sent. '+obGone(d):'';
@@ -1137,7 +1141,7 @@ function obSend(){
   platform:(window.innerWidth<720?'phone':'desktop'),
   viewport:(window.innerWidth<720?'narrow':'wide')};
  var q=obQueue(e);
- if(!q.ok){ status(q.why,'fail'); return false; }
+ if(!q.ok){ status(obSentence(q.why),'fail'); return false; }
  /* QUEUED SAYS QUEUED. Never sent, because it has not been. The sheet shuts
     on the queue and not on the send: the words are safe on this device the
     moment obQueue says so, and the send is told separately when it answers.
