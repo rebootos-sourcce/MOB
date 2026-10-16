@@ -4481,7 +4481,7 @@ var PCT_KIND={
  /* ---------- already on nought to a hundred ---------- */
  /* compute.js:168, the 21 laws summed over 210. Each law is at most 10
     (schema.js:1035 and lawLift, compute.js:151), so 100 is every law at 10. */
- cq:        {lo:0, hi:100, src:'engine/compute.js', find:'/210*100;}',
+ cq:        {lo:0, hi:100, src:'engine/compute.js', find:'(lawIn(l)?lawNow(l):0),0)/210*100;}',
              say:'coherence, the 21 laws summed over 210'},
  /* compute.js:382, all 112 addresses summed over 1120, each sq at most 10 */
  dq:        {lo:0, hi:100, src:'engine/compute.js', find:'const DQ=SQ.reduce((a,v)=>a+v,0)/1120*100;',

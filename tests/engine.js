@@ -7877,6 +7877,119 @@ g('RB · becoming S1 to S3: the avatar\'s own data on the record, its identity, 
   'an avatar held in memory from before gains the new fields and keeps what it had');
 }
 
+g('PCT · one formula and one registry for every score a person reads (engine/pct.js)');
+/* Ruled 16 October: every 0.0 figure becomes a percent, and the percent is the
+   fill of the ring drawn for it. These hold the formula at both ends of every
+   kind, the dash where a figure rounds to nothing, the citation each range
+   rests on, and that no roster person's reading falls outside the range its
+   kind claims, which is the one way this table could lie without throwing. */
+{
+ const {PCT_KIND,PCT_DASH,pct,fmtPct,pctMove}=E;
+ const fs=require('fs'), path=require('path');
+ const kinds=Object.keys(PCT_KIND||{});
+ ok(typeof pct==='function'&&typeof fmtPct==='function'&&typeof pctMove==='function'&&kinds.length>0,
+  'the registry and its three functions are exported, '+kinds.length+' kinds');
+ ok(PCT_DASH==='–','the dash is the en dash every surface already prints');
+ kinds.forEach(k=>{
+  const K=PCT_KIND[k], span=K.hi-K.lo, mid=K.lo+span/2;
+  ok(typeof K.lo==='number'&&typeof K.hi==='number'&&isFinite(K.lo)&&isFinite(K.hi)&&K.hi>K.lo,
+   k+': lo and hi are numbers and hi is above lo, '+K.lo+' to '+K.hi);
+  ok(pct(k,K.lo)===0&&fmtPct(k,K.lo)===PCT_DASH,k+': at lo it is 0 and prints the dash, '+fmtPct(k,K.lo));
+  ok(pct(k,K.hi)===100&&fmtPct(k,K.hi)==='100%',k+': at hi it is 100 and prints 100%, '+fmtPct(k,K.hi));
+  ok(pct(k,mid)===50&&fmtPct(k,mid)==='50%',k+': halfway it is 50%, '+fmtPct(k,mid));
+  ok(pct(k,K.lo-span)===0&&fmtPct(k,K.lo-span)===PCT_DASH,k+': below lo it stays at 0, '+pct(k,K.lo-span));
+  ok(pct(k,K.hi+span*3)===100,k+': above hi it stays at 100, '+pct(k,K.hi+span*3));
+  ok([NaN,Infinity,null,undefined,'',true,'six'].every(v=>pct(k,v)===null&&fmtPct(k,v)===PCT_DASH),
+   k+': nothing that is not a number reads as a figure');
+  ok(fmtPct(k,K.hi,{unread:true})===PCT_DASH&&pctMove(k,K.lo,K.hi,{unread:true})===null,
+   k+': an unread profile prints the dash even at hi, because a default is not a reading');
+  /* monotone and whole, across the range and a span either side */
+  let prev=-1, mono=true, whole=true, zeroPct=false;
+  for(let i=0;i<=120;i++){const v=K.lo-span+i*(3*span/120), p=pct(k,v);
+   if(p<prev)mono=false; prev=p; if(!Number.isInteger(p)||p<0||p>100)whole=false;
+   if(fmtPct(k,v)==='0%')zeroPct=true;}
+  ok(mono,k+': the percent never falls as the value rises');
+  ok(whole,k+': every percent is a whole number from 0 to 100');
+  ok(!zeroPct,k+': nothing ever prints 0%');
+  /* THE CITATION. The fragment is read out of the cited file, so a clamp that
+     moves fails here by name rather than leaving the table wrong. */
+  const f=path.resolve('atuned_src',K.src||'');
+  const body=(K.src&&fs.existsSync(f))?fs.readFileSync(f,'utf8'):'';
+  ok(!!K.src&&!!body,k+': cites a source file that exists, '+K.src);
+  ok(typeof K.find==='string'&&K.find.length>=12&&body.indexOf(K.find)>=0,
+   k+': and the bound it cites is still written there, '+JSON.stringify(K.find));
+  ok(typeof K.say==='string'&&K.say.length>3,k+': says in words what it measures');
+  ok(!K.cap||(K.p99&&typeof K.p99.n==='number'),k+': a cap carries what it was measured on');});
+ ok(pct('weight',6.2)===62&&fmtPct('weight',6.2)==='62%'&&fmtPct('cq',58.4)==='58%'&&fmtPct('vitality',0.17)==='17%',
+  'the ruling\'s own example: a weight of 6.2 reads 62%, CQ 58.4 reads 58%, vitality 0.17 reads 17%');
+ ok(fmtPct('law',0.04)===PCT_DASH&&fmtPct('law',0.05)==='1%','a figure that rounds to nothing is the dash, the first whole percent is not');
+ let threw='';
+ try{pct('weigth',5);}catch(e){threw=e.message;}
+ ok(/weigth/.test(threw),'a misspelt kind is refused by name, never read as a figure: '+threw);
+ /* A CHANGE IS BEFORE AND AFTER */
+ const mv=pctMove('cq',58.2,61.4), same=pctMove('cq',58.2,58.4), down=pctMove('dq',22,19);
+ ok(mv&&mv.from==='58%'&&mv.to==='61%'&&mv.moved&&mv.up,'a move is said from 58% to 61%, '+JSON.stringify(mv));
+ ok(same&&!same.moved&&same.from===same.to,'a move too small to show is no move, '+JSON.stringify(same));
+ ok(down&&down.moved&&!down.up&&down.to==='19%','and a fall is a fall, '+JSON.stringify(down));
+ ok(pctMove('cq',NaN,50)===null&&pctMove('cq',50,undefined)===null,'a move with an end missing is not a move');
+
+ /* THE ROSTER NEVER LEAVES THE RANGE ITS KIND CLAIMS. The clamp makes the
+    printed percent safe whatever comes in; this checks the honest part, the
+    raw share before the clamp, for every quantity the engine computes, on
+    every person in PEOPLE. A kind whose range is too narrow fails here with
+    the person and the value. */
+ const raw=(k,v)=>{const K=PCT_KIND[k];return 100*(v-K.lo)/(K.hi-K.lo);};
+ const out=[], seen={}, capSeen={};
+ const put=(k,v,who)=>{if(v===null||v===undefined||!isFinite(v))return;
+  seen[k]=(seen[k]||0)+1; const r=raw(k,v);
+  if(PCT_KIND[k].cap){(capSeen[k]=capSeen[k]||[]).push(r);return;}
+  if(r<-1e-9||r>100+1e-9)out.push(k+' '+who+' '+v);};
+ PEOPLE.forEach(p=>{
+  S.doms=p.doms?p.doms.slice():[p.dom]; S.arcs=p.arcs?p.arcs.slice():[p.a1,p.a2];
+  S.roots=p.roots?p.roots.slice():[]; buildSoul();
+  CHARGES.forEach(c=>{S.charge[c]=(p.c&&p.c[c])||0; S.replace[c]=(p.rep&&p.rep[c])||0;});
+  const LS=LAWSET[p.nm]||{_:E.LAW_DEFAULT};
+  SINAMES.forEach(l=>S.law[l]=(LS[l]!==undefined)?LS[l]:(LS._!==undefined?LS._:E.LAW_DEFAULT)); lawsIn();
+  const x=compute(), who=p.nm;
+  put('cq',x.CQ,who); put('dq',x.DQ,who); put('expression',x.EX,who);
+  put('expression',E.exHeadroom(x.EX),who);
+  SINAMES.forEach(l=>put('law',S.law[l],who));
+  CHARGES.forEach(c=>{put('charge',S.charge[c],who); put('installed',S.replace[c],who);});
+  E.W.forEach(n=>{put('held',n.held,who); put('installed',n.rep,who); put('weight',n.sq,who);
+   put('pole',n.pole,who); put('overshoot',n.jq,who); put('pull',E.leverPull(n.sq),who);});
+  NODES.forEach(n=>put('weight',n.sq,who));
+  put('weight',x.SQm,who); put('weight',x.darkV,who); x.maskRing.forEach(m=>put('weight',m.w,who));
+  [].concat(x.sabs,x.cxs,x.hys,x.sups).forEach(o=>{put('chain',o.w,who); if(o.score)put('match',o.score,who);});
+  put('pole',x.poleMean,who); put('overshoot',x.JQ,who); put('distortion',x.dist,who);
+  put('integrity',x.Ig,who); put('intention',x.It,who);
+  put('vitality',x.X,who); put('awareness',x.Y,who); put('will',x.Z,who); put('radiance',x.radiance,who);
+  put('energy',(x.X+x.Y+x.Z)/3,who); put('pull',x.PULL,who);
+  (x.aff||[]).forEach(v=>put('affinity',v,who));
+  put('shape',x.outward,who); put('control',x.organized,who);
+  if(x.malig!==null&&x.malig!==undefined){put('lean',x.malig,who); put('lean',100-x.malig,who);}
+  E.BANDS.forEach(b=>{const g=E.W.filter(n=>n.b===b), m=g.reduce((a,n)=>a+n.sq,0)/g.length;
+   put('axis',E.mirrorAt(m,E.bandIg(b)),who);});
+  E.verpRead().forEach(v=>put('gate',v.pct,who));
+  try{const iq=E.iqScore({laws:{},intake:p.intake||{}}); Object.keys(iq||{}).forEach(l=>put('spread',iq[l].spread,who));}catch(e){}
+  try{put('accuracy',E.accuracy(x,{laws:Object.assign({},LS)}).pct,who);}catch(e){}
+  /* what the story puts at an address, one entry and summed */
+  const im=(E.parseStory(p.says||'').imprints)||[], by={}, pill={};
+  im.forEach(m=>{put('atom',m.amt,who); by[m.node]=(by[m.node]||0)+m.amt;
+   const key=m.inferred?('f|'+m.band+'|'+m.fetter):('n|'+m.node); pill[key]=(pill[key]||0)+m.amt;});
+  Object.values(by).concat(Object.values(pill)).forEach(v=>put('atomsum',v,who));});
+ ok(out.length===0,'no roster reading falls outside the range its kind claims, '+out.length+' do'
+  +(out.length?': '+out.slice(0,6).join('; '):''));
+ const engineKinds=['cq','dq','expression','law','charge','installed','held','weight','chain','pole','overshoot',
+  'distortion','integrity','intention','vitality','awareness','will','radiance','energy','pull','affinity','axis'];
+ const unseen=engineKinds.filter(k=>!seen[k]);
+ ok(unseen.length===0,'and every kind the engine computes was actually measured on the roster, missing '+JSON.stringify(unseen));
+ /* A CAP HOLDS THE ROSTER IT WAS MEASURED ON: at least 99 in a hundred of its
+    observed values sit inside it, which is what the 99th percentile means. */
+ kinds.filter(k=>PCT_KIND[k].cap).forEach(k=>{
+  const a=capSeen[k]||[], inside=a.filter(r=>r<=100+1e-9).length;
+  ok(a.length>0&&inside/a.length>=0.99,k+': the cap holds '+inside+' of '+a.length+' roster values');});
+}
+
 g('CRISIS · srcSafe trips on self harm and not on everyday uses of the same words');
 /* all expected red on main: block 2a ports srcSafe from e2aa6f8 and must fix it */
 {
