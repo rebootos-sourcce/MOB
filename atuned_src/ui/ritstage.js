@@ -340,7 +340,7 @@ function ritGoalHtml(st){
  var m=st.L.next;
  if(m)h+='<div class="rv-nxm" style="--c:'+seatCol(m.b)+'"><span class="rv-nxi" aria-hidden="true">'
   +'<svg viewBox="0 0 24 24"><path d="'+m.ic+'"/></svg></span>'
-  +'<span class="rv-nxt"><span class="rv-lb">Next mark</span><b>'+esc(m.nm)+'</b><span>'+esc(m.d)+'</span></span></div>';
+  +'<span class="rv-nxt"><span class="rv-lb">Next mark</span><b>'+esc(m.nm)+'</b><span>'+esc(m.to)+'</span></span></div>';
  return h+'</section>';}
 
 /* ---------------- did it work ---------------- */

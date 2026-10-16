@@ -1088,13 +1088,14 @@ function sumOutput(r){
     return card('The protocol','Not read yet',
      'Write what happened and this fills in','');}())
   /* A NUMBER CARRIES ITS UNIT. This read "12 away", twelve of what; the
-     record card says the same distance in addresses, so this does too. And
+     record card says the same distance, in patterns since 16 October, the
+     unit the markers count (meterRead, engine/schema.js). And
      the fallback said "The first one. Open some ground and it appears",
      which is false: markersFor() always returns the ladder, on a reference
      age when there is no birth date, so m.next is null only once every
      marker is behind the person. */
   +(m&&m.next?card('Next marker',m.next.nm,
-      m.next.left+(m.next.left===1?' new address':' new addresses')+' away','')
+      m.next.left+(m.next.left===1?' new pattern':' new patterns')+' away','')
     :m?card('Next marker','None left','Every marker is behind you',''):'')
   +'</div>';}
 

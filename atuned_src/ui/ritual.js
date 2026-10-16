@@ -950,9 +950,19 @@ function ritTodayHtml(act,today,L){
     by side. The two rules are the ladder's, in engine/ladder.js, and the
     mismatch is reported there. Here the longest run a person has held is at
     least the one they are holding. */
- var s=L.streak, kd={}, best=Math.max(s.best||0,s.run||0);
- ((CURP&&CURP.rituals)||[]).forEach(function(x){if(ritIsDone(x)){var k=pracDay(x.t); if(k!==null)kd[k]=1;}});
- var kept=Object.keys(kd).length;
+ /* AND THAT MADE BEST A NUMBER NOBODY HELD. The sentence printed under these
+    figures says "Best is your longest run with no gap", and max(best, run)
+    put the forgiving run under that word: seven days practised every other
+    day read Best 7 days for a person whose longest run with no gap is one,
+    measured on f7188cba. Best is streakRead's best, the strict row, and when
+    it is shorter than the streak the two say different true things, which
+    the sentence under them explains. */
+ /* KEPT IS THE ENGINE'S OWN COUNT. This page recounted the days with its own
+    loop and counted a day dated a month ahead as kept, beside a streak that
+    no longer did (pracSoon, engine/ladder.js). One count of days practised,
+    read in one place, cannot disagree with itself. */
+ var s=L.streak, best=s.best||0;
+ var kept=s.days||0;
  return '<div class="rv-today">'
   +'<div class="rv-hero">'+svg+'<div class="rv-mid"><b>'+(s.run||'\u2013')+'</b><span>Streak</span></div></div>'
   /* A ZERO IS A DASH, COPY.md Value. Round J13. */

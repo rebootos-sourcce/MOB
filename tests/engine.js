@@ -173,6 +173,24 @@ const sh=E.verpRead();
 ok(sh.length===6&&sh.every(v=>v.mult>0),'six gates, each with a multiplier');
 ok(sh.filter(v=>v.side==='higher').length===3&&sh.filter(v=>v.side==='lower').length===3,
    'three higher, three lower');
+/* A PHRASE OUTRANKS THE WORDS INSIDE IT. verpScan was a bare indexOf, so
+   Intention's 'kept going' counted inside Attachment's 'kept going over', and
+   a cue counted inside a longer word. Red on f7188cba, each check beside the
+   known good case it must not break. */
+{const hit=t=>E.verpScan(t).hits;
+ const a=hit('I could not stop thinking about it, it had me all night and I kept going over it');
+ ok(a.attach===3&&a.intent===0,'kept going over is Attachment and not Intention as well, got '+JSON.stringify(a));
+ ok(hit('It rose and I kept going with the work').intent===1,'while kept going on its own is still Intention');
+ ok(hit('it did not seem like much').ignore===0,'a cue does not match inside a longer word: did not see in did not seem');
+ ok(hit('I stayed one more hour').intent===0&&hit('I stayed on it').intent===1,'stayed on is not read off stayed one, and is read off itself');
+ ok(hit('I kept going over it, and later I kept going').intent===1&&hit('I kept going over it, and later I kept going').attach===1,
+  'the same short cue outside the long one still counts');
+ /* every cue that sits inside another is a precedence the scan must honour,
+    read off the table rather than typed, so a cue added later is checked */
+ const rows=[];Object.keys(E.VERPCUE).forEach(g=>E.VERPCUE[g].forEach(p=>rows.push({g,p})));
+ rows.forEach(s=>rows.forEach(l=>{if(s===l||l.p.indexOf(' '+s.p+' ')<0&&l.p.indexOf(s.p+' ')!==0&&!l.p.endsWith(' '+s.p))return;
+  const h=hit(l.p); ok(h[l.g]>=1&&(s.g===l.g?h[l.g]===1:h[s.g]===0),
+   "'"+l.p+"' reads its own gate once, and not '"+s.p+"' inside it, got "+JSON.stringify(h));}));}
 
 g('8 · the lean');
 /* THE FIELD HERE HAS TO LEAN SOMEWHERE, and it is laws at 3 rather than 6
@@ -3069,6 +3087,159 @@ console.log('\n27 · the ladder');
    'markDays dates First run on the oldest day, Seven days on the seventh and Sixty minutes on the sixth, '+JSON.stringify(md));
   ok(Object.keys(md).every(k=>MARKS.find(m=>m.k===k).fam==='Practice'),'only practice marks are dated');
   ok(Object.keys(markDays(blankProfile('L'),NOW)).length===0,'a blank profile has no dated mark');}
+
+ /* BLOCK 1, THE RECORD TELLS THE TRUTH, 16 October. The owner's rule: "it is
+    never lying to you". Each check below failed on f7188cba and names the
+    lie it closes. */
+
+ /* L3. A DAY THAT HAS NOT HAPPENED IS NOT A DAY PRACTISED. Seven rituals
+    dated 30 to 36 days ahead read Streak 7, live, and earned First run,
+    Seven days and Sixty minutes. TDD v3 10.2: no more than one day after
+    now. Tomorrow is the known good case and still counts. */
+ {const fut=mk([-30,-31,-32,-33,-34,-35,-36]), sF=streakRead(fut,NOW), LF=ladderRead(fut,NOW);
+  ok(sF.days===0&&sF.run===0&&!sF.live,
+   'days dated a month ahead are not days practised, got '+JSON.stringify({days:sF.days,run:sF.run,live:sF.live}));
+  ok(LF.earned.length===0,'and earn no mark, got '+LF.earned.map(m=>m.k).join(','));
+  ok(LF.ledger.minutes===0&&LF.ledger.done===0,'and put no minutes practised on the ledger, got '+LF.ledger.minutes);
+  ok(LF.ledger.planned===70,'while they still count as planned, got '+LF.ledger.planned);
+  ok(E.pracDays(fut,NOW).length===0,'pracDays agrees, got '+E.pracDays(fut,NOW).length);
+  ok(streakRead(mk([-1]),NOW).days===1,'and tomorrow, the one day of slack, still counts');
+  ok(streakRead(mk([-2]),NOW).days===0,'the day after it does not');
+  /* the track mark and the dated marks read the same rule */
+  const tracks=[...new Set(E.PRACTICE.map(x=>x.track).filter(Boolean))], tf=blankProfile('L');
+  tracks.forEach((t,i)=>{const k=E.PRACTICE.find(x=>x.track===t).k; tf.rituals.push({t:day(-30-i),min:5,steps:[k]});});
+  ok(!ladderRead(tf,NOW).earned.some(m=>m.k==='tracks'),'Every track run is not earned off days ahead');
+  /* and the day list that markDays dates against agrees with the one the
+     marks are tested on, so a mark on the shelf always has a date */
+  const mix=mk([0,1,2,3,4,5,-20,-21]), md=E.markDays(mix,NOW), LM=ladderRead(mix,NOW);
+  ok(LM.earned.filter(m=>m.fam==='Practice').every(m=>md[m.k]!==undefined),
+   'every practice mark earned is one markDays can date, earned '+LM.earned.filter(m=>m.fam==='Practice').map(m=>m.k)+' dated '+Object.keys(md));}
+
+ /* L4. PRACTISING NEVER LOWERS THE STREAK A PERSON SEES. Ten days in a row
+    ending twenty days ago read 10, and practising today read 5. The halving
+    lands on the gap now, so the lapsed figure is 5 and today keeps it.
+    Then every day set the roster's cadences could make: adding today to it
+    never lowers the run. Checked against f7188cba first, where the first
+    two fail and the sweep finds the drop. */
+ {const ten=[20,21,22,23,24,25,26,27,28,29];
+  const a=streakRead(mk(ten),NOW), b=streakRead(mk([0].concat(ten)),NOW);
+  ok(a.run===5,'a run of ten that lapsed twenty days ago stands at five, got '+a.run);
+  ok(b.run>=a.run,'and practising today does not lower it, '+a.run+' then '+b.run);
+  ok(a.best===10&&a.days===10,'while the longest row and the days practised still say ten, got '+a.best+' and '+a.days);
+  ok(streakRead(mk([2,3,4,5]),NOW).run===4,'a gap of two days is the grace day and halves nothing yet');
+  let drops=[];
+  for(let seed=1;seed<=400;seed++){
+   let x=seed, days=[];
+   const rnd=()=>{x=(x*1103515245+12345)%2147483648; return x/2147483648;};
+   for(let d=1;d<60;d++)if(rnd()<0.45)days.push(d);
+   if(!days.length)continue;
+   const r0=streakRead(mk(days),NOW).run, r1=streakRead(mk([0].concat(days)),NOW).run;
+   if(r1<r0)drops.push({seed,r0,r1});}
+  ok(drops.length===0,'over 400 day sets, practising today never lowers the streak, drops '+JSON.stringify(drops.slice(0,3)));
+  ok(typeof E.STREAK_MEANS==='string'&&/marked done/.test(E.STREAK_MEANS)&&/halves/.test(E.STREAK_MEANS),
+   'the streak carries one meaning, and it says a day is a ritual marked done and a long gap halves it');}
+
+ /* L11. TEN STORIES IS TEN DAYS. Ten entries committed in one minute earned
+    it. Ten entries on ten days is the known good case. */
+ {const at=(ms)=>({t:new Date(ms).toISOString(),text:'x',imprints:0});
+  const one=blankProfile('L'); for(let i=0;i<10;i++)one.story.entries.push(at(NOW-60000+i*5000));
+  ok(!ladderRead(one,NOW).earned.some(m=>m.k==='kept'),'ten entries in one minute do not earn Ten stories');
+  ok(ladderRead(one,NOW).earned.some(m=>m.k==='told'),'while the first of them still earns First story');
+  const ten=blankProfile('L'); for(let i=0;i<10;i++)ten.story.entries.push(at(NOW-i*86400000));
+  ok(ladderRead(ten,NOW).earned.some(m=>m.k==='kept'),'ten entries on ten days do');
+  const nine=blankProfile('L'); for(let i=0;i<9;i++)nine.story.entries.push(at(NOW-i*86400000)); nine.story.entries.push(at(NOW-1000));
+  ok(!ladderRead(nine,NOW).earned.some(m=>m.k==='kept'),'and ten entries on nine days do not');
+  ok(/ten different days/.test(MARKS.find(m=>m.k==='kept').d),'and its words say days');}
+
+ /* L9. NINE AXES MEANS ALL NINE HAVE A VALUE. Nine axes at 2 did not earn
+    it, and five at 5 on both sides with four at 2 did, because the test
+    counted axes at four or more on either side. A blank has no value on any
+    axis and is the known good case for refusing. */
+ {const has=p=>ladderRead(p,NOW).earned.some(m=>m.k==='nine');
+  const two=blankProfile('L'); CHILD.forEach(c=>{two.axes[c.nm]={held:2,opp:0};});
+  ok(has(two),'nine axes entered at 2 earn Nine axes');
+  const dbl=blankProfile('L'); CHILD.forEach((c,i)=>{dbl.axes[c.nm]=i<5?{held:5,opp:5}:{held:0,opp:0};});
+  ok(!has(dbl),'five axes counted twice, with four empty, do not');
+  ok(!has(blankProfile('L')),'a blank record does not');
+  const said=blankProfile('L'); CHILD.forEach(c=>{E.ixSet(said,'axes',c.nm,0);});
+  ok(has(said),'nine intake answers earn it, an answer of nought included, because an answer is a value');
+  const eight=blankProfile('L'); CHILD.slice(0,8).forEach(c=>{eight.axes[c.nm]={held:3,opp:0};});
+  ok(!has(eight),'and eight of nine do not');}
+
+ /* L10. A MARK NAMES THE UNIT ITS TEST COUNTS. First clearing and Five clear
+    read ledgerRead().clear, which walks CHILD, the nine axes, and their words
+    said addresses. Every mark whose test reads clear says axes and never
+    addresses; Ten addresses, which counts addresses, is the known good case. */
+ {const byClear=['turned','seat'].map(k=>MARKS.find(m=>m.k===k));
+  byClear.forEach(m=>ok(/\bax[ie]s\b/.test(m.d)&&!/address/.test(m.d),
+   m.nm+' says axes, the unit its test counts, got '+JSON.stringify(m.d)));
+  const one=blankProfile('L'); one.axes[CHILD[0].nm]={held:0,opp:4};
+  ok(ladderRead(one,NOW).earned.some(m=>m.k==='turned')&&ledgerRead(one).clear===1,
+   'and one axis with its opposite at four is what earns First clearing');
+  ok(/address/.test(MARKS.find(m=>m.k==='ten').d),'Ten addresses still says addresses, because it counts them');}
+
+ /* L2. THE NEXT MARK SAYS WHAT IT TAKES. Both surfaces printed the next
+    mark's d line, written for a mark already held, so a blank record read
+    "First run. You marked one ritual done." A mark carries to, what it
+    takes, and the next is only ever a mark that has one. */
+ {const L0=ladderRead(blankProfile('L'),NOW);
+  ok(L0.next&&L0.next.to==='Mark one ritual done.','a blank record\'s next mark says what it takes, got '+JSON.stringify(L0.next&&L0.next.to));
+  ok(MARKS.filter(m=>m.k!=='back').every(m=>typeof m.to==='string'&&m.to&&m.to!==m.d),
+   'every mark but Came back carries a to line of its own, missing '+MARKS.filter(m=>m.k!=='back'&&!(typeof m.to==='string'&&m.to&&m.to!==m.d)).map(m=>m.k));
+  ok(MARKS.every(m=>!m.to||!/^You /.test(m.to)),'and no to line is written as a thing already done');
+  /* Came back asks for two weeks away, so it is never the goal. Every other
+     practice mark held leaves it as the family's only one left. */
+  const all=[];for(let i=0;i<95;i++)all.push(i);
+  const p=mk(all), tracks=[...new Set(E.PRACTICE.map(x=>x.track).filter(Boolean))];
+  tracks.forEach((t,i)=>{p.rituals[i].steps=[E.PRACTICE.find(x=>x.track===t).k];});
+  const LP=ladderRead(p,NOW), pr=MARKS.filter(m=>m.fam==='Practice'&&m.k!=='back');
+  ok(pr.every(m=>LP.earned.some(e=>e.k===m.k))&&!LP.earned.some(m=>m.k==='back'),
+   'the fixture holds every practice mark but Came back, earned '+LP.earned.map(m=>m.k));
+  ok(LP.next&&LP.next.k!=='back','and the next mark is never Came back, got '+(LP.next&&LP.next.k));}
+
+ /* L1. OPENED IS ADDRESSES, ON EVERY SURFACE. One address, both limit
+    channels, thirty lines each: the Compass ledger read 1 address and three
+    other surfaces printed meterRead().unique, 60, as addresses. meterRead
+    carries the address count as ground now, the same function the ledger
+    reads. The patterns stay what the gift and the markers count, which is
+    the known good case: the gift reads 40 left of 100 before and after. */
+ {const {meterRead,meterKey,markersFor}=E, p=blankProfile('L');
+  ['Llimit','Rlimit'].forEach(ch=>{for(let i=0;i<30;i++)p.meter.unique.push(meterKey(4,ch,i));}); p.meter.lines=60;
+  const m=meterRead(p,NOW);
+  ok(m.ground===1&&m.ground===ledgerRead(p).ground,'meterRead says one address opened, as the ledger does, got '+m.ground);
+  ok(m.unique===60&&m.giftLeft===40,'and still counts sixty patterns, which is what the gift spends, got '+m.unique+' and '+m.giftLeft);
+  ok(m.next&&m.next.left===m.next.at-m.unique,'the marker distance is in patterns, '+JSON.stringify(m.next));
+  /* why the ruler cannot be addresses: the second marker sits past every
+     address a release can reach, so counted in addresses it is unreachable */
+  ok(markersFor(null)[1].at>W.length,'the second marker, '+markersFor(null)[1].at+', is past the '+W.length+' addresses a release reaches, so the markers count patterns');}
+
+ /* L12, HELD RATHER THAN REWORDED. The release results print "Up" as
+    Math.max(0, after minus before), and the fact map read that clamp as a
+    drop printed "Up 0.00", after LD9 measured releases lowering CQ (Sofia
+    56.6 to 55.1). That was the arithmetic before 25 September. CQ is now the
+    answered laws and the lift releaseWork writes, and the lift only rises
+    with the count, so a release cannot lower it and the clamp never fires:
+    measured on f7188cba over 6,000 releases, 0 falls and 5,992 rises. This
+    holds that, so the day a release can lower CQ the "Up" figure fails here
+    by name instead of hiding the drop. Known good first: a changed answer
+    does lower CQ, and the sweep would see it. The word "Up" itself goes in
+    phase 2 of the percent framework (CQ before and after, its rule 3). */
+ {const {loadProfile,releaseWork,cqSum,meterKey}=E;
+  let x=7; const rnd=()=>{x=(x*1103515245+12345)%2147483648; return x/2147483648;};
+  let falls=0, rises=0;
+  for(let t=0;t<60;t++){
+   const p=blankProfile('L');
+   SINAMES.forEach(l=>{p.laws[l]=rnd()<0.2?null:Math.round(rnd()*100)/10;});
+   loadProfile(p); p.work=p.work||{};
+   for(let r=0;r<10;r++){
+    const keys=[]; for(let i=0,n=1+Math.floor(rnd()*25);i<n;i++)keys.push(meterKey(W[Math.floor(rnd()*W.length)].i,'Llimit',Math.floor(rnd()*50)));
+    const o=releaseWork(p,keys); if(o.cq1<o.cq0-1e-12)falls++; else if(o.cq1>o.cq0)rises++;}}
+  ok(rises>0,'the sweep sees releases lift CQ, so it is reading the lift, '+rises+' rises');
+  ok(falls===0,'and no release lowers CQ, so "Up" never clamps a drop, '+falls+' falls');
+  const q=blankProfile('L'); SINAMES.forEach(l=>{q.laws[l]=8;}); loadProfile(q);
+  const a=cqSum(); S.law[SINAMES[0]]=2; const b=cqSum();
+  ok(b<a,'known good: a changed answer does lower CQ, '+a.toFixed(2)+' to '+b.toFixed(2));
+  reset();}
 }
 
 console.log('\n27c · a save never costs a person data, and a drain never leaks');
