@@ -19,6 +19,7 @@ engine/data/cards.js
 engine/data/intakemore.js
 engine/data/gloss.js
 engine/data/onboarding.js
+engine/pct.js
 engine/verp.js
 engine/lexicon.js
 engine/core.js
