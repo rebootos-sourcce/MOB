@@ -87,6 +87,29 @@ const ev=async(pg,fn,arg)=>{try{return await pg.evaluate(fn,arg);}catch(e){retur
    'after one day the next is Seven days and says what it takes, got '+JSON.stringify(r.c1));
   ok(/Practise on seven days\./.test(r.g1||''),'on both surfaces');}
 
+ console.log('\n=== L1. Opened is addresses everywhere, and the marker distance says patterns ===');
+ {const r=await ev(pg,()=>{
+   CURP.meter.unique=[]; ['Llimit','Rlimit'].forEach(function(ch){for(var i=0;i<30;i++)CURP.meter.unique.push(meterKey(4,ch,i));});
+   CURP.meter.lines=60; CURP.history=[snapshot(CURP),snapshot(CURP)];
+   var out={led:(__ld().text.match(/Opened ?([^A-Z]*)/)||[])[1]};
+   var made=false, host=document.getElementById('rec');
+   if(!host){host=document.createElement('div'); host.id='rec'; document.body.appendChild(host); made=true;}
+   recRender(); var rec=host.cloneNode(true);
+   out.big=(rec.querySelector('.rec-big')||{}).textContent||''; out.nl=(rec.querySelector('.rec-nl')||{}).textContent||'';
+   if(made)host.remove();
+   out.sum=__txt(sumOutput(compute()));
+   profileSheet(); var c=document.getElementById('sheet-card');
+   out.sheet=[].slice.call(c?c.querySelectorAll('.sh-row'):[]).map(function(x){return x.textContent.replace(/\s+/g,' ').trim();});
+   sheetShut(); CURP.meter.unique=[]; CURP.meter.lines=0; CURP.history=[];
+   return out;});
+  ok(/^1 address\b/.test(r.led||''),'the Compass ledger reads 1 address opened, got '+JSON.stringify(r.led));
+  ok(r.big==='1 address','the Analytics record card says the same, got '+JSON.stringify(r.big));
+  ok(/^\d+ new patterns away$/.test(r.nl||''),'and gives the distance to the next marker in patterns, got '+JSON.stringify(r.nl));
+  ok(/Next marker.*\d+ new patterns away/.test(r.sum||'')&&!/new address/.test(r.sum||''),'the Summary card says patterns, got '+JSON.stringify((r.sum||'').match(/Next marker.{0,60}/)));
+  const g=(r.sheet||[]).find(x=>/^Ground opened/.test(x))||'', n=(r.sheet||[]).find(x=>/^Next marker/.test(x))||'';
+  ok(g==='Ground opened1 address','the profile sheet says one address opened, got '+JSON.stringify(g));
+  ok(/new patterns away$/.test(n),'and its distance carries its unit, got '+JSON.stringify(n));}
+
  ok(errs.length===0,'no page error'+(errs.length?': '+errs.slice(0,2).join(' | '):''));
  await browser.close();
  console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');

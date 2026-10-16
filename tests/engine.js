@@ -3179,6 +3179,21 @@ console.log('\n27 · the ladder');
    'the fixture holds every practice mark but Came back, earned '+LP.earned.map(m=>m.k));
   ok(LP.next&&LP.next.k!=='back','and the next mark is never Came back, got '+(LP.next&&LP.next.k));}
 
+ /* L1. OPENED IS ADDRESSES, ON EVERY SURFACE. One address, both limit
+    channels, thirty lines each: the Compass ledger read 1 address and three
+    other surfaces printed meterRead().unique, 60, as addresses. meterRead
+    carries the address count as ground now, the same function the ledger
+    reads. The patterns stay what the gift and the markers count, which is
+    the known good case: the gift reads 40 left of 100 before and after. */
+ {const {meterRead,meterKey,markersFor}=E, p=blankProfile('L');
+  ['Llimit','Rlimit'].forEach(ch=>{for(let i=0;i<30;i++)p.meter.unique.push(meterKey(4,ch,i));}); p.meter.lines=60;
+  const m=meterRead(p,NOW);
+  ok(m.ground===1&&m.ground===ledgerRead(p).ground,'meterRead says one address opened, as the ledger does, got '+m.ground);
+  ok(m.unique===60&&m.giftLeft===40,'and still counts sixty patterns, which is what the gift spends, got '+m.unique+' and '+m.giftLeft);
+  ok(m.next&&m.next.left===m.next.at-m.unique,'the marker distance is in patterns, '+JSON.stringify(m.next));
+  /* why the ruler cannot be addresses: the second marker sits past every
+     address a release can reach, so counted in addresses it is unreachable */
+  ok(markersFor(null)[1].at>W.length,'the second marker, '+markersFor(null)[1].at+', is past the '+W.length+' addresses a release reaches, so the markers count patterns');}
 }
 
 console.log('\n27c · a save never costs a person data, and a drain never leaks');
