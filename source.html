@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2039 57af034 2026-10-16 00:22"><head><meta charset="utf-8">
+<html lang="en" data-build="v2046 e9ca1ae 2026-10-16 02:45"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -17093,6 +17093,64 @@ function accuracy(r,prof){
   held:held, inst:inst, deg:deg, signal:Math.round(sig*100)};}
 
 /* ============================================================
+   HOW MUCH OF THE INSTRUMENT HAS BEEN ANSWERED OR WRITTEN, and nothing about
+   how high any of it reads.
+
+   The Summary plate's early, partial or full word was read off accuracy().pct
+   above, and that figure is a fit of how trustworthy the reading is, not a
+   count of what was measured. Two of its terms read the answers themselves:
+   exq is the expression fill, which is the laws' own mean at each band, and
+   held counts addresses at 4 or more, which is how heavy the stories were. So
+   it rose with how high the answers were. Measured at e9ca1ae (probe p4): all
+   21 laws answered at 10 read 56.0, partial; all 21 answered at 1 read 39.8,
+   early; no law and five heavy stories read 46.1, partial, above the person
+   who had answered everything honestly low. And a blank read 20.8, of which
+   10.8 was the default 6 sitting in every unanswered law.
+
+   accuracy() stays as it is, because the stage's Accuracy ring and its drill
+   print that fit and name its causes, and that is a different question. This
+   answers the plate's question only, from counts:
+
+     laws     the laws answered, lawIn's count, which is the reading's own
+     entries  the stories written, every entry, whatever it read
+
+   pct is 80 for the intake and 20 for the story, so the laws carry four
+   fifths: they are the measurement, and a story is evidence for it. The story
+   side is whole at ten entries, the ladder's own Ten stories rung
+   (engine/ladder.js, "the field is being read from your own words"), so
+   CS_STORY_N names the same ten and a story past it adds nothing here.
+   Neither side reads a value, so the same counts give the same figure whether
+   every answer is 1 or 10, and one more answer or one more story can never
+   lower it.
+   ============================================================ */
+const CS_LAWW=80, CS_STORYW=20, CS_STORY_N=10;
+function accCover(r,prof){
+ var P=prof||CURP, of=SINAMES.length;
+ var laws=(r&&typeof r.answered==='number')?r.answered:SINAMES.filter(lawIn).length;
+ var ents=(P&&P.story&&Array.isArray(P.story.entries))?P.story.entries.length:0;
+ var pct=CS_LAWW*laws/of + CS_STORYW*Math.min(ents,CS_STORY_N)/CS_STORY_N;
+ return {pct:pct, laws:laws, of:of, entries:ents, complete:laws>=of};}
+/* THE WORD, ON THAT SCALE. The old lines, 45 and 70, were drawn on
+   accuracy()'s mix, which starts at a floor of 10 and needs the field to be
+   carrying to reach 70, so neither means anything here and both are redrawn
+   from the two counts:
+
+     full     every law answered, and only then. That is the one point the
+              CQ figure stops moving (compute's complete), so the plate can
+              never say full while the core drill still says the figure has
+              room to move. The intake alone is 80 on this scale, so no
+              number of stories reaches it without the laws.
+     partial  40 or more, half the intake's 80: about half the laws with no
+              story yet, or six of the 21 with the story side whole.
+     early    anything entered short of that.
+     ''       nothing answered and nothing written, which accWord has always
+              printed as the dash. */
+const CS_PARTIAL=CS_LAWW/2;
+function accCoverWord(c){
+ if(!c||!(c.pct>0))return '';
+ return c.complete?'full':c.pct<CS_PARTIAL?'early':'partial';}
+
+/* ============================================================
    THE CHILD PATTERN. WHICH READING THIS IS, AND WHY IT IS AN ASSUMPTION.
 
    Ruled by the owner that a child pattern is special and has to be
@@ -29139,7 +29197,8 @@ if(typeof module!=='undefined'&&module.exports){
                   LIFT_R:LIFT_R, lawLift:lawLift, lawWork:lawWork, lawNow:lawNow,
                   releaseWork:releaseWork, lawAnswered:lawAnswered,
   /* seed */      TYPE16:TYPE16, SEED16:SEED16, seedAxes:seedAxes, seedApply:seedApply,
-                  seedClear:seedClear, seedShare:seedShare, seedValid:seedValid, accuracy:accuracy, sab33Detect:sab33Detect,
+                  seedClear:seedClear, seedShare:seedShare, seedValid:seedValid, accuracy:accuracy, accCover:accCover, accCoverWord:accCoverWord,
+                  CS_LAWW:CS_LAWW, CS_STORYW:CS_STORYW, CS_STORY_N:CS_STORY_N, CS_PARTIAL:CS_PARTIAL, sab33Detect:sab33Detect,
                   sabLevels:sabLevels, exprFill:exprFill, exprRead:exprRead,
   /* gates */     verpScan:verpScan, verpApply:verpApply, verpFactor:verpFactor,
                   verpRead:verpRead, verpShare:verpShare,
@@ -46464,17 +46523,19 @@ function sumNameBlock(B,fallback){
  return first?'<div class="s-pname">'+esc(first)+'</div>'+full+line:'';}
 /* HOW MUCH HAS BEEN MEASURED, AS ONE WORD. 15 October, under the owner's 14
    October ruling: no bare score on a daily surface. The plate's ring used to
-   print the coherence figure; it prints this word now, read off accuracy(),
-   which is the fit's own estimate of how much of the reading is in: the laws
-   answered, the addresses carrying, the expression read. The figure and the
+   print the coherence figure; it prints this word now. The figure and the
    range it swings in sit one tap down, in the core drill the ring opens.
-   tests/golden.js holds the ladder, so a fourth word cannot appear unseen. */
-function accWord(a){
- if(!a||!(a.pct>0))return '';
- return a.pct<45?'early':a.pct<70?'partial':'full';}
+   tests/golden.js holds the ladder, so a fourth word cannot appear unseen.
+   IT WAS READ OFF accuracy(), and that measured how high the answers were
+   rather than how many there were: every law answered at 10 read partial and
+   every law answered at 1 read early. It reads accCover now, the laws
+   answered and the stories written, and the lines are drawn on that scale
+   (engine/compute.js, accCoverWord), so a whole intake reads full whatever
+   the answers were. */
+function accWord(c){return accCoverWord(c);}
 function sumPlate(r,B){
  var t=TIER_BY[r.tier]||null;
- var aw=(typeof accuracy==='function')?accWord(accuracy(r)):'';
+ var aw=(typeof accCover==='function')?accWord(accCover(r)):'';
  return '<div class="s-plate">'
   +'<div class="s-pl-l">'+sumNameBlock(B,true)+'</div>'
   +'<div class="s-pl-r">'
@@ -76400,5 +76461,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005012751"></div>
+<div id="eof" hidden data-len="005016443"></div>
 </body></html>
