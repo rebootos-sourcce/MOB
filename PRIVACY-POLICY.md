@@ -16,9 +16,10 @@ Write to hello@atuned.world about anything on this page.
 - The name you enter never leaves this device.
 - A first visit sends our server a random code made for this browser and the topic you pick, and later a mark for each step you finish.
 - An account sends our server your email and your password.
-- The voice that reads a release sends each line it speaks to ElevenLabs, a company that turns text into speech. The voice is on unless you turn it off.
+- The voice that reads a release out loud sends each line it speaks to ElevenLabs, a company that turns text into speech. A release is the short set of lines the app reads to help you let go of one pattern, a way of feeling or reacting you have been running on. The voice is on unless you turn it off.
 - A few other companies help run Atüned. Section 5 names every one, with what it gets.
-- We never sell your data. We do not use it for ads. No model is trained on what you write.
+- What you send from Help goes to a channel on our Discord server, and anyone who can read that channel can read it.
+- We never sell your data. We do not use it for ads. No AI model, which is a program that learns from text, is trained on what you write.
 
 ## 3. What stays on your device
 
@@ -30,13 +31,17 @@ It holds:
 - your answers to the questions
 - your stories, exactly as you typed them
 - the imprints, which are the patterns the app found in your stories
-- the snapshots, which are saved pictures of your field over time
-- the avatar and the purpose you set
+- your readings, which are what the app works out from your answers and your stories
+- the snapshots, which are dated copies of your readings, so you can see how they changed
+- the releases and practices you do, with their dates
+- the avatar, which is the figure that stands for you in the app, and the purpose you set, which is what you said you are becoming
 - the name of your plan, and never a card
 
 We do not have a copy of any of it. If you clear your browser's data or lose the device, it is gone, unless you copied it with Export this record (section 8).
 
 Nobody else can see it. The app has no way to show your record to anyone yet. If we add one, it will work only after you say yes, it will list who can see what, and one press will take it back.
+
+The button **Is this a crisis?** sends nothing and reads nothing you write. It shows three numbers that reach a trained person or emergency help. Pressing one opens your phone's own dialler or messages, so the call or text goes from your phone and never through us. Its other choice, Talk it through, opens your journal, the Story page where you write. The journal stays on your device, and no person reads it.
 
 The free quiz on atuned.world keeps your answers in your browser too, so you can stop and come back. The quiz sends nothing. A story typed into the quiz is held only while the page is open. When the quiz opens the app, your answers ride in the link after a # sign, and a browser never sends that part of a link anywhere.
 
@@ -52,7 +57,7 @@ The app and the pages load no ads, no tracking tools, no outside fonts and no ou
 | You press Forgot your password | Your email | Our server, then Resend, a company that sends email | Resend sends a link to that email. The link works once, for one hour. |
 | The voice reads a release | Each line it speaks. A line names one of your patterns, such as "that I am completely alone and nothing is holding me". If you are not logged in, also a random code for this browser. | Our server, which passes the line on to ElevenLabs | To say the line out loud. ElevenLabs gets the line and nothing that names you: no email, no account and no code. Turn Voice off in the release panel and the line shows on the screen instead. |
 | You press Record to speak a story | The sound of your voice | Your browser's maker, and not us. Chrome sends it to Google and Edge sends it to Microsoft. Other browsers may do the same. | To turn what you say into text. We never get the sound. Type instead and nothing is sent. |
-| You send a comment, a question, a report or a rating from Help | What you typed, or your answers to the rating questions. With it go the day, the app's version, whether you are on a phone or a computer, whether the screen is wide or narrow, and the band your coherence reading sits in, such as low or high. Your email, your name and your account do not go with it. | Our site, run by Cloudflare, which posts it to a channel on our Discord server. Discord is a chat app, and our team reads that channel. | So our team can read it. It does not name you, so we cannot write back to it. Email us (section 15) if you want an answer. |
+| You send a comment, a question, a report or a rating from Help | What you typed, or your answers to the rating questions. It is kept on your device first, then sent. With it go the day, the app's version, whether you are on a phone or a computer, whether the screen is wide or narrow, and whether your coherence reads low, middle or high. Coherence is the app's reading of how closely what you mean and what you do point the same way, worked out from your answers. Your email, your name and your account do not go with it. | Our site, run by Cloudflare, which posts it to a channel on our Discord server. Discord is a chat app. Anyone who can read that channel on Discord can read what you sent, and Discord keeps a copy. | So our team can read it. Nothing we add to it names you, so we cannot write back to it. Email us (section 15) if you want an answer. |
 | You pay for a plan. Paid plans are not open yet. | When they open: your account code, the plan you pick and your email, for the receipt. You type your card on Stripe's own page. | Stripe, a company that takes card payments | To take the payment. We never see your card number. |
 | You write to us | What you write, and your email | Us | To answer you. |
 
@@ -66,7 +71,7 @@ Every time your browser reaches our site or our server, it carries your IP addre
 - **Supabase** runs the database that holds your first visit: the random code, the topic, the marks and the starter gift.
 - **ElevenLabs** makes the spoken voice. It gets each line being spoken and nothing that names you.
 - **Resend** sends the password reset email. It gets your email address and the link.
-- **Discord** holds what you send from Help, in a channel our team reads.
+- **Discord** holds what you send from Help, in a channel on our Discord server, and anyone who can read that channel can read it.
 - **Stripe** will take payment when paid plans open. It will get your account code, your plan, your email and your card.
 - **Your browser's maker**, such as Google or Microsoft, turns speech into text when you press Record.
 
@@ -81,7 +86,7 @@ Each company handles what it gets under its own privacy policy. They are based i
 - **Voice counts.** How many letters the voice spoke each day, for about two days. Not the lines.
 - **An error log.** What broke on our server and where. It holds no story text.
 
-Our server does not keep your name, your birth details, your stories or your answers. Research sharing is off and is not offered. Nobody at Atüned can see what stays on your device. The people who run Atüned can see what our server keeps, so they can fix faults and answer you.
+Our server does not keep your name, your birth details, your stories or your answers. We share nothing for research, and no research sharing is offered. Nobody at Atüned can see what stays on your device. The people who run Atüned can see what our server keeps, so they can fix faults and answer you.
 
 ## 7. How long we keep it
 
@@ -97,7 +102,7 @@ Our server does not keep your name, your birth details, your stories or your ans
 | A first visit that never joined an account | No end date is set yet. It holds the random code, the topic and the marks, and nothing that names you. |
 | The activity list | 24 months after you delete the account, under the random account code and with no email |
 | The server's error log | 90 days |
-| What you sent from Help, in Discord | Until our team deletes it. It does not name you. |
+| What you sent from Help, in Discord | Until our team deletes it from the channel. Nothing we add to it names you. |
 | Payment records at Stripe | As long as the law makes Stripe keep them |
 | Backups | Our database companies keep short backups so they can recover from a fault. A deleted account can stay in a backup until that backup rolls over, up to 30 days. |
 
@@ -129,7 +134,7 @@ Wherever you live, you may ask us what we hold about you, ask for a copy, ask us
 
 **If you live in the European Economic Area or the United Kingdom,** the General Data Protection Regulation gives you these rights, and also the right to object to how we use your data and to have it as a file you can take elsewhere. You may complain to the data protection authority where you live. In the United Kingdom that is the Information Commissioner's Office, at ico.org.uk. The European Data Protection Board lists the rest at edpb.europa.eu.
 
-**If you live in California,** the California Consumer Privacy Act gives you the right to know what we collect, to delete it, to correct it, and to limit how we use sensitive information. We already use it only to run Atüned. We do not sell personal information and do not share it for ads. Your browser may send a Do Not Track signal. We run no tracking, so there is nothing for it to stop.
+**If you live in California,** the California Consumer Privacy Act gives you the right to know what we collect, to delete it, to correct it, and to limit how we use sensitive information. We already use it only to run Atüned. We do not sell personal information and do not share it for ads. Your browser may send a Do Not Track signal, which is a setting that asks websites not to follow you from site to site. We run no tracking, so there is nothing for it to stop.
 
 ## 12. Keeping it safe
 

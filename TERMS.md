@@ -20,15 +20,22 @@ Atüned reads only what you type and what you answer. It cannot see your body. W
 
 ## 3. If you are in crisis
 
-Atüned is not an emergency service. Nobody reads what you write as you write it, so nobody will know if you are in danger.
+Atüned is not an emergency service. Nobody reads what you write as you write it, so nobody will know if you are in danger. Nothing in Atüned watches your words for signs of danger.
+
+**Is this a crisis?** is a button that shows the numbers below. It reads nothing you write, and it sends nothing. You will find it:
+
+- on the door where you log in
+- at the top of every step of the opening, the short walk through the app on a first visit
+- in the menu under your profile button
+- at the top of the free quiz
 
 If you are thinking about ending your life, or you do not feel safe, reach a person now. These numbers are for the United States:
 
-- Call or text 988 for the Suicide and Crisis Lifeline, or chat at 988lifeline.org.
-- Text the word home to 741741 for the Crisis Text Line.
-- Call 911 if you or someone near you is in danger right now.
+- Call or text 988 for the Suicide and Crisis Lifeline, or chat at 988lifeline.org. A trained person answers, at any hour.
+- Text the word home to 741741 for the Crisis Text Line. A trained person writes back.
+- Call 911 for police, fire or an ambulance if you or someone near you is in danger right now.
 
-Outside the United States, call your local emergency number.
+988 also works in Canada. Anywhere else, call your local emergency number.
 
 ## 4. Who can use it
 
@@ -52,7 +59,7 @@ Before paid plans open, we will change these terms to say how they work. When th
 
 You own what you write and what you answer. We do not claim it.
 
-What you type in the app is kept on your device, and we do not use it. No model is trained on it.
+What you type in the app is kept on your device, and we do not use it. No AI model, which is a program that learns from text, is trained on it.
 
 If you send us feedback, we may use the idea in it to change Atüned, and we owe you nothing for that.
 

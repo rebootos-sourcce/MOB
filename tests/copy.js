@@ -138,6 +138,23 @@ const REQUIRED=[
  ['privacy-page', [/\bResend\b/, /\bemail\b/i], 'Resend, which sends the reset email'],
  ['privacy-page', [/\bDiscord\b/, /\bHelp\b/], 'Discord, where what is sent from Help goes'],
  ['privacy-page', [/\bStripe\b/, /\bcard\b/i], 'Stripe, which takes the card'],
+ /* WHO CAN READ HELP, 16 October. The relay posts to a webhook on a channel
+    of the team's Discord server (functions/feedback.js), and whether that
+    channel is private to the team or open to the community is the owner's to
+    set. "Our team reads that channel" was true and incomplete, so the page
+    says what the feedback sheet already says, in the same words: anyone who
+    can read that channel can read it. */
+ ['privacy-page', [/\bDiscord\b/, /\bHelp\b/, /\banyone who can read that channel can read it\b/i],
+  'that anyone who can read the Discord channel can read what Help sends'],
+ /* THE CRISIS BUTTON ON THE PUBLIC PAGES, 16 October (ui/crisis.js). The
+    splitter breaks a sentence at a question mark, so "Is this a crisis?" is
+    its own sentence and the rows hold the ones after it. "No person reads
+    it" is the app's own claim, true while profile sync is off, which
+    tests/onboarding2.js holds of the build; the day sync goes on, this page
+    is wrong with the panel. */
+ ['privacy-page', [/\bsends nothing and reads nothing you write\b/i], 'that the crisis button sends nothing and reads nothing'],
+ ['privacy-page', [/\bdialler or messages\b/i, /\bnever through us\b/i], 'that a crisis number is called from the phone and not through us'],
+ ['privacy-page', [/\bjournal\b/i, /\bno person reads it\b/i], 'that the journal stays on the device and no person reads it'],
  ['terms-page', [/\bnot a clinician\b/i], 'the owner\'s line, we are not a clinician'],
  ['terms-page', [/\bnot a substitute for care\b/i], 'that it is not a substitute for care'],
  ['terms-page', [/\bcall or text 988\b/i], 'the 988 line, call or text'],
@@ -147,7 +164,10 @@ const REQUIRED=[
  ['terms-page', [/\btext\b[^.]{0,20}\bhome to 741741\b/i], 'the Crisis Text Line'],
  ['terms-page', [/\b911\b/, /\bdanger\b/i], '911 for danger now'],
  ['terms-page', [/\bnumbers\b/i, /\bUnited States\b/], 'that the numbers are United States numbers'],
- ['terms-page', [/\bpaid plans are not open yet\b/i], 'that paid plans are not open yet']];
+ ['terms-page', [/\bpaid plans are not open yet\b/i], 'that paid plans are not open yet'],
+ ['terms-page', [/\bwatches your words\b/i, /\bdanger\b/i], 'that nothing watches what a person writes for danger'],
+ ['terms-page', [/\breads nothing you write\b/i, /\bsends nothing\b/i], 'that the crisis button reads nothing and sends nothing'],
+ ['terms-page', [/\b988 also works in Canada\b/], 'where else 988 answers, as the panel says']];
 /* which funnel page answers to which set above, by the name the stage serves */
 const PAGE_NEED={'privacy.html':'privacy-page','terms.html':'terms-page'};
 
@@ -210,6 +230,9 @@ function hold(scope,surface,text,need){
     ElevenLabs, must be called incomplete on the public page */
  if(missing('privacy-page','The words being spoken go to the browser\'s maker. The name you enter never leaves this device.').indexOf('one sentence naming ElevenLabs and the voice lines it gets')<0)
   fail('self','a privacy page that does not name ElevenLabs is not called incomplete');
+ /* and the Discord row before it said who else can read the channel */
+ if(missing('privacy-page','Discord holds what you send from Help, in a channel our team reads.').indexOf('that anyone who can read the Discord channel can read what Help sends')<0)
+  fail('self','a privacy page that says only our team reads the Discord channel is not called incomplete');
  if(missing('terms-page','We are not a clinician, and no clinician is involved.').indexOf('the owner\'s line, we are not a clinician')>=0)
   fail('self','the terms line we are not a clinician is not found');
  if(FAIL>before){console.log('the checker failed its own known cases, so nothing below is trusted');process.exit(1);}

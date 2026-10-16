@@ -21,9 +21,9 @@ This is what can reach us, or pass through our server:
 | The topic you pick on a first visit, such as anxiety, grief or pain | To join your first visit, and the free patterns that come with it, to your account if you make one |
 | A mark when you finish the opening, finish your first release, or answer What changed. Never what you answered. | The same |
 | Each line the voice speaks in a release. A line names one of your patterns. | To say the line out loud. Our server passes it to ElevenLabs and does not keep it. |
-| What you write when you send a comment, a question or a report from Help, if it says something about your health | So our team can read it |
+| What you write when you send a comment, a question or a report from Help, if it says something about your health | So our team can read it. It goes to a channel on our Discord server, and anyone who can read that channel can read it. |
 
-We use it for those reasons and nothing else. We do not use it to train any model.
+We use it for those reasons and nothing else. We do not use it to train any AI model, which is a program that learns from text.
 
 ## 3. Where it comes from
 
@@ -38,7 +38,7 @@ These companies handle it for us, and only to run Atüned:
 - **Cloudflare** runs our server, so everything above passes through it.
 - **Supabase** holds the topic and the marks from your first visit.
 - **ElevenLabs** gets each line the voice speaks, and nothing that names you.
-- **Discord** holds what you send from Help, in a channel our team reads.
+- **Discord** holds what you send from Help, in a channel on our Discord server, and anyone who can read that channel can read it.
 
 If you press Record to speak a story, your browser's maker turns the sound into text. Chrome sends it to Google and Edge sends it to Microsoft. We never get the sound.
 
