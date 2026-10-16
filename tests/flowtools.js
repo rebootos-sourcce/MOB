@@ -832,8 +832,23 @@ async function flowGate(browser,FILE,ok,booted){
    const today=Math.floor((Date.now()-off)/DAY);
    const iso=d=>new Date(d*DAY+off+12*3600000).toISOString();
    const wd=d=>(new Date(d*DAY).getUTCDay()+6)%7;
+   /* THE THIRD STORY IS WHAT GIVES FT30 ITS CHALLENGES, AND IT USED TO BE A
+      LEAK. With only the first two, the challenges here were the Procrastinator
+      and the Innocent, drawn on the root's Victimhood at 3.41. That charge was
+      Sad, and nothing at the root says sad: it came from "abandoned", a heart
+      word, through the one wanted map parseStory built for the whole text.
+      engine/sniff.js now reads each seat against its own words (the round 1
+      exhaustion fix), so the root's terrified, panic and cannot breathe land
+      on four Fear addresses at 2.83 each, compute() draws a SAB33 saboteur
+      only on an address at 3 or more, and the two stories alone honestly name
+      none. The SAB33 levels still fit both, so the gap is the per address
+      floor, which this branch did not touch. A third root fear story, in his
+      own register, carries the root over that floor on its own words, and the
+      assertion below still asks for at least one challenge drawn: it was not
+      loosened to accept the empty state. */
    ['I am terrified of being abandoned and I panic and cannot breathe. My chest is tight.',
-    'I feel worthless and ashamed, I am never enough, I am a failure.'].forEach(t=>{ST_TEXT=t; ST_PARSED=parseStory(t); stCommit();});
+    'I feel worthless and ashamed, I am never enough, I am a failure.',
+    'I am scared all the time and my legs shake.'].forEach(t=>{ST_TEXT=t; ST_PARSED=parseStory(t); stCommit();});
    const h0=snapshot(CURP); h0.t=iso(today-60); h0.loaded=19; CURP.history.unshift(h0);
    CURP.avatar=avatarBlank(); CURP.avatar.built=true; CURP.avatar.at=iso(today-30);
    CURP.avatar.pairs=[{be:'I speak up calmly in the room',notbe:'I feel worthless and ashamed, I am never enough'},
@@ -1016,7 +1031,18 @@ async function flowGate(browser,FILE,ok,booted){
   ok(ct.miss.length===0&&!ct.dash,'FT31: every one of the nine axes has an affirmation and a challenge, and no line carries a dash, '+JSON.stringify(ct.miss));
   ok(ct.want.length===3&&JSON.stringify(ct.got)===JSON.stringify(ct.want),
    'FT31: a named saboteur\'s challenge is its own intervention from SABDEF, the heaviest three, '+JSON.stringify(ct));
-  ok(ct.inf.length===1&&ct.inf[0].act&&/does not name/.test(ct.inf[0].who)&&/sadness at the root/.test(ct.inf[0].who),'FT31: an inferred saboteur says it is one, and carries its fetter\'s challenge, '+JSON.stringify(ct.inf));
+  /* THE ROWS AFTER THE FIRST ARE THE PLACES THE PERSON HOLDS, AND THEY ARE
+     NOT THE INFERRED ONE AGAIN. This asked for exactly one row, which was only
+     ever true because the QX seed held nothing at 4: ritChallenge appends a
+     row for each held place (ritHeld, ui/ritual.js) after the saboteurs it is
+     handed, and r here is handed in while ritHeld reads the live profile. The
+     seed's third story (see the QX seed above) holds the root on Fear, so a
+     second row, "Fear at the root", is the function doing its job. So the
+     handed in saboteur must be first and say it is inferred, and every row
+     after it must be a held place and must not repeat the Sad challenge the
+     first one already carries. */
+  ok(ct.inf.length>=1&&ct.inf[0].act&&/does not name/.test(ct.inf[0].who)&&/sadness at the root/.test(ct.inf[0].who)
+    &&ct.inf.slice(1).every(c=>!c.act&&/^a place you hold/.test(c.who)),'FT31: an inferred saboteur says it is one, and carries its fetter\'s challenge, '+JSON.stringify(ct.inf));
 
   /* ---- FT32: success over time, his ten spans, and honest before the record starts ---- */
   const sx=await pg.evaluate(async()=>{const DAY=86400000, off=new Date().getTimezoneOffset()*60000, today=Math.floor((Date.now()-off)/DAY);
