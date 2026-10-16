@@ -3483,5 +3483,7 @@ function ladderHtml(){
     +'<span class="ld-md">'+esc(m.d)+'</span></div>';});
   h+='</div>';}
  if(L.next)
-  h+='<p class="ld-next"><b>'+esc(L.next.nm)+'</b> '+esc(L.next.d)+'</p>';
+  /* what it takes, never what it means once held: the d line is past tense
+     and read as a mark already earned (L2, engine/ladder.js) */
+  h+='<p class="ld-next"><b>'+esc(L.next.nm)+'</b> '+esc(L.next.to)+'</p>';
  return h+'</div>';}

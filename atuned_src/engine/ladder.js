@@ -269,47 +269,61 @@ function storyDays(p,today){
 var MARKS=[
  /* practice */
  {k:'first', fam:'Practice', b:'Root', nm:'First run',
+  to:'Mark one ritual done.',
   d:'You marked one ritual done. The instrument is no longer a thing you are reading about.',
   ic:'M12 21V6 M7 11l5-5 5 5',
   t:function(l){return l.done>=1;}},
  {k:'week', fam:'Practice', b:'Root', nm:'Seven days',
+  to:'Practise on seven days. They do not need to be in a row.',
   d:'Seven days of practice on the record. This is where it stops being a decision each morning.',
   ic:'M4 6h16v14H4z M4 11h16 M8 3v4 M16 3v4',
   t:function(l,s){return s.days>=7;}},
  {k:'month', fam:'Practice', b:'Root', nm:'Thirty days',
+  to:'Practise on thirty days. They do not need to be in a row.',
   d:'Thirty days of practice on the record. The nervous system has had long enough to believe you.',
   ic:'M4 6h16v14H4z M4 11h16 M8 3v4 M16 3v4 M9 15l2 2 4-4',
   t:function(l,s){return s.days>=30;}},
  {k:'season', fam:'Practice', b:'Root', nm:'Ninety days',
+  to:'Practise on ninety days. They do not need to be in a row.',
   d:'Ninety days of practice on the record. Nothing about this is a beginner number.',
   ic:'M12 3a9 9 0 109 9 M12 3v9h9 M12 12l5 5',
   t:function(l,s){return s.days>=90;}},
  {k:'hour', fam:'Practice', b:'Root', nm:'Sixty minutes',
+  to:'Put sixty minutes of practice on the record, spread any way you like.',
   d:'An hour of practice on the record, however it was spread.',
   ic:'M12 3a9 9 0 100 18 9 9 0 100-18 M12 7v5l4 2',
   t:function(l){return l.minutes>=60;}},
  {k:'tracks', fam:'Practice', b:'Root', nm:'Every track run',
+  to:'Mark a ritual done in every track the practice library carries.',
   d:'A ritual marked done in every track the practice library carries.',
   ic:'M12 3v18 M3 12h18 M6 6l12 12',
   t:function(l,s,p){var t=pracTracks(p,s.today); return t.all>0&&t.done>=t.all;}},
  {k:'back', fam:'Practice', b:'Root', nm:'Came back',
+  /* NO to LINE, SO IT IS NEVER THE NEXT MARK. What it takes is two weeks
+     away, and a goal that asks for an absence names one, which DESIGN-ladder
+     anti design 5 rules out. It is earned on the way back and named then. */
+  to:null,
   d:'Two weeks or more away, then a day of practice. Coming back is the practice too.',
   ic:'M9 5L4 10l5 5 M4 10h10a5 5 0 010 10h-4',
   t:function(l,s,p){return pracBack(pracDaysAt(p,s.today));}},
  /* ground */
  {k:'ten', fam:'Ground', b:'Throat', nm:'Ten addresses',
+  to:'Open ten different addresses with a release. An address is one exact place in your body.',
   d:'Ten distinct addresses opened. Not ten runs. Ten places.',
   ic:'M4 4h7v7H4z M13 4h7v7h-7z M4 13h7v7H4z M13 13h7v7h-7z',
   t:function(l){return l.ground>=10;}},
  {k:'fifty', fam:'Ground', b:'Throat', nm:'Fifty addresses',
+  to:'Open fifty different addresses with a release.',
   d:'Fifty. Close to half your addresses have been opened at least once.',
   ic:'M3 12h18 M3 7h18 M3 17h18 M7 3v18 M17 3v18',
   t:function(l){return l.ground>=50;}},
  {k:'told', fam:'Ground', b:'Throat', nm:'First story',
+  to:'Write one story of something that happened, in your own words.',
   d:'You told it something true and let it read the charge out of that.',
   ic:'M4 5h16v11H8l-4 4z',
   t:function(l,s,p){return !!(p&&p.story&&(p.story.entries||[]).length);}},
  {k:'kept', fam:'Ground', b:'Throat', nm:'Ten stories',
+  to:'Write a story on ten different days.',
   d:'Stories on ten different days. The field is being read from your own words and not from a form.',
   ic:'M4 5h16v11H8l-4 4z M8 9h8 M8 12h5',
   /* TEN ENTRIES WAS TEN MINUTES OF TYPING. Ten entries committed in one
@@ -319,6 +333,7 @@ var MARKS=[
   t:function(l,s,p){return storyDays(p,s.today)>=10;}},
  /* structure */
  {k:'nine', fam:'Structure', b:'Heart', nm:'Nine axes',
+  to:'Answer the question for each of the nine axes in the intake. An axis is a feeling and its opposite.',
   d:'Each of the nine axes, a feeling and its opposite, has a value on your record. None is left empty.',
   ic:'M5 5h14v14H5z M5 10h14 M5 15h14 M10 5v14 M15 5v14',
   /* THE TEST COUNTED AXES AT FOUR OR MORE, ON EITHER SIDE. clear+carry>=9 let
@@ -333,14 +348,17 @@ var MARKS=[
      on an axis the person never set by hand. */
   t:function(l,s,p){return axesValued(p)>=CHILD.length;}},
  {k:'laws', fam:'Structure', b:'Heart', nm:'Laws measured',
+  to:'Answer every question in the intake.',
   d:'The intake is complete, so integrity is measured rather than assumed.',
   ic:'M12 4v4 M4 8h16 M4 8l-2 5h4z M20 8l-2 5h4z',
   t:function(l,s,p){return !!(p&&p.intake&&p.intake.completedAt);}},
  {k:'stated', fam:'Structure', b:'Heart', nm:'Blueprint stated',
+  to:'Name your four letter type.',
   d:'You named your type, and the field carries that until you move it.',
   ic:'M4 20V8l8-5 8 5v12 M9 20v-7h6v7',
   t:function(l,s,p){return !!(p&&p.seed);}},
  {k:'aimed', fam:'Structure', b:'Heart', nm:'Purpose set',
+  to:'Place your six values on the Avatar page.',
   d:'Six values placed. The compass has something to point at.',
   ic:'M12 3a9 9 0 100 18 9 9 0 100-18 M12 8l3 8-3-2-3 2z',
   t:function(l,s,p){return !!(p&&p.purpose&&purposeReady&&purposeReady(p.purpose));}},
@@ -353,15 +371,18 @@ var MARKS=[
      these were not (fact map L10). One word per concept: the count is axes,
      and installed is the ledger's own word for an opposite at four or more.
      The keys do not change, because a key is identity. */
+  to:'Install the opposite on one of the nine axes. Each release builds it up.',
   d:'One of the nine axes has its opposite installed. An axis is a feeling and its opposite.',
   ic:'M4 12a8 8 0 1116 0 8 8 0 01-16 0 M8 12l3 3 5-6',
   t:function(l){return l.clear>=1;}},
  {k:'seat', fam:'Structure', b:'Heart', nm:'Five clear',
+  to:'Install the opposite on five axes.',
   d:'Five axes have their opposite installed. That is structure, not a good day.',
   ic:'M4 12a8 8 0 1116 0 8 8 0 01-16 0 M12 4v16 M4 12h16',
   t:function(l){return l.clear>=5;}},
  /* the record itself */
  {k:'watched', fam:'Structure', b:'Heart', nm:'Ten snapshots',
+  to:'Keep ten readings on file. Each story and each release saves one.',
   d:'Ten readings on file, so the movement is yours to see and not to recall.',
   ic:'M3 17l5-6 4 4 3-4 6 6 M3 5h18v14H3z',
   t:function(l){return l.snaps>=10;}}];
@@ -372,6 +393,13 @@ var MARKS=[
    already furthest into, because the useful next thing is the one adjacent to
    what they are doing. Everything past it is deliberately not returned, so no
    caller can render a checklist of a person's unfinished self. */
+/* THE NEXT MARK WAS PRINTED IN THE PAST TENSE. Both surfaces that name it,
+   the Compass and the Ritual page's Ongoing goal, printed its d line, which is
+   written for a mark already held: a blank record read "First run. You marked
+   one ritual done." and one done ritual read "Seven days. Seven days of
+   practice on the record." Measured on f7188cba. A mark carries two lines
+   now: d, what it means once held, and to, what it takes, and the next mark
+   is printed with to. A mark with no to is never offered as the next one. */
 function ladderRead(p,now){
  var l=ledgerRead(p,now), s=streakRead(p,now), got=[], left=[];
  MARKS.forEach(function(m){
@@ -379,7 +407,7 @@ function ladderRead(p,now){
   (ok?got:left).push(m);});
  var by={}; got.forEach(function(m){by[m.fam]=(by[m.fam]||0)+1;});
  var lead=null, best=-1;
- left.forEach(function(m){var n=by[m.fam]||0; if(n>best){best=n; lead=m;}});
+ left.forEach(function(m){if(!m.to)return; var n=by[m.fam]||0; if(n>best){best=n; lead=m;}});
  return {earned:got, next:lead, ledger:l, streak:s};}
 
 /* WHEN A PRACTICE MARK BECAME TRUE, round QS. The TDD dates every mark with

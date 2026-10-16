@@ -74,6 +74,19 @@ const ev=async(pg,fn,arg)=>{try{return await pg.evaluate(fn,arg);}catch(e){retur
   ok(/longest run with no gap/.test(r.mean||''),'the page defines Best as the longest run with no gap');
   ok(best==='1 dayBest','so seven days, every other day, read Best 1 day, got '+JSON.stringify(best)+' beside a streak of '+r.run);}
 
+ console.log('\n=== L2. the next mark says what it takes, on the Compass and on the Ritual page ===');
+ {const r=await ev(pg,()=>{
+   var out={};
+   __rec([]); out.c0=__ld().next; out.g0=__txt(ritGoalHtml(ritRead()));
+   __rec([0]); out.c1=__ld().next; out.g1=__txt(ritGoalHtml(ritRead()));
+   return out;});
+  ok(r.c0==='First run Mark one ritual done.','a blank record\'s Compass names the next mark and what it takes, got '+JSON.stringify(r.c0));
+  ok(/Next mark ?First run ?Mark one ritual done\./.test(r.g0||'')&&!/You marked/.test(r.g0||''),
+   'and so does the Ongoing goal, with nothing in the past tense, got '+JSON.stringify(r.g0&&r.g0.slice(-120)));
+  ok(/^Seven days Practise on seven days\./.test(r.c1||'')&&!/on the record/.test(r.c1||''),
+   'after one day the next is Seven days and says what it takes, got '+JSON.stringify(r.c1));
+  ok(/Practise on seven days\./.test(r.g1||''),'on both surfaces');}
+
  ok(errs.length===0,'no page error'+(errs.length?': '+errs.slice(0,2).join(' | '):''));
  await browser.close();
  console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');

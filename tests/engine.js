@@ -3159,6 +3159,26 @@ console.log('\n27 · the ladder');
   ok(ladderRead(one,NOW).earned.some(m=>m.k==='turned')&&ledgerRead(one).clear===1,
    'and one axis with its opposite at four is what earns First clearing');
   ok(/address/.test(MARKS.find(m=>m.k==='ten').d),'Ten addresses still says addresses, because it counts them');}
+
+ /* L2. THE NEXT MARK SAYS WHAT IT TAKES. Both surfaces printed the next
+    mark's d line, written for a mark already held, so a blank record read
+    "First run. You marked one ritual done." A mark carries to, what it
+    takes, and the next is only ever a mark that has one. */
+ {const L0=ladderRead(blankProfile('L'),NOW);
+  ok(L0.next&&L0.next.to==='Mark one ritual done.','a blank record\'s next mark says what it takes, got '+JSON.stringify(L0.next&&L0.next.to));
+  ok(MARKS.filter(m=>m.k!=='back').every(m=>typeof m.to==='string'&&m.to&&m.to!==m.d),
+   'every mark but Came back carries a to line of its own, missing '+MARKS.filter(m=>m.k!=='back'&&!(typeof m.to==='string'&&m.to&&m.to!==m.d)).map(m=>m.k));
+  ok(MARKS.every(m=>!m.to||!/^You /.test(m.to)),'and no to line is written as a thing already done');
+  /* Came back asks for two weeks away, so it is never the goal. Every other
+     practice mark held leaves it as the family's only one left. */
+  const all=[];for(let i=0;i<95;i++)all.push(i);
+  const p=mk(all), tracks=[...new Set(E.PRACTICE.map(x=>x.track).filter(Boolean))];
+  tracks.forEach((t,i)=>{p.rituals[i].steps=[E.PRACTICE.find(x=>x.track===t).k];});
+  const LP=ladderRead(p,NOW), pr=MARKS.filter(m=>m.fam==='Practice'&&m.k!=='back');
+  ok(pr.every(m=>LP.earned.some(e=>e.k===m.k))&&!LP.earned.some(m=>m.k==='back'),
+   'the fixture holds every practice mark but Came back, earned '+LP.earned.map(m=>m.k));
+  ok(LP.next&&LP.next.k!=='back','and the next mark is never Came back, got '+(LP.next&&LP.next.k));}
+
 }
 
 console.log('\n27c · a save never costs a person data, and a drain never leaks');
