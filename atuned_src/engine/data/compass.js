@@ -530,7 +530,7 @@ function darkRead(mal01, CQ){
   /* which step of the descent, and only while both conditions hold */
   step:!dark?null:(CQ<11?DESCENT[2]:(CQ<21?DESCENT[1]:DESCENT[0])),
   refer:dark&&CQ<11,
-  say:!dark?'':'The shape is malignant and the field is decoherent at the same time. '
+  say:!dark?'':'The shape is malignant and your energy is decoherent at the same time. '
    +'That pair is what the descent describes. It is a reading of what is running, not of who is running it.'};}
 /* Which circle a descent has reached. Depth follows coherence, so
    the ladder is read off the same number everything else is. */

@@ -1323,7 +1323,7 @@ const virgin=await blank.evaluate(()=>{
 ok(virgin.charge===0,'a first load seeds no charge, total is '+virgin.charge);
 ok(virgin.carrying===0,'and nothing is carrying');
 ok(virgin.unread===true&&virgin.measured===0,'the reading knows it has not been read');
-ok(!/Incoherent|Corrupt|Severe|Collapsed/.test(virgin.tier),
+ok(!/Incoherent|Corrupt|Severe|Contracted/.test(virgin.tier),
  'the tier does not name a band, it reads: '+JSON.stringify(virgin.tier));
 ok(!/Incoherent/.test(virgin.profile),'nor does the profile sheet');
 ok(!/incoherent/.test(virgin.ana),'nor the analytics hero, which reads: '+JSON.stringify(virgin.ana));
@@ -1333,7 +1333,7 @@ ok(!/incoherent/.test(virgin.ana),'nor the analytics hero, which reads: '+JSON.s
    to answer. A band word here would be one read off laws nobody answered. */
 ok(virgin.unreadAfter===false&&/^\d+ laws? to answer$/.test(virgin.after),
  'and one held address makes it a reading, with the band waiting on the laws: '+JSON.stringify(virgin.after));
-const bands=['Incoherent','Corrupt','Severe','Collapsed'].filter(w=>virgin.sweep.includes(w));
+const bands=['Incoherent','Corrupt','Severe','Contracted'].filter(w=>virgin.sweep.includes(w));
 ok(bands.length===0,'no band word appears anywhere on an unread first screen, found: '
  +(bands.join(', ')||'none'));
 await blank.close();
@@ -1398,7 +1398,7 @@ const lab=await page.evaluate(()=>{
  runCompassDrill();
  return {label:el.textContent, tip:el.title,
   drill:(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ')};});
-ok(/Severe|Collapsed|Corrupt|Incoherent/.test(lab.label),
+ok(/Severe|Contracted|Corrupt|Incoherent/.test(lab.label),
  'the heaviest case gets a band, got '+JSON.stringify(lab.label));
 ok(lab.tip.length>120,'and the label carries its meaning on hover, '+lab.tip.length+' chars');
 ok(/Toward:/.test(lab.tip),'including the direction out of it');
@@ -2079,8 +2079,11 @@ ok(/blueprint you were born on|no birth data/.test(sum.text),
    paragraphs carries a label, and a sentence that opened on its own
    denominator. The intent is that the reading closes on which way the field
    leans, so the row asserts that instead of the word. */
-ok(/the field leans/i.test(sum.text)&&/benign|malignant/i.test(sum.text),
- 'and closes on which way the field leans');
+/* 16 October, his words: "change the field to 'your energy leans malignant',
+   because energy is more natural. Field is just too abstract." So the subject
+   is held, and the word after it, and the old subject is held out. */
+ok(/Your energy leans (?:benign|malignant)\b/.test(sum.text)&&!/the field leans/i.test(sum.text),
+ 'and closes on which way your energy leans, never the field');
 ok(!/undefined|NaN|\[object/.test(sum.text),'and nothing leaked a placeholder');
 console.log(' ',JSON.stringify({glance:sum.glance,rows:sum.structRows,chips:sum.chips,
  num:sum.numRows,rings:sum.rings}));
@@ -3263,8 +3266,9 @@ const pmn=await page.evaluate(async()=>{
  o.sfx=m?(()=>{const b=m.querySelector('[data-pmsfx]');return b?{h:b.getBoundingClientRect().height,on:b.getAttribute('aria-checked')}:null;})():null;
  /* Discord feedback joined at 3 October; Join our Discord is a row only once
     COMMUNITY_INVITE holds a real invite, so it is read off commInvite and not
-    assumed either way */
- o.want=ACC_SECS.map(s=>s.nm).concat(['Discord feedback'],commInvite()?['Join our Discord']:[],['Message log','Settings']);
+    assumed either way. Is this a crisis? joined at 16 October, after the
+    log and before Settings (ui/crisis.js) */
+ o.want=ACC_SECS.map(s=>s.nm).concat(['Discord feedback'],commInvite()?['Join our Discord']:[],['Message log','Is this a crisis?','Settings']);
  o.tall=m?Math.min(...[...m.querySelectorAll('[role=menuitem]')].map(e=>e.getBoundingClientRect().height)):0;
  o.stillField=S.tab===TAB.FIELD;
  m.querySelector('[data-pms="billing"]').click(); await wait();
@@ -7243,7 +7247,7 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
 /* ---------------------------------------------------------------------------
    THE PROFILE PICKER IS SORTED BY COHERENCE TIER, J12 round PL. The owner:
    "Fix all of the profiles. By tier." The group heading is the tier name, the
-   groups run Collapsed to Mastery, and inside a group the lowest CQ comes
+   groups run Contracted to Mastery, and inside a group the lowest CQ comes
    first. Read off the live select and the live engine, so what is asserted is
    what a person sees and not what the sort function was meant to do.
 --------------------------------------------------------------------------- */

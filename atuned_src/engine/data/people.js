@@ -80,7 +80,7 @@ const PEOPLE=[
     Four reference cases added on the owner's ruling, because the roster sat in
     the middle and the vocabulary at the ends had never been looked at with a
     real field behind it. Two at the floor and two near the ceiling, and the
-    pairs are the point: 2 and 10 are both Collapsed, 92 and 98 are both Mastery.
+    pairs are the point: 2 and 10 are both Contracted, 92 and 98 are both Mastery.
     If one word has to carry both ends of each pair, the word is doing no work.
 
     The charge vectors were solved against compute() rather than invented, and
@@ -93,7 +93,7 @@ const PEOPLE=[
     were never re-solved, so they read 25.9, 45.6, 91.3 and 89.2: the floor pair
     sat in two different bands, one of them the median, and the ceiling pair in
     two. Measured again on 2 October (J12). Tomas is solved again to 3.8 and
-    reads Collapsed. Nkem was solved to 14.5, Severe, and was cut with the
+    reads Contracted. Nkem was solved to 14.5, Severe, and was cut with the
     ladder in round QD.
     Wren (91.1, Mastery) and Abraham (89.1, Embodied) are left where they are.
     Abraham carries a held shame of 5.4 and six installed poles near 5, which
@@ -184,7 +184,7 @@ const LAWSET={
     then 30.8 on screen, Incoherent, beside a field carrying 77 addresses.
     Nkem, solved to 10, read the median. The shape of each table is kept (what
     the person still does is the highest thing in it) and the level is the new
-    solve. Tomas 3.8, Collapsed. */
+    solve. Tomas 3.8, Contracted. */
  Tomas:  {_:.124, Courage:.5, Truth:.7, Patience:.6, Duty:2, 'Non-Harm':2.2},
  Wren:   {_:9.221, Patience:9.4, Temperance:9.2, 'Aesthetic Beauty':9.6, Forgiveness:6.8},
  Abraham:{_:8.702, Equanimity:9.7, Justice:9.8, Humility:9.5, Presence:9.6, Temperance:9.4},

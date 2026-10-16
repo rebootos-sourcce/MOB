@@ -1036,6 +1036,57 @@ const PROBE = () => {
     await bctx.close();
   }
 
+  /* ---------- the quiz's crisis panel, as the app's, 16 October ----------
+     The art director's re-check of the screens: Talk it through on the quiz
+     left no way back to the numbers, the panel's buttons were rounded
+     rectangles where the app draws pills, and the question view said nothing
+     about where Talk it through goes. Held at both widths on the source page:
+     the line under the question, the pills, the door beside the story line,
+     and that the door opens the same panel on the numbers. Checked against
+     the page before this change, where it fails at the line and the door. */
+  for (const [w, hgt] of WIDTHS) {
+    console.log('\n--- the quiz crisis panel @' + w + ' ---');
+    const cctx = await browser.newContext({ viewport: { width: w, height: hgt } });
+    const cp = await cctx.newPage();
+    const cerrs = [];
+    cp.on('pageerror', e => cerrs.push(String(e && e.message || e)));
+    await cp.goto('file://' + path.join(DIR, 'quiz.html'), { waitUntil: 'load' });
+    await cp.waitForTimeout(300);
+    await cp.click('#crxq'); await cp.waitForTimeout(150);
+    const ask = await cp.evaluate(() => {
+      const c = document.getElementById('crxqp');
+      return { text: c.innerText.replace(/\s+/g, ' '),
+        radius: [...c.querySelectorAll('.act')].map(b => parseFloat(getComputedStyle(b).borderTopLeftRadius)) };
+    });
+    ok(/Talk it through opens the story box on this page\. This page sends nothing anywhere\./.test(ask.text)
+      && !/journal/i.test(ask.text),
+      'quiz @' + w + ': the question view says where Talk it through goes, true for the quiz: ' + JSON.stringify(ask.text.slice(0, 220)));
+    ok(ask.radius.length >= 3 && ask.radius.every(r => r >= 20),
+      'quiz @' + w + ': the panel\'s buttons are pills, as the app draws them: ' + JSON.stringify(ask.radius));
+    await cp.click('#crxqp [data-crx="talk"]'); await cp.waitForTimeout(300);
+    const door = await cp.evaluate(() => {
+      const b = document.querySelector('.crxq-row [data-crx="reachnow"]'), r = b && b.getBoundingClientRect();
+      return { line: (document.getElementById('crxqsay') || {}).textContent || null, t: b ? b.textContent : null,
+        h: r ? Math.round(r.height) : 0, on: !!r && r.width > 0 && r.right <= innerWidth,
+        radius: b ? parseFloat(getComputedStyle(b).borderTopLeftRadius) : 0 };
+    });
+    ok(door.line === 'It is always a story. Write what is happening, or what happened.' && door.t === 'Reach someone now'
+      && door.on && door.h >= 44 && door.radius >= 20,
+      'quiz @' + w + ': after Talk it through, Reach someone now stands beside the story line, a pill at the floor: ' + JSON.stringify(door));
+    if (door.t) { await cp.click('.crxq-row [data-crx="reachnow"]'); await cp.waitForTimeout(200); }
+    const back = await cp.evaluate(() => {
+      const c = document.getElementById('crxqp');
+      return { open: !!c && !c.hidden, h: c ? (c.querySelector('#crxqh') || {}).textContent : null,
+        hrefs: c ? [...c.querySelectorAll('a[href]')].map(a => a.getAttribute('href')) : [] };
+    });
+    ok(back.open && back.h === 'Reach someone now' && back.hrefs.indexOf('tel:988') >= 0
+      && back.hrefs.indexOf('sms:741741?&body=HOME') >= 0,
+      'quiz @' + w + ': and it opens the same panel straight on the numbers: ' + JSON.stringify(back));
+    ok(cerrs.length === 0, 'quiz @' + w + ': ' + cerrs.length + ' error(s) in the crisis panel: ' + cerrs.slice(0, 2).join(' | '));
+    console.log('  question line, pills, Story door and numbers checked');
+    await cctx.close();
+  }
+
   /* ---------- the sendable build, if it has been made ---------- */
   console.log('\n--- dist ---');
   const DIST = path.join(DIR, 'dist');

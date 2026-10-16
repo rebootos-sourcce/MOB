@@ -299,7 +299,7 @@ function sumStory(r){
         why, and "something was installed on top" was a story about a person
         the ledger cannot show. Round J13. */
      ? 'Those agree.'
-     : 'The blueprint says '+esc(elRoot)+'. The field runs '+esc(rootNow)+'. These differ.')+'</span>');
+     : 'The blueprint says '+esc(elRoot)+'. Your energy runs '+esc(rootNow)+'. These differ.')+'</span>');
  }else{
   p.push('There is no birth data on file, so the spiritual layer is not in this reading. '
    +'Date, time and place would put it in. What is running now is '+rootB(rootNow)
@@ -375,9 +375,18 @@ function sumStory(r){
     clause "which means it is expanding" stated a cause and is now a
     direction. Round J13, his words: "I keep seeing this percent shit, the
     hardest carrying zero percent. I don't want that." */
- p.push(((lean.read===false?'':'The field leans <b>'
-  +(lean.ben>=lean.mal?'benign':'malignant')+'</b>'
-  +(r.benign===null?'':', toward '+(r.benign?'expanding':'contracting'))+'.')
+ /* THE WORD CARRIES ITS MEANING HERE, 16 October, from the review of the
+    crisis screens. He ruled "Your energy leans malignant" and kept the word,
+    and round PO rules that no term stands without its plain meaning in the
+    same place. A hover tip is not the same place on a phone, so the sentence
+    the glossary already holds for the word (rail:benign, rail:malignant in
+    engine/data/gloss.js) follows it on the page, read from that one table so
+    the two can never say different things. */
+ var leanW=lean.ben>=lean.mal?'benign':'malignant';
+ p.push(((lean.read===false?'':'Your energy leans <b>'
+  +leanW+'</b>'
+  +(r.benign===null?'':', toward '+(r.benign?'expanding':'contracting'))+'. '
+  +unpSay(leanW,'rail'))
   /* .length, because r.excess is a list and an empty list is truthy: this
      told every one of the fourteen reference cases the pole was past paying,
      including the ones with nothing past it. ui.js reads it the same way. */
@@ -930,7 +939,7 @@ function sumPlate(r,B){
   /* the direction out, which has never been on a surface a touch screen can
      reach. It is the third of the three things a band is required to carry. */
   +(t&&t.toward?'<div class="s-ptoward"><span class="pm-eye">Where it goes</span>'
-    +esc(t.toward)+'</div>':'')
+    +esc(t.toward)+crisisFloor(t)+'</div>':'')
   +'</div>';}
 /* the head of the page: the plate. On a read profile it is the name, the band
    and where it goes. On an unread one it is what was entered and nothing else,
