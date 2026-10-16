@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v252 bc30c332 2026-10-16 14:01"><head><meta charset="utf-8">
+<html lang="en" data-build="v255 2c3e949c 2026-10-16 15:15"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -6772,6 +6772,10 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
 /* at the foot the bar gains a third button, so it may wrap on a phone and
    Clear and Commit stay together at the right */
 .st-bar.st-bar-crx{flex-wrap:wrap}
+/* and when it wraps, the door goes last, onto its own line: first shot at 390
+   it took Clear's line and left Commit alone underneath, which split the pair
+   a person finishes with */
+@media(max-width:640px){.st-bar.st-bar-crx .st-crxbar{order:3}}
 .login-dev summary{font-size:12.5px;color:var(--dim);cursor:pointer;
  list-style:none}
 .login-dev summary::-webkit-details-marker{display:none}
@@ -77531,5 +77535,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005086570"></div>
+<div id="eof" hidden data-len="005086821"></div>
 </body></html>

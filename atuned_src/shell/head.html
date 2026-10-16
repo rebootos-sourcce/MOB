@@ -6772,6 +6772,10 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
 /* at the foot the bar gains a third button, so it may wrap on a phone and
    Clear and Commit stay together at the right */
 .st-bar.st-bar-crx{flex-wrap:wrap}
+/* and when it wraps, the door goes last, onto its own line: first shot at 390
+   it took Clear's line and left Commit alone underneath, which split the pair
+   a person finishes with */
+@media(max-width:640px){.st-bar.st-bar-crx .st-crxbar{order:3}}
 .login-dev summary{font-size:12.5px;color:var(--dim);cursor:pointer;
  list-style:none}
 .login-dev summary::-webkit-details-marker{display:none}
