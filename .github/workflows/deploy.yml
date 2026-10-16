@@ -174,6 +174,12 @@ jobs:
         run: python3 .claude/skills/atuned-voice/check.py --objections
       - name: workflow lint, this file held to its own shape
         run: python3 tools/workflow-lint.py && python3 tools/workflow-lint.py --self-test
+      # The lint counts the deploy job's Discord steps as a success without
+      # running them, and discord-post.yml is not its file. This runs all
+      # three Discord scripts against stand ins and fails on a printed
+      # webhook, a step off main, or a post that can ping.
+      - name: the Discord steps, run against stand ins
+        run: python3 tools/discord-workflows.py && python3 tools/discord-workflows.py --self-test
       # It runs whether or not the file is there. A missing file fails here,
       # where a skipped step would read green.
       - name: no browser gate hardcodes the sandbox chromium
@@ -613,6 +619,48 @@ jobs:
       - name: install wrangler
         if: inputs.rollback_ref != '' || steps.order.outputs.publish == 'true'
         run: npm install --no-audit --no-fund wrangler@4
+      # THE FEEDBACK WEBHOOK TRAVELS FROM GITHUB, 16 October. The owner keeps
+      # his secrets on GitHub, and the relay (functions/feedback.js) reads
+      # DISCORD_FEEDBACK_WEBHOOK from the Pages project, which until now only
+      # the Cloudflare dashboard could set. Read in wrangler 4.151.1's own
+      # source before this was written: `pages secret put` is one PATCH that
+      # merges that one key into the project's production settings (delete
+      # sends the key as null, so the API merges by key and never replaces the
+      # list), and the upload step below never PATCHes the project at all, so a
+      # value set here survives every later deploy. This repository has no
+      # wrangler config file, which is the one case where the file would own
+      # the project's settings. Pages hands its variables only to deployments
+      # made after they are set, so this runs before the upload.
+      #
+      # NEVER FAILS THE SITE, NEVER PRINTS THE VALUE. Not set on GitHub is a
+      # notice and leaves whatever the dashboard holds as it was. Set but not a
+      # Discord webhook address (an invite link pasted into the wrong box) is
+      # a warning and is not written, because the relay would refuse it anyway
+      # and the dashboard's good value would be lost. A refusal from Cloudflare
+      # is a warning: the site still publishes, and the run page says the
+      # feedback address was not updated. tools/discord-workflows.py runs this.
+      - name: carry the Discord feedback webhook from GitHub to Cloudflare Pages
+        if: github.ref == 'refs/heads/main' && (inputs.rollback_ref != '' || steps.order.outputs.publish == 'true')
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          HOOK: ${{ secrets.DISCORD_FEEDBACK_WEBHOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::notice::DISCORD_FEEDBACK_WEBHOOK is not set on GitHub, so the Cloudflare Pages value was left as it was."
+            exit 0
+          fi
+          if ! [[ "$HOOK" =~ ^https://((ptb|canary)\.)?discord(app)?\.com/api/webhooks/[0-9]+/[A-Za-z0-9_-]+$ ]]; then
+            echo "::warning::DISCORD_FEEDBACK_WEBHOOK is set on GitHub but is not a Discord webhook address, so it was not written to Cloudflare Pages."
+            exit 0
+          fi
+          if printf '%s' "$HOOK" | npx wrangler pages secret put DISCORD_FEEDBACK_WEBHOOK --project-name=atuned > "$RUNNER_TEMP/put.log" 2>&1; then
+            echo "DISCORD_FEEDBACK_WEBHOOK written to the Cloudflare Pages project atuned, production"
+          else
+            echo "::warning::Cloudflare did not take DISCORD_FEEDBACK_WEBHOOK, so feedback keeps the address it had. The site still publishes."
+            awk -v h="$HOOK" 'index($0, h) == 0' "$RUNNER_TEMP/put.log" | tail -n 5
+          fi
+          rm -f "$RUNNER_TEMP/put.log"
       # --branch=main, BECAUSE A ROLLBACK IS A DETACHED CHECKOUT. Without it
       # wrangler names the upload's branch from `git rev-parse --abbrev-ref
       # HEAD`, which reads HEAD after the guard checks out a commit id, and
@@ -651,3 +699,52 @@ jobs:
           done
           echo "FAIL after about two minutes the newest production deployment on Cloudflare Pages is not commit $published with its last stage deploy: success. The upload may have gone to a preview, or not finished. Last read: ${newest:-nothing}"
           exit 1
+
+      # #LATEST, 16 October. The owner's Discord has a channel for what just
+      # went live, and the only thing that knows is this job, after the step
+      # above has read production back. So it runs after that step and only
+      # when it passed (an if with no status function means success()), on
+      # main only. One card: the commit's first line, the short sha, the build
+      # stamp, the run. Never the pull request body, which can carry anything.
+      #
+      # IT NEVER FAILS THE DEPLOY. The site is already live when this runs, so
+      # a red run here would say atuned.world failed when it did not.
+      # continue-on-error is refused by tools/workflow-lint.py, so the script
+      # itself ends 0 on every path and says what happened as a notice. The
+      # commit line is handed to jq as an argument and never to the shell, and
+      # allowed_mentions is empty, so "@everyone" in a commit cannot ping
+      # anybody. GitHub runs this under bash -e -o pipefail, so nothing here
+      # pipes through a grep, which exits 1 on no match and would fail the
+      # job. tools/discord-workflows.py runs this script.
+      - name: tell Discord latest what went live
+        if: github.ref == 'refs/heads/main' && (inputs.rollback_ref != '' || steps.order.outputs.publish == 'true')
+        env:
+          HOOK: ${{ secrets.DISCORD_WEBHOOK_LATEST }}
+          ROLLBACK: ${{ inputs.rollback_ref }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::notice::DISCORD_WEBHOOK_LATEST is not set on GitHub, so nothing was posted to Discord."
+            exit 0
+          fi
+          if ! [[ "$HOOK" =~ ^https://((ptb|canary)\.)?discord(app)?\.com/api/webhooks/[0-9]+/[A-Za-z0-9_-]+$ ]]; then
+            echo "::warning::DISCORD_WEBHOOK_LATEST is set on GitHub but is not a Discord webhook address, so nothing was posted."
+            exit 0
+          fi
+          sha="$(git rev-parse HEAD)"
+          subject="$(git log -1 --format=%s "$sha" | cut -c1-200)"
+          stamp="$(sed -n '/data-build="/{s/.*data-build="\([^"]*\)".*/\1/p;q;}' source.html 2>/dev/null)" || stamp=""
+          title="Live on atuned.world"
+          if [ -n "$ROLLBACK" ]; then title="Rolled back on atuned.world"; fi
+          run="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          jq -n --arg t "$title" --arg s "$subject" --arg h "${sha:0:7}" --arg b "${stamp:-not stamped}" --arg r "$run" \
+            '{username: "Atuned deploys", allowed_mentions: {parse: []},
+              embeds: [{title: $t, description: $s, url: $r,
+                fields: [{name: "Commit", value: $h, inline: true}, {name: "Build", value: $b, inline: true}]}]}' > "$RUNNER_TEMP/latest.json"
+          code="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 -X POST -H 'content-type: application/json' \
+            --data @"$RUNNER_TEMP/latest.json" "$HOOK" 2>/dev/null)" || code="000"
+          rm -f "$RUNNER_TEMP/latest.json"
+          case "$code" in
+            2??) echo "posted to Discord latest: $title, ${sha:0:7}" ;;
+            *) echo "::notice::Discord latest did not take the card (status $code). The deploy itself is done and live." ;;
+          esac
+          exit 0

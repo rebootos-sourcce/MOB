@@ -3473,6 +3473,13 @@ console.log('\n30 · the outbox, and what may never leave the device');
   ok(bad.body==='write to lance@example.com','and the body is not edited');}
  {const bad=e(); bad.body='call 555 867 5309 about it';
   ok(!E.obValidate(bad).ok,'a long run of digits in the body is refused');}
+ /* 16 October: a blank entry the relay refuses for ever sat at the head of
+    the queue and held every later one back. Refused here, by name. */
+ {const bad=e(); bad.body='  ';
+  const v=E.obValidate(bad);
+  ok(!v.ok&&/nothing in it to send/.test(v.errs.join())
+   &&E.obValidate(Object.assign(e(),{body:'',answers:{state:2}})).ok,
+   'an envelope with no words and no answer is refused by name, and one with an answer is not');}
  {const bad=e(); bad.kind='newsletter';
   ok(!E.obValidate(bad).ok,'a kind that is not one of the four is refused');}
  {const bad=e(); bad.body='x'.repeat(E.OB_LIMIT.question+1);
