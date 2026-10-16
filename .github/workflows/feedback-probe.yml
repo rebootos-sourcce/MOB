@@ -9,6 +9,10 @@
 # pipe test, and prints the status and the server's own error sentence. It
 # never prints a header beyond the content type and the allow line, because
 # nothing else is needed to read the answer.
+#
+# And one read of Discord's public invite endpoint for the invite the app
+# ships (COMMUNITY_INVITE, ui/account.js), because an expired invite turns
+# "Join our Discord" into a dead button and nothing in the build can tell.
 name: feedback probe
 on:
   workflow_dispatch:
@@ -19,6 +23,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
+      - uses: actions/checkout@v4
       - name: ask atuned.world/feedback, once with a GET and once with one post
         run: |
           set -u
@@ -37,7 +42,8 @@ jobs:
             esac
           }
           echo "=== (a) GET $URL"
-          code=$(curl -sS -o get.body -D get.head -w '%{http_code}' "$URL" || echo 000)
+          code=$(curl -sS -o get.body -D get.head -w '%{http_code}' "$URL") || true
+          code=${code:-000}; touch get.body get.head
           echo "status: $code"
           grep -i '^content-type:' get.head || true
           grep -i '^allow:' get.head || echo "allow: (none)"
@@ -46,7 +52,8 @@ jobs:
           echo "=== (b) POST one comment to $URL"
           code=$(curl -sS -o post.body -D post.head -w '%{http_code}' -X POST "$URL" \
             -H 'content-type: application/json' -H 'origin: https://atuned.world' \
-            --data '{"kind":"comment","body":"Engineering pipe test from the build team. Ignore this card."}' || echo 000)
+            --data '{"kind":"comment","body":"Engineering pipe test from the build team. Ignore this card."}') || true
+          code=${code:-000}; touch post.body post.head
           echo "status: $code"
           grep -i '^content-type:' post.head || true
           if jq -e . post.body >/dev/null 2>&1; then
@@ -56,3 +63,18 @@ jobs:
           fi
           echo "=== (c) what it means"
           mean "$code"
+      - name: is the Join our Discord invite alive
+        run: |
+          set -u
+          code=$(grep -o "COMMUNITY_INVITE='https://discord.gg/[A-Za-z0-9-]*'" atuned_src/ui/account.js | sed "s|.*discord.gg/||; s|'||") || code=""
+          if [ -z "$code" ]; then echo "no discord.gg invite in atuned_src/ui/account.js"; exit 0; fi
+          st=$(curl -sS -o inv.json -w '%{http_code}' "https://discord.com/api/v10/invites/$code?with_expiration=true") || true
+          echo "invite $code: status $st"
+          if [ "$st" = 200 ]; then
+            echo "alive. expires: $(jq -r '.expires_at // "never"' inv.json)"
+          elif [ "$st" = 404 ]; then
+            echo "Discord says this invite does not exist or has expired, so Join our Discord is a dead button."
+          else
+            echo "Discord answered $st, so this run cannot say."
+          fi
+
