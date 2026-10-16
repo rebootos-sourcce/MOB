@@ -4470,9 +4470,11 @@ const JOURNEY_DOORS=['onboarding','tutorial'];
    go is the row's links, [what the button says, the address]. tel: and sms:
    open the phone's own dialler or messages on a phone; on a desktop the
    number is still in the sentence as plain text, so nothing depends on the
-   link working. sms: carries the keyword in body=, which iOS and Android
-   both read; a phone that ignores it still opens the right number, and the
-   sentence says what to type.
+   link working. sms: carries the keyword as ?&body=, 16 October: Android
+   reads ?body=, older iOS reads &body= and took ?body=HOME as part of the
+   number or dropped it, and ?&body= is the one form both read. A phone that
+   ignores it still opens the right number, and the sentence says what to
+   type.
 
    THE KEYWORD IS IN SENTENCE CASE. The brief asked for "text HOME", and the
    service prints it in capitals, but all caps is ruled out of copy and the
@@ -4491,7 +4493,7 @@ const JOURNEY_DOORS=['onboarding','tutorial'];
 const CRISIS_LINES=[
  {k:'988', nm:'Suicide and Crisis Lifeline', go:[['Call 988','tel:988',true],['Text 988','sms:988']],
   say:'988, Suicide and Crisis Lifeline. Call or text, any hour. A trained person answers.'},
- {k:'741741', nm:'Crisis Text Line', go:[['Text 741741','sms:741741?body=HOME']],
+ {k:'741741', nm:'Crisis Text Line', go:[['Text 741741','sms:741741?&body=HOME']],
   say:'741741, Crisis Text Line. Text the word home. A trained person writes back.'},
  {k:'911', nm:'police, fire or an ambulance', go:[['Call 911','tel:911']],
   say:'911, police, fire or an ambulance. If you are in danger now.'}];

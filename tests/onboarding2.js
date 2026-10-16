@@ -937,7 +937,8 @@ console.log('\n=== Is this a crisis, on the welcome and after it (16 October) ==
     fits:c.querySelector('.crx-card').getBoundingClientRect().bottom<=innerHeight,
     focus:c.contains(document.activeElement), stage:OB.open&&OB.step===0};});
   ok(reach.h==='Reach someone now'&&reach.focus&&reach.stage,'Reach someone now shows the numbers in the same panel, over the stage'+at);
-  ok(['tel:988','sms:988','sms:741741?body=HOME','tel:911'].every(x=>reach.hrefs.indexOf(x)>=0),
+  /* ?&body=, the one form Android and older iOS both read, 16 October */
+  ok(['tel:988','sms:988','sms:741741?&body=HOME','tel:911'].every(x=>reach.hrefs.indexOf(x)>=0),
    'as tel: and sms: links: 988 to call and to text, 741741 with home in the message, and 911'+at+', '+JSON.stringify(reach.hrefs));
   ok(/988, Suicide and Crisis Lifeline\. Call or text, any hour\. A trained person answers\./.test(reach.text)
    &&/741741, Crisis Text Line\. Text the word home\. A trained person writes back\./.test(reach.text)
