@@ -14842,7 +14842,8 @@ function parseStory(text){
   if(h.charge){ byChg[h.charge]=(byChg[h.charge]||0)+1; }});
  var wanted={}; Object.keys(byChg).forEach(function(c){var f=CHG2FET[c]; if(f)wanted[f]=true;});
  /* a word that names its own fetter is as named as an adjective that maps to
-    one, so it counts toward wanted and stops the reading being inferred. */
+    one, so it counts toward what its seat wants (wantK, below) and stops the
+    reading there being inferred. */
  /* AND A STATED FETTER IS STATED AT THE SEAT ITS WORD SITS AT, round GR. It
     was one flag for the whole text, so a fetter stated anywhere let every seat
     skip the quarter rule. Measured on 27 September: "I am exhausted. My father
@@ -14852,21 +14853,43 @@ function parseStory(text){
     quarter rule was written to stop. So each seat now asks only what was
     stated at that seat, heaviest first. A seat nothing stated at is read by
     the quarter rule exactly as before. */
- var statedAt={};
- hits.forEach(function(h){ if(h.fet){ wanted[h.fet]=true;
-  if(h.band){ var sa=statedAt[h.band]=statedAt[h.band]||{};
-   sa[h.fet]=(sa[h.fet]||0)+Math.abs(h.amt||0); } } });
- var anyNamed=Object.keys(wanted).length>0;
+ /* AND WHAT A SEAT WANTS IS WHAT ITS OWN WORDS NAMED, a map per seat and not
+    one for the sentence. wanted was built once for the whole text, so every
+    seat was read against every emotion named anywhere and the heaviest seat
+    won: "I was afraid, sad, ashamed and numb" filed the shame at the solar
+    plexus as Perfectionism, Force and Rigidity under Fear, and in a field
+    already carrying "I am exhausted and terrified" filed the terror at the
+    root on Escapism as Apathy, both inferred false. A seat word names its own
+    fetter two ways: it states one (LEX's third element), or the adjective
+    table names the charge of that same word (ownAt, an adj hit at the same
+    offset). A seat whose words named something wants exactly that. A seat
+    reached only by words that name nothing, a tight chest, still reads the
+    sentence's adjectives as it always has, because there the text's own
+    naming is the best evidence there is. */
+ var statedAt={}, ownAt={}, adjAt={};
+ hits.forEach(function(h){ if(h.kind==='adj'&&h.charge&&CHG2FET[h.charge])adjAt[h.at]=CHG2FET[h.charge]; });
+ hits.forEach(function(h){
+  if(!h.band||h.band==='coherent')return;
+  if(h.fet){
+   var sa=statedAt[h.band]=statedAt[h.band]||{};
+   sa[h.fet]=(sa[h.fet]||0)+Math.abs(h.amt||0);}
+  else if(adjAt[h.at]){
+   var oa=ownAt[h.band]=ownAt[h.band]||{};
+   oa[adjAt[h.at]]=true;}});
  Object.keys(byBand).forEach(function(k){
   var bn=K2BAND[k]; if(!bn) return;
   var all=W.filter(function(n){return n.b===bn&&n.cf;});
+  var wantK={};
+  Object.keys(statedAt[k]||{}).concat(Object.keys(ownAt[k]||{})).forEach(function(f){wantK[f]=true;});
+  if(!Object.keys(wantK).length)Object.keys(wanted).forEach(function(f){wantK[f]=true;});
+  var anyNamed=Object.keys(wantK).length>0;
   /* Band says WHERE, the adjective says WHAT. But a named fetter only governs
      a band it actually occupies. The original accepted any non-empty match, so
      one Shame address at the heart was enough to route the whole heart band --
      including everything the despair idioms carried -- onto Shame, and grief
      was filed as shame. A named fetter now has to hold at least a quarter of
      the band, otherwise the band's own modal child emotion is the better read. */
-  var seg=anyNamed? all.filter(function(n){return wanted[n.cf];}) : [];
+  var seg=anyNamed? all.filter(function(n){return wantK[n.cf];}) : [];
   /* DID THE TEXT NAME THIS, OR DID WE INFER IT? The answer decides what the
      product is allowed to SAY, and until now it said the same thing either
      way, which is how the worst readings in the instrument were produced.
@@ -14898,12 +14921,55 @@ function parseStory(text){
   var here=statedAt[k]||{};
   var hereF=Object.keys(here).sort(function(a,b){return here[b]-here[a];});
   var stateHere=hereF.length>0;
-  if(stateHere&&!seg.length){
-   imprints.push({node:all[0]?all[0].i:null, name:all[0]?all[0].k:'', band:bn,
-    fetter:hereF[0], inferred:false, stated:true,
-    amt:Math.round(Math.min(10,byBand[k]/3)*10)/10, from:k});
-   return;}
-  if(seg.length < all.length*0.25 && !stateHere){
+  /* the intensity curve is 0-30ish. normalise to a 0-10 charge delta. */
+  var total=Math.min(10,byBand[k]/3);
+  /* EACH STATED WORD KEEPS ITS OWN CHARGE, AND THE REST OF THE SEAT IS READ
+     ON ITS OWN. This asked for a stated fetter only when seg was empty, and
+     seg is built from wanted, which is every fetter named anywhere in the
+     text. So a second emotion word anywhere let the seat skip its own
+     statement, and the round GR defect came back through the seg door.
+     Measured at e9ca1ae (probes p1, p3): "I am exhausted and furious"
+     applied Anger 10.8 and left Apathy at 0, because furious wants Anger and
+     the solar plexus has ten Anger addresses, which breaks the ruling quoted
+     above that exhaustion is NOT anger. "I am exhausted and terrified" filed
+     the exhaustion at the solar plexus as Perfectionism, Force and Rigidity
+     with inferred false, from a Fear wanted at the root.
+
+     So the seat's charge is split by who said what. Each fetter stated here
+     takes the share its own words carried, on its own addresses at this seat
+     when the seat has any and as the one stated imprint when it has none,
+     which is what a lone stated word did before. What the seat holds beyond
+     the stated words is read as an unstated seat is, from the fetters named
+     elsewhere less the ones already stated here, and only when that reading
+     passes the quarter rule. When it does not, or nothing else is named, the
+     rest stays with what was stated, which is the old behaviour of a seat
+     with one statement and keeps a stray address from taking it. */
+  if(stateHere){
+   var said=hereF.reduce(function(a,f){return a+here[f];},0);
+   var restW={}; Object.keys(wantK).forEach(function(f){if(!here[f])restW[f]=true;});
+   /* a seat whose only naming words are its stated ones still reads the rest
+      against the sentence's adjectives, as an unnamed seat does */
+   if(!Object.keys(restW).length&&!ownAt[k])Object.keys(wanted).forEach(function(f){if(!here[f])restW[f]=true;});
+   var rest=byBand[k]-said;
+   var restSeg=rest>0?all.filter(function(n){return restW[n.cf];}):[];
+   var split=restSeg.length>0&&restSeg.length>=all.length*0.25;
+   var saidTotal=split?total*said/byBand[k]:total;
+   hereF.forEach(function(f){
+    var amtF=saidTotal*here[f]/said;
+    var segF=all.filter(function(n){return n.cf===f;})
+     .sort(function(a,b){return (b.susc||1)-(a.susc||1);});
+    if(!segF.length){
+     imprints.push({node:all[0]?all[0].i:null, name:all[0]?all[0].k:'', band:bn,
+      fetter:f, inferred:false, stated:true,
+      amt:Math.round(amtF*10)/10, from:k});
+     return;}
+    var shF=amtF/Math.min(4,segF.length);
+    segF.slice(0,4).forEach(function(n){
+     imprints.push({node:n.i, name:n.k, band:bn, fetter:n.cf, inferred:false,
+      amt:Math.round(shF*10)/10, from:k});});});
+   if(!split)return;
+   seg=restSeg; named=true; total=total*rest/byBand[k];}
+  else if(seg.length < all.length*0.25){
    named=false;
    var tally={}; all.forEach(function(n){tally[n.cf]=(tally[n.cf]||0)+1;});
    var modal=Object.keys(tally).sort(function(a,b){return tally[b]-tally[a];})[0];
@@ -14913,8 +14979,7 @@ function parseStory(text){
    if(!seg.length) seg=all;}
   seg=seg.sort(function(a,b){return (b.susc||1)-(a.susc||1);});
   if(!seg.length) return;
-  /* the intensity curve is 0-30ish. normalise to a 0-10 charge delta. */
-  var total=Math.min(10,byBand[k]/3), share=total/Math.min(4,seg.length);
+  var share=total/Math.min(4,seg.length);
   seg.slice(0,4).forEach(function(n){
    imprints.push({node:n.i, name:n.k, band:bn, fetter:n.cf,
     /* inferred: the seat was read, the address was chosen by the fallback and
