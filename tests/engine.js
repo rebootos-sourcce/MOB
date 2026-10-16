@@ -131,7 +131,7 @@ near(r.CQ,100,0.001,'all laws 10, nothing held, CQ is 100');
 ok(r.tier==='Mastery','and the tier is Mastery');
 r=reset(10,0,0);
 ok(r.CQ>=0,'CQ never goes below 0');
-ok(r.tier==='Collapsed','all laws 0, everything held, tier is Collapsed');
+ok(r.tier==='Contracted','all laws 0, everything held, tier is Contracted');
 for(let h=0;h<=10;h+=2)for(let l=0;l<=10;l+=2){
  const x=reset(h,0,l);
  if(x.CQ<0||x.CQ>100){ok(false,'CQ out of range at held '+h+' law '+l);}}
@@ -224,6 +224,14 @@ const snap=E.snapshot(prof);
  const lost=Object.keys(snap).filter(k=>kept.indexOf(k)<0), extra=kept.filter(k=>!(k in snap));
  ok(vs.ok&&!lost.length&&!extra.length,'every field a snapshot writes survives the boundary, and nothing is added, '
   +Object.keys(snap).length+' written'+(lost.length?', lost '+lost.join(' '):'')+(extra.length?', added '+extra.join(' '):''));}
+/* THE FLOOR BAND'S OLD NAME, 16 October. A row an older build wrote says
+   Collapsed; the boundary hands it back under the band's new name and leaves
+   every other word, and a row still filling, exactly as written. */
+{const rows=['Collapsed','Severe',null].map(t=>Object.assign(JSON.parse(JSON.stringify(snap)),{tier:t}));
+ const vs=E.validateProfile(Object.assign(JSON.parse(JSON.stringify(prof)),{history:rows}));
+ const got=vs.ok?vs.profile.history.map(x=>x.tier):[];
+ ok(vs.ok&&got[0]==='Contracted'&&got[1]==='Severe'&&got[2]===null&&!!E.TIER_BY.Contracted&&!E.TIER_BY.Collapsed,
+  'a history row written as Collapsed reads Contracted, the band it is, and nothing else moves, '+JSON.stringify(got));}
 ok(snap.m===E.CQ_MODEL,'and it is stamped with the arithmetic that wrote it, got '+snap.m);
 ok(!('charge' in snap)&&!('law' in snap)&&!('laws' in snap),'snapshot holds no inputs');
 
@@ -1506,7 +1514,7 @@ g('19b \u00b7 the empty field says it is empty');
  S.charge.Fear=7; const r1=compute();
  ok(r1.unread===false,'one held address makes it a reading');
  /* CHANGED 25 SEPTEMBER, from "and the tier means something". A tier word on
-    a CQ that is still filling would call this person Collapsed for not having
+    a CQ that is still filling would call this person Contracted for not having
     done the intake. The word waits for all 21. */
  ok(r1.tier===null,'but no tier word is put on it until all 21 laws are in, got '+r1.tier);
  ok(r1.DQ>0&&r1.CQ===0,'and the shadow reads while CQ waits, DQ '+r1.DQ.toFixed(1));
@@ -1746,7 +1754,7 @@ g('19ba · the roster: twelve across the scale, and the owner at four points on 
     person to the base value and the tier with it. */
  const bad=[]; ppl.forEach(p=>Object.keys(LAWSET[p.nm]).forEach(k=>{if(k!=='_'&&SINAMES.indexOf(k)<0)bad.push(p.nm+':'+k);}));
  ok(bad.length===0,'no persona table names a law that does not exist, '+bad.join(', '));
- /* THE FIELD DOES NOT CONTRADICT THE WORD AT THE ENDS. Whoever reads Collapsed
+ /* THE FIELD DOES NOT CONTRADICT THE WORD AT THE ENDS. Whoever reads Contracted
     carries most of what they hold, and whoever reads Mastery carries almost none
     of it. The tier is the laws alone, so this is the one place the held charge
     is checked against it, and only where the two have to agree. */
@@ -1813,8 +1821,8 @@ g('19c \u00b7 a label carries what it owes');
     rename would have drifted silently between the engine and the definitions.
     This asserts there is no second table anywhere by checking that every band
     compute can name has a definition behind it, across the whole scale. */
- ok(tierOf(95).nm==='Mastery'&&tierOf(12).nm==='Severe'&&tierOf(0).nm==='Collapsed'
-  &&tierOf(10).nm==='Collapsed'&&tierOf(11).nm==='Severe'&&tierOf(75).nm==='Compounding',
+ ok(tierOf(95).nm==='Mastery'&&tierOf(12).nm==='Severe'&&tierOf(0).nm==='Contracted'
+  &&tierOf(10).nm==='Contracted'&&tierOf(11).nm==='Severe'&&tierOf(75).nm==='Compounding',
   'tierOf resolves the band');
  {
   const named=new Set(), defined=new Set(TIERDEF.map(t=>t.nm));
@@ -1835,7 +1843,7 @@ g('19c \u00b7 a label carries what it owes');
  reset(0,0,10); ok(tierOf(compute().CQ).nm===compute().tier,'and agrees with compute at the top');
  reset(10,0,0); ok(tierOf(compute().CQ).nm===compute().tier,'and at the bottom');
  /* the lowest band is the one that must not read as a product upsell */
- ok(/not alone|alone/.test(TIER_BY.Collapsed.toward),
+ ok(/not alone|alone/.test(TIER_BY.Contracted.toward),
   'the lowest band does not tell a person to manage it by themselves');
  /* house voice applies to the copy too */
  const all=JSON.stringify(TIERDEF);

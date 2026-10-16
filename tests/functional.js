@@ -1285,7 +1285,7 @@ const virgin=await blank.evaluate(()=>{
 ok(virgin.charge===0,'a first load seeds no charge, total is '+virgin.charge);
 ok(virgin.carrying===0,'and nothing is carrying');
 ok(virgin.unread===true&&virgin.measured===0,'the reading knows it has not been read');
-ok(!/Incoherent|Corrupt|Severe|Collapsed/.test(virgin.tier),
+ok(!/Incoherent|Corrupt|Severe|Contracted/.test(virgin.tier),
  'the tier does not name a band, it reads: '+JSON.stringify(virgin.tier));
 ok(!/Incoherent/.test(virgin.profile),'nor does the profile sheet');
 ok(!/incoherent/.test(virgin.ana),'nor the analytics hero, which reads: '+JSON.stringify(virgin.ana));
@@ -1295,7 +1295,7 @@ ok(!/incoherent/.test(virgin.ana),'nor the analytics hero, which reads: '+JSON.s
    to answer. A band word here would be one read off laws nobody answered. */
 ok(virgin.unreadAfter===false&&/^\d+ laws? to answer$/.test(virgin.after),
  'and one held address makes it a reading, with the band waiting on the laws: '+JSON.stringify(virgin.after));
-const bands=['Incoherent','Corrupt','Severe','Collapsed'].filter(w=>virgin.sweep.includes(w));
+const bands=['Incoherent','Corrupt','Severe','Contracted'].filter(w=>virgin.sweep.includes(w));
 ok(bands.length===0,'no band word appears anywhere on an unread first screen, found: '
  +(bands.join(', ')||'none'));
 await blank.close();
@@ -1360,7 +1360,7 @@ const lab=await page.evaluate(()=>{
  runCompassDrill();
  return {label:el.textContent, tip:el.title,
   drill:(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ')};});
-ok(/Severe|Collapsed|Corrupt|Incoherent/.test(lab.label),
+ok(/Severe|Contracted|Corrupt|Incoherent/.test(lab.label),
  'the heaviest case gets a band, got '+JSON.stringify(lab.label));
 ok(lab.tip.length>120,'and the label carries its meaning on hover, '+lab.tip.length+' chars');
 ok(/Toward:/.test(lab.tip),'including the direction out of it');
@@ -7186,7 +7186,7 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
 /* ---------------------------------------------------------------------------
    THE PROFILE PICKER IS SORTED BY COHERENCE TIER, J12 round PL. The owner:
    "Fix all of the profiles. By tier." The group heading is the tier name, the
-   groups run Collapsed to Mastery, and inside a group the lowest CQ comes
+   groups run Contracted to Mastery, and inside a group the lowest CQ comes
    first. Read off the live select and the live engine, so what is asserted is
    what a person sees and not what the sort function was meant to do.
 --------------------------------------------------------------------------- */
