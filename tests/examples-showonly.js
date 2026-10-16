@@ -134,7 +134,8 @@ const TEXT='I was furious and ashamed and I could not stop going over it. I said
      relClose();}
     else { out.ctl.card=true; out.ctl.begin=true; out.refused.cool=true; out.said.cool=true; }
     /* the Intake: answers drawn disabled, and a press that arrives anyway */
-    setTab(TAB.INTAKE); if(typeof renderIntake==='function')renderIntake(); await wait(30);
+    /* a law open in the list, so its three answers are on the page to press */
+    setTab(TAB.INTAKE); IQ_VIEW='list'; IQ_OPEN=0; renderIntake(); await wait(30);
     const ans=[...document.querySelectorAll('#iqbody [data-a],#iq [data-a]')];
     out.ctl.intake=ans.length>0&&ans.every(e=>e.disabled)
      &&((document.querySelector('.iqa-show')||{}).textContent||'')===line('intake');
@@ -207,7 +208,7 @@ const TEXT='I was furious and ashamed and I could not stop going over it. I said
    ST_TEXT=TEXT; ST_PARSED=parseStory(TEXT);
    const c=stCommit(); o.commit=!!c&&c.ok===true&&((CURP.story.entries||[]).length===e0+1);
    o.said=(document.getElementById('status')||{}).textContent||'';
-   setTab(TAB.INTAKE); renderIntake(); await wait(30);
+   setTab(TAB.INTAKE); IQ_VIEW='list'; IQ_OPEN=0; renderIntake(); await wait(30);
    const b=[...document.querySelectorAll('[data-a]')].find(e=>!e.disabled&&CURP.intake.answers[+e.dataset.a]!==+e.dataset.v);
    if(b){const k=+b.dataset.a, v=+b.dataset.v; b.onclick(); o.answer=CURP.intake.answers[k]===v;} else o.answer=false;
    setTab(TAB.FIELD); const hot=relQueueOf(8).map(n=>n.i);

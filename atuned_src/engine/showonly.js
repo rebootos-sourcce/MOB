@@ -6,17 +6,18 @@
    But not run them. If you're a tier one, it allows you to see what you're
    missing as a product."
 
-   WHAT THE CHEAT WAS, measured before this file. Every worked example opens
-   on tier four sight (loadP, ui/personas.js, ruled 2 October), and the
-   refusals that stood were one per control and read S.who: the Story commit
-   and the release's last step refused, and the Intake did not. On Gordon, a
-   free person pressed an Intake answer: lawAnswered and the answer landed on
-   the example's scratch record, iqApply moved S.law, and every reading on the
-   screen re-read their own answer at tier four. pSave then refused, which
-   said "Nothing saved on a worked example." over a field that had already
-   moved. The release refused too, but only at relCoolDown, after the whole
-   protocol had played and the voice had been spoken and paid for. A refusal
-   that arrives after the work is not a refusal of the work.
+   WHAT THE CHEAT WAS, measured on the build from before this file (origin/
+   main 920d7ed2). Every worked example opens on tier four sight (loadP,
+   ui/personas.js, ruled 2 October), and the refusals that stood were one per
+   control and read S.who: the Story commit refused, and the release refused
+   only at relCoolDown, after the whole protocol had begun (Begin pressed on
+   Gordon went to phase welcome), so the voice was spoken and paid for on a
+   run its end would refuse. The Intake did not refuse at all. On Gordon, with
+   the own record free and the example on tier four, one press on an Intake
+   answer moved S.law and took his CQ from 17.52 to 18.10, and the status line
+   said nothing: every reading on the screen re-read the press at tier four.
+   A refusal that arrives after the work is not a refusal of the work, and a
+   control with no refusal is the cheat itself.
 
    SO THE RULE LIVES HERE, ONCE, AND THE WRITERS ASK IT. A control does not
    have to remember the rule: every engine writer that moves the field or a
