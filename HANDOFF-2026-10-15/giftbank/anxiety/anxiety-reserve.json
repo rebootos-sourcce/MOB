@@ -1,0 +1,778 @@
+{
+  "note": "Ranked candidates after the 100, same rules, not in the bank.",
+  "reserve": [
+    {
+      "pattern_id": "anxiety-f31e452191812f20",
+      "content": "I'm letting go of being scared alone",
+      "pattern_hash": "f31e452191812f20383451271bc92bc46023b9db6c18da7615898392ae58414d",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=50:19"
+    },
+    {
+      "pattern_id": "anxiety-1aefb61a1c747e2f",
+      "content": "I'm letting go of being scared of authority",
+      "pattern_hash": "1aefb61a1c747e2f3c2810ba518bd18be00e86eec8a4f4042f5347d654afc4b1",
+      "tier": "fear",
+      "source_record_id": "pdf_b-117",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=59:12"
+    },
+    {
+      "pattern_id": "anxiety-3a818183c292ff09",
+      "content": "I'm letting go of my fear of pain",
+      "pattern_hash": "3a818183c292ff092c1b0140cea1d040bec94ff795c2fbddf4b2cfb0b1c4f564",
+      "tier": "fear",
+      "source_record_id": "pdf_b-116",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=58:4"
+    },
+    {
+      "pattern_id": "anxiety-61a3d1db755618d2",
+      "content": "I'm letting go of being scared that I am God",
+      "pattern_hash": "61a3d1db755618d25da8ca8e93968f073a488c60fb98eb96940471e46c7da4c6",
+      "tier": "fear",
+      "source_record_id": "pdf_b-120",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=61:24"
+    },
+    {
+      "pattern_id": "anxiety-ccee938ed86dcb6e",
+      "content": "I'm letting go of the fear that my efforts will be unnoticed",
+      "pattern_hash": "ccee938ed86dcb6e8fb7b60d5d0431f6cd56de54bac24deac951540aa54c363e",
+      "tier": "fear",
+      "source_record_id": "pdf_b-089",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=29:7"
+    },
+    {
+      "pattern_id": "anxiety-368d5ff88a99219d",
+      "content": "I'm letting go of fear associated with talking to people in positions of power",
+      "pattern_hash": "368d5ff88a99219db51d886efe219c8df915219cd9bfe85c347197ad161fcc5d",
+      "tier": "fear",
+      "source_record_id": "pdf_b-119",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=61:16"
+    },
+    {
+      "pattern_id": "anxiety-c2c9a952f152f941",
+      "content": "I'm letting go of fearing criticism",
+      "pattern_hash": "c2c9a952f152f9412de131ac835c13e4bed54157bfbc0892d995cec78c74a545",
+      "tier": "fear",
+      "source_record_id": "pdf_b-101",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=34:34"
+    },
+    {
+      "pattern_id": "anxiety-5b74260b993095c5",
+      "content": "I'm letting go of being scared of pain",
+      "pattern_hash": "5b74260b993095c5bde775d4b366a423b9ae27e07bf24ccbc0aef49de844fcc0",
+      "tier": "fear",
+      "source_record_id": "pdf_b-116",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=58:5"
+    },
+    {
+      "pattern_id": "anxiety-945ca20457ab69eb",
+      "content": "I'm letting go of being afraid and alone",
+      "pattern_hash": "945ca20457ab69eb8a4c8202e38f23339dc3ec937f541031fb8bce19ed9a6c9f",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=50:20"
+    },
+    {
+      "pattern_id": "anxiety-d5f7de7a911f0990",
+      "content": "I'm letting go of my fear of authority",
+      "pattern_hash": "d5f7de7a911f099045c8889e3c3a544cd6af130a999e44a3fe5c60c7d00a37d1",
+      "tier": "fear",
+      "source_record_id": "pdf_b-117",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=59:11"
+    },
+    {
+      "pattern_id": "anxiety-6acfaecf8b47430a",
+      "content": "I'm letting go of the fear that I am God",
+      "pattern_hash": "6acfaecf8b47430a566861c1cb9f1351cd91db49dc42e2bf518120eda5a2a7bd",
+      "tier": "fear",
+      "source_record_id": "pdf_b-120",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=61:23"
+    },
+    {
+      "pattern_id": "anxiety-a67ce48168bca762",
+      "content": "I'm letting go of the fear that I lack the discipline for self-improvement",
+      "pattern_hash": "a67ce48168bca762e9178fb45bbe7a0dfd529cccf14f1dc906890760bba12035",
+      "tier": "fear",
+      "source_record_id": "pdf_b-089",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=28:32"
+    },
+    {
+      "pattern_id": "anxiety-059580cdf8c2278c",
+      "content": "I'm letting go of fearing simplicity in art",
+      "pattern_hash": "059580cdf8c2278cfcdafcb2e0342202d0eaf3278d5af2d620d7739b7ef77bb9",
+      "tier": "fear",
+      "source_record_id": "pdf_b-101",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=35:5"
+    },
+    {
+      "pattern_id": "anxiety-2df4f1797216d772",
+      "content": "I'm letting go of being afraid believing in myself",
+      "pattern_hash": "2df4f1797216d77214b72914ec243a652b18c39a1dc123d4982875e913f3a35e",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=50:6"
+    },
+    {
+      "pattern_id": "anxiety-34211f7b69592e6e",
+      "content": "I'm letting go of fear of making the wrong choice",
+      "pattern_hash": "34211f7b69592e6e09f49406285e4dfd3473bd709a24afbf83d1ff622d36fe91",
+      "tier": "fear",
+      "source_record_id": "pdf_b-117",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=60:12"
+    },
+    {
+      "pattern_id": "anxiety-fe00a6f1ae30401d",
+      "content": "I'm letting go of the fear of stepping out of my comfort zone",
+      "pattern_hash": "fe00a6f1ae30401dc29b229c1e54e907e9fecc5781cda2c0e969fb444f466a7f",
+      "tier": "fear",
+      "source_record_id": "pdf_b-089",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=28:40"
+    },
+    {
+      "pattern_id": "anxiety-dfb5e12039562d75",
+      "content": "I'm letting go of the sensation labeled Scared to communicate with people in position of power",
+      "pattern_hash": "dfb5e12039562d75b390e657a1b455f4fc0108f958cf212fa40f98f39b5f5451",
+      "tier": "fear",
+      "source_record_id": "pdf_b-119",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=61:15"
+    },
+    {
+      "pattern_id": "anxiety-2bebc3ff5de7cc43",
+      "content": "I'm letting go of fearing to break conventions",
+      "pattern_hash": "2bebc3ff5de7cc436cdcbdc7047fdf7b9ed614b061a8304edc8440de4155f908",
+      "tier": "fear",
+      "source_record_id": "pdf_b-101",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=34:40"
+    },
+    {
+      "pattern_id": "anxiety-54b8b39adceb8192",
+      "content": "I'm letting go of my fear of the spotlight",
+      "pattern_hash": "54b8b39adceb8192d2069b85811900ef68f509668645174c90ebf4e83e658676",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=49:33"
+    },
+    {
+      "pattern_id": "anxiety-2245b799461b0db0",
+      "content": "I'm letting go of the fear of speaking my truth",
+      "pattern_hash": "2245b799461b0db033eb7af082cd268fb1fb12e6fcb50aa8202bb1c7dab88a01",
+      "tier": "fear",
+      "source_record_id": "pdf_b-116",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=57:47"
+    },
+    {
+      "pattern_id": "anxiety-c707c5a59fde2561",
+      "content": "I'm letting go of being scared of talking to cops",
+      "pattern_hash": "c707c5a59fde2561f13c260faab0b0d3de483863c5bae52b5e1fab1df8768f35",
+      "tier": "fear",
+      "source_record_id": "pdf_b-117",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=59:27"
+    },
+    {
+      "pattern_id": "anxiety-30588fcd381976c6",
+      "content": "I'm letting go of fearing the blank canvas",
+      "pattern_hash": "30588fcd381976c6297b0a3e7439b498e81384ae5f50a15c3fbc22f0c704e6a0",
+      "tier": "fear",
+      "source_record_id": "pdf_b-101",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=34:30"
+    },
+    {
+      "pattern_id": "anxiety-865bc3c4a043ce0d",
+      "content": "I'm letting go of fearing death is permanent",
+      "pattern_hash": "865bc3c4a043ce0d32dcd2124e9a5672fcd79fe98b30d6207efef9dac1ad4afd",
+      "tier": "fear",
+      "source_record_id": "pdf_b-110",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=52:20"
+    },
+    {
+      "pattern_id": "anxiety-da68878ce74c1acc",
+      "content": "I'm letting go of my fear of being alone",
+      "pattern_hash": "da68878ce74c1acce29fdd70396db292fa1881c59c4fcf282b80b50099418e49",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=50:18"
+    },
+    {
+      "pattern_id": "anxiety-977a9e1989bf260a",
+      "content": "I'm letting go of being scared that I will be hurt",
+      "pattern_hash": "977a9e1989bf260ad6fa0801970311936ab44cf0b2e030a7a274cf7591138f09",
+      "tier": "fear",
+      "source_record_id": "pdf_b-116",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=58:10"
+    },
+    {
+      "pattern_id": "anxiety-220c993ad2c67dda",
+      "content": "I'm letting go of fear of judgment from others when I speak my mind",
+      "pattern_hash": "220c993ad2c67dda3759d82661b7e37d7b9e67aad62506f1c8d68ca0e824579d",
+      "tier": "fear",
+      "source_record_id": "pdf_b-117",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=60:7"
+    },
+    {
+      "pattern_id": "anxiety-4f6ad31cdcfacde7",
+      "content": "I'm letting go of fearing to mix mediums",
+      "pattern_hash": "4f6ad31cdcfacde741b50e8e7dacd0be353c98ce9586c697edb130bd5b7def3f",
+      "tier": "fear",
+      "source_record_id": "pdf_b-101",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=34:49"
+    },
+    {
+      "pattern_id": "anxiety-e9267f91b1bafd3b",
+      "content": "I'm letting go of being terrified of being immobilized",
+      "pattern_hash": "e9267f91b1bafd3bf4dfb3962b3c0f8ceef95f464db2c13b7c37e58c90e34d1d",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=48:29"
+    },
+    {
+      "pattern_id": "anxiety-aa109d75760499e6",
+      "content": "I'm letting go of my fear that I will get hurt",
+      "pattern_hash": "aa109d75760499e6f5cfafb995f70635b403a552b0e58d46e53ed18d6448d35c",
+      "tier": "fear",
+      "source_record_id": "pdf_b-116",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=58:9"
+    },
+    {
+      "pattern_id": "anxiety-a876e32a012e0fc7",
+      "content": "I'm letting go of my fear of staying awake too many hours because as it is an irrational thought",
+      "pattern_hash": "a876e32a012e0fc76789f0d026112d24e64e899598a442dcc16704cf921e7717",
+      "tier": "fear",
+      "source_record_id": "pdf_b-117",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=61:7"
+    },
+    {
+      "pattern_id": "anxiety-b22fd9b10e72a64f",
+      "content": "I'm letting go of being scared to die",
+      "pattern_hash": "b22fd9b10e72a64fe14928ecbcd419dcfa39f56cca3e838323499fcc2abf1dd8",
+      "tier": "fear",
+      "source_record_id": "pdf_b-110",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=52:13"
+    },
+    {
+      "pattern_id": "anxiety-5a3f99997f5224d7",
+      "content": "I'm letting go of fearing to outgrow old techniques",
+      "pattern_hash": "5a3f99997f5224d747739c061ca56b951dcfdddf19588f1cade3f30f146b415a",
+      "tier": "fear",
+      "source_record_id": "pdf_b-101",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=35:21"
+    },
+    {
+      "pattern_id": "anxiety-f60d7abea0c2da97",
+      "content": "I'm letting go of being terrified of being immobile",
+      "pattern_hash": "f60d7abea0c2da97417929242d40363dce49e59677c36e529f55a195dd6f8bda",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=48:28"
+    },
+    {
+      "pattern_id": "anxiety-9a7076cf672ff11d",
+      "content": "I'm letting go of the fear of being judged when speaking honestly",
+      "pattern_hash": "9a7076cf672ff11dc2a3e713544e3634c9c2b1de712abf1ed2718552b0898d78",
+      "tier": "fear",
+      "source_record_id": "pdf_b-116",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=57:49"
+    },
+    {
+      "pattern_id": "anxiety-5ec279256ddcdad3",
+      "content": "I'm letting go of my fear of insomnia Bingo that I may not be able to fall asleep because I know that I can",
+      "pattern_hash": "5ec279256ddcdad38bff9d112ebb36ba86f7da21d38292acc57c5e5da74bded0",
+      "tier": "fear",
+      "source_record_id": "pdf_b-117",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=61:5-61:6"
+    },
+    {
+      "pattern_id": "anxiety-c9b4dd33cfc9a1e8",
+      "content": "I'm letting go of being afraid to die",
+      "pattern_hash": "c9b4dd33cfc9a1e8c9829967676bd4458f4d89c728b3d3426098e0e097982e7a",
+      "tier": "fear",
+      "source_record_id": "pdf_b-110",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=52:12"
+    },
+    {
+      "pattern_id": "anxiety-ddea896df9128511",
+      "content": "I'm letting go of fearing to experiment with textures",
+      "pattern_hash": "ddea896df912851115234c3872484d6741cae1207a9ea44299de1f21e1b3faf7",
+      "tier": "fear",
+      "source_record_id": "pdf_b-101",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=35:31"
+    },
+    {
+      "pattern_id": "anxiety-09547324f66db9b8",
+      "content": "I'm letting go of being scared of what I am",
+      "pattern_hash": "09547324f66db9b8765c714f10e70af9ee51979f0ffa42e52e0a09efdbb36c2e",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=49:24"
+    },
+    {
+      "pattern_id": "anxiety-7b5051829ec74605",
+      "content": "I'm letting go of my fear people who are in charge you can neutralizer for all that is because I lose my freedom but I know that's not true",
+      "pattern_hash": "7b5051829ec7460576e7e9ad538340a9a2bc9ca30faafed23be5634dde6f9eb4",
+      "tier": "fear",
+      "source_record_id": "pdf_b-117",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=59:13-59:14"
+    },
+    {
+      "pattern_id": "anxiety-146fadcf6b4a2645",
+      "content": "I'm letting go of fearing the authenticity in my work",
+      "pattern_hash": "146fadcf6b4a2645dab402e37847cbe16fa3d8a3f295183ef785f7ca7cf08abf",
+      "tier": "fear",
+      "source_record_id": "pdf_b-101",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=35:16"
+    },
+    {
+      "pattern_id": "anxiety-1fd8a30c7f172843",
+      "content": "I'm letting go of being scared to believe in myself",
+      "pattern_hash": "1fd8a30c7f1728438a65795df0341e045f187532eb106859fa743a45c2460da9",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=50:5"
+    },
+    {
+      "pattern_id": "anxiety-52d4e90f6532371c",
+      "content": "I'm letting go of being scared to be home alone",
+      "pattern_hash": "52d4e90f6532371c0628e98f0d2f52ef540a7e85ee4fbd7fcb976a0b1878a899",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=50:24"
+    },
+    {
+      "pattern_id": "anxiety-6d0368d6c5334e83",
+      "content": "I'm letting go of fearing to share my artistic vision",
+      "pattern_hash": "6d0368d6c5334e8368103a2022bd9521fe13603c0a5f8e7cc90f53db5e302bae",
+      "tier": "fear",
+      "source_record_id": "pdf_b-101",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=35:25"
+    },
+    {
+      "pattern_id": "anxiety-54973d91ec47976d",
+      "content": "I'm letting go of being scared of being tied up",
+      "pattern_hash": "54973d91ec47976d06c0929aa661b8ba7a484d664331a0e3e462f361bff2f9ac",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=48:31"
+    },
+    {
+      "pattern_id": "anxiety-8695497eee5aa071",
+      "content": "I'm letting go of fearing the commercial aspects of art",
+      "pattern_hash": "8695497eee5aa07132b1cd57a5d5a90b40fda0c3c8db8f8753cdfa12ff56c141",
+      "tier": "fear",
+      "source_record_id": "pdf_b-101",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=35:36"
+    },
+    {
+      "pattern_id": "anxiety-5abf6173330e54fb",
+      "content": "I'm letting go of being terrified and unable to move",
+      "pattern_hash": "5abf6173330e54fb590d19a6e8e6b085913699850b91608a4fb623f006a4651c",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=48:41"
+    },
+    {
+      "pattern_id": "anxiety-8f4817f468dd15a1",
+      "content": "I'm letting go of fearing to express emotions in art",
+      "pattern_hash": "8f4817f468dd15a1e274e6504660b1ec2f01dfce58ea16b0aef290f30a8574e2",
+      "tier": "fear",
+      "source_record_id": "pdf_b-101",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=35:9"
+    },
+    {
+      "pattern_id": "anxiety-61cd2c9b1388b84f",
+      "content": "I'm letting go of being afraid of being home alone",
+      "pattern_hash": "61cd2c9b1388b84f254bf575db5934c90544241bc6f4e3de39bc55df4a33f7a2",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=50:25"
+    },
+    {
+      "pattern_id": "anxiety-9e31983d39f129b9",
+      "content": "I'm letting go of fearing to express through abstract art",
+      "pattern_hash": "9e31983d39f129b90125ed422bffa437e80d2c58deb344c8bd6923017ac48c06",
+      "tier": "fear",
+      "source_record_id": "pdf_b-101",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=35:34"
+    },
+    {
+      "pattern_id": "anxiety-717a9323523861c3",
+      "content": "I'm letting go of being terrified of being tied up",
+      "pattern_hash": "717a9323523861c3f8e8d1f14201ff24577560225798632a78c62e33884bd757",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=48:30"
+    },
+    {
+      "pattern_id": "anxiety-ac94257dcd28fbad",
+      "content": "I'm letting go of fearing to explore digital art forms",
+      "pattern_hash": "ac94257dcd28fbad6738b6111bcbb5c9e25618885b34893d5142043db2cada1b",
+      "tier": "fear",
+      "source_record_id": "pdf_b-101",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=35:28"
+    },
+    {
+      "pattern_id": "anxiety-eda283edd72375ee",
+      "content": "I'm letting go of fear of asking for help",
+      "pattern_hash": "eda283edd72375ee431fc2e753fd2b15f8b345e9e2388d197b19bb3c5ce1edcf",
+      "tier": "fear",
+      "source_record_id": "pdf_b-110",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=53:18"
+    },
+    {
+      "pattern_id": "anxiety-9ca56e2205a58e87",
+      "content": "I'm letting go of being scared to trust the process",
+      "pattern_hash": "9ca56e2205a58e87b498694ad800a185999c2599a82fc93116effb443229cbcc",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=50:4"
+    },
+    {
+      "pattern_id": "anxiety-b8ab9d2a2b717a64",
+      "content": "I'm letting go of fearing the lifelong journey of art",
+      "pattern_hash": "b8ab9d2a2b717a649108f1f2e417769bb304b7c1c9c900a9406881b3d2668242",
+      "tier": "fear",
+      "source_record_id": "pdf_b-101",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=35:50"
+    },
+    {
+      "pattern_id": "anxiety-17dd5401b6e0c380",
+      "content": "I'm letting go of being scared to ask for help",
+      "pattern_hash": "17dd5401b6e0c380508b7d62da8721f3f948ffde02094f74ec0570a48308aa04",
+      "tier": "fear",
+      "source_record_id": "pdf_b-110",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=53:11"
+    },
+    {
+      "pattern_id": "anxiety-a9833a771f990925",
+      "content": "I'm letting go of being really terrified of being immobilized",
+      "pattern_hash": "a9833a771f9909254898b546f888bd04be354de26acdd080a18b64cd08e0ee58",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=48:39"
+    },
+    {
+      "pattern_id": "anxiety-b9fbe73b919553c0",
+      "content": "I'm letting go of fearing to diverge from mainstream trends",
+      "pattern_hash": "b9fbe73b919553c06b388a13a5e42de9a8c714a1211978c9bd321a182adfe5d8",
+      "tier": "fear",
+      "source_record_id": "pdf_b-101",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=35:14"
+    },
+    {
+      "pattern_id": "anxiety-37c74191f1aa4010",
+      "content": "I'm letting go of being scared to own my responsibility",
+      "pattern_hash": "37c74191f1aa4010d572dca4a5baf4a37320a0f5033a0594d5044585f3417b22",
+      "tier": "fear",
+      "source_record_id": "pdf_b-110",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=51:9"
+    },
+    {
+      "pattern_id": "anxiety-02919cdfb4592d63",
+      "content": "I'm letting go of fearing the judgement of the art community",
+      "pattern_hash": "02919cdfb4592d63f5d43ca26f17d08815ccea1b7378eedc74ac57ac0051b99b",
+      "tier": "fear",
+      "source_record_id": "pdf_b-101",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=35:23"
+    },
+    {
+      "pattern_id": "anxiety-24c4d6ec4f2bba6c",
+      "content": "I'm letting go of being terrified of being unable to move",
+      "pattern_hash": "24c4d6ec4f2bba6c0307735c8a1142c31c0ea544c72c3d75b6b56dd35e142f8e",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=48:40"
+    },
+    {
+      "pattern_id": "anxiety-0b2b4c316d899c76",
+      "content": "I'm letting go of fearing to explore unknown territories in art",
+      "pattern_hash": "0b2b4c316d899c761b42d693be0091e20e43d374fd75f975dfb089671c7dadf1",
+      "tier": "fear",
+      "source_record_id": "pdf_b-101",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=35:12"
+    },
+    {
+      "pattern_id": "anxiety-96d06b8ec72b182c",
+      "content": "I'm letting go of being afraid I will fail at life",
+      "pattern_hash": "96d06b8ec72b182c51ee7739094601f84a2322c3bf6ce0bec87650931ffb3a48",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=49:46"
+    },
+    {
+      "pattern_id": "anxiety-8874dda6fb2fee4f",
+      "content": "I'm letting go of fearing to engage with the art community",
+      "pattern_hash": "8874dda6fb2fee4fdbf089454679f90411a72471ee239839cc5b10136c323e30",
+      "tier": "fear",
+      "source_record_id": "pdf_b-101",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=35:41"
+    },
+    {
+      "pattern_id": "anxiety-7d1cb567eb42e7d0",
+      "content": "I'm letting go of being scared of being caught in a lie",
+      "pattern_hash": "7d1cb567eb42e7d02927db519b6289cc56f0e15772e6948a59b496e20e20ed1e",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=49:8"
+    },
+    {
+      "pattern_id": "anxiety-cc816dac8428c5e7",
+      "content": "I'm letting go of being afraid to own my responsibility",
+      "pattern_hash": "cc816dac8428c5e75a4d1f25169e4194f43cadb6a483d523780c6dd9c411f93e",
+      "tier": "fear",
+      "source_record_id": "pdf_b-110",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=51:10"
+    },
+    {
+      "pattern_id": "anxiety-a00948d295fa5914",
+      "content": "I'm letting go of fearing to pursue art as a career",
+      "pattern_hash": "a00948d295fa59145824ccfc10bd9e6e1c3443f2380453bf5d8656dad5d9da67",
+      "tier": "fear",
+      "source_record_id": "pdf_b-101",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=35:38"
+    },
+    {
+      "pattern_id": "anxiety-9f0f64c4def4d2b8",
+      "content": "I'm letting go of the fear of being caught on a lie",
+      "pattern_hash": "9f0f64c4def4d2b86070573a7f009976892da8f14a1e0cd435afd771f7cac745",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=49:9"
+    },
+    {
+      "pattern_id": "anxiety-ae519a9849ffe757",
+      "content": "I'm letting go of fearing to tell my story through art",
+      "pattern_hash": "ae519a9849ffe757790be146b419fc4a86132f5d72d299425a82f2772d716d63",
+      "tier": "fear",
+      "source_record_id": "pdf_b-101",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=35:18"
+    },
+    {
+      "pattern_id": "anxiety-ef32da5b37836a49",
+      "content": "I'm letting go of my fear of judgment if in the spotlight",
+      "pattern_hash": "ef32da5b37836a49381e0cb9cb73b7a6f1f87c02135366b3348c239da3bbc666",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=49:34"
+    },
+    {
+      "pattern_id": "anxiety-967b627225fed1ab",
+      "content": "I'm letting go of having a fear of failing my responsibility",
+      "pattern_hash": "967b627225fed1ab98f6bfe10167367b2c56cd8eee31cb82ea9ceae7769ce657",
+      "tier": "fear",
+      "source_record_id": "pdf_b-110",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=51:11"
+    },
+    {
+      "pattern_id": "anxiety-23a87f277794e4a8",
+      "content": "I'm letting go of fearing to explore the depth of my creativity",
+      "pattern_hash": "23a87f277794e4a82d9e899abc753b014521ce98e19cd071b444254803b3c64a",
+      "tier": "fear",
+      "source_record_id": "pdf_b-101",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=35:47"
+    },
+    {
+      "pattern_id": "anxiety-fad56a29ee52b168",
+      "content": "I'm letting go of being scared that I will fail at life",
+      "pattern_hash": "fad56a29ee52b1688e08d052dd90ba5ea4a1c8f29c2c1440baed841676129bf4",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=50:1"
+    },
+    {
+      "pattern_id": "anxiety-0b0e85303d794deb",
+      "content": "I'm letting go of fear asking people to do things for me",
+      "pattern_hash": "0b0e85303d794deb8a6ce35bd9c91f340bfa0342d30de7a39a471e783668ae9d",
+      "tier": "fear",
+      "source_record_id": "pdf_b-110",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=53:19"
+    },
+    {
+      "pattern_id": "anxiety-be9de438122da5f5",
+      "content": "I'm letting go of fearing to use art as a form of activism",
+      "pattern_hash": "be9de438122da5f507fc77a17b066937215c171ed59bd439eee446531628c43d",
+      "tier": "fear",
+      "source_record_id": "pdf_b-101",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=35:44"
+    },
+    {
+      "pattern_id": "anxiety-34ee3e5ecb94eac3",
+      "content": "I'm letting go of being afraid of getting involved in a conversation",
+      "pattern_hash": "34ee3e5ecb94eac3c56106293fa90b875d6f52a46209e160192b08364eae9433",
+      "tier": "fear",
+      "source_record_id": "pdf_b-110",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=52:28"
+    },
+    {
+      "pattern_id": "anxiety-239e2f0eb540ec2d",
+      "content": "I'm letting go of the fear of taking full responsibility of my life",
+      "pattern_hash": "239e2f0eb540ec2dc6cc3611f18370a6e8a8050b75a14ef44edc1c844cff320e",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=49:41"
+    },
+    {
+      "pattern_id": "anxiety-ad3c0168f88710ef",
+      "content": "I'm letting go of being scared of taking full responsibility for my wife",
+      "pattern_hash": "ad3c0168f88710ef8144ed8da01dc1d82d89528bb3261efb14406eabae9c3c99",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=49:42"
+    },
+    {
+      "pattern_id": "anxiety-d2aec62a13200687",
+      "content": "I'm letting go of a fear of rejection if I ask for help",
+      "pattern_hash": "d2aec62a13200687012fa291541d2aadb5300aa4027d87beb59daafdd535fef4",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=50:14"
+    },
+    {
+      "pattern_id": "anxiety-d00fa64a8f2cda55",
+      "content": "I'm letting go of being really scared of being tied up in a mobile",
+      "pattern_hash": "d00fa64a8f2cda55a2651538576ec44fc60c03f0e517c9611442bf78e25331cc",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=48:38"
+    },
+    {
+      "pattern_id": "anxiety-8d48f7fb980d7c3e",
+      "content": "I'm letting go of being afraid of what people will say if I give them a command",
+      "pattern_hash": "8d48f7fb980d7c3e9e81861523e89966f8aa6c6585ef2d6e136997bd98bedc48",
+      "tier": "fear",
+      "source_record_id": "pdf_b-110",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=53:30"
+    },
+    {
+      "pattern_id": "anxiety-680c3c9623c18cda",
+      "content": "I'm letting go of wanting to live forever Of fear that I will not look forever",
+      "pattern_hash": "680c3c9623c18cda5d5724bff66da55eca2554b463bc755b092ef3840f3c84ac",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=49:13-49:14"
+    },
+    {
+      "pattern_id": "anxiety-a75b3f2c66535aa7",
+      "content": "I'm letting go of my fear of the shift from the judgment of others when the spotlight",
+      "pattern_hash": "a75b3f2c66535aa77008213f6023421736d7e5ee34d6eca698b97c8b431843f6",
+      "tier": "fear",
+      "source_record_id": "pdf_b-109",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=49:35"
+    }
+  ],
+  "held_by_reading": [
+    {
+      "sentence": "I'm letting go of believing I am too much in my head too afraid of others judgments to scared of hearing what they will say",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=551;unit=2",
+      "reason": "\"to scared\" is the transcription of \"too scared\""
+    },
+    {
+      "sentence": "I'm letting go of believing perceiving behaving acting feeling that I'm scared to try but",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=580;unit=2",
+      "reason": "the line stops mid word"
+    },
+    {
+      "sentence": "I'm letting go of being nervous shy and secure to try",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=580;unit=3",
+      "reason": "\"and secure\" is the transcription of \"insecure\"; the line says the opposite of what was said"
+    },
+    {
+      "sentence": "I'm letting go of believing perceiving thinking being acting and feeling that I intense stress terrified worried concern afraid out of control of the future (direct hit center chest)",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1024;unit=1",
+      "reason": "carries a side note about the body, not part of the release"
+    },
+    {
+      "sentence": "I'm letting go of believing I'm scared to look down",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1082;unit=1",
+      "reason": "\"look down\" is the transcription of \"look dumb\" (heading: Looking dumb)"
+    },
+    {
+      "sentence": "I'm letting go of believing perceiving thinking behaving acting feel like that I'm scared to fail that I'm terrified so I avoid failing",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1086;unit=8",
+      "reason": "\"feel like\" is the transcription of \"feeling\""
+    },
+    {
+      "sentence": "I'm letting go of being afraid of to face reality as a man but",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1235;unit=26",
+      "reason": "the line stops mid word"
+    },
+    {
+      "sentence": "I'm letting go of being scared to face reality as a man",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1235;unit=27",
+      "reason": "speaks to men only; the gift goes to anyone"
+    },
+    {
+      "sentence": "I'm letting go of being terrified worried nervous and secure shy to face reality as a man",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1235;unit=28",
+      "reason": "\"and secure\" is the transcription of \"insecure\"; the line says the opposite of what was said"
+    },
+    {
+      "sentence": "I'm letting go of believing you I'm afraid to open myself up",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1721;unit=7",
+      "reason": "a stray \"you\" breaks the line"
+    },
+    {
+      "sentence": "I'm letting go of believing perceiving behaving acting and feeling thinking speaking saying voicing that I'm easily started or scared or that I can be sort of scared easily",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1892;unit=2",
+      "reason": "\"started\" is the transcription of \"startled\""
+    },
+    {
+      "sentence": "I'm letting go of leaving I'm worried and nervous bothered stress tense afraid guilty ashamed to speak up",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2298;unit=6",
+      "reason": "\"leaving\" is the transcription of \"believing\" and the reading layer did not catch it"
+    },
+    {
+      "sentence": "I'm letting go of believing and afraid of women",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=2364;unit=2",
+      "reason": "the words broke in transcription"
+    },
+    {
+      "sentence": "I'm letting go of being scared to come in the first place",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3015;unit=7",
+      "reason": "\"first place\" here is a transcription break"
+    },
+    {
+      "sentence": "I'm letting go of being terrified and paralyzed to come in the first place",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3016;unit=8",
+      "reason": "\"first place\" here is a transcription break"
+    },
+    {
+      "sentence": "I'm letting go of being scared to do the hard day first",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3063;unit=8",
+      "reason": "\"hard day\" is the transcription of \"hard thing\""
+    },
+    {
+      "sentence": "I'm letting go of being scared to wi",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3098;unit=20",
+      "reason": "the line stops mid word"
+    },
+    {
+      "sentence": "I'm letting go of being scared of being judged by people will perceive me when I lead",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3249;unit=29",
+      "reason": "a word dropped in transcription (\"by how people will perceive me\")"
+    },
+    {
+      "sentence": "I'm letting go of being scared to be a man",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3321;unit=13",
+      "reason": "speaks to men only; the gift goes to anyone"
+    },
+    {
+      "sentence": "I'm letting go of being worried and nervous concerned stressed terrified petrified paralyzed to be a man",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3322;unit=14",
+      "reason": "speaks to men only; the gift goes to anyone"
+    },
+    {
+      "sentence": "I'm letting go of being afraid to die for I believe in",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3334;unit=3",
+      "reason": "the words broke in transcription (\"for what I believe in\")"
+    },
+    {
+      "sentence": "I'm letting go of being terrified to get caught in the line",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=3432;unit=49",
+      "reason": "\"the line\" is the transcription of \"a lie\""
+    },
+    {
+      "sentence": "I'm letting go of being really nervous of being tied up in a mobile",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=48:37",
+      "reason": "\"a mobile\" is the transcription of \"immobile\""
+    }
+  ]
+}
