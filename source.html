@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2053 4c49681 2026-10-16 03:10"><head><meta charset="utf-8">
+<html lang="en" data-build="v2054 d47434b 2026-10-16 03:11"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -16657,8 +16657,34 @@ function lawWork(nm){
  return (w&&w.on===S.law[nm]&&w.n>0)?w.n:0;}
 /* a law as CQ reads it: the answer, and what the releases since have added */
 function lawNow(nm){return lawLift(S.law[nm],lawWork(nm));}
-/* CQ on its own, for the callers that need it without the whole reading */
-function cqSum(){return SINAMES.reduce((a,l)=>a+(lawIn(l)?lawNow(l):0),0)/210*100;}
+/* CQ on its own, for the callers that need it without the whole reading.
+   open is what an unanswered law counts, and every caller but cqSpan passes
+   none, so it is the 0 the ruling gives it. cqSpan asks what the figure
+   would be if every open law landed at ten, through this same sum, so the
+   two ends of the range are the engine's arithmetic and never a copy of it. */
+function cqSum(open){return SINAMES.reduce((a,l)=>a+(lawIn(l)?lawNow(l):(open||0)),0)/210*100;}
+/* ============================================================
+   WHERE THE FINISHED CQ CAN STILL LAND, read off what is unanswered.
+
+   The core drill said "The reading swings between lo and hi. The figure is
+   the middle of that range" off cqRange (ui/personas.js), which is a band
+   drawn round the figure alone and knows nothing about how many laws are in.
+   Measured at e9ca1ae: with 1 law answered at 10 the drill said CQ swings
+   between 0 and 18 and that the figure was the middle, where the middle of
+   that was 8.9 against a CQ of 5 and the finished figure can land anywhere
+   from 5 to 100.
+
+   lo is the figure with every open law at its lowest, which is the figure
+   now, because an open law counts nothing. hi is every open law at ten. When
+   every law is in the two are one number. enough is false while most laws
+   are still open (fewer than half answered), and then the drill says there
+   are not enough answers to give a range at all, because a range that covers
+   most of the scale says nothing a person can use.
+   ============================================================ */
+function cqSpan(){
+ var of=SINAMES.length, answered=SINAMES.filter(lawIn).length;
+ return {lo:cqSum(), hi:cqSum(10), answered:answered, of:of,
+  complete:answered===of, enough:answered*2>=of};}
 /* WHAT A RELEASE WRITES INTO THE LAWS. keys are the patterns of new ground the
    meter has just recorded, so a rerun passes none and moves nothing. Each key's
    address names a seat, and every answered law at that seat counts them. A law
@@ -29279,7 +29305,7 @@ if(typeof module!=='undefined'&&module.exports){
      to his fifteen thousand. Exported so the gate can drive a release through
      the same function the release panel calls, and hold the rate to the fit. */
                   exCeiling:exCeiling, exHeadroom:exHeadroom,
-                  lawIn:lawIn, cqSum:cqSum, leverPull:leverPull,
+                  lawIn:lawIn, cqSum:cqSum, cqSpan:cqSpan, leverPull:leverPull,
                   LEVER_MU:LEVER_MU, LEVER_SD:LEVER_SD, CQ_MODEL:CQ_MODEL,
                   LIFT_R:LIFT_R, lawLift:lawLift, lawWork:lawWork, lawNow:lawNow,
                   releaseWork:releaseWork, lawAnswered:lawAnswered,
@@ -62870,6 +62896,35 @@ addEventListener('click',function(e){
    What it measures goes first. Then where the distortion sits, because that
    is the only actionable thing on the screen. Then the arithmetic, which is
    how the number was reached and not what it says. */
+/* THE RANGE, SAID ONLY AS FAR AS THE ANSWERS SUPPORT IT. This printed
+   cqRange on every read field, and cqRange is a band round the figure
+   alone: with 1 law of 21 answered at 10 it said the reading swings between
+   0 and 18 and that the figure is the middle, where the figure was 5, the
+   middle of 0 to 18 is 9, and the finished figure could still land anywhere
+   from 5 to 100. So it says three different things now, by how much is in:
+
+     most laws open    that there are not enough answers yet, and the count
+     half or more in   where the finished figure can still land, cqSpan's two
+                       ends, with what each end means beside it
+     every law in      the swing cqRange draws, and "the middle" only when
+                       the figure really is the middle, which it is not when
+                       the band is cut off at nothing or at a hundred
+
+   The drill is the one place a range is printed (the 14 October ruling),
+   and every number in it carries its meaning in the same sentence. */
+function coreRangeSay(r){
+ if(r.unread)return '';
+ var sp=cqSpan(), of=sp.of;
+ if(!sp.enough)return '<p class="ad-p">There are not enough answers yet to give a range. <b>'
+  +sp.answered+'</b> of '+of+' laws are answered.</p>';
+ if(!sp.complete)return '<p class="ad-p">With <b>'+sp.answered+'</b> of '+of+' laws answered, the finished figure lands between <b>'
+  +Math.round(sp.lo)+'</b> and <b>'+Math.round(sp.hi)+'</b>. It is <b>'+Math.round(sp.lo)
+  +'</b> if every law still open is answered at nothing, and <b>'+Math.round(sp.hi)+'</b> if every one is answered at ten.</p>';
+ var rg=cqRange(r.CQ);
+ return '<p class="ad-p">The reading swings between <b>'+Math.round(rg.lo)+'</b> and <b>'+Math.round(rg.hi)+'</b>. '
+  +(rg.lo>0&&rg.hi<100?'The figure is the middle of that range, not a mark out of a hundred.'
+   :rg.hi>=100?'The figure sits near the top of that range, because the scale stops at a hundred.'
+   :'The figure sits near the bottom of that range, because the scale stops at nothing.')+'</p>';}
 function runCoreDrill(){
  var r=compute();
  /* THE FIGURE LIVES HERE, ONE TAP DOWN, WITH ITS RANGE. 15 October, under
@@ -62877,12 +62932,10 @@ function runCoreDrill(){
     Summary plate prints how much has been measured and opens this, where the
     number sits beside the range it swings in (cqRange, the same range the
     Field's key draws), so nobody reads 62 without its plus or minus. */
- var rg=r.unread?null:cqRange(r.CQ);
  var h='<div class="pm-eye">The core</div>'
   +'<div class="ad-nm">'+(r.unread?'not read yet'
     :'CQ '+Math.round(r.CQ)+', '+tierSay(r).toLowerCase())+'</div>'
-  +(rg?'<p class="ad-p">The reading swings between <b>'+Math.round(rg.lo)+'</b> and <b>'
-    +Math.round(rg.hi)+'</b>. The figure is the middle of that range, not a mark out of a hundred.</p>':'')
+  +coreRangeSay(r)
   +'<div class="pm-eye">What coherence is</div><p class="ad-p">'
   +'Coherence is the alignment between the world around you, what arrives from '
   +'it, the way you read what arrives, the intention behind it, and the action '
@@ -76548,5 +76601,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005022082"></div>
+<div id="eof" hidden data-len="005025548"></div>
 </body></html>
