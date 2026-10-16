@@ -66,7 +66,9 @@ jobs:
             echo "::error::The message is empty, so nothing was posted."
             exit 1
           fi
-          n="$(printf '%s' "$text" | wc -m)"
+          # characters, not bytes: wc -m counts bytes when no UTF-8 locale is
+          # set, which refused 1800 accented letters as 3600 (measured)
+          n="$(jq -rn --arg t "$text" '$t | length')"
           if [ "$n" -gt 1800 ]; then
             echo "::error::The message is $n characters and the limit is 1800, so nothing was posted."
             exit 1

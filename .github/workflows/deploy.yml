@@ -652,7 +652,7 @@ jobs:
             echo "DISCORD_FEEDBACK_WEBHOOK written to the Cloudflare Pages project atuned, production"
           else
             echo "::warning::Cloudflare did not take DISCORD_FEEDBACK_WEBHOOK, so feedback keeps the address it had. The site still publishes."
-            grep -v -F -- "$HOOK" "$RUNNER_TEMP/put.log" | tail -n 5
+            awk -v h="$HOOK" 'index($0, h) == 0' "$RUNNER_TEMP/put.log" | tail -n 5
           fi
           rm -f "$RUNNER_TEMP/put.log"
       # --branch=main, BECAUSE A ROLLBACK IS A DETACHED CHECKOUT. Without it
@@ -707,7 +707,9 @@ jobs:
       # itself ends 0 on every path and says what happened as a notice. The
       # commit line is handed to jq as an argument and never to the shell, and
       # allowed_mentions is empty, so "@everyone" in a commit cannot ping
-      # anybody. tools/discord-workflows.py runs this script.
+      # anybody. GitHub runs this under bash -e -o pipefail, so nothing here
+      # pipes through a grep, which exits 1 on no match and would fail the
+      # job. tools/discord-workflows.py runs this script.
       - name: tell Discord latest what went live
         if: github.ref == 'refs/heads/main' && (inputs.rollback_ref != '' || steps.order.outputs.publish == 'true')
         env:
@@ -724,7 +726,7 @@ jobs:
           fi
           sha="$(git rev-parse HEAD)"
           subject="$(git log -1 --format=%s "$sha" | cut -c1-200)"
-          stamp="$(grep -o -m1 'data-build="[^"]*"' source.html | cut -d'"' -f2)"
+          stamp="$(sed -n '/data-build="/{s/.*data-build="\([^"]*\)".*/\1/p;q;}' source.html 2>/dev/null)" || stamp=""
           title="Live on atuned.world"
           if [ -n "$ROLLBACK" ]; then title="Rolled back on atuned.world"; fi
           run="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
