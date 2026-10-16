@@ -252,6 +252,13 @@ function pracTracks(p,today){
 function pracBack(days){
  for(var i=1;i<days.length;i++)if(days[i-1]-days[i]>=BACK_GAP)return true;
  return false;}
+/* the axes with a value on the record, for Nine axes */
+function axesValued(p){
+ var n=0, ax=(p&&p.axes)||{};
+ CHILD.forEach(function(c){
+  var a=ax[c.nm]||{}, said=(typeof ixGet==='function')?ixGet(p,'axes',c.nm):null;
+  if(said!==null||(+a.held||0)>AXIS_BLANK||(+a.opp||0)>0)n++;});
+ return n;}
 /* the distinct days a story was committed on, by pracDay, and none past
    tomorrow (pracSoon), so a story and a ritual count a day the same way */
 function storyDays(p,today){
@@ -312,9 +319,19 @@ var MARKS=[
   t:function(l,s,p){return storyDays(p,s.today)>=10;}},
  /* structure */
  {k:'nine', fam:'Structure', b:'Heart', nm:'Nine axes',
-  d:'Every one of the nine has a value you entered. Nothing is a default.',
+  d:'Each of the nine axes, a feeling and its opposite, has a value on your record. None is left empty.',
   ic:'M5 5h14v14H5z M5 10h14 M5 15h14 M10 5v14 M15 5v14',
-  t:function(l){return l.clear+l.carry>=9;}},
+  /* THE TEST COUNTED AXES AT FOUR OR MORE, ON EITHER SIDE. clear+carry>=9 let
+     one axis count twice and never saw a value under four, so nine axes
+     entered at 2 did not earn it and five at 5 on both sides with four at 2
+     did, measured on f7188cba, under words that said every one of the nine
+     had a value. It reads what the words say now (TDD v3 9.3, LD4): an axis
+     has a value when the person answered its intake question, which records
+     an answer of 0 as an answer, or when it carries charge or an opposite
+     off the blank (AXIS_BLANK), from a story, a seed or a release. The words
+     say "on your record" and not "you entered", because a story puts charge
+     on an axis the person never set by hand. */
+  t:function(l,s,p){return axesValued(p)>=CHILD.length;}},
  {k:'laws', fam:'Structure', b:'Heart', nm:'Laws measured',
   d:'The intake is complete, so integrity is measured rather than assumed.',
   ic:'M12 4v4 M4 8h16 M4 8l-2 5h4z M20 8l-2 5h4z',

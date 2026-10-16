@@ -3132,6 +3132,21 @@ console.log('\n27 · the ladder');
   const nine=blankProfile('L'); for(let i=0;i<9;i++)nine.story.entries.push(at(NOW-i*86400000)); nine.story.entries.push(at(NOW-1000));
   ok(!ladderRead(nine,NOW).earned.some(m=>m.k==='kept'),'and ten entries on nine days do not');
   ok(/ten different days/.test(MARKS.find(m=>m.k==='kept').d),'and its words say days');}
+
+ /* L9. NINE AXES MEANS ALL NINE HAVE A VALUE. Nine axes at 2 did not earn
+    it, and five at 5 on both sides with four at 2 did, because the test
+    counted axes at four or more on either side. A blank has no value on any
+    axis and is the known good case for refusing. */
+ {const has=p=>ladderRead(p,NOW).earned.some(m=>m.k==='nine');
+  const two=blankProfile('L'); CHILD.forEach(c=>{two.axes[c.nm]={held:2,opp:0};});
+  ok(has(two),'nine axes entered at 2 earn Nine axes');
+  const dbl=blankProfile('L'); CHILD.forEach((c,i)=>{dbl.axes[c.nm]=i<5?{held:5,opp:5}:{held:0,opp:0};});
+  ok(!has(dbl),'five axes counted twice, with four empty, do not');
+  ok(!has(blankProfile('L')),'a blank record does not');
+  const said=blankProfile('L'); CHILD.forEach(c=>{E.ixSet(said,'axes',c.nm,0);});
+  ok(has(said),'nine intake answers earn it, an answer of nought included, because an answer is a value');
+  const eight=blankProfile('L'); CHILD.slice(0,8).forEach(c=>{eight.axes[c.nm]={held:3,opp:0};});
+  ok(!has(eight),'and eight of nine do not');}
 }
 
 console.log('\n27c · a save never costs a person data, and a drain never leaks');
