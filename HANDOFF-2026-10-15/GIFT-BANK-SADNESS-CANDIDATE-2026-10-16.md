@@ -12,7 +12,7 @@
 
 - Your own lines that name sadness and pass the same rules as the anxiety bank: **5**.
 - The cards gave 62 more that pass the same rules. The bank takes 62 of them, so it reaches 67.
-- The Little Books gave none. 9 of their charge lines name sadness, and every one of them also names other natures and runs 46 to 62 words, against a limit of 30.
+- The Little Books gave none. 9 of their 99 pairs (7 different charge lines) name sadness, and every one of them also names another nature and runs 46 to 62 words, against a limit of 30.
 - **Shortfall: 33.** Nothing was invented and no line about another nature was added to fill it. Where more could come from is in "The shortfall" below.
 
 ## Where the sentences came from
@@ -37,7 +37,7 @@
 - By the words in the sentence itself, the same rule as the anxiety bank. Headings, index entries and the intake's fetter join (its guess at which canonical fetter a whole record is about) all label a whole record, not a sentence, so they do not decide. A heading is used only to hold a line back, when the heading names another nature.
 - **Core words**, which name sadness outright: sad, sadness, saddened, sorrow, sorrows, sorrowful, unhappy, unhappiness.
 - **Neighbour words**, which name the same state in other plain words: cry, crying, cried, tears, tearful, weep, weeping, wept, gloomy, melancholy, heartache, lonely, loneliness.
-- Why these: Core words name the state: sad, sorrow, unhappy. Neighbour words name what sadness does or how it sits: crying, tears, weeping, gloomy, melancholy, heartache, lonely. "Down", "blue", "hurt" and "heavy" are left out, because in the corpus they mostly mean something else ("let myself down", "hurt from love", "life is heavy").
+- Why these: Core words name the state: sad, sorrow, unhappy. Neighbour words name what sadness does or how it sits: crying, tears, weeping, gloomy, melancholy, heartache, lonely. "Down", "hurt" and "heavy" are left out: in the corpus "down" is mostly "let people down" or "slow down" (31 different sentences), "hurt" is mostly hurt feelings or a body in pain (40), and "heavy" is used for eyes, weight and life (9). "Blue" appears twice.
 - **A line that names two natures is held from both.** The other five sets are: anxiety (anxious, anxiety, anxieties, worry, worries, worried, worrying, nervous, nervousness, panic, panicking, panicked, dread, dreading), overwhelm (overwhelm, overwhelmed, overwhelming, overwhelms), burnout (burnout, burn out, burned out, burnt out, burning out, exhausted, exhaustion, exhausting, depleted, depletion, drained, draining), grief (grief, grieve, grieves, grieving, grieved, mourn, mourning, mourned, bereaved, bereavement, heartbroken, heartbreak), depression (depressed, depression, depressing, depressive, hopeless, hopelessness), each with its own neighbour words. So no line can sit in two banks, and this bank cannot overlap the anxiety bank or any other.
 - 36 of the 67 use a core word. 31 use only a neighbour word.
 
@@ -86,7 +86,7 @@ Of the card lines held for naming another nature, the other nature was (a line c
 - 1: With the stem in front it does not read as a sentence ("that I am explosive collapsing into tears"). "explosive collapsing into tears."
 - 1: With the stem in front it does not read as a sentence ("that I am explosive waves of sorrow"). "explosive waves of sorrow."
 
-**Little Books charge lines, read and not used (9):** by volume, Grief 8, Duty 1. Every one names sadness and also other natures, and runs 46 to 62 words, against a limit of 30. Each is one long list of states. The volumes mark their source "LANCE DICTATION", but most of each list is shared: the 99 pairs in the eleven volumes carry only 59 different charge lines, so a pair is one or two of your words in front of its volume's shared list. Each is listed with its reason in the held file.
+**Little Books charge lines, read and not used (9 pairs, 7 different lines):** by volume, Grief 8, Duty 1. Every one names sadness and also another nature, and runs 46 to 62 words, against a limit of 30. Each is one long list of states. The volumes mark their source "LANCE DICTATION", but most of each list is shared: the 99 pairs in the eleven volumes carry only 59 different charge lines, so a pair is one or two of your words in front of its volume's shared list. Each is listed with its reason in the held file.
 
 Every line above is listed with its reason in `sadness-held.json`, beside the bank.
 

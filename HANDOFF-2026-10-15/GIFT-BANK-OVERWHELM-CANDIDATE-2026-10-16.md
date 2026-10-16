@@ -12,7 +12,7 @@
 
 - Your own lines that name overwhelm and pass the same rules as the anxiety bank: **1**.
 - The cards gave 140 more that pass the same rules. The bank takes 99 of them, so it reaches 100.
-- The Little Books gave none. 65 of their charge lines name overwhelm, and every one of them also names other natures and runs 51 to 69 words, against a limit of 30.
+- The Little Books gave none. 65 of their 99 pairs (35 different charge lines) name overwhelm, and every one of them also names another nature and runs 51 to 69 words, against a limit of 30.
 
 ## Where the sentences came from
 
@@ -36,7 +36,7 @@
 - By the words in the sentence itself, the same rule as the anxiety bank. Headings, index entries and the intake's fetter join (its guess at which canonical fetter a whole record is about) all label a whole record, not a sentence, so they do not decide. A heading is used only to hold a line back, when the heading names another nature.
 - **Core words**, which name overwhelm outright: overwhelm, overwhelmed, overwhelming, overwhelms.
 - **Neighbour words**, which name the same state in other plain words: overloaded, overload, swamped, drowning in, buried under, too many things, spread too thin, can't keep up, cannot keep up.
-- Why these: They name more coming in than a person can take: overloaded, swamped, drowning in, buried under, spread too thin, cannot keep up. "Too much" alone is left out, because in the corpus it mostly means "I take up too much space", which is not overwhelm. "Pressure" is left out, because it names a push from outside, not the state of being flooded by it.
+- Why these: They name more coming in than a person can take: overloaded, swamped, drowning in, buried under, spread too thin, cannot keep up. "Too much" alone is left out: in the corpus it is in 6 different sentences and means overwhelm in one ("I've taken on too much"), and something else in the others ("too much in my head", "take up too much space", "drink too much"). "Pressure" is left out, because it names a push from outside, not the state of being flooded by it.
 - **A line that names two natures is held from both.** The other five sets are: anxiety (anxious, anxiety, anxieties, worry, worries, worried, worrying, nervous, nervousness, panic, panicking, panicked, dread, dreading), burnout (burnout, burn out, burned out, burnt out, burning out, exhausted, exhaustion, exhausting, depleted, depletion, drained, draining), grief (grief, grieve, grieves, grieving, grieved, mourn, mourning, mourned, bereaved, bereavement, heartbroken, heartbreak), sadness (sad, sadness, saddened, sorrow, sorrows, sorrowful, unhappy, unhappiness), depression (depressed, depression, depressing, depressive, hopeless, hopelessness), each with its own neighbour words. So no line can sit in two banks, and this bank cannot overlap the anxiety bank or any other.
 - 100 of the 100 use a core word. 0 use only a neighbour word.
 
@@ -81,7 +81,7 @@ Of the card lines held for naming another nature, the other nature was (a line c
 
 - 1: With the stem in front it does not read as a sentence ("that I am explosive emotional overwhelm"). "explosive emotional overwhelm."
 
-**Little Books charge lines, read and not used (65):** by volume, Anger 9, Anxiety 9, Burnout 9, Control 9, Drive 9, Shame 9, Worth 7, Duty 2, Grief 1, Money 1. Every one names overwhelm and also other natures, and runs 51 to 69 words, against a limit of 30. Each is one long list of states. The volumes mark their source "LANCE DICTATION", but most of each list is shared: the 99 pairs in the eleven volumes carry only 59 different charge lines, so a pair is one or two of your words in front of its volume's shared list. Each is listed with its reason in the held file.
+**Little Books charge lines, read and not used (65 pairs, 35 different lines):** by volume, Anger 9, Anxiety 9, Burnout 9, Control 9, Drive 9, Shame 9, Worth 7, Duty 2, Grief 1, Money 1. Every one names overwhelm and also another nature, and runs 51 to 69 words, against a limit of 30. Each is one long list of states. The volumes mark their source "LANCE DICTATION", but most of each list is shared: the 99 pairs in the eleven volumes carry only 59 different charge lines, so a pair is one or two of your words in front of its volume's shared list. Each is listed with its reason in the held file.
 
 Every line above is listed with its reason in `overwhelm-held.json`, beside the bank.
 

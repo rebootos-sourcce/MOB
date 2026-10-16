@@ -12,7 +12,7 @@
 
 - Your own lines that name depression and pass the same rules as the anxiety bank: **8**.
 - The cards gave 85 more that pass the same rules. The bank takes 85 of them, so it reaches 93.
-- The Little Books gave none. 16 of their charge lines name depression, and every one of them also names other natures and runs 46 to 68 words, against a limit of 30.
+- The Little Books gave none. 16 of their 99 pairs (10 different charge lines) name depression, and every one of them also names another nature and runs 46 to 68 words, against a limit of 30.
 - **Shortfall: 7.** Nothing was invented and no line about another nature was added to fill it. Where more could come from is in "The shortfall" below.
 
 ## Where the sentences came from
@@ -37,7 +37,7 @@
 - By the words in the sentence itself, the same rule as the anxiety bank. Headings, index entries and the intake's fetter join (its guess at which canonical fetter a whole record is about) all label a whole record, not a sentence, so they do not decide. A heading is used only to hold a line back, when the heading names another nature.
 - **Core words**, which name depression outright: depressed, depression, depressing, depressive, hopeless, hopelessness.
 - **Neighbour words**, which name the same state in other plain words: despair, despairing, despondent, numb, numbness, empty, emptiness, meaningless, meaninglessness, pointless, pointlessness, unmotivated, apathy, apathetic, lifeless, joyless, giving up, give up, gave up.
-- Why these: Core words name the state: depressed, depression, hopeless. Neighbour words name what it is like from inside: despair, numb, empty, meaningless, pointless, unmotivated, apathy, joyless, giving up. "Defeated" and "deflated" are left out: the owner says them in nearly every long run, beside anxious and ashamed, and on their own they name losing a contest, which can come with any of the six. "Worthless" is left out, because it names shame.
+- Why these: Core words name the state: depressed, depression, hopeless. Neighbour words name what it is like from inside: despair, numb, empty, meaningless, pointless, unmotivated, apathy, joyless, giving up. "Defeated" and "deflated" are left out: of the 32 different sentences that say either, 27 also name one of the six natures, usually inside a long list beside anxious and ashamed, and on their own they name losing a contest, which can come with any of the six. "Worthless" is left out, because it names shame.
 - **A line that names two natures is held from both.** The other five sets are: anxiety (anxious, anxiety, anxieties, worry, worries, worried, worrying, nervous, nervousness, panic, panicking, panicked, dread, dreading), overwhelm (overwhelm, overwhelmed, overwhelming, overwhelms), burnout (burnout, burn out, burned out, burnt out, burning out, exhausted, exhaustion, exhausting, depleted, depletion, drained, draining), grief (grief, grieve, grieves, grieving, grieved, mourn, mourning, mourned, bereaved, bereavement, heartbroken, heartbreak), sadness (sad, sadness, saddened, sorrow, sorrows, sorrowful, unhappy, unhappiness), each with its own neighbour words. So no line can sit in two banks, and this bank cannot overlap the anxiety bank or any other.
 - 7 of the 93 use a core word. 86 use only a neighbour word.
 
@@ -88,7 +88,7 @@ Of the card lines held for naming another nature, the other nature was (a line c
 - 1: About sexual attraction, from a card set about sexual desire; the gift goes to anyone. "Hopeless that I can rekindle attraction."
 - 1: "give up" here means handing something over, not giving up on life. "enraged I had to give up my bird too."
 
-**Little Books charge lines, read and not used (16):** by volume, Money 8, Duty 7, Voice 1. Every one names depression and also other natures, and runs 46 to 68 words, against a limit of 30. Each is one long list of states. The volumes mark their source "LANCE DICTATION", but most of each list is shared: the 99 pairs in the eleven volumes carry only 59 different charge lines, so a pair is one or two of your words in front of its volume's shared list. Each is listed with its reason in the held file.
+**Little Books charge lines, read and not used (16 pairs, 10 different lines):** by volume, Money 8, Duty 7, Voice 1. Every one names depression and also another nature, and runs 46 to 68 words, against a limit of 30. Each is one long list of states. The volumes mark their source "LANCE DICTATION", but most of each list is shared: the 99 pairs in the eleven volumes carry only 59 different charge lines, so a pair is one or two of your words in front of its volume's shared list. Each is listed with its reason in the held file.
 
 Every line above is listed with its reason in `depression-held.json`, beside the bank.
 

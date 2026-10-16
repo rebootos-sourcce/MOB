@@ -130,7 +130,7 @@ P('## The short answer')
 P('')
 P('- Your own lines that name %s and pass the same rules as the anxiety bank: **%d**.' % (NAT, st['owner_pool']))
 P('- The cards gave %d more that pass the same rules. %s' % (st['card_pool'], 'The bank takes %d of them, so it reaches %d.' % (nc, n) if nc else 'None was needed.'))
-P('- The Little Books gave none. %s' % ('%d of their charge lines name %s, and every one of them also names other natures and runs %d to %d words, against a limit of 30.' % (len(lb), NAT, lb_words[0], lb_words[1]) if lb else 'No Little Books charge line names %s.' % NAT))
+P('- The Little Books gave none. %s' % ('%d of their 99 pairs (%d different charge lines) name %s, and every one of them also names another nature and runs %d to %d words, against a limit of 30.' % (len(lb), len({x['sentence'] for x in lb}), NAT, lb_words[0], lb_words[1]) if lb else 'No Little Books charge line names %s.' % NAT))
 if short:
     P('- **Shortfall: %d.** Nothing was invented and no line about another nature was added to fill it. Where more could come from is in "The shortfall" below.' % short)
 P('')
@@ -207,7 +207,7 @@ else:
     P('_None._')
 P('')
 if lb:
-    P('**Little Books charge lines, read and not used (%d):** by volume, %s. Every one names %s and also other natures, and runs %d to %d words, against a limit of 30. Each is one long list of states. The volumes mark their source "LANCE DICTATION", but most of each list is shared: the %d pairs in the eleven volumes carry only %d different charge lines, so a pair is one or two of your words in front of its volume\'s shared list. Each is listed with its reason in the held file.' % (len(lb), ', '.join('%s %d' % kv for kv in lb_vols.most_common()), NAT, lb_words[0], lb_words[1], LB_PAIRS, LB_DISTINCT))
+    P('**Little Books charge lines, read and not used (%d pairs, %d different lines):** by volume, %s. Every one names %s and also another nature, and runs %d to %d words, against a limit of 30. Each is one long list of states. The volumes mark their source "LANCE DICTATION", but most of each list is shared: the %d pairs in the eleven volumes carry only %d different charge lines, so a pair is one or two of your words in front of its volume\'s shared list. Each is listed with its reason in the held file.' % (len(lb), len({x['sentence'] for x in lb}), ', '.join('%s %d' % kv for kv in lb_vols.most_common()), NAT, lb_words[0], lb_words[1], LB_PAIRS, LB_DISTINCT))
     P('')
 P('Every line above is listed with its reason in `%s-held.json`, beside the bank.' % NAT)
 P('')

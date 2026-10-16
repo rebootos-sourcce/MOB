@@ -12,7 +12,7 @@
 
 - Your own lines that name grief and pass the same rules as the anxiety bank: **3**.
 - The cards gave 49 more that pass the same rules. The bank takes 49 of them, so it reaches 52.
-- The Little Books gave none. 8 of their charge lines name grief, and every one of them also names other natures and runs 46 to 47 words, against a limit of 30.
+- The Little Books gave none. 8 of their 99 pairs (6 different charge lines) name grief, and every one of them also names another nature and runs 46 to 47 words, against a limit of 30.
 - **Shortfall: 48.** Nothing was invented and no line about another nature was added to fill it. Where more could come from is in "The shortfall" below.
 
 ## Where the sentences came from
@@ -37,7 +37,7 @@
 - By the words in the sentence itself, the same rule as the anxiety bank. Headings, index entries and the intake's fetter join (its guess at which canonical fetter a whole record is about) all label a whole record, not a sentence, so they do not decide. A heading is used only to hold a line back, when the heading names another nature.
 - **Core words**, which name grief outright: grief, grieve, grieves, grieving, grieved, mourn, mourning, mourned, bereaved, bereavement, heartbroken, heartbreak.
 - **Neighbour words**, which name the same state in other plain words: loss, losses.
-- Why these: Core words name mourning: grief, grieving, mourning, bereaved, heartbroken. The one neighbour word is "loss", because a loss is what grief is about. "Lost", "death", "die" and "miss" are left out: in the corpus "lost" mostly means confused ("lost my mojo", "feeling lost on how to finish"), "death" and "die" come with afraid or scared and are anxiety, and "miss" mostly means "miss deadlines". A loss of power, control, strength, energy or vitality is held as not a loss that is mourned.
+- Why these: Core words name mourning: grief, grieving, mourning, bereaved, heartbroken. The one neighbour word is "loss", because a loss is what grief is about; a loss of power, control, strength, energy or vitality is held as not a loss anyone mourns. "Lost", "miss", "death" and "die" are left out. In all 8 different sentences that say "lost", it means a quality gone ("lost my spark", "lost my mojo", "lost confidence") or being unsure ("feeling lost on how to finish projects"), never a person. None of the 4 that say "miss" or "missed" is about missing someone. Of the 15 that say "death" or "die", 10 are fear of dying, which is anxiety.
 - **A line that names two natures is held from both.** The other five sets are: anxiety (anxious, anxiety, anxieties, worry, worries, worried, worrying, nervous, nervousness, panic, panicking, panicked, dread, dreading), overwhelm (overwhelm, overwhelmed, overwhelming, overwhelms), burnout (burnout, burn out, burned out, burnt out, burning out, exhausted, exhaustion, exhausting, depleted, depletion, drained, draining), sadness (sad, sadness, saddened, sorrow, sorrows, sorrowful, unhappy, unhappiness), depression (depressed, depression, depressing, depressive, hopeless, hopelessness), each with its own neighbour words. So no line can sit in two banks, and this bank cannot overlap the anxiety bank or any other.
 - 45 of the 52 use a core word. 7 use only a neighbour word.
 
@@ -86,7 +86,7 @@ Of the card lines held for naming another nature, the other nature was (a line c
 - 1: With the stem in front it does not read as a sentence ("that I am explosive emotional grief"). "explosive emotional grief."
 - 1: With the stem in front it does not read as a sentence ("that I am explosive frustration at the loss"). "explosive frustration at the loss."
 
-**Little Books charge lines, read and not used (8):** by volume, Grief 8. Every one names grief and also other natures, and runs 46 to 47 words, against a limit of 30. Each is one long list of states. The volumes mark their source "LANCE DICTATION", but most of each list is shared: the 99 pairs in the eleven volumes carry only 59 different charge lines, so a pair is one or two of your words in front of its volume's shared list. Each is listed with its reason in the held file.
+**Little Books charge lines, read and not used (8 pairs, 6 different lines):** by volume, Grief 8. Every one names grief and also another nature, and runs 46 to 47 words, against a limit of 30. Each is one long list of states. The volumes mark their source "LANCE DICTATION", but most of each list is shared: the 99 pairs in the eleven volumes carry only 59 different charge lines, so a pair is one or two of your words in front of its volume's shared list. Each is listed with its reason in the held file.
 
 Every line above is listed with its reason in `grief-held.json`, beside the bank.
 

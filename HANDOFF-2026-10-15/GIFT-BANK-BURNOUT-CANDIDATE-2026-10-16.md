@@ -12,7 +12,7 @@
 
 - Your own lines that name burnout and pass the same rules as the anxiety bank: **10**.
 - The cards gave 238 more that pass the same rules. The bank takes 90 of them, so it reaches 100.
-- The Little Books gave none. 33 of their charge lines name burnout, and every one of them also names other natures and runs 51 to 69 words, against a limit of 30.
+- The Little Books gave none. 33 of their 99 pairs (16 different charge lines) name burnout, and every one of them also names another nature and runs 51 to 69 words, against a limit of 30.
 
 ## Where the sentences came from
 
@@ -84,7 +84,7 @@ Of the card lines held for naming another nature, the other nature was (a line c
 
 _None._
 
-**Little Books charge lines, read and not used (33):** by volume, Anger 9, Burnout 8, Drive 7, Worth 6, Control 3. Every one names burnout and also other natures, and runs 51 to 69 words, against a limit of 30. Each is one long list of states. The volumes mark their source "LANCE DICTATION", but most of each list is shared: the 99 pairs in the eleven volumes carry only 59 different charge lines, so a pair is one or two of your words in front of its volume's shared list. Each is listed with its reason in the held file.
+**Little Books charge lines, read and not used (33 pairs, 16 different lines):** by volume, Anger 9, Burnout 8, Drive 7, Worth 6, Control 3. Every one names burnout and also another nature, and runs 51 to 69 words, against a limit of 30. Each is one long list of states. The volumes mark their source "LANCE DICTATION", but most of each list is shared: the 99 pairs in the eleven volumes carry only 59 different charge lines, so a pair is one or two of your words in front of its volume's shared list. Each is listed with its reason in the held file.
 
 Every line above is listed with its reason in `burnout-held.json`, beside the bank.
 
