@@ -1433,7 +1433,7 @@ const TIERCOL={
  'Incoherent':  '#CFAB64',   /* warm, a caution and not an alarm */
  'Corrupt':     '#CF8958',
  'Severe':      '#B58379',   /* chroma coming out. numb is less present, not louder */
- 'Collapsed':   '#A48986'};  /* the colour nearly gone. the floor is quiet */
+ 'Contracted':  '#A48986'};  /* the colour nearly gone. the floor is quiet */
 const TIERDEF=[
  {at:91, nm:'Mastery',
   state:'Sovereign',
@@ -1500,7 +1500,17 @@ const TIERDEF=[
      a person is least able to hear it that way. The instruction underneath was
      already right and is kept word for word. */
   toward:'Corrupt, and it is reached one address at a time. One seat, one address, one line. Not a programme.'},
- {at:0, nm:'Collapsed',
+ /* CONTRACTED, NOT COLLAPSED, 16 October. His words: "I don't [like] the band
+    name, like collapsed ... the energy wants to expand, not collapse." The
+    product already says expanding and contracting for the direction a reading
+    moves (r.benign, ui/summary.js), so the floor takes the word for that
+    direction, and the word says it can open again where collapsed said it
+    had fallen. The state, Fragmented, and what the band says are unchanged.
+    A history row an older build wrote under the old word is renamed at the
+    boundary (validateProfile, engine/schema.js), so no record prints it
+    again. The Reboot-OS application carries its own copy of this table and is
+    not this repository's to change. */
+ {at:0, nm:'Contracted',
   state:'Fragmented',
   soma:'Taken over by what happened before and was never worked through. The body drags with its full weight.',
   def:'The field is fully loaded. Nothing is clearing.',
@@ -3215,7 +3225,7 @@ const PEOPLE=[
     Four reference cases added on the owner's ruling, because the roster sat in
     the middle and the vocabulary at the ends had never been looked at with a
     real field behind it. Two at the floor and two near the ceiling, and the
-    pairs are the point: 2 and 10 are both Collapsed, 92 and 98 are both Mastery.
+    pairs are the point: 2 and 10 are both Contracted, 92 and 98 are both Mastery.
     If one word has to carry both ends of each pair, the word is doing no work.
 
     The charge vectors were solved against compute() rather than invented, and
@@ -3228,7 +3238,7 @@ const PEOPLE=[
     were never re-solved, so they read 25.9, 45.6, 91.3 and 89.2: the floor pair
     sat in two different bands, one of them the median, and the ceiling pair in
     two. Measured again on 2 October (J12). Tomas is solved again to 3.8 and
-    reads Collapsed. Nkem was solved to 14.5, Severe, and was cut with the
+    reads Contracted. Nkem was solved to 14.5, Severe, and was cut with the
     ladder in round QD.
     Wren (91.1, Mastery) and Abraham (89.1, Embodied) are left where they are.
     Abraham carries a held shame of 5.4 and six installed poles near 5, which
@@ -3319,7 +3329,7 @@ const LAWSET={
     then 30.8 on screen, Incoherent, beside a field carrying 77 addresses.
     Nkem, solved to 10, read the median. The shape of each table is kept (what
     the person still does is the highest thing in it) and the level is the new
-    solve. Tomas 3.8, Collapsed. */
+    solve. Tomas 3.8, Contracted. */
  Tomas:  {_:.124, Courage:.5, Truth:.7, Patience:.6, Duty:2, 'Non-Harm':2.2},
  Wren:   {_:9.221, Patience:9.4, Temperance:9.2, 'Aesthetic Beauty':9.6, Forgiveness:6.8},
  Abraham:{_:8.702, Equanimity:9.7, Justice:9.8, Humility:9.5, Presence:9.6, Temperance:9.4},
@@ -11028,9 +11038,17 @@ function validateProfile(o){
   var q={t:typeof x.t==='string'?x.t:new Date().toISOString(),
    dark:typeof x.dark==='string'?x.dark:'Heart',
    /* null is a row written while CQ was still filling, and it stays null:
-      defaulting it to Collapsed would put the lowest word on the scale on
-      somebody who had only not finished the intake. */
-   tier:(typeof x.tier==='string'||x.tier===null)?x.tier:'Collapsed',
+      defaulting it to the floor band would put the lowest word on the scale
+      on somebody who had only not finished the intake. */
+   /* THE FLOOR BAND WAS RENAMED, 16 October, Collapsed to Contracted (canon.js
+      TIERDEF). A row keeps the word and not a lookup, so a row an older build
+      wrote still said Collapsed: the record would print the word he ruled out,
+      and ui/record.js would report "the tier read collapsed and now reads
+      contracted", a move between two names for one band. Renamed here, where
+      every row is rebuilt, so the old word never reaches a renderer. It is
+      the same band under its new name, not a value clamped into range. */
+   tier:x.tier==='Collapsed'?'Contracted'
+    :(typeof x.tier==='string'||x.tier===null)?x.tier:'Contracted',
    arch:typeof x.arch==='string'?x.arch:''};
   [['m',0,CQ_MODEL],['cq',0,100],['dq',0,1e4],['sq',0,10],['pole',0,10],['jq',0,10],['rad',0,10],
    ['loaded',0,1e4],['sab',0,1e4],['cx',0,1e4],['hy',0,1e4],['ch',0,1e4]].forEach(function(f){
