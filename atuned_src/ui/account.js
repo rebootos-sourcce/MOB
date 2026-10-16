@@ -713,7 +713,7 @@ function accWire(){
  /* a device setting and not a profile write: see pracOn in ui/practitioner.js */
  if(pr)pr.onclick=function(){pracSwitch(!pracOn()); renderAccount();};
  var ex=$('acexp');
- if(ex)ex.onclick=function(){var t=pExport();
+ if(ex)ex.onclick=function(){var t=pExport(); if(t==null)return;
   try{navigator.clipboard.writeText(t); status('Record copied to the clipboard.','ok');}
   catch(e){status('Could not reach the clipboard. Nothing was copied.','fail');}};
  var dl=$('acdel');

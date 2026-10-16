@@ -690,6 +690,49 @@ function notYours(what){
  if(S.who===0)return false;
  void what;
  return true;}
+/* A WORKED EXAMPLE IS SHOW ONLY, AND ITS REFUSAL IS A PREVIEW. Ruled 16
+   October, his words: "it allows people to see the patterns. But not run
+   them. If you're a tier one, it allows you to see what you're missing as a
+   product." The rule itself is the engine's, showRefuse in engine/showonly.js,
+   asked by every writer; these are its words, which are the host's to choose.
+
+   The refusals this replaces were walls: "Nothing committed on a worked
+   example.", "Nothing released on a worked example.", in the fail kind, which
+   holds on screen in the alarm colour and sounds the refusal. A press on an
+   example is not a failure. It is a person asking what the control does, so
+   the line says what it would do on their own profile, and then one of two
+   things, read off the sight table and never typed here (SIGHT, planNextSight,
+   engine/plan.js). If their own plan already shows every layer the example
+   shows, it says to open their own profile. If it does not, it names the next
+   layer the example is showing them and the tier that opens it on their own.
+   Running a story or a release is never tier gated, every plan runs one inside
+   its allowance, so the line never says a plan is needed to run anything.
+
+   The person's own plan is read off their own record, the one loadP(0) goes
+   back to, because CURP is the example's here and says tier four. Plain kind,
+   so it fades like any line that is not a failure. */
+var SHOW_DOES={
+ story:'Commit puts what your words carry on your map',
+ release:'a release empties charge from the addresses it reaches',
+ intake:'each answer here moves how your laws read',
+ export:'Export copies your profile to the clipboard'};
+function showOwnPlan(){
+ var own=(typeof PROF_BY!=='undefined')?PROF_BY[PEOPLE[0].nm]:null;
+ return (own&&own.plan)||null;}
+function showLine(what){
+ var head='A worked example shows every reading and runs nothing.';
+ if(what==='import')return head+' Open your own profile first, then load the file.';
+ var does=SHOW_DOES[what];
+ var nx=planNextSight(showOwnPlan());
+ var tail=nx
+  ?(function(t){return t.charAt(0).toUpperCase()+t.slice(1);})(planList(nx.adds.map(function(g){return g.nm;})))
+   +' show here, and on your own profile they open on '+nx.to.nm.toLowerCase()+'.'
+  :'Open your own profile to run it.';
+ return head+(does?' On your own profile, '+does+'.':'')+' '+tail;}
+/* the same line, where a control that cannot run on an example used to sit */
+function showNote(what,cls){
+ return '<p class="show-note'+(cls?' '+cls:'')+'" role="note">'+esc(showLine(what))+'</p>';}
+bindShowSay(function(what){ status(showLine(what)); });
 /* THE MIRROR ONLY WRITES FOR THE RECORD IT MIRRORS.
 
    PEOPLE[0] is the table loadP(0) reads the person's own field back out of, and
@@ -913,6 +956,13 @@ function loadP(i){
     recognises (engine/plan.js), the same literal tests/seed.js's FULL_SIGHT
     and ui/lock.js's devSight already use to mean full sight. */
  if(!p.you)CURP.plan={tier:'four',status:'active',granted:0,carried:0,base:null,since:null,until:null};
+ /* AND IT IS SHOW ONLY, ruled 16 October: it reads at tier four and runs
+    nothing. The mark is the record's identity, held by the engine
+    (engine/showonly.js), so every writer refuses it, and it is made here on
+    the same !p.you key as the stamp above, so the person's own record is never
+    marked. A scratch record the practitioner page made first is the same
+    object and is marked the first time it is opened. */
+ if(!p.you)showMark(CURP);
  /* AND EVERY WORKED EXAMPLE OPENS WITH A BANK AND A VAULT, round QD, his
     words: "load up their bank and their vault. With real data." Its journal
     and its releases are replayed through the real writers (engine/exdepth.js)

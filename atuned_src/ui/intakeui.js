@@ -1367,7 +1367,10 @@ function renderIntake(){
     the header carries the remainder, and the three ways are shown by layout:
     an open law sets its three framings side by side, each with its own name
     and icon. */
- var h='<div class="iqa">'+iqHeroHtml(p,sc,r,scored,answered,Q.length)+iqMoreHtml(p)
+ var h='<div class="iqa">'+iqHeroHtml(p,sc,r,scored,answered,Q.length)
+  /* show only on a worked example, ruled 16 October: the line under the
+     header, and the answers drawn disabled below */
+  +(showOnly()?showNote('intake','iqa-show'):'')+iqMoreHtml(p)
   +'<div class="iqa-mid" data-who="'+(IQ_WHO?1:0)+'">'+iqWhoHtml(p)+iqAccuracy()+'</div>';
  /* THE LAW IN HAND IS PINNED ON ARRIVAL. Left unpinned it was worked out
     fresh on every draw as the first law still missing an answer, so the third
@@ -1380,6 +1383,15 @@ function renderIntake(){
  h+='</div>';
  iqArtCss(); iqDoors();
  host.innerHTML=h;
+ /* A WORKED EXAMPLE'S ANSWERS ARE ITS READING, AND THEY ARE NOT PRESSED.
+    Ruled 16 October (engine/showonly.js). Every control on this page that
+    writes an answer, a name, a birth moment, the seal, the stated type, a save
+    or the export is drawn disabled, so it reads as a reading and does not
+    offer a press that the engine would then refuse. What opens a law, a seat
+    or a view stays live, because that is looking. iqAnswer and ixSet refuse
+    it in the engine for any press that gets here another way. */
+ if(showOnly())host.querySelectorAll('[data-a],[data-ixb],[data-who],[data-born],#iqseal,#wtype,#wtu,#iqsave,#iqexp')
+  .forEach(function(e){e.disabled=true; e.setAttribute('aria-disabled','true');});
  /* the avatar repaints only when something it reads has moved, so a press on
     a law never throws away a half typed pair above it */
  if(typeof avRefresh==='function')avRefresh();
@@ -1445,7 +1457,9 @@ function renderIntake(){
     and the status line is what says whether it will survive a reload. */
  host.querySelectorAll('[data-ixb]').forEach(function(el){el.onclick=function(){
   var id=el.getAttribute('data-ixb'), k=el.getAttribute('data-ixk'), v=+el.getAttribute('data-v');
-  if(!ixSet(CURP,id,k,v)){status('That answer was not recorded.','fail');return;}
+  /* a refusal on a worked example has already said its own line through the
+     engine's reporter, and this one would put a failure over it */
+  if(!ixSet(CURP,id,k,v)){if(!showOnly())status('That answer was not recorded.','fail');return;}
   IQ_FOCUS='[data-ixb="'+id+'"][data-ixk="'+k+'"][data-v="'+v+'"]';
   IQ_XPOP=IQ_FOCUS; pSave(); statusSaved(); renderIntake();};});
  host.querySelectorAll('[data-a]').forEach(function(el){el.onclick=function(){
@@ -1454,10 +1468,9 @@ function renderIntake(){
      when the mean of the three lands on the same number: the person has just
      told us where the law is, and that wins over the model's estimate. */
   var li=Math.floor(+el.dataset.a/3), was=iqGot(CURP,li);
-  if(CURP.intake.answers[+el.dataset.a]!==+el.dataset.v)
-   lawAnswered(CURP,SI[li].nm);
-  CURP.intake.answers[+el.dataset.a]=+el.dataset.v;
-  if(!CURP.intake.startedAt)CURP.intake.startedAt=new Date().toISOString();
+  /* the write is the engine's, so a worked example refuses it there and the
+     reporter it bound says what the press would do on the person's own */
+  if(!iqAnswer(CURP,+el.dataset.a,+el.dataset.v))return;
   IQ_PULSE={li:li,a:+el.dataset.a,fresh:iqGot(CURP,li)>was};
   iqApply(CURP); pSave(); syncLw(); renderIntake(); render();};});
  /* THE NESTED ROWS. Both write the whole host like every other press, and
@@ -1526,7 +1539,7 @@ function renderIntake(){
   sb.textContent=ok?'Saved':'Not saved';
   setTimeout(function(){sb.textContent='Save';},ok?900:2600);};
  var eb=document.getElementById('iqexp');
- if(eb)eb.onclick=function(){var t=pExport();
+ if(eb)eb.onclick=function(){var t=pExport(); if(t==null)return;
   try{navigator.clipboard.writeText(t);eb.textContent='Copied';status('Profile copied to the clipboard.');}
   catch(e){eb.textContent=t.length+' bytes';}
   setTimeout(function(){eb.textContent='Export';},1200);};}
