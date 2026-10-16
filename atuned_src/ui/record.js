@@ -95,8 +95,9 @@ function recRender(){
     line adds stays, and the horizon is said once, where the distance to the
     next marker is. */
  h+='<div class="rec-lead"><div class="pm-eye">Opened</div>'
-  +'<div class="rec-big">'+m.unique+(m.unique===1?' address':' addresses')+'</div>'
-  +'<div class="sum-lc">'+(m.unique
+  /* m.ground, the addresses, never m.unique, the patterns (meterRead) */
+  +'<div class="rec-big">'+m.ground+(m.ground===1?' address':' addresses')+'</div>'
+  +'<div class="sum-lc">'+(m.ground
     ? 'opened at least once, from '+m.lines+(m.lines===1?' line':' lines')+' spoken'
     : 'nothing opened yet')+'.</div>';
  /* THE LADDER IS THEIRS. A threshold is a fraction of what a person is
@@ -111,8 +112,11 @@ function recRender(){
  if(m.next)
   h+='<div class="rec-next"><span class="pm-eye">Next</span>'
    +'<b>'+esc(m.next.nm)+'</b>'
+   /* the ruler is patterns, so the distance is (meterRead, OPENED IS
+      ADDRESSES). It said addresses, and 440 new addresses is more than the
+      body has. */
    +'<span class="rec-nl">'+m.next.left
-     +(m.next.left===1?' new address':' new addresses')+' away</span>'
+     +(m.next.left===1?' new pattern':' new patterns')+' away</span>'
    /* THE THIRD LINE GOES WHEN IT HAS NOTHING TO SAY. It read "your own scale,
       50 addresses of about 300" under a distance already given in addresses,
       a second figure and a count against a total on the smallest line of the

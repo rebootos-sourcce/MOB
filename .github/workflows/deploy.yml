@@ -293,6 +293,7 @@ jobs:
           - { gate: loopui, timeout: 20, command: node tests/loopui.js }
           - { gate: personas-tier, timeout: 20, command: node tests/personas-tier.js }
           - { gate: valuefeltui, timeout: 20, command: node tests/valuefeltui.js }
+          - { gate: record, timeout: 20, command: node tests/record.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

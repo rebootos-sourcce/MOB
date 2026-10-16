@@ -3392,8 +3392,11 @@ function coneClose(){
    only count things that happened. Then the marks earned, and one line naming
    the next.
 
-   NOTHING HERE PRINTS A COUNT AGAINST A TOTAL. Sixteen marks exist and the
-   surface never says sixteen. Earned ones are shown, the next is named with
+   NOTHING HERE PRINTS A COUNT AGAINST A TOTAL. MARKS (engine/ladder.js) holds
+   every mark there is and the surface never says how many. This line said
+   "Sixteen marks exist" after two more had landed at round QS, which is the
+   count typed into prose that CLAUDE.md warns about, so the number is read off
+   MARKS.length and not written here. Earned ones are shown, the next is named with
    what it takes, and the rest are not enumerated, because a list of a person's
    unfinished self is a completion bar and this is not a game about becoming
    whole.
@@ -3401,26 +3404,37 @@ function coneClose(){
 function ladderHtml(){
  var L=ladderRead(CURP,Date.now()), s=L.streak, l=L.ledger;
  var h='<div class="ld"><div class="pm-eye">The record</div>';
- /* the streak. A run that has lapsed still says what it was, because the
-    thing a person built is not deleted by their having stopped. */
- h+='<div class="ld-streak'+(s.live?' live':'')+'">'
+ /* THE STREAK SAYS WHAT IT IS, AND THREE LINES HERE SAID WHAT IT WAS NOT.
+    Measured on f7188cba. A blank record read "Build one ritual and save it,
+    and the first day is on", and since 21.J2 a saved ritual is a plan: only
+    a ritual marked done puts a day on. A lapsed one read "10 days, last run"
+    and "The run ended 20 days ago ... Practise today and a new one starts",
+    and practising today put 5 on screen, half the old run and not a new one.
+    The halving now lands on the gap (streakRead, engine/ladder.js), so the
+    figure is the one that stands, and it carries its meaning on the figure,
+    the sentence the Accountability column already prints under its own. The
+    absence is not counted in days, DESIGN-ladder anti design 5: the line
+    gives the date of the last day practised, TDD v3 10.5, and the button
+    under it is the route. */
+ var dys=function(n){return n+(n===1?' day':' days');};
+ h+='<div class="ld-streak'+(s.live?' live':'')+'" title="'+esc(STREAK_MEANS)+'">'
   +'<span class="ld-n">'+(s.run?s.run:'\u2013')+'</span>'
   /* the space before the comma was on the screen: "14 days , last run". */
-  +'<span class="ld-u">'+(s.run?(s.run===1?'day':'days')+(s.live?' running':', last run'):'')+'</span>'
+  +'<span class="ld-u">'+(s.run?(s.run===1?'day':'days')+(s.live?' running':''):'')+'</span>'
   +'</div>';
+ var lastOn=(s.last!=null&&typeof ritDateOf==='function'&&typeof relDay==='function')?relDay(ritDateOf(s.last)):'';
  if(!s.days)
-  h+='<p class="ld-p">Nothing on the record yet. Build one ritual and save it, '
-   +'and the first day is on.</p>';
+  h+='<p class="ld-p">Nothing on the record yet. Mark a ritual done and the first day is on.</p>';
  else if(!s.live)
-  h+='<p class="ld-p">The run ended '+s.gap+' days ago. Longest held: '
-   +s.best+'. Practise today and a new one starts.</p>';
+  h+='<p class="ld-p">'+(lastOn?'Last practised '+esc(lastOn)+'. ':'')
+   +(s.best>s.run?'Longest held: '+dys(s.best)+'.':'')+'</p>';
  else if(s.best>s.run)
-  h+='<p class="ld-p">Longest held: '+s.best+' days.</p>';
+  h+='<p class="ld-p">Longest held: '+dys(s.best)+'.</p>';
  /* THE ACCOUNTABILITY HALF. A record that only reports is a scoreboard. This
     says where today stands and hands over the one control that changes it, so
     a person is never told they are behind on a surface that cannot do
-    anything about it. Today counts as done the moment a ritual is saved with
-    today's date, which is the same fact the streak is counted from, so the two
+    anything about it. Today counts as done the moment a ritual for today is
+    marked done, which is the same fact the streak is counted from, so the two
     can never disagree. */
  h+='<div class="ld-acc">'
   +(s.gap===0
@@ -3472,5 +3486,7 @@ function ladderHtml(){
     +'<span class="ld-md">'+esc(m.d)+'</span></div>';});
   h+='</div>';}
  if(L.next)
-  h+='<p class="ld-next"><b>'+esc(L.next.nm)+'</b> '+esc(L.next.d)+'</p>';
+  /* what it takes, never what it means once held: the d line is past tense
+     and read as a mark already earned (L2, engine/ladder.js) */
+  h+='<p class="ld-next"><b>'+esc(L.next.nm)+'</b> '+esc(L.next.to)+'</p>';
  return h+'</div>';}

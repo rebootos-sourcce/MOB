@@ -1181,8 +1181,11 @@ function profileSheet(){
   /* "of 112" was a count against a total, which is the one thing a reading
      may never be. The number of addresses carrying is the fact. */
   +'<div class="sh-row"><span>Addresses carrying</span><b>'+r.loaded.length+'</b></div>'
-  +(m?'<div class="sh-row"><span>Ground opened</span><b>'+m.unique+'</b></div>':'')
-  +(m&&m.next?'<div class="sh-row"><span>Next marker</span><b>'+esc(m.next.nm)+', '+m.next.left+' away</b></div>':'')
+  /* addresses opened, the Compass ledger's count, and the distance in the
+     patterns the markers count, each with its unit (meterRead). This printed
+     the pattern count under Ground opened, and a bare distance. */
+  +(m?'<div class="sh-row"><span>Ground opened</span><b>'+m.ground+(m.ground===1?' address':' addresses')+'</b></div>':'')
+  +(m&&m.next?'<div class="sh-row"><span>Next marker</span><b>'+esc(m.next.nm)+', '+m.next.left+(m.next.left===1?' new pattern':' new patterns')+' away</b></div>':'')
   +'</div>'
   +planSection(m)
   +'<div class="sh-sec"><div class="pm-eye">Screen</div>'

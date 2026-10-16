@@ -119,6 +119,10 @@ BROWSER = {
     'loopui':        ('node tests/loopui.js', 20),
     'personas-tier': ('node tests/personas-tier.js', 20),
     'valuefeltui':   ('node tests/valuefeltui.js', 20),
+# the record tells the truth, achievements Block 1 (tests/record.js): the
+# words on the record's surfaces, read on the real renderers. Report only
+# until three green runs, like the alpha guards above.
+    'record':        ('node tests/record.js', 20),
 }
 # P0 Alpha acceptance: move to the blocking browser matrix, and mutation-test each
 # one so a future refactor cannot silently return it to report-only.
@@ -2127,6 +2131,10 @@ BREAKS = [
     ('a workflow concurrency that cancels', lambda d: d.__setitem__('concurrency', {'group': 'x', 'cancel-in-progress': True})),
     ('chromium pointed at after the gate', lambda d: _job(d, 'gates-browser')['steps'].append(_job(d, 'gates-browser')['steps'].pop(4))),
     ('a browser gate dropped from the matrix', lambda d: _legs(d, 'gates-browser').pop(0)),
+    # a report leg dropped by name, the record gate, which ran nowhere in CI for
+    # one pull request because its matrix line and this table disagreed
+    ('the record gate dropped from gates-report', lambda d: _legs(d, 'gates-report').remove(
+        [l for l in _legs(d, 'gates-report') if l.get('gate') == 'record'][0])),
     ('the build order reversed', lambda d: _sub(d, 'gates-fast', r'BUILD-engine', './atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh', './atuned_src/BUILD.sh && ./atuned_src/BUILD-engine.sh')),
     ('the deploy job builds BUILD.sh first', lambda d: _sub(d, 'deploy', r'BUILD-engine', './atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh', './atuned_src/BUILD.sh && ./atuned_src/BUILD-engine.sh')),
     ('the engine gate not teed', lambda d: _sub(d, 'gates-fast', r'tests/engine\.js', 'engine.log', 'engine.txt')),
