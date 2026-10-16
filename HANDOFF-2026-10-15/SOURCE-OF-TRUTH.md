@@ -222,3 +222,72 @@ corpus, anxiety first, each delivered for the owner's approval in the
 validator's format; nothing issued until all six are approved and readback
 is proven. The gift does not block alpha: a stranger still gets 100 releases
 from the general catalogue.
+
+## 16 October: the KPI count was the test gates, and both sides now stop it
+
+- The first ladder read said 6,867 sessions opened against 14 grounds
+  chosen. A breakdown by state, status, day and hour (kpi-totals.yml, run
+  38828528547, then 38829869001) showed every session at ARRIVE and active,
+  none past the door, opening by the hundred in the hours the gates ran and
+  zero in the hours they did not. They were the browser gates: every one
+  opens the app from a file, and from 9 October, when the first visit
+  shipped, each opening posted a session to the live Worker. A file page's
+  origin is `null`; the server only sets the CORS header and does not refuse,
+  so the request ran, the browser refused to hand the answer back, the app
+  never kept the session, and the next run made another.
+- **Server, live at 00:29:56 UTC** (Reboot-OS PR 57, merge 025f057, deploy
+  run 38829691194, every live smoke green): `POST /v1/funnel/session` answers
+  403 to origin `null` before the rate limit and before any write. A request
+  with no origin header and a request from the site are untouched. Test in
+  `test/funnel.test.mjs`; 129 server tests pass.
+- **App, merged at 01:18 UTC** (MOB PR 80, merge 3e3880b): `authFunnelStart`
+  returns at once on a file page whose `AUTH_API` is still the production
+  address (`AUTH_API_LIVE` beside it in `ui/auth.js`). A gate that points
+  `AUTH_API` at its own stub still starts one; the copy gate names its stub
+  as the server before the page's script runs (`tests/copy.js`). The
+  production readback for that merge: deploy run 38834393508, "Cloudflare
+  serves this commit in production" success, 01:39 UTC; `3e3880b` is what
+  atuned.world serves.
+- **KPI ladder** (Reboot-OS PR 58, merge f242313): the clean date is
+  `2026-10-16T00:30:00Z`. The ladder prints "of them since the clean date"
+  under "sessions opened" and says in one line that the total before it
+  counts the test gates, not people. Last read before the clean date, at
+  00:30 UTC: 6,984 opened, 0 since the clean date, ground chosen 14, tutorial
+  done 6, first release 6, release checked 4, joined to an account 5.
+- Local gates on the change: copy 151 passed, 0 failed (the guard made it
+  fail first); golden, onboarding2, quit, reset, feedback, journey2,
+  firstrelease, storage green; engine 5038 passed, 10 expected red. The
+  functional gate failed one reload check in one run and three other reload
+  checks in the next, a different set each time, with other work loading the
+  same four cores; the practitioner reload passes three times in a row on the
+  build and CI on a clean runner passed every gate (run 38832520942).
+
+## 16 October: Stripe re-checked, the key is still test mode
+
+The owner wrote that the live key was in. Checked, not asked: the server's
+own check (server.yml, dispatch run 38831971807, 00:53 UTC) reads the GitHub
+secret `STRIPE_SECRET_KEY`, which every deploy writes into the Worker, and
+printed "live Stripe setup check passed, test mode". So the Worker is on a
+test key (`sk_test_` or `rk_test_`); the earlier screenshot was a Stripe
+sandbox, which only hands out test keys. The three prices, the webhook and
+the portal all pass on it. Checkout stays closed (`STRIPE_BILLING_ENABLED=0`)
+until the owner says "open checkout" (TEAM-REVIEW-2026-10-15.md line 361).
+The owner has also ruled that nothing more is asked of him on Cloudflare,
+GitHub or Stripe, so the `atuned-os` dashboard look above is withdrawn: the
+Worker stays as it is, with no bindings and no custom domain, and the
+boundary holds by token scope and the disabled workflow.
+
+## 16 October: the anxiety gift bank candidate
+
+`GIFT-BANK-ANXIETY-CANDIDATE-2026-10-16.md` and `giftbank/` beside this
+file (MOB PR 81). 100 sentences in the owner's own dictated words from the
+LET GO corpus, verbatim, each with its source record, a stable id and a
+hash, in the validator's format; 82 ranked in reserve, 221 held with one
+reason each. 2,470 distinct sentences in the corpus, 403 naming anxiety or
+fear, 182 after the rules and a read-through. Nothing in the corpus sorts a
+sentence by nature, so anxiety was decided by the words in the sentence: 39
+use a core word (anxious, worry, nervous, panic, dread), 61 only a fear word.
+Not approved. The validator refuses the set, as it must, on the three empty
+approval fields, the five banks that do not exist yet and the empty nature
+to track map, and on nothing about the content. The owner approves with the
+one sentence at the bottom of the document, or names lines to swap.
