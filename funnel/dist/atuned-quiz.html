@@ -1540,7 +1540,17 @@ const TIERDEF=[
   soma:'Taken over by what happened before and was never worked through. The body drags with its full weight.',
   def:'Your energy is fully loaded. Nothing is clearing.',
   energy:'Flat. Not calm, out of charge.',
-  toward:'Weight off, and not alone. A reading this low is not a thing to manage by yourself, and the instrument will not pretend otherwise.'}];
+  /* WEIGHT COMES OFF WITH ANOTHER PERSON, 16 October, from the review of the
+     crisis screens. The line before it, "Weight off, and not alone. A reading
+     this low is not a thing to manage by yourself, and the instrument will
+     not pretend otherwise.", said a person should not be alone with this and
+     then offered nobody: no number, no button, only the sentence. It was a
+     seat's draft (b6f58ba1, 18 September, whose message marks the copy as a
+     draft and the wording as the owner's call), not his words, and neither
+     DECISIONS.md nor BIBLE.md carries it, so Emmy's line replaces it. The
+     way to reach that person is the crisis button the renderers put directly
+     under this sentence for this band (crisisFloor, ui/crisis.js). */
+  toward:'Weight comes off with another person.'}];
 /* one lookup, so the band table stops being copied into renderers */
 const TIER_BY={}; TIERDEF.forEach(function(t){TIER_BY[t.nm]=t;});
 /* the median, and the width of the swing around it. named once, because three

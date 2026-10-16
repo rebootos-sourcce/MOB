@@ -6746,6 +6746,11 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
  transition:color var(--t-micro) var(--ease-out),border-color var(--t-micro) var(--ease-out)}
 .crx-open:hover{color:var(--ink);border-color:color-mix(in srgb,var(--ink) 34%,transparent)}
 .crx-line{margin:14px 0 0}
+/* UNDER THE FLOOR BAND'S DIRECTION it is the next step, so it takes the size,
+   the ink and the panel of the page's own .btn, the Run a release beside it.
+   The quiet pill above is right for a way out of a flow and wrong here, where
+   the sentence has just told a person to reach somebody. */
+.crx-open.crx-near{font-size:14px;padding:9px 17px;color:var(--ink);background:var(--panel-2)}
 /* on the stage it joins Not now on the right; the rail is out of the flow, so
    the auto margin is what keeps the two of them off the rail in the middle */
 .obx-top .obx-crx{margin-left:auto;margin-right:10px}
@@ -6754,6 +6759,13 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
 .obx-crx{background:color-mix(in srgb,rgb(6,6,8) 82%,transparent)}
 /* the Story box's own line after Talk it through, above the box it is about */
 .st-crisis{margin:0 0 10px;color:var(--ink)}
+/* the line and Reach someone now on one row; on a phone the button wraps
+   under the line rather than squeezing it to a column of two words */
+.st-crxrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin:0 0 10px}
+.st-crxrow .st-crisis{flex:1 1 240px;margin:0}
+/* at the foot the bar gains a third button, so it may wrap on a phone and
+   Clear and Commit stay together at the right */
+.st-bar.st-bar-crx{flex-wrap:wrap}
 .login-dev summary{font-size:12.5px;color:var(--dim);cursor:pointer;
  list-style:none}
 .login-dev summary::-webkit-details-marker{display:none}

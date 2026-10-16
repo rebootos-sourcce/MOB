@@ -936,6 +936,34 @@ console.log('\n=== Is this a crisis, on the welcome and after it (16 October) ==
    'Talk it through lands in the Story box, open, focused and empty'+at+', '+JSON.stringify(talk));
   ok(talk.line==='It is always a story. Write what happened, in your own words.','with one line above it saying what it is for'+at+', '+talk.line);
   await shot(page,'crisis-story-'+w);
+  /* THE WAY BACK TO THE NUMBERS, from the review of these screens: Talk it
+     through used to leave the person on the full Story page with no way back
+     to the three numbers. Reach someone now stands beside the line and beside
+     Commit, and opens the same panel on the numbers. Checked against the
+     build before the doors, where it fails here, on no door. */
+  const doors=await page.evaluate(()=>[...document.querySelectorAll('[data-crisis="reachnow"]')].map(b=>{
+    const r=b.getBoundingClientRect();
+    return {t:b.textContent, h:Math.round(r.height), on:r.width>0&&r.height>0&&r.right<=innerWidth,
+     row:!!b.closest('.st-crxrow'), bar:!!b.closest('.st-bar')&&!!b.parentNode.querySelector('#stapply')};}));
+  ok(doors.length===2&&doors.every(d=>d.t==='Reach someone now'&&d.on&&d.h>=44)
+   &&doors.some(d=>d.row)&&doors.some(d=>d.bar),
+   'Reach someone now stands beside the line and beside Commit, at the floor'+at+', '+JSON.stringify(doors));
+  /* a missing door is a named failure and not a thirty second click timeout
+     that ends the run before the checks after it */
+  if(await page.$('.st-bar [data-crisis="reachnow"]'))
+   await page.click('.st-bar [data-crisis="reachnow"]');
+  await page.waitForTimeout(150);
+  const back=await page.evaluate(()=>{const c=document.getElementById('crisis');
+   return {open:!c.hidden, h:(c.querySelector('#crxh')||{}).textContent,
+    hrefs:[...c.querySelectorAll('a[href]')].map(a=>a.getAttribute('href'))};});
+  ok(back.open&&back.h==='Reach someone now'&&back.hrefs.indexOf('tel:988')>=0,
+   'and it opens the panel straight on the numbers'+at+', '+JSON.stringify(back));
+  await page.keyboard.press('Escape'); await page.waitForTimeout(150);
+  const stay=await page.evaluate(()=>({shut:document.getElementById('crisis').hidden, story:S.tab===TAB.STORY,
+   line:!!document.getElementById('stcrisis'),
+   back:!!(document.activeElement&&document.activeElement.matches('.st-bar [data-crisis="reachnow"]'))}));
+  ok(stay.shut&&stay.story&&stay.line&&stay.back,
+   'Escape puts the person back on the Story page, the line still there, focus on the door'+at+', '+JSON.stringify(stay));
 
   /* after the first run, the profile menu */
   await page.click('#profbtn'); await page.waitForTimeout(250);
@@ -949,6 +977,71 @@ console.log('\n=== Is this a crisis, on the welcome and after it (16 October) ==
   const closed=await page.evaluate(()=>({shut:document.getElementById('crisis').hidden,
    back:!!(document.activeElement&&document.activeElement.id==='profbtn'), story:S.tab===TAB.STORY}));
   ok(closed.shut&&closed.back&&closed.story,'Close shuts it, focus is back on the profile button, and nothing moved'+at+', '+JSON.stringify(closed));
+  ok(errs.length===0,'no script error'+at+': '+errs.slice(0,3).join(' | '));
+  await page.close();
+ }
+}
+
+console.log('\n=== the floor band says where to go and gives the door to it (16 October) ===');
+/* The lowest band's "Where it goes" told a person to take the weight off with
+   somebody else and gave them nobody to reach. The review of the crisis
+   screens ruled the button directly under that sentence, as visible as the
+   page's own Run a release. The profile is chosen by its computed band, the
+   one starting at zero, never by its place in the roster; the comparison
+   profile is any band above it. Checked against the build before the button,
+   where it fails at its first row, on the missing button. */
+{
+ const SHOTS=process.env.SHOTS||'';
+ for(const [w,h] of [[1600,1000],[390,844]]){
+  const at=' at '+w;
+  const page=await browser.newPage({viewport:{width:w,height:h}});
+  const errs=[]; page.on('pageerror',e=>errs.push(e.message));
+  await page.goto(FILE+'?dev=1',{waitUntil:'load'}); await booted(page);
+  await page.waitForTimeout(300);
+  const who=await page.evaluate(()=>{const all=PEOPLE.map((x,i)=>{loadP(i); const r=compute();
+    return {i,nm:x.nm,at:r.tier&&TIER_BY[r.tier]?TIER_BY[r.tier].at:null};});
+   return {floor:all.find(x=>x.at===0), above:all.find(x=>x.at!==null&&x.at>0)};});
+  ok(!!who.floor&&!!who.above,'the roster has a profile on the floor band and one above it'+at+', '+JSON.stringify(who));
+  if(!who.floor||!who.above){ await page.close(); continue; }
+  await page.evaluate(i=>{loadP(i);setTab(TAB.SUMMARY);render();},who.floor.i);
+  await page.waitForTimeout(500);
+  const plate=await page.evaluate(()=>{const tw=document.querySelector('.s-ptoward'),
+    b=tw&&tw.querySelector('[data-crisis="open"]'), rel=document.querySelector('.s-oact');
+   const box=e=>{if(!e)return null; const r=e.getBoundingClientRect(), cs=getComputedStyle(e);
+    return {h:Math.round(r.height),fs:cs.fontSize,c:cs.color,top:Math.round(r.top),
+     on:r.width>0&&r.height>0&&cs.visibility!=='hidden'};};
+   return {text:tw?tw.textContent:'', btn:b?b.textContent:null, near:!!b&&b.classList.contains('crx-near'),
+    under:!!b&&tw.textContent.indexOf(TIER_BY.Contracted.toward)>=0
+     &&tw.innerHTML.indexOf(TIER_BY.Contracted.toward)<tw.innerHTML.indexOf('data-crisis'),
+    b:box(b), rel:box(rel)};});
+  ok(plate.btn==='Is this a crisis?'&&plate.near&&plate.under,
+   'on the floor band the crisis button sits directly under "Where it goes"'+at+', '+JSON.stringify(plate.text));
+  ok(plate.b&&plate.b.on&&plate.b.h>=44&&plate.rel&&plate.b.fs===plate.rel.fs&&plate.b.c===plate.rel.c,
+   'at the tap floor, in the size and ink of the page\'s own Run a release'+at+', '+JSON.stringify({b:plate.b,rel:plate.rel}));
+  await page.locator('.s-ptoward [data-crisis="open"]').scrollIntoViewIfNeeded();
+  if(SHOTS){ await page.mouse.move(0,0); await page.waitForTimeout(200);
+   await page.screenshot({path:path.join(SHOTS,'crisis-floor-'+w+'.png')}); }
+  await page.click('.s-ptoward [data-crisis="open"]'); await page.waitForTimeout(150);
+  const opened=await page.evaluate(()=>({open:!document.getElementById('crisis').hidden,
+   h:(document.getElementById('crxh')||{}).textContent}));
+  ok(opened.open&&opened.h==='Tell me about it.','and it opens the same panel'+at+', '+JSON.stringify(opened));
+  await page.keyboard.press('Escape'); await page.waitForTimeout(150);
+  /* the band drill (runCompassDrill, the side panel the band label opens)
+     prints the same sentence, so it carries the same door. Counted in the
+     document and not by size: at 390 the side panel is folded away. */
+  await page.evaluate(()=>{S.pin=null; runCompassDrill(); render();}); await page.waitForTimeout(400);
+  const drill=await page.evaluate(()=>{const b=[...document.querySelectorAll('[data-crisis="open"].crx-near')]
+    .filter(e=>!e.closest('.s-ptoward'));
+   return {n:b.length, after:b.length?(b[0].closest('.crx-line').previousElementSibling||{}).textContent:null};});
+  ok(drill.n===1&&drill.after===TIER_BY.Contracted.toward,
+   'the band drill carries it directly under the same sentence'+at+', '+JSON.stringify(drill));
+  /* and a band above the floor carries no such button: it is a door for the
+     reading that told a person to reach somebody, not decoration. The drill
+     is opened again for that profile, so both surfaces are compared. */
+  await page.evaluate(i=>{loadP(i);setTab(TAB.SUMMARY);S.pin=null;runCompassDrill();render();},who.above.i);
+  await page.waitForTimeout(400);
+  const above=await page.evaluate(()=>document.querySelectorAll('.crx-near').length);
+  ok(above===0,'and a profile above the floor band gets none, '+who.above.nm+at+', found '+above);
   ok(errs.length===0,'no script error'+at+': '+errs.slice(0,3).join(' | '));
   await page.close();
  }

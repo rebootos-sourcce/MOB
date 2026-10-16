@@ -175,7 +175,16 @@ function stRender(){
      says what it is for in one line above it, until the entry is committed.
      A note and not the box's own text: words put in the box would be read
      and committed as if the person had typed them. */
-  +(STV.crisis&&!STV.chat?'<p class="st-mask st-crisis" id="stcrisis" role="note">'+esc(CRISIS_SAY.story)+'</p>':'')
+  /* AND THE WAY BACK TO THE NUMBERS, from the review of these screens: Talk it
+     through landed on the full Story page and the three numbers were behind a
+     panel that had shut, with no way back to them short of the profile menu.
+     Reach someone now stands beside this line and beside Commit while the
+     line is up, and opens the same panel on the numbers (crisisReach,
+     ui/crisis.js). It is only a door: nothing here reads the box. A sibling
+     of the line and not inside it, so the line's own words stay its words. */
+  +(STV.crisis&&!STV.chat?'<div class="st-crxrow">'
+    +'<p class="st-mask st-crisis" id="stcrisis" role="note">'+esc(CRISIS_SAY.story)+'</p>'
+    +crisisReachBtn('st-crxline')+'</div>':'')
   +(STV.chat
    ?'<div class="src-cmp"><textarea id="stcin" class="src-cin" rows="2" spellcheck="false" '
     +'aria-label="Your reply" placeholder="Write back. Enter sends.">'+esc(SRC_CDRAFT)+'</textarea>'
@@ -213,7 +222,10 @@ function stRender(){
      keeps the two buttons at the right edge where the counter pushed them.
      The prototype this page is ported from put a word count back here, and
      it stays out: the ruling is his and names this exact place. */
-  +'<div class="st-bar">'
+  +'<div class="st-bar'+(STV.crisis&&!STV.chat?' st-bar-crx':'')+'">'
+   /* the second door, at the foot, where the person finishes: see the crisis
+      line above. Left of the spacer, so Clear and Commit keep their edge. */
+   +(STV.crisis&&!STV.chat?crisisReachBtn('st-crxbar'):'')
    +'<span class="st-ct" aria-hidden="true"></span>'
    +'<button class="btn" id="stclear">Clear</button>'
    +'<button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'

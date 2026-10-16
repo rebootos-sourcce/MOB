@@ -930,7 +930,7 @@ function sumPlate(r,B){
   /* the direction out, which has never been on a surface a touch screen can
      reach. It is the third of the three things a band is required to carry. */
   +(t&&t.toward?'<div class="s-ptoward"><span class="pm-eye">Where it goes</span>'
-    +esc(t.toward)+'</div>':'')
+    +esc(t.toward)+crisisFloor(t)+'</div>':'')
   +'</div>';}
 /* the head of the page: the plate. On a read profile it is the name, the band
    and where it goes. On an unread one it is what was entered and nothing else,

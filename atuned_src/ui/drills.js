@@ -1455,7 +1455,7 @@ function runCompassDrill(){
   +(me.soma?'<div class="pm-eye">The state</div><p class="ad-p"><b>'
     +esc(me.state)+'.</b> '+esc(me.soma)+'</p>':'')
   +'<div class="pm-eye">How it shows up</div><p class="ad-p">'+esc(me.energy)+'</p>'
-  +'<div class="pm-eye">Where it goes</div><p class="ad-p">'+esc(me.toward)+'</p>';
+  +'<div class="pm-eye">Where it goes</div><p class="ad-p">'+esc(me.toward)+'</p>'+crisisFloor(me);
  h+='<div class="pm-eye">The whole scale</div><div class="ad-rows">'
   +TIERDEF.map(function(t){
     return '<div class="ad-r static'+(t.nm===r.tier&&!r.unread?' on':'')+'" title="'+esc(t.soma||t.def)+'">'

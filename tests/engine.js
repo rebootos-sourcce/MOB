@@ -1861,7 +1861,12 @@ g('19c \u00b7 a label carries what it owes');
  reset(0,0,10); ok(tierOf(compute().CQ).nm===compute().tier,'and agrees with compute at the top');
  reset(10,0,0); ok(tierOf(compute().CQ).nm===compute().tier,'and at the bottom');
  /* the lowest band is the one that must not read as a product upsell */
- ok(/not alone|alone/.test(TIER_BY.Contracted.toward),
+ /* the floor band's direction names another person, 16 October: the line
+    used to say "not alone", and now says who with. Held at the same
+    strength: a direction that sends a person anywhere but to somebody else
+    fails, and so does one that tells them to manage it alone. */
+ ok(/\banother person\b|\bnot alone\b/.test(TIER_BY.Contracted.toward)
+   &&!/\b(?:yourself|on your own|by yourself)\b/.test(TIER_BY.Contracted.toward),
   'the lowest band does not tell a person to manage it by themselves');
  /* house voice applies to the copy too */
  const all=JSON.stringify(TIERDEF);

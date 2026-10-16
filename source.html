@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v241 f5c029f1 2026-10-16 12:04"><head><meta charset="utf-8">
+<html lang="en" data-build="v246 c7f02676 2026-10-16 12:38"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -6746,6 +6746,11 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
  transition:color var(--t-micro) var(--ease-out),border-color var(--t-micro) var(--ease-out)}
 .crx-open:hover{color:var(--ink);border-color:color-mix(in srgb,var(--ink) 34%,transparent)}
 .crx-line{margin:14px 0 0}
+/* UNDER THE FLOOR BAND'S DIRECTION it is the next step, so it takes the size,
+   the ink and the panel of the page's own .btn, the Run a release beside it.
+   The quiet pill above is right for a way out of a flow and wrong here, where
+   the sentence has just told a person to reach somebody. */
+.crx-open.crx-near{font-size:14px;padding:9px 17px;color:var(--ink);background:var(--panel-2)}
 /* on the stage it joins Not now on the right; the rail is out of the flow, so
    the auto margin is what keeps the two of them off the rail in the middle */
 .obx-top .obx-crx{margin-left:auto;margin-right:10px}
@@ -6754,6 +6759,13 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
 .obx-crx{background:color-mix(in srgb,rgb(6,6,8) 82%,transparent)}
 /* the Story box's own line after Talk it through, above the box it is about */
 .st-crisis{margin:0 0 10px;color:var(--ink)}
+/* the line and Reach someone now on one row; on a phone the button wraps
+   under the line rather than squeezing it to a column of two words */
+.st-crxrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin:0 0 10px}
+.st-crxrow .st-crisis{flex:1 1 240px;margin:0}
+/* at the foot the bar gains a third button, so it may wrap on a phone and
+   Clear and Commit stay together at the right */
+.st-bar.st-bar-crx{flex-wrap:wrap}
 .login-dev summary{font-size:12.5px;color:var(--dim);cursor:pointer;
  list-style:none}
 .login-dev summary::-webkit-details-marker{display:none}
@@ -10804,7 +10816,17 @@ const TIERDEF=[
   soma:'Taken over by what happened before and was never worked through. The body drags with its full weight.',
   def:'Your energy is fully loaded. Nothing is clearing.',
   energy:'Flat. Not calm, out of charge.',
-  toward:'Weight off, and not alone. A reading this low is not a thing to manage by yourself, and the instrument will not pretend otherwise.'}];
+  /* WEIGHT COMES OFF WITH ANOTHER PERSON, 16 October, from the review of the
+     crisis screens. The line before it, "Weight off, and not alone. A reading
+     this low is not a thing to manage by yourself, and the instrument will
+     not pretend otherwise.", said a person should not be alone with this and
+     then offered nobody: no number, no button, only the sentence. It was a
+     seat's draft (b6f58ba1, 18 September, whose message marks the copy as a
+     draft and the wording as the owner's call), not his words, and neither
+     DECISIONS.md nor BIBLE.md carries it, so Emmy's line replaces it. The
+     way to reach that person is the crisis button the renderers put directly
+     under this sentence for this band (crisisFloor, ui/crisis.js). */
+  toward:'Weight comes off with another person.'}];
 /* one lookup, so the band table stops being copied into renderers */
 const TIER_BY={}; TIERDEF.forEach(function(t){TIER_BY[t.nm]=t;});
 /* the median, and the width of the swing around it. named once, because three
@@ -43626,7 +43648,16 @@ function stRender(){
      says what it is for in one line above it, until the entry is committed.
      A note and not the box's own text: words put in the box would be read
      and committed as if the person had typed them. */
-  +(STV.crisis&&!STV.chat?'<p class="st-mask st-crisis" id="stcrisis" role="note">'+esc(CRISIS_SAY.story)+'</p>':'')
+  /* AND THE WAY BACK TO THE NUMBERS, from the review of these screens: Talk it
+     through landed on the full Story page and the three numbers were behind a
+     panel that had shut, with no way back to them short of the profile menu.
+     Reach someone now stands beside this line and beside Commit while the
+     line is up, and opens the same panel on the numbers (crisisReach,
+     ui/crisis.js). It is only a door: nothing here reads the box. A sibling
+     of the line and not inside it, so the line's own words stay its words. */
+  +(STV.crisis&&!STV.chat?'<div class="st-crxrow">'
+    +'<p class="st-mask st-crisis" id="stcrisis" role="note">'+esc(CRISIS_SAY.story)+'</p>'
+    +crisisReachBtn('st-crxline')+'</div>':'')
   +(STV.chat
    ?'<div class="src-cmp"><textarea id="stcin" class="src-cin" rows="2" spellcheck="false" '
     +'aria-label="Your reply" placeholder="Write back. Enter sends.">'+esc(SRC_CDRAFT)+'</textarea>'
@@ -43664,7 +43695,10 @@ function stRender(){
      keeps the two buttons at the right edge where the counter pushed them.
      The prototype this page is ported from put a word count back here, and
      it stays out: the ruling is his and names this exact place. */
-  +'<div class="st-bar">'
+  +'<div class="st-bar'+(STV.crisis&&!STV.chat?' st-bar-crx':'')+'">'
+   /* the second door, at the foot, where the person finishes: see the crisis
+      line above. Left of the spacer, so Clear and Commit keep their edge. */
+   +(STV.crisis&&!STV.chat?crisisReachBtn('st-crxbar'):'')
    +'<span class="st-ct" aria-hidden="true"></span>'
    +'<button class="btn" id="stclear">Clear</button>'
    +'<button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
@@ -47275,7 +47309,7 @@ function sumPlate(r,B){
   /* the direction out, which has never been on a surface a touch screen can
      reach. It is the third of the three things a band is required to carry. */
   +(t&&t.toward?'<div class="s-ptoward"><span class="pm-eye">Where it goes</span>'
-    +esc(t.toward)+'</div>':'')
+    +esc(t.toward)+crisisFloor(t)+'</div>':'')
   +'</div>';}
 /* the head of the page: the plate. On a read profile it is the name, the band
    and where it goes. On an unread one it is what was entered and nothing else,
@@ -64579,7 +64613,7 @@ function runCompassDrill(){
   +(me.soma?'<div class="pm-eye">The state</div><p class="ad-p"><b>'
     +esc(me.state)+'.</b> '+esc(me.soma)+'</p>':'')
   +'<div class="pm-eye">How it shows up</div><p class="ad-p">'+esc(me.energy)+'</p>'
-  +'<div class="pm-eye">Where it goes</div><p class="ad-p">'+esc(me.toward)+'</p>';
+  +'<div class="pm-eye">Where it goes</div><p class="ad-p">'+esc(me.toward)+'</p>'+crisisFloor(me);
  h+='<div class="pm-eye">The whole scale</div><div class="ad-rows">'
   +TIERDEF.map(function(t){
     return '<div class="ad-r static'+(t.nm===r.tier&&!r.unread?' on':'')+'" title="'+esc(t.soma||t.def)+'">'
@@ -73174,6 +73208,23 @@ var CRISIS={open:false, view:'ask', back:null};
 function crisisBtn(cls){
  return '<button type="button" class="crx-open'+(cls?' '+cls:'')+'" data-crisis="open" '
   +'aria-haspopup="dialog">'+esc(CRISIS_SAY.open)+'</button>';}
+/* UNDER THE FLOOR BAND'S DIRECTION, 16 October, from the review of these
+   screens. The lowest band told a person to take the weight off with somebody
+   else and gave them nobody to reach. Every surface that prints that band's
+   "Where it goes" calls this and gets the button directly under the sentence,
+   at the size of the page's own Run a release (.crx-near), because here it is
+   the next step and not a way out of a flow. The band is known by its
+   threshold, the one band that starts at zero, not by its name: the name was
+   renamed once already this month. Anything else gets nothing. */
+/* REACH SOMEONE NOW, as a door of its own, for the Story page after Talk it
+   through: the person already chose to write, so the question is not asked
+   again and the panel opens on the numbers. The words are the panel's own
+   choice, CRISIS_SAY.reach, so the door and the panel say the same thing. */
+function crisisReachBtn(cls){
+ return '<button type="button" class="btn crx-reach'+(cls?' '+cls:'')+'" data-crisis="reachnow" '
+  +'aria-haspopup="dialog">'+esc(CRISIS_SAY.reach)+'</button>';}
+function crisisFloor(t){
+ return t&&t.at===0?'<p class="crx-line">'+crisisBtn('crx-near')+'</p>':'';}
 /* ONE SCREEN, TWO VIEWS. ask is his two lines and the two choices; reach is
    the three numbers, each with its sentence, and the line that says they are
    US numbers. Talk it through and Close are on both, so whichever a person
@@ -73239,6 +73290,7 @@ addEventListener('click',function(e){
  var b=t.closest('[data-crisis]'); if(!b)return;
  var k=b.getAttribute('data-crisis');
  if(k==='open'){ e.preventDefault(); crisisOpen(); return; }
+ if(k==='reachnow'){ e.preventDefault(); crisisOpen(); CRISIS.view='reach'; crisisPaint(); return; }
  if(!CRISIS.open)return;
  if(k==='reach'){ CRISIS.view='reach'; crisisPaint(); return; }
  if(k==='talk'){ crisisTalk(); return; }
@@ -77400,5 +77452,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005077729"></div>
+<div id="eof" hidden data-len="005081441"></div>
 </body></html>

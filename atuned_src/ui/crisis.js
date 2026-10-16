@@ -38,6 +38,23 @@ var CRISIS={open:false, view:'ask', back:null};
 function crisisBtn(cls){
  return '<button type="button" class="crx-open'+(cls?' '+cls:'')+'" data-crisis="open" '
   +'aria-haspopup="dialog">'+esc(CRISIS_SAY.open)+'</button>';}
+/* UNDER THE FLOOR BAND'S DIRECTION, 16 October, from the review of these
+   screens. The lowest band told a person to take the weight off with somebody
+   else and gave them nobody to reach. Every surface that prints that band's
+   "Where it goes" calls this and gets the button directly under the sentence,
+   at the size of the page's own Run a release (.crx-near), because here it is
+   the next step and not a way out of a flow. The band is known by its
+   threshold, the one band that starts at zero, not by its name: the name was
+   renamed once already this month. Anything else gets nothing. */
+/* REACH SOMEONE NOW, as a door of its own, for the Story page after Talk it
+   through: the person already chose to write, so the question is not asked
+   again and the panel opens on the numbers. The words are the panel's own
+   choice, CRISIS_SAY.reach, so the door and the panel say the same thing. */
+function crisisReachBtn(cls){
+ return '<button type="button" class="btn crx-reach'+(cls?' '+cls:'')+'" data-crisis="reachnow" '
+  +'aria-haspopup="dialog">'+esc(CRISIS_SAY.reach)+'</button>';}
+function crisisFloor(t){
+ return t&&t.at===0?'<p class="crx-line">'+crisisBtn('crx-near')+'</p>':'';}
 /* ONE SCREEN, TWO VIEWS. ask is his two lines and the two choices; reach is
    the three numbers, each with its sentence, and the line that says they are
    US numbers. Talk it through and Close are on both, so whichever a person
@@ -103,6 +120,7 @@ addEventListener('click',function(e){
  var b=t.closest('[data-crisis]'); if(!b)return;
  var k=b.getAttribute('data-crisis');
  if(k==='open'){ e.preventDefault(); crisisOpen(); return; }
+ if(k==='reachnow'){ e.preventDefault(); crisisOpen(); CRISIS.view='reach'; crisisPaint(); return; }
  if(!CRISIS.open)return;
  if(k==='reach'){ CRISIS.view='reach'; crisisPaint(); return; }
  if(k==='talk'){ crisisTalk(); return; }
