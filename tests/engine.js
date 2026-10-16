@@ -173,6 +173,24 @@ const sh=E.verpRead();
 ok(sh.length===6&&sh.every(v=>v.mult>0),'six gates, each with a multiplier');
 ok(sh.filter(v=>v.side==='higher').length===3&&sh.filter(v=>v.side==='lower').length===3,
    'three higher, three lower');
+/* A PHRASE OUTRANKS THE WORDS INSIDE IT. verpScan was a bare indexOf, so
+   Intention's 'kept going' counted inside Attachment's 'kept going over', and
+   a cue counted inside a longer word. Red on f7188cba, each check beside the
+   known good case it must not break. */
+{const hit=t=>E.verpScan(t).hits;
+ const a=hit('I could not stop thinking about it, it had me all night and I kept going over it');
+ ok(a.attach===3&&a.intent===0,'kept going over is Attachment and not Intention as well, got '+JSON.stringify(a));
+ ok(hit('It rose and I kept going with the work').intent===1,'while kept going on its own is still Intention');
+ ok(hit('it did not seem like much').ignore===0,'a cue does not match inside a longer word: did not see in did not seem');
+ ok(hit('I stayed one more hour').intent===0&&hit('I stayed on it').intent===1,'stayed on is not read off stayed one, and is read off itself');
+ ok(hit('I kept going over it, and later I kept going').intent===1&&hit('I kept going over it, and later I kept going').attach===1,
+  'the same short cue outside the long one still counts');
+ /* every cue that sits inside another is a precedence the scan must honour,
+    read off the table rather than typed, so a cue added later is checked */
+ const rows=[];Object.keys(E.VERPCUE).forEach(g=>E.VERPCUE[g].forEach(p=>rows.push({g,p})));
+ rows.forEach(s=>rows.forEach(l=>{if(s===l||l.p.indexOf(' '+s.p+' ')<0&&l.p.indexOf(s.p+' ')!==0&&!l.p.endsWith(' '+s.p))return;
+  const h=hit(l.p); ok(h[l.g]>=1&&(s.g===l.g?h[l.g]===1:h[s.g]===0),
+   "'"+l.p+"' reads its own gate once, and not '"+s.p+"' inside it, got "+JSON.stringify(h));}));}
 
 g('8 · the lean');
 /* THE FIELD HERE HAS TO LEAN SOMEWHERE, and it is laws at 3 rather than 6
