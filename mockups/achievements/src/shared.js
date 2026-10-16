@@ -118,6 +118,8 @@ function turnRing(cx,cy,r,lit,o){o=o||{};const w=o.w||3,gap=o.gap||6,ir=o.iconR,
   if(ir){const c=pol(cx,cy,ir,i*90+45);s+='<g transform="translate('+(c[0]-is/2).toFixed(1)+' '+(c[1]-is/2).toFixed(1)+') scale('+(is/24)+')" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="stroke:var(--sec-'+q.k+')">'+q.ic+'</g>';}});
  return s+'</g>';}
 function turnKey(lit){return '<div class="tk">'+LOOP.filter(q=>lit.indexOf(q.k)>=0).map(q=>'<span style="--c:var(--sec-'+q.k+')"><svg viewBox="0 0 24 24" aria-hidden="true">'+q.ic+'</svg>'+q.nm+'</span>').join('')+'</div>';}
+/* said only when the outer arc is on the page: below half a percent nothing is drawn, so nothing is pointed at */
+const arcSays=t=>estimate(P).state==='start'?'':'<p class="small">'+t+'</p>';
 const TURN_SAYS='The ring round you is one turn of the loop: discover, play, flow, embody. A quarter lights when you do that step.';
 
 /* the horizon ring. The solid arc is the printed percent, drawn from the printed figure. The faint
@@ -125,7 +127,11 @@ const TURN_SAYS='The ring round you is one turn of the loop: discover, play, flo
    percent is printed, because no ring can be filled past full and stay true. */
 function horizonRing(cx,cy,r,o){o=o||{};const E=estimate(P),sw=o.w||2,bw=o.bw||8;let s='<g class="horizon">';
  if(E.state==='pct'){
-  s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" pathLength="1000" stroke-width="'+bw+'" stroke-dasharray="0 '+(E.bandLo*10).toFixed(2)+' '+((E.bandHi-E.bandLo)*10).toFixed(2)+' 1000" transform="rotate(-90 '+cx+' '+cy+')" style="stroke:var(--ach-flow);opacity:.26"/>';
+  /* the band is faint by spacing, not by opacity: thin ticks at full colour, each at 7 to 1, a gap
+     between them. A see-through arc measured 1.5 to 1 and a band that carries meaning needs 3. */
+  const a0=E.bandLo*3.6,a1=E.bandHi*3.6,len=2*Math.PI*r*(a1-a0)/360,n=Math.max(2,Math.floor(len/(o.step||3.6))+1);let d='';
+  for(let i=0;i<n;i++){const a=a0+(a1-a0)*i/(n-1),p0=pol(cx,cy,r-bw/2,a),p1=pol(cx,cy,r+bw/2,a);d+='M'+p0[0].toFixed(2)+' '+p0[1].toFixed(2)+'L'+p1[0].toFixed(2)+' '+p1[1].toFixed(2);}
+  s+='<path class="band" d="'+d+'" fill="none" stroke-width="1" style="stroke:var(--ach-flow)"/>';
   s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" pathLength="1000" stroke-width="'+sw+'" stroke-linecap="butt" stroke-dasharray="'+(E.pct*10).toFixed(2)+' 1000" transform="rotate(-90 '+cx+' '+cy+')" style="stroke:var(--ach-flow)"/>';
   const e=pol(cx,cy,r,E.pct*3.6);s+='<circle cx="'+e[0].toFixed(2)+'" cy="'+e[1].toFixed(2)+'" r="'+(sw*1.5)+'" style="fill:var(--bg);stroke:var(--ach-flow)" stroke-width="1.5"/>';}
  else if(E.state==='past'){s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="none" stroke-width="'+sw+'" style="stroke:var(--ach-flow)"/>';}
@@ -139,7 +145,7 @@ function horizonText(o){o=o||{};const E=estimate(P);let big,line;
 function howTo(E){E=E||estimate(P);return '<details class="how"><summary>How this is worked out</summary>'
   +'<p>A pattern is one line of charge you let go. Each one counts once, and the count only rises.</p>'
   +'<p>The estimate is 2,000 patterns for every ten years of life. It is the founder\'s own figure, from one person, and it will be worked out again from real data.</p>'
-  +(E.state==='pct'?'<p>The faint arc is how far off the estimate could be.</p>':'')
+  +(E.state==='pct'?'<p>The outer arc starts at twelve o\'clock and its length is this percent. The hatched part beyond it is how far off the estimate could be.</p>':'')
   +'<p>Your age is taken on the day the estimate is first shown, so a birthday never moves it.</p></details>';}
 
 /* ---------- the icon grammar (Petra). Released: a ring with a 40 degree gap at one o'clock, and what
@@ -212,7 +218,7 @@ function bodySvg(o){
 function ringsSvg(R){return P.opened.filter(r=>placed(r[0])).map(r=>{const p=DATA.place[r[0]];
  return '<g class="ar" data-id="'+r[0]+'" data-at="'+r[1]+'" transform="translate('+p[0]+' '+p[1]+')">'
   +'<circle class="w" r="'+(R*3.2).toFixed(3)+'"/><circle class="g" r="'+R.toFixed(3)+'"/>'
-  +'<circle class="r" r="'+R.toFixed(3)+'" pathLength="100" stroke-dasharray="100" stroke-dashoffset="0" transform="rotate(-90)"/></g>';}).join('');}
+  +'<circle class="r" r="'+R.toFixed(3)+'" pathLength="100" transform="rotate(-90)"/></g>';}).join('');}
 
 /* ---------- the tooltip: press or hover near a ring ---------- */
 let TIP;
@@ -247,7 +253,8 @@ function replay(){
  $$('.ar[data-id="'+P.last+'"]').forEach(g=>{
   const w=g.querySelector('.w'),r=g.querySelector('.r'),gl=g.querySelector('.g');
   if(w)w.animate([{opacity:1},{opacity:0}],{duration:900,easing:EASE_IN,fill:'both'});
-  if(r)r.animate([{strokeDashoffset:100},{strokeDashoffset:0}],{duration:700,delay:500,easing:EASE_OUT,fill:'both'});
+  /* drawn by the dash length, 0 to 101 of a 100 long path, so the end state is a solid ring with no seam */
+  if(r)r.animate([{strokeDasharray:'0 101'},{strokeDasharray:'101 0'}],{duration:700,delay:500,easing:EASE_OUT,fill:'both'});
   if(gl)gl.animate([{opacity:0},{opacity:.35}],{duration:700,delay:500,easing:EASE_OUT,fill:'both'});});
  HOOKS.replay.forEach(f=>f());}
 /* for the pictures: hold every animation at one moment */
@@ -259,10 +266,11 @@ function frame(){
  const vlinks=VERSIONS.map(v=>'<a href="'+v.id+'.html?p='+PI+'"'+(v.id===VERSION.id?' aria-current="page"':'')+'>'+v.n+'. '+v.name+'</a>').join('');
  app.innerHTML='<div class="demo" role="region" aria-label="Mockup controls">'
   +'<span class="dl"><b>Achievements mockup '+VERSION.n+', '+VERSION.name.toLowerCase()+'.</b> Demo data, not a real person.</span>'
-  +'<nav aria-label="The four mockups">'+vlinks+'</nav><span class="sp"></span>'
+  +'<button class="chip dtog" type="button" aria-expanded="false" aria-controls="dctl">Demo controls</button>'
+  +'<div class="dctl" id="dctl"><nav aria-label="The four mockups">'+vlinks+'</nav><span class="sp"></span>'
   +'<div class="grp" role="group" aria-label="Demo person">'+PEOPLE.map((p,i)=>'<button class="chip" type="button" data-p="'+i+'" aria-pressed="'+(i===PI)+'">'+p.label+'</button>').join('')+'</div>'
   +'<button class="chip" type="button" id="rp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="'+arc(12,12,8,40,330)+'"/><path d="M8.7 4.6 12 4l-.7 3.3"/></svg>Replay the last release</button>'
-  +'<span id="demo-status" class="small" role="status" aria-live="polite"></span></div>'
+  +'</div><span id="demo-status" class="small" role="status" aria-live="polite"></span></div>'
   +'<header class="appbar"><span class="wm">atüned</span><div class="secs" aria-hidden="true">'
   +LOOP.map(q=>'<span class="sec" style="--c:var(--sec-'+q.k+')"><svg viewBox="0 0 24 24">'+q.ic+'</svg><span>'+q.nm+'</span></span>').join('')
   +'</div><span class="pg">Achievements</span></header><main id="main"></main>';
@@ -271,6 +279,7 @@ function frame(){
   $$('.demo [data-p]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
   $$('.demo nav a').forEach((a,i)=>a.href=VERSIONS[i].id+'.html?p='+PI);draw();}));
  $('#rp').addEventListener('click',replay);
+ const dt=$('.dtog');dt.addEventListener('click',()=>{const o=$('.demo').classList.toggle('open');dt.setAttribute('aria-expanded',String(o));});
  wireTips();}
 function draw(){TIP.classList.remove('on');delete TIP.dataset.pin;render();wireTiles();HOOKS.render.forEach(f=>f());}
 let RT;addEventListener('resize',()=>{clearTimeout(RT);RT=setTimeout(draw,120);});
