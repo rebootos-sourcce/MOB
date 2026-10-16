@@ -7914,6 +7914,29 @@ g('PLATE WORD · early, partial or full follows how much was answered, never how
  ok(wmono&&wl===3,'the word climbs the ladder as the laws are answered and never steps back, ending at full');
 }
 
+g('SEED SHARE · the share of the field that is still the seed is measured from the real blank');
+/* seedShare measured the seed from a blank of 3 after the blank moved to 0,
+   so at e9ca1ae an ESTJ seed plus one story read 0.36 where the seed put
+   26.80 of 37.07 units on the axes. */
+{
+ const sum=p=>CHARGES.reduce((a,c)=>a+p.axes[c].held,0);
+ const p=E.blankProfile('seed'); E.seedApply(p,'ESTJ');
+ const seeded=sum(p);
+ ok(E.seedShare(p)===1,'a seed nobody has moved is all seed, got '+E.seedShare(p));
+ /* raise every axis by a known amount, so the seed's share of the units is exact */
+ CHARGES.forEach(c=>{p.axes[c].held=Math.min(10,p.axes[c].held+1);});
+ const added=sum(p)-seeded, want=Math.round(seeded/(seeded+added)*100)/100;
+ ok(E.seedShare(p)===want,'with every axis raised, the share is the seed\'s units over all the units, '
+  +E.seedShare(p)+' against '+want);
+ const q=E.blankProfile('seed2'); E.seedApply(q,'ESTJ');
+ E.read(q,{story:'I was furious at work today, my jaw clenched, I could not stop shaking',write:true});
+ const qs=sum(q), seedUnits=CHARGES.reduce((a,c)=>a+Math.min(q.seed.axes[c],q.axes[c].held),0);
+ ok(Math.abs(E.seedShare(q)-seedUnits/qs)<0.1,'after one story the line agrees with the units the seed still holds, '
+  +E.seedShare(q)+' against '+(seedUnits/qs).toFixed(2));
+ const empty=E.blankProfile('noseedaxes'); empty.axes={}; E.seedApply(empty,'INFP');
+ ok(E.seedShare(empty)===1&&CHARGES.every(c=>empty.axes[c].opp===0),'a seed onto a record with no axes builds them from the blank');
+}
+
 g('ONE BLANK · a missing axis loads at the same blank the boundary fills');
 /* loadProfile filled a missing axis with 3 and validateProfile with 0, so at
    e9ca1ae read() of a profile with axes:{} gave unread false, 107 addresses
