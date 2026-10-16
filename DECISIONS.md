@@ -2852,3 +2852,13 @@ Built as phase 1 on `claude/percent-framework`, MOB PR 88. No screen changes in 
 - **What it supersedes** is listed in the entry above: round PQ for CQ and DQ, the 9 October no percent ruling, the 15 October P0 item, and MOB PR 83's whole number weights. The 14 October no raw scores ruling stands.
 - **Phase 1 changes no screen.** It adds the engine file, its gate and the two documents. Phase 2 moves the renderers and flips the tests that hold the old forms.
 - **Open, the lead's or his:** the one cap (several entries summed at one address, capped at 10); which of two archetype figures the person reads; whether the Summary plate returns to a percent on a quiz only record; inputs answered on 0 to 10 stay as they are (default taken).
+
+## What an archetype's percent means, 16 October
+
+His words: "we want to see how much of a person, the archetypes themselves should be 100%. The limiting beliefs are going to drag it down. So the archetype is just the archetype. The percent should show where they are based off their story. So you may start off at 100%. And over time, watch it diminish. And as you go through your recipes, watch it rise. It is least as things never lying to you."
+
+- **An archetype's percent is how fully it is expressed.** 100% with nothing held. It falls as the person's story puts charge (limiting beliefs) where that archetype acts, and rises as they release (recipes, practices).
+- **It is not a share of the twelve and not a measure against the strongest.** This retires the 16 October framework recommendation to print `affinity` everywhere: `affinity()` (`engine/core.js:403`) is the soul map's lean, set by the blueprint, and it does not move with story or release. It still decides which archetype is first and second; it is no longer printed as a percent.
+- **Where an archetype acts is its seat**, `ARCH[i].b` (`engine/data/canon.js:418`), the owner's ruling "the warrior's root, the sage is crown, the mage is third eye". The engine has no honest archetype to domain to seat chain: the wheel draws archetypes in list order over addresses laid out by seat, so the sector each covers disagrees with its ruled seat for ten of the twelve. No table ties an archetype to a mask.
+- **Archetypes that share a seat read the same percent** (Warrior and Everyman at the root, Creator and Explorer at the sacral, Caregiver and Lover at the heart, Rebel and Jester at the throat, Sage and Innocent at the crown). That follows from the seat ruling; a finer split needs a ruling on what separates them.
+- Built as phase 1b, engine only: `archExpr(i)` in `atuned_src/engine/archexpr.js`, registry kind `archetype`. No screen changes until phase 2.

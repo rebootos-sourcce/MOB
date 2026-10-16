@@ -184,14 +184,16 @@ var PCT_KIND={
  /* ui/map.js:206, the product of the seven passes, root to crown */
  flow:      {lo:0, hi:1, src:'ui/map.js', find:'function flSpeed(){var s=1;flSeats().slice().reverse().forEach(function(x){s*=x.pass;});return s;}',
              say:'flow, what gets from the root to the crown'},
- /* core.js:403, each archetype against the strongest, so the first reads 1 */
- affinity:  {lo:0, hi:1, src:'engine/core.js', find:'const mx=Math.max(...a)||1;return a.map(v=>v/mx);}',
-             say:'an archetype against the strongest'},
- /* ui/summary.js:438, an archetype's share of all twelve added up. This is a
-    second reading of the same affinity and prints a different figure for the
-    same archetype; which one the person reads is in the framework's open list. */
- share:     {lo:0, hi:1, src:'ui/summary.js', find:'var tot=aff.reduce(function(a,x){return a+x.v;},0)||1;',
-             say:'an archetype\'s share of all twelve'},
+ /* AN ARCHETYPE IS HOW FULLY IT IS EXPRESSED, ruled 16 October: 100% with
+    nothing held, dragged by the charge at its seat, lifted by release.
+    engine/archexpr.js, one minus the seat's mean weight over ten, and each sq
+    is clamped to 0 and 10 at engine/compute.js:295. This replaced two kinds.
+    affinity (engine/core.js:403, an archetype against the strongest) and share
+    (ui/summary.js:438, a share of all twelve) were both the soul map's lean,
+    printed three ways for one archetype, and neither moves with a story or a
+    release. affinity still orders first and second; nothing prints it. */
+ archetype: {lo:0, hi:1, src:'engine/archexpr.js', find:'return s?clamp(1-s.mean,0,1):null;}',
+             say:'how fully an archetype is expressed, dragged by the charge at its seat'},
  /* core.js:394, each domain against the strongest. The floor of .08 is drawn
     (the petal never vanishes), so lo stays 0 and the floor reads 8%. */
  domain:    {lo:0, hi:1, src:'engine/core.js', find:'DOMAIN=DOMAIN.map(v=>.08+.92*v/mx);',
