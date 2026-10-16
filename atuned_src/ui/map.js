@@ -2154,7 +2154,7 @@ function bmHubRefresh(r){
    out.push({k:k,o:o,x:hx,y:hy,pl:pl,at:[{x:hx,y:hy},{x:100-hx,y:hy}]});});});
  BM.hubs=out;}
 function bmHubSay(h){var n=leaves(h.o).length;
- return (h.k==='cx'?'Complex':'Hyper complex')+' at a weight of '+h.o.w.toFixed(1)+', built on '+n+(n===1?' address.':' addresses.');}
+ return (h.k==='cx'?'Complex':'Hyper complex')+' at a weight of '+Math.round(h.o.w)+', built on '+n+(n===1?' address.':' addresses.');}
 function bmDrawHubs(g,vs){
  if(!BM.hubs||!BM.hubs.length)return;
  if(!BMHUBP)BMHUBP={cx:new Path2D(CHAINGLYPH.cx),hy:new Path2D(CHAINGLYPH.hy)};
@@ -2756,7 +2756,7 @@ function bmWire(){
   if(tk!==BM.tipKey){BM.tipKey=tk;
    if(pk.hub)bmTip({t:pk.hub.o.nm,b:bmHubSay(pk.hub),x:p[0],y:p[1]});
    else if(pk.place)bmTip(Object.assign(bmPlaceTip(pk.place),{x:p[0],y:p[1]}));
-   else if(pk.sab)bmTip({t:pk.sab.nm,b:(pk.sab.dir>0?'Loading':'Releasing')+', at a weight of '+pk.sab.T.toFixed(1)+'.',x:p[0],y:p[1]});
+   else if(pk.sab)bmTip({t:pk.sab.nm,b:(pk.sab.dir>0?'Loading':'Releasing')+', at a weight of '+Math.round(pk.sab.T)+'.',x:p[0],y:p[1]});
    else bmTip(null);}
   BM.dirty=true;});
  sv.addEventListener('pointerleave',function(){
@@ -3371,8 +3371,8 @@ function bmOvVals(r){
  var F={},V={},dash='–';try{F=fbValues(r);}catch(e){}
  V.addr=F.addresses;V.sab=F.saboteurs;V.cx=F.complexes;V.hy=F.hyper;
  var mr=((r&&r.maskRing)||[]).slice().sort(function(a,b){return b.w-a.w;})[0];
- V.masks=(mr&&!r.unread&&mr.w>=0.05)?{p:mr.w*10,v:mr.w.toFixed(1),c:bmRgba(BMC.mask,1),
-  m:'Ring and number: the heaviest mask, '+mr.nm+', at a weight of '+mr.w.toFixed(1)+'.'}
+ V.masks=(mr&&!r.unread&&Math.round(mr.w)>0)?{p:mr.w*10,v:String(Math.round(mr.w)),c:bmRgba(BMC.mask,1),
+  m:'Ring and number: the heaviest mask, '+mr.nm+', at a weight of '+Math.round(mr.w)+'.'}
   :{p:0,v:dash,c:bmRgba(BMC.mask,1),m:'Nothing read yet.'};
  var pv=(BMG&&BMG.reg||[]).reduce(function(m,q){return Math.max(m,q.val||0);},0);
  V.pain={p:pv*10,v:pv?String(pv):dash,c:seatCol('Sacral'),

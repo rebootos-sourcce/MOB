@@ -2994,8 +2994,8 @@ function cnOvList(){
 function cnOvVals(){
  var r=compute(), V={};
  if(r.unread){V.well={p:0,v:'\u2013',c:seatCol(r.darkB||'Root'),m:'Nothing read yet.'};return V;}
- V.well={p:clamp((r.darkV||0)*10,0,100),v:(+r.darkV||0).toFixed(1),c:seatCol(r.darkB),
-  m:'Ring and number: the heaviest assemblage point, '+r.darkB+', at a weight of '+(+r.darkV||0).toFixed(1)+'.'};
+ V.well={p:clamp((r.darkV||0)*10,0,100),v:String(Math.round(+r.darkV||0)),c:seatCol(r.darkB),
+  m:'Ring and number: the heaviest assemblage point, '+r.darkB+', at a weight of '+Math.round(+r.darkV||0)+'.'};
  return V;}
 function cnOvOrb(k,V){
  var o=CN_OV[k], v=V[k];
