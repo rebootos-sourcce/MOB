@@ -3147,6 +3147,18 @@ console.log('\n27 · the ladder');
   ok(has(said),'nine intake answers earn it, an answer of nought included, because an answer is a value');
   const eight=blankProfile('L'); CHILD.slice(0,8).forEach(c=>{eight.axes[c.nm]={held:3,opp:0};});
   ok(!has(eight),'and eight of nine do not');}
+
+ /* L10. A MARK NAMES THE UNIT ITS TEST COUNTS. First clearing and Five clear
+    read ledgerRead().clear, which walks CHILD, the nine axes, and their words
+    said addresses. Every mark whose test reads clear says axes and never
+    addresses; Ten addresses, which counts addresses, is the known good case. */
+ {const byClear=['turned','seat'].map(k=>MARKS.find(m=>m.k===k));
+  byClear.forEach(m=>ok(/\bax[ie]s\b/.test(m.d)&&!/address/.test(m.d),
+   m.nm+' says axes, the unit its test counts, got '+JSON.stringify(m.d)));
+  const one=blankProfile('L'); one.axes[CHILD[0].nm]={held:0,opp:4};
+  ok(ladderRead(one,NOW).earned.some(m=>m.k==='turned')&&ledgerRead(one).clear===1,
+   'and one axis with its opposite at four is what earns First clearing');
+  ok(/address/.test(MARKS.find(m=>m.k==='ten').d),'Ten addresses still says addresses, because it counts them');}
 }
 
 console.log('\n27c · a save never costs a person data, and a drain never leaks');

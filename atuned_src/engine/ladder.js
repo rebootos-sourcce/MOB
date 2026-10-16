@@ -345,11 +345,19 @@ var MARKS=[
   ic:'M12 3a9 9 0 100 18 9 9 0 100-18 M12 8l3 8-3-2-3 2z',
   t:function(l,s,p){return !!(p&&p.purpose&&purposeReady&&purposeReady(p.purpose));}},
  {k:'turned', fam:'Structure', b:'Heart', nm:'First clearing',
-  d:'An address that was carrying is held at the far pole instead.',
+  /* THESE TWO COUNT AXES AND SAID ADDRESSES. ledgerRead's clear is a count
+     over CHILD, the nine axes, and an address is one of the 112 places on
+     the body map, so "An address that was carrying" and "Five addresses
+     holding the opposite" named a unit neither test reads. The Compass
+     ledger row over the same count was corrected to axes for this reason and
+     these were not (fact map L10). One word per concept: the count is axes,
+     and installed is the ledger's own word for an opposite at four or more.
+     The keys do not change, because a key is identity. */
+  d:'One of the nine axes has its opposite installed. An axis is a feeling and its opposite.',
   ic:'M4 12a8 8 0 1116 0 8 8 0 01-16 0 M8 12l3 3 5-6',
   t:function(l){return l.clear>=1;}},
  {k:'seat', fam:'Structure', b:'Heart', nm:'Five clear',
-  d:'Five addresses holding the opposite. That is structure, not a good day.',
+  d:'Five axes have their opposite installed. That is structure, not a good day.',
   ic:'M4 12a8 8 0 1116 0 8 8 0 01-16 0 M12 4v16 M4 12h16',
   t:function(l){return l.clear>=5;}},
  /* the record itself */
