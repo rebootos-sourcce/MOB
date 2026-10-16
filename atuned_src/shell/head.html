@@ -7395,6 +7395,25 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
  .obx-fn i{display:none}
  /* the emblem is too small to carry a name, and the card names every seat */
  .obx[data-step="5"] .obx-fn,.obx[data-step="6"] .obx-fn,.obx[data-step="7"] .obx-fn,.obx[data-step="9"] .obx-fn{opacity:0}}
+/* UNDER 380 THE ROW IS FULL. With the crisis button in the bar, 360 left
+   "Step 2 of 8" one pixel from the wordmark and its 8 touching the pill:
+   nothing overlapped, and it still read as one smudge. The wordmark gives up
+   fourteen pixels and the gaps and the pill's padding two each, so every
+   item keeps at least four pixels of air. The step words stay: they are what
+   the dots mean. */
+@media(max-width:379px){
+ .obx-mark .bn{width:58px}
+ .obx-top{gap:6px}
+ .obx-top .obx-crx{padding:0 8px}
+ .obx-x{padding:0 12px}}
+/* AND UNDER 340 THERE IS NO ROOM AT ALL: at 320 the wordmark, the dots, their
+   words, the pill and Not now need more than the screen. The pill goes back
+   to where it hung before, just under the bar on the right, on its dark, and
+   the row keeps its air. Measured at 320 on every step. */
+@media(max-width:339px){
+ .obx-top .obx-crx{position:absolute;top:60px;right:12px;margin:0}
+ /* the pill's auto margin was what held Not now at the right edge */
+ .obx-x{margin-left:auto}}
 /* REDUCED MOTION GETS THE END STATE. The poses still apply; nothing travels
    to them. A light that carries a reading still shows, at once. */
 @media (prefers-reduced-motion:reduce){
