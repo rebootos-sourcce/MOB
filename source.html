@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2046 e9ca1ae 2026-10-16 02:45"><head><meta charset="utf-8">
+<html lang="en" data-build="v213 833031d 2026-10-16 04:46"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -6709,6 +6709,14 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
 .login-msg{margin:4px 0 0;font-size:13px;line-height:1.5;color:var(--mid)}
 .login-msg:empty{display:none}
 .login-msg[data-kind="fail"]{color:var(--hot,#c0392b);font-weight:500}
+/* THE LEGAL LINKS, 16 October: Privacy and Terms on atuned.world, from the
+   door, the first onboarding card, and Settings under Account and Privacy
+   (legalLink, ui/account.js). A link inside a sentence is held to the 24 pixel
+   pointer floor, and the 12.5 and 13 pixel lines it sits in are under it, so
+   the link carries its own line box. */
+a.legal-a{color:var(--accent);text-underline-offset:3px;display:inline-block;
+ min-height:24px;line-height:24px}
+.login-legal{margin:12px 0 0;font-size:13px;line-height:1.5;color:var(--dim)}
 /* DEVELOPER OPTIONS, DISCLOSED. A testing control, kept out of the way of
    a stranger meeting the funnel for the first time, round MP: "the login
    screen should give me the options, onboarding and tutorial." */
@@ -68583,7 +68591,8 @@ function accAccount(){
    accRow('Signed in as',ses.email)
    +accAct('Sign out of this browser','acout',{btn:'Sign out'})
    +accAct('Delete this account','acdelacc',{btn:'Delete',danger:true}),
-   'Your stories and readings stay on this device. Signing in does not copy them anywhere.')
+   'Your stories and readings stay on this device. Signing in does not copy them anywhere. '
+   +legalLink('privacy')+' and '+legalLink('terms')+' say the rest.')
   :accGroup('Sign in',
    accStub('Signed in as','not signed in')
    +'<form id="acsignin" novalidate>'
@@ -68599,7 +68608,8 @@ function accAccount(){
       which joins the topic picked and the marks to the account, so it is
       said here, where a person decides to sign in */
    'Your email and password go to our server, and what your first visit sent joins the account. '
-   +'Your stories and readings stay on this device.'));
+   +'Your stories and readings stay on this device. '
+   +legalLink('privacy')+' and '+legalLink('terms')+' say the rest.'));
  /* DEVELOPER OPTIONS, DEACTIVATED IN FULL, ROUND RI, the same ruling that
     removed the login card's own panel (ui/login.js). This panel's second
     home, the owner's own signed in account, is removed with it: devtoolsOn
@@ -68878,6 +68888,28 @@ function accSecurity(){
       per concept. The design lives in DECISIONS.md, not on this screen. */
    ses?'':'Every row here waits on sign in.');}
 
+/* ---------- the two legal pages ---------- */
+/* PRIVACY AND TERMS, 16 October. The owner: "Yes, we need a privacy policy.
+   It's very important to us. Transparency is important to us. We also need our
+   terms." The pages were drafted on 1 October and never staged, so the app had
+   nothing to link and linked nothing. They are served now at atuned.world, by
+   the deploy's stage step, from funnel/legal/render.py.
+
+   THE ADDRESS IS ABSOLUTE, ON PURPOSE. This app is also one file a person
+   downloads and opens from a folder, where a relative "privacy" resolves to
+   their own drive, the same trap feedbackWhere in ui/auth.js names for the
+   outbox. A link is a page the person chooses to open, not a request this
+   file makes, so tests/design.js gate 7 sees nothing until it is pressed.
+
+   ONE LABEL EACH, Privacy and Terms, and they are the words the funnel's own
+   footers use, one word per concept. A new tab, so the record stays open
+   behind it. */
+var LEGAL_PAGES={privacy:['Privacy','https://atuned.world/privacy'],
+ terms:['Terms','https://atuned.world/terms']};
+function legalLink(k){
+ var x=LEGAL_PAGES[k];
+ return '<a class="legal-a" href="'+x[1]+'" target="_blank" rel="noopener noreferrer">'+x[0]+'</a>';}
+
 /* ---------- 4.4 privacy. the one section here that is not generic ---------- */
 var ACC_HELD=[
  ['The identity and birth moment','name, sex, date, time and place'],
@@ -68913,6 +68945,17 @@ function accPrivacy(){
    +'What you answered is not sent. A sign in sends your email and password and '
    +'joins those marks to your account. Feedback, dictation, the voice that reads '
    +'a release, and payment each say what they send where you use them.');
+ /* THE FULL PAGES, beside the short version above. A row is the action row
+    the community door already is, a link dressed as the button, because a
+    press here opens a page and changes nothing on this device. */
+ h+=accGroup('The full pages',
+   '<div class="ac-row ac-act"><span class="ac-rl">What we keep, what leaves this device, '
+   +'and which companies get it</span><a class="btn" id="acprivacy" href="'+LEGAL_PAGES.privacy[1]
+   +'" target="_blank" rel="noopener noreferrer">'+LEGAL_PAGES.privacy[0]+'</a></div>'
+   +'<div class="ac-row ac-act"><span class="ac-rl">What Atüned is and is not, and the rules '
+   +'for using it</span><a class="btn" id="acterms" href="'+LEGAL_PAGES.terms[1]
+   +'" target="_blank" rel="noopener noreferrer">'+LEGAL_PAGES.terms[0]+'</a></div>',
+   'Both open on atuned.world in a new tab.');
  h+=accGroup('This device',
    accRow('Snapshots on file',snaps,{num:true})
    +accRow('Storage',STORE_BOUND?'writing':'blocked'),
@@ -73270,7 +73313,9 @@ function obRender(){
       (authFunnelCheckpoint), so it says what goes, here, before the pick.
       tests/copy.js holds it. */
    +'<p class="ob-p ob-foot">Your story and your name stay on this device. Our server gets a '
-   +'random code for this browser, the topic you pick next, and which steps you finish.</p>',
+   +'random code for this browser, the topic you pick next, and which steps you finish. '
+   /* the full pages, on the card that says what is sent, 16 October */
+   +legalLink('privacy')+' and '+legalLink('terms')+' say the rest.</p>',
    '<button type="button" class="btn pri" data-ob="next">Come in</button>'
    +'<button type="button" class="btn" data-ob="skip">Not now</button>');
  }
@@ -74242,6 +74287,11 @@ function loginCard(mail){
   +'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-go">Log in</button>'
   +'<button type="button" class="btn" id="loginb-new">Create account</button>'
   +'<button type="button" class="btn" id="loginb-skip">Guest</button></div>'
+  /* THE DOOR'S LEGAL LINE, 16 October. The first place a person can make an
+     account, so the two pages that say what an account sends and keeps are
+     linked here, before the press (legalLink, ui/account.js). */
+  +'<p class="login-legal">Read '+legalLink('privacy')+' and '+legalLink('terms')
+  +' before you make an account.</p>'
   +loginDevOptions()
   +'</div></div>';}
 function loginResetCard(mail){
@@ -76410,5 +76460,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005013588"></div>
+<div id="eof" hidden data-len="005016822"></div>
 </body></html>
