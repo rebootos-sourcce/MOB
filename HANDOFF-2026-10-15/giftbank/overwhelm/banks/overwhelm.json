@@ -1,0 +1,3449 @@
+{
+  "nature_id": "overwhelm",
+  "bank_version": "overwhelm-candidate-2026-10-16-v1",
+  "source_path_or_uri": "rebootos-sourcce/Reboot-OS:atuned/data/letgo/ (2026_Let_Go_List.txt, TULA__Lances_Let_Go_List_1.pdf, TULA__Lances_Let_Go_List.pdf, and for the card lines only, Tula__SUPPLIMENT_LET_GO_LIST.txt)",
+  "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+  "approval_reference": "",
+  "approved_by": "",
+  "approved_at": "",
+  "status": "candidate, not approved",
+  "counts": {
+    "items": 100,
+    "owner_lines": 1,
+    "card_lines_not_dictated": 99,
+    "shortfall_to_100": 0
+  },
+  "items": [
+    {
+      "pattern_id": "overwhelm-d4632cac1dcb3181",
+      "content": "I'm letting go of feeling too overwhelmed to start",
+      "pattern_hash": "d4632cac1dcb3181f95136f4837d9cf8f6f7191adf8f17d2cb48634a4dcee7cf",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz",
+        "source_kind": "owner typed list",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_pdf_b.json",
+        "source_record_file_blob": "8be3bd5b27c2b1e183c46ac1afab3a8299930b03",
+        "source_record_id": "pdf_b-089",
+        "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=28:34",
+        "record_title": "Self Drive",
+        "source_text_as_transcribed": "I'm Letting Go of feeling too overwhelmed to start",
+        "reading_layer": "text_clean (intake rule 1189, ruled by the owner 2026-09-11)",
+        "index_node_id": 216,
+        "also_in": [
+          "atuned/data/letgo/raw/TULA__Lances_Let_Go_List.pdf.gz#page-lines=11:23"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-01ff6400d1d01702",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed suppressing insight.",
+      "pattern_hash": "01ff6400d1d0170275a43503ef24532da0d507a4b2b14732b59195e0b511144f",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-193",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=32017",
+        "record_title": "50. collapsed in the belief I must appear intelligent to matter.",
+        "source_text_as_transcribed": "overwhelmed suppressing insight.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 31937,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-08c63bea57e9c6ad",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by discouragement.",
+      "pattern_hash": "08c63bea57e9c6ad76c829d2dc518b56445571ed0d4a2f5fa0698db0bdb2fc9e",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-196",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=32724",
+        "record_title": "energetic signature: power turned inward against the self; pain recycled into identity; motion stalled by unresolved gri",
+        "source_text_as_transcribed": "overwhelmed by discouragement.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 32704,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-1235c34b4b1351be",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by comparison.",
+      "pattern_hash": "1235c34b4b1351be741ba45bf058895dcbc1929751615c8a715c1d65ed5d1c0b",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-188",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=31201",
+        "record_title": "energetic signature: life-force dimmed by comparison; value outsourced to recognition; inner importance muted.",
+        "source_text_as_transcribed": "overwhelmed by comparison.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 31181,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100.",
+        "also_in": [
+          "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=31306",
+          "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=34906"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-145f010b65dcb9ec",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed losing self-direction.",
+      "pattern_hash": "145f010b65dcb9ece3bee8e21364f502515b86d5b79358007486b4cf61ec1b72",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-190",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=31478",
+        "record_title": "energetic signature: power outsourced; worth measured externally; inner authority muted by the need to be accepted.",
+        "source_text_as_transcribed": "overwhelmed losing self-direction.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 31398,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-168c083c7a86381e",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed losing self-connection.",
+      "pattern_hash": "168c083c7a86381e50b3c1b58699306c2ee568d8466d0365b5356fdc2351580f",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-195",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=32455",
+        "record_title": "50. collapsed in the belief I must be accepted to be safe.",
+        "source_text_as_transcribed": "overwhelmed losing self-connection.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 32375,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-182c6b1ce2996ad6",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tense anticipating overwhelm.",
+      "pattern_hash": "182c6b1ce2996ad6b0339a39a681f081110d01566384afafaaa71853d330475c",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-177",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=29383",
+        "record_title": "50. collapsed under fear of poor performance.",
+        "source_text_as_transcribed": "tense anticipating overwhelm.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 29317,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelm"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-25d2925b3b23a128",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by invisibility.",
+      "pattern_hash": "25d2925b3b23a1286f8a43c9696960274f8add8879727f1e040273321dac46e3",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-189",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=31366",
+        "record_title": "50. collapsed in the belief I don’t matter.",
+        "source_text_as_transcribed": "overwhelmed by invisibility.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 31286,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-3021d5ed2ed9ceef",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed defending independence.",
+      "pattern_hash": "3021d5ed2ed9ceef7362fc0d31d5bc99817396f397cf0382116e89fd3b74e78f",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-220",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=37293",
+        "record_title": "energetic signature: independence used as shield; need disowned instead of integrated; validation hunger inverted into d",
+        "source_text_as_transcribed": "overwhelmed defending independence.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 37273,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-3143a8052295f700",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed anticipating collapse.",
+      "pattern_hash": "3143a8052295f70009450a7031e915576abeb3d1ece51a49d0978c1401a1e1c6",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-174",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=29011",
+        "record_title": "energetic signature: masculine fire trapped under fear; feminine flow constricted by pressure; arousal blocked where ins",
+        "source_text_as_transcribed": "overwhelmed anticipating collapse.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 28991,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-329d57fc9ec3b7bb",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by instability.",
+      "pattern_hash": "329d57fc9ec3b7bbee3512b19842b1c687779adb3b4f24cb9c33d3626fee441a",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-233",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=39576",
+        "record_title": "50. collapsed in the belief I’ve lost everything and can’t recover.",
+        "source_text_as_transcribed": "overwhelmed by instability.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 39556,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-3fad488f34890e1a",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by disappointment.",
+      "pattern_hash": "3fad488f34890e1a02fc8e8b85bb828aa0ccc070bc5f459fa9680c2390735bc3",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-202",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33881",
+        "record_title": "energetic signature: life treated as transaction; goodness used as control; reality resisted when outcomes don’t match b",
+        "source_text_as_transcribed": "overwhelmed by disappointment.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 33801,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100.",
+        "also_in": [
+          "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33926"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-47426e904a228df2",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed losing self-reference.",
+      "pattern_hash": "47426e904a228df2d0f71b47d53809c464a05a2f404643dcf6c48c8974404366",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-191",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=31583",
+        "record_title": "50. collapsed in the belief I need approval to be okay.",
+        "source_text_as_transcribed": "overwhelmed losing self-reference.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 31503,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100.",
+        "also_in": [
+          "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=32350"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-5c6f6dec36ed8327",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed denying nourishment.",
+      "pattern_hash": "5c6f6dec36ed83275a1355d3e1e1ac2c5bfc81293d2988860ae744dceec983df",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-229",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=38704",
+        "record_title": "50. collapsed in the belief need equals dependency.",
+        "source_text_as_transcribed": "overwhelmed denying nourishment.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 38684,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-772dd086ce2c7731",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by responsibility.",
+      "pattern_hash": "772dd086ce2c773152709c870a72af2db9dce7fa327018ddf6a33854273d88f8",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-184",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=30393",
+        "record_title": "energetic signature: survival patterns activated; life-force pulled upward in tension; support-field blocked by fear of ",
+        "source_text_as_transcribed": "overwhelmed by responsibility.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 30313,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-78d2baebfb015af5",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by futility.",
+      "pattern_hash": "78d2baebfb015af55b8171101812b7ecf04ffd95679779b26f36e0d47427155d",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-227",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=38270",
+        "record_title": "50. collapsed in the belief everything I do is futile.",
+        "source_text_as_transcribed": "overwhelmed by futility.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 38250,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-792bea0e680daeb4",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed losing gentleness.",
+      "pattern_hash": "792bea0e680daeb409c837d28ee0ae7155ec0acb9c91879212ea1e191b8fda0f",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-199",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33327",
+        "record_title": "50. collapsed in the belief I must be powerful to exist.",
+        "source_text_as_transcribed": "overwhelmed losing gentleness.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 33247,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-7f9816696e07a914",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by stimulation.",
+      "pattern_hash": "7f9816696e07a914b91f6f5000fd27b91169a47db7817c24b9a95834d804b301",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-212",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=35617",
+        "record_title": "energetic signature: future-focused alarm; safety outsourced to prediction; presence pulled out of the body.",
+        "source_text_as_transcribed": "overwhelmed by stimulation.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 35537,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100.",
+        "also_in": [
+          "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=35722"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-99d4e23442739c7c",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed denying support.",
+      "pattern_hash": "99d4e23442739c7c2eae998cfbac348f9333f82ad8747cd8b3b5c3a556070b95",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-228",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=38599",
+        "record_title": "energetic signature: need misinterpreted as weakness; dependence feared; support equated with loss of self.",
+        "source_text_as_transcribed": "overwhelmed denying support.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 38579,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-a0b897704ed6050c",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by regret.",
+      "pattern_hash": "a0b897704ed6050c46516a37371cdfbf95a406813a312a09d335b8c033027481",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-001",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=77",
+        "record_title": "3B – Regret",
+        "source_text_as_transcribed": "Overwhelmed by regret.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 7,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100.",
+        "also_in": [
+          "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=10203"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-b55c22a8c19c0ede",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by longing.",
+      "pattern_hash": "b55c22a8c19c0ede9e2ac7f613c7159c1040c1d27851be49e2a6250e53197add",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-231",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=39198",
+        "record_title": "50. collapsed in the belief this loss has broken me.",
+        "source_text_as_transcribed": "overwhelmed by longing.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 39118,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-c193cc16be0b530e",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by responsibilities.",
+      "pattern_hash": "c193cc16be0b530e8d92e2225e9bc2f79c3f79410ab726296317750f1320bc59",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-158",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=26333",
+        "record_title": "energetic signature: mind sprinting ahead of the moment; body braced for future impact; life lived in anticipation rathe",
+        "source_text_as_transcribed": "overwhelmed by responsibilities.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 26271,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-c855dff5f0dc6ea9",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed suppressing longing.",
+      "pattern_hash": "c855dff5f0dc6ea92f4b4d94ddb0c9b189c83f5f715654162ae50cd89a57dae6",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-221",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=37398",
+        "record_title": "50. collapsed in the belief I must not need validation to be strong.",
+        "source_text_as_transcribed": "overwhelmed suppressing longing.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 37378,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-cccd68fdfdac2931",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by expectations.",
+      "pattern_hash": "cccd68fdfdac2931d8ebf8ce1027e70cd59f9d96511bd601199c08cfb7ca1a75",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-172",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=28790",
+        "record_title": "energetic signature: sexual energy trapped in mental loops; desire overridden by pressure; confidence replaced with fear",
+        "source_text_as_transcribed": "overwhelmed by expectations.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 28770,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-dacf2669ebbc96fb",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by newness.",
+      "pattern_hash": "dacf2669ebbc96fbf6763bfc526894631f2a24810f2ae258bd08353e227d7fe2",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-213",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=35662",
+        "record_title": "50. collapsed in the belief new situations are unsafe.",
+        "source_text_as_transcribed": "overwhelmed by newness.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 35642,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-e838f36b69075183",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by endurance.",
+      "pattern_hash": "e838f36b69075183184ee821558cc7d907a2e0fe1d865c2bab6db6594ca3eebf",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-211",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=35228",
+        "record_title": "50. collapsed in the belief I don’t finish what I start.",
+        "source_text_as_transcribed": "overwhelmed by endurance.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 35208,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-ed57e6a8ffc9eed1",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by scarcity.",
+      "pattern_hash": "ed57e6a8ffc9eed14eed56f9342bf369c4f3b40333e8e7d7bdf37c1762045e84",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-232",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=39531",
+        "record_title": "energetic signature: identity fused with loss; past effort invalidated; future feels blocked; survival fear overrides cr",
+        "source_text_as_transcribed": "overwhelmed by scarcity.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 39451,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-07d3b96187978929",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by external focus.",
+      "pattern_hash": "07d3b961879789293d4c59d59edd85aef73e83b92e85407f21e6a44c6e7670b7",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-215",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=36156",
+        "record_title": "50. collapsed in the belief other people’s judgment determines my safety.",
+        "source_text_as_transcribed": "overwhelmed by external focus.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 36076,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100.",
+        "also_in": [
+          "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=36590"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-0af781be2c5b4084",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed navigating life transitions.",
+      "pattern_hash": "0af781be2c5b40846ffb7c242d5ee26709985912a203b88761767efdd2487564",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-180",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=29734",
+        "record_title": "energetic signature: instinct muted by uncertainty; purpose tangled in overthinking; direction distorted by fear of misa",
+        "source_text_as_transcribed": "overwhelmed navigating life transitions.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 29654,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-11a4f0fa34826dfb",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by relational responsibility.",
+      "pattern_hash": "11a4f0fa34826dfb4a7af2ea3532da5d3ae7b080bb2873ef68969d21b5619ca1",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-225",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=37896",
+        "record_title": "50. collapsed in the belief I must avoid irritating people to be safe.",
+        "source_text_as_transcribed": "overwhelmed by relational responsibility.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 37816,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-12c43fc5835469dd",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by potential conflict.",
+      "pattern_hash": "12c43fc5835469dd8b6b4ab8fa5fad9e5bebd12e7ee28b7c3abb4345926facf7",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-224",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=37731",
+        "record_title": "energetic signature: harmony prioritized over truth; self-expression edited to manage others’ reactions; avoidance used ",
+        "source_text_as_transcribed": "overwhelmed by potential conflict.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 37711,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-1cccc55c061f5614",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by inner heaviness.",
+      "pattern_hash": "1cccc55c061f5614fcf4114efeab32802d6530309dc52d898d2735b73960b683",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-197",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=32889",
+        "record_title": "50. collapsed in the belief I am a victim of life.",
+        "source_text_as_transcribed": "overwhelmed by inner heaviness.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 32809,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-25683ac8742bf40a",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by inner judgment.",
+      "pattern_hash": "25683ac8742bf40a06c4012b8c54ebc4d89a98ec940456ffef3bfe46b4a839ae",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-179",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=29558",
+        "record_title": "50. collapsed inside the lie that I am dangerous.",
+        "source_text_as_transcribed": "overwhelmed by inner judgment.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 29538,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-25dd83f9a2a68c33",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by ego maintenance.",
+      "pattern_hash": "25dd83f9a2a68c3373f446e129a1c471b90e0d20d2ab0ccfacce7017e91406a7",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-208",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=34966",
+        "record_title": "energetic signature: worth inflated to cover doubt; power sought through comparison; presence becomes performance.",
+        "source_text_as_transcribed": "overwhelmed by ego maintenance.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 34886,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-27de19d3717ece03",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am ashamed to feel overwhelmed.",
+      "pattern_hash": "27de19d3717ece038572dd7ab9af2f82904e9c4e11e0cac8b07cbe68264f09e1",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-159",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=26386",
+        "record_title": "50. collapsed under the weight of nonstop anxiety.",
+        "source_text_as_transcribed": "ashamed to feel overwhelmed.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 26376,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-2acbde96d71ccd9f",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by life’s unpredictability.",
+      "pattern_hash": "2acbde96d71ccd9fc804305418bae905fd2bd6dfc665031af6e784beec8f8190",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-181",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=29779",
+        "record_title": "50. collapsed in fear of not knowing where my life is headed.",
+        "source_text_as_transcribed": "overwhelmed by life’s unpredictability.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 29759,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-2ba0d9aa16209b82",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by rising intensity.",
+      "pattern_hash": "2ba0d9aa16209b82e79103f7c46a712612055b2213b86711972eddb818bf2dc5",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-175",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=29116",
+        "record_title": "50. collapsed inside a blocked hypogastric pathway.",
+        "source_text_as_transcribed": "overwhelmed by rising intensity.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 29096,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-31c5d3de11ba1ad6",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by emotional waves.",
+      "pattern_hash": "31c5d3de11ba1ad682d155197d65e636eedab123d099d38add63b362f1e26826",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-204",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=34315",
+        "record_title": "energetic signature: attachment severed; love energy looping backward; presence fragmented by loss.",
+        "source_text_as_transcribed": "overwhelmed by emotional waves.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 34235,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-3a5ec59f3f22572c",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by mental self-surveillance.",
+      "pattern_hash": "3a5ec59f3f22572c6ddea472f73ca3dd59bb95b70dc91eacf799d9510784f20c",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-192",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=31912",
+        "record_title": "energetic signature: knowing disconnected from being; intelligence used as armor; worth tied to appearing smart rather t",
+        "source_text_as_transcribed": "overwhelmed by mental self-surveillance.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 31832,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-3ab0c186c97a92a6",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed navigating internal blockages.",
+      "pattern_hash": "3ab0c186c97a92a6f913f46b3763e9335a33c95c62caffbc15acbb1627202968",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-170",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=28412",
+        "record_title": "energetic signature: masculine charge muted by fear; life-force held back; desire trapped beneath pressure and contracti",
+        "source_text_as_transcribed": "overwhelmed navigating internal blockages.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 28332,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-3ea73439f47b1d32",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed guarding my status.",
+      "pattern_hash": "3ea73439f47b1d321cd19f01883f5b1ff320639b7556160861f743c40ba30dea",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-209",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=35011",
+        "record_title": "50. collapsed in the belief I must be better than everyone to matter.",
+        "source_text_as_transcribed": "overwhelmed guarding my status.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 34991,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-46252a31c445e1de",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by emotional noise.",
+      "pattern_hash": "46252a31c445e1de01320d70e47a5460590d1dde0a7f571daa7b4d4619c2637d",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-183",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=30217",
+        "record_title": "50. collapsed under the feeling I can’t get rid of it.",
+        "source_text_as_transcribed": "overwhelmed by emotional noise.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 30197,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-50323b96cbc214b6",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by daily demands.",
+      "pattern_hash": "50323b96cbc214b69521be6c230e2ecb4d36f5b23a05aca1cdb5acb3d71aa0e7",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-200",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33600",
+        "record_title": "energetic signature: life-force thinned by constant demand; output exceeds recovery; willpower replacing nourishment.",
+        "source_text_as_transcribed": "overwhelmed by daily demands.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 33580,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-58deacbfea4dff09",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by emotional intensity.",
+      "pattern_hash": "58deacbfea4dff09754f5999fcada57758e08dc7823c247d1d47e8e551d1f955",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-171",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=28517",
+        "record_title": "50. collapsing inside blocked sexual energy.",
+        "source_text_as_transcribed": "overwhelmed by emotional intensity.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 28437,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100.",
+        "also_in": [
+          "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=28955",
+          "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=34794"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-6cf7adb964128439",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by conflicting emotions.",
+      "pattern_hash": "6cf7adb9641284398dc20b9b7873f5b1817132491b7f04590a91d778aa561a5c",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-050",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=9969",
+        "record_title": "energetic signature: wanting things to feel right instead of seeing what is real.",
+        "source_text_as_transcribed": "overwhelmed by conflicting emotions.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 9895,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-6ec33ded970799f3",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by spiritual information.",
+      "pattern_hash": "6ec33ded970799f3e4ba36e86266321e8e712fd82278325ad8eb8e19cbb3fef0",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-087",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=16183",
+        "record_title": "energetic signature: intellect spins without orientation, spiritual sight clouded by fear of truth and embodiment.",
+        "source_text_as_transcribed": "overwhelmed by spiritual information.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 16111,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-754ae5e771ab9c40",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by abandonment feelings.",
+      "pattern_hash": "754ae5e771ab9c40f24c4c2ff8c8b06a1d475bd1f12947c8d943eaaed23fc6f7",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-230",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=39093",
+        "record_title": "energetic signature: bond rupture; love energy searching for its lost home; nervous system disoriented by sudden absence",
+        "source_text_as_transcribed": "overwhelmed by abandonment feelings.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 39013,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-783b38ed54dc0f8c",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by conflicting signals.",
+      "pattern_hash": "783b38ed54dc0f8cd008b1b4ef077ecdfe028a555d5daa5a9b3f0a375acbbdd0",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-088",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=16347",
+        "record_title": "energetic signature: longing to see truth but fearing its weight, caught between intuition and illusion, craving reconne",
+        "source_text_as_transcribed": "overwhelmed by conflicting signals.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 16329,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-85afaf6811eebf37",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by social expectations.",
+      "pattern_hash": "85afaf6811eebf373301c8bd434c7d74af6d7ed88836359d43013678591d5382",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-214",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=36051",
+        "record_title": "energetic signature: self-reference outsourced; safety tied to perception; presence collapses under imagined judgment.",
+        "source_text_as_transcribed": "overwhelmed by social expectations.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 35971,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100.",
+        "also_in": [
+          "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=36485"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-898493d416e89f1b",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by emotional buildup.",
+      "pattern_hash": "898493d416e89f1b63cc18088bf9491e2c2150d0992cc601ac06cc3315a5ebdb",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-207",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=34854",
+        "record_title": "50. collapsed in the belief I can’t speak when it matters.",
+        "source_text_as_transcribed": "overwhelmed by emotional buildup.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 34774,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-9667ef0f647e7817",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed when sensation shifts.",
+      "pattern_hash": "9667ef0f647e7817fa7d47ffa3e181a7948034c2a9a4066ea7c9428aaa37eed7",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-176",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=29232",
+        "record_title": "energetic signature: sexual fire choked by pressure; masculine charge collapsing under fear; feminine softness contracti",
+        "source_text_as_transcribed": "overwhelmed when sensation shifts.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 29212,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-9cbc02c0a43d398f",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by social listening.",
+      "pattern_hash": "9cbc02c0a43d398f8bad1ac5fbdc8ce7b094c614b909e4bc17acadccb7bfc515",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-219",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=37024",
+        "record_title": "50. collapsed in the belief my voice must be restrained to be safe.",
+        "source_text_as_transcribed": "overwhelmed by social listening.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 36944,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-ba9f27df8369d7f2",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by social evaluation.",
+      "pattern_hash": "ba9f27df8369d7f2435d45fcbcf53811cf8b8c740d1559fdc48b6acf78f79ec9",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-194",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=32290",
+        "record_title": "energetic signature: worth outsourced to group belonging; self-reference dissolves into social approval; identity bends ",
+        "source_text_as_transcribed": "overwhelmed by social evaluation.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 32270,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-c0ca63a7fa9b0874",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am believing overwhelm means weakness.",
+      "pattern_hash": "c0ca63a7fa9b0874ddf22aee1810759153edcec4c8040718e8fecdcced83386f",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-028",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=6008",
+        "record_title": "Energetic Signature: “When I don’t understand, I collapse instead of staying curious.”",
+        "source_text_as_transcribed": "Believing overwhelm means weakness.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 5924,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelm"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-c5e6dcf1c687d393",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by feeling stuck.",
+      "pattern_hash": "c5e6dcf1c687d3931b36714a85ba0ab27cb76652b208e529e1e77029ab48e0b0",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-206",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=34749",
+        "record_title": "energetic signature: truth held back; emotion floods upward without release; expression frozen by fear of impact or cons",
+        "source_text_as_transcribed": "overwhelmed by feeling stuck.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 34669,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-fb65af917fce4c95",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed managing both bodies.",
+      "pattern_hash": "fb65af917fce4c9587eb1c1bc06842f253edb0de43db9dc02e3aa9eadd25bde5",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-173",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=28895",
+        "record_title": "50. collapsed under psychological pressure to perform.",
+        "source_text_as_transcribed": "overwhelmed managing both bodies.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 28875,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-fbf0a054081b9031",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by long arcs.",
+      "pattern_hash": "fbf0a054081b90318ef8a665613c0a37789e819024622be1a1ea021e2ad1c34d",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-210",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=35123",
+        "record_title": "energetic signature: energy starts strong then leaks; intention outruns embodiment; safety sought in stopping short.",
+        "source_text_as_transcribed": "overwhelmed by long arcs.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 35103,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-fd63ed7c45f51653",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by others’ expectations.",
+      "pattern_hash": "fd63ed7c45f51653ef000ecfd2fb652d13e45b9770cfc2036ab954955c7620c7",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-124",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=21687",
+        "record_title": "50. collapsed in the illusion that my mind must never rest.",
+        "source_text_as_transcribed": "overwhelmed by others’ expectations.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 21649,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-12d903e89fe26c67",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by tenderness without holding.",
+      "pattern_hash": "12d903e89fe26c674b634a46bfa57ebe333827b450b38748ac56405951e21e0a",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-223",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=37615",
+        "record_title": "50. collapsed in the belief I must grieve alone.",
+        "source_text_as_transcribed": "overwhelmed by tenderness without holding.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 37595,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-17c43a0176e6b593",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by longing for care.",
+      "pattern_hash": "17c43a0176e6b5936e7fa1cc5d4a3fb38ffd4cd3f81739426b9ade4367c1aeae",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-187",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=30872",
+        "record_title": "50. collapsed in the belief my parents rejected me.",
+        "source_text_as_transcribed": "overwhelmed by longing for care.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 30852,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-4f682496e348aa95",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by feelings I’ve stored.",
+      "pattern_hash": "4f682496e348aa95be3af49bd7f88e6aa606b7e814ccff9c34f763a4947df7cb",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-054",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=10829",
+        "record_title": "energetic signature: holding fear and emotional weight in the hip instead of trusting life to carry me.",
+        "source_text_as_transcribed": "overwhelmed by feelings I’ve stored.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 10767,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-6df456108b53bc27",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am believing fullness will overwhelm me.",
+      "pattern_hash": "6df456108b53bc2735548b4218152a39aaa34b75eedef5eadf27cb5cc6eb5942",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-094",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=17374",
+        "record_title": "50. collapsed in illusion that I am only the surface.",
+        "source_text_as_transcribed": "believing fullness will overwhelm me.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 17304,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelm"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-84c760277da817ef",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am believing clarity will overwhelm me.",
+      "pattern_hash": "84c760277da817efb30c9733116d382c8a0874130fa5ad92f8fd795897f0ab15",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-117",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=20759",
+        "record_title": "energetic signature: refusing to see what is already known; rejecting divine awareness to maintain control of a smaller ",
+        "source_text_as_transcribed": "believing clarity will overwhelm me.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 20675,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelm"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-9774e09e0bf37598",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by comparison of status.",
+      "pattern_hash": "9774e09e0bf3759866b3abd48fdccbddf4ef24a8c0bd0b8e52f32557ca1acd9d",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-198",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33162",
+        "record_title": "energetic signature: power performed instead of embodied; strength used as defense; visibility confused with safety.",
+        "source_text_as_transcribed": "overwhelmed by comparison of status.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 33142,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-98766fad49ba7e49",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am ashamed to say I’m overwhelmed.",
+      "pattern_hash": "98766fad49ba7e4985080d7fc04394143e24e283e238da0b45b106e841fb6bfe",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-151",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=25550",
+        "record_title": "50. collapsed beneath the weight of constant striving.",
+        "source_text_as_transcribed": "ashamed to say I’m overwhelmed.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 25492,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-be2e8c6fdce94685",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am closing awareness to avoid overwhelm.",
+      "pattern_hash": "be2e8c6fdce9468554ff97dfa0bcadd59c5bad67a1ef8265b4a8d3a06c6742b6",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-118",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=20814",
+        "record_title": "50. collapsed under fear of divine awareness.",
+        "source_text_as_transcribed": "closing awareness to avoid overwhelm.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 20780,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelm"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-c4739ea7d5272bfc",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by other people’s views.",
+      "pattern_hash": "c4739ea7d5272bfc3bd9e7892c86da8b8a9cfee97d44670837e13cbd485947db",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-062",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=12551",
+        "record_title": "energetic signature: caught between emotion and intuition, longing to rest in unity but afraid to dissolve boundaries.",
+        "source_text_as_transcribed": "overwhelmed by other people’s views.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 12511,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-c9d4eb7fb35520cd",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by sound and sensation.",
+      "pattern_hash": "c9d4eb7fb35520cd4b0156d4882ab68ed5e0db53a505ca885d2264733d2c3f6a",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-067",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=13693",
+        "record_title": "energetic signature: over-sensitized to life’s randomness, demanding peace by force instead of presence.",
+        "source_text_as_transcribed": "overwhelmed by sound and sensation.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 13601,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-de46d3e1c135cd79",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed when plans change suddenly.",
+      "pattern_hash": "de46d3e1c135cd79729d16efed0f593e10e1425b324c83bffafa3a73762d2ba0",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-044",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=9116",
+        "record_title": "Energetic Signature: “When life moves suddenly, I shut down instead of trusting I’m safe.”",
+        "source_text_as_transcribed": "Overwhelmed when plans change suddenly.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 9023,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-157f1e5b82508366",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by the intensity of it.",
+      "pattern_hash": "157f1e5b825083669d5ec0b0047048e077c12bb33a89e85c7dbd0345ed141ab5",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-182",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=30172",
+        "record_title": "energetic signature: nervous system in overdrive; life-force trapped in anticipation; presence crushed under constant al",
+        "source_text_as_transcribed": "overwhelmed by the intensity of it.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 30092,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-1bba11b7563b5e5f",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed when support feels far away.",
+      "pattern_hash": "1bba11b7563b5e5f6affff1b4b705ec563c9873bcfa7ee399166fe5ec5bbce86",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-185",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=30438",
+        "record_title": "50. collapsed inside the belief I have no help.",
+        "source_text_as_transcribed": "overwhelmed when support feels far away.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 30418,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-22ab89453902d21b",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by tension that’s become normal.",
+      "pattern_hash": "22ab89453902d21b241007f9437bd7266c2585a2f414673e59a0cae8bd5b3e66",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-056",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=11283",
+        "record_title": "energetic signature: holding pain in protection rather than releasing into softness and trust.",
+        "source_text_as_transcribed": "overwhelmed by tension that’s become normal.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 11203,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-55a4c7c2653072dd",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed when asked for the truth.",
+      "pattern_hash": "55a4c7c2653072ddb6acbfad74a9db8d46f10f3b60c8ed2af355394644ad510e",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-052",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=10373",
+        "record_title": "energetic signature: shrinking from reality to stay liked and safe.",
+        "source_text_as_transcribed": "overwhelmed when asked for the truth.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 10331,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-57e9c89575413581",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by the energy of life.",
+      "pattern_hash": "57e9c89575413581fe48ff28610e58a3bc0d9fd5cc9e3a2db8997189441a6fe3",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-068",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=13893",
+        "record_title": "energetic signature: overwhelmed by life’s noise, craving peace but gripping against the very aliveness that delivers it",
+        "source_text_as_transcribed": "overwhelmed by the energy of life.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 13819,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-88dbd934b9a8381c",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed when attention turns to me.",
+      "pattern_hash": "88dbd934b9a8381c3b9795166fdea7878aa8eaa6c5f4fd2ba315662481aedc90",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-058",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=11693",
+        "record_title": "energetic signature: holding back words and feelings to keep harmony, love, or safety.",
+        "source_text_as_transcribed": "overwhelmed when attention turns to me.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 11639,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-f2eb7426b50f40ff",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by every sound around me.",
+      "pattern_hash": "f2eb7426b50f40ff15a581afbf75e9629e13eaef6286ce31de8e33628e9e7cf3",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-099",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=18070",
+        "record_title": "energetic signature: overwhelmed by external vibration, craving silence as protection instead of integration.",
+        "source_text_as_transcribed": "overwhelmed by every sound around me.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 18068,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-14a72b1ed35cc5ad",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by the concept of inner evil.",
+      "pattern_hash": "14a72b1ed35cc5adea7ebad2cd783230cffed07c128c63e28da3101215e89f34",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-178",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=29453",
+        "record_title": "energetic signature: shadow mistaken for identity; fear projected inward; power turned against the self; goodness buried",
+        "source_text_as_transcribed": "overwhelmed by the concept of inner evil.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 29433,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-3d34d6dc4d70f788",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by sound because I can’t ground feeling.",
+      "pattern_hash": "3d34d6dc4d70f7880c89da610c3e1c9a4180c1a03bcdda4422db0b873bfb2db6",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-100",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=18175",
+        "record_title": "50. collapsed in the belief that the world is too loud to bear.",
+        "source_text_as_transcribed": "overwhelmed by sound because I can’t ground feeling.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 18173,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-43bf6b5c176dc544",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by heaviness.",
+      "pattern_hash": "43bf6b5c176dc54491ee959dca19e65cd5fc38bc64acb5a28021745dbd1fafe2",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-233",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=39636",
+        "record_title": "50. collapsed in the belief I’ve lost everything and can’t recover.",
+        "source_text_as_transcribed": "overwhelmed by heaviness.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 39556,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-a9aef16456a314b6",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by novelty.",
+      "pattern_hash": "a9aef16456a314b6fbe110e938e29d69e364c73ab00d60aaf64381cef930ae4c",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-212",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=35557",
+        "record_title": "energetic signature: future-focused alarm; safety outsourced to prediction; presence pulled out of the body.",
+        "source_text_as_transcribed": "overwhelmed by novelty.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 35537,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-12acc0d075c0a65a",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by long-term holding.",
+      "pattern_hash": "12acc0d075c0a65a35a3c66b2a6b92d5632f5a286a1c489800c4441d637c32fa",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-211",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=35288",
+        "record_title": "50. collapsed in the belief I don’t finish what I start.",
+        "source_text_as_transcribed": "overwhelmed by long-term holding.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 35208,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-35cc1528c7360654",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed guarding my space.",
+      "pattern_hash": "35cc1528c736065446969b32629ccc4e08bb90440c17e471735bdf3dcc265117",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-199",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33267",
+        "record_title": "50. collapsed in the belief I must be powerful to exist.",
+        "source_text_as_transcribed": "overwhelmed guarding my space.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 33247,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-53934afcf3010f8e",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by others’ opinions.",
+      "pattern_hash": "53934afcf3010f8ebd97050ff1ef7d78cf34958fcf8cf94e7612a7c74b7928a4",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-190",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=31418",
+        "record_title": "energetic signature: power outsourced; worth measured externally; inner authority muted by the need to be accepted.",
+        "source_text_as_transcribed": "overwhelmed by others’ opinions.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 31398,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-54632da468d2c870",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by internal shutdown.",
+      "pattern_hash": "54632da468d2c870ac7be30bfc64caf89f2af5ad8b6f7bc2bee5a427038767c6",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-174",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=29071",
+        "record_title": "energetic signature: masculine fire trapped under fear; feminine flow constricted by pressure; arousal blocked where ins",
+        "source_text_as_transcribed": "overwhelmed by internal shutdown.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 28991,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-5ae95003345dd9ab",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by emotional futility.",
+      "pattern_hash": "5ae95003345dd9ab7bade7501bb9e782dca49eff24b8b2688e4ecb8b176e4ede",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-227",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=38330",
+        "record_title": "50. collapsed in the belief everything I do is futile.",
+        "source_text_as_transcribed": "overwhelmed by emotional futility.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 38250,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-5da501506e966062",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by emotional rupture.",
+      "pattern_hash": "5da501506e966062775bdba7fe95aa1f7e322bb6b0c92215665fc737b42e9c06",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-231",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=39138",
+        "record_title": "50. collapsed in the belief this loss has broken me.",
+        "source_text_as_transcribed": "overwhelmed by emotional rupture.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 39118,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-607ecfe5eaaa999a",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by stuck energy.",
+      "pattern_hash": "607ecfe5eaaa999a8e0a6c9e84f0f423e3881ef7ab8cbb776330e69c1367be76",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-196",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=32784",
+        "record_title": "energetic signature: power turned inward against the self; pain recycled into identity; motion stalled by unresolved gri",
+        "source_text_as_transcribed": "overwhelmed by stuck energy.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 32704,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-613d7c0f19b823f3",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by people’s reactions.",
+      "pattern_hash": "613d7c0f19b823f3706403d6a6df17a14b2dc9f08e1533e584967015d28f6aa9",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-224",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=37791",
+        "record_title": "energetic signature: harmony prioritized over truth; self-expression edited to manage others’ reactions; avoidance used ",
+        "source_text_as_transcribed": "overwhelmed by people’s reactions.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 37711,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-6751a3f778d12301",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am distressed when pleasure overwhelms.",
+      "pattern_hash": "6751a3f778d123011bd17b4c8447695f69b2601830d9c19327870a2f5f0556da",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-175",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=29134",
+        "record_title": "50. collapsed inside a blocked hypogastric pathway.",
+        "source_text_as_transcribed": "distressed when pleasure overwhelms.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 29096,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelms"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-74959861dedf5a3d",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by internal conflict.",
+      "pattern_hash": "74959861dedf5a3d9f7a166581fda301a9dc4bf815ca808966bed7ea830bb93b",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-179",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=29618",
+        "record_title": "50. collapsed inside the lie that I am dangerous.",
+        "source_text_as_transcribed": "overwhelmed by internal conflict.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 29538,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-79a702931a9ca953",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed holding life uncertainty.",
+      "pattern_hash": "79a702931a9ca953120ca01e7f5932413a17da5253f0c94fa965cf9cd5639df3",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-181",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=29839",
+        "record_title": "50. collapsed in fear of not knowing where my life is headed.",
+        "source_text_as_transcribed": "overwhelmed holding life uncertainty.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 29759,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-7b76b3edeea25541",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by emotional feedback.",
+      "pattern_hash": "7b76b3edeea25541110662e6562fc5484450d6670e6177be136e3a3bd2829ba0",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-191",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=31523",
+        "record_title": "50. collapsed in the belief I need approval to be okay.",
+        "source_text_as_transcribed": "overwhelmed by emotional feedback.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 31503,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-82c320501cdb638e",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by unmet needs.",
+      "pattern_hash": "82c320501cdb638ea45f4a021071a8611455e9b0fe90fad582f70225d0e92862",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-229",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=38764",
+        "record_title": "50. collapsed in the belief need equals dependency.",
+        "source_text_as_transcribed": "overwhelmed by unmet needs.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 38684,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-8f50c49c9ac9c5e9",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by relational tension.",
+      "pattern_hash": "8f50c49c9ac9c5e973892db02fb16442d42d11308ee4defb7117824c3d67832b",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-225",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=37836",
+        "record_title": "50. collapsed in the belief I must avoid irritating people to be safe.",
+        "source_text_as_transcribed": "overwhelmed by relational tension.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 37816,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-91ef0222195171dc",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by relational feedback.",
+      "pattern_hash": "91ef0222195171dc97b4b329754dd47632073802c7b8bf6e00b5944229aae70f",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-195",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=32395",
+        "record_title": "50. collapsed in the belief I must be accepted to be safe.",
+        "source_text_as_transcribed": "overwhelmed by relational feedback.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 32375,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-96b3696fa10d75f7",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by life’s demands.",
+      "pattern_hash": "96b3696fa10d75f712488bc2c1cf920758f8a50bfb3a41892eb69f9040a026d6",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-184",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=30333",
+        "record_title": "energetic signature: survival patterns activated; life-force pulled upward in tension; support-field blocked by fear of ",
+        "source_text_as_transcribed": "overwhelmed by life’s demands.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 30313,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-9ce22c0832b264be",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by social attention.",
+      "pattern_hash": "9ce22c0832b264be4c7b4845bd5fb7b624cb2a47c7741053e0b4b4e1d2bee1a1",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-216",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=36425",
+        "record_title": "energetic signature: self-reference outsourced; identity monitored instead of lived; presence collapses under imagined e",
+        "source_text_as_transcribed": "overwhelmed by social attention.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 36405,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-a8819d12f47c3fa6",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by daily expectations.",
+      "pattern_hash": "a8819d12f47c3fa6af9319a1a09962166a659d5954ed12a46bbcf10bf25e23d4",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-158",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=26361",
+        "record_title": "energetic signature: mind sprinting ahead of the moment; body braced for future impact; life lived in anticipation rathe",
+        "source_text_as_transcribed": "overwhelmed by daily expectations.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 26271,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100.",
+        "also_in": [
+          "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=26410"
+        ]
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-ad0568f65882e20c",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by false self-sufficiency.",
+      "pattern_hash": "ad0568f65882e20c5ed905660107b89064100a18bd580d4d69e2bc3d14ae0a1b",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-220",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=37353",
+        "record_title": "energetic signature: independence used as shield; need disowned instead of integrated; validation hunger inverted into d",
+        "source_text_as_transcribed": "overwhelmed by false self-sufficiency.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 37273,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    },
+    {
+      "pattern_id": "overwhelm-b6d45748803a2c14",
+      "content": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by false self-reliance.",
+      "pattern_hash": "b6d45748803a2c14388fdd52c177edac42d273584c53b437b8e0a036fb9202c9",
+      "classification": "release",
+      "source_provenance": {
+        "source": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz",
+        "source_kind": "from a card, not dictated",
+        "source_revision": "fbad94c62212515f7046cd1b7a8e2252fff3336e",
+        "source_record_file": "atuned/data/letgo/letgo_cards.json",
+        "source_record_file_blob": "85f3fe9f06f88ca6e7c095b25d8b17f40aecc412",
+        "source_record_id": "card-228",
+        "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=38659",
+        "record_title": "energetic signature: need misinterpreted as weakness; dependence feared; support equated with loss of self.",
+        "source_text_as_transcribed": "overwhelmed by false self-reliance.",
+        "card_stem_as_printed": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am",
+        "card_stem_heading_line": 38579,
+        "reading_layer": "card join: the stem printed above the set, a space, then the card line with its first letter made small",
+        "note": "Generated in a chat session, not dictated by the owner. Used only because his own lines fall short of 100."
+      },
+      "nature_evidence": {
+        "rule": "the sentence itself names the state",
+        "tier": "core",
+        "words": [
+          "overwhelmed"
+        ]
+      },
+      "unresolved": [
+        "channel",
+        "side",
+        "phase",
+        "owner_approval"
+      ]
+    }
+  ],
+  "content_sha256": "5cd04c9f5fdea0f905c24f862d2820436ece046d11beb008148a61352519576d"
+}

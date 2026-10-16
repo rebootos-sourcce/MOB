@@ -1,0 +1,1 @@
+gift-bank validator: rejected with 17 error(s); no manifest created
