@@ -12,7 +12,7 @@ MOB. Phase 1 of the owner's ruling of 16 October. The code is `atuned_src/engine
 2. **One formula, one table.** Every kind of score has a bottom (lo) and a top (hi) written once, in one table, with the line of engine code that sets that range. The percent is how far the value sits between the two.
 3. **A change is said as before and after.** "CQ moved from 58% to 61% since last session", never "up 3", because "3" of what is not on the screen.
 4. **Counts stay counts.** 112 addresses, 25 patterns, 21 laws, nine axes, seven seats and their names, days, minutes, answers, prices, tier numbers, versions, dates, ids, coordinates and geometry never get a percent.
-5. **"Points" goes.** "Holds back about 3.0 points of your coherence" becomes a percent on the same scale as coherence. The engine's headroom (`exHeadroom`, `engine/compute.js:559`) is the gap between expression now and expression with every charge released, and expression is CQ (0 to 100) times what the shadow leaves, so the gap is already out of 100: 3.0 points is 3%. Said as before and after it reads "release could take your expression from 47% to 50%". A gap that rounds to 0% prints no sentence at all.
+5. **"Points" goes.** "Holds back about 3.0 points of your coherence" becomes a percent on the same scale as coherence. The engine's headroom (`exHeadroom`, `engine/compute.js:585`) is the gap between expression now and expression with every charge released, and expression is CQ (0 to 100) times what the shadow leaves, so the gap is already out of 100: 3.0 points is 3%. Said as before and after it reads "release could take your expression from 47% to 50%". A gap that rounds to 0% prints no sentence at all.
 6. **CQ and DQ print as N% everywhere.** They are already 0 to 100.
 
 ## The formula
@@ -29,39 +29,39 @@ Worked examples, from the gate: a weight of 6.2 reads 62%; CQ 58.4 reads 58%; vi
 
 ## The registry
 
-Each row is one kind. "Range from" is the line in the engine (or in a renderer, where the formula lives there today) that bounds the value; the gate reads that file and fails by name if the bound is no longer written there. Line numbers are those on main at `4c6185d`.
+Each row is one kind. "Range from" is the line in the engine (or in a renderer, where the formula lives there today) that bounds the value; the gate reads that file and fails by name if the bound is no longer written there. Line numbers are those on main at `f403588`, after the merge of 16 October.
 
 | Kind | lo | hi | What it is | Range from | Who prints it |
 |---|---|---|---|---|---|
-| `cq` | 0 | 100 | coherence, the 21 laws summed over 210 | `engine/compute.js:168` | analytics.js, character.js, component.js, cone.js, drills.js, engine/data/canon.js, fieldbar.js, funnel/quiz.html, intakeui.js, panels.js, personas.js, record.js, release.js, rings.js, summary.js, ui.js, wheel.js |
-| `dq` | 0 | 100 | decoherence, the shadow on all 112 against the most they could hold | `engine/compute.js:382` | analytics.js, character.js, component.js, drills.js, fieldbar.js, record.js, release.js, rings.js, summary.js |
-| `expression` | 0 | 100 | expression, and the headroom a release still has in it | `engine/compute.js:422` | analytics.js, drills.js, funnel/about.html, release.js, summary.js |
-| `accuracy` | 0 | 100 | identification, how much of the person the instrument has measured | `engine/compute.js:596` | analytics.js, personas.js, summary.js |
+| `cq` | 0 | 100 | coherence, the 21 laws summed over 210 | `engine/compute.js:172` | analytics.js, character.js, component.js, cone.js, drills.js, engine/data/canon.js, fieldbar.js, funnel/quiz.html, intakeui.js, panels.js, personas.js, record.js, release.js, rings.js, summary.js, ui.js, wheel.js |
+| `dq` | 0 | 100 | decoherence, the shadow on all 112 against the most they could hold | `engine/compute.js:408` | analytics.js, character.js, component.js, drills.js, fieldbar.js, record.js, release.js, rings.js, summary.js |
+| `expression` | 0 | 100 | expression, and the headroom a release still has in it | `engine/compute.js:448` | analytics.js, drills.js, funnel/about.html, release.js, summary.js |
+| `accuracy` | 0 | 100 | identification, how much of the person the instrument has measured | `engine/compute.js:622` | analytics.js, personas.js, summary.js |
 | `axis` | 0 | 100 | the position on a compass axis | `engine/data/compass.js:484` | cone.js, drills.js |
 | `match` | 0 | 100 | a saboteur match | `engine/core.js:426` | analytics.js, drills.js, imprints.js, map.js |
 | `gate` | 0 | 100 | the share of the story through one gate | `engine/verp.js:357` | drills.js, fieldbar.js, rings.js, ui.js, wheel.js |
 | `lean` | 0 | 100 | the benign or malignant share | `engine/verp.js:496` | component.js, drills.js, ui.js |
 | `kept` | 0 | 100 | the days a ritual was kept against the days it was due | `ui/ritual.js:1087` | ritual.js |
-| `law` | 0 | 10 | one law | `engine/schema.js:1035` | analytics.js, cone.js, drills.js, funnel/quiz.html, imprints.js, intakeui.js, mapshelf.js, rings.js, ui.js |
-| `charge` | 0 | 10 | the charge on one axis | `engine/schema.js:1028` | analytics.js, character.js, drills.js, games.js, imprints.js, summary.js, ui.js |
-| `installed` | 0 | 10 | an opposite installed | `engine/schema.js:1029` | analytics.js, drills.js, games.js, imprints.js, knowledge.js, summary.js, ui.js |
-| `held` | 0 | 10 | the charge held at one address | `engine/compute.js:264` | drills.js, knowledge.js, ui.js |
-| `weight` | 0 | 10 | the weight at an address, or a mean of it | `engine/compute.js:269` | *.js, analytics.js, character.js, component.js, cone.js, drills.js, fieldbar.js, funnel/about.html, funnel/quiz.html, imprints.js, knowledge.js, map.js, mapshelf.js, personas.js, record.js, release.js, rings.js, ritstage.js, summary.js, ui.js |
+| `law` | 0 | 10 | one law | `engine/schema.js:1047` | analytics.js, cone.js, drills.js, funnel/quiz.html, imprints.js, intakeui.js, mapshelf.js, rings.js, ui.js |
+| `charge` | 0 | 10 | the charge on one axis | `engine/schema.js:1040` | analytics.js, character.js, drills.js, games.js, imprints.js, summary.js, ui.js |
+| `installed` | 0 | 10 | an opposite installed | `engine/schema.js:1041` | analytics.js, drills.js, games.js, imprints.js, knowledge.js, summary.js, ui.js |
+| `held` | 0 | 10 | the charge held at one address | `engine/compute.js:290` | drills.js, knowledge.js, ui.js |
+| `weight` | 0 | 10 | the weight at an address, or a mean of it | `engine/compute.js:295` | *.js, analytics.js, character.js, component.js, cone.js, drills.js, fieldbar.js, funnel/about.html, funnel/quiz.html, imprints.js, knowledge.js, map.js, mapshelf.js, personas.js, record.js, release.js, rings.js, ritstage.js, summary.js, ui.js |
 | `chain` | 0 | 10 | the weight of a saboteur, complex, hyper complex or character layer | `engine/core.js:430` | analytics.js, avatarui.js, component.js, drills.js, imprints.js, map.js, mapshelf.js, rings.js, ui.js |
-| `pole` | 0 | 10 | how far the opposite outweighs the charge | `engine/compute.js:270` | analytics.js, drills.js, imprints.js, record.js, summary.js, ui.js |
-| `overshoot` | 0 | 10 | an opposite pushed past the point where it helps | `engine/compute.js:274` | analytics.js, record.js, ui.js |
-| `distortion` | 0 | 10 | how much what is running bends what is meant | `engine/compute.js:355` | drills.js, ui.js |
-| `integrity` | 0 | 10 | integrity, the laws lifted by the poles and pulled down by overshoot | `engine/compute.js:364` | cone.js, drills.js, summary.js, ui.js |
-| `intention` | 0 | 10 | intention, the same laws read seat by seat | `engine/compute.js:365` | drills.js, ui.js |
+| `pole` | 0 | 10 | how far the opposite outweighs the charge | `engine/compute.js:296` | analytics.js, drills.js, imprints.js, record.js, summary.js, ui.js |
+| `overshoot` | 0 | 10 | an opposite pushed past the point where it helps | `engine/compute.js:300` | analytics.js, record.js, ui.js |
+| `distortion` | 0 | 10 | how much what is running bends what is meant | `engine/compute.js:381` | drills.js, ui.js |
+| `integrity` | 0 | 10 | integrity, the laws lifted by the poles and pulled down by overshoot | `engine/compute.js:390` | cone.js, drills.js, summary.js, ui.js |
+| `intention` | 0 | 10 | intention, the same laws read seat by seat | `engine/compute.js:391` | drills.js, ui.js |
 | `spread` | 0 | 10 | how far apart a law's three answers sit | `engine/intake.js:55` | drills.js, intakeui.js |
-| `atom` | 0 | 10 | what one entry put at one address | `engine/sniff.js:898` | drills.js, ui.js |
-| `atomsum` **cap** | 0 | 10 | what several entries put at one address, added up | `engine/sniff.js:898` | drills.js, imprints.js, map.js, storyui.js |
-| `vitality` | 0 | 1 | vitality | `engine/compute.js:484` | character.js, drills.js, ui.js |
-| `awareness` | 0 | 1 | awareness | `engine/compute.js:485` | drills.js, ui.js |
-| `will` | 0 | 1 | will | `engine/compute.js:486` | drills.js, ui.js |
-| `radiance` | 0 | 1 | radiance, vitality, awareness and will together | `engine/compute.js:487` | drills.js, ui.js |
+| `atom` | 0 | 10 | what one entry put at one address | `engine/sniff.js:906` | drills.js, ui.js |
+| `atomsum` **cap** | 0 | 10 | what several entries put at one address, added up | `engine/sniff.js:906` | drills.js, imprints.js, map.js, storyui.js |
+| `vitality` | 0 | 1 | vitality | `engine/compute.js:510` | character.js, drills.js, ui.js |
+| `awareness` | 0 | 1 | awareness | `engine/compute.js:511` | drills.js, ui.js |
+| `will` | 0 | 1 | will | `engine/compute.js:512` | drills.js, ui.js |
+| `radiance` | 0 | 1 | radiance, vitality, awareness and will together | `engine/compute.js:513` | drills.js, ui.js |
 | `energy` | 0 | 1 | energy, the mean of vitality, awareness and will | `ui/summary.js:76` | drills.js, summary.js |
-| `pull` | 0 | 1 | how hard the shadow drags | `engine/compute.js:254` | analytics.js, drills.js |
+| `pull` | 0 | 1 | how hard the shadow drags | `engine/compute.js:280` | analytics.js, drills.js |
 | `seatload` | 0 | 1 | the load a seat carries | `ui/map.js:202` | drills.js, summary.js |
 | `pass` | 0 | 1 | what one seat passes on | `ui/map.js:203` | analytics.js, drills.js, map.js, mapshelf.js |
 | `flow` | 0 | 1 | flow, what gets from the root to the crown | `ui/map.js:206` | drills.js, map.js, ui.js |
@@ -88,7 +88,7 @@ Each row is one kind. "Range from" is the line in the engine (or in a renderer, 
 
 A cap is a top chosen because the quantity has no true maximum. There is one.
 
-- **`atomsum`, what several entries put at one address, added up, capped at 10.** It is a sum over entries, so it has no ceiling. Measured over all 16 people in the worked example roster on 16 October: only two carry a story that lands, eight imprints in all; the 99th percentile of the sum at one address is 2.2 and of a merged pill 8.8. Both are under what a single entry can already put at one seat, 10 (`engine/sniff.js:898`), and a cap below that would print 100% on one ordinary entry. So the cap is 10. The roster cannot measure more, because each person in it carries one story. **The question:** keep 10, or pick a larger top (for example 30, three heavy entries) once real records with several entries exist.
+- **`atomsum`, what several entries put at one address, added up, capped at 10.** It is a sum over entries, so it has no ceiling. Measured over all 16 people in the worked example roster on 16 October: only two carry a story that lands, eight imprints in all; the 99th percentile of the sum at one address is 2.2 and of a merged pill 8.8. Both are under what a single entry can already put at one seat, 10 (`engine/sniff.js:906`), and a cap below that would print 100% on one ordinary entry. So the cap is 10. The roster cannot measure more, because each person in it carries one story. **The question:** keep 10, or pick a larger top (for example 30, three heavy entries) once real records with several entries exist.
 - **Not a cap, a choice taken:** the release's "163 weight freed" is also a sum with no ceiling. Rather than invent a top for it, phase 2 says the same fact as DQ before and after the run (rule 3), so no cap is needed. His to overturn.
 
 ## Open, and whose call (the lead decides or carries one question)

@@ -33,8 +33,8 @@
    find is a fragment of that bound, copied exactly. tests/engine.js reads the
    cited file and fails when the fragment is gone, so a change to a clamp
    anywhere in the engine fails this table by name instead of leaving it
-   quietly wrong. The line in each comment is the line on 16 October at
-   4c6185d, given so a reader can go straight there; the gate holds the
+   quietly wrong. The line in each comment is the line on 16 October at main
+   f403588, given so a reader can go straight there; the gate holds the
    fragment and not the line, because other seats edit those files and a line
    number in a gate is a number typed into a gate.
 
@@ -64,19 +64,19 @@ var PCT_DASH='–';
 
 var PCT_KIND={
  /* ---------- already on nought to a hundred ---------- */
- /* compute.js:168, the 21 laws summed over 210. Each law is at most 10
-    (schema.js:1035 and lawLift, compute.js:151), so 100 is every law at 10. */
- cq:        {lo:0, hi:100, src:'engine/compute.js', find:'(lawIn(l)?lawNow(l):0),0)/210*100;}',
+ /* compute.js:172, the 21 laws summed over 210. Each law is at most 10
+    (schema.js:1047 and lawLift, compute.js:151), so 100 is every law at 10. */
+ cq:        {lo:0, hi:100, src:'engine/compute.js', find:'),0)/210*100;}',
              say:'coherence, the 21 laws summed over 210'},
- /* compute.js:382, all 112 addresses summed over 1120, each sq at most 10 */
+ /* compute.js:408, all 112 addresses summed over 1120, each sq at most 10 */
  dq:        {lo:0, hi:100, src:'engine/compute.js', find:'const DQ=SQ.reduce((a,v)=>a+v,0)/1120*100;',
              say:'decoherence, the shadow on all 112 against the most they could hold'},
- /* compute.js:422, CQ times what the pull leaves, PULL nought to one. The
-    headroom exHeadroom returns, compute.js:559, is a gap on this same scale,
+ /* compute.js:448, CQ times what the pull leaves, PULL nought to one. The
+    headroom exHeadroom returns, compute.js:585, is a gap on this same scale,
     so it asks this kind too: three points of expression is 3%. */
  expression:{lo:0, hi:100, src:'engine/compute.js', find:'const EX=CQ*(1-PULL);',
              say:'expression, and the headroom a release still has in it'},
- /* compute.js:596, clamped to 8.3 and 99. It is already a percent of a
+ /* compute.js:622, clamped to 8.3 and 99. It is already a percent of a
     hundred, so lo stays 0: the floor is the fit's own, not the scale's. */
  accuracy:  {lo:0, hi:100, src:'engine/compute.js', find:'pct=clamp(pct*(1-deg*0.10),8.3,99);',
              say:'identification, how much of the person the instrument has measured'},
@@ -97,49 +97,49 @@ var PCT_KIND={
              say:'the days a ritual was kept against the days it was due'},
 
  /* ---------- nought to ten ---------- */
- /* schema.js:1035, the boundary refuses a law outside 0 to 10 by name */
+ /* schema.js:1047, the boundary refuses a law outside 0 to 10 by name */
  law:       {lo:0, hi:10, src:'engine/schema.js', find:"vRange(errs,'laws.'+l.nm,o.laws[l.nm],0,10)",
              say:'one law'},
- /* schema.js:1028, the charge held on one of the nine axes */
+ /* schema.js:1040, the charge held on one of the nine axes */
  charge:    {lo:0, hi:10, src:'engine/schema.js', find:"vRange(errs,'axes.'+c.nm+'.held',a.held,0,10)",
              say:'the charge on one axis'},
- /* schema.js:1029 on the axis, and compute.js:267 at one address */
+ /* schema.js:1041 on the axis, and compute.js:293 at one address */
  installed: {lo:0, hi:10, src:'engine/schema.js', find:"vRange(errs,'axes.'+c.nm+'.opp',a.opp,0,10)",
              say:'an opposite installed'},
- /* compute.js:264, the charge held at one address before the opposite */
+ /* compute.js:290, the charge held at one address before the opposite */
  held:      {lo:0, hi:10, src:'engine/compute.js', find:'n.held = n.cf?clamp(S.charge[n.cf]*n.susc*(1-relief*0.42),0,10):0;',
              say:'the charge held at one address'},
- /* compute.js:269, sq, what is left at one address after the opposite. A mean
-    of sq stays on the same scale, so SQm (compute.js:292), the heaviest seat
-    darkV, a mask's load (compute.js:352) and a seat's mean all ask this kind.
+ /* compute.js:295, sq, what is left at one address after the opposite. A mean
+    of sq stays on the same scale, so SQm (compute.js:318), the heaviest seat
+    darkV, a mask's load (compute.js:378) and a seat's mean all ask this kind.
     It is the fieldbar's p:r.SQm*10, which is where the ruling started. */
  weight:    {lo:0, hi:10, src:'engine/compute.js', find:'n.sq   = clamp(n.held - n.rep*0.86,0,10);',
              say:'the weight at an address, or a mean of it'},
  /* a saboteur is a mean of sq or of its rated levels capped at 10 (core.js:430),
-    a complex and a hyper the mean of their parts (compute.js:336 and 343), and
+    a complex and a hyper the mean of their parts (compute.js:362 and 369), and
     the body map clamps the same w at 10 (ui/map.js:2036) */
  chain:     {lo:0, hi:10, src:'engine/core.js', find:'w:Math.min(10, parts.reduce(',
              say:'the weight of a saboteur, complex, hyper complex or character layer'},
- /* compute.js:270, and poleMean is the mean of it over the somatic set */
+ /* compute.js:296, and poleMean is the mean of it over the somatic set */
  pole:      {lo:0, hi:10, src:'engine/compute.js', find:'n.pole = clamp(n.rep - n.held,0,10);',
              say:'how far the opposite outweighs the charge'},
- /* compute.js:274, and JQ is the mean of it over the somatic set */
+ /* compute.js:300, and JQ is the mean of it over the somatic set */
  overshoot: {lo:0, hi:10, src:'engine/compute.js', find:'n.jq   = clamp(n.rep - 6,0,4)/4*10;',
              say:'an opposite pushed past the point where it helps'},
- /* compute.js:355 */
+ /* compute.js:381 */
  distortion:{lo:0, hi:10, src:'engine/compute.js', find:'sups.length*2.4,0,10);',
              say:'how much what is running bends what is meant'},
- /* compute.js:364 */
+ /* compute.js:390 */
  integrity: {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.42,0,10);',
              say:'integrity, the laws lifted by the poles and pulled down by overshoot'},
- /* compute.js:365 */
+ /* compute.js:391 */
  intention: {lo:0, hi:10, src:'engine/compute.js', find:'- JQ*0.30,0,10);',
              say:'intention, the same laws read seat by seat'},
  /* intake.js:55, the widest gap between a law's three answers, each 0 to 10
-    at the boundary (schema.js:1057) */
+    at the boundary (schema.js:1069) */
  spread:    {lo:0, hi:10, src:'engine/intake.js', find:'var spread=Math.max.apply(null,v)-Math.min.apply(null,v);',
              say:'how far apart a law\'s three answers sit'},
- /* sniff.js:898, what one entry puts at one address: the seat's total is
+ /* sniff.js:906, what one entry puts at one address: the seat's total is
     capped at 10 and split across up to four addresses */
  atom:      {lo:0, hi:10, src:'engine/sniff.js', find:'var total=Math.min(10,byBand[k]/3)',
              say:'what one entry put at one address'},
@@ -149,7 +149,7 @@ var PCT_KIND={
     Measured on 16 October over all sixteen of PEOPLE: two carry a story that
     lands, eight imprints, the 99th percentile of the sum at an address 2.2 and
     of a merged pill 8.8. Both sit under what one entry can already put at one
-    seat, 10 (sniff.js:898), and a cap below a value the engine can produce from
+    seat, 10 (sniff.js:906), and a cap below a value the engine can produce from
     a single entry would print 100% on an ordinary entry. So hi is 10, the
     larger of the two, and the roster cannot see more because each person in it
     carries one story. His to rule. */
@@ -158,7 +158,7 @@ var PCT_KIND={
              say:'what several entries put at one address, added up'},
 
  /* ---------- nought to one ---------- */
- /* compute.js:484 to 487, each clamped to 0 and 1, radiance their length
+ /* compute.js:510 to 513, each clamped to 0 and 1, radiance their length
     over the root of three */
  vitality:  {lo:0, hi:1, src:'engine/compute.js', find:'const X=clamp((1-S.charge.Apathy/10)*.3+(1-clamp(DQ/14,0,1))*.7,0,1);',
              say:'vitality'},
@@ -171,8 +171,8 @@ var PCT_KIND={
  /* ui/summary.js:76, the mean of the three above */
  energy:    {lo:0, hi:1, src:'ui/summary.js', find:'var e=(r.X+r.Y+r.Z)/3;',
              say:'energy, the mean of vitality, awareness and will'},
- /* compute.js:254, the bell normalised by its own top, so 10 pulls 1, and
-    PULL is the mean of it over the 112 (compute.js:421) */
+ /* compute.js:280, the bell normalised by its own top, so 10 pulls 1, and
+    PULL is the mean of it over the 112 (compute.js:447) */
  pull:      {lo:0, hi:1, src:'engine/compute.js', find:'function leverPull(w){return leverPhi((w-LEVER_MU)/LEVER_SD)/LEVER_TOP;}',
              say:'how hard the shadow drags'},
  /* ui/map.js:202, a seat's held charge over its addresses, out of ten */

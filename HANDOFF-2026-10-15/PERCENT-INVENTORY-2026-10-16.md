@@ -1,6 +1,6 @@
 # Percent inventory, 16 October 2026
 
-MOB, branch `claude/percent-framework`, built from main at `4c6185d`. Phase 1 of the owner's 16 October ruling. Nothing here changes a screen; it is the list phase 2 works from.
+MOB, branch `claude/percent-framework`, built from main at `4c6185d`, and merged with main at `f403588` the same morning. Line numbers are at `4c6185d` except where a row says `f403588`: main changed `ui/drills.js` and `ui/summary.js` in between, and only `drills.js` gained a printed number (the CQ span, rows marked). Phase 1 of the owner's 16 October ruling. Nothing here changes a screen; it is the list phase 2 works from.
 
 ## How this was made
 
@@ -12,10 +12,10 @@ MOB, branch `claude/percent-framework`, built from main at `4c6185d`. Phase 1 of
 
 | Class | Rows | What happens in phase 2 |
 |---|---|---|
-| PERCENT | 267 | Printed through `fmtPct(kind, value)`, and the drawn fill moves onto `pct(kind, value)` where it does not already agree |
-| COUNT | 34 | Untouched. A count never gets a percent |
+| PERCENT | 268 | Printed through `fmtPct(kind, value)`, and the drawn fill moves onto `pct(kind, value)` where it does not already agree |
+| COUNT | 35 | Untouched. A count never gets a percent |
 | OTHER | 21 | Untouched, with the reason in the row: a factor, an input the person chose, an id, a unit, time, geometry, or a figure that is not a measure at all |
-| Total | 322 | |
+| Total | 324 | |
 
 Kinds and ranges are read from `PCT_KIND` in `atuned_src/engine/pct.js`; the citation for each range is in `PERCENT-FRAMEWORK-2026-10-16.md`.
 
@@ -167,7 +167,9 @@ Kinds and ranges are read from `PCT_KIND` in `atuned_src/engine/pct.js`; the cit
 | `ui/drills.js:334` | Collapse 4.9 (chip) | PERCENT | chain 0 to 10 |  |
 | `ui/drills.js:381` | put 2.0 here | PERCENT | atom 0 to 10 |  |
 | `ui/drills.js:419` | CQ 48, oscillating | PERCENT | cq 0 to 100 |  |
-| `ui/drills.js:420` | The reading swings between 40 and 56 | PERCENT | cq 0 to 100 | and the sentence "not a mark out of a hundred" contradicts a percent; it is rewritten in phase 2 |
+| `ui/drills.js:434 (main f403588)` | The reading swings between 40 and 56 | PERCENT | cq 0 to 100 | moved into coreRangeSay on main; the sentence "not a mark out of a hundred" contradicts a percent and is rewritten in phase 2 |
+| `ui/drills.js:430 (main f403588)` | With 7 of 21 laws answered, the finished figure lands between 12 and 79 | PERCENT | cq 0 to 100 | added on main (cqSpan): both ends are CQ; the answered count is a COUNT |
+| `ui/drills.js:429 (main f403588)` | 3 of 21 laws are answered | COUNT | laws |  |
 | `ui/drills.js:443` | expression 43 | PERCENT | expression 0 to 100 |  |
 | `ui/drills.js:444` | with the shadow taking 12 per cent | PERCENT | pull 0 to 1 |  |
 | `ui/drills.js:448` | contracting 40% | PERCENT | lean 0 to 100 | already a percent (malig) |
