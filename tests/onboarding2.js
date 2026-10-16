@@ -824,7 +824,22 @@ console.log('\n=== Is this a crisis, on the welcome and after it (16 October) ==
    missing button, and cannot go on. */
 {
  const SHOTS=process.env.SHOTS||'';
- const shot=async(p,n)=>{if(SHOTS)await p.screenshot({path:path.join(SHOTS,n+'.png')});};
+ /* THE WELCOME WAS SHOT EMPTY. Its card's words animate in, and 400ms after
+    Guest the picture caught the stage with the ring drawn and no card on it,
+    while the assertions beside it, which read the DOM, passed. A reviewer
+    judging the screen from that picture judges a frame nobody stops on. So
+    the shot waits for every finite animation to finish, and never more than
+    three seconds: the ring breathes for ever and is left out, and a paused
+    one would otherwise hold the run. Pictures only; no assertion reads it.
+    And the pointer leaves the card first: the click on Reach someone now
+    left it resting where Text 741741 then drew, so the 390 picture showed
+    that link in its hover dark, which no person on a phone ever sees. */
+ const shot=async(p,n)=>{if(!SHOTS)return;
+  await p.mouse.move(0,0);
+  await p.evaluate(()=>Promise.race([new Promise(r=>setTimeout(r,3000)),
+   Promise.all(document.getAnimations().filter(a=>{const t=a.effect&&a.effect.getComputedTiming();
+    return t&&t.iterations!==Infinity;}).map(a=>a.finished.catch(()=>{})))]));
+  await p.screenshot({path:path.join(SHOTS,n+'.png')});};
  for(const [w,h] of [[1600,1000],[390,844]]){
   const at=' at '+w;
   const page=await browser.newPage({viewport:{width:w,height:h}});
