@@ -11,6 +11,42 @@ time. It covers four channels in your "Wins" group:
 | #milestones | A card your team writes and you approve, about a milestone | GitHub, only when someone starts it by hand |
 | #investors | A card your team writes and you approve, for investors | GitHub, only when someone starts it by hand. Never by itself |
 
+## Step 0. Find the test card first
+
+On 16 October at 19:16 UTC the team sent one test message through the app's
+feedback route on atuned.world, from a GitHub test run. atuned.world answered
+"ok", which means Discord accepted it. So feedback is already reaching a
+channel. We just do not know which one.
+
+1. Open Discord and look through your channels for a card from "Atuned
+   feedback", titled **Comment**, that says "Engineering pipe test from the
+   build team. Ignore this card."
+2. Tell us which channel it is in.
+
+If it is in #atuned-feedback, the pipe works. Feedback that seems to go
+missing is then one of these:
+
+- **A saved copy of the app.** If you open the app from a file on your
+  computer (the atuned.html the team sends you), it can never send. Only
+  atuned.world/atuned.html can.
+- **An outbox blocked by an empty send.** Fixed in pull request 100. Until
+  that is live, one press of Send on an empty box held back everything after
+  it on that device.
+
+If it is in another channel, the feedback webhook belongs to that channel.
+To point it at #atuned-feedback:
+
+1. Make a new webhook for #atuned-feedback (Part 1 below).
+2. Put it into GitHub as `DISCORD_FEEDBACK_WEBHOOK` (Part 2 below).
+3. Run one deploy (Part 3 below). The deploy copies it to Cloudflare in place
+   of the old one.
+4. In Discord, go to the other channel, gear, Integrations, Webhooks. Find the
+   old "Atuned feedback" webhook and click **Delete Webhook**, so nothing
+   posts there any more.
+
+If you cannot find the card anywhere, the webhook may belong to a server or
+channel you do not look at. Do the same four steps.
+
 Words used on this page:
 
 - **Webhook**: a private web address that Discord makes for one channel.
@@ -208,7 +244,9 @@ The feedback probe below also asks Discord whether this invite is still alive.
 - A probe on GitHub asks atuned.world/feedback once and says plainly what the
   answer means. It is called **feedback probe**, under Actions, and it posts
   at most one test card that says "Engineering pipe test from the build
-  team. Ignore this card."
+  team. Ignore this card." Its run on 16 October (run 38953488416) read: the
+  feedback route is on atuned.world, the test post was answered "ok" (Discord
+  took it), and the Join our Discord invite is alive and never expires.
 - A fault was found and fixed: one Send on an empty box used to block every
   later comment on that device, even with Discord set up. Fixed in pull
   request 100.
