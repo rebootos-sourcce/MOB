@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v213 b3f1fbf 2026-10-16 04:55"><head><meta charset="utf-8">
+<html lang="en" data-build="v214 9440650 2026-10-16 05:00"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -14354,6 +14354,19 @@ var PCT_KIND={
              say:'shape, the share of what is running that points at other people'},
  control:   {lo:0, hi:1, src:'engine/data/compass.js', find:'function organisedShare(stack){',
              say:'control, the share of what is running that is organised'},
+ /* a count over its own total, which several surfaces already print as a
+    share: the seat's addresses carrying in Knowledge (ui/knowledge.js:212),
+    the carrying addresses a story reached on the glass bar (ui/fieldbar.js).
+    The range is the definition, nought of them to all of them. */
+ portion:   {lo:0, hi:1, src:'ui/knowledge.js', find:'Math.round(lit/all.length*100)',
+             say:'how many of a set, against the whole set'},
+ /* charfield.js:60, how closed a seat reads on the Character page, a smooth
+    step clamped to nought and one */
+ closed:    {lo:0, hi:1, src:'engine/charfield.js', find:'function charSmooth(a,b,v){var t=clamp((v-a)/(b-a),0,1);',
+             say:'how closed a seat is, the shadow at that seat'},
+ /* charfield.js:160, closedness times a share, so never above it */
+ leak:      {lo:0, hi:1, src:'engine/charfield.js', find:'o.lk[k]=sh*(.55+.45*(1-c));',
+             say:'how much a seat leaks'},
  /* ui/avatarui.js:624, the mean of the avatar's closures */
  complete:  {lo:0, hi:1, src:'ui/avatarui.js', find:'var overall=cs.length?cs.reduce(function(s,v){return s+v;},0)/cs.length:null;',
              say:'the avatar\'s percent complete'}};
@@ -76655,5 +76668,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005029691"></div>
+<div id="eof" hidden data-len="005030635"></div>
 </body></html>

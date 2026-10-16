@@ -4616,6 +4616,19 @@ var PCT_KIND={
              say:'shape, the share of what is running that points at other people'},
  control:   {lo:0, hi:1, src:'engine/data/compass.js', find:'function organisedShare(stack){',
              say:'control, the share of what is running that is organised'},
+ /* a count over its own total, which several surfaces already print as a
+    share: the seat's addresses carrying in Knowledge (ui/knowledge.js:212),
+    the carrying addresses a story reached on the glass bar (ui/fieldbar.js).
+    The range is the definition, nought of them to all of them. */
+ portion:   {lo:0, hi:1, src:'ui/knowledge.js', find:'Math.round(lit/all.length*100)',
+             say:'how many of a set, against the whole set'},
+ /* charfield.js:60, how closed a seat reads on the Character page, a smooth
+    step clamped to nought and one */
+ closed:    {lo:0, hi:1, src:'engine/charfield.js', find:'function charSmooth(a,b,v){var t=clamp((v-a)/(b-a),0,1);',
+             say:'how closed a seat is, the shadow at that seat'},
+ /* charfield.js:160, closedness times a share, so never above it */
+ leak:      {lo:0, hi:1, src:'engine/charfield.js', find:'o.lk[k]=sh*(.55+.45*(1-c));',
+             say:'how much a seat leaks'},
  /* ui/avatarui.js:624, the mean of the avatar's closures */
  complete:  {lo:0, hi:1, src:'ui/avatarui.js', find:'var overall=cs.length?cs.reduce(function(s,v){return s+v;},0)/cs.length:null;',
              say:'the avatar\'s percent complete'}};
