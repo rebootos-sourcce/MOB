@@ -3194,6 +3194,34 @@ console.log('\n27 · the ladder');
   /* why the ruler cannot be addresses: the second marker sits past every
      address a release can reach, so counted in addresses it is unreachable */
   ok(markersFor(null)[1].at>W.length,'the second marker, '+markersFor(null)[1].at+', is past the '+W.length+' addresses a release reaches, so the markers count patterns');}
+
+ /* L12, HELD RATHER THAN REWORDED. The release results print "Up" as
+    Math.max(0, after minus before), and the fact map read that clamp as a
+    drop printed "Up 0.00", after LD9 measured releases lowering CQ (Sofia
+    56.6 to 55.1). That was the arithmetic before 25 September. CQ is now the
+    answered laws and the lift releaseWork writes, and the lift only rises
+    with the count, so a release cannot lower it and the clamp never fires:
+    measured on f7188cba over 6,000 releases, 0 falls and 5,992 rises. This
+    holds that, so the day a release can lower CQ the "Up" figure fails here
+    by name instead of hiding the drop. Known good first: a changed answer
+    does lower CQ, and the sweep would see it. The word "Up" itself goes in
+    phase 2 of the percent framework (CQ before and after, its rule 3). */
+ {const {loadProfile,releaseWork,cqSum,meterKey}=E;
+  let x=7; const rnd=()=>{x=(x*1103515245+12345)%2147483648; return x/2147483648;};
+  let falls=0, rises=0;
+  for(let t=0;t<60;t++){
+   const p=blankProfile('L');
+   SINAMES.forEach(l=>{p.laws[l]=rnd()<0.2?null:Math.round(rnd()*100)/10;});
+   loadProfile(p); p.work=p.work||{};
+   for(let r=0;r<10;r++){
+    const keys=[]; for(let i=0,n=1+Math.floor(rnd()*25);i<n;i++)keys.push(meterKey(W[Math.floor(rnd()*W.length)].i,'Llimit',Math.floor(rnd()*50)));
+    const o=releaseWork(p,keys); if(o.cq1<o.cq0-1e-12)falls++; else if(o.cq1>o.cq0)rises++;}}
+  ok(rises>0,'the sweep sees releases lift CQ, so it is reading the lift, '+rises+' rises');
+  ok(falls===0,'and no release lowers CQ, so "Up" never clamps a drop, '+falls+' falls');
+  const q=blankProfile('L'); SINAMES.forEach(l=>{q.laws[l]=8;}); loadProfile(q);
+  const a=cqSum(); S.law[SINAMES[0]]=2; const b=cqSum();
+  ok(b<a,'known good: a changed answer does lower CQ, '+a.toFixed(2)+' to '+b.toFixed(2));
+  reset();}
 }
 
 console.log('\n27c · a save never costs a person data, and a drain never leaks');
