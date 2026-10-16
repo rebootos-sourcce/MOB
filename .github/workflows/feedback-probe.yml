@@ -1,0 +1,58 @@
+# Ask the live atuned.world whether its /feedback route is there and whether
+# it relays, because the build sandbox cannot reach atuned.world or
+# discord.com and a guess about the live system is how the owner was told it
+# worked. 16 October, the owner: "I can't add anything from feedback and have
+# it go to Discord."
+#
+# Hand start only, and no secret: it is what any visitor's browser does, from
+# a GitHub runner. It posts at most ONE message, a comment that says it is a
+# pipe test, and prints the status and the server's own error sentence. It
+# never prints a header beyond the content type and the allow line, because
+# nothing else is needed to read the answer.
+name: feedback probe
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: ask atuned.world/feedback, once with a GET and once with one post
+        run: |
+          set -u
+          URL="https://atuned.world/feedback"
+          mean() {
+            case "$1" in
+              200) echo "200 means the Function took it and Discord said yes: a card is in the channel." ;;
+              400) echo "400 means the Function is there and refused the envelope itself, and the sentence above says why." ;;
+              404) echo "404 means nothing answers at /feedback: the Function is not in the deployed site." ;;
+              405) echo "405 on a POST means a static host answered and the Function is not deployed; on a GET it means the Function is there." ;;
+              413|415) echo "$1 means the Function is there and refused the shape of the request." ;;
+              502) echo "502 means the Function is there and its webhook is set, and Discord refused the post or could not be reached." ;;
+              503) echo "503 means the Function is there and no usable webhook is set (see the sentence: not switched on, set up wrong, or Discord busy)." ;;
+              000) echo "000 means the runner got no answer at all from atuned.world." ;;
+              *) echo "$1 is not an answer the Function gives, so something in front of it (Cloudflare itself) answered." ;;
+            esac
+          }
+          echo "=== (a) GET $URL"
+          code=$(curl -sS -o get.body -D get.head -w '%{http_code}' "$URL" || echo 000)
+          echo "status: $code"
+          grep -i '^content-type:' get.head || true
+          grep -i '^allow:' get.head || echo "allow: (none)"
+          mean "$code"
+          echo
+          echo "=== (b) POST one comment to $URL"
+          code=$(curl -sS -o post.body -D post.head -w '%{http_code}' -X POST "$URL" \
+            -H 'content-type: application/json' -H 'origin: https://atuned.world' \
+            --data '{"kind":"comment","body":"Engineering pipe test from the build team. Ignore this card."}' || echo 000)
+          echo "status: $code"
+          grep -i '^content-type:' post.head || true
+          if jq -e . post.body >/dev/null 2>&1; then
+            echo "answer: $(jq -c '{ok, error}' post.body)"
+          else
+            echo "answer: not JSON, $(wc -c < post.body) bytes, so the Function did not write it"
+          fi
+          echo "=== (c) what it means"
+          mean "$code"
