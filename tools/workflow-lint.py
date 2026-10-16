@@ -111,6 +111,10 @@ BROWSER = {
     'valuefelt':     ('node tests/valuefelt.js', 20),
     'claims':        ('node tests/claims.js', 20),
     'discordfeedback': ('node tests/discordfeedback.js', 20),
+# the record tells the truth, achievements Block 1 (tests/record.js): the
+# words on the record's surfaces, read on the real renderers. Report only
+# until three green runs, like the alpha guards above.
+    'record':        ('node tests/record.js', 20),
 }
 # P0 Alpha acceptance: move to the blocking browser matrix, and mutation-test each
 # one so a future refactor cannot silently return it to report-only.
