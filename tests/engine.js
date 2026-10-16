@@ -7899,5 +7899,26 @@ g('CRISIS · srcSafe trips on self harm and not on everyday uses of the same wor
  NOT.forEach(t=>xf(typeof srcSafe==='function'&&srcSafe(t)===false,'srcSafe does not trip on '+JSON.stringify(t)));
 }
 
+g('CRISIS · the button a person presses: three numbers, each with its sentence and its link');
+/* NOT A DETECTOR, and nothing above changes because of it: the ten expected
+   red rows stay red. This is the table the app's panel and the quiz both print
+   (engine/data/crisis.js). Each row names its own number in its own sentence,
+   and every link dials or texts that same number, so a sentence and its
+   button can never send a person to two different places. */
+{
+ const L=E.CRISIS_LINES||[], S=E.CRISIS_SAY||{};
+ ok(L.map(l=>l.k).join()==='988,741741,911','the three numbers, in order, got '+L.map(l=>l.k).join());
+ L.forEach(l=>{
+  ok(new RegExp('\\b'+l.k+'\\b').test(l.say)&&/\.$/.test(l.say)&&l.say.split('. ').length===1,
+   l.k+' is named in its own one sentence: '+JSON.stringify(l.say));
+  ok(l.go.length>0&&l.go.every(g=>/^(tel|sms):/.test(g[1])&&g[1].replace(/^(tel|sms):/,'').split('?')[0]===l.k),
+   l.k+' links only to itself, by tel: or sms:, '+JSON.stringify(l.go));});
+ ok(L.some(l=>l.go.some(g=>g[1]==='tel:988'))&&L.some(l=>l.go.some(g=>g[1]==='sms:988')),'988 is both a call and a text');
+ ok(/\bUS\b/.test(S.where||'')&&/local emergency number/.test(S.where||''),'the panel says they are US numbers and what to use elsewhere');
+ ok(S.open==='Is this a crisis?'&&S.h==='Tell me about it.'&&S.reach==='Reach someone now'&&S.talk==='Talk it through',
+  'the button and the panel carry the words as ruled');
+ ok(!/—/.test(JSON.stringify([L,S])),'and no em dash anywhere in them');
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');
 process.exit(F?1:0);

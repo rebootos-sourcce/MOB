@@ -19,6 +19,7 @@ engine/data/cards.js
 engine/data/intakemore.js
 engine/data/gloss.js
 engine/data/onboarding.js
+engine/data/crisis.js
 engine/verp.js
 engine/lexicon.js
 engine/core.js
@@ -92,6 +93,7 @@ ui/rootsum.js
 ui/loopread.js
 ui/railtiles.js
 ui/railmotion.js
+ui/crisis.js
 ui/onboard.js
 ui/login.js
 ui/valuefelt.js

@@ -3213,8 +3213,9 @@ const pmn=await page.evaluate(async()=>{
  o.sfx=m?(()=>{const b=m.querySelector('[data-pmsfx]');return b?{h:b.getBoundingClientRect().height,on:b.getAttribute('aria-checked')}:null;})():null;
  /* Discord feedback joined at 3 October; Join our Discord is a row only once
     COMMUNITY_INVITE holds a real invite, so it is read off commInvite and not
-    assumed either way */
- o.want=ACC_SECS.map(s=>s.nm).concat(['Discord feedback'],commInvite()?['Join our Discord']:[],['Message log','Settings']);
+    assumed either way. Is this a crisis? joined at 16 October, after the
+    log and before Settings (ui/crisis.js) */
+ o.want=ACC_SECS.map(s=>s.nm).concat(['Discord feedback'],commInvite()?['Join our Discord']:[],['Message log','Is this a crisis?','Settings']);
  o.tall=m?Math.min(...[...m.querySelectorAll('[role=menuitem]')].map(e=>e.getBoundingClientRect().height)):0;
  o.stillField=S.tab===TAB.FIELD;
  m.querySelector('[data-pms="billing"]').click(); await wait();

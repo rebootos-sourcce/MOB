@@ -94,7 +94,21 @@ const REQUIRED=[
  ['privacy', [/\bname\b/i, /\bnever leaves this device\b/i],
   'one sentence naming that the name never leaves the device'],
  ['delete', [/\bour server\b/i, /\bfirst visit\b/i],
-  'the delete screen says what our server still keeps']];
+  'the delete screen says what our server still keeps'],
+ /* THE CRISIS PANEL'S NUMBERS, 16 October (engine/data/crisis.js). A number
+    nobody explains is a symbol, and a deleted sentence here is a person in
+    trouble left with a bare 741741, so each number is held with what it
+    reaches, in one sentence, and the line that says they are US numbers is
+    held with what to do outside the US. Read off the app's panel and the
+    quiz's copy of it. */
+ ['crisis', [/\bCall or text 988\b/, /\bSuicide and Crisis Lifeline\b/, /\btrained person answers\b/],
+  'the sentence that says 988 is the Suicide and Crisis Lifeline, to call or text'],
+ ['crisis', [/\bText the word home to 741741\b/, /\bCrisis Text Line\b/, /\btrained person writes back\b/],
+  'the sentence that says texting home to 741741 reaches the Crisis Text Line'],
+ ['crisis', [/\bCall 911\b/, /\bin danger now\b/, /\bpolice, fire or an ambulance\b/],
+  'the sentence that says 911 is for danger now'],
+ ['crisis', [/\bThese are US numbers\b/], 'the line that says they are US numbers'],
+ ['crisis', [/\bOutside the US\b/, /\blocal emergency number\b/], 'what to call outside the US']];
 
 /* WHAT MAY LEAVE DURING THE WALK. [method, path, the body keys it may carry],
    read off ui/auth.js. The walk never signs in, so these are the only routes
@@ -140,6 +154,11 @@ function hold(scope,surface,text,need){
  if(good.length)fail('self','a true privacy line is called banned: '+JSON.stringify(good));
  if(quiz.length)fail('self','the quiz line, true on the quiz, is called banned: '+JSON.stringify(quiz));
  if(!missing('privacy','Held in this browser and nowhere else.').length)fail('self','an empty privacy footer is not called incomplete');
+ if(missing('crisis','Call 988. Text 741741. Call 911.').length!==5)fail('self','bare crisis numbers are not called incomplete');
+ if(missing('crisis','Call or text 988 to reach the Suicide and Crisis Lifeline, where a trained person answers at any hour. '
+  +'Text the word home to 741741 to reach the Crisis Text Line, where a trained person writes back at any hour. '
+  +'Call 911 if you are in danger now, for police, fire or an ambulance. '
+  +'These are US numbers. Outside the US, call your local emergency number.').length)fail('self','the whole crisis panel is called incomplete');
  if(missing('privacy','A first visit sends our server a random code, the topic you pick and whether you finish. The name you enter never leaves this device.').length)
   fail('self','a complete privacy footer is called incomplete');
  if(FAIL>before){console.log('the checker failed its own known cases, so nothing below is trusted');process.exit(1);}
@@ -285,6 +304,13 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
   if(fb){await p.waitForTimeout(250); hold('app',at('sheet:feedback'),await p.evaluate(harvest,'#sheet-card'));
    await p.evaluate(()=>sheetShut());}
 
+  /* the crisis panel, on its numbers, where the required sentences are */
+  const cx=await p.evaluate(()=>{if(typeof crisisOpen!=='function')return null;
+   crisisOpen(); CRISIS.view='reach'; crisisPaint(); return true;});
+  if(!cx)fail(at('crisis'),'missing the crisis panel');
+  else {await p.waitForTimeout(150); hold('app',at('crisis'),await p.evaluate(harvest,'#crisis'),'crisis');
+   await p.evaluate(()=>crisisShut());}
+
   /* every onboarding card, counted off its own dots. The topic is picked by
      a real press, so the pick is really sent through the stub. */
   if(who==='blank'){
@@ -311,6 +337,13 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
   const p=await c.newPage();
   await p.goto('file://'+path.join(DIST,f),{waitUntil:'load'}); await p.waitForTimeout(500);
   hold('funnel','funnel/'+wn+'/'+f,await p.evaluate(harvest,null));
+  /* the quiz's copy of the crisis panel, held to the same sentences */
+  if(await p.$('#crxq')){
+   await p.click('#crxq'); await p.waitForTimeout(150);
+   await p.click('#crxqp [data-crx="reach"]'); await p.waitForTimeout(150);
+   hold('funnel','funnel/'+wn+'/'+f+':crisis',await p.evaluate(harvest,'#crxqp'),'crisis');
+   await p.keyboard.press('Escape'); await p.waitForTimeout(100);}
+  else if(f==='atuned-quiz.html')fail('funnel/'+wn+'/'+f,'missing the crisis button');
   const states=await p.evaluate(()=>{if(typeof render!=='function'||typeof STATE==='undefined')return [];
    var s=[], re=/STATE==='(\w+)'/g, m; while((m=re.exec(String(render))))s.push(m[1]);
    s.push('read'); return s.filter(function(x,i){return s.indexOf(x)===i;});});

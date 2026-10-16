@@ -170,6 +170,12 @@ function stRender(){
      is still ST_TEXT and a reply is appended to it, see srcChatSend, so the
      big box steps aside rather than standing beside a copy of itself, and
      Talk pressed again puts it back holding every reply as its own line. */
+  /* IS THIS A CRISIS, TALK IT THROUGH, 16 October (ui/crisis.js). His words:
+     "It's always a story." The person chose to talk it through, so the box
+     says what it is for in one line above it, until the entry is committed.
+     A note and not the box's own text: words put in the box would be read
+     and committed as if the person had typed them. */
+  +(STV.crisis&&!STV.chat?'<p class="st-mask st-crisis" id="stcrisis" role="note">'+esc(CRISIS_SAY.story)+'</p>':'')
   +(STV.chat
    ?'<div class="src-cmp"><textarea id="stcin" class="src-cin" rows="2" spellcheck="false" '
     +'aria-label="Your reply" placeholder="Write back. Enter sends.">'+esc(SRC_CDRAFT)+'</textarea>'
@@ -322,7 +328,7 @@ function stRender(){
    is open. Kept across a return to the tab, never saved.
    ============================================================ */
 var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:false,law:false,
- unsaved:null,draftT:null,draftFail:false};
+ unsaved:null,draftT:null,draftFail:false,crisis:false};
 /* the one width the page changes shape at is the one the product stacks its
    columns at, so the Story cannot be in three columns while the rails are
    already one. */
@@ -576,6 +582,8 @@ function stCommit(){
     with Run on it: widening it there would push Run off the first screen,
     which is the one thing layout H exists to stop. */
  STV.focus=stPhone()?'write':'release';
+ /* the crisis line has said what the box is for, and the box has been used */
+ STV.crisis=false;
  toYou();syncCh();if(typeof stRender==='function')stRender();render();
  /* A STORY KEPT WITH STARS IN IT SAYS SO, round QR. The person may choose
     not to type the hidden words, and the entry is still theirs; it is kept

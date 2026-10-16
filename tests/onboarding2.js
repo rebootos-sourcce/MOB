@@ -807,6 +807,138 @@ console.log('\n=== the Account header names the account signed in (ab691ec, port
  await page.close();
 }
 
+console.log('\n=== Is this a crisis, on the welcome and after it (16 October) ===');
+/* His words: "Maybe [the crisis check] belongs in the pop-up, the welcome.
+   Maybe it's an option. Is this a crisis? Hit that button. Tell me about it.
+   Do you need immediate emergency contact, or would you like to talk it
+   through? It's always a story."
+
+   Walked through the real door at both widths, the way a stranger meets it:
+   the button is on the login card and on the first run's stage, it opens one
+   panel, the panel's first choice shows the three numbers as links, Escape
+   shuts the panel and only the panel, Talk it through lands in the Story box,
+   and the profile menu carries the same press after the first run. And the
+   cards it sits on are read back word for word, so the button cannot have
+   moved anything else on them. SHOTS=dir saves the pictures. Checked against
+   the build before the button, where it fails at its first row, on the
+   missing button, and cannot go on. */
+{
+ const SHOTS=process.env.SHOTS||'';
+ const shot=async(p,n)=>{if(SHOTS)await p.screenshot({path:path.join(SHOTS,n+'.png')});};
+ for(const [w,h] of [[1600,1000],[390,844]]){
+  const at=' at '+w;
+  const page=await browser.newPage({viewport:{width:w,height:h}});
+  const errs=[]; page.on('pageerror',e=>errs.push(e.message));
+  await page.goto(FILE,{waitUntil:'load'}); await booted(page);
+  await page.waitForSelector('#loginb-skip',{timeout:8000});
+  await page.waitForTimeout(400);
+  const rect=sel=>page.evaluate(sel=>{const e=document.querySelector(sel); if(!e)return null;
+   const r=e.getBoundingClientRect(); return {x:r.x,y:r.y,w:r.width,h:r.height,b:r.bottom,r:r.right,
+    on:r.width>0&&r.height>0&&getComputedStyle(e).visibility!=='hidden'};},sel);
+  const inPanel=()=>page.evaluate(()=>{const c=document.getElementById('crisis');
+   return !!c&&!c.hidden&&c.contains(document.activeElement);});
+
+  /* the login door, the first card */
+  const door=await page.evaluate(()=>({acts:[...document.querySelectorAll('#login .ob-acts .btn')].map(b=>b.textContent),
+   h:(document.querySelector('#login .ob-h')||{}).textContent,
+   btn:(document.querySelector('#login [data-crisis="open"]')||{}).textContent||null}));
+  ok(door.btn==='Is this a crisis?','the login door carries the button'+at+', got '+door.btn);
+  ok(JSON.stringify(door.acts)==='["Log in","Create account","Guest"]'&&door.h==='Log in',
+   'and its own heading and three ways in are unchanged'+at+', '+JSON.stringify(door));
+  const lb=await rect('#login [data-crisis="open"]');
+  ok(lb&&lb.on&&lb.h>=44&&lb.r<=w&&lb.b<=h,'at the 44 pixel floor and on the first screen'+at+', '+JSON.stringify(lb));
+  await shot(page,'crisis-door-'+w);
+  await page.click('#login [data-crisis="open"]'); await page.waitForTimeout(150);
+  const ask=await page.evaluate(()=>{const c=document.getElementById('crisis'), d=c&&c.querySelector('[role="dialog"]');
+   return {open:!!c&&!c.hidden, modal:!!d&&d.getAttribute('aria-modal')==='true'&&d.getAttribute('aria-labelledby')==='crxh',
+    h:(c.querySelector('#crxh')||{}).textContent, text:c.innerText,
+    btns:[...c.querySelectorAll('.crx-acts button')].map(b=>b.textContent),
+    top:c.contains(document.elementFromPoint(innerWidth/2,innerHeight/2))};});
+  ok(ask.open&&ask.modal&&ask.top,'pressed, one panel opens on top of the door, a labelled modal dialog'+at);
+  ok(ask.h==='Tell me about it.'&&/Do you need to reach someone right now, or would you like to talk it through\?/.test(ask.text),
+   'it says "Tell me about it." and asks the one question'+at+', '+JSON.stringify(ask.text));
+  ok(JSON.stringify(ask.btns)==='["Reach someone now","Talk it through","Close"]','with the two choices and a way out'+at+', '+JSON.stringify(ask.btns));
+  ok(await inPanel(),'focus moves into the panel'+at);
+  await shot(page,'crisis-ask-'+w);
+  await page.keyboard.press('Escape'); await page.waitForTimeout(150);
+  const esc1=await page.evaluate(()=>({shut:document.getElementById('crisis').hidden, door:LOGIN.open,
+   back:!!(document.activeElement&&document.activeElement.matches('#login [data-crisis="open"]'))}));
+  ok(esc1.shut&&esc1.door&&esc1.back,'Escape shuts the panel and only the panel, and focus is back on the button'+at+', '+JSON.stringify(esc1));
+
+  /* the first run's stage, every step */
+  await page.click('#loginb-skip'); await page.waitForTimeout(500);
+  const arrive=await page.evaluate(()=>({open:OB.open, step:OB.step,
+   h:(document.querySelector('#ob .ob-card .ob-h')||{}).textContent,
+   p:[...document.querySelectorAll('#ob .ob-card .ob-p')].map(e=>e.textContent),
+   acts:[...document.querySelectorAll('#ob .ob-card .ob-acts .btn')].map(b=>b.textContent),
+   inCard:!!document.querySelector('#ob .ob-card [data-crisis]'),
+   btn:(document.querySelector('#ob .obx-top [data-crisis="open"]')||{}).textContent||null}));
+  ok(arrive.open&&arrive.step===0&&arrive.btn==='Is this a crisis?','the first run\'s first card stands under the same button'+at);
+  ok(!arrive.inCard&&arrive.h==='This is you, and it is okay.'&&JSON.stringify(arrive.acts)==='["Come in","Not now"]'
+   &&arrive.p.length===3&&arrive.p[0]==='No judgment. Nothing here grades you. This one is for you.',
+   'and nothing on the card itself changed: the button is the stage\'s, not the card\'s'+at+', '+JSON.stringify(arrive));
+  const sb=await rect('#ob .obx-crx');
+  const clash=await page.evaluate(()=>{const b=document.querySelector('#ob .obx-crx').getBoundingClientRect();
+   return [...document.querySelectorAll('#ob .ob-card .ob-h,#ob .ob-card .ob-p,#ob .ob-card .ob-acts .btn,#ob .obx-x,#ob .obx-rail')]
+    .filter(e=>{const r=e.getBoundingClientRect(); return r.width&&r.height&&getComputedStyle(e).visibility!=='hidden'
+     &&!(r.right<=b.left||r.left>=b.right||r.bottom<=b.top||r.top>=b.bottom);}).map(e=>e.className);});
+  ok(sb&&sb.on&&sb.h>=44&&sb.r<=w&&!clash.length,'at the floor and over nothing it could hide'+at+', '+JSON.stringify({sb,clash}));
+  await shot(page,'crisis-welcome-'+w);
+  await page.click('[data-ob="next"]'); await page.waitForTimeout(400);
+  ok((await rect('#ob .obx-crx')||{}).on===true,'and it is still there on the next step'+at);
+  await page.click('[data-ob="back"]'); await page.waitForTimeout(400);
+
+  await page.click('#ob .obx-crx'); await page.waitForTimeout(150);
+  await page.click('#crisis [data-crisis="reach"]'); await page.waitForTimeout(150);
+  const reach=await page.evaluate(()=>{const c=document.getElementById('crisis');
+   return {h:(c.querySelector('#crxh')||{}).textContent, text:c.innerText,
+    hrefs:[...c.querySelectorAll('a[href]')].map(a=>a.getAttribute('href')),
+    tall:Math.min(...[...c.querySelectorAll('a[href],button')].map(e=>e.getBoundingClientRect().height)),
+    fits:c.querySelector('.crx-card').getBoundingClientRect().bottom<=innerHeight,
+    focus:c.contains(document.activeElement), stage:OB.open&&OB.step===0};});
+  ok(reach.h==='Reach someone now'&&reach.focus&&reach.stage,'Reach someone now shows the numbers in the same panel, over the stage'+at);
+  ok(['tel:988','sms:988','sms:741741?body=HOME','tel:911'].every(x=>reach.hrefs.indexOf(x)>=0),
+   'as tel: and sms: links: 988 to call and to text, 741741 with home in the message, and 911'+at+', '+JSON.stringify(reach.hrefs));
+  ok(/Call or text 988 to reach the Suicide and Crisis Lifeline/.test(reach.text)&&/Text the word home to 741741 to reach the Crisis Text Line/.test(reach.text)
+   &&/Call 911 if you are in danger now/.test(reach.text)&&/These are US numbers\. Outside the US, call your local emergency number\./.test(reach.text),
+   'each number with its sentence, and the line that says they are US numbers'+at);
+  ok(reach.tall>=44&&reach.fits,'every link and button at the floor, the whole panel on one screen'+at+', '+JSON.stringify({tall:reach.tall,fits:reach.fits}));
+  await shot(page,'crisis-reach-'+w);
+  await page.keyboard.press('Escape'); await page.waitForTimeout(150);
+  const esc2=await page.evaluate(()=>({shut:document.getElementById('crisis').hidden, ob:OB.open, step:OB.step}));
+  ok(esc2.shut&&esc2.ob&&esc2.step===0,'Escape over the stage shuts the panel and leaves the first run where it was'+at+', '+JSON.stringify(esc2));
+  /* the backdrop is a way out too */
+  await page.click('#ob .obx-crx'); await page.waitForTimeout(150);
+  await page.mouse.click(4,h-4); await page.waitForTimeout(150);
+  ok(await page.evaluate(()=>document.getElementById('crisis').hidden&&OB.open),'and so does the backdrop'+at);
+
+  await page.click('#ob .obx-crx'); await page.waitForTimeout(150);
+  await page.click('#crisis [data-crisis="talk"]'); await page.waitForTimeout(800);
+  const talk=await page.evaluate(()=>({shut:document.getElementById('crisis').hidden, ob:OB.open, story:S.tab===TAB.STORY,
+   box:!!(document.activeElement&&document.activeElement.id==='sttext'),
+   line:(document.getElementById('stcrisis')||{}).textContent||null, empty:(document.getElementById('sttext')||{}).value===''}));
+  ok(talk.shut&&!talk.ob&&talk.story&&talk.box&&talk.empty,
+   'Talk it through lands in the Story box, open, focused and empty'+at+', '+JSON.stringify(talk));
+  ok(talk.line==='It is always a story. Write what happened, in your own words.','with one line above it saying what it is for'+at+', '+talk.line);
+  await shot(page,'crisis-story-'+w);
+
+  /* after the first run, the profile menu */
+  await page.click('#profbtn'); await page.waitForTimeout(250);
+  const row=await rect('#profmenu [data-pmcrisis]');
+  ok(row&&row.on&&row.h>=44,'after the first run, the profile menu carries the same press'+at+', '+JSON.stringify(row));
+  await page.click('#profmenu [data-pmcrisis]'); await page.waitForTimeout(150);
+  const fromMenu=await page.evaluate(()=>({open:!document.getElementById('crisis').hidden,
+   menu:document.getElementById('profmenu').hidden, h:(document.getElementById('crxh')||{}).textContent}));
+  ok(fromMenu.open&&fromMenu.menu&&fromMenu.h==='Tell me about it.','and it opens the same panel, the menu shut behind it'+at+', '+JSON.stringify(fromMenu));
+  await page.click('#crisis [data-crisis="close"]'); await page.waitForTimeout(150);
+  const closed=await page.evaluate(()=>({shut:document.getElementById('crisis').hidden,
+   back:!!(document.activeElement&&document.activeElement.id==='profbtn'), story:S.tab===TAB.STORY}));
+  ok(closed.shut&&closed.back&&closed.story,'Close shuts it, focus is back on the profile button, and nothing moved'+at+', '+JSON.stringify(closed));
+  ok(errs.length===0,'no script error'+at+': '+errs.slice(0,3).join(' | '));
+  await page.close();
+ }
+}
+
 console.log('\n=== J0, the distress gap, reported rather than papered over ===');
 /* THIS IS NOT A SAFETY TEST. It cannot be: there is nothing in this engine
    to test. It is a standing check that nobody has quietly added a decorative
