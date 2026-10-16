@@ -21,13 +21,13 @@ Kinds and ranges are read from `PCT_KIND` in `atuned_src/engine/pct.js`; the cit
 
 ## Defects found on the way, all of them the rule being broken today
 
-- `ui/analytics.js:68`, "Explorer, 10.0 (archetype bubble)": v is max(0.4, aff*10), analytics.js:227, so a weak archetype prints the floor 0.4 and not its value
+- `ui/analytics.js:68`, "Explorer, 10.0 (archetype bubble, value built at analytics.js:227)": v is max(0.4, aff*10), analytics.js:227, so a weak archetype prints the floor 0.4 and not its value; phase 2 prints archExpr, how fully it is expressed (ruled 16 October); the soul map lean no longer prints; the bubble size may stay the lean, it is not a fill
 - `ui/analytics.js:68`, "Fear, 1.5 (axis bubble)": v is max(0.3, charge), analytics.js:241, so an axis holding nothing prints 0.3
 - `ui/analytics.js:68`, "Crown, 0.3 (seat bubble)": v is max(0.3, s.hot), analytics.js:244, a COUNT of held addresses printed as a decimal, and 0.3 when none are held
 - `ui/analytics.js:68`, "Restoration, 9.0 / Knowledge, 2.0 (domain bubble)": v is the constant 9 for a selected domain and 2 for the rest, analytics.js:222 to 224, a sizing number printed as a reading; phase 2 prints no figure
 - `ui/fieldbar.js:188`, "Addresses 4 (segment depth, at a weight of 4)": what is drawn and what is printed disagree: fill SQm*10 (44) and print round(SQm) (4) disagree since PR 83
 - `ui/release.js:3014`, "Pineal 42 Lowered (log ring, raw w0)": what is drawn and what is printed disagree: w0 is already 0 to 100 (release.js:1275) and the ring fills w0*10, so every row above 10 draws a full ring
-- `ui/summary.js:442`, `ui/ui.js:76` and `ui/analytics.js:227` print one archetype three ways: a share of all twelve (17%), a share of the strongest (100%) and the strongest times ten (10.0).
+- `ui/summary.js:442`, `ui/ui.js:76` and `ui/analytics.js:227` print one archetype three ways: a share of all twelve (17%), a share of the strongest (100%) and the strongest times ten (10.0). All three are the soul map, which never moves with a story. Ruled 16 October: all five archetype printers print `archExpr` instead (kind `archetype`).
 
 ## ui/ui.js
 
@@ -42,7 +42,7 @@ Kinds and ranges are read from `PCT_KIND` in `atuned_src/engine/pct.js`; the cit
 | `ui/ui.js:56` | takes 1.20× the charge | OTHER | factor | susceptibility, 0.448 to 1.3 (compute.js:19); not a fill |
 | `ui/ui.js:67` | weighed 2.0 at this address | PERCENT | atom 0 to 10 |  |
 | `ui/ui.js:74` | reads 6.0 (law hover) | PERCENT | law 0 to 10 |  |
-| `ui/ui.js:76` | 100% as strong as your strongest | PERCENT | affinity 0 to 1 | already a percent |
+| `ui/ui.js:76` | 100% as strong as your strongest (hover) | PERCENT | archetype 0 to 1 | today affinity; phase 2 prints archExpr, how fully it is expressed (ruled 16 October); the soul map lean no longer prints: "Warrior, expressed 78%" |
 | `ui/ui.js:79` | weight 0.47 (domain hover) | PERCENT | domain 0 to 1 |  |
 | `ui/ui.js:91` | weight 4.9 (chain hover) | PERCENT | chain 0 to 10 |  |
 | `ui/ui.js:91` | built on 3 addresses | COUNT | addresses |  |
@@ -76,7 +76,7 @@ Kinds and ranges are read from `PCT_KIND` in `atuned_src/engine/pct.js`; the cit
 | Where | Prints today | Class | Kind, lo to hi | Note |
 |---|---|---|---|---|
 | `ui/analytics.js:68` | Child, 0.4 (mask bubble title) | PERCENT | weight 0 to 10 | bubble size is relative to the top bubble, not the fill: phase 2 prints the kind |
-| `ui/analytics.js:68` | Explorer, 10.0 (archetype bubble) | PERCENT | affinity 0 to 1 | DEFECT: v is max(0.4, aff*10), analytics.js:227, so a weak archetype prints the floor 0.4 and not its value |
+| `ui/analytics.js:68` | Explorer, 10.0 (archetype bubble, value built at analytics.js:227) | PERCENT | archetype 0 to 1 | DEFECT: v is max(0.4, aff*10), analytics.js:227, so a weak archetype prints the floor 0.4 and not its value; phase 2 prints archExpr, how fully it is expressed (ruled 16 October); the soul map lean no longer prints; the bubble size may stay the lean, it is not a fill |
 | `ui/analytics.js:68` | Collapse, 4.9 (running bubble) | PERCENT | chain 0 to 10 |  |
 | `ui/analytics.js:68` | Fear, 1.5 (axis bubble) | PERCENT | charge 0 to 10 | DEFECT: v is max(0.3, charge), analytics.js:241, so an axis holding nothing prints 0.3 |
 | `ui/analytics.js:68` | Crown, 0.3 (seat bubble) | COUNT | held addresses | DEFECT: v is max(0.3, s.hot), analytics.js:244, a COUNT of held addresses printed as a decimal, and 0.3 when none are held |
@@ -96,7 +96,7 @@ Kinds and ranges are read from `PCT_KIND` in `atuned_src/engine/pct.js`; the cit
 | `ui/analytics.js:609` | passes 75% of what reaches it | PERCENT | pass 0 to 1 | already a percent |
 | `ui/analytics.js:609` | 3 addresses are held here | COUNT | addresses |  |
 | `ui/analytics.js:616` | Truth 6.0 (seat drill law badge) | PERCENT | law 0 to 10 |  |
-| `ui/analytics.js:642` | 61% as strong as your strongest | PERCENT | affinity 0 to 1 | already a percent |
+| `ui/analytics.js:642` | 61% as strong as your strongest (archetype drill) | PERCENT | archetype 0 to 1 | today affinity; phase 2 prints archExpr, how fully it is expressed (ruled 16 October); the soul map lean no longer prints |
 | `ui/analytics.js:655` | Load 0.4 (mask drill) | PERCENT | weight 0 to 10 |  |
 | `ui/analytics.js:700` | Coherence 48 (telemetry ring) | PERCENT | cq 0 to 100 |  |
 | `ui/analytics.js:703` | Shadow 26% | PERCENT | dq 0 to 100 | already a percent |
@@ -126,7 +126,7 @@ Kinds and ranges are read from `PCT_KIND` in `atuned_src/engine/pct.js`; the cit
 | `ui/summary.js:125` | Identification 82% | PERCENT | accuracy 0 to 100 | already a percent |
 | `ui/summary.js:315` | at a weight of 9 (heaviest address sentence) | PERCENT | weight 0 to 10 |  |
 | `ui/summary.js:322` | Shadow weight is 20 | PERCENT | dq 0 to 100 |  |
-| `ui/summary.js:442` | Caregiver, 17% (Primary and secondary) | PERCENT | share 0 to 1 | already a percent; a share of all twelve, not the strongest; see open list |
+| `ui/summary.js:442` | Caregiver, 17% (Primary and secondary) | PERCENT | archetype 0 to 1 | today a share of all twelve; phase 2 prints archExpr, how fully it is expressed (ruled 16 October); the soul map lean no longer prints; the rows stay ordered by affinity, which still names first and second, and the ring fills archExpr too (rule 1) |
 | `ui/summary.js:457` | Child 0.4 (mask row) | PERCENT | weight 0 to 10 |  |
 | `ui/summary.js:474` | Heaviest seats 35% | PERCENT | seatload 0 to 1 | already a percent |
 | `ui/summary.js:980` | Fear 9.0 (the nine) | PERCENT | charge 0 to 10 |  |
@@ -197,7 +197,7 @@ Kinds and ranges are read from `PCT_KIND` in `atuned_src/engine/pct.js`; the cit
 | `ui/drills.js:640` | Outward mean 2.5 against inward mean 3.1 | PERCENT | charge 0 to 10 | means of charges stay on the charge scale |
 | `ui/drills.js:686` | Held 4.0 | PERCENT | charge 0 to 10 |  |
 | `ui/drills.js:687` | Trust installed 3.0 | PERCENT | installed 0 to 10 |  |
-| `ui/drills.js:739` | 61% (archetype drill) | PERCENT | affinity 0 to 1 | already a percent |
+| `ui/drills.js:766 (main)` | 61% (archetype drill) | PERCENT | archetype 0 to 1 | today affinity; phase 2 prints archExpr, how fully it is expressed (ruled 16 October); the soul map lean no longer prints |
 | `ui/drills.js:756` | Load 0.4 (mask drill) | PERCENT | weight 0 to 10 |  |
 | `ui/drills.js:880` | is carrying 35% | PERCENT | seatload 0 to 1 | already a percent |
 | `ui/drills.js:881` | its integrity reads 4.6 | PERCENT | law 0 to 10 | bandIg is the mean of the seat's laws |
@@ -233,7 +233,7 @@ Kinds and ranges are read from `PCT_KIND` in `atuned_src/engine/pct.js`; the cit
 | `ui/fieldbar.js:201` | Decoherence 26 | PERCENT | dq 0 to 100 | design.js PQ asserts bare; flips |
 | `ui/fieldbar.js:204` | Stories 35% | PERCENT | portion 0 to 1 | already a percent |
 | `ui/fieldbar.js:210` | Saboteurs 26, Complexes 11, Hyper 2, Character 0 | COUNT | counts | the ring beside it is a portion and the number a count; both stay as they are |
-| `ui/fieldbar.js:215` | Archetypes 17% | PERCENT | share 0 to 1 | already a percent |
+| `ui/fieldbar.js:215` | Archetypes 17% (glass bar orb, the first archetype) | PERCENT | archetype 0 to 1 | today the first archetype's share of all twelve, ring and figure; phase 2 prints archExpr, how fully it is expressed (ruled 16 October); the soul map lean no longer prints for the first archetype, ring and figure both |
 | `ui/fieldbar.js:220` | Domains 35% | PERCENT | domain 0 to 1 | already a percent, the mean of DOMAIN |
 | `ui/fieldbar.js:533` | Reframe 1.0× | OTHER | zoom | a view scale |
 
