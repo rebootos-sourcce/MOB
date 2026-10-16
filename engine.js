@@ -6909,8 +6909,34 @@ function lawWork(nm){
  return (w&&w.on===S.law[nm]&&w.n>0)?w.n:0;}
 /* a law as CQ reads it: the answer, and what the releases since have added */
 function lawNow(nm){return lawLift(S.law[nm],lawWork(nm));}
-/* CQ on its own, for the callers that need it without the whole reading */
-function cqSum(){return SINAMES.reduce((a,l)=>a+(lawIn(l)?lawNow(l):0),0)/210*100;}
+/* CQ on its own, for the callers that need it without the whole reading.
+   open is what an unanswered law counts, and every caller but cqSpan passes
+   none, so it is the 0 the ruling gives it. cqSpan asks what the figure
+   would be if every open law landed at ten, through this same sum, so the
+   two ends of the range are the engine's arithmetic and never a copy of it. */
+function cqSum(open){return SINAMES.reduce((a,l)=>a+(lawIn(l)?lawNow(l):(open||0)),0)/210*100;}
+/* ============================================================
+   WHERE THE FINISHED CQ CAN STILL LAND, read off what is unanswered.
+
+   The core drill said "The reading swings between lo and hi. The figure is
+   the middle of that range" off cqRange (ui/personas.js), which is a band
+   drawn round the figure alone and knows nothing about how many laws are in.
+   Measured at e9ca1ae: with 1 law answered at 10 the drill said CQ swings
+   between 0 and 18 and that the figure was the middle, where the middle of
+   that was 8.9 against a CQ of 5 and the finished figure can land anywhere
+   from 5 to 100.
+
+   lo is the figure with every open law at its lowest, which is the figure
+   now, because an open law counts nothing. hi is every open law at ten. When
+   every law is in the two are one number. enough is false while most laws
+   are still open (fewer than half answered), and then the drill says there
+   are not enough answers to give a range at all, because a range that covers
+   most of the scale says nothing a person can use.
+   ============================================================ */
+function cqSpan(){
+ var of=SINAMES.length, answered=SINAMES.filter(lawIn).length;
+ return {lo:cqSum(), hi:cqSum(10), answered:answered, of:of,
+  complete:answered===of, enough:answered*2>=of};}
 /* WHAT A RELEASE WRITES INTO THE LAWS. keys are the patterns of new ground the
    meter has just recorded, so a rerun passes none and moves nothing. Each key's
    address names a seat, and every answered law at that seat counts them. A law
@@ -7343,6 +7369,64 @@ function accuracy(r,prof){
  var band=5.7*0.5 + (1-cov)*6 + (1-sig)*8 + deg*4 + (1-rel)*1.2 + (1-exq)*3;
  return {pct:pct, band:band, exq:exq, sig:sig, cov:meas, rel:Math.round(rel*100), relN:rel,
   held:held, inst:inst, deg:deg, signal:Math.round(sig*100)};}
+
+/* ============================================================
+   HOW MUCH OF THE INSTRUMENT HAS BEEN ANSWERED OR WRITTEN, and nothing about
+   how high any of it reads.
+
+   The Summary plate's early, partial or full word was read off accuracy().pct
+   above, and that figure is a fit of how trustworthy the reading is, not a
+   count of what was measured. Two of its terms read the answers themselves:
+   exq is the expression fill, which is the laws' own mean at each band, and
+   held counts addresses at 4 or more, which is how heavy the stories were. So
+   it rose with how high the answers were. Measured at e9ca1ae (probe p4): all
+   21 laws answered at 10 read 56.0, partial; all 21 answered at 1 read 39.8,
+   early; no law and five heavy stories read 46.1, partial, above the person
+   who had answered everything honestly low. And a blank read 20.8, of which
+   10.8 was the default 6 sitting in every unanswered law.
+
+   accuracy() stays as it is, because the stage's Accuracy ring and its drill
+   print that fit and name its causes, and that is a different question. This
+   answers the plate's question only, from counts:
+
+     laws     the laws answered, lawIn's count, which is the reading's own
+     entries  the stories written, every entry, whatever it read
+
+   pct is 80 for the intake and 20 for the story, so the laws carry four
+   fifths: they are the measurement, and a story is evidence for it. The story
+   side is whole at ten entries, the ladder's own Ten stories rung
+   (engine/ladder.js, "the field is being read from your own words"), so
+   CS_STORY_N names the same ten and a story past it adds nothing here.
+   Neither side reads a value, so the same counts give the same figure whether
+   every answer is 1 or 10, and one more answer or one more story can never
+   lower it.
+   ============================================================ */
+const CS_LAWW=80, CS_STORYW=20, CS_STORY_N=10;
+function accCover(r,prof){
+ var P=prof||CURP, of=SINAMES.length;
+ var laws=(r&&typeof r.answered==='number')?r.answered:SINAMES.filter(lawIn).length;
+ var ents=(P&&P.story&&Array.isArray(P.story.entries))?P.story.entries.length:0;
+ var pct=CS_LAWW*laws/of + CS_STORYW*Math.min(ents,CS_STORY_N)/CS_STORY_N;
+ return {pct:pct, laws:laws, of:of, entries:ents, complete:laws>=of};}
+/* THE WORD, ON THAT SCALE. The old lines, 45 and 70, were drawn on
+   accuracy()'s mix, which starts at a floor of 10 and needs the field to be
+   carrying to reach 70, so neither means anything here and both are redrawn
+   from the two counts:
+
+     full     every law answered, and only then. That is the one point the
+              CQ figure stops moving (compute's complete), so the plate can
+              never say full while the core drill still says the figure has
+              room to move. The intake alone is 80 on this scale, so no
+              number of stories reaches it without the laws.
+     partial  40 or more, half the intake's 80: about half the laws with no
+              story yet, or six of the 21 with the story side whole.
+     early    anything entered short of that.
+     ''       nothing answered and nothing written, which accWord has always
+              printed as the dash. */
+const CS_PARTIAL=CS_LAWW/2;
+function accCoverWord(c){
+ if(!c||!(c.pct>0))return '';
+ return c.complete?'full':c.pct<CS_PARTIAL?'early':'partial';}
 
 /* ============================================================
    THE CHILD PATTERN. WHICH READING THIS IS, AND WHY IT IS AN ASSUMPTION.
@@ -9212,6 +9296,15 @@ function traceFromRecord(p,intents){
    This touches the cross-compatibility contract with SOURCE, so the bump is
    flagged for his ruling in REVIEW-source.md. */
 var SCHEMA_V=2, PKEY='source.profiles';
+/* WHAT AN AXIS HOLDS BEFORE ANYTHING IS ENTERED, and the one place it is
+   said. blankProfile wrote 0 here while loadProfile filled a missing axis
+   with 3 and seed.js measured the seed against 3, so one quantity had two
+   answers and a third reader trusting the wrong one. Measured at e9ca1ae:
+   read() of a profile with axes:{} gave unread false, 107 addresses
+   carrying and DQ 13.6, from charge nobody entered, where the boundary
+   (validateProfile, which starts from blankProfile) fills the same gap
+   with 0. Every reader of the blank reads this. */
+const AXIS_BLANK=0;
 function blankProfile(name){
  var p={v:SCHEMA_V, id:'p'+Date.now().toString(36)+Math.random().toString(36).slice(2,6),
   name:name||'New profile', created:new Date().toISOString(), updated:null,
@@ -9333,7 +9426,7 @@ function blankProfile(name){
     laws beside it are correctly null, meaning not yet measured, and the charge
     was not given the same honesty. Nobody entered a 3. Zero is the only value
     that is true of a person who has said nothing. */
- CHILD.forEach(function(c){p.axes[c.nm]={held:0,opp:0};});
+ CHILD.forEach(function(c){p.axes[c.nm]={held:AXIS_BLANK,opp:0};});
  SI.forEach(function(l){p.laws[l.nm]=null;});        /* null = not yet measured */
  /* the trace graph's stored half, engine/trace.js. Only what cannot be
     derived from the record lives here; everything else is read off it. */
@@ -9408,8 +9501,11 @@ function loadProfile(p){
  ixFill(p);
  S.doms=(p.soul.doms||[0]).slice(); S.arcs=(p.soul.arcs||[0,1]).slice();
  S.roots=(p.soul.roots||[]).slice(); buildSoul();
+ /* a missing axis is an axis nobody entered, so it opens at the blank and
+    not at the 3 this used to type, which read a record with axes:{} as a
+    person carrying on all nine (AXIS_BLANK, above) */
  CHILD.forEach(function(c){var a=p.axes[c.nm]||{};
-  S.charge[c.nm]=a.held!=null?a.held:3; S.replace[c.nm]=a.opp||0;});
+  S.charge[c.nm]=a.held!=null?a.held:AXIS_BLANK; S.replace[c.nm]=a.opp||0;});
  /* an old name's score is carried across rather than dropped back to the
     default a person never entered (LAW_WAS, above) */
  var LAWWAS=LAW_WAS;
@@ -14772,7 +14868,8 @@ function parseStory(text){
   if(h.charge){ byChg[h.charge]=(byChg[h.charge]||0)+1; }});
  var wanted={}; Object.keys(byChg).forEach(function(c){var f=CHG2FET[c]; if(f)wanted[f]=true;});
  /* a word that names its own fetter is as named as an adjective that maps to
-    one, so it counts toward wanted and stops the reading being inferred. */
+    one, so it counts toward what its seat wants (wantK, below) and stops the
+    reading there being inferred. */
  /* AND A STATED FETTER IS STATED AT THE SEAT ITS WORD SITS AT, round GR. It
     was one flag for the whole text, so a fetter stated anywhere let every seat
     skip the quarter rule. Measured on 27 September: "I am exhausted. My father
@@ -14782,21 +14879,43 @@ function parseStory(text){
     quarter rule was written to stop. So each seat now asks only what was
     stated at that seat, heaviest first. A seat nothing stated at is read by
     the quarter rule exactly as before. */
- var statedAt={};
- hits.forEach(function(h){ if(h.fet){ wanted[h.fet]=true;
-  if(h.band){ var sa=statedAt[h.band]=statedAt[h.band]||{};
-   sa[h.fet]=(sa[h.fet]||0)+Math.abs(h.amt||0); } } });
- var anyNamed=Object.keys(wanted).length>0;
+ /* AND WHAT A SEAT WANTS IS WHAT ITS OWN WORDS NAMED, a map per seat and not
+    one for the sentence. wanted was built once for the whole text, so every
+    seat was read against every emotion named anywhere and the heaviest seat
+    won: "I was afraid, sad, ashamed and numb" filed the shame at the solar
+    plexus as Perfectionism, Force and Rigidity under Fear, and in a field
+    already carrying "I am exhausted and terrified" filed the terror at the
+    root on Escapism as Apathy, both inferred false. A seat word names its own
+    fetter two ways: it states one (LEX's third element), or the adjective
+    table names the charge of that same word (ownAt, an adj hit at the same
+    offset). A seat whose words named something wants exactly that. A seat
+    reached only by words that name nothing, a tight chest, still reads the
+    sentence's adjectives as it always has, because there the text's own
+    naming is the best evidence there is. */
+ var statedAt={}, ownAt={}, adjAt={};
+ hits.forEach(function(h){ if(h.kind==='adj'&&h.charge&&CHG2FET[h.charge])adjAt[h.at]=CHG2FET[h.charge]; });
+ hits.forEach(function(h){
+  if(!h.band||h.band==='coherent')return;
+  if(h.fet){
+   var sa=statedAt[h.band]=statedAt[h.band]||{};
+   sa[h.fet]=(sa[h.fet]||0)+Math.abs(h.amt||0);}
+  else if(adjAt[h.at]){
+   var oa=ownAt[h.band]=ownAt[h.band]||{};
+   oa[adjAt[h.at]]=true;}});
  Object.keys(byBand).forEach(function(k){
   var bn=K2BAND[k]; if(!bn) return;
   var all=W.filter(function(n){return n.b===bn&&n.cf;});
+  var wantK={};
+  Object.keys(statedAt[k]||{}).concat(Object.keys(ownAt[k]||{})).forEach(function(f){wantK[f]=true;});
+  if(!Object.keys(wantK).length)Object.keys(wanted).forEach(function(f){wantK[f]=true;});
+  var anyNamed=Object.keys(wantK).length>0;
   /* Band says WHERE, the adjective says WHAT. But a named fetter only governs
      a band it actually occupies. The original accepted any non-empty match, so
      one Shame address at the heart was enough to route the whole heart band --
      including everything the despair idioms carried -- onto Shame, and grief
      was filed as shame. A named fetter now has to hold at least a quarter of
      the band, otherwise the band's own modal child emotion is the better read. */
-  var seg=anyNamed? all.filter(function(n){return wanted[n.cf];}) : [];
+  var seg=anyNamed? all.filter(function(n){return wantK[n.cf];}) : [];
   /* DID THE TEXT NAME THIS, OR DID WE INFER IT? The answer decides what the
      product is allowed to SAY, and until now it said the same thing either
      way, which is how the worst readings in the instrument were produced.
@@ -14828,12 +14947,55 @@ function parseStory(text){
   var here=statedAt[k]||{};
   var hereF=Object.keys(here).sort(function(a,b){return here[b]-here[a];});
   var stateHere=hereF.length>0;
-  if(stateHere&&!seg.length){
-   imprints.push({node:all[0]?all[0].i:null, name:all[0]?all[0].k:'', band:bn,
-    fetter:hereF[0], inferred:false, stated:true,
-    amt:Math.round(Math.min(10,byBand[k]/3)*10)/10, from:k});
-   return;}
-  if(seg.length < all.length*0.25 && !stateHere){
+  /* the intensity curve is 0-30ish. normalise to a 0-10 charge delta. */
+  var total=Math.min(10,byBand[k]/3);
+  /* EACH STATED WORD KEEPS ITS OWN CHARGE, AND THE REST OF THE SEAT IS READ
+     ON ITS OWN. This asked for a stated fetter only when seg was empty, and
+     seg is built from wanted, which is every fetter named anywhere in the
+     text. So a second emotion word anywhere let the seat skip its own
+     statement, and the round GR defect came back through the seg door.
+     Measured at e9ca1ae (probes p1, p3): "I am exhausted and furious"
+     applied Anger 10.8 and left Apathy at 0, because furious wants Anger and
+     the solar plexus has ten Anger addresses, which breaks the ruling quoted
+     above that exhaustion is NOT anger. "I am exhausted and terrified" filed
+     the exhaustion at the solar plexus as Perfectionism, Force and Rigidity
+     with inferred false, from a Fear wanted at the root.
+
+     So the seat's charge is split by who said what. Each fetter stated here
+     takes the share its own words carried, on its own addresses at this seat
+     when the seat has any and as the one stated imprint when it has none,
+     which is what a lone stated word did before. What the seat holds beyond
+     the stated words is read as an unstated seat is, from the fetters named
+     elsewhere less the ones already stated here, and only when that reading
+     passes the quarter rule. When it does not, or nothing else is named, the
+     rest stays with what was stated, which is the old behaviour of a seat
+     with one statement and keeps a stray address from taking it. */
+  if(stateHere){
+   var said=hereF.reduce(function(a,f){return a+here[f];},0);
+   var restW={}; Object.keys(wantK).forEach(function(f){if(!here[f])restW[f]=true;});
+   /* a seat whose only naming words are its stated ones still reads the rest
+      against the sentence's adjectives, as an unnamed seat does */
+   if(!Object.keys(restW).length&&!ownAt[k])Object.keys(wanted).forEach(function(f){if(!here[f])restW[f]=true;});
+   var rest=byBand[k]-said;
+   var restSeg=rest>0?all.filter(function(n){return restW[n.cf];}):[];
+   var split=restSeg.length>0&&restSeg.length>=all.length*0.25;
+   var saidTotal=split?total*said/byBand[k]:total;
+   hereF.forEach(function(f){
+    var amtF=saidTotal*here[f]/said;
+    var segF=all.filter(function(n){return n.cf===f;})
+     .sort(function(a,b){return (b.susc||1)-(a.susc||1);});
+    if(!segF.length){
+     imprints.push({node:all[0]?all[0].i:null, name:all[0]?all[0].k:'', band:bn,
+      fetter:f, inferred:false, stated:true,
+      amt:Math.round(amtF*10)/10, from:k});
+     return;}
+    var shF=amtF/Math.min(4,segF.length);
+    segF.slice(0,4).forEach(function(n){
+     imprints.push({node:n.i, name:n.k, band:bn, fetter:n.cf, inferred:false,
+      amt:Math.round(shF*10)/10, from:k});});});
+   if(!split)return;
+   seg=restSeg; named=true; total=total*rest/byBand[k];}
+  else if(seg.length < all.length*0.25){
    named=false;
    var tally={}; all.forEach(function(n){tally[n.cf]=(tally[n.cf]||0)+1;});
    var modal=Object.keys(tally).sort(function(a,b){return tally[b]-tally[a];})[0];
@@ -14843,8 +15005,7 @@ function parseStory(text){
    if(!seg.length) seg=all;}
   seg=seg.sort(function(a,b){return (b.susc||1)-(a.susc||1);});
   if(!seg.length) return;
-  /* the intensity curve is 0-30ish. normalise to a 0-10 charge delta. */
-  var total=Math.min(10,byBand[k]/3), share=total/Math.min(4,seg.length);
+  var share=total/Math.min(4,seg.length);
   seg.slice(0,4).forEach(function(n){
    imprints.push({node:n.i, name:n.k, band:bn, fetter:n.cf,
     /* inferred: the seat was read, the address was chosen by the fallback and
@@ -17191,7 +17352,7 @@ function rootOverlap(sp,N){
 
 /* the four axes of the type, and what each pole does to the body.
    each entry is a child fetter and the charge added, on the 0 to 10
-   scale, against a blank field's 3. */
+   scale, to the seed's base of SEED_BASE below. */
 const SEED16={
  /* outward against inward discharge. the one term the engine measures
     directly, through balance(), so it is the term to trust most. */
@@ -17216,12 +17377,16 @@ const TYPE16=['INTJ','INTP','ENTJ','ENTP','INFJ','INFP','ENFJ','ENFP',
 
 function seedValid(t){return TYPE16.indexOf(String(t||'').toUpperCase())>=0;}
 
-/* the axes a type seeds, as absolute charges. base 3, the same floor a
-   blank profile carries, so a seeded field and an unseeded one are on
-   one scale. */
+/* the axes a type seeds, as absolute charges, from a base of 3 on every
+   axis. That base was chosen as the same floor a blank profile carried, and
+   a blank carries AXIS_BLANK (engine/schema.js) now, which is 0. The base is
+   what a stated type writes, so it stays 3 and is named for what it is: the
+   seed's own charge, which seedShare counts as seed. Whether a seed should
+   write it at all is the open decay and overwrite question, not this. */
+const SEED_BASE=3;
 function seedAxes(type){
  var t=String(type||'').toUpperCase(), out={};
- CHARGES.forEach(function(c){out[c]=3;});
+ CHARGES.forEach(function(c){out[c]=SEED_BASE;});
  if(!seedValid(t))return out;
  t.split('').forEach(function(letter){
   var d=SEED16[letter]; if(!d)return;
@@ -17238,7 +17403,7 @@ function seedApply(p,type){
  if(!p||!seedValid(type))return null;
  var ax=seedAxes(type);
  CHARGES.forEach(function(c){
-  p.axes[c]=p.axes[c]||{held:3,opp:0};
+  p.axes[c]=p.axes[c]||{held:AXIS_BLANK,opp:0};
   p.axes[c].held=ax[c];});
  p.seed={type:String(type).toUpperCase(), at:new Date().toISOString(), axes:ax};
  return p.seed;}
@@ -17249,14 +17414,20 @@ function seedClear(p){ if(p)p.seed=null; return p; }
    where the seed put them, against the distance the seed itself moved
    them from a blank field. 1 means untouched since seeding, 0 means the
    person's own input now accounts for all of it. It is a measurement,
-   not a countdown: charge moved back toward the seed raises it again. */
+   not a countdown: charge moved back toward the seed raises it again.
+   THE BLANK IS AXIS_BLANK, NOT 3. This measured the seed from a blank of 3
+   after the blank profile had moved to 0, so the base of 3 the seed puts on
+   all nine axes was never counted as seed. Measured at e9ca1ae (probe p2 A):
+   an ESTJ seed wrote 26.80 units, one story brought the field to 37.07, and
+   the line under the type said 36% was still the seed, where the seed's
+   share of what the axes carried was about 72%. */
 function seedShare(p){
  if(!p||!p.seed||!p.seed.axes)return 0;
  var seeded=0, moved=0;
  CHARGES.forEach(function(c){
-  var s=p.seed.axes[c]!=null?p.seed.axes[c]:3;
-  var now=(p.axes[c]&&p.axes[c].held!=null)?p.axes[c].held:3;
-  seeded+=Math.abs(s-3);
+  var s=p.seed.axes[c]!=null?p.seed.axes[c]:AXIS_BLANK;
+  var now=(p.axes[c]&&p.axes[c].held!=null)?p.axes[c].held:AXIS_BLANK;
+  seeded+=Math.abs(s-AXIS_BLANK);
   moved+=Math.abs(now-s);});
  if(seeded+moved<=0)return 0;
  return Math.round(seeded/(seeded+moved)*100)/100;}
@@ -19336,12 +19507,13 @@ if(typeof module!=='undefined'&&module.exports){
      to his fifteen thousand. Exported so the gate can drive a release through
      the same function the release panel calls, and hold the rate to the fit. */
                   exCeiling:exCeiling, exHeadroom:exHeadroom,
-                  lawIn:lawIn, cqSum:cqSum, leverPull:leverPull,
+                  lawIn:lawIn, cqSum:cqSum, cqSpan:cqSpan, leverPull:leverPull,
                   LEVER_MU:LEVER_MU, LEVER_SD:LEVER_SD, CQ_MODEL:CQ_MODEL,
                   LIFT_R:LIFT_R, lawLift:lawLift, lawWork:lawWork, lawNow:lawNow,
                   releaseWork:releaseWork, lawAnswered:lawAnswered,
   /* seed */      TYPE16:TYPE16, SEED16:SEED16, seedAxes:seedAxes, seedApply:seedApply,
-                  seedClear:seedClear, seedShare:seedShare, seedValid:seedValid, accuracy:accuracy, sab33Detect:sab33Detect,
+                  seedClear:seedClear, seedShare:seedShare, seedValid:seedValid, accuracy:accuracy, accCover:accCover, accCoverWord:accCoverWord,
+                  CS_LAWW:CS_LAWW, CS_STORYW:CS_STORYW, CS_STORY_N:CS_STORY_N, CS_PARTIAL:CS_PARTIAL, sab33Detect:sab33Detect,
                   sabLevels:sabLevels, exprFill:exprFill, exprRead:exprRead,
   /* gates */     verpScan:verpScan, verpApply:verpApply, verpFactor:verpFactor,
                   verpRead:verpRead, verpShare:verpShare,
@@ -19362,7 +19534,7 @@ if(typeof module!=='undefined'&&module.exports){
                   LEAN_TRUST_HALF:LEAN_TRUST_HALF, LEAN_MIN_CH:LEAN_MIN_CH,
   /* the door */  read:read, input:input, throughput:throughput, output:output,
                   gatesClear:gatesClear, gatesLoad:gatesLoad, gatesSave:gatesSave,
-  /* schema */    blankProfile:blankProfile, loadProfile:loadProfile,
+  /* schema */    blankProfile:blankProfile, AXIS_BLANK:AXIS_BLANK, loadProfile:loadProfile,
                   saveProfile:saveProfile, snapshot:snapshot, LAW_DEFAULT:LAW_DEFAULT,
   /* the twenty one on every history row, the one law over time a graph reads,
      and the renames both the loader and the boundary read */
