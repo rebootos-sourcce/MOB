@@ -980,13 +980,13 @@ const TIERDEF=[
  {at:91, nm:'Mastery',
   state:'Sovereign',
   soma:'Everything in you is clear and standing straight. Nothing from the past is left to work through.',
-  def:'The field builds far more than it costs. Almost nothing is held.',
+  def:'Your energy builds far more than it costs. Almost nothing is held.',
   energy:'Intention and action arrive together. There is no gap left to manage.',
   toward:'Hold it. The work here is maintenance, and what you can now carry for other people.'},
  {at:81, nm:'Embodied',
   state:'Coherent',
   soma:'What happens around you and what happens in you move together, with nothing rubbing. Always moving.',
-  def:'The field builds more than it costs, with real load still in it.',
+  def:'Your energy builds more than it costs, with real load still in it.',
   energy:'You recover fast. A charge lands and clears instead of staying.',
   toward:'Mastery. Close the laws still shut, and clear what is still holding a week later.'},
  {at:71, nm:'Compounding',
@@ -998,13 +998,13 @@ const TIERDEF=[
  {at:61, nm:'Gaining',
   state:'Tuned',
   soma:'Finding the places you get stuck and fixing them. Practical, and set on getting it done.',
-  def:'The field builds more than it spends, and the margin is thin.',
+  def:'Your energy builds more than it spends, and the margin is thin.',
   energy:'Forward on most days, and one hard week takes it back.',
   toward:'Compounding. Same seat, same address, repeated, until the load there stops returning.'},
  {at:51, nm:'Even',
   state:'Receptive',
   soma:'Exhausted by the old way and aware that it is broken.',
-  def:'The field breaks even and sits just above the line.',
+  def:'Your energy breaks even and sits just above the line.',
   energy:'What you build holds about as often as it slips.',
   toward:'Gaining. One address cleared entirely beats four reduced.'},
  {at:41, nm:'Oscillating',
@@ -1014,14 +1014,14 @@ const TIERDEF=[
      and the meaning table keeps a tier's first sentence, so the one place
      Oscillating was defined said what fifty is and never what Oscillating
      is. Same two facts, the meaning first. */
-  def:'The field crosses fifty, the median or middle of the line, both ways: above it some days '
+  def:'Your energy crosses fifty, the median or middle of the line, both ways: above it some days '
      +'and below it on others.',
   energy:'The day decides. What is running that morning sets the range.',
   toward:'Even. Consistency rather than intensity. The swing narrows before the number rises.'},
  {at:31, nm:'Incoherent',
   state:'Frustrated',
   soma:'Caught between the weight in your body and the odd moment of seeing clearly.',
-  def:'The field costs more than it builds. Charge is held at more addresses than are clearing.',
+  def:'Your energy costs more than it builds. Charge is held at more addresses than are clearing.',
   energy:'Effort goes in and less comes out. You are working, and the work is going into holding.',
   toward:'Oscillating, which starts at 41. Take the heaviest seat first. One address cleared where the load actually sits moves this further than ten cleared anywhere else.'},
  {at:21, nm:'Corrupt',
@@ -1033,7 +1033,7 @@ const TIERDEF=[
  {at:11, nm:'Severe',
   state:'Numb',
   soma:'Numbing or distracting yourself to get through. The body is starting to shut down.',
-  def:'Most of the field is carrying. Very little is clear.',
+  def:'Most of your energy is carrying. Very little is clear.',
   energy:'Ordinary demands read as threats. Capacity is spent before the day starts.',
   /* "OFF THE FLOOR" COMES OUT. Ruled. Every other tier's direction names the
      next band and what to do to reach it. This one named where the person was
@@ -1055,7 +1055,7 @@ const TIERDEF=[
  {at:0, nm:'Contracted',
   state:'Fragmented',
   soma:'Taken over by what happened before and was never worked through. The body drags with its full weight.',
-  def:'The field is fully loaded. Nothing is clearing.',
+  def:'Your energy is fully loaded. Nothing is clearing.',
   energy:'Flat. Not calm, out of charge.',
   toward:'Weight off, and not alone. A reading this low is not a thing to manage by yourself, and the instrument will not pretend otherwise.'}];
 /* one lookup, so the band table stops being copied into renderers */
@@ -1667,7 +1667,7 @@ function darkRead(mal01, CQ){
   /* which step of the descent, and only while both conditions hold */
   step:!dark?null:(CQ<11?DESCENT[2]:(CQ<21?DESCENT[1]:DESCENT[0])),
   refer:dark&&CQ<11,
-  say:!dark?'':'The shape is malignant and the field is decoherent at the same time. '
+  say:!dark?'':'The shape is malignant and your energy is decoherent at the same time. '
    +'That pair is what the descent describes. It is a reading of what is running, not of who is running it.'};}
 /* Which circle a descent has reached. Depth follows coherence, so
    the ladder is read off the same number everything else is. */
@@ -16756,9 +16756,9 @@ function converge(name,r){
     field contracting made an unanswered intake read as disagreement. */
  var fieldOpen=(r.benign===null||r.benign===undefined);
  if(!fieldOpen){
-  if(initiating===!!r.benign) agree.push('birth mode '+e.sunMode+' matches a field that is '
+  if(initiating===!!r.benign) agree.push('birth mode '+e.sunMode+' matches your energy, which is '
     +(r.benign?'expanding':'contracting'));
-  else differ.push('birth mode '+e.sunMode+' against a field that is '+(r.benign?'expanding':'contracting'));}
+  else differ.push('birth mode '+e.sunMode+' against your energy, which is '+(r.benign?'expanding':'contracting'));}
  /* The fourth comparison used to read a Human Design type that was the
     birth hour modulo five. Now that the type is honestly unresolved
     there is nothing to compare, so it goes in a third bucket. A gap is
@@ -16769,12 +16769,12 @@ function converge(name,r){
  if(!e.rising)open.push('the ascendant, which needs '+(e.needsTime?'a birth time':'a birthplace'));
  /* the design gate is real and independent of the field, so it can be
     compared: a design line of 1 or 4 is an inward profile. */
- if(fieldOpen)open.push('the direction of the field, which needs all '+SI.length+' laws answered');
+ if(fieldOpen)open.push('the direction of your energy, which needs all '+SI.length+' laws answered');
  else if(e.hd.design){
   var inward=(e.hd.design.line===1||e.hd.design.line===4);
-  if(inward===!r.benign)agree.push('design line '+e.hd.design.line+' and a field that is '
-    +(r.benign?'expanding':'contracting')+' point the same way');
-  else differ.push('design line '+e.hd.design.line+' against a field that is '
+  if(inward===!r.benign)agree.push('design line '+e.hd.design.line+' and your energy, which is '
+    +(r.benign?'expanding':'contracting')+', point the same way');
+  else differ.push('design line '+e.hd.design.line+' against your energy, which is '
     +(r.benign?'expanding':'contracting'));}
  var n=agree.length+differ.length;
  return {e:e, agree:agree, differ:differ, open:open,

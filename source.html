@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v212 c9ecf22 2026-10-16 04:38"><head><meta charset="utf-8">
+<html lang="en" data-build="v214 da58d06 2026-10-16 04:41"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -10688,13 +10688,13 @@ const TIERDEF=[
  {at:91, nm:'Mastery',
   state:'Sovereign',
   soma:'Everything in you is clear and standing straight. Nothing from the past is left to work through.',
-  def:'The field builds far more than it costs. Almost nothing is held.',
+  def:'Your energy builds far more than it costs. Almost nothing is held.',
   energy:'Intention and action arrive together. There is no gap left to manage.',
   toward:'Hold it. The work here is maintenance, and what you can now carry for other people.'},
  {at:81, nm:'Embodied',
   state:'Coherent',
   soma:'What happens around you and what happens in you move together, with nothing rubbing. Always moving.',
-  def:'The field builds more than it costs, with real load still in it.',
+  def:'Your energy builds more than it costs, with real load still in it.',
   energy:'You recover fast. A charge lands and clears instead of staying.',
   toward:'Mastery. Close the laws still shut, and clear what is still holding a week later.'},
  {at:71, nm:'Compounding',
@@ -10706,13 +10706,13 @@ const TIERDEF=[
  {at:61, nm:'Gaining',
   state:'Tuned',
   soma:'Finding the places you get stuck and fixing them. Practical, and set on getting it done.',
-  def:'The field builds more than it spends, and the margin is thin.',
+  def:'Your energy builds more than it spends, and the margin is thin.',
   energy:'Forward on most days, and one hard week takes it back.',
   toward:'Compounding. Same seat, same address, repeated, until the load there stops returning.'},
  {at:51, nm:'Even',
   state:'Receptive',
   soma:'Exhausted by the old way and aware that it is broken.',
-  def:'The field breaks even and sits just above the line.',
+  def:'Your energy breaks even and sits just above the line.',
   energy:'What you build holds about as often as it slips.',
   toward:'Gaining. One address cleared entirely beats four reduced.'},
  {at:41, nm:'Oscillating',
@@ -10722,14 +10722,14 @@ const TIERDEF=[
      and the meaning table keeps a tier's first sentence, so the one place
      Oscillating was defined said what fifty is and never what Oscillating
      is. Same two facts, the meaning first. */
-  def:'The field crosses fifty, the median or middle of the line, both ways: above it some days '
+  def:'Your energy crosses fifty, the median or middle of the line, both ways: above it some days '
      +'and below it on others.',
   energy:'The day decides. What is running that morning sets the range.',
   toward:'Even. Consistency rather than intensity. The swing narrows before the number rises.'},
  {at:31, nm:'Incoherent',
   state:'Frustrated',
   soma:'Caught between the weight in your body and the odd moment of seeing clearly.',
-  def:'The field costs more than it builds. Charge is held at more addresses than are clearing.',
+  def:'Your energy costs more than it builds. Charge is held at more addresses than are clearing.',
   energy:'Effort goes in and less comes out. You are working, and the work is going into holding.',
   toward:'Oscillating, which starts at 41. Take the heaviest seat first. One address cleared where the load actually sits moves this further than ten cleared anywhere else.'},
  {at:21, nm:'Corrupt',
@@ -10741,7 +10741,7 @@ const TIERDEF=[
  {at:11, nm:'Severe',
   state:'Numb',
   soma:'Numbing or distracting yourself to get through. The body is starting to shut down.',
-  def:'Most of the field is carrying. Very little is clear.',
+  def:'Most of your energy is carrying. Very little is clear.',
   energy:'Ordinary demands read as threats. Capacity is spent before the day starts.',
   /* "OFF THE FLOOR" COMES OUT. Ruled. Every other tier's direction names the
      next band and what to do to reach it. This one named where the person was
@@ -10763,7 +10763,7 @@ const TIERDEF=[
  {at:0, nm:'Contracted',
   state:'Fragmented',
   soma:'Taken over by what happened before and was never worked through. The body drags with its full weight.',
-  def:'The field is fully loaded. Nothing is clearing.',
+  def:'Your energy is fully loaded. Nothing is clearing.',
   energy:'Flat. Not calm, out of charge.',
   toward:'Weight off, and not alone. A reading this low is not a thing to manage by yourself, and the instrument will not pretend otherwise.'}];
 /* one lookup, so the band table stops being copied into renderers */
@@ -11377,7 +11377,7 @@ function darkRead(mal01, CQ){
   /* which step of the descent, and only while both conditions hold */
   step:!dark?null:(CQ<11?DESCENT[2]:(CQ<21?DESCENT[1]:DESCENT[0])),
   refer:dark&&CQ<11,
-  say:!dark?'':'The shape is malignant and the field is decoherent at the same time. '
+  say:!dark?'':'The shape is malignant and your energy is decoherent at the same time. '
    +'That pair is what the descent describes. It is a reading of what is running, not of who is running it.'};}
 /* Which circle a descent has reached. Depth follows coherence, so
    the ladder is read off the same number everything else is. */
@@ -26536,9 +26536,9 @@ function converge(name,r){
     field contracting made an unanswered intake read as disagreement. */
  var fieldOpen=(r.benign===null||r.benign===undefined);
  if(!fieldOpen){
-  if(initiating===!!r.benign) agree.push('birth mode '+e.sunMode+' matches a field that is '
+  if(initiating===!!r.benign) agree.push('birth mode '+e.sunMode+' matches your energy, which is '
     +(r.benign?'expanding':'contracting'));
-  else differ.push('birth mode '+e.sunMode+' against a field that is '+(r.benign?'expanding':'contracting'));}
+  else differ.push('birth mode '+e.sunMode+' against your energy, which is '+(r.benign?'expanding':'contracting'));}
  /* The fourth comparison used to read a Human Design type that was the
     birth hour modulo five. Now that the type is honestly unresolved
     there is nothing to compare, so it goes in a third bucket. A gap is
@@ -26549,12 +26549,12 @@ function converge(name,r){
  if(!e.rising)open.push('the ascendant, which needs '+(e.needsTime?'a birth time':'a birthplace'));
  /* the design gate is real and independent of the field, so it can be
     compared: a design line of 1 or 4 is an inward profile. */
- if(fieldOpen)open.push('the direction of the field, which needs all '+SI.length+' laws answered');
+ if(fieldOpen)open.push('the direction of your energy, which needs all '+SI.length+' laws answered');
  else if(e.hd.design){
   var inward=(e.hd.design.line===1||e.hd.design.line===4);
-  if(inward===!r.benign)agree.push('design line '+e.hd.design.line+' and a field that is '
-    +(r.benign?'expanding':'contracting')+' point the same way');
-  else differ.push('design line '+e.hd.design.line+' against a field that is '
+  if(inward===!r.benign)agree.push('design line '+e.hd.design.line+' and your energy, which is '
+    +(r.benign?'expanding':'contracting')+', point the same way');
+  else differ.push('design line '+e.hd.design.line+' against your energy, which is '
     +(r.benign?'expanding':'contracting'));}
  var n=agree.length+differ.length;
  return {e:e, agree:agree, differ:differ, open:open,
@@ -45900,7 +45900,7 @@ function sumStory(r){
         why, and "something was installed on top" was a story about a person
         the ledger cannot show. Round J13. */
      ? 'Those agree.'
-     : 'The blueprint says '+esc(elRoot)+'. The field runs '+esc(rootNow)+'. These differ.')+'</span>');
+     : 'The blueprint says '+esc(elRoot)+'. Your energy runs '+esc(rootNow)+'. These differ.')+'</span>');
  }else{
   p.push('There is no birth data on file, so the spiritual layer is not in this reading. '
    +'Date, time and place would put it in. What is running now is '+rootB(rootNow)
@@ -45976,7 +45976,7 @@ function sumStory(r){
     clause "which means it is expanding" stated a cause and is now a
     direction. Round J13, his words: "I keep seeing this percent shit, the
     hardest carrying zero percent. I don't want that." */
- p.push(((lean.read===false?'':'The field leans <b>'
+ p.push(((lean.read===false?'':'Your energy leans <b>'
   +(lean.ben>=lean.mal?'benign':'malignant')+'</b>'
   +(r.benign===null?'':', toward '+(r.benign?'expanding':'contracting'))+'.')
   /* .length, because r.excess is a list and an empty list is truthy: this
@@ -47387,7 +47387,7 @@ function anaRender(){
    /* ROUND RG. The band word stood alone, bold, with nothing on it, which
       is V9's judgement and not a reading. The tier's own first sentence
       rides after it, the same one Clients carries on its tooltip. */
-   :(r.tier?'The field reads <b>'+esc(r.tier.toLowerCase())+'</b>. '+unpSay(r.tier,'tier')+' '
+   :(r.tier?'Your energy reads <b>'+esc(r.tier.toLowerCase())+'</b>. '+unpSay(r.tier,'tier')+' '
      :'Coherence is still filling, with <b>'+esc(tierSay(r))+'</b>. ')
    +(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. '
      /* "Nothing is compounding" is a claim about somebody's chain, and a plan
@@ -62788,7 +62788,7 @@ function runCoreDrill(){
    +(r.PULL>=0.005?', with the shadow taking <b>'+Math.round(r.PULL*100)+' per cent</b>':''))+'.</p>'
   +'<div class="pm-eye">The read</div><p class="ad-p">'
   /* benign is null while CQ is still filling, and the clause waits with it */
-  +(r.benign===null?'':'The field is <b>'
+  +(r.benign===null?'':'Your energy is <b>'
     +(r.benign?'expanding':'contracting '+r.malig+'%')+'</b>. ')+'Radiance <b>'
   +(r.radiance*100).toFixed(0)+'%</b>. The field is the geometry of that '
   +'radiance. It is harmonic, so patterns sit at registers rather than '
@@ -63747,7 +63747,7 @@ function runCompassDrill(){
  var h='<div class="pm-eye">The compass</div><div class="ad-nm">'
   +(r.unread?'not read yet':'CQ '+Math.round(cq)+', '+tierSay(r).toLowerCase())+'</div>'
   +'<div class="pm-eye">How to read it</div><p class="ad-p">The line runs 0 at the base to 100 at the crown, and the word changes every ten points. '
-  +'Above '+MEDIAN+' the field builds more than it costs. Below '+MEDIAN+' it costs more than it builds. '
+  +'Above '+MEDIAN+' your energy builds more than it costs. Below '+MEDIAN+' it costs more than it builds. '
   +MEDIAN_LO+' to '+MEDIAN_HI+' is the median range, where the reading crosses the line in both directions'
   +(medianRange(cq)&&!r.unread&&r.complete?', and that is where this one sits':'')+'. '
   /* "THE SWING, 11 POINTS" IS GONE FROM HERE TOO. Ruled as a class rather
@@ -63840,10 +63840,10 @@ function runSpDrill(kind,val){
   means=[unpackOf('design'),/^\d\/\d$/.test(String(val))?unpackOf('profile'):''];
   /* the comparison reads CQ against the median, which a CQ still filling
      cannot answer: it would call every Generator's field contracting */
-  extra=!r.complete?'A '+val+'. Coherence is still filling, so the field has no direction to compare yet.'
+  extra=!r.complete?'A '+val+'. Coherence is still filling, so your energy has no direction to compare yet.'
    :'A '+val+' at CQ <b>'+Math.round(r.CQ)+'</b>. '
    +((val==='Generator'||val==='Manifesting Generator')===(r.CQ>=50)
-     ?'Type and field point the same way.':'Type and field point differently.');
+     ?'Type and energy point the same way.':'Type and energy point differently.');
  } else if(kind==='auth'){
   t='Authority'; sub='where the decision lands';
   runs='the body signal this person is meant to decide from, rather than the mind';
@@ -63863,7 +63863,7 @@ function runSpDrill(kind,val){
     +means.filter(Boolean).map(esc).join(' ')+'</p>':'')
   +'<div class="pm-eye">How it runs through you</div>'
   +'<p class="ad-p">'+(runs||'no behaviour on file')+'</p>'
-  +(extra?'<div class="pm-eye">Against your field</div><p class="ad-p">'+extra+'</p>':''));}
+  +(extra?'<div class="pm-eye">Against your energy</div><p class="ad-p">'+extra+'</p>':''));}
 
 /* ============================================================
    THE NUMEROLOGY DRILL. One number, what it was reduced from, and
@@ -76428,5 +76428,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005014909"></div>
+<div id="eof" hidden data-len="005014969"></div>
 </body></html>
