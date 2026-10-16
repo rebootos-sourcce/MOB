@@ -137,7 +137,7 @@ function acctMissHtml(st){
 function acctDoneHtml(st){
  return '<div class="rv-sec rv-done"><div class="rv-hd"><span class="rv-h">Done</span></div>'
   +ritTodayHtml(st.act.filter(function(p){return ritDue(p,st.today);}),st.today,st.L)
-  +'<p class="rv-mean">Streak is your current run of days with a ritual on the record. One skipped day is forgiven and a longer gap halves it. '
+  +'<p class="rv-mean">'+esc(STREAK_MEANS)+' '
   +'Best is your longest run with no gap. Kept is the days you marked a ritual done. Practised is the minutes you put in.</p>'
   /* the earned marks stay here, with the record that earned them. The next one
      moved to the Ongoing goal card in the centre, round QN, because the next

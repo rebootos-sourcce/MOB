@@ -86,7 +86,7 @@ if(typeof module!=='undefined'&&module.exports){
                   NERVEBR:NERVEBR, BODYPATH:BODYPATH, TAB:TAB,
   /* the ladder */MARKS:MARKS, ladderRead:ladderRead, markDays:markDays, BACK_GAP:BACK_GAP, ledgerRead:ledgerRead,
                   intentionRead:intentionRead, INTENT_DAYS:INTENT_DAYS,
-                  streakRead:streakRead, pracDays:pracDays, pracDay:pracDay,
+                  streakRead:streakRead, pracDays:pracDays, pracDay:pracDay, STREAK_MEANS:STREAK_MEANS,
   /* indexes */   W:W, BY:BY, ALL_SAB:ALL_SAB, S:S,
   /* soul */      buildSoul:buildSoul, affinity:affinity, bandIg:bandIg,
   /* engine */    compute:compute, suscAll:suscAll, balance:balance, OUTWARD:OUTWARD, INWARD:INWARD,
@@ -360,6 +360,8 @@ if(typeof module!=='undefined'&&module.exports){
                   ONB_MINI_ADDRS:ONB_MINI_ADDRS, ONB_MINI_DOSE:ONB_MINI_DOSE, ONB_CHANS:ONB_CHANS,
                   OB_STARTS:OB_STARTS, OB_FEELS:OB_FEELS, OB_PLACES:OB_PLACES,
                   journeyRead:journeyRead, onbMiniPlan:onbMiniPlan,
+  /* the crisis button's numbers and words, engine/data/crisis.js. Reads only. */
+                  CRISIS_LINES:CRISIS_LINES, CRISIS_SAY:CRISIS_SAY,
   /* the journey record itself, F13: its tables, its boundary, its writers,
      what the first release made, and the claim packet with its boundary */
                   JOURNEY_V:JOURNEY_V, JOURNEY_EVENTS:JOURNEY_EVENTS, JOURNEY_LOG_MAX:JOURNEY_LOG_MAX,

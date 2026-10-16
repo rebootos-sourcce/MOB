@@ -203,9 +203,9 @@ function converge(name,r){
     field contracting made an unanswered intake read as disagreement. */
  var fieldOpen=(r.benign===null||r.benign===undefined);
  if(!fieldOpen){
-  if(initiating===!!r.benign) agree.push('birth mode '+e.sunMode+' matches a field that is '
+  if(initiating===!!r.benign) agree.push('birth mode '+e.sunMode+' matches your energy, which is '
     +(r.benign?'expanding':'contracting'));
-  else differ.push('birth mode '+e.sunMode+' against a field that is '+(r.benign?'expanding':'contracting'));}
+  else differ.push('birth mode '+e.sunMode+' against your energy, which is '+(r.benign?'expanding':'contracting'));}
  /* The fourth comparison used to read a Human Design type that was the
     birth hour modulo five. Now that the type is honestly unresolved
     there is nothing to compare, so it goes in a third bucket. A gap is
@@ -216,12 +216,12 @@ function converge(name,r){
  if(!e.rising)open.push('the ascendant, which needs '+(e.needsTime?'a birth time':'a birthplace'));
  /* the design gate is real and independent of the field, so it can be
     compared: a design line of 1 or 4 is an inward profile. */
- if(fieldOpen)open.push('the direction of the field, which needs all '+SI.length+' laws answered');
+ if(fieldOpen)open.push('the direction of your energy, which needs all '+SI.length+' laws answered');
  else if(e.hd.design){
   var inward=(e.hd.design.line===1||e.hd.design.line===4);
-  if(inward===!r.benign)agree.push('design line '+e.hd.design.line+' and a field that is '
-    +(r.benign?'expanding':'contracting')+' point the same way');
-  else differ.push('design line '+e.hd.design.line+' against a field that is '
+  if(inward===!r.benign)agree.push('design line '+e.hd.design.line+' and your energy, which is '
+    +(r.benign?'expanding':'contracting')+', point the same way');
+  else differ.push('design line '+e.hd.design.line+' against your energy, which is '
     +(r.benign?'expanding':'contracting'));}
  var n=agree.length+differ.length;
  return {e:e, agree:agree, differ:differ, open:open,

@@ -96,9 +96,11 @@ for src in SRC:
 
 # a sendable file that still reaches for a sibling has not been made sendable.
 # The four dist names are routes and not assets, so they are the only strings
-# allowed to remain.
+# allowed to remain. tel: and sms: are not siblings either, 16 October: the
+# crisis panel's numbers dial and text from a phone, and a number to call is
+# never a file the page needs beside it.
 for nm, h in built.items():
-    left = [u for u in re.findall(r'(?:src|href)="(?!https?:|#|data:|mailto:)([^"]+)"', h)
+    left = [u for u in re.findall(r'(?:src|href)="(?!https?:|#|data:|mailto:|tel:|sms:)([^"]+)"', h)
             if u not in OUT.values() and u != APP[1]]
     assert not left, nm+' still reaches for '+repr(left)
 print('  %d pages, and none of them needs a sibling to render' % len(built))

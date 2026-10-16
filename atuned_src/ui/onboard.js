@@ -54,6 +54,14 @@
    where the first stranger's words are actually read, for the same warning
    placed at the exact line it describes. Tracked in the owner's plan as J0,
    a ship blocker for any build a stranger who is not the owner can reach.
+
+   AND A BUTTON IS NOT A DETECTOR, 16 October. He ruled the crisis option onto
+   the welcome as a choice: "Is this a crisis? Hit that button." It is in the
+   stage's top bar on every step (obStage) and its panel is ui/crisis.js. It
+   answers a real signal, the person's own press, so it is not the frame the
+   paragraph above refuses; and it reads no word anybody writes, so J0, the
+   automatic check he deferred on 9 October, is still exactly as open as this
+   header says.
    ============================================================ */
 /* THE AUTOMATIC OPEN IS OFF BY ITS OWN FLAG, unchanged: ui/login.js's
    loginEnter runs this sheet on its own switch, DEV_PLAY_ONBOARDING, and
@@ -399,6 +407,7 @@ function obRing(){
    and a Not now that answers to data-ob. */
 function obStage(h,n,xattr){
  if(h.querySelector('.obx-slot'))return;
+ var own=!!xattr;
  n=n||OB_NSTEPS; xattr=xattr||'data-ob="skip"';
  var wm=document.querySelector('#brand .bn'), mark=wm?wm.outerHTML:'';
  h.classList.add('obx');
@@ -414,6 +423,11 @@ function obStage(h,n,xattr){
   +Array.from({length:n}).map(function(_,i){
     return '<span class="ob-dot" style="--k:'+i+'"></span>';}).join('')+'</div>'
   +'<span class="obx-step"></span></div>'
+  /* IS THIS A CRISIS, 16 October, on the first run's stage only, in the top
+     bar beside Not now so it stands on every step and not on one card. The
+     Day One tutorial stands on this stage with its own way out (xattr) and
+     is left as it was. ui/crisis.js has the panel. */
+  +(own?'':crisisBtn('obx-crx'))
   +'<button type="button" class="obx-x" '+xattr+'>Not now</button>'
   +'</div>'
   +'<div class="obx-slot"></div>';}

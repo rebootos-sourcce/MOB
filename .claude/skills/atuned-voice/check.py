@@ -802,15 +802,29 @@ def main():
         print(UNMEASURABLE)
         return 1 if worst else 0
 
+    # A NAMED FILE THAT WAS NOT READ IS NOT A PASS, 16 October. A path that
+    # did not exist, or a file with nothing in it to read, printed "no prose
+    # strings found" and exited 0, so tests/engine.js's known bad probe read
+    # exit 0 when a second engine run had deleted its file, and any caller
+    # that named the wrong file got green. Exit 2 says the input was refused,
+    # which is neither a pass (0) nor a finding (1).
     fails = 0
+    unread = 0
     for a in args:
+        if not os.path.exists(a):
+            print('%s: no such file or directory. Nothing was checked, so this is not a pass.' % a)
+            unread += 1
+            continue
         ss = harvest(a)
         if not ss:
-            print('%s: no prose strings found' % a)
+            print('%s: no prose strings found. A named input with nothing to read is refused, not passed.' % a)
+            unread += 1
             continue
         sents = sentences(ss)
         fails += report(a, rates(sents), base, scan(sents) + scan_literals(a))
     print(UNMEASURABLE)
+    if unread:
+        return 2
     return 1 if fails else 0
 
 

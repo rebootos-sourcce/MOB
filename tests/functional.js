@@ -13,24 +13,46 @@ let PASS=0,FAIL=0;
    up, and a run fails intermittently on whichever surface it happened to
    reach first. Measured once as four failures in one run of four that would
    not reproduce, which is exactly the shape of this kind of race. */
-const booted=async p=>{try{await p.waitForFunction(
-  ()=>document.body.classList.contains('booted'),null,{timeout:12000});}
- catch(e){/* reduced motion clears it synchronously; a miss is not a failure */}
+/* READY MEANS THE START UP SAID SO, 16 October. This waited on the class the
+   boot sheet's fade adds and treated a miss as success, then slept a fixed
+   600 ms, and on a loaded runner a reload check read a page that had not
+   finished starting: CI failed "they come back after a reload" twice and
+   passed it once on one commit, and "after a reload the switch is still on"
+   once on another, with the code identical. It waits now on data-boot, which
+   the guard writes when __bootOk runs, and a page that never gets there is a
+   failure by name here, instead of passing and failing a later check about
+   something else. Nothing in here counts a pass, so the gate's count is
+   unchanged. */
+const notReady=(p,what)=>{FAIL++;console.log('  FAIL the page was not ready: '+what+', '+p.url().replace(/^.*\//,''));};
+const ready=async(p,fn,ms,what,arg)=>{try{await p.waitForFunction(fn,arg===undefined?null:arg,{timeout:ms});return true;}
+ catch(e){notReady(p,what+' within '+ms+' ms');return false;}};
+/* A WRITE THAT HAS LEFT THE PAGE before a reload, tests/persist.js says why */
+const persisted=async(p,fn,arg,what)=>{if(!await require('./persist.js').persisted(p,fn,arg))notReady(p,what+' within 20000 ms');};
+const booted=async p=>{
+ if(!await ready(p,()=>document.documentElement.getAttribute('data-boot')==='ok',30000,'the start up never called __bootOk'))return;
+ /* the sheet lifts on its own clock after start up; reduced motion clears it
+    at once, which adds the class the same way */
+ await ready(p,()=>document.body.classList.contains('booted'),15000,'the boot sheet never cleared');
  /* AND THE OPENING IS DISMISSED, because every page here goes on to test the
     instrument and a first visit meets the onboarding sheet over it. That is
     real behaviour and the gate proved it by failing four Field checks the
     moment onboarding landed, so the sheet is closed the way a person closes
     it rather than hidden. The onboarding has a block of its own below, so
     getting past it here is not the same as not testing it. */
- try{ await p.waitForTimeout(600);
-   await p.evaluate(()=>{ if(typeof OB!=='undefined'&&OB.open&&typeof obClose==='function')obClose(); });
-   await p.waitForTimeout(120); }catch(e){}
+ /* AND THE 600 MS IS KEPT, after the flag and not instead of it. Work still
+    lands after __bootOk: with the settle taken out, "remembered across a
+    reload" read the seat tone switch off on a record that had saved it on,
+    and the walk crashed on the next wait. Until that work is named and given
+    a flag of its own, the settle stays, and the flag above is what says the
+    page started at all. */
+ await p.waitForTimeout(600);
+ await p.evaluate(()=>{ if(typeof OB!=='undefined'&&OB.open&&typeof obClose==='function')obClose(); });
+ await ready(p,()=>typeof OB==='undefined'||!OB.open,4000,'the onboarding sheet did not close');
  /* AND THE FIELD'S ENTRANCE IS LET FINISH. It assembles on arrival, so for
     its first second the parts are on their way to where they belong and a
     measurement taken then measures the animation. Waited out rather than
     turned off, because it is real and a person sees it. */
- try{ await p.waitForFunction(
-   ()=>typeof enterOver!=='function'||enterOver(),null,{timeout:4000}); }catch(e){}};
+ await ready(p,()=>typeof enterOver!=='function'||enterOver(),10000,'the Field entrance never finished');};
 const ok=(c,m)=>{if(c)PASS++;else{FAIL++;console.log('  FAIL '+m);}};
 (async()=>{
 const browser=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
@@ -250,6 +272,16 @@ console.log('\n=== the six masks, as pixels on the figure ===');
  await sp.evaluate(()=>{setTab(TAB.ENERGY);PMLAYER='map';render();});
  await sp.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
  await sp.waitForTimeout(400);
+ /* AND THE CANVAS HAS PAINTED THEM, 16 October. A fixed 400 ms read the
+    canvas mid paint on a loaded machine: four busy loops on four cores made
+    "the pixels reach the canvas" read Child 1/5 in two runs of sixteen. This
+    waits, up to 8 s, for the same measure the check below takes; a canvas
+    that never gets there still fails it below, with its numbers. */
+ await sp.waitForFunction(()=>{const r=compute(),cx=BM.cv.getContext('2d');
+  return BMG.masks.every(k=>{const px=bmMaskRead(k,r).px; let bone=0;
+   px.forEach(x=>{const s=bmW2S(x.p.x,x.p.y),d=cx.getImageData(Math.round(s[0]*BM.dpr),Math.round(s[1]*BM.dpr),1,1).data;
+    if(d[0]>90&&d[0]>=d[2]+12)bone++;});
+   return bone>=px.length*0.5;});},null,{timeout:8000,polling:200}).catch(()=>{});
  /* EVERYTHING EXPECTED IS WORKED OUT HERE FROM THE ENTRIES THEMSELVES:
     which stories landed under each mask at an address still carrying, which
     saboteurs in r.sabs each of those touches, and the heaviest of them. */
@@ -442,7 +474,7 @@ console.log('\n=== the six masks, as pixels on the figure ===');
     same probe on James, lit, is the case that proves it can see a torus.
     Then the overlays are set and the page reloaded, which is the only honest
     way to say a preference is kept. */
- {const bp=await browser.newPage({viewport:{width:1600,height:1000}});
+ {const bp=await (await browser.newContext({viewport:{width:1600,height:1000}})).newPage(); /* a context of its own, so persisted() can open a second page in it */
   const bpErr=[];bp.on('pageerror',e=>bpErr.push(e.message));
   await bp.goto(FILE,{waitUntil:'load'}); await booted(bp); await bp.evaluate(CH_HELP);
   const ovs=()=>bp.evaluate(()=>[...document.querySelectorAll('#masksview [data-chov]')].map(b=>b.getAttribute('data-chov')+':'+b.getAttribute('aria-pressed')).join());
@@ -462,10 +494,16 @@ console.log('\n=== the six masks, as pixels on the figure ===');
    o.set=STORE.get('chov');
    return o;});
   const set=await ovs();
+  /* the presses in the store first and a page that has finished starting
+     after, each a failure by name: CI read the defaults here twice on one
+     commit and the presses on its third attempt, with the code unchanged */
+  await ready(bp,()=>STORE.get('chov')==='torus,heat',3000,'the overlay presses were not in the store before the reload');
+  await persisted(bp,()=>localStorage.getItem('chov')==='torus,heat',undefined,'the overlay presses had not left the page before the reload');
   await bp.reload({waitUntil:'load'}); await booted(bp);
   const rl=await bp.evaluate(async()=>{setTab(TAB.MASKS); render();
    await new Promise(q=>requestAnimationFrame(()=>requestAnimationFrame(q)));
    return {chov:STORE.get('chov'),on:CHV.ov};});
+  await ready(bp,()=>document.querySelectorAll('#masksview [data-chov]').length===4,5000,'the overlay toggles were not drawn after the reload');
   const after=await ovs();
   ok(bl.unread&&/^Nothing read yet, so the field is dark/.test(bl.txt),'a stranger reads that nothing is read yet, got '+bl.txt.slice(0,60));
   ok(!bl.lead&&!/Leading pattern/.test(bl.txt),'and an unread profile leads with no pattern at all, 5dcb45d, got '+(bl.lead?'a lead block':'')+(/Leading pattern/.test(bl.txt)?' the words':''));
@@ -476,7 +514,7 @@ console.log('\n=== the six masks, as pixels on the figure ===');
   ok(bl.blank.d===0,'5dcb45d: at coherence zero the torus draws nothing, no cape of broken meridians, '+bl.blank.d+' pixels changed by it');
   ok(bl.chov===null&&set==='cloud:false,torus:true,heat:true,trace:false'&&bl.set==='torus,heat',
    'a fresh store holds no overlays, and the presses are kept under chov, '+JSON.stringify({was:bl.chov,set:bl.set,btn:set}));
-  ok(rl.chov==='torus,heat'&&after===set,'and they come back after a reload, '+after);
+  ok(rl.chov==='torus,heat'&&after===set,'and they come back after a reload, '+after+', stored '+rl.chov);
   ok(bpErr.length===0,'no page errors on a fresh page, '+bpErr.join(' | '));
   await bp.close();}
  ok(spErr.length===0,'no page errors on the story profile, '+spErr.join(' | '));
@@ -1096,7 +1134,7 @@ const pers=await page.evaluate(()=>{
 ok(pers.bound===true,'store is bound through bindStore, got '+pers.bound);
 ok(pers.persist===true,'pPersist reports success, got '+pers.persist+' '+pers.err);
 ok(pers.keys.indexOf('source.profiles')>=0,'profile key present in localStorage: '+pers.keys.join(','));
-await page.reload(); await page.waitForTimeout(900);
+await page.reload(); await booted(page); await page.waitForTimeout(900);
 /* PROFILES hydrates lazily from the store on the first intake render, so the
    honest check after reload is what the store holds, not the in-memory array. */
 const back=await page.evaluate(()=>({n:pStore().length, bound:STORE_BOUND}));
@@ -1262,7 +1300,7 @@ console.log('\n=== a stranger is not told they are incoherent ===');
 const blank=await browser.newPage({viewport:{width:1600,height:1000}});
 await blank.goto(FILE,{waitUntil:'load'}); await booted(blank); await blank.waitForTimeout(400);
 await blank.evaluate(()=>{try{localStorage.clear();}catch(e){}});
-await blank.reload({waitUntil:'load'}); await blank.waitForTimeout(700);
+await blank.reload({waitUntil:'load'}); await booted(blank); await blank.waitForTimeout(700);
 const virgin=await blank.evaluate(()=>{
  const r=compute();
  const o={unread:r.unread, measured:r.measured, carrying:r.loaded.length,
@@ -1285,7 +1323,7 @@ const virgin=await blank.evaluate(()=>{
 ok(virgin.charge===0,'a first load seeds no charge, total is '+virgin.charge);
 ok(virgin.carrying===0,'and nothing is carrying');
 ok(virgin.unread===true&&virgin.measured===0,'the reading knows it has not been read');
-ok(!/Incoherent|Corrupt|Severe|Collapsed/.test(virgin.tier),
+ok(!/Incoherent|Corrupt|Severe|Contracted/.test(virgin.tier),
  'the tier does not name a band, it reads: '+JSON.stringify(virgin.tier));
 ok(!/Incoherent/.test(virgin.profile),'nor does the profile sheet');
 ok(!/incoherent/.test(virgin.ana),'nor the analytics hero, which reads: '+JSON.stringify(virgin.ana));
@@ -1295,7 +1333,7 @@ ok(!/incoherent/.test(virgin.ana),'nor the analytics hero, which reads: '+JSON.s
    to answer. A band word here would be one read off laws nobody answered. */
 ok(virgin.unreadAfter===false&&/^\d+ laws? to answer$/.test(virgin.after),
  'and one held address makes it a reading, with the band waiting on the laws: '+JSON.stringify(virgin.after));
-const bands=['Incoherent','Corrupt','Severe','Collapsed'].filter(w=>virgin.sweep.includes(w));
+const bands=['Incoherent','Corrupt','Severe','Contracted'].filter(w=>virgin.sweep.includes(w));
 ok(bands.length===0,'no band word appears anywhere on an unread first screen, found: '
  +(bands.join(', ')||'none'));
 await blank.close();
@@ -1360,7 +1398,7 @@ const lab=await page.evaluate(()=>{
  runCompassDrill();
  return {label:el.textContent, tip:el.title,
   drill:(document.getElementById('rdrill').textContent||'').replace(/\s+/g,' ')};});
-ok(/Severe|Collapsed|Corrupt|Incoherent/.test(lab.label),
+ok(/Severe|Contracted|Corrupt|Incoherent/.test(lab.label),
  'the heaviest case gets a band, got '+JSON.stringify(lab.label));
 ok(lab.tip.length>120,'and the label carries its meaning on hover, '+lab.tip.length+' chars');
 ok(/Toward:/.test(lab.tip),'including the direction out of it');
@@ -2041,8 +2079,11 @@ ok(/blueprint you were born on|no birth data/.test(sum.text),
    paragraphs carries a label, and a sentence that opened on its own
    denominator. The intent is that the reading closes on which way the field
    leans, so the row asserts that instead of the word. */
-ok(/the field leans/i.test(sum.text)&&/benign|malignant/i.test(sum.text),
- 'and closes on which way the field leans');
+/* 16 October, his words: "change the field to 'your energy leans malignant',
+   because energy is more natural. Field is just too abstract." So the subject
+   is held, and the word after it, and the old subject is held out. */
+ok(/Your energy leans (?:benign|malignant)\b/.test(sum.text)&&!/the field leans/i.test(sum.text),
+ 'and closes on which way your energy leans, never the field');
 ok(!/undefined|NaN|\[object/.test(sum.text),'and nothing leaked a placeholder');
 console.log(' ',JSON.stringify({glance:sum.glance,rows:sum.structRows,chips:sum.chips,
  num:sum.numRows,rings:sum.rings}));
@@ -2686,7 +2727,7 @@ console.log('\n=== practitioner mode: the switch, the fifth section and the sket
    state. Then off again by both routes that can shut it: the switch, and a
    change of profile while standing on the page whose door is going. */
 {
- const pr=await browser.newPage({viewport:{width:1600,height:1000}});
+ const pr=await (await browser.newContext({viewport:{width:1600,height:1000}})).newPage(); /* a context of its own, so persisted() can open a second page in it */
  await pr.goto(FILE,{waitUntil:'load'}); await booted(pr);
  const shown=()=>pr.evaluate(()=>[...document.querySelectorAll('#secbar .secb')]
   .filter(b=>getComputedStyle(b).display!=='none').map(b=>b.getAttribute('data-sec')));
@@ -2758,10 +2799,25 @@ console.log('\n=== practitioner mode: the switch, the fifth section and the sket
  ok(o.back,'Open Account goes back to the switch');
  /* ACROSS A RELOAD. applyUiPrefs never ran at start up, so this is the check
     that the door reads the stored switch on the way in. */
+ /* the stored switch first, then a page that has finished starting, then a
+    bar that has been drawn, each a failure by name, so the check below reads
+    the door and not a page still on its way (CI run 38886546412, attempt 1,
+    read the four loop sections with the switch on and passed on rerun) */
+ await ready(pr,()=>devGet('practitioner')===true,3000,'the switch was not in the device store before the reload');
+ await persisted(pr,()=>{try{return JSON.parse(localStorage.getItem('source.profiles.device')||'{}').practitioner===true;}catch(e){return false;}},
+  undefined,'the switch had not left the page before the reload');
  await pr.reload({waitUntil:'load'}); await booted(pr);
+ await ready(pr,()=>[...document.querySelectorAll('#secbar .secb')].filter(b=>getComputedStyle(b).display!=='none').length>=4,
+  5000,'the section bar was not drawn after the reload');
  const reload=await shown();
+ /* what the page holds when the door reads shut, so a red here says why */
+ const why=JSON.stringify(reload)==='["discover","play","flow","embody","practitioner"]'?'':' '+JSON.stringify(await pr.evaluate(()=>{
+  const b=document.querySelector('#secbar .secb[data-sec="practitioner"]');
+  return {on:typeof pracOn==='function'?pracOn():'none',dev:typeof devGet==='function'?devGet('practitioner'):'none',
+   inline:b?b.style.display:'no button',css:b?getComputedStyle(b).display:'',boot:document.documentElement.getAttribute('data-boot'),
+   tab:S.tab,quiet:(document.getElementById('bootquiet')||{}).textContent||''};}));
  ok(JSON.stringify(reload)==='["discover","play","flow","embody","practitioner"]',
-  'after a reload the switch is still on and so is the door, '+JSON.stringify(reload));
+  'after a reload the switch is still on and so is the door, '+JSON.stringify(reload)+why);
  const o2=await pr.evaluate(async()=>{
   const wait=()=>new Promise(r=>setTimeout(r,260)), o={}, $q=s=>document.querySelector(s);
   const vis=()=>[...document.querySelectorAll('#tabbar .tabtop')].filter(b=>b.offsetParent).length;
@@ -3210,8 +3266,9 @@ const pmn=await page.evaluate(async()=>{
  o.sfx=m?(()=>{const b=m.querySelector('[data-pmsfx]');return b?{h:b.getBoundingClientRect().height,on:b.getAttribute('aria-checked')}:null;})():null;
  /* Discord feedback joined at 3 October; Join our Discord is a row only once
     COMMUNITY_INVITE holds a real invite, so it is read off commInvite and not
-    assumed either way */
- o.want=ACC_SECS.map(s=>s.nm).concat(['Discord feedback'],commInvite()?['Join our Discord']:[],['Message log','Settings']);
+    assumed either way. Is this a crisis? joined at 16 October, after the
+    log and before Settings (ui/crisis.js) */
+ o.want=ACC_SECS.map(s=>s.nm).concat(['Discord feedback'],commInvite()?['Join our Discord']:[],['Message log','Is this a crisis?','Settings']);
  o.tall=m?Math.min(...[...m.querySelectorAll('[role=menuitem]')].map(e=>e.getBoundingClientRect().height)):0;
  o.stillField=S.tab===TAB.FIELD;
  m.querySelector('[data-pms="billing"]').click(); await wait();
@@ -5782,7 +5839,7 @@ console.log('\n=== a sentence does not disappear at a pause, round NU ===');
    waveform can be wired to the wrong seat.
 --------------------------------------------------------------------------- */
 console.log('\n=== the seat tone is binaural, and it is the seat\'s own ===');
-{const tp=await browser.newPage({viewport:{width:1600,height:1000}});
+{const tp=await (await browser.newContext({viewport:{width:1600,height:1000}})).newPage(); /* a context of its own, so persisted() can open a second page in it */
  const terr=[]; tp.on('pageerror',e=>terr.push('PAGEERROR: '+e.message));
  await tp.goto(FILE,{waitUntil:'load'}); await booted(tp);
  /* the two beats, read off the page, so no number here can drift from them */
@@ -5974,7 +6031,11 @@ console.log('\n=== the seat tone is binaural, and it is the seat\'s own ===');
   +JSON.stringify([s1&&s1.checked,k1]));
  ok(/Saved/.test(said1),'and the save reports like every other preference, said '+JSON.stringify(said1));
  ok(!b1.on&&b1.carrier===null,'and nothing sounds before Begin, '+JSON.stringify(b1));
- /* REMEMBERED. The page is reloaded and the switch reads the record. */
+ /* REMEMBERED. The page is reloaded and the switch reads the record, once
+    the record has left the page (persisted, above). */
+ const toneId=await tp.evaluate(()=>CURP.id);
+ await persisted(tp,id=>{try{const me=JSON.parse(localStorage.getItem('source.profiles')||'[]').filter(r=>r.id===id)[0];
+   return !!(me&&me.ui&&me.ui.tone===true);}catch(e){return false;}},toneId,'the tone switch had not left the page before the reload');
  await tp.reload({waitUntil:'load'}); await booted(tp);
  await pick();
  const s2=await sw();
@@ -7186,7 +7247,7 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
 /* ---------------------------------------------------------------------------
    THE PROFILE PICKER IS SORTED BY COHERENCE TIER, J12 round PL. The owner:
    "Fix all of the profiles. By tier." The group heading is the tier name, the
-   groups run Collapsed to Mastery, and inside a group the lowest CQ comes
+   groups run Contracted to Mastery, and inside a group the lowest CQ comes
    first. Read off the live select and the live engine, so what is asserted is
    what a person sees and not what the sort function was meant to do.
 --------------------------------------------------------------------------- */

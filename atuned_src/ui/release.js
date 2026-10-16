@@ -1361,6 +1361,15 @@ function relCoolDown(){
    var previous=JSON.parse(recordBefore);
    Object.keys(CURP).forEach(function(k){delete CURP[k];});
    Object.keys(previous).forEach(function(k){CURP[k]=previous[k];});
+   /* AND THE WORKING STATE WITH IT, 16 October. compute() and saveProfile
+      read S, not CURP, so restoring CURP alone left S.charge at the released
+      values: the page read the release as landed, and the next unrelated
+      save wrote that charge onto the record with no release in its history.
+      Measured before this line: 3 charged addresses on the record, a refused
+      release, one ordinary save, a reload, and 0 charged with 0 releases.
+      loadProfile rebuilds S from the restored record, so the card keeps the
+      run and the record and the reading both stay where they were. */
+   loadProfile(CURP);
    RUN.recordRestored=true;
   }catch(e){ RUN.recordRestored=false; }
  }
@@ -2937,10 +2946,17 @@ function relResults(){
   +'<div class="rel-node rel-rs-hero">'+(RUN.halted?'':'Congratulations. ')
   +'You released '+t.said+(t.said===1?' pattern':' patterns')+' and recharged '+t.put+'.</div>'
   +relEndNote();
+ /* "NEW MARK" WAS A CLAIM THE RECORD CANNOT MAKE. marksNew is what the ladder
+    reads after this run and did not read before it, and nothing stores a mark
+    once earned (TDD v3 1.2, unbuilt), so a mark held last week, lost when an
+    undo took an axis back or a done press was taken off, and true again now
+    was announced as new. What the record can say is that this release is
+    where the mark became true, so that is what the card says. Stored marks,
+    Block 3 of the achievements plan, are what would make "new" knowable. */
  (RUN.marksNew||[]).forEach(function(m){
   out+='<div class="rel-mark" style="--c:'+(typeof seatCol==='function'?seatCol(m.b):'var(--accent)')+'">'
    +'<svg viewBox="0 0 24 24" class="rel-mark-i" aria-hidden="true"><path d="'+esc(m.ic||'')+'"/></svg>'
-   +'<span><span class="rel-mark-k">New mark</span><b>'+esc(m.nm)+'</b><em>'+esc(m.d)+'</em></span></div>';});
+   +'<span><span class="rel-mark-k">Earned on this release</span><b>'+esc(m.nm)+'</b><em>'+esc(m.d)+'</em></span></div>';});
  /* 2. left and right, mirrored, the same panels the run counted on */
  if(t.side)out+=relSect('Left and right',
   '<div class="rel-lrw">'+relSidePanel('L',t,null)+relSidePanel('R',t,null)+'</div>'

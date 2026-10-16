@@ -125,4 +125,13 @@ node ../tests/claims.js
 #
 # Nothing is renamed, reordered or rewritten, which is why the same gates run
 # against it. See tools/slim.py.
-python3 ../tools/slim.py "$OUT" "$(dirname "$OUT")/atuned-slim.html" 
+python3 ../tools/slim.py "$OUT" "$(dirname "$OUT")/atuned-slim.html"
+
+# THE PACKED BUILD, ON EVERY BUILD, 16 October. atuned-packed.html is the
+# owner's ruled download route and was packed by hand, so it fell behind: on
+# 16 October it inflated to v2028 018bb70 while source.html was v2046 e9ca1ae.
+# Packed here from the slim build just written, beside it, so every build
+# writes all three products from one run and they carry one stamp.
+# tools/products.js in gates-fast fails a commit whose products disagree.
+# Resolved against the repo root, which an absolute path passes through.
+node ../tools/pack.js "$(cd "$(dirname "$OUT")" && pwd)/atuned-slim.html" "$(cd "$(dirname "$OUT")" && pwd)/atuned-packed.html"

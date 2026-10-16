@@ -975,18 +975,18 @@ const TIERCOL={
  'Incoherent':  '#CFAB64',   /* warm, a caution and not an alarm */
  'Corrupt':     '#CF8958',
  'Severe':      '#B58379',   /* chroma coming out. numb is less present, not louder */
- 'Collapsed':   '#A48986'};  /* the colour nearly gone. the floor is quiet */
+ 'Contracted':  '#A48986'};  /* the colour nearly gone. the floor is quiet */
 const TIERDEF=[
  {at:91, nm:'Mastery',
   state:'Sovereign',
   soma:'Everything in you is clear and standing straight. Nothing from the past is left to work through.',
-  def:'The field builds far more than it costs. Almost nothing is held.',
+  def:'Your energy builds far more than it costs. Almost nothing is held.',
   energy:'Intention and action arrive together. There is no gap left to manage.',
   toward:'Hold it. The work here is maintenance, and what you can now carry for other people.'},
  {at:81, nm:'Embodied',
   state:'Coherent',
   soma:'What happens around you and what happens in you move together, with nothing rubbing. Always moving.',
-  def:'The field builds more than it costs, with real load still in it.',
+  def:'Your energy builds more than it costs, with real load still in it.',
   energy:'You recover fast. A charge lands and clears instead of staying.',
   toward:'Mastery. Close the laws still shut, and clear what is still holding a week later.'},
  {at:71, nm:'Compounding',
@@ -998,13 +998,13 @@ const TIERDEF=[
  {at:61, nm:'Gaining',
   state:'Tuned',
   soma:'Finding the places you get stuck and fixing them. Practical, and set on getting it done.',
-  def:'The field builds more than it spends, and the margin is thin.',
+  def:'Your energy builds more than it spends, and the margin is thin.',
   energy:'Forward on most days, and one hard week takes it back.',
   toward:'Compounding. Same seat, same address, repeated, until the load there stops returning.'},
  {at:51, nm:'Even',
   state:'Receptive',
   soma:'Exhausted by the old way and aware that it is broken.',
-  def:'The field breaks even and sits just above the line.',
+  def:'Your energy breaks even and sits just above the line.',
   energy:'What you build holds about as often as it slips.',
   toward:'Gaining. One address cleared entirely beats four reduced.'},
  {at:41, nm:'Oscillating',
@@ -1014,14 +1014,14 @@ const TIERDEF=[
      and the meaning table keeps a tier's first sentence, so the one place
      Oscillating was defined said what fifty is and never what Oscillating
      is. Same two facts, the meaning first. */
-  def:'The field crosses fifty, the median or middle of the line, both ways: above it some days '
+  def:'Your energy crosses fifty, the median or middle of the line, both ways: above it some days '
      +'and below it on others.',
   energy:'The day decides. What is running that morning sets the range.',
   toward:'Even. Consistency rather than intensity. The swing narrows before the number rises.'},
  {at:31, nm:'Incoherent',
   state:'Frustrated',
   soma:'Caught between the weight in your body and the odd moment of seeing clearly.',
-  def:'The field costs more than it builds. Charge is held at more addresses than are clearing.',
+  def:'Your energy costs more than it builds. Charge is held at more addresses than are clearing.',
   energy:'Effort goes in and less comes out. You are working, and the work is going into holding.',
   toward:'Oscillating, which starts at 41. Take the heaviest seat first. One address cleared where the load actually sits moves this further than ten cleared anywhere else.'},
  {at:21, nm:'Corrupt',
@@ -1033,7 +1033,7 @@ const TIERDEF=[
  {at:11, nm:'Severe',
   state:'Numb',
   soma:'Numbing or distracting yourself to get through. The body is starting to shut down.',
-  def:'Most of the field is carrying. Very little is clear.',
+  def:'Most of your energy is carrying. Very little is clear.',
   energy:'Ordinary demands read as threats. Capacity is spent before the day starts.',
   /* "OFF THE FLOOR" COMES OUT. Ruled. Every other tier's direction names the
      next band and what to do to reach it. This one named where the person was
@@ -1042,12 +1042,32 @@ const TIERDEF=[
      a person is least able to hear it that way. The instruction underneath was
      already right and is kept word for word. */
   toward:'Corrupt, and it is reached one address at a time. One seat, one address, one line. Not a programme.'},
- {at:0, nm:'Collapsed',
+ /* CONTRACTED, NOT COLLAPSED, 16 October. His words: "I don't [like] the band
+    name, like collapsed ... the energy wants to expand, not collapse." The
+    product already says expanding and contracting for the direction a reading
+    moves (r.benign, ui/summary.js), so the floor takes the word for that
+    direction, and the word says it can open again where collapsed said it
+    had fallen. The state, Fragmented, and what the band says are unchanged.
+    A history row an older build wrote under the old word is renamed at the
+    boundary (validateProfile, engine/schema.js), so no record prints it
+    again. The Reboot-OS application carries its own copy of this table and is
+    not this repository's to change. */
+ {at:0, nm:'Contracted',
   state:'Fragmented',
   soma:'Taken over by what happened before and was never worked through. The body drags with its full weight.',
-  def:'The field is fully loaded. Nothing is clearing.',
+  def:'Your energy is fully loaded. Nothing is clearing.',
   energy:'Flat. Not calm, out of charge.',
-  toward:'Weight off, and not alone. A reading this low is not a thing to manage by yourself, and the instrument will not pretend otherwise.'}];
+  /* WEIGHT COMES OFF WITH ANOTHER PERSON, 16 October, from the review of the
+     crisis screens. The line before it, "Weight off, and not alone. A reading
+     this low is not a thing to manage by yourself, and the instrument will
+     not pretend otherwise.", said a person should not be alone with this and
+     then offered nobody: no number, no button, only the sentence. It was a
+     seat's draft (b6f58ba1, 18 September, whose message marks the copy as a
+     draft and the wording as the owner's call), not his words, and neither
+     DECISIONS.md nor BIBLE.md carries it, so Emmy's line replaces it. The
+     way to reach that person is the crisis button the renderers put directly
+     under this sentence for this band (crisisFloor, ui/crisis.js). */
+  toward:'Weight comes off with another person.'}];
 /* one lookup, so the band table stops being copied into renderers */
 const TIER_BY={}; TIERDEF.forEach(function(t){TIER_BY[t.nm]=t;});
 /* the median, and the width of the swing around it. named once, because three
@@ -1657,7 +1677,7 @@ function darkRead(mal01, CQ){
   /* which step of the descent, and only while both conditions hold */
   step:!dark?null:(CQ<11?DESCENT[2]:(CQ<21?DESCENT[1]:DESCENT[0])),
   refer:dark&&CQ<11,
-  say:!dark?'':'The shape is malignant and the field is decoherent at the same time. '
+  say:!dark?'':'The shape is malignant and your energy is decoherent at the same time. '
    +'That pair is what the descent describes. It is a reading of what is running, not of who is running it.'};}
 /* Which circle a descent has reached. Depth follows coherence, so
    the ladder is read off the same number everything else is. */
@@ -2757,7 +2777,7 @@ const PEOPLE=[
     Four reference cases added on the owner's ruling, because the roster sat in
     the middle and the vocabulary at the ends had never been looked at with a
     real field behind it. Two at the floor and two near the ceiling, and the
-    pairs are the point: 2 and 10 are both Collapsed, 92 and 98 are both Mastery.
+    pairs are the point: 2 and 10 are both Contracted, 92 and 98 are both Mastery.
     If one word has to carry both ends of each pair, the word is doing no work.
 
     The charge vectors were solved against compute() rather than invented, and
@@ -2770,7 +2790,7 @@ const PEOPLE=[
     were never re-solved, so they read 25.9, 45.6, 91.3 and 89.2: the floor pair
     sat in two different bands, one of them the median, and the ceiling pair in
     two. Measured again on 2 October (J12). Tomas is solved again to 3.8 and
-    reads Collapsed. Nkem was solved to 14.5, Severe, and was cut with the
+    reads Contracted. Nkem was solved to 14.5, Severe, and was cut with the
     ladder in round QD.
     Wren (91.1, Mastery) and Abraham (89.1, Embodied) are left where they are.
     Abraham carries a held shame of 5.4 and six installed poles near 5, which
@@ -2861,7 +2881,7 @@ const LAWSET={
     then 30.8 on screen, Incoherent, beside a field carrying 77 addresses.
     Nkem, solved to 10, read the median. The shape of each table is kept (what
     the person still does is the highest thing in it) and the level is the new
-    solve. Tomas 3.8, Collapsed. */
+    solve. Tomas 3.8, Contracted. */
  Tomas:  {_:.124, Courage:.5, Truth:.7, Patience:.6, Duty:2, 'Non-Harm':2.2},
  Wren:   {_:9.221, Patience:9.4, Temperance:9.2, 'Aesthetic Beauty':9.6, Forgiveness:6.8},
  Abraham:{_:8.702, Equanimity:9.7, Justice:9.8, Humility:9.5, Presence:9.6, Temperance:9.4},
@@ -4414,6 +4434,104 @@ const JOURNEY_WALK=['arrive','ask','settle','feel','body','story','mirror','next
    to, the tutorial from what the story read. */
 const JOURNEY_DOORS=['onboarding','tutorial'];
 /* ============================================================
+   THE CRISIS BUTTON'S WORDS AND NUMBERS, 16 October. His words: "Maybe [the
+   crisis check] belongs in the pop-up, the welcome. Maybe it's an option. Is
+   this a crisis? Hit that button. Tell me about it. Do you need immediate
+   emergency contact, or would you like to talk it through? It's always a
+   story."
+
+   A BUTTON THE PERSON PRESSES, AND NOT A DETECTOR. On 9 October he deferred
+   the automatic check, a phrase list reading what a person writes (parked on
+   claude/b2a-crisis and claude/b2a-crisis2, not merged), and J0 in
+   ui/onboard.js stays open for exactly that. Nothing here reads a word
+   anybody types. It is three numbers and the sentences around them, shown
+   when somebody says, by pressing, that this is a crisis.
+
+   HERE AND NOT IN A RENDERER, because two surfaces print it: the app's panel
+   (ui/crisis.js) and the funnel's quiz page, which carries engine.js and no
+   ui module. One table, so a number corrected once is corrected on both, the
+   rule funnel/quiz.html states for the engine it references rather than
+   copies.
+
+   EACH NUMBER CARRIES ITS NAME, round PO's unpack rule: a bare 741741 is a
+   symbol. Each row opens on the number and the service it reaches (nm), then
+   says how to use it and who is there, in short sentences, from the review of
+   these screens on 16 October: one long sentence per number buried the name
+   of the service in its middle. 911 is named by what it sends, police, fire
+   or an ambulance, the same shape as the other two, because "911. If you are
+   in danger now." would have left the one number with no meaning beside it.
+   tests/copy.js holds each line so none can be cut without the gate failing.
+
+   WHERE THEY ANSWER. 988 answers in the United States and in Canada; 741741
+   and 911 are the United States (911 is Canada's too). The panel no longer
+   says "These are US numbers", which told a Canadian their 988 did not
+   work; it says where 988 also works and what to use anywhere else.
+
+   go is the row's links, [what the button says, the address]. tel: and sms:
+   open the phone's own dialler or messages on a phone; on a desktop the
+   number is still in the sentence as plain text, so nothing depends on the
+   link working. sms: carries the keyword as ?&body=, 16 October: Android
+   reads ?body=, older iOS reads &body= and took ?body=HOME as part of the
+   number or dropped it, and ?&body= is the one form both read. A phone that
+   ignores it still opens the right number, and the sentence says what to
+   type.
+
+   THE KEYWORD IS IN SENTENCE CASE. The brief asked for "text HOME", and the
+   service prints it in capitals, but all caps is ruled out of copy and the
+   voice gate fails it. The line takes any case, so the sentence says "the
+   word home", which a person can type as read, and the link still sends HOME
+   for them. The button is "Text 741741", the same shape as "Text 988"
+   beside it.
+   ============================================================ */
+/* ONE FILLED BUTTON, 16 October, from the review of these screens. Every link
+   in the numbers view was the same outlined pill, so a person who had just
+   asked to reach somebody met six equal choices and no first one. Call 988 is
+   the first: it answers a call or a text at any hour for anything short of
+   danger now, which 911 is for. The third place in a go entry marks it, and
+   it is data and not a renderer's choice so the app and the quiz fill the
+   same button. Exactly one entry in the table carries it. */
+const CRISIS_LINES=[
+ {k:'988', nm:'Suicide and Crisis Lifeline', go:[['Call 988','tel:988',true],['Text 988','sms:988']],
+  say:'988, Suicide and Crisis Lifeline. Call or text, any hour. A trained person answers.'},
+ {k:'741741', nm:'Crisis Text Line', go:[['Text 741741','sms:741741?&body=HOME']],
+  say:'741741, Crisis Text Line. Text the word home. A trained person writes back.'},
+ {k:'911', nm:'police, fire or an ambulance', go:[['Call 911','tel:911']],
+  say:'911, police, fire or an ambulance. If you are in danger now.'}];
+/* THE PANEL'S WORDS, once, so the app and the quiz say the same thing. open is
+   the button; h and q are his two lines as the build was asked for them; the
+   two choices are verbs for what each does; journal is the line under the
+   question that says where Talk it through goes and who sees it; where is the
+   line under the numbers; story is the first line the Story box shows after
+   Talk it through, his "It's always a story" said as a fact and then the one
+   thing to do, which since 16 October names the present too: a person in a
+   crisis is often writing about what is happening, not what happened.
+
+   NO PERSON READS IT, and it is a claim about this build that has to stay
+   true. Checked 16 October: the journal is kept in this browser, profile sync
+   is off (PROFILE_SYNC_ENABLED, ui/auth.js, "not part of alpha"), and no call
+   the app makes carries an entry: the voice is given the release's own
+   lines, never the box. DECISIONS.md's privacy ruling expects the story to
+   leave the device one day ("The thing that leaves the device is the story
+   itself"), and a practitioner can be granted sight; the day either ships,
+   this line is wrong. tests/onboarding2.js fails while the line is printed
+   and sync is on, so that day cannot pass quietly. */
+const CRISIS_SAY={
+ open:'Is this a crisis?',
+ h:'Tell me about it.',
+ q:'Do you need to reach someone right now, or would you like to talk it through?',
+ reach:'Reach someone now',
+ talk:'Talk it through',
+ close:'Close',
+ journal:'Talk it through opens your journal. No person reads it.',
+ /* the quiz's own line under the question, 16 October. The app's journal
+    line is wrong there, so the quiz says where its Talk it through goes, its
+    story box, and the one thing that is proven about that page: it makes no
+    request at all (tests/funnel.js counts requests on the quiz, source and
+    built, and fails on one). It does not say who reads anything. */
+ quiz:'Talk it through opens the story box on this page. This page sends nothing anywhere.',
+ where:'988 also works in Canada. Elsewhere, call your local emergency number.',
+ story:'It is always a story. Write what is happening, or what happened.'};
+/* ============================================================
    THE PERCENT. One formula and one table for every score, weight and measure
    a person reads, so that "6.2" becomes "62%" by one rule everywhere and not
    by forty renderers each deciding their own scale.
@@ -4599,14 +4717,16 @@ var PCT_KIND={
  /* ui/map.js:206, the product of the seven passes, root to crown */
  flow:      {lo:0, hi:1, src:'ui/map.js', find:'function flSpeed(){var s=1;flSeats().slice().reverse().forEach(function(x){s*=x.pass;});return s;}',
              say:'flow, what gets from the root to the crown'},
- /* core.js:403, each archetype against the strongest, so the first reads 1 */
- affinity:  {lo:0, hi:1, src:'engine/core.js', find:'const mx=Math.max(...a)||1;return a.map(v=>v/mx);}',
-             say:'an archetype against the strongest'},
- /* ui/summary.js:438, an archetype's share of all twelve added up. This is a
-    second reading of the same affinity and prints a different figure for the
-    same archetype; which one the person reads is in the framework's open list. */
- share:     {lo:0, hi:1, src:'ui/summary.js', find:'var tot=aff.reduce(function(a,x){return a+x.v;},0)||1;',
-             say:'an archetype\'s share of all twelve'},
+ /* AN ARCHETYPE IS HOW FULLY IT IS EXPRESSED, ruled 16 October: 100% with
+    nothing held, dragged by the charge at its seat, lifted by release.
+    engine/archexpr.js, one minus the seat's mean weight over ten, and each sq
+    is clamped to 0 and 10 at engine/compute.js:295. This replaced two kinds.
+    affinity (engine/core.js:403, an archetype against the strongest) and share
+    (ui/summary.js:438, a share of all twelve) were both the soul map's lean,
+    printed three ways for one archetype, and neither moves with a story or a
+    release. affinity still orders first and second; nothing prints it. */
+ archetype: {lo:0, hi:1, src:'engine/archexpr.js', find:'return s?clamp(1-s.mean,0,1):null;}',
+             say:'how fully an archetype is expressed, dragged by the charge at its seat'},
  /* core.js:394, each domain against the strongest. The floor of .08 is drawn
     (the petal never vanishes), so lo stays 0 and the floor reads 8%. */
  domain:    {lo:0, hi:1, src:'engine/core.js', find:'DOMAIN=DOMAIN.map(v=>.08+.92*v/mx);',
@@ -5005,12 +5125,30 @@ var LEANMIX={benign:0,malignant:0,
  self:0,other:0,rawLack:0,texts:0};
 
 /* ---------- the six gates ---------- */
+/* A PHRASE OUTRANKS THE WORDS INSIDE IT, here as in the lean below and in the
+   sniffer, both ported from scanStory. This was a bare indexOf per cue, so
+   Intention's 'kept going' matched inside Attachment's 'kept going over':
+   "it had me all night and I kept going over it" read attach 3 and intent 1,
+   and the Intention hit was false, measured on f7188cba. The bare indexOf
+   also matched inside words, so "it did not seem like much" read Ignorance
+   off 'did not see' and "I stayed one more hour" read Intention off 'stayed
+   on'. So the lean's rule, unchanged: every cue of every gate scanned
+   longest first, bounded by spaces, and a match that starts inside a span
+   already taken is not counted. No negation here, which the lean carries and
+   these cues have never had: adding it is a change to what the gates read,
+   not to how a phrase is found. */
 function verpScan(text){
  var src=' '+String(text||'').toLowerCase().replace(/[^a-z' ]+/g,' ').replace(/\s+/g,' ')+' ';
- var hits={},tot=0;
+ var hits={},tot=0,rows=[],spans=[];
  Object.keys(VERPCUE).forEach(function(g){hits[g]=0;
-  VERPCUE[g].forEach(function(p){var at=src.indexOf(p);
-   while(at>=0){hits[g]++;tot++;at=src.indexOf(p,at+1);}});});
+  VERPCUE[g].forEach(function(p){rows.push({p:p,g:g});});});
+ rows.sort(function(a,b){return b.p.length-a.p.length;});
+ rows.forEach(function(row){
+  var t=' '+row.p+' ', at=src.indexOf(t);
+  while(at>=0){
+   if(!spans.some(function(h){return h.at<=at&&at<h.at+h.len+1;})){
+    spans.push({at:at,len:row.p.length}); hits[row.g]++; tot++;}
+   at=src.indexOf(t,at+1);}});
  return {hits:hits,total:tot};}
 function verpApply(text){var s=verpScan(text);if(!s.total)return s;
  Object.keys(s.hits).forEach(function(g){VERPMIX[g]+=s.hits[g];});return s;}
@@ -7651,7 +7789,10 @@ function accuracy(r,prof){
    fifths: they are the measurement, and a story is evidence for it. The story
    side is whole at ten entries, the ladder's own Ten stories rung
    (engine/ladder.js, "the field is being read from your own words"), so
-   CS_STORY_N names the same ten and a story past it adds nothing here.
+   CS_STORY_N names the same ten and a story past it adds nothing here. The
+   rung counts ten days with an entry since 16 October (L11) and this still
+   counts entries: coverage asks how much evidence there is, and ten entries
+   in one sitting are ten pieces of it, where the mark asks what was kept up.
    Neither side reads a value, so the same counts give the same figure whether
    every answer is 1 or 10, and one more answer or one more story can never
    lower it.
@@ -10921,9 +11062,17 @@ function validateProfile(o){
   var q={t:typeof x.t==='string'?x.t:new Date().toISOString(),
    dark:typeof x.dark==='string'?x.dark:'Heart',
    /* null is a row written while CQ was still filling, and it stays null:
-      defaulting it to Collapsed would put the lowest word on the scale on
-      somebody who had only not finished the intake. */
-   tier:(typeof x.tier==='string'||x.tier===null)?x.tier:'Collapsed',
+      defaulting it to the floor band would put the lowest word on the scale
+      on somebody who had only not finished the intake. */
+   /* THE FLOOR BAND WAS RENAMED, 16 October, Collapsed to Contracted (canon.js
+      TIERDEF). A row keeps the word and not a lookup, so a row an older build
+      wrote still said Collapsed: the record would print the word he ruled out,
+      and ui/record.js would report "the tier read collapsed and now reads
+      contracted", a move between two names for one band. Renamed here, where
+      every row is rebuilt, so the old word never reaches a renderer. It is
+      the same band under its new name, not a value clamped into range. */
+   tier:x.tier==='Collapsed'?'Contracted'
+    :(typeof x.tier==='string'||x.tier===null)?x.tier:'Contracted',
    arch:typeof x.arch==='string'?x.arch:''};
   [['m',0,CQ_MODEL],['cq',0,100],['dq',0,1e4],['sq',0,10],['pole',0,10],['jq',0,10],['rad',0,10],
    ['loaded',0,1e4],['sab',0,1e4],['cx',0,1e4],['hy',0,1e4],['ch',0,1e4]].forEach(function(f){
@@ -11418,7 +11567,24 @@ function meterRead(p,now){
  var age=ageAt(p&&p.who&&p.who.born?p.who.born.date:null,now);
  var est=age===null?null:Math.round(age*PAT_PER_YEAR*PAT_GEN);
  var mk=markersFor(est);
- return {lines:m.lines, unique:uniq, first:m.first, last:m.last,
+ /* OPENED IS ADDRESSES, AND THE RULER IS PATTERNS. unique is one entry per
+    line ever opened, address:channel:line, so one address across both limit
+    channels at thirty lines each is 60 of them. Three surfaces printed that
+    as "Opened 60 addresses", "Ground opened 60" and "440 new addresses
+    away", beside a Compass ledger reading "Opened 1 address" off the same
+    record, measured on f7188cba. ladder.js fixed this for the marks with
+    meterGroundCount and the fix never reached here. ground is that count,
+    and every "Opened" figure reads it.
+
+    The markers keep counting unique, and that is not the bug. Their ruler
+    is a lifetime load, fifteen thousand at the reference age, and the body
+    has 112 addresses of which a release reaches fewer, so a marker counted
+    in addresses could never be reached past Entry. The owner's thresholds
+    were counts of releases, which is lines: patterns, the word the gift
+    already uses for this same count ("patterns left of the 100 you were
+    given"). So the distance is said in patterns, which is what it measures. */
+ var ground=(typeof meterGroundCount==='function')?meterGroundCount(m):null;
+ return {lines:m.lines, unique:uniq, ground:ground, first:m.first, last:m.last,
   /* the gift is 100 of new ground, ruled. reruns never spend it. */
   giftLeft:Math.max(0,GIFT_N-uniq), inGift:uniq<GIFT_N,
   age:age===null?null:Math.round(age*10)/10,
@@ -17154,9 +17320,9 @@ function converge(name,r){
     field contracting made an unanswered intake read as disagreement. */
  var fieldOpen=(r.benign===null||r.benign===undefined);
  if(!fieldOpen){
-  if(initiating===!!r.benign) agree.push('birth mode '+e.sunMode+' matches a field that is '
+  if(initiating===!!r.benign) agree.push('birth mode '+e.sunMode+' matches your energy, which is '
     +(r.benign?'expanding':'contracting'));
-  else differ.push('birth mode '+e.sunMode+' against a field that is '+(r.benign?'expanding':'contracting'));}
+  else differ.push('birth mode '+e.sunMode+' against your energy, which is '+(r.benign?'expanding':'contracting'));}
  /* The fourth comparison used to read a Human Design type that was the
     birth hour modulo five. Now that the type is honestly unresolved
     there is nothing to compare, so it goes in a third bucket. A gap is
@@ -17167,12 +17333,12 @@ function converge(name,r){
  if(!e.rising)open.push('the ascendant, which needs '+(e.needsTime?'a birth time':'a birthplace'));
  /* the design gate is real and independent of the field, so it can be
     compared: a design line of 1 or 4 is an inward profile. */
- if(fieldOpen)open.push('the direction of the field, which needs all '+SI.length+' laws answered');
+ if(fieldOpen)open.push('the direction of your energy, which needs all '+SI.length+' laws answered');
  else if(e.hd.design){
   var inward=(e.hd.design.line===1||e.hd.design.line===4);
-  if(inward===!r.benign)agree.push('design line '+e.hd.design.line+' and a field that is '
-    +(r.benign?'expanding':'contracting')+' point the same way');
-  else differ.push('design line '+e.hd.design.line+' against a field that is '
+  if(inward===!r.benign)agree.push('design line '+e.hd.design.line+' and your energy, which is '
+    +(r.benign?'expanding':'contracting')+', point the same way');
+  else differ.push('design line '+e.hd.design.line+' against your energy, which is '
     +(r.benign?'expanding':'contracting'));}
  var n=agree.length+differ.length;
  return {e:e, agree:agree, differ:differ, open:open,
@@ -17779,11 +17945,24 @@ function pracDay(t){
    been done on yet. done===undefined means an older entry predating the
    field, read as done, same reading ritIsDone (ui/ritual.js) gives it; only
    done===false is excluded. */
-function pracDays(p){
+/* A DAY THAT HAS NOT HAPPENED IS NOT A DAY PRACTISED. Seven entries dated 30
+   to 36 days ahead read Streak 7, live, and earned First run, Seven days and
+   Sixty minutes, measured on f7188cba, from a device clock set ahead or an
+   imported record. markDays below already refused them and this did not, so
+   the shelf showed three marks it could not date. TDD v3 10.2 gives the rule:
+   a day no more than one day after now counts, the slack the Daily Summary
+   allows a person who flew west and back. Ignored and never refused, because
+   refusing at the boundary would set the whole record aside over one clock
+   error. Every count of days and minutes in this file asks this one test. */
+function pracSoon(d,today){return d!==null&&(today===null||d<=today+1);}
+function pracDays(p,now){return pracDaysAt(p,pracDay(now||Date.now()));}
+/* the same list against a day key rather than a moment, for a mark test that
+   is handed the streak and not the moment */
+function pracDaysAt(p,today){
  var seen={}, out=[];
  ((p&&p.rituals)||[]).forEach(function(x){
   if(x&&x.done===false)return;
-  var k=pracDay(x&&x.t); if(k===null||seen[k])return; seen[k]=1; out.push(k);});
+  var k=pracDay(x&&x.t); if(!pracSoon(k,today)||seen[k])return; seen[k]=1; out.push(k);});
  return out.sort(function(a,b){return b-a;});}
 
 /* THE STREAK, AND WHY TODAY IS NOT REQUIRED.
@@ -17794,9 +17973,15 @@ function pracDays(p){
    today and yesterday's streak continues. Miss a whole day and it is over, and
    the length of what was lost is still reported, because the thing a person
    built is not deleted by having stopped. */
+/* WHAT THE STREAK IS, said once and read by every surface that prints one,
+   so the Compass and the Accountability column cannot explain it two ways.
+   It said "a ritual on the record", and since 21.J2 only a ritual marked
+   done is a day. */
+var STREAK_MEANS='Streak is your current run of days with a ritual marked done. '
+ +'One skipped day is forgiven and a longer gap halves it.';
 function streakRead(p,now){
- var days=pracDays(p), today=pracDay(now||Date.now());
- if(!days.length||today===null)return {run:0, live:false, last:null, best:0, days:0};
+ var days=pracDays(p,now), today=pracDay(now||Date.now());
+ if(!days.length||today===null)return {run:0, live:false, last:null, best:0, days:0, today:today};
  /* THE RUN HALVES, IT DOES NOT RESET. Ruled, Bible 1133:
     Math.max(1, Math.ceil(s/2)) with one grace day.
 
@@ -17823,7 +18008,24 @@ function streakRead(p,now){
  var best=1,cur=1; for(var j=1;j<days.length;j++){
   if(days[j]===days[j-1]-1){cur++; if(cur>best)best=cur;} else cur=1;}
  var gap=today-days[0];
- return {run:run, live:gap<=1, last:days[0], best:best, days:days.length, gap:gap};}
+ /* THE HALVING LANDS ON THE GAP, NOT ON THE RETURN. Ten days in a row ending
+    twenty days ago read Streak 10 on the Ritual page and 10 days on the
+    Compass, and the day the person came back and practised it read 5, so the
+    one act the streak exists to reward was the act that lowered it. Measured
+    on f7188cba. The rule above is unchanged: a gap of three or more halves
+    what was standing, once. It is applied the moment the gap is three days
+    long, so the figure on screen is the figure that stands, and practising
+    today keeps it and tomorrow adds one. Practising never lowers the number
+    a person sees.
+
+    It is still a figure that falls after an absence, and TDD v3 10.6 names
+    that tension rather than hiding it: the halving was ruled (Bible 1133) and
+    costed, it pays nothing, no mark reads it, and days practised sits beside
+    it and never falls. The drop is the rule working and is not shown as a
+    mistake or explained as an absence (DESIGN-ladder anti design 5): the
+    surfaces say what the streak is, and the date of the last day practised. */
+ if(gap>2)run=Math.max(1,Math.ceil(run/2));
+ return {run:run, live:gap<=1, last:days[0], best:best, days:days.length, gap:gap, today:today};}
 
 /* GROUND COUNTED LINES, AND CALLED THEM ADDRESSES. p.meter.unique holds one
    entry per line ever opened, address:channel:line (HEAVY_KEY, schema.js), so
@@ -17850,7 +18052,7 @@ function meterGroundCount(m){
    tier ladder charges for. clear is how many addresses are held at the far
    pole right now, and it is the only one of the four that can go down, which
    is correct: it is a state and not a tally. */
-function ledgerRead(p){
+function ledgerRead(p,now){
  /* MINUTES PRACTISED WAS MINUTES PLANNED, and it was the one label in the
     product claiming what the data did not carry. Select the twenty minute scan,
     press save, close the tab, and the ledger read twenty minutes practised.
@@ -17861,11 +18063,14 @@ function ledgerRead(p){
     rather than discarded, because a person's history is not ours to delete over
     a schema change. Only entries written from here on can be planned and not
     yet done. */
- var mins=0, plan=0, doneN=0;
+ /* and an entry dated past tomorrow is not practised (pracSoon, above): it
+    earned First run and Sixty minutes off a day that had not come. It still
+    counts as planned, which is all a day ahead can be. */
+ var mins=0, plan=0, doneN=0, today=pracDay(now||Date.now());
  ((p&&p.rituals)||[]).forEach(function(x){
   var m=(x&&+x.min)||0; plan+=m;
   var done=(x&&x.done!==undefined)?!!x.done:true;
-  if(done){mins+=m; doneN++;}});
+  if(done&&pracSoon(pracDay(x&&x.t),today)){mins+=m; doneN++;}});
  var m=(p&&p.meter)||{};
  var clear=0, carry=0;
  ((p&&p.axes)&&CHILD.forEach(function(c){
@@ -17946,91 +18151,149 @@ function intentionRead(p,now){
    Nothing new is stored. A mark's date is derived by markDays below, off the
    same record, the way the TDD's own drawer dates one (9.1). */
 var BACK_GAP=14;
-function pracTracks(p){
+function pracTracks(p,today){
  var by={}, seen={};
  ((typeof PRACTICE!=='undefined'&&PRACTICE)||[]).forEach(function(x){if(x&&x.track)by[x.k]=x.track;});
  ((p&&p.rituals)||[]).forEach(function(x){
   if(!x||x.done===false||!Array.isArray(x.steps))return;
+  if(today!==undefined&&!pracSoon(pracDay(x.t),today))return;
   x.steps.forEach(function(k){if(by[k])seen[by[k]]=1;});});
  var all={}; Object.keys(by).forEach(function(k){all[by[k]]=1;});
  return {done:Object.keys(seen).length, all:Object.keys(all).length};}
 function pracBack(days){
  for(var i=1;i<days.length;i++)if(days[i-1]-days[i]>=BACK_GAP)return true;
  return false;}
+/* the axes with a value on the record, for Nine axes */
+function axesValued(p){
+ var n=0, ax=(p&&p.axes)||{};
+ CHILD.forEach(function(c){
+  var a=ax[c.nm]||{}, said=(typeof ixGet==='function')?ixGet(p,'axes',c.nm):null;
+  if(said!==null||(+a.held||0)>AXIS_BLANK||(+a.opp||0)>0)n++;});
+ return n;}
+/* the distinct days a story was committed on, by pracDay, and none past
+   tomorrow (pracSoon), so a story and a ritual count a day the same way */
+function storyDays(p,today){
+ var seen={}, n=0;
+ ((p&&p.story&&p.story.entries)||[]).forEach(function(e){
+  var k=pracDay(e&&e.t); if(!pracSoon(k,today)||seen[k])return; seen[k]=1; n++;});
+ return n;}
 var MARKS=[
  /* practice */
  {k:'first', fam:'Practice', b:'Root', nm:'First run',
+  to:'Mark one ritual done.',
   d:'You marked one ritual done. The instrument is no longer a thing you are reading about.',
   ic:'M12 21V6 M7 11l5-5 5 5',
   t:function(l){return l.done>=1;}},
  {k:'week', fam:'Practice', b:'Root', nm:'Seven days',
+  to:'Practise on seven days. They do not need to be in a row.',
   d:'Seven days of practice on the record. This is where it stops being a decision each morning.',
   ic:'M4 6h16v14H4z M4 11h16 M8 3v4 M16 3v4',
   t:function(l,s){return s.days>=7;}},
  {k:'month', fam:'Practice', b:'Root', nm:'Thirty days',
+  to:'Practise on thirty days. They do not need to be in a row.',
   d:'Thirty days of practice on the record. The nervous system has had long enough to believe you.',
   ic:'M4 6h16v14H4z M4 11h16 M8 3v4 M16 3v4 M9 15l2 2 4-4',
   t:function(l,s){return s.days>=30;}},
  {k:'season', fam:'Practice', b:'Root', nm:'Ninety days',
+  to:'Practise on ninety days. They do not need to be in a row.',
   d:'Ninety days of practice on the record. Nothing about this is a beginner number.',
   ic:'M12 3a9 9 0 109 9 M12 3v9h9 M12 12l5 5',
   t:function(l,s){return s.days>=90;}},
  {k:'hour', fam:'Practice', b:'Root', nm:'Sixty minutes',
+  to:'Put sixty minutes of practice on the record, spread any way you like.',
   d:'An hour of practice on the record, however it was spread.',
   ic:'M12 3a9 9 0 100 18 9 9 0 100-18 M12 7v5l4 2',
   t:function(l){return l.minutes>=60;}},
  {k:'tracks', fam:'Practice', b:'Root', nm:'Every track run',
+  to:'Mark a ritual done in every track the practice library carries.',
   d:'A ritual marked done in every track the practice library carries.',
   ic:'M12 3v18 M3 12h18 M6 6l12 12',
-  t:function(l,s,p){var t=pracTracks(p); return t.all>0&&t.done>=t.all;}},
+  t:function(l,s,p){var t=pracTracks(p,s.today); return t.all>0&&t.done>=t.all;}},
  {k:'back', fam:'Practice', b:'Root', nm:'Came back',
+  /* NO to LINE, SO IT IS NEVER THE NEXT MARK. What it takes is two weeks
+     away, and a goal that asks for an absence names one, which DESIGN-ladder
+     anti design 5 rules out. It is earned on the way back and named then. */
+  to:null,
   d:'Two weeks or more away, then a day of practice. Coming back is the practice too.',
   ic:'M9 5L4 10l5 5 M4 10h10a5 5 0 010 10h-4',
-  t:function(l,s,p){return pracBack(pracDays(p));}},
+  t:function(l,s,p){return pracBack(pracDaysAt(p,s.today));}},
  /* ground */
  {k:'ten', fam:'Ground', b:'Throat', nm:'Ten addresses',
+  to:'Open ten different addresses with a release. An address is one exact place in your body.',
   d:'Ten distinct addresses opened. Not ten runs. Ten places.',
   ic:'M4 4h7v7H4z M13 4h7v7h-7z M4 13h7v7H4z M13 13h7v7h-7z',
   t:function(l){return l.ground>=10;}},
  {k:'fifty', fam:'Ground', b:'Throat', nm:'Fifty addresses',
+  to:'Open fifty different addresses with a release.',
   d:'Fifty. Close to half your addresses have been opened at least once.',
   ic:'M3 12h18 M3 7h18 M3 17h18 M7 3v18 M17 3v18',
   t:function(l){return l.ground>=50;}},
  {k:'told', fam:'Ground', b:'Throat', nm:'First story',
+  to:'Write one story of something that happened, in your own words.',
   d:'You told it something true and let it read the charge out of that.',
   ic:'M4 5h16v11H8l-4 4z',
   t:function(l,s,p){return !!(p&&p.story&&(p.story.entries||[]).length);}},
  {k:'kept', fam:'Ground', b:'Throat', nm:'Ten stories',
-  d:'Ten told. The field is being read from your own words and not from a form.',
+  to:'Write a story on ten different days.',
+  d:'Stories on ten different days. The field is being read from your own words and not from a form.',
   ic:'M4 5h16v11H8l-4 4z M8 9h8 M8 12h5',
-  t:function(l,s,p){return ((p&&p.story&&p.story.entries)||[]).length>=10;}},
+  /* TEN ENTRIES WAS TEN MINUTES OF TYPING. Ten entries committed in one
+     minute earned "Ten told", measured on f7188cba, which is volume in one
+     sitting and not ten stories told over a life. Ten distinct days with an
+     entry, TDD v3 9.3 and LD4, the day counted by the rule the streak uses. */
+  t:function(l,s,p){return storyDays(p,s.today)>=10;}},
  /* structure */
  {k:'nine', fam:'Structure', b:'Heart', nm:'Nine axes',
-  d:'Every one of the nine has a value you entered. Nothing is a default.',
+  to:'Answer the question for each of the nine axes in the intake. An axis is a feeling and its opposite.',
+  d:'Each of the nine axes, a feeling and its opposite, has a value on your record. None is left empty.',
   ic:'M5 5h14v14H5z M5 10h14 M5 15h14 M10 5v14 M15 5v14',
-  t:function(l){return l.clear+l.carry>=9;}},
+  /* THE TEST COUNTED AXES AT FOUR OR MORE, ON EITHER SIDE. clear+carry>=9 let
+     one axis count twice and never saw a value under four, so nine axes
+     entered at 2 did not earn it and five at 5 on both sides with four at 2
+     did, measured on f7188cba, under words that said every one of the nine
+     had a value. It reads what the words say now (TDD v3 9.3, LD4): an axis
+     has a value when the person answered its intake question, which records
+     an answer of 0 as an answer, or when it carries charge or an opposite
+     off the blank (AXIS_BLANK), from a story, a seed or a release. The words
+     say "on your record" and not "you entered", because a story puts charge
+     on an axis the person never set by hand. */
+  t:function(l,s,p){return axesValued(p)>=CHILD.length;}},
  {k:'laws', fam:'Structure', b:'Heart', nm:'Laws measured',
+  to:'Answer every question in the intake.',
   d:'The intake is complete, so integrity is measured rather than assumed.',
   ic:'M12 4v4 M4 8h16 M4 8l-2 5h4z M20 8l-2 5h4z',
   t:function(l,s,p){return !!(p&&p.intake&&p.intake.completedAt);}},
  {k:'stated', fam:'Structure', b:'Heart', nm:'Blueprint stated',
+  to:'Name your four letter type.',
   d:'You named your type, and the field carries that until you move it.',
   ic:'M4 20V8l8-5 8 5v12 M9 20v-7h6v7',
   t:function(l,s,p){return !!(p&&p.seed);}},
  {k:'aimed', fam:'Structure', b:'Heart', nm:'Purpose set',
+  to:'Place your six values on the Avatar page.',
   d:'Six values placed. The compass has something to point at.',
   ic:'M12 3a9 9 0 100 18 9 9 0 100-18 M12 8l3 8-3-2-3 2z',
   t:function(l,s,p){return !!(p&&p.purpose&&purposeReady&&purposeReady(p.purpose));}},
  {k:'turned', fam:'Structure', b:'Heart', nm:'First clearing',
-  d:'An address that was carrying is held at the far pole instead.',
+  /* THESE TWO COUNT AXES AND SAID ADDRESSES. ledgerRead's clear is a count
+     over CHILD, the nine axes, and an address is one of the 112 places on
+     the body map, so "An address that was carrying" and "Five addresses
+     holding the opposite" named a unit neither test reads. The Compass
+     ledger row over the same count was corrected to axes for this reason and
+     these were not (fact map L10). One word per concept: the count is axes,
+     and installed is the ledger's own word for an opposite at four or more.
+     The keys do not change, because a key is identity. */
+  to:'Install the opposite on one of the nine axes. Each release builds it up.',
+  d:'One of the nine axes has its opposite installed. An axis is a feeling and its opposite.',
   ic:'M4 12a8 8 0 1116 0 8 8 0 01-16 0 M8 12l3 3 5-6',
   t:function(l){return l.clear>=1;}},
  {k:'seat', fam:'Structure', b:'Heart', nm:'Five clear',
-  d:'Five addresses holding the opposite. That is structure, not a good day.',
+  to:'Install the opposite on five axes.',
+  d:'Five axes have their opposite installed. That is structure, not a good day.',
   ic:'M4 12a8 8 0 1116 0 8 8 0 01-16 0 M12 4v16 M4 12h16',
   t:function(l){return l.clear>=5;}},
  /* the record itself */
  {k:'watched', fam:'Structure', b:'Heart', nm:'Ten snapshots',
+  to:'Keep ten readings on file. Each story and each release saves one.',
   d:'Ten readings on file, so the movement is yours to see and not to recall.',
   ic:'M3 17l5-6 4 4 3-4 6 6 M3 5h18v14H3z',
   t:function(l){return l.snaps>=10;}}];
@@ -18041,14 +18304,21 @@ var MARKS=[
    already furthest into, because the useful next thing is the one adjacent to
    what they are doing. Everything past it is deliberately not returned, so no
    caller can render a checklist of a person's unfinished self. */
+/* THE NEXT MARK WAS PRINTED IN THE PAST TENSE. Both surfaces that name it,
+   the Compass and the Ritual page's Ongoing goal, printed its d line, which is
+   written for a mark already held: a blank record read "First run. You marked
+   one ritual done." and one done ritual read "Seven days. Seven days of
+   practice on the record." Measured on f7188cba. A mark carries two lines
+   now: d, what it means once held, and to, what it takes, and the next mark
+   is printed with to. A mark with no to is never offered as the next one. */
 function ladderRead(p,now){
- var l=ledgerRead(p), s=streakRead(p,now), got=[], left=[];
+ var l=ledgerRead(p,now), s=streakRead(p,now), got=[], left=[];
  MARKS.forEach(function(m){
   var ok=false; try{ok=!!m.t(l,s,p);}catch(e){ok=false;}
   (ok?got:left).push(m);});
  var by={}; got.forEach(function(m){by[m.fam]=(by[m.fam]||0)+1;});
  var lead=null, best=-1;
- left.forEach(function(m){var n=by[m.fam]||0; if(n>best){best=n; lead=m;}});
+ left.forEach(function(m){if(!m.to)return; var n=by[m.fam]||0; if(n>best){best=n; lead=m;}});
  return {earned:got, next:lead, ledger:l, streak:s};}
 
 /* WHEN A PRACTICE MARK BECAME TRUE, round QS. The TDD dates every mark with
@@ -19732,7 +20002,7 @@ if(typeof module!=='undefined'&&module.exports){
                   NERVEBR:NERVEBR, BODYPATH:BODYPATH, TAB:TAB,
   /* the ladder */MARKS:MARKS, ladderRead:ladderRead, markDays:markDays, BACK_GAP:BACK_GAP, ledgerRead:ledgerRead,
                   intentionRead:intentionRead, INTENT_DAYS:INTENT_DAYS,
-                  streakRead:streakRead, pracDays:pracDays, pracDay:pracDay,
+                  streakRead:streakRead, pracDays:pracDays, pracDay:pracDay, STREAK_MEANS:STREAK_MEANS,
   /* indexes */   W:W, BY:BY, ALL_SAB:ALL_SAB, S:S,
   /* soul */      buildSoul:buildSoul, affinity:affinity, bandIg:bandIg,
   /* engine */    compute:compute, suscAll:suscAll, balance:balance, OUTWARD:OUTWARD, INWARD:INWARD,
@@ -20006,6 +20276,8 @@ if(typeof module!=='undefined'&&module.exports){
                   ONB_MINI_ADDRS:ONB_MINI_ADDRS, ONB_MINI_DOSE:ONB_MINI_DOSE, ONB_CHANS:ONB_CHANS,
                   OB_STARTS:OB_STARTS, OB_FEELS:OB_FEELS, OB_PLACES:OB_PLACES,
                   journeyRead:journeyRead, onbMiniPlan:onbMiniPlan,
+  /* the crisis button's numbers and words, engine/data/crisis.js. Reads only. */
+                  CRISIS_LINES:CRISIS_LINES, CRISIS_SAY:CRISIS_SAY,
   /* the journey record itself, F13: its tables, its boundary, its writers,
      what the first release made, and the claim packet with its boundary */
                   JOURNEY_V:JOURNEY_V, JOURNEY_EVENTS:JOURNEY_EVENTS, JOURNEY_LOG_MAX:JOURNEY_LOG_MAX,
@@ -20423,3 +20695,58 @@ function ritexHas(rec){return !!rec&&((rec.rituals||[]).length>0);}
 if(typeof module!=='undefined'&&module.exports){
  Object.assign(module.exports,{RITEX_HIST:RITEX_HIST, ritexBuild:ritexBuild, ritexHas:ritexHas,
   ritexCovers:ritexCovers, ritexWd:ritexWd});}
+/* ============================================================
+   HOW FULLY AN ARCHETYPE IS EXPRESSED. Ruled 16 October, his words: "the
+   archetypes themselves should be 100%. The limiting beliefs are going to drag
+   it down. So the archetype is just the archetype. The percent should show
+   where they are based off their story. So you may start off at 100%. And over
+   time, watch it diminish. And as you go through your recipes, watch it rise."
+
+   So the figure an archetype carries is not how strongly the blueprint leans
+   toward it. That is affinity() in engine/core.js, which is read off the soul
+   map, never moves with a story or a release, and keeps its one job: naming
+   the first and second archetype. Printed as a percent it told a person their
+   Innocent was 10% of them because the domains they picked sat elsewhere, and
+   no release they ran could ever change it.
+
+   WHERE AN ARCHETYPE ACTS IS ITS SEAT, ARCH[i].b in engine/data/canon.js,
+   because that is the ruling ("the warrior's root, the sage is crown, the
+   mage is third eye") and the Field rings already draw each archetype inside
+   its seat (ui/rings.js). The chain through the domains was looked for and is
+   not there: the canvas wheel lays the twelve out in list order over
+   addresses laid out by seat, so the addresses under an archetype's sector
+   disagree with its ruled seat for ten of the twelve (Sage, seated at the
+   crown, sits over root and sacral addresses), and the domains are the soul
+   map again. Nothing in the data ties an archetype to a mask.
+
+   THE FORMULA IS THE SEAT'S OWN. seatField() in engine/charfield.js already
+   gives each seat's mean weight over ten, sq after the opposite, so a release
+   that empties an address or installs its opposite lifts it, and a story that
+   lands charge there drags it. The expression is what is left:
+
+     archExpr(i) = 1 - mean(sq at the archetype's seat) / 10
+
+   One with nothing held. Each sq is clamped to 0 and 10 (engine/compute.js),
+   so the mean stays inside them and the figure inside 0 and 1. It reads sq as
+   the last compute() left it, like everything in charfield.js: a caller that
+   has not computed reads a blank field, which is 1, the honest answer for a
+   person whose story has not landed anywhere.
+
+   TWO ARCHETYPES ON ONE SEAT READ ONE FIGURE. Five seats carry two each. That
+   is the seat ruling's consequence, recorded in DECISIONS.md, and splitting
+   them needs a ruling on what separates them rather than a weight invented
+   here.
+
+   THE ENGINE MAY NOT TOUCH THE HOST and this file does not. It sits after
+   engine/export.js and adds its names to what export.js left, as
+   engine/charfield.js does.
+   ============================================================ */
+function archExpr(i){
+ var a=ARCH[i]; if(!a)return null;
+ var s=seatField().filter(function(x){return x.seat===a.b;})[0];
+ return s?clamp(1-s.mean,0,1):null;}
+/* all twelve in ARCH order, so a renderer asks once per render */
+function archExprAll(){return ARCH.map(function(a,i){return archExpr(i);});}
+
+if(typeof module!=='undefined'&&module.exports){
+ Object.assign(module.exports,{archExpr:archExpr, archExprAll:archExprAll});}

@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v238 7f6a428d 2026-10-16 05:58"><head><meta charset="utf-8">
+<html lang="en" data-build="v2080 b08c64b6 2026-10-16 20:16"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -6726,6 +6726,68 @@ a.legal-a{color:var(--accent);text-underline-offset:3px;display:inline-block;
  padding:0;display:flex;flex-direction:column-reverse;align-items:flex-end;opacity:.7}
 .login-dev[open]{opacity:1}
 #login{background:#06060a}
+/* IS THIS A CRISIS, 16 October, ui/crisis.js. Its own layer over the login
+   door and the first run's stage (both at 95) and under the boot sheet, so it
+   opens on top of the card it was pressed on. One card, centred on every
+   width: a person in a crisis is not asked to find a sheet that slid in from
+   an edge. Every control is at the 44 pixel floor, and a number is a link
+   that looks like the buttons beside it, because it is the thing to press. */
+.crx{position:fixed;inset:0;z-index:97;display:flex;align-items:center;justify-content:center;
+ padding:16px;background:rgba(6,6,8,.8)}
+.crx[hidden]{display:none}
+.crx-card{width:min(480px,100%);max-height:calc(100vh - 32px);overflow:auto;background:var(--panel);
+ border:1px solid var(--edge);border-radius:14px;padding:24px 24px 20px;box-shadow:0 18px 60px rgba(0,0,0,.5)}
+.crx-h{margin:0 0 12px;font-size:22px;line-height:1.25;font-weight:600;color:var(--ink);outline:none}
+.crx-p{margin:0 0 12px;font-size:15px;line-height:1.55;color:var(--mid)}
+.crx-dim{font-size:13.5px;color:var(--dim)}
+.crx-ls{list-style:none;margin:0 0 6px;padding:0}
+.crx-ls li{padding:12px 0;border-top:1px solid var(--edge)}
+.crx-ls li:first-child{border-top:0;padding-top:2px}
+.crx-ls .crx-p{color:var(--ink);margin-bottom:8px}
+.crx-go{display:flex;gap:8px;flex-wrap:wrap}
+.crx-tel{display:inline-flex;align-items:center;text-decoration:none}
+.crx-acts{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+/* the button, quiet: the same pill as the stage's Not now, so it reads as a
+   way out of the flow and never as the next step in it */
+/* THE OUTLINE IS 40 PER CENT INK, 16 October, from the review of these
+   screens. At 16 per cent it measured about 1.5 to 1 against the stage, so
+   the pill's edge all but vanished and the button read as loose words. Forty
+   per cent is about 3.4 to 1, past the 3 to 1 a control's boundary needs,
+   still without colour, so it stays quiet and stays findable. The hover goes
+   up with it, or it would be fainter than the rest state. */
+.crx-open{min-height:var(--tap);padding:0 16px;border-radius:999px;background:transparent;font:inherit;
+ font-size:13px;color:var(--mid);border:1px solid color-mix(in srgb,var(--ink) 40%,transparent);cursor:pointer;
+ transition:color var(--t-micro) var(--ease-out),border-color var(--t-micro) var(--ease-out)}
+.crx-open:hover{color:var(--ink);border-color:color-mix(in srgb,var(--ink) 60%,transparent)}
+.crx-line{margin:14px 0 0}
+/* UNDER THE FLOOR BAND'S DIRECTION it is the next step, so it takes the size,
+   the ink and the panel of the page's own .btn, the Run a release beside it.
+   The quiet pill above is right for a way out of a flow and wrong here, where
+   the sentence has just told a person to reach somebody. */
+.crx-open.crx-near{font-size:14px;padding:9px 17px;color:var(--ink);background:var(--panel-2)}
+/* on the stage it joins Not now on the right; the rail is out of the flow, so
+   the auto margin is what keeps the two of them off the rail in the middle */
+.obx-top .obx-crx{margin-left:auto;margin-right:10px}
+/* on a narrow screen the ring's top reaches the bar, so the pill carries the
+   stage's own dark behind its words and the ticks never run through them */
+.obx-crx{background:color-mix(in srgb,rgb(6,6,8) 82%,transparent)}
+/* the Story box's own line after Talk it through, above the box it is about */
+.st-crisis{margin:0 0 10px;color:var(--ink)}
+/* the line and Reach someone now on one row; on a phone the button wraps
+   under the line rather than squeezing it to a column of two words */
+.st-crxrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin:0 0 10px}
+.st-crxrow .st-crisis{flex:1 1 240px;margin:0}
+/* at the foot the bar gains a third button, so it may wrap on a phone and
+   Clear and Commit stay together at the right */
+.st-bar.st-bar-crx{flex-wrap:wrap}
+/* ONE DOOR ON A PHONE, 16 October, from the art director's re-check: at 390
+   the two Reach someone now buttons stood about 245 pixels apart, the same
+   words twice on one screen. The one by the line stays, because it is on the
+   first screen when Talk it through lands (tests/onboarding2.js holds that it
+   is inside the viewport at 390); the one in the Commit row goes. An earlier
+   cut wrapped it onto Clear's line and left Commit alone underneath, so the
+   pair a person finishes with is held side by side as well. */
+@media(max-width:640px){.st-bar.st-bar-crx .st-crxbar{display:none}}
 .login-dev summary{font-size:12.5px;color:var(--dim);cursor:pointer;
  list-style:none}
 .login-dev summary::-webkit-details-marker{display:none}
@@ -7316,6 +7378,24 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
  .obx-step{font-size:11.5px}
  .obx-stepn{display:none}
  .obx-x{padding:0 14px}
+ /* THE CRISIS BUTTON IS IN THE BAR'S ROW AT THIS WIDTH TOO, 16 October,
+    from the review of these screens. It hung under the bar on the right,
+    over the ring beside the avatar's head, which read as part of the drawing
+    and put a button where the eye goes for the figure. The row makes room
+    instead: the rail leaves the middle and sits after the wordmark, its
+    track shrinks with the screen and its dots go to five pixels, and the
+    button and Not now take the right. Measured on every step at 390 and 360,
+    nothing in the row touches anything else (tests/onboarding2.js). */
+ .obx-top{justify-content:flex-start;gap:8px}
+ .obx-rail{position:static;translate:none;flex:0 1 auto;min-width:0}
+ .obx-track{width:clamp(48px,calc(100vw - 330px),150px)}
+ .obx .ob-dot{width:5px;height:5px}
+ .obx-top .obx-crx{margin:0 0 0 auto;padding:0 10px;font-size:12px;white-space:nowrap;
+  /* the bar's ground is lighter here, under the crown's wash: forty per cent
+     ink read 2.52 to 1 against it off the rendered pixels, so the outline
+     takes fifty, still without colour, for the same 3.4 to 1 as elsewhere */
+  border-color:color-mix(in srgb,var(--ink) 50%,transparent)}
+ .obx-x{flex:0 0 auto}
  .obx-slot{left:0;top:var(--st)}
  .obx .ob-scroll{padding:14px 20px 28px}
  .obx .obx-in{margin:0;max-width:none;font-size:16px}
@@ -7335,6 +7415,25 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
  .obx-fn i{display:none}
  /* the emblem is too small to carry a name, and the card names every seat */
  .obx[data-step="5"] .obx-fn,.obx[data-step="6"] .obx-fn,.obx[data-step="7"] .obx-fn,.obx[data-step="9"] .obx-fn{opacity:0}}
+/* UNDER 380 THE ROW IS FULL. With the crisis button in the bar, 360 left
+   "Step 2 of 8" one pixel from the wordmark and its 8 touching the pill:
+   nothing overlapped, and it still read as one smudge. The wordmark gives up
+   fourteen pixels and the gaps and the pill's padding two each, so every
+   item keeps at least four pixels of air. The step words stay: they are what
+   the dots mean. */
+@media(max-width:379px){
+ .obx-mark .bn{width:58px}
+ .obx-top{gap:6px}
+ .obx-top .obx-crx{padding:0 8px}
+ .obx-x{padding:0 12px}}
+/* AND UNDER 340 THERE IS NO ROOM AT ALL: at 320 the wordmark, the dots, their
+   words, the pill and Not now need more than the screen. The pill goes back
+   to where it hung before, just under the bar on the right, on its dark, and
+   the row keeps its air. Measured at 320 on every step. */
+@media(max-width:339px){
+ .obx-top .obx-crx{position:absolute;top:60px;right:12px;margin:0}
+ /* the pill's auto margin was what held Not now at the right edge */
+ .obx-x{margin-left:auto}}
 /* REDUCED MOTION GETS THE END STATE. The poses still apply; nothing travels
    to them. A light that carries a reading still shows, at once. */
 @media (prefers-reduced-motion:reduce){
@@ -9480,6 +9579,12 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
     that failed along the way. */
  window.__bootOk=function(failed){
   BOOTED=true;
+  /* AND SAID WHERE A TEST CAN READ IT, 16 October. BOOTED is private, and the
+     gates waited on the class the boot sheet's fade adds, which is a cosmetic
+     event and not the end of start up, then slept a fixed time; on a loaded
+     runner they read pages that had not finished starting. This attribute is
+     written at the one moment the start up says it finished. */
+  try{document.documentElement.setAttribute('data-boot','ok');}catch(e){}
   /* THE START UP FINISHED, SO NOTHING BEFORE THIS STOPPED IT. A screen painted
      early, by the ceiling below while the document was still arriving, is
      taken back. An error from our own code that did not stop the start up is
@@ -10691,18 +10796,18 @@ const TIERCOL={
  'Incoherent':  '#CFAB64',   /* warm, a caution and not an alarm */
  'Corrupt':     '#CF8958',
  'Severe':      '#B58379',   /* chroma coming out. numb is less present, not louder */
- 'Collapsed':   '#A48986'};  /* the colour nearly gone. the floor is quiet */
+ 'Contracted':  '#A48986'};  /* the colour nearly gone. the floor is quiet */
 const TIERDEF=[
  {at:91, nm:'Mastery',
   state:'Sovereign',
   soma:'Everything in you is clear and standing straight. Nothing from the past is left to work through.',
-  def:'The field builds far more than it costs. Almost nothing is held.',
+  def:'Your energy builds far more than it costs. Almost nothing is held.',
   energy:'Intention and action arrive together. There is no gap left to manage.',
   toward:'Hold it. The work here is maintenance, and what you can now carry for other people.'},
  {at:81, nm:'Embodied',
   state:'Coherent',
   soma:'What happens around you and what happens in you move together, with nothing rubbing. Always moving.',
-  def:'The field builds more than it costs, with real load still in it.',
+  def:'Your energy builds more than it costs, with real load still in it.',
   energy:'You recover fast. A charge lands and clears instead of staying.',
   toward:'Mastery. Close the laws still shut, and clear what is still holding a week later.'},
  {at:71, nm:'Compounding',
@@ -10714,13 +10819,13 @@ const TIERDEF=[
  {at:61, nm:'Gaining',
   state:'Tuned',
   soma:'Finding the places you get stuck and fixing them. Practical, and set on getting it done.',
-  def:'The field builds more than it spends, and the margin is thin.',
+  def:'Your energy builds more than it spends, and the margin is thin.',
   energy:'Forward on most days, and one hard week takes it back.',
   toward:'Compounding. Same seat, same address, repeated, until the load there stops returning.'},
  {at:51, nm:'Even',
   state:'Receptive',
   soma:'Exhausted by the old way and aware that it is broken.',
-  def:'The field breaks even and sits just above the line.',
+  def:'Your energy breaks even and sits just above the line.',
   energy:'What you build holds about as often as it slips.',
   toward:'Gaining. One address cleared entirely beats four reduced.'},
  {at:41, nm:'Oscillating',
@@ -10730,14 +10835,14 @@ const TIERDEF=[
      and the meaning table keeps a tier's first sentence, so the one place
      Oscillating was defined said what fifty is and never what Oscillating
      is. Same two facts, the meaning first. */
-  def:'The field crosses fifty, the median or middle of the line, both ways: above it some days '
+  def:'Your energy crosses fifty, the median or middle of the line, both ways: above it some days '
      +'and below it on others.',
   energy:'The day decides. What is running that morning sets the range.',
   toward:'Even. Consistency rather than intensity. The swing narrows before the number rises.'},
  {at:31, nm:'Incoherent',
   state:'Frustrated',
   soma:'Caught between the weight in your body and the odd moment of seeing clearly.',
-  def:'The field costs more than it builds. Charge is held at more addresses than are clearing.',
+  def:'Your energy costs more than it builds. Charge is held at more addresses than are clearing.',
   energy:'Effort goes in and less comes out. You are working, and the work is going into holding.',
   toward:'Oscillating, which starts at 41. Take the heaviest seat first. One address cleared where the load actually sits moves this further than ten cleared anywhere else.'},
  {at:21, nm:'Corrupt',
@@ -10749,7 +10854,7 @@ const TIERDEF=[
  {at:11, nm:'Severe',
   state:'Numb',
   soma:'Numbing or distracting yourself to get through. The body is starting to shut down.',
-  def:'Most of the field is carrying. Very little is clear.',
+  def:'Most of your energy is carrying. Very little is clear.',
   energy:'Ordinary demands read as threats. Capacity is spent before the day starts.',
   /* "OFF THE FLOOR" COMES OUT. Ruled. Every other tier's direction names the
      next band and what to do to reach it. This one named where the person was
@@ -10758,12 +10863,32 @@ const TIERDEF=[
      a person is least able to hear it that way. The instruction underneath was
      already right and is kept word for word. */
   toward:'Corrupt, and it is reached one address at a time. One seat, one address, one line. Not a programme.'},
- {at:0, nm:'Collapsed',
+ /* CONTRACTED, NOT COLLAPSED, 16 October. His words: "I don't [like] the band
+    name, like collapsed ... the energy wants to expand, not collapse." The
+    product already says expanding and contracting for the direction a reading
+    moves (r.benign, ui/summary.js), so the floor takes the word for that
+    direction, and the word says it can open again where collapsed said it
+    had fallen. The state, Fragmented, and what the band says are unchanged.
+    A history row an older build wrote under the old word is renamed at the
+    boundary (validateProfile, engine/schema.js), so no record prints it
+    again. The Reboot-OS application carries its own copy of this table and is
+    not this repository's to change. */
+ {at:0, nm:'Contracted',
   state:'Fragmented',
   soma:'Taken over by what happened before and was never worked through. The body drags with its full weight.',
-  def:'The field is fully loaded. Nothing is clearing.',
+  def:'Your energy is fully loaded. Nothing is clearing.',
   energy:'Flat. Not calm, out of charge.',
-  toward:'Weight off, and not alone. A reading this low is not a thing to manage by yourself, and the instrument will not pretend otherwise.'}];
+  /* WEIGHT COMES OFF WITH ANOTHER PERSON, 16 October, from the review of the
+     crisis screens. The line before it, "Weight off, and not alone. A reading
+     this low is not a thing to manage by yourself, and the instrument will
+     not pretend otherwise.", said a person should not be alone with this and
+     then offered nobody: no number, no button, only the sentence. It was a
+     seat's draft (b6f58ba1, 18 September, whose message marks the copy as a
+     draft and the wording as the owner's call), not his words, and neither
+     DECISIONS.md nor BIBLE.md carries it, so Emmy's line replaces it. The
+     way to reach that person is the crisis button the renderers put directly
+     under this sentence for this band (crisisFloor, ui/crisis.js). */
+  toward:'Weight comes off with another person.'}];
 /* one lookup, so the band table stops being copied into renderers */
 const TIER_BY={}; TIERDEF.forEach(function(t){TIER_BY[t.nm]=t;});
 /* the median, and the width of the swing around it. named once, because three
@@ -11375,7 +11500,7 @@ function darkRead(mal01, CQ){
   /* which step of the descent, and only while both conditions hold */
   step:!dark?null:(CQ<11?DESCENT[2]:(CQ<21?DESCENT[1]:DESCENT[0])),
   refer:dark&&CQ<11,
-  say:!dark?'':'The shape is malignant and the field is decoherent at the same time. '
+  say:!dark?'':'The shape is malignant and your energy is decoherent at the same time. '
    +'That pair is what the descent describes. It is a reading of what is running, not of who is running it.'};}
 /* Which circle a descent has reached. Depth follows coherence, so
    the ladder is read off the same number everything else is. */
@@ -12485,7 +12610,7 @@ const PEOPLE=[
     Four reference cases added on the owner's ruling, because the roster sat in
     the middle and the vocabulary at the ends had never been looked at with a
     real field behind it. Two at the floor and two near the ceiling, and the
-    pairs are the point: 2 and 10 are both Collapsed, 92 and 98 are both Mastery.
+    pairs are the point: 2 and 10 are both Contracted, 92 and 98 are both Mastery.
     If one word has to carry both ends of each pair, the word is doing no work.
 
     The charge vectors were solved against compute() rather than invented, and
@@ -12498,7 +12623,7 @@ const PEOPLE=[
     were never re-solved, so they read 25.9, 45.6, 91.3 and 89.2: the floor pair
     sat in two different bands, one of them the median, and the ceiling pair in
     two. Measured again on 2 October (J12). Tomas is solved again to 3.8 and
-    reads Collapsed. Nkem was solved to 14.5, Severe, and was cut with the
+    reads Contracted. Nkem was solved to 14.5, Severe, and was cut with the
     ladder in round QD.
     Wren (91.1, Mastery) and Abraham (89.1, Embodied) are left where they are.
     Abraham carries a held shame of 5.4 and six installed poles near 5, which
@@ -12589,7 +12714,7 @@ const LAWSET={
     then 30.8 on screen, Incoherent, beside a field carrying 77 addresses.
     Nkem, solved to 10, read the median. The shape of each table is kept (what
     the person still does is the highest thing in it) and the level is the new
-    solve. Tomas 3.8, Collapsed. */
+    solve. Tomas 3.8, Contracted. */
  Tomas:  {_:.124, Courage:.5, Truth:.7, Patience:.6, Duty:2, 'Non-Harm':2.2},
  Wren:   {_:9.221, Patience:9.4, Temperance:9.2, 'Aesthetic Beauty':9.6, Forgiveness:6.8},
  Abraham:{_:8.702, Equanimity:9.7, Justice:9.8, Humility:9.5, Presence:9.6, Temperance:9.4},
@@ -14160,6 +14285,106 @@ const JOURNEY_DOORS=['onboarding','tutorial'];
 
 try{window.__at&&window.__at('engine/data/onboarding.js');}catch(e){}
 /* ============================================================
+   THE CRISIS BUTTON'S WORDS AND NUMBERS, 16 October. His words: "Maybe [the
+   crisis check] belongs in the pop-up, the welcome. Maybe it's an option. Is
+   this a crisis? Hit that button. Tell me about it. Do you need immediate
+   emergency contact, or would you like to talk it through? It's always a
+   story."
+
+   A BUTTON THE PERSON PRESSES, AND NOT A DETECTOR. On 9 October he deferred
+   the automatic check, a phrase list reading what a person writes (parked on
+   claude/b2a-crisis and claude/b2a-crisis2, not merged), and J0 in
+   ui/onboard.js stays open for exactly that. Nothing here reads a word
+   anybody types. It is three numbers and the sentences around them, shown
+   when somebody says, by pressing, that this is a crisis.
+
+   HERE AND NOT IN A RENDERER, because two surfaces print it: the app's panel
+   (ui/crisis.js) and the funnel's quiz page, which carries engine.js and no
+   ui module. One table, so a number corrected once is corrected on both, the
+   rule funnel/quiz.html states for the engine it references rather than
+   copies.
+
+   EACH NUMBER CARRIES ITS NAME, round PO's unpack rule: a bare 741741 is a
+   symbol. Each row opens on the number and the service it reaches (nm), then
+   says how to use it and who is there, in short sentences, from the review of
+   these screens on 16 October: one long sentence per number buried the name
+   of the service in its middle. 911 is named by what it sends, police, fire
+   or an ambulance, the same shape as the other two, because "911. If you are
+   in danger now." would have left the one number with no meaning beside it.
+   tests/copy.js holds each line so none can be cut without the gate failing.
+
+   WHERE THEY ANSWER. 988 answers in the United States and in Canada; 741741
+   and 911 are the United States (911 is Canada's too). The panel no longer
+   says "These are US numbers", which told a Canadian their 988 did not
+   work; it says where 988 also works and what to use anywhere else.
+
+   go is the row's links, [what the button says, the address]. tel: and sms:
+   open the phone's own dialler or messages on a phone; on a desktop the
+   number is still in the sentence as plain text, so nothing depends on the
+   link working. sms: carries the keyword as ?&body=, 16 October: Android
+   reads ?body=, older iOS reads &body= and took ?body=HOME as part of the
+   number or dropped it, and ?&body= is the one form both read. A phone that
+   ignores it still opens the right number, and the sentence says what to
+   type.
+
+   THE KEYWORD IS IN SENTENCE CASE. The brief asked for "text HOME", and the
+   service prints it in capitals, but all caps is ruled out of copy and the
+   voice gate fails it. The line takes any case, so the sentence says "the
+   word home", which a person can type as read, and the link still sends HOME
+   for them. The button is "Text 741741", the same shape as "Text 988"
+   beside it.
+   ============================================================ */
+/* ONE FILLED BUTTON, 16 October, from the review of these screens. Every link
+   in the numbers view was the same outlined pill, so a person who had just
+   asked to reach somebody met six equal choices and no first one. Call 988 is
+   the first: it answers a call or a text at any hour for anything short of
+   danger now, which 911 is for. The third place in a go entry marks it, and
+   it is data and not a renderer's choice so the app and the quiz fill the
+   same button. Exactly one entry in the table carries it. */
+const CRISIS_LINES=[
+ {k:'988', nm:'Suicide and Crisis Lifeline', go:[['Call 988','tel:988',true],['Text 988','sms:988']],
+  say:'988, Suicide and Crisis Lifeline. Call or text, any hour. A trained person answers.'},
+ {k:'741741', nm:'Crisis Text Line', go:[['Text 741741','sms:741741?&body=HOME']],
+  say:'741741, Crisis Text Line. Text the word home. A trained person writes back.'},
+ {k:'911', nm:'police, fire or an ambulance', go:[['Call 911','tel:911']],
+  say:'911, police, fire or an ambulance. If you are in danger now.'}];
+/* THE PANEL'S WORDS, once, so the app and the quiz say the same thing. open is
+   the button; h and q are his two lines as the build was asked for them; the
+   two choices are verbs for what each does; journal is the line under the
+   question that says where Talk it through goes and who sees it; where is the
+   line under the numbers; story is the first line the Story box shows after
+   Talk it through, his "It's always a story" said as a fact and then the one
+   thing to do, which since 16 October names the present too: a person in a
+   crisis is often writing about what is happening, not what happened.
+
+   NO PERSON READS IT, and it is a claim about this build that has to stay
+   true. Checked 16 October: the journal is kept in this browser, profile sync
+   is off (PROFILE_SYNC_ENABLED, ui/auth.js, "not part of alpha"), and no call
+   the app makes carries an entry: the voice is given the release's own
+   lines, never the box. DECISIONS.md's privacy ruling expects the story to
+   leave the device one day ("The thing that leaves the device is the story
+   itself"), and a practitioner can be granted sight; the day either ships,
+   this line is wrong. tests/onboarding2.js fails while the line is printed
+   and sync is on, so that day cannot pass quietly. */
+const CRISIS_SAY={
+ open:'Is this a crisis?',
+ h:'Tell me about it.',
+ q:'Do you need to reach someone right now, or would you like to talk it through?',
+ reach:'Reach someone now',
+ talk:'Talk it through',
+ close:'Close',
+ journal:'Talk it through opens your journal. No person reads it.',
+ /* the quiz's own line under the question, 16 October. The app's journal
+    line is wrong there, so the quiz says where its Talk it through goes, its
+    story box, and the one thing that is proven about that page: it makes no
+    request at all (tests/funnel.js counts requests on the quiz, source and
+    built, and fails on one). It does not say who reads anything. */
+ quiz:'Talk it through opens the story box on this page. This page sends nothing anywhere.',
+ where:'988 also works in Canada. Elsewhere, call your local emergency number.',
+ story:'It is always a story. Write what is happening, or what happened.'};
+
+try{window.__at&&window.__at('engine/data/crisis.js');}catch(e){}
+/* ============================================================
    THE PERCENT. One formula and one table for every score, weight and measure
    a person reads, so that "6.2" becomes "62%" by one rule everywhere and not
    by forty renderers each deciding their own scale.
@@ -14345,14 +14570,16 @@ var PCT_KIND={
  /* ui/map.js:206, the product of the seven passes, root to crown */
  flow:      {lo:0, hi:1, src:'ui/map.js', find:'function flSpeed(){var s=1;flSeats().slice().reverse().forEach(function(x){s*=x.pass;});return s;}',
              say:'flow, what gets from the root to the crown'},
- /* core.js:403, each archetype against the strongest, so the first reads 1 */
- affinity:  {lo:0, hi:1, src:'engine/core.js', find:'const mx=Math.max(...a)||1;return a.map(v=>v/mx);}',
-             say:'an archetype against the strongest'},
- /* ui/summary.js:438, an archetype's share of all twelve added up. This is a
-    second reading of the same affinity and prints a different figure for the
-    same archetype; which one the person reads is in the framework's open list. */
- share:     {lo:0, hi:1, src:'ui/summary.js', find:'var tot=aff.reduce(function(a,x){return a+x.v;},0)||1;',
-             say:'an archetype\'s share of all twelve'},
+ /* AN ARCHETYPE IS HOW FULLY IT IS EXPRESSED, ruled 16 October: 100% with
+    nothing held, dragged by the charge at its seat, lifted by release.
+    engine/archexpr.js, one minus the seat's mean weight over ten, and each sq
+    is clamped to 0 and 10 at engine/compute.js:295. This replaced two kinds.
+    affinity (engine/core.js:403, an archetype against the strongest) and share
+    (ui/summary.js:438, a share of all twelve) were both the soul map's lean,
+    printed three ways for one archetype, and neither moves with a story or a
+    release. affinity still orders first and second; nothing prints it. */
+ archetype: {lo:0, hi:1, src:'engine/archexpr.js', find:'return s?clamp(1-s.mean,0,1):null;}',
+             say:'how fully an archetype is expressed, dragged by the charge at its seat'},
  /* core.js:394, each domain against the strongest. The floor of .08 is drawn
     (the petal never vanishes), so lo stays 0 and the floor reads 8%. */
  domain:    {lo:0, hi:1, src:'engine/core.js', find:'DOMAIN=DOMAIN.map(v=>.08+.92*v/mx);',
@@ -14753,12 +14980,30 @@ var LEANMIX={benign:0,malignant:0,
  self:0,other:0,rawLack:0,texts:0};
 
 /* ---------- the six gates ---------- */
+/* A PHRASE OUTRANKS THE WORDS INSIDE IT, here as in the lean below and in the
+   sniffer, both ported from scanStory. This was a bare indexOf per cue, so
+   Intention's 'kept going' matched inside Attachment's 'kept going over':
+   "it had me all night and I kept going over it" read attach 3 and intent 1,
+   and the Intention hit was false, measured on f7188cba. The bare indexOf
+   also matched inside words, so "it did not seem like much" read Ignorance
+   off 'did not see' and "I stayed one more hour" read Intention off 'stayed
+   on'. So the lean's rule, unchanged: every cue of every gate scanned
+   longest first, bounded by spaces, and a match that starts inside a span
+   already taken is not counted. No negation here, which the lean carries and
+   these cues have never had: adding it is a change to what the gates read,
+   not to how a phrase is found. */
 function verpScan(text){
  var src=' '+String(text||'').toLowerCase().replace(/[^a-z' ]+/g,' ').replace(/\s+/g,' ')+' ';
- var hits={},tot=0;
+ var hits={},tot=0,rows=[],spans=[];
  Object.keys(VERPCUE).forEach(function(g){hits[g]=0;
-  VERPCUE[g].forEach(function(p){var at=src.indexOf(p);
-   while(at>=0){hits[g]++;tot++;at=src.indexOf(p,at+1);}});});
+  VERPCUE[g].forEach(function(p){rows.push({p:p,g:g});});});
+ rows.sort(function(a,b){return b.p.length-a.p.length;});
+ rows.forEach(function(row){
+  var t=' '+row.p+' ', at=src.indexOf(t);
+  while(at>=0){
+   if(!spans.some(function(h){return h.at<=at&&at<h.at+h.len+1;})){
+    spans.push({at:at,len:row.p.length}); hits[row.g]++; tot++;}
+   at=src.indexOf(t,at+1);}});
  return {hits:hits,total:tot};}
 function verpApply(text){var s=verpScan(text);if(!s.total)return s;
  Object.keys(s.hits).forEach(function(g){VERPMIX[g]+=s.hits[g];});return s;}
@@ -17409,7 +17654,10 @@ function accuracy(r,prof){
    fifths: they are the measurement, and a story is evidence for it. The story
    side is whole at ten entries, the ladder's own Ten stories rung
    (engine/ladder.js, "the field is being read from your own words"), so
-   CS_STORY_N names the same ten and a story past it adds nothing here.
+   CS_STORY_N names the same ten and a story past it adds nothing here. The
+   rung counts ten days with an entry since 16 October (L11) and this still
+   counts entries: coverage asks how much evidence there is, and ten entries
+   in one sitting are ten pieces of it, where the mark asks what was kept up.
    Neither side reads a value, so the same counts give the same figure whether
    every answer is 1 or 10, and one more answer or one more story can never
    lower it.
@@ -20687,9 +20935,17 @@ function validateProfile(o){
   var q={t:typeof x.t==='string'?x.t:new Date().toISOString(),
    dark:typeof x.dark==='string'?x.dark:'Heart',
    /* null is a row written while CQ was still filling, and it stays null:
-      defaulting it to Collapsed would put the lowest word on the scale on
-      somebody who had only not finished the intake. */
-   tier:(typeof x.tier==='string'||x.tier===null)?x.tier:'Collapsed',
+      defaulting it to the floor band would put the lowest word on the scale
+      on somebody who had only not finished the intake. */
+   /* THE FLOOR BAND WAS RENAMED, 16 October, Collapsed to Contracted (canon.js
+      TIERDEF). A row keeps the word and not a lookup, so a row an older build
+      wrote still said Collapsed: the record would print the word he ruled out,
+      and ui/record.js would report "the tier read collapsed and now reads
+      contracted", a move between two names for one band. Renamed here, where
+      every row is rebuilt, so the old word never reaches a renderer. It is
+      the same band under its new name, not a value clamped into range. */
+   tier:x.tier==='Collapsed'?'Contracted'
+    :(typeof x.tier==='string'||x.tier===null)?x.tier:'Contracted',
    arch:typeof x.arch==='string'?x.arch:''};
   [['m',0,CQ_MODEL],['cq',0,100],['dq',0,1e4],['sq',0,10],['pole',0,10],['jq',0,10],['rad',0,10],
    ['loaded',0,1e4],['sab',0,1e4],['cx',0,1e4],['hy',0,1e4],['ch',0,1e4]].forEach(function(f){
@@ -21184,7 +21440,24 @@ function meterRead(p,now){
  var age=ageAt(p&&p.who&&p.who.born?p.who.born.date:null,now);
  var est=age===null?null:Math.round(age*PAT_PER_YEAR*PAT_GEN);
  var mk=markersFor(est);
- return {lines:m.lines, unique:uniq, first:m.first, last:m.last,
+ /* OPENED IS ADDRESSES, AND THE RULER IS PATTERNS. unique is one entry per
+    line ever opened, address:channel:line, so one address across both limit
+    channels at thirty lines each is 60 of them. Three surfaces printed that
+    as "Opened 60 addresses", "Ground opened 60" and "440 new addresses
+    away", beside a Compass ledger reading "Opened 1 address" off the same
+    record, measured on f7188cba. ladder.js fixed this for the marks with
+    meterGroundCount and the fix never reached here. ground is that count,
+    and every "Opened" figure reads it.
+
+    The markers keep counting unique, and that is not the bug. Their ruler
+    is a lifetime load, fifteen thousand at the reference age, and the body
+    has 112 addresses of which a release reaches fewer, so a marker counted
+    in addresses could never be reached past Entry. The owner's thresholds
+    were counts of releases, which is lines: patterns, the word the gift
+    already uses for this same count ("patterns left of the 100 you were
+    given"). So the distance is said in patterns, which is what it measures. */
+ var ground=(typeof meterGroundCount==='function')?meterGroundCount(m):null;
+ return {lines:m.lines, unique:uniq, ground:ground, first:m.first, last:m.last,
   /* the gift is 100 of new ground, ruled. reruns never spend it. */
   giftLeft:Math.max(0,GIFT_N-uniq), inGift:uniq<GIFT_N,
   age:age===null?null:Math.round(age*10)/10,
@@ -26944,9 +27217,9 @@ function converge(name,r){
     field contracting made an unanswered intake read as disagreement. */
  var fieldOpen=(r.benign===null||r.benign===undefined);
  if(!fieldOpen){
-  if(initiating===!!r.benign) agree.push('birth mode '+e.sunMode+' matches a field that is '
+  if(initiating===!!r.benign) agree.push('birth mode '+e.sunMode+' matches your energy, which is '
     +(r.benign?'expanding':'contracting'));
-  else differ.push('birth mode '+e.sunMode+' against a field that is '+(r.benign?'expanding':'contracting'));}
+  else differ.push('birth mode '+e.sunMode+' against your energy, which is '+(r.benign?'expanding':'contracting'));}
  /* The fourth comparison used to read a Human Design type that was the
     birth hour modulo five. Now that the type is honestly unresolved
     there is nothing to compare, so it goes in a third bucket. A gap is
@@ -26957,12 +27230,12 @@ function converge(name,r){
  if(!e.rising)open.push('the ascendant, which needs '+(e.needsTime?'a birth time':'a birthplace'));
  /* the design gate is real and independent of the field, so it can be
     compared: a design line of 1 or 4 is an inward profile. */
- if(fieldOpen)open.push('the direction of the field, which needs all '+SI.length+' laws answered');
+ if(fieldOpen)open.push('the direction of your energy, which needs all '+SI.length+' laws answered');
  else if(e.hd.design){
   var inward=(e.hd.design.line===1||e.hd.design.line===4);
-  if(inward===!r.benign)agree.push('design line '+e.hd.design.line+' and a field that is '
-    +(r.benign?'expanding':'contracting')+' point the same way');
-  else differ.push('design line '+e.hd.design.line+' against a field that is '
+  if(inward===!r.benign)agree.push('design line '+e.hd.design.line+' and your energy, which is '
+    +(r.benign?'expanding':'contracting')+', point the same way');
+  else differ.push('design line '+e.hd.design.line+' against your energy, which is '
     +(r.benign?'expanding':'contracting'));}
  var n=agree.length+differ.length;
  return {e:e, agree:agree, differ:differ, open:open,
@@ -27579,11 +27852,24 @@ function pracDay(t){
    been done on yet. done===undefined means an older entry predating the
    field, read as done, same reading ritIsDone (ui/ritual.js) gives it; only
    done===false is excluded. */
-function pracDays(p){
+/* A DAY THAT HAS NOT HAPPENED IS NOT A DAY PRACTISED. Seven entries dated 30
+   to 36 days ahead read Streak 7, live, and earned First run, Seven days and
+   Sixty minutes, measured on f7188cba, from a device clock set ahead or an
+   imported record. markDays below already refused them and this did not, so
+   the shelf showed three marks it could not date. TDD v3 10.2 gives the rule:
+   a day no more than one day after now counts, the slack the Daily Summary
+   allows a person who flew west and back. Ignored and never refused, because
+   refusing at the boundary would set the whole record aside over one clock
+   error. Every count of days and minutes in this file asks this one test. */
+function pracSoon(d,today){return d!==null&&(today===null||d<=today+1);}
+function pracDays(p,now){return pracDaysAt(p,pracDay(now||Date.now()));}
+/* the same list against a day key rather than a moment, for a mark test that
+   is handed the streak and not the moment */
+function pracDaysAt(p,today){
  var seen={}, out=[];
  ((p&&p.rituals)||[]).forEach(function(x){
   if(x&&x.done===false)return;
-  var k=pracDay(x&&x.t); if(k===null||seen[k])return; seen[k]=1; out.push(k);});
+  var k=pracDay(x&&x.t); if(!pracSoon(k,today)||seen[k])return; seen[k]=1; out.push(k);});
  return out.sort(function(a,b){return b-a;});}
 
 /* THE STREAK, AND WHY TODAY IS NOT REQUIRED.
@@ -27594,9 +27880,15 @@ function pracDays(p){
    today and yesterday's streak continues. Miss a whole day and it is over, and
    the length of what was lost is still reported, because the thing a person
    built is not deleted by having stopped. */
+/* WHAT THE STREAK IS, said once and read by every surface that prints one,
+   so the Compass and the Accountability column cannot explain it two ways.
+   It said "a ritual on the record", and since 21.J2 only a ritual marked
+   done is a day. */
+var STREAK_MEANS='Streak is your current run of days with a ritual marked done. '
+ +'One skipped day is forgiven and a longer gap halves it.';
 function streakRead(p,now){
- var days=pracDays(p), today=pracDay(now||Date.now());
- if(!days.length||today===null)return {run:0, live:false, last:null, best:0, days:0};
+ var days=pracDays(p,now), today=pracDay(now||Date.now());
+ if(!days.length||today===null)return {run:0, live:false, last:null, best:0, days:0, today:today};
  /* THE RUN HALVES, IT DOES NOT RESET. Ruled, Bible 1133:
     Math.max(1, Math.ceil(s/2)) with one grace day.
 
@@ -27623,7 +27915,24 @@ function streakRead(p,now){
  var best=1,cur=1; for(var j=1;j<days.length;j++){
   if(days[j]===days[j-1]-1){cur++; if(cur>best)best=cur;} else cur=1;}
  var gap=today-days[0];
- return {run:run, live:gap<=1, last:days[0], best:best, days:days.length, gap:gap};}
+ /* THE HALVING LANDS ON THE GAP, NOT ON THE RETURN. Ten days in a row ending
+    twenty days ago read Streak 10 on the Ritual page and 10 days on the
+    Compass, and the day the person came back and practised it read 5, so the
+    one act the streak exists to reward was the act that lowered it. Measured
+    on f7188cba. The rule above is unchanged: a gap of three or more halves
+    what was standing, once. It is applied the moment the gap is three days
+    long, so the figure on screen is the figure that stands, and practising
+    today keeps it and tomorrow adds one. Practising never lowers the number
+    a person sees.
+
+    It is still a figure that falls after an absence, and TDD v3 10.6 names
+    that tension rather than hiding it: the halving was ruled (Bible 1133) and
+    costed, it pays nothing, no mark reads it, and days practised sits beside
+    it and never falls. The drop is the rule working and is not shown as a
+    mistake or explained as an absence (DESIGN-ladder anti design 5): the
+    surfaces say what the streak is, and the date of the last day practised. */
+ if(gap>2)run=Math.max(1,Math.ceil(run/2));
+ return {run:run, live:gap<=1, last:days[0], best:best, days:days.length, gap:gap, today:today};}
 
 /* GROUND COUNTED LINES, AND CALLED THEM ADDRESSES. p.meter.unique holds one
    entry per line ever opened, address:channel:line (HEAVY_KEY, schema.js), so
@@ -27650,7 +27959,7 @@ function meterGroundCount(m){
    tier ladder charges for. clear is how many addresses are held at the far
    pole right now, and it is the only one of the four that can go down, which
    is correct: it is a state and not a tally. */
-function ledgerRead(p){
+function ledgerRead(p,now){
  /* MINUTES PRACTISED WAS MINUTES PLANNED, and it was the one label in the
     product claiming what the data did not carry. Select the twenty minute scan,
     press save, close the tab, and the ledger read twenty minutes practised.
@@ -27661,11 +27970,14 @@ function ledgerRead(p){
     rather than discarded, because a person's history is not ours to delete over
     a schema change. Only entries written from here on can be planned and not
     yet done. */
- var mins=0, plan=0, doneN=0;
+ /* and an entry dated past tomorrow is not practised (pracSoon, above): it
+    earned First run and Sixty minutes off a day that had not come. It still
+    counts as planned, which is all a day ahead can be. */
+ var mins=0, plan=0, doneN=0, today=pracDay(now||Date.now());
  ((p&&p.rituals)||[]).forEach(function(x){
   var m=(x&&+x.min)||0; plan+=m;
   var done=(x&&x.done!==undefined)?!!x.done:true;
-  if(done){mins+=m; doneN++;}});
+  if(done&&pracSoon(pracDay(x&&x.t),today)){mins+=m; doneN++;}});
  var m=(p&&p.meter)||{};
  var clear=0, carry=0;
  ((p&&p.axes)&&CHILD.forEach(function(c){
@@ -27746,91 +28058,149 @@ function intentionRead(p,now){
    Nothing new is stored. A mark's date is derived by markDays below, off the
    same record, the way the TDD's own drawer dates one (9.1). */
 var BACK_GAP=14;
-function pracTracks(p){
+function pracTracks(p,today){
  var by={}, seen={};
  ((typeof PRACTICE!=='undefined'&&PRACTICE)||[]).forEach(function(x){if(x&&x.track)by[x.k]=x.track;});
  ((p&&p.rituals)||[]).forEach(function(x){
   if(!x||x.done===false||!Array.isArray(x.steps))return;
+  if(today!==undefined&&!pracSoon(pracDay(x.t),today))return;
   x.steps.forEach(function(k){if(by[k])seen[by[k]]=1;});});
  var all={}; Object.keys(by).forEach(function(k){all[by[k]]=1;});
  return {done:Object.keys(seen).length, all:Object.keys(all).length};}
 function pracBack(days){
  for(var i=1;i<days.length;i++)if(days[i-1]-days[i]>=BACK_GAP)return true;
  return false;}
+/* the axes with a value on the record, for Nine axes */
+function axesValued(p){
+ var n=0, ax=(p&&p.axes)||{};
+ CHILD.forEach(function(c){
+  var a=ax[c.nm]||{}, said=(typeof ixGet==='function')?ixGet(p,'axes',c.nm):null;
+  if(said!==null||(+a.held||0)>AXIS_BLANK||(+a.opp||0)>0)n++;});
+ return n;}
+/* the distinct days a story was committed on, by pracDay, and none past
+   tomorrow (pracSoon), so a story and a ritual count a day the same way */
+function storyDays(p,today){
+ var seen={}, n=0;
+ ((p&&p.story&&p.story.entries)||[]).forEach(function(e){
+  var k=pracDay(e&&e.t); if(!pracSoon(k,today)||seen[k])return; seen[k]=1; n++;});
+ return n;}
 var MARKS=[
  /* practice */
  {k:'first', fam:'Practice', b:'Root', nm:'First run',
+  to:'Mark one ritual done.',
   d:'You marked one ritual done. The instrument is no longer a thing you are reading about.',
   ic:'M12 21V6 M7 11l5-5 5 5',
   t:function(l){return l.done>=1;}},
  {k:'week', fam:'Practice', b:'Root', nm:'Seven days',
+  to:'Practise on seven days. They do not need to be in a row.',
   d:'Seven days of practice on the record. This is where it stops being a decision each morning.',
   ic:'M4 6h16v14H4z M4 11h16 M8 3v4 M16 3v4',
   t:function(l,s){return s.days>=7;}},
  {k:'month', fam:'Practice', b:'Root', nm:'Thirty days',
+  to:'Practise on thirty days. They do not need to be in a row.',
   d:'Thirty days of practice on the record. The nervous system has had long enough to believe you.',
   ic:'M4 6h16v14H4z M4 11h16 M8 3v4 M16 3v4 M9 15l2 2 4-4',
   t:function(l,s){return s.days>=30;}},
  {k:'season', fam:'Practice', b:'Root', nm:'Ninety days',
+  to:'Practise on ninety days. They do not need to be in a row.',
   d:'Ninety days of practice on the record. Nothing about this is a beginner number.',
   ic:'M12 3a9 9 0 109 9 M12 3v9h9 M12 12l5 5',
   t:function(l,s){return s.days>=90;}},
  {k:'hour', fam:'Practice', b:'Root', nm:'Sixty minutes',
+  to:'Put sixty minutes of practice on the record, spread any way you like.',
   d:'An hour of practice on the record, however it was spread.',
   ic:'M12 3a9 9 0 100 18 9 9 0 100-18 M12 7v5l4 2',
   t:function(l){return l.minutes>=60;}},
  {k:'tracks', fam:'Practice', b:'Root', nm:'Every track run',
+  to:'Mark a ritual done in every track the practice library carries.',
   d:'A ritual marked done in every track the practice library carries.',
   ic:'M12 3v18 M3 12h18 M6 6l12 12',
-  t:function(l,s,p){var t=pracTracks(p); return t.all>0&&t.done>=t.all;}},
+  t:function(l,s,p){var t=pracTracks(p,s.today); return t.all>0&&t.done>=t.all;}},
  {k:'back', fam:'Practice', b:'Root', nm:'Came back',
+  /* NO to LINE, SO IT IS NEVER THE NEXT MARK. What it takes is two weeks
+     away, and a goal that asks for an absence names one, which DESIGN-ladder
+     anti design 5 rules out. It is earned on the way back and named then. */
+  to:null,
   d:'Two weeks or more away, then a day of practice. Coming back is the practice too.',
   ic:'M9 5L4 10l5 5 M4 10h10a5 5 0 010 10h-4',
-  t:function(l,s,p){return pracBack(pracDays(p));}},
+  t:function(l,s,p){return pracBack(pracDaysAt(p,s.today));}},
  /* ground */
  {k:'ten', fam:'Ground', b:'Throat', nm:'Ten addresses',
+  to:'Open ten different addresses with a release. An address is one exact place in your body.',
   d:'Ten distinct addresses opened. Not ten runs. Ten places.',
   ic:'M4 4h7v7H4z M13 4h7v7h-7z M4 13h7v7H4z M13 13h7v7h-7z',
   t:function(l){return l.ground>=10;}},
  {k:'fifty', fam:'Ground', b:'Throat', nm:'Fifty addresses',
+  to:'Open fifty different addresses with a release.',
   d:'Fifty. Close to half your addresses have been opened at least once.',
   ic:'M3 12h18 M3 7h18 M3 17h18 M7 3v18 M17 3v18',
   t:function(l){return l.ground>=50;}},
  {k:'told', fam:'Ground', b:'Throat', nm:'First story',
+  to:'Write one story of something that happened, in your own words.',
   d:'You told it something true and let it read the charge out of that.',
   ic:'M4 5h16v11H8l-4 4z',
   t:function(l,s,p){return !!(p&&p.story&&(p.story.entries||[]).length);}},
  {k:'kept', fam:'Ground', b:'Throat', nm:'Ten stories',
-  d:'Ten told. The field is being read from your own words and not from a form.',
+  to:'Write a story on ten different days.',
+  d:'Stories on ten different days. The field is being read from your own words and not from a form.',
   ic:'M4 5h16v11H8l-4 4z M8 9h8 M8 12h5',
-  t:function(l,s,p){return ((p&&p.story&&p.story.entries)||[]).length>=10;}},
+  /* TEN ENTRIES WAS TEN MINUTES OF TYPING. Ten entries committed in one
+     minute earned "Ten told", measured on f7188cba, which is volume in one
+     sitting and not ten stories told over a life. Ten distinct days with an
+     entry, TDD v3 9.3 and LD4, the day counted by the rule the streak uses. */
+  t:function(l,s,p){return storyDays(p,s.today)>=10;}},
  /* structure */
  {k:'nine', fam:'Structure', b:'Heart', nm:'Nine axes',
-  d:'Every one of the nine has a value you entered. Nothing is a default.',
+  to:'Answer the question for each of the nine axes in the intake. An axis is a feeling and its opposite.',
+  d:'Each of the nine axes, a feeling and its opposite, has a value on your record. None is left empty.',
   ic:'M5 5h14v14H5z M5 10h14 M5 15h14 M10 5v14 M15 5v14',
-  t:function(l){return l.clear+l.carry>=9;}},
+  /* THE TEST COUNTED AXES AT FOUR OR MORE, ON EITHER SIDE. clear+carry>=9 let
+     one axis count twice and never saw a value under four, so nine axes
+     entered at 2 did not earn it and five at 5 on both sides with four at 2
+     did, measured on f7188cba, under words that said every one of the nine
+     had a value. It reads what the words say now (TDD v3 9.3, LD4): an axis
+     has a value when the person answered its intake question, which records
+     an answer of 0 as an answer, or when it carries charge or an opposite
+     off the blank (AXIS_BLANK), from a story, a seed or a release. The words
+     say "on your record" and not "you entered", because a story puts charge
+     on an axis the person never set by hand. */
+  t:function(l,s,p){return axesValued(p)>=CHILD.length;}},
  {k:'laws', fam:'Structure', b:'Heart', nm:'Laws measured',
+  to:'Answer every question in the intake.',
   d:'The intake is complete, so integrity is measured rather than assumed.',
   ic:'M12 4v4 M4 8h16 M4 8l-2 5h4z M20 8l-2 5h4z',
   t:function(l,s,p){return !!(p&&p.intake&&p.intake.completedAt);}},
  {k:'stated', fam:'Structure', b:'Heart', nm:'Blueprint stated',
+  to:'Name your four letter type.',
   d:'You named your type, and the field carries that until you move it.',
   ic:'M4 20V8l8-5 8 5v12 M9 20v-7h6v7',
   t:function(l,s,p){return !!(p&&p.seed);}},
  {k:'aimed', fam:'Structure', b:'Heart', nm:'Purpose set',
+  to:'Place your six values on the Avatar page.',
   d:'Six values placed. The compass has something to point at.',
   ic:'M12 3a9 9 0 100 18 9 9 0 100-18 M12 8l3 8-3-2-3 2z',
   t:function(l,s,p){return !!(p&&p.purpose&&purposeReady&&purposeReady(p.purpose));}},
  {k:'turned', fam:'Structure', b:'Heart', nm:'First clearing',
-  d:'An address that was carrying is held at the far pole instead.',
+  /* THESE TWO COUNT AXES AND SAID ADDRESSES. ledgerRead's clear is a count
+     over CHILD, the nine axes, and an address is one of the 112 places on
+     the body map, so "An address that was carrying" and "Five addresses
+     holding the opposite" named a unit neither test reads. The Compass
+     ledger row over the same count was corrected to axes for this reason and
+     these were not (fact map L10). One word per concept: the count is axes,
+     and installed is the ledger's own word for an opposite at four or more.
+     The keys do not change, because a key is identity. */
+  to:'Install the opposite on one of the nine axes. Each release builds it up.',
+  d:'One of the nine axes has its opposite installed. An axis is a feeling and its opposite.',
   ic:'M4 12a8 8 0 1116 0 8 8 0 01-16 0 M8 12l3 3 5-6',
   t:function(l){return l.clear>=1;}},
  {k:'seat', fam:'Structure', b:'Heart', nm:'Five clear',
-  d:'Five addresses holding the opposite. That is structure, not a good day.',
+  to:'Install the opposite on five axes.',
+  d:'Five axes have their opposite installed. That is structure, not a good day.',
   ic:'M4 12a8 8 0 1116 0 8 8 0 01-16 0 M12 4v16 M4 12h16',
   t:function(l){return l.clear>=5;}},
  /* the record itself */
  {k:'watched', fam:'Structure', b:'Heart', nm:'Ten snapshots',
+  to:'Keep ten readings on file. Each story and each release saves one.',
   d:'Ten readings on file, so the movement is yours to see and not to recall.',
   ic:'M3 17l5-6 4 4 3-4 6 6 M3 5h18v14H3z',
   t:function(l){return l.snaps>=10;}}];
@@ -27841,14 +28211,21 @@ var MARKS=[
    already furthest into, because the useful next thing is the one adjacent to
    what they are doing. Everything past it is deliberately not returned, so no
    caller can render a checklist of a person's unfinished self. */
+/* THE NEXT MARK WAS PRINTED IN THE PAST TENSE. Both surfaces that name it,
+   the Compass and the Ritual page's Ongoing goal, printed its d line, which is
+   written for a mark already held: a blank record read "First run. You marked
+   one ritual done." and one done ritual read "Seven days. Seven days of
+   practice on the record." Measured on f7188cba. A mark carries two lines
+   now: d, what it means once held, and to, what it takes, and the next mark
+   is printed with to. A mark with no to is never offered as the next one. */
 function ladderRead(p,now){
- var l=ledgerRead(p), s=streakRead(p,now), got=[], left=[];
+ var l=ledgerRead(p,now), s=streakRead(p,now), got=[], left=[];
  MARKS.forEach(function(m){
   var ok=false; try{ok=!!m.t(l,s,p);}catch(e){ok=false;}
   (ok?got:left).push(m);});
  var by={}; got.forEach(function(m){by[m.fam]=(by[m.fam]||0)+1;});
  var lead=null, best=-1;
- left.forEach(function(m){var n=by[m.fam]||0; if(n>best){best=n; lead=m;}});
+ left.forEach(function(m){if(!m.to)return; var n=by[m.fam]||0; if(n>best){best=n; lead=m;}});
  return {earned:got, next:lead, ledger:l, streak:s};}
 
 /* WHEN A PRACTICE MARK BECAME TRUE, round QS. The TDD dates every mark with
@@ -29540,7 +29917,7 @@ if(typeof module!=='undefined'&&module.exports){
                   NERVEBR:NERVEBR, BODYPATH:BODYPATH, TAB:TAB,
   /* the ladder */MARKS:MARKS, ladderRead:ladderRead, markDays:markDays, BACK_GAP:BACK_GAP, ledgerRead:ledgerRead,
                   intentionRead:intentionRead, INTENT_DAYS:INTENT_DAYS,
-                  streakRead:streakRead, pracDays:pracDays, pracDay:pracDay,
+                  streakRead:streakRead, pracDays:pracDays, pracDay:pracDay, STREAK_MEANS:STREAK_MEANS,
   /* indexes */   W:W, BY:BY, ALL_SAB:ALL_SAB, S:S,
   /* soul */      buildSoul:buildSoul, affinity:affinity, bandIg:bandIg,
   /* engine */    compute:compute, suscAll:suscAll, balance:balance, OUTWARD:OUTWARD, INWARD:INWARD,
@@ -29814,6 +30191,8 @@ if(typeof module!=='undefined'&&module.exports){
                   ONB_MINI_ADDRS:ONB_MINI_ADDRS, ONB_MINI_DOSE:ONB_MINI_DOSE, ONB_CHANS:ONB_CHANS,
                   OB_STARTS:OB_STARTS, OB_FEELS:OB_FEELS, OB_PLACES:OB_PLACES,
                   journeyRead:journeyRead, onbMiniPlan:onbMiniPlan,
+  /* the crisis button's numbers and words, engine/data/crisis.js. Reads only. */
+                  CRISIS_LINES:CRISIS_LINES, CRISIS_SAY:CRISIS_SAY,
   /* the journey record itself, F13: its tables, its boundary, its writers,
      what the first release made, and the claim packet with its boundary */
                   JOURNEY_V:JOURNEY_V, JOURNEY_EVENTS:JOURNEY_EVENTS, JOURNEY_LOG_MAX:JOURNEY_LOG_MAX,
@@ -30237,6 +30616,63 @@ if(typeof module!=='undefined'&&module.exports){
   ritexCovers:ritexCovers, ritexWd:ritexWd});}
 
 try{window.__at&&window.__at('engine/ritex.js');}catch(e){}
+/* ============================================================
+   HOW FULLY AN ARCHETYPE IS EXPRESSED. Ruled 16 October, his words: "the
+   archetypes themselves should be 100%. The limiting beliefs are going to drag
+   it down. So the archetype is just the archetype. The percent should show
+   where they are based off their story. So you may start off at 100%. And over
+   time, watch it diminish. And as you go through your recipes, watch it rise."
+
+   So the figure an archetype carries is not how strongly the blueprint leans
+   toward it. That is affinity() in engine/core.js, which is read off the soul
+   map, never moves with a story or a release, and keeps its one job: naming
+   the first and second archetype. Printed as a percent it told a person their
+   Innocent was 10% of them because the domains they picked sat elsewhere, and
+   no release they ran could ever change it.
+
+   WHERE AN ARCHETYPE ACTS IS ITS SEAT, ARCH[i].b in engine/data/canon.js,
+   because that is the ruling ("the warrior's root, the sage is crown, the
+   mage is third eye") and the Field rings already draw each archetype inside
+   its seat (ui/rings.js). The chain through the domains was looked for and is
+   not there: the canvas wheel lays the twelve out in list order over
+   addresses laid out by seat, so the addresses under an archetype's sector
+   disagree with its ruled seat for ten of the twelve (Sage, seated at the
+   crown, sits over root and sacral addresses), and the domains are the soul
+   map again. Nothing in the data ties an archetype to a mask.
+
+   THE FORMULA IS THE SEAT'S OWN. seatField() in engine/charfield.js already
+   gives each seat's mean weight over ten, sq after the opposite, so a release
+   that empties an address or installs its opposite lifts it, and a story that
+   lands charge there drags it. The expression is what is left:
+
+     archExpr(i) = 1 - mean(sq at the archetype's seat) / 10
+
+   One with nothing held. Each sq is clamped to 0 and 10 (engine/compute.js),
+   so the mean stays inside them and the figure inside 0 and 1. It reads sq as
+   the last compute() left it, like everything in charfield.js: a caller that
+   has not computed reads a blank field, which is 1, the honest answer for a
+   person whose story has not landed anywhere.
+
+   TWO ARCHETYPES ON ONE SEAT READ ONE FIGURE. Five seats carry two each. That
+   is the seat ruling's consequence, recorded in DECISIONS.md, and splitting
+   them needs a ruling on what separates them rather than a weight invented
+   here.
+
+   THE ENGINE MAY NOT TOUCH THE HOST and this file does not. It sits after
+   engine/export.js and adds its names to what export.js left, as
+   engine/charfield.js does.
+   ============================================================ */
+function archExpr(i){
+ var a=ARCH[i]; if(!a)return null;
+ var s=seatField().filter(function(x){return x.seat===a.b;})[0];
+ return s?clamp(1-s.mean,0,1):null;}
+/* all twelve in ARCH order, so a renderer asks once per render */
+function archExprAll(){return ARCH.map(function(a,i){return archExpr(i);});}
+
+if(typeof module!=='undefined'&&module.exports){
+ Object.assign(module.exports,{archExpr:archExpr, archExprAll:archExprAll});}
+
+try{window.__at&&window.__at('engine/archexpr.js');}catch(e){}
 
 /* ============================================================
    THE COMBINED PILL AND RING.
@@ -43305,6 +43741,21 @@ function stRender(){
      is still ST_TEXT and a reply is appended to it, see srcChatSend, so the
      big box steps aside rather than standing beside a copy of itself, and
      Talk pressed again puts it back holding every reply as its own line. */
+  /* IS THIS A CRISIS, TALK IT THROUGH, 16 October (ui/crisis.js). His words:
+     "It's always a story." The person chose to talk it through, so the box
+     says what it is for in one line above it, until the entry is committed.
+     A note and not the box's own text: words put in the box would be read
+     and committed as if the person had typed them. */
+  /* AND THE WAY BACK TO THE NUMBERS, from the review of these screens: Talk it
+     through landed on the full Story page and the three numbers were behind a
+     panel that had shut, with no way back to them short of the profile menu.
+     Reach someone now stands beside this line and beside Commit while the
+     line is up, and opens the same panel on the numbers (crisisReach,
+     ui/crisis.js). It is only a door: nothing here reads the box. A sibling
+     of the line and not inside it, so the line's own words stay its words. */
+  +(STV.crisis&&!STV.chat?'<div class="st-crxrow">'
+    +'<p class="st-mask st-crisis" id="stcrisis" role="note">'+esc(CRISIS_SAY.story)+'</p>'
+    +crisisReachBtn('st-crxline')+'</div>':'')
   +(STV.chat
    ?'<div class="src-cmp"><textarea id="stcin" class="src-cin" rows="2" spellcheck="false" '
     +'aria-label="Your reply" placeholder="Write back. Enter sends.">'+esc(SRC_CDRAFT)+'</textarea>'
@@ -43342,7 +43793,10 @@ function stRender(){
      keeps the two buttons at the right edge where the counter pushed them.
      The prototype this page is ported from put a word count back here, and
      it stays out: the ruling is his and names this exact place. */
-  +'<div class="st-bar">'
+  +'<div class="st-bar'+(STV.crisis&&!STV.chat?' st-bar-crx':'')+'">'
+   /* the second door, at the foot, where the person finishes: see the crisis
+      line above. Left of the spacer, so Clear and Commit keep their edge. */
+   +(STV.crisis&&!STV.chat?crisisReachBtn('st-crxbar'):'')
    +'<span class="st-ct" aria-hidden="true"></span>'
    +'<button class="btn" id="stclear">Clear</button>'
    +'<button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
@@ -43457,7 +43911,7 @@ function stRender(){
    is open. Kept across a return to the tab, never saved.
    ============================================================ */
 var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:false,law:false,
- unsaved:null,draftT:null,draftFail:false};
+ unsaved:null,draftT:null,draftFail:false,crisis:false};
 /* the one width the page changes shape at is the one the product stacks its
    columns at, so the Story cannot be in three columns while the rails are
    already one. */
@@ -43711,6 +44165,8 @@ function stCommit(){
     with Run on it: widening it there would push Run off the first screen,
     which is the one thing layout H exists to stop. */
  STV.focus=stPhone()?'write':'release';
+ /* the crisis line has said what the box is for, and the box has been used */
+ STV.crisis=false;
  toYou();syncCh();if(typeof stRender==='function')stRender();render();
  /* A STORY KEPT WITH STARS IN IT SAYS SO, round QR. The person may choose
     not to type the hidden words, and the entry is still theirs; it is kept
@@ -46320,7 +46776,7 @@ function sumStory(r){
         why, and "something was installed on top" was a story about a person
         the ledger cannot show. Round J13. */
      ? 'Those agree.'
-     : 'The blueprint says '+esc(elRoot)+'. The field runs '+esc(rootNow)+'. These differ.')+'</span>');
+     : 'The blueprint says '+esc(elRoot)+'. Your energy runs '+esc(rootNow)+'. These differ.')+'</span>');
  }else{
   p.push('There is no birth data on file, so the spiritual layer is not in this reading. '
    +'Date, time and place would put it in. What is running now is '+rootB(rootNow)
@@ -46396,9 +46852,18 @@ function sumStory(r){
     clause "which means it is expanding" stated a cause and is now a
     direction. Round J13, his words: "I keep seeing this percent shit, the
     hardest carrying zero percent. I don't want that." */
- p.push(((lean.read===false?'':'The field leans <b>'
-  +(lean.ben>=lean.mal?'benign':'malignant')+'</b>'
-  +(r.benign===null?'':', toward '+(r.benign?'expanding':'contracting'))+'.')
+ /* THE WORD CARRIES ITS MEANING HERE, 16 October, from the review of the
+    crisis screens. He ruled "Your energy leans malignant" and kept the word,
+    and round PO rules that no term stands without its plain meaning in the
+    same place. A hover tip is not the same place on a phone, so the sentence
+    the glossary already holds for the word (rail:benign, rail:malignant in
+    engine/data/gloss.js) follows it on the page, read from that one table so
+    the two can never say different things. */
+ var leanW=lean.ben>=lean.mal?'benign':'malignant';
+ p.push(((lean.read===false?'':'Your energy leans <b>'
+  +leanW+'</b>'
+  +(r.benign===null?'':', toward '+(r.benign?'expanding':'contracting'))+'. '
+  +unpSay(leanW,'rail'))
   /* .length, because r.excess is a list and an empty list is truthy: this
      told every one of the fourteen reference cases the pole was past paying,
      including the ones with nothing past it. ui.js reads it the same way. */
@@ -46951,7 +47416,7 @@ function sumPlate(r,B){
   /* the direction out, which has never been on a surface a touch screen can
      reach. It is the third of the three things a band is required to carry. */
   +(t&&t.toward?'<div class="s-ptoward"><span class="pm-eye">Where it goes</span>'
-    +esc(t.toward)+'</div>':'')
+    +esc(t.toward)+crisisFloor(t)+'</div>':'')
   +'</div>';}
 /* the head of the page: the plate. On a read profile it is the name, the band
    and where it goes. On an unread one it is what was entered and nothing else,
@@ -47109,13 +47574,14 @@ function sumOutput(r){
     return card('The protocol','Not read yet',
      'Write what happened and this fills in','');}())
   /* A NUMBER CARRIES ITS UNIT. This read "12 away", twelve of what; the
-     record card says the same distance in addresses, so this does too. And
+     record card says the same distance, in patterns since 16 October, the
+     unit the markers count (meterRead, engine/schema.js). And
      the fallback said "The first one. Open some ground and it appears",
      which is false: markersFor() always returns the ladder, on a reference
      age when there is no birth date, so m.next is null only once every
      marker is behind the person. */
   +(m&&m.next?card('Next marker',m.next.nm,
-      m.next.left+(m.next.left===1?' new address':' new addresses')+' away','')
+      m.next.left+(m.next.left===1?' new pattern':' new patterns')+' away','')
     :m?card('Next marker','None left','Every marker is behind you',''):'')
   +'</div>';}
 
@@ -47809,7 +48275,7 @@ function anaRender(){
    /* ROUND RG. The band word stood alone, bold, with nothing on it, which
       is V9's judgement and not a reading. The tier's own first sentence
       rides after it, the same one Clients carries on its tooltip. */
-   :(r.tier?'The field reads <b>'+esc(r.tier.toLowerCase())+'</b>. '+unpSay(r.tier,'tier')+' '
+   :(r.tier?'Your energy reads <b>'+esc(r.tier.toLowerCase())+'</b>. '+unpSay(r.tier,'tier')+' '
      :'Coherence is still filling, with <b>'+esc(tierSay(r))+'</b>. ')
    +(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. '
      /* "Nothing is compounding" is a claim about somebody's chain, and a plan
@@ -48964,12 +49430,12 @@ function avRuleRead(r,now){
    whether a day happened. Distinct days, because ten rituals marked done on
    one afternoon is one day of practice and a wheel that turned ten seats for
    it would be counting presses. */
+/* AND IT IS THE LADDER'S LIST, pracDays in engine/ladder.js. This walked the
+   rituals with its own loop and turned the wheel for days dated a month
+   ahead, which the streak beside it no longer counts. The done rule was the
+   same on every entry the boundary lets in, so only those days move. */
 function avCycles(p){
- var seen={}, n=0;
- ((p&&p.rituals)||[]).forEach(function(x){
-  if(!x)return;
-  if(x.done!==undefined&&!x.done)return;
-  var k=pracDay(x.t); if(k===null||seen[k])return; seen[k]=1; n++;});
+ var n=pracDays(p,Date.now()).length;
  var per=AV_TURN*AV_TURNS, cyc=[];
  for(var c=0;c<AV_CYCLES;c++){
   var turns=[];
@@ -53745,6 +54211,15 @@ function relCoolDown(){
    var previous=JSON.parse(recordBefore);
    Object.keys(CURP).forEach(function(k){delete CURP[k];});
    Object.keys(previous).forEach(function(k){CURP[k]=previous[k];});
+   /* AND THE WORKING STATE WITH IT, 16 October. compute() and saveProfile
+      read S, not CURP, so restoring CURP alone left S.charge at the released
+      values: the page read the release as landed, and the next unrelated
+      save wrote that charge onto the record with no release in its history.
+      Measured before this line: 3 charged addresses on the record, a refused
+      release, one ordinary save, a reload, and 0 charged with 0 releases.
+      loadProfile rebuilds S from the restored record, so the card keeps the
+      run and the record and the reading both stay where they were. */
+   loadProfile(CURP);
    RUN.recordRestored=true;
   }catch(e){ RUN.recordRestored=false; }
  }
@@ -55321,10 +55796,17 @@ function relResults(){
   +'<div class="rel-node rel-rs-hero">'+(RUN.halted?'':'Congratulations. ')
   +'You released '+t.said+(t.said===1?' pattern':' patterns')+' and recharged '+t.put+'.</div>'
   +relEndNote();
+ /* "NEW MARK" WAS A CLAIM THE RECORD CANNOT MAKE. marksNew is what the ladder
+    reads after this run and did not read before it, and nothing stores a mark
+    once earned (TDD v3 1.2, unbuilt), so a mark held last week, lost when an
+    undo took an axis back or a done press was taken off, and true again now
+    was announced as new. What the record can say is that this release is
+    where the mark became true, so that is what the card says. Stored marks,
+    Block 3 of the achievements plan, are what would make "new" knowable. */
  (RUN.marksNew||[]).forEach(function(m){
   out+='<div class="rel-mark" style="--c:'+(typeof seatCol==='function'?seatCol(m.b):'var(--accent)')+'">'
    +'<svg viewBox="0 0 24 24" class="rel-mark-i" aria-hidden="true"><path d="'+esc(m.ic||'')+'"/></svg>'
-   +'<span><span class="rel-mark-k">New mark</span><b>'+esc(m.nm)+'</b><em>'+esc(m.d)+'</em></span></div>';});
+   +'<span><span class="rel-mark-k">Earned on this release</span><b>'+esc(m.nm)+'</b><em>'+esc(m.d)+'</em></span></div>';});
  /* 2. left and right, mirrored, the same panels the run counted on */
  if(t.side)out+=relSect('Left and right',
   '<div class="rel-lrw">'+relSidePanel('L',t,null)+relSidePanel('R',t,null)+'</div>'
@@ -56689,9 +57171,19 @@ function ritTodayHtml(act,today,L){
     by side. The two rules are the ladder's, in engine/ladder.js, and the
     mismatch is reported there. Here the longest run a person has held is at
     least the one they are holding. */
- var s=L.streak, kd={}, best=Math.max(s.best||0,s.run||0);
- ((CURP&&CURP.rituals)||[]).forEach(function(x){if(ritIsDone(x)){var k=pracDay(x.t); if(k!==null)kd[k]=1;}});
- var kept=Object.keys(kd).length;
+ /* AND THAT MADE BEST A NUMBER NOBODY HELD. The sentence printed under these
+    figures says "Best is your longest run with no gap", and max(best, run)
+    put the forgiving run under that word: seven days practised every other
+    day read Best 7 days for a person whose longest run with no gap is one,
+    measured on f7188cba. Best is streakRead's best, the strict row, and when
+    it is shorter than the streak the two say different true things, which
+    the sentence under them explains. */
+ /* KEPT IS THE ENGINE'S OWN COUNT. This page recounted the days with its own
+    loop and counted a day dated a month ahead as kept, beside a streak that
+    no longer did (pracSoon, engine/ladder.js). One count of days practised,
+    read in one place, cannot disagree with itself. */
+ var s=L.streak, best=s.best||0;
+ var kept=s.days||0;
  return '<div class="rv-today">'
   +'<div class="rv-hero">'+svg+'<div class="rv-mid"><b>'+(s.run||'\u2013')+'</b><span>Streak</span></div></div>'
   /* A ZERO IS A DASH, COPY.md Value. Round J13. */
@@ -57798,7 +58290,7 @@ function acctMissHtml(st){
 function acctDoneHtml(st){
  return '<div class="rv-sec rv-done"><div class="rv-hd"><span class="rv-h">Done</span></div>'
   +ritTodayHtml(st.act.filter(function(p){return ritDue(p,st.today);}),st.today,st.L)
-  +'<p class="rv-mean">Streak is your current run of days with a ritual on the record. One skipped day is forgiven and a longer gap halves it. '
+  +'<p class="rv-mean">'+esc(STREAK_MEANS)+' '
   +'Best is your longest run with no gap. Kept is the days you marked a ritual done. Practised is the minutes you put in.</p>'
   /* the earned marks stay here, with the record that earned them. The next one
      moved to the Ongoing goal card in the centre, round QN, because the next
@@ -58387,7 +58879,7 @@ function ritGoalHtml(st){
  var m=st.L.next;
  if(m)h+='<div class="rv-nxm" style="--c:'+seatCol(m.b)+'"><span class="rv-nxi" aria-hidden="true">'
   +'<svg viewBox="0 0 24 24"><path d="'+m.ic+'"/></svg></span>'
-  +'<span class="rv-nxt"><span class="rv-lb">Next mark</span><b>'+esc(m.nm)+'</b><span>'+esc(m.d)+'</span></span></div>';
+  +'<span class="rv-nxt"><span class="rv-lb">Next mark</span><b>'+esc(m.nm)+'</b><span>'+esc(m.to)+'</span></span></div>';
  return h+'</section>';}
 
 /* ---------------- did it work ---------------- */
@@ -62680,8 +63172,11 @@ function coneClose(){
    only count things that happened. Then the marks earned, and one line naming
    the next.
 
-   NOTHING HERE PRINTS A COUNT AGAINST A TOTAL. Sixteen marks exist and the
-   surface never says sixteen. Earned ones are shown, the next is named with
+   NOTHING HERE PRINTS A COUNT AGAINST A TOTAL. MARKS (engine/ladder.js) holds
+   every mark there is and the surface never says how many. This line said
+   "Sixteen marks exist" after two more had landed at round QS, which is the
+   count typed into prose that CLAUDE.md warns about, so the number is read off
+   MARKS.length and not written here. Earned ones are shown, the next is named with
    what it takes, and the rest are not enumerated, because a list of a person's
    unfinished self is a completion bar and this is not a game about becoming
    whole.
@@ -62689,26 +63184,37 @@ function coneClose(){
 function ladderHtml(){
  var L=ladderRead(CURP,Date.now()), s=L.streak, l=L.ledger;
  var h='<div class="ld"><div class="pm-eye">The record</div>';
- /* the streak. A run that has lapsed still says what it was, because the
-    thing a person built is not deleted by their having stopped. */
- h+='<div class="ld-streak'+(s.live?' live':'')+'">'
+ /* THE STREAK SAYS WHAT IT IS, AND THREE LINES HERE SAID WHAT IT WAS NOT.
+    Measured on f7188cba. A blank record read "Build one ritual and save it,
+    and the first day is on", and since 21.J2 a saved ritual is a plan: only
+    a ritual marked done puts a day on. A lapsed one read "10 days, last run"
+    and "The run ended 20 days ago ... Practise today and a new one starts",
+    and practising today put 5 on screen, half the old run and not a new one.
+    The halving now lands on the gap (streakRead, engine/ladder.js), so the
+    figure is the one that stands, and it carries its meaning on the figure,
+    the sentence the Accountability column already prints under its own. The
+    absence is not counted in days, DESIGN-ladder anti design 5: the line
+    gives the date of the last day practised, TDD v3 10.5, and the button
+    under it is the route. */
+ var dys=function(n){return n+(n===1?' day':' days');};
+ h+='<div class="ld-streak'+(s.live?' live':'')+'" title="'+esc(STREAK_MEANS)+'">'
   +'<span class="ld-n">'+(s.run?s.run:'\u2013')+'</span>'
   /* the space before the comma was on the screen: "14 days , last run". */
-  +'<span class="ld-u">'+(s.run?(s.run===1?'day':'days')+(s.live?' running':', last run'):'')+'</span>'
+  +'<span class="ld-u">'+(s.run?(s.run===1?'day':'days')+(s.live?' running':''):'')+'</span>'
   +'</div>';
+ var lastOn=(s.last!=null&&typeof ritDateOf==='function'&&typeof relDay==='function')?relDay(ritDateOf(s.last)):'';
  if(!s.days)
-  h+='<p class="ld-p">Nothing on the record yet. Build one ritual and save it, '
-   +'and the first day is on.</p>';
+  h+='<p class="ld-p">Nothing on the record yet. Mark a ritual done and the first day is on.</p>';
  else if(!s.live)
-  h+='<p class="ld-p">The run ended '+s.gap+' days ago. Longest held: '
-   +s.best+'. Practise today and a new one starts.</p>';
+  h+='<p class="ld-p">'+(lastOn?'Last practised '+esc(lastOn)+'. ':'')
+   +(s.best>s.run?'Longest held: '+dys(s.best)+'.':'')+'</p>';
  else if(s.best>s.run)
-  h+='<p class="ld-p">Longest held: '+s.best+' days.</p>';
+  h+='<p class="ld-p">Longest held: '+dys(s.best)+'.</p>';
  /* THE ACCOUNTABILITY HALF. A record that only reports is a scoreboard. This
     says where today stands and hands over the one control that changes it, so
     a person is never told they are behind on a surface that cannot do
-    anything about it. Today counts as done the moment a ritual is saved with
-    today's date, which is the same fact the streak is counted from, so the two
+    anything about it. Today counts as done the moment a ritual for today is
+    marked done, which is the same fact the streak is counted from, so the two
     can never disagree. */
  h+='<div class="ld-acc">'
   +(s.gap===0
@@ -62760,7 +63266,9 @@ function ladderHtml(){
     +'<span class="ld-md">'+esc(m.d)+'</span></div>';});
   h+='</div>';}
  if(L.next)
-  h+='<p class="ld-next"><b>'+esc(L.next.nm)+'</b> '+esc(L.next.d)+'</p>';
+  /* what it takes, never what it means once held: the d line is past tense
+     and read as a mark already earned (L2, engine/ladder.js) */
+  h+='<p class="ld-next"><b>'+esc(L.next.nm)+'</b> '+esc(L.next.to)+'</p>';
  return h+'</div>';}
 
 try{window.__at&&window.__at('ui/cone.js');}catch(e){}
@@ -63237,7 +63745,7 @@ function runCoreDrill(){
    +(r.PULL>=0.005?', with the shadow taking <b>'+Math.round(r.PULL*100)+' per cent</b>':''))+'.</p>'
   +'<div class="pm-eye">The read</div><p class="ad-p">'
   /* benign is null while CQ is still filling, and the clause waits with it */
-  +(r.benign===null?'':'The field is <b>'
+  +(r.benign===null?'':'Your energy is <b>'
     +(r.benign?'expanding':'contracting '+r.malig+'%')+'</b>. ')+'Radiance <b>'
   +(r.radiance*100).toFixed(0)+'%</b>. The field is the geometry of that '
   +'radiance. It is harmonic, so patterns sit at registers rather than '
@@ -64196,7 +64704,7 @@ function runCompassDrill(){
  var h='<div class="pm-eye">The compass</div><div class="ad-nm">'
   +(r.unread?'not read yet':'CQ '+Math.round(cq)+', '+tierSay(r).toLowerCase())+'</div>'
   +'<div class="pm-eye">How to read it</div><p class="ad-p">The line runs 0 at the base to 100 at the crown, and the word changes every ten points. '
-  +'Above '+MEDIAN+' the field builds more than it costs. Below '+MEDIAN+' it costs more than it builds. '
+  +'Above '+MEDIAN+' your energy builds more than it costs. Below '+MEDIAN+' it costs more than it builds. '
   +MEDIAN_LO+' to '+MEDIAN_HI+' is the median range, where the reading crosses the line in both directions'
   +(medianRange(cq)&&!r.unread&&r.complete?', and that is where this one sits':'')+'. '
   /* "THE SWING, 11 POINTS" IS GONE FROM HERE TOO. Ruled as a class rather
@@ -64221,7 +64729,7 @@ function runCompassDrill(){
   +(me.soma?'<div class="pm-eye">The state</div><p class="ad-p"><b>'
     +esc(me.state)+'.</b> '+esc(me.soma)+'</p>':'')
   +'<div class="pm-eye">How it shows up</div><p class="ad-p">'+esc(me.energy)+'</p>'
-  +'<div class="pm-eye">Where it goes</div><p class="ad-p">'+esc(me.toward)+'</p>';
+  +'<div class="pm-eye">Where it goes</div><p class="ad-p">'+esc(me.toward)+'</p>'+crisisFloor(me);
  h+='<div class="pm-eye">The whole scale</div><div class="ad-rows">'
   +TIERDEF.map(function(t){
     return '<div class="ad-r static'+(t.nm===r.tier&&!r.unread?' on':'')+'" title="'+esc(t.soma||t.def)+'">'
@@ -64289,10 +64797,10 @@ function runSpDrill(kind,val){
   means=[unpackOf('design'),/^\d\/\d$/.test(String(val))?unpackOf('profile'):''];
   /* the comparison reads CQ against the median, which a CQ still filling
      cannot answer: it would call every Generator's field contracting */
-  extra=!r.complete?'A '+val+'. Coherence is still filling, so the field has no direction to compare yet.'
+  extra=!r.complete?'A '+val+'. Coherence is still filling, so your energy has no direction to compare yet.'
    :'A '+val+' at CQ <b>'+Math.round(r.CQ)+'</b>. '
    +((val==='Generator'||val==='Manifesting Generator')===(r.CQ>=50)
-     ?'Type and field point the same way.':'Type and field point differently.');
+     ?'Type and energy point the same way.':'Type and energy point differently.');
  } else if(kind==='auth'){
   t='Authority'; sub='where the decision lands';
   runs='the body signal this person is meant to decide from, rather than the mind';
@@ -64312,7 +64820,7 @@ function runSpDrill(kind,val){
     +means.filter(Boolean).map(esc).join(' ')+'</p>':'')
   +'<div class="pm-eye">How it runs through you</div>'
   +'<p class="ad-p">'+(runs||'no behaviour on file')+'</p>'
-  +(extra?'<div class="pm-eye">Against your field</div><p class="ad-p">'+extra+'</p>':''));}
+  +(extra?'<div class="pm-eye">Against your energy</div><p class="ad-p">'+extra+'</p>':''));}
 
 /* ============================================================
    THE NUMEROLOGY DRILL. One number, what it was reduced from, and
@@ -65377,8 +65885,9 @@ function recRender(){
     line adds stays, and the horizon is said once, where the distance to the
     next marker is. */
  h+='<div class="rec-lead"><div class="pm-eye">Opened</div>'
-  +'<div class="rec-big">'+m.unique+(m.unique===1?' address':' addresses')+'</div>'
-  +'<div class="sum-lc">'+(m.unique
+  /* m.ground, the addresses, never m.unique, the patterns (meterRead) */
+  +'<div class="rec-big">'+m.ground+(m.ground===1?' address':' addresses')+'</div>'
+  +'<div class="sum-lc">'+(m.ground
     ? 'opened at least once, from '+m.lines+(m.lines===1?' line':' lines')+' spoken'
     : 'nothing opened yet')+'.</div>';
  /* THE LADDER IS THEIRS. A threshold is a fraction of what a person is
@@ -65393,8 +65902,11 @@ function recRender(){
  if(m.next)
   h+='<div class="rec-next"><span class="pm-eye">Next</span>'
    +'<b>'+esc(m.next.nm)+'</b>'
+   /* the ruler is patterns, so the distance is (meterRead, OPENED IS
+      ADDRESSES). It said addresses, and 440 new addresses is more than the
+      body has. */
    +'<span class="rec-nl">'+m.next.left
-     +(m.next.left===1?' new address':' new addresses')+' away</span>'
+     +(m.next.left===1?' new pattern':' new patterns')+' away</span>'
    /* THE THIRD LINE GOES WHEN IT HAS NOTHING TO SAY. It read "your own scale,
       50 addresses of about 300" under a distance already given in addresses,
       a second figure and a count against a total on the smallest line of the
@@ -66873,8 +67385,11 @@ function profileSheet(){
   /* "of 112" was a count against a total, which is the one thing a reading
      may never be. The number of addresses carrying is the fact. */
   +'<div class="sh-row"><span>Addresses carrying</span><b>'+r.loaded.length+'</b></div>'
-  +(m?'<div class="sh-row"><span>Ground opened</span><b>'+m.unique+'</b></div>':'')
-  +(m&&m.next?'<div class="sh-row"><span>Next marker</span><b>'+esc(m.next.nm)+', '+m.next.left+' away</b></div>':'')
+  /* addresses opened, the Compass ledger's count, and the distance in the
+     patterns the markers count, each with its unit (meterRead). This printed
+     the pattern count under Ground opened, and a bare distance. */
+  +(m?'<div class="sh-row"><span>Ground opened</span><b>'+m.ground+(m.ground===1?' address':' addresses')+'</b></div>':'')
+  +(m&&m.next?'<div class="sh-row"><span>Next marker</span><b>'+esc(m.next.nm)+', '+m.next.left+(m.next.left===1?' new pattern':' new patterns')+' away</b></div>':'')
   +'</div>'
   +planSection(m)
   +'<div class="sh-sec"><div class="pm-eye">Screen</div>'
@@ -69802,6 +70317,15 @@ function profMenu(){
   +'<button type="button" role="menuitem" class="pm-it" data-pmlog="1">'
   +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6.5h14M5 12h14M5 17.5h9"/></svg></span>'
   +'<span>Message log</span></button>'
+  /* IS THIS A CRISIS, after the first run, 16 October. The welcome carries
+     the button and is met once, so the same press has to be somewhere a
+     person can still reach on any day, and the menu on every screen's top bar
+     is that place. The same words and the same panel, ui/crisis.js; the ring
+     is a closed circle with a mark through its centre, stroked, never filled. */
+  +'<button type="button" role="menuitem" class="pm-it" data-pmcrisis="1">'
+  +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/>'
+  +'<path d="M12 7.5v5.5M12 16.2v.3"/></svg></span>'
+  +'<span>'+esc(CRISIS_SAY.open)+'</span></button>'
   +'<button type="button" role="menuitem" class="pm-it pm-all" data-pms="">'
   +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/>'
   +'<path d="M12 3.5v2.2M12 18.3v2.2M3.5 12h2.2M18.3 12h2.2M6 6l1.6 1.6M16.4 16.4L18 18M18 6l-1.6 1.6M7.6 16.4L6 18"/></svg></span>'
@@ -69842,6 +70366,11 @@ function profMenu(){
  if(jn)jn.onclick=function(){profMenuShut();};
  var lg=m.querySelector('[data-pmlog]');
  if(lg)lg.onclick=function(){profMenuShut(); if(typeof msgLogOpen==='function')msgLogOpen();};
+ /* the menu shuts first and focus goes to the profile button, so closing the
+    panel puts a keyboard back on the control the menu hung from */
+ var cr=m.querySelector('[data-pmcrisis]');
+ if(cr)cr.onclick=function(){profMenuShut(); var pb=document.getElementById('profbtn'); if(pb)pb.focus();
+  if(typeof crisisOpen==='function')crisisOpen();};
  var o=m.querySelector('[data-pmout]');
  if(o)o.onclick=function(){profMenuShut(); if(typeof accSignOut==='function')accSignOut();};
  var r=b.getBoundingClientRect();
@@ -70402,7 +70931,7 @@ var PRAC_SEL=null, PRAC_SORT='attn', PRAC_RCACHE={};
    coherence band, which read as near duplicates of whichever ICP solved the
    same band: a wider list would be longer and not more worth looking at.
    These ten are the six ICPs plus four reference cases chosen to span the
-   scale the ICPs do not reach on their own: Gordon near the floor (Collapsed,
+   scale the ICPs do not reach on their own: Gordon near the floor (Contracted,
    a defended field that calls itself fine), Ana in the middle (Oscillating,
    "in the middle of something"), Abraham near the ceiling (Embodied, real
    load still in it), and Wren at the top (Mastery, one thing still held).
@@ -71628,7 +72157,7 @@ function pselName(p,up){
    The examples were two groups by an accident of how they were added: the six
    ICPs under Examples and everyone else under More examples. Ruled round PL
    (J12): "Fix all of the profiles. By tier." So the group heading is the
-   coherence tier, Collapsed first and Mastery last, and inside a tier the
+   coherence tier, Contracted first and Mastery last, and inside a tier the
    lowest CQ comes first, which gives one run from the floor of the scale to
    the ceiling with the person's name and role unchanged on each row.
 
@@ -72280,6 +72809,19 @@ try{window.__at&&window.__at('ui/rootsum.js');}catch(e){}
    ============================================================ */
 var LP={memo:null, sig:'', all:false, open:{}, wired:false};
 
+/* WHICH RECORD A ROW'S OPEN STATE BELONGS TO, 16 October. LP.open was one
+   map keyed by pattern alone, and the toggle that fires when a first row is
+   drawn open wrote into it, so every record opened its first row on every
+   other record that carries the same pattern. Measured on 4c6185d: after
+   Sofia, Diane, Marcus, Angela and Derek, James opened Pride as well as his
+   own first row, and Summary printed his unanswered line twice. Keyed by the
+   record now, the way the undo stack and S.rec already are; a worked example
+   has no id and is keyed by its place in the roster. */
+function lpWho(){
+ var p=(typeof CURP!=='undefined')?CURP:null;
+ return p&&p.id?'r:'+p.id:'w:'+((typeof S!=='undefined'&&S.who!=null)?S.who:'');}
+function lpOpen(w){return LP.open[w]||(LP.open[w]={});}
+
 /* the parts of the record traceFromRecord reads, and nothing else */
 function loopSig(p){
  if(!p)return '';
@@ -72337,9 +72879,10 @@ function lpChain(x){
   return '<li><span class="lp-cl">'+s[0]+'</span><span class="lp-cv">'+s[1]+'</span></li>';}).join('')+'</ol>';}
 
 function lpRow(x,i){
- var open=LP.open[x.key]!==undefined?LP.open[x.key]:i===0;
+ var w=lpWho(), was=lpOpen(w)[x.key];
+ var open=was!==undefined?was:i===0;
  var seat=x.seat?unp(String(x.seat).toLowerCase(),x.seat+' seat','seat'):'';
- return '<details class="lp-p" data-lpk="'+esc(x.key)+'"'+(open?' open':'')+'>'
+ return '<details class="lp-p" data-lpk="'+esc(x.key)+'" data-lpw="'+esc(w)+'"'+(open?' open':'')+'>'
   +'<summary><span class="lp-pn"><b>'+esc(x.name)+'</b>'+(seat?'<em>'+seat+'</em>':'')+'</span>'
   +'<span class="lp-st lp-'+x.state+'">'+(x.state==='confirmed'?'Confirmed':'Unanswered')+'</span></summary>'
   +lpChain(x)+'</details>';}
@@ -72411,7 +72954,10 @@ function loopRepaint(){
 function loopWire(){
  if(LP.wired)return; LP.wired=true;
  document.addEventListener('toggle',function(ev){var d=ev.target;
-  if(d&&d.getAttribute&&d.getAttribute('data-lpk'))LP.open[d.getAttribute('data-lpk')]=d.open;},true);
+  /* the record is read off the row, never off CURP at the time the event
+     arrives, because the toggle is queued and the record may have moved */
+  if(d&&d.getAttribute&&d.getAttribute('data-lpk'))
+   lpOpen(d.getAttribute('data-lpw')||lpWho())[d.getAttribute('data-lpk')]=d.open;},true);
  document.addEventListener('click',function(ev){
   var b=ev.target&&ev.target.closest?ev.target.closest('[data-lprel],[data-lpall]'):null;
   if(!b)return;
@@ -72791,6 +73337,151 @@ function railSection(sec,opening){
 
 try{window.__at&&window.__at('ui/railmotion.js');}catch(e){}
 /* ============================================================
+   IS THIS A CRISIS. 16 October, his words: "Maybe [the crisis check] belongs
+   in the pop-up, the welcome. Maybe it's an option. Is this a crisis? Hit
+   that button. Tell me about it. Do you need immediate emergency contact, or
+   would you like to talk it through? It's always a story."
+
+   WHAT IT IS: a button the person chooses to press, and the one small panel
+   it opens. It reads nothing anybody writes. The automatic check he deferred
+   on 9 October is a different thing and is still J0 in ui/onboard.js; this
+   does not close it and does not pretend to, and tests/onboarding2.js still
+   asserts that no detector exists.
+
+   WHERE THE BUTTON IS, every place, so a person never has to hunt for it:
+     the login door      the first card a stranger meets, under its actions
+                         (loginCard, ui/login.js)
+     the first run       the stage's own top bar, on every one of its steps,
+                         beside Not now (obStage, ui/onboard.js)
+     after the first run the profile menu, one row (profMenu, ui/account.js)
+     the funnel's quiz   its sticky top, with its own copy of this panel over
+                         the same words (funnel/quiz.html)
+
+   THE PANEL IS ITS OWN LAYER AND NOT #sheet. The sheet sits at z-index 70,
+   under the login door and the first run's stage at 95, so a panel opened
+   from either would open behind the card it was pressed on. And the sheet's
+   Escape, the stage's Escape and the profile menu's Escape all listen on the
+   way up: one key would have shut the panel and the whole first run with it.
+   So this listens on the way down and stops the key there, and it is the
+   only thing Escape closes while it is open.
+
+   NEVER A LOCK. Close, Escape and the backdrop each shut it, and nothing
+   behind it moves: the card it was opened from is exactly where it was and
+   focus goes back to the button that opened it. Talk it through is the one
+   choice that moves the person, and it moves them to the Story box.
+   ============================================================ */
+var CRISIS={open:false, view:'ask', back:null};
+/* the button, for every surface that carries it. cls is the surface's own
+   placement; the words are CRISIS_SAY's, so every door says the same thing. */
+function crisisBtn(cls){
+ return '<button type="button" class="crx-open'+(cls?' '+cls:'')+'" data-crisis="open" '
+  +'aria-haspopup="dialog">'+esc(CRISIS_SAY.open)+'</button>';}
+/* UNDER THE FLOOR BAND'S DIRECTION, 16 October, from the review of these
+   screens. The lowest band told a person to take the weight off with somebody
+   else and gave them nobody to reach. Every surface that prints that band's
+   "Where it goes" calls this and gets the button directly under the sentence,
+   at the size of the page's own Run a release (.crx-near), because here it is
+   the next step and not a way out of a flow. The band is known by its
+   threshold, the one band that starts at zero, not by its name: the name was
+   renamed once already this month. Anything else gets nothing. */
+/* REACH SOMEONE NOW, as a door of its own, for the Story page after Talk it
+   through: the person already chose to write, so the question is not asked
+   again and the panel opens on the numbers. The words are the panel's own
+   choice, CRISIS_SAY.reach, so the door and the panel say the same thing. */
+function crisisReachBtn(cls){
+ return '<button type="button" class="btn crx-reach'+(cls?' '+cls:'')+'" data-crisis="reachnow" '
+  +'aria-haspopup="dialog">'+esc(CRISIS_SAY.reach)+'</button>';}
+function crisisFloor(t){
+ return t&&t.at===0?'<p class="crx-line">'+crisisBtn('crx-near')+'</p>':'';}
+/* ONE SCREEN, TWO VIEWS. ask is his two lines, the line that says where Talk
+   it through goes and that no person reads it, and the two choices; reach is
+   the three numbers, each with its name, and the line that says where else
+   988 answers. Talk it through and Close are on both, so whichever a person
+   is looking at, the way on and the way out are on it. */
+function crisisCard(){
+ var reach=CRISIS.view==='reach';
+ return '<div class="crx-card" role="dialog" aria-modal="true" aria-labelledby="crxh">'
+  +'<h2 class="crx-h" id="crxh" tabindex="-1">'+esc(reach?CRISIS_SAY.reach:CRISIS_SAY.h)+'</h2>'
+  +(reach
+   ?'<ul class="crx-ls">'+CRISIS_LINES.map(function(l){
+     return '<li data-crisisline="'+esc(l.k)+'"><p class="crx-p">'+esc(l.say)+'</p>'
+      +'<div class="crx-go">'+l.go.map(function(g){
+        return '<a class="btn crx-tel'+(g[2]?' pri':'')+'" href="'+esc(g[1])+'">'+esc(g[0])+'</a>';}).join('')
+      +'</div></li>';}).join('')+'</ul>'
+    +'<p class="crx-p crx-dim">'+esc(CRISIS_SAY.where)+'</p>'
+   :'<p class="crx-p">'+esc(CRISIS_SAY.q)+'</p>'
+    +'<p class="crx-p crx-dim">'+esc(CRISIS_SAY.journal)+'</p>')
+  +'<div class="crx-acts">'
+  +(reach?'':'<button type="button" class="btn pri" data-crisis="reach">'+esc(CRISIS_SAY.reach)+'</button>')
+  +'<button type="button" class="btn" data-crisis="talk">'+esc(CRISIS_SAY.talk)+'</button>'
+  +'<button type="button" class="btn" data-crisis="close">'+esc(CRISIS_SAY.close)+'</button>'
+  +'</div></div>';}
+/* the host is made on first use, so no shell markup carries an empty layer */
+function crisisHost(){
+ var h=document.getElementById('crisis');
+ if(!h){ h=document.createElement('div'); h.id='crisis'; h.className='crx'; h.hidden=true;
+  document.body.appendChild(h); }
+ return h;}
+function crisisPaint(){
+ var h=crisisHost(); h.innerHTML=crisisCard();
+ var f=h.querySelector('#crxh'); if(f)f.focus({preventScroll:true});}
+function crisisOpen(){
+ CRISIS.back=document.activeElement||null;
+ CRISIS.open=true; CRISIS.view='ask';
+ var h=crisisHost(); h.hidden=false; crisisPaint();}
+/* keep says the person is going on somewhere and focus goes with them: the
+   button that opened the panel is on a card that is about to leave */
+function crisisShut(keep){
+ var h=document.getElementById('crisis');
+ CRISIS.open=false; CRISIS.view='ask';
+ if(h){ h.hidden=true; h.innerHTML=''; }
+ var b=CRISIS.back; CRISIS.back=null;
+ if(!keep&&b&&b.focus&&document.contains(b))b.focus({preventScroll:true});}
+/* TALK IT THROUGH, "it's always a story". The panel shuts, whatever card it
+   was opened over steps aside, and the person lands in the Story tab with
+   the box itself, not the reply line, open and focused and one line above it
+   saying what to do. The door and the first run are left the way their own
+   ways out leave them: the login door as Guest leaves it, the first run as
+   Open Avatar leaves it (obClose, then the tab), so neither has a second
+   path out that skips what its own close writes. */
+function crisisTalk(){
+ crisisShut(true);
+ if(typeof LOGIN!=='undefined'&&LOGIN.open&&typeof loginClose==='function')loginClose();
+ if(typeof OB!=='undefined'&&OB.open&&typeof obClose==='function')obClose();
+ if(typeof STV!=='undefined'){ STV.chat=false; STV.focus='write'; STV.crisis=true; }
+ if(typeof setTab==='function')setTab(TAB.STORY);
+ if(typeof render==='function')render();
+ var ta=document.getElementById('sttext'); if(ta)ta.focus();}
+addEventListener('click',function(e){
+ var t=e.target&&e.target.closest?e.target:null; if(!t)return;
+ var h=document.getElementById('crisis');
+ /* the backdrop is a way out, the card is not */
+ if(CRISIS.open&&h&&t===h){ crisisShut(); return; }
+ var b=t.closest('[data-crisis]'); if(!b)return;
+ var k=b.getAttribute('data-crisis');
+ if(k==='open'){ e.preventDefault(); crisisOpen(); return; }
+ if(k==='reachnow'){ e.preventDefault(); crisisOpen(); CRISIS.view='reach'; crisisPaint(); return; }
+ if(!CRISIS.open)return;
+ if(k==='reach'){ CRISIS.view='reach'; crisisPaint(); return; }
+ if(k==='talk'){ crisisTalk(); return; }
+ if(k==='close'){ crisisShut(); return; }});
+/* ON THE WAY DOWN, see the header: the panel takes Escape before the stage,
+   the sheet or the menu can, and keeps Tab inside itself, because a modal a
+   keyboard can tab out of leaves a person typing into a card they cannot
+   see. */
+addEventListener('keydown',function(e){
+ if(!CRISIS.open)return;
+ if(e.key==='Escape'){ e.preventDefault(); e.stopPropagation(); crisisShut(); return; }
+ if(e.key!=='Tab')return;
+ var h=document.getElementById('crisis'); if(!h)return;
+ var f=[].slice.call(h.querySelectorAll('a[href],button'));
+ if(!f.length)return;
+ var i=f.indexOf(document.activeElement);
+ if(e.shiftKey&&(i<=0)){ e.preventDefault(); f[f.length-1].focus(); }
+ else if(!e.shiftKey&&(i<0||i===f.length-1)){ e.preventDefault(); f[0].focus(); }},true);
+
+try{window.__at&&window.__at('ui/crisis.js');}catch(e){}
+/* ============================================================
    ONBOARDING, ROUND PS. The three reviews (REVIEW-onboarding/) and three
    rounds of mockup (mockups/onboarding-v2/) converged on one flow: arrive,
    the twelve starting points, settle, feel, body, story, a mirror with a
@@ -72846,6 +73537,14 @@ try{window.__at&&window.__at('ui/railmotion.js');}catch(e){}
    where the first stranger's words are actually read, for the same warning
    placed at the exact line it describes. Tracked in the owner's plan as J0,
    a ship blocker for any build a stranger who is not the owner can reach.
+
+   AND A BUTTON IS NOT A DETECTOR, 16 October. He ruled the crisis option onto
+   the welcome as a choice: "Is this a crisis? Hit that button." It is in the
+   stage's top bar on every step (obStage) and its panel is ui/crisis.js. It
+   answers a real signal, the person's own press, so it is not the frame the
+   paragraph above refuses; and it reads no word anybody writes, so J0, the
+   automatic check he deferred on 9 October, is still exactly as open as this
+   header says.
    ============================================================ */
 /* THE AUTOMATIC OPEN IS OFF BY ITS OWN FLAG, unchanged: ui/login.js's
    loginEnter runs this sheet on its own switch, DEV_PLAY_ONBOARDING, and
@@ -73191,6 +73890,7 @@ function obRing(){
    and a Not now that answers to data-ob. */
 function obStage(h,n,xattr){
  if(h.querySelector('.obx-slot'))return;
+ var own=!!xattr;
  n=n||OB_NSTEPS; xattr=xattr||'data-ob="skip"';
  var wm=document.querySelector('#brand .bn'), mark=wm?wm.outerHTML:'';
  h.classList.add('obx');
@@ -73206,6 +73906,11 @@ function obStage(h,n,xattr){
   +Array.from({length:n}).map(function(_,i){
     return '<span class="ob-dot" style="--k:'+i+'"></span>';}).join('')+'</div>'
   +'<span class="obx-step"></span></div>'
+  /* IS THIS A CRISIS, 16 October, on the first run's stage only, in the top
+     bar beside Not now so it stands on every step and not on one card. The
+     Day One tutorial stands on this stage with its own way out (xattr) and
+     is left as it was. ui/crisis.js has the panel. */
+  +(own?'':crisisBtn('obx-crx'))
   +'<button type="button" class="obx-x" '+xattr+'>Not now</button>'
   +'</div>'
   +'<div class="obx-slot"></div>';}
@@ -74749,9 +75454,19 @@ function loginCard(mail){
   +'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-go">Log in</button>'
   +'<button type="button" class="btn" id="loginb-new">Create account</button>'
   +'<button type="button" class="btn" id="loginb-skip">Guest</button></div>'
+  /* IS THIS A CRISIS, 16 October: the first card a stranger meets carries the
+     button, under the three ways in and never in front of them, so it is
+     always there and never the thing a person has to read past. The panel and
+     the reason it is its own layer are in ui/crisis.js. */
+  +'<p class="crx-line">'+crisisBtn()+'</p>'
   /* THE DOOR'S LEGAL LINE, 16 October. The first place a person can make an
      account, so the two pages that say what an account sends and keeps are
-     linked here, before the press (legalLink, ui/account.js). */
+     linked here (legalLink, ui/account.js). It is the card's foot and sits
+     under the crisis button, never between it and the three ways in: there
+     it would put two links ahead of the button in the tab order and a line
+     of text above it on a phone, and the button is the one control a person
+     in trouble should reach with the fewest presses after the three.
+     tests/onboarding2.js holds the button on the first screen at 390. */
   +'<p class="login-legal">Read '+legalLink('privacy')+' and '+legalLink('terms')
   +' before you make an account.</p>'
   +loginDevOptions()
@@ -76922,5 +77637,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005046880"></div>
+<div id="eof" hidden data-len="005093712"></div>
 </body></html>

@@ -131,7 +131,7 @@ near(r.CQ,100,0.001,'all laws 10, nothing held, CQ is 100');
 ok(r.tier==='Mastery','and the tier is Mastery');
 r=reset(10,0,0);
 ok(r.CQ>=0,'CQ never goes below 0');
-ok(r.tier==='Collapsed','all laws 0, everything held, tier is Collapsed');
+ok(r.tier==='Contracted','all laws 0, everything held, tier is Contracted');
 for(let h=0;h<=10;h+=2)for(let l=0;l<=10;l+=2){
  const x=reset(h,0,l);
  if(x.CQ<0||x.CQ>100){ok(false,'CQ out of range at held '+h+' law '+l);}}
@@ -173,6 +173,24 @@ const sh=E.verpRead();
 ok(sh.length===6&&sh.every(v=>v.mult>0),'six gates, each with a multiplier');
 ok(sh.filter(v=>v.side==='higher').length===3&&sh.filter(v=>v.side==='lower').length===3,
    'three higher, three lower');
+/* A PHRASE OUTRANKS THE WORDS INSIDE IT. verpScan was a bare indexOf, so
+   Intention's 'kept going' counted inside Attachment's 'kept going over', and
+   a cue counted inside a longer word. Red on f7188cba, each check beside the
+   known good case it must not break. */
+{const hit=t=>E.verpScan(t).hits;
+ const a=hit('I could not stop thinking about it, it had me all night and I kept going over it');
+ ok(a.attach===3&&a.intent===0,'kept going over is Attachment and not Intention as well, got '+JSON.stringify(a));
+ ok(hit('It rose and I kept going with the work').intent===1,'while kept going on its own is still Intention');
+ ok(hit('it did not seem like much').ignore===0,'a cue does not match inside a longer word: did not see in did not seem');
+ ok(hit('I stayed one more hour').intent===0&&hit('I stayed on it').intent===1,'stayed on is not read off stayed one, and is read off itself');
+ ok(hit('I kept going over it, and later I kept going').intent===1&&hit('I kept going over it, and later I kept going').attach===1,
+  'the same short cue outside the long one still counts');
+ /* every cue that sits inside another is a precedence the scan must honour,
+    read off the table rather than typed, so a cue added later is checked */
+ const rows=[];Object.keys(E.VERPCUE).forEach(g=>E.VERPCUE[g].forEach(p=>rows.push({g,p})));
+ rows.forEach(s=>rows.forEach(l=>{if(s===l||l.p.indexOf(' '+s.p+' ')<0&&l.p.indexOf(s.p+' ')!==0&&!l.p.endsWith(' '+s.p))return;
+  const h=hit(l.p); ok(h[l.g]>=1&&(s.g===l.g?h[l.g]===1:h[s.g]===0),
+   "'"+l.p+"' reads its own gate once, and not '"+s.p+"' inside it, got "+JSON.stringify(h));}));}
 
 g('8 · the lean');
 /* THE FIELD HERE HAS TO LEAN SOMEWHERE, and it is laws at 3 rather than 6
@@ -224,6 +242,14 @@ const snap=E.snapshot(prof);
  const lost=Object.keys(snap).filter(k=>kept.indexOf(k)<0), extra=kept.filter(k=>!(k in snap));
  ok(vs.ok&&!lost.length&&!extra.length,'every field a snapshot writes survives the boundary, and nothing is added, '
   +Object.keys(snap).length+' written'+(lost.length?', lost '+lost.join(' '):'')+(extra.length?', added '+extra.join(' '):''));}
+/* THE FLOOR BAND'S OLD NAME, 16 October. A row an older build wrote says
+   Collapsed; the boundary hands it back under the band's new name and leaves
+   every other word, and a row still filling, exactly as written. */
+{const rows=['Collapsed','Severe',null].map(t=>Object.assign(JSON.parse(JSON.stringify(snap)),{tier:t}));
+ const vs=E.validateProfile(Object.assign(JSON.parse(JSON.stringify(prof)),{history:rows}));
+ const got=vs.ok?vs.profile.history.map(x=>x.tier):[];
+ ok(vs.ok&&got[0]==='Contracted'&&got[1]==='Severe'&&got[2]===null&&!!E.TIER_BY.Contracted&&!E.TIER_BY.Collapsed,
+  'a history row written as Collapsed reads Contracted, the band it is, and nothing else moves, '+JSON.stringify(got));}
 ok(snap.m===E.CQ_MODEL,'and it is stamped with the arithmetic that wrote it, got '+snap.m);
 ok(!('charge' in snap)&&!('law' in snap)&&!('laws' in snap),'snapshot holds no inputs');
 
@@ -1506,7 +1532,7 @@ g('19b \u00b7 the empty field says it is empty');
  S.charge.Fear=7; const r1=compute();
  ok(r1.unread===false,'one held address makes it a reading');
  /* CHANGED 25 SEPTEMBER, from "and the tier means something". A tier word on
-    a CQ that is still filling would call this person Collapsed for not having
+    a CQ that is still filling would call this person Contracted for not having
     done the intake. The word waits for all 21. */
  ok(r1.tier===null,'but no tier word is put on it until all 21 laws are in, got '+r1.tier);
  ok(r1.DQ>0&&r1.CQ===0,'and the shadow reads while CQ waits, DQ '+r1.DQ.toFixed(1));
@@ -1746,7 +1772,7 @@ g('19ba · the roster: twelve across the scale, and the owner at four points on 
     person to the base value and the tier with it. */
  const bad=[]; ppl.forEach(p=>Object.keys(LAWSET[p.nm]).forEach(k=>{if(k!=='_'&&SINAMES.indexOf(k)<0)bad.push(p.nm+':'+k);}));
  ok(bad.length===0,'no persona table names a law that does not exist, '+bad.join(', '));
- /* THE FIELD DOES NOT CONTRADICT THE WORD AT THE ENDS. Whoever reads Collapsed
+ /* THE FIELD DOES NOT CONTRADICT THE WORD AT THE ENDS. Whoever reads Contracted
     carries most of what they hold, and whoever reads Mastery carries almost none
     of it. The tier is the laws alone, so this is the one place the held charge
     is checked against it, and only where the two have to agree. */
@@ -1813,8 +1839,8 @@ g('19c \u00b7 a label carries what it owes');
     rename would have drifted silently between the engine and the definitions.
     This asserts there is no second table anywhere by checking that every band
     compute can name has a definition behind it, across the whole scale. */
- ok(tierOf(95).nm==='Mastery'&&tierOf(12).nm==='Severe'&&tierOf(0).nm==='Collapsed'
-  &&tierOf(10).nm==='Collapsed'&&tierOf(11).nm==='Severe'&&tierOf(75).nm==='Compounding',
+ ok(tierOf(95).nm==='Mastery'&&tierOf(12).nm==='Severe'&&tierOf(0).nm==='Contracted'
+  &&tierOf(10).nm==='Contracted'&&tierOf(11).nm==='Severe'&&tierOf(75).nm==='Compounding',
   'tierOf resolves the band');
  {
   const named=new Set(), defined=new Set(TIERDEF.map(t=>t.nm));
@@ -1835,7 +1861,12 @@ g('19c \u00b7 a label carries what it owes');
  reset(0,0,10); ok(tierOf(compute().CQ).nm===compute().tier,'and agrees with compute at the top');
  reset(10,0,0); ok(tierOf(compute().CQ).nm===compute().tier,'and at the bottom');
  /* the lowest band is the one that must not read as a product upsell */
- ok(/not alone|alone/.test(TIER_BY.Collapsed.toward),
+ /* the floor band's direction names another person, 16 October: the line
+    used to say "not alone", and now says who with. Held at the same
+    strength: a direction that sends a person anywhere but to somebody else
+    fails, and so does one that tells them to manage it alone. */
+ ok(/\banother person\b|\bnot alone\b/.test(TIER_BY.Contracted.toward)
+   &&!/\b(?:yourself|on your own|by yourself)\b/.test(TIER_BY.Contracted.toward),
   'the lowest band does not tell a person to manage it by themselves');
  /* house voice applies to the copy too */
  const all=JSON.stringify(TIERDEF);
@@ -3069,6 +3100,159 @@ console.log('\n27 · the ladder');
    'markDays dates First run on the oldest day, Seven days on the seventh and Sixty minutes on the sixth, '+JSON.stringify(md));
   ok(Object.keys(md).every(k=>MARKS.find(m=>m.k===k).fam==='Practice'),'only practice marks are dated');
   ok(Object.keys(markDays(blankProfile('L'),NOW)).length===0,'a blank profile has no dated mark');}
+
+ /* BLOCK 1, THE RECORD TELLS THE TRUTH, 16 October. The owner's rule: "it is
+    never lying to you". Each check below failed on f7188cba and names the
+    lie it closes. */
+
+ /* L3. A DAY THAT HAS NOT HAPPENED IS NOT A DAY PRACTISED. Seven rituals
+    dated 30 to 36 days ahead read Streak 7, live, and earned First run,
+    Seven days and Sixty minutes. TDD v3 10.2: no more than one day after
+    now. Tomorrow is the known good case and still counts. */
+ {const fut=mk([-30,-31,-32,-33,-34,-35,-36]), sF=streakRead(fut,NOW), LF=ladderRead(fut,NOW);
+  ok(sF.days===0&&sF.run===0&&!sF.live,
+   'days dated a month ahead are not days practised, got '+JSON.stringify({days:sF.days,run:sF.run,live:sF.live}));
+  ok(LF.earned.length===0,'and earn no mark, got '+LF.earned.map(m=>m.k).join(','));
+  ok(LF.ledger.minutes===0&&LF.ledger.done===0,'and put no minutes practised on the ledger, got '+LF.ledger.minutes);
+  ok(LF.ledger.planned===70,'while they still count as planned, got '+LF.ledger.planned);
+  ok(E.pracDays(fut,NOW).length===0,'pracDays agrees, got '+E.pracDays(fut,NOW).length);
+  ok(streakRead(mk([-1]),NOW).days===1,'and tomorrow, the one day of slack, still counts');
+  ok(streakRead(mk([-2]),NOW).days===0,'the day after it does not');
+  /* the track mark and the dated marks read the same rule */
+  const tracks=[...new Set(E.PRACTICE.map(x=>x.track).filter(Boolean))], tf=blankProfile('L');
+  tracks.forEach((t,i)=>{const k=E.PRACTICE.find(x=>x.track===t).k; tf.rituals.push({t:day(-30-i),min:5,steps:[k]});});
+  ok(!ladderRead(tf,NOW).earned.some(m=>m.k==='tracks'),'Every track run is not earned off days ahead');
+  /* and the day list that markDays dates against agrees with the one the
+     marks are tested on, so a mark on the shelf always has a date */
+  const mix=mk([0,1,2,3,4,5,-20,-21]), md=E.markDays(mix,NOW), LM=ladderRead(mix,NOW);
+  ok(LM.earned.filter(m=>m.fam==='Practice').every(m=>md[m.k]!==undefined),
+   'every practice mark earned is one markDays can date, earned '+LM.earned.filter(m=>m.fam==='Practice').map(m=>m.k)+' dated '+Object.keys(md));}
+
+ /* L4. PRACTISING NEVER LOWERS THE STREAK A PERSON SEES. Ten days in a row
+    ending twenty days ago read 10, and practising today read 5. The halving
+    lands on the gap now, so the lapsed figure is 5 and today keeps it.
+    Then every day set the roster's cadences could make: adding today to it
+    never lowers the run. Checked against f7188cba first, where the first
+    two fail and the sweep finds the drop. */
+ {const ten=[20,21,22,23,24,25,26,27,28,29];
+  const a=streakRead(mk(ten),NOW), b=streakRead(mk([0].concat(ten)),NOW);
+  ok(a.run===5,'a run of ten that lapsed twenty days ago stands at five, got '+a.run);
+  ok(b.run>=a.run,'and practising today does not lower it, '+a.run+' then '+b.run);
+  ok(a.best===10&&a.days===10,'while the longest row and the days practised still say ten, got '+a.best+' and '+a.days);
+  ok(streakRead(mk([2,3,4,5]),NOW).run===4,'a gap of two days is the grace day and halves nothing yet');
+  let drops=[];
+  for(let seed=1;seed<=400;seed++){
+   let x=seed, days=[];
+   const rnd=()=>{x=(x*1103515245+12345)%2147483648; return x/2147483648;};
+   for(let d=1;d<60;d++)if(rnd()<0.45)days.push(d);
+   if(!days.length)continue;
+   const r0=streakRead(mk(days),NOW).run, r1=streakRead(mk([0].concat(days)),NOW).run;
+   if(r1<r0)drops.push({seed,r0,r1});}
+  ok(drops.length===0,'over 400 day sets, practising today never lowers the streak, drops '+JSON.stringify(drops.slice(0,3)));
+  ok(typeof E.STREAK_MEANS==='string'&&/marked done/.test(E.STREAK_MEANS)&&/halves/.test(E.STREAK_MEANS),
+   'the streak carries one meaning, and it says a day is a ritual marked done and a long gap halves it');}
+
+ /* L11. TEN STORIES IS TEN DAYS. Ten entries committed in one minute earned
+    it. Ten entries on ten days is the known good case. */
+ {const at=(ms)=>({t:new Date(ms).toISOString(),text:'x',imprints:0});
+  const one=blankProfile('L'); for(let i=0;i<10;i++)one.story.entries.push(at(NOW-60000+i*5000));
+  ok(!ladderRead(one,NOW).earned.some(m=>m.k==='kept'),'ten entries in one minute do not earn Ten stories');
+  ok(ladderRead(one,NOW).earned.some(m=>m.k==='told'),'while the first of them still earns First story');
+  const ten=blankProfile('L'); for(let i=0;i<10;i++)ten.story.entries.push(at(NOW-i*86400000));
+  ok(ladderRead(ten,NOW).earned.some(m=>m.k==='kept'),'ten entries on ten days do');
+  const nine=blankProfile('L'); for(let i=0;i<9;i++)nine.story.entries.push(at(NOW-i*86400000)); nine.story.entries.push(at(NOW-1000));
+  ok(!ladderRead(nine,NOW).earned.some(m=>m.k==='kept'),'and ten entries on nine days do not');
+  ok(/ten different days/.test(MARKS.find(m=>m.k==='kept').d),'and its words say days');}
+
+ /* L9. NINE AXES MEANS ALL NINE HAVE A VALUE. Nine axes at 2 did not earn
+    it, and five at 5 on both sides with four at 2 did, because the test
+    counted axes at four or more on either side. A blank has no value on any
+    axis and is the known good case for refusing. */
+ {const has=p=>ladderRead(p,NOW).earned.some(m=>m.k==='nine');
+  const two=blankProfile('L'); CHILD.forEach(c=>{two.axes[c.nm]={held:2,opp:0};});
+  ok(has(two),'nine axes entered at 2 earn Nine axes');
+  const dbl=blankProfile('L'); CHILD.forEach((c,i)=>{dbl.axes[c.nm]=i<5?{held:5,opp:5}:{held:0,opp:0};});
+  ok(!has(dbl),'five axes counted twice, with four empty, do not');
+  ok(!has(blankProfile('L')),'a blank record does not');
+  const said=blankProfile('L'); CHILD.forEach(c=>{E.ixSet(said,'axes',c.nm,0);});
+  ok(has(said),'nine intake answers earn it, an answer of nought included, because an answer is a value');
+  const eight=blankProfile('L'); CHILD.slice(0,8).forEach(c=>{eight.axes[c.nm]={held:3,opp:0};});
+  ok(!has(eight),'and eight of nine do not');}
+
+ /* L10. A MARK NAMES THE UNIT ITS TEST COUNTS. First clearing and Five clear
+    read ledgerRead().clear, which walks CHILD, the nine axes, and their words
+    said addresses. Every mark whose test reads clear says axes and never
+    addresses; Ten addresses, which counts addresses, is the known good case. */
+ {const byClear=['turned','seat'].map(k=>MARKS.find(m=>m.k===k));
+  byClear.forEach(m=>ok(/\bax[ie]s\b/.test(m.d)&&!/address/.test(m.d),
+   m.nm+' says axes, the unit its test counts, got '+JSON.stringify(m.d)));
+  const one=blankProfile('L'); one.axes[CHILD[0].nm]={held:0,opp:4};
+  ok(ladderRead(one,NOW).earned.some(m=>m.k==='turned')&&ledgerRead(one).clear===1,
+   'and one axis with its opposite at four is what earns First clearing');
+  ok(/address/.test(MARKS.find(m=>m.k==='ten').d),'Ten addresses still says addresses, because it counts them');}
+
+ /* L2. THE NEXT MARK SAYS WHAT IT TAKES. Both surfaces printed the next
+    mark's d line, written for a mark already held, so a blank record read
+    "First run. You marked one ritual done." A mark carries to, what it
+    takes, and the next is only ever a mark that has one. */
+ {const L0=ladderRead(blankProfile('L'),NOW);
+  ok(L0.next&&L0.next.to==='Mark one ritual done.','a blank record\'s next mark says what it takes, got '+JSON.stringify(L0.next&&L0.next.to));
+  ok(MARKS.filter(m=>m.k!=='back').every(m=>typeof m.to==='string'&&m.to&&m.to!==m.d),
+   'every mark but Came back carries a to line of its own, missing '+MARKS.filter(m=>m.k!=='back'&&!(typeof m.to==='string'&&m.to&&m.to!==m.d)).map(m=>m.k));
+  ok(MARKS.every(m=>!m.to||!/^You /.test(m.to)),'and no to line is written as a thing already done');
+  /* Came back asks for two weeks away, so it is never the goal. Every other
+     practice mark held leaves it as the family's only one left. */
+  const all=[];for(let i=0;i<95;i++)all.push(i);
+  const p=mk(all), tracks=[...new Set(E.PRACTICE.map(x=>x.track).filter(Boolean))];
+  tracks.forEach((t,i)=>{p.rituals[i].steps=[E.PRACTICE.find(x=>x.track===t).k];});
+  const LP=ladderRead(p,NOW), pr=MARKS.filter(m=>m.fam==='Practice'&&m.k!=='back');
+  ok(pr.every(m=>LP.earned.some(e=>e.k===m.k))&&!LP.earned.some(m=>m.k==='back'),
+   'the fixture holds every practice mark but Came back, earned '+LP.earned.map(m=>m.k));
+  ok(LP.next&&LP.next.k!=='back','and the next mark is never Came back, got '+(LP.next&&LP.next.k));}
+
+ /* L1. OPENED IS ADDRESSES, ON EVERY SURFACE. One address, both limit
+    channels, thirty lines each: the Compass ledger read 1 address and three
+    other surfaces printed meterRead().unique, 60, as addresses. meterRead
+    carries the address count as ground now, the same function the ledger
+    reads. The patterns stay what the gift and the markers count, which is
+    the known good case: the gift reads 40 left of 100 before and after. */
+ {const {meterRead,meterKey,markersFor}=E, p=blankProfile('L');
+  ['Llimit','Rlimit'].forEach(ch=>{for(let i=0;i<30;i++)p.meter.unique.push(meterKey(4,ch,i));}); p.meter.lines=60;
+  const m=meterRead(p,NOW);
+  ok(m.ground===1&&m.ground===ledgerRead(p).ground,'meterRead says one address opened, as the ledger does, got '+m.ground);
+  ok(m.unique===60&&m.giftLeft===40,'and still counts sixty patterns, which is what the gift spends, got '+m.unique+' and '+m.giftLeft);
+  ok(m.next&&m.next.left===m.next.at-m.unique,'the marker distance is in patterns, '+JSON.stringify(m.next));
+  /* why the ruler cannot be addresses: the second marker sits past every
+     address a release can reach, so counted in addresses it is unreachable */
+  ok(markersFor(null)[1].at>W.length,'the second marker, '+markersFor(null)[1].at+', is past the '+W.length+' addresses a release reaches, so the markers count patterns');}
+
+ /* L12, HELD RATHER THAN REWORDED. The release results print "Up" as
+    Math.max(0, after minus before), and the fact map read that clamp as a
+    drop printed "Up 0.00", after LD9 measured releases lowering CQ (Sofia
+    56.6 to 55.1). That was the arithmetic before 25 September. CQ is now the
+    answered laws and the lift releaseWork writes, and the lift only rises
+    with the count, so a release cannot lower it and the clamp never fires:
+    measured on f7188cba over 6,000 releases, 0 falls and 5,992 rises. This
+    holds that, so the day a release can lower CQ the "Up" figure fails here
+    by name instead of hiding the drop. Known good first: a changed answer
+    does lower CQ, and the sweep would see it. The word "Up" itself goes in
+    phase 2 of the percent framework (CQ before and after, its rule 3). */
+ {const {loadProfile,releaseWork,cqSum,meterKey}=E;
+  let x=7; const rnd=()=>{x=(x*1103515245+12345)%2147483648; return x/2147483648;};
+  let falls=0, rises=0;
+  for(let t=0;t<60;t++){
+   const p=blankProfile('L');
+   SINAMES.forEach(l=>{p.laws[l]=rnd()<0.2?null:Math.round(rnd()*100)/10;});
+   loadProfile(p); p.work=p.work||{};
+   for(let r=0;r<10;r++){
+    const keys=[]; for(let i=0,n=1+Math.floor(rnd()*25);i<n;i++)keys.push(meterKey(W[Math.floor(rnd()*W.length)].i,'Llimit',Math.floor(rnd()*50)));
+    const o=releaseWork(p,keys); if(o.cq1<o.cq0-1e-12)falls++; else if(o.cq1>o.cq0)rises++;}}
+  ok(rises>0,'the sweep sees releases lift CQ, so it is reading the lift, '+rises+' rises');
+  ok(falls===0,'and no release lowers CQ, so "Up" never clamps a drop, '+falls+' falls');
+  const q=blankProfile('L'); SINAMES.forEach(l=>{q.laws[l]=8;}); loadProfile(q);
+  const a=cqSum(); S.law[SINAMES[0]]=2; const b=cqSum();
+  ok(b<a,'known good: a changed answer does lower CQ, '+a.toFixed(2)+' to '+b.toFixed(2));
+  reset();}
 }
 
 console.log('\n27c · a save never costs a person data, and a drain never leaks');
@@ -5843,9 +6027,19 @@ g('J14 · the starter recipe for each teacher');
  {const cp=require('child_process'), fs=require('fs'), os=require('os'), path=require('path');
   const py=(f)=>{try{cp.execFileSync('python3',['.claude/skills/atuned-voice/check.py',f],{stdio:'pipe'});return 0;}
    catch(e){return e.status===undefined?-1:e.status;}};
-  const bad=path.join(os.tmpdir(),'j14-known-bad.js');
+  /* a directory of this run's own, 16 October. A fixed name in the shared
+     temp directory let a second engine run on the same machine unlink this
+     file between its write and its check, and the probe read exit 0. */
+  const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'engine-j14-'));
+  const bad=path.join(tmp,'j14-known-bad.js');
   fs.writeFileSync(bad,"var x=['Sit back and relax and breathe gently.','Done 2 of 5.'];\n");
-  const known=py(bad); try{fs.unlinkSync(bad);}catch(e){}
+  const known=py(bad);
+  const gone=py(path.join(tmp,'not-there.js'));
+  fs.writeFileSync(path.join(tmp,'empty.js'),'');
+  const empty=py(path.join(tmp,'empty.js'));
+  try{fs.rmSync(tmp,{recursive:true,force:true});}catch(e){}
+  ok(gone===2,'and it refuses a file that is not there, exit '+gone+', rather than passing it');
+  ok(empty===2,'and it refuses a named file with no strings in it, exit '+empty+', rather than passing it');
   ok(known===1,'the voice gate fails a known bad file before it is trusted on this one, exit '+known);
   ok(py('atuned_src/engine/data/teachers_recipes.js')===0,'no string in the recipe table fails the voice rules');}
 }
@@ -7090,12 +7284,19 @@ g('PO · unpack every symbol: the meaning table and the pole meanings');
  {const cp=require('child_process'), fs=require('fs'), os=require('os'), path=require('path');
   const py=(f)=>{try{cp.execFileSync('python3',['.claude/skills/atuned-voice/check.py',f],{stdio:'pipe'});return 0;}
    catch(e){return e.status===undefined?-1:e.status;}};
-  const bad=path.join(os.tmpdir(),'po-known-bad.js'), good=path.join(os.tmpdir(),'po-table.js');
+  const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'engine-po-'));
+  const bad=path.join(tmp,'po-known-bad.js'), good=path.join(tmp,'po-table.js');
   fs.writeFileSync(bad,"var x=['Sit back and relax and breathe gently.','Your energy is 70% open '+String.fromCharCode(0x2014)+' simply lovely.'];\n");
   const known=py(bad);
-  fs.writeFileSync(good,'var T=['+keys.map(k=>JSON.stringify(T[k])).join(',\n')+'];\n');
+  /* SINGLE QUOTED, 16 October. Outside engine/data check.py reads single
+     quoted literals only, and JSON.stringify writes double quotes, so this
+     file gave it nothing to read and it passed on nothing, exit 0, from the
+     day this check was written. check.py now refuses a named file with no
+     strings in it (exit 2), which is how it showed. */
+  const sq=s=>"'"+String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,'\\n')+"'";
+  fs.writeFileSync(good,'var T=['+keys.map(k=>sq(T[k])).join(',\n')+'];\n');
   const real=py(good);
-  try{fs.unlinkSync(bad);fs.unlinkSync(good);}catch(e){}
+  try{fs.rmSync(tmp,{recursive:true,force:true});}catch(e){}
   ok(known===1,'the voice gate fails a known bad file before it is trusted on the table, exit '+known);
   ok(real===0,'no entry in the built meaning table fails the voice rules, exit '+real);
   ok(py('atuned_src/engine/data/gloss.js')===0,'no string in the meaning table file fails the voice rules');}
@@ -7127,10 +7328,13 @@ g('PO · unpack every symbol: the meaning table and the pole meanings');
  ok(E.compassPoleOf&&E.compassPoleOf('IL')===il&&E.compassPoleLines(il,'up')===il.upm&&E.compassPoleLines({upd:'x'},'up')[0][0]==='x',
   'a pole is found by its key and a pole with no meanings still returns its codex line');
  {const cp=require('child_process'), fs=require('fs'), os=require('os'), path=require('path');
-  const f=path.join(os.tmpdir(),'po-pole-means.js');
-  fs.writeFileSync(f,'var M=['+meanings.map(t=>JSON.stringify(t)).join(',\n')+'];\n');
+  const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'engine-pole-'));
+  const f=path.join(tmp,'po-pole-means.js');
+  /* single quoted, for the reason the meaning table's file above is */
+  const sq=s=>"'"+String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,'\\n')+"'";
+  fs.writeFileSync(f,'var M=['+meanings.map(t=>sq(t)).join(',\n')+'];\n');
   let code=0; try{cp.execFileSync('python3',['.claude/skills/atuned-voice/check.py',f],{stdio:'pipe'});}catch(e){code=e.status===undefined?-1:e.status;}
-  try{fs.unlinkSync(f);}catch(e){}
+  try{fs.rmSync(tmp,{recursive:true,force:true});}catch(e){}
   ok(code===0,'no pole meaning fails the voice rules, exit '+code);}
 }
 
@@ -8115,7 +8319,7 @@ g('PCT · one formula and one registry for every score a person reads (engine/pc
   put('integrity',x.Ig,who); put('intention',x.It,who);
   put('vitality',x.X,who); put('awareness',x.Y,who); put('will',x.Z,who); put('radiance',x.radiance,who);
   put('energy',(x.X+x.Y+x.Z)/3,who); put('pull',x.PULL,who);
-  (x.aff||[]).forEach(v=>put('affinity',v,who));
+  E.archExprAll().forEach(v=>put('archetype',v,who));
   put('shape',x.outward,who); put('control',x.organized,who);
   if(x.malig!==null&&x.malig!==undefined){put('lean',x.malig,who); put('lean',100-x.malig,who);}
   E.BANDS.forEach(b=>{const g=E.W.filter(n=>n.b===b), m=g.reduce((a,n)=>a+n.sq,0)/g.length;
@@ -8131,7 +8335,7 @@ g('PCT · one formula and one registry for every score a person reads (engine/pc
  ok(out.length===0,'no roster reading falls outside the range its kind claims, '+out.length+' do'
   +(out.length?': '+out.slice(0,6).join('; '):''));
  const engineKinds=['cq','dq','expression','law','charge','installed','held','weight','chain','pole','overshoot',
-  'distortion','integrity','intention','vitality','awareness','will','radiance','energy','pull','affinity','axis'];
+  'distortion','integrity','intention','vitality','awareness','will','radiance','energy','pull','archetype','axis'];
  const unseen=engineKinds.filter(k=>!seen[k]);
  ok(unseen.length===0,'and every kind the engine computes was actually measured on the roster, missing '+JSON.stringify(unseen));
  /* A CAP HOLDS THE ROSTER IT WAS MEASURED ON: at least 99 in a hundred of its
@@ -8139,6 +8343,84 @@ g('PCT · one formula and one registry for every score a person reads (engine/pc
  kinds.filter(k=>PCT_KIND[k].cap).forEach(k=>{
   const a=capSeen[k]||[], inside=a.filter(r=>r<=100+1e-9).length;
   ok(a.length>0&&inside/a.length>=0.99,k+': the cap holds '+inside+' of '+a.length+' roster values');});
+}
+
+g('ARCH EXPR · an archetype is 100% expressed with nothing held, dragged by its seat, lifted by release');
+/* Ruled 16 October: "you may start off at 100%. And over time, watch it
+   diminish. And as you go through your recipes, watch it rise." archExpr reads
+   the archetype's ruled seat (ARCH[i].b) and nothing else, so charge landing on
+   one seat moves only the archetypes seated there, and installing the opposite,
+   which is what a release writes, gives it back. The touched seats are read off
+   the field after compute(), never typed here. */
+{
+ const {archExpr,archExprAll,pct,fmtPct}=E;
+ ok(typeof archExpr==='function'&&typeof archExprAll==='function'&&E.PCT_KIND&&E.PCT_KIND.archetype,
+  'archExpr and archExprAll are exported and archetype is a registered kind');
+ ok(!E.PCT_KIND.affinity&&!E.PCT_KIND.share,'affinity and share are no longer printed kinds: the soul map is not this quantity');
+ const blank=()=>{S.doms=[0];S.arcs=[0,1];S.roots=[];buildSoul();
+  CHARGES.forEach(c=>{S.charge[c]=0;S.replace[c]=0;}); return compute();};
+ blank();
+ const b0=archExprAll();
+ ok(b0.length===ARCH.length&&b0.every(v=>v===1)&&b0.every((v,i)=>fmtPct('archetype',archExpr(i))==='100%'),
+  'a blank profile reads 100% for all '+ARCH.length+', '+JSON.stringify(b0.map(v=>pct('archetype',v))));
+ /* one axis, on the seats it reaches */
+ S.charge.Fear=6; compute();
+ const hit=new Set(W.filter(n=>n.sq>0).map(n=>n.b));
+ const f1=archExprAll();
+ const fell=ARCH.map((a,i)=>i).filter(i=>hit.has(ARCH[i].b));
+ const stay=ARCH.map((a,i)=>i).filter(i=>!hit.has(ARCH[i].b));
+ ok(hit.size>0&&hit.size<BANDS.length,'Fear at 6 reaches some seats and not all, '+[...hit].join(', '));
+ ok(fell.length>0&&fell.every(i=>f1[i]<1),'every archetype seated where Fear landed falls below 100%, '
+  +fell.map(i=>ARCH[i].nm+' '+fmtPct('archetype',f1[i])).join(', '));
+ ok(stay.length>0&&stay.every(i=>f1[i]===1),'and every other archetype stays at exactly 100%, '
+  +stay.map(i=>ARCH[i].nm).join(', '));
+ /* release: the opposite installed lifts it, and clearing the charge gives it all back */
+ S.replace.Fear=6; compute();
+ const r1=archExprAll();
+ ok(fell.every(i=>r1[i]>f1[i]),'installing the opposite, as a release does, lifts every one that fell, '
+  +fell.map(i=>fmtPct('archetype',f1[i])+' to '+fmtPct('archetype',r1[i])).join(', '));
+ S.charge.Fear=0; S.replace.Fear=0; compute();
+ ok(archExprAll().every(v=>v===1),'and with the charge released all twelve read 100% again');
+ /* monotone, and strict until the seat is full */
+ let mono=true, strict=true, prev=null;
+ for(let v=0;v<=10;v+=0.5){S.charge.Fear=v; compute(); const x=archExprAll();
+  if(prev){fell.forEach(i=>{if(x[i]>prev[i]+1e-12)mono=false; if(v<=6&&!(x[i]<prev[i]))strict=false;});
+   stay.forEach(i=>{if(x[i]!==1)mono=false;});}
+  prev=x;}
+ ok(mono,'as Fear rises the archetypes it reaches never rise and the others never move');
+ ok(strict,'and up to 6 each half step of Fear drags them further');
+ /* whole percents, and the range, on all sixteen */
+ let whole=true, out=[];
+ PEOPLE.forEach(p=>{
+  S.doms=p.doms?p.doms.slice():[p.dom]; S.arcs=p.arcs?p.arcs.slice():[p.a1,p.a2];
+  S.roots=p.roots?p.roots.slice():[]; buildSoul();
+  CHARGES.forEach(c=>{S.charge[c]=(p.c&&p.c[c])||0; S.replace[c]=(p.rep&&p.rep[c])||0;});
+  compute();
+  archExprAll().forEach((v,i)=>{if(!(v>=0&&v<=1))out.push(p.nm+' '+ARCH[i].nm+' '+v);
+   if(!Number.isInteger(pct('archetype',v)))whole=false;});});
+ ok(out.length===0,'across all '+PEOPLE.length+' roster people every archetype stays between 0% and 100%, '+out.length+' leave it'
+  +(out.length?': '+out.slice(0,4).join('; '):''));
+ ok(whole,'and every one prints a whole percent');
+ /* two archetypes on one seat read one figure, which is the seat ruling */
+ const twin=ARCH.map((a,i)=>i).filter(i=>ARCH[i].b===ARCH[0].b);
+ S.charge.Fear=6; compute();
+ ok(twin.length>1&&twin.every(i=>archExpr(i)===archExpr(twin[0])),
+  'archetypes on one seat read one figure, '+twin.map(i=>ARCH[i].nm).join(' and '));
+ ok(archExpr(ARCH.length)===null&&archExpr(-1)===null,'an archetype that does not exist reads null, not a figure');
+ /* AFFINITY KEEPS ITS ONE JOB. It is no longer printed, and it still names the
+    first and second archetype: on every roster person r.pi is the strongest
+    lean and r.si the strongest of the rest. */
+ let firstOk=true, secondOk=true;
+ PEOPLE.forEach(p=>{
+  S.doms=p.doms?p.doms.slice():[p.dom]; S.arcs=p.arcs?p.arcs.slice():[p.a1,p.a2];
+  S.roots=p.roots?p.roots.slice():[]; buildSoul();
+  const x=compute(), a=x.aff, mx=Math.max(...a);
+  if(a[x.pi]!==mx)firstOk=false;
+  const rest=a.filter((v,i)=>i!==x.pi);
+  if(x.si===x.pi||a[x.si]!==Math.max(...rest))secondOk=false;});
+ ok(firstOk,'affinity still names the first archetype on every roster person');
+ ok(secondOk,'and the second, the strongest of the rest');
+ blank();
 }
 
 g('CRISIS · srcSafe trips on self harm and not on everyday uses of the same words');
@@ -8153,6 +8435,44 @@ g('CRISIS · srcSafe trips on self harm and not on everyday uses of the same wor
   'the crisis list keeps at least 7 that trip and 3 that do not, has '+TRIP.length+' and '+NOT.length);
  TRIP.forEach(t=>xf(typeof srcSafe==='function'&&srcSafe(t)===true,'srcSafe trips on '+JSON.stringify(t)));
  NOT.forEach(t=>xf(typeof srcSafe==='function'&&srcSafe(t)===false,'srcSafe does not trip on '+JSON.stringify(t)));
+}
+
+g('CRISIS · the button a person presses: three numbers, each with its sentence and its link');
+/* NOT A DETECTOR, and nothing above changes because of it: the ten expected
+   red rows stay red. This is the table the app's panel and the quiz both print
+   (engine/data/crisis.js). Each row names its own number in its own sentence,
+   and every link dials or texts that same number, so a sentence and its
+   button can never send a person to two different places. */
+{
+ const L=E.CRISIS_LINES||[], S=E.CRISIS_SAY||{};
+ ok(L.map(l=>l.k).join()==='988,741741,911','the three numbers, in order, got '+L.map(l=>l.k).join());
+ /* EACH ROW OPENS ON ITS NUMBER AND NAMES ITS SERVICE, 16 October, from the
+    review of these screens: one long sentence per number became the number,
+    its name, and short sentences after it. Held as hard as before: the
+    number is the first thing, the service's name follows it, every sentence
+    ends, and none runs past eight words. */
+ L.forEach(l=>{
+  const parts=l.say.replace(/\.$/,'').split(/\.\s+/);
+  ok(l.say.indexOf(l.k)===0&&typeof l.nm==='string'&&l.nm.length>0&&l.say.indexOf(l.nm)>l.k.length-1
+   &&/\.$/.test(l.say)&&parts.length>=2&&parts.every(s=>s.split(/\s+/).length<=8),
+   l.k+' opens on its number and names its service, in short sentences: '+JSON.stringify(l.say));
+  ok(l.go.length>0&&l.go.every(g=>/^(tel|sms):/.test(g[1])&&g[1].replace(/^(tel|sms):/,'').split('?')[0]===l.k),
+   l.k+' links only to itself, by tel: or sms:, '+JSON.stringify(l.go));});
+ ok(L.some(l=>l.go.some(g=>g[1]==='tel:988'))&&L.some(l=>l.go.some(g=>g[1]==='sms:988')),'988 is both a call and a text');
+ /* one filled button in the numbers view, 16 October, and it is Call 988 */
+ const pri=[].concat(...L.map(l=>l.go)).filter(g=>g[2]===true);
+ ok(pri.length===1&&pri[0][1]==='tel:988','exactly one link is the filled one, and it is Call 988, got '+JSON.stringify(pri));
+ ok(/^988 also works in Canada\./.test(S.where||'')&&/\bElsewhere, call your local emergency number\.$/.test(S.where||''),
+  'the panel says where else 988 answers and what to use anywhere else, got '+JSON.stringify(S.where));
+ ok(S.journal==='Talk it through opens your journal. No person reads it.',
+  'and says where Talk it through goes and who reads it, got '+JSON.stringify(S.journal));
+ ok(S.quiz==='Talk it through opens the story box on this page. This page sends nothing anywhere.',
+  'and the quiz says where its own Talk it through goes, with no claim about who reads it, got '+JSON.stringify(S.quiz));
+ ok(S.story==='It is always a story. Write what is happening, or what happened.',
+  'and the Story line names the present as well as the past, got '+JSON.stringify(S.story));
+ ok(S.open==='Is this a crisis?'&&S.h==='Tell me about it.'&&S.reach==='Reach someone now'&&S.talk==='Talk it through',
+  'the button and the panel carry the words as ruled');
+ ok(!/—/.test(JSON.stringify([L,S])),'and no em dash anywhere in them');
 }
 
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');

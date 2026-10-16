@@ -1381,9 +1381,17 @@ function validateProfile(o){
   var q={t:typeof x.t==='string'?x.t:new Date().toISOString(),
    dark:typeof x.dark==='string'?x.dark:'Heart',
    /* null is a row written while CQ was still filling, and it stays null:
-      defaulting it to Collapsed would put the lowest word on the scale on
-      somebody who had only not finished the intake. */
-   tier:(typeof x.tier==='string'||x.tier===null)?x.tier:'Collapsed',
+      defaulting it to the floor band would put the lowest word on the scale
+      on somebody who had only not finished the intake. */
+   /* THE FLOOR BAND WAS RENAMED, 16 October, Collapsed to Contracted (canon.js
+      TIERDEF). A row keeps the word and not a lookup, so a row an older build
+      wrote still said Collapsed: the record would print the word he ruled out,
+      and ui/record.js would report "the tier read collapsed and now reads
+      contracted", a move between two names for one band. Renamed here, where
+      every row is rebuilt, so the old word never reaches a renderer. It is
+      the same band under its new name, not a value clamped into range. */
+   tier:x.tier==='Collapsed'?'Contracted'
+    :(typeof x.tier==='string'||x.tier===null)?x.tier:'Contracted',
    arch:typeof x.arch==='string'?x.arch:''};
   [['m',0,CQ_MODEL],['cq',0,100],['dq',0,1e4],['sq',0,10],['pole',0,10],['jq',0,10],['rad',0,10],
    ['loaded',0,1e4],['sab',0,1e4],['cx',0,1e4],['hy',0,1e4],['ch',0,1e4]].forEach(function(f){
@@ -1878,7 +1886,24 @@ function meterRead(p,now){
  var age=ageAt(p&&p.who&&p.who.born?p.who.born.date:null,now);
  var est=age===null?null:Math.round(age*PAT_PER_YEAR*PAT_GEN);
  var mk=markersFor(est);
- return {lines:m.lines, unique:uniq, first:m.first, last:m.last,
+ /* OPENED IS ADDRESSES, AND THE RULER IS PATTERNS. unique is one entry per
+    line ever opened, address:channel:line, so one address across both limit
+    channels at thirty lines each is 60 of them. Three surfaces printed that
+    as "Opened 60 addresses", "Ground opened 60" and "440 new addresses
+    away", beside a Compass ledger reading "Opened 1 address" off the same
+    record, measured on f7188cba. ladder.js fixed this for the marks with
+    meterGroundCount and the fix never reached here. ground is that count,
+    and every "Opened" figure reads it.
+
+    The markers keep counting unique, and that is not the bug. Their ruler
+    is a lifetime load, fifteen thousand at the reference age, and the body
+    has 112 addresses of which a release reaches fewer, so a marker counted
+    in addresses could never be reached past Entry. The owner's thresholds
+    were counts of releases, which is lines: patterns, the word the gift
+    already uses for this same count ("patterns left of the 100 you were
+    given"). So the distance is said in patterns, which is what it measures. */
+ var ground=(typeof meterGroundCount==='function')?meterGroundCount(m):null;
+ return {lines:m.lines, unique:uniq, ground:ground, first:m.first, last:m.last,
   /* the gift is 100 of new ground, ruled. reruns never spend it. */
   giftLeft:Math.max(0,GIFT_N-uniq), inGift:uniq<GIFT_N,
   age:age===null?null:Math.round(age*10)/10,
