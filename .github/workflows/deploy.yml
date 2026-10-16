@@ -146,6 +146,16 @@ jobs:
       # engine.js, and the quiz that funnel/BUILD-single.sh packs carries it.
       - name: build, the engine first
         run: ./atuned_src/BUILD-engine.sh && ./atuned_src/BUILD.sh && ./funnel/BUILD-single.sh
+      # THE COMMITTED PRODUCTS ARE THIS SOURCE'S, 16 October. The build above
+      # rewrote source.html, engine.js and atuned-packed.html in the checkout;
+      # tools/products.js reads the committed copies from git and fails when
+      # either file differs from the fresh one (source.html with its stamp
+      # and length set aside) or the packed file is not from the same build
+      # run as source.html. On every event, so drift is red on the pull
+      # request that causes it. No if, for the reason the orphans step has
+      # none. A branch fixes it by building and committing all three.
+      - name: committed build products match their source
+        run: node tools/products.js --self-test && node tools/products.js
       # An empty list must fail, or a lost FUNNEL_PAGES would check nothing.
       - name: the funnel actually built
         run: |

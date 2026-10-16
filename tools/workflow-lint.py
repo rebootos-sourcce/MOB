@@ -1276,6 +1276,12 @@ class Lint:
             self.ok('if' not in s and 'continue-on-error' not in s,
                     'R2 the orphans step has if: %s or continue-on-error: %s. It takes neither: a skipped or forgiven orphan check reads green.' % (s.get('if'), s.get('continue-on-error')))
             self.ok(os.path.isfile(os.path.join(self.root, 'tools', 'orphans.js')), 'R2 tools/orphans.js does not exist.')
+        p, _, s = find(texts, r'node tools/products\.js(?! --self-test)\b')
+        if self.ok(p is not None, 'R2 gates-fast does not run node tools/products.js, so a committed build product can fall behind its source unseen.'):
+            self.ok(built is not None and p > built, 'R2 gates-fast checks the build products before the build has run, so there is nothing fresh to compare them with.')
+            self.ok('if' not in s and 'continue-on-error' not in s,
+                    'R2 the products step has if: %s or continue-on-error: %s. It takes neither: a skipped or forgiven products check reads green.' % (s.get('if'), s.get('continue-on-error')))
+            self.ok(os.path.isfile(os.path.join(self.root, 'tools', 'products.js')), 'R2 tools/products.js does not exist.')
         fa = self.floors_args(texts)
         want = ['engine', 'funnel-package']
         hit = [a for a in fa if all(w in a[1] for w in want)]
@@ -2131,6 +2137,10 @@ BREAKS = [
     ('the orphans check skipped on a pull request', lambda d: _step(d, 'gates-fast', r'tools/orphans\.js').__setitem__('if', "github.event_name == 'push'")),
     ('the orphans check allowed to fail', lambda d: _step(d, 'gates-fast', r'tools/orphans\.js').__setitem__('continue-on-error', True)),
     ('the orphans check reduced to its self test', lambda d: _sub(d, 'gates-fast', r'tools/orphans\.js', ' && node tools/orphans.js', '')),
+    ('the products check dropped', lambda d: _job(d, 'gates-fast')['steps'].remove(_step(d, 'gates-fast', r'tools/products\.js'))),
+    ('the products check skipped on a pull request', lambda d: _step(d, 'gates-fast', r'tools/products\.js').__setitem__('if', "github.event_name == 'push'")),
+    ('the products check allowed to fail', lambda d: _step(d, 'gates-fast', r'tools/products\.js').__setitem__('continue-on-error', True)),
+    ('the products check reduced to its self test', lambda d: _sub(d, 'gates-fast', r'tools/products\.js', ' && node tools/products.js', '')),
     ('the FAQ not staged', lambda d: _sub(d, 'deploy', r'mkdir deploy', 'cp funnel/dist/atuned-faq.html deploy/\n', '')),
     ('the FAQ dropped from FUNNEL_PAGES', lambda d: d['env'].__setitem__('FUNNEL_PAGES', d['env']['FUNNEL_PAGES'].replace(' atuned-faq', ''))),
     ('a page list typed into the deploy check', lambda d: _sub(d, 'deploy', r'test -s', '$FUNNEL_PAGES; do', 'atuned-funnel atuned-quiz atuned-about atuned-buy atuned-faq; do')),
