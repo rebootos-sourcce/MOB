@@ -3392,8 +3392,11 @@ function coneClose(){
    only count things that happened. Then the marks earned, and one line naming
    the next.
 
-   NOTHING HERE PRINTS A COUNT AGAINST A TOTAL. Sixteen marks exist and the
-   surface never says sixteen. Earned ones are shown, the next is named with
+   NOTHING HERE PRINTS A COUNT AGAINST A TOTAL. MARKS (engine/ladder.js) holds
+   every mark there is and the surface never says how many. This line said
+   "Sixteen marks exist" after two more had landed at round QS, which is the
+   count typed into prose that CLAUDE.md warns about, so the number is read off
+   MARKS.length and not written here. Earned ones are shown, the next is named with
    what it takes, and the rest are not enumerated, because a list of a person's
    unfinished self is a completion bar and this is not a game about becoming
    whole.
