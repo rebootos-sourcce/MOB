@@ -24,7 +24,7 @@ WORDS = {
         'neighbour': r"overloaded|overload|swamped|drowning in|buried under|too many things|spread too thin|can't keep up|cannot keep up",
     },
     'burnout': {
-        'core': r"burnout|burn out|burned out|burnt out|burning out|exhausted|exhaustion|exhausting|depleted|drained|draining",
+        'core': r"burnout|burn out|burned out|burnt out|burning out|exhausted|exhaustion|exhausting|depleted|depletion|drained|draining",
         'neighbour': r"tired|tiredness|fatigue|fatigued|fatiguing|worn out|run down|rundown|weary|weariness|overworked|overworking",
     },
     'grief': {
@@ -37,7 +37,7 @@ WORDS = {
     },
     'depression': {
         'core': r"depressed|depression|depressing|depressive|hopeless|hopelessness",
-        'neighbour': r"despair|despairing|despondent|numb|numbness|empty|emptiness|meaningless|pointless|unmotivated|apathy|apathetic|lifeless|joyless|giving up|give up|gave up",
+        'neighbour': r"despair|despairing|despondent|numb|numbness|empty|emptiness|meaningless|meaninglessness|pointless|pointlessness|unmotivated|apathy|apathetic|lifeless|joyless|giving up|give up|gave up",
     },
 }
 

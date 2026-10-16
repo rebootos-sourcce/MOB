@@ -1,0 +1,1076 @@
+{
+  "note": "Every line that named overwhelm and is not in the bank or the reserve, one reason each.",
+  "counts": {
+    "owner_lines_held_by_rule": 7,
+    "card_lines_held_by_rule": 43,
+    "held_on_reading": 2,
+    "little_books_lines_read": 65,
+    "little_books_lines_that_qualify": 0
+  },
+  "owner_lines_held_by_rule": [
+    {
+      "sentence": "I'm letting go of the belief that I'm overwhelmed",
+      "source_kind": "owner typed list",
+      "reason": "filed under a heading that names another nature: depression",
+      "source_record_id": "pdf_b-115",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=57:35"
+    },
+    {
+      "sentence": "I'm letting go of the belief that project tasks are overwhelming.",
+      "source_kind": "owner typed list",
+      "reason": "from a typed list, not dictation",
+      "source_record_id": "pdf_b-105",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=40:14"
+    },
+    {
+      "sentence": "I'm letting go of believing perceiving thinking behaving acting feeling speaking saying voicing that I'm overwhelmed by stress that I'm overwhelmed by stimuli that I'm overwhelmed by questions that an overwhelmed by birds chirping but I'm overwhelmed by loud rooms and overwhelmed by loud people than overwhelmed by stressful experiences and overwhelmed by stressful events and",
+      "source_kind": "owner dictation",
+      "reason": "longer than 30 words",
+      "source_record_id": "2026-260",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1944;unit=1"
+    },
+    {
+      "sentence": "I'm letting go of them humiliated guilty ashamed sad defeated deflated shy and secure anxious terrified worried concerned about being overwhelmed",
+      "source_kind": "owner dictation",
+      "reason": "names another nature: anxiety, sadness",
+      "source_record_id": "2026-260",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1944;unit=2"
+    },
+    {
+      "sentence": "I'm letting go of believing perceiving thinking behaving acting feeling speaking saying voicing that I'm overwhelmed by stress that I'm overwhelmed by stimuli that I'm overwhelmed by questions that an overwhelmed by birds chirping but I'm overwhelmed by loud rooms and overwhelmed by loud people than overwhelmed by stressful experiences and overwhelmed by stressful events and I'm letting go of them humiliated guilty ashamed sad defeated deflated shy and secure anxious terrified worried concerned about being overwhelmed",
+      "source_kind": "owner typed list",
+      "reason": "names another nature: anxiety, sadness",
+      "source_record_id": "pdf_b-019",
+      "locator": "atuned/data/letgo/raw/TULA__Lances_Let_Go_List_1.pdf.gz#page-lines=8:14-8:20"
+    },
+    {
+      "sentence": "I'm letting go of believing perceiving behaving acting and feeling that I am in trouble that I don't know how to get out of the situation that I'm on my own that I'm helpless that I cannot do this that this is something I cannot do on my own and I can't take this strain or this pressure that I'm too overwhelmed and I'm too exhausted and letting go of believing that I'm humiliated tired exhausted and beat I worn down from believing that I can't do this and that I can't make it on my own and then I need help",
+      "source_kind": "owner dictation",
+      "reason": "names another nature: burnout",
+      "source_record_id": "2026-244",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1716;unit=2"
+    },
+    {
+      "sentence": "I'm letting go of leaving him overwhelmed and exhausted from taking that too much",
+      "source_kind": "owner dictation",
+      "reason": "names another nature: burnout",
+      "source_record_id": "2026-260",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1946;unit=4"
+    }
+  ],
+  "card_lines_held_by_rule": [
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am nervous that feeling energy will overwhelm me.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-072",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=14539",
+      "card_line_as_printed": "nervous that feeling energy will overwhelm me."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am fearing abundance will overwhelm me.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-007",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=1582",
+      "card_line_as_printed": "Fearing abundance will overwhelm me."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am afraid of being overwhelmed by energy.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-091",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=17034",
+      "card_line_as_printed": "afraid of being overwhelmed by energy."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am afraid vibration will overwhelm my nerves.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-099",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=18118",
+      "card_line_as_printed": "afraid vibration will overwhelm my nerves."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am afraid openness means overwhelm.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-100",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=18243",
+      "card_line_as_printed": "afraid openness means overwhelm."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am anxious in conversations I can’t keep up with.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-131",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=22644",
+      "card_line_as_printed": "anxious in conversations I can’t keep up with."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am afraid to admit I’m overwhelmed.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-131",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=22658",
+      "card_line_as_printed": "afraid to admit I’m overwhelmed."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am anxious when I can’t keep up.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-151",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=25504",
+      "card_line_as_printed": "anxious when I can’t keep up."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am scared the unknown will overwhelm me.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-163",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=26816",
+      "card_line_as_printed": "scared the unknown will overwhelm me."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am uneasy when emotions overwhelm me.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-169",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=28176",
+      "card_line_as_printed": "uneasy when emotions overwhelm me."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by fear of being misunderstood.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-178",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=29513",
+      "card_line_as_printed": "overwhelmed by fear of being misunderstood."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by fear spikes.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-182",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=30112",
+      "card_line_as_printed": "overwhelmed by fear spikes."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am collapsing under nervous system overload.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-183",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=30257",
+      "card_line_as_printed": "collapsing under nervous system overload."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am nervous losing myself in overwhelm.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-183",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=30265",
+      "card_line_as_printed": "nervous losing myself in overwhelm."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed when emotion and fear stack.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-183",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=30277",
+      "card_line_as_printed": "overwhelmed when emotion and fear stack."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by fear of being left.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-186",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=30767",
+      "card_line_as_printed": "overwhelmed by fear of being left."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by attachment anxiety.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-186",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=30827",
+      "card_line_as_printed": "overwhelmed by attachment anxiety."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am panicked drowning in feeling.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-197",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=32849",
+      "card_line_as_printed": "panicked drowning in feeling."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am worried my truth will overwhelm others.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-207",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=34802",
+      "card_line_as_printed": "worried my truth will overwhelm others."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am afraid to be overwhelmed by grace.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-016",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=3481",
+      "card_line_as_printed": "Afraid to be overwhelmed by grace."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am anxious novelty overwhelms me.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-213",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=35724",
+      "card_line_as_printed": "anxious novelty overwhelms me."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by social fear.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-218",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=36919",
+      "card_line_as_printed": "overwhelmed by social fear."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am afraid support will overwhelm me.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-229",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=38708",
+      "card_line_as_printed": "afraid support will overwhelm me."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am fearing that truth will overwhelm others.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety",
+      "source_record_id": "card-026",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=5512",
+      "card_line_as_printed": "Fearing that truth will overwhelm others."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am anxious my grief will overwhelm others.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: anxiety, grief",
+      "source_record_id": "card-223",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=37617",
+      "card_line_as_printed": "anxious my grief will overwhelm others."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am tired of being overwhelmed by small things.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: burnout",
+      "source_record_id": "card-068",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=13849",
+      "card_line_as_printed": "tired of being overwhelmed by small things."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am fatigued by emotional overload.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: burnout",
+      "source_record_id": "card-133",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=23119",
+      "card_line_as_printed": "fatigued by emotional overload."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by cumulative tiredness.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: burnout",
+      "source_record_id": "card-200",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33660",
+      "card_line_as_printed": "overwhelmed by cumulative tiredness."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by ongoing depletion.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: burnout",
+      "source_record_id": "card-201",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33705",
+      "card_line_as_printed": "overwhelmed by ongoing depletion."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by long-term fatigue.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: burnout",
+      "source_record_id": "card-201",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33765",
+      "card_line_as_printed": "overwhelmed by long-term fatigue."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by pointlessness.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: depression",
+      "source_record_id": "card-226",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=38165",
+      "card_line_as_printed": "overwhelmed by pointlessness."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by meaninglessness.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: depression",
+      "source_record_id": "card-226",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=38225",
+      "card_line_as_printed": "overwhelmed by meaninglessness."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by loss of innocence.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: grief",
+      "source_record_id": "card-203",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=33986",
+      "card_line_as_printed": "overwhelmed by loss of innocence."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by grief.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: grief",
+      "source_record_id": "card-204",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=34255",
+      "card_line_as_printed": "overwhelmed by grief."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by tenderness and loss.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: grief",
+      "source_record_id": "card-205",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=34420",
+      "card_line_as_printed": "overwhelmed by tenderness and loss."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by unsupported grief.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: grief",
+      "source_record_id": "card-222",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=37570",
+      "card_line_as_printed": "overwhelmed by unsupported grief."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by unsupported mourning.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: grief",
+      "source_record_id": "card-223",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=37675",
+      "card_line_as_printed": "overwhelmed by unsupported mourning."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by grief waves.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: grief",
+      "source_record_id": "card-230",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=39033",
+      "card_line_as_printed": "overwhelmed by grief waves."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by financial loss.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: grief",
+      "source_record_id": "card-232",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=39471",
+      "card_line_as_printed": "overwhelmed by financial loss."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by sadness.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: sadness",
+      "source_record_id": "card-205",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=34360",
+      "card_line_as_printed": "overwhelmed by sadness."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by unshared sorrow.",
+      "source_kind": "from a card, not dictated",
+      "reason": "names another nature: sadness",
+      "source_record_id": "card-222",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=37510",
+      "card_line_as_printed": "overwhelmed by unshared sorrow."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by sexual expectations.",
+      "source_kind": "from a card, not dictated",
+      "reason": "speaks to one sex, or about sex",
+      "source_record_id": "card-170",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=28352",
+      "card_line_as_printed": "overwhelmed by sexual expectations."
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am overwhelmed by sexual intensity.",
+      "source_kind": "from a card, not dictated",
+      "reason": "speaks to one sex, or about sex",
+      "source_record_id": "card-177",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=29337",
+      "card_line_as_printed": "overwhelmed by sexual intensity."
+    }
+  ],
+  "held_on_reading": [
+    {
+      "sentence": "I'm letting go of believing me it's difficult to respond when I see an overwhelming number of text messages",
+      "source_kind": "owner dictation",
+      "source_record_id": "2026-209",
+      "locator": "atuned/data/letgo/raw/2026_Let_Go_List.txt.gz#line=1339;unit=2",
+      "reason": "held on reading: a stray \"me\" breaks the line (\"believing it's difficult\")"
+    },
+    {
+      "sentence": "I am letting go of believing, perceiving, thinking, behaving, acting, feeling, speaking, saying, and doing that I am explosive emotional overwhelm.",
+      "card_line_as_printed": "explosive emotional overwhelm.",
+      "source_kind": "from a card, not dictated",
+      "source_record_id": "card-213",
+      "locator": "atuned/data/letgo/raw/Tula__SUPPLIMENT_LET_GO_LIST.txt.gz#line=35700",
+      "reason": "held on reading: with the stem in front it does not read as a sentence (\"that I am explosive emotional overwhelm\")"
+    }
+  ],
+  "little_books_lines_read": [
+    {
+      "volume": "ANGER",
+      "pair": 1,
+      "charge": "Anger",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am angry, uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 51,
+      "file": "MOB e98a057:generator/volumes/anger.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (51)"
+    },
+    {
+      "volume": "ANGER",
+      "pair": 2,
+      "charge": "Discouraged",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am tired, discouraged, uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 53,
+      "file": "MOB e98a057:generator/volumes/anger.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (53)"
+    },
+    {
+      "volume": "ANGER",
+      "pair": 3,
+      "charge": "Easily",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 51,
+      "file": "MOB e98a057:generator/volumes/anger.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (51)"
+    },
+    {
+      "volume": "ANGER",
+      "pair": 4,
+      "charge": "Thinking the 90s sucked",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 51,
+      "file": "MOB e98a057:generator/volumes/anger.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (51)"
+    },
+    {
+      "volume": "ANGER",
+      "pair": 5,
+      "charge": "Temptation",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am innocent, guilty, uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 53,
+      "file": "MOB e98a057:generator/volumes/anger.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (53)"
+    },
+    {
+      "volume": "ANGER",
+      "pair": 6,
+      "charge": "Fucking pissed",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 51,
+      "file": "MOB e98a057:generator/volumes/anger.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (51)"
+    },
+    {
+      "volume": "ANGER",
+      "pair": 7,
+      "charge": "Demands",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 51,
+      "file": "MOB e98a057:generator/volumes/anger.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (51)"
+    },
+    {
+      "volume": "ANGER",
+      "pair": 8,
+      "charge": "Temper",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 51,
+      "file": "MOB e98a057:generator/volumes/anger.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (51)"
+    },
+    {
+      "volume": "ANGER",
+      "pair": 9,
+      "charge": "Defiance",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 51,
+      "file": "MOB e98a057:generator/volumes/anger.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (51)"
+    },
+    {
+      "volume": "ANXIETY",
+      "pair": 1,
+      "charge": "Public expression",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 52,
+      "file": "MOB e98a057:generator/volumes/anxiety.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (52)"
+    },
+    {
+      "volume": "ANXIETY",
+      "pair": 2,
+      "charge": "Swarm",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 52,
+      "file": "MOB e98a057:generator/volumes/anxiety.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (52)"
+    },
+    {
+      "volume": "ANXIETY",
+      "pair": 3,
+      "charge": "The truth",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 52,
+      "file": "MOB e98a057:generator/volumes/anxiety.json",
+      "source_note": "LANCE DICTATION. address OBSERVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (52)"
+    },
+    {
+      "volume": "ANXIETY",
+      "pair": 4,
+      "charge": "Go be exhausted vehicle respon",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 52,
+      "file": "MOB e98a057:generator/volumes/anxiety.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (52)"
+    },
+    {
+      "volume": "ANXIETY",
+      "pair": 5,
+      "charge": "Fear speaking my needs",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 52,
+      "file": "MOB e98a057:generator/volumes/anxiety.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (52)"
+    },
+    {
+      "volume": "ANXIETY",
+      "pair": 6,
+      "charge": "Fear of responsibility and",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am not responsible, terrified responsibility, uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 56,
+      "file": "MOB e98a057:generator/volumes/anxiety.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (56)"
+    },
+    {
+      "volume": "ANXIETY",
+      "pair": 7,
+      "charge": "Afraid of everything",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am afraid of everything, scared of everything, uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 58,
+      "file": "MOB e98a057:generator/volumes/anxiety.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (58)"
+    },
+    {
+      "volume": "ANXIETY",
+      "pair": 8,
+      "charge": "Conflict",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 52,
+      "file": "MOB e98a057:generator/volumes/anxiety.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (52)"
+    },
+    {
+      "volume": "ANXIETY",
+      "pair": 9,
+      "charge": "Life's experiences",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 52,
+      "file": "MOB e98a057:generator/volumes/anxiety.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (52)"
+    },
+    {
+      "volume": "BURNOUT",
+      "pair": 1,
+      "charge": "Overwhelmed",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am too much, uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 53,
+      "file": "MOB e98a057:generator/volumes/burnout.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (53)"
+    },
+    {
+      "volume": "BURNOUT",
+      "pair": 2,
+      "charge": "Physically tired",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 51,
+      "file": "MOB e98a057:generator/volumes/burnout.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (51)"
+    },
+    {
+      "volume": "BURNOUT",
+      "pair": 3,
+      "charge": "Shouldering responsibility",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am tired, fatigued, exhausted, humbled, uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 55,
+      "file": "MOB e98a057:generator/volumes/burnout.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (55)"
+    },
+    {
+      "volume": "BURNOUT",
+      "pair": 4,
+      "charge": "No one's coming to save me",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am too overwhelmed, helpless, afraid to be vulnerable, afraid to expose myself, afraid to open myself up, too exhausted, uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 69,
+      "file": "MOB e98a057:generator/volumes/burnout.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (69)"
+    },
+    {
+      "volume": "BURNOUT",
+      "pair": 5,
+      "charge": "Overwhelmed",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 51,
+      "file": "MOB e98a057:generator/volumes/burnout.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (51)"
+    },
+    {
+      "volume": "BURNOUT",
+      "pair": 6,
+      "charge": "Life's a burden",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 51,
+      "file": "MOB e98a057:generator/volumes/burnout.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (51)"
+    },
+    {
+      "volume": "BURNOUT",
+      "pair": 7,
+      "charge": "That I'm not in control of my ",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am overwhelmed, uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 52,
+      "file": "MOB e98a057:generator/volumes/burnout.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (52)"
+    },
+    {
+      "volume": "BURNOUT",
+      "pair": 8,
+      "charge": "Doing things Don't Want to do",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 51,
+      "file": "MOB e98a057:generator/volumes/burnout.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (51)"
+    },
+    {
+      "volume": "BURNOUT",
+      "pair": 9,
+      "charge": "Life",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am doing, not triggering, uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 54,
+      "file": "MOB e98a057:generator/volumes/burnout.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (54)"
+    },
+    {
+      "volume": "CONTROL",
+      "pair": 1,
+      "charge": "Resistance",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am flexible, uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 52,
+      "file": "MOB e98a057:generator/volumes/control.json",
+      "source_note": "LANCE DICTATION. address OBSERVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (52)"
+    },
+    {
+      "volume": "CONTROL",
+      "pair": 2,
+      "charge": "Negative",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am not in control, uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 55,
+      "file": "MOB e98a057:generator/volumes/control.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (55)"
+    },
+    {
+      "volume": "CONTROL",
+      "pair": 3,
+      "charge": "Self Control",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am doing, uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 53,
+      "file": "MOB e98a057:generator/volumes/control.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (53)"
+    },
+    {
+      "volume": "CONTROL",
+      "pair": 4,
+      "charge": "Control",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 51,
+      "file": "MOB e98a057:generator/volumes/control.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (51)"
+    },
+    {
+      "volume": "CONTROL",
+      "pair": 5,
+      "charge": "Impulse control",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 52,
+      "file": "MOB e98a057:generator/volumes/control.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (52)"
+    },
+    {
+      "volume": "CONTROL",
+      "pair": 6,
+      "charge": "Obsessing",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am obsessing, uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 52,
+      "file": "MOB e98a057:generator/volumes/control.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (52)"
+    },
+    {
+      "volume": "CONTROL",
+      "pair": 7,
+      "charge": "Life",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uncertain which way, not in control of life, uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 60,
+      "file": "MOB e98a057:generator/volumes/control.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (60)"
+    },
+    {
+      "volume": "CONTROL",
+      "pair": 8,
+      "charge": "Standards",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am not a controlled my actions, uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 57,
+      "file": "MOB e98a057:generator/volumes/control.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (57)"
+    },
+    {
+      "volume": "CONTROL",
+      "pair": 9,
+      "charge": "Goals and tasks",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 52,
+      "file": "MOB e98a057:generator/volumes/control.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (52)"
+    },
+    {
+      "volume": "DRIVE",
+      "pair": 1,
+      "charge": "Completing projects",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am not a finisher, uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 54,
+      "file": "MOB e98a057:generator/volumes/drive.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (54)"
+    },
+    {
+      "volume": "DRIVE",
+      "pair": 2,
+      "charge": "Completing projects",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am ridged, unflexible, uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 53,
+      "file": "MOB e98a057:generator/volumes/drive.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (53)"
+    },
+    {
+      "volume": "DRIVE",
+      "pair": 3,
+      "charge": "Avoidant",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am avoiding, uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 52,
+      "file": "MOB e98a057:generator/volumes/drive.json",
+      "source_note": "LANCE DICTATION. address OBSERVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (52)"
+    },
+    {
+      "volume": "DRIVE",
+      "pair": 4,
+      "charge": "project success",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am ridged, unflexible, not a project finisher, not capable of completing projects, uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 62,
+      "file": "MOB e98a057:generator/volumes/drive.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (62)"
+    },
+    {
+      "volume": "DRIVE",
+      "pair": 5,
+      "charge": "Commitment",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am responsibility, insecurity, uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 54,
+      "file": "MOB e98a057:generator/volumes/drive.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (54)"
+    },
+    {
+      "volume": "DRIVE",
+      "pair": 6,
+      "charge": "Lie",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am lying, uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 52,
+      "file": "MOB e98a057:generator/volumes/drive.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (52)"
+    },
+    {
+      "volume": "DRIVE",
+      "pair": 7,
+      "charge": "Can't do it",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 52,
+      "file": "MOB e98a057:generator/volumes/drive.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (52)"
+    },
+    {
+      "volume": "DRIVE",
+      "pair": 8,
+      "charge": "Regret",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 51,
+      "file": "MOB e98a057:generator/volumes/drive.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (51)"
+    },
+    {
+      "volume": "DRIVE",
+      "pair": 9,
+      "charge": "Self-doubt",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 51,
+      "file": "MOB e98a057:generator/volumes/drive.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (51)"
+    },
+    {
+      "volume": "DUTY",
+      "pair": 7,
+      "charge": "Ego",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am scared to become, unhappy with life, scared to become who, uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 62,
+      "file": "MOB e98a057:generator/volumes/duty.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, sadness; longer than 30 words (62)"
+    },
+    {
+      "volume": "DUTY",
+      "pair": 8,
+      "charge": "And letting go of my victim ma",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 52,
+      "file": "MOB e98a057:generator/volumes/duty.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (52)"
+    },
+    {
+      "volume": "GRIEF",
+      "pair": 9,
+      "charge": "Life's not fair",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 52,
+      "file": "MOB e98a057:generator/volumes/grief.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (52)"
+    },
+    {
+      "volume": "MONEY",
+      "pair": 1,
+      "charge": "Money",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 52,
+      "file": "MOB e98a057:generator/volumes/money.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (52)"
+    },
+    {
+      "volume": "SHAME",
+      "pair": 1,
+      "charge": "Shame from the past",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am sorry, barely, ashamed of my past, ashamed of my past experiences, uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 63,
+      "file": "MOB e98a057:generator/volumes/shame.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (63)"
+    },
+    {
+      "volume": "SHAME",
+      "pair": 2,
+      "charge": "Ashamed disappointing people",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am ashamed or disappointed, ashamed or guilty, uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 58,
+      "file": "MOB e98a057:generator/volumes/shame.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (58)"
+    },
+    {
+      "volume": "SHAME",
+      "pair": 3,
+      "charge": "Life difficult",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am disappointed, ashamed, guilty, uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 55,
+      "file": "MOB e98a057:generator/volumes/shame.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (55)"
+    },
+    {
+      "volume": "SHAME",
+      "pair": 4,
+      "charge": "Embarrassed",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am not attached, uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 54,
+      "file": "MOB e98a057:generator/volumes/shame.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (54)"
+    },
+    {
+      "volume": "SHAME",
+      "pair": 5,
+      "charge": "Blame",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am scared nervous shot, uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 55,
+      "file": "MOB e98a057:generator/volumes/shame.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (55)"
+    },
+    {
+      "volume": "SHAME",
+      "pair": 6,
+      "charge": "Voice",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am scared to use my voice, uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 57,
+      "file": "MOB e98a057:generator/volumes/shame.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (57)"
+    },
+    {
+      "volume": "SHAME",
+      "pair": 7,
+      "charge": "Money",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am nervous, uneasy, tense, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 52,
+      "file": "MOB e98a057:generator/volumes/shame.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (52)"
+    },
+    {
+      "volume": "SHAME",
+      "pair": 8,
+      "charge": "Broke",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am embarrassed, uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 53,
+      "file": "MOB e98a057:generator/volumes/shame.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (53)"
+    },
+    {
+      "volume": "SHAME",
+      "pair": 9,
+      "charge": "Need help",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 52,
+      "file": "MOB e98a057:generator/volumes/shame.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (52)"
+    },
+    {
+      "volume": "WORTH",
+      "pair": 1,
+      "charge": "Self-confidence",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 51,
+      "file": "MOB e98a057:generator/volumes/worth.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (51)"
+    },
+    {
+      "volume": "WORTH",
+      "pair": 2,
+      "charge": "I;m letting of believing i;m l",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 51,
+      "file": "MOB e98a057:generator/volumes/worth.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (51)"
+    },
+    {
+      "volume": "WORTH",
+      "pair": 4,
+      "charge": "Self suppression",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am not being fully expressed, uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 55,
+      "file": "MOB e98a057:generator/volumes/worth.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (55)"
+    },
+    {
+      "volume": "WORTH",
+      "pair": 5,
+      "charge": "Luck Dynamics",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am unlucky, undeserving, grateful, not deserving, uneasy, tense, nervous, unsure, insecure, cautious, hesitant, restless, worried, anxious, stressed, overwhelmed, threatened, cornered, trapped, frozen, helpless, powerless, disconnected from safety, unable to settle, unable to trust the ground, afraid of what comes next, afraid of being cornered.",
+      "words": 57,
+      "file": "MOB e98a057:generator/volumes/worth.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety; longer than 30 words (57)"
+    },
+    {
+      "volume": "WORTH",
+      "pair": 6,
+      "charge": "30 years of training and pract",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 51,
+      "file": "MOB e98a057:generator/volumes/worth.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (51)"
+    },
+    {
+      "volume": "WORTH",
+      "pair": 8,
+      "charge": "Stand ground",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 51,
+      "file": "MOB e98a057:generator/volumes/worth.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (51)"
+    },
+    {
+      "volume": "WORTH",
+      "pair": 9,
+      "charge": "Rejected from authority",
+      "sentence": "I'm letting go of believing, perceiving, thinking, behaving, acting, and feeling that I am uneasy, tense, irritated, frustrated, stressed, overwhelmed, pressured, defensive, resentful, angry, furious, depleted, defeated, disconnected from my power, unable to hold my ground, unable to act without rehearsing, afraid to be seen failing, afraid of my own force.",
+      "words": 51,
+      "file": "MOB e98a057:generator/volumes/worth.json",
+      "source_note": "LANCE DICTATION. address DERIVED. install ORIGINAL-FORMAT.",
+      "reason": "names another nature: anxiety, burnout; longer than 30 words (51)"
+    }
+  ]
+}
