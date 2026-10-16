@@ -60,7 +60,7 @@ If you send us feedback, we may use the idea in it to change Atüned, and we owe
 
 We promise to:
 
-- say plainly what leaves your device, on the [Privacy](privacy.html) page, and change that page before what leaves changes
+- say plainly what leaves your device, on the Privacy page, and change that page before what leaves changes
 - never sell your data, and never use it for ads
 - let you copy what you entered, and delete it
 
