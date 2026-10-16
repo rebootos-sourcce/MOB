@@ -245,7 +245,9 @@ from the general catalogue.
   address (`AUTH_API_LIVE` beside it in `ui/auth.js`). A gate that points
   `AUTH_API` at its own stub still starts one; the copy gate names its stub
   as the server before the page's script runs (`tests/copy.js`). The
-  production readback for that merge is recorded below when it lands.
+  production readback for that merge: deploy run 38834393508, "Cloudflare
+  serves this commit in production" success, 01:39 UTC; `3e3880b` is what
+  atuned.world serves.
 - **KPI ladder** (Reboot-OS PR 58, merge f242313): the clean date is
   `2026-10-16T00:30:00Z`. The ladder prints "of them since the clean date"
   under "sessions opened" and says in one line that the total before it
