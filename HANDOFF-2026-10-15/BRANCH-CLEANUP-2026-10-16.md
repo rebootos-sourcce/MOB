@@ -34,9 +34,9 @@ main at the time of writing: `920d7ed2b38492826d1a578feaac0646160f0804`. Branche
 - EQUIVALENT: 9
 - KEEP: 30
 
-Deleted in this pass: 88 (SAFE only). Held: 9 EQUIVALENT, see "Why the equivalent branches were held".
+Deleted in this pass: 0. Cleared to delete: 88 SAFE. Held: 9 EQUIVALENT. See "Outcome" below.
 
-### Safe, fully inside main (deleted): 88
+### Safe, fully inside main (cleared to delete, NOT deleted): 88
 
 | Branch | Tip | Last commit | Merged PR | Evidence | Recreate |
 |---|---|---|---|---|---|
@@ -358,9 +358,9 @@ main at the time of writing: `3d66f5ef4e3c3ea7d7319b3930e7b63e11dec648`. Branche
 - EQUIVALENT: 9
 - KEEP: 20
 
-Deleted in this pass: 24 (SAFE only). Held: 9 EQUIVALENT, see "Why the equivalent branches were held".
+Deleted in this pass: 0. Cleared to delete: 24 SAFE. Held: 9 EQUIVALENT. See "Outcome" below.
 
-### Safe, fully inside main (deleted): 24
+### Safe, fully inside main (cleared to delete, NOT deleted): 24
 
 | Branch | Tip | Last commit | Merged PR | Evidence | Recreate |
 |---|---|---|---|---|---|
@@ -572,6 +572,23 @@ Each is kept. The count is commits whose change is not in main (`git log --cherr
 - **`fix/p0-single-pages-publisher-20261013`** at `8f4b722a600f`, 2026-10-13, Lance Powell. 2 commits not in main; 1 files, 1 differ against main.
   - `8f4b722 c`i(p0): validate web artifact on pull requests
   - `70252de f`ix: prevent duplicate ATUNED Pages publishing
+
+## Outcome, 16 October, about 18:00 UTC
+
+**Nothing was deleted, in either repository.** The first real delete,
+`git push origin --delete claude/atuned-stripe-production-3` on Reboot-OS, was answered HTTP 403
+by this session's GitHub proxy, and the branch was still on the server afterwards. The protocol
+said to report a refusal, so the delete step stopped there.
+
+- The dry run, immediately before, found one SAFE branch that had moved since the inventory:
+  MOB `claude/discord-feedback`, from `16200cbb` to `d22870f4` (a new commit at 17:55, now
+  open as PR 100). It is no longer an ancestor of main and must not be deleted.
+- After the attempt: every tip in this file was checked by script, 0 unreachable; both mains
+  unchanged (MOB `920d7ed2`, Reboot-OS `3d66f5ef`); every open pull request from the first
+  snapshot still open on the same head.
+- To finish it, someone with GitHub access outside this session runs the Recreate column in
+  reverse: `git push origin --delete <branch>`, after re-running the ancestor test, or deletes
+  from the GitHub branches page.
 
 ## Why the equivalent branches were held
 
