@@ -989,6 +989,12 @@ console.log('\n=== Is this a crisis, on the welcome and after it (16 October) ==
   ok(doors.length===2&&doors.every(d=>d.t==='Reach someone now'&&d.on&&d.h>=44)
    &&doors.some(d=>d.row)&&doors.some(d=>d.bar),
    'Reach someone now stands beside the line and beside Commit, at the floor'+at+', '+JSON.stringify(doors));
+  /* and the door never splits Clear from Commit: the first cut wrapped at 390
+     with the door on Clear's line and Commit alone below it */
+  const pair=await page.evaluate(()=>{const c=document.getElementById('stclear'), m=document.getElementById('stapply');
+   if(!c||!m)return null; const a=c.getBoundingClientRect(), b=m.getBoundingClientRect();
+   return {sameLine:Math.abs(a.top-b.top)<2, order:b.left>a.right, right:Math.round(innerWidth-b.right)};});
+  ok(pair&&pair.sameLine&&pair.order,'with Clear and Commit still side by side, Commit last'+at+', '+JSON.stringify(pair));
   /* a missing door is a named failure and not a thirty second click timeout
      that ends the run before the checks after it */
   if(await page.$('.st-bar [data-crisis="reachnow"]'))
