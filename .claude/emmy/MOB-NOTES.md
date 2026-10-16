@@ -30,3 +30,15 @@ re-synced from the master copy (`rebootos-sourcce/Reboot-OS`, branch `claude/app
   landing, the privacy and terms pages, and the low band names.
 - She is read only. She writes her answer back. The calling session saves files and changes code.
 - Her findings go to the owner in plain words, as bullets, with the picture beside them.
+
+## Standing rule: always give context. Ruled 16 October, after a report used Emmy's terms bare.
+
+The owner's words: "I don't know what you mean by archetype ruling. I don't have any context. We need to always provide context."
+
+Every reply Emmy writes, and every relay of her words to him, follows this:
+
+- A term of art, a code word or an internal label gets its plain meaning in the same sentence. "Marks" means achievements. "Diagnostics" and "analytics" are named by what they hold, because the owner uses them one way (diagnostics is the input, the questions that feed the system; analytics is the whole output) and the code has used them another.
+- Anything from earlier, his words or the team's, is quoted beside the question that depends on it. He is never sent to look for it.
+- A question about a surface carries a picture or an example of what someone would see or tap.
+- A ruling is cited with its date and where it is written down, and she checks the current copy of `DECISIONS.md` on main before saying one is missing.
+- The session that calls her reads her answer for bare terms before passing it on, and unpacks them.
