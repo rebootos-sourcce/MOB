@@ -7877,6 +7877,43 @@ g('RB · becoming S1 to S3: the avatar\'s own data on the record, its identity, 
   'an avatar held in memory from before gains the new fields and keeps what it had');
 }
 
+g('PLATE WORD · early, partial or full follows how much was answered, never how high');
+/* The Summary plate's word was read off accuracy().pct, which carries the
+   expression fill and the held count, so it measured the answers' height:
+   at e9ca1ae every law at 10 read partial, every law at 1 read early, and five
+   stories with no law read partial. It reads accCover now (engine/compute.js). */
+{
+ const has=typeof E.accCover==='function'&&typeof E.accCoverWord==='function';
+ ok(has,'accCover and accCoverWord exist, the plate word has its own measure');
+ const cover=(lawVal,nLaws,nStories)=>{
+  const p=E.blankProfile('cover');
+  if(nLaws){p.laws={};SINAMES.slice(0,nLaws).forEach(l=>p.laws[l]=lawVal);}
+  for(let i=0;i<(nStories||0);i++)p.story.entries.push({t:'2026-10-16T00:00:0'+(i%10)+'Z',text:'I am furious'});
+  const r=E.read(p).reading;
+  return has?E.accCover(r,p):{pct:NaN};};
+ const word=c=>has?E.accCoverWord(c):'?';
+ ok(word(cover(null,0,0))==='','a blank profile has no word, got '+JSON.stringify(word(cover(null,0,0))));
+ const hi=cover(10,21,0), lo=cover(1,21,0), zero=cover(0,21,0);
+ ok(word(hi)==='full'&&word(lo)==='full'&&word(zero)==='full',
+  'every law answered reads full whether the answers are 10, 1 or 0, got '+[word(hi),word(lo),word(zero)].join(','));
+ ok(hi.pct===lo.pct&&lo.pct===zero.pct,'and the measure is the same figure at all three, '+[hi.pct,lo.pct,zero.pct].join(','));
+ const st=cover(null,0,5);
+ ok(word(st)==='early'&&st.pct<lo.pct,'five stories and no law read early, below every law answered low, '+word(st)+' '+st.pct);
+ ok(word(cover(10,1,0))==='early','one law answered at 10 is early, not full, got '+word(cover(10,1,0)));
+ ok(word(cover(10,20,10))!=='full','twenty laws and ten stories are not full while a law is still open, got '+word(cover(10,20,10)));
+ /* monotone in each count, and indifferent to the height */
+ let last=-1, mono=true;
+ for(let n=0;n<=21;n++){const c=cover(n%2?9:2,n,0); if(!(c.pct>=last))mono=false; last=c.pct;}
+ ok(mono,'answering one more law never lowers the measure, laws at alternating heights');
+ last=-1; mono=true;
+ for(let n=0;n<=14;n++){const c=cover(3,7,n); if(!(c.pct>=last))mono=false; last=c.pct;}
+ ok(mono,'writing one more story never lowers the measure');
+ const order=['','early','partial','full'];
+ let wl=0, wmono=true;
+ for(let n=0;n<=21;n++){const w=order.indexOf(word(cover(5,n,0))); if(w<wl)wmono=false; wl=w;}
+ ok(wmono&&wl===3,'the word climbs the ladder as the laws are answered and never steps back, ending at full');
+}
+
 g('CRISIS · srcSafe trips on self harm and not on everyday uses of the same words');
 /* all expected red on main: block 2a ports srcSafe from e2aa6f8 and must fix it */
 {
