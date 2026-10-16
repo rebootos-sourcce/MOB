@@ -2937,10 +2937,17 @@ function relResults(){
   +'<div class="rel-node rel-rs-hero">'+(RUN.halted?'':'Congratulations. ')
   +'You released '+t.said+(t.said===1?' pattern':' patterns')+' and recharged '+t.put+'.</div>'
   +relEndNote();
+ /* "NEW MARK" WAS A CLAIM THE RECORD CANNOT MAKE. marksNew is what the ladder
+    reads after this run and did not read before it, and nothing stores a mark
+    once earned (TDD v3 1.2, unbuilt), so a mark held last week, lost when an
+    undo took an axis back or a done press was taken off, and true again now
+    was announced as new. What the record can say is that this release is
+    where the mark became true, so that is what the card says. Stored marks,
+    Block 3 of the achievements plan, are what would make "new" knowable. */
  (RUN.marksNew||[]).forEach(function(m){
   out+='<div class="rel-mark" style="--c:'+(typeof seatCol==='function'?seatCol(m.b):'var(--accent)')+'">'
    +'<svg viewBox="0 0 24 24" class="rel-mark-i" aria-hidden="true"><path d="'+esc(m.ic||'')+'"/></svg>'
-   +'<span><span class="rel-mark-k">New mark</span><b>'+esc(m.nm)+'</b><em>'+esc(m.d)+'</em></span></div>';});
+   +'<span><span class="rel-mark-k">Earned on this release</span><b>'+esc(m.nm)+'</b><em>'+esc(m.d)+'</em></span></div>';});
  /* 2. left and right, mirrored, the same panels the run counted on */
  if(t.side)out+=relSect('Left and right',
   '<div class="rel-lrw">'+relSidePanel('L',t,null)+relSidePanel('R',t,null)+'</div>'

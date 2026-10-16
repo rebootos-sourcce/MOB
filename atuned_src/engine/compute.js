@@ -651,7 +651,10 @@ function accuracy(r,prof){
    fifths: they are the measurement, and a story is evidence for it. The story
    side is whole at ten entries, the ladder's own Ten stories rung
    (engine/ladder.js, "the field is being read from your own words"), so
-   CS_STORY_N names the same ten and a story past it adds nothing here.
+   CS_STORY_N names the same ten and a story past it adds nothing here. The
+   rung counts ten days with an entry since 16 October (L11) and this still
+   counts entries: coverage asks how much evidence there is, and ten entries
+   in one sitting are ten pieces of it, where the mark asks what was kept up.
    Neither side reads a value, so the same counts give the same figure whether
    every answer is 1 or 10, and one more answer or one more story can never
    lower it.
