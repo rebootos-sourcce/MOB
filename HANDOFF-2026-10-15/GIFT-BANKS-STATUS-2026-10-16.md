@@ -84,7 +84,7 @@ These are the decisions that move the five new banks. None is made for you; each
 
 - **The LET GO corpus** (your dictation and typed lists, Reboot-OS commit `fbad94c`, the same files byte for byte as Reboot-OS main `3d66f5e`). Used first, for every bank.
 - **The "50 Limiting Beliefs" cards** (`Tula__SUPPLIMENT_LET_GO_LIST.txt`, 233 sets, 11,700 lines, generated in a chat session, not dictated). Used to fill, each line marked "from a card, not dictated" in its own source column and listed in its own section of each review document.
-- **The Little Books volumes** (MOB branch `claude/little-books-review-k7az9s`, commit `e98a057`): 11 volumes (anger, anxiety, burnout, control, drive, duty, grief, money, shame, voice, worth), 99 charge and install pairs, but only 59 different charge lines, because most pairs repeat their volume's shared list. Read for every nature. None qualifies: every charge line runs 46 to 69 words, and none is 30 words or fewer. For each of the five new natures, every line that names it also names another nature. There is no overwhelm, sadness, depression volume.
+- **The Little Books volumes** (MOB branch `claude/little-books-review-k7az9s`, commit `e98a057`): 11 volumes (anger, anxiety, burnout, control, drive, duty, grief, money, shame, voice, worth), 99 charge and install pairs, but only 59 different charge lines, because most pairs repeat their volume's shared list. Read for every nature. None qualifies: every charge line runs 46 to 69 words, and none is 30 words or fewer. For each of the five new natures, every line that names it also names another nature. There is no overwhelm, sadness or depression volume.
 
 ## Files
 
