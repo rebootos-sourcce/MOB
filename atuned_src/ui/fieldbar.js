@@ -172,7 +172,13 @@ function fbReach(list,carry){
  return carry.filter(function(n){return s[n.i];}).length/carry.length*100;}
 function fbValues(r){
  var V={}, dash='–', carry=W.filter(function(n){return n.sq>=4;});
- var f1=function(x){var n=+x||0; return n>=0.05?n.toFixed(1):dash;}, pc=function(x){var n=Math.round(+x||0);return n>0?n+'%':dash;};
+ /* WHOLE NUMBERS ON THE TWO WEIGHTS, 16 October. The addresses and seats pills
+    printed one decimal ("6.3"), a figure the rest of the page never shows to
+    that precision and a raw score under the 14 October ruling. They print the
+    way CQ and DQ do, a bare whole number, and a weight that rounds to nothing
+    is a dash. The sentences below test the figure the pill prints, so a pill
+    that says a dash never sits beside a tooltip that says something carries. */
+ var f1=function(x){var n=Math.round(+x||0); return n>0?String(n):dash;}, pc=function(x){var n=Math.round(+x||0);return n>0?n+'%':dash;};
  /* NO PERCENT ON THE HEADLINE READING, round PQ, his words: "No, it doesn't
     need to be a percent. Just a number." CQ and DQ are the headline readings
     and print bare here, as on the wheel's core and the Summary plate. The
@@ -180,10 +186,10 @@ function fbValues(r){
     and keep their sign. */
  var nb=function(x){var n=Math.round(+x||0);return n>0?String(n):dash;};
  V.addresses={p:r.SQm*10,v:f1(r.SQm),c:seatCol(r.darkB),
-  m:r.SQm>=0.05?'Ring and number: segment depth, SQ, at a weight of '+f1(r.SQm)+'. How deep the held charge sits.'
+  m:f1(r.SQm)!==dash?'Ring and number: segment depth, SQ, at a weight of '+f1(r.SQm)+'. How deep the held charge sits.'
    :'Ring and number: segment depth, SQ. Nothing is carrying yet.'};
  V.seats={p:(r.darkV||0)*10,v:f1(r.darkV),c:seatCol(r.darkB),
-  m:(r.darkV||0)>=0.05?'Ring and number: the heaviest assemblage point, '+r.darkB+', at a weight of '+f1(r.darkV)+'.'
+  m:f1(r.darkV)!==dash?'Ring and number: the heaviest assemblage point, '+r.darkB+', at a weight of '+f1(r.darkV)+'.'
    :'Ring and number: the heaviest assemblage point. Nothing is carrying yet.'};
  V.laws={p:r.CQ,v:nb(r.CQ),c:seatCol('Crown'),
   m:'Ring and number: coherence, CQ, which is the laws summed.'};

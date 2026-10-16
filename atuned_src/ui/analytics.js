@@ -166,15 +166,19 @@ function anaRender(){
       spread under the line reported "Nothing is carrying" beside a tier word
       earned by that same load. It now says which of the two is true. */
     :(r.heaviest?'Nothing is above '+unp('the line')+'. The heaviest is <b>'+esc(r.heaviest.k)
-      +'</b> at <b>'+r.heaviest.sq.toFixed(1)+'</b>, at the '
+      +'</b>, at the '
       +String(r.heaviest.b).toLowerCase()+'.':'Nothing is carrying.'))
    /* only against a row the same arithmetic wrote. A row from before 25
       September holds It*Ig/Rz, and the gap to the laws over 210 is the
       formula changing, not the person moving. */
    /* a move that prints as 0.0 is no move, round RB: "CQ up 0.0" read as
-      a change and was a rounding */
-   +(prev&&prev.m===CQ_MODEL?(Math.abs(r.CQ-prev.cq)<0.05?' CQ has not moved since last session.'
-     :' CQ '+(r.CQ-prev.cq>0?'up ':'down ')+Math.abs(r.CQ-prev.cq).toFixed(1)+' since last session.'):''))
+      a change and was a rounding. 16 October: and a move of 0.1 beside a
+      figure the page shows as a whole number is a decimal nobody can find on
+      the screen, which is the raw score the 14 October ruling took off every
+      daily surface. The change is said against the figure the person sees:
+      whole numbers, and "has not moved" until the shown figure has. */
+   +(prev&&prev.m===CQ_MODEL?(Math.round(r.CQ)===Math.round(prev.cq)?' CQ has not moved since last session.'
+     :' CQ '+(r.CQ>prev.cq?'up ':'down ')+Math.abs(Math.round(r.CQ)-Math.round(prev.cq))+' since last session.'):''))
   +'</div>'
   /* THE FIGURE STAYS ON THE TAB WHOSE JOB IS SAYING WHAT THE INSTRUMENT
      KNOWS. The tolerance beside it does not. It printed "58% plus or minus

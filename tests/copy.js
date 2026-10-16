@@ -77,7 +77,13 @@ const BANNED=[
  /* a clinical word, 15 October, the owner's non clinical ruling: the instrument
     asks questions and reads answers, it does not diagnose, and a card that said
     "From your diagnostic" claimed a clinic it is not */
- ['app', /\bdiagnos(?:tic|tics|is|ed|e)\b/i, 'the instrument asks questions and does not diagnose']];
+ ['app', /\bdiagnos(?:tic|tics|is|ed|e)\b/i, 'the instrument asks questions and does not diagnose'],
+ /* a decimal weight or change, 16 October, the owner's 14 October ruling of no
+    raw scores on a person's screen: the two pills and the Analytics line printed
+    "at a weight of 6.3" and "CQ up 0.1", figures the page shows nowhere else to
+    that precision. They print whole numbers like CQ and DQ */
+ ['app', /\bat a weight of \d+\.\d/i, 'a weight prints as a whole number, as CQ and DQ do'],
+ ['app', /\bCQ (?:up|down) \d+\.\d\b/i, 'a change in CQ is said in whole numbers, against the figure the page shows']];
 
 /* THE REQUIRED SENTENCES. [surface, [patterns that must all sit in one
    sentence], what it must say]. Held by sentence, so two halves on two
