@@ -7230,7 +7230,11 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
    whatever the card says. When the card fits, nothing sticks and nothing moves. */
 .obx .ob-scroll .ob-acts{position:sticky;bottom:0;z-index:2;margin-top:18px;
  padding:18px 0 calc(8px + env(safe-area-inset-bottom,0px));
- background:linear-gradient(to top,rgb(6,6,8) 62%,rgba(6,6,8,0))}
+ background:linear-gradient(to top,color-mix(in srgb,var(--bg) 96%,#000) 62%,transparent)}
+/* at desktop width the card does not scroll, so the actions never need a
+   backing: the hard black block behind them was the one hard edge on a screen
+   built from soft light (art direction, 16 October). */
+@media (min-width:900px){.obx .ob-scroll .ob-acts{background:none}}
 .obx .btn{min-height:48px;padding:0 22px;font-size:15px}
 .obx .btn:active{scale:.97}
 .obx .btn.pri{min-height:54px;padding:0 26px 0 30px;display:inline-flex;align-items:center;gap:14px;font-size:15.5px;
@@ -7770,6 +7774,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
  color:var(--ink);border-radius:var(--r-xs);padding:11px 12px;font-family:var(--sans);
  font-size:14px;line-height:1.6;resize:vertical;min-height:110px}
 .ob-f textarea:focus{border-color:var(--accent);outline:none}
+.obx .ob-f textarea::placeholder{color:var(--dim);opacity:1}
 /* THE MIRROR'S SEATS, F4 round QA. One block per seat the words put weight
    on, a rule in the seat's own colour down its left edge, and one row per
    address with its own Yes and Not me. The tag says whether the address

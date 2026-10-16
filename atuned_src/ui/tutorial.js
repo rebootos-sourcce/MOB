@@ -186,17 +186,20 @@ function tutRender(){
  var s=TUT.step, out='';
  if(s===0){
   out=tutCard('Let’s look at something from your journal.',
-   '<p class="ob-p">Write one thing. A sentence or two is enough. Not a '
-   +'summary of your life, just something real from today or recently, the '
-   +'kind of thing you would actually write in here.</p>'
-   +'<p class="ob-p">Name the feeling. Say afraid, ashamed, furious or numb. '
-   +'Say what your body did: tight chest, hot face, hollow stomach. Words like '
-   +'fine, off or rough could mean anything, so the engine has to guess.</p>'
-   +'<p class="ob-p ob-dim">The clearer the feeling, the clearer where it lands '
-   +'in your body. Not &ldquo;it was a rough day&rdquo;. Try &ldquo;My boss '
-   +'shouted at me in front of the team. I felt ashamed and my face went '
-   +'hot.&rdquo;</p>'
-   +'<div class="ob-f"><textarea id="tuttext" rows="4" placeholder="What happened, and what it was like."></textarea></div>',
+   '<p class="ob-p">Write one thing that happened today or recently. A '
+   +'sentence or two is enough.</p>'
+   /* THE OWNER'S LINE, 16 October: use feeling words, use descriptive words,
+      no ambiguity, "the clearer the emotion, the clearer the targeting".
+      Checked against parseStory before it was written: a named feeling
+      ("ashamed") lands as one clean reading at one seat, a vague phrase
+      ("a rough day") is read as a loose guess, and body words scatter the
+      reading across seats, so the card asks for the feeling and gives the
+      example as a placeholder, which is never saved as the person's own. */
+   +'<p class="ob-p">Name the feeling in one plain word, like afraid, '
+   +'ashamed, furious or numb. Not fine, off or rough: those could mean '
+   +'anything. The clearer the feeling, the clearer where it lands in your '
+   +'body.</p>'
+   +'<div class="ob-f"><textarea id="tuttext" rows="4" placeholder="For example: My boss shouted at me in front of the team. I felt ashamed."></textarea></div>',
    '<button type="button" class="btn pri" data-tut="commit">Continue</button>'
    +'<button type="button" class="btn" data-tut="skip">Skip the tutorial</button>');
  }
