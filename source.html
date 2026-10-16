@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v214 da58d06 2026-10-16 04:41"><head><meta charset="utf-8">
+<html lang="en" data-build="v215 9c566dd 2026-10-16 05:20"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -6718,6 +6718,42 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
  padding:0;display:flex;flex-direction:column-reverse;align-items:flex-end;opacity:.7}
 .login-dev[open]{opacity:1}
 #login{background:#06060a}
+/* IS THIS A CRISIS, 16 October, ui/crisis.js. Its own layer over the login
+   door and the first run's stage (both at 95) and under the boot sheet, so it
+   opens on top of the card it was pressed on. One card, centred on every
+   width: a person in a crisis is not asked to find a sheet that slid in from
+   an edge. Every control is at the 44 pixel floor, and a number is a link
+   that looks like the buttons beside it, because it is the thing to press. */
+.crx{position:fixed;inset:0;z-index:97;display:flex;align-items:center;justify-content:center;
+ padding:16px;background:rgba(6,6,8,.8)}
+.crx[hidden]{display:none}
+.crx-card{width:min(480px,100%);max-height:calc(100vh - 32px);overflow:auto;background:var(--panel);
+ border:1px solid var(--edge);border-radius:14px;padding:24px 24px 20px;box-shadow:0 18px 60px rgba(0,0,0,.5)}
+.crx-h{margin:0 0 12px;font-size:22px;line-height:1.25;font-weight:600;color:var(--ink);outline:none}
+.crx-p{margin:0 0 12px;font-size:15px;line-height:1.55;color:var(--mid)}
+.crx-dim{font-size:13.5px;color:var(--dim)}
+.crx-ls{list-style:none;margin:0 0 6px;padding:0}
+.crx-ls li{padding:12px 0;border-top:1px solid var(--edge)}
+.crx-ls li:first-child{border-top:0;padding-top:2px}
+.crx-ls .crx-p{color:var(--ink);margin-bottom:8px}
+.crx-go{display:flex;gap:8px;flex-wrap:wrap}
+.crx-tel{display:inline-flex;align-items:center;text-decoration:none}
+.crx-acts{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+/* the button, quiet: the same pill as the stage's Not now, so it reads as a
+   way out of the flow and never as the next step in it */
+.crx-open{min-height:var(--tap);padding:0 16px;border-radius:999px;background:transparent;font:inherit;
+ font-size:13px;color:var(--mid);border:1px solid color-mix(in srgb,var(--ink) 16%,transparent);cursor:pointer;
+ transition:color var(--t-micro) var(--ease-out),border-color var(--t-micro) var(--ease-out)}
+.crx-open:hover{color:var(--ink);border-color:color-mix(in srgb,var(--ink) 34%,transparent)}
+.crx-line{margin:14px 0 0}
+/* on the stage it joins Not now on the right; the rail is out of the flow, so
+   the auto margin is what keeps the two of them off the rail in the middle */
+.obx-top .obx-crx{margin-left:auto;margin-right:10px}
+/* at 390 it hangs over the stage's ring, so it carries the stage's own dark
+   behind its words and the ticks never run through the letters */
+.obx-crx{background:color-mix(in srgb,rgb(6,6,8) 82%,transparent)}
+/* the Story box's own line after Talk it through, above the box it is about */
+.st-crisis{margin:0 0 10px;color:var(--ink)}
 .login-dev summary{font-size:12.5px;color:var(--dim);cursor:pointer;
  list-style:none}
 .login-dev summary::-webkit-details-marker{display:none}
@@ -7308,6 +7344,9 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
  .obx-step{font-size:11.5px}
  .obx-stepn{display:none}
  .obx-x{padding:0 14px}
+ /* no room beside the rail at this width, so the crisis button hangs just
+    under the bar on the right, clear of the words, on every step */
+ .obx-top .obx-crx{position:absolute;top:60px;right:16px;margin:0;padding:0 12px;font-size:12.5px}
  .obx-slot{left:0;top:var(--st)}
  .obx .ob-scroll{padding:14px 20px 28px}
  .obx .obx-in{margin:0;max-width:none;font-size:16px}
@@ -14161,6 +14200,70 @@ const JOURNEY_WALK=['arrive','ask','settle','feel','body','story','mirror','next
 const JOURNEY_DOORS=['onboarding','tutorial'];
 
 try{window.__at&&window.__at('engine/data/onboarding.js');}catch(e){}
+/* ============================================================
+   THE CRISIS BUTTON'S WORDS AND NUMBERS, 16 October. His words: "Maybe [the
+   crisis check] belongs in the pop-up, the welcome. Maybe it's an option. Is
+   this a crisis? Hit that button. Tell me about it. Do you need immediate
+   emergency contact, or would you like to talk it through? It's always a
+   story."
+
+   A BUTTON THE PERSON PRESSES, AND NOT A DETECTOR. On 9 October he deferred
+   the automatic check, a phrase list reading what a person writes (parked on
+   claude/b2a-crisis and claude/b2a-crisis2, not merged), and J0 in
+   ui/onboard.js stays open for exactly that. Nothing here reads a word
+   anybody types. It is three numbers and the sentences around them, shown
+   when somebody says, by pressing, that this is a crisis.
+
+   HERE AND NOT IN A RENDERER, because two surfaces print it: the app's panel
+   (ui/crisis.js) and the funnel's quiz page, which carries engine.js and no
+   ui module. One table, so a number corrected once is corrected on both, the
+   rule funnel/quiz.html states for the engine it references rather than
+   copies.
+
+   EACH NUMBER CARRIES ITS SENTENCE, round PO's unpack rule: a bare 741741 is
+   a symbol, so every row says what the number reaches and what happens when
+   you use it, in one sentence, and tests/copy.js holds each sentence so none
+   of them can be cut without the gate failing. They are United States
+   numbers, and the panel says so beside them and names what to use instead,
+   because outside the US they are not the numbers that answer.
+
+   go is the row's links, [what the button says, the address]. tel: and sms:
+   open the phone's own dialler or messages on a phone; on a desktop the
+   number is still in the sentence as plain text, so nothing depends on the
+   link working. sms: carries the keyword in body=, which iOS and Android
+   both read; a phone that ignores it still opens the right number, and the
+   sentence says what to type.
+
+   THE KEYWORD IS IN SENTENCE CASE. The brief asked for "text HOME", and the
+   service prints it in capitals, but all caps is ruled out of copy and the
+   voice gate fails it. The line takes any case, so the sentence says "the
+   word home", which a person can type as read, and the link still sends HOME
+   for them. The button is "Text 741741", the same shape as "Text 988"
+   beside it.
+   ============================================================ */
+const CRISIS_LINES=[
+ {k:'988', go:[['Call 988','tel:988'],['Text 988','sms:988']],
+  say:'Call or text 988 to reach the Suicide and Crisis Lifeline, where a trained person answers at any hour.'},
+ {k:'741741', go:[['Text 741741','sms:741741?body=HOME']],
+  say:'Text the word home to 741741 to reach the Crisis Text Line, where a trained person writes back at any hour.'},
+ {k:'911', go:[['Call 911','tel:911']],
+  say:'Call 911 if you are in danger now, for police, fire or an ambulance.'}];
+/* THE PANEL'S WORDS, once, so the app and the quiz say the same thing. open is
+   the button; h and q are his two lines as the build was asked for them; the
+   two choices are verbs for what each does; where is the line beside the US
+   numbers; story is the first line the Story box shows after Talk it through,
+   his "It's always a story" said as a fact and then the one thing to do. */
+const CRISIS_SAY={
+ open:'Is this a crisis?',
+ h:'Tell me about it.',
+ q:'Do you need to reach someone right now, or would you like to talk it through?',
+ reach:'Reach someone now',
+ talk:'Talk it through',
+ close:'Close',
+ where:'These are US numbers. Outside the US, call your local emergency number.',
+ story:'It is always a story. Write what happened, in your own words.'};
+
+try{window.__at&&window.__at('engine/data/crisis.js');}catch(e){}
 
 /* ============================================================
    THE SIX AXES. Three higher gates and three lower gates. This is
@@ -29394,6 +29497,8 @@ if(typeof module!=='undefined'&&module.exports){
                   ONB_MINI_ADDRS:ONB_MINI_ADDRS, ONB_MINI_DOSE:ONB_MINI_DOSE, ONB_CHANS:ONB_CHANS,
                   OB_STARTS:OB_STARTS, OB_FEELS:OB_FEELS, OB_PLACES:OB_PLACES,
                   journeyRead:journeyRead, onbMiniPlan:onbMiniPlan,
+  /* the crisis button's numbers and words, engine/data/crisis.js. Reads only. */
+                  CRISIS_LINES:CRISIS_LINES, CRISIS_SAY:CRISIS_SAY,
   /* the journey record itself, F13: its tables, its boundary, its writers,
      what the first release made, and the claim packet with its boundary */
                   JOURNEY_V:JOURNEY_V, JOURNEY_EVENTS:JOURNEY_EVENTS, JOURNEY_LOG_MAX:JOURNEY_LOG_MAX,
@@ -42885,6 +42990,12 @@ function stRender(){
      is still ST_TEXT and a reply is appended to it, see srcChatSend, so the
      big box steps aside rather than standing beside a copy of itself, and
      Talk pressed again puts it back holding every reply as its own line. */
+  /* IS THIS A CRISIS, TALK IT THROUGH, 16 October (ui/crisis.js). His words:
+     "It's always a story." The person chose to talk it through, so the box
+     says what it is for in one line above it, until the entry is committed.
+     A note and not the box's own text: words put in the box would be read
+     and committed as if the person had typed them. */
+  +(STV.crisis&&!STV.chat?'<p class="st-mask st-crisis" id="stcrisis" role="note">'+esc(CRISIS_SAY.story)+'</p>':'')
   +(STV.chat
    ?'<div class="src-cmp"><textarea id="stcin" class="src-cin" rows="2" spellcheck="false" '
     +'aria-label="Your reply" placeholder="Write back. Enter sends.">'+esc(SRC_CDRAFT)+'</textarea>'
@@ -43037,7 +43148,7 @@ function stRender(){
    is open. Kept across a return to the tab, never saved.
    ============================================================ */
 var STV={sort:'seat',focus:'write',list:'entry',bank:false,lastFound:[],lastT:null,hot:null,view:'lanes',ana:false,chat:false,law:false,
- unsaved:null,draftT:null,draftFail:false};
+ unsaved:null,draftT:null,draftFail:false,crisis:false};
 /* the one width the page changes shape at is the one the product stacks its
    columns at, so the Story cannot be in three columns while the rails are
    already one. */
@@ -43291,6 +43402,8 @@ function stCommit(){
     with Run on it: widening it there would push Run off the first screen,
     which is the one thing layout H exists to stop. */
  STV.focus=stPhone()?'write':'release';
+ /* the crisis line has said what the box is for, and the box has been used */
+ STV.crisis=false;
  toYou();syncCh();if(typeof stRender==='function')stRender();render();
  /* A STORY KEPT WITH STARS IN IT SAYS SO, round QR. The person may choose
     not to type the hidden words, and the entry is still theirs; it is kept
@@ -69318,6 +69431,15 @@ function profMenu(){
   +'<button type="button" role="menuitem" class="pm-it" data-pmlog="1">'
   +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6.5h14M5 12h14M5 17.5h9"/></svg></span>'
   +'<span>Message log</span></button>'
+  /* IS THIS A CRISIS, after the first run, 16 October. The welcome carries
+     the button and is met once, so the same press has to be somewhere a
+     person can still reach on any day, and the menu on every screen's top bar
+     is that place. The same words and the same panel, ui/crisis.js; the ring
+     is a closed circle with a mark through its centre, stroked, never filled. */
+  +'<button type="button" role="menuitem" class="pm-it" data-pmcrisis="1">'
+  +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/>'
+  +'<path d="M12 7.5v5.5M12 16.2v.3"/></svg></span>'
+  +'<span>'+esc(CRISIS_SAY.open)+'</span></button>'
   +'<button type="button" role="menuitem" class="pm-it pm-all" data-pms="">'
   +'<span class="ac-gl"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/>'
   +'<path d="M12 3.5v2.2M12 18.3v2.2M3.5 12h2.2M18.3 12h2.2M6 6l1.6 1.6M16.4 16.4L18 18M18 6l-1.6 1.6M7.6 16.4L6 18"/></svg></span>'
@@ -69358,6 +69480,11 @@ function profMenu(){
  if(jn)jn.onclick=function(){profMenuShut();};
  var lg=m.querySelector('[data-pmlog]');
  if(lg)lg.onclick=function(){profMenuShut(); if(typeof msgLogOpen==='function')msgLogOpen();};
+ /* the menu shuts first and focus goes to the profile button, so closing the
+    panel puts a keyboard back on the control the menu hung from */
+ var cr=m.querySelector('[data-pmcrisis]');
+ if(cr)cr.onclick=function(){profMenuShut(); var pb=document.getElementById('profbtn'); if(pb)pb.focus();
+  if(typeof crisisOpen==='function')crisisOpen();};
  var o=m.querySelector('[data-pmout]');
  if(o)o.onclick=function(){profMenuShut(); if(typeof accSignOut==='function')accSignOut();};
  var r=b.getBoundingClientRect();
@@ -72307,6 +72434,131 @@ function railSection(sec,opening){
 
 try{window.__at&&window.__at('ui/railmotion.js');}catch(e){}
 /* ============================================================
+   IS THIS A CRISIS. 16 October, his words: "Maybe [the crisis check] belongs
+   in the pop-up, the welcome. Maybe it's an option. Is this a crisis? Hit
+   that button. Tell me about it. Do you need immediate emergency contact, or
+   would you like to talk it through? It's always a story."
+
+   WHAT IT IS: a button the person chooses to press, and the one small panel
+   it opens. It reads nothing anybody writes. The automatic check he deferred
+   on 9 October is a different thing and is still J0 in ui/onboard.js; this
+   does not close it and does not pretend to, and tests/onboarding2.js still
+   asserts that no detector exists.
+
+   WHERE THE BUTTON IS, every place, so a person never has to hunt for it:
+     the login door      the first card a stranger meets, under its actions
+                         (loginCard, ui/login.js)
+     the first run       the stage's own top bar, on every one of its steps,
+                         beside Not now (obStage, ui/onboard.js)
+     after the first run the profile menu, one row (profMenu, ui/account.js)
+     the funnel's quiz   its sticky top, with its own copy of this panel over
+                         the same words (funnel/quiz.html)
+
+   THE PANEL IS ITS OWN LAYER AND NOT #sheet. The sheet sits at z-index 70,
+   under the login door and the first run's stage at 95, so a panel opened
+   from either would open behind the card it was pressed on. And the sheet's
+   Escape, the stage's Escape and the profile menu's Escape all listen on the
+   way up: one key would have shut the panel and the whole first run with it.
+   So this listens on the way down and stops the key there, and it is the
+   only thing Escape closes while it is open.
+
+   NEVER A LOCK. Close, Escape and the backdrop each shut it, and nothing
+   behind it moves: the card it was opened from is exactly where it was and
+   focus goes back to the button that opened it. Talk it through is the one
+   choice that moves the person, and it moves them to the Story box.
+   ============================================================ */
+var CRISIS={open:false, view:'ask', back:null};
+/* the button, for every surface that carries it. cls is the surface's own
+   placement; the words are CRISIS_SAY's, so every door says the same thing. */
+function crisisBtn(cls){
+ return '<button type="button" class="crx-open'+(cls?' '+cls:'')+'" data-crisis="open" '
+  +'aria-haspopup="dialog">'+esc(CRISIS_SAY.open)+'</button>';}
+/* ONE SCREEN, TWO VIEWS. ask is his two lines and the two choices; reach is
+   the three numbers, each with its sentence, and the line that says they are
+   US numbers. Talk it through and Close are on both, so whichever a person
+   is looking at, the way on and the way out are on it. */
+function crisisCard(){
+ var reach=CRISIS.view==='reach';
+ return '<div class="crx-card" role="dialog" aria-modal="true" aria-labelledby="crxh">'
+  +'<h2 class="crx-h" id="crxh" tabindex="-1">'+esc(reach?CRISIS_SAY.reach:CRISIS_SAY.h)+'</h2>'
+  +(reach
+   ?'<ul class="crx-ls">'+CRISIS_LINES.map(function(l){
+     return '<li data-crisisline="'+esc(l.k)+'"><p class="crx-p">'+esc(l.say)+'</p>'
+      +'<div class="crx-go">'+l.go.map(function(g){
+        return '<a class="btn crx-tel" href="'+esc(g[1])+'">'+esc(g[0])+'</a>';}).join('')
+      +'</div></li>';}).join('')+'</ul>'
+    +'<p class="crx-p crx-dim">'+esc(CRISIS_SAY.where)+'</p>'
+   :'<p class="crx-p">'+esc(CRISIS_SAY.q)+'</p>')
+  +'<div class="crx-acts">'
+  +(reach?'':'<button type="button" class="btn pri" data-crisis="reach">'+esc(CRISIS_SAY.reach)+'</button>')
+  +'<button type="button" class="btn" data-crisis="talk">'+esc(CRISIS_SAY.talk)+'</button>'
+  +'<button type="button" class="btn" data-crisis="close">'+esc(CRISIS_SAY.close)+'</button>'
+  +'</div></div>';}
+/* the host is made on first use, so no shell markup carries an empty layer */
+function crisisHost(){
+ var h=document.getElementById('crisis');
+ if(!h){ h=document.createElement('div'); h.id='crisis'; h.className='crx'; h.hidden=true;
+  document.body.appendChild(h); }
+ return h;}
+function crisisPaint(){
+ var h=crisisHost(); h.innerHTML=crisisCard();
+ var f=h.querySelector('#crxh'); if(f)f.focus({preventScroll:true});}
+function crisisOpen(){
+ CRISIS.back=document.activeElement||null;
+ CRISIS.open=true; CRISIS.view='ask';
+ var h=crisisHost(); h.hidden=false; crisisPaint();}
+/* keep says the person is going on somewhere and focus goes with them: the
+   button that opened the panel is on a card that is about to leave */
+function crisisShut(keep){
+ var h=document.getElementById('crisis');
+ CRISIS.open=false; CRISIS.view='ask';
+ if(h){ h.hidden=true; h.innerHTML=''; }
+ var b=CRISIS.back; CRISIS.back=null;
+ if(!keep&&b&&b.focus&&document.contains(b))b.focus({preventScroll:true});}
+/* TALK IT THROUGH, "it's always a story". The panel shuts, whatever card it
+   was opened over steps aside, and the person lands in the Story tab with
+   the box itself, not the reply line, open and focused and one line above it
+   saying what to do. The door and the first run are left the way their own
+   ways out leave them: the login door as Guest leaves it, the first run as
+   Open Avatar leaves it (obClose, then the tab), so neither has a second
+   path out that skips what its own close writes. */
+function crisisTalk(){
+ crisisShut(true);
+ if(typeof LOGIN!=='undefined'&&LOGIN.open&&typeof loginClose==='function')loginClose();
+ if(typeof OB!=='undefined'&&OB.open&&typeof obClose==='function')obClose();
+ if(typeof STV!=='undefined'){ STV.chat=false; STV.focus='write'; STV.crisis=true; }
+ if(typeof setTab==='function')setTab(TAB.STORY);
+ if(typeof render==='function')render();
+ var ta=document.getElementById('sttext'); if(ta)ta.focus();}
+addEventListener('click',function(e){
+ var t=e.target&&e.target.closest?e.target:null; if(!t)return;
+ var h=document.getElementById('crisis');
+ /* the backdrop is a way out, the card is not */
+ if(CRISIS.open&&h&&t===h){ crisisShut(); return; }
+ var b=t.closest('[data-crisis]'); if(!b)return;
+ var k=b.getAttribute('data-crisis');
+ if(k==='open'){ e.preventDefault(); crisisOpen(); return; }
+ if(!CRISIS.open)return;
+ if(k==='reach'){ CRISIS.view='reach'; crisisPaint(); return; }
+ if(k==='talk'){ crisisTalk(); return; }
+ if(k==='close'){ crisisShut(); return; }});
+/* ON THE WAY DOWN, see the header: the panel takes Escape before the stage,
+   the sheet or the menu can, and keeps Tab inside itself, because a modal a
+   keyboard can tab out of leaves a person typing into a card they cannot
+   see. */
+addEventListener('keydown',function(e){
+ if(!CRISIS.open)return;
+ if(e.key==='Escape'){ e.preventDefault(); e.stopPropagation(); crisisShut(); return; }
+ if(e.key!=='Tab')return;
+ var h=document.getElementById('crisis'); if(!h)return;
+ var f=[].slice.call(h.querySelectorAll('a[href],button'));
+ if(!f.length)return;
+ var i=f.indexOf(document.activeElement);
+ if(e.shiftKey&&(i<=0)){ e.preventDefault(); f[f.length-1].focus(); }
+ else if(!e.shiftKey&&(i<0||i===f.length-1)){ e.preventDefault(); f[0].focus(); }},true);
+
+try{window.__at&&window.__at('ui/crisis.js');}catch(e){}
+/* ============================================================
    ONBOARDING, ROUND PS. The three reviews (REVIEW-onboarding/) and three
    rounds of mockup (mockups/onboarding-v2/) converged on one flow: arrive,
    the twelve starting points, settle, feel, body, story, a mirror with a
@@ -72362,6 +72614,14 @@ try{window.__at&&window.__at('ui/railmotion.js');}catch(e){}
    where the first stranger's words are actually read, for the same warning
    placed at the exact line it describes. Tracked in the owner's plan as J0,
    a ship blocker for any build a stranger who is not the owner can reach.
+
+   AND A BUTTON IS NOT A DETECTOR, 16 October. He ruled the crisis option onto
+   the welcome as a choice: "Is this a crisis? Hit that button." It is in the
+   stage's top bar on every step (obStage) and its panel is ui/crisis.js. It
+   answers a real signal, the person's own press, so it is not the frame the
+   paragraph above refuses; and it reads no word anybody writes, so J0, the
+   automatic check he deferred on 9 October, is still exactly as open as this
+   header says.
    ============================================================ */
 /* THE AUTOMATIC OPEN IS OFF BY ITS OWN FLAG, unchanged: ui/login.js's
    loginEnter runs this sheet on its own switch, DEV_PLAY_ONBOARDING, and
@@ -72707,6 +72967,7 @@ function obRing(){
    and a Not now that answers to data-ob. */
 function obStage(h,n,xattr){
  if(h.querySelector('.obx-slot'))return;
+ var own=!!xattr;
  n=n||OB_NSTEPS; xattr=xattr||'data-ob="skip"';
  var wm=document.querySelector('#brand .bn'), mark=wm?wm.outerHTML:'';
  h.classList.add('obx');
@@ -72722,6 +72983,11 @@ function obStage(h,n,xattr){
   +Array.from({length:n}).map(function(_,i){
     return '<span class="ob-dot" style="--k:'+i+'"></span>';}).join('')+'</div>'
   +'<span class="obx-step"></span></div>'
+  /* IS THIS A CRISIS, 16 October, on the first run's stage only, in the top
+     bar beside Not now so it stands on every step and not on one card. The
+     Day One tutorial stands on this stage with its own way out (xattr) and
+     is left as it was. ui/crisis.js has the panel. */
+  +(own?'':crisisBtn('obx-crx'))
   +'<button type="button" class="obx-x" '+xattr+'>Not now</button>'
   +'</div>'
   +'<div class="obx-slot"></div>';}
@@ -74260,6 +74526,11 @@ function loginCard(mail){
   +'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-go">Log in</button>'
   +'<button type="button" class="btn" id="loginb-new">Create account</button>'
   +'<button type="button" class="btn" id="loginb-skip">Guest</button></div>'
+  /* IS THIS A CRISIS, 16 October: the first card a stranger meets carries the
+     button, under the three ways in and never in front of them, so it is
+     always there and never the thing a person has to read past. The panel and
+     the reason it is its own layer are in ui/crisis.js. */
+  +'<p class="crx-line">'+crisisBtn()+'</p>'
   +loginDevOptions()
   +'</div></div>';}
 function loginResetCard(mail){
@@ -76428,5 +76699,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005014969"></div>
+<div id="eof" hidden data-len="005031611"></div>
 </body></html>
