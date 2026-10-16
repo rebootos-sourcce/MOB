@@ -34,7 +34,7 @@ main at the time of writing: `920d7ed2b38492826d1a578feaac0646160f0804`. Branche
 - EQUIVALENT: 9
 - KEEP: 30
 
-Deleted in this pass: 97 (all SAFE and EQUIVALENT).
+Deleted in this pass: 88 (SAFE only). Held: 9 EQUIVALENT, see "Why the equivalent branches were held".
 
 ### Safe, fully inside main (deleted): 88
 
@@ -129,7 +129,7 @@ Deleted in this pass: 97 (all SAFE and EQUIVALENT).
 | `tutorial-cinematic` | `8bb370a59c5b` | 2026-10-03 |  | ancestor of main; 614 commits behind | `git push origin 8bb370a59c5b58372d199c7178e1bd562246f515:refs/heads/tutorial-cinematic` |
 | `worktree-agent-ad6238b7878d6984f` | `5dcb45d86632` | 2026-10-02 |  | ancestor of main; 936 commits behind | `git push origin 5dcb45d86632f5994b561d5d4dfc899d983096fc:refs/heads/worktree-agent-ad6238b7878d6984f` |
 
-### Equivalent, content inside main (deleted, archive tag kept): 9
+### Equivalent, content inside main (HELD, not deleted): 9
 
 | Branch | Tip | Last commit | Merged PR | Evidence | Recreate |
 |---|---|---|---|---|---|
@@ -358,7 +358,7 @@ main at the time of writing: `3d66f5ef4e3c3ea7d7319b3930e7b63e11dec648`. Branche
 - EQUIVALENT: 9
 - KEEP: 20
 
-Deleted in this pass: 33 (all SAFE and EQUIVALENT).
+Deleted in this pass: 24 (SAFE only). Held: 9 EQUIVALENT, see "Why the equivalent branches were held".
 
 ### Safe, fully inside main (deleted): 24
 
@@ -389,7 +389,7 @@ Deleted in this pass: 33 (all SAFE and EQUIVALENT).
 | `claude/w3-firstvisit` | `2952c599b894` | 2026-10-09 |  | ancestor of main; 51 commits behind | `git push origin 2952c599b8943a1150d07b6763c41c99bef69727:refs/heads/claude/w3-firstvisit` |
 | `claude/worker-hardening-1` | `fb538a13feb3` | 2026-10-08 |  | ancestor of main; 82 commits behind | `git push origin fb538a13feb34ab17362b577036f8ec275ba50f5:refs/heads/claude/worker-hardening-1` |
 
-### Equivalent, content inside main (deleted, archive tag kept): 9
+### Equivalent, content inside main (HELD, not deleted): 9
 
 | Branch | Tip | Last commit | Merged PR | Evidence | Recreate |
 |---|---|---|---|---|---|
@@ -573,6 +573,17 @@ Each is kept. The count is commits whose change is not in main (`git log --cherr
   - `8f4b722 c`i(p0): validate web artifact on pull requests
   - `70252de f`ix: prevent duplicate ATUNED Pages publishing
 
+## Why the equivalent branches were held
+
+The protocol said: before deleting an EQUIVALENT branch, push an archive tag at its tip so its
+original commits stay reachable. This session cannot create tags. A tag push over git was
+answered HTTP 403 by the session's GitHub proxy, and the GitHub API route answered "Write access
+to this GitHub API path is not permitted through this proxy." Branch pushes are allowed, tags
+are not. So every EQUIVALENT branch was left in place. Their content is already in main; only
+their original commit history depends on the branch name. Most of them are also held by
+GitHub's permanent pull request ref (`refs/pull/<number>/head`), which GitHub never deletes.
+A session that can push tags, or the owner from GitHub's web page, can finish them.
+
 ## How the tests were checked before use
 
 Both scripts were first run against a throwaway repository built with one branch of each
@@ -584,6 +595,8 @@ edited with no PR named, squash that dropped a file) read KEEP, which is the saf
 ## How to get a deleted branch back
 
 Run the Recreate command from its row, from any up to date clone of that repository.
-For an EQUIVALENT branch the archive tag also works:
-`git push origin refs/tags/archive/<name>^{commit}:refs/heads/<name>`.
+A copy of every SAFE and EQUIVALENT branch also exists as a git bundle (one file holding the
+commits) made in the cleaning session's scratch space. That space is temporary and is gone
+when the session ends, so the Recreate commands are the real recovery route: main holds
+every commit of every deleted branch.
 
