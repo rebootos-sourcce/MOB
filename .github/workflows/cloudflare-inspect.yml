@@ -20,7 +20,7 @@ on:
         default: "no"
 jobs:
   inspect:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     env:
       CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
