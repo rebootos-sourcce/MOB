@@ -8115,7 +8115,7 @@ g('PCT · one formula and one registry for every score a person reads (engine/pc
   put('integrity',x.Ig,who); put('intention',x.It,who);
   put('vitality',x.X,who); put('awareness',x.Y,who); put('will',x.Z,who); put('radiance',x.radiance,who);
   put('energy',(x.X+x.Y+x.Z)/3,who); put('pull',x.PULL,who);
-  (x.aff||[]).forEach(v=>put('affinity',v,who));
+  E.archExprAll().forEach(v=>put('archetype',v,who));
   put('shape',x.outward,who); put('control',x.organized,who);
   if(x.malig!==null&&x.malig!==undefined){put('lean',x.malig,who); put('lean',100-x.malig,who);}
   E.BANDS.forEach(b=>{const g=E.W.filter(n=>n.b===b), m=g.reduce((a,n)=>a+n.sq,0)/g.length;
@@ -8131,7 +8131,7 @@ g('PCT · one formula and one registry for every score a person reads (engine/pc
  ok(out.length===0,'no roster reading falls outside the range its kind claims, '+out.length+' do'
   +(out.length?': '+out.slice(0,6).join('; '):''));
  const engineKinds=['cq','dq','expression','law','charge','installed','held','weight','chain','pole','overshoot',
-  'distortion','integrity','intention','vitality','awareness','will','radiance','energy','pull','affinity','axis'];
+  'distortion','integrity','intention','vitality','awareness','will','radiance','energy','pull','archetype','axis'];
  const unseen=engineKinds.filter(k=>!seen[k]);
  ok(unseen.length===0,'and every kind the engine computes was actually measured on the roster, missing '+JSON.stringify(unseen));
  /* A CAP HOLDS THE ROSTER IT WAS MEASURED ON: at least 99 in a hundred of its
@@ -8139,6 +8139,84 @@ g('PCT · one formula and one registry for every score a person reads (engine/pc
  kinds.filter(k=>PCT_KIND[k].cap).forEach(k=>{
   const a=capSeen[k]||[], inside=a.filter(r=>r<=100+1e-9).length;
   ok(a.length>0&&inside/a.length>=0.99,k+': the cap holds '+inside+' of '+a.length+' roster values');});
+}
+
+g('ARCH EXPR · an archetype is 100% expressed with nothing held, dragged by its seat, lifted by release');
+/* Ruled 16 October: "you may start off at 100%. And over time, watch it
+   diminish. And as you go through your recipes, watch it rise." archExpr reads
+   the archetype's ruled seat (ARCH[i].b) and nothing else, so charge landing on
+   one seat moves only the archetypes seated there, and installing the opposite,
+   which is what a release writes, gives it back. The touched seats are read off
+   the field after compute(), never typed here. */
+{
+ const {archExpr,archExprAll,pct,fmtPct}=E;
+ ok(typeof archExpr==='function'&&typeof archExprAll==='function'&&E.PCT_KIND&&E.PCT_KIND.archetype,
+  'archExpr and archExprAll are exported and archetype is a registered kind');
+ ok(!E.PCT_KIND.affinity&&!E.PCT_KIND.share,'affinity and share are no longer printed kinds: the soul map is not this quantity');
+ const blank=()=>{S.doms=[0];S.arcs=[0,1];S.roots=[];buildSoul();
+  CHARGES.forEach(c=>{S.charge[c]=0;S.replace[c]=0;}); return compute();};
+ blank();
+ const b0=archExprAll();
+ ok(b0.length===ARCH.length&&b0.every(v=>v===1)&&b0.every((v,i)=>fmtPct('archetype',archExpr(i))==='100%'),
+  'a blank profile reads 100% for all '+ARCH.length+', '+JSON.stringify(b0.map(v=>pct('archetype',v))));
+ /* one axis, on the seats it reaches */
+ S.charge.Fear=6; compute();
+ const hit=new Set(W.filter(n=>n.sq>0).map(n=>n.b));
+ const f1=archExprAll();
+ const fell=ARCH.map((a,i)=>i).filter(i=>hit.has(ARCH[i].b));
+ const stay=ARCH.map((a,i)=>i).filter(i=>!hit.has(ARCH[i].b));
+ ok(hit.size>0&&hit.size<BANDS.length,'Fear at 6 reaches some seats and not all, '+[...hit].join(', '));
+ ok(fell.length>0&&fell.every(i=>f1[i]<1),'every archetype seated where Fear landed falls below 100%, '
+  +fell.map(i=>ARCH[i].nm+' '+fmtPct('archetype',f1[i])).join(', '));
+ ok(stay.length>0&&stay.every(i=>f1[i]===1),'and every other archetype stays at exactly 100%, '
+  +stay.map(i=>ARCH[i].nm).join(', '));
+ /* release: the opposite installed lifts it, and clearing the charge gives it all back */
+ S.replace.Fear=6; compute();
+ const r1=archExprAll();
+ ok(fell.every(i=>r1[i]>f1[i]),'installing the opposite, as a release does, lifts every one that fell, '
+  +fell.map(i=>fmtPct('archetype',f1[i])+' to '+fmtPct('archetype',r1[i])).join(', '));
+ S.charge.Fear=0; S.replace.Fear=0; compute();
+ ok(archExprAll().every(v=>v===1),'and with the charge released all twelve read 100% again');
+ /* monotone, and strict until the seat is full */
+ let mono=true, strict=true, prev=null;
+ for(let v=0;v<=10;v+=0.5){S.charge.Fear=v; compute(); const x=archExprAll();
+  if(prev){fell.forEach(i=>{if(x[i]>prev[i]+1e-12)mono=false; if(v<=6&&!(x[i]<prev[i]))strict=false;});
+   stay.forEach(i=>{if(x[i]!==1)mono=false;});}
+  prev=x;}
+ ok(mono,'as Fear rises the archetypes it reaches never rise and the others never move');
+ ok(strict,'and up to 6 each half step of Fear drags them further');
+ /* whole percents, and the range, on all sixteen */
+ let whole=true, out=[];
+ PEOPLE.forEach(p=>{
+  S.doms=p.doms?p.doms.slice():[p.dom]; S.arcs=p.arcs?p.arcs.slice():[p.a1,p.a2];
+  S.roots=p.roots?p.roots.slice():[]; buildSoul();
+  CHARGES.forEach(c=>{S.charge[c]=(p.c&&p.c[c])||0; S.replace[c]=(p.rep&&p.rep[c])||0;});
+  compute();
+  archExprAll().forEach((v,i)=>{if(!(v>=0&&v<=1))out.push(p.nm+' '+ARCH[i].nm+' '+v);
+   if(!Number.isInteger(pct('archetype',v)))whole=false;});});
+ ok(out.length===0,'across all '+PEOPLE.length+' roster people every archetype stays between 0% and 100%, '+out.length+' leave it'
+  +(out.length?': '+out.slice(0,4).join('; '):''));
+ ok(whole,'and every one prints a whole percent');
+ /* two archetypes on one seat read one figure, which is the seat ruling */
+ const twin=ARCH.map((a,i)=>i).filter(i=>ARCH[i].b===ARCH[0].b);
+ S.charge.Fear=6; compute();
+ ok(twin.length>1&&twin.every(i=>archExpr(i)===archExpr(twin[0])),
+  'archetypes on one seat read one figure, '+twin.map(i=>ARCH[i].nm).join(' and '));
+ ok(archExpr(ARCH.length)===null&&archExpr(-1)===null,'an archetype that does not exist reads null, not a figure');
+ /* AFFINITY KEEPS ITS ONE JOB. It is no longer printed, and it still names the
+    first and second archetype: on every roster person r.pi is the strongest
+    lean and r.si the strongest of the rest. */
+ let firstOk=true, secondOk=true;
+ PEOPLE.forEach(p=>{
+  S.doms=p.doms?p.doms.slice():[p.dom]; S.arcs=p.arcs?p.arcs.slice():[p.a1,p.a2];
+  S.roots=p.roots?p.roots.slice():[]; buildSoul();
+  const x=compute(), a=x.aff, mx=Math.max(...a);
+  if(a[x.pi]!==mx)firstOk=false;
+  const rest=a.filter((v,i)=>i!==x.pi);
+  if(x.si===x.pi||a[x.si]!==Math.max(...rest))secondOk=false;});
+ ok(firstOk,'affinity still names the first archetype on every roster person');
+ ok(secondOk,'and the second, the strongest of the rest');
+ blank();
 }
 
 g('CRISIS · srcSafe trips on self harm and not on everyday uses of the same words');

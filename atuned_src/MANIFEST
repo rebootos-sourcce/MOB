@@ -53,6 +53,7 @@ engine/profiles.js
 engine/export.js
 engine/charfield.js
 engine/ritex.js
+engine/archexpr.js
 ui/component.js
 ui/sound.js
 ui/tip.js
