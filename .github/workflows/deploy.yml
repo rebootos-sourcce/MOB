@@ -117,7 +117,7 @@ jobs:
   # The builds, then every gate that needs no browser. Skipped on a rollback.
   gates-fast:
     if: inputs.rollback_ref == ''
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
@@ -180,7 +180,7 @@ jobs:
   gates-browser:
     if: inputs.rollback_ref == ''
     name: gates-browser (${{ matrix.gate }})
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: ${{ matrix.timeout }}
     strategy:
       # every gate reports, so one red gate does not hide what else is red
@@ -240,7 +240,7 @@ jobs:
   gates-report:
     if: inputs.rollback_ref == ''
     name: gates-report (${{ matrix.gate }})
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: ${{ matrix.timeout }}
     continue-on-error: true
     strategy:
@@ -296,7 +296,7 @@ jobs:
   gates-pass:
     needs: [gates-fast, gates-browser]
     if: always() && inputs.rollback_ref == ''
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
       - name: every required gate job succeeded
@@ -325,7 +325,7 @@ jobs:
   gates-report-summary:
     needs: [gates-report]
     if: always() && inputs.rollback_ref == ''
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     permissions:
       actions: read
@@ -374,7 +374,7 @@ jobs:
       (github.ref == 'refs/heads/main' && inputs.rollback_ref == '' &&
       (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
       needs.gates-pass.result == 'success')) }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     concurrency:
       group: pages-prod
