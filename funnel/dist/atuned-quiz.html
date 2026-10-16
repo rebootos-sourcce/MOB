@@ -8111,7 +8111,10 @@ function accuracy(r,prof){
    fifths: they are the measurement, and a story is evidence for it. The story
    side is whole at ten entries, the ladder's own Ten stories rung
    (engine/ladder.js, "the field is being read from your own words"), so
-   CS_STORY_N names the same ten and a story past it adds nothing here.
+   CS_STORY_N names the same ten and a story past it adds nothing here. The
+   rung counts ten days with an entry since 16 October (L11) and this still
+   counts entries: coverage asks how much evidence there is, and ten entries
+   in one sitting are ten pieces of it, where the mark asks what was kept up.
    Neither side reads a value, so the same counts give the same figure whether
    every answer is 1 or 10, and one more answer or one more story can never
    lower it.
@@ -11878,7 +11881,24 @@ function meterRead(p,now){
  var age=ageAt(p&&p.who&&p.who.born?p.who.born.date:null,now);
  var est=age===null?null:Math.round(age*PAT_PER_YEAR*PAT_GEN);
  var mk=markersFor(est);
- return {lines:m.lines, unique:uniq, first:m.first, last:m.last,
+ /* OPENED IS ADDRESSES, AND THE RULER IS PATTERNS. unique is one entry per
+    line ever opened, address:channel:line, so one address across both limit
+    channels at thirty lines each is 60 of them. Three surfaces printed that
+    as "Opened 60 addresses", "Ground opened 60" and "440 new addresses
+    away", beside a Compass ledger reading "Opened 1 address" off the same
+    record, measured on f7188cba. ladder.js fixed this for the marks with
+    meterGroundCount and the fix never reached here. ground is that count,
+    and every "Opened" figure reads it.
+
+    The markers keep counting unique, and that is not the bug. Their ruler
+    is a lifetime load, fifteen thousand at the reference age, and the body
+    has 112 addresses of which a release reaches fewer, so a marker counted
+    in addresses could never be reached past Entry. The owner's thresholds
+    were counts of releases, which is lines: patterns, the word the gift
+    already uses for this same count ("patterns left of the 100 you were
+    given"). So the distance is said in patterns, which is what it measures. */
+ var ground=(typeof meterGroundCount==='function')?meterGroundCount(m):null;
+ return {lines:m.lines, unique:uniq, ground:ground, first:m.first, last:m.last,
   /* the gift is 100 of new ground, ruled. reruns never spend it. */
   giftLeft:Math.max(0,GIFT_N-uniq), inGift:uniq<GIFT_N,
   age:age===null?null:Math.round(age*10)/10,
@@ -18239,11 +18259,24 @@ function pracDay(t){
    been done on yet. done===undefined means an older entry predating the
    field, read as done, same reading ritIsDone (ui/ritual.js) gives it; only
    done===false is excluded. */
-function pracDays(p){
+/* A DAY THAT HAS NOT HAPPENED IS NOT A DAY PRACTISED. Seven entries dated 30
+   to 36 days ahead read Streak 7, live, and earned First run, Seven days and
+   Sixty minutes, measured on f7188cba, from a device clock set ahead or an
+   imported record. markDays below already refused them and this did not, so
+   the shelf showed three marks it could not date. TDD v3 10.2 gives the rule:
+   a day no more than one day after now counts, the slack the Daily Summary
+   allows a person who flew west and back. Ignored and never refused, because
+   refusing at the boundary would set the whole record aside over one clock
+   error. Every count of days and minutes in this file asks this one test. */
+function pracSoon(d,today){return d!==null&&(today===null||d<=today+1);}
+function pracDays(p,now){return pracDaysAt(p,pracDay(now||Date.now()));}
+/* the same list against a day key rather than a moment, for a mark test that
+   is handed the streak and not the moment */
+function pracDaysAt(p,today){
  var seen={}, out=[];
  ((p&&p.rituals)||[]).forEach(function(x){
   if(x&&x.done===false)return;
-  var k=pracDay(x&&x.t); if(k===null||seen[k])return; seen[k]=1; out.push(k);});
+  var k=pracDay(x&&x.t); if(!pracSoon(k,today)||seen[k])return; seen[k]=1; out.push(k);});
  return out.sort(function(a,b){return b-a;});}
 
 /* THE STREAK, AND WHY TODAY IS NOT REQUIRED.
@@ -18254,9 +18287,15 @@ function pracDays(p){
    today and yesterday's streak continues. Miss a whole day and it is over, and
    the length of what was lost is still reported, because the thing a person
    built is not deleted by having stopped. */
+/* WHAT THE STREAK IS, said once and read by every surface that prints one,
+   so the Compass and the Accountability column cannot explain it two ways.
+   It said "a ritual on the record", and since 21.J2 only a ritual marked
+   done is a day. */
+var STREAK_MEANS='Streak is your current run of days with a ritual marked done. '
+ +'One skipped day is forgiven and a longer gap halves it.';
 function streakRead(p,now){
- var days=pracDays(p), today=pracDay(now||Date.now());
- if(!days.length||today===null)return {run:0, live:false, last:null, best:0, days:0};
+ var days=pracDays(p,now), today=pracDay(now||Date.now());
+ if(!days.length||today===null)return {run:0, live:false, last:null, best:0, days:0, today:today};
  /* THE RUN HALVES, IT DOES NOT RESET. Ruled, Bible 1133:
     Math.max(1, Math.ceil(s/2)) with one grace day.
 
@@ -18283,7 +18322,24 @@ function streakRead(p,now){
  var best=1,cur=1; for(var j=1;j<days.length;j++){
   if(days[j]===days[j-1]-1){cur++; if(cur>best)best=cur;} else cur=1;}
  var gap=today-days[0];
- return {run:run, live:gap<=1, last:days[0], best:best, days:days.length, gap:gap};}
+ /* THE HALVING LANDS ON THE GAP, NOT ON THE RETURN. Ten days in a row ending
+    twenty days ago read Streak 10 on the Ritual page and 10 days on the
+    Compass, and the day the person came back and practised it read 5, so the
+    one act the streak exists to reward was the act that lowered it. Measured
+    on f7188cba. The rule above is unchanged: a gap of three or more halves
+    what was standing, once. It is applied the moment the gap is three days
+    long, so the figure on screen is the figure that stands, and practising
+    today keeps it and tomorrow adds one. Practising never lowers the number
+    a person sees.
+
+    It is still a figure that falls after an absence, and TDD v3 10.6 names
+    that tension rather than hiding it: the halving was ruled (Bible 1133) and
+    costed, it pays nothing, no mark reads it, and days practised sits beside
+    it and never falls. The drop is the rule working and is not shown as a
+    mistake or explained as an absence (DESIGN-ladder anti design 5): the
+    surfaces say what the streak is, and the date of the last day practised. */
+ if(gap>2)run=Math.max(1,Math.ceil(run/2));
+ return {run:run, live:gap<=1, last:days[0], best:best, days:days.length, gap:gap, today:today};}
 
 /* GROUND COUNTED LINES, AND CALLED THEM ADDRESSES. p.meter.unique holds one
    entry per line ever opened, address:channel:line (HEAVY_KEY, schema.js), so
@@ -18310,7 +18366,7 @@ function meterGroundCount(m){
    tier ladder charges for. clear is how many addresses are held at the far
    pole right now, and it is the only one of the four that can go down, which
    is correct: it is a state and not a tally. */
-function ledgerRead(p){
+function ledgerRead(p,now){
  /* MINUTES PRACTISED WAS MINUTES PLANNED, and it was the one label in the
     product claiming what the data did not carry. Select the twenty minute scan,
     press save, close the tab, and the ledger read twenty minutes practised.
@@ -18321,11 +18377,14 @@ function ledgerRead(p){
     rather than discarded, because a person's history is not ours to delete over
     a schema change. Only entries written from here on can be planned and not
     yet done. */
- var mins=0, plan=0, doneN=0;
+ /* and an entry dated past tomorrow is not practised (pracSoon, above): it
+    earned First run and Sixty minutes off a day that had not come. It still
+    counts as planned, which is all a day ahead can be. */
+ var mins=0, plan=0, doneN=0, today=pracDay(now||Date.now());
  ((p&&p.rituals)||[]).forEach(function(x){
   var m=(x&&+x.min)||0; plan+=m;
   var done=(x&&x.done!==undefined)?!!x.done:true;
-  if(done){mins+=m; doneN++;}});
+  if(done&&pracSoon(pracDay(x&&x.t),today)){mins+=m; doneN++;}});
  var m=(p&&p.meter)||{};
  var clear=0, carry=0;
  ((p&&p.axes)&&CHILD.forEach(function(c){
@@ -18406,91 +18465,149 @@ function intentionRead(p,now){
    Nothing new is stored. A mark's date is derived by markDays below, off the
    same record, the way the TDD's own drawer dates one (9.1). */
 var BACK_GAP=14;
-function pracTracks(p){
+function pracTracks(p,today){
  var by={}, seen={};
  ((typeof PRACTICE!=='undefined'&&PRACTICE)||[]).forEach(function(x){if(x&&x.track)by[x.k]=x.track;});
  ((p&&p.rituals)||[]).forEach(function(x){
   if(!x||x.done===false||!Array.isArray(x.steps))return;
+  if(today!==undefined&&!pracSoon(pracDay(x.t),today))return;
   x.steps.forEach(function(k){if(by[k])seen[by[k]]=1;});});
  var all={}; Object.keys(by).forEach(function(k){all[by[k]]=1;});
  return {done:Object.keys(seen).length, all:Object.keys(all).length};}
 function pracBack(days){
  for(var i=1;i<days.length;i++)if(days[i-1]-days[i]>=BACK_GAP)return true;
  return false;}
+/* the axes with a value on the record, for Nine axes */
+function axesValued(p){
+ var n=0, ax=(p&&p.axes)||{};
+ CHILD.forEach(function(c){
+  var a=ax[c.nm]||{}, said=(typeof ixGet==='function')?ixGet(p,'axes',c.nm):null;
+  if(said!==null||(+a.held||0)>AXIS_BLANK||(+a.opp||0)>0)n++;});
+ return n;}
+/* the distinct days a story was committed on, by pracDay, and none past
+   tomorrow (pracSoon), so a story and a ritual count a day the same way */
+function storyDays(p,today){
+ var seen={}, n=0;
+ ((p&&p.story&&p.story.entries)||[]).forEach(function(e){
+  var k=pracDay(e&&e.t); if(!pracSoon(k,today)||seen[k])return; seen[k]=1; n++;});
+ return n;}
 var MARKS=[
  /* practice */
  {k:'first', fam:'Practice', b:'Root', nm:'First run',
+  to:'Mark one ritual done.',
   d:'You marked one ritual done. The instrument is no longer a thing you are reading about.',
   ic:'M12 21V6 M7 11l5-5 5 5',
   t:function(l){return l.done>=1;}},
  {k:'week', fam:'Practice', b:'Root', nm:'Seven days',
+  to:'Practise on seven days. They do not need to be in a row.',
   d:'Seven days of practice on the record. This is where it stops being a decision each morning.',
   ic:'M4 6h16v14H4z M4 11h16 M8 3v4 M16 3v4',
   t:function(l,s){return s.days>=7;}},
  {k:'month', fam:'Practice', b:'Root', nm:'Thirty days',
+  to:'Practise on thirty days. They do not need to be in a row.',
   d:'Thirty days of practice on the record. The nervous system has had long enough to believe you.',
   ic:'M4 6h16v14H4z M4 11h16 M8 3v4 M16 3v4 M9 15l2 2 4-4',
   t:function(l,s){return s.days>=30;}},
  {k:'season', fam:'Practice', b:'Root', nm:'Ninety days',
+  to:'Practise on ninety days. They do not need to be in a row.',
   d:'Ninety days of practice on the record. Nothing about this is a beginner number.',
   ic:'M12 3a9 9 0 109 9 M12 3v9h9 M12 12l5 5',
   t:function(l,s){return s.days>=90;}},
  {k:'hour', fam:'Practice', b:'Root', nm:'Sixty minutes',
+  to:'Put sixty minutes of practice on the record, spread any way you like.',
   d:'An hour of practice on the record, however it was spread.',
   ic:'M12 3a9 9 0 100 18 9 9 0 100-18 M12 7v5l4 2',
   t:function(l){return l.minutes>=60;}},
  {k:'tracks', fam:'Practice', b:'Root', nm:'Every track run',
+  to:'Mark a ritual done in every track the practice library carries.',
   d:'A ritual marked done in every track the practice library carries.',
   ic:'M12 3v18 M3 12h18 M6 6l12 12',
-  t:function(l,s,p){var t=pracTracks(p); return t.all>0&&t.done>=t.all;}},
+  t:function(l,s,p){var t=pracTracks(p,s.today); return t.all>0&&t.done>=t.all;}},
  {k:'back', fam:'Practice', b:'Root', nm:'Came back',
+  /* NO to LINE, SO IT IS NEVER THE NEXT MARK. What it takes is two weeks
+     away, and a goal that asks for an absence names one, which DESIGN-ladder
+     anti design 5 rules out. It is earned on the way back and named then. */
+  to:null,
   d:'Two weeks or more away, then a day of practice. Coming back is the practice too.',
   ic:'M9 5L4 10l5 5 M4 10h10a5 5 0 010 10h-4',
-  t:function(l,s,p){return pracBack(pracDays(p));}},
+  t:function(l,s,p){return pracBack(pracDaysAt(p,s.today));}},
  /* ground */
  {k:'ten', fam:'Ground', b:'Throat', nm:'Ten addresses',
+  to:'Open ten different addresses with a release. An address is one exact place in your body.',
   d:'Ten distinct addresses opened. Not ten runs. Ten places.',
   ic:'M4 4h7v7H4z M13 4h7v7h-7z M4 13h7v7H4z M13 13h7v7h-7z',
   t:function(l){return l.ground>=10;}},
  {k:'fifty', fam:'Ground', b:'Throat', nm:'Fifty addresses',
+  to:'Open fifty different addresses with a release.',
   d:'Fifty. Close to half your addresses have been opened at least once.',
   ic:'M3 12h18 M3 7h18 M3 17h18 M7 3v18 M17 3v18',
   t:function(l){return l.ground>=50;}},
  {k:'told', fam:'Ground', b:'Throat', nm:'First story',
+  to:'Write one story of something that happened, in your own words.',
   d:'You told it something true and let it read the charge out of that.',
   ic:'M4 5h16v11H8l-4 4z',
   t:function(l,s,p){return !!(p&&p.story&&(p.story.entries||[]).length);}},
  {k:'kept', fam:'Ground', b:'Throat', nm:'Ten stories',
-  d:'Ten told. The field is being read from your own words and not from a form.',
+  to:'Write a story on ten different days.',
+  d:'Stories on ten different days. The field is being read from your own words and not from a form.',
   ic:'M4 5h16v11H8l-4 4z M8 9h8 M8 12h5',
-  t:function(l,s,p){return ((p&&p.story&&p.story.entries)||[]).length>=10;}},
+  /* TEN ENTRIES WAS TEN MINUTES OF TYPING. Ten entries committed in one
+     minute earned "Ten told", measured on f7188cba, which is volume in one
+     sitting and not ten stories told over a life. Ten distinct days with an
+     entry, TDD v3 9.3 and LD4, the day counted by the rule the streak uses. */
+  t:function(l,s,p){return storyDays(p,s.today)>=10;}},
  /* structure */
  {k:'nine', fam:'Structure', b:'Heart', nm:'Nine axes',
-  d:'Every one of the nine has a value you entered. Nothing is a default.',
+  to:'Answer the question for each of the nine axes in the intake. An axis is a feeling and its opposite.',
+  d:'Each of the nine axes, a feeling and its opposite, has a value on your record. None is left empty.',
   ic:'M5 5h14v14H5z M5 10h14 M5 15h14 M10 5v14 M15 5v14',
-  t:function(l){return l.clear+l.carry>=9;}},
+  /* THE TEST COUNTED AXES AT FOUR OR MORE, ON EITHER SIDE. clear+carry>=9 let
+     one axis count twice and never saw a value under four, so nine axes
+     entered at 2 did not earn it and five at 5 on both sides with four at 2
+     did, measured on f7188cba, under words that said every one of the nine
+     had a value. It reads what the words say now (TDD v3 9.3, LD4): an axis
+     has a value when the person answered its intake question, which records
+     an answer of 0 as an answer, or when it carries charge or an opposite
+     off the blank (AXIS_BLANK), from a story, a seed or a release. The words
+     say "on your record" and not "you entered", because a story puts charge
+     on an axis the person never set by hand. */
+  t:function(l,s,p){return axesValued(p)>=CHILD.length;}},
  {k:'laws', fam:'Structure', b:'Heart', nm:'Laws measured',
+  to:'Answer every question in the intake.',
   d:'The intake is complete, so integrity is measured rather than assumed.',
   ic:'M12 4v4 M4 8h16 M4 8l-2 5h4z M20 8l-2 5h4z',
   t:function(l,s,p){return !!(p&&p.intake&&p.intake.completedAt);}},
  {k:'stated', fam:'Structure', b:'Heart', nm:'Blueprint stated',
+  to:'Name your four letter type.',
   d:'You named your type, and the field carries that until you move it.',
   ic:'M4 20V8l8-5 8 5v12 M9 20v-7h6v7',
   t:function(l,s,p){return !!(p&&p.seed);}},
  {k:'aimed', fam:'Structure', b:'Heart', nm:'Purpose set',
+  to:'Place your six values on the Avatar page.',
   d:'Six values placed. The compass has something to point at.',
   ic:'M12 3a9 9 0 100 18 9 9 0 100-18 M12 8l3 8-3-2-3 2z',
   t:function(l,s,p){return !!(p&&p.purpose&&purposeReady&&purposeReady(p.purpose));}},
  {k:'turned', fam:'Structure', b:'Heart', nm:'First clearing',
-  d:'An address that was carrying is held at the far pole instead.',
+  /* THESE TWO COUNT AXES AND SAID ADDRESSES. ledgerRead's clear is a count
+     over CHILD, the nine axes, and an address is one of the 112 places on
+     the body map, so "An address that was carrying" and "Five addresses
+     holding the opposite" named a unit neither test reads. The Compass
+     ledger row over the same count was corrected to axes for this reason and
+     these were not (fact map L10). One word per concept: the count is axes,
+     and installed is the ledger's own word for an opposite at four or more.
+     The keys do not change, because a key is identity. */
+  to:'Install the opposite on one of the nine axes. Each release builds it up.',
+  d:'One of the nine axes has its opposite installed. An axis is a feeling and its opposite.',
   ic:'M4 12a8 8 0 1116 0 8 8 0 01-16 0 M8 12l3 3 5-6',
   t:function(l){return l.clear>=1;}},
  {k:'seat', fam:'Structure', b:'Heart', nm:'Five clear',
-  d:'Five addresses holding the opposite. That is structure, not a good day.',
+  to:'Install the opposite on five axes.',
+  d:'Five axes have their opposite installed. That is structure, not a good day.',
   ic:'M4 12a8 8 0 1116 0 8 8 0 01-16 0 M12 4v16 M4 12h16',
   t:function(l){return l.clear>=5;}},
  /* the record itself */
  {k:'watched', fam:'Structure', b:'Heart', nm:'Ten snapshots',
+  to:'Keep ten readings on file. Each story and each release saves one.',
   d:'Ten readings on file, so the movement is yours to see and not to recall.',
   ic:'M3 17l5-6 4 4 3-4 6 6 M3 5h18v14H3z',
   t:function(l){return l.snaps>=10;}}];
@@ -18501,14 +18618,21 @@ var MARKS=[
    already furthest into, because the useful next thing is the one adjacent to
    what they are doing. Everything past it is deliberately not returned, so no
    caller can render a checklist of a person's unfinished self. */
+/* THE NEXT MARK WAS PRINTED IN THE PAST TENSE. Both surfaces that name it,
+   the Compass and the Ritual page's Ongoing goal, printed its d line, which is
+   written for a mark already held: a blank record read "First run. You marked
+   one ritual done." and one done ritual read "Seven days. Seven days of
+   practice on the record." Measured on f7188cba. A mark carries two lines
+   now: d, what it means once held, and to, what it takes, and the next mark
+   is printed with to. A mark with no to is never offered as the next one. */
 function ladderRead(p,now){
- var l=ledgerRead(p), s=streakRead(p,now), got=[], left=[];
+ var l=ledgerRead(p,now), s=streakRead(p,now), got=[], left=[];
  MARKS.forEach(function(m){
   var ok=false; try{ok=!!m.t(l,s,p);}catch(e){ok=false;}
   (ok?got:left).push(m);});
  var by={}; got.forEach(function(m){by[m.fam]=(by[m.fam]||0)+1;});
  var lead=null, best=-1;
- left.forEach(function(m){var n=by[m.fam]||0; if(n>best){best=n; lead=m;}});
+ left.forEach(function(m){if(!m.to)return; var n=by[m.fam]||0; if(n>best){best=n; lead=m;}});
  return {earned:got, next:lead, ledger:l, streak:s};}
 
 /* WHEN A PRACTICE MARK BECAME TRUE, round QS. The TDD dates every mark with
@@ -20192,7 +20316,7 @@ if(typeof module!=='undefined'&&module.exports){
                   NERVEBR:NERVEBR, BODYPATH:BODYPATH, TAB:TAB,
   /* the ladder */MARKS:MARKS, ladderRead:ladderRead, markDays:markDays, BACK_GAP:BACK_GAP, ledgerRead:ledgerRead,
                   intentionRead:intentionRead, INTENT_DAYS:INTENT_DAYS,
-                  streakRead:streakRead, pracDays:pracDays, pracDay:pracDay,
+                  streakRead:streakRead, pracDays:pracDays, pracDay:pracDay, STREAK_MEANS:STREAK_MEANS,
   /* indexes */   W:W, BY:BY, ALL_SAB:ALL_SAB, S:S,
   /* soul */      buildSoul:buildSoul, affinity:affinity, bandIg:bandIg,
   /* engine */    compute:compute, suscAll:suscAll, balance:balance, OUTWARD:OUTWARD, INWARD:INWARD,
