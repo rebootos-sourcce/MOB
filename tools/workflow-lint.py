@@ -1263,6 +1263,11 @@ class Lint:
         if self.ok(p is not None, 'R2 gates-fast does not run node tests/chrome-path.js.'):
             self.ok('if' not in s,
                     'R2 the chrome-path step has if: %s. It takes no if of any kind: one that skips it when its file is gone, or on a pull request, reads green.' % (s.get('if'),))
+        p, _, s = find(texts, r'node tools/orphans\.js(?! --self-test)\b')
+        if self.ok(p is not None, 'R2 gates-fast does not run node tools/orphans.js, so a test file no job runs is never red.'):
+            self.ok('if' not in s and 'continue-on-error' not in s,
+                    'R2 the orphans step has if: %s or continue-on-error: %s. It takes neither: a skipped or forgiven orphan check reads green.' % (s.get('if'), s.get('continue-on-error')))
+            self.ok(os.path.isfile(os.path.join(self.root, 'tools', 'orphans.js')), 'R2 tools/orphans.js does not exist.')
         fa = self.floors_args(texts)
         want = ['engine', 'funnel-package']
         hit = [a for a in fa if all(w in a[1] for w in want)]
@@ -2114,6 +2119,10 @@ BREAKS = [
     ('no pipefail', lambda d: d['defaults']['run'].__setitem__('shell', 'sh')),
     ('the chrome-path step skipped when its file is gone', lambda d: _step(d, 'gates-fast', r'chrome-path').__setitem__('if', "hashFiles('tests/chrome-path.js') != ''")),
     ('the chrome-path step skipped on a pull request', lambda d: _step(d, 'gates-fast', r'chrome-path').__setitem__('if', "github.event_name == 'push'")),
+    ('the orphans check dropped', lambda d: _job(d, 'gates-fast')['steps'].remove(_step(d, 'gates-fast', r'tools/orphans\.js'))),
+    ('the orphans check skipped on a pull request', lambda d: _step(d, 'gates-fast', r'tools/orphans\.js').__setitem__('if', "github.event_name == 'push'")),
+    ('the orphans check allowed to fail', lambda d: _step(d, 'gates-fast', r'tools/orphans\.js').__setitem__('continue-on-error', True)),
+    ('the orphans check reduced to its self test', lambda d: _sub(d, 'gates-fast', r'tools/orphans\.js', ' && node tools/orphans.js', '')),
     ('the FAQ not staged', lambda d: _sub(d, 'deploy', r'mkdir deploy', 'cp funnel/dist/atuned-faq.html deploy/\n', '')),
     ('the FAQ dropped from FUNNEL_PAGES', lambda d: d['env'].__setitem__('FUNNEL_PAGES', d['env']['FUNNEL_PAGES'].replace(' atuned-faq', ''))),
     ('a page list typed into the deploy check', lambda d: _sub(d, 'deploy', r'test -s', '$FUNNEL_PAGES; do', 'atuned-funnel atuned-quiz atuned-about atuned-buy atuned-faq; do')),

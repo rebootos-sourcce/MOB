@@ -163,6 +163,13 @@ jobs:
       # where a skipped step would read green.
       - name: no browser gate hardcodes the sandbox chromium
         run: node tests/chrome-path.js
+      # A GATE NO JOB RUNS IS NEVER RED. On 16 October seven files under
+      # tests/ were run by nothing here, and two of them had been red on main
+      # for days. tools/orphans.js fails on any tests/*.js that no job runs and
+      # no run file requires, unless its MANUAL list names it with a reason.
+      # It takes no if, for the reason the chrome-path step takes none.
+      - name: every test file is run by a job
+        run: node tools/orphans.js --self-test && node tools/orphans.js
       # A gate that lost its tests still exits 0. The floors are in
       # tests/floors.json and are raised on purpose, never lowered to get green.
       - name: floors
