@@ -252,6 +252,13 @@ function pracTracks(p,today){
 function pracBack(days){
  for(var i=1;i<days.length;i++)if(days[i-1]-days[i]>=BACK_GAP)return true;
  return false;}
+/* the distinct days a story was committed on, by pracDay, and none past
+   tomorrow (pracSoon), so a story and a ritual count a day the same way */
+function storyDays(p,today){
+ var seen={}, n=0;
+ ((p&&p.story&&p.story.entries)||[]).forEach(function(e){
+  var k=pracDay(e&&e.t); if(!pracSoon(k,today)||seen[k])return; seen[k]=1; n++;});
+ return n;}
 var MARKS=[
  /* practice */
  {k:'first', fam:'Practice', b:'Root', nm:'First run',
@@ -296,9 +303,13 @@ var MARKS=[
   ic:'M4 5h16v11H8l-4 4z',
   t:function(l,s,p){return !!(p&&p.story&&(p.story.entries||[]).length);}},
  {k:'kept', fam:'Ground', b:'Throat', nm:'Ten stories',
-  d:'Ten told. The field is being read from your own words and not from a form.',
+  d:'Stories on ten different days. The field is being read from your own words and not from a form.',
   ic:'M4 5h16v11H8l-4 4z M8 9h8 M8 12h5',
-  t:function(l,s,p){return ((p&&p.story&&p.story.entries)||[]).length>=10;}},
+  /* TEN ENTRIES WAS TEN MINUTES OF TYPING. Ten entries committed in one
+     minute earned "Ten told", measured on f7188cba, which is volume in one
+     sitting and not ten stories told over a life. Ten distinct days with an
+     entry, TDD v3 9.3 and LD4, the day counted by the rule the streak uses. */
+  t:function(l,s,p){return storyDays(p,s.today)>=10;}},
  /* structure */
  {k:'nine', fam:'Structure', b:'Heart', nm:'Nine axes',
   d:'Every one of the nine has a value you entered. Nothing is a default.',

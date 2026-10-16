@@ -3120,6 +3120,18 @@ console.log('\n27 · the ladder');
   ok(drops.length===0,'over 400 day sets, practising today never lowers the streak, drops '+JSON.stringify(drops.slice(0,3)));
   ok(typeof E.STREAK_MEANS==='string'&&/marked done/.test(E.STREAK_MEANS)&&/halves/.test(E.STREAK_MEANS),
    'the streak carries one meaning, and it says a day is a ritual marked done and a long gap halves it');}
+
+ /* L11. TEN STORIES IS TEN DAYS. Ten entries committed in one minute earned
+    it. Ten entries on ten days is the known good case. */
+ {const at=(ms)=>({t:new Date(ms).toISOString(),text:'x',imprints:0});
+  const one=blankProfile('L'); for(let i=0;i<10;i++)one.story.entries.push(at(NOW-60000+i*5000));
+  ok(!ladderRead(one,NOW).earned.some(m=>m.k==='kept'),'ten entries in one minute do not earn Ten stories');
+  ok(ladderRead(one,NOW).earned.some(m=>m.k==='told'),'while the first of them still earns First story');
+  const ten=blankProfile('L'); for(let i=0;i<10;i++)ten.story.entries.push(at(NOW-i*86400000));
+  ok(ladderRead(ten,NOW).earned.some(m=>m.k==='kept'),'ten entries on ten days do');
+  const nine=blankProfile('L'); for(let i=0;i<9;i++)nine.story.entries.push(at(NOW-i*86400000)); nine.story.entries.push(at(NOW-1000));
+  ok(!ladderRead(nine,NOW).earned.some(m=>m.k==='kept'),'and ten entries on nine days do not');
+  ok(/ten different days/.test(MARKS.find(m=>m.k==='kept').d),'and its words say days');}
 }
 
 console.log('\n27c · a save never costs a person data, and a drain never leaks');
