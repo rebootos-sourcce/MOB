@@ -218,6 +218,9 @@ if short:
     P('- **Your own lines held only for length:** %d. %s your dictation, but longer than 30 words. If you rule the limit up for %s, this is the first place to look; each line would still be read before it went in.' % (only_len, 'It is' if only_len == 1 else 'They are', NAT))
     P('- **Your own lines held for naming a second nature:** %d. If you rule that a line naming two natures may sit in one bank (you choose which), these come back.' % only_two)
     P('- **Card lines held for naming a second nature:** %d. Same ruling.' % sum(1 for x in card_held if x['reason'].startswith('names another nature')))
+    only_head = sum(1 for x in own_held if x['reason'].startswith('filed under a heading'))
+    if only_head:
+        P('- **Your own lines held only because their heading names another nature:** %d. The sentence itself names %s and nothing else. If you rule that a heading may not hold a line back, these come back.' % (only_head, NAT))
     P('- **New dictation.** A short session of %s lines from you would close it in your own words, which is what the gift promises. It needs %d more lines that pass the same rules.' % (NAT, short))
     P('- The Little Books do not help as they are: their charge lines are long shared lists, and none qualifies.')
     P('')
