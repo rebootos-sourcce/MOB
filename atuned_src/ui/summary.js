@@ -299,7 +299,7 @@ function sumStory(r){
         why, and "something was installed on top" was a story about a person
         the ledger cannot show. Round J13. */
      ? 'Those agree.'
-     : 'The blueprint says '+esc(elRoot)+'. The field runs '+esc(rootNow)+'. These differ.')+'</span>');
+     : 'The blueprint says '+esc(elRoot)+'. Your energy runs '+esc(rootNow)+'. These differ.')+'</span>');
  }else{
   p.push('There is no birth data on file, so the spiritual layer is not in this reading. '
    +'Date, time and place would put it in. What is running now is '+rootB(rootNow)
@@ -375,7 +375,7 @@ function sumStory(r){
     clause "which means it is expanding" stated a cause and is now a
     direction. Round J13, his words: "I keep seeing this percent shit, the
     hardest carrying zero percent. I don't want that." */
- p.push(((lean.read===false?'':'The field leans <b>'
+ p.push(((lean.read===false?'':'Your energy leans <b>'
   +(lean.ben>=lean.mal?'benign':'malignant')+'</b>'
   +(r.benign===null?'':', toward '+(r.benign?'expanding':'contracting'))+'.')
   /* .length, because r.excess is a list and an empty list is truthy: this

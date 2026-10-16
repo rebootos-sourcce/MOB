@@ -2041,8 +2041,11 @@ ok(/blueprint you were born on|no birth data/.test(sum.text),
    paragraphs carries a label, and a sentence that opened on its own
    denominator. The intent is that the reading closes on which way the field
    leans, so the row asserts that instead of the word. */
-ok(/the field leans/i.test(sum.text)&&/benign|malignant/i.test(sum.text),
- 'and closes on which way the field leans');
+/* 16 October, his words: "change the field to 'your energy leans malignant',
+   because energy is more natural. Field is just too abstract." So the subject
+   is held, and the word after it, and the old subject is held out. */
+ok(/Your energy leans (?:benign|malignant)\b/.test(sum.text)&&!/the field leans/i.test(sum.text),
+ 'and closes on which way your energy leans, never the field');
 ok(!/undefined|NaN|\[object/.test(sum.text),'and nothing leaked a placeholder');
 console.log(' ',JSON.stringify({glance:sum.glance,rows:sum.structRows,chips:sum.chips,
  num:sum.numRows,rings:sum.rings}));
