@@ -1457,7 +1457,9 @@ function renderIntake(){
     and the status line is what says whether it will survive a reload. */
  host.querySelectorAll('[data-ixb]').forEach(function(el){el.onclick=function(){
   var id=el.getAttribute('data-ixb'), k=el.getAttribute('data-ixk'), v=+el.getAttribute('data-v');
-  if(!ixSet(CURP,id,k,v)){status('That answer was not recorded.','fail');return;}
+  /* a refusal on a worked example has already said its own line through the
+     engine's reporter, and this one would put a failure over it */
+  if(!ixSet(CURP,id,k,v)){if(!showOnly())status('That answer was not recorded.','fail');return;}
   IQ_FOCUS='[data-ixb="'+id+'"][data-ixk="'+k+'"][data-v="'+v+'"]';
   IQ_XPOP=IQ_FOCUS; pSave(); statusSaved(); renderIntake();};});
  host.querySelectorAll('[data-a]').forEach(function(el){el.onclick=function(){

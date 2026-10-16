@@ -294,6 +294,9 @@ jobs:
           - { gate: personas-tier, timeout: 20, command: node tests/personas-tier.js }
           - { gate: valuefeltui, timeout: 20, command: node tests/valuefeltui.js }
           - { gate: record, timeout: 20, command: node tests/record.js }
+          # 16 October: a worked example shows everything and runs nothing, at
+          # every tier (engine/showonly.js). New, so report only first.
+          - { gate: examples-showonly, timeout: 20, command: node tests/examples-showonly.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

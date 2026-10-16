@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2076 dc65a983 2026-10-16 18:05"><head><meta charset="utf-8">
+<html lang="en" data-build="v2077 e4039db3 2026-10-16 18:13"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -52639,7 +52639,9 @@ function renderIntake(){
     and the status line is what says whether it will survive a reload. */
  host.querySelectorAll('[data-ixb]').forEach(function(el){el.onclick=function(){
   var id=el.getAttribute('data-ixb'), k=el.getAttribute('data-ixk'), v=+el.getAttribute('data-v');
-  if(!ixSet(CURP,id,k,v)){status('That answer was not recorded.','fail');return;}
+  /* a refusal on a worked example has already said its own line through the
+     engine's reporter, and this one would put a failure over it */
+  if(!ixSet(CURP,id,k,v)){if(!showOnly())status('That answer was not recorded.','fail');return;}
   IQ_FOCUS='[data-ixb="'+id+'"][data-ixk="'+k+'"][data-v="'+v+'"]';
   IQ_XPOP=IQ_FOCUS; pSave(); statusSaved(); renderIntake();};});
  host.querySelectorAll('[data-a]').forEach(function(el){el.onclick=function(){
@@ -72207,13 +72209,13 @@ function notYours(what){
 var SHOW_DOES={
  story:'Commit puts what your words carry on your map',
  release:'a release empties charge from the addresses it reaches',
- intake:'each answer here changes how your laws of integrity read',
+ intake:'each answer here moves how your laws read',
  export:'Export copies your profile to the clipboard'};
 function showOwnPlan(){
  var own=(typeof PROF_BY!=='undefined')?PROF_BY[PEOPLE[0].nm]:null;
  return (own&&own.plan)||null;}
 function showLine(what){
- var head='This is a worked example, to look at and not to run.';
+ var head='A worked example shows every reading and runs nothing.';
  if(what==='import')return head+' Open your own profile first, then load the file.';
  var does=SHOW_DOES[what];
  var nx=planNextSight(showOwnPlan());
@@ -77381,5 +77383,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005076963"></div>
+<div id="eof" hidden data-len="005077110"></div>
 </body></html>

@@ -714,13 +714,13 @@ function notYours(what){
 var SHOW_DOES={
  story:'Commit puts what your words carry on your map',
  release:'a release empties charge from the addresses it reaches',
- intake:'each answer here changes how your laws of integrity read',
+ intake:'each answer here moves how your laws read',
  export:'Export copies your profile to the clipboard'};
 function showOwnPlan(){
  var own=(typeof PROF_BY!=='undefined')?PROF_BY[PEOPLE[0].nm]:null;
  return (own&&own.plan)||null;}
 function showLine(what){
- var head='This is a worked example, to look at and not to run.';
+ var head='A worked example shows every reading and runs nothing.';
  if(what==='import')return head+' Open your own profile first, then load the file.';
  var does=SHOW_DOES[what];
  var nx=planNextSight(showOwnPlan());

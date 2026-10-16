@@ -3097,9 +3097,12 @@ console.log('\n=== a worked example never reaches the person\'s own record ===')
      it reported no entry added while the entry had gone into the example's. */
   const exRec=CURP;
   const ent0=((exRec&&exRec.story&&exRec.story.entries)||[]).length;
-  const ap2=document.getElementById('stapply');
-  o.stArmed=!!ap2&&!ap2.disabled;
-  if(ap2)ap2.click();
+  /* THE BOX IS NOT THERE ON AN EXAMPLE ANY MORE, ruled 16 October: a worked
+     example is show only (engine/showonly.js), so the journal is the preview
+     line and Commit is not drawn. The refusal is still the thing measured:
+     the press is the same stCommit the button called, made directly. */
+  o.stArmed=!document.getElementById('stapply')&&!!document.querySelector('#story .show-note');
+  stCommit();
   o.stEntries=((exRec&&exRec.story&&exRec.story.entries)||[]).length-ent0;
   o.stWho=S.who; o.stExample=gi;
   o.stSaid=((document.getElementById('status')||{}).textContent||'');
@@ -3122,8 +3125,8 @@ console.log('\n=== a worked example never reaches the person\'s own record ===')
  ok(leak.backOffered&&leak.backDepth>0,
   'and the example still carries its own history when you go back to it, offered '
   +leak.backOffered+' depth '+leak.backDepth);
- ok(leak.stArmed,'the commit control is armed on the example, so the refusal is the '
-  +'thing being measured and not a disabled button');
+ ok(leak.stArmed,'the journal on the example is the preview line and offers no Commit, '
+  +'so the commit below is the button\'s own call made directly');
  ok(leak.stEntries===0,
   'a story cannot be committed onto a worked example, entries added to its record '
   +leak.stEntries);
@@ -5044,7 +5047,12 @@ console.log('\n=== a release can be ended from its opening ===');
  await tp.goto(FILE,{waitUntil:'load'}); await booted(tp);
  const o=await tp.evaluate(async()=>{
   const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  /* on the person's own profile carrying Gordon's charge in the working
+     state only: a worked example is show only from 16 October and its card
+     offers no Begin (engine/showonly.js) */
   loadP(PEOPLE.findIndex(x=>x.nm==='Gordon'));
+  var bc=Object.assign({},S.charge), br=Object.assign({},S.replace);
+  loadP(0); CHARGES.forEach(function(k){S.charge[k]=bc[k]; S.replace[k]=br[k];}); compute();
   var q=['Root','3rd Eye','Heart'].map(function(s){return NODES.filter(function(n){return n.cf&&n.b===s;})[0].i;});
   relPick(q); document.getElementById('relgo').click(); await wait(300);
   const o={phase:RUN.phase, has:!!document.getElementById('relstop'), before:RUN.log.length};
@@ -6104,20 +6112,19 @@ console.log('\n=== the seat tone is binaural, and it is the seat\'s own ===');
  await tp.evaluate(()=>relClose());
  /* A REFUSED RUN IS STILL AN ENDED RUN. relCoolDown refuses on a worked
     example and returns without a render, and a render is what moves the tone,
-    so this is the path that would have left it sounding with the card frozen. */
- const refused=await tp.evaluate(()=>{ loadP(GORDON()); render();
+    so this is the path that would have left it sounding with the card frozen.
+    AND FROM 16 OCTOBER THE RUN NEVER BEGINS THERE: a worked example is show
+    only (engine/showonly.js) and its card offers no Begin, so the tone is
+    never opened for it. A run that reaches its end on one anyway, by any
+    other route, is still refused at the end and still leaves no tone. */
+ const rf=await tp.evaluate(()=>{ loadP(GORDON()); render();
   if(!CURP.ui)CURP.ui={}; CURP.ui.tone=true;
   relPick(W.filter(function(n){return n.cf&&n.sq>=4;}).slice(0,2).map(function(n){return n.i;}));
-  return !!document.getElementById('relgo');});
- let rf={began:false};
- if(refused){
-  await tp.click('#relgo'); await tp.waitForTimeout(150);
-  rf=await tp.evaluate(()=>{ clearInterval(RUN.timer); var on=bedState().on;
-   RUN.phase='run'; RUN.idx=RUN.plan.length; var r=relCoolDown();
-   return {began:on, returned:r, phase:RUN.phase, bed:bedState().on};});
-  await tp.evaluate(()=>relClose());}
- ok(rf.began&&rf.returned===false&&rf.phase==='pick'&&rf.bed===false,
-  'a run refused on a worked example ends its tone although nothing re-renders, '+JSON.stringify(rf));
+  var begin=!!document.getElementById('relgo');
+  RUN.phase='run'; RUN.idx=RUN.plan.length; var r=relCoolDown();
+  var o={begin:begin, returned:r, phase:RUN.phase, bed:bedState().on}; relClose(); return o;});
+ ok(!rf.begin&&rf.returned===false&&rf.phase==='pick'&&rf.bed===false,
+  'on a worked example the card offers no Begin, and a run that reaches its end there anyway is refused with no tone left, '+JSON.stringify(rf));
  ok(terr.length===0,'and the seat tone raised no page error, '+terr.join(' | '));
  await tp.close();
 }
