@@ -39,8 +39,15 @@
    for them. The button is "Text 741741", the same shape as "Text 988"
    beside it.
    ============================================================ */
+/* ONE FILLED BUTTON, 16 October, from the review of these screens. Every link
+   in the numbers view was the same outlined pill, so a person who had just
+   asked to reach somebody met six equal choices and no first one. Call 988 is
+   the first: it answers a call or a text at any hour for anything short of
+   danger now, which 911 is for. The third place in a go entry marks it, and
+   it is data and not a renderer's choice so the app and the quiz fill the
+   same button. Exactly one entry in the table carries it. */
 const CRISIS_LINES=[
- {k:'988', go:[['Call 988','tel:988'],['Text 988','sms:988']],
+ {k:'988', go:[['Call 988','tel:988',true],['Text 988','sms:988']],
   say:'Call or text 988 to reach the Suicide and Crisis Lifeline, where a trained person answers at any hour.'},
  {k:'741741', go:[['Text 741741','sms:741741?body=HOME']],
   say:'Text the word home to 741741 to reach the Crisis Text Line, where a trained person writes back at any hour.'},

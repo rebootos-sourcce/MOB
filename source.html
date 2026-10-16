@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v247 3b5203bc 2026-10-16 12:40"><head><meta charset="utf-8">
+<html lang="en" data-build="v248 b122cb0e 2026-10-16 12:43"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -14263,8 +14263,15 @@ try{window.__at&&window.__at('engine/data/onboarding.js');}catch(e){}
    for them. The button is "Text 741741", the same shape as "Text 988"
    beside it.
    ============================================================ */
+/* ONE FILLED BUTTON, 16 October, from the review of these screens. Every link
+   in the numbers view was the same outlined pill, so a person who had just
+   asked to reach somebody met six equal choices and no first one. Call 988 is
+   the first: it answers a call or a text at any hour for anything short of
+   danger now, which 911 is for. The third place in a go entry marks it, and
+   it is data and not a renderer's choice so the app and the quiz fill the
+   same button. Exactly one entry in the table carries it. */
 const CRISIS_LINES=[
- {k:'988', go:[['Call 988','tel:988'],['Text 988','sms:988']],
+ {k:'988', go:[['Call 988','tel:988',true],['Text 988','sms:988']],
   say:'Call or text 988 to reach the Suicide and Crisis Lifeline, where a trained person answers at any hour.'},
  {k:'741741', go:[['Text 741741','sms:741741?body=HOME']],
   say:'Text the word home to 741741 to reach the Crisis Text Line, where a trained person writes back at any hour.'},
@@ -73246,7 +73253,7 @@ function crisisCard(){
    ?'<ul class="crx-ls">'+CRISIS_LINES.map(function(l){
      return '<li data-crisisline="'+esc(l.k)+'"><p class="crx-p">'+esc(l.say)+'</p>'
       +'<div class="crx-go">'+l.go.map(function(g){
-        return '<a class="btn crx-tel" href="'+esc(g[1])+'">'+esc(g[0])+'</a>';}).join('')
+        return '<a class="btn crx-tel'+(g[2]?' pri':'')+'" href="'+esc(g[1])+'">'+esc(g[0])+'</a>';}).join('')
       +'</div></li>';}).join('')+'</ul>'
     +'<p class="crx-p crx-dim">'+esc(CRISIS_SAY.where)+'</p>'
    :'<p class="crx-p">'+esc(CRISIS_SAY.q)+'</p>')
@@ -77461,5 +77468,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005081989"></div>
+<div id="eof" hidden data-len="005082538"></div>
 </body></html>

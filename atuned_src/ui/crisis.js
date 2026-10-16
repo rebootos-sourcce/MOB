@@ -67,7 +67,7 @@ function crisisCard(){
    ?'<ul class="crx-ls">'+CRISIS_LINES.map(function(l){
      return '<li data-crisisline="'+esc(l.k)+'"><p class="crx-p">'+esc(l.say)+'</p>'
       +'<div class="crx-go">'+l.go.map(function(g){
-        return '<a class="btn crx-tel" href="'+esc(g[1])+'">'+esc(g[0])+'</a>';}).join('')
+        return '<a class="btn crx-tel'+(g[2]?' pri':'')+'" href="'+esc(g[1])+'">'+esc(g[0])+'</a>';}).join('')
       +'</div></li>';}).join('')+'</ul>'
     +'<p class="crx-p crx-dim">'+esc(CRISIS_SAY.where)+'</p>'
    :'<p class="crx-p">'+esc(CRISIS_SAY.q)+'</p>')

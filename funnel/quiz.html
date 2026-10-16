@@ -1518,7 +1518,8 @@ function crxCard(){
   +(reach
    ?'<ul class="crxp-ls">'+CRISIS_LINES.map(function(l){
      return '<li><p class="crxp-p">'+esc(l.say)+'</p><div class="crxp-go">'+l.go.map(function(g){
-      return '<a class="act" data-crxgo="'+esc(g[1])+'">'+esc(g[0])+'</a>';}).join('')+'</div></li>';}).join('')+'</ul>'
+      /* the one filled button is the table's, g[2], so this page and the app fill the same one */
+      return '<a class="act'+(g[2]?' go':'')+'" data-crxgo="'+esc(g[1])+'">'+esc(g[0])+'</a>';}).join('')+'</div></li>';}).join('')+'</ul>'
     +'<p class="crxp-p">'+esc(CRISIS_SAY.where)+'</p>'
    :'<p class="crxp-p">'+esc(CRISIS_SAY.q)+'</p>')
   +'<div class="crxp-acts">'

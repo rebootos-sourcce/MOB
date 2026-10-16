@@ -8432,6 +8432,9 @@ g('CRISIS · the button a person presses: three numbers, each with its sentence 
   ok(l.go.length>0&&l.go.every(g=>/^(tel|sms):/.test(g[1])&&g[1].replace(/^(tel|sms):/,'').split('?')[0]===l.k),
    l.k+' links only to itself, by tel: or sms:, '+JSON.stringify(l.go));});
  ok(L.some(l=>l.go.some(g=>g[1]==='tel:988'))&&L.some(l=>l.go.some(g=>g[1]==='sms:988')),'988 is both a call and a text');
+ /* one filled button in the numbers view, 16 October, and it is Call 988 */
+ const pri=[].concat(...L.map(l=>l.go)).filter(g=>g[2]===true);
+ ok(pri.length===1&&pri[0][1]==='tel:988','exactly one link is the filled one, and it is Call 988, got '+JSON.stringify(pri));
  ok(/\bUS\b/.test(S.where||'')&&/local emergency number/.test(S.where||''),'the panel says they are US numbers and what to use elsewhere');
  ok(S.open==='Is this a crisis?'&&S.h==='Tell me about it.'&&S.reach==='Reach someone now'&&S.talk==='Talk it through',
   'the button and the panel carry the words as ruled');

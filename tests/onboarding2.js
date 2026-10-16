@@ -918,6 +918,19 @@ console.log('\n=== Is this a crisis, on the welcome and after it (16 October) ==
    &&/Call 911 if you are in danger now/.test(reach.text)&&/These are US numbers\. Outside the US, call your local emergency number\./.test(reach.text),
    'each number with its sentence, and the line that says they are US numbers'+at);
   ok(reach.tall>=44&&reach.fits,'every link and button at the floor, the whole panel on one screen'+at+', '+JSON.stringify({tall:reach.tall,fits:reach.fits}));
+  /* ONE FILLED BUTTON, and it is Call 988: read off the painted backgrounds,
+     so a class that styles nothing cannot pass it. The pointer leaves first:
+     it rests where Reach someone now was, which at 390 is over a link, and a
+     hover is a third background. */
+  await page.mouse.move(0,0); await page.waitForTimeout(250);
+  const fill=await page.evaluate(()=>{const c=document.getElementById('crisis');
+   const bg=e=>getComputedStyle(e).backgroundColor;
+   const all=[...c.querySelectorAll('a[href],button')], card=bg(c.querySelector('.crx-card'));
+   const kinds={}; all.forEach(e=>{const k=bg(e); (kinds[k]=kinds[k]||[]).push(e.getAttribute('href')||e.textContent);});
+   return {card, kinds};});
+  const solo=Object.values(fill.kinds).filter(v=>v.length===1);
+  ok(solo.length===1&&solo[0][0]==='tel:988'&&Object.keys(fill.kinds).length===2,
+   'Call 988 is the one filled button, every other link and button shares one outline style'+at+', '+JSON.stringify(fill.kinds));
   await shot(page,'crisis-reach-'+w);
   await page.keyboard.press('Escape'); await page.waitForTimeout(150);
   const esc2=await page.evaluate(()=>({shut:document.getElementById('crisis').hidden, ob:OB.open, step:OB.step}));
