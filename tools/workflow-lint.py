@@ -111,6 +111,14 @@ BROWSER = {
     'valuefelt':     ('node tests/valuefelt.js', 20),
     'claims':        ('node tests/claims.js', 20),
     'discordfeedback': ('node tests/discordfeedback.js', 20),
+# 16 October: run by no job until tools/orphans.js named them, report only
+# until three green runs like every gate new to CI
+    'honest':        ('node tests/honest.js', 20),
+    'dailyui':       ('node tests/dailyui.js', 20),
+    'becoming':      ('node tests/becoming.js', 20),
+    'loopui':        ('node tests/loopui.js', 20),
+    'personas-tier': ('node tests/personas-tier.js', 20),
+    'valuefeltui':   ('node tests/valuefeltui.js', 20),
 }
 # P0 Alpha acceptance: move to the blocking browser matrix, and mutation-test each
 # one so a future refactor cannot silently return it to report-only.

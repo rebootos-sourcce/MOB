@@ -45,15 +45,7 @@ const fs = require('fs'), path = require('path'), os = require('os');
    Empty means every test file is run by CI. Adding one is a decision a
    reviewer must be able to see, so it carries its reason here, not in a
    commit message. */
-const PENDING = 'NOT MANUAL. Unrun on main as of 16 October (round 1 sweep, F3). Step 2 of the gates coverage change wires it into deploy.yml, and the stale entry rule below then fails until this line is deleted.';
 const MANUAL = {
-  'becoming.js': PENDING,
-  'dailyui.js': PENDING,
-  'honest.js': PENDING,
-  'loopui.js': PENDING,
-  'personas-tier.js': PENDING,
-  'plan-selfgrant.js': PENDING,
-  'valuefeltui.js': PENDING,
 };
 
 /* YAML and bash share `#` as a comment. A `#` opens one at the start of a

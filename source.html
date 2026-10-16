@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v230 536c0f24 2026-10-16 05:44"><head><meta charset="utf-8">
+<html lang="en" data-build="v232 f2bb261d 2026-10-16 07:18"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -53796,6 +53796,15 @@ function relCoolDown(){
    var previous=JSON.parse(recordBefore);
    Object.keys(CURP).forEach(function(k){delete CURP[k];});
    Object.keys(previous).forEach(function(k){CURP[k]=previous[k];});
+   /* AND THE WORKING STATE WITH IT, 16 October. compute() and saveProfile
+      read S, not CURP, so restoring CURP alone left S.charge at the released
+      values: the page read the release as landed, and the next unrelated
+      save wrote that charge onto the record with no release in its history.
+      Measured before this line: 3 charged addresses on the record, a refused
+      release, one ordinary save, a reload, and 0 charged with 0 releases.
+      loadProfile rebuilds S from the restored record, so the card keeps the
+      run and the record and the reading both stay where they were. */
+   loadProfile(CURP);
    RUN.recordRestored=true;
   }catch(e){ RUN.recordRestored=false; }
  }
@@ -72296,6 +72305,19 @@ try{window.__at&&window.__at('ui/rootsum.js');}catch(e){}
    ============================================================ */
 var LP={memo:null, sig:'', all:false, open:{}, wired:false};
 
+/* WHICH RECORD A ROW'S OPEN STATE BELONGS TO, 16 October. LP.open was one
+   map keyed by pattern alone, and the toggle that fires when a first row is
+   drawn open wrote into it, so every record opened its first row on every
+   other record that carries the same pattern. Measured on 4c6185d: after
+   Sofia, Diane, Marcus, Angela and Derek, James opened Pride as well as his
+   own first row, and Summary printed his unanswered line twice. Keyed by the
+   record now, the way the undo stack and S.rec already are; a worked example
+   has no id and is keyed by its place in the roster. */
+function lpWho(){
+ var p=(typeof CURP!=='undefined')?CURP:null;
+ return p&&p.id?'r:'+p.id:'w:'+((typeof S!=='undefined'&&S.who!=null)?S.who:'');}
+function lpOpen(w){return LP.open[w]||(LP.open[w]={});}
+
 /* the parts of the record traceFromRecord reads, and nothing else */
 function loopSig(p){
  if(!p)return '';
@@ -72353,9 +72375,10 @@ function lpChain(x){
   return '<li><span class="lp-cl">'+s[0]+'</span><span class="lp-cv">'+s[1]+'</span></li>';}).join('')+'</ol>';}
 
 function lpRow(x,i){
- var open=LP.open[x.key]!==undefined?LP.open[x.key]:i===0;
+ var w=lpWho(), was=lpOpen(w)[x.key];
+ var open=was!==undefined?was:i===0;
  var seat=x.seat?unp(String(x.seat).toLowerCase(),x.seat+' seat','seat'):'';
- return '<details class="lp-p" data-lpk="'+esc(x.key)+'"'+(open?' open':'')+'>'
+ return '<details class="lp-p" data-lpk="'+esc(x.key)+'" data-lpw="'+esc(w)+'"'+(open?' open':'')+'>'
   +'<summary><span class="lp-pn"><b>'+esc(x.name)+'</b>'+(seat?'<em>'+seat+'</em>':'')+'</span>'
   +'<span class="lp-st lp-'+x.state+'">'+(x.state==='confirmed'?'Confirmed':'Unanswered')+'</span></summary>'
   +lpChain(x)+'</details>';}
@@ -72427,7 +72450,10 @@ function loopRepaint(){
 function loopWire(){
  if(LP.wired)return; LP.wired=true;
  document.addEventListener('toggle',function(ev){var d=ev.target;
-  if(d&&d.getAttribute&&d.getAttribute('data-lpk'))LP.open[d.getAttribute('data-lpk')]=d.open;},true);
+  /* the record is read off the row, never off CURP at the time the event
+     arrives, because the toggle is queued and the record may have moved */
+  if(d&&d.getAttribute&&d.getAttribute('data-lpk'))
+   lpOpen(d.getAttribute('data-lpw')||lpWho())[d.getAttribute('data-lpk')]=d.open;},true);
  document.addEventListener('click',function(ev){
   var b=ev.target&&ev.target.closest?ev.target.closest('[data-lprel],[data-lpall]'):null;
   if(!b)return;
@@ -76928,5 +76954,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005046831"></div>
+<div id="eof" hidden data-len="005048480"></div>
 </body></html>

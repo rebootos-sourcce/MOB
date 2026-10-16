@@ -155,6 +155,11 @@ jobs:
           done
       - name: engine gate
         run: node tests/engine.js 2>&1 | tee "$RUNNER_TEMP/gates/engine.log"
+      # J11, held open on purpose and watched: pImport still accepts a self
+      # declared tier four. Node only, so it runs here and not on a browser
+      # runner. It fails the day the door is closed without saying so.
+      - name: plan self grant watch
+        run: node tests/plan-selfgrant.js 2>&1 | tee "$RUNNER_TEMP/gates/plan-selfgrant.log"
       - name: voice check, his own objections as rules
         run: python3 .claude/skills/atuned-voice/check.py --objections
       - name: workflow lint, this file held to its own shape
@@ -173,7 +178,7 @@ jobs:
       # A gate that lost its tests still exits 0. The floors are in
       # tests/floors.json and are raised on purpose, never lowered to get green.
       - name: floors
-        run: node tools/floors.js --self-test && node tools/floors.js engine funnel-package
+        run: node tools/floors.js --self-test && node tools/floors.js engine funnel-package plan-selfgrant
 
   # The required browser gates, one job each, in parallel, each on its own
   # runner with the chromium that playwright 1.56.1 installs. CHROME carries
@@ -268,6 +273,16 @@ jobs:
           - { gate: valuefelt, timeout: 20, command: node tests/valuefelt.js }
           - { gate: claims, timeout: 20, command: node tests/claims.js }
           - { gate: discordfeedback, timeout: 20, command: node tests/discordfeedback.js }
+          # 16 October: six browser gates no job ran, two of them red on main.
+          # Here first, the house rule for a gate new to CI; each moves up to
+          # gates-browser after three green runs. honest.js holds "a control
+          # never claims success before it has it" and goes first.
+          - { gate: honest, timeout: 20, command: node tests/honest.js }
+          - { gate: dailyui, timeout: 20, command: node tests/dailyui.js }
+          - { gate: becoming, timeout: 20, command: node tests/becoming.js }
+          - { gate: loopui, timeout: 20, command: node tests/loopui.js }
+          - { gate: personas-tier, timeout: 20, command: node tests/personas-tier.js }
+          - { gate: valuefeltui, timeout: 20, command: node tests/valuefeltui.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
