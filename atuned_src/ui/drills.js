@@ -406,6 +406,35 @@ addEventListener('click',function(e){
    What it measures goes first. Then where the distortion sits, because that
    is the only actionable thing on the screen. Then the arithmetic, which is
    how the number was reached and not what it says. */
+/* THE RANGE, SAID ONLY AS FAR AS THE ANSWERS SUPPORT IT. This printed
+   cqRange on every read field, and cqRange is a band round the figure
+   alone: with 1 law of 21 answered at 10 it said the reading swings between
+   0 and 18 and that the figure is the middle, where the figure was 5, the
+   middle of 0 to 18 is 9, and the finished figure could still land anywhere
+   from 5 to 100. So it says three different things now, by how much is in:
+
+     most laws open    that there are not enough answers yet, and the count
+     half or more in   where the finished figure can still land, cqSpan's two
+                       ends, with what each end means beside it
+     every law in      the swing cqRange draws, and "the middle" only when
+                       the figure really is the middle, which it is not when
+                       the band is cut off at nothing or at a hundred
+
+   The drill is the one place a range is printed (the 14 October ruling),
+   and every number in it carries its meaning in the same sentence. */
+function coreRangeSay(r){
+ if(r.unread)return '';
+ var sp=cqSpan(), of=sp.of;
+ if(!sp.enough)return '<p class="ad-p">There are not enough answers yet to give a range. <b>'
+  +sp.answered+'</b> of '+of+' laws are answered.</p>';
+ if(!sp.complete)return '<p class="ad-p">With <b>'+sp.answered+'</b> of '+of+' laws answered, the finished figure lands between <b>'
+  +Math.round(sp.lo)+'</b> and <b>'+Math.round(sp.hi)+'</b>. It is <b>'+Math.round(sp.lo)
+  +'</b> if every law still open is answered at nothing, and <b>'+Math.round(sp.hi)+'</b> if every one is answered at ten.</p>';
+ var rg=cqRange(r.CQ);
+ return '<p class="ad-p">The reading swings between <b>'+Math.round(rg.lo)+'</b> and <b>'+Math.round(rg.hi)+'</b>. '
+  +(rg.lo>0&&rg.hi<100?'The figure is the middle of that range, not a mark out of a hundred.'
+   :rg.hi>=100?'The figure sits near the top of that range, because the scale stops at a hundred.'
+   :'The figure sits near the bottom of that range, because the scale stops at nothing.')+'</p>';}
 function runCoreDrill(){
  var r=compute();
  /* THE FIGURE LIVES HERE, ONE TAP DOWN, WITH ITS RANGE. 15 October, under
@@ -413,12 +442,10 @@ function runCoreDrill(){
     Summary plate prints how much has been measured and opens this, where the
     number sits beside the range it swings in (cqRange, the same range the
     Field's key draws), so nobody reads 62 without its plus or minus. */
- var rg=r.unread?null:cqRange(r.CQ);
  var h='<div class="pm-eye">The core</div>'
   +'<div class="ad-nm">'+(r.unread?'not read yet'
     :'CQ '+Math.round(r.CQ)+', '+tierSay(r).toLowerCase())+'</div>'
-  +(rg?'<p class="ad-p">The reading swings between <b>'+Math.round(rg.lo)+'</b> and <b>'
-    +Math.round(rg.hi)+'</b>. The figure is the middle of that range, not a mark out of a hundred.</p>':'')
+  +coreRangeSay(r)
   +'<div class="pm-eye">What coherence is</div><p class="ad-p">'
   +'Coherence is the alignment between the world around you, what arrives from '
   +'it, the way you read what arrives, the intention behind it, and the action '

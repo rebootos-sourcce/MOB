@@ -887,17 +887,19 @@ function sumNameBlock(B,fallback){
  return first?'<div class="s-pname">'+esc(first)+'</div>'+full+line:'';}
 /* HOW MUCH HAS BEEN MEASURED, AS ONE WORD. 15 October, under the owner's 14
    October ruling: no bare score on a daily surface. The plate's ring used to
-   print the coherence figure; it prints this word now, read off accuracy(),
-   which is the fit's own estimate of how much of the reading is in: the laws
-   answered, the addresses carrying, the expression read. The figure and the
+   print the coherence figure; it prints this word now. The figure and the
    range it swings in sit one tap down, in the core drill the ring opens.
-   tests/golden.js holds the ladder, so a fourth word cannot appear unseen. */
-function accWord(a){
- if(!a||!(a.pct>0))return '';
- return a.pct<45?'early':a.pct<70?'partial':'full';}
+   tests/golden.js holds the ladder, so a fourth word cannot appear unseen.
+   IT WAS READ OFF accuracy(), and that measured how high the answers were
+   rather than how many there were: every law answered at 10 read partial and
+   every law answered at 1 read early. It reads accCover now, the laws
+   answered and the stories written, and the lines are drawn on that scale
+   (engine/compute.js, accCoverWord), so a whole intake reads full whatever
+   the answers were. */
+function accWord(c){return accCoverWord(c);}
 function sumPlate(r,B){
  var t=TIER_BY[r.tier]||null;
- var aw=(typeof accuracy==='function')?accWord(accuracy(r)):'';
+ var aw=(typeof accCover==='function')?accWord(accCover(r)):'';
  return '<div class="s-plate">'
   +'<div class="s-pl-l">'+sumNameBlock(B,true)+'</div>'
   +'<div class="s-pl-r">'
