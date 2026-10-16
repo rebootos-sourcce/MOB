@@ -7914,6 +7914,33 @@ g('PLATE WORD · early, partial or full follows how much was answered, never how
  ok(wmono&&wl===3,'the word climbs the ladder as the laws are answered and never steps back, ending at full');
 }
 
+g('CQ SPAN · the range on a partial intake is where the finished figure can still land');
+/* The core drill drew cqRange round the figure alone, so at e9ca1ae 1 law
+   answered at 10 read "swings between 0 and 18, the figure is the middle",
+   with CQ 5 and a finished figure anywhere from 5 to 100. cqSpan reads both
+   ends off cqSum with every open law at nothing and at ten. */
+{
+ const has=typeof E.cqSpan==='function';
+ ok(has,'cqSpan exists');
+ const span=(n,v)=>{const p=E.blankProfile('span');p.laws={};SINAMES.slice(0,n).forEach(l=>p.laws[l]=v);
+  const r=E.read(p).reading; return {r, s:has?E.cqSpan():null};};
+ const a=span(1,10);
+ ok(a.s&&Math.abs(a.s.lo-a.r.CQ)<1e-9,'the low end is the figure now, an open law counting nothing, '+(a.s&&a.s.lo)+' against '+a.r.CQ);
+ ok(a.s&&Math.abs(a.s.hi-100)<1e-9,'one law at 10 and twenty open can still finish at 100, '+(a.s&&a.s.hi));
+ ok(a.s&&a.s.enough===false&&a.s.answered===1&&a.s.of===SINAMES.length,'and with most laws open there are not enough answers to give a range, '+JSON.stringify(a.s));
+ const b=span(12,5);
+ const want=a.s?(12*5+(SINAMES.length-12)*10)/210*100:NaN;
+ ok(b.s&&b.s.enough&&!b.s.complete&&Math.abs(b.s.hi-want)<1e-9&&Math.abs(b.s.lo-b.r.CQ)<1e-9,
+  'twelve laws at 5: enough to give a range, from the figure now to every open law at ten, '+JSON.stringify(b.s));
+ const c=span(SINAMES.length,7);
+ ok(c.s&&c.s.complete&&Math.abs(c.s.lo-c.s.hi)<1e-9&&Math.abs(c.s.lo-c.r.CQ)<1e-9,'every law in, the two ends are the figure');
+ ok(Math.abs(E.cqSum()-c.r.CQ)<1e-9,'and cqSum with nothing passed is CQ exactly as before');
+ /* the swing only narrows as laws come in */
+ let wide=Infinity, narrows=true;
+ for(let n=0;n<=SINAMES.length;n++){const s=span(n,6).s; if(!s)break; const w=s.hi-s.lo; if(w>wide+1e-9)narrows=false; wide=w;}
+ ok(has&&narrows,'answering a law never widens where the figure can land');
+}
+
 g('OWN WORD · a second emotion word never erases a stated one, each keeps its own charge on its own seat');
 /* parseStory read every seat against one wanted map for the whole text, so at
    e9ca1ae "I am exhausted and furious" applied {"Anger":10.8} and left Apathy

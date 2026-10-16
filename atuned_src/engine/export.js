@@ -116,7 +116,7 @@ if(typeof module!=='undefined'&&module.exports){
      to his fifteen thousand. Exported so the gate can drive a release through
      the same function the release panel calls, and hold the rate to the fit. */
                   exCeiling:exCeiling, exHeadroom:exHeadroom,
-                  lawIn:lawIn, cqSum:cqSum, leverPull:leverPull,
+                  lawIn:lawIn, cqSum:cqSum, cqSpan:cqSpan, leverPull:leverPull,
                   LEVER_MU:LEVER_MU, LEVER_SD:LEVER_SD, CQ_MODEL:CQ_MODEL,
                   LIFT_R:LIFT_R, lawLift:lawLift, lawWork:lawWork, lawNow:lawNow,
                   releaseWork:releaseWork, lawAnswered:lawAnswered,

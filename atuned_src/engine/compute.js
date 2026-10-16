@@ -164,8 +164,34 @@ function lawWork(nm){
  return (w&&w.on===S.law[nm]&&w.n>0)?w.n:0;}
 /* a law as CQ reads it: the answer, and what the releases since have added */
 function lawNow(nm){return lawLift(S.law[nm],lawWork(nm));}
-/* CQ on its own, for the callers that need it without the whole reading */
-function cqSum(){return SINAMES.reduce((a,l)=>a+(lawIn(l)?lawNow(l):0),0)/210*100;}
+/* CQ on its own, for the callers that need it without the whole reading.
+   open is what an unanswered law counts, and every caller but cqSpan passes
+   none, so it is the 0 the ruling gives it. cqSpan asks what the figure
+   would be if every open law landed at ten, through this same sum, so the
+   two ends of the range are the engine's arithmetic and never a copy of it. */
+function cqSum(open){return SINAMES.reduce((a,l)=>a+(lawIn(l)?lawNow(l):(open||0)),0)/210*100;}
+/* ============================================================
+   WHERE THE FINISHED CQ CAN STILL LAND, read off what is unanswered.
+
+   The core drill said "The reading swings between lo and hi. The figure is
+   the middle of that range" off cqRange (ui/personas.js), which is a band
+   drawn round the figure alone and knows nothing about how many laws are in.
+   Measured at e9ca1ae: with 1 law answered at 10 the drill said CQ swings
+   between 0 and 18 and that the figure was the middle, where the middle of
+   that was 8.9 against a CQ of 5 and the finished figure can land anywhere
+   from 5 to 100.
+
+   lo is the figure with every open law at its lowest, which is the figure
+   now, because an open law counts nothing. hi is every open law at ten. When
+   every law is in the two are one number. enough is false while most laws
+   are still open (fewer than half answered), and then the drill says there
+   are not enough answers to give a range at all, because a range that covers
+   most of the scale says nothing a person can use.
+   ============================================================ */
+function cqSpan(){
+ var of=SINAMES.length, answered=SINAMES.filter(lawIn).length;
+ return {lo:cqSum(), hi:cqSum(10), answered:answered, of:of,
+  complete:answered===of, enough:answered*2>=of};}
 /* WHAT A RELEASE WRITES INTO THE LAWS. keys are the patterns of new ground the
    meter has just recorded, so a rerun passes none and moves nothing. Each key's
    address names a seat, and every answered law at that seat counts them. A law
