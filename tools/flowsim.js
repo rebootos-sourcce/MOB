@@ -52,7 +52,7 @@ const WEIGHT={Diane:180,Derek:170,Marcus:160,Angela:150,Sofia:140,James:100,
    deliberately not in the engine, so it is held here and never
    written back to a profile. */
 const GRID=[
- {lv:1,  lo:0,  hi:10,  nm:'Collapsed',   state:'Fragmented',  buy:0.00},
+ {lv:1,  lo:0,  hi:10,  nm:'Contracted',  state:'Fragmented',  buy:0.00},
  {lv:2,  lo:11, hi:20,  nm:'Severe',      state:'Numb',        buy:0.10},
  {lv:3,  lo:21, hi:30,  nm:'Corrupt',     state:'Defensive',   buy:0.20},
  {lv:4,  lo:31, hi:40,  nm:'Incoherent',  state:'Frustrated',  buy:0.40},

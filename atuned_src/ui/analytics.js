@@ -145,7 +145,7 @@ function anaRender(){
    /* ROUND RG. The band word stood alone, bold, with nothing on it, which
       is V9's judgement and not a reading. The tier's own first sentence
       rides after it, the same one Clients carries on its tooltip. */
-   :(r.tier?'The field reads <b>'+esc(r.tier.toLowerCase())+'</b>. '+unpSay(r.tier,'tier')+' '
+   :(r.tier?'Your energy reads <b>'+esc(r.tier.toLowerCase())+'</b>. '+unpSay(r.tier,'tier')+' '
      :'Coherence is still filling, with <b>'+esc(tierSay(r))+'</b>. ')
    +(loud?'<b>'+esc(loud.nm)+'</b> is the biggest thing running. '
      /* "Nothing is compounding" is a claim about somebody's chain, and a plan

@@ -136,6 +136,11 @@ function loginCard(mail){
   +'<div class="ob-acts"><button type="button" class="btn pri" id="loginb-go">Log in</button>'
   +'<button type="button" class="btn" id="loginb-new">Create account</button>'
   +'<button type="button" class="btn" id="loginb-skip">Guest</button></div>'
+  /* IS THIS A CRISIS, 16 October: the first card a stranger meets carries the
+     button, under the three ways in and never in front of them, so it is
+     always there and never the thing a person has to read past. The panel and
+     the reason it is its own layer are in ui/crisis.js. */
+  +'<p class="crx-line">'+crisisBtn()+'</p>'
   +loginDevOptions()
   +'</div></div>';}
 function loginResetCard(mail){

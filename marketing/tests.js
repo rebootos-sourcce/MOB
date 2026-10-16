@@ -91,14 +91,14 @@ T(H.DOOR_OUT.isHook === false, '13. the door out is not marked as a non hook');
 
 /* ---- 14. THE DOOR OUT IS THE ENGINE'S OWN WORDS.
 
-   It is TIERDEF's direction for the Collapsed band, carried verbatim. If the
+   It is TIERDEF's direction for the floor band, Contracted since 16 October, carried verbatim. If the
    engine's wording changes, this fails and somebody decides, rather than the
    marketing copy quietly becoming a second voice. */
 const E = require(path.resolve(__dirname, '..', process.env.ENGINE || 'engine.js'));
 const collapsed = E.TIERDEF[E.TIERDEF.length - 1];
-T(collapsed.nm === 'Collapsed', '14. the last TIERDEF entry is ' + collapsed.nm + ', not Collapsed');
+T(collapsed.nm === 'Contracted', '14. the last TIERDEF entry is ' + collapsed.nm + ', not Contracted');
 T(H.DOOR_OUT.hook === collapsed.toward,
-  '14. the door out no longer matches TIERDEF Collapsed toward. engine says: ' + collapsed.toward);
+  '14. the door out no longer matches TIERDEF Contracted toward. engine says: ' + collapsed.toward);
 
 /* ---- 15. EVERY HOOK'S ADDRESS, NERVE AND DISTORTION MATCH THE ENGINE ROW.
 

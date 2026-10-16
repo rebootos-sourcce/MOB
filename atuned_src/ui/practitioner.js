@@ -310,7 +310,7 @@ var PRAC_SEL=null, PRAC_SORT='attn', PRAC_RCACHE={};
    coherence band, which read as near duplicates of whichever ICP solved the
    same band: a wider list would be longer and not more worth looking at.
    These ten are the six ICPs plus four reference cases chosen to span the
-   scale the ICPs do not reach on their own: Gordon near the floor (Collapsed,
+   scale the ICPs do not reach on their own: Gordon near the floor (Contracted,
    a defended field that calls itself fine), Ana in the middle (Oscillating,
    "in the middle of something"), Abraham near the ceiling (Embodied, real
    load still in it), and Wren at the top (Mastery, one thing still held).

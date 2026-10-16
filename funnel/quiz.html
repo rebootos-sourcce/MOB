@@ -200,6 +200,45 @@ a.act{display:inline-flex;align-items:center;text-decoration:none}
 .act.go{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
 button.act:focus-visible,a.act:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .read>.door:first-child{margin-top:8px}
+/* ---- IS THIS A CRISIS, 16 October. The app's button and panel (ui/crisis.js
+   in atuned_src), carried here because the quiz is a door a stranger meets
+   first too. The words and numbers are engine.js's own CRISIS_SAY and
+   CRISIS_LINES, so this page and the app cannot say two different things.
+   The button is quiet in the sticky top, so it is on every state of the page;
+   the panel is one card over the page, and every control is at the floor. ---- */
+/* THE OUTLINE IS INK, NOT --edge-2, 16 October, the app's rule from the review
+   of these screens (atuned_src/shell/head.html .crx-open): the edge colour
+   left the pill's border all but gone, so the button read as loose words.
+   Forty per cent ink, colourless, the app's own share on a ground this
+   dark: measured off this page's pixels, fifty read 4.73 to 1, louder than
+   the app's pill beside the same dark, and forty reads about 3.3. */
+.crxq{flex:0 0 auto;min-height:var(--tap);padding:0 14px;border-radius:999px;background:transparent;
+ font:inherit;font-size:13px;color:var(--mid);border:1px solid color-mix(in srgb,var(--ink) 40%,transparent);cursor:pointer}
+.crxq:hover{color:var(--ink);border-color:color-mix(in srgb,var(--ink) 60%,transparent)}
+.crxq:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.crxp{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;
+ padding:16px;background:rgba(6,6,8,.8)}
+.crxp[hidden]{display:none}
+.crxp-card{width:min(480px,100%);max-height:calc(100vh - 32px);overflow:auto;background:var(--panel);
+ border:1px solid var(--edge);border-radius:14px;padding:24px 24px 20px}
+.crxp-h{margin:0 0 12px;font-size:22px;line-height:1.25;font-weight:600;color:var(--ink);outline:none}
+.crxp-p{margin:0 0 12px;font-size:15px;line-height:1.55;color:var(--mid)}
+.crxp-ls{list-style:none;margin:0 0 6px;padding:0}
+.crxp-ls li{padding:12px 0;border-top:1px solid var(--edge)}
+.crxp-ls li:first-child{border-top:0;padding-top:2px}
+.crxp-ls .crxp-p{color:var(--ink);margin-bottom:8px}
+.crxp-go,.crxp-acts{display:flex;gap:8px;flex-wrap:wrap}
+.crxp-acts{margin-top:16px}
+.crxp .act{min-height:var(--tap);padding:10px 16px;font-size:15px}
+/* pills, as the app's panel draws them: here only, in the panel and on the
+   Story door, because every other button on this page is a rounded
+   rectangle by its own rule and reshaping them all is not this change */
+.crxp .act,.crxq-row .act{border-radius:999px}
+/* the line Talk it through leaves above the box, and the way back to the
+   numbers beside it; on a phone the button wraps under the line */
+.crxq-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-top:12px}
+.crxq-row .sm{flex:1 1 240px;margin:0}
+.crxq-row .act{min-height:var(--tap);padding:10px 16px;font-size:15px}
 /* ---- the story. One box, the same panel as a card, and the type at body
    size, because a person writing about their week at 14 pixels is squinting
    at their own sentence. ---- */
@@ -295,6 +334,7 @@ button.yna:focus-visible,button.more:focus-visible{outline:2px solid var(--ink);
   <!-- THE SEVEN BAND RING. It is filled by RING.set out of the engine's own
        band loads, so it cannot disagree with the reading underneath it. -->
   <div class="ringwrap" id="ringtop"></div>
+  <button type="button" class="crxq" id="crxq" aria-haspopup="dialog">Is this a crisis?</button>
  </div>
  <div id="app"></div>
 </div>
@@ -1163,6 +1203,12 @@ function viewStory(){
      offered to the story, never written into it. */
   +(sigSay()?'<p class="sm">Before the questions you noticed '+esc(sigSay())
     +'. If it is the same moment, write that in too.</p>':'')
+  /* Talk it through, from the crisis panel: the box says what it is for */
+  /* and Reach someone now beside it, as the app has: Talk it through must
+     never be a door that closes on the numbers. It opens the same panel on
+     them, and reads nothing in the box. */
+  +(CRX.talk?'<div class="crxq-row"><p class="sm" id="crxqsay">'+esc(CRISIS_SAY.story)+'</p>'
+    +'<button type="button" class="act" data-crx="reachnow">'+esc(CRISIS_SAY.reach)+'</button></div>':'')
   +'<textarea class="storyta" id="storytx" spellcheck="false" aria-label="What happened" '
   +'placeholder="What happened, and where you felt it.">'+esc(STORY)+'</textarea>'
   +'<div class="acts stacts">'
@@ -1472,6 +1518,82 @@ function bindNotice(){
  /* a skip declines the beat, so nothing half given is said back later */
  if((b=document.getElementById('sigskip')))b.onclick=function(){
   SIG={where:'',whereOwn:false,what:'',whatOwn:false,none:false,done:false}; toQuestions(); };}
+
+/* ============================================================
+   IS THIS A CRISIS, 16 October, the quiz's own copy of the app's panel
+   (atuned_src/ui/crisis.js has the full account). His words: "Is this a
+   crisis? Hit that button. Tell me about it. Do you need immediate emergency
+   contact, or would you like to talk it through? It's always a story."
+   A button the person presses; nothing here reads what anybody writes. Talk
+   it through goes to this page's own story box, which is where a person
+   writes what happened here. Escape, Close and the backdrop shut it, and it
+   takes Escape on the way down so nothing else on the page hears the key.
+   ============================================================ */
+var CRX={open:false, view:'ask', back:null, talk:false};
+function crxCard(){
+ var reach=CRX.view==='reach';
+ return '<div class="crxp-card" role="dialog" aria-modal="true" aria-labelledby="crxqh">'
+  +'<h2 class="crxp-h" id="crxqh" tabindex="-1">'+esc(reach?CRISIS_SAY.reach:CRISIS_SAY.h)+'</h2>'
+  +(reach
+   ?'<ul class="crxp-ls">'+CRISIS_LINES.map(function(l){
+     return '<li><p class="crxp-p">'+esc(l.say)+'</p><div class="crxp-go">'+l.go.map(function(g){
+      /* the one filled button is the table's, g[2], so this page and the app fill the same one */
+      return '<a class="act'+(g[2]?' go':'')+'" data-crxgo="'+esc(g[1])+'">'+esc(g[0])+'</a>';}).join('')+'</div></li>';}).join('')+'</ul>'
+    +'<p class="crxp-p">'+esc(CRISIS_SAY.where)+'</p>'
+   /* NOT CRISIS_SAY.journal. The app says "Talk it through opens your
+      journal. No person reads it." under this question, and here it would be
+      wrong: Talk it through on this page goes to this page's own story box,
+      and there is no journal on the quiz. CRISIS_SAY.quiz is this page's own
+      line, true here: where the button goes, and that the page sends nothing,
+      which tests/funnel.js proves by counting its requests. */
+   :'<p class="crxp-p">'+esc(CRISIS_SAY.q)+'</p>'
+    +'<p class="crxp-p">'+esc(CRISIS_SAY.quiz)+'</p>')
+  +'<div class="crxp-acts">'
+  +(reach?'':'<button type="button" class="act go" data-crx="reach">'+esc(CRISIS_SAY.reach)+'</button>')
+  +'<button type="button" class="act" data-crx="talk">'+esc(CRISIS_SAY.talk)+'</button>'
+  +'<button type="button" class="act" data-crx="close">'+esc(CRISIS_SAY.close)+'</button></div></div>';}
+function crxHost(){
+ var h=document.getElementById('crxqp');
+ if(!h){ h=document.createElement('div'); h.id='crxqp'; h.className='crxp'; h.hidden=true; document.body.appendChild(h); }
+ return h;}
+/* THE ADDRESS GOES ON AFTER THE MARKUP. funnel/BUILD-single.sh reads every
+   href in this file as a sibling the sent page might need, and an href built
+   by concatenation reads to it as a file called '+esc(g[1])+'. So the link is
+   drawn without one and given its tel: or sms: address here, from the same
+   table, which the check never has to guess at. */
+function crxPaint(){ var h=crxHost(); h.innerHTML=crxCard();
+ Array.prototype.forEach.call(h.querySelectorAll('[data-crxgo]'),function(a){ a.setAttribute('href',a.getAttribute('data-crxgo')); });
+ var f=document.getElementById('crxqh'); if(f)f.focus({preventScroll:true}); }
+function crxOpen(){ CRX.back=document.activeElement||null; CRX.open=true; CRX.view='ask'; crxHost().hidden=false; crxPaint(); }
+function crxShut(keep){
+ var h=document.getElementById('crxqp'); CRX.open=false; CRX.view='ask';
+ if(h){ h.hidden=true; h.innerHTML=''; }
+ var b=CRX.back; CRX.back=null;
+ if(!keep&&b&&b.focus&&document.contains(b))b.focus({preventScroll:true});}
+function crxTalk(){
+ crxShut(true); CRX.talk=true; STATE='story'; render(); scrollTo(0,0);
+ var t=document.getElementById('storytx'); if(t)t.focus();}
+(function(){ var b=document.getElementById('crxq'); if(b){ b.textContent=CRISIS_SAY.open; b.onclick=crxOpen; } })();
+document.addEventListener('click',function(e){
+ /* the Story door opens the panel straight on the numbers */
+ var rn=e.target&&e.target.closest?e.target.closest('[data-crx="reachnow"]'):null;
+ if(rn&&!CRX.open){ crxOpen(); CRX.view='reach'; crxPaint(); return; }
+ if(!CRX.open)return;
+ var h=document.getElementById('crxqp'); if(e.target===h){ crxShut(); return; }
+ var b=e.target&&e.target.closest?e.target.closest('[data-crx]'):null; if(!b)return;
+ var k=b.getAttribute('data-crx');
+ if(k==='reach'){ CRX.view='reach'; crxPaint(); }
+ else if(k==='talk')crxTalk();
+ else if(k==='close')crxShut();});
+addEventListener('keydown',function(e){
+ if(!CRX.open)return;
+ if(e.key==='Escape'){ e.preventDefault(); e.stopPropagation(); crxShut(); return; }
+ if(e.key!=='Tab')return;
+ var h=document.getElementById('crxqp'), f=h?[].slice.call(h.querySelectorAll('a[href],button')):[];
+ if(!f.length)return;
+ var i=f.indexOf(document.activeElement);
+ if(e.shiftKey&&i<=0){ e.preventDefault(); f[f.length-1].focus(); }
+ else if(!e.shiftKey&&(i<0||i===f.length-1)){ e.preventDefault(); f[0].focus(); }},true);
 
 load(); render();
 </script></body></html>
