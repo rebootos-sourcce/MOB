@@ -170,6 +170,16 @@ for(const [w,h,wn] of [[1600,1000,'1600'],[390,844,'390']]){
   await c.route('**/*',route);
   const p=await c.newPage();
   await p.addInitScript(require('./seed.js').FULL_SIGHT);
+  /* THE PAGE IS OPENED FROM A FILE AND MUST STILL SEND, 16 October. From that
+     day a copy on a file page never starts a first visit against the production
+     address (ui/auth.js authFunnelStart: every gate's openings were landing in
+     the live store as sessions, 6,965 of them). The walk here has to send, so
+     the stub is named as the server before the page's own script runs: a
+     getter on the global wins over the page's later var, the same way a gate
+     that assigns AUTH_API at run time points the app at its own stub. */
+  await p.addInitScript(()=>{
+   Object.defineProperty(window,'AUTH_API',{get(){return 'https://copygate.stub.test';},set(){},configurable:true});
+   Object.defineProperty(window,'AUTH_API_LIVE',{get(){return 'https://atuned-api.lance-o-powell.workers.dev';},set(){},configurable:true});});
   let dialogAction='dismiss';
   const dialogs=[]; p.on('dialog',d=>{
    dialogs.push({type:d.type(),message:d.message(),action:dialogAction});

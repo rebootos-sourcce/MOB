@@ -36,6 +36,10 @@
    session token, which the server hands back and this file keeps in their own
    browser. A var so a gate can point it at a stub. */
 var AUTH_API='https://atuned-api.lance-o-powell.workers.dev';
+/* the production address, kept apart from AUTH_API so a copy that is not
+   served from the site can tell it is talking to the real server and not to
+   a gate's stub; see authFunnelStart */
+var AUTH_API_LIVE=AUTH_API;
 var AUTH_KEY='source.session';
 var FUNNEL_KEY='funnel.session';
 var VOICE_DEV_KEY='source.voicedev';
@@ -146,6 +150,17 @@ function authFunnelStart(){
  var existing=funnelSession();
  if(existing){ authFunnelJoin(); return Promise.resolve({ok:true,session:existing.session||null,reused:true}); }
  if(FUNNEL_STARTING)return FUNNEL_STARTING.then(function(r){ return Object.assign({},r,{reused:true}); });
+ /* A COPY OPENED FROM A FILE NEVER STARTS A FIRST VISIT ON THE REAL SERVER.
+    16 October. Every browser gate opens this app from a file, and from 9
+    October, when the first visit shipped, every one of those openings made
+    a session in production: 6,965 by the first KPI read, all at the door,
+    rising by the hundred in the hours the gates ran, against 14 people who
+    ever chose a ground. A downloaded copy is the same case: the server
+    turns its null origin away for everything else (E3f), so a session it
+    cannot use is a count it should not add to. A gate that points AUTH_API
+    at its own stub still starts one, which is what the stubs are for. */
+ try{ if(location.protocol==='file:'&&AUTH_API===AUTH_API_LIVE)
+  return Promise.resolve({ok:false,status:0,body:null,copy:true}); }catch(e){}
  var anonymousId=funnelUuid();
  var request=authCall('POST','/v1/funnel/session',{anonymousId:anonymousId},null,false).then(function(r){
   /* The Worker intentionally creates the anonymous id. Keep the caller's id
