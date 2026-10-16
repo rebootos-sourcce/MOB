@@ -28,6 +28,16 @@
    expected red clause, below the floor, says so by name. A floor of 0 is
    "floor not set" and fails, so a placeholder never passes.
 
+   A FLOOR FAR BELOW THE COUNT FAILS TOO, 16 October. functional's floor was
+   2317 while the gate printed 2622, so 305 checks, about one in eight, could
+   have gone missing with every job green, and the line below saying "raise
+   the floor on purpose" had printed on every run for a week. A count more
+   than SLACK above its floor now fails, by the larger of SLACK_MIN checks
+   and SLACK_SHARE of the floor, and says the number to write. It reads only
+   this run's log and floors.json, never an older run, so no job depends on
+   another run having happened. The margin is there so a gate whose count
+   moves by a check or two from one runner to the next is not red for it.
+
    It never writes a floor. Raising one is a deliberate edit to floors.json.
 
      node tools/floors.js [--dir DIR] [--floors FILE] [gate ...]
@@ -53,6 +63,8 @@ const SUMMARY = [
 const TAP_PASS = /^(?:#|\u2139) pass (\d+)\s*$/;   // tap, or the spec reporter's info mark
 const TAP_FAIL = /^(?:#|\u2139) fail (\d+)\s*$/;
 const has = (o, k) => !!o && Object.prototype.hasOwnProperty.call(o, k);
+const SLACK_MIN = 3, SLACK_SHARE = 0.05;
+const slackOf = floor => Math.max(SLACK_MIN, Math.ceil(floor * SLACK_SHARE));
 
 function lines(text) {
   return text.replace(/\x1b\[[0-9;]*m/g, '').split(/\r?\n/);
@@ -112,6 +124,10 @@ function judge(gate, dir, table) {
   }
   if (s.pass < floor)
     return [false, gate + ': ' + s.pass + ' passed, below its floor of ' + floor + '. Checks were lost or did not run.'];
+  if (s.pass - floor > slackOf(floor))
+    return [false, gate + ': ' + s.pass + ' passed, ' + (s.pass - floor) + ' above its floor of ' + floor + ', more than the '
+      + slackOf(floor) + ' it may drift. That many checks could go missing unseen. Raise its floor to ' + s.pass
+      + ' in tests/floors.json, in this change, read off this run.'];
   return [true, gate + ': ' + s.pass + ' passed, 0 failed' + (s.red === null || s.red === undefined ? '' : ', ' + s.red + ' expected red') + ', floor ' + floor
     + (s.pass > floor ? '. ' + (s.pass - floor) + ' above it: raise the floor on purpose when that is the new normal.' : '.')];
 }
@@ -131,7 +147,7 @@ function check(gates, dir, table) {
 
 /* ---- --self-test: known bad logs must fail and known good ones pass ---- */
 function selfTest() {
-  const T = { floors: { g: 10, tap: 44, plain: 562, zero: 0, eng: 4689, nocap: 10, badcap: 10 },
+  const T = { floors: { g: 10, tap: 44, plain: 562, zero: 0, eng: 4689, nocap: 10, badcap: 10, drift: 2317 },
               expected_red_max: { g: 10, eng: 10, badcap: 'ten' },
               no_count: { mon: 'all surfaces render' } };
   // [name, gate, log, passes, words its message must carry]: a case that
@@ -139,6 +155,10 @@ function selfTest() {
   const CASES = [
     ['a summary at its floor', 'g', 'x\n===== 10 passed, 0 failed =====\n', true],
     ['a summary above its floor', 'g', '===== 12 passed, 0 failed =====', true],
+    ['a summary at the edge of its slack', 'g', '===== 13 passed, 0 failed =====', true],
+    ['a summary past its slack, the floor left behind', 'g', '===== 14 passed, 0 failed =====', false, 'Raise its floor to 14'],
+    ['the functional drift of 16 October', 'drift', '===== 2622 passed, 0 failed =====', false, 'more than the 116'],
+    ['five percent above a large floor is still in its slack', 'drift', '===== 2433 passed, 0 failed =====', true],
     ['a summary below its floor', 'g', '===== 9 passed, 0 failed =====', false],
     ['a summary with a failure', 'g', '===== 10 passed, 1 failed =====', false],
     ['a crash, no summary line', 'g', 'starting\nTypeError: x is not a function\n', false],
@@ -168,7 +188,9 @@ function selfTest() {
     ['a no count gate, empty log', 'mon', '', false],
     // tests/engine.js since its CRISIS group, 9 October: the reds it expects
     // are counted after the failures, inside the bars.
-    ['the engine summary with expected reds', 'g', 'x\n===== 4689 passed, 0 failed, 10 expected red =====\n', true],
+    // held against eng, whose floor is that count, since a floor far below
+    // the count fails on its own (16 October)
+    ['the engine summary with expected reds', 'eng', 'x\n===== 4689 passed, 0 failed, 10 expected red =====\n', true],
     ['expected reds at the floor', 'g', '===== 10 passed, 0 failed, 10 expected red =====', true],
     ['expected reds and a failure', 'g', '===== 4689 passed, 1 failed, 10 expected red =====', false, 'Any failure'],
     ['expected reds, below the floor', 'g', '===== 9 passed, 0 failed, 3 expected red =====', false, 'below its floor'],

@@ -6027,9 +6027,19 @@ g('J14 · the starter recipe for each teacher');
  {const cp=require('child_process'), fs=require('fs'), os=require('os'), path=require('path');
   const py=(f)=>{try{cp.execFileSync('python3',['.claude/skills/atuned-voice/check.py',f],{stdio:'pipe'});return 0;}
    catch(e){return e.status===undefined?-1:e.status;}};
-  const bad=path.join(os.tmpdir(),'j14-known-bad.js');
+  /* a directory of this run's own, 16 October. A fixed name in the shared
+     temp directory let a second engine run on the same machine unlink this
+     file between its write and its check, and the probe read exit 0. */
+  const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'engine-j14-'));
+  const bad=path.join(tmp,'j14-known-bad.js');
   fs.writeFileSync(bad,"var x=['Sit back and relax and breathe gently.','Done 2 of 5.'];\n");
-  const known=py(bad); try{fs.unlinkSync(bad);}catch(e){}
+  const known=py(bad);
+  const gone=py(path.join(tmp,'not-there.js'));
+  fs.writeFileSync(path.join(tmp,'empty.js'),'');
+  const empty=py(path.join(tmp,'empty.js'));
+  try{fs.rmSync(tmp,{recursive:true,force:true});}catch(e){}
+  ok(gone===2,'and it refuses a file that is not there, exit '+gone+', rather than passing it');
+  ok(empty===2,'and it refuses a named file with no strings in it, exit '+empty+', rather than passing it');
   ok(known===1,'the voice gate fails a known bad file before it is trusted on this one, exit '+known);
   ok(py('atuned_src/engine/data/teachers_recipes.js')===0,'no string in the recipe table fails the voice rules');}
 }
@@ -7274,12 +7284,19 @@ g('PO · unpack every symbol: the meaning table and the pole meanings');
  {const cp=require('child_process'), fs=require('fs'), os=require('os'), path=require('path');
   const py=(f)=>{try{cp.execFileSync('python3',['.claude/skills/atuned-voice/check.py',f],{stdio:'pipe'});return 0;}
    catch(e){return e.status===undefined?-1:e.status;}};
-  const bad=path.join(os.tmpdir(),'po-known-bad.js'), good=path.join(os.tmpdir(),'po-table.js');
+  const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'engine-po-'));
+  const bad=path.join(tmp,'po-known-bad.js'), good=path.join(tmp,'po-table.js');
   fs.writeFileSync(bad,"var x=['Sit back and relax and breathe gently.','Your energy is 70% open '+String.fromCharCode(0x2014)+' simply lovely.'];\n");
   const known=py(bad);
-  fs.writeFileSync(good,'var T=['+keys.map(k=>JSON.stringify(T[k])).join(',\n')+'];\n');
+  /* SINGLE QUOTED, 16 October. Outside engine/data check.py reads single
+     quoted literals only, and JSON.stringify writes double quotes, so this
+     file gave it nothing to read and it passed on nothing, exit 0, from the
+     day this check was written. check.py now refuses a named file with no
+     strings in it (exit 2), which is how it showed. */
+  const sq=s=>"'"+String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,'\\n')+"'";
+  fs.writeFileSync(good,'var T=['+keys.map(k=>sq(T[k])).join(',\n')+'];\n');
   const real=py(good);
-  try{fs.unlinkSync(bad);fs.unlinkSync(good);}catch(e){}
+  try{fs.rmSync(tmp,{recursive:true,force:true});}catch(e){}
   ok(known===1,'the voice gate fails a known bad file before it is trusted on the table, exit '+known);
   ok(real===0,'no entry in the built meaning table fails the voice rules, exit '+real);
   ok(py('atuned_src/engine/data/gloss.js')===0,'no string in the meaning table file fails the voice rules');}
@@ -7311,10 +7328,13 @@ g('PO · unpack every symbol: the meaning table and the pole meanings');
  ok(E.compassPoleOf&&E.compassPoleOf('IL')===il&&E.compassPoleLines(il,'up')===il.upm&&E.compassPoleLines({upd:'x'},'up')[0][0]==='x',
   'a pole is found by its key and a pole with no meanings still returns its codex line');
  {const cp=require('child_process'), fs=require('fs'), os=require('os'), path=require('path');
-  const f=path.join(os.tmpdir(),'po-pole-means.js');
-  fs.writeFileSync(f,'var M=['+meanings.map(t=>JSON.stringify(t)).join(',\n')+'];\n');
+  const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'engine-pole-'));
+  const f=path.join(tmp,'po-pole-means.js');
+  /* single quoted, for the reason the meaning table's file above is */
+  const sq=s=>"'"+String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,'\\n')+"'";
+  fs.writeFileSync(f,'var M=['+meanings.map(t=>sq(t)).join(',\n')+'];\n');
   let code=0; try{cp.execFileSync('python3',['.claude/skills/atuned-voice/check.py',f],{stdio:'pipe'});}catch(e){code=e.status===undefined?-1:e.status;}
-  try{fs.unlinkSync(f);}catch(e){}
+  try{fs.rmSync(tmp,{recursive:true,force:true});}catch(e){}
   ok(code===0,'no pole meaning fails the voice rules, exit '+code);}
 }
 

@@ -74,6 +74,12 @@
     that failed along the way. */
  window.__bootOk=function(failed){
   BOOTED=true;
+  /* AND SAID WHERE A TEST CAN READ IT, 16 October. BOOTED is private, and the
+     gates waited on the class the boot sheet's fade adds, which is a cosmetic
+     event and not the end of start up, then slept a fixed time; on a loaded
+     runner they read pages that had not finished starting. This attribute is
+     written at the one moment the start up says it finished. */
+  try{document.documentElement.setAttribute('data-boot','ok');}catch(e){}
   /* THE START UP FINISHED, SO NOTHING BEFORE THIS STOPPED IT. A screen painted
      early, by the ceiling below while the document was still arriving, is
      taken back. An error from our own code that did not stop the start up is

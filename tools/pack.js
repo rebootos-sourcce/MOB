@@ -21,10 +21,12 @@
    ============================================================ */
 const fs=require('fs'), zlib=require('zlib'), path=require('path');
 const ROOT=path.join(__dirname,'..');
-const SRC=path.join(ROOT,process.argv[2]||'atuned-slim.html');
-const OUT=path.join(ROOT,process.argv[3]||'atuned-packed.html');
 
-const raw=fs.readFileSync(SRC);
+/* THE PAGE, AS A FUNCTION OF THE BYTES IT CARRIES, 16 October, so
+   tools/products.js can rebuild the wrapper around a committed payload and
+   compare it with the committed file without writing anything. The command
+   line below is unchanged. */
+function packPage(raw){
 const gz=zlib.gzipSync(raw,{level:9});
 const b64=gz.toString('base64');
 
@@ -32,7 +34,7 @@ const b64=gz.toString('base64');
    person can say which build they are holding before it has inflated. */
 const stamp=(raw.toString('utf8').match(/data-build="([^"]+)"/)||[])[1]||'unknown';
 
-const page=`<!doctype html>
+return {stamp:stamp, page:`<!doctype html>
 <html lang="en" data-build="${stamp}"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
@@ -104,9 +106,17 @@ var B="${b64}";
   .catch(function(e){ fail('the payload did not inflate',String(e)); });
 })();
 </script>
-</body></html>`;
+</body></html>`};
+}
+module.exports={packPage:packPage};
 
+if(require.main===module){
+const SRC=path.resolve(ROOT,process.argv[2]||'atuned-slim.html');
+const OUT=path.resolve(ROOT,process.argv[3]||'atuned-packed.html');
+const raw=fs.readFileSync(SRC);
+const {stamp,page}=packPage(raw);
 fs.writeFileSync(OUT,page);
 console.log('  '+path.basename(SRC)+'  '+raw.length.toLocaleString()+' bytes');
 console.log('  '+path.basename(OUT)+'  '+page.length.toLocaleString()+' bytes  '
  +(100-Math.round(page.length/raw.length*100))+'% smaller  build '+stamp);
+}
