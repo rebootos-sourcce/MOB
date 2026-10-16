@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2054 d47434b 2026-10-16 03:11"><head><meta charset="utf-8">
+<html lang="en" data-build="v217 cc72fae 2026-10-16 04:06"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -36670,7 +36670,13 @@ function fbReach(list,carry){
  return carry.filter(function(n){return s[n.i];}).length/carry.length*100;}
 function fbValues(r){
  var V={}, dash='–', carry=W.filter(function(n){return n.sq>=4;});
- var f1=function(x){var n=+x||0; return n>=0.05?n.toFixed(1):dash;}, pc=function(x){var n=Math.round(+x||0);return n>0?n+'%':dash;};
+ /* WHOLE NUMBERS ON THE TWO WEIGHTS, 16 October. The addresses and seats pills
+    printed one decimal ("6.3"), a figure the rest of the page never shows to
+    that precision and a raw score under the 14 October ruling. They print the
+    way CQ and DQ do, a bare whole number, and a weight that rounds to nothing
+    is a dash. The sentences below test the figure the pill prints, so a pill
+    that says a dash never sits beside a tooltip that says something carries. */
+ var f1=function(x){var n=Math.round(+x||0); return n>0?String(n):dash;}, pc=function(x){var n=Math.round(+x||0);return n>0?n+'%':dash;};
  /* NO PERCENT ON THE HEADLINE READING, round PQ, his words: "No, it doesn't
     need to be a percent. Just a number." CQ and DQ are the headline readings
     and print bare here, as on the wheel's core and the Summary plate. The
@@ -36678,10 +36684,10 @@ function fbValues(r){
     and keep their sign. */
  var nb=function(x){var n=Math.round(+x||0);return n>0?String(n):dash;};
  V.addresses={p:r.SQm*10,v:f1(r.SQm),c:seatCol(r.darkB),
-  m:r.SQm>=0.05?'Ring and number: segment depth, SQ, at a weight of '+f1(r.SQm)+'. How deep the held charge sits.'
+  m:f1(r.SQm)!==dash?'Ring and number: segment depth, SQ, at a weight of '+f1(r.SQm)+'. How deep the held charge sits.'
    :'Ring and number: segment depth, SQ. Nothing is carrying yet.'};
  V.seats={p:(r.darkV||0)*10,v:f1(r.darkV),c:seatCol(r.darkB),
-  m:(r.darkV||0)>=0.05?'Ring and number: the heaviest assemblage point, '+r.darkB+', at a weight of '+f1(r.darkV)+'.'
+  m:f1(r.darkV)!==dash?'Ring and number: the heaviest assemblage point, '+r.darkB+', at a weight of '+f1(r.darkV)+'.'
    :'Ring and number: the heaviest assemblage point. Nothing is carrying yet.'};
  V.laws={p:r.CQ,v:nb(r.CQ),c:seatCol('Crown'),
   m:'Ring and number: coherence, CQ, which is the laws summed.'};
@@ -39214,7 +39220,7 @@ function bmHubRefresh(r){
    out.push({k:k,o:o,x:hx,y:hy,pl:pl,at:[{x:hx,y:hy},{x:100-hx,y:hy}]});});});
  BM.hubs=out;}
 function bmHubSay(h){var n=leaves(h.o).length;
- return (h.k==='cx'?'Complex':'Hyper complex')+' at a weight of '+h.o.w.toFixed(1)+', built on '+n+(n===1?' address.':' addresses.');}
+ return (h.k==='cx'?'Complex':'Hyper complex')+' at a weight of '+Math.round(h.o.w)+', built on '+n+(n===1?' address.':' addresses.');}
 function bmDrawHubs(g,vs){
  if(!BM.hubs||!BM.hubs.length)return;
  if(!BMHUBP)BMHUBP={cx:new Path2D(CHAINGLYPH.cx),hy:new Path2D(CHAINGLYPH.hy)};
@@ -39816,7 +39822,7 @@ function bmWire(){
   if(tk!==BM.tipKey){BM.tipKey=tk;
    if(pk.hub)bmTip({t:pk.hub.o.nm,b:bmHubSay(pk.hub),x:p[0],y:p[1]});
    else if(pk.place)bmTip(Object.assign(bmPlaceTip(pk.place),{x:p[0],y:p[1]}));
-   else if(pk.sab)bmTip({t:pk.sab.nm,b:(pk.sab.dir>0?'Loading':'Releasing')+', at a weight of '+pk.sab.T.toFixed(1)+'.',x:p[0],y:p[1]});
+   else if(pk.sab)bmTip({t:pk.sab.nm,b:(pk.sab.dir>0?'Loading':'Releasing')+', at a weight of '+Math.round(pk.sab.T)+'.',x:p[0],y:p[1]});
    else bmTip(null);}
   BM.dirty=true;});
  sv.addEventListener('pointerleave',function(){
@@ -40431,8 +40437,8 @@ function bmOvVals(r){
  var F={},V={},dash='–';try{F=fbValues(r);}catch(e){}
  V.addr=F.addresses;V.sab=F.saboteurs;V.cx=F.complexes;V.hy=F.hyper;
  var mr=((r&&r.maskRing)||[]).slice().sort(function(a,b){return b.w-a.w;})[0];
- V.masks=(mr&&!r.unread&&mr.w>=0.05)?{p:mr.w*10,v:mr.w.toFixed(1),c:bmRgba(BMC.mask,1),
-  m:'Ring and number: the heaviest mask, '+mr.nm+', at a weight of '+mr.w.toFixed(1)+'.'}
+ V.masks=(mr&&!r.unread&&Math.round(mr.w)>0)?{p:mr.w*10,v:String(Math.round(mr.w)),c:bmRgba(BMC.mask,1),
+  m:'Ring and number: the heaviest mask, '+mr.nm+', at a weight of '+Math.round(mr.w)+'.'}
   :{p:0,v:dash,c:bmRgba(BMC.mask,1),m:'Nothing read yet.'};
  var pv=(BMG&&BMG.reg||[]).reduce(function(m,q){return Math.max(m,q.val||0);},0);
  V.pain={p:pv*10,v:pv?String(pv):dash,c:seatCol('Sacral'),
@@ -46061,7 +46067,7 @@ function sumStory(r){
    /* the weight is the reading. "of 10" made it a mark out of ten. */
    +seatB(String(held[0].cf).toLowerCase(),held[0].b,String(held[0].cf).toLowerCase(),'feeling')
    +' '+unp('axis')+', at a weight of '
-   +held[0].sq.toFixed(1)+'.'
+   +Math.round(held[0].sq)+'.'
    +(loud?' The biggest thing compounding on it is <b>'+esc(loud.nm)+'</b>.':'')
    +(stop?' Flow stops at the '+seatB(String(stop.p.n).toLowerCase(),stop.p.b,String(stop.p.n).toLowerCase(),'seat')
      +', which is where the charge is dense enough to close the seat.'
@@ -46996,7 +47002,7 @@ function sumAxes(r,bare){
   /* "of 10" made a weight a mark out of ten. V8, and ui/summary.js was its
      own named corpse: "at a weight of 7.4" is what ships, so this says it. */
   p.push('The heaviest of the nine is <b>'+esc(top.c.nm)+'</b>, at a weight of <b>'
-   +top.sq.toFixed(1)+'</b>. It sits at '+esc(top.c.addr)
+   +Math.round(top.sq)+'</b>. It sits at '+esc(top.c.addr)
    +', which you feel in the '+esc(top.c.loc)+'. The quality on the far side '
    +'of it is <b>'+esc(top.c.opp)+'</b>.');
   if(live.length>1){
@@ -47558,15 +47564,19 @@ function anaRender(){
       spread under the line reported "Nothing is carrying" beside a tier word
       earned by that same load. It now says which of the two is true. */
     :(r.heaviest?'Nothing is above '+unp('the line')+'. The heaviest is <b>'+esc(r.heaviest.k)
-      +'</b> at <b>'+r.heaviest.sq.toFixed(1)+'</b>, at the '
+      +'</b>, at the '
       +String(r.heaviest.b).toLowerCase()+'.':'Nothing is carrying.'))
    /* only against a row the same arithmetic wrote. A row from before 25
       September holds It*Ig/Rz, and the gap to the laws over 210 is the
       formula changing, not the person moving. */
    /* a move that prints as 0.0 is no move, round RB: "CQ up 0.0" read as
-      a change and was a rounding */
-   +(prev&&prev.m===CQ_MODEL?(Math.abs(r.CQ-prev.cq)<0.05?' CQ has not moved since last session.'
-     :' CQ '+(r.CQ-prev.cq>0?'up ':'down ')+Math.abs(r.CQ-prev.cq).toFixed(1)+' since last session.'):''))
+      a change and was a rounding. 16 October: and a move of 0.1 beside a
+      figure the page shows as a whole number is a decimal nobody can find on
+      the screen, which is the raw score the 14 October ruling took off every
+      daily surface. The change is said against the figure the person sees:
+      whole numbers, and "has not moved" until the shown figure has. */
+   +(prev&&prev.m===CQ_MODEL?(Math.round(r.CQ)===Math.round(prev.cq)?' CQ has not moved since last session.'
+     :' CQ '+(r.CQ>prev.cq?'up ':'down ')+Math.abs(Math.round(r.CQ)-Math.round(prev.cq))+' since last session.'):''))
   +'</div>'
   /* THE FIGURE STAYS ON THE TAB WHOSE JOB IS SAYING WHAT THE INSTRUMENT
      KNOWS. The tolerance beside it does not. It printed "58% plus or minus
@@ -62006,8 +62016,8 @@ function cnOvList(){
 function cnOvVals(){
  var r=compute(), V={};
  if(r.unread){V.well={p:0,v:'\u2013',c:seatCol(r.darkB||'Root'),m:'Nothing read yet.'};return V;}
- V.well={p:clamp((r.darkV||0)*10,0,100),v:(+r.darkV||0).toFixed(1),c:seatCol(r.darkB),
-  m:'Ring and number: the heaviest assemblage point, '+r.darkB+', at a weight of '+(+r.darkV||0).toFixed(1)+'.'};
+ V.well={p:clamp((r.darkV||0)*10,0,100),v:String(Math.round(+r.darkV||0)),c:seatCol(r.darkB),
+  m:'Ring and number: the heaviest assemblage point, '+r.darkB+', at a weight of '+Math.round(+r.darkV||0)+'.'};
  return V;}
 function cnOvOrb(k,V){
  var o=CN_OV[k], v=V[k];
@@ -76601,5 +76611,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005025548"></div>
+<div id="eof" hidden data-len="005026384"></div>
 </body></html>

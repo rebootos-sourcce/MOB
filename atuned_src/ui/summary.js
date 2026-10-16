@@ -312,7 +312,7 @@ function sumStory(r){
    /* the weight is the reading. "of 10" made it a mark out of ten. */
    +seatB(String(held[0].cf).toLowerCase(),held[0].b,String(held[0].cf).toLowerCase(),'feeling')
    +' '+unp('axis')+', at a weight of '
-   +held[0].sq.toFixed(1)+'.'
+   +Math.round(held[0].sq)+'.'
    +(loud?' The biggest thing compounding on it is <b>'+esc(loud.nm)+'</b>.':'')
    +(stop?' Flow stops at the '+seatB(String(stop.p.n).toLowerCase(),stop.p.b,String(stop.p.n).toLowerCase(),'seat')
      +', which is where the charge is dense enough to close the seat.'
@@ -1247,7 +1247,7 @@ function sumAxes(r,bare){
   /* "of 10" made a weight a mark out of ten. V8, and ui/summary.js was its
      own named corpse: "at a weight of 7.4" is what ships, so this says it. */
   p.push('The heaviest of the nine is <b>'+esc(top.c.nm)+'</b>, at a weight of <b>'
-   +top.sq.toFixed(1)+'</b>. It sits at '+esc(top.c.addr)
+   +Math.round(top.sq)+'</b>. It sits at '+esc(top.c.addr)
    +', which you feel in the '+esc(top.c.loc)+'. The quality on the far side '
    +'of it is <b>'+esc(top.c.opp)+'</b>.');
   if(live.length>1){
