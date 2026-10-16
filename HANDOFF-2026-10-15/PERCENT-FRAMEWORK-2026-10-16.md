@@ -65,8 +65,7 @@ Each row is one kind. "Range from" is the line in the engine (or in a renderer, 
 | `seatload` | 0 | 1 | the load a seat carries | `ui/map.js:202` | drills.js, summary.js |
 | `pass` | 0 | 1 | what one seat passes on | `ui/map.js:203` | analytics.js, drills.js, map.js, mapshelf.js |
 | `flow` | 0 | 1 | flow, what gets from the root to the crown | `ui/map.js:206` | drills.js, map.js, ui.js |
-| `affinity` | 0 | 1 | an archetype against the strongest | `engine/core.js:403` | analytics.js, drills.js, ui.js |
-| `share` | 0 | 1 | an archetype's share of all twelve | `ui/summary.js:438` | fieldbar.js, summary.js |
+| `archetype` | 0 | 1 | how fully an archetype is expressed, dragged by the charge at its seat | `engine/archexpr.js:50` | analytics.js, drills.js, fieldbar.js, summary.js, ui.js |
 | `domain` | 0 | 1 | a blueprint domain against the strongest | `engine/core.js:394` | fieldbar.js, ui.js |
 | `shape` | 0 | 1 | shape, the share of what is running that points at other people | `engine/data/compass.js:655` | drills.js |
 | `control` | 0 | 1 | control, the share of what is running that is organised | `engine/data/compass.js:634` | drills.js |
@@ -93,7 +92,7 @@ A cap is a top chosen because the quantity has no true maximum. There is one.
 
 ## Open, and whose call (the lead decides or carries one question)
 
-1. **One archetype, three figures.** Summary prints a share of all twelve (Caregiver 17%), the hover prints a share of the strongest (100%), Analytics prints the strongest times ten (10.0). The registry carries both `share` and `affinity`. Recommended: `affinity` everywhere, because it is what the engine returns and the strongest reading 100% matches "primary"; the Summary's ordering already carries rank.
+1. **One archetype, three figures. Ruled 16 October, closed.** His words: "the archetypes themselves should be 100%. The limiting beliefs are going to drag it down... you may start off at 100%. And over time, watch it diminish. And as you go through your recipes, watch it rise." An archetype prints `archExpr(i)` (`engine/archexpr.js`, kind `archetype`): one minus the mean weight over ten at its ruled seat `ARCH[i].b`. 100% with nothing held, lower as the story lands charge there, higher as a release empties it or installs the opposite. It replaced `affinity` and `share` in the registry. Affinity still names the first and second archetype and is printed nowhere. No domain chain was used, because none is honest: the wheel lays the twelve over addresses in list order and the sector each covers disagrees with its ruled seat for ten of the twelve. Archetypes sharing a seat read one figure (five seats carry two); splitting them needs a ruling. The five printers and what each prints in phase 2: `ui/summary.js:442`, `ui/ui.js:76`, `ui/analytics.js:227` (the bubble value) and `:642`, `ui/drills.js:766`, `ui/fieldbar.js:215`.
 2. **The 14 October plate.** `tests/golden.js` station 4 holds that the Summary plate prints a word ("early", "partial", "full") and not the figure on a quiz only record. The lead has ruled that a percent of a defined maximum is not a raw score; whether the plate returns to `48%` or keeps the word is a call the lead makes before phase 2 touches `summary.js`.
 3. **Inputs.** The intake slider, the profile sheet sliders and the pain brush are answered on 0 to 10. Recommended: the scale a person answers on stays as it is; what the engine reads back from those answers is printed as a percent.
 4. **"Answers 36% apart".** The law spread converts cleanly, but the sentence needs rewriting ("your three answers sit 36% of the scale apart"); that is copy for phase 2.

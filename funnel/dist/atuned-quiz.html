@@ -5154,14 +5154,16 @@ var PCT_KIND={
  /* ui/map.js:206, the product of the seven passes, root to crown */
  flow:      {lo:0, hi:1, src:'ui/map.js', find:'function flSpeed(){var s=1;flSeats().slice().reverse().forEach(function(x){s*=x.pass;});return s;}',
              say:'flow, what gets from the root to the crown'},
- /* core.js:403, each archetype against the strongest, so the first reads 1 */
- affinity:  {lo:0, hi:1, src:'engine/core.js', find:'const mx=Math.max(...a)||1;return a.map(v=>v/mx);}',
-             say:'an archetype against the strongest'},
- /* ui/summary.js:438, an archetype's share of all twelve added up. This is a
-    second reading of the same affinity and prints a different figure for the
-    same archetype; which one the person reads is in the framework's open list. */
- share:     {lo:0, hi:1, src:'ui/summary.js', find:'var tot=aff.reduce(function(a,x){return a+x.v;},0)||1;',
-             say:'an archetype\'s share of all twelve'},
+ /* AN ARCHETYPE IS HOW FULLY IT IS EXPRESSED, ruled 16 October: 100% with
+    nothing held, dragged by the charge at its seat, lifted by release.
+    engine/archexpr.js, one minus the seat's mean weight over ten, and each sq
+    is clamped to 0 and 10 at engine/compute.js:295. This replaced two kinds.
+    affinity (engine/core.js:403, an archetype against the strongest) and share
+    (ui/summary.js:438, a share of all twelve) were both the soul map's lean,
+    printed three ways for one archetype, and neither moves with a story or a
+    release. affinity still orders first and second; nothing prints it. */
+ archetype: {lo:0, hi:1, src:'engine/archexpr.js', find:'return s?clamp(1-s.mean,0,1):null;}',
+             say:'how fully an archetype is expressed, dragged by the charge at its seat'},
  /* core.js:394, each domain against the strongest. The floor of .08 is drawn
     (the petal never vanishes), so lo stays 0 and the floor reads 8%. */
  domain:    {lo:0, hi:1, src:'engine/core.js', find:'DOMAIN=DOMAIN.map(v=>.08+.92*v/mx);',
@@ -20988,6 +20990,61 @@ function ritexHas(rec){return !!rec&&((rec.rituals||[]).length>0);}
 if(typeof module!=='undefined'&&module.exports){
  Object.assign(module.exports,{RITEX_HIST:RITEX_HIST, ritexBuild:ritexBuild, ritexHas:ritexHas,
   ritexCovers:ritexCovers, ritexWd:ritexWd});}
+/* ============================================================
+   HOW FULLY AN ARCHETYPE IS EXPRESSED. Ruled 16 October, his words: "the
+   archetypes themselves should be 100%. The limiting beliefs are going to drag
+   it down. So the archetype is just the archetype. The percent should show
+   where they are based off their story. So you may start off at 100%. And over
+   time, watch it diminish. And as you go through your recipes, watch it rise."
+
+   So the figure an archetype carries is not how strongly the blueprint leans
+   toward it. That is affinity() in engine/core.js, which is read off the soul
+   map, never moves with a story or a release, and keeps its one job: naming
+   the first and second archetype. Printed as a percent it told a person their
+   Innocent was 10% of them because the domains they picked sat elsewhere, and
+   no release they ran could ever change it.
+
+   WHERE AN ARCHETYPE ACTS IS ITS SEAT, ARCH[i].b in engine/data/canon.js,
+   because that is the ruling ("the warrior's root, the sage is crown, the
+   mage is third eye") and the Field rings already draw each archetype inside
+   its seat (ui/rings.js). The chain through the domains was looked for and is
+   not there: the canvas wheel lays the twelve out in list order over
+   addresses laid out by seat, so the addresses under an archetype's sector
+   disagree with its ruled seat for ten of the twelve (Sage, seated at the
+   crown, sits over root and sacral addresses), and the domains are the soul
+   map again. Nothing in the data ties an archetype to a mask.
+
+   THE FORMULA IS THE SEAT'S OWN. seatField() in engine/charfield.js already
+   gives each seat's mean weight over ten, sq after the opposite, so a release
+   that empties an address or installs its opposite lifts it, and a story that
+   lands charge there drags it. The expression is what is left:
+
+     archExpr(i) = 1 - mean(sq at the archetype's seat) / 10
+
+   One with nothing held. Each sq is clamped to 0 and 10 (engine/compute.js),
+   so the mean stays inside them and the figure inside 0 and 1. It reads sq as
+   the last compute() left it, like everything in charfield.js: a caller that
+   has not computed reads a blank field, which is 1, the honest answer for a
+   person whose story has not landed anywhere.
+
+   TWO ARCHETYPES ON ONE SEAT READ ONE FIGURE. Five seats carry two each. That
+   is the seat ruling's consequence, recorded in DECISIONS.md, and splitting
+   them needs a ruling on what separates them rather than a weight invented
+   here.
+
+   THE ENGINE MAY NOT TOUCH THE HOST and this file does not. It sits after
+   engine/export.js and adds its names to what export.js left, as
+   engine/charfield.js does.
+   ============================================================ */
+function archExpr(i){
+ var a=ARCH[i]; if(!a)return null;
+ var s=seatField().filter(function(x){return x.seat===a.b;})[0];
+ return s?clamp(1-s.mean,0,1):null;}
+/* all twelve in ARCH order, so a renderer asks once per render */
+function archExprAll(){return ARCH.map(function(a,i){return archExpr(i);});}
+
+if(typeof module!=='undefined'&&module.exports){
+ Object.assign(module.exports,{archExpr:archExpr, archExprAll:archExprAll});}
 
 </script>
 <script>
