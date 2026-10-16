@@ -360,12 +360,12 @@ function avRuleRead(r,now){
    whether a day happened. Distinct days, because ten rituals marked done on
    one afternoon is one day of practice and a wheel that turned ten seats for
    it would be counting presses. */
+/* AND IT IS THE LADDER'S LIST, pracDays in engine/ladder.js. This walked the
+   rituals with its own loop and turned the wheel for days dated a month
+   ahead, which the streak beside it no longer counts. The done rule was the
+   same on every entry the boundary lets in, so only those days move. */
 function avCycles(p){
- var seen={}, n=0;
- ((p&&p.rituals)||[]).forEach(function(x){
-  if(!x)return;
-  if(x.done!==undefined&&!x.done)return;
-  var k=pracDay(x.t); if(k===null||seen[k])return; seen[k]=1; n++;});
+ var n=pracDays(p,Date.now()).length;
  var per=AV_TURN*AV_TURNS, cyc=[];
  for(var c=0;c<AV_CYCLES;c++){
   var turns=[];

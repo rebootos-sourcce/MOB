@@ -39,7 +39,8 @@
     "voice": 28,
     "landing": 15,
     "quit": 87,
-    "alpha-journey": 61
+    "alpha-journey": 61,
+    "record": 24
   },
   "no_count": {
     "monitor": "all surfaces render"
