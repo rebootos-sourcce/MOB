@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v241 67186fd2 2026-10-16 16:13"><head><meta charset="utf-8">
+<html lang="en" data-build="v2076 d22870f4 2026-10-16 18:00"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -29350,6 +29350,18 @@ function obValidate(e){
   +'and nothing that identifies you can go in here');
  if(/\d[\d\s().-]{6,}\d/.test(t)) errs.push('that looks like a phone number or an '
   +'account number, and nothing that identifies you can go in here');
+ /* EMPTY IS REFUSED HERE, BEFORE IT IS QUEUED. 16 October, the owner: "I can't
+    add anything from feedback and have it go to Discord." Measured: Send on an
+    empty sheet queued an envelope with no text and no answer, the relay
+    (functions/feedback.js) refused it with "there is nothing in it to send",
+    and the drain stops at the first no, so that blank entry sat at the head of
+    the outbox and every comment written after it on that device waited behind
+    it for ever, with the webhook set and Discord answering. The relay's rule
+    is copied here so the sheet says so before anything is held. On the way out
+    the same call takes an empty entry already on a disk out of the queue. */
+ var n=(e.answers&&typeof e.answers==='object')?Object.keys(e.answers).length:0;
+ if(!t.trim()&&!n) errs.push('there is nothing in it to send yet. Write a line, '
+  +'or pick an answer, first');
  return {ok:!errs.length, errs:errs};}
 
 /* ONE QUEUE ENTRY. Over the cap is refused by name rather than evicting the
@@ -29442,6 +29454,13 @@ function obDrainAsync(){
   try{ p=Promise.resolve(SEND_HOST(q[i])); }catch(ex){ p=Promise.reject(ex); }
   return p.then(function(r){
     if(r===true){ sent++; return; }
+    /* A NO THAT CAN NEVER TURN INTO A YES. The host answers {drop:reason} when
+       the server's own boundary refused this exact envelope, the relay's 400,
+       which no retry changes. Held like a 503, it sat at the head of the queue
+       and stopped every later entry behind it for ever, the defect measured on
+       16 October. So it goes the way an entry this boundary refuses on the way
+       out goes: taken out, and named, and the drain carries on to the next. */
+    if(r&&typeof r.drop==='string'){ bad.push({i:i,errs:[r.drop]}); return; }
     left.push(q[i]); stopped=true; if(!err)err='the send was refused'; },
    function(ex){ left.push(q[i]); stopped=true; err=String(ex&&ex.message||ex); })
    .then(function(){ return step(i+1); });}
@@ -29460,13 +29479,20 @@ function obDrainAsync(){
      over a send that went. The first cut did both; tests/feedback.js caught
      it. Only when everything tried went, so a server that said no is not
      knocked on again for the newcomer. */
+  /* WHY AN ENTRY WAS TAKEN OUT TRAVELS WITH THE COUNT. The sentence said every
+     dropped entry "carried something that identifies a person", which was the
+     only reason there was until a blank entry and the relay's own refusal
+     joined it, and a false reason is a lie about a failure. */
+  var gone=bad.length?bad[0].errs[0]:undefined;
   if(tail.length&&!stopped) return obDrainAsync().then(function(d){
    if(d.state==='sent') return {state:'sent', n:sent+d.n,
-    refused:(bad.length+(d.refused||0))||undefined};
-   d.sent=(d.sent||0)+sent; return d;});
-  if(bad.length&&!left.length&&!sent) return {state:'refused', n:bad.length, bad:bad};
-  if(!left.length) return {state:'sent', n:sent, refused:bad.length||undefined};
-  return {state:'retry', n:left.length, sent:sent, why:err, refused:bad.length||undefined};},
+    refused:(bad.length+(d.refused||0))||undefined, dropped:gone||d.dropped};
+   d.sent=(d.sent||0)+sent;
+   if(bad.length){ d.refused=(d.refused||0)+bad.length; d.dropped=gone; }
+   return d;});
+  if(bad.length&&!left.length&&!sent) return {state:'refused', n:bad.length, bad:bad, dropped:gone};
+  if(!left.length) return {state:'sent', n:sent, refused:bad.length||undefined, dropped:gone};
+  return {state:'retry', n:left.length, sent:sent, why:err, refused:bad.length||undefined, dropped:gone};},
  function(ex){ OB_DRAINING=false; return {state:'retry', n:obCount(), sent:0,
   why:String(ex&&ex.message||ex)}; });}
 
@@ -68287,7 +68313,8 @@ function feedbackWhere(){
    an account. authCall sends Authorization only when handed a token, so null
    here is the whole of that promise.
 
-   Resolves true on a yes and rejects with authWhy's sentence on a no, because
+   Resolves true on a yes, {drop} on a refusal no retry can change (below),
+   and rejects with authWhy's sentence on a no, because
    obDrainAsync keeps the entry on a rejection and carries its message to the
    status line. Until the Function is deployed the site answers a post with
    404 or 405, because a static host takes no posts, and until the variable is
@@ -68299,6 +68326,16 @@ function authFeedback(e){
   +'the one at atuned.world can send.'));
  return authCall('POST','',e,null,false,at).then(function(r){
   if(r.ok)return true;
+  /* THE RELAY'S OWN REFUSAL OF THIS ENVELOPE IS FINAL. A 400, 413 or 415
+     carrying the Function's json is its boundary saying no to these exact
+     bytes, and sending them again gets the same answer for ever: held, the
+     entry stopped every later one behind it (16 October, measured). It is
+     handed back as {drop} so the outbox takes it out and says why. Only with
+     the Function's own json: the same status from Cloudflare in front of it
+     is an HTML page about the edge, not about the envelope, and is held. */
+  if((r.status===400||r.status===413||r.status===415)&&r.body&&r.body.ok===false
+   &&typeof r.body.error==='string')
+   return {drop:'the server refused it as it was: '+r.body.error};
   throw new Error(r.status===404||r.status===405?'The server does not take these yet.'
    :authWhy(r,'feedback')); });}
 /* THE SERVER'S OWN WORDS, SET IN SENTENCE CASE. Its errors are lower case
@@ -70262,17 +70299,26 @@ function obWire(){
    as sent, because the drain's state is the only thing that knows. A retry
    carries the reason the host gave, which is ui/auth.js's sentence for what
    the server or the connection did. */
+/* THE REASON AN ENTRY WAS TAKEN OUT IS THE DRAIN'S, NOT THIS FILE'S. Both
+   lines below said "carried something that identifies a person" for every
+   dropped entry, and on 16 October a blank entry and an entry the relay
+   refused joined that reason, so the sentence now carries d.dropped, the
+   boundary's or the relay's own words, and falls back to the old one only for
+   a drain that named none. */
+function obGone(d){
+ var w=String(d.dropped||'it carried something that identifies a person').trim();
+ return w.charAt(0).toUpperCase()+w.slice(1)+(/[.?]$/.test(w)?'':'.');}
 function obSaid(d){
- var dropped=d.refused?' One waiting entry carried something that identifies a '
-  +'person, so it was taken out and not sent.':'';
+ var many=d.refused>1?d.refused+' waiting entries were':'One waiting entry was';
+ var dropped=d.refused?' '+many+' taken out and not sent. '+obGone(d):'';
  switch(d.state){
   case 'sent':   return 'Sent. Thank you.'+dropped;
   case 'empty':  return 'Nothing is waiting to send.';
   case 'busy':   return 'Already sending. What you wrote is held on this device.';
   case 'nohost': return 'Held on this device. There is nowhere to send it yet, so '
    +'it waits in the outbox.';
-  case 'refused':return 'Nothing was sent. What was waiting carried something that '
-   +'identifies a person, so it was taken out of the outbox.';
+  case 'refused':return 'Nothing was sent. What was waiting was taken out of the '
+   +'outbox. '+obGone(d);
   default:       return 'Held on this device, not sent yet. '+(d.why||'')
    +' It waits in the outbox and nothing has been thrown away.'+dropped;}}
 function obFlush(btn){
@@ -77143,5 +77189,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005061806"></div>
+<div id="eof" hidden data-len="005065090"></div>
 </body></html>

@@ -19548,6 +19548,18 @@ function obValidate(e){
   +'and nothing that identifies you can go in here');
  if(/\d[\d\s().-]{6,}\d/.test(t)) errs.push('that looks like a phone number or an '
   +'account number, and nothing that identifies you can go in here');
+ /* EMPTY IS REFUSED HERE, BEFORE IT IS QUEUED. 16 October, the owner: "I can't
+    add anything from feedback and have it go to Discord." Measured: Send on an
+    empty sheet queued an envelope with no text and no answer, the relay
+    (functions/feedback.js) refused it with "there is nothing in it to send",
+    and the drain stops at the first no, so that blank entry sat at the head of
+    the outbox and every comment written after it on that device waited behind
+    it for ever, with the webhook set and Discord answering. The relay's rule
+    is copied here so the sheet says so before anything is held. On the way out
+    the same call takes an empty entry already on a disk out of the queue. */
+ var n=(e.answers&&typeof e.answers==='object')?Object.keys(e.answers).length:0;
+ if(!t.trim()&&!n) errs.push('there is nothing in it to send yet. Write a line, '
+  +'or pick an answer, first');
  return {ok:!errs.length, errs:errs};}
 
 /* ONE QUEUE ENTRY. Over the cap is refused by name rather than evicting the
@@ -19640,6 +19652,13 @@ function obDrainAsync(){
   try{ p=Promise.resolve(SEND_HOST(q[i])); }catch(ex){ p=Promise.reject(ex); }
   return p.then(function(r){
     if(r===true){ sent++; return; }
+    /* A NO THAT CAN NEVER TURN INTO A YES. The host answers {drop:reason} when
+       the server's own boundary refused this exact envelope, the relay's 400,
+       which no retry changes. Held like a 503, it sat at the head of the queue
+       and stopped every later entry behind it for ever, the defect measured on
+       16 October. So it goes the way an entry this boundary refuses on the way
+       out goes: taken out, and named, and the drain carries on to the next. */
+    if(r&&typeof r.drop==='string'){ bad.push({i:i,errs:[r.drop]}); return; }
     left.push(q[i]); stopped=true; if(!err)err='the send was refused'; },
    function(ex){ left.push(q[i]); stopped=true; err=String(ex&&ex.message||ex); })
    .then(function(){ return step(i+1); });}
@@ -19658,13 +19677,20 @@ function obDrainAsync(){
      over a send that went. The first cut did both; tests/feedback.js caught
      it. Only when everything tried went, so a server that said no is not
      knocked on again for the newcomer. */
+  /* WHY AN ENTRY WAS TAKEN OUT TRAVELS WITH THE COUNT. The sentence said every
+     dropped entry "carried something that identifies a person", which was the
+     only reason there was until a blank entry and the relay's own refusal
+     joined it, and a false reason is a lie about a failure. */
+  var gone=bad.length?bad[0].errs[0]:undefined;
   if(tail.length&&!stopped) return obDrainAsync().then(function(d){
    if(d.state==='sent') return {state:'sent', n:sent+d.n,
-    refused:(bad.length+(d.refused||0))||undefined};
-   d.sent=(d.sent||0)+sent; return d;});
-  if(bad.length&&!left.length&&!sent) return {state:'refused', n:bad.length, bad:bad};
-  if(!left.length) return {state:'sent', n:sent, refused:bad.length||undefined};
-  return {state:'retry', n:left.length, sent:sent, why:err, refused:bad.length||undefined};},
+    refused:(bad.length+(d.refused||0))||undefined, dropped:gone||d.dropped};
+   d.sent=(d.sent||0)+sent;
+   if(bad.length){ d.refused=(d.refused||0)+bad.length; d.dropped=gone; }
+   return d;});
+  if(bad.length&&!left.length&&!sent) return {state:'refused', n:bad.length, bad:bad, dropped:gone};
+  if(!left.length) return {state:'sent', n:sent, refused:bad.length||undefined, dropped:gone};
+  return {state:'retry', n:left.length, sent:sent, why:err, refused:bad.length||undefined, dropped:gone};},
  function(ex){ OB_DRAINING=false; return {state:'retry', n:obCount(), sent:0,
   why:String(ex&&ex.message||ex)}; });}
 /* ============================================================

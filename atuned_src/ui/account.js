@@ -1097,17 +1097,26 @@ function obWire(){
    as sent, because the drain's state is the only thing that knows. A retry
    carries the reason the host gave, which is ui/auth.js's sentence for what
    the server or the connection did. */
+/* THE REASON AN ENTRY WAS TAKEN OUT IS THE DRAIN'S, NOT THIS FILE'S. Both
+   lines below said "carried something that identifies a person" for every
+   dropped entry, and on 16 October a blank entry and an entry the relay
+   refused joined that reason, so the sentence now carries d.dropped, the
+   boundary's or the relay's own words, and falls back to the old one only for
+   a drain that named none. */
+function obGone(d){
+ var w=String(d.dropped||'it carried something that identifies a person').trim();
+ return w.charAt(0).toUpperCase()+w.slice(1)+(/[.?]$/.test(w)?'':'.');}
 function obSaid(d){
- var dropped=d.refused?' One waiting entry carried something that identifies a '
-  +'person, so it was taken out and not sent.':'';
+ var many=d.refused>1?d.refused+' waiting entries were':'One waiting entry was';
+ var dropped=d.refused?' '+many+' taken out and not sent. '+obGone(d):'';
  switch(d.state){
   case 'sent':   return 'Sent. Thank you.'+dropped;
   case 'empty':  return 'Nothing is waiting to send.';
   case 'busy':   return 'Already sending. What you wrote is held on this device.';
   case 'nohost': return 'Held on this device. There is nowhere to send it yet, so '
    +'it waits in the outbox.';
-  case 'refused':return 'Nothing was sent. What was waiting carried something that '
-   +'identifies a person, so it was taken out of the outbox.';
+  case 'refused':return 'Nothing was sent. What was waiting was taken out of the '
+   +'outbox. '+obGone(d);
   default:       return 'Held on this device, not sent yet. '+(d.why||'')
    +' It waits in the outbox and nothing has been thrown away.'+dropped;}}
 function obFlush(btn){
