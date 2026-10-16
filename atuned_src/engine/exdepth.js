@@ -206,6 +206,11 @@ function exdepthFill(rec,p,now){
     record held is kept and put back on any refusal, and the refusal is
     thrown on to the caller, which says so. */
  var keep=JSON.stringify({story:rec.story||null, meter:rec.meter||null, work:rec.work||null});
+ /* THE BUILD'S OWN HISTORY, PUT IN PLACE, and not a person running anything.
+    loadP marks this record show only (engine/showonly.js) and every writer
+    below would refuse it, so the replay is the one caller that lifts the
+    refusal, for exactly its own body: the finally below puts it back. */
+ SHOW_REPLAY++;
  try{
   rec.story=rec.story||{entries:[]};
   if(!Array.isArray(rec.story.entries))rec.story.entries=[];
@@ -250,6 +255,7 @@ function exdepthFill(rec,p,now){
   var k0=JSON.parse(keep); rec.story=k0.story; rec.meter=k0.meter; rec.work=k0.work;
   throw e;}
  finally{
+  SHOW_REPLAY--;
   exdepthPut(S.charge,c0); exdepthPut(S.replace,r0);
   exdepthPut(VERPMIX,v0); exdepthPut(LEANMIX,l0);
   compute();}

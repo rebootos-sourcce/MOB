@@ -8424,5 +8424,62 @@ g('CRISIS · srcSafe trips on self harm and not on everyday uses of the same wor
  NOT.forEach(t=>xf(typeof srcSafe==='function'&&srcSafe(t)===false,'srcSafe does not trip on '+JSON.stringify(t)));
 }
 
+g('SHOW ONLY · a worked example\'s record refuses every engine writer, and an own record refuses none');
+/* Ruled 16 October (engine/showonly.js). A record is marked by identity, and
+   with it open each writer asks the one rule and stops, by name, with nothing
+   moved. The same writers on an unmarked record write as they always did, and
+   the authored replay (exdepthFill) still fills a marked one, because it is
+   the build's own history and not a person running it. Every writer the
+   module's header names is called here by name, so a writer that loses its
+   guard fails this group and not only the browser gate. */
+{
+ const said=[]; E.bindShowSay(w=>said.push(w));
+ const TEXT='I was furious and ashamed and I could not stop going over it.';
+ const snap=()=>JSON.stringify({c:S.charge,o:S.replace,l:S.law,v:E.VERPMIX,m:E.LEANMIX});
+ const run=rec=>{
+  const n=W.filter(x=>x.cf)[0];
+  return {
+   story:E.applyStory(TEXT), verp:E.verpApply(TEXT), lean:E.leanApply(TEXT),
+   rel:E.relWrite([n],n,60), work:E.releaseWork(rec,[n.i+':l:rel']),
+   meter:E.meterRun(rec,[n.i+':l:rel']), first:E.meterFirst(rec,'addr:'+n.i,'x'),
+   law:E.lawAnswered(rec,SINAMES[0]), ans:E.iqAnswer(rec,0,9), ix:E.ixSet(rec,'arch',E.IX_ARCH2[0].k,5),
+   seed:E.seedApply(rec,'INTJ'), exp:E.pExport(), imp:E.pImport(JSON.stringify(E.blankProfile('pasted')))};};
+ reset(3,0,6);
+ const ex=E.pNew('Gordon'); E.loadProfile(ex); E.showMark(ex);
+ ok(E.showOnly()&&E.showOnly(ex),'a marked record reads show only, and so does the open one');
+ ok(!E.showOnly(E.blankProfile('Gordon')),'a record with the same name and shape that was not marked is not show only');
+ const n0=E.profiles().length, s0=snap(), r0=JSON.stringify(ex);
+ const R=run(ex);
+ ok(snap()===s0,'nothing in the field, the laws or the two mixes moved on the marked record');
+ ok(JSON.stringify(ex)===r0,'and nothing on the record itself moved');
+ ok(R.story.refused==='example'&&Object.keys(R.story.applied).length===0,'applyStory refuses by name, '+JSON.stringify(R.story.refused));
+ ok(R.verp.refused==='example'&&R.lean.refused==='example','verpApply and leanApply refuse by name');
+ ok(R.rel.refused==='example'&&R.work.refused==='example','relWrite and releaseWork refuse by name');
+ ok(R.meter===null&&R.first===null,'meterRun and meterFirst write nothing');
+ ok(R.law===false&&R.ans===false&&R.ix===false&&R.seed===null,'lawAnswered, iqAnswer, ixSet and seedApply write nothing');
+ ok(R.exp===null,'pExport hands back nothing to copy, so the example\'s tier four never leaves it');
+ ok(R.imp===null&&/worked example/.test((E.importError()||[]).join(' '))&&E.profiles().length===n0&&E.current()===ex,
+  'pImport loads nothing, says why, pushes nothing and leaves the open record where it was, '+JSON.stringify(E.importError()));
+ const keys=['story','story','story','release','release','release','release','intake','intake','intake','intake','export','import'];
+ ok(JSON.stringify(said)===JSON.stringify(keys),'every refusal reached the host\'s reporter once, keyed by what it refused, '+JSON.stringify(said));
+ ok(E.showLast()&&E.showLast().name==='Gordon'&&E.showLast().what==='import','showLast names the record and the last thing refused, '+JSON.stringify(E.showLast()));
+ /* the authored replay still fills a marked record */
+ const gp=PEOPLE.find(p=>E.EXDEPTH_HIST[p.nm]);
+ if(gp){
+  const sx=E.blankProfile(gp.nm); E.showMark(sx); said.length=0;
+  const out=E.exdepthFill(sx,gp,Date.UTC(2026,9,16));
+  ok(out&&out.entries>0&&E.exdepthHas(sx)&&said.length===0,
+   'the authored history of '+gp.nm+' still fills a marked record and refuses nothing, '+JSON.stringify(out));
+  ok(E.applyStory(TEXT).refused==='example','and the rule is back in force the moment the replay ends');}
+ else ok(false,'a roster person with an authored history, to check the replay against');
+ /* the same writers on the person's own record */
+ const own=E.pNew('You'); E.loadProfile(own); said.length=0; reset(3,0,6);
+ ok(!E.showOnly(),'the own record is not show only');
+ const t0=snap(); const Q=run(own);
+ ok(snap()!==t0&&!Q.story.refused&&Q.ans===true&&Q.exp!==null&&said.length===0,
+  'on the own record the same writers write, and nothing is refused, '+JSON.stringify(said));
+ E.bindShowSay(null);
+}
+
 console.log('\n===== '+P+' passed, '+F+' failed, '+XF+' expected red =====');
 process.exit(F?1:0);

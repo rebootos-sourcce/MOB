@@ -67,6 +67,14 @@ function stRender(){
  var h=document.getElementById('story'); if(!h) return;
  stDraftBack();
  var p=ST_PARSED;
+ /* A WORKED EXAMPLE IS SHOW ONLY, ruled 16 October (engine/showonly.js). Its
+    bank, its vault and its imprints are the reading and all of them stay.
+    The journal is where a person's own words are read, so on an example the
+    box, Talk, Record, Source AI's question and Commit are the one preview
+    line in their place (showNote, ui/personas.js). It was a box that took a
+    whole story and then refused it at Commit, which is a control that looks
+    like it works until the moment it does not. */
+ var show=showOnly();
  var out='<div class="st-flow" id="stflow" data-focus="'+STV.focus+'">'
   /* ---- the write column: the journal, with Source AI inside it ---- */
   +'<div class="st-colw">'
@@ -103,7 +111,7 @@ function stRender(){
       question button already draws: one drawing per named thing. The margin
       takes the free space, so it and Record stand together at the right
       edge where Record stood alone. See srcThread for what it opens. */
-   +'<button class="st-mic st-talk" id="sttalk" type="button" aria-pressed="'+!!STV.chat+'" '
+   +(show?'':'<button class="st-mic st-talk" id="sttalk" type="button" aria-pressed="'+!!STV.chat+'" '
    +'title="Write it as a conversation, one turn at a time.">'
    +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
    +'<circle cx="6" cy="6.5" r="3"/><circle cx="18" cy="17.5" r="3"/>'
@@ -126,7 +134,7 @@ function stRender(){
       that shows it runs. */
    +(ST_LISTEN?'<span class="st-mictime" id="stmictime" aria-hidden="true">'
      +stMicFmt(stMicElapsed())+'</span>':'')
-   +'</button></div>'
+   +'</button>')+'</div>'
   /* SOURCE AI AND THE JOURNAL'S MENU CHANGED PLACES, round LO, his words: "I
      want you to swap the main journal menu with the source AI question." The
      column read Source AI, then the journal's own top line with Record on it,
@@ -156,7 +164,7 @@ function stRender(){
      .src-comb. It is a sibling of #stsrc and not inside it, for the reason
      the halo is: srcPaint rewrites #stsrc on every key, and the floor is
      painted once a render. srcLock puts every loop in here on one clock. */
-  +'<div class="st-glow"><div class="st-pe" id="stsrc" aria-label="Question"></div>'
+  +(show?showNote('story','st-show'):'<div class="st-glow"><div class="st-pe" id="stsrc" aria-label="Question"></div>'
   +srcComb()+'</div>'
   /* THE FETTERS LIGHT UP IN THE PERSON'S OWN SENTENCE.
 
@@ -212,7 +220,7 @@ function stRender(){
    +'<button class="btn" id="stclear">Clear</button>'
    +'<button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
     +'Commit'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button>'
-  +'</div></div></div>'
+  +'</div>')+'</div></div>'
   /* ---- the read column: the instrument over the list ---- */
   +'<div class="st-colr">'
   +'<div class="st-pan st-ch" id="stch" aria-label="Imprints, as read">'
@@ -482,9 +490,11 @@ function stCommit(){
     already uses for the same crossing. That wording is one line since BA9, 25
     September: he struck the long form above the Field, and the state it
     carried is on the profile picker now. */
- if(typeof S!=='undefined'&&S.who!==0){
-  status('Nothing committed on a worked example.','fail');
-  return {ok:false,why:'example'};}
+/* AND IT IS THE ENGINE'S ONE RULE NOW, ruled 16 October: a worked example is
+    show only (engine/showonly.js). showRefuse is the same question S.who
+    asked, by the record's identity, and its reporter says what Commit would
+    do on the person's own profile in place of the wall this was. */
+ if(showRefuse('story'))return {ok:false,why:'example'};
  var kept=stFound(), k=ST_PARSED.imprints.length, bands=ST_PARSED.bands;
  /* A PRESS AFTER THE BROWSER REFUSED THE LAST ONE ASKS IT AGAIN, AND WRITES
     NOTHING TWICE. A refused save leaves the entry in this session and the
@@ -2008,13 +2018,17 @@ function stRelPanel(){
     +'aria-label="'+esc(a.k+', '+a.b)+'" title="'+esc(a.k+', '+a.b)+'">'+crNode(a,'sm',{raw:'',title:''})+'</button>';}).join('')
   +'</div>';
  o+='</div><div class="st-rlfoot">'
-  +'<div class="rel-fields st-fields">'
+  /* pace and patterns set the run, so they go with it on a worked example */
+  +(showOnly()?'':'<div class="rel-fields st-fields">'
    +'<label class="rel-field"><span>Pace</span><input type="number" id="strpace" min="0.5" max="2" step="0.1" value="'+RUN.pace+'"></label>'
    +'<label class="rel-field"><span>Patterns</span><input type="number" id="strdose" min="1" max="'+LINES_PER_CH+'" step="1" value="'+RUN.dose+'"></label>'
-  +'</div>'
+  +'</div>')
   /* ENABLED ON A SELECTION, NOT ON A PRICE, so a spent allowance still
      reaches the card that refuses it and says why. */
-  +'<button type="button" class="st-go" id="strun"'+(M.sel.length?'':' disabled')+'>Run release</button></div>';
+  /* and on a worked example it is the preview line, ruled 16 October: the
+     rings above are the reading and stay, Run is the run and does not */
+  +(showOnly()?showNote('release','st-show')
+   :'<button type="button" class="st-go" id="strun"'+(M.sel.length?'':' disabled')+'>Run release</button>')+'</div>';
  e.innerHTML=o;
  /* lit from within, in the heaviest selected seat's colour, as bright as
     that address is heavy. Round HX, B, which he did not strike.

@@ -54,6 +54,7 @@ engine/export.js
 engine/charfield.js
 engine/ritex.js
 engine/archexpr.js
+engine/showonly.js
 ui/component.js
 ui/sound.js
 ui/tip.js

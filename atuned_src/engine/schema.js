@@ -602,7 +602,15 @@ function pSaveSnap(){
   return false;
  }
 }
-function pExport(){ return JSON.stringify(CURP?saveProfile(CURP):null,null,1); }
+/* NOT OFF A WORKED EXAMPLE. An example's scratch record carries the tier four
+   plan loadP stamps on it, and pImport still takes a tier a record declares
+   (J11 in PLAN.md, held open by tests/plan-selfgrant.js), so Export on an
+   example and Load on the person's own was two presses from a free profile
+   to a tier four one: the cheat the 16 October ruling names, by another door.
+   Refused by the one rule (engine/showonly.js), and null is what a caller
+   reads as nothing to copy. */
+function pExport(){ if(showRefuse('export'))return null;
+ return JSON.stringify(CURP?saveProfile(CURP):null,null,1); }
 /* ============================================================
    THE BOUNDARY. Everything above this line trusts its input
    because the app wrote it. Everything a person can paste in
@@ -1634,6 +1642,8 @@ function meterBudget(p,now){
    two arguments reads exactly as it did. */
 function meterRun(p,keys,at){
  if(!p)return null;
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('release',p))return null;
  if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null,giftAt:null};
  if(!Array.isArray(p.meter.unique))p.meter.unique=[];
  if(p.meter.giftAt===undefined)p.meter.giftAt=null;
@@ -1922,6 +1932,8 @@ function meterRead(p,now){
    does not say what that made someone. */
 function meterFirst(p,key,label,at){
  if(!p||!key)return null;
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('release',p))return null;
  if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null};
  if(!Array.isArray(p.meter.firsts))p.meter.firsts=[];
  for(var i=0;i<p.meter.firsts.length;i++)
@@ -1943,6 +1955,15 @@ function profMark(p){ try{ if(p&&p.id)devSet('open',p.id); }catch(e){} }
 var IMPORT_ERR=null;
 function pImport(txt){
  IMPORT_ERR=null;
+ /* NOTHING IS LOADED WHILE A WORKED EXAMPLE IS OPEN. This pushed the new
+    record and pointed CURP at it, and left S.who naming the example, so the
+    person's own record then read as somebody else's to every control that
+    asks S.who: their first commit on it was refused. The ruling of 16 October
+    makes an example show only (engine/showonly.js), so the import is refused
+    by the same one rule, before anything is parsed, and says how to get past
+    it. Nothing is pushed and CURP does not move. */
+ if(showRefuse('import')){
+  IMPORT_ERR=['a worked example is open. Open your own profile first, then load it']; return null; }
  var o; try{ o=JSON.parse(txt); }catch(e){ IMPORT_ERR=['not valid JSON']; return null; }
  var v=validateProfile(o);
  if(!v.ok){ IMPORT_ERR=v.errs; return null; }

@@ -316,6 +316,7 @@ function authProfileSync(){
  PROFILE_SYNC_BUSY=true;
  var localText;
  try{ localText=pExport(); }catch(e){PROFILE_SYNC_BUSY=false;return Promise.resolve({state:'refused'});}
+ if(localText==null){PROFILE_SYNC_BUSY=false;return Promise.resolve({state:'refused'});}
  var local;
  try{ local=JSON.parse(localText); }catch(e){PROFILE_SYNC_BUSY=false;return Promise.resolve({state:'refused'});}
  if(!local||typeof local!=='object'){PROFILE_SYNC_BUSY=false;return Promise.resolve({state:'refused'});}

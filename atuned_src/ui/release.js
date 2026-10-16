@@ -1211,7 +1211,13 @@ function relCoolDown(){
 
     The meter ruling is untouched. When a person runs their own release they
     are the person charged, which is what it always meant. */
- if(typeof S!=='undefined'&&S.who!==0){
+ /* AND THE ENGINE'S ONE RULE ANSWERS IT, ruled 16 October (engine/
+    showonly.js), and its reporter says the preview line where the wall
+    "Nothing released on a worked example." was said, in the fail kind, at the
+    foot of this branch. The refusal still reports, through showRefuse. A run cannot reach here from an example any more, because Begin is
+    refused before the first line (relgo, below) and is not drawn on one; this
+    stays for any route that does. */
+ if(showRefuse('release')){
   RUN.done=false; RUN.phase='pick';
   /* ONE LINE, AND THE STATE MOVED TO THE PICKER. Ruled 25 September (BA9): he
      struck the sentence that stood here, "You are looking at Abraham, which is
@@ -1225,7 +1231,6 @@ function relCoolDown(){
      That nothing was released is a refusal, and a refusal still reports and
      names its own reason, because a write that fails without a word is the
      silent failure this codebase forbids by name. */
-  if(typeof status==='function')status('Nothing released on a worked example.','fail');
   return false; }
  /* expression before and after, because it is what a release moves visibly.
     CQ is the 21 laws, and since the correction of 25 September a release lifts
@@ -3266,9 +3271,17 @@ function relRender(){
    /* THE BUTTON IS NOT THERE WHEN THERE IS NOTHING TO SPEND. A disabled Begin
       would be a control the panel is still offering, and the honest reading of
       a spent allowance is that this run does not exist yet. */
-   foot:'<button class="btn" id="relcancel">'+(spent?'Close':'Cancel')+'</button>'
+   /* AND NOT ON A WORKED EXAMPLE, ruled 16 October. The card is a reading,
+      what a release would take and how long it would run, and that stays.
+      Begin is the run, so on an example it is the preview line in its place
+      (showNote, ui/personas.js), and a Begin that could not begin is not
+      drawn, for the reason the spent case above gives. Close and not Cancel,
+      because nothing was started that could be cancelled. */
+   foot:(showOnly()
+    ?showNote('release','rel-show')+'<button class="btn" id="relcancel">Close</button>'
+    :'<button class="btn" id="relcancel">'+(spent?'Close':'Cancel')+'</button>'
     +(spent?'<button class="btn pri" id="relplan">See the tiers</button>'
-          :'<button class="btn pri" id="relgo">Run release</button>')});}
+          :'<button class="btn pri" id="relgo">Run release</button>'))});}
  var sc0=document.getElementById('relsc'), keepY=(sc0&&sc0.closest('[data-ph]')
   &&sc0.closest('[data-ph]').getAttribute('data-ph')==='done'&&RUN.phase==='done')?sc0.scrollTop:0;
  if(!kept)h.innerHTML=out;
@@ -3291,6 +3304,10 @@ function relRender(){
   /* sounded first, while the room is still the interface's, and with the room
      argument as well so it does not depend on that: it is the one fitting a
      run is allowed, and it is one per run. */
+  /* the engine's one rule, before the first line is said: on a worked example
+     the protocol does not play and the voice is not spoken for a run the end
+     of it would refuse */
+  if(showRefuse('release'))return;
   if(typeof sfx==='function')sfx('begin',true);
   RUN.phase='welcome';RUN.line=0;RUN.idx=0;RUN.pass=0;RUN.halted=false;RUN.paused=false;
   RUN.t0=Date.now();RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;relTicker(true);relStep();};

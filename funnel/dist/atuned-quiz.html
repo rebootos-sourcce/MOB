@@ -5491,6 +5491,8 @@ function verpScan(text){
    at=src.indexOf(t,at+1);}});
  return {hits:hits,total:tot};}
 function verpApply(text){var s=verpScan(text);if(!s.total)return s;
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('story')){s.refused='example';return s;}
  Object.keys(s.hits).forEach(function(g){VERPMIX[g]+=s.hits[g];});return s;}
 function verpShare(){
  var tot=Object.keys(VERPMIX).reduce(function(a,k){return a+VERPMIX[k];},0);
@@ -5616,6 +5618,8 @@ function leanScan(text){
  return out;}
 
 function leanApply(text){var s=leanScan(text);
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('story')){s.refused='example';return s;}
  LEANMIX.benign+=s.benign; LEANMIX.malignant+=s.malignant;
  LEANMIX.emp+=s.emp; LEANMIX.empLack+=s.empLack;
  LEANMIX.acc+=s.acc; LEANMIX.accLack+=s.accLack;
@@ -7680,6 +7684,8 @@ function cqSpan(){
    what moved, by law, and CQ before and after as that record reads. */
 function releaseWork(p,keys){
  var out={laws:{}, cq0:cqSum(), cq1:null, n:0};
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('release',p)){out.cq1=out.cq0;out.refused='example';return out;}
  if(!p||!keys||!keys.length){out.cq1=out.cq0;return out;}
  if(!p.work||typeof p.work!=='object'||Array.isArray(p.work))p.work={};
  var bySeat={};
@@ -7698,7 +7704,8 @@ function releaseWork(p,keys){
    number. The count above would survive a same number answer, because it is
    keyed to the value; this is what the intake calls when a person changes an
    answer, so a new measurement always wins over the model's estimate. */
-function lawAnswered(p,nm){if(p&&p.work&&p.work[nm])delete p.work[nm];}
+function lawAnswered(p,nm){if(showRefuse('intake',p))return false;
+ if(p&&p.work&&p.work[nm])delete p.work[nm]; return true;}
 /* ONE ADDRESS'S SHARE OF THE WRITE, and the only copy of it. It sat inline in
    relCoolDown, and the live shadow row below has to run the same arithmetic
    ahead of the commit. Moved here from ui/release.js in round QD, body
@@ -7709,6 +7716,8 @@ function lawAnswered(p,nm){if(p&&p.work&&p.work[nm])delete p.work[nm];}
    first write moves anything, and the projection has to read them the same
    way. */
 function relWrite(q,n,w0){
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('release'))return {d:0,w1:w0,refused:'example'};
  var d=-Math.round(w0*0.21+2);
  var w1=Math.max(0,w0+d);
  var share=Math.abs(d)/10/Math.max(1,q.filter(function(x){return x.cf===n.cf;}).length);
@@ -10623,7 +10632,15 @@ function pSaveSnap(){
   return false;
  }
 }
-function pExport(){ return JSON.stringify(CURP?saveProfile(CURP):null,null,1); }
+/* NOT OFF A WORKED EXAMPLE. An example's scratch record carries the tier four
+   plan loadP stamps on it, and pImport still takes a tier a record declares
+   (J11 in PLAN.md, held open by tests/plan-selfgrant.js), so Export on an
+   example and Load on the person's own was two presses from a free profile
+   to a tier four one: the cheat the 16 October ruling names, by another door.
+   Refused by the one rule (engine/showonly.js), and null is what a caller
+   reads as nothing to copy. */
+function pExport(){ if(showRefuse('export'))return null;
+ return JSON.stringify(CURP?saveProfile(CURP):null,null,1); }
 /* ============================================================
    THE BOUNDARY. Everything above this line trusts its input
    because the app wrote it. Everything a person can paste in
@@ -11655,6 +11672,8 @@ function meterBudget(p,now){
    two arguments reads exactly as it did. */
 function meterRun(p,keys,at){
  if(!p)return null;
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('release',p))return null;
  if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null,giftAt:null};
  if(!Array.isArray(p.meter.unique))p.meter.unique=[];
  if(p.meter.giftAt===undefined)p.meter.giftAt=null;
@@ -11943,6 +11962,8 @@ function meterRead(p,now){
    does not say what that made someone. */
 function meterFirst(p,key,label,at){
  if(!p||!key)return null;
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('release',p))return null;
  if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null};
  if(!Array.isArray(p.meter.firsts))p.meter.firsts=[];
  for(var i=0;i<p.meter.firsts.length;i++)
@@ -11964,6 +11985,15 @@ function profMark(p){ try{ if(p&&p.id)devSet('open',p.id); }catch(e){} }
 var IMPORT_ERR=null;
 function pImport(txt){
  IMPORT_ERR=null;
+ /* NOTHING IS LOADED WHILE A WORKED EXAMPLE IS OPEN. This pushed the new
+    record and pointed CURP at it, and left S.who naming the example, so the
+    person's own record then read as somebody else's to every control that
+    asks S.who: their first commit on it was refused. The ruling of 16 October
+    makes an example show only (engine/showonly.js), so the import is refused
+    by the same one rule, before anything is parsed, and says how to get past
+    it. Nothing is pushed and CURP does not move. */
+ if(showRefuse('import')){
+  IMPORT_ERR=['a worked example is open. Open your own profile first, then load it']; return null; }
  var o; try{ o=JSON.parse(txt); }catch(e){ IMPORT_ERR=['not valid JSON']; return null; }
  var v=validateProfile(o);
  if(!v.ok){ IMPORT_ERR=v.errs; return null; }
@@ -14466,6 +14496,11 @@ function exdepthFill(rec,p,now){
     record held is kept and put back on any refusal, and the refusal is
     thrown on to the caller, which says so. */
  var keep=JSON.stringify({story:rec.story||null, meter:rec.meter||null, work:rec.work||null});
+ /* THE BUILD'S OWN HISTORY, PUT IN PLACE, and not a person running anything.
+    loadP marks this record show only (engine/showonly.js) and every writer
+    below would refuse it, so the replay is the one caller that lifts the
+    refusal, for exactly its own body: the finally below puts it back. */
+ SHOW_REPLAY++;
  try{
   rec.story=rec.story||{entries:[]};
   if(!Array.isArray(rec.story.entries))rec.story.entries=[];
@@ -14510,6 +14545,7 @@ function exdepthFill(rec,p,now){
   var k0=JSON.parse(keep); rec.story=k0.story; rec.meter=k0.meter; rec.work=k0.work;
   throw e;}
  finally{
+  SHOW_REPLAY--;
   exdepthPut(S.charge,c0); exdepthPut(S.replace,r0);
   exdepthPut(VERPMIX,v0); exdepthPut(LEANMIX,l0);
   compute();}
@@ -14579,6 +14615,22 @@ function iqScore(p){
        : v[0]>v[1] ? 'holds when it costs, slips when unseen'
        : 'holds when unseen, slips when it costs'};});
  return out;}
+/* ONE ANSWER OF THE SIXTY THREE, WRITTEN. This was four lines inside the Intake
+   page's press handler, a property set straight onto the record, so the one
+   rule the engine holds about whose record may move (showRefuse, engine/
+   showonly.js) could not see it: on a worked example the answer landed, the
+   laws moved through iqApply and every reading re-read it at the example's
+   tier four, and only the save after it refused. The four lines are the same
+   four, in the same order, and the press calls this. a is the answer's index,
+   v its value. Returns false, and writes nothing, when it is refused. */
+function iqAnswer(p,a,v){
+ if(!p||!p.intake)return false;
+ if(showRefuse('intake',p))return false;
+ var li=Math.floor(+a/3);
+ if(p.intake.answers[+a]!==+v&&SI[li])lawAnswered(p,SI[li].nm);
+ p.intake.answers[+a]=+v;
+ if(!p.intake.startedAt)p.intake.startedAt=new Date().toISOString();
+ return true;}
 function iqApply(p){
  if(!p||!p.intake)return {};
  var sc=iqScore(p);
@@ -14674,6 +14726,8 @@ function ixGet(p,id,k){
    control cannot report an answer it did not record. Never clamped: 9999 is
    not a 10 the person pressed. */
 function ixSet(p,id,k,v){
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('intake',p))return false;
  if(!ixRow(id,k))return false;
  if(!NUM(v)||v<0||v>10)return false;
  /* startedAt is NOT stamped here. It says the 63 were begun, and a person who
@@ -15901,6 +15955,8 @@ function unmarkedOf(t,p){
  out.forEach(function(r){r.text=t.slice(r.s,r.e);});
  return {stretches:out, words:ws.length, read:read, unmarked:ws.length-read};}
 function applyStory(text){
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('story'))return {parsed:parseStory(text), applied:{}, refused:'example'};
  var p=parseStory(text), touched={};
  p.imprints.forEach(function(im){ var f=im.fetter; if(!f) return;
   touched[f]=(touched[f]||0)+im.amt;});
@@ -18154,6 +18210,8 @@ function seedAxes(type){
    base rather than compounding. */
 function seedApply(p,type){
  if(!p||!seedValid(type))return null;
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('intake',p))return null;
  var ax=seedAxes(type);
  CHARGES.forEach(function(c){
   p.axes[c]=p.axes[c]||{held:AXIS_BLANK,opp:0};
@@ -20368,7 +20426,7 @@ if(typeof module!=='undefined'&&module.exports){
                   lawIn:lawIn, cqSum:cqSum, cqSpan:cqSpan, leverPull:leverPull,
                   LEVER_MU:LEVER_MU, LEVER_SD:LEVER_SD, CQ_MODEL:CQ_MODEL,
                   LIFT_R:LIFT_R, lawLift:lawLift, lawWork:lawWork, lawNow:lawNow,
-                  releaseWork:releaseWork, lawAnswered:lawAnswered,
+                  releaseWork:releaseWork, lawAnswered:lawAnswered, iqAnswer:iqAnswer,
   /* seed */      TYPE16:TYPE16, SEED16:SEED16, seedAxes:seedAxes, seedApply:seedApply,
                   seedClear:seedClear, seedShare:seedShare, seedValid:seedValid, accuracy:accuracy, accCover:accCover, accCoverWord:accCoverWord,
                   CS_LAWW:CS_LAWW, CS_STORYW:CS_STORYW, CS_STORY_N:CS_STORY_N, CS_PARTIAL:CS_PARTIAL, sab33Detect:sab33Detect,
@@ -21080,6 +21138,82 @@ function archExprAll(){return ARCH.map(function(a,i){return archExpr(i);});}
 
 if(typeof module!=='undefined'&&module.exports){
  Object.assign(module.exports,{archExpr:archExpr, archExprAll:archExprAll});}
+/* ============================================================
+   A WORKED EXAMPLE IS SHOW ONLY. Ruled 16 October, his words: "something we
+   need to do with those user profiles where the customer who selects any of
+   the tiers cannot run a profile's inference. And for show only. Otherwise,
+   that's cheating." And the same day: "it allows people to see the patterns.
+   But not run them. If you're a tier one, it allows you to see what you're
+   missing as a product."
+
+   WHAT THE CHEAT WAS, measured before this file. Every worked example opens
+   on tier four sight (loadP, ui/personas.js, ruled 2 October), and the
+   refusals that stood were one per control and read S.who: the Story commit
+   and the release's last step refused, and the Intake did not. On Gordon, a
+   free person pressed an Intake answer: lawAnswered and the answer landed on
+   the example's scratch record, iqApply moved S.law, and every reading on the
+   screen re-read their own answer at tier four. pSave then refused, which
+   said "Nothing saved on a worked example." over a field that had already
+   moved. The release refused too, but only at relCoolDown, after the whole
+   protocol had played and the voice had been spoken and paid for. A refusal
+   that arrives after the work is not a refusal of the work.
+
+   SO THE RULE LIVES HERE, ONCE, AND THE WRITERS ASK IT. A control does not
+   have to remember the rule: every engine writer that moves the field or a
+   record (applyStory, verpApply, leanApply, relWrite, releaseWork, meterRun,
+   meterFirst, lawAnswered, iqAnswer, ixSet, seedApply, pImport) asks
+   showRefuse before it writes, so a control added later is refused by the
+   writer it calls, by name, and says so. The saves already refuse a record
+   that is not in PROFILES (pSave, NotARecord), and a worked example never is.
+
+   WHICH RECORD IS AN EXAMPLE, BY IDENTITY. loadP marks the scratch record it
+   makes for an example (showMark), and the mark is the object, held here and
+   never written on the record: a flag on the record would travel through an
+   export and could be pasted back, and an identity cannot. The person's own
+   records are never marked, so their own tier and their own writes are
+   exactly what they were.
+
+   THE AUTHORED HISTORY IS NOT A PERSON RUNNING IT. An example's bank and
+   vault are replayed through these same writers once, the first time it is
+   opened (exdepthFill, engine/exdepth.js). That is the build's own data put
+   in place, so the replay raises SHOW_REPLAY for its own body and puts it back
+   in its finally, and nothing else raises it.
+
+   THE ENGINE REPORTS AND THE HOST DECIDES THE WORDS, the split pPersist and
+   devSet keep. showRefuse records what was refused and hands the key to the
+   reporter the host bound (bindShowSay); with none bound, a headless run, it
+   still refuses and the caller reads showLast. HOST FREE. It sits after
+   engine/export.js and adds its names to what export.js left, as
+   engine/archexpr.js does.
+   ============================================================ */
+var SHOW_RECS=[], SHOW_REPLAY=0, SHOW_SAY=null, SHOW_LAST=null, SHOW_N=0;
+/* rec is an example's scratch record; marking twice is one mark */
+function showMark(rec){
+ if(rec&&typeof rec==='object'&&SHOW_RECS.indexOf(rec)<0)SHOW_RECS.push(rec);
+ return rec;}
+/* whether a record is shown only. With no argument it asks about the record
+   that is open, which is the one every writer below is about to touch. */
+function showOnly(rec){
+ var r=arguments.length?rec:((typeof CURP!=='undefined')?CURP:null);
+ return !!r&&SHOW_RECS.indexOf(r)>=0;}
+/* THE ONE REFUSAL. what is the key of the thing refused (story, release,
+   intake, import), which the host turns into a sentence. rec, when a writer
+   is handed the record it writes, is asked instead of CURP, because that is
+   the record that would move. Returns true when the caller must stop. */
+function showRefuse(what,rec){
+ if(SHOW_REPLAY>0)return false;
+ var r=(rec!==undefined&&rec!==null)?rec:((typeof CURP!=='undefined')?CURP:null);
+ if(!showOnly(r))return false;
+ SHOW_N++;
+ SHOW_LAST={what:String(what||'run'), name:(r&&r.name)||'', n:SHOW_N};
+ if(typeof SHOW_SAY==='function'){ try{ SHOW_SAY(SHOW_LAST.what); }catch(e){} }
+ return true;}
+function showLast(){ return SHOW_LAST?Object.assign({},SHOW_LAST):null; }
+function bindShowSay(fn){ SHOW_SAY=(typeof fn==='function')?fn:null; return SHOW_SAY; }
+
+if(typeof module!=='undefined'&&module.exports){
+ Object.assign(module.exports,{showMark:showMark, showOnly:showOnly, showRefuse:showRefuse,
+  showLast:showLast, bindShowSay:bindShowSay});}
 
 </script>
 <script>
