@@ -110,6 +110,25 @@ const ev=async(pg,fn,arg)=>{try{return await pg.evaluate(fn,arg);}catch(e){retur
   ok(g==='Ground opened1 address','the profile sheet says one address opened, got '+JSON.stringify(g));
   ok(/new patterns away$/.test(n),'and its distance carries its unit, got '+JSON.stringify(n));}
 
+ console.log('\n=== L8. the release card says where a mark became true, never that it is new ===');
+ {const r=await ev(pg,()=>{
+   /* held, lost and true again: First clearing read before, then an undo
+      took the axis back, then this run put it there again. marks0 is the
+      read at the start of the run, so the run reports it, and nothing on the
+      record can tell this apart from a first time */
+   var ax=CHILD[0].nm, was=JSON.stringify(CURP.axes[ax]);
+   CURP.axes[ax]={held:0,opp:4}; var held=relMarksNow().indexOf('turned')>=0;
+   CURP.axes[ax]={held:0,opp:3}; RUN.marks0=relMarksNow();
+   CURP.axes[ax]={held:0,opp:4};
+   RUN.marksNew=(function(a){var w={}; RUN.marks0.forEach(function(k){w[k]=1;}); return a.filter(function(m){return !w[m.k];});})(relMarksNow(true));
+   var e=document.createElement('div'); e.innerHTML=relResults();
+   var k=[].slice.call(e.querySelectorAll('.rel-mark')).map(function(x){return x.textContent.replace(/\s+/g,' ').trim();});
+   CURP.axes[ax]=JSON.parse(was); RUN.marksNew=[]; RUN.marks0=[];
+   return {held:held, cards:k};});
+  ok(r.held&&(r.cards||[]).some(c=>/First clearing/.test(c)),'the fixture holds First clearing, loses it, and the run reports it again, '+JSON.stringify(r.cards));
+  ok((r.cards||[]).length&&r.cards.every(c=>!/\bnew\b/i.test(c)),'and no card calls it new, got '+JSON.stringify(r.cards));
+  ok((r.cards||[]).every(c=>/^Earned on this release/.test(c)),'each says it was earned on this release');}
+
  ok(errs.length===0,'no page error'+(errs.length?': '+errs.slice(0,2).join(' | '):''));
  await browser.close();
  console.log('\n===== '+PASS+' passed, '+FAIL+' failed =====');
