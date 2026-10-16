@@ -1085,8 +1085,9 @@ console.log('\n=== the floor band says where to go and gives the door to it (16 
   await page.evaluate(()=>{S.pin=null; runCompassDrill(); render();}); await page.waitForTimeout(400);
   const drill=await page.evaluate(()=>{const b=[...document.querySelectorAll('[data-crisis="open"].crx-near')]
     .filter(e=>!e.closest('.s-ptoward'));
-   return {n:b.length, after:b.length?(b[0].closest('.crx-line').previousElementSibling||{}).textContent:null};});
-  ok(drill.n===1&&drill.after===TIER_BY.Contracted.toward,
+   return {n:b.length, want:TIER_BY.Contracted.toward,
+    after:b.length?(b[0].closest('.crx-line').previousElementSibling||{}).textContent:null};});
+  ok(drill.n===1&&drill.after===drill.want,
    'the band drill carries it directly under the same sentence'+at+', '+JSON.stringify(drill));
   /* and a band above the floor carries no such button: it is a door for the
      reading that told a person to reach somebody, not decoration. The drill
