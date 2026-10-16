@@ -31,6 +31,8 @@
      4  the refusal reads as a preview and never as a failure: the one line,
         in no fail kind, and its second sentence is the one the sight table
         gives for the own plan (planNextSight), read at run time
+   AND THE CRISIS DOOR: Talk it through pressed while an example is open
+   lands on the person's own journal, never on an example's page with no box
    THEN, FOR THE OWN RECORD:
      5  it is untouched by the visits: the stored bytes are the same bytes,
         and no example joined the stored list
@@ -196,6 +198,20 @@ const TEXT='I was furious and ashamed and I could not stop going over it. I said
    return {raw, named:all.filter(x=>nm.indexOf(x&&x.name)>=0).map(x=>x.name), n:PROFILES.length};},examples.map(e=>e.nm));
   ok(own1.raw===own0.raw,tier+': the own record\'s stored bytes are the same bytes after every visit');
   ok(own1.named.length===0&&own1.n===own0.n,tier+': no example joined the stored list, '+JSON.stringify({named:own1.named,n:own1.n}));
+
+  /* 5b . Talk it through, the crisis door, never lands on an example's
+     Story page, which has no box: it opens the person's own profile */
+  const crx=await pg.evaluate(async i=>{
+   loadP(i); await new Promise(r=>setTimeout(r,30));
+   if(typeof crisisOpen!=='function'||typeof crisisTalk!=='function')return {missing:true};
+   crisisOpen(); crisisTalk(); await new Promise(r=>setTimeout(r,60));
+   const o={who:S.who, show:showOnly(), box:!!document.getElementById('sttext'),
+    note:!!document.querySelector('#story .show-note'), line:!!document.getElementById('stcrisis')};
+   if(typeof STV!=='undefined')STV.crisis=false;
+   return o;},examples[0].i);
+  ok(!crx.missing&&crx.who===0&&!crx.show&&crx.box&&!crx.note&&crx.line,
+   tier+': Talk it through pressed on '+examples[0].nm+' opens the own profile\'s journal with its line, '+JSON.stringify(crx));
+  await pg.evaluate(()=>{ ST_TEXT=''; ST_PARSED=null; });
 
   /* 6 . the own record keeps its own tier's powers */
   const mine=await pg.evaluate(async ([t,TEXT])=>{
