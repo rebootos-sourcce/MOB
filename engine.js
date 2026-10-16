@@ -5007,12 +5007,30 @@ var LEANMIX={benign:0,malignant:0,
  self:0,other:0,rawLack:0,texts:0};
 
 /* ---------- the six gates ---------- */
+/* A PHRASE OUTRANKS THE WORDS INSIDE IT, here as in the lean below and in the
+   sniffer, both ported from scanStory. This was a bare indexOf per cue, so
+   Intention's 'kept going' matched inside Attachment's 'kept going over':
+   "it had me all night and I kept going over it" read attach 3 and intent 1,
+   and the Intention hit was false, measured on f7188cba. The bare indexOf
+   also matched inside words, so "it did not seem like much" read Ignorance
+   off 'did not see' and "I stayed one more hour" read Intention off 'stayed
+   on'. So the lean's rule, unchanged: every cue of every gate scanned
+   longest first, bounded by spaces, and a match that starts inside a span
+   already taken is not counted. No negation here, which the lean carries and
+   these cues have never had: adding it is a change to what the gates read,
+   not to how a phrase is found. */
 function verpScan(text){
  var src=' '+String(text||'').toLowerCase().replace(/[^a-z' ]+/g,' ').replace(/\s+/g,' ')+' ';
- var hits={},tot=0;
+ var hits={},tot=0,rows=[],spans=[];
  Object.keys(VERPCUE).forEach(function(g){hits[g]=0;
-  VERPCUE[g].forEach(function(p){var at=src.indexOf(p);
-   while(at>=0){hits[g]++;tot++;at=src.indexOf(p,at+1);}});});
+  VERPCUE[g].forEach(function(p){rows.push({p:p,g:g});});});
+ rows.sort(function(a,b){return b.p.length-a.p.length;});
+ rows.forEach(function(row){
+  var t=' '+row.p+' ', at=src.indexOf(t);
+  while(at>=0){
+   if(!spans.some(function(h){return h.at<=at&&at<h.at+h.len+1;})){
+    spans.push({at:at,len:row.p.length}); hits[row.g]++; tot++;}
+   at=src.indexOf(t,at+1);}});
  return {hits:hits,total:tot};}
 function verpApply(text){var s=verpScan(text);if(!s.total)return s;
  Object.keys(s.hits).forEach(function(g){VERPMIX[g]+=s.hits[g];});return s;}
