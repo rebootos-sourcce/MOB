@@ -375,9 +375,18 @@ function sumStory(r){
     clause "which means it is expanding" stated a cause and is now a
     direction. Round J13, his words: "I keep seeing this percent shit, the
     hardest carrying zero percent. I don't want that." */
+ /* THE WORD CARRIES ITS MEANING HERE, 16 October, from the review of the
+    crisis screens. He ruled "Your energy leans malignant" and kept the word,
+    and round PO rules that no term stands without its plain meaning in the
+    same place. A hover tip is not the same place on a phone, so the sentence
+    the glossary already holds for the word (rail:benign, rail:malignant in
+    engine/data/gloss.js) follows it on the page, read from that one table so
+    the two can never say different things. */
+ var leanW=lean.ben>=lean.mal?'benign':'malignant';
  p.push(((lean.read===false?'':'Your energy leans <b>'
-  +(lean.ben>=lean.mal?'benign':'malignant')+'</b>'
-  +(r.benign===null?'':', toward '+(r.benign?'expanding':'contracting'))+'.')
+  +leanW+'</b>'
+  +(r.benign===null?'':', toward '+(r.benign?'expanding':'contracting'))+'. '
+  +unpSay(leanW,'rail'))
   /* .length, because r.excess is a list and an empty list is truthy: this
      told every one of the fourteen reference cases the pole was past paying,
      including the ones with nothing past it. ui.js reads it the same way. */
