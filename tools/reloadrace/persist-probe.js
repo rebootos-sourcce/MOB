@@ -13,11 +13,25 @@ function blank() {
   return BLANK;
 }
 const keys = () => Object.keys(localStorage).sort().map(k => { const v = localStorage.getItem(k) || ''; let h = 0; for (let i = 0; i < v.length; i++) h = (h * 31 + v.charCodeAt(i)) | 0; return k + ':' + v.length + '#' + (h >>> 0).toString(36); }).join(' ');
+/* the browser's utility and renderer processes, by type and pid, read off
+   /proc under the browser's own pid, so a storage service that died and was
+   started again reads as a new pid */
+function procs(page) {
+  try {
+    const bp = { pid: process.pid };
+    const all = fs.readdirSync('/proc').filter(x => /^\d+$/.test(x)), kids = {};
+    for (const p of all) { try { const st = fs.readFileSync('/proc/' + p + '/stat', 'utf8'); const pp = +st.slice(st.lastIndexOf(')') + 2).split(' ')[1]; (kids[pp] = kids[pp] || []).push(+p); } catch (e) {} }
+    const out = [], walk = p => { (kids[p] || []).forEach(c => { let cl = ''; try { cl = fs.readFileSync('/proc/' + c + '/cmdline', 'utf8'); } catch (e) {} const m = cl.match(/--utility-sub-type=([\w.]+)/) || cl.match(/--type=([\w-]+)/); if (m && !/zygote|crashpad/.test(m[1])) out.push(m[1].replace(/\.mojom\.\w+/, '') + ':' + c); walk(c); }); };
+    walk(bp.pid);
+    return out.join(' ');
+  } catch (e) { return 'procs ' + e.message; }
+}
 async function persisted(page, fn, arg, ms) {
   const id = ++N, T0 = Date.now(), line = [];
   const log = s => { const l = 'PROBE ' + id + ' +' + (Date.now() - T0) + ' ' + s; line.push(l); console.log(l); };
   const own = await page.evaluate(([f, a]) => { try { return (0, eval)('(' + f + ')')(a); } catch (e) { return 'err ' + e; } }, [fn.toString(), arg === undefined ? null : arg]).catch(e => 'eval ' + e.message);
   log('first page sees its own write: ' + own);
+  log('processes ' + procs(page));
   const q = await page.context().newPage();
   let got = false;
   try {
@@ -38,6 +52,7 @@ async function persisted(page, fn, arg, ms) {
       await new Promise(r => setTimeout(r, 250));
     }
     if (!got) {
+      log('processes at the miss ' + procs(page));
       log('MISS. second keys ' + await q.evaluate(keys).catch(e => e.message));
       log('first keys ' + await page.evaluate(keys).catch(e => e.message));
       const d = await page.evaluate(() => ({ w: (window.__ls || []).slice(-30), lt: (window.__lt || []).slice(-40), now: Date.now() })).catch(e => ({ err: e.message }));
