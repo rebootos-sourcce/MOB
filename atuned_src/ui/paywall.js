@@ -87,17 +87,21 @@ var PW_W={
  soon:'Opens soon',
  seeNow:'You see this now',
  came:'You pressed this one to get here.',
- /* THE NUMBER'S MEANING. The allowance counts meter.unique, lines a person
-    has not opened before (planAllowance, meterPlan in engine/schema.js), and a
-    rerun of an open line is charged nothing (relRerunPlan, ui/release.js).
-    "NEVER OPENED" CAME OFF ON 17 OCTOBER, five seats on the coordinator's
-    word: the releasable lines hold only 65 different sentences, so a person
-    paying for 400 never opened patterns could hear a sentence again and read
-    the promise as broken. The line sells the pace and the place in the body
-    instead, never "unique" and never "new ones are added", because the pool is
-    fixed. A rerun is the person's own press, so it says reruns free and never
-    that patterns come back. */
- pat:'Each one opens a new place in your body map to work on. Everything you have opened reruns free, any time.',
+ /* THE NUMBER'S MEANING, the sales director's line of 17 October. The
+    allowance counts meter.unique, keys of address, channel and line a person
+    has not opened before (planAllowance, meterPlan in engine/schema.js), so a
+    pattern is one line at one place. Two wordings came off on the way here.
+    "Never opened" went because the releasable lines hold only 65 different
+    sentences, so a person could hear one again and read the promise as
+    broken; the gate bans it, with "unique" and "new ones", because the pool
+    is fixed. "Each one opens a new place in your body map" went because it
+    was false: an address carries four channels of fifty lines, so most new
+    patterns are new lines at places already opened. "Some lines share their
+    words" says the 65 sentences out loud. The rerun clause of the full line,
+    "Everything you have opened reruns free", is left off here because three
+    sentences in one tooltip is more than one idea (the voice gate's
+    tooltip-one-idea flag), which is the split the coordinator gave. */
+ pat:'Each pattern is one line said at one place in your body. Some lines share their words.',
  prac:'Everything in tier three, plus cohorts of people you lead.',
  foot:'Charged monthly. Stop anytime from Billing, on the payment page.',
  refund:'Charged in the last seven days? Write to hello@atuned.world and we refund it in full.',

@@ -224,6 +224,9 @@ async function page(browser,W,H,o){
    /* 17 October: the lines hold 65 different sentences, so the sheet never
       promises a pattern is unheard. Read with the screen reader's spans too */
    ok(!/never opened|unique|new ones/i.test(txt),tag+'never says never opened, unique or new ones');
+   /* and never the line that was false: most new patterns are new lines at
+      places already opened, so a pattern is not a new place */
+   ok(!/new place in your body/i.test(txt),tag+'never says a pattern opens a new place in the body');
 
    /* 11 . words */
    const words=await pg.evaluate(()=>__pw.words());
