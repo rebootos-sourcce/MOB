@@ -140,6 +140,9 @@ BROWSER = {
 # patterns follow the money, 17 October (tests/money.js). Report only until
 # three green runs.
     'money':         ('node tests/money.js', 20),
+# the release chain, 17 October (tests/releasechain.js). Report only until
+# three green runs.
+    'releasechain':  ('node tests/releasechain.js', 20),
 }
 # P0 Alpha acceptance: move to the blocking browser matrix, and mutation-test each
 # one so a future refactor cannot silently return it to report-only.
