@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2142 96f7e89e 2026-10-17 18:11"><head><meta charset="utf-8">
+<html lang="en" data-build="v2162 2eafef6d 2026-10-17 18:42"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -18099,16 +18099,35 @@ function planLadder(pl){
    translation, and translation is where access bugs live. */
 const PLAN_LIVE={trialing:1, active:1, past_due:1};
 const PLAN_DEAD={canceled:1, unpaid:1, incomplete_expired:1, paused:1};
-function planState(pl){
+/* THE END DATE IS READ, NOT ONLY THE STATUS, 17 October, the pay cycle run
+   (step h) and the systems seat: "planState ignores until, so a signed-out
+   record stays paid for ever." The status is only as new as the last read of
+   /v1/me, and sign out, a device offline and a person who never opens the app
+   again all leave the last read standing, so a plan stopped on the payment
+   page read live long after the day it stopped. Two dates now end it on their
+   own. ends is the day a stopped plan stops, and nothing renews it, so it ends
+   on that day exactly. until is the paid period's end on a plan that renews,
+   and a renewal this device has not read yet is not an ending, so it carries a
+   grace of three days, the same grace the server gives a store plan before its
+   hourly expiry (Reboot-OS atuned/server/README.md). A default taken, his to
+   overrule, in this one number. now is optional, for the gate. */
+const PLAN_GRACE_MS=3*24*3600*1000;
+function planPast(pl,now){
+ var n=(now!=null)?new Date(now).getTime():Date.now(); if(!isFinite(n))return false;
+ var e=(typeof pl.ends==='string')?Date.parse(pl.ends):NaN;
+ if(isFinite(e)&&n>=e)return true;
+ var u=(typeof pl.until==='string')?Date.parse(pl.until):NaN;
+ return isFinite(u)&&n>u+PLAN_GRACE_MS;}
+function planState(pl,now){
  if(!pl||!pl.tier||pl.tier==='free'||pl.tier==='gift')return 'none';
- if(PLAN_LIVE[pl.status])return 'live';
+ if(PLAN_LIVE[pl.status])return planPast(pl,now)?'ended':'live';
  if(PLAN_DEAD[pl.status])return 'ended';
  return 'pending';}
 /* WHICH TIER IS ACTUALLY IN FORCE. A record can say tier three and be
    cancelled, and the answer is free, not tier three. Never read pl.tier
    directly anywhere else. */
-function planOf(pl){
- var st=planState(pl);
+function planOf(pl,now){
+ var st=planState(pl,now);
  if(st==='live'&&PLAN_BY[pl.tier])return PLAN_BY[pl.tier];
  return PLAN_BY.free;}
 /* THE PLAN THE SERVER HOLDS, LAID ONTO A RECORD. Nothing wrote CURP.plan from
@@ -18132,8 +18151,10 @@ function planOf(pl){
    is the count when the server was read and not when the period began, which
    charges anything opened in between to the period before: the record knows
    no unique count at an earlier time, and erring that way never takes
-   patterns from somebody. An upgrade or a downgrade mid month is a new tier,
-   so it opens a full allowance of the new tier.
+   patterns from somebody. An upgrade or a downgrade mid month opened a full
+   allowance of the new tier, until 17 October: see PATTERNS FOLLOW THE MONEY
+   below, which holds when the server says what was paid and when the tier
+   changed, and leaves this rule standing when it does not.
 
    same says whether anything a person can see moved, which is what the host
    speaks on. A renewal moves since and until and is not same, but it keeps
@@ -18155,16 +18176,70 @@ function planOf(pl){
    the restart. A plan that stops in place, the same tier read back cancelled
    or unpaid, moves base the same way, and its free weeks count from the day it
    stopped (planFreeFrom). today is optional and an ISO string, for the gate. */
+/* PATTERNS FOLLOW THE MONEY, 17 October. The pay cycle run in Stripe test
+   mode (Reboot-OS run 39054584771) fed the server's own answers through this
+   function and found two ways it printed patterns nobody paid for. The server
+   now sends five more fields on billing (Reboot-OS PR 67, README there): paid,
+   currency, renewal, changed and prorated. Each is optional, and null or
+   missing is a server that does not know, which is read exactly as before.
+
+   A REFUSED CARD OPENS NO NEW GROUND (step e1). Stripe moves the period on
+   the day of a renewal whether or not the card pays, so since moved and a
+   fresh month opened on a refused charge: measured, 100 left became 400 of
+   400 with nothing paid. When the period moves and renewal names the bill as
+   anything but paid, the record keeps the period it last had money for:
+   since, base and the grant stay, so what is left stays left and what is open
+   still runs, and only until moves, so the plan stays on while Stripe
+   retries. since on the record is the start of the last period paid for, so
+   the read after the card goes through sees it move and opens the month then.
+
+   A TIER CHANGE ADDS ONLY THE SHARE THE MONEY COVERS (step f2). Stripe bills a
+   change as the difference between the two prices for the part of the month
+   still to run, and this opened a whole month of the new tier on it:
+   measured, 200 left on tier one became 800 on tier two for about nine
+   dollars. The rule, a default taken and his to overrule (DECISIONS.md): the
+   period's grant moves by the difference between the two tiers' grants times
+   prorated, the share of the month left at the change, the same arithmetic
+   Stripe bills by. Spent stays spent, because base does not move. Day 75 of
+   the run, 200 left and 0.5484 of the month to go, reads 200 plus 219, which
+   is 419; the sales seat's day 20 of 30, one to two, reads 133 more; and the
+   next renewal is the new tier's whole grant. A downgrade takes the same
+   share off, never takes back what was opened, and never leaves more than the
+   lower tier's whole grant to open. Down and up on one day, which Stripe nets
+   to about nothing, therefore opens about nothing: measured on main, tier
+   three spent, down to one and back read 400 and then 1,200. When the server
+   names no share the change opens a full allowance, as it always did.
+
+   EACH FIELD IS READ AT THE BOUNDARY, the rule validateProfile holds: a wrong
+   type or a value out of range is refused by name and nothing moves, never
+   clamped, because a share of 1.2 clamped to 1 is a number the server did not
+   send. paid and currency are checked and not used: the grant follows
+   prorated, which says when, and paid says only how much, in a currency. */
+const PLAN_RENEWAL={paid:1, open:1, uncollectible:1, draft:1, 'void':1};
+function planMoneyBad(b){
+ var has=function(k){return b[k]!==undefined&&b[k]!==null;};
+ if(has('paid')&&!(typeof b.paid==='number'&&isFinite(b.paid)&&b.paid>=0&&Math.floor(b.paid)===b.paid))
+  return {k:'paid', why:'its paid, the money taken this month in cents, is not a whole number at or above nought'};
+ if(has('currency')&&!(typeof b.currency==='string'&&/^[a-z]{3}$/.test(b.currency)))
+  return {k:'currency', why:'its currency is not a three letter code'};
+ if(has('renewal')&&!(typeof b.renewal==='string'&&PLAN_RENEWAL[b.renewal]))
+  return {k:'renewal', why:'its renewal, what happened to the last monthly bill, is not a word Stripe uses'};
+ if(has('changed')&&!(typeof b.changed==='string'&&!isNaN(Date.parse(b.changed))))
+  return {k:'changed', why:'its changed, the day the tier last changed, is not a date'};
+ if(has('prorated')&&!(typeof b.prorated==='number'&&isFinite(b.prorated)&&b.prorated>=0&&b.prorated<=1))
+  return {k:'prorated', why:'its prorated, the share of the month left at a tier change, is not between nought and one'};
+ return null;}
 function planFromServer(prev,b,unique,today){
  var pv=(prev&&typeof prev==='object')?prev:{};
- if(b&&typeof b==='object'&&!PLAN_BY[b.tier]){
-  var k=planOf(prev).k, lv=planState(prev)==='live';
-  return {plan:pv, same:true, refused:String(b.tier), was:k, now:k, wasLive:lv, nowLive:lv,
+ var at=(typeof today==='string'&&!isNaN(Date.parse(today)))?today:new Date().toISOString();
+ var bad=(b&&typeof b==='object')?(PLAN_BY[b.tier]?planMoneyBad(b):{k:String(b.tier)}):null;
+ if(bad){
+  var k=planOf(prev,at).k, lv=planState(prev,at)==='live';
+  return {plan:pv, same:true, refused:bad.k, why:bad.why||null, was:k, now:k, wasLive:lv, nowLive:lv,
    status:(typeof pv.status==='string')?pv.status:'', wasStatus:(typeof pv.status==='string')?pv.status:''};}
  var paid=!!(b&&typeof b==='object'&&PLAN_BY[b.tier]&&b.tier!=='free'&&b.tier!=='gift');
  var next;
  var n=Array.isArray(unique)?unique.length:Number(unique); if(!isFinite(n)||n<0)n=0;
- var at=(typeof today==='string'&&!isNaN(Date.parse(today)))?today:new Date().toISOString();
  var wasPaid=!!(PLAN_BY[pv.tier]&&pv.tier!=='free'&&pv.tier!=='gift');
  if(!paid)next={tier:'free',status:'',granted:0,carried:0,
   base:wasPaid?Math.max(GIFT_N,Math.floor(n)):((pv.tier==='free'&&pv.base!=null)?pv.base:null),
@@ -18181,18 +18256,50 @@ function planFromServer(prev,b,unique,today){
      so an older server cannot clear a day a newer one wrote. It is not a new
      period, so base and the grant are untouched by it. */
   var ends=('ends' in b)?((typeof b.ends==='string')?b.ends:null):(pv.ends==null?null:pv.ends);
-  var fresh=(pv.tier!==b.tier)||((pv.since==null?null:pv.since)!==since);
-  var stopped=!fresh&&planState(pv)==='live'&&!!PLAN_DEAD[b.status];
+  var moved=(pv.since==null?null:pv.since)!==since;
+  var fresh=(pv.tier!==b.tier)||moved;
+  /* on the word the record was last read with, not on planState: a record
+     read as ended by its own end date (planPast) is still the plan that
+     stopped, and reading it back cancelled must restart free from here, or
+     the paid month is charged against the free weeks again */
+  var onWord=wasPaid&&!!PLAN_LIVE[pv.status];
+  var stopped=!fresh&&onWord&&!!PLAN_DEAD[b.status];
+  /* PATTERNS FOLLOW THE MONEY, above. hold is a moved period whose bill is
+     not paid; share is a tier change inside this period with its share
+     named. A period that moved and changed tier in one read starts from the
+     old tier's whole grant, since the change was made inside the new one. */
+  var hold=moved&&onWord&&typeof b.renewal==='string'&&b.renewal!=='paid'&&!PLAN_DEAD[b.status];
+  var chAt=(typeof b.changed==='string')?Date.parse(b.changed):NaN, sAt=since?Date.parse(since):NaN;
+  var share=(!hold&&onWord&&pv.tier!==b.tier&&typeof b.prorated==='number'&&isFinite(chAt)
+   &&(!isFinite(sAt)||chAt>=sAt))?b.prorated:null;
+  var base=(stopped||(fresh&&!hold&&!(share!==null&&!moved)))?Math.max(GIFT_N,Math.floor(n))
+   :(pv.base==null?null:pv.base);
+  var carried=(fresh&&!hold&&!(share!==null&&!moved))?0:(pv.carried||0);
+  /* a held period keeps the grant it had, and a hold that also changed tier
+     names the old tier's grant, or planAllowance would read nought as none
+     written and open the new tier's whole one on the unpaid month */
+  var granted=(fresh&&!hold)?0:(pv.granted>0?pv.granted:(hold&&pv.tier!==b.tier?PLAN_BY[pv.tier].grant:(pv.granted||0)));
+  if(share!==null){
+   var oldG=PLAN_BY[pv.tier].grant, newG=PLAN_BY[b.tier].grant;
+   var from=(!moved&&pv.granted>0)?Math.floor(pv.granted):oldG;
+   granted=from+Math.round((newG-oldG)*share);
+   /* down: what was opened stays opened, and no more than the lower tier's
+      whole grant is left to open */
+   if(newG<oldG){
+    var spent=Math.max(0,n-Math.max(GIFT_N,base==null?GIFT_N:Number(base))-carried);
+    granted=Math.min(granted,spent+newG);}
+   /* nought would read as no grant written, and planAllowance would hand
+      out the tier's whole one, so the least it can be is one */
+   granted=Math.max(1,granted);}
   /* in the blank's own key order (schema.js), so a record written here and
      the same record after the boundary serialise the same */
   next={tier:b.tier, status:(typeof b.status==='string')?b.status:'',
-   granted:fresh?0:(pv.granted||0), carried:fresh?0:(pv.carried||0),
-   base:(fresh||stopped)?Math.max(GIFT_N,Math.floor(n)):(pv.base==null?null:pv.base),
-   since:since, until:until, ends:ends};}
+   granted:granted, carried:carried, base:base,
+   since:hold?(pv.since==null?null:pv.since):since, until:until, ends:ends};}
  var eq=function(k){return (pv[k]==null?null:pv[k])===(next[k]==null?null:next[k]);};
- var was=planOf(prev), now=planOf(next);
+ var was=planOf(prev,at), now=planOf(next,at);
  return {plan:next, same:['tier','status','since','until','ends'].every(eq),
-  was:was.k, now:now.k, wasLive:planState(prev)==='live', nowLive:planState(next)==='live',
+  was:was.k, now:now.k, wasLive:planState(prev,at)==='live', nowLive:planState(next,at)==='live',
   status:next.status, wasStatus:(typeof pv.status==='string')?pv.status:'',
   ends:next.ends, wasEnds:(pv.ends==null?null:pv.ends)};}
 /* ============================================================
@@ -18233,9 +18340,10 @@ function planRank(k){ return TIER_KEYS.indexOf(k); }
    The caller decides whether somebody is inside the gift (planInGift, off
    their own meter), because a worked example has a meter too and its history
    is not the viewer's gift. With no second argument this reads exactly as it
-   always did. */
-function planSight(pl,gift){
- var t=planOf(pl), at=planRank(t.k), sees={}, locked=[];
+   always did. now is optional, for the gate, and reaches planOf, which reads
+   the end date (planPast). */
+function planSight(pl,gift,now){
+ var t=planOf(pl,now), at=planRank(t.k), sees={}, locked=[];
  SIGHT.forEach(function(g){
   var ok=!!gift||at>=planRank(g.need); sees[g.k]=ok; if(!ok&&g.built!==false)locked.push(g);});
  return {tier:t.k, gift:!!gift, sees:sees, locked:locked, all:locked.length===0};}
@@ -18322,14 +18430,14 @@ function planAllowance(pl,uniqueCount,giftAt,now){
   base:0, spent:used, runs:Math.floor(giftLeft/RUN_MIN), weeks:0, renews:null,
   /* what it is of, in words. "92 of the gift left" says ninety two of what. */
   say:giftLeft+' patterns left of the '+GIFT_N+' you were given'};
- var t=planOf(pl);
+ var t=planOf(pl,now), st=planState(pl,now);
  /* The grant comes from the tier that is IN FORCE, not from the number
     written on the record, unless the plan is live and the host has written
     one for this period, which is how proration and a carried remainder
     arrive. A cancelled record carrying granted 400 must not spend 400: it
     drops to free and gets free's ten, which is the honest behaviour and not
     the punitive one. */
- var granted=(planState(pl)==='live'&&pl&&pl.granted>0)?Math.floor(pl.granted):t.grant;
+ var granted=(st==='live'&&pl&&pl.granted>0)?Math.floor(pl.granted):t.grant;
  /* SPEND IS PER PERIOD, which needs a baseline and cannot be derived from a
     lifetime count. The first build subtracted every address ever opened from
     one month's grant, so somebody in their ninth month read nothing left on
@@ -18349,6 +18457,14 @@ function planAllowance(pl,uniqueCount,giftAt,now){
  var stored=(pl&&pl.base!=null&&isFinite(pl.base))?Number(pl.base):null;
  var base=Math.max(GIFT_N,stored===null?GIFT_N:stored);
  var spent=Math.max(0,used-base-Math.max(0,(pl&&pl.carried)||0));
+ /* A PLAN THAT ENDED BY ITS OWN DATE, never read back stopped (planPast), still
+    carries the paid period's base, because no read was there to restart free
+    the way planFromServer does. Charged from that base, the paid month's
+    opening lands on the free weeks and free reads nought for months, the trap
+    the run measured at step h. What the paid period granted was paid for, so
+    free is charged only for what is opened past it. */
+ if(st==='ended'&&pl&&PLAN_LIVE[pl.status]&&PLAN_BY[pl.tier])
+  spent=Math.max(0,spent-(pl.granted>0?Math.floor(pl.granted):PLAN_BY[pl.tier].grant));
  /* FREE BANKS, RULED IN DECISIONS: "the grant banks, the surface says it is
     banking". Nothing in a one file build starts a new week, so free was ten
     once and then never again. It is derived instead of written: every week
@@ -18365,7 +18481,12 @@ function planAllowance(pl,uniqueCount,giftAt,now){
     planFreeFrom). That record's base sits past the gift because a period was
     written, and on the rule above it read one grant of ten and never another,
     so free opened ten patterns once and then nothing for good. */
- var from=(t.k!=='free')?null:(base===GIFT_N?giftAt:planFreeFrom(pl));
+ /* the end day first, then the gift's end. It was the gift's end whenever base
+    sat on it, which a paid month that opened the moment the gift ran out also
+    does, so the paid months were banked as free weeks: measured, a tier two
+    month ended on day 30 read 60 free on day 40, where free from the end is
+    20 (tests/money.js) */
+ var from=(t.k!=='free')?null:(planFreeFrom(pl,now)||(base===GIFT_N?giftAt:null));
  if(t.k==='free'&&(base===GIFT_N||from)){ weeks=planWeeks(from,now); total=granted*weeks; }
  var left=Math.max(0,total-spent);
  /* WHEN NEW ONES ARRIVE, as an ISO day or null, so a sentence that names the
@@ -18375,7 +18496,9 @@ function planAllowance(pl,uniqueCount,giftAt,now){
  var fromMs=from?new Date(from).getTime():NaN;
  var renews=(t.k==='free')
   ?(isFinite(fromMs)?new Date(fromMs+weeks*WEEK_MS).toISOString():null)
-  :((planState(pl)==='live'&&typeof pl.until==='string'&&!isNaN(Date.parse(pl.until)))?pl.until:null);
+  /* and a card that did not go through names no day: new ones arrive when it
+     does, which is not a date anybody knows (PATTERNS FOLLOW THE MONEY) */
+  :((st==='live'&&pl.status!=='past_due'&&typeof pl.until==='string'&&!isNaN(Date.parse(pl.until)))?pl.until:null);
  /* HOW MANY RUNS THAT IS, which is the unit a person actually acts in. Counted
     against the smallest run and not the largest: a run costs the minimum for
     what was picked, so what an allowance buys is answered by the floor. Saying
@@ -18400,11 +18523,11 @@ function planAllowance(pl,uniqueCount,giftAt,now){
    since; a paid tier read back stopped carries the day it stops as ends, or the
    end of its period as until. null when the record names none, and then free
    reads one grant, the way it always did. */
-function planFreeFrom(pl){
+function planFreeFrom(pl,now){
  if(!pl)return null;
  var ok=function(d){return (typeof d==='string'&&!isNaN(Date.parse(d)))?d:null;};
  if(pl.tier==='free')return ok(pl.since);
- if(planState(pl)==='ended')return ok(pl.ends)||ok(pl.until)||ok(pl.since);
+ if(planState(pl,now)==='ended')return ok(pl.ends)||ok(pl.until)||ok(pl.since);
  return null;}
 /* A LIST SAID THE WAY A PERSON SAYS IT: a, b and c. */
 function planList(a){
@@ -30118,6 +30241,7 @@ if(typeof module!=='undefined'&&module.exports){
                  SIGHT:SIGHT, TIER_KEYS:TIER_KEYS, planRank:planRank, planSight:planSight,
                  planNeed:planNeed, planNmIn:planNmIn, planSightSay:planSightSay, planLockedSay:planLockedSay, planSeesAt:planSeesAt, planAdds:planAdds, planList:planList,
                  PLAN_LIVE:PLAN_LIVE, PLAN_DEAD:PLAN_DEAD,
+                 PLAN_GRACE_MS:PLAN_GRACE_MS, planPast:planPast, PLAN_RENEWAL:PLAN_RENEWAL,
                  planState:planState, planOf:planOf, planSees:planSees,
                  planNextSight:planNextSight, planAllowance:planAllowance,
                  planWeeks:planWeeks, planFreeFrom:planFreeFrom, GIFT_N:GIFT_N, WEEK_MS:WEEK_MS, planInGift:planInGift,
@@ -68067,12 +68191,22 @@ function planSection(m,o){
     back from the server (planFromServer, engine/plan.js). The value says
     "ends" beside "ended" below, one word for one fact at two times. */
  var ends=(st==='live'&&pl&&pl.ends)?planDay(pl.ends):'';
+ /* A CARD THAT DID NOT GO THROUGH STANDS ON THE STATE ROW, 17 October, the pay
+    cycle run. It was said once in a line that fades after three seconds
+    (ui/auth.js) and this row stayed silent, so a person who looked later saw
+    a plan that read as running and an allowance that had stopped moving. New
+    ground waits for the money now (planFromServer, engine/plan.js), so the
+    row says so for as long as it is true, and what still runs beside it. */
+ var late=(st==='live'&&pl&&pl.status==='past_due');
  var h='<div class="sh-sec"><div class="pm-eye">Your plan</div>'
   +'<div class="sh-row"><span>On</span><b>'+esc(t.nm)+'</b></div>'
   +(st==='pending'
     ? '<div class="sh-row"><span>State</span><b>not confirmed</b></div>'
     : (st==='ended'?'<div class="sh-row"><span>State</span><b>ended</b></div>'
-    : (ends?'<div class="sh-row"><span>State</span><b>ends '+esc(ends)+'</b></div>':'')))
+    : (late?'<div class="sh-row" id="planlate"><span>State</span><b>the card did not go through</b></div>'
+      +'<p class="sh-p">Everything you have opened still runs. New patterns wait until the card does, '
+      +'and Manage billing replaces the card.</p>'
+    : (ends?'<div class="sh-row"><span>State</span><b>ends '+esc(ends)+'</b></div>':''))))
   /* THE DAY NEW ONES ARRIVE, 17 October, where a paid tier has less than one
      run left. It read "0 left this month, banking toward a run of 4", and paid
      tiers do not bank (planAllowance). renews is the paid period's end off the
@@ -69650,9 +69784,11 @@ function authPlanTake(b){
  if(typeof CURP==='undefined'||!CURP||typeof PROFILES==='undefined'||PROFILES.indexOf(CURP)<0)
   return 'not a record';
  var r=planFromServer(CURP.plan,b,(CURP.meter&&CURP.meter.unique)||[]);
+ /* a field refused at the boundary carries its own reason, in words, since
+    "a plan this build does not know" said of a share of the month is false */
  if(r.refused){
-  status('The server named a plan this build does not know, '+r.refused
-   +', so this record was not changed.','fail');
+  status(r.why?'The plan the server sent could not be read, so this record was not changed: '+r.why+'.'
+   :'The server named a plan this build does not know, '+r.refused+', so this record was not changed.','fail');
   return 'refused';}
  if(r.same)return 'same';
  var v=validateProfile({v:SCHEMA_V, plan:r.plan});
@@ -69667,8 +69803,12 @@ function authPlanTake(b){
  var nm=PLAN_BY[r.now].nm, wasNm=PLAN_BY[r.was].nm, say='', kind='ok';
  if(r.nowLive&&(r.now!==r.was||!r.wasLive))say=nm+' is on this record now.';
  else if(r.nowLive&&r.status==='past_due'&&r.wasStatus!=='past_due'){
-  say='The last card payment for '+nm+' did not go through. The plan stays on while Stripe '
-   +'tries the card again, and Manage billing replaces the card.'; kind='fail';}
+  /* "the plan stays on" stopped being the whole truth on 17 October, when new
+     ground began to wait for the money (planFromServer, engine/plan.js). The
+     same words stand on Billing's State row (ui/panels.js) for as long as the
+     card has not gone through, so this line is not the only place they live. */
+  say='The card for '+nm+' did not go through. Everything you have opened still runs. New patterns '
+   +'wait until the card does, and Manage billing replaces the card.'; kind='fail';}
  /* STOPPED ON THE PAYMENT PAGE, and turned back on there. Neither moves the
     tier, the status or the period, so neither was said: a person came back
     from pressing stop to silence and a plan that read as running. Said as a
@@ -78349,5 +78489,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005141477"></div>
+<div id="eof" hidden data-len="005151687"></div>
 </body></html>
