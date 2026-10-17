@@ -2883,3 +2883,14 @@ His words: "I'm a reaction person. Emmy's running these designs, and she's got J
 - **A reaction is the unit of input.** He reacts to pictures and files. A mockup round ships with a recommendation the personas made, so his reaction is to something chosen, not to a menu.
 - **This sits on top of round PD (ask at most one question, only when blocked) and round PL (deliver, do not point).** It narrows what counts as blocked.
 - **Same day, the tier names:** "There are four tiers. Free, tier one, tier two, tier three, practitioner." The top rung formerly called tier four is named Practitioner for display. See the entry that renames it.
+
+## The top tier is named Practitioner, 17 October
+
+His words: "There are four tiers. Free, tier one, tier two, tier three, practitioner."
+
+- **The rung that was called Tier four is called Practitioner wherever a person can read it**: the tiers page, the plan sheet, the status line that refuses its checkout, the funnel's tier page (`funnel/buy.html`) and the name the Stripe setup tool gives the product (`tools/stripe-setup.js`). Free, Tier one, Tier two and Tier three keep their names. Practitioner means the rung for somebody who leads other people: manage profiles, build rituals and build accountability for the people you lead.
+- **The display name moved and nothing else did.** The key is still `four` in `PLANS` (`engine/plan.js`), because a key is identity: a record's `plan.tier` holds it, the worked examples carry it, and Stripe finds the price by the lookup key `atuned_tier_four` and the server's setting `STRIPE_PRICE_FOUR`. Renaming it would read every record already on the rung as a tier this build does not know.
+- **The price stays 99 dollars a month and the rung stays closed until built** (`built:false`, round PK, "tier four is closed until built"). `planBuyable('four')` still answers no, and a press still refuses with "Practitioner is not open yet. It opens when the lead suite is built. Nothing was charged."
+- **Stripe is outside this repository and was not touched.** No live Practitioner price exists yet. Whoever creates it names the product Practitioner (the tool now does). If a test mode product was already made as "Atüned tier four", it keeps that name until someone renames it on the Stripe website, because the tool finds an existing price by its key and never edits a product it has made.
+- **This supersedes the "tier four" wording in earlier entries without rewriting them.** Rounds PK, PW, the 1 October sight and price rulings and the 16 October show only entry above say tier four and still hold for the rung keyed `four`. Code comments that quote those rulings keep his words as he said them.
+- **Held by gates.** `tests/engine.js` checks the rung keyed four is named Practitioner and that no plan row says tier four. `tests/copy.js` fails any surface of the app or the funnel that prints "tier four" or "tier 4".

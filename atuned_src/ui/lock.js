@@ -92,7 +92,7 @@ function lockKind(kind){ return LOCK_OF_LAYER[kind]||null; }
 function lockWhat(k){
  var g=SIGHT.filter(function(x){return x.k===k;})[0]; return g?g.what:'';}
 function lockTier(k){
- var n=planNeed(k); return n?n.nm.toLowerCase():'';}
+ var n=planNeed(k); return planNmIn(n);}
 function lockSay(k){
  var t=lockTier(k);
  return lockWhat(k)+(t?' Unlocked on '+t+' and above.':'');}

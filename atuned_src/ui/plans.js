@@ -158,7 +158,7 @@ function planTiersHtml(){
    +(r.now?'<span class="pt-now">You are on this</span>'
      :(r.up&&!r.buy?'<span class="pt-now pt-shut">'+(r.lead?'Opens with the lead suite':'Not open yet')+'</span>'
      :(r.up?'<button class="btn" type="button" data-ptier="'+esc(r.k)+'">Move to '
-       +esc(r.nm.toLowerCase())+'</button>':'')))
+       +esc(planNmIn(PLAN_BY[r.k]))+'</button>':'')))
    +'</div></div>';});
  h+='</div>';
  /* THE FOOT SAYS WHAT A PRESS WILL MEET, before it is pressed. */

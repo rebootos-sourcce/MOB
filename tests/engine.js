@@ -2620,6 +2620,18 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
   'free, the gift and a key this build does not know are never bought');
  /* closing a rung moves nobody: a record on tier four still reads tier four */
  ok(E.planOf({tier:'four',status:'active'}).k==='four','a record already on tier four still reads tier four');
+ /* THE TOP RUNG IS NAMED PRACTITIONER, ruled 17 October: "There are four
+    tiers. Free, tier one, tier two, tier three, practitioner." The name moved
+    and the key did not, so a record on it still reads it (the line above). And
+    no row of the ladder may print the old name, in its name or its sentence,
+    because every surface that names a tier reads it off this table. */
+ ok(E.PLAN_BY.four.nm==='Practitioner','the rung keyed four is named Practitioner, got '+JSON.stringify(E.PLAN_BY.four.nm));
+ ok(!E.PLANS.some(p=>/\btier[ -]?(?:four|4)\b/i.test(p.nm+' '+p.d)),
+  'no plan row says tier four, in its name or its sentence');
+ /* inside a sentence a numbered rung lowercases and Practitioner keeps its
+    capital, so a Move to reads "Move to Practitioner" and not a person to see */
+ ok(E.planNmIn(E.PLAN_BY.one)==='tier one'&&E.planNmIn(E.PLAN_BY.four)==='Practitioner'&&E.planNmIn(null)==='',
+  'a tier named inside a sentence: tier one lowercases, Practitioner does not, nothing is empty');
  /* A DIFFERENCE ONLY MEANS SOMETHING WHEN THE PERIODS MATCH. Free is ten a
     week and tier one is four hundred a month. Subtracting gave 390 more a
     month, which is arithmetic over two different units. */

@@ -4100,7 +4100,8 @@ const tiers=await page.evaluate(async()=>{
  CURP.plan=kept; CURP.meter.unique=keptU; ACC_OPEN='account';
  return o;});
 ok(tiers.there,'Billing carries the tiers group');
-ok(JSON.stringify(tiers.rows)===JSON.stringify(['Free','Tier one','Tier two','Tier three','Tier four']),
+/* the top rung is named Practitioner since 17 October, keyed four still */
+ok(JSON.stringify(tiers.rows)===JSON.stringify(['Free','Tier one','Tier two','Tier three','Practitioner']),
  'one row per tier, in ladder order, the gift left out: '+JSON.stringify(tiers.rows));
 ok(JSON.stringify(tiers.now)==='["Free"]','the tier in force is marked, and only it: '+JSON.stringify(tiers.now));
 ok(tiers.presses.join()===(tiers.closed4?'one,two,three':'one,two,three,four'),
@@ -4111,9 +4112,9 @@ if(tiers.closed4){
  ok(/Not open yet/.test(tiers.rowLine4||'')&&/None of it is built/.test(tiers.rowLine4||''),
   'and its line says it is not open and the suite is not built: '+JSON.stringify(tiers.rowLine4));
  ok(tiers.called4===null,'a checkout for tier four never reaches the billing host: '+JSON.stringify(tiers.called4));
- ok(/Tier four is not open yet/.test(tiers.status4)&&/Nothing was charged/.test(tiers.status4),
+ ok(/Practitioner is not open yet/.test(tiers.status4)&&/Nothing was charged/.test(tiers.status4),
   'and the status line says so, by name: '+JSON.stringify(tiers.status4));
- ok(!tiers.sheet3up,'a person on tier three is offered no Move to tier four on the plan sheet');
+ ok(!tiers.sheet3up,'a person on tier three is offered no Move to Practitioner on the plan sheet');
 }
 ok(tiers.called&&tiers.called.what==='checkout'&&tiers.called.tier==='two',
  'a press goes through planOpen to the same seam as Move to, with its own tier: '+JSON.stringify(tiers.called));

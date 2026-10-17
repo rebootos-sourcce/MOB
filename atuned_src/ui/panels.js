@@ -1297,7 +1297,7 @@ function planSection(m,o){
  if(worth)h+='<p class="sh-p">'+esc(worth)+'</p>';
  h+='<div class="sh-act">'
   +(up?'<button class="btn pri" id="planup" data-tier="'+esc(up.to.k)+'">Move to '
-    +esc(up.to.nm.toLowerCase())+'</button>':'')
+    +esc(planNmIn(up.to))+'</button>':'')
   +'<button class="btn" id="planman">Manage billing</button></div>'
   /* WHAT THE BUTTON OPENS, said before it is pressed. Manage billing used to
      answer "not built yet" on a press, so the line beside it only said where
