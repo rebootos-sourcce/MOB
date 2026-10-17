@@ -4326,7 +4326,7 @@
  },
  "p5-gift-390.png": {
   "tip": null,
-  "lowest": 570,
+  "lowest": 651,
   "H": 844,
   "clipped": [],
   "scrolls": false,
@@ -4805,18 +4805,16 @@
   "H": 844,
   "clipped": [],
   "scrolls": false,
-  "words": 54,
+  "words": 46,
   "presses": 29,
   "small": [],
   "minText": 6.54,
-  "minTextWhat": "You are here Free, 10 patterns a week",
+  "minTextWhat": "Tier one",
   "minMark": 4.45,
   "minMarkWhat": "dk",
   "fails": [],
   "lines": [
    "Open more of your reading.",
-   "Free, 10 patterns a week",
-   "You are here",
    "The payment did not go through. Nothing was charged.",
    "Tier one",
    "400",
@@ -4879,7 +4877,7 @@
  },
  "p5-stop-390.png": {
   "tip": null,
-  "lowest": 484,
+  "lowest": 654,
   "H": 844,
   "clipped": [],
   "scrolls": false,
@@ -5153,7 +5151,7 @@
  },
  "p5-stop-done-390.png": {
   "tip": null,
-  "lowest": 271,
+  "lowest": 551,
   "H": 844,
   "clipped": [],
   "scrolls": false,
@@ -5325,7 +5323,7 @@
  },
  "p5-open-tip-locked-1600.png": {
   "tip": {
-   "text": "Hyper complexes Complexes running together. Opens at tier three",
+   "text": "Hyper complexes Opens at tier three Complexes running together.",
    "min": 9.22,
    "words": 9
   },
@@ -5376,8 +5374,8 @@
    "Terms",
    "Privacy",
    "Hyper complexes",
-   "Complexes running together.",
-   "Opens at tier three"
+   "Opens at tier three",
+   "Complexes running together."
   ],
   "sheetH": 932
  },
@@ -5495,7 +5493,7 @@
  },
  "p5-open-tip-locked-390.png": {
   "tip": {
-   "text": "Hyper complexes Complexes running together. Opens at tier three",
+   "text": "Hyper complexes Opens at tier three Complexes running together.",
    "min": 9.22,
    "words": 9
   },
@@ -5545,8 +5543,8 @@
    "Terms",
    "Privacy",
    "Hyper complexes",
-   "Complexes running together.",
-   "Opens at tier three"
+   "Opens at tier three",
+   "Complexes running together."
   ],
   "sheetH": 800
  },

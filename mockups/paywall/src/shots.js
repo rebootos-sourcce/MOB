@@ -35,6 +35,9 @@ function measure(){
  let lowest=0,clipped=[];
  sheet.querySelectorAll('*').forEach(el=>{if(!vis(el)||el.closest('.vh'))return;const r=el.getBoundingClientRect();if(r.bottom>lowest)lowest=r.bottom;
   if(r.bottom>H+0.5||r.right>Wd+0.5||r.bottom>sr.bottom+0.5)clipped.push((el.className&&el.className.baseVal!==undefined?el.className.baseVal:el.className)+' '+Math.round(r.bottom));});
+ /* nothing may hang out of its own card (caught by eye on p5's failed state at 390) */
+ sheet.querySelectorAll('.c5,.card').forEach(c=>{const cr=c.getBoundingClientRect();c.querySelectorAll('*').forEach(el=>{if(!vis(el))return;const r=el.getBoundingClientRect();
+  if(r.bottom>cr.bottom+0.5||r.right>cr.right+0.5)clipped.push('out of its card: '+(el.className&&el.className.baseVal!==undefined?el.className.baseVal:el.className)+' '+Math.round(r.bottom-cr.bottom));});});
  const scrolls=sheet.scrollHeight>sheet.clientHeight+1||document.documentElement.scrollHeight>H+1;
  /* words and presses */
  const cl=sheet.cloneNode(true);cl.querySelectorAll('.vh,.status').forEach(n=>n.remove());

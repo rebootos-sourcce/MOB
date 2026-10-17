@@ -274,10 +274,16 @@ body.punch .tipbox{box-shadow:none;background:color-mix(in srgb,var(--panel-2) 7
 .ft5 .links{margin:0}
 
 /* ---- signed out: the chosen card beside the account step ---- */
-.step5{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:14px;align-items:stretch}
-.step5 .acct{align-content:center;max-width:460px}
-.step5 .acct .why b{color:var(--ink);font-weight:600;font-size:22px}
+.step5{flex:1;min-height:0;display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-top:14px;align-items:stretch}
+/* the chosen card keeps its size from the three-up, and the form takes the rest */
+.step5 .acct{align-content:center;justify-self:center;width:min(520px,100%);gap:14px}
+.step5 .acct .why b{color:var(--ink);font-weight:600;font-size:28px}
+.step5 .acct label{font-size:16px}
+.step5 .acct input{min-height:56px;font-size:18px;padding:0 16px}
+.step5 .acct .go{min-height:60px;font-size:19px;border-radius:30px;margin-top:6px}
+.step5 .acct .alt{font-size:16px}
 .step5 .act[hidden]{display:none}
+.step5 .c5{justify-content:center;gap:clamp(20px,5vh,56px)}
 
 /* ---- the tooltip ---- */
 .tip5{position:fixed;z-index:60;display:none;background:#3A3D4A;color:var(--ink);border-radius:var(--r-s);padding:12px 14px;font-size:14.5px;line-height:1.4;pointer-events:none}
@@ -288,7 +294,11 @@ body.punch .tipbox{box-shadow:none;background:color-mix(in srgb,var(--panel-2) 7
 .tip5.dn::after{top:-8px;clip-path:polygon(50% 0,100% 100%,0 100%)}
 .tip5 b{font-size:16px;font-weight:600}
 .tip5 .m{color:var(--ink)}
-.tip5 .tl{display:flex;align-items:center;gap:8px;color:var(--ink);font-weight:600;margin-top:2px}
+.tip5 .r1{display:contents}
+.tip5 .tl{order:2}
+.tip5 .r1 b{order:0}
+.tip5 .m{order:1}
+.tip5 .tl{display:flex;align-items:center;gap:8px;color:var(--ink);font-weight:600}
 .tip5 .tl svg{width:18px;height:18px;flex:none}
 
 /* ---- the gift: six lit rings, nothing to buy ---- */
@@ -300,6 +310,12 @@ body.punch .tipbox{box-shadow:none;background:color-mix(in srgb,var(--panel-2) 7
 
 /* ---- stop, the same family ---- */
 .p5stop .facts .v{font-size:18px}
+@media (max-width:760px){
+ .p5stop{display:flex;flex-direction:column;justify-content:center}
+ .p5stop .t1{margin-top:0;font-size:28px}
+ .p5stop .facts li{padding:16px}
+ .p5stop .facts .v{font-size:19px}
+}
 
 /* ---- the phone ---- */
 @media (max-width:760px){
@@ -342,10 +358,24 @@ body.punch .tipbox{box-shadow:none;background:color-mix(in srgb,var(--panel-2) 7
  .ft5 .links a,.ft5 .links button{padding:0 7px;font-size:13px}
  .ft5 .rf5{font-size:12.5px;margin-top:4px}
  .step5{grid-template-columns:1fr;gap:18px;margin-top:8px;align-content:center}
+ .step5 .acct .why b{font-size:19px}
+ .step5 .acct input{min-height:48px;font-size:16px}
+ .step5 .acct .go{min-height:52px;font-size:17px}
  .step5 .c5{grid-template-areas:"top pr" "rg rg"}
- .step5 .acct .why b{font-size:17px}
  .gift5 .t1{font-size:26px;padding:0 30px}
- .giftrgs{margin-top:28px;gap:6px}
+ /* the refusal is the newest fact, so on a phone it takes the marker's place */
+ .p5.failed .hd5 .herechip{display:none}
+ /* a compact tooltip: the name and its tier on one row, the meaning under it,
+    so it sits inside the card's own top row and cuts no words in half */
+ .tip5{padding:9px 12px;font-size:14px}
+ .tip5 .r1{display:flex;align-items:center;justify-content:space-between;gap:10px;order:0}
+ .tip5 .r1 b{font-size:15px;white-space:nowrap}
+ .tip5 .tl{font-size:13.5px;gap:6px;white-space:nowrap}
+ .tip5 .tl svg{width:15px;height:15px}
+ .giftrgs{margin-top:28px;gap:18px;grid-template-columns:repeat(3,1fr);width:min(320px,100%)}
+ .giftrgs .rg5{aspect-ratio:1;height:auto}
+ .giftrgs .rg5 .dk{width:100%;height:100%}
+ .gift5 .t1{text-wrap:balance}
  .gift5 .gq{font-size:15px;margin:24px 0 18px}
 }
 
@@ -729,7 +759,7 @@ function render(){
  RID=0;
  const step2=!SIGNED&&STATE.go;
  const chosen=step2?TIER(STATE.pick||DOOR||'one'):null;
- return '<div class="sheet p5" role="dialog" aria-modal="true" aria-labelledby="t1">'+xBtn()+head5()
+ return '<div class="sheet p5'+(S==='failed'?' failed':'')+'" role="dialog" aria-modal="true" aria-labelledby="t1">'+xBtn()+head5()
   +(step2
    ?'<div class="step5">'+card5(chosen).replace('<div class="act"><button class="go','<div class="act" hidden><button class="go')+acct5(chosen)+'</div>'
    :'<div class="cards5">'+TIERS.map(card5).join('')+'</div>'+prac5())
@@ -766,11 +796,11 @@ function tipBox(){if(!TIP){TIP=document.createElement('div');TIP.className='tip5
 function tipShow(el,pin){
  const b=tipBox();
  if(el.classList.contains('rg5')){const k=el.dataset.k;
-  b.innerHTML='<b>'+WORD[k]+'</b><span class="m">'+MEAN[k]+'</span><span class="tl">'
-   +(el.dataset.tl===W5.seeNow||el.dataset.tl==='Open on your gift'?staysSvg:lockSvg())+'<span>'+el.dataset.tl+'</span></span>';}
+  b.innerHTML='<span class="r1"><b>'+WORD[k]+'</b><span class="tl">'
+   +(el.dataset.tl===W5.seeNow||el.dataset.tl==='Open on your gift'?staysSvg:lockSvg())+'<span>'+el.dataset.tl+'</span></span></span><span class="m">'+MEAN[k]+'</span>';}
  else b.innerHTML='<span class="m">'+document.getElementById(el.dataset.tip5).textContent+'</span>';
  b.classList.add('on');TIPON=el;TIPPIN=!!pin;
- const r=el.getBoundingClientRect(),w=Math.min(300,innerWidth-24);b.style.width=w+'px';
+ const r=el.getBoundingClientRect(),w=Math.min(innerWidth<761?340:300,innerWidth-24);b.style.width=w+'px';
  const L=Math.max(12,Math.min(innerWidth-w-12,r.left+r.width/2-w/2));b.style.left=L+'px';
  const h=b.offsetHeight;let T=r.top-h-12,up=true;if(T<52){T=r.bottom+12;up=false;}b.style.top=T+'px';
  b.classList.toggle('up',up);b.classList.toggle('dn',!up);b.style.setProperty('--cx',Math.round(Math.max(18,Math.min(w-18,r.left+r.width/2-L)))+'px');

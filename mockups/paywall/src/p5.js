@@ -125,7 +125,7 @@ function render(){
  RID=0;
  const step2=!SIGNED&&STATE.go;
  const chosen=step2?TIER(STATE.pick||DOOR||'one'):null;
- return '<div class="sheet p5" role="dialog" aria-modal="true" aria-labelledby="t1">'+xBtn()+head5()
+ return '<div class="sheet p5'+(S==='failed'?' failed':'')+'" role="dialog" aria-modal="true" aria-labelledby="t1">'+xBtn()+head5()
   +(step2
    ?'<div class="step5">'+card5(chosen).replace('<div class="act"><button class="go','<div class="act" hidden><button class="go')+acct5(chosen)+'</div>'
    :'<div class="cards5">'+TIERS.map(card5).join('')+'</div>'+prac5())
@@ -162,11 +162,11 @@ function tipBox(){if(!TIP){TIP=document.createElement('div');TIP.className='tip5
 function tipShow(el,pin){
  const b=tipBox();
  if(el.classList.contains('rg5')){const k=el.dataset.k;
-  b.innerHTML='<b>'+WORD[k]+'</b><span class="m">'+MEAN[k]+'</span><span class="tl">'
-   +(el.dataset.tl===W5.seeNow||el.dataset.tl==='Open on your gift'?staysSvg:lockSvg())+'<span>'+el.dataset.tl+'</span></span>';}
+  b.innerHTML='<span class="r1"><b>'+WORD[k]+'</b><span class="tl">'
+   +(el.dataset.tl===W5.seeNow||el.dataset.tl==='Open on your gift'?staysSvg:lockSvg())+'<span>'+el.dataset.tl+'</span></span></span><span class="m">'+MEAN[k]+'</span>';}
  else b.innerHTML='<span class="m">'+document.getElementById(el.dataset.tip5).textContent+'</span>';
  b.classList.add('on');TIPON=el;TIPPIN=!!pin;
- const r=el.getBoundingClientRect(),w=Math.min(300,innerWidth-24);b.style.width=w+'px';
+ const r=el.getBoundingClientRect(),w=Math.min(innerWidth<761?340:300,innerWidth-24);b.style.width=w+'px';
  const L=Math.max(12,Math.min(innerWidth-w-12,r.left+r.width/2-w/2));b.style.left=L+'px';
  const h=b.offsetHeight;let T=r.top-h-12,up=true;if(T<52){T=r.bottom+12;up=false;}b.style.top=T+'px';
  b.classList.toggle('up',up);b.classList.toggle('dn',!up);b.style.setProperty('--cx',Math.round(Math.max(18,Math.min(w-18,r.left+r.width/2-L)))+'px');

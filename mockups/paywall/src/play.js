@@ -30,7 +30,7 @@ ok(await pg.$$eval('.rg5.came',e=>e.length)===3&&await pg.$$eval('.rg5.came',e=>
 ok((await pg.getAttribute('.c5.door','data-pt'))==='two'&&(await pg.$$eval('.c5 .go:not(.quiet)',e=>e.length))===1,'p5 the door card is tier two, the one solid button');
 ok(await pg.$$eval('.c5',cs=>cs.map(c=>c.querySelectorAll('.rg5.on').length).join(','))==='1,2,6','p5 tiers light 1, 2 and 6 rings');
 await pg.hover('.c5[data-pt="one"] .rg5[data-k="hy"]');
-ok(await pg.isVisible('.tip5.on')&&(await pg.textContent('.tip5'))==='Hyper complexesComplexes running together.Opens at tier three','p5 hover a locked ring: name, meaning, the tier that opens it');
+ok(await pg.isVisible('.tip5.on')&&(await pg.textContent('.tip5 b'))==='Hyper complexes'&&(await pg.textContent('.tip5 .m'))==='Complexes running together.'&&(await pg.textContent('.tip5 .tl'))==='Opens at tier three','p5 hover a locked ring: name, meaning, the tier that opens it');
 await pg.mouse.move(5,500);await pg.waitForTimeout(50);ok(!(await pg.isVisible('.tip5.on')),'p5 the tooltip leaves with the pointer');
 await pg.focus('.c5[data-pt="two"] .rg5[data-k="mask"]');ok((await pg.textContent('.tip5 b'))==='Masks'&&(await pg.textContent('.tip5 .tl'))==='Opens at tier three','p5 keyboard focus on a ring shows its tooltip');
 await pg.focus('.c5[data-pt="two"] .rg5[data-k="sab"]');await pg.keyboard.press('Tab');ok(await pg.isVisible('.tip5.on')&&(await pg.textContent('.tip5 b'))==='Complexes','p5 Tab to the next ring moves the tooltip with it');
