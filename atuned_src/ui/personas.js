@@ -726,7 +726,7 @@ function showLine(what){
  var nx=planNextSight(showOwnPlan());
  var tail=nx
   ?(function(t){return t.charAt(0).toUpperCase()+t.slice(1);})(planList(nx.adds.map(function(g){return g.nm;})))
-   +' show here, and on your own profile they open on '+nx.to.nm.toLowerCase()+'.'
+   +' show here, and on your own profile they open on '+planNmIn(nx.to)+'.'
   :'Open your own profile to run it.';
  return head+(does?' On your own profile, '+does+'.':'')+' '+tail;}
 /* the same line, where a control that cannot run on an example used to sit */
