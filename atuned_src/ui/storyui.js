@@ -647,6 +647,11 @@ function stDraftSave(){
  if(!ok&&!STV.draftFail&&typeof status==='function')
   status('This browser would not save. Your words are in the box and not on your record, so copy them before you reload.','fail');
  STV.draftFail=!ok;}
+/* the half second is a debounce with no flush, so a tab that closes or reloads
+   inside it loses the sentence the person was in, and never says so: the write
+   never reaches the store at all. The same flush ui/personas.js carries. */
+if(typeof addEventListener==='function')['pagehide','visibilitychange'].forEach(function(ev){
+ addEventListener(ev,function(){ if(STV.draftT)stDraftSave(); });});
 /* back into the box when the box is empty, which is a reload or a commit of
    somebody else's words through stCommit */
 function stDraftBack(){
