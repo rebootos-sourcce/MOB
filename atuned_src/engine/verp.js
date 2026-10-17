@@ -361,6 +361,8 @@ function verpScan(text){
    at=src.indexOf(t,at+1);}});
  return {hits:hits,total:tot};}
 function verpApply(text){var s=verpScan(text);if(!s.total)return s;
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('story')){s.refused='example';return s;}
  Object.keys(s.hits).forEach(function(g){VERPMIX[g]+=s.hits[g];});return s;}
 function verpShare(){
  var tot=Object.keys(VERPMIX).reduce(function(a,k){return a+VERPMIX[k];},0);
@@ -486,6 +488,8 @@ function leanScan(text){
  return out;}
 
 function leanApply(text){var s=leanScan(text);
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('story')){s.refused='example';return s;}
  LEANMIX.benign+=s.benign; LEANMIX.malignant+=s.malignant;
  LEANMIX.emp+=s.emp; LEANMIX.empLack+=s.empLack;
  LEANMIX.acc+=s.acc; LEANMIX.accLack+=s.accLack;

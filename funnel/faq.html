@@ -58,6 +58,8 @@ html{scroll-behavior:smooth}
 :root{--measure:64ch}
 .wrap{max-width:1120px;margin:0 auto;padding:40px var(--g3) 64px}
 .m{max-width:var(--measure)}
+/* a link in an answer is prose, held to the 24 pixel floor by tests/funnel.js */
+.m a{color:var(--accent);padding:2px 0}
 
 .mark{display:grid;gap:4px;justify-items:center;text-align:center}
 h1{font-size:44px;line-height:1;letter-spacing:-.025em;margin:0;font-weight:600}
@@ -329,13 +331,12 @@ a.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 </section>
 
 <!-- 10. Section 71: "The receiving AI must never invent privacy guarantees."
-     Every line here is a row of the privacy draft, sections 3 and 4, checked
+     Every line here is a row of the Privacy page, sections 3 and 4, checked
      against ui/auth.js ("It does not sync") and the dictation in
-     ui/storyui.js. Rows the draft marks not built (Google sign in, the name
-     lookup, error reports, the morning note) are not listed. The draft itself
-     is not linked: it carries a warning that it must not go live until
-     counsel has read it. When it does, link it here and re-read this answer
-     against it, line by line.
+     ui/storyui.js. The page went live on 16 October and is linked at the end
+     of this answer, which was re-read against it line by line that day. The
+     voice row said "if you pick a voice that runs online", and there is one
+     voice, ElevenLabs, and it is on unless the person turns it off.
      One row is not in the draft and is read off ui/auth.js instead, WP2a-4:
      the first visit, which sends without being chosen (authFunnelStart and
      authFunnelCheckpoint), so "only when you choose them" was false. -->
@@ -357,9 +358,13 @@ a.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
    <li><b>An account.</b> Your sign in details, if you make one.</li>
    <li><b>Help.</b> A message you send us, posted to a channel on our Discord server.</li>
    <li><b>Dictation.</b> Your speech, which your browser's maker turns into text.</li>
-   <li><b>A voice.</b> The lines of a release, if you pick a voice that runs online.</li>
+   <li><b>The voice.</b> Each line a release speaks, sent through our server to
+   ElevenLabs, a company that turns text into speech. It is on unless you turn it
+   off.</li>
    <li><b>Payment.</b> Your card, typed on Stripe's page and never into Atüned.</li>
   </ul>
+  <p class="m"><a href="privacy.html">Privacy</a> names every company that gets
+  anything, and what our server keeps.</p>
  </div>
 </section>
 
@@ -373,6 +378,8 @@ Nothing you answer leaves your browser.</p>
 <nav class="nav foot-nav"><a href="index.html">What it reads</a>
  <a href="about.html">About</a>
  <a href="buy.html">Tiers</a>
+ <a href="privacy.html">Privacy</a>
+ <a href="terms.html">Terms</a>
  <a href="quiz.html">Take quiz</a></nav>
 <p class="foot">&copy; 2026 Tula Unified LLC. All rights reserved.</p>
 

@@ -202,6 +202,8 @@ function cqSpan(){
    what moved, by law, and CQ before and after as that record reads. */
 function releaseWork(p,keys){
  var out={laws:{}, cq0:cqSum(), cq1:null, n:0};
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('release',p)){out.cq1=out.cq0;out.refused='example';return out;}
  if(!p||!keys||!keys.length){out.cq1=out.cq0;return out;}
  if(!p.work||typeof p.work!=='object'||Array.isArray(p.work))p.work={};
  var bySeat={};
@@ -220,7 +222,8 @@ function releaseWork(p,keys){
    number. The count above would survive a same number answer, because it is
    keyed to the value; this is what the intake calls when a person changes an
    answer, so a new measurement always wins over the model's estimate. */
-function lawAnswered(p,nm){if(p&&p.work&&p.work[nm])delete p.work[nm];}
+function lawAnswered(p,nm){if(showRefuse('intake',p))return false;
+ if(p&&p.work&&p.work[nm])delete p.work[nm]; return true;}
 /* ONE ADDRESS'S SHARE OF THE WRITE, and the only copy of it. It sat inline in
    relCoolDown, and the live shadow row below has to run the same arithmetic
    ahead of the commit. Moved here from ui/release.js in round QD, body
@@ -231,6 +234,8 @@ function lawAnswered(p,nm){if(p&&p.work&&p.work[nm])delete p.work[nm];}
    first write moves anything, and the projection has to read them the same
    way. */
 function relWrite(q,n,w0){
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('release'))return {d:0,w1:w0,refused:'example'};
  var d=-Math.round(w0*0.21+2);
  var w1=Math.max(0,w0+d);
  var share=Math.abs(d)/10/Math.max(1,q.filter(function(x){return x.cf===n.cf;}).length);
