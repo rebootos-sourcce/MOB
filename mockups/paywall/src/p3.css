@@ -1,0 +1,105 @@
+/* P3, the figure leads. Dark lighting, drawn flat: one hairline on the sheet, no glow,
+   no gradient. A ring a tier opens fills as a flat band of the accent. */
+.p3{width:min(1120px,calc(100vw - 48px));padding-top:24px}
+.p3 .hd{text-align:center;padding:0 56px}
+.hero{display:grid;grid-template-columns:1fr 380px 1fr;gap:24px;align-items:center;margin-top:8px}
+.figwrap{position:relative;width:380px;height:380px}
+.fig{width:100%;height:100%;display:block}
+.fig .body{fill:var(--panel-2);stroke:var(--mid);stroke-width:9;stroke-linejoin:round}
+.fig .rg{fill:none;stroke:var(--dim);stroke-width:1;stroke-dasharray:1.2 2.4;transition:stroke-width var(--t-element) var(--ease-out)}
+.fig .rg.seen{stroke:var(--ink);stroke-dasharray:none;stroke-width:1.4}
+.fig .rg.tch{stroke:var(--ink);stroke-width:1.3}
+.fig .rg.fill{stroke:var(--accent);stroke-dasharray:none;stroke-width:3.5}
+.ondisc{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);display:flex;gap:10px}
+.ondisc .om{width:36px;height:36px;border-radius:18px;background:var(--panel-2);display:flex;align-items:center;justify-content:center;color:var(--mid)}
+.ondisc .om svg{width:20px;height:20px}
+.ondisc .om.fill{background:var(--accent);color:var(--on-accent)}
+.lbs{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.lbs.left{justify-items:end;text-align:right}
+.lb{display:flex;gap:10px;align-items:flex-start;max-width:280px}
+.lbs.left .lb{flex-direction:row-reverse}
+.lb .disc{width:36px;height:36px;border-radius:18px;background:var(--panel-2);display:flex;align-items:center;justify-content:center;color:var(--ink);flex:none}
+.lb .disc .lk{background:var(--panel-2)}
+.lb .tx{display:block;line-height:1.35}
+.lb b{font-size:15px;font-weight:600;color:var(--ink)}
+.lb .m{display:block;font-size:13.5px;color:var(--mid)}
+.lb .tg{display:block;font-size:13px;color:var(--mid);font-weight:500}
+.lb.fill .disc{background:var(--accent);color:var(--on-accent)}
+.lb.fill .tg,.lb.tch .tg{color:var(--ink)}
+.segs{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:20px;border-radius:var(--r);overflow:hidden}
+.seg{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:2px;border:0;background:var(--panel-2);color:var(--ink);padding:14px 20px 14px;cursor:pointer;font:inherit;min-height:44px}
+div.seg{cursor:default}
+.seg .cn{font-size:16px;font-weight:600;color:var(--mid)}
+.seg .prw{display:flex;align-items:baseline;gap:8px}
+.seg .prw .num{font-size:40px;font-weight:600;letter-spacing:-.02em;line-height:1.05}
+.seg .per{font-size:15px;color:var(--mid)}
+.seg .ln{font-size:14.5px}
+.seg .fl{display:flex;align-items:center;gap:6px;font-size:14.5px;font-weight:600;margin-top:4px}
+.seg .pm{width:18px;height:18px}
+.seg .sa .sh{display:none}
+.plg{display:none}
+.srg{display:none}
+.seg .sa{margin-top:10px;font-size:16px;font-weight:600;color:var(--accent)}
+.seg .sa.shutx{display:flex;align-items:center;gap:6px;color:var(--mid);font-weight:500}
+.seg .sa.shutx svg{width:18px;height:18px}
+.seg.now{box-shadow:inset 4px 0 0 var(--accent)}
+.seg.now .sa{color:var(--ink)}
+/* the preview, flat: the segment pointed at takes the picked colour while it is pointed at */
+.seg.pv{background:var(--pick)}
+.seg.pv .cn,.seg.pv .per,.seg.pv .sa{color:var(--ink)}
+button.seg.pv .sa{text-decoration:underline;text-underline-offset:4px}
+.p3 .gl{text-align:center;margin-top:10px}
+.step2{display:grid;grid-template-columns:1fr 1.3fr;gap:20px;margin-top:18px;align-items:start}
+.step2 .seg{border-radius:var(--r);background:var(--pick)}
+.step2 .seg .cn,.step2 .seg .per{color:var(--ink)}
+
+@media (max-width:760px){
+ .p3{padding-top:10px;width:100%}
+ .p3.s2 .plg{display:none}
+ .p3.s2 .figwrap{width:120px;height:120px}
+ .lbs{display:none!important}
+ .plg{display:grid;list-style:none;margin:4px 0 0;padding:0;gap:1px}
+ .pl{display:grid;grid-template-columns:20px 1fr;gap:8px;align-items:center;font-size:13px;white-space:nowrap}
+ .pl .mk{color:var(--ink)}
+ .pl .mk .lk{background:var(--panel)}
+ .pl b{font-size:14px;font-weight:600}
+ .pl .m{color:var(--mid)}
+ .seg .sa .lg{display:none}
+ .seg .sa .sh{display:inline}
+ .p3 .hd{text-align:left;padding:0 0 0 46px}
+ .p3 .hd .t1{padding-top:8px;font-size:22px}
+ .hero{grid-template-columns:1fr;gap:6px;margin-top:4px}
+ .figwrap{width:180px;height:180px;margin:0 auto}
+ .srg{display:flex;gap:3px;color:var(--ink);margin-top:4px}
+ .srg svg{width:14px;height:14px;stroke-width:1.7}
+ .ondisc{bottom:-2px}
+ .ondisc .om{width:30px;height:30px}
+ .ondisc .om svg{width:17px;height:17px}
+ .lbs{order:1;gap:1px}
+ .lbs.left{order:2;justify-items:start;text-align:left;margin:0}
+ .lbs.left .lb{flex-direction:row}
+ .lb{max-width:none;align-items:center;gap:8px}
+ .lb .disc{width:26px;height:26px}
+ .lb .disc .mk{width:17px!important;height:17px!important}
+ .lb .tx{display:block}
+ .lb b{font-size:14px}
+ .lb .m,.lb .tg{display:inline;font-size:13px}
+ .lb .tg{margin-left:4px}
+ .lb .tg::before{content:"\00b7\00a0"}
+ .segs{margin-top:8px;border-radius:var(--r-s)}
+ .seg{padding:8px 10px}
+ .seg .cn{font-size:14px}
+ .seg .prw{flex-wrap:wrap;gap:0 4px}
+ .seg .prw .num{font-size:26px}
+ .seg .per{font-size:12.5px;white-space:nowrap}
+ .seg .ln{font-size:12.5px;line-height:1.3}
+ .seg .fl{font-size:12.5px}
+ .seg .pm{width:14px;height:14px}
+ .seg .sa{margin-top:4px;font-size:14px}
+ .seg .sa.shutx{font-size:12.5px;white-space:nowrap;gap:4px}
+ .seg .sa.shutx svg{width:15px;height:15px}
+ .p3 .gl{margin-top:6px}
+ .step2{grid-template-columns:1fr;gap:10px;margin-top:10px}
+ .p3 .foot{text-align:left}
+ .p3 .links{justify-content:flex-start;margin-left:-8px}
+}
