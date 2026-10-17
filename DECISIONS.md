@@ -2874,6 +2874,16 @@ His words: "something we need to do with those user profiles where the customer 
 - **One guard, in the engine.** `showOnly` and `showRefuse` (`engine/showonly.js`) refuse every engine writer while an example is loaded, so a control added later is refused too. Held by `tests/examples-showonly.js`.
 - **Default taken, recorded as his to overrule:** the practitioner page is not affected. It reads examples and writes only its own notes to the device, never to the example.
 
+## The personas decide, the owner reacts, 17 October
+
+His words: "I'm a reaction person. Emmy's running these designs, and she's got Jimmy Ivy [Jony Ive] and a bunch of other people. If you're asking me stupid-ass questions that these personas should already be able to answer, then we've got a problem."
+
+- **Design, copy, layout and product-judgment questions are answered by the personas** (Emmy and her lenses, and the directors), not put to him. The seat picks the persona's answer, builds it, and shows him a picture or a playable file to react to.
+- **He is asked only for four things:** money (prices, spend), legal wording, safety consent, and facts only he can know (his own history, who he knows, what he intends).
+- **A reaction is the unit of input.** He reacts to pictures and files. A mockup round ships with a recommendation the personas made, so his reaction is to something chosen, not to a menu.
+- **This sits on top of round PD (ask at most one question, only when blocked) and round PL (deliver, do not point).** It narrows what counts as blocked.
+- **Same day, the tier names:** "There are four tiers. Free, tier one, tier two, tier three, practitioner." The top rung formerly called tier four is named Practitioner for display. See the entry that renames it.
+
 ## The top tier is named Practitioner, 17 October
 
 His words: "There are four tiers. Free, tier one, tier two, tier three, practitioner."
