@@ -2453,6 +2453,36 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
  ok(planNextSight(mk('one')).to.k==='two'&&planNextSight(mk('two')).to.k==='three','and each step names the next rung that adds something');
  ok(planNextSight(mk('three'))===null&&planNextSight(mk('four'))===null,'at tier three there is no next rung of sight to sell');
  ok(planNextSight({tier:'three',status:'canceled'}).to.k==='one','a lapsed tier three is offered tier one, the rung it actually stands on');
+ /* THE GIFT SEES EVERYTHING, AND IS STILL NOT A TIER. The ruling is
+    DECISIONS.md, "100 patterns, free, with everything visible", kept at round
+    PK and REVIEW-arch/TALLY.md ruling 8, "whole reading visible while it
+    lasts". planSight read the plan alone, so planSees(null,'sab') was false
+    for a person who had opened nothing. The gift reaches sight as its own
+    input, off the meter, and never as a plan: the assertion above that a
+    record saying tier gift grants nothing still holds, and nothing here may
+    put the gift on a rung. */
+ {
+  const {planInGift,GIFT_N}=E;
+  ok(planInGift(0)&&planInGift([])&&planInGift(GIFT_N-1)&&!planInGift(GIFT_N)&&!planInGift(GIFT_N+40),
+   'the gift is in force until the hundredth pattern is opened, and not after');
+  ok(planInGift(new Array(GIFT_N-1).fill('k'))&&!planInGift(new Array(GIFT_N).fill('k')),'it takes the list of keys as well as the count');
+  ok(planInGift(undefined)&&planInGift('x')&&planInGift(NaN)&&planInGift(-5),'a count that is not a number reads as nothing opened, the way the allowance reads it');
+  ok([0,1,GIFT_N-1,GIFT_N,GIFT_N+1,250].every(n=>planInGift(n)===planAllowance(null,n).inGift),
+   'sight and the allowance agree on who is inside the gift, at every edge');
+  const g=planSight(null,true);
+  ok(g.all&&g.locked.length===0&&SIGHT.every(r=>g.sees[r.k]===true),'inside the gift every row of SIGHT is seen and nothing is locked');
+  ok(g.tier==='free'&&g.gift===true&&planOf(null).k==='free','and the rung in force is still free: the gift opens sight and moves nobody up the ladder');
+  ok(SEE_ORDER.every(r=>planSees(null,r,true))&&planSees(null,'reg',true)&&planSees(null,'mask',true),
+   'saboteurs, complexes, hyper complexes, character, the registers and the masks are all visible on the gift');
+  ok(planSees(null,'nonsense',true)===false,'a key SIGHT does not hold is still not visible, gift or not');
+  ok(SEE_ORDER.every(r=>!planSees(null,r,false)&&!planSees(null,r)),'with the gift spent, or not asked, free sees exactly what it saw before');
+  ok(planSight(mk('one'),true).all&&planSight(mk('one'),false).locked.map(x=>x.k).join()==='cx,hy,sup,reg,mask',
+   'a paid tier inside the gift sees everything, and after it sees its own rung');
+  ok(planNextSight(null,true)===null&&planNextSight(null,false).to.k==='one','inside the gift there is no next rung of sight to name');
+  ok(E.planSightSay(null,true)==='your own reading, with saboteurs, complexes, hyper complexes, character, the registers and the masks, while your gift lasts',
+   'what the gift sees is said off the table, '+E.planSightSay(null,true));
+  ok(planUpgrade(null)&&planUpgrade(null).to.k==='one'&&E.planBuyable('one')&&!E.planBuyable('gift'),
+   'the gift buys nothing and is never bought: the ladder and checkout read the plan alone');}
  ok(planList(['a','b','c'])==='a, b and c'&&planList(['a'])==='a'&&planList([])==='','a list is said the way a person says it');
  /* ANNUAL. TWO MONTHS FREE IS OUT, on the owner's ruling, and this test is
     what would have caught the product still making the offer: it asserted the

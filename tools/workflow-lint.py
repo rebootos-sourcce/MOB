@@ -128,6 +128,9 @@ BROWSER = {
 # a worked example shows everything and runs nothing, ruled 16 October
 # (engine/showonly.js). Report only until three green runs.
     'examples-showonly': ('node tests/examples-showonly.js', 20),
+# the gift sees everything and is still free, ruled in DECISIONS.md and kept at
+# round PK (tests/gift.js). Report only until three green runs.
+    'gift':          ('node tests/gift.js', 20),
 }
 # P0 Alpha acceptance: move to the blocking browser matrix, and mutation-test each
 # one so a future refactor cannot silently return it to report-only.

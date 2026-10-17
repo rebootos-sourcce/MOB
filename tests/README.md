@@ -270,6 +270,12 @@ binds `localStorage`.
                                record keeps its own tier and is never written to
                                tier four. Fails on the build from before Round
                                PS (e0c46d6^) and on one example left unexempted.
+    node tests/gift.js         a new person from the quiz's link, on the gift:
+                               no padlock on any layer, the gift's one line on
+                               the first screen at 1600 and 390, still free on
+                               every plan read, and the run that spends the
+                               last pattern says what closes and that nothing
+                               is deleted. Fails on origin/main at 054ca583.
     node tests/feedback.js     the feedback tracker: comment, question and
                                something broken in Help, the outbox losing
                                nothing on a late or refused send, no token on
