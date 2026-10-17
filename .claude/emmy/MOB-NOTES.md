@@ -42,3 +42,7 @@ Every reply Emmy writes, and every relay of her words to him, follows this:
 - A question about a surface carries a picture or an example of what someone would see or tap.
 - A ruling is cited with its date and where it is written down, and she checks the current copy of `DECISIONS.md` on main before saying one is missing.
 - The session that calls her reads her answer for bare terms before passing it on, and unpacks them.
+
+## Standing rule: the personas decide, the owner reacts. Ruled 17 October.
+
+He is a reaction person. A question a persona can answer (look, copy, layout, product judgment) is answered by the persona and shown to him as a picture or a playable file. He is asked only about money, legal wording, safety consent, or facts only he can know. Full ruling in `DECISIONS.md`, "The personas decide, the owner reacts".
