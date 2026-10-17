@@ -1083,7 +1083,9 @@ function frCallouts(M,r,P){
    /* SQ, the product's own word for an address's depth: the readout, the
       badge and the rail all print it that way. The mockup said "Held at",
       and held is the axis charge in the readout two inches away. */
-   push('addresses',a,s.n.k,s.n.b+'. SQ '+s.n.sq.toFixed(1),M.seat(s.n.b),P.hitOf['n'+s.s]);});
+   /* and as a percent, 17 October, percent phase 2: "SQ 4.2" beside a badge
+      printing 42% was one reading in two units on one screen */
+   push('addresses',a,s.n.k,s.n.b+'. SQ '+fmtPct('weight',s.n.sq),M.seat(s.n.b),P.hitOf['n'+s.s]);});
  if(ARCH[r.pi])push('archetypes',P.archAt[r.pi],ARCH[r.pi].nm,'First archetype',M.accent,P.hitOf['a'+r.pi]);
  /* the selected domain is not called out: the left rail already names it, and
     a fifth name in one corner reached the dial's own outer ring */
@@ -1091,10 +1093,14 @@ function frCallouts(M,r,P){
  var shut=SI.map(function(l,i){return {l:l,i:i,v:+S.law[l.nm]||0};})
   .filter(function(x){return typeof lawIn!=='function'||lawIn(x.l.nm);})
   .sort(function(a,b){return a.v-b.v;})[0];
- if(shut)push('laws',P.lawAt[shut.i],shut.l.nm,'Most shut law. '+shut.v.toFixed(1),M.seat(shut.l.b),P.hitOf['l'+shut.i]);
+ /* a law is answered on nought to ten and stays so where it is answered; what
+    the instrument reads back from it prints as a percent, the inventory's
+    recommendation for inputs (PERCENT-FRAMEWORK-2026-10-16.md, open item 3).
+    A law at nought is the dash, the registry's rule. */
+ if(shut)push('laws',P.lawAt[shut.i],shut.l.nm,'Most shut law. '+fmtPct('law',shut.v),M.seat(shut.l.b),P.hitOf['l'+shut.i]);
  var hp=r.sabs.slice().sort(function(a,b){return b.w-a.w;})[0];
  if(hp){var hk=M.ixSab.get(hp);
-  push('patterns',P.at.sab[hk],hp.nm,'Heaviest pattern. Weight '+hp.w.toFixed(1),M.seat((hp.parts[0]&&hp.parts[0].b)||'Root'),P.hitOf['s'+hk]);}
+  push('patterns',P.at.sab[hk],hp.nm,'Heaviest pattern. Weight '+fmtPct('chain',hp.w),M.seat((hp.parts[0]&&hp.parts[0].b)||'Root'),P.hitOf['s'+hk]);}
  /* the box a label takes is the name's line over the line saying what it is,
     30 tall, with the leader meeting it at the name. inRing is flatplate's
     test with the dial's own edge and floor in place of the wheel's. */
