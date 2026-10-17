@@ -5034,6 +5034,137 @@ const CRISIS_SAY={
  where:'988 also works in Canada. Elsewhere, call your local emergency number.',
  story:'It is always a story. Write what is happening, or what happened.'};
 /* ============================================================
+   THE WORDS THAT STOP A RELEASE, 17 October. A closed list, and the one
+   table that turns the behaviour off.
+
+   WHY IT EXISTS. QA measured main on 16 October: "I keep thinking about
+   killing myself" read Disgust 7.2 at the eye and the Story page offered a
+   release toward Acceptance; "I have been hurting myself again" read Sad 6 at
+   the heart and offered one toward Restoration; said twice, Source AI asked
+   "Both land at the heart. Why there?". A release offered on words about
+   ending a life treats them as old charge to let go of, and that is the worst
+   thing this page could do. "I never feel safe at home" read Fear at the root
+   and was offered one too, and danger now is not old charge either.
+
+   WHAT IT IS, AND WHAT IT IS NOT. A phrase list, read on the device, that
+   makes the reader read nothing in that entry (engine/safe.js says where).
+   It is not the automatic crisis check the owner deferred on 9 October and it
+   is not a detector of the person: it says nothing about who wrote the words,
+   it scores nothing, and nothing about a match is stored anywhere. The entry
+   is still saved as written. The Story page puts the crisis door beside it.
+
+   TURNING IT OFF. One line: set on to false on a family's row below. Both
+   rows off and srcSafe never trips, every entry reads exactly as it did on
+   main, and the Story page never draws the line. The owner may revert it.
+
+   HOW A ROW IS WRITTEN. Each phrase is in normMap's own form (engine/sniff.js):
+   lower case, the apostrophe dropped, every other mark a single space. So
+   "self-harm" is self harm, "can't" is cant, "I'm" is im. A phrase may carry
+   its own no ("dont want to live", "never feel safe at home"), the way the
+   lexicon's "cant sleep" does, and then the no is the phrase's and the
+   negation read starts in front of it.
+
+   THE FRAMES ARE ROWS AND NOT A RULE. "I was not going to kill myself" puts
+   the no three words in front of kill, and the sniffer's negation window is
+   two (SRC_NEG_W). Widening that window would change every reading the
+   sniffer makes, so the frame is written as its own phrase, "going to kill
+   myself", the longer phrase decides for the shorter one inside it, and the
+   no lands in the window it always had.
+
+   held is the refusals, the same kind of table as LEXSYN_NO: a phrase
+   followed straight away by one of these words, in its own clause, is an
+   idiom and does not trip. Kept short on purpose. A missed statement costs
+   far more than a quiet line shown on a joke, so a tail is held only where
+   the words after the phrase say outright that no death or injury is meant:
+     laughing, of laughter, of embarrassment, a little   the idiom names what
+                        is "killing" the writer, and it is not their life
+     old, happy         a death in old age, wished for, is not a wish to die now
+     at work, at the gym, working, lifting, to get, to finish, to meet,
+       to keep up       "killing myself at work", "killing myself to meet the
+                        deadline": the overwork idiom
+   Each held tail has a test both ways in tests/engine.js: with the tail it
+   does not trip, and the same phrase without it does. Idioms that never
+   reach this table because no row matches them are tested too: "I could
+   kill for a coffee", "this deadline is killing me", "my cutting board",
+   "I cut myself a slice of bread".
+
+   LEFT OUT ON PURPOSE, with the reason, so nobody adds them by accident:
+     cut myself, hurt myself   "I cut myself shaving", "I hurt myself lifting
+                               boxes". Only the forms that carry the intent
+                               are rows: cutting myself, hurt myself on purpose
+     going to kill me, will kill me
+                               "my mum is going to kill me when she sees the
+                               car" is the commonest use. Only threatened to
+                               kill me, which is never a joke, is a row
+     killed himself, took his own life
+                               a death, read as grief at the heart by the
+                               lexicon (LEXSYN died), and another person's
+   ============================================================ */
+var SAFE_WORDS=[
+ /* ending one's own life, or hurting oneself */
+ {k:'self', on:true,
+  say:['suicide','suicidal','kill myself','killing myself','killed myself',
+   'going to kill myself','gonna kill myself','want to kill myself','wanted to kill myself',
+   'wanna kill myself','try to kill myself','tried to kill myself','trying to kill myself',
+   'thinking about killing myself','thought about killing myself','thinking of killing myself',
+   'thought of killing myself',
+   'end my life','ending my life','end it all','take my own life','taking my own life',
+   'took my own life','take my life',
+   'want to die','wanna die','wanted to die','wanting to die','wish i was dead','wish i were dead',
+   'wish i could die','better off dead','better off without me','better off if i was gone',
+   'better off if i were gone','dont want to live','do not want to live','dont want to be alive',
+   'do not want to be alive','dont want to be here anymore','do not want to be here anymore',
+   'dont want to wake up','do not want to wake up','no reason to live','nothing to live for',
+   'hurting myself','hurt myself on purpose','want to hurt myself','wanted to hurt myself',
+   'going to hurt myself','harm myself','harming myself','harmed myself',
+   'self harm','self harming','self harmed',
+   'cutting myself','cut myself on purpose','cut my wrists','cutting my wrists','slit my wrists',
+   'burning myself','burned myself on purpose'],
+  held:{
+   'want to die':['laughing','of laughter','of embarrassment','a little','old','happy'],
+   'wanna die':['laughing','of laughter','of embarrassment','a little','old','happy'],
+   'wanted to die':['laughing','of laughter','of embarrassment','a little'],
+   'kill myself':['laughing','at work','at the gym','working'],
+   'killing myself':['laughing','at work','at the gym','working','to get','to finish','to meet','to keep up'],
+   'killed myself':['laughing','at work','at the gym','working'],
+   'hurting myself':['at the gym','lifting','at work']}},
+ /* danger now: not safe where they live, or their life threatened */
+ {k:'now', on:true,
+  say:['never feel safe at home','dont feel safe at home','do not feel safe at home',
+   'not safe at home','never safe at home','unsafe at home','dont feel safe in my home',
+   'do not feel safe in my home','not safe in my own home',
+   'afraid to go home','scared to go home','afraid for my life','scared for my life',
+   'fear for my life','feared for my life',
+   'threatened to kill me','threatens to kill me','threatening to kill me',
+   'afraid he will hurt me','scared he will hurt me','afraid she will hurt me',
+   'scared she will hurt me','afraid they will hurt me','scared they will hurt me'],
+  held:{}}];
+/* SOMEONE ELSE'S WORDS, quoted. A phrase inside double quotation marks, in a
+   sentence where a word below comes before the opening mark, is a line
+   somebody else said or a work's own line, and does not trip:
+     She said "I want to die" when her phone broke.
+     The last line of the novel is "I want to die free."
+   A speech word counts only when its subject is someone else, by whoOf
+   (engine/sniff.js), the sniffer's own reader of whose a word is: "I said
+   "I want to die"" is the writer and trips. Without quotation marks nothing
+   here holds: "she said I should kill myself" is about the writer. Single
+   quotation marks are not read, because normMap drops the apostrophe and the
+   two cannot be told apart. */
+var SAFE_SAY_V=['said','says','say','saying','told','tells','wrote','writes','texted','texts',
+ 'messaged','posted','yelled','yells','screamed','screams','shouted','shouts','whispered',
+ 'asked','asks','sang','sings','sobbed','cried','repeated','goes','went'];
+/* a work, and the topic words a sentence says one is about without quoting
+   it: "I watched a documentary about suicide", a topic word within three
+   words after about, on or regarding. Outside quotation marks that is all a
+   work holds: "the film made me want to die" trips, and so does "I read the
+   news and now I'm suicidal", which names a work and is not about one. */
+var SAFE_WORK=['book','books','novel','novels','film','films','movie','movies','documentary',
+ 'documentaries','show','shows','series','song','songs','lyric','lyrics','poem','poems','play',
+ 'article','articles','podcast','podcasts','episode','episodes','character','characters','news',
+ 'video','videos','scene','chapter','lecture','class','course','study','report'];
+var SAFE_TOPIC=['suicide','suicidal','self harm','self harming'];
+var SAFE_ABOUT=['about','on','regarding'];
+/* ============================================================
    THE PERCENT. One formula and one table for every score, weight and measure
    a person reads, so that "6.2" becomes "62%" by one rule everywhere and not
    by forty renderers each deciding their own scale.
@@ -5655,6 +5786,11 @@ function verpScan(text){
 function verpApply(text){var s=verpScan(text);if(!s.total)return s;
  /* show only on a worked example, engine/showonly.js */
  if(showRefuse('story')){s.refused='example';return s;}
+ /* and nothing from an entry about ending a life or danger now, which
+    parseStory already reads as nothing (engine/safe.js). This reads the
+    words itself, so it asks the same question rather than trusting it was
+    asked. */
+ if(srcSafe(text)){s.refused='safe';return s;}
  Object.keys(s.hits).forEach(function(g){VERPMIX[g]+=s.hits[g];});return s;}
 function verpShare(){
  var tot=Object.keys(VERPMIX).reduce(function(a,k){return a+VERPMIX[k];},0);
@@ -5782,6 +5918,8 @@ function leanScan(text){
 function leanApply(text){var s=leanScan(text);
  /* show only on a worked example, engine/showonly.js */
  if(showRefuse('story')){s.refused='example';return s;}
+ /* nothing from an entry srcSafe stops, see verpApply above */
+ if(srcSafe(text)){s.refused='safe';return s;}
  LEANMIX.benign+=s.benign; LEANMIX.malignant+=s.malignant;
  LEANMIX.emp+=s.emp; LEANMIX.empLack+=s.empLack;
  LEANMIX.acc+=s.acc; LEANMIX.accLack+=s.accLack;
@@ -15836,7 +15974,11 @@ function parseStory(text){
     fetter, imprint or path, and every reader of hits below and of this
     result's hits sees only what counts. It is kept, not erased: marksOf
     draws it struck and the Story page names it. */
- var all=scanStory(text), hits=[], denied=[], others=[], byBand={}, byChg={}, imprints=[];
+ /* AN ENTRY ABOUT ENDING A LIFE OR DANGER NOW READS NOTHING, 17 October
+    (engine/safe.js). Scanning nothing is the whole change: the result is
+    built by the same lines below on an empty list, so its shape is exactly an
+    entry that named no feeling, and no reader of it needs to know why. */
+ var all=srcSafe(text)?[]:scanStory(text), hits=[], denied=[], others=[], byBand={}, byChg={}, imprints=[];
  /* AND A HIT ABOUT SOMEONE ELSE GOES TO others, S2, by the same rule: kept,
     listed, and counted nowhere. A denied hit is never also in others. */
  all.forEach(function(h){(h.neg?denied:h.other?others:hits).push(h);});
@@ -17081,6 +17223,10 @@ function srcHear(text,prior){
  var t=String(text||'');
  var out={unread:true, seats:[], top:null, root:null, asks:false};
  if(!t.trim())return out;
+ /* an entry srcSafe stops (engine/safe.js) is heard as nothing, which
+    parseStory already gives, and says so, so srcTurn asks nothing and the
+    page puts the crisis door where the question was. In memory only. */
+ if(srcSafe(t)){out.safe=true;return out;}
  var p=parseStory(t), nm=normMap(t), by={}, den={}, oth={};
  /* THE ENGINE'S OWN FLAG, S1. Every word read, counted or said with a no,
     walked in order; a step the parse denied is counted as negated and never
@@ -17133,6 +17279,10 @@ function srcHear(text,prior){
    is that the person leads. */
 function srcTurn(heard,state){
  var st=state||{};
+ /* safe, ahead of every other move, 17 October: an entry srcSafe stops is
+    asked nothing at all, not the opener, not a why, and Move on has nothing
+    to move on from. The page draws the crisis door in its place. */
+ if(heard&&heard.safe)return {move:'safe'};
  if(!heard||(heard.unread&&!st.typed))return {move:'open'};
  if(st.passed)return {move:'pass'};
  if(!heard.asks)return {move:'listen'};
@@ -17276,7 +17426,11 @@ function srcDims(text){
   var n=ws[i+1]==='just'||ws[i+1]==='then'?ws[i+2]:ws[i+1];
   if(SRC_DO.indexOf(n)>=0)say('behaviour','i '+n);});
  var open=SRC_DIM_ORDER.filter(function(k){return !by[k];});
- return {answered:by, open:open, words:ws.filter(Boolean).length};}
+ /* safe says srcNext may not ask, see srcTurn: a person who wrote about
+    ending their life is not asked what their body did */
+ var out={answered:by, open:open, words:ws.filter(Boolean).length};
+ if(srcSafe(t))out.safe=true;
+ return out;}
 
 /* THE NEXT DIMENSION TO ASK, by the precedence above. dims is srcDims's
    result, asked the kinds already asked in this entry in the order they
@@ -17285,6 +17439,7 @@ function srcDims(text){
    dimension is answered the person still pressed for a question, so it
    walks them all in the same order rather than saying nothing. */
 function srcNext(dims,asked,askable){
+ if(dims&&dims.safe)return null;
  var can=SRC_DIM_ORDER.filter(function(k){return (askable||[]).indexOf(k)>=0;});
  if(!can.length)return null;
  var open=can.filter(function(k){return dims&&dims.open.indexOf(k)>=0;});
@@ -17336,6 +17491,125 @@ function srcAsked(log,len){
  return out;}
 /* the most an entry can carry: every kind at every seat and at none. */
 function srcAskedMax(){return SRC_KINDS.length*(Object.keys(K2BAND).length+1);}
+/* ============================================================
+   A STOP, NOT A DETECTOR, 17 October. srcSafe(text) says whether an entry
+   carries one of the phrases in SAFE_WORDS (engine/data/safe.js) as the
+   writer's own words. It is the name the ten expected red checks in
+   tests/engine.js were written against on 9 October, and they are green on
+   this function. Read the data file's header first: it says why the list
+   exists, what it leaves out and how to turn it off.
+
+   WHAT A TRIP DOES, and every place it does it:
+     parseStory    reads nothing in the entry (engine/sniff.js), so no
+                   imprint, band, seat, mark or path comes out of it. Every
+                   surface that reads a story reads it through parseStory:
+                   the commit, the release column, the tutorial's offer, the
+                   wheel, Analytics, the daily rows, the trace graph. So one
+                   question at one place keeps the entry out of all of them,
+                   which a guard on the Story page alone would not: the
+                   release column parses committed entries again and would
+                   have offered one off the saved words on the next paint.
+     verpApply, leanApply
+                   apply nothing (engine/verp.js), because they read the text
+                   themselves and would have moved the laws and the leans.
+     srcHear       says safe, srcTurn makes the move safe and asks nothing,
+                   srcDims says safe and srcNext then has nothing to ask
+                   (engine/sourceai.js).
+   The entry's words are still kept when the person presses Commit. Nothing
+   about the match is: it is worked out again from the words every time it is
+   asked, held in page memory and nowhere else, so the record, the export, the
+   outbox and the server carry nothing that says it happened.
+
+   NOT A SECOND SCANNER. The phrases are found the way scanStory finds its own
+   (' '+phrase+' ' on normMap's copy), and every decision about a hit is the
+   sniffer's own reader, called and not copied:
+     a no        sniffDeny, which is srcNegated cut at clauseFloor, with the
+                 can't stop frame and the comma ruling it already carries.
+                 "I would never kill myself" is denied; "I can't stop
+                 thinking about killing myself" is not.
+     whose       sniffWho, which is whoOf. Asked only of a phrase with no
+                 first person word of its own (WHO_ME): "he is suicidal" is
+                 someone else's, while "kill myself" and "threatened to kill
+                 me" say whose they are in their own words, and asking whoOf
+                 of them would hold "he threatened to kill me" as his. An
+                 unclear subject trips, because a generic you ("sometimes you
+                 just want to die") is so often the writer, and a quiet line
+                 shown in error costs less than a statement missed.
+   The one rule added is the quotation, SAFE_SAY_V and SAFE_WORK in the data
+   file, which the sniffer has no reader for yet. It is here and not in
+   sniffWho on purpose: putting it there would change what every entry reads,
+   which is L3's work and not this block's.
+
+   KNOWN GAPS, said so nobody has to find them: a no in front of the comma
+   ending a clause still reaches across it, the sniffer's comma ruling, so "No,
+   I want to die" is read as denied; a phrase this list does not carry is
+   read as it always was; and a quotation that runs over a full stop is
+   read as the writer's.
+   ============================================================ */
+/* every hit, with why each one that does not count was set aside. Pure, and
+   it keeps nothing: tests and the gate read it, the product reads srcSafe. */
+function safeOf(text){
+ var t=String(text||''), nm=normMap(t), src=nm.s, hits=[];
+ SAFE_WORDS.forEach(function(row){
+  if(!row.on)return;
+  row.say.forEach(function(w){
+   var at=src.indexOf(' '+w+' ');
+   while(at>=0){ hits.push({t:w, fam:row.k, band:'safe', at:at, held:row.held[w]||null});
+    at=src.indexOf(' '+w+' ',at+1); }});});
+ if(!hits.length)return [];
+ /* the longer phrase decides for a shorter one inside it, "going to kill
+    myself" for "kill myself", so the no in front of the frame is read */
+ hits=hits.filter(function(h){
+  return !hits.some(function(o){return o!==h&&o.t.length>h.t.length&&o.at<=h.at
+   &&o.at+o.t.length>=h.at+h.t.length;});});
+ hits.forEach(function(h){
+  var after=h.at+1+h.t.length;
+  /* straight after it and in its own sentence: "I want to die. Laughing at
+     me is all they do" is not the idiom */
+  if(h.held&&!SENT_END.test(t.charAt(nm.map[after]))
+   &&h.held.some(function(x){return src.indexOf(' '+x+' ',after)===after;}))h.why='idiom';});
+ sniffDeny(t,nm,hits);
+ hits.forEach(function(h){if(h.neg&&!h.why)h.why='no';});
+ var ask=hits.filter(function(h){return !h.why&&!h.t.split(' ').some(function(w){return WHO_ME.indexOf(w)>=0;});});
+ if(ask.length)sniffWho(t,nm,ask);
+ hits.forEach(function(h){if(h.other&&!h.unclear&&!h.why)h.why='other';});
+ var ws=null;
+ hits.forEach(function(h){
+  if(h.why)return;
+  if(!ws)ws=wordsOf(t,nm);
+  if(safeQuoted(t,nm,ws,h))h.why='quoted';});
+ return hits;}
+/* someone else's words or a work's, see SAFE_SAY_V in the data file. Walks
+   back from the hit through its own sentence, across a colon ("She said:"),
+   and stops at any other sentence end. */
+function safeQuoted(t,nm,ws,h){
+ var i=-1, k;
+ for(k=0;k<ws.length;k++)if(ws[k].at===h.at){i=k;break;}
+ /* never taken from safeOf, whose every at is a word's leading space on this
+    same normMap copy; kept so a caller with a foreign at reads false and does
+    not throw on ws[i] below */
+ if(i<0)return false;
+ var raw=nm.map[h.at+1], before=t.slice(0,raw), q=-1, n=0;
+ for(k=0;k<before.length;k++)if(/["“”]/.test(before.charAt(k))){n++;q=k;}
+ var inQuote=n%2===1;
+ /* a topic word counts only as what a work is about, within three words of
+    about or on: "a documentary about teen suicide". "I read the news and now
+    I'm suicidal" names a work and is not about one, and trips. */
+ var topic=SAFE_TOPIC.indexOf(h.t)>=0&&ws.slice(Math.max(0,i-3),i)
+  .some(function(x){return x.c===ws[i].c&&SAFE_ABOUT.indexOf(x.w)>=0;});
+ if(!inQuote&&!topic)return false;
+ for(k=i-1;k>=0;k--){
+  if(ws[k].c!==ws[k+1].c&&t.charAt(nm.map[ws[k+1].at])!==':')break;
+  var w=ws[k].w;
+  if(SAFE_WORK.indexOf(w)>=0&&(topic||ws[k].e<=q))return true;
+  if(inQuote&&ws[k].e<=q&&SAFE_SAY_V.indexOf(w)>=0){
+   var who=whoOf(t,ws,k);
+   if(who&&!who.unclear)return true;}}
+ return false;}
+/* THE ONE QUESTION THE PRODUCT ASKS. true when any hit is the writer's own,
+   said without a no, not an idiom and not somebody else's quoted line. */
+function srcSafe(text){
+ return safeOf(text).some(function(h){return !h.why;});}
 
 /* ============================================================
    ASTRO. The actual sky, computed here, offline, from the birth
@@ -20519,6 +20793,8 @@ if(typeof module!=='undefined'&&module.exports){
                  srcHear:srcHear, srcHear:srcHear, srcPrior:srcPrior, srcTurn:srcTurn,
                  SRC_DIM_ORDER:SRC_DIM_ORDER, SRC_DIM_CUE:SRC_DIM_CUE, SRC_DO:SRC_DO,
                  srcDims:srcDims, srcNext:srcNext,
+  /* the stop */  SAFE_WORDS:SAFE_WORDS, SAFE_SAY_V:SAFE_SAY_V, SAFE_WORK:SAFE_WORK, SAFE_TOPIC:SAFE_TOPIC,
+                 SAFE_ABOUT:SAFE_ABOUT, srcSafe:srcSafe, safeOf:safeOf,
                  SRC_KINDS:SRC_KINDS, SRC_OUTCOMES:SRC_OUTCOMES,
                  srcAsked:srcAsked, srcAskedMax:srcAskedMax,
   /* undo */     undoPush:undoPush, undoPop:undoPop, undoDepth:undoDepth,

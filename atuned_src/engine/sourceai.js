@@ -127,6 +127,10 @@ function srcHear(text,prior){
  var t=String(text||'');
  var out={unread:true, seats:[], top:null, root:null, asks:false};
  if(!t.trim())return out;
+ /* an entry srcSafe stops (engine/safe.js) is heard as nothing, which
+    parseStory already gives, and says so, so srcTurn asks nothing and the
+    page puts the crisis door where the question was. In memory only. */
+ if(srcSafe(t)){out.safe=true;return out;}
  var p=parseStory(t), nm=normMap(t), by={}, den={}, oth={};
  /* THE ENGINE'S OWN FLAG, S1. Every word read, counted or said with a no,
     walked in order; a step the parse denied is counted as negated and never
@@ -179,6 +183,10 @@ function srcHear(text,prior){
    is that the person leads. */
 function srcTurn(heard,state){
  var st=state||{};
+ /* safe, ahead of every other move, 17 October: an entry srcSafe stops is
+    asked nothing at all, not the opener, not a why, and Move on has nothing
+    to move on from. The page draws the crisis door in its place. */
+ if(heard&&heard.safe)return {move:'safe'};
  if(!heard||(heard.unread&&!st.typed))return {move:'open'};
  if(st.passed)return {move:'pass'};
  if(!heard.asks)return {move:'listen'};
@@ -322,7 +330,11 @@ function srcDims(text){
   var n=ws[i+1]==='just'||ws[i+1]==='then'?ws[i+2]:ws[i+1];
   if(SRC_DO.indexOf(n)>=0)say('behaviour','i '+n);});
  var open=SRC_DIM_ORDER.filter(function(k){return !by[k];});
- return {answered:by, open:open, words:ws.filter(Boolean).length};}
+ /* safe says srcNext may not ask, see srcTurn: a person who wrote about
+    ending their life is not asked what their body did */
+ var out={answered:by, open:open, words:ws.filter(Boolean).length};
+ if(srcSafe(t))out.safe=true;
+ return out;}
 
 /* THE NEXT DIMENSION TO ASK, by the precedence above. dims is srcDims's
    result, asked the kinds already asked in this entry in the order they
@@ -331,6 +343,7 @@ function srcDims(text){
    dimension is answered the person still pressed for a question, so it
    walks them all in the same order rather than saying nothing. */
 function srcNext(dims,asked,askable){
+ if(dims&&dims.safe)return null;
  var can=SRC_DIM_ORDER.filter(function(k){return (askable||[]).indexOf(k)>=0;});
  if(!can.length)return null;
  var open=can.filter(function(k){return dims&&dims.open.indexOf(k)>=0;});

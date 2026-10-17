@@ -363,6 +363,11 @@ function verpScan(text){
 function verpApply(text){var s=verpScan(text);if(!s.total)return s;
  /* show only on a worked example, engine/showonly.js */
  if(showRefuse('story')){s.refused='example';return s;}
+ /* and nothing from an entry about ending a life or danger now, which
+    parseStory already reads as nothing (engine/safe.js). This reads the
+    words itself, so it asks the same question rather than trusting it was
+    asked. */
+ if(srcSafe(text)){s.refused='safe';return s;}
  Object.keys(s.hits).forEach(function(g){VERPMIX[g]+=s.hits[g];});return s;}
 function verpShare(){
  var tot=Object.keys(VERPMIX).reduce(function(a,k){return a+VERPMIX[k];},0);
@@ -490,6 +495,8 @@ function leanScan(text){
 function leanApply(text){var s=leanScan(text);
  /* show only on a worked example, engine/showonly.js */
  if(showRefuse('story')){s.refused='example';return s;}
+ /* nothing from an entry srcSafe stops, see verpApply above */
+ if(srcSafe(text)){s.refused='safe';return s;}
  LEANMIX.benign+=s.benign; LEANMIX.malignant+=s.malignant;
  LEANMIX.emp+=s.emp; LEANMIX.empLack+=s.empLack;
  LEANMIX.acc+=s.acc; LEANMIX.accLack+=s.accLack;

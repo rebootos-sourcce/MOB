@@ -20,6 +20,7 @@ engine/data/intakemore.js
 engine/data/gloss.js
 engine/data/onboarding.js
 engine/data/crisis.js
+engine/data/safe.js
 engine/pct.js
 engine/verp.js
 engine/lexicon.js
@@ -41,6 +42,7 @@ engine/intake.js
 engine/intakemore.js
 engine/sniff.js
 engine/sourceai.js
+engine/safe.js
 engine/astro.js
 engine/birth.js
 engine/numerology.js
