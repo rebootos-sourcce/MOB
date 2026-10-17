@@ -1,0 +1,436 @@
+{
+ "a1-field-locked": {
+  "390": {
+   "tip": "Saboteurs Which saboteurs are running on your charge. Unlocked on tier one and above. See tiers",
+   "status": [
+    "",
+    ""
+   ]
+  },
+  "1600": {
+   "tip": "Saboteurs Which saboteurs are running on your charge. Unlocked on tier one and above. See tiers",
+   "status": [
+    "",
+    ""
+   ]
+  }
+ },
+ "a1b-character-locked": {
+  "390": {
+   "status": [
+    "",
+    ""
+   ]
+  },
+  "1600": {
+   "status": [
+    "",
+    ""
+   ]
+  }
+ },
+ "a2-release-spent": {
+  "390": {
+   "status": [
+    "",
+    ""
+   ],
+   "panel": "Set up Story Seat Root Root is the seat at the base of the spine, and it holds what you stand on. Possession · Escapism · Fear · Shame · Guilt · Control Not in this run Sacral Sacral is the seat in the lower belly, and it holds what you want. Addiction · Lust Not in this run Seat 1 of 2 8 addresses, 0 patterns. Each pattern is one line, said once. Nothing left to open Your allowance pays for addresses you have not released before, and this period's is spent. Each tier sets how much new ground a period opens. Close See the tiers"
+  },
+  "1600": {
+   "status": [
+    "",
+    ""
+   ],
+   "panel": "Release Set up Story Seat Root Root is the seat at the base of the spine, and it holds what you stand on. Possession · Escapism · Fear · Shame · Guilt · Control Not in this run Sacral Sacral is the seat in the lower belly, and it holds what you want. Addiction · Lust Not in this run Seat 1 of 2 8 addresses, 0 patterns. Each pattern is one line, said once. Nothing left to open Your allowance pays for addresses you have not released before, and this period's is spent. Each tier sets how much new ground a period opens. Close See the tiers"
+  }
+ },
+ "a2b-see-tiers-lands": {
+  "390": {
+   "status": [
+    "",
+    ""
+   ]
+  },
+  "1600": {
+   "status": [
+    "",
+    ""
+   ]
+  }
+ },
+ "a3-billing-free": {
+  "390": {
+   "status": [
+    "",
+    ""
+   ]
+  },
+  "1600": {
+   "status": [
+    "",
+    ""
+   ]
+  }
+ },
+ "a3-tiers-free": {
+  "390": {
+   "status": [
+    "",
+    ""
+   ]
+  },
+  "1600": {
+   "status": [
+    "",
+    ""
+   ]
+  }
+ },
+ "a3-tiers-free-full": {
+  "390": {
+   "status": [
+    "",
+    ""
+   ]
+  },
+  "1600": {
+   "status": [
+    "",
+    ""
+   ]
+  }
+ },
+ "a3-tiers-one": {
+  "390": {
+   "status": [
+    "",
+    ""
+   ]
+  },
+  "1600": {
+   "status": [
+    "",
+    ""
+   ]
+  }
+ },
+ "a3-tiers-two": {
+  "390": {
+   "status": [
+    "",
+    ""
+   ]
+  },
+  "1600": {
+   "status": [
+    "",
+    ""
+   ]
+  }
+ },
+ "a3-tiers-three": {
+  "390": {
+   "status": [
+    "",
+    ""
+   ]
+  },
+  "1600": {
+   "status": [
+    "",
+    ""
+   ]
+  }
+ },
+ "a4-press-closed": {
+  "390": {
+   "status": [
+    "Paid checkout is not open in this release yet.",
+    "fail"
+   ]
+  },
+  "1600": {
+   "status": [
+    "Paid checkout is not open in this release yet.",
+    "fail"
+   ]
+  }
+ },
+ "a4b-press-signed-out": {
+  "390": {
+   "status": [
+    "Sign in first. The plan is read from your record, and billing lives behind sign in.",
+    "fail"
+   ]
+  },
+  "1600": {
+   "status": [
+    "Sign in first. The plan is read from your record, and billing lives behind sign in.",
+    "fail"
+   ]
+  }
+ },
+ "a4c-ladder-foot-signed-out": {
+  "390": {
+   "status": [
+    "",
+    ""
+   ]
+  },
+  "1600": {
+   "status": [
+    "",
+    ""
+   ]
+  }
+ },
+ "a4d-manage-never-paid": {
+  "390": {
+   "status": [
+    "There is no paid plan on this account yet, so there is no billing to manage.",
+    "fail"
+   ]
+  },
+  "1600": {
+   "status": [
+    "There is no paid plan on this account yet, so there is no billing to manage.",
+    "fail"
+   ]
+  }
+ },
+ "a6-gift-release": {
+  "390": {
+   "status": [
+    "",
+    ""
+   ],
+   "numbers": {
+    "left": 100,
+    "budget": 25,
+    "planned": 8,
+    "dose": 100,
+    "addresses": 2
+   },
+   "panel": "Set up Story Seat Root Root is the seat at the base of the spine, and it holds what you stand on. Possession · Escapism 400patterns 2 addresses, 400 patterns. Each pattern is one line, said once. Run speed Patterns Time 55:43 Left and right 25 50 100 Voice ElevenLabs, a voice company, over the network. It gets each line, and each line names one of your patterns. Binaural tone Cancel Run release"
+  },
+  "1600": {
+   "status": [
+    "",
+    ""
+   ],
+   "numbers": {
+    "left": 100,
+    "budget": 25,
+    "planned": 8,
+    "dose": 100,
+    "addresses": 2
+   },
+   "panel": "Release Set up Story Seat Root Root is the seat at the base of the spine, and it holds what you stand on. Possession · Escapism 400patterns 2 addresses, 400 patterns. Each pattern is one line, said once. Run speed Patterns Time 55:43 Left and right 25 50 100 Voice ElevenLabs, a voice company, over the network. It gets each line, and each line names one of your patterns. Binaural tone Cancel Run release"
+  }
+ },
+ "a6-example-full-sight": {
+  "390": {
+   "status": [
+    "",
+    ""
+   ]
+  },
+  "1600": {
+   "status": [
+    "",
+    ""
+   ]
+  }
+ },
+ "b1-billing-paying": {
+  "390": {
+   "status": [
+    "",
+    ""
+   ]
+  },
+  "1600": {
+   "status": [
+    "",
+    ""
+   ]
+  }
+ },
+ "b2-manage": {
+  "390": {
+   "requests": [
+    "POST /v1/billing/portal Bearer t-one"
+   ],
+   "url": "about:blank#stripe-portal"
+  },
+  "1600": {
+   "requests": [
+    "POST /v1/billing/portal Bearer t-one"
+   ],
+   "url": "about:blank#stripe-portal"
+  }
+ },
+ "b3-back-stopped": {
+  "390": {
+   "status": [
+    "Tier one stops on 1 Nov 2026. It stays on until then, and Manage billing turns it back on.",
+    "ok"
+   ]
+  },
+  "1600": {
+   "status": [
+    "Tier one stops on 1 Nov 2026. It stays on until then, and Manage billing turns it back on.",
+    "ok"
+   ]
+  }
+ },
+ "b3b-delete-control": {
+  "390": {
+   "status": [
+    "",
+    ""
+   ]
+  },
+  "1600": {
+   "status": [
+    "",
+    ""
+   ]
+  }
+ },
+ "b3c-delete-confirm": {
+  "390": {
+   "dialog": "Delete the account sam@example.invalid?\n\nA paid plan is cancelled first, today, so nothing more is charged. Your email, password and sign in go from our server. It cannot be undone.\n\nThis record stays on this device.",
+   "status": [
+    "",
+    ""
+   ]
+  },
+  "1600": {
+   "dialog": "Delete the account sam@example.invalid?\n\nA paid plan is cancelled first, today, so nothing more is charged. Your email, password and sign in go from our server. It cannot be undone.\n\nThis record stays on this device.",
+   "status": [
+    "",
+    ""
+   ]
+  }
+ },
+ "b4-receipt": {
+  "390": {
+   "status": [
+    "The account is deleted.",
+    "ok"
+   ],
+   "receipt": "Account Deleted\n\nThe paid plan is cancelled today, so nothing more is charged.\n\nRemoved from our server: your email, your password, your sign in on every device, and everything it held under the account.\n\nKept on our server: a dated list of when the account signed in and paid, linked by that random account ID and with no email.\n\nKept by Stripe, the company that takes the card: its own record of your past payments.\n\nThis record is still on this device, and its plan reads Free now. Delete it under Profiles to remove it here too."
+  },
+  "1600": {
+   "status": [
+    "The account is deleted.",
+    "ok"
+   ],
+   "receipt": "Account Deleted\n\nThe paid plan is cancelled today, so nothing more is charged.\n\nRemoved from our server: your email, your password, your sign in on every device, and everything it held under the account.\n\nKept on our server: a dated list of when the account signed in and paid, linked by that random account ID and with no email.\n\nKept by Stripe, the company that takes the card: its own record of your past payments.\n\nThis record is still on this device, and its plan reads Free now. Delete it under Profiles to remove it here too."
+  }
+ },
+ "b4b-billing-after-delete": {
+  "390": {
+   "status": [
+    "",
+    ""
+   ]
+  },
+  "1600": {
+   "status": [
+    "",
+    ""
+   ]
+  }
+ },
+ "b4c-plan-ran-out": {
+  "390": {
+   "status": [
+    "Tier one has ended, so this record reads Free now.",
+    "fail"
+   ]
+  },
+  "1600": {
+   "status": [
+    "Tier one has ended, so this record reads Free now.",
+    "fail"
+   ]
+  }
+ },
+ "b5-after-field": {
+  "390": {
+   "status": [
+    "",
+    ""
+   ]
+  },
+  "1600": {
+   "status": [
+    "",
+    ""
+   ]
+  }
+ },
+ "b7-help": {
+  "390": {
+   "status": [
+    "",
+    ""
+   ]
+  },
+  "1600": {
+   "status": [
+    "",
+    ""
+   ]
+  }
+ },
+ "b7-forgot": {
+  "390": {
+   "login": "The server cannot send mail yet.",
+   "status": [
+    "The server cannot send mail yet.",
+    "fail"
+   ]
+  },
+  "1600": {
+   "login": "The server cannot send mail yet.",
+   "status": [
+    "The server cannot send mail yet.",
+    "fail"
+   ]
+  }
+ },
+ "_run": {
+  "390": {
+   "errors": []
+  },
+  "1600": {
+   "errors": []
+  },
+  "all": {
+   "realHostRequests": [
+    "https://atuned-api.lance-o-powell.workers.dev/v1/me",
+    "https://atuned-api.lance-o-powell.workers.dev/v1/me"
+   ]
+  }
+ },
+ "a5-buy": {
+  "390": {
+   "state": "Checkout is not open yet, so nothing on this table can be charged today. The gift above needs no card and no account."
+  },
+  "1600": {
+   "state": "Checkout is not open yet, so nothing on this table can be charged today. The gift above needs no card and no account."
+  }
+ },
+ "b6-refund-terms": {
+  "390": {
+   "refund": "Renewal. A paid plan renews on its own every month at the price shown when you paid, until you cancel. Before you pay, you are told how much, how often and how to cancel. Then you tick a box of its own, apart from the box that accepts these terms. It reads: \"I agree to a recurring charge of the price shown every month until I cancel.\" The box starts unticked, and nothing is charged until you tick it. [CHECK: this must match the consent control on the paid step. California's automatic renewal law is prescriptive about it, and it asks us to keep a record of the consent for three years.]\nCancelling. Cancel from Billing in Settings, with the Manage billing button. It opens a page Stripe runs. It is the same place you started. One press. No call and no email. Cancelling stops the next charge. You keep what you paid for until the period ends. [CHECK: Stripe's Customer portal must be set to cancel at the end of the period, and must be switched on.]\nNothing is destroyed. Cancelling does not delete your record, your stories or your imprints. Your plan drops to free.\nReminders. If you pay by the year in future, we will remind you before each renewal. [CHECK: the plans are monthly today. Keep or delete this line when a yearly plan is decided.]\nRefunds. You can have a refund of any charge if you ask within seven days of that charge. Write to hello@atuned.world from the email on your account, and say which charge. We refund the whole charge. After seven days from the charge, we do not refund it. The seven days are counted from the time of the charge. This applies to every monthly charge, not only the first. Cancelling stops the next charge. It does not refund a charge already made. The only other refunds are those in sections 18 and 19, and any the law requires. [PROPOSED: the owner's ruling in round PA is \"no refund after seven days\". The draft reads it as a full refund within seven days, on every charge, asked for by email. A lawyer confirms the wording, and the owner confirms the route.] [CHECK: people in the European Union and the United Kingdom have a right to cancel a distance purchase within 14 days, and seven days is shorter. For a digital service that starts at once, the law lets the person give up that right only if they ask for it to start and accept that they lose it. A lawyer rules, and the paid step may need a second box for it.] [CHECK: the same words must go into Stripe's settings and the buy page.]"
+  },
+  "1600": {
+   "refund": "Renewal. A paid plan renews on its own every month at the price shown when you paid, until you cancel. Before you pay, you are told how much, how often and how to cancel. Then you tick a box of its own, apart from the box that accepts these terms. It reads: \"I agree to a recurring charge of the price shown every month until I cancel.\" The box starts unticked, and nothing is charged until you tick it. [CHECK: this must match the consent control on the paid step. California's automatic renewal law is prescriptive about it, and it asks us to keep a record of the consent for three years.]\nCancelling. Cancel from Billing in Settings, with the Manage billing button. It opens a page Stripe runs. It is the same place you started. One press. No call and no email. Cancelling stops the next charge. You keep what you paid for until the period ends. [CHECK: Stripe's Customer portal must be set to cancel at the end of the period, and must be switched on.]\nNothing is destroyed. Cancelling does not delete your record, your stories or your imprints. Your plan drops to free.\nReminders. If you pay by the year in future, we will remind you before each renewal. [CHECK: the plans are monthly today. Keep or delete this line when a yearly plan is decided.]\nRefunds. You can have a refund of any charge if you ask within seven days of that charge. Write to hello@atuned.world from the email on your account, and say which charge. We refund the whole charge. After seven days from the charge, we do not refund it. The seven days are counted from the time of the charge. This applies to every monthly charge, not only the first. Cancelling stops the next charge. It does not refund a charge already made. The only other refunds are those in sections 18 and 19, and any the law requires. [PROPOSED: the owner's ruling in round PA is \"no refund after seven days\". The draft reads it as a full refund within seven days, on every charge, asked for by email. A lawyer confirms the wording, and the owner confirms the route.] [CHECK: people in the European Union and the United Kingdom have a right to cancel a distance purchase within 14 days, and seven days is shorter. For a digital service that starts at once, the law lets the person give up that right only if they ask for it to start and accept that they lose it. A lawyer rules, and the paid step may need a second box for it.] [CHECK: the same words must go into Stripe's settings and the buy page.]"
+  }
+ }
+}
