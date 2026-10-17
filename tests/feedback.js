@@ -148,6 +148,38 @@ async function engineSuite(E,ok){
   E.bindSend(()=>{reached++; return Promise.resolve(true);});
   const d=await E.obDrainAsync();
   ok(reached===0&&d.state==='refused','an envelope carrying a name never reaches the host, '+J(d));}
+
+ /* 16 OCTOBER, the owner: "I can't add anything from feedback and have it go
+    to Discord." Measured: one Send on an empty sheet put a blank entry at the
+    head of the outbox, the relay refused it with 400 for ever, the drain
+    stopped at it, and every comment after it waited behind it. */
+ reset();
+ {const r=E.obQueue(Object.assign(env(),{body:'   ',answers:{}}));
+  ok(!r.ok&&/nothing in it to send/.test(r.why)&&q().length===0,
+   'an empty envelope is refused by name before it is queued, '+J(r));
+  ok(E.obQueue(Object.assign(env(),{kind:'rating',body:'',answers:{state:3}})).ok,
+   'and a rating with an answer and no words is still taken');}
+ /* a blank entry an older build left on the disk does not stop the next one */
+ mem[E.OBKEY]=J([Object.assign(env(),{body:''}),Object.assign(env(),{body:'the real one'})]);
+ {const got=[];
+  E.bindSend(e=>{got.push(e.body); return Promise.resolve(true);});
+  const d=await E.obDrainAsync();
+  ok(J(got)===J(['the real one'])&&q().length===0&&d.state==='sent'&&d.refused===1&&/nothing in it/.test(d.dropped||''),
+   'a blank entry already waiting is taken out and named, and the one behind it goes, '+J(d));}
+ /* the relay's own refusal is final: taken out, named, and the drain goes on */
+ reset(); E.obQueue(Object.assign(env(),{body:'refused by the relay'})); E.obQueue(Object.assign(env(),{body:'the next one'}));
+ {const got=[];
+  E.bindSend(e=>{ got.push(e.body);
+   return Promise.resolve(e.body==='refused by the relay'?{drop:'the server refused it as it was: build is not a build stamp'}:true);});
+  const d=await E.obDrainAsync();
+  ok(J(got)===J(['refused by the relay','the next one'])&&q().length===0&&d.state==='sent'&&d.refused===1
+   &&/build stamp/.test(d.dropped||''),
+   'an entry the relay refuses for good is taken out with its reason and the next one still goes, '+J(d));}
+ /* and a no that names no reason is still held, so a server that is down loses nothing */
+ reset(); E.obQueue(env());
+ {E.bindSend(()=>Promise.resolve({drop:42}));
+  const d=await E.obDrainAsync();
+  ok(d.state==='retry'&&q().length===1,'a no without a reason is held, never dropped, '+J(d));}
  E.bindSend(null);}
 
 const MUTANTS=[
@@ -161,7 +193,11 @@ const MUTANTS=[
  {what:'two drains may run at once',
   from:"if(OB_DRAINING) return Promise.resolve({state:'busy', n:obCount()});", to:""},
  {what:'the drain keeps knocking after a no',
-  from:"if(stopped){ left.push(q[i]); return step(i+1); }", to:""}];
+  from:"if(stopped){ left.push(q[i]); return step(i+1); }", to:""},
+ {what:'an empty envelope is taken',
+  from:"if(!t.trim()&&!n) errs.push(", to:"if(false) errs.push("},
+ {what:'a relay refusal that is final is held at the head for ever',
+  from:"if(r&&typeof r.drop==='string'){ bad.push({i:i,errs:[r.drop]}); return; }", to:""}];
 
 async function countFails(E){
  let f=0; const fails=[];

@@ -3914,6 +3914,15 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-eb{font-size:12px;font-weight:600;color:var(--dim)}
 .st-tag{font-size:12px;color:var(--dim);margin-right:auto;white-space:nowrap}
 .st-none{color:var(--dim);font-size:13.5px;line-height:1.55;margin:10px 0 0;max-width:52ch}
+/* A WORKED EXAMPLE'S PREVIEW LINE, ruled 16 October (showNote, ui/personas.js).
+   It stands where a control that runs something stood, so it is set as plain
+   body in the mid ink the ritual page's own example note uses: not the fail
+   colour, not a box, not a badge, because it is a person being told what a
+   press would do and not an error. */
+.show-note{color:var(--mid);font-size:14px;line-height:1.6;margin:10px 0;max-width:56ch;font-weight:400}
+.show-note.st-show{margin:12px 2px}
+.show-note.rel-show{flex:1 1 220px;margin:0 12px 0 0;text-align:left}
+.show-note.iqa-show{margin:4px 0 12px}
 .st-ring{display:inline-block;width:12px;height:12px;border-radius:50%;flex:0 0 auto;
  border:1.6px solid var(--c,var(--accent))}
 /* the column itself does not scroll: the list and the release queue do, each
@@ -6709,6 +6718,14 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
 .login-msg{margin:4px 0 0;font-size:13px;line-height:1.5;color:var(--mid)}
 .login-msg:empty{display:none}
 .login-msg[data-kind="fail"]{color:var(--hot,#c0392b);font-weight:500}
+/* THE LEGAL LINKS, 16 October: Privacy and Terms on atuned.world, from the
+   door, the first onboarding card, and Settings under Account and Privacy
+   (legalLink, ui/account.js). A link inside a sentence is held to the 24 pixel
+   pointer floor, and the 12.5 and 13 pixel lines it sits in are under it, so
+   the link carries its own line box. */
+a.legal-a{color:var(--accent);text-underline-offset:3px;display:inline-block;
+ min-height:24px;line-height:24px}
+.login-legal{margin:12px 0 0;font-size:13px;line-height:1.5;color:var(--dim)}
 /* DEVELOPER OPTIONS, DISCLOSED. A testing control, kept out of the way of
    a stranger meeting the funnel for the first time, round MP: "the login
    screen should give me the options, onboarding and tutorial." */
@@ -7292,7 +7309,11 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
    whatever the card says. When the card fits, nothing sticks and nothing moves. */
 .obx .ob-scroll .ob-acts{position:sticky;bottom:0;z-index:2;margin-top:18px;
  padding:18px 0 calc(8px + env(safe-area-inset-bottom,0px));
- background:linear-gradient(to top,rgb(6,6,8) 62%,rgba(6,6,8,0))}
+ background:linear-gradient(to top,color-mix(in srgb,var(--bg) 96%,#000) 62%,transparent)}
+/* at desktop width the card does not scroll, so the actions never need a
+   backing: the hard black block behind them was the one hard edge on a screen
+   built from soft light (art direction, 16 October). */
+@media (min-width:900px){.obx .ob-scroll .ob-acts{background:none}}
 .obx .btn{min-height:48px;padding:0 22px;font-size:15px}
 .obx .btn:active{scale:.97}
 .obx .btn.pri{min-height:54px;padding:0 26px 0 30px;display:inline-flex;align-items:center;gap:14px;font-size:15.5px;
@@ -7869,6 +7890,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
  color:var(--ink);border-radius:var(--r-xs);padding:11px 12px;font-family:var(--sans);
  font-size:14px;line-height:1.6;resize:vertical;min-height:110px}
 .ob-f textarea:focus{border-color:var(--accent);outline:none}
+.obx .ob-f textarea::placeholder{color:var(--dim);opacity:1}
 /* THE MIRROR'S SEATS, F4 round QA. One block per seat the words put weight
    on, a rule in the seat's own colour down its left edge, and one row per
    address with its own Yes and Not me. The tag says whether the address

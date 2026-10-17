@@ -85,6 +85,8 @@ function ixGet(p,id,k){
    control cannot report an answer it did not record. Never clamped: 9999 is
    not a 10 the person pressed. */
 function ixSet(p,id,k,v){
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('intake',p))return false;
  if(!ixRow(id,k))return false;
  if(!NUM(v)||v<0||v>10)return false;
  /* startedAt is NOT stamped here. It says the 63 were begun, and a person who

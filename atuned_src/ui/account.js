@@ -134,7 +134,8 @@ function accAccount(){
    accRow('Signed in as',ses.email)
    +accAct('Sign out of this browser','acout',{btn:'Sign out'})
    +accAct('Delete this account','acdelacc',{btn:'Delete',danger:true}),
-   'Your stories and readings stay on this device. Signing in does not copy them anywhere.')
+   'Your stories and readings stay on this device. Signing in does not copy them anywhere. '
+   +legalLink('privacy')+' and '+legalLink('terms')+' say the rest.')
   :accGroup('Sign in',
    accStub('Signed in as','not signed in')
    +'<form id="acsignin" novalidate>'
@@ -150,7 +151,8 @@ function accAccount(){
       which joins the topic picked and the marks to the account, so it is
       said here, where a person decides to sign in */
    'Your email and password go to our server, and what your first visit sent joins the account. '
-   +'Your stories and readings stay on this device.'));
+   +'Your stories and readings stay on this device. '
+   +legalLink('privacy')+' and '+legalLink('terms')+' say the rest.'));
  /* DEVELOPER OPTIONS, DEACTIVATED IN FULL, ROUND RI, the same ruling that
     removed the login card's own panel (ui/login.js). This panel's second
     home, the owner's own signed in account, is removed with it: devtoolsOn
@@ -429,6 +431,28 @@ function accSecurity(){
       per concept. The design lives in DECISIONS.md, not on this screen. */
    ses?'':'Every row here waits on sign in.');}
 
+/* ---------- the two legal pages ---------- */
+/* PRIVACY AND TERMS, 16 October. The owner: "Yes, we need a privacy policy.
+   It's very important to us. Transparency is important to us. We also need our
+   terms." The pages were drafted on 1 October and never staged, so the app had
+   nothing to link and linked nothing. They are served now at atuned.world, by
+   the deploy's stage step, from funnel/legal/render.py.
+
+   THE ADDRESS IS ABSOLUTE, ON PURPOSE. This app is also one file a person
+   downloads and opens from a folder, where a relative "privacy" resolves to
+   their own drive, the same trap feedbackWhere in ui/auth.js names for the
+   outbox. A link is a page the person chooses to open, not a request this
+   file makes, so tests/design.js gate 7 sees nothing until it is pressed.
+
+   ONE LABEL EACH, Privacy and Terms, and they are the words the funnel's own
+   footers use, one word per concept. A new tab, so the record stays open
+   behind it. */
+var LEGAL_PAGES={privacy:['Privacy','https://atuned.world/privacy'],
+ terms:['Terms','https://atuned.world/terms']};
+function legalLink(k){
+ var x=LEGAL_PAGES[k];
+ return '<a class="legal-a" href="'+x[1]+'" target="_blank" rel="noopener noreferrer">'+x[0]+'</a>';}
+
 /* ---------- 4.4 privacy. the one section here that is not generic ---------- */
 var ACC_HELD=[
  ['The identity and birth moment','name, sex, date, time and place'],
@@ -464,6 +488,17 @@ function accPrivacy(){
    +'What you answered is not sent. A sign in sends your email and password and '
    +'joins those marks to your account. Feedback, dictation, the voice that reads '
    +'a release, and payment each say what they send where you use them.');
+ /* THE FULL PAGES, beside the short version above. A row is the action row
+    the community door already is, a link dressed as the button, because a
+    press here opens a page and changes nothing on this device. */
+ h+=accGroup('The full pages',
+   '<div class="ac-row ac-act"><span class="ac-rl">What we keep, what leaves this device, '
+   +'and which companies get it</span><a class="btn" id="acprivacy" href="'+LEGAL_PAGES.privacy[1]
+   +'" target="_blank" rel="noopener noreferrer">'+LEGAL_PAGES.privacy[0]+'</a></div>'
+   +'<div class="ac-row ac-act"><span class="ac-rl">What Atüned is and is not, and the rules '
+   +'for using it</span><a class="btn" id="acterms" href="'+LEGAL_PAGES.terms[1]
+   +'" target="_blank" rel="noopener noreferrer">'+LEGAL_PAGES.terms[0]+'</a></div>',
+   'Both open on atuned.world in a new tab.');
  h+=accGroup('This device',
    accRow('Snapshots on file',snaps,{num:true})
    +accRow('Storage',STORE_BOUND?'writing':'blocked'),
@@ -713,7 +748,7 @@ function accWire(){
  /* a device setting and not a profile write: see pracOn in ui/practitioner.js */
  if(pr)pr.onclick=function(){pracSwitch(!pracOn()); renderAccount();};
  var ex=$('acexp');
- if(ex)ex.onclick=function(){var t=pExport();
+ if(ex)ex.onclick=function(){var t=pExport(); if(t==null)return;
   try{navigator.clipboard.writeText(t); status('Record copied to the clipboard.','ok');}
   catch(e){status('Could not reach the clipboard. Nothing was copied.','fail');}};
  var dl=$('acdel');
@@ -1111,17 +1146,30 @@ function obWire(){
    as sent, because the drain's state is the only thing that knows. A retry
    carries the reason the host gave, which is ui/auth.js's sentence for what
    the server or the connection did. */
+/* THE REASON AN ENTRY WAS TAKEN OUT IS THE DRAIN'S, NOT THIS FILE'S. Both
+   lines below said "carried something that identifies a person" for every
+   dropped entry, and on 16 October a blank entry and an entry the relay
+   refused joined that reason, so the sentence now carries d.dropped, the
+   boundary's or the relay's own words, and falls back to the old one only for
+   a drain that named none. */
+/* the boundary writes its reasons lower case so they can sit inside a longer
+   sentence, and the status line is sentence case, so each one is set here */
+function obSentence(w){
+ w=String(w||'').trim();
+ return w.charAt(0).toUpperCase()+w.slice(1)+(/[.?]$/.test(w)?'':'.');}
+function obGone(d){
+ return obSentence(d.dropped||'it carried something that identifies a person');}
 function obSaid(d){
- var dropped=d.refused?' One waiting entry carried something that identifies a '
-  +'person, so it was taken out and not sent.':'';
+ var many=d.refused>1?d.refused+' waiting entries were':'One waiting entry was';
+ var dropped=d.refused?' '+many+' taken out and not sent. '+obGone(d):'';
  switch(d.state){
   case 'sent':   return 'Sent. Thank you.'+dropped;
   case 'empty':  return 'Nothing is waiting to send.';
   case 'busy':   return 'Already sending. What you wrote is held on this device.';
   case 'nohost': return 'Held on this device. There is nowhere to send it yet, so '
    +'it waits in the outbox.';
-  case 'refused':return 'Nothing was sent. What was waiting carried something that '
-   +'identifies a person, so it was taken out of the outbox.';
+  case 'refused':return 'Nothing was sent. What was waiting was taken out of the '
+   +'outbox. '+obGone(d);
   default:       return 'Held on this device, not sent yet. '+(d.why||'')
    +' It waits in the outbox and nothing has been thrown away.'+dropped;}}
 function obFlush(btn){
@@ -1142,7 +1190,7 @@ function obSend(){
   platform:(window.innerWidth<720?'phone':'desktop'),
   viewport:(window.innerWidth<720?'narrow':'wide')};
  var q=obQueue(e);
- if(!q.ok){ status(q.why,'fail'); return false; }
+ if(!q.ok){ status(obSentence(q.why),'fail'); return false; }
  /* QUEUED SAYS QUEUED. Never sent, because it has not been. The sheet shuts
     on the queue and not on the send: the words are safe on this device the
     moment obQueue says so, and the send is told separately when it answers.

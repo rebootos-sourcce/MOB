@@ -111,6 +111,14 @@ function crisisTalk(){
  if(typeof LOGIN!=='undefined'&&LOGIN.open&&typeof loginClose==='function')loginClose();
  if(typeof OB!=='undefined'&&OB.open&&typeof obClose==='function')obClose();
  if(typeof STV!=='undefined'){ STV.chat=false; STV.focus='write'; STV.crisis=true; }
+ /* AND ON THE PERSON'S OWN PROFILE. A worked example is show only from 16
+    October (engine/showonly.js), so its Story page has no box: the preview
+    line stands where the journal was. Talk it through pressed while an example
+    was open landed a person in crisis on a page that could not take what they
+    had to say. Their words are theirs, so the door opens their own profile
+    first, through loadP(0), the one route to it, and says nothing about the
+    example: this is not the moment for that line. */
+ if(typeof showOnly==='function'&&showOnly()&&typeof loadP==='function')loadP(0);
  if(typeof setTab==='function')setTab(TAB.STORY);
  if(typeof render==='function')render();
  var ta=document.getElementById('sttext'); if(ta)ta.focus();}

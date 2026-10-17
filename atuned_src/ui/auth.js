@@ -316,6 +316,7 @@ function authProfileSync(){
  PROFILE_SYNC_BUSY=true;
  var localText;
  try{ localText=pExport(); }catch(e){PROFILE_SYNC_BUSY=false;return Promise.resolve({state:'refused'});}
+ if(localText==null){PROFILE_SYNC_BUSY=false;return Promise.resolve({state:'refused'});}
  var local;
  try{ local=JSON.parse(localText); }catch(e){PROFILE_SYNC_BUSY=false;return Promise.resolve({state:'refused'});}
  if(!local||typeof local!=='object'){PROFILE_SYNC_BUSY=false;return Promise.resolve({state:'refused'});}
@@ -457,7 +458,8 @@ function feedbackWhere(){
    an account. authCall sends Authorization only when handed a token, so null
    here is the whole of that promise.
 
-   Resolves true on a yes and rejects with authWhy's sentence on a no, because
+   Resolves true on a yes, {drop} on a refusal no retry can change (below),
+   and rejects with authWhy's sentence on a no, because
    obDrainAsync keeps the entry on a rejection and carries its message to the
    status line. Until the Function is deployed the site answers a post with
    404 or 405, because a static host takes no posts, and until the variable is
@@ -469,6 +471,16 @@ function authFeedback(e){
   +'the one at atuned.world can send.'));
  return authCall('POST','',e,null,false,at).then(function(r){
   if(r.ok)return true;
+  /* THE RELAY'S OWN REFUSAL OF THIS ENVELOPE IS FINAL. A 400, 413 or 415
+     carrying the Function's json is its boundary saying no to these exact
+     bytes, and sending them again gets the same answer for ever: held, the
+     entry stopped every later one behind it (16 October, measured). It is
+     handed back as {drop} so the outbox takes it out and says why. Only with
+     the Function's own json: the same status from Cloudflare in front of it
+     is an HTML page about the edge, not about the envelope, and is held. */
+  if((r.status===400||r.status===413||r.status===415)&&r.body&&r.body.ok===false
+   &&typeof r.body.error==='string')
+   return {drop:'the server refused it as it was: '+r.body.error};
   throw new Error(r.status===404||r.status===405?'The server does not take these yet.'
    :authWhy(r,'feedback')); });}
 /* THE SERVER'S OWN WORDS, SET IN SENTENCE CASE. Its errors are lower case

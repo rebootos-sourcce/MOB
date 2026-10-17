@@ -1132,6 +1132,111 @@ const PROBE = () => {
     }
   }
 
+  /* ---------- the legal pages: staged, and linked ----------
+     16 October. funnel/legal/ held a privacy policy and terms from 1 October,
+     and the deploy's stage step copied nothing under it, so atuned.world
+     served no policy and not one page or screen linked to one. Three holes,
+     each held here:
+
+       the stage   the deploy's own stage step, read out of deploy.yml and run
+                   into a scratch folder, must put privacy.html and terms.html
+                   there, the same bytes funnel/dist built. The step is run
+                   rather than read, because a cp line that names the wrong
+                   source passes a text search and stages nothing.
+       the funnel  every funnel page that is not itself a legal page links
+                   both, by the name the stage serves.
+       the app     the built app links both addresses from the door, from
+                   Settings under Account and under Privacy, and from the
+                   first onboarding card, read off the rendered markup.
+
+     Checked against a known bad case first: the stage step with its privacy
+     line taken out must be called incomplete, or nothing after it is trusted. */
+  console.log('\n--- the legal pages ---');
+  const LEGAL = ['privacy.html', 'terms.html'];
+  const ROOT = path.resolve(__dirname, '..');
+  const stageRun = (() => {
+    const lines = fs.readFileSync(path.join(ROOT, '.github', 'workflows', 'deploy.yml'), 'utf8').split('\n');
+    const at = lines.findIndex(l => /^\s*- name: stage the site\s*$/.test(l));
+    if (at < 0) return null;
+    const r = lines.findIndex((l, i) => i > at && /^\s*run: \|\s*$/.test(l));
+    if (r < 0) return null;
+    const ind = lines[r].search(/\S/), out = [];
+    for (let i = r + 1; i < lines.length; i++) {
+      const l = lines[i];
+      if (l.trim() && l.search(/\S/) <= ind) break;
+      out.push(l.trim());
+    }
+    return out.join('\n');
+  })();
+  const staged = run => {
+    const d = fs.mkdtempSync(path.join(require('os').tmpdir(), 'funnel-stage-'));
+    fs.mkdirSync(path.join(d, 'funnel'));
+    fs.symlinkSync(path.join(DIR, 'dist'), path.join(d, 'funnel', 'dist'));
+    fs.symlinkSync(path.resolve(ROOT, process.env.ATUNED_FILE || 'source.html'), path.join(d, 'source.html'));
+    const r = require('child_process').spawnSync('bash', ['-euo', 'pipefail', '-c', run], { cwd: d, encoding: 'utf8' });
+    const lost = LEGAL.filter(f => {
+      const p = path.join(d, 'deploy', f), src = path.join(DIST, f);
+      return !fs.existsSync(p) || !fs.existsSync(src) || fs.statSync(p).size === 0
+        || !fs.readFileSync(p).equals(fs.readFileSync(src));
+    });
+    fs.rmSync(d, { recursive: true, force: true });
+    return { code: r.status, lost, err: (r.stderr || '').trim().split('\n')[0] };
+  };
+  ok(!!stageRun, 'deploy.yml has no "stage the site" step with a run block to read');
+  if (stageRun && fs.existsSync(DIST)) {
+    const bad = staged(stageRun.split('\n').filter(l => !/privacy\.html/.test(l)).join('\n'));
+    if (!bad.lost.includes('privacy.html')) {
+      ok(false, 'the stage check passed a stage step with no privacy line, so it is not trusted');
+    } else {
+      PASS++;
+      const st = staged(stageRun);
+      ok(st.code === 0, 'the deploy stage step exits ' + st.code + ' here: ' + st.err);
+      ok(st.lost.length === 0, 'the deploy stage step does not put ' + st.lost.join(' and ')
+        + ' on the site, so atuned.world/privacy or /terms answers nothing');
+      console.log('  staged by the deploy step: ' + LEGAL.filter(f => !st.lost.includes(f)).join(', '));
+    }
+  } else if (stageRun) {
+    console.log('  no dist, so the stage was not run');
+  }
+  for (const p of PAGES.filter(f => !/^(privacy|terms|consumer-health-data)\.html$/.test(f))) {
+    const h = fs.readFileSync(path.join(DIR, p), 'utf8');
+    const miss = LEGAL.filter(f => h.indexOf('href="' + f + '"') < 0);
+    ok(miss.length === 0, p + ' does not link ' + miss.join(' or '));
+  }
+  {
+    const APP = path.resolve(ROOT, process.env.ATUNED_FILE || 'source.html');
+    const ctx = await browser.newContext({ viewport: { width: 1600, height: 1000 } });
+    const page = await ctx.newPage();
+    await page.route('**/*', r => /^(file|data|blob):/.test(r.request().url()) ? r.continue() : r.abort());
+    await page.goto('file://' + APP + '?dev=1');
+    let up = true;
+    try { await page.waitForFunction(() => document.body.classList.contains('booted'), null, { timeout: 15000 }); }
+    catch (e) { up = false; ok(false, 'the app at ' + APP + ' did not boot, so its legal links were not read'); }
+    if (up) {
+      const seen = await page.evaluate(() => {
+        const hrefs = html => { const d = document.createElement('div'); d.innerHTML = html;
+          return [...d.querySelectorAll('a[href]')].map(a => a.getAttribute('href')); };
+        const out = {};
+        out.door = hrefs(loginCard(''));
+        setTab(TAB.SETTINGS);
+        for (const k of ['account', 'privacy']) {
+          ACC_OPEN = k; renderAccount();
+          out['settings ' + k] = [...document.querySelectorAll('#settings a[href]')].map(a => a.getAttribute('href'));
+        }
+        obOpen(true); OB.step = 0; obRender();
+        out['first onboarding card'] = [...document.querySelectorAll('#ob a[href]')].map(a => a.getAttribute('href'));
+        try { obClose(); } catch (e) {}
+        return out;
+      });
+      for (const [where, list] of Object.entries(seen)) {
+        const miss = ['https://atuned.world/privacy', 'https://atuned.world/terms'].filter(u => list.indexOf(u) < 0);
+        ok(miss.length === 0, 'the app\'s ' + where + ' does not link ' + miss.join(' or '));
+      }
+      console.log('  linked in the app from: ' + Object.keys(seen).join(', '));
+    }
+    await ctx.close();
+  }
+
   await browser.close();
   console.log('\n  controls measured ' + ctrlSeen + ', prose links ' + proseSeen
     + ', outbound requests ' + reqSeen);

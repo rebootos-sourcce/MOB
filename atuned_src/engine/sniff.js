@@ -1103,6 +1103,8 @@ function unmarkedOf(t,p){
  out.forEach(function(r){r.text=t.slice(r.s,r.e);});
  return {stretches:out, words:ws.length, read:read, unmarked:ws.length-read};}
 function applyStory(text){
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('story'))return {parsed:parseStory(text), applied:{}, refused:'example'};
  var p=parseStory(text), touched={};
  p.imprints.forEach(function(im){ var f=im.fetter; if(!f) return;
   touched[f]=(touched[f]||0)+im.amt;});

@@ -141,6 +141,16 @@ function loginCard(mail){
      always there and never the thing a person has to read past. The panel and
      the reason it is its own layer are in ui/crisis.js. */
   +'<p class="crx-line">'+crisisBtn()+'</p>'
+  /* THE DOOR'S LEGAL LINE, 16 October. The first place a person can make an
+     account, so the two pages that say what an account sends and keeps are
+     linked here (legalLink, ui/account.js). It is the card's foot and sits
+     under the crisis button, never between it and the three ways in: there
+     it would put two links ahead of the button in the tab order and a line
+     of text above it on a phone, and the button is the one control a person
+     in trouble should reach with the fewest presses after the three.
+     tests/onboarding2.js holds the button on the first screen at 390. */
+  +'<p class="login-legal">Read '+legalLink('privacy')+' and '+legalLink('terms')
+  +' before you make an account.</p>'
   +loginDevOptions()
   +'</div></div>';}
 function loginResetCard(mail){
