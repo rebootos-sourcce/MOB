@@ -778,6 +778,14 @@ function obDraft(v){
  if(!OB.rec)return;
  if(OB.draftT)clearTimeout(OB.draftT);
  OB.draftT=setTimeout(function(){ OB.draftT=null; if(OB.open&&OB.step===5)obWalkSave(); },500);}
+/* the half second is a debounce with no flush, so a tab that closes or reloads
+   inside it loses the words on the story step, and never says so: the write
+   never reaches the store at all. The same flush ui/personas.js carries. */
+if(typeof addEventListener==='function')['pagehide','visibilitychange'].forEach(function(ev){
+ addEventListener(ev,function(){
+  if(!OB.draftT)return;
+  clearTimeout(OB.draftT); OB.draftT=null;
+  if(OB.open&&OB.step===5)obWalkSave();});});
 /* A CORRECTION, READ, in the order the card shows it, so a reload rebuilds
    exactly the rows the person was answering. obAdjust reads through this. */
 function obFixRead(v){

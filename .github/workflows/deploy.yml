@@ -310,6 +310,10 @@ jobs:
           # no question, and the crisis door beside the entry (engine/safe.js).
           # New, so report only first.
           - { gate: safepage, timeout: 20, command: node tests/safepage.js }
+          # 17 October: the allowance, five seats (tests/allowance.js): whole
+          # addresses, no free release, the empty card's rerun first, the plan
+          # sheet's day. New, so report only first.
+          - { gate: allowance, timeout: 20, command: node tests/allowance.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

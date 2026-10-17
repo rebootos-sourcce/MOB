@@ -7,8 +7,11 @@
    Tier four is left out of the default on purpose. It is closed to purchase until the lead suite
    is built (DECISIONS.md round PK, "tier four is closed until built"; engine/plan.js built:false),
    so a live run must not make a price a checkout could charge. Name it in --tiers once it opens.
+   Four is the key and Practitioner the name a person sees, ruled 17 October: the lookup key and the
+   metadata stay atuned_tier_four, because this tool finds a price by that key and the server's
+   setting for it is STRIPE_PRICE_FOUR.
    Safe to run twice: a price is found by its lookup key and never made twice. */
-var TIERS={one:{name:'Atüned tier one',usd:12},two:{name:'Atüned tier two',usd:29},three:{name:'Atüned tier three',usd:59},four:{name:'Atüned tier four',usd:99}};
+var TIERS={one:{name:'Atüned tier one',usd:12},two:{name:'Atüned tier two',usd:29},three:{name:'Atüned tier three',usd:59},four:{name:'Atüned Practitioner',usd:99}};
 var argv=process.argv.slice(2),go=argv.indexOf('--go')>=0,live=argv.indexOf('--live')>=0;
 var tl=(argv.filter(function(a){return a.indexOf('--tiers=')===0;})[0]||'--tiers=one,two,three').slice(8).split(',');
 var KEY=process.env.STRIPE_SECRET_KEY||'';

@@ -2884,3 +2884,62 @@ A seat decision, taken by the team on the round 3 plan's decision 1 default (a),
 - **Nothing about a match is stored.** Not on the record, the draft, the export, the outbox or the server. `tests/safepage.js` holds that the export and the whole browser store are the same with and without it.
 - **How to turn it off:** set `on:false` on a family's row in `SAFE_WORDS`. One table, one line each.
 - **Still open, his:** whether this stays; whether the first run should draw the line too (today it only reads nothing there, and its top bar already carries the crisis button); whether the phrase list goes to a clinician (round PW ruled that "explicitly not now").
+## The personas decide, the owner reacts, 17 October
+
+His words: "I'm a reaction person. Emmy's running these designs, and she's got Jimmy Ivy [Jony Ive] and a bunch of other people. If you're asking me stupid-ass questions that these personas should already be able to answer, then we've got a problem."
+
+- **Design, copy, layout and product-judgment questions are answered by the personas** (Emmy and her lenses, and the directors), not put to him. The seat picks the persona's answer, builds it, and shows him a picture or a playable file to react to.
+- **He is asked only for four things:** money (prices, spend), legal wording, safety consent, and facts only he can know (his own history, who he knows, what he intends).
+- **A reaction is the unit of input.** He reacts to pictures and files. A mockup round ships with a recommendation the personas made, so his reaction is to something chosen, not to a menu.
+- **This sits on top of round PD (ask at most one question, only when blocked) and round PL (deliver, do not point).** It narrows what counts as blocked.
+- **Same day, the tier names:** "There are four tiers. Free, tier one, tier two, tier three, practitioner." The top rung formerly called tier four is named Practitioner for display. See the entry that renames it.
+
+## The top tier is named Practitioner, 17 October
+
+His words: "There are four tiers. Free, tier one, tier two, tier three, practitioner."
+
+- **The rung that was called Tier four is called Practitioner wherever a person can read it**: the tiers page, the plan sheet, the status line that refuses its checkout, the funnel's tier page (`funnel/buy.html`) and the name the Stripe setup tool gives the product (`tools/stripe-setup.js`). Free, Tier one, Tier two and Tier three keep their names. Practitioner means the rung for somebody who leads other people: manage profiles, build rituals and build accountability for the people you lead.
+- **The display name moved and nothing else did.** The key is still `four` in `PLANS` (`engine/plan.js`), because a key is identity: a record's `plan.tier` holds it, the worked examples carry it, and Stripe finds the price by the lookup key `atuned_tier_four` and the server's setting `STRIPE_PRICE_FOUR`. Renaming it would read every record already on the rung as a tier this build does not know.
+- **The price stays 99 dollars a month and the rung stays closed until built** (`built:false`, round PK, "tier four is closed until built"). `planBuyable('four')` still answers no, and a press still refuses with "Practitioner is not open yet. It opens when the lead suite is built. Nothing was charged."
+- **Stripe is outside this repository and was not touched.** No live Practitioner price exists yet. Whoever creates it names the product Practitioner (the tool now does). If a test mode product was already made as "Atüned tier four", it keeps that name until someone renames it on the Stripe website, because the tool finds an existing price by its key and never edits a product it has made.
+- **This supersedes the "tier four" wording in earlier entries without rewriting them.** Rounds PK, PW, the 1 October sight and price rulings and the 16 October show only entry above say tier four and still hold for the rung keyed `four`. Code comments that quote those rulings keep his words as he said them.
+- **Held by gates.** `tests/engine.js` checks the rung keyed four is named Practitioner and that no plan row says tier four. `tests/copy.js` fails any surface of the app or the funnel that prints "tier four" or "tier 4".
+
+## The allowance, five seats, 17 October
+
+His words, the question this answers: "what patterns does a person have access to per month? ... once they run those patterns, they get a maximum of 400 unique patterns per month. So they can rerun the patterns that they've already generated, but new ones, they will not be able to. It's one of the reasons why you want to clear the ones that don't work to make space for the ones that do work. ... And if a person wants to run, then shame, but they only have 50 patterns left, then what happens? To say you're out of patterns for the month. ... What if I don't want the user to have to engage? ... Now let's tease out a few mechanics here that will help reduce friction and help me resolve this."
+
+Five seats read what the code does (the game director, UI and UX, sales, the AI director, and Emmy) and agreed. A pattern here is one unit of the allowance: one line at one address down one channel, counted the first time it is opened. An address is one of the 112 spots in the body; a channel is one of its four tracks, left and right release, left and right reframe.
+
+**Built, branch `claude/allowance-fixes`, held by `tests/allowance.js`:**
+
+- **A run opens whole addresses only.** One address is four patterns, both sides and both tracks. When the allowance cannot cover everything picked, the run takes as many whole addresses as fit, heaviest first, and never one channel of an address without the rest (`meterPlanWhole`, `engine/schema.js`). It used to cut key by key: three left opened three of one address's four channels and dropped its right reframe.
+- **No address is released that was not charged.** A new run kept every picked address in its queue and released the charge at all of them when it ended, so eight picked against three left released eight for the three patterns one address was charged. The queue is now what the plan reaches, for a new run as it already was for a rerun, and the end of the run cuts it again for any route that skips that (`relReached` and `relCoolDown`, `ui/release.js`).
+- **A shorter run says so before Run.** One line: "This run opens 2 new addresses. This week has room for 2, and you picked 3." It names addresses and room and never a price.
+- **The empty card hands over a rerun first.** "Rerun these" is the first press, filled, one tap from the empty card to a running rerun, and it spends nothing. When nothing picked has been opened it reads "Rerun your heaviest" and reruns the heaviest addresses already opened, so the first press is never dead. Then Close, then "See the tiers", last and small. The words: "This week's new patterns are all opened. Everything you have opened still runs, free, as often as you like. New ones arrive on 24 Oct 2026." The day is the plan record's own (the paid period's end, or free's next week); with no day on the record the sentence is left out. The crisis door is on the card, and Talk it through closes the card on the way to the Story box. The story was saved when it was committed, before any release.
+- **A paid tier at nought is never told it is banking.** The plan sheet said "0 left this month, banking toward a run of 4", and paid tiers carry nothing over. It says "0 left this month. New ones arrive on" and the renewal day.
+- **Pattern means the allowance's unit on the release card.** The card printed "200 patterns" for a run that spent four, because it counted release lines said, every pass. It says lines now: each group, the summary, Remaining, the closing and the results. The dose field says "Times said". Engine keys are untouched.
+
+**Default taken, his to overrule: free restarts from the day a paid plan stops.** Dropping from paid to free charged everything opened while paying against the free weeks: 1,500 opened read nought left for about 140 weeks, which is a penalty for leaving. Now ground opened before the stop is the person's and reruns free, and the free ten a week count only from the stop (`planFromServer` and `planFreeFrom`, `engine/plan.js`). This is the sales and UX seats' recommendation.
+
+**Picked, and holding:**
+
+- **Clearing never refunds allowance.** A refund makes 400 unlimited: clear 400, open 400, again. Clearing, when it is built, only trims what a rerun replays.
+- **A rerun of anything opened is always free.** Ruled 18 and 19 September, and the empty card now leads with it.
+- **Stories and the crisis door are never gated by the allowance.**
+- **No refill packs and no borrowing.** A refill sold at the empty moment sells to somebody mid charge; borrowing is a debt next month opens on.
+
+**Not built, after alpha:**
+
+- Carry over for paid tiers, capped at one month's grant.
+- Make room: trimming the rerun hand by weight, per the 19 September ruling ("what a person marks heavy stays, what sits light drops off first"), optional and never in front of a run.
+- A chosen rerun: picking which opened lines a rerun says.
+- Grouped runs by cluster, only over links the person's words named or they said yes to.
+- A cap of 25 on free banking (one full run). Today it has none: a year unused banks 530.
+- A prorated upgrade mid month.
+
+**Not built, because he ruled the other way: the cost line under Run.** The seats asked for "Opens 12 new. 388 left this month." under Run in the normal case. He took that line off this card at round IG, 27 September: "Cost runs left, that goes away. And this, just, run release button." `tests/functional.js` holds his cut, so it stays off. It is not put to him as a question (the personas ruling above). A reversal of his own cut is not the seats' to make silently either, so it waits for him to react to the two cards side by side: the card as he cut it, and the card with the line.
+
+**The risk all five named.** Only 65 different sentences sit behind the 21,400 slots one person can open, so a "pattern you have never opened" is often words already heard. Selling never opened patterns is not honest until slots carry distinct sentences. Checkout stays closed.
+
+**Still open in the words:** the glossary defines a pattern as "a reaction you keep having, and the instrument places it at one exact spot in your body", and "Your patterns" is a surface of its own. Making pattern mean the allowance's unit everywhere would reword those, which is his to rule; this round moved only the release card's counts.
