@@ -1,4 +1,138 @@
-# Paywall, four mockups
+# Paywall mockups
+
+## p5, flat cards, second cut. The owner's pick, fixed (17 October 2026)
+
+His words on p1: "It's a C minus. It's not maximizing the space. There's too
+much text at the bottom ... 'a pattern is one line, said once.' I don't know
+why that's there ... I think the icons under the price are great ... More
+visual, more show, less tell. Icons, I can hover over the icons and get
+information on what features I may be missing."
+
+**Open `p5-flat-cards-v2.html`.** p1 to p4 are untouched and stay as the record.
+
+What changed from p1, and which of us called it:
+
+- **Petra, the space.** The sheet fills the screen. Three cards take its full
+  height at 1600 by 1000 and at 390 by 844, with no scroll. On a desktop the six
+  rings sit 3 by 2 at about 120 px each, in the same places on every card. That
+  way the card's spare height goes to the hero, not to air.
+- **Bjorn, the order.** The patterns number is each card's headline: "400",
+  "800", "1,200" at 136 px. The price is the second level at 60 px, and the
+  tier name is the third. Gone: the legend row, the "a pattern is one line"
+  line, tier four's sentence and the two-line foot essay. The foot is one line,
+  "Stop anytime, in two presses.", with Restore, Terms and Privacy beside it.
+- **Sol, the colour.** A ring a tier opens is a solid disc of the accent. Its
+  mark stays drawn in line on top, so the house rule "ring, not fill" still
+  holds for the symbol. A ring a tier does not open is a grey outline. Solid
+  against outline is a change of shape, so colour is never the only sign. One
+  colour serves all three cards: tiers rank by how much is lit, never by hue.
+  No glow, no gradient, Punch tokens.
+- **Mika, the telling.** Every ring is a button. Hover (desktop), a tap
+  (phone) or keyboard focus opens one short card:
+  - the layer's name
+  - one plain sentence
+  - "Opens at tier two" (or "You see this now")
+
+  The number does the same with the meaning of a pattern. The locked ring the
+  person pressed to get here is marked with a bar under its column on every
+  card, so the eye runs across to where it is lit. The card that opens it
+  carries the one solid button.
+- **Practitioner** is a slim strip under the three, on the darkest ground:
+  "Practitioner, $99 a month, For people who lead others, Opens soon". Its own
+  tooltip says it is everything tier three has plus tools to guide the people
+  you lead. **Free** is a quiet "You are here" marker in the header, never a
+  card. On tier one the marker moves onto tier one's card.
+
+Every state from before is kept, with fewer words: the gift, paying closed,
+paying open, signed out with the account step inside the panel, already on tier
+one, payment failed, and the two-press stop screen.
+
+### Words and presses against p1, read off the run (`shots/measure.json`)
+
+| State | p1 words 1600 / 390 | p5 words 1600 / 390 |
+|---|---|---|
+| Paying open | 140 / 134 | 68 / 45 |
+| Today, paying closed | 137 / 137 | 65 / 45 |
+| Already on tier one | 143 / 139 | 66 / 41 |
+| Payment failed | 150 / 144 | 77 / 46 |
+| Signed out, account step | 96 / 96 | 45 / 42 |
+| The gift | 54 / 54 | 12 / 12 |
+| Stop screen | 37 / 37 | 22 / 22 |
+
+How to read the press counts:
+
+- **Things to press in view.** Paying open: p1 has 8; p5 has 29, of which 22
+  only open a tooltip (18 rings, 3 numbers, Practitioner) and 7 act (3 Start,
+  the X, Restore, Terms, Privacy). Paying closed: p1 has 5, p5 has 4 that act.
+- **Presses, unchanged from p1.** Locked ring to paid is 3 signed in (the
+  ring, Start, the payment page's confirm) and 4 signed out. Billing to paid is
+  3. Stopping a plan is 2.
+- **Tooltip words** are on demand and not in the counts above. A ring says 9
+  words, the number 35, and Practitioner 27.
+
+### Checks, all green on the final build
+
+- **`src/shots.js p5`.** 30 pictures: every state at both widths, plus a
+  locked ring hovered (1600) and tapped (390), the number opened by the
+  keyboard alone, and the Practitioner tooltip. It fails on:
+  - anything below the fold or clipped
+  - text under 4.5 to 1, or a mark under 3 to 1, each against its own ground
+  - a target under 44 by 44
+  - an open tooltip off screen or under 4.5 to 1
+  - **new:** anything hanging out of its own card. It was added because the
+    failed state on a phone pushed the Start buttons over the card edges and
+    the old gate did not see it. It was checked against that known bad case:
+    6 elements caught; the fixed build, 0.
+- **The lowest contrasts.**
+  - Text: 6.54, the "You are here" chip.
+  - Mark: 4.45, a grey locked ring on its card.
+  - Tooltip text: 9.22.
+- **`src/play.js`.** 20 p5 press checks, all pass:
+  - the pre-marked ring is on all three cards
+  - the door card has the one solid button
+  - the tiers light 1, 2 and 6 rings
+  - hover opens a tooltip and pointer-out closes it
+  - focus opens it, Tab moves it, Esc closes it
+  - a phone tap opens it, a second tap or a tap elsewhere closes it, and it
+    stays on screen
+  - a screen reader gets the meaning and the tier
+  - paying closed has no paying press
+  - Practitioner cannot be bought
+  - stop in two presses
+  - the account step stays inside the panel
+  - the gift has no padlock and no price
+- **`src/voice.py`.** 94 of 94 page lines pass. All 60 tooltip and label lines
+  pass through `check.py --line` too.
+
+### What is not true in the product yet
+
+- **"Stop anytime, in two presses."** True on this mockup's stop screen. In
+  the product today, stopping happens on Stripe's page. The two presses need
+  the server route to stop a plan at the month's end, which is not built.
+- **The refund line** is still a switch, off, for the same reasons as before
+  (below).
+- **The gift state.** The gift still locks the layers in code (`lockPlan` in
+  `ui/lock.js`).
+- **"Unique", checked against the code.** What is true:
+  - The allowance counts `meter.unique`, the lines a person has never opened
+    before. So 400 is 400 patterns new to that person each month.
+  - Repeating ones already opened is free and unlimited (`relRerunPlan`), and
+    it is the person's own choice, so the tooltip says "Repeat old ones free",
+    never "they come back".
+  - **Not true:** "new ones will be added". The pool is fixed: 112 addresses
+    by 4 channels by 50 lines, 22,400 in all. Nothing in the code adds more.
+    Spent in full, tier three opens the whole pool in about 19 months.
+- **The name.** `atuned_src/engine/plan.js` still names the rung "Tier four"
+  (PLANS, k four). p5 types "Practitioner" in one place (`src/p5.js`, PRAC).
+  Its price, allowance and closed state still come from plan.js. Renaming it
+  in plan.js is one word.
+- **"Patterns a month" against the glossary.** The tooltip uses the
+  glossary's meaning, "a reaction you keep having", not Emmy's "one line, said
+  once". The release panel counts lines, so the product still needs one
+  meaning.
+
+## The four mockups, as first sent (the record)
+
 
 Mika's seat (art), with Sol (colour and light), Bjorn (type and grid) and Petra
 (composition and symbols). Made 17 October 2026 on the owner's words: "Our

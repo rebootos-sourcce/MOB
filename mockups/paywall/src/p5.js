@@ -37,9 +37,12 @@ const W5={
  pats:'patterns a month',
  /* the number's own meaning, said once per card on hover, focus or tap. Checked
     against the code: the allowance counts meter.unique, lines never opened
-    before, and a rerun of an open line is charged nothing (relRerunPlan). */
+    before, and a rerun of an open line is charged nothing (relRerunPlan). A
+    rerun is the person's own choice (relPick always opens on new), so the line
+    says "repeat", never "they come back", which would claim the product
+    brings them round on its own. */
  patTip:t=>'A pattern is a reaction you keep having, placed at one spot in your body. '
-  +NUM(t.grant)+' new ones open for you every month. Ones you have opened come back free, so you feel their weight.',
+  +'You get '+NUM(t.grant)+' new ones every month. Repeat old ones free, as often as you like, to feel their weight.',
  opensAt:k=>'Opens at '+TIERWORD[needOf(k)],
  seeNow:'You see this now',
  start:t=>(ON==='free'?'Start ':'Move to ')+t.nm.toLowerCase(),

@@ -35,7 +35,7 @@ await pg.mouse.move(5,500);await pg.waitForTimeout(50);ok(!(await pg.isVisible('
 await pg.focus('.c5[data-pt="two"] .rg5[data-k="mask"]');ok((await pg.textContent('.tip5 b'))==='Masks'&&(await pg.textContent('.tip5 .tl'))==='Opens at tier three','p5 keyboard focus on a ring shows its tooltip');
 await pg.focus('.c5[data-pt="two"] .rg5[data-k="sab"]');await pg.keyboard.press('Tab');ok(await pg.isVisible('.tip5.on')&&(await pg.textContent('.tip5 b'))==='Complexes','p5 Tab to the next ring moves the tooltip with it');
 await pg.keyboard.press('Escape');ok(!(await pg.isVisible('.tip5.on')),'p5 Esc closes the tooltip');
-await pg.focus('.c5[data-pt="three"] .hl');ok((await pg.textContent('.tip5'))===(await pg.textContent('#ptthree'))&&(await pg.textContent('.tip5')).includes('1,200 new ones'),'p5 the number carries its meaning on focus, 1,200 on tier three');
+await pg.focus('.c5[data-pt="three"] .hl');ok((await pg.textContent('.tip5'))===(await pg.textContent('#ptthree'))&&(await pg.textContent('.tip5')).includes('1,200 new ones every month'),'p5 the number carries its meaning on focus, 1,200 on tier three');
 ok(await pg.$eval('.c5[data-pt="one"] .rg5[data-k="sab"]',e=>document.getElementById(e.getAttribute('aria-describedby')).textContent)==='Habits that run on your charge. Opens at tier one.','p5 a screen reader gets the meaning and the tier too');
 await pg.goto(P5+'?s=closed&t=sab');ok(!(await pg.$('.c5 button.go'))&&(await pg.$$eval('.c5 .shut',e=>e.length))===3,'p5 closed: three "Opens soon", no card can be pressed to pay');
 ok(!(await pg.$('.pr5 [data-act="buy"]'))&&(await pg.textContent('.pr5 .shut'))==='Opens soon','p5 Practitioner cannot be bought and says so');
