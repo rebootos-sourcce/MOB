@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2185 aeab54e2 2026-10-17 22:14"><head><meta charset="utf-8">
+<html lang="en" data-build="v2186 03b08fd1 2026-10-17 23:16"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -13509,9 +13509,16 @@ function addrLine(n,pole,i){
     axis if the engine knows one, never a guess. */
  var opp=(CHILD.filter(function(x){return x.nm===ax;})[0]||{}).opp;
  var nm=String(n.k).toLowerCase();
- return {rel:C3_STEM+nm+'.',
+ /* "IN" BEFORE THE NAME, 17 October. An address name is a noun, Panic,
+    Betrayal, Oversensitivity, and this read it straight after the stem's "that
+    I am", so the three Surprise addresses, the only ones no card covers, ran
+    "that I am betrayal." a hundred times a block on the carousel and in the
+    voice. The axes cards already settle how he puts a noun after that stem:
+    "in shock.", "in grief.", "in rejection." So the strict syntax takes his
+    "in", and the truth's fallback with it. */
+ return {rel:C3_STEM+'in '+nm+'.',
    tru:opp?C3_TRUTH+'moving toward '+String(opp).toLowerCase()+' at this address.'
-     :C3_TRUTH+'not '+nm+'.',
+     :C3_TRUTH+'not in '+nm+'.',
    track:null, src:'Strict syntax at the address', split:false};}
 /* ONE THOUGHT LINE OF A RELEASE, read off its meter key. The key is address,
    pass and line; the pass is the side then the phase (Rlimit, Ltruth). The
@@ -31396,6 +31403,15 @@ function cr(band,pct,o){
     component prints passes through here, so a ring that reads nought prints the
     dash and its title says so, and no caller has to remember. Round J13. */
  if(/^0(?:\.0+)?%?$/.test(String(val)))val='\u2013';
+ /* A PERCENT IS NEVER THE ALARM. 17 October, percent phase 2: every score now
+    prints as a percent of its own range (engine/pct.js), so a weight of 9.2
+    reads 92%, and a ring past ninety went alarm red beside a figure that now
+    looks like a mark out of a hundred. Red on a percent reads as a failed
+    grade, which nothing here sets out to give. Default taken by the team and
+    written in DECISIONS.md as his to overrule: a ring printing a percent draws
+    its own colour at every fill, so the arc shows an amount and nothing else.
+    A ring printing something other than a percent keeps the alarm law. */
+ if(/%$/.test(String(val)))hot=false;
  var cls='cr '+size+(hot?' hot':'')+(o.act?' act':'')+(o.on?' on':'');
  var attrs=o.data||'';
  /* THE RING NAMED ITS COLOUR AND NOT ITS SUBJECT. The fallback led with the
@@ -31848,7 +31864,9 @@ function rbMotion(hosts){
      var d=n1-m.n1, up=(now-m.ct<RB_CHIP)&&m.chip&&((m.dsum>0)===(d>0));
      nm.dsum=up?m.dsum+d:d;
      var txt=Math.abs(nm.dsum).toFixed(nm.dp);
-     if(+txt>0){nm.chip=(nm.dsum>0?'+':'−')+txt;nm.ct=now;nm.chipBad=nm.bad&&nm.dsum>0;}}
+     /* the chip carries the pill's own unit, 17 October, percent phase 2: a
+        bare "+3" beside "61%" was a move in a unit the row does not show */
+     if(+txt>0){nm.chip=(nm.dsum>0?'+':'−')+txt+nm.suf;nm.ct=now;nm.chipBad=nm.bad&&nm.dsum>0;}}
     else if(m.chip&&now-m.ct<RB_CHIP){nm.chip=m.chip;nm.ct=m.ct;nm.chipBad=m.chipBad;nm.dsum=m.dsum;}}
    RBMO[key]=nm; rbPaint(nm,now); rbGhost(el,nm,now); rbChip(el,nm,now);});});
  fresh.sort(function(a,b){return a.r.top-b.r.top;});
@@ -31931,15 +31949,14 @@ function rbMotion(hosts){
 var RB2={}, RB2_ON=false, RB2_MINF=0.5;
 /* the compass marker's own wander, lifted so the two are one function */
 function rbDrift(t){return Math.sin(t*0.55)*0.62+Math.sin(t*0.23+1.1)*0.38;}
-/* a figure as the bar prints it: a whole percent, and a zero is a dash */
-function rbPct(v){var n=Math.round(+v||0); return n>0?n+'%':'–';}
-/* A HEADLINE READING PRINTS BARE. Round PQ, his words: "No, it doesn't need
-   to be a percent. Just a number." The CQ and DQ key under the wheel still
-   printed 62% and 11% on 15 October, the last place they did. A pole marked
-   bare prints the whole number; a share of a whole (the balance, the lean)
-   keeps its sign, because a share is a percent. */
-function rbBare(v){var n=Math.round(+v||0); return n>0?String(n):'–';}
-function rbVal(P,v){return P&&P.bare?rbBare(v):rbPct(v);}
+/* A FIGURE AS THE BAR PRINTS IT, through the registry. Every pole on a pair
+   bar is already a share of a hundred, so each names its kind (cq, dq, lean)
+   and fmtPct prints it: a whole percent, and nought is the dash.
+   rbBare is gone, 17 October, percent phase 2. Round PQ ("No, it doesn't need
+   to be a percent. Just a number.") is superseded for CQ and DQ by the 16
+   October ruling, his words: "Instead of 0.0, site wide, we need to convert
+   those numbers into percent." DECISIONS.md, 16 October. */
+function rbVal(P,v){return fmtPct((P&&P.kind)||'lean',v);}
 function rbPair(k,o){
  var L=o.L, R=o.R, read=!!o.read;
  function pole(P,side){
@@ -31966,7 +31983,8 @@ function rbPairSays(pairWord,o,lean){
  var s=[rbSay(pairWord),rbSay(o.L.nm),rbSay(o.R.nm)].filter(Boolean).join(' ');
  return (s+(lean?' '+lean:'')).trim();}
 function rbPairAria(pairWord,o,say,does){
- var f=function(P){return P.nm+' '+(o.read?(Math.round(+P.v||0)>0?Math.round(P.v)+(P.bare?'':' per cent'):'zero'):'not read yet');};
+ var f=function(P){var p=pct(P.kind||'lean',P.v);
+  return P.nm+' '+(o.read?(p>0?p+' per cent':'zero'):'not read yet');};
  return pairWord+'. '+f(o.L)+', '+f(o.R)+'. '+say+(does?' '+does:'');}
 /* a reading arrives. o is rbPair's own spec, with each pole's v, its swing
    sw(t) as an offset from v in the same units, and fw, the width that swing
@@ -32071,9 +32089,15 @@ Object.keys(QICON_D).forEach(function(k){QICON[k]=qp(QICON_D[k]);});
    is a figure about the seed. Round J13. */
 function unreadNow(){try{return !!compute().unread;}catch(e){return false;}}
 /* an address, a saboteur or a seat, rendered as one object */
+/* EVERY ADDRESS RING PRINTS ITS FILL. 17 October, percent phase 2: the ring
+   filled sq*10 and printed sq.toFixed(1), so one reading was drawn as 87 and
+   printed as 8.7. Both are pct('weight') now, the registry's one formula
+   (engine/pct.js), so the arc and the pill cannot disagree. A weight that
+   rounds to nothing is the dash, and its title says nothing is held. */
 function crNode(n,size,o){o=o||{};
- return cr(n.b, n.sq*10, Object.assign({size:size||'sm', raw:n.sq.toFixed(1),
-  label:n.k, title:n.k+', '+n.b.toLowerCase()+' seat. '+(n.sq>0?n.sq.toFixed(1)+' left after the opposite':'Nothing held.')},o));}
+ var f=fmtPct('weight',n.sq);
+ return cr(n.b, pct('weight',n.sq)||0, Object.assign({size:size||'sm', raw:f,
+  label:n.k, title:n.k+', '+n.b.toLowerCase()+' seat. '+(f!==PCT_DASH?f+' left after the opposite':'Nothing held.')},o));}
 /* An address row. analytics.js and drills.js each carried a byte identical
    copy of this markup, a filled dot plus a bare number, while crNode sat
    unused. crNode was built for exactly this: the ring carries the seat colour
@@ -32159,13 +32183,17 @@ function crBadge(band,pct,o){
 /* an address as a badge. the same reading the ring carried, in the shape the
    ruling asked for. */
 function crbNode(n,size,o){o=o||{};
- return crBadge(n.b, n.sq*10, Object.assign({size:size||'sm', raw:n.sq.toFixed(1),
-  title:n.k+', '+n.b.toLowerCase()+' seat. '+(n.sq>0?n.sq.toFixed(1)+' left after the opposite':'Nothing held.')},o));}
+ var f=fmtPct('weight',n.sq);
+ return crBadge(n.b, pct('weight',n.sq)||0, Object.assign({size:size||'sm', raw:f,
+  title:n.k+', '+n.b.toLowerCase()+' seat. '+(f!==PCT_DASH?f+' left after the opposite':'Nothing held.')},o));}
+/* a saboteur, complex, hyper or character layer, on the registry's chain kind.
+   hot:p.w>=9 stays as the caller's word, and cr() keeps it off the arc because
+   the figure is a percent; overshot is said in the title. */
 function crPat(p,size,o){o=o||{};
- var lv=leaves(p), b=(lv[0]||{}).b||'Heart';
- return cr(b, p.w*10, Object.assign({size:size||'md', raw:p.w.toFixed(1), label:p.nm,
+ var lv=leaves(p), b=(lv[0]||{}).b||'Heart', f=fmtPct('chain',p.w);
+ return cr(b, pct('chain',p.w)||0, Object.assign({size:size||'md', raw:f, label:p.nm,
   hot:p.w>=9||!!p.over,
-  title:p.nm+', weight '+p.w.toFixed(1)+(p.over?', overshot':'')},o));}
+  title:p.nm+', weight '+f+(p.over?', overshot':'')},o));}
 function leaves(o){if(!o||!o.parts)return o?[o]:[];
  var a=[],sn={};(function dig(x){if(x.parts)x.parts.forEach(dig);
   else if(!sn[x.i]){sn[x.i]=1;a.push(x);}})(o);return a;}
@@ -33916,6 +33944,29 @@ function speakStop(){ studioStop(); }
    and a voice that answers after it has already been talked over.
    ============================================================ */
 var STUDIO={seq:0, el:null, url:''}, STUDIO_WAIT_MS=5000;
+/* A LINE ALREADY RENDERED IS PLAYED AGAIN, NOT BOUGHT AGAIN, 17 October. A
+   release block is its head once and then the same pass, "that I am in
+   apathy.", for every time said after it, so a run at the default hundred over
+   three addresses asked the server for 1,200 renders of about two dozen
+   sentences. The server's cache was meant to answer the repeats and is a no
+   op on its workers.dev address (atuned/server/src/voice.js, cacheOf), so
+   every one was new synthesis against the twenty thousand characters a device
+   gets a day. Measured on the walk at a quarter of the default, the grief
+   story's run asked for 304 renders of 8 sentences, 11,341 characters, so the
+   default run passes the day's ceiling inside its second address and "Today's
+   voice lines are used up" reads the rest on the screen. Kept by style and
+   text, the key the server's own
+   cache uses less the voice, which this page cannot change mid visit. Held
+   for the visit only, the last STUDIO_KEEP_N, never written anywhere. */
+var STUDIO_KEEP=Object.create(null), STUDIO_KEEP_AT=[], STUDIO_KEEP_N=64;
+function studioAsk(text,style){
+ var k=style+'\n'+text, b=STUDIO_KEEP[k];
+ if(b)return Promise.resolve({ok:true, blob:b});
+ return authVoice(text,style).then(function(r){
+  if(r&&r.ok&&r.blob&&!STUDIO_KEEP[k]){
+   STUDIO_KEEP[k]=r.blob; STUDIO_KEEP_AT.push(k);
+   if(STUDIO_KEEP_AT.length>STUDIO_KEEP_N)delete STUDIO_KEEP[STUDIO_KEEP_AT.shift()];}
+  return r;});}
 function studioCan(){
  try{ return typeof Audio==='function'&&typeof URL!=='undefined'&&!!URL.createObjectURL
   &&typeof authVoice==='function'; }catch(e){ return false; }}
@@ -33933,7 +33984,7 @@ function speakStudio(text,rate,style,onend,onfail){
  var seq=STUDIO.seq, t0=Date.now(), over=false;
  var lose=function(st){ if(over||seq!==STUDIO.seq)return; over=true; studioStop(); if(onfail)onfail(st||0); };
  var wait=setTimeout(function(){ lose(0); },STUDIO_WAIT_MS);
- authVoice(String(text),style).then(function(r){
+ studioAsk(String(text),style).then(function(r){
   if(over||seq!==STUDIO.seq)return;
   if(!r.ok){ clearTimeout(wait); lose(r.status); return; }
   var el, url;
@@ -35225,7 +35276,9 @@ function solCore(r,base){
   g.textAlign='center'; g.textBaseline='alphabetic';
   g.fillStyle=cqc;
   g.font='500 '+big.toFixed(1)+'px Inter, system-ui, sans-serif';
-  g.fillText(String(Math.round(r.CQ)), CX, CY+big*0.30);
+  /* a percent, 17 October, percent phase 2: fmtPct('cq'), the registry's
+     form, so the core says what the ring at the foot of the stage says */
+  g.fillText(fmtPct('cq',r.CQ), CX, CY+big*0.30);
   /* THE SCALE, ALWAYS. A bare 51 in the middle of a figure is the exact
      defect the number law exists for. It is drawn only when there is room
      for it to be legible, which is the eleven pixel floor the rest of the
@@ -37028,8 +37081,13 @@ function frCore(M,r,cx,cy,R,o){
  var rin=R-w/2-2;
  s+=frFeathers(M,r,cx,cy,rin)+'<g class="frcq"><circle class="frcq-bk" cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)
   +'" r="'+(rin*.62).toFixed(1)+'" fill="'+frRgb(M.ground)+'"/>';
- var cq=String(Math.round(r.CQ)),dq=Math.round(+r.DQ||0)>0?String(Math.round(+r.DQ)):'\u2013',lab=11;
- var FC=cq.length>2?cq:'88',FD=dq.length>2?dq:'88';
+ /* CQ AND DQ AS PERCENTS, 17 October, percent phase 2, through the registry
+    (engine/pct.js); the 16 October ruling supersedes round PQ's bare number.
+    Nought is the dash. The fit below still measures the widest two digit
+    figure, now with its sign, so a one digit DQ never sets the coherence
+    larger than a two digit one does. */
+ var cq=fmtPct('cq',r.CQ),dq=fmtPct('dq',r.DQ),lab=11;
+ var FC=cq.length>3?cq:'88%',FD=dq.length>3?dq:'88%';
  var W_=function(str,size,wt){return frTextW(str,wt+' '+size.toFixed(1)+'px Inter, system-ui, sans-serif');};
  /* THE TYPE IS FITTED TO THE HOLE, NOT TO A TABLE. The ring's inside runs
     from 22 pixels of radius on a phone to 57 on a wide screen, and two figures
@@ -37910,36 +37968,35 @@ function fbReach(list,carry){
  return carry.filter(function(n){return s[n.i];}).length/carry.length*100;}
 function fbValues(r){
  var V={}, dash='–', carry=W.filter(function(n){return n.sq>=4;});
- /* WHOLE NUMBERS ON THE TWO WEIGHTS, 16 October. The addresses and seats pills
-    printed one decimal ("6.3"), a figure the rest of the page never shows to
-    that precision and a raw score under the 14 October ruling. They print the
-    way CQ and DQ do, a bare whole number, and a weight that rounds to nothing
-    is a dash. The sentences below test the figure the pill prints, so a pill
-    that says a dash never sits beside a tooltip that says something carries. */
- var f1=function(x){var n=Math.round(+x||0); return n>0?String(n):dash;}, pc=function(x){var n=Math.round(+x||0);return n>0?n+'%':dash;};
- /* NO PERCENT ON THE HEADLINE READING, round PQ, his words: "No, it doesn't
-    need to be a percent. Just a number." CQ and DQ are the headline readings
-    and print bare here, as on the wheel's core and the Summary plate. The
-    shares below (gates, stories, archetypes, domains) are shares of a whole
-    and keep their sign. */
- var nb=function(x){var n=Math.round(+x||0);return n>0?String(n):dash;};
- V.addresses={p:r.SQm*10,v:f1(r.SQm),c:seatCol(r.darkB),
-  m:f1(r.SQm)!==dash?'Ring and number: segment depth, SQ, at a weight of '+f1(r.SQm)+'. How deep the held charge sits.'
+ /* EVERY PILL PRINTS ITS RING, 17 October, percent phase 2. Each figure on
+    this bar goes through the registry (engine/pct.js): the ring fills
+    pct(kind, value) and the pill prints fmtPct(kind, value), so the arc and
+    the number are one reading. Before this the two weights filled SQm*10 and
+    printed round(SQm), so a segment depth of 4.4 drew 44 and read 4, the
+    disagreement the inventory names (PERCENT-INVENTORY-2026-10-16.md,
+    ui/fieldbar.js:188 and :191). CQ and DQ printed bare under round PQ; the 16
+    October ruling supersedes it for both, his words: "Instead of 0.0, site
+    wide, we need to convert those numbers into percent." Nought is the dash,
+    so a pill never prints 0% beside a tooltip that says nothing carries. */
+ var P=function(k,x){return {p:pct(k,x)||0,v:fmtPct(k,x)};};
+ var sqm=P('weight',r.SQm), dk=P('weight',r.darkV||0), cq=P('cq',r.CQ), dqv=P('dq',r.DQ);
+ V.addresses={p:sqm.p,v:sqm.v,c:seatCol(r.darkB),
+  m:sqm.v!==dash?'Ring and number: segment depth, SQ, at '+sqm.v+'. How deep the held charge sits.'
    :'Ring and number: segment depth, SQ. Nothing is carrying yet.'};
- V.seats={p:(r.darkV||0)*10,v:f1(r.darkV),c:seatCol(r.darkB),
-  m:f1(r.darkV)!==dash?'Ring and number: the heaviest assemblage point, '+r.darkB+', at a weight of '+f1(r.darkV)+'.'
+ V.seats={p:dk.p,v:dk.v,c:seatCol(r.darkB),
+  m:dk.v!==dash?'Ring and number: the heaviest assemblage point, '+r.darkB+', at '+dk.v+'.'
    :'Ring and number: the heaviest assemblage point. Nothing is carrying yet.'};
- V.laws={p:r.CQ,v:nb(r.CQ),c:seatCol('Crown'),
+ V.laws={p:cq.p,v:cq.v,c:seatCol('Crown'),
   m:'Ring and number: coherence, CQ, which is the laws summed.'};
  var G=verpRead(), hi=G.filter(function(g){return g.side==='higher';}).reduce(function(a,g){return a+g.pct;},0),
   anyG=G.some(function(g){return g.pct>0;});
- V.gates={p:anyG?hi:0,v:anyG?pc(hi):dash,c:seatCol('Heart'),
+ V.gates={p:anyG?pct('gate',hi):0,v:anyG?fmtPct('gate',hi):dash,c:seatCol('Heart'),
   m:anyG?'Ring and number: how much of what you wrote ran through awareness, detachment and intention.'
    :'No story has been read for action yet.'};
- V.shadow={p:r.DQ,v:nb(r.DQ),c:seatCol('Root'),
+ V.shadow={p:dqv.p,v:dqv.v,c:seatCol('Root'),
   m:'Ring and number: shadow weight, DQ, the weight on all 112 addresses.'};
  var ai=atomIndex()||{}, traced=carry.length?carry.filter(function(n){return (ai[n.i]||[]).length;}).length/carry.length*100:0;
- V.stories={p:traced,v:carry.length?pc(traced):dash,c:'var(--accent)',
+ V.stories={p:pct('portion',traced/100)||0,v:carry.length?fmtPct('portion',traced/100):dash,c:'var(--accent)',
   m:carry.length?'Ring and number: the share of your carrying addresses a story you wrote reached.'
    :'Nothing is carrying charge yet.'};
  [['saboteurs',r.sabs,r.sabs[0]&&r.sabs[0].parts[0]?r.sabs[0].parts[0].b:r.darkB],
@@ -37947,15 +38004,21 @@ function fbValues(r){
   var p=fbReach(t[1],carry);
   V[t[0]]={p:p,v:String(t[1].length),c:seatCol(t[2]),
    m:'Number: how many are running, as the rail counts them.'
-    +(carry.length?' Ring: the share of your carrying addresses they are built on, '+pc(p)+'.':'')};});
+    +(carry.length?' Ring: the share of your carrying addresses they are built on, '+fmtPct('portion',p/100)+'.':'')};});
+ /* THE FIRST ARCHETYPE, HOW FULLY IT IS EXPRESSED. Ruled 16 October, his
+    words: "the archetypes themselves should be 100%. The limiting beliefs are
+    going to drag it down." The orb printed the first archetype's share of all
+    twelve, the soul map's lean, which no story or release ever moved. affinity
+    still names which archetype is first; the figure is archExpr
+    (engine/archexpr.js), ring and number both. */
  var aff=(r.aff||[]).map(function(v,i){return {i:i,v:v};}).sort(function(a,b){return b.v-a.v;});
- var tot=aff.reduce(function(a,x){return a+x.v;},0)||1, top=aff[0]||{i:0,v:0}, A=ARCH[top.i]||{};
- V.archetypes={p:top.v/tot*100,v:pc(top.v/tot*100),c:seatCol(A.b||'Heart'),
-  m:'Ring and number: '+(A.nm||'the first archetype')+', the first archetype, as its share of how the blueprint expresses.'};
+ var top=aff[0]||{i:0,v:0}, A=ARCH[top.i]||{}, ax=archExpr(top.i);
+ V.archetypes={p:pct('archetype',ax)||0,v:fmtPct('archetype',ax),c:seatCol(A.b||'Heart'),
+  m:'Ring and number: '+(A.nm||'the first archetype')+', the first archetype, and how fully it is expressed. Charge held at its seat pulls it down; a release lifts it.'};
  /* the root's colour off the one ladder every other surface reads, rootPlain,
     and not ROOTCOL, which is the Dark values on every lighting */
  var dm=DOMAIN.reduce(function(a,v){return a+v;},0)/DOMAIN.length*100, d0=DOMAINS[S.doms[0]];
- V.domains={p:dm,v:pc(dm),c:(d0&&rootPlain(d0.r))||'var(--gold)',
+ V.domains={p:pct('domain',dm/100)||0,v:fmtPct('domain',dm/100),c:(d0&&rootPlain(d0.r))||'var(--gold)',
   m:'Ring and number: how far across the nineteen domains your blueprint reaches.'};
  /* NOTHING READ, NOTHING PRINTED. The rail's own rule: the ring draws empty
     and the pill carries a dash, because a figure beside "not read yet" is
@@ -44580,10 +44643,21 @@ function stRead(){
  var marks=stMarks(t,ST_PARSED);
  STR={t:t,marks:marks,toks:marks.toks||(t?(t.match(/[A-Za-z']+/g)||[]).map(function(w){return {w:w};}):[]),
   heard:srcHear(t,srcPrior(ents))};}
-/* the addresses this entry reaches, or the last committed entry's */
+/* the addresses this entry reaches, or the last committed entry's.
+   THE ONES THE WORDS NAMED COME FIRST, and .named says how many of the head of
+   the list they are, 17 October. parseStory reaches two kinds of address: the
+   ones the person's words chose, and the ones it fills a seat with when the
+   seat was read and no feeling named one (inferred, engine/sniff.js, whose own
+   rule is that such a name is never printed as a finding). The split rides on
+   the list so STV.lastFound keeps it once the parse is cleared at commit;
+   stRelModel says what losing it cost. */
 function stFound(){
- var found=[];
- if(ST_PARSED)ST_PARSED.imprints.forEach(function(im){var n=BY[im.node];if(n&&n.cf&&found.indexOf(n)<0)found.push(n);});
+ var found=[], named=0;
+ [false,true].forEach(function(inf){
+  if(ST_PARSED)ST_PARSED.imprints.forEach(function(im){var n=BY[im.node];
+   if(!!im.inferred===inf&&n&&n.cf&&found.indexOf(n)<0)found.push(n);});
+  if(!inf)named=found.length;});
+ found.named=named;
  return found.length?found:STV.lastFound;}
 
 /* THE REAL COMMIT, FACTORED OUT OF THE APPLY BUTTON'S OWN ONCLICK, round NF,
@@ -46136,13 +46210,28 @@ function stVaultPaint(hd,box){
    and the card that opens carries Pause and Stop.
    ============================================================ */
 var ST_OFF={};
+/* the card's ceiling on times said, read off its own picks (REL_DOSES,
+   ui/release.js, which loads after this file and is read only at a press) */
+function stDoseMax(){return typeof REL_DOSES!=='undefined'?REL_DOSES[REL_DOSES.length-1]:LINES_PER_CH;}
 function stRelModel(){
  var r=compute(), bySq=function(a,b){return b.sq-a.sq;};
  var picked=Object.keys(IMP_PICK).filter(function(k){return IMP_PICK[k];})
   .map(function(k){return BY[+k];}).filter(function(n){return n&&n.cf;});
  var found=stFound(), take;
+ /* WHAT THE WORDS NAMED RUNS, 17 October. These were the heaviest three of
+    everything the entry reached, and charge lands per feeling, so a feeling
+    with fewer addresses reads heavier at each of them: "My father died ... I
+    feel completely alone" ran Addiction, Lust and Shame of Desire, filled in at
+    a sacral the words never named, said "that I am in apathy" a hundred times
+    a block, and left out the four grief addresses it did name. The shame story
+    did the same. Filling the three up with them kept two of the shame story's
+    three on apathy, so a filled in address runs only when the words named
+    none, and the welcome never names one as what is being released while a
+    named one exists. Weight still orders what runs. An entry from before the
+    split carries no .named and reads as it always did. */
+ var cut=found.named||0;
  if(picked.length)take=picked.sort(bySq);
- else if(found.length)take=found.slice().sort(bySq).slice(0,3);
+ else if(found.length)take=(cut?found.slice(0,cut):found.slice()).sort(bySq).slice(0,3);
  else take=r.loaded.filter(function(n){return n.cf;}).sort(bySq).slice(0,3);
  return {take:take,sel:take.filter(function(n){return ST_OFF[n.i]!==true;}),bank:!!picked.length,
   added:!!(picked.length||found.length),
@@ -46163,7 +46252,12 @@ function stRelPanel(){
   /* pace and patterns set the run, so they go with it on a worked example */
   +(showOnly()?'':'<div class="rel-fields st-fields">'
    +'<label class="rel-field"><span>Pace</span><input type="number" id="strpace" min="0.5" max="2" step="0.1" value="'+RUN.pace+'"></label>'
-   +'<label class="rel-field"><span>Patterns</span><input type="number" id="strdose" min="1" max="'+LINES_PER_CH+'" step="1" value="'+RUN.dose+'"></label>'
+   /* TIMES SAID, 17 October, the card's own word and the card's own ceiling.
+      It said Patterns, which since the allowance is the unit a run spends and
+      not how often a line is said, and it capped at the fifty a printed card
+      carries while the card offers a hundred and opens there, so a hundred
+      showed in a field whose ceiling was fifty and any edit cut it in half. */
+   +'<label class="rel-field"><span>Times said</span><input type="number" id="strdose" min="1" max="'+stDoseMax()+'" step="1" value="'+RUN.dose+'"></label>'
   +'</div>')
   /* ENABLED ON A SELECTION, NOT ON A PRICE, so a spent allowance still
      reaches the card that refuses it and says why. */
@@ -46198,7 +46292,7 @@ function stRelPanel(){
   RUN.pace=Math.max(0.5,Math.min(2,Math.round((+this.value||1)*10)/10));
   RUN.speed=2.2/RUN.pace; this.value=RUN.pace;};
  if((f=document.getElementById('strdose')))f.onchange=function(){
-  RUN.dose=Math.max(1,Math.min(LINES_PER_CH,Math.round(+this.value)||1)); this.value=RUN.dose;};
+  RUN.dose=Math.max(1,Math.min(stDoseMax(),Math.round(+this.value)||1)); this.value=RUN.dose;};
  var go=document.getElementById('strun');
  if(go)go.onclick=function(){
   if(!M.sel.length)return;
@@ -56729,8 +56823,12 @@ function relRender(){
    /* where in the run, on the plate it describes, rather than a row of its own */
    /* each part whole, so a phone breaks the line between parts and never
       leaves "session" on a line of its own */
+   /* RELEASE LINES, the setup's count, 17 October. This added the reframe
+      half in, so the setup said "3 addresses, 150 lines", Remaining counted
+      down from 150, and this said 300 lines this session, one word for two
+      sizes of the same run. Recharged is counted on the side panels. */
    +'<span class="rel-ct">'+['Pass '+(RUN.pass+1)+' of '+RUN.dose,'address '+(ad.at+1)+' of '+ad.of]
-    .concat(cts&&cts.of?[(cts.of+cts.putOf)+' lines this session']:[])
+    .concat(cts&&cts.of?[cts.of+(cts.of===1?' release line':' release lines')+' this session']:[])
     .map(function(x){return '<span class="rel-nw">'+x+'</span>';}).join(' · ')+'</span></span></div>';
   var info=relTally(cts,live)+relSws(n);
   /* PAUSE AND END ON THE CENTRE LINE, round QM, his words: "You can keep the
@@ -73293,7 +73391,9 @@ function renderPol2(r){
  s+='<rect x="'+(x-5)+'" y="'+y60+'" width="10" height="'+(y40-y60).toFixed(1)+'" rx="2" fill="rgba(128,128,128,.10)"/>';
  [[60,y60],[50,mid],[40,y40]].forEach(function(tk){
   s+='<line x1="'+(x-6)+'" y1="'+tk[1]+'" x2="'+(x+6)+'" y2="'+tk[1]+'" stroke="rgba(128,128,128,.34)" stroke-width="1"/>';
-  s+='<text x="'+(x-10)+'" y="'+(tk[1]+3.5)+'" text-anchor="end" class="pol2-t">'+tk[0]+'</text>';});
+  /* the scale in the marker's own unit, 17 October, percent phase 2: a tick
+     at 60 beside a marker reading 62% would be two units on one axis */
+  s+='<text x="'+(x-10)+'" y="'+(tk[1]+3.5)+'" text-anchor="end" class="pol2-t">'+tk[0]+'%</text>';});
  /* THE TWO ENDS ARE DOORS. The compass was a picture of a direction with
     nothing at either end of it. The top of the cone is anchored by the
     twelve, the bottom by the blueprint and the nine circles, and both are
@@ -73354,7 +73454,7 @@ function renderPol2(r){
     because the picture of an unread field is a real picture, but the number
     beside it is not printed until somebody has entered something. */
  s+='<text x="'+(x+20)+'" y="'+(yB+4).toFixed(1)+'" class="pol2-c" style="fill:'+mc+'">'
-  +(r.unread?'\u2013':Math.round(cq))+'</text></g>';
+  +fmtPct('cq',cq,{unread:r.unread})+'</text></g>';
  el.innerHTML=s+'</svg>';
  POL2.sig=sig; POL2.el=el; POL2.yB=yB;
  POL2.mv=el.querySelector('.pol2-mv');
@@ -73426,7 +73526,10 @@ function renderAcc(r){
      larger, on his ruling.
      It lies on the stage again, round LR, level with zoom in the lower left,
      and keeps the orb: zoom's circles beside it are 44, the orb's size. */
-  +cr('Crown',un?0:a.pct,{size:'orb',raw:un?'\u2013':a.pct.toFixed(0),
+  /* a percent, 17 October, percent phase 2: fill and pill are both the
+     registry's accuracy kind (engine/pct.js), so the orb reads 58% and not a
+     bare 58 beside the CQ percents around it */
+  +cr('Crown',un?0:pct('accuracy',a.pct),{size:'orb',raw:fmtPct('accuracy',a.pct,{unread:un}),
     label:'Accuracy',hot:false})
   +'</button>';
  var bt=document.getElementById('accbtn');
@@ -78141,19 +78244,22 @@ function railStack(r){
       legend, so the legend was cut only once each row opened runFetterDrill,
       the axis's own drill, which says both halves and what fills each. */
    return '<button type="button" class="stk-r" data-fet="'+ci+'"><span class="stk-l">'
-    +cr(c.seat,v*10,{size:'xs',raw:v>0?v.toFixed(1):'\u2013',glyph:'<path d="'+c.ic+'"/>',
-      title:c.nm+(v>0?' held '+v.toFixed(1):', nothing held')})+esc(c.nm)+'</span>'
+    /* held and installed as percents, 17 October, percent phase 2: each ring
+       fills pct(kind) and prints fmtPct(kind), the registry's one formula */
+    +(function(fv,fp){return cr(c.seat,pct('charge',v)||0,{size:'xs',raw:fv,glyph:'<path d="'+c.ic+'"/>',
+      title:c.nm+(fv!==PCT_DASH?' held '+fv:', nothing held')})+esc(c.nm)+'</span>'
     +'<span class="stk-p">'+esc(c.opp)
-    +cr('Heart',p*10,{size:'xs',raw:p>0?p.toFixed(1):'\u2013',hot:false,
-      glyph:'<path d="'+c.ic+'"/>',title:c.opp+(p>0?' installed '+p.toFixed(1):', nothing installed')})+'</span></button>';}).join('');}
+    +cr('Heart',pct('installed',p)||0,{size:'xs',raw:fp,hot:false,
+      glyph:'<path d="'+c.ic+'"/>',title:c.opp+(fp!==PCT_DASH?' installed '+fp:', nothing installed')});}(fmtPct('charge',v),fmtPct('installed',p)))
+    +'</span></button>';}).join('');}
  else{
   var list={sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups}[STACK_TAB]||[];
   h+=list.length?'<div class="stk-hd"><span>weight</span><span>opposite in</span></div>':'';
   h+=list.length?list.map(function(o,i){var p=poleOf(o);
    return '<button type="button" class="stk-r'+(S.pin===o?' on':'')+'" data-sk="'+STACK_TAB+'" data-si="'+i+'">'
     +'<span class="stk-l">'+crPat(o,'xs')+esc(o.nm)+(o.unnamed?'<em>inferred</em>':'')+'</span>'
-    +'<span class="stk-p">'+cr('Heart',p*10,{size:'xs',raw:p>0?p.toFixed(1):'\u2013',hot:false,
-      title:p>0?'Opposite installed '+p.toFixed(1):'Nothing installed'})+'</span></button>';}).join('')
+    +'<span class="stk-p">'+(function(fp){return cr('Heart',pct('installed',p)||0,{size:'xs',raw:fp,hot:false,
+      title:fp!==PCT_DASH?'Opposite installed '+fp:'Nothing installed'});}(fmtPct('installed',p)))+'</span></button>';}).join('')
    :(lockSees(STACK_TAB)?'<div class="rnone">Nothing at this layer.</div>':lockPanelHtml(STACK_TAB));}
  e.innerHTML=h;
  /* THE STACK'S TABS ARE THE RAIL'S ROW OF WHAT IS RUNNING, so a tab above the
@@ -78314,10 +78420,11 @@ function railTop(r){
     high chip centred against a 44 high word, so its top sat seven pixels
     below the word's and neither matched the boxed 44 high cells every other
     readout on the Field sits in. The ring and the word share one box now. */
- /* a bare number, round PQ: "No, it doesn't need to be a percent. Just a
-    number." The ring still draws the share; the figure is the reading. */
- e.innerHTML='<span class="rt-cell">'+cr(r.darkB, r.unread?0:r.CQ, {size:'sm', label:'Coherence',
-   raw:r.unread||Math.round(r.CQ)<=0?'\u2013':String(Math.round(r.CQ)), hot:false, color:tcol||undefined})
+ /* CQ AS A PERCENT, 17 October, percent phase 2: the 16 October ruling
+    supersedes round PQ's bare number. The ring fills pct('cq') and the pill
+    prints the same figure, so the two cannot disagree. */
+ e.innerHTML='<span class="rt-cell">'+cr(r.darkB, r.unread?0:pct('cq',r.CQ), {size:'sm', label:'Coherence',
+   raw:fmtPct('cq',r.CQ,{unread:r.unread}), hot:false, color:tcol||undefined})
   /* THE TIER IS A CONTROL WHEREVER IT LIVES. Taking the word off the Field
      centre was ruled, and it took the only tappable route to the definition
      with it: there was exactly one tier control in the product and it was the
@@ -78379,10 +78486,12 @@ function render(){
    +'so there is no split to show.</div>'; return;}
   $('pol').innerHTML='<div class="bmrow"><span class="bmk">Benign</span>'
    +'<span class="bmbar"><i style="width:'+ben.toFixed(0)+'%;background:'+PAL.Heart+'"></i></span>'
-   +'<span class="bmv" style="color:'+PAL.Heart+'">'+ben.toFixed(0)+'%</span></div>'
+   /* fmtPct('lean'), 17 October, percent phase 2: a share of nought is the
+      dash and never "0%", the registry's one rule for every figure */
+   +'<span class="bmv" style="color:'+PAL.Heart+'">'+fmtPct('lean',ben)+'</span></div>'
    +'<div class="bmrow"><span class="bmk">Malignant</span>'
    +'<span class="bmbar"><i style="width:'+mal.toFixed(0)+'%;background:'+PAL.Root+'"></i></span>'
-   +'<span class="bmv" style="color:'+PAL.Root+'">'+mal.toFixed(0)+'%</span></div>'
+   +'<span class="bmv" style="color:'+PAL.Root+'">'+fmtPct('lean',mal)+'</span></div>'
    /* This said "building more than it costs", which is the ledger sentence and
       the ledger belongs to the scale, where it is defined against the median.
       A field at CQ 39 read Incoherent in the rail and "building more than it
@@ -78466,10 +78575,10 @@ function render(){
   var cr0=r.unread?null:cqRange(r.CQ), half=cr0?(cr0.hi-cr0.lo)/2:0;
   var dq=clamp((+r.DQ||0)/100,0,1), amp=(+r.DQ||0)*PUL_WAVE*dq;
   var spec={read:!r.unread, whole:false,
-   L:{nm:'CQ',ic:'cq',c:'var(--accent)',v:r.unread?0:r.CQ,q:'cq',fk:'laws',bare:true,
+   L:{nm:'CQ',ic:'cq',c:'var(--accent)',v:r.unread?0:r.CQ,q:'cq',fk:'laws',kind:'cq',
     sw:half>0.05?function(t){return rbDrift(t)*half;}:null, fw:cr0?cr0.hi-cr0.lo:0,
     note:r.unread?'Not read yet.':'The edge of the blue moves through the range your coherence swings in, and the notches mark where it stands now.'},
-   R:{nm:'DQ',ic:'dq',c:seatCol('Root'),v:r.unread?0:r.DQ,q:'dq',fk:'shadow',bare:true,
+   R:{nm:'DQ',ic:'dq',c:seatCol('Root'),v:r.unread?0:r.DQ,q:'dq',fk:'shadow',kind:'dq',
     sw:amp>0.05?function(t){return amp*Math.sin(t*TAU*PUL_WAVE_HZ);}:null, fw:2*amp,
     note:r.unread?'Not read yet.':'The edge of the red breathes with your shadow, and the notches mark where it stands now.'}};
   $('key').innerHTML=rbPair('cqdq',spec);
@@ -78491,16 +78600,20 @@ function render(){
  (function(){
   var f=flSpeed(), lo=$('keylo'); if(!lo)return;
   var nr=r.unread?' Not read yet.':'';
+  /* each bar fills pct(kind) and prints fmtPct(kind), 17 October, percent
+     phase 2: they filled X*100 and printed X.toFixed(2), so vitality was drawn
+     as 17 and read as 0.17. One figure now, the registry's. */
+  var u={unread:r.unread};
   lo.innerHTML=
-   rbRow('xyz','Vitality',r.X*100,r.unread?'–':r.X.toFixed(2),
+   rbRow('xyz','Vitality',pct('vitality',r.X),fmtPct('vitality',r.X,u),
     {unread:r.unread,fk:'core',ic:'vitality',col:seatCol('Solar'),title:rbSay('Vitality')+nr})
-  +rbRow('xyz','Awareness',r.Y*100,r.unread?'–':r.Y.toFixed(2),
+  +rbRow('xyz','Awareness',pct('awareness',r.Y),fmtPct('awareness',r.Y,u),
     {unread:r.unread,fk:'core',ic:'awareness',col:seatCol('3rd Eye'),title:rbSay('Awareness')+nr})
-  +rbRow('xyz','Will',r.Z*100,r.unread?'–':r.Z.toFixed(2),
+  +rbRow('xyz','Will',pct('will',r.Z),fmtPct('will',r.Z,u),
     {unread:r.unread,fk:'core',ic:'will',col:seatCol('Throat'),title:rbSay('Will')+nr})
-  +rbRow('xyz','Radiance',r.unread?0:r.radiance*100,r.unread?'–':r.radiance.toFixed(2),
+  +rbRow('xyz','Radiance',r.unread?0:pct('radiance',r.radiance),fmtPct('radiance',r.radiance,u),
     {unread:r.unread,fk:'core',ic:'rad',title:rbSay('Radiance')+nr})
-  +rbRow('flow','Flow',f*100,r.unread?'–':f.toFixed(2),
+  +rbRow('flow','Flow',pct('flow',f),fmtPct('flow',f,u),
     {unread:r.unread,fk:'seats',ic:'flow',wave:rbSeatPass(),rate:lerp(PUL_LO,PUL_HI,clamp((+r.DQ||0)/100,0,1)),
      title:rbSay('Flow')+(r.unread?nr:' The wave inside runs root to crown, and a seat that holds charge back roughens it where it sits.')});})();
  /* who, and what is running hottest in them. */
@@ -78654,7 +78767,8 @@ function render(){
    +row('Carrying',held?held+' addresses':'nothing yet',
      held?'':(r.under?r.under+' sitting under the line':''))
    +row('Filled in',inst?inst+' addresses':'nothing yet','')
-   +row('Heaviest',r.darkB,r.darkV.toFixed(1))
+   /* percent phase 2, 17 October: the seat mean on the registry's weight kind */
+   +row('Heaviest',r.darkB,fmtPct('weight',r.darkV))
    +row('Most shut',r.weakL.nm,'at the '+r.weakL.b.toLowerCase()));
   var ws=$('psum'); if(ws)ws.onclick=function(){S.pin=null; runCompassDrill(); render();};})();
  railStack(r); renderBal(r);
@@ -78666,24 +78780,28 @@ function render(){
  /* V21. Five words, and none of them defined anywhere on the screen. Each
     line now carries a plain sentence on its title, true to compute.js, and
     "pole in" is "pole", the word the Summary tile already uses for it. */
+ /* AND EACH IS A PERCENT, 17 October, percent phase 2: integrity printed
+    4.9, pole 0.80 and overshoot 0.52, three precisions for figures the
+    registry bounds the same way (engine/pct.js, nought to ten). Each prints
+    fmtPct for its own kind now, and nought or an unread profile is the dash. */
  var ins=function(t,line){return '<span title="'+esc(t)+'">'+line+'</span><br>';};
  $('rows').innerHTML='<span class="k">Instruments</span><br>'
   +ins('How well you keep the 21 laws, lifted by the opposites installed and pulled down by overshoot.',
-    'integrity <b>'+(r.unread?'\u2013':r.Ig.toFixed(1))+'</b>')
+    'integrity <b>'+fmtPct('integrity',r.Ig,{unread:r.unread})+'</b>')
   +ins('The same laws read seat by seat, up the body.',
-    'intention <b>'+(r.unread?'\u2013':r.It.toFixed(1))+'</b>')
+    'intention <b>'+fmtPct('intention',r.It,{unread:r.unread})+'</b>')
   /* JOUISSANCE WAS ON EIGHTY ONE SCREENS. A French psychoanalytic term, printed
      as an instrument label to a person who has never heard it, with no gloss
      anywhere in the product. One word per concept, and the word has to say
      what the thing does: JQ is the opposite driven past the point where it
      serves. That is overshoot. The codex keeps its own word. */
   +ins('How far the installed opposites outweigh the charge, on average, across your body.',
-    'pole <b>'+(r.unread||r.poleMean<0.005?'\u2013':r.poleMean.toFixed(2))+'</b>')
+    'pole <b>'+fmtPct('pole',r.poleMean,{unread:r.unread})+'</b>')
   +ins('How far installed opposites have been pushed past the point where they help.',
-    'overshoot <b>'+(r.unread||r.JQ<0.005?'\u2013':r.JQ.toFixed(2))+'</b>'
+    'overshoot <b>'+fmtPct('overshoot',r.JQ,{unread:r.unread})+'</b>'
     +(r.excess.length?', '+r.excess.length+' address'+(r.excess.length===1?'':'es')+' overshot':''))
   +'<span title="'+esc('How much the patterns running in you bend what you mean. More patterns, '
-    +'and deeper ones, bend it more.')+'">distortion <b>'+(r.unread||r.dist<0.05?'\u2013':r.dist.toFixed(1))+'</b></span>';
+    +'and deeper ones, bend it more.')+'">distortion <b>'+fmtPct('distortion',r.dist,{unread:r.unread})+'</b></span>';
  /* what is running */
  const rows=[].concat(r.sups,r.hys,r.cxs,r.sabs);
  const TIERNM={sup:'Character',hy:'Hyper-complex',cx:'Complex',sab:'Saboteur'};
@@ -78756,14 +78874,17 @@ function render(){
        own, CHAINGLYPH, the one the glass bar and the stack tabs give the same
        four, because this list mixes character, hyper complexes, complexes and
        saboteurs and a name alone does not say which. The ring is the seat the
-       pattern sits on, and an overshoot or a weight past nine goes to the
-       alarm colour, as the ring on its Flow card already does. */
+       pattern sits on. An overshoot or a weight past nine went to the alarm
+       colour until 17 October; see the note on the badge below. */
     +rows.slice(0,8).map(function(o,i){
-     var b=(leaves(o)[0]||{}).b||'Heart', hot=o.w>=9||!!o.over;
+     /* a percent and its own colour, 17 October, percent phase 2: the badge
+        fills and prints pct('chain'), and the alarm colour it took past nine
+        is gone, because red on a percent reads as a failed mark. Default taken,
+        DECISIONS.md, his to overrule. Overshot is still said in the title. */
+     var b=(leaves(o)[0]||{}).b||'Heart', fw=fmtPct('chain',o.w);
      return '<div class="it run-it'+(S.pin===o?' pin':'')+'" data-i="'+i+'">'
-      +crBadge(b,o.w*10,{size:'sm',raw:o.w.toFixed(1),glyph:'<path d="'+CHAINGLYPH[o.kind]+'"/>',
-        color:hot?ALARM:undefined,
-        title:TIERNM[o.kind]+'. '+o.nm+', weight '+o.w.toFixed(1)+(o.over?', overshot':'')})
+      +crBadge(b,pct('chain',o.w)||0,{size:'sm',raw:fw,glyph:'<path d="'+CHAINGLYPH[o.kind]+'"/>',
+        title:TIERNM[o.kind]+'. '+o.nm+', weight '+fw+(o.over?', overshot':'')})
       +'<span class="run-n">'+esc(o.nm)+'</span></div>';}).join('')
     +(rows.length>8?'<div class="it"><span>and '+(rows.length-8)+' more</span></div>':'')
   : (r.locked&&r.locked.length===SEE_ORDER.length
@@ -79102,5 +79223,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005191895"></div>
+<div id="eof" hidden data-len="005200346"></div>
 </body></html>

@@ -467,10 +467,21 @@ function stRead(){
  var marks=stMarks(t,ST_PARSED);
  STR={t:t,marks:marks,toks:marks.toks||(t?(t.match(/[A-Za-z']+/g)||[]).map(function(w){return {w:w};}):[]),
   heard:srcHear(t,srcPrior(ents))};}
-/* the addresses this entry reaches, or the last committed entry's */
+/* the addresses this entry reaches, or the last committed entry's.
+   THE ONES THE WORDS NAMED COME FIRST, and .named says how many of the head of
+   the list they are, 17 October. parseStory reaches two kinds of address: the
+   ones the person's words chose, and the ones it fills a seat with when the
+   seat was read and no feeling named one (inferred, engine/sniff.js, whose own
+   rule is that such a name is never printed as a finding). The split rides on
+   the list so STV.lastFound keeps it once the parse is cleared at commit;
+   stRelModel says what losing it cost. */
 function stFound(){
- var found=[];
- if(ST_PARSED)ST_PARSED.imprints.forEach(function(im){var n=BY[im.node];if(n&&n.cf&&found.indexOf(n)<0)found.push(n);});
+ var found=[], named=0;
+ [false,true].forEach(function(inf){
+  if(ST_PARSED)ST_PARSED.imprints.forEach(function(im){var n=BY[im.node];
+   if(!!im.inferred===inf&&n&&n.cf&&found.indexOf(n)<0)found.push(n);});
+  if(!inf)named=found.length;});
+ found.named=named;
  return found.length?found:STV.lastFound;}
 
 /* THE REAL COMMIT, FACTORED OUT OF THE APPLY BUTTON'S OWN ONCLICK, round NF,
@@ -2023,13 +2034,28 @@ function stVaultPaint(hd,box){
    and the card that opens carries Pause and Stop.
    ============================================================ */
 var ST_OFF={};
+/* the card's ceiling on times said, read off its own picks (REL_DOSES,
+   ui/release.js, which loads after this file and is read only at a press) */
+function stDoseMax(){return typeof REL_DOSES!=='undefined'?REL_DOSES[REL_DOSES.length-1]:LINES_PER_CH;}
 function stRelModel(){
  var r=compute(), bySq=function(a,b){return b.sq-a.sq;};
  var picked=Object.keys(IMP_PICK).filter(function(k){return IMP_PICK[k];})
   .map(function(k){return BY[+k];}).filter(function(n){return n&&n.cf;});
  var found=stFound(), take;
+ /* WHAT THE WORDS NAMED RUNS, 17 October. These were the heaviest three of
+    everything the entry reached, and charge lands per feeling, so a feeling
+    with fewer addresses reads heavier at each of them: "My father died ... I
+    feel completely alone" ran Addiction, Lust and Shame of Desire, filled in at
+    a sacral the words never named, said "that I am in apathy" a hundred times
+    a block, and left out the four grief addresses it did name. The shame story
+    did the same. Filling the three up with them kept two of the shame story's
+    three on apathy, so a filled in address runs only when the words named
+    none, and the welcome never names one as what is being released while a
+    named one exists. Weight still orders what runs. An entry from before the
+    split carries no .named and reads as it always did. */
+ var cut=found.named||0;
  if(picked.length)take=picked.sort(bySq);
- else if(found.length)take=found.slice().sort(bySq).slice(0,3);
+ else if(found.length)take=(cut?found.slice(0,cut):found.slice()).sort(bySq).slice(0,3);
  else take=r.loaded.filter(function(n){return n.cf;}).sort(bySq).slice(0,3);
  return {take:take,sel:take.filter(function(n){return ST_OFF[n.i]!==true;}),bank:!!picked.length,
   added:!!(picked.length||found.length),
@@ -2050,7 +2076,12 @@ function stRelPanel(){
   /* pace and patterns set the run, so they go with it on a worked example */
   +(showOnly()?'':'<div class="rel-fields st-fields">'
    +'<label class="rel-field"><span>Pace</span><input type="number" id="strpace" min="0.5" max="2" step="0.1" value="'+RUN.pace+'"></label>'
-   +'<label class="rel-field"><span>Patterns</span><input type="number" id="strdose" min="1" max="'+LINES_PER_CH+'" step="1" value="'+RUN.dose+'"></label>'
+   /* TIMES SAID, 17 October, the card's own word and the card's own ceiling.
+      It said Patterns, which since the allowance is the unit a run spends and
+      not how often a line is said, and it capped at the fifty a printed card
+      carries while the card offers a hundred and opens there, so a hundred
+      showed in a field whose ceiling was fifty and any edit cut it in half. */
+   +'<label class="rel-field"><span>Times said</span><input type="number" id="strdose" min="1" max="'+stDoseMax()+'" step="1" value="'+RUN.dose+'"></label>'
   +'</div>')
   /* ENABLED ON A SELECTION, NOT ON A PRICE, so a spent allowance still
      reaches the card that refuses it and says why. */
@@ -2085,7 +2116,7 @@ function stRelPanel(){
   RUN.pace=Math.max(0.5,Math.min(2,Math.round((+this.value||1)*10)/10));
   RUN.speed=2.2/RUN.pace; this.value=RUN.pace;};
  if((f=document.getElementById('strdose')))f.onchange=function(){
-  RUN.dose=Math.max(1,Math.min(LINES_PER_CH,Math.round(+this.value)||1)); this.value=RUN.dose;};
+  RUN.dose=Math.max(1,Math.min(stDoseMax(),Math.round(+this.value)||1)); this.value=RUN.dose;};
  var go=document.getElementById('strun');
  if(go)go.onclick=function(){
   if(!M.sel.length)return;

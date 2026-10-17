@@ -3652,9 +3652,16 @@ function addrLine(n,pole,i){
     axis if the engine knows one, never a guess. */
  var opp=(CHILD.filter(function(x){return x.nm===ax;})[0]||{}).opp;
  var nm=String(n.k).toLowerCase();
- return {rel:C3_STEM+nm+'.',
+ /* "IN" BEFORE THE NAME, 17 October. An address name is a noun, Panic,
+    Betrayal, Oversensitivity, and this read it straight after the stem's "that
+    I am", so the three Surprise addresses, the only ones no card covers, ran
+    "that I am betrayal." a hundred times a block on the carousel and in the
+    voice. The axes cards already settle how he puts a noun after that stem:
+    "in shock.", "in grief.", "in rejection." So the strict syntax takes his
+    "in", and the truth's fallback with it. */
+ return {rel:C3_STEM+'in '+nm+'.',
    tru:opp?C3_TRUTH+'moving toward '+String(opp).toLowerCase()+' at this address.'
-     :C3_TRUTH+'not '+nm+'.',
+     :C3_TRUTH+'not in '+nm+'.',
    track:null, src:'Strict syntax at the address', split:false};}
 /* ONE THOUGHT LINE OF A RELEASE, read off its meter key. The key is address,
    pass and line; the pass is the side then the phase (Rlimit, Ltruth). The

@@ -322,6 +322,10 @@ jobs:
           # run's three red steps in engine/plan.js. Headless and fast. New, so
           # report only first.
           - { gate: money, timeout: 20, command: node tests/money.js }
+          # 17 October: the release chain (tests/releasechain.js), a story's own
+          # addresses run, no line says "I am" onto an address name, the voice
+          # renders a line once. New, so report only first.
+          - { gate: releasechain, timeout: 20, command: node tests/releasechain.js }
           # 17 October: percent phase 2 (tests/pct.js), every ring and bar
           # prints its own fill as a percent, no percent is in the alarm
           # colour, and each moved surface prints the registry's form. New, so

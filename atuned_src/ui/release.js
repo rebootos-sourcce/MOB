@@ -3275,8 +3275,12 @@ function relRender(){
    /* where in the run, on the plate it describes, rather than a row of its own */
    /* each part whole, so a phone breaks the line between parts and never
       leaves "session" on a line of its own */
+   /* RELEASE LINES, the setup's count, 17 October. This added the reframe
+      half in, so the setup said "3 addresses, 150 lines", Remaining counted
+      down from 150, and this said 300 lines this session, one word for two
+      sizes of the same run. Recharged is counted on the side panels. */
    +'<span class="rel-ct">'+['Pass '+(RUN.pass+1)+' of '+RUN.dose,'address '+(ad.at+1)+' of '+ad.of]
-    .concat(cts&&cts.of?[(cts.of+cts.putOf)+' lines this session']:[])
+    .concat(cts&&cts.of?[cts.of+(cts.of===1?' release line':' release lines')+' this session']:[])
     .map(function(x){return '<span class="rel-nw">'+x+'</span>';}).join(' · ')+'</span></span></div>';
   var info=relTally(cts,live)+relSws(n);
   /* PAUSE AND END ON THE CENTRE LINE, round QM, his words: "You can keep the

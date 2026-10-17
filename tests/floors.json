@@ -12,6 +12,7 @@
     "Added 17 October: gift 64, read off its first green local run on claude/gift-shows-everything (a new person from the quiz's link at 1600 and 390; the build from origin/main 054ca583 read 30 passed, 34 failed). engine raised 5785 to 5798 and examples-showonly 850 to 855 in the same change, which added the gift's engine group and the inside-or-past-the-gift check at each of the five own tiers. On the merge with main at 9a162d14 (Practitioner 5788, allowance 5791) the merged tree reads engine 5804, both sides kept.",
     "Added 17 October: money 54, read off its first green local run on claude/patterns-follow-money (tests/money.js, the pay cycle run's three red steps in engine/plan.js). It read 24 passed, 30 failed on main's 9a162d14 engine.js.",
     "Raised 17 October, functional 2633 to 2634, for the one check added with patterns follow the money (Billing's State row holds the refused card line), read off CI on bef4e302, gates-browser (functional) job 117473888293.",
+    "Added 17 October: releasechain 48, read off its first green local run on claude/release-chain-fix (tests/releasechain.js, the release chain walked end to end for six stories at 1600 and 390). The build from origin/main aeab54e2 read 34 passed, 14 failed.",
     "Raise a floor by editing this file on purpose, in the same change that adds the checks, from a green run. Never lower one to get green. Nothing writes this file.",
     "expected_red_max is the most expected red a gate may print. tools/floors.js fails a gate above its ceiling, and fails a gate that prints an expected red count with no ceiling here, so a failing check cannot be let off as expected red unseen. Added empty on 9 October: the lead sets each value from a clean full run, as printed, and until then the engine's floor step fails by name. It drops to 0 in the change that turns the expected reds green."
   ],
@@ -62,7 +63,8 @@
     "record": 24,
     "paywall": 563,
     "allowance": 84,
-    "money": 54
+    "money": 54,
+    "releasechain": 48
   },
   "no_count": {
     "monitor": "all surfaces render"
