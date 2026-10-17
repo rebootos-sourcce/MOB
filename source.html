@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2110 06c893a4 2026-10-16 21:58"><head><meta charset="utf-8">
+<html lang="en" data-build="v2128 6b7614b0 2026-10-17 02:43"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -17934,6 +17934,17 @@ function planBuyable(k){
    carried its own literal 100 in five places beside that row, which is the same
    number held twice and one edit away from two answers. */
 const GIFT_N=PLAN_BY.gift.grant;
+/* WHETHER THE GIFT IS STILL IN FORCE, off the count of patterns opened. The gift
+   is not a plan a person is on: no record ever says tier gift, planOf reads it
+   as free, and it is never bought. It is the first hundred patterns of anybody's
+   meter, which is how planAllowance has always spent it, and this is that same
+   test said once so sight and the allowance cannot disagree about whether
+   somebody is inside it. Either shape of the count, the way planAllowance takes
+   it, and anything that is not a number reads as nothing opened. */
+function planInGift(unique){
+ var n=Array.isArray(unique)?unique.length:Number(unique);
+ if(!isFinite(n))n=0;
+ return Math.max(0,n)<GIFT_N;}
 /* A FREE WEEK, as a length. The free tier's weeks are counted from the moment
    the gift ran out, seven days at a time, so a week needs no calendar, no zone
    and no host to start it. */
@@ -18161,16 +18172,37 @@ function planRank(k){ return TIER_KEYS.indexOf(k); }
 /* WHAT THIS PLAN CAN SEE. sees maps every key in SIGHT to a boolean, so a
    caller never has to treat a missing key as an answer, and locked is the rows
    it cannot, in table order, which is what a lock has to name. tier is the key
-   of the rung in force. */
-function planSight(pl){
+   of the rung in force.
+
+   gift, when true, is a person inside the gift, and they see every row. The
+   ruling is DECISIONS.md: "A new person gets 100 patterns, free, with
+   everything visible. They explore the whole app until the gift is spent.
+   Then it reverts." It was kept at round PK ("the gift stays as ruled") and
+   REVIEW-arch/TALLY.md ruling 8 says it plainly: "whole reading visible while
+   it lasts". This read the plan alone, and the gift has no rank because it is
+   not a tier, so a new person on their first screen was handed a padlock over
+   the saboteurs the engine had already found in their own answers, before
+   they had seen anything worth paying for.
+
+   THE GIFT IS NOT A TIER, AND THIS DOES NOT MAKE IT ONE. tier still says the
+   rung in force, planOf is untouched, and nothing here writes a plan: a gift
+   person reads free everywhere the plan is asked, the allowance, the ladder,
+   the tiers page's "You are on this" and checkout. It opens sight and nothing
+   else, so it reaches nothing that costs money to serve, and the cohort lead
+   suite, which is tier four's and is not sight at all, stays where it was.
+   The caller decides whether somebody is inside the gift (planInGift, off
+   their own meter), because a worked example has a meter too and its history
+   is not the viewer's gift. With no second argument this reads exactly as it
+   always did. */
+function planSight(pl,gift){
  var t=planOf(pl), at=planRank(t.k), sees={}, locked=[];
  SIGHT.forEach(function(g){
-  var ok=at>=planRank(g.need); sees[g.k]=ok; if(!ok&&g.built!==false)locked.push(g);});
- return {tier:t.k, sees:sees, locked:locked, all:locked.length===0};}
+  var ok=!!gift||at>=planRank(g.need); sees[g.k]=ok; if(!ok&&g.built!==false)locked.push(g);});
+ return {tier:t.k, gift:!!gift, sees:sees, locked:locked, all:locked.length===0};}
 /* Whether one thing is visible on this plan. A key that is not in SIGHT is not
    a thing the product gates and answers false, the same straight no the old
-   version gave a rung that did not exist. */
-function planSees(pl,kind){ return planSight(pl).sees[kind]===true; }
+   version gave a rung that did not exist. gift is planSight's. */
+function planSees(pl,kind,gift){ return planSight(pl,gift).sees[kind]===true; }
 /* THE TIER THAT UNLOCKS A THING, as its PLANS row, or null for a key SIGHT does
    not hold. This is what a lock names. */
 function planNeed(kind){
@@ -18187,8 +18219,8 @@ function planAdds(k){
 /* WHAT A PLAN SEES, SAID AS ONE CLAUSE for a sheet that has a line for it. The
    reading everybody has is the stem, and what the plan adds is a list off
    SIGHT, so this types no rung. */
-function planSightSay(pl){
- var s=planSight(pl), seen=sightRows().filter(function(g){return s.sees[g.k];}).map(function(g){return g.nm;});
+function planSightSay(pl,gift){
+ var s=planSight(pl,gift), seen=sightRows().filter(function(g){return s.sees[g.k];}).map(function(g){return g.nm;});
  return 'your own reading'+(seen.length?', with '+planList(seen):', without what is running it');}
 /* THE LOCKED ROWS, GROUPED BY THE TIER THAT UNLOCKS THEM, as clauses: saboteurs,
    unlocked on tier one and above. Both the tiers page and a partly locked
@@ -18203,8 +18235,11 @@ function planLockedSay(keys){
 /* WHAT AN UPGRADE WOULD UNLOCK, as the next rung up that adds anything to see,
    with the rows it adds. null when everything is visible already. It never
    skips a rung that adds something, so a person on free is told tier one, not
-   tier three. */
-function planNextSight(pl){
+   tier three. Inside the gift everything is visible already, so it is null:
+   a worked example told a gift person that saboteurs "open on tier one" on
+   their own profile, where they were open that minute. */
+function planNextSight(pl,gift){
+ if(gift)return null;
  var at=planRank(planOf(pl).k);
  for(var i=at+1;i<TIER_KEYS.length;i++){
   var add=planAdds(TIER_KEYS[i]);
@@ -18239,7 +18274,7 @@ function planAllowance(pl,uniqueCount,giftAt,now){
  n=Number(n); if(!isFinite(n))n=0;
  var used=Math.max(0,n);
  var giftLeft=Math.max(0,GIFT_N-used);
- if(giftLeft>0)return {source:'gift', left:giftLeft, of:GIFT_N, inGift:true,
+ if(planInGift(used))return {source:'gift', left:giftLeft, of:GIFT_N, inGift:true,
   base:0, spent:used, runs:Math.floor(giftLeft/RUN_MIN), weeks:0,
   /* what it is of, in words. "92 of the gift left" says ninety two of what. */
   say:giftLeft+' patterns left of the '+GIFT_N+' you were given'};
@@ -29970,7 +30005,7 @@ if(typeof module!=='undefined'&&module.exports){
                  PLAN_LIVE:PLAN_LIVE, PLAN_DEAD:PLAN_DEAD,
                  planState:planState, planOf:planOf, planSees:planSees,
                  planNextSight:planNextSight, planAllowance:planAllowance,
-                 planWeeks:planWeeks, GIFT_N:GIFT_N, WEEK_MS:WEEK_MS,
+                 planWeeks:planWeeks, GIFT_N:GIFT_N, WEEK_MS:WEEK_MS, planInGift:planInGift,
                  planUpgrade:planUpgrade, planBuyable:planBuyable, RUN_MAX:RUN_MAX, RUN_MIN:RUN_MIN,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
@@ -34144,10 +34179,32 @@ function lockPlan(){
  if(typeof devSight==='function'&&devSight())
   return {tier:'four',status:'active'};
  return (typeof CURP!=='undefined'&&CURP&&CURP.plan)||null;}
+/* WHETHER THE RECORD THAT IS OPEN IS INSIDE THE GIFT, which sees everything
+   (planSight, engine/plan.js, and the ruling quoted there). Read off the
+   record's own meter through planInGift, the test the allowance spends the
+   gift by, so the padlocks come off and go back at exactly the pattern the
+   Billing count says the gift ran out at.
+
+   Measured 17 October on main at 054ca583, a record from the funnel's link on
+   its first screen: plan free, nothing opened, fifteen saboteurs computed and none
+   shown, two lock panels and See tiers on Summary, nine padlocks on the Field
+   at 1600. That is the person the gift was ruled for, before they had opened
+   a single pattern.
+
+   NEVER FOR A WORKED EXAMPLE. An example's meter is its authored history and
+   says nothing about the viewer's gift, and its sight is the plan loadP gives
+   it (ui/personas.js). The rule that it runs nothing is engine/showonly.js and
+   this does not touch it. NOR UNDER THE HARNESS SEAM: SIGHT_PLAN, when a gate
+   sets one, is the whole answer, which is how the gates measure a tier. */
+function lockGift(){
+ if(SIGHT_PLAN)return false;
+ if(typeof CURP==='undefined'||!CURP)return false;
+ if(typeof showOnly==='function'&&showOnly(CURP))return false;
+ return planInGift((CURP.meter&&CURP.meter.unique)||[]);}
 /* Whether this person may see a thing right now. Read at every call and never
    cached, because a plan can change under an open surface: a payment lands, a
-   subscription lapses, a record is swapped. */
-function lockSees(k){ return planSees(lockPlan(),k); }
+   subscription lapses, a record is swapped, the gift runs out. */
+function lockSees(k){ return planSees(lockPlan(),k,lockGift()); }
 /* the same question for a layer key on the glass bar, which names its rungs
    saboteurs, complexes, hyper and character */
 const LOCK_OF_LAYER={saboteurs:'sab',complexes:'cx',hyper:'hy',character:'sup',
@@ -34258,17 +34315,17 @@ function lockPanelHtml(k,o){
    is running it, and the owner's ruling names what is running them. */
 function sightR(r){
  if(!r)return r;
- var pl=lockPlan();
- if(SEE_ORDER.every(function(k){return planSees(pl,k);}))return r;
+ var pl=lockPlan(), gf=lockGift();
+ if(SEE_ORDER.every(function(k){return planSees(pl,k,gf);}))return r;
  var v={}, k; for(k in r)v[k]=r[k];
- v.sabs=planSees(pl,'sab')?r.sabs:[];
- v.cxs=planSees(pl,'cx')?r.cxs:[];
- v.hys=planSees(pl,'hy')?r.hys:[];
- v.sups=planSees(pl,'sup')?r.sups:[];
+ v.sabs=planSees(pl,'sab',gf)?r.sabs:[];
+ v.cxs=planSees(pl,'cx',gf)?r.cxs:[];
+ v.hys=planSees(pl,'hy',gf)?r.hys:[];
+ v.sups=planSees(pl,'sup',gf)?r.sups:[];
  v.mask=v.sups[0]||v.hys[0]||v.cxs[0]||v.sabs[0]||null;
  /* the layers the plan cannot see, so a renderer can say why a list is empty
     instead of saying nothing is running */
- v.locked=SEE_ORDER.filter(function(x){return !planSees(pl,x);});
+ v.locked=SEE_ORDER.filter(function(x){return !planSees(pl,x,gf);});
  return v;}
 /* compute(), as a person on this plan may see it. Surfaces that draw or list
    the chain call this and not compute(). */
@@ -77958,5 +78015,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005114823"></div>
+<div id="eof" hidden data-len="005118567"></div>
 </body></html>
