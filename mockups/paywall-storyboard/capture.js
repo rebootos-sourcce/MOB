@@ -111,6 +111,14 @@ const said = (id, W, key, v) => { frames[id] = frames[id] || {}; frames[id][W] =
     pg.on('dialog', d => { dialog = d.message(); d.dismiss(); });
     const shot = async (id, o) => {
       o = o || {};
+      /* NO STRAY HOVER OR FOCUS. The pointer is left wherever the last press
+         was, and on the phone a tap leaves its row lit, which read as a
+         second selected section in the first run of this file. The one frame
+         that is about a hover keeps it. */
+      if (!o.keep) {
+        await pg.mouse.move(0, 0);
+        await pg.evaluate(() => { const a = document.activeElement; if (a && a !== document.body && a.blur) a.blur(); });
+      }
       await pg.waitForTimeout(o.wait || 350);
       const file = path.join(OUT, id + '-' + W + '.png');
       if (o.full && !phone) {
@@ -159,6 +167,15 @@ const said = (id, W, key, v) => { frames[id] = frames[id] || {}; frames[id][W] =
       }, plan);
       await pg.waitForTimeout(900);
     };
+    /* BACK TO THE TOP OF THE PAGE, after the repaint. The settings pane keeps
+       its scroll between frames, so the first run's "Billing, as a new free
+       person" opened half way down the ladder, where the frame before it left
+       it. */
+    const top = async () => {
+      await pg.waitForTimeout(300);
+      await pg.evaluate(() => { const s = document.getElementById('settings'); if (s) s.scrollTop = 0; window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0; document.body.scrollTop = 0; });
+    };
     const own = async () => { await pg.evaluate(() => { loadP(0); setTab(TAB.FIELD); render(); __quiet(); }); await pg.waitForTimeout(500); };
 
     await boot();
@@ -174,7 +191,7 @@ const said = (id, W, key, v) => { frames[id] = frames[id] || {}; frames[id][W] =
     }
     await pg.waitForTimeout(900);
     said('a1-field-locked', W, 'tip', await pg.evaluate(() => { const t = document.getElementById('tip'); return t ? t.innerText.replace(/\s+/g, ' ').trim() : ''; }));
-    await shot('a1-field-locked');
+    await shot('a1-field-locked', { keep: true });
     await pg.mouse.move(2, H - 2);
     if (phone) await pg.evaluate(() => { if (typeof TIP !== 'undefined' && TIP.hide) TIP.hide(); fbOpenPanel(false); });
 
@@ -208,13 +225,19 @@ const said = (id, W, key, v) => { frames[id] = frames[id] || {}; frames[id][W] =
     /* a new person: the gift of a hundred untouched, as A2 left the record spent */
     await pg.evaluate(async () => { CURP.meter = { lines: 0, unique: [], first: null, last: null }; pSave();
       __as('t-free'); await authPlanRead(); __billing(); __quiet(); });
+    await top();
     await shot('a3-billing-free');
     await pg.evaluate(() => __scroll('#plantiers'));
     await shot('a3-tiers-free');
     await pg.evaluate(() => __scroll('#plantiers'));
     await shot('a3-tiers-free-full', { full: phone ? true : '#settings' });
     for (const t of ['one', 'two', 'three']) {
-      await pg.evaluate(async t => { __as('t-' + t); await authPlanRead(); __billing(); __quiet(); __scroll('#plantiers .pt-list'); }, t);
+      await pg.evaluate(async t => { __as('t-' + t); await authPlanRead(); __billing(); __quiet(); }, t);
+      /* the scroll waits for the repaint setTab makes after it returns, the
+         same wait planTiersOpen keeps: made at once, it scrolled a node that
+         was then replaced, measured at 390 */
+      await pg.waitForTimeout(400);
+      await pg.evaluate(t => __scroll('#plantiers [data-pt="' + t + '"]', 'center'), t);
       await shot('a3-tiers-' + t, { wait: 500 });
     }
 
@@ -261,6 +284,7 @@ const said = (id, W, key, v) => { frames[id] = frames[id] || {}; frames[id][W] =
     await own();
     /* B1. Billing for a person paying for tier one */
     await pg.evaluate(async () => { __as('t-one'); await authPlanRead(); __billing(); __quiet(); });
+    await top();
     await shot('b1-billing-paying');
     /* B2. Manage billing: the app asks the server for Stripe's page and the
        browser leaves for it. What is recorded is that it left, and where. */
@@ -324,6 +348,7 @@ const said = (id, W, key, v) => { frames[id] = frames[id] || {}; frames[id][W] =
     pg.removeAllListeners('dialog');
     pg.on('dialog', d => { dialog = d.message(); d.dismiss(); });
     await pg.evaluate(() => { __billing(); __quiet(); });
+    await top();
     await shot('b4b-billing-after-delete');
 
     /* B4c. the other ending: the plan simply runs out at the end of the paid
@@ -332,11 +357,16 @@ const said = (id, W, key, v) => { frames[id] = frames[id] || {}; frames[id][W] =
       __as('t-stop'); await authPlanRead(); __quiet();
       __as('t-ended'); await authPlanRead(); __billing();
     });
+    await top();
     await shot('b4c-plan-ran-out', { wait: 400 });
 
     /* B5. the person afterwards, on a free plan again: the Field locks */
     await gordon({ tier: 'one', status: 'canceled', since: S1, until: U1, ends: U1 });
+    /* on a phone the layer buttons are in a panel, so it is opened to show
+       the padlocks, as A1 does */
+    if (phone) { await pg.evaluate(() => fbOpenPanel(true)); await pg.waitForTimeout(400); }
     await shot('b5-after-field', { wait: 600 });
+    if (phone) await pg.evaluate(() => fbOpenPanel(false));
 
     /* B7. a person who cannot sign in: Help, and the forgotten password */
     await own();

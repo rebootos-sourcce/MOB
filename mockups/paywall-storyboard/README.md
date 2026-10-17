@@ -157,7 +157,16 @@ and it says so. These are the ones that fail a rule a person can see:
    two and a half weeks"** (A5). The app says the opposite on Billing: "Ten
    patterns a week ... Two releases at one address". The app is right: a run
    costs what it opens, from four patterns.
-8. **Headings print in title case** ("Your Plan", "The Tiers", "Account
+8. **"Patterns" means two counts on two screens.** The release panel for a new
+   person says "400 patterns" (lines said aloud); the same run spends 8 of the
+   gift's 100 (new ground), which is what Billing counts. Read off the page in
+   the same moment (A6). A person reading both would think one run costs four
+   times their gift.
+9. **The draft terms say cancelling is "One press"** (B6). It is three: Manage
+   billing, Cancel, and Stripe's confirm. They also promise a tick box, "I agree
+   to a recurring charge of the price shown every month until I cancel", before
+   paying. Nothing in the app draws it.
+10. **Headings print in title case** ("Your Plan", "The Tiers", "Account
    Deleted", "Password Reset") because one style rule capitalises every word
    (`atuned_src/shell/head.html` line 1298). The voice rules say sentence case.
 
@@ -173,11 +182,13 @@ and it says so. These are the ones that fail a rule a person can see:
    with the email address and what to put in the message. And set the mail key
    on the server so the password reset sends, which is a setting only the owner
    can paste.
-3. **Fix the four sentences that are wrong today:** the closed checkout line
+3. **Fix the words that are wrong today:** the closed checkout line
    ("Paying is not switched on yet. Nothing was charged."), the receipt's
    dangling "that random account ID" plus a line saying the first visit was
-   deleted and how long the dated list is kept, the buy page's "every two and a
-   half weeks", and one label, See the tiers, on both buttons.
+   deleted and how long the dated list is kept, the release panel saying what
+   a run takes from the gift ("This run opens 8 of your 100") instead of a
+   count of lines, the buy page's "every two and a half weeks", and one label,
+   See the tiers, on both buttons.
 
 ## Run it again
 
