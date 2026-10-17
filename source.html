@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2132 11285e0f 2026-10-17 03:01"><head><meta charset="utf-8">
+<html lang="en" data-build="v2142 96f7e89e 2026-10-17 18:11"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -17906,7 +17906,15 @@ const PLANS=[
   d:'Eight hundred a month, two hundred a week. Twice the ground of tier one.'},
  {k:'three', nm:'Tier three',  per:'month', grant:1200, lead:false,
   d:'Twelve hundred a month, three hundred a week. Three times the ground.'},
- /* TIER FOUR IS NOT MORE OF THE SAME. It carries the same twelve hundred as
+ /* NAMED PRACTITIONER SINCE 17 OCTOBER, the owner's words: "There are four
+    tiers. Free, tier one, tier two, tier three, practitioner." Only nm moved.
+    The key is still 'four' because k is identity: it is compared, it is what a
+    record's plan.tier holds, and it is the atuned_tier_four lookup key Stripe
+    finds the price by, so renaming it would read every record already on this
+    rung as a tier this build does not know. The rung is still called tier
+    four in the comments below where they quote the rulings that made it.
+
+    TIER FOUR IS NOT MORE OF THE SAME. It carries the same twelve hundred as
     tier three, so patterns do not separate them at all, and it sees what tier
     three sees: what tier four buys is the cohort lead suite. Ruled, and it is
     the one rung with a price attached.
@@ -17925,9 +17933,15 @@ const PLANS=[
     here, when the lead suite and its consent list are built. A record that
     already says tier four, a worked example or a test account, still reads
     tier four through planOf: this closes the door, it moves nobody. */
- {k:'four',  nm:'Tier four',   per:'month', grant:1200, lead:true, built:false,
+ {k:'four',  nm:'Practitioner', own:true, per:'month', grant:1200, lead:true, built:false,
   d:'The same twelve hundred as tier three, and the cohort lead suite. Manage profiles, build rituals and build accountability for the people you lead.'}];
 const PLAN_BY={}; PLANS.forEach(function(p){PLAN_BY[p.k]=p;});
+/* A TIER'S NAME INSIDE A SENTENCE. Five callers lowercased nm to write "Move
+   to tier one" and "unlocked on tier two and above", which is right for a
+   numbered rung and wrong for Practitioner: lowercased it reads "Move to
+   practitioner", a person to go and see and not a plan to be on. own marks a
+   row whose name is its own and keeps its capital. */
+function planNmIn(p){ return !p?'':(p.own?p.nm:p.nm.toLowerCase()); }
 /* WHETHER A CHECKOUT MAY BE STARTED FOR A TIER. Only a paid tier that exists
    and is built. Free and the gift are never bought, and a key this build does
    not know is not a thing to sell. Every press that could reach a payment page
@@ -18127,7 +18141,21 @@ function planOf(pl){
 /* A TIER THIS BUILD DOES NOT KNOW IS REFUSED, NOT ROUNDED TO FREE, the rule
    validateProfile already holds: a server one tier ahead of this file would
    otherwise downgrade everybody on it. refused names it and nothing moves. */
-function planFromServer(prev,b,unique){
+/* FREE RESTARTS FROM THE DAY A PAID PLAN STOPS, 17 October, the allowance
+   review of five seats, recorded in DECISIONS.md as a default taken and his to
+   overrule. Leaving a paid tier wrote base null, so planAllowance fell back to
+   the end of the gift and charged everything opened while paying against the
+   free weeks: measured, 1,500 opened and the gift out twenty weeks read 0 left
+   of 210, and the free tier opened nothing new for about 140 weeks, which is a
+   penalty for leaving. So the move off a paid tier writes base as the unique
+   count now and since as the day it was read, and planAllowance counts free's
+   weeks from that day. Ground opened before it is the person's and reruns
+   free, as it always did; only what is opened from here counts. A free record
+   read again keeps the base and since it holds, or the next boot would undo
+   the restart. A plan that stops in place, the same tier read back cancelled
+   or unpaid, moves base the same way, and its free weeks count from the day it
+   stopped (planFreeFrom). today is optional and an ISO string, for the gate. */
+function planFromServer(prev,b,unique,today){
  var pv=(prev&&typeof prev==='object')?prev:{};
  if(b&&typeof b==='object'&&!PLAN_BY[b.tier]){
   var k=planOf(prev).k, lv=planState(prev)==='live';
@@ -18135,7 +18163,13 @@ function planFromServer(prev,b,unique){
    status:(typeof pv.status==='string')?pv.status:'', wasStatus:(typeof pv.status==='string')?pv.status:''};}
  var paid=!!(b&&typeof b==='object'&&PLAN_BY[b.tier]&&b.tier!=='free'&&b.tier!=='gift');
  var next;
- if(!paid)next={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null,ends:null};
+ var n=Array.isArray(unique)?unique.length:Number(unique); if(!isFinite(n)||n<0)n=0;
+ var at=(typeof today==='string'&&!isNaN(Date.parse(today)))?today:new Date().toISOString();
+ var wasPaid=!!(PLAN_BY[pv.tier]&&pv.tier!=='free'&&pv.tier!=='gift');
+ if(!paid)next={tier:'free',status:'',granted:0,carried:0,
+  base:wasPaid?Math.max(GIFT_N,Math.floor(n)):((pv.tier==='free'&&pv.base!=null)?pv.base:null),
+  since:wasPaid?at:((pv.tier==='free'&&typeof pv.since==='string')?pv.since:null),
+  until:null,ends:null};
  else {
   var since=(typeof b.since==='string')?b.since:null, until=(typeof b.until==='string')?b.until:null;
   /* THE DAY A STOPPED PLAN STOPS. Stopping on the payment page leaves tier,
@@ -18148,12 +18182,12 @@ function planFromServer(prev,b,unique){
      period, so base and the grant are untouched by it. */
   var ends=('ends' in b)?((typeof b.ends==='string')?b.ends:null):(pv.ends==null?null:pv.ends);
   var fresh=(pv.tier!==b.tier)||((pv.since==null?null:pv.since)!==since);
-  var n=Array.isArray(unique)?unique.length:Number(unique); if(!isFinite(n)||n<0)n=0;
+  var stopped=!fresh&&planState(pv)==='live'&&!!PLAN_DEAD[b.status];
   /* in the blank's own key order (schema.js), so a record written here and
      the same record after the boundary serialise the same */
   next={tier:b.tier, status:(typeof b.status==='string')?b.status:'',
    granted:fresh?0:(pv.granted||0), carried:fresh?0:(pv.carried||0),
-   base:fresh?Math.max(GIFT_N,Math.floor(n)):(pv.base==null?null:pv.base),
+   base:(fresh||stopped)?Math.max(GIFT_N,Math.floor(n)):(pv.base==null?null:pv.base),
    since:since, until:until, ends:ends};}
  var eq=function(k){return (pv[k]==null?null:pv[k])===(next[k]==null?null:next[k]);};
  var was=planOf(prev), now=planOf(next);
@@ -18241,7 +18275,7 @@ function planLockedSay(keys){
   if(!by[g.need]){by[g.need]=[]; order.push(g.need);}
   by[g.need].push(g.nm);});
  return order.map(function(n){
-  return planList(by[n])+', unlocked on '+PLAN_BY[n].nm.toLowerCase()+' and above';}).join('; ');}
+  return planList(by[n])+', unlocked on '+planNmIn(PLAN_BY[n])+' and above';}).join('; ');}
 /* WHAT AN UPGRADE WOULD UNLOCK, as the next rung up that adds anything to see,
    with the rows it adds. null when everything is visible already. It never
    skips a rung that adds something, so a person on free is told tier one, not
@@ -18285,7 +18319,7 @@ function planAllowance(pl,uniqueCount,giftAt,now){
  var used=Math.max(0,n);
  var giftLeft=Math.max(0,GIFT_N-used);
  if(planInGift(used))return {source:'gift', left:giftLeft, of:GIFT_N, inGift:true,
-  base:0, spent:used, runs:Math.floor(giftLeft/RUN_MIN), weeks:0,
+  base:0, spent:used, runs:Math.floor(giftLeft/RUN_MIN), weeks:0, renews:null,
   /* what it is of, in words. "92 of the gift left" says ninety two of what. */
   say:giftLeft+' patterns left of the '+GIFT_N+' you were given'};
  var t=planOf(pl);
@@ -18327,21 +18361,51 @@ function planAllowance(pl,uniqueCount,giftAt,now){
     sits past the gift's end had a period written by the record store, and the
     store that wrote it writes the next one. */
  var weeks=1, total=granted;
- if(t.k==='free'&&base===GIFT_N){ weeks=planWeeks(giftAt,now); total=granted*weeks; }
+ /* AND AFTER A PAID PLAN STOPS, FROM THE DAY IT STOPPED (planFromServer and
+    planFreeFrom). That record's base sits past the gift because a period was
+    written, and on the rule above it read one grant of ten and never another,
+    so free opened ten patterns once and then nothing for good. */
+ var from=(t.k!=='free')?null:(base===GIFT_N?giftAt:planFreeFrom(pl));
+ if(t.k==='free'&&(base===GIFT_N||from)){ weeks=planWeeks(from,now); total=granted*weeks; }
  var left=Math.max(0,total-spent);
+ /* WHEN NEW ONES ARRIVE, as an ISO day or null, so a sentence that names the
+    day can be left out rather than invent one. A paid tier renews on the paid
+    period's end, which the server sends as until. Free renews at the start of
+    its next week, counted from the same day the weeks are. */
+ var fromMs=from?new Date(from).getTime():NaN;
+ var renews=(t.k==='free')
+  ?(isFinite(fromMs)?new Date(fromMs+weeks*WEEK_MS).toISOString():null)
+  :((planState(pl)==='live'&&typeof pl.until==='string'&&!isNaN(Date.parse(pl.until)))?pl.until:null);
  /* HOW MANY RUNS THAT IS, which is the unit a person actually acts in. Counted
     against the smallest run and not the largest: a run costs the minimum for
     what was picked, so what an allowance buys is answered by the floor. Saying
     nought runs on ten patterns was true only while every run cost twenty five. */
  var runs=Math.floor(left/RUN_MIN);
  return {source:t.k, left:left, of:total, inGift:false, base:base, spent:spent,
-  runs:runs, weeks:weeks,
+  runs:runs, weeks:weeks, renews:renews,
   say:!granted?'nothing left to open'
    /* more than one week's grant is only reachable by banking, and "18 of 10"
       says nothing, so a bank says what it is and what arrives next */
    :(left>granted?(left+' banked, and '+granted+' more arrive each '+t.per)
    :(runs>0?(left+' of '+granted+' left this '+t.per)
-    :(left+' left this '+t.per+', banking toward a run of '+RUN_MIN)))};}
+    /* ONLY FREE BANKS. A paid tier at nought read "0 left this month, banking
+       toward a run of 4", which is false: a paid period carries nothing over
+       (planFromServer writes carried 0 on every new one). So a paid tier says
+       what is left and nothing about a bank, and the plan sheet adds the day
+       new ones arrive off renews. */
+    :(t.k==='free'?(left+' left this '+t.per+', banking toward a run of '+RUN_MIN)
+     :(left+' left this '+t.per))))};}
+/* THE DAY FREE COUNTS FROM WHEN IT IS NOT THE GIFT'S END: the day a paid plan
+   stopped. A free record written by planFromServer off a paid one carries it as
+   since; a paid tier read back stopped carries the day it stops as ends, or the
+   end of its period as until. null when the record names none, and then free
+   reads one grant, the way it always did. */
+function planFreeFrom(pl){
+ if(!pl)return null;
+ var ok=function(d){return (typeof d==='string'&&!isNaN(Date.parse(d)))?d:null;};
+ if(pl.tier==='free')return ok(pl.since);
+ if(planState(pl)==='ended')return ok(pl.ends)||ok(pl.until)||ok(pl.since);
+ return null;}
 /* A LIST SAID THE WAY A PERSON SAYS IT: a, b and c. */
 function planList(a){
  return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' and '+a[a.length-1];}
@@ -21157,6 +21221,47 @@ function meterPlan(p,nodeIds,chans,cap){
     while(n>=0&&seen[meterKey(id,ch,n)])n++;
     if(n<0||n>=LINES_PER_CH)continue;
     var k=meterKey(id,ch,n); seen[k]=1; out.push(k);}}}
+ return out;}
+/* A RUN OPENS WHOLE ADDRESSES, 17 October, the allowance review of five seats.
+   meterPlan above cuts key by key, so a cap that lands inside an address keeps
+   part of it: measured on main, three left against eight picked planned
+   2:Llimit:0, 2:Rlimit:0 and 2:Ltruth:0, the right reframe missing, and the
+   main Release button's twenty five keys covered six addresses and one key at
+   a seventh. RUN_MIN's own comment says why that is wrong: "a run has to cover
+   the address on both sides and both tracks to be a release at all".
+
+   So this takes an address whole or not at all. Whole is every channel that
+   still has an unopened line, which is four on new ground and fewer where a
+   channel is already fully open. The addresses that fit are chosen heaviest
+   first, by wts when the caller has weights and by the caller's own order when
+   it does not, and the plan is written in the caller's order so the release
+   card still finds each address in one block. An address that does not fit is
+   left out; a lighter one that does still goes in, because the room is the
+   person's and leaving it empty saves them nothing.
+
+   A cap of nought plans nothing. meterPlan reads nought as no cap and falls
+   back to twenty five, which tests/engine.js records as the reason the release
+   panel refuses above it; this one cannot be called into that.
+
+   meterPlan is untouched: the worked examples' histories are replayed through
+   it (engine/exdepth.js) and the protocol plan is asserted equal to it
+   (tests/practice.js), and neither is a run a person starts from the card. */
+function meterPlanWhole(p,nodeIds,chans,cap,wts){
+ var lim=(cap>0&&isFinite(cap))?Math.floor(cap):0;
+ if(!lim)return [];
+ var blocks=[], seenId={};
+ (nodeIds||[]).forEach(function(id,a){
+  if(seenId[id])return; seenId[id]=1;
+  var keys=[];
+  (chans||[]).forEach(function(ch){
+   var n=meterNext(p,id,ch); if(n>=0)keys.push(meterKey(id,ch,n));});
+  var w=(wts&&isFinite(+wts[a]))?+wts[a]:0;
+  if(keys.length)blocks.push({a:a,w:w,keys:keys});});
+ var room=lim, take={};
+ blocks.slice().sort(function(x,y){return (y.w-x.w)||(x.a-y.a);}).forEach(function(b){
+  if(b.keys.length<=room){take[b.a]=1; room-=b.keys.length;}});
+ var out=[];
+ blocks.forEach(function(b){if(take[b.a])out.push.apply(out,b.keys);});
  return out;}
 /* ============================================================
    THE RERUN, 22.K17. DECISIONS.md rules it four times: "Anything
@@ -30011,11 +30116,11 @@ if(typeof module!=='undefined'&&module.exports){
                  PUR_SOUL:PUR_SOUL, PUR_EGO:PUR_EGO,
   /* plan */     PLANS:PLANS, PLAN_BY:PLAN_BY, PLAN_ALWAYS:PLAN_ALWAYS, SEE_ORDER:SEE_ORDER,
                  SIGHT:SIGHT, TIER_KEYS:TIER_KEYS, planRank:planRank, planSight:planSight,
-                 planNeed:planNeed, planSightSay:planSightSay, planLockedSay:planLockedSay, planSeesAt:planSeesAt, planAdds:planAdds, planList:planList,
+                 planNeed:planNeed, planNmIn:planNmIn, planSightSay:planSightSay, planLockedSay:planLockedSay, planSeesAt:planSeesAt, planAdds:planAdds, planList:planList,
                  PLAN_LIVE:PLAN_LIVE, PLAN_DEAD:PLAN_DEAD,
                  planState:planState, planOf:planOf, planSees:planSees,
                  planNextSight:planNextSight, planAllowance:planAllowance,
-                 planWeeks:planWeeks, GIFT_N:GIFT_N, WEEK_MS:WEEK_MS, planInGift:planInGift,
+                 planWeeks:planWeeks, planFreeFrom:planFreeFrom, GIFT_N:GIFT_N, WEEK_MS:WEEK_MS, planInGift:planInGift,
                  planUpgrade:planUpgrade, planBuyable:planBuyable, RUN_MAX:RUN_MAX, RUN_MIN:RUN_MIN,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
@@ -30135,7 +30240,7 @@ if(typeof module!=='undefined'&&module.exports){
                   LINK_V:LINK_V, LINK_MAX:LINK_MAX,
                   meterRun:meterRun, meterRead:meterRead, meterKey:meterKey, meterBudget:meterBudget,
                   meterGiftAt:meterGiftAt,
-                  meterNext:meterNext, meterPlan:meterPlan,
+                  meterNext:meterNext, meterPlan:meterPlan, meterPlanWhole:meterPlanWhole,
                   meterLast:meterLast, meterRerunPlan:meterRerunPlan, meterRerun:meterRerun,
                   meterRerunOrder:meterRerunOrder, meterHeavy:meterHeavy, meterHeavyClear:meterHeavyClear,
                   meterHeavyWhy:meterHeavyWhy,
@@ -34229,7 +34334,7 @@ function lockKind(kind){ return LOCK_OF_LAYER[kind]||null; }
 function lockWhat(k){
  var g=SIGHT.filter(function(x){return x.k===k;})[0]; return g?g.what:'';}
 function lockTier(k){
- var n=planNeed(k); return n?n.nm.toLowerCase():'';}
+ var n=planNeed(k); return planNmIn(n);}
 function lockSay(k){
  var t=lockTier(k);
  return lockWhat(k)+(t?' Unlocked on '+t+' and above.':'');}
@@ -44462,6 +44567,11 @@ function stDraftSave(){
  if(!ok&&!STV.draftFail&&typeof status==='function')
   status('This browser would not save. Your words are in the box and not on your record, so copy them before you reload.','fail');
  STV.draftFail=!ok;}
+/* the half second is a debounce with no flush, so a tab that closes or reloads
+   inside it loses the sentence the person was in, and never says so: the write
+   never reaches the store at all. The same flush ui/personas.js carries. */
+if(typeof addEventListener==='function')['pagehide','visibilitychange'].forEach(function(ev){
+ addEventListener(ev,function(){ if(STV.draftT)stDraftSave(); });});
 /* back into the box when the box is empty, which is a reload or a commit of
    somebody else's words through stCommit */
 function stDraftBack(){
@@ -49790,9 +49900,12 @@ function avQueue(seat){
  var hot=at.filter(function(n){return n.sq>=4;});
  return (hot.length?hot:at).slice(0,8);}
 function avMinutes(q){
- if(!q.length||!CURP||typeof meterPlan!=='function'||typeof relBudget!=='function')return null;
+ if(!q.length||!CURP||typeof meterPlanWhole!=='function'||typeof relBudget!=='function')return null;
  var cap=relBudget(); if(cap<=0)return 0;
- var pl=meterPlan(CURP,q.map(function(n){return n.i;}),CHAN.map(function(c){return c[0]+c[2];}),cap);
+ /* the release card plans whole addresses since 17 October (relPlan), so the
+    length printed here is read off the same planner or it names another run */
+ var pl=meterPlanWhole(CURP,q.map(function(n){return n.i;}),CHAN.map(function(c){return c[0]+c[2];}),cap,
+  q.map(function(n){return n.sq;}));
  return pl.length*RUN.speed/60;}
 function avMinSay(m){
  if(m===null)return '';
@@ -53308,7 +53421,11 @@ function relReframeSay(ref){
    is whether End was pressed. A run ended early is not congratulated on a
    finish it did not reach; it is told what it did. */
 function relClosing(t,halted){
- var n=(t&&t.said)||0, u=n===1?' pattern':' patterns';
+ /* LINES AND NOT PATTERNS, 17 October. A pattern is one unit of the allowance,
+    a line opened for the first time; this counts release lines said, every
+    pass, so one address at a dose of a hundred read "200 patterns" on a run
+    that spent four. One word per concept. */
+ var n=(t&&t.said)||0, u=n===1?' line':' lines';
  var out=[halted?'You ended early. You released '+n+u+'.'
   :'Congratulations. You finished your release: '+n+u+'.'];
  var rf=relReframeSay(t&&t.ref); if(rf)out.push(rf);
@@ -53452,7 +53569,22 @@ function relPlan(){
     passed down, because meterPlan reads a cap of nought as "no cap given" and
     falls back to twenty five, which is the ceiling it was asked to remove. */
  var cap=relBudget();
- return (CURP&&cap>0)?meterPlan(CURP,ids,chans,cap):[];}
+ /* WHOLE ADDRESSES, HEAVIEST FIRST, 17 October (meterPlanWhole, engine/
+    schema.js). meterPlan cut the run key by key, so three left planned three
+    of the four channels at one address and dropped its right reframe. The
+    weights are the queue's own sq, the charge every door already sorts by. */
+ return (CURP&&cap>0)?meterPlanWhole(CURP,ids,chans,cap,RUN.queue.map(function(n){return n.sq;})):[];}
+/* THE QUEUE IS WHAT THE PLAN REACHES, for a new run as for a rerun. relCoolDown
+   releases the charge at every address in the queue, and a new run kept every
+   picked address in it, so measured on main eight picked against three left
+   released all eight for the three patterns one address was charged. relMode
+   already narrowed the rerun this way; this is the same line for the new
+   route. An empty plan keeps what was picked, so the card can still show it
+   and offer the rerun, and nothing is released off it because no run begins. */
+function relReached(pick,plan){
+ if(!(plan&&plan.length))return (pick||[]).slice();
+ var on={}; plan.forEach(function(k){on[String(k).split(':')[0]]=1;});
+ return (pick||[]).filter(function(n){return on[n.i];});}
 /* THE RERUN'S PLAN, 22.K17. The same addresses and channels, read through
    meterRerunPlan, which plans only lines already open. relBudget is not called
    here and that is the point of this function: a rerun is charged nothing, so
@@ -53486,7 +53618,7 @@ function relMode(rr){
   RUN.plan=relRerunPlan(pick);
   var on={}; RUN.plan.forEach(function(k){on[String(k).split(':')[0]]=1;});
   RUN.queue=pick.filter(function(n){return on[n.i];});}
- else {RUN.queue=pick.slice(); RUN.plan=relPlan();}
+ else {RUN.queue=pick.slice(); RUN.plan=relPlan(); RUN.queue=relReached(pick,RUN.plan);}
  RUN.proj=null; relRender();}
 /* what the panel says before a rerun begins, which is the whole of its price
    and anything it leaves out of what was picked. Read off the plan it will
@@ -53512,6 +53644,81 @@ function relRerunSay(){
   +(none?' '+none+(none===1?' address you picked has nothing open yet, so it is'
     :' addresses you picked have nothing open yet, so they are')+' left out.':'')
   +(cut>0?' A run is full, so '+cut+(cut===1?' more address waits':' more addresses wait')+' for the next one.':'');}
+/* BEGIN, as one function, because two presses start a run now: Run release,
+   and Rerun these on the empty card, which plans the rerun and begins it on
+   the one tap. Sounded first, while the room is still the interface's, and
+   with the room argument as well so it does not depend on that: it is the one
+   fitting a run is allowed, and it is one per run. The engine's one rule goes
+   before the first line is said: on a worked example the protocol does not
+   play and the voice is not spoken for a run the end of it would refuse. */
+function relBegin(){
+ if(showRefuse('release'))return;
+ if(typeof sfx==='function')sfx('begin',true);
+ RUN.phase='welcome';RUN.line=0;RUN.idx=0;RUN.pass=0;RUN.halted=false;RUN.paused=false;
+ RUN.t0=Date.now();RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;relTicker(true);relStep();}
+/* WHAT RERUN THESE RUNS. What was picked, when any of it has a line open. When
+   none of it does, a story's addresses that were never released, the heaviest
+   addresses that have, by the charge every door sorts by, so the first press
+   on the empty card is never a dead one. Empty only when nothing anywhere is
+   open, and then the card offers no rerun at all. */
+function relRerunPick(){
+ var pick=RUN.pick||[];
+ if(relRerunPlan(pick).length)return pick;
+ var have={}, out=[];
+ ((typeof CURP!=='undefined'&&CURP&&CURP.meter&&CURP.meter.unique)||[]).forEach(function(k){
+  var i=String(k).split(':')[0]; if(!have[i]){have[i]=1; var n=BY[+i]; if(n&&n.cf)out.push(n);}});
+ return out.sort(function(a,b){return b.sq-a.sq;}).filter(function(n){return relRerunPlan([n]).length>0;});}
+/* THE PERIOD AN ALLOWANCE IS COUNTED IN, as words: month for a paid tier, week
+   for free, and the gift for the gift, read off the allowance the card spends. */
+function relPer(a){
+ if(!a)return '';
+ if(a.inGift)return 'gift';
+ var t=(typeof PLAN_BY!=='undefined'&&PLAN_BY[a.source])||null;
+ return t?t.per:'';}
+/* THE EMPTY CARD'S WORDS. Why nothing new can open, which of three it is: the
+   period's new patterns are all opened, a few are left and no whole address
+   fits in them, or every line at what was picked is open already. Then what
+   still runs, and the day new ones arrive, which is the plan record's own and
+   is left out when the record names none rather than invented. */
+function relEmptySay(rr){
+ var B=(typeof meterBudget==='function'&&typeof CURP!=='undefined'&&CURP)?meterBudget(CURP):null;
+ var a=(B&&B.allow)||null, per=relPer(a), left=B?B.left:0, chans=CHAN.map(function(c){return c[0]+c[2];});
+ /* whether anything picked still has a line unopened: if so, the room is short */
+ var fresh=!!(B&&(RUN.pick||[]).some(function(x){return meterPlanWhole(CURP,[x.i],chans,RUN_MAX).length>0;}));
+ var head=left<=0
+  ?(per==='gift'?'The gift\'s new patterns are all opened.'
+   :'This '+(per||'period')+'\'s new patterns are all opened.')
+  :(fresh
+   ?(per==='gift'?'The gift':'This '+(per||'period'))+' has '+left+' new '+(left===1?'pattern':'patterns')
+    +' left, which is less than one whole address.'
+   :'Every line at these addresses is already opened.');
+ var limited=left<=0||fresh;
+ var day=(limited&&a&&a.renews&&typeof planDay==='function')?planDay(a.renews):'';
+ return head+(rr?' Everything you have opened still runs, free, as often as you like.':'')
+  +(day?' New ones arrive on '+day+'.':'');}
+/* THE ONE LINE BEFORE RUN, WHEN THE RUN IS SHORTER THAN WHAT WAS PICKED. The
+   plan stops at whole addresses that fit, and the card said nothing about it:
+   the cut addresses were simply not on it. This says how many the run opens
+   and why, the room being this period's or one run's, and carries no price.
+
+   AND ONLY THEN. The allowance review asked for a cost line under Run in the
+   normal case too, "Opens 12 new. 388 left this month." He ruled that line off
+   this card at round IG, 27 September, in his words: "Cost runs left, that
+   goes away. And this, just, run release button." tests/functional.js holds
+   it, so it stays off until he rules it back, and DECISIONS.md asks him.
+   Read off the plan the card will run, so it cannot describe another one. */
+function relShortSay(){
+ var plan=RUN.plan||[]; if(!plan.length||RUN.rerun)return '';
+ var B=(typeof meterBudget==='function'&&typeof CURP!=='undefined'&&CURP)?meterBudget(CURP):null;
+ if(!B)return '';
+ var a=B.allow||{}, per=relPer(a), chans=CHAN.map(function(c){return c[0]+c[2];});
+ var n=(RUN.queue||[]).length;
+ var want=(RUN.pick||[]).filter(function(x){return meterPlanWhole(CURP,[x.i],chans,RUN_MAX).length>0;}).length;
+ if(n<want){
+  var room=B.left<RUN_MAX?(per==='gift'?'The gift has':'This '+(per||'period')+' has'):'One run has';
+  return 'This run opens '+n+' new '+(n===1?'address':'addresses')+'. '+room+' room for '+n
+   +', and you picked '+want+'.';}
+ return '';}
 /* one entry of the plan, read back into the address and channel it names */
 function relAt(i){
  var k=(RUN.plan||[])[i]; if(!k)return null;
@@ -53560,7 +53767,7 @@ function relPick(nodeIds,from){
  RUN.pick=RUN.queue.slice(); RUN.rerun=false; RUN.reach=null; RUN.planN=0;
  RUN.resShown=false; RUN.ask=false; RUN.said=null; RUN.skip=false; RUN.storyT=(from&&typeof from.story_t==='string')?from.story_t:null;
  RUN.pace=Math.max(0.5,Math.min(2,Math.round(22/(RUN.speed||2.2))/10));
- RUN.plan=relPlan();
+ RUN.plan=relPlan(); RUN.queue=relReached(RUN.pick,RUN.plan);
  /* the setup carousel opens on its first group, and on stories when any of
     what was picked came from one; the toggle is the person's after that */
  RUN.gfocus=0; RUN.grp=relGroups('story').some(function(g){return g.ei!=null;})?'story':'seat';
@@ -54100,7 +54307,7 @@ function relTally(c,live){
     readings that count down and up. Six across wrapped CQ onto a row of its
     own at 390; five fit. */
  return '<div class="rel-clock rel-figs">'
-  +fig('Remaining',c.left,c.left===1?'pattern':'patterns')
+  +fig('Remaining',c.left,c.left===1?'line':'lines')
   +(live&&live.dq!=null?'<div class="rel-fig"><span class="tipu"'+unpAttr('dq',null,'DQ')+'>DQ</span><b>'+live.dq.toFixed(2)+'</b></div>'
     +'<div class="rel-fig"><span>Down</span><b>'+Math.max(0,live.dq0-live.dq).toFixed(2)+'</b></div>':'')
   /* CQ and how far it has come up, round QQ, see CQ, COUNTED UP above */
@@ -54430,10 +54637,15 @@ function relCoolDown(){
     never reached is not written and not charged. A run that reached its end
     has reach equal to the plan and nothing is cut. */
  RUN.reach=reach; RUN.planN=planN;
- if(reach<planN){
-  var reached={}; RUN.plan.slice(0,reach).forEach(function(k){reached[String(k).split(':')[0]]=1;});
-  RUN.queue=RUN.queue.filter(function(n){return reached[n.i];});
-  RUN.plan=RUN.plan.slice(0,reach);}
+ /* AND A RUN THAT REACHED ITS END IS CUT THE SAME WAY, 17 October. This was
+    inside reach<planN, so a finished run wrote every queued address whether
+    or not the plan had a line there, and the new route queued every address
+    picked: eight picked against three left released eight and charged one.
+    relReached narrows the queue when the run is planned; this is the guard
+    for any route that reaches here with a queue wider than its plan. */
+ var reached={}; (RUN.plan||[]).slice(0,reach).forEach(function(k){reached[String(k).split(':')[0]]=1;});
+ RUN.queue=RUN.queue.filter(function(n){return reached[n.i];});
+ if(reach<planN)RUN.plan=RUN.plan.slice(0,reach);
  /* what the finished card reports, fixed here: the two counts where the list
     stopped, the elapsed clock stopped with it, and what was running through
     these addresses before the write moved any of it */
@@ -55284,6 +55496,21 @@ function relCss(){
   ' padding:4px 24px 28px;display:flex;flex-direction:column;align-items:center}',
   '.rel-scroll>*{width:100%;max-width:720px;flex:none}',
   '.rel-scroll>.rel-mid{max-width:1160px}',
+  /* SEE THE TIERS, LAST AND SMALL, 17 October: a text press after Close on the
+     empty card, at the tap floor however small its words */
+  '.rel-lk{background:none;border:0;color:var(--dim);font:inherit;font-size:13px;text-decoration:underline;',
+  ' text-underline-offset:3px;min-height:var(--tap);min-width:var(--tap);padding:0 10px;cursor:pointer}',
+  '.rel-lk:hover{color:var(--ink)}',
+  /* THE STORAGE LINE SITS OVER THE FOOT, 17 October. #keepline (ui/keep.js)
+     stands at z-index 94 above this card's 90 and reserves its room as
+     --keep-h for the app, not for this card, so a guest who had just saved a
+     story met the card with Run release, and on the empty card Rerun these,
+     under "Your record is kept only in this browser". The setup's foot takes
+     the room too. Only the setup's: on the running screen the room comes out
+     of the readings, which tests/release-screen.js holds above the controls
+     at 1600 by 1000, so the run's foot is left as it was and named in the
+     review of this change rather than moved here. */
+  'html.keep-on .rel .rel-card[data-ph="setup"] .rel-foot.rel-act{padding-bottom:calc(var(--keep-h) + 4px)}',
   '.rel-foot.rel-act{flex:none;display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;margin:0;',
   ' padding:12px 24px calc(20px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg) 62%,transparent)}',
   '.rel-stage{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:min(52vh,500px)}',
@@ -55752,7 +55979,9 @@ function relMiniNow(){return !!RUN.mini&&!RUN.rerun;}
    screen before counts lines, both halves, said once, and printed "4 lines"
    above a screen that printed 200 (M28). On the mini release every line of
    the plan is counted and called a line, so the two screens say one number in
-   one word; every other release keeps his patterns. */
+   one word. Every other release counted the release half and called it
+   patterns until 17 October, when the word went to the allowance alone (the
+   allowance review): it counts the same thing and calls it lines now. */
 function relGroups(mode){
  var per={}, dose=RUN.dose||0, G=[], by={}, all=relMiniNow();
  (RUN.plan||[]).forEach(function(k){var b=String(k).split(':');
@@ -55783,10 +56012,12 @@ function relGroupHtml(g,k){
   +(s?'<span class="rel-gi-s">'+s+'</span>':'')
   +'<span class="rel-gi-a">'+g.ns.map(function(n){
     return '<span style="color:'+seatCol(n.b)+'">'+esc(n.k)+'</span>';}).join('<i aria-hidden="true">·</i>')+'</span>'
-  +'<span class="rel-gi-c">'+(g.pats?'<b>'+g.pats+'</b>'+(relMiniNow()?(g.pats===1?'line':'lines')
-   :(g.pats===1?'pattern':'patterns')):'Not in this run')+'</span>'
+  +'<span class="rel-gi-c">'+(g.pats?'<b>'+g.pats+'</b>'+(g.pats===1?'line':'lines'):'Not in this run')+'</span>'
   +'</button>';}
-function relSetupCar(){
+/* none says the card is empty, nothing new can open: the count line under the
+   groups read "3 addresses, 0 lines" over a card that runs nothing, so it is
+   left off there and the empty card's own sentence says why. */
+function relSetupCar(none){
  var mode=RUN.grp==='seat'?'seat':'story', G=relGroups(mode);
  var pats=G.reduce(function(s,g){return s+g.pats;},0), q=RUN.queue||[];
  return '<div class="rel-gc" id="relgc" tabindex="0" role="region" aria-label="What this run will release, by '+mode+'">'
@@ -55797,10 +56028,10 @@ function relSetupCar(){
    +'<button type="button" id="relgup" aria-label="Back">'+relIc('up')+'</button>'
    +'<button type="button" id="relgdn" aria-label="Forward">'+relIc('down')+'</button></span>'
    +'<span class="rel-gat" id="relgat" aria-live="polite"></span></div>':'')
-  +'<div class="rel-gsum"><b>'+q.length+'</b>'+(q.length===1?' address, ':' addresses, ')
+  +(none?'':'<div class="rel-gsum"><b>'+q.length+'</b>'+(q.length===1?' address, ':' addresses, ')
   +'<b>'+pats+'</b>'+(relMiniNow()
    ?(pats===1?' line':' lines')+'. Each line is said '+(RUN.dose===1?'once':RUN.dose+' times')+'.'
-   :(pats===1?' pattern':' patterns')+'. Each pattern is one line, said once.')+'</div>';}
+   :(pats===1?' line':' lines')+'. Each is one release line, said once.')+'</div>');}
 /* which group sits on the centre, the gradient on it, and the count under it */
 function relGcSync(G){
  var R=[].slice.call(G.querySelectorAll('.rel-gi')); if(!R.length)return;
@@ -56123,7 +56354,7 @@ function relResults(){
  /* 1. the congratulations, and a mark if this run earned one */
  out+='<div class="pm-eye">Released</div>'
   +'<div class="rel-node rel-rs-hero">'+(RUN.halted?'':'Congratulations. ')
-  +'You released '+t.said+(t.said===1?' pattern':' patterns')+' and recharged '+t.put+'.</div>'
+  +'You released '+t.said+(t.said===1?' line':' lines')+' and recharged '+t.put+'.</div>'
   +relEndNote()+relGiftEnd();
  /* "NEW MARK" WAS A CLAIM THE RECORD CANNOT MAKE. marksNew is what the ladder
     reads after this run and did not read before it, and nothing stores a mark
@@ -56389,8 +56620,13 @@ function relRender(){
   /* A RERUN IS NEVER SPENT, so a spent allowance closes the new route only.
      can is whether any picked address has a line open to rerun; with none,
      the panel is exactly what it was before 22.K17 and offers no choice. */
-  var left=relLeft(), spent=(left<=0)&&!RUN.rerun,
-   can=RUN.rerun||relRerunPlan(RUN.pick||[]).length>0;
+  /* SPENT IS A NEW RUN WITH NOTHING IN ITS PLAN, 17 October. It was a
+     left of nought, so three left planned nothing whole and still offered Run
+     release, which would have begun a run of no lines and released every
+     picked address for free at its end. The same holds where every line at
+     the picked addresses is already open. */
+  var left=relLeft(), spent=!RUN.rerun&&!(RUN.plan||[]).length,
+   can=RUN.rerun||relRerunPlan(RUN.pick||[]).length>0, again=spent?relRerunPick():[];
   /* THE CROSS, ruled 2 October: "when I click on a protocol, if I don't want
      to run it, give me the X so I can have the option of canceling." Same
      close as Cancel, so nothing is started and nothing is charged. It sits at
@@ -56403,11 +56639,17 @@ function relRender(){
   var body='<div class="rel-hdt"><span class="seg" role="group" aria-label="Show what is picked by">'
    +'<button type="button" data-relgrp="story" aria-pressed="'+(RUN.grp!=='seat')+'">Story</button>'
    +'<button type="button" data-relgrp="seat" aria-pressed="'+(RUN.grp==='seat')+'">Seat</button></span></div>'
-   +relSetupCar();
+   +relSetupCar(spent);
+  /* A SHORTER RUN SAYS SO, IN ONE LINE, BEFORE RUN AND NEVER AFTER, 17
+     October. A short allowance cut the run without a sentence. It sits under
+     the count it qualifies, because at the foot of the fields it fell below
+     the first screen at both widths and Run release was pressed over it. */
+  var cost=(!spent&&!showOnly())?relShortSay():'';
+  if(cost)body+='<div class="rel-note rel-cost" id="relcost">'+esc(cost)+'</div>';
   /* NEW OR RERUN, 22.K17, as a pressed pair the way the dose picks are. The
      rerun's price is said before Run release is offered, because a person is
      entitled to see what a run costs before they begin it. */
-  if(can)body+='<div class="rel-fields"><div class="rel-field"><span>Lines</span>'
+  if(can&&!spent)body+='<div class="rel-fields"><div class="rel-field"><span>Lines</span>'
     +'<div class="seg" role="group" aria-label="New lines or a rerun">'
     +'<button type="button" data-relmode="new" aria-pressed="'+(!RUN.rerun)+'">New</button>'
     +'<button type="button" data-relmode="rerun" aria-pressed="'+(!!RUN.rerun)+'">Rerun</button>'
@@ -56415,9 +56657,15 @@ function relRender(){
    +(RUN.rerun?'<div class="rel-note">'+esc(relRerunSay())+'</div>':'');
   /* "on the plan in settings" sent a person to a section they then had to
      find. The button below opens the tiers themselves, round NZ. */
-  if(spent)body+='<div class="rel-node">Nothing left to open</div>'
-   +'<div class="rel-note">Your allowance pays for addresses you have not released before, and this '
-   +'period\'s is spent. Each tier sets how much new ground a period opens.</div>';
+  /* THE EMPTY CARD, 17 October, the allowance review of five seats. It said
+     "Nothing left to open", took Run release away and offered Close and See
+     the tiers, so a person who pressed Run on a hard story met a paywall shut
+     mid charge. A rerun was there and costs nothing, behind a toggle. Now the
+     rerun is the first press, one tap from here to a run, money is last and
+     small, and the crisis door is on the card. The story is already saved:
+     stCommit wrote it before any release could be planned. */
+  if(spent)body+='<div class="rel-note" id="relempty">'+esc(relEmptySay(again.length>0))+'</div>'
+   +(typeof crisisBtn==='function'?'<p class="crx-line">'+crisisBtn()+'</p>':'');
   /* HOW MANY PATTERNS, RUN SPEED AND TIME, round LY: "dials that say time, run
      speed... number of patterns". Time is the length this exact plan will
      run, read off relSecFrom, the same clock the run shows once it starts. */
@@ -56433,16 +56681,20 @@ function relRender(){
   else if(!showOnly())body+='<div class="rel-fields">'
     +'<label class="rel-field"><span>Run speed</span><input type="number" id="relpace" min="0.5" max="2" step="0.1" value="'
      +RUN.pace+'"></label>'
-    +(relMiniNow()?'':'<label class="rel-field"><span>Patterns</span><input type="number" id="reldose" min="1" max="'
+    /* TIMES SAID, 17 October, and not Patterns: this is how many times each
+       line is said, and the allowance's unit is a line opened, which a dose
+       never spends. One word per concept. */
+    +(relMiniNow()?'':'<label class="rel-field"><span>Times said</span><input type="number" id="reldose" min="1" max="'
      +REL_DOSES[REL_DOSES.length-1]+'" step="1" value="'+RUN.dose+'"></label>')
     +'<div class="rel-field"><span>Time</span><b class="rel-time">'+relMMSS(relSecFrom(null))+'</b></div>'
     /* his three, as quick picks on the same number */
-    +(relMiniNow()?'':'<div class="rel-field"><span>Left and right</span><div class="seg" role="group" aria-label="Patterns, left and right">'
+    +(relMiniNow()?'':'<div class="rel-field"><span>Left and right</span><div class="seg" role="group" aria-label="Times each line is said, left and right">'
      +REL_DOSES.map(function(d){return '<button type="button" data-reldose="'+d+'" aria-pressed="'
       +(RUN.dose===d)+'">'+d+'</button>';}).join('')+'</div></div>')
     +'</div>';
   /* and no switch for a run that cannot begin */
   if(!spent&&!showOnly())body+=relSws(null);
+
   out=relShell({ph:'setup',col:col0,body:body,
    right:'<button type="button" class="rel-x" id="relx" aria-label="Cancel">'+relIc('x')+'</button>',
    /* THE BUTTON IS NOT THERE WHEN THERE IS NOTHING TO SPEND. A disabled Begin
@@ -56456,9 +56708,12 @@ function relRender(){
       because nothing was started that could be cancelled. */
    foot:(showOnly()
     ?showNote('release','rel-show')+'<button class="btn" id="relcancel">Close</button>'
-    :'<button class="btn" id="relcancel">'+(spent?'Close':'Cancel')+'</button>'
-    +(spent?'<button class="btn pri" id="relplan">See the tiers</button>'
-          :'<button class="btn pri" id="relgo">Run release</button>'))});}
+    :(spent
+     ?(again.length?'<button class="btn pri" id="relrerun">'+(again===RUN.pick?'Rerun these':'Rerun your heaviest')+'</button>':'')
+      +'<button class="btn" id="relcancel">Close</button>'
+      +'<button type="button" class="rel-lk" id="relplan">See the tiers</button>'
+     :'<button class="btn" id="relcancel">Cancel</button>'
+      +'<button class="btn pri" id="relgo">Run release</button>'))});}
  var sc0=document.getElementById('relsc'), keepY=(sc0&&sc0.closest('[data-ph]')
   &&sc0.closest('[data-ph]').getAttribute('data-ph')==='done'&&RUN.phase==='done')?sc0.scrollTop:0;
  if(!kept)h.innerHTML=out;
@@ -56477,17 +56732,14 @@ function relRender(){
   relHush(); RUN.cool=COOLING.length; RUN.settled=true; relTicker(false); relRender();};
  /* BEGIN IS THE HAND OVER, and the press a browser needs before it will make
     a sound. The technical requirement and the ritual are the same press. */
- if((b=document.getElementById('relgo')))b.onclick=function(){
-  /* sounded first, while the room is still the interface's, and with the room
-     argument as well so it does not depend on that: it is the one fitting a
-     run is allowed, and it is one per run. */
-  /* the engine's one rule, before the first line is said: on a worked example
-     the protocol does not play and the voice is not spoken for a run the end
-     of it would refuse */
-  if(showRefuse('release'))return;
-  if(typeof sfx==='function')sfx('begin',true);
-  RUN.phase='welcome';RUN.line=0;RUN.idx=0;RUN.pass=0;RUN.halted=false;RUN.paused=false;
-  RUN.t0=Date.now();RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;relTicker(true);relStep();};
+ if((b=document.getElementById('relgo')))b.onclick=relBegin;
+ /* RERUN THESE, the empty card's first press: the rerun plan for what is
+    picked, or for the heaviest addresses already opened when nothing picked
+    is (relRerunPick), and the run begins on the same press. relMode narrows
+    the queue to what the rerun plan reaches, so nothing unsaid is released. */
+ if((b=document.getElementById('relrerun')))b.onclick=function(){
+  var q=relRerunPick(); if(!q.length)return;
+  RUN.pick=q.slice(); relMode(true); relBegin();};
  if((b=document.getElementById('relskip')))b.onclick=function(){
   RUN.phase='run';RUN.line=0;RUN.idx=0;RUN.pass=0;relStep();};
  /* the cross and the Cancel button are one close, and it says what did not
@@ -67821,7 +68073,13 @@ function planSection(m,o){
     ? '<div class="sh-row"><span>State</span><b>not confirmed</b></div>'
     : (st==='ended'?'<div class="sh-row"><span>State</span><b>ended</b></div>'
     : (ends?'<div class="sh-row"><span>State</span><b>ends '+esc(ends)+'</b></div>':'')))
-  +'<div class="sh-row"><span>New ground</span><b>'+esc(al.say)+'</b></div>'
+  /* THE DAY NEW ONES ARRIVE, 17 October, where a paid tier has less than one
+     run left. It read "0 left this month, banking toward a run of 4", and paid
+     tiers do not bank (planAllowance). renews is the paid period's end off the
+     record; with no day on the record the sentence is left out, not invented. */
+  +'<div class="sh-row"><span>New ground</span><b>'+esc(al.say
+    +((!al.inGift&&al.source!=='free'&&al.runs===0&&al.renews&&planDay(al.renews))
+      ?'. New ones arrive on '+planDay(al.renews):''))+'</b></div>'
   /* WHAT THE PLAN SHOWS, off SIGHT (engine/plan.js). It said everything while
      sight was not for sale, ruled back on 1 October. Inside the gift it is
      everything again, with the gift named as the reason, read off the lock's
@@ -67847,7 +68105,7 @@ function planSection(m,o){
  if(worth)h+='<p class="sh-p">'+esc(worth)+'</p>';
  h+='<div class="sh-act">'
   +(up?'<button class="btn pri" id="planup" data-tier="'+esc(up.to.k)+'">Move to '
-    +esc(up.to.nm.toLowerCase())+'</button>':'')
+    +esc(planNmIn(up.to))+'</button>':'')
   +'<button class="btn" id="planman">Manage billing</button></div>'
   /* WHAT THE BUTTON OPENS, said before it is pressed. Manage billing used to
      answer "not built yet" on a press, so the line beside it only said where
@@ -69693,7 +69951,7 @@ function planTiersHtml(){
    +(r.now?'<span class="pt-now">You are on this</span>'
      :(r.up&&!r.buy?'<span class="pt-now pt-shut">'+(r.lead?'Opens with the lead suite':'Not open yet')+'</span>'
      :(r.up?'<button class="btn" type="button" data-ptier="'+esc(r.k)+'">Move to '
-       +esc(r.nm.toLowerCase())+'</button>':'')))
+       +esc(planNmIn(PLAN_BY[r.k]))+'</button>':'')))
    +'</div></div>';});
  h+='</div>';
  /* THE FOOT SAYS WHAT A PRESS WILL MEET, before it is pressed. */
@@ -72729,7 +72987,7 @@ function showLine(what){
  var nx=planNextSight(showOwnPlan(),showOwnGift());
  var tail=nx
   ?(function(t){return t.charAt(0).toUpperCase()+t.slice(1);})(planList(nx.adds.map(function(g){return g.nm;})))
-   +' show here, and on your own profile they open on '+nx.to.nm.toLowerCase()+'.'
+   +' show here, and on your own profile they open on '+planNmIn(nx.to)+'.'
   :'Open your own profile to run it.';
  return head+(does?' On your own profile, '+does+'.':'')+' '+tail;}
 /* the same line, where a control that cannot run on an example used to sit */
@@ -73881,6 +74139,11 @@ function crisisTalk(){
  crisisShut(true);
  if(typeof LOGIN!=='undefined'&&LOGIN.open&&typeof loginClose==='function')loginClose();
  if(typeof OB!=='undefined'&&OB.open&&typeof obClose==='function')obClose();
+ /* and the release card, from its empty state since 17 October, which carries
+    this door. It covers the page at z-index 90, so the Story box would open
+    behind it. Only before a run begins: nothing has started there, so closing
+    it starts and charges nothing, the same close its own Close makes. */
+ if(typeof RUN!=='undefined'&&RUN.open&&RUN.phase==='idle'&&typeof relClose==='function')relClose();
  if(typeof STV!=='undefined'){ STV.chat=false; STV.focus='write'; STV.crisis=true; }
  /* AND ON THE PERSON'S OWN PROFILE. A worked example is show only from 16
     October (engine/showonly.js), so its Story page has no box: the preview
@@ -74692,6 +74955,14 @@ function obDraft(v){
  if(!OB.rec)return;
  if(OB.draftT)clearTimeout(OB.draftT);
  OB.draftT=setTimeout(function(){ OB.draftT=null; if(OB.open&&OB.step===5)obWalkSave(); },500);}
+/* the half second is a debounce with no flush, so a tab that closes or reloads
+   inside it loses the words on the story step, and never says so: the write
+   never reaches the store at all. The same flush ui/personas.js carries. */
+if(typeof addEventListener==='function')['pagehide','visibilitychange'].forEach(function(ev){
+ addEventListener(ev,function(){
+  if(!OB.draftT)return;
+  clearTimeout(OB.draftT); OB.draftT=null;
+  if(OB.open&&OB.step===5)obWalkSave();});});
 /* A CORRECTION, READ, in the order the card shows it, so a reload rebuilds
    exactly the rows the person was answering. obAdjust reads through this. */
 function obFixRead(v){
@@ -78078,5 +78349,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005122969"></div>
+<div id="eof" hidden data-len="005141477"></div>
 </body></html>

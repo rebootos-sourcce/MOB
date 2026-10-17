@@ -2650,6 +2650,18 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
   'free, the gift and a key this build does not know are never bought');
  /* closing a rung moves nobody: a record on tier four still reads tier four */
  ok(E.planOf({tier:'four',status:'active'}).k==='four','a record already on tier four still reads tier four');
+ /* THE TOP RUNG IS NAMED PRACTITIONER, ruled 17 October: "There are four
+    tiers. Free, tier one, tier two, tier three, practitioner." The name moved
+    and the key did not, so a record on it still reads it (the line above). And
+    no row of the ladder may print the old name, in its name or its sentence,
+    because every surface that names a tier reads it off this table. */
+ ok(E.PLAN_BY.four.nm==='Practitioner','the rung keyed four is named Practitioner, got '+JSON.stringify(E.PLAN_BY.four.nm));
+ ok(!E.PLANS.some(p=>/\btier[ -]?(?:four|4)\b/i.test(p.nm+' '+p.d)),
+  'no plan row says tier four, in its name or its sentence');
+ /* inside a sentence a numbered rung lowercases and Practitioner keeps its
+    capital, so a Move to reads "Move to Practitioner" and not a person to see */
+ ok(E.planNmIn(E.PLAN_BY.one)==='tier one'&&E.planNmIn(E.PLAN_BY.four)==='Practitioner'&&E.planNmIn(null)==='',
+  'a tier named inside a sentence: tier one lowercases, Practitioner does not, nothing is empty');
  /* A DIFFERENCE ONLY MEANS SOMETHING WHEN THE PERIODS MATCH. Free is ten a
     week and tier one is four hundred a month. Subtracting gave 390 more a
     month, which is arithmetic over two different units. */
@@ -5200,6 +5212,26 @@ g('38 · one seed for one unmeasured law, and the allowance is a ceiling');
  }
 }
 
+g('38a · a release run opens whole addresses only, 17 October');
+/* meterPlanWhole, engine/schema.js. The release card plans through it, so the
+   required gate holds its three properties as well as tests/allowance.js,
+   which is report only until three green runs: no address is ever split
+   across the cap, a cap of nought plans nothing, and where everything fits it
+   is meterPlan exactly. */
+{
+ const {meterPlanWhole,meterPlan,RUN_MAX}=E, CH=['Llimit','Rlimit','Ltruth','Rtruth'];
+ if(typeof meterPlanWhole!=='function')ok(false,'meterPlanWhole is reachable from the contract');
+ else {
+  const p=E.blankProfile('whole'), by={};
+  meterPlanWhole(p,[1,2,3,4,5,6,7,8],CH,RUN_MAX).forEach(k=>{const a=k.split(':')[0]; by[a]=(by[a]||0)+1;});
+  ok(Object.keys(by).length>0&&Object.values(by).every(n=>n===CH.length),
+   'every address in a wide run carries all four channels: '+JSON.stringify(by));
+  ok(meterPlanWhole(p,[1,2,3],CH,3).length===0&&meterPlanWhole(p,[1,2,3],CH,0).length===0,
+   'three left, or nought, opens no part of an address');
+  ok(JSON.stringify(meterPlanWhole(p,[1,2,3],CH,RUN_MAX))===JSON.stringify(meterPlan(p,[1,2,3],CH,RUN_MAX)),
+   'and where everything fits it plans what meterPlan plans');}
+}
+
 g('38b · a rerun plans open ground only, and is charged nothing, 22.K17');
 /* DECISIONS.md: "Anything already opened may be rerun without limit and without
    cost, forever." Measured before this landed: one address released four times
@@ -6245,7 +6277,11 @@ g('NZ2 · the plan the server holds, laid onto a record');
   'a cancelled plan keeps which tier ended and reads free');
  /* the account has no paid plan, on a record that says it has one */
  const h=planFromServer(b.plan,null,many(150));
- ok(!h.same&&h.wasLive&&!h.nowLive&&h.plan.tier==='free'&&h.plan.base===null,'null over a paid record is a change to free, which the host must say');
+ /* and free restarts from that day, 17 October: base is the unique count now
+    and since is the day it was read, where it was base null, which charged
+    everything opened while paying against the free weeks (tests/allowance.js) */
+ ok(!h.same&&h.wasLive&&!h.nowLive&&h.plan.tier==='free'&&h.plan.base===150&&typeof h.plan.since==='string',
+  'null over a paid record is a change to free, which the host must say, and free counts from here: '+JSON.stringify(h.plan));
  /* a tier this build does not know moves nothing */
  const u=planFromServer(b.plan,{tier:'five',status:'active',since:S1,until:U1},many(150));
  ok(u.refused==='five'&&u.same&&u.plan===b.plan,'an unknown tier is refused by name, never rounded down to free');

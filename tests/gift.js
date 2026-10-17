@@ -199,13 +199,20 @@ async function arrive(browser,payload,W,H){
     const wait=ms=>new Promise(r=>setTimeout(r,ms));
     if(CURP.id!==window.GIFT_ID)accProfOpen(window.GIFT_ID);
     setTab(TAB.FIELD); render();
-    /* a person two patterns from the end of the gift: what they opened is
-       written through the meter's own writer, as a run writes it */
-    const fill=Array.from({length:GIFT_N-2},(_,i)=>'filled:'+i);
+    /* A PERSON ONE WHOLE ADDRESS FROM THE END OF THE GIFT. A run plans whole
+       addresses only (meterPlanWhole, main 17 October), so the size of one is
+       read off a real pick of the heaviest address before anything is
+       opened, and what they opened is written up to exactly that far from
+       the end, through the meter's own writer, as a run writes it. A fill of
+       the gift less two planned nothing once a run stopped at whole
+       addresses, because two is less than one of them. */
+    const ids=relQueueOf(8).map(n=>n.i).slice(0,1);
+    relPick(ids); await wait(60);
+    const whole=RUN.plan.length; relClose(); await wait(60);
+    const fill=Array.from({length:Math.max(0,GIFT_N-whole)},(_,i)=>'filled:'+i);
     meterRun(CURP,fill); pSave();
-    const o={before:CURP.meter.unique.length, giftBefore:GIFT_ASK()};
+    const o={before:CURP.meter.unique.length, whole:whole, giftBefore:GIFT_ASK()};
     const keep=CURP.meter.unique.slice(), entries=((CURP.story&&CURP.story.entries)||[]).length;
-    const ids=relQueueOf(8).map(n=>n.i);
     relPick(ids); await wait(60);
     o.plan=RUN.plan.length;
     RUN.phase='run'; RUN.idx=RUN.plan.length; relCoolDown(); await wait(60);
@@ -229,7 +236,7 @@ async function arrive(browser,payload,W,H){
     o.again=document.querySelectorAll('#relgiftend').length;
     relClose(); await wait(60);
     return o;});
-   ok(end.giftBefore&&end.before===who.N-2,tag+'two patterns before the end the gift still sees everything, '+JSON.stringify({before:end.before,gift:end.giftBefore}));
+   ok(end.whole>0&&end.giftBefore&&end.before===who.N-end.whole,tag+'one whole address before the end the gift still sees everything, '+JSON.stringify({before:end.before,whole:end.whole,gift:end.giftBefore}));
    ok(end.plan>0&&end.before+end.added===end.after&&end.after>=who.N&&!end.giftAfter,
     tag+'the run opens the last of it and the gift is spent, '+JSON.stringify({plan:end.plan,added:end.added,after:end.after}));
    ok(!end.resting,tag+'the two minutes after a run say nothing about it, the results do');

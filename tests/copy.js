@@ -83,7 +83,11 @@ const BANNED=[
     "at a weight of 6.3" and "CQ up 0.1", figures the page shows nowhere else to
     that precision. They print whole numbers like CQ and DQ */
  ['app', /\bat a weight of \d+\.\d/i, 'a weight prints as a whole number, as CQ and DQ do'],
- ['app', /\bCQ (?:up|down) \d+\.\d\b/i, 'a change in CQ is said in whole numbers, against the figure the page shows']];
+ ['app', /\bCQ (?:up|down) \d+\.\d\b/i, 'a change in CQ is said in whole numbers, against the figure the page shows'],
+ /* the top rung's old name, 17 October, the owner's words: "There are four
+    tiers. Free, tier one, tier two, tier three, practitioner." It is keyed four
+    and is called Practitioner wherever a person can read it */
+ ['all', /\btier[ -]?(?:four|4)\b/i, 'the top rung is called Practitioner']];
 
 /* THE REQUIRED SENTENCES. [surface, [patterns that must all sit in one
    sentence], what it must say]. Held by sentence, so two halves on two
@@ -214,6 +218,10 @@ function hold(scope,surface,text,need){
  if(bad.length!==1)fail('self','the old first card line is not called banned: '+JSON.stringify(bad));
  if(good.length)fail('self','a true privacy line is called banned: '+JSON.stringify(good));
  if(quiz.length)fail('self','the quiz line, true on the quiz, is called banned: '+JSON.stringify(quiz));
+ /* the rung's old name is caught on the funnel too, and the new one passes */
+ if(banned('funnel','Tier four cannot be bought yet.').length!==1)fail('self','the old top rung name is not called banned');
+ if(banned('funnel','Practitioner cannot be bought yet. Tier one shows you your saboteurs.').length)
+  fail('self','Practitioner, or tier one, is called banned');
  if(!missing('privacy','Held in this browser and nowhere else.').length)fail('self','an empty privacy footer is not called incomplete');
  const NCRX=REQUIRED.filter(r=>r[0]==='crisis').length;
  if(missing('crisis','Call 988. Text 741741. Call 911.').length!==NCRX)fail('self','bare crisis numbers are not called incomplete');
