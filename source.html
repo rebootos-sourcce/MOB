@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2147 b29ddf21 2026-10-17 16:25"><head><meta charset="utf-8">
+<html lang="en" data-build="v2148 66313c3e 2026-10-17 16:39"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -55395,6 +55395,13 @@ function relCss(){
   '.rel-lk{background:none;border:0;color:var(--dim);font:inherit;font-size:13px;text-decoration:underline;',
   ' text-underline-offset:3px;min-height:var(--tap);min-width:var(--tap);padding:0 10px;cursor:pointer}',
   '.rel-lk:hover{color:var(--ink)}',
+  /* THE STORAGE LINE SITS OVER THE FOOT, 17 October. #keepline (ui/keep.js)
+     stands at z-index 94 above this card's 90 and reserves its room as
+     --keep-h for the app, not for this card, so a guest who had just saved a
+     story met the card with Run release, and on the empty card Rerun these,
+     under "Your record is kept only in this browser". The foot takes the room
+     too. */
+  'html.keep-on .rel .rel-foot.rel-act{padding-bottom:calc(var(--keep-h) + 4px)}',
   '.rel-foot.rel-act{flex:none;display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;margin:0;',
   ' padding:12px 24px calc(20px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg) 62%,transparent)}',
   '.rel-stage{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:min(52vh,500px)}',
@@ -55898,7 +55905,10 @@ function relGroupHtml(g,k){
     return '<span style="color:'+seatCol(n.b)+'">'+esc(n.k)+'</span>';}).join('<i aria-hidden="true">·</i>')+'</span>'
   +'<span class="rel-gi-c">'+(g.pats?'<b>'+g.pats+'</b>'+(g.pats===1?'line':'lines'):'Not in this run')+'</span>'
   +'</button>';}
-function relSetupCar(){
+/* none says the card is empty, nothing new can open: the count line under the
+   groups read "3 addresses, 0 lines" over a card that runs nothing, so it is
+   left off there and the empty card's own sentence says why. */
+function relSetupCar(none){
  var mode=RUN.grp==='seat'?'seat':'story', G=relGroups(mode);
  var pats=G.reduce(function(s,g){return s+g.pats;},0), q=RUN.queue||[];
  return '<div class="rel-gc" id="relgc" tabindex="0" role="region" aria-label="What this run will release, by '+mode+'">'
@@ -55909,10 +55919,10 @@ function relSetupCar(){
    +'<button type="button" id="relgup" aria-label="Back">'+relIc('up')+'</button>'
    +'<button type="button" id="relgdn" aria-label="Forward">'+relIc('down')+'</button></span>'
    +'<span class="rel-gat" id="relgat" aria-live="polite"></span></div>':'')
-  +'<div class="rel-gsum"><b>'+q.length+'</b>'+(q.length===1?' address, ':' addresses, ')
+  +(none?'':'<div class="rel-gsum"><b>'+q.length+'</b>'+(q.length===1?' address, ':' addresses, ')
   +'<b>'+pats+'</b>'+(relMiniNow()
    ?(pats===1?' line':' lines')+'. Each line is said '+(RUN.dose===1?'once':RUN.dose+' times')+'.'
-   :(pats===1?' line':' lines')+'. Each is one release line, said once.')+'</div>';}
+   :(pats===1?' line':' lines')+'. Each is one release line, said once.')+'</div>');}
 /* which group sits on the centre, the gradient on it, and the count under it */
 function relGcSync(G){
  var R=[].slice.call(G.querySelectorAll('.rel-gi')); if(!R.length)return;
@@ -56520,7 +56530,13 @@ function relRender(){
   var body='<div class="rel-hdt"><span class="seg" role="group" aria-label="Show what is picked by">'
    +'<button type="button" data-relgrp="story" aria-pressed="'+(RUN.grp!=='seat')+'">Story</button>'
    +'<button type="button" data-relgrp="seat" aria-pressed="'+(RUN.grp==='seat')+'">Seat</button></span></div>'
-   +relSetupCar();
+   +relSetupCar(spent);
+  /* A SHORTER RUN SAYS SO, IN ONE LINE, BEFORE RUN AND NEVER AFTER, 17
+     October. A short allowance cut the run without a sentence. It sits under
+     the count it qualifies, because at the foot of the fields it fell below
+     the first screen at both widths and Run release was pressed over it. */
+  var cost=(!spent&&!showOnly())?relShortSay():'';
+  if(cost)body+='<div class="rel-note rel-cost" id="relcost">'+esc(cost)+'</div>';
   /* NEW OR RERUN, 22.K17, as a pressed pair the way the dose picks are. The
      rerun's price is said before Run release is offered, because a person is
      entitled to see what a run costs before they begin it. */
@@ -56569,10 +56585,7 @@ function relRender(){
     +'</div>';
   /* and no switch for a run that cannot begin */
   if(!spent&&!showOnly())body+=relSws(null);
-  /* A SHORTER RUN SAYS SO, IN ONE LINE, BEFORE RUN AND NEVER AFTER, 17
-     October. A short allowance cut the run without a sentence. */
-  var cost=(!spent&&!showOnly())?relShortSay():'';
-  if(cost)body+='<div class="rel-note rel-cost" id="relcost">'+esc(cost)+'</div>';
+
   out=relShell({ph:'setup',col:col0,body:body,
    right:'<button type="button" class="rel-x" id="relx" aria-label="Cancel">'+relIc('x')+'</button>',
    /* THE BUTTON IS NOT THERE WHEN THERE IS NOTHING TO SPEND. A disabled Begin
@@ -78213,5 +78226,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005132148"></div>
+<div id="eof" hidden data-len="005133034"></div>
 </body></html>

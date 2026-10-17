@@ -241,12 +241,15 @@ async function shot(page, name, W) {
       const sh = await ev(page, () => {
         relPick(relQueueOf(3).map(function (n) { return n.i; }));
         var c = document.getElementById('relcost'), go = document.getElementById('relgo');
+        var r = c && c.getBoundingClientRect(), ft = document.getElementById('relfoot'), fr = ft && ft.getBoundingClientRect();
         return { text: c && c.textContent, before: !!(c && go && (c.compareDocumentPosition(go) & Node.DOCUMENT_POSITION_FOLLOWING)),
-          seen: !!(c && c.getBoundingClientRect().height > 0) };
+          /* on the first screen, above the foot, with no scrolling: a line
+             under the fold is a line nobody reads before pressing Run */
+          seen: !!(r && fr && r.height > 0 && r.top >= 0 && r.bottom <= fr.top), at: r && [Math.round(r.top), Math.round(r.bottom), fr && Math.round(fr.top)] };
       });
       ok(sh.text === 'This run opens 2 new addresses. This week has room for 2, and you picked 3.',
         'a short run says so before Run: "' + sh.text + '"');
-      ok(sh.before && sh.seen, 'on the card, above Run release');
+      ok(sh.before && sh.seen, 'on the card\'s first screen, above Run release: ' + J(sh.at));
       await shot(page, 'allowance-short', W);
       await ev(page, () => relClose());
 
@@ -257,7 +260,9 @@ async function shot(page, name, W) {
           until: new Date(Date.now() + 20 * 86400000).toISOString(), ends: null };
         relPick(relQueueOf(3).map(function (n) { return n.i; }));
         var c = document.getElementById('relcost'), card = document.querySelector('#rel .rel-card');
-        var out = { cost: !!c, plan: RUN.plan.length, left: relLeft(), go: !!document.getElementById('relgo'),
+        var go = document.getElementById('relgo'), gr = go && go.getBoundingClientRect();
+        var top = gr ? document.elementFromPoint(gr.left + gr.width / 2, gr.top + gr.height / 2) : null;
+        var out = { cost: !!c, plan: RUN.plan.length, left: relLeft(), go: !!go, open: !!(top && go && (top === go || go.contains(top))),
           price: /\d+ left this|\bof the \d+/.test(card ? card.innerText : '') }; relClose(); return out;
       });
       /* round IG, 27 September, his words: "Cost runs left, that goes away. And
@@ -265,6 +270,7 @@ async function shot(page, name, W) {
          388 left this month." here; it stays off until he rules it back. */
       ok(nm.go && nm.plan > 0 && !nm.cost && !nm.price,
         'a run that covers what was picked carries no cost line, as ruled at IG: ' + J(nm));
+      ok(nm.open, 'and Run release is not under the storage line');
     }
 
     console.log('\n=== 6. the empty card, at ' + W + ' ===');
@@ -276,9 +282,12 @@ async function shot(page, name, W) {
         relPick(Object.keys(at).map(Number));
         var f = document.getElementById('relfoot'), kids = f ? [].slice.call(f.querySelectorAll('button')) : [];
         var rr = document.getElementById('relrerun'), r = rr && rr.getBoundingClientRect();
+        /* nothing sits over it: the storage line (ui/keep.js) stood above the card's foot */
+        var top = r ? document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2) : null;
         var note = document.getElementById('relempty'), crx = document.querySelector('#rel [data-crisis="open"]');
         return { ids: kids.map(function (b) { return b.id; }), words: kids.map(function (b) { return b.textContent; }),
           pri: !!(rr && rr.classList.contains('pri')), w: r && r.width, h: r && r.height,
+          open: !!(top && rr && (top === rr || rr.contains(top))), over: top ? (top.id || top.className) : null,
           go: !!document.getElementById('relgo'), note: note && note.textContent,
           renews: (meterBudget(CURP).allow || {}).renews, day: typeof planDay === 'function' ? planDay((meterBudget(CURP).allow || {}).renews) : '',
           crx: !!crx, crxH: crx ? crx.getBoundingClientRect().height : 0,
@@ -288,6 +297,7 @@ async function shot(page, name, W) {
       ok(s.left === 0 && s.real > 0 && s.entries > 0, 'nothing left, ' + s.real + ' patterns really open, and the story kept: ' + s.entries + ' entries');
       ok(e.ids && e.ids[0] === 'relrerun' && e.words[0] === 'Rerun these' && e.pri, 'Rerun these is the first press, and filled: ' + J(e.words));
       ok(e.h >= 44 && e.w >= 44, 'at the tap floor, ' + Math.round(e.w) + ' by ' + Math.round(e.h));
+      ok(e.open, 'and nothing covers it, the top element at its centre is ' + J(e.over));
       ok(e.ids && e.ids[1] === 'relcancel' && e.words[1] === 'Close', 'then Close');
       ok(e.ids && e.ids[e.ids.length - 1] === 'relplan' && e.words[e.words.length - 1] === 'See the tiers' && e.tiersFont < e.riFont,
         'and See the tiers last and smaller, ' + e.tiersFont + 'px against ' + e.riFont + 'px');

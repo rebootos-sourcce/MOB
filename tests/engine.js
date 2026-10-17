@@ -5182,6 +5182,26 @@ g('38 · one seed for one unmeasured law, and the allowance is a ceiling');
  }
 }
 
+g('38a · a release run opens whole addresses only, 17 October');
+/* meterPlanWhole, engine/schema.js. The release card plans through it, so the
+   required gate holds its three properties as well as tests/allowance.js,
+   which is report only until three green runs: no address is ever split
+   across the cap, a cap of nought plans nothing, and where everything fits it
+   is meterPlan exactly. */
+{
+ const {meterPlanWhole,meterPlan,RUN_MAX}=E, CH=['Llimit','Rlimit','Ltruth','Rtruth'];
+ if(typeof meterPlanWhole!=='function')ok(false,'meterPlanWhole is reachable from the contract');
+ else {
+  const p=E.blankProfile('whole'), by={};
+  meterPlanWhole(p,[1,2,3,4,5,6,7,8],CH,RUN_MAX).forEach(k=>{const a=k.split(':')[0]; by[a]=(by[a]||0)+1;});
+  ok(Object.keys(by).length>0&&Object.values(by).every(n=>n===CH.length),
+   'every address in a wide run carries all four channels: '+JSON.stringify(by));
+  ok(meterPlanWhole(p,[1,2,3],CH,3).length===0&&meterPlanWhole(p,[1,2,3],CH,0).length===0,
+   'three left, or nought, opens no part of an address');
+  ok(JSON.stringify(meterPlanWhole(p,[1,2,3],CH,RUN_MAX))===JSON.stringify(meterPlan(p,[1,2,3],CH,RUN_MAX)),
+   'and where everything fits it plans what meterPlan plans');}
+}
+
 g('38b · a rerun plans open ground only, and is charged nothing, 22.K17');
 /* DECISIONS.md: "Anything already opened may be rerun without limit and without
    cost, forever." Measured before this landed: one address released four times
