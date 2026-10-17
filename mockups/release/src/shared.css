@@ -1,0 +1,163 @@
+/* ---- tokens. The seat colours, accent, ink, mid and dim are injected above this
+   sheet by build.js, read off atuned_src/shell/head.html. The rest are copied from
+   head.html under their real names: the Dark lighting's surfaces at :root, and the
+   Punch lighting verbatim, "nothing outlined, everything solid", tinted toward the
+   seat the reading names heaviest. This session's heaviest seat is the solar
+   plexus, so --seat is --solar at the product's default weight. ---- */
+:root{
+ --bg:#0C0D12; --panel:#1A1D26; --panel-2:#252833; --sunk:#090A0E;
+ --edge:rgba(255,255,255,.09); --edge-2:rgba(255,255,255,.14);
+ --on-accent:#0B1418; --on-flat:#0E1015;
+ --sans:'Inter','Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+ --r:16px; --r-s:11px; --r-xs:8px; --tap:44px;
+ --ease-out:cubic-bezier(.22,1,.36,1); --t-micro:120ms; --t-element:220ms; --t-line:560ms;
+ /* semantic, release. One new colour and it is a mix of two that exist: the well
+    the lines sit in is the ground pulled a step toward panel, so the carousel reads
+    as a place and not as a box. */
+ --well:color-mix(in srgb,var(--panel) 55%,var(--bg));
+}
+body.punch{
+ --seat:var(--solar); --seat-w:0.3;
+ --edge:transparent; --edge-2:transparent;
+ --bg:color-mix(in srgb,var(--seat) calc(2% + var(--seat-w)*6%),#12131A);
+ --panel:color-mix(in srgb,var(--seat) calc(3% + var(--seat-w)*4%),#171922);
+ --panel-2:color-mix(in srgb,var(--seat) calc(4% + var(--seat-w)*4%),#20222D);
+ --sunk:color-mix(in srgb,var(--seat) calc(2% + var(--seat-w)*5%),#12131B);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font:15px/1.45 var(--sans);-webkit-font-smoothing:antialiased;overflow:hidden}
+button,input{font:inherit;color:inherit}
+.num{font-variant-numeric:tabular-nums}
+.ri{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;display:block}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+[hidden]{display:none!important}
+
+/* ---- the demo bar. Not the product, and it says so. ---- */
+.demo{position:relative;z-index:30;height:44px;display:flex;align-items:center;gap:12px;padding:0 12px 0 16px;
+ background:#050608;color:#B4B0A8;font-size:13px;border-bottom:1px solid rgba(255,255,255,.06)}
+.demo .dl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.demo .dl b{color:#EFEDE8;font-weight:500}
+.demo .sp{flex:1}
+.demo .dbtn{min-height:36px;padding:0 14px;border-radius:18px;border:1px solid rgba(255,255,255,.18);background:transparent;cursor:pointer;color:#EFEDE8;font-size:13px;white-space:nowrap}
+.drawer{position:absolute;left:0;right:0;top:44px;z-index:29;background:#050608;border-bottom:1px solid rgba(255,255,255,.1);
+ padding:12px 16px 16px;display:none;max-height:calc(100vh - 44px);overflow:auto;font-size:13px;color:#B4B0A8}
+.drawer.open{display:block}
+.drawer .row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:6px 0}
+.drawer .lab{width:130px;color:#B4B0A8}
+.drawer a,.drawer button{min-height:36px;display:inline-flex;align-items:center;padding:0 12px;border-radius:18px;border:1px solid rgba(255,255,255,.16);
+ background:transparent;color:#B4B0A8;text-decoration:none;cursor:pointer;font-size:13px}
+.drawer [aria-pressed="true"],.drawer [aria-current]{color:#EFEDE8;border-color:#B4B0A8}
+.drawer .note{margin:8px 0 0;color:#94908A;max-width:96ch}
+body.embed .demo,body.embed .drawer{display:none}
+
+/* ---- the stage: the release is the whole screen, no frame ---- */
+.stage{position:relative;height:calc(100vh - 44px);overflow:hidden}
+body.embed .stage{height:100vh}
+.rs{position:absolute;inset:0;overflow:hidden}
+
+/* the exit */
+.x{position:absolute;top:12px;left:12px;z-index:5;width:44px;height:44px;border-radius:22px;border:0;background:transparent;color:var(--mid);
+ display:flex;align-items:center;justify-content:center;cursor:pointer}
+.x:hover{color:var(--ink);background:var(--panel-2)}
+.x svg{width:26px;height:26px}
+/* THE CRISIS DOOR. On every state, in the same corner, words and no icon: a mark
+   would have to be learned and these four words do not. 44 tall, --mid on the
+   ground, and never hidden by the run. */
+.crx{position:absolute;left:12px;bottom:10px;z-index:6;min-height:44px;padding:0 12px;border:0;border-radius:22px;background:transparent;
+ color:var(--mid);font-size:14px;cursor:pointer;text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--mid) 45%,transparent);text-underline-offset:4px}
+.crx:hover{color:var(--ink);background:var(--panel-2)}
+
+/* buttons: one primary, then quiet ones. Punch: filled, no edges. */
+.go{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 28px;border-radius:26px;border:0;
+ background:var(--accent);color:var(--on-accent);font-size:17px;font-weight:600;cursor:pointer}
+.go:hover{background:color-mix(in srgb,var(--accent) 88%,#fff)}
+.q{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:22px;border:0;
+ background:var(--panel-2);color:var(--ink);font-size:15px;font-weight:500;cursor:pointer}
+.q:hover{background:color-mix(in srgb,var(--panel-2) 80%,#fff)}
+.q svg,.go svg{width:20px;height:20px;flex:none}
+.lk{min-height:44px;padding:0 10px;border:0;background:none;color:var(--mid);font-size:14px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-color:color-mix(in srgb,var(--mid) 45%,transparent)}
+.lk:hover{color:var(--ink)}
+/* a slot that says what is true and takes no press: the paywall's lesson, a control
+   that takes a press and refuses is furniture. A clock ring and the words. */
+.shut{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 12px;color:var(--mid);font-size:16px;font-weight:500}
+.shut svg{width:20px;height:20px;flex:none}
+
+/* the segmented pick, Punch: the pressed one is the accent, the rest sit on sunk */
+.seg{display:inline-flex;gap:4px;padding:4px;border-radius:26px;background:var(--sunk)}
+.seg button{min-width:52px;min-height:44px;padding:0 14px;border:0;border-radius:22px;background:transparent;color:var(--mid);font-size:15px;font-weight:500;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);font-weight:600}
+/* a switch drawn as a ring: empty when off, a dot inside when on */
+.sw{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 16px 0 12px;border:0;border-radius:22px;background:var(--panel-2);color:var(--ink);font-size:15px;cursor:pointer}
+.sw .rk{width:22px;height:22px;flex:none}
+.sw .rk circle{fill:none;stroke:currentColor;stroke-width:1.6}
+.sw .rk .dot{fill:currentColor;stroke:none;opacity:0}
+.sw[aria-pressed="true"] .rk .dot{opacity:1}
+.sw[aria-pressed="true"] .rk{color:var(--accent)}
+.sw[aria-pressed="false"]{color:var(--mid)}
+
+/* the voice mark: a ring with three bars, still when reduced motion is on */
+.vm{display:inline-flex;align-items:center;gap:8px;color:var(--mid);font-size:14px}
+.vm svg{width:20px;height:20px;flex:none}
+.vm .b{transform-origin:center;transform-box:fill-box}
+body:not(.rm) .vm.on .b{animation:vb 1.2s ease-in-out infinite}
+body:not(.rm) .vm.on .b2{animation-delay:.2s}
+body:not(.rm) .vm.on .b3{animation-delay:.4s}
+@keyframes vb{0%,100%{transform:scaleY(.55)}50%{transform:scaleY(1)}}
+
+/* ---- the carousel, shared. Rows are keyed by their index and kept, so a step is
+   a move and not a redraw. Fixed row height, so the fade is a mask over a fixed
+   rhythm and lights every row the same way. ---- */
+.car{position:relative;overflow:hidden;--rowh:76px;
+ -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 32%,#000 68%,transparent 100%);
+ mask-image:linear-gradient(to bottom,transparent 0,#000 32%,#000 68%,transparent 100%)}
+.cr{position:absolute;left:0;right:0;top:50%;height:var(--rowh);margin-top:calc(var(--rowh) / -2);display:flex;align-items:center;justify-content:center;
+ text-align:center;padding:0 8px;font-size:21px;line-height:1.25;color:var(--ink);opacity:.5;
+ transition:transform var(--t-line) var(--ease-out),opacity var(--t-line) var(--ease-out)}
+.cr[data-d="0"]{opacity:1}
+.cr[data-d="1"]{opacity:.42}
+.cr[data-d="2"]{opacity:.18}
+.cr[data-d="3"]{opacity:.07}
+.cr.gone{opacity:0}
+.cr .t{display:block;max-width:24em;text-wrap:balance}
+.cr[data-d="0"] .t{font-size:1.5em;letter-spacing:-.012em;font-weight:450}
+body.rm .cr{transition:none}
+/* reduced motion: one line and nothing that moves; no neighbours, no mask */
+body.rm .car{-webkit-mask-image:none;mask-image:none}
+body.rm .cr:not([data-d="0"]){display:none}
+
+/* the prompt: bold and centred, above the list */
+.prompt{margin:0;text-align:center;font-weight:650;letter-spacing:-.012em;line-height:1.22;text-wrap:balance}
+
+/* ---- the crisis panel, its own layer, over everything ---- */
+.cx-bk{position:fixed;inset:0;z-index:80;background:rgba(5,6,9,.78);display:flex;align-items:center;justify-content:center;padding:16px}
+.cx-card{width:min(520px,100%);background:var(--panel);border-radius:var(--r);padding:24px 24px 18px}
+.cx-card h2{margin:0;font-size:24px;font-weight:600}
+.cx-card p{margin:10px 0 0;color:var(--ink);font-size:16px}
+.cx-card p.dim{color:var(--mid);font-size:14px}
+.cx-card ul{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:10px}
+.cx-card li{background:var(--panel-2);border-radius:var(--r-s);padding:12px 14px}
+.cx-card li p{margin:0 0 8px;font-size:15px}
+.cx-go{display:flex;gap:8px;flex-wrap:wrap}
+.cx-acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+
+/* status, for a demo press that the product would route elsewhere */
+.st{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);z-index:7;max-width:min(560px,calc(100% - 220px));
+ background:var(--panel-2);color:var(--ink);font-size:14px;border-radius:var(--r-s);padding:10px 14px;display:none}
+.st.on{display:block}
+
+/* ---- the phone, inside a desktop browser ---- */
+.phone{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#050608}
+.phone iframe{width:390px;height:844px;border:0;border-radius:28px;background:var(--bg);box-shadow:0 0 0 10px #15171C}
+
+@media (max-width:760px){
+ .x{top:6px;left:6px}
+ .crx{left:4px;bottom:4px;font-size:13px}
+ .car{--rowh:66px}
+ .cr{font-size:15px;padding:0 4px}
+ .cr[data-d="0"] .t{font-size:1.4em}
+ .go{min-height:50px;font-size:16px;padding:0 22px}
+ .demo .dl .long{display:none}
+ .st{max-width:calc(100% - 24px);bottom:56px}
+}

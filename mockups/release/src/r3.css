@@ -1,0 +1,82 @@
+/* 3. THE DIAL. A watch face, Nomos and the Braun clocks: one ring, twelve
+   marks, nothing that is not a reading. Ring, never fill. */
+.r3{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:48px 24px 60px;gap:10px}
+.r3p{font-size:28px;max-width:24em;min-height:2.44em;display:flex;align-items:center;justify-content:center;transition:opacity var(--t-line) var(--ease-out);flex:none}
+.r3p.wait{opacity:.32}
+.r3p.off{display:none}
+.face{--D:min(600px,calc(100vh - 44px - 330px));position:relative;width:var(--D);height:var(--D);flex:none;transition:width var(--t-line) var(--ease-out),height var(--t-line) var(--ease-out)}
+body.embed .face{--D:min(600px,calc(100vh - 330px))}
+.rg,.rg svg{position:absolute;inset:0;width:100%;height:100%}
+.ring path{fill:none;stroke-width:3.2;stroke-linecap:butt}
+.ring .tr{stroke:var(--panel-2)}
+.ring .fl{transition:stroke-dasharray var(--t-line) linear}
+.ring .ct{fill:none;stroke:var(--panel-2);stroke-width:1.4}
+.ring .cp{fill:none;stroke:var(--accent);stroke-width:1.4;stroke-linecap:round;transition:stroke-dasharray 1s linear}
+body.rm .ring .fl,body.rm .ring .cp{transition:none}
+.in{position:absolute;inset:16%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px}
+.in .lede{margin:0;font-size:26px;font-weight:600;line-height:1.25;letter-spacing:-.01em;text-wrap:balance}
+.in .sm,.r3t .sm{margin:0;color:var(--mid);font-size:14px;text-wrap:balance}
+.in .cl{font-size:15px;color:var(--mid)}
+.in .clk{font-size:76px;font-weight:500;line-height:1;letter-spacing:-.03em}
+.in .cs{margin:6px 0 0;font-size:17px;color:var(--ink);max-width:18em;text-wrap:balance}
+.in .cg{margin:0;font-size:34px;font-weight:650;letter-spacing:-.02em;line-height:1.1}
+.r3c{position:absolute;left:12%;right:12%;top:14%;bottom:20%;--rowh:72px}
+.r3c .cr{font-size:18px}
+.ft{position:absolute;left:0;right:0;bottom:15%;text-align:center;color:var(--mid);font-size:14px}
+.r3t{display:flex;flex-direction:column;align-items:center;gap:10px;flex:none;min-height:96px;justify-content:flex-end}
+.r3t .row{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+.r3t .lb{display:inline-flex;align-items:center;gap:10px;color:var(--mid);font-size:14px;margin:0 6px}
+.r3t .sm{text-align:center}
+.r3t p.ss{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px}
+.r3t p.ss .es{margin-left:12px}
+.r3t p.ss svg{margin-left:6px}
+.r3t .ad{margin:0;display:flex;align-items:center;gap:8px;color:var(--mid);font-size:15px}
+.r3t .ad b{color:var(--ink);font-weight:500}
+.r3t .sp{margin:0;font-size:15px;text-align:center;max-width:46em;text-wrap:balance}
+.r3f{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:min(820px,calc(100vw - 48px))}
+.r3f .fg{background:var(--panel-2);border-radius:var(--r);padding:14px 18px;display:flex;flex-direction:column}
+.r3f b{font-size:44px;font-weight:600;line-height:1.05;letter-spacing:-.025em}
+.r3f .fl{font-size:15px;color:var(--ink)}
+.r3f .fm{font-size:13.5px;color:var(--mid);margin-top:2px}
+.r3v{position:absolute;right:16px;bottom:10px;min-height:44px;display:flex;align-items:center}
+#rs[data-ph="done"] .face{--D:min(380px,calc(100vh - 44px - 470px))}
+body.embed #rs[data-ph="done"] .face{--D:min(380px,calc(100vh - 470px))}
+#rs[data-ph="done"] .in{inset:12%}
+#rs[data-ph="done"] .r3{justify-content:center;gap:22px}
+#rs[data-ph="cool"] .r3{justify-content:center;gap:28px}
+#rs[data-ph="before"] .in{inset:18%}
+
+@media (max-width:760px){
+ .r3{padding:50px 12px 54px;gap:6px}
+ .r3p{font-size:18px;min-height:3.66em}
+ .face,body.embed .face{--D:min(340px,calc(100vw - 32px))}
+ #rs[data-ph="before"] .face,body.embed #rs[data-ph="before"] .face{--D:250px}
+ .in{gap:6px}
+ .in .lede{font-size:17px}
+ .in .sm,.r3t .sm{font-size:12.5px}
+ .in .clk{font-size:56px}
+ .in .cs{font-size:14px}
+ .in .cg{font-size:26px}
+ .r3c{left:13%;right:13%;top:15%;bottom:22%;--rowh:62px}
+ .r3c .cr{font-size:13px}
+ .ft{font-size:12.5px;bottom:12%}
+ .r3t{gap:6px;min-height:0}
+ .r3t .row{gap:6px}
+ .r3t .lb{margin:0;gap:6px;font-size:12px}
+ .r3t .seg button{min-width:46px;padding:0 10px}
+ .r3t .sw{font-size:14px;padding:0 12px 0 10px}
+ .r3t p.ss .es{flex-basis:100%;margin:0;text-align:center}
+ .r3t .ad{font-size:13px}
+ .r3t .sp{font-size:13px}
+ .r3f{grid-template-columns:repeat(3,1fr);gap:6px;width:100%}
+ .r3f .fg{padding:8px 10px;border-radius:var(--r-s)}
+ .r3f b{font-size:28px}
+ .r3f .fl{font-size:12px}
+ .r3f .fm{font-size:11px;line-height:1.3}
+ #rs[data-ph="done"] .face,body.embed #rs[data-ph="done"] .face{--D:250px}
+ #rs[data-ph="done"] .r3{gap:10px}
+ #rs[data-ph="done"] .in .sm{font-size:11.5px}
+ #rs[data-ph="done"] .in .cg{font-size:21px}
+ .r3v{right:6px;bottom:4px}
+ .r3v .vm span{display:none}
+}
