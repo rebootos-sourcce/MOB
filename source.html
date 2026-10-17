@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2175 9743c439 2026-10-17 18:47"><head><meta charset="utf-8">
+<html lang="en" data-build="v2176 2ced0fc4 2026-10-17 19:26"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -71410,8 +71410,11 @@ function pwPlan(){
 function pwSigned(){ return typeof authSession==='function'&&!!authSession(); }
 /* WHETHER THE PERSON IS INSIDE THE GIFT. The lock's own answer (lockGift), or
    on a worked example the own record's (showOwnGift, ui/personas.js), for the
-   same reason pwPlan reads the own plan there. */
+   same reason pwPlan reads the own plan there. Never under the harness seam:
+   SIGHT_PLAN, when a gate sets one, is the whole answer, the rule lockGift
+   keeps, so a gate measuring a tier is not handed the gift on an example. */
 function pwGift(){
+ if(typeof SIGHT_PLAN!=='undefined'&&SIGHT_PLAN)return false;
  if(typeof showOnly==='function'&&showOnly())return typeof showOwnGift==='function'&&showOwnGift();
  return typeof lockGift==='function'&&lockGift();}
 
@@ -78959,5 +78962,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005181442"></div>
+<div id="eof" hidden data-len="005181685"></div>
 </body></html>

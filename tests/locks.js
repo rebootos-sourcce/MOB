@@ -61,6 +61,14 @@ async function lockGate(browser,FILE,ok,booted){
   const as=async(tier,status)=>{
    await pg.evaluate(([tier,status])=>{
     SIGHT_PLAN=null;
+    /* THE OWN RECORD PAST THE GIFT. The paywall reads the person's own record
+       on a worked example (pwPlan and pwGift, ui/paywall.js), and since PR 109
+       an own record inside the gift sees everything and meets the gift's own
+       state, with no cards to mark. This gate measures a lock on Gordon, so the
+       own record behind him has spent the gift: GIFT_N keys, nothing typed */
+    const own=PROF_BY[PEOPLE[0].nm];
+    if(own){ own.meter=own.meter||{lines:0,unique:[],first:null,last:null,giftAt:null}; own.meter.unique=own.meter.unique||[];
+     for(let n=own.meter.unique.length;n<GIFT_N;n++)own.meter.unique.push(meterKey(1+Math.floor(n/LINES_PER_CH),'Rtruth',n%LINES_PER_CH)); }
     const g=PEOPLE.findIndex(x=>x.nm==='Gordon'); loadP(g);
     CURP.plan={tier:tier,status:status===undefined?(tier==='free'?'':'active'):status,
      granted:0,carried:0,base:null,since:null,until:null};

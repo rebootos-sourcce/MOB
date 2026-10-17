@@ -82,8 +82,11 @@ function pwPlan(){
 function pwSigned(){ return typeof authSession==='function'&&!!authSession(); }
 /* WHETHER THE PERSON IS INSIDE THE GIFT. The lock's own answer (lockGift), or
    on a worked example the own record's (showOwnGift, ui/personas.js), for the
-   same reason pwPlan reads the own plan there. */
+   same reason pwPlan reads the own plan there. Never under the harness seam:
+   SIGHT_PLAN, when a gate sets one, is the whole answer, the rule lockGift
+   keeps, so a gate measuring a tier is not handed the gift on an example. */
 function pwGift(){
+ if(typeof SIGHT_PLAN!=='undefined'&&SIGHT_PLAN)return false;
  if(typeof showOnly==='function'&&showOnly())return typeof showOwnGift==='function'&&showOwnGift();
  return typeof lockGift==='function'&&lockGift();}
 

@@ -327,7 +327,10 @@ on close. And the honest half: nothing in the sheet reaches the payment seam
 while checkout is closed, Practitioner is never sold while it is not built, a
 press while open goes through `planOpen` and nothing else, opening it writes
 no storage and sends no request, and on a worked example it reads the
-person's own plan. The count is read off the run and held by `floors.json`.
+person's own plan. Since the gift sees everything (PR 109), a person inside
+the gift meets the mockup's gift state, every ring lit with nothing to buy,
+and every paid state is measured on a record past the gift. The count is read
+off the run and held by `floors.json`.
 
 ## The path simulation
 
