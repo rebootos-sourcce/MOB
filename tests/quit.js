@@ -50,7 +50,9 @@ const SHOTS = process.env.SHOTS || '';
 let n = 0; const fails = [];
 const ok = (c, m) => { n++; if (!c) fails.push(m); console.log((c ? '  ok    ' : '  FAIL  ') + m); };
 
-const S1 = '2026-10-01T00:00:00.000Z', U1 = '2026-11-01T00:00:00.000Z';
+/* in 2036, because a plan past its own end day is ended now (planPast,
+   engine/plan.js), and a period ending November 2026 would turn this red then */
+const S1 = '2036-10-01T00:00:00.000Z', U1 = '2036-11-01T00:00:00.000Z';
 const ACC = { id: 'acc_quit', research_id: 'rsh_quit', plan: 1, email: 'quit@example.invalid' };
 const CORS = { 'access-control-allow-origin': '*', 'access-control-allow-headers': 'authorization, content-type, x-funnel-credential',
   'access-control-allow-methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS' };
@@ -201,7 +203,7 @@ const stub = http.createServer((req, res) => {
         authKeep({ token: tok, email: 'quit@example.invalid', accountId: 'acc_quit' });
         funnelKeep({ id: 'fs_quit', anonymousId: 'anon_quit', credential: 'cred_quit' });
         STORE.set('source.profile.sync', JSON.stringify({ id: 'atuned.primary-profile', version: 2, hash: 'h' }));
-        CURP.plan = plan ? { tier: 'one', status: 'active', granted: 0, carried: 0, base: 120, since: '2026-10-01T00:00:00.000Z', until: '2026-11-01T00:00:00.000Z', ends: null }
+        CURP.plan = plan ? { tier: 'one', status: 'active', granted: 0, carried: 0, base: 120, since: '2036-10-01T00:00:00.000Z', until: '2036-11-01T00:00:00.000Z', ends: null }
           : { tier: 'free', status: '', granted: 0, carried: 0, base: null, since: null, until: null, ends: null };
         pSave(); window.__id = CURP.id; window.__n = PROFILES.length;
         ACC_OPEN = 'account'; setTab(TAB.SETTINGS); renderAccount(); status('probe, before delete');

@@ -310,6 +310,10 @@ jobs:
           # addresses, no free release, the empty card's rerun first, the plan
           # sheet's day. New, so report only first.
           - { gate: allowance, timeout: 20, command: node tests/allowance.js }
+          # 17 October: patterns follow the money (tests/money.js), the pay cycle
+          # run's three red steps in engine/plan.js. Headless and fast. New, so
+          # report only first.
+          - { gate: money, timeout: 20, command: node tests/money.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

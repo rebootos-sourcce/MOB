@@ -1267,12 +1267,22 @@ function planSection(m,o){
     back from the server (planFromServer, engine/plan.js). The value says
     "ends" beside "ended" below, one word for one fact at two times. */
  var ends=(st==='live'&&pl&&pl.ends)?planDay(pl.ends):'';
+ /* A CARD THAT DID NOT GO THROUGH STANDS ON THE STATE ROW, 17 October, the pay
+    cycle run. It was said once in a line that fades after three seconds
+    (ui/auth.js) and this row stayed silent, so a person who looked later saw
+    a plan that read as running and an allowance that had stopped moving. New
+    ground waits for the money now (planFromServer, engine/plan.js), so the
+    row says so for as long as it is true, and what still runs beside it. */
+ var late=(st==='live'&&pl&&pl.status==='past_due');
  var h='<div class="sh-sec"><div class="pm-eye">Your plan</div>'
   +'<div class="sh-row"><span>On</span><b>'+esc(t.nm)+'</b></div>'
   +(st==='pending'
     ? '<div class="sh-row"><span>State</span><b>not confirmed</b></div>'
     : (st==='ended'?'<div class="sh-row"><span>State</span><b>ended</b></div>'
-    : (ends?'<div class="sh-row"><span>State</span><b>ends '+esc(ends)+'</b></div>':'')))
+    : (late?'<div class="sh-row" id="planlate"><span>State</span><b>the card did not go through</b></div>'
+      +'<p class="sh-p">Everything you have opened still runs. New patterns wait until the card does, '
+      +'and Manage billing replaces the card.</p>'
+    : (ends?'<div class="sh-row"><span>State</span><b>ends '+esc(ends)+'</b></div>':''))))
   /* THE DAY NEW ONES ARRIVE, 17 October, where a paid tier has less than one
      run left. It read "0 left this month, banking toward a run of 4", and paid
      tiers do not bank (planAllowance). renews is the paid period's end off the

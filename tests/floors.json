@@ -8,6 +8,7 @@
     "Raised 17 October, functional 2632 to 2633, for the one check added with the left column seed fix (the seed waited for the page's own first touch of the store, tests/seed.js), read off CI on 3807e3b9, gates-browser (functional) job 117267910623.",
     "Raised 17 October, engine 5785 to 5788, for the three checks added with the top rung's name, Practitioner (the rung keyed four is named Practitioner, no plan row says tier four, planNmIn keeps its capital), read off a local run on the branch claude/tier-four-is-practitioner. copy stays 185: the banned row it added can only fail a surface, and it failed six on main's build before the rename and none after.",
     "Added 17 October: allowance 84, read off its first green local run on claude/allowance-fixes (tests/allowance.js, the allowance review of five seats). engine raised 5788 to 5791 in the same change, for the three whole address checks of group 38a.",
+    "Added 17 October: money 51, read off its first green local run on claude/patterns-follow-money (tests/money.js, the pay cycle run's three red steps in engine/plan.js). It read 24 passed, 27 failed on main's 9a162d14 engine.js.",
     "Raise a floor by editing this file on purpose, in the same change that adds the checks, from a green run. Never lower one to get green. Nothing writes this file.",
     "expected_red_max is the most expected red a gate may print. tools/floors.js fails a gate above its ceiling, and fails a gate that prints an expected red count with no ceiling here, so a failing check cannot be let off as expected red unseen. Added empty on 9 October: the lead sets each value from a clean full run, as printed, and until then the engine's floor step fails by name. It drops to 0 in the change that turns the expected reds green."
   ],
@@ -55,7 +56,8 @@
     "examples-showonly": 850,
     "valuefeltui": 20,
     "record": 24,
-    "allowance": 84
+    "allowance": 84,
+    "money": 51
   },
   "no_count": {
     "monitor": "all surfaces render"

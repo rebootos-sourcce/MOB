@@ -39,6 +39,7 @@ if(typeof module!=='undefined'&&module.exports){
                  SIGHT:SIGHT, TIER_KEYS:TIER_KEYS, planRank:planRank, planSight:planSight,
                  planNeed:planNeed, planNmIn:planNmIn, planSightSay:planSightSay, planLockedSay:planLockedSay, planSeesAt:planSeesAt, planAdds:planAdds, planList:planList,
                  PLAN_LIVE:PLAN_LIVE, PLAN_DEAD:PLAN_DEAD,
+                 PLAN_GRACE_MS:PLAN_GRACE_MS, planPast:planPast, PLAN_RENEWAL:PLAN_RENEWAL,
                  planState:planState, planOf:planOf, planSees:planSees,
                  planNextSight:planNextSight, planAllowance:planAllowance,
                  planWeeks:planWeeks, planFreeFrom:planFreeFrom, GIFT_N:GIFT_N, WEEK_MS:WEEK_MS,

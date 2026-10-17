@@ -950,9 +950,11 @@ function authPlanTake(b){
  if(typeof CURP==='undefined'||!CURP||typeof PROFILES==='undefined'||PROFILES.indexOf(CURP)<0)
   return 'not a record';
  var r=planFromServer(CURP.plan,b,(CURP.meter&&CURP.meter.unique)||[]);
+ /* a field refused at the boundary carries its own reason, in words, since
+    "a plan this build does not know" said of a share of the month is false */
  if(r.refused){
-  status('The server named a plan this build does not know, '+r.refused
-   +', so this record was not changed.','fail');
+  status(r.why?'The plan the server sent could not be read, so this record was not changed: '+r.why+'.'
+   :'The server named a plan this build does not know, '+r.refused+', so this record was not changed.','fail');
   return 'refused';}
  if(r.same)return 'same';
  var v=validateProfile({v:SCHEMA_V, plan:r.plan});
@@ -967,8 +969,12 @@ function authPlanTake(b){
  var nm=PLAN_BY[r.now].nm, wasNm=PLAN_BY[r.was].nm, say='', kind='ok';
  if(r.nowLive&&(r.now!==r.was||!r.wasLive))say=nm+' is on this record now.';
  else if(r.nowLive&&r.status==='past_due'&&r.wasStatus!=='past_due'){
-  say='The last card payment for '+nm+' did not go through. The plan stays on while Stripe '
-   +'tries the card again, and Manage billing replaces the card.'; kind='fail';}
+  /* "the plan stays on" stopped being the whole truth on 17 October, when new
+     ground began to wait for the money (planFromServer, engine/plan.js). The
+     same words stand on Billing's State row (ui/panels.js) for as long as the
+     card has not gone through, so this line is not the only place they live. */
+  say='The card for '+nm+' did not go through. Everything you have opened still runs. New patterns '
+   +'wait until the card does, and Manage billing replaces the card.'; kind='fail';}
  /* STOPPED ON THE PAYMENT PAGE, and turned back on there. Neither moves the
     tier, the status or the period, so neither was said: a person came back
     from pressing stop to silence and a plan that read as running. Said as a
