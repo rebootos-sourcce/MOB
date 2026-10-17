@@ -310,6 +310,14 @@ jobs:
           # locked ring opens it, and it sells nothing while checkout is
           # closed. New, so report only first.
           - { gate: paywall, timeout: 20, command: node tests/paywall.js }
+          # 17 October: the allowance, five seats (tests/allowance.js): whole
+          # addresses, no free release, the empty card's rerun first, the plan
+          # sheet's day. New, so report only first.
+          - { gate: allowance, timeout: 20, command: node tests/allowance.js }
+          # 17 October: a new person on the gift sees everything, with no
+          # padlock and the gift's one line on the first screen, and is still
+          # on free (DECISIONS.md, TALLY ruling 8). New, so report only first.
+          - { gate: gift, timeout: 20, command: node tests/gift.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

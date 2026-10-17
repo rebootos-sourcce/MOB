@@ -4653,6 +4653,12 @@ var UNPACK_BASE={
  'release line':'A release line is one spoken line of a release, aimed at one address, to lower the charge held there.',
  'truth line':'A truth line is one spoken line that puts the opposite quality in at the address, where the limit was.',
  'evidence':'Evidence is something noticed or measured after a practice that backs a pattern up or goes against it.',
+ /* THE WORD THE GIFT AND THE ALLOWANCE COUNT IN. A hundred patterns of the gift
+    are a hundred lines, not a hundred reactions, so the sentence above is the
+    wrong one beside "Your gift: 100 patterns" on Summary. This is the gift's
+    own sentence, the one the first release card already prints beside the
+    count (obGiftSay, ui/onboard.js), so it is said one way. */
+ 'gift:pattern':'A pattern is one line you have not said before.',
  /* THE SAME WORDS, READ BY A PRACTITIONER ABOUT A CLIENT, round QB (ui/
     practitioner.js). The entries above speak to the person about themselves,
     "you said yes", and on the practitioner's page the reader is somebody
@@ -8595,6 +8601,17 @@ function planCheckoutOpen(){ return PLAN_CHECKOUT_OPEN===true; }
    carried its own literal 100 in five places beside that row, which is the same
    number held twice and one edit away from two answers. */
 const GIFT_N=PLAN_BY.gift.grant;
+/* WHETHER THE GIFT IS STILL IN FORCE, off the count of patterns opened. The gift
+   is not a plan a person is on: no record ever says tier gift, planOf reads it
+   as free, and it is never bought. It is the first hundred patterns of anybody's
+   meter, which is how planAllowance has always spent it, and this is that same
+   test said once so sight and the allowance cannot disagree about whether
+   somebody is inside it. Either shape of the count, the way planAllowance takes
+   it, and anything that is not a number reads as nothing opened. */
+function planInGift(unique){
+ var n=Array.isArray(unique)?unique.length:Number(unique);
+ if(!isFinite(n))n=0;
+ return Math.max(0,n)<GIFT_N;}
 /* A FREE WEEK, as a length. The free tier's weeks are counted from the moment
    the gift ran out, seven days at a time, so a week needs no calendar, no zone
    and no host to start it. */
@@ -8771,7 +8788,21 @@ function planOf(pl){
 /* A TIER THIS BUILD DOES NOT KNOW IS REFUSED, NOT ROUNDED TO FREE, the rule
    validateProfile already holds: a server one tier ahead of this file would
    otherwise downgrade everybody on it. refused names it and nothing moves. */
-function planFromServer(prev,b,unique){
+/* FREE RESTARTS FROM THE DAY A PAID PLAN STOPS, 17 October, the allowance
+   review of five seats, recorded in DECISIONS.md as a default taken and his to
+   overrule. Leaving a paid tier wrote base null, so planAllowance fell back to
+   the end of the gift and charged everything opened while paying against the
+   free weeks: measured, 1,500 opened and the gift out twenty weeks read 0 left
+   of 210, and the free tier opened nothing new for about 140 weeks, which is a
+   penalty for leaving. So the move off a paid tier writes base as the unique
+   count now and since as the day it was read, and planAllowance counts free's
+   weeks from that day. Ground opened before it is the person's and reruns
+   free, as it always did; only what is opened from here counts. A free record
+   read again keeps the base and since it holds, or the next boot would undo
+   the restart. A plan that stops in place, the same tier read back cancelled
+   or unpaid, moves base the same way, and its free weeks count from the day it
+   stopped (planFreeFrom). today is optional and an ISO string, for the gate. */
+function planFromServer(prev,b,unique,today){
  var pv=(prev&&typeof prev==='object')?prev:{};
  if(b&&typeof b==='object'&&!PLAN_BY[b.tier]){
   var k=planOf(prev).k, lv=planState(prev)==='live';
@@ -8779,7 +8810,13 @@ function planFromServer(prev,b,unique){
    status:(typeof pv.status==='string')?pv.status:'', wasStatus:(typeof pv.status==='string')?pv.status:''};}
  var paid=!!(b&&typeof b==='object'&&PLAN_BY[b.tier]&&b.tier!=='free'&&b.tier!=='gift');
  var next;
- if(!paid)next={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null,ends:null};
+ var n=Array.isArray(unique)?unique.length:Number(unique); if(!isFinite(n)||n<0)n=0;
+ var at=(typeof today==='string'&&!isNaN(Date.parse(today)))?today:new Date().toISOString();
+ var wasPaid=!!(PLAN_BY[pv.tier]&&pv.tier!=='free'&&pv.tier!=='gift');
+ if(!paid)next={tier:'free',status:'',granted:0,carried:0,
+  base:wasPaid?Math.max(GIFT_N,Math.floor(n)):((pv.tier==='free'&&pv.base!=null)?pv.base:null),
+  since:wasPaid?at:((pv.tier==='free'&&typeof pv.since==='string')?pv.since:null),
+  until:null,ends:null};
  else {
   var since=(typeof b.since==='string')?b.since:null, until=(typeof b.until==='string')?b.until:null;
   /* THE DAY A STOPPED PLAN STOPS. Stopping on the payment page leaves tier,
@@ -8792,12 +8829,12 @@ function planFromServer(prev,b,unique){
      period, so base and the grant are untouched by it. */
   var ends=('ends' in b)?((typeof b.ends==='string')?b.ends:null):(pv.ends==null?null:pv.ends);
   var fresh=(pv.tier!==b.tier)||((pv.since==null?null:pv.since)!==since);
-  var n=Array.isArray(unique)?unique.length:Number(unique); if(!isFinite(n)||n<0)n=0;
+  var stopped=!fresh&&planState(pv)==='live'&&!!PLAN_DEAD[b.status];
   /* in the blank's own key order (schema.js), so a record written here and
      the same record after the boundary serialise the same */
   next={tier:b.tier, status:(typeof b.status==='string')?b.status:'',
    granted:fresh?0:(pv.granted||0), carried:fresh?0:(pv.carried||0),
-   base:fresh?Math.max(GIFT_N,Math.floor(n)):(pv.base==null?null:pv.base),
+   base:(fresh||stopped)?Math.max(GIFT_N,Math.floor(n)):(pv.base==null?null:pv.base),
    since:since, until:until, ends:ends};}
  var eq=function(k){return (pv[k]==null?null:pv[k])===(next[k]==null?null:next[k]);};
  var was=planOf(prev), now=planOf(next);
@@ -8822,16 +8859,37 @@ function planRank(k){ return TIER_KEYS.indexOf(k); }
 /* WHAT THIS PLAN CAN SEE. sees maps every key in SIGHT to a boolean, so a
    caller never has to treat a missing key as an answer, and locked is the rows
    it cannot, in table order, which is what a lock has to name. tier is the key
-   of the rung in force. */
-function planSight(pl){
+   of the rung in force.
+
+   gift, when true, is a person inside the gift, and they see every row. The
+   ruling is DECISIONS.md: "A new person gets 100 patterns, free, with
+   everything visible. They explore the whole app until the gift is spent.
+   Then it reverts." It was kept at round PK ("the gift stays as ruled") and
+   REVIEW-arch/TALLY.md ruling 8 says it plainly: "whole reading visible while
+   it lasts". This read the plan alone, and the gift has no rank because it is
+   not a tier, so a new person on their first screen was handed a padlock over
+   the saboteurs the engine had already found in their own answers, before
+   they had seen anything worth paying for.
+
+   THE GIFT IS NOT A TIER, AND THIS DOES NOT MAKE IT ONE. tier still says the
+   rung in force, planOf is untouched, and nothing here writes a plan: a gift
+   person reads free everywhere the plan is asked, the allowance, the ladder,
+   the tiers page's "You are on this" and checkout. It opens sight and nothing
+   else, so it reaches nothing that costs money to serve, and the cohort lead
+   suite, which is tier four's and is not sight at all, stays where it was.
+   The caller decides whether somebody is inside the gift (planInGift, off
+   their own meter), because a worked example has a meter too and its history
+   is not the viewer's gift. With no second argument this reads exactly as it
+   always did. */
+function planSight(pl,gift){
  var t=planOf(pl), at=planRank(t.k), sees={}, locked=[];
  SIGHT.forEach(function(g){
-  var ok=at>=planRank(g.need); sees[g.k]=ok; if(!ok&&g.built!==false)locked.push(g);});
- return {tier:t.k, sees:sees, locked:locked, all:locked.length===0};}
+  var ok=!!gift||at>=planRank(g.need); sees[g.k]=ok; if(!ok&&g.built!==false)locked.push(g);});
+ return {tier:t.k, gift:!!gift, sees:sees, locked:locked, all:locked.length===0};}
 /* Whether one thing is visible on this plan. A key that is not in SIGHT is not
    a thing the product gates and answers false, the same straight no the old
-   version gave a rung that did not exist. */
-function planSees(pl,kind){ return planSight(pl).sees[kind]===true; }
+   version gave a rung that did not exist. gift is planSight's. */
+function planSees(pl,kind,gift){ return planSight(pl,gift).sees[kind]===true; }
 /* THE TIER THAT UNLOCKS A THING, as its PLANS row, or null for a key SIGHT does
    not hold. This is what a lock names. */
 function planNeed(kind){
@@ -8847,10 +8905,14 @@ function planAdds(k){
  return sightRows().filter(function(g){return g.need===k;});}
 /* WHAT A PLAN SEES, SAID AS ONE CLAUSE for a sheet that has a line for it. The
    reading everybody has is the stem, and what the plan adds is a list off
-   SIGHT, so this types no rung. */
-function planSightSay(pl){
- var s=planSight(pl), seen=sightRows().filter(function(g){return s.sees[g.k];}).map(function(g){return g.nm;});
- return 'your own reading'+(seen.length?', with '+planList(seen):', without what is running it');}
+   SIGHT, so this types no rung. Inside the gift it says the gift is why, since
+   it sits under "Your tier: Free" on the tiers page, and a free person told
+   they see the whole chain with no reason given would read it as what free
+   is. */
+function planSightSay(pl,gift){
+ var s=planSight(pl,gift), seen=sightRows().filter(function(g){return s.sees[g.k];}).map(function(g){return g.nm;});
+ return 'your own reading'+(seen.length?', with '+planList(seen):', without what is running it')
+  +(gift?', while your gift lasts':'');}
 /* THE LOCKED ROWS, GROUPED BY THE TIER THAT UNLOCKS THEM, as clauses: saboteurs,
    unlocked on tier one and above. Both the tiers page and a partly locked
    preset say this, so it is said here once. keys are SIGHT keys. */
@@ -8864,8 +8926,11 @@ function planLockedSay(keys){
 /* WHAT AN UPGRADE WOULD UNLOCK, as the next rung up that adds anything to see,
    with the rows it adds. null when everything is visible already. It never
    skips a rung that adds something, so a person on free is told tier one, not
-   tier three. */
-function planNextSight(pl){
+   tier three. Inside the gift everything is visible already, so it is null:
+   a worked example told a gift person that saboteurs "open on tier one" on
+   their own profile, where they were open that minute. */
+function planNextSight(pl,gift){
+ if(gift)return null;
  var at=planRank(planOf(pl).k);
  for(var i=at+1;i<TIER_KEYS.length;i++){
   var add=planAdds(TIER_KEYS[i]);
@@ -8900,8 +8965,8 @@ function planAllowance(pl,uniqueCount,giftAt,now){
  n=Number(n); if(!isFinite(n))n=0;
  var used=Math.max(0,n);
  var giftLeft=Math.max(0,GIFT_N-used);
- if(giftLeft>0)return {source:'gift', left:giftLeft, of:GIFT_N, inGift:true,
-  base:0, spent:used, runs:Math.floor(giftLeft/RUN_MIN), weeks:0,
+ if(planInGift(used))return {source:'gift', left:giftLeft, of:GIFT_N, inGift:true,
+  base:0, spent:used, runs:Math.floor(giftLeft/RUN_MIN), weeks:0, renews:null,
   /* what it is of, in words. "92 of the gift left" says ninety two of what. */
   say:giftLeft+' patterns left of the '+GIFT_N+' you were given'};
  var t=planOf(pl);
@@ -8943,21 +9008,51 @@ function planAllowance(pl,uniqueCount,giftAt,now){
     sits past the gift's end had a period written by the record store, and the
     store that wrote it writes the next one. */
  var weeks=1, total=granted;
- if(t.k==='free'&&base===GIFT_N){ weeks=planWeeks(giftAt,now); total=granted*weeks; }
+ /* AND AFTER A PAID PLAN STOPS, FROM THE DAY IT STOPPED (planFromServer and
+    planFreeFrom). That record's base sits past the gift because a period was
+    written, and on the rule above it read one grant of ten and never another,
+    so free opened ten patterns once and then nothing for good. */
+ var from=(t.k!=='free')?null:(base===GIFT_N?giftAt:planFreeFrom(pl));
+ if(t.k==='free'&&(base===GIFT_N||from)){ weeks=planWeeks(from,now); total=granted*weeks; }
  var left=Math.max(0,total-spent);
+ /* WHEN NEW ONES ARRIVE, as an ISO day or null, so a sentence that names the
+    day can be left out rather than invent one. A paid tier renews on the paid
+    period's end, which the server sends as until. Free renews at the start of
+    its next week, counted from the same day the weeks are. */
+ var fromMs=from?new Date(from).getTime():NaN;
+ var renews=(t.k==='free')
+  ?(isFinite(fromMs)?new Date(fromMs+weeks*WEEK_MS).toISOString():null)
+  :((planState(pl)==='live'&&typeof pl.until==='string'&&!isNaN(Date.parse(pl.until)))?pl.until:null);
  /* HOW MANY RUNS THAT IS, which is the unit a person actually acts in. Counted
     against the smallest run and not the largest: a run costs the minimum for
     what was picked, so what an allowance buys is answered by the floor. Saying
     nought runs on ten patterns was true only while every run cost twenty five. */
  var runs=Math.floor(left/RUN_MIN);
  return {source:t.k, left:left, of:total, inGift:false, base:base, spent:spent,
-  runs:runs, weeks:weeks,
+  runs:runs, weeks:weeks, renews:renews,
   say:!granted?'nothing left to open'
    /* more than one week's grant is only reachable by banking, and "18 of 10"
       says nothing, so a bank says what it is and what arrives next */
    :(left>granted?(left+' banked, and '+granted+' more arrive each '+t.per)
    :(runs>0?(left+' of '+granted+' left this '+t.per)
-    :(left+' left this '+t.per+', banking toward a run of '+RUN_MIN)))};}
+    /* ONLY FREE BANKS. A paid tier at nought read "0 left this month, banking
+       toward a run of 4", which is false: a paid period carries nothing over
+       (planFromServer writes carried 0 on every new one). So a paid tier says
+       what is left and nothing about a bank, and the plan sheet adds the day
+       new ones arrive off renews. */
+    :(t.k==='free'?(left+' left this '+t.per+', banking toward a run of '+RUN_MIN)
+     :(left+' left this '+t.per))))};}
+/* THE DAY FREE COUNTS FROM WHEN IT IS NOT THE GIFT'S END: the day a paid plan
+   stopped. A free record written by planFromServer off a paid one carries it as
+   since; a paid tier read back stopped carries the day it stops as ends, or the
+   end of its period as until. null when the record names none, and then free
+   reads one grant, the way it always did. */
+function planFreeFrom(pl){
+ if(!pl)return null;
+ var ok=function(d){return (typeof d==='string'&&!isNaN(Date.parse(d)))?d:null;};
+ if(pl.tier==='free')return ok(pl.since);
+ if(planState(pl)==='ended')return ok(pl.ends)||ok(pl.until)||ok(pl.since);
+ return null;}
 /* A LIST SAID THE WAY A PERSON SAYS IT: a, b and c. */
 function planList(a){
  return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' and '+a[a.length-1];}
@@ -11767,6 +11862,47 @@ function meterPlan(p,nodeIds,chans,cap){
     while(n>=0&&seen[meterKey(id,ch,n)])n++;
     if(n<0||n>=LINES_PER_CH)continue;
     var k=meterKey(id,ch,n); seen[k]=1; out.push(k);}}}
+ return out;}
+/* A RUN OPENS WHOLE ADDRESSES, 17 October, the allowance review of five seats.
+   meterPlan above cuts key by key, so a cap that lands inside an address keeps
+   part of it: measured on main, three left against eight picked planned
+   2:Llimit:0, 2:Rlimit:0 and 2:Ltruth:0, the right reframe missing, and the
+   main Release button's twenty five keys covered six addresses and one key at
+   a seventh. RUN_MIN's own comment says why that is wrong: "a run has to cover
+   the address on both sides and both tracks to be a release at all".
+
+   So this takes an address whole or not at all. Whole is every channel that
+   still has an unopened line, which is four on new ground and fewer where a
+   channel is already fully open. The addresses that fit are chosen heaviest
+   first, by wts when the caller has weights and by the caller's own order when
+   it does not, and the plan is written in the caller's order so the release
+   card still finds each address in one block. An address that does not fit is
+   left out; a lighter one that does still goes in, because the room is the
+   person's and leaving it empty saves them nothing.
+
+   A cap of nought plans nothing. meterPlan reads nought as no cap and falls
+   back to twenty five, which tests/engine.js records as the reason the release
+   panel refuses above it; this one cannot be called into that.
+
+   meterPlan is untouched: the worked examples' histories are replayed through
+   it (engine/exdepth.js) and the protocol plan is asserted equal to it
+   (tests/practice.js), and neither is a run a person starts from the card. */
+function meterPlanWhole(p,nodeIds,chans,cap,wts){
+ var lim=(cap>0&&isFinite(cap))?Math.floor(cap):0;
+ if(!lim)return [];
+ var blocks=[], seenId={};
+ (nodeIds||[]).forEach(function(id,a){
+  if(seenId[id])return; seenId[id]=1;
+  var keys=[];
+  (chans||[]).forEach(function(ch){
+   var n=meterNext(p,id,ch); if(n>=0)keys.push(meterKey(id,ch,n));});
+  var w=(wts&&isFinite(+wts[a]))?+wts[a]:0;
+  if(keys.length)blocks.push({a:a,w:w,keys:keys});});
+ var room=lim, take={};
+ blocks.slice().sort(function(x,y){return (y.w-x.w)||(x.a-y.a);}).forEach(function(b){
+  if(b.keys.length<=room){take[b.a]=1; room-=b.keys.length;}});
+ var out=[];
+ blocks.forEach(function(b){if(take[b.a])out.push.apply(out,b.keys);});
  return out;}
 /* ============================================================
    THE RERUN, 22.K17. DECISIONS.md rules it four times: "Anything
@@ -20583,7 +20719,7 @@ if(typeof module!=='undefined'&&module.exports){
                  PLAN_LIVE:PLAN_LIVE, PLAN_DEAD:PLAN_DEAD,
                  planState:planState, planOf:planOf, planSees:planSees,
                  planNextSight:planNextSight, planAllowance:planAllowance,
-                 planWeeks:planWeeks, GIFT_N:GIFT_N, WEEK_MS:WEEK_MS,
+                 planWeeks:planWeeks, planFreeFrom:planFreeFrom, GIFT_N:GIFT_N, WEEK_MS:WEEK_MS, planInGift:planInGift,
                  planUpgrade:planUpgrade, planBuyable:planBuyable, RUN_MAX:RUN_MAX, RUN_MIN:RUN_MIN,
                  PLAN_CHECKOUT_OPEN:PLAN_CHECKOUT_OPEN, planCheckoutOpen:planCheckoutOpen,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
@@ -20704,7 +20840,7 @@ if(typeof module!=='undefined'&&module.exports){
                   LINK_V:LINK_V, LINK_MAX:LINK_MAX,
                   meterRun:meterRun, meterRead:meterRead, meterKey:meterKey, meterBudget:meterBudget,
                   meterGiftAt:meterGiftAt,
-                  meterNext:meterNext, meterPlan:meterPlan,
+                  meterNext:meterNext, meterPlan:meterPlan, meterPlanWhole:meterPlanWhole,
                   meterLast:meterLast, meterRerunPlan:meterRerunPlan, meterRerun:meterRerun,
                   meterRerunOrder:meterRerunOrder, meterHeavy:meterHeavy, meterHeavyClear:meterHeavyClear,
                   meterHeavyWhy:meterHeavyWhy,

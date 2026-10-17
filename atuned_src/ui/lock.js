@@ -75,10 +75,32 @@ function lockPlan(){
  if(typeof devSight==='function'&&devSight())
   return {tier:'four',status:'active'};
  return (typeof CURP!=='undefined'&&CURP&&CURP.plan)||null;}
+/* WHETHER THE RECORD THAT IS OPEN IS INSIDE THE GIFT, which sees everything
+   (planSight, engine/plan.js, and the ruling quoted there). Read off the
+   record's own meter through planInGift, the test the allowance spends the
+   gift by, so the padlocks come off and go back at exactly the pattern the
+   Billing count says the gift ran out at.
+
+   Measured 17 October on main at 054ca583, a record from the funnel's link on
+   its first screen: plan free, nothing opened, fifteen saboteurs computed and none
+   shown, two lock panels and See tiers on Summary, nine padlocks on the Field
+   at 1600. That is the person the gift was ruled for, before they had opened
+   a single pattern.
+
+   NEVER FOR A WORKED EXAMPLE. An example's meter is its authored history and
+   says nothing about the viewer's gift, and its sight is the plan loadP gives
+   it (ui/personas.js). The rule that it runs nothing is engine/showonly.js and
+   this does not touch it. NOR UNDER THE HARNESS SEAM: SIGHT_PLAN, when a gate
+   sets one, is the whole answer, which is how the gates measure a tier. */
+function lockGift(){
+ if(SIGHT_PLAN)return false;
+ if(typeof CURP==='undefined'||!CURP)return false;
+ if(typeof showOnly==='function'&&showOnly(CURP))return false;
+ return planInGift((CURP.meter&&CURP.meter.unique)||[]);}
 /* Whether this person may see a thing right now. Read at every call and never
    cached, because a plan can change under an open surface: a payment lands, a
-   subscription lapses, a record is swapped. */
-function lockSees(k){ return planSees(lockPlan(),k); }
+   subscription lapses, a record is swapped, the gift runs out. */
+function lockSees(k){ return planSees(lockPlan(),k,lockGift()); }
 /* the same question for a layer key on the glass bar, which names its rungs
    saboteurs, complexes, hyper and character */
 const LOCK_OF_LAYER={saboteurs:'sab',complexes:'cx',hyper:'hy',character:'sup',
@@ -189,17 +211,17 @@ function lockPanelHtml(k,o){
    is running it, and the owner's ruling names what is running them. */
 function sightR(r){
  if(!r)return r;
- var pl=lockPlan();
- if(SEE_ORDER.every(function(k){return planSees(pl,k);}))return r;
+ var pl=lockPlan(), gf=lockGift();
+ if(SEE_ORDER.every(function(k){return planSees(pl,k,gf);}))return r;
  var v={}, k; for(k in r)v[k]=r[k];
- v.sabs=planSees(pl,'sab')?r.sabs:[];
- v.cxs=planSees(pl,'cx')?r.cxs:[];
- v.hys=planSees(pl,'hy')?r.hys:[];
- v.sups=planSees(pl,'sup')?r.sups:[];
+ v.sabs=planSees(pl,'sab',gf)?r.sabs:[];
+ v.cxs=planSees(pl,'cx',gf)?r.cxs:[];
+ v.hys=planSees(pl,'hy',gf)?r.hys:[];
+ v.sups=planSees(pl,'sup',gf)?r.sups:[];
  v.mask=v.sups[0]||v.hys[0]||v.cxs[0]||v.sabs[0]||null;
  /* the layers the plan cannot see, so a renderer can say why a list is empty
     instead of saying nothing is running */
- v.locked=SEE_ORDER.filter(function(x){return !planSees(pl,x);});
+ v.locked=SEE_ORDER.filter(function(x){return !planSees(pl,x,gf);});
  return v;}
 /* compute(), as a person on this plan may see it. Surfaces that draw or list
    the chain call this and not compute(). */

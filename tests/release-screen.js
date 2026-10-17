@@ -187,7 +187,9 @@ require('./net.js').guardBrowser(browser);
    dq:[].slice.call(document.querySelectorAll('#rel .rel-fig span')).map(function(e){return e.textContent;})}));
   ['Left and right','Your patterns','Shadow weight','Why this release ran','Your ritual'].forEach(s=>
    ok(r7.sec.indexOf(s)>=0,'the results carry '+s+': '+r7.sec.join(' | ')));
-  ok(/^Congratulations\. You released \d+ patterns? and recharged \d+\.$/.test(r7.hero),'and lead with the congratulations, released and recharged: '+r7.hero);
+  /* lines and not patterns since 17 October: a pattern is the allowance's unit,
+     and this counts release lines said (tests/allowance.js, 8) */
+  ok(/^Congratulations\. You released \d+ lines? and recharged \d+\.$/.test(r7.hero),'and lead with the congratulations, released and recharged: '+r7.hero);
   ok(r7.figs.some(f=>f[0]==='Bank'&&+f[1]===r7.bank[1])&&r7.bank[1]===r7.bank[2],'the bank is the record\'s held count after the write: '+JSON.stringify([r7.figs,r7.bank]));
   ok(r7.figs.some(f=>f[0]==='Vault'&&+f[1]===r7.vault[1])&&r7.vault[1]===r7.vault[2]&&r7.vault[1]>r7.vault[0],'the vault grew by the run and is the Story\'s own count: '+JSON.stringify(r7.vault));
   ok(r7.newMarks.every(k=>r7.marks0.indexOf(k)<0&&r7.now.indexOf(k)>=0),'a new mark is one the ladder reads now and did not before: '+JSON.stringify(r7.newMarks));

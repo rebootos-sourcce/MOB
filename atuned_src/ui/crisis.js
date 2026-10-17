@@ -110,6 +110,11 @@ function crisisTalk(){
  crisisShut(true);
  if(typeof LOGIN!=='undefined'&&LOGIN.open&&typeof loginClose==='function')loginClose();
  if(typeof OB!=='undefined'&&OB.open&&typeof obClose==='function')obClose();
+ /* and the release card, from its empty state since 17 October, which carries
+    this door. It covers the page at z-index 90, so the Story box would open
+    behind it. Only before a run begins: nothing has started there, so closing
+    it starts and charges nothing, the same close its own Close makes. */
+ if(typeof RUN!=='undefined'&&RUN.open&&RUN.phase==='idle'&&typeof relClose==='function')relClose();
  if(typeof STV!=='undefined'){ STV.chat=false; STV.focus='write'; STV.crisis=true; }
  /* AND ON THE PERSON'S OWN PROFILE. A worked example is show only from 16
     October (engine/showonly.js), so its Story page has no box: the preview
