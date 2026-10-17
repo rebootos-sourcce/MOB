@@ -21,7 +21,10 @@
      2  every target is at least 44 by 44, the atuned-ux floor, at both widths
      3  text holds 4.5 to 1 and a mark 3 to 1, each against its own ground,
         read in every lighting LIGHTINGS names (panels.js)
-     4  every ring's card opens by hover on a desktop, by a tap on a phone and
+     4  a person inside the gift meets the mockup's gift state: every ring lit,
+        no price, no press, the gift's line, Close (since PR 109 the gift sees
+        everything); every other state is measured past the gift
+     4b every ring's card opens by hover on a desktop, by a tap on a phone and
         by keyboard focus on both, says the ring's name and its tier, and stays
         on screen
      5  the cards say what the engine says: the price, the patterns, which
@@ -139,6 +142,14 @@ async function page(browser,W,H,o){
  await pg.evaluate(o=>{
   loadP(0);
   CURP.plan={tier:o.tier,status:o.tier==='free'?'':'active',granted:0,carried:0,base:null,since:null,until:null,ends:null};
+  /* PAST THE GIFT unless the state is the gift. Since PR 109 a person inside
+     the gift sees everything (lockGift, ui/lock.js) and the sheet shows the
+     gift's own state, so a tier's cards are measured on a record that has
+     spent it: the gift's size of keys, read off GIFT_N and LINES_PER_CH */
+  CURP.meter=CURP.meter||{lines:0,unique:[],first:null,last:null,giftAt:null};
+  CURP.meter.unique=[];
+  if(!o.gift)for(let a=1;CURP.meter.unique.length<GIFT_N;a++)
+   for(let i=0;i<LINES_PER_CH&&CURP.meter.unique.length<GIFT_N;i++)CURP.meter.unique.push(meterKey(a,'Rtruth',i));
   pPersist();
   if(o.signed)authKeep({token:'gate',email:'gate@example.com',accountId:'gate'});
   setTab(TAB.FIELD); render();},o);
@@ -307,6 +318,39 @@ async function page(browser,W,H,o){
    ok(after===before,tag+'opening it, its cards and its presses wrote nothing to storage');
    ok(P.req.length===reqBefore&&P.req.length===0,tag+'no request left the page, '+P.req.slice(0,3).join(' '));
    ok(P.err.length===0,tag+'no page errors, '+P.err.slice(0,2).join(' | '));
+   await P.ctx.close();}
+
+  /* THE GIFT, the mockup's gift state: every ring lit, no price, no press, the
+     gift's one line in Summary's words, Close. Read off the lock's own answer */
+  {const P=await page(browser,W,H,{tier:'free',signed:false,pay:true,gift:true}), pg=P.pg, tag='@'+W+' gift: ';
+   const before=await pg.evaluate(()=>JSON.stringify(Object.assign({},localStorage)));
+   const g=await pg.evaluate(()=>{
+    const inGift=lockGift(); paywallOpen('hy',null);
+    const s=document.querySelector('#paywall .pw-sheet'), t=s.textContent.replace(/\s+/g,' ');
+    return {inGift, gift:s.classList.contains('pw-gift'), k:PW.k, door:PW.door,
+     rings:s.querySelectorAll('.pw-rg').length, lit:s.querySelectorAll('.pw-rg.on').length, want:sightRows().length,
+     tl:[...s.querySelectorAll('.pw-rg')].every(r=>r.getAttribute('data-tl')==='Open on your gift'),
+     buy:s.querySelectorAll('[data-pwbuy]').length, price:/\$\d/.test(t), soon:/Opens soon/.test(t),
+     line:(s.querySelector('.pw-gq')||{}).textContent, want2:'Your gift: '+GIFT_N+' patterns, no card. Everything is open.',
+     title:(s.querySelector('#pwt1')||{}).textContent, words:__pw.words()};});
+   ok(g.inGift&&g.gift&&g.k===null&&g.door===null,tag+'a person inside the gift meets the gift state, with nothing marked, '+JSON.stringify(g));
+   ok(g.rings===g.want&&g.lit===g.want&&g.tl,tag+'every ring SIGHT draws is lit and says it is open on the gift, '+g.lit+' of '+g.rings);
+   ok(g.buy===0&&!g.price&&!g.soon,tag+'no price, no press and no Opens soon: there is nothing to buy');
+   ok(g.line===g.want2&&g.title==='Your whole reading is open.',tag+'the gift\'s one line, in Summary\'s words, under the mockup\'s title, '+JSON.stringify([g.title,g.line]));
+   const bad=await pg.evaluate(()=>__pw.fit()), small=await pg.evaluate(m=>__pw.targets(m),TAP), cn=await pg.evaluate(()=>__pw.contrast());
+   ok(bad.length===0,tag+'fits one screen, '+bad.slice(0,3).join(' | '));
+   ok(small.length===0,tag+'every target is at least '+TAP+', '+small.slice(0,3).join(' | '));
+   ok(cn.lowT.length===0&&cn.lowM.length===0,tag+'text and marks hold their floors, lowest text '+cn.minT.toFixed(2)+', mark '+cn.minM.toFixed(2));
+   await pg.focus('#paywall .pw-rg >> nth=0'); await pg.waitForTimeout(40);
+   const t1=await pg.evaluate(()=>__pw.tip());
+   ok(t1&&/Open on your gift/.test(t1.text)&&t1.on,tag+'a ring\'s card says it is open on the gift, '+(t1&&t1.text));
+   await pg.focus('#paywall .pw-gp'); await pg.waitForTimeout(40);
+   const t2=await pg.evaluate(()=>__pw.tip());
+   ok(t2&&t2.text===await pg.evaluate(()=>PW_W.pat),tag+'the word patterns carries what a pattern is');
+   await pg.click('#paywall .pw-gclose'); await pg.waitForTimeout(60);
+   ok(!(await pg.evaluate(()=>paywallIsOpen())),tag+'Close shuts it');
+   const after=await pg.evaluate(()=>JSON.stringify(Object.assign({},localStorage)));
+   ok(after===before&&P.req.length===0&&P.err.length===0,tag+'wrote nothing, sent nothing, no page errors, '+P.err.slice(0,2).join(' | '));
    await P.ctx.close();}
 
   /* 3 . contrast in every lighting, read off LIGHTINGS */

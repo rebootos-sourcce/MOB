@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2156 555c80bd 2026-10-17 18:39"><head><meta charset="utf-8">
+<html lang="en" data-build="v2175 9743c439 2026-10-17 18:47"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -71380,9 +71380,11 @@ try{window.__at&&window.__at('ui/account.js');}catch(e){}
      stopping takes two presses, because the in app stop is not built.
    - The refund line is a switch and it is off (PW_REFUND), until the terms
      page carries the refund and a lawyer has read it.
-   - The gift still locks the layers in code (lockPlan), so this sheet draws
-     a person on the gift as the free tier they are on. The gift's own state
-     belongs to another branch and is not invented here.
+   - THE GIFT SEES EVERYTHING, since PR 109 merged on 17 October: the lock
+     reads it off the record's own meter (lockGift, ui/lock.js, through
+     planInGift). So a person inside the gift meets the mockup's gift state
+     here: every ring lit, no price, no press, the gift's one line in the
+     words Summary already says it in (sumGift, ui/summary.js), and Close.
    - On a worked example the sheet reads the person's own plan (showOwnPlan,
      ui/personas.js), and opening it writes nothing anywhere.
    ============================================================ */
@@ -71406,6 +71408,12 @@ function pwPlan(){
  if(typeof showOnly==='function'&&showOnly()&&typeof showOwnPlan==='function')return showOwnPlan();
  return (typeof lockPlan==='function')?lockPlan():((typeof CURP!=='undefined'&&CURP&&CURP.plan)||null);}
 function pwSigned(){ return typeof authSession==='function'&&!!authSession(); }
+/* WHETHER THE PERSON IS INSIDE THE GIFT. The lock's own answer (lockGift), or
+   on a worked example the own record's (showOwnGift, ui/personas.js), for the
+   same reason pwPlan reads the own plan there. */
+function pwGift(){
+ if(typeof showOnly==='function'&&showOnly())return typeof showOwnGift==='function'&&showOwnGift();
+ return typeof lockGift==='function'&&lockGift();}
 
 /* ---- the words. Every string the sheet prints starts here, so the voice
    gate reads one list. ---- */
@@ -71436,7 +71444,12 @@ var PW_W={
  billing:'Billing',
  signin:'Sign in', signinMeans:'Already paying? Sign in to bring your plan here.',
  stop:'Stop or change plan', stopMeans:'Opens the payment page, where you stop or change your plan.',
- close:'Close'};
+ close:'Close',
+ /* the gift's state, the mockup's title, and the gift's line as Summary says
+    it, so the gift has one wording */
+ giftTitle:'Your whole reading is open.',
+ giftTl:'Open on your gift',
+ gift:function(){ return ['Your gift: '+GIFT_N+' ','patterns',', no card. Everything is open.']; }};
 /* 1,200 and not 1200, the way the tiers page prints it (ptN, ui/plans.js) */
 function pwN(n){ return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,','); }
 /* a ring's name, off SIGHT: "the masks" is Masks on a ring */
@@ -71471,8 +71484,8 @@ function pwLock(){ return pwSvg(typeof LOCK_PATH!=='undefined'?LOCK_PATH:''); }
 
 /* ---- the pieces ---- */
 var PW_ID=0;
-function pwRing(pl,g,on){
- var id='pwr'+(++PW_ID), came=PW.k===g.k, tl=pwTierLine(pl,g);
+function pwRing(pl,g,on,tl){
+ var id='pwr'+(++PW_ID), came=PW.k===g.k; tl=tl||pwTierLine(pl,g);
  return '<button type="button" class="pw-rg'+(on?' on':'')+(came?' came':'')+'" data-k="'+esc(g.k)+'" data-tl="'+esc(tl)+'"'
   +' aria-label="'+esc(pwName(g)+(on?', on this tier':', not on this tier')+(came?'. '+PW_W.came:''))+'" aria-describedby="'+id+'">'
   +'<span class="pw-dk">'+pwSvg('<path d="'+pwGlyph(g.k)+'"/>')+'</span></button>'
@@ -71523,9 +71536,20 @@ function pwFoot(pl){
   +(typeof legalLink==='function'?legalLink('terms')+legalLink('privacy'):'')
   +'</div></div>';}
 
+/* THE GIFT: every ring lit, nothing to buy, the line that says why */
+function pwGiftHtml(pl){
+ var w=PW_W.gift();
+ return '<div class="pw-sheet pw-gift" role="dialog" aria-modal="true" aria-labelledby="pwt1" tabindex="-1">'
+  +'<button type="button" class="pw-x" id="pwx" aria-label="'+esc(PW_W.close)+'">'+PW_X+'</button>'
+  +'<h2 class="pw-t1" id="pwt1">'+esc(PW_W.giftTitle)+'</h2>'
+  +'<div class="pw-rgs pw-giftrgs">'+sightRows().map(function(g){return pwRing(pl,g,true,PW_W.giftTl);}).join('')+'</div>'
+  +'<p class="pw-gq">'+esc(w[0])+'<button type="button" class="pw-gp" data-pwtip="pwngift" aria-describedby="pwngift"><span class="pw-u">'
+  +esc(w[1])+'</span></button>'+esc(w[2])+'</p><span class="pw-vh" id="pwngift">'+esc(PW_W.pat)+'</span>'
+  +'<button type="button" class="pw-go pw-gclose" data-pwact="close">'+esc(PW_W.close)+'</button></div>';}
 function pwHtml(){
  PW_ID=0;
  var pl=pwPlan(), rows=planLadder(pl), pay=pwPayOpen(), now=planOf(pl);
+ if(pwGift())return pwGiftHtml(pl);
  var free=rows.filter(function(r){return r.k==='free';})[0];
  var cards=rows.filter(function(r){return r.k!=='free'&&!r.lead;});
  var prac=rows.filter(function(r){return r.lead;})[0];
@@ -71551,7 +71575,7 @@ function pwTipShow(el,pin){
  if(el.classList.contains('pw-rg')){
   var k=el.getAttribute('data-k'), g=sightRows().filter(function(x){return x.k===k;})[0], tl=el.getAttribute('data-tl');
   b.innerHTML='<span class="pw-r1"><b>'+esc(pwName(g))+'</b><span class="pw-tl">'
-   +(tl===PW_W.seeNow?PW_SEES:pwLock())+'<span>'+esc(tl)+'</span></span></span><span class="pw-m">'+esc(pwMean(g))+'</span>';}
+   +(tl===PW_W.seeNow||tl===PW_W.giftTl?PW_SEES:pwLock())+'<span>'+esc(tl)+'</span></span></span><span class="pw-m">'+esc(pwMean(g))+'</span>';}
  else{var src=document.getElementById(el.getAttribute('data-pwtip'));
   b.innerHTML='<span class="pw-m">'+esc(src?src.textContent:'')+'</span>';}
  b.classList.add('on'); PW.tipOn=el; PW.pin=!!pin;
@@ -71578,7 +71602,7 @@ function paywallOpen(k,back){
  var pl=pwPlan();
  /* a ring the person already sees is not a reason they came, so it marks
     nothing, and the door is the cheapest tier that opens what was pressed */
- if(k&&(planSees(pl,k)||!planNeed(k)))k=null;
+ if(k&&(pwGift()||planSees(pl,k)||!planNeed(k)))k=null;
  PW.k=k||null; PW.door=k?planNeed(k).k:null;
  PW.back=back||document.activeElement||null;
  if(typeof TIP!=='undefined')TIP.hide();
@@ -71625,6 +71649,7 @@ function pwWireOnce(){
   if(a){var w=a.getAttribute('data-pwact');
    if(w==='portal'){pwTipHide(); planOpen('portal',null); return;}
    paywallClose();
+   if(w==='close')return;
    if(w==='billing'){if(typeof planTiersOpen==='function')planTiersOpen();}
    else if(w==='signin'){ACC_OPEN='account'; setTab(TAB.SETTINGS); if(typeof renderAccount==='function')renderAccount();}
    return;}
@@ -71768,6 +71793,17 @@ function pwCss(){
   '.pw-tip .pw-tl{order:2;display:flex;align-items:center;gap:8px;color:var(--ink);font-weight:600}',
   '.pw-tip .pw-tl svg{width:18px;height:18px;flex:none}',
   'body.pw-on #tip{display:none!important}',
+  /* the gift: six lit rings in the middle, the line, and Close */
+  '.pw-sheet.pw-gift{align-items:center;justify-content:center;text-align:center;padding:16px 28px}',
+  '.pw-gift .pw-x{left:14px;top:14px}',
+  '.pw-gift .pw-t1{flex:none;font-size:48px;padding:0 52px}',
+  '.pw-gift .pw-giftrgs{width:min(1240px,100%);gap:28px;margin-top:48px}',
+  '.pw-gq{font-size:20px;color:var(--mid);margin:44px 0 28px}',
+  /* a word in a sentence that carries its meaning: 44 tall to a finger, and
+     the padding is paid back by the margin so the line it sits in keeps its
+     own spacing (measured at 390: a 44 pixel box opened the line by a third) */
+  '.pw-gp{display:inline;background:none;border:0;padding:13px 0;margin:-13px 0;min-height:0;cursor:help;color:var(--mid)!important;font-size:inherit!important;line-height:inherit}',
+  '.pw-gift .pw-gclose{width:min(360px,100%)}',
   /* THE PHONE. The sheet is the screen; each card is one row of name and
      number beside the price, the six rings across, and the one action */
   '@media (max-width:760px){',
@@ -71815,7 +71851,14 @@ function pwCss(){
   ' .pw-tip .pw-r1{display:flex;align-items:center;justify-content:space-between;gap:10px;order:0}',
   ' .pw-tip .pw-r1 b{font-size:15px;white-space:nowrap}',
   ' .pw-tip .pw-tl{font-size:13.5px;gap:6px;white-space:nowrap}',
-  ' .pw-tip .pw-tl svg{width:15px;height:15px}}'].join('\n');
+  ' .pw-tip .pw-tl svg{width:15px;height:15px}',
+ ' .pw-sheet.pw-gift{padding:16px}',
+ ' .pw-gift .pw-x{left:6px;top:6px}',
+ ' .pw-gift .pw-t1{font-size:26px;padding:0 30px;text-wrap:balance}',
+ ' .pw-gift .pw-giftrgs{margin-top:28px;gap:18px;grid-template-columns:repeat(3,1fr);width:min(320px,100%)}',
+ ' .pw-gift .pw-giftrgs .pw-rg{aspect-ratio:1;height:auto}',
+ ' .pw-gift .pw-giftrgs .pw-dk{width:100%;height:100%}',
+ ' .pw-gq{font-size:15px;margin:24px 0 18px}}'].join('\n');
  document.head.appendChild(st);}
 
 try{window.__at&&window.__at('ui/paywall.js');}catch(e){}
@@ -78916,5 +78959,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005178358"></div>
+<div id="eof" hidden data-len="005181442"></div>
 </body></html>
