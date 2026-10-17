@@ -503,7 +503,9 @@ function solCore(r,base){
   g.textAlign='center'; g.textBaseline='alphabetic';
   g.fillStyle=cqc;
   g.font='500 '+big.toFixed(1)+'px Inter, system-ui, sans-serif';
-  g.fillText(String(Math.round(r.CQ)), CX, CY+big*0.30);
+  /* a percent, 17 October, percent phase 2: fmtPct('cq'), the registry's
+     form, so the core says what the ring at the foot of the stage says */
+  g.fillText(fmtPct('cq',r.CQ), CX, CY+big*0.30);
   /* THE SCALE, ALWAYS. A bare 51 in the middle of a figure is the exact
      defect the number law exists for. It is drawn only when there is room
      for it to be legible, which is the eleven pixel floor the rest of the

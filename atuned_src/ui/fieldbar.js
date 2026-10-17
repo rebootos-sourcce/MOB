@@ -172,36 +172,35 @@ function fbReach(list,carry){
  return carry.filter(function(n){return s[n.i];}).length/carry.length*100;}
 function fbValues(r){
  var V={}, dash='–', carry=W.filter(function(n){return n.sq>=4;});
- /* WHOLE NUMBERS ON THE TWO WEIGHTS, 16 October. The addresses and seats pills
-    printed one decimal ("6.3"), a figure the rest of the page never shows to
-    that precision and a raw score under the 14 October ruling. They print the
-    way CQ and DQ do, a bare whole number, and a weight that rounds to nothing
-    is a dash. The sentences below test the figure the pill prints, so a pill
-    that says a dash never sits beside a tooltip that says something carries. */
- var f1=function(x){var n=Math.round(+x||0); return n>0?String(n):dash;}, pc=function(x){var n=Math.round(+x||0);return n>0?n+'%':dash;};
- /* NO PERCENT ON THE HEADLINE READING, round PQ, his words: "No, it doesn't
-    need to be a percent. Just a number." CQ and DQ are the headline readings
-    and print bare here, as on the wheel's core and the Summary plate. The
-    shares below (gates, stories, archetypes, domains) are shares of a whole
-    and keep their sign. */
- var nb=function(x){var n=Math.round(+x||0);return n>0?String(n):dash;};
- V.addresses={p:r.SQm*10,v:f1(r.SQm),c:seatCol(r.darkB),
-  m:f1(r.SQm)!==dash?'Ring and number: segment depth, SQ, at a weight of '+f1(r.SQm)+'. How deep the held charge sits.'
+ /* EVERY PILL PRINTS ITS RING, 17 October, percent phase 2. Each figure on
+    this bar goes through the registry (engine/pct.js): the ring fills
+    pct(kind, value) and the pill prints fmtPct(kind, value), so the arc and
+    the number are one reading. Before this the two weights filled SQm*10 and
+    printed round(SQm), so a segment depth of 4.4 drew 44 and read 4, the
+    disagreement the inventory names (PERCENT-INVENTORY-2026-10-16.md,
+    ui/fieldbar.js:188 and :191). CQ and DQ printed bare under round PQ; the 16
+    October ruling supersedes it for both, his words: "Instead of 0.0, site
+    wide, we need to convert those numbers into percent." Nought is the dash,
+    so a pill never prints 0% beside a tooltip that says nothing carries. */
+ var P=function(k,x){return {p:pct(k,x)||0,v:fmtPct(k,x)};};
+ var sqm=P('weight',r.SQm), dk=P('weight',r.darkV||0), cq=P('cq',r.CQ), dqv=P('dq',r.DQ);
+ V.addresses={p:sqm.p,v:sqm.v,c:seatCol(r.darkB),
+  m:sqm.v!==dash?'Ring and number: segment depth, SQ, at '+sqm.v+'. How deep the held charge sits.'
    :'Ring and number: segment depth, SQ. Nothing is carrying yet.'};
- V.seats={p:(r.darkV||0)*10,v:f1(r.darkV),c:seatCol(r.darkB),
-  m:f1(r.darkV)!==dash?'Ring and number: the heaviest assemblage point, '+r.darkB+', at a weight of '+f1(r.darkV)+'.'
+ V.seats={p:dk.p,v:dk.v,c:seatCol(r.darkB),
+  m:dk.v!==dash?'Ring and number: the heaviest assemblage point, '+r.darkB+', at '+dk.v+'.'
    :'Ring and number: the heaviest assemblage point. Nothing is carrying yet.'};
- V.laws={p:r.CQ,v:nb(r.CQ),c:seatCol('Crown'),
+ V.laws={p:cq.p,v:cq.v,c:seatCol('Crown'),
   m:'Ring and number: coherence, CQ, which is the laws summed.'};
  var G=verpRead(), hi=G.filter(function(g){return g.side==='higher';}).reduce(function(a,g){return a+g.pct;},0),
   anyG=G.some(function(g){return g.pct>0;});
- V.gates={p:anyG?hi:0,v:anyG?pc(hi):dash,c:seatCol('Heart'),
+ V.gates={p:anyG?pct('gate',hi):0,v:anyG?fmtPct('gate',hi):dash,c:seatCol('Heart'),
   m:anyG?'Ring and number: how much of what you wrote ran through awareness, detachment and intention.'
    :'No story has been read for action yet.'};
- V.shadow={p:r.DQ,v:nb(r.DQ),c:seatCol('Root'),
+ V.shadow={p:dqv.p,v:dqv.v,c:seatCol('Root'),
   m:'Ring and number: shadow weight, DQ, the weight on all 112 addresses.'};
  var ai=atomIndex()||{}, traced=carry.length?carry.filter(function(n){return (ai[n.i]||[]).length;}).length/carry.length*100:0;
- V.stories={p:traced,v:carry.length?pc(traced):dash,c:'var(--accent)',
+ V.stories={p:pct('portion',traced/100)||0,v:carry.length?fmtPct('portion',traced/100):dash,c:'var(--accent)',
   m:carry.length?'Ring and number: the share of your carrying addresses a story you wrote reached.'
    :'Nothing is carrying charge yet.'};
  [['saboteurs',r.sabs,r.sabs[0]&&r.sabs[0].parts[0]?r.sabs[0].parts[0].b:r.darkB],
@@ -209,15 +208,21 @@ function fbValues(r){
   var p=fbReach(t[1],carry);
   V[t[0]]={p:p,v:String(t[1].length),c:seatCol(t[2]),
    m:'Number: how many are running, as the rail counts them.'
-    +(carry.length?' Ring: the share of your carrying addresses they are built on, '+pc(p)+'.':'')};});
+    +(carry.length?' Ring: the share of your carrying addresses they are built on, '+fmtPct('portion',p/100)+'.':'')};});
+ /* THE FIRST ARCHETYPE, HOW FULLY IT IS EXPRESSED. Ruled 16 October, his
+    words: "the archetypes themselves should be 100%. The limiting beliefs are
+    going to drag it down." The orb printed the first archetype's share of all
+    twelve, the soul map's lean, which no story or release ever moved. affinity
+    still names which archetype is first; the figure is archExpr
+    (engine/archexpr.js), ring and number both. */
  var aff=(r.aff||[]).map(function(v,i){return {i:i,v:v};}).sort(function(a,b){return b.v-a.v;});
- var tot=aff.reduce(function(a,x){return a+x.v;},0)||1, top=aff[0]||{i:0,v:0}, A=ARCH[top.i]||{};
- V.archetypes={p:top.v/tot*100,v:pc(top.v/tot*100),c:seatCol(A.b||'Heart'),
-  m:'Ring and number: '+(A.nm||'the first archetype')+', the first archetype, as its share of how the blueprint expresses.'};
+ var top=aff[0]||{i:0,v:0}, A=ARCH[top.i]||{}, ax=archExpr(top.i);
+ V.archetypes={p:pct('archetype',ax)||0,v:fmtPct('archetype',ax),c:seatCol(A.b||'Heart'),
+  m:'Ring and number: '+(A.nm||'the first archetype')+', the first archetype, and how fully it is expressed. Charge held at its seat pulls it down; a release lifts it.'};
  /* the root's colour off the one ladder every other surface reads, rootPlain,
     and not ROOTCOL, which is the Dark values on every lighting */
  var dm=DOMAIN.reduce(function(a,v){return a+v;},0)/DOMAIN.length*100, d0=DOMAINS[S.doms[0]];
- V.domains={p:dm,v:pc(dm),c:(d0&&rootPlain(d0.r))||'var(--gold)',
+ V.domains={p:pct('domain',dm/100)||0,v:fmtPct('domain',dm/100),c:(d0&&rootPlain(d0.r))||'var(--gold)',
   m:'Ring and number: how far across the nineteen domains your blueprint reaches.'};
  /* NOTHING READ, NOTHING PRINTED. The rail's own rule: the ring draws empty
     and the pill carries a dash, because a figure beside "not read yet" is

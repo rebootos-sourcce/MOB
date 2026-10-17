@@ -597,8 +597,13 @@ function frCore(M,r,cx,cy,R,o){
  var rin=R-w/2-2;
  s+=frFeathers(M,r,cx,cy,rin)+'<g class="frcq"><circle class="frcq-bk" cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)
   +'" r="'+(rin*.62).toFixed(1)+'" fill="'+frRgb(M.ground)+'"/>';
- var cq=String(Math.round(r.CQ)),dq=Math.round(+r.DQ||0)>0?String(Math.round(+r.DQ)):'\u2013',lab=11;
- var FC=cq.length>2?cq:'88',FD=dq.length>2?dq:'88';
+ /* CQ AND DQ AS PERCENTS, 17 October, percent phase 2, through the registry
+    (engine/pct.js); the 16 October ruling supersedes round PQ's bare number.
+    Nought is the dash. The fit below still measures the widest two digit
+    figure, now with its sign, so a one digit DQ never sets the coherence
+    larger than a two digit one does. */
+ var cq=fmtPct('cq',r.CQ),dq=fmtPct('dq',r.DQ),lab=11;
+ var FC=cq.length>3?cq:'88%',FD=dq.length>3?dq:'88%';
  var W_=function(str,size,wt){return frTextW(str,wt+' '+size.toFixed(1)+'px Inter, system-ui, sans-serif');};
  /* THE TYPE IS FITTED TO THE HOLE, NOT TO A TABLE. The ring's inside runs
     from 22 pixels of radius on a phone to 57 on a wide screen, and two figures

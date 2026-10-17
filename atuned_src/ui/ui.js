@@ -865,19 +865,22 @@ function railStack(r){
       legend, so the legend was cut only once each row opened runFetterDrill,
       the axis's own drill, which says both halves and what fills each. */
    return '<button type="button" class="stk-r" data-fet="'+ci+'"><span class="stk-l">'
-    +cr(c.seat,v*10,{size:'xs',raw:v>0?v.toFixed(1):'\u2013',glyph:'<path d="'+c.ic+'"/>',
-      title:c.nm+(v>0?' held '+v.toFixed(1):', nothing held')})+esc(c.nm)+'</span>'
+    /* held and installed as percents, 17 October, percent phase 2: each ring
+       fills pct(kind) and prints fmtPct(kind), the registry's one formula */
+    +(function(fv,fp){return cr(c.seat,pct('charge',v)||0,{size:'xs',raw:fv,glyph:'<path d="'+c.ic+'"/>',
+      title:c.nm+(fv!==PCT_DASH?' held '+fv:', nothing held')})+esc(c.nm)+'</span>'
     +'<span class="stk-p">'+esc(c.opp)
-    +cr('Heart',p*10,{size:'xs',raw:p>0?p.toFixed(1):'\u2013',hot:false,
-      glyph:'<path d="'+c.ic+'"/>',title:c.opp+(p>0?' installed '+p.toFixed(1):', nothing installed')})+'</span></button>';}).join('');}
+    +cr('Heart',pct('installed',p)||0,{size:'xs',raw:fp,hot:false,
+      glyph:'<path d="'+c.ic+'"/>',title:c.opp+(fp!==PCT_DASH?' installed '+fp:', nothing installed')});}(fmtPct('charge',v),fmtPct('installed',p)))
+    +'</span></button>';}).join('');}
  else{
   var list={sab:r.sabs,cx:r.cxs,hy:r.hys,sup:r.sups}[STACK_TAB]||[];
   h+=list.length?'<div class="stk-hd"><span>weight</span><span>opposite in</span></div>':'';
   h+=list.length?list.map(function(o,i){var p=poleOf(o);
    return '<button type="button" class="stk-r'+(S.pin===o?' on':'')+'" data-sk="'+STACK_TAB+'" data-si="'+i+'">'
     +'<span class="stk-l">'+crPat(o,'xs')+esc(o.nm)+(o.unnamed?'<em>inferred</em>':'')+'</span>'
-    +'<span class="stk-p">'+cr('Heart',p*10,{size:'xs',raw:p>0?p.toFixed(1):'\u2013',hot:false,
-      title:p>0?'Opposite installed '+p.toFixed(1):'Nothing installed'})+'</span></button>';}).join('')
+    +'<span class="stk-p">'+(function(fp){return cr('Heart',pct('installed',p)||0,{size:'xs',raw:fp,hot:false,
+      title:fp!==PCT_DASH?'Opposite installed '+fp:'Nothing installed'});}(fmtPct('installed',p)))+'</span></button>';}).join('')
    :(lockSees(STACK_TAB)?'<div class="rnone">Nothing at this layer.</div>':lockPanelHtml(STACK_TAB));}
  e.innerHTML=h;
  /* THE STACK'S TABS ARE THE RAIL'S ROW OF WHAT IS RUNNING, so a tab above the
@@ -1038,10 +1041,11 @@ function railTop(r){
     high chip centred against a 44 high word, so its top sat seven pixels
     below the word's and neither matched the boxed 44 high cells every other
     readout on the Field sits in. The ring and the word share one box now. */
- /* a bare number, round PQ: "No, it doesn't need to be a percent. Just a
-    number." The ring still draws the share; the figure is the reading. */
- e.innerHTML='<span class="rt-cell">'+cr(r.darkB, r.unread?0:r.CQ, {size:'sm', label:'Coherence',
-   raw:r.unread||Math.round(r.CQ)<=0?'\u2013':String(Math.round(r.CQ)), hot:false, color:tcol||undefined})
+ /* CQ AS A PERCENT, 17 October, percent phase 2: the 16 October ruling
+    supersedes round PQ's bare number. The ring fills pct('cq') and the pill
+    prints the same figure, so the two cannot disagree. */
+ e.innerHTML='<span class="rt-cell">'+cr(r.darkB, r.unread?0:pct('cq',r.CQ), {size:'sm', label:'Coherence',
+   raw:fmtPct('cq',r.CQ,{unread:r.unread}), hot:false, color:tcol||undefined})
   /* THE TIER IS A CONTROL WHEREVER IT LIVES. Taking the word off the Field
      centre was ruled, and it took the only tappable route to the definition
      with it: there was exactly one tier control in the product and it was the
@@ -1103,10 +1107,12 @@ function render(){
    +'so there is no split to show.</div>'; return;}
   $('pol').innerHTML='<div class="bmrow"><span class="bmk">Benign</span>'
    +'<span class="bmbar"><i style="width:'+ben.toFixed(0)+'%;background:'+PAL.Heart+'"></i></span>'
-   +'<span class="bmv" style="color:'+PAL.Heart+'">'+ben.toFixed(0)+'%</span></div>'
+   /* fmtPct('lean'), 17 October, percent phase 2: a share of nought is the
+      dash and never "0%", the registry's one rule for every figure */
+   +'<span class="bmv" style="color:'+PAL.Heart+'">'+fmtPct('lean',ben)+'</span></div>'
    +'<div class="bmrow"><span class="bmk">Malignant</span>'
    +'<span class="bmbar"><i style="width:'+mal.toFixed(0)+'%;background:'+PAL.Root+'"></i></span>'
-   +'<span class="bmv" style="color:'+PAL.Root+'">'+mal.toFixed(0)+'%</span></div>'
+   +'<span class="bmv" style="color:'+PAL.Root+'">'+fmtPct('lean',mal)+'</span></div>'
    /* This said "building more than it costs", which is the ledger sentence and
       the ledger belongs to the scale, where it is defined against the median.
       A field at CQ 39 read Incoherent in the rail and "building more than it
@@ -1190,10 +1196,10 @@ function render(){
   var cr0=r.unread?null:cqRange(r.CQ), half=cr0?(cr0.hi-cr0.lo)/2:0;
   var dq=clamp((+r.DQ||0)/100,0,1), amp=(+r.DQ||0)*PUL_WAVE*dq;
   var spec={read:!r.unread, whole:false,
-   L:{nm:'CQ',ic:'cq',c:'var(--accent)',v:r.unread?0:r.CQ,q:'cq',fk:'laws',bare:true,
+   L:{nm:'CQ',ic:'cq',c:'var(--accent)',v:r.unread?0:r.CQ,q:'cq',fk:'laws',kind:'cq',
     sw:half>0.05?function(t){return rbDrift(t)*half;}:null, fw:cr0?cr0.hi-cr0.lo:0,
     note:r.unread?'Not read yet.':'The edge of the blue moves through the range your coherence swings in, and the notches mark where it stands now.'},
-   R:{nm:'DQ',ic:'dq',c:seatCol('Root'),v:r.unread?0:r.DQ,q:'dq',fk:'shadow',bare:true,
+   R:{nm:'DQ',ic:'dq',c:seatCol('Root'),v:r.unread?0:r.DQ,q:'dq',fk:'shadow',kind:'dq',
     sw:amp>0.05?function(t){return amp*Math.sin(t*TAU*PUL_WAVE_HZ);}:null, fw:2*amp,
     note:r.unread?'Not read yet.':'The edge of the red breathes with your shadow, and the notches mark where it stands now.'}};
   $('key').innerHTML=rbPair('cqdq',spec);
@@ -1215,16 +1221,20 @@ function render(){
  (function(){
   var f=flSpeed(), lo=$('keylo'); if(!lo)return;
   var nr=r.unread?' Not read yet.':'';
+  /* each bar fills pct(kind) and prints fmtPct(kind), 17 October, percent
+     phase 2: they filled X*100 and printed X.toFixed(2), so vitality was drawn
+     as 17 and read as 0.17. One figure now, the registry's. */
+  var u={unread:r.unread};
   lo.innerHTML=
-   rbRow('xyz','Vitality',r.X*100,r.unread?'–':r.X.toFixed(2),
+   rbRow('xyz','Vitality',pct('vitality',r.X),fmtPct('vitality',r.X,u),
     {unread:r.unread,fk:'core',ic:'vitality',col:seatCol('Solar'),title:rbSay('Vitality')+nr})
-  +rbRow('xyz','Awareness',r.Y*100,r.unread?'–':r.Y.toFixed(2),
+  +rbRow('xyz','Awareness',pct('awareness',r.Y),fmtPct('awareness',r.Y,u),
     {unread:r.unread,fk:'core',ic:'awareness',col:seatCol('3rd Eye'),title:rbSay('Awareness')+nr})
-  +rbRow('xyz','Will',r.Z*100,r.unread?'–':r.Z.toFixed(2),
+  +rbRow('xyz','Will',pct('will',r.Z),fmtPct('will',r.Z,u),
     {unread:r.unread,fk:'core',ic:'will',col:seatCol('Throat'),title:rbSay('Will')+nr})
-  +rbRow('xyz','Radiance',r.unread?0:r.radiance*100,r.unread?'–':r.radiance.toFixed(2),
+  +rbRow('xyz','Radiance',r.unread?0:pct('radiance',r.radiance),fmtPct('radiance',r.radiance,u),
     {unread:r.unread,fk:'core',ic:'rad',title:rbSay('Radiance')+nr})
-  +rbRow('flow','Flow',f*100,r.unread?'–':f.toFixed(2),
+  +rbRow('flow','Flow',pct('flow',f),fmtPct('flow',f,u),
     {unread:r.unread,fk:'seats',ic:'flow',wave:rbSeatPass(),rate:lerp(PUL_LO,PUL_HI,clamp((+r.DQ||0)/100,0,1)),
      title:rbSay('Flow')+(r.unread?nr:' The wave inside runs root to crown, and a seat that holds charge back roughens it where it sits.')});})();
  /* who, and what is running hottest in them. */
@@ -1378,7 +1388,8 @@ function render(){
    +row('Carrying',held?held+' addresses':'nothing yet',
      held?'':(r.under?r.under+' sitting under the line':''))
    +row('Filled in',inst?inst+' addresses':'nothing yet','')
-   +row('Heaviest',r.darkB,r.darkV.toFixed(1))
+   /* percent phase 2, 17 October: the seat mean on the registry's weight kind */
+   +row('Heaviest',r.darkB,fmtPct('weight',r.darkV))
    +row('Most shut',r.weakL.nm,'at the '+r.weakL.b.toLowerCase()));
   var ws=$('psum'); if(ws)ws.onclick=function(){S.pin=null; runCompassDrill(); render();};})();
  railStack(r); renderBal(r);
@@ -1390,24 +1401,28 @@ function render(){
  /* V21. Five words, and none of them defined anywhere on the screen. Each
     line now carries a plain sentence on its title, true to compute.js, and
     "pole in" is "pole", the word the Summary tile already uses for it. */
+ /* AND EACH IS A PERCENT, 17 October, percent phase 2: integrity printed
+    4.9, pole 0.80 and overshoot 0.52, three precisions for figures the
+    registry bounds the same way (engine/pct.js, nought to ten). Each prints
+    fmtPct for its own kind now, and nought or an unread profile is the dash. */
  var ins=function(t,line){return '<span title="'+esc(t)+'">'+line+'</span><br>';};
  $('rows').innerHTML='<span class="k">Instruments</span><br>'
   +ins('How well you keep the 21 laws, lifted by the opposites installed and pulled down by overshoot.',
-    'integrity <b>'+(r.unread?'\u2013':r.Ig.toFixed(1))+'</b>')
+    'integrity <b>'+fmtPct('integrity',r.Ig,{unread:r.unread})+'</b>')
   +ins('The same laws read seat by seat, up the body.',
-    'intention <b>'+(r.unread?'\u2013':r.It.toFixed(1))+'</b>')
+    'intention <b>'+fmtPct('intention',r.It,{unread:r.unread})+'</b>')
   /* JOUISSANCE WAS ON EIGHTY ONE SCREENS. A French psychoanalytic term, printed
      as an instrument label to a person who has never heard it, with no gloss
      anywhere in the product. One word per concept, and the word has to say
      what the thing does: JQ is the opposite driven past the point where it
      serves. That is overshoot. The codex keeps its own word. */
   +ins('How far the installed opposites outweigh the charge, on average, across your body.',
-    'pole <b>'+(r.unread||r.poleMean<0.005?'\u2013':r.poleMean.toFixed(2))+'</b>')
+    'pole <b>'+fmtPct('pole',r.poleMean,{unread:r.unread})+'</b>')
   +ins('How far installed opposites have been pushed past the point where they help.',
-    'overshoot <b>'+(r.unread||r.JQ<0.005?'\u2013':r.JQ.toFixed(2))+'</b>'
+    'overshoot <b>'+fmtPct('overshoot',r.JQ,{unread:r.unread})+'</b>'
     +(r.excess.length?', '+r.excess.length+' address'+(r.excess.length===1?'':'es')+' overshot':''))
   +'<span title="'+esc('How much the patterns running in you bend what you mean. More patterns, '
-    +'and deeper ones, bend it more.')+'">distortion <b>'+(r.unread||r.dist<0.05?'\u2013':r.dist.toFixed(1))+'</b></span>';
+    +'and deeper ones, bend it more.')+'">distortion <b>'+fmtPct('distortion',r.dist,{unread:r.unread})+'</b></span>';
  /* what is running */
  const rows=[].concat(r.sups,r.hys,r.cxs,r.sabs);
  const TIERNM={sup:'Character',hy:'Hyper-complex',cx:'Complex',sab:'Saboteur'};
@@ -1480,14 +1495,17 @@ function render(){
        own, CHAINGLYPH, the one the glass bar and the stack tabs give the same
        four, because this list mixes character, hyper complexes, complexes and
        saboteurs and a name alone does not say which. The ring is the seat the
-       pattern sits on, and an overshoot or a weight past nine goes to the
-       alarm colour, as the ring on its Flow card already does. */
+       pattern sits on. An overshoot or a weight past nine went to the alarm
+       colour until 17 October; see the note on the badge below. */
     +rows.slice(0,8).map(function(o,i){
-     var b=(leaves(o)[0]||{}).b||'Heart', hot=o.w>=9||!!o.over;
+     /* a percent and its own colour, 17 October, percent phase 2: the badge
+        fills and prints pct('chain'), and the alarm colour it took past nine
+        is gone, because red on a percent reads as a failed mark. Default taken,
+        DECISIONS.md, his to overrule. Overshot is still said in the title. */
+     var b=(leaves(o)[0]||{}).b||'Heart', fw=fmtPct('chain',o.w);
      return '<div class="it run-it'+(S.pin===o?' pin':'')+'" data-i="'+i+'">'
-      +crBadge(b,o.w*10,{size:'sm',raw:o.w.toFixed(1),glyph:'<path d="'+CHAINGLYPH[o.kind]+'"/>',
-        color:hot?ALARM:undefined,
-        title:TIERNM[o.kind]+'. '+o.nm+', weight '+o.w.toFixed(1)+(o.over?', overshot':'')})
+      +crBadge(b,pct('chain',o.w)||0,{size:'sm',raw:fw,glyph:'<path d="'+CHAINGLYPH[o.kind]+'"/>',
+        title:TIERNM[o.kind]+'. '+o.nm+', weight '+fw+(o.over?', overshot':'')})
       +'<span class="run-n">'+esc(o.nm)+'</span></div>';}).join('')
     +(rows.length>8?'<div class="it"><span>and '+(rows.length-8)+' more</span></div>':'')
   : (r.locked&&r.locked.length===SEE_ORDER.length
