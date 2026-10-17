@@ -2982,8 +2982,11 @@ ok(relrun.distinct===relrun.plan,'and never repeats a line inside one run');
    Story and Seat toggle, and the selection is shown as what it is, each group
    with its count of patterns. */
 ok(!/Release your selections/i.test(relrun.setup)&&/Story/.test(relrun.setup)&&/Seat/.test(relrun.setup)
- &&/\d+ patterns/.test(relrun.setup)&&/Run speed/.test(relrun.setup)
- &&/Patterns/.test(relrun.setup)&&/Run release/.test(relrun.setup),
+ /* counted in lines and the dose named Times said since 17 October: a
+    pattern is the allowance's unit, and these count lines said, every pass
+    (tests/allowance.js, 8). The controls he named are all still here. */
+ &&/\d+ ?lines/.test(relrun.setup)&&/Run speed/.test(relrun.setup)
+ &&/Times said/.test(relrun.setup)&&/Run release/.test(relrun.setup),
  'the setup is what is picked, by story or seat with its patterns, run speed, how many patterns and one button: '
  +relrun.setup.slice(0,160));
 ok(!/patterns of the|thought lines? of new ground|you have left|empties the story/.test(relrun.setup),
@@ -5509,7 +5512,9 @@ console.log('\n=== a rerun is picked on purpose, priced before it starts, and ch
  ok(o.lines===4,'while the four lines are counted as spoken, '+o.lines);
  ok(o.left1===0,'and the allowance reads what it read before, '+o.left1);
  ok(o.log===1,'only the address reached is released, '+o.log+' in the log');
- ok(o.after==='true'&&o.afterRerun===false,'and the next pick opens on New again');
+ /* on New, never carried over. The spent card draws no toggle since 17
+    October, so New is read off RUN.rerun and the empty card's own press */
+ ok(o.after===null&&o.afterRerun===false,'and the next pick opens on New again: '+JSON.stringify([o.after,o.afterRerun]));
  console.log('  rerun      '+JSON.stringify(o.note));
  await rp.close();
 }
