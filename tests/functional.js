@@ -5389,9 +5389,13 @@ console.log('\n=== the release panel quotes a price it then charges ===');
   /* ROUND NZ. The route lands on the tiers, not on whichever account section
      was last open, which by default is the sign in form. */
   const rp=document.getElementById('relplan');
-  if(rp){ACC_OPEN='account'; rp.click(); await new Promise(r=>setTimeout(r,120));
-   out.landed=S.tab===TAB.SETTINGS&&ACC_OPEN==='billing'&&!!document.getElementById('plantiers');
-   ACC_OPEN='account'; setTab(TAB.FIELD);}
+  /* 17 OCTOBER. The route opens the paywall over the screen, with nothing
+     marked because nothing locked was pressed, the same door a lock's See
+     tiers opens (ui/paywall.js). It still never lands on the sign in form. */
+  if(rp){ACC_OPEN='account'; const t0=S.tab; rp.click(); await new Promise(r=>setTimeout(r,120));
+   out.landed=paywallIsOpen()&&PW.k===null&&PW.door===null&&S.tab===t0&&ACC_OPEN==='account'
+    &&document.querySelectorAll('#paywall .pw-c').length>0;
+   paywallClose(); setTab(TAB.FIELD);}
   if(out.begin){RUN.phase='run'; RUN.idx=RUN.plan.length; relCoolDown();}
   out.after=CURP.meter.unique.length;
   out.spent=out.after-out.before;
@@ -5402,7 +5406,7 @@ console.log('\n=== the release panel quotes a price it then charges ===');
  ok(run.begin===false,'so Begin is not offered at all, rather than offered and disabled');
  ok(run.route===true,'and the panel routes to the one thing that changes the answer');
  ok(run.label==='See the tiers'&&run.landed===true,
-  'and the route opens Billing at the tiers, not the last account section: '
+  'and the route opens the paywall with the tiers, not the last account section: '
   +JSON.stringify(run.label)+' landed '+run.landed);
  ok(run.spent===0,'and nothing is spent, '+run.spent+' patterns went out the door');
  ok(!/\b0 patterns of the 0\b/.test(run.sub),

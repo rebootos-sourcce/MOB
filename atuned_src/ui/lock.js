@@ -35,7 +35,8 @@
    A phone has no hover, so on a coarse pointer the press that would have acted
    explains instead, and a press on a locked control does that on every
    pointer. It says what is locked in one plain sentence, which tier unlocks
-   it, and carries one button, See tiers, which opens Billing on the tiers page.
+   it, and carries one button, See tiers, which opened Billing on the tiers
+   page and opens the paywall over the screen since 17 October (lockGo below).
 
    A PANEL is a place that would have held a list or a picture: a rail section,
    the Character page, a Compass view reached with nothing to draw. It cannot
@@ -245,14 +246,41 @@ function lockTabs(){
    the way it reaches every button: Enter and Space fire a click, and a click
    with no pointer behind it (detail 0) puts focus on the panel's button, so a
    person without a mouse can press See tiers without having to find it. */
-function lockGo(){
+/* SEE TIERS OPENS THE PAYWALL, round of 17 October ("Paywall mockup five ...
+   That's the one I'd like to build"). It opened Billing at the tiers page, a
+   page of 488 words with no price in view on a phone, and the lock knew which
+   ring had been pressed and threw it away on the way. The paywall
+   (ui/paywall.js) is a sheet over the screen the person is on, and it is
+   handed the ring, so it marks that ring on every card and puts the one solid
+   button on the cheapest tier that opens it, and the control to put focus back
+   on when it closes.
+
+   WHICH RING. A lock panel names its own (data-lock-panel). A description in
+   the tooltip names the control that built it (TIP.goFor, ui/tip.js), which
+   survives the panel hiding as focus moves onto its button. A depth preset that is only partly
+   locked carries every key it leaves out (data-lock-keys, ui/fieldbar.js), and
+   the ring that counts is the one the highest tier opens, since that tier is
+   the cheapest that opens all of them. */
+function lockWant(keys){
+ var best=null;
+ String(keys||'').split(/\s+/).forEach(function(k){
+  var n=planNeed(k); if(!n)return;
+  if(!best||planRank(n.k)>planRank(planNeed(best).k))best=k;});
+ return best;}
+function lockGo(from){
+ var p=from&&from.closest?from.closest('[data-lock-panel]'):null, k=null, back=from||null;
+ if(p)k=p.getAttribute('data-lock-panel');
+ else if(typeof TIP!=='undefined'&&TIP.goFor&&TIP.goFor.getAttribute){
+  back=TIP.goFor; k=back.getAttribute('data-lock')||lockWant(back.getAttribute('data-lock-keys'));}
  if(typeof TIP!=='undefined')TIP.hide();
- if(typeof planTiersOpen==='function')planTiersOpen();}
+ if(typeof paywallOpen==='function')paywallOpen(k,back);
+ else if(typeof planTiersOpen==='function')planTiersOpen();}
 (function(){
  if(typeof document==='undefined')return;
  document.addEventListener('click',function(ev){
   var t=ev.target; if(!t||!t.closest)return;
-  if(t.closest('.tip-go,.lk-go')){ev.preventDefault(); ev.stopPropagation(); lockGo(); return;}
+  var go=t.closest('.tip-go,.lk-go');
+  if(go){ev.preventDefault(); ev.stopPropagation(); lockGo(go); return;}
   var l=t.closest('[data-lock]');
   if(!l||l.getAttribute('aria-disabled')!=='true')return;
   ev.preventDefault(); ev.stopImmediatePropagation();

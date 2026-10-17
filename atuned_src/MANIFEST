@@ -90,6 +90,7 @@ ui/keep.js
 ui/auth.js
 ui/plans.js
 ui/account.js
+ui/paywall.js
 ui/practitioner.js
 ui/personas.js
 ui/rootsum.js

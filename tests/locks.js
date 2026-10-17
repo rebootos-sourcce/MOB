@@ -25,7 +25,8 @@
         locked is untouched
      2  its description is reachable by hover, by keyboard focus and by a tap,
         says what is locked and which tier unlocks it, and carries a See tiers
-        button of 44 pixels that lands on Billing at the tiers page
+        button of 44 pixels that opens the paywall with that ring marked (it
+        landed on Billing at the tiers page until 17 October)
      3  a press on it does not act
      4  AND THE DATA IS NOT DRAWN. The wheel and Frames hold no saboteur, complex,
         hyper or character target for a plan that cannot see them, the Body
@@ -60,6 +61,14 @@ async function lockGate(browser,FILE,ok,booted){
   const as=async(tier,status)=>{
    await pg.evaluate(([tier,status])=>{
     SIGHT_PLAN=null;
+    /* THE OWN RECORD PAST THE GIFT. The paywall reads the person's own record
+       on a worked example (pwPlan and pwGift, ui/paywall.js), and since PR 109
+       an own record inside the gift sees everything and meets the gift's own
+       state, with no cards to mark. This gate measures a lock on Gordon, so the
+       own record behind him has spent the gift: GIFT_N keys, nothing typed */
+    const own=PROF_BY[PEOPLE[0].nm];
+    if(own){ own.meter=own.meter||{lines:0,unique:[],first:null,last:null,giftAt:null}; own.meter.unique=own.meter.unique||[];
+     for(let n=own.meter.unique.length;n<GIFT_N;n++)own.meter.unique.push(meterKey(1+Math.floor(n/LINES_PER_CH),'Rtruth',n%LINES_PER_CH)); }
     const g=PEOPLE.findIndex(x=>x.nm==='Gordon'); loadP(g);
     CURP.plan={tier:tier,status:status===undefined?(tier==='free'?'':'active'):status,
      granted:0,carried:0,base:null,since:null,until:null};
@@ -143,12 +152,26 @@ async function lockGate(browser,FILE,ok,booted){
    const set1=await pg.evaluate(()=>JSON.stringify(layChosen()));
    ok(set1===(await pg.evaluate(()=>JSON.stringify(layChosen()))),tag+'the tap did not switch the layer on');
    await pg.tap('#tip .tip-go'); await pg.waitForTimeout(700);}
-  /* See tiers lands on Billing at the tiers page */
-  const landed=await pg.evaluate(()=>({tab:S.tab===TAB.SETTINGS,acc:ACC_OPEN,tiers:!!document.getElementById('plantiers'),
-   you:((document.getElementById('ptyou')||{}).textContent||'').replace(/\s+/g,' ')}));
-  ok(landed.tab&&landed.acc==='billing'&&landed.tiers,tag+'See tiers opens Billing on the tiers page, '+JSON.stringify(landed));
-  ok(/Your tier\s*Free/.test(landed.you)&&/Locked: saboteurs, unlocked on tier one and above/.test(landed.you),
-   tag+'and the page says first which tier the person has and what is locked, '+landed.you);
+  /* SEE TIERS OPENS THE PAYWALL, 17 October (ui/paywall.js). It landed on
+     Billing at the tiers page; it opens a sheet over the screen now, with the
+     ring that was pressed marked on every card and the tier SIGHT says opens
+     it as the one door, and the person stays on the screen they were on. The
+     expectation moved with the route and asks as much as it did: where the
+     press lands, that the page says which tier the person has, and which tier
+     opens what was locked. */
+  const landed=await pg.evaluate(()=>({open:typeof paywallIsOpen==='function'&&paywallIsOpen(),k:PW.k,door:PW.door,
+   field:S.tab===TAB.FIELD,
+   doorCard:!!document.querySelector('#paywall .pw-c.door[data-pt="'+(PW.door||'none')+'"]'),
+   cards:document.querySelectorAll('#paywall .pw-c').length,
+   came:document.querySelectorAll('#paywall .pw-rg.came[data-k="sab"]').length,
+   tip:((document.querySelector('#paywall .pw-c[data-pt="'+(PW.door||'none')+'"] .pw-rg[data-k="sab"]')||{getAttribute:()=>''}).getAttribute('data-tl')),
+   you:((document.querySelector('#paywall .pw-hd .pw-here')||{}).textContent||'').replace(/\s+/g,' ')}));
+  ok(landed.open&&landed.field&&landed.k==='sab'&&landed.door===need('sab')&&landed.doorCard,
+   tag+'See tiers opens the paywall over the Field, saboteurs pressed, the door on the tier SIGHT names, '+JSON.stringify(landed));
+  ok(landed.cards>0&&landed.came===landed.cards,tag+'the pressed ring is marked on every card, '+landed.came+' of '+landed.cards);
+  ok(/You are here\s*Free/.test(landed.you)&&landed.tip==='Opens at '+G.tierNm[need('sab')].toLowerCase(),
+   tag+'and the sheet says which tier the person has and which tier opens what was locked, '+JSON.stringify([landed.you,landed.tip]));
+  await pg.evaluate(()=>paywallClose());
 
   /* ---- 3 · THE DATA IS NOT DRAWN, ON THE WHEEL AND ON FRAMES ---- */
   await as('free');
@@ -233,8 +256,13 @@ async function lockGate(browser,FILE,ok,booted){
   ok(/Unlocked on tier three and above|Unlocked on tier \w+ and above/.test(cp.text)&&cp.go==='See tiers'&&cp.gw>=44&&cp.gh>=44,
    tag+'saying which tier opens it, with a 44 pixel See tiers, '+cp.text+' '+cp.gw+'x'+cp.gh);
   await pg.evaluate(()=>{document.querySelector('#masksview .lk-go').click();}); await pg.waitForTimeout(500);
-  ok(await pg.evaluate(()=>S.tab===TAB.SETTINGS&&ACC_OPEN==='billing'&&!!document.getElementById('plantiers')),
-   tag+'and that button lands on Billing at the tiers page');
+  /* the panel's See tiers opens the paywall too, over the Character page,
+     with the masks marked and their tier as the door (17 October) */
+  const mp=await pg.evaluate(()=>({open:paywallIsOpen(),k:PW.k,door:PW.door,on:S.tab===TAB.MASKS,
+   came:document.querySelectorAll('#paywall .pw-rg.came[data-k="mask"]').length}));
+  ok(mp.open&&mp.on&&mp.k==='mask'&&mp.door===need('mask')&&mp.came>0,
+   tag+'and that button opens the paywall over the Character page at the tier that opens the masks, '+JSON.stringify(mp));
+  await pg.evaluate(()=>paywallClose());
 
   /* ---- 8 · THE RAIL AND THE LISTS, which must say locked and not nothing ---- */
   await as('free');

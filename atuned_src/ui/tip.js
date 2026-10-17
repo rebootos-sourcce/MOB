@@ -45,7 +45,7 @@ var TIP=(function(){
  var MINW=200;      /* below this the panel goes to the sheet instead of shrinking */
  var DELAY=380;     /* hover intent. under 300 the panel fires while crossing */
  var GRACE=120;     /* the crossing tolerance, and the exit duration */
- var EL=null, CUR=null, TO=null, HOLD=null, RESTORE=null;
+ var EL=null, CUR=null, TO=null, HOLD=null, RESTORE=null, GOFOR=null;
 
  function el(){
   if(EL)return EL;
@@ -188,6 +188,7 @@ var TIP=(function(){
   if(CUR&&CUR!==owner&&CUR.classList)CUR.classList.remove('tip-open');
   var e=el();
   e.innerHTML=build(d);
+  GOFOR=d.go?(owner||null):null;
   e.style.setProperty('--tc',d.c||'var(--accent)');
   CUR=owner||null;
 
@@ -408,7 +409,16 @@ var TIP=(function(){
   document.addEventListener('click',function(ev){
    if(EL&&EL.contains(ev.target)&&ev.target.closest('.tip-x')){hide();}});}
 
+ /* goFor is the carrier whose description put the door button in the panel,
+    read only. A locked control's See tiers has to say which lock it belongs
+    to, and the click lands on the panel's own button, which knows nothing of
+    the carrier (ui/lock.js). It is not CUR, because CUR is cleared on hide and
+    focus moving onto that button hides the panel: the keyboard path, Enter
+    on a lock and then Enter on See tiers, would arrive with no carrier. The
+    button is rebuilt on every show, so the last carrier that built one is the
+    one the button belongs to. */
  return {wire:wire, show:showFor, showAt:showAt, hide:hide, sheet:sheet,
+         get goFor(){return GOFOR;},
          set DELAY(v){DELAY=v;}, get DELAY(){return DELAY;}};
 })();
 TIP.wire();
