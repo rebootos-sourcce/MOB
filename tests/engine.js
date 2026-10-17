@@ -2479,7 +2479,7 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
   ok(planSight(mk('one'),true).all&&planSight(mk('one'),false).locked.map(x=>x.k).join()==='cx,hy,sup,reg,mask',
    'a paid tier inside the gift sees everything, and after it sees its own rung');
   ok(planNextSight(null,true)===null&&planNextSight(null,false).to.k==='one','inside the gift there is no next rung of sight to name');
-  ok(E.planSightSay(null,true)==='your own reading, with saboteurs, complexes, hyper complexes, character, the registers and the masks',
+  ok(E.planSightSay(null,true)==='your own reading, with saboteurs, complexes, hyper complexes, character, the registers and the masks, while your gift lasts',
    'what the gift sees is said off the table, '+E.planSightSay(null,true));
   ok(planUpgrade(null)&&planUpgrade(null).to.k==='one'&&E.planBuyable('one')&&!E.planBuyable('gift'),
    'the gift buys nothing and is never bought: the ladder and checkout read the plan alone');}

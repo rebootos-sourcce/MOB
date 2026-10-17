@@ -116,7 +116,11 @@ function planTiersHtml(){
  var bud=(typeof CURP!=='undefined'&&CURP&&typeof meterBudget==='function')?meterBudget(CURP):null;
  var al=bud&&bud.allow;
  var signed=(typeof authSession==='function')&&!!authSession();
- var seeNow=planSight(pl), nowT=planOf(pl);
+ /* the gift is the lock's own answer (lockGift, ui/lock.js), so this block and
+    every padlock agree: it said "Locked: saboteurs" here to a person whose
+    saboteurs were drawn on the Field the same minute */
+ var gift=(typeof lockGift==='function')&&lockGift();
+ var seeNow=planSight(pl,gift), nowT=planOf(pl);
  /* WHICH TIER THE PERSON HAS, FIRST, and what it does and does not show them.
     The row marked "You are on this" is further down, and a person deciding
     whether to pay should not have to scroll to learn where they stand. The
@@ -125,7 +129,7 @@ function planTiersHtml(){
   +'<div class="ac-gh">The tiers</div>'
   +'<div class="pt-you" id="ptyou"><div class="pt-sh">Your tier</div>'
   +'<p class="pt-yn"><b>'+esc(nowT.nm)+'</b></p>'
-  +'<p>You see '+esc(planSightSay(pl))+'.</p>'
+  +'<p>You see '+esc(planSightSay(pl,gift))+'.</p>'
   +(seeNow.locked.length?'<p class="pt-lk">'+lockMarkHtml()+'<span>Locked: '
     +esc(planLockedSay(seeNow.locked.map(function(g){return g.k;})))+'.</span></p>':'')
   +'</div>'

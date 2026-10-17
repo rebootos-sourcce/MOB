@@ -437,10 +437,14 @@ function planAdds(k){
  return sightRows().filter(function(g){return g.need===k;});}
 /* WHAT A PLAN SEES, SAID AS ONE CLAUSE for a sheet that has a line for it. The
    reading everybody has is the stem, and what the plan adds is a list off
-   SIGHT, so this types no rung. */
+   SIGHT, so this types no rung. Inside the gift it says the gift is why, since
+   it sits under "Your tier: Free" on the tiers page, and a free person told
+   they see the whole chain with no reason given would read it as what free
+   is. */
 function planSightSay(pl,gift){
  var s=planSight(pl,gift), seen=sightRows().filter(function(g){return s.sees[g.k];}).map(function(g){return g.nm;});
- return 'your own reading'+(seen.length?', with '+planList(seen):', without what is running it');}
+ return 'your own reading'+(seen.length?', with '+planList(seen):', without what is running it')
+  +(gift?', while your gift lasts':'');}
 /* THE LOCKED ROWS, GROUPED BY THE TIER THAT UNLOCKS THEM, as clauses: saboteurs,
    unlocked on tier one and above. Both the tiers page and a partly locked
    preset say this, so it is said here once. keys are SIGHT keys. */

@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2128 6b7614b0 2026-10-17 02:43"><head><meta charset="utf-8">
+<html lang="en" data-build="v2129 ffc5ad03 2026-10-17 02:47"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -18218,10 +18218,14 @@ function planAdds(k){
  return sightRows().filter(function(g){return g.need===k;});}
 /* WHAT A PLAN SEES, SAID AS ONE CLAUSE for a sheet that has a line for it. The
    reading everybody has is the stem, and what the plan adds is a list off
-   SIGHT, so this types no rung. */
+   SIGHT, so this types no rung. Inside the gift it says the gift is why, since
+   it sits under "Your tier: Free" on the tiers page, and a free person told
+   they see the whole chain with no reason given would read it as what free
+   is. */
 function planSightSay(pl,gift){
  var s=planSight(pl,gift), seen=sightRows().filter(function(g){return s.sees[g.k];}).map(function(g){return g.nm;});
- return 'your own reading'+(seen.length?', with '+planList(seen):', without what is running it');}
+ return 'your own reading'+(seen.length?', with '+planList(seen):', without what is running it')
+  +(gift?', while your gift lasts':'');}
 /* THE LOCKED ROWS, GROUPED BY THE TIER THAT UNLOCKS THEM, as clauses: saboteurs,
    unlocked on tier one and above. Both the tiers page and a partly locked
    preset say this, so it is said here once. keys are SIGHT keys. */
@@ -67774,8 +67778,10 @@ function planSection(m,o){
     : (ends?'<div class="sh-row"><span>State</span><b>ends '+esc(ends)+'</b></div>':'')))
   +'<div class="sh-row"><span>New ground</span><b>'+esc(al.say)+'</b></div>'
   /* WHAT THE PLAN SHOWS, off SIGHT (engine/plan.js). It said everything while
-     sight was not for sale, ruled back on 1 October. */
-  +'<div class="sh-row"><span>You can see</span><b>'+esc(planSightSay(pl))+'</b></div>'
+     sight was not for sale, ruled back on 1 October. Inside the gift it is
+     everything again, with the gift named as the reason, read off the lock's
+     own answer so this row and the padlocks cannot disagree. */
+  +'<div class="sh-row"><span>You can see</span><b>'+esc(planSightSay(pl,(typeof lockGift==='function')&&lockGift()))+'</b></div>'
   /* "RERUNNING ANYTHING ALREADY OPEN COSTS NOTHING, ALWAYS" CAME OFF, round
      NW, 22.K17. This is the plan sheet, read while deciding what a tier
      buys, and the claim was false: measured, a release at an address
@@ -69596,7 +69602,11 @@ function planTiersHtml(){
  var bud=(typeof CURP!=='undefined'&&CURP&&typeof meterBudget==='function')?meterBudget(CURP):null;
  var al=bud&&bud.allow;
  var signed=(typeof authSession==='function')&&!!authSession();
- var seeNow=planSight(pl), nowT=planOf(pl);
+ /* the gift is the lock's own answer (lockGift, ui/lock.js), so this block and
+    every padlock agree: it said "Locked: saboteurs" here to a person whose
+    saboteurs were drawn on the Field the same minute */
+ var gift=(typeof lockGift==='function')&&lockGift();
+ var seeNow=planSight(pl,gift), nowT=planOf(pl);
  /* WHICH TIER THE PERSON HAS, FIRST, and what it does and does not show them.
     The row marked "You are on this" is further down, and a person deciding
     whether to pay should not have to scroll to learn where they stand. The
@@ -69605,7 +69615,7 @@ function planTiersHtml(){
   +'<div class="ac-gh">The tiers</div>'
   +'<div class="pt-you" id="ptyou"><div class="pt-sh">Your tier</div>'
   +'<p class="pt-yn"><b>'+esc(nowT.nm)+'</b></p>'
-  +'<p>You see '+esc(planSightSay(pl))+'.</p>'
+  +'<p>You see '+esc(planSightSay(pl,gift))+'.</p>'
   +(seeNow.locked.length?'<p class="pt-lk">'+lockMarkHtml()+'<span>Locked: '
     +esc(planLockedSay(seeNow.locked.map(function(g){return g.k;})))+'.</span></p>':'')
   +'</div>'
@@ -72659,11 +72669,19 @@ var SHOW_DOES={
 function showOwnPlan(){
  var own=(typeof PROF_BY!=='undefined')?PROF_BY[PEOPLE[0].nm]:null;
  return (own&&own.plan)||null;}
+/* WHETHER THE OWN RECORD IS INSIDE THE GIFT, off its own meter, for the same
+   reason the plan is read off it: CURP is the example's here. Inside the gift
+   the own profile already shows every layer the example shows, so this line
+   told a new person that saboteurs "open on tier one" on a profile where they
+   were drawn that minute. */
+function showOwnGift(){
+ var own=(typeof PROF_BY!=='undefined')?PROF_BY[PEOPLE[0].nm]:null;
+ return !!own&&planInGift((own.meter&&own.meter.unique)||[]);}
 function showLine(what){
  var head='A worked example shows every reading and runs nothing.';
  if(what==='import')return head+' Open your own profile first, then load the file.';
  var does=SHOW_DOES[what];
- var nx=planNextSight(showOwnPlan());
+ var nx=planNextSight(showOwnPlan(),showOwnGift());
  var tail=nx
   ?(function(t){return t.charAt(0).toUpperCase()+t.slice(1);})(planList(nx.adds.map(function(g){return g.nm;})))
    +' show here, and on your own profile they open on '+nx.to.nm.toLowerCase()+'.'
@@ -78015,5 +78033,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005118567"></div>
+<div id="eof" hidden data-len="005119807"></div>
 </body></html>
