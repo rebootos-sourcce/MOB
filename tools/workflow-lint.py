@@ -128,6 +128,10 @@ BROWSER = {
 # a worked example shows everything and runs nothing, ruled 16 October
 # (engine/showonly.js). Report only until three green runs.
     'examples-showonly': ('node tests/examples-showonly.js', 20),
+# words about ending a life or danger now: no release, no question, the crisis
+# door beside the entry (engine/safe.js), 17 October. Report only until three
+# green runs.
+    'safepage':      ('node tests/safepage.js', 20),
 # the allowance, five seats, 17 October (tests/allowance.js). Report only until
 # three green runs.
     'allowance':     ('node tests/allowance.js', 20),

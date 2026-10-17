@@ -814,7 +814,11 @@ function parseStory(text){
     fetter, imprint or path, and every reader of hits below and of this
     result's hits sees only what counts. It is kept, not erased: marksOf
     draws it struck and the Story page names it. */
- var all=scanStory(text), hits=[], denied=[], others=[], byBand={}, byChg={}, imprints=[];
+ /* AN ENTRY ABOUT ENDING A LIFE OR DANGER NOW READS NOTHING, 17 October
+    (engine/safe.js). Scanning nothing is the whole change: the result is
+    built by the same lines below on an empty list, so its shape is exactly an
+    entry that named no feeling, and no reader of it needs to know why. */
+ var all=srcSafe(text)?[]:scanStory(text), hits=[], denied=[], others=[], byBand={}, byChg={}, imprints=[];
  /* AND A HIT ABOUT SOMEONE ELSE GOES TO others, S2, by the same rule: kept,
     listed, and counted nowhere. A denied hit is never also in others. */
  all.forEach(function(h){(h.neg?denied:h.other?others:hits).push(h);});

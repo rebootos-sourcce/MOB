@@ -17,6 +17,8 @@ if(typeof module!=='undefined'&&module.exports){
                  srcHear:srcHear, srcHear:srcHear, srcPrior:srcPrior, srcTurn:srcTurn,
                  SRC_DIM_ORDER:SRC_DIM_ORDER, SRC_DIM_CUE:SRC_DIM_CUE, SRC_DO:SRC_DO,
                  srcDims:srcDims, srcNext:srcNext,
+  /* the stop */  SAFE_WORDS:SAFE_WORDS, SAFE_SAY_V:SAFE_SAY_V, SAFE_WORK:SAFE_WORK, SAFE_TOPIC:SAFE_TOPIC,
+                 SAFE_ABOUT:SAFE_ABOUT, srcSafe:srcSafe, safeOf:safeOf,
                  SRC_KINDS:SRC_KINDS, SRC_OUTCOMES:SRC_OUTCOMES,
                  srcAsked:srcAsked, srcAskedMax:srcAskedMax,
   /* undo */     undoPush:undoPush, undoPop:undoPop, undoDepth:undoDepth,
