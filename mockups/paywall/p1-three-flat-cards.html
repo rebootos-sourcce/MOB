@@ -79,7 +79,7 @@ body.embed .stage{height:100vh}
 .sheet{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--panel);border-radius:var(--r);
  width:min(1120px,calc(100vw - 48px));max-height:calc(100% - 32px);overflow:hidden;padding:28px 36px 22px}
 body.dark .sheet{border:1px solid var(--edge-2)}
-.status{min-height:0;font-size:14px;color:var(--mid)}
+.status{min-height:0;margin:0;font-size:14px;color:var(--mid)}
 .status:not(:empty){margin-top:8px}
 
 /* the exit: a ring with a cross, the product's close, 44 by 44, top left like his example */
@@ -368,7 +368,7 @@ const W={
  stopLink:'Stop or change plan',
  restore:'Restore', restoreMeans:'Already paying? Sign in to bring your plan here.',
  terms:'Terms', privacy:'Privacy',
- failed:'The payment did not go through, so nothing was charged. Press again to go back to the payment page.',
+ failed:'The payment did not go through, so nothing was charged.',
  acctHead:'Make an account to pay.',
  acctWhy:'An account holds your plan, so you can stop it later.',
  acctNew:'Make account and pay', acctOld:'Sign in and pay',

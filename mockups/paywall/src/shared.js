@@ -77,7 +77,7 @@ const W={
  stopLink:'Stop or change plan',
  restore:'Restore', restoreMeans:'Already paying? Sign in to bring your plan here.',
  terms:'Terms', privacy:'Privacy',
- failed:'The payment did not go through, so nothing was charged. Press again to go back to the payment page.',
+ failed:'The payment did not go through, so nothing was charged.',
  acctHead:'Make an account to pay.',
  acctWhy:'An account holds your plan, so you can stop it later.',
  acctNew:'Make account and pay', acctOld:'Sign in and pay',
