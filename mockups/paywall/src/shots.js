@@ -55,13 +55,24 @@ function measure(){
  /* the lines a person reads, for the voice gate */
  const lines=[];sheet.querySelectorAll('h1,p,b,span,button,a,div,label,li').forEach(el=>{if(!vis(el))return;
   const t=Array.from(el.childNodes).filter(n=>n.nodeType===3).map(n=>n.textContent).join('').trim();if(t)lines.push(t);});
- return {lowest:Math.round(lowest),H,clipped:clipped.slice(0,6),scrolls,words,presses:presses.length,small,minText:+minT.toFixed(2),minTextWhat:minTw,minMark:+minM.toFixed(2),minMarkWhat:minMw,fails,lines,sheetH:Math.round(sr.height)};}
+ /* an open tooltip (p5): on screen, and its words at 4.5 to 1 against its own ground */
+ let tip=null;const tb=document.querySelector('.tip5.on');
+ if(tb){const r=tb.getBoundingClientRect();const g=ground(tb);let mt=99;
+  tb.querySelectorAll('b,span').forEach(el=>{if(!Array.from(el.childNodes).some(n=>n.nodeType===3&&n.textContent.trim()))return;
+   const rr=ratio(over(parse(getComputedStyle(el).color),g),g);if(rr<mt)mt=rr;});
+  tb.querySelectorAll('svg.ri').forEach(el=>{const rr=ratio(over(parse(getComputedStyle(el).color),g),g);if(rr<3)fails.push('tip mark '+rr.toFixed(2));});
+  if(mt<4.5)fails.push('tip text '+mt.toFixed(2));
+  if(r.left<0||r.top<0||r.right>Wd+.5||r.bottom>H+.5)clipped.push('tip5 off screen');
+  tip={text:tb.innerText.replace(/\s+/g,' ').trim(),min:+mt.toFixed(2),words:tb.innerText.split(/\s+/).filter(w=>/[A-Za-z0-9$]/.test(w)).length};
+  tb.querySelectorAll('b,span').forEach(el=>{const t=Array.from(el.childNodes).filter(n=>n.nodeType===3).map(n=>n.textContent).join('').trim();if(t)lines.push(t);});}
+ return {tip,lowest:Math.round(lowest),H,clipped:clipped.slice(0,6),scrolls,words,presses:presses.length,small,minText:+minT.toFixed(2),minTextWhat:minTw,minMark:+minM.toFixed(2),minMarkWhat:minMw,fails,lines,sheetH:Math.round(sr.height)};}
 (async()=>{const b=await chromium.launch();
- async function shot(file,w,h,q,name){
-  const pg=await b.newPage({viewport:{width:w,height:h},deviceScaleFactor:w<700?2:1});
+ async function shot(file,w,h,q,name,act){
+  const pg=await b.newPage({viewport:{width:w,height:h},deviceScaleFactor:w<700?2:1,hasTouch:w<700});
   pg.on('pageerror',e=>{bad++;console.log('PAGE ERROR',file,q,e.message);});
   pg.on('request',r=>{if(!r.url().startsWith('file:')&&!r.url().startsWith('data:')){bad++;console.log('NETWORK',file,r.url());}});
   await pg.goto('file://'+path.join(DIR,file)+'?'+q);await pg.waitForTimeout(200);
+  if(act){await act(pg,w);await pg.waitForTimeout(150);}
   const m=await pg.evaluate(measure);
   await pg.screenshot({path:path.join(OUT,name)});await pg.close();
   const ok=!m.err&&!m.scrolls&&!m.clipped.length&&!m.fails.length&&!m.small.length;
@@ -79,6 +90,13 @@ function measure(){
    await shot(f,w,h,'s=open&t=hy',v+'-open-touched-hyper-'+w+'.png');
    await shot(f,w,h,'s=open&t=sab&r=1',v+'-open-refund-on-'+w+'.png');}
   if(v==='p3')for(const [w,h] of SIZES)await shot(f,w,h,'s=open&t=sab&pv=three',v+'-open-preview-tier-three-'+w+'.png');
+  if(v==='p5')for(const [w,h] of SIZES){
+   /* a locked ring on tier one's card: hovered on a desktop, tapped on a phone */
+   const sel='.c5[data-pt="one"] .rg5[data-k="hy"]';
+   await shot(f,w,h,'s=open&t=sab',v+'-open-tip-locked-'+w+'.png',async(pg,w)=>{if(w<700)await pg.tap(sel);else await pg.hover(sel);});
+   /* the number's own meaning, reached by the keyboard alone */
+   await shot(f,w,h,'s=open&t=sab',v+'-open-tip-number-'+w+'.png',async(pg)=>{await pg.focus('.c5[data-pt="one"] .hl');});
+   await shot(f,w,h,'s=closed&t=cx',v+'-closed-tip-practitioner-'+w+'.png',async(pg,w)=>{if(w<700)await pg.tap('.pn');else await pg.hover('.pn');});}
   if(v==='p4')for(const [w,h] of SIZES)await shot(f,w,h,'s=open&t=sab&all=1',v+'-open-all-plans-'+w+'.png');
   console.log('done',f);}
  fs.writeFileSync(MJ,JSON.stringify(M,null,1));

@@ -56,7 +56,8 @@ const VERSIONS=[
  {id:'p1-three-flat-cards',n:1,name:'Three flat cards',file:'p1.js',css:'p1.css',theme:'punch'},
  {id:'p2-icon-grid',n:2,name:'Icon grid then plans',file:'p2.js',css:'p2.css',theme:'punch'},
  {id:'p3-figure-leads',n:3,name:'The figure leads',file:'p3.js',css:'p3.css',theme:'dark'},
- {id:'p4-one-plan',n:4,name:'One plan, one sentence',file:'p4.js',css:'p4.css',theme:'punch'}];
+ {id:'p4-one-plan',n:4,name:'One plan, one sentence',file:'p4.js',css:'p4.css',theme:'punch'},
+ {id:'p5-flat-cards-v2',n:5,name:'Flat cards, second cut',file:'p5.js',css:'p5.css',theme:'punch'}];
 const pick=process.argv[2]?process.argv[2].split(','):null;
 VERSIONS.forEach(v=>{
  if(!fs.existsSync(path.join(dir,v.file)))return;
