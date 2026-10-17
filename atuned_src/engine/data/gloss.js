@@ -189,7 +189,7 @@ var UNPACK_BASE={
     which keeps the bare key above. Two meanings sat on one Summary page. */
  'field:expression':'Expression is the part of your coherence that gets past the charge you carry.',
  /* the line every surface counts held from, BELOW THE LINE in compute.js */
- 'the line':'The line is the point where the charge at one address reaches 4 and starts to cost your body.',
+ 'the line':'The line is the point where the charge at one address reaches 40% and starts to cost your body.',
  /* YOUR PATTERNS, the trace graph's screen (ui/loopread.js, engine/loop.js).
     Each word below is a label that block prints, and its meaning is the
     graph's own: confirmed is a user_confirmed edge, unanswered is everything

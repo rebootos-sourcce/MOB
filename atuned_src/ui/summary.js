@@ -73,7 +73,7 @@ function SUM_WORD(n){return SUM_WORDS[n]||String(n);}
 /* ---- the strip. all analytics at a glance, which is what was asked for. ---- */
 function sumGlance(r,noCQ){
  var acc=(typeof accuracy==='function')?accuracy(r):null;
- var e=(r.X+r.Y+r.Z)/3;
+ var e=(r.X+r.Y+r.Z)/3, U={unread:r.unread};
  var row=[
   /* the glance row's coherence ring reads the tier too, for the same reason */
   /* A PERCENT IS ALREADY OUT OF A HUNDRED. The third line read "of 100" under
@@ -83,9 +83,16 @@ function sumGlance(r,noCQ){
      like third tier tiny information that no one's ever going to read." The
      line stays only where the figure has no unit of its own, which is where
      the scale is information. */
-  /* round PQ: the headline reading is a number and not a percent, on this
-     tile by name ("the Summary tile"), for coherence and the shadow below */
-  ['coherence', r.darkB, r.CQ, String(Math.round(r.CQ)), 'How closely you keep the 21 laws, all added up.',
+  /* EVERY TILE PRINTS ITS RING, 17 October, percent phase 2. Each row is
+     [label, seat, fill, figure, title, small print]; the fill is pct(kind) and
+     the figure is fmtPct(kind) off the same value (engine/pct.js), so the arc
+     and the pill are one reading. Before this the ring of carried depth drew
+     SQm*10 and its pill printed SQm to one decimal, pole and energy printed
+     two, and coherence and the shadow printed bare under round PQ, which the
+     16 October ruling supersedes for both, his words: "Instead of 0.0, site
+     wide, we need to convert those numbers into percent." Nought, or a
+     profile nothing has been read for, prints the dash. */
+  ['coherence', r.darkB, pct('cq',r.CQ)||0, fmtPct('cq',r.CQ,U), 'How closely you keep the 21 laws, all added up.',
    '', TIERCOL[r.tier]],
   /* THE LABEL SAID 0 TO 10 AND THE NUMBER GOES PAST 54. Measured across the
      roster: Gordon 54.7, Tomas 45.9, Ana 22.8. It is a sum over every address
@@ -98,7 +105,7 @@ function sumGlance(r,noCQ){
      BOTH ARE FIXED BY THE RULING OF 25 SEPTEMBER rather than here. DQ is the
      total shadow on all 112 over the most they can hold, so it has a ceiling
      of 100 and the ring is the figure, on the same scale as coherence. */
-  ['shadow weight', 'Root', r.DQ, String(Math.round(r.DQ)),
+  ['shadow weight', 'Root', pct('dq',r.DQ)||0, fmtPct('dq',r.DQ,U),
    'All the charge on all 112 addresses, against the most they could hold.',
    ''],
   /* THIS PRINTED THE OPPOSITE OF WHAT IT MEASURES. It was labelled "installed"
@@ -109,20 +116,20 @@ function sumGlance(r,noCQ){
      the product printed a person's carried load and told them it was the part
      of them that had been filled in, which is not a wording problem, it is a
      reading that says the reverse of the truth. */
-  ['carried depth', 'Root', r.SQm*10, r.SQm.toFixed(1),
+  ['carried depth', 'Root', pct('weight',r.SQm)||0, fmtPct('weight',r.SQm,U),
    'How deep the charge runs, on average, across the addresses carrying it.', ''],
   /* and this said 0 to 1 while reading 8.49. It is a mean of values clamped
      to 0 and 10, so ten is the ceiling and always was. */
-  ['pole', 'Heart', r.poleMean*10, r.poleMean.toFixed(2),
+  ['pole', 'Heart', pct('pole',r.poleMean)||0, fmtPct('pole',r.poleMean,U),
    'How much of each opposite is installed, on average, across the body.', ''],
-  ['energy', 'Solar', e*100, e.toFixed(2),
+  ['energy', 'Solar', pct('energy',e)||0, fmtPct('energy',e,U),
    'The average of vitality, awareness and will.', '']];
  /* THE TOLERANCE CAME OFF THIS ROW TOO. It read "of 100, plus or minus 11"
     on the third line of a glance tile, which is the smallest place in the
     product and the last place a lab readout belongs. Ruled with the rest of
     the class. The scale stays: every number says what it is out of, and that
     rule is the reason the third line exists at all. */
- if(acc)row.push(['identification','3rd Eye',acc.pct,acc.pct.toFixed(0)+'%',
+ if(acc)row.push(['identification','3rd Eye',pct('accuracy',acc.pct)||0,fmtPct('accuracy',acc.pct,U),
   'How much of you the instrument has actually measured.','']);
  /* SUPERSEDED ON 2 OCTOBER, CO-31: the third line no longer carries "of 10" or
     "of 1". A count against a total is a score at any scale, and he read it as
@@ -312,14 +319,16 @@ function sumStory(r){
    /* the weight is the reading. "of 10" made it a mark out of ten. */
    +seatB(String(held[0].cf).toLowerCase(),held[0].b,String(held[0].cf).toLowerCase(),'feeling')
    +' '+unp('axis')+', at a weight of '
-   +Math.round(held[0].sq)+'.'
+   /* a percent, 17 October, percent phase 2: the weight the address ring
+      beside it prints, the registry's weight kind */
+   +fmtPct('weight',held[0].sq)+'.'
    +(loud?' The biggest thing compounding on it is <b>'+esc(loud.nm)+'</b>.':'')
    +(stop?' Flow stops at the '+seatB(String(stop.p.n).toLowerCase(),stop.p.b,String(stop.p.n).toLowerCase(),'seat')
      +', which is where the charge is dense enough to close the seat.'
     :' No seat is closed, so what is held is not yet stopping flow.')
    /* ROUND RG. "Shadow weight is 54" was a bare figure under a term nobody
       on this page had been told. The term carries its sentence now. */
-   +' '+unp('shadow weight','Shadow weight')+' is '+Math.round(r.DQ)+'. The law furthest shut is '
+   +' '+unp('shadow weight','Shadow weight')+' is '+fmtPct('dq',r.DQ)+'. The law furthest shut is '
    +seatB(r.weakL.nm,r.weakL.b,r.weakL.nm.toLowerCase(),'law')+', at the '
    +seatB(String(r.weakL.b).toLowerCase(),r.weakL.b,String(r.weakL.b).toLowerCase(),'seat')+'.');
  }else{
@@ -444,11 +453,16 @@ function sumArch(r){
  var aff=(r.aff||[]).map(function(v,i){return {i:i,nm:(ARCH[i]||{}).nm||'',
    ic:(ARCH[i]||{}).ic, b:(ARCH[i]||{}).b||'Heart', d:(ARCH[i]||{}).v||'', v:v};})
   .filter(function(x){return x.nm;}).sort(function(a,b){return b.v-a.v;});
- var tot=aff.reduce(function(a,x){return a+x.v;},0)||1;
+ /* AND THE PERCENT IS HOW FULLY IT IS EXPRESSED. Ruled 16 October, his
+    words: "the archetypes themselves should be 100%. The limiting beliefs are
+    going to drag it down." These rows printed each archetype's share of all
+    twelve, the soul map's lean, which no story or release ever moves. The lean
+    still orders the rows, first and second; the figure is archExpr
+    (engine/archexpr.js), ring and pill both, as on the glass bar's orb. */
  return '<div class="pm-eye">Primary and secondary</div>'
-  +aff.slice(0,4).map(function(x){
+  +aff.slice(0,4).map(function(x){var ax=archExpr(x.i);
   return sumStructRow(x.nm, x.d, x.b,
-   x.v/tot*100, Math.round(x.v/tot*100)+'%', x.ic?'<path d="'+x.ic+'"/>':null,
+   pct('archetype',ax)||0, fmtPct('archetype',ax), x.ic?'<path d="'+x.ic+'"/>':null,
    ' data-arch="'+x.i+'"', false);}).join('');}
 function sumMasks(r,from,to){
  /* masks. weight on 0 to 10, so the arc is the weight and the pill is the value. */
@@ -463,7 +477,8 @@ function sumMasks(r,from,to){
    var md=(MASKS.filter(function(x){return x.nm===m.nm;})[0]||{}).v
      ||(m.bands||[]).join(' and ');
    return sumStructRow(m.nm, md, (m.bands||['Heart'])[0],
-    m.w*10, m.w.toFixed(1), null, ' data-mask="'+esc(m.nm)+'"');}).join('');}
+    /* a mask's load is a mean of sq, so it asks the weight kind, 17 October */
+    pct('weight',m.w)||0, fmtPct('weight',m.w), null, ' data-mask="'+esc(m.nm)+'"');}).join('');}
 function sumSeats(){
  /* the seats. load is measured and the ring is the load. */
  var seats=flSeats().filter(function(x){return x.load>0;})
@@ -480,7 +495,7 @@ function sumSeats(){
    return sumStructRow(x.p.n,
     x.held?'shut, so charge sits under it':'open, so charge passes through',
     x.p.n,
-    Math.min(100,x.load*100), Math.round(x.load*100)+'%', null,
+    pct('seatload',x.load)||0, fmtPct('seatload',x.load), null,
     ' data-seat="'+esc(x.p.n)+'"');}).join('');}
 function sumChain(r){
  /* the chain. counts, never against a total. */
@@ -908,7 +923,16 @@ function sumNameBlock(B,fallback){
 function accWord(c){return accCoverWord(c);}
 function sumPlate(r,B){
  var t=TIER_BY[r.tier]||null;
- var aw=(typeof accCover==='function')?accWord(accCover(r)):'';
+ var cov=(typeof accCover==='function')?accCover(r):null, aw=cov?accWord(cov):'';
+ /* THE FIGURE COMES BACK ONCE IT IS A READING, 17 October, percent phase 2.
+    The 14 October ruling took the bare score off this plate and it stands:
+    a percent of a defined maximum is not a raw score. While the laws are
+    still being answered most of the coherence figure is the default answer,
+    so the plate keeps the word (early, partial) and prints no figure that
+    claims a reading not taken. Once every law is answered (accCover complete,
+    where CQ stops moving) the pill prints CQ as the registry does and equals
+    its ring. Default taken by the team, DECISIONS.md, his to overrule. */
+ var cqp=(cov&&cov.complete&&!r.unread)?fmtPct('cq',r.CQ):null;
  return '<div class="s-plate">'
   +'<div class="s-pl-l">'+sumNameBlock(B,true)+'</div>'
   +'<div class="s-pl-r">'
@@ -926,8 +950,8 @@ function sumPlate(r,B){
       much has been measured, and the ring is a button to the core drill,
       where the figure sits with its range. The click router at the foot of
       this file sends any button it does not know to runCoreDrill. */
-   +cr(r.darkB,r.CQ,{size:'lg',label:'Coherence',raw:aw||'–',hot:false,act:true,data:'data-gl="core"',
-      title:'Coherence, '+(aw?aw+' reading':'not read yet')+'. Opens the figure and its range.',
+   +cr(r.darkB,pct('cq',r.CQ)||0,{size:'lg',label:'Coherence',raw:cqp||aw||'–',hot:false,act:true,data:'data-gl="core"',
+      title:'Coherence, '+(cqp?cqp:(aw?aw+' reading':'not read yet'))+'. Opens the figure and its range.',
       color:TIERCOL[r.tier]||undefined})
    /* and the word wears it too. A ring in one colour beside the same band
       printed in the body colour reads as two facts, not one. */
@@ -1001,7 +1025,8 @@ function sumNine(){
  var mx=Math.max.apply(null,top);
  return '<div class="sg-nine">'+C.map(function(c,i){var sq=top[i];
   return '<div class="sg-n'+(sq>0&&sq===mx?' top':'')+'" data-nine="'+esc(c.nm)+'">'
-   +cr(c.seat,sq*10,{size:'sm',raw:sq.toFixed(1),glyph:'<path d="'+c.ic+'"/>',label:c.nm})
+   /* the charge on the axis as a percent, 17 October, percent phase 2 */
+   +cr(c.seat,pct('charge',sq)||0,{size:'sm',raw:fmtPct('charge',sq),glyph:'<path d="'+c.ic+'"/>',label:c.nm})
    +'<span class="sg-n-t"><b>'+esc(c.nm)+'</b><em>'+esc(c.loc)+'</em></span></div>';}).join('')+'</div>';}
 /* THE DAY SLOT MOVED TO THE SIDE. It stood here, under the story and above
    the output row, full width, holding nothing until the daily summary was
@@ -1057,16 +1082,20 @@ function sumOutput(r){
   +(function(){
     var THIN=1.5;
     if(hot)return card('Release this first',hot.k,
-     hot.b+' seat, holding '+hot.sq.toFixed(1)
+     hot.b+' seat, holding '+fmtPct('weight',hot.sq)
       /* ROUND RG. "Points of expression" was a term of art on the same page
          where Expression is a numerology number, so one word meant two
          things a scroll apart. The headroom is coherence held back by the
          charge, which is what exHeadroom measures, and it is said that way. */
-      +(r.unread||!r.complete?'':'. What you carry holds back about '+rhead.toFixed(1)
-        +' points of your coherence, and release can give them back'),
+      /* AND THE POINTS ARE A PERCENT, 17 October, percent phase 2. The
+         headroom is a gap on expression's own scale, nought to a hundred, so
+         three points is 3% (PERCENT-FRAMEWORK-2026-10-16.md, item 5), and a
+         gap that rounds to nothing says no sentence at all. */
+      +(r.unread||!r.complete||fmtPct('expression',rhead)===PCT_DASH?''
+        :'. What you carry holds back about '+fmtPct('expression',rhead)+' of your coherence, and release can give it back'),
      '<button class="btn s-oact" data-sout="rel" data-n="'+hot.i+'">Run a release</button>');
     if(r.heaviest&&(r.unread||rhead>=THIN))return card('Release this first',r.heaviest.k,
-     r.heaviest.b+' seat, below the line at '+r.heaviest.sq.toFixed(1)
+     r.heaviest.b+' seat, below the line, at '+fmtPct('weight',r.heaviest.sq)
       +'. The heaviest thing you are holding',
      '<button class="btn s-oact" data-sout="rel" data-n="'+r.heaviest.i+'">Run a release</button>');
     /* four words, so it is a label. "now" was the fifth and it was carrying
@@ -1077,8 +1106,8 @@ function sumOutput(r){
      'Coherence fills as you answer them. Until it is full, release has little to give back',
      '<button class="btn s-oact" data-sout="iq">Answer the laws</button>');
     if(r.heaviest)return card('What moves the reading','The twenty one laws',
-     (rhead>=0.05?'What you carry holds back about '+rhead.toFixed(1)+' points of your coherence, and release '
-      +'can give them back. Past that only the laws move it, and they move when you answer them or when what you do changes'
+     (fmtPct('expression',rhead)!==PCT_DASH?'What you carry holds back about '+fmtPct('expression',rhead)+' of your coherence, and release '
+      +'can give it back. Past that only the laws move it, and they move when you answer them or when what you do changes'
       :'Release has nothing left to give back to your coherence. What is left is the laws, and they move '
       +'when you answer them or when what you do changes'),
      '<button class="btn s-oact" data-sout="iq">Answer the laws</button>');
@@ -1269,15 +1298,16 @@ function sumAxes(r,bare){
      it assumes one shape of noun. */
   /* "of 10" made a weight a mark out of ten. V8, and ui/summary.js was its
      own named corpse: "at a weight of 7.4" is what ships, so this says it. */
+  /* the charge on the axis, as the ring of the nine prints it, 17 October */
   p.push('The heaviest of the nine is <b>'+esc(top.c.nm)+'</b>, at a weight of <b>'
-   +Math.round(top.sq)+'</b>. It sits at '+esc(top.c.addr)
+   +fmtPct('charge',top.sq)+'</b>. It sits at '+esc(top.c.addr)
    +', which you feel in the '+esc(top.c.loc)+'. The quality on the far side '
    +'of it is <b>'+esc(top.c.opp)+'</b>.');
   if(live.length>1){
    var rest=live.slice(1,4);
    p.push('Under it, '+rest.map(function(x){
      return '<b>'+esc(x.c.nm)+'</b> in the '+esc(x.c.loc)
-      +' at '+x.sq.toFixed(1);}).join(', ')
+      +' at '+fmtPct('charge',x.sq);}).join(', ')
     /* AND THE COUNT IS COUNTED. This said "five more" whatever the number
        was, which is the same defect as a gate that counts by hand. */
     /* and the number is spelled, because it opens a sentence and a sentence
@@ -1287,7 +1317,7 @@ function sumAxes(r,bare){
  }
  if(standing.length){
   p.push('Standing against them: <b>'+esc(standing[0].c.opp)+'</b> at <b>'
-   +standing[0].rep.toFixed(1)+'</b>'
+   +fmtPct('installed',standing[0].rep)+'</b>'
    +(standing.length>1?', and '+(standing.length-1)+' other'
      +(standing.length>2?'s':'')+' installed':'')
    +'. An address with the opposite installed conducts.');}
@@ -1351,7 +1381,7 @@ function sumIg(r){
  if(pts.length<2){
   body='<p class="cn-gp">'
    +(pts.length?'One reading with an integrity on it in this span, at <b>'
-     +pts[0].ig.toFixed(1)+'</b>. Two makes a line.'
+     +fmtPct('integrity',pts[0].ig)+'</b>. Two makes a line.'
     :'Nothing on the record for this span.')
    +'</p>';}
  else {
@@ -1362,12 +1392,12 @@ function sumIg(r){
   var d=xy.map(function(q,i){return (i?'L':'M')+q.x.toFixed(2)+','+q.y.toFixed(2);}).join(' ');
   var area=d+' L'+xy[xy.length-1].x.toFixed(2)+',100 L'+xy[0].x.toFixed(2)+',100 Z';
   var first=pts[0].ig, last=pts[pts.length-1].ig;
-  var dir=last>first?'up':(last<first?'down':'level');
+  var mv=pctMove('integrity',first,last), dir=!mv||!mv.moved?'level':(mv.up?'up':'down');
   var col=dir==='down'?'var(--bad)':(dir==='up'?'var(--good)':'var(--accent)');
   body=''
   +'<svg class="s-ig-g" viewBox="0 0 100 100" preserveAspectRatio="none" '
   +'aria-label="Integrity over the last '+esc(sr.span.nm.toLowerCase())
-  +', on a scale of nought to ten">'
+  +', from nothing to 100%">'
   /* the axis is nought to ten and never the range that happens to be there.
      integrity has two real ends, so a chart drawn to fit the data would make
      a quiet month look like a cliff and a good one look flat. */
@@ -1377,8 +1407,12 @@ function sumIg(r){
   +'<path d="'+d+'" fill="none" stroke="'+col+'" stroke-width="1.6" '
   +'vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>'
   +'</svg>'
-  +'<div class="s-ig-f"><span>'+first.toFixed(1)+'</span>'
-  +'<b>'+dir+'</b><span>'+last.toFixed(1)+'</span></div>';}
+  /* the two ends as percents, 17 October, percent phase 2: integrity's
+     scale is nought to ten (engine/pct.js), so 4.9 reads 49%. The word
+     between them is read off the two figures it sits between, so a move too
+     small to print is level and never "up" between two equal figures. */
+  +'<div class="s-ig-f"><span>'+fmtPct('integrity',first)+'</span>'
+  +'<b>'+dir+'</b><span>'+fmtPct('integrity',last)+'</span></div>';}
  return head+body+'</div>';}
 
 /* ---- one delegated listener for everything on this surface ---- */
