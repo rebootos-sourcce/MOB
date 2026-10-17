@@ -547,9 +547,13 @@ function fbPaint(){
   if(sayP){
    if(bt&&!mk)bt.insertAdjacentHTML('beforeend',lockMarkHtml());
    m.setAttribute('data-tip',sayP); m.setAttribute('data-tip-go',LOCK_GO);
-   m.setAttribute('data-tip-t',VIEWS[pi].nm);}
+   m.setAttribute('data-tip-t',VIEWS[pi].nm);
+   /* what it leaves out, so See tiers can open the paywall at the tier that
+      opens all of it (lockWant, ui/lock.js) */
+   m.setAttribute('data-lock-keys',hid.join(' '));}
   else{if(mk)mk.parentNode.removeChild(mk);
-   m.removeAttribute('data-tip'); m.removeAttribute('data-tip-go'); m.removeAttribute('data-tip-t');}});
+   m.removeAttribute('data-tip'); m.removeAttribute('data-tip-go'); m.removeAttribute('data-tip-t');
+   m.removeAttribute('data-lock-keys');}});
  /* THE RING IS HOW DEEP THE PICTURE GOES, NOT WHETHER IT IS A PRESET. GO in
     TASKS.md, his words: "And depth. It should already start at full depth."
     It did, and does: S.view opens on 3, Blueprint, every layer on, measured on

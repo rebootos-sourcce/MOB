@@ -8046,8 +8046,18 @@ const PLANS=[
     here, when the lead suite and its consent list are built. A record that
     already says tier four, a worked example or a test account, still reads
     tier four through planOf: this closes the door, it moves nobody. */
+ /* THE WORDS ARE THE OWNER'S OF 17 OCTOBER, and every term in them carries its
+    meaning in the same sentence (round PO): "we need to add our fourth tier,
+    which is practitioner. Which gets all of tier three plus they get to add
+    cohorts. And that's at 99 a month. And with the cohorts, they get to see
+    their cohorts analytics, create recipes, set up their protocol, and see
+    their analytics." It said "Manage profiles, build rituals and build
+    accountability" in the present tense, for a suite ui/practitioner.js says is
+    not there, so it says opens soon now and nothing in it is claimed built. The
+    paywall's Practitioner strip prints this row's d as its tooltip, so this is
+    the one place the sentence lives. */
  {k:'four',  nm:'Practitioner', own:true, per:'month', grant:1200, lead:true, built:false,
-  d:'The same twelve hundred as tier three, and the cohort lead suite. Manage profiles, build rituals and build accountability for the people you lead.'}];
+  d:'Everything in tier three, plus cohorts, which open soon. A cohort is a group of people you lead. You will see their analytics, the charts of how each of them moves. You will create recipes for them, sets of habits and rituals to practise, and set up their protocol, the practices each of them works through.'}];
 const PLAN_BY={}; PLANS.forEach(function(p){PLAN_BY[p.k]=p;});
 /* A TIER'S NAME INSIDE A SENTENCE. Five callers lowercased nm to write "Move
    to tier one" and "unlocked on tier two and above", which is right for a
@@ -8063,6 +8073,22 @@ function planNmIn(p){ return !p?'':(p.own?p.nm:p.nm.toLowerCase()); }
 function planBuyable(k){
  var p=PLAN_BY[k];
  return !!(p&&p.k!=='free'&&p.k!=='gift'&&p.built!==false);}
+/* WHETHER CHECKOUT IS OPEN AT ALL, which is a second question from whether a
+   tier is built. Paid checkout is closed on the server by its own switch,
+   STRIPE_BILLING_ENABLED=0 (reboot-os PR 31), until the owner approves the
+   release, and nothing on this side could tell: planBuyable said yes to tiers
+   one to three, so a screen drawn off it offered "Start tier one" and the press
+   went to the server to be refused. The paywall (ui/paywall.js) asks this
+   before it draws a press, and while it answers false every card says "Opens
+   soon" and carries nothing that can start a checkout.
+
+   IT DOES NOT CLOSE THE SERVER AND IT DOES NOT OPEN IT. The server's switch is
+   the gate; this is the instrument saying the same thing before anybody
+   presses. Opening paying is two words, this one and the server's, in the same
+   release. Billing's own Move to presses still go through planOpen and are
+   refused by the server exactly as they were: that route is left as it stood. */
+const PLAN_CHECKOUT_OPEN=false;
+function planCheckoutOpen(){ return PLAN_CHECKOUT_OPEN===true; }
 /* THE GIFT'S SIZE, NAMED ONCE. It is the gift row's grant above. planAllowance
    carried its own literal 100 in five places beside that row, which is the same
    number held twice and one edit away from two answers. */
@@ -20057,6 +20083,7 @@ if(typeof module!=='undefined'&&module.exports){
                  planNextSight:planNextSight, planAllowance:planAllowance,
                  planWeeks:planWeeks, GIFT_N:GIFT_N, WEEK_MS:WEEK_MS,
                  planUpgrade:planUpgrade, planBuyable:planBuyable, RUN_MAX:RUN_MAX, RUN_MIN:RUN_MIN,
+                 PLAN_CHECKOUT_OPEN:PLAN_CHECKOUT_OPEN, planCheckoutOpen:planCheckoutOpen,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  PLAN_PRICE:PLAN_PRICE, planPrice:planPrice, planLadder:planLadder,

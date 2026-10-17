@@ -305,6 +305,24 @@ repo root.
 Google Fonts cannot be fetched and the two optional figure rasters are absent.
 Both are environmental. The vector figure is inline and always renders.
 
+## The paywall
+
+    node tests/paywall.js
+
+Mockup five, built into the app on the owner's ruling of 17 October
+(`ui/paywall.js`). Real Chromium at 1600 by 1000 and 390 by 844, on free, on
+tier one and signed out, with checkout closed (the build's own state) and open
+(the `PAYWALL_PAY_OPEN` harness seam). It holds the sheet to one screen with
+nothing out of its card, every target at 44, text at 4.5 and marks at 3 in
+every lighting `LIGHTINGS` names, every ring's card by hover, tap and focus,
+the cards against `planLadder` and `SIGHT`, and every locked control on every
+surface `TABDEF` names opening the sheet at its own ring with focus put back
+on close. And the honest half: nothing in the sheet reaches the payment seam
+while checkout is closed, Practitioner is never sold while it is not built, a
+press while open goes through `planOpen` and nothing else, opening it writes
+no storage and sends no request, and on a worked example it reads the
+person's own plan. The count is read off the run and held by `floors.json`.
+
 ## The path simulation
 
 The engine gate asserts the path's contract. The simulation attacks it, by

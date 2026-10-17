@@ -7,6 +7,7 @@
     "Added 16 October: examples-showonly 845, read off its first green local run on 2d66ec82 (16 examples read off PEOPLE at five own tiers). engine raised 5751 to 5768 in the same change, which added the SHOW ONLY group; on the merge with main (387c94d0, whose CRISIS button group took main to 5767) the merged tree reads 5784, both groups kept. examples-showonly 845 to 850 on c0b01c8f, which added the crisis door check at each of the five tiers.",
     "Raised 17 October, functional 2632 to 2633, for the one check added with the left column seed fix (the seed waited for the page's own first touch of the store, tests/seed.js), read off CI on 3807e3b9, gates-browser (functional) job 117267910623.",
     "Raised 17 October, engine 5785 to 5788, for the three checks added with the top rung's name, Practitioner (the rung keyed four is named Practitioner, no plan row says tier four, planNmIn keeps its capital), read off a local run on the branch claude/tier-four-is-practitioner. copy stays 185: the banned row it added can only fail a surface, and it failed six on main's build before the rename and none after.",
+    "Added 17 October: paywall 531, read off its first green local run on the branch claude/paywall-build (tests/paywall.js, the paywall from mockup five at 1600 and 390, five states, every lighting, every locked control on free and tier one). Raised the same day to 541, for the ten checks that hold the false line, a new place in your body, off the sheet, read off a local run on claude/paywall-build.",
     "Raise a floor by editing this file on purpose, in the same change that adds the checks, from a green run. Never lower one to get green. Nothing writes this file.",
     "expected_red_max is the most expected red a gate may print. tools/floors.js fails a gate above its ceiling, and fails a gate that prints an expected red count with no ceiling here, so a failing check cannot be let off as expected red unseen. Added empty on 9 October: the lead sets each value from a clean full run, as printed, and until then the engine's floor step fails by name. It drops to 0 in the change that turns the expected reds green."
   ],
@@ -53,7 +54,8 @@
     "personas-tier": 44,
     "examples-showonly": 850,
     "valuefeltui": 20,
-    "record": 24
+    "record": 24,
+    "paywall": 541
   },
   "no_count": {
     "monitor": "all surfaces render"

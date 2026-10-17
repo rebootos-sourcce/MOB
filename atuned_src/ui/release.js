@@ -3326,8 +3326,13 @@ function relRender(){
  /* ROUND NZ. This went to Settings and landed on whichever section was last
     open, the sign in form by default, which says nothing about a plan. It
     opens Billing at the tiers now, ui/plans.js, still through setTab. */
+ /* AND SINCE 17 OCTOBER IT OPENS THE PAYWALL, over the screen, with nothing
+    marked, because nothing locked was pressed. A lock's See tiers opens the
+    paywall (ui/lock.js), and two buttons that say see the tiers must land in
+    one place. Billing is one press from the paywall's foot. */
  if((b=document.getElementById('relplan')))b.onclick=function(){relClose();
-  if(typeof planTiersOpen==='function')planTiersOpen(); else setTab(TAB.SETTINGS);};
+  if(typeof paywallOpen==='function')paywallOpen(null,null);
+  else if(typeof planTiersOpen==='function')planTiersOpen(); else setTab(TAB.SETTINGS);};
  if((b=document.getElementById('relclose')))b.onclick=relClose;
  if((b=document.getElementById('relrit')))b.onclick=function(){var lg=RUN.log.slice();relClose();ritOpen(lg);};
  /* RUN ANOTHER, round QM: "do you want to run another session, we would

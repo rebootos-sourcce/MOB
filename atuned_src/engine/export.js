@@ -43,6 +43,7 @@ if(typeof module!=='undefined'&&module.exports){
                  planNextSight:planNextSight, planAllowance:planAllowance,
                  planWeeks:planWeeks, GIFT_N:GIFT_N, WEEK_MS:WEEK_MS,
                  planUpgrade:planUpgrade, planBuyable:planBuyable, RUN_MAX:RUN_MAX, RUN_MIN:RUN_MIN,
+                 PLAN_CHECKOUT_OPEN:PLAN_CHECKOUT_OPEN, planCheckoutOpen:planCheckoutOpen,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  PLAN_PRICE:PLAN_PRICE, planPrice:planPrice, planLadder:planLadder,
