@@ -318,6 +318,10 @@ jobs:
           # padlock and the gift's one line on the first screen, and is still
           # on free (DECISIONS.md, TALLY ruling 8). New, so report only first.
           - { gate: gift, timeout: 20, command: node tests/gift.js }
+          # 17 October: patterns follow the money (tests/money.js), the pay cycle
+          # run's three red steps in engine/plan.js. Headless and fast. New, so
+          # report only first.
+          - { gate: money, timeout: 20, command: node tests/money.js }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

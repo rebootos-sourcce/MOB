@@ -50,7 +50,9 @@ const SHOTS = process.env.SHOTS || '';
 let n = 0; const fails = [];
 const ok = (c, m) => { n++; if (!c) fails.push(m); console.log((c ? '  ok    ' : '  FAIL  ') + m); };
 
-const S1 = '2026-10-01T00:00:00.000Z', U1 = '2026-11-01T00:00:00.000Z';
+/* in 2036, because a plan past its own end day is ended now (planPast,
+   engine/plan.js), and a period ending November 2026 would turn this red then */
+const S1 = '2036-10-01T00:00:00.000Z', U1 = '2036-11-01T00:00:00.000Z';
 const ACC = { id: 'acc_quit', research_id: 'rsh_quit', plan: 1, email: 'quit@example.invalid' };
 const CORS = { 'access-control-allow-origin': '*', 'access-control-allow-headers': 'authorization, content-type, x-funnel-credential',
   'access-control-allow-methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS' };
@@ -161,12 +163,12 @@ const stub = http.createServer((req, res) => {
     ok(stopped.own, tag + 'the open record is the person\'s own, so the plan is written to it');
     ok(!/\bends\b/.test(stopped.before), tag + 'a plan that renews shows no end day on Billing');
     ok(reads['Bearer t-stop'] > 1, tag + 'the return from the payment page is read again while the webhook lands, ' + reads['Bearer t-stop'] + ' reads');
-    ok(stopped.said.some(s => /^Tier one stops on \d{1,2} \w{3} 2026\. It stays on until then,/.test(s)),
+    ok(stopped.said.some(s => /^Tier one stops on \d{1,2} \w{3} 2036\. It stays on until then,/.test(s)),
       tag + 'the return says the day the plan stops and that it is on until then, got ' + JSON.stringify(stopped.said));
     ok(stopped.search === '?dev=1', tag + 'and ?billing= comes off the address, keeping ?dev=1, got ' + stopped.search);
     ok(stopped.plan.ends === U1 && stopped.k === 'one' && stopped.st === 'live', tag + 'the record carries the end day and is still tier one, in force, ' + JSON.stringify(stopped.plan));
     ok(stopped.disk && stopped.disk.ends === U1, tag + 'and it is saved, not only held in memory');
-    ok(/State ends \d{1,2} \w{3} 2026/.test(stopped.after), tag + 'Billing says on its State row the day it ends, got ' + (stopped.after.match(/On .{0,80}/) || [''])[0]);
+    ok(/State ends \d{1,2} \w{3} 2036/.test(stopped.after), tag + 'Billing says on its State row the day it ends, got ' + (stopped.after.match(/On .{0,80}/) || [''])[0]);
     ok(stopped.resumed.some(s => /^Tier one renews on /.test(s)) && stopped.resumedEnds === null && !/State ends/.test(stopped.resumedPane),
       tag + 'turning it back on says it renews and the end day goes, got ' + JSON.stringify(stopped.resumed));
 
@@ -201,7 +203,7 @@ const stub = http.createServer((req, res) => {
         authKeep({ token: tok, email: 'quit@example.invalid', accountId: 'acc_quit' });
         funnelKeep({ id: 'fs_quit', anonymousId: 'anon_quit', credential: 'cred_quit' });
         STORE.set('source.profile.sync', JSON.stringify({ id: 'atuned.primary-profile', version: 2, hash: 'h' }));
-        CURP.plan = plan ? { tier: 'one', status: 'active', granted: 0, carried: 0, base: 120, since: '2026-10-01T00:00:00.000Z', until: '2026-11-01T00:00:00.000Z', ends: null }
+        CURP.plan = plan ? { tier: 'one', status: 'active', granted: 0, carried: 0, base: 120, since: '2036-10-01T00:00:00.000Z', until: '2036-11-01T00:00:00.000Z', ends: null }
           : { tier: 'free', status: '', granted: 0, carried: 0, base: null, since: null, until: null, ends: null };
         pSave(); window.__id = CURP.id; window.__n = PROFILES.length;
         ACC_OPEN = 'account'; setTab(TAB.SETTINGS); renderAccount(); status('probe, before delete');

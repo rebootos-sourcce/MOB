@@ -3570,8 +3570,10 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
    if(k==='POST /v1/auth/signout')return auth==='Bearer t-probe'?send(200,{ok:true}):send(401,{error:'sign in'});
    /* the plan read back: each of these sessions is an account whose billing
       says one thing, in the shape reboot-os store.js billingOf sends. t-probe
-      sends no billing key at all, which is a server from before that field */
-   const SPAN={since:'2026-10-01T00:00:00.000Z',until:'2026-11-01T00:00:00.000Z'};
+      sends no billing key at all, which is a server from before that field.
+      The period is in 2036 because a plan past its end day is ended now
+      (planPast, engine/plan.js) */
+   const SPAN={since:'2036-10-01T00:00:00.000Z',until:'2036-11-01T00:00:00.000Z'};
    const BILL={'Bearer t-paid':Object.assign({tier:'one',status:'active'},SPAN),
     'Bearer t-late':Object.assign({tier:'one',status:'past_due'},SPAN),
     'Bearer t-ended':Object.assign({tier:'one',status:'canceled'},SPAN),
@@ -3719,6 +3721,10 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
   o.rbPaid=await as('t-paid'); o.rbDisk=onDisk();
   o.rbAgain=await as('t-paid');
   o.rbLate=await as('t-late');
+  /* and Billing's State row holds it, not only a line that fades (17 October,
+     tests/money.js holds the arithmetic) */
+  o.rbLateRow=(function(){var d=document.createElement('div'); d.innerHTML=planSection(meterRead(CURP));
+   var r=d.querySelector('#planlate'); return r?d.textContent.replace(/\s+/g,' '):'';})();
   o.rbEnded=await as('t-ended');
   await as('t-paid'); o.rbNone=await as('t-none');
   await as('t-paid'); o.rbOdd=await as('t-odd');
@@ -3802,13 +3808,15 @@ console.log('\n=== sign in, against a stub of the real server, and keeps nothing
  ok(o.manOff&&!o.manOff.ok&&o.manOff.say===reach,'and with no network it says so rather than hanging, got '+JSON.stringify(o.manOff));
  /* the plan read back off the account, through ui/auth.js authPlanTake */
  ok(o.own,'the plan walk runs on a real record, one PROFILES holds');
- ok(o.rbPaid.took==='live'&&o.rbPaid.free==='one'&&o.rbPaid.plan.status==='active'&&o.rbPaid.plan.until==='2026-11-01T00:00:00.000Z'
+ ok(o.rbPaid.took==='live'&&o.rbPaid.free==='one'&&o.rbPaid.plan.status==='active'&&o.rbPaid.plan.until==='2036-11-01T00:00:00.000Z'
   &&o.rbPaid.said[0]==='Tier one is on this record now.',
   'a paid account lands its tier on the open record and says so after, got '+JSON.stringify(o.rbPaid));
  ok(o.rbDisk&&o.rbDisk.tier==='one'&&o.rbDisk.status==='active','and the record on the disk carries it, got '+JSON.stringify(o.rbDisk));
  ok(o.rbAgain.took==='same'&&o.rbAgain.said[0]==='probe, before the plan read','read again, nothing moves and nothing is said');
  ok(o.rbLate.took==='live'&&o.rbLate.free==='one'&&/did not go through/.test(o.rbLate.said[0])&&o.rbLate.said[1]==='fail',
   'past due keeps the tier and holds a line about the card, got '+JSON.stringify(o.rbLate.said));
+ ok(/State\s*the card did not go through/.test(o.rbLateRow)&&/Everything you have opened still runs\. New patterns wait until the card does/.test(o.rbLateRow),
+  'and Billing\'s State row says the card did not go through, what still runs and what waits, for as long as it is so, got '+JSON.stringify(o.rbLateRow.slice(0,240)));
  ok(o.rbEnded.free==='free'&&o.rbEnded.plan.tier==='one'&&o.rbEnded.plan.status==='canceled'
   &&o.rbEnded.said[0]==='Tier one has ended, so this record reads Free now.'&&o.rbEnded.said[1]==='fail',
   'a cancelled plan reads free, keeps which tier ended, and says so on a held line, got '+JSON.stringify(o.rbEnded.said));
@@ -3927,7 +3935,7 @@ const plan=await page.evaluate(()=>{
  o.boundAtBoot=(typeof PLAN_HOST==='function');
  profileSheet(); o.free=txt();
  CURP.plan={tier:'two',status:'active',granted:800,carried:0,base:100,
-  since:'2026-09-01T00:00:00Z',until:'2026-10-01T00:00:00Z'};
+  since:'2036-09-01T00:00:00Z',until:'2036-10-01T00:00:00Z'};
  CURP.meter.unique=new Array(320).fill(0).map((_,i)=>'a'+i);
  profileSheet(); o.two=txt();
  /* a cancelled record must not read as the tier written on it */

@@ -10,6 +10,8 @@
     "Added 17 October: paywall 531, read off its first green local run on the branch claude/paywall-build (tests/paywall.js, the paywall from mockup five at 1600 and 390, five states, every lighting, every locked control on free and tier one). Raised the same day to 541, for the ten checks that hold the false line, a new place in your body, off the sheet, read off a local run on claude/paywall-build. Raised to 563 on the merge with main at 53ce7146, for the gift state the sheet shows now the gift sees everything (PR 109), read off a local run on 2ced0fc4.",
     "Added 17 October: allowance 84, read off its first green local run on claude/allowance-fixes (tests/allowance.js, the allowance review of five seats). engine raised 5788 to 5791 in the same change, for the three whole address checks of group 38a.",
     "Added 17 October: gift 64, read off its first green local run on claude/gift-shows-everything (a new person from the quiz's link at 1600 and 390; the build from origin/main 054ca583 read 30 passed, 34 failed). engine raised 5785 to 5798 and examples-showonly 850 to 855 in the same change, which added the gift's engine group and the inside-or-past-the-gift check at each of the five own tiers. On the merge with main at 9a162d14 (Practitioner 5788, allowance 5791) the merged tree reads engine 5804, both sides kept.",
+    "Added 17 October: money 54, read off its first green local run on claude/patterns-follow-money (tests/money.js, the pay cycle run's three red steps in engine/plan.js). It read 24 passed, 30 failed on main's 9a162d14 engine.js.",
+    "Raised 17 October, functional 2633 to 2634, for the one check added with patterns follow the money (Billing's State row holds the refused card line), read off CI on bef4e302, gates-browser (functional) job 117473888293.",
     "Raise a floor by editing this file on purpose, in the same change that adds the checks, from a green run. Never lower one to get green. Nothing writes this file.",
     "expected_red_max is the most expected red a gate may print. tools/floors.js fails a gate above its ceiling, and fails a gate that prints an expected red count with no ceiling here, so a failing check cannot be let off as expected red unseen. Added empty on 9 October: the lead sets each value from a clean full run, as printed, and until then the engine's floor step fails by name. It drops to 0 in the change that turns the expected reds green."
   ],
@@ -26,7 +28,7 @@
     "collide": 388,
     "funnel": 657,
     "design": 192,
-    "functional": 2633,
+    "functional": 2634,
     "copy": 185,
     "reset": 39,
     "storage": 120,
@@ -59,7 +61,8 @@
     "valuefeltui": 20,
     "record": 24,
     "paywall": 563,
-    "allowance": 84
+    "allowance": 84,
+    "money": 54
   },
   "no_count": {
     "monitor": "all surfaces render"

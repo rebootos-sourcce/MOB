@@ -137,6 +137,9 @@ BROWSER = {
 # the gift sees everything and is still free, ruled in DECISIONS.md and kept at
 # round PK (tests/gift.js). Report only until three green runs.
     'gift':          ('node tests/gift.js', 20),
+# patterns follow the money, 17 October (tests/money.js). Report only until
+# three green runs.
+    'money':         ('node tests/money.js', 20),
 }
 # P0 Alpha acceptance: move to the blocking browser matrix, and mutation-test each
 # one so a future refactor cannot silently return it to report-only.

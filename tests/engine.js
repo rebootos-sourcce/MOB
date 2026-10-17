@@ -6246,7 +6246,10 @@ g('NZ2 · the plan the server holds, laid onto a record');
 {
  const {planFromServer,planOf,planState,validateProfile,SCHEMA_V,GIFT_N,planAllowance}=E;
  const free={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null};
- const S1='2026-10-01T00:00:00.000Z', U1='2026-11-01T00:00:00.000Z', S2='2026-11-01T00:00:00.000Z', U2='2026-12-01T00:00:00.000Z';
+ /* in 2036, because a plan is ended by its own end date now (planPast,
+    engine/plan.js) and these reads name no day: a period that ran out in
+    November 2026 would turn this group red on the day it ran out */
+ const S1='2036-10-01T00:00:00.000Z', U1='2036-11-01T00:00:00.000Z', S2='2036-11-01T00:00:00.000Z', U2='2036-12-01T00:00:00.000Z';
  const many=n=>new Array(n).fill(0).map((_,i)=>'k'+i);
  /* never paid, on a free record: nothing a person can see moves */
  const a=planFromServer(free,null,[]);
@@ -6303,7 +6306,8 @@ g('NZ3 · a plan stopped on the payment page says the day it ends, and is still 
 {
  const {planFromServer,planOf,planState,validateProfile,SCHEMA_V,blankProfile}=E;
  const free={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null,ends:null};
- const S1='2026-10-01T00:00:00.000Z', U1='2026-11-01T00:00:00.000Z';
+ /* in 2036, for the reason NZ2 gives: an end day that has passed ends the plan */
+ const S1='2036-10-01T00:00:00.000Z', U1='2036-11-01T00:00:00.000Z';
  const many=n=>new Array(n).fill(0).map((_,i)=>'k'+i);
  ok(blankProfile().plan.ends===null,'a blank record has no end day, got '+JSON.stringify(blankProfile().plan));
  const on=planFromServer(free,{tier:'one',status:'active',since:S1,until:U1,ends:null},many(140));
