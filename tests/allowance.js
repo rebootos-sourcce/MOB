@@ -6,7 +6,7 @@
    five seats". A pattern is one unit of the allowance: one line at one
    address down one channel, counted the first time it is opened.
 
-     env NODE_PATH=/opt/node22/lib/node_modules PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers \
+     env NODE_PATH=/opt/node22/lib/node_modules PLAYWRIGHT_BROWSERS_PATH=$PW_DIR \
        node tests/allowance.js
      ENGINE=file        the headless half against another engine.js
      ALLOWANCE_HTML=file the browser half against another build
