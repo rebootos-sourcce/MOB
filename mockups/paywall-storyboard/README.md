@@ -200,5 +200,11 @@ and it says so. These are the ones that fail a rule a person can see:
       flock -o -w 3000 /tmp/atuned-browser.lock \
       node mockups/paywall-storyboard/build.js
 
-`capture.js` takes an optional path to another build. `shots/frames.json` holds
+`capture.js` takes an optional path to another build. Each run logs how many
+requests tried to reach the real server: two, both refused by the browser
+before they left, from a sign in kept in the browser being checked at page
+load before the stub was attached.
+
+Seen in passing and not a paywall finding: on a phone, the panel that holds the
+layer buttons lets text from the page behind it show through (A1, B5). `shots/frames.json` holds
 the exact words each frame showed, read off the page during the capture.

@@ -104,6 +104,9 @@ main{max-width:1500px;margin:0 auto;padding:14px 16px 40px;display:grid;grid-tem
 .stage.w390 img{max-width:min(100%,390px)}
 .stage.tall{max-height:78vh;overflow:auto;align-items:flex-start}
 .stage.tall img{max-height:none}
+.stage.zoom{overflow:auto;justify-content:flex-start;align-items:flex-start;max-height:82vh}
+.stage.zoom img{max-width:none!important;cursor:zoom-out}
+.stage img{cursor:zoom-in}
 .card{max-width:640px;padding:28px;font-size:16px;align-self:center}
 .card p{margin:0 0 12px}
 .hint{color:var(--dim);font-size:13px;margin:6px 0 0}
@@ -136,7 +139,7 @@ function draw(){
  if(f.card)st.innerHTML='<div class="card"><p><b>No picture for this frame.</b></p><p>'+esc(ST[f.state])+'</p><p>'+esc(f.see)+'</p></div>';
  else{var im=f.img[W]; st.innerHTML=im?'<img alt="'+esc(f.n+', '+f.title+', at '+W+' wide')+'" src="'+im.url+'" width="'+im.w+'" height="'+im.h+'">':'<div class="card">This width was not captured.</div>';
   st.scrollTop=0;}
- document.getElementById('hint').textContent=f.card?'':(f.tall?'A long page: scroll inside the picture. ':'')+(W===1600?'Desktop, 1600 by 1000.':'Phone, 390 by 844.');
+ document.getElementById('hint').textContent=f.card?'':(f.tall?'A long page: scroll inside the picture. ':'')+(W===1600?'Desktop, 1600 by 1000.':'Phone, 390 by 844.')+' Press the picture to see it at full size.';
  var q=(f.said&&f.saidText)?f.saidText[W]:'';
  document.getElementById('cap').innerHTML='<div class="n">'+esc(f.n)+' &middot; '+(f.seq==='A'?'The paywall':'The cancellation')+'</div>'
   +'<h2>'+esc(f.title)+'</h2>'
@@ -153,10 +156,16 @@ function draw(){
  document.getElementById('vd').setAttribute('aria-pressed',String(W===1600));
  document.getElementById('vp').setAttribute('aria-pressed',String(W===390));
  try{history.replaceState(null,'','#'+f.id);}catch(e){}}
+/* full size on a press, because a 1600 wide screen shrunk into a column is
+   too small to read, and the words are the point */
+document.getElementById('stage').addEventListener('click',function(e){
+ if(e.target.tagName==='IMG')this.classList.toggle('zoom');});
 function go(d){i=Math.max(0,Math.min(F.length-1,i+d)); draw();}
 document.getElementById('prev').onclick=function(){go(-1);};
 document.getElementById('next').onclick=function(){go(1);};
 jump.onchange=function(){i=+jump.value; draw();};
+/* a link to a frame by its id works after load too, not only on first open */
+window.addEventListener('hashchange',function(){var k=F.findIndex(function(f){return '#'+f.id===location.hash;}); if(k>=0&&k!==i){i=k; draw();}});
 document.getElementById('vd').onclick=function(){W=1600; draw();};
 document.getElementById('vp').onclick=function(){W=390; draw();};
 document.addEventListener('keydown',function(e){
