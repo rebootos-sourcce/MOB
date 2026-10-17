@@ -11,6 +11,16 @@
    same shape read the practitioner switch off after a reload on CI (run
    38886546412) and the overlay presses as the defaults (run 38873611132).
 
+   17 October, and that last sentence was wrong about whose reason it was. It
+   was never a late write. The page in those runs had a store the browser had
+   never connected, because the gates' own left column seed touched
+   localStorage at document start, the one moment Chromium can drop a page's
+   request for its store without a word. Nothing that page wrote, from its
+   first boot write on, reached any other page. tests/seed.js has the cause and
+   the measure, and the seed now waits for the page's own first touch. This
+   check stays: it is what turned a lost store into a failure by name, and it
+   is still the only thing that would see one come back.
+
    persisted(page, fn, arg, ms) opens a second, blank page in the same
    context, which shares the store and has no copy of its own, and waits up to
    ms (20 s) for fn(arg) to be true there. It answers true or false and never
