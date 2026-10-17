@@ -1536,6 +1536,47 @@ function meterPlan(p,nodeIds,chans,cap){
     if(n<0||n>=LINES_PER_CH)continue;
     var k=meterKey(id,ch,n); seen[k]=1; out.push(k);}}}
  return out;}
+/* A RUN OPENS WHOLE ADDRESSES, 17 October, the allowance review of five seats.
+   meterPlan above cuts key by key, so a cap that lands inside an address keeps
+   part of it: measured on main, three left against eight picked planned
+   2:Llimit:0, 2:Rlimit:0 and 2:Ltruth:0, the right reframe missing, and the
+   main Release button's twenty five keys covered six addresses and one key at
+   a seventh. RUN_MIN's own comment says why that is wrong: "a run has to cover
+   the address on both sides and both tracks to be a release at all".
+
+   So this takes an address whole or not at all. Whole is every channel that
+   still has an unopened line, which is four on new ground and fewer where a
+   channel is already fully open. The addresses that fit are chosen heaviest
+   first, by wts when the caller has weights and by the caller's own order when
+   it does not, and the plan is written in the caller's order so the release
+   card still finds each address in one block. An address that does not fit is
+   left out; a lighter one that does still goes in, because the room is the
+   person's and leaving it empty saves them nothing.
+
+   A cap of nought plans nothing. meterPlan reads nought as no cap and falls
+   back to twenty five, which tests/engine.js records as the reason the release
+   panel refuses above it; this one cannot be called into that.
+
+   meterPlan is untouched: the worked examples' histories are replayed through
+   it (engine/exdepth.js) and the protocol plan is asserted equal to it
+   (tests/practice.js), and neither is a run a person starts from the card. */
+function meterPlanWhole(p,nodeIds,chans,cap,wts){
+ var lim=(cap>0&&isFinite(cap))?Math.floor(cap):0;
+ if(!lim)return [];
+ var blocks=[], seenId={};
+ (nodeIds||[]).forEach(function(id,a){
+  if(seenId[id])return; seenId[id]=1;
+  var keys=[];
+  (chans||[]).forEach(function(ch){
+   var n=meterNext(p,id,ch); if(n>=0)keys.push(meterKey(id,ch,n));});
+  var w=(wts&&isFinite(+wts[a]))?+wts[a]:0;
+  if(keys.length)blocks.push({a:a,w:w,keys:keys});});
+ var room=lim, take={};
+ blocks.slice().sort(function(x,y){return (y.w-x.w)||(x.a-y.a);}).forEach(function(b){
+  if(b.keys.length<=room){take[b.a]=1; room-=b.keys.length;}});
+ var out=[];
+ blocks.forEach(function(b){if(take[b.a])out.push.apply(out,b.keys);});
+ return out;}
 /* ============================================================
    THE RERUN, 22.K17. DECISIONS.md rules it four times: "Anything
    already opened may be rerun without limit and without cost,

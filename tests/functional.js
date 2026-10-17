@@ -2982,8 +2982,11 @@ ok(relrun.distinct===relrun.plan,'and never repeats a line inside one run');
    Story and Seat toggle, and the selection is shown as what it is, each group
    with its count of patterns. */
 ok(!/Release your selections/i.test(relrun.setup)&&/Story/.test(relrun.setup)&&/Seat/.test(relrun.setup)
- &&/\d+ patterns/.test(relrun.setup)&&/Run speed/.test(relrun.setup)
- &&/Patterns/.test(relrun.setup)&&/Run release/.test(relrun.setup),
+ /* counted in lines and the dose named Times said since 17 October: a
+    pattern is the allowance's unit, and these count lines said, every pass
+    (tests/allowance.js, 8). The controls he named are all still here. */
+ &&/\d+ ?lines/.test(relrun.setup)&&/Run speed/.test(relrun.setup)
+ &&/Times said/.test(relrun.setup)&&/Run release/.test(relrun.setup),
  'the setup is what is picked, by story or seat with its patterns, run speed, how many patterns and one button: '
  +relrun.setup.slice(0,160));
 ok(!/patterns of the|thought lines? of new ground|you have left|empties the story/.test(relrun.setup),
@@ -5397,7 +5400,9 @@ console.log('\n=== the release panel quotes a price it then charges ===');
  ok(!/\b0 patterns of the 0\b/.test(run.sub),
   'the panel does not quote a price of nought against an allowance of nought, got '
   +JSON.stringify(run.sub));
- ok(/allowance/.test(run.note),'and the refusal says why, got '+JSON.stringify(run.note));
+ /* the reason is the empty card's since 17 October (tests/allowance.js): what
+    is spent, in the period's own word, and not the word allowance */
+ ok(/^This week's new patterns are all opened\./.test(run.note),'and the refusal says why, got '+JSON.stringify(run.note));
  console.log('  spent      '+JSON.stringify(run.note));
  /* AND THE PARTIAL CASE, which is the half a refusal would have broken. */
  const part=await rl.evaluate(async unique=>{
@@ -5416,8 +5421,12 @@ console.log('\n=== the release panel quotes a price it then charges ===');
    begin:!!document.getElementById('relgo'), before:CURP.meter.unique.length};
   if(out.begin){RUN.phase='run'; RUN.idx=RUN.plan.length; relCoolDown();}
   out.spent=CURP.meter.unique.length-out.before;
-  return out;},107);
- ok(part.left>0,'seven of the week spent leaves some, got '+part.left);
+  return out;},102);
+ /* TWO OF THE WEEK SPENT AND NOT SEVEN, 17 October. Three left is less than
+    one whole address, and a run opens whole addresses only now (meterPlanWhole,
+    engine/schema.js), so three left plans nothing new and the card offers the
+    rerun: tests/allowance.js holds that case. Eight left is the shorter run. */
+ ok(part.left>0,'two of the week spent leaves some, got '+part.left);
  ok(part.begin===true,'a short allowance is a shorter run and not a refused one');
  ok(part.plan===part.left,'the plan is exactly what is left, '+part.plan
   +' against '+part.left);
@@ -5426,7 +5435,12 @@ console.log('\n=== the release panel quotes a price it then charges ===');
  /* the price sentence that stood here was struck at round IG. What the
     panel owes a short allowance now is a run and not a quote: the plan above
     is exactly what is left and the run spends exactly that. */
- ok(part.sub===''&&part.note==='','and the panel quotes no price for it, got '
+ /* and one line says the run is shorter than what was picked, which is not a
+    price: it names addresses and room, never a count of patterns or what is
+    left, so round IG's cut stands (relShortSay, ui/release.js) */
+ ok(part.sub===''&&/^This run opens \d+ new address(es)?\. This week has room for \d+, and you picked \d+\.$/.test(part.note)
+  &&!/left|patterns? of/.test(part.note),
+  'and the panel quotes no price for it, only that it is shorter, got '
   +JSON.stringify([part.sub,part.note]));
  await rl.close();
 }
@@ -5459,7 +5473,12 @@ console.log('\n=== a rerun is picked on purpose, priced before it starts, and ch
   relPick(ids);
   out.left0=relLeft(); out.newOn=pressed('new'); out.rerunOn=pressed('rerun');
   out.beginNew=!!document.getElementById('relgo');
-  host.querySelector('[data-relmode="rerun"]').click();
+  /* THE EMPTY CARD'S FIRST PRESS IS RERUN THESE SINCE 17 OCTOBER, and the
+     toggle is not drawn on it (tests/allowance.js holds the press itself). The
+     rerun setup below is relMode(true), which both the toggle and that press
+     call, so what is asserted about the rerun card is unchanged. */
+  out.again=(document.getElementById('relrerun')||{}).textContent||''; out.rerunAt0=RUN.rerun;
+  relMode(true);
   out.rerunOn2=pressed('rerun'); out.rerun=RUN.rerun;
   out.note=(host.querySelector('.rel-note')||{}).textContent||'';
   out.beginRerun=!!document.getElementById('relgo');
@@ -5477,7 +5496,9 @@ console.log('\n=== a rerun is picked on purpose, priced before it starts, and ch
  ok(o.opened===4,'one address run once opens four lines, got '+o.opened);
  ok(o.bare===null,'an address with nothing open is offered no rerun');
  ok(o.left0===0,'the allowance is spent, got '+o.left0);
- ok(o.newOn==='true'&&o.rerunOn==='false','the panel opens on New, never on Rerun');
+ ok(o.rerunAt0===false&&o.newOn===null&&o.rerunOn===null&&o.again==='Rerun these',
+  'the spent panel opens on New, never on Rerun, and offers the rerun as its first press: '
+  +JSON.stringify([o.rerunAt0,o.newOn,o.rerunOn,o.again]));
  ok(o.beginNew===false,'and with nothing left New offers no run, as before');
  ok(o.rerunOn2==='true'&&o.rerun===true,'pressing Rerun picks the rerun');
  ok(/costs nothing/.test(o.note),'and its price is said before it begins, got '+JSON.stringify(o.note));
@@ -5491,7 +5512,9 @@ console.log('\n=== a rerun is picked on purpose, priced before it starts, and ch
  ok(o.lines===4,'while the four lines are counted as spoken, '+o.lines);
  ok(o.left1===0,'and the allowance reads what it read before, '+o.left1);
  ok(o.log===1,'only the address reached is released, '+o.log+' in the log');
- ok(o.after==='true'&&o.afterRerun===false,'and the next pick opens on New again');
+ /* on New, never carried over. The spent card draws no toggle since 17
+    October, so New is read off RUN.rerun and the empty card's own press */
+ ok(o.after===null&&o.afterRerun===false,'and the next pick opens on New again: '+JSON.stringify([o.after,o.afterRerun]));
  console.log('  rerun      '+JSON.stringify(o.note));
  await rp.close();
 }

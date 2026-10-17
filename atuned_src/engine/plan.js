@@ -343,7 +343,21 @@ function planOf(pl){
 /* A TIER THIS BUILD DOES NOT KNOW IS REFUSED, NOT ROUNDED TO FREE, the rule
    validateProfile already holds: a server one tier ahead of this file would
    otherwise downgrade everybody on it. refused names it and nothing moves. */
-function planFromServer(prev,b,unique){
+/* FREE RESTARTS FROM THE DAY A PAID PLAN STOPS, 17 October, the allowance
+   review of five seats, recorded in DECISIONS.md as a default taken and his to
+   overrule. Leaving a paid tier wrote base null, so planAllowance fell back to
+   the end of the gift and charged everything opened while paying against the
+   free weeks: measured, 1,500 opened and the gift out twenty weeks read 0 left
+   of 210, and the free tier opened nothing new for about 140 weeks, which is a
+   penalty for leaving. So the move off a paid tier writes base as the unique
+   count now and since as the day it was read, and planAllowance counts free's
+   weeks from that day. Ground opened before it is the person's and reruns
+   free, as it always did; only what is opened from here counts. A free record
+   read again keeps the base and since it holds, or the next boot would undo
+   the restart. A plan that stops in place, the same tier read back cancelled
+   or unpaid, moves base the same way, and its free weeks count from the day it
+   stopped (planFreeFrom). today is optional and an ISO string, for the gate. */
+function planFromServer(prev,b,unique,today){
  var pv=(prev&&typeof prev==='object')?prev:{};
  if(b&&typeof b==='object'&&!PLAN_BY[b.tier]){
   var k=planOf(prev).k, lv=planState(prev)==='live';
@@ -351,7 +365,13 @@ function planFromServer(prev,b,unique){
    status:(typeof pv.status==='string')?pv.status:'', wasStatus:(typeof pv.status==='string')?pv.status:''};}
  var paid=!!(b&&typeof b==='object'&&PLAN_BY[b.tier]&&b.tier!=='free'&&b.tier!=='gift');
  var next;
- if(!paid)next={tier:'free',status:'',granted:0,carried:0,base:null,since:null,until:null,ends:null};
+ var n=Array.isArray(unique)?unique.length:Number(unique); if(!isFinite(n)||n<0)n=0;
+ var at=(typeof today==='string'&&!isNaN(Date.parse(today)))?today:new Date().toISOString();
+ var wasPaid=!!(PLAN_BY[pv.tier]&&pv.tier!=='free'&&pv.tier!=='gift');
+ if(!paid)next={tier:'free',status:'',granted:0,carried:0,
+  base:wasPaid?Math.max(GIFT_N,Math.floor(n)):((pv.tier==='free'&&pv.base!=null)?pv.base:null),
+  since:wasPaid?at:((pv.tier==='free'&&typeof pv.since==='string')?pv.since:null),
+  until:null,ends:null};
  else {
   var since=(typeof b.since==='string')?b.since:null, until=(typeof b.until==='string')?b.until:null;
   /* THE DAY A STOPPED PLAN STOPS. Stopping on the payment page leaves tier,
@@ -364,12 +384,12 @@ function planFromServer(prev,b,unique){
      period, so base and the grant are untouched by it. */
   var ends=('ends' in b)?((typeof b.ends==='string')?b.ends:null):(pv.ends==null?null:pv.ends);
   var fresh=(pv.tier!==b.tier)||((pv.since==null?null:pv.since)!==since);
-  var n=Array.isArray(unique)?unique.length:Number(unique); if(!isFinite(n)||n<0)n=0;
+  var stopped=!fresh&&planState(pv)==='live'&&!!PLAN_DEAD[b.status];
   /* in the blank's own key order (schema.js), so a record written here and
      the same record after the boundary serialise the same */
   next={tier:b.tier, status:(typeof b.status==='string')?b.status:'',
    granted:fresh?0:(pv.granted||0), carried:fresh?0:(pv.carried||0),
-   base:fresh?Math.max(GIFT_N,Math.floor(n)):(pv.base==null?null:pv.base),
+   base:(fresh||stopped)?Math.max(GIFT_N,Math.floor(n)):(pv.base==null?null:pv.base),
    since:since, until:until, ends:ends};}
  var eq=function(k){return (pv[k]==null?null:pv[k])===(next[k]==null?null:next[k]);};
  var was=planOf(prev), now=planOf(next);
@@ -473,7 +493,7 @@ function planAllowance(pl,uniqueCount,giftAt,now){
  var used=Math.max(0,n);
  var giftLeft=Math.max(0,GIFT_N-used);
  if(giftLeft>0)return {source:'gift', left:giftLeft, of:GIFT_N, inGift:true,
-  base:0, spent:used, runs:Math.floor(giftLeft/RUN_MIN), weeks:0,
+  base:0, spent:used, runs:Math.floor(giftLeft/RUN_MIN), weeks:0, renews:null,
   /* what it is of, in words. "92 of the gift left" says ninety two of what. */
   say:giftLeft+' patterns left of the '+GIFT_N+' you were given'};
  var t=planOf(pl);
@@ -515,21 +535,51 @@ function planAllowance(pl,uniqueCount,giftAt,now){
     sits past the gift's end had a period written by the record store, and the
     store that wrote it writes the next one. */
  var weeks=1, total=granted;
- if(t.k==='free'&&base===GIFT_N){ weeks=planWeeks(giftAt,now); total=granted*weeks; }
+ /* AND AFTER A PAID PLAN STOPS, FROM THE DAY IT STOPPED (planFromServer and
+    planFreeFrom). That record's base sits past the gift because a period was
+    written, and on the rule above it read one grant of ten and never another,
+    so free opened ten patterns once and then nothing for good. */
+ var from=(t.k!=='free')?null:(base===GIFT_N?giftAt:planFreeFrom(pl));
+ if(t.k==='free'&&(base===GIFT_N||from)){ weeks=planWeeks(from,now); total=granted*weeks; }
  var left=Math.max(0,total-spent);
+ /* WHEN NEW ONES ARRIVE, as an ISO day or null, so a sentence that names the
+    day can be left out rather than invent one. A paid tier renews on the paid
+    period's end, which the server sends as until. Free renews at the start of
+    its next week, counted from the same day the weeks are. */
+ var fromMs=from?new Date(from).getTime():NaN;
+ var renews=(t.k==='free')
+  ?(isFinite(fromMs)?new Date(fromMs+weeks*WEEK_MS).toISOString():null)
+  :((planState(pl)==='live'&&typeof pl.until==='string'&&!isNaN(Date.parse(pl.until)))?pl.until:null);
  /* HOW MANY RUNS THAT IS, which is the unit a person actually acts in. Counted
     against the smallest run and not the largest: a run costs the minimum for
     what was picked, so what an allowance buys is answered by the floor. Saying
     nought runs on ten patterns was true only while every run cost twenty five. */
  var runs=Math.floor(left/RUN_MIN);
  return {source:t.k, left:left, of:total, inGift:false, base:base, spent:spent,
-  runs:runs, weeks:weeks,
+  runs:runs, weeks:weeks, renews:renews,
   say:!granted?'nothing left to open'
    /* more than one week's grant is only reachable by banking, and "18 of 10"
       says nothing, so a bank says what it is and what arrives next */
    :(left>granted?(left+' banked, and '+granted+' more arrive each '+t.per)
    :(runs>0?(left+' of '+granted+' left this '+t.per)
-    :(left+' left this '+t.per+', banking toward a run of '+RUN_MIN)))};}
+    /* ONLY FREE BANKS. A paid tier at nought read "0 left this month, banking
+       toward a run of 4", which is false: a paid period carries nothing over
+       (planFromServer writes carried 0 on every new one). So a paid tier says
+       what is left and nothing about a bank, and the plan sheet adds the day
+       new ones arrive off renews. */
+    :(t.k==='free'?(left+' left this '+t.per+', banking toward a run of '+RUN_MIN)
+     :(left+' left this '+t.per))))};}
+/* THE DAY FREE COUNTS FROM WHEN IT IS NOT THE GIFT'S END: the day a paid plan
+   stopped. A free record written by planFromServer off a paid one carries it as
+   since; a paid tier read back stopped carries the day it stops as ends, or the
+   end of its period as until. null when the record names none, and then free
+   reads one grant, the way it always did. */
+function planFreeFrom(pl){
+ if(!pl)return null;
+ var ok=function(d){return (typeof d==='string'&&!isNaN(Date.parse(d)))?d:null;};
+ if(pl.tier==='free')return ok(pl.since);
+ if(planState(pl)==='ended')return ok(pl.ends)||ok(pl.until)||ok(pl.since);
+ return null;}
 /* A LIST SAID THE WAY A PERSON SAYS IT: a, b and c. */
 function planList(a){
  return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' and '+a[a.length-1];}
