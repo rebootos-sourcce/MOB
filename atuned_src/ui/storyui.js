@@ -467,8 +467,27 @@ function stRead(){
  var marks=stMarks(t,ST_PARSED);
  STR={t:t,marks:marks,toks:marks.toks||(t?(t.match(/[A-Za-z']+/g)||[]).map(function(w){return {w:w};}):[]),
   heard:srcHear(t,srcPrior(ents))};}
+/* ============================================================
+   THE ENTRY srcSafe STOPS, 17 October (engine/safe.js). True while the words
+   in the box trip it, and after Commit of words that did, until the person
+   starts the next entry. The second is STV.safeSaid, page memory and
+   nothing else: it is not on the record, the draft, the entry, the export
+   or the outbox, so a reload forgets it and nothing about it can leave the
+   device. The engine already reads the words as nothing; this is only what
+   the page draws in place of the release and the question. Emmy's ruling,
+   17 October: the entry is saved as written, no modal, no sound, no red, no
+   "we noticed", one line and one door, once, and nothing escalates if it is
+   left alone. The release column stays reachable and is not offered.
+   ============================================================ */
+function stSafe(){
+ var t=ST_TEXT||'';
+ return t.trim()?srcSafe(t):!!STV.safeSaid;}
 /* the addresses this entry reaches, or the last committed entry's */
 function stFound(){
+ /* nothing off an entry srcSafe stops, and not the last entry's either: the
+    fall back below put an earlier entry's places in the release column
+    beside these words, which is a release offered on them by another door */
+ if(stSafe())return [];
  var found=[];
  if(ST_PARSED)ST_PARSED.imprints.forEach(function(im){var n=BY[im.node];if(n&&n.cf&&found.indexOf(n)<0)found.push(n);});
  return found.length?found:STV.lastFound;}
@@ -513,7 +532,10 @@ function stCommit(){
     asked, by the record's identity, and its reporter says what Commit would
     do on the person's own profile in place of the wall this was. */
  if(showRefuse('story'))return {ok:false,why:'example'};
- var kept=stFound(), k=ST_PARSED.imprints.length, bands=ST_PARSED.bands;
+ /* asked of the words, not of the page, so the tutorial's and the first
+    run's commits through here are held the same way (stSafe, above) */
+ var safe=srcSafe(ST_TEXT);
+ var kept=safe?[]:stFound(), k=ST_PARSED.imprints.length, bands=ST_PARSED.bands;
  /* A PRESS AFTER THE BROWSER REFUSED THE LAST ONE ASKS IT AGAIN, AND WRITES
     NOTHING TWICE. A refused save leaves the entry in this session and the
     words in the box (below), so the same words pressed again are the same
@@ -600,10 +622,13 @@ function stCommit(){
     not silence the next. */
  var text=ST_TEXT;
  ST_TEXT='';ST_PARSED=null;SRC_PASSED=false;if(typeof srcFresh==='function')srcFresh();STV.lastFound=kept;STV.lastT=entT;
+ /* the line stays where it was once the box empties, see stSafe */
+ STV.safeSaid=safe;
  /* the release takes the room on a desktop. On a phone it stays the bar
     with Run on it: widening it there would push Run off the first screen,
-    which is the one thing layout H exists to stop. */
- STV.focus=stPhone()?'write':'release';
+    which is the one thing layout H exists to stop. Not after an entry
+    srcSafe stopped: the page does not walk a person to a release on it. */
+ STV.focus=(stPhone()||safe)?'write':'release';
  /* the crisis line has said what the box is for, and the box has been used */
  STV.crisis=false;
  toYou();syncCh();if(typeof stRender==='function')stRender();render();
@@ -612,10 +637,13 @@ function stCommit(){
     as it stands. What the line may not do is report the commit as if every
     word had been read. */
  var hid=maskedRuns(text).length;
- status((k?'Committed. '+k+(k===1?' imprint':' imprints')+' written to the field.'
+ /* an entry srcSafe stopped is reported as kept and nothing else: the line
+    beside it already says so, and "nothing read as charge" would be a claim
+    about the words. And no sound, Emmy's ruling: a chime is a reward. */
+ status((safe?'Kept.':k?'Committed. '+k+(k===1?' imprint':' imprints')+' written to the field.'
   :'Kept. Nothing here read as charge, so nothing moved.')
   +(hid?' '+hid+(hid===1?' word':' words')+' hidden behind stars by dictation could not be read.':''));
- if(typeof sfx==='function')sfx('kept');
+ if(!safe&&typeof sfx==='function')sfx('kept');
  return {ok:true,k:k,kept:kept,bands:bands,text:text,t:entT,saved:true};}
 
 /* ============================================================
@@ -656,6 +684,8 @@ function stDraftBack(){
 
 /* refresh only what the text moves, so typing never loses the caret */
 function stRefresh(){
+ /* the next entry has started, so the line about the last one goes */
+ if(ST_TEXT&&ST_TEXT.trim())STV.safeSaid=false;
  stDraft();
  var keep=document.getElementById('sttext'), pos=keep?keep.selectionStart:0;
  /* the counter is gone, see stRender: nothing is written into .st-ct */
@@ -1035,6 +1065,9 @@ function srcPaint(){
     longer true, so it goes and the walk's own question comes back */
  if(SRC_DQ&&SRC_DW&&ST_TEXT.indexOf(SRC_DW)<0){SRC_DQ='';SRC_DW='';}
  var turn=srcTurn(heard,{typed:!!ST_TEXT.trim(),passed:SRC_PASSED});
+ /* after Commit the box is empty and the engine has nothing to hear, so the
+    page's own memory keeps the line up until the next entry starts */
+ if(turn.move==='open'&&stSafe())turn={move:'safe'};
  /* THE LIVE MARK. A dot beside the name that breathes while Source AI is
     idle and holds lit while it is reading, see srcHearing. It is drawn and
     carries no word, because "thinking" printed on a scripted reader would be
@@ -1071,7 +1104,18 @@ function srcPaint(){
    +'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 5h15v10.5H10l-4.5 4v-4h-1z"/><path d="M10 8.6l-1.1 2.6M14.2 8.6l-1.1 2.6"/></svg>'
    +'</button></div>';
  var q=turn.move==='open'||turn.move==='listen'?srcQuestion():ask;
- if(turn.move==='open')
+ /* SAFE, 17 October (stSafe above). No question and no question buttons, one
+    line and one door, in the row the Story box already uses after Talk it
+    through, so it is the same quiet weight and not a new alarm. The door is
+    crisisReachBtn, which opens the panel straight on the numbers. When Talk
+    it through already put that door beside the box, the line comes alone,
+    so there is still one door on the page. The first sentence goes when this
+    browser refused to keep the words, see CRISIS_SAY.entryNow. */
+ var safeSay=(STV.unsaved||STV.draftFail)?CRISIS_SAY.entryNow:CRISIS_SAY.entry;
+ if(turn.move==='safe')
+  o+='<div class="st-crxrow" id="stsafe"><p class="st-mask st-crisis" role="note">'+esc(safeSay)+'</p>'
+   +(STV.crisis&&!STV.chat?'':crisisReachBtn('st-crxline'))+'</div>';
+ else if(turn.move==='open')
   o+='<div class="src-ask">'+srcLand('src-open',q)+acts+'</div>';
  else if(turn.move==='ask'){
   o+=srcLand('src-q',ask,'--c:'+seatCol(turn.band))
@@ -1096,7 +1140,7 @@ function srcPaint(){
  /* the why, under whatever move was made, on every move that has heard a
     seat. It is not a question, so Move on does not silence it: moving on ends
     the asking, and the reason for a release is still true. */
- var why=turn.move==='open'?'':srcWhy(heard);
+ var why=(turn.move==='open'||turn.move==='safe')?'':srcWhy(heard);
  /* an id and no class: the shell carries no rule for it, and the design gate
     fails a class with no rule. Found by its id, the way the house finds a host. */
  if(why)o+='<div id="srcwhy" style="margin-top:14px"><span class="pm-eye">Why</span>'
@@ -1106,10 +1150,10 @@ function srcPaint(){
     what the entry keeps at commit is identical whichever way it was shown.
     Only the markup is swapped, and the wiring below finds the same ids. */
  var cur=null;
- if(STV.chat){cur=srcChatCur(turn,heard,q,ask); srcChatSync(); srcChatNote(cur);
+ if(STV.chat&&turn.move!=='safe'){cur=srcChatCur(turn,heard,q,ask); srcChatSync(); srcChatNote(cur);
   o=srcThread(turn,heard,cur,acts,why);}
  h.innerHTML=o;
- SRC_SHOWN=cur?cur.q:(turn.move==='pass'?'':q);
+ SRC_SHOWN=cur?cur.q:((turn.move==='pass'||turn.move==='safe')?'':q);
  if(cur)srcWire(h);
  srcHearing(h);
  /* the dot used to be rebuilt here on every key and put back on the beat.
@@ -1119,7 +1163,7 @@ function srcPaint(){
     143 to 190 over the same typed line, and that cost is gone with it. */
  /* a screen reader hears the opener, an ask, "Cool.", and while listening
     only a question the person pressed for. */
- var said=turn.move==='open'?q:(turn.move==='ask'?ask:(turn.move==='pass'?'Cool.'
+ var said=turn.move==='safe'?safeSay:turn.move==='open'?q:(turn.move==='ask'?ask:(turn.move==='pass'?'Cool.'
   :((SRC_DQ||SRC_QI>=0)?q:'')));
  /* talking, every turn Source AI takes is a line it says, once */
  if(cur)said=cur.q;
@@ -1916,7 +1960,11 @@ function stListPaint(){
  if(!n){
   /* a worked example has no journal to gather from (showOnly, ruled 16
      October), so the line does not invite writing that cannot happen */
+  /* and beside an entry srcSafe stopped, nothing but that: "write where you
+     felt it" asks the why there question by another door, and after Commit
+     "you have not written anything yet" would be false (stSafe, above) */
   box.innerHTML='<p class="st-none">'+(showOnly()?'Nothing is pending. On your own profile, what you write gathers here.'
+   :stSafe()?'Nothing is pending.'
    :ST_TEXT.trim()
    ?'Nothing in this entry reads as held yet. Keep writing, or write where you felt it.'
    :(STV.lastFound.length?'Your last entry is in the field and its addresses are queued in the release. The next entry gathers here.'

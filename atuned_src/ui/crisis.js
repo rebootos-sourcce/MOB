@@ -8,7 +8,10 @@
    it opens. It reads nothing anybody writes. The automatic check he deferred
    on 9 October is a different thing and is still J0 in ui/onboard.js; this
    does not close it and does not pretend to, and tests/onboarding2.js still
-   asserts that no detector exists.
+   asserts that no detector exists. Since 17 October the Story page also
+   shows the door, crisisReachBtn, beside an entry srcSafe stops
+   (engine/safe.js, ui/storyui.js stSafe): a closed phrase list and not a
+   detector, which this file still does not read.
 
    WHERE THE BUTTON IS, every place, so a person never has to hunt for it:
      the login door      the first card a stranger meets, under its actions

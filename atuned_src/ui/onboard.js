@@ -62,6 +62,16 @@
    paragraph above refuses; and it reads no word anybody writes, so J0, the
    automatic check he deferred on 9 October, is still exactly as open as this
    header says.
+
+   AND A PHRASE STOP IS NOT A DETECTOR EITHER, 17 October. srcSafe
+   (engine/safe.js) is a closed list of words about ending one's life,
+   hurting oneself and danger now, and on a match parseStory reads nothing.
+   So a first story here that carries one is kept and offered no release,
+   because obStoryDone reads it through parseStory, and that is the whole of
+   it on this sheet: no line of its own is drawn, the stage's top bar
+   already carries the crisis button, and the Story page is where the line
+   and the door stand (ui/storyui.js, stSafe). It reads words and not the
+   person, so J0 stays open; tests/onboarding2.js says both.
    ============================================================ */
 /* THE AUTOMATIC OPEN IS OFF BY ITS OWN FLAG, unchanged: ui/login.js's
    loginEnter runs this sheet on its own switch, DEV_PLAY_ONBOARDING, and

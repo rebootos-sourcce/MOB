@@ -63,7 +63,11 @@
    WHAT IT DOES NOT CLAIM. No distress detector exists anywhere in this
    engine, and this file does not pretend otherwise: see the J0 check near
    the foot, which reports the gap rather than papering over it, the same
-   rule atuned_src/ui/onboard.js's own header states.
+   rule atuned_src/ui/onboard.js's own header states. Since 17 October there
+   is a narrow phrase stop, srcSafe (engine/safe.js): a closed list that
+   makes the reader read nothing and puts the crisis door beside the entry
+   on the Story page. It reads words, not the person, and the J0 check says
+   exactly that much and no more.
 
        NODE_PATH=/opt/node22/lib/node_modules node tests/onboarding2.js
 
@@ -1116,24 +1120,39 @@ console.log('\n=== the floor band says where to go and gives the door to it (16 
 }
 
 console.log('\n=== J0, the distress gap, reported rather than papered over ===');
-/* THIS IS NOT A SAFETY TEST. It cannot be: there is nothing in this engine
-   to test. It is a standing check that nobody has quietly added a decorative
-   frame that LOOKS like a safety check while answering no real signal,
-   which would be worse than the gap it is reporting. */
+/* THIS IS NOT A SAFETY TEST. It is a standing check that nobody has quietly
+   added a decorative frame that LOOKS like a safety check while answering no
+   real signal, which would be worse than the gap it is reporting.
+
+   WHAT EXISTS SINCE 17 OCTOBER, said exactly. srcSafe (engine/safe.js) is a
+   closed phrase list about ending one's life, hurting oneself and danger
+   now. On a match parseStory reads nothing, so no release is offered and no
+   question is asked, and the Story page shows one line and the door to the
+   numbers. It is a stop on words. It is not a detector of the person: it
+   scores nothing, keeps nothing about a match, and draws nothing on the
+   first run beyond the crisis button its top bar already carries. The
+   automatic check the owner deferred on 9 October, which would read a
+   person's state, does not exist, and this asserts both halves. */
 {
  const page=await browser.newPage({viewport:{width:1600,height:1000}});
  await page.goto(FILE+'?dev=1',{waitUntil:'load'}); await booted(page);
  const q=await page.evaluate(()=>({
   detector:typeof detectDistress,
+  stop:typeof srcSafe,
+  stopTrips:typeof srcSafe==='function'&&srcSafe('I keep thinking about killing myself'),
+  stopRead:typeof parseStory==='function'?parseStory('I keep thinking about killing myself').imprints.length:null,
   stopFrame:document.querySelectorAll('[class*="stop"],[id*="stop"]').length,
   src:String(window.obStoryDone||'')}));
  await page.close();
- console.log('  J0 STILL OPEN: no distress detector runs on a stranger\'s first story before it is');
- console.log('  committed. typeof a detector function: '+q.detector+' (expect undefined). This is a');
- console.log('  ship blocker for any build a stranger who is not the owner can reach, named as such in');
- console.log('  atuned_src/ui/onboard.js\'s own header, at the exact line obStoryDone hands the words to parseStory.');
+ console.log('  J0 STILL OPEN: no detector of a person\'s state runs on a stranger\'s first story before it is');
+ console.log('  committed. typeof a detector function: '+q.detector+' (expect undefined). What does exist is');
+ console.log('  srcSafe, a closed phrase stop ('+q.stop+'): on a match the reader reads nothing, so no release is');
+ console.log('  offered, and the Story page shows the crisis door. The first run gets no line of its own beyond its');
+ console.log('  top bar\'s crisis button. Named in atuned_src/ui/onboard.js\'s own header.');
  ok(q.detector==='undefined',
-  'confirmed: no distress detector exists in this build (the gap is real, not assumed)');
+  'confirmed: no detector of the person exists in this build (the gap is real, not assumed)');
+ ok(q.stop==='function'&&q.stopTrips===true&&q.stopRead===0,
+  'and the narrow phrase stop does exist and does what it says: srcSafe '+q.stop+', trips '+q.stopTrips+', the reader reads '+q.stopRead+' imprints');
 }
 
 console.log('\n'+PASS+' passed, '+FAIL+' failed');
