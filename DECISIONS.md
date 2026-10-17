@@ -2873,3 +2873,14 @@ His words: "something we need to do with those user profiles where the customer 
 - **The person's own profile keeps its own tier exactly as before.** Visiting an example never moves it.
 - **One guard, in the engine.** `showOnly` and `showRefuse` (`engine/showonly.js`) refuse every engine writer while an example is loaded, so a control added later is refused too. Held by `tests/examples-showonly.js`.
 - **Default taken, recorded as his to overrule:** the practitioner page is not affected. It reads examples and writes only its own notes to the device, never to the example.
+
+## Words about ending a life or danger now get no release, 17 October
+
+A seat decision, taken by the team on the round 3 plan's decision 1 default (a), with Emmy's wording. Not the owner's ruling. He reacts to a preview build and may revert it. The automatic crisis check he deferred on 9 October stays deferred.
+
+- **A closed phrase list, not a detector.** `SAFE_WORDS` (`engine/data/safe.js`): words about ending one's own life or hurting oneself, and danger now ("I never feel safe at home", "he threatened to kill me"). `srcSafe` (`engine/safe.js`) reads them with the sniffer's own rules: a no denies it, someone else's words do not count, a quoted line with someone else or a book or film as its speaker does not count, a short list of idioms ("I want to die laughing", "killing myself at work") does not count. It scores nothing about the person.
+- **On a match the reader reads nothing.** `parseStory` returns an empty reading, so no release is offered off that entry anywhere, Source AI asks nothing, and the laws and leans do not move. The entry is still saved exactly as written when the person presses Commit.
+- **The Story page shows one line and one door in its place.** "It is saved. If you want a person now, 988 answers by call or text, any hour." beside Reach someone now, which opens the crisis panel on the numbers. No modal, no sound, no red, no "we noticed". It shows once and nothing escalates. The release column stays reachable and is not offered.
+- **Nothing about a match is stored.** Not on the record, the draft, the export, the outbox or the server. `tests/safepage.js` holds that the export and the whole browser store are the same with and without it.
+- **How to turn it off:** set `on:false` on a family's row in `SAFE_WORDS`. One table, one line each.
+- **Still open, his:** whether this stays; whether the first run should draw the line too (today it only reads nothing there, and its top bar already carries the crisis button); whether the phrase list goes to a clinician (round PW ruled that "explicitly not now").
