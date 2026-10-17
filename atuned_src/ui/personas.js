@@ -719,11 +719,19 @@ var SHOW_DOES={
 function showOwnPlan(){
  var own=(typeof PROF_BY!=='undefined')?PROF_BY[PEOPLE[0].nm]:null;
  return (own&&own.plan)||null;}
+/* WHETHER THE OWN RECORD IS INSIDE THE GIFT, off its own meter, for the same
+   reason the plan is read off it: CURP is the example's here. Inside the gift
+   the own profile already shows every layer the example shows, so this line
+   told a new person that saboteurs "open on tier one" on a profile where they
+   were drawn that minute. */
+function showOwnGift(){
+ var own=(typeof PROF_BY!=='undefined')?PROF_BY[PEOPLE[0].nm]:null;
+ return !!own&&planInGift((own.meter&&own.meter.unique)||[]);}
 function showLine(what){
  var head='A worked example shows every reading and runs nothing.';
  if(what==='import')return head+' Open your own profile first, then load the file.';
  var does=SHOW_DOES[what];
- var nx=planNextSight(showOwnPlan());
+ var nx=planNextSight(showOwnPlan(),showOwnGift());
  var tail=nx
   ?(function(t){return t.charAt(0).toUpperCase()+t.slice(1);})(planList(nx.adds.map(function(g){return g.nm;})))
    +' show here, and on your own profile they open on '+planNmIn(nx.to)+'.'

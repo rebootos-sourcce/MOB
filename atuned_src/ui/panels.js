@@ -1281,8 +1281,10 @@ function planSection(m,o){
     +((!al.inGift&&al.source!=='free'&&al.runs===0&&al.renews&&planDay(al.renews))
       ?'. New ones arrive on '+planDay(al.renews):''))+'</b></div>'
   /* WHAT THE PLAN SHOWS, off SIGHT (engine/plan.js). It said everything while
-     sight was not for sale, ruled back on 1 October. */
-  +'<div class="sh-row"><span>You can see</span><b>'+esc(planSightSay(pl))+'</b></div>'
+     sight was not for sale, ruled back on 1 October. Inside the gift it is
+     everything again, with the gift named as the reason, read off the lock's
+     own answer so this row and the padlocks cannot disagree. */
+  +'<div class="sh-row"><span>You can see</span><b>'+esc(planSightSay(pl,(typeof lockGift==='function')&&lockGift()))+'</b></div>'
   /* "RERUNNING ANYTHING ALREADY OPEN COSTS NOTHING, ALWAYS" CAME OFF, round
      NW, 22.K17. This is the plan sheet, read while deciding what a tier
      buys, and the claim was false: measured, a release at an address

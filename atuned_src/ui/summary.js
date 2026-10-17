@@ -949,7 +949,20 @@ function sumWho(r,B,full){
     You, which is a default and not somebody, so it never counts. */
  if(!full&&!(B.sp||B.N||sumRealName()))return '';
  return sgZone('who','Who this is',
-  full?sumPlate(r,B):'<div class="s-plate sg-plain"><div class="s-pl-l">'+sumNameBlock(B,false)+'</div></div>');}
+  full?sumPlate(r,B)+sumGift():'<div class="s-plate sg-plain"><div class="s-pl-l">'+sumNameBlock(B,false)+'</div></div>');}
+/* THE GIFT, SAID ONCE AND QUIETLY, under the name on the page a new person
+   lands on (tabLandFirst, ui/panels.js). The ruling is "100 patterns, free,
+   with everything visible", and the lock now keeps it (lockGift, ui/lock.js),
+   so nothing on this page is padlocked while it lasts. This is the one line
+   that says why. No count of what is left, no price and no button: the first
+   screen is the person's reading, opened, and not a shop. The count is in
+   Billing and on the card before a release, where it is spent. Read off the
+   lock's own answer, so it goes when the padlocks come back, and never on a
+   worked example. The size is GIFT_N and not a typed hundred. */
+function sumGift(){
+ if(typeof lockGift!=='function'||!lockGift())return '';
+ return '<p class="s-src" id="sumgift">Your gift: '+GIFT_N+' '+unp('pattern','patterns','gift')
+  +', no card. Everything is open.</p>';}
 /* the first drivers card. Unread or read, it is only what a birth and a name
    say, so it is real or it is absent. */
 function sumDrivers(B,r){
