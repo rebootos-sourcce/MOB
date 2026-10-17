@@ -125,7 +125,8 @@ const ev = async (page, fn, arg) => { try { return await page.evaluate(fn, arg);
       await commit(page, text);
       const r = await ev(page, () => { var M = stRelModel(); return M.sel.map(function (n) { return n.i + ' ' + n.k + ' (' + n.cf + ')'; }); });
       const ids = Array.isArray(r) ? r.map(s => +s.split(' ')[0]) : [];
-      const want = named.length >= ids.length ? ids.every(i => named.indexOf(i) >= 0) : named.every(i => ids.indexOf(i) >= 0);
+      /* only what the words named runs, when they named anything at all */
+      const want = named.length ? ids.every(i => named.indexOf(i) >= 0) : true;
       ok(ids.length > 0 && want, k + ': runs ' + J(r) + ', and the words named ' + J(named));
       ok(errs.length === 0, k + ': no page error' + (errs.length ? ': ' + errs[0] : ''));
       await ctx.close();

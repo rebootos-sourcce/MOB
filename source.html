@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2185 aeab54e2 2026-10-17 21:25"><head><meta charset="utf-8">
+<html lang="en" data-build="v2188 eb569fa7 2026-10-17 22:15"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -46185,18 +46185,20 @@ function stRelModel(){
  var picked=Object.keys(IMP_PICK).filter(function(k){return IMP_PICK[k];})
   .map(function(k){return BY[+k];}).filter(function(n){return n&&n.cf;});
  var found=stFound(), take;
- /* WHAT THE WORDS NAMED RUNS FIRST, 17 October. These were the heaviest three
-    of everything the entry reached, and charge lands per feeling, so a feeling
+ /* WHAT THE WORDS NAMED RUNS, 17 October. These were the heaviest three of
+    everything the entry reached, and charge lands per feeling, so a feeling
     with fewer addresses reads heavier at each of them: "My father died ... I
     feel completely alone" ran Addiction, Lust and Shame of Desire, filled in at
     a sacral the words never named, said "that I am in apathy" a hundred times
     a block, and left out the four grief addresses it did name. The shame story
-    did the same. Weight still orders each kind, and a filled in address runs
-    only when the words named fewer than three. An entry from before the split
-    carries no .named and reads as it always did. */
- var cut=found.named==null?0:found.named;
+    did the same. Filling the three up with them kept two of the shame story's
+    three on apathy, so a filled in address runs only when the words named
+    none, and the welcome never names one as what is being released while a
+    named one exists. Weight still orders what runs. An entry from before the
+    split carries no .named and reads as it always did. */
+ var cut=found.named||0;
  if(picked.length)take=picked.sort(bySq);
- else if(found.length)take=found.slice(0,cut).sort(bySq).concat(found.slice(cut).sort(bySq)).slice(0,3);
+ else if(found.length)take=(cut?found.slice(0,cut):found.slice()).sort(bySq).slice(0,3);
  else take=r.loaded.filter(function(n){return n.cf;}).sort(bySq).slice(0,3);
  return {take:take,sel:take.filter(function(n){return ST_OFF[n.i]!==true;}),bank:!!picked.length,
   added:!!(picked.length||found.length),
@@ -79165,5 +79167,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005196255"></div>
+<div id="eof" hidden data-len="005196373"></div>
 </body></html>

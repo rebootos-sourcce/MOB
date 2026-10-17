@@ -2042,18 +2042,20 @@ function stRelModel(){
  var picked=Object.keys(IMP_PICK).filter(function(k){return IMP_PICK[k];})
   .map(function(k){return BY[+k];}).filter(function(n){return n&&n.cf;});
  var found=stFound(), take;
- /* WHAT THE WORDS NAMED RUNS FIRST, 17 October. These were the heaviest three
-    of everything the entry reached, and charge lands per feeling, so a feeling
+ /* WHAT THE WORDS NAMED RUNS, 17 October. These were the heaviest three of
+    everything the entry reached, and charge lands per feeling, so a feeling
     with fewer addresses reads heavier at each of them: "My father died ... I
     feel completely alone" ran Addiction, Lust and Shame of Desire, filled in at
     a sacral the words never named, said "that I am in apathy" a hundred times
     a block, and left out the four grief addresses it did name. The shame story
-    did the same. Weight still orders each kind, and a filled in address runs
-    only when the words named fewer than three. An entry from before the split
-    carries no .named and reads as it always did. */
- var cut=found.named==null?0:found.named;
+    did the same. Filling the three up with them kept two of the shame story's
+    three on apathy, so a filled in address runs only when the words named
+    none, and the welcome never names one as what is being released while a
+    named one exists. Weight still orders what runs. An entry from before the
+    split carries no .named and reads as it always did. */
+ var cut=found.named||0;
  if(picked.length)take=picked.sort(bySq);
- else if(found.length)take=found.slice(0,cut).sort(bySq).concat(found.slice(cut).sort(bySq)).slice(0,3);
+ else if(found.length)take=(cut?found.slice(0,cut):found.slice()).sort(bySq).slice(0,3);
  else take=r.loaded.filter(function(n){return n.cf;}).sort(bySq).slice(0,3);
  return {take:take,sel:take.filter(function(n){return ST_OFF[n.i]!==true;}),bank:!!picked.length,
   added:!!(picked.length||found.length),
