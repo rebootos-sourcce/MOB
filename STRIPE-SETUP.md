@@ -41,10 +41,14 @@ you doing it wrong. It is Stripe renaming something.
 | Tier one | 12 US dollars | every month |
 | Tier two | 29 US dollars | every month |
 | Tier three | 59 US dollars | every month |
-| Tier four | 99 US dollars | every month |
+| Practitioner | 99 US dollars | every month |
 
 These are your own prices, from 1 October: "Tier 1: $12/month. Tier 2:
-$29/month. Tier 3: $59/month. Tier 4: $99/month." Monthly only. Do not add a
+$29/month. Tier 3: $59/month. Tier 4: $99/month." On 17 October you named
+tier four Practitioner: "There are four tiers. Free, tier one, tier two, tier
+three, practitioner." So that product is called Practitioner in Stripe. The
+server still calls it four, which is why its setting is `STRIPE_PRICE_FOUR`.
+Monthly only. Do not add a
 yearly price; no yearly price has been decided.
 
 ---
@@ -92,7 +96,7 @@ Do this four times, once for each row in the table above.
    product".
 
 When all four are made, the Product catalog page lists Tier one, Tier two,
-Tier three and Tier four.
+Tier three and Practitioner.
 
 ### Step 4. Copy each price id
 
@@ -116,7 +120,7 @@ You should end with four lines like:
     Tier one     price_...
     Tier two     price_...
     Tier three   price_...
-    Tier four    price_...
+    Practitioner price_...
 
 ### Step 5. Put the four price ids into the server's settings
 
@@ -134,7 +138,8 @@ account; you used it before to put the database id into this same file.
    **wrangler.toml**.
 3. Click the **pencil icon** at the top right of the file to edit it.
 4. Find the four lines that start with `STRIPE_PRICE_ONE`,
-   `STRIPE_PRICE_TWO`, `STRIPE_PRICE_THREE` and `STRIPE_PRICE_FOUR`. Each one
+   `STRIPE_PRICE_TWO`, `STRIPE_PRICE_THREE` and `STRIPE_PRICE_FOUR` (that last one is
+   Practitioner). Each one
    currently ends in `"REPLACE_WITH_STRIPE_PRICE_ID_FOR_TIER_..."`.
 5. Replace only the text **inside the quote marks** with the matching price
    id. For example:
@@ -230,8 +235,8 @@ switch it on once.
    - **Customers can cancel subscriptions**: on. If it asks when, choose
      **"At the end of the billing period"**.
    - **Customers can switch plans**: on. Below that switch is a box for
-     **products**. Add all four: Tier one, Tier two, Tier three and Tier
-     four. That is the list a person picks from when they change tier.
+     **products**. Add all four: Tier one, Tier two, Tier three and
+     Practitioner. That is the list a person picks from when they change tier.
 4. Click **"Save"** (top right or bottom of the page; in test mode it may say
    **"Save and activate"**).
 
