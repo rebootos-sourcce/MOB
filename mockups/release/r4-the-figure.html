@@ -381,7 +381,7 @@ function estMin(){return Math.round((SCRIPT.reduce((s,t)=>s+secSay(t),0)+secsFro
 
 /* ---- the allowance, tier one, this month ---- */
 function money(){
- const left0=ST.spent?12:300, vault0=96, bank0=56, reach=ST.halted?ST.reach:ADDR.length;
+ const left0=ST.spent?12:300, vault0=88, bank0=56, reach=ST.halted?ST.reach:ADDR.length;
  const p=reach*ALLOW.patternsPerAddress;
  return {released:p,places:reach,bank:bank0-p,vault:vault0+p,left:Math.max(0,left0-p),
   canRun:(left0-p)>=ALLOW.patternsPerAddress};}

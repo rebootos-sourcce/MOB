@@ -90,7 +90,7 @@ VERSIONS.forEach(v=>{
   +'const SESSION='+JSON.stringify(SESSION)+';\nconst TIMING='+JSON.stringify(TIMING)+';\nconst WELCOME='+JSON.stringify(WELCOME)+';\n'
   +'const IC='+JSON.stringify(IC)+';\nconst ALLOW='+JSON.stringify(ALLOW)+';\nconst CRISIS='+JSON.stringify(CRISIS)+';\n'
   +'const BODY='+JSON.stringify(BODY)+';\n'+rd('shared.js')+'\n'+rd(v.file)+'\nboot();\n</script>\n</body></html>\n';
- if(html.indexOf('—')>=0)throw new Error('em dash in '+v.id);
+ if(html.indexOf('\u2014')>=0)throw new Error('em dash in '+v.id);
  if(/https?:\/\//.test(html.replace(/http:\/\/www\.w3\.org\/2000\/svg/g,'')))throw new Error('a network address in '+v.id);
  fs.writeFileSync(path.join(out,v.id+'.html'),html);
  console.log('wrote',v.id+'.html',Math.round(html.length/1024)+' KB');});
