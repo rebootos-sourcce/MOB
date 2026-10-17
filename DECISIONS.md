@@ -2928,7 +2928,7 @@ Five seats read what the code does (the game director, UI and UX, sales, the AI 
 - A cap of 25 on free banking (one full run). Today it has none: a year unused banks 530.
 - A prorated upgrade mid month.
 
-**Not built, because he ruled the other way: the cost line under Run.** The seats asked for "Opens 12 new. 388 left this month." under Run in the normal case. He took that line off this card at round IG, 27 September: "Cost runs left, that goes away. And this, just, run release button." `tests/functional.js` holds his cut, so it stays off. **The question for him:** put one line back under Run that says what a run opens and what is left this month, or keep the card as he cut it, with the number only on the plan sheet?
+**Not built, because he ruled the other way: the cost line under Run.** The seats asked for "Opens 12 new. 388 left this month." under Run in the normal case. He took that line off this card at round IG, 27 September: "Cost runs left, that goes away. And this, just, run release button." `tests/functional.js` holds his cut, so it stays off. It is not put to him as a question (the personas ruling above). A reversal of his own cut is not the seats' to make silently either, so it waits for him to react to the two cards side by side: the card as he cut it, and the card with the line.
 
 **The risk all five named.** Only 65 different sentences sit behind the 21,400 slots one person can open, so a "pattern you have never opened" is often words already heard. Selling never opened patterns is not honest until slots carry distinct sentences. Checkout stays closed.
 
