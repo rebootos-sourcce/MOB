@@ -89,7 +89,10 @@ window.GORDON=function(){return window.PERSON('Gordon');};`;
    remembers after that press, and only a store with nothing in it: a check
    that shuts it and reloads still finds it shut. A page opened on #landing is
    not seeded, so the landing state itself is measured on a real first visit,
-   in the GO block below. The product never reads the hash. */
+   in the GO block below. The product never reads the hash. The seed itself
+   lives in tests/seed.js, and it waits for the page's own first touch of the
+   store, because a touch at document start can leave a page with a store the
+   browser never connected (17 October, the seed's own comment says how). */
 /* THE TIER RULING OF 1 OCTOBER put the chain, the Registers and the Character
    masks behind a plan, and every persona this file loads is a free record. The
    checks below were written against the full reading, so each page and context
@@ -97,9 +100,7 @@ window.GORDON=function(){return window.PERSON('Gordon');};`;
    own group near the foot of this file sets it back to nothing to measure the
    lock. Sight alone reads the seed: Billing and the tiers page still read the
    record, so those checks are unchanged. */
-const {FULL_SIGHT}=require('./seed.js');
-const LCOL_SEED=`try{if(!/landing/.test(location.hash)&&localStorage.getItem('lcol')===null)
- localStorage.setItem('lcol','open');}catch(e){}`;
+const {FULL_SIGHT,LCOL_SEED}=require('./seed.js');
 browser.newPage=(orig=>async function(...a){
  const pg=await orig.apply(this,a);
  await pg.addInitScript(GORDON_FN);
@@ -119,7 +120,19 @@ page.on('console',m=>{if(m.type()==='error'){const t=m.text();
  if(!/ERR_CERT_AUTHORITY_INVALID|ERR_FILE_NOT_FOUND|fonts\.googleapis/.test(t))real.push(t);}});
 await page.goto(FILE,{waitUntil:'load'}); await booted(page); await page.waitForTimeout(800);
 
-console.log('=== figure fallback ===');
+/* THE SEED WAITED FOR THE PAGE, 17 October. A seed that touches localStorage
+   at document start can leave the page on a store the browser never
+   connected (tests/seed.js), which failed the reload checks below on CI on
+   three heads in one day. This reads the seed's own word: it says it seeded
+   at the page's first touch only if the accessor was wrapped and the page,
+   not the seed, was the first to ask for the store. On the seed from before
+   this it is undefined and fails. */
+console.log('=== the gates touch the store when the page does ===');
+{const sd=await page.evaluate(()=>[window.__lcolSeed,localStorage.getItem('lcol')]);
+ ok(sd[0]==='seeded at first touch'&&sd[1]==='open',
+  'the left column seed waited for the page\'s own first touch of the store, and seeded it, '+JSON.stringify(sd));}
+
+console.log('\n=== figure fallback ===');
 await page.evaluate(()=>setTab(TAB.ENERGY)); await page.waitForTimeout(400);
 const fig=await page.evaluate(()=>({
  raster:document.querySelectorAll('#emap image.pm-art').length,
