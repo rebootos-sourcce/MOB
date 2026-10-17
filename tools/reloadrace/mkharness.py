@@ -12,7 +12,7 @@ def find(s,start=0):
   for i in range(start,len(L)):
     if s in L[i]: return i
   raise SystemExit('not found: '+s)
-first=find("console.log('=== figure fallback ===');")
+first=find("=== figure fallback ===")
 chh=find("const CH_HELP=`")
 masks=find("console.log('\\n=== the six masks, as pixels on the figure ===');")
 masksEnd=find("console.log('\\n=== Character: the five masks",masks)

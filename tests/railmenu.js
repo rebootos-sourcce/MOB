@@ -66,9 +66,12 @@ async function railMenuGate(browser,FILE,ok,booted){
   const ctx=await browser.newContext({viewport:{width:w,height:h},isMobile:phone,hasTouch:phone});
   const pg=await ctx.newPage();
   const err=[]; pg.on('pageerror',e=>err.push(e.message));
-  /* the column is opened the way a person who opened it once finds it */
-  await pg.addInitScript(()=>{try{localStorage.setItem('lcol','open');}catch(e){}});
-  try{ const {FULL_SIGHT}=require('./seed.js'); await pg.addInitScript(FULL_SIGHT); }catch(e){}
+  /* the column is opened the way a person who opened it once finds it, by the
+     seed in tests/seed.js and not by a setItem at document start: a store
+     touched that early can be one the browser never connected (17 October).
+     One document on a fresh context, so the seed's "only when lcol is unset"
+     is the unconditional write this was. */
+  try{ const {FULL_SIGHT,LCOL_SEED}=require('./seed.js'); await pg.addInitScript(LCOL_SEED); await pg.addInitScript(FULL_SIGHT); }catch(e){}
   await pg.goto(FILE); await booted(pg);
   try{
   const load=async nm=>{await pg.evaluate(nm=>{var i=PEOPLE.findIndex(x=>x.nm===nm); if(i<0)i=0;
