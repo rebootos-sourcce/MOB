@@ -96,7 +96,8 @@ button.seg.pv .sa{text-decoration:underline;text-underline-offset:4px}
  .seg .fl{font-size:12.5px}
  .seg .pm{width:14px;height:14px}
  .seg .sa{margin-top:4px;font-size:14px}
- .seg .sa.shutx{font-size:13px}
+ .seg .sa.shutx{font-size:12.5px;white-space:nowrap;gap:4px}
+ .seg .sa.shutx svg{width:15px;height:15px}
  .p3 .gl{margin-top:6px}
  .step2{grid-template-columns:1fr;gap:10px;margin-top:10px}
  .p3 .foot{text-align:left}

@@ -2228,7 +2228,7 @@
   "minText": 5.98,
   "minTextWhat": "Saboteurs",
   "minMark": 5.98,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "mk",
   "fails": [],
   "lines": [
    "Your whole reading is open.",
@@ -2260,7 +2260,7 @@
   "minText": 5.98,
   "minTextWhat": "Saboteurs",
   "minMark": 5.98,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "mk",
   "fails": [],
   "lines": [
    "Your whole reading is open.",
@@ -2292,7 +2292,7 @@
   "minText": 6.79,
   "minTextWhat": "Tier one",
   "minMark": 6.79,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "lk",
   "fails": [],
   "lines": [
    "Open more of your reading.",
@@ -2341,7 +2341,7 @@
   "sheetH": 806
  },
  "p3-closed-390.png": {
-  "lowest": 796,
+  "lowest": 776,
   "H": 844,
   "clipped": [],
   "scrolls": false,
@@ -2351,7 +2351,7 @@
   "minText": 6.79,
   "minTextWhat": "Tier one",
   "minMark": 6.79,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "sa shutx",
   "fails": [],
   "lines": [
    "Open more of your reading.",
@@ -2404,7 +2404,7 @@
   "minText": 6.78,
   "minTextWhat": "Start tier one",
   "minMark": 6.79,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "lk",
   "fails": [],
   "lines": [
    "Open more of your reading.",
@@ -2463,7 +2463,7 @@
   "minText": 6.78,
   "minTextWhat": "Start",
   "minMark": 7.79,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "x",
   "fails": [],
   "lines": [
    "Open more of your reading.",
@@ -2516,7 +2516,7 @@
   "minText": 6.78,
   "minTextWhat": "Start tier one",
   "minMark": 6.79,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "lk",
   "fails": [],
   "lines": [
    "Open more of your reading.",
@@ -2575,7 +2575,7 @@
   "minText": 6.78,
   "minTextWhat": "Start",
   "minMark": 7.79,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "x",
   "fails": [],
   "lines": [
    "Open more of your reading.",
@@ -2628,7 +2628,7 @@
   "minText": 6.78,
   "minTextWhat": "Move to tier two",
   "minMark": 6.79,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "lk",
   "fails": [],
   "lines": [
    "Open more of your reading.",
@@ -2687,7 +2687,7 @@
   "minText": 6.78,
   "minTextWhat": "Move up",
   "minMark": 7.79,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "x",
   "fails": [],
   "lines": [
    "Open more of your reading.",
@@ -2740,7 +2740,7 @@
   "minText": 6.78,
   "minTextWhat": "Start tier one",
   "minMark": 6.79,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "lk",
   "fails": [],
   "lines": [
    "Open more of your reading.",
@@ -2800,7 +2800,7 @@
   "minText": 6.78,
   "minTextWhat": "Start",
   "minMark": 7.79,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "x",
   "fails": [],
   "lines": [
    "Open more of your reading.",
@@ -2854,7 +2854,7 @@
   "minText": 6.79,
   "minTextWhat": "Stays",
   "minMark": 7.79,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "x",
   "fails": [],
   "lines": [
    "Stop your plan.",
@@ -2880,7 +2880,7 @@
   "minText": 6.79,
   "minTextWhat": "Stays",
   "minMark": 7.79,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "x",
   "fails": [],
   "lines": [
    "Stop your plan.",
@@ -2906,7 +2906,7 @@
   "minText": 5.98,
   "minTextWhat": "Tier one",
   "minMark": 6.79,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "lk",
   "fails": [],
   "lines": [
    "Open more of your reading.",
@@ -2958,7 +2958,7 @@
   "minText": 7.79,
   "minTextWhat": "Turn tier one back on",
   "minMark": 7.79,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "x",
   "fails": [],
   "lines": [
    "Tier one stops on 14 November. Nothing was deleted.",
@@ -2978,7 +2978,7 @@
   "minText": 6.78,
   "minTextWhat": "Start tier one",
   "minMark": 6.79,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "lk",
   "fails": [],
   "lines": [
    "Open more of your reading.",
@@ -3036,7 +3036,7 @@
   "minText": 6.78,
   "minTextWhat": "Start tier one",
   "minMark": 6.79,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "lk",
   "fails": [],
   "lines": [
    "Open more of your reading.",
@@ -3095,7 +3095,7 @@
   "minText": 6.78,
   "minTextWhat": "Start tier one",
   "minMark": 6.79,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "lk",
   "fails": [],
   "lines": [
    "Open more of your reading.",
@@ -3155,7 +3155,7 @@
   "minText": 5.98,
   "minTextWhat": "Tier one",
   "minMark": 7.79,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "x",
   "fails": [],
   "lines": [
    "Open more of your reading.",
@@ -3189,7 +3189,7 @@
   "minText": 7.79,
   "minTextWhat": "Turn tier one back on",
   "minMark": 7.79,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "x",
   "fails": [],
   "lines": [
    "Tier one stops on 14 November. Nothing was deleted.",
@@ -3209,7 +3209,7 @@
   "minText": 6.78,
   "minTextWhat": "Start",
   "minMark": 7.79,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "x",
   "fails": [],
   "lines": [
    "Open more of your reading.",
@@ -3261,7 +3261,7 @@
   "minText": 6.78,
   "minTextWhat": "Start",
   "minMark": 7.79,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "x",
   "fails": [],
   "lines": [
    "Open more of your reading.",
@@ -3314,7 +3314,7 @@
   "minText": 6.78,
   "minTextWhat": "Start",
   "minMark": 7.79,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "x",
   "fails": [],
   "lines": [
    "Open more of your reading.",
@@ -3368,7 +3368,7 @@
   "minText": 5.98,
   "minTextWhat": "Tier three",
   "minMark": 7.79,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "x",
   "fails": [],
   "lines": [
    "Open more of your reading.",
@@ -3427,7 +3427,7 @@
   "minText": 5.98,
   "minTextWhat": "Tier three",
   "minMark": 5.98,
-  "minMarkWhat": "[object SVGAnimatedString]",
+  "minMarkWhat": "srg",
   "fails": [],
   "lines": [
    "Open more of your reading.",

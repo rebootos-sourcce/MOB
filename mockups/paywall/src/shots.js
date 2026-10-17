@@ -51,7 +51,7 @@ function measure(){
   if(own&&el.tagName!=='svg'&&!(el instanceof SVGElement)){const c=parse(getComputedStyle(el).color),g=ground(el),r=ratio(over(c,g),g);
    if(r<minT){minT=r;minTw=el.textContent.trim().slice(0,40);}if(r<4.5)fails.push('text '+r.toFixed(2)+' '+el.textContent.trim().slice(0,40));}
   if(el.tagName==='svg'&&el.classList.contains('ri')){const c=parse(getComputedStyle(el).color),g=ground(el.parentElement),r=ratio(over(c,g),g);
-   if(r<minM){minM=r;minMw=(el.closest('[class]')||el).className.toString().slice(0,30);}if(r<3)fails.push('mark '+r.toFixed(2)+' '+minMw);}});
+   if(r<minM){minM=r;minMw=((el.parentElement&&el.parentElement.getAttribute('class'))||'mark').slice(0,30);}if(r<3)fails.push('mark '+r.toFixed(2)+' '+minMw);}});
  /* the lines a person reads, for the voice gate */
  const lines=[];sheet.querySelectorAll('h1,p,b,span,button,a,div,label,li').forEach(el=>{if(!vis(el))return;
   const t=Array.from(el.childNodes).filter(n=>n.nodeType===3).map(n=>n.textContent).join('').trim();if(t)lines.push(t);});
