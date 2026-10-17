@@ -2218,9 +2218,12 @@ function relCss(){
      stands at z-index 94 above this card's 90 and reserves its room as
      --keep-h for the app, not for this card, so a guest who had just saved a
      story met the card with Run release, and on the empty card Rerun these,
-     under "Your record is kept only in this browser". The foot takes the room
-     too. */
-  'html.keep-on .rel .rel-foot.rel-act{padding-bottom:calc(var(--keep-h) + 4px)}',
+     under "Your record is kept only in this browser". The setup's foot takes
+     the room too. Only the setup's: on the running screen the room comes out
+     of the readings, which tests/release-screen.js holds above the controls
+     at 1600 by 1000, so the run's foot is left as it was and named in the
+     review of this change rather than moved here. */
+  'html.keep-on .rel .rel-card[data-ph="setup"] .rel-foot.rel-act{padding-bottom:calc(var(--keep-h) + 4px)}',
   '.rel-foot.rel-act{flex:none;display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;margin:0;',
   ' padding:12px 24px calc(20px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg) 62%,transparent)}',
   '.rel-stage{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:min(52vh,500px)}',

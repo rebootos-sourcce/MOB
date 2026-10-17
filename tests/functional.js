@@ -5470,7 +5470,12 @@ console.log('\n=== a rerun is picked on purpose, priced before it starts, and ch
   relPick(ids);
   out.left0=relLeft(); out.newOn=pressed('new'); out.rerunOn=pressed('rerun');
   out.beginNew=!!document.getElementById('relgo');
-  host.querySelector('[data-relmode="rerun"]').click();
+  /* THE EMPTY CARD'S FIRST PRESS IS RERUN THESE SINCE 17 OCTOBER, and the
+     toggle is not drawn on it (tests/allowance.js holds the press itself). The
+     rerun setup below is relMode(true), which both the toggle and that press
+     call, so what is asserted about the rerun card is unchanged. */
+  out.again=(document.getElementById('relrerun')||{}).textContent||''; out.rerunAt0=RUN.rerun;
+  relMode(true);
   out.rerunOn2=pressed('rerun'); out.rerun=RUN.rerun;
   out.note=(host.querySelector('.rel-note')||{}).textContent||'';
   out.beginRerun=!!document.getElementById('relgo');
@@ -5488,7 +5493,9 @@ console.log('\n=== a rerun is picked on purpose, priced before it starts, and ch
  ok(o.opened===4,'one address run once opens four lines, got '+o.opened);
  ok(o.bare===null,'an address with nothing open is offered no rerun');
  ok(o.left0===0,'the allowance is spent, got '+o.left0);
- ok(o.newOn==='true'&&o.rerunOn==='false','the panel opens on New, never on Rerun');
+ ok(o.rerunAt0===false&&o.newOn===null&&o.rerunOn===null&&o.again==='Rerun these',
+  'the spent panel opens on New, never on Rerun, and offers the rerun as its first press: '
+  +JSON.stringify([o.rerunAt0,o.newOn,o.rerunOn,o.again]));
  ok(o.beginNew===false,'and with nothing left New offers no run, as before');
  ok(o.rerunOn2==='true'&&o.rerun===true,'pressing Rerun picks the rerun');
  ok(/costs nothing/.test(o.note),'and its price is said before it begins, got '+JSON.stringify(o.note));
