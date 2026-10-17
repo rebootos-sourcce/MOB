@@ -4151,6 +4151,12 @@ var UNPACK_BASE={
  'release line':'A release line is one spoken line of a release, aimed at one address, to lower the charge held there.',
  'truth line':'A truth line is one spoken line that puts the opposite quality in at the address, where the limit was.',
  'evidence':'Evidence is something noticed or measured after a practice that backs a pattern up or goes against it.',
+ /* THE WORD THE GIFT AND THE ALLOWANCE COUNT IN. A hundred patterns of the gift
+    are a hundred lines, not a hundred reactions, so the sentence above is the
+    wrong one beside "Your gift: 100 patterns" on Summary. This is the gift's
+    own sentence, the one the first release card already prints beside the
+    count (obGiftSay, ui/onboard.js), so it is said one way. */
+ 'gift:pattern':'A pattern is one line you have not said before.',
  /* THE SAME WORDS, READ BY A PRACTITIONER ABOUT A CLIENT, round QB (ui/
     practitioner.js). The entries above speak to the person about themselves,
     "you said yes", and on the practitioner's page the reader is somebody

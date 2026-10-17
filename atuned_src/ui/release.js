@@ -1105,6 +1105,32 @@ function relEndNote(){
     :'You were charged for '+paid+' new '+(paid===1?'line':'lines')+', not for the whole plan. ')
   +'The other '+rest+(rest===1?' line was':' lines were')+' never started'
   +(RUN.rerun?'.':', so '+(rest===1?'it was':'they were')+' not charged.')+'</div>';}
+/* THE GIFT RAN OUT ON THIS RUN, said once, on the results of the run that spent
+   its last pattern, and nowhere else. REVIEW-arch/TALLY.md ruling 8: "the gift
+   end copy says plainly what is kept and what rests, with no countdown". The
+   gift sees everything (lockGift, ui/lock.js), so this is the run after which
+   the padlocks come back, and a person who never saw one would otherwise meet
+   them on the next screen with no word said.
+
+   Read off the meter's own answer for this run, as relEndNote reads it: the
+   unique count now, less what this run added, is the count before it, and the
+   gift ran out here only if it was in force before and is not now. A rerun
+   adds nothing and never crosses. What closes is read off the same table the
+   padlocks read, for the plan in force (lockPlan), so a paid tier names only
+   what is above it and tier three names nothing. "Locked on your plan" is the
+   lock panel's own heading and "deletes nothing" the tiers page's own words
+   for stopping: nothing opened is taken back, the record keeps every release,
+   and a list above the plan says it is locked and never that nothing is
+   running (sightR). Never on a worked example, which runs nothing. */
+function relGiftEnd(){
+ if(RUN.rerun||!RUN.meter||!RUN.meter.added||typeof CURP==='undefined'||!CURP)return '';
+ if(typeof showOnly==='function'&&showOnly(CURP))return '';
+ var now=((CURP.meter&&CURP.meter.unique)||[]).length, was=now-RUN.meter.added;
+ if(!planInGift(was)||planInGift(now))return '';
+ var shut=planSight(lockPlan()).locked.map(function(g){return g.nm;});
+ return '<div class="rel-note" id="relgiftend">This release spent the last of your gift. '
+  +(shut.length?'From here, '+planList(shut)+' are locked on your plan. ':'')
+  +'Nothing you released is deleted.</div>';}
 /* ============================================================
    WHAT CHANGED. The System Congruency TDD, section 15, and the step
    CONGRUENCY-AUDIT.md found missing from every release path: "There is no
@@ -2950,7 +2976,7 @@ function relResults(){
  out+='<div class="pm-eye">Released</div>'
   +'<div class="rel-node rel-rs-hero">'+(RUN.halted?'':'Congratulations. ')
   +'You released '+t.said+(t.said===1?' pattern':' patterns')+' and recharged '+t.put+'.</div>'
-  +relEndNote();
+  +relEndNote()+relGiftEnd();
  /* "NEW MARK" WAS A CLAIM THE RECORD CANNOT MAKE. marksNew is what the ladder
     reads after this run and did not read before it, and nothing stores a mark
     once earned (TDD v3 1.2, unbuilt), so a mark held last week, lost when an
