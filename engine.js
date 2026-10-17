@@ -8554,7 +8554,12 @@ function planAllowance(pl,uniqueCount,giftAt,now){
     planFreeFrom). That record's base sits past the gift because a period was
     written, and on the rule above it read one grant of ten and never another,
     so free opened ten patterns once and then nothing for good. */
- var from=(t.k!=='free')?null:(base===GIFT_N?giftAt:planFreeFrom(pl,now));
+ /* the end day first, then the gift's end. It was the gift's end whenever base
+    sat on it, which a paid month that opened the moment the gift ran out also
+    does, so the paid months were banked as free weeks: measured, a tier two
+    month ended on day 30 read 60 free on day 40, where free from the end is
+    20 (tests/money.js) */
+ var from=(t.k!=='free')?null:(planFreeFrom(pl,now)||(base===GIFT_N?giftAt:null));
  if(t.k==='free'&&(base===GIFT_N||from)){ weeks=planWeeks(from,now); total=granted*weeks; }
  var left=Math.max(0,total-spent);
  /* WHEN NEW ONES ARRIVE, as an ISO day or null, so a sentence that names the

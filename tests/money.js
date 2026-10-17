@@ -99,6 +99,13 @@ console.log('\n=== 1. e1, a refused card opens no new patterns ===');
   const gone = read(B, bill('one', 'unpaid', 61, 91, { paid: 0, renewal: 'uncollectible' }), 80);
   ok(gone.source === 'free' && gone.left > 0, 'when Stripe gives up, the plan ends and free opens: ' + gone.source + ', ' + gone.left + ' left');
 
+  /* a refused renewal and a tier change in one read: still held, on the old
+     tier's grant, never the new tier's whole one on an unpaid month */
+  const H = person();
+  read(H, bill('one', 'active', 0, 30), 0.1); use(H, 350);
+  const hh = read(H, bill('two', 'past_due', 30, 61, { paid: 0, renewal: 'open', changed: iso(30.5), prorated: 0.98 }), 31);
+  ok(hh.left === 50, 'a refused renewal read together with a move to tier two still holds the 50 that were left: ' + hh.left + ' of ' + hh.of);
+
   /* a server from before the field: exactly what main did, a moved month opens */
   const O = person();
   read(O, { tier: 'one', status: 'active', since: iso(0), until: iso(30) }, 0.1); use(O, 300);
@@ -185,6 +192,19 @@ console.log('\n=== 3. h, an ended plan reads free, from the day it ended ===');
   ok(E.planState(Object.assign({}, R, { since: '2020-01-01T00:00:00Z', until: '2020-02-01T00:00:00Z' })) === 'ended',
     'and with no day given, the clock is today\'s: a plan that ran out in 2020 is ended');
   ok(E.planState(Object.assign({}, R, { until: null })) === 'live', 'a record with no end on it reads live as it always did');
+
+  /* a month that moved tier and was then never read again: what it granted,
+     the prorated share included, is what was paid for, and free is not
+     charged for any of it */
+  const P = person();
+  read(P, bill('one', 'active', 0, 30), 0.1);
+  read(P, bill('two', 'active', 0, 30, { changed: iso(15), prorated: 0.5 }), 15.01);
+  use(P, P.rec.granted);
+  const pf = look(P, 40);
+  ok(P.rec.granted === G('one') + (G('two') - G('one')) / 2 && pf.source === 'free' && pf.left === 2 * G('free'),
+    'a prorated month of ' + P.rec.granted + ', opened the day the gift ran out, all opened, then unread to day 40: free counts from the day 30 end, ' + pf.left + ' left, not from the gift');
+  const pc = { rec: E.planFromServer(P.rec, bill('two', 'canceled', 0, 30), many(P.n), iso(31)).plan, n: P.n, giftAt: P.giftAt };
+  ok(look(pc, 40).left === 2 * G('free'), 'and read back cancelled, the same: ' + look(pc, 40).left);
 }
 
 console.log('\n=== 4. the new fields are read at the boundary ===');

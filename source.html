@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2159 9a162d14 2026-10-17 18:14"><head><meta charset="utf-8">
+<html lang="en" data-build="v2160 ee3b26d1 2026-10-17 18:16"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -18435,7 +18435,12 @@ function planAllowance(pl,uniqueCount,giftAt,now){
     planFreeFrom). That record's base sits past the gift because a period was
     written, and on the rule above it read one grant of ten and never another,
     so free opened ten patterns once and then nothing for good. */
- var from=(t.k!=='free')?null:(base===GIFT_N?giftAt:planFreeFrom(pl,now));
+ /* the end day first, then the gift's end. It was the gift's end whenever base
+    sat on it, which a paid month that opened the moment the gift ran out also
+    does, so the paid months were banked as free weeks: measured, a tier two
+    month ended on day 30 read 60 free on day 40, where free from the end is
+    20 (tests/money.js) */
+ var from=(t.k!=='free')?null:(planFreeFrom(pl,now)||(base===GIFT_N?giftAt:null));
  if(t.k==='free'&&(base===GIFT_N||from)){ weeks=planWeeks(from,now); total=granted*weeks; }
  var left=Math.max(0,total-spent);
  /* WHEN NEW ONES ARRIVE, as an ISO day or null, so a sentence that names the
@@ -78363,5 +78368,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005143102"></div>
+<div id="eof" hidden data-len="005143450"></div>
 </body></html>
