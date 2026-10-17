@@ -16,7 +16,7 @@ const target=PAGE?path.resolve(PAGE):blank;
 const EARLY=`try{if(localStorage.getItem('lcol')===null)localStorage.setItem('lcol','open');}catch(e){}`;
 const LAZY=require(process.env.SEED_LAZY_FROM||path.join(__dirname,'..','..','tests','seed.js')).LCOL_SEED;
 (async()=>{
- const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
+ const b=await chromium.launch({executablePath:process.env.CHROME||'/opt/pw-browsers/chromium-1194/chrome-linux/chrome'});
  let dead=0, t0=Date.now(); const bad=[];
  for(let i=0;i<N;i++){
   const cx=await b.newContext();

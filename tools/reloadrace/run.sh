@@ -20,7 +20,7 @@ H=$(cd "$(dirname "$0")" && pwd); R=$(cd "$H/../.." && pwd)
 N=$1; T=$2; B=${3:-4}; F=$(readlink -f "${4:-$R/source.html}"); OUT=${OUT:-/tmp/reloadrace}
 mkdir -p "$OUT"
 python3 "$H/mkharness.py" "$R/tests/functional.js" "$OUT/harness-$T.js" "$R/tests" "$H/persist-probe.js" "$H/init.js" || exit 1
-export NODE_PATH=${NODE_PATH:-/opt/node22/lib/node_modules} PLAYWRIGHT_BROWSERS_PATH=${PLAYWRIGHT_BROWSERS_PATH:-/opt/pw-browsers}
+export NODE_PATH=${NODE_PATH:-/opt/node22/lib/node_modules}
 cd "$R"
 exec 9>/tmp/atuned-browser.lock; flock -w 3000 9 || exit 1
 pids=""; for i in $(seq 1 "$B"); do node -e "for(;;){}" & pids="$pids $!"; done
