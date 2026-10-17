@@ -190,10 +190,11 @@ times, once per row.
 | Tier one | 12 US dollars | every month |
 | Tier two | 29 US dollars | every month |
 | Tier three | 59 US dollars | every month |
-| Tier four | 99 US dollars | every month |
+| Practitioner | 99 US dollars | every month |
 
 Those are your own figures from 1 October ("Tier 1: $12/month. Tier 2: $29/month.
-Tier 3: $59/month. Tier 4: $99/month."). Monthly only. Add no yearly price.
+Tier 3: $59/month. Tier 4: $99/month."). On 17 October you named tier four
+Practitioner, so type that name for the fourth. Monthly only. Add no yearly price.
 
 1. In the **left menu** click **Product catalog**. (Look for the word
    **Products** if it says that instead.)
@@ -211,7 +212,7 @@ Tier 3: $59/month. Tier 4: $99/month."). Monthly only. Add no yearly price.
    **Save product**).
 
 When all four are done, Product catalog lists Tier one, Tier two, Tier three and
-Tier four.
+Practitioner.
 
 ## Step 4. Copy each price id
 
@@ -235,7 +236,7 @@ You should end with:
     Tier one     price_...
     Tier two     price_...
     Tier three   price_...
-    Tier four    price_...
+    Practitioner price_...
 
 ## Step 5. Give us the four price ids
 
@@ -306,7 +307,7 @@ Stripe's words.
    - **Customers can cancel subscriptions:** on. If it asks when, choose **At
      the end of the billing period**.
    - **Customers can switch plans:** on. Below it is a box for products. Add
-     all four: Tier one, Tier two, Tier three, Tier four.
+     all four: Tier one, Tier two, Tier three, Practitioner.
 4. Click **Save** (top right or the bottom of the page; in test mode it may say
    **Save and activate**).
 5. **Check this:** Stripe may ask for a link to your terms of service and

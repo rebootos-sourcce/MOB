@@ -61,9 +61,11 @@ often. You make one product per tier, with one monthly price each.
 | `Tier one` | `12` | Monthly |
 | `Tier two` | `29` | Monthly |
 | `Tier three` | `59` | Monthly |
-| `Tier four` | `99` | Monthly |
+| `Practitioner` | `99` | Monthly |
 
-These are your own prices from 1 October. Make all four. Tier four stays
+These are your own prices from 1 October. Make all four. The fourth is
+named Practitioner, your ruling of 17 October ("There are four tiers. Free,
+tier one, tier two, tier three, practitioner."). Practitioner stays
 closed to buyers until the lead suite is built: making it now does not sell
 it.
 
@@ -81,7 +83,7 @@ Do this four times, once for each row:
    **Save product**).
 
 When you are done, **Product catalog** lists Tier one, Tier two, Tier three
-and Tier four.
+and Practitioner.
 
 ### Step 3. Copy the four price ids
 
@@ -102,7 +104,7 @@ You end with four lines, like:
     Tier one     price_...
     Tier two     price_...
     Tier three   price_...
-    Tier four    price_...
+    Practitioner price_...
 
 ### Step 4. Copy the secret key
 
@@ -175,7 +177,7 @@ Stripe keeps it shut until you save its settings once.
      **At the end of the billing period**. This is what makes a stopped plan
      run to the end of the month the person paid for.
    - **Customers can switch plans**: on. In the **Products** box under it,
-     add Tier one, Tier two and Tier three. Leave Tier four out while it is
+     add Tier one, Tier two and Tier three. Leave Practitioner out while it is
      closed.
 4. Click **Save** (in test mode it may say **Save and activate**).
 
@@ -199,7 +201,7 @@ Stripe keeps it shut until you save its settings once.
 | `STRIPE_PRICE_ONE` | Tier one's price id from step 3 |
 | `STRIPE_PRICE_TWO` | Tier two's price id |
 | `STRIPE_PRICE_THREE` | Tier three's price id |
-| `STRIPE_PRICE_FOUR` | Tier four's price id |
+| `STRIPE_PRICE_FOUR` | Practitioner's price id (the server calls it four) |
 
    If a name is already in the list, click it and use **Update secret**
    instead.
