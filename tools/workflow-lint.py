@@ -131,6 +131,9 @@ BROWSER = {
 # the allowance, five seats, 17 October (tests/allowance.js). Report only until
 # three green runs.
     'allowance':     ('node tests/allowance.js', 20),
+# the gift sees everything and is still free, ruled in DECISIONS.md and kept at
+# round PK (tests/gift.js). Report only until three green runs.
+    'gift':          ('node tests/gift.js', 20),
 # patterns follow the money, 17 October (tests/money.js). Report only until
 # three green runs.
     'money':         ('node tests/money.js', 20),

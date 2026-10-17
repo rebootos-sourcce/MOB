@@ -176,7 +176,7 @@ console.log('\n=== 3. h, an ended plan reads free, from the day it ended ===');
   /* the same person, never read again: signed out, or offline */
   const off = { rec: atStop, n: A.n, giftAt: A.giftAt };
   ok(E.planState(off.rec, iso(123)) === 'ended', 'never read again, a plan past its end day is ended, not live: ' + E.planState(off.rec, iso(123)));
-  ok(E.planOf(off.rec, iso(123)).k === 'free' && E.planSight(off.rec, iso(123)).tier === 'free', 'so it reads free, and sees what free sees');
+  ok(E.planOf(off.rec, iso(123)).k === 'free' && E.planSight(off.rec, false, iso(123)).tier === 'free', 'so it reads free, and sees what free sees');
   const fo = look(off, 123);
   ok(fo.source === 'free' && fo.left === G('free'), 'and free has its own ' + fo.left + ', not nought for what was opened while paying');
   ok(look(off, 123 + 21).left === 4 * G('free'), 'banking from the end day: three weeks on, ' + look(off, 123 + 21).left);

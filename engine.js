@@ -4151,6 +4151,12 @@ var UNPACK_BASE={
  'release line':'A release line is one spoken line of a release, aimed at one address, to lower the charge held there.',
  'truth line':'A truth line is one spoken line that puts the opposite quality in at the address, where the limit was.',
  'evidence':'Evidence is something noticed or measured after a practice that backs a pattern up or goes against it.',
+ /* THE WORD THE GIFT AND THE ALLOWANCE COUNT IN. A hundred patterns of the gift
+    are a hundred lines, not a hundred reactions, so the sentence above is the
+    wrong one beside "Your gift: 100 patterns" on Summary. This is the gift's
+    own sentence, the one the first release card already prints beside the
+    count (obGiftSay, ui/onboard.js), so it is said one way. */
+ 'gift:pattern':'A pattern is one line you have not said before.',
  /* THE SAME WORDS, READ BY A PRACTITIONER ABOUT A CLIENT, round QB (ui/
     practitioner.js). The entries above speak to the person about themselves,
     "you said yes", and on the practitioner's page the reader is somebody
@@ -8067,6 +8073,17 @@ function planBuyable(k){
    carried its own literal 100 in five places beside that row, which is the same
    number held twice and one edit away from two answers. */
 const GIFT_N=PLAN_BY.gift.grant;
+/* WHETHER THE GIFT IS STILL IN FORCE, off the count of patterns opened. The gift
+   is not a plan a person is on: no record ever says tier gift, planOf reads it
+   as free, and it is never bought. It is the first hundred patterns of anybody's
+   meter, which is how planAllowance has always spent it, and this is that same
+   test said once so sight and the allowance cannot disagree about whether
+   somebody is inside it. Either shape of the count, the way planAllowance takes
+   it, and anything that is not a number reads as nothing opened. */
+function planInGift(unique){
+ var n=Array.isArray(unique)?unique.length:Number(unique);
+ if(!isFinite(n))n=0;
+ return Math.max(0,n)<GIFT_N;}
 /* A FREE WEEK, as a length. The free tier's weeks are counted from the moment
    the gift ran out, seven days at a time, so a week needs no calendar, no zone
    and no host to start it. */
@@ -8421,16 +8438,38 @@ function planRank(k){ return TIER_KEYS.indexOf(k); }
 /* WHAT THIS PLAN CAN SEE. sees maps every key in SIGHT to a boolean, so a
    caller never has to treat a missing key as an answer, and locked is the rows
    it cannot, in table order, which is what a lock has to name. tier is the key
-   of the rung in force. */
-function planSight(pl,now){
+   of the rung in force.
+
+   gift, when true, is a person inside the gift, and they see every row. The
+   ruling is DECISIONS.md: "A new person gets 100 patterns, free, with
+   everything visible. They explore the whole app until the gift is spent.
+   Then it reverts." It was kept at round PK ("the gift stays as ruled") and
+   REVIEW-arch/TALLY.md ruling 8 says it plainly: "whole reading visible while
+   it lasts". This read the plan alone, and the gift has no rank because it is
+   not a tier, so a new person on their first screen was handed a padlock over
+   the saboteurs the engine had already found in their own answers, before
+   they had seen anything worth paying for.
+
+   THE GIFT IS NOT A TIER, AND THIS DOES NOT MAKE IT ONE. tier still says the
+   rung in force, planOf is untouched, and nothing here writes a plan: a gift
+   person reads free everywhere the plan is asked, the allowance, the ladder,
+   the tiers page's "You are on this" and checkout. It opens sight and nothing
+   else, so it reaches nothing that costs money to serve, and the cohort lead
+   suite, which is tier four's and is not sight at all, stays where it was.
+   The caller decides whether somebody is inside the gift (planInGift, off
+   their own meter), because a worked example has a meter too and its history
+   is not the viewer's gift. With no second argument this reads exactly as it
+   always did. now is optional, for the gate, and reaches planOf, which reads
+   the end date (planPast). */
+function planSight(pl,gift,now){
  var t=planOf(pl,now), at=planRank(t.k), sees={}, locked=[];
  SIGHT.forEach(function(g){
-  var ok=at>=planRank(g.need); sees[g.k]=ok; if(!ok&&g.built!==false)locked.push(g);});
- return {tier:t.k, sees:sees, locked:locked, all:locked.length===0};}
+  var ok=!!gift||at>=planRank(g.need); sees[g.k]=ok; if(!ok&&g.built!==false)locked.push(g);});
+ return {tier:t.k, gift:!!gift, sees:sees, locked:locked, all:locked.length===0};}
 /* Whether one thing is visible on this plan. A key that is not in SIGHT is not
    a thing the product gates and answers false, the same straight no the old
-   version gave a rung that did not exist. */
-function planSees(pl,kind){ return planSight(pl).sees[kind]===true; }
+   version gave a rung that did not exist. gift is planSight's. */
+function planSees(pl,kind,gift){ return planSight(pl,gift).sees[kind]===true; }
 /* THE TIER THAT UNLOCKS A THING, as its PLANS row, or null for a key SIGHT does
    not hold. This is what a lock names. */
 function planNeed(kind){
@@ -8446,10 +8485,14 @@ function planAdds(k){
  return sightRows().filter(function(g){return g.need===k;});}
 /* WHAT A PLAN SEES, SAID AS ONE CLAUSE for a sheet that has a line for it. The
    reading everybody has is the stem, and what the plan adds is a list off
-   SIGHT, so this types no rung. */
-function planSightSay(pl){
- var s=planSight(pl), seen=sightRows().filter(function(g){return s.sees[g.k];}).map(function(g){return g.nm;});
- return 'your own reading'+(seen.length?', with '+planList(seen):', without what is running it');}
+   SIGHT, so this types no rung. Inside the gift it says the gift is why, since
+   it sits under "Your tier: Free" on the tiers page, and a free person told
+   they see the whole chain with no reason given would read it as what free
+   is. */
+function planSightSay(pl,gift){
+ var s=planSight(pl,gift), seen=sightRows().filter(function(g){return s.sees[g.k];}).map(function(g){return g.nm;});
+ return 'your own reading'+(seen.length?', with '+planList(seen):', without what is running it')
+  +(gift?', while your gift lasts':'');}
 /* THE LOCKED ROWS, GROUPED BY THE TIER THAT UNLOCKS THEM, as clauses: saboteurs,
    unlocked on tier one and above. Both the tiers page and a partly locked
    preset say this, so it is said here once. keys are SIGHT keys. */
@@ -8463,8 +8506,11 @@ function planLockedSay(keys){
 /* WHAT AN UPGRADE WOULD UNLOCK, as the next rung up that adds anything to see,
    with the rows it adds. null when everything is visible already. It never
    skips a rung that adds something, so a person on free is told tier one, not
-   tier three. */
-function planNextSight(pl){
+   tier three. Inside the gift everything is visible already, so it is null:
+   a worked example told a gift person that saboteurs "open on tier one" on
+   their own profile, where they were open that minute. */
+function planNextSight(pl,gift){
+ if(gift)return null;
  var at=planRank(planOf(pl).k);
  for(var i=at+1;i<TIER_KEYS.length;i++){
   var add=planAdds(TIER_KEYS[i]);
@@ -8499,7 +8545,7 @@ function planAllowance(pl,uniqueCount,giftAt,now){
  n=Number(n); if(!isFinite(n))n=0;
  var used=Math.max(0,n);
  var giftLeft=Math.max(0,GIFT_N-used);
- if(giftLeft>0)return {source:'gift', left:giftLeft, of:GIFT_N, inGift:true,
+ if(planInGift(used))return {source:'gift', left:giftLeft, of:GIFT_N, inGift:true,
   base:0, spent:used, runs:Math.floor(giftLeft/RUN_MIN), weeks:0, renews:null,
   /* what it is of, in words. "92 of the gift left" says ninety two of what. */
   say:giftLeft+' patterns left of the '+GIFT_N+' you were given'};
@@ -20269,7 +20315,7 @@ if(typeof module!=='undefined'&&module.exports){
                  PLAN_GRACE_MS:PLAN_GRACE_MS, planPast:planPast, PLAN_RENEWAL:PLAN_RENEWAL,
                  planState:planState, planOf:planOf, planSees:planSees,
                  planNextSight:planNextSight, planAllowance:planAllowance,
-                 planWeeks:planWeeks, planFreeFrom:planFreeFrom, GIFT_N:GIFT_N, WEEK_MS:WEEK_MS,
+                 planWeeks:planWeeks, planFreeFrom:planFreeFrom, GIFT_N:GIFT_N, WEEK_MS:WEEK_MS, planInGift:planInGift,
                  planUpgrade:planUpgrade, planBuyable:planBuyable, RUN_MAX:RUN_MAX, RUN_MIN:RUN_MIN,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,
                  planYear:planYear, PLAN_YEAR_FREE:PLAN_YEAR_FREE,

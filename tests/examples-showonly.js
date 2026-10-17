@@ -30,7 +30,9 @@
         in the field or on the example's record moves
      4  the refusal reads as a preview and never as a failure: the one line,
         in no fail kind, and its second sentence is the one the sight table
-        gives for the own plan (planNextSight), read at run time
+        gives for the own plan and the own gift (planNextSight), read at run
+        time. Free is a new person inside the gift, which already sees what
+        the example shows; every paid tier has spent its gift
    AND THE CRISIS DOOR: Talk it through pressed while an example is open
    lands on the person's own journal, never on an example's page with no box
    THEN, FOR THE OWN RECORD:
@@ -76,13 +78,20 @@ const TEXT='I was furious and ashamed and I could not stop going over it. I said
   await pg.goto(FILE,{waitUntil:'load'}); await booted(pg); await pg.waitForTimeout(400);
   console.log('\n--- the own record on '+tier+' ---');
 
-  /* the own record on this tier, written to the store the way a paid record is */
+  /* the own record on this tier, written to the store the way a paid record is.
+     FREE STAYS A NEW PERSON, INSIDE THE GIFT, and every paid tier has spent its
+     gift. The gift sees everything (planSight, engine/plan.js), so a fresh
+     own record on every tier measured only the gift's tail, "Open your own
+     profile to run it.", and never the line that names a tier. A paid record
+     past the gift is the person that line is for. */
   const own0=await pg.evaluate(t=>{
    loadP(0);
    CURP.plan={tier:t,status:t==='free'?'':'active',granted:0,carried:0,base:null,since:null,until:null,ends:null};
-   const saved=pPersist();
-   return {saved, raw:STORE.get(PKEY), n:PROFILES.length, of:planOf(CURP.plan).k,
-    nx:(function(){var n=planNextSight(CURP.plan); return n?{to:n.to.nm, adds:n.adds.map(g=>g.nm)}:null;})()};},tier);
+   if(t!=='free')meterRun(CURP,Array.from({length:GIFT_N},(_,i)=>i+':gift:spent'));
+   const saved=pPersist(), gift=planInGift(CURP.meter.unique);
+   return {saved, raw:STORE.get(PKEY), n:PROFILES.length, of:planOf(CURP.plan).k, gift,
+    nx:(function(){var n=planNextSight(CURP.plan,gift); return n?{to:n.to.nm, adds:n.adds.map(g=>g.nm)}:null;})()};},tier);
+  ok(own0.gift===(tier==='free'),'the own record on '+tier+' is '+(tier==='free'?'inside':'past')+' the gift, '+own0.gift);
   ok(own0.saved&&own0.of===tier,'the own record is on '+tier+' and stored, '+JSON.stringify({saved:own0.saved,of:own0.of}));
   const examples=await pg.evaluate(()=>PEOPLE.map((p,i)=>({i:i,nm:p.nm,you:!!p.you})).filter(p=>!p.you));
   ok(examples.length>0,'the roster has examples to measure, read off PEOPLE: '+examples.length);
