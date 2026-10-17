@@ -95,4 +95,16 @@ const CRISIS_SAY={
     built, and fails on one). It does not say who reads anything. */
  quiz:'Talk it through opens the story box on this page. This page sends nothing anywhere.',
  where:'988 also works in Canada. Elsewhere, call your local emergency number.',
- story:'It is always a story. Write what is happening, or what happened.'};
+ story:'It is always a story. Write what is happening, or what happened.',
+ /* BESIDE AN ENTRY srcSafe STOPS, 17 October (engine/safe.js), in the place
+    the release and the why there question were. Emmy's words, taken as
+    given: a door and not an alarm. It says the words are kept, which is
+    true while they are typed (the draft is on the record half a second
+    after the last key, ui/storyui.js stDraft) and after Commit, and it names
+    the one number and what it does. It does not say what was read, or that
+    anything was, and nothing on the page goes red, sounds or counts down. */
+ entry:'It is saved. If you want a person now, 988 answers by call or text, any hour.',
+ /* and the same line without its first sentence when this browser refused
+    the write, because "It is saved" would then be a lie about the one thing
+    the person most needs to know; the status line says what was not kept */
+ entryNow:'If you want a person now, 988 answers by call or text, any hour.'};

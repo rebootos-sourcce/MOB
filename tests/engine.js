@@ -8431,7 +8431,11 @@ g('ARCH EXPR · an archetype is 100% expressed with nothing held, dragged by its
 }
 
 g('CRISIS · srcSafe trips on self harm and not on everyday uses of the same words');
-/* all expected red on main: block 2a ports srcSafe from e2aa6f8 and must fix it */
+/* expected red on main from 9 October to 17 October, green on engine/safe.js.
+   Each xf became ok only after it passed; no assertion was dropped or
+   loosened. srcSafe is not e2aa6f8's: that one was a bare substring list, so
+   "cut myself" tripped on "I cut myself a slice of bread", the third row of
+   NOT below, and it read no negation and no other person. */
 {
  const srcSafe=E.srcSafe;
  const TRIP=['I want to die','I keep thinking about killing myself','I am ending my life tonight',
@@ -8440,8 +8444,130 @@ g('CRISIS · srcSafe trips on self harm and not on everyday uses of the same wor
  const NOT=['I cut myself a slice of bread','I made myself a cup of tea after work','I hurt my knee at the gym'];
  ok(TRIP.length>=7&&NOT.length>=3,
   'the crisis list keeps at least 7 that trip and 3 that do not, has '+TRIP.length+' and '+NOT.length);
- TRIP.forEach(t=>xf(typeof srcSafe==='function'&&srcSafe(t)===true,'srcSafe trips on '+JSON.stringify(t)));
- NOT.forEach(t=>xf(typeof srcSafe==='function'&&srcSafe(t)===false,'srcSafe does not trip on '+JSON.stringify(t)));
+ TRIP.forEach(t=>ok(typeof srcSafe==='function'&&srcSafe(t)===true,'srcSafe trips on '+JSON.stringify(t)));
+ NOT.forEach(t=>ok(typeof srcSafe==='function'&&srcSafe(t)===false,'srcSafe does not trip on '+JSON.stringify(t)));
+}
+
+g('SAFE · words about ending a life or danger now read nothing, and the sniffer\'s own rules decide what counts');
+/* engine/safe.js and engine/data/safe.js, 17 October. Every row below was run
+   against main's engine first: on main srcSafe does not exist and every TRIP
+   row reads charge, which is the defect. The reasons a hit is set aside are
+   asserted by name, so a row that passes for the wrong reason fails. */
+{
+ const why=t=>E.safeOf(t).map(h=>h.why||'counts');
+ /* one row per family and per form a person actually writes */
+ const TRIP=[
+  ['self','I keep thinking about killing myself'],['self','I have been hurting myself again'],
+  ['self',"I'm suicidal"],['self','Suicide has been on my mind all week'],
+  ['self',"I've been self-harming again"],['self','I started cutting myself last year'],
+  ['self','I cut my wrists last night'],['self',"I don't want to be alive anymore"],
+  ['self','I wish I was dead'],['self','I tried to kill myself in 2019'],['self','I just want to end it all'],
+  ['self','i dont want to wake up tomorrow'],['self','I want to hurt myself'],
+  ['self','I have thought about suicide'],['self','I might kill myself'],
+  ['now','I never feel safe at home'],['now','I am not safe at home'],['now','He threatened to kill me'],
+  ['now','I am scared for my life'],['now','I am afraid to go home']];
+ TRIP.forEach(([f,t])=>ok(E.srcSafe(t)===true&&E.safeOf(t).some(h=>!h.why&&h.fam===f),
+  'trips, family '+f+': '+JSON.stringify(t)+' '+JSON.stringify(why(t))));
+ /* a no in front of it is a denial, by sniffDeny, the sniffer's own reader */
+ const NO=['I was not going to kill myself','I would never kill myself',"I'm not suicidal, just tired",
+  "I don't want to die",'I am not going to hurt myself','I was never suicidal',
+  'I am not thinking about killing myself anymore','I never feel unsafe at home'];
+ NO.forEach(t=>ok(E.srcSafe(t)===false&&why(t).every(w=>w==='no'),'a no denies it: '+JSON.stringify(t)+' '+JSON.stringify(why(t))));
+ /* and a no that is not a denial, the can't stop frame, still trips */
+ ok(E.srcSafe("I can't stop thinking about killing myself"),'"I can\'t stop thinking about killing myself" trips: a can\'t stop frame is not a no');
+ ok(E.srcSafe("I don't know why I want to die"),'"I don\'t know why I want to die" trips: the no is two words too far to reach it');
+ /* the longer frame decides for the shorter phrase inside it */
+ ok(E.safeOf('I was not going to kill myself').length===1&&E.safeOf('I was not going to kill myself')[0].t==='going to kill myself',
+  'the frame "going to kill myself" stands for the "kill myself" inside it, once');
+ /* someone else's, by sniffWho */
+ const OTHER=['My dad died by suicide','She is suicidal and I am scared for her','my grandfather wanted to die at home'];
+ OTHER.forEach(t=>ok(E.srcSafe(t)===false&&why(t).every(w=>w==='other'),'someone else\'s, by whoOf: '+JSON.stringify(t)+' '+JSON.stringify(why(t))));
+ ok(E.srcSafe('He threatened to kill himself')===false&&E.safeOf('He threatened to kill himself').length===0,
+  '"He threatened to kill himself" matches no row: the list is the writer\'s own words');
+ /* a phrase that names the writer in its own words is never asked whose it is */
+ ok(E.srcSafe('He threatened to kill me')&&E.srcSafe('He told me to kill myself')&&E.srcSafe('She said I should kill myself'),
+  'a phrase carrying me or myself is the writer\'s whoever else is in the sentence');
+ ok(E.srcSafe('sometimes you just want to die'),'an unclear you trips: a generic you is so often the writer');
+ /* someone else's quoted line, or a work's */
+ const QUOTE=['She said "I want to die" when her phone broke','The last line of the novel is "I want to die free."',
+  'He yelled "I will kill myself" and slammed the door','She said: "I want to die."',
+  'I watched a documentary about teen suicide','I read a book about self-harm'];
+ QUOTE.forEach(t=>ok(E.srcSafe(t)===false&&why(t).every(w=>w==='quoted'),'quoted, someone else\'s or a work\'s: '+JSON.stringify(t)+' '+JSON.stringify(why(t))));
+ ok(E.srcSafe('I said "I want to die" and meant it'),'the writer quoting themselves trips');
+ ok(E.srcSafe('She cried all night. "I want to die"'),'a speaker in the sentence before is not this quotation\'s speaker, so it trips');
+ ok(E.srcSafe('The film made me want to die'),'a work named and not quoted trips: "The film made me want to die"');
+ ok(E.srcSafe('I read the news and now I am suicidal'),'a topic word a work is not about trips: "I read the news and now I am suicidal"');
+ /* the held idioms, each both ways */
+ const IDIOM=[['I want to die laughing','I want to die'],['I want to die of embarrassment','I want to die'],
+  ['I want to die old and happy','I want to die'],['I have been killing myself at work','I have been killing myself'],
+  ['I am killing myself to meet this deadline','I am killing myself'],['I keep hurting myself at the gym','I keep hurting myself'],
+  ['I killed myself at the gym this morning','I killed myself this morning']];
+ IDIOM.forEach(([held,bare])=>ok(E.srcSafe(held)===false&&why(held).every(w=>w==='idiom')&&E.srcSafe(bare)===true,
+  'held as an idiom: '+JSON.stringify(held)+', and the same phrase bare trips: '+JSON.stringify(bare)));
+ ok(E.srcSafe('I want to die. Laughing at me is all they do.'),'an idiom tail in the next sentence is not the idiom');
+ /* the controls no row reaches */
+ const PLAIN=['I could kill for a coffee','this deadline is killing me','my cutting board is warped','I nearly died laughing',
+  'I killed it at the gym','I am dying to see you','I feel safe at home now','My mum is going to kill me when she sees the car',
+  'He killed himself last spring','I am so tired I could die','I hated myself'];
+ PLAIN.forEach(t=>ok(E.srcSafe(t)===false&&E.safeOf(t).length===0,'no row matches: '+JSON.stringify(t)));
+ ok(E.scanStory('He killed himself last spring').length>0,
+  'and a death named in another person\'s words is still read by the sniffer, as grief');
+
+ /* WHAT A TRIP DOES. The reader reads nothing, and the result has exactly the
+    shape of an entry that named no feeling, key for key. */
+ const T='I keep thinking about killing myself', Q='I walked to the shop on Tuesday';
+ const pT=E.parseStory(T), pQ=E.parseStory(Q);
+ ok(pT.imprints.length===0&&Object.keys(pT.bands).length===0&&pT.hits.length===0,
+  'parseStory reads nothing on a tripped entry: '+pT.imprints.length+' imprints, bands '+JSON.stringify(pT.bands));
+ ok(JSON.stringify(Object.keys(pT).sort())===JSON.stringify(Object.keys(pQ).sort()),
+  'and its result has the keys of an entry that read nothing, '+Object.keys(pT).length);
+ ok(E.marksOf(T,pT).length===0,'and marksOf draws nothing on it, so no word is lit as a feeling');
+ /* the field does not move */
+ reset(0);
+ const snap=()=>JSON.stringify({c:S.charge,o:S.replace,l:S.law,v:E.VERPMIX,m:E.LEANMIX});
+ const before=snap();
+ const ap=E.applyStory(T), vp=E.verpApply(T), lp=E.leanApply(T);
+ ok(snap()===before,'applyStory, verpApply and leanApply move nothing on it');
+ ok(vp.refused==='safe'||!vp.total,'verpApply says why it applied nothing: '+JSON.stringify(vp.refused));
+ ok(lp.refused==='safe','leanApply says why it applied nothing: '+JSON.stringify(lp.refused));
+ /* and on an entry that also carries a law cue, so verpApply's own stop is
+    the line that holds it and not its early return on nothing found */
+ const TV='I avoided everyone all week and I want to die';
+ E.SAFE_WORDS.forEach(r=>{r.was=r.on; r.on=false;}); const vOff=E.verpScan(TV).total;
+ E.SAFE_WORDS.forEach(r=>{r.on=r.was; delete r.was;});
+ const vb=snap(), vv=E.verpApply(TV);
+ ok(vOff>0&&vv.refused==='safe'&&snap()===vb,
+  'verpApply refuses a tripped entry that carries a law cue, '+vOff+' found, and moves nothing: '+JSON.stringify(vv.refused));
+ /* Source AI asks nothing */
+ const h=E.srcHear(T,{eye:5,heart:5});
+ ok(h.safe===true&&h.unread===true&&!h.asks,'srcHear hears it as safe and asks nothing');
+ ok(E.srcTurn(h,{typed:true}).move==='safe'&&E.srcTurn(h,{typed:true,passed:true}).move==='safe',
+  'srcTurn makes the safe move, ahead of pass and every other move');
+ const T2=T+'. I have been hurting myself again.';
+ ok(E.srcTurn(E.srcHear(T2,{heart:9,eye:9}),{typed:true}).move==='safe',
+  'said twice with earlier entries at both seats, it still asks no why there');
+ const d=E.srcDims(T);
+ ok(d.safe===true&&E.srcNext(d,[],E.SRC_DIM_ORDER)===null,'srcNext has nothing to ask of it');
+ ok(E.srcNext(E.srcDims(Q),[],E.SRC_DIM_ORDER)!==null,'and still asks of an ordinary entry');
+ /* nothing about the match is kept: the safe flags are page memory and the
+    reader's result carries no key or value that says it happened */
+ ok(!/safe/.test(JSON.stringify(pT)),'the parse result carries no word of the match');
+
+ /* THE ONE TABLE, ONE LINE. Off, every entry reads as it did on main. */
+ E.SAFE_WORDS.forEach(r=>{r.was=r.on; r.on=false;});
+ ok(E.srcSafe(T)===false&&E.parseStory(T).imprints.length>0&&E.srcTurn(E.srcHear(T,null),{typed:true}).move!=='safe',
+  'with on false on both rows the entry reads charge again, '+E.parseStory(T).imprints.length+' imprints, as on main');
+ E.SAFE_WORDS.forEach(r=>{r.on=r.was; delete r.was;});
+ ok(E.srcSafe(T)===true,'and back on, it trips again');
+ /* the table itself: written in normMap's form, so every row can match */
+ const all=[].concat(...E.SAFE_WORDS.map(r=>r.say));
+ const unform=all.filter(w=>E.normMap(w).s!==' '+w+' ');
+ ok(unform.length===0,'every row is in normMap\'s own form, so none is a dead row: '+JSON.stringify(unform));
+ ok(all.every(w=>E.srcSafe(w)||E.safeOf(w).every(h=>h.why==='other')),
+  'every row trips on its own words, or is someone else\'s with no subject at all, never silent');
+ const heldKeys=[].concat(...E.SAFE_WORDS.map(r=>Object.keys(r.held)));
+ ok(heldKeys.every(k=>all.indexOf(k)>=0),'every held idiom belongs to a row that exists');
+ reset(0);
 }
 
 g('SHOW ONLY · a worked example\'s record refuses every engine writer, and an own record refuses none');
