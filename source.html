@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2177 2666ec59 2026-10-17 19:55"><head><meta charset="utf-8">
+<html lang="en" data-build="v2185 aeab54e2 2026-10-17 21:25"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -13509,9 +13509,16 @@ function addrLine(n,pole,i){
     axis if the engine knows one, never a guess. */
  var opp=(CHILD.filter(function(x){return x.nm===ax;})[0]||{}).opp;
  var nm=String(n.k).toLowerCase();
- return {rel:C3_STEM+nm+'.',
+ /* "IN" BEFORE THE NAME, 17 October. An address name is a noun, Panic,
+    Betrayal, Oversensitivity, and this read it straight after the stem's "that
+    I am", so the three Surprise addresses, the only ones no card covers, ran
+    "that I am betrayal." a hundred times a block on the carousel and in the
+    voice. The axes cards already settle how he puts a noun after that stem:
+    "in shock.", "in grief.", "in rejection." So the strict syntax takes his
+    "in", and the truth's fallback with it. */
+ return {rel:C3_STEM+'in '+nm+'.',
    tru:opp?C3_TRUTH+'moving toward '+String(opp).toLowerCase()+' at this address.'
-     :C3_TRUTH+'not '+nm+'.',
+     :C3_TRUTH+'not in '+nm+'.',
    track:null, src:'Strict syntax at the address', split:false};}
 /* ONE THOUGHT LINE OF A RELEASE, read off its meter key. The key is address,
    pass and line; the pass is the side then the phase (Rlimit, Ltruth). The
@@ -33916,6 +33923,29 @@ function speakStop(){ studioStop(); }
    and a voice that answers after it has already been talked over.
    ============================================================ */
 var STUDIO={seq:0, el:null, url:''}, STUDIO_WAIT_MS=5000;
+/* A LINE ALREADY RENDERED IS PLAYED AGAIN, NOT BOUGHT AGAIN, 17 October. A
+   release block is its head once and then the same pass, "that I am in
+   apathy.", for every time said after it, so a run at the default hundred over
+   three addresses asked the server for 1,200 renders of about two dozen
+   sentences. The server's cache was meant to answer the repeats and is a no
+   op on its workers.dev address (atuned/server/src/voice.js, cacheOf), so
+   every one was new synthesis against the twenty thousand characters a device
+   gets a day. Measured on the walk at a quarter of the default, the grief
+   story's run asked for 304 renders of 8 sentences, 11,341 characters, so the
+   default run passes the day's ceiling inside its second address and "Today's
+   voice lines are used up" reads the rest on the screen. Kept by style and
+   text, the key the server's own
+   cache uses less the voice, which this page cannot change mid visit. Held
+   for the visit only, the last STUDIO_KEEP_N, never written anywhere. */
+var STUDIO_KEEP=Object.create(null), STUDIO_KEEP_AT=[], STUDIO_KEEP_N=64;
+function studioAsk(text,style){
+ var k=style+'\n'+text, b=STUDIO_KEEP[k];
+ if(b)return Promise.resolve({ok:true, blob:b});
+ return authVoice(text,style).then(function(r){
+  if(r&&r.ok&&r.blob&&!STUDIO_KEEP[k]){
+   STUDIO_KEEP[k]=r.blob; STUDIO_KEEP_AT.push(k);
+   if(STUDIO_KEEP_AT.length>STUDIO_KEEP_N)delete STUDIO_KEEP[STUDIO_KEEP_AT.shift()];}
+  return r;});}
 function studioCan(){
  try{ return typeof Audio==='function'&&typeof URL!=='undefined'&&!!URL.createObjectURL
   &&typeof authVoice==='function'; }catch(e){ return false; }}
@@ -33933,7 +33963,7 @@ function speakStudio(text,rate,style,onend,onfail){
  var seq=STUDIO.seq, t0=Date.now(), over=false;
  var lose=function(st){ if(over||seq!==STUDIO.seq)return; over=true; studioStop(); if(onfail)onfail(st||0); };
  var wait=setTimeout(function(){ lose(0); },STUDIO_WAIT_MS);
- authVoice(String(text),style).then(function(r){
+ studioAsk(String(text),style).then(function(r){
   if(over||seq!==STUDIO.seq)return;
   if(!r.ok){ clearTimeout(wait); lose(r.status); return; }
   var el, url;
@@ -44580,10 +44610,21 @@ function stRead(){
  var marks=stMarks(t,ST_PARSED);
  STR={t:t,marks:marks,toks:marks.toks||(t?(t.match(/[A-Za-z']+/g)||[]).map(function(w){return {w:w};}):[]),
   heard:srcHear(t,srcPrior(ents))};}
-/* the addresses this entry reaches, or the last committed entry's */
+/* the addresses this entry reaches, or the last committed entry's.
+   THE ONES THE WORDS NAMED COME FIRST, and .named says how many of the head of
+   the list they are, 17 October. parseStory reaches two kinds of address: the
+   ones the person's words chose, and the ones it fills a seat with when the
+   seat was read and no feeling named one (inferred, engine/sniff.js, whose own
+   rule is that such a name is never printed as a finding). The split rides on
+   the list so STV.lastFound keeps it once the parse is cleared at commit;
+   stRelModel says what losing it cost. */
 function stFound(){
- var found=[];
- if(ST_PARSED)ST_PARSED.imprints.forEach(function(im){var n=BY[im.node];if(n&&n.cf&&found.indexOf(n)<0)found.push(n);});
+ var found=[], named=0;
+ [false,true].forEach(function(inf){
+  if(ST_PARSED)ST_PARSED.imprints.forEach(function(im){var n=BY[im.node];
+   if(!!im.inferred===inf&&n&&n.cf&&found.indexOf(n)<0)found.push(n);});
+  if(!inf)named=found.length;});
+ found.named=named;
  return found.length?found:STV.lastFound;}
 
 /* THE REAL COMMIT, FACTORED OUT OF THE APPLY BUTTON'S OWN ONCLICK, round NF,
@@ -46136,13 +46177,26 @@ function stVaultPaint(hd,box){
    and the card that opens carries Pause and Stop.
    ============================================================ */
 var ST_OFF={};
+/* the card's ceiling on times said, read off its own picks (REL_DOSES,
+   ui/release.js, which loads after this file and is read only at a press) */
+function stDoseMax(){return typeof REL_DOSES!=='undefined'?REL_DOSES[REL_DOSES.length-1]:LINES_PER_CH;}
 function stRelModel(){
  var r=compute(), bySq=function(a,b){return b.sq-a.sq;};
  var picked=Object.keys(IMP_PICK).filter(function(k){return IMP_PICK[k];})
   .map(function(k){return BY[+k];}).filter(function(n){return n&&n.cf;});
  var found=stFound(), take;
+ /* WHAT THE WORDS NAMED RUNS FIRST, 17 October. These were the heaviest three
+    of everything the entry reached, and charge lands per feeling, so a feeling
+    with fewer addresses reads heavier at each of them: "My father died ... I
+    feel completely alone" ran Addiction, Lust and Shame of Desire, filled in at
+    a sacral the words never named, said "that I am in apathy" a hundred times
+    a block, and left out the four grief addresses it did name. The shame story
+    did the same. Weight still orders each kind, and a filled in address runs
+    only when the words named fewer than three. An entry from before the split
+    carries no .named and reads as it always did. */
+ var cut=found.named==null?0:found.named;
  if(picked.length)take=picked.sort(bySq);
- else if(found.length)take=found.slice().sort(bySq).slice(0,3);
+ else if(found.length)take=found.slice(0,cut).sort(bySq).concat(found.slice(cut).sort(bySq)).slice(0,3);
  else take=r.loaded.filter(function(n){return n.cf;}).sort(bySq).slice(0,3);
  return {take:take,sel:take.filter(function(n){return ST_OFF[n.i]!==true;}),bank:!!picked.length,
   added:!!(picked.length||found.length),
@@ -46163,7 +46217,12 @@ function stRelPanel(){
   /* pace and patterns set the run, so they go with it on a worked example */
   +(showOnly()?'':'<div class="rel-fields st-fields">'
    +'<label class="rel-field"><span>Pace</span><input type="number" id="strpace" min="0.5" max="2" step="0.1" value="'+RUN.pace+'"></label>'
-   +'<label class="rel-field"><span>Patterns</span><input type="number" id="strdose" min="1" max="'+LINES_PER_CH+'" step="1" value="'+RUN.dose+'"></label>'
+   /* TIMES SAID, 17 October, the card's own word and the card's own ceiling.
+      It said Patterns, which since the allowance is the unit a run spends and
+      not how often a line is said, and it capped at the fifty a printed card
+      carries while the card offers a hundred and opens there, so a hundred
+      showed in a field whose ceiling was fifty and any edit cut it in half. */
+   +'<label class="rel-field"><span>Times said</span><input type="number" id="strdose" min="1" max="'+stDoseMax()+'" step="1" value="'+RUN.dose+'"></label>'
   +'</div>')
   /* ENABLED ON A SELECTION, NOT ON A PRICE, so a spent allowance still
      reaches the card that refuses it and says why. */
@@ -46198,7 +46257,7 @@ function stRelPanel(){
   RUN.pace=Math.max(0.5,Math.min(2,Math.round((+this.value||1)*10)/10));
   RUN.speed=2.2/RUN.pace; this.value=RUN.pace;};
  if((f=document.getElementById('strdose')))f.onchange=function(){
-  RUN.dose=Math.max(1,Math.min(LINES_PER_CH,Math.round(+this.value)||1)); this.value=RUN.dose;};
+  RUN.dose=Math.max(1,Math.min(stDoseMax(),Math.round(+this.value)||1)); this.value=RUN.dose;};
  var go=document.getElementById('strun');
  if(go)go.onclick=function(){
   if(!M.sel.length)return;
@@ -56729,8 +56788,12 @@ function relRender(){
    /* where in the run, on the plate it describes, rather than a row of its own */
    /* each part whole, so a phone breaks the line between parts and never
       leaves "session" on a line of its own */
+   /* RELEASE LINES, the setup's count, 17 October. This added the reframe
+      half in, so the setup said "3 addresses, 150 lines", Remaining counted
+      down from 150, and this said 300 lines this session, one word for two
+      sizes of the same run. Recharged is counted on the side panels. */
    +'<span class="rel-ct">'+['Pass '+(RUN.pass+1)+' of '+RUN.dose,'address '+(ad.at+1)+' of '+ad.of]
-    .concat(cts&&cts.of?[(cts.of+cts.putOf)+' lines this session']:[])
+    .concat(cts&&cts.of?[cts.of+(cts.of===1?' release line':' release lines')+' this session']:[])
     .map(function(x){return '<span class="rel-nw">'+x+'</span>';}).join(' · ')+'</span></span></div>';
   var info=relTally(cts,live)+relSws(n);
   /* PAUSE AND END ON THE CENTRE LINE, round QM, his words: "You can keep the
@@ -79102,5 +79165,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005191895"></div>
+<div id="eof" hidden data-len="005196255"></div>
 </body></html>

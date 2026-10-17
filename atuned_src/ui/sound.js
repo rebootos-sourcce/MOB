@@ -1250,6 +1250,29 @@ function speakStop(){ studioStop(); }
    and a voice that answers after it has already been talked over.
    ============================================================ */
 var STUDIO={seq:0, el:null, url:''}, STUDIO_WAIT_MS=5000;
+/* A LINE ALREADY RENDERED IS PLAYED AGAIN, NOT BOUGHT AGAIN, 17 October. A
+   release block is its head once and then the same pass, "that I am in
+   apathy.", for every time said after it, so a run at the default hundred over
+   three addresses asked the server for 1,200 renders of about two dozen
+   sentences. The server's cache was meant to answer the repeats and is a no
+   op on its workers.dev address (atuned/server/src/voice.js, cacheOf), so
+   every one was new synthesis against the twenty thousand characters a device
+   gets a day. Measured on the walk at a quarter of the default, the grief
+   story's run asked for 304 renders of 8 sentences, 11,341 characters, so the
+   default run passes the day's ceiling inside its second address and "Today's
+   voice lines are used up" reads the rest on the screen. Kept by style and
+   text, the key the server's own
+   cache uses less the voice, which this page cannot change mid visit. Held
+   for the visit only, the last STUDIO_KEEP_N, never written anywhere. */
+var STUDIO_KEEP=Object.create(null), STUDIO_KEEP_AT=[], STUDIO_KEEP_N=64;
+function studioAsk(text,style){
+ var k=style+'\n'+text, b=STUDIO_KEEP[k];
+ if(b)return Promise.resolve({ok:true, blob:b});
+ return authVoice(text,style).then(function(r){
+  if(r&&r.ok&&r.blob&&!STUDIO_KEEP[k]){
+   STUDIO_KEEP[k]=r.blob; STUDIO_KEEP_AT.push(k);
+   if(STUDIO_KEEP_AT.length>STUDIO_KEEP_N)delete STUDIO_KEEP[STUDIO_KEEP_AT.shift()];}
+  return r;});}
 function studioCan(){
  try{ return typeof Audio==='function'&&typeof URL!=='undefined'&&!!URL.createObjectURL
   &&typeof authVoice==='function'; }catch(e){ return false; }}
@@ -1267,7 +1290,7 @@ function speakStudio(text,rate,style,onend,onfail){
  var seq=STUDIO.seq, t0=Date.now(), over=false;
  var lose=function(st){ if(over||seq!==STUDIO.seq)return; over=true; studioStop(); if(onfail)onfail(st||0); };
  var wait=setTimeout(function(){ lose(0); },STUDIO_WAIT_MS);
- authVoice(String(text),style).then(function(r){
+ studioAsk(String(text),style).then(function(r){
   if(over||seq!==STUDIO.seq)return;
   if(!r.ok){ clearTimeout(wait); lose(r.status); return; }
   var el, url;
