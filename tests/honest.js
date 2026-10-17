@@ -176,6 +176,44 @@ require('./net.js').guardBrowser(browser);
   ok(/yes or no/.test(yes) && /pattern/.test(yes) && !/^Answer/.test(yes), 'the yes line names its question: ' + JSON.stringify(yes));
   ok(!ch.some(t => /Not answered yet/.test(t)), 'no line says only "Not answered yet" beside an answer');
 
+  /* THE HALF SECOND HAS A FLUSH. stDraft writes 500 ms after the last key, and
+     a tab that closed inside that half second lost the sentence without a word,
+     because the timer died with the page. Measured here the way it happens: type,
+     close the page inside 100 ms with no unload prompt, open a new page in the
+     same context, and read the record that came back. A fresh context, so the
+     blank store has no record to hide a missing write, and no init script, which
+     can leave the page on a store Chromium never connected (tests/seed.js). */
+  console.log('\n-- the Story draft, a page closed inside the half second --');
+  const cx2 = await browser.newContext({ viewport: { width: W, height: H } });
+  await cx2.route(/workers\.dev/, r => r.abort('failed'));
+  const open2 = async () => {
+    const q = await cx2.newPage();
+    await q.goto('file://' + FILE + '?dev=1', { waitUntil: 'load' });
+    await q.waitForFunction(() => document.documentElement.getAttribute('data-boot') === 'ok', null, { timeout: 20000 });
+    return q;
+  };
+  const q1 = await open2(); await story(q1);
+  await q1.fill('#sttext', HALF);
+  const t0 = Date.now(); await q1.close({ runBeforeUnload: false });
+  const gone = Date.now() - t0;
+  const q2 = await open2();
+  const back = await q2.evaluate(() => CURP && CURP.story ? CURP.story.draft : null);
+  ok(back === HALF, 'a page closed ' + gone + ' ms after the last key keeps the sentence: ' + JSON.stringify(back));
+  await story(q2);
+  ok((await box(q2)) === HALF, 'and it is back in the box');
+  await q2.click('#stclear'); await q2.close();
+
+  /* the same half second on the first run's story step, kept on the walk */
+  const o1 = await open2();
+  await o1.evaluate(() => { loadP(0); obOpen(false); OB.step = 5; obRender(); });
+  await o1.fill('#obtext', HALF);
+  await o1.close({ runBeforeUnload: false });
+  const o2 = await open2();
+  const walk = await o2.evaluate(() => CURP && CURP.journey && CURP.journey.walk ? CURP.journey.walk.text : null);
+  ok(walk === HALF, 'a page closed on the first run story step keeps the words on the walk: ' + JSON.stringify(walk));
+  await o2.close();
+  await cx2.close();
+
   ok(errs.length === 0, 'no page errors ' + JSON.stringify(errs.slice(0, 2)));
   await browser.close();
   console.log(`\n${pass} passed, ${fail} failed`);
