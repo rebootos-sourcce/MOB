@@ -78,6 +78,7 @@ function measure(){
    await shot(f,w,h,'s=open&t=none',v+'-open-from-billing-'+w+'.png');
    await shot(f,w,h,'s=open&t=hy',v+'-open-touched-hyper-'+w+'.png');
    await shot(f,w,h,'s=open&t=sab&r=1',v+'-open-refund-on-'+w+'.png');}
+  if(v==='p3')for(const [w,h] of SIZES)await shot(f,w,h,'s=open&t=sab&pv=three',v+'-open-preview-tier-three-'+w+'.png');
   if(v==='p4')for(const [w,h] of SIZES)await shot(f,w,h,'s=open&t=sab&all=1',v+'-open-all-plans-'+w+'.png');
   console.log('done',f);}
  fs.writeFileSync(MJ,JSON.stringify(M,null,1));
