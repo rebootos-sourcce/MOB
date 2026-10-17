@@ -1273,7 +1273,13 @@ function planSection(m,o){
     ? '<div class="sh-row"><span>State</span><b>not confirmed</b></div>'
     : (st==='ended'?'<div class="sh-row"><span>State</span><b>ended</b></div>'
     : (ends?'<div class="sh-row"><span>State</span><b>ends '+esc(ends)+'</b></div>':'')))
-  +'<div class="sh-row"><span>New ground</span><b>'+esc(al.say)+'</b></div>'
+  /* THE DAY NEW ONES ARRIVE, 17 October, where a paid tier has less than one
+     run left. It read "0 left this month, banking toward a run of 4", and paid
+     tiers do not bank (planAllowance). renews is the paid period's end off the
+     record; with no day on the record the sentence is left out, not invented. */
+  +'<div class="sh-row"><span>New ground</span><b>'+esc(al.say
+    +((!al.inGift&&al.source!=='free'&&al.runs===0&&al.renews&&planDay(al.renews))
+      ?'. New ones arrive on '+planDay(al.renews):''))+'</b></div>'
   /* WHAT THE PLAN SHOWS, off SIGHT (engine/plan.js). It said everything while
      sight was not for sale, ruled back on 1 October. */
   +'<div class="sh-row"><span>You can see</span><b>'+esc(planSightSay(pl))+'</b></div>'

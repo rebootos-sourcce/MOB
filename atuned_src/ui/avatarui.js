@@ -435,9 +435,12 @@ function avQueue(seat){
  var hot=at.filter(function(n){return n.sq>=4;});
  return (hot.length?hot:at).slice(0,8);}
 function avMinutes(q){
- if(!q.length||!CURP||typeof meterPlan!=='function'||typeof relBudget!=='function')return null;
+ if(!q.length||!CURP||typeof meterPlanWhole!=='function'||typeof relBudget!=='function')return null;
  var cap=relBudget(); if(cap<=0)return 0;
- var pl=meterPlan(CURP,q.map(function(n){return n.i;}),CHAN.map(function(c){return c[0]+c[2];}),cap);
+ /* the release card plans whole addresses since 17 October (relPlan), so the
+    length printed here is read off the same planner or it names another run */
+ var pl=meterPlanWhole(CURP,q.map(function(n){return n.i;}),CHAN.map(function(c){return c[0]+c[2];}),cap,
+  q.map(function(n){return n.sq;}));
  return pl.length*RUN.speed/60;}
 function avMinSay(m){
  if(m===null)return '';

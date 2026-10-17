@@ -5397,7 +5397,9 @@ console.log('\n=== the release panel quotes a price it then charges ===');
  ok(!/\b0 patterns of the 0\b/.test(run.sub),
   'the panel does not quote a price of nought against an allowance of nought, got '
   +JSON.stringify(run.sub));
- ok(/allowance/.test(run.note),'and the refusal says why, got '+JSON.stringify(run.note));
+ /* the reason is the empty card's since 17 October (tests/allowance.js): what
+    is spent, in the period's own word, and not the word allowance */
+ ok(/^This week's new patterns are all opened\./.test(run.note),'and the refusal says why, got '+JSON.stringify(run.note));
  console.log('  spent      '+JSON.stringify(run.note));
  /* AND THE PARTIAL CASE, which is the half a refusal would have broken. */
  const part=await rl.evaluate(async unique=>{
@@ -5416,8 +5418,12 @@ console.log('\n=== the release panel quotes a price it then charges ===');
    begin:!!document.getElementById('relgo'), before:CURP.meter.unique.length};
   if(out.begin){RUN.phase='run'; RUN.idx=RUN.plan.length; relCoolDown();}
   out.spent=CURP.meter.unique.length-out.before;
-  return out;},107);
- ok(part.left>0,'seven of the week spent leaves some, got '+part.left);
+  return out;},102);
+ /* TWO OF THE WEEK SPENT AND NOT SEVEN, 17 October. Three left is less than
+    one whole address, and a run opens whole addresses only now (meterPlanWhole,
+    engine/schema.js), so three left plans nothing new and the card offers the
+    rerun: tests/allowance.js holds that case. Eight left is the shorter run. */
+ ok(part.left>0,'two of the week spent leaves some, got '+part.left);
  ok(part.begin===true,'a short allowance is a shorter run and not a refused one');
  ok(part.plan===part.left,'the plan is exactly what is left, '+part.plan
   +' against '+part.left);
@@ -5426,7 +5432,12 @@ console.log('\n=== the release panel quotes a price it then charges ===');
  /* the price sentence that stood here was struck at round IG. What the
     panel owes a short allowance now is a run and not a quote: the plan above
     is exactly what is left and the run spends exactly that. */
- ok(part.sub===''&&part.note==='','and the panel quotes no price for it, got '
+ /* and one line says the run is shorter than what was picked, which is not a
+    price: it names addresses and room, never a count of patterns or what is
+    left, so round IG's cut stands (relShortSay, ui/release.js) */
+ ok(part.sub===''&&/^This run opens \d+ new address(es)?\. This week has room for \d+, and you picked \d+\.$/.test(part.note)
+  &&!/left|patterns? of/.test(part.note),
+  'and the panel quotes no price for it, only that it is shorter, got '
   +JSON.stringify([part.sub,part.note]));
  await rl.close();
 }

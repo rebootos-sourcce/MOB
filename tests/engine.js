@@ -6227,7 +6227,11 @@ g('NZ2 · the plan the server holds, laid onto a record');
   'a cancelled plan keeps which tier ended and reads free');
  /* the account has no paid plan, on a record that says it has one */
  const h=planFromServer(b.plan,null,many(150));
- ok(!h.same&&h.wasLive&&!h.nowLive&&h.plan.tier==='free'&&h.plan.base===null,'null over a paid record is a change to free, which the host must say');
+ /* and free restarts from that day, 17 October: base is the unique count now
+    and since is the day it was read, where it was base null, which charged
+    everything opened while paying against the free weeks (tests/allowance.js) */
+ ok(!h.same&&h.wasLive&&!h.nowLive&&h.plan.tier==='free'&&h.plan.base===150&&typeof h.plan.since==='string',
+  'null over a paid record is a change to free, which the host must say, and free counts from here: '+JSON.stringify(h.plan));
  /* a tier this build does not know moves nothing */
  const u=planFromServer(b.plan,{tier:'five',status:'active',since:S1,until:U1},many(150));
  ok(u.refused==='five'&&u.same&&u.plan===b.plan,'an unknown tier is refused by name, never rounded down to free');

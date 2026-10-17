@@ -160,7 +160,11 @@ function relReframeSay(ref){
    is whether End was pressed. A run ended early is not congratulated on a
    finish it did not reach; it is told what it did. */
 function relClosing(t,halted){
- var n=(t&&t.said)||0, u=n===1?' pattern':' patterns';
+ /* LINES AND NOT PATTERNS, 17 October. A pattern is one unit of the allowance,
+    a line opened for the first time; this counts release lines said, every
+    pass, so one address at a dose of a hundred read "200 patterns" on a run
+    that spent four. One word per concept. */
+ var n=(t&&t.said)||0, u=n===1?' line':' lines';
  var out=[halted?'You ended early. You released '+n+u+'.'
   :'Congratulations. You finished your release: '+n+u+'.'];
  var rf=relReframeSay(t&&t.ref); if(rf)out.push(rf);
@@ -304,7 +308,22 @@ function relPlan(){
     passed down, because meterPlan reads a cap of nought as "no cap given" and
     falls back to twenty five, which is the ceiling it was asked to remove. */
  var cap=relBudget();
- return (CURP&&cap>0)?meterPlan(CURP,ids,chans,cap):[];}
+ /* WHOLE ADDRESSES, HEAVIEST FIRST, 17 October (meterPlanWhole, engine/
+    schema.js). meterPlan cut the run key by key, so three left planned three
+    of the four channels at one address and dropped its right reframe. The
+    weights are the queue's own sq, the charge every door already sorts by. */
+ return (CURP&&cap>0)?meterPlanWhole(CURP,ids,chans,cap,RUN.queue.map(function(n){return n.sq;})):[];}
+/* THE QUEUE IS WHAT THE PLAN REACHES, for a new run as for a rerun. relCoolDown
+   releases the charge at every address in the queue, and a new run kept every
+   picked address in it, so measured on main eight picked against three left
+   released all eight for the three patterns one address was charged. relMode
+   already narrowed the rerun this way; this is the same line for the new
+   route. An empty plan keeps what was picked, so the card can still show it
+   and offer the rerun, and nothing is released off it because no run begins. */
+function relReached(pick,plan){
+ if(!(plan&&plan.length))return (pick||[]).slice();
+ var on={}; plan.forEach(function(k){on[String(k).split(':')[0]]=1;});
+ return (pick||[]).filter(function(n){return on[n.i];});}
 /* THE RERUN'S PLAN, 22.K17. The same addresses and channels, read through
    meterRerunPlan, which plans only lines already open. relBudget is not called
    here and that is the point of this function: a rerun is charged nothing, so
@@ -338,7 +357,7 @@ function relMode(rr){
   RUN.plan=relRerunPlan(pick);
   var on={}; RUN.plan.forEach(function(k){on[String(k).split(':')[0]]=1;});
   RUN.queue=pick.filter(function(n){return on[n.i];});}
- else {RUN.queue=pick.slice(); RUN.plan=relPlan();}
+ else {RUN.queue=pick.slice(); RUN.plan=relPlan(); RUN.queue=relReached(pick,RUN.plan);}
  RUN.proj=null; relRender();}
 /* what the panel says before a rerun begins, which is the whole of its price
    and anything it leaves out of what was picked. Read off the plan it will
@@ -364,6 +383,81 @@ function relRerunSay(){
   +(none?' '+none+(none===1?' address you picked has nothing open yet, so it is'
     :' addresses you picked have nothing open yet, so they are')+' left out.':'')
   +(cut>0?' A run is full, so '+cut+(cut===1?' more address waits':' more addresses wait')+' for the next one.':'');}
+/* BEGIN, as one function, because two presses start a run now: Run release,
+   and Rerun these on the empty card, which plans the rerun and begins it on
+   the one tap. Sounded first, while the room is still the interface's, and
+   with the room argument as well so it does not depend on that: it is the one
+   fitting a run is allowed, and it is one per run. The engine's one rule goes
+   before the first line is said: on a worked example the protocol does not
+   play and the voice is not spoken for a run the end of it would refuse. */
+function relBegin(){
+ if(showRefuse('release'))return;
+ if(typeof sfx==='function')sfx('begin',true);
+ RUN.phase='welcome';RUN.line=0;RUN.idx=0;RUN.pass=0;RUN.halted=false;RUN.paused=false;
+ RUN.t0=Date.now();RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;relTicker(true);relStep();}
+/* WHAT RERUN THESE RUNS. What was picked, when any of it has a line open. When
+   none of it does, a story's addresses that were never released, the heaviest
+   addresses that have, by the charge every door sorts by, so the first press
+   on the empty card is never a dead one. Empty only when nothing anywhere is
+   open, and then the card offers no rerun at all. */
+function relRerunPick(){
+ var pick=RUN.pick||[];
+ if(relRerunPlan(pick).length)return pick;
+ var have={}, out=[];
+ ((typeof CURP!=='undefined'&&CURP&&CURP.meter&&CURP.meter.unique)||[]).forEach(function(k){
+  var i=String(k).split(':')[0]; if(!have[i]){have[i]=1; var n=BY[+i]; if(n&&n.cf)out.push(n);}});
+ return out.sort(function(a,b){return b.sq-a.sq;}).filter(function(n){return relRerunPlan([n]).length>0;});}
+/* THE PERIOD AN ALLOWANCE IS COUNTED IN, as words: month for a paid tier, week
+   for free, and the gift for the gift, read off the allowance the card spends. */
+function relPer(a){
+ if(!a)return '';
+ if(a.inGift)return 'gift';
+ var t=(typeof PLAN_BY!=='undefined'&&PLAN_BY[a.source])||null;
+ return t?t.per:'';}
+/* THE EMPTY CARD'S WORDS. Why nothing new can open, which of three it is: the
+   period's new patterns are all opened, a few are left and no whole address
+   fits in them, or every line at what was picked is open already. Then what
+   still runs, and the day new ones arrive, which is the plan record's own and
+   is left out when the record names none rather than invented. */
+function relEmptySay(rr){
+ var B=(typeof meterBudget==='function'&&typeof CURP!=='undefined'&&CURP)?meterBudget(CURP):null;
+ var a=(B&&B.allow)||null, per=relPer(a), left=B?B.left:0, chans=CHAN.map(function(c){return c[0]+c[2];});
+ /* whether anything picked still has a line unopened: if so, the room is short */
+ var fresh=!!(B&&(RUN.pick||[]).some(function(x){return meterPlanWhole(CURP,[x.i],chans,RUN_MAX).length>0;}));
+ var head=left<=0
+  ?(per==='gift'?'The gift\'s new patterns are all opened.'
+   :'This '+(per||'period')+'\'s new patterns are all opened.')
+  :(fresh
+   ?(per==='gift'?'The gift':'This '+(per||'period'))+' has '+left+' new '+(left===1?'pattern':'patterns')
+    +' left, which is less than one whole address.'
+   :'Every line at these addresses is already opened.');
+ var limited=left<=0||fresh;
+ var day=(limited&&a&&a.renews&&typeof planDay==='function')?planDay(a.renews):'';
+ return head+(rr?' Everything you have opened still runs, free, as often as you like.':'')
+  +(day?' New ones arrive on '+day+'.':'');}
+/* THE ONE LINE BEFORE RUN, WHEN THE RUN IS SHORTER THAN WHAT WAS PICKED. The
+   plan stops at whole addresses that fit, and the card said nothing about it:
+   the cut addresses were simply not on it. This says how many the run opens
+   and why, the room being this period's or one run's, and carries no price.
+
+   AND ONLY THEN. The allowance review asked for a cost line under Run in the
+   normal case too, "Opens 12 new. 388 left this month." He ruled that line off
+   this card at round IG, 27 September, in his words: "Cost runs left, that
+   goes away. And this, just, run release button." tests/functional.js holds
+   it, so it stays off until he rules it back, and DECISIONS.md asks him.
+   Read off the plan the card will run, so it cannot describe another one. */
+function relShortSay(){
+ var plan=RUN.plan||[]; if(!plan.length||RUN.rerun)return '';
+ var B=(typeof meterBudget==='function'&&typeof CURP!=='undefined'&&CURP)?meterBudget(CURP):null;
+ if(!B)return '';
+ var a=B.allow||{}, per=relPer(a), chans=CHAN.map(function(c){return c[0]+c[2];});
+ var n=(RUN.queue||[]).length;
+ var want=(RUN.pick||[]).filter(function(x){return meterPlanWhole(CURP,[x.i],chans,RUN_MAX).length>0;}).length;
+ if(n<want){
+  var room=B.left<RUN_MAX?(per==='gift'?'The gift has':'This '+(per||'period')+' has'):'One run has';
+  return 'This run opens '+n+' new '+(n===1?'address':'addresses')+'. '+room+' room for '+n
+   +', and you picked '+want+'.';}
+ return '';}
 /* one entry of the plan, read back into the address and channel it names */
 function relAt(i){
  var k=(RUN.plan||[])[i]; if(!k)return null;
@@ -412,7 +506,7 @@ function relPick(nodeIds,from){
  RUN.pick=RUN.queue.slice(); RUN.rerun=false; RUN.reach=null; RUN.planN=0;
  RUN.resShown=false; RUN.ask=false; RUN.said=null; RUN.skip=false; RUN.storyT=(from&&typeof from.story_t==='string')?from.story_t:null;
  RUN.pace=Math.max(0.5,Math.min(2,Math.round(22/(RUN.speed||2.2))/10));
- RUN.plan=relPlan();
+ RUN.plan=relPlan(); RUN.queue=relReached(RUN.pick,RUN.plan);
  /* the setup carousel opens on its first group, and on stories when any of
     what was picked came from one; the toggle is the person's after that */
  RUN.gfocus=0; RUN.grp=relGroups('story').some(function(g){return g.ei!=null;})?'story':'seat';
@@ -952,7 +1046,7 @@ function relTally(c,live){
     readings that count down and up. Six across wrapped CQ onto a row of its
     own at 390; five fit. */
  return '<div class="rel-clock rel-figs">'
-  +fig('Remaining',c.left,c.left===1?'pattern':'patterns')
+  +fig('Remaining',c.left,c.left===1?'line':'lines')
   +(live&&live.dq!=null?'<div class="rel-fig"><span class="tipu"'+unpAttr('dq',null,'DQ')+'>DQ</span><b>'+live.dq.toFixed(2)+'</b></div>'
     +'<div class="rel-fig"><span>Down</span><b>'+Math.max(0,live.dq0-live.dq).toFixed(2)+'</b></div>':'')
   /* CQ and how far it has come up, round QQ, see CQ, COUNTED UP above */
@@ -1256,10 +1350,15 @@ function relCoolDown(){
     never reached is not written and not charged. A run that reached its end
     has reach equal to the plan and nothing is cut. */
  RUN.reach=reach; RUN.planN=planN;
- if(reach<planN){
-  var reached={}; RUN.plan.slice(0,reach).forEach(function(k){reached[String(k).split(':')[0]]=1;});
-  RUN.queue=RUN.queue.filter(function(n){return reached[n.i];});
-  RUN.plan=RUN.plan.slice(0,reach);}
+ /* AND A RUN THAT REACHED ITS END IS CUT THE SAME WAY, 17 October. This was
+    inside reach<planN, so a finished run wrote every queued address whether
+    or not the plan had a line there, and the new route queued every address
+    picked: eight picked against three left released eight and charged one.
+    relReached narrows the queue when the run is planned; this is the guard
+    for any route that reaches here with a queue wider than its plan. */
+ var reached={}; (RUN.plan||[]).slice(0,reach).forEach(function(k){reached[String(k).split(':')[0]]=1;});
+ RUN.queue=RUN.queue.filter(function(n){return reached[n.i];});
+ if(reach<planN)RUN.plan=RUN.plan.slice(0,reach);
  /* what the finished card reports, fixed here: the two counts where the list
     stopped, the elapsed clock stopped with it, and what was running through
     these addresses before the write moved any of it */
@@ -2110,6 +2209,11 @@ function relCss(){
   ' padding:4px 24px 28px;display:flex;flex-direction:column;align-items:center}',
   '.rel-scroll>*{width:100%;max-width:720px;flex:none}',
   '.rel-scroll>.rel-mid{max-width:1160px}',
+  /* SEE THE TIERS, LAST AND SMALL, 17 October: a text press after Close on the
+     empty card, at the tap floor however small its words */
+  '.rel-lk{background:none;border:0;color:var(--dim);font:inherit;font-size:13px;text-decoration:underline;',
+  ' text-underline-offset:3px;min-height:var(--tap);min-width:var(--tap);padding:0 10px;cursor:pointer}',
+  '.rel-lk:hover{color:var(--ink)}',
   '.rel-foot.rel-act{flex:none;display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;margin:0;',
   ' padding:12px 24px calc(20px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg) 62%,transparent)}',
   '.rel-stage{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:min(52vh,500px)}',
@@ -2578,7 +2682,9 @@ function relMiniNow(){return !!RUN.mini&&!RUN.rerun;}
    screen before counts lines, both halves, said once, and printed "4 lines"
    above a screen that printed 200 (M28). On the mini release every line of
    the plan is counted and called a line, so the two screens say one number in
-   one word; every other release keeps his patterns. */
+   one word. Every other release counted the release half and called it
+   patterns until 17 October, when the word went to the allowance alone (the
+   allowance review): it counts the same thing and calls it lines now. */
 function relGroups(mode){
  var per={}, dose=RUN.dose||0, G=[], by={}, all=relMiniNow();
  (RUN.plan||[]).forEach(function(k){var b=String(k).split(':');
@@ -2609,8 +2715,7 @@ function relGroupHtml(g,k){
   +(s?'<span class="rel-gi-s">'+s+'</span>':'')
   +'<span class="rel-gi-a">'+g.ns.map(function(n){
     return '<span style="color:'+seatCol(n.b)+'">'+esc(n.k)+'</span>';}).join('<i aria-hidden="true">·</i>')+'</span>'
-  +'<span class="rel-gi-c">'+(g.pats?'<b>'+g.pats+'</b>'+(relMiniNow()?(g.pats===1?'line':'lines')
-   :(g.pats===1?'pattern':'patterns')):'Not in this run')+'</span>'
+  +'<span class="rel-gi-c">'+(g.pats?'<b>'+g.pats+'</b>'+(g.pats===1?'line':'lines'):'Not in this run')+'</span>'
   +'</button>';}
 function relSetupCar(){
  var mode=RUN.grp==='seat'?'seat':'story', G=relGroups(mode);
@@ -2626,7 +2731,7 @@ function relSetupCar(){
   +'<div class="rel-gsum"><b>'+q.length+'</b>'+(q.length===1?' address, ':' addresses, ')
   +'<b>'+pats+'</b>'+(relMiniNow()
    ?(pats===1?' line':' lines')+'. Each line is said '+(RUN.dose===1?'once':RUN.dose+' times')+'.'
-   :(pats===1?' pattern':' patterns')+'. Each pattern is one line, said once.')+'</div>';}
+   :(pats===1?' line':' lines')+'. Each is one release line, said once.')+'</div>';}
 /* which group sits on the centre, the gradient on it, and the count under it */
 function relGcSync(G){
  var R=[].slice.call(G.querySelectorAll('.rel-gi')); if(!R.length)return;
@@ -2949,7 +3054,7 @@ function relResults(){
  /* 1. the congratulations, and a mark if this run earned one */
  out+='<div class="pm-eye">Released</div>'
   +'<div class="rel-node rel-rs-hero">'+(RUN.halted?'':'Congratulations. ')
-  +'You released '+t.said+(t.said===1?' pattern':' patterns')+' and recharged '+t.put+'.</div>'
+  +'You released '+t.said+(t.said===1?' line':' lines')+' and recharged '+t.put+'.</div>'
   +relEndNote();
  /* "NEW MARK" WAS A CLAIM THE RECORD CANNOT MAKE. marksNew is what the ladder
     reads after this run and did not read before it, and nothing stores a mark
@@ -3215,8 +3320,13 @@ function relRender(){
   /* A RERUN IS NEVER SPENT, so a spent allowance closes the new route only.
      can is whether any picked address has a line open to rerun; with none,
      the panel is exactly what it was before 22.K17 and offers no choice. */
-  var left=relLeft(), spent=(left<=0)&&!RUN.rerun,
-   can=RUN.rerun||relRerunPlan(RUN.pick||[]).length>0;
+  /* SPENT IS A NEW RUN WITH NOTHING IN ITS PLAN, 17 October. It was a
+     left of nought, so three left planned nothing whole and still offered Run
+     release, which would have begun a run of no lines and released every
+     picked address for free at its end. The same holds where every line at
+     the picked addresses is already open. */
+  var left=relLeft(), spent=!RUN.rerun&&!(RUN.plan||[]).length,
+   can=RUN.rerun||relRerunPlan(RUN.pick||[]).length>0, again=spent?relRerunPick():[];
   /* THE CROSS, ruled 2 October: "when I click on a protocol, if I don't want
      to run it, give me the X so I can have the option of canceling." Same
      close as Cancel, so nothing is started and nothing is charged. It sits at
@@ -3233,7 +3343,7 @@ function relRender(){
   /* NEW OR RERUN, 22.K17, as a pressed pair the way the dose picks are. The
      rerun's price is said before Run release is offered, because a person is
      entitled to see what a run costs before they begin it. */
-  if(can)body+='<div class="rel-fields"><div class="rel-field"><span>Lines</span>'
+  if(can&&!spent)body+='<div class="rel-fields"><div class="rel-field"><span>Lines</span>'
     +'<div class="seg" role="group" aria-label="New lines or a rerun">'
     +'<button type="button" data-relmode="new" aria-pressed="'+(!RUN.rerun)+'">New</button>'
     +'<button type="button" data-relmode="rerun" aria-pressed="'+(!!RUN.rerun)+'">Rerun</button>'
@@ -3241,9 +3351,15 @@ function relRender(){
    +(RUN.rerun?'<div class="rel-note">'+esc(relRerunSay())+'</div>':'');
   /* "on the plan in settings" sent a person to a section they then had to
      find. The button below opens the tiers themselves, round NZ. */
-  if(spent)body+='<div class="rel-node">Nothing left to open</div>'
-   +'<div class="rel-note">Your allowance pays for addresses you have not released before, and this '
-   +'period\'s is spent. Each tier sets how much new ground a period opens.</div>';
+  /* THE EMPTY CARD, 17 October, the allowance review of five seats. It said
+     "Nothing left to open", took Run release away and offered Close and See
+     the tiers, so a person who pressed Run on a hard story met a paywall shut
+     mid charge. A rerun was there and costs nothing, behind a toggle. Now the
+     rerun is the first press, one tap from here to a run, money is last and
+     small, and the crisis door is on the card. The story is already saved:
+     stCommit wrote it before any release could be planned. */
+  if(spent)body+='<div class="rel-note" id="relempty">'+esc(relEmptySay(again.length>0))+'</div>'
+   +(typeof crisisBtn==='function'?'<p class="crx-line">'+crisisBtn()+'</p>':'');
   /* HOW MANY PATTERNS, RUN SPEED AND TIME, round LY: "dials that say time, run
      speed... number of patterns". Time is the length this exact plan will
      run, read off relSecFrom, the same clock the run shows once it starts. */
@@ -3259,16 +3375,23 @@ function relRender(){
   else if(!showOnly())body+='<div class="rel-fields">'
     +'<label class="rel-field"><span>Run speed</span><input type="number" id="relpace" min="0.5" max="2" step="0.1" value="'
      +RUN.pace+'"></label>'
-    +(relMiniNow()?'':'<label class="rel-field"><span>Patterns</span><input type="number" id="reldose" min="1" max="'
+    /* TIMES SAID, 17 October, and not Patterns: this is how many times each
+       line is said, and the allowance's unit is a line opened, which a dose
+       never spends. One word per concept. */
+    +(relMiniNow()?'':'<label class="rel-field"><span>Times said</span><input type="number" id="reldose" min="1" max="'
      +REL_DOSES[REL_DOSES.length-1]+'" step="1" value="'+RUN.dose+'"></label>')
     +'<div class="rel-field"><span>Time</span><b class="rel-time">'+relMMSS(relSecFrom(null))+'</b></div>'
     /* his three, as quick picks on the same number */
-    +(relMiniNow()?'':'<div class="rel-field"><span>Left and right</span><div class="seg" role="group" aria-label="Patterns, left and right">'
+    +(relMiniNow()?'':'<div class="rel-field"><span>Left and right</span><div class="seg" role="group" aria-label="Times each line is said, left and right">'
      +REL_DOSES.map(function(d){return '<button type="button" data-reldose="'+d+'" aria-pressed="'
       +(RUN.dose===d)+'">'+d+'</button>';}).join('')+'</div></div>')
     +'</div>';
   /* and no switch for a run that cannot begin */
   if(!spent&&!showOnly())body+=relSws(null);
+  /* A SHORTER RUN SAYS SO, IN ONE LINE, BEFORE RUN AND NEVER AFTER, 17
+     October. A short allowance cut the run without a sentence. */
+  var cost=(!spent&&!showOnly())?relShortSay():'';
+  if(cost)body+='<div class="rel-note rel-cost" id="relcost">'+esc(cost)+'</div>';
   out=relShell({ph:'setup',col:col0,body:body,
    right:'<button type="button" class="rel-x" id="relx" aria-label="Cancel">'+relIc('x')+'</button>',
    /* THE BUTTON IS NOT THERE WHEN THERE IS NOTHING TO SPEND. A disabled Begin
@@ -3282,9 +3405,12 @@ function relRender(){
       because nothing was started that could be cancelled. */
    foot:(showOnly()
     ?showNote('release','rel-show')+'<button class="btn" id="relcancel">Close</button>'
-    :'<button class="btn" id="relcancel">'+(spent?'Close':'Cancel')+'</button>'
-    +(spent?'<button class="btn pri" id="relplan">See the tiers</button>'
-          :'<button class="btn pri" id="relgo">Run release</button>'))});}
+    :(spent
+     ?(again.length?'<button class="btn pri" id="relrerun">'+(again===RUN.pick?'Rerun these':'Rerun your heaviest')+'</button>':'')
+      +'<button class="btn" id="relcancel">Close</button>'
+      +'<button type="button" class="rel-lk" id="relplan">See the tiers</button>'
+     :'<button class="btn" id="relcancel">Cancel</button>'
+      +'<button class="btn pri" id="relgo">Run release</button>'))});}
  var sc0=document.getElementById('relsc'), keepY=(sc0&&sc0.closest('[data-ph]')
   &&sc0.closest('[data-ph]').getAttribute('data-ph')==='done'&&RUN.phase==='done')?sc0.scrollTop:0;
  if(!kept)h.innerHTML=out;
@@ -3303,17 +3429,14 @@ function relRender(){
   relHush(); RUN.cool=COOLING.length; RUN.settled=true; relTicker(false); relRender();};
  /* BEGIN IS THE HAND OVER, and the press a browser needs before it will make
     a sound. The technical requirement and the ritual are the same press. */
- if((b=document.getElementById('relgo')))b.onclick=function(){
-  /* sounded first, while the room is still the interface's, and with the room
-     argument as well so it does not depend on that: it is the one fitting a
-     run is allowed, and it is one per run. */
-  /* the engine's one rule, before the first line is said: on a worked example
-     the protocol does not play and the voice is not spoken for a run the end
-     of it would refuse */
-  if(showRefuse('release'))return;
-  if(typeof sfx==='function')sfx('begin',true);
-  RUN.phase='welcome';RUN.line=0;RUN.idx=0;RUN.pass=0;RUN.halted=false;RUN.paused=false;
-  RUN.t0=Date.now();RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;relTicker(true);relStep();};
+ if((b=document.getElementById('relgo')))b.onclick=relBegin;
+ /* RERUN THESE, the empty card's first press: the rerun plan for what is
+    picked, or for the heaviest addresses already opened when nothing picked
+    is (relRerunPick), and the run begins on the same press. relMode narrows
+    the queue to what the rerun plan reaches, so nothing unsaid is released. */
+ if((b=document.getElementById('relrerun')))b.onclick=function(){
+  var q=relRerunPick(); if(!q.length)return;
+  RUN.pick=q.slice(); relMode(true); relBegin();};
  if((b=document.getElementById('relskip')))b.onclick=function(){
   RUN.phase='run';RUN.line=0;RUN.idx=0;RUN.pass=0;relStep();};
  /* the cross and the Cancel button are one close, and it says what did not
