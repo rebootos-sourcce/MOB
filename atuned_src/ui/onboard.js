@@ -1001,8 +1001,13 @@ function obRender(){
       random code (authFunnelStart) and the next card sends the topic picked
       (authFunnelCheckpoint), so it says what goes, here, before the pick.
       tests/copy.js holds it. */
-   +'<p class="ob-p ob-foot">Your story and your name stay on this device. Our server gets a '
-   +'random code for this browser, the topic you pick next, and which steps you finish.</p>',
+   /* THE FULL PAGES, on the card that says what is sent, 16 October. One span
+      inside the line, because .obx .ob-foot is a flex row that draws a rule
+      before its first child, and two bare links in it became three columns of
+      text squeezed beside the rule at 390 wide. */
+   +'<p class="ob-p ob-foot"><span>Your story and your name stay on this device. Our server gets a '
+   +'random code for this browser, the topic you pick next, and which steps you finish. '
+   +legalLink('privacy')+' and '+legalLink('terms')+' say the rest.</span></p>',
    '<button type="button" class="btn pri" data-ob="next">Come in</button>'
    +'<button type="button" class="btn" data-ob="skip">Not now</button>');
  }

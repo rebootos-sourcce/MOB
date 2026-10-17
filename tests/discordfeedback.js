@@ -265,6 +265,37 @@ require('./net.js').guardBrowser(browser);
    'and what reached Discord is what was typed'+at);
   if(SHOTS)await pg.screenshot({path:path.join(SHOTS,'sent-'+w+'.png')});
 
+  /* 16 OCTOBER, the owner: "I can't add anything from feedback and have it go
+     to Discord." Measured before this: Send on an empty sheet queued a blank
+     entry, the Function refused it with 400, and the drain stopped at it, so
+     every comment after it on that device waited behind it for ever with the
+     variable set and Discord answering yes. */
+  hits.length=0; posts.length=0;
+  const e1=await pg.evaluate(async()=>{ const wait=ms=>new Promise(r=>setTimeout(r,ms));
+   obCompose('comment'); await wait(100);
+   document.getElementById('obtext').value='  ';
+   document.getElementById('obsend').click(); await wait(500);
+   return {open:!document.getElementById('sheet').hidden};});
+  const s4=await said(pg), n4=await queued(pg);
+  ok(/nothing in it to send/.test(s4.msg)&&s4.kind==='fail'&&n4===0&&!hits.length&&e1.open,
+   'Send on an empty sheet says there is nothing to send, keeps the sheet open, and queues and posts nothing'+at+', '+J({s4,n4,hits:hits.length}));
+  await pg.evaluate(()=>sheetShut());
+  /* an outbox an older build left poisoned: a blank entry, then one the
+     Function refuses by its own rule, then a real one */
+  await pg.evaluate(()=>{ const e=b=>({kind:'comment',at:'2026-10-16',body:b,answers:{},band:'median',
+    build:'abc1234',platform:'desktop',viewport:'wide'});
+   localStorage.setItem('source.outbox',JSON.stringify([e(''),Object.assign(e('drifted envelope'),{build:'not/a stamp'}),
+    e('the one that has to arrive')]));
+   ACC_OPEN='help'; setTab(TAB.SETTINGS); renderAccount();});
+  await pg.evaluate(()=>document.getElementById('acobsend').click());
+  await pg.waitForTimeout(900);
+  const s5=await said(pg), n5=await queued(pg);
+  ok(posts.length===1&&/the one that has to arrive/.test((posts[0].embeds[0]||{}).description||'')&&n5===0,
+   'a blank entry and an entry the Function refuses no longer hold back the real one behind them'+at+', '+J({posts:posts.length,n5}));
+  ok(/^Sent\. Thank you\./.test(s5.msg)&&/2 waiting entries were taken out/.test(s5.msg)
+   &&/nothing in it to send/i.test(s5.msg)&&!/identifies a person/.test(s5.msg),
+   'and it says sent, how many were taken out, and the true reason rather than the identity one'+at+', '+J(s5));
+
   /* the join row, once there is an invite */
   const j=await pg.evaluate(async()=>{
    const wait=ms=>new Promise(r=>setTimeout(r,ms)), o={};

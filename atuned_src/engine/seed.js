@@ -67,6 +67,8 @@ function seedAxes(type){
    base rather than compounding. */
 function seedApply(p,type){
  if(!p||!seedValid(type))return null;
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('intake',p))return null;
  var ax=seedAxes(type);
  CHARGES.forEach(function(c){
   p.axes[c]=p.axes[c]||{held:AXIS_BLANK,opp:0};

@@ -63,6 +63,22 @@ function iqScore(p){
        : v[0]>v[1] ? 'holds when it costs, slips when unseen'
        : 'holds when unseen, slips when it costs'};});
  return out;}
+/* ONE ANSWER OF THE SIXTY THREE, WRITTEN. This was four lines inside the Intake
+   page's press handler, a property set straight onto the record, so the one
+   rule the engine holds about whose record may move (showRefuse, engine/
+   showonly.js) could not see it: on a worked example the answer landed, the
+   laws moved through iqApply and every reading re-read it at the example's
+   tier four, and only the save after it refused. The four lines are the same
+   four, in the same order, and the press calls this. a is the answer's index,
+   v its value. Returns false, and writes nothing, when it is refused. */
+function iqAnswer(p,a,v){
+ if(!p||!p.intake)return false;
+ if(showRefuse('intake',p))return false;
+ var li=Math.floor(+a/3);
+ if(p.intake.answers[+a]!==+v&&SI[li])lawAnswered(p,SI[li].nm);
+ p.intake.answers[+a]=+v;
+ if(!p.intake.startedAt)p.intake.startedAt=new Date().toISOString();
+ return true;}
 function iqApply(p){
  if(!p||!p.intake)return {};
  var sc=iqScore(p);

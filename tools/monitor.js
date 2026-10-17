@@ -174,6 +174,15 @@ const FLOOR_CANVAS=60;
      var out=[], best=-1, most=0;
      PEOPLE.forEach(function(x,i){loadP(i); var c=compute().carrying.length; if(c>most){most=c;best=i;}});
      if(best>=0)loadP(best);
+     /* AND IT OPENS ON THE PERSON'S OWN PROFILE, CARRYING THAT CHARGE. A
+        worked example is show only from 16 October (engine/showonly.js): its
+        card is drawn and Begin is not, so on the example this watch would
+        measure the setup and skip the opening and the run without a word.
+        The charge goes into the working state and nowhere else: nothing here
+        calls saveYou, so the mirror loadP(0) reads back is untouched and the
+        own profile is blank again when the watch moves on. */
+     if(best>=0){var bc=Object.assign({},S.charge), br=Object.assign({},S.replace);
+      loadP(0); CHARGES.forEach(function(k){S.charge[k]=bc[k]; S.replace[k]=br[k];}); compute();}
      var ids=compute().carrying.slice(0,3).map(function(n){return n.i;});
      if(!ids.length||typeof relPick!=='function'){loadP(L);return out;}
      var had=CURP&&CURP.ui?CURP.ui.voice:undefined;
@@ -185,6 +194,9 @@ const FLOOR_CANVAS=60;
      var g=document.getElementById('relgo');
      if(g){ g.click(); clearTimeout(RUN.timer); m('rel open');
       RUN.phase='run'; RUN.idx=0; RUN.pass=0; relRender(); m('rel run'); }
+     /* a Begin that is not there is a surface this watch did not see, and it
+        says so as an empty row rather than printing two rows fewer */
+     else out.push({nm:'rel open', markup:0, text:0});
      relClose();
      if(CURP&&CURP.ui)CURP.ui.voice=had;
      loadP(L);

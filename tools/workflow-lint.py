@@ -22,9 +22,11 @@ cut of this lint could not see:
       gates-report-summary, which shows each report only leg's result and
       warns on every one that is not green. deploy, which needs gates-pass and
       never waits for gates-report.
-  R3  The FAQ page is staged for the live site (M48). FUNNEL_PAGES, in the
-      workflow env, is the one list of built pages, and gates-fast and deploy
-      both check it.
+  R3  The FAQ page is staged for the live site (M48), and so are the three
+      legal pages, privacy, terms and consumer-health-data (16 October), which
+      were rendered and never staged, so atuned.world served no policy.
+      FUNNEL_PAGES, in the workflow env, is the one list of built pages, and
+      gates-fast and deploy both check it.
   R4  The deploy job. A missing Cloudflare secret fails it. A push publishes
       only while its commit is still the tip of main. A rollback takes only a
       full commit sha, on main, that Cloudflare Pages lists, a page at a time,
@@ -123,6 +125,9 @@ BROWSER = {
 # words on the record's surfaces, read on the real renderers. Report only
 # until three green runs, like the alpha guards above.
     'record':        ('node tests/record.js', 20),
+# a worked example shows everything and runs nothing, ruled 16 October
+# (engine/showonly.js). Report only until three green runs.
+    'examples-showonly': ('node tests/examples-showonly.js', 20),
 }
 # P0 Alpha acceptance: move to the blocking browser matrix, and mutation-test each
 # one so a future refactor cannot silently return it to report-only.
@@ -137,7 +142,7 @@ UNWAITED = ['gates-report', 'gates-report-summary']     # never in deploy's need
 BUILDS = [r'\./atuned_src/BUILD-engine\.sh\b', r'\./atuned_src/BUILD\.sh\b',
           r'\./funnel/BUILD-single\.sh\b']
 FUNNEL_PAGES = ['atuned-funnel', 'atuned-quiz', 'atuned-about', 'atuned-buy',
-                'atuned-faq']
+                'atuned-faq', 'privacy', 'terms', 'consumer-health-data']
 
 INSTALL_CMD = 'npm install --no-audit --no-fund wrangler@4'
 # --branch=main: without it wrangler names the upload's branch from
@@ -2151,6 +2156,9 @@ BREAKS = [
     ('the products check reduced to its self test', lambda d: _sub(d, 'gates-fast', r'tools/products\.js', ' && node tools/products.js', '')),
     ('the FAQ not staged', lambda d: _sub(d, 'deploy', r'mkdir deploy', 'cp funnel/dist/atuned-faq.html deploy/\n', '')),
     ('the FAQ dropped from FUNNEL_PAGES', lambda d: d['env'].__setitem__('FUNNEL_PAGES', d['env']['FUNNEL_PAGES'].replace(' atuned-faq', ''))),
+    ('the privacy page not staged', lambda d: _sub(d, 'deploy', r'mkdir deploy', 'cp funnel/dist/privacy.html deploy/\n', '')),
+    ('the terms page not staged', lambda d: _sub(d, 'deploy', r'mkdir deploy', 'cp funnel/dist/terms.html deploy/\n', '')),
+    ('the terms page dropped from FUNNEL_PAGES', lambda d: d['env'].__setitem__('FUNNEL_PAGES', d['env']['FUNNEL_PAGES'].replace(' terms', ''))),
     ('a page list typed into the deploy check', lambda d: _sub(d, 'deploy', r'test -s', '$FUNNEL_PAGES; do', 'atuned-funnel atuned-quiz atuned-about atuned-buy atuned-faq; do')),
     ('an empty page list passing', lambda d: _sub(d, 'gates-fast', r'test -s', 'test -n "$FUNNEL_PAGES"', 'true')),
     ('the deploy command without --branch=main', lambda d: _sub(d, 'deploy', r'wrangler pages deploy', ' --branch=main', '')),

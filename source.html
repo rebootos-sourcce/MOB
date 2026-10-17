@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v219 387c94d 2026-10-17 01:36"><head><meta charset="utf-8">
+<html lang="en" data-build="v2078 febe03b3 2026-10-17 02:33"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -3914,6 +3914,15 @@ body.snow .pm-art{filter:invert(1) brightness(.32);opacity:.82}
 .st-eb{font-size:12px;font-weight:600;color:var(--dim)}
 .st-tag{font-size:12px;color:var(--dim);margin-right:auto;white-space:nowrap}
 .st-none{color:var(--dim);font-size:13.5px;line-height:1.55;margin:10px 0 0;max-width:52ch}
+/* A WORKED EXAMPLE'S PREVIEW LINE, ruled 16 October (showNote, ui/personas.js).
+   It stands where a control that runs something stood, so it is set as plain
+   body in the mid ink the ritual page's own example note uses: not the fail
+   colour, not a box, not a badge, because it is a person being told what a
+   press would do and not an error. */
+.show-note{color:var(--mid);font-size:14px;line-height:1.6;margin:10px 0;max-width:56ch;font-weight:400}
+.show-note.st-show{margin:12px 2px}
+.show-note.rel-show{flex:1 1 220px;margin:0 12px 0 0;text-align:left}
+.show-note.iqa-show{margin:4px 0 12px}
 .st-ring{display:inline-block;width:12px;height:12px;border-radius:50%;flex:0 0 auto;
  border:1.6px solid var(--c,var(--accent))}
 /* the column itself does not scroll: the list and the release queue do, each
@@ -6709,6 +6718,14 @@ body.punch .cn-nr.front .fb-gl svg{stroke:var(--on-flat)}
 .login-msg{margin:4px 0 0;font-size:13px;line-height:1.5;color:var(--mid)}
 .login-msg:empty{display:none}
 .login-msg[data-kind="fail"]{color:var(--hot,#c0392b);font-weight:500}
+/* THE LEGAL LINKS, 16 October: Privacy and Terms on atuned.world, from the
+   door, the first onboarding card, and Settings under Account and Privacy
+   (legalLink, ui/account.js). A link inside a sentence is held to the 24 pixel
+   pointer floor, and the 12.5 and 13 pixel lines it sits in are under it, so
+   the link carries its own line box. */
+a.legal-a{color:var(--accent);text-underline-offset:3px;display:inline-block;
+ min-height:24px;line-height:24px}
+.login-legal{margin:12px 0 0;font-size:13px;line-height:1.5;color:var(--dim)}
 /* DEVELOPER OPTIONS, DISCLOSED. A testing control, kept out of the way of
    a stranger meeting the funnel for the first time, round MP: "the login
    screen should give me the options, onboarding and tutorial." */
@@ -7292,7 +7309,11 @@ body.ob-on .app,body.ob-on #bgaura{visibility:hidden}
    whatever the card says. When the card fits, nothing sticks and nothing moves. */
 .obx .ob-scroll .ob-acts{position:sticky;bottom:0;z-index:2;margin-top:18px;
  padding:18px 0 calc(8px + env(safe-area-inset-bottom,0px));
- background:linear-gradient(to top,rgb(6,6,8) 62%,rgba(6,6,8,0))}
+ background:linear-gradient(to top,color-mix(in srgb,var(--bg) 96%,#000) 62%,transparent)}
+/* at desktop width the card does not scroll, so the actions never need a
+   backing: the hard black block behind them was the one hard edge on a screen
+   built from soft light (art direction, 16 October). */
+@media (min-width:900px){.obx .ob-scroll .ob-acts{background:none}}
 .obx .btn{min-height:48px;padding:0 22px;font-size:15px}
 .obx .btn:active{scale:.97}
 .obx .btn.pri{min-height:54px;padding:0 26px 0 30px;display:inline-flex;align-items:center;gap:14px;font-size:15.5px;
@@ -7869,6 +7890,7 @@ body.punch .ac-gf{border-top-color:transparent;background:var(--panel)}
  color:var(--ink);border-radius:var(--r-xs);padding:11px 12px;font-family:var(--sans);
  font-size:14px;line-height:1.6;resize:vertical;min-height:110px}
 .ob-f textarea:focus{border-color:var(--accent);outline:none}
+.obx .ob-f textarea::placeholder{color:var(--dim);opacity:1}
 /* THE MIRROR'S SEATS, F4 round QA. One block per seat the words put weight
    on, a rule in the seat's own colour down its left edge, and one row per
    address with its own Yes and Not me. The tag says whether the address
@@ -14998,6 +15020,8 @@ function verpScan(text){
    at=src.indexOf(t,at+1);}});
  return {hits:hits,total:tot};}
 function verpApply(text){var s=verpScan(text);if(!s.total)return s;
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('story')){s.refused='example';return s;}
  Object.keys(s.hits).forEach(function(g){VERPMIX[g]+=s.hits[g];});return s;}
 function verpShare(){
  var tot=Object.keys(VERPMIX).reduce(function(a,k){return a+VERPMIX[k];},0);
@@ -15123,6 +15147,8 @@ function leanScan(text){
  return out;}
 
 function leanApply(text){var s=leanScan(text);
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('story')){s.refused='example';return s;}
  LEANMIX.benign+=s.benign; LEANMIX.malignant+=s.malignant;
  LEANMIX.emp+=s.emp; LEANMIX.empLack+=s.empLack;
  LEANMIX.acc+=s.acc; LEANMIX.accLack+=s.accLack;
@@ -17197,6 +17223,8 @@ function cqSpan(){
    what moved, by law, and CQ before and after as that record reads. */
 function releaseWork(p,keys){
  var out={laws:{}, cq0:cqSum(), cq1:null, n:0};
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('release',p)){out.cq1=out.cq0;out.refused='example';return out;}
  if(!p||!keys||!keys.length){out.cq1=out.cq0;return out;}
  if(!p.work||typeof p.work!=='object'||Array.isArray(p.work))p.work={};
  var bySeat={};
@@ -17215,7 +17243,8 @@ function releaseWork(p,keys){
    number. The count above would survive a same number answer, because it is
    keyed to the value; this is what the intake calls when a person changes an
    answer, so a new measurement always wins over the model's estimate. */
-function lawAnswered(p,nm){if(p&&p.work&&p.work[nm])delete p.work[nm];}
+function lawAnswered(p,nm){if(showRefuse('intake',p))return false;
+ if(p&&p.work&&p.work[nm])delete p.work[nm]; return true;}
 /* ONE ADDRESS'S SHARE OF THE WRITE, and the only copy of it. It sat inline in
    relCoolDown, and the live shadow row below has to run the same arithmetic
    ahead of the commit. Moved here from ui/release.js in round QD, body
@@ -17226,6 +17255,8 @@ function lawAnswered(p,nm){if(p&&p.work&&p.work[nm])delete p.work[nm];}
    first write moves anything, and the projection has to read them the same
    way. */
 function relWrite(q,n,w0){
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('release'))return {d:0,w1:w0,refused:'example'};
  var d=-Math.round(w0*0.21+2);
  var w1=Math.max(0,w0+d);
  var share=Math.abs(d)/10/Math.max(1,q.filter(function(x){return x.cf===n.cf;}).length);
@@ -20148,7 +20179,15 @@ function pSaveSnap(){
   return false;
  }
 }
-function pExport(){ return JSON.stringify(CURP?saveProfile(CURP):null,null,1); }
+/* NOT OFF A WORKED EXAMPLE. An example's scratch record carries the tier four
+   plan loadP stamps on it, and pImport still takes a tier a record declares
+   (J11 in PLAN.md, held open by tests/plan-selfgrant.js), so Export on an
+   example and Load on the person's own was two presses from a free profile
+   to a tier four one: the cheat the 16 October ruling names, by another door.
+   Refused by the one rule (engine/showonly.js), and null is what a caller
+   reads as nothing to copy. */
+function pExport(){ if(showRefuse('export'))return null;
+ return JSON.stringify(CURP?saveProfile(CURP):null,null,1); }
 /* ============================================================
    THE BOUNDARY. Everything above this line trusts its input
    because the app wrote it. Everything a person can paste in
@@ -21188,6 +21227,8 @@ function meterBudget(p,now){
    two arguments reads exactly as it did. */
 function meterRun(p,keys,at){
  if(!p)return null;
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('release',p))return null;
  if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null,giftAt:null};
  if(!Array.isArray(p.meter.unique))p.meter.unique=[];
  if(p.meter.giftAt===undefined)p.meter.giftAt=null;
@@ -21476,6 +21517,8 @@ function meterRead(p,now){
    does not say what that made someone. */
 function meterFirst(p,key,label,at){
  if(!p||!key)return null;
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('release',p))return null;
  if(!p.meter)p.meter={lines:0,unique:[],first:null,last:null};
  if(!Array.isArray(p.meter.firsts))p.meter.firsts=[];
  for(var i=0;i<p.meter.firsts.length;i++)
@@ -21497,6 +21540,15 @@ function profMark(p){ try{ if(p&&p.id)devSet('open',p.id); }catch(e){} }
 var IMPORT_ERR=null;
 function pImport(txt){
  IMPORT_ERR=null;
+ /* NOTHING IS LOADED WHILE A WORKED EXAMPLE IS OPEN. This pushed the new
+    record and pointed CURP at it, and left S.who naming the example, so the
+    person's own record then read as somebody else's to every control that
+    asks S.who: their first commit on it was refused. The ruling of 16 October
+    makes an example show only (engine/showonly.js), so the import is refused
+    by the same one rule, before anything is parsed, and says how to get past
+    it. Nothing is pushed and CURP does not move. */
+ if(showRefuse('import')){
+  IMPORT_ERR=['a worked example is open. Open your own profile first, then load it']; return null; }
  var o; try{ o=JSON.parse(txt); }catch(e){ IMPORT_ERR=['not valid JSON']; return null; }
  var v=validateProfile(o);
  if(!v.ok){ IMPORT_ERR=v.errs; return null; }
@@ -24011,6 +24063,11 @@ function exdepthFill(rec,p,now){
     record held is kept and put back on any refusal, and the refusal is
     thrown on to the caller, which says so. */
  var keep=JSON.stringify({story:rec.story||null, meter:rec.meter||null, work:rec.work||null});
+ /* THE BUILD'S OWN HISTORY, PUT IN PLACE, and not a person running anything.
+    loadP marks this record show only (engine/showonly.js) and every writer
+    below would refuse it, so the replay is the one caller that lifts the
+    refusal, for exactly its own body: the finally below puts it back. */
+ SHOW_REPLAY++;
  try{
   rec.story=rec.story||{entries:[]};
   if(!Array.isArray(rec.story.entries))rec.story.entries=[];
@@ -24055,6 +24112,7 @@ function exdepthFill(rec,p,now){
   var k0=JSON.parse(keep); rec.story=k0.story; rec.meter=k0.meter; rec.work=k0.work;
   throw e;}
  finally{
+  SHOW_REPLAY--;
   exdepthPut(S.charge,c0); exdepthPut(S.replace,r0);
   exdepthPut(VERPMIX,v0); exdepthPut(LEANMIX,l0);
   compute();}
@@ -24126,6 +24184,22 @@ function iqScore(p){
        : v[0]>v[1] ? 'holds when it costs, slips when unseen'
        : 'holds when unseen, slips when it costs'};});
  return out;}
+/* ONE ANSWER OF THE SIXTY THREE, WRITTEN. This was four lines inside the Intake
+   page's press handler, a property set straight onto the record, so the one
+   rule the engine holds about whose record may move (showRefuse, engine/
+   showonly.js) could not see it: on a worked example the answer landed, the
+   laws moved through iqApply and every reading re-read it at the example's
+   tier four, and only the save after it refused. The four lines are the same
+   four, in the same order, and the press calls this. a is the answer's index,
+   v its value. Returns false, and writes nothing, when it is refused. */
+function iqAnswer(p,a,v){
+ if(!p||!p.intake)return false;
+ if(showRefuse('intake',p))return false;
+ var li=Math.floor(+a/3);
+ if(p.intake.answers[+a]!==+v&&SI[li])lawAnswered(p,SI[li].nm);
+ p.intake.answers[+a]=+v;
+ if(!p.intake.startedAt)p.intake.startedAt=new Date().toISOString();
+ return true;}
 function iqApply(p){
  if(!p||!p.intake)return {};
  var sc=iqScore(p);
@@ -24223,6 +24297,8 @@ function ixGet(p,id,k){
    control cannot report an answer it did not record. Never clamped: 9999 is
    not a 10 the person pressed. */
 function ixSet(p,id,k,v){
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('intake',p))return false;
  if(!ixRow(id,k))return false;
  if(!NUM(v)||v<0||v>10)return false;
  /* startedAt is NOT stamped here. It says the 63 were begun, and a person who
@@ -25452,6 +25528,8 @@ function unmarkedOf(t,p){
  out.forEach(function(r){r.text=t.slice(r.s,r.e);});
  return {stretches:out, words:ws.length, read:read, unmarked:ws.length-read};}
 function applyStory(text){
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('story'))return {parsed:parseStory(text), applied:{}, refused:'example'};
  var p=parseStory(text), touched={};
  p.imprints.forEach(function(im){ var f=im.fetter; if(!f) return;
   touched[f]=(touched[f]||0)+im.amt;});
@@ -27717,6 +27795,8 @@ function seedAxes(type){
    base rather than compounding. */
 function seedApply(p,type){
  if(!p||!seedValid(type))return null;
+ /* show only on a worked example, engine/showonly.js */
+ if(showRefuse('intake',p))return null;
  var ax=seedAxes(type);
  CHARGES.forEach(function(c){
   p.axes[c]=p.axes[c]||{held:AXIS_BLANK,opp:0};
@@ -29577,6 +29657,18 @@ function obValidate(e){
   +'and nothing that identifies you can go in here');
  if(/\d[\d\s().-]{6,}\d/.test(t)) errs.push('that looks like a phone number or an '
   +'account number, and nothing that identifies you can go in here');
+ /* EMPTY IS REFUSED HERE, BEFORE IT IS QUEUED. 16 October, the owner: "I can't
+    add anything from feedback and have it go to Discord." Measured: Send on an
+    empty sheet queued an envelope with no text and no answer, the relay
+    (functions/feedback.js) refused it with "there is nothing in it to send",
+    and the drain stops at the first no, so that blank entry sat at the head of
+    the outbox and every comment written after it on that device waited behind
+    it for ever, with the webhook set and Discord answering. The relay's rule
+    is copied here so the sheet says so before anything is held. On the way out
+    the same call takes an empty entry already on a disk out of the queue. */
+ var n=(e.answers&&typeof e.answers==='object')?Object.keys(e.answers).length:0;
+ if(!t.trim()&&!n) errs.push('there is nothing in it to send yet. Write a line, '
+  +'or pick an answer, first');
  return {ok:!errs.length, errs:errs};}
 
 /* ONE QUEUE ENTRY. Over the cap is refused by name rather than evicting the
@@ -29669,6 +29761,13 @@ function obDrainAsync(){
   try{ p=Promise.resolve(SEND_HOST(q[i])); }catch(ex){ p=Promise.reject(ex); }
   return p.then(function(r){
     if(r===true){ sent++; return; }
+    /* A NO THAT CAN NEVER TURN INTO A YES. The host answers {drop:reason} when
+       the server's own boundary refused this exact envelope, the relay's 400,
+       which no retry changes. Held like a 503, it sat at the head of the queue
+       and stopped every later entry behind it for ever, the defect measured on
+       16 October. So it goes the way an entry this boundary refuses on the way
+       out goes: taken out, and named, and the drain carries on to the next. */
+    if(r&&typeof r.drop==='string'){ bad.push({i:i,errs:[r.drop]}); return; }
     left.push(q[i]); stopped=true; if(!err)err='the send was refused'; },
    function(ex){ left.push(q[i]); stopped=true; err=String(ex&&ex.message||ex); })
    .then(function(){ return step(i+1); });}
@@ -29687,13 +29786,20 @@ function obDrainAsync(){
      over a send that went. The first cut did both; tests/feedback.js caught
      it. Only when everything tried went, so a server that said no is not
      knocked on again for the newcomer. */
+  /* WHY AN ENTRY WAS TAKEN OUT TRAVELS WITH THE COUNT. The sentence said every
+     dropped entry "carried something that identifies a person", which was the
+     only reason there was until a blank entry and the relay's own refusal
+     joined it, and a false reason is a lie about a failure. */
+  var gone=bad.length?bad[0].errs[0]:undefined;
   if(tail.length&&!stopped) return obDrainAsync().then(function(d){
    if(d.state==='sent') return {state:'sent', n:sent+d.n,
-    refused:(bad.length+(d.refused||0))||undefined};
-   d.sent=(d.sent||0)+sent; return d;});
-  if(bad.length&&!left.length&&!sent) return {state:'refused', n:bad.length, bad:bad};
-  if(!left.length) return {state:'sent', n:sent, refused:bad.length||undefined};
-  return {state:'retry', n:left.length, sent:sent, why:err, refused:bad.length||undefined};},
+    refused:(bad.length+(d.refused||0))||undefined, dropped:gone||d.dropped};
+   d.sent=(d.sent||0)+sent;
+   if(bad.length){ d.refused=(d.refused||0)+bad.length; d.dropped=gone; }
+   return d;});
+  if(bad.length&&!left.length&&!sent) return {state:'refused', n:bad.length, bad:bad, dropped:gone};
+  if(!left.length) return {state:'sent', n:sent, refused:bad.length||undefined, dropped:gone};
+  return {state:'retry', n:left.length, sent:sent, why:err, refused:bad.length||undefined, dropped:gone};},
  function(ex){ OB_DRAINING=false; return {state:'retry', n:obCount(), sent:0,
   why:String(ex&&ex.message||ex)}; });}
 
@@ -29943,7 +30049,7 @@ if(typeof module!=='undefined'&&module.exports){
                   lawIn:lawIn, cqSum:cqSum, cqSpan:cqSpan, leverPull:leverPull,
                   LEVER_MU:LEVER_MU, LEVER_SD:LEVER_SD, CQ_MODEL:CQ_MODEL,
                   LIFT_R:LIFT_R, lawLift:lawLift, lawWork:lawWork, lawNow:lawNow,
-                  releaseWork:releaseWork, lawAnswered:lawAnswered,
+                  releaseWork:releaseWork, lawAnswered:lawAnswered, iqAnswer:iqAnswer,
   /* seed */      TYPE16:TYPE16, SEED16:SEED16, seedAxes:seedAxes, seedApply:seedApply,
                   seedClear:seedClear, seedShare:seedShare, seedValid:seedValid, accuracy:accuracy, accCover:accCover, accCoverWord:accCoverWord,
                   CS_LAWW:CS_LAWW, CS_STORYW:CS_STORYW, CS_STORY_N:CS_STORY_N, CS_PARTIAL:CS_PARTIAL, sab33Detect:sab33Detect,
@@ -30665,6 +30771,85 @@ if(typeof module!=='undefined'&&module.exports){
  Object.assign(module.exports,{archExpr:archExpr, archExprAll:archExprAll});}
 
 try{window.__at&&window.__at('engine/archexpr.js');}catch(e){}
+/* ============================================================
+   A WORKED EXAMPLE IS SHOW ONLY. Ruled 16 October, his words: "something we
+   need to do with those user profiles where the customer who selects any of
+   the tiers cannot run a profile's inference. And for show only. Otherwise,
+   that's cheating." And the same day: "it allows people to see the patterns.
+   But not run them. If you're a tier one, it allows you to see what you're
+   missing as a product."
+
+   WHAT THE CHEAT WAS, measured on the build from before this file (origin/
+   main 920d7ed2). Every worked example opens on tier four sight (loadP,
+   ui/personas.js, ruled 2 October), and the refusals that stood were one per
+   control and read S.who: the Story commit refused, and the release refused
+   only at relCoolDown, after the whole protocol had begun (Begin pressed on
+   Gordon went to phase welcome), so the voice was spoken and paid for on a
+   run its end would refuse. The Intake did not refuse at all. On Gordon, with
+   the own record free and the example on tier four, one press on an Intake
+   answer moved S.law and took his CQ from 17.52 to 18.10, and the status line
+   said nothing: every reading on the screen re-read the press at tier four.
+   A refusal that arrives after the work is not a refusal of the work, and a
+   control with no refusal is the cheat itself.
+
+   SO THE RULE LIVES HERE, ONCE, AND THE WRITERS ASK IT. A control does not
+   have to remember the rule: every engine writer that moves the field or a
+   record (applyStory, verpApply, leanApply, relWrite, releaseWork, meterRun,
+   meterFirst, lawAnswered, iqAnswer, ixSet, seedApply, pImport) asks
+   showRefuse before it writes, so a control added later is refused by the
+   writer it calls, by name, and says so. The saves already refuse a record
+   that is not in PROFILES (pSave, NotARecord), and a worked example never is.
+
+   WHICH RECORD IS AN EXAMPLE, BY IDENTITY. loadP marks the scratch record it
+   makes for an example (showMark), and the mark is the object, held here and
+   never written on the record: a flag on the record would travel through an
+   export and could be pasted back, and an identity cannot. The person's own
+   records are never marked, so their own tier and their own writes are
+   exactly what they were.
+
+   THE AUTHORED HISTORY IS NOT A PERSON RUNNING IT. An example's bank and
+   vault are replayed through these same writers once, the first time it is
+   opened (exdepthFill, engine/exdepth.js). That is the build's own data put
+   in place, so the replay raises SHOW_REPLAY for its own body and puts it back
+   in its finally, and nothing else raises it.
+
+   THE ENGINE REPORTS AND THE HOST DECIDES THE WORDS, the split pPersist and
+   devSet keep. showRefuse records what was refused and hands the key to the
+   reporter the host bound (bindShowSay); with none bound, a headless run, it
+   still refuses and the caller reads showLast. HOST FREE. It sits after
+   engine/export.js and adds its names to what export.js left, as
+   engine/archexpr.js does.
+   ============================================================ */
+var SHOW_RECS=[], SHOW_REPLAY=0, SHOW_SAY=null, SHOW_LAST=null, SHOW_N=0;
+/* rec is an example's scratch record; marking twice is one mark */
+function showMark(rec){
+ if(rec&&typeof rec==='object'&&SHOW_RECS.indexOf(rec)<0)SHOW_RECS.push(rec);
+ return rec;}
+/* whether a record is shown only. With no argument it asks about the record
+   that is open, which is the one every writer below is about to touch. */
+function showOnly(rec){
+ var r=arguments.length?rec:((typeof CURP!=='undefined')?CURP:null);
+ return !!r&&SHOW_RECS.indexOf(r)>=0;}
+/* THE ONE REFUSAL. what is the key of the thing refused (story, release,
+   intake, import), which the host turns into a sentence. rec, when a writer
+   is handed the record it writes, is asked instead of CURP, because that is
+   the record that would move. Returns true when the caller must stop. */
+function showRefuse(what,rec){
+ if(SHOW_REPLAY>0)return false;
+ var r=(rec!==undefined&&rec!==null)?rec:((typeof CURP!=='undefined')?CURP:null);
+ if(!showOnly(r))return false;
+ SHOW_N++;
+ SHOW_LAST={what:String(what||'run'), name:(r&&r.name)||'', n:SHOW_N};
+ if(typeof SHOW_SAY==='function'){ try{ SHOW_SAY(SHOW_LAST.what); }catch(e){} }
+ return true;}
+function showLast(){ return SHOW_LAST?Object.assign({},SHOW_LAST):null; }
+function bindShowSay(fn){ SHOW_SAY=(typeof fn==='function')?fn:null; return SHOW_SAY; }
+
+if(typeof module!=='undefined'&&module.exports){
+ Object.assign(module.exports,{showMark:showMark, showOnly:showOnly, showRefuse:showRefuse,
+  showLast:showLast, bindShowSay:bindShowSay});}
+
+try{window.__at&&window.__at('engine/showonly.js');}catch(e){}
 
 /* ============================================================
    THE COMBINED PILL AND RING.
@@ -43630,6 +43815,14 @@ function stRender(){
  var h=document.getElementById('story'); if(!h) return;
  stDraftBack();
  var p=ST_PARSED;
+ /* A WORKED EXAMPLE IS SHOW ONLY, ruled 16 October (engine/showonly.js). Its
+    bank, its vault and its imprints are the reading and all of them stay.
+    The journal is where a person's own words are read, so on an example the
+    box, Talk, Record, Source AI's question and Commit are the one preview
+    line in their place (showNote, ui/personas.js). It was a box that took a
+    whole story and then refused it at Commit, which is a control that looks
+    like it works until the moment it does not. */
+ var show=showOnly();
  var out='<div class="st-flow" id="stflow" data-focus="'+STV.focus+'">'
   /* ---- the write column: the journal, with Source AI inside it ---- */
   +'<div class="st-colw">'
@@ -43666,7 +43859,7 @@ function stRender(){
       question button already draws: one drawing per named thing. The margin
       takes the free space, so it and Record stand together at the right
       edge where Record stood alone. See srcThread for what it opens. */
-   +'<button class="st-mic st-talk" id="sttalk" type="button" aria-pressed="'+!!STV.chat+'" '
+   +(show?'':'<button class="st-mic st-talk" id="sttalk" type="button" aria-pressed="'+!!STV.chat+'" '
    +'title="Write it as a conversation, one turn at a time.">'
    +'<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">'
    +'<circle cx="6" cy="6.5" r="3"/><circle cx="18" cy="17.5" r="3"/>'
@@ -43689,7 +43882,7 @@ function stRender(){
       that shows it runs. */
    +(ST_LISTEN?'<span class="st-mictime" id="stmictime" aria-hidden="true">'
      +stMicFmt(stMicElapsed())+'</span>':'')
-   +'</button></div>'
+   +'</button>')+'</div>'
   /* SOURCE AI AND THE JOURNAL'S MENU CHANGED PLACES, round LO, his words: "I
      want you to swap the main journal menu with the source AI question." The
      column read Source AI, then the journal's own top line with Record on it,
@@ -43719,7 +43912,7 @@ function stRender(){
      .src-comb. It is a sibling of #stsrc and not inside it, for the reason
      the halo is: srcPaint rewrites #stsrc on every key, and the floor is
      painted once a render. srcLock puts every loop in here on one clock. */
-  +'<div class="st-glow"><div class="st-pe" id="stsrc" aria-label="Question"></div>'
+  +(show?showNote('story','st-show'):'<div class="st-glow"><div class="st-pe" id="stsrc" aria-label="Question"></div>'
   +srcComb()+'</div>'
   /* THE FETTERS LIGHT UP IN THE PERSON'S OWN SENTENCE.
 
@@ -43793,7 +43986,7 @@ function stRender(){
    +'<button class="btn" id="stclear">Clear</button>'
    +'<button class="btn pri" id="stapply"'+(p?'':' disabled')+'>'
     +'Commit'+(p&&p.imprints.length?' '+p.imprints.length:'')+'</button>'
-  +'</div></div></div>'
+  +'</div>')+'</div></div>'
   /* ---- the read column: the instrument over the list ---- */
   +'<div class="st-colr">'
   +'<div class="st-pan st-ch" id="stch" aria-label="Imprints, as read">'
@@ -44063,9 +44256,11 @@ function stCommit(){
     already uses for the same crossing. That wording is one line since BA9, 25
     September: he struck the long form above the Field, and the state it
     carried is on the profile picker now. */
- if(typeof S!=='undefined'&&S.who!==0){
-  status('Nothing committed on a worked example.','fail');
-  return {ok:false,why:'example'};}
+/* AND IT IS THE ENGINE'S ONE RULE NOW, ruled 16 October: a worked example is
+    show only (engine/showonly.js). showRefuse is the same question S.who
+    asked, by the record's identity, and its reporter says what Commit would
+    do on the person's own profile in place of the wall this was. */
+ if(showRefuse('story'))return {ok:false,why:'example'};
  var kept=stFound(), k=ST_PARSED.imprints.length, bands=ST_PARSED.bands;
  /* A PRESS AFTER THE BROWSER REFUSED THE LAST ONE ASKS IT AGAIN, AND WRITES
     NOTHING TWICE. A refused save leaves the entry in this session and the
@@ -45465,13 +45660,17 @@ var ST_SEEN={};
 function stListPaint(){
  var hd=document.getElementById('stlshd'), box=document.getElementById('stimps'); if(!hd||!box)return;
  if(STV.list==='vault'){stVaultPaint(hd,box);return;}
- var p=ST_PARSED,n=p?p.imprints.length:0,o='';
+ /* the person's own draft is not read onto a worked example's page */
+ var p=showOnly()?null:ST_PARSED,n=p?p.imprints.length:0,o='';
  hd.textContent='Pending imprints, by '+ST_SORTS.filter(function(s){return s[0]===STV.sort;})[0][1].toLowerCase();
  /* THE EMPTY STATE SAYS WHAT IS TRUE. After a commit the box is empty and the
     person has just written, so "you have not written anything yet" would be
     the false empty state ui/imprints.js already records. */
  if(!n){
-  box.innerHTML='<p class="st-none">'+(ST_TEXT.trim()
+  /* a worked example has no journal to gather from (showOnly, ruled 16
+     October), so the line does not invite writing that cannot happen */
+  box.innerHTML='<p class="st-none">'+(showOnly()?'Nothing is pending. On your own profile, what you write gathers here.'
+   :ST_TEXT.trim()
    ?'Nothing in this entry reads as held yet. Keep writing, or write where you felt it.'
    :(STV.lastFound.length?'Your last entry is in the field and its addresses are queued in the release. The next entry gathers here.'
     :'You have not written anything yet. Whatever you write gets pulled apart and collected here.'))+'</p>';
@@ -45596,13 +45795,17 @@ function stRelPanel(){
     +'aria-label="'+esc(a.k+', '+a.b)+'" title="'+esc(a.k+', '+a.b)+'">'+crNode(a,'sm',{raw:'',title:''})+'</button>';}).join('')
   +'</div>';
  o+='</div><div class="st-rlfoot">'
-  +'<div class="rel-fields st-fields">'
+  /* pace and patterns set the run, so they go with it on a worked example */
+  +(showOnly()?'':'<div class="rel-fields st-fields">'
    +'<label class="rel-field"><span>Pace</span><input type="number" id="strpace" min="0.5" max="2" step="0.1" value="'+RUN.pace+'"></label>'
    +'<label class="rel-field"><span>Patterns</span><input type="number" id="strdose" min="1" max="'+LINES_PER_CH+'" step="1" value="'+RUN.dose+'"></label>'
-  +'</div>'
+  +'</div>')
   /* ENABLED ON A SELECTION, NOT ON A PRICE, so a spent allowance still
      reaches the card that refuses it and says why. */
-  +'<button type="button" class="st-go" id="strun"'+(M.sel.length?'':' disabled')+'>Run release</button></div>';
+  /* and on a worked example it is the preview line, ruled 16 October: the
+     rings above are the reading and stay, Run is the run and does not */
+  +(showOnly()?showNote('release','st-show')
+   :'<button type="button" class="st-go" id="strun"'+(M.sel.length?'':' disabled')+'>Run release</button>')+'</div>';
  e.innerHTML=o;
  /* lit from within, in the heaviest selected seat's colour, as bright as
     that address is heavy. Round HX, B, which he did not strike.
@@ -46275,10 +46478,20 @@ function tutRender(){
  var s=TUT.step, out='';
  if(s===0){
   out=tutCard('Let’s look at something from your journal.',
-   '<p class="ob-p">Write one thing. A sentence or two is enough. Not a '
-   +'summary of your life, just something real from today or recently, the '
-   +'kind of thing you would actually write in here.</p>'
-   +'<div class="ob-f"><textarea id="tuttext" rows="4" placeholder="What happened, and what it was like."></textarea></div>',
+   '<p class="ob-p">Write one thing that happened today or recently. A '
+   +'sentence or two is enough.</p>'
+   /* THE OWNER'S LINE, 16 October: use feeling words, use descriptive words,
+      no ambiguity, "the clearer the emotion, the clearer the targeting".
+      Checked against parseStory before it was written: a named feeling
+      ("ashamed") lands as one clean reading at one seat, a vague phrase
+      ("a rough day") is read as a loose guess, and body words scatter the
+      reading across seats, so the card asks for the feeling and gives the
+      example as a placeholder, which is never saved as the person's own. */
+   +'<p class="ob-p">Name the feeling in one plain word, like afraid, '
+   +'ashamed, furious or numb. Not fine, off or rough: those could mean '
+   +'anything. The clearer the feeling, the clearer where it lands in your '
+   +'body.</p>'
+   +'<div class="ob-f"><textarea id="tuttext" rows="4" placeholder="For example: My boss shouted at me in front of the team. I felt ashamed."></textarea></div>',
    '<button type="button" class="btn pri" data-tut="commit">Continue</button>'
    +'<button type="button" class="btn" data-tut="skip">Skip the tutorial</button>');
  }
@@ -52653,7 +52866,10 @@ function renderIntake(){
     the header carries the remainder, and the three ways are shown by layout:
     an open law sets its three framings side by side, each with its own name
     and icon. */
- var h='<div class="iqa">'+iqHeroHtml(p,sc,r,scored,answered,Q.length)+iqMoreHtml(p)
+ var h='<div class="iqa">'+iqHeroHtml(p,sc,r,scored,answered,Q.length)
+  /* show only on a worked example, ruled 16 October: the line under the
+     header, and the answers drawn disabled below */
+  +(showOnly()?showNote('intake','iqa-show'):'')+iqMoreHtml(p)
   +'<div class="iqa-mid" data-who="'+(IQ_WHO?1:0)+'">'+iqWhoHtml(p)+iqAccuracy()+'</div>';
  /* THE LAW IN HAND IS PINNED ON ARRIVAL. Left unpinned it was worked out
     fresh on every draw as the first law still missing an answer, so the third
@@ -52666,6 +52882,15 @@ function renderIntake(){
  h+='</div>';
  iqArtCss(); iqDoors();
  host.innerHTML=h;
+ /* A WORKED EXAMPLE'S ANSWERS ARE ITS READING, AND THEY ARE NOT PRESSED.
+    Ruled 16 October (engine/showonly.js). Every control on this page that
+    writes an answer, a name, a birth moment, the seal, the stated type, a save
+    or the export is drawn disabled, so it reads as a reading and does not
+    offer a press that the engine would then refuse. What opens a law, a seat
+    or a view stays live, because that is looking. iqAnswer and ixSet refuse
+    it in the engine for any press that gets here another way. */
+ if(showOnly())host.querySelectorAll('[data-a],[data-ixb],[data-who],[data-born],#iqseal,#wtype,#wtu,#iqsave,#iqexp')
+  .forEach(function(e){e.disabled=true; e.setAttribute('aria-disabled','true');});
  /* the avatar repaints only when something it reads has moved, so a press on
     a law never throws away a half typed pair above it */
  if(typeof avRefresh==='function')avRefresh();
@@ -52731,7 +52956,9 @@ function renderIntake(){
     and the status line is what says whether it will survive a reload. */
  host.querySelectorAll('[data-ixb]').forEach(function(el){el.onclick=function(){
   var id=el.getAttribute('data-ixb'), k=el.getAttribute('data-ixk'), v=+el.getAttribute('data-v');
-  if(!ixSet(CURP,id,k,v)){status('That answer was not recorded.','fail');return;}
+  /* a refusal on a worked example has already said its own line through the
+     engine's reporter, and this one would put a failure over it */
+  if(!ixSet(CURP,id,k,v)){if(!showOnly())status('That answer was not recorded.','fail');return;}
   IQ_FOCUS='[data-ixb="'+id+'"][data-ixk="'+k+'"][data-v="'+v+'"]';
   IQ_XPOP=IQ_FOCUS; pSave(); statusSaved(); renderIntake();};});
  host.querySelectorAll('[data-a]').forEach(function(el){el.onclick=function(){
@@ -52740,10 +52967,9 @@ function renderIntake(){
      when the mean of the three lands on the same number: the person has just
      told us where the law is, and that wins over the model's estimate. */
   var li=Math.floor(+el.dataset.a/3), was=iqGot(CURP,li);
-  if(CURP.intake.answers[+el.dataset.a]!==+el.dataset.v)
-   lawAnswered(CURP,SI[li].nm);
-  CURP.intake.answers[+el.dataset.a]=+el.dataset.v;
-  if(!CURP.intake.startedAt)CURP.intake.startedAt=new Date().toISOString();
+  /* the write is the engine's, so a worked example refuses it there and the
+     reporter it bound says what the press would do on the person's own */
+  if(!iqAnswer(CURP,+el.dataset.a,+el.dataset.v))return;
   IQ_PULSE={li:li,a:+el.dataset.a,fresh:iqGot(CURP,li)>was};
   iqApply(CURP); pSave(); syncLw(); renderIntake(); render();};});
  /* THE NESTED ROWS. Both write the whole host like every other press, and
@@ -52812,7 +53038,7 @@ function renderIntake(){
   sb.textContent=ok?'Saved':'Not saved';
   setTimeout(function(){sb.textContent='Save';},ok?900:2600);};
  var eb=document.getElementById('iqexp');
- if(eb)eb.onclick=function(){var t=pExport();
+ if(eb)eb.onclick=function(){var t=pExport(); if(t==null)return;
   try{navigator.clipboard.writeText(t);eb.textContent='Copied';status('Profile copied to the clipboard.');}
   catch(e){eb.textContent=t.length+' bytes';}
   setTimeout(function(){eb.textContent='Export';},1200);};}
@@ -54058,7 +54284,13 @@ function relCoolDown(){
 
     The meter ruling is untouched. When a person runs their own release they
     are the person charged, which is what it always meant. */
- if(typeof S!=='undefined'&&S.who!==0){
+ /* AND THE ENGINE'S ONE RULE ANSWERS IT, ruled 16 October (engine/
+    showonly.js), and its reporter says the preview line where the wall
+    "Nothing released on a worked example." was said, in the fail kind, at the
+    foot of this branch. The refusal still reports, through showRefuse. A run cannot reach here from an example any more, because Begin is
+    refused before the first line (relgo, below) and is not drawn on one; this
+    stays for any route that does. */
+ if(showRefuse('release')){
   RUN.done=false; RUN.phase='pick';
   /* ONE LINE, AND THE STATE MOVED TO THE PICKER. Ruled 25 September (BA9): he
      struck the sentence that stood here, "You are looking at Abraham, which is
@@ -54072,7 +54304,6 @@ function relCoolDown(){
      That nothing was released is a refusal, and a refusal still reports and
      names its own reason, because a write that fails without a word is the
      silent failure this codebase forbids by name. */
-  if(typeof status==='function')status('Nothing released on a worked example.','fail');
   return false; }
  /* expression before and after, because it is what a release moves visibly.
     CQ is the 21 laws, and since the correction of 25 September a release lifts
@@ -56095,7 +56326,10 @@ function relRender(){
      Patterns field here was how "4 lines" became four hundred (M28). The pace
      and the time stay, because the card says the person sets the pace. A
      release after this one opens with the dose back. */
-  else body+='<div class="rel-fields">'
+  /* the pace, the patterns and the switches set a run, so on a worked example,
+     where no run begins (showOnly, ruled 16 October), they are not offered:
+     the voice switch there was a preference save the example refused */
+  else if(!showOnly())body+='<div class="rel-fields">'
     +'<label class="rel-field"><span>Run speed</span><input type="number" id="relpace" min="0.5" max="2" step="0.1" value="'
      +RUN.pace+'"></label>'
     +(relMiniNow()?'':'<label class="rel-field"><span>Patterns</span><input type="number" id="reldose" min="1" max="'
@@ -56107,15 +56341,23 @@ function relRender(){
       +(RUN.dose===d)+'">'+d+'</button>';}).join('')+'</div></div>')
     +'</div>';
   /* and no switch for a run that cannot begin */
-  if(!spent)body+=relSws(null);
+  if(!spent&&!showOnly())body+=relSws(null);
   out=relShell({ph:'setup',col:col0,body:body,
    right:'<button type="button" class="rel-x" id="relx" aria-label="Cancel">'+relIc('x')+'</button>',
    /* THE BUTTON IS NOT THERE WHEN THERE IS NOTHING TO SPEND. A disabled Begin
       would be a control the panel is still offering, and the honest reading of
       a spent allowance is that this run does not exist yet. */
-   foot:'<button class="btn" id="relcancel">'+(spent?'Close':'Cancel')+'</button>'
+   /* AND NOT ON A WORKED EXAMPLE, ruled 16 October. The card is a reading,
+      what a release would take and how long it would run, and that stays.
+      Begin is the run, so on an example it is the preview line in its place
+      (showNote, ui/personas.js), and a Begin that could not begin is not
+      drawn, for the reason the spent case above gives. Close and not Cancel,
+      because nothing was started that could be cancelled. */
+   foot:(showOnly()
+    ?showNote('release','rel-show')+'<button class="btn" id="relcancel">Close</button>'
+    :'<button class="btn" id="relcancel">'+(spent?'Close':'Cancel')+'</button>'
     +(spent?'<button class="btn pri" id="relplan">See the tiers</button>'
-          :'<button class="btn pri" id="relgo">Run release</button>')});}
+          :'<button class="btn pri" id="relgo">Run release</button>'))});}
  var sc0=document.getElementById('relsc'), keepY=(sc0&&sc0.closest('[data-ph]')
   &&sc0.closest('[data-ph]').getAttribute('data-ph')==='done'&&RUN.phase==='done')?sc0.scrollTop:0;
  if(!kept)h.innerHTML=out;
@@ -56138,6 +56380,10 @@ function relRender(){
   /* sounded first, while the room is still the interface's, and with the room
      argument as well so it does not depend on that: it is the one fitting a
      run is allowed, and it is one per run. */
+  /* the engine's one rule, before the first line is said: on a worked example
+     the protocol does not play and the voice is not spoken for a run the end
+     of it would refuse */
+  if(showRefuse('release'))return;
   if(typeof sfx==='function')sfx('begin',true);
   RUN.phase='welcome';RUN.line=0;RUN.idx=0;RUN.pass=0;RUN.halted=false;RUN.paused=false;
   RUN.t0=Date.now();RUN.tEnd=0;RUN.pauseAt=0;RUN.pausedMs=0;relTicker(true);relStep();};
@@ -68409,6 +68655,7 @@ function authProfileSync(){
  PROFILE_SYNC_BUSY=true;
  var localText;
  try{ localText=pExport(); }catch(e){PROFILE_SYNC_BUSY=false;return Promise.resolve({state:'refused'});}
+ if(localText==null){PROFILE_SYNC_BUSY=false;return Promise.resolve({state:'refused'});}
  var local;
  try{ local=JSON.parse(localText); }catch(e){PROFILE_SYNC_BUSY=false;return Promise.resolve({state:'refused'});}
  if(!local||typeof local!=='object'){PROFILE_SYNC_BUSY=false;return Promise.resolve({state:'refused'});}
@@ -68550,7 +68797,8 @@ function feedbackWhere(){
    an account. authCall sends Authorization only when handed a token, so null
    here is the whole of that promise.
 
-   Resolves true on a yes and rejects with authWhy's sentence on a no, because
+   Resolves true on a yes, {drop} on a refusal no retry can change (below),
+   and rejects with authWhy's sentence on a no, because
    obDrainAsync keeps the entry on a rejection and carries its message to the
    status line. Until the Function is deployed the site answers a post with
    404 or 405, because a static host takes no posts, and until the variable is
@@ -68562,6 +68810,16 @@ function authFeedback(e){
   +'the one at atuned.world can send.'));
  return authCall('POST','',e,null,false,at).then(function(r){
   if(r.ok)return true;
+  /* THE RELAY'S OWN REFUSAL OF THIS ENVELOPE IS FINAL. A 400, 413 or 415
+     carrying the Function's json is its boundary saying no to these exact
+     bytes, and sending them again gets the same answer for ever: held, the
+     entry stopped every later one behind it (16 October, measured). It is
+     handed back as {drop} so the outbox takes it out and says why. Only with
+     the Function's own json: the same status from Cloudflare in front of it
+     is an HTML page about the edge, not about the envelope, and is held. */
+  if((r.status===400||r.status===413||r.status===415)&&r.body&&r.body.ok===false
+   &&typeof r.body.error==='string')
+   return {drop:'the server refused it as it was: '+r.body.error};
   throw new Error(r.status===404||r.status===405?'The server does not take these yet.'
    :authWhy(r,'feedback')); });}
 /* THE SERVER'S OWN WORDS, SET IN SENTENCE CASE. Its errors are lower case
@@ -69562,7 +69820,8 @@ function accAccount(){
    accRow('Signed in as',ses.email)
    +accAct('Sign out of this browser','acout',{btn:'Sign out'})
    +accAct('Delete this account','acdelacc',{btn:'Delete',danger:true}),
-   'Your stories and readings stay on this device. Signing in does not copy them anywhere.')
+   'Your stories and readings stay on this device. Signing in does not copy them anywhere. '
+   +legalLink('privacy')+' and '+legalLink('terms')+' say the rest.')
   :accGroup('Sign in',
    accStub('Signed in as','not signed in')
    +'<form id="acsignin" novalidate>'
@@ -69578,7 +69837,8 @@ function accAccount(){
       which joins the topic picked and the marks to the account, so it is
       said here, where a person decides to sign in */
    'Your email and password go to our server, and what your first visit sent joins the account. '
-   +'Your stories and readings stay on this device.'));
+   +'Your stories and readings stay on this device. '
+   +legalLink('privacy')+' and '+legalLink('terms')+' say the rest.'));
  /* DEVELOPER OPTIONS, DEACTIVATED IN FULL, ROUND RI, the same ruling that
     removed the login card's own panel (ui/login.js). This panel's second
     home, the owner's own signed in account, is removed with it: devtoolsOn
@@ -69857,6 +70117,28 @@ function accSecurity(){
       per concept. The design lives in DECISIONS.md, not on this screen. */
    ses?'':'Every row here waits on sign in.');}
 
+/* ---------- the two legal pages ---------- */
+/* PRIVACY AND TERMS, 16 October. The owner: "Yes, we need a privacy policy.
+   It's very important to us. Transparency is important to us. We also need our
+   terms." The pages were drafted on 1 October and never staged, so the app had
+   nothing to link and linked nothing. They are served now at atuned.world, by
+   the deploy's stage step, from funnel/legal/render.py.
+
+   THE ADDRESS IS ABSOLUTE, ON PURPOSE. This app is also one file a person
+   downloads and opens from a folder, where a relative "privacy" resolves to
+   their own drive, the same trap feedbackWhere in ui/auth.js names for the
+   outbox. A link is a page the person chooses to open, not a request this
+   file makes, so tests/design.js gate 7 sees nothing until it is pressed.
+
+   ONE LABEL EACH, Privacy and Terms, and they are the words the funnel's own
+   footers use, one word per concept. A new tab, so the record stays open
+   behind it. */
+var LEGAL_PAGES={privacy:['Privacy','https://atuned.world/privacy'],
+ terms:['Terms','https://atuned.world/terms']};
+function legalLink(k){
+ var x=LEGAL_PAGES[k];
+ return '<a class="legal-a" href="'+x[1]+'" target="_blank" rel="noopener noreferrer">'+x[0]+'</a>';}
+
 /* ---------- 4.4 privacy. the one section here that is not generic ---------- */
 var ACC_HELD=[
  ['The identity and birth moment','name, sex, date, time and place'],
@@ -69892,6 +70174,17 @@ function accPrivacy(){
    +'What you answered is not sent. A sign in sends your email and password and '
    +'joins those marks to your account. Feedback, dictation, the voice that reads '
    +'a release, and payment each say what they send where you use them.');
+ /* THE FULL PAGES, beside the short version above. A row is the action row
+    the community door already is, a link dressed as the button, because a
+    press here opens a page and changes nothing on this device. */
+ h+=accGroup('The full pages',
+   '<div class="ac-row ac-act"><span class="ac-rl">What we keep, what leaves this device, '
+   +'and which companies get it</span><a class="btn" id="acprivacy" href="'+LEGAL_PAGES.privacy[1]
+   +'" target="_blank" rel="noopener noreferrer">'+LEGAL_PAGES.privacy[0]+'</a></div>'
+   +'<div class="ac-row ac-act"><span class="ac-rl">What Atüned is and is not, and the rules '
+   +'for using it</span><a class="btn" id="acterms" href="'+LEGAL_PAGES.terms[1]
+   +'" target="_blank" rel="noopener noreferrer">'+LEGAL_PAGES.terms[0]+'</a></div>',
+   'Both open on atuned.world in a new tab.');
  h+=accGroup('This device',
    accRow('Snapshots on file',snaps,{num:true})
    +accRow('Storage',STORE_BOUND?'writing':'blocked'),
@@ -70141,7 +70434,7 @@ function accWire(){
  /* a device setting and not a profile write: see pracOn in ui/practitioner.js */
  if(pr)pr.onclick=function(){pracSwitch(!pracOn()); renderAccount();};
  var ex=$('acexp');
- if(ex)ex.onclick=function(){var t=pExport();
+ if(ex)ex.onclick=function(){var t=pExport(); if(t==null)return;
   try{navigator.clipboard.writeText(t); status('Record copied to the clipboard.','ok');}
   catch(e){status('Could not reach the clipboard. Nothing was copied.','fail');}};
  var dl=$('acdel');
@@ -70539,17 +70832,30 @@ function obWire(){
    as sent, because the drain's state is the only thing that knows. A retry
    carries the reason the host gave, which is ui/auth.js's sentence for what
    the server or the connection did. */
+/* THE REASON AN ENTRY WAS TAKEN OUT IS THE DRAIN'S, NOT THIS FILE'S. Both
+   lines below said "carried something that identifies a person" for every
+   dropped entry, and on 16 October a blank entry and an entry the relay
+   refused joined that reason, so the sentence now carries d.dropped, the
+   boundary's or the relay's own words, and falls back to the old one only for
+   a drain that named none. */
+/* the boundary writes its reasons lower case so they can sit inside a longer
+   sentence, and the status line is sentence case, so each one is set here */
+function obSentence(w){
+ w=String(w||'').trim();
+ return w.charAt(0).toUpperCase()+w.slice(1)+(/[.?]$/.test(w)?'':'.');}
+function obGone(d){
+ return obSentence(d.dropped||'it carried something that identifies a person');}
 function obSaid(d){
- var dropped=d.refused?' One waiting entry carried something that identifies a '
-  +'person, so it was taken out and not sent.':'';
+ var many=d.refused>1?d.refused+' waiting entries were':'One waiting entry was';
+ var dropped=d.refused?' '+many+' taken out and not sent. '+obGone(d):'';
  switch(d.state){
   case 'sent':   return 'Sent. Thank you.'+dropped;
   case 'empty':  return 'Nothing is waiting to send.';
   case 'busy':   return 'Already sending. What you wrote is held on this device.';
   case 'nohost': return 'Held on this device. There is nowhere to send it yet, so '
    +'it waits in the outbox.';
-  case 'refused':return 'Nothing was sent. What was waiting carried something that '
-   +'identifies a person, so it was taken out of the outbox.';
+  case 'refused':return 'Nothing was sent. What was waiting was taken out of the '
+   +'outbox. '+obGone(d);
   default:       return 'Held on this device, not sent yet. '+(d.why||'')
    +' It waits in the outbox and nothing has been thrown away.'+dropped;}}
 function obFlush(btn){
@@ -70570,7 +70876,7 @@ function obSend(){
   platform:(window.innerWidth<720?'phone':'desktop'),
   viewport:(window.innerWidth<720?'narrow':'wide')};
  var q=obQueue(e);
- if(!q.ok){ status(q.why,'fail'); return false; }
+ if(!q.ok){ status(obSentence(q.why),'fail'); return false; }
  /* QUEUED SAYS QUEUED. Never sent, because it has not been. The sheet shuts
     on the queue and not on the send: the words are safe on this device the
     moment obQueue says so, and the send is told separately when it answers.
@@ -72272,6 +72578,49 @@ function notYours(what){
  if(S.who===0)return false;
  void what;
  return true;}
+/* A WORKED EXAMPLE IS SHOW ONLY, AND ITS REFUSAL IS A PREVIEW. Ruled 16
+   October, his words: "it allows people to see the patterns. But not run
+   them. If you're a tier one, it allows you to see what you're missing as a
+   product." The rule itself is the engine's, showRefuse in engine/showonly.js,
+   asked by every writer; these are its words, which are the host's to choose.
+
+   The refusals this replaces were walls: "Nothing committed on a worked
+   example.", "Nothing released on a worked example.", in the fail kind, which
+   holds on screen in the alarm colour and sounds the refusal. A press on an
+   example is not a failure. It is a person asking what the control does, so
+   the line says what it would do on their own profile, and then one of two
+   things, read off the sight table and never typed here (SIGHT, planNextSight,
+   engine/plan.js). If their own plan already shows every layer the example
+   shows, it says to open their own profile. If it does not, it names the next
+   layer the example is showing them and the tier that opens it on their own.
+   Running a story or a release is never tier gated, every plan runs one inside
+   its allowance, so the line never says a plan is needed to run anything.
+
+   The person's own plan is read off their own record, the one loadP(0) goes
+   back to, because CURP is the example's here and says tier four. Plain kind,
+   so it fades like any line that is not a failure. */
+var SHOW_DOES={
+ story:'Commit puts what your words carry on your map',
+ release:'a release empties charge from the addresses it reaches',
+ intake:'each answer here moves how your laws read',
+ export:'Export copies your profile to the clipboard'};
+function showOwnPlan(){
+ var own=(typeof PROF_BY!=='undefined')?PROF_BY[PEOPLE[0].nm]:null;
+ return (own&&own.plan)||null;}
+function showLine(what){
+ var head='A worked example shows every reading and runs nothing.';
+ if(what==='import')return head+' Open your own profile first, then load the file.';
+ var does=SHOW_DOES[what];
+ var nx=planNextSight(showOwnPlan());
+ var tail=nx
+  ?(function(t){return t.charAt(0).toUpperCase()+t.slice(1);})(planList(nx.adds.map(function(g){return g.nm;})))
+   +' show here, and on your own profile they open on '+nx.to.nm.toLowerCase()+'.'
+  :'Open your own profile to run it.';
+ return head+(does?' On your own profile, '+does+'.':'')+' '+tail;}
+/* the same line, where a control that cannot run on an example used to sit */
+function showNote(what,cls){
+ return '<p class="show-note'+(cls?' '+cls:'')+'" role="note">'+esc(showLine(what))+'</p>';}
+bindShowSay(function(what){ status(showLine(what)); });
 /* THE MIRROR ONLY WRITES FOR THE RECORD IT MIRRORS.
 
    PEOPLE[0] is the table loadP(0) reads the person's own field back out of, and
@@ -72495,6 +72844,13 @@ function loadP(i){
     recognises (engine/plan.js), the same literal tests/seed.js's FULL_SIGHT
     and ui/lock.js's devSight already use to mean full sight. */
  if(!p.you)CURP.plan={tier:'four',status:'active',granted:0,carried:0,base:null,since:null,until:null};
+ /* AND IT IS SHOW ONLY, ruled 16 October: it reads at tier four and runs
+    nothing. The mark is the record's identity, held by the engine
+    (engine/showonly.js), so every writer refuses it, and it is made here on
+    the same !p.you key as the stamp above, so the person's own record is never
+    marked. A scratch record the practitioner page made first is the same
+    object and is marked the first time it is opened. */
+ if(!p.you)showMark(CURP);
  /* AND EVERY WORKED EXAMPLE OPENS WITH A BANK AND A VAULT, round QD, his
     words: "load up their bank and their vault. With real data." Its journal
     and its releases are replayed through the real writers (engine/exdepth.js)
@@ -73411,6 +73767,14 @@ function crisisTalk(){
  if(typeof LOGIN!=='undefined'&&LOGIN.open&&typeof loginClose==='function')loginClose();
  if(typeof OB!=='undefined'&&OB.open&&typeof obClose==='function')obClose();
  if(typeof STV!=='undefined'){ STV.chat=false; STV.focus='write'; STV.crisis=true; }
+ /* AND ON THE PERSON'S OWN PROFILE. A worked example is show only from 16
+    October (engine/showonly.js), so its Story page has no box: the preview
+    line stands where the journal was. Talk it through pressed while an example
+    was open landed a person in crisis on a page that could not take what they
+    had to say. Their words are theirs, so the door opens their own profile
+    first, through loadP(0), the one route to it, and says nothing about the
+    example: this is not the moment for that line. */
+ if(typeof showOnly==='function'&&showOnly()&&typeof loadP==='function')loadP(0);
  if(typeof setTab==='function')setTab(TAB.STORY);
  if(typeof render==='function')render();
  var ta=document.getElementById('sttext'); if(ta)ta.focus();}
@@ -74446,8 +74810,13 @@ function obRender(){
       random code (authFunnelStart) and the next card sends the topic picked
       (authFunnelCheckpoint), so it says what goes, here, before the pick.
       tests/copy.js holds it. */
-   +'<p class="ob-p ob-foot">Your story and your name stay on this device. Our server gets a '
-   +'random code for this browser, the topic you pick next, and which steps you finish.</p>',
+   /* THE FULL PAGES, on the card that says what is sent, 16 October. One span
+      inside the line, because .obx .ob-foot is a flex row that draws a rule
+      before its first child, and two bare links in it became three columns of
+      text squeezed beside the rule at 390 wide. */
+   +'<p class="ob-p ob-foot"><span>Your story and your name stay on this device. Our server gets a '
+   +'random code for this browser, the topic you pick next, and which steps you finish. '
+   +legalLink('privacy')+' and '+legalLink('terms')+' say the rest.</span></p>',
    '<button type="button" class="btn pri" data-ob="next">Come in</button>'
    +'<button type="button" class="btn" data-ob="skip">Not now</button>');
  }
@@ -75424,6 +75793,16 @@ function loginCard(mail){
      always there and never the thing a person has to read past. The panel and
      the reason it is its own layer are in ui/crisis.js. */
   +'<p class="crx-line">'+crisisBtn()+'</p>'
+  /* THE DOOR'S LEGAL LINE, 16 October. The first place a person can make an
+     account, so the two pages that say what an account sends and keeps are
+     linked here (legalLink, ui/account.js). It is the card's foot and sits
+     under the crisis button, never between it and the three ways in: there
+     it would put two links ahead of the button in the tab order and a line
+     of text above it on a phone, and the button is the one control a person
+     in trouble should reach with the fewest presses after the three.
+     tests/onboarding2.js holds the button on the first screen at 390. */
+  +'<p class="login-legal">Read '+legalLink('privacy')+' and '+legalLink('terms')
+  +' before you make an account.</p>'
   +loginDevOptions()
   +'</div></div>';}
 function loginResetCard(mail){
@@ -77592,5 +77971,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005090738"></div>
+<div id="eof" hidden data-len="005115697"></div>
 </body></html>

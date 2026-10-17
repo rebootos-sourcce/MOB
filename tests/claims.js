@@ -18,7 +18,10 @@
      the funnel pages     funnel/*.html, read off the directory
      their copy tables    funnel/*.js, except the make-*.js build tools
      the sendable pages   funnel/dist/*.html, which is what actually goes out
-     the legal pages      funnel/legal/*.html
+     the legal pages      funnel/privacy.html, terms.html and
+                          consumer-health-data.html, read with the funnel pages
+                          since 16 October; funnel/legal/ is still read, for a
+                          draft rendered there by hand
      the engine's strings engine.js, because the quiz prints its tables
      the hooks            marketing/hooks.js, every field a person is served
 
