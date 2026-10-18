@@ -8,8 +8,8 @@ assert.equal(model.counts.saboteurs, 33);
 assert.equal(model.counts.complexes, 0, 'do not fabricate a canonical Complex roster');
 assert.equal(model.counts.supercomplexes, 0, 'do not fabricate a canonical Supercomplex roster');
 assert.equal(model.counts.unresolved_layer_placeholders, 2);
-assert.equal(model.counts.canonical_fetter_to_saboteur_edges, 69);
-assert.equal(model.counts.source_supported_saboteur_to_archetype_edges, 20);
+assert.equal(model.counts.canonical_fetter_to_saboteur_edges, 70);
+assert.equal(model.counts.source_supported_saboteur_to_archetype_edges, 23);
 assert.ok(model.gaps.some(g => g.id === 'GAP-SAB-CMP-001' && g.severity === 'P0'));
 assert.ok(model.gaps.some(g => g.id === 'GAP-HCX-SCX-001' && g.severity === 'P0'));
 
