@@ -226,3 +226,22 @@ Resume from the existing branch and PR #122. Do not restart the strategy. Do not
 | Confidence in empirical accuracy | Not assignable | Insufficient independent ground truth |
 
 **Controlling instruction:** Build the framework. Make its rules, evidence, tests, simulations, and external-engine handshake correct and explicit. Leave engine generation and engine artifact repair to the separate software.
+
+
+## 11. CONTROLLING SCOPE UPDATE — FULL HIERARCHY FRAMEWORK (2026-10-18)
+
+The owner clarified the required deliverable: stop treating the second layer's simulator as the main work. Build the framework across the full hierarchy in order:
+
+**Fetters → Saboteurs → Complexes → Hypercomplexes → Supercomplexes.**
+
+Every entity at every layer must use one shared story/description template; every child-parent mapping must be explicit; each boundary must have simulations, overlap/differentiation analysis, and a gap report; and the full ancestry must remain traceable to the fetter inputs. The simulator is a validation tool, not the deliverable. A passing simulator cannot close missing template or mapping work.
+
+New controlling contract:
+- `proto/sniffer/ATUNED_ALL_LEVELS_FRAMEWORK_CONTRACT.md`
+- It defines the shared entity template, typed relationship schema, layer-specific acceptance criteria, simulation outputs, gap severity, completion gates, and current source-grounded blockers.
+- Do not fabricate Complex, Hypercomplex, or Supercomplex rosters or mappings. Locate and reconcile canonical source data; if unavailable, record a precise blocked entity/gap and continue building the reusable schema and validators.
+- First establish template parity and roster/edge/gap validation; complete the 33 Saboteur stories and their fetter mappings; then advance each higher layer only with source-verified rosters.
+- Treat P0 template/mapping/source-of-truth gaps as blockers to framework completion. Do not tune synthetic score weights while structural framework gates remain open.
+- Engine-generated outputs remain excluded; the separate software owns generation and engine-side parity.
+
+This scope update supersedes any interpretation of Blocks 1–6 that would keep the effort centered on the evaluator or collision simulation rather than the full hierarchy framework.
