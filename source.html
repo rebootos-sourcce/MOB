@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2197 a132f0fd 2026-10-18 00:31"><head><meta charset="utf-8">
+<html lang="en" data-build="v2199 6fd27d23 2026-10-18 00:59"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -48271,7 +48271,10 @@ function sumOutput(r){
     if(r.heaviest)return card('What moves the reading','The twenty one laws',
      (fmtPct('expression',rhead)!==PCT_DASH?'What you carry holds back about '+fmtPct('expression',rhead)+' of your coherence, and release '
       +'can give it back. Past that only the laws move it, and they move when you answer them or when what you do changes'
-      :'Release has nothing left to give back to your coherence. What is left is the laws, and they move '
+      /* under one percent is not nothing, and pass 1 says so: 0.1 of a
+         point printed "nothing left" the day this moved to percents */
+      :(rhead>=0.05?'Release has under 1% left to give back to your coherence. ':'Release has nothing left to give back to your coherence. ')
+      +'What is left is the laws, and they move '
       +'when you answer them or when what you do changes'),
      '<button class="btn s-oact" data-sout="iq">Answer the laws</button>');
     return card('Release this first','Nothing is carrying',
@@ -79274,5 +79277,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005204495"></div>
+<div id="eof" hidden data-len="005204724"></div>
 </body></html>
