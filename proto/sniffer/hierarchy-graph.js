@@ -112,8 +112,10 @@ function summarizeSelection(id) {
 function inferUp(startIds) {
   const queue = [...startIds].map(id => ({ id, path: [id], statuses: [] }));
   const found = new Map();
+  const reachedLayers = new Set(startIds.map(id => byId.get(id)?.layer).filter(Boolean));
   while (queue.length) {
     const current = queue.shift();
+    if (byId.has(current.id)) reachedLayers.add(byId.get(current.id).layer);
     for (const edge of childrenById.get(current.id) || []) {
       const path = [...current.path, edge.to];
       const statuses = [...current.statuses, edge.status];
@@ -133,10 +135,7 @@ function inferUp(startIds) {
   return {
     start_ids: startIds,
     candidates: reachable,
-    blocked_boundaries: gaps.filter(g => startIds.some(id => {
-      const node = byId.get(id);
-      return node && (node.layer === g.from_layer || node.layer === g.to_layer);
-    })),
+    blocked_boundaries: gaps.filter(g => reachedLayers.has(g.from_layer) || reachedLayers.has(g.to_layer)),
     warning: 'Candidate ancestors follow recorded edges only. Missing hierarchy edges are not guessed; this is not a diagnosis or a claim about hidden intent.'
   };
 }
