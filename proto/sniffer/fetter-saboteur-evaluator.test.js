@@ -42,5 +42,6 @@ assert.equal(unprovenanced.candidates.find(x => x.name === 'Micromanager').behav
 
 assert.throws(() => evaluateFetterSaboteurs({ fear: 11 }), RangeError);
 assert.throws(() => evaluateFetterSaboteurs({ fear: NaN }), RangeError);
+assert.throws(() => evaluateFetterSaboteurs({ anxiety: 5 }), RangeError, 'non-canonical axis aliases must not be accepted');
 assert.throws(() => evaluateFetterSaboteurs(null), TypeError);
 console.log('fetter-saboteur-evaluator: all tests passed');
