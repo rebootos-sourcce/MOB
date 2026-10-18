@@ -280,8 +280,9 @@ function lawDrillHtml(l,o){
      under the owner's non clinical ruling: the instrument does not diagnose,
      it asks questions, so the eyebrow names the answers. tests/copy.js bans
      the word on every app surface now. */
-  ? '<div class="pm-eye">From your answers</div><p class="ad-p">Your three answers sit <b>'+sc.spread
-    +'</b> apart, '+sc.lean+'.</p>'
+  ? '<div class="pm-eye">From your answers</div><p class="ad-p">Your three answers '
+    /* the gap as a percent, 17 October, and a gap of nothing is said, never a dash */
+    +(fmtPct('spread',sc.spread)!==PCT_DASH?'sit <b>'+fmtPct('spread',sc.spread)+'</b> apart':'agree')+', '+sc.lean+'.</p>'
   : '<div class="pm-eye">Not measured</div><p class="ad-p">Not answered in the questions, so '
     +'it defaults to '+fmtPct('law',v)+'. Three questions would replace the guess.</p>';
  if(hot.length)h+='<div class="pm-eye">Held here</div><div class="ad-rows">'
