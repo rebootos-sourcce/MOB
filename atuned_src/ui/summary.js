@@ -73,7 +73,8 @@ function SUM_WORD(n){return SUM_WORDS[n]||String(n);}
 /* ---- the strip. all analytics at a glance, which is what was asked for. ---- */
 function sumGlance(r,noCQ){
  var acc=(typeof accuracy==='function')?accuracy(r):null;
- var e=(r.X+r.Y+r.Z)/3, U={unread:r.unread};
+ var e=(r.X+r.Y+r.Z)/3;
+ var U={unread:r.unread};
  var row=[
   /* the glance row's coherence ring reads the tier too, for the same reason */
   /* A PERCENT IS ALREADY OUT OF A HUNDRED. The third line read "of 100" under
