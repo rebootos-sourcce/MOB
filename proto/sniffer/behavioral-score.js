@@ -4,6 +4,8 @@
 // It does not infer behavioral evidence from journal text. The default weights are
 // provisional engineering settings, not canonical or empirically validated values.
 const DEFAULT_WEIGHTS = Object.freeze({ behavior: 0.65, charge: 0.35 });
+const catalog = require('./behavioral-catalog.json');
+const catalogEligibility = new Map(catalog.records.map(record => [record.name, record.scoring_eligible === true]));
 
 function validateScore(value, label) {
   if (!Number.isFinite(value) || value < 0 || value > 1) throw new RangeError(label + ' must be a number from 0 to 1');
@@ -19,7 +21,7 @@ function scoreCandidates(candidates, weights = DEFAULT_WEIGHTS) {
     const charge = candidate.chargeScore == null ? null : validateScore(candidate.chargeScore, candidate.name + '.chargeScore');
     const support = candidate.behaviorSupport == null ? null : validateScore(candidate.behaviorSupport, candidate.name + '.behaviorSupport');
     const contradiction = candidate.behaviorContradiction == null ? null : validateScore(candidate.behaviorContradiction, candidate.name + '.behaviorContradiction');
-    const behaviorAvailable = support !== null && contradiction !== null && candidate.behaviorSourceVerified === true;
+    const behaviorAvailable = support !== null && contradiction !== null && candidate.behaviorSourceVerified === true && catalogEligibility.get(candidate.name) === true;
     const behavior = behaviorAvailable ? Math.max(0, support - contradiction) : null;
     const score = behaviorAvailable && charge !== null ? wb * behavior + wc * charge : null;
     return { name: candidate.name, chargeScore: charge, behaviorScore: behavior, combinedScore: score,
