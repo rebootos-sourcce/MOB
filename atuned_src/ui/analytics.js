@@ -720,26 +720,26 @@ function anaRungCard(r,nm){
    expression print as percents beside the shadow and the pull, which already
    did, and overshoot and installed stop printing a decimal over a fill ten
    times its size. */
-function anaFig(kind,v,r){return {p:pct(kind,v)||0,raw:fmtPct(kind,v,{unread:r&&r.unread})};}
+function anaPctFig(kind,v,r){return {p:pct(kind,v)||0,raw:fmtPct(kind,v,{unread:r&&r.unread})};}
 var ANA_MET={
  cq:{nm:'Coherence',seat:'Crown',txt:'CQ',
   tip:'CQ is your coherence number, built only from your answers on the laws.',
-  fig:function(r){return anaFig('cq',r.CQ,r);}},
+  fig:function(r){return anaPctFig('cq',r.CQ,r);}},
  dq:{nm:'Shadow',seat:'Root',txt:'DQ',
   tip:'Shadow is all the charge left at your addresses, added up, as a share of the most they could hold.',
-  fig:function(r){return anaFig('dq',r.DQ,r);}},
+  fig:function(r){return anaPctFig('dq',r.DQ,r);}},
  pull:{nm:'Pull',seat:'Solar',txt:null,
   tip:'Pull is how hard the charge you hold drags on what you do, and a heavy place drags far harder than a light one.',
-  fig:function(r){return anaFig('pull',r.PULL,r);}},
+  fig:function(r){return anaPctFig('pull',r.PULL,r);}},
  ex:{nm:'Expression',seat:'Throat',txt:null,
   tip:'Expression is your coherence with the pull taken off it, so it is how much of it reaches what you do.',
-  fig:function(r){return anaFig('expression',r.EX,r);}},
+  fig:function(r){return anaPctFig('expression',r.EX,r);}},
  jq:{nm:'Overshoot',seat:'3rd Eye',txt:null,
   tip:'Overshoot is an opposite feeling put in past the point where it helps, at 60% and above.',
-  fig:function(r){return anaFig('overshoot',r.JQ,r);}},
+  fig:function(r){return anaPctFig('overshoot',r.JQ,r);}},
  pole:{nm:'Installed',seat:'Heart',txt:null,
   tip:'Installed is how much of each opposite feeling is in place where its feeling was, such as trust where fear sat.',
-  fig:function(r){return anaFig('pole',r.poleMean,r);}}};
+  fig:function(r){return anaPctFig('pole',r.poleMean,r);}}};
 function anaMetRow(r,k){
  var M=ANA_MET[k], f=M.fig(r);
  return '<button type="button" class="ad-r" data-ana="met|'+k+'" title="'+esc('Open '+M.nm)+'">'

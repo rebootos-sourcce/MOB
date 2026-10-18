@@ -26,7 +26,7 @@
         form, read against fmtPct off the same compute(), and prints no bare
         decimal where a score stood. A surface joins this list in the change
         that moves it, so the list is the record of what has moved: S1 the
-        shared ring and the Field, S2 Summary.
+        shared ring and the Field, S2 Summary, S3 Analytics and the record.
 
    It walks with reduced motion, so every ring is at its value the frame it
    is written and the count up tween in ui/component.js never stands between
@@ -166,6 +166,36 @@ const READ=`(function(){
    ok(s.rows.length>0&&s.rows.every(v=>/^(\d+%|\u2013)$/.test(v)),'S2: '+tag+'every structure and axis ring prints a percent or the dash, '+J(s.rows.slice(0,8)));
    ok(s.weightBare.length===0,'S2: '+tag+'no weight in the prose is printed bare, '+J(s.weightBare));
    ok(s.decimal.length===0,'S2: '+tag+'no decimal figure is left in the prose, '+J(s.decimal));
+  }
+  /* ---------- S, slice 3: Analytics and the record ---------- */
+  for(const who of ['Marcus','James','Diane']){
+   const tag=W+' '+who+': ';
+   const s=await page.evaluate(async who=>{
+    loadP(PEOPLE.findIndex(x=>x.nm===who)); setTab(TAB.ANALYTICS); render();
+    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+    const R=compute(), acc=accuracy(R), ana=document.getElementById('ana');
+    const t=ana?ana.innerText:'';
+    const badges=ana?Array.from(ana.querySelectorAll('.crb .crb-v,.cr .v')).map(e=>e.textContent.trim()):[];
+    const bubbles=ana?Array.from(ana.querySelectorAll('.ab-v')).map(e=>e.textContent.trim()):[];
+    const accFig=ana?((ana.querySelector('.ab-acc b')||{}).textContent||'').trim():null;
+    /* every one of the six readings opened as a card, so the trail's figures are read too */
+    const cards=[];
+    for(const k of Object.keys(ANA_MET)){const h=anaMetCard(R,k); if(h)cards.push(h.replace(/<[^>]+>/g,' '));}
+    const rec=document.getElementById('rec');
+    const recCells=rec?Array.from(rec.querySelectorAll('.rec-row')).map(x=>({k:(x.querySelector('.rec-k')||{}).textContent,
+     a:(x.querySelector('.rec-a')||{}).textContent,b:(x.querySelector('.rec-b')||{}).textContent,d:(x.querySelector('.rec-d')||{}).textContent})):[];
+    return {unread:!!R.unread,badges,bubbles,accFig,accWant:fmtPct('accuracy',acc.pct),t,cards,recCells};},who);
+   ok(!s.unread&&s.badges.length>0,'S3: '+tag+'Analytics reads, with badges to check');
+   const dec=v=>/^\d+\.\d+$/.test(v);
+   ok(!s.badges.some(dec),'S3: '+tag+'no badge on Analytics prints a decimal, '+J(s.badges.filter(dec).slice(0,6)));
+   ok(!s.bubbles.some(dec),'S3: '+tag+'no bubble prints a decimal or its size floor, '+J(s.bubbles.filter(dec).slice(0,6)));
+   ok(s.accFig===s.accWant,'S3: '+tag+'identification prints the registry\'s form, '+J(s.accFig)+' against '+J(s.accWant));
+   ok(!/\bCQ (?:up|down) \d/.test(s.t)&&!/ per cent\b/.test(s.t),'S3: '+tag+'no change in CQ is a signed move and no figure says per cent');
+   const cardDec=s.cards.map(c=>(c.match(/(?<![\d.×])\b\d+\.\d{1,2}\b(?!\s*(?:Hz|×))/g)||[])).reduce((a,b)=>a.concat(b),[]);
+   ok(cardDec.length===0,'S3: '+tag+'the six reading cards print no decimal figure, '+J(cardDec.slice(0,6)));
+   const kinded=s.recCells.filter(c=>/Coherence|Shadow|Carried|installed|Overshot/.test(c.k||''));
+   ok(kinded.every(c=>/^(\d+%|–)$/.test((c.a||'').trim())&&/^(\d+%|–)$/.test((c.b||'').trim())&&!/[+−-]\d/.test(c.d||'')),
+    'S3: '+tag+'the record prints each score as two percents and a word, '+J(kinded.slice(0,3)));
   }
   /* and an unread profile prints the dash in every one of them, never 0% */
   const u=await page.evaluate(async()=>{loadP(0); setTab(TAB.FIELD); render();

@@ -14,6 +14,8 @@
     "Raised 17 October, functional 2633 to 2634, for the one check added with patterns follow the money (Billing's State row holds the refused card line), read off CI on bef4e302, gates-browser (functional) job 117473888293.",
     "Added 17 October: releasechain 48, read off its first green local run on claude/release-chain-fix (tests/releasechain.js, the release chain walked end to end for six stories at 1600 and 390). The build from origin/main aeab54e2 read 34 passed, 14 failed.",
     "Added 17 October: pct 2858, read off its first green local run on claude/percent-phase-2 at 7609fde6 (tests/pct.js, every ring and bar that prints a percent filled to it, at 1600 and 390, blank and three worked examples). The build from origin/main aeab54e2 read 157 passed, 89 failed.",
+    "Raised 17 October: pct 3148 with slice 2 (Summary, section S2), read off its green run on claude/percent-phase-2-s2 at 53f6f792. The slice 1 build read 2878 passed, 46 failed against it.",
+    "Raised 17 October: pct 3238 with slice 3 (Analytics and the record, section S3), read off its green run on claude/percent-phase-2-s3 at f19e9d85. The slice 2 build read 3168 passed, 22 failed against it.",
     "Raise a floor by editing this file on purpose, in the same change that adds the checks, from a green run. Never lower one to get green. Nothing writes this file.",
     "expected_red_max is the most expected red a gate may print. tools/floors.js fails a gate above its ceiling, and fails a gate that prints an expected red count with no ceiling here, so a failing check cannot be let off as expected red unseen. Added empty on 9 October: the lead sets each value from a clean full run, as printed, and until then the engine's floor step fails by name. It drops to 0 in the change that turns the expected reds green."
   ],
@@ -66,7 +68,7 @@
     "allowance": 84,
     "money": 54,
     "releasechain": 48,
-    "pct": 2858
+    "pct": 3238
   },
   "no_count": {
     "monitor": "all surfaces render"
