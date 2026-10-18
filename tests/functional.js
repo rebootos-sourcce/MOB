@@ -6297,7 +6297,8 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
     nodes:FR_HIT.filter(h=>h.k==='node').length,body:W.length,
     outside:FR_HIT.filter(h=>h.k==='anchor'||(h.n&&FIELD.indexOf(h.n)>=0)).map(h=>h.n.k),
     kept:FIELD.length+' '+FIELD.every(n=>isFinite(n.sq)),
-    figures:texts.map(t=>t.textContent).filter(s=>/^\d+$/.test(s)),cq:Math.round(compute().CQ),
+    /* NAMED CHANGE, percent phase 2 slice 1: the core prints CQ as a percent */
+    figures:texts.map(t=>t.textContent).filter(s=>/^\d+%$/.test(s)),cq:Math.round(compute().CQ),
     small:texts.filter(t=>parseFloat(getComputedStyle(t).fontSize)<11).map(t=>t.textContent),
     calls:[...fr.querySelectorAll('[data-call]')].length};},LAYERS);};
  for(const v of ['frames','dial']){
@@ -6321,7 +6322,7 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   ok(o.nodes===o.body,'"'+v+'": every body address is on the loop, '+o.nodes+' of '+o.body);
   ok(o.outside.length===0,'"'+v+'": the four outside the body are not drawn, got '+(o.outside.join(', ')||'none'));
   ok(o.kept==='4 true','"'+v+'": and the engine still carries the four, each with a figure, got '+o.kept);
-  ok(o.figures.length===1&&+o.figures[0]===o.cq,'"'+v+'": the core prints the reading, '+o.figures.join(',')+' against CQ '+o.cq);
+  ok(o.figures.length===1&&parseInt(o.figures[0],10)===o.cq,'"'+v+'": the core prints the reading, '+o.figures.join(',')+' against CQ '+o.cq);
   ok(o.small.length===0,'"'+v+'": nothing set under eleven pixels, '+JSON.stringify(o.small));
   console.log('  '+v.padEnd(7)+o.w+'x'+o.h+'  '+o.counts.map(c=>c[0].slice(0,4)+' '+c[1]).join('  ')
    +(v==='dial'?'  callouts '+o.calls:''));}
@@ -6653,8 +6654,12 @@ console.log('\n=== the Field drawn three ways, and the switch between them (BP8)
   const rows=[...d.querySelectorAll('.rbar,.rb2')].filter(e=>e.offsetParent), rr=rows.map(e=>e.getBoundingClientRect());
   const bars=[...d.querySelectorAll('.rbar')], rc=bars.map(e=>e.getBoundingClientRect());
   const R=compute(), f=flSpeed();
-  const want=[['Vitality',R.X*100,seatCol('Solar')],['Awareness',R.Y*100,seatCol('3rd Eye')],['Will',R.Z*100,seatCol('Throat')],
-   ['Radiance',R.radiance*100,null],['Flow',f*100,null]];
+  /* NAMED CHANGE, percent phase 2 slice 1, 17 October: each bar fills
+     pct(kind, value), the whole percent its figure prints (engine/pct.js),
+     so the fill and the colour ramp are read off that and not off the raw
+     value times a hundred. */
+  const want=[['Vitality',pct('vitality',R.X),seatCol('Solar')],['Awareness',pct('awareness',R.Y),seatCol('3rd Eye')],['Will',pct('will',R.Z),seatCol('Throat')],
+   ['Radiance',pct('radiance',R.radiance),null],['Flow',pct('flow',f),null]];
   const pairs=[...d.querySelectorAll('.rb2')];
   const bar={names:bars.map(e=>e.querySelector('.rb-n').textContent),
    pairNames:pairs.map(p=>[...p.querySelectorAll('.rb2-n')].map(n=>n.textContent)),
@@ -7036,7 +7041,7 @@ console.log('\n=== FJ: words with the zoom, layers that move, one dial in two de
    return fj.evaluate(()=>{const h=document.getElementById('frend');
     const shown=sel=>[...h.querySelectorAll(sel)].filter(e=>getComputedStyle(e).visibility!=='hidden'&&!e.classList.contains('hid')).length;
     return {notext:h.classList.contains('notext'),tx:+h.style.getPropertyValue('--fztx'),
-     names:shown('.frnm span'),calls:shown('[data-call]'),figures:[...h.querySelectorAll('.frsvg text')].filter(t=>/^\d+$/.test(t.textContent)&&getComputedStyle(t).visibility!=='hidden').length};});};
+     names:shown('.frnm span'),calls:shown('[data-call]'),figures:[...h.querySelectorAll('.frsvg text')].filter(t=>/^\d+%$/.test(t.textContent)&&getComputedStyle(t).visibility!=='hidden').length};});};
   const a1=await at(1), a2=await at(2);
   ok(a1.notext&&a1.tx===0&&a1.names===0&&a1.calls===0,'"'+v+'" at 1x: no word shown, names '+a1.names+', callouts '+a1.calls);
   ok(a1.figures===1,'"'+v+'" at 1x: the core figure still prints, '+a1.figures);
