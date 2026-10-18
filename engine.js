@@ -1023,7 +1023,7 @@ const TIERDEF=[
   soma:'Caught between the weight in your body and the odd moment of seeing clearly.',
   def:'Your energy costs more than it builds. Charge is held at more addresses than are clearing.',
   energy:'Effort goes in and less comes out. You are working, and the work is going into holding.',
-  toward:'Oscillating, which starts at 41. Take the heaviest seat first. One address cleared where the load actually sits moves this further than ten cleared anywhere else.'},
+  toward:'Oscillating, which starts at 41%. Take the heaviest seat first. One address cleared where the load actually sits moves this further than ten cleared anywhere else.'},
  {at:21, nm:'Corrupt',
   state:'Defensive',
   soma:'Tied to fixed beliefs. Patching over the signs of trouble to protect where you stand.',
@@ -1090,7 +1090,12 @@ function medianRange(cq){var c=cqShown(cq); return c>=MEDIAN_LO&&c<=MEDIAN_HI;}
 function tierTop(nm){
  for(var i=0;i<TIERDEF.length;i++) if(TIERDEF[i].nm===nm) return i===0?100:TIERDEF[i-1].at-1;
  return 100;}
-function tierRange(t){return t.at+' to '+tierTop(t.nm);}
+/* AND THE RANGE IS IN PERCENT, 17 October, percent phase 2: a band is a range
+   of CQ, and CQ prints as a percent everywhere (engine/pct.js), so the ladder
+   printing "61 to 70" beside a reading of 64% was two units on one scale. The
+   bottom band starts at nought, and nought is never printed as 0%, the
+   registry's one rule, so it reads up to its top. */
+function tierRange(t){return t.at>0?t.at+'% to '+tierTop(t.nm)+'%':'up to '+tierTop(t.nm)+'%';}
 function tierOf(cq){
  var c=cqShown(cq);
  for(var i=0;i<TIERDEF.length;i++) if(c>=TIERDEF[i].at)return TIERDEF[i];
@@ -4141,7 +4146,7 @@ var UNPACK_BASE={
     which keeps the bare key above. Two meanings sat on one Summary page. */
  'field:expression':'Expression is the part of your coherence that gets past the charge you carry.',
  /* the line every surface counts held from, BELOW THE LINE in compute.js */
- 'the line':'The line is the point where the charge at one address reaches 4 and starts to cost your body.',
+ 'the line':'The line is the point where the charge at one address reaches 40% and starts to cost your body.',
  /* YOUR PATTERNS, the trace graph's screen (ui/loopread.js, engine/loop.js).
     Each word below is a label that block prints, and its meaning is the
     graph's own: confirmed is a user_confirmed edge, unanswered is everything
