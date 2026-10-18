@@ -60,6 +60,10 @@ function evaluateFetterSaboteurs(levels, evidence = {}) {
     const evidenceValid = Boolean(
       eligible && supplied &&
       supplied.sourceVerified === true &&
+      Array.isArray(supplied.evidenceRefs) && supplied.evidenceRefs.length > 0 &&
+      supplied.evidenceRefs.every(ref => typeof ref === 'string' && /^https:\/\//.test(ref)) &&
+      Array.isArray(supplied.observationIds) && supplied.observationIds.length > 0 &&
+      supplied.observationIds.every(id => typeof id === 'string' && id.trim().length > 0) &&
       Number.isFinite(supplied.support) && supplied.support >= 0 && supplied.support <= 1 &&
       Number.isFinite(supplied.contradiction) && supplied.contradiction >= 0 && supplied.contradiction <= 1
     );
