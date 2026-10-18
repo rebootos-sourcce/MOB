@@ -141,6 +141,42 @@ function inferUp(startIds) {
   };
 }
 
+function getInferredList() {
+  return bands.map(([name, parts]) => {
+    const id = 'saboteur:' + name;
+    const fetterInputs = parts.map(([axis, low, high]) => ({
+      node_id: 'fetter:' + axis,
+      axis,
+      band: { low, high },
+      mapping_status: 'canonical',
+      source: 'SNIFFER_SPEC.md §3'
+    }));
+    const sourceSupportedParents = (childrenById.get(id) || [])
+      .filter(edge => edge.status === 'source_supported')
+      .map(edge => ({
+        node_id: edge.to,
+        name: byId.get(edge.to)?.name || edge.to,
+        layer: byId.get(edge.to)?.layer || 'unknown',
+        relationship: edge.relationship,
+        mapping_status: edge.status,
+        source: edge.source
+      }));
+    return {
+      saboteur_id: id,
+      name,
+      layer: 'saboteur',
+      inputs: fetterInputs,
+      source_supported_context_parents: sourceSupportedParents,
+      upward_inference: {
+        complex: { status: 'blocked', gap_id: 'GAP-SAB-CMP-001' },
+        hypercomplex: { status: 'blocked', gap_id: 'GAP-CMP-HCX-001' },
+        supercomplex: { status: 'blocked', gap_id: 'GAP-HCX-SCX-001' }
+      },
+      caveat: 'Parent candidates are source-supported framing relationships only. No missing edge is inferred from synthetic score similarity.'
+    };
+  });
+}
+
 function getModel() {
   return { schema_version: '1.0.0', layers: LAYERS, nodes, edges, gaps, counts: {
     fetters: nodes.filter(n => n.layer === 'fetter').length,
@@ -154,4 +190,4 @@ function getModel() {
     source_supported_saboteur_to_archetype_edges: edges.filter(e => e.status === 'source_supported').length
   } };
 }
-module.exports = { getModel, summarizeSelection, inferUp, nodes, edges, gaps };
+module.exports = { getModel, getInferredList, summarizeSelection, inferUp, nodes, edges, gaps };
