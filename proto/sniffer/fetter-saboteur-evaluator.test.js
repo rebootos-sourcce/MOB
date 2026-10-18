@@ -20,10 +20,10 @@ assert.equal(micromanagerCenter.accuracyClaim, 'none: independent expected label
 const withEvidence = evaluateFetterSaboteurs(
   { fear: 8, anger: 6, anticipation: 6 },
   {
-    Micromanager: { support: 0.2, contradiction: 0.1, sourceVerified: true },
-    'Hyper-Vigilant': { support: 0.9, contradiction: 0.1, sourceVerified: true },
-    'Control Freak': { support: 1, contradiction: 0, sourceVerified: true },
-    Victim: { support: 1, contradiction: 0, sourceVerified: true }
+    Micromanager: { support: 0.2, contradiction: 0.1, sourceVerified: true, evidenceRefs: ['https://fixture.invalid/source'], observationIds: ['fixture-observation'] },
+    'Hyper-Vigilant': { support: 0.9, contradiction: 0.1, sourceVerified: true, evidenceRefs: ['https://fixture.invalid/source'], observationIds: ['fixture-observation'] },
+    'Control Freak': { support: 1, contradiction: 0, sourceVerified: true, evidenceRefs: ['https://fixture.invalid/source'], observationIds: ['fixture-observation'] },
+    Victim: { support: 1, contradiction: 0, sourceVerified: true, evidenceRefs: ['https://fixture.invalid/source'], observationIds: ['fixture-observation'] }
   }
 );
 assert.equal(withEvidence.behaviorScoredCount, 2, 'blocked catalog entries must not score even if caller supplies ratings');
