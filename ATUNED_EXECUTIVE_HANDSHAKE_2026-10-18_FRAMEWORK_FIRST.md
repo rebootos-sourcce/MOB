@@ -270,3 +270,15 @@ New implementation in `proto/sniffer/hierarchy-graph.js` connects the known grap
 The graph contains 9 fetter nodes, 33 Saboteur nodes, 70 canonical fetter-to-Saboteur band edges, 12 archetype-context nodes and 23 source-supported Saboteur-to-archetype context edges. The archetype roster is explicitly conflicted (the spec itself records 12/13/15 variants). The six hyper-complex modes are represented as a partial roster with no fabricated membership edges. Complex and Supercomplex appear as explicit unresolved placeholders so selecting the top-level placeholder surfaces the missing structure rather than returning a false complete path.
 
 Added `proto/sniffer/hierarchy-graph.test.js` for structural counts, top-level blocked traversal, inferred-list wiring, and inverse paths; the dedicated workflow now includes it. The current code/test changes have been committed to the existing feature branch, but CI status for the newest revision remains unverified. Do not report test pass until GitHub Actions confirms it.
+
+
+## 14. Latest repository status after graph wiring
+
+- Current branch head at this refresh: `a1ab5022b3cfd0bd1bd00acd060812b6e83ec6e8`.
+- PR #122 remains open, draft, and unmerged.
+- The PR currently has 42 commits and 16 changed files.
+- Combined commit status returned 0 status entries for the exact head. The connector did not expose a current workflow run for that SHA, so no CI pass is claimed.
+- The graph exposes a derived inferred list, top-down selection tracing, bottom-up inverse inference, and structural gap reporting. The inverse inference reports the next missing hierarchy boundary reached from the selected fetter/Saboteur.
+- Structural blockers remain P0: canonical Complex roster and edges, reconciliation of Complex vs archetype layer semantics, membership edges into hyper-complex modes, and the Supercomplex roster/composition.
+- The shared description fields exist for all 33 Saboteur copy records. Full story-to-canon content review and template application to Complex/Hypercomplex/Supercomplex entities remain incomplete because their canonical rosters and mappings are unresolved.
+- Do not treat this state as a completed geometric model. It is the first wired graph contract with explicit holes and inverse tracing; full geometry is gated on canonical source reconciliation and passing CI.
