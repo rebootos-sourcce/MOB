@@ -6,7 +6,7 @@ Added `fetter-saboteur-evaluator.js` at the framework mapping boundary. It consu
 
 ## Safety and validity rules
 - Behavioral evidence is never inferred from prose or journal text.
-- A behavioral score requires a catalog entry marked scoring-eligible plus caller-supplied support, contradiction, and `sourceVerified: true`.
+- A behavioral score requires a catalog entry marked scoring-eligible, caller-supplied support/contradiction, `sourceVerified: true`, at least one HTTPS evidence reference, and at least one observation ID. Test fixtures use reserved `.invalid` URLs and are not behavioral evidence.
 - Blocked or ambiguous entries (including Victim and Control Freak where the catalog marks them ineligible) remain behaviorally unscored.
 - Charge and behavior scores remain separate; `combinedScore` is deliberately null. The current 65/35 experimental weights are not used because coverage and validity have not been established.
 - No accuracy percentage is emitted without independent expected labels.
