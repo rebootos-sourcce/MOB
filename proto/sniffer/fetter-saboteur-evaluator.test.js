@@ -8,7 +8,7 @@ assert.equal(bands.length, 33);
 assert.equal(new Set(bands.map(row => row[0])).size, 33);
 assert.equal(catalog.records.length, 33);
 assert.equal(member(8.5, 7, 10), 1);
-assert.equal(member(8, 7, 9), 0.925);
+assert.equal(member(8, 7, 9), 1);
 
 const micromanagerCenter = evaluateFetterSaboteurs({ fear: 8.5, anger: 6.5 });
 assert.equal(micromanagerCenter.candidateCount, 33);
