@@ -12,6 +12,7 @@ const ABOVE = 3;
 const ARITY = Object.freeze({ 1: 0.80, 2: 1.00, 3: 1.10 });
 const WEIGHT = Object.freeze({ Avoider: 0.55 });
 const byName = new Map(catalog.records.map(record => [record.name, record]));
+const VALID_AXES = new Set(bands.flatMap(([, parts]) => parts.map(([axis]) => axis)));
 
 function member(value, low, high) {
   const midpoint = (low + high) / 2;
@@ -41,6 +42,7 @@ function validateLevels(levels) {
     throw new TypeError('levels must be an object keyed by canonical fetter axis');
   }
   for (const [axis, value] of Object.entries(levels)) {
+    if (!VALID_AXES.has(axis)) throw new RangeError(axis + ' is not a canonical fetter axis');
     if (!Number.isFinite(value) || value < 0 || value > 10) {
       throw new RangeError(axis + ' must be a finite number from 0 to 10');
     }
