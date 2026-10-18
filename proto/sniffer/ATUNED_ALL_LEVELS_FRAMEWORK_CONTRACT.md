@@ -128,3 +128,16 @@ Build the shared schema and roster/edge/gap validators first; populate and valid
 - `proto/sniffer/bands.js` — machine-readable Saboteur band table used by the evaluator.
 - `proto/sniffer/behavioral-catalog.json` and `proto/sniffer/FETTER_BEHAVIOR_EVIDENCE_COVERAGE_AUDIT_2026-10-18.md` — descriptive source crosswalk and its current evidence limitations.
 - `atuned_src/engine/data/sabcard.js` — current user-facing Saboteur story/availability/next-move copy source. The separate software owns generation of engine outputs.
+
+
+## Live graph and inference wiring added in this work session
+
+The reusable graph implementation is `proto/sniffer/hierarchy-graph.js`:
+- `getModel()` returns the nodes, typed edges, layer counts, and P0 gap register.
+- `getInferredList()` returns all 33 Saboteur records, their canonical fetter inputs/bands, source-supported archetype-context parents, and explicit blocked upward mappings to Complexes, Hypercomplexes, and Supercomplexes.
+- `summarizeSelection(nodeId)` traverses known child edges from a selected parent and includes adjacent unresolved boundaries. A top-level unresolved placeholder is selectable and returns its blocked state rather than pretending it has children.
+- `inferUp(startIds)` reverses recorded edges from fetters or Saboteurs to all reachable parent candidates, retaining edge provenance/status. It never fabricates edges across missing layers.
+
+The graph currently encodes 9 fetter nodes, 33 Saboteur nodes, 70 canonical fetter-to-Saboteur band edges, 12 archetype-context nodes and 23 source-supported Saboteur-to-archetype context edges. The archetype roster is marked conflicted because the spec itself records 12/13/15 alternatives. It includes explicit unresolved Complex and Supercomplex placeholders, not invented canonical entities. Six hyper-complex modes are listed as a partial roster but have no fabricated membership edges.
+
+Tests were added in `proto/sniffer/hierarchy-graph.test.js` and wired into `.github/workflows/fetter-saboteur-evaluator.yml`. The graph now provides both top-down trace and bottom-up inference APIs; CI must still confirm the latest revision before the tests can be called passing.
