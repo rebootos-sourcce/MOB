@@ -32,6 +32,14 @@ assert.equal(withEvidence.candidates.find(x => x.name === 'Control Freak').behav
 assert.equal(withEvidence.candidates.find(x => x.name === 'Victim').behaviorScore, null);
 assert.ok(withEvidence.candidates.every(x => x.combinedScore === null), 'no global blend before evidence coverage and weighting are validated');
 
+
+const unprovenanced = evaluateFetterSaboteurs(
+  { fear: 8, anger: 6 },
+  { Micromanager: { support: 1, contradiction: 0, sourceVerified: true } }
+);
+assert.equal(unprovenanced.candidates.find(x => x.name === 'Micromanager').behaviorScore, null,
+  'sourceVerified flag alone is insufficient without evidence references and observation IDs');
+
 assert.throws(() => evaluateFetterSaboteurs({ fear: 11 }), RangeError);
 assert.throws(() => evaluateFetterSaboteurs({ fear: NaN }), RangeError);
 assert.throws(() => evaluateFetterSaboteurs(null), TypeError);
