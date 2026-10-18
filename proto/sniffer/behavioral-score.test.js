@@ -26,4 +26,9 @@ assert.throws(()=>scoreCandidates([{name:'Bad',chargeScore:1.1}]), RangeError);
 assert.throws(()=>scoreCandidates([], {behavior:0.6,charge:0.6}), RangeError);
 assert.ok(catalog.records.some(x=>x.name==='Control Freak' && !x.scoring_eligible), 'missing canonical behavior remains blocked');
 assert.ok(catalog.records.some(x=>x.name==='Victim' && x.behavior_status==='shared_ambiguous'), 'shared Victim/Judge entry must not be split silently');
+const blocked = scoreCandidates([
+ {name:'Control Freak', chargeScore:0.9, behaviorSupport:1, behaviorContradiction:0, behaviorSourceVerified:true},
+ {name:'Victim', chargeScore:0.8, behaviorSupport:1, behaviorContradiction:0, behaviorSourceVerified:true}
+]);
+assert.ok(blocked.every(x=>x.combinedScore === null), 'missing or ambiguous catalog entries must not receive a behavior score');
 console.log('behavioral-score tests passed');
