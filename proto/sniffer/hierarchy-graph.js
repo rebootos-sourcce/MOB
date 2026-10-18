@@ -4,7 +4,8 @@
 // source-backed; missing hierarchy levels remain explicit gaps, never guesses.
 const bands = require('./bands');
 
-const LAYERS = Object.freeze(['fetter', 'saboteur', 'complex', 'archetype', 'hypercomplex', 'supercomplex']);
+const LAYERS = Object.freeze(['fetter', 'saboteur', 'complex', 'hypercomplex', 'supercomplex']);
+const CONTEXT_LAYERS = Object.freeze(['archetype_context']);
 const FETTERS = Object.freeze([
   ['fear', 'Fear'], ['anger', 'Anger'], ['shame', 'Shame'],
   ['disgust', 'Disgust'], ['apathy', 'Apathy'], ['shock', 'Shock'],
@@ -40,8 +41,8 @@ const nodes = [];
 const edges = [];
 const gaps = [
   { id: 'GAP-SAB-CMP-001', from_layer: 'saboteur', to_layer: 'complex', severity: 'P0', status: 'blocked', reason: 'Canonical Complex roster and Saboteur-to-Complex membership graph not located in the inspected source.', required_action: 'Reconcile authoritative ENGINE/canon source; do not infer canonical membership from synthetic scores.' },
-  { id: 'GAP-CMP-ARC-001', from_layer: 'complex', to_layer: 'archetype', severity: 'P0', status: 'unresolved', reason: 'The spec calls layer three archetypes while the requested geometric path calls for Complexes; relationship between these terms is not ruled.', required_action: 'Resolve layer naming and ordering against authoritative canon before connecting nodes.' },
-  { id: 'GAP-ARC-HCX-001', from_layer: 'archetype', to_layer: 'hypercomplex', severity: 'P0', status: 'blocked', reason: 'Six hyper-complex modes are listed, but their contributing child membership is not defined in SNIFFER_SPEC.md.', required_action: 'Find authoritative membership/composition records.' },
+  { id: 'GAP-CMP-HCX-001', from_layer: 'complex', to_layer: 'hypercomplex', severity: 'P0', status: 'unresolved', reason: 'The requested Complex layer is not represented as a canonical composition layer in SNIFFER_SPEC.md; the spec instead lists archetypes as layer three.', required_action: 'Reconcile Complex terminology and ordering against authoritative canon before connecting nodes.' },
+  { id: 'GAP-ARC-HCX-001', from_layer: 'archetype_context', to_layer: 'hypercomplex', severity: 'P0', status: 'blocked', reason: 'Six hyper-complex modes are listed, but their contributing child membership is not defined in SNIFFER_SPEC.md.', required_action: 'Find authoritative membership/composition records.' },
   { id: 'GAP-HCX-SCX-001', from_layer: 'hypercomplex', to_layer: 'supercomplex', severity: 'P0', status: 'blocked', reason: 'No canonical Supercomplex roster or composition rules were found in the inspected source.', required_action: 'Find and reconcile canonical Supercomplex source before creating nodes or edges.' }
 ];
 
@@ -52,8 +53,10 @@ for (const [name, parts] of bands) {
     edges.push({ from: 'fetter:' + axis, to: 'saboteur:' + name, relationship: 'contributes_to', status: 'canonical', source: 'SNIFFER_SPEC.md §3', band: { low, high } });
   }
 }
+nodes.push({ id: 'complex:roster-unresolved', name: 'Complex roster — unresolved', layer: 'complex', status: 'blocked_roster_not_canonical', placeholder: true });
+nodes.push({ id: 'supercomplex:roster-unresolved', name: 'Supercomplex roster — unresolved', layer: 'supercomplex', status: 'blocked_roster_not_canonical', placeholder: true });
 for (const [name, children] of Object.entries(SABOTEUR_TO_ARCHETYPE)) {
-  nodes.push({ id: 'archetype:' + name, name, layer: 'archetype', status: 'canonical_source_roster_conflicted' });
+  nodes.push({ id: 'archetype:' + name, name, layer: 'archetype_context', status: 'canonical_source_roster_conflicted', context_only: true });
   for (const child of children) edges.push({ from: 'saboteur:' + child, to: 'archetype:' + name, relationship: 'frames', status: 'source_supported', source: 'SNIFFER_SPEC.md §4' });
 }
 for (const item of HYPERCOMPLEXES) nodes.push({ ...item, layer: 'hypercomplex', status: 'canonical_mode_roster_partial' });
@@ -76,7 +79,7 @@ function descend(id, seen = new Set()) {
   const links = parentsById.get(id) || []; // incoming edges are children flowing into a selected parent
   const childIds = links.map(edge => edge.from);
   const children = childIds.map(childId => descend(childId, new Set(seen)));
-  const adjacentGaps = gaps.filter(g => g.to_layer === node.layer || g.from_layer === node.layer);
+  const adjacentGaps = gaps.filter(g => g.to_layer === node.layer || g.from_layer === node.layer || (node.layer === 'supercomplex' && g.to_layer === 'supercomplex'));
   return {
     id: node.id, name: node.name, layer: node.layer, status: node.status,
     children,
@@ -142,10 +145,11 @@ function getModel() {
   return { schema_version: '1.0.0', layers: LAYERS, nodes, edges, gaps, counts: {
     fetters: nodes.filter(n => n.layer === 'fetter').length,
     saboteurs: nodes.filter(n => n.layer === 'saboteur').length,
-    archetypes: nodes.filter(n => n.layer === 'archetype').length,
+    archetype_context_nodes: nodes.filter(n => n.layer === 'archetype_context').length,
     hypercomplexes: nodes.filter(n => n.layer === 'hypercomplex').length,
-    complexes: 0,
-    supercomplexes: 0,
+    complexes: nodes.filter(n => n.layer === 'complex' && !n.placeholder).length,
+    supercomplexes: nodes.filter(n => n.layer === 'supercomplex' && !n.placeholder).length,
+    unresolved_layer_placeholders: nodes.filter(n => n.placeholder).length,
     canonical_fetter_to_saboteur_edges: edges.filter(e => e.status === 'canonical').length,
     source_supported_saboteur_to_archetype_edges: edges.filter(e => e.status === 'source_supported').length
   } };
