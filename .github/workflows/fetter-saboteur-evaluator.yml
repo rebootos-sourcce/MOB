@@ -8,6 +8,7 @@ on:
       - 'proto/sniffer/fetter-saboteur-evaluator.test.js'
       - 'proto/sniffer/fetter-saboteur-simulation.js'
       - 'proto/sniffer/fetter-saboteur-simulation.test.js'
+      - 'proto/sniffer/fetter-saboteur-framework-contract.test.js'
       - '.github/workflows/fetter-saboteur-evaluator.yml'
   push:
     branches: [main]
@@ -31,3 +32,4 @@ jobs:
           node-version: 22
       - run: node proto/sniffer/fetter-saboteur-evaluator.test.js
       - run: node proto/sniffer/fetter-saboteur-simulation.test.js
+      - run: node proto/sniffer/fetter-saboteur-framework-contract.test.js
