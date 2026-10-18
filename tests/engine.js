@@ -1819,8 +1819,11 @@ g('19c \u00b7 a label carries what it owes');
     so the word moves at every tenth point and no band swallows nineteen. */
  const wide=TIERDEF.filter(t=>tierTop(t.nm)-t.at!==(t.at===0?10:9)).map(t=>t.nm+' '+tierRange(t));
  ok(wide.length===0,'every band is ten points wide'+(wide.length?'  '+wide.join(', '):''));
- ok(tierRange(TIERDEF[0])==='91 to 100'&&tierRange(TIERDEF[9])==='0 to 10',
-  'and a band prints as a range, got '+tierRange(TIERDEF[0])+' and '+tierRange(TIERDEF[9]));
+ /* NAMED CHANGE, percent phase 2 slice 2, 17 October: a band is a range of CQ
+    and CQ prints as a percent, so the range does too. The bottom band starts at
+    nought, which the registry never prints as 0%, so it reads up to its top. */
+ ok(tierRange(TIERDEF[0])==='91% to 100%'&&tierRange(TIERDEF[9])==='up to 10%',
+  'and a band prints as a range in percent, got '+tierRange(TIERDEF[0])+' and '+tierRange(TIERDEF[9]));
  /* the median, ruled. fifty is the centre and forty to sixty is the swing. */
  ok(MEDIAN===50&&MEDIAN_LO===40&&MEDIAN_HI===60,'fifty is the median, forty to sixty the range');
  /* closed at forty and sixty AS PRINTED. This asserted 39.9 and 60.1 outside,

@@ -25,7 +25,8 @@
      S  THE SLICES. Each surface phase 2 has moved prints the registry's own
         form, read against fmtPct off the same compute(), and prints no bare
         decimal where a score stood. A surface joins this list in the change
-        that moves it, so the list is the record of what has moved.
+        that moves it, so the list is the record of what has moved: S1 the
+        shared ring and the Field, S2 Summary.
 
    It walks with reduced motion, so every ring is at its value the frame it
    is written and the count up tween in ui/component.js never stands between
@@ -137,6 +138,34 @@ const READ=`(function(){
    ok(s.node.length>0&&s.node.every(v=>/^(\d+%|–)$/.test(v)),'S1: '+tag+'every address ring prints a percent or the dash, '+J(s.node.slice(0,6)));
    ok(Object.values(s.got).concat(s.node).every(v=>v===null||!/^\d+\.\d+$/.test(v)),'S1: '+tag+'no bare decimal is left on the Field\'s readings');
    ok(s.core,'S1: '+tag+'the wheel\'s core draws CQ as the registry prints it');
+  }
+  /* ---------- S, slice 2: Summary ---------- */
+  for(const who of ['Marcus','James','Diane']){
+   const tag=W+' '+who+': ';
+   const s=await page.evaluate(async who=>{
+    loadP(PEOPLE.findIndex(x=>x.nm===who)); setTab(TAB.SUMMARY); render();
+    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+    const R=compute(), acc=accuracy(R), e=(R.X+R.Y+R.Z)/3, cov=accCover(R);
+    const gl={}; document.querySelectorAll('#sum .s-gl').forEach(b=>{gl[b.getAttribute('data-gl')]=((b.querySelector('.cr .v')||{}).textContent||'').trim();});
+    const plate=((document.querySelector('#sum .s-plate .cr[title^="Coherence"] .v')||{}).textContent||'').trim();
+    const txt=(document.getElementById('sum')||{}).innerText||'';
+    const rows=Array.from(document.querySelectorAll('#sum .s-row .cr .v,#sum .sg-n .cr .v')).map(e=>e.textContent.trim());
+    return {unread:!!R.unread,gl,plate,complete:!!cov.complete,rows,
+     want:{'coherence':fmtPct('cq',R.CQ),'shadow weight':fmtPct('dq',R.DQ),'carried depth':fmtPct('weight',R.SQm),
+      'pole':fmtPct('pole',R.poleMean),'energy':fmtPct('energy',e),'identification':fmtPct('accuracy',acc.pct)},
+     plateWant:cov.complete?fmtPct('cq',R.CQ):accCoverWord(cov),
+     weightBare:(txt.match(/at a weight of \d+(?:\.\d+)?(?!\d|%)/g)||[]),
+     decimal:(txt.match(/\b(?:weight|holding|at|is) \d+\.\d\b/g)||[])};},who);
+   ok(!s.unread,'S2: '+tag+'the example reads');
+   for(const k of Object.keys(s.want)){
+    if(s.gl[k]===undefined)continue;
+    ok(s.gl[k]===s.want[k],'S2: '+tag+'the glance tile '+k+' prints the registry\'s form, '+J(s.gl[k])+' against '+J(s.want[k]));}
+   ok(Object.keys(s.gl).length>=4,'S2: '+tag+'the glance row is there to read, '+J(Object.keys(s.gl)));
+   ok(s.plate===s.plateWant&&(s.complete?/^\d+%$/.test(s.plate):/^(early|partial)$/.test(s.plate)),
+    'S2: '+tag+'the plate prints the word while filling and CQ as a percent once every law is answered, '+J({plate:s.plate,want:s.plateWant,complete:s.complete}));
+   ok(s.rows.length>0&&s.rows.every(v=>/^(\d+%|\u2013)$/.test(v)),'S2: '+tag+'every structure and axis ring prints a percent or the dash, '+J(s.rows.slice(0,8)));
+   ok(s.weightBare.length===0,'S2: '+tag+'no weight in the prose is printed bare, '+J(s.weightBare));
+   ok(s.decimal.length===0,'S2: '+tag+'no decimal figure is left in the prose, '+J(s.decimal));
   }
   /* and an unread profile prints the dash in every one of them, never 0% */
   const u=await page.evaluate(async()=>{loadP(0); setTab(TAB.FIELD); render();

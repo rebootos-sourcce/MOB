@@ -459,11 +459,24 @@ async function door(browser, SITE, cut, giftAt) {
   station(4, 'Q: the reading reaches Summary and the account');
   await Q.tab(1);
   /* 15 October, the owner's 14 October ruling: the plate prints how much has
-     been measured, one of three words, and never the figure. The figure sits
-     one tap down in the core drill with its range. */
+     been measured, one of three words, and never the bare figure. The figure
+     sits one tap down in the core drill with its range.
+     NAMED CHANGE, percent phase 2 slice 2, 17 October: the plate prints the
+     word (early, partial) while the laws are still being answered, and CQ as
+     a percent once every law is, which is where the word said full and where
+     the figure stops moving. The percent is the registry's (engine/pct.js)
+     and equals the plate's own ring. A bare figure, or a word outside the
+     ladder, still fails. */
   const sumCQ = await Q.settled('#sum .cr[title^="Coherence"] .v');
-  ok(/^(early|partial|full)$/.test(sumCQ) && num(sumCQ) == null, 'Summary prints how much of the quiz\'s reading is in, as a word and not the figure: ' + J(sumCQ),
-    'Summary prints the bare coherence figure, or a word outside the ladder');
+  const plate = await page.evaluate(() => { const R = compute(), c = accCover(R);
+    const a = document.querySelector('#sum .cr[title^="Coherence"] svg.arc circle:last-child');
+    const C = a ? parseFloat(a.getAttribute('stroke-dasharray')) : NaN, off = a ? parseFloat(a.getAttribute('stroke-dashoffset')) : NaN;
+    return { complete: !!c.complete, want: fmtPct('cq', R.CQ), fill: C > 0 ? 100 * (1 - off / C) : null }; });
+  ok(plate.complete
+      ? (sumCQ === plate.want && /^\d+%$/.test(sumCQ) && plate.fill !== null && Math.abs(num(sumCQ) - plate.fill) <= 1)
+      : (/^(early|partial)$/.test(sumCQ) && num(sumCQ) == null),
+    'Summary prints how much of the quiz\'s reading is in: a word while the laws are being answered, CQ as a percent equal to its ring once all are, ' + J({ sumCQ, plate }),
+    'Summary prints a bare coherence figure, a word outside the ladder, or a percent its ring does not draw');
   await Q.click('#profbtn'); await Q.click('[data-pms="account"]');
   await page.waitForTimeout(250);
   const accHd = await page.evaluate(() => { const h = document.querySelector('#settings .ac-hd'); return h ? h.innerText : ''; });
@@ -764,7 +777,13 @@ async function door(browser, SITE, cut, giftAt) {
   const round = Math.round(L1.CQ);
   ok(num(top) === round, 'the Field\'s top bar prints it, ' + J(top) + ' against ' + round);
   ok(num(key) === round, 'the Field\'s left key prints it, ' + J(key) + ' against ' + round);
-  ok(/^(early|partial|full)$/.test(sum1) && num(sum1) == null, 'Summary prints how much is measured, not the figure: ' + J(sum1));
+  /* NAMED CHANGE, percent phase 2 slice 2, 17 October, the same change as
+     station 4: the plate prints the word while the laws are being answered
+     and CQ as the registry's percent once all are, the figure the Field's top
+     bar and key print beside it. */
+  const full1 = await page.evaluate(() => !!accCover(compute()).complete);
+  ok(full1 ? (sum1 === round + '%') : (/^(early|partial)$/.test(sum1) && num(sum1) == null),
+    'Summary prints how much is measured: a word while filling, CQ as a percent once every law is answered, ' + J({ sum1, full1, round }));
 
   /* The Alpha gate stops after the accepted quiz-to-first-release walk.
      Billing, cross-device profile sync, and downloaded-file account creation

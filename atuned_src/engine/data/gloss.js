@@ -189,7 +189,12 @@ var UNPACK_BASE={
     which keeps the bare key above. Two meanings sat on one Summary page. */
  'field:expression':'Expression is the part of your coherence that gets past the charge you carry.',
  /* the line every surface counts held from, BELOW THE LINE in compute.js */
- 'the line':'The line is the point where the charge at one address reaches 4 and starts to cost your body.',
+ /* NO FIGURE IN THE MEANING, 17 October, percent phase 2. This said "reaches
+    4", the weight on nought to ten; every weight prints as a percent now, so
+    4 would contradict the 40% beside it, and this table refuses a percent in
+    any entry (tests/engine.js, PO). The meaning keeps the event; the figure
+    is printed where the line is drawn. */
+ 'the line':'The line is the point where the charge at one address gets heavy enough to start costing your body.',
  /* YOUR PATTERNS, the trace graph's screen (ui/loopread.js, engine/loop.js).
     Each word below is a label that block prints, and its meaning is the
     graph's own: confirmed is a user_confirmed edge, unanswered is everything
