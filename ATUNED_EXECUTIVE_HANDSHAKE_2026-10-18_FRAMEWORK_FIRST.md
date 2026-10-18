@@ -257,3 +257,16 @@ This scope update supersedes any interpretation of Blocks 1–6 that would keep 
 - Source check: `atuned_src/engine/data/sabcard.js` has 33 records and each record contains `h/a/n` plus a reflection prompt. This is structural parity; it does not prove that every story's factual content is canonically validated or that every replacement state is correctly derived.
 - Critical source gap confirmed: `SNIFFER_SPEC.md` lists the six hyper-complex modes but does not provide a canonical Complex membership graph or Supercomplex roster/composition. It also describes archetypes at layer 3, so this must be reconciled against the authoritative source rather than silently relabeled. The all-level contract records these as P0 blockers and explicitly forbids inventing rosters or mappings.
 - Remaining framework work is still substantive: validate the new test in CI, add machine-readable roster/edge/gap records and full per-profile diagnostics, reconcile the authoritative higher-level hierarchy, then complete the mapping/simulation/gap reports at every boundary. The framework is **not complete** yet.
+
+
+## 13. Graph wiring and inverse inference update (2026-10-18)
+
+New implementation in `proto/sniffer/hierarchy-graph.js` connects the known graph and makes the inferred list callable rather than an isolated artifact:
+- `getModel()`: full graph snapshot and explicit gap register.
+- `getInferredList()`: 33 Saboteurs with canonical fetter bands/inputs, source-supported archetype-context candidates, and explicit blocked mappings at missing higher layers.
+- `summarizeSelection(nodeId)`: top-down traversal from a selected node, returning its known children and unresolved boundary gaps.
+- `inferUp(startIds)`: bottom-up inversion from fetters or Saboteurs through all currently supported parent edges, preserving provenance and edge status.
+
+The graph contains 9 fetter nodes, 33 Saboteur nodes, 70 canonical fetter-to-Saboteur band edges, 12 archetype-context nodes and 23 source-supported Saboteur-to-archetype context edges. The archetype roster is explicitly conflicted (the spec itself records 12/13/15 variants). The six hyper-complex modes are represented as a partial roster with no fabricated membership edges. Complex and Supercomplex appear as explicit unresolved placeholders so selecting the top-level placeholder surfaces the missing structure rather than returning a false complete path.
+
+Added `proto/sniffer/hierarchy-graph.test.js` for structural counts, top-level blocked traversal, inferred-list wiring, and inverse paths; the dedicated workflow now includes it. The current code/test changes have been committed to the existing feature branch, but CI status for the newest revision remains unverified. Do not report test pass until GitHub Actions confirms it.
