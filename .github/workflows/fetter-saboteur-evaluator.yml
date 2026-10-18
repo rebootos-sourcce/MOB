@@ -6,6 +6,8 @@ on:
       - 'proto/sniffer/behavioral-catalog.json'
       - 'proto/sniffer/fetter-saboteur-evaluator.js'
       - 'proto/sniffer/fetter-saboteur-evaluator.test.js'
+      - 'proto/sniffer/fetter-saboteur-simulation.js'
+      - 'proto/sniffer/fetter-saboteur-simulation.test.js'
       - '.github/workflows/fetter-saboteur-evaluator.yml'
   push:
     branches: [main]
@@ -14,6 +16,8 @@ on:
       - 'proto/sniffer/behavioral-catalog.json'
       - 'proto/sniffer/fetter-saboteur-evaluator.js'
       - 'proto/sniffer/fetter-saboteur-evaluator.test.js'
+      - 'proto/sniffer/fetter-saboteur-simulation.js'
+      - 'proto/sniffer/fetter-saboteur-simulation.test.js'
       - '.github/workflows/fetter-saboteur-evaluator.yml'
 permissions:
   contents: read
@@ -26,3 +30,4 @@ jobs:
         with:
           node-version: 22
       - run: node proto/sniffer/fetter-saboteur-evaluator.test.js
+      - run: node proto/sniffer/fetter-saboteur-simulation.test.js
