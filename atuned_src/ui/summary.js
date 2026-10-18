@@ -1109,7 +1109,10 @@ function sumOutput(r){
     if(r.heaviest)return card('What moves the reading','The twenty one laws',
      (fmtPct('expression',rhead)!==PCT_DASH?'What you carry holds back about '+fmtPct('expression',rhead)+' of your coherence, and release '
       +'can give it back. Past that only the laws move it, and they move when you answer them or when what you do changes'
-      :'Release has nothing left to give back to your coherence. What is left is the laws, and they move '
+      /* under one percent is not nothing, and pass 1 says so: 0.1 of a
+         point printed "nothing left" the day this moved to percents */
+      :(rhead>=0.05?'Release has under 1% left to give back to your coherence. ':'Release has nothing left to give back to your coherence. ')
+      +'What is left is the laws, and they move '
       +'when you answer them or when what you do changes'),
      '<button class="btn s-oact" data-sout="iq">Answer the laws</button>');
     return card('Release this first','Nothing is carrying',

@@ -692,7 +692,13 @@ function rbMotion(hosts){
        turns rather than jumping back to where the first began */
     var e=crMoAt(m,now);nm.w0=m.w0+(m.w1-m.w0)*e;
     nm.n0=(m.n0!==null&&m.n1!==null&&n1!==null&&m.suf===nm.suf)?m.n0+(m.n1-m.n0)*e:null;
-    if(m.s1&&sv&&m.s1.length===sv.length)nm.s0=m.s0.map(function(v,q){return v+(m.s1[q]-v)*e;});
+    /* m.s0 IS NULL WHEN THE ROW FIRST ARRIVED WITH NO SEAT WAVE. The settled
+       path above refreshes m.s1 and never m.s0, so a row that gained its wave
+       later held s1 and a null s0, and the next change threw on m.s0.map
+       inside render. Seen in tests/functional.js on the percent phase 2
+       build, where the Flow figure stopped moving between two renders and
+       took that path. With no s0 the wave starts where it now is. */
+    if(m.s0&&m.s1&&sv&&m.s1.length===sv.length)nm.s0=m.s0.map(function(v,q){return v+(m.s1[q]-v)*e;});
     nm.dir=to>m.w1+.05?1:to<m.w1-.05?-1:0;
     nm.span=Math.max(ENTER_SPAN,nm.dir?RB_HEAD:0);}
    /* a figure that moved, and not the first sight of one and not a different

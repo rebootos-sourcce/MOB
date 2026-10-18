@@ -777,7 +777,13 @@ async function door(browser, SITE, cut, giftAt) {
   const round = Math.round(L1.CQ);
   ok(num(top) === round, 'the Field\'s top bar prints it, ' + J(top) + ' against ' + round);
   ok(num(key) === round, 'the Field\'s left key prints it, ' + J(key) + ' against ' + round);
-  ok(/^(early|partial|full)$/.test(sum1) && num(sum1) == null, 'Summary prints how much is measured, not the figure: ' + J(sum1));
+  /* NAMED CHANGE, percent phase 2 slice 2, 17 October, the same change as
+     station 4: the plate prints the word while the laws are being answered
+     and CQ as the registry's percent once all are, the figure the Field's top
+     bar and key print beside it. */
+  const full1 = await page.evaluate(() => !!accCover(compute()).complete);
+  ok(full1 ? (sum1 === round + '%') : (/^(early|partial)$/.test(sum1) && num(sum1) == null),
+    'Summary prints how much is measured: a word while filling, CQ as a percent once every law is answered, ' + J({ sum1, full1, round }));
 
   /* The Alpha gate stops after the accepted quiz-to-first-release walk.
      Billing, cross-device profile sync, and downloaded-file account creation
