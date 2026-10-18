@@ -65,7 +65,14 @@ function anaField(title,sub,items,w,h){
      at the foot of this file). */
   s+='<g class="ab-b'+(on?' on':'')+'" data-ana="'+esc((p.it.k||'')+'|'+p.it.nm)+'" tabindex="0" role="button" '
    +'aria-label="'+esc('Open '+p.it.nm)+'">'
-   +'<title>'+esc(p.it.nm+(UN?', not read yet':(p.it.v>0?', '+p.it.v.toFixed(1):', nothing held')))+'</title>'
+   /* THE SIZE IS NOT THE FIGURE, 17 October, percent phase 2. A bubble is
+      sized by v, which carries a floor so a nought still draws (0.3 on the
+      nine, 0.4 on the archetypes), and it printed v to one decimal, so an
+      axis holding nothing read 0.3 and a domain read the constant 9.0 it is
+      drawn at. Each caller now names the figure, f, the registry's percent
+      or a count, and a bubble with no f (a domain, which is a selection and
+      not a measurement) prints none. */
+   +'<title>'+esc(p.it.nm+(UN?', not read yet':(p.it.f&&p.it.f!==PCT_DASH?', '+p.it.f:(p.it.f===undefined?'':', nothing held'))))+'</title>'
    +'<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+p.r.toFixed(1)
    +'" fill="'+p.it.c+'" opacity="'+(0.26+0.56*(p.it.v/(top||1))).toFixed(2)+'"/>'
    +'<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="'+p.r.toFixed(1)
@@ -80,8 +87,8 @@ function anaField(title,sub,items,w,h){
    if(t){
     s+='<text x="'+p.x.toFixed(1)+'" y="'+(p.y-(fit?3:-3)).toFixed(1)+'" text-anchor="middle" '
      +'class="ab-t" style="font-size:'+fs.toFixed(1)+'px">'+esc(t)+'</text>';
-    if(fit)s+='<text x="'+p.x.toFixed(1)+'" y="'+(p.y+13).toFixed(1)+'" text-anchor="middle" '
-     +'class="ab-v" style="font-size:'+Math.max(11,p.r*0.24).toFixed(1)+'px">'+(!UN&&p.it.v>0?p.it.v.toFixed(1):'\u2013')+'</text>';}}
+    if(fit&&p.it.f!==undefined)s+='<text x="'+p.x.toFixed(1)+'" y="'+(p.y+13).toFixed(1)+'" text-anchor="middle" '
+     +'class="ab-v" style="font-size:'+Math.max(11,p.r*0.24).toFixed(1)+'px">'+(UN?'\u2013':p.it.f)+'</text>';}}
   s+='</g>';});
  return s+'</svg>'+(sub?'<div class="ab-s">'+sub+'</div>':'')+'</div>';}
 function anaRender(){
@@ -160,7 +167,7 @@ function anaRender(){
       not a weight those held addresses make between them, so the sentence
       no longer says they make it. The Shadow tile below says what it is. */
    +(held.length?'<b>'+held.length+'</b> address'+(held.length===1?' is':'es are')
-     +' held, and the shadow across all '+NODES.length+' reads <b>'+Math.round(r.DQ)+' per cent</b>.'
+     +' held, and the shadow across all '+NODES.length+' reads <b>'+fmtPct('dq',r.DQ)+'</b>.'
    /* Held above the line and carrying anything at all are two different facts
       and this said the second when it only knew the first. A field with load
       spread under the line reported "Nothing is carrying" beside a tier word
@@ -177,8 +184,12 @@ function anaRender(){
       the screen, which is the raw score the 14 October ruling took off every
       daily surface. The change is said against the figure the person sees:
       whole numbers, and "has not moved" until the shown figure has. */
-   +(prev&&prev.m===CQ_MODEL?(Math.round(r.CQ)===Math.round(prev.cq)?' CQ has not moved since last session.'
-     :' CQ '+(r.CQ>prev.cq?'up ':'down ')+Math.abs(Math.round(r.CQ)-Math.round(prev.cq))+' since last session.'):''))
+   /* AND IT IS SAID AS BEFORE AND AFTER, 17 October, percent phase 2: "CQ
+      up 3" was a move in a unit the person cannot see. pctMove reads both
+      ends off the registry, so "has not moved" is still the shown figure not
+      moving (engine/pct.js). */
+   +(prev&&prev.m===CQ_MODEL?(function(mv){return !mv?'':!mv.moved?' CQ has not moved since last session, at '+mv.to+'.'
+     :' CQ moved from '+mv.from+' to '+mv.to+' since last session.';}(pctMove('cq',prev.cq,r.CQ,{unread:r.unread}))):''))
   +'</div>'
   /* THE FIGURE STAYS ON THE TAB WHOSE JOB IS SAYING WHAT THE INSTRUMENT
      KNOWS. The tolerance beside it does not. It printed "58% plus or minus
@@ -198,7 +209,7 @@ function anaRender(){
   /* a press opens the identification drill that already exists
      (ui/personas.js runAccDrill), round RB */
   +'<div class="ab-acc"'+(r.unread?'':' data-ana="met|id" role="button" tabindex="0"')+'><span class="pm-eye">Identification</span>'
-  +'<b>'+(r.unread?'\u2013':acc.pct.toFixed(0)+'%')+'</b>'
+  +'<b>'+fmtPct('accuracy',acc.pct,{unread:r.unread})+'</b>'
   +'<span class="ab-note">'+(r.unread
     ?'Nothing read yet. Write what happened and this fills in.'
     /* the coverage as a fact and a remainder, not as a fraction of the person */
@@ -215,7 +226,7 @@ function anaRender(){
     share one chart and colour is the only thing telling them apart. Its tail,
     the bigger the mark, goes with the rest. */
  out+=(lockSees('mask')?anaField('Masks','',
-  r.maskRing.map(function(m){return {k:'mask',nm:m.nm,v:m.w,
+  r.maskRing.map(function(m){return {k:'mask',nm:m.nm,v:m.w,f:fmtPct('weight',m.w),
    c:seatCol((m.bands||['Heart'])[0])};}),300,210)
   :'<div class="ab-f"><div class="pm-eye">Masks</div>'+lockPanelHtml('mask',{brief:true})+'</div>');
  out+=anaField('Domains','',
@@ -224,7 +235,9 @@ function anaRender(){
     .map(function(d){return {k:'dom',nm:d.nm,v:2,c:rootPlain(d.r)};})),300,210);
  out+=anaField('Archetypes','',
   (r.aff||[]).map(function(a,i){return {k:'arch',nm:(ARCH[i]||{}).nm||'',
-   v:Math.max(0.4,a*10),c:(i===r.pi?GOLD:PAL['3rd Eye'])};}),300,210);
+   /* sized by the lean, which orders them; the figure is how fully each is
+      expressed, ruled 16 October (engine/archexpr.js) */
+   v:Math.max(0.4,a*10),f:fmtPct('archetype',archExpr(i)),c:(i===r.pi?GOLD:PAL['3rd Eye'])};}),300,210);
  out+=(r.locked&&r.locked.length===SEE_ORDER.length
   /* nothing of the chain is visible on this plan: the chart's place says so
      rather than printing "nothing here" over a chain somebody has */
@@ -236,12 +249,16 @@ function anaRender(){
      drew sixteen bubbles and none in the blue the key names. Sorted by
      weight, the chart shows what the eyebrow says, what is running hardest. */
   [].concat(r.sups,r.hys,r.cxs,r.sabs).sort(function(a,b){return b.w-a.w;}).slice(0,16).map(function(o){
-   return {k:'chain',nm:o.nm,v:o.w,c:o.over?ALARM:(TIER[o.kind]||PAL.Throat)};}),300,210));
+   /* the kind's own colour at every weight, 17 October: a bubble printing a
+      percent never takes the alarm (DECISIONS.md, the default taken), and red
+      here was also the key's colour for a character layer */
+   return {k:'chain',nm:o.nm,v:o.w,f:fmtPct('chain',o.w),c:TIER[o.kind]||PAL.Throat};}),300,210));
  out+=anaField('The nine axes','',
-  CHILD.map(function(c){return {k:'axis',nm:c.nm,v:Math.max(0.3,S.charge[c.nm]||0),
+  CHILD.map(function(c){return {k:'axis',nm:c.nm,v:Math.max(0.3,S.charge[c.nm]||0),f:fmtPct('charge',S.charge[c.nm]||0),
    c:seatCol(c.seat)};}),300,210);
  out+=anaField('The seven seats','',
-  seats.map(function(s){return {k:'seat',nm:s.p.n,v:Math.max(0.3,s.hot),
+  /* a count of held addresses, so it prints as a count */
+  seats.map(function(s){return {k:'seat',nm:s.p.n,v:Math.max(0.3,s.hot),f:anaN(s.hot),
    c:seatCol(K2B[s.p.k])};}),300,210);
  out+='</div>';
  /* TELEMETRY, round RB, his words: "I want the analytics page to give me
@@ -272,7 +289,7 @@ function anaRender(){
   +'<div class="ana-laws">';
  laws.forEach(function(l){
   /* a bar is a button now, round RB, and opens its law in the trail */
-  out+='<button type="button" class="ana-lw'+(l.v<4?' shut':'')+'" data-ana="'+esc('law|'+l.nm)+'" title="'+esc(l.nm+' '+l.v.toFixed(1)+(l.v<4?', shut':''))+'">'
+  out+='<button type="button" class="ana-lw'+(l.v<4?' shut':'')+'" data-ana="'+esc('law|'+l.nm)+'" title="'+esc(l.nm+' '+fmtPct('law',l.v)+(l.v<4?', shut':''))+'">'
    +'<s><u style="height:'+Math.max(4,Math.round(l.v/10*60))+'px;background:'
    +seatCol(l.b)+'"></u></s><span>'+l.nm.slice(0,3)+'</span></button>';});
  out+='</div>';
@@ -294,7 +311,7 @@ function anaRender(){
      attribute here, where an unescaped quote breaks out of it. esc() closes that. */
   /* and a session is a button, round RB: its whole row opens in the trail,
      every figure the snapshot kept and how far each moved from the one before */
-  H.forEach(function(x,i){out+='<button type="button" class="ana-px" data-ana="sess|'+i+'" title="CQ '+x.cq+', heaviest at the '+esc(String(x.dark).toLowerCase())
+  H.forEach(function(x,i){out+='<button type="button" class="ana-px" data-ana="sess|'+i+'" title="CQ '+fmtPct('cq',x.cq)+', heaviest at the '+esc(String(x.dark).toLowerCase())
    +'"><u style="height:'+Math.max(6,Math.round(x.cq/100*50))+'px;background:'
    +seatCol(x.dark)+'"></u></button>';});
   out+='</div>';}
@@ -437,7 +454,7 @@ function anaAxisRow(nm){
  var c=CHILD.filter(function(x){return x.nm===nm;})[0]; if(!c)return '';
  var v=S.charge[c.nm]||0;
  return '<button type="button" class="ad-r" data-ana="'+anaKey('axis',c.nm)+'" title="'+esc('Open '+c.nm+', the feeling, held against '+c.opp.toLowerCase())+'">'
-  +crBadge(c.seat,v*10,{size:'sm',raw:v.toFixed(1),title:c.nm+' held'})
+  +crBadge(c.seat,pct('charge',v)||0,{size:'sm',raw:fmtPct('charge',v),title:c.nm+' held'})
   +'<span>'+esc(c.nm)+'</span><em>'+unp('axis','toward '+c.opp.toLowerCase())+'</em></button>';}
 function anaSeatRow(band){
  var s=flSeats().filter(function(x){return K2B[x.p.k]===band;})[0]; if(!s)return '';
@@ -453,7 +470,8 @@ function anaBands(list){var bs=[];list.forEach(function(n){if(n.b&&bs.indexOf(n.
 function anaPatRow(o){
  var lv=leaves(o), b=(lv[0]||{}).b||'Heart', K=ANA_KIND[o.kind]||['pattern','Pattern'];
  return '<button type="button" class="ad-r" data-ana="'+anaKey('chain',o.nm)+'" title="'+esc('Open '+o.nm)+'">'
-  +crBadge(b,o.w*10,{size:'sm',raw:o.w.toFixed(1),color:o.over?ALARM:null,
+  /* a percent in the pattern's own colour; overshot is said in words */
+  +crBadge(b,pct('chain',o.w)||0,{size:'sm',raw:fmtPct('chain',o.w),
     title:o.nm+', '+K[1].toLowerCase()+(o.over?', overshot':'')})
   +'<span>'+esc(o.nm)+'</span><em>'+unp(K[0],K[1].toLowerCase()+(o.over?', overshot':''))+'</em></button>';}
 function anaAddrRows(list,max){
@@ -542,7 +560,7 @@ function anaChainCard(r,o){
  var opps=fets.map(oppOf).filter(Boolean);
  var inst=fets.filter(function(f){return (S.replace[f]||0)>=4;});
  var h=anaHead(unp(K[0],K[1])+(o.over?', overshot':''),o.nm,o.auth?esc(o.auth):'');
- h+=anaKv([['Weight',crBadge(bs[0]||'Heart',o.w*10,{size:'md',raw:o.w.toFixed(1),color:o.over?ALARM:null,
+ h+=anaKv([['Weight',crBadge(bs[0]||'Heart',pct('chain',o.w)||0,{size:'md',raw:fmtPct('chain',o.w),
    title:'How heavily it runs, on the same scale as an address'})],
   ['Fetters',anaN(lv.length)],['Held',anaN(lv.filter(function(n){return n.sq>=4;}).length)],
   ['Seats',anaN(bs.length)]]);
@@ -584,8 +602,9 @@ function anaAxisCard(r,nm){
  var own=W.filter(function(n){return n.cf===nm;}).sort(anaBySq);
  var where=String(c.addr).indexOf('plexus')>=0?unp('plexus',c.addr):esc(c.addr);
  var h=anaHead(unp('axis','Axis'),c.nm+' toward '+c.opp,where+', '+esc(c.loc));
- h+=anaKv([['Held',crBadge(c.seat,(S.charge[c.nm]||0)*10,{size:'md',raw:(S.charge[c.nm]||0).toFixed(1),title:c.nm+' held'})],
-  ['Installed',crBadge(c.seat,(S.replace[c.nm]||0)*10,{size:'md',raw:(S.replace[c.nm]||0).toFixed(1),title:c.opp+' installed'})],
+ var hv=S.charge[c.nm]||0, iv=S.replace[c.nm]||0;
+ h+=anaKv([['Held',crBadge(c.seat,pct('charge',hv)||0,{size:'md',raw:fmtPct('charge',hv),title:c.nm+' held'})],
+  ['Installed',crBadge(c.seat,pct('installed',iv)||0,{size:'md',raw:fmtPct('installed',iv),title:c.opp+' installed'})],
   ['Fetters',anaN(own.length)]]);
  h+='<p class="ad-p">'+unpSay('axis')+' Held is how much '+c.nm.toLowerCase()+' is stored. Installed is how much '
   +c.opp.toLowerCase()+' is in place. Coherence is the centre of this axis, not either end. It runs through <b>'
@@ -606,14 +625,14 @@ function anaSeatCard(r,nm){
  var h=anaHead('Seat',s2.p.n)+'<div class="ad-sub">'+unp(s2.p.n,s2.p.sk,'yoga')+' · '+unp('plexus',s2.p.nv)
   +' · <span style="color:'+seatCol(bn)+'">'+unp('seat tone',s2.p.hz+' Hz')+'</span></div>';
  h+='<p class="ad-p">'+unpSay('level:'+s2.p.k)+' The seat sits at '+unp('spot:'+s2.p.k,s2.p.seat)+'. It passes <b>'
-  +Math.round(s2.pass*100)+'%</b> of what reaches it. <b>'+s2.hot+'</b> address'
+  +fmtPct('pass',s2.pass)+'</b> of what reaches it. <b>'+s2.hot+'</b> address'
   +(s2.hot===1?' is':'es are')+' held here.</p>';
  /* the laws seated here, as doors, round RB. They were chips that went nowhere. */
  var laws=SI.filter(function(l){return l.b===bn;});
  h+='<div class="pm-eye">Moral integrity seated here</div><div class="ad-rows">'+laws.map(function(l){
   var read=(typeof lawIn!=='function')||lawIn(l.nm), v=S.law[l.nm];
   return '<button type="button" class="ad-r" data-ana="'+anaKey('law',l.nm)+'" title="'+esc('Open '+l.nm)+'">'
-   +crBadge(bn,read?v*10:0,{size:'sm',raw:read?v.toFixed(1):'\u2013',title:l.nm+(read?'':', not read yet')})
+   +crBadge(bn,read?pct('law',v)||0:0,{size:'sm',raw:read?fmtPct('law',v):'\u2013',title:l.nm+(read?'':', not read yet')})
    +'<span>'+esc(l.nm)+'</span><em>'+(!read?'not read yet':v<4?'shut':v>=7?'open':'working')+'</em></button>';}).join('')+'</div>';
  h+='<div class="pm-eye" style="margin-top:12px">Addresses here</div>'+anaAddrRows(seg,10);
  h+='<div class="pm-eye" style="margin-top:12px">By feeling</div>'+anaByFeeling(seg);
@@ -639,7 +658,9 @@ function anaArchCard(r,nm){
  var a18=ARCH18.filter(function(x){return x[0]===nm||(nm==='Rebel'&&x[0]==='Outlaw');})[0];
  var h=anaHead('Archetype',nm,(ai===r.pi?'primary, how the soul expresses':'not your primary'));
  h+='<p class="ad-p">'+esc((ARCH[ai]||{}).v||'')+'. <b>'
-  +(((r.aff||[])[ai]||0)*100).toFixed(0)+'%</b> as strong as your strongest.'
+  /* how fully it is expressed, ruled 16 October; the lean against the
+     strongest still orders the archetypes and is printed nowhere */
+  +fmtPct('archetype',archExpr(ai))+'</b> expressed. Charge held at its seat pulls it down, and a release lifts it.'
   +(a18?' Its primary saboteur is <b>'+esc(a18[1])+'</b>, seated at the '+a18[2].toLowerCase()+'.':'')
   +' The archetype does not change. Release clears what bends it on the way out.</p>';
  /* and when that saboteur is running, it is a door */
@@ -652,7 +673,7 @@ function anaMaskCard(r,nm){
  var all=W.filter(function(n){return sb.indexOf(n.b)>=0;}).sort(anaBySq);
  var lv2=all.filter(function(n){return n.sq>=4;});
  var h=anaHead(unp('mask','Mask'),m2.nm,'speaks from '+esc(sb.join(' and ')));
- h+=anaKv([['Load',crBadge(sb[0]||'Heart',m2.w*10,{size:'md',raw:m2.w.toFixed(1),title:'The average charge left across these seats'})],
+ h+=anaKv([['Load',crBadge(sb[0]||'Heart',pct('weight',m2.w)||0,{size:'md',raw:fmtPct('weight',m2.w),title:'The average charge left across these seats'})],
   ['Held',anaN(lv2.length)]]);
  h+='<p class="ad-p">'+unpSay('mask')+' This is the age the output takes on the way out. Its load is the average charge left across every address at those seats.</p>'
   +'<div class="pm-eye">Underneath it</div>'+anaAddrRows(all.filter(function(n){return n.sq>0;}),10);
@@ -694,25 +715,31 @@ function anaRungCard(r,nm){
    measure. Shadow, pull and expression are worked out from the addresses,
    which is said on each, because a figure that is arithmetic must not read as
    a second instrument. */
+/* EACH FIGURE IS THE REGISTRY'S, 17 October, percent phase 2: fig returns the
+   ring's fill and the pill's figure off one kind (engine/pct.js), so CQ and
+   expression print as percents beside the shadow and the pull, which already
+   did, and overshoot and installed stop printing a decimal over a fill ten
+   times its size. */
+function anaFig(kind,v,r){return {p:pct(kind,v)||0,raw:fmtPct(kind,v,{unread:r&&r.unread})};}
 var ANA_MET={
  cq:{nm:'Coherence',seat:'Crown',txt:'CQ',
   tip:'CQ is your coherence number, built only from your answers on the laws.',
-  fig:function(r){return {p:r.CQ,raw:String(Math.round(r.CQ))};}},
+  fig:function(r){return anaFig('cq',r.CQ,r);}},
  dq:{nm:'Shadow',seat:'Root',txt:'DQ',
   tip:'Shadow is all the charge left at your addresses, added up, as a share of the most they could hold.',
-  fig:function(r){return {p:r.DQ,raw:Math.round(r.DQ)+'%'};}},
+  fig:function(r){return anaFig('dq',r.DQ,r);}},
  pull:{nm:'Pull',seat:'Solar',txt:null,
   tip:'Pull is how hard the charge you hold drags on what you do, and a heavy place drags far harder than a light one.',
-  fig:function(r){return {p:r.PULL*100,raw:Math.round(r.PULL*100)+'%'};}},
+  fig:function(r){return anaFig('pull',r.PULL,r);}},
  ex:{nm:'Expression',seat:'Throat',txt:null,
   tip:'Expression is your coherence with the pull taken off it, so it is how much of it reaches what you do.',
-  fig:function(r){return {p:r.EX,raw:String(Math.round(r.EX))};}},
+  fig:function(r){return anaFig('expression',r.EX,r);}},
  jq:{nm:'Overshoot',seat:'3rd Eye',txt:null,
-  tip:'Overshoot is an opposite feeling put in past the point where it helps, at 6 and above.',
-  fig:function(r){return {p:r.JQ*10,raw:r.JQ.toFixed(1)};}},
+  tip:'Overshoot is an opposite feeling put in past the point where it helps, at 60% and above.',
+  fig:function(r){return anaFig('overshoot',r.JQ,r);}},
  pole:{nm:'Installed',seat:'Heart',txt:null,
   tip:'Installed is how much of each opposite feeling is in place where its feeling was, such as trust where fear sat.',
-  fig:function(r){return {p:r.poleMean*10,raw:r.poleMean.toFixed(1)};}}};
+  fig:function(r){return anaFig('pole',r.poleMean,r);}}};
 function anaMetRow(r,k){
  var M=ANA_MET[k], f=M.fig(r);
  return '<button type="button" class="ad-r" data-ana="met|'+k+'" title="'+esc('Open '+M.nm)+'">'
@@ -733,26 +760,27 @@ function anaMetCard(r,k){
    +'<div class="pm-eye">The laws, weakest first</div><div class="ad-rows">'+laws.map(function(l){
     var read=lawIn(l.nm), v=S.law[l.nm];
     return '<button type="button" class="ad-r" data-ana="'+anaKey('law',l.nm)+'" title="'+esc('Open '+l.nm)+'">'
-     +crBadge(l.b,read?v*10:0,{size:'sm',raw:read?v.toFixed(1):'\u2013',title:l.nm+(read?'':', not read yet')})
+     +crBadge(l.b,read?pct('law',v)||0:0,{size:'sm',raw:read?fmtPct('law',v):'\u2013',title:l.nm+(read?'':', not read yet')})
      +'<span>'+esc(l.nm)+'</span><em>'+(!read?'not read yet':v<4?'shut':v>=7?'open':'working')+'</em></button>';}).join('')+'</div>';}
  else if(k==='dq'){
-  h+='<p class="ad-p">It counts every one of your '+NODES.length+' addresses, under the line at 4 as well as over it. '
+  h+='<p class="ad-p">It counts every one of your '+NODES.length+' addresses, under the line at 40% as well as over it. '
    +'It is worked out from the addresses and is not measured on its own. It does not touch CQ. It feeds the pull.</p>'
    +'<div class="pm-eye">Where it sits, by seat</div>'+bySeat()
    +'<div class="pm-eye" style="margin-top:12px">Heaviest fetters</div>'+anaAddrRows(W.filter(function(n){return n.sq>0;}).sort(anaBySq),8);}
  else if(k==='pull'){
-  h+='<p class="ad-p">Each address drags by how heavy it is, on a curve. At 2 it barely drags, '
-   +'at 5 it drags half as hard as it can, and from 7 up it drags almost fully. Pull is the average drag across all '
+  /* the weights in the unit every address now prints, 17 October */
+  h+='<p class="ad-p">Each address drags by how heavy it is, on a curve. At 20% it barely drags, '
+   +'at 50% it drags half as hard as it can, and from 70% up it drags almost fully. Pull is the average drag across all '
    +NODES.length+' addresses, so a few heavy places pull harder than many light ones.</p>'
    +'<div class="pm-eye">Pulling hardest</div><div class="ad-rows">'
    +W.filter(function(n){return n.sq>=2;}).sort(anaBySq).slice(0,10).map(function(n){
-    return addrRow(n,{ana:true,em:'drags '+Math.round(leverPull(n.sq)*100)+'%'});}).join('')+'</div>'
+    return addrRow(n,{ana:true,em:'drags '+fmtPct('pull',leverPull(n.sq))});}).join('')+'</div>'
    +'<div class="pm-eye" style="margin-top:12px">By seat</div>'+bySeat();}
  else if(k==='ex'){
   var top=(typeof exCeiling==='function')?exCeiling():null;
-  h+='<p class="ad-p">Expression is CQ times what the pull leaves. CQ <b>'+Math.round(r.CQ)+'</b>, pull <b>'
-   +Math.round(r.PULL*100)+'%</b>, expression <b>'+Math.round(r.EX)+'</b>.'
-   +(top!=null?' With every charge released it would read <b>'+Math.round(top)+'</b> on the laws as they stand.':'')+'</p>'
+  h+='<p class="ad-p">Expression is CQ times what the pull leaves. CQ <b>'+fmtPct('cq',r.CQ)+'</b>, pull <b>'
+   +fmtPct('pull',r.PULL)+'</b>, expression <b>'+fmtPct('expression',r.EX)+'</b>.'
+   +(top!=null?' With every charge released it would read <b>'+fmtPct('expression',top)+'</b> on the laws as they stand.':'')+'</p>'
    +'<div class="pm-eye">What makes it</div><div class="ad-rows">'+anaMetRow(r,'cq')+anaMetRow(r,'pull')+'</div>';}
  else if(k==='jq'){
   var ex=W.filter(function(n){return n.jq>=4;}).sort(function(a,b){return b.jq-a.jq;});
@@ -773,18 +801,23 @@ function anaMetCard(r,k){
 function anaSessCard(r,nm){
  var H=anaHist(), i=+nm, x=H[i]; if(!x)return null;
  var p=i>0?H[i-1]:null, same=p&&p.m===x.m;
- var d=function(k,dp){if(!same||x[k]==null||p[k]==null)return '';
+ /* A SCORE ROW NAMES ITS KIND, 17 October, percent phase 2: it prints the
+    registry's percent and says its move as where it stood before, "from 58%",
+    never "up 0.1" in a unit the person cannot see. A count row passes no kind
+    and keeps its whole number and its signed move. */
+ var d=function(k,dp,kind){if(!same||x[k]==null||p[k]==null)return '';
+  if(kind){var mv=pctMove(kind,p[k],x[k]); return !mv||!mv.moved?' <em>no change</em>':' <em>from '+mv.from+'</em>';}
   var v=+x[k]-+p[k]; if(Math.abs(v)<Math.pow(10,-dp)/2)return ' <em>no change</em>';
   return ' <em>'+(v>0?'up ':'down ')+Math.abs(v).toFixed(dp)+'</em>';};
- var row=function(lbl,k,dp,unit){
-  return '<div class="ana-dl"><span>'+lbl+'</span><b>'+(x[k]==null||x[k]===0?'\u2013':(+x[k]).toFixed(dp)+(unit||''))+'</b>'+d(k,dp)+'</div>';};
+ var row=function(lbl,k,dp,kind){
+  return '<div class="ana-dl"><span>'+lbl+'</span><b>'+(x[k]==null?'\u2013':kind?fmtPct(kind,x[k]):(+x[k]===0?'\u2013':(+x[k]).toFixed(dp)))+'</b>'+d(k,dp,kind)+'</div>';};
  var h=anaHead('Session '+(i+1),(typeof dlyDayWord==='function'?dlyDayWord(String(x.t).slice(0,10))+' '+String(x.t).slice(0,4):String(x.t).slice(0,10)),
   esc(x.dark?'heaviest at the '+String(x.dark).toLowerCase():''));
  h+='<p class="ad-p">Every figure this session kept. '+(p?(same?'Each change is against the session before it.'
    :'The session before was worked out a different way, so no change is shown against it.'):'This is the first session on the record.')+'</p>'
-  +'<div class="ana-dls">'+row('Coherence','cq',1)+row('Shadow','dq',1,'%')+row('Held','loaded',0)
+  +'<div class="ana-dls">'+row('Coherence','cq',1,'cq')+row('Shadow','dq',1,'dq')+row('Held','loaded',0)
   +row('Saboteurs','sab',0)+row('Complexes','cx',0)+row('Hyper-complexes','hy',0)+row('Character','ch',0)
-  +row('Overshoot','jq',2)+row('Installed','pole',2)+'</div>'
+  +row('Overshoot','jq',2,'overshoot')+row('Installed','pole',2,'pole')+'</div>'
   +(x.tier?'<p class="ad-p">The band read <b>'+esc(String(x.tier).toLowerCase())+'</b>.</p>':'')
   +(x.arch?'<p class="ad-p">The leading archetype was <b>'+esc(x.arch)+'</b>.</p>':'');
  return h;}

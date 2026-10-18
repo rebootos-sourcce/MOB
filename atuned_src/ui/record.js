@@ -35,14 +35,22 @@ function recDays(a,b){
 
 /* one measured line. no causation, and a direction word only where the
    quantity has a direction a person would recognise. */
-function recRow(label,a,b,dp,lowerIsBetter){
- var d=b-a, s=d>0?'+':'';
- var dir=Math.abs(d)<Math.pow(10,-dp)/2 ? 'level'
+/* A SCORE ROW IS TWO PERCENTS AND A WORD, 17 October, percent phase 2. With
+   a kind, A and B print the registry's percent (engine/pct.js) and the move
+   is said in words, up or lighter, because A and B already are the before and
+   after and a signed "+1.9" beside them was a third figure in a unit the
+   person cannot see (PERCENT-FRAMEWORK-2026-10-16.md, rule 3). Level is the
+   two shown figures being equal, so a move too small to print is never "up".
+   A count row passes no kind and keeps its whole numbers and its sign. */
+function recRow(label,a,b,dp,lowerIsBetter,kind){
+ var mv=kind?pctMove(kind,a,b):null, d=b-a, s=d>0?'+':'';
+ var lvl=kind?(!mv||!mv.moved):Math.abs(d)<Math.pow(10,-dp)/2;
+ var dir=lvl ? 'level'
    : (lowerIsBetter ? (d<0?'lighter':'heavier') : (d>0?'up':'down'));
  return '<div class="rec-row"><span class="rec-k">'+esc(label)+'</span>'
-  +'<span class="rec-a">'+a.toFixed(dp)+'</span>'
-  +'<span class="rec-b">'+b.toFixed(dp)+'</span>'
-  +'<span class="rec-d'+(dir==='level'?' lvl':'')+'">'+(dir==='level'?'level':s+d.toFixed(dp))+'</span></div>';}
+  +'<span class="rec-a">'+(kind?fmtPct(kind,a):a.toFixed(dp))+'</span>'
+  +'<span class="rec-b">'+(kind?fmtPct(kind,b):b.toFixed(dp))+'</span>'
+  +'<span class="rec-d'+(dir==='level'?' lvl':'')+'">'+(dir==='level'?'level':kind?dir:s+d.toFixed(dp))+'</span></div>';}
 
 function recRender(){
  var host=document.getElementById('rec'); if(!host)return;
@@ -68,7 +76,7 @@ function recRender(){
   +H.map(function(s,i){
     var on=(i===REC_A||i===REC_B);
     return '<button type="button" class="rec-p'+(on?' on':'')+'" data-rec="'+i+'" '
-     +'style="--c:'+seatCol(s.dark||'Heart')+'" title="'+esc(recWhen(s.t))+', CQ '+s.cq+'">'
+     +'style="--c:'+seatCol(s.dark||'Heart')+'" title="'+esc(recWhen(s.t))+', CQ '+fmtPct('cq',s.cq)+'">'
      +'<span class="rec-pb" style="height:'+Math.max(6,Math.round(s.cq))+'%"></span>'
      +(on?'<span class="rec-pm">'+(i===REC_A?'A':'B')+'</span>':'')+'</button>';}).join('')
   +'</div>';
@@ -133,13 +141,13 @@ function recRender(){
      September and a row from before carries no m. Across that line the move
      is the formula changing, not the person, so the two rows are left out
      and the note under the table says why. */
-  +(a.m===b.m?recRow('Coherence',a.cq,b.cq,1,false)+recRow('Shadow weight',a.dq,b.dq,1,true):'')
+  +(a.m===b.m?recRow('Coherence',a.cq,b.cq,1,false,'cq')+recRow('Shadow weight',a.dq,b.dq,1,true,'dq'):'')
   /* ONE WORD PER CONCEPT. This is r.SQm, which the Summary calls carried
      depth; and jouissance is the French psychoanalytic term ui/ui.js already
      records removing from a stranger's screen, replaced there by overshot. */
-  +recRow('Carried depth',a.sq,b.sq,2,true)
-  +recRow('Opposite installed',a.pole,b.pole,2,false)
-  +recRow('Overshot',a.jq,b.jq,2,true)
+  +recRow('Carried depth',a.sq,b.sq,2,true,'weight')
+  +recRow('Opposite installed',a.pole,b.pole,2,false,'pole')
+  +recRow('Overshot',a.jq,b.jq,2,true,'overshoot')
   +recRow('Addresses carrying',a.loaded,b.loaded,0,true)
   +recRow('Saboteurs',a.sab,b.sab,0,true)
   +recRow('Complexes',a.cx,b.cx,0,true)
