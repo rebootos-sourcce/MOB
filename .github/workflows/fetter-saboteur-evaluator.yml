@@ -25,7 +25,6 @@ on:
       - 'proto/sniffer/fetter-saboteur-framework-contract.test.js'
       - 'proto/sniffer/hierarchy-graph.js'
       - 'proto/sniffer/hierarchy-graph.test.js'
-      - 'proto/sniffer/fetter-saboteur-framework-contract.test.js'
       - 'atuned_src/engine/data/sabcard.js'
       - '.github/workflows/fetter-saboteur-evaluator.yml'
 permissions:
