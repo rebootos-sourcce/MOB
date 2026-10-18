@@ -68,3 +68,26 @@ Acceptance criteria:
 ## Next step
 
 Locate or author the canonical, provenance-backed behavioral indicator source. Once its owner-approved definitions exist, implement the scorer and fixtures, discover the repository's actual test command/CI gate, run tests, and iterate on failures. Do not fabricate the missing behavioral data to make the test suite appear complete.
+
+
+## Execution delta — 2026-10-18
+
+The initial source gap has been partially closed by inspecting the v29 application file in Reboot-OS. Its `V22_SABOTEUR_DETAIL` object supplies trigger, interrupt, and formation descriptions for 31 legacy entries. The MOB branch now contains:
+
+- `proto/sniffer/behavioral-catalog.json`: 33 canonical names, provenance fields, explicit aliases, and blocked missing/ambiguous records.
+- `proto/sniffer/behavioral-score.js`: experimental ranker combining charge compatibility with externally supplied support/contradiction ratings. It requires the catalog entry to be individually eligible before accepting a behavior score.
+- `proto/sniffer/behavioral-score.test.js`: Node assertion tests for 33-name coverage, score ranges, weights, charge-only fallback, contrasting candidate ranking, and missing/ambiguous mapping blocks.
+- `.github/workflows/behavioral-score.yml`: dedicated Node 22 CI gate.
+
+### Coverage and limitations
+
+- 33/33 canonical names represented in the catalog.
+- 28 entries have individual source descriptions eligible for the experimental ranker.
+- Victim and Judge remain blocked because the source combines them into one entry.
+- Innocent, Enabler, and Control Freak remain blocked because no descriptions were found in the inspected source.
+- The source descriptions are not validated positive/negative behavioral indicators. The ranker does not classify raw text; it consumes separately supplied evidence ratings.
+- The 65% behavior / 35% charge weighting is provisional, not canonical or empirically validated.
+- Initial dedicated CI run passed before the final eligibility guard and regression were added. The updated final-head CI run is pending and must be checked before calling the gate green.
+- End-to-end integration into the live Sniffer decision path remains unverified.
+
+Do not mark behavioral scoring complete until source-backed indicator rules, raw-input evaluation, validated contrast fixtures, and final-head CI/runtime integration have been completed.
