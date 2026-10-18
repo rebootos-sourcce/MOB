@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2199 6fd27d23 2026-10-18 00:59"><head><meta charset="utf-8">
+<html lang="en" data-build="v2200 c69bffdf 2026-10-18 02:55"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -31862,7 +31862,13 @@ function rbMotion(hosts){
        turns rather than jumping back to where the first began */
     var e=crMoAt(m,now);nm.w0=m.w0+(m.w1-m.w0)*e;
     nm.n0=(m.n0!==null&&m.n1!==null&&n1!==null&&m.suf===nm.suf)?m.n0+(m.n1-m.n0)*e:null;
-    if(m.s1&&sv&&m.s1.length===sv.length)nm.s0=m.s0.map(function(v,q){return v+(m.s1[q]-v)*e;});
+    /* m.s0 IS NULL WHEN THE ROW FIRST ARRIVED WITH NO SEAT WAVE. The settled
+       path above refreshes m.s1 and never m.s0, so a row that gained its wave
+       later held s1 and a null s0, and the next change threw on m.s0.map
+       inside render. Seen in tests/functional.js on the percent phase 2
+       build, where the Flow figure stopped moving between two renders and
+       took that path. With no s0 the wave starts where it now is. */
+    if(m.s0&&m.s1&&sv&&m.s1.length===sv.length)nm.s0=m.s0.map(function(v,q){return v+(m.s1[q]-v)*e;});
     nm.dir=to>m.w1+.05?1:to<m.w1-.05?-1:0;
     nm.span=Math.max(ENTER_SPAN,nm.dir?RB_HEAD:0);}
    /* a figure that moved, and not the first sight of one and not a different
@@ -79277,5 +79283,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005204724"></div>
+<div id="eof" hidden data-len="005205179"></div>
 </body></html>
