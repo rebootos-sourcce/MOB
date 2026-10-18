@@ -20,6 +20,15 @@ assert.equal(rows.length, 33, 'user-facing story table must contain exactly 33 S
 assert.equal(bands.length, 33, 'canonical band table must contain exactly 33 Saboteurs');
 assert.equal(new Set(rows.map(row => row.key)).size, 33, 'story keys must be unique');
 
+const normalize = value => value.toLowerCase().replace(/[^a-z0-9]/g, '');
+const storyKeys = new Set(rows.map(row => normalize(row.key)));
+const aliases = { Micromanager: 'controller' };
+const missingCanonicalStories = bands
+  .map(([name]) => ({ name, key: aliases[name] || name }))
+  .filter(({ key }) => !storyKeys.has(normalize(key)))
+  .map(({ name }) => name);
+assert.deepEqual(missingCanonicalStories, [], 'every canonical band must have a story record or explicit alias');
+
 const missing = [];
 for (const row of rows) {
   for (const [field, pattern] of [
