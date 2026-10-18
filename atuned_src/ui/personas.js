@@ -12,7 +12,7 @@ for(let rw=0;rw<9;rw++)for(let c=0;c<19;c++){
    return Math.min(18,Math.floor(n.slot/(108/19)))===c&&n.cf===CHILD[rw].nm;});
   const held=seg.length?seg.reduce(function(a,n){return a+n.sq;},0)/seg.length:0;
   $('mxk').innerHTML='<b>'+DOMAINS[c].nm+'</b> × <b>'+CHILD[rw].nm+'</b><br>'
-   +seg.length+' address'+(seg.length===1?'':'es')+', SQ <b>'+held.toFixed(1)+'</b>'
+   +seg.length+' address'+(seg.length===1?'':'es')+', SQ <b>'+fmtPct('weight',held)+'</b>'
    +((AFFIN[DOMAINS[c].r]||[]).indexOf(CHILD[rw].nm)>=0
      ?'<br><b>1.3× affinity pair</b> for '+DOMAINS[c].r:'');});
  $('mx').appendChild(b);MXC.push(b);}
@@ -363,7 +363,7 @@ function renderAcc(r){
  var a=accuracy(r), w=[];
  if(a.cov<21) w.push((21-a.cov)+' law'+(21-a.cov===1?'':'s')+' not answered yet');
  if(a.signal<70) w.push(a.signal>0?'signal '+a.signal+'%, '+a.held+' held':'no signal yet');
- if(a.exq<0.7) w.push(a.exq>=0.005&&!r.unread?'expression '+Math.round(a.exq*100)+'%':'no expression yet');
+ if(a.exq<0.7) w.push(fmtPct('expression',a.exq*100,{unread:r.unread})!==PCT_DASH?'expression '+fmtPct('expression',a.exq*100):'no expression yet');
  if(a.deg) w.push(a.deg+(a.deg>1?' pairs':' pair')+' of patterns too alike to tell apart');
  /* This was a figure and three lines of diagnostics, 325 by 140, parked in
     the bottom corner of the stage. A circle inside a rectangle leaves the
@@ -435,10 +435,11 @@ function runAccDrill(){
  var r=compute(), a=accuracy(r), w=[];
  if(a.cov<21) w.push((21-a.cov)+' law'+(21-a.cov===1?'':'s')+' not answered yet');
  if(a.signal<70) w.push(a.signal>0?'signal '+a.signal+'%, '+a.held+' held':'no signal yet');
- if(a.exq<0.7) w.push(a.exq>=0.005&&!r.unread?'expression '+Math.round(a.exq*100)+'%':'no expression yet');
+ if(a.exq<0.7) w.push(fmtPct('expression',a.exq*100,{unread:r.unread})!==PCT_DASH?'expression '+fmtPct('expression',a.exq*100):'no expression yet');
  if(a.deg) w.push(a.deg+(a.deg>1?' pairs':' pair')+' of patterns too alike to tell apart');
  rdShell('<div class="pm-eye">Family identification</div>'
-  +'<div class="ad-nm">'+(!r.unread&&a.pct>=0.05?a.pct.toFixed(1)+'%':'\u2013')+'</div>'
+  /* identification as the registry prints it, a whole percent, 17 October */
+  +'<div class="ad-nm">'+fmtPct('accuracy',a.pct,{unread:r.unread})+'</div>'
   /* THE SPREAD IS SAID BY ITS CAUSES, NOT BY A TOLERANCE. This printed
      "Plus or minus 11.4 at this reading" and then explained what a narrow
      one and a wide one mean, which is a person being handed a figure and

@@ -248,7 +248,9 @@ function avArc(cx,cy,r,f){if(f<=0)return ''; if(f>=1)f=0.9999;
  var a0=-Math.PI/2,a1=a0+f*Math.PI*2;
  return 'M'+avP(cx+r*Math.cos(a0))+' '+avP(cy+r*Math.sin(a0))+' A'+r+' '+r+' 0 '+(f>0.5?1:0)
   +' 1 '+avP(cx+r*Math.cos(a1))+' '+avP(cy+r*Math.sin(a1));}
-function avPct(f){return f==null?'–':Math.round(f*100)+'%';}
+/* the registry's complete kind, 17 October, percent phase 2: nought is the
+   dash, never 0%, the one rule every figure keeps */
+function avPct(f){return f==null?'–':fmtPct('complete',f);}
 
 /* ---------------- whose record this is ----------------
    A worked example is a demonstration and not a record, so nothing on this
@@ -722,7 +724,7 @@ function avRing(st){
   var c=avPos(x.a,ORB), A=st.areas[x.k], on=sel===x.b;
   return '<button type="button" class="av-sat avh-sat'+(on?' av-on':'')+(A.set?' avh-set':'')+'" data-avsat="'+x.k+'" style="left:'
    +avP(c[0])+'%;top:'+avP(c[1])+'%;--c:'+seatCol(x.b)+'" aria-pressed="'+on+'" aria-label="'+x.nm+', '+AV_THE[x.b]+', '
-   +(A.set?'story written':'nothing written')+(A.pct==null?'':', '+Math.round(A.pct*100)+' percent complete')+'">'
+   +(A.set?'story written':'nothing written')+(A.pct==null||!pct('complete',A.pct)?'':', '+fmtPct('complete',A.pct)+' complete')+'">'
    +avSvg(AV_IC[x.k])
    +(A.set?'<span class="avs-tick" aria-hidden="true">'+avSvg(AV_OK)+'</span>':'')+'</button>';}).join('');
  /* each ring's name sits under it. Inside the orbit, where GG put them, the
@@ -1136,7 +1138,7 @@ function avRunHTML(st){
   out+='<button type="button" class="av-run-row'+(on?' av-on':'')+'" data-avsab="'+esc(x.nm)+'" aria-pressed="'+on+'" style="--c:'+c+'">'
    +'<span class="av-run-ic"><svg viewBox="0 0 24 24" aria-hidden="true">'+glyphPath(x.fam?x.fam.ic:'')+'</svg></span>'
    +'<span class="av-run-nm">'+esc(x.nm)+'</span>'
-   +'<span class="av-run-v">'+x.w.toFixed(1)+'</span>'
+   +'<span class="av-run-v">'+fmtPct('chain',x.w)+'</span>'
    +'<span class="av-run-d av-'+x.dir+'">'+(R.written?x.dir:'')+'</span>'
    +'<span class="av-run-bar"><i style="width:'+Math.min(100,x.w*10).toFixed(0)+'%"></i></span></button>';});
  return out+'</div></section>';}

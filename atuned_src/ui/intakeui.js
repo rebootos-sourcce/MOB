@@ -90,7 +90,7 @@ function iqSeedBlock(p){
     it is gone. Once a type is chosen the line is a reading, how much of the
     field is still the seed, and it stays. Its last sentence, on what the seed
     does not write, explained the mechanism and is cut. */
- var note=sd?('Seeded from <b>'+esc(sd.type)+'</b>. <b>'+Math.round(share*100)+'%</b> of what the axes carry is still '
+ var note=sd?('Seeded from <b>'+esc(sd.type)+'</b>. <b>'+fmtPct('portion',share)+'</b> of what the axes carry is still '
   +'that seed'+(share<=0.25?', so the field is mostly yours now.':share>=0.9?'. Nothing has moved it yet.':'.')):'';
  /* auto-fill and not the sheet's auto-fit when the note is gone: auto-fit
     collapses the empty tracks and the one select stretched across the whole
@@ -780,7 +780,7 @@ function iqInHand(p){
 /* ROUND RG. "spread 2.2" named a statistic and "2 left" counted nothing a
    person could name. The spread is how far apart the three answers sit, and
    what is left is questions, so each says so. */
-function iqLine(s,g){return s?'answers '+s.spread+' apart, '+s.lean
+function iqLine(s,g){return s?'answers '+(fmtPct('spread',s.spread)!==PCT_DASH?fmtPct('spread',s.spread)+' apart':'level')+', '+s.lean
  :g?(3-g)+((3-g)===1?' question left':' questions left'):'unanswered';}
 /* a law as Summary draws a thing: its own glyph in a ring. The ring is the
    page's grammar, written above at iqSegs: segments while it is being
@@ -935,7 +935,8 @@ function iqHeroRing(p,sc,cq){
  var o=iqBodyOrder(), vals=o.map(function(li){var g=iqGot(p,li); return sc[SI[li].nm]?1:g?.5:0;});
  var seg=iqSegs(vals,function(i){return seatCol(SI[o[i]].b);},48,48,40,6.5,5);
  return '<span class="iqa-hr"><svg viewBox="0 0 96 96" aria-hidden="true">'+seg+'</svg>'
-  +'<span class="iqa-hn"><b>'+(cq==null?'–':Math.round(cq))+'</b><i class="tipu"'+unpAttr('cq',null,'CQ')+'>CQ</i></span></span>';}
+  /* CQ as the registry prints it, 17 October, percent phase 2 */
+  +'<span class="iqa-hn"><b>'+(cq==null?'–':fmtPct('cq',cq))+'</b><i class="tipu"'+unpAttr('cq',null,'CQ')+'>CQ</i></span></span>';}
 /* A SIMULATION, NOT A BEHAVIOUR, round OK. His words: "What if we do show CQ
    at 100 on starting? It shows the soul raw expression. And then as the input
    stuff, it comes down. I don't want that to actually happen. But I'm curious
@@ -989,7 +990,10 @@ function iqViewList(p,Q,sc){
   items.push({grp:'seat', key:b, pid:'iqa-p'+bi, on:(open===b), st:t.st, c:seatCol(b), nm:b,
    line:IQ_SEATLINE[b], say:['not started','started','read'][t.st], ring:iqSeatRing(b,t,p,sc,56),
    pips:t.L.map(function(x){return sc[x.l.nm]?2:iqGot(p,x.li)?1:0;}),
-   fig:t.done?'<b class="iqa-ts">'+t.mean.toFixed(1)+'</b>':'',
+   /* the answers stay on nought to ten where they are given; what the
+      instrument reads back from them is a percent (PERCENT-FRAMEWORK-
+      2026-10-16.md, open item 3), here and in the law rows below */
+   fig:t.done?'<b class="iqa-ts">'+fmtPct('law',t.mean)+'</b>':'',
    next:(nx!=null&&SI[nx].b===b), t:t});});
  return iqNestHtml('The seven seats',items,function(o){
   var c=o.c, h='<div class="iqa-laws" role="group" aria-label="The laws in '+esc(o.key)+'">';
@@ -1001,7 +1005,7 @@ function iqViewList(p,Q,sc){
     +'<span class="iqa-lx"><span class="iqa-lt">'+esc(x.l.nm)+(nx===x.li?'<span class="iqa-nx">Next</span>':'')+'</span>'
     +'<span class="iqa-lv">'+esc(iqLine(s,g))+'</span></span>'
     +'<span class="iqa-gw">'+iqGap(p,x.li,200)+'</span>'
-    +'<span class="iqa-sv">'+(s?s.score.toFixed(1):'')+'</span>'
+    +'<span class="iqa-sv">'+(s?fmtPct('law',s.score):'')+'</span>'
     +'<span class="iqa-chev">'+iqSvg(IQ_IC.chev)+'</span></button>';
    if(lo)h+='<div class="iq-law open iqa-open" style="--c:'+c+'">'+iqFramings(p,Q,x.li)+'</div>';});
   return h+'</div>';});}
@@ -1064,11 +1068,11 @@ function iqViewWheel(p,Q,sc,r,scored){
      +'stroke-dasharray="'+Cc.toFixed(1)+'" stroke-dashoffset="'+(Cc*(1-frac)).toFixed(1)+'" transform="rotate(-90 '+px+' '+py+')"/>'
     +'<g transform="translate('+f(pp[0]-9)+' '+f(pp[1]-9)+') scale(.75)" fill="none" stroke="'+c+'" stroke-width="2" '
      +'stroke-linecap="round" stroke-linejoin="round"><path d="'+x.l.ic+'"/></g>'
-    +(q?'<text x="'+px+'" y="'+f(pp[1]+38)+'" font-size="12" text-anchor="middle" style="fill:var(--mid)">'+q.score.toFixed(1)+'</text>':'')
+    +(q?'<text x="'+px+'" y="'+f(pp[1]+38)+'" font-size="12" text-anchor="middle" style="fill:var(--mid)">'+fmtPct('law',q.score)+'</text>':'')
     +'</g>';});});
  s+='<circle cx="'+C+'" cy="'+C+'" r="66" fill="url(#iqa-orb)"/>'
   +'<text x="'+C+'" y="'+(C+12)+'" font-size="36" font-weight="600" text-anchor="middle" '
-  +'style="fill:'+(lit?'var(--on-accent)':'var(--dim)')+'">'+(lit?Math.round(cq):'–')+'</text></svg>';
+  +'style="fill:'+(lit?'var(--on-accent)':'var(--dim)')+'">'+(lit?fmtPct('cq',cq):'–')+'</text></svg>';
  var l=SI[ih], q=sc[l.nm], c=seatCol(l.b), g=iqGot(p,ih);
  var side='<div class="iqa-side" style="--c:'+c+'"><div class="iqa-sidehd">'+iqLawBadge(l,q,g,'md')
   +'<div><h3 class="iqa-h3">'+esc(l.nm)+'</h3><div class="iqa-sub"><b>'+esc(l.b)+'</b>, '+esc(IQ_SEATLINE[l.b])+'</div></div></div>'
@@ -1091,7 +1095,7 @@ function iqViewOne(p,Q,sc){
   +'<g transform="translate(64 60) scale(3)" fill="none" stroke="'+c+'" stroke-width="1.3" stroke-linecap="round" '
   +'stroke-linejoin="round"><path d="'+l.ic+'"/></g>'
   +(q?'<text x="100" y="150" font-size="20" font-weight="600" text-anchor="middle" style="fill:var(--ink)">'
-   +q.score.toFixed(1)+'</text>':'')+'</svg>';
+   +fmtPct('law',q.score)+'</text>':'')+'</svg>';
  return iqStrip(p,sc,ih,'')
   +'<div class="iqa-focus" style="--c:'+c+'"><div class="iqa-hero1">'+ring
   +'<div class="iqa-ln">'+esc(l.nm)+'</div>'

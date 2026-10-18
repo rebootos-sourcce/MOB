@@ -710,23 +710,27 @@ function kbPoleRow(x,i,seat,c,fam){
     "0 per cent toward Anger, 100 toward Equanimity" read a nought and a result
     to a screen reader. The label says what is held, and which way it leans.
     Round J13. */
- var say=x.t+', '+(fam||'')+(wl>=0.05?', weight '+wl.toFixed(1):', nothing held')+'.'
-  +(pole?' Opposite, '+x.opp+(wr>=0.05?', weight '+wr.toFixed(1):', nothing installed')+'.'
+ /* each side as the registry prints it, 17 October, percent phase 2: the
+    held side is the charge before the opposite where there is a pole and the
+    weight left where there is none; the other side is the opposite installed */
+ var kl=pole?'held':'weight', fl=fmtPct(kl,wl), fr=pole?fmtPct('installed',wr):PCT_DASH;
+ var say=x.t+', '+(fam||'')+(fl!==PCT_DASH?', weight '+fl:', nothing held')+'.'
+  +(pole?' Opposite, '+x.opp+(fr!==PCT_DASH?', weight '+fr:', nothing installed')+'.'
     +(sh?' Leans toward '+(sh.l>=sh.r?x.t:x.opp)+'.':''):' No opposite.');
  return '<button type="button" class="kb-row kbp" data-kbi="'+i+'" style="--c:'+c+';--oc:'+oc+'"'
   +' aria-label="'+esc(say)+'">'
    +'<span class="kbp-body"><span class="kbp-top">'
   +'<span class="kbp-side">'
   +crBadge(seat, x.p||0, {size:'sm', bare:true, color:c,
-     glyph:glyphPath(x.ic), title:x.t+(wl>=0.05?' · '+wl.toFixed(1):'')})
+     glyph:glyphPath(x.ic), title:x.t+(fl!==PCT_DASH?' · '+fl:'')})
   +'<span class="kb-rt"><span class="kb-rn">'+esc(x.t)+'</span>'
   +(fam?'<span class="kb-rs">'+esc(fam)+'</span>':'')+'</span>'
-  +'<span class="kb-rv'+(wl>=0.05?'':' z')+'">'+(wl>=0.05?wl.toFixed(1):'\u2013')+'</span></span>'
+  +'<span class="kb-rv'+(fl!==PCT_DASH?'':' z')+'">'+fl+'</span></span>'
   +(pole?'<span class="kbp-side kbp-o">'
-    +'<span class="kbp-w'+(wr>=0.05?'':' z')+'">'+(wr>=0.05?wr.toFixed(1):'\u2013')+'</span>'
+    +'<span class="kbp-w'+(fr!==PCT_DASH?'':' z')+'">'+fr+'</span>'
     +'<span class="kbp-op">'+esc(x.opp)+'</span>'
     +crBadge('Heart', x.q||0, {size:'sm', bare:true, color:oc,
-      glyph:glyphPath(x.ic), title:x.opp+(wr>=0.05?' · '+wr.toFixed(1):'')})+'</span>'
+      glyph:glyphPath(x.ic), title:x.opp+(fr!==PCT_DASH?' · '+fr:'')})+'</span>'
    :'<span class="kbp-side kbp-o"><span class="kbp-op z">no opposite</span></span>')
   +'</span>'
   +'<span class="kbp-line"><span class="kbp-pc">'+(sh&&sh.l?sh.l+'%':'–')+'</span>'
@@ -789,8 +793,8 @@ function poleDrillHead(n){
  return '<div class="kbp-dr" style="--c:'+col+';--oc:'+oc+'">'
   +'<div class="kbp-top"><span class="kbp-side">'
   +crBadge(n.b, kbPct(n.held), {size:'sm', bare:true, color:col, glyph:glyphPath(c.ic)})
-  +'<span class="kbp-nm">'+esc(n.k)+'</span><span class="kbp-w">'+(n.held>=0.05?n.held.toFixed(1):'\u2013')+'</span></span>'
-  +'<span class="kbp-side kbp-o"><span class="kbp-w">'+(n.rep>=0.05?n.rep.toFixed(1):'\u2013')+'</span>'
+  +'<span class="kbp-nm">'+esc(n.k)+'</span><span class="kbp-w">'+fmtPct('held',n.held)+'</span></span>'
+  +'<span class="kbp-side kbp-o"><span class="kbp-w">'+fmtPct('installed',n.rep)+'</span>'
   +'<span class="kbp-nm">'+esc(c.opp)+'</span>'
   +crBadge('Heart', kbPct(n.rep), {size:'sm', bare:true, color:oc, glyph:glyphPath(c.ic)})
   +'</span></div>'
@@ -904,7 +908,7 @@ function deckRender(){
       hand, believing and feeling, which was a third list of them. */
    +'<p>'+esc(C3_STEM+String(n.k).toLowerCase()+'.')+'</p></div>'
   +'<div class="card-ft"><span>axis '+esc(n.cf||'unrouted')+(opp?', toward '+esc(opp):'')+'</span>'
-   +'<span class="card-sq">'+n.sq.toFixed(1)+'</span></div>'
+   +'<span class="card-sq">'+fmtPct('weight',n.sq)+'</span></div>'
   +'<div class="card-act"><button class="btn" id="cardnext">Deal another</button>'
    +'<button class="btn" id="cardopen">Open the address</button>'
    +'<button class="btn" id="cardx">Close</button></div>'

@@ -397,21 +397,25 @@ console.log('\n=== the six masks, as pixels on the figure ===');
   /* THE LEADING PATTERN, the largest of S.charge, first of a tie as CHILD lists them */
   let li=0; CHILD.forEach((c,i)=>{if((+S.charge[c.nm]||0)>(+S.charge[CHILD[li].nm]||0))li=i;});
   const lead=rail.querySelector('.chr-lead');
-  out.lead={want:CHILD[li].nm,fig:(+S.charge[CHILD[li].nm]||0).toFixed(1),got:lead?lead.textContent:''};
+  /* NAMED CHANGE, percent phase 2 slice 5, 17 October: the leading pattern,
+     the trace's address and the hover print their charge as the registry's
+     percent (engine/pct.js), so each is held against fmtPct and not against
+     toFixed(1). The same three facts are checked. */
+  out.lead={want:CHILD[li].nm,fig:fmtPct('charge',+S.charge[CHILD[li].nm]||0),got:lead?lead.textContent:''};
   /* TRACE. The toggle opens the card on the heaviest leak. */
   const SF=seatField(), byMean=SF.map((s,k)=>k).sort((a,b)=>SF[b].mean-SF[a].mean||a-b);
   const trace=host.querySelector('[data-chov="trace"]');
   trace.click(); await fr();
   let card=rail.querySelector('.chr-trace');
   const tabs=card?[...card.querySelectorAll('.chr-tabs [data-chtrace]')]:[];
-  const ct=card?card.textContent:'', am=/Address (\d+)/.exec(ct), cm=/Charge ([\d.]+)/.exec(ct);
+  const ct=card?card.textContent:'', am=/Address (\d+)/.exec(ct), cm=/Charge (\d+%|\u2013)/.exec(ct);
   const N=am?+am[1]:-1, af=addrField().filter(a=>a.i===N)[0];
   const q=card&&card.querySelector('.chr-q'), qt=q?q.textContent.replace(/^“|”$/g,'').replace(/\.\.\.$/,''):'';
   out.trace={pressed:trace.getAttribute('aria-pressed'),tracing:host.classList.contains('chp-tracing'),card:!!card,sel:CHV.sel,
    tabs:tabs.map(b=>+b.getAttribute('data-chtrace')),on:tabs.filter(b=>b.getAttribute('aria-pressed')==='true').map(b=>+b.getAttribute('data-chtrace')),
    names:tabs.map(b=>b.textContent.trim()),seats:tabs.map(b=>BANDS[+b.getAttribute('data-chtrace')]),byMean:byMean,meanSeats:byMean.map(k=>BANDS[k]),
    topSh:charSmooth(CHAR_SEAT_LO,CHAR_SEAT_FULL,SF[byMean[0]].mean),
-   addr:{N:N,seat:BY[N]?BY[N].b:null,want:BANDS[CHV.sel],field:af?af.field:null,got:cm?cm[1]:null,charge:af?af.sq.toFixed(1):null},
+   addr:{N:N,seat:BY[N]?BY[N].b:null,want:BANDS[CHV.sel],field:af?af.field:null,got:cm?cm[1]:null,charge:af?fmtPct('weight',af.sq):null},
    story:{q:qt,own:!!qt&&CURP.story.entries.some(e=>String(e.text).indexOf(qt)===0)}};
   /* Close trace puts all of it down */
   const tc=document.getElementById('chtc'); if(tc)tc.click(); await fr();
@@ -424,7 +428,7 @@ console.log('\n=== the six masks, as pixels on the figure ===');
   const rc=cv.getBoundingClientRect(), ap=sc.AP.slice().sort((a,b)=>sc.achT[b[2]]-sc.achT[a[2]])[0];
   cv.dispatchEvent(new PointerEvent('pointermove',{clientX:rc.left+ap[0],clientY:rc.top+ap[1],pointerType:'mouse',bubbles:true}));
   const hf=addrField()[ap[2]], hl=document.getElementById('chhover');
-  out.hover={name:hf.name,charge:hf.sq.toFixed(1),txt:hl?hl.textContent:''};
+  out.hover={name:hf.name,charge:fmtPct('weight',hf.sq),txt:hl?hl.textContent:''};
   cv.dispatchEvent(new PointerEvent('pointerleave',{pointerType:'mouse',bubbles:true}));
   out.hover.off=hl?hl.textContent:'';
   /* READ THIS MASK opens its summary in Selection */

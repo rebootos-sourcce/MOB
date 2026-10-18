@@ -232,10 +232,11 @@ function ritSugMark(x,b){
  var cf=n&&n.cf?CHILD.filter(function(c){return c.nm===n.cf;})[0]:null;
  var glyph=(x.rel!=null&&cf)?glyphPath(cf.ic):(SEATGLYPH[b]||SEATGLYPH._);
  var col=b?seatCol(b):'var(--accent)';
- var badge=crBadge(b,n?n.sq*10:0,{size:'md', color:col, glyph:glyph, raw:n?n.sq.toFixed(1):'–'});
+ /* the address's weight as the registry prints it, ring and pill, 17 October */
+ var badge=crBadge(b,n?pct('weight',n.sq)||0:0,{size:'md', color:col, glyph:glyph, raw:n?fmtPct('weight',n.sq):'–'});
  var says=!b?'No seat yet, so the mark is empty.'
   :n?'The mark is '+(x.rel!=null&&cf?'the pattern '+cf.nm.toLowerCase()+', ':'the seat, ')+'and the ring is '
-    +String(n.k).toLowerCase()+' held at '+ritThe(b)+', at '+n.sq.toFixed(1)+'.'
+    +String(n.k).toLowerCase()+' held at '+ritThe(b)+', at '+fmtPct('weight',n.sq)+'.'
   :'The mark is the seat. Nothing is held at '+ritThe(b)+', so the ring is empty.';
  return {badge:badge, says:says};}
 

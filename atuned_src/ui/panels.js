@@ -1173,8 +1173,11 @@ function profileSheet(){
      exactly this and left the number it was actually about. The scale belongs
      in the label, where Analytics already puts it, and the figure stands as a
      figure. */
-  +'<div class="sh-row"><span>Coherence, 0 to 100</span><b>'
-   +(r.unread?'not read yet':String(Math.round(r.CQ)))+'</b></div>'
+  /* A PERCENT CARRIES ITS OWN SCALE, 17 October, percent phase 2: the label
+     said "0 to 100" so a bare figure had one, and the figure is the
+     registry's percent now (engine/pct.js), so the label is one word (V17) */
+  +'<div class="sh-row"><span>Coherence</span><b>'
+   +(r.unread?'not read yet':fmtPct('cq',r.CQ))+'</b></div>'
   +'<div class="sh-row"><span>Tier</span><b'
   +(r.unread?'':' style="color:'+(TIERCOL[r.tier]||'var(--ink)')+'"')+'>'
   +esc(r.unread?'not read yet':tierSay(r))+'</b></div>'

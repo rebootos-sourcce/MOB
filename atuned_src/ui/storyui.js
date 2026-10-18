@@ -1971,7 +1971,9 @@ function stListPaint(){
      +'title="'+esc(q.st?'Your words named '+String(q.fet||'').toLowerCase()+'. This seat has no address for it, so the charge stays at the seat.'
       :q.inf?'The seat was read. The words did not name this address.'
       :'Your words named '+String(q.fet||'').toLowerCase()+'. The engine picked this address for it.')+'">'
-     +'<span class="st-ring"></span>'+esc(q.label)+' <small>+'+(Math.round(q.amt*10)/10)+'</small></span>';}).join('')
+     /* what the entry puts there, as a percent, 17 October, percent phase 2
+        (the inventory's rule 3: "+1.7" was a move in a unit nobody can see) */
+     +'<span class="st-ring"></span>'+esc(q.label)+(fmtPct('atomsum',q.amt)!==PCT_DASH?' <small>+'+fmtPct('atomsum',q.amt)+'</small>':'')+'</span>';}).join('')
    +'</div></div>';});
  ST_SEEN=seen; box.innerHTML=o;
  box.querySelectorAll('.st-grp').forEach(function(gp){
@@ -2389,10 +2391,10 @@ function stLawPaint(){
   o+=stAnaHead('Intention','your last entry');
   /* NEVER THE AVOIDANCE NUMBER ALONE, the spec's own rule: it reads as a
      character flaw without the two readings it was built from beside it. */
-  o+='<p style="margin:6px 0 2px">Avoidance reads <b>'+g.intentional.avoidance+' per cent</b> in your last entry, built '
+  o+='<p style="margin:6px 0 2px">Avoidance reads <b>'+fmtPct('gate',g.intentional.avoidance)+'</b> in your last entry, built '
    +'from the two readings below it and never shown without them.</p>'
-   +'<p style="margin:2px 0">Aware against reactive, clean: <b>'+Math.round(g.aware*100)+' per cent</b>.</p>'
-   +'<p style="margin:2px 0">Detached against attached, clean: <b>'+Math.round(g.detached*100)+' per cent</b>.</p>';}
+   +'<p style="margin:2px 0">Aware against reactive, clean: <b>'+fmtPct('portion',g.aware)+'</b>.</p>'
+   +'<p style="margin:2px 0">Detached against attached, clean: <b>'+fmtPct('portion',g.detached)+'</b>.</p>';}
  b.innerHTML=o;}
 
 /* ============================================================

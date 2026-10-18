@@ -881,7 +881,9 @@ function renderMap(r){
     h+='<g class="pm-n" data-node="'+m.o.i+'" opacity="'+fade+'">'
      +'<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r="'+((0.28+m.v*0.46)*ZS).toFixed(3)
      +'" fill="'+c+'" opacity="'+(0.6+m.v*0.4).toFixed(2)+'"/>'
-     +'<title>'+esc(m.nm)+' · '+m.o.sq.toFixed(1)+'</title></g>';}}});
+     /* the address's weight as the registry prints it, 17 October, percent
+        phase 2, so a hover here says what the Field's ring says */
+     +'<title>'+esc(m.nm)+' · '+fmtPct('weight',m.o.sq)+'</title></g>';}}});
  h+='</g>';
  /* THE COLUMN OF THROUGHPUT, AND ONE LABEL ON THE WHOLE FIGURE.
 
@@ -940,7 +942,7 @@ function renderMap(r){
    +'<path d="'+(PMIC[kind]||PMIC.sab)+'" fill="none" stroke="'+c
    +'" stroke-width="2.2" stroke-linejoin="round" opacity=".92"/></g>'
    +'<title>'+esc(m.nm)+'. '+m.links.length+' addresses, weight '
-   +(m.v*10).toFixed(1)+'</title></g>';
+   +fmtPct('chain',m.v*10)+'</title></g>';
   if(on){
    var lsd=(m.gside<0)?-1:1;
    h+='<circle cx="'+m.x.toFixed(2)+'" cy="'+m.y.toFixed(2)+'" r="'+(rr+2.4).toFixed(2)
@@ -2154,7 +2156,7 @@ function bmHubRefresh(r){
    out.push({k:k,o:o,x:hx,y:hy,pl:pl,at:[{x:hx,y:hy},{x:100-hx,y:hy}]});});});
  BM.hubs=out;}
 function bmHubSay(h){var n=leaves(h.o).length;
- return (h.k==='cx'?'Complex':'Hyper complex')+' at a weight of '+Math.round(h.o.w)+', built on '+n+(n===1?' address.':' addresses.');}
+ return (h.k==='cx'?'Complex':'Hyper complex')+' at a weight of '+fmtPct('chain',h.o.w)+', built on '+n+(n===1?' address.':' addresses.');}
 function bmDrawHubs(g,vs){
  if(!BM.hubs||!BM.hubs.length)return;
  if(!BMHUBP)BMHUBP={cx:new Path2D(CHAINGLYPH.cx),hy:new Path2D(CHAINGLYPH.hy)};
@@ -2202,8 +2204,9 @@ var BMFLOW=[[.8,'open'],[.6,'mildly impaired'],[.4,'moderately impaired'],[.2,'h
    gave a share of nothing it named. The count is addresses and the share is
    how much of the flow up the spine this seat lets past, which is pass. */
 function bmSeatSay(st){
+ /* the pass as the registry prints it, 17 October, percent phase 2 */
  return st.hot+(st.hot===1?' address':' addresses')+' carrying, '
-  +Math.round(st.pass*100)+' percent of the flow getting through';}
+  +fmtPct('pass',st.pass)+' of the flow getting through';}
 function bmFlowStep(pass){for(var i=0;i<BMFLOW.length;i++)if(pass>=BMFLOW[i][0])return BMFLOW[i][1];return 'blocked';}
 function bmDrawFlow(g,vs){
  if(!BM.ov.on.flow)return;
@@ -2698,7 +2701,7 @@ function bmPlaceTip(p){
      it as a sentence, "Avoidance Of Grief, Joy at the great cardiac nerve",
      which reads as though joy sits there, when Joy is the fetter it is under */
   b:ids.map(function(id){var n=BY[id];
-   return n.k+' · '+(n.c||'no fetter')+' · '+String(n.n).toLowerCase()+' · '+(n.sq||0).toFixed(1);}).join('. ')};}
+   return n.k+' · '+(n.c||'no fetter')+' · '+String(n.n).toLowerCase()+' · '+fmtPct('weight',n.sq||0);}).join('. ')};}
 
 /* ---------- the lines, touched ----------
    2 October, the owner: "And the body when you zoom in, close to the tension
@@ -2756,7 +2759,7 @@ function bmWire(){
   if(tk!==BM.tipKey){BM.tipKey=tk;
    if(pk.hub)bmTip({t:pk.hub.o.nm,b:bmHubSay(pk.hub),x:p[0],y:p[1]});
    else if(pk.place)bmTip(Object.assign(bmPlaceTip(pk.place),{x:p[0],y:p[1]}));
-   else if(pk.sab)bmTip({t:pk.sab.nm,b:(pk.sab.dir>0?'Loading':'Releasing')+', at a weight of '+Math.round(pk.sab.T)+'.',x:p[0],y:p[1]});
+   else if(pk.sab)bmTip({t:pk.sab.nm,b:(pk.sab.dir>0?'Loading':'Releasing')+', at a weight of '+fmtPct('chain',pk.sab.T)+'.',x:p[0],y:p[1]});
    else bmTip(null);}
   BM.dirty=true;});
  sv.addEventListener('pointerleave',function(){
@@ -2924,14 +2927,16 @@ function bmRegionDrill(list){
  /* painted at the brush's own level, one to ten, and printed bare: "7 of 10"
     is a count against a total, which he struck (CO-05) */
  h+='<div class="pm-grid"><span>painted</span><b>'+(val?val:'\u2013')+'</b>'
-  +'<span>heaviest</span><b>'+(top?top.toFixed(1):'\u2013')+'</b></div>';
+  /* painted is the brush's own level, an input, and stays as answered;
+     heaviest is a weight the instrument reads back, so it is a percent */
+  +'<span>heaviest</span><b>'+(top?fmtPct('weight',top):'\u2013')+'</b></div>';
  var eye=function(t){return '<div class="pm-eye" style="margin-top:14px">'+t+'</div>';};
  /* the summary, for a painted region only. Counts and names, each one
     something the person can check by reading on. */
  if(val){var hv=ids.length?BY[ids[0]]:null;
   h+=eye('Dig deeper')+'<div class="pm-dm">You marked pain here at <b>'+val+'</b>. '
    +(ids.length?'<b>'+ids.length+'</b> address'+(ids.length===1?' stands':'es stand')+' here. '
-     +(top>=0.3?'The heaviest is <b>'+esc(hv.k)+'</b>, with <b>'+top.toFixed(1)+'</b> of charge held. '
+     +(top>=0.3?'The heaviest is <b>'+esc(hv.k)+'</b>, holding <b>'+fmtPct('weight',top)+'</b>. '
        :'None of '+(ids.length===1?'it':'them')+' is holding charge yet. ')
      /* "2 of your stories" failed the voice gate as a naked number, the
         "25 of your allowance" shape, so the count carries its own noun. None
@@ -2953,7 +2958,7 @@ function bmRegionDrill(list){
      +'background:none;border-top:0;border-right:0;border-bottom:0;cursor:pointer;font-family:var(--sans);min-height:var(--tap)">'
      +esc(e.text.slice(0,130))+(e.text.length>130?'\u2026':'')
      +'<span style="display:block;font-style:normal;font-size:12px;margin-top:3px">'
-     +(d?d+'. ':'')+'Put <b>'+e.amt.toFixed(1)+'</b> here, most on '+esc(BY[e.top].k)+'.</span></button>';}).join('')
+     +(d?d+'. ':'')+'Put <b>'+fmtPct('atomsum',e.amt)+'</b> here, most on '+esc(BY[e.top].k)+'.</span></button>';}).join('')
     +(stories.length>3?'<div class="pm-dm">And '+(stories.length-3)+' more.</div>':'');
   else h+='<div class="pm-dm">No story you have written has landed here yet.</div>'
    +'<button type="button" class="btn" id="bmwrite" style="margin-top:8px">Write about it</button>';
@@ -2975,7 +2980,7 @@ function bmRegionDrill(list){
   h+=eye('Running through here')+'<div class="pm-list">'
    +through.map(function(s,i){return '<button type="button" class="pm-li" data-bmsab="'+i+'">'
     +'<i style="background:'+bmRgba(s.col,1)+'"></i><span class="pm-ln">'+esc(s.nm)+'</span>'
-    +'<span class="pm-lw">'+s.T.toFixed(1)+'</span></button>';}).join('')+'</div>';}
+    +'<span class="pm-lw">'+fmtPct('chain',s.T)+'</span></button>';}).join('')+'</div>';}
  h+='<button type="button" class="btn" id="bmzoom" style="margin-top:14px">Zoom into this region</button>';
  rdShell(h);
  var z=document.getElementById('bmzoom'); if(z)z.onclick=function(){bmZoomRegs(list);};
@@ -3371,15 +3376,19 @@ function bmOvVals(r){
  var F={},V={},dash='–';try{F=fbValues(r);}catch(e){}
  V.addr=F.addresses;V.sab=F.saboteurs;V.cx=F.complexes;V.hy=F.hyper;
  var mr=((r&&r.maskRing)||[]).slice().sort(function(a,b){return b.w-a.w;})[0];
- V.masks=(mr&&!r.unread&&Math.round(mr.w)>0)?{p:mr.w*10,v:String(Math.round(mr.w)),c:bmRgba(BMC.mask,1),
-  m:'Ring and number: the heaviest mask, '+mr.nm+', at a weight of '+Math.round(mr.w)+'.'}
+ /* the mask and the flow print their rings, 17 October, percent phase 2:
+    the mask ring drew w*10 and printed the whole of w, so 4.6 drew 46 and
+    read 5. Both ask the registry now; pain is the brush's own level, an
+    input, and stays as it was painted. */
+ V.masks=(mr&&!r.unread&&fmtPct('weight',mr.w)!==dash)?{p:pct('weight',mr.w),v:fmtPct('weight',mr.w),c:bmRgba(BMC.mask,1),
+  m:'Ring and number: the heaviest mask, '+mr.nm+', at a weight of '+fmtPct('weight',mr.w)+'.'}
   :{p:0,v:dash,c:bmRgba(BMC.mask,1),m:'Nothing read yet.'};
  var pv=(BMG&&BMG.reg||[]).reduce(function(m,q){return Math.max(m,q.val||0);},0);
  V.pain={p:pv*10,v:pv?String(pv):dash,c:seatCol('Sacral'),
   m:pv?'Ring and number: the heaviest pain you have painted, at '+pv+'.':'Nothing painted yet.'};
  var sp=flSpeed();
- V.flow=(r&&!r.unread&&sp>=0.005)?{p:sp*100,v:Math.round(sp*100)+'%',c:'var(--accent)',
-  m:'Ring and number: flow, the share of charge that passes every seat, '+Math.round(sp*100)+'%.'}
+ V.flow=(r&&!r.unread&&fmtPct('flow',sp)!==dash)?{p:pct('flow',sp),v:fmtPct('flow',sp),c:'var(--accent)',
+  m:'Ring and number: flow, the share of charge that passes every seat, '+fmtPct('flow',sp)+'.'}
   :{p:0,v:dash,c:'var(--accent)',m:(r&&!r.unread)?'Ring and number: flow. Nothing passes every seat yet.':'Nothing read yet.'};
  Object.keys(V).forEach(function(k){if(V[k])V[k].p=clamp(+V[k].p||0,0,100);});
  return V;}

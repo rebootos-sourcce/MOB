@@ -285,12 +285,14 @@ function chHoverText(j,seat){
   var wo=(CHV.who&&CHV.who[j])||null;
   return '<b>'+esc(a.k)+'</b>'+(a.plex?', '+esc(a.plex.toLowerCase()):'')+'. '
    +(a.fld?esc(a.b):esc(chSeatName(a.b))+' seat')+(a.c?', '+esc(a.c.toLowerCase())+' channel':'')
-   +'. Charge '+(sc.achT[j]*10).toFixed(1)+'.'
+   /* the address's weight as a percent, 17 October, percent phase 2;
+      achT is sq over ten, so this is the registry's weight kind */
+   +'. Charge '+fmtPct('weight',sc.achT[j]*10)+'.'
    /* round RB: what is running here, and what it does to the body */
    +(wo&&wo.sab?' The saboteur '+esc(wo.sab.nm)+' runs here and dims the body at this place.':'')
    +(wo&&wo.cx?' It is part of the complex '+esc(wo.cx.nm)+'.':'');}
  if(seat>=0){var st=CHC.seatState(sc,true),sh=st.st.sh[seat];
-  return '<b>'+chSentence(chSeatWord(BANDS[seat])+' seat').replace(/\.$/,'')+'</b>, '+Math.round(sh*100)+' percent shadow. Press to trace it.';}
+  return '<b>'+chSentence(chSeatWord(BANDS[seat])+' seat').replace(/\.$/,'')+'</b>, '+(fmtPct('closed',sh)!==PCT_DASH?fmtPct('closed',sh)+' shadow':'no shadow')+'. Press to trace it.';}
  /* nothing under the pointer is the empty value, a dash. The sentence that
     stood here explained how to use the line (CO-27, section-explains-itself) */
  return '\u2013';}
@@ -348,11 +350,11 @@ function chTraceCard(r){
   +'<div class="chr-tabs" role="group" aria-label="Leaks">'+tabs.map(function(t){
     return '<button type="button" class="chr-tab" data-chtrace="'+t+'" aria-pressed="'+(t===k)+'" style="--lc:'+PAL[BANDS[t]]+'"><i></i>'+esc(chSeatName(BANDS[t]))+'</button>';}).join('')+'</div>'
   +'<div class="chr-ttl"><b>'+esc(chSeatName(BANDS[k]))+' seat</b><span>'
-  +(lk>.12?'Leaking, '+Math.round(lk*100)+' percent':'Holding. No leak')+'</span></div>';
+  +(lk>.12?'Leaking, '+fmtPct('leak',lk):'Holding. No leak')+'</span></div>';
  if(ch.story)h+='<div class="chr-step"><div class="chr-k">Story'+(ch.when?', '+esc(ch.when):'')+'<i>'+esc(ch.src)+'</i></div><p class="chr-q">“'+chStoryHtml(ch.story)+'”</p></div><div class="chr-edge">supports</div>';
  else h+='<div class="chr-step"><div class="chr-k">Story<i>none</i></div><p class="chr-m">No story has landed here. The charge is from your intake.</p></div><div class="chr-edge">supports</div>';
  if(ch.addr){var n=BY[ch.addr.i];
-  h+='<div class="chr-step"><div class="chr-k">Address '+ch.addr.i+'<i>known</i></div>'+addrRow(n,{em:'Charge '+ch.addr.sq.toFixed(1),ink:PAL[ch.addr.seat]})
+  h+='<div class="chr-step"><div class="chr-k">Address '+ch.addr.i+'<i>known</i></div>'+addrRow(n,{em:'Charge '+fmtPct('weight',ch.addr.sq),ink:PAL[ch.addr.seat]})
    +'<p class="chr-m">'+esc(chSeatName(ch.addr.seat))+' seat'+(ch.addr.plexus?', '+esc(ch.addr.plexus.toLowerCase()):'')+(ch.addr.channel?', '+esc(ch.addr.channel.toLowerCase())+' channel':'')+'.</p></div>';}
  h+='<div class="chr-edge">worn under</div><div class="chr-step"><div class="chr-k">Mask<i>known</i></div><p class="chr-m"><b>'
   +esc(under.join(', ')||'No mask')+'</b>, by the '+esc(chSeatWord(BANDS[k]))+' seat.'+(under.indexOf(m.nm)<0&&under.length?' You are viewing '+esc(m.nm)+'.':'')+'</p></div>'
@@ -373,7 +375,7 @@ function chRailHtml(r){
     reading the record does not hold. The note above says the field is dark;
     the panel now agrees with it. */
  if(!unread)h+='<div class="chr-lead" style="--lead:'+hexc+'"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="'+hexc+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="'+a.ic+'"/></svg>'
-  +'<div><div class="pm-eye">Leading pattern</div><b>'+esc(a.nm)+'</b><span class="chr-fig">'+(w[a.nm]||0).toFixed(1)+'</span></div></div>'
+  +'<div><div class="pm-eye">Leading pattern</div><b>'+esc(a.nm)+'</b><span class="chr-fig">'+fmtPct('charge',w[a.nm]||0)+'</span></div></div>'
   +'<div class="chr-where">'+esc(chSentence(a.loc))+'</div>';
  h+='<div class="pm-eye">Mask</div><div class="ad-nm">'+esc(m.nm)+'</div><div class="ad-sub">Worn over the '+esc(chSeats(m))+'</div>'
   +'<p class="ad-p">It '+esc(m.v)+'.</p>'
@@ -383,9 +385,11 @@ function chRailHtml(r){
  /* the two readings that light and move the field */
  var cq=unread?0:Math.round(+r.CQ||0), dq=unread?0:Math.round(+r.DQ||0), vt=unread?0:(+r.X||0);
  h+='<div class="pm-eye chr-sp">Light and breath</div><div class="chr-read">'
-  +'<div class="chr-row"><span>Coherence</span><b>'+(unread?'–':cq+'%')+'</b><i>'+esc(chSentence(charCohWord(unread?0:cq/100)))+' It lights the figure and sets how wide, bright and whole the field is.</i></div>'
-  +'<div class="chr-row"><span>Vitality</span><b>'+(unread?'–':vt.toFixed(2))+'</b><i>'+esc(chVitWord(unread?0:vt))+' It sets how far and how fast the field breathes.</i></div>'
-  +'<div class="chr-row"><span>Decoherence</span><b>'+(unread?'–':dq+'%')+'</b><i>The shadow, all 112 addresses against the most they could hold. It opens the gaps.</i></div></div>'
+  /* the three on the registry, 17 October, percent phase 2: vitality read
+     0.24 beside two percents */
+  +'<div class="chr-row"><span>Coherence</span><b>'+fmtPct('cq',r.CQ,{unread:unread})+'</b><i>'+esc(chSentence(charCohWord(unread?0:cq/100)))+' It lights the figure and sets how wide, bright and whole the field is.</i></div>'
+  +'<div class="chr-row"><span>Vitality</span><b>'+fmtPct('vitality',vt,{unread:unread})+'</b><i>'+esc(chVitWord(unread?0:vt))+' It sets how far and how fast the field breathes.</i></div>'
+  +'<div class="chr-row"><span>Decoherence</span><b>'+fmtPct('dq',r.DQ,{unread:unread})+'</b><i>The shadow, all 112 addresses against the most they could hold. It opens the gaps.</i></div></div>'
   /* round RB: the glow behind the figure is a picture too, so it is said */
   +(unread?'':'<p class="chr-note">The glow behind the figure is the colour your whole field gives off: every point\u2019s colour, mixed by how bright it is. It breathes with the field.</p>');
  /* the seven seats: root first as everywhere, each a button that traces it */
@@ -393,7 +397,8 @@ function chRailHtml(r){
   +SF.map(function(s,k){var sh=charSmooth(CHAR_SEAT_LO,CHAR_SEAT_FULL,s.mean),word=sh<.25?'Open':sh<.6?'Loaded':'Closed';
    return '<button type="button" class="chr-seat" data-chtrace="'+k+'" aria-pressed="'+(CHV.sel===k)+'" title="'+word+'" style="--sc:'+PAL[s.seat]+'">'
     +'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6.5" fill="none" stroke="'+PAL[s.seat]+'" stroke-width="1.7"/></svg>'
-    +'<span class="chr-sn">'+esc(chSeatName(s.seat))+'</span><span class="chr-bar"><i style="width:'+Math.round(sh*100)+'%"></i></span><span class="chr-sv">'+Math.round(sh*100)+'</span></button>';}).join('')
+    /* the bar and its figure off one kind, and the figure carries its sign */
+    +'<span class="chr-sn">'+esc(chSeatName(s.seat))+'</span><span class="chr-bar"><i style="width:'+(pct('closed',sh)||0)+'%"></i></span><span class="chr-sv">'+fmtPct('closed',sh)+'</span></button>';}).join('')
   +'</div><p class="chr-note">The bar is how closed the seat is, from the charge on its own addresses. Past about a third the field pinches there, runs slow and breaks up. An open seat swells.</p>';
  /* what the points are, which is the question the owner asked of the mockup */
  h+='<div class="pm-eye chr-sp">What the points are</div>'
@@ -557,11 +562,11 @@ function chDrill(m){
  h+='<div class="pm-eye">The seats it covers</div><div class="chr-seats">'+seats.map(function(s){
   var sh=charSmooth(CHAR_SEAT_LO,CHAR_SEAT_FULL,s.mean);
   return '<div class="chr-seat chr-seat-ro" style="--sc:'+PAL[s.seat]+'"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6.5" fill="none" stroke="'+PAL[s.seat]+'" stroke-width="1.7"/></svg>'
-   +'<span class="chr-sn">'+esc(chSeatName(s.seat))+'</span><span class="chr-bar"><i style="width:'+Math.round(sh*100)+'%"></i></span><span class="chr-sv">'+Math.round(sh*100)+'</span></div>';}).join('')+'</div>';
+   +'<span class="chr-sn">'+esc(chSeatName(s.seat))+'</span><span class="chr-bar"><i style="width:'+(pct('closed',sh)||0)+'%"></i></span><span class="chr-sv">'+fmtPct('closed',sh)+'</span></div>';}).join('')+'</div>';
  var top=AF.filter(function(a){return !a.field&&m.b.indexOf(a.seat)>=0&&a.sq>0;}).sort(function(a,b){return b.sq-a.sq;}).slice(0,6);
  h+='<div class="pm-eye">Carrying the most</div>';
  if(!top.length)h+='<p class="ad-p">Nothing held under this mask.</p>';
- else h+='<div class="ad-rows">'+top.map(function(a){return addrRow(BY[a.i],{em:'Charge '+a.sq.toFixed(1),ink:PAL[a.seat]});}).join('')+'</div>';
+ else h+='<div class="ad-rows">'+top.map(function(a){return addrRow(BY[a.i],{em:'Charge '+fmtPct('weight',a.sq),ink:PAL[a.seat]});}).join('')+'</div>';
  var cov=AF.filter(function(a){return !a.field&&m.b.indexOf(a.seat)>=0;}).length;
  h+='<p class="ad-p">It covers '+chPl(cov,'address','addresses')+'. '+chPl(AF.filter(function(a){return !a.field&&m.b.indexOf(a.seat)>=0&&a.sq>=4;}).length,'is','are')+' held at 4 or more.</p>';
  rdShell(h);}

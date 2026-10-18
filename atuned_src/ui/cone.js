@@ -2482,7 +2482,8 @@ function coneKey(){
     +(dir>0?'M12 20V4M7 9l5-5 5 5':'M12 4v16M7 15l5 5 5-5')
     +'" fill="none" stroke="currentColor" stroke-width="1.7" '
     +'stroke-linecap="round" stroke-linejoin="round"/></svg>'
-    +esc(l.nm)+' <span class="ck-v">'+l.v.toFixed(1)+'</span></span>';};
+    /* what the instrument reads back from the law, a percent, 17 October */
+    +esc(l.nm)+' <span class="ck-v">'+fmtPct('law',l.v)+'</span></span>';};
   h+=grp('Lifting you',rg.up.map(function(l){
     return row(l,seatCol(PAL[l.b]?l.b:'Heart'),1);}).join(''));
   h+=grp('Pulling you down',rg.dn.map(function(l){
@@ -2689,9 +2690,11 @@ function coneRead(){
  /* "CURRENTLY TURNING" CAME OFF. The direction is read from where integrity
     sits, the top or the bottom half of its range, and not from a change over
     time, so the sentence says what it is read from and claims no movement. */
- return '<p class="cone-p">Your coherence is <b>'+cq+'</b>. '+unpSay('coherence')+' '
+ /* both figures as the registry prints them, 17 October, percent phase 2;
+    cq stays the whole number the band below is read from */
+ return '<p class="cone-p">Your coherence is <b>'+fmtPct('cq',r.CQ)+'</b>. '+unpSay('coherence')+' '
   +band+', where most people swing between better days and worse ones.</p>'
-  +'<p class="cone-p">Your integrity is <b>'+r.Ig.toFixed(1)+'</b>. '+unpSay('integrity')+'</p>'
+  +'<p class="cone-p">Your integrity is <b>'+fmtPct('integrity',r.Ig)+'</b>. '+unpSay('integrity')+'</p>'
   +'<p class="cone-p">Integrity is the hull. A hole in it means the ship takes '
   +'on water, and everything above the waterline stops mattering. Integrity '
   +'raises coherence, coherence raises what you can hold to, and that raises '
@@ -2738,7 +2741,7 @@ function coneGraph(){
      explained how the chart fills, which the chart does. */
   h+='<p class="cn-gp">Nothing on the record for this span.</p>';}
  else if(sr.state==='one'){
-  h+='<p class="cn-gp">One reading in this span, at <b>'+Math.round(sr.last)+'</b>. '
+  h+='<p class="cn-gp">One reading in this span, at <b>'+fmtPct('cq',sr.last)+'</b>. '
    +'Two makes a line.</p>';}
  else {
   /* the axis is the range that is actually there, with a floor of ten points
@@ -2759,9 +2762,12 @@ function coneGraph(){
    +'</svg>'
    /* THE NUMBERS ARE PRINTED, NOT HOVERED. A phone has no hover, and the
       reading a person came for is the two ends and the direction. */
-   +'<div class="cn-gf"><span>'+Math.round(sr.first)+'</span>'
-   +'<b>'+(sr.dir==='up'?'up':(sr.dir==='down'?'down':'level'))+'</b>'
-   +'<span>'+Math.round(sr.last)+'</span></div>';}
+   /* the ends as percents, and the word read off the two printed figures,
+      so a move too small to show is level and never "up" between two equal
+      figures (pctMove, engine/pct.js), 17 October */
+   +(function(mv){return '<div class="cn-gf"><span>'+fmtPct('cq',sr.first)+'</span>'
+    +'<b>'+(!mv||!mv.moved?'level':(mv.up?'up':'down'))+'</b>'
+    +'<span>'+fmtPct('cq',sr.last)+'</span></div>';}(pctMove('cq',sr.first,sr.last)));}
  h+='<button type="button" class="cn-gmore" id="cngomore">Open the summary</button>';
  return h+'</div>';}
 /* ============================================================
@@ -2906,8 +2912,10 @@ function coneAxPaint(){
   var v=M.un?-1:Math.round(clamp(a.x,0,100));
   if(v===o.v)continue; o.v=v;
   o.val.setAttribute('stroke-dasharray',(v<0?0:v)+' 100');
-  o.pv.textContent=v<0?'\u2013':String(v);
-  o.el.setAttribute('aria-label',o.nm+(v<0?'. Nothing read yet.':'. You sit at '+v+' on this axis.'));}}
+  /* a place on the axis as a percent, 17 October, percent phase 2, and the
+     bottom of the axis is the dash, the registry's one rule for nought */
+  o.pv.textContent=v<0?'\u2013':fmtPct('axis',v);
+  o.el.setAttribute('aria-label',o.nm+(v<0?'. Nothing read yet.':v===0?'. You sit at the bottom of this axis.':'. You sit at '+v+'% on this axis.'));}}
 function coneRowsFind(){
  var rows=[].slice.call(document.querySelectorAll('#cone .cn-nr[data-cnax]'));
  CONE.rows=rows.map(function(el){
@@ -2994,8 +3002,10 @@ function cnOvList(){
 function cnOvVals(){
  var r=compute(), V={};
  if(r.unread){V.well={p:0,v:'\u2013',c:seatCol(r.darkB||'Root'),m:'Nothing read yet.'};return V;}
- V.well={p:clamp((r.darkV||0)*10,0,100),v:String(Math.round(+r.darkV||0)),c:seatCol(r.darkB),
-  m:'Ring and number: the heaviest assemblage point, '+r.darkB+', at a weight of '+Math.round(+r.darkV||0)+'.'};
+ /* the Field's own figure for the same seat, so the ring and the pill
+    agree: it drew darkV*10 and printed the whole of darkV, 17 October */
+ V.well={p:pct('weight',r.darkV||0)||0,v:fmtPct('weight',r.darkV||0),c:seatCol(r.darkB),
+  m:'Ring and number: the heaviest assemblage point, '+r.darkB+', at a weight of '+fmtPct('weight',r.darkV||0)+'.'};
  return V;}
 function cnOvOrb(k,V){
  var o=CN_OV[k], v=V[k];
