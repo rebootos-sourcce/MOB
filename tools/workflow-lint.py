@@ -143,6 +143,9 @@ BROWSER = {
 # the release chain, 17 October (tests/releasechain.js). Report only until
 # three green runs.
     'releasechain':  ('node tests/releasechain.js', 20),
+# percent phase 2, 17 October (tests/pct.js): the printed percent is the
+# drawn fill. Report only until three green runs.
+    'pct':           ('node tests/pct.js', 20),
 }
 # P0 Alpha acceptance: move to the blocking browser matrix, and mutation-test each
 # one so a future refactor cannot silently return it to report-only.

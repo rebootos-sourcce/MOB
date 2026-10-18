@@ -243,6 +243,15 @@ function cr(band,pct,o){
     component prints passes through here, so a ring that reads nought prints the
     dash and its title says so, and no caller has to remember. Round J13. */
  if(/^0(?:\.0+)?%?$/.test(String(val)))val='\u2013';
+ /* A PERCENT IS NEVER THE ALARM. 17 October, percent phase 2: every score now
+    prints as a percent of its own range (engine/pct.js), so a weight of 9.2
+    reads 92%, and a ring past ninety went alarm red beside a figure that now
+    looks like a mark out of a hundred. Red on a percent reads as a failed
+    grade, which nothing here sets out to give. Default taken by the team and
+    written in DECISIONS.md as his to overrule: a ring printing a percent draws
+    its own colour at every fill, so the arc shows an amount and nothing else.
+    A ring printing something other than a percent keeps the alarm law. */
+ if(/%$/.test(String(val)))hot=false;
  var cls='cr '+size+(hot?' hot':'')+(o.act?' act':'')+(o.on?' on':'');
  var attrs=o.data||'';
  /* THE RING NAMED ITS COLOUR AND NOT ITS SUBJECT. The fallback led with the
@@ -683,7 +692,13 @@ function rbMotion(hosts){
        turns rather than jumping back to where the first began */
     var e=crMoAt(m,now);nm.w0=m.w0+(m.w1-m.w0)*e;
     nm.n0=(m.n0!==null&&m.n1!==null&&n1!==null&&m.suf===nm.suf)?m.n0+(m.n1-m.n0)*e:null;
-    if(m.s1&&sv&&m.s1.length===sv.length)nm.s0=m.s0.map(function(v,q){return v+(m.s1[q]-v)*e;});
+    /* m.s0 IS NULL WHEN THE ROW FIRST ARRIVED WITH NO SEAT WAVE. The settled
+       path above refreshes m.s1 and never m.s0, so a row that gained its wave
+       later held s1 and a null s0, and the next change threw on m.s0.map
+       inside render. Seen in tests/functional.js on the percent phase 2
+       build, where the Flow figure stopped moving between two renders and
+       took that path. With no s0 the wave starts where it now is. */
+    if(m.s0&&m.s1&&sv&&m.s1.length===sv.length)nm.s0=m.s0.map(function(v,q){return v+(m.s1[q]-v)*e;});
     nm.dir=to>m.w1+.05?1:to<m.w1-.05?-1:0;
     nm.span=Math.max(ENTER_SPAN,nm.dir?RB_HEAD:0);}
    /* a figure that moved, and not the first sight of one and not a different
@@ -695,7 +710,9 @@ function rbMotion(hosts){
      var d=n1-m.n1, up=(now-m.ct<RB_CHIP)&&m.chip&&((m.dsum>0)===(d>0));
      nm.dsum=up?m.dsum+d:d;
      var txt=Math.abs(nm.dsum).toFixed(nm.dp);
-     if(+txt>0){nm.chip=(nm.dsum>0?'+':'−')+txt;nm.ct=now;nm.chipBad=nm.bad&&nm.dsum>0;}}
+     /* the chip carries the pill's own unit, 17 October, percent phase 2: a
+        bare "+3" beside "61%" was a move in a unit the row does not show */
+     if(+txt>0){nm.chip=(nm.dsum>0?'+':'−')+txt+nm.suf;nm.ct=now;nm.chipBad=nm.bad&&nm.dsum>0;}}
     else if(m.chip&&now-m.ct<RB_CHIP){nm.chip=m.chip;nm.ct=m.ct;nm.chipBad=m.chipBad;nm.dsum=m.dsum;}}
    RBMO[key]=nm; rbPaint(nm,now); rbGhost(el,nm,now); rbChip(el,nm,now);});});
  fresh.sort(function(a,b){return a.r.top-b.r.top;});
@@ -778,15 +795,14 @@ function rbMotion(hosts){
 var RB2={}, RB2_ON=false, RB2_MINF=0.5;
 /* the compass marker's own wander, lifted so the two are one function */
 function rbDrift(t){return Math.sin(t*0.55)*0.62+Math.sin(t*0.23+1.1)*0.38;}
-/* a figure as the bar prints it: a whole percent, and a zero is a dash */
-function rbPct(v){var n=Math.round(+v||0); return n>0?n+'%':'–';}
-/* A HEADLINE READING PRINTS BARE. Round PQ, his words: "No, it doesn't need
-   to be a percent. Just a number." The CQ and DQ key under the wheel still
-   printed 62% and 11% on 15 October, the last place they did. A pole marked
-   bare prints the whole number; a share of a whole (the balance, the lean)
-   keeps its sign, because a share is a percent. */
-function rbBare(v){var n=Math.round(+v||0); return n>0?String(n):'–';}
-function rbVal(P,v){return P&&P.bare?rbBare(v):rbPct(v);}
+/* A FIGURE AS THE BAR PRINTS IT, through the registry. Every pole on a pair
+   bar is already a share of a hundred, so each names its kind (cq, dq, lean)
+   and fmtPct prints it: a whole percent, and nought is the dash.
+   rbBare is gone, 17 October, percent phase 2. Round PQ ("No, it doesn't need
+   to be a percent. Just a number.") is superseded for CQ and DQ by the 16
+   October ruling, his words: "Instead of 0.0, site wide, we need to convert
+   those numbers into percent." DECISIONS.md, 16 October. */
+function rbVal(P,v){return fmtPct((P&&P.kind)||'lean',v);}
 function rbPair(k,o){
  var L=o.L, R=o.R, read=!!o.read;
  function pole(P,side){
@@ -813,7 +829,8 @@ function rbPairSays(pairWord,o,lean){
  var s=[rbSay(pairWord),rbSay(o.L.nm),rbSay(o.R.nm)].filter(Boolean).join(' ');
  return (s+(lean?' '+lean:'')).trim();}
 function rbPairAria(pairWord,o,say,does){
- var f=function(P){return P.nm+' '+(o.read?(Math.round(+P.v||0)>0?Math.round(P.v)+(P.bare?'':' per cent'):'zero'):'not read yet');};
+ var f=function(P){var p=pct(P.kind||'lean',P.v);
+  return P.nm+' '+(o.read?(p>0?p+' per cent':'zero'):'not read yet');};
  return pairWord+'. '+f(o.L)+', '+f(o.R)+'. '+say+(does?' '+does:'');}
 /* a reading arrives. o is rbPair's own spec, with each pole's v, its swing
    sw(t) as an offset from v in the same units, and fw, the width that swing
@@ -918,9 +935,15 @@ Object.keys(QICON_D).forEach(function(k){QICON[k]=qp(QICON_D[k]);});
    is a figure about the seed. Round J13. */
 function unreadNow(){try{return !!compute().unread;}catch(e){return false;}}
 /* an address, a saboteur or a seat, rendered as one object */
+/* EVERY ADDRESS RING PRINTS ITS FILL. 17 October, percent phase 2: the ring
+   filled sq*10 and printed sq.toFixed(1), so one reading was drawn as 87 and
+   printed as 8.7. Both are pct('weight') now, the registry's one formula
+   (engine/pct.js), so the arc and the pill cannot disagree. A weight that
+   rounds to nothing is the dash, and its title says nothing is held. */
 function crNode(n,size,o){o=o||{};
- return cr(n.b, n.sq*10, Object.assign({size:size||'sm', raw:n.sq.toFixed(1),
-  label:n.k, title:n.k+', '+n.b.toLowerCase()+' seat. '+(n.sq>0?n.sq.toFixed(1)+' left after the opposite':'Nothing held.')},o));}
+ var f=fmtPct('weight',n.sq);
+ return cr(n.b, pct('weight',n.sq)||0, Object.assign({size:size||'sm', raw:f,
+  label:n.k, title:n.k+', '+n.b.toLowerCase()+' seat. '+(f!==PCT_DASH?f+' left after the opposite':'Nothing held.')},o));}
 /* An address row. analytics.js and drills.js each carried a byte identical
    copy of this markup, a filled dot plus a bare number, while crNode sat
    unused. crNode was built for exactly this: the ring carries the seat colour
@@ -1006,13 +1029,17 @@ function crBadge(band,pct,o){
 /* an address as a badge. the same reading the ring carried, in the shape the
    ruling asked for. */
 function crbNode(n,size,o){o=o||{};
- return crBadge(n.b, n.sq*10, Object.assign({size:size||'sm', raw:n.sq.toFixed(1),
-  title:n.k+', '+n.b.toLowerCase()+' seat. '+(n.sq>0?n.sq.toFixed(1)+' left after the opposite':'Nothing held.')},o));}
+ var f=fmtPct('weight',n.sq);
+ return crBadge(n.b, pct('weight',n.sq)||0, Object.assign({size:size||'sm', raw:f,
+  title:n.k+', '+n.b.toLowerCase()+' seat. '+(f!==PCT_DASH?f+' left after the opposite':'Nothing held.')},o));}
+/* a saboteur, complex, hyper or character layer, on the registry's chain kind.
+   hot:p.w>=9 stays as the caller's word, and cr() keeps it off the arc because
+   the figure is a percent; overshot is said in the title. */
 function crPat(p,size,o){o=o||{};
- var lv=leaves(p), b=(lv[0]||{}).b||'Heart';
- return cr(b, p.w*10, Object.assign({size:size||'md', raw:p.w.toFixed(1), label:p.nm,
+ var lv=leaves(p), b=(lv[0]||{}).b||'Heart', f=fmtPct('chain',p.w);
+ return cr(b, pct('chain',p.w)||0, Object.assign({size:size||'md', raw:f, label:p.nm,
   hot:p.w>=9||!!p.over,
-  title:p.nm+', weight '+p.w.toFixed(1)+(p.over?', overshot':'')},o));}
+  title:p.nm+', weight '+f+(p.over?', overshot':'')},o));}
 function leaves(o){if(!o||!o.parts)return o?[o]:[];
  var a=[],sn={};(function dig(x){if(x.parts)x.parts.forEach(dig);
   else if(!sn[x.i]){sn[x.i]=1;a.push(x);}})(o);return a;}

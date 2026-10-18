@@ -287,7 +287,9 @@ function renderPol2(r){
  s+='<rect x="'+(x-5)+'" y="'+y60+'" width="10" height="'+(y40-y60).toFixed(1)+'" rx="2" fill="rgba(128,128,128,.10)"/>';
  [[60,y60],[50,mid],[40,y40]].forEach(function(tk){
   s+='<line x1="'+(x-6)+'" y1="'+tk[1]+'" x2="'+(x+6)+'" y2="'+tk[1]+'" stroke="rgba(128,128,128,.34)" stroke-width="1"/>';
-  s+='<text x="'+(x-10)+'" y="'+(tk[1]+3.5)+'" text-anchor="end" class="pol2-t">'+tk[0]+'</text>';});
+  /* the scale in the marker's own unit, 17 October, percent phase 2: a tick
+     at 60 beside a marker reading 62% would be two units on one axis */
+  s+='<text x="'+(x-10)+'" y="'+(tk[1]+3.5)+'" text-anchor="end" class="pol2-t">'+tk[0]+'%</text>';});
  /* THE TWO ENDS ARE DOORS. The compass was a picture of a direction with
     nothing at either end of it. The top of the cone is anchored by the
     twelve, the bottom by the blueprint and the nine circles, and both are
@@ -348,7 +350,7 @@ function renderPol2(r){
     because the picture of an unread field is a real picture, but the number
     beside it is not printed until somebody has entered something. */
  s+='<text x="'+(x+20)+'" y="'+(yB+4).toFixed(1)+'" class="pol2-c" style="fill:'+mc+'">'
-  +(r.unread?'\u2013':Math.round(cq))+'</text></g>';
+  +fmtPct('cq',cq,{unread:r.unread})+'</text></g>';
  el.innerHTML=s+'</svg>';
  POL2.sig=sig; POL2.el=el; POL2.yB=yB;
  POL2.mv=el.querySelector('.pol2-mv');
@@ -420,7 +422,10 @@ function renderAcc(r){
      larger, on his ruling.
      It lies on the stage again, round LR, level with zoom in the lower left,
      and keeps the orb: zoom's circles beside it are 44, the orb's size. */
-  +cr('Crown',un?0:a.pct,{size:'orb',raw:un?'\u2013':a.pct.toFixed(0),
+  /* a percent, 17 October, percent phase 2: fill and pill are both the
+     registry's accuracy kind (engine/pct.js), so the orb reads 58% and not a
+     bare 58 beside the CQ percents around it */
+  +cr('Crown',un?0:pct('accuracy',a.pct),{size:'orb',raw:fmtPct('accuracy',a.pct,{unread:un}),
     label:'Accuracy',hot:false})
   +'</button>';
  var bt=document.getElementById('accbtn');

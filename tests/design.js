@@ -856,10 +856,16 @@ console.log('\n=== the alarm law ===');
  ok(bad.length===0,'no good end reading prints in the alarm colour, got '
    +JSON.stringify(bad.slice(0,4)));
  /* AND THE MECHANISM IS STILL LIVE. A ring built past the threshold with no
-    hot decision has to redden, or the gate above is passing on a corpse. */
+    hot decision has to redden, or the gate above is passing on a corpse.
+    NAMED CHANGE, percent phase 2 slice 1, 17 October: a ring that prints a
+    percent no longer takes the alarm at any fill (the default taken in
+    DECISIONS.md, his to overrule: red on a percent reads as a failed mark).
+    The ring built here prints no percent, a charge of 9.6 as a bare figure,
+    so it is the case the alarm law still covers, and tests/pct.js holds the
+    other half, that 96% draws its own colour. */
  const fires=await page.evaluate(()=>{
   const d=document.createElement('div');
-  d.innerHTML=cr('Root',96,{size:'sm',label:'shadow weight'});
+  d.innerHTML=cr('Root',96,{size:'sm',label:'shadow weight',raw:'9.6'});
   document.body.appendChild(d);
   const e=d.querySelector('.cr');
   const arc=e.querySelector('.arc circle:last-child');
@@ -1428,6 +1434,14 @@ console.log('\n=== a figure is legible against the ground it is printed on ===')
   loadP(gi); render();
   await new Promise(r=>setTimeout(r,300));
   const chip={plain:{r:99,n:0},hot:{r:99,n:0}};
+  /* NAMED CHANGE, percent phase 2 slice 1, 17 October: no ring that prints a
+     percent is hot any more (DECISIONS.md, the default taken), and every ring
+     on the Field prints one, so Gordon's Field has no hot chip left to
+     measure. The alarm survives on a ring that prints no percent, so one is
+     put beside the first chip, on the same ground, and measured there. */
+  let probe=null;
+  if(!document.querySelector('.cr.hot')){const c0=document.querySelector('.cr');
+   if(c0){c0.insertAdjacentHTML('afterend',cr('Root',96,{size:'sm',raw:'9.6',label:'probe'}));probe=c0.nextElementSibling;}}
   [...document.querySelectorAll('.cr')].forEach(c=>{
    const v=c.querySelector('.v'); if(!v)return;
    const g=painted(v), r=+ratio(lum(inkOn(v,g)),lum(g)).toFixed(2);
@@ -1437,6 +1451,7 @@ console.log('\n=== a figure is legible against the ground it is printed on ===')
     chip[k].seat=((c.getAttribute('style')||'').match(/--c:\s*([^;]+)/)||[,'?'])[1].trim();
     chip[k].px=+parseFloat(getComputedStyle(v).fontSize).toFixed(1);
     chip[k].txt=v.textContent.trim();}});
+  if(probe)probe.remove();
   /* THE PAIR BARS' FIGURES, round RB, ported in the P3 menu pass. Orientation
      and balance were a dial whose fill reached under one end figure; every
      pair on the rail is rbPair now, where each pole's colour lies at its own
@@ -1594,15 +1609,16 @@ console.log('\n=== the release runs to its end in silence, and says what it spea
  await rp.close();
 }
 
-console.log('\n=== the headline coherence is a number, not a percent ===');
+console.log('\n=== the headline coherence is a percent, equal to its fill ===');
 /* ROUND PQ, his words: "No, it doesn't need to be a percent. Just a number."
-   Recorded in DECISIONS.md for the headline CQ and DQ wherever they stand:
-   the rings, the glass bar, the Summary tile, the Compass centre. The Summary
-   plate and the wheel's core already read bare. On the Field the glass bar's
-   Laws circle (CQ) and Decoherence circle (DQ) and the ring at the foot of
-   the stage (CQ, with its band) still printed 62% and 11%. Held here on
-   Marcus, whose figures are neither empty nor whole: each prints the bare
-   whole number the reading rounds to, and on an unread field a dash. */
+   This section held CQ and DQ bare on the glass bar's Laws and Decoherence
+   circles and the ring at the foot of the stage. SUPERSEDED 16 October, his
+   words: "Instead of 0.0, site wide, we need to convert those numbers into
+   percent." DECISIONS.md records that the ruling replaces round PQ for CQ and
+   DQ. NAMED CHANGE, percent phase 2 slice 1, 17 October: the three now print
+   fmtPct('cq') and fmtPct('dq'), the registry's form (engine/pct.js), and an
+   unread field still prints a dash in all three, never 0%. Held on Marcus,
+   whose figures are neither empty nor whole. */
 {
  const pq=await browser.newPage({viewport:{width:1600,height:1000}});
  await pq.goto(FILE,{waitUntil:'load'}); await booted(pq); await pq.waitForTimeout(700);
@@ -1611,11 +1627,11 @@ console.log('\n=== the headline coherence is a number, not a percent ===');
   await new Promise(r=>setTimeout(r,ENTER_SPAN+12*ENTER_STAGGER+300));
   const R=compute(), t=s=>{const e=document.querySelector(s); return e?e.textContent.trim():null;};
   return {laws:t('#fbar [data-fb=laws] .fb-v'), shadow:t('#fbar [data-fb=shadow] .fb-v'), ring:t('#railtop .cr .v'),
-   cq:String(Math.round(R.CQ)), dq:String(Math.round(R.DQ)), unread:!!R.unread};},'Marcus');
+   cq:fmtPct('cq',R.CQ), dq:fmtPct('dq',R.DQ), unread:!!R.unread};},'Marcus');
  const m=await read();
- ok(!m.unread&&m.laws===m.cq,'PQ: the glass bar\'s Laws circle prints CQ bare, '+m.laws+' against '+m.cq);
- ok(m.shadow===m.dq,'PQ: the Decoherence circle prints DQ bare, '+m.shadow+' against '+m.dq);
- ok(m.ring===m.cq,'PQ: the ring at the foot of the stage prints CQ bare, '+m.ring+' against '+m.cq);
+ ok(!m.unread&&m.laws===m.cq&&/%$/.test(m.laws),'PQ: the glass bar\'s Laws circle prints CQ as a percent, '+m.laws+' against '+m.cq);
+ ok(m.shadow===m.dq&&/%$/.test(m.shadow),'PQ: the Decoherence circle prints DQ as a percent, '+m.shadow+' against '+m.dq);
+ ok(m.ring===m.cq,'PQ: the ring at the foot of the stage prints CQ as a percent, '+m.ring+' against '+m.cq);
  const u=await pq.evaluate(async()=>{loadP(0); setTab(TAB.FIELD); render();
   await new Promise(r=>setTimeout(r,400));
   const t=s=>{const e=document.querySelector(s); return e?e.textContent.trim():null;};

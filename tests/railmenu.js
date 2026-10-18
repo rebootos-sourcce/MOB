@@ -160,9 +160,14 @@ async function railMenuGate(browser,FILE,ok,booted){
    ok(st.lc[0]&&st.rc[0]&&st.lc[0]!==st.rc[0]&&st.lc[0]===st.accent&&st.rc[0]===st.root,
     'RM2: '+tag+'in two opposing colours, coherence the accent blue and decoherence the root red, '+JSON.stringify({l:st.lc[0],r:st.rc[0],accent:st.accent,root:st.root}));
    /* bare, round PQ: "No, it doesn't need to be a percent. Just a number."
-      The key was the last place CQ and DQ still carried the sign, 15 October. */
-   ok(JSON.stringify(st.pairFigs[0])===JSON.stringify([String(Math.round(st.cq)),Math.round(st.dq)>0?String(Math.round(st.dq)):'–']),
-    'RM2: '+tag+'and it prints the two figures bare, no percent sign, '+JSON.stringify(st.pairFigs[0])+' for '+st.cq.toFixed(1)+' and '+st.dq.toFixed(1));
+      The key was the last place CQ and DQ still carried the sign, 15 October.
+      NAMED CHANGE, percent phase 2 slice 1, 17 October: superseded by the 16
+      October ruling ("Instead of 0.0, site wide, we need to convert those
+      numbers into percent"). The pair prints each figure as a percent, the
+      registry's own form (engine/pct.js), and nought is still the dash. */
+   const pc=v=>Math.round(v)>0?Math.round(v)+'%':'–';
+   ok(JSON.stringify(st.pairFigs[0])===JSON.stringify([pc(st.cq),pc(st.dq)]),
+    'RM2: '+tag+'and it prints the two figures as percents, '+JSON.stringify(st.pairFigs[0])+' for '+st.cq.toFixed(1)+' and '+st.dq.toFixed(1));
    ok(JSON.stringify(st.pairNames.slice(1))==='[["Benign","Malignant"],["Masculine","Feminine"]]',
     'RM4: '+tag+'orientation and balance are the same pair bar, '+JSON.stringify(st.pairNames.slice(1)));
    ok(!!st.halo&&st.leanIc===st.halo&&!!st.fork&&st.malIc===st.fork,'RM5: '+tag+'benign carries the halo and malignant the pitchfork, '+JSON.stringify({l:st.leanIc,r:st.malIc}));
