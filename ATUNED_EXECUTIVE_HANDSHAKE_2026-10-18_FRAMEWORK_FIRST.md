@@ -245,3 +245,15 @@ New controlling contract:
 - Engine-generated outputs remain excluded; the separate software owns generation and engine-side parity.
 
 This scope update supersedes any interpretation of Blocks 1–6 that would keep the effort centered on the evaluator or collision simulation rather than the full hierarchy framework.
+
+
+## 12. Work-session changes and current verification (2026-10-18)
+
+- Added `proto/sniffer/ATUNED_ALL_LEVELS_FRAMEWORK_CONTRACT.md`, defining the shared entity template, mapping-edge contract, simulation outputs, gap IDs/severity, and acceptance gates for all requested levels.
+- Added `proto/sniffer/fetter-saboteur-framework-contract.test.js` to assert that the user-facing Saboteur story table contains 33 unique records, each with story (`h`), coherent availability (`a`), next move (`n`), and a reflection prompt, and that every canonical band maps to a story record or explicit alias.
+- Updated `.github/workflows/fetter-saboteur-evaluator.yml` to run the template-parity test and trigger when the story source changes.
+- Updated this handshake to make full hierarchy coverage the controlling scope.
+- Current branch head at this status refresh: `67836765fd8066ce2b11ed4b64917addbca27900`; PR #122 remains open and draft. No combined status checks were returned for this exact head at the time of refresh; therefore the new test is **not yet claimed as CI-passing**.
+- Source check: `atuned_src/engine/data/sabcard.js` has 33 records and each record contains `h/a/n` plus a reflection prompt. This is structural parity; it does not prove that every story's factual content is canonically validated or that every replacement state is correctly derived.
+- Critical source gap confirmed: `SNIFFER_SPEC.md` lists the six hyper-complex modes but does not provide a canonical Complex membership graph or Supercomplex roster/composition. It also describes archetypes at layer 3, so this must be reconciled against the authoritative source rather than silently relabeled. The all-level contract records these as P0 blockers and explicitly forbids inventing rosters or mappings.
+- Remaining framework work is still substantive: validate the new test in CI, add machine-readable roster/edge/gap records and full per-profile diagnostics, reconcile the authoritative higher-level hierarchy, then complete the mapping/simulation/gap reports at every boundary. The framework is **not complete** yet.
