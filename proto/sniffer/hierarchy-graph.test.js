@@ -34,4 +34,5 @@ assert.ok(inverse.warning.includes('not guessed'));
 const axisInverse = inferUp(['fetter:fear']);
 assert.ok(axisInverse.candidates.some(c => c.candidate_id === 'saboteur:Micromanager'));
 assert.ok(axisInverse.candidates.some(c => c.candidate_id === 'archetype:Warrior'));
+assert.ok(axisInverse.blocked_boundaries.some(g => g.id === 'GAP-SAB-CMP-001'), 'inverse inference must surface the next missing structural boundary');
 console.log('hierarchy-graph: structural trace and inverse inference tests passed');
