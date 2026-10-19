@@ -11,6 +11,7 @@ on:
       - 'proto/sniffer/fetter-saboteur-framework-contract.test.js'
       - 'proto/sniffer/hierarchy-graph.js'
       - 'proto/sniffer/hierarchy-graph.test.js'
+      - 'proto/sniffer/hierarchy-gap-contract.test.js'
       - 'atuned_src/engine/data/sabcard.js'
       - '.github/workflows/fetter-saboteur-evaluator.yml'
   push:
@@ -25,6 +26,7 @@ on:
       - 'proto/sniffer/fetter-saboteur-framework-contract.test.js'
       - 'proto/sniffer/hierarchy-graph.js'
       - 'proto/sniffer/hierarchy-graph.test.js'
+      - 'proto/sniffer/hierarchy-gap-contract.test.js'
       - 'atuned_src/engine/data/sabcard.js'
       - '.github/workflows/fetter-saboteur-evaluator.yml'
 permissions:
@@ -41,3 +43,4 @@ jobs:
       - run: node proto/sniffer/fetter-saboteur-simulation.test.js
       - run: node proto/sniffer/fetter-saboteur-framework-contract.test.js
       - run: node proto/sniffer/hierarchy-graph.test.js
+      - run: node proto/sniffer/hierarchy-gap-contract.test.js
