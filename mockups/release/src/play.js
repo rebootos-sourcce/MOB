@@ -48,7 +48,12 @@ for(const f of FILES){const v=f.slice(0,2);
  ok(await until(pg,async()=>await ph(pg)==='done',9000),v+' the cooldown counts to nought and lands on the completion by itself');
  const tx=await pg.textContent('#rs');
  ok(/Congratulations\./.test(tx)&&/You ended early\./.test(tx),v+' a session ended early is told so, under the congratulations');
- ok(/Released/.test(tx)&&/Bank/.test(tx)&&/Vault/.test(tx)&&/new patterns left this month/.test(tx),v+' the completion carries released, bank, vault and this month\'s new patterns');
+ /* his 19 October list replaced the "288 new patterns left this month"
+    sentence on the dial with a fifth stat, Left this month, alongside
+    Released, Bank, Vault and the new Reframes; the other three versions
+    still carry the old sentence, untouched this round. */
+ ok(/Released/.test(tx)&&/Bank/.test(tx)&&/Vault/.test(tx)&&(v==='r3'?/Reframes/.test(tx)&&/Left this month/.test(tx):/new patterns left this month/.test(tx)),
+  v+' the completion carries released, bank, vault and '+(v==='r3'?'reframes and left this month':'this month\'s new patterns'));
  ok(!!(await pg.$('[data-act=another]')),v+' one primary: Run another session');
  await pg.click('[data-act=another]');ok(await ph(pg)==='before',v+' Run another session goes back to the setup, same page');
  /* the crisis door from the running list, by data-act and not by .crx: the

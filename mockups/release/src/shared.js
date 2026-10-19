@@ -61,12 +61,11 @@ const W={
  /* the run */
  pause:'Pause', play:'Play', end:'End session',
  left:n=>N(n)+(n===1?' line left':' lines left'),
- /* his 18 October ask: the countdown split by the engine's own two channels
-    inside the half that is running, left release/right release or left
-    reframe/right reframe (schema.js: "left release, right release, left
-    reframe, right reframe"). Each side starts at the dose and counts to
-    nought as that side is said. */
- split:(l,r)=>N(l)+' left, '+N(r)+' right',
+ /* his 19 October ask: not one split but the engine's own four channels at
+    once (schema.js: "left release, right release, left reframe, right
+    reframe"), each its own small countdown, each its own colour so the
+    four read apart. The order here is that order. */
+ chanLbl:['Left release','Right release','Left reframe','Right reframe'],
  minLeft:m=>m<=1?'About a minute left':'About '+m+' minutes left',
  half:{release:'Release',reframe:'Reframe'},
  halfMeans:{release:'Letting go, left side then right.',reframe:'Putting back what is true, left side then right.'},
@@ -77,9 +76,15 @@ const W={
  congrats:'Congratulations.',
  did:(p,k)=>'You released '+N(p)+' patterns at '+k+' places in your body.',
  ended:(p,k)=>'You ended early. You released '+N(p)+' patterns at '+k+(k===1?' place':' places')+' in your body.',
- fig:{released:'Released',bank:'Bank',vault:'Vault'},
- figU:{released:'this session',bank:'still held',vault:'released, ever'},
- figM:{released:'Opened for the first time today.',bank:'Waiting in your body to be released.',vault:'Kept on your record.'},
+ /* his 19 October list, replacing the three cards and the one sentence
+    below them with five, released through left, the order he said them
+    in. left is unpacked as his own words asked: not a bare number but
+    which patterns it counts, original and unique, so a rerun is never
+    mistaken for new ground. */
+ fig:{released:'Released',bank:'Bank',vault:'Vault',reframes:'Reframes',left:'Left this month'},
+ figU:{released:'this session',bank:'still held',vault:'released, ever',reframes:'this session',left:'new only'},
+ figM:{released:'Opened for the first time today.',bank:'Waiting in your body to be released.',vault:'Kept on your record.',
+  reframes:'Putting back what is true, this session.',left:'Original, unique patterns, not reruns.'},
  pattern:'A pattern is one line at one place in your body, the first time it is said.',
  month:n=>N(n)+' new patterns left this month.',
  another:'Run another session',
@@ -119,25 +124,30 @@ const SCRIPT=[W.opening,W.releasing].concat(WELCOME,[W.ready,W.resonance]);
 const secSay=(t,k)=>words(t)*TIMING.word+TIMING.gap+TIMING.frame+(t===W.ready?3:0);
 function secsFrom(ri){let s=0;for(let i=ri;i<TOTAL();i++)s+=secLine(lineAt(i));return s;}
 function estMin(){return Math.round((SCRIPT.reduce((s,t)=>s+secSay(t),0)+secsFrom(0))/60);}
-/* his 18 October ask: the countdown split by side, left and right, inside
-   the half now running (schema.js's own order: left release, right
-   release, left reframe, right reframe). Each half is two channels, the
-   left one then the right one; whichever has not started yet still reads
-   the full dose, never a number that has not been earned. */
-function sideSplit(i){
- const within=Math.floor((i%PER_ADDR())/ST.dose), pos=i%ST.dose, atLeft=within%2===0;
- return {left:atLeft?ST.dose-pos:0, right:atLeft?ST.dose:ST.dose-pos};}
+/* his 19 October ask: not one combined split but all four of schema.js's
+   own channels at once, each its own countdown: left release, right
+   release, left reframe, right reframe, in that order. A channel not
+   reached yet still reads the full dose, never a number not earned; one
+   already finished reads nought. */
+function channelSplit(i){
+ const within=Math.floor((i%PER_ADDR())/ST.dose), pos=i%ST.dose;
+ return [0,1,2,3].map(c=>c<within?0:c===within?ST.dose-pos:ST.dose);}
 
 /* ---- the allowance, tier one, this month ---- */
 /* his 18 October ruling: ending early counts only what was actually said.
    A channel (left release, right release, left reframe or right reframe)
    opens its pattern the first time any of its lines is said, so the count
    on an early end is the number of channels actually reached, global
-   across the whole run, never the full planned run. */
+   across the whole run, never the full planned run. reframes is the same
+   count, read only at the channels whose place in the four is a reframe
+   (index 2 and 3 of every address, schema.js's own order again), so a
+   session stopped partway still says a true number for it and not half
+   of a guess. */
 function money(){
  const left0=ST.spent?12:300, vault0=88, bank0=56, full=ADDR.length*ALLOW.patternsPerAddress;
  const p=ST.halted?ST.reach:full, places=ST.halted?Math.min(ADDR.length,Math.ceil(p/ALLOW.patternsPerAddress)):ADDR.length;
- return {released:p,places,bank:bank0-p,vault:vault0+p,left:Math.max(0,left0-p),
+ let reframes=0;for(let i=0;i<p;i++)if(i%4>=2)reframes++;
+ return {released:p,places,reframes,bank:bank0-p,vault:vault0+p,left:Math.max(0,left0-p),
   canRun:(left0-p)>=ALLOW.patternsPerAddress};}
 
 /* ---- the model every version paints from ---- */
@@ -147,7 +157,7 @@ function model(){
  return {ph:ST.ph,paused:ST.paused,live:ST.live,rm:RM,dose:ST.dose,from:ST.from,voice:ST.voice,tone:ST.tone,
   script:{items:SCRIPT,i:ST.si,cur:SCRIPT[Math.min(ST.si,SCRIPT.length-1)]},
   run:{i:ST.ri,N:TOTAL(),left:TOTAL()-ST.ri,cur,half,prompt:W.prompt[half],addr:cur?cur.addr:ADDR[0],
-   split:ST.ph==='run'?sideSplit(ST.ri):null,
+   chan:ST.ph==='run'?channelSplit(ST.ri):null,
    min:Math.max(1,Math.ceil(secsFrom(ST.ri)/60))},
   est:{lines:TOTAL(),min:estMin()},
   cool:{left:ST.cool,said:Math.min(W.cool.length,Math.floor((TIMING.settle-ST.cool)/6)+1)},
