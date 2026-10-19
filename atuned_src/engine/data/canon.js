@@ -41,7 +41,7 @@
    ============================================================ */
 var SAB33=[
  ["Negotiator",     [["fear",4,6],["apathy",3,5]]],
- ["Controller",     [["fear",7,10],["anger",5,8]]],
+ ["Micromanager",   [["fear",7,10],["anger",5,8]]],
  ["Victim",         [["sadness",6,8],["anger",5,7],["apathy",2,5]]],
  ["Perfectionist",  [["disgust",5,7],["anger",4,6]]],
  ["Pleaser",        [["apathy",3,5],["fear",3,8]]],
@@ -236,7 +236,7 @@ var SABAUTH={
  'Victim':"Sadness + Self-loathing + Hopelessness"};
 
 /* archetype rolls up from its primary saboteur. wired into the archetype drill. */
-var ARCH18=[['Warrior','Controller','Solar'],['Caregiver','Pleaser','Heart'],
+var ARCH18=[['Warrior','Micromanager','Solar'],['Caregiver','Pleaser','Heart'],
  ['Creator','Stickler','Throat'],['Sage','Hyper-Rational','3rd Eye'],
  ['Jester','Avoider','Sacral'],['Lover','Hyper-Vigilant','Heart'],
  ['Magician','Victim','Crown'],['Innocent','Restless','Root'],
