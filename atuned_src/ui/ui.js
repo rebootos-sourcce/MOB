@@ -1081,8 +1081,20 @@ function railTop(r){
     direction, and clicking the strip opens the whole thing. */
  e.title=td?(td.nm+'. '+td.def+' '+td.energy+' Toward: '+td.toward)
   :r.unread?'Nothing has been read yet. Write a story or set a charge.':tierBuilding();}
+/* THE READOUT BELONGS TO WHOEVER WAS UNDER THE POINTER. The hover readout
+   (#probe) kept its last text when a different profile loaded, so the page
+   carried the previous person's figure. It printed "CQ 89" and nothing
+   checked it; with percent phase 2 it printed "CQ 89%" and functional's
+   "no percentage is printed off the defaults anywhere" caught it on a blank
+   profile. A change of person takes the readout down and empties it. */
+var PROBE_WHO=null;
+function probeForWho(){
+ var who=((typeof CURP!=='undefined'&&CURP&&CURP.id)||'')+':'+S.who;
+ if(who===PROBE_WHO)return; PROBE_WHO=who;
+ var pr=document.getElementById('probe'); if(pr){pr.classList.remove('on'); pr.innerHTML='';}}
 function render(){
  if(typeof paintUndo==='function')paintUndo();
+ probeForWho();
  /* THE READING A PERSON MAY SEE, not compute()'s own. Everything render hands
     down, the rails, the glass bar, the wheel and the Body, draws and lists
     only the rungs of the chain this plan can see: sightR in ui/lock.js. */

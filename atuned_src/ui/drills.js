@@ -439,8 +439,12 @@ function coreRangeSay(r){
   +'</b> if every law still open is answered at nothing, and <b>'+fmtPct('cq',sp.hi)+'</b> if every one is answered at ten.</p>';
  var rg=cqRange(r.CQ);
  return '<p class="ad-p">The reading swings between <b>'+fmtPct('cq',rg.lo)+'</b> and <b>'+fmtPct('cq',rg.hi)+'</b>. '
-  +(rg.lo>0&&rg.hi<100?'The figure is the middle of that range, not a mark out of a hundred.'
-   :rg.hi>=100?'The figure sits near the top of that range, because the scale stops at a hundred.'
+  /* "not a mark out of a hundred" went with the percents, 17 October: the
+     figure is printed as a percent now, and a percent is out of a hundred,
+     so the clause contradicted the figure above it. What it warned against
+     is already said where the figure is: a small move is not a reading. */
+  +(rg.lo>0&&rg.hi<100?'The figure is the middle of that range.'
+   :rg.hi>=100?'The figure sits near the top of that range, because the scale stops at 100%.'
    :'The figure sits near the bottom of that range, because the scale stops at nothing.')+'</p>';}
 function runCoreDrill(){
  var r=compute();

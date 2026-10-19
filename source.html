@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2212 0a42ee99 2026-10-18 10:42"><head><meta charset="utf-8">
+<html lang="en" data-build="v2213 09538691 2026-10-18 11:28"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -64698,8 +64698,12 @@ function coreRangeSay(r){
   +'</b> if every law still open is answered at nothing, and <b>'+fmtPct('cq',sp.hi)+'</b> if every one is answered at ten.</p>';
  var rg=cqRange(r.CQ);
  return '<p class="ad-p">The reading swings between <b>'+fmtPct('cq',rg.lo)+'</b> and <b>'+fmtPct('cq',rg.hi)+'</b>. '
-  +(rg.lo>0&&rg.hi<100?'The figure is the middle of that range, not a mark out of a hundred.'
-   :rg.hi>=100?'The figure sits near the top of that range, because the scale stops at a hundred.'
+  /* "not a mark out of a hundred" went with the percents, 17 October: the
+     figure is printed as a percent now, and a percent is out of a hundred,
+     so the clause contradicted the figure above it. What it warned against
+     is already said where the figure is: a small move is not a reading. */
+  +(rg.lo>0&&rg.hi<100?'The figure is the middle of that range.'
+   :rg.hi>=100?'The figure sits near the top of that range, because the scale stops at 100%.'
    :'The figure sits near the bottom of that range, because the scale stops at nothing.')+'</p>';}
 function runCoreDrill(){
  var r=compute();
@@ -78583,8 +78587,20 @@ function railTop(r){
     direction, and clicking the strip opens the whole thing. */
  e.title=td?(td.nm+'. '+td.def+' '+td.energy+' Toward: '+td.toward)
   :r.unread?'Nothing has been read yet. Write a story or set a charge.':tierBuilding();}
+/* THE READOUT BELONGS TO WHOEVER WAS UNDER THE POINTER. The hover readout
+   (#probe) kept its last text when a different profile loaded, so the page
+   carried the previous person's figure. It printed "CQ 89" and nothing
+   checked it; with percent phase 2 it printed "CQ 89%" and functional's
+   "no percentage is printed off the defaults anywhere" caught it on a blank
+   profile. A change of person takes the readout down and empties it. */
+var PROBE_WHO=null;
+function probeForWho(){
+ var who=((typeof CURP!=='undefined'&&CURP&&CURP.id)||'')+':'+S.who;
+ if(who===PROBE_WHO)return; PROBE_WHO=who;
+ var pr=document.getElementById('probe'); if(pr){pr.classList.remove('on'); pr.innerHTML='';}}
 function render(){
  if(typeof paintUndo==='function')paintUndo();
+ probeForWho();
  /* THE READING A PERSON MAY SEE, not compute()'s own. Everything render hands
     down, the rails, the glass bar, the wheel and the Body, draws and lists
     only the rungs of the chain this plan can see: sightR in ui/lock.js. */
@@ -79352,5 +79368,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005210754"></div>
+<div id="eof" hidden data-len="005211736"></div>
 </body></html>
