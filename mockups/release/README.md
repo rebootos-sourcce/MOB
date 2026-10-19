@@ -373,3 +373,48 @@ it is words or an icon.
 Nothing on his twelve-item list. The one open item from the September round
 ("heavy marks") is unrelated to this round and still waits on his answer,
 unchanged.
+
+## 19 October: "too compressed, needs to be symmetrical and evenly spaced"
+
+His second reaction, to the screenshots the round above produced
+(`r3-run`, `r3-done`, both widths): "The design is a C. The layout is too
+compressed and needs to be symmetrical and evenly spaced." Measured what
+that meant before touching anything, by reading real box positions out of
+the built file rather than guessing from the picture:
+
+- The page's outer container (`.r3` in `r3.css`) centred nothing. It used
+  `justify-content:space-between`, which pins the first and last child to
+  the padding edge and hands whatever height is left over to the one or two
+  gaps between them. That leftover is different on every state, because
+  every state's content is a different height, so the gap was never a
+  chosen number: 39.7px before begin, 63.9px running, and on the
+  completion the ring sat 22px from the stats on a desktop and **10px** on
+  a phone, the single tightest spot measured.
+- Top and bottom padding were different numbers (48px and 60px), a small
+  but real asymmetry on a screen he called out for needing to be
+  symmetrical.
+- The spacing scale itself was ad hoc: 6, 8, 10, 12, 14, 22, 28 all in use
+  for what are conceptually the same kind of gap (icon to icon, card to
+  card, block to block), so even where a gap was not literally an
+  accident of leftover space, it was not a deliberate, repeatable rhythm
+  either.
+
+The fix: `.r3` now centres its content (`justify-content:center`) on one
+declared gap per state, so the space above and below the whole block is
+always the true leftover, split evenly, which is what symmetrical means
+on this axis; padding is equal top and bottom; and the gap values now
+step in a clear scale (14, 16, 18, 24, 28, 32, 40, 44) instead of
+scattering across a dozen numbers. Re-measured after, every state, both
+widths: top margin equals bottom margin to the pixel, at both 1600x1000
+and 390x844, on every one of before, running, paused, the cooldown, the
+completion and the ended-early demo. The ring-to-stats gap that measured
+10px on a phone is 32px now; 22px on a desktop is 44px now.
+
+No face, ring or text size changed, and no state's content was removed,
+so this is spacing only: `src/r3.css`'s `.r3`, `.r3t`, `.r3f`, `.quad`,
+`.doneacts` and the `done`/`cool` phase overrides, at both the desktop
+rules and inside the `@media (max-width:760px)` block.
+
+Gates re-run after: `shots.js r3` (24 states, both widths) and
+`shots.js r3 ended`, all still ok, zero clipping or scrolling, confirming
+the extra room did not push anything off the page at either width.
