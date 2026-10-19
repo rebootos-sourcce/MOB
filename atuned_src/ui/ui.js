@@ -39,8 +39,12 @@ function describe(h,r,still){
  if(h.k==='pole')return '<u>compass</u> <b>'+(h.end==='up'?'Coherent':'Decoherent')+'</b>'
   +'<hr><b>Click for detail.</b>';
  if(h.k==='gate'){var v=h.v;
+  /* v.pct+'%' could print "0% of your story, in 1 sentence", because one
+     sentence out of a long story can round below a whole percent. That is
+     the same lie in a different shape as "0% held, read as nothing": the
+     dash exists for exactly this, and fmtPct('gate',...) carries it here. */
   return '<u>'+(v.side==='higher'?'higher gate':'lower gate')+'</u> <b>'+esc(v.nm)+'</b><hr>'
-   +esc(v.d||'')+'<hr>'+(v.n?'<b>'+v.pct+'%</b> of your story, in '+v.n+' sentence'+(v.n===1?'':'s'):'no story yet')
+   +esc(v.d||'')+'<hr>'+(v.n?'<b>'+fmtPct('gate',v.pct)+'</b> of your story, in '+v.n+' sentence'+(v.n===1?'':'s'):'no story yet')
    +'<br>everything held weighs <b>\u00d7'+v.mult.toFixed(2)+'</b><hr><b>Click for detail.</b>';}
  /* V21, speak to a ten year old. This read "001 Fear / Root seat, Lumbar
     Plexus / axis Fear / susceptibility 1.00 / held 0.3, opposite 8.8 / SQ

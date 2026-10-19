@@ -499,9 +499,15 @@ function gatesBlock(focus){
  var V=verpRead(), evid=V.some(function(v){return v.pct>0;});
  var rows=V.map(function(v){
   var c=v.side==='higher'?seatCol('Heart'):seatCol('Root');
+  /* v.pct+'%' printed "0%" for a gate with no evidence on a story where some
+     OTHER gate had evidence, because evid is true for the row even when this
+     one is nought. That is the exact defect the dash rule exists for: the
+     hardest carrying zero percent. fmtPct('gate',...), the same registry
+     entry verp.js already matches, prints the dash for that gate instead and
+     leaves the other five alone. */
   return '<button class="ad-r gate-r'+(focus===v.k?' on':'')+'" data-gate="'+v.k+'" style="--c:'+c+'">'
    +'<span class="ad-k">'+esc(v.nm)+'</span>'
-   +'<span class="ad-v">'+(evid?v.pct+'%':'')+'</span>'
+   +'<span class="ad-v">'+(evid?fmtPct('gate',v.pct):'')+'</span>'
    +'<span class="ad-m">\u00d7'+v.mult.toFixed(2)+'</span></button>';}).join('');
  /* ACTION, GO in TASKS.md, the bar's name for this layer now, and his reading
     of it: right action and wrong action. The six keep their own names. */
@@ -516,7 +522,7 @@ function runGatesDrill(k){
   +'<div class="ad-nm">'+esc(v.nm)+'</div>'
   +'<div class="pm-eye">What it sounds like</div><p class="ad-p">'+esc(v.d)+'</p>'
   +'<div class="pm-eye">What it does</div><p class="ad-p">'
-  +(v.pct?'<b>'+v.pct+'%</b> of the story ran through '+esc(v.nm.toLowerCase())+', '+v.n+' sentence'+(v.n===1?'':'s')+'. ':'Nothing in the story has run through it yet. ')
+  +(v.pct?'<b>'+fmtPct('gate',v.pct)+'</b> of the story ran through '+esc(v.nm.toLowerCase())+', '+v.n+' sentence'+(v.n===1?'':'s')+'. ':'Nothing in the story has run through it yet. ')
   +'Everything held is multiplied by <b>'+v.mult.toFixed(2)+'</b> for the share that runs this way'
   +(v.mult<1?', so it lightens the load.':v.mult>1?', so it adds to the load.':'.')+'</p>'
   +gatesBlock(k);
