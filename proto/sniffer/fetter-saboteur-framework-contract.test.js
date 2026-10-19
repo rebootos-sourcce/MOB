@@ -43,4 +43,28 @@ for (const row of rows) {
 }
 assert.deepEqual(missing, [], 'every Saboteur needs story (h), coherent availability (a), next move (n), and reflection prompt');
 
-console.log('fetter-saboteur-framework-contract: 33/33 story records contain h/a/n and reflection fields');
+
+const validAxes = new Set(['fear', 'anger', 'shame', 'disgust', 'apathy', 'shock', 'sadness', 'surprise', 'anticipation']);
+const mappingGaps = [];
+for (const [name, parts] of bands) {
+  if (!Array.isArray(parts) || parts.length === 0) {
+    mappingGaps.push(name + ':missing-fetter-inputs');
+    continue;
+  }
+  for (const [axis, low, high] of parts) {
+    if (!validAxes.has(axis)) mappingGaps.push(name + ':unknown-axis:' + axis);
+    if (!Number.isFinite(low) || !Number.isFinite(high) || low < 0 || high > 10 || low > high) {
+      mappingGaps.push(name + ':invalid-band:' + axis);
+    }
+    if (axis === 'surprise') mappingGaps.push(name + ':surprise-must-not-score');
+  }
+}
+assert.deepEqual(mappingGaps, [], 'all canonical Saboteur inputs must use valid axes and 0-10 band bounds; Surprise scores no Saboteur');
+
+const storyToBand = new Map(bands.map(([name]) => [normalize(name), name]));
+const unmatchedStories = rows
+  .filter(row => !storyToBand.has(normalize(row.key)) && normalize(row.key) !== 'controller')
+  .map(row => row.key);
+assert.deepEqual(unmatchedStories, [], 'story records must map to a canonical band or a documented alias');
+
+console.log('fetter-saboteur-framework-contract: 33/33 stories and band inputs validated; shared fields and mapping bounds present');
