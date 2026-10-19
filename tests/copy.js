@@ -89,7 +89,10 @@ const BANNED=[
     writer of a whole number weight moves (slice 5), when it widens to every
     weight that is not a percent. */
  ['app', /\bat a weight of \d+\.\d/i, 'a weight prints as a percent of its range, never a decimal'],
- ['app', /\bCQ (?:up|down) \d+\.\d\b/i, 'a change in CQ is said in whole numbers, against the figure the page shows'],
+ /* NAMED CHANGE, percent phase 2 slice 3, 17 October: a change in CQ is said
+    as before and after ("CQ moved from 58% to 61%", pctMove in engine/pct.js),
+    so the pattern widens from a decimal move to any signed move */
+ ['app', /\bCQ (?:up|down) \d/i, 'a change in CQ is said as before and after, never as a move in a unit the page does not show'],
  /* the top rung's old name, 17 October, the owner's words: "There are four
     tiers. Free, tier one, tier two, tier three, practitioner." It is keyed four
     and is called Practitioner wherever a person can read it */
