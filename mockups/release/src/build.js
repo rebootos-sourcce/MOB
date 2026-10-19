@@ -63,6 +63,12 @@ const CRISIS={say:E.CRISIS_SAY,lines:E.CRISIS_LINES};
 const head=src('atuned_src/shell/head.html');
 const tok=k=>{const m=head.match(new RegExp(k.replace(/-/g,'\\-')+':(#[0-9A-Fa-f]{6})'));if(!m)throw new Error(k+' not in head.html');return m[1];};
 const COL={};['--root','--sacral','--solar','--heart','--throat','--eye','--crown','--accent','--ink','--mid','--dim','--alarm'].forEach(k=>COL[k]=tok(k));
+/* the numeral token: the app's tabular numbers carry var(--num) and not
+   var(--sans), so this file reads it off head.html too rather than
+   assuming the two are the same string forever. 18 October, Emmy's font
+   check. */
+const numTokM=head.match(/--num:([^;]+);/);if(!numTokM)throw new Error('--num not in head.html');
+const NUM_TOKEN=numTokM[1];
 const f0=head.indexOf("@font-face{font-family:'Inter'"),f1=head.indexOf('}',f0);
 if(f0<0||f1<0)throw new Error('the embedded Inter was not found in head.html');
 const FONT=head.slice(f0,f1+1);
@@ -76,7 +82,7 @@ const VERSIONS=[
  {id:'r3-the-dial',n:3,name:'The dial',file:'r3.js',css:'r3.css'},
  {id:'r4-the-figure',n:4,name:'The figure',file:'r4.js',css:'r4.css'}];
 const pick=process.argv[2]?process.argv[2].split(','):null;
-const seatCss=':root{'+Object.keys(COL).map(k=>k+':'+COL[k]).join(';')+'}\n';
+const seatCss=':root{'+Object.keys(COL).map(k=>k+':'+COL[k]).join(';')+';--num:'+NUM_TOKEN+'}\n';
 VERSIONS.forEach(v=>{
  if(!fs.existsSync(path.join(dir,v.file)))return;
  if(pick&&!pick.some(p=>v.id.startsWith(p)))return;

@@ -19,7 +19,10 @@ body.rm .ring .fl,body.rm .ring .cp{transition:none}
 .in .cl{font-size:15px;color:var(--mid)}
 .in .clk{font-size:76px;font-weight:500;line-height:1;letter-spacing:-.03em}
 .in .cs{margin:6px 0 0;font-size:17px;color:var(--ink);max-width:18em;text-wrap:balance}
-.in .cg{margin:0;font-size:34px;font-weight:650;letter-spacing:-.02em;line-height:1.1}
+.in .cg{margin:0;font-size:40px;font-weight:650;letter-spacing:-.02em;line-height:1.1;
+ animation:cg-in .6s var(--ease-out)}
+body.rm .in .cg{animation:none}
+@keyframes cg-in{from{opacity:0;transform:translateY(5px) scale(.97)}to{opacity:1;transform:none}}
 .r3c{position:absolute;left:12%;right:12%;top:14%;bottom:20%;--rowh:72px}
 .r3c .cr{font-size:18px}
 .ft{position:absolute;left:0;right:0;bottom:15%;text-align:center;color:var(--mid);font-size:14px}
@@ -38,7 +41,23 @@ body.rm .ring .fl,body.rm .ring .cp{transition:none}
 .r3f b{font-size:44px;font-weight:600;line-height:1.05;letter-spacing:-.025em}
 .r3f .fl{font-size:15px;color:var(--ink)}
 .r3f .fm{font-size:13.5px;color:var(--mid);margin-top:2px}
-.r3v{position:absolute;right:16px;bottom:10px;min-height:44px;display:flex;align-items:center}
+/* his four icons, 18 October: crisis, voice, pause/play, end, one row,
+   symmetrical and aligned. Icon only, no caption, the same way the exit
+   mark carries no visible word: aria-label and title carry the name. */
+/* explicit track widths, not 1fr/percent: .row is a flex child centred by
+   its parent with no stretch, so a percentage width here has no definite
+   base to resolve against and collapses to the icon's own size, which is
+   exactly how this shipped BAD at first (44 tall, 22 wide). */
+.quad{display:grid;grid-template-columns:repeat(4,56px);gap:10px}
+.quad .qi{width:56px;padding:0;gap:0}
+.quad .qi svg{width:22px;height:22px}
+.quad .qi[aria-pressed="false"]{color:var(--mid)}
+/* the two completion buttons, same size, side by side: his "make sure our
+   buttons are here, that this page is symmetrical" */
+.doneacts{gap:14px}
+.go2{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 28px;border-radius:26px;border:0;
+ background:var(--panel-2);color:var(--ink);font-size:17px;font-weight:600;cursor:pointer}
+.go2:hover{background:color-mix(in srgb,var(--panel-2) 80%,#fff)}
 #rs[data-ph="done"] .face{--D:min(380px,calc(100vh - 44px - 470px))}
 body.embed #rs[data-ph="done"] .face{--D:min(380px,calc(100vh - 470px))}
 #rs[data-ph="done"] .in{inset:12%}
@@ -76,7 +95,9 @@ body.embed #rs[data-ph="done"] .face{--D:min(380px,calc(100vh - 470px))}
  #rs[data-ph="done"] .face,body.embed #rs[data-ph="done"] .face{--D:250px}
  #rs[data-ph="done"] .r3{gap:10px}
  #rs[data-ph="done"] .in .sm{font-size:11.5px}
- #rs[data-ph="done"] .in .cg{font-size:21px}
- .r3v{right:6px;bottom:4px}
- .r3v .vm span{display:none}
+ #rs[data-ph="done"] .in .cg{font-size:24px}
+ .quad{grid-template-columns:repeat(4,44px);gap:6px}
+ .quad .qi{width:44px}
+ .doneacts{gap:8px;width:100%}
+ .doneacts .go,.doneacts .go2{min-height:48px;padding:0 16px;font-size:14px;flex:1 1 auto;justify-content:center}
 }

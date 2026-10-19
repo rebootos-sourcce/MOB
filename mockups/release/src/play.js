@@ -11,7 +11,10 @@ const FILES=fs.readdirSync(DIR).filter(f=>/^r\d-.*\.html$/.test(f));
 (async()=>{const b=await chromium.launch();let bad=0;const ok=(c,m)=>{console.log((c?'ok  ':'BAD ')+m);if(!c)bad++;};
 const ph=pg=>pg.$eval('#rs',e=>e.dataset.ph);
 const focus=pg=>pg.$$eval('#rs .cr[data-d="0"]:not(.gone) .t',e=>e.map(x=>x.textContent).join('|'));
-const presses=pg=>pg.$$eval('#rs button,#rs a',e=>e.filter(x=>{const r=x.getBoundingClientRect();return r.width>0&&r.height>0&&getComputedStyle(x).visibility!=='hidden';}).map(x=>x.textContent.trim()));
+/* text first, aria-label when there is none: the dial's four icons (18
+   October) carry no visible caption by his own ask, so a press is still
+   named for these checks the way a screen reader would hear it. */
+const presses=pg=>pg.$$eval('#rs button,#rs a',e=>e.filter(x=>{const r=x.getBoundingClientRect();return r.width>0&&r.height>0&&getComputedStyle(x).visibility!=='hidden';}).map(x=>x.textContent.trim()||x.getAttribute('aria-label')||''));
 const until=async(pg,fn,ms)=>{const t=Date.now();while(Date.now()-t<(ms||8000)){if(await fn())return true;await pg.waitForTimeout(50);}return false;};
 for(const f of FILES){const v=f.slice(0,2);
  const pg=await b.newPage({viewport:{width:1600,height:1000}});pg.on('pageerror',e=>{bad++;console.log('ERR',v,e.message)});
@@ -22,15 +25,18 @@ for(const f of FILES){const v=f.slice(0,2);
  await pg.click('[data-act=dose][data-v="25"]');
  ok((await pg.textContent('#rs')).includes('25 times each side: 300 lines'),v+' the dose 25 reprices the session to 300 lines, on the same screen');
  const url0=pg.url();
- /* Begin: the script plays on the same page, and the running screen offers two presses */
+ /* Begin: the script plays on the same page, and the running screen offers
+    its presses. The dial (18 October) added voice and end to pause and the
+    crisis door, four instead of two; every other version still has two. */
+ const maxRun=v==='r3'?4:2;
  await pg.click('[data-act=begin]');
  ok(await ph(pg)==='script'&&pg.url()===url0,v+' Begin plays the script in place: no navigation');
- const pr=await presses(pg);ok(pr.length<=2&&pr.some(t=>/Pause/.test(t))&&pr.some(t=>/crisis/.test(t)),v+' while the voice speaks: '+pr.length+' presses, Pause and the crisis door');
+ const pr=await presses(pg);ok(pr.length<=maxRun&&pr.some(t=>/Pause/i.test(t))&&pr.some(t=>/crisis/i.test(t)),v+' while the voice speaks: '+pr.length+' presses, Pause and the crisis door among them');
  ok(await until(pg,async()=>await ph(pg)==='run'),v+' the script hands over to the list by itself, no second press');
  const pt=await pg.textContent('#rs .prompt');ok(/^I'm releasing believing, perceiving, thinking, behaving, acting, feeling that I am$/.test(pt.trim()),v+' the prompt above the list is his: '+pt.trim());
  const a=await focus(pg);await pg.waitForTimeout(700);const c=await focus(pg);
  ok(a&&c&&a!==c,v+' the line in focus reads on by itself: "'+a+'" then "'+c+'"');
- const pr2=await presses(pg);ok(pr2.length===2,v+' the running list offers exactly two presses: '+pr2.join(' | '));
+ const pr2=await presses(pg);ok(pr2.length===maxRun,v+' the running list offers exactly '+maxRun+' presses: '+pr2.join(' | '));
  /* Pause holds the line; Play goes on */
  await pg.click('[data-act=pause]');const h0=await focus(pg);await pg.waitForTimeout(800);
  ok(await focus(pg)===h0&&!!(await pg.$('[data-act=play]'))&&!!(await pg.$('[data-act=end]')),v+' Pause holds the line in focus and offers Play and End session');
@@ -45,8 +51,10 @@ for(const f of FILES){const v=f.slice(0,2);
  ok(/Released/.test(tx)&&/Bank/.test(tx)&&/Vault/.test(tx)&&/new patterns left this month/.test(tx),v+' the completion carries released, bank, vault and this month\'s new patterns');
  ok(!!(await pg.$('[data-act=another]')),v+' one primary: Run another session');
  await pg.click('[data-act=another]');ok(await ph(pg)==='before',v+' Run another session goes back to the setup, same page');
- /* the crisis door from the running list */
- await pg.goto(D+f+'?embed=1&s=run');await pg.click('.crx');
+ /* the crisis door from the running list, by data-act and not by .crx: the
+    dial (18 October) carries it as one of the four icons, not the words
+    only corner link the other versions still use, and both carry data-act */
+ await pg.goto(D+f+'?embed=1&s=run');await pg.click('[data-act="crisis"]');
  ok(await pg.isVisible('.cx-card')&&(await pg.textContent('.cx-card h2'))==='Tell me about it.',v+' the crisis door opens from the running list');
  await pg.click('[data-act=cxreach]');ok(!!(await pg.$('.cx-card a[href="tel:988"]')),v+' Reach someone now shows 988 to call');
  await pg.keyboard.press('Escape');ok(!(await pg.$('.cx-bk')),v+' Escape closes it and leaves the list where it was');

@@ -7,7 +7,12 @@
    - FAILS when anything sits below the fold or off the side, because the ruling is
      one screen with no scroll
    - counts the words and the things to press on the screen, the demo bar excluded,
-     and FAILS when the running list offers more than two things to press
+     and FAILS when the running list offers more than four things to press.
+     Changed 18 October, named here rather than silently: his own ruling added
+     two icons to the running row (voice, end) beside the two that were
+     already there (pause, the crisis door), so the floor this gate holds the
+     running list to moved from two presses to four, on purpose, the same day
+     the icons did.
    - measures contrast against each element's OWN ground, walking up to the first
      surface that paints, never the page: text at 4.5 to 1, a mark at 3 to 1. Rows
      faded on purpose by opacity (the carousel's neighbours) are not seen by this
@@ -83,7 +88,9 @@ function measure(){
   const m=await pg.evaluate(measure);
   await pg.screenshot({path:path.join(OUT,name),type:'jpeg',quality:82});await pg.close();
   const running=/-(run|reframe|script)(-rm)?-/.test(name);
-  const tooMany=running&&m.presses>2;
+  /* 4, not 2: his 18 October icon row (crisis, voice, pause, end). See the
+     file header. */
+  const tooMany=running&&m.presses>4;
   const ok=!m.err&&!m.scrolls&&!m.clipped.length&&!m.fails.length&&!m.small.length&&!m.hits.length&&!tooMany;
   if(!ok)bad++;
   M[name]=m;
@@ -93,8 +100,11 @@ function measure(){
  for(const f of FILES){const v=f.slice(0,2);
   for(const s of STATES)for(const [w,h] of SIZES)await shot(f,w,h,'embed=1&s='+s,v+'-'+s+'-'+w+'.jpg');
   if(EXTRA)for(const s of ['run','cool'])for(const [w,h] of SIZES)await shot(f,w,h,'embed=1&rm=1&s='+s,v+'-'+s+'-rm-'+w+'.jpg');
-  /* the crisis door, opened from the running list: reachable, and its panel fits */
-  if(EXTRA)for(const [w,h] of SIZES)await shot(f,w,h,'embed=1&s=run',v+'-run-crisis-'+w+'.jpg',async pg=>{await pg.click('.crx');});
+  /* the crisis door, opened from the running list: reachable, and its panel
+     fits. By data-act, not by .crx: the dial carries the same door as an
+     icon in the four icon row (18 October) and not as the words-only
+     corner link the other versions still use, and both carry data-act. */
+  if(EXTRA)for(const [w,h] of SIZES)await shot(f,w,h,'embed=1&s=run',v+'-run-crisis-'+w+'.jpg',async pg=>{await pg.click('[data-act="crisis"]');});
   console.log('done',f);}
  fs.writeFileSync(MJ,JSON.stringify(M,null,1));
  await b.close();if(bad){console.log(bad,'problems');process.exit(1);}})();

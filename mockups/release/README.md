@@ -241,3 +241,135 @@ Files: `src/build.js` reads the lines, timing, welcome, marks, crisis words,
 allowance, seat colours, face and figure out of the product. `src/shared.*`
 is the session, the clock, the carousel, the crisis panel and the demo bar.
 `src/r1` to `src/r4` are the four versions.
+
+## 18-19 October: his reaction to the four, applied to the dial
+
+He watched the four and picked **3, the dial**. Full reaction and the
+numbered list it was read off: `OWNER-REACTION-18OCT.md` (not in this folder).
+Versions 1, 2 and 4 stop here, kept only as the record; their files are
+untouched by this round. Everything below changed `r3-the-dial.html` only,
+through `src/build.js r3`, which writes that one file and leaves the other
+three where they were.
+
+1. **Four icons, one row, during the run.** Pause and the crisis door used to
+   be the whole running list; Voice and End are new. All four (crisis, voice,
+   pause or play, end) are ring icons with no visible caption, his own ask
+   ("each self-explaining without a caption"), named for anyone else by
+   `aria-label` and `title`. The crisis mark is a life ring (a ring, a hole,
+   four straps), the safety-glyph convention, not a question mark: Petra's
+   check was whether a stranger would read "crisis, help" off the shape
+   alone, and a life ring is the one glyph that convention already carries
+   that meaning without the words. `src/shared.js`'s `MK.help` and `UI.quad`;
+   `src/r3.css`'s `.quad`.
+2. **Ending early is honest.** A pattern opens the first time one of its
+   four channels (left release, right release, left reframe, right reframe,
+   the engine's own order, see below) is said at all; so the count an early
+   End reports is the channels actually reached, never the planned run. The
+   ring agrees: lit marks stop exactly where the person stopped, grey past
+   that point, on the cooldown and the completion both. Demoed at `?s=ended`,
+   a believable partial run (one address fully said, the next one channel
+   in, the third untouched): "You ended early. You released 5 patterns at 2
+   places in your body." `shared.js`'s `money()` and `ACT.end()`.
+3. **Fonts.** Checked against `atuned_src/shell/head.html`: the embedded
+   Inter was already exact (`build.js` slices the same `@font-face` out of
+   head.html at build time) and the `--sans` token already matched
+   character for character. What did not travel was `--num`, the token the
+   shipped app puts on every tabular number, a near twin of `--sans` missing
+   only the `Segoe UI` fallback. Carried over now, so `.num` reads
+   `var(--num,var(--sans))` and the numbers on the ring, the stats and the
+   dose picker use the same declared stack the rest of the product does,
+   not a coincidence of two similar lists.
+4. **No address jargon beside the feeling word.** The running line used to
+   print the seat ring, "Anxiety", then "Adrenal Medulla, solar plexus"
+   beside it. The anatomical name and the seat word are both gone from that
+   line; only the feeling word remains, which is what he asked for word for
+   word.
+5. **Symmetry.** The four icons sit in one grid, equal cells, equal gaps.
+   The completion's two buttons are the same height and shape, filled and
+   quiet, side by side and centred. (A build bug surfaced here first: a
+   percentage width on a flex child with no stretch resolves against
+   nothing and collapses to its content, so the first build of this row
+   measured 22 pixels wide, an icon's own width, not a button's. Fixed by
+   giving the grid explicit pixel tracks instead of percentages. Gate 6
+   below is what caught it.)
+6. **The countdown, split left and right.** His words: "50 left, 50 right."
+   The engine's own convention, confirmed in `atuned_src/engine/schema.js`
+   (the THE ORDER comment above `HEAVY_KEY`): "the channels in the order
+   the caller names them, which is left release, right release, left
+   reframe, right reframe." His left/right is the product's own left/right,
+   not a mockup invention, so no mismatch to flag. The foot of the dial now
+   reads "N left, M right": the side already said in the running half
+   counts down from the dose to nought; the side not reached yet still
+   reads the full dose, never a number not yet earned. `shared.js`'s
+   `sideSplit()`.
+7. **The cooldown line, verbatim.** "Focus your awareness inside your body
+   for the next 2 minutes." replaces the four line rotation this had
+   before. Voice checked, see below.
+8. **End sits with the other three icons**, not isolated in the paused
+   state alone: it is always one of the four, pressable whether paused or
+   running, which is also what lets a person end without pausing first if
+   that is what they want.
+9. **The completion, made to feel like a finish.** Congratulations grew
+   (34 to 40px) and now fades and settles in on arrival (disabled under
+   reduced motion). The ring under it is the full session in seat colour,
+   lit on every mark, from the version that already read as the strongest
+   image in the set.
+10. **The forbidden sentence is gone from this mockup.** Checked by reading
+    every line this build captures at every state: zero instances of "a
+    pattern is one line at one place" or any variant, at any width, in this
+    file. (The constant it came from, `W.pattern` in `shared.js`, is kept
+    defined and unused by `r3.js`, because `r1`/`r2`/`r4` are frozen as they
+    stood and still reference it; nothing in those three files changed this
+    round.)
+11. **Completion buttons: Run another session, End session.** Both present,
+    both built, same size. Run another session goes back to the setup (his
+    "back to your bank in session"). End session is provisional, his own
+    words ("We'll change it if we need to"): it shows a status line saying
+    where it goes in the product, Summary with the reading already on it,
+    the same pattern this file already used for Close and See the tiers,
+    because this one page has no second screen to send it to and "ONE
+    SCREEN, nothing navigates" is this file's own rule at the top of
+    `shared.js`.
+12. **Overlaps.** None found in this round's gate (see below); the one real
+    bug was the collapsed icon row in point 5, caught as four 22 pixel wide
+    presses, not as a visual overlap.
+
+### The real channel names, and why nothing was reinterpreted
+
+`atuned_src/engine/schema.js` says it directly, in the block above
+`HEAVY_KEY`: an address's four channels are, in order, left release, right
+release, left reframe, right reframe, and `build.js` already reads them this
+way (`CH=[['L','limit'],['R','limit'],['L','truth'],['R','truth']]`). His
+"50 left, 50 right" is this same left and right, not a screen-position left
+and right, so the fix was to show it, not to translate it.
+
+### Gates, this round
+
+    node mockups/release/src/build.js r3
+    shots.js r3            24 states (8 default plus the rm and crisis
+                            extras, both widths): all ok, zero clipping,
+                            overlap, contrast or small target failures
+    shots.js r3 ended       the new demo state, both widths: ok
+    play.js                 all four files, 105 checks: all ok, including
+                            r3's new 4 press running list and quad crisis
+                            door
+    voice.py                every line this build captures, 75 lines across
+                            all four files' measure.json entries: 75 pass,
+                            0 fail
+
+**The running list's press ceiling moved from two to four in `shots.js`,
+on purpose, not silently.** His four icons took the running list from two
+presses (pause, the crisis door) to four (pause, the crisis door, voice,
+end), so the gate's own floor for "too many presses" moved with it, from
+`m.presses>2` to `m.presses>4`, named in a comment at both places it
+appears in `shots.js`. `play.js`'s press count is now read per version
+(`v==='r3'?4:2`) for the same reason, and its crisis-door click moved from
+the `.crx` class (words only, still true of `r1`/`r2`/`r4`) to
+`[data-act="crisis"]`, which every version's crisis button carries whether
+it is words or an icon.
+
+### What could not be built as asked, with the reason
+
+Nothing on his twelve-item list. The one open item from the September round
+("heavy marks") is unrelated to this round and still waits on his answer,
+unchanged.

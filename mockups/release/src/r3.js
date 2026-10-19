@@ -20,7 +20,12 @@ const V=(()=>{
  const pt=deg=>{const r=deg*Math.PI/180;return (100+R*Math.cos(r)).toFixed(2)+' '+(100+R*Math.sin(r)).toFixed(2);};
  const arc=s=>'M'+pt(s.from)+'A'+R+' '+R+' 0 0 1 '+pt(s.to);
  function ring(m){
-  const done=i=>{if(m.ph==='done'||m.ph==='cool')return 1;if(m.ph!=='run')return 0;
+  /* his 18 October ruling: an early end lights only the marks actually
+     reached, never the whole ring. i is the same global channel order as
+     m.done.released (one mark, one channel, one pattern), so a run ended
+     after 5 of 12 shows 5 lit and 7 still grey, on the cooldown and on
+     the completion both. */
+  const done=i=>{if(m.ph==='done'||m.ph==='cool')return m.done.halted?(i<m.done.released?1:0):1;if(m.ph!=='run')return 0;
    const k=Math.floor(m.run.i/m.dose), f=(m.run.i%m.dose)/m.dose;return i<k?1:i===k?f:0;};
   let s='<svg class="ring" viewBox="0 0 200 200" aria-hidden="true">';
   segs.forEach((g,i)=>{const p=done(i);
@@ -32,7 +37,7 @@ const V=(()=>{
  function mount(rs){
   rs.innerHTML=UI.x()+'<div class="r3"><p class="prompt r3p" id="r3p"></p><div class="face" id="face"><div class="rg" id="rg"></div>'
    +'<div class="in" id="in"></div><div class="car r3c" id="r3c" aria-live="polite"></div><div class="ft" id="ft"></div></div>'
-   +'<div class="r3t" id="r3t"></div></div>'+UI.crx()+'<div class="r3v" id="r3v"></div>';}
+   +'<div class="r3t" id="r3t"></div></div>';}
  let mode='';
  function paint(m){
   const rs=$('#rs');rs.dataset.ph=m.ph;
@@ -52,20 +57,21 @@ const V=(()=>{
   else if(m.ph==='cool')inn='<span class="cl">'+W.coolNm+'</span><b class="num clk">'+mmss(m.cool.left)+'</b><p class="cs">'+esc(W.cool[m.cool.said-1])+'</p>';
   else if(m.ph==='done')inn='<p class="cg">'+W.congrats+'</p><p class="sm">'+esc(m.done.halted?W.ended(m.done.released,m.done.places):W.did(m.done.released,m.done.places))+'</p>';
   $('#in').innerHTML=inn;
-  $('#ft').innerHTML=m.ph==='run'?'<span class="num">'+(m.paused?esc(W.pausedSay):W.left(m.run.left))+'</span>':'';
+  $('#ft').innerHTML=m.ph==='run'?'<span class="num">'+(m.paused?esc(W.pausedSay):esc(W.split(m.run.split.left,m.run.split.right)))+'</span>':'';
   /* under the face */
   let t='';
   if(m.ph==='before')t='<div class="row">'+UI.from(m)+'<span class="lb"><span class="ll">'+W.dose+'</span>'+UI.dose(m)+'</span>'+UI.voice(m)+UI.tone(m)+'</div>'
    +'<p class="sm ss num">'+ADDR.map(a=>seatMk(a,12)+'<span>'+esc(a.k)+'</span>').join('')+'<span class="es">'+esc(W.est(m.dose,m.est.lines,m.est.min))+'</span></p><div class="row">'+UI.begin()+'</div>';
   else if(m.ph==='script'||m.ph==='run'){const a=m.run.addr;
-   t=(m.ph==='run'?'<p class="ad">'+seatMk(a)+'<b>'+esc(a.k)+'</b><span>'+esc(W.place(a))+'</span></p>':'')+'<div class="row">'+UI.pause(m)+'</div>';}
-  else if(m.ph==='cool')t='<div class="row"><button type="button" class="lk" data-act="finish">'+W.finish+'</button></div>';
+   /* his 18 October ask: just the feeling word, no address/body jargon beside it */
+   t=(m.ph==='run'?'<p class="ad">'+seatMk(a)+'<b>'+esc(a.k)+'</b></p>':'')+'<div class="row">'+UI.quad(m)+'</div>';}
+  else if(m.ph==='cool')t='<div class="row"><button type="button" class="q qi" data-act="crisis" aria-haspopup="dialog" aria-label="'+esc(CRISIS.say.open)+'" title="'+esc(CRISIS.say.open)+'">'+MK.help+'</button>'
+   +'<button type="button" class="lk" data-act="finish">'+W.finish+'</button></div>';
   else{const d=m.done;
    t='<div class="r3f">'+['released','bank','vault'].map(k=>'<div class="fg"><b class="num">'+N(d[k])+'</b><span class="fl">'+W.fig[k]+', '+W.figU[k]+'</span><span class="fm">'+W.figM[k]+'</span></div>').join('')+'</div>'
-    +'<p class="sm">'+esc(W.pattern)+(d.canRun?' '+esc(W.month(d.left)):'')+'</p>'
-    +(d.canRun?'':'<p class="sp">'+esc(W.spent)+'</p>')
-    +'<div class="row">'+UI.after(m)+(d.canRun?'':'<span class="shut">'+MK.clock+'<span>'+W.spentSlot+'</span></span><button type="button" class="lk" data-act="tiers">'+W.tiers+'</button>')+'</div>';}
-  $('#r3t').innerHTML=t;
-  $('#r3v').innerHTML=(m.ph==='run'||m.ph==='cool'||m.ph==='script')&&m.voice?UI.vm(!m.paused,W.voice):'';}
+    +(d.canRun?'<p class="sm">'+esc(W.month(d.left))+'</p>':'<p class="sp">'+esc(W.spent)+'</p>')
+    +'<div class="row doneacts">'+UI.after(m)+UI.endsession()+'</div>'
+    +(d.canRun?'':'<div class="row"><span class="shut">'+MK.clock+'<span>'+W.spentSlot+'</span></span><button type="button" class="lk" data-act="tiers">'+W.tiers+'</button></div>');}
+  $('#r3t').innerHTML=t;}
  return {mount,paint};})();
 W.ringMeans='Each mark on the ring is one pattern: one place, one side, letting go or putting back.';

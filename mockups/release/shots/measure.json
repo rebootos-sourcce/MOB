@@ -1406,8 +1406,8 @@
   "clipped": [],
   "hits": [],
   "scrolls": false,
-  "words": 63,
-  "presses": 10,
+  "words": 59,
+  "presses": 9,
   "pressNames": [
    "Close",
    "Story",
@@ -1417,8 +1417,7 @@
    "100",
    "Voice",
    "Binaural tone",
-   "Begin",
-   "Is this a crisis?"
+   "Begin"
   ],
   "small": [],
   "minText": 6.59,
@@ -1442,8 +1441,7 @@
    "Expectation",
    "Hypervigilance",
    "100 times each side: 1,200 lines, about 71 minutes.",
-   "Begin",
-   "Is this a crisis?"
+   "Begin"
   ]
  },
  "r3-before-390.jpg": {
@@ -1452,8 +1450,8 @@
   "clipped": [],
   "hits": [],
   "scrolls": false,
-  "words": 63,
-  "presses": 10,
+  "words": 59,
+  "presses": 9,
   "pressNames": [
    "Close",
    "Story",
@@ -1463,8 +1461,7 @@
    "100",
    "Voice",
    "Binaural tone",
-   "Begin",
-   "Is this a crisis?"
+   "Begin"
   ],
   "small": [],
   "minText": 6.59,
@@ -1488,8 +1485,7 @@
    "Expectation",
    "Hypervigilance",
    "100 times each side: 1,200 lines, about 71 minutes.",
-   "Begin",
-   "Is this a crisis?"
+   "Begin"
   ]
  },
  "r3-script-1600.jpg": {
@@ -1498,24 +1494,23 @@
   "clipped": [],
   "hits": [],
   "scrolls": false,
-  "words": 28,
-  "presses": 2,
+  "words": 22,
+  "presses": 4,
   "pressNames": [
+   "Is this a crisis?",
+   "Voice, on",
    "Pause",
-   "Is this a crisis?"
+   "End session"
   ],
   "small": [],
-  "minText": 8.07,
-  "minTextWhat": "Is this a crisis?",
-  "minMark": 8.07,
-  "minMarkWhat": "vm on",
+  "minText": 14.9,
+  "minTextWhat": "I'm releasing believing, perceiving, thi",
+  "minMark": 6.59,
+  "minMarkWhat": "q qi vm on",
   "fails": [],
   "lines": [
    "I'm releasing believing, perceiving, thinking, behaving, acting, feeling that I am",
-   "Take one deep breath. Feel what your body is doing mechanically.",
-   "Pause",
-   "Is this a crisis?",
-   "Voice"
+   "Take one deep breath. Feel what your body is doing mechanically."
   ]
  },
  "r3-script-390.jpg": {
@@ -1524,23 +1519,23 @@
   "clipped": [],
   "hits": [],
   "scrolls": false,
-  "words": 27,
-  "presses": 2,
+  "words": 22,
+  "presses": 4,
   "pressNames": [
+   "Is this a crisis?",
+   "Voice, on",
    "Pause",
-   "Is this a crisis?"
+   "End session"
   ],
   "small": [],
-  "minText": 8.07,
-  "minTextWhat": "Is this a crisis?",
-  "minMark": 8.07,
-  "minMarkWhat": "vm on",
+  "minText": 14.9,
+  "minTextWhat": "I'm releasing believing, perceiving, thi",
+  "minMark": 6.59,
+  "minMarkWhat": "q qi vm on",
   "fails": [],
   "lines": [
    "I'm releasing believing, perceiving, thinking, behaving, acting, feeling that I am",
-   "Take one deep breath. Feel what your body is doing mechanically.",
-   "Pause",
-   "Is this a crisis?"
+   "Take one deep breath. Feel what your body is doing mechanically."
   ]
  },
  "r3-run-1600.jpg": {
@@ -1549,27 +1544,25 @@
   "clipped": [],
   "hits": [],
   "scrolls": false,
-  "words": 30,
-  "presses": 2,
+  "words": 21,
+  "presses": 4,
   "pressNames": [
+   "Is this a crisis?",
+   "Voice, on",
    "Pause",
-   "Is this a crisis?"
+   "End session"
   ],
   "small": [],
   "minText": 8.07,
-  "minTextWhat": "1,089 lines left",
-  "minMark": 8.07,
-  "minMarkWhat": "vm on",
+  "minTextWhat": "0 left, 89 right",
+  "minMark": 6.59,
+  "minMarkWhat": "q qi vm on",
   "fails": [],
   "lines": [
    "I'm releasing believing, perceiving, thinking, behaving, acting, feeling that I am",
    "going to lose control completely.",
-   "1,089 lines left",
-   "Anxiety",
-   "Adrenal Medulla, solar plexus",
-   "Pause",
-   "Is this a crisis?",
-   "Voice"
+   "0 left, 89 right",
+   "Anxiety"
   ]
  },
  "r3-run-390.jpg": {
@@ -1578,26 +1571,25 @@
   "clipped": [],
   "hits": [],
   "scrolls": false,
-  "words": 29,
-  "presses": 2,
+  "words": 21,
+  "presses": 4,
   "pressNames": [
+   "Is this a crisis?",
+   "Voice, on",
    "Pause",
-   "Is this a crisis?"
+   "End session"
   ],
   "small": [],
   "minText": 8.07,
-  "minTextWhat": "1,089 lines left",
-  "minMark": 8.07,
-  "minMarkWhat": "vm on",
+  "minTextWhat": "0 left, 89 right",
+  "minMark": 6.59,
+  "minMarkWhat": "q qi vm on",
   "fails": [],
   "lines": [
    "I'm releasing believing, perceiving, thinking, behaving, acting, feeling that I am",
    "going to lose control completely.",
-   "1,089 lines left",
-   "Anxiety",
-   "Adrenal Medulla, solar plexus",
-   "Pause",
-   "Is this a crisis?"
+   "0 left, 89 right",
+   "Anxiety"
   ]
  },
  "r3-reframe-1600.jpg": {
@@ -1606,27 +1598,25 @@
   "clipped": [],
   "hits": [],
   "scrolls": false,
-  "words": 20,
-  "presses": 2,
+  "words": 11,
+  "presses": 4,
   "pressNames": [
+   "Is this a crisis?",
+   "Voice, on",
    "Pause",
-   "Is this a crisis?"
+   "End session"
   ],
   "small": [],
   "minText": 8.07,
-  "minTextWhat": "997 lines left",
-  "minMark": 8.07,
-  "minMarkWhat": "vm on",
+  "minTextWhat": "97 left, 100 right",
+  "minMark": 6.59,
+  "minMarkWhat": "q qi vm on",
   "fails": [],
   "lines": [
    "I know that I am",
    "grounded.",
-   "997 lines left",
-   "Anxiety",
-   "Adrenal Medulla, solar plexus",
-   "Pause",
-   "Is this a crisis?",
-   "Voice"
+   "97 left, 100 right",
+   "Anxiety"
   ]
  },
  "r3-reframe-390.jpg": {
@@ -1635,26 +1625,25 @@
   "clipped": [],
   "hits": [],
   "scrolls": false,
-  "words": 19,
-  "presses": 2,
+  "words": 11,
+  "presses": 4,
   "pressNames": [
+   "Is this a crisis?",
+   "Voice, on",
    "Pause",
-   "Is this a crisis?"
+   "End session"
   ],
   "small": [],
   "minText": 8.07,
-  "minTextWhat": "997 lines left",
-  "minMark": 8.07,
-  "minMarkWhat": "vm on",
+  "minTextWhat": "97 left, 100 right",
+  "minMark": 6.59,
+  "minMarkWhat": "q qi vm on",
   "fails": [],
   "lines": [
    "I know that I am",
    "grounded.",
-   "997 lines left",
-   "Anxiety",
-   "Adrenal Medulla, solar plexus",
-   "Pause",
-   "Is this a crisis?"
+   "97 left, 100 right",
+   "Anxiety"
   ]
  },
  "r3-paused-1600.jpg": {
@@ -1663,29 +1652,25 @@
   "clipped": [],
   "hits": [],
   "scrolls": false,
-  "words": 36,
-  "presses": 3,
+  "words": 24,
+  "presses": 4,
   "pressNames": [
+   "Is this a crisis?",
+   "Voice, on",
    "Play",
-   "End session",
-   "Is this a crisis?"
+   "End session"
   ],
   "small": [],
   "minText": 8.07,
   "minTextWhat": "Paused. The list waits on this line.",
-  "minMark": 8.07,
-  "minMarkWhat": "vm",
+  "minMark": 6.59,
+  "minMarkWhat": "q qi vm",
   "fails": [],
   "lines": [
    "I'm releasing believing, perceiving, thinking, behaving, acting, feeling that I am",
    "going to lose control completely.",
    "Paused. The list waits on this line.",
-   "Anxiety",
-   "Adrenal Medulla, solar plexus",
-   "Play",
-   "End session",
-   "Is this a crisis?",
-   "Voice"
+   "Anxiety"
   ]
  },
  "r3-paused-390.jpg": {
@@ -1694,28 +1679,25 @@
   "clipped": [],
   "hits": [],
   "scrolls": false,
-  "words": 35,
-  "presses": 3,
+  "words": 24,
+  "presses": 4,
   "pressNames": [
+   "Is this a crisis?",
+   "Voice, on",
    "Play",
-   "End session",
-   "Is this a crisis?"
+   "End session"
   ],
   "small": [],
   "minText": 8.07,
   "minTextWhat": "Paused. The list waits on this line.",
-  "minMark": 8.07,
-  "minMarkWhat": "vm",
+  "minMark": 6.59,
+  "minMarkWhat": "q qi vm",
   "fails": [],
   "lines": [
    "I'm releasing believing, perceiving, thinking, behaving, acting, feeling that I am",
    "going to lose control completely.",
    "Paused. The list waits on this line.",
-   "Anxiety",
-   "Adrenal Medulla, solar plexus",
-   "Play",
-   "End session",
-   "Is this a crisis?"
+   "Anxiety"
   ]
  },
  "r3-cool-1600.jpg": {
@@ -1724,25 +1706,23 @@
   "clipped": [],
   "hits": [],
   "scrolls": false,
-  "words": 18,
+  "words": 15,
   "presses": 2,
   "pressNames": [
-   "Finish now",
-   "Is this a crisis?"
+   "Is this a crisis?",
+   "Finish now"
   ],
   "small": [],
   "minText": 8.07,
   "minTextWhat": "Cooldown",
-  "minMark": 8.07,
-  "minMarkWhat": "vm on",
+  "minMark": 12.18,
+  "minMarkWhat": "q qi",
   "fails": [],
   "lines": [
    "Cooldown",
    "1:24",
-   "Focus your awareness lightly for the next two minutes.",
-   "Finish now",
-   "Is this a crisis?",
-   "Voice"
+   "Focus your awareness inside your body for the next 2 minutes.",
+   "Finish now"
   ]
  },
  "r3-cool-390.jpg": {
@@ -1751,24 +1731,23 @@
   "clipped": [],
   "hits": [],
   "scrolls": false,
-  "words": 17,
+  "words": 15,
   "presses": 2,
   "pressNames": [
-   "Finish now",
-   "Is this a crisis?"
+   "Is this a crisis?",
+   "Finish now"
   ],
   "small": [],
   "minText": 8.07,
   "minTextWhat": "Cooldown",
-  "minMark": 8.07,
-  "minMarkWhat": "vm on",
+  "minMark": 12.18,
+  "minMarkWhat": "q qi",
   "fails": [],
   "lines": [
    "Cooldown",
    "1:24",
-   "Focus your awareness lightly for the next two minutes.",
-   "Finish now",
-   "Is this a crisis?"
+   "Focus your awareness inside your body for the next 2 minutes.",
+   "Finish now"
   ]
  },
  "r3-done-1600.jpg": {
@@ -1777,12 +1756,12 @@
   "clipped": [],
   "hits": [],
   "scrolls": false,
-  "words": 70,
+  "words": 51,
   "presses": 3,
   "pressNames": [
    "Close",
    "Run another session",
-   "Is this a crisis?"
+   "End session"
   ],
   "small": [],
   "minText": 6.59,
@@ -1802,9 +1781,9 @@
    "100",
    "Vault, released, ever",
    "Kept on your record.",
-   "A pattern is one line at one place in your body, the first time it is said. 288 new patterns left this month.",
+   "288 new patterns left this month.",
    "Run another session",
-   "Is this a crisis?"
+   "End session"
   ]
  },
  "r3-done-390.jpg": {
@@ -1813,12 +1792,12 @@
   "clipped": [],
   "hits": [],
   "scrolls": false,
-  "words": 70,
+  "words": 51,
   "presses": 3,
   "pressNames": [
    "Close",
    "Run another session",
-   "Is this a crisis?"
+   "End session"
   ],
   "small": [],
   "minText": 6.59,
@@ -1838,9 +1817,9 @@
    "100",
    "Vault, released, ever",
    "Kept on your record.",
-   "A pattern is one line at one place in your body, the first time it is said. 288 new patterns left this month.",
+   "288 new patterns left this month.",
    "Run another session",
-   "Is this a crisis?"
+   "End session"
   ]
  },
  "r3-spent-1600.jpg": {
@@ -1849,13 +1828,13 @@
   "clipped": [],
   "hits": [],
   "scrolls": false,
-  "words": 95,
+  "words": 76,
   "presses": 4,
   "pressNames": [
    "Close",
    "Rerun these",
-   "See the tiers",
-   "Is this a crisis?"
+   "End session",
+   "See the tiers"
   ],
   "small": [],
   "minText": 6.59,
@@ -1875,12 +1854,11 @@
    "100",
    "Vault, released, ever",
    "Kept on your record.",
-   "A pattern is one line at one place in your body, the first time it is said.",
    "This month's new patterns are all opened. Everything you have opened still runs, free, as often as you like. New ones arrive on 14 Nov 2026.",
    "Rerun these",
+   "End session",
    "Run another session",
-   "See the tiers",
-   "Is this a crisis?"
+   "See the tiers"
   ]
  },
  "r3-spent-390.jpg": {
@@ -1889,13 +1867,13 @@
   "clipped": [],
   "hits": [],
   "scrolls": false,
-  "words": 95,
+  "words": 76,
   "presses": 4,
   "pressNames": [
    "Close",
    "Rerun these",
-   "See the tiers",
-   "Is this a crisis?"
+   "End session",
+   "See the tiers"
   ],
   "small": [],
   "minText": 6.59,
@@ -1915,12 +1893,11 @@
    "100",
    "Vault, released, ever",
    "Kept on your record.",
-   "A pattern is one line at one place in your body, the first time it is said.",
    "This month's new patterns are all opened. Everything you have opened still runs, free, as often as you like. New ones arrive on 14 Nov 2026.",
    "Rerun these",
+   "End session",
    "Run another session",
-   "See the tiers",
-   "Is this a crisis?"
+   "See the tiers"
   ]
  },
  "r3-run-rm-1600.jpg": {
@@ -1929,27 +1906,25 @@
   "clipped": [],
   "hits": [],
   "scrolls": false,
-  "words": 30,
-  "presses": 2,
+  "words": 21,
+  "presses": 4,
   "pressNames": [
+   "Is this a crisis?",
+   "Voice, on",
    "Pause",
-   "Is this a crisis?"
+   "End session"
   ],
   "small": [],
   "minText": 8.07,
-  "minTextWhat": "1,089 lines left",
-  "minMark": 8.07,
-  "minMarkWhat": "vm on",
+  "minTextWhat": "0 left, 89 right",
+  "minMark": 6.59,
+  "minMarkWhat": "q qi vm on",
   "fails": [],
   "lines": [
    "I'm releasing believing, perceiving, thinking, behaving, acting, feeling that I am",
    "going to lose control completely.",
-   "1,089 lines left",
-   "Anxiety",
-   "Adrenal Medulla, solar plexus",
-   "Pause",
-   "Is this a crisis?",
-   "Voice"
+   "0 left, 89 right",
+   "Anxiety"
   ]
  },
  "r3-run-rm-390.jpg": {
@@ -1958,26 +1933,25 @@
   "clipped": [],
   "hits": [],
   "scrolls": false,
-  "words": 29,
-  "presses": 2,
+  "words": 21,
+  "presses": 4,
   "pressNames": [
+   "Is this a crisis?",
+   "Voice, on",
    "Pause",
-   "Is this a crisis?"
+   "End session"
   ],
   "small": [],
   "minText": 8.07,
-  "minTextWhat": "1,089 lines left",
-  "minMark": 8.07,
-  "minMarkWhat": "vm on",
+  "minTextWhat": "0 left, 89 right",
+  "minMark": 6.59,
+  "minMarkWhat": "q qi vm on",
   "fails": [],
   "lines": [
    "I'm releasing believing, perceiving, thinking, behaving, acting, feeling that I am",
    "going to lose control completely.",
-   "1,089 lines left",
-   "Anxiety",
-   "Adrenal Medulla, solar plexus",
-   "Pause",
-   "Is this a crisis?"
+   "0 left, 89 right",
+   "Anxiety"
   ]
  },
  "r3-cool-rm-1600.jpg": {
@@ -1986,25 +1960,23 @@
   "clipped": [],
   "hits": [],
   "scrolls": false,
-  "words": 18,
+  "words": 15,
   "presses": 2,
   "pressNames": [
-   "Finish now",
-   "Is this a crisis?"
+   "Is this a crisis?",
+   "Finish now"
   ],
   "small": [],
   "minText": 8.07,
   "minTextWhat": "Cooldown",
-  "minMark": 8.07,
-  "minMarkWhat": "vm on",
+  "minMark": 12.18,
+  "minMarkWhat": "q qi",
   "fails": [],
   "lines": [
    "Cooldown",
    "1:24",
-   "Focus your awareness lightly for the next two minutes.",
-   "Finish now",
-   "Is this a crisis?",
-   "Voice"
+   "Focus your awareness inside your body for the next 2 minutes.",
+   "Finish now"
   ]
  },
  "r3-cool-rm-390.jpg": {
@@ -2013,24 +1985,23 @@
   "clipped": [],
   "hits": [],
   "scrolls": false,
-  "words": 17,
+  "words": 15,
   "presses": 2,
   "pressNames": [
-   "Finish now",
-   "Is this a crisis?"
+   "Is this a crisis?",
+   "Finish now"
   ],
   "small": [],
   "minText": 8.07,
   "minTextWhat": "Cooldown",
-  "minMark": 8.07,
-  "minMarkWhat": "vm on",
+  "minMark": 12.18,
+  "minMarkWhat": "q qi",
   "fails": [],
   "lines": [
    "Cooldown",
    "1:24",
-   "Focus your awareness lightly for the next two minutes.",
-   "Finish now",
-   "Is this a crisis?"
+   "Focus your awareness inside your body for the next 2 minutes.",
+   "Finish now"
   ]
  },
  "r3-run-crisis-1600.jpg": {
@@ -2039,27 +2010,25 @@
   "clipped": [],
   "hits": [],
   "scrolls": false,
-  "words": 30,
-  "presses": 2,
+  "words": 21,
+  "presses": 4,
   "pressNames": [
+   "Is this a crisis?",
+   "Voice, on",
    "Pause",
-   "Is this a crisis?"
+   "End session"
   ],
   "small": [],
   "minText": 8.07,
-  "minTextWhat": "1,089 lines left",
-  "minMark": 8.07,
-  "minMarkWhat": "vm on",
+  "minTextWhat": "0 left, 89 right",
+  "minMark": 6.59,
+  "minMarkWhat": "q qi vm on",
   "fails": [],
   "lines": [
    "I'm releasing believing, perceiving, thinking, behaving, acting, feeling that I am",
    "going to lose control completely.",
-   "1,089 lines left",
-   "Anxiety",
-   "Adrenal Medulla, solar plexus",
-   "Pause",
-   "Is this a crisis?",
-   "Voice"
+   "0 left, 89 right",
+   "Anxiety"
   ]
  },
  "r3-run-crisis-390.jpg": {
@@ -2068,26 +2037,25 @@
   "clipped": [],
   "hits": [],
   "scrolls": false,
-  "words": 29,
-  "presses": 2,
+  "words": 21,
+  "presses": 4,
   "pressNames": [
+   "Is this a crisis?",
+   "Voice, on",
    "Pause",
-   "Is this a crisis?"
+   "End session"
   ],
   "small": [],
   "minText": 8.07,
-  "minTextWhat": "1,089 lines left",
-  "minMark": 8.07,
-  "minMarkWhat": "vm on",
+  "minTextWhat": "0 left, 89 right",
+  "minMark": 6.59,
+  "minMarkWhat": "q qi vm on",
   "fails": [],
   "lines": [
    "I'm releasing believing, perceiving, thinking, behaving, acting, feeling that I am",
    "going to lose control completely.",
-   "1,089 lines left",
-   "Anxiety",
-   "Adrenal Medulla, solar plexus",
-   "Pause",
-   "Is this a crisis?"
+   "0 left, 89 right",
+   "Anxiety"
   ]
  },
  "r4-before-1600.jpg": {
@@ -2799,6 +2767,78 @@
    "1,089 lines left in all",
    "Pause",
    "Is this a crisis?"
+  ]
+ },
+ "r3-ended-1600.jpg": {
+  "lowest": 1000,
+  "H": 1000,
+  "clipped": [],
+  "hits": [],
+  "scrolls": false,
+  "words": 54,
+  "presses": 3,
+  "pressNames": [
+   "Close",
+   "Run another session",
+   "End session"
+  ],
+  "small": [],
+  "minText": 6.59,
+  "minTextWhat": "Opened for the first time today.",
+  "minMark": 8.07,
+  "minMarkWhat": "x",
+  "fails": [],
+  "lines": [
+   "Congratulations.",
+   "You ended early. You released 5 patterns at 2 places in your body.",
+   "5",
+   "Released, this session",
+   "Opened for the first time today.",
+   "51",
+   "Bank, still held",
+   "Waiting in your body to be released.",
+   "93",
+   "Vault, released, ever",
+   "Kept on your record.",
+   "295 new patterns left this month.",
+   "Run another session",
+   "End session"
+  ]
+ },
+ "r3-ended-390.jpg": {
+  "lowest": 844,
+  "H": 844,
+  "clipped": [],
+  "hits": [],
+  "scrolls": false,
+  "words": 54,
+  "presses": 3,
+  "pressNames": [
+   "Close",
+   "Run another session",
+   "End session"
+  ],
+  "small": [],
+  "minText": 6.59,
+  "minTextWhat": "Opened for the first time today.",
+  "minMark": 8.07,
+  "minMarkWhat": "x",
+  "fails": [],
+  "lines": [
+   "Congratulations.",
+   "You ended early. You released 5 patterns at 2 places in your body.",
+   "5",
+   "Released, this session",
+   "Opened for the first time today.",
+   "51",
+   "Bank, still held",
+   "Waiting in your body to be released.",
+   "93",
+   "Vault, released, ever",
+   "Kept on your record.",
+   "295 new patterns left this month.",
+   "Run another session",
+   "End session"
   ]
  }
 }
