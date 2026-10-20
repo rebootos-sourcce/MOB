@@ -103,3 +103,10 @@ Source and generator edits are committed. The generated `data.js` has not yet be
 - Expected seat-level edges: Root 400; Sacral 112; Solar 192; Heart 165; Throat 108; 3rd Eye 36; Crown 105; total **1,118 branch-to-node edges**. These are calculated from branch counts × node counts per matching band.
 - Scope limitation: this creates a framework topology by shared seat/band, not evidence that each artwork branch is an anatomically identified nerve or has a uniquely established relationship to each node. Four field anchors are outside the seven seat bands and remain unlinked to nerve branches.
 - Verification state: source changes re-fetched and string-checked. Generator execution and validator run remain unverified; do not call this runtime-tested or fully closed until executed.
+
+## Fetter-to-Saboteur wiring — implementation checkpoint
+
+- Updated `proto/knowledge/src/gen-data.js` so node records read the canonical axis from the source node's `c` field (rather than the non-existent `cf` field).
+- Added reciprocal links from each Saboteur to every canonical fetter axis represented by the Saboteur's explicit `nids` through the linked node records. The axis also links back to that Saboteur.
+- This is a source-derived graph: Saboteur → its declared node IDs → each node's canonical axis. It does not infer additional relationships beyond the committed `nids` and node axis values.
+- Generator and validator still require execution; this source-level wiring is not yet runtime verified.
