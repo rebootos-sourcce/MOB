@@ -118,8 +118,10 @@ E.forEach(e=>{
  if(!schema) throw new Error('No template schema for entry kind '+e.kind+' ('+e.id+')');
  e.templateId=schema.id;
  e.template=Object.fromEntries(schema.fields.map(k=>[k,Object.prototype.hasOwnProperty.call(e,k)?e[k]:null]));
+ const missingFields=schema.fields.filter(k=>!Object.prototype.hasOwnProperty.call(e,k)||e[k]==null||e[k]==='');
  e.templateValidation={schemaDefined:true, sourceBacked:true,
-  missingFields:schema.fields.filter(k=>!Object.prototype.hasOwnProperty.call(e,k)||e[k]==null||e[k]==='')};
+  contentStatus:missingFields.length===0?'complete':'incomplete',
+  missingFields};
 });
 
 const icp=JSON.parse(fs.readFileSync(path.join(__dirname,'icp.json'),'utf8'));
