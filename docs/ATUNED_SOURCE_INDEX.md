@@ -6,6 +6,9 @@ This index points to the maintained register and the main source locations.
 - [ATÜNED / Mechanics of Being Source Register](ATUNED_SOURCE_REGISTER.md) — canonical repositories, verified paths, retrieval protocol, closure gate, and outstanding verification.
 - [Framework Closure Audit Log — 2026-10-20](ATUNED_FRAMEWORK_CLOSURE_AUDIT_LOG_2026-10-20.md) — current source-backed findings, acceptance status, and recursive next actions.
 
+## Current closure execution
+- [Template + Connectivity Closure Execution — 2026-10-20](ATUNED_TEMPLATE_CONNECTIVITY_CLOSURE_EXECUTION_2026-10-20.md) — current verified repository evidence, mandatory template coverage criteria, graph/nerve connectivity criteria, and closure status.
+
 ## Repositories
 - [MOB — Mechanics of Being / ATÜNED application](https://github.com/rebootos-sourcce/MOB)
 - [MOB-Manuscript — Mechanics of Being manuscript](https://github.com/rebootos-sourcce/MOB-Manuscript)
