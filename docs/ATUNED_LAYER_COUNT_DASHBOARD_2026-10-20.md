@@ -145,3 +145,19 @@ Source and generator edits are committed. The generated `data.js` has not yet be
 - The previous dashboard statement that Psychopathy is a confirmed super-complex is superseded by this correction. Preserve the history but use this correction for all current decisions.
 - The root `source.html` retrieval returned no usable body text through the current connector, and the referenced `MOB-Manuscript` README path was inaccessible. Treat these as source-retrieval blockers, not as absent content.
 - Before starting super-complex work, complete the layer-by-layer inventory for nerves, nodes, fetters, saboteurs, ordinary complexes, and hyper-complexes, and reconcile all candidate source families against the authoritative owner-defined taxonomy. Keep the super-complex phase gated until that is complete.
+
+
+## Owner-directed phase-order correction — 2026-10-20
+
+**Active phase is now Super-Complex source reconciliation and design.** The owner explicitly directed that Super-Complex work begin before the remaining lower-layer closure audit. The previous dashboard execution order is retained as the deferred post-discussion closure plan, not as a gate preventing current Super-Complex work.
+
+Read [ATUNED_SUPER_COMPLEX_PHASE_HANDSHAKE_2026-10-20.md](ATUNED_SUPER_COMPLEX_PHASE_HANDSHAKE_2026-10-20.md) first. It contains the full source-first startup sequence, source authority hierarchy, candidate-family breakdown, and retrieval protocol.
+
+### First-read blockers
+- Required exact source `MOB_Complete_v341.html` has not yet been recovered through the last retrieval path; v336/v2 staging material is not a substitute.
+- Large root `source.html` body and referenced `MOB-Manuscript` README were not retrievable via the connector used. This is not proof of absent source content.
+- The owner-defined eight ordinary Complexes and original semantic nerve-to-character mapping still require authoritative source locators.
+- General Super-Complex membership rule and canonical denominator remain unresolved.
+- Psychopathy as a canonical Super-Complex is **rejected by owner**; do not count or promote it because of the current `compass.js` label.
+
+No completion percentages should be calculated from unverified denominators. Current counts above remain evidence snapshots, not closure claims.
