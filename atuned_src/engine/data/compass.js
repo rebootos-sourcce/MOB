@@ -460,14 +460,50 @@ function compassPoleLines(m,end){
    structural layer. Refer to licensed clinical professionals for
    parallel support." */
 const DESCENT=[
- {nm:'Narcissism',      kind:'complex',
-  d:'Grandiose entitlement. The self appointed arbiter. Personal situations described in strategic terms.'},
+ {nm:'Narcissism', kind:'complex',
+  d:'Grandiose entitlement; the self-appointed arbiter. Personal situations are interpreted through status, exceptionalism, entitlement, and the need to preserve a superior self-image.',
+  content:{
+   inferred:false, inferenceBasis:'The complex name and core description are explicitly source-defined in this DESCENT registry. The detailed behavioral template is a research-informed expansion, not a clinical diagnosis.',
+   behavior:'May overstate personal importance or achievements, expect special treatment, seek admiration, discount other perspectives, or respond defensively to criticism. Vulnerable shame or humiliation may sit beneath grandiosity; presentation can vary by context.',
+   triggerMechanism:'A perceived status threat, criticism, loss of admiration, boundary, or another person’s independent need can activate a defensive move to restore superiority or control. Treat this as a hypothesis to check against observed behavior, not a claim about every person.',
+   livedExample:'In a team discussion, another person receives credit. The person experiences this as a threat to rank, reframes the other person as incompetent, redirects the discussion toward their own contribution, and struggles to acknowledge the other person’s work.',
+   impact:'Can reduce mutuality, trust, feedback quality, and capacity to repair harm when other people’s needs are treated as secondary to protecting self-image.',
+   practice:'Pause before defending rank. State the observable facts, name the impact on the other person, acknowledge one valid point or contribution without qualification, and ask what repair or shared outcome is needed.',
+   oppositeId:'opposite:Narcissism', oppositeDefinition:'Grounded self-worth with humility, reciprocal empathy, accountability, and respect for others as equally real—not self-erasure or self-contempt.',
+   oppositeStatus:'inferred-working-counterpart; not asserted as a canonical one-to-one opposite',
+   confidence:0.78, reviewStatus:'external-research-pass-A-done; semantic-pass-B-and-adversarial-pass-C-pending',
+   researchSources:['https://www.psychiatry.org/News-room/APA-Blogs/What-Is-Narcissistic-Personality-Disorder','https://pmc.ncbi.nlm.nih.gov/articles/PMC4415495/']
+  }},
  {nm:'Machiavellianism',kind:'hyper complex',
   d:'The narcissistic stack plus active suppression of empathy. Feeling right has become more important than feeling connected.',
-  gate:'Malignancy begins where harm to others becomes instrumental.'},
- {nm:'Psychopathy',     kind:'super complex',
+  gate:'Malignancy begins where harm to others becomes instrumental.',
+  content:{
+   inferred:false, inferenceBasis:'The higher-order placement and brief description are explicitly source-defined in this DESCENT registry. Detailed behavior and opposite are research-informed expansions, not diagnoses.',
+   behavior:'May use strategic impression management, selective disclosure, deception, cynical assumptions, or interpersonal leverage to pursue an outcome. Empathy may be used instrumentally rather than to guide care; research does not support treating every person with this trait as identical.',
+   triggerMechanism:'A desired outcome, competition, perceived vulnerability, or distrust can shift the decision rule from mutual agreement toward control of information and other people’s choices.',
+   livedExample:'During a disagreement, the person privately tells each colleague a different version of events to isolate an opponent and secure a decision, while presenting the move as neutral problem-solving.',
+   impact:'Undermines informed consent, stable trust, fair collaboration, and shared decision-making; apparent cooperation can become difficult to distinguish from tactical compliance.',
+   practice:'Make the goal and relevant information explicit, disclose conflicts of interest, invite independent verification, give others a genuine option to refuse, and choose a route that remains defensible if all affected parties know the facts.',
+   oppositeId:'opposite:Machiavellianism', oppositeDefinition:'Transparent, principled agency: truthful communication, reciprocal consent, fair dealing, and strategic skill constrained by care and accountability.',
+   oppositeStatus:'inferred-working-counterpart; not asserted as a canonical one-to-one opposite',
+   confidence:0.76, reviewStatus:'external-research-pass-A-done; semantic-pass-B-and-adversarial-pass-C-pending',
+   researchSources:['https://pmc.ncbi.nlm.nih.gov/articles/PMC3717508/','https://pubmed.ncbi.nlm.nih.gov/34636074/']
+  }},
+ {nm:'Psychopathy',kind:'super complex',
   d:'Structural absence of the empathy feedback loop. The Machiavellian suppresses, so there is something to suppress. This does not suppress, because harm is always a neutral option.',
-  refer:true}];
+  refer:true,
+  content:{
+   inferred:false, inferenceBasis:'The super-complex placement and core phrasing are explicitly source-defined in this DESCENT registry. The added behavioral template is research-informed and must not be used to diagnose an individual.',
+   behavior:'The source model describes harm-related feedback as structurally unavailable or not constraining choice. In real-world research, psychopathy is a complex construct with varied measures; do not infer it from a single action, conflict, or perceived lack of warmth.',
+   triggerMechanism:'In the source model, a choice point occurs where another person’s welfare would normally constrain an action, but the anticipated harm does not function as a meaningful stop signal. This is a model description, not a validated clinical mechanism for an individual.',
+   livedExample:'A decision-maker recognizes that a choice will predictably injure another person, but treats that injury as irrelevant to the decision and proceeds without meaningful consideration of consent, responsibility, or repair.',
+   impact:'If this pattern is present, ordinary appeals to shared feeling may not be sufficient to protect others; prioritize boundaries, accountability, documented decisions, and appropriate professional support.',
+   practice:'Do not rely on an assumed emotional response. Make behavioral limits explicit, document decisions and consequences, require independent oversight where harm risk exists, and seek qualified professional guidance when safety or clinical concerns arise.',
+   oppositeId:'opposite:Psychopathy', oppositeDefinition:'Empathic accountability: recognizing others’ welfare as decision-relevant, inhibiting preventable harm, respecting consent, and taking responsibility for consequences.',
+   oppositeStatus:'inferred-working-counterpart; not asserted as a canonical one-to-one opposite',
+   confidence:0.64, reviewStatus:'external-research-pass-A-partial; source model wording requires expert review; semantic-pass-B-and-adversarial-pass-C-pending',
+   researchSources:['https://pubmed.ncbi.nlm.nih.gov/34636074/','https://pubmed.ncbi.nlm.nih.gov/23885245/']
+  }}];
 const DESCENT_REFER='Work at the address. Do not work the structural layer, and say so plainly. '
  +'This configuration needs a licensed clinician alongside, not instead.';
 
