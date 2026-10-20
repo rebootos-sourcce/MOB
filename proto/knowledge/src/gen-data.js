@@ -341,6 +341,34 @@ T.DESCENT.forEach(d=>{
  complex.links.push(...linkedSaboteurs.map(s=>s.id));
  linkedSaboteurs.forEach(s=>s.links.push(complex.id));
 });
+/* Hypercomplex-to-complex ecosystem wiring.
+   Each mode is connected to Saboteurs through its declared axis route; those
+   Saboteurs already connect reciprocally to the populated complex records.
+   These routes are provisional navigation metadata, not claims of equivalence
+   or canonical parentage. Direct parent-complex assignments remain open. */
+const HYPERCOMPLEX_AXIS_ROUTES={
+ 'Grandiosity':['Shame','Fear','Control','Insecurity'],
+ 'Predatory':['Fear','Control','Shame','Anger'],
+ 'Collapse':['Fear','Shame','Insecurity'],
+ 'Rigidity':['Control','Shame','Fear'],
+ 'Dysregulation':['Fear','Anger','Shame'],
+ 'Dissociation':['Fear','Shame','Insecurity']
+};
+E.filter(e=>e.kind==='hypercomplex').forEach(h=>{
+ const routeAxes=HYPERCOMPLEX_AXIS_ROUTES[h.nm]||[];
+ const routeNodeIds=new Set(E.filter(e=>e.kind==='node'&&routeAxes.includes(e.axis)).map(e=>e.id));
+ const linkedSaboteurs=E.filter(e=>e.kind==='sab'&&(e.nids||[]).some(i=>routeNodeIds.has('node:'+i)));
+ h.routeAxes=routeAxes;
+ h.routeBasis='provisional axis-mediated ecosystem route; shared node IDs connect this mode to Saboteurs and the existing complex layer; not canonical parentage or clinical equivalence';
+ h.links.push(...linkedSaboteurs.map(s=>s.id));
+ linkedSaboteurs.forEach(s=>s.links.push(h.id));
+ const linkedComplexes=E.filter(e=>e.kind==='complex'&&linkedSaboteurs.some(s=>(s.links||[]).includes(e.id)));
+ h.complexRouteIds=linkedComplexes.map(c=>c.id);
+ h.links.push(...h.complexRouteIds);
+ linkedComplexes.forEach(c=>c.links.push(h.id));
+ if(!linkedComplexes.length) h.parentLinkBasis='no populated complex reachable on declared provisional axis route; review required';
+ else h.parentLinkBasis='provisional shared-axis path to populated complex records; not direct parent mapping';
+});
 /* Counterpart edges are explicit and reciprocal; both endpoints must exist. */
 T.DESCENT.forEach(d=>{
  const original=by['descent:'+d.nm];
