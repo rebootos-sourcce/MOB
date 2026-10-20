@@ -24,6 +24,8 @@ vm.runInContext(src+`;this.__={NODES,CHILD,MASKS,ARCH,GLOSS,HCX_LIB,ALL_SAB,SABD
 const cardSource=fs.readFileSync(path.join(ROOT,'atuned_src','engine','data','sabcard.js'),'utf8');
 const cardCtx={}; vm.createContext(cardCtx); vm.runInContext(cardSource+';this.__cards=SABCARD;',cardCtx);
 const SAB_CARDS=cardCtx.__cards;
+const cardKey=s=>String(s==null?'':s).toLowerCase().replace(/[^a-z0-9]/g,'');
+const SAB_CARDS_BY_KEY=Object.fromEntries(Object.entries(SAB_CARDS).map(([k,v])=>[cardKey(k),v]));
 const T=ctx.__;
 const clean=s=>String(s==null?'':s).replace(/\s*--\s*/g,', ').replace(/\u2014/g,', ').trim();
 /* the first sentence, or two when the first is a fragment under forty
@@ -62,7 +64,7 @@ T.NODES.forEach(n=>{const field=T.BANDS.indexOf(n.b)<0;
 /* thirty nine saboteurs, thirty three with the codex's full text */
 T.ALL_SAB.forEach(s=>{const d=T.SABDEF[T.KB_KEY(s.nm)];
  const fam=T.HCX_LIB.filter(h=>h.nm===s.hcx)[0];
- const card=SAB_CARDS[String(s.nm).toLowerCase()]||null;
+ const card=SAB_CARDS_BY_KEY[cardKey(s.nm)]||null;
  add({id:'sab:'+s.nm, kind:'sab', nm:s.nm, seat:(fam&&fam.b)||'Heart',
   fam:s.hcx||'unnamed', def:d?lead(d.d):(fam?s.nm+', a saboteur in the '+fam.nm+' architecture: '+fam.d+'.':s.nm+', a saboteur.'),
   body:d?clean(d.d):'', trigger:d?clean(d.t):'', says:d?clean(d.q):'', out:d?clean(d.i):'',
