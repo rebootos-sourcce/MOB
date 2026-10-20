@@ -153,6 +153,7 @@ T.DESCENT.forEach((d,i)=>add({
  gate:d.gate||null, refer:!!d.refer,
  narrativeSource:'atuned_src/engine/data/compass.js DESCENT; external research sources recorded per entry',
  researchSources:d.content.researchSources,
+ researchPasses:d.content.researchPasses||[],
  descentOrder:i
 }));
 
@@ -178,7 +179,8 @@ T.DESCENT.forEach(d=>{
   confidence:c.confidence,
   reviewStatus:c.reviewStatus,
   narrativeSource:'derived counterpart synthesis; not canonical',
-  researchSources:c.researchSources||[]
+  researchSources:c.researchSources||[],
+  researchPasses:c.researchPasses||[]
  });
 });
 
@@ -401,7 +403,7 @@ const TEMPLATE_SCHEMAS={
  hcx:{id:'TPL-HYPERCOMPLEX', fields:['nm','seat','fam','def','sub','links']},
  complex:{id:'TPL-COMPLEX-UNIFIED', fields:['nm','fam','def','body','inferred','inferenceBasis','behavior','triggerMechanism','livedExample','impact','practice','oppositeId','oppositeDefinition','oppositeStatus','confidence','reviewStatus','narrativeSource','researchSources','links']},
  inferred:{id:'TPL-COMPLEX-UNIFIED', fields:['nm','fam','def','body','inferred','inferenceBasis','behavior','triggerMechanism','livedExample','impact','practice','oppositeId','oppositeDefinition','oppositeStatus','confidence','reviewStatus','narrativeSource','researchSources','links']},
- supercomplex:{id:'TPL-SUPERCOMPLEX', fields:['nm','fam','def','body','inferred','inferenceBasis','behavior','triggerMechanism','livedExample','impact','practice','oppositeId','oppositeDefinition','oppositeStatus','confidence','reviewStatus','refer','narrativeSource','researchSources','links']},
+ supercomplex:{id:'TPL-SUPERCOMPLEX', fields:['nm','fam','def','body','inferred','inferenceBasis','behavior','triggerMechanism','livedExample','impact','practice','oppositeId','oppositeDefinition','oppositeStatus','confidence','reviewStatus','refer','narrativeSource','researchSources','researchPasses','links']},
  mask:{id:'TPL-MASK', fields:['nm','seat','fam','def','links']},
  arch:{id:'TPL-ARCHETYPE', fields:['nm','seat','fam','def','links']},
  dom:{id:'TPL-DOMAIN', fields:['nm','seat','fam','def','clear','dist','links']},
@@ -411,7 +413,7 @@ E.forEach(e=>{
  const schema=TEMPLATE_SCHEMAS[e.kind];
  if(!schema) throw new Error('No template schema for entry kind '+e.kind+' ('+e.id+')');
  e.templateId=schema.id;
- const descentDetailFields=['inferred','inferenceBasis','behavior','triggerMechanism','livedExample','impact','practice','oppositeId','oppositeDefinition','oppositeStatus','confidence','reviewStatus','researchSources'];
+ const descentDetailFields=['inferred','inferenceBasis','behavior','triggerMechanism','livedExample','impact','practice','oppositeId','oppositeDefinition','oppositeStatus','confidence','reviewStatus','researchSources','researchPasses'];
  const assignedFields=(e.kind==='hcx'&&String(e.narrativeSource||'').includes('compass.js DESCENT'))?schema.fields.concat(descentDetailFields):schema.fields;
  e.template=Object.fromEntries(assignedFields.map(k=>[k,Object.prototype.hasOwnProperty.call(e,k)?e[k]:null]));
  const missingFields=assignedFields.filter(k=>{
