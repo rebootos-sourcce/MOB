@@ -77,3 +77,25 @@ Exact repository searches for `TPL-NODE-CHARGE-STASIS-NARRATIVE-V1`, `PASS46_NAR
 - The `DESCENT` table is exported to the generator and its source-defined entries are emitted as records. Narcissism is the one ordinary-complex entry explicitly found in that table. Machiavellianism remains hyper-complex; Psychopathy remains super-complex.
 - The opposite of Narcissism is not assigned: the generated fields mark it unresolved. This is intentional and must not be replaced with a guessed opposite.
 - Verification boundary: source edits are committed, but generator execution, generated-data review, and validator execution have not been performed in this tool session. Full ordinary-complex and inferred-complex inventories remain unknown. Status stays OPEN.
+
+
+## Continued execution update — substantive complex content — 2026-10-20
+
+### Implemented in source
+
+- Expanded the three explicit `DESCENT` source entries with substantive fields: behavior, trigger/mechanism, lived example, impact, practice, named counterpart, opposite status, confidence, review status, and external research source URLs.
+- Added three separately addressable inferred counterpart records emitted by `gen-data.js`: Grounded Self-Worth, Transparent Reciprocal Agency, and Empathic Accountability. Each has a stable ID, inferred status, inference basis, behavioral and practice content, provenance, confidence/review status, and source URLs.
+- Added reciprocal links from each source-defined descent record to its inferred counterpart and back. The higher-order descent template payload now conditionally includes the expanded content fields so the content is not lost when generated.
+- Counterparts are explicitly labeled as inferred working counterparts, not canonical opposites. They must not be promoted to canon without owner/source review.
+- External research used: APA material on narcissistic personality disorder; peer-reviewed work on empathy and narcissism; PubMed Central/Frontiers work on Machiavellianism; PubMed research on Machiavellianism/psychopathy. Sources are stored on the corresponding records.
+
+### Record-level scope currently evidenced
+
+- Explicit ordinary complex in inspected `DESCENT`: 1 (Narcissism).
+- Explicit higher-order entries in `DESCENT`: 1 hyper-complex (Machiavellianism), 1 super-complex (Psychopathy).
+- Inferred counterpart records added: 3.
+- Full denominator for all complexes/inferred complexes remains unknown; these three descent entries do not prove that the registry is exhaustive.
+
+### Verification boundary
+
+Changes are committed to source and generator. Generated `data.js` regeneration and validator execution have not been confirmed. Do not mark closure complete until those tests run, their exact output is recorded, the full inventory is reconciled, and Pass B/C reviews resolve or explicitly disposition all gaps.
