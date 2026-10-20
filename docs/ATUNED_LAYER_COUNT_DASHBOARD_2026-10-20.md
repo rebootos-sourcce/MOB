@@ -14,7 +14,7 @@
 | Saboteurs | 33 | Record/template coverage not fully audited | Canonical SAB33 table; required record-level validation remains OPEN |
 | Ordinary complexes | Total unverified; at least 1 explicit definition located | Generated complex records: 0 in inspected proto/knowledge generator path; complete source records/templates unverified | OPEN — Narcissism is explicitly typed as kind 'complex' in compass.js; do not infer total from this one hit |
 | Hyper-complex modes | 6 | Record/template coverage not fully audited | SNIFFER_SPEC.md names six modes; this is a separate layer from ordinary complexes |
-| Super-complexes | Total unverified | Record/template coverage not audited | Psychopathy appears as one explicit super-complex entry in compass.js; not proof of total |
+| Super-complexes | **UNVERIFIED** | Record/template coverage not audited | Psychopathy is disputed by owner and must not be counted as super-complex |
 | Inferred records | Denominator unverified | Not audited | Must list individually and mark as inferred, with provenance and confidence |
 
 ## Sources to re-fetch and reconcile
@@ -37,7 +37,7 @@
 | Node/address | Emotional axis/fetter | Node records carry a canonical axis reference (`c` in source; generator reads `n.cf`) and generated node content routes to the linked axis when one is assigned | Partial; every node target and null/unresolved exception must be audited |
 | Saboteur | Node/address and its linked child/axis | Generator derives saboteur records from `ALL_SAB`, its node IDs, and corresponding child records | Generator logic exists; full generated edge coverage and dangling references not yet verified |
 | Saboteur | Hyper-complex mode | Saboteur source rows carry an `hcx` classification, and generator looks up the matching `HCX_LIB` entry | Intended relation evidenced; every saboteur-to-mode target must be validated |
-| Hyper-complex mode | Complex / higher-order descent | `SNIFFER_SPEC.md` defines bias → fetter → saboteur → complex → hyper-complex; `compass.js` explicitly distinguishes Narcissism (complex), Machiavellianism (hyper complex), and Psychopathy (super complex) | Conceptual hierarchy evidenced; complete record-level edges not verified |
+| Hyper-complex mode | Complex / higher-order descent | `SNIFFER_SPEC.md` defines bias → fetter → saboteur → complex → hyper-complex; `compass.js` currently labels Narcissism (complex), Machiavellianism (hyper complex), and Psychopathy (super complex), but the owner rejected Psychopathy's super-complex classification; do not treat that label as canon | Conceptual hierarchy evidenced; complete record-level edges not verified |
 | Ordinary complex | Generated knowledge-base record/template | Validator requires kind `complex`, but inspected `gen-data.js` path does not emit ordinary complex records | **Gap confirmed in inspected generator path** |
 | Super-complex | Generated knowledge-base record/template | Validator requires kind `supercomplex`; a source entry exists in `compass.js` | Record emission and links not verified |
 | Nerve branch | Node/address, fetter, saboteur, complex | Nerve artwork has 72 branches; a complete crosswalk from every branch into the framework was not established in this audit | **Unverified; requires explicit nerve-to-character/record crosswalk** |
@@ -71,7 +71,7 @@ This document establishes the update rule; it does not itself create continuous 
 - Generator now defines a shared `TPL-COMPLEX-UNIFIED` template for both `complex` and `inferred` records.
 - Shared fields include the definition/body, explicit inferred flag and inference basis, opposite record ID, opposite definition, opposite-resolution status, provenance, and links.
 - The source-defined `Narcissism` descent record is emitted as a complex record with the shared template fields. Its opposite remains explicitly unresolved because no authoritative opposite definition was found in the inspected source; no opposite was invented.
-- The descent's existing `Machiavellianism` and `Psychopathy` entries retain their distinct hyper-complex and super-complex kinds. They are not counted as ordinary complexes.
+- The descent's `Machiavellianism` and `Psychopathy` entries have implementation labels that require owner-taxonomy reconciliation. Psychopathy is not an approved super-complex and must not be counted as one. Neither entry is counted as an ordinary complex.
 - **Not yet verified:** regenerated output, validator results, full complex denominator, full inferred-complex inventory, and authoritative opposites. Do not mark the complex layer complete until these are resolved.
 
 
@@ -79,7 +79,7 @@ This document establishes the update rule; it does not itself create continuous 
 
 ### Source-defined higher-order entries now populated
 
-The source registry `atuned_src/engine/data/compass.js` now carries substantive template content for the three explicit DESCENT entries: Narcissism (complex), Machiavellianism (hyper-complex), and Psychopathy (super-complex). Each has definition, behavior, trigger/mechanism, lived example, impact, practice, a named working counterpart, confidence, review status, and external research URLs. These are content records, not a claim that the full complex inventory has been found.
+The source registry `atuned_src/engine/data/compass.js` carries substantive template content for three DESCENT entries. Narcissism is labeled complex and Machiavellianism hyper-complex in the implementation. Psychopathy's implementation label is disputed by the owner and is not approved taxonomy. Each has definition, behavior, trigger/mechanism, lived example, impact, practice, a named working counterpart, confidence, review status, and external research URLs. These are content records, not a claim that the full complex inventory has been found.
 
 ### Explicit inferred counterpart records
 
