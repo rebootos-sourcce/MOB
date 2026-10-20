@@ -68,3 +68,12 @@ Exact repository searches for `TPL-NODE-CHARGE-STASIS-NARRATIVE-V1`, `PASS46_NAR
 ### Current status
 
 **OPEN / BLOCKED ON SOURCE-BACKED DOMAIN CATALOG AND BUILD VERIFICATION.** The new gate is intentionally expected to fail while the generated catalog lacks `complex`, `supercomplex`, and `inferred` record kinds or has incomplete template payloads. No invented definitions or assignments were added to disguise these gaps. Full closure has not been demonstrated.
+
+
+## Continued execution update — unified complex template — 2026-10-20
+
+- Updated `proto/knowledge/src/gen-data.js` to apply the shared template ID `TPL-COMPLEX-UNIFIED` to both source-defined `complex` records and future `inferred` records.
+- Required shared fields include `inferred`, `inferenceBasis`, `oppositeId`, `oppositeDefinition`, `oppositeStatus`, provenance, and links, in addition to the core name/definition/body fields.
+- The `DESCENT` table is exported to the generator and its source-defined entries are emitted as records. Narcissism is the one ordinary-complex entry explicitly found in that table. Machiavellianism remains hyper-complex; Psychopathy remains super-complex.
+- The opposite of Narcissism is not assigned: the generated fields mark it unresolved. This is intentional and must not be replaced with a guessed opposite.
+- Verification boundary: source edits are committed, but generator execution, generated-data review, and validator execution have not been performed in this tool session. Full ordinary-complex and inferred-complex inventories remain unknown. Status stays OPEN.
