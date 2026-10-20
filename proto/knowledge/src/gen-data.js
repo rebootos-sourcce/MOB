@@ -98,6 +98,30 @@ E.forEach(e=>{
 });
 E.forEach(e=>{e.links=[...new Set(e.links)].filter(l=>l!==e.id);});
 
+/* Source-backed template binding. The template schema defines which fields
+   are exposed for each existing record kind; values are projected from the
+   authoritative engine-derived entry, never hand-written into generated data.
+   A null value stays null and is reported by the validator, not fabricated. */
+const TEMPLATE_SCHEMAS={
+ seat:{id:'TPL-SEAT', fields:['nm','fam','def','body','links']},
+ axis:{id:'TPL-FETTER-AXIS', fields:['nm','seat','fam','def','card','where','says','inst','opp','links']},
+ node:{id:'TPL-FETTER-NODE', fields:['nm','seat','fam','def','where','card','theme','distort','axis','links']},
+ sab:{id:'TPL-SABOTEUR', fields:['nm','seat','fam','def','body','trigger','says','out','nids','arch','links']},
+ hcx:{id:'TPL-HYPERCOMPLEX', fields:['nm','seat','fam','def','sub','links']},
+ mask:{id:'TPL-MASK', fields:['nm','seat','fam','def','links']},
+ arch:{id:'TPL-ARCHETYPE', fields:['nm','seat','fam','def','links']},
+ dom:{id:'TPL-DOMAIN', fields:['nm','seat','fam','def','clear','dist','links']},
+ term:{id:'TPL-GLOSSARY-TERM', fields:['nm','fam','def','links']}
+};
+E.forEach(e=>{
+ const schema=TEMPLATE_SCHEMAS[e.kind];
+ if(!schema) throw new Error('No template schema for entry kind '+e.kind+' ('+e.id+')');
+ e.templateId=schema.id;
+ e.template=Object.fromEntries(schema.fields.map(k=>[k,Object.prototype.hasOwnProperty.call(e,k)?e[k]:null]));
+ e.templateValidation={schemaDefined:true, sourceBacked:true,
+  missingFields:schema.fields.filter(k=>!Object.prototype.hasOwnProperty.call(e,k)||e[k]==null||e[k]==='')};
+});
+
 const icp=JSON.parse(fs.readFileSync(path.join(__dirname,'icp.json'),'utf8'));
 const out={entries:E, pal:T.PAL, glyph:T.SEATGLYPH, bands:T.BANDS, icp:icp,
  stamp:'engine tables and ICP figures read from commit b434f1a'};
