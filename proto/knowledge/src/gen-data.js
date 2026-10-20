@@ -61,18 +61,40 @@ T.NODES.forEach(n=>{const field=T.BANDS.indexOf(n.b)<0;
   card:'Governs '+clean(n.a).toLowerCase()+'. Distorts into '+clean(n.d).toLowerCase()+'.',
   theme:clean(n.a), distort:clean(n.d), axis:n.cf||null, ic:(ax&&ax.ic)||null});});
 
-/* thirty nine saboteurs, thirty three with the codex's full text */
-T.ALL_SAB.forEach(s=>{const d=T.SABDEF[T.KB_KEY(s.nm)];
+/* all thirty nine Saboteurs use one complete record shape. Existing authored cards retain their reviewed copy;
+   inferred records are explicitly derived from their linked canonical node/child records. */
+T.ALL_SAB.forEach(s=>{
+ const d=T.SABDEF[T.KB_KEY(s.nm)];
  const fam=T.HCX_LIB.filter(h=>h.nm===s.hcx)[0];
  const card=SAB_CARDS_BY_KEY[cardKey(s.nm)]||null;
+ const nodes=(s.nids||[]).map(i=>T.NODES.find(x=>x.i===i)).filter(Boolean);
+ const children=nodes.map(n=>T.CHILD.find(x=>x.nm===n.c)).filter(Boolean);
+ const themes=[...new Set(nodes.map(n=>n.a).filter(Boolean))];
+ const distortions=[...new Set(nodes.map(n=>n.d).filter(Boolean))];
+ const opposites=[...new Set(children.map(x=>x.opp).filter(Boolean))];
+ const themeLine=themes.length?themes.join(', '):'the linked pattern';
+ const distortionLine=distortions.length?distortions.join(', '):'automatic reaction';
+ const oppositeLine=opposites.length?opposites.join(', '):'a more conscious response';
+ const inferredBody='This inferred Saboteur pattern organizes around '+themeLine+'. Its linked records describe distortions such as '+distortionLine+'. Treat this as a working synthesis of the linked canonical records, not a separately sourced quotation.';
+ const inferredTrigger='The pattern may activate around '+themeLine+'. Notice the specific moment when the linked distortion ('+distortionLine+') begins shaping perception or choice.';
+ const inferredSays='The implied inner message is that the familiar response is necessary: '+distortionLine+'. Check that message against what is actually happening before acting.';
+ const inferredOut='Interrupt the automatic response by naming the linked distortion ('+distortionLine+'), separating the observed facts from the interpretation, and making room for '+oppositeLine+'.';
+ const inferredStory='A situation involving '+themeLine+' brings the pattern into focus. The person may default to '+distortionLine+', narrowing the available choices. The story is not a fixed identity: identify the trigger, trace which linked child pattern is active, and notice the cost of repeating the response.';
+ const inferredAvailable='When the pattern is noticed rather than obeyed, '+oppositeLine+' becomes a possible direction. This is an available state to practice, not a claim that the pattern has permanently disappeared.';
+ const inferredNext='Pause at the first observable sign. Name the relevant theme ('+themeLine+'), identify the distortion ('+distortionLine+'), and choose one small action consistent with '+oppositeLine+'. Then review the result without turning it into a judgment about identity.';
  add({id:'sab:'+s.nm, kind:'sab', nm:s.nm, seat:(fam&&fam.b)||'Heart',
-  fam:s.hcx||'unnamed', def:d?lead(d.d):(fam?s.nm+', a saboteur in the '+fam.nm+' architecture: '+fam.d+'.':s.nm+', a saboteur.'),
-  body:d?clean(d.d):'', trigger:d?clean(d.t):'', says:d?clean(d.q):'', out:d?clean(d.i):'',
-  livedBehavior:card?clean(card.h):clean(d?('A situation brings '+d.t+' The response is '+d.d+'. Reflection: What is happening, and what response can you choose?'):(s.nids||[]).map(i=>{const n=T.NODES.find(x=>x.i===i);return n?n.a+' can narrow into '+n.d+'.':'';}).filter(Boolean).join(' ')),
-  availableState:card?clean(card.a):clean((s.nids||[]).map(i=>{const n=T.NODES.find(x=>x.i===i);const a=n&&T.CHILD.find(x=>x.nm===n.c);return a?a.opp:'';}).filter(Boolean).length?'When the charge is no longer directing the response, '+[...new Set((s.nids||[]).map(i=>{const n=T.NODES.find(x=>x.i===i);const a=n&&T.CHILD.find(x=>x.nm===n.c);return a&&a.opp;} ).filter(Boolean))].join(', ')+' can become available.':'The pattern is not the whole of you. Notice the charge without automatically repeating its distortion.'),
-  nextMove:card?clean(card.n):'Notice the first sign of the pattern. Name the linked distortion, pause before acting, and choose one small response that does not repeat the automatic move.',
-  narrativeSource:card?'atuned_src/engine/data/sabcard.js':'derived from linked canonical node fields',
-  nids:s.nids||[], arch:s.hcx||null, ic:(fam&&fam.ic)||null});});
+  fam:s.hcx||'unnamed',
+  def:d?lead(d.d):(fam?s.nm+', a saboteur in the '+fam.nm+' architecture: '+fam.d+'.':s.nm+', a saboteur pattern inferred from its linked canonical records.'),
+  body:d?clean(d.d):inferredBody,
+  trigger:d?clean(d.t):inferredTrigger,
+  says:d?clean(d.q):inferredSays,
+  out:d?clean(d.i):inferredOut,
+  livedBehavior:card?clean(card.h):clean(d?('A situation brings '+d.t+' The response is '+d.d+'. Reflection: What is happening, and what response can you choose?'):inferredStory),
+  availableState:card?clean(card.a):clean(inferredAvailable),
+  nextMove:card?clean(card.n):clean(inferredNext),
+  narrativeSource:card?'atuned_src/engine/data/sabcard.js':(d?'SABDEF plus linked canonical node fields':'inferred synthesis from linked canonical node/child fields; review as derived copy'),
+  nids:s.nids||[], arch:s.hcx||null, ic:(fam&&fam.ic)||null});
+});
 
 /* six architectures the saboteurs belong to */
 T.HCX_LIB.forEach(h=>add({id:'hcx:'+h.nm, kind:'hcx', nm:h.nm, seat:h.b, fam:'architecture',
