@@ -118,7 +118,12 @@ E.forEach(e=>{
  if(!schema) throw new Error('No template schema for entry kind '+e.kind+' ('+e.id+')');
  e.templateId=schema.id;
  e.template=Object.fromEntries(schema.fields.map(k=>[k,Object.prototype.hasOwnProperty.call(e,k)?e[k]:null]));
- const missingFields=schema.fields.filter(k=>!Object.prototype.hasOwnProperty.call(e,k)||e[k]==null||e[k]==='');
+ const missingFields=schema.fields.filter(k=>{
+  if(!Object.prototype.hasOwnProperty.call(e,k)||e[k]==null||e[k]==='') return true;
+  /* Empty arrays are valid for relationship collections: a leaf may have no
+     outgoing links. Do not report [] as missing content. */
+  return false;
+});
  e.templateValidation={schemaDefined:true, sourceBacked:true,
   contentStatus:missingFields.length===0?'complete':'incomplete',
   missingFields};
