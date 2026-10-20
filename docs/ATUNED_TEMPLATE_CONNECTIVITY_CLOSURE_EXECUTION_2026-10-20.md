@@ -108,3 +108,10 @@ Changes are committed to source and generator. Generated `data.js` regeneration 
 - The crosswalk yields 1,118 seat-level edges across the 108 somatic nodes; the 4 field anchors are not mapped to nerve branches.
 - Important semantic boundary: these are seat/band-level framework links. The source provides seven seat labels and coordinates, not anatomical identities for all 72 branches. No one-to-one anatomical claim is made.
 - Verification: generator source was re-fetched and checked for nerve-source loading, record emission, reciprocal edge code, and schema binding. Runtime generation and validator execution remain outstanding because no repository shell execution was available in this pass.
+
+### Fetter-to-Saboteur wiring change — 2026-10-20
+
+- Corrected the generator's node-to-axis lookup to use the source field `NODES[].c`, ensuring the node's canonical fetter/axis is available for relationship wiring.
+- Added reciprocal Saboteur ↔ fetter-axis edges derived from each Saboteur's declared node IDs and the canonical axis assigned to each referenced node.
+- No guessed links were added: the relationship is traceable through explicit Saboteur node references.
+- Source re-fetch verification is pending this update; generator execution and validator execution remain outstanding.
