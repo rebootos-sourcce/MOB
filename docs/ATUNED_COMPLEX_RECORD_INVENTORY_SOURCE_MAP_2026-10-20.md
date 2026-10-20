@@ -113,3 +113,37 @@ Search the full Mechanics of Being source and ATÜNED source HTML / codex, not o
 ## Source review note
 
 The current repository has a large root `source.html` and a separate `MOB-Manuscript` repository referenced by the source register. The GitHub connector did not return usable body text for the large root HTML, and the manuscript README path was inaccessible. This is a retrieval gap, not evidence that those sources lack the taxonomy. The next pass must recover those source files through the project file/source mechanism or an accessible repository path before closing the inventory.
+
+
+## Reconciled against the project Library TDD — 2026-10-20
+
+The Library's `SOURCE_TDD_DEEP_CONTENT_ADDENDUM_2026-10-20.md`, `SOURCE_TDD_AI_HANDOFF_MASTER_REBUILT_V1.1_DEEP_PASS.md`, `complex_hyper_super_templates.csv`, and `complex_hyper_super_inference_gates.csv` were located and inspected through Project Library search. They add authoritative project rules that the repository-only pass had missed:
+
+- **Complex rule:** two distinct Saboteurs from the same authoritative family combine into one candidate pattern.
+- **Hyper-complex rule:** at least two supported Complexes from the same family operate together.
+- **Character layer:** separate from Super-Complex; the TDD describes an innermost ring associated with two sufficiently strong Hyper-Complexes.
+- **Super-Complex general rule:** unresolved. The inference-gates CSV explicitly says the named runtime example is not a full general membership schema and labels the general rule unresolved.
+- **Candidate evidence gates:** Complex recurrence requires at least two distinct shared stories, coherence >= 0.70 as a provisional tuning parameter, and zero unresolved contradictions. Hyper-Complex recurrence requires at least two exact shared story IDs across its member Complexes, coherence >= 0.75 as a provisional tuning parameter, and zero unresolved contradictions. These are implementation gates, not externally validated psychological cutoffs.
+- **Family templates:** six source-authored runtime families are Grandiosity, Predatory, Collapse, Rigidity, Dysregulation, and Dissociation. A family is not itself a user-specific Complex or Hyper-Complex and must not be counted as one.
+- **Named examples:** the staging TDD package contains Narcissism, Machiavellianism, and Psychopathy as examples, but the user has explicitly rejected Psychopathy as a canonical Super-Complex. That owner correction takes precedence over the implementation/example label. Retain the entry as a disputed source example; do not count it as canon.
+- **No full composite inventory:** the TDD says the current source does not expose a complete canonical catalog of user-specific Complexes, Hyper-Complexes, or Super-Complexes. The requested eight-complex list has not yet been extracted from an authoritative record.
+
+### Revised work order for this inventory
+
+1. Build the 6-family index from source-authoritative Saboteur family membership.
+2. Generate candidate Complex combinations only where at least two distinct Saboteurs share a confirmed family; do not label a candidate canonical without story/evidence gates.
+3. Identify the owner's eight expected Complex records in the Mechanics of Being / ATÜNED sources and reconcile them with generated candidates.
+4. Verify all six family records and the six named Hyper-Complex mode records have complete templates, content provenance, three distinct research/review passes, and verified graph links.
+5. Keep Character/Mask distinct from Super-Complex. Do not infer Super-Complex membership from clinical severity, names, or the disputed Psychopathy example.
+6. Do not mark the earlier-layer gate closed until the exact expected denominators and per-record validation results are present.
+
+### Source locations recovered from Library
+
+- `SOURCE_TDD_DEEP_CONTENT_ADDENDUM_2026-10-20.md` — sections 40.1–40.9.
+- `SOURCE_TDD_AI_HANDOFF_MASTER_REBUILT_V1.1_DEEP_PASS.md` — sections 40.2–40.7.
+- `complex_hyper_super_templates.csv` — six family templates plus three named examples.
+- `complex_hyper_super_inference_gates.csv` — candidate rules and unresolved Super-Complex general rule.
+- `fetter_deep_templates_108.csv` — 108-row Fetter template library.
+- `saboteur_deep_templates_33.csv` — 33-row Saboteur template library.
+
+These Library artifacts are source evidence for the project design, but their staging status must be preserved: candidate templates and provisional gates are not automatically Canon, and a staging CSV does not prove the live app has every record wired.
