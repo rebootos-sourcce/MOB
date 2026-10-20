@@ -472,7 +472,12 @@ const DESCENT=[
    oppositeName:'Grounded Self-Worth', oppositeId:'opposite:Narcissism', oppositeDefinition:'Grounded self-worth with humility, reciprocal empathy, accountability, and respect for others as equally real—not self-erasure or self-contempt.',
    oppositeStatus:'inferred-working-counterpart; not asserted as a canonical one-to-one opposite',
    confidence:0.78, reviewStatus:'external-research-pass-A-done; semantic-pass-B-and-adversarial-pass-C-pending',
-   researchSources:['https://www.psychiatry.org/News-room/APA-Blogs/What-Is-Narcissistic-Personality-Disorder','https://pmc.ncbi.nlm.nih.gov/articles/PMC4415495/']
+   researchSources:['https://www.psychiatry.org/News-room/APA-Blogs/What-Is-Narcissistic-Personality-Disorder','https://pmc.ncbi.nlm.nih.gov/articles/PMC4415495/','https://pubmed.ncbi.nlm.nih.gov/34860434/','https://www.sciencedirect.com/science/article/pii/S0092656622001428','https://pubmed.ncbi.nlm.nih.gov/35913765/'],
+   researchPasses:[
+    {pass:'A · construct and source check',focus:'APA overview and foundational narcissism literature; separate source-defined framework wording from clinical construct descriptions.',sources:['https://www.psychiatry.org/News-room/APA-Blogs/What-Is-Narcissistic-Personality-Disorder','https://pmc.ncbi.nlm.nih.gov/articles/PMC4415495/'],finding:'Retain status protection, entitlement and self-image as framework language; do not diagnose or equate the framework record with a disorder.'},
+    {pass:'B · dimension and evidence check',focus:'Meta-analytic work on grandiose/vulnerable narcissism, empathy facets and interpersonal functioning.',sources:['https://pubmed.ncbi.nlm.nih.gov/34860434/','https://www.sciencedirect.com/science/article/pii/S0092656622001428','https://pubmed.ncbi.nlm.nih.gov/35913765/'],finding:'Narcissism is multidimensional; interpersonal and empathy associations vary by facet and measure. Keep triggers probabilistic and behavior-specific.'},
+    {pass:'C · counterpart/adversarial review',focus:'Test whether the inverse is overclaimed and whether practice could be mistaken for clinical treatment.',sources:['https://pubmed.ncbi.nlm.nih.gov/34860434/','https://www.sciencedirect.com/science/article/pii/S0092656622001428'],finding:'Grounded Self-Worth is a design hypothesis, not a validated one-to-one opposite. Emphasize observable humility, reciprocal regard and accountability; do not prescribe treatment.'}
+   ]
   }},
  {nm:'Machiavellianism',kind:'hyper complex',
   d:'The narcissistic stack plus active suppression of empathy. Feeling right has become more important than feeling connected.',
@@ -487,7 +492,12 @@ const DESCENT=[
    oppositeName:'Transparent Reciprocal Agency', oppositeId:'opposite:Machiavellianism', oppositeDefinition:'Transparent, principled agency: truthful communication, reciprocal consent, fair dealing, and strategic skill constrained by care and accountability.',
    oppositeStatus:'inferred-working-counterpart; not asserted as a canonical one-to-one opposite',
    confidence:0.76, reviewStatus:'external-research-pass-A-done; semantic-pass-B-and-adversarial-pass-C-pending',
-   researchSources:['https://pmc.ncbi.nlm.nih.gov/articles/PMC3717508/','https://pubmed.ncbi.nlm.nih.gov/34636074/']
+   researchSources:['https://pmc.ncbi.nlm.nih.gov/articles/PMC3717508/','https://pubmed.ncbi.nlm.nih.gov/34636074/','https://pmc.ncbi.nlm.nih.gov/articles/PMC6031853/','https://onlinelibrary.wiley.com/doi/10.1002/job.2877?af=R','https://pmc.ncbi.nlm.nih.gov/articles/PMC13422123/'],
+   researchPasses:[
+    {pass:'A · construct and source check',focus:'Review strategic manipulation, deception and Dark Triad overlap; preserve the source-defined placement without clinical equivalence.',sources:['https://pmc.ncbi.nlm.nih.gov/articles/PMC3717508/','https://pubmed.ncbi.nlm.nih.gov/34636074/'],finding:'Machiavellianism is discussed as a subclinical trait construct; its boundaries with psychopathy and the validity of common measures remain debated.'},
+    {pass:'B · context and outcome check',focus:'Examine ethical leadership, workplace behavior and newer meta-analytic leadership evidence.',sources:['https://pmc.ncbi.nlm.nih.gov/articles/PMC6031853/','https://onlinelibrary.wiley.com/doi/10.1002/job.2877?af=R'],finding:'Context and ethical constraints can shape observed outcomes; avoid portraying every person or setting as identical or behavior as inevitable.'},
+    {pass:'C · adversarial/counterpart review',focus:'Check newer systematic synthesis of dishonest behavior and test the proposed opposite against agency and consent.',sources:['https://pmc.ncbi.nlm.nih.gov/articles/PMC13422123/','https://pubmed.ncbi.nlm.nih.gov/34636074/'],finding:'Associations vary by outcome and construct measurement. Transparent Reciprocal Agency is an inferred practice pole, not a validated clinical opposite; focus on disclosure, consent and verifiable accountability.'}
+   ]
   }},
  {nm:'Psychopathy',kind:'super complex',
   d:'Structural absence of the empathy feedback loop. The Machiavellian suppresses, so there is something to suppress. This does not suppress, because harm is always a neutral option.',
@@ -502,7 +512,12 @@ const DESCENT=[
    oppositeName:'Empathic Accountability', oppositeId:'opposite:Psychopathy', oppositeDefinition:'Empathic accountability: recognizing others’ welfare as decision-relevant, inhibiting preventable harm, respecting consent, and taking responsibility for consequences.',
    oppositeStatus:'inferred-working-counterpart; not asserted as a canonical one-to-one opposite',
    confidence:0.64, reviewStatus:'external-research-pass-A-partial; source model wording requires expert review; semantic-pass-B-and-adversarial-pass-C-pending',
-   researchSources:['https://pubmed.ncbi.nlm.nih.gov/34636074/','https://pubmed.ncbi.nlm.nih.gov/23885245/']
+   researchSources:['https://pubmed.ncbi.nlm.nih.gov/34636074/','https://pubmed.ncbi.nlm.nih.gov/23885245/','https://pubmed.ncbi.nlm.nih.gov/35349788/','https://www.annualreviews.org/content/journals/10.1146/annurev-clinpsy-072720-012851','https://pmc.ncbi.nlm.nih.gov/articles/PMC13422123/','https://www.sciencedirect.com/science/article/abs/pii/S0191886923003549'],
+   researchPasses:[
+    {pass:'A · construct and safety check',focus:'Review psychopathy construct and measurement; separate ATÜNED source model from clinical/forensic assessment.',sources:['https://pubmed.ncbi.nlm.nih.gov/34636074/','https://www.annualreviews.org/content/journals/10.1146/annurev-clinpsy-072720-012851'],finding:'Psychopathy is a complex research construct; the source model’s “structural absence” wording is not a validated individual mechanism or diagnostic rule.'},
+    {pass:'B · evidence and facet check',focus:'Review meta-analysis of empathy domains and systematic work on dark-trait measurement.',sources:['https://pubmed.ncbi.nlm.nih.gov/35349788/','https://www.sciencedirect.com/science/article/abs/pii/S0191886923003549'],finding:'Empathy associations differ by dimension and measurement; avoid assuming global absence of empathy or inferring a trait from one action.'},
+    {pass:'C · adversarial/safety review',focus:'Test for deterministic or stigmatizing language against newer systematic evidence on behavioral outcomes.',sources:['https://pmc.ncbi.nlm.nih.gov/articles/PMC13422123/','https://pubmed.ncbi.nlm.nih.gov/35349788/'],finding:'Population-level associations do not diagnose individuals or establish inevitable harm. Empathic Accountability is an inferred behavioral pole; safeguards should emphasize observable conduct, boundaries, oversight and qualified support.'}
+   ]
   }}];
 const DESCENT_REFER='Work at the address. Do not work the structural layer, and say so plainly. '
  +'This configuration needs a licensed clinician alongside, not instead.';
