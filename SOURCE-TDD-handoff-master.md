@@ -1602,3 +1602,20 @@ DISCOVERY
 ```
 
 That is how SOURCE can evolve without becoming an uncontrolled pattern generator.
+
+
+---
+
+# 49. OWNER-DIRECTED SUPER-COMPLEX PHASE HANDSHAKE — 2026-10-20
+
+**Read before further implementation:** [`docs/ATUNED_SUPER_COMPLEX_PHASE_HANDSHAKE_2026-10-20.md`](docs/ATUNED_SUPER_COMPLEX_PHASE_HANDSHAKE_2026-10-20.md).
+
+The owner changed the immediate execution order: Super-Complex source reconciliation and design begin now. Do not postpone this work until all lower layers pass closure. Lower-layer source recovery, record/template audits, wiring, and runtime tests remain mandatory, but are deferred until after the Super-Complex discussion/design phase.
+
+The first-read sequence and retrieval blockers are maintained in the dedicated handshake. At minimum, retrieve current owner instructions, source index/register, layer dashboard, complex source map, closure audit, Project Library TDDs and inference-gate/template CSVs, current repository source and validators, and the exact owner-designated `MOB_Complete_v341.html` artifact. Do not silently substitute v336/v2 staging content for v341.
+
+**Canon boundary:** an implementation label is evidence of implementation behavior, not owner-approved taxonomy. The owner explicitly rejected Psychopathy as a canonical Super-Complex; it must remain disputed/not canon and must not be counted as a Super-Complex. The general Super-Complex membership rule and total remain unresolved until authoritative source evidence or an explicit owner decision settles them. Keep Super-Complex, Hyper-Complex, Complex, Character, and Mask distinct.
+
+**Source-retrieval rule:** a failed connector fetch is a retrieval blocker, not evidence that a source or definition does not exist. Record exact location/method/result and the next fallback. Keep these blockers at the top of the handshake until resolved. Never claim full framework wiring, source-library completeness, or runtime validation without evidence.
+
+**Deferred closure work:** after the Super-Complex discussion, recover the eight Complex list and semantic nerve-to-character mapping, audit all lower-layer content and templates, complete edge inventories, correct any false classification in code, run generator/validator/tests, update all registers, and produce a verified ZIP handoff.
