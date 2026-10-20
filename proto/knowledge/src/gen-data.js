@@ -64,9 +64,9 @@ T.NODES.forEach(n=>{const field=T.BANDS.indexOf(n.b)<0;
   trigger:'Notice when '+clean(n.a).toLowerCase()+' becomes charged and the response begins moving toward '+clean(n.d).toLowerCase()+'.',
   says:'The active pattern frames '+clean(n.a).toLowerCase()+' through the distortion '+clean(n.d).toLowerCase()+'. Treat this as a signal to examine, not as a fact that must govern the response.',
   out:'Name the observed situation, separate it from the '+clean(n.d).toLowerCase()+' interpretation, and return to the linked axis and its canonical opposite before choosing a response.',
-  inst:ax?'The canonical opposite for the linked '+ax.nm+' axis is '+ax.opp+'. Use the axis record for its full installation language.':'Use the linked canonical axis record to identify the verified opposite state.',
-  opp:ax?ax.opp:null,
-  nextMove:'Identify the trigger, name '+clean(n.a).toLowerCase()+' and '+clean(n.d).toLowerCase()+', then open the linked '+(n.cf||'axis')+' record and practice its canonical opposite state.',
+  inst:ax?'The canonical opposite for the linked '+ax.nm+' axis is '+ax.opp+'. Use the axis record for its full installation language.':'No opposite is assigned in the canonical source for this node. Do not infer one.',
+  opp:ax?ax.opp:'Unmapped',
+  nextMove:ax?'Identify the trigger, name '+clean(n.a).toLowerCase()+' and '+clean(n.d).toLowerCase()+', then open the linked '+n.cf+' record and practice its canonical opposite state.':'Trace this node to an approved canonical axis or source definition before selecting an opposite state.',
   narrativeSource:'derived from engine node fields and linked canonical axis'});});
 
 /* all thirty nine Saboteurs use one complete record shape. Existing authored cards retain their reviewed copy;
