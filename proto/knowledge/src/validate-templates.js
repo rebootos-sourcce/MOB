@@ -38,6 +38,23 @@ for (const e of entries) {
     }
   }
 }
+/* Hypercomplex closure gate: every mode must reach at least one populated
+   complex through reciprocal links, and every declared route edge must return. */
+for (const e of entries.filter(x => x.kind === 'hypercomplex')) {
+  const targets = new Set(e.links || []);
+  const linkedSaboteurs = [...targets].map(id => byId.get(id) || entries.find(x => x.id === id))
+    .filter(x => x && x.kind === 'sab');
+  const linkedComplexes = [...targets].map(id => byId.get(id) || entries.find(x => x.id === id))
+    .filter(x => x && x.kind === 'complex');
+  if (!e.routeAxes || !e.routeAxes.length) errors.push(e.id + ': missing provisional route axes');
+  if (!linkedSaboteurs.length) errors.push(e.id + ': no Saboteur route; hypercomplex graph is disconnected');
+  if (!linkedComplexes.length) errors.push(e.id + ': no populated complex-layer link; hypercomplex graph is disconnected');
+  for (const target of [...linkedSaboteurs, ...linkedComplexes]) {
+    if (!(target.links || []).includes(e.id)) errors.push(e.id + ': non-reciprocal hypercomplex route to ' + target.id);
+  }
+  const opposite = entries.find(x => x.id === e.oppositeId);
+  if (!opposite || !(opposite.links || []).includes(e.id)) errors.push(e.id + ': missing reciprocal inferred counterpart');
+}
 for (const kind of requiredKinds) {
   if (!counts[kind]) errors.push('required domain kind absent from generated catalog: ' + kind);
 }
