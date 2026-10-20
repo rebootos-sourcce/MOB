@@ -7,8 +7,8 @@
 
 | Layer / record family | Count currently supported by inspected source | Record/template completion | Status |
 |---|---:|---|---|
-| Nerve artwork branches | 72 | Not audited as individual framework records | Count confirmed by opening comment in atuned_src/engine/data/nerves.js; branch count is not the same as nerve-to-character mapping count |
-| Nerve-to-character relationships | Unverified | Not audited | OPEN — must inventory expected relationships and each current mapping |
+| Nerve artwork branches | 72 | Not audited as individual framework records | Count confirmed by opening comment in atuned_src/engine/data/nerves.js; generator now assigns stable branch IDs and joins each branch to nodes sharing its seat band |
+| Nerve-branch-to-node seat crosswalk | 72 branches represented as generated `nerve:*` records; 1,118 seat-level branch→node edges expected across 108 somatic nodes | Generator now emits branch records and reciprocal branch/node links; not yet regenerated or validator-tested | IMPLEMENTED IN GENERATOR SOURCE; execution verification OPEN. This is a seat/band crosswalk, not a one-to-one anatomical mapping. Four field anchors have no nerve branch mapping. |
 | Nodes / addresses | 112 | Individual completeness not audited | Count supported by atuned_src/engine/data/nodes.js; includes 108 somatic nodes and 4 field anchors in prior audit |
 | Fetters / emotional axes | 9 | Record-level coverage not audited | SNIFFER_SPEC.md identifies nine emotional axes as fetters; full record inventory and mapping completeness remain OPEN |
 | Saboteurs | 33 | Record/template coverage not fully audited | Canonical SAB33 table; required record-level validation remains OPEN |
@@ -93,3 +93,13 @@ All three are marked inferred working counterparts, not canonical one-to-one opp
 ### Verification boundary
 
 Source and generator edits are committed. The generated `data.js` has not yet been regenerated and the validator has not yet been run in this execution, so runtime template coverage and edge validation remain pending. The full denominator of all canonical and inferred complexes remains unknown. Pass B and Pass C review remain open.
+
+## Nerve-to-node crosswalk — implementation checkpoint
+
+- Branch source: `atuned_src/engine/data/nerves.js`, 72 coordinate branches.
+- Node source: `atuned_src/engine/data/nodes.js`, 112 records (108 somatic nodes in seven bands, plus 4 field anchors).
+- Generator change: `proto/knowledge/src/gen-data.js` now loads the nerve artwork source, emits one `nerve` record per branch with a stable seat-local ID, adds a `TPL-NERVE-BRANCH` payload, and emits reciprocal links between branch records and nodes sharing the corresponding band.
+- Seat alias mapping: `eye → 3rd Eye`; `root → Root`; `sacral → Sacral`; `solar → Solar`; `heart → Heart`; `throat → Throat`; `crown → Crown`.
+- Expected seat-level edges: Root 400; Sacral 112; Solar 192; Heart 165; Throat 108; 3rd Eye 36; Crown 105; total **1,118 branch-to-node edges**. These are calculated from branch counts × node counts per matching band.
+- Scope limitation: this creates a framework topology by shared seat/band, not evidence that each artwork branch is an anatomically identified nerve or has a uniquely established relationship to each node. Four field anchors are outside the seven seat bands and remain unlinked to nerve branches.
+- Verification state: source changes re-fetched and string-checked. Generator execution and validator run remain unverified; do not call this runtime-tested or fully closed until executed.
