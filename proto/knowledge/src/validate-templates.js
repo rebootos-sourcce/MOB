@@ -18,7 +18,7 @@ const byId = new Map();
 const errors = [];
 const counts = {};
 const missingByKind = {};
-const requiredKinds = ['node','sab','hcx','complex','supercomplex','inferred'];
+const requiredKinds = ['node','sab','hcx','hypercomplex','complex','supercomplex','inferred'];
 for (const e of entries) {
   counts[e.kind] = (counts[e.kind] || 0) + 1;
   if (!e.id) errors.push('record has no stable id');
