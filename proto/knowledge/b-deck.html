@@ -328,6 +328,10 @@ var KB=(function(){
    +(e.theme?sec('What it governs',e.theme):'')
    +(e.distort?sec('What it distorts into',e.distort):'')
    +(e.body&&e.body!==e.def?sec('How it runs',e.body):'')
+   +(e.kind==='node'&&e.trigger?sec('When it fires',e.trigger):'')
+   +(e.kind==='node'&&e.says?sec('Pattern message',e.says,'say'):'')
+   +(e.kind==='node'&&e.inst?sec('Canonical opposite / installation',e.inst):'')
+   +(e.kind==='node'&&e.nextMove?sec('Next move',e.nextMove):'')
    +(e.kind==='sab'&&e.livedBehavior?sec('Lived behavior and story',e.livedBehavior):'')
    +(e.kind==='sab'&&e.availableState?sec('Opposite / available state',e.availableState):'')
    +(e.kind==='sab'&&e.nextMove?sec('Next move',e.nextMove):'')
@@ -463,7 +467,8 @@ function faces(e){
   if(e.livedBehavior)F.push(['Lived behavior and story',e.livedBehavior]); if(e.availableState)F.push(['Opposite / available state',e.availableState]);
   if(e.out)F.push(['The interrupt',e.out]); if(e.nextMove)F.push(['Next move',e.nextMove]);}
  else if(e.kind==='node'){F.push(['Where it sits',e.where]); F.push(['What it governs',e.theme]);
-  F.push(['What it distorts into',e.distort]);}
+  F.push(['What it distorts into',e.distort]); if(e.trigger)F.push(['When it fires',e.trigger]); if(e.says)F.push(['Pattern message',e.says,'say']);
+  if(e.inst)F.push(['Canonical opposite / installation',e.inst]); if(e.nextMove)F.push(['Next move',e.nextMove]);}
  else if(e.kind==='seat'){F.push(['How it runs',e.body]);}
  F.push(['check']);
  return F;}
