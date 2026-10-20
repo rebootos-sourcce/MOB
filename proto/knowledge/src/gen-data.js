@@ -140,7 +140,7 @@ T.DESCENT.forEach((d,i)=>add({
 T.DESCENT.forEach(d=>{
  const c=d.content;
  add({
-  id:c.oppositeId, kind:'inferred', nm:c.oppositeDefinition.split(':')[0]||('Counterpart to '+d.nm),
+  id:c.oppositeId, kind:'inferred', nm:c.oppositeName||('Counterpart to '+d.nm),
   seat:null, fam:'inferred counterpart',
   def:c.oppositeDefinition, body:c.oppositeDefinition,
   inferred:true,
