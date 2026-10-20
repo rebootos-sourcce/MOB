@@ -222,6 +222,25 @@ E.filter(e=>e.kind==='sab').forEach(s=>{
   if(axis){s.links.push(axis.id);axis.links.push(s.id);}
  });
 });
+/* Complex-to-Saboteur links are source-traceable through the same node/axis
+   graph. The registry supplies the complex content; these declared axis
+   families are provisional routing metadata and remain reviewable, not canon. */
+const COMPLEX_AXIS_ROUTES={
+ 'Narcissism':['Shame','Fear','Control','Insecurity'],
+ 'Machiavellianism':['Fear','Control','Shame'],
+ 'Psychopathy':['Fear','Control','Shame','Anger']
+};
+T.DESCENT.forEach(d=>{
+ const complex=by['descent:'+d.nm];
+ if(!complex) return;
+ const routeAxes=COMPLEX_AXIS_ROUTES[d.nm]||[];
+ const routeNodeIds=new Set(E.filter(e=>e.kind==='node'&&routeAxes.includes(e.axis)).map(e=>e.id));
+ const linkedSaboteurs=E.filter(e=>e.kind==='sab'&&(e.nids||[]).some(i=>routeNodeIds.has('node:'+i)));
+ complex.routeAxes=routeAxes;
+ complex.routeBasis='provisional axis-mediated routing; review required; each edge is traceable through shared node IDs';
+ complex.links.push(...linkedSaboteurs.map(s=>s.id));
+ linkedSaboteurs.forEach(s=>s.links.push(complex.id));
+});
 /* Counterpart edges are explicit and reciprocal; both endpoints must exist. */
 T.DESCENT.forEach(d=>{
  const original=by['descent:'+d.nm];
