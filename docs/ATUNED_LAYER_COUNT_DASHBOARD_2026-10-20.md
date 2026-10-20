@@ -28,6 +28,26 @@
 - proto/knowledge/src/validate-templates.js — SHA 78b2c8039b61605256cf3e6b25ff18a82b8246b
 - docs/ATUNED_COMPLEX_RECORD_INVENTORY_SOURCE_MAP_2026-10-20.md — complex source map, candidate classification, and next actions
 
+## Wiring / connectivity snapshot
+
+**Overall graph status: OPEN — full-framework connectivity is not yet proven.** This section distinguishes relationships encoded by source fields or generator logic from relationships verified in the generated knowledge-base graph. A source field is not proof that every target exists or that the generated edge is valid.
+
+| From | To | Wiring currently evidenced | Verification status |
+|---|---|---|---|
+| Node/address | Emotional axis/fetter | Node records carry a canonical axis reference (`c` in source; generator reads `n.cf`) and generated node content routes to the linked axis when one is assigned | Partial; every node target and null/unresolved exception must be audited |
+| Saboteur | Node/address and its linked child/axis | Generator derives saboteur records from `ALL_SAB`, its node IDs, and corresponding child records | Generator logic exists; full generated edge coverage and dangling references not yet verified |
+| Saboteur | Hyper-complex mode | Saboteur source rows carry an `hcx` classification, and generator looks up the matching `HCX_LIB` entry | Intended relation evidenced; every saboteur-to-mode target must be validated |
+| Hyper-complex mode | Complex / higher-order descent | `SNIFFER_SPEC.md` defines bias → fetter → saboteur → complex → hyper-complex; `compass.js` explicitly distinguishes Narcissism (complex), Machiavellianism (hyper complex), and Psychopathy (super complex) | Conceptual hierarchy evidenced; complete record-level edges not verified |
+| Ordinary complex | Generated knowledge-base record/template | Validator requires kind `complex`, but inspected `gen-data.js` path does not emit ordinary complex records | **Gap confirmed in inspected generator path** |
+| Super-complex | Generated knowledge-base record/template | Validator requires kind `supercomplex`; a source entry exists in `compass.js` | Record emission and links not verified |
+| Nerve branch | Node/address, fetter, saboteur, complex | Nerve artwork has 72 branches; a complete crosswalk from every branch into the framework was not established in this audit | **Unverified; requires explicit nerve-to-character/record crosswalk** |
+| Template | Each required record | Validator checks template ID/payload, required fields, duplicate IDs, and dangling links | Validator exists; a successful run against freshly generated current data has not been established here |
+| Framework-wide links | All applicable records and layers | No complete source-backed edge inventory with expected-versus-present counts is currently available | **OPEN — do not describe the framework as fully wired** |
+
+### Required wiring audit
+
+For each source and target layer, produce an edge register with: `source_id`, `relationship_type`, `target_id`, source provenance, whether the target exists, whether the edge is emitted, and validation result. Report counts as **expected edges / emitted edges / verified edges / dangling edges / unresolved exceptions**. Include node-to-axis, node-to-nerve, saboteur-to-node/fetter, saboteur-to-hyper-complex, complex-to-hyper-complex, higher-order descent, template-to-record, and any canon-defined links. A null source field must remain an explicit exception until canon resolves it; do not invent a target.
+
 ## Completion fields required per layer
 
 For each layer, the next verified dashboard must record: canonical expected count; unique IDs/names; records present; records substantively complete; templates present and complete; source provenance; relationship edges expected/present/verified; outstanding IDs; unresolved exceptions; validation command and result. A layer is not complete merely because the source has a list or a generator has a schema.
