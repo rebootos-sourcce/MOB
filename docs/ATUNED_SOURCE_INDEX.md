@@ -41,3 +41,11 @@ This index points to the maintained register and the main source locations.
 
 ## Index maintenance rule
 When a source or audit file is discovered, add its repository-relative path, role, source/version status, retrieval date, and confidence to `ATUNED_SOURCE_REGISTER.md`; add a navigable link here. Do not treat a remembered filename or an empty search result as proof of current existence or nonexistence.
+
+
+## Mandatory first-read item — active Super-Complex phase (2026-10-20)
+- [Super-Complex Phase Executive Handshake and Source-First Runbook](ATUNED_SUPER_COMPLEX_PHASE_HANDSHAKE_2026-10-20.md) — **read first after owner instructions**. It establishes the changed execution order, source hierarchy, v341 and nerve-to-character retrieval blockers, candidate-family inventory, and the rule that Psychopathy is not approved as a canonical Super-Complex.
+- [Complex Record Inventory Source Map](ATUNED_COMPLEX_RECORD_INVENTORY_SOURCE_MAP_2026-10-20.md) — candidate families and source-backed counts.
+- [Layer Count Dashboard](ATUNED_LAYER_COUNT_DASHBOARD_2026-10-20.md) — current count and verification state.
+
+**Startup rule:** retrieve the primary source/Canon and Library TDDs named in the handshake before making layer assignments. A failed retrieval is a blocker to record, not evidence that content is absent. The owner has directed that Super-Complex work begins now; lower-layer closure tasks are deferred until after the Super-Complex discussion, not deleted.
