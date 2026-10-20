@@ -135,3 +135,13 @@ Source and generator edits are committed. The generated `data.js` has not yet be
 - Updated `proto/knowledge/src/validate-templates.js` to fail if a hypercomplex mode lacks route axes, a Saboteur route, a populated complex-layer link, reciprocal route edges, or its reciprocal inferred counterpart.
 - These are **provisional ecosystem routes**, not canonical parent-complex assignments or clinical equivalences. Direct parentage for Predatory, Collapse, Rigidity, Dysregulation, and Dissociation remains unresolved and must not be described as canon.
 - **Implementation committed; execution status remains unverified.** The generator and validator have not yet been executed in this environment, so do not report the graph as runtime-validated until the validator passes.
+
+
+## Owner taxonomy correction — 2026-10-20 (overrides earlier dashboard wording)
+
+- **Psychopathy is not an approved super-complex.** The owner explicitly rejected that classification. The `kind: 'super complex'` label in `atuned_src/engine/data/compass.js` is an implementation label, not approved canon; it must not be used to establish the super-complex count.
+- **Canonical super-complex count remains UNVERIFIED.** Recover the owner's list from Mechanics of Being and the ATÜNED app/codex sources before creating or classifying those records.
+- Full-file review of `compass.js` identified distinct candidate source families: 8 mirror pairs (16 poles), 9 circles, 6 behavioral-cascade states, 4 blueprint patterns, and the 3-item DESCENT registry. These are not interchangeable categories. Do not assume any family is the super-complex list without authoritative source evidence.
+- The previous dashboard statement that Psychopathy is a confirmed super-complex is superseded by this correction. Preserve the history but use this correction for all current decisions.
+- The root `source.html` retrieval returned no usable body text through the current connector, and the referenced `MOB-Manuscript` README path was inaccessible. Treat these as source-retrieval blockers, not as absent content.
+- Before starting super-complex work, complete the layer-by-layer inventory for nerves, nodes, fetters, saboteurs, ordinary complexes, and hyper-complexes, and reconcile all candidate source families against the authoritative owner-defined taxonomy. Keep the super-complex phase gated until that is complete.
