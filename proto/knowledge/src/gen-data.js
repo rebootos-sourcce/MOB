@@ -59,7 +59,15 @@ T.NODES.forEach(n=>{const field=T.BANDS.indexOf(n.b)<0;
   def:n.k+', a fetter held at the '+clean(n.n)+'.',
   where:clean(n.n)+', '+(field?'a field anchor '+(n.b==='Field-Above'?'above':'below')+' the body':'in the '+n.b+' seat')+'.',
   card:'Governs '+clean(n.a).toLowerCase()+'. Distorts into '+clean(n.d).toLowerCase()+'.',
-  theme:clean(n.a), distort:clean(n.d), axis:n.cf||null, ic:(ax&&ax.ic)||null});});
+  theme:clean(n.a), distort:clean(n.d), axis:n.cf||null, ic:(ax&&ax.ic)||null,
+  body:'This fetter is organized around '+clean(n.a)+'. The linked distortion is '+clean(n.d)+'. Its relationship to the '+(n.cf||'linked')+' axis is the canonical route for interpreting this record.',
+  trigger:'Notice when '+clean(n.a).toLowerCase()+' becomes charged and the response begins moving toward '+clean(n.d).toLowerCase()+'.',
+  says:'The active pattern frames '+clean(n.a).toLowerCase()+' through the distortion '+clean(n.d).toLowerCase()+'. Treat this as a signal to examine, not as a fact that must govern the response.',
+  out:'Name the observed situation, separate it from the '+clean(n.d).toLowerCase()+' interpretation, and return to the linked axis and its canonical opposite before choosing a response.',
+  inst:ax?'The canonical opposite for the linked '+ax.nm+' axis is '+ax.opp+'. Use the axis record for its full installation language.':'Use the linked canonical axis record to identify the verified opposite state.',
+  opp:ax?ax.opp:null,
+  nextMove:'Identify the trigger, name '+clean(n.a).toLowerCase()+' and '+clean(n.d).toLowerCase()+', then open the linked '+(n.cf||'axis')+' record and practice its canonical opposite state.',
+  narrativeSource:'derived from engine node fields and linked canonical axis'});});
 
 /* all thirty nine Saboteurs use one complete record shape. Existing authored cards retain their reviewed copy;
    inferred records are explicitly derived from their linked canonical node/child records. */
@@ -137,7 +145,7 @@ E.forEach(e=>{e.links=[...new Set(e.links)].filter(l=>l!==e.id);});
 const TEMPLATE_SCHEMAS={
  seat:{id:'TPL-SEAT', fields:['nm','fam','def','body','links']},
  axis:{id:'TPL-FETTER-AXIS', fields:['nm','seat','fam','def','card','where','says','inst','opp','links']},
- node:{id:'TPL-FETTER-NODE', fields:['nm','seat','fam','def','where','card','theme','distort','axis','links']},
+ node:{id:'TPL-FETTER-NODE', fields:['nm','seat','fam','def','where','card','theme','distort','axis','body','trigger','says','out','inst','opp','nextMove','narrativeSource','links']},
  sab:{id:'TPL-SABOTEUR', fields:['nm','seat','fam','def','body','trigger','says','out','livedBehavior','availableState','nextMove','nids','arch','links']},
  hcx:{id:'TPL-HYPERCOMPLEX', fields:['nm','seat','fam','def','sub','links']},
  mask:{id:'TPL-MASK', fields:['nm','seat','fam','def','links']},
