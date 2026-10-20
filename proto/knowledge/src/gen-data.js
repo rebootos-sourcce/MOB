@@ -134,6 +134,32 @@ T.DESCENT.forEach((d,i)=>add({
  descentOrder:i
 }));
 
+/* Each higher-order item receives a separate, explicitly INFERRED counterpart
+   record. These are working therapeutic/coherence poles, not canonical claims.
+   Provenance, confidence, and review status travel with the record. */
+T.DESCENT.forEach(d=>{
+ const c=d.content;
+ add({
+  id:c.oppositeId, kind:'inferred', nm:c.oppositeDefinition.split(':')[0]||('Counterpart to '+d.nm),
+  seat:null, fam:'inferred counterpart',
+  def:c.oppositeDefinition, body:c.oppositeDefinition,
+  inferred:true,
+  inferenceBasis:c.inferenceBasis+' Counterpart wording is a provisional synthesis for review, not a canonical source statement.',
+  behavior:c.oppositeDefinition,
+  triggerMechanism:'Use this counterpart as a deliberate response when the linked pattern is observed; do not assume the person has or lacks this capacity globally.',
+  livedExample:'In the same situation that would trigger '+d.nm+', the person checks facts, considers the other party’s perspective and agency, and chooses an accountable response consistent with this counterpart.',
+  impact:'Supports more reciprocal, transparent, harm-aware decisions; outcome must be assessed from behavior rather than inferred identity.',
+  practice:'Name the trigger, identify who is affected, state the facts transparently, and choose one observable action consistent with the counterpart. Review the impact and repair any harm.',
+  oppositeId:'descent:'+d.nm,
+  oppositeDefinition:clean(d.d),
+  oppositeStatus:'inferred-working-counterpart; reciprocal navigation pair; owner/canon review required',
+  confidence:c.confidence,
+  reviewStatus:c.reviewStatus,
+  narrativeSource:'derived counterpart synthesis; not canonical',
+  researchSources:c.researchSources||[]
+ });
+});
+
 /* masks, archetypes, domains */
 T.MASKS.forEach(m=>add({id:'mask:'+m.nm, kind:'mask', nm:m.nm, seat:(m.b&&m.b[0])||'Heart',
  fam:(m.b||[]).join(' and '), def:'The '+m.nm.toLowerCase()+' mask '+clean(m.v)+'.', ic:m.ic}));
@@ -162,6 +188,16 @@ E.forEach(e=>{
   e.links.unshift('seat:'+e.seat);}
  if(e.kind==='seat'){ E.filter(x=>x.kind==='axis'&&x.seat===e.nm).forEach(x=>e.links.push(x.id));}
 });
+/* Counterpart edges are explicit and reciprocal; both endpoints must exist. */
+T.DESCENT.forEach(d=>{
+ const original=by['descent:'+d.nm];
+ const opposite=by[d.content.oppositeId];
+ if(original&&opposite){
+  original.links.push(opposite.id);
+  opposite.links.push(original.id);
+ }
+});
+
 /* The DESCENT registry is an explicitly source-defined ordered chain. */
 const descentEntries=T.DESCENT.map(d=>by['descent:'+d.nm]).filter(Boolean);
 descentEntries.forEach((e,i)=>{
