@@ -89,3 +89,12 @@ For each layer, level, concept, descriptive object, inferred item, and inferred 
 - Completeness of the source inventory: **Partial / not yet complete**
 - Current truth of previously reported gap counts: **Unverified**
 - Framework closure status: **Not verified; do not declare complete**
+
+
+## Recursive audit log added — 2026-10-20
+
+- [`docs/ATUNED_FRAMEWORK_CLOSURE_AUDIT_LOG_2026-10-20.md`](ATUNED_FRAMEWORK_CLOSURE_AUDIT_LOG_2026-10-20.md) — records the source-backed findings from `atuned_src/engine/data/canon.js`, the three-pass method applied to that source, explicit risks, acceptance status, and next recursive actions.
+- Commit: `8151beb9e2cf85c0ce3bb377d3ca91e509945f62`.
+- The source index now links to this audit log.
+- New finding: the code contains explicit proposal/canon boundaries that must be preserved, including unapproved node-state thresholds and proposed anatomical Fetter placements.
+- The audit does not claim all concepts have received three full passes; that remains an open gate.
