@@ -48,3 +48,23 @@ The current default-branch tree was retrieved successfully: **6031 paths; tree n
 - Semantic node-to-supercomplex connectivity: NOT YET PROVEN.
 - Nerve-to-node semantic connectivity: NOT YET PROVEN.
 - End-to-end simulation closure: NOT YET PROVEN.
+
+## Continued execution update — 2026-10-20
+
+### Changes committed during this execution
+
+- `proto/knowledge/src/gen-data.js` now emits `templateValidation.contentStatus` as `complete` or `incomplete`, derived from its required-field list.
+- The generator no longer treats an empty array as missing content. An empty relationship list can be valid for a leaf record; a missing/null required scalar or absent field remains a gap.
+- Added `proto/knowledge/src/validate-templates.js`, a fail-closed validation gate. It checks stable/duplicate IDs, template assignments and payloads, missing required fields, dangling links, and required domain kinds (`node`, `sab`, `hcx`, `complex`, `supercomplex`, `inferred`). Run it after regenerating data with `node proto/knowledge/src/validate-templates.js`.
+
+### Verification boundary
+
+The validator has been committed but has **not been executed against a freshly regenerated build in this session**. The checked-in `proto/knowledge/src/data.js` is stale relative to the latest generator changes, so its prior 127 incomplete status must not be presented as the post-fix count. A fresh generation and validator run are required to establish the new measured state.
+
+### Source-recovery result
+
+Exact repository searches for `TPL-NODE-CHARGE-STASIS-NARRATIVE-V1`, `PASS46_NARRATIVE_COUNTERPART_CLOSURE_AUDIT`, `supercomplex inference template`, `template assignment inference`, and the historical `338 assignments` baseline returned no matches in the inspected repository search results. This is not proof that the historical material does not exist elsewhere; the authoritative assignment catalog remains unrecovered in this pass.
+
+### Current status
+
+**OPEN / BLOCKED ON SOURCE-BACKED DOMAIN CATALOG AND BUILD VERIFICATION.** The new gate is intentionally expected to fail while the generated catalog lacks `complex`, `supercomplex`, and `inferred` record kinds or has incomplete template payloads. No invented definitions or assignments were added to disguise these gaps. Full closure has not been demonstrated.
