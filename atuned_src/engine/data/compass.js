@@ -469,7 +469,7 @@ const DESCENT=[
    livedExample:'In a team discussion, another person receives credit. The person experiences this as a threat to rank, reframes the other person as incompetent, redirects the discussion toward their own contribution, and struggles to acknowledge the other person’s work.',
    impact:'Can reduce mutuality, trust, feedback quality, and capacity to repair harm when other people’s needs are treated as secondary to protecting self-image.',
    practice:'Pause before defending rank. State the observable facts, name the impact on the other person, acknowledge one valid point or contribution without qualification, and ask what repair or shared outcome is needed.',
-   oppositeId:'opposite:Narcissism', oppositeDefinition:'Grounded self-worth with humility, reciprocal empathy, accountability, and respect for others as equally real—not self-erasure or self-contempt.',
+   oppositeName:'Grounded Self-Worth', oppositeId:'opposite:Narcissism', oppositeDefinition:'Grounded self-worth with humility, reciprocal empathy, accountability, and respect for others as equally real—not self-erasure or self-contempt.',
    oppositeStatus:'inferred-working-counterpart; not asserted as a canonical one-to-one opposite',
    confidence:0.78, reviewStatus:'external-research-pass-A-done; semantic-pass-B-and-adversarial-pass-C-pending',
    researchSources:['https://www.psychiatry.org/News-room/APA-Blogs/What-Is-Narcissistic-Personality-Disorder','https://pmc.ncbi.nlm.nih.gov/articles/PMC4415495/']
@@ -484,7 +484,7 @@ const DESCENT=[
    livedExample:'During a disagreement, the person privately tells each colleague a different version of events to isolate an opponent and secure a decision, while presenting the move as neutral problem-solving.',
    impact:'Undermines informed consent, stable trust, fair collaboration, and shared decision-making; apparent cooperation can become difficult to distinguish from tactical compliance.',
    practice:'Make the goal and relevant information explicit, disclose conflicts of interest, invite independent verification, give others a genuine option to refuse, and choose a route that remains defensible if all affected parties know the facts.',
-   oppositeId:'opposite:Machiavellianism', oppositeDefinition:'Transparent, principled agency: truthful communication, reciprocal consent, fair dealing, and strategic skill constrained by care and accountability.',
+   oppositeName:'Transparent Reciprocal Agency', oppositeId:'opposite:Machiavellianism', oppositeDefinition:'Transparent, principled agency: truthful communication, reciprocal consent, fair dealing, and strategic skill constrained by care and accountability.',
    oppositeStatus:'inferred-working-counterpart; not asserted as a canonical one-to-one opposite',
    confidence:0.76, reviewStatus:'external-research-pass-A-done; semantic-pass-B-and-adversarial-pass-C-pending',
    researchSources:['https://pmc.ncbi.nlm.nih.gov/articles/PMC3717508/','https://pubmed.ncbi.nlm.nih.gov/34636074/']
@@ -499,7 +499,7 @@ const DESCENT=[
    livedExample:'A decision-maker recognizes that a choice will predictably injure another person, but treats that injury as irrelevant to the decision and proceeds without meaningful consideration of consent, responsibility, or repair.',
    impact:'If this pattern is present, ordinary appeals to shared feeling may not be sufficient to protect others; prioritize boundaries, accountability, documented decisions, and appropriate professional support.',
    practice:'Do not rely on an assumed emotional response. Make behavioral limits explicit, document decisions and consequences, require independent oversight where harm risk exists, and seek qualified professional guidance when safety or clinical concerns arise.',
-   oppositeId:'opposite:Psychopathy', oppositeDefinition:'Empathic accountability: recognizing others’ welfare as decision-relevant, inhibiting preventable harm, respecting consent, and taking responsibility for consequences.',
+   oppositeName:'Empathic Accountability', oppositeId:'opposite:Psychopathy', oppositeDefinition:'Empathic accountability: recognizing others’ welfare as decision-relevant, inhibiting preventable harm, respecting consent, and taking responsibility for consequences.',
    oppositeStatus:'inferred-working-counterpart; not asserted as a canonical one-to-one opposite',
    confidence:0.64, reviewStatus:'external-research-pass-A-partial; source model wording requires expert review; semantic-pass-B-and-adversarial-pass-C-pending',
    researchSources:['https://pubmed.ncbi.nlm.nih.gov/34636074/','https://pubmed.ncbi.nlm.nih.gov/23885245/']
