@@ -21,6 +21,9 @@ const ctx={console}; vm.createContext(ctx);
 vm.runInContext(src+`;this.__={NODES,CHILD,MASKS,ARCH,GLOSS,HCX_LIB,ALL_SAB,SABDEF,
  DOMAINS,DOMDEF,APC,AXCARD,PAL,SEATGLYPH,BANDS,KB_KEY,
  AXLINE:CHILD.map(function(c){return axLine(c.nm);})};`,ctx);
+const cardSource=fs.readFileSync(path.join(ROOT,'atuned_src','engine','data','sabcard.js'),'utf8');
+const cardCtx={}; vm.createContext(cardCtx); vm.runInContext(cardSource+';this.__cards=SABCARD;',cardCtx);
+const SAB_CARDS=cardCtx.__cards;
 const T=ctx.__;
 const clean=s=>String(s==null?'':s).replace(/\s*--\s*/g,', ').replace(/\u2014/g,', ').trim();
 /* the first sentence, or two when the first is a fragment under forty
@@ -59,9 +62,12 @@ T.NODES.forEach(n=>{const field=T.BANDS.indexOf(n.b)<0;
 /* thirty nine saboteurs, thirty three with the codex's full text */
 T.ALL_SAB.forEach(s=>{const d=T.SABDEF[T.KB_KEY(s.nm)];
  const fam=T.HCX_LIB.filter(h=>h.nm===s.hcx)[0];
+ const card=SAB_CARDS[String(s.nm).toLowerCase()]||null;
  add({id:'sab:'+s.nm, kind:'sab', nm:s.nm, seat:(fam&&fam.b)||'Heart',
   fam:s.hcx||'unnamed', def:d?lead(d.d):(fam?s.nm+', a saboteur in the '+fam.nm+' architecture: '+fam.d+'.':s.nm+', a saboteur.'),
   body:d?clean(d.d):'', trigger:d?clean(d.t):'', says:d?clean(d.q):'', out:d?clean(d.i):'',
+  livedBehavior:card?clean(card.h):'', availableState:card?clean(card.a):'', nextMove:card?clean(card.n):'',
+  narrativeSource:card?'atuned_src/engine/data/sabcard.js':null,
   nids:s.nids||[], arch:s.hcx||null, ic:(fam&&fam.ic)||null});});
 
 /* six architectures the saboteurs belong to */
@@ -106,7 +112,7 @@ const TEMPLATE_SCHEMAS={
  seat:{id:'TPL-SEAT', fields:['nm','fam','def','body','links']},
  axis:{id:'TPL-FETTER-AXIS', fields:['nm','seat','fam','def','card','where','says','inst','opp','links']},
  node:{id:'TPL-FETTER-NODE', fields:['nm','seat','fam','def','where','card','theme','distort','axis','links']},
- sab:{id:'TPL-SABOTEUR', fields:['nm','seat','fam','def','body','trigger','says','out','nids','arch','links']},
+ sab:{id:'TPL-SABOTEUR', fields:['nm','seat','fam','def','body','trigger','says','out','livedBehavior','availableState','nextMove','nids','arch','links']},
  hcx:{id:'TPL-HYPERCOMPLEX', fields:['nm','seat','fam','def','sub','links']},
  mask:{id:'TPL-MASK', fields:['nm','seat','fam','def','links']},
  arch:{id:'TPL-ARCHETYPE', fields:['nm','seat','fam','def','links']},
