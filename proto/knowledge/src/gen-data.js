@@ -68,8 +68,10 @@ T.ALL_SAB.forEach(s=>{const d=T.SABDEF[T.KB_KEY(s.nm)];
  add({id:'sab:'+s.nm, kind:'sab', nm:s.nm, seat:(fam&&fam.b)||'Heart',
   fam:s.hcx||'unnamed', def:d?lead(d.d):(fam?s.nm+', a saboteur in the '+fam.nm+' architecture: '+fam.d+'.':s.nm+', a saboteur.'),
   body:d?clean(d.d):'', trigger:d?clean(d.t):'', says:d?clean(d.q):'', out:d?clean(d.i):'',
-  livedBehavior:card?clean(card.h):'', availableState:card?clean(card.a):'', nextMove:card?clean(card.n):'',
-  narrativeSource:card?'atuned_src/engine/data/sabcard.js':null,
+  livedBehavior:card?clean(card.h):clean(d?('A situation brings '+d.t+' The response is '+d.d+'. Reflection: What is happening, and what response can you choose?'):(s.nids||[]).map(i=>{const n=T.NODES.find(x=>x.i===i);return n?n.a+' can narrow into '+n.d+'.':'';}).filter(Boolean).join(' ')),
+  availableState:card?clean(card.a):clean((s.nids||[]).map(i=>{const n=T.NODES.find(x=>x.i===i);const a=n&&T.CHILD.find(x=>x.nm===n.c);return a?a.opp:'';}).filter(Boolean).length?'When the charge is no longer directing the response, '+[...new Set((s.nids||[]).map(i=>{const n=T.NODES.find(x=>x.i===i);const a=n&&T.CHILD.find(x=>x.nm===n.c);return a&&a.opp;} ).filter(Boolean))].join(', ')+' can become available.':'The pattern is not the whole of you. Notice the charge without automatically repeating its distortion.'),
+  nextMove:card?clean(card.n):'Notice the first sign of the pattern. Name the linked distortion, pause before acting, and choose one small response that does not repeat the automatic move.',
+  narrativeSource:card?'atuned_src/engine/data/sabcard.js':'derived from linked canonical node fields',
   nids:s.nids||[], arch:s.hcx||null, ic:(fam&&fam.ic)||null});});
 
 /* six architectures the saboteurs belong to */
