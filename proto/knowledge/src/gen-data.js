@@ -299,6 +299,8 @@ T.GLOSS.forEach(g=>add({id:'term:'+g.t, kind:'term', nm:g.t, seat:null, fam:'ter
    its addresses and its architecture. */
 const by={}; E.forEach(e=>by[e.id]=e);
 E.forEach(e=>{e.links=[];});
+/* Hyper-complex mode ↔ inferred counterpart is an explicit reciprocal pair. Grandiosity maps to the source-defined Cluster I / Narcissism association; other direct parent mappings remain unresolved. */
+E.filter(e=>e.kind==='hypercomplex').forEach(h=>{const opposite=by[h.oppositeId]; if(opposite){h.links.push(opposite.id);opposite.links.push(h.id);} if(h.cluster==='I · Narcissism'&&by['descent:Narcissism']){h.links.push('descent:Narcissism');by['descent:Narcissism'].links.push(h.id);h.parentLinkBasis='source-defined Cluster I / Narcissism association in SNIFFER_SPEC.md';} else {h.parentLinkBasis='direct parent-complex mapping unresolved; no edge invented';}});
 E.forEach(e=>{
  if(e.kind==='nerve'){
   e.mappedNodeIds.forEach(nid=>{if(by[nid]){e.links.push(nid);by[nid].links.push(e.id);}});
