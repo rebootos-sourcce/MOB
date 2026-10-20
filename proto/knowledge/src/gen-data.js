@@ -20,7 +20,7 @@ const src=process.argv[2]?fs.readFileSync(process.argv[2],'utf8')
 const ctx={console}; vm.createContext(ctx);
 vm.runInContext(src+`;this.__={NODES,CHILD,MASKS,ARCH,GLOSS,HCX_LIB,ALL_SAB,SABDEF,
  DOMAINS,DOMDEF,APC,AXCARD,PAL,SEATGLYPH,BANDS,KB_KEY,
- AXLINE:CHILD.map(function(c){return axLine(c.nm);})};`,ctx);
+ AXLINE:CHILD.map(function(c){return axLine(c.nm);}), DESCENT};`,ctx);
 const cardSource=fs.readFileSync(path.join(ROOT,'atuned_src','engine','data','sabcard.js'),'utf8');
 const cardCtx={}; vm.createContext(cardCtx); vm.runInContext(cardSource+';this.__cards=SABCARD;',cardCtx);
 const SAB_CARDS=cardCtx.__cards;
@@ -108,6 +108,19 @@ T.ALL_SAB.forEach(s=>{
 T.HCX_LIB.forEach(h=>add({id:'hcx:'+h.nm, kind:'hcx', nm:h.nm, seat:h.b, fam:'architecture',
  def:h.nm+': '+clean(h.d)+'.', sub:clean(h.sub), ic:h.ic}));
 
+/* source-defined higher-order descent entries. Keep the three named steps
+   distinct from the six HCX architecture records; provenance is compass.js.
+   Do not treat this small explicit descent as a complete complex registry. */
+T.DESCENT.forEach((d,i)=>add({
+ id:'descent:'+d.nm,
+ kind:d.kind==='complex'?'complex':(d.kind==='super complex'?'supercomplex':'hcx'),
+ nm:d.nm, seat:null, fam:'higher-order descent',
+ def:clean(d.d), body:clean(d.d),
+ gate:d.gate||null, refer:!!d.refer,
+ narrativeSource:'atuned_src/engine/data/compass.js DESCENT',
+ descentOrder:i
+}));
+
 /* masks, archetypes, domains */
 T.MASKS.forEach(m=>add({id:'mask:'+m.nm, kind:'mask', nm:m.nm, seat:(m.b&&m.b[0])||'Heart',
  fam:(m.b||[]).join(' and '), def:'The '+m.nm.toLowerCase()+' mask '+clean(m.v)+'.', ic:m.ic}));
@@ -136,6 +149,12 @@ E.forEach(e=>{
   e.links.unshift('seat:'+e.seat);}
  if(e.kind==='seat'){ E.filter(x=>x.kind==='axis'&&x.seat===e.nm).forEach(x=>e.links.push(x.id));}
 });
+/* The DESCENT registry is an explicitly source-defined ordered chain. */
+const descentEntries=T.DESCENT.map(d=>by['descent:'+d.nm]).filter(Boolean);
+descentEntries.forEach((e,i)=>{
+ if(i>0)e.links.push(descentEntries[i-1].id);
+ if(i<descentEntries.length-1)e.links.push(descentEntries[i+1].id);
+});
 E.forEach(e=>{e.links=[...new Set(e.links)].filter(l=>l!==e.id);});
 
 /* Source-backed template binding. The template schema defines which fields
@@ -148,6 +167,8 @@ const TEMPLATE_SCHEMAS={
  node:{id:'TPL-FETTER-NODE', fields:['nm','seat','fam','def','where','card','theme','distort','axis','body','trigger','says','out','inst','opp','nextMove','narrativeSource','links']},
  sab:{id:'TPL-SABOTEUR', fields:['nm','seat','fam','def','body','trigger','says','out','livedBehavior','availableState','nextMove','nids','arch','links']},
  hcx:{id:'TPL-HYPERCOMPLEX', fields:['nm','seat','fam','def','sub','links']},
+ complex:{id:'TPL-COMPLEX', fields:['nm','fam','def','body','narrativeSource','links']},
+ supercomplex:{id:'TPL-SUPERCOMPLEX', fields:['nm','fam','def','body','refer','narrativeSource','links']},
  mask:{id:'TPL-MASK', fields:['nm','seat','fam','def','links']},
  arch:{id:'TPL-ARCHETYPE', fields:['nm','seat','fam','def','links']},
  dom:{id:'TPL-DOMAIN', fields:['nm','seat','fam','def','clear','dist','links']},
