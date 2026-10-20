@@ -98,3 +98,20 @@ For each layer, level, concept, descriptive object, inferred item, and inferred 
 - The source index now links to this audit log.
 - New finding: the code contains explicit proposal/canon boundaries that must be preserved, including unapproved node-state thresholds and proposed anatomical Fetter placements.
 - The audit does not claim all concepts have received three full passes; that remains an open gate.
+
+
+## Active phase update — Super-Complexes first (2026-10-20)
+
+**Owner-directed order:** begin Super-Complex source reconciliation and design now. Do not gate this phase on completion of nerve/node/fetter/Saboteur/Complex/Hyper-Complex audits. Those closure tasks remain queued for after the Super-Complex discussion.
+
+**Read first:** [ATUNED_SUPER_COMPLEX_PHASE_HANDSHAKE_2026-10-20.md](ATUNED_SUPER_COMPLEX_PHASE_HANDSHAKE_2026-10-20.md). It lists the required first-read sources, source authority hierarchy, current candidate families, exact retrieval blockers, and required deliverables.
+
+### Priority retrieval blockers that must remain visible
+- `MOB_Complete_v341.html`: required exact source/version; not yet recovered via the last retrieval path. Do not silently substitute the v336/v2 staging artifact.
+- Large root `source.html`: GitHub connector did not return usable body text.
+- Referenced `MOB-Manuscript` README: inaccessible via the connector used in the previous pass.
+- Original nerve-to-character semantic mapping and owner-defined list of eight ordinary Complexes: not yet located with an authoritative source locator.
+- Super-Complex general membership rule: unresolved in the inspected Library inference-gates CSV; source/owner decision required.
+- Psychopathy as a canonical Super-Complex: explicitly rejected by owner; source code label is not Canon.
+
+These are retrieval/decision blockers, not evidence of absence. The next pass must search the Project Library, conversation files, and source registers with exact names and document the precise locations searched before reporting any item globally unavailable.
