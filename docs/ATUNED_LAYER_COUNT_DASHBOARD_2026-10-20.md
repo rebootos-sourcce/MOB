@@ -73,3 +73,23 @@ This document establishes the update rule; it does not itself create continuous 
 - The source-defined `Narcissism` descent record is emitted as a complex record with the shared template fields. Its opposite remains explicitly unresolved because no authoritative opposite definition was found in the inspected source; no opposite was invented.
 - The descent's existing `Machiavellianism` and `Psychopathy` entries retain their distinct hyper-complex and super-complex kinds. They are not counted as ordinary complexes.
 - **Not yet verified:** regenerated output, validator results, full complex denominator, full inferred-complex inventory, and authoritative opposites. Do not mark the complex layer complete until these are resolved.
+
+
+## Complex content population checkpoint — 2026-10-20
+
+### Source-defined higher-order entries now populated
+
+The source registry `atuned_src/engine/data/compass.js` now carries substantive template content for the three explicit DESCENT entries: Narcissism (complex), Machiavellianism (hyper-complex), and Psychopathy (super-complex). Each has definition, behavior, trigger/mechanism, lived example, impact, practice, a named working counterpart, confidence, review status, and external research URLs. These are content records, not a claim that the full complex inventory has been found.
+
+### Explicit inferred counterpart records
+
+The generator now emits three separate inferred counterpart records and reciprocal edges:
+- `opposite:Narcissism` — Grounded Self-Worth
+- `opposite:Machiavellianism` — Transparent Reciprocal Agency
+- `opposite:Psychopathy` — Empathic Accountability
+
+All three are marked inferred working counterparts, not canonical one-to-one opposites. Their links return to the matching descent record. Template content includes inference basis, behavior, trigger/mechanism, lived example, impact, practice, confidence, review state, provenance, and research sources. The higher-order descent entries include the same detail fields in their generated template payloads.
+
+### Verification boundary
+
+Source and generator edits are committed. The generated `data.js` has not yet been regenerated and the validator has not yet been run in this execution, so runtime template coverage and edge validation remain pending. The full denominator of all canonical and inferred complexes remains unknown. Pass B and Pass C review remain open.
