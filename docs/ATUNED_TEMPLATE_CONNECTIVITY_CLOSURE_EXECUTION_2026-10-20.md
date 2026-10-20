@@ -115,3 +115,10 @@ Changes are committed to source and generator. Generated `data.js` regeneration 
 - Added reciprocal Saboteur ↔ fetter-axis edges derived from each Saboteur's declared node IDs and the canonical axis assigned to each referenced node.
 - No guessed links were added: the relationship is traceable through explicit Saboteur node references.
 - Source re-fetch verification is pending this update; generator execution and validator execution remain outstanding.
+
+### Complex-to-Saboteur wiring — 2026-10-20
+
+- Added `COMPLEX_AXIS_ROUTES` to the generator and built the relationship from each complex's declared axes through the existing node graph to Saboteurs whose `nids` reference those nodes.
+- Links are reciprocal: complex record ↔ Saboteur record.
+- The routing axis choices are explicitly marked provisional and reviewable. No clinical diagnosis or canonical one-to-one opposite is asserted.
+- Re-fetched generator source contains the route table, shared-node lookup, and reciprocal link insertion. Runtime generation/validator results remain unverified.
