@@ -182,6 +182,104 @@ T.DESCENT.forEach(d=>{
  });
 });
 
+/* Six canonical hyper-complex modes from SNIFFER_SPEC.md, section 5.
+   These are framework modes, not clinical diagnoses or direct equivalents of
+   schema-therapy constructs. Research sources support adjacent constructs only.
+   Every mode has a separate inferred coherent/inversion counterpart record;
+   those counterparts are explicitly provisional, not canon. */
+const HYPERCOMPLEX_MODES=[
+ {name:'Grandiosity',cluster:'I · Narcissism',
+  definition:'A mode organized around an inflated or exceptional self-position, status protection, entitlement, and treating other people as less authoritative or less important.',
+  behavior:'May appear as superiority claims, status-seeking, special-rule expectations, dismissal of feedback, or using admiration to stabilize self-worth.',
+  triggerMechanism:'Possible triggers include perceived disrespect, criticism, loss of status, shame, or a threat to the preferred self-image. This is a working formulation, not a universal cause.',
+  livedExample:'After receiving corrective feedback, a person dismisses the source as inferior and insists ordinary standards do not apply to them.',
+  impact:'Can impair reciprocity, learning, trust, and accountability when the pattern dominates; assess observable behavior and context rather than assigning an identity.',
+  practice:'Describe the observable event without ranking people; identify the threatened need; invite disconfirming evidence; acknowledge one specific contribution or boundary from another person.',
+  inverseName:'Grounded Mutual Worth',inverseDefinition:'An inferred counterpart emphasizing stable self-respect without superiority: equal human worth, realistic appraisal, openness to feedback, and respect for others’ agency.',
+  basis:'Framework mode Grandiosity maps to Cluster I / Narcissism in SNIFFER_SPEC.md. Adjacent research describes schema modes such as Self-Aggrandizer and notes grandiosity/status protection; it does not validate this ATÜNED category as a clinical construct.',
+  confidence:0.78,
+  sources:['https://pmc.ncbi.nlm.nih.gov/articles/PMC8813040/','https://pmc.ncbi.nlm.nih.gov/articles/PMC5177643/']},
+ {name:'Predatory',cluster:'II',
+  definition:'A mode organized around instrumental pursuit of a target or outcome while discounting the other party’s safety, autonomy, or suffering.',
+  behavior:'May include cold strategic pressure, exploitation, concealment of intent, treating people as obstacles, or planning actions without regard for harm.',
+  triggerMechanism:'May be activated by a perceived obstacle, rival, threat, or desired gain. This describes a possible pattern, not a diagnosis or a claim about any person.',
+  livedExample:'A person quietly plans how to remove a rival and evaluates only whether the plan will succeed, not the foreseeable harm.',
+  impact:'Can create significant relational or physical risk. Prioritize concrete behavior, boundaries, and safety; do not infer this mode from a label alone.',
+  practice:'Stop the harmful action; state the intended outcome and who could be affected; assess consent and foreseeable harm; choose a lawful, transparent alternative and seek appropriate support if safety is at risk.',
+  inverseName:'Protective, Consensual Agency',inverseDefinition:'An inferred counterpart that pursues legitimate goals transparently while respecting consent, safety, rights, and the other party’s independent interests.',
+  basis:'Framework mode Predatory is Cluster II in SNIFFER_SPEC.md. Adjacent forensic schema-mode literature describes a Predator mode as cold, calculating, and focused on eliminating a perceived threat; this is analogy, not equivalence.',
+  confidence:0.74,
+  sources:['https://pmc.ncbi.nlm.nih.gov/articles/PMC6184370/','https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2016.01987/full']},
+ {name:'Collapse',cluster:'III',
+  definition:'A mode of marked contraction in agency, initiative, or perceived possibility, in which withdrawal or surrender can replace active engagement.',
+  behavior:'May appear as shutdown, giving up, passivity, inability to initiate, or treating a difficult state as proof that no useful action is possible.',
+  triggerMechanism:'Possible triggers include overwhelm, repeated perceived failure, threat, exhaustion, or loss. The label is a framework hypothesis and must not be used to infer a medical condition.',
+  livedExample:'After a setback, a person stops seeking options and concludes that no action can change the outcome.',
+  impact:'May narrow problem-solving and access to support. Similar outward behavior can have many causes, so assess context and needs rather than pathologizing it.',
+  practice:'Reduce the task to one safe, observable next step; identify available support; distinguish present constraints from global conclusions; seek professional care when distress is severe or persistent.',
+  inverseName:'Supported Re-engagement',inverseDefinition:'An inferred counterpart emphasizing grounded support, small feasible actions, restored choice, and realistic hope without denying pain or constraints.',
+  basis:'Framework mode Collapse is Cluster III in SNIFFER_SPEC.md. Research on schema modes describes detached, surrender, and dysregulated states, but does not establish this ATÜNED mode as an independently validated construct.',
+  confidence:0.62,
+  sources:['https://pmc.ncbi.nlm.nih.gov/articles/PMC8194201/','https://pmc.ncbi.nlm.nih.gov/articles/PMC5177643/']},
+ {name:'Rigidity',cluster:'IV',
+  definition:'A mode organized around inflexible rules, certainty, and resistance to updating a response when context or evidence changes.',
+  behavior:'May appear as all-or-nothing standards, repeated insistence on one correct method, intolerance of ambiguity, or prioritizing control over adaptation.',
+  triggerMechanism:'Possible triggers include uncertainty, perceived disorder, mistakes, or threat to predictability. These are hypotheses to test, not assumed causes.',
+  livedExample:'A plan no longer fits the situation, but a person insists on following it because changing course feels unacceptable.',
+  impact:'Can impair adaptation, collaboration, and repair; structure itself is not the problem unless it overrides evidence, context, or people’s needs.',
+  practice:'Name the purpose behind the rule; list what has changed; generate two safe alternatives; retain the principle while adapting the method.',
+  inverseName:'Flexible Integrity',inverseDefinition:'An inferred counterpart that preserves values and accountability while adapting methods to evidence, context, and legitimate needs.',
+  basis:'Framework mode Rigidity is Cluster IV in SNIFFER_SPEC.md. Schema-therapy literature describes over-controller modes and rigid rule/standard patterns as adjacent constructs, not as a one-to-one match.',
+  confidence:0.69,
+  sources:['https://pmc.ncbi.nlm.nih.gov/articles/PMC8813040/','https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2016.01987/full']},
+ {name:'Dysregulation',cluster:'V',
+  definition:'A mode in which emotional or behavioral activation becomes difficult to modulate in proportion to the situation, reducing the ability to pause, integrate signals, and choose a response.',
+  behavior:'May include rapid escalation, abrupt shifts, impulsive action, or difficulty returning to baseline after activation; record the actual observed behavior.',
+  triggerMechanism:'Activation can be shaped by stress, unmet needs, threat, sleep, environment, and other factors. Do not assume a single cause or diagnosis.',
+  livedExample:'During conflict, activation rises quickly and the person acts before checking the facts or considering consequences.',
+  impact:'Can strain relationships and decision-making. This record is a descriptive framework aid, not a substitute for assessment of medical or mental-health concerns.',
+  practice:'Pause when safe; orient to immediate facts; reduce stimulation; use a practiced grounding or regulation skill; revisit the decision after activation decreases.',
+  inverseName:'Regulated Responsiveness',inverseDefinition:'An inferred counterpart emphasizing awareness of activation, proportionate response, recovery, and deliberate choice without suppressing legitimate emotion.',
+  basis:'Framework mode Dysregulation is Cluster V in SNIFFER_SPEC.md. Published reviews discuss emotion-regulation difficulties and schema modes, but do not validate this exact ATÜNED category.',
+  confidence:0.72,
+  sources:['https://pmc.ncbi.nlm.nih.gov/articles/PMC5177643/','https://pmc.ncbi.nlm.nih.gov/articles/PMC8194201/']},
+ {name:'Dissociation',cluster:'VI',
+  definition:'A mode characterized here as disconnection or compartmentalization in experience, with reduced integration between present cues, feeling, memory, or action.',
+  behavior:'Possible signs can include feeling detached, emotionally distant, unreal, or disconnected from the present; these signs are nonspecific and should not be used to diagnose dissociation.',
+  triggerMechanism:'Dissociative experiences can have multiple causes and require careful contextual assessment. Do not presume trauma, disorder, or a specific mechanism from this framework label.',
+  livedExample:'In a stressful interaction, a person reports feeling distant from the situation and has difficulty staying connected to what is happening.',
+  impact:'May affect presence, communication, and recall. If symptoms are recurrent, distressing, or impairing, recommend assessment by a qualified health professional.',
+  practice:'Use a gentle present-orientation exercise if welcome and safe; invite the person to notice current surroundings and choices; avoid forcing recall or exposure; seek qualified support for persistent symptoms.',
+  inverseName:'Integrated Present Connection',inverseDefinition:'An inferred counterpart emphasizing safe contact with present experience, continuity between feeling and action, and paced integration without forcing or denying experience.',
+  basis:'Framework mode Dissociation is Cluster VI in SNIFFER_SPEC.md. Schema-mode literature discusses separation between modes and detached states; that is adjacent literature, not proof that this framework category is a clinical equivalent.',
+  confidence:0.58,
+  sources:['https://pmc.ncbi.nlm.nih.gov/articles/PMC5177643/','https://pmc.ncbi.nlm.nih.gov/articles/PMC8813040/']}
+];
+HYPERCOMPLEX_MODES.forEach((m,i)=>{
+ const id='hypercomplex:'+m.name;
+ const oppositeId='inferred:hypercomplex-inverse:'+m.name;
+ add({id,kind:'hypercomplex',nm:m.name,seat:null,fam:'hyper-complex mode',cluster:m.cluster,
+  def:m.definition,body:m.definition,behavior:m.behavior,triggerMechanism:m.triggerMechanism,
+  livedExample:m.livedExample,impact:m.impact,practice:m.practice,
+  inferred:false,inferenceBasis:m.basis,confidence:m.confidence,
+  reviewStatus:'research-populated working record; canon/owner review required; not diagnosis',
+  oppositeId,oppositeDefinition:m.inverseDefinition,
+  oppositeStatus:'inferred-working-counterpart; not canonical; review required',
+  narrativeSource:'SNIFFER_SPEC.md section 5 plus adjacent research; see researchSources',
+  researchSources:m.sources,clusterOrder:i+1,links:[oppositeId]});
+ add({id:oppositeId,kind:'inferred',nm:m.inverseName,seat:null,fam:'inferred hyper-complex counterpart',
+  def:m.inverseDefinition,body:m.inverseDefinition,behavior:m.inverseDefinition,
+  triggerMechanism:'Use as a possible deliberate response after identifying the observed pattern; do not assume a person possesses or lacks this capacity globally.',
+  livedExample:'In a situation that activates '+m.name+', the person identifies the observable facts and chooses one action consistent with '+m.inverseDefinition.toLowerCase(),
+  impact:'Working counterpart for reflection and practice; effects must be evaluated from observed behavior, not inferred identity.',
+  practice:'Name the trigger, check the facts, choose one small observable action aligned with the counterpart, and review its effects.',
+  inferred:true,inferenceBasis:'Inferred inversion for the ATÜNED hyper-complex mode '+m.name+'. This is a working design hypothesis, not a canonical or clinical claim.',
+  confidence:m.confidence,reviewStatus:'inferred; owner/canon review required',
+  oppositeId:id,oppositeDefinition:m.definition,oppositeStatus:'inferred reciprocal navigation pair',
+  narrativeSource:'derived inferred counterpart; not canonical',researchSources:m.sources,
+  cluster:m.cluster,links:[id]});
+});
+
 /* masks, archetypes, domains */
 T.MASKS.forEach(m=>add({id:'mask:'+m.nm, kind:'mask', nm:m.nm, seat:(m.b&&m.b[0])||'Heart',
  fam:(m.b||[]).join(' and '), def:'The '+m.nm.toLowerCase()+' mask '+clean(m.v)+'.', ic:m.ic}));
@@ -264,6 +362,7 @@ E.forEach(e=>{e.links=[...new Set(e.links)].filter(l=>l!==e.id);});
    authoritative engine-derived entry, never hand-written into generated data.
    A null value stays null and is reported by the validator, not fabricated. */
 const TEMPLATE_SCHEMAS={
+ hypercomplex:{id:'TPL-HYPERCOMPLEX', fields:['nm','fam','cluster','def','body','behavior','triggerMechanism','livedExample','impact','practice','inferred','inferenceBasis','confidence','reviewStatus','oppositeId','oppositeDefinition','oppositeStatus','narrativeSource','researchSources','links']},
  nerve:{id:'TPL-NERVE-BRANCH', fields:['nm','seat','fam','def','branchIndex','sourceSeat','pointCount','mappingBasis','mappedNodeIds','narrativeSource','links']},
  seat:{id:'TPL-SEAT', fields:['nm','fam','def','body','links']},
  axis:{id:'TPL-FETTER-AXIS', fields:['nm','seat','fam','def','card','where','says','inst','opp','links']},
