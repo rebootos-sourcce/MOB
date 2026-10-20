@@ -127,3 +127,11 @@ Source and generator edits are committed. The generated `data.js` has not yet be
 - Validator now requires the `hypercomplex` record kind. Grandiosity links to the source-defined Narcissism entry. Direct parent mappings for modes II–VI remain unresolved.
 - Research sources support adjacent schema-mode constructs only; they do not establish these ATÜNED modes as diagnoses or one-to-one clinical equivalents.
 - **Source-defined count: 6 modes + 6 inferred counterparts. Generated output and validator pass remain unverified by execution.**
+
+## Hypercomplex-to-complex connectivity closure — 2026-10-20
+
+- Updated `proto/knowledge/src/gen-data.js` to give all six hypercomplex modes explicit provisional axis routes and connect each mode to Saboteurs sharing the route's canonical node IDs. Because the populated complex records already link to routed Saboteurs, each mode also receives links to reachable populated complex records.
+- Added reciprocal edges for hypercomplex ↔ Saboteur and hypercomplex ↔ complex routes. The existing inferred counterpart links remain reciprocal.
+- Updated `proto/knowledge/src/validate-templates.js` to fail if a hypercomplex mode lacks route axes, a Saboteur route, a populated complex-layer link, reciprocal route edges, or its reciprocal inferred counterpart.
+- These are **provisional ecosystem routes**, not canonical parent-complex assignments or clinical equivalences. Direct parentage for Predatory, Collapse, Rigidity, Dysregulation, and Dissociation remains unresolved and must not be described as canon.
+- **Implementation committed; execution status remains unverified.** The generator and validator have not yet been executed in this environment, so do not report the graph as runtime-validated until the validator passes.
