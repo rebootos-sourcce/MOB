@@ -83,3 +83,33 @@ This document preserves the exact sources inspected for the complex layer so fut
 ## Non-negotiable reporting rule
 
 Never report “one complex total” from the single definition found here. The only defensible statement at this checkpoint is: **one explicit ordinary-complex definition was located in the inspected section; the canonical total and existing record coverage remain unverified.**
+
+
+## Owner correction and taxonomy reconciliation — 2026-10-20
+
+**Priority correction from the project owner:** do not classify Psychopathy as a canonical super-complex merely because the current implementation labels it `kind: 'super complex'`. The owner explicitly rejected that classification. The source-code label is an implementation assertion that conflicts with the owner's stated taxonomy and is **not approved canon**. Keep the record as a source candidate with classification disputed until the authoritative Mechanics of Being / ATÜNED source definitions establish its proper layer. Do not count it toward the super-complex denominator.
+
+This correction supersedes the earlier wording in this document that presented the source-code classification as an accepted taxonomy. The code is evidence of what the implementation currently says, not proof of the owner's intended taxonomy.
+
+## Additional source families identified during the full-file review
+
+The complete `atuned_src/engine/data/compass.js` contains more higher-order structures than the three-entry `DESCENT` array. They must be inventoried as separate candidate families, without prematurely treating them as super-complexes:
+
+- **Eight mirror pairs** — the `MIRROR` registry describes eight paired axes / sixteen poles. This is not evidence that the eight pairs are super-complexes.
+- **Nine circles / descent** — the `CIRCLES` registry contains Limbo, Lust, Gluttony, Greed, Wrath and sloth, Heresy, Violence, Fraud, and Treachery. This is a distinct named taxonomy; classification in the ATÜNED layer model is unresolved here.
+- **Six behavioral-cascade states** — The Zombie, The Drone, The NPC, The Energy Vampire, The Demon, and The Devil. The source labels these as states between early decoherence and full fragmentation; do not silently reclassify them as super-complexes.
+- **Four blueprint patterns** — Malak, Baal, Set, and Lucifer. These are named in the compass source and must be reconciled against the owner's definitions before assigning them to a record layer.
+- **The three-entry DESCENT array** — Narcissism, Machiavellianism, and Psychopathy. The array's current `kind` values conflict with the owner's correction for Psychopathy and cannot serve as the authoritative super-complex list.
+
+## Required reconciliation action
+
+Search the full Mechanics of Being source and ATÜNED source HTML / codex, not only `DESCENT`, for the owner-defined super-complex list and the eight complexes recalled by the owner. Extract the actual names and definitions, preserve exact source locators, and compare them against all four candidate families above. Record each candidate as confirmed layer member, confirmed other layer, duplicate/alias, or unresolved, with an explicit reason. Until this is done:
+
+- canonical super-complex count = **UNVERIFIED**;
+- Psychopathy as a super-complex = **REJECTED BY OWNER / NOT CANON**;
+- the nine-circle taxonomy, six-state cascade, four blueprint patterns, and eight mirror pairs remain distinct source families, not interchangeable counts;
+- do not start super-complex content generation from the current `DESCENT` tag.
+
+## Source review note
+
+The current repository has a large root `source.html` and a separate `MOB-Manuscript` repository referenced by the source register. The GitHub connector did not return usable body text for the large root HTML, and the manuscript README path was inaccessible. This is a retrieval gap, not evidence that those sources lack the taxonomy. The next pass must recover those source files through the project file/source mechanism or an accessible repository path before closing the inventory.
