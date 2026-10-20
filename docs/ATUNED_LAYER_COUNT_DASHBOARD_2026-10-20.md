@@ -110,3 +110,10 @@ Source and generator edits are committed. The generated `data.js` has not yet be
 - Added reciprocal links from each Saboteur to every canonical fetter axis represented by the Saboteur's explicit `nids` through the linked node records. The axis also links back to that Saboteur.
 - This is a source-derived graph: Saboteur → its declared node IDs → each node's canonical axis. It does not infer additional relationships beyond the committed `nids` and node axis values.
 - Generator and validator still require execution; this source-level wiring is not yet runtime verified.
+
+## Complex-to-Saboteur wiring — 2026-10-20
+
+- Updated `proto/knowledge/src/gen-data.js` to add reciprocal links between the three populated DESCENT records and Saboteurs whose explicit node IDs intersect declared provisional axis routes.
+- Provisional route axes: Narcissism → Shame, Fear, Control, Insecurity; Machiavellianism → Fear, Control, Shame; Psychopathy → Fear, Control, Shame, Anger.
+- Each complex record carries `routeAxes` and `routeBasis` so the mapping is inspectable. These are provisional routing relationships, not canonical claims; expert/source review is still required.
+- Source wiring is implemented. Generated edge counts and validator status are not yet confirmed by execution.
