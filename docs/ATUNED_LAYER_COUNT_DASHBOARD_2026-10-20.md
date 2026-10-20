@@ -117,3 +117,13 @@ Source and generator edits are committed. The generated `data.js` has not yet be
 - Provisional route axes: Narcissism → Shame, Fear, Control, Insecurity; Machiavellianism → Fear, Control, Shame; Psychopathy → Fear, Control, Shame, Anger.
 - Each complex record carries `routeAxes` and `routeBasis` so the mapping is inspectable. These are provisional routing relationships, not canonical claims; expert/source review is still required.
 - Source wiring is implemented. Generated edge counts and validator status are not yet confirmed by execution.
+
+
+## Hyper-complex population checkpoint — 2026-10-20
+
+- Canonical modes: Grandiosity (Cluster I / Narcissism), Predatory (II), Collapse (III), Rigidity (IV), Dysregulation (V), Dissociation (VI), from `SNIFFER_SPEC.md` section 5.
+- Generator source defines six `hypercomplex:<name>` records with `TPL-HYPERCOMPLEX` and substantive working content.
+- Generator source defines six `inferred:hypercomplex-inverse:<name>` counterpart records. Each is marked inferred and paired reciprocally; these are working hypotheses, not canonical opposites.
+- Validator now requires the `hypercomplex` record kind. Grandiosity links to the source-defined Narcissism entry. Direct parent mappings for modes II–VI remain unresolved.
+- Research sources support adjacent schema-mode constructs only; they do not establish these ATÜNED modes as diagnoses or one-to-one clinical equivalents.
+- **Source-defined count: 6 modes + 6 inferred counterparts. Generated output and validator pass remain unverified by execution.**
