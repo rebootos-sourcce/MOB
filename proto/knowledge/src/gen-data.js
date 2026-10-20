@@ -228,8 +228,10 @@ E.forEach(e=>{
  const schema=TEMPLATE_SCHEMAS[e.kind];
  if(!schema) throw new Error('No template schema for entry kind '+e.kind+' ('+e.id+')');
  e.templateId=schema.id;
- e.template=Object.fromEntries(schema.fields.map(k=>[k,Object.prototype.hasOwnProperty.call(e,k)?e[k]:null]));
- const missingFields=schema.fields.filter(k=>{
+ const descentDetailFields=['inferred','inferenceBasis','behavior','triggerMechanism','livedExample','impact','practice','oppositeId','oppositeDefinition','oppositeStatus','confidence','reviewStatus','researchSources'];
+ const assignedFields=(e.kind==='hcx'&&String(e.narrativeSource||'').includes('compass.js DESCENT'))?schema.fields.concat(descentDetailFields):schema.fields;
+ e.template=Object.fromEntries(assignedFields.map(k=>[k,Object.prototype.hasOwnProperty.call(e,k)?e[k]:null]));
+ const missingFields=assignedFields.filter(k=>{
   if(!Object.prototype.hasOwnProperty.call(e,k)||e[k]==null||e[k]==='') return true;
   /* Empty arrays are valid for relationship collections: a leaf may have no
      outgoing links. Do not report [] as missing content. */
