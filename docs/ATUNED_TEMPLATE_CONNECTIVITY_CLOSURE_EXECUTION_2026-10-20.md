@@ -99,3 +99,12 @@ Exact repository searches for `TPL-NODE-CHARGE-STASIS-NARRATIVE-V1`, `PASS46_NAR
 ### Verification boundary
 
 Changes are committed to source and generator. Generated `data.js` regeneration and validator execution have not been confirmed. Do not mark closure complete until those tests run, their exact output is recorded, the full inventory is reconciled, and Pass B/C reviews resolve or explicitly disposition all gaps.
+
+### Nerve-to-node wiring change — 2026-10-20
+
+- Updated `proto/knowledge/src/gen-data.js` to load the 72-branch `NERVEBR` table from `atuned_src/engine/data/nerves.js`.
+- Added stable generated nerve records (`nerve:<seat>:<seat-local-index>`) with source branch index, point count, seat mapping basis, mapped node IDs, and a dedicated `TPL-NERVE-BRANCH` schema.
+- Added reciprocal graph edges from each branch to all nodes sharing its matching seat band and from each such node back to the branch.
+- The crosswalk yields 1,118 seat-level edges across the 108 somatic nodes; the 4 field anchors are not mapped to nerve branches.
+- Important semantic boundary: these are seat/band-level framework links. The source provides seven seat labels and coordinates, not anatomical identities for all 72 branches. No one-to-one anatomical claim is made.
+- Verification: generator source was re-fetched and checked for nerve-source loading, record emission, reciprocal edge code, and schema binding. Runtime generation and validator execution remain outstanding because no repository shell execution was available in this pass.
