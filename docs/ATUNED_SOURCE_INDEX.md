@@ -6,6 +6,9 @@ This index points to the maintained register and the main source locations.
 - [ATÜNED / Mechanics of Being Source Register](ATUNED_SOURCE_REGISTER.md) — canonical repositories, verified paths, retrieval protocol, closure gate, and outstanding verification.
 - [Framework Closure Audit Log — 2026-10-20](ATUNED_FRAMEWORK_CLOSURE_AUDIT_LOG_2026-10-20.md) — current source-backed findings, acceptance status, and recursive next actions.
 
+## Live count dashboard
+- [Layer Count Dashboard — 2026-10-20](ATUNED_LAYER_COUNT_DASHBOARD_2026-10-20.md) — quick per-round counts, record-completion status, source SHAs, open gaps, and the mandatory refresh rule.
+
 ## Complex-layer inventory
 - [Complex Record Inventory — Source Map and Closure Register](ATUNED_COMPLEX_RECORD_INVENTORY_SOURCE_MAP_2026-10-20.md) — inspected source paths, SHAs, confirmed partial findings, count boundaries, and required actions to establish the full complex denominator and record/template coverage.
 
