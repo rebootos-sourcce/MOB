@@ -21,6 +21,11 @@ const ctx={console}; vm.createContext(ctx);
 vm.runInContext(src+`;this.__={NODES,CHILD,MASKS,ARCH,GLOSS,HCX_LIB,ALL_SAB,SABDEF,
  DOMAINS,DOMDEF,APC,AXCARD,PAL,SEATGLYPH,BANDS,KB_KEY,
  AXLINE:CHILD.map(function(c){return axLine(c.nm);}), DESCENT};`,ctx);
+const nerveSource=fs.readFileSync(path.join(ROOT,'atuned_src','engine','data','nerves.js'),'utf8');
+const nerveCtx={}; vm.createContext(nerveCtx);
+vm.runInContext(nerveSource+';this.__nerves=NERVEBR;',nerveCtx);
+const NERVE_BRANCHES=nerveCtx.__nerves;
+const NERVE_TO_BAND={root:'Root',sacral:'Sacral',solar:'Solar',heart:'Heart',throat:'Throat',eye:'3rd Eye',crown:'Crown'};
 const cardSource=fs.readFileSync(path.join(ROOT,'atuned_src','engine','data','sabcard.js'),'utf8');
 const cardCtx={}; vm.createContext(cardCtx); vm.runInContext(cardSource+';this.__cards=SABCARD;',cardCtx);
 const SAB_CARDS=cardCtx.__cards;
@@ -50,6 +55,23 @@ T.CHILD.forEach((c,i)=>{const ax=T.AXCARD.filter(a=>a.ax===c.nm)[0]||{};
   where:'Held at: '+c.addr.toLowerCase()+'. Felt in the '+c.loc+'.', says:clean(ax.track), out:clean(T.AXLINE[i]),
   inst:clean(ax.inst), opp:c.opp, ic:c.ic});});
 
+/* The 72 artwork branches are explicit records. Their only supported
+   semantic join to nodes is seat/band-level: the artwork labels branches by
+   chakra seat, while nodes carry a seat band. Do not interpret this as a
+   clinically/anatomically verified one-branch-to-one-node mapping. */
+const nerveSeatCounts={};
+NERVE_BRANCHES.forEach((b,i)=>{
+ const seat=String(b.s||'').toLowerCase();
+ const band=NERVE_TO_BAND[seat];
+ const nerveId='nerve:'+seat+':'+(nerveSeatCounts[seat]=(nerveSeatCounts[seat]||0)+1);
+ const nodeIds=band?T.NODES.filter(n=>n.b===band).map(n=>'node:'+n.i):[];
+ add({id:nerveId,kind:'nerve',nm:seat+' nerve branch '+nerveSeatCounts[seat],
+  seat:band||seat,fam:'nerve artwork branch',
+  def:'A traced nerve-artwork branch assigned to the '+(band||seat)+' seat group.',
+  branchIndex:i+1,sourceSeat:seat,pointCount:Array.isArray(b.p)?b.p.length:0,
+  mappingBasis:band?'seat/band join only; not a one-to-one anatomical nerve mapping':'no matching node band; unresolved',
+  mappedNodeIds:nodeIds,narrativeSource:'atuned_src/engine/data/nerves.js; seat-level crosswalk to nodes.js'});
+});
 /* the 112 addresses */
 T.NODES.forEach(n=>{const field=T.BANDS.indexOf(n.b)<0;
  const seat=field?(n.b==='Field-Above'?'Crown':'Root'):n.b;
@@ -180,6 +202,9 @@ T.GLOSS.forEach(g=>add({id:'term:'+g.t, kind:'term', nm:g.t, seat:null, fam:'ter
 const by={}; E.forEach(e=>by[e.id]=e);
 E.forEach(e=>{e.links=[];});
 E.forEach(e=>{
+ if(e.kind==='nerve'){
+  e.mappedNodeIds.forEach(nid=>{if(by[nid]){e.links.push(nid);by[nid].links.push(e.id);}});
+ }
  if(e.kind==='node'){ if(e.axis&&by['axis:'+e.axis])e.links.push('axis:'+e.axis);
   e.links.push('seat:'+e.seat);}
  if(e.kind==='sab'){ e.nids.forEach(i=>{const n='node:'+i; if(by[n]){e.links.push(n); by[n].links.push(e.id);}});
@@ -211,6 +236,7 @@ E.forEach(e=>{e.links=[...new Set(e.links)].filter(l=>l!==e.id);});
    authoritative engine-derived entry, never hand-written into generated data.
    A null value stays null and is reported by the validator, not fabricated. */
 const TEMPLATE_SCHEMAS={
+ nerve:{id:'TPL-NERVE-BRANCH', fields:['nm','seat','fam','def','branchIndex','sourceSeat','pointCount','mappingBasis','mappedNodeIds','narrativeSource','links']},
  seat:{id:'TPL-SEAT', fields:['nm','fam','def','body','links']},
  axis:{id:'TPL-FETTER-AXIS', fields:['nm','seat','fam','def','card','where','says','inst','opp','links']},
  node:{id:'TPL-FETTER-NODE', fields:['nm','seat','fam','def','where','card','theme','distort','axis','body','trigger','says','out','inst','opp','nextMove','narrativeSource','links']},
