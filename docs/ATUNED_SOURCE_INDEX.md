@@ -6,6 +6,9 @@ This index points to the maintained register and the main source locations.
 - [ATÜNED / Mechanics of Being Source Register](ATUNED_SOURCE_REGISTER.md) — canonical repositories, verified paths, retrieval protocol, closure gate, and outstanding verification.
 - [Framework Closure Audit Log — 2026-10-20](ATUNED_FRAMEWORK_CLOSURE_AUDIT_LOG_2026-10-20.md) — current source-backed findings, acceptance status, and recursive next actions.
 
+## Complex-layer inventory
+- [Complex Record Inventory — Source Map and Closure Register](ATUNED_COMPLEX_RECORD_INVENTORY_SOURCE_MAP_2026-10-20.md) — inspected source paths, SHAs, confirmed partial findings, count boundaries, and required actions to establish the full complex denominator and record/template coverage.
+
 ## Current closure execution
 - [Template Closure Three-Pass Research — 2026-10-20](ATUNED_TEMPLATE_THREE_PASS_RESEARCH_2026-10-20.md) — three-pass inventory, semantic review, adversarial closure checks, measured gaps, and next implementation actions.
 - [Template + Connectivity Closure Execution — 2026-10-20](ATUNED_TEMPLATE_CONNECTIVITY_CLOSURE_EXECUTION_2026-10-20.md) — current verified repository evidence, mandatory template coverage criteria, graph/nerve connectivity criteria, and closure status.
