@@ -75,20 +75,20 @@ NERVE_BRANCHES.forEach((b,i)=>{
 /* the 112 addresses */
 T.NODES.forEach(n=>{const field=T.BANDS.indexOf(n.b)<0;
  const seat=field?(n.b==='Field-Above'?'Crown':'Root'):n.b;
- const ax=T.CHILD.filter(c=>c.nm===n.cf)[0];
+ const ax=T.CHILD.filter(c=>c.nm===n.c)[0];
  add({id:'node:'+n.i, kind:'node', nm:n.k, seat:seat, idx:n.i-1,
   fam:field?'field anchor':n.b+' seat',
   def:n.k+', a fetter held at the '+clean(n.n)+'.',
   where:clean(n.n)+', '+(field?'a field anchor '+(n.b==='Field-Above'?'above':'below')+' the body':'in the '+n.b+' seat')+'.',
   card:'Governs '+clean(n.a).toLowerCase()+'. Distorts into '+clean(n.d).toLowerCase()+'.',
-  theme:clean(n.a), distort:clean(n.d), axis:n.cf||null, ic:(ax&&ax.ic)||null,
-  body:'This fetter is organized around '+clean(n.a)+'. The linked distortion is '+clean(n.d)+'. Its relationship to the '+(n.cf||'linked')+' axis is the canonical route for interpreting this record.',
+  theme:clean(n.a), distort:clean(n.d), axis:n.c||null, ic:(ax&&ax.ic)||null,
+  body:'This fetter is organized around '+clean(n.a)+'. The linked distortion is '+clean(n.d)+'. Its relationship to the '+(n.c||'linked')+' axis is the canonical route for interpreting this record.',
   trigger:'Notice when '+clean(n.a).toLowerCase()+' becomes charged and the response begins moving toward '+clean(n.d).toLowerCase()+'.',
   says:'The active pattern frames '+clean(n.a).toLowerCase()+' through the distortion '+clean(n.d).toLowerCase()+'. Treat this as a signal to examine, not as a fact that must govern the response.',
   out:'Name the observed situation, separate it from the '+clean(n.d).toLowerCase()+' interpretation, and return to the linked axis and its canonical opposite before choosing a response.',
   inst:ax?'The canonical opposite for the linked '+ax.nm+' axis is '+ax.opp+'. Use the axis record for its full installation language.':'No opposite is assigned in the canonical source for this node. Do not infer one.',
   opp:ax?ax.opp:'Unmapped',
-  nextMove:ax?'Identify the trigger, name '+clean(n.a).toLowerCase()+' and '+clean(n.d).toLowerCase()+', then open the linked '+n.cf+' record and practice its canonical opposite state.':'Trace this node to an approved canonical axis or source definition before selecting an opposite state.',
+  nextMove:ax?'Identify the trigger, name '+clean(n.a).toLowerCase()+' and '+clean(n.d).toLowerCase()+', then open the linked '+n.c+' record and practice its canonical opposite state.':'Trace this node to an approved canonical axis or source definition before selecting an opposite state.',
   narrativeSource:'derived from engine node fields and linked canonical axis'});});
 
 /* all thirty nine Saboteurs use one complete record shape. Existing authored cards retain their reviewed copy;
@@ -212,6 +212,15 @@ E.forEach(e=>{
  if(e.kind==='axis'){ E.filter(n=>n.kind==='node'&&n.axis===e.nm).forEach(n=>e.links.push(n.id));
   e.links.unshift('seat:'+e.seat);}
  if(e.kind==='seat'){ E.filter(x=>x.kind==='axis'&&x.seat===e.nm).forEach(x=>e.links.push(x.id));}
+});
+/* Fetters (the nine canonical axes) connect to Saboteurs through their
+   explicit shared node IDs. Keep these edges reciprocal and source-derived. */
+E.filter(e=>e.kind==='sab').forEach(s=>{
+ (s.nids||[]).forEach(i=>{
+  const node=by['node:'+i];
+  const axis=node&&node.axis?by['axis:'+node.axis]:null;
+  if(axis){s.links.push(axis.id);axis.links.push(s.id);}
+ });
 });
 /* Counterpart edges are explicit and reciprocal; both endpoints must exist. */
 T.DESCENT.forEach(d=>{
