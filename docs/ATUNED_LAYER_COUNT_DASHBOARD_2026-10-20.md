@@ -64,3 +64,12 @@ For each layer, the next verified dashboard must record: canonical expected coun
 ## Automation limitation
 
 This document establishes the update rule; it does not itself create continuous monitoring or cross-thread synchronization. No persistent monitoring agent has been configured or tested in this change. Until such an agent is actually configured and verified, refresh these counts during each work round and verify them at thread startup/handoff.
+
+
+### Complex template checkpoint — 2026-10-20
+
+- Generator now defines a shared `TPL-COMPLEX-UNIFIED` template for both `complex` and `inferred` records.
+- Shared fields include the definition/body, explicit inferred flag and inference basis, opposite record ID, opposite definition, opposite-resolution status, provenance, and links.
+- The source-defined `Narcissism` descent record is emitted as a complex record with the shared template fields. Its opposite remains explicitly unresolved because no authoritative opposite definition was found in the inspected source; no opposite was invented.
+- The descent's existing `Machiavellianism` and `Psychopathy` entries retain their distinct hyper-complex and super-complex kinds. They are not counted as ordinary complexes.
+- **Not yet verified:** regenerated output, validator results, full complex denominator, full inferred-complex inventory, and authoritative opposites. Do not mark the complex layer complete until these are resolved.
