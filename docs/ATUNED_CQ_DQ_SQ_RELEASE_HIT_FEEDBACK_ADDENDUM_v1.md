@@ -85,7 +85,7 @@ Before each run, the user can choose voice feedback on/off. Clarify whether the 
 3. Add decision events and idempotent state transitions to the existing release queue/state machine.
 4. Wire voice and interactive controls to the same command/decision handler.
 5. Add unit and release-chain tests for all acceptance cases above.
-6. Verify current CQ, DQ, and SQ read/write paths and update existing TDDs to match these semantics.
+6. Verify current CQ, DQ, and SQ read/write paths against CQ model 3 and the `ATUNED_CQ_COHERENCE_FORMULA_INTEGRATION_TDD_v1.md` contract.
 7. Run the documented engine build, engine tests, and release-chain tests in a real runner; report results, not assumptions.
 
 ## 7. Verification boundary
