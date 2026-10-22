@@ -5631,6 +5631,7 @@ g('41 · the twenty one on every history row, and a record from before still loa
  ok(row&&row.lawNow.Unity===null&&row.lawNow.Courage===null,
   'and a law nobody answered is null, not the six it is seeded with');
  ok(row&&typeof row.cq==='number'&&row.cq>=0&&row.cq<=100,'the saved row carries a bounded CQ value under its stamped formula version');
+  if(row&&row.m===E.CQ_MODEL)near(row.cq,Math.max(0,Math.min(100,row.integrity*row.intention/row.resistance)),0.15,'the saved CQ row reconciles to its persisted formula inputs');
  /* A refused write must not leave a staged snapshot sitting in memory: a
     later successful save would otherwise duplicate a run that never saved. */
  const savedText=mem['source.profiles'], historyN=rec.history.length;
