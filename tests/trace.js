@@ -447,6 +447,16 @@ function suite(T,E,ok,g){
   ok(!!marked,'loop read exposes a source-backed signal marker through the existing fetter owner');
   ok(marked&&marked.signalSources.every(s=>s.status==='candidate'&&s.src==='inferred'),
    'signal marker retains inferred candidate status rather than implying user confirmation');
+  const confirmedAddress=JSON.parse(J(p));
+  confirmedAddress.story.entries[0].ob={yes:[53],no:[]};
+  const confirmedGraph=T.traceFromRecord(confirmedAddress);
+  const confirmedEdge=confirmedGraph.edges.find(e=>e.from==='story:'+story.id&&e.to==='pattern:53'&&e.edge==='supports');
+  ok(confirmedEdge&&confirmedEdge.src==='user_confirmed'&&confirmedEdge.yes===true,
+   'explicit mirror-card Yes remains a user-confirmed story-to-address edge');
+  const confirmedLoop=T.loopRead(confirmedAddress);
+  const confirmedMarker=confirmedLoop.patterns.find(x=>Array.isArray(x.signalSources)&&x.signalSources.some(z=>z.id===story.id));
+  ok(confirmedMarker&&confirmedMarker.signalSources.every(z=>z.status==='candidate'&&z.src==='inferred'),
+   'confirming an address does not silently promote the distinct signal-to-fetter interpretation');
   const path=story&&supported&&supported.length?T.tracePath(G,'story:'+story.id,supported[0].to):null;
   ok(!!path&&path.length===2&&path.every(e=>e.src==='inferred'),'story→signal→fetter is traversable with provenance intact');
   const before=JSON.stringify({meter:p.meter,axes:p.axes,laws:p.laws});
