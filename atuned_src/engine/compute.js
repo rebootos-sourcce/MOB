@@ -325,8 +325,8 @@ function compute(){
  const sabs=[];
  /* ONE SABOTEUR, ONE ENTRY. SAB33's range match and the library's own fixed
     address groups can name the same saboteur from two different tests, eg
-    Controller matches both a fear/anger RANGE and its own three addresses.
-    Named twice, it pairs with itself into "Controller + Controller" below.
+    Micromanager matches both a fear/anger RANGE and its own three addresses.
+    Named twice, it pairs with itself into "Micromanager + Micromanager" below.
     The stronger of the two readings wins; the weaker is dropped, not kept
     as a second voice. */
  const sabByNm={};

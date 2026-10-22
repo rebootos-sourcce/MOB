@@ -211,7 +211,7 @@ var SABAUTH={
  'Avoider':"Fear of confrontation + Delusion + Laziness",
  'Bully':"Aggression + Cruelty + Self-importance",
  'Codependent':"Fear of abandonment + Lack of self-esteem + Dependency",
- 'Controller':"Anxiety + Manipulation + Impatience",
+ 'Micromanager':"Anxiety + Manipulation + Impatience",
  'Critic':"Self-hatred + Judgment of others + Perfectionism",
  'Cynic':"Doubt + Procrastination + Lack of effort",
  'Deflector':"Insecurity + Dishonesty + Pretending",
@@ -313,7 +313,7 @@ const GATEGLYPH={
  ignore:'M2 12s4 5 10 5 10-5 10-5M6 15l-2 3M12 17v3M18 15l2 3',
  attach:'M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.5 1.5M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.5-1.5',
  averse:'M3 19C3 9 21 9 21 19M12 15m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0'};
-const SAB_PI=['Judge','Avoider','Controller','Hyper-Achiever','Hyper-Rational',
+const SAB_PI=['Judge','Avoider','Micromanager','Hyper-Achiever','Hyper-Rational',
  'Hyper-Vigilant','Pleaser','Restless','Stickler','Victim'];
 /* Inferred saboteurs are clusters the library does not name: two or more
    addresses in one seat carrying the same child fetter. They take an agent
