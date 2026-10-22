@@ -390,8 +390,10 @@ function compute(){
  const poleMean=W.reduce((a,n)=>a+n.pole,0)/108;
  const JQ=W.reduce((a,n)=>a+n.jq,0)/108;
  const excess=W.filter(n=>n.jq>=4);
- /* Ig and It no longer enter CQ. They are kept because the Awareness and
-    Will readouts and the will against drag steer below still read them. */
+ /* Ig and It remain supporting awareness/will readouts. The canonical CQ
+    formula uses integrity (the fixed-denominator law score), It as Intention,
+    and Rz as the normalized Resistance factor; do not substitute Ig for
+    integrity or create a second CQ output. */
  const Ig=clamp(SINAMES.reduce((a,l)=>a+S.law[l],0)/21 + poleMean*0.30 - JQ*0.42,0,10);
  const It=clamp(BANDS.reduce((a,b)=>a+bandIg(b),0)/7 + poleMean*0.22 - JQ*0.30,0,10);
  /* DQ, THE TOTAL SHADOW. "DQ is a total shadow. I don't know why you keep
@@ -414,9 +416,9 @@ function compute(){
  /* THE SIX AXES multiply what every held pattern costs. Detachment is the
     cheapest gate at 0.60, attachment the most expensive at 1.35. No story
     means no gate evidence, so the factor is 1 and nothing changes.
-    Resistance is still computed and reported, because the gates drill names
-    it, but it divides nothing any more: the owner ruled CQ is the 21 laws and
-    nothing else, and verpFactor stops multiplying anything in CQ with it. */
+    Resistance is computed as a normalized divisor for the canonical CQ
+    formula below. The gate factor remains part of that divisor; it is not a
+    second CQ calculator. */
  const _vf=verpFactor();
  const Rz=Math.max(1,(1+DQ*0.05)*_vf);
  /* ============================================================
