@@ -1,7 +1,7 @@
 # ATÜNED Vritti — Unified Signal, Fetter, Qualium, and Nerve-Node TDD
 Version: 1.2
 Date: 2026-10-21
-Status: Owner-directed architecture contract; runtime wiring and tests remain unverified.
+Status: Runtime trace path implemented on `atuned/mvp-alpha-recursive-execution`; regression assertions added, execution evidence pending.
 
 ## 1. Purpose
 Define the unified relationship between:
@@ -71,6 +71,20 @@ Do **not** add a top-level standalone `p.vritti[]` collection merely to name thi
 - A Vritti association, tone marker, trace edge, or view action does not itself alter CQ, DQ, SQ, node weight, release-hit count, or stored-charge estimate.
 - The conceptual formula `CQ = (Integrity × Intention) / Resistance` must be reconciled with the existing 21-law CQ engine by one versioned decision. Do not ship two competing canonical CQ calculators.
 - The current release-lift implementation remains single-owned; do not duplicate it in this layer.
+
+## 7A. Implemented minimum derived trace path (2026-10-21)
+
+The branch implementation in `atuned_src/engine/trace.js` now derives the following without adding a standalone `p.vritti[]` collection:
+
+- `story:<entry-id> produces impression:<entry-id>` with `inferred` provenance. The impression is a derived signal-reading layer, not a claim that the complete sensory-emotional waveform is already persisted.
+- `impression:<entry-id> supports pattern:fetter:<canonical-name>` with `inferred` provenance when the story parser returns a canonical fetter label.
+- `story:<entry-id> supports pattern:<address-id>` remains unchanged for existing consumers.
+- `pattern:<address-id> associated_with pattern:fetter:<canonical-name>` is derived from canonical `NODES[].cf` membership with `known` provenance. This is classification/association, not a claim about the person's current state or a causal claim.
+- All of these links are derived on read. They do not mutate the profile, CQ, DQ, SQ, node weights, stored charge, or release-hit state.
+
+Regression assertions were added in `tests/trace.js` for path traversal, provenance, canonical address membership, no duplicate Vritti collection, and metric isolation. These assertions are **not considered verified until the candidate revision's test workflow completes successfully**.
+
+Still outside this minimum closure: qualium value contract/association metadata, actual `FLOWSEAT` declaration-to-consumer mapping, derived marker rendering/navigation, and durable structured sensory/emotional waveform capture. Those remain explicit follow-on acceptance criteria; this section does not claim them complete.
 
 ## 7. Relationship provenance and state
 Every relationship must use the trace graph's existing allowed edge vocabulary and provenance rules. Candidate/inferred, proposed, observed, and user-confirmed relationships remain distinct. A lexicon or model inference does not become a user-confirmed belief. Invalid endpoints remain unresolved and must not be silently reassigned. Prefer `supports`, `associated_with`, or `addresses` only where their direction and definitions match; update the trace allowlist/TDD/tests together if a new edge type is required.
