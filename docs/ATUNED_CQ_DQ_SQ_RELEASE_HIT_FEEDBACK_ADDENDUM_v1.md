@@ -34,10 +34,17 @@ When a Vritti is identified and associated with a fetter, the record must preser
 7. Vritti marker presence does not itself alter node weight, SQ, DQ, CQ, or release-hit counts.
 8. Test persistence, reload, export/import, duplicate prevention, and broken-link handling for the association.
 
-## 3. Preserve current engine behavior while reconciling the model
-The current `atuned_src/engine/compute.js` comments define CQ from the 21 universal-law values over fixed denominator 210, with unanswered laws contributing zero. Partial CQ therefore builds from zero as answers are supplied; completeness gates definitive tier eligibility, not existence of a partial score. The release-lift mechanic is already defined in that file and must not be duplicated.
+## 3. Canonical coherence formula and engine integration
+Owner formula: `CQ = (Integrity × Intention) / Resistance`. CQ and Coherence are the same metric; there must be one operational output, not a parallel calculator.
 
-The conceptual relationship `CQ = (Integrity × Intention) / Resistance` must be reconciled with the canonical engine rather than implemented as a second calculator. Treat CQ as Coherence per owner instruction. DQ is the Resistance term. SQ is a different aggregate: total node shadow weight. Do not silently substitute SQ for DQ or change the existing CQ calculation without a versioned decision and tests.
+The working branch implements this as **CQ model 3** in `atuned_src/engine/compute.js`:
+- **Integrity** = the existing 21-law score on the 0–10 scale (`cqSum()/10)); unanswered laws contribute zero. The existing release lift is already included through `lawNow()` and must not be applied a second time.
+- **Intention** = the existing band-derived `It` value on the 0–10 scale.
+- **Resistance** = the existing `Rz` factor, derived from total shadow `DQ` and the six-axis gate factor, with the established denominator floor of 1.
+- **CQ** = `clamp(Integrity * Intention / Resistance, 0, 100)`, with CQ set to zero when no laws have been answered. Tier words remain gated on all 21 laws being answered.
+- History rows are stamped with `CQ_MODEL=3` so records from the former law-only calculation are not compared as if they used the same arithmetic.
+
+This is an explicit model change from the prior 21-law-only CQ output. DQ remains Resistance/total shadow; SQ remains total node shadow weight. Do not substitute SQ for DQ or use `100-CQ` for Resistance. The formula wiring and regression assertions are present on the working branch, but runtime acceptance is **not complete until the engine build, tests, downstream consumer audit, and history/persistence checks execute successfully**. Any mismatch between the owner's intended meanings of Integrity/Intention/Resistance and the existing engine owners must be raised as a specific domain decision rather than hidden in another formula.
 
 ## 4. Release pile: optional voice-activated hit feedback
 Before a release run, offer a setting to enable or disable voice-activated decisions. Provide equivalent visible interactive controls for accessibility and noisy environments. When disabled, the existing release flow remains available without mandatory per-item decisions.
