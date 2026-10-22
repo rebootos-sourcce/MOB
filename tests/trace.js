@@ -439,7 +439,10 @@ function suite(T,E,ok,g){
   ok(!!address&&!!fetter,'nerve-address node retains canonical fetter metadata');
   ok(address&&address.toneHz===T.seatHz(address.seat)&&address.toneSource==='FLOWSEAT seat-tone mapping',
    'derived nerve-address view resolves its configured tone from FLOWSEAT without persisting duplicate truth');
+  const beforeLoop=JSON.stringify({meter:p.meter,axes:p.axes,laws:p.laws});
   const loop=T.loopRead(p);
+  const afterLoop=JSON.stringify({meter:p.meter,axes:p.axes,laws:p.laws});
+  ok(beforeLoop===afterLoop,'render-data derivation for markers has no metric side effects');
   const marked=loop&&loop.patterns.find(x=>Array.isArray(x.signalSources)&&x.signalSources.some(s=>s.id==='2026-09-21T08:00:00.000Z'));
   ok(!!marked,'loop read exposes a source-backed signal marker through the existing fetter owner');
   ok(marked&&marked.signalSources.every(s=>s.status==='candidate'&&s.src==='inferred'),
