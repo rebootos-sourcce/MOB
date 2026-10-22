@@ -33,7 +33,7 @@
       "aliases": [],
       "layer": "deep_psychological.roots",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_unverified",
+      "status": "owner_stated_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -51,41 +51,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Architect is one of the four owner-stated roots; stated seat: Third Eye."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover primary source and verify definition, seat association, and parent/child links."
+        "Recover primary source and verify definition, seat association, and parent/child links.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -119,7 +134,7 @@
       "aliases": [],
       "layer": "deep_psychological.roots",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_unverified",
+      "status": "owner_stated_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -137,41 +152,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Engine is one of the four owner-stated roots; stated seat: Sacral."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover primary source and verify definition, seat association, and parent/child links."
+        "Recover primary source and verify definition, seat association, and parent/child links.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -205,7 +235,7 @@
       "aliases": [],
       "layer": "deep_psychological.roots",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_unverified",
+      "status": "owner_stated_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -223,41 +253,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Weaver is one of the four owner-stated roots; stated seat: Heart."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover primary source and verify definition, seat association, and parent/child links."
+        "Recover primary source and verify definition, seat association, and parent/child links.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -291,7 +336,7 @@
       "aliases": [],
       "layer": "deep_psychological.roots",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_unverified",
+      "status": "owner_stated_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -309,41 +354,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Witness is one of the four owner-stated roots; stated seat: Crown."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover primary source and verify definition, seat association, and parent/child links."
+        "Recover primary source and verify definition, seat association, and parent/child links.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -377,7 +437,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_unverified",
+      "status": "owner_stated_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -395,41 +455,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Knowledge is in the owner-stated list of fifteen behavioral domains."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover primary source, canonical definition, order, and supported parent/child relationships."
+        "Recover primary source, canonical definition, order, and supported parent/child relationships.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -463,7 +538,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_unverified",
+      "status": "owner_stated_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -481,41 +556,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Communication and Exchange is in the owner-stated list of fifteen behavioral domains."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover primary source, canonical definition, order, and supported parent/child relationships."
+        "Recover primary source, canonical definition, order, and supported parent/child relationships.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -549,7 +639,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_unverified",
+      "status": "owner_stated_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -567,41 +657,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Directed Force is in the owner-stated list of fifteen behavioral domains."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover primary source, canonical definition, order, and supported parent/child relationships."
+        "Recover primary source, canonical definition, order, and supported parent/child relationships.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -635,7 +740,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_unverified",
+      "status": "owner_stated_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -653,41 +758,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Rulership and Order is in the owner-stated list of fifteen behavioral domains."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover primary source, canonical definition, order, and supported parent/child relationships."
+        "Recover primary source, canonical definition, order, and supported parent/child relationships.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -721,7 +841,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_unverified",
+      "status": "owner_stated_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -739,41 +859,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Creation and Manifestation is in the owner-stated list of fifteen behavioral domains."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover primary source, canonical definition, order, and supported parent/child relationships."
+        "Recover primary source, canonical definition, order, and supported parent/child relationships.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -807,7 +942,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_unverified",
+      "status": "owner_stated_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -825,41 +960,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Destruction and Transformation is in the owner-stated list of fifteen behavioral domains."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover primary source, canonical definition, order, and supported parent/child relationships."
+        "Recover primary source, canonical definition, order, and supported parent/child relationships.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -893,7 +1043,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_unverified",
+      "status": "owner_stated_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -911,41 +1061,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Love and Connection is in the owner-stated list of fifteen behavioral domains."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover primary source, canonical definition, order, and supported parent/child relationships."
+        "Recover primary source, canonical definition, order, and supported parent/child relationships.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -979,7 +1144,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_unverified",
+      "status": "owner_stated_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -997,41 +1162,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Healing and Restoration is in the owner-stated list of fifteen behavioral domains."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover primary source, canonical definition, order, and supported parent/child relationships."
+        "Recover primary source, canonical definition, order, and supported parent/child relationships.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -1065,7 +1245,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_unverified",
+      "status": "owner_stated_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -1083,41 +1263,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Sacrifice and Wisdom Through Descent is in the owner-stated list of fifteen behavioral domains."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover primary source, canonical definition, order, and supported parent/child relationships."
+        "Recover primary source, canonical definition, order, and supported parent/child relationships.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -1151,7 +1346,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_unverified",
+      "status": "owner_stated_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -1169,41 +1364,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Justice and Truth is in the owner-stated list of fifteen behavioral domains."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover primary source, canonical definition, order, and supported parent/child relationships."
+        "Recover primary source, canonical definition, order, and supported parent/child relationships.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -1237,7 +1447,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_unverified",
+      "status": "owner_stated_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -1255,41 +1465,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Trickster and Disruption is in the owner-stated list of fifteen behavioral domains."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover primary source, canonical definition, order, and supported parent/child relationships."
+        "Recover primary source, canonical definition, order, and supported parent/child relationships.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -1323,7 +1548,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_unverified",
+      "status": "owner_stated_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -1341,41 +1566,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Nature and Organic Intelligence is in the owner-stated list of fifteen behavioral domains."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover primary source, canonical definition, order, and supported parent/child relationships."
+        "Recover primary source, canonical definition, order, and supported parent/child relationships.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -1409,7 +1649,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_unverified",
+      "status": "owner_stated_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -1427,41 +1667,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Mystery and the Unseen is in the owner-stated list of fifteen behavioral domains."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover primary source, canonical definition, order, and supported parent/child relationships."
+        "Recover primary source, canonical definition, order, and supported parent/child relationships.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -1495,7 +1750,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_unverified",
+      "status": "owner_stated_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -1513,41 +1768,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Devotion and Right Action is in the owner-stated list of fifteen behavioral domains."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover primary source, canonical definition, order, and supported parent/child relationships."
+        "Recover primary source, canonical definition, order, and supported parent/child relationships.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -1581,7 +1851,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_unverified",
+      "status": "owner_stated_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -1599,41 +1869,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Play and Creative Delight is in the owner-stated list of fifteen behavioral domains."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover primary source, canonical definition, order, and supported parent/child relationships."
+        "Recover primary source, canonical definition, order, and supported parent/child relationships.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -4735,7 +5020,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_unverified",
+      "status": "owner_stated_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -4753,41 +5038,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Empyrean Consciousness is owner-stated as the unified field containing seven other Conscious Domains."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify definition and the precise relation to the other seven domains."
+        "Verify definition and the precise relation to the other seven domains.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -4821,7 +5121,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "missing_canonical_label",
+      "status": "missing_canonical_label_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -4839,41 +5139,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Placeholder for one of seven Conscious Domains whose canonical name has not yet been recovered."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover canonical name, affirmation, definition, and source; do not invent a label."
+        "Recover canonical name, affirmation, definition, and source; do not invent a label.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -4907,7 +5222,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "missing_canonical_label",
+      "status": "missing_canonical_label_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -4925,41 +5240,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Placeholder for one of seven Conscious Domains whose canonical name has not yet been recovered."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover canonical name, affirmation, definition, and source; do not invent a label."
+        "Recover canonical name, affirmation, definition, and source; do not invent a label.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -4993,7 +5323,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "missing_canonical_label",
+      "status": "missing_canonical_label_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -5011,41 +5341,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Placeholder for one of seven Conscious Domains whose canonical name has not yet been recovered."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover canonical name, affirmation, definition, and source; do not invent a label."
+        "Recover canonical name, affirmation, definition, and source; do not invent a label.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -5079,7 +5424,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "missing_canonical_label",
+      "status": "missing_canonical_label_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -5097,41 +5442,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Placeholder for one of seven Conscious Domains whose canonical name has not yet been recovered."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover canonical name, affirmation, definition, and source; do not invent a label."
+        "Recover canonical name, affirmation, definition, and source; do not invent a label.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -5165,7 +5525,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "missing_canonical_label",
+      "status": "missing_canonical_label_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -5183,41 +5543,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Placeholder for one of seven Conscious Domains whose canonical name has not yet been recovered."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover canonical name, affirmation, definition, and source; do not invent a label."
+        "Recover canonical name, affirmation, definition, and source; do not invent a label.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -5251,7 +5626,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "missing_canonical_label",
+      "status": "missing_canonical_label_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -5269,41 +5644,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Placeholder for one of seven Conscious Domains whose canonical name has not yet been recovered."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover canonical name, affirmation, definition, and source; do not invent a label."
+        "Recover canonical name, affirmation, definition, and source; do not invent a label.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -5337,7 +5727,7 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "missing_canonical_label",
+      "status": "missing_canonical_label_source_recovery_blocked",
       "definition": null,
       "essence": null,
       "function": null,
@@ -5355,41 +5745,56 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "Owner-provided project context; canonical repo source not yet located."
+        "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
         "Placeholder for one of seven Conscious Domains whose canonical name has not yet been recovered."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "owner-stated inventory item; canonical source not located",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
+          "status": "blocked",
           "sources": [],
-          "findings": [],
-          "conflicts": []
+          "findings": [
+            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
+          ],
+          "conflicts": [
+            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "blocked",
+          "sources": [
+            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
+          ],
+          "findings": [
+            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
+          ],
+          "conflicts": [
+            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Recover canonical name, affirmation, definition, and source; do not invent a label."
+        "Recover canonical name, affirmation, definition, and source; do not invent a label.",
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
       ],
       "notes": [],
       "changelog": [
@@ -5423,7 +5828,7 @@
       "aliases": [],
       "layer": "separate_cultural_figure_domain_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_crosswalk_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -5441,43 +5846,66 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ],
       "sourceClaims": [
         "CDOMAIN.json maps Rama to Duty."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; semantics not independently established",
+      "confidence": 0.78,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
+          ],
+          "findings": [
+            "Extracted the exact source mapping Rama → Duty."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Compared the target label \"Duty\" with the separate ARCHDOM target-label vocabulary and checked that CDOMAIN keys are treated as a separate cultural-figure table."
+          ],
+          "conflicts": [
+            "The label \"Duty\" does not exact-match the owner-stated behavioral-domain list or ARCHDOM target labels; no crosswalk is supported by inspected evidence."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Reviewed all twelve CDOMAIN rows as a separate source table and retained the figure-to-label relation without converting it to a psychological hierarchy edge."
+          ],
+          "conflicts": [
+            "No independent source defining the table's intended meaning was located; mapping semantics and any crosswalk remain unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify table meaning; do not equate this label with another taxonomy by name similarity."
+        "Recover the source documentation for CDOMAIN and establish whether these are cultural exemplars, Conscious Domain representatives, or another construct."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-consistency passes completed; no cross-taxonomy relationship approved."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -5499,7 +5927,8 @@
       },
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
-      ]
+      ],
+      "domainTarget": "Duty"
     },
     {
       "id": "conscious-figure:krishna",
@@ -5509,7 +5938,7 @@
       "aliases": [],
       "layer": "separate_cultural_figure_domain_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_crosswalk_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -5527,43 +5956,66 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ],
       "sourceClaims": [
         "CDOMAIN.json maps Krishna to Play."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; semantics not independently established",
+      "confidence": 0.78,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
+          ],
+          "findings": [
+            "Extracted the exact source mapping Krishna → Play."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Compared the target label \"Play\" with the separate ARCHDOM target-label vocabulary and checked that CDOMAIN keys are treated as a separate cultural-figure table."
+          ],
+          "conflicts": [
+            "The label \"Play\" appears in another domain vocabulary, but matching labels do not prove the tables share a taxonomy."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Reviewed all twelve CDOMAIN rows as a separate source table and retained the figure-to-label relation without converting it to a psychological hierarchy edge."
+          ],
+          "conflicts": [
+            "No independent source defining the table's intended meaning was located; mapping semantics and any crosswalk remain unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify table meaning; do not equate this label with another taxonomy by name similarity."
+        "Recover the source documentation for CDOMAIN and establish whether these are cultural exemplars, Conscious Domain representatives, or another construct."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-consistency passes completed; no cross-taxonomy relationship approved."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -5585,7 +6037,8 @@
       },
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
-      ]
+      ],
+      "domainTarget": "Play"
     },
     {
       "id": "conscious-figure:zoroaster",
@@ -5595,7 +6048,7 @@
       "aliases": [],
       "layer": "separate_cultural_figure_domain_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_crosswalk_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -5613,43 +6066,66 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ],
       "sourceClaims": [
         "CDOMAIN.json maps Zoroaster to Knowledge."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; semantics not independently established",
+      "confidence": 0.78,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
+          ],
+          "findings": [
+            "Extracted the exact source mapping Zoroaster → Knowledge."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Compared the target label \"Knowledge\" with the separate ARCHDOM target-label vocabulary and checked that CDOMAIN keys are treated as a separate cultural-figure table."
+          ],
+          "conflicts": [
+            "The label \"Knowledge\" appears in another domain vocabulary, but matching labels do not prove the tables share a taxonomy."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Reviewed all twelve CDOMAIN rows as a separate source table and retained the figure-to-label relation without converting it to a psychological hierarchy edge."
+          ],
+          "conflicts": [
+            "No independent source defining the table's intended meaning was located; mapping semantics and any crosswalk remain unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify table meaning; do not equate this label with another taxonomy by name similarity."
+        "Recover the source documentation for CDOMAIN and establish whether these are cultural exemplars, Conscious Domain representatives, or another construct."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-consistency passes completed; no cross-taxonomy relationship approved."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -5671,7 +6147,8 @@
       },
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
-      ]
+      ],
+      "domainTarget": "Knowledge"
     },
     {
       "id": "conscious-figure:akhenaten",
@@ -5681,7 +6158,7 @@
       "aliases": [],
       "layer": "separate_cultural_figure_domain_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_crosswalk_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -5699,43 +6176,66 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ],
       "sourceClaims": [
         "CDOMAIN.json maps Akhenaten to Devotion."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; semantics not independently established",
+      "confidence": 0.78,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
+          ],
+          "findings": [
+            "Extracted the exact source mapping Akhenaten → Devotion."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Compared the target label \"Devotion\" with the separate ARCHDOM target-label vocabulary and checked that CDOMAIN keys are treated as a separate cultural-figure table."
+          ],
+          "conflicts": [
+            "The label \"Devotion\" does not exact-match the owner-stated behavioral-domain list or ARCHDOM target labels; no crosswalk is supported by inspected evidence."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Reviewed all twelve CDOMAIN rows as a separate source table and retained the figure-to-label relation without converting it to a psychological hierarchy edge."
+          ],
+          "conflicts": [
+            "No independent source defining the table's intended meaning was located; mapping semantics and any crosswalk remain unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify table meaning; do not equate this label with another taxonomy by name similarity."
+        "Recover the source documentation for CDOMAIN and establish whether these are cultural exemplars, Conscious Domain representatives, or another construct."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-consistency passes completed; no cross-taxonomy relationship approved."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -5757,7 +6257,8 @@
       },
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
-      ]
+      ],
+      "domainTarget": "Devotion"
     },
     {
       "id": "conscious-figure:buddha",
@@ -5767,7 +6268,7 @@
       "aliases": [],
       "layer": "separate_cultural_figure_domain_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_crosswalk_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -5785,43 +6286,66 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ],
       "sourceClaims": [
         "CDOMAIN.json maps Buddha to Mystery."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; semantics not independently established",
+      "confidence": 0.78,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
+          ],
+          "findings": [
+            "Extracted the exact source mapping Buddha → Mystery."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Compared the target label \"Mystery\" with the separate ARCHDOM target-label vocabulary and checked that CDOMAIN keys are treated as a separate cultural-figure table."
+          ],
+          "conflicts": [
+            "The label \"Mystery\" appears in another domain vocabulary, but matching labels do not prove the tables share a taxonomy."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Reviewed all twelve CDOMAIN rows as a separate source table and retained the figure-to-label relation without converting it to a psychological hierarchy edge."
+          ],
+          "conflicts": [
+            "No independent source defining the table's intended meaning was located; mapping semantics and any crosswalk remain unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify table meaning; do not equate this label with another taxonomy by name similarity."
+        "Recover the source documentation for CDOMAIN and establish whether these are cultural exemplars, Conscious Domain representatives, or another construct."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-consistency passes completed; no cross-taxonomy relationship approved."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -5843,7 +6367,8 @@
       },
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
-      ]
+      ],
+      "domainTarget": "Mystery"
     },
     {
       "id": "conscious-figure:confucius",
@@ -5853,7 +6378,7 @@
       "aliases": [],
       "layer": "separate_cultural_figure_domain_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_crosswalk_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -5871,43 +6396,66 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ],
       "sourceClaims": [
         "CDOMAIN.json maps Confucius to Justice."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; semantics not independently established",
+      "confidence": 0.78,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
+          ],
+          "findings": [
+            "Extracted the exact source mapping Confucius → Justice."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Compared the target label \"Justice\" with the separate ARCHDOM target-label vocabulary and checked that CDOMAIN keys are treated as a separate cultural-figure table."
+          ],
+          "conflicts": [
+            "The label \"Justice\" does not exact-match the owner-stated behavioral-domain list or ARCHDOM target labels; no crosswalk is supported by inspected evidence."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Reviewed all twelve CDOMAIN rows as a separate source table and retained the figure-to-label relation without converting it to a psychological hierarchy edge."
+          ],
+          "conflicts": [
+            "No independent source defining the table's intended meaning was located; mapping semantics and any crosswalk remain unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify table meaning; do not equate this label with another taxonomy by name similarity."
+        "Recover the source documentation for CDOMAIN and establish whether these are cultural exemplars, Conscious Domain representatives, or another construct."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-consistency passes completed; no cross-taxonomy relationship approved."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -5929,7 +6477,8 @@
       },
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
-      ]
+      ],
+      "domainTarget": "Justice"
     },
     {
       "id": "conscious-figure:jesus",
@@ -5939,7 +6488,7 @@
       "aliases": [],
       "layer": "separate_cultural_figure_domain_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_crosswalk_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -5957,43 +6506,66 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ],
       "sourceClaims": [
         "CDOMAIN.json maps Jesus to Love."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; semantics not independently established",
+      "confidence": 0.78,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
+          ],
+          "findings": [
+            "Extracted the exact source mapping Jesus → Love."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Compared the target label \"Love\" with the separate ARCHDOM target-label vocabulary and checked that CDOMAIN keys are treated as a separate cultural-figure table."
+          ],
+          "conflicts": [
+            "The label \"Love\" appears in another domain vocabulary, but matching labels do not prove the tables share a taxonomy."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Reviewed all twelve CDOMAIN rows as a separate source table and retained the figure-to-label relation without converting it to a psychological hierarchy edge."
+          ],
+          "conflicts": [
+            "No independent source defining the table's intended meaning was located; mapping semantics and any crosswalk remain unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify table meaning; do not equate this label with another taxonomy by name similarity."
+        "Recover the source documentation for CDOMAIN and establish whether these are cultural exemplars, Conscious Domain representatives, or another construct."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-consistency passes completed; no cross-taxonomy relationship approved."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -6015,7 +6587,8 @@
       },
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
-      ]
+      ],
+      "domainTarget": "Love"
     },
     {
       "id": "conscious-figure:rumi",
@@ -6025,7 +6598,7 @@
       "aliases": [],
       "layer": "separate_cultural_figure_domain_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_crosswalk_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -6043,43 +6616,66 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ],
       "sourceClaims": [
         "CDOMAIN.json maps Rumi to Creation."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; semantics not independently established",
+      "confidence": 0.78,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
+          ],
+          "findings": [
+            "Extracted the exact source mapping Rumi → Creation."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Compared the target label \"Creation\" with the separate ARCHDOM target-label vocabulary and checked that CDOMAIN keys are treated as a separate cultural-figure table."
+          ],
+          "conflicts": [
+            "The label \"Creation\" appears in another domain vocabulary, but matching labels do not prove the tables share a taxonomy."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Reviewed all twelve CDOMAIN rows as a separate source table and retained the figure-to-label relation without converting it to a psychological hierarchy edge."
+          ],
+          "conflicts": [
+            "No independent source defining the table's intended meaning was located; mapping semantics and any crosswalk remain unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify table meaning; do not equate this label with another taxonomy by name similarity."
+        "Recover the source documentation for CDOMAIN and establish whether these are cultural exemplars, Conscious Domain representatives, or another construct."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-consistency passes completed; no cross-taxonomy relationship approved."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -6101,7 +6697,8 @@
       },
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
-      ]
+      ],
+      "domainTarget": "Creation"
     },
     {
       "id": "conscious-figure:lao-tzu",
@@ -6111,7 +6708,7 @@
       "aliases": [],
       "layer": "separate_cultural_figure_domain_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_crosswalk_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -6129,43 +6726,66 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ],
       "sourceClaims": [
         "CDOMAIN.json maps Lao Tzu to Nature."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; semantics not independently established",
+      "confidence": 0.78,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
+          ],
+          "findings": [
+            "Extracted the exact source mapping Lao Tzu → Nature."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Compared the target label \"Nature\" with the separate ARCHDOM target-label vocabulary and checked that CDOMAIN keys are treated as a separate cultural-figure table."
+          ],
+          "conflicts": [
+            "The label \"Nature\" appears in another domain vocabulary, but matching labels do not prove the tables share a taxonomy."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Reviewed all twelve CDOMAIN rows as a separate source table and retained the figure-to-label relation without converting it to a psychological hierarchy edge."
+          ],
+          "conflicts": [
+            "No independent source defining the table's intended meaning was located; mapping semantics and any crosswalk remain unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify table meaning; do not equate this label with another taxonomy by name similarity."
+        "Recover the source documentation for CDOMAIN and establish whether these are cultural exemplars, Conscious Domain representatives, or another construct."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-consistency passes completed; no cross-taxonomy relationship approved."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -6187,7 +6807,8 @@
       },
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
-      ]
+      ],
+      "domainTarget": "Nature"
     },
     {
       "id": "conscious-figure:moses",
@@ -6197,7 +6818,7 @@
       "aliases": [],
       "layer": "separate_cultural_figure_domain_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_crosswalk_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -6215,43 +6836,66 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ],
       "sourceClaims": [
         "CDOMAIN.json maps Moses to Power."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; semantics not independently established",
+      "confidence": 0.78,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
+          ],
+          "findings": [
+            "Extracted the exact source mapping Moses → Power."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Compared the target label \"Power\" with the separate ARCHDOM target-label vocabulary and checked that CDOMAIN keys are treated as a separate cultural-figure table."
+          ],
+          "conflicts": [
+            "The label \"Power\" appears in another domain vocabulary, but matching labels do not prove the tables share a taxonomy."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Reviewed all twelve CDOMAIN rows as a separate source table and retained the figure-to-label relation without converting it to a psychological hierarchy edge."
+          ],
+          "conflicts": [
+            "No independent source defining the table's intended meaning was located; mapping semantics and any crosswalk remain unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify table meaning; do not equate this label with another taxonomy by name similarity."
+        "Recover the source documentation for CDOMAIN and establish whether these are cultural exemplars, Conscious Domain representatives, or another construct."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-consistency passes completed; no cross-taxonomy relationship approved."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -6273,7 +6917,8 @@
       },
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
-      ]
+      ],
+      "domainTarget": "Power"
     },
     {
       "id": "conscious-figure:guru-nanak",
@@ -6283,7 +6928,7 @@
       "aliases": [],
       "layer": "separate_cultural_figure_domain_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_crosswalk_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -6301,43 +6946,66 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ],
       "sourceClaims": [
         "CDOMAIN.json maps Guru Nanak to Healing."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; semantics not independently established",
+      "confidence": 0.78,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
+          ],
+          "findings": [
+            "Extracted the exact source mapping Guru Nanak → Healing."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Compared the target label \"Healing\" with the separate ARCHDOM target-label vocabulary and checked that CDOMAIN keys are treated as a separate cultural-figure table."
+          ],
+          "conflicts": [
+            "The label \"Healing\" appears in another domain vocabulary, but matching labels do not prove the tables share a taxonomy."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Reviewed all twelve CDOMAIN rows as a separate source table and retained the figure-to-label relation without converting it to a psychological hierarchy edge."
+          ],
+          "conflicts": [
+            "No independent source defining the table's intended meaning was located; mapping semantics and any crosswalk remain unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify table meaning; do not equate this label with another taxonomy by name similarity."
+        "Recover the source documentation for CDOMAIN and establish whether these are cultural exemplars, Conscious Domain representatives, or another construct."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-consistency passes completed; no cross-taxonomy relationship approved."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -6359,7 +7027,8 @@
       },
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
-      ]
+      ],
+      "domainTarget": "Healing"
     },
     {
       "id": "conscious-figure:solomon",
@@ -6369,7 +7038,7 @@
       "aliases": [],
       "layer": "separate_cultural_figure_domain_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_crosswalk_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -6387,43 +7056,66 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ],
       "sourceClaims": [
         "CDOMAIN.json maps Solomon to Architect."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; semantics not independently established",
+      "confidence": 0.78,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
+          ],
+          "findings": [
+            "Extracted the exact source mapping Solomon → Architect."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Compared the target label \"Architect\" with the separate ARCHDOM target-label vocabulary and checked that CDOMAIN keys are treated as a separate cultural-figure table."
+          ],
+          "conflicts": [
+            "The label \"Architect\" appears in another domain vocabulary, but matching labels do not prove the tables share a taxonomy."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Reviewed all twelve CDOMAIN rows as a separate source table and retained the figure-to-label relation without converting it to a psychological hierarchy edge."
+          ],
+          "conflicts": [
+            "No independent source defining the table's intended meaning was located; mapping semantics and any crosswalk remain unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify table meaning; do not equate this label with another taxonomy by name similarity."
+        "Recover the source documentation for CDOMAIN and establish whether these are cultural exemplars, Conscious Domain representatives, or another construct."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-consistency passes completed; no cross-taxonomy relationship approved."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -6445,7 +7137,8 @@
       },
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
-      ]
+      ],
+      "domainTarget": "Architect"
     },
     {
       "id": "mapping:archdom:warrior",
@@ -12138,6 +12831,19 @@
       "total": 36,
       "threePassesComplete": 36,
       "semanticEdgesApproved": 0
+    },
+    "consciousFigureMappings": {
+      "total": 12,
+      "threePassesComplete": 12,
+      "crosswalksApproved": 0
+    },
+    "ownerStatedTaxonomies": {
+      "roots": 4,
+      "behavioralDomains": 15,
+      "consciousDomainSlots": 8,
+      "pass1Complete": 27,
+      "pass2Blocked": 27,
+      "pass3Blocked": 27
     }
   },
   "layerVisualizationInventory": [
