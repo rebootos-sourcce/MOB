@@ -132,3 +132,17 @@ Report only what was actually done. Distinguish:
 - **BLOCKED** — exact blocker and fallback recorded.
 
 Do not say the whole framework is wired, the source library is complete, or Super-Complex Canon is settled until the corresponding evidence and validation exist.
+
+## Addendum — deep-psychological record-first mandate (2026-10-22)
+
+The owner has directed that the deep-psychological layer must first be researched from documentation, then have every record shell set up in the shared Nerve-to-Super-Complex record format, then receive ATÜNED-specific sourced content, then undergo three distinct research passes per record, and only after that be wired parent-to-child where evidence supports it. Execute recursively through closure; do not stop after a sample or imply background work continues outside an active execution session.
+
+New artifacts on MOB main:
+- docs/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_v1.md
+- docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_SCHEMA_v1.json
+- docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json
+
+The registry contains 93 seeded records/rows: 4 roots, 15 behavioral domains, 18 archetype candidates, 8 Conscious Domain slots (seven labels unresolved), 12 CDOMAIN cultural-figure mappings, 18 ARCHDOM archetype/domain mappings, and 18 ARCH18 archetype/fetter/seat mappings. All three-pass slots are pending. These are not closure-complete. In particular, do not treat ARCH12 filename as proof of a 12-entry taxonomy; its current JSON content has 18 entries. Do not silently equate behavioral domains, Conscious Domains, blueprint archetypes, Jungian archetypes, cultural figures, or fetter tables.
+
+Next checkpoint: recover primary-source definitions for roots/domains/Conscious Domains; establish canonical denominators; complete three research passes; populate sourced content and templates; then create typed relationships and verify forward/backward graph paths and runtime parity. Refresh the dashboard and this handshake after each execution round.
+
