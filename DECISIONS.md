@@ -2954,3 +2954,11 @@ His words, 17 October: "knock out that percent framework... the percent is how w
 - **The line at 4 reads 40%.** A charge "reaches 4 and starts to cost your body" becomes "reaches 40%".
 - **The one cap stays at 10** (several entries added up at one address print as a percent of 10). Unchanged from phase 1, still open for him.
 - **The release screen waits for its own rebuild.** Its results page and carousel are being rebuilt by another seat, so `ui/release.js` is not touched by phase 2; the percent items it needs are listed in the phase 2 plan for that seat.
+
+## Execute, do not stop and wait. Ruled 22 October.
+
+His words: "when I give you a command, you exercise it. If there's a prior command that's blocking it, you can talk to me about it, but don't ever stop doing it." A standing instruction for how work gets carried out, not limited to one task.
+
+A prior ruling (the locked CQ formula, a content decision only he can make, anything that needs his word before it is right rather than before it is built) is a real reason to talk to him about a command before carrying it out. It is never a reason to stop and only report. Where a command meets no such ruling, the work gets done, not written up as a plan for him to approve. Reporting instead of building, when nothing actually blocks the building, is the failure this entry exists to name.
+
+The occasion: asked on 22 October to find out where all the latest code for the nerve to super complex structure actually is, after a report that morning had described the real detection chain (nerve, address, fetter, saboteur, complex, hyper-complex) as already wired, without having looked at `proto/knowledge/`, a separate prototype area where the same campaign had written a full second layer of behavior, trigger, lived example, impact and practice content for all six real hyper-complex families, plus four competing page designs for showing it, none of it connected to the shipped app. The miss was not looking hard enough before reporting complete, not a blocking ruling anywhere in the way.
