@@ -13,7 +13,7 @@
     "ARCH12.json contains 18 entries despite its filename; taxonomy identity/count needs reconciliation.",
     "Owner-stated material remains owner_stated_unverified until reconciled with primary project documentation."
   ],
-  "recordCount": 93,
+  "recordCount": 107,
   "countsByLayer": {
     "deep_psychological.roots": 4,
     "deep_psychological.behavioral_domains": 15,
@@ -21,7 +21,8 @@
     "conscious_domains": 8,
     "separate_cultural_figure_domain_table": 12,
     "archetype_domain_mapping_table": 18,
-    "archetype_fetter_seat_mapping_table": 18
+    "archetype_fetter_seat_mapping_table": 18,
+    "psyche_map.blueprint_domain_visual_slots": 14
   },
   "records": [
     {
@@ -9541,6 +9542,1448 @@
       "sourceIds": [
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ]
+    },
+    {
+      "id": "blueprint-domain-slot:01",
+      "recordType": "blueprint_domain_slot",
+      "canonicalName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_01",
+      "displayName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_01",
+      "aliases": [],
+      "layer": "psyche_map.blueprint_domain_visual_slots",
+      "taxonomyVersion": "deep-psychological-record-contract-v1",
+      "status": "visual_slot_only_unresolved",
+      "kind": "blueprint_domain_slot",
+      "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_01",
+      "seat": null,
+      "fam": "visualization slot only",
+      "def": null,
+      "body": null,
+      "definition": null,
+      "essence": null,
+      "function": null,
+      "healthyExpression": [],
+      "decoherentExpression": [],
+      "signals": [],
+      "distortions": [],
+      "upstreamInfluenceIds": [],
+      "downstreamEffectIds": [],
+      "parentId": null,
+      "childIds": [],
+      "links": [],
+      "relationships": [],
+      "interactions": [],
+      "examples": [],
+      "nonExamples": [],
+      "safetyNotes": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceRefs": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+      ],
+      "sourceIds": [
+        "45_the-psyche-map.js@9cd5d9b93ce3522b9f7c523efdfe6ee6fe1bc9d6"
+      ],
+      "sourceClaims": [
+        "The Psyche Map visualization declares a Blueprint Domains layer with n=14. This supports fourteen visualization positions only; it does not supply fourteen canonical domain names or prove a fourteen-record denominator."
+      ],
+      "evidenceStrength": "source_backed_visual_count_only",
+      "confidence": 0.99,
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "primary_source_extraction",
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+          ],
+          "conflicts": []
+        },
+        {
+          "pass": 2,
+          "name": "independent_corroboration_and_contradiction",
+          "status": "blocked",
+          "sources": [],
+          "findings": [
+            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+          ],
+          "conflicts": [
+            "A visualization point count is not proof of fourteen semantic records."
+          ]
+        },
+        {
+          "pass": 3,
+          "name": "synthesis_and_cross_record_consistency",
+          "status": "blocked",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+          ],
+          "conflicts": [
+            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+          ]
+        }
+      ],
+      "unresolvedQuestions": [
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+      ],
+      "notes": [
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+      ],
+      "changelog": [
+        {
+          "date": "2026-10-22",
+          "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        }
+      ],
+      "slotOnly": true
+    },
+    {
+      "id": "blueprint-domain-slot:02",
+      "recordType": "blueprint_domain_slot",
+      "canonicalName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_02",
+      "displayName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_02",
+      "aliases": [],
+      "layer": "psyche_map.blueprint_domain_visual_slots",
+      "taxonomyVersion": "deep-psychological-record-contract-v1",
+      "status": "visual_slot_only_unresolved",
+      "kind": "blueprint_domain_slot",
+      "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_02",
+      "seat": null,
+      "fam": "visualization slot only",
+      "def": null,
+      "body": null,
+      "definition": null,
+      "essence": null,
+      "function": null,
+      "healthyExpression": [],
+      "decoherentExpression": [],
+      "signals": [],
+      "distortions": [],
+      "upstreamInfluenceIds": [],
+      "downstreamEffectIds": [],
+      "parentId": null,
+      "childIds": [],
+      "links": [],
+      "relationships": [],
+      "interactions": [],
+      "examples": [],
+      "nonExamples": [],
+      "safetyNotes": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceRefs": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+      ],
+      "sourceIds": [
+        "45_the-psyche-map.js@9cd5d9b93ce3522b9f7c523efdfe6ee6fe1bc9d6"
+      ],
+      "sourceClaims": [
+        "The Psyche Map visualization declares a Blueprint Domains layer with n=14. This supports fourteen visualization positions only; it does not supply fourteen canonical domain names or prove a fourteen-record denominator."
+      ],
+      "evidenceStrength": "source_backed_visual_count_only",
+      "confidence": 0.99,
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "primary_source_extraction",
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+          ],
+          "conflicts": []
+        },
+        {
+          "pass": 2,
+          "name": "independent_corroboration_and_contradiction",
+          "status": "blocked",
+          "sources": [],
+          "findings": [
+            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+          ],
+          "conflicts": [
+            "A visualization point count is not proof of fourteen semantic records."
+          ]
+        },
+        {
+          "pass": 3,
+          "name": "synthesis_and_cross_record_consistency",
+          "status": "blocked",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+          ],
+          "conflicts": [
+            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+          ]
+        }
+      ],
+      "unresolvedQuestions": [
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+      ],
+      "notes": [
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+      ],
+      "changelog": [
+        {
+          "date": "2026-10-22",
+          "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        }
+      ],
+      "slotOnly": true
+    },
+    {
+      "id": "blueprint-domain-slot:03",
+      "recordType": "blueprint_domain_slot",
+      "canonicalName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_03",
+      "displayName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_03",
+      "aliases": [],
+      "layer": "psyche_map.blueprint_domain_visual_slots",
+      "taxonomyVersion": "deep-psychological-record-contract-v1",
+      "status": "visual_slot_only_unresolved",
+      "kind": "blueprint_domain_slot",
+      "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_03",
+      "seat": null,
+      "fam": "visualization slot only",
+      "def": null,
+      "body": null,
+      "definition": null,
+      "essence": null,
+      "function": null,
+      "healthyExpression": [],
+      "decoherentExpression": [],
+      "signals": [],
+      "distortions": [],
+      "upstreamInfluenceIds": [],
+      "downstreamEffectIds": [],
+      "parentId": null,
+      "childIds": [],
+      "links": [],
+      "relationships": [],
+      "interactions": [],
+      "examples": [],
+      "nonExamples": [],
+      "safetyNotes": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceRefs": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+      ],
+      "sourceIds": [
+        "45_the-psyche-map.js@9cd5d9b93ce3522b9f7c523efdfe6ee6fe1bc9d6"
+      ],
+      "sourceClaims": [
+        "The Psyche Map visualization declares a Blueprint Domains layer with n=14. This supports fourteen visualization positions only; it does not supply fourteen canonical domain names or prove a fourteen-record denominator."
+      ],
+      "evidenceStrength": "source_backed_visual_count_only",
+      "confidence": 0.99,
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "primary_source_extraction",
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+          ],
+          "conflicts": []
+        },
+        {
+          "pass": 2,
+          "name": "independent_corroboration_and_contradiction",
+          "status": "blocked",
+          "sources": [],
+          "findings": [
+            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+          ],
+          "conflicts": [
+            "A visualization point count is not proof of fourteen semantic records."
+          ]
+        },
+        {
+          "pass": 3,
+          "name": "synthesis_and_cross_record_consistency",
+          "status": "blocked",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+          ],
+          "conflicts": [
+            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+          ]
+        }
+      ],
+      "unresolvedQuestions": [
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+      ],
+      "notes": [
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+      ],
+      "changelog": [
+        {
+          "date": "2026-10-22",
+          "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        }
+      ],
+      "slotOnly": true
+    },
+    {
+      "id": "blueprint-domain-slot:04",
+      "recordType": "blueprint_domain_slot",
+      "canonicalName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_04",
+      "displayName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_04",
+      "aliases": [],
+      "layer": "psyche_map.blueprint_domain_visual_slots",
+      "taxonomyVersion": "deep-psychological-record-contract-v1",
+      "status": "visual_slot_only_unresolved",
+      "kind": "blueprint_domain_slot",
+      "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_04",
+      "seat": null,
+      "fam": "visualization slot only",
+      "def": null,
+      "body": null,
+      "definition": null,
+      "essence": null,
+      "function": null,
+      "healthyExpression": [],
+      "decoherentExpression": [],
+      "signals": [],
+      "distortions": [],
+      "upstreamInfluenceIds": [],
+      "downstreamEffectIds": [],
+      "parentId": null,
+      "childIds": [],
+      "links": [],
+      "relationships": [],
+      "interactions": [],
+      "examples": [],
+      "nonExamples": [],
+      "safetyNotes": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceRefs": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+      ],
+      "sourceIds": [
+        "45_the-psyche-map.js@9cd5d9b93ce3522b9f7c523efdfe6ee6fe1bc9d6"
+      ],
+      "sourceClaims": [
+        "The Psyche Map visualization declares a Blueprint Domains layer with n=14. This supports fourteen visualization positions only; it does not supply fourteen canonical domain names or prove a fourteen-record denominator."
+      ],
+      "evidenceStrength": "source_backed_visual_count_only",
+      "confidence": 0.99,
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "primary_source_extraction",
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+          ],
+          "conflicts": []
+        },
+        {
+          "pass": 2,
+          "name": "independent_corroboration_and_contradiction",
+          "status": "blocked",
+          "sources": [],
+          "findings": [
+            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+          ],
+          "conflicts": [
+            "A visualization point count is not proof of fourteen semantic records."
+          ]
+        },
+        {
+          "pass": 3,
+          "name": "synthesis_and_cross_record_consistency",
+          "status": "blocked",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+          ],
+          "conflicts": [
+            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+          ]
+        }
+      ],
+      "unresolvedQuestions": [
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+      ],
+      "notes": [
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+      ],
+      "changelog": [
+        {
+          "date": "2026-10-22",
+          "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        }
+      ],
+      "slotOnly": true
+    },
+    {
+      "id": "blueprint-domain-slot:05",
+      "recordType": "blueprint_domain_slot",
+      "canonicalName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_05",
+      "displayName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_05",
+      "aliases": [],
+      "layer": "psyche_map.blueprint_domain_visual_slots",
+      "taxonomyVersion": "deep-psychological-record-contract-v1",
+      "status": "visual_slot_only_unresolved",
+      "kind": "blueprint_domain_slot",
+      "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_05",
+      "seat": null,
+      "fam": "visualization slot only",
+      "def": null,
+      "body": null,
+      "definition": null,
+      "essence": null,
+      "function": null,
+      "healthyExpression": [],
+      "decoherentExpression": [],
+      "signals": [],
+      "distortions": [],
+      "upstreamInfluenceIds": [],
+      "downstreamEffectIds": [],
+      "parentId": null,
+      "childIds": [],
+      "links": [],
+      "relationships": [],
+      "interactions": [],
+      "examples": [],
+      "nonExamples": [],
+      "safetyNotes": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceRefs": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+      ],
+      "sourceIds": [
+        "45_the-psyche-map.js@9cd5d9b93ce3522b9f7c523efdfe6ee6fe1bc9d6"
+      ],
+      "sourceClaims": [
+        "The Psyche Map visualization declares a Blueprint Domains layer with n=14. This supports fourteen visualization positions only; it does not supply fourteen canonical domain names or prove a fourteen-record denominator."
+      ],
+      "evidenceStrength": "source_backed_visual_count_only",
+      "confidence": 0.99,
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "primary_source_extraction",
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+          ],
+          "conflicts": []
+        },
+        {
+          "pass": 2,
+          "name": "independent_corroboration_and_contradiction",
+          "status": "blocked",
+          "sources": [],
+          "findings": [
+            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+          ],
+          "conflicts": [
+            "A visualization point count is not proof of fourteen semantic records."
+          ]
+        },
+        {
+          "pass": 3,
+          "name": "synthesis_and_cross_record_consistency",
+          "status": "blocked",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+          ],
+          "conflicts": [
+            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+          ]
+        }
+      ],
+      "unresolvedQuestions": [
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+      ],
+      "notes": [
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+      ],
+      "changelog": [
+        {
+          "date": "2026-10-22",
+          "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        }
+      ],
+      "slotOnly": true
+    },
+    {
+      "id": "blueprint-domain-slot:06",
+      "recordType": "blueprint_domain_slot",
+      "canonicalName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_06",
+      "displayName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_06",
+      "aliases": [],
+      "layer": "psyche_map.blueprint_domain_visual_slots",
+      "taxonomyVersion": "deep-psychological-record-contract-v1",
+      "status": "visual_slot_only_unresolved",
+      "kind": "blueprint_domain_slot",
+      "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_06",
+      "seat": null,
+      "fam": "visualization slot only",
+      "def": null,
+      "body": null,
+      "definition": null,
+      "essence": null,
+      "function": null,
+      "healthyExpression": [],
+      "decoherentExpression": [],
+      "signals": [],
+      "distortions": [],
+      "upstreamInfluenceIds": [],
+      "downstreamEffectIds": [],
+      "parentId": null,
+      "childIds": [],
+      "links": [],
+      "relationships": [],
+      "interactions": [],
+      "examples": [],
+      "nonExamples": [],
+      "safetyNotes": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceRefs": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+      ],
+      "sourceIds": [
+        "45_the-psyche-map.js@9cd5d9b93ce3522b9f7c523efdfe6ee6fe1bc9d6"
+      ],
+      "sourceClaims": [
+        "The Psyche Map visualization declares a Blueprint Domains layer with n=14. This supports fourteen visualization positions only; it does not supply fourteen canonical domain names or prove a fourteen-record denominator."
+      ],
+      "evidenceStrength": "source_backed_visual_count_only",
+      "confidence": 0.99,
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "primary_source_extraction",
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+          ],
+          "conflicts": []
+        },
+        {
+          "pass": 2,
+          "name": "independent_corroboration_and_contradiction",
+          "status": "blocked",
+          "sources": [],
+          "findings": [
+            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+          ],
+          "conflicts": [
+            "A visualization point count is not proof of fourteen semantic records."
+          ]
+        },
+        {
+          "pass": 3,
+          "name": "synthesis_and_cross_record_consistency",
+          "status": "blocked",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+          ],
+          "conflicts": [
+            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+          ]
+        }
+      ],
+      "unresolvedQuestions": [
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+      ],
+      "notes": [
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+      ],
+      "changelog": [
+        {
+          "date": "2026-10-22",
+          "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        }
+      ],
+      "slotOnly": true
+    },
+    {
+      "id": "blueprint-domain-slot:07",
+      "recordType": "blueprint_domain_slot",
+      "canonicalName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_07",
+      "displayName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_07",
+      "aliases": [],
+      "layer": "psyche_map.blueprint_domain_visual_slots",
+      "taxonomyVersion": "deep-psychological-record-contract-v1",
+      "status": "visual_slot_only_unresolved",
+      "kind": "blueprint_domain_slot",
+      "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_07",
+      "seat": null,
+      "fam": "visualization slot only",
+      "def": null,
+      "body": null,
+      "definition": null,
+      "essence": null,
+      "function": null,
+      "healthyExpression": [],
+      "decoherentExpression": [],
+      "signals": [],
+      "distortions": [],
+      "upstreamInfluenceIds": [],
+      "downstreamEffectIds": [],
+      "parentId": null,
+      "childIds": [],
+      "links": [],
+      "relationships": [],
+      "interactions": [],
+      "examples": [],
+      "nonExamples": [],
+      "safetyNotes": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceRefs": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+      ],
+      "sourceIds": [
+        "45_the-psyche-map.js@9cd5d9b93ce3522b9f7c523efdfe6ee6fe1bc9d6"
+      ],
+      "sourceClaims": [
+        "The Psyche Map visualization declares a Blueprint Domains layer with n=14. This supports fourteen visualization positions only; it does not supply fourteen canonical domain names or prove a fourteen-record denominator."
+      ],
+      "evidenceStrength": "source_backed_visual_count_only",
+      "confidence": 0.99,
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "primary_source_extraction",
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+          ],
+          "conflicts": []
+        },
+        {
+          "pass": 2,
+          "name": "independent_corroboration_and_contradiction",
+          "status": "blocked",
+          "sources": [],
+          "findings": [
+            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+          ],
+          "conflicts": [
+            "A visualization point count is not proof of fourteen semantic records."
+          ]
+        },
+        {
+          "pass": 3,
+          "name": "synthesis_and_cross_record_consistency",
+          "status": "blocked",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+          ],
+          "conflicts": [
+            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+          ]
+        }
+      ],
+      "unresolvedQuestions": [
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+      ],
+      "notes": [
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+      ],
+      "changelog": [
+        {
+          "date": "2026-10-22",
+          "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        }
+      ],
+      "slotOnly": true
+    },
+    {
+      "id": "blueprint-domain-slot:08",
+      "recordType": "blueprint_domain_slot",
+      "canonicalName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_08",
+      "displayName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_08",
+      "aliases": [],
+      "layer": "psyche_map.blueprint_domain_visual_slots",
+      "taxonomyVersion": "deep-psychological-record-contract-v1",
+      "status": "visual_slot_only_unresolved",
+      "kind": "blueprint_domain_slot",
+      "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_08",
+      "seat": null,
+      "fam": "visualization slot only",
+      "def": null,
+      "body": null,
+      "definition": null,
+      "essence": null,
+      "function": null,
+      "healthyExpression": [],
+      "decoherentExpression": [],
+      "signals": [],
+      "distortions": [],
+      "upstreamInfluenceIds": [],
+      "downstreamEffectIds": [],
+      "parentId": null,
+      "childIds": [],
+      "links": [],
+      "relationships": [],
+      "interactions": [],
+      "examples": [],
+      "nonExamples": [],
+      "safetyNotes": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceRefs": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+      ],
+      "sourceIds": [
+        "45_the-psyche-map.js@9cd5d9b93ce3522b9f7c523efdfe6ee6fe1bc9d6"
+      ],
+      "sourceClaims": [
+        "The Psyche Map visualization declares a Blueprint Domains layer with n=14. This supports fourteen visualization positions only; it does not supply fourteen canonical domain names or prove a fourteen-record denominator."
+      ],
+      "evidenceStrength": "source_backed_visual_count_only",
+      "confidence": 0.99,
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "primary_source_extraction",
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+          ],
+          "conflicts": []
+        },
+        {
+          "pass": 2,
+          "name": "independent_corroboration_and_contradiction",
+          "status": "blocked",
+          "sources": [],
+          "findings": [
+            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+          ],
+          "conflicts": [
+            "A visualization point count is not proof of fourteen semantic records."
+          ]
+        },
+        {
+          "pass": 3,
+          "name": "synthesis_and_cross_record_consistency",
+          "status": "blocked",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+          ],
+          "conflicts": [
+            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+          ]
+        }
+      ],
+      "unresolvedQuestions": [
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+      ],
+      "notes": [
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+      ],
+      "changelog": [
+        {
+          "date": "2026-10-22",
+          "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        }
+      ],
+      "slotOnly": true
+    },
+    {
+      "id": "blueprint-domain-slot:09",
+      "recordType": "blueprint_domain_slot",
+      "canonicalName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_09",
+      "displayName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_09",
+      "aliases": [],
+      "layer": "psyche_map.blueprint_domain_visual_slots",
+      "taxonomyVersion": "deep-psychological-record-contract-v1",
+      "status": "visual_slot_only_unresolved",
+      "kind": "blueprint_domain_slot",
+      "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_09",
+      "seat": null,
+      "fam": "visualization slot only",
+      "def": null,
+      "body": null,
+      "definition": null,
+      "essence": null,
+      "function": null,
+      "healthyExpression": [],
+      "decoherentExpression": [],
+      "signals": [],
+      "distortions": [],
+      "upstreamInfluenceIds": [],
+      "downstreamEffectIds": [],
+      "parentId": null,
+      "childIds": [],
+      "links": [],
+      "relationships": [],
+      "interactions": [],
+      "examples": [],
+      "nonExamples": [],
+      "safetyNotes": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceRefs": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+      ],
+      "sourceIds": [
+        "45_the-psyche-map.js@9cd5d9b93ce3522b9f7c523efdfe6ee6fe1bc9d6"
+      ],
+      "sourceClaims": [
+        "The Psyche Map visualization declares a Blueprint Domains layer with n=14. This supports fourteen visualization positions only; it does not supply fourteen canonical domain names or prove a fourteen-record denominator."
+      ],
+      "evidenceStrength": "source_backed_visual_count_only",
+      "confidence": 0.99,
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "primary_source_extraction",
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+          ],
+          "conflicts": []
+        },
+        {
+          "pass": 2,
+          "name": "independent_corroboration_and_contradiction",
+          "status": "blocked",
+          "sources": [],
+          "findings": [
+            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+          ],
+          "conflicts": [
+            "A visualization point count is not proof of fourteen semantic records."
+          ]
+        },
+        {
+          "pass": 3,
+          "name": "synthesis_and_cross_record_consistency",
+          "status": "blocked",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+          ],
+          "conflicts": [
+            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+          ]
+        }
+      ],
+      "unresolvedQuestions": [
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+      ],
+      "notes": [
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+      ],
+      "changelog": [
+        {
+          "date": "2026-10-22",
+          "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        }
+      ],
+      "slotOnly": true
+    },
+    {
+      "id": "blueprint-domain-slot:10",
+      "recordType": "blueprint_domain_slot",
+      "canonicalName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_10",
+      "displayName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_10",
+      "aliases": [],
+      "layer": "psyche_map.blueprint_domain_visual_slots",
+      "taxonomyVersion": "deep-psychological-record-contract-v1",
+      "status": "visual_slot_only_unresolved",
+      "kind": "blueprint_domain_slot",
+      "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_10",
+      "seat": null,
+      "fam": "visualization slot only",
+      "def": null,
+      "body": null,
+      "definition": null,
+      "essence": null,
+      "function": null,
+      "healthyExpression": [],
+      "decoherentExpression": [],
+      "signals": [],
+      "distortions": [],
+      "upstreamInfluenceIds": [],
+      "downstreamEffectIds": [],
+      "parentId": null,
+      "childIds": [],
+      "links": [],
+      "relationships": [],
+      "interactions": [],
+      "examples": [],
+      "nonExamples": [],
+      "safetyNotes": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceRefs": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+      ],
+      "sourceIds": [
+        "45_the-psyche-map.js@9cd5d9b93ce3522b9f7c523efdfe6ee6fe1bc9d6"
+      ],
+      "sourceClaims": [
+        "The Psyche Map visualization declares a Blueprint Domains layer with n=14. This supports fourteen visualization positions only; it does not supply fourteen canonical domain names or prove a fourteen-record denominator."
+      ],
+      "evidenceStrength": "source_backed_visual_count_only",
+      "confidence": 0.99,
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "primary_source_extraction",
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+          ],
+          "conflicts": []
+        },
+        {
+          "pass": 2,
+          "name": "independent_corroboration_and_contradiction",
+          "status": "blocked",
+          "sources": [],
+          "findings": [
+            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+          ],
+          "conflicts": [
+            "A visualization point count is not proof of fourteen semantic records."
+          ]
+        },
+        {
+          "pass": 3,
+          "name": "synthesis_and_cross_record_consistency",
+          "status": "blocked",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+          ],
+          "conflicts": [
+            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+          ]
+        }
+      ],
+      "unresolvedQuestions": [
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+      ],
+      "notes": [
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+      ],
+      "changelog": [
+        {
+          "date": "2026-10-22",
+          "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        }
+      ],
+      "slotOnly": true
+    },
+    {
+      "id": "blueprint-domain-slot:11",
+      "recordType": "blueprint_domain_slot",
+      "canonicalName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_11",
+      "displayName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_11",
+      "aliases": [],
+      "layer": "psyche_map.blueprint_domain_visual_slots",
+      "taxonomyVersion": "deep-psychological-record-contract-v1",
+      "status": "visual_slot_only_unresolved",
+      "kind": "blueprint_domain_slot",
+      "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_11",
+      "seat": null,
+      "fam": "visualization slot only",
+      "def": null,
+      "body": null,
+      "definition": null,
+      "essence": null,
+      "function": null,
+      "healthyExpression": [],
+      "decoherentExpression": [],
+      "signals": [],
+      "distortions": [],
+      "upstreamInfluenceIds": [],
+      "downstreamEffectIds": [],
+      "parentId": null,
+      "childIds": [],
+      "links": [],
+      "relationships": [],
+      "interactions": [],
+      "examples": [],
+      "nonExamples": [],
+      "safetyNotes": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceRefs": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+      ],
+      "sourceIds": [
+        "45_the-psyche-map.js@9cd5d9b93ce3522b9f7c523efdfe6ee6fe1bc9d6"
+      ],
+      "sourceClaims": [
+        "The Psyche Map visualization declares a Blueprint Domains layer with n=14. This supports fourteen visualization positions only; it does not supply fourteen canonical domain names or prove a fourteen-record denominator."
+      ],
+      "evidenceStrength": "source_backed_visual_count_only",
+      "confidence": 0.99,
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "primary_source_extraction",
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+          ],
+          "conflicts": []
+        },
+        {
+          "pass": 2,
+          "name": "independent_corroboration_and_contradiction",
+          "status": "blocked",
+          "sources": [],
+          "findings": [
+            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+          ],
+          "conflicts": [
+            "A visualization point count is not proof of fourteen semantic records."
+          ]
+        },
+        {
+          "pass": 3,
+          "name": "synthesis_and_cross_record_consistency",
+          "status": "blocked",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+          ],
+          "conflicts": [
+            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+          ]
+        }
+      ],
+      "unresolvedQuestions": [
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+      ],
+      "notes": [
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+      ],
+      "changelog": [
+        {
+          "date": "2026-10-22",
+          "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        }
+      ],
+      "slotOnly": true
+    },
+    {
+      "id": "blueprint-domain-slot:12",
+      "recordType": "blueprint_domain_slot",
+      "canonicalName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_12",
+      "displayName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_12",
+      "aliases": [],
+      "layer": "psyche_map.blueprint_domain_visual_slots",
+      "taxonomyVersion": "deep-psychological-record-contract-v1",
+      "status": "visual_slot_only_unresolved",
+      "kind": "blueprint_domain_slot",
+      "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_12",
+      "seat": null,
+      "fam": "visualization slot only",
+      "def": null,
+      "body": null,
+      "definition": null,
+      "essence": null,
+      "function": null,
+      "healthyExpression": [],
+      "decoherentExpression": [],
+      "signals": [],
+      "distortions": [],
+      "upstreamInfluenceIds": [],
+      "downstreamEffectIds": [],
+      "parentId": null,
+      "childIds": [],
+      "links": [],
+      "relationships": [],
+      "interactions": [],
+      "examples": [],
+      "nonExamples": [],
+      "safetyNotes": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceRefs": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+      ],
+      "sourceIds": [
+        "45_the-psyche-map.js@9cd5d9b93ce3522b9f7c523efdfe6ee6fe1bc9d6"
+      ],
+      "sourceClaims": [
+        "The Psyche Map visualization declares a Blueprint Domains layer with n=14. This supports fourteen visualization positions only; it does not supply fourteen canonical domain names or prove a fourteen-record denominator."
+      ],
+      "evidenceStrength": "source_backed_visual_count_only",
+      "confidence": 0.99,
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "primary_source_extraction",
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+          ],
+          "conflicts": []
+        },
+        {
+          "pass": 2,
+          "name": "independent_corroboration_and_contradiction",
+          "status": "blocked",
+          "sources": [],
+          "findings": [
+            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+          ],
+          "conflicts": [
+            "A visualization point count is not proof of fourteen semantic records."
+          ]
+        },
+        {
+          "pass": 3,
+          "name": "synthesis_and_cross_record_consistency",
+          "status": "blocked",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+          ],
+          "conflicts": [
+            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+          ]
+        }
+      ],
+      "unresolvedQuestions": [
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+      ],
+      "notes": [
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+      ],
+      "changelog": [
+        {
+          "date": "2026-10-22",
+          "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        }
+      ],
+      "slotOnly": true
+    },
+    {
+      "id": "blueprint-domain-slot:13",
+      "recordType": "blueprint_domain_slot",
+      "canonicalName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_13",
+      "displayName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_13",
+      "aliases": [],
+      "layer": "psyche_map.blueprint_domain_visual_slots",
+      "taxonomyVersion": "deep-psychological-record-contract-v1",
+      "status": "visual_slot_only_unresolved",
+      "kind": "blueprint_domain_slot",
+      "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_13",
+      "seat": null,
+      "fam": "visualization slot only",
+      "def": null,
+      "body": null,
+      "definition": null,
+      "essence": null,
+      "function": null,
+      "healthyExpression": [],
+      "decoherentExpression": [],
+      "signals": [],
+      "distortions": [],
+      "upstreamInfluenceIds": [],
+      "downstreamEffectIds": [],
+      "parentId": null,
+      "childIds": [],
+      "links": [],
+      "relationships": [],
+      "interactions": [],
+      "examples": [],
+      "nonExamples": [],
+      "safetyNotes": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceRefs": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+      ],
+      "sourceIds": [
+        "45_the-psyche-map.js@9cd5d9b93ce3522b9f7c523efdfe6ee6fe1bc9d6"
+      ],
+      "sourceClaims": [
+        "The Psyche Map visualization declares a Blueprint Domains layer with n=14. This supports fourteen visualization positions only; it does not supply fourteen canonical domain names or prove a fourteen-record denominator."
+      ],
+      "evidenceStrength": "source_backed_visual_count_only",
+      "confidence": 0.99,
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "primary_source_extraction",
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+          ],
+          "conflicts": []
+        },
+        {
+          "pass": 2,
+          "name": "independent_corroboration_and_contradiction",
+          "status": "blocked",
+          "sources": [],
+          "findings": [
+            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+          ],
+          "conflicts": [
+            "A visualization point count is not proof of fourteen semantic records."
+          ]
+        },
+        {
+          "pass": 3,
+          "name": "synthesis_and_cross_record_consistency",
+          "status": "blocked",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+          ],
+          "conflicts": [
+            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+          ]
+        }
+      ],
+      "unresolvedQuestions": [
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+      ],
+      "notes": [
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+      ],
+      "changelog": [
+        {
+          "date": "2026-10-22",
+          "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        }
+      ],
+      "slotOnly": true
+    },
+    {
+      "id": "blueprint-domain-slot:14",
+      "recordType": "blueprint_domain_slot",
+      "canonicalName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_14",
+      "displayName": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_14",
+      "aliases": [],
+      "layer": "psyche_map.blueprint_domain_visual_slots",
+      "taxonomyVersion": "deep-psychological-record-contract-v1",
+      "status": "visual_slot_only_unresolved",
+      "kind": "blueprint_domain_slot",
+      "nm": "UNRESOLVED_BLUEPRINT_DOMAIN_SLOT_14",
+      "seat": null,
+      "fam": "visualization slot only",
+      "def": null,
+      "body": null,
+      "definition": null,
+      "essence": null,
+      "function": null,
+      "healthyExpression": [],
+      "decoherentExpression": [],
+      "signals": [],
+      "distortions": [],
+      "upstreamInfluenceIds": [],
+      "downstreamEffectIds": [],
+      "parentId": null,
+      "childIds": [],
+      "links": [],
+      "relationships": [],
+      "interactions": [],
+      "examples": [],
+      "nonExamples": [],
+      "safetyNotes": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceRefs": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+      ],
+      "sourceIds": [
+        "45_the-psyche-map.js@9cd5d9b93ce3522b9f7c523efdfe6ee6fe1bc9d6"
+      ],
+      "sourceClaims": [
+        "The Psyche Map visualization declares a Blueprint Domains layer with n=14. This supports fourteen visualization positions only; it does not supply fourteen canonical domain names or prove a fourteen-record denominator."
+      ],
+      "evidenceStrength": "source_backed_visual_count_only",
+      "confidence": 0.99,
+      "researchPasses": [
+        {
+          "pass": 1,
+          "name": "primary_source_extraction",
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Extracted the explicit Blueprint Domains layer declaration with n=14."
+          ],
+          "conflicts": []
+        },
+        {
+          "pass": 2,
+          "name": "independent_corroboration_and_contradiction",
+          "status": "blocked",
+          "sources": [],
+          "findings": [
+            "No second source naming the fourteen Blueprint Domains has been located in this pass."
+          ],
+          "conflicts": [
+            "A visualization point count is not proof of fourteen semantic records."
+          ]
+        },
+        {
+          "pass": 3,
+          "name": "synthesis_and_cross_record_consistency",
+          "status": "blocked",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js"
+          ],
+          "findings": [
+            "Created non-canonical slot placeholders so the missing labels remain visible in the inventory."
+          ],
+          "conflicts": [
+            "Do not assign semantic definitions or hierarchy edges until the authoritative domain list is recovered."
+          ]
+        }
+      ],
+      "unresolvedQuestions": [
+        "Recover the fourteen canonical Blueprint Domain names, definitions, source version, and parent/child mapping; confirm whether n=14 is a record count or only visualization geometry."
+      ],
+      "notes": [
+        "This is an inventory placeholder, not a canonical domain entity. Do not expose it as a user-facing archetype/domain."
+      ],
+      "changelog": [
+        {
+          "date": "2026-10-22",
+          "change": "Created explicit unresolved slot to preserve a source-declared visual layer count without inventing a canonical name."
+        }
+      ],
+      "slotOnly": true
     }
   ],
   "lastUpdated": "2026-10-22",
@@ -9551,6 +10994,73 @@
       "semanticFieldsPopulated": 18,
       "canonicalTaxonomyResolved": 0,
       "ownerDictationIndependentlyRecovered": 0
+    },
+    "blueprintDomainSlots": {
+      "visualSlots": 14,
+      "canonicalNamesRecovered": 0,
+      "threePassesComplete": 0
     }
-  }
+  },
+  "layerVisualizationInventory": [
+    {
+      "layer": "Conscious Domains",
+      "visualCount": 8,
+      "source": "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+      "semanticDenominator": "owner-stated eight; only Empyrean name currently retained, seven labels unresolved"
+    },
+    {
+      "layer": "Blueprint Domains",
+      "visualCount": 14,
+      "source": "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+      "semanticDenominator": "unverified; 14 slot placeholders only"
+    },
+    {
+      "layer": "Archetypes",
+      "visualCount": 12,
+      "source": "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+      "semanticDenominator": "conflicts with 18 source-backed entries in ARCH12/ARCH18; likely stale visualization count, must reconcile"
+    },
+    {
+      "layer": "Masks",
+      "visualCount": 7,
+      "source": "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+      "semanticDenominator": "conflicts with MASKS6.json six named records; must reconcile"
+    },
+    {
+      "layer": "Hyper-Complexes",
+      "visualCount": 6,
+      "source": "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+      "semanticDenominator": "conflicts with Reboot-OS HYPER.json eight entries; MOB engine has separate six-item HCX_LIB; taxonomy/version reconcile required"
+    },
+    {
+      "layer": "Saboteurs",
+      "visualCount": 14,
+      "source": "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+      "semanticDenominator": "visual count only; Reboot-OS SAB33.json contains 33 records"
+    },
+    {
+      "layer": "Complexes",
+      "visualCount": 12,
+      "source": "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+      "semanticDenominator": "unverified; no complete canonical complex inventory established"
+    },
+    {
+      "layer": "Clusters",
+      "visualCount": 9,
+      "source": "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+      "semanticDenominator": "visual count only; canonical record family not reconciled"
+    },
+    {
+      "layer": "Fetters",
+      "visualCount": 18,
+      "source": "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+      "semanticDenominator": "visual count only; NODEREG.json contains 112 fetter records"
+    },
+    {
+      "layer": "Child Fetters",
+      "visualCount": 9,
+      "source": "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/45_the-psyche-map.js",
+      "semanticDenominator": "visual count aligns with nine child axes in MOB, but full record closure still needs validation"
+    }
+  ]
 }
