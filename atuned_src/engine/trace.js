@@ -221,7 +221,7 @@ var TRACE_TABLE=['pattern','release','reframe'];
 /* THE TYPES THE RECORD CAN ANSWER FOR. Anything else stored in p.trace
    belongs to the practice objects, whose schema is not this file's, and
    is counted as unchecked rather than claimed to resolve. */
-var TRACE_RESOLVED=['story','pattern','release','reframe'];
+var TRACE_RESOLVED=['story','impression','pattern','release','reframe'];
 /* A truth channel is a reframe. The same test relCounts makes in
    ui/release.js over the channel part of a meter key. */
 var TRACE_TRUTH=/truth$/;
