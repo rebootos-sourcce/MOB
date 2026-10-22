@@ -418,3 +418,154 @@ rules and inside the `@media (max-width:760px)` block.
 Gates re-run after: `shots.js r3` (24 states, both widths) and
 `shots.js r3 ended`, all still ok, zero clipping or scrolling, confirming
 the extra room did not push anything off the page at either width.
+
+## 22 October: the ring was never a matched element, so a real collision shipped quiet
+
+The last session's own note: a real collision on the allowance spent
+completion, the stat row sitting on the ring's lit arc, at a width the
+automated check called clean. Measured before touching anything, the way
+this file now insists on: at 390 the stat row's top sat inside the ring's
+own bottom arc by about 33px; at 1600, worse, the green arc ran straight
+through two of the five captions, cutting "Bank, still held" and
+"Reframes, this session" in half. Both widths were broken, not only the
+one the note named.
+
+**Why the gate missed it.** `shots.js`'s collision check (`blocks`, the
+list of elements it tests against each other) has never included the
+dial's own ring. A `<path>` on an SVG is not a `button`, an `a`, a `p`, a
+`.fg` or any of the other things that list names, so the ring was simply
+never in the fight. Named as a fix to the check itself, not only to the
+page, because the next thing the ring sits behind would have shipped
+quiet too.
+
+**The fix, on the page.** `r3.js`'s `paint()` now sets `data-spent="1"` on
+the dial's root whenever the completion is the allowance spent variant
+(`m.done&&!m.done.canRun`), read off the same model every other state
+reads, not off width. `r3.css` reads that attribute to compact this one
+state, and only this one: the meaning line under each stat (`.fm`, kept
+on the ordinary completion, where there is room) is dropped, the gap
+between the stat row, the sentence and the two status rows below tightens
+to 6px, and the block's own floor moves to 14px, the same number at both
+widths now. Re-measured after: the stat row's top clears the ring's own
+rendered bottom edge by 26.9px at 390 and 9.5px at 1600, both real,
+positive, both widths, and the ordinary completion (`?s=done`) is
+untouched, pixel for pixel, since `data-spent` is never set for it.
+
+**The fix, in the gate.** `shots.js` now walks the ring's actual curve,
+not its bounding box. A bounding box was the first attempt and it is
+wrong for a curved mark: an arc's box is a pie slice, and most of that
+slice is empty, so the box reads as colliding with anything sitting in
+the empty corner, which is exactly where the running list's own feeling
+word and the before screen's centred text sit on purpose. Checked against
+a known case before trusting it, the way this file's own rules ask:
+the box test flagged the centred word on the before screen, plainly clear
+of the ring in the picture, so it was wrong and the walk replaced it.
+`getPointAtLength` samples points along the ring's own rendered marks
+(`.ring .tr`, the twelve track marks every state draws, lit or grey, so
+the empty ring before a run and the cooldown's inner ring are covered
+too), scaled from the ring's own viewBox to the screen the way the
+browser already scales it, and a block only fails when some point on
+that real line sits within the stroke's own width of it, the distance
+that would make them touch. A second false alarm, caught the same way:
+a composite wrapper span (`.chan`'s own column, a channel's name over its
+count, two differently sized lines centred as one) reports a box that
+reaches past its own two lines of text into the gap its narrower child
+leaves beside the wider one. Fixed by only testing a wrapper here when it
+carries its own text directly, the way the contrast check below it
+already reads "own" text rather than a parent's whole `textContent`, or
+is itself a press; a pure layout wrapper around other matched elements is
+left to them.
+
+**What the fixed gate then caught, for real, going forward.** Once the
+ring could be seen at all, it found two more genuine collisions this
+round's own new work had put there, neither the one the note named:
+
+1. The four-channel countdown's outer two columns, Left release and
+   Right reframe, crossed the ring's own track at 390 in the run, reframe
+   and paused states. Confirmed at full resolution, not only by the
+   numbers: the ring's line ran through the letter "L" of "Left" and
+   close by the "0" under it. Moving the row up enough to clear the ring
+   alone is not available here: the carousel above it clips its own
+   overflow at its own box edge (measured at 517px), but its first faded
+   neighbour line sits fully inside that box already, at 503px, so a
+   push far enough to clear the ring (tried once at 20%, once at 23%)
+   crossed that still legible line instead, confirmed the same way, at
+   full resolution: "through what is ahead" sitting behind "Right release
+   Left reframe". Fixed with both a small, measured position change
+   (`.ft`'s mobile `bottom`, 12% to 15%, the number the desktop rule
+   already uses) and a tighter row (`.chan`'s mobile `gap`, 8px to 2px),
+   so the remaining distance comes from the row's own width rather than
+   a position that does not have the room to give. Re-measured after
+   with the gate's own point walk: 6.47px clear on the label, 8.08px
+   clear on the number, both real.
+2. The before screen's own ring caption, "Each mark on the ring is one
+   pattern...", came within 3.12px of the ring at 390, close enough that
+   the walk (not the box) caught it. Fixed with `#rs[data-ph="before"]
+   .in{inset:21%}` at that width only, pulling the text in from an 18%
+   inset that was never set there before; re-measured after, 8.23px
+   clear. 1600 was already clear and is untouched.
+
+**A scope mistake caught before it shipped.** Verifying the whole set,
+`node mockups/release/src/build.js` was run with no argument, which
+rebuilds all four files, not only the dial. `shared.js` already carried
+this round's own changes (the four channel labels, the five stat
+entries, and `W.cool` shrinking from a four line rotation to the one
+fixed line his 18 October words gave), committed by the session before
+this one. Rebuilding all four pulled those changes into `r1-one-stream`,
+`r2-three-bands` and `r4-the-figure` too, which would have silently
+changed their cooldown text, the three files this document already calls
+"kept only as the record... untouched by this round." Caught by reading
+the diff before committing, not by a gate: `git diff --stat` showed
+`r1-one-stream.html` changed by 99 lines it had no business carrying.
+Reverted with `git checkout`, the three files and the shot pictures that
+had changed under them, back to what `HEAD` already held; `node
+mockups/release/src/build.js r3` writes only the dial, which is what
+every build from here on used.
+
+**Gates, this round.**
+
+    node mockups/release/src/build.js r3
+    shots.js                default states, all four files, both widths:
+                             88 ok, 0 bad, the ring now checked
+    shots.js r3 ended        2 ok, both widths
+    play.js                  all four files, 105 checks: 105 ok, 0 bad
+    voice.py                 87 distinct lines across every file's
+                             measure.json entry: 87 pass, 0 fail
+
+**The four asks, re-verified against the built file, not assumed from the
+diff.**
+
+1. **The feeling word, centred.** Measured, not eyeballed: ring to word
+   and word to the icon row are 39.25px and 39px at 1600 (0.25px apart),
+   66.16px and 67px at 390 (0.84px apart). `r3.css`'s
+   `#rs[data-ph="run"] .r3t` gap rules, from the session before this one,
+   confirmed still in place and still true.
+2. **Four countdowns, four colours.** `Left release`, `Right release`,
+   `Left reframe`, `Right reframe` each read their own number, each in
+   their own colour, stepped from the address's own seat colour
+   (`--c0` through `--c3` in `r3.css`'s `.chan`). Checked as RGB, not by
+   eye: the closest pair (Left reframe to Right reframe) is 28.1 apart,
+   the furthest (Left release to Right reframe) 91.3, both real.
+3. **The completion.** `Congratulations.` is 56px at 1600 and 34px at
+   390, read as the computed style, not off the source: `r3.css` carries
+   two mobile rules for it (a general 26px and a more specific
+   `#rs[data-ph="done"]` one at 34px) and the second wins by
+   specificity, so 34px is what the screen actually shows. Up from 40px
+   and 24px before this fork of work began (`49a2e002`), at 1600 and 390.
+   The ring is the same element, same position, same size, running or
+   finished, by the shared centring rule above it; nothing about the fix
+   in this round touched that rule. The two buttons hold the 44px floor
+   and nothing more (`.doneacts .go,.doneacts .go2`). The stat line is
+   five numbers, `Released`, `Bank`, `Vault`, `Reframes`, `Left this
+   month`, each read off `money()` in `shared.js`, which reads
+   `ALLOW.patternsPerAddress` off the built `engine.js`'s tier one grant
+   (`PLAN_BY.one`, sourced in `atuned_src/engine/plan.js`) at build time,
+   `build.js` throwing if tier one has no grant, not a typed number; the
+   single old "288 new patterns left this month" sentence is gone from
+   this file.
+4. **The ring, unchanged between running and the finish.** Still the one
+   rule from the session before this one
+   (`#rs[data-ph="run"] .face,#rs[data-ph="script"] .face,#rs[data-ph="paused"]
+   .face,#rs[data-ph="done"] .face{position:absolute;top:50%;left:50%;
+   transform:translate(-50%,-50%)}`), untouched by this round's fix,
+   which only ever moved what sits below the ring, never the ring.

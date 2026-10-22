@@ -18,7 +18,19 @@
      faded on purpose by opacity (the carousel's neighbours) are not seen by this
      probe; the line in focus is.
    - fails on any page error and on any request that leaves the file
-   and writes shots/measure.json, which README.md is written from. */
+   and writes shots/measure.json, which README.md is written from.
+
+   NAMED FIX, 22 October: the collision check's matched-element list never
+   included the dial's own SVG ring (r3's .ring .tr paths, the twelve track
+   marks every state draws, lit or not). That is the actual reason the
+   allowance-spent completion shipped with the stat row sitting on top of
+   the ring's lit green arc on both widths: this gate ran clean the whole
+   time because it was never looking at the one element the bug was in.
+   Fixed here, not just on the page: the ring's own twelve marks (always
+   present, lit or grey, so this also covers the cooldown's inner ring and
+   the empty ring before a run) are now walked and checked against every
+   text block and press the same way two text blocks are checked against
+   each other, below. */
 const {chromium}=require('playwright');const path=require('path'),fs=require('fs');
 const DIR=path.resolve(__dirname,'..'),OUT=path.join(DIR,'shots');fs.mkdirSync(OUT,{recursive:true});
 const pick=(process.argv[2]||'r1,r2,r3,r4').split(',');
@@ -57,6 +69,61 @@ function measure(){
  for(let i=0;i<blocks.length;i++)for(let j=i+1;j<blocks.length;j++){const a=blocks[i],b=blocks[j];if(a.contains(b)||b.contains(a))continue;
   const A=a.getBoundingClientRect(),B=b.getBoundingClientRect();const ix=Math.min(A.right,B.right)-Math.max(A.left,B.left),iy=Math.min(A.bottom,B.bottom)-Math.max(A.top,B.top);
   if(ix>2&&iy>2&&(a.matches('button,a')||b.matches('button,a')||(a.textContent.trim()&&b.textContent.trim()&&!a.closest('svg')&&!b.closest('svg'))))hits.push(name(a)+' x '+name(b));}
+ /* the ring itself, added 22 October: r3's instrument face (.ring .tr, the
+    twelve track marks every state draws, lit or grey, so the empty ring
+    before a run and the cooldown's own ring, .ct/.cp, are covered too)
+    was never a matched element above, which is the whole reason the
+    allowance spent completion's stat row could sit on top of the lit arc
+    and this gate stayed green.
+    A box against the arc's own bounding box was the first attempt and it
+    is wrong: an arc's rectangle is a pie slice, and most of that rectangle
+    is empty (the curve only runs along its far edge), so the box reads as
+    colliding with anything sitting in that empty corner, which is exactly
+    where this run's own carousel text and the four-channel countdown sit
+    on purpose, well inside the ring and nowhere near the line. Checked
+    against a known case both ways before trusting it: the box test flagged
+    the centred feeling word on the before screen, which is plainly clear
+    of the ring in the picture, and a tighter read confirmed it was a false
+    alarm.
+    So this walks the rendered curve instead, the same shape the eye sees:
+    getPointAtLength along the actual path (or circle, for the cooldown's
+    two), scaled from the ring svg's own viewBox to the screen the way the
+    browser already scales it, and flags a block only when some point on
+    that line sits within the stroke's own width of it, the same distance
+    that would make them touch on screen. Not tested against itself: two
+    marks that share a boundary are meant to sit close, so ring-against-ring
+    is not a collision and would only be noise here.
+    One more false alarm, caught the same way, against the same known
+    case, after the curve walk replaced the box test above: a composite
+    label like .chan's own wrapper span (the column holding a channel's
+    name over its count, two differently sized lines centred as one flex
+    column) reports a bounding box that reaches past its own two lines of
+    real text, into the gap its narrower child leaves beside the wider
+    one. The ring's curve can sit inside that dead corner, which this
+    flagged, while the label and the number inside it, tested on their
+    own below, both clear it with room. So a wrapper is only tested here
+    when it carries its own text directly (a leaf, the way the contrast
+    walk below also reads "own" text rather than a parent's whole
+    textContent) or is itself a press, where the full hit area is the
+    point either way; a pure layout wrapper around other matched elements
+    is left to them. */
+ const ownText=el=>Array.from(el.childNodes).some(n=>n.nodeType===3&&n.textContent.trim());
+ const ringEls=Array.from(root.querySelectorAll('.ring .tr,.ring .ct,.ring .cp')).filter(vis);
+ const ringHits=new Set();
+ ringEls.forEach(p=>{
+  const svg=p.closest('svg'); const vb=svg&&svg.viewBox&&svg.viewBox.baseVal; const svgR=svg&&svg.getBoundingClientRect();
+  if(!vb||!vb.width||!svgR||!svgR.width||typeof p.getTotalLength!=='function')return;
+  const sx=svgR.width/vb.width, sy=svgR.height/vb.height;
+  const sw=(parseFloat(getComputedStyle(p).strokeWidth)||1)*((sx+sy)/2)/2+1.5; /* half stroke, screen px, +1.5 for anti-aliasing */
+  const len=p.getTotalLength(), steps=Math.max(8,Math.min(120,Math.round(len/3)));
+  for(let i=0;i<=steps;i++){
+   const pt=p.getPointAtLength(len*i/steps);
+   const X=svgR.left+(pt.x-vb.x)*sx, Y=svgR.top+(pt.y-vb.y)*sy;
+   for(const b of blocks){if(p.contains(b)||b.contains(p)||!b.textContent.trim())continue;
+    if(!b.matches('button,a')&&!ownText(b))continue;
+    const B=b.getBoundingClientRect();
+    if(X>B.left-sw&&X<B.right+sw&&Y>B.top-sw&&Y<B.bottom+sw)ringHits.add('ring x '+name(b));}}});
+ ringHits.forEach(h=>hits.push(h));
  const scrolls=document.documentElement.scrollHeight>H+1||root.scrollHeight>root.clientHeight+1;
  /* words and presses */
  let text=[];const walk=src=>{src.childNodes.forEach(n=>{if(n.nodeType===3){if(n.textContent.trim()&&vis(n.parentElement))text.push(n.textContent.trim());}

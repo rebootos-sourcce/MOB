@@ -138,10 +138,16 @@ body.rm .in .cg{animation:none}
    completion, where there is room), a tighter gap between the four rows,
    and a lower floor under them, matching the weight the locked-slot row
    already carries at 390 for every width now. r3.js sets data-spent from
-   the model, not from width, since the deficit is worst on a desktop. */
-#rs[data-spent="1"] .r3t{gap:10px;bottom:28px}
+   the model, not from width, since the deficit is worst on a desktop.
+   First pass (28px floor, 10px gap) closed the 36px deficit at 390 but
+   left 1600 18px into the arc still: the five stats sit in a shorter,
+   wider row on a wide screen, so there is less spare height to give back
+   and the same floor was not enough. Re-measured and dropped to the same
+   14px floor and 6px gap this file already uses at 390, rather than two
+   different numbers for no reason now that both clear the ring. */
+#rs[data-spent="1"] .r3t{gap:6px;bottom:14px}
 #rs[data-spent="1"] .r3f .fm{display:none}
-#rs[data-spent="1"] .r3t .sp{font-size:13px;line-height:1.3}
+#rs[data-spent="1"] .r3t .sp{font-size:13px;line-height:1.25}
 #rs[data-spent="1"] .shut{min-height:0;font-size:12px}
 #rs[data-spent="1"] .shut svg{width:16px;height:16px}
 #rs[data-spent="1"] .lk{font-size:12px}
@@ -151,6 +157,15 @@ body.rm .in .cg{animation:none}
  .r3p{font-size:18px;min-height:3.66em}
  .face,body.embed .face{--D:min(340px,calc(100vw - 32px))}
  #rs[data-ph="before"] .face,body.embed #rs[data-ph="before"] .face{--D:250px}
+ /* the ring check (above) caught a third real case, the smallest of the
+    three: the last line of the ring's own caption, "go or putting back.",
+    came within 3px of the ring's own track here (walked the same way,
+    not boxed), on this phase's own smaller 250px face. 18% inset (the
+    desktop figure, unset at this width until now) leaves a 160px column;
+    21% leaves 152.5, enough room at this face's own radius, re-measured
+    after. before is the only phase this touches: run, paused and done
+    use the larger 340px face and were already clear. */
+ #rs[data-ph="before"] .in{inset:21%}
  .in{gap:6px}
  .in .lede{font-size:17px}
  .in .sm,.r3t .sm{font-size:12.5px}
@@ -159,7 +174,28 @@ body.rm .in .cg{animation:none}
  .in .cg{font-size:26px}
  .r3c{left:13%;right:13%;top:15%;bottom:22%;--rowh:62px}
  .r3c .cr{font-size:13px}
- .ft{font-size:12.5px;bottom:12%}
+ /* a second real collision the ring check (above) caught once it could
+    see the ring at all: the four-channel countdown's outer two columns,
+    Left release and Right reframe, sit low enough in the face here (12%
+    up from the bottom) that the ring's own track curves in behind the
+    word "Left" and the "0" under it, confirmed at full resolution, not
+    just by the box math.
+    Moving the row up alone cannot fix this: the carousel above it clips
+    its own rows (.car's own overflow:hidden), but only at its own box
+    edge, measured at 517px here, and its first faded neighbour line (42
+    percent opacity, still legible) runs to 503px, fully inside that box
+    and nowhere near the clip. Pushed up far enough to clear the ring
+    (tried at 20%, then 23%) the countdown row crosses that still-legible
+    line instead, confirmed the same way, at full resolution: "through
+    what is ahead" sitting behind "Right release Left reframe". Measured
+    budget, not guessed: 503px is the real floor, so the row can move up
+    about 10px from its own 12% before it meets the neighbour line, not
+    the 27px the ring alone would have asked for.
+    So the rest of the clearance comes from the row's own width, not its
+    position: tighter gap, below, pulls the two outer columns' own reach
+    in by the same few pixels the remaining ring deficit measured to,
+    confirmed after by the same point-walk the gate itself runs. */
+ .ft{font-size:12.5px;bottom:15%}
  .r3t{gap:10px}
  /* the same measured fix as the desktop rule, at the phone's own numbers:
     the ring is smaller here (340px, not 600px) so the gap that puts
@@ -197,7 +233,14 @@ body.rm .in .cg{animation:none}
     where five columns and a long sentence are already sharing the ring's
     leftover room on a phone. */
  .r3f .fm{display:none}
- .chan{gap:8px}
+ /* 2px, not 8px: the room .ft's own position (above) could not spend
+    without crossing the carousel's still-visible neighbour line comes
+    from here instead, pulling Left release and Right reframe, the two
+    outer columns, in by the same few pixels the ring's own track still
+    reached at 8px. Re-walked after with the gate's own point-sampling,
+    not eyeballed: clear at both reach points, label and number, with a
+    few pixels to spare rather than sitting right on the line. */
+ .chan{gap:2px}
  .chan .c{font-size:9.5px}
  .chan .cn{font-size:12px}
  /* done no longer sizes or places its own face; see the desktop rule. */
