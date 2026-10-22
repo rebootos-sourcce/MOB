@@ -1,15 +1,16 @@
-# ATÜNED Unified Vritti–Fetter–Nerve Node Architecture
-Version: 1.0
+# ATÜNED Unified Vritti–Fetter–Qualium–Nerve Node Architecture
+Version: 1.1
 Date: 2026-10-21
 Status: Owner-directed architecture priority; implementation contract, not a claim of validated biophysics.
 
 ## Executive ruling
 Vritti is not a separate collection of independent observations in the conceptual model. It is the **total waveform** of sensory input combined with emotional input that is identified/tagged as a limiting belief. The limiting belief is the **fetter**. The **tone is attached to the nerve-address node**. The nerve is described by the model as oscillating energy at that frequency.
 
-These are three connected layers of one model:
+These are three connected layers plus a distinct orientation dimension; do not collapse the qualium into any of the three:
 1. **Vritti / signal layer** — the total sensory-emotional waveform.
 2. **Fetter / pattern layer** — the limiting-belief identity assigned to or associated with that waveform.
 3. **Nerve-address node / tone layer** — the node at the address, with its tone/frequency reference.
+4. **Qualium / orientation dimension** — the orientation of the distortion. It describes how the distortion is oriented, not the waveform itself, not the limiting-belief identity, and not the node's tone. Its precise taxonomy and canonical storage owner must be mapped to the existing architecture before a runtime field or enum is introduced.
 
 The architecture should express the three layers through the engine's existing record owners and trace graph. Do not create a second profile inventory or a duplicate shadow/fetter registry. The previous draft's proposal to add a top-level `p.vritti[]` collection was premature and has been reverted from the execution branch. The conceptual relationship must be modeled first; the storage shape should follow the canonical owners.
 
@@ -20,8 +21,10 @@ flowchart TB
   S["Sensory input"] --> V["Vritti: total sensory + emotional waveform"]
   E["Emotional input"] --> V
   V -->|"identified / tagged as"| F["Fetter: limiting-belief pattern"]
+  V -->|"orientation is characterized by"| Q["Qualium: orientation of distortion"]
   F -->|"associated with / manifests at"| N["Nerve-address node"]
   N --> T["Tone attached to node"]
+  Q -.->|"orientation metadata; not a new score"| F
   N -.->|"frequency / oscillation interpretation"| W["Nerve oscillation / energetic model"]
   F --> DQ["DQ: Resistance / total shadow"]
   N --> SQ["SQ: sum of individual node weights"]
@@ -34,6 +37,7 @@ Read the arrows carefully:
 - A Vritti being *tagged as* a limiting belief means an interpretation/identification relationship, not that raw sensory data is itself a belief.
 - The fetter is the named pattern identity.
 - The fetter connects to the nerve-address node(s) where its tone is represented.
+- Qualium describes the orientation of distortion. Its directionality must not be inferred from the word "distortion" or silently equated with the existing node-table `d` label, the inward/outward charge split, or a tone/frequency. The owner must define the vocabulary and semantics before implementation.
 - Tone/frequency belongs to the node/address relationship, not as a new fetter and not as an independent CQ/DQ/SQ score.
 - DQ and SQ are related to the shadow/fetter/node architecture but remain different aggregates. Do not sum the same weight twice.
 
@@ -56,7 +60,8 @@ Read the arrows carefully:
 
 **Decision:** First reuse the canonical owners:
 - **Fetter/pattern owner:** canonical identity, user wording, pattern evidence, and confirmation status.
-- **Nerve-address/node owner:** canonical address ID, node identity, tone/frequency reference, and individual node weight.
+- **Nerve-address/node owner:** canonical address ID, node identity, tone/frequency reference, nerve label, and individual node weight.
+- **Qualium owner:** not yet identified as a canonical persisted field/record. Existing source has a node-table distortion descriptor and an inward/outward charge split, but the audit has not established that either is semantically equivalent to the owner's qualium. Do not alias them without explicit domain mapping.
 - **Source/journal/imprint owner:** sensory and emotional input, context, time, and source evidence.
 - **Trace graph:** typed relationships between the existing records; derived relationships should be derived, and relationships requiring a person's judgment should be stored with provenance.
 - **CQ/DQ/SQ compute owner:** reads canonical node/fetter weights and approved evidence; does not store a parallel Vritti score.
@@ -97,6 +102,12 @@ Do not add a top-level Vritti array simply because the word Vritti needs to exis
 - linked nerve-address node references;
 - no duplicated waveform payload and no marker stored as independent truth.
 
+### Qualium / orientation of distortion
+- a distinct semantic dimension, separate from Vritti waveform, fetter identity, node address, and node tone;
+- an explicit orientation value/reference and its definition, only after the domain vocabulary is established;
+- provenance/source for the orientation judgment and whether it is proposed, inferred, observed, or user-confirmed;
+- no numeric score or physiological interpretation unless a measurement contract is defined.
+
 ### Nerve-address node / tone
 - canonical node/address ID;
 - tone/frequency reference attached to that node;
@@ -124,10 +135,11 @@ Use the current trace vocabulary and validation allowlist. Prefer existing edge 
 ### P0 — Record/engine ontology and owner map
 1. Map current journal/story/imprint records, fetter/pattern identity, nerve-address nodes, node tone/frequency fields, trace graph, and metric calculation.
 2. Identify which existing record owns the sensory input, emotional input, belief wording, tone, address, and node weight.
-3. Document source → fetter and fetter → node relationships using existing record IDs.
-4. Remove any proposed standalone Vritti collection that duplicates or floats outside those owners.
+3. Map qualium as the orientation of distortion, separately from waveform, fetter identity, node tone, and the existing node-table distortion descriptor.
+4. Document source → fetter, qualium → distortion interpretation, and fetter → node relationships using canonical IDs and provenance.
+5. Remove any proposed standalone Vritti collection that duplicates or floats outside those owners.
 
-**Acceptance:** field-to-owner table exists; every field has one canonical owner; no parallel fetter or Vritti inventory is introduced without a documented necessity.
+**Acceptance:** field-to-owner table exists; every field has one canonical owner or a named unresolved owner gap; qualium is semantically distinguished from adjacent fields; no parallel fetter or Vritti inventory is introduced without a documented necessity.
 
 ### P1 — Typed trace relationship
 1. Add or derive the Vritti/signal-to-fetter relationship using the current graph model.
@@ -161,19 +173,20 @@ Run build, engine tests, trace tests, UI/release-chain tests, export/import, rel
 
 ## 6. Acceptance test matrix
 1. Sensory and emotional inputs combine into one conceptual Vritti waveform reference without deleting either raw input.
-2. Vritti can be associated with a fetter while preserving the source record and exact user wording.
-3. A fetter links to one or more canonical nerve-address nodes without duplicating the fetter.
-4. The tone reference is read from the node owner, not independently copied into a Vritti store.
-5. The UI can traverse signal → fetter → node/tone and back to evidence.
-6. Candidate/inferred links remain visibly distinct from user-confirmed links.
-7. Invalid/missing endpoints are reported as unresolved, never silently reassigned.
-8. A relationship-only edit does not change CQ, DQ, SQ, node weight, or release-hit count.
-9. No edge is labelled causal solely because it exists in the graph.
-10. Old profiles load without losing data; export/import and reload preserve links.
-11. The current 21-law CQ calculation and the conceptual Integrity × Intention / Resistance relationship are not both silently presented as independent canonical CQ calculators.
-12. Repeated processing is idempotent and does not duplicate links or evidence.
+2. Qualium is represented as the orientation of distortion and is not silently aliased to tone, fetter, node-table `d`, or inward/outward charge orientation.
+3. Vritti can be associated with a fetter while preserving the source record and exact user wording.
+4. A fetter links to one or more canonical nerve-address nodes without duplicating the fetter.
+5. The tone reference is read from the node owner, not independently copied into a Vritti store.
+6. The UI can traverse signal → fetter → node/tone and back to evidence.
+7. Candidate/inferred links remain visibly distinct from user-confirmed links.
+8. Invalid/missing endpoints are reported as unresolved, never silently reassigned.
+9. A relationship-only edit does not change CQ, DQ, SQ, node weight, or release-hit count.
+10. No edge is labelled causal solely because it exists in the graph.
+11. Old profiles load without losing data; export/import and reload preserve links.
+12. The current 21-law CQ calculation and the conceptual Integrity × Intention / Resistance relationship are not both silently presented as independent canonical CQ calculators.
+13. Repeated processing is idempotent and does not duplicate links or evidence.
 
 ## 7. Current implementation boundary
 The repository currently has a strict profile validation boundary and a trace graph with an allowlisted set of node and edge types. The architecture must be implemented through those owners. The prior draft change that added a top-level `p.vritti[]` collection was reverted from the working execution branch after the owner clarified that Vritti is the total waveform connecting the signal, limiting-belief/fetter, and nerve-node/tone layers.
 
-This document defines the prioritized target model and review findings. It does not claim that the three-layer runtime wiring or tests are complete.
+This document defines the prioritized target model and review findings. Qualium has now been added to the canonical conceptual contract as the orientation of distortion; its existing-record owner and runtime wiring remain unresolved. It does not claim that the runtime wiring or tests are complete.
