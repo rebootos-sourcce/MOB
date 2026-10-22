@@ -143,7 +143,7 @@ var SABCARD={
   a:"A break can help. When the fear isn't reaching for the exit, there's room to stay with a hard feeling until it moves. Vitality becomes available in being here, and trust that you can get through discomfort without leaving.",
   n:"Notice the reach for the exit. Separate needing a real break from leaving before the feeling finishes. Choose to stay for two minutes and name what's there."},
  "avoider":{
-  h:"Something needs dealing with, and leaving it costs nothing today. So it slides. You don't argue with it or run from it. You just don't look. For a moment nothing can land on you. Then the pile grows quietly, and the bill comes due all at once. Reflection: What is the real reason this can wait—or what makes it difficult to face now?",
+  h:"Something needs dealing with, and leaving it costs nothing today. So it slides. You don't argue with it or run from it. You just don't look. For a moment nothing can land on you. Then the pile grows quietly, and the bill comes due all at once. Reflection: What is the real reason this can wait, or what makes it difficult to face now?",
   a:"Some things can wait. When the fear isn't keeping your eyes off it, there's room to look at the thing directly. Vitality becomes available for the smallest piece of it, and trust that you can handle what you find.",
   n:"Notice the thing you keep not looking at. Separate what can wait from what you're avoiding. Choose to say it out loud, then do the smallest piece."},
  "nihilist":{
