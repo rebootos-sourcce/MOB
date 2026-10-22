@@ -79,3 +79,18 @@ Status: OPEN — record inventory seeded; source-row reviews partially complete;
 ## Status statement
 
 Record shells and an initial set of source-backed content are now committed. The deep-psychological layer is **not complete or wired**. This audit records partial execution and a reproducible checkpoint; it does not claim a background recursive job is running.
+
+
+## Recursive execution update — registry refresh (2026-10-22)
+
+This section supersedes earlier counts in this audit where they differ.
+
+- Registry now contains **125 unique entries**: 4 roots, 15 owner-stated behavioral domains, 18 archetype candidates, 8 Conscious Domain slots, 12 CDOMAIN cultural-figure mappings, 18 ARCHDOM mappings, 18 ARCH18 tuples, 14 non-canonical Blueprint Domain visualization placeholders, and 18 source-canon domain candidates.
+- All **125/125 records have explicit template assignments** in the proposed template catalog.
+- A structural audit confirms **125 unique IDs** and **exactly three research-pass slots per record**.
+- **103/125 records have all three source-review passes complete**. This includes 18 archetype records, 18 ARCHDOM mappings, 18 ARCH18 mappings, 12 CDOMAIN mappings, 4 roots, 15 owner-stated behavioral domains, and 18 source-canon domain candidates. Three-pass completion here means source/table review, not semantic approval or complete record content.
+- **22 records remain blocked at research passes 2 and 3**: 8 Conscious Domain records and 14 Blueprint Domain visualization slots. Their names/definitions and authoritative source material remain unresolved.
+- **23 records still have missing required template fields**: 15 behavioral-domain records lack definition/body fields, and 8 Conscious Domain records lack affirmations; seven Conscious Domain placeholders also lack definitions/body.
+- Runtime integration remains false for all records. No generator/validator integration, runtime graph traversal, or end-to-end path test has been completed.
+- The 18 source-canon domain candidates are attached to the four source-canon root records through reciprocal source-table membership edges. This is an explicit source-table grouping only; the unresolved 18/15/14 denominator ruling remains open.
+- No automatic crosswalk has been approved between the 15 owner-stated behavioral domains and the 18 source-canon domain candidates.
