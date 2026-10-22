@@ -46,7 +46,7 @@ function loopSig(p){
  if(!p)return '';
  try{
   var es=(p.story&&p.story.entries)||[];
-  return JSON.stringify([p.id||null, es.map(function(e){return [e&&e.t,e&&e.text&&e.text.length,e&&e.lex];}),
+  return JSON.stringify([p.id||null, es.map(function(e){return [e&&e.t,e&&e.text,e&&e.lex];}),
    (p.meter&&p.meter.unique)||[], (p.rituals||[]).map(function(x){return [x&&x.t,x&&x.done];}),
    p.practice||null, p.trace||null, p.soul||null]);}
  catch(e){return String(Math.random());}}
