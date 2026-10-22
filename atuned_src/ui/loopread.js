@@ -104,7 +104,21 @@ function lpRow(x,i){
  return '<details class="lp-p" data-lpk="'+esc(x.key)+'" data-lpw="'+esc(w)+'"'+(open?' open':'')+'>'
   +'<summary><span class="lp-pn"><b>'+esc(x.name)+'</b>'+(seat?'<em>'+seat+'</em>':'')+'</span>'
   +'<span class="lp-st lp-'+x.state+'">'+(x.state==='confirmed'?'Confirmed':'Unanswered')+'</span></summary>'
-  +lpChain(x)+'</details>';}
+  +lpChain(x)+lpSignalHtml(x)+'</details>';}
+
+/* A marker is a navigable view of the existing source, not a second truth.
+   Candidate/inferred status stays explicit; no marker mutates metrics. */
+function lpSignalHtml(x){
+ var src=Array.isArray(x.signalSources)?x.signalSources:[];
+ if(!src.length)return '';
+ var nerve=x.nerve?'<p class="lp-signal-node">Nerve address '+esc(String(x.address||x.id))+': '+esc(x.nerve)+'. Tone remains owned by the address model; no separate tone value is inferred here.</p>':'';
+ return '<details class="lp-signal"><summary>Signal marker · '+src.length+' source'+(src.length===1?'':'s')+'</summary>'
+  +'<p class="lp-signal-note">Candidate signal-to-fetter association. This is an interpretation of source text, not proof of causation. Raw sensory and emotional components are not yet separately represented in this record.</p>'
+  +nerve+'<ol class="lp-signal-sources">'+src.map(function(s){
+   return '<li><span class="lp-signal-state">'+(s.status==='confirmed'?'User confirmed':'Inferred candidate')+'</span>'
+    +(s.at?'<time datetime="'+esc(s.at)+'">'+esc(s.at)+'</time>':'')
+    +'<blockquote>'+esc(s.text||'(source text unavailable)')+'</blockquote></li>';
+  }).join('')+'</ol></details>';}
 
 function loopHtml(r,where){
  if(!r||r.unread)return '';
