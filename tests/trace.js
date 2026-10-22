@@ -424,10 +424,13 @@ function suite(T,E,ok,g){
   const p=worked(E);
   const G=T.traceFromRecord(p);
   const story=G.nodes.find(n=>n.type==='story'&&n.id==='2026-09-21T08:00:00.000Z');
-  const supported=story&&G.edges.filter(e=>e.from==='story:'+story.id&&e.edge==='supports'&&e.to.indexOf('pattern:fetter:')===0);
+  const signal=story&&G.nodes.find(n=>n.type==='impression'&&n.id===story.id);
+  const signalEdge=story&&G.edges.find(e=>e.from==='story:'+story.id&&e.edge==='produces'&&e.to==='impression:'+story.id);
+  const supported=signal&&G.edges.filter(e=>e.from==='impression:'+signal.id&&e.edge==='supports'&&e.to.indexOf('pattern:fetter:')===0);
   ok(!!story,'worked source story exists for signal path');
-  ok(!!supported&&supported.length>0,'story/imprint derives an explicit signal→fetter support edge');
-  ok(supported&&supported.every(e=>e.src==='inferred'&&e.derived===true),'signal→fetter keeps inferred provenance and is derived, not duplicated');
+  ok(!!signal&&!!signalEdge,'source story produces a derived signal-impression node');
+  ok(!!supported&&supported.length>0,'signal impression derives an explicit fetter support edge');
+  ok(signalEdge&&signalEdge.src==='inferred'&&supported&&supported.every(e=>e.src==='inferred'&&e.derived===true),'signal→fetter path keeps inferred provenance and is derived, not duplicated');
   const memberships=G.edges.filter(e=>e.edge==='associated_with'&&e.from.indexOf('pattern:')===0&&e.to.indexOf('pattern:fetter:')===0&&e.src==='known');
   ok(memberships.length>0,'canonical address nodes connect to their canonical fetter by association');
   ok(memberships.every(e=>e.why&&e.why.indexOf('does not imply causation')>=0),'address→fetter membership explicitly does not claim causation');
@@ -435,7 +438,7 @@ function suite(T,E,ok,g){
   const fetter=address&&address.fetter;
   ok(!!address&&!!fetter,'nerve-address node retains canonical fetter metadata');
   const path=story&&supported&&supported.length?T.tracePath(G,'story:'+story.id,supported[0].to):null;
-  ok(!!path&&path.length===1&&path[0].src==='inferred','signal-to-fetter is traversable with its provenance intact');
+  ok(!!path&&path.length===2&&path.every(e=>e.src==='inferred'),'story→signal→fetter is traversable with provenance intact');
   const before=JSON.stringify({meter:p.meter,axes:p.axes,laws:p.laws});
   T.traceFromRecord(p);
   const after=JSON.stringify({meter:p.meter,axes:p.axes,laws:p.laws});
