@@ -92,6 +92,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "root",
+      "nm": "Architect",
+      "seat": "Third Eye",
+      "fam": "deep_psychological.roots",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -162,6 +178,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "root",
+      "nm": "Engine",
+      "seat": "Sacral",
+      "fam": "deep_psychological.roots",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -232,6 +264,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "root",
+      "nm": "Weaver",
+      "seat": "Heart",
+      "fam": "deep_psychological.roots",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -302,6 +350,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "root",
+      "nm": "Witness",
+      "seat": "Crown",
+      "fam": "deep_psychological.roots",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -372,6 +436,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "domain",
+      "nm": "Knowledge",
+      "seat": null,
+      "fam": "deep_psychological.behavioral_domains",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -442,6 +522,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "domain",
+      "nm": "Communication and Exchange",
+      "seat": null,
+      "fam": "deep_psychological.behavioral_domains",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -512,6 +608,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "domain",
+      "nm": "Directed Force",
+      "seat": null,
+      "fam": "deep_psychological.behavioral_domains",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -582,6 +694,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "domain",
+      "nm": "Rulership and Order",
+      "seat": null,
+      "fam": "deep_psychological.behavioral_domains",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -652,6 +780,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "domain",
+      "nm": "Creation and Manifestation",
+      "seat": null,
+      "fam": "deep_psychological.behavioral_domains",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -722,6 +866,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "domain",
+      "nm": "Destruction and Transformation",
+      "seat": null,
+      "fam": "deep_psychological.behavioral_domains",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -792,6 +952,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "domain",
+      "nm": "Love and Connection",
+      "seat": null,
+      "fam": "deep_psychological.behavioral_domains",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -862,6 +1038,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "domain",
+      "nm": "Healing and Restoration",
+      "seat": null,
+      "fam": "deep_psychological.behavioral_domains",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -932,6 +1124,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "domain",
+      "nm": "Sacrifice and Wisdom Through Descent",
+      "seat": null,
+      "fam": "deep_psychological.behavioral_domains",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -1002,6 +1210,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "domain",
+      "nm": "Justice and Truth",
+      "seat": null,
+      "fam": "deep_psychological.behavioral_domains",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -1072,6 +1296,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "domain",
+      "nm": "Trickster and Disruption",
+      "seat": null,
+      "fam": "deep_psychological.behavioral_domains",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -1142,6 +1382,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "domain",
+      "nm": "Nature and Organic Intelligence",
+      "seat": null,
+      "fam": "deep_psychological.behavioral_domains",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -1212,6 +1468,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "domain",
+      "nm": "Mystery and the Unseen",
+      "seat": null,
+      "fam": "deep_psychological.behavioral_domains",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -1282,6 +1554,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "domain",
+      "nm": "Devotion and Right Action",
+      "seat": null,
+      "fam": "deep_psychological.behavioral_domains",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -1352,6 +1640,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "domain",
+      "nm": "Play and Creative Delight",
+      "seat": null,
+      "fam": "deep_psychological.behavioral_domains",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -1422,6 +1726,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "archetype",
+      "nm": "Warrior",
+      "seat": null,
+      "fam": "archetype_taxonomy.candidates",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ]
     },
     {
@@ -1492,6 +1812,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "archetype",
+      "nm": "Orphan",
+      "seat": null,
+      "fam": "archetype_taxonomy.candidates",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ]
     },
     {
@@ -1562,6 +1898,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "archetype",
+      "nm": "Innocent",
+      "seat": null,
+      "fam": "archetype_taxonomy.candidates",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ]
     },
     {
@@ -1632,6 +1984,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "archetype",
+      "nm": "Caregiver",
+      "seat": null,
+      "fam": "archetype_taxonomy.candidates",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ]
     },
     {
@@ -1702,6 +2070,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "archetype",
+      "nm": "Explorer",
+      "seat": null,
+      "fam": "archetype_taxonomy.candidates",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ]
     },
     {
@@ -1772,6 +2156,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "archetype",
+      "nm": "Outlaw",
+      "seat": null,
+      "fam": "archetype_taxonomy.candidates",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ]
     },
     {
@@ -1842,6 +2242,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "archetype",
+      "nm": "Lover",
+      "seat": null,
+      "fam": "archetype_taxonomy.candidates",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ]
     },
     {
@@ -1912,6 +2328,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "archetype",
+      "nm": "Creator",
+      "seat": null,
+      "fam": "archetype_taxonomy.candidates",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ]
     },
     {
@@ -1982,6 +2414,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "archetype",
+      "nm": "Jester",
+      "seat": null,
+      "fam": "archetype_taxonomy.candidates",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ]
     },
     {
@@ -2052,6 +2500,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "archetype",
+      "nm": "Sage",
+      "seat": null,
+      "fam": "archetype_taxonomy.candidates",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ]
     },
     {
@@ -2122,6 +2586,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "archetype",
+      "nm": "Magician",
+      "seat": null,
+      "fam": "archetype_taxonomy.candidates",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ]
     },
     {
@@ -2192,6 +2672,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "archetype",
+      "nm": "Ruler",
+      "seat": null,
+      "fam": "archetype_taxonomy.candidates",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ]
     },
     {
@@ -2262,6 +2758,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "archetype",
+      "nm": "Hero",
+      "seat": null,
+      "fam": "archetype_taxonomy.candidates",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ]
     },
     {
@@ -2332,6 +2844,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "archetype",
+      "nm": "Everyman",
+      "seat": null,
+      "fam": "archetype_taxonomy.candidates",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ]
     },
     {
@@ -2402,6 +2930,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "archetype",
+      "nm": "Mentor",
+      "seat": null,
+      "fam": "archetype_taxonomy.candidates",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ]
     },
     {
@@ -2472,6 +3016,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "archetype",
+      "nm": "Shadow",
+      "seat": null,
+      "fam": "archetype_taxonomy.candidates",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ]
     },
     {
@@ -2542,6 +3102,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "archetype",
+      "nm": "Shapeshifter",
+      "seat": null,
+      "fam": "archetype_taxonomy.candidates",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ]
     },
     {
@@ -2612,6 +3188,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "archetype",
+      "nm": "Healer",
+      "seat": null,
+      "fam": "archetype_taxonomy.candidates",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
       ]
     },
     {
@@ -2682,6 +3274,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "conscious_domain",
+      "nm": "Empyrean Consciousness",
+      "seat": null,
+      "fam": "conscious_domains",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -2752,6 +3360,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "conscious_domain",
+      "nm": "UNRESOLVED_CONSCIOUS_DOMAIN_1",
+      "seat": null,
+      "fam": "conscious_domains",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -2822,6 +3446,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "conscious_domain",
+      "nm": "UNRESOLVED_CONSCIOUS_DOMAIN_2",
+      "seat": null,
+      "fam": "conscious_domains",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -2892,6 +3532,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "conscious_domain",
+      "nm": "UNRESOLVED_CONSCIOUS_DOMAIN_3",
+      "seat": null,
+      "fam": "conscious_domains",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -2962,6 +3618,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "conscious_domain",
+      "nm": "UNRESOLVED_CONSCIOUS_DOMAIN_4",
+      "seat": null,
+      "fam": "conscious_domains",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -3032,6 +3704,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "conscious_domain",
+      "nm": "UNRESOLVED_CONSCIOUS_DOMAIN_5",
+      "seat": null,
+      "fam": "conscious_domains",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -3102,6 +3790,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "conscious_domain",
+      "nm": "UNRESOLVED_CONSCIOUS_DOMAIN_6",
+      "seat": null,
+      "fam": "conscious_domains",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -3172,6 +3876,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "conscious_domain",
+      "nm": "UNRESOLVED_CONSCIOUS_DOMAIN_7",
+      "seat": null,
+      "fam": "conscious_domains",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "Owner-provided project context; canonical repo source not yet located."
       ]
     },
     {
@@ -3242,6 +3962,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "cultural_figure",
+      "nm": "Rama",
+      "seat": null,
+      "fam": "separate_cultural_figure_domain_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
       ]
     },
     {
@@ -3312,6 +4048,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "cultural_figure",
+      "nm": "Krishna",
+      "seat": null,
+      "fam": "separate_cultural_figure_domain_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
       ]
     },
     {
@@ -3382,6 +4134,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "cultural_figure",
+      "nm": "Zoroaster",
+      "seat": null,
+      "fam": "separate_cultural_figure_domain_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
       ]
     },
     {
@@ -3452,6 +4220,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "cultural_figure",
+      "nm": "Akhenaten",
+      "seat": null,
+      "fam": "separate_cultural_figure_domain_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
       ]
     },
     {
@@ -3522,6 +4306,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "cultural_figure",
+      "nm": "Buddha",
+      "seat": null,
+      "fam": "separate_cultural_figure_domain_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
       ]
     },
     {
@@ -3592,6 +4392,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "cultural_figure",
+      "nm": "Confucius",
+      "seat": null,
+      "fam": "separate_cultural_figure_domain_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
       ]
     },
     {
@@ -3662,6 +4478,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "cultural_figure",
+      "nm": "Jesus",
+      "seat": null,
+      "fam": "separate_cultural_figure_domain_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
       ]
     },
     {
@@ -3732,6 +4564,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "cultural_figure",
+      "nm": "Rumi",
+      "seat": null,
+      "fam": "separate_cultural_figure_domain_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
       ]
     },
     {
@@ -3802,6 +4650,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "cultural_figure",
+      "nm": "Lao Tzu",
+      "seat": null,
+      "fam": "separate_cultural_figure_domain_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
       ]
     },
     {
@@ -3872,6 +4736,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "cultural_figure",
+      "nm": "Moses",
+      "seat": null,
+      "fam": "separate_cultural_figure_domain_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
       ]
     },
     {
@@ -3942,6 +4822,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "cultural_figure",
+      "nm": "Guru Nanak",
+      "seat": null,
+      "fam": "separate_cultural_figure_domain_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
       ]
     },
     {
@@ -4012,6 +4908,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "cultural_figure",
+      "nm": "Solomon",
+      "seat": null,
+      "fam": "separate_cultural_figure_domain_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/CDOMAIN.json"
       ]
     },
     {
@@ -4082,6 +4994,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Warrior → Power",
+      "seat": null,
+      "fam": "archetype_domain_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
       ]
     },
     {
@@ -4152,6 +5080,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Caregiver → Healing",
+      "seat": null,
+      "fam": "archetype_domain_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
       ]
     },
     {
@@ -4222,6 +5166,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Creator → Creation",
+      "seat": null,
+      "fam": "archetype_domain_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
       ]
     },
     {
@@ -4292,6 +5252,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Sage → Knowledge",
+      "seat": null,
+      "fam": "archetype_domain_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
       ]
     },
     {
@@ -4362,6 +5338,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Jester → Play",
+      "seat": null,
+      "fam": "archetype_domain_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
       ]
     },
     {
@@ -4432,6 +5424,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Lover → Love",
+      "seat": null,
+      "fam": "archetype_domain_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
       ]
     },
     {
@@ -4502,6 +5510,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Magician → Mystery",
+      "seat": null,
+      "fam": "archetype_domain_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
       ]
     },
     {
@@ -4572,6 +5596,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Innocent → Nature",
+      "seat": null,
+      "fam": "archetype_domain_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
       ]
     },
     {
@@ -4642,6 +5682,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Outlaw → Destruction",
+      "seat": null,
+      "fam": "archetype_domain_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
       ]
     },
     {
@@ -4712,6 +5768,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Ruler → Architect",
+      "seat": null,
+      "fam": "archetype_domain_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
       ]
     },
     {
@@ -4782,6 +5854,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Explorer → Nature",
+      "seat": null,
+      "fam": "archetype_domain_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
       ]
     },
     {
@@ -4852,6 +5940,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Orphan → Guardian",
+      "seat": null,
+      "fam": "archetype_domain_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
       ]
     },
     {
@@ -4922,6 +6026,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Hero → Power",
+      "seat": null,
+      "fam": "archetype_domain_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
       ]
     },
     {
@@ -4992,6 +6112,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Everyman → Communication",
+      "seat": null,
+      "fam": "archetype_domain_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
       ]
     },
     {
@@ -5062,6 +6198,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Mentor → Knowledge",
+      "seat": null,
+      "fam": "archetype_domain_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
       ]
     },
     {
@@ -5132,6 +6284,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Shadow → Death",
+      "seat": null,
+      "fam": "archetype_domain_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
       ]
     },
     {
@@ -5202,6 +6370,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Shapeshifter → Trickster",
+      "seat": null,
+      "fam": "archetype_domain_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
       ]
     },
     {
@@ -5272,6 +6456,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Healer → Healing",
+      "seat": null,
+      "fam": "archetype_domain_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
       ]
     },
     {
@@ -5342,6 +6542,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Warrior → Controller @ solar",
+      "seat": null,
+      "fam": "archetype_fetter_seat_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ]
     },
     {
@@ -5412,6 +6628,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Caregiver → Pleaser @ heart",
+      "seat": null,
+      "fam": "archetype_fetter_seat_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ]
     },
     {
@@ -5482,6 +6714,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Creator → Stickler @ throat",
+      "seat": null,
+      "fam": "archetype_fetter_seat_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ]
     },
     {
@@ -5552,6 +6800,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Sage → Hyper-Rational @ eye",
+      "seat": null,
+      "fam": "archetype_fetter_seat_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ]
     },
     {
@@ -5622,6 +6886,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Jester → Restless @ sacral",
+      "seat": null,
+      "fam": "archetype_fetter_seat_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ]
     },
     {
@@ -5692,6 +6972,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Lover → Hyper-Vigilant @ heart",
+      "seat": null,
+      "fam": "archetype_fetter_seat_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ]
     },
     {
@@ -5762,6 +7058,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Magician → Victim @ eye",
+      "seat": null,
+      "fam": "archetype_fetter_seat_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ]
     },
     {
@@ -5832,6 +7144,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Innocent → Restless @ root",
+      "seat": null,
+      "fam": "archetype_fetter_seat_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ]
     },
     {
@@ -5902,6 +7230,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Outlaw → Judge @ solar",
+      "seat": null,
+      "fam": "archetype_fetter_seat_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ]
     },
     {
@@ -5972,6 +7316,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Ruler → Hyper-Achiever @ crown",
+      "seat": null,
+      "fam": "archetype_fetter_seat_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ]
     },
     {
@@ -6042,6 +7402,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Explorer → Restless @ sacral",
+      "seat": null,
+      "fam": "archetype_fetter_seat_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ]
     },
     {
@@ -6112,6 +7488,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Orphan → Worrywart @ heart",
+      "seat": null,
+      "fam": "archetype_fetter_seat_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ]
     },
     {
@@ -6182,6 +7574,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Hero → Hyper-Achiever @ solar",
+      "seat": null,
+      "fam": "archetype_fetter_seat_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ]
     },
     {
@@ -6252,6 +7660,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Everyman → Pleaser @ heart",
+      "seat": null,
+      "fam": "archetype_fetter_seat_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ]
     },
     {
@@ -6322,6 +7746,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Mentor → Stickler @ eye",
+      "seat": null,
+      "fam": "archetype_fetter_seat_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ]
     },
     {
@@ -6392,6 +7832,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Shadow → Judge @ solar",
+      "seat": null,
+      "fam": "archetype_fetter_seat_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ]
     },
     {
@@ -6462,6 +7918,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Shapeshifter → Restless @ sacral",
+      "seat": null,
+      "fam": "archetype_fetter_seat_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ]
     },
     {
@@ -6532,6 +8004,22 @@
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
         }
+      ],
+      "kind": "mapping",
+      "nm": "Healer → Hyper-Vigilant @ heart",
+      "seat": null,
+      "fam": "archetype_fetter_seat_mapping_table",
+      "def": null,
+      "body": null,
+      "links": [],
+      "templateId": null,
+      "template": null,
+      "templateValidation": {
+        "status": "not_yet_run",
+        "missingFields": []
+      },
+      "sourceIds": [
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ]
     }
   ]
