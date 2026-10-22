@@ -318,19 +318,19 @@ function snapshot(p){
 /* ============================================================
    THE TWENTY ONE, ON EVERY ROW. Ruled 26 September, answering BW Q2:
    "keeping track of the laws over time is excellent, and being able to show
-   a graph to show how far you've come." A row carried cq, which is the laws
-   summed over 210, and not the laws themselves, so no row could say which law
-   moved. This is the twenty one as that same cq read them.
+   a graph to show how far you've come." A row carries both the CQ formula
+   output and its model-3 inputs, while lawNow records each law as the formula's
+   Integrity source so the history can explain where that input came from.
 
    WHAT IS WRITTEN IS lawNow, NOT THE ANSWER, AND THE KEY IS NAMED FOR IT.
    p.laws is the answers, an input, and a second meaning under that same name
-   is a bug that has not happened yet. A law as CQ reads it is the answer
-   lifted by the releases at its seat since (engine/compute.js, LIFT_R),
-   and the lift is the whole of what a release does to a law. Writing the bare
-   answer would draw every release as a flat line, which is the opposite of
-   what the graph is for. So the row reconciles with itself: the laws that are
-   not null, summed, over 210, times 100, is the row's own cq to within the
-   rounding of both. The gate asserts it on every row it writes.
+   is a bug that has not happened yet. A law as Integrity reads it is the
+   answer lifted by the releases at its seat since (engine/compute.js, LIFT_R),
+   and the lift is recorded once. Writing the bare answer would draw every
+   release as a flat line, which is the opposite of what the graph is for.
+   Model-3 rows can be checked against their stored Integrity, Intention and
+   Resistance inputs; the law series is evidence for Integrity, not a second
+   CQ calculator.
 
    A LAW NOT YET ANSWERED IS null, the meaning p.laws already gives it, and CQ
    counts it as nothing (lawIn). Writing the six it is seeded with would put a
