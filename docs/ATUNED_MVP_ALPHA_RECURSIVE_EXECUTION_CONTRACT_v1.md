@@ -13,7 +13,7 @@ Where older documents conflict with the owner's latest definitions below, the la
 
 ## Canonical owner definitions
 - CQ = Coherence.
-- DQ = Resistance / total shadow, using the existing canonical implementation unless a versioned change is approved.
+- DQ = the canonical total-shadow Resistance measure; SQ is total node shadow weight. CQ model 3 uses the normalized `Rz` denominator derived from DQ and the six-axis gate factor, with an explicit floor of 1.
 - SQ = sum of individual fetter/node weights.
 - Fetter = the name/type of an individual node; its weight contributes to SQ.
 - Vritti (V-R-I-T-T-I) = total waveform of sensory input plus emotional input. Existing story/source records hold raw language and some onboarding context, but source audit has not established that the complete sensory-emotional waveform is already persisted.
@@ -33,7 +33,7 @@ Each block is executed in dependency order. After every block:
 7. A separate Development Metrics & Verification Auditor responsibility reviews the snapshot each turn. It must flag unsupported completion claims and must not invent test results or percentages.
 
 ## Block 1 — P0 canonical contract and owner map (COMPLETE)
-P0 exit decisions are recorded in `docs/ATUNED_MVP_ALPHA_CANONICAL_RECORD_OWNER_AUDIT_v1.md` v1.1. P0 is complete as an architecture/ownership contract, not as runtime implementation. The canonical choices are: Vritti is the linked total sensory-emotional signal, not a new `p.vritti[]` store; fetter is the limiting-belief pattern; qualium is an orientation attribute of the Vritti→fetter interpretation/association; tone is owned/referenced by the canonical nerve-address node/seat owner; associations are provenance-bearing and not causation; the existing 21-law CQ remains the sole operational calculator until a versioned reconciliation of `CQ = (Integrity × Intention) / Resistance` defines units, normalization and zero-resistance behavior. Runtime mapping of `FLOWSEAT` and trace schema changes are P1 implementation tasks, not open P0 semantic decisions.
+P0 exit decisions are recorded in `docs/ATUNED_MVP_ALPHA_CANONICAL_RECORD_OWNER_AUDIT_v1.md` v1.1. P0 is complete as an architecture/ownership contract, not as runtime implementation. The canonical choices are: Vritti is the linked total sensory-emotional signal, not a new `p.vritti[]` store; fetter is the limiting-belief pattern; qualium is an orientation attribute of the Vritti→fetter interpretation/association; tone is owned/referenced by the canonical nerve-address node/seat owner; associations are provenance-bearing and not causation; CQ model 3 is the versioned operational reconciliation of `CQ = (Integrity × Intention) / Resistance`, with Integrity and Intention on 0–10 scales and the normalized Resistance denominator `Rz = max(1, (1 + DQ × 0.05) × verpFactor())`. This preserves partial CQ from zero answered-law state and defines zero-resistance behavior. Runtime acceptance remains gated on CI/tests.
 
 ### P0 exit gate
 - [x] Definitions, current owners, target owners, cardinality, provenance, metric isolation and CQ version policy documented.
