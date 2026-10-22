@@ -63,9 +63,10 @@ var TRACE_V=1;
 /* WHICH DERIVATION MADE A DERIVED GRAPH, TDD section 27's algorithm
    version. A graph read under one rule compared with one read under
    another is a change of rule, not a change in the person. */
-/* 2, 3 October: the mirror card's Yes is read as the person's confirmation
-   (yesOf in traceFromRecord). */
-var TRACE_ALG=2;
+/* 2, 3 October: the mirror card's Yes is read as the person's confirmation.
+   3, 22 October: derived story→signal-impression→fetter and canonical
+   address→fetter membership are added to the graph read. */
+var TRACE_ALG=3;
 
 /* TDD section 16, exactly. */
 var TRACE_NODE_TYPES=['story','impression','pattern','goal','behavior','protocol',
