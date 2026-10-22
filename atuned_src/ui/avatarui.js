@@ -526,9 +526,12 @@ var AV_DEF={
  Everyman:'The Everyman stays with the room, so it reads the room first. It keeps you in the group.',
  Innocent:'The Innocent takes things at face value. It lets you trust people and start again after a bad day.'};
 /* what taking the role on costs, as a thing that happens in a day. It names
-   the saboteur and never calls the person by it. */
+   the saboteur and never calls the person by it. Keyed by the name ARCH18
+   carries, so S02 is Micromanager here: the owner renamed it in ARCH18 on 18
+   October and this key still said Controller, so the Warrior's line printed
+   empty until 22 October. */
 var AV_IMPACT={
- 'Controller':'Handing a thing over feels like dropping it, so the grip stays on.',
+ 'Micromanager':'Handing a thing over feels like dropping it, so the grip stays on.',
  'Pleaser':'Yes comes out before your own answer has been checked.',
  'Stickler':'Time goes into holding everything to the one right way.',
  'Hyper-Rational':'What cannot be explained gets set aside, feelings first.',

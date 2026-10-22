@@ -152,7 +152,7 @@ ok(true,'CQ stays inside 0..100 across the grid');
 ok(reset(0,0,10).Rz>=1&&reset(10,0,0).Rz>=1,'resistance never drops below its floor of 1');
 
 g('6 · SAB33 ranges are bands, not floors');
-/* Controller is fear 7..10 + anger 5..8 */
+/* Micromanager, S02, is fear 7..10 + anger 5..8 */
 function fitFor(name,fear,anger){
  reset(0,0,6); S.charge.Fear=fear; S.charge.Anger=anger;
  const hit=E.sab33Detect().filter(d=>d.nm===name)[0];
@@ -6229,16 +6229,66 @@ g('ND · one saboteur, one entry, however many tests name it');
    Held heavy and uniform this produced 26 entries carrying 23 identities,
    Controller, Hyper-Vigilant and Avoider each twice, and one pairing away
    from a self-paired complex, "X + X", which is not a second voice, it is
-   the same one counted twice. */
+   the same one counted twice.
+
+   AND BY IDENTITY, 22 October. Counting by name could not see the defect it
+   was written for once two tables spelled one saboteur two ways. The owner
+   renamed S02 to Micromanager in SAB33 on 18 October and the library kept
+   Controller, so from then a heavy field named S02 twice, once under each
+   name and in two families, and this group stayed green because the two
+   strings differ. It counts identities now: a saboteur is its SABDEF code,
+   reached from SAB33's row and from SABDEF's key both, so two spellings of
+   one code are one saboteur. And it holds every table that names a
+   saboteur to a name SABDEF knows, so a rename that reaches one table and
+   not the others fails here. Both halves were run first on the build from
+   before the fix, where both failed, and pass on the fix. */
 {
- reset(8,0,6);
- const r=compute();
- const names=r.sabs.map(s=>s.nm);
- const counts={};names.forEach(n=>counts[n]=(counts[n]||0)+1);
- const dupes=Object.keys(counts).filter(n=>counts[n]>1);
- ok(dupes.length===0,'no saboteur is named twice in one reading, got '+JSON.stringify(dupes));
- const selfCx=r.cxs.filter(c=>c.parts[0].nm===c.parts[1].nm);
- ok(selfCx.length===0,'no complex pairs a saboteur with itself, got '+JSON.stringify(selfCx.map(c=>c.nm)));
+ const {SABDEF,SAB_LIB,SAB_PI,SAB_PI_AS,SABAUTH,SABCARD,ARCH18,KB_KEY}=E;
+ /* the aliases of each code: SAB33's own spelling, by its row, which is the
+    codex order S01 to S32 and then Avoider at S33, and SABDEF's key */
+ const code=k=>SABDEF[k]?SABDEF[k].c:null;
+ ok(SAB33.every((r,i)=>code(KB_KEY(r[0]))===null||code(KB_KEY(r[0]))==='S'+String(i+1).padStart(2,'0')),
+  'SAB33 is in codex order, so its row says which code it is');
+ const alias={};
+ SAB33.forEach((r,i)=>{const c='S'+String(i+1).padStart(2,'0');(alias[c]=alias[c]||new Set()).add(KB_KEY(r[0]));});
+ Object.keys(SABDEF).forEach(k=>{(alias[SABDEF[k].c]=alias[SABDEF[k].c]||new Set()).add(k);});
+ const codeOf=nm=>{const k=KB_KEY(nm);for(const c in alias)if(alias[c].has(k))return c;return k;};
+ const twice=r=>{const n={};r.sabs.filter(s=>!s.over).forEach(s=>{const c=codeOf(s.nm);n[c]=(n[c]||0)+1;});
+  return Object.keys(n).filter(c=>n[c]>1);};
+ const s02=()=>{reset(0,0,6);S.charge.Fear=9;S.charge.Anger=7;S.charge.Sad=10;return compute();};
+ [['every axis held at 8',()=>reset(8,0,6)],['fear 9, anger 7 and sadness 10, S02 on both routes',s02]].forEach(f=>{
+  const r=f[1]();
+  ok(twice(r).length===0,f[0]+': no saboteur is named twice in one reading, by identity, got '+JSON.stringify(twice(r)));
+  const selfCx=r.cxs.filter(c=>codeOf(c.parts[0].nm)===codeOf(c.parts[1].nm));
+  ok(selfCx.length===0,f[0]+': no complex pairs a saboteur with itself, got '+JSON.stringify(selfCx.map(c=>c.nm)));});
+ const r2=s02(), m=r2.sabs.filter(s=>!s.over&&codeOf(s.nm)==='S02');
+ ok(m.length===1&&m[0].nm===SAB33[1][0],'S02 is one entry under its one name, got '+JSON.stringify(m.map(s=>s.nm)));
+ /* AND ONE FAMILY. The range route took FAM_OF of its first charge and the
+    address route the library row's family, so S02 was Dysregulation from one
+    and Rigidity from the other. Every route gives the library's. */
+ const famOff=[];
+ SAB33.forEach(row=>{const lib=SAB_LIB.find(s=>KB_KEY(s.nm)===KB_KEY(row[0])); if(!lib)return;
+  reset(0,0,6); row[1].forEach(p=>{S.charge[p[0]==='sadness'?'Sad':p[0].charAt(0).toUpperCase()+p[0].slice(1)]=(p[1]+p[2])/2;});
+  compute().sabs.filter(s=>!s.over&&KB_KEY(s.nm)===KB_KEY(row[0])&&s.hcx!==lib.hcx).forEach(s=>famOff.push(s.nm+' '+s.hcx+(s.named?' off the range':'')));});
+ ok(famOff.length===0,'a saboteur with a library row carries that row\'s family from either route, off: '+JSON.stringify(famOff));
+ /* ONE NAME IN EVERY TABLE. Each name a table carries keys into SABDEF. */
+ const tables={SAB33:SAB33.map(r=>r[0]),SAB_LIB:SAB_LIB.map(s=>s.nm),SAB_PI:SAB_PI,ARCH18:ARCH18.map(a=>a[1])};
+ const unknown=t=>t.filter(n=>!SABDEF[KB_KEY(n)]);
+ Object.keys(tables).forEach(t=>ok(unknown(tables[t]).length===0,
+  'every saboteur '+t+' names is one SABDEF knows, unknown: '+JSON.stringify(unknown(tables[t]))));
+ ok(SAB33.every(r=>SABAUTH[r[0]]&&SABCARD[KB_KEY(r[0])]),
+  'and every SAB33 name has its SABAUTH line and its card row, missing: '
+  +JSON.stringify(SAB33.filter(r=>!SABAUTH[r[0]]||!SABCARD[KB_KEY(r[0])]).map(r=>r[0])));
+ /* the check is run on the split it was written for, and must catch it */
+ const split=SAB_LIB.map(s=>s.nm).map(n=>n===SAB33[1][0]?'Controller':n);
+ ok(unknown(split).length===1&&unknown(split)[0]==='Controller','the check catches a library that kept Controller: '+JSON.stringify(unknown(split)));
+ /* SAB_PI IS A LOOKUP. Its names are the ones the reading prints, or the
+    attribution goes quiet; Chamine's own name for S02 rides beside it. */
+ const printable=new Set(SAB33.map(r=>KB_KEY(r[0])).concat(SAB_LIB.map(s=>KB_KEY(s.nm))));
+ ok(SAB_PI.length===10&&SAB_PI.every(n=>printable.has(KB_KEY(n))),
+  'all ten Positive Intelligence names are names the engine can print, '+JSON.stringify(SAB_PI.filter(n=>!printable.has(KB_KEY(n)))));
+ ok(SAB_PI_AS&&SAB_PI_AS[SAB33[1][0]]==='Controller'&&Object.keys(SAB_PI_AS).every(n=>SAB_PI.indexOf(n)>=0),
+  'and his own name for S02 is kept, Controller, beside the name the product prints');
 }
 
 g('NZ · the tiers side by side, read off the ladder and nothing else');
@@ -8012,9 +8062,11 @@ g('SB · the saboteur card is the same 33 as SABDEF, and its opposites are read 
 
    SAB_LIB's own map resolves, and the card can only print what it holds:
    every address id is a real node and every family has a d, since the card
-   prints d and never sub. Superior is in SAB_LIB and in neither table, and it
-   must stay without a card row, because a row would be a definition nobody
-   wrote. */
+   prints d and never sub. Superior was in SAB_LIB and in neither table, and
+   was held here without a card row, because a row would have been a
+   definition nobody wrote. It was retired from SAB_LIB on 22 October, and
+   engine/data/nodes.js says why, so the rule is now the stronger one: no
+   library name sits outside the 33 at all. */
 {
  const {SABDEF,SABCARD,SAB_LIB,HCX_LIB}=E;
  const KK=s=>String(s).replace(/^[Tt]he\s+/,'').toLowerCase().replace(/-/g,' ');
@@ -8044,9 +8096,123 @@ g('SB · the saboteur card is the same 33 as SABDEF, and its opposites are read 
  ok(SAB_LIB.every(s=>s.nids.every(i=>NODES.some(n=>n.i===i))),'every SAB_LIB address id is a real node');
  ok(SAB_LIB.every(s=>{const f=HCX_LIB.find(h=>h.nm===s.hcx);return f&&typeof f.d==='string'&&f.d.length>0;}),
   'every SAB_LIB family resolves and carries a d to print, '+linked+' of the 33 are mapped and '+(SAB33.length-linked)+' print the gap');
- const orphans=SAB_LIB.filter(s=>!SAB33.some(r=>r[0]===s.nm));
- ok(orphans.every(s=>!SABDEF[KK(s.nm)]&&!SABCARD[KK(s.nm)]),
-  'a SAB_LIB name outside the 33 gets no card row, '+JSON.stringify(orphans.map(s=>s.nm)));
+ const orphans=SAB_LIB.filter(s=>!SAB33.some(r=>KK(r[0])===KK(s.nm)));
+ ok(orphans.length===0,'every SAB_LIB name is one of the 33, so each has a definition and a card row, orphans: '
+  +JSON.stringify(orphans.map(s=>s.nm)));
+}
+
+g('SW · a range match is checked at a seat its own first charge can reach');
+/* PIECE ONE OF 22 OCTOBER, core.js SAB_SEAT. compute() names a SAB33 range
+   match only when its seat holds an address at sq 3 or more. The seat was
+   CHG2SEAT, and CHG2SEAT seats apathy at the throat, where no address carries
+   Apathy, so six rows led by apathy could never be named from their own
+   configuration. Measured on the build before the fix, over laws 0 to 10 and
+   five souls at each row's band centre and edges: Pleaser, Hyper-Achiever,
+   Restless, Dreamer, Escapist and Avoider, never. This group was run there
+   first and failed on exactly those six. */
+{
+ const {SAB_SEAT,CHG2SEAT,CHG2FET,sab33Detect,KB_KEY}=E;
+ const fetOf=ch=>CHG2FET[ch]||CHARGES.find(c=>c.toLowerCase()===ch)||null;
+ const ruledHolds=ch=>W.some(n=>n.b===CHG2SEAT[ch]&&n.cf===fetOf(ch));
+ /* the ruling stands wherever it can be honoured */
+ const moved=Object.keys(CHG2SEAT).filter(ch=>SAB_SEAT[ch]!==CHG2SEAT[ch]);
+ ok(moved.every(ch=>!ruledHolds(ch)),'the check leaves CHG2SEAT alone wherever its seat holds the charge, moved: '+JSON.stringify(moved));
+ ok(Object.keys(CHG2SEAT).every(ch=>!fetOf(ch)||!W.some(n=>n.cf===fetOf(ch))||W.some(n=>n.b===SAB_SEAT[ch]&&n.cf===fetOf(ch))),
+  'and every charge is checked at a seat holding at least one of its addresses');
+ ok(!W.some(n=>n.b===CHG2SEAT.apathy&&n.cf==='Apathy')&&W.some(n=>n.b===SAB_SEAT.apathy&&n.cf==='Apathy'),
+  'apathy is the case it was written for: none at the '+CHG2SEAT.apathy.toLowerCase()+', checked at the '+SAB_SEAT.apathy.toLowerCase());
+ /* every match the detector returns is seated where its own first charge sits */
+ const AX=k=>k==='sadness'?'Sad':k.charAt(0).toUpperCase()+k.slice(1);
+ const seatOff=[];
+ SAB33.forEach(row=>{reset(0,0,6); row[1].forEach(p=>{S.charge[AX(p[0])]=(p[1]+p[2])/2;}); compute();
+  sab33Detect().filter(d=>d.nm===row[0]).forEach(d=>{
+   if(!W.some(n=>n.b===d.band&&n.cf===fetOf(d.charges[0])))seatOff.push(row[0]+' at '+d.band);});});
+ ok(seatOff.length===0,'no range match is seated where its first charge has no address, off: '+JSON.stringify(seatOff));
+ /* AND EVERY ROW CAN BE NAMED FROM ITS OWN CONFIGURATION. Laws 0 to 10 and
+    five souls, at band centre: the range route, read off the reading itself. */
+ const SOULS=[[0,[0,1]],[4,[3,7]],[9,[6,11]],[14,[9,2]],[18,[11,5]]];
+ const never=SAB33.filter(row=>!SOULS.some(sl=>[0,2,4,6,8,10].some(law=>{
+  S.doms=[sl[0]];S.arcs=sl[1].slice();S.roots=[];buildSoul();
+  CHARGES.forEach(c=>{S.charge[c]=0;S.replace[c]=0;}); SINAMES.forEach(l=>S.law[l]=law); lawsIn();
+  row[1].forEach(p=>{S.charge[AX(p[0])]=(p[1]+p[2])/2;});
+  return compute().sabs.some(s=>s.named&&KB_KEY(s.nm)===KB_KEY(row[0]));})));
+ ok(never.length===0,'every one of the '+SAB33.length+' can be named by its own band configuration, never: '+JSON.stringify(never.map(r=>r[0])));
+ reset(0,0,6);
+}
+
+g('SL · the library: every saboteur has a place in the body, grounded on its own charges, and asks its own band');
+/* PIECES TWO AND THREE OF 22 OCTOBER, engine/data/nodes.js and compute.js.
+   Every SAB33 row but one has a SAB_LIB row, and the one is named here with
+   its reason, so wiring it later is a decision. Superior is retired. A row
+   added on 22 October carries only its own canon charges, because the engine
+   reads an address only through its charge. No two rows share two addresses.
+   And the address route names a row only while its own configuration is on
+   the band ramp. Each rule was run on the build before the fix: the first,
+   the second and the last failed there, and the fetter rule is checked
+   against a known bad row below. */
+{
+ const {SAB_LIB,HCX_LIB,sabFetters,KB_KEY,BY}=E;
+ /* Innocent: one low band, fear 2 to 4, and the addresses that say what it
+    does carry Disgust. Three fear addresses only reach the address route's
+    load above its band. nodes.js has the measurement. */
+ const FLAGGED=['Innocent'];
+ /* the thirteen that came with the original source, picked by name before
+    SAB33 was ported, and kept as written. nodes.js records which of them
+    read charges their own row does not key on. */
+ const LEGACY=['Micromanager','Victim','Perfectionist','Pleaser','Hyper-Achiever','Hyper-Vigilant','Judge',
+  'Avoider','Worrywart','Loner','Nihilist','Aggressor','Imposter'];
+ const libOf=nm=>SAB_LIB.find(s=>KB_KEY(s.nm)===KB_KEY(nm));
+ const unwired=SAB33.filter(r=>!libOf(r[0])).map(r=>r[0]);
+ ok(JSON.stringify(unwired)===JSON.stringify(FLAGGED),
+  'every SAB33 row has a library row but the one flagged, unwired: '+JSON.stringify(unwired));
+ ok(!SAB_LIB.some(s=>KB_KEY(s.nm)==='superior'),'Superior is retired from the library');
+ ok([48,33,38].every(i=>SAB_LIB.some(s=>s.nids.indexOf(i)>=0)),
+  'and its three addresses stay named by the rows that hold them, so no inferred cluster takes its place');
+ ok(SAB_LIB.every(s=>s.nids.length===3&&new Set(s.nids).size===3&&s.nids.every(i=>BY[i]&&!BY[i].b.startsWith('Field'))),
+  'every row is three different somatic addresses');
+ ok(SAB_LIB.every(s=>HCX_LIB.some(h=>h.nm===s.hcx)),'every row names one of the six families');
+ /* GROUNDED ON ITS OWN CHARGES */
+ const FET={fear:'Fear',anger:'Anger',shame:'Shame',disgust:'Disgust',apathy:'Apathy',shock:'Shock',
+  sadness:'Sad',surprise:'Surprise',anticipation:'Anticipation'};
+ const offCharge=rows=>{const out=[];rows.forEach(s=>{const row=SAB33.find(r=>KB_KEY(r[0])===KB_KEY(s.nm)); if(!row)return;
+  const own=row[1].map(p=>FET[p[0]]);
+  s.nids.forEach(i=>{if(own.indexOf(BY[i].cf)<0)out.push(s.nm+' '+i+' '+BY[i].k+' carries '+BY[i].cf);});});return out;};
+ const added=SAB_LIB.filter(s=>LEGACY.indexOf(s.nm)<0);
+ ok(added.length===SAB33.length-LEGACY.length-FLAGGED.length,
+  'the rows added on 22 October are every SAB33 row that is neither legacy nor flagged, '+added.length);
+ ok(offCharge(added).length===0,'every address of every added row carries one of its own SAB33 charges, off: '+JSON.stringify(offCharge(added)));
+ ok(offCharge([{nm:'Pleaser',nids:[66,2,65]}]).length===3,
+  'and the check catches a row on the wrong charge: Pleaser\'s legacy three are all Shame, its row apathy and fear');
+ /* ONE DETECTOR, ONE NAME. No added row shares two addresses with any row.
+    One legacy pair already did, Pleaser and Imposter on 2 and 66, and it is
+    held here as the one known pair so a second cannot join it unseen. */
+ const pairs=[];
+ for(let i=0;i<SAB_LIB.length;i++)for(let j=i+1;j<SAB_LIB.length;j++){
+  const sh=SAB_LIB[i].nids.filter(x=>SAB_LIB[j].nids.indexOf(x)>=0);
+  if(sh.length>=2)pairs.push(SAB_LIB[i].nm+'/'+SAB_LIB[j].nm);}
+ ok(JSON.stringify(pairs)===JSON.stringify(['Pleaser/Imposter']),
+  'no two rows share two addresses but the one legacy pair, '+JSON.stringify(pairs));
+ /* THE ADDRESS ROUTE ASKS THE BAND. Pleaser's addresses all carry Shame, so
+    shame alone loads them past 3.7 while its own configuration, apathy and
+    fear, is absent. It is not named. */
+ reset(0,0,6); S.charge.Shame=10; let r=compute();
+ const pl=libOf('Pleaser'), plW=pl.nids.map(i=>BY[i]).reduce((a,n)=>a+n.sq,0)/3;
+ ok(plW>=3.7&&!r.sabs.some(s=>!s.over&&KB_KEY(s.nm)==='pleaser'),
+  'shame alone loads Pleaser\'s three addresses to '+plW.toFixed(2)+' and does not name it, because its own band is apathy and fear');
+ /* and inside its own band the check can never remove a naming: the ramp is
+    above zero everywhere inside every band */
+ const inside=[];
+ SAB33.forEach(row=>{const pos=p=>[p[1],(p[1]+p[2])/2,p[2]];
+  let cfgs=[{}];row[1].forEach(p=>{cfgs=[].concat(...cfgs.map(c=>pos(p).map(v=>Object.assign({},c,{[p[0]]:v}))));});
+  cfgs.forEach(c=>{const L={};Object.keys(FET).forEach(k=>L[k]=c[k]||0);if(sabFetters(row[1],L)<=0)inside.push(row[0]);});});
+ ok(inside.length===0,'the band check is open everywhere inside every band, closed at: '+JSON.stringify([...new Set(inside)]));
+ /* and the field the address route was built for still names it off its
+    addresses: Pleaser at its own band with its addresses loaded, where the
+    address reading is the heavier one and so the entry the merge keeps */
+ reset(0,0,6); S.charge.Apathy=4; S.charge.Fear=5; S.charge.Shame=10; r=compute();
+ ok(r.sabs.some(s=>!s.over&&!s.named&&KB_KEY(s.nm)==='pleaser'),
+  'with apathy 4 and fear 5 in its band and its addresses loaded, the address route names Pleaser');
+ reset(0,0,6);
 }
 
 g('RB · every worked example with a row runs rituals, written in the shapes the Ritual page reads');

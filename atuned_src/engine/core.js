@@ -41,6 +41,51 @@ const CHG2FET={anxiety:'Anticipation',fear:'Fear',anger:'Anger',shame:'Shame',
  disgust:'Disgust',apathy:'Apathy',shock:'Shock',sadness:'Sad',sad:'Sad',
  grief:'Sad',surprise:'Surprise',separation:'Apathy',silence:'Apathy',
  doubt:'Shock',pride:'Shame',guilt:'Shame',craving:'Disgust'};
+/* THE SEAT A RANGE MATCH IS CHECKED AT, READ OFF THE ADDRESSES. 22 October.
+
+   compute() names a SAB33 range match only when the seat of its first charge
+   holds an address at sq 3 or more, and it draws the saboteur there. That
+   seat was CHG2SEAT, the owner's ruling about where a charge is held, and for
+   every axis but one the ruled seat holds at least one address carrying the
+   charge. Apathy is the one. CHG2SEAT and CHILD put it at the throat, the
+   shoulder girdle and the base of the neck, and no throat address carries
+   Apathy: REROUTE sends the node map's Joy label to Apathy, and every Joy
+   address sits at the root, the sacral, the third eye or the crown. So a row
+   led by apathy was checked at a seat its own charge never reaches. Measured
+   on 22 October over 270 or more settings a row (six law levels, five souls,
+   every combination of each band's low, centre and high): Pleaser,
+   Hyper-Achiever, Restless, Dreamer, Escapist and Avoider were never named
+   from their own configuration. People-Pleaser and Enabler escaped only
+   because their second charge, shame, happens to sit at the throat.
+
+   THE RULE. A charge is checked at its CHG2SEAT seat wherever that seat holds
+   an address carrying it, so the ruling stands everywhere it can be honoured.
+   Where the ruled seat holds none, the check moves to the seat holding the
+   most of that charge's addresses, and BANDS order breaks a tie. It is read
+   off W at load and never typed, so a change to the node map moves it and no
+   second table is left holding the old answer. On the map as it stands it
+   moves exactly one charge, apathy, from the throat to the sacral.
+
+   CHG2SEAT itself is not touched. It is also where the lexicon seats a story
+   word and where the path draws one, and sniff.js records that reconciling it
+   with the address map is a ruling nobody has made. This table answers a
+   narrower question with no ruling in it: which seat's addresses can carry
+   this charge at all. */
+const SAB_SEAT=(function(){
+ var out={};
+ Object.keys(CHG2SEAT).forEach(function(ch){
+  var fet=CHG2FET[ch]||CHARGES.filter(function(c){return String(c).toLowerCase()===ch;})[0]||null;
+  var ruled=CHG2SEAT[ch], at=fet?W.filter(function(n){return n.cf===fet;}):[];
+  if(!at.length||at.some(function(n){return n.b===ruled;})){out[ch]=ruled;return;}
+  var cnt={}; at.forEach(function(n){cnt[n.b]=(cnt[n.b]||0)+1;});
+  out[ch]=BANDS.reduce(function(best,b){return (cnt[b]||0)>(cnt[best]||0)?b:best;},ruled);});
+ return out;})();
+/* ONE SABOTEUR, ONE LIBRARY ROW, found by identity. KB_KEY is the key SABDEF
+   and SABCARD already use, so a saboteur is the same saboteur in every table
+   however its name is cased or hyphenated. compute() reads the library row's
+   family through this, so the range route and the address route can no
+   longer put one saboteur in two families. */
+const SAB_LIB_BY={};SAB_LIB.forEach(s=>{SAB_LIB_BY[KB_KEY(s.nm)]=s;});
 
 /* ============================================================
    TABS. A stale tab index caused the same class of bug four times in
@@ -407,12 +452,14 @@ function meanAng(l){let x=0,y=0;l.forEach(a=>{x+=Math.cos(a);y+=Math.sin(a);});r
 function bandIg(b){const g=SI.filter(l=>l.b===b);return g.reduce((a,l)=>a+S.law[l.nm],0)/g.length;}
 
 /* ---------- SAB33 detection ---------- */
-function sabLevels(){
+function sabLevels(exact){
  var L={},F={Fear:'fear',Anger:'anger',Shame:'shame',Disgust:'disgust',Apathy:'apathy',
   Shock:'shock',Sad:'sadness',Surprise:'surprise',Anticipation:'anticipation'};
- CHILD.forEach(function(c){L[F[c.nm]||c.nm.toLowerCase()]=Math.round(S.charge[c.nm]||0);});
+ CHILD.forEach(function(c){var v=S.charge[c.nm]||0;L[F[c.nm]||c.nm.toLowerCase()]=exact?v:Math.round(v);});
  L.anxiety=L.anticipation;
  return L;}
+/* each SAB33 row by identity, for the address route's band check in compute() */
+const SAB33_BY={};SAB33.forEach(function(r){SAB33_BY[KB_KEY(r[0])]=r;});
 /* fit scoring against the ranges. 1.0 inside the band, 0.5 for adjacent. */
 function sab33Detect(){
  var L=sabLevels(), out=[];
@@ -426,7 +473,9 @@ function sab33Detect(){
   var score=Math.round(fit/parts.length*100);
   if(score>=60) out.push({nm:nm, score:score, exact:inAll, parts:parts,
    charges:parts.map(function(p){return p[0];}),
-   band:CHG2SEAT[parts[0][0]]||'Root',
+   /* the seat that can carry the first charge, SAB_SEAT above, and never a
+      seat its own charge cannot reach */
+   band:SAB_SEAT[parts[0][0]]||CHG2SEAT[parts[0][0]]||'Root',
    w:Math.min(10, parts.reduce(function(a,p){return a+(L[p[0]]||0);},0)/parts.length)});});
  return out.sort(function(a,b){return b.score-a.score || b.w-a.w;});}
 

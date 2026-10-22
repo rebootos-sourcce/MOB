@@ -357,28 +357,68 @@ function compute(){
  const sabs=[];
  /* ONE SABOTEUR, ONE ENTRY. SAB33's range match and the library's own fixed
     address groups can name the same saboteur from two different tests, eg
-    Controller matches both a fear/anger RANGE and its own three addresses.
-    Named twice, it pairs with itself into "Controller + Controller" below.
-    The stronger of the two readings wins; the weaker is dropped, not kept
-    as a second voice. */
+    Micromanager matches both a fear/anger RANGE and its own three addresses.
+    Named twice, it pairs with itself into "Micromanager + Micromanager"
+    below. The stronger of the two readings wins; the weaker is dropped, not
+    kept as a second voice.
+
+    BY IDENTITY, NOT BY SPELLING, 22 October. The merge keyed on s.nm, so it
+    only caught a saboteur both tables spelled the same way. The owner's
+    rename of S02 on 18 October reached SAB33 and not the library, and from
+    then one saboteur printed as two, Micromanager off the range and
+    Controller off its addresses, each in its own family, and the merge could
+    not see it because the spellings differed. The rename is finished in every
+    table now, and the merge keys on KB_KEY, the identity SABDEF and SABCARD
+    already use, so a future spelling drift still makes one entry.
+    tests/engine.js, ND, holds both halves.
+
+    AND ONE FAMILY. The range route took its family from FAM_OF, the family of
+    its first charge, and the address route from the library row. Where the
+    two differ, the family, and so the complex the saboteur could join,
+    flipped with whichever reading was heavier. A saboteur with a library row
+    now takes that row's family from either route, through SAB_LIB_BY in
+    core.js. FAM_OF still answers for a range match with no library row. */
  const sabByNm={};
  const pushSab=function(s){
-  const ex=sabByNm[s.nm];
-  if(ex){if(s.w<=ex.w)return; sabs[sabs.indexOf(ex)]=s;sabByNm[s.nm]=s;return;}
-  sabByNm[s.nm]=s;sabs.push(s);};
+  const id=KB_KEY(s.nm), ex=sabByNm[id];
+  if(ex){if(s.w<=ex.w)return; sabs[sabs.indexOf(ex)]=s;sabByNm[id]=s;return;}
+  sabByNm[id]=s;sabs.push(s);};
  /* SAB33: 33 named saboteurs matched on charge RANGES. */
  sab33Detect().forEach(function(d){
   const parts=W.filter(n=>n.b===d.band&&n.sq>=3).sort((a,b)=>b.sq-a.sq).slice(0,4);
   if(!parts.length)return;
+  /* anticipation is spelled out because SAB33 spells it out: a row led by it
+     fell through this map to Collapse. No row leads with it today. */
   const key=d.charges[0]==='anxiety'?'Anticipation':
    ({fear:'Fear',anger:'Anger',shame:'Shame',disgust:'Disgust',apathy:'Apathy',
-     shock:'Shock',sadness:'Sad',surprise:'Surprise'})[d.charges[0]];
-  pushSab({kind:'sab',nm:d.nm,hcx:FAM_OF[key]||'Collapse',named:true,
+     shock:'Shock',sadness:'Sad',surprise:'Surprise',anticipation:'Anticipation'})[d.charges[0]];
+  const own=SAB_LIB_BY[KB_KEY(d.nm)];
+  pushSab({kind:'sab',nm:d.nm,hcx:own?own.hcx:(FAM_OF[key]||'Collapse'),named:true,
    score:d.score,exact:d.exact,charges:d.charges,auth:SABAUTH[d.nm]||null,
    parts,w:d.w,ang:meanAng(parts.map(n=>n.ang))});});
+ /* THE ADDRESS ROUTE ASKS THE BAND, 22 October. A library row was named when
+    its three addresses averaged 3.7, whatever the saboteur's own bands said.
+    SNIFFER_SPEC section 3, which the owner rules is canon: "A saboteur is a
+    configuration of fetters at specific intensities, not a thing. Break the
+    co-mingling and the saboteur is gone." Measured on the worked examples,
+    19 of the route's 34 names were saboteurs whose own configuration was off
+    the band ramp entirely, and wiring the rest of the library without this
+    would have added 42 more. So a row with a SAB33 row is named here only
+    while sabFetters, the ramp canon.js already carries for the sniffer, is
+    above zero on the exact charge. The ramp is lenient on purpose: it only
+    reaches zero two points under a band and three points over it, the
+    stretch where the canon says a saboteur is forming or fading. Inside its
+    own band nothing changes: the sweep named every row inside its band
+    exactly as often with this as without it. An inferred cluster has no band
+    and is not asked. The
+    overshot reading below is the opposite installed past 6, not the held
+    configuration, so it is not asked either. */
+ const sabL=sabLevels(true);
+ const formed=function(s){const row=s.unnamed?null:SAB33_BY[KB_KEY(s.nm)];
+  return !row||sabFetters(row[1],sabL)>0;};
  ALL_SAB.forEach(s=>{const parts=s.nids.map(i=>BY[i]).filter(Boolean);
   const w=parts.reduce((a,n)=>a+n.sq,0)/parts.length;
-  if(w>=3.7)pushSab({kind:'sab',nm:s.nm,hcx:s.hcx,unnamed:!!s.unnamed,parts,w,
+  if(w>=3.7&&formed(s))pushSab({kind:'sab',nm:s.nm,hcx:s.hcx,unnamed:!!s.unnamed,parts,w,
    auth:SABAUTH[s.nm]||null,ang:meanAng(parts.map(n=>n.ang))});
   /* the same cluster, overshot. a voice that will not stop rather than one that shuts. */
   const j=parts.reduce((a,n)=>a+n.jq,0)/parts.length;

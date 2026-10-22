@@ -178,7 +178,8 @@ function runDrill(o){
   +'<div class="ad-nm">'+esc(o.nm)+'</div>'
   +(o.auth?'<div class="ad-sub">'+esc(o.auth)+'</div>':'')
   +(o.kind==='sab'&&o.unnamed?'<div class="ad-sub">Inferred. The library has no name for this cluster, so it is named for its seat and its child emotion.</div>'
-   :(o.kind==='sab'&&SAB_PI.indexOf(o.nm)>=0?'<div class="ad-sub">One of the ten Positive Intelligence saboteurs, after Shirzad Chamine.</div>':''))
+   :(o.kind==='sab'&&SAB_PI.indexOf(o.nm)>=0?'<div class="ad-sub">One of the ten Positive Intelligence saboteurs, after Shirzad Chamine'
+     +(SAB_PI_AS[o.nm]?', who calls it the '+esc(SAB_PI_AS[o.nm]):'')+'.</div>':''))
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
   +(o.over
    ? 'Jouissance. The coherent opposite installed past the point where it serves. The address '
@@ -749,7 +750,8 @@ function runSabDrill(s){
  var nodes=(s.nids||[]).map(function(i){return BY[i];}).filter(Boolean);
  var h='<div class="pm-eye">Saboteur, not running</div><div class="ad-nm">'+esc(s.nm)+'</div>'
   +'<div class="ad-sub">'+(s.unnamed?'Inferred from the connection types'
-    :(pi?'One of the ten Positive Intelligence saboteurs, after Shirzad Chamine':'Source library'))+'</div>'
+    :(pi?'One of the ten Positive Intelligence saboteurs, after Shirzad Chamine'
+      +(SAB_PI_AS[s.nm]?', who calls it the '+esc(SAB_PI_AS[s.nm]):''):'Source library'))+'</div>'
   +'<div class="pm-eye">What it would take</div><p class="ad-p">It fires when its addresses carry at '
   +'once. Yours are not carrying enough for it to run, which is why it is here and not on the wheel.'
   +(s.hcx?' It compounds into <b>'+esc(s.hcx)+'</b>.':'')+'</p>'
@@ -827,10 +829,14 @@ function runMaskDrill(m){
    field it was composed from, so a gap prints the old copy and never nothing;
    tests/engine.js fails before that can ship.
 
-   CONNECTED IS ONLY WHAT SAB_LIB KNOWS. Thirteen of the 33 have fetters and a
-   family in the engine. The other twenty were left unnamed by the engine on
-   purpose, and a card that drew three addresses for Martyr would be the guess
-   that boundary exists to refuse, so the gap is printed as a gap. The family
+   CONNECTED IS ONLY WHAT SAB_LIB KNOWS. Thirteen of the 33 had fetters and a
+   family in the engine and the other twenty were left unnamed on purpose,
+   because a card that drew three addresses for Martyr would have been a
+   guess. On 22 October the library was filled from each saboteur's own words
+   and its own canon charges, with the grounding written beside every row in
+   engine/data/nodes.js, and the one row that could not be grounded, Innocent,
+   was left out by name. A saboteur with no row still prints the gap as a gap,
+   never a guess. The family
    prints d and never sub: sub is a diagnostic name, and engine/data/nodes.js
    records the day a person was handed "depression, BPD and anxiety" about
    themselves as a subtitle. */
