@@ -131,7 +131,7 @@ g('5 · CQ bounds and the ceiling');
  const x=reset(0,0,6);
  near(x.CQ,0,1e-12,'no answered laws means zero Integrity and zero CQ');
  ok(E.CQ_MODEL===3,'the formula change has its own model version');
- ok(x.CQ===clamp(x.integrity*x.intention/x.resistance,0,100),
+ ok(x.CQ===Math.max(0,Math.min(100,x.integrity*x.intention/x.resistance)),
   'CQ is Integrity × Intention / Resistance');
  ok(x.integrity>=0&&x.integrity<=10,'Integrity input is on 0..10');
  ok(x.intention>=0&&x.intention<=10,'Intention input is on 0..10');
