@@ -140,6 +140,8 @@ function loopRead(p){
   var at=(!n.name&&typeof tracePatternAttrs==='function')?tracePatternAttrs(n.id):{};
   var row={key:k, id:n.id, name:n.name||at.name||n.id, seat:n.seat||at.seat||null, fetter:n.fetter||at.fetter||null,
    nerve:n.nerve||at.nerve||null, address:/^[0-9]+$/.test(n.id)?+n.id:null,
+   toneHz:typeof n.toneHz==='number'&&isFinite(n.toneHz)?n.toneHz:null,
+   toneSource:n.toneSource||null,
    state:'unanswered', named:false, stories:0, weight:0, lines:0, truths:0,
    protocols:[], rituals:0, practised:0, evFor:0, evAgainst:0, by:null,
    /* WHAT THE PERSON SAID CHANGED after each release here, read off the
