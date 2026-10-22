@@ -437,6 +437,13 @@ function suite(T,E,ok,g){
   const address=G.nodes.find(n=>n.type==='pattern'&&n.id==='53');
   const fetter=address&&address.fetter;
   ok(!!address&&!!fetter,'nerve-address node retains canonical fetter metadata');
+  ok(address&&address.toneHz===T.seatHz(address.seat)&&address.toneSource==='FLOWSEAT seat-tone mapping',
+   'derived nerve-address view resolves its configured tone from FLOWSEAT without persisting duplicate truth');
+  const loop=T.loopRead(p);
+  const marked=loop&&loop.patterns.find(x=>Array.isArray(x.signalSources)&&x.signalSources.some(s=>s.id==='2026-09-21T08:00:00.000Z'));
+  ok(!!marked,'loop read exposes a source-backed signal marker through the existing fetter owner');
+  ok(marked&&marked.signalSources.every(s=>s.status==='candidate'&&s.src==='inferred'),
+   'signal marker retains inferred candidate status rather than implying user confirmation');
   const path=story&&supported&&supported.length?T.tracePath(G,'story:'+story.id,supported[0].to):null;
   ok(!!path&&path.length===2&&path.every(e=>e.src==='inferred'),'story→signal→fetter is traversable with provenance intact');
   const before=JSON.stringify({meter:p.meter,axes:p.axes,laws:p.laws});
