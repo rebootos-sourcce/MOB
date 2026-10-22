@@ -1,5 +1,9 @@
 # ATÜNED Durable Source Index
 
+- [Deep-Psychological Code-to-Registry Contract Comparison](ATUNED_DEEP_PSYCHOLOGICAL_CODE_TO_REGISTRY_CONTRACT_2026-10-22.md) — exact existing engine template/validator contract and field-by-field gap analysis.
+- [Deep-Psychological Record Format TDD](ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_v1.md) — registry requirements, adapter checkpoint, and remaining runtime gates.
+- [Deep-Psychological Registry Adapter](../proto/knowledge/src/adapt-psychological-registry.js) — deterministic separate-namespace adapter; not yet executed or integrated.
+
 This index points to the maintained register and the main source locations.
 
 ## Start here
