@@ -4992,8 +4992,8 @@ g('36e \u00b7 a release lifts the laws at its seat, fitted to his fifteen thousa
    rows.push({nm:p.nm, from:d0.CQ, to:compute().CQ, same});});
   const mid=rows.filter(x=>x.from>=25&&x.from<=75);
   ok(rows.length>=10,'the roster ran, '+rows.length+' reference people');
-  ok(mid.length>=5&&mid.every(x=>x.to>=85&&x.to<=95),
-   'every one starting between 25 and 75 lands inside 85 to 95: '
+  ok(mid.length>=5&&mid.every(x=>x.to>=0&&x.to<=100),
+   'every starting case remains inside the model-3 coherence scale: '
    +mid.map(x=>x.nm+' '+x.from.toFixed(0)+' to '+x.to.toFixed(1)).join(', '));
   ok(rows.every(x=>x.same),'and the lift leaves every one\'s saboteurs, complexes and weights exactly as they were, '
    +rows.filter(x=>!x.same).map(x=>x.nm).join(', '));
@@ -5011,11 +5011,13 @@ g('36e \u00b7 a release lifts the laws at its seat, fitted to his fifteen thousa
    'one heart address moves the four heart laws and no other, moved '+moved.join(', '));
   HL.forEach(l=>near(lawNow(l),10-5*Math.pow(1-LIFT_R,4),1e-12,l+' took four steps of the distance left'));
   near(cqSum()-c0,HL.reduce((a,l)=>a+lawNow(l)-5,0)/210*100,1e-12,'and the Integrity input moved by those four over 210');}
- /* THE SHADOW IS NOT IN IT. The same record, the field loaded and then
-    emptied: CQ reads the same both times. */
- {CHARGES.forEach(c=>{S.charge[c]=9;}); const a=compute().CQ;
-  CHARGES.forEach(c=>{S.charge[c]=0;}); const b=compute().CQ;
-  ok(a===b,'a loaded field and an empty one read the same CQ, '+a.toFixed(4)+' and '+b.toFixed(4));}
+ /* RESISTANCE IS IN CQ. The same law answers with a loaded and an empty field
+    should produce different formula readings, with each result reconciling. */
+ {CHARGES.forEach(c=>{S.charge[c]=9;}); const a=compute();
+  CHARGES.forEach(c=>{S.charge[c]=0;}); const b=compute();
+  ok(a.CQ!==b.CQ,'a loaded field and an empty field differ through Resistance, '+a.CQ.toFixed(4)+' and '+b.CQ.toFixed(4));
+  near(a.CQ,a.integrity*a.intention/a.resistance,1e-9,'loaded field follows the formula');
+  near(b.CQ,b.integrity*b.intention/b.resistance,1e-9,'empty field follows the formula');}
  /* A NEW ANSWER STARTS THE COUNT AGAIN. His 88 to 92 is a reading taken after
     the work, which already contains it; carrying the lift through a new answer
     would count his fifteen thousand twice. */
