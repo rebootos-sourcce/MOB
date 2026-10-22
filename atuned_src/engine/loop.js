@@ -138,7 +138,8 @@ function loopRead(p){
      lookup the story edges are made with. Found by the practitioner page,
      round QB, whose examples reach their patterns through practice first. */
   var at=(!n.name&&typeof tracePatternAttrs==='function')?tracePatternAttrs(n.id):{};
-  var row={key:k, id:n.id, name:n.name||at.name||n.id, seat:n.seat||at.seat||null, fetter:n.fetter||at.fetter||null,
+  var fetterKey=n.fetter||at.fetter||null;
+  var row={key:k, id:n.id, name:n.name||at.name||n.id, seat:n.seat||at.seat||null, fetter:fetterKey,
    nerve:n.nerve||at.nerve||null, address:/^[0-9]+$/.test(n.id)?+n.id:null,
    toneHz:typeof n.toneHz==='number'&&isFinite(n.toneHz)?n.toneHz:null,
    toneSource:n.toneSource||null,
@@ -152,7 +153,7 @@ function loopRead(p){
    /* Derived signal evidence linked through the canonical fetter. The raw
       source remains the story entry; sensory and emotional components are
       not claimed to be separately captured by this legacy text field. */
-   signalSources:signalByFetter[row.fetter||'']||[]};
+   signalSources:signalByFetter[fetterKey||'']||[]};
   if(row.address!==null&&typeof releaseVerifyAt==='function')
    releaseVerifyAt(P,row.address).forEach(function(v){
     row.said.n++; row.said.by[v.value]=(row.said.by[v.value]||0)+1; row.said.last=v.value;});
