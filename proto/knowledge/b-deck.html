@@ -328,6 +328,13 @@ var KB=(function(){
    +(e.theme?sec('What it governs',e.theme):'')
    +(e.distort?sec('What it distorts into',e.distort):'')
    +(e.body&&e.body!==e.def?sec('How it runs',e.body):'')
+   +(e.kind==='node'&&e.trigger?sec('When it fires',e.trigger):'')
+   +(e.kind==='node'&&e.says?sec('Pattern message',e.says,'say'):'')
+   +(e.kind==='node'&&e.inst?sec('Canonical opposite / installation',e.inst):'')
+   +(e.kind==='node'&&e.nextMove?sec('Next move',e.nextMove):'')
+   +(e.kind==='sab'&&e.livedBehavior?sec('Lived behavior and story',e.livedBehavior):'')
+   +(e.kind==='sab'&&e.availableState?sec('Opposite / available state',e.availableState):'')
+   +(e.kind==='sab'&&e.nextMove?sec('Next move',e.nextMove):'')
    +(e.trigger?sec('When it fires',e.trigger):'')
    +(e.says?sec('What it says',e.says,'say'):'')
    +(e.clear?sec('Read clear',e.clear):'')
@@ -340,13 +347,18 @@ var KB=(function(){
   return h;}
  function linksHtml(e){
   var L=(e.links||[]).map(function(id){return BY[id];}).filter(Boolean);
-  if(!L.length)return '<aside class="links"><h3>Linked</h3><p class="dim">Nothing links from here yet.</p></aside>';
-  var shown=L.slice(0,14);
-  return '<aside class="links"><h3>Linked</h3>'+shown.map(function(x){
+  var children=e.kind==='sab'?(e.nids||[]).map(function(i){return BY['node:'+i];}).filter(Boolean):[];
+  var childIds={}; children.forEach(function(x){childIds[x.id]=true;});
+  var rest=L.filter(function(x){return !childIds[x.id];});
+  function rows(items){return items.map(function(x){
    return '<button type="button" class="lk" data-open="'+esc(x.id)+'" data-pv="'+esc(x.id)+'">'+ring(x,32,pct(x))
     +'<span class="t"><span>'+esc(x.nm)+'</span><small>'+esc(KIND[x.kind][0])+'</small></span>'
-    +(known(x.id)?'<span class="state known" style="margin-left:auto"><i></i>Known</span>':'')+'</button>';}).join('')
-   +(L.length>shown.length?'<p class="dim" style="font-size:14px;padding:6px 10px">And '+(L.length-shown.length)+' more, in the search.</p>':'')
+    +(known(x.id)?'<span class="state known" style="margin-left:auto"><i></i>Known</span>':'')+'</button>';}).join('');}
+  if(!children.length&&!rest.length)return '<aside class="links"><h3>Children and linked records</h3><p class="dim">Nothing links from here yet.</p></aside>';
+  return '<aside class="links">'+(e.kind==='sab'?'<h3>Children ('+children.length+')</h3>':'<h3>Linked</h3>')
+   +(children.length?rows(children):'')
+   +(rest.length?'<h3 style="margin-top:18px">Other linked records</h3>'+rows(rest.slice(0,14)):'')
+   +(rest.length>14?'<p class="dim" style="font-size:14px;padding:6px 10px">And '+(rest.length-14)+' more, in the search.</p>':'')
    +'</aside>';}
 
  /* ---- the preview on hover or focus ---- */
@@ -451,10 +463,12 @@ function faces(e){
  F.push(['What it is',e.def,y]);
  if(e.kind==='axis'){F.push(['Where it sits',e.where,e.card]); F.push(['What it says',e.says,'say']);
   F.push(['The release line',e.out]); F.push(['What fills it',e.inst]);}
- else if(e.kind==='sab'){if(e.trigger)F.push(['When it fires',e.trigger]); if(e.says)F.push(['What it says',e.says,'say']);
-  if(e.out)F.push(['The interrupt',e.out]);}
+ else if(e.kind==='sab'){if(e.body)F.push(['How it runs',e.body]); if(e.trigger)F.push(['When it fires',e.trigger]); if(e.says)F.push(['What it says',e.says,'say']);
+  if(e.livedBehavior)F.push(['Lived behavior and story',e.livedBehavior]); if(e.availableState)F.push(['Opposite / available state',e.availableState]);
+  if(e.out)F.push(['The interrupt',e.out]); if(e.nextMove)F.push(['Next move',e.nextMove]);}
  else if(e.kind==='node'){F.push(['Where it sits',e.where]); F.push(['What it governs',e.theme]);
-  F.push(['What it distorts into',e.distort]);}
+  F.push(['What it distorts into',e.distort]); if(e.trigger)F.push(['When it fires',e.trigger]); if(e.says)F.push(['Pattern message',e.says,'say']);
+  if(e.inst)F.push(['Canonical opposite / installation',e.inst]); if(e.nextMove)F.push(['Next move',e.nextMove]);}
  else if(e.kind==='seat'){F.push(['How it runs',e.body]);}
  F.push(['check']);
  return F;}
