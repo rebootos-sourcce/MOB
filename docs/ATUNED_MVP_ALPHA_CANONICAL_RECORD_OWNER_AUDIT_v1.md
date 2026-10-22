@@ -72,13 +72,13 @@ Preserve raw source, provenance, candidate/confirmed distinctions, old-profile c
 
 ## Block status
 - **P0 — COMPLETE as architecture/ownership contract.** This is design/contract completion, not runtime completion.
-- **P1 — next: resolve runtime owner seams and implement record/trace wiring.**
-- **P2 — trace path, derived marker and navigation must be implemented and tested.**
-- **Build/tests — not run in this audit.**
+- **P1 — PARTIAL:** derived signal→fetter and canonical address→fetter association edges are now implemented in `engine/trace.js`; `FLOWSEAT` declaration/consumer remains unresolved and qualium still has no approved value contract.
+- **P2 — PARTIAL:** trace path implemented as derived graph relationships; marker rendering/navigation and full verification remain open.
+- **Build/tests — not run in this pass; candidate CI deploy run is queued, not a test result.**
 
 ## Next recursive actions
-1. P1.1: find `FLOWSEAT` declaration/consumers and map its seat key to canonical address-node IDs.
-2. P1.2: inspect trace edge-attribute validation and choose the smallest backward-compatible association representation for qualium/provenance.
-3. P1/P2: implement derived signal→fetter→address/tone traversal without duplicate records.
-4. Add tests for provenance, cardinality, idempotency, old-profile compatibility, export/import/reload, and metric isolation.
-5. Run build, engine tests, release-chain tests and candidate-revision CI; update development snapshot with evidence.
+1. **P1-A source/tone:** locate `FLOWSEAT` declaration and every consumer; prove the address→seat→tone lookup from source, not assumptions.
+2. **P1-B trace:** done for the minimum graph path: story/imprint→fetter (`supports`, inferred) and canonical address→fetter (`associated_with`, known), derived from existing owners. No new `p.vritti[]` collection.
+3. **P1-C qualium:** still blocked on an approved orientation vocabulary/value contract and canonical owner; do not invent values or add an unchecked edge attribute.
+4. Add/execute tests for provenance, cardinality, idempotency, old-profile compatibility, export/import/reload, and metric isolation.
+5. Run build, engine tests, release-chain tests and candidate-revision CI; update the development snapshot with evidence.
