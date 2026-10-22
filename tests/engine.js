@@ -126,16 +126,17 @@ for(let v=0;v<=10;v+=1){const x=reset(0,0,v); if(x.CQ<prev-1e-9)mono=false; prev
 ok(mono,'CQ never falls as integrity rises');
 
 g('5 · CQ bounds and the ceiling');
-/* CQ MODEL 3: the public output is the canonical formula, not a parallel law-only score. */
+/* CQ MODEL 2, RESTORED 22 October: model 3 put Integrity x Intention /
+   Resistance inside CQ itself and read 36 here. That is the same defect
+   AZ5 already killed, measured again: every law at 10 read 48.7 not 100,
+   and a release lowered CQ on 2,881 of 10,000 fields. Reverted. CQ is the
+   21 laws and nothing else, so six points on all 21 reads 60. */
 {
  const x=reset(0,0,6);
- near(x.CQ,36,1e-12,'six-point Integrity × Intention over floor-1 Resistance gives CQ 36');
- ok(E.CQ_MODEL===3,'the formula change has its own model version');
- ok(x.CQ===Math.max(0,Math.min(100,x.integrity*x.intention/x.resistance)),
-  'CQ is the normalized Integrity × Intention / DQ formula');
- ok(x.integrity>=0&&x.integrity<=10,'Integrity input is on 0..10');
- ok(x.intention>=0&&x.intention<=10,'Intention input is on 0..10');
- ok(x.resistance===x.Rz&&x.resistance>=1,'Resistance is the normalized Rz factor with floor 1');
+ near(x.CQ,60,1e-12,'all 21 laws at six reads 60, the pure law sum');
+ ok(E.CQ_MODEL===2,'the formula reverted to its model 2 stamp');
+ ok(x.integrity===undefined&&x.intention===undefined&&x.resistance===undefined,
+  'the model 3 integrity/intention/resistance split is gone, not just unused');
 }
 
 r=reset(0,0,10);

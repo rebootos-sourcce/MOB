@@ -81,7 +81,7 @@ function lawIn(nm){
    lift starts at nothing on every record the day it ships and only grows from
    releases run after that, so a row before it and a row after it differ by
    work the person actually did, which is a move and is meant to read as one. */
-const CQ_MODEL=3;
+const CQ_MODEL=2;
 
 /* ============================================================
    A RELEASE MOVES THE LAWS AT ITS SEAT, A LITTLE. Ruled 25 September, after
@@ -171,12 +171,13 @@ function lawNow(nm){return lawLift(S.law[nm],lawWork(nm));}
    would be if every open law landed at ten, through this same sum, so the
    two ends of the range are the engine's arithmetic and never a copy of it. */
 function cqSum(open){return SINAMES.reduce((a,l)=>a+(lawIn(l)?lawNow(l):(open||0)),0)/210*100;}
-/* One formula implementation shared by the engine and derived CQ ranges. */
-function coherenceFormula(integrity,intention,resistance){
- /* Integrity and Intention are 0..10. Resistance is the normalized Rz factor
-    derived from total-shadow DQ and the six-axis gate multiplier. Its explicit
-    floor of 1 defines the zero-shadow/zero-gate denominator behavior. */
- return clamp(integrity*intention/Math.max(1,resistance),0,100);}
+/* THE SEESAW, AT MODULE LEVEL so exCeiling can read it too. Will can only
+   push the tipping point up from 5 toward 6, never down: moving it the
+   other way breaks the rule that "paralysed" pulls at least a hundred times
+   harder than "a little tense" at every level of will. Will has no
+   measurement anywhere in this engine yet, so every caller passes 0, which
+   makes this exactly leverPull, to the digit, until it is real. */
+function leverPullWill(v,w){return leverPhi((v-LEVER_MU-w)/LEVER_SD)/leverPhi((10-LEVER_MU-w)/LEVER_SD);}
 /* ============================================================
    WHERE THE FINISHED CQ CAN STILL LAND, read off what is unanswered.
 
@@ -197,14 +198,7 @@ function coherenceFormula(integrity,intention,resistance){
    ============================================================ */
 function cqSpan(){
  var of=SINAMES.length, answered=SINAMES.filter(lawIn).length;
- /* Keep the range on the same formula as the reading. This is a conditional
-    projection: vary unanswered laws from 0 to 10 while holding the current
-    intention/resistance state fixed, rather than presenting raw law scores as
-    though they were CQ. */
- var r=compute();
- var lo=coherenceFormula(cqSum()/10,r.intention,r.resistance);
- var hi=coherenceFormula(cqSum(10)/10,r.intention,r.resistance);
- return {lo:lo, hi:hi, answered:answered, of:of,
+ return {lo:cqSum(), hi:cqSum(10), answered:answered, of:of,
   complete:answered===of, enough:answered*2>=of};}
 /* WHAT A RELEASE WRITES INTO THE LAWS. keys are the patterns of new ground the
    meter has just recorded, so a rerun passes none and moves nothing. Each key's
@@ -436,51 +430,53 @@ function compute(){
  const _vf=verpFactor();
  const Rz=Math.max(1,(1+DQ*0.05)*_vf);
  /* ============================================================
-    CQ INPUT HISTORY — PRIOR MODEL. The previous formula was fitted by the ten
-    thousand-run simulation (AZ5, DECISIONS.md "The CQ model, fitted"). Model 3
-    replaces that public output with the canonical formula below.
+    CQ, THE 21 LAWS SUMMED OVER 210. Ruled 25 September, fitted by the ten
+    thousand run simulation (AZ5, DECISIONS.md "The CQ model, fitted"),
+    and ruled again, as a direct answer to the owner's own restated
+    formula, 22 October: Coherence equals Integrity times Intention
+    divided by Resistance runs for real as the shape of Expression below,
+    not as a second division inside CQ itself. CQ stays pure.
 
-    This was clamp(It*Ig/Rz). Ig was the law mean and It was the band mean of
-    the same 21 laws, so the laws were counted twice and CQ went as their
-    square: every law at 5 read 25 where his ruling reads 50 (AY2). And both
-    factors carried poleMean and JQ, so installing an opposite past 6 pushed
-    JQ up and CQ down: a release lowered CQ in 22 of 10,000 random fields
-    (AY1, measured at 9f4c7e5). Model 3 addresses those defects by using one law-derived Integrity input and
-    the explicit Intention and Resistance inputs in the canonical formula below.
+    MODEL 3, BRIEFLY LIVE ON THIS BRANCH, IS THE SAME DEFECT AS THE
+    FORMULA THE AZ5 SIMULATION ALREADY KILLED, MEASURED AGAIN TODAY.
+    It set CQ to clamp(integrity*It/Rz), It being the band mean of the
+    same 21 laws read a second way. Measured on this exact branch: every
+    law at 10 with axes at their 6 default read 48.7, not the 100 the
+    all-tens invariant requires, and a release lowered CQ on 2,881 of
+    10,000 random fields, where the pure sum lowers it on none. That is
+    worse than the formula AY1 already measured and killed at 22 of
+    10,000. Reverted; new data for Intention and Resistance does not
+    make the same shape of division safe inside CQ.
 
-    AN UNANSWERED LAW COUNTS 0 AGAINST A FIXED 210, so the Integrity input fills
-    from zero as laws land. The final CQ can also move with Intention and
-    Resistance; the formula, not the law sum alone, is the public reading. "I don't
-    want it to go from 100 down, because that's demoralizing." The mean of
-    the laws answered so far, which the desktop runs, fell in every one of
-    10,000 simulated intakes; this rule fell in none of 630,000 answers.
+    AN UNANSWERED LAW COUNTS 0 AGAINST A FIXED 210, so CQ fills from zero
+    as the laws land and can only rise while a person is answering. "I
+    don't want it to go from 100 down, because that's demoralizing." The
+    mean of the laws answered so far, which the desktop runs, fell in
+    every one of 10,000 simulated intakes; this rule fell in none of
+    630,000 answers.
 
     The default 6 still sits in S.law for an unanswered law, because the
-    band relief inside sq and the band-derived Intention readout need a number.
-    It is excluded from Integrity by lawIn(); if no laws are answered, the
-    public CQ is explicitly zero. */
+    band relief inside sq and the Ig/It readouts still need a number.
+    It never enters CQ: lawIn() is what says whether a law was answered. */
  const answered=SINAMES.filter(lawIn).length;
  const complete=(answered===SINAMES.length);
- /* CANONICAL COHERENCE FORMULA, MODEL 3.
-    Integrity is the existing 21-law score on its fixed 0..10 input scale;
-    unanswered laws contribute zero, and release lift is already included by
-    cqSum()/lawNow(), so release work is not counted twice. Intention is the
-    existing band-derived It value on its 0..10 scale. Resistance is the
-    normalized Rz factor derived from DQ and the six-axis gate factor, with
-    an explicit floor of 1. CQ is the single operational output of
-    Integrity × Intention / Resistance.
-    This deliberately replaces the prior law-only CQ output; history is
-    stamped with CQ_MODEL=3 so values from the old arithmetic are not compared
-    as though they were produced by this formula. */
- const integrity=cqSum()/10;
- const intention=It;
- const resistance=Rz;
- const CQ=answered===0?0:coherenceFormula(integrity,intention,resistance);
- /* THE LEVER. Expression is CQ times what the shadow leaves: "CQ 100 SQ 0
-    ... one pulls down the other, it's a lever", and the pull is his bell,
-    applied per address because "a little tense" and "paralyzed" are
-    intensity at a place. PULL is the mean of leverPull over the 112. */
- const PULL=SQ.reduce((a,v)=>a+leverPull(v),0)/SQ.length;
+ /* each law as answered, plus what releases at its seat have added since. See
+    LIFT_R above. It is still a law score and nothing else. */
+ const CQ=cqSum();
+ /* THE SEESAW. Expression is CQ times what the shadow leaves, and this is
+    where Integrity times Intention divided by Resistance actually runs:
+    Integrity is the plank (CQ itself), Intention and Resistance are the two
+    ends. "Frames, gates, bends, shows." The bend is the same bell curve as
+    before, Phi over the 112 SQ values, centred at 5, width 1.25, except the
+    centre now moves with WILL: willpower can only push the tipping point
+    up, from 5 toward 6, never down, because moving it down would break the
+    rule that "paralysed" must pull at least a hundred times harder than "a
+    little tense" at every level of will. WILL has no measurement anywhere
+    in this engine yet, so it is 0 here, which makes this exactly the curve
+    already shipped, to the digit. Nothing moves until Will is real; that is
+    the correct behaviour, not a gap. */
+ const WILL=0;
+ const PULL=SQ.reduce((a,v)=>a+leverPullWill(v,WILL),0)/SQ.length;
  const EX=CQ*(1-PULL);
  /* One table. This was a literal copy of the thresholds and the names, and a
     previous commit claimed to have removed the duplicate after removing only
@@ -589,7 +585,7 @@ function compute(){
  const carrying=W.filter(n=>n.sq>0).sort((a,b)=>b.sq-a.sq);
  return {loaded,carrying,heaviest:carrying[0]||null,
   sabs,cxs,hys,sups,maskRing,DQ,SQ,PULL,EX,Rz,vf:_vf,SQm,poleMean,JQ,excess,
-  FAM_POLE,dist,Ig,It,integrity,intention,resistance,CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
+  FAM_POLE,dist,Ig,It,will:WILL,CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
   outward,organized,gov,
   will,drag,mask,darkB,darkV,root,rootsIn,weakL,balance:balance()};
 }
@@ -616,18 +612,7 @@ function compute(){
    every address, sq is zero whatever is installed, the four outside take a
    seat mean of zero, and the pull is leverPull(0) at all 112. Nothing is
    mutated and nothing is guessed. */
-function exCeiling(){
- /* Evaluate the formula at the shadowless ceiling without changing the live
-    field: Integrity keeps answered-law/release-lift state; Intention loses
-    the pole/JQ adjustments caused by shadow; Resistance keeps the story gate
-    factor but removes the DQ multiplier because the shadow is zero. */
- var answered=SINAMES.filter(lawIn).length;
- var integrity=cqSum()/10;
- var intention=clamp(BANDS.reduce(function(a,b){return a+bandIg(b);},0)/BANDS.length,0,10);
- var resistance=Math.max(1,verpFactor());
- var shadowlessCQ=answered===0?0:coherenceFormula(integrity,intention,resistance);
- return shadowlessCQ*(1-leverPull(0));
-}
+function exCeiling(){return cqSum()*(1-leverPullWill(0,0));}
 /* the gap a release still has in it, for the person about to run one */
 function exHeadroom(exNow){return Math.max(0,exCeiling()-exNow);}
 
