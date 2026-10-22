@@ -111,7 +111,7 @@ function lpRow(x,i){
 function lpSignalHtml(x){
  var src=Array.isArray(x.signalSources)?x.signalSources:[];
  if(!src.length)return '';
- var nerve=x.nerve?'<p class="lp-signal-node">Nerve address '+esc(String(x.address||x.id))+': '+esc(x.nerve)+'. Tone remains owned by the address model; no separate tone value is inferred here.</p>':'';
+ var nerve=x.nerve?'<p class="lp-signal-node">Nerve address '+esc(String(x.address||x.id))+': '+esc(x.nerve)+'. '+(x.toneHz!==null&&x.toneHz!==undefined?'Configured seat-tone reference: '+esc(String(x.toneHz))+' Hz ('+esc(x.toneSource||'FLOWSEAT')+'); this is a sound-healing reference, not a measured physiological frequency.':'No canonical tone reference is mapped for this address.')+'</p>':'';
  return '<details class="lp-signal"><summary>Signal marker · '+src.length+' source'+(src.length===1?'':'s')+'</summary>'
   +'<p class="lp-signal-note">Candidate signal-to-fetter association. This is an interpretation of source text, not proof of causation. Raw sensory and emotional components are not yet separately represented in this record.</p>'
   +nerve+'<ol class="lp-signal-sources">'+src.map(function(s){
