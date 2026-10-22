@@ -1,14 +1,14 @@
 # ATÜNED MVP Alpha — Development Statistics Snapshot
 Snapshot: 2026-10-21
 Scope: Unified Vritti / fetter / qualium / nerve-node architecture workstream
-Baseline type: First evidence-backed snapshot for this scoped workstream; no previous comparable snapshot exists.
+Baseline type: Updated after P0 contract closure; first comparable runtime snapshot remains unavailable, so no build delta is claimed.
 
 ## Headline
 | Measure | Current value | Basis |
 |---|---:|---|
 | Runtime acceptance criteria verified complete | 0% | No candidate-revision build/test run has been verified in this execution pass. |
 | Runtime acceptance criteria remaining or unverified | 100% | All runtime integration and regression criteria remain open until source implementation is tested. |
-| Architecture contract and owner audit | 100% of the documentation task | Architecture and TDD now include qualium as orientation of distortion; source-owner audit records known owners and unresolved gaps. This is documentation completion, not runtime completion. |
+| P0 canonical architecture/ownership contract | 100% | Canonical definitions, target owners, cardinality, provenance, CQ-version policy, and runtime-gap transfer are recorded in the v1.1 owner audit. This is contract completion, not runtime completion. |
 | Build delta | N/A | First comparable snapshot; no previous evidence-backed baseline. |
 
 ## Block-by-block progress
@@ -16,7 +16,7 @@ Percentages below are for the defined implementation acceptance criteria, not fi
 
 | Block | Verified complete | Remaining / unverified | Status and evidence |
 |---|---:|---:|---|
-| P0 — Canonical engine contract and owner map | 50% | 50% | Definitions are reconciled in the architecture/TDD and the current record owners are mapped. Exact tone source and canonical qualium field/taxonomy remain unresolved. See ATUNED_MVP_ALPHA_CANONICAL_RECORD_OWNER_AUDIT_v1.md. |
+| P0 — Canonical engine contract and owner map | 100% | 0% | Complete as architecture/ownership contract. Qualium is the Vritti→fetter interpretation orientation; tone belongs to canonical nerve-address node/seat owner; CQ equation version policy and metric isolation are fixed. Runtime source wiring is P1, not a P0 blocker. See ATUNED_MVP_ALPHA_CANONICAL_RECORD_OWNER_AUDIT_v1.md v1.1. |
 | P1 — Record and schema wiring | 0% | 100% | No runtime schema/persistence changes made; intentionally avoided guessing a qualium owner. |
 | P2 — Trace graph integration | 0% | 100% | Existing graph exists, but the new unified path is not implemented/verified. |
 | P3 — CQ/DQ/SQ calculation integration | 0% | 100% | Existing calculations are present; this pass did not complete the versioned reconciliation of the conceptual CQ formula or add regression proof for relationship isolation. |
@@ -31,16 +31,15 @@ Percentages below are for the defined implementation acceptance criteria, not fi
 - Test status: passed 0 confirmed; failed 0 confirmed; blocked/not run: documented build, engine, and release-chain tests. “0 passed” means no run evidence is available, not that tests failed.
 
 ## Open gaps
-1. Locate and confirm the canonical FLOWSEAT declaration and whether its frequency is keyed by address node or band/seat.
-2. Define qualium's allowed orientation vocabulary and canonical owner. Do not silently equate it with NODES[].d, inward/outward charge balance, or tone.
-3. Decide the minimal trace representation and edge semantics using the existing graph rules.
-4. Implement the derived graph path and marker/navigation without adding a duplicate p.vritti[] inventory.
-5. Add relationship provenance, idempotency, old-profile compatibility, export/import/reload, and metric-isolation tests.
-6. Reconcile the conceptual CQ formula with the existing 21-law CQ calculator through a versioned decision.
-7. Run ./atuned_src/BUILD-engine.sh, node tests/engine.js, and the documented release-chain test command in the supported environment; inspect CI for the candidate revision.
+1. P1: Locate and confirm the canonical FLOWSEAT declaration/consumers and map the seat key to canonical address-node IDs.
+2. P1/P2: Implement the Vritti→fetter association with qualium orientation and provenance using existing owners and strict trace validation; no p.vritti[] inventory.
+3. P2: Add derived marker/navigation and visibly distinguish candidate from user-confirmed links.
+4. Add tests for relationship provenance, cardinality, idempotency, old-profile compatibility, export/import/reload, and metric isolation.
+5. Keep the current 21-law CQ as the sole operational calculator until the conceptual equation receives a fully specified, versioned implementation contract.
+6. Run ./atuned_src/BUILD-engine.sh, node tests/engine.js, and the documented release-chain test command in the supported environment; inspect CI for the candidate revision.
 
 ## Next recursive execution target
-P0.1 — Locate and inspect FLOWSEAT and its consumers, then establish the canonical tone owner. In the same block, map the qualium orientation vocabulary without assuming it equals the node-table distortion descriptor or charge-direction grouping. Once those two owner gaps are resolved, continue immediately to P1/P2 wiring.
+P0 is complete. Next: execute P1/P2 concurrently where dependencies allow: (a) trace/schema implementation audit for qualium association attrs and backward compatibility; (b) locate FLOWSEAT declaration/consumers and map seat→address; (c) build acceptance tests for provenance, idempotency and metric isolation. Integrate these results before making shared-file edits, then run build/tests.
 
 ## Audit rule
 Do not upgrade a percentage because a document was written or a commit exists. Mark criteria complete only when the defined source/behavior criteria and applicable verification evidence are satisfied. Update this file after every subsequent build/pass and preserve the previous snapshot for delta calculation.
