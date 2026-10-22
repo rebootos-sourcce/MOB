@@ -5,7 +5,7 @@
      still covers the app and still takes pointer events. So the stamp on the
      card is gone the moment the app is usable, which is exactly when somebody
      asks which build they are looking at. The root element never goes. -->
-<html lang="en" data-build="v2412 61a1d7b1 2026-10-22 20:08"><head><meta charset="utf-8">
+<html lang="en" data-build="v2415 41009c04 2026-10-22 21:15"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>SOURCE · your field</title>
 <meta name="description" content="A field instrument. 112 addresses, nine poled axes, twenty-one laws.">
@@ -4758,10 +4758,11 @@ body.punch .ip.kid{background:color-mix(in srgb,var(--c) 68%,var(--panel-2))}
 .ad-q{font-size:14px;line-height:1.7;color:var(--dim);font-style:italic;
  border-left:3px solid var(--gold);padding-left:12px;margin:8px 0;font-weight:300}
 /* THE SABOTEUR CARD'S QUIET END, round SB. Connected is the engine's own map
-   for the thirteen of the 33 that SAB_LIB names, set under a rule so it reads
-   as reference and not as more of the reading above it. The gap is the other
-   twenty, dashed, because a missing map drawn in the same frame as a real one
-   reads as a map that came back empty. */
+   for every saboteur SAB_LIB names, set under a rule so it reads as reference
+   and not as more of the reading above it. The gap is a saboteur with no row,
+   dashed, because a missing map drawn in the same frame as a real one reads
+   as a map that came back empty. SAB_LIB was thirteen of the 33 in round SB
+   and is all of them but Innocent since 22 October. */
 .ad-con{margin-top:14px;padding-top:10px;border-top:1px solid var(--edge)}
 .ad-con .ad-sub,.ad-gap .ad-sub{margin-bottom:6px}
 .ad-gap{margin-top:14px;padding:8px 12px 4px;border:1px dashed var(--edge-2);border-radius:var(--r-s)}
@@ -9835,7 +9836,224 @@ body.rail2 .rbar .rb-row,body.rail2 .rbar::before{pointer-events:none}
    ============================================================ */
 const NODES=
 [{"i":1,"k":"Fear","b":"Root","n":"Lumbar Plexus","a":"Instinct, threat","d":"Avoidance","c":"Fear"},{"i":2,"k":"Shame","b":"Root","n":"Pudendal Nerve","a":"Worth, embodiment","d":"Self-rejection","c":"Shame"},{"i":3,"k":"Guilt","b":"Root","n":"Inferior Hypogastric Plexus","a":"Responsibility","d":"Overcompensation","c":"Shame"},{"i":4,"k":"Control","b":"Root","n":"Sacral Nerves","a":"Safety through force","d":"Domination","c":"Fear"},{"i":5,"k":"Insecurity","b":"Root","n":"Pelvic Nerve","a":"Belonging","d":"Dependency","c":"Fear"},{"i":6,"k":"Victimhood","b":"Root","n":"Coccygeal Plexus","a":"Agency","d":"Blame","c":"Sadness"},{"i":7,"k":"Scarcity","b":"Root","n":"Iliac Nerve Branch","a":"Resources","d":"Hoarding","c":"Fear"},{"i":8,"k":"Root_08_Unnamed","b":"Root","n":"Cauda Equina","a":"Privilege","d":"Deservingness","c":null},{"i":9,"k":"Possession","b":"Root","n":"Gluteal Nerve","a":"Attachment","d":"Control of objects","c":"Shock"},{"i":10,"k":"Lethargy","b":"Root","n":"Obturator Nerve","a":"Momentum","d":"Stagnation","c":"Sadness"},{"i":11,"k":"Resistance","b":"Root","n":"Perineal Branch","a":"Change","d":"Holding on","c":"Fear"},{"i":12,"k":"Compulsion","b":"Root","n":"Pelvic Floor Nerves","a":"Safety rituals","d":"Fixation","c":"Fear"},{"i":13,"k":"Disconnection","b":"Root","n":"Sacral Root Ganglia","a":"Presence","d":"Numbness","c":"Sadness"},{"i":14,"k":"Escapism","b":"Root","n":"Sciatic Nerve","a":"Facing pain","d":"Running","c":"Joy"},{"i":15,"k":"Panic","b":"Root","n":"Lumbar Sympathetic Chain","a":"Reaction","d":"Unconsciousness","c":"Fear"},{"i":16,"k":"Collapse","b":"Root","n":"Spinal Cord Base","a":"Structure","d":"Abandoning Self","c":"Sadness"},{"i":17,"k":"Addiction","b":"Sacral","n":"Sacral Plexus","a":"Craving","d":"Obsession","c":"Joy"},{"i":18,"k":"Lust","b":"Sacral","n":"Genitofemoral Nerve","a":"Desire","d":"Objectification","c":"Joy"},{"i":19,"k":"Envy","b":"Sacral","n":"Internal Pudendal Nerve","a":"Lack","d":"Hatred of others' joy","c":"Resentment"},{"i":20,"k":"Jealousy","b":"Sacral","n":"Obturator Nerve","a":"Possessiveness","d":"Paranoia","c":"Resentment"},{"i":21,"k":"Co-Dependency","b":"Sacral","n":"Pelvic Splanchnic Nerves","a":"Neediness","d":"Self-abandonment","c":"Disgust"},{"i":22,"k":"Shame Of Desire","b":"Sacral","n":"Hypogastric Plexus","a":"Repression","d":"Suppression","c":"Joy"},{"i":23,"k":"Hypersexuality","b":"Sacral","n":"Pudendal Plexus","a":"Validation","d":"Dissociation","c":"Joy"},{"i":24,"k":"Avoidance Of Pleasure","b":"Sacral","n":"Pelvic Nerve","a":"Sensuality","d":"Denial of life","c":"Joy"},{"i":25,"k":"Manipulation Through Emotion","b":"Sacral","n":"Uterovaginal Plexus","a":"Control","d":"Emotional blackmail","c":"Anger"},{"i":26,"k":"Oversensitivity","b":"Sacral","n":"Inferior Hypogastric Plexus","a":"Pain threshold","d":"Victim reactivity","c":"Shock"},{"i":27,"k":"Fantasy","b":"Sacral","n":"Splanchnic Root","a":"Escapism","d":"Delusion","c":"Joy"},{"i":28,"k":"Infatuation","b":"Sacral","n":"Lumbar-Sacral Overlap","a":"Projection","d":"Idealization","c":"Joy"},{"i":29,"k":"Obsession","b":"Sacral","n":"Pelvic Ganglia","a":"Focus","d":"Fixation","c":"Fear"},{"i":30,"k":"Guilt Of Pleasure","b":"Sacral","n":"Sacral Outflow","a":"Joy","d":"Self-denial","c":"Joy"},{"i":31,"k":"Need For Approval","b":"Sacral","n":"Iliac Branches","a":"Identity in others","d":"Conformity","c":"Shame"},{"i":32,"k":"Excess Emotion","b":"Sacral","n":"Urogenital Nerve","a":"Drama","d":"Flooding","c":"Shock"},{"i":33,"k":"Pride","b":"Solar","n":"Celiac Plexus","a":"Self-importance","d":"Superiority","c":"Anger"},{"i":34,"k":"Arrogance","b":"Solar","n":"Greater Splanchnic Nerve","a":"Ego","d":"Inflated Self","c":"Anger"},{"i":35,"k":"Competition","b":"Solar","n":"Aortic Plexus","a":"Comparison","d":"Division","c":"Anger"},{"i":36,"k":"Anger","b":"Solar","n":"Celiac Plexus","a":"Power misused","d":"Attack","c":"Anger"},{"i":37,"k":"Judgment","b":"Solar","n":"Splanchnic Plexus","a":"Othering","d":"Projection","c":"Anger"},{"i":38,"k":"Entitlement","b":"Solar","n":"Renal Plexus","a":"Control of outcomes","d":"Deserving","c":"Anger"},{"i":39,"k":"Rebellion","b":"Solar","n":"Renal Ganglia","a":"Defiance","d":"Misalignment","c":"Anger"},{"i":40,"k":"Perfectionism","b":"Solar","n":"Mesenteric Plexus","a":"Idealism","d":"Rigidity","c":"Fear"},{"i":41,"k":"Force","b":"Solar","n":"Splenic Plexus","a":"Control over flow","d":"Overpowering","c":"Fear"},{"i":42,"k":"Rigidity","b":"Solar","n":"Pancreatic Plexus","a":"Will","d":"Inflexibility","c":"Fear"},{"i":43,"k":"Resentment (Solar)","b":"Solar","n":"Suprarenal Plexus","a":"Grudge","d":"Recycled anger","c":"Resentment"},{"i":44,"k":"Unworthiness","b":"Solar","n":"Inferior Mesenteric Plexus","a":"Confidence","d":"Minimization","c":"Shame"},{"i":45,"k":"Anxiety","b":"Solar","n":"Adrenal Medulla","a":"Control of outcomes","d":"Future fear","c":"Fear"},{"i":46,"k":"Self-Judgment (Solar)","b":"Solar","n":"Epigastric Branches","a":"Inner war","d":"Invalidation","c":"Shame"},{"i":47,"k":"Need To Win","b":"Solar","n":"Vagus-Liver Plexus","a":"Ego","d":"Domination","c":"Anger"},{"i":48,"k":"Superiority","b":"Solar","n":"Hepatic Nerve","a":"Hierarchy","d":"Distinction","c":"Anger"},{"i":49,"k":"Hatred","b":"Heart","n":"Cardiac Plexus","a":"Forgiveness","d":"Vengeance","c":"Anger"},{"i":50,"k":"Resentment (Heart)","b":"Heart","n":"Thoracic Nerves","a":"Holding pain","d":"Withholding love","c":"Resentment"},{"i":51,"k":"Self-Judgment (Heart)","b":"Heart","n":"Vagus Nerve","a":"Grace","d":"Harshness","c":"Shame"},{"i":52,"k":"Betrayal","b":"Heart","n":"Thoracic Plexus","a":"Trust","d":"Abandonment","c":"Shock"},{"i":53,"k":"Separation","b":"Heart","n":"Pericardial Nerve","a":"Unity","d":"Isolation","c":"Sadness"},{"i":54,"k":"Martyrdom","b":"Heart","n":"Intercostal Nerves","a":"Self-sacrifice","d":"Guilt-driven love","c":"Sadness"},{"i":55,"k":"Longing","b":"Heart","n":"Cardiac Nerve Plexus","a":"Presence","d":"Fantasy","c":"Sadness"},{"i":56,"k":"Closed Heart","b":"Heart","n":"Costal Branches","a":"Vulnerability","d":"Armor","c":"Sadness"},{"i":57,"k":"Manipulative Kindness","b":"Heart","n":"Phrenic Nerve","a":"Motive","d":"Transactional giving","c":"Anger"},{"i":58,"k":"Expectation","b":"Heart","n":"Pulmonary Nerve Plexus","a":"Outcome","d":"Contractual love","c":"Fear"},{"i":59,"k":"Blame","b":"Heart","n":"Thoracic Ganglia","a":"Responsibility","d":"Externalization","c":"Anger"},{"i":60,"k":"False Love","b":"Heart","n":"Anterior Thoracic Roots","a":"Image","d":"Projection","c":"Disgust"},{"i":61,"k":"Rejection","b":"Heart","n":"Vagal Branches","a":"Inclusion","d":"Othering","c":"Sadness"},{"i":62,"k":"Avoidance Of Grief","b":"Heart","n":"Great Cardiac Nerve","a":"Loss","d":"Suppression","c":"Joy"},{"i":63,"k":"Need To Be Needed","b":"Heart","n":"Coronary Plexus","a":"Identity","d":"Validation","c":"Disgust"},{"i":64,"k":"Deceit","b":"Throat","n":"Cervical Plexus","a":"Honesty","d":"Manipulation","c":"Disgust"},{"i":65,"k":"Self-Silencing","b":"Throat","n":"Vagus Nerve","a":"Voice","d":"Withholding","c":"Shame"},{"i":66,"k":"People Pleasing","b":"Throat","n":"Superior Laryngeal Nerve","a":"Approval","d":"Inauthenticity","c":"Shame"},{"i":67,"k":"Lying","b":"Throat","n":"Recurrent Laryngeal Nerve","a":"Integrity","d":"Protection","c":"Disgust"},{"i":68,"k":"Interrupting","b":"Throat","n":"Pharyngeal Nerve","a":"Listening","d":"Imposition","c":"Anger"},{"i":69,"k":"Comparison","b":"Throat","n":"Accessory Nerve","a":"Voice Identity","d":"Envy","c":"Shame"},{"i":70,"k":"Excuse","b":"Throat","n":"Glossopharyngeal Nerve","a":"Ownership","d":"Victimization","c":"Disgust"},{"i":71,"k":"Stage Performing","b":"Throat","n":"Laryngeal Plexus","a":"Image","d":"Persona","c":"Shock"},{"i":72,"k":"Speaking To Be Right","b":"Throat","n":"Cervical Ganglia","a":"Ego","d":"Righteousness","c":"Anger"},{"i":73,"k":"Manic Expression","b":"Throat","n":"Spinal Accessory Nerve","a":"Over-talking","d":"Energy discharge","c":"Shock"},{"i":74,"k":"Talking To Avoid Feeling","b":"Throat","n":"Subclavian Nerve","a":"Presence","d":"Avoidance","c":"Shock"},{"i":75,"k":"Spiritual Language To Manipulate","b":"Throat","n":"Brachial Plexus","a":"Belonging","d":"Performance","c":"Disgust"},{"i":76,"k":"Delusion","b":"3rd Eye","n":"Optic Nerve","a":"Truth","d":"Illusion","c":"Disgust"},{"i":77,"k":"Cynicism","b":"3rd Eye","n":"Oculomotor Nerve","a":"Clarity","d":"Dismissal","c":"Disgust"},{"i":78,"k":"Distrust","b":"3rd Eye","n":"Abducens Nerve","a":"Faith","d":"Suspicion","c":"Fear"},{"i":79,"k":"Hypervigilance","b":"3rd Eye","n":"Optic Chiasm","a":"Control","d":"Overthinking","c":"Fear"},{"i":80,"k":"Dogma","b":"3rd Eye","n":"Pineal Gland","a":"Belief","d":"Rigidity","c":"Disgust"},{"i":81,"k":"Overanalysis","b":"3rd Eye","n":"Trigeminal Nerve","a":"Clarity","d":"Paralysis","c":"Shock"},{"i":82,"k":"Projection","b":"3rd Eye","n":"Visual Cortex","a":"Othering","d":"Blame","c":"Disgust"},{"i":83,"k":"Paranoia","b":"3rd Eye","n":"Lateral Geniculate","a":"Fear","d":"Narrative spinning","c":"Fear"},{"i":84,"k":"Distortion","b":"3rd Eye","n":"Occipital Nerve","a":"Reality","d":"Mis-seeing","c":"Disgust"},{"i":85,"k":"Doubt","b":"3rd Eye","n":"Cortical Visual Pathway","a":"Intuition","d":"Dismissal","c":"Fear"},{"i":86,"k":"Idealism","b":"3rd Eye","n":"Supraoptic Nucleus","a":"Fantasy","d":"Denial of reality","c":"Joy"},{"i":87,"k":"Lack Of Discernment","b":"3rd Eye","n":"Thalamus","a":"Perception","d":"Blind trust","c":"Disgust"},{"i":88,"k":"Doubt Of God","b":"Crown","n":"Corpus Callosum","a":"Faith","d":"Separation","c":"Resentment"},{"i":89,"k":"Hubris","b":"Crown","n":"Prefrontal Cortex","a":"Alignment","d":"Ego-God complex","c":"Anger"},{"i":90,"k":"Spiritual Pride","b":"Crown","n":"Pineal-Hypothalamic Axis","a":"Insight","d":"Superiority","c":"Disgust"},{"i":91,"k":"Nihilism","b":"Crown","n":"Parietal Cortex","a":"Meaning","d":"Apathy","c":"Sadness"},{"i":92,"k":"Spiritual Escapism","b":"Crown","n":"Dorsal Raphe Nucleus","a":"Presence","d":"Bypass","c":"Joy"},{"i":93,"k":"False Humility","b":"Crown","n":"Frontal Lobe","a":"Disguise","d":"Manipulation","c":"Shame"},{"i":94,"k":"Seeking Validation","b":"Crown","n":"Cerebral Cortex","a":"Ego","d":"Worship addiction","c":"Shame"},{"i":95,"k":"Savior Complex","b":"Crown","n":"Posterior Cingulate","a":"Responsibility","d":"Overreach","c":"Disgust"},{"i":96,"k":"Condemnation","b":"Crown","n":"Reticular Formation","a":"Mercy","d":"Judgment","c":"Anger"},{"i":97,"k":"Need To Be Special","b":"Crown","n":"Anterior Cingulate","a":"Identity","d":"Distinction","c":"Disgust"},{"i":98,"k":"Unworthy Of God","b":"Crown","n":"Pineal-Amygdala Axis","a":"Divinity","d":"Disbelief","c":"Resentment"},{"i":99,"k":"Knowing Better Than God","b":"Crown","n":"Default Mode Network","a":"Will","d":"Arrogance","c":"Resentment"},{"i":100,"k":"Denial Of Truth","b":"Crown","n":"Medial Forebrain Bundle","a":"Insight","d":"Resistance","c":"Resentment"},{"i":101,"k":"Rejection Of Spirit","b":"Crown","n":"Posterior Commissure","a":"Divinity","d":"Abandonment","c":"Resentment"},{"i":102,"k":"Fear Of God","b":"Crown","n":"Temporal Lobe","a":"Love","d":"Dread","c":"Resentment"},{"i":103,"k":"Anger At God","b":"Crown","n":"Hypothalamus","a":"Trust","d":"Rebellion","c":"Resentment"},{"i":104,"k":"Forgetfulness","b":"Crown","n":"Hippocampus","a":"Identity","d":"Amnesia","c":"Sadness"},{"i":105,"k":"Denial Of Light","b":"Crown","n":"Epithalamus","a":"Revelation","d":"Avoidance","c":"Resentment"},{"i":106,"k":"Rejection Of Unity","b":"Crown","n":"Neocortex","a":"Connection","d":"Separation","c":"Resentment"},{"i":107,"k":"Self-Exclusion","b":"Crown","n":"Superior Sagittal Sinus","a":"Belonging","d":"Disconnection","c":"Shame"},{"i":108,"k":"Endless Seeking","b":"Crown","n":"Ascension Column","a":"Arrival","d":"Never enough","c":"Sadness"},{"i":109,"k":"Sol Star","b":"Field-Above","n":null,"a":"Higher Self anchor","d":"field","c":null},{"i":110,"k":"Stellar Gateway","b":"Field-Above","n":null,"a":"Source connection","d":"field","c":null},{"i":111,"k":"Earth Star","b":"Field-Below","n":null,"a":"Grounding anchor","d":"field","c":null},{"i":112,"k":"Gaia Gateway","b":"Field-Below","n":null,"a":"Cosmic anchor","d":"field","c":null}];
-const SAB_LIB=[{"nm":"Controller","nids":[4,36,50],"hcx":"Rigidity"},{"nm":"Victim","nids":[6,50,3],"hcx":"Collapse"},{"nm":"Perfectionist","nids":[40,37,45],"hcx":"Rigidity"},{"nm":"Pleaser","nids":[66,2,65],"hcx":"Collapse"},{"nm":"Hyper-Achiever","nids":[33,40,48],"hcx":"Grandiosity"},{"nm":"Hyper-Vigilant","nids":[79,1,82],"hcx":"Dysregulation"},{"nm":"Judge","nids":[37,48,82],"hcx":"Predatory"},{"nm":"Avoider","nids":[1,14,89],"hcx":"Dissociation"},{"nm":"Worrywart","nids":[45,1,3],"hcx":"Dysregulation"},{"nm":"Loner","nids":[55,1,49],"hcx":"Dissociation"},{"nm":"Nihilist","nids":[91,88,90],"hcx":"Collapse"},{"nm":"Aggressor","nids":[36,49,38],"hcx":"Predatory"},{"nm":"Imposter","nids":[2,45,66],"hcx":"Collapse"},{"nm":"Superior","nids":[48,33,38],"hcx":"Grandiosity"}];
+/* ============================================================
+   SAB_LIB · each named saboteur's three addresses and its family.
+
+   compute() names a row on the address route when the mean load of its three
+   addresses reaches 3.7, and draws it there; the card prints them under
+   Connected (kbSabLinked, ui/drills.js); the family is the hyper-complex it
+   compounds into. The engine reads an address only through the charge it
+   carries, n.cf, so three addresses are three charges at three places.
+
+   THE FIRST THIRTEEN came with the original source and are kept as written.
+   They were picked by name against each saboteur's own words, before SAB33 was
+   ported on 20 September, and several read a charge their canon row does not
+   key on: Pleaser's three all carry Shame, where its row is apathy and fear.
+   That is recorded here and not changed, because moving them moves every
+   reading that already names them.
+
+   ROWS WERE ADDED ON 22 OCTOBER for every saboteur the codex defines but one,
+   flagged below, so it has a place in the body and not only a charge range.
+   Each was picked the way the thirteen were, with one check they never had:
+     1. by name, against its own words: SABDEF's definition, trigger and
+        sentence in kb.js, and SABAUTH's composition in canon.js. Each note
+        says which words each address answers.
+     2. every address carries one of the row's own SAB33 charges. An address
+        carrying another charge would name the saboteur off a charge it is not
+        made of. Where the most literal address carries the wrong charge it
+        was left out, and the note says so.
+     3. no added row shares two addresses with any row. Two rows sharing two
+        of three fire together and are one detector with two names. One
+        legacy pair already does, Pleaser and Imposter on 2 and 66, and is
+        recorded rather than changed.
+   The family. The owner's TULA notes ("Emotions & Saboteurs & Hyper
+   Personalities", April 2026) list the saboteurs each hyper-complex
+   personality comes from, and HCX_LIB's sub names the personalities each
+   family translates. Where TULA names one family it is used. Where it names
+   two, the family whose d describes the saboteur's own SABDEF behaviour is
+   used and both are named. Where it names none, the nearest canon sibling
+   decides and the note says which.
+   A row also leans the way its bands do: the charge with the higher band
+   gets two of the three addresses.
+
+   ONE IS FLAGGED AND NOT WIRED: INNOCENT, S28. Its canon row is one low band,
+   fear 2 to 4, and the addresses that say what it does, refusal to see, are
+   87 Lack Of Discernment and 76 Delusion, which carry Disgust. A triple on
+   its own charge is three fear addresses, a plain fear detector, and three
+   fear addresses reach the address route's 3.7 only above fear 5 or so:
+   measured on 22 October it named Innocent inside its own band in 1 of 90
+   settings, and everywhere else only where the band ramp says it is fading.
+   It stays on the range route, which reads its band, and kbSabLinked prints
+   the open gap for it rather than a guess. tests/engine.js, SL, holds the
+   flag by name, so wiring it later is a decision and not a slip.
+
+   AND THE ADDRESS ROUTE NOW ASKS THE BAND, compute.js, 22 October. A row with
+   a SAB33 row is named off its addresses only while its own configuration
+   is on the band ramp in canon.js (sabFetters above zero). Before that the
+   route fired on address load alone: on the worked examples 19 of its 34
+   names were saboteurs whose own bands said they had not formed or had been
+   displaced, and the rows above would have added 42 more.
+
+   SUPERIOR IS RETIRED, 22 October. It was a fourteenth row, 48 Superiority,
+   33 Pride and 38 Entitlement in Grandiosity, and it was in neither SAB33 nor
+   SABDEF, so a reading could name it and the card had nothing to say about
+   it. No source of the owner's defines it: not the 33 in the codex, not
+   SNIFFER_SPEC, not TULA's thirty, not the complete list. TULA carries the
+   idea one rung up, as Entitlement, "that someone is beneath you", a layer on
+   the saboteurs Narcissism is made of, Controller, Hyper-Achiever and Judge,
+   and Narcissism is the Grandiosity family. As a saboteur it was a second
+   name for addresses canon rows already read: 33 and 48 are Hyper-Achiever's,
+   48 is Judge's, 38 is Aggressor's. All three carry Anger at the solar
+   plexus, and over 6,000 random fields it fired together with Aggressor on 88
+   per cent of the fields where either fired. Retiring it costs no address:
+   all three stay named by the rows that hold them, so no inferred cluster
+   appears in its place.
+   ============================================================ */
+const SAB_LIB=[
+ /* S02. The owner renamed Controller to Micromanager on 18 October in
+    canon.js; the rename reaches the library here. Same three addresses. */
+ {"nm":"Micromanager","nids":[4,36,50],"hcx":"Rigidity"},
+ {"nm":"Victim","nids":[6,50,3],"hcx":"Collapse"},
+ {"nm":"Perfectionist","nids":[40,37,45],"hcx":"Rigidity"},
+ {"nm":"Pleaser","nids":[66,2,65],"hcx":"Collapse"},
+ {"nm":"Hyper-Achiever","nids":[33,40,48],"hcx":"Grandiosity"},
+ {"nm":"Hyper-Vigilant","nids":[79,1,82],"hcx":"Dysregulation"},
+ {"nm":"Judge","nids":[37,48,82],"hcx":"Predatory"},
+ {"nm":"Avoider","nids":[1,14,89],"hcx":"Dissociation"},
+ {"nm":"Worrywart","nids":[45,1,3],"hcx":"Dysregulation"},
+ {"nm":"Loner","nids":[55,1,49],"hcx":"Dissociation"},
+ {"nm":"Nihilist","nids":[91,88,90],"hcx":"Collapse"},
+ {"nm":"Aggressor","nids":[36,49,38],"hcx":"Predatory"},
+ {"nm":"Imposter","nids":[2,45,66],"hcx":"Collapse"},
+ /* S01 Negotiator, fear and apathy. 85 Doubt and 11 Resistance are the doubt
+    SABAUTH names and the pause its trigger names, change held off one more
+    day. 17 Addiction is "just this once", the momentary gratification TULA
+    names. Dysregulation: TULA names no family; intention and indulgence
+    swing and never settle, and fear is Dysregulation in FAM_OF. */
+ {"nm":"Negotiator","nids":[85,11,17],"hcx":"Dysregulation"},
+ /* S09 Restless, apathy and fear. 28 Infatuation, the new thing idealised;
+    17 Addiction, the next thrill TULA names; 92 Spiritual Escapism, "rarely
+    at peace with the current moment", presence bypassed. Its fear sits at 2
+    to 4 and is left to the range route. Dysregulation: TULA puts it in
+    Bipolar and ADHD, and HCX_LIB translates both as Dysregulation. */
+ {"nm":"Restless","nids":[28,17,92],"hcx":"Dysregulation"},
+ /* S10 Stickler, disgust and anger. 80 Dogma, belief held as rigidity,
+    "there is a right way"; 72 Speaking To Be Right and 68 Interrupting, the
+    correction of others SABAUTH names. Two at the throat, where SNIFFER_SPEC
+    seats the Creator it pairs with. Rigidity: TULA, OCPD. */
+ {"nm":"Stickler","nids":[80,72,68],"hcx":"Rigidity"},
+ /* S07 Hyper-Rational, shock and disgust. 81 Overanalysis; 84 Distortion,
+    reality mis-seen, "if I can't explain it, it isn't real"; 74 Talking To
+    Avoid Feeling, the dismissal of emotion SABAUTH names. Two at the third
+    eye, the Sage's seat. Dissociation: TULA names no family; the reasoned
+    answer with nobody feeling inside it is Dissociation's d, the outline that
+    holds with nobody in it. */
+ {"nm":"Hyper-Rational","nids":[81,84,74],"hcx":"Dissociation"},
+ /* S12 Deflector, shame and anger. 59 Blame, responsibility pushed outward,
+    "does not own"; 93 False Humility, the pretending SABAUTH names; 2 Shame,
+    worth rejected, "if they knew the real me they would leave". 70 Excuse
+    and 67 Lying are more literal and carry Disgust, which its row does not
+    key on. Predatory: TULA, Antisocial. */
+ {"nm":"Deflector","nids":[59,93,2],"hcx":"Predatory"},
+ /* S13 Dramatizer, shock and sadness. 32 Excess Emotion, drama into
+    flooding; 71 Stage Performing, the audience its trigger needs; 73 Manic
+    Expression, the exaggeration SABAUTH names. Grandiosity: TULA puts it in
+    Bipolar and Histrionic. HCX_LIB's Grandiosity translates histrionic, and
+    its d, the shape held bigger than it is, is what its card says it does:
+    you tell it bigger. */
+ {"nm":"Dramatizer","nids":[32,71,73],"hcx":"Grandiosity"},
+ /* S16 People-Pleaser, apathy and shame, its apathy band the higher, so two
+    apathy addresses and one shame. 66 People Pleasing, approval into
+    inauthenticity; 22 Shame Of Desire and 30 Guilt Of Pleasure, its own wants
+    suppressed and its own joy denied, the self erasure SABAUTH names.
+    Collapse: TULA puts it in BPD and Histrionic; Pleaser, its sibling, is
+    Collapse, and self erasure is the structure giving way. */
+ {"nm":"People-Pleaser","nids":[66,22,30],"hcx":"Collapse"},
+ /* S17 Skeptic, disgust and shock. 77 Cynicism, clarity into dismissal, the
+    pre-emptive doubt; 80 Dogma, the refusal to be moved; 81 Overanalysis,
+    clarity into paralysis. 78 Distrust is more literal and carries Fear.
+    All three at the third eye, the Sage's seat. Predatory: TULA,
+    Machiavellianism. */
+ {"nm":"Skeptic","nids":[77,80,81],"hcx":"Predatory"},
+ /* S18 Dreamer, apathy and sadness. 27 Fantasy and 86 Idealism, the retreat
+    into the possible and the denial of the actual; 108 Endless Seeking,
+    arrival that never comes, "someday". Grandiosity: TULA puts it in
+    Histrionic and ADHD; Grandiosity's d, the shape held bigger than it is
+    and the gap defended, is its trigger, the gap between the vision and the
+    current reality. */
+ {"nm":"Dreamer","nids":[27,86,108],"hcx":"Grandiosity"},
+ /* S19 Procrastinator, fear and sadness, its fear band the higher. SABAUTH
+    is avoidance, doubt and fear of failure: 85 Doubt; 40 Perfectionism, the
+    fear of failure, which the owner's TULA archetype notes say leads "to
+    procrastination or dissatisfaction with outcomes"; 10 Lethargy, momentum
+    into stagnation, the delay. Dysregulation: TULA names no family; the delay
+    and the rush at the deadline swing and never settle, and fear is
+    Dysregulation in FAM_OF. */
+ {"nm":"Procrastinator","nids":[85,40,10],"hcx":"Dysregulation"},
+ /* S22 Martyr, sadness, shame and apathy, one address each. 54 Martyrdom,
+    self sacrifice into guilt driven love; 3 Guilt, responsibility into
+    overcompensation, the over-giving; 30 Guilt Of Pleasure, its own joy
+    denied. 57 Manipulative Kindness and 50 Resentment fit the obligation and
+    the resentment and carry Anger, which its row does not key on. Collapse:
+    TULA names no family; SABDEF files martyrdom under Victim, which is
+    Collapse. */
+ {"nm":"Martyr","nids":[54,3,30],"hcx":"Collapse"},
+ /* S23 Cynic, disgust and sadness. 77 Cynicism, the pre-emptive dismissal;
+    98 Unworthy Of God, disbelief; 13 Disconnection, presence into numbness,
+    unimpressed and so safe from disappointment. Root and crown, the seats
+    SNIFFER_SPEC gives the Orphan it pairs with, and the third eye. Collapse:
+    TULA names no family; Nihilist runs on the same two charges and is
+    Collapse. */
+ {"nm":"Cynic","nids":[77,98,13],"hcx":"Collapse"},
+ /* S24 Manipulator, anger and apathy. 25 Manipulation Through Emotion,
+    control by emotional blackmail; 57 Manipulative Kindness, transactional
+    giving; 43 Resentment, the grudge, which SNIFFER_SPEC rules is anger and
+    apathy held together, its own row. 64 Deceit and 75 Spiritual Language To
+    Manipulate sit at the throat where the canon seats its Magician and carry
+    Disgust, so they are left out. Predatory: TULA, Machiavellianism. */
+ {"nm":"Manipulator","nids":[25,57,43],"hcx":"Predatory"},
+ /* S25 Overthinker, fear and shame. 85 Doubt, intuition dismissed; 83
+    Paranoia, the narrative spinning a loop is; 46 Self-Judgment, the inner
+    war. 81 Overanalysis and 79 Hypervigilance name it outright and carry
+    Shock and Anticipation, which its row does not key on. Dysregulation:
+    TULA names no family; Worrywart, its nearest sibling, is Dysregulation. */
+ {"nm":"Overthinker","nids":[85,83,46],"hcx":"Dysregulation"},
+ /* S26 Escapist, apathy and fear. SABAUTH word for word: 14 Escapism, 27
+    Fantasy for the overindulgence in fantasies, 18 Lust for the sensual
+    desire. Root and sacral, the seats SNIFFER_SPEC gives the Explorer it
+    pairs with. It shares 14 with Avoider and nothing more, the line SABDEF
+    draws between them. Dissociation: TULA names no family; Avoider is
+    Dissociation, and leaving before the feeling finishes is the outline
+    left empty. */
+ {"nm":"Escapist","nids":[14,27,18],"hcx":"Dissociation"},
+ /* S29 Pessimist, sadness and fear. 91 Nihilism, the first word of its
+    SABAUTH; 83 Paranoia, the case built before the outcome arrives; 56
+    Closed Heart, vulnerability into armour against the hope. Collapse: TULA,
+    Depression. */
+ {"nm":"Pessimist","nids":[91,83,56],"hcx":"Collapse"},
+ /* S30 Catastrophizer, fear and sadness. 1 Fear, instinct and threat; 7
+    Scarcity, resources, the threat to survival its definition jumps to; 16
+    Collapse, structure gone, "this will destroy everything". All three at the
+    root. Dysregulation: TULA names no family; SABDEF calls the Worrywart the
+    same thing on a smaller scale, and Worrywart is Dysregulation. */
+ {"nm":"Catastrophizer","nids":[1,7,16],"hcx":"Dysregulation"},
+ /* S31 Enabler, apathy and shame, its shame band the higher, so two shame
+    addresses and one apathy, the reverse of People-Pleaser, whose charges are
+    the same two. 65 Self-Silencing, you see it and you do not say it; 31 Need
+    For Approval, identity held in the other; 17 Addiction, the overindulgence
+    SABAUTH names, backed up rather than named. 63 Need To Be Needed and 21
+    Co-Dependency name it outright and carry Disgust, which its row does not
+    key on. Collapse: TULA names no family; Pleaser, which SABDEF sets it
+    beside, is Collapse. */
+ {"nm":"Enabler","nids":[65,31,17],"hcx":"Collapse"},
+ /* S32 Control Freak, fear, anger and anticipation. 45 Anxiety at the
+    adrenal medulla, the sustained sympathetic activation its definition ends
+    on; 41 Force, control over flow; 78 Distrust, distrust of others' hands.
+    It shares no address with Micromanager or Hyper-Vigilant, the two it is
+    composed of. Rigidity: TULA names no family; SABDEF says what separates it
+    from Hyper-Vigilant is the scan organised around its own agency, which is
+    Micromanager's Rigidity. */
+ {"nm":"Control Freak","nids":[45,41,78],"hcx":"Rigidity"}];
 /* THE CLINICAL NAMES ARE NOT SHOWN TO THE PERSON THEY ARE ABOUT.
 
    sub carries the diagnostic families these architectures correspond to, and
@@ -10296,7 +10514,9 @@ var SABAUTH={
  'Avoider':"Fear of confrontation + Delusion + Laziness",
  'Bully':"Aggression + Cruelty + Self-importance",
  'Codependent':"Fear of abandonment + Lack of self-esteem + Dependency",
- 'Controller':"Anxiety + Manipulation + Impatience",
+ /* S02, renamed by the owner on 18 October. Keyed by the name the reading
+    prints, because both routes in compute() look this up by s.nm. */
+ 'Micromanager':"Anxiety + Manipulation + Impatience",
  'Critic':"Self-hatred + Judgment of others + Perfectionism",
  'Cynic':"Doubt + Procrastination + Lack of effort",
  'Deflector':"Insecurity + Dishonesty + Pretending",
@@ -10398,8 +10618,23 @@ const GATEGLYPH={
  ignore:'M2 12s4 5 10 5 10-5 10-5M6 15l-2 3M12 17v3M18 15l2 3',
  attach:'M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.5 1.5M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.5-1.5',
  averse:'M3 19C3 9 21 9 21 19M12 15m-2 0a2 2 0 1 0 4 0a2 2 0 1 0-4 0'};
-const SAB_PI=['Judge','Avoider','Controller','Hyper-Achiever','Hyper-Rational',
+/* SAB_PI IS A LOOKUP, NOT A CITATION, and that decided the 18 October rename
+   here. Nothing prints these strings. ui/drills.js and ui/ui.js ask
+   SAB_PI.indexOf(o.nm) with the name the reading prints, and print a fixed
+   attribution when it answers. So an entry has to be this product's name for
+   the saboteur, or the attribution goes quiet. Since 18 October the range
+   route has named S02 Micromanager and printed no credit for it. With
+   Controller left here once the library carries the new name as well,
+   nothing the engine names is called Controller, and the credit would be
+   gone from S02 everywhere. Renaming his concept and dropping his credit
+   would be the inaccurate outcome, not the consistent one.
+
+   His own name for it is kept as data, in SAB_PI_AS, so the attribution can
+   say it. Chamine calls S02 the Controller; this product calls it the
+   Micromanager. The nine others use his names unchanged. */
+const SAB_PI=['Judge','Avoider','Micromanager','Hyper-Achiever','Hyper-Rational',
  'Hyper-Vigilant','Pleaser','Restless','Stickler','Victim'];
+const SAB_PI_AS={Micromanager:'Controller'};
 /* Inferred saboteurs are clusters the library does not name: two or more
    addresses in one seat carrying the same child fetter. They take an agent
    noun for the fetter so they read alongside the named ones, and they carry
@@ -13046,7 +13281,7 @@ try{window.__at&&window.__at('engine/data/catalog.js');}catch(e){}
    picking one, because that ruling is the owner's.
    ============================================================ */
 var KB_KEY=function(s){return String(s||'').replace(/^[Tt]he\s+/,'').toLowerCase().replace(/-/g,' ');};
-var SABDEF={"negotiator":{"c":"S01","d":"Argues against your own intentions. Always sounds reasonable. Never says stop forever, says stop today. The fear of discomfort is mild enough to be rationalized away. The happiness available from the easier option is just high enough to make the rationalization feel earned. Together they produce the internal diplomat who can talk you out of anything, not through force, but through the perfectly reasonable argument that now is not the right moment. The most dangerous saboteur in the system because it sounds exactly like you.","t":"The moment between intending to do the necessary thing and beginning to do it. The pause.","i":"Begin the action before the internal dialogue completes. Remove the pause. The Negotiator only has power in the gap between intention and motion. Close the gap.","q":"I can start tomorrow. / Just this once. / I've earned a break."},"controller":{"c":"S02","d":"Hypervigilance at the level of outcomes. The foundation of the Type A pattern. Not a personality trait, a fear response that has been running so long it looks like a management style. The fear underneath: something will go wrong, someone will get hurt, or the situation will fall apart if I release my grip. Self-control registers as 10. Anything less registers as loss. The delta between perceived control and actual control is the zone of active saboteur behavior. Anger layers in as a do-as-I-say mechanism, authority used to close the control gap quickly. Entitlement provides the justification: it is not just that I need to control this. It is that I am right to. Competition drives the adversarial edge, not just winning but not-losing, which is a different frequency entirely.","t":"The moment control begins to slip. Uncertainty in outcomes. Others not performing to expectation. Delegation without confirmation. Silence where confirmation should be.","i":"Control is a belief held under pressure. The person fails control the same way a person fails a landing, only if they quit. Recognize that the need to be in control and the experience of being out of control are both charges, not conditions. Neither is real. Locate the fear underneath. Release the fear. The need to control loses what it was standing on.","q":"If I don't control this, something will go wrong."},"victim":{"c":"S03","d":"Focuses on internal feelings and victim mentality for attention. Martyrdom.","t":"When accountability is required.","i":"Identify one thing within your control. Take one action on it.","q":"This keeps happening to me."},"perfectionist":{"c":"S04","d":"Continuous pressure to do better. Anxiety about imperfections in self and others.","t":"Before completion or release of work.","i":"Set a fixed completion time. Release at that time regardless of state.","q":"It is not good enough yet."},"pleaser":{"c":"S05","d":"Indirectly tries to gain acceptance by helping, pleasing, rescuing, or flattering.","t":"When there is potential for disapproval or when a boundary is needed.","i":"State a preference or limit once. Do not explain or apologize.","q":"My worth depends on making others happy."},"hyper achiever":{"c":"S06","d":"Dependent on constant performance for self-respect. Workaholic.","t":"When performance is not being measured or when rest is available.","i":"Rest without producing for one hour. No metrics.","q":"My worth is in my output."},"hyper rational":{"c":"S07","d":"Processes everything through logic. Impatient with emotional concerns.","t":"When emotional input is offered.","i":"Name the emotion present in the room before analyzing the problem.","q":"If I can't explain it, it isn't real."},"hyper vigilant":{"c":"S08","d":"Continuous anxiety about potential dangers. Constant risk management.","t":"When the environment changes or trust is required.","i":"Identify one thing that is safe. Hold that for 60 seconds.","q":"The threat is always just ahead."},"restless":{"c":"S09","d":"Constant search for new activities. Rarely at peace with the current moment.","t":"When the current situation becomes familiar or stable.","i":"Stay with the current thing for twice as long as the impulse to move suggests.","q":"The next thing will be better."},"stickler":{"c":"S10","d":"Perfectionism and need for order. Anxiety when standards are not met.","t":"When the environment or person deviates from the correct way.","i":"Identify one situation where your standard is serving your fear, not your values.","q":"There is a right way and a wrong way."},"judge":{"c":"S11","d":"Judges self and others. Replays past failures. The master saboteur, activates all others.","t":"When someone, including self, falls short of standard.","i":"Find one thing that is right about the situation being judged.","q":"Someone is responsible for this."},"deflector":{"c":"S12","d":"Does not own. Justification to avoid accountability.","t":"When direct accountability or personal disclosure is required.","i":"Stay with the direct question for 10 seconds before redirecting.","q":"If they knew the real me they would leave."},"dramatizer":{"c":"S13","d":"Amplifies the emotional intensity of situations to generate attention or movement.","t":"When intensity of feeling is present and an audience is available.","i":"Reduce the intensity of the next statement by half.","q":"My pain must be visible to matter."},"worrywart":{"c":"S14","d":"Runs continuous worst-case scenarios. Mistakes anxiety for planning.","t":"When the future is uncertain.","i":"Name the specific worst case. Name one action if it occurs.","q":"Worrying is preparation."},"loner":{"c":"S15","d":"Withdraws from contact as protection. Independence as defense, not a value. Fear of rejection co-mingling with shame of belonging at sufficient magnitude. The person does not experience themselves as afraid, they experience themselves as preferring solitude. Release the fear and sad nodes and the solitude remains if chosen, not if driven.","t":"When connection is available and would be beneficial.","i":"Make one direct request for connection.","q":"Needing others is weakness."},"people pleaser":{"c":"S16","d":"Approval-seeking at the expense of authenticity.","t":"When approval is uncertain or a boundary is needed.","i":"Identify the response that serves the relationship rather than the approval.","q":"If they don't like me I have failed."},"skeptic":{"c":"S17","d":"Defaults to distrust and doubt. Skepticism as protection against disappointment.","t":"When new information challenges the current model.","i":"Sit with the new information for 24 hours before dismissing it.","q":"Trust gets you hurt."},"dreamer":{"c":"S18","d":"Lives in possibility without building the bridge toward it. Avoids the friction of execution.","t":"When the gap between vision and current reality is visible.","i":"Identify one concrete step. Execute it today.","q":"Someday the conditions will be right."},"procrastinator":{"c":"S19","d":"Delays action on important tasks. Mistakes motion for progress.","t":"When the important task is clear and available.","i":"Begin. Not finish. Not plan. Begin. Three minutes.","q":"I work better under pressure."},"imposter":{"c":"S20","d":"Believes their competence is unearned and discoverable as fraud.","t":"When competence is being evaluated or recognition is offered.","i":"Identify one thing you know that the room does not. State it.","q":"They will find out I do not belong here."},"aggressor":{"c":"S21","d":"Uses anger and force to override resistance. Mistakes compliance for agreement.","t":"When authority is challenged or outcome is not proceeding as required.","i":"Pause 5 seconds. Name the fear underneath the anger before responding.","q":"Aggression gets results."},"martyr":{"c":"S22","d":"Sacrifices for others to generate obligation or moral authority.","t":"When sacrifice has been made and goes unrecognized.","i":"Identify whether the sacrifice was chosen or performed. If performed, stop.","q":"I give everything and receive nothing."},"cynic":{"c":"S23","d":"Undermines possibility through pre-emptive dismissal.","t":"When hope or enthusiasm is present in self or others.","i":"Identify one thing good about the situation being dismissed.","q":"Optimism is naive."},"manipulator":{"c":"S24","d":"Achieves outcomes indirectly through influence, withholding, or positioning.","t":"When the direct approach feels risky.","i":"State the actual need directly. Once. Without positioning.","q":"Direct requests make me vulnerable."},"overthinker":{"c":"S25","d":"Loops on decisions past the point of useful analysis.","t":"When a decision is required and the outcome is uncertain.","i":"Set a decision time limit. Decide at that limit. Do not extend it.","q":"More analysis will produce the right answer."},"escapist":{"c":"S26","d":"Uses pleasure, distraction, or movement to exit discomfort before it resolves.","t":"When the present moment is uncomfortable and an exit is available.","i":"Stay in the discomfort for two minutes. Name what is present.","q":"I just need to not feel this right now."},"avoider":{"c":"S33","d":"Declines the engagement before it can cost anything. Not fleeing discomfort the way the Escapist does, and not arguing the way the Negotiator does. Not present for it.","t":"When something asks to be dealt with and not dealing with it carries no immediate penalty.","i":"Name the thing being avoided out loud, then do the smallest piece of it.","q":"If I stay unaware, nothing can land on me."},"nihilist":{"c":"S27","d":"Removes the foundation of meaning as a pre-emptive strike against disappointment.","t":"When meaning is required to justify effort.","i":"Identify one action worth doing regardless of meaning. Do it.","q":"Nothing matters enough to sustain effort."},"innocent":{"c":"S28","d":"Maintains deliberate unawareness to avoid responsibility or conflict.","t":"When complexity, conflict, or moral weight is present.","i":"Name one thing you know that you are pretending not to know.","q":"I don't want to be involved."},"pessimist":{"c":"S29","d":"Pre-empts positive outcomes by building a case against them before they materialize.","t":"When a positive outcome is possible.","i":"Name the best thing that could really happen. Act from that.","q":"It will not work out."},"catastrophizer":{"c":"S30","d":"Pictures the worst outcome in every unknown. The Worrywart does this on a smaller scale. The Catastrophizer jumps from an ordinary unknown to a threat to survival.","t":"Any unresolved uncertainty.","i":"Describe the actual current situation without projection. Stay in the present tense.","q":"This will destroy everything."},"enabler":{"c":"S31","d":"Backs up the harmful patterns of others to keep the relationship or avoid conflict. Not the same as the Pleaser: the Enabler backs up behavior they know is harmful.","t":"When someone they care about is repeating a destructive pattern.","i":"Name what you see. Once. Without attachment to the response.","q":"If I say something they will leave."},"control freak":{"c":"S32","d":"The colloquial name for the Controller and Hyper-Vigilant composite at Type A intensity. Hypervigilance running on outcomes and on threat at the same time. The body is scanning forward (what could go wrong) and downward (am I in command of this) in continuous loop. Reads to other people as competence under pressure. Reads in the body as never landing. The same fear that drives Controller (something will go wrong if I release grip) and the same fear that drives Hyper-Vigilant (the threat is just ahead) co-mingle here at sufficient magnitude that they cannot be felt as separate. Distinct from Controller alone: Control Freak does not wait for the control gap to open before acting. Distinct from Hyper-Vigilant alone: Control Freak organizes the scan around its own agency, not around external monitoring. Type A is the social presentation. The somatic state is sustained sympathetic activation that the body has normalized as baseline.","t":"Any environment the person did not configure. Any outcome the person did not design. Any silence where confirmation should be.","i":"Lock the jaw, the shoulders, and the diaphragm for a count of five. Notice they were already locked. Release on the exhale. The drill shows the body can hold a state without scanning it. Repeat until the scan stops without being asked to.","q":"If I am not running this, no one is."}};
+var SABDEF={"negotiator":{"c":"S01","d":"Argues against your own intentions. Always sounds reasonable. Never says stop forever, says stop today. The fear of discomfort is mild enough to be rationalized away. The happiness available from the easier option is just high enough to make the rationalization feel earned. Together they produce the internal diplomat who can talk you out of anything, not through force, but through the perfectly reasonable argument that now is not the right moment. The most dangerous saboteur in the system because it sounds exactly like you.","t":"The moment between intending to do the necessary thing and beginning to do it. The pause.","i":"Begin the action before the internal dialogue completes. Remove the pause. The Negotiator only has power in the gap between intention and motion. Close the gap.","q":"I can start tomorrow. / Just this once. / I've earned a break."},"micromanager":{"c":"S02","d":"Hypervigilance at the level of outcomes. The foundation of the Type A pattern. Not a personality trait, a fear response that has been running so long it looks like a management style. The fear underneath: something will go wrong, someone will get hurt, or the situation will fall apart if I release my grip. Self-control registers as 10. Anything less registers as loss. The delta between perceived control and actual control is the zone of active saboteur behavior. Anger layers in as a do-as-I-say mechanism, authority used to close the control gap quickly. Entitlement provides the justification: it is not just that I need to control this. It is that I am right to. Competition drives the adversarial edge, not just winning but not-losing, which is a different frequency entirely.","t":"The moment control begins to slip. Uncertainty in outcomes. Others not performing to expectation. Delegation without confirmation. Silence where confirmation should be.","i":"Control is a belief held under pressure. The person fails control the same way a person fails a landing, only if they quit. Recognize that the need to be in control and the experience of being out of control are both charges, not conditions. Neither is real. Locate the fear underneath. Release the fear. The need to control loses what it was standing on.","q":"If I don't control this, something will go wrong."},"victim":{"c":"S03","d":"Focuses on internal feelings and victim mentality for attention. Martyrdom.","t":"When accountability is required.","i":"Identify one thing within your control. Take one action on it.","q":"This keeps happening to me."},"perfectionist":{"c":"S04","d":"Continuous pressure to do better. Anxiety about imperfections in self and others.","t":"Before completion or release of work.","i":"Set a fixed completion time. Release at that time regardless of state.","q":"It is not good enough yet."},"pleaser":{"c":"S05","d":"Indirectly tries to gain acceptance by helping, pleasing, rescuing, or flattering.","t":"When there is potential for disapproval or when a boundary is needed.","i":"State a preference or limit once. Do not explain or apologize.","q":"My worth depends on making others happy."},"hyper achiever":{"c":"S06","d":"Dependent on constant performance for self-respect. Workaholic.","t":"When performance is not being measured or when rest is available.","i":"Rest without producing for one hour. No metrics.","q":"My worth is in my output."},"hyper rational":{"c":"S07","d":"Processes everything through logic. Impatient with emotional concerns.","t":"When emotional input is offered.","i":"Name the emotion present in the room before analyzing the problem.","q":"If I can't explain it, it isn't real."},"hyper vigilant":{"c":"S08","d":"Continuous anxiety about potential dangers. Constant risk management.","t":"When the environment changes or trust is required.","i":"Identify one thing that is safe. Hold that for 60 seconds.","q":"The threat is always just ahead."},"restless":{"c":"S09","d":"Constant search for new activities. Rarely at peace with the current moment.","t":"When the current situation becomes familiar or stable.","i":"Stay with the current thing for twice as long as the impulse to move suggests.","q":"The next thing will be better."},"stickler":{"c":"S10","d":"Perfectionism and need for order. Anxiety when standards are not met.","t":"When the environment or person deviates from the correct way.","i":"Identify one situation where your standard is serving your fear, not your values.","q":"There is a right way and a wrong way."},"judge":{"c":"S11","d":"Judges self and others. Replays past failures. The master saboteur, activates all others.","t":"When someone, including self, falls short of standard.","i":"Find one thing that is right about the situation being judged.","q":"Someone is responsible for this."},"deflector":{"c":"S12","d":"Does not own. Justification to avoid accountability.","t":"When direct accountability or personal disclosure is required.","i":"Stay with the direct question for 10 seconds before redirecting.","q":"If they knew the real me they would leave."},"dramatizer":{"c":"S13","d":"Amplifies the emotional intensity of situations to generate attention or movement.","t":"When intensity of feeling is present and an audience is available.","i":"Reduce the intensity of the next statement by half.","q":"My pain must be visible to matter."},"worrywart":{"c":"S14","d":"Runs continuous worst-case scenarios. Mistakes anxiety for planning.","t":"When the future is uncertain.","i":"Name the specific worst case. Name one action if it occurs.","q":"Worrying is preparation."},"loner":{"c":"S15","d":"Withdraws from contact as protection. Independence as defense, not a value. Fear of rejection co-mingling with shame of belonging at sufficient magnitude. The person does not experience themselves as afraid, they experience themselves as preferring solitude. Release the fear and sad nodes and the solitude remains if chosen, not if driven.","t":"When connection is available and would be beneficial.","i":"Make one direct request for connection.","q":"Needing others is weakness."},"people pleaser":{"c":"S16","d":"Approval-seeking at the expense of authenticity.","t":"When approval is uncertain or a boundary is needed.","i":"Identify the response that serves the relationship rather than the approval.","q":"If they don't like me I have failed."},"skeptic":{"c":"S17","d":"Defaults to distrust and doubt. Skepticism as protection against disappointment.","t":"When new information challenges the current model.","i":"Sit with the new information for 24 hours before dismissing it.","q":"Trust gets you hurt."},"dreamer":{"c":"S18","d":"Lives in possibility without building the bridge toward it. Avoids the friction of execution.","t":"When the gap between vision and current reality is visible.","i":"Identify one concrete step. Execute it today.","q":"Someday the conditions will be right."},"procrastinator":{"c":"S19","d":"Delays action on important tasks. Mistakes motion for progress.","t":"When the important task is clear and available.","i":"Begin. Not finish. Not plan. Begin. Three minutes.","q":"I work better under pressure."},"imposter":{"c":"S20","d":"Believes their competence is unearned and discoverable as fraud.","t":"When competence is being evaluated or recognition is offered.","i":"Identify one thing you know that the room does not. State it.","q":"They will find out I do not belong here."},"aggressor":{"c":"S21","d":"Uses anger and force to override resistance. Mistakes compliance for agreement.","t":"When authority is challenged or outcome is not proceeding as required.","i":"Pause 5 seconds. Name the fear underneath the anger before responding.","q":"Aggression gets results."},"martyr":{"c":"S22","d":"Sacrifices for others to generate obligation or moral authority.","t":"When sacrifice has been made and goes unrecognized.","i":"Identify whether the sacrifice was chosen or performed. If performed, stop.","q":"I give everything and receive nothing."},"cynic":{"c":"S23","d":"Undermines possibility through pre-emptive dismissal.","t":"When hope or enthusiasm is present in self or others.","i":"Identify one thing good about the situation being dismissed.","q":"Optimism is naive."},"manipulator":{"c":"S24","d":"Achieves outcomes indirectly through influence, withholding, or positioning.","t":"When the direct approach feels risky.","i":"State the actual need directly. Once. Without positioning.","q":"Direct requests make me vulnerable."},"overthinker":{"c":"S25","d":"Loops on decisions past the point of useful analysis.","t":"When a decision is required and the outcome is uncertain.","i":"Set a decision time limit. Decide at that limit. Do not extend it.","q":"More analysis will produce the right answer."},"escapist":{"c":"S26","d":"Uses pleasure, distraction, or movement to exit discomfort before it resolves.","t":"When the present moment is uncomfortable and an exit is available.","i":"Stay in the discomfort for two minutes. Name what is present.","q":"I just need to not feel this right now."},"avoider":{"c":"S33","d":"Declines the engagement before it can cost anything. Not fleeing discomfort the way the Escapist does, and not arguing the way the Negotiator does. Not present for it.","t":"When something asks to be dealt with and not dealing with it carries no immediate penalty.","i":"Name the thing being avoided out loud, then do the smallest piece of it.","q":"If I stay unaware, nothing can land on me."},"nihilist":{"c":"S27","d":"Removes the foundation of meaning as a pre-emptive strike against disappointment.","t":"When meaning is required to justify effort.","i":"Identify one action worth doing regardless of meaning. Do it.","q":"Nothing matters enough to sustain effort."},"innocent":{"c":"S28","d":"Maintains deliberate unawareness to avoid responsibility or conflict.","t":"When complexity, conflict, or moral weight is present.","i":"Name one thing you know that you are pretending not to know.","q":"I don't want to be involved."},"pessimist":{"c":"S29","d":"Pre-empts positive outcomes by building a case against them before they materialize.","t":"When a positive outcome is possible.","i":"Name the best thing that could really happen. Act from that.","q":"It will not work out."},"catastrophizer":{"c":"S30","d":"Pictures the worst outcome in every unknown. The Worrywart does this on a smaller scale. The Catastrophizer jumps from an ordinary unknown to a threat to survival.","t":"Any unresolved uncertainty.","i":"Describe the actual current situation without projection. Stay in the present tense.","q":"This will destroy everything."},"enabler":{"c":"S31","d":"Backs up the harmful patterns of others to keep the relationship or avoid conflict. Not the same as the Pleaser: the Enabler backs up behavior they know is harmful.","t":"When someone they care about is repeating a destructive pattern.","i":"Name what you see. Once. Without attachment to the response.","q":"If I say something they will leave."},"control freak":{"c":"S32","d":"The colloquial name for the Micromanager and Hyper-Vigilant composite at Type A intensity. Hypervigilance running on outcomes and on threat at the same time. The body is scanning forward (what could go wrong) and downward (am I in command of this) in continuous loop. Reads to other people as competence under pressure. Reads in the body as never landing. The same fear that drives Micromanager (something will go wrong if I release grip) and the same fear that drives Hyper-Vigilant (the threat is just ahead) co-mingle here at sufficient magnitude that they cannot be felt as separate. Distinct from Micromanager alone: Control Freak does not wait for the control gap to open before acting. Distinct from Hyper-Vigilant alone: Control Freak organizes the scan around its own agency, not around external monitoring. Type A is the social presentation. The somatic state is sustained sympathetic activation that the body has normalized as baseline.","t":"Any environment the person did not configure. Any outcome the person did not design. Any silence where confirmation should be.","i":"Lock the jaw, the shoulders, and the diaphragm for a count of five. Notice they were already locked. Release on the exhale. The drill shows the body can hold a state without scanning it. Repeat until the scan stops without being asked to.","q":"If I am not running this, no one is."}};
 var DOMDEF={"knowledge":{"n":"I","c":"pattern recognition, codification, teaching, symbolic thinking. The person who reads before being asked to. Somatic knowledge is true knowledge, once it's in the body, deception doesn't work on you. You can feel the lie before it forms a word.","x":"over-intellectualization, false certainty, knowledge as a barrier rather than a bridge."},"communication":{"n":"II","c":"bridging, translation, exact words, quick thinking. The connector, the person who translates between people, between ideas, between worlds.","x":"manipulation, saying one thing and then another, using what you know to get a hold over people."},"power":{"n":"III","c":"physical courage, holding your ground, guarding what matters. Force aimed at what is in the way, not at people.","x":"domination, violence without purpose, war as identity."},"imperium":{"n":"IV","c":"governance, structural authority, organizing chaos into function. sees how systems should be organized.","x":"domination, entitlement, autocracy."},"creation":{"n":"V","c":"building, executing, bringing vision into form. Always needed to make things. When you can't create it feels like disconnection, like the system is broken. Financial stress kills creativity not motivationally but anatomically: the survival charge consumes the current before it reaches the generative center. When the root clears, the sacral opens, the creative current flows again. Not as discipline. As a natural consequence of the channel being clear.","x":"perfectionism as paralysis, identity tied to output."},"dissolution":{"n":"VI","c":"deliberate dissolution, clearing what's false or finished, making space for what comes next. Sees what needs to end.","x":"destruction as identity, nihilism, chaos without rebuilding."},"love":{"n":"VII","c":"union, intimacy, the force that draws beings into genuine contact. Love as a state the person generates, not receives. Always knew what brings people together.","x":"codependency, possession, love as completion rather than addition."},"healing":{"n":"VIII","c":"directed intervention, active clearing, creating conditions in which restoration happens. Finds the broken thing in any room.","x":"rescuer complex, martyrdom, healing as identity."},"sacrifice":{"n":"IX","c":"voluntary descent, the chosen ordeal, sacrifice as the mechanism that produces insight unavailable any other way. The knowledge that comes from what was given up, not accumulated. The real use of experience: take in as much as you can, then let go of the names you gave it. Words illuminate, they don't contain.","x":"suffering as identity, the descent without return."},"justice":{"n":"X","c":"discernment of what's real and what's false. Accountability without cruelty. Moral disorder doesn't just feel wrong, it triggers the nervous system. When truth is a 10, anything less is somatic. You can feel the lie before it forms a word. If you lie, you knock your own nervous system off balance.","x":"rigid judgment, self-righteousness, justice as control."},"trickster":{"n":"XI","c":"disruption of rigid patterns, revealing what's hidden through inversion, innovation through disorder. Sees the absurdity in what everyone else treats as fixed.","x":"deception as lifestyle, instability mistaken for freedom."},"nature":{"n":"XII","c":"alignment with biological truth, growth through patience rather than force. Thinks in cycles rather than straight lines.","x":"rejection of structure, naturalism as escape from complexity."},"mystery":{"n":"XIII","c":"navigation of the unseen, death and rebirth as structural realities. Can hold darkness without being consumed. Always drawn to what's hidden.","x":"obsession with shadow, nihilism, identity built on the margin."},"duty":{"n":"XIV","c":"right action regardless of personal cost. Loyalty to what's true, not what's comfortable. Does the right thing even when no one is watching.","x":"rigidity, losing self in obligation, duty performed for an audience."},"play":{"n":"XV","c":"the generative state of pure engagement. Awe. Creativity for its own sake. Not the absence of seriousness, the intelligence serious people miss. Always able to find what's alive in something.","x":"avoidance through play, irresponsibility, lightness that refuses depth."},"death":{"n":"XVI","c":"completion. Endings held cleanly. The threshold kept, the thread cut when the thread is finished, presence with what's dying without flinching. Releases what's done so renewal has room.","x":"morbidity, clinging that refuses every ending, or dealing endings as power."},"fate":{"n":"XVII","c":"reads the pattern and its timing. Knows what must unfold and when to move. Acts at the right moment without forcing the thread.","x":"fatalism, abdication of choice, reading the pattern as an excuse to never act."},"guardian":{"n":"XVIII","c":"the watch kept. A perimeter held so what's inside can live. Protection without possession, sanctuary without walls that strangle.","x":"overprotection that smothers, vigilance that never rests, walls against life itself."},"provision":{"n":"XIX","c":"the one who makes sure there's enough, and not only for today. Supply held against a season nobody can see yet. The granary, the harvest, the wage. Provides for, rather than trades with.","x":"worth measured only in what's furnished, hoarding dressed as prudence, the provider who can't be provided for."}};
 var KB_RENAME={"descent":"Sacrifice","connection":"Love","exchange":"Communication","restoration":"Healing"};
 /* THREE ROWS REWORDED, 22 October. Integrity read "All of your coherence,
@@ -13109,7 +13344,7 @@ try{window.__at&&window.__at('engine/data/kb.js');}catch(e){}
         from nothing else. No fact here is new canon.
      a  what becomes available. Composed from TWO tables, never guessed: the
         axes this saboteur's SAB33 row keys on, and each axis's opp in CHILD.
-        Controller keys on fear and anger, so its row names trust and
+        Micromanager keys on fear and anger, so its row names trust and
         equanimity. tests/engine.js reads every row against SAB33 and CHILD
         and fails a row that leaves out one of its own opposites, because
         that is how the first draft of Martyr shipped: the approved mock-up
@@ -13127,16 +13362,22 @@ try{window.__at&&window.__at('engine/data/kb.js');}catch(e){}
    the accusation pass 9 of the voice skill exists to catch.
 
    Every string went through check.py --line before it landed, and the file
-   goes through check.py whole. Superior is in SAB_LIB and in neither SABDEF
-   nor SAB33, so it has no row here and kbSabBlock prints nothing for it,
-   which is what it printed before.
+   goes through check.py whole. Superior was in SAB_LIB and in neither SABDEF
+   nor SAB33, so it never had a row here. It was retired from SAB_LIB on 22
+   October, and engine/data/nodes.js says why. Every name in SAB_LIB is one
+   of the 33 now, so every one of them has a row.
+
+   S02 IS MICROMANAGER, the owner's rename of 18 October in canon.js, carried
+   here on 22 October. The row kept its words and changed only its key, so
+   the card a person reads is the same card under the name the reading
+   prints.
    ============================================================ */
 var SABCARD={
  "negotiator":{
   h:"You mean to start. In the pause before you begin, a reasonable voice speaks up. Just this once. You've earned a break. It never says stop for good, only stop for today. For a moment the easier option feels earned. Then the thing you meant to do is still waiting, and the next pause is easier to win. Reflection: What does the pause help you avoid feeling, and what would make beginning manageable?",
   a:"Everyone has a pause before starting. When the fear isn't the one talking in it, the gap between meaning to and beginning gets short. Trust becomes available that you can handle the first uncomfortable minute, and vitality goes into the thing itself.",
   n:"Notice the pause between meaning to and starting. Separate the reasonable voice from the discomfort it is steering you around. Choose the first small motion before the argument finishes."},
- "controller":{
+ "micromanager":{
   h:"The future feels uncertain. Something may happen, but you cannot quite predict what. That uncertainty can produce anxiety before anything has actually gone wrong. The grip tightens in an attempt to make the outcome predictable: you check, correct, and take over. For a moment, control can feel like safety and the anxiety may ease. Then the room gets smaller: less space for the people around you to move, less room in you to trust without checking first. This is one possible pattern, not an explanation for every act of control. Reflection: When you cannot predict the outcome, what do you feel you need to take control of?",
   a:"Control isn't the problem. It works. When the fear isn't the one holding the grip, there's a beat of equanimity before you act, long enough to decide instead of react. Trust becomes available instead of something to verify first.",
   n:"Notice the moment the grip tightens. Separate the real risk from the old fear running it. Choose the next move from there."},
@@ -16594,6 +16835,51 @@ const CHG2FET={anxiety:'Anticipation',fear:'Fear',anger:'Anger',shame:'Shame',
  disgust:'Disgust',apathy:'Apathy',shock:'Shock',sadness:'Sad',sad:'Sad',
  grief:'Sad',surprise:'Surprise',separation:'Apathy',silence:'Apathy',
  doubt:'Shock',pride:'Shame',guilt:'Shame',craving:'Disgust'};
+/* THE SEAT A RANGE MATCH IS CHECKED AT, READ OFF THE ADDRESSES. 22 October.
+
+   compute() names a SAB33 range match only when the seat of its first charge
+   holds an address at sq 3 or more, and it draws the saboteur there. That
+   seat was CHG2SEAT, the owner's ruling about where a charge is held, and for
+   every axis but one the ruled seat holds at least one address carrying the
+   charge. Apathy is the one. CHG2SEAT and CHILD put it at the throat, the
+   shoulder girdle and the base of the neck, and no throat address carries
+   Apathy: REROUTE sends the node map's Joy label to Apathy, and every Joy
+   address sits at the root, the sacral, the third eye or the crown. So a row
+   led by apathy was checked at a seat its own charge never reaches. Measured
+   on 22 October over 270 or more settings a row (six law levels, five souls,
+   every combination of each band's low, centre and high): Pleaser,
+   Hyper-Achiever, Restless, Dreamer, Escapist and Avoider were never named
+   from their own configuration. People-Pleaser and Enabler escaped only
+   because their second charge, shame, happens to sit at the throat.
+
+   THE RULE. A charge is checked at its CHG2SEAT seat wherever that seat holds
+   an address carrying it, so the ruling stands everywhere it can be honoured.
+   Where the ruled seat holds none, the check moves to the seat holding the
+   most of that charge's addresses, and BANDS order breaks a tie. It is read
+   off W at load and never typed, so a change to the node map moves it and no
+   second table is left holding the old answer. On the map as it stands it
+   moves exactly one charge, apathy, from the throat to the sacral.
+
+   CHG2SEAT itself is not touched. It is also where the lexicon seats a story
+   word and where the path draws one, and sniff.js records that reconciling it
+   with the address map is a ruling nobody has made. This table answers a
+   narrower question with no ruling in it: which seat's addresses can carry
+   this charge at all. */
+const SAB_SEAT=(function(){
+ var out={};
+ Object.keys(CHG2SEAT).forEach(function(ch){
+  var fet=CHG2FET[ch]||CHARGES.filter(function(c){return String(c).toLowerCase()===ch;})[0]||null;
+  var ruled=CHG2SEAT[ch], at=fet?W.filter(function(n){return n.cf===fet;}):[];
+  if(!at.length||at.some(function(n){return n.b===ruled;})){out[ch]=ruled;return;}
+  var cnt={}; at.forEach(function(n){cnt[n.b]=(cnt[n.b]||0)+1;});
+  out[ch]=BANDS.reduce(function(best,b){return (cnt[b]||0)>(cnt[best]||0)?b:best;},ruled);});
+ return out;})();
+/* ONE SABOTEUR, ONE LIBRARY ROW, found by identity. KB_KEY is the key SABDEF
+   and SABCARD already use, so a saboteur is the same saboteur in every table
+   however its name is cased or hyphenated. compute() reads the library row's
+   family through this, so the range route and the address route can no
+   longer put one saboteur in two families. */
+const SAB_LIB_BY={};SAB_LIB.forEach(s=>{SAB_LIB_BY[KB_KEY(s.nm)]=s;});
 
 /* ============================================================
    TABS. A stale tab index caused the same class of bug four times in
@@ -16960,12 +17246,14 @@ function meanAng(l){let x=0,y=0;l.forEach(a=>{x+=Math.cos(a);y+=Math.sin(a);});r
 function bandIg(b){const g=SI.filter(l=>l.b===b);return g.reduce((a,l)=>a+S.law[l.nm],0)/g.length;}
 
 /* ---------- SAB33 detection ---------- */
-function sabLevels(){
+function sabLevels(exact){
  var L={},F={Fear:'fear',Anger:'anger',Shame:'shame',Disgust:'disgust',Apathy:'apathy',
   Shock:'shock',Sad:'sadness',Surprise:'surprise',Anticipation:'anticipation'};
- CHILD.forEach(function(c){L[F[c.nm]||c.nm.toLowerCase()]=Math.round(S.charge[c.nm]||0);});
+ CHILD.forEach(function(c){var v=S.charge[c.nm]||0;L[F[c.nm]||c.nm.toLowerCase()]=exact?v:Math.round(v);});
  L.anxiety=L.anticipation;
  return L;}
+/* each SAB33 row by identity, for the address route's band check in compute() */
+const SAB33_BY={};SAB33.forEach(function(r){SAB33_BY[KB_KEY(r[0])]=r;});
 /* fit scoring against the ranges. 1.0 inside the band, 0.5 for adjacent. */
 function sab33Detect(){
  var L=sabLevels(), out=[];
@@ -16979,7 +17267,9 @@ function sab33Detect(){
   var score=Math.round(fit/parts.length*100);
   if(score>=60) out.push({nm:nm, score:score, exact:inAll, parts:parts,
    charges:parts.map(function(p){return p[0];}),
-   band:CHG2SEAT[parts[0][0]]||'Root',
+   /* the seat that can carry the first charge, SAB_SEAT above, and never a
+      seat its own charge cannot reach */
+   band:SAB_SEAT[parts[0][0]]||CHG2SEAT[parts[0][0]]||'Root',
    w:Math.min(10, parts.reduce(function(a,p){return a+(L[p[0]]||0);},0)/parts.length)});});
  return out.sort(function(a,b){return b.score-a.score || b.w-a.w;});}
 
@@ -17505,28 +17795,68 @@ function compute(){
  const sabs=[];
  /* ONE SABOTEUR, ONE ENTRY. SAB33's range match and the library's own fixed
     address groups can name the same saboteur from two different tests, eg
-    Controller matches both a fear/anger RANGE and its own three addresses.
-    Named twice, it pairs with itself into "Controller + Controller" below.
-    The stronger of the two readings wins; the weaker is dropped, not kept
-    as a second voice. */
+    Micromanager matches both a fear/anger RANGE and its own three addresses.
+    Named twice, it pairs with itself into "Micromanager + Micromanager"
+    below. The stronger of the two readings wins; the weaker is dropped, not
+    kept as a second voice.
+
+    BY IDENTITY, NOT BY SPELLING, 22 October. The merge keyed on s.nm, so it
+    only caught a saboteur both tables spelled the same way. The owner's
+    rename of S02 on 18 October reached SAB33 and not the library, and from
+    then one saboteur printed as two, Micromanager off the range and
+    Controller off its addresses, each in its own family, and the merge could
+    not see it because the spellings differed. The rename is finished in every
+    table now, and the merge keys on KB_KEY, the identity SABDEF and SABCARD
+    already use, so a future spelling drift still makes one entry.
+    tests/engine.js, ND, holds both halves.
+
+    AND ONE FAMILY. The range route took its family from FAM_OF, the family of
+    its first charge, and the address route from the library row. Where the
+    two differ, the family, and so the complex the saboteur could join,
+    flipped with whichever reading was heavier. A saboteur with a library row
+    now takes that row's family from either route, through SAB_LIB_BY in
+    core.js. FAM_OF still answers for a range match with no library row. */
  const sabByNm={};
  const pushSab=function(s){
-  const ex=sabByNm[s.nm];
-  if(ex){if(s.w<=ex.w)return; sabs[sabs.indexOf(ex)]=s;sabByNm[s.nm]=s;return;}
-  sabByNm[s.nm]=s;sabs.push(s);};
+  const id=KB_KEY(s.nm), ex=sabByNm[id];
+  if(ex){if(s.w<=ex.w)return; sabs[sabs.indexOf(ex)]=s;sabByNm[id]=s;return;}
+  sabByNm[id]=s;sabs.push(s);};
  /* SAB33: 33 named saboteurs matched on charge RANGES. */
  sab33Detect().forEach(function(d){
   const parts=W.filter(n=>n.b===d.band&&n.sq>=3).sort((a,b)=>b.sq-a.sq).slice(0,4);
   if(!parts.length)return;
+  /* anticipation is spelled out because SAB33 spells it out: a row led by it
+     fell through this map to Collapse. No row leads with it today. */
   const key=d.charges[0]==='anxiety'?'Anticipation':
    ({fear:'Fear',anger:'Anger',shame:'Shame',disgust:'Disgust',apathy:'Apathy',
-     shock:'Shock',sadness:'Sad',surprise:'Surprise'})[d.charges[0]];
-  pushSab({kind:'sab',nm:d.nm,hcx:FAM_OF[key]||'Collapse',named:true,
+     shock:'Shock',sadness:'Sad',surprise:'Surprise',anticipation:'Anticipation'})[d.charges[0]];
+  const own=SAB_LIB_BY[KB_KEY(d.nm)];
+  pushSab({kind:'sab',nm:d.nm,hcx:own?own.hcx:(FAM_OF[key]||'Collapse'),named:true,
    score:d.score,exact:d.exact,charges:d.charges,auth:SABAUTH[d.nm]||null,
    parts,w:d.w,ang:meanAng(parts.map(n=>n.ang))});});
+ /* THE ADDRESS ROUTE ASKS THE BAND, 22 October. A library row was named when
+    its three addresses averaged 3.7, whatever the saboteur's own bands said.
+    SNIFFER_SPEC section 3, which the owner rules is canon: "A saboteur is a
+    configuration of fetters at specific intensities, not a thing. Break the
+    co-mingling and the saboteur is gone." Measured on the worked examples,
+    19 of the route's 34 names were saboteurs whose own configuration was off
+    the band ramp entirely, and wiring the rest of the library without this
+    would have added 42 more. So a row with a SAB33 row is named here only
+    while sabFetters, the ramp canon.js already carries for the sniffer, is
+    above zero on the exact charge. The ramp is lenient on purpose: it only
+    reaches zero two points under a band and three points over it, the
+    stretch where the canon says a saboteur is forming or fading. Inside its
+    own band nothing changes: the sweep named every row inside its band
+    exactly as often with this as without it. An inferred cluster has no band
+    and is not asked. The
+    overshot reading below is the opposite installed past 6, not the held
+    configuration, so it is not asked either. */
+ const sabL=sabLevels(true);
+ const formed=function(s){const row=s.unnamed?null:SAB33_BY[KB_KEY(s.nm)];
+  return !row||sabFetters(row[1],sabL)>0;};
  ALL_SAB.forEach(s=>{const parts=s.nids.map(i=>BY[i]).filter(Boolean);
   const w=parts.reduce((a,n)=>a+n.sq,0)/parts.length;
-  if(w>=3.7)pushSab({kind:'sab',nm:s.nm,hcx:s.hcx,unnamed:!!s.unnamed,parts,w,
+  if(w>=3.7&&formed(s))pushSab({kind:'sab',nm:s.nm,hcx:s.hcx,unnamed:!!s.unnamed,parts,w,
    auth:SABAUTH[s.nm]||null,ang:meanAng(parts.map(n=>n.ang))});
   /* the same cluster, overshot. a voice that will not stop rather than one that shuts. */
   const j=parts.reduce((a,n)=>a+n.jq,0)/parts.length;
@@ -30700,7 +31030,7 @@ try{window.__at&&window.__at('engine/profiles.js');}catch(e){}
    ============================================================ */
 if(typeof module!=='undefined'&&module.exports){
  module.exports={
-  /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33, SAB_PI:SAB_PI, GATEGLYPH:GATEGLYPH,
+  /* data */      NODES:NODES, SAB_LIB:SAB_LIB, HCX_LIB:HCX_LIB, SAB33:SAB33, SAB_PI:SAB_PI, SAB_PI_AS:SAB_PI_AS, GATEGLYPH:GATEGLYPH,
                   APC:APC, APC_REL:APC_REL, APC_EMB:APC_EMB,
                   SABDEF:SABDEF, SABCARD:SABCARD, DOMDEF:DOMDEF, GLOSS:GLOSS, HARM:HARM,
   /* meter */    meterFirst:meterFirst,
@@ -30928,7 +31258,7 @@ if(typeof module!=='undefined'&&module.exports){
      exported so the gate can assert the derivation against them rather than
      against a number typed into the test, which is the failure this repository
      has been bitten by seven times. */
-                  CHG2SEAT:CHG2SEAT, CHG2FET:CHG2FET, B2K:B2K, K2BAND:K2BAND,
+                  CHG2SEAT:CHG2SEAT, CHG2FET:CHG2FET, SAB_SEAT:SAB_SEAT, SAB_LIB_BY:SAB_LIB_BY, B2K:B2K, K2BAND:K2BAND,
                   LEX_SEAT:LEX_SEAT, LEX_AMT:LEX_AMT, LEX_FET:LEX_FET,
                   LEX_SEATS:LEX_SEATS, LEX_SRC:LEX_SRC, LEX_AMT_MAX:LEX_AMT_MAX,
                   LEXMETA:LEXMETA, CHGMETA:CHGMETA,
@@ -50858,9 +51188,12 @@ var AV_DEF={
  Everyman:'The Everyman stays with the room, so it reads the room first. It keeps you in the group.',
  Innocent:'The Innocent takes things at face value. It lets you trust people and start again after a bad day.'};
 /* what taking the role on costs, as a thing that happens in a day. It names
-   the saboteur and never calls the person by it. */
+   the saboteur and never calls the person by it. Keyed by the name ARCH18
+   carries, so S02 is Micromanager here: the owner renamed it in ARCH18 on 18
+   October and this key still said Controller, so the Warrior's line printed
+   empty until 22 October. */
 var AV_IMPACT={
- 'Controller':'Handing a thing over feels like dropping it, so the grip stays on.',
+ 'Micromanager':'Handing a thing over feels like dropping it, so the grip stays on.',
  'Pleaser':'Yes comes out before your own answer has been checked.',
  'Stickler':'Time goes into holding everything to the one right way.',
  'Hyper-Rational':'What cannot be explained gets set aside, feelings first.',
@@ -64924,7 +65257,8 @@ function runDrill(o){
   +'<div class="ad-nm">'+esc(o.nm)+'</div>'
   +(o.auth?'<div class="ad-sub">'+esc(o.auth)+'</div>':'')
   +(o.kind==='sab'&&o.unnamed?'<div class="ad-sub">Inferred. The library has no name for this cluster, so it is named for its seat and its child emotion.</div>'
-   :(o.kind==='sab'&&SAB_PI.indexOf(o.nm)>=0?'<div class="ad-sub">One of the ten Positive Intelligence saboteurs, after Shirzad Chamine.</div>':''))
+   :(o.kind==='sab'&&SAB_PI.indexOf(o.nm)>=0?'<div class="ad-sub">One of the ten Positive Intelligence saboteurs, after Shirzad Chamine'
+     +(SAB_PI_AS[o.nm]?', who calls it the '+esc(SAB_PI_AS[o.nm]):'')+'.</div>':''))
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
   +(o.over
    ? 'Jouissance. The coherent opposite installed past the point where it serves. The address '
@@ -65495,7 +65829,8 @@ function runSabDrill(s){
  var nodes=(s.nids||[]).map(function(i){return BY[i];}).filter(Boolean);
  var h='<div class="pm-eye">Saboteur, not running</div><div class="ad-nm">'+esc(s.nm)+'</div>'
   +'<div class="ad-sub">'+(s.unnamed?'Inferred from the connection types'
-    :(pi?'One of the ten Positive Intelligence saboteurs, after Shirzad Chamine':'Source library'))+'</div>'
+    :(pi?'One of the ten Positive Intelligence saboteurs, after Shirzad Chamine'
+      +(SAB_PI_AS[s.nm]?', who calls it the '+esc(SAB_PI_AS[s.nm]):''):'Source library'))+'</div>'
   +'<div class="pm-eye">What it would take</div><p class="ad-p">It fires when its addresses carry at '
   +'once. Yours are not carrying enough for it to run, which is why it is here and not on the wheel.'
   +(s.hcx?' It compounds into <b>'+esc(s.hcx)+'</b>.':'')+'</p>'
@@ -65573,10 +65908,14 @@ function runMaskDrill(m){
    field it was composed from, so a gap prints the old copy and never nothing;
    tests/engine.js fails before that can ship.
 
-   CONNECTED IS ONLY WHAT SAB_LIB KNOWS. Thirteen of the 33 have fetters and a
-   family in the engine. The other twenty were left unnamed by the engine on
-   purpose, and a card that drew three addresses for Martyr would be the guess
-   that boundary exists to refuse, so the gap is printed as a gap. The family
+   CONNECTED IS ONLY WHAT SAB_LIB KNOWS. Thirteen of the 33 had fetters and a
+   family in the engine and the other twenty were left unnamed on purpose,
+   because a card that drew three addresses for Martyr would have been a
+   guess. On 22 October the library was filled from each saboteur's own words
+   and its own canon charges, with the grounding written beside every row in
+   engine/data/nodes.js, and the one row that could not be grounded, Innocent,
+   was left out by name. A saboteur with no row still prints the gap as a gap,
+   never a guess. The family
    prints d and never sub: sub is a diagnostic name, and engine/data/nodes.js
    records the day a person was handed "depression, BPD and anxiety" about
    themselves as a subtitle. */
@@ -79866,5 +80205,5 @@ try{window.__at&&window.__at('ui/ui.js');}catch(e){}
 
      data-len is the byte length the build wrote, stamped by BUILD.sh, so the
      guard can say what arrived against what was sent. -->
-<div id="eof" hidden data-len="005256039"></div>
+<div id="eof" hidden data-len="005277899"></div>
 </body></html>
