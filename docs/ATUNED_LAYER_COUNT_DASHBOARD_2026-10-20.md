@@ -161,3 +161,19 @@ Read [ATUNED_SUPER_COMPLEX_PHASE_HANDSHAKE_2026-10-20.md](ATUNED_SUPER_COMPLEX_P
 - Psychopathy as a canonical Super-Complex is **rejected by owner**; do not count or promote it because of the current `compass.js` label.
 
 No completion percentages should be calculated from unverified denominators. Current counts above remain evidence snapshots, not closure claims.
+
+## Deep-psychological layer record setup — 2026-10-22
+
+| Family | Seeded records/rows | Research status | Wiring status |
+|---|---:|---|---|
+| Owner-stated roots | 4 | Three passes pending | Parent/child links not assigned pending source verification |
+| Owner-stated behavioral domains | 15 | Three passes pending | Parent/child links not assigned pending source verification |
+| Archetype candidates from Reboot-OS ARCH12.json | 18 | Three passes pending; taxonomy identity unresolved | No forced blueprint/Jungian equivalence |
+| Conscious Domains | 8 slots | Three passes pending; seven labels unresolved | No crosswalk assigned |
+| CDOMAIN cultural-figure mappings | 12 | Three passes pending | Separate table; semantics unresolved |
+| ARCHDOM archetype/domain mappings | 18 | Three passes pending | Mapping exists in source table; target taxonomy equivalence unverified |
+| ARCH18 archetype/fetter/seat mappings | 18 | Three passes pending | Mapping exists in source table; canonical status unverified |
+| **Total deep-psychological registry entries** | **93** | **0/93 research-complete** | **No new semantic edges verified in this registry** |
+
+The registry is an inventory seed, not the canonical total for the complete engine. See ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_v1.md and data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json. Do not remove existing closure flags until generated data and tests prove closure.
+
