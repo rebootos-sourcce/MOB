@@ -1406,6 +1406,7 @@ function validateProfile(o){
    ['loaded',0,1e4],['sab',0,1e4],['cx',0,1e4],['hy',0,1e4],['ch',0,1e4]].forEach(function(f){
    var v=vRange(errs,'history['+i+'].'+f[0],x[f[0]],f[1],f[2]);
    q[f[0]]=v===null?0:v;});
+  if(q.m===CQ_MODEL&&q.resistance<1)errs.push('history['+i+'].resistance must be at least 1 for CQ model '+CQ_MODEL);
   /* THE TWENTY ONE ON THE ROW (snapLaws). This whitelist is why the field
      needed a line here and not only in snapshot(): every row is rebuilt from
      it, so a key snapshot() writes and this does not name survives until the
