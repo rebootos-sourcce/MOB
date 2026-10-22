@@ -419,6 +419,29 @@ function suite(T,E,ok,g){
   ok(J(G.unchecked)==='{}','nothing on this record is unchecked');
  }
 
+ g('TG11b · unified signal / fetter / nerve-address path');
+ {
+  const p=worked(E);
+  const G=T.traceFromRecord(p);
+  const story=G.nodes.find(n=>n.type==='story'&&n.id==='2026-09-21T08:00:00.000Z');
+  const supported=story&&G.edges.filter(e=>e.from==='story:'+story.id&&e.edge==='supports'&&e.to.indexOf('pattern:fetter:')===0);
+  ok(!!story,'worked source story exists for signal path');
+  ok(!!supported&&supported.length>0,'story/imprint derives an explicit signal→fetter support edge');
+  ok(supported&&supported.every(e=>e.src==='inferred'&&e.derived===true),'signal→fetter keeps inferred provenance and is derived, not duplicated');
+  const memberships=G.edges.filter(e=>e.edge==='associated_with'&&e.from.indexOf('pattern:')===0&&e.to.indexOf('pattern:fetter:')===0&&e.src==='known');
+  ok(memberships.length>0,'canonical address nodes connect to their canonical fetter by association');
+  ok(memberships.every(e=>e.why&&e.why.indexOf('does not imply causation')>=0),'address→fetter membership explicitly does not claim causation');
+  const address=G.nodes.find(n=>n.type==='pattern'&&n.id==='53');
+  const fetter=address&&address.fetter;
+  ok(!!address&&!!fetter,'nerve-address node retains canonical fetter metadata');
+  const path=story&&supported&&supported.length?T.tracePath(G,'story:'+story.id,supported[0].to):null;
+  ok(!!path&&path.length===1&&path[0].src==='inferred','signal-to-fetter is traversable with its provenance intact');
+  const before=JSON.stringify({meter:p.meter,axes:p.axes,laws:p.laws});
+  T.traceFromRecord(p);
+  const after=JSON.stringify({meter:p.meter,axes:p.axes,laws:p.laws});
+  ok(before===after,'deriving signal/fetter/address links has no metric or persisted-record side effects');
+  ok(!Object.prototype.hasOwnProperty.call(p,'vritti'),'no parallel p.vritti collection is introduced');
+ }
  g('TG12 · same record, same graph, whatever is loaded');
  {
   const P=worked(E); if(!P)return;
