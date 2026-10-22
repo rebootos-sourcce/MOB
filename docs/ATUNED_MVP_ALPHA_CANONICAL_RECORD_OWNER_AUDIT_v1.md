@@ -1,58 +1,84 @@
 # ATÜNED MVP Alpha — Canonical Record Owner Audit
-Version: 1.0
+Version: 1.1
 Date: 2026-10-21
-Status: Source-inspected; owner gaps remain. This is an implementation audit, not a claim of runtime completion.
+Status: **P0 contract complete.** Runtime integration is a downstream P1/P2 task and is not claimed complete.
 
 ## Scope
-Map the existing canonical owners for the unified signal → fetter → qualium → nerve-address node/tone model before changing persistence or trace rules.
+Establish the canonical semantic boundaries and ownership decisions for Vritti → fetter / qualium → nerve-address node / tone, using existing records and trace rather than introducing a parallel Vritti inventory.
 
-## Findings grounded in source
-| Concept/data | Current owner/evidence | What is actually available | Gap / implementation consequence |
+## Canonical owner decisions (P0 exit contract)
+| Concept | Canonical meaning | Current source/owner | Target representation and rule |
 |---|---|---|---|
-| Raw source language | `p.story.entries[].text` in `atuned_src/engine/schema.js`; story entries are derived by `traceFromRecord` in `atuned_src/engine/trace.js` | User-authored text and timestamp; the sniffer derives imprints/addresses from text | This is a source record, not yet a structured sensory/emotional waveform record. Do not claim the full waveform is persisted. |
-| Source context / onboarding self-report | `p.story.entries[].ob` validated by `vEntryOb` in `schema.js`; fields include `pick`, `feel`, `place`, `yes`, `no`, `fixes`; source lists live in `atuned_src/engine/data/onboarding.js` | Coarse onboarding selections and user confirmations/corrections | These fields may inform the signal but are not equivalent to separately captured raw sensory input and raw emotional input. |
-| Imprint interpretation | `parseStory(e.text).imprints` read in `traceFromRecord` | Current lexical/model interpretation of story text into address/fetter imprints; trace provenance is inferred unless the user confirmed the address | Preserve the distinction between source text and interpretation; do not call the inference a confirmed belief. |
-| Address / nerve label | Canonical `NODES` table in `atuned_src/engine/data/nodes.js`; each row includes address `i`, label `k`, band `b`, nerve label `n`, and other descriptors | Canonical address and nerve labels; trace pattern nodes derive `name`, `seat`, `nerve`, and `fetter` attributes from this table | This is the current node identity source. It does not by itself prove the model's nerve oscillation claim biologically. |
-| Fetter identity | `CHARGES` plus node-table `cf`; trace accepts `pattern:fetter:<name>` only for canonical charge names | Fetter is the limiting-belief/pattern identity; address patterns may carry a `fetter` association | Existing trace model overloads `pattern` for address and fetter IDs. There is no dedicated first-class `fetter` node type today. |
-| Node-table distortion descriptor | `NODES[].d` in `atuned_src/engine/data/nodes.js` | A per-address descriptor named `d` | Not established as the owner's qualium. Do not alias it to qualium without a domain mapping. |
-| Inward/outward orientation in calculations | `OUTWARD` / `INWARD` in `atuned_src/engine/compute.js` | A charge-balance grouping used by calculation | Not established as the qualium taxonomy. Do not assume the orientation of distortion is identical to charge direction. |
-| Tone/frequency | `schema.js` comments refer to `FLOWSEAT` as hertz per seat and to tone being used under release; exact canonical owner/source must be confirmed in the full source dependency chain | Evidence that a frequency-by-seat concept exists in the codebase | Exact declaration, unit semantics, and whether tone is attached to address node versus band/seat are not yet proven by this audit. Locate and verify before wiring UI or graph attrs. |
-| Trace persistence | `p.trace` initialized by `traceNew()`; `validateTrace` enforces strict node/edge allowlists and profile import/export validation | Stored graph only for relationships that cannot be derived; source stories, address patterns, release/reframe, rituals, practice events are derived | New node/edge kinds require synchronized type/rule/validation/cycle/UI/test updates. No arbitrary graph types may be inserted. |
-| CQ / DQ / SQ | `atuned_src/engine/compute.js` and profile/history boundary in `schema.js` | CQ is 21 laws over 210 with release lift; DQ and SQ are separately computed | Conceptual `CQ = (Integrity × Intention) / Resistance` still needs one versioned reconciliation with the current 21-law implementation. No second calculator. |
+| Raw source | User's original account and context | `p.story.entries[].text` and `.ob` in `atuned_src/engine/schema.js` | Preserve original source and timestamp. Existing story/onboarding data is not a fully captured sensory-emotional waveform. |
+| Vritti | Total sensory + emotional waveform identified/tagged as a limiting belief | No complete structured waveform owner established; story/imprint is the nearest source pipeline | Treat Vritti as a derived/linked signal concept across existing source/imprint owners, not a new top-level `p.vritti[]` collection. Preserve raw source separately from normalized interpretation. Add structured sensory/emotional capture only at the canonical source/imprint owner when its contract is implemented. |
+| Fetter | Limiting-belief pattern; individual node/type whose weight contributes to SQ | `CHARGES`, `NODES[].cf`, and trace `pattern:fetter:<name>` | Keep canonical fetter identity; no duplicate fetter records. Current trace type `pattern` is overloaded for address and fetter IDs, so type-safe interpretation must use canonical IDs and validation. |
+| Qualium | **Orientation of the distortion** | No existing field is proven equivalent | Treat as an orientation attribute of the Vritti→fetter interpretation/association, with provenance/status. It is not a separate waveform, fetter, node, tone, score, or top-level collection. Do not alias it to `NODES[].d` or `OUTWARD/INWARD` absent an approved domain mapping. If current edge schema cannot safely own attributes, extend the existing canonical association representation; do not invent parallel state. |
+| Nerve-address node | Canonical address node where the model locates tone | `NODES` in `atuned_src/engine/data/nodes.js`; trace derives address `pattern` nodes | Address ID and nerve label come from `NODES`. Fetter↔address association is many-to-many unless a domain rule narrows it. |
+| Tone/frequency | Tone is attached to the nerve-address node at that address | Source comment in `schema.js` names `FLOWSEAT` as “hertz per seat”; exact runtime declaration/consumer not located by this audit | Domain ownership is fixed: tone is read from the canonical address-node/seat owner and referenced, not copied into Vritti or fetter. Locating the runtime constant and mapping seat→address is a P1 source-wiring task, not an open semantic decision. Do not claim validated biological measurement. |
+| Trace graph | Navigation and typed, provenance-bearing relationships among existing owners | `p.trace`, `traceNew`, strict node/edge allowlists and `TRACE_RULES` in `atuned_src/engine/trace.js` | Derive relationships that can be derived; store only relationships/decisions not derivable from source. Association is not causation. New rules/attrs require validation, import/export, UI, and tests together. |
+| CQ / Coherence | CQ is Coherence; partial score is available from zero using the current 21-law/210-point engine | `atuned_src/engine/compute.js`; history stores formula version | Keep current 21-law calculator as the sole operational CQ calculator/version until a versioned model decision changes it. |
+| Conceptual CQ equation | `CQ = (Integrity × Intention) / Resistance` | Owner-provided conceptual relationship; component normalization and denominator behavior are not a fully specified executable metric contract | Treat as a conceptual model to reconcile against operational 21-law CQ; do not ship a second canonical calculator or silently replace CQ. A later version must define units, zero-resistance behavior, normalization, migration, and comparative validation before activation. |
+| DQ / SQ / node weight | DQ is resistance/total shadow under the current contract; SQ is the sum of individual node/fetter weights | Existing compute engine | Preserve existing metric ownership. DQ is not `100-CQ`. Link/marker/qualium operations must not mutate CQ, DQ, SQ, node weight, stored charge, or hit count. |
 
-## Qualium decision
-Owner definition: **qualium is the orientation of distortion**.
+## Explicit relationship model
+```text
+raw story + source context
+        │ (preserved evidence; parsed separately)
+        ▼
+Vritti signal concept (sensory waveform + emotional waveform)
+        │ interpretation / association carries qualium = orientation of distortion
+        ▼
+fetter (limiting-belief pattern)
+        │ associated with / manifests at (not automatically causal)
+        ▼
+canonical nerve-address node ── owns/references tone/frequency
+```
 
-The current source audit has not identified an existing canonical field that can safely be declared equivalent to qualium. Three adjacent candidates are explicitly not interchangeable without a domain rule:
-1. `NODES[].d`, a node-level distortion descriptor;
-2. `OUTWARD` / `INWARD`, calculation groupings for charge balance;
-3. tone/frequency, a node/seat signal reference.
+Rules:
+- Relationships are not assumed one-to-one. One source/Vritti may be interpreted as more than one fetter; a fetter may be associated with more than one address.
+- Keep provenance states distinct: known, inferred, proposed, user-confirmed, observed. Candidate interpretation is not user confirmation.
+- Do not label association as causation. Causes are claims only and require permitted provenance.
+- Marker is derived from valid associations; it is not persisted as duplicate truth and is not a score.
+- Nerve oscillation/frequency language is a conceptual model. Do not claim experimentally validated physiology or invent units.
+- No standalone `p.vritti[]` collection is authorized by this contract.
 
-Therefore, this block does **not** add a new persisted qualium field, enum, or trace node yet. That is not deferral by preference: it prevents a guessed mapping from becoming canonical data. The next implementation block must establish the qualium vocabulary/relationship contract and locate the tone owner in source before adding graph links.
+## Source findings and implementation boundary
+- Story text/context: `p.story.entries[].text` and `.ob`; parsed imprints come from `parseStory(e.text).imprints` in trace derivation.
+- Address/nerve labels: canonical `NODES` table; current graph derives address pattern attributes from it.
+- Fetter identity: `CHARGES` and `NODES[].cf`; current trace graph has no dedicated `fetter` node type.
+- `NODES[].d` is a node-table distortion descriptor, not qualium by default.
+- `OUTWARD/INWARD` are calculation groupings, not qualium by default.
+- Source comment identifies `FLOWSEAT` as hertz per seat, but this audit did not locate its declaration/consumer; P1 must find it and map canonical address/seat owner before wiring.
+- Trace graph is strict; a new edge or attribute must be validated across graph functions, profile boundary, UI and tests.
 
-## Recursive review
-### Review A — semantic and owner correctness
-- Story text is raw source; parsed imprints are interpretation.
-- Fetter identity and address identity currently share the graph's `pattern` type; do not flatten them conceptually.
-- Node `d`, charge direction, qualium orientation, and tone remain distinct until mapped explicitly.
-- No top-level `p.vritti[]` collection is justified by the current evidence.
+## Three-pass review result
+### Pass 1 — Ontology
+Vritti is the total signal; fetter is the limiting-belief interpretation; qualium describes the orientation of that distortion; tone belongs to the nerve-address node. Connected, not interchangeable.
 
-### Review B — failure and compatibility risks
-- `schema.js` is a strict profile boundary; undeclared fields may be rejected or dropped.
-- `trace.js` has strict node/edge allowlists and validates imported graphs.
-- Derived graph items must be deterministic and idempotent; stored edges must preserve provenance.
-- Adding a marker must not mutate CQ, DQ, SQ, node weight, stored-charge estimate, or release-hit count.
-- Association must not be rendered as causation.
-- Legacy profile import/export/reload must remain valid.
+### Pass 2 — Runtime ownership and metric isolation
+Use existing story/imprint, fetter/address, and trace owners. Qualium belongs to the interpretation/association unless implementation inspection proves the current edge contract cannot safely carry it; then extend that canonical contract, not a parallel collection. Tone is referenced from node/seat owner. CQ remains one operational calculator; conceptual formula is not a second executable calculator.
+
+### Pass 3 — Failure and evidence
+Preserve raw source, provenance, candidate/confirmed distinctions, old-profile compatibility, deterministic derivation, idempotency, and export/import. No relationship-only operation may alter metrics. No association implies causation. Do not overstate physiological validity.
+
+## P0 exit checklist
+- [x] Canonical definitions fixed.
+- [x] Current source owners and missing runtime mappings documented.
+- [x] Target ownership assigned for Vritti, fetter, qualium, node/tone, trace and metrics.
+- [x] No standalone Vritti collection.
+- [x] CQ operational-vs-conceptual equation policy fixed.
+- [x] Relationship cardinality, provenance, causal restraint, and metric-isolation rules fixed.
+- [x] Runtime implementation gaps transferred explicitly to P1/P2 rather than left as unresolved P0 semantics.
 
 ## Block status
-- **P0 — partially complete.** Current source owners and material semantic gaps are mapped. The canonical qualium vocabulary/owner and exact tone source remain unresolved.
-- **P1 — not started in runtime code.** Do not claim Vritti/qualium/node relationship wiring is complete.
-- **Verification — not run.** No build or test result is claimed by this audit.
+- **P0 — COMPLETE as architecture/ownership contract.** This is design/contract completion, not runtime completion.
+- **P1 — next: resolve runtime owner seams and implement record/trace wiring.**
+- **P2 — trace path, derived marker and navigation must be implemented and tested.**
+- **Build/tests — not run in this audit.**
 
 ## Next recursive actions
-1. Find the declaration and consumers of `FLOWSEAT`; determine whether tone is keyed by node address or band/seat.
-2. Reconcile the owner's qualium vocabulary with `NODES[].d`, charge-direction groupings, and tone without conflation.
-3. Define graph relationships using existing record owners; extend trace schema only where the contract requires it.
-4. Add tests for derived links, provenance, old-profile compatibility, idempotency, and metric isolation.
-5. Run build, engine tests, release-chain tests, and candidate-revision CI; append evidence and the Development Statistics Snapshot.
+1. P1.1: find `FLOWSEAT` declaration/consumers and map its seat key to canonical address-node IDs.
+2. P1.2: inspect trace edge-attribute validation and choose the smallest backward-compatible association representation for qualium/provenance.
+3. P1/P2: implement derived signal→fetter→address/tone traversal without duplicate records.
+4. Add tests for provenance, cardinality, idempotency, old-profile compatibility, export/import/reload, and metric isolation.
+5. Run build, engine tests, release-chain tests and candidate-revision CI; update development snapshot with evidence.
