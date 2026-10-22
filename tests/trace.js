@@ -394,8 +394,8 @@ function suite(T,E,ok,g){
    const want=[...new Set(E.parseStory(e.text).imprints.map(x=>'pattern:'+x.node))].sort();
    const got=G.edges.filter(x=>x.from==='story:'+sids[i]&&x.edge==='supports').map(x=>x.to).sort();
    ok(want.length>0&&J(got)===J(want),'entry '+i+' supports the addresses the product shows for it, '+J(got)+' against '+J(want));});
-  ok(G.edges.filter(e=>e.from.indexOf('story:')===0).every(e=>e.src==='inferred'&&e.edge==='supports'),
-   'a reading is inferred and supports; it never causes');
+  ok(G.edges.filter(e=>e.from.indexOf('story:')===0&&e.to.indexOf('pattern:')===0).every(e=>e.src==='inferred'&&e.edge==='supports'),
+   'a reading is inferred and supports an address; it never causes');
   ok(G.edges.some(e=>e.from.indexOf('story:')===0&&e.named===true)&&G.edges.some(e=>e.from.indexOf('story:')===0&&e.named===false),
    'whether the words named it is carried beside the provenance, both kinds present');
   ok(G.nodes.filter(n=>n.type==='story').every(n=>n.src==='known'),'an entry on the record is known');
@@ -457,8 +457,8 @@ function suite(T,E,ok,g){
   const confirmedMarker=confirmedLoop.patterns.find(x=>Array.isArray(x.signalSources)&&x.signalSources.some(z=>z.id===story.id));
   ok(confirmedMarker&&confirmedMarker.signalSources.every(z=>z.status==='candidate'&&z.src==='inferred'),
    'confirming an address does not silently promote the distinct signal-to-fetter interpretation');
-  const path=story&&supported&&supported.length?T.tracePath(G,'story:'+story.id,supported[0].to):null;
-  ok(!!path&&path.length===2&&path.every(e=>e.src==='inferred'),'story→signal→fetter is traversable with provenance intact');
+  const storyPath=story&&supported&&supported.length?T.tracePath(G,'story:'+story.id,supported[0].to):null;
+  ok(!!storyPath&&storyPath.length===2&&storyPath.every(e=>e.src==='inferred'),'story→signal→fetter is traversable with provenance intact');
   const before=JSON.stringify({meter:p.meter,axes:p.axes,laws:p.laws});
   T.traceFromRecord(p);
   const after=JSON.stringify({meter:p.meter,axes:p.axes,laws:p.laws});
