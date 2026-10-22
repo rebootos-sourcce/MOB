@@ -853,6 +853,22 @@ function traceFromRecord(p,intents){
    if(!by[k]){by[k]={amt:0, named:false}; order.push(k);}
    by[k].amt+=x.amt||0; if(!x.inferred)by[k].named=true;
    by[k].fetter=x.fetter||null;});
+  /* THE SIGNAL → FETTER → ADDRESS PATH.
+     The story/imprint is the nearest existing signal owner; it is not
+     mislabeled as a fully structured sensory-emotional waveform. Each
+     fetter comes from the parser's canonical label, and each address→fetter
+     membership comes from NODES[].cf. These are supports/association, never
+     causation. All are derived on read; no duplicate collection or metrics. */
+  var fetters={};
+  im.forEach(function(x){
+   var f=x&&typeof x.fetter==='string'?x.fetter:null;
+   if(f&&CHARGES.indexOf(f)>=0)fetters[f]=1;
+  });
+  Object.keys(fetters).sort().forEach(function(f){
+   var fk=node('pattern','fetter:'+f,'known',tracePatternAttrs('fetter:'+f));
+   if(fk)edge(sk,'supports',fk,'inferred',{derived:true,
+    why:'the parser identified '+f+' as the limiting-belief pattern in this source; this is an interpretation, not causation'});
+  });
   order.forEach(function(k){
    var pk=node('pattern',k,'known',tracePatternAttrs(k));
    if(!pk)return;
@@ -862,6 +878,15 @@ function traceFromRecord(p,intents){
      :'the seat was read and the address was chosen by the fallback, not by the words'});});
   yesOf(sk,e);});
 
+ /* CANONICAL ADDRESS→FETTER MEMBERSHIP. NODES[].cf owns this mapping.
+    It is a known classification edge, not a claim about the person's state. */
+ W.forEach(function(n){
+  if(!n||!n.cf||CHARGES.indexOf(n.cf)<0)return;
+  var ak=node('pattern',String(n.i),'known',tracePatternAttrs(String(n.i)));
+  var fk=node('pattern','fetter:'+n.cf,'known',tracePatternAttrs('fetter:'+n.cf));
+  if(ak&&fk)edge(ak,'associated_with',fk,'known',{derived:true,
+   why:'canonical NODES[].cf membership; association does not imply causation'});
+ });
  /* THE LINES OPENED. One node per address and channel, which is
     meterKey's own form with no line. */
  var groups={}, gorder=[];
