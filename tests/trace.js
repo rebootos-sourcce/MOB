@@ -535,7 +535,7 @@ function suite(T,E,ok,g){
    'a Yes on an address today\'s reading no longer reaches is still held as the person\'s, with nothing it was before, got '+J(f));
   const n=G.edges.find(e=>e.from===sid&&e.to==='pattern:'+read[1]);
   ok(n&&n.src==='inferred','a Not me changes nothing in the graph: it has no provenance for a refusal, got '+J(n));
-  ok(G.alg===2,'and the graph says it was read under the rule that reads the Yes');
+  ok(G.alg===3,'and the graph version stamps both Yes-confirmation and signal/fetter derivation rules');
   if(typeof E.loopRead==='function'){
    const L=E.loopRead(Object.assign({},v.profile,{practice:null}));
    const row=k=>L.patterns.find(x=>x.key==='pattern:'+k);
