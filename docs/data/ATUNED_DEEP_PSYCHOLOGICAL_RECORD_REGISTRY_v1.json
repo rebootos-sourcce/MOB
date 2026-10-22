@@ -2,8 +2,8 @@
   "registryId": "atuned.deep_psychological.record_registry",
   "version": "1.0.0",
   "generatedAt": "2026-10-22",
-  "status": "OPEN_NOT_CLOSURE",
-  "purpose": "First-pass source-backed inventory of owner-stated deep-psychological taxonomies and repository-backed adjacent tables. Existence in this registry is not evidence of completion or canonical approval.",
+  "status": "OPEN_PROVISIONAL_CONTENT_POPULATED_SOURCE_GAPS_REMAIN",
+  "purpose": "Source-qualified inventory with provisional content populated for the 15 owner-stated behavioral-domain records and explicit source-gap scaffolding for 8 Conscious Domain records. Provisional text is not canonical approval.",
   "recordContract": "docs/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_v1.md",
   "rules": [
     "Each record contains three distinct research-pass slots; all remain pending until evidence is recorded.",
@@ -968,14 +968,20 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_compilation_domain_crosswalk_unresolved",
-      "definition": null,
+      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "definition": "The behavioral domain concerned with acquiring, evaluating, organizing, and applying understanding.",
       "essence": null,
       "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
+      "healthyExpression": [
+        "In coherent expression, a person seeks reliable information, distinguishes observation from assumption, updates beliefs when evidence changes, and applies learning with appropriate humility"
+      ],
+      "decoherentExpression": [
+        "certainty without evidence, information hoarding, intellectual avoidance, or using knowledge to dominate rather than understand"
+      ],
       "signals": [],
-      "distortions": [],
+      "distortions": [
+        "certainty without evidence, information hoarding, intellectual avoidance, or using knowledge to dominate rather than understand"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -991,10 +997,11 @@
       ],
       "sourceClaims": [
         "Knowledge is in the owner-stated list of fifteen behavioral domains.",
-        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established."
+        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
       ],
-      "evidenceStrength": "owner-stated list cross-checked against canonical source with explicit open ruling",
-      "confidence": 0.82,
+      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
@@ -1039,28 +1046,32 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Populate the full definition and source version for this behavioral-domain item."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
       ],
       "notes": [],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
         }
       ],
       "kind": "domain",
       "nm": "Knowledge",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": null,
-      "body": null,
+      "def": "PROVISIONAL — The behavioral domain concerned with acquiring, evaluating, organizing, and applying understanding.",
+      "body": "PROVISIONAL — In coherent expression, a person seeks reliable information, distinguishes observation from assumption, updates beliefs when evidence changes, and applies learning with appropriate humility. Distortion may appear as certainty without evidence, information hoarding, intellectual avoidance, or using knowledge to dominate rather than understand. These are proposed operational distinctions, not source-verified ATÜNED claims.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Knowledge",
         "fam": "deep_psychological.behavioral_domains",
-        "def": null,
-        "body": null,
+        "def": "PROVISIONAL — The behavioral domain concerned with acquiring, evaluating, organizing, and applying understanding.",
+        "body": "PROVISIONAL — In coherent expression, a person seeks reliable information, distinguishes observation from assumption, updates beliefs when evidence changes, and applies learning with appropriate humility. Distortion may appear as certainty without evidence, information hoarding, intellectual avoidance, or using knowledge to dominate rather than understand. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -1112,13 +1123,11 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "incomplete",
-        "missingFields": [
-          "def",
-          "body"
-        ],
+        "contentStatus": "provisional_content_populated",
+        "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "canonicalApproval": "pending"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -1132,14 +1141,20 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_compilation_domain_crosswalk_unresolved",
-      "definition": null,
+      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "definition": "The behavioral domain concerned with transmitting meaning and exchanging information, resources, attention, or value between people and systems.",
       "essence": null,
       "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
+      "healthyExpression": [
+        "makes intent legible, listens for the other party's actual meaning, checks understanding, and supports reciprocal exchange"
+      ],
+      "decoherentExpression": [
+        "withholding, manipulation, noise, one-way extraction, or mistaking volume for clarity"
+      ],
       "signals": [],
-      "distortions": [],
+      "distortions": [
+        "withholding, manipulation, noise, one-way extraction, or mistaking volume for clarity"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -1155,10 +1170,11 @@
       ],
       "sourceClaims": [
         "Communication and Exchange is in the owner-stated list of fifteen behavioral domains.",
-        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established."
+        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
       ],
-      "evidenceStrength": "owner-stated list cross-checked against canonical source with explicit open ruling",
-      "confidence": 0.82,
+      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
@@ -1203,28 +1219,32 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Populate the full definition and source version for this behavioral-domain item."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
       ],
       "notes": [],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
         }
       ],
       "kind": "domain",
       "nm": "Communication and Exchange",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": null,
-      "body": null,
+      "def": "PROVISIONAL — The behavioral domain concerned with transmitting meaning and exchanging information, resources, attention, or value between people and systems.",
+      "body": "PROVISIONAL — Coherent expression makes intent legible, listens for the other party's actual meaning, checks understanding, and supports reciprocal exchange. Distortion may appear as withholding, manipulation, noise, one-way extraction, or mistaking volume for clarity. These are proposed operational distinctions, not source-verified ATÜNED claims.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Communication and Exchange",
         "fam": "deep_psychological.behavioral_domains",
-        "def": null,
-        "body": null,
+        "def": "PROVISIONAL — The behavioral domain concerned with transmitting meaning and exchanging information, resources, attention, or value between people and systems.",
+        "body": "PROVISIONAL — Coherent expression makes intent legible, listens for the other party's actual meaning, checks understanding, and supports reciprocal exchange. Distortion may appear as withholding, manipulation, noise, one-way extraction, or mistaking volume for clarity. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -1276,13 +1296,11 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "incomplete",
-        "missingFields": [
-          "def",
-          "body"
-        ],
+        "contentStatus": "provisional_content_populated",
+        "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "canonicalApproval": "pending"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -1296,14 +1314,20 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_compilation_domain_crosswalk_unresolved",
-      "definition": null,
+      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "definition": "The behavioral domain concerned with mobilizing will, energy, and effort toward a chosen aim.",
       "essence": null,
       "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
+      "healthyExpression": [
+        "applies proportionate force with clear direction, awareness of consequences, and the ability to stop or redirect when conditions change"
+      ],
+      "decoherentExpression": [
+        "coercion, scattered effort, passivity disguised as restraint, or force detached from purpose"
+      ],
       "signals": [],
-      "distortions": [],
+      "distortions": [
+        "coercion, scattered effort, passivity disguised as restraint, or force detached from purpose"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -1319,10 +1343,11 @@
       ],
       "sourceClaims": [
         "Directed Force is in the owner-stated list of fifteen behavioral domains.",
-        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established."
+        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
       ],
-      "evidenceStrength": "owner-stated list cross-checked against canonical source with explicit open ruling",
-      "confidence": 0.82,
+      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
@@ -1367,28 +1392,32 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Populate the full definition and source version for this behavioral-domain item."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
       ],
       "notes": [],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
         }
       ],
       "kind": "domain",
       "nm": "Directed Force",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": null,
-      "body": null,
+      "def": "PROVISIONAL — The behavioral domain concerned with mobilizing will, energy, and effort toward a chosen aim.",
+      "body": "PROVISIONAL — Coherent expression applies proportionate force with clear direction, awareness of consequences, and the ability to stop or redirect when conditions change. Distortion may appear as coercion, scattered effort, passivity disguised as restraint, or force detached from purpose. These are proposed operational distinctions, not source-verified ATÜNED claims.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Directed Force",
         "fam": "deep_psychological.behavioral_domains",
-        "def": null,
-        "body": null,
+        "def": "PROVISIONAL — The behavioral domain concerned with mobilizing will, energy, and effort toward a chosen aim.",
+        "body": "PROVISIONAL — Coherent expression applies proportionate force with clear direction, awareness of consequences, and the ability to stop or redirect when conditions change. Distortion may appear as coercion, scattered effort, passivity disguised as restraint, or force detached from purpose. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -1440,13 +1469,11 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "incomplete",
-        "missingFields": [
-          "def",
-          "body"
-        ],
+        "contentStatus": "provisional_content_populated",
+        "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "canonicalApproval": "pending"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -1460,14 +1487,20 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_compilation_domain_crosswalk_unresolved",
-      "definition": null,
+      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "definition": "The behavioral domain concerned with stewardship, governance, boundaries, structure, and coordinated responsibility.",
       "essence": null,
       "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
+      "healthyExpression": [
+        "creates understandable rules, accepts accountability, distributes responsibility appropriately, and uses authority to maintain a workable system rather than elevate the ruler"
+      ],
+      "decoherentExpression": [
+        "domination, rigidity, arbitrary control, abdication, or confusing compliance with integrity"
+      ],
       "signals": [],
-      "distortions": [],
+      "distortions": [
+        "domination, rigidity, arbitrary control, abdication, or confusing compliance with integrity"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -1483,10 +1516,11 @@
       ],
       "sourceClaims": [
         "Rulership and Order is in the owner-stated list of fifteen behavioral domains.",
-        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established."
+        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
       ],
-      "evidenceStrength": "owner-stated list cross-checked against canonical source with explicit open ruling",
-      "confidence": 0.82,
+      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
@@ -1531,28 +1565,32 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Populate the full definition and source version for this behavioral-domain item."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
       ],
       "notes": [],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
         }
       ],
       "kind": "domain",
       "nm": "Rulership and Order",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": null,
-      "body": null,
+      "def": "PROVISIONAL — The behavioral domain concerned with stewardship, governance, boundaries, structure, and coordinated responsibility.",
+      "body": "PROVISIONAL — Coherent expression creates understandable rules, accepts accountability, distributes responsibility appropriately, and uses authority to maintain a workable system rather than elevate the ruler. Distortion may appear as domination, rigidity, arbitrary control, abdication, or confusing compliance with integrity. These are proposed operational distinctions, not source-verified ATÜNED claims.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Rulership and Order",
         "fam": "deep_psychological.behavioral_domains",
-        "def": null,
-        "body": null,
+        "def": "PROVISIONAL — The behavioral domain concerned with stewardship, governance, boundaries, structure, and coordinated responsibility.",
+        "body": "PROVISIONAL — Coherent expression creates understandable rules, accepts accountability, distributes responsibility appropriately, and uses authority to maintain a workable system rather than elevate the ruler. Distortion may appear as domination, rigidity, arbitrary control, abdication, or confusing compliance with integrity. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -1604,13 +1642,11 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "incomplete",
-        "missingFields": [
-          "def",
-          "body"
-        ],
+        "contentStatus": "provisional_content_populated",
+        "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "canonicalApproval": "pending"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -1624,14 +1660,20 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_compilation_domain_crosswalk_unresolved",
-      "definition": null,
+      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "definition": "The behavioral domain concerned with bringing an intention or possibility into an observable form.",
       "essence": null,
       "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
+      "healthyExpression": [
+        "converts ideas into useful outcomes through deliberate choices, resources, iteration, and contact with reality"
+      ],
+      "decoherentExpression": [
+        "endless ideation without delivery, premature action without grounding, attachment to appearances, or claiming authorship without responsibility for effects"
+      ],
       "signals": [],
-      "distortions": [],
+      "distortions": [
+        "endless ideation without delivery, premature action without grounding, attachment to appearances, or claiming authorship without responsibility for effects"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -1647,10 +1689,11 @@
       ],
       "sourceClaims": [
         "Creation and Manifestation is in the owner-stated list of fifteen behavioral domains.",
-        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established."
+        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
       ],
-      "evidenceStrength": "owner-stated list cross-checked against canonical source with explicit open ruling",
-      "confidence": 0.82,
+      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
@@ -1695,28 +1738,32 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Populate the full definition and source version for this behavioral-domain item."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
       ],
       "notes": [],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
         }
       ],
       "kind": "domain",
       "nm": "Creation and Manifestation",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": null,
-      "body": null,
+      "def": "PROVISIONAL — The behavioral domain concerned with bringing an intention or possibility into an observable form.",
+      "body": "PROVISIONAL — Coherent expression converts ideas into useful outcomes through deliberate choices, resources, iteration, and contact with reality. Distortion may appear as endless ideation without delivery, premature action without grounding, attachment to appearances, or claiming authorship without responsibility for effects. These are proposed operational distinctions, not source-verified ATÜNED claims.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Creation and Manifestation",
         "fam": "deep_psychological.behavioral_domains",
-        "def": null,
-        "body": null,
+        "def": "PROVISIONAL — The behavioral domain concerned with bringing an intention or possibility into an observable form.",
+        "body": "PROVISIONAL — Coherent expression converts ideas into useful outcomes through deliberate choices, resources, iteration, and contact with reality. Distortion may appear as endless ideation without delivery, premature action without grounding, attachment to appearances, or claiming authorship without responsibility for effects. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -1768,13 +1815,11 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "incomplete",
-        "missingFields": [
-          "def",
-          "body"
-        ],
+        "contentStatus": "provisional_content_populated",
+        "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "canonicalApproval": "pending"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -1788,14 +1833,20 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_compilation_domain_crosswalk_unresolved",
-      "definition": null,
+      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "definition": "The behavioral domain concerned with ending, dismantling, releasing, or changing forms that no longer serve their purpose.",
       "essence": null,
       "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
+      "healthyExpression": [
+        "distinguishes necessary endings from reactive damage, removes obsolete structures with care, and makes room for a viable next state"
+      ],
+      "decoherentExpression": [
+        "indiscriminate destruction, avoidance of necessary endings, attachment to decay, or treating harm as transformation merely because something changed"
+      ],
       "signals": [],
-      "distortions": [],
+      "distortions": [
+        "indiscriminate destruction, avoidance of necessary endings, attachment to decay, or treating harm as transformation merely because something changed"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -1811,10 +1862,11 @@
       ],
       "sourceClaims": [
         "Destruction and Transformation is in the owner-stated list of fifteen behavioral domains.",
-        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established."
+        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
       ],
-      "evidenceStrength": "owner-stated list cross-checked against canonical source with explicit open ruling",
-      "confidence": 0.82,
+      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
@@ -1859,28 +1911,32 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Populate the full definition and source version for this behavioral-domain item."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
       ],
       "notes": [],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
         }
       ],
       "kind": "domain",
       "nm": "Destruction and Transformation",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": null,
-      "body": null,
+      "def": "PROVISIONAL — The behavioral domain concerned with ending, dismantling, releasing, or changing forms that no longer serve their purpose.",
+      "body": "PROVISIONAL — Coherent expression distinguishes necessary endings from reactive damage, removes obsolete structures with care, and makes room for a viable next state. Distortion may appear as indiscriminate destruction, avoidance of necessary endings, attachment to decay, or treating harm as transformation merely because something changed. These are proposed operational distinctions, not source-verified ATÜNED claims.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Destruction and Transformation",
         "fam": "deep_psychological.behavioral_domains",
-        "def": null,
-        "body": null,
+        "def": "PROVISIONAL — The behavioral domain concerned with ending, dismantling, releasing, or changing forms that no longer serve their purpose.",
+        "body": "PROVISIONAL — Coherent expression distinguishes necessary endings from reactive damage, removes obsolete structures with care, and makes room for a viable next state. Distortion may appear as indiscriminate destruction, avoidance of necessary endings, attachment to decay, or treating harm as transformation merely because something changed. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -1932,13 +1988,11 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "incomplete",
-        "missingFields": [
-          "def",
-          "body"
-        ],
+        "contentStatus": "provisional_content_populated",
+        "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "canonicalApproval": "pending"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -1952,14 +2006,20 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_compilation_domain_crosswalk_unresolved",
-      "definition": null,
+      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "definition": "The behavioral domain concerned with relational bonding, care, intimacy, belonging, and connection across difference.",
       "essence": null,
       "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
+      "healthyExpression": [
+        "combines care with truthful boundaries, recognizes the other as distinct, and supports connection without erasing agency"
+      ],
+      "decoherentExpression": [
+        "possession, enmeshment, conditional affection, chronic withdrawal, or self-erasure in exchange for belonging"
+      ],
       "signals": [],
-      "distortions": [],
+      "distortions": [
+        "possession, enmeshment, conditional affection, chronic withdrawal, or self-erasure in exchange for belonging"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -1975,10 +2035,11 @@
       ],
       "sourceClaims": [
         "Love and Connection is in the owner-stated list of fifteen behavioral domains.",
-        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established."
+        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
       ],
-      "evidenceStrength": "owner-stated list cross-checked against canonical source with explicit open ruling",
-      "confidence": 0.82,
+      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
@@ -2023,28 +2084,32 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Populate the full definition and source version for this behavioral-domain item."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
       ],
       "notes": [],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
         }
       ],
       "kind": "domain",
       "nm": "Love and Connection",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": null,
-      "body": null,
+      "def": "PROVISIONAL — The behavioral domain concerned with relational bonding, care, intimacy, belonging, and connection across difference.",
+      "body": "PROVISIONAL — Coherent expression combines care with truthful boundaries, recognizes the other as distinct, and supports connection without erasing agency. Distortion may appear as possession, enmeshment, conditional affection, chronic withdrawal, or self-erasure in exchange for belonging. These are proposed operational distinctions, not source-verified ATÜNED claims.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Love and Connection",
         "fam": "deep_psychological.behavioral_domains",
-        "def": null,
-        "body": null,
+        "def": "PROVISIONAL — The behavioral domain concerned with relational bonding, care, intimacy, belonging, and connection across difference.",
+        "body": "PROVISIONAL — Coherent expression combines care with truthful boundaries, recognizes the other as distinct, and supports connection without erasing agency. Distortion may appear as possession, enmeshment, conditional affection, chronic withdrawal, or self-erasure in exchange for belonging. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -2096,13 +2161,11 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "incomplete",
-        "missingFields": [
-          "def",
-          "body"
-        ],
+        "contentStatus": "provisional_content_populated",
+        "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "canonicalApproval": "pending"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -2116,14 +2179,20 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_compilation_domain_crosswalk_unresolved",
-      "definition": null,
+      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "definition": "The behavioral domain concerned with repair, recovery, reintegration, and the restoration of functional capacity after disruption.",
       "essence": null,
       "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
+      "healthyExpression": [
+        "identifies what is injured or depleted, respects limits and time, supports repair, and distinguishes recovery from concealment of symptoms"
+      ],
+      "decoherentExpression": [
+        "rescuing without consent, rushing recovery, denying damage, or making a permanent identity out of an injury"
+      ],
       "signals": [],
-      "distortions": [],
+      "distortions": [
+        "rescuing without consent, rushing recovery, denying damage, or making a permanent identity out of an injury"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -2139,10 +2208,11 @@
       ],
       "sourceClaims": [
         "Healing and Restoration is in the owner-stated list of fifteen behavioral domains.",
-        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established."
+        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
       ],
-      "evidenceStrength": "owner-stated list cross-checked against canonical source with explicit open ruling",
-      "confidence": 0.82,
+      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
@@ -2187,28 +2257,32 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Populate the full definition and source version for this behavioral-domain item."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
       ],
       "notes": [],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
         }
       ],
       "kind": "domain",
       "nm": "Healing and Restoration",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": null,
-      "body": null,
+      "def": "PROVISIONAL — The behavioral domain concerned with repair, recovery, reintegration, and the restoration of functional capacity after disruption.",
+      "body": "PROVISIONAL — Coherent expression identifies what is injured or depleted, respects limits and time, supports repair, and distinguishes recovery from concealment of symptoms. Distortion may appear as rescuing without consent, rushing recovery, denying damage, or making a permanent identity out of an injury. These are proposed operational distinctions, not source-verified ATÜNED claims.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Healing and Restoration",
         "fam": "deep_psychological.behavioral_domains",
-        "def": null,
-        "body": null,
+        "def": "PROVISIONAL — The behavioral domain concerned with repair, recovery, reintegration, and the restoration of functional capacity after disruption.",
+        "body": "PROVISIONAL — Coherent expression identifies what is injured or depleted, respects limits and time, supports repair, and distinguishes recovery from concealment of symptoms. Distortion may appear as rescuing without consent, rushing recovery, denying damage, or making a permanent identity out of an injury. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -2260,13 +2334,11 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "incomplete",
-        "missingFields": [
-          "def",
-          "body"
-        ],
+        "contentStatus": "provisional_content_populated",
+        "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "canonicalApproval": "pending"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -2280,14 +2352,20 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_compilation_domain_crosswalk_unresolved",
-      "definition": null,
+      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "definition": "The behavioral domain concerned with relinquishing something of value, entering difficult experience, and extracting learning without glorifying suffering.",
       "essence": null,
       "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
+      "healthyExpression": [
+        "distinguishes chosen cost from coerced loss, remains honest about consequences, and allows difficulty to deepen discernment where learning is possible"
+      ],
+      "decoherentExpression": [
+        "martyrdom, self-abandonment, avoidable suffering, or treating pain as proof of wisdom"
+      ],
       "signals": [],
-      "distortions": [],
+      "distortions": [
+        "martyrdom, self-abandonment, avoidable suffering, or treating pain as proof of wisdom"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -2303,10 +2381,11 @@
       ],
       "sourceClaims": [
         "Sacrifice and Wisdom Through Descent is in the owner-stated list of fifteen behavioral domains.",
-        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established."
+        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
       ],
-      "evidenceStrength": "owner-stated list cross-checked against canonical source with explicit open ruling",
-      "confidence": 0.82,
+      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
@@ -2351,28 +2430,32 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Populate the full definition and source version for this behavioral-domain item."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
       ],
       "notes": [],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
         }
       ],
       "kind": "domain",
       "nm": "Sacrifice and Wisdom Through Descent",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": null,
-      "body": null,
+      "def": "PROVISIONAL — The behavioral domain concerned with relinquishing something of value, entering difficult experience, and extracting learning without glorifying suffering.",
+      "body": "PROVISIONAL — Coherent expression distinguishes chosen cost from coerced loss, remains honest about consequences, and allows difficulty to deepen discernment where learning is possible. Distortion may appear as martyrdom, self-abandonment, avoidable suffering, or treating pain as proof of wisdom. These are proposed operational distinctions, not source-verified ATÜNED claims.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Sacrifice and Wisdom Through Descent",
         "fam": "deep_psychological.behavioral_domains",
-        "def": null,
-        "body": null,
+        "def": "PROVISIONAL — The behavioral domain concerned with relinquishing something of value, entering difficult experience, and extracting learning without glorifying suffering.",
+        "body": "PROVISIONAL — Coherent expression distinguishes chosen cost from coerced loss, remains honest about consequences, and allows difficulty to deepen discernment where learning is possible. Distortion may appear as martyrdom, self-abandonment, avoidable suffering, or treating pain as proof of wisdom. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -2424,13 +2507,11 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "incomplete",
-        "missingFields": [
-          "def",
-          "body"
-        ],
+        "contentStatus": "provisional_content_populated",
+        "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "canonicalApproval": "pending"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -2444,14 +2525,20 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_compilation_domain_crosswalk_unresolved",
-      "definition": null,
+      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "definition": "The behavioral domain concerned with truthful representation, fair treatment, proportionate accountability, and alignment between claims and evidence.",
       "essence": null,
       "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
+      "healthyExpression": [
+        "tests claims against evidence, applies standards consistently, acknowledges uncertainty, and repairs harm without reducing people to their worst actions"
+      ],
+      "decoherentExpression": [
+        "selective truth, vengeance presented as justice, double standards, or certainty used to suppress inquiry"
+      ],
       "signals": [],
-      "distortions": [],
+      "distortions": [
+        "selective truth, vengeance presented as justice, double standards, or certainty used to suppress inquiry"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -2467,10 +2554,11 @@
       ],
       "sourceClaims": [
         "Justice and Truth is in the owner-stated list of fifteen behavioral domains.",
-        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established."
+        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
       ],
-      "evidenceStrength": "owner-stated list cross-checked against canonical source with explicit open ruling",
-      "confidence": 0.82,
+      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
@@ -2515,28 +2603,32 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Populate the full definition and source version for this behavioral-domain item."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
       ],
       "notes": [],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
         }
       ],
       "kind": "domain",
       "nm": "Justice and Truth",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": null,
-      "body": null,
+      "def": "PROVISIONAL — The behavioral domain concerned with truthful representation, fair treatment, proportionate accountability, and alignment between claims and evidence.",
+      "body": "PROVISIONAL — Coherent expression tests claims against evidence, applies standards consistently, acknowledges uncertainty, and repairs harm without reducing people to their worst actions. Distortion may appear as selective truth, vengeance presented as justice, double standards, or certainty used to suppress inquiry. These are proposed operational distinctions, not source-verified ATÜNED claims.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Justice and Truth",
         "fam": "deep_psychological.behavioral_domains",
-        "def": null,
-        "body": null,
+        "def": "PROVISIONAL — The behavioral domain concerned with truthful representation, fair treatment, proportionate accountability, and alignment between claims and evidence.",
+        "body": "PROVISIONAL — Coherent expression tests claims against evidence, applies standards consistently, acknowledges uncertainty, and repairs harm without reducing people to their worst actions. Distortion may appear as selective truth, vengeance presented as justice, double standards, or certainty used to suppress inquiry. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -2588,13 +2680,11 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "incomplete",
-        "missingFields": [
-          "def",
-          "body"
-        ],
+        "contentStatus": "provisional_content_populated",
+        "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "canonicalApproval": "pending"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -2608,14 +2698,20 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_compilation_domain_crosswalk_unresolved",
-      "definition": null,
+      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "definition": "The behavioral domain concerned with exposing assumptions, interrupting stale patterns, and introducing alternative perspectives through play, inversion, or disruption.",
       "essence": null,
       "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
+      "healthyExpression": [
+        "uses surprise and challenge to reveal blind spots while remaining accountable for impact"
+      ],
+      "decoherentExpression": [
+        "chaos for its own sake, humiliation, deception that destroys trust, or reflexively opposing structure without offering insight"
+      ],
       "signals": [],
-      "distortions": [],
+      "distortions": [
+        "chaos for its own sake, humiliation, deception that destroys trust, or reflexively opposing structure without offering insight"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -2631,10 +2727,11 @@
       ],
       "sourceClaims": [
         "Trickster and Disruption is in the owner-stated list of fifteen behavioral domains.",
-        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established."
+        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
       ],
-      "evidenceStrength": "owner-stated list cross-checked against canonical source with explicit open ruling",
-      "confidence": 0.82,
+      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
@@ -2679,28 +2776,32 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Populate the full definition and source version for this behavioral-domain item."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
       ],
       "notes": [],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
         }
       ],
       "kind": "domain",
       "nm": "Trickster and Disruption",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": null,
-      "body": null,
+      "def": "PROVISIONAL — The behavioral domain concerned with exposing assumptions, interrupting stale patterns, and introducing alternative perspectives through play, inversion, or disruption.",
+      "body": "PROVISIONAL — Coherent expression uses surprise and challenge to reveal blind spots while remaining accountable for impact. Distortion may appear as chaos for its own sake, humiliation, deception that destroys trust, or reflexively opposing structure without offering insight. These are proposed operational distinctions, not source-verified ATÜNED claims.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Trickster and Disruption",
         "fam": "deep_psychological.behavioral_domains",
-        "def": null,
-        "body": null,
+        "def": "PROVISIONAL — The behavioral domain concerned with exposing assumptions, interrupting stale patterns, and introducing alternative perspectives through play, inversion, or disruption.",
+        "body": "PROVISIONAL — Coherent expression uses surprise and challenge to reveal blind spots while remaining accountable for impact. Distortion may appear as chaos for its own sake, humiliation, deception that destroys trust, or reflexively opposing structure without offering insight. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -2752,13 +2853,11 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "incomplete",
-        "missingFields": [
-          "def",
-          "body"
-        ],
+        "contentStatus": "provisional_content_populated",
+        "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "canonicalApproval": "pending"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -2772,14 +2871,20 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_compilation_domain_crosswalk_unresolved",
-      "definition": null,
+      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "definition": "The behavioral domain concerned with ecological awareness, embodied feedback, natural processes, and intelligence that emerges through relationship with living systems.",
       "essence": null,
       "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
+      "healthyExpression": [
+        "observes conditions, respects interdependence and limits, and adapts to feedback rather than forcing every process into an abstract plan"
+      ],
+      "decoherentExpression": [
+        "domination of living systems, romanticizing nature, ignoring practical constraints, or treating instinct as infallible"
+      ],
       "signals": [],
-      "distortions": [],
+      "distortions": [
+        "domination of living systems, romanticizing nature, ignoring practical constraints, or treating instinct as infallible"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -2795,10 +2900,11 @@
       ],
       "sourceClaims": [
         "Nature and Organic Intelligence is in the owner-stated list of fifteen behavioral domains.",
-        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established."
+        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
       ],
-      "evidenceStrength": "owner-stated list cross-checked against canonical source with explicit open ruling",
-      "confidence": 0.82,
+      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
@@ -2843,28 +2949,32 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Populate the full definition and source version for this behavioral-domain item."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
       ],
       "notes": [],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
         }
       ],
       "kind": "domain",
       "nm": "Nature and Organic Intelligence",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": null,
-      "body": null,
+      "def": "PROVISIONAL — The behavioral domain concerned with ecological awareness, embodied feedback, natural processes, and intelligence that emerges through relationship with living systems.",
+      "body": "PROVISIONAL — Coherent expression observes conditions, respects interdependence and limits, and adapts to feedback rather than forcing every process into an abstract plan. Distortion may appear as domination of living systems, romanticizing nature, ignoring practical constraints, or treating instinct as infallible. These are proposed operational distinctions, not source-verified ATÜNED claims.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Nature and Organic Intelligence",
         "fam": "deep_psychological.behavioral_domains",
-        "def": null,
-        "body": null,
+        "def": "PROVISIONAL — The behavioral domain concerned with ecological awareness, embodied feedback, natural processes, and intelligence that emerges through relationship with living systems.",
+        "body": "PROVISIONAL — Coherent expression observes conditions, respects interdependence and limits, and adapts to feedback rather than forcing every process into an abstract plan. Distortion may appear as domination of living systems, romanticizing nature, ignoring practical constraints, or treating instinct as infallible. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -2916,13 +3026,11 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "incomplete",
-        "missingFields": [
-          "def",
-          "body"
-        ],
+        "contentStatus": "provisional_content_populated",
+        "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "canonicalApproval": "pending"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -2936,14 +3044,20 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_compilation_domain_crosswalk_unresolved",
-      "definition": null,
+      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "definition": "The behavioral domain concerned with engaging uncertainty, hidden causes, ambiguity, and phenomena not yet fully understood.",
       "essence": null,
       "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
+      "healthyExpression": [
+        "can remain curious without prematurely closing the question, distinguishes direct experience from interpretation, and holds uncertainty without surrendering discernment"
+      ],
+      "decoherentExpression": [
+        "credulity, conspiratorial certainty, avoidance disguised as mysticism, or dismissing all unknowns before examination"
+      ],
       "signals": [],
-      "distortions": [],
+      "distortions": [
+        "credulity, conspiratorial certainty, avoidance disguised as mysticism, or dismissing all unknowns before examination"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -2959,10 +3073,11 @@
       ],
       "sourceClaims": [
         "Mystery and the Unseen is in the owner-stated list of fifteen behavioral domains.",
-        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established."
+        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
       ],
-      "evidenceStrength": "owner-stated list cross-checked against canonical source with explicit open ruling",
-      "confidence": 0.82,
+      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
@@ -3007,28 +3122,32 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Populate the full definition and source version for this behavioral-domain item."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
       ],
       "notes": [],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
         }
       ],
       "kind": "domain",
       "nm": "Mystery and the Unseen",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": null,
-      "body": null,
+      "def": "PROVISIONAL — The behavioral domain concerned with engaging uncertainty, hidden causes, ambiguity, and phenomena not yet fully understood.",
+      "body": "PROVISIONAL — Coherent expression can remain curious without prematurely closing the question, distinguishes direct experience from interpretation, and holds uncertainty without surrendering discernment. Distortion may appear as credulity, conspiratorial certainty, avoidance disguised as mysticism, or dismissing all unknowns before examination. These are proposed operational distinctions, not source-verified ATÜNED claims.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Mystery and the Unseen",
         "fam": "deep_psychological.behavioral_domains",
-        "def": null,
-        "body": null,
+        "def": "PROVISIONAL — The behavioral domain concerned with engaging uncertainty, hidden causes, ambiguity, and phenomena not yet fully understood.",
+        "body": "PROVISIONAL — Coherent expression can remain curious without prematurely closing the question, distinguishes direct experience from interpretation, and holds uncertainty without surrendering discernment. Distortion may appear as credulity, conspiratorial certainty, avoidance disguised as mysticism, or dismissing all unknowns before examination. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -3080,13 +3199,11 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "incomplete",
-        "missingFields": [
-          "def",
-          "body"
-        ],
+        "contentStatus": "provisional_content_populated",
+        "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "canonicalApproval": "pending"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -3100,14 +3217,20 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_compilation_domain_crosswalk_unresolved",
-      "definition": null,
+      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "definition": "The behavioral domain concerned with sustained commitment to a value, practice, or source of meaning expressed through responsible action.",
       "essence": null,
       "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
+      "healthyExpression": [
+        "aligns repeated action with declared commitments, remains open to correction, and measures devotion by integrity rather than display"
+      ],
+      "decoherentExpression": [
+        "fanaticism, obedience without discernment, performative virtue, or using a noble purpose to excuse harmful means"
+      ],
       "signals": [],
-      "distortions": [],
+      "distortions": [
+        "fanaticism, obedience without discernment, performative virtue, or using a noble purpose to excuse harmful means"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -3123,10 +3246,11 @@
       ],
       "sourceClaims": [
         "Devotion and Right Action is in the owner-stated list of fifteen behavioral domains.",
-        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established."
+        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
       ],
-      "evidenceStrength": "owner-stated list cross-checked against canonical source with explicit open ruling",
-      "confidence": 0.82,
+      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
@@ -3171,28 +3295,32 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Populate the full definition and source version for this behavioral-domain item."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
       ],
       "notes": [],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
         }
       ],
       "kind": "domain",
       "nm": "Devotion and Right Action",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": null,
-      "body": null,
+      "def": "PROVISIONAL — The behavioral domain concerned with sustained commitment to a value, practice, or source of meaning expressed through responsible action.",
+      "body": "PROVISIONAL — Coherent expression aligns repeated action with declared commitments, remains open to correction, and measures devotion by integrity rather than display. Distortion may appear as fanaticism, obedience without discernment, performative virtue, or using a noble purpose to excuse harmful means. These are proposed operational distinctions, not source-verified ATÜNED claims.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Devotion and Right Action",
         "fam": "deep_psychological.behavioral_domains",
-        "def": null,
-        "body": null,
+        "def": "PROVISIONAL — The behavioral domain concerned with sustained commitment to a value, practice, or source of meaning expressed through responsible action.",
+        "body": "PROVISIONAL — Coherent expression aligns repeated action with declared commitments, remains open to correction, and measures devotion by integrity rather than display. Distortion may appear as fanaticism, obedience without discernment, performative virtue, or using a noble purpose to excuse harmful means. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -3244,13 +3372,11 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "incomplete",
-        "missingFields": [
-          "def",
-          "body"
-        ],
+        "contentStatus": "provisional_content_populated",
+        "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "canonicalApproval": "pending"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -3264,14 +3390,20 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_compilation_domain_crosswalk_unresolved",
-      "definition": null,
+      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "definition": "The behavioral domain concerned with exploration, experimentation, spontaneous creativity, humor, and the intrinsic pleasure of participation.",
       "essence": null,
       "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
+      "healthyExpression": [
+        "permits curiosity and invention while staying aware of context, consent, and consequences"
+      ],
+      "decoherentExpression": [
+        "compulsive distraction, avoidance of responsibility, mockery that degrades others, or suppressing play until all outcomes are guaranteed"
+      ],
       "signals": [],
-      "distortions": [],
+      "distortions": [
+        "compulsive distraction, avoidance of responsibility, mockery that degrades others, or suppressing play until all outcomes are guaranteed"
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -3287,10 +3419,11 @@
       ],
       "sourceClaims": [
         "Play and Creative Delight is in the owner-stated list of fifteen behavioral domains.",
-        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established."
+        "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
       ],
-      "evidenceStrength": "owner-stated list cross-checked against canonical source with explicit open ruling",
-      "confidence": 0.82,
+      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "confidence": 0.55,
       "researchPasses": [
         {
           "pass": 1,
@@ -3335,28 +3468,32 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Populate the full definition and source version for this behavioral-domain item."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
       ],
       "notes": [],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
         }
       ],
       "kind": "domain",
       "nm": "Play and Creative Delight",
       "seat": null,
       "fam": "deep_psychological.behavioral_domains",
-      "def": null,
-      "body": null,
+      "def": "PROVISIONAL — The behavioral domain concerned with exploration, experimentation, spontaneous creativity, humor, and the intrinsic pleasure of participation.",
+      "body": "PROVISIONAL — Coherent expression permits curiosity and invention while staying aware of context, consent, and consequences. Distortion may appear as compulsive distraction, avoidance of responsibility, mockery that degrades others, or suppressing play until all outcomes are guaranteed. These are proposed operational distinctions, not source-verified ATÜNED claims.",
       "links": [],
       "templateId": "TPL-BEHAVIORAL-DOMAIN-V1",
       "template": {
         "nm": "Play and Creative Delight",
         "fam": "deep_psychological.behavioral_domains",
-        "def": null,
-        "body": null,
+        "def": "PROVISIONAL — The behavioral domain concerned with exploration, experimentation, spontaneous creativity, humor, and the intrinsic pleasure of participation.",
+        "body": "PROVISIONAL — Coherent expression permits curiosity and invention while staying aware of context, consent, and consequences. Distortion may appear as compulsive distraction, avoidance of responsibility, mockery that degrades others, or suppressing play until all outcomes are guaranteed. These are proposed operational distinctions, not source-verified ATÜNED claims.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22",
@@ -3408,13 +3545,11 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "incomplete",
-        "missingFields": [
-          "def",
-          "body"
-        ],
+        "contentStatus": "provisional_content_populated",
+        "missingFields": [],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "canonicalApproval": "pending"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -8482,8 +8617,8 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "owner_stated_source_recovery_blocked",
-      "definition": "Owner-stated unified field containing the other seven Conscious Domains; canonical source recovery remains open.",
+      "status": "source_gap_record_preserved_not_canonically_complete",
+      "definition": "SOURCE GAP — Empyrean Consciousness is owner-stated as a unified field containing the other seven Conscious Domains; authoritative definition remains unverified.",
       "essence": null,
       "function": null,
       "healthyExpression": [],
@@ -8503,7 +8638,8 @@
         "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
-        "Empyrean Consciousness is owner-stated as the unified field containing seven other Conscious Domains."
+        "Empyrean Consciousness is owner-stated as the unified field containing seven other Conscious Domains.",
+        "No canonical name/affirmation was found in the inspected source canon or targeted repository searches; absence in inspected sources is not proof no source exists."
       ],
       "evidenceStrength": "owner-stated inventory item; canonical source not located",
       "confidence": 0.55,
@@ -8549,29 +8685,34 @@
       ],
       "unresolvedQuestions": [
         "Verify definition and the precise relation to the other seven domains.",
-        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
+        "Authoritative definition and owner-approved affirmation are not recovered."
       ],
       "notes": [],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Made missing canonical content explicit in required record fields without inventing names or affirmations."
         }
       ],
       "kind": "conscious_domain",
       "nm": "Empyrean Consciousness",
       "seat": null,
       "fam": "conscious_domains",
-      "def": "Owner-stated unified field containing the other seven Conscious Domains; canonical source recovery remains open.",
-      "body": "Owner-stated unified field containing the other seven Conscious Domains; canonical source recovery remains open.",
+      "def": "SOURCE GAP — Empyrean Consciousness is owner-stated as a unified field containing the other seven Conscious Domains; authoritative definition remains unverified.",
+      "body": "SOURCE GAP — Authoritative definition and owner-approved affirmation are not recovered. This record is structurally preserved pending source recovery.",
       "links": [],
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "Empyrean Consciousness",
-        "fam": "conscious_domains",
-        "def": "Owner-stated unified field containing the other seven Conscious Domains; canonical source recovery remains open.",
-        "body": "Owner-stated unified field containing the other seven Conscious Domains; canonical source recovery remains open.",
-        "affirmation": null,
+        "fam": "deep_psychological.conscious_domains",
+        "def": "SOURCE GAP — Empyrean Consciousness is owner-stated as a unified field containing the other seven Conscious Domains; authoritative definition remains unverified.",
+        "body": "SOURCE GAP — Authoritative definition and owner-approved affirmation are not recovered. This record is structurally preserved pending source recovery.",
+        "affirmation": "SOURCE GAP — authoritative affirmation not recovered; do not invent.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
@@ -8620,12 +8761,14 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "incomplete",
+        "contentStatus": "source_gap_explicit",
         "missingFields": [
-          "affirmation"
+          "affirmation",
+          "authoritative definition"
         ],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "canonicalApproval": "pending"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -8640,8 +8783,8 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "missing_canonical_label_source_recovery_blocked",
-      "definition": null,
+      "status": "source_gap_record_preserved_not_canonically_complete",
+      "definition": "SOURCE GAP — Canonical Conscious Domain name and definition not recovered. Preserve this ID; do not infer a name.",
       "essence": null,
       "function": null,
       "healthyExpression": [],
@@ -8661,7 +8804,8 @@
         "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
-        "Placeholder for one of seven Conscious Domains whose canonical name has not yet been recovered."
+        "Placeholder for one of seven Conscious Domains whose canonical name has not yet been recovered.",
+        "No canonical name/affirmation was found in the inspected source canon or targeted repository searches; absence in inspected sources is not proof no source exists."
       ],
       "evidenceStrength": "owner-stated inventory item; canonical source not located",
       "confidence": 0.55,
@@ -8707,29 +8851,34 @@
       ],
       "unresolvedQuestions": [
         "Recover canonical name, affirmation, definition, and source; do not invent a label.",
-        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
+        "Canonical name, definition, body, and affirmation are not recovered from inspected sources."
       ],
       "notes": [],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Made missing canonical content explicit in required record fields without inventing names or affirmations."
         }
       ],
       "kind": "conscious_domain",
       "nm": "UNRESOLVED_CONSCIOUS_DOMAIN_1",
       "seat": null,
       "fam": "conscious_domains",
-      "def": null,
-      "body": null,
+      "def": "SOURCE GAP — Canonical Conscious Domain name and definition not recovered. Preserve this ID; do not infer a name.",
+      "body": "SOURCE GAP — Canonical name, definition, body, and affirmation are not recovered from inspected sources. This record is structurally preserved pending source recovery.",
       "links": [],
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "UNRESOLVED_CONSCIOUS_DOMAIN_1",
-        "fam": "conscious_domains",
-        "def": null,
-        "body": null,
-        "affirmation": null,
+        "fam": "deep_psychological.conscious_domains",
+        "def": "SOURCE GAP — Canonical Conscious Domain name and definition not recovered. Preserve this ID; do not infer a name.",
+        "body": "SOURCE GAP — Canonical name, definition, body, and affirmation are not recovered from inspected sources. This record is structurally preserved pending source recovery.",
+        "affirmation": "SOURCE GAP — authoritative affirmation not recovered; do not invent.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
@@ -8778,14 +8927,16 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "incomplete",
+        "contentStatus": "source_gap_explicit",
         "missingFields": [
+          "canonicalName",
           "def",
           "body",
           "affirmation"
         ],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "canonicalApproval": "pending"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -8799,8 +8950,8 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "missing_canonical_label_source_recovery_blocked",
-      "definition": null,
+      "status": "source_gap_record_preserved_not_canonically_complete",
+      "definition": "SOURCE GAP — Canonical Conscious Domain name and definition not recovered. Preserve this ID; do not infer a name.",
       "essence": null,
       "function": null,
       "healthyExpression": [],
@@ -8820,7 +8971,8 @@
         "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
-        "Placeholder for one of seven Conscious Domains whose canonical name has not yet been recovered."
+        "Placeholder for one of seven Conscious Domains whose canonical name has not yet been recovered.",
+        "No canonical name/affirmation was found in the inspected source canon or targeted repository searches; absence in inspected sources is not proof no source exists."
       ],
       "evidenceStrength": "owner-stated inventory item; canonical source not located",
       "confidence": 0.55,
@@ -8866,29 +9018,34 @@
       ],
       "unresolvedQuestions": [
         "Recover canonical name, affirmation, definition, and source; do not invent a label.",
-        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
+        "Canonical name, definition, body, and affirmation are not recovered from inspected sources."
       ],
       "notes": [],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Made missing canonical content explicit in required record fields without inventing names or affirmations."
         }
       ],
       "kind": "conscious_domain",
       "nm": "UNRESOLVED_CONSCIOUS_DOMAIN_2",
       "seat": null,
       "fam": "conscious_domains",
-      "def": null,
-      "body": null,
+      "def": "SOURCE GAP — Canonical Conscious Domain name and definition not recovered. Preserve this ID; do not infer a name.",
+      "body": "SOURCE GAP — Canonical name, definition, body, and affirmation are not recovered from inspected sources. This record is structurally preserved pending source recovery.",
       "links": [],
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "UNRESOLVED_CONSCIOUS_DOMAIN_2",
-        "fam": "conscious_domains",
-        "def": null,
-        "body": null,
-        "affirmation": null,
+        "fam": "deep_psychological.conscious_domains",
+        "def": "SOURCE GAP — Canonical Conscious Domain name and definition not recovered. Preserve this ID; do not infer a name.",
+        "body": "SOURCE GAP — Canonical name, definition, body, and affirmation are not recovered from inspected sources. This record is structurally preserved pending source recovery.",
+        "affirmation": "SOURCE GAP — authoritative affirmation not recovered; do not invent.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
@@ -8937,14 +9094,16 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "incomplete",
+        "contentStatus": "source_gap_explicit",
         "missingFields": [
+          "canonicalName",
           "def",
           "body",
           "affirmation"
         ],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "canonicalApproval": "pending"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -8958,8 +9117,8 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "missing_canonical_label_source_recovery_blocked",
-      "definition": null,
+      "status": "source_gap_record_preserved_not_canonically_complete",
+      "definition": "SOURCE GAP — Canonical Conscious Domain name and definition not recovered. Preserve this ID; do not infer a name.",
       "essence": null,
       "function": null,
       "healthyExpression": [],
@@ -8979,7 +9138,8 @@
         "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
-        "Placeholder for one of seven Conscious Domains whose canonical name has not yet been recovered."
+        "Placeholder for one of seven Conscious Domains whose canonical name has not yet been recovered.",
+        "No canonical name/affirmation was found in the inspected source canon or targeted repository searches; absence in inspected sources is not proof no source exists."
       ],
       "evidenceStrength": "owner-stated inventory item; canonical source not located",
       "confidence": 0.55,
@@ -9025,29 +9185,34 @@
       ],
       "unresolvedQuestions": [
         "Recover canonical name, affirmation, definition, and source; do not invent a label.",
-        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
+        "Canonical name, definition, body, and affirmation are not recovered from inspected sources."
       ],
       "notes": [],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Made missing canonical content explicit in required record fields without inventing names or affirmations."
         }
       ],
       "kind": "conscious_domain",
       "nm": "UNRESOLVED_CONSCIOUS_DOMAIN_3",
       "seat": null,
       "fam": "conscious_domains",
-      "def": null,
-      "body": null,
+      "def": "SOURCE GAP — Canonical Conscious Domain name and definition not recovered. Preserve this ID; do not infer a name.",
+      "body": "SOURCE GAP — Canonical name, definition, body, and affirmation are not recovered from inspected sources. This record is structurally preserved pending source recovery.",
       "links": [],
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "UNRESOLVED_CONSCIOUS_DOMAIN_3",
-        "fam": "conscious_domains",
-        "def": null,
-        "body": null,
-        "affirmation": null,
+        "fam": "deep_psychological.conscious_domains",
+        "def": "SOURCE GAP — Canonical Conscious Domain name and definition not recovered. Preserve this ID; do not infer a name.",
+        "body": "SOURCE GAP — Canonical name, definition, body, and affirmation are not recovered from inspected sources. This record is structurally preserved pending source recovery.",
+        "affirmation": "SOURCE GAP — authoritative affirmation not recovered; do not invent.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
@@ -9096,14 +9261,16 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "incomplete",
+        "contentStatus": "source_gap_explicit",
         "missingFields": [
+          "canonicalName",
           "def",
           "body",
           "affirmation"
         ],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "canonicalApproval": "pending"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -9117,8 +9284,8 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "missing_canonical_label_source_recovery_blocked",
-      "definition": null,
+      "status": "source_gap_record_preserved_not_canonically_complete",
+      "definition": "SOURCE GAP — Canonical Conscious Domain name and definition not recovered. Preserve this ID; do not infer a name.",
       "essence": null,
       "function": null,
       "healthyExpression": [],
@@ -9138,7 +9305,8 @@
         "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
-        "Placeholder for one of seven Conscious Domains whose canonical name has not yet been recovered."
+        "Placeholder for one of seven Conscious Domains whose canonical name has not yet been recovered.",
+        "No canonical name/affirmation was found in the inspected source canon or targeted repository searches; absence in inspected sources is not proof no source exists."
       ],
       "evidenceStrength": "owner-stated inventory item; canonical source not located",
       "confidence": 0.55,
@@ -9184,29 +9352,34 @@
       ],
       "unresolvedQuestions": [
         "Recover canonical name, affirmation, definition, and source; do not invent a label.",
-        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
+        "Canonical name, definition, body, and affirmation are not recovered from inspected sources."
       ],
       "notes": [],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Made missing canonical content explicit in required record fields without inventing names or affirmations."
         }
       ],
       "kind": "conscious_domain",
       "nm": "UNRESOLVED_CONSCIOUS_DOMAIN_4",
       "seat": null,
       "fam": "conscious_domains",
-      "def": null,
-      "body": null,
+      "def": "SOURCE GAP — Canonical Conscious Domain name and definition not recovered. Preserve this ID; do not infer a name.",
+      "body": "SOURCE GAP — Canonical name, definition, body, and affirmation are not recovered from inspected sources. This record is structurally preserved pending source recovery.",
       "links": [],
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "UNRESOLVED_CONSCIOUS_DOMAIN_4",
-        "fam": "conscious_domains",
-        "def": null,
-        "body": null,
-        "affirmation": null,
+        "fam": "deep_psychological.conscious_domains",
+        "def": "SOURCE GAP — Canonical Conscious Domain name and definition not recovered. Preserve this ID; do not infer a name.",
+        "body": "SOURCE GAP — Canonical name, definition, body, and affirmation are not recovered from inspected sources. This record is structurally preserved pending source recovery.",
+        "affirmation": "SOURCE GAP — authoritative affirmation not recovered; do not invent.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
@@ -9255,14 +9428,16 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "incomplete",
+        "contentStatus": "source_gap_explicit",
         "missingFields": [
+          "canonicalName",
           "def",
           "body",
           "affirmation"
         ],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "canonicalApproval": "pending"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -9276,8 +9451,8 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "missing_canonical_label_source_recovery_blocked",
-      "definition": null,
+      "status": "source_gap_record_preserved_not_canonically_complete",
+      "definition": "SOURCE GAP — Canonical Conscious Domain name and definition not recovered. Preserve this ID; do not infer a name.",
       "essence": null,
       "function": null,
       "healthyExpression": [],
@@ -9297,7 +9472,8 @@
         "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
-        "Placeholder for one of seven Conscious Domains whose canonical name has not yet been recovered."
+        "Placeholder for one of seven Conscious Domains whose canonical name has not yet been recovered.",
+        "No canonical name/affirmation was found in the inspected source canon or targeted repository searches; absence in inspected sources is not proof no source exists."
       ],
       "evidenceStrength": "owner-stated inventory item; canonical source not located",
       "confidence": 0.55,
@@ -9343,29 +9519,34 @@
       ],
       "unresolvedQuestions": [
         "Recover canonical name, affirmation, definition, and source; do not invent a label.",
-        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
+        "Canonical name, definition, body, and affirmation are not recovered from inspected sources."
       ],
       "notes": [],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Made missing canonical content explicit in required record fields without inventing names or affirmations."
         }
       ],
       "kind": "conscious_domain",
       "nm": "UNRESOLVED_CONSCIOUS_DOMAIN_5",
       "seat": null,
       "fam": "conscious_domains",
-      "def": null,
-      "body": null,
+      "def": "SOURCE GAP — Canonical Conscious Domain name and definition not recovered. Preserve this ID; do not infer a name.",
+      "body": "SOURCE GAP — Canonical name, definition, body, and affirmation are not recovered from inspected sources. This record is structurally preserved pending source recovery.",
       "links": [],
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "UNRESOLVED_CONSCIOUS_DOMAIN_5",
-        "fam": "conscious_domains",
-        "def": null,
-        "body": null,
-        "affirmation": null,
+        "fam": "deep_psychological.conscious_domains",
+        "def": "SOURCE GAP — Canonical Conscious Domain name and definition not recovered. Preserve this ID; do not infer a name.",
+        "body": "SOURCE GAP — Canonical name, definition, body, and affirmation are not recovered from inspected sources. This record is structurally preserved pending source recovery.",
+        "affirmation": "SOURCE GAP — authoritative affirmation not recovered; do not invent.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
@@ -9414,14 +9595,16 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "incomplete",
+        "contentStatus": "source_gap_explicit",
         "missingFields": [
+          "canonicalName",
           "def",
           "body",
           "affirmation"
         ],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "canonicalApproval": "pending"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -9435,8 +9618,8 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "missing_canonical_label_source_recovery_blocked",
-      "definition": null,
+      "status": "source_gap_record_preserved_not_canonically_complete",
+      "definition": "SOURCE GAP — Canonical Conscious Domain name and definition not recovered. Preserve this ID; do not infer a name.",
       "essence": null,
       "function": null,
       "healthyExpression": [],
@@ -9456,7 +9639,8 @@
         "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
-        "Placeholder for one of seven Conscious Domains whose canonical name has not yet been recovered."
+        "Placeholder for one of seven Conscious Domains whose canonical name has not yet been recovered.",
+        "No canonical name/affirmation was found in the inspected source canon or targeted repository searches; absence in inspected sources is not proof no source exists."
       ],
       "evidenceStrength": "owner-stated inventory item; canonical source not located",
       "confidence": 0.55,
@@ -9502,29 +9686,34 @@
       ],
       "unresolvedQuestions": [
         "Recover canonical name, affirmation, definition, and source; do not invent a label.",
-        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
+        "Canonical name, definition, body, and affirmation are not recovered from inspected sources."
       ],
       "notes": [],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Made missing canonical content explicit in required record fields without inventing names or affirmations."
         }
       ],
       "kind": "conscious_domain",
       "nm": "UNRESOLVED_CONSCIOUS_DOMAIN_6",
       "seat": null,
       "fam": "conscious_domains",
-      "def": null,
-      "body": null,
+      "def": "SOURCE GAP — Canonical Conscious Domain name and definition not recovered. Preserve this ID; do not infer a name.",
+      "body": "SOURCE GAP — Canonical name, definition, body, and affirmation are not recovered from inspected sources. This record is structurally preserved pending source recovery.",
       "links": [],
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "UNRESOLVED_CONSCIOUS_DOMAIN_6",
-        "fam": "conscious_domains",
-        "def": null,
-        "body": null,
-        "affirmation": null,
+        "fam": "deep_psychological.conscious_domains",
+        "def": "SOURCE GAP — Canonical Conscious Domain name and definition not recovered. Preserve this ID; do not infer a name.",
+        "body": "SOURCE GAP — Canonical name, definition, body, and affirmation are not recovered from inspected sources. This record is structurally preserved pending source recovery.",
+        "affirmation": "SOURCE GAP — authoritative affirmation not recovered; do not invent.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
@@ -9573,14 +9762,16 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "incomplete",
+        "contentStatus": "source_gap_explicit",
         "missingFields": [
+          "canonicalName",
           "def",
           "body",
           "affirmation"
         ],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "canonicalApproval": "pending"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -9594,8 +9785,8 @@
       "aliases": [],
       "layer": "conscious_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "missing_canonical_label_source_recovery_blocked",
-      "definition": null,
+      "status": "source_gap_record_preserved_not_canonically_complete",
+      "definition": "SOURCE GAP — Canonical Conscious Domain name and definition not recovered. Preserve this ID; do not infer a name.",
       "essence": null,
       "function": null,
       "healthyExpression": [],
@@ -9615,7 +9806,8 @@
         "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
       ],
       "sourceClaims": [
-        "Placeholder for one of seven Conscious Domains whose canonical name has not yet been recovered."
+        "Placeholder for one of seven Conscious Domains whose canonical name has not yet been recovered.",
+        "No canonical name/affirmation was found in the inspected source canon or targeted repository searches; absence in inspected sources is not proof no source exists."
       ],
       "evidenceStrength": "owner-stated inventory item; canonical source not located",
       "confidence": 0.55,
@@ -9661,29 +9853,34 @@
       ],
       "unresolvedQuestions": [
         "Recover canonical name, affirmation, definition, and source; do not invent a label.",
-        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3."
+        "Locate authoritative source text and independently corroborate the definition before completing research passes 2 and 3.",
+        "Canonical name, definition, body, and affirmation are not recovered from inspected sources."
       ],
       "notes": [],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Made missing canonical content explicit in required record fields without inventing names or affirmations."
         }
       ],
       "kind": "conscious_domain",
       "nm": "UNRESOLVED_CONSCIOUS_DOMAIN_7",
       "seat": null,
       "fam": "conscious_domains",
-      "def": null,
-      "body": null,
+      "def": "SOURCE GAP — Canonical Conscious Domain name and definition not recovered. Preserve this ID; do not infer a name.",
+      "body": "SOURCE GAP — Canonical name, definition, body, and affirmation are not recovered from inspected sources. This record is structurally preserved pending source recovery.",
       "links": [],
       "templateId": "TPL-CONSCIOUS-DOMAIN-V1",
       "template": {
         "nm": "UNRESOLVED_CONSCIOUS_DOMAIN_7",
-        "fam": "conscious_domains",
-        "def": null,
-        "body": null,
-        "affirmation": null,
+        "fam": "deep_psychological.conscious_domains",
+        "def": "SOURCE GAP — Canonical Conscious Domain name and definition not recovered. Preserve this ID; do not infer a name.",
+        "body": "SOURCE GAP — Canonical name, definition, body, and affirmation are not recovered from inspected sources. This record is structurally preserved pending source recovery.",
+        "affirmation": "SOURCE GAP — authoritative affirmation not recovered; do not invent.",
         "links": [],
         "sourceRefs": [
           "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
@@ -9732,14 +9929,16 @@
       "templateValidation": {
         "schemaDefined": true,
         "sourceBacked": true,
-        "contentStatus": "incomplete",
+        "contentStatus": "source_gap_explicit",
         "missingFields": [
+          "canonicalName",
           "def",
           "body",
           "affirmation"
         ],
         "templateCatalogVersion": "1.0.0",
-        "runtimeIntegration": "not_yet_wired"
+        "runtimeIntegration": "not_yet_wired",
+        "canonicalApproval": "pending"
       },
       "sourceIds": [
         "Owner-provided project context; canonical repo source not yet located."
@@ -23949,8 +24148,36 @@
   "templateAssignmentProgress": {
     "assigned": 125,
     "total": 125,
-    "structurallyComplete": 102,
-    "incomplete": 23,
-    "runtimeIntegrated": false
+    "structurallyComplete": 125,
+    "incomplete": 0,
+    "runtimeIntegrated": false,
+    "contentStatus": "15 behavioral records provisionally populated; 8 conscious records structurally scaffolded with explicit source gaps",
+    "canonicalApproval": {
+      "behavioralDomains": 0,
+      "consciousDomains": 0
+    },
+    "sourceComplete": {
+      "behavioralDomains": 0,
+      "consciousDomains": 0
+    }
+  },
+  "closureSummary": {
+    "date": "2026-10-22",
+    "scope": "23 previously incomplete records",
+    "behavioralDomains": {
+      "count": 15,
+      "provisionalContentPopulated": 15,
+      "sourceVerified": 0,
+      "canonicalApproved": 0
+    },
+    "consciousDomains": {
+      "count": 8,
+      "structurallyScaffolded": 8,
+      "canonicalNamesRecovered": 1,
+      "sourceComplete": 0
+    },
+    "researchPasses": "Not marked complete by this scaffolding update; evidence-based passes remain to be executed for each record.",
+    "runtimeIntegration": "Not verified; template catalog remains not yet integrated with engine.",
+    "warning": "Structural completeness is not semantic/source completeness. Do not treat provisional text or source-gap placeholders as canonical."
   }
 }
