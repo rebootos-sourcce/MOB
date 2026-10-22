@@ -139,18 +139,18 @@ ok(true,'CQ stays inside 0..100 across the grid');
 ok(reset(0,0,10).Rz>=1&&reset(10,0,0).Rz>=1,'resistance never drops below its floor of 1');
 
 g('6 · SAB33 ranges are bands, not floors');
-/* Controller is fear 7..10 + anger 5..8 */
+/* Micromanager is fear 7..10 + anger 5..8. Renamed from Controller, 337966b8. */
 function fitFor(name,fear,anger){
  reset(0,0,6); S.charge.Fear=fear; S.charge.Anger=anger;
  const hit=E.sab33Detect().filter(d=>d.nm===name)[0];
  return hit?{score:hit.score,exact:hit.exact}:null;}
-const inside=fitFor('Controller',8,6);
+const inside=fitFor('Micromanager',8,6);
 ok(inside&&inside.score===100&&inside.exact,'inside both bands scores 100 and exact');
-const below=fitFor('Controller',2,1);
+const below=fitFor('Micromanager',2,1);
 ok(!below||below.score<100,'below the band does not score 100: the saboteur has not formed');
 const above=fitFor('Victim',10,10);   /* Victim is sadness 6..8 + anger 4..6 */
 ok(!above||!above.exact,'above the band is not exact: the charge escalated past it');
-ok(fitFor('Controller',6,6).score<100,'one step below lo is adjacent, not inside');
+ok(fitFor('Micromanager',6,6).score<100,'one step below lo is adjacent, not inside');
 
 g('7 · the six gates multiply resistance');
 r=reset(6,0,6);
@@ -6175,9 +6175,9 @@ g('Sign in · the session is the browser\'s and never rides on a profile');
 g('ND · one saboteur, one entry, however many tests name it');
 /* AUDIT-source-tdd.md's own finding. SAB33's range match (compute.js's
    sab33Detect loop) and the fixed-address library (the ALL_SAB loop) can
-   both name the same saboteur, eg Controller, from two different tests.
+   both name the same saboteur, eg Micromanager, from two different tests.
    Held heavy and uniform this produced 26 entries carrying 23 identities,
-   Controller, Hyper-Vigilant and Avoider each twice, and one pairing away
+   Micromanager, Hyper-Vigilant and Avoider each twice, and one pairing away
    from a self-paired complex, "X + X", which is not a second voice, it is
    the same one counted twice. */
 {

@@ -251,7 +251,10 @@ function lawDrillHtml(l,o){
     answer to whether it was entered. Round J13. */
  var read=(typeof lawIn!=='function')||lawIn(l.nm);
  var h='<div class="pm-eye">Law of integrity, '+l.b.toLowerCase()+'</div>'
-  +'<div class="ad-nm">'+l.nm+(read?' '+v.toFixed(1):'')+'</div>'
+  /* what the instrument reads back from the answer, as a percent, 17
+     October, percent phase 2. The answer itself stays on nought to ten where
+     it is given (PERCENT-FRAMEWORK-2026-10-16.md, open item 3). */
+  +'<div class="ad-nm">'+l.nm+(read?' '+fmtPct('law',v):'')+'</div>'
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
   /* V21 and pass 1. "Under 4 it is not resisting, it is closed, and
      everything seated there pays for it" read the threshold aloud, ran an
@@ -277,10 +280,11 @@ function lawDrillHtml(l,o){
      under the owner's non clinical ruling: the instrument does not diagnose,
      it asks questions, so the eyebrow names the answers. tests/copy.js bans
      the word on every app surface now. */
-  ? '<div class="pm-eye">From your answers</div><p class="ad-p">Your three answers sit <b>'+sc.spread
-    +'</b> apart, '+sc.lean+'.</p>'
+  ? '<div class="pm-eye">From your answers</div><p class="ad-p">Your three answers '
+    /* the gap as a percent, 17 October, and a gap of nothing is said, never a dash */
+    +(fmtPct('spread',sc.spread)!==PCT_DASH?'sit <b>'+fmtPct('spread',sc.spread)+'</b> apart':'agree')+', '+sc.lean+'.</p>'
   : '<div class="pm-eye">Not measured</div><p class="ad-p">Not answered in the questions, so '
-    +'it defaults to '+v.toFixed(1)+'. Three questions would replace the guess.</p>';
+    +'it defaults to '+fmtPct('law',v)+'. Three questions would replace the guess.</p>';
  if(hot.length)h+='<div class="pm-eye">Held here</div><div class="ad-rows">'
   +hot.slice(0,6).map(function(n){return addrRow(n,{ana:!!o.ana});}).join('')+'</div>';
  return h;}
@@ -309,9 +313,12 @@ function nodeDrillHtml(n,o){
   /* both ends of the pole, the same bar the codex row draws. Round JQ. */
   +(typeof poleDrillHead==='function'?poleDrillHead(n):'')
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
-  +'Charge held here <b>'+n.held.toFixed(1)+'</b>. '
-  +(c.opp?esc(c.opp)+' installed <b>'+n.rep.toFixed(1)+'</b>. ':'')
-  +'Left after that <b>'+n.sq.toFixed(1)+'</b>.'
+  /* three figures, one registry, 17 October, percent phase 2: each is a
+     quantity on nought to ten at one address (engine/pct.js), so each prints
+     as the percent the address ring beside it draws */
+  +'Charge held here <b>'+fmtPct('held',n.held)+'</b>. '
+  +(c.opp?esc(c.opp)+' installed <b>'+fmtPct('installed',n.rep)+'</b>. ':'')
+  +'Left after that <b>'+fmtPct('weight',n.sq)+'</b>.'
   +(n.d?' It shows up as '+esc(n.d.toLowerCase())+'.':'')+'</p>'
   +'<div class="pm-eye">The opposite</div><p class="ad-p">'
   +(c.opp?'The other end of <b>'+c.nm.toLowerCase()+'</b> is <b>'+c.opp.toLowerCase()+'</b>. '
@@ -331,7 +338,7 @@ function nodeDrillHtml(n,o){
      +owners.slice(0,8).map(anaPatRow).join('')+'</div>'
     :'<div class="pm-eye">Feeds'+(owners.length?' '+owners.length:'')+'</div><div class="pm-chips">'
     +(owners.length?owners.slice(0,8).map(function(o){
-     return '<span class="pm-chip'+(o.over?' over':'')+'">'+esc(o.nm)+' '+o.w.toFixed(1)+'</span>';}).join('')
+     return '<span class="pm-chip'+(o.over?' over':'')+'">'+esc(o.nm)+' '+fmtPct('chain',o.w)+'</span>';}).join('')
     :'<span class="pm-chip">nothing compounds from here</span>')+'</div>')
    :'<div class="pm-eye">Feeds</div>'+lockPanelHtml('sab',{brief:true}));
  h+=nodeStories(n);
@@ -378,7 +385,7 @@ function nodeStories(n){
   var txt=x.text.length>150?x.text.slice(0,150)+'…':x.text;
   h+='<div class="ad-st"><p class="ad-q">'+esc(txt)+'</p>'
    +'<span class="ad-stm">'+esc(new Date(x.t).toLocaleDateString())
-   +', put <b>'+x.amt.toFixed(1)+'</b> here</span>'
+   +', put <b>'+fmtPct('atom',x.amt)+'</b> here</span>'
    +(ids.length?'<button type="button" class="btn" data-protl="'+ids.join(',')+'">'
      +'Release this story</button>':'')+'</div>';});
  if(list.length>3)h+='<div class="pm-more">and '+(list.length-3)+' more</div>';
@@ -428,12 +435,16 @@ function coreRangeSay(r){
  if(!sp.enough)return '<p class="ad-p">There are not enough answers yet to give a range. <b>'
   +sp.answered+'</b> of '+of+' laws are answered.</p>';
  if(!sp.complete)return '<p class="ad-p">With <b>'+sp.answered+'</b> of '+of+' laws answered, the finished figure lands between <b>'
-  +Math.round(sp.lo)+'</b> and <b>'+Math.round(sp.hi)+'</b>. It is <b>'+Math.round(sp.lo)
-  +'</b> if every law still open is answered at nothing, and <b>'+Math.round(sp.hi)+'</b> if every one is answered at ten.</p>';
+  +fmtPct('cq',sp.lo)+'</b> and <b>'+fmtPct('cq',sp.hi)+'</b>. It is <b>'+fmtPct('cq',sp.lo)
+  +'</b> if every law still open is answered at nothing, and <b>'+fmtPct('cq',sp.hi)+'</b> if every one is answered at ten.</p>';
  var rg=cqRange(r.CQ);
- return '<p class="ad-p">The reading swings between <b>'+Math.round(rg.lo)+'</b> and <b>'+Math.round(rg.hi)+'</b>. '
-  +(rg.lo>0&&rg.hi<100?'The figure is the middle of that range, not a mark out of a hundred.'
-   :rg.hi>=100?'The figure sits near the top of that range, because the scale stops at a hundred.'
+ return '<p class="ad-p">The reading swings between <b>'+fmtPct('cq',rg.lo)+'</b> and <b>'+fmtPct('cq',rg.hi)+'</b>. '
+  /* "not a mark out of a hundred" went with the percents, 17 October: the
+     figure is printed as a percent now, and a percent is out of a hundred,
+     so the clause contradicted the figure above it. What it warned against
+     is already said where the figure is: a small move is not a reading. */
+  +(rg.lo>0&&rg.hi<100?'The figure is the middle of that range.'
+   :rg.hi>=100?'The figure sits near the top of that range, because the scale stops at 100%.'
    :'The figure sits near the bottom of that range, because the scale stops at nothing.')+'</p>';}
 function runCoreDrill(){
  var r=compute();
@@ -444,7 +455,7 @@ function runCoreDrill(){
     Field's key draws), so nobody reads 62 without its plus or minus. */
  var h='<div class="pm-eye">The core</div>'
   +'<div class="ad-nm">'+(r.unread?'not read yet'
-    :'CQ '+Math.round(r.CQ)+', '+tierSay(r).toLowerCase())+'</div>'
+    :'CQ '+fmtPct('cq',r.CQ)+', '+tierSay(r).toLowerCase())+'</div>'
   +coreRangeSay(r)
   +'<div class="pm-eye">What coherence is</div><p class="ad-p">'
   +'Coherence is the alignment between the world around you, what arrives from '
@@ -467,13 +478,13 @@ function runCoreDrill(){
     :'<b>'+(SI.length-r.answered)+'</b> are still to answer, and each counts nothing until it is. ')
   +'The shadow does not touch this number. It pulls on expression, which is '
   +'coherence times what the shadow leaves'
-  +(r.unread?'':': expression <b>'+Math.round(r.EX)+'</b>'
-   +(r.PULL>=0.005?', with the shadow taking <b>'+Math.round(r.PULL*100)+' per cent</b>':''))+'.</p>'
+  +(r.unread?'':': expression <b>'+fmtPct('expression',r.EX)+'</b>'
+   +(fmtPct('pull',r.PULL)!==PCT_DASH?', with the shadow taking <b>'+fmtPct('pull',r.PULL)+'</b>':''))+'.</p>'
   +'<div class="pm-eye">The read</div><p class="ad-p">'
   /* benign is null while CQ is still filling, and the clause waits with it */
   +(r.benign===null?'':'Your energy is <b>'
-    +(r.benign?'expanding':'contracting '+r.malig+'%')+'</b>. ')+'Radiance <b>'
-  +(r.radiance*100).toFixed(0)+'%</b>. The field is the geometry of that '
+    +(r.benign?'expanding':'contracting '+fmtPct('lean',r.malig))+'</b>. ')+'Radiance <b>'
+  +fmtPct('radiance',r.radiance)+'</b>. The field is the geometry of that '
   +'radiance. It is harmonic, so patterns sit at registers rather than '
   +'anywhere, and what radiates outward tends to carry the colour of the '
   +'loudest seat. The core takes its colour from the coherence ramp, so '
@@ -488,9 +499,15 @@ function gatesBlock(focus){
  var V=verpRead(), evid=V.some(function(v){return v.pct>0;});
  var rows=V.map(function(v){
   var c=v.side==='higher'?seatCol('Heart'):seatCol('Root');
+  /* v.pct+'%' printed "0%" for a gate with no evidence on a story where some
+     OTHER gate had evidence, because evid is true for the row even when this
+     one is nought. That is the exact defect the dash rule exists for: the
+     hardest carrying zero percent. fmtPct('gate',...), the same registry
+     entry verp.js already matches, prints the dash for that gate instead and
+     leaves the other five alone. */
   return '<button class="ad-r gate-r'+(focus===v.k?' on':'')+'" data-gate="'+v.k+'" style="--c:'+c+'">'
    +'<span class="ad-k">'+esc(v.nm)+'</span>'
-   +'<span class="ad-v">'+(evid?v.pct+'%':'')+'</span>'
+   +'<span class="ad-v">'+(evid?fmtPct('gate',v.pct):'')+'</span>'
    +'<span class="ad-m">\u00d7'+v.mult.toFixed(2)+'</span></button>';}).join('');
  /* ACTION, GO in TASKS.md, the bar's name for this layer now, and his reading
     of it: right action and wrong action. The six keep their own names. */
@@ -505,7 +522,7 @@ function runGatesDrill(k){
   +'<div class="ad-nm">'+esc(v.nm)+'</div>'
   +'<div class="pm-eye">What it sounds like</div><p class="ad-p">'+esc(v.d)+'</p>'
   +'<div class="pm-eye">What it does</div><p class="ad-p">'
-  +(v.pct?'<b>'+v.pct+'%</b> of the story ran through '+esc(v.nm.toLowerCase())+', '+v.n+' sentence'+(v.n===1?'':'s')+'. ':'Nothing in the story has run through it yet. ')
+  +(v.pct?'<b>'+fmtPct('gate',v.pct)+'</b> of the story ran through '+esc(v.nm.toLowerCase())+', '+v.n+' sentence'+(v.n===1?'':'s')+'. ':'Nothing in the story has run through it yet. ')
   +'Everything held is multiplied by <b>'+v.mult.toFixed(2)+'</b> for the share that runs this way'
   +(v.mult<1?', so it lightens the load.':v.mult>1?', so it adds to the load.':'.')+'</p>'
   +gatesBlock(k);
@@ -523,25 +540,25 @@ function runQDrill(q){
   /* REWRITTEN 25 SEPTEMBER. It said DQ was every address above its floor
      and the whole of resistance, with CQ divided by it. DQ is the total
      shadow on all 112 now, out of 100, and it pulls on expression. */
-  h='<div class="pm-eye">Shadow weight</div><div class="ad-nm">DQ '+(r.DQ>=0.5?Math.round(r.DQ)+'%':'\u2013')+'</div>'
+  h='<div class="pm-eye">Shadow weight</div><div class="ad-nm">DQ '+fmtPct('dq',r.DQ)+'</div>'
    +'<div class="pm-eye">How it is built</div><p class="ad-p">The weight at all 112 addresses, summed, out of the most they can hold. '
-   +'It is the wash pressing in from the edge of the wheel. It leaves coherence alone and pulls on expression, and an address near 10 pulls far harder than one near 2.</p>'
+   +'It is the wash pressing in from the edge of the wheel. It leaves coherence alone and pulls on expression, and an address near 100% pulls far harder than one near 20%.</p>'
    +'<div class="pm-eye">Where it sits</div><p class="ad-p">'+(r.loaded.length?'<b>'+r.loaded.length+'</b> addresses carry it. The heaviest:':'No address carries it.')+'</p>'
    +'<div class="ad-rows">'+top.map(addrRow).join('')+'</div>';}
  else if(q==='sq'){
-  h='<div class="pm-eye">Segment depth</div><div class="ad-nm">SQ '+r.SQm.toFixed(1)+' mean</div>'
-   +'<div class="pm-eye">How it is built</div><p class="ad-p">The charge held at one address, 0 to 10. '
+  h='<div class="pm-eye">Segment depth</div><div class="ad-nm">SQ '+fmtPct('weight',r.SQm)+' mean</div>'
+   +'<div class="pm-eye">How it is built</div><p class="ad-p">The charge held at one address, from nothing to 100%. '
    +'Each segment of the shell is drawn to its own depth, so the wheel is 112 segments side by side. The mean is across the addresses that hold anything.</p>'
-   +'<div class="pm-eye">Heaviest seat</div><p class="ad-p"><b>'+esc(r.darkB)+'</b> at <b>'+r.darkV.toFixed(1)+'</b>. Click a segment on the wheel to read one address.</p>';}
+   +'<div class="pm-eye">Heaviest seat</div><p class="ad-p"><b>'+esc(r.darkB)+'</b> at <b>'+fmtPct('weight',r.darkV)+'</b>. Click a segment on the wheel to read one address.</p>';}
  else {
   var inst=CHARGES.filter(function(c){return (S.replace[c]||0)>=4;});
-  h='<div class="pm-eye">Pole</div><div class="ad-nm">'+r.poleMean.toFixed(2)+' on average</div>'
+  h='<div class="pm-eye">Pole</div><div class="ad-nm">'+fmtPct('pole',r.poleMean)+' on average</div>'
    /* PASS 1 BEFORE V21. This said the pole was "0 to 1 averaged across the
       nine". compute.js scores each address's pole 0 to 10, as how far the
       installed opposite outweighs the charge held there, and averages it over
       every address in the body. DESIGN-tooltip-copy.md, example 7. */
    +'<div class="pm-eye">How it is built</div><p class="ad-p">Each child emotion has an opposite. Fear turns to trust, and anger to equanimity, a steady calm. '
-   +'Release empties an address and the opposite fills it. The pole is how far the opposite outweighs the charge at each address, 0 to 10, averaged across every address in your body.</p>'
+   +'Release empties an address and the opposite fills it. The pole is how far the opposite outweighs the charge at each address, from nothing to 100%, averaged across every address in your body.</p>'
    +'<div class="pm-eye">Installed</div><p class="ad-p">'+(inst.length?inst.map(function(c){
      var o=CHILD.filter(function(x){return x.nm===c;})[0];return esc(o.opp)+' over '+esc(c);}).join(', ')+'.':'Nothing installed yet.')+'</p>';}
  rdShell(h);}
@@ -552,21 +569,26 @@ function runQDrill(q){
    distortion. Will is integrity through a clear segment. */
 function runXYZDrill(){
  var r=compute();
+ /* every figure in these lines on the registry, 17 October, percent phase 2;
+    the fifth slot is each axis's own kind, so the ring and its pill agree */
  var A=[['Vitality',r.X,'Solar','what is left after apathy and the shadow weight. Apathy <b>'
-   +((S.charge.Apathy||0)>0?(S.charge.Apathy).toFixed(1):'\u2013')+'</b>, shadow weight <b>'+(Math.round(r.DQ)||'\u2013')+'</b>.'],
-  ['Awareness',r.Y,'3rd Eye','intention against distortion. Intention <b>'+r.It.toFixed(1)
-   +'</b>, distortion <b>'+r.dist.toFixed(1)+'</b>.'],
-  ['Will',r.Z,'Root','integrity carried through a clear segment. Integrity <b>'+r.Ig.toFixed(1)
-   +'</b>, mean depth <b>'+r.SQm.toFixed(1)+'</b>.']];
+   +fmtPct('charge',S.charge.Apathy||0)+'</b>, shadow weight <b>'+fmtPct('dq',r.DQ)+'</b>.','vitality'],
+  ['Awareness',r.Y,'3rd Eye','intention against distortion. Intention <b>'+fmtPct('intention',r.It)
+   +'</b>, distortion <b>'+fmtPct('distortion',r.dist)+'</b>.','awareness'],
+  ['Will',r.Z,'Root','integrity carried through a clear segment. Integrity <b>'+fmtPct('integrity',r.Ig)
+   +'</b>, mean depth <b>'+fmtPct('weight',r.SQm)+'</b>.','will']];
  var mean=(r.X+r.Y+r.Z)/3;
  var low=A.slice().sort(function(a,b){return a[1]-b[1];})[0];
- var h='<div class="pm-eye">Energy</div><div class="ad-nm">'+(r.unread?'\u2013':(mean*100).toFixed(0)+'% across three axes')+'</div>'
+ var h='<div class="pm-eye">Energy</div><div class="ad-nm">'+(r.unread?'\u2013':fmtPct('energy',mean)+' across three axes')+'</div>'
   +'<div class="pm-eye">How to read it</div><p class="ad-p">Three independent lines. They do not average into '
   +'a score, they say which of the three is carrying and which is short. Yours reads shortest at <b>'
   +low[0]+'</b>.</p>'
   +'<div class="ad-rows">'+A.map(function(a){
-    return '<div class="ad-r static"><span class="ad-k">'+cr(a[2],a[1]*100,{size:'xs',raw:r.unread?'\u2013':a[1].toFixed(2),hot:false})
-     +a[0]+'</span><span class="ad-m">'+(r.unread?'\u2013':(a[1]*100).toFixed(0)+'%')+'</span></div>';}).join('')+'</div>'
+    /* ONE FIGURE PER ROW. The ring's pill printed 0.17 and the row's end
+       printed 17%, one reading in two units. The pill is the registry's
+       percent now and the end of the row would only say it again (V17). */
+    return '<div class="ad-r static"><span class="ad-k">'+cr(a[2],pct(a[4],a[1])||0,{size:'xs',raw:fmtPct(a[4],a[1],{unread:r.unread}),hot:false})
+     +a[0]+'</span></div>';}).join('')+'</div>'
   +A.map(function(a){return '<div class="pm-eye">'+a[0]+'</div><p class="ad-p">'+a[3]+'</p>';}).join('');
  rdShell(h);}
 
@@ -587,14 +609,16 @@ function runAtomDrill(n,x){
   +'<div class="pm-eye">Your words</div>'
   +'<p class="ad-p"><em>'+esc(x.text)+'</em></p>'
   +'<div class="pm-eye">What it weighed</div><p class="ad-p">'
-  +(d?'Written '+d+'. ':'')+'This entry put <b>'+x.amt.toFixed(1)+'</b> at this '
-  +'address'+(all.length>1?'. The '+all.length+' entries that landed here put <b>'+tot.toFixed(1)
+  /* one entry is the atom kind, several added up the one cap, atomsum,
+     both on nought to ten (engine/pct.js) */
+  +(d?'Written '+d+'. ':'')+'This entry put <b>'+fmtPct('atom',x.amt)+'</b> at this '
+  +'address'+(all.length>1?'. The '+all.length+' entries that landed here put <b>'+fmtPct('atomsum',tot)
     +'</b> in all':'')+'.</p>'
   +'<div class="pm-eye">The address</div><p class="ad-p">'
   +esc(n.k)+' sits at the '+String(n.b).toLowerCase()+', on the <b>'
   +esc(n.cf||'unrouted')+'</b> axis'+(cf&&cf.opp?', against <b>'+esc(cf.opp)+'</b>':'')
-  +'. It is holding <b>'+n.sq.toFixed(1)+'</b> and the opposite is installed at <b>'
-  +(n.pole||0).toFixed(1)+'</b>.</p>'
+  +'. It is holding <b>'+fmtPct('weight',n.sq)+'</b> and the opposite is installed at <b>'
+  +fmtPct('pole',n.pole||0)+'</b>.</p>'
   /* ONE CONTROL, ONE LABEL. The same button, the same data-prot attribute and
      the same handler, two hundred lines above this one, says "Run the protocol
      here", which is the phrasing COPY.md carries as the example and the
@@ -616,7 +640,7 @@ function runFlowDrill(){
  var r=compute(), seats=flSeats(), f=flSpeed();
  var stop=null; seats.slice().reverse().forEach(function(s){if(!stop&&s.held)stop=s;});
  var h='<div class="pm-eye">Flow</div><div class="ad-nm">'+(r.unread?'not read yet'
-    :(f*100).toFixed(0)+'% reaches the crown')+'</div>'
+    :fmtPct('flow',f)+' reaches the crown')+'</div>'
   +'<div class="pm-eye">How it is built</div><p class="ad-p">'
   +'The seven seats pass signal in series, root upward. Each one passes a share '
   +'and the column carries the product of all seven, so one shut seat closes '
@@ -625,8 +649,10 @@ function runFlowDrill(){
   +'<div class="pm-eye">Seat by seat</div><div class="ad-rows">'
   +seats.slice().reverse().map(function(s){
     return '<div class="ad-r static"><span class="ad-k">'
-     +cr(K2B[s.p.k],s.pass*100,{size:'xs',raw:s.hot?s.pass.toFixed(2):'\u2013',hot:false})+esc(s.p.n)+'</span>'
-     +'<span class="ad-m">'+(s.hot?Math.round(s.pass*100)+'%':'\u2013')+'</span></div>';}).join('')+'</div>'
+     /* one figure per row, the pass as the registry prints it; the end of
+        the row said the same figure again in a second unit */
+     +cr(K2B[s.p.k],pct('pass',s.pass)||0,{size:'xs',raw:s.hot?fmtPct('pass',s.pass):'\u2013',hot:false})+esc(s.p.n)+'</span>'
+     +'</div>';}).join('')+'</div>'
   +'<div class="pm-eye">Where it stops</div><p class="ad-p">'
   +(stop?'The column closes at the <b>'+esc(String(stop.p.n).toLowerCase())+'</b>, which is '
     +'carrying <b>'+stop.hot+'</b> address'+(stop.hot===1?'':'es')+'. Clear those and the '
@@ -640,7 +666,7 @@ function runBalDrill(){
  var sx=CURP&&CURP.who?CURP.who.sex:'';
  var SXN={m:'male',f:'female',o:'other'}[sx]||'';
  var row=function(c,v,col){return '<div class="ad-r static"><span class="ad-k">'
-  +cr(col,v*10,{size:'xs',raw:v.toFixed(1)})+esc(c)+'</span></div>';};
+  +cr(col,pct('charge',v)||0,{size:'xs',raw:fmtPct('charge',v)})+esc(c)+'</span></div>';};
  /* THE SAME REFUSAL IN THE SAME KIND OF SLOT, one door further in. ad-nm is
     the drill's value line and it read "not enough held to read", which is the
     engine's own wording for declining to call a direction, printed where the
@@ -664,7 +690,7 @@ function runBalDrill(){
   +'<div class="pm-eye">How to read it</div><p class="ad-p">The nine axes split by the direction the '
   +'body takes under them. Four discharge outward, five withdraw inward. Four against five is not a '
   +'fair sum, so the means are what compare.'
-  +(b.read?' Outward mean <b>'+b.outMean.toFixed(1)+'</b> against inward mean <b>'+b.inMean.toFixed(1)+'</b>.':'')
+  +(b.read?' Outward mean <b>'+fmtPct('charge',b.outMean)+'</b> against inward mean <b>'+fmtPct('charge',b.inMean)+'</b>.':'')
   /* THE REFUSAL, IN FULL, ONE DOOR IN. The strip's value slot carries a dash
      and nothing else, which is the whole of the fix: a refusal is not a value.
      This is where the refusal is allowed its own sentence, because there is
@@ -710,8 +736,8 @@ function runFetterDrill(c){
   +'<div class="ad-sub">toward '+esc(c.opp)+'</div>'
   +'<div class="pm-eye">Where it sits</div><p class="ad-p">'+esc(c.addr)+', at '+esc(c.loc)
   +'. Seated at the '+esc(c.seat).toLowerCase()+'.</p>'
-  +'<div class="pm-eye">Both halves</div><p class="ad-p">Held <b>'+held.toFixed(1)+'</b>. '
-  +esc(c.opp)+' installed <b>'+inst.toFixed(1)+'</b>. Release empties the address, the opposite is what fills it.</p>'
+  +'<div class="pm-eye">Both halves</div><p class="ad-p">Held <b>'+fmtPct('charge',held)+'</b>. '
+  +esc(c.opp)+' installed <b>'+fmtPct('installed',inst)+'</b>. Release empties the address, the opposite is what fills it.</p>'
   +'<div class="pm-eye">It runs '+at.length+' addresses</div><div class="ad-rows">'
   +at.slice(0,10).map(addrRow).join('')
   +(at.length>10?'<div class="pm-more">and '+(at.length-10)+' more</div>':'')+'</div>';
@@ -762,8 +788,12 @@ function runArchDrill(a){
   +'<div class="ad-sub">how the blueprint expresses</div>'
   +(a.v?'<div class="pm-eye">What it is</div><p class="ad-p">'+esc(a.v)+'</p>':'');
  if(!r.unread&&j>=0&&r.aff)
-  h+='<div class="pm-eye">Where you sit</div><p class="ad-p">Affinity <b>'
-   +Math.round((r.aff[j]||0)*100)+'%</b>.'
+  /* HOW FULLY IT IS EXPRESSED, ruled 16 October, his words: "the archetypes
+     themselves should be 100%. The limiting beliefs are going to drag it
+     down." Affinity, the soul map's lean, still orders the twelve and is
+     printed nowhere (engine/archexpr.js). */
+  h+='<div class="pm-eye">Where you sit</div><p class="ad-p">Expressed <b>'
+   +fmtPct('archetype',archExpr(j))+'</b>. Charge held at its seat pulls it down, and a release lifts it.'
    +(at===0?' Set as your primary.':at>0?' Set as one of yours.':'')+'</p>';
  rdShell(h);}
 function runMaskDrill(m){
@@ -780,7 +810,7 @@ function runMaskDrill(m){
  var hot=W.filter(function(n){return b.indexOf(n.b)>=0&&n.sq>=4;})
   .sort(function(x,y){return y.sq-x.sq;});
  if(!r.unread&&ring){
-  h+='<div class="pm-eye">Where you sit</div><p class="ad-p">Load <b>'+ring.w.toFixed(1)
+  h+='<div class="pm-eye">Where you sit</div><p class="ad-p">Load <b>'+fmtPct('weight',ring.w)
    +'</b>, the mean charge on the addresses under it.</p>';
   if(hot.length)h+='<div class="pm-eye">Held here</div><div class="ad-rows">'
    +hot.slice(0,6).map(addrRow).join('')+'</div>';}
@@ -904,8 +934,8 @@ function runTeacherDrill(m,end){
   +(r.unread
     ?'Nothing has been entered yet, so this axis has no reading. It is still the axis.'
     :'The '+esc(String(m.seat).toLowerCase())
-     +(Math.round(load*100)>0?' is carrying <b>'+Math.round(load*100)+'%</b> and its integrity reads <b>'
-      :' has nothing held, and its integrity reads <b>')+ig.toFixed(1)
+     +(fmtPct('seatload',load)!==PCT_DASH?' is carrying <b>'+fmtPct('seatload',load)+'</b> and its integrity reads <b>'
+      :' has nothing held, and its integrity reads <b>')+fmtPct('integrity',ig)
      +'</b>.'+(at?' That puts you at <b>'+esc(at)+'</b> on this axis.':''))
   +'</p>'
   +'<div class="pm-eye">The question that separates them</div>'
@@ -1044,7 +1074,7 @@ function runPoleDrill(end){
    +'is directing or the drag is. '
    +(r.gov
      ?('What is running here reads <b>'+esc(r.gov.nm.replace(/^The /,''))+'</b>: shape '
-       +Math.round(r.outward*100)+', control '+Math.round((r.organized||0)*100)+'.')
+       +fmtPct('shape',r.outward)+', control '+fmtPct('control',r.organized||0)+'.')
      :'Nothing is firing that points either way, so there is no shape to read here.')
    +'</p>'
    +'<p class="ad-p">The devil is the ordinary case, not a rare one: resistance dominating, '
@@ -1214,9 +1244,9 @@ function runAvatarDrill(){
   rows.forEach(function(r,i){
    var g2=r.gap;
    h+='<button type="button" class="ad-r" data-avp="'+i+'">'
-    +(g2?cr(g2.seat,g2.at,{size:'xs',raw:String(g2.at),hot:false}):'')
+    +(g2?cr(g2.seat,pct('axis',g2.at)||0,{size:'xs',raw:fmtPct('axis',g2.at),hot:false}):'')
     +'<span>'+esc(r.pair.be)+'</span>'
-    +'<em>'+(g2?(g2.clear?'clear':esc(String(g2.seat).toLowerCase())+', '+g2.load.toFixed(1))
+    +'<em>'+(g2?(g2.clear?'clear':esc(String(g2.seat).toLowerCase())+', '+fmtPct('weight',g2.load))
       :'not resolved')+'</em></button>';});
   h+='</div>';
   /* a count against a total is a score, the standing ruling, round RB */
@@ -1250,8 +1280,8 @@ function runAvPair(i){
  if(g2){
   h+='<div class="pm-eye">Where that sits</div>'
    +'<p class="ad-p">The '+String(g2.seat).toLowerCase()+', carrying <b>'
-   +g2.load.toFixed(1)+'</b>. On the axis between the two poles of that seat you read <b>'
-   +g2.at+'</b>.</p>';
+   +fmtPct('weight',g2.load)+'</b>. On the axis between the two poles of that seat you read <b>'
+   +fmtPct('axis',g2.at)+'</b>.</p>';
   var grp=W.filter(function(n){return n.b===g2.seat;})
    .sort(function(a,b){return b.sq-a.sq;}).slice(0,5);
   if(grp.length)h+='<div class="pm-eye">What is in the way</div><div class="ad-rows">'
@@ -1428,10 +1458,12 @@ function runCompassDrill(){
     from it silently. It reads TIERDEF now, which is the only one. */
  var me=r.unread?null:TIER_BY[r.tier];
  var h='<div class="pm-eye">The compass</div><div class="ad-nm">'
-  +(r.unread?'not read yet':'CQ '+Math.round(cq)+', '+tierSay(r).toLowerCase())+'</div>'
-  +'<div class="pm-eye">How to read it</div><p class="ad-p">The line runs 0 at the base to 100 at the crown, and the word changes every ten points. '
-  +'Above '+MEDIAN+' your energy builds more than it costs. Below '+MEDIAN+' it costs more than it builds. '
-  +MEDIAN_LO+' to '+MEDIAN_HI+' is the median range, where the reading crosses the line in both directions'
+  /* in percent, 17 October, percent phase 2: CQ prints as a percent, so
+     the scale it is read against does too */
+  +(r.unread?'not read yet':'CQ '+fmtPct('cq',cq)+', '+tierSay(r).toLowerCase())+'</div>'
+  +'<div class="pm-eye">How to read it</div><p class="ad-p">The line runs from nothing at the base to 100% at the crown, and the word changes every 10%. '
+  +'Above '+MEDIAN+'% your energy builds more than it costs. Below '+MEDIAN+'% it costs more than it builds. '
+  +MEDIAN_LO+'% to '+MEDIAN_HI+'% is the median range, where the reading crosses the line in both directions'
   +(medianRange(cq)&&!r.unread&&r.complete?', and that is where this one sits':'')+'. '
   /* "THE SWING, 11 POINTS" IS GONE FROM HERE TOO. Ruled as a class rather
      than as two strings: "do a sweep of text like that, 100 plus minus 12,
@@ -1524,7 +1556,7 @@ function runSpDrill(kind,val){
   /* the comparison reads CQ against the median, which a CQ still filling
      cannot answer: it would call every Generator's field contracting */
   extra=!r.complete?'A '+val+'. Coherence is still filling, so your energy has no direction to compare yet.'
-   :'A '+val+' at CQ <b>'+Math.round(r.CQ)+'</b>. '
+   :'A '+val+' at CQ <b>'+fmtPct('cq',r.CQ)+'</b>. '
    +((val==='Generator'||val==='Manifesting Generator')===(r.CQ>=50)
      ?'Type and energy point the same way.':'Type and energy point differently.');
  } else if(kind==='auth'){

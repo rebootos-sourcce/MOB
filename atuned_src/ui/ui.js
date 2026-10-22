@@ -22,7 +22,12 @@ function describe(h,r,still){
     intend by it, and what you then do. That is a circuit with four stations
     and this instrument reads every one. The formula is how the reading is
     computed. It is not what the reading means, and it does not go first. */
- if(h.k==='core')return '<u>CQ '+Math.round(r.CQ)+'</u> <b>the core</b><hr>'
+ /* EVERY FIGURE ON A HOVER IS THE REGISTRY'S, 17 October, percent phase 2:
+    the tips below printed the address, the law, the pattern and the domain
+    to one or two decimals beside rings that print percents. A factor (the
+    gate's multiplier, the susceptibility) is not a share of anything and
+    keeps its times sign (engine/pct.js, what never comes here). */
+ if(h.k==='core')return '<u>CQ '+fmtPct('cq',r.CQ,{unread:r.unread})+'</u> <b>the core</b><hr>'
   +'Coherence is the alignment between what arrives, how you read it,<br>'
   +'what you intend, and what you then do.<br>'
   +'This reads every register in that circuit.<hr>'
@@ -34,8 +39,12 @@ function describe(h,r,still){
  if(h.k==='pole')return '<u>compass</u> <b>'+(h.end==='up'?'Coherent':'Decoherent')+'</b>'
   +'<hr><b>Click for detail.</b>';
  if(h.k==='gate'){var v=h.v;
+  /* v.pct+'%' could print "0% of your story, in 1 sentence", because one
+     sentence out of a long story can round below a whole percent. That is
+     the same lie in a different shape as "0% held, read as nothing": the
+     dash exists for exactly this, and fmtPct('gate',...) carries it here. */
   return '<u>'+(v.side==='higher'?'higher gate':'lower gate')+'</u> <b>'+esc(v.nm)+'</b><hr>'
-   +esc(v.d||'')+'<hr>'+(v.n?'<b>'+v.pct+'%</b> of your story, in '+v.n+' sentence'+(v.n===1?'':'s'):'no story yet')
+   +esc(v.d||'')+'<hr>'+(v.n?'<b>'+fmtPct('gate',v.pct)+'</b> of your story, in '+v.n+' sentence'+(v.n===1?'':'s'):'no story yet')
    +'<br>everything held weighs <b>\u00d7'+v.mult.toFixed(2)+'</b><hr><b>Click for detail.</b>';}
  /* V21, speak to a ten year old. This read "001 Fear / Root seat, Lumbar
     Plexus / axis Fear / susceptibility 1.00 / held 0.3, opposite 8.8 / SQ
@@ -50,9 +59,9 @@ function describe(h,r,still){
    +(n.n?'At the '+esc(n.n.toLowerCase())+', in the '+n.b.toLowerCase()+' seat.'
         :'Just outside the body, by the '+n.b.toLowerCase()+' seat.')
    +(n.d?' It shows up as '+esc(n.d.toLowerCase())+'.':'')
-   +'<hr>charge held <b>'+n.held.toFixed(1)+'</b>'
-   +(c?'<br>'+esc(c.opp.toLowerCase())+' installed <b>'+n.rep.toFixed(1)+'</b>':'')
-   +'<br>left after that <b>'+n.sq.toFixed(1)+'</b>'
+   +'<hr>charge held <b>'+fmtPct('held',n.held)+'</b>'
+   +(c?'<br>'+esc(c.opp.toLowerCase())+' installed <b>'+fmtPct('installed',n.rep)+'</b>':'')
+   +'<br>left after that <b>'+fmtPct('weight',n.sq)+'</b>'
    +'<br>takes <b>'+n.susc.toFixed(2)+'\u00d7</b> the charge'+(aff?', because of your '+esc(r.root)+' root':'')
    +'<hr><b>'+(still?'Click for detail.':'Drag to change, click for detail.')+'</b>';}
  /* AN ATOM. One story, one address, one weight, which is the smallest true
@@ -64,19 +73,20 @@ function describe(h,r,still){
   var snip=x.text.length>96?x.text.slice(0,96).replace(/\s\S*$/,'')+'\u2026':x.text;
   return '<u>what put it here</u> <b>'+esc(h.n.k)+'</b><hr>'
    +'<em>'+esc(snip)+'</em><hr>'
-   +(d?d+', ':'')+'weighed <b>'+x.amt.toFixed(1)+'</b> at this address'
+   +(d?d+', ':'')+'weighed <b>'+fmtPct('atom',x.amt)+'</b> at this address'
    +'<hr><b>Click to hold it.</b>';}
  /* the law says what it is. IQ_STEM is the exact phrase the person was asked
     about, so the definition is what was measured and nothing is invented. */
  if(h.k==='law'){var l=SI[h.j], stem=(typeof IQ_STEM!=='undefined'&&IQ_STEM[l.nm])||'';
   return '<u>law</u> <b>'+l.nm+'</b><hr>'+(stem?'How often you '+esc(stem)+'. ':'')
    +'Seated at the '+l.b.toLowerCase()+'.'
-   +'<br>reads <b>'+S.law[l.nm].toFixed(1)+'</b><hr><b>Click for detail.</b>';}
+   +'<br>reads <b>'+fmtPct('law',S.law[l.nm])+'</b><hr><b>Click for detail.</b>';}
  if(h.k==='arch')return '<u>archetype</u> <b>'+ARCH[h.j].nm+'</b><hr>'+ARCH[h.j].v
-  +'<br><b>'+(r.aff[h.j]*100).toFixed(0)+'%</b> as strong as your strongest'
+  /* how fully it is expressed, ruled 16 October (engine/archexpr.js) */
+  +'<br><b>'+fmtPct('archetype',archExpr(h.j))+'</b> expressed'
   +'<hr><b>Click to set as primary.</b>';
  if(h.k==='dom'){var d=DOMAINS[h.j];
-  return '<u>'+d.r+'</u> <b>'+d.nm+'</b><hr>'+d.d+'<br>weight <b>'+(DOMAIN[h.j]||0).toFixed(2)
+  return '<u>'+d.r+'</u> <b>'+d.nm+'</b><hr>'+d.d+'<br>weight <b>'+fmtPct('domain',DOMAIN[h.j]||0)
    +'</b><hr><b>Click to select, shift-click to add.</b>';}
  var o=h.o; if(!o)return '';
  var f=leaves(o);
@@ -88,9 +98,9 @@ function describe(h,r,still){
      off the screen of the person it is about. d is the plain line. And no
      storage index in front of a name, CO-15: Fear is not 001 to anybody. */
   +(o.auth?esc(o.auth)+'<br>':'')+(o.kind==='hy'&&o.d?esc(o.d)+'<br>':'')
-  +'weight <b>'+o.w.toFixed(1)+'</b><hr><b>built on '+f.length+' address'+(f.length===1?'':'es')+'</b><br>'
+  +'weight <b>'+fmtPct('chain',o.w)+'</b><hr><b>built on '+f.length+' address'+(f.length===1?'':'es')+'</b><br>'
   +f.slice(0,5).map(function(n){return esc(n.k)
-   +' <b>'+n.sq.toFixed(1)+'</b>';}).join('<br>')
+   +' <b>'+fmtPct('weight',n.sq)+'</b>';}).join('<br>')
   +(f.length>5?'<br>and '+(f.length-5)+' more':'');}
 /* AN ATOM IS THE SMALLEST THING DRAWN AND IT MUST WIN ITS OWN PIXEL.
 
@@ -1075,8 +1085,20 @@ function railTop(r){
     direction, and clicking the strip opens the whole thing. */
  e.title=td?(td.nm+'. '+td.def+' '+td.energy+' Toward: '+td.toward)
   :r.unread?'Nothing has been read yet. Write a story or set a charge.':tierBuilding();}
+/* THE READOUT BELONGS TO WHOEVER WAS UNDER THE POINTER. The hover readout
+   (#probe) kept its last text when a different profile loaded, so the page
+   carried the previous person's figure. It printed "CQ 89" and nothing
+   checked it; with percent phase 2 it printed "CQ 89%" and functional's
+   "no percentage is printed off the defaults anywhere" caught it on a blank
+   profile. A change of person takes the readout down and empties it. */
+var PROBE_WHO=null;
+function probeForWho(){
+ var who=((typeof CURP!=='undefined'&&CURP&&CURP.id)||'')+':'+S.who;
+ if(who===PROBE_WHO)return; PROBE_WHO=who;
+ var pr=document.getElementById('probe'); if(pr){pr.classList.remove('on'); pr.innerHTML='';}}
 function render(){
  if(typeof paintUndo==='function')paintUndo();
+ probeForWho();
  /* THE READING A PERSON MAY SEE, not compute()'s own. Everything render hands
     down, the rails, the glass bar, the wheel and the Body, draws and lists
     only the rungs of the chain this plan can see: sightR in ui/lock.js. */
