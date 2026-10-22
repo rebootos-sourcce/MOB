@@ -191,9 +191,8 @@ ok(oneLawFormula.answered===1&&oneLawFormula.integrity>0&&oneLawFormula.CQ>0,
 reset(6,0,6); E.verpApply('i could not stop going over it and it had me');
 const att=compute();
 ok(att.vf>1,'an attachment story costs more than 1');
-/* CHANGED 25 SEPTEMBER, and on purpose. These read "and it raises
-   resistance, lowering CQ" and "and it raises CQ". The owner ruled CQ is the
-   21 laws and nothing else, so resistance still moves and CQ must not. */
+/* Model 3: resistance is the denominator of the canonical CQ formula, so
+   gate changes must move the public coherence output in the expected direction. */
 ok(att.Rz>baseRz,'and it raises resistance');
 ok(att.CQ<baseCQ,'the higher resistance lowers coherence, '+baseCQ+' then '+att.CQ);
 reset(6,0,6); E.verpApply('i let it pass and i stayed out of the story and i let it go');
@@ -4630,10 +4629,9 @@ g('36 · the ceiling is reachable, and it is what expression reads with nothing 
    agree exactly. That is what catches a change made to one copy of the
    formula and not the other.
 
-   CHANGED 25 SEPTEMBER from cqCeiling and cqHeadroom, which had CQ as the
-   thing a release moves. CQ is the 21 laws alone now and no release can move
-   it, so the ceiling is expression's: what the lever leaves once the shadow
-   is gone. The assertions are the same ones, on that number. */
+   The ceiling is expression's: the canonical CQ formula evaluated with shadow
+   removed, then reduced by the residual lever pull. The assertions pin the
+   shadowless baseline and ensure the helper does not mutate the live field. */
 {
  const {exCeiling,exHeadroom}=E;
  ok(typeof exCeiling==='function','exCeiling is reachable from outside the engine');
@@ -8232,10 +8230,9 @@ g('PLATE WORD · early, partial or full follows how much was answered, never how
 }
 
 g('CQ SPAN · the range on a partial intake is where the finished figure can still land');
-/* The core drill drew cqRange round the figure alone, so at e9ca1ae 1 law
-   answered at 10 read "swings between 0 and 18, the figure is the middle",
-   with CQ 5 and a finished figure anywhere from 5 to 100. cqSpan reads both
-   ends off cqSum with every open law at nothing and at ten. */
+/* cqSpan projects both endpoints through the canonical formula, not raw
+   law totals. It varies open laws from 0 to 10 while holding current
+   intention/resistance fixed, and matches the current reading at the low end. */
 {
  const has=typeof E.cqSpan==='function';
  ok(has,'cqSpan exists');
