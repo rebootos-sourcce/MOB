@@ -60,7 +60,8 @@ const NODES=
    is on the band ramp in canon.js (sabFetters above zero). Before that the
    route fired on address load alone: on the worked examples 19 of its 34
    names were saboteurs whose own bands said they had not formed or had been
-   displaced, and the rows above would have added 42 more.
+   displaced, and the rows above, without the check, add 38 more: 59 names
+   on the worked examples, 21 of them inside their own band.
 
    SUPERIOR IS RETIRED, 22 October. It was a fourteenth row, 48 Superiority,
    33 Pride and 38 Entitlement in Grandiosity, and it was in neither SAB33 nor

@@ -402,8 +402,8 @@ function compute(){
     configuration of fetters at specific intensities, not a thing. Break the
     co-mingling and the saboteur is gone." Measured on the worked examples,
     19 of the route's 34 names were saboteurs whose own configuration was off
-    the band ramp entirely, and wiring the rest of the library without this
-    would have added 42 more. So a row with a SAB33 row is named here only
+    the band ramp entirely, and the rows nodes.js added on 22 October add 38
+    more without this check. So a row with a SAB33 row is named here only
     while sabFetters, the ramp canon.js already carries for the sniffer, is
     above zero on the exact charge. The ramp is lenient on purpose: it only
     reaches zero two points under a band and three points over it, the
