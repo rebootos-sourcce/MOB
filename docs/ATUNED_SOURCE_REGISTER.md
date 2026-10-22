@@ -133,4 +133,4 @@ These are retrieval/decision blockers, not evidence of absence. The next pass mu
 | `Reboot-OS: atuned/data/canon_tables/manifest.json` | Canon table descriptions and row counts, including HYPER=8, MASKS6=6, SAB33=33, NODEREG=112 | SHA `9cc010fac9b46e27e90594167de3ed5cdf89c680` |
 
 The new registry is an inventory and research ledger, not a runtime integration. Do not remove prior closure blockers until source denominators, templates, generated output, and graph tests have been verified.
-
+| `docs/ATUNED_DEEP_PSYCHOLOGICAL_CODE_TO_REGISTRY_CONTRACT_2026-10-22.md` | Exact generator template fields and closure-validator contract compared with the 125-record psychological registry; adapter and runtime gaps | Commit `0fef21a2150df55095a1e08c35212b116ec6d76b` |
