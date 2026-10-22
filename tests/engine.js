@@ -4989,7 +4989,7 @@ g('36e \u00b7 a release lifts the laws at its seat, fitted to his fifteen thousa
    r.work={}; SI.forEach(l=>{r.work[l.nm]={n:3000,on:S.law[l.nm]};});
    const d1=compute(), same=(sig(d1)===s0);
    r.work={}; releaseWork(r,order.slice(0,15000));
-   rows.push({nm:p.nm, from:d0.CQ, to:cqSum(), same});});
+   rows.push({nm:p.nm, from:d0.CQ, to:compute().CQ, same});});
   const mid=rows.filter(x=>x.from>=25&&x.from<=75);
   ok(rows.length>=10,'the roster ran, '+rows.length+' reference people');
   ok(mid.length>=5&&mid.every(x=>x.to>=85&&x.to<=95),
@@ -5010,7 +5010,7 @@ g('36e \u00b7 a release lifts the laws at its seat, fitted to his fifteen thousa
   ok(moved.slice().sort().join()===HL.slice().sort().join(),
    'one heart address moves the four heart laws and no other, moved '+moved.join(', '));
   HL.forEach(l=>near(lawNow(l),10-5*Math.pow(1-LIFT_R,4),1e-12,l+' took four steps of the distance left'));
-  near(cqSum()-c0,HL.reduce((a,l)=>a+lawNow(l)-5,0)/210*100,1e-12,'and CQ moved by those four over 210');}
+  near(cqSum()-c0,HL.reduce((a,l)=>a+lawNow(l)-5,0)/210*100,1e-12,'and the Integrity input moved by those four over 210');}
  /* THE SHADOW IS NOT IN IT. The same record, the field loaded and then
     emptied: CQ reads the same both times. */
  {CHARGES.forEach(c=>{S.charge[c]=9;}); const a=compute().CQ;
@@ -5041,7 +5041,7 @@ g('36e \u00b7 a release lifts the laws at its seat, fitted to his fifteen thousa
   releaseWork(r3,meterRun(r3,hk(0)).fresh);
   ok(Object.keys(r3.work).join()==='Compassion','only the answered heart law counts, counted '+Object.keys(r3.work).join());
   ok(!lawIn('Forgiveness'),'and the unanswered ones stay unanswered');
-  near(cqSum(),lawNow('Compassion')/210*100,1e-12,'so CQ is that one law, lifted, over 210');}
+  near(cqSum()/10,lawNow('Compassion')/210,1e-12,'so Integrity includes that one answered law and its lift');}
  /* A FIELD THAT IS NOT THIS RECORD'S WEARS NONE OF ITS WORK, the rule undo and
     the mirror already carry for a reference case in S. */
  {const k=S.rec; S.rec='someone else'; const w=lawWork('Compassion'); S.rec=k;
