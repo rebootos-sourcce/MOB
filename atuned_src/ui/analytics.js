@@ -311,7 +311,7 @@ function anaRender(){
      attribute here, where an unescaped quote breaks out of it. esc() closes that. */
   /* and a session is a button, round RB: its whole row opens in the trail,
      every figure the snapshot kept and how far each moved from the one before */
-  H.forEach(function(x,i){out+='<button type="button" class="ana-px" data-ana="sess|'+i+'" title="CQ '+fmtPct('cq',x.cq)+', heaviest at the '+esc(String(x.dark).toLowerCase())
+  H.forEach(function(x,i){out+='<button type="button" class="ana-px" data-ana="sess|'+i+'" title="'+(x.m===CQ_MODEL?'CQ ':'Historical CQ (model '+String(x.m)+', not comparable) ')+fmtPct('cq',x.cq)+', heaviest at the '+esc(String(x.dark).toLowerCase())
    +'"><u style="height:'+Math.max(6,Math.round(x.cq/100*50))+'px;background:'
    +seatCol(x.dark)+'"></u></button>';});
   out+='</div>';}
