@@ -81,7 +81,7 @@ function lawIn(nm){
    lift starts at nothing on every record the day it ships and only grows from
    releases run after that, so a row before it and a row after it differ by
    work the person actually did, which is a move and is meant to read as one. */
-const CQ_MODEL=2;
+const CQ_MODEL=3;
 
 /* ============================================================
    A RELEASE MOVES THE LAWS AT ITS SEAT, A LITTLE. Ruled 25 September, after
@@ -442,9 +442,21 @@ function compute(){
     CQ: lawIn() is what says whether a law was answered. */
  const answered=SINAMES.filter(lawIn).length;
  const complete=(answered===SINAMES.length);
- /* each law as answered, plus what releases at its seat have added since. See
-    LIFT_R above. It is still a law score and nothing else. */
- const CQ=cqSum();
+ /* CANONICAL COHERENCE FORMULA, MODEL 3.
+    Integrity is the existing 21-law score on its fixed 0..10 input scale;
+    unanswered laws contribute zero, and release lift is already included by
+    cqSum()/lawNow(), so release work is not counted twice.
+    Intention is the existing band-derived It value on its 0..10 scale.
+    Resistance is the existing Rz factor, including total shadow DQ and the
+    existing six-axis gate factor, with its established floor of 1.
+    CQ is now the single operational output of Integrity × Intention / Resistance.
+    This deliberately replaces the prior law-only CQ output; history is
+    stamped with CQ_MODEL=3 so values from the old arithmetic are not compared
+    as though they were produced by this formula. */
+ const integrity=cqSum()/10;
+ const intention=It;
+ const resistance=Rz;
+ const CQ=answered===0?0:clamp(integrity*intention/resistance,0,100);
  /* THE LEVER. Expression is CQ times what the shadow leaves: "CQ 100 SQ 0
     ... one pulls down the other, it's a lever", and the pull is his bell,
     applied per address because "a little tense" and "paralyzed" are
