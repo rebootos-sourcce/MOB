@@ -1,5 +1,5 @@
 # ATÜNED MVP Alpha — Development Statistics Snapshot
-Snapshot: 2026-10-21
+Snapshot: 2026-10-21 (after trace implementation pass)
 Scope: Unified Vritti / fetter / qualium / nerve-node architecture workstream
 Baseline type: Updated after P0 contract closure; first comparable runtime snapshot remains unavailable, so no build delta is claimed.
 
@@ -17,8 +17,10 @@ Percentages below are for the defined implementation acceptance criteria, not fi
 | Block | Verified complete | Remaining / unverified | Status and evidence |
 |---|---:|---:|---|
 | P0 — Canonical engine contract and owner map | 100% | 0% | Complete as architecture/ownership contract. Qualium is the Vritti→fetter interpretation orientation; tone belongs to canonical nerve-address node/seat owner; CQ equation version policy and metric isolation are fixed. Runtime source wiring is P1, not a P0 blocker. See ATUNED_MVP_ALPHA_CANONICAL_RECORD_OWNER_AUDIT_v1.md v1.1. |
-| P1 — Record and schema wiring | 0% | 100% | No runtime schema/persistence changes made; intentionally avoided guessing a qualium owner. |
-| P2 — Trace graph integration | 0% | 100% | Existing graph exists, but the new unified path is not implemented/verified. |
+| P1-A — Source/tone owner seam | 0% | 100% | `FLOWSEAT` declaration/consumer still not located; tone mapping not yet wired. |
+| P1-B — Trace relationship seam | 70% | 30% | Derived story/imprint→fetter support and canonical address→fetter association implemented in `engine/trace.js`; tests added, not executed. Qualium attribute contract remains open. |
+| P1-C — Verification seam | 35% | 65% | Regression assertions added for graph path, provenance, no duplicate Vritti collection and metric isolation; build/test execution and import/export/reload coverage remain unverified. |
+| P2 — Trace graph integration | 60% | 40% | Minimum derived path now implemented; marker rendering/navigation, qualium, tone linkage and executed regression evidence remain open. |
 | P3 — CQ/DQ/SQ calculation integration | 0% | 100% | Existing calculations are present; this pass did not complete the versioned reconciliation of the conceptual CQ formula or add regression proof for relationship isolation. |
 | P4 — Release/intervention loop | 0% | 100% | Release hit-feedback requirements are documented elsewhere; no new implementation or tests completed in this pass. |
 | P5 — End-to-end verification | 0% | 100% | Build and test commands were not executed. No CI workflow run was returned for commit 610a552cb636debcba2e8f087770180e7d36dec1. |
