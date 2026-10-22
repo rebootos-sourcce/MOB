@@ -94,9 +94,10 @@ const CQ_MODEL=3;
      and 92, plus or minus 3 points of accuracy. Those 15k releases raised my
      CQ."
 
-   CQ is still the 21 laws over 210, and nothing else enters it. SQ and DQ are
-   not folded in. What changed is what a law reads: a release closes a small
-   share of the distance between each law at its seat and 10.
+   Integrity's input to CQ is the 21 laws over 210. The operational CQ also
+   multiplies normalized Integrity by Intention and divides by Resistance.
+   DQ feeds Resistance; SQ remains the separate total of node shadow weights.
+   A release changes Integrity by lifting each answered law at its seat.
 
      law as CQ reads it = 10 - (10 - answer) x (1 - LIFT_R)^n
 
@@ -432,19 +433,21 @@ function compute(){
  const _vf=verpFactor();
  const Rz=Math.max(1,(1+DQ*0.05)*_vf);
  /* ============================================================
-    CQ, THE 21 LAWS SUMMED OVER 210. Ruled 25 September, fitted by the ten
-    thousand run simulation (AZ5, DECISIONS.md "The CQ model, fitted").
+    CQ INPUT HISTORY — PRIOR MODEL. The previous formula was fitted by the ten
+    thousand-run simulation (AZ5, DECISIONS.md "The CQ model, fitted"). Model 3
+    replaces that public output with the canonical formula below.
 
     This was clamp(It*Ig/Rz). Ig was the law mean and It was the band mean of
     the same 21 laws, so the laws were counted twice and CQ went as their
     square: every law at 5 read 25 where his ruling reads 50 (AY2). And both
     factors carried poleMean and JQ, so installing an opposite past 6 pushed
     JQ up and CQ down: a release lowered CQ in 22 of 10,000 random fields
-    (AY1, measured at 9f4c7e5). Neither can happen now, because nothing but
-    a law score is read.
+    (AY1, measured at 9f4c7e5). Model 3 addresses those defects by using one law-derived Integrity input and
+    the explicit Intention and Resistance inputs in the canonical formula below.
 
-    AN UNANSWERED LAW COUNTS 0 AGAINST A FIXED 210, so CQ fills from zero as
-    the laws land and can only rise while a person is answering. "I don't
+    AN UNANSWERED LAW COUNTS 0 AGAINST A FIXED 210, so the Integrity input fills
+    from zero as laws land. The final CQ can also move with Intention and
+    Resistance; the formula, not the law sum alone, is the public reading. "I don't
     want it to go from 100 down, because that's demoralizing." The mean of
     the laws answered so far, which the desktop runs, fell in every one of
     10,000 simulated intakes; this rule fell in none of 630,000 answers.
