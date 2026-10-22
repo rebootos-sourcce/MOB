@@ -605,7 +605,8 @@ function compute(){
 function exCeiling(){
  var r=compute();
  var noShadowResistance=Math.max(1,r.vf);
- return coherenceFormula(cqSum()/10,r.It,noShadowResistance)*(1-leverPull(0));
+ var noShadowIntention=clamp(r.It-r.poleMean*0.22+r.JQ*0.30,0,10);
+ return coherenceFormula(cqSum()/10,noShadowIntention,noShadowResistance)*(1-leverPull(0));
 }
 /* the gap a release still has in it, for the person about to run one */
 function exHeadroom(exNow){return Math.max(0,exCeiling()-exNow);}
