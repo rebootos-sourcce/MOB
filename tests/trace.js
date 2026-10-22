@@ -424,8 +424,8 @@ function suite(T,E,ok,g){
   const p=worked(E);
   const G=T.traceFromRecord(p);
   const story=G.nodes.find(n=>n.type==='story'&&n.id==='2026-09-21T08:00:00.000Z');
-  const signal=story&&G.nodes.find(n=>n.type==='impression'&&n.id===story.id);
-  const signalEdge=story&&G.edges.find(e=>e.from==='story:'+story.id&&e.edge==='produces'&&e.to==='impression:'+story.id);
+  const signal=story&&G.nodes.find(n=>n.type==='impression'&&n.id==='signal:'+story.id);
+  const signalEdge=story&&G.edges.find(e=>e.from==='story:'+story.id&&e.edge==='produces'&&e.to==='impression:signal:'+story.id);
   const supported=signal&&G.edges.filter(e=>e.from==='impression:'+signal.id&&e.edge==='supports'&&e.to.indexOf('pattern:fetter:')===0);
   ok(!!story,'worked source story exists for signal path');
   ok(!!signal&&!!signalEdge,'source story produces a derived signal-impression node');
