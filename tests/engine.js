@@ -168,6 +168,26 @@ g('7 · the six gates multiply resistance');
 r=reset(6,0,6);
 const baseRz=r.Rz, baseCQ=r.CQ;
 near(r.vf,1,1e-9,'no story means no gate evidence, factor is 1');
+/* CQ MODEL 3: the owner's coherence formula is the one operational output.
+   Pin the mapping and arithmetic so the three inputs cannot drift apart. */
+ok(E.CQ_MODEL===3,'formula history version is model 3');
+near(r.CQ,Math.max(0,Math.min(100,r.integrity*r.intention/r.resistance)),1e-12,
+ 'CQ equals clamped Integrity × Intention / Resistance');
+near(r.integrity,E.cqSum()/10,1e-12,
+ 'Integrity is the fixed-scale 21-law score, including the existing release lift');
+near(r.intention,r.It,1e-12,'Intention is the canonical band-derived It value');
+near(r.resistance,r.Rz,1e-12,'Resistance is the canonical Rz factor');
+ok(r.resistance>=1,'formula denominator preserves the established resistance floor');
+reset(0,0,6);
+const unreadFormula=compute();
+ok(unreadFormula.answered===0&&unreadFormula.CQ===0,
+ 'no answered laws means no claimed coherence even when defaults exist');
+reset(0,0,6);
+S.law[SINAMES[0]]=10; E.LAW_UNSET[SINAMES[0]]=false;
+const oneLawFormula=compute();
+ok(oneLawFormula.answered===1&&oneLawFormula.integrity>0&&oneLawFormula.CQ>0,
+ 'one measured law contributes partial integrity and partial coherence');
+
 reset(6,0,6); E.verpApply('i could not stop going over it and it had me');
 const att=compute();
 ok(att.vf>1,'an attachment story costs more than 1');
