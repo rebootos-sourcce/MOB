@@ -125,6 +125,26 @@ body.rm .in .cg{animation:none}
 #rs[data-ph="done"] .in{inset:14%}
 #rs[data-ph="cool"] .r3{gap:40px}
 #rs[data-ph="before"] .in{inset:18%}
+/* the collision Mika's pass caught: the allowance spent completion carries
+   two rows the ordinary one does not (the spent sentence, the locked next
+   slot) under the same five stats and two buttons, in the same fixed gap
+   below the ring, and the ring cannot move or shrink to make room (his 19
+   October ruling, above). Measured against the ring's own rendered edge
+   (shots.js now checks it, see its header): at 390 the stat row's top sat
+   36px above the ring's own bottom arc, and at 1600, worse, 97px above it,
+   so the green arc ran straight through two of the five captions. Earned
+   the room back by compacting this one state only, never the ordinary
+   completion: the meaning line under each stat (kept for a plain
+   completion, where there is room), a tighter gap between the four rows,
+   and a lower floor under them, matching the weight the locked-slot row
+   already carries at 390 for every width now. r3.js sets data-spent from
+   the model, not from width, since the deficit is worst on a desktop. */
+#rs[data-spent="1"] .r3t{gap:10px;bottom:28px}
+#rs[data-spent="1"] .r3f .fm{display:none}
+#rs[data-spent="1"] .r3t .sp{font-size:13px;line-height:1.3}
+#rs[data-spent="1"] .shut{min-height:0;font-size:12px}
+#rs[data-spent="1"] .shut svg{width:16px;height:16px}
+#rs[data-spent="1"] .lk{font-size:12px}
 
 @media (max-width:760px){
  .r3{padding:40px 16px 40px;gap:24px}
@@ -189,4 +209,9 @@ body.rm .in .cg{animation:none}
     four lines and measure 174px tall instead of 44. */
  .doneacts{gap:10px;width:calc(100vw - 32px)}
  .doneacts .go,.doneacts .go2{min-height:44px;padding:0 14px;font-size:13px;flex:1 1 auto;justify-content:center}
+ /* same measured fix as the desktop rule just above, at the phone's own
+    numbers: the stat row's top used to sit 36px above the ring's own
+    bottom arc here too. */
+ #rs[data-spent="1"] .r3t{gap:6px;bottom:14px}
+ #rs[data-spent="1"] .r3t .sp{font-size:10px}
 }

@@ -41,6 +41,13 @@ const V=(()=>{
  let mode='';
  function paint(m){
   const rs=$('#rs');rs.dataset.ph=m.ph;
+  /* named for the layout rule below, not for the words: the allowance
+     spent completion carries two extra rows (the spent sentence and the
+     locked next slot) under the same five stats and two buttons every
+     completion has, and the ring cannot move or shrink to make room (his
+     19 October ruling). r3.css reads this to earn the extra room a tight
+     fit by compacting that one state only, never the ordinary completion. */
+  rs.dataset.spent=(m.done&&!m.done.canRun)?'1':'';
   $('.x',rs).hidden=!(m.ph==='before'||m.ph==='done');
   const p=$('#r3p');p.textContent=m.ph==='run'?m.run.prompt:W.prompt.release;
   p.classList.toggle('wait',m.ph==='before'||(m.ph==='script'&&m.script.i<SCRIPT.length-1));
