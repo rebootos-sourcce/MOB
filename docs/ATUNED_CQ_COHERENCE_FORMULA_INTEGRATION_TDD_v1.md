@@ -24,7 +24,7 @@ No competing CQ calculator is introduced. CQ model version is 3.
 `band integrity + existing pole/JQ adjustment → Intention`
 `total shadow DQ + six-axis gate factor → Resistance`
 `Integrity × Intention / Resistance → clamp 0..100 → CQ / Coherence`
-`CQ → existing tiers, expression lever, governance/quadrant, snapshots, and downstream readers`
+`CQ → existing tiers, expression lever, governance/quadrant, snapshots, and downstream readers`. `cqSpan()` now projects both bounds through the same formula (varying unanswered laws while holding current intention/resistance fixed); `exCeiling()` evaluates the shadowless expression ceiling through the same formula without mutating live state.
 
 All consumers continue to read the single `compute().CQ` result. `cqSum()` remains an input/utility for Integrity and range calculations; it is no longer assigned directly as the public CQ output.
 
