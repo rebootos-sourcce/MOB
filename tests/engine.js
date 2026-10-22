@@ -165,40 +165,36 @@ const above=fitFor('Victim',10,10);   /* Victim is sadness 6..8 + anger 4..6 */
 ok(!above||!above.exact,'above the band is not exact: the charge escalated past it');
 ok(fitFor('Micromanager',6,6).score<100,'one step below lo is adjacent, not inside');
 
-g('7 · the six gates multiply normalized resistance');
+g('7 · the six gates multiply resistance');
 r=reset(6,0,6);
 const baseRz=r.Rz, baseCQ=r.CQ;
 near(r.vf,1,1e-9,'no story means no gate evidence, factor is 1');
-/* CQ MODEL 3: the owner's coherence formula is the one operational output.
-   Pin the mapping and arithmetic so the three inputs cannot drift apart. */
-ok(E.CQ_MODEL===3,'formula history version is model 3');
-near(r.CQ,Math.max(0,Math.min(100,r.integrity*r.intention/r.resistance)),1e-12,
- 'CQ equals clamped Integrity × Intention / Resistance');
-near(r.integrity,E.cqSum()/10,1e-12,
- 'Integrity is the fixed-scale 21-law score, including the existing release lift');
-near(r.intention,r.It,1e-12,'Intention is the canonical band-derived It value');
-near(r.resistance,r.Rz,1e-12,'Resistance is the normalized Rz factor derived from DQ and gate state');
-ok(r.resistance>=1,'formula denominator has the explicit normalized resistance floor');
+/* A SEEDED LAW IS NOT AN ANSWER. Every law sits at its seeded default here
+   and none is marked answered, so CQ is nothing, and one answer is that one
+   law over 210. */
 const unreadProfile=E.blankProfile('unanswered formula'); E.loadProfile(unreadProfile);
 const unreadFormula=compute();
 ok(unreadFormula.answered===0&&unreadFormula.CQ===0,
  'no answered laws means no claimed coherence even when defaults exist');
 S.law[SINAMES[0]]=10; E.LAW_UNSET[SINAMES[0]]=false;
 const oneLawFormula=compute();
-ok(oneLawFormula.answered===1&&oneLawFormula.integrity>0&&oneLawFormula.CQ>0,
- 'one measured law contributes partial integrity and partial coherence');
+ok(oneLawFormula.answered===1,'one measured law is one answered, got '+oneLawFormula.answered);
+near(oneLawFormula.CQ,10/210*100,1e-12,
+ 'and CQ is that one law over 210, the '+(SINAMES.length-1)+' seeded defaults counting nothing');
 
 reset(6,0,6); E.verpApply('i could not stop going over it and it had me');
 const att=compute();
 ok(att.vf>1,'an attachment story costs more than 1');
-/* Gate evidence changes the normalized Resistance factor Rz, which is the
-   denominator in the canonical CQ formula. */
-ok(att.Rz>baseRz,'and it raises normalized resistance');
-ok(att.CQ<baseCQ,'the higher resistance lowers coherence, '+baseCQ+' then '+att.CQ);
+/* CHANGED 25 SEPTEMBER, and on purpose. These read "and it raises
+   resistance, lowering CQ" and "and it raises CQ". The owner ruled CQ is the
+   21 laws and nothing else, so resistance still moves and CQ must not.
+   Model 3 turned both round on this branch and was reverted, 22 October. */
+ok(att.Rz>baseRz,'and it raises resistance');
+ok(att.CQ===baseCQ,'which no longer moves CQ, '+baseCQ+' then '+att.CQ);
 reset(6,0,6); E.verpApply('i let it pass and i stayed out of the story and i let it go');
 const det=compute();
 ok(det.vf<1,'a detachment story costs less than 1');
-ok(det.Rz<baseRz&&det.CQ>baseCQ,'lower normalized resistance raises coherence, '+baseCQ+' then '+det.CQ);
+ok(det.Rz<baseRz&&det.CQ===baseCQ,'and it lowers resistance, which does not move CQ either');
 reset(0,0,6);
 const sh=E.verpRead();
 ok(sh.length===6&&sh.every(v=>v.mult>0),'six gates, each with a multiplier');
@@ -393,7 +389,11 @@ const ref=n=>{const p=PEOPLE.find(x=>x.nm===n);
  CHARGES.forEach(c=>{S.charge[c]=p.c[c]||0;S.replace[c]=(p.rep&&p.rep[c])||0;});
  const LS=LAWSET[n];SINAMES.forEach(l=>S.law[l]=LS[l]!==undefined?LS[l]:LS._); lawsIn();
  return compute();};
-['Rosa','Ana','Gordon'].forEach(n=>{const x=ref(n);near(x.CQ,x.integrity*x.intention/x.resistance,1e-9,n+' reference case follows the canonical formula');});
+ok(ref('Rosa').CQ>ref('Ana').CQ,'the cleared reference case reads higher than the one mid-crisis');
+ok(ref('Ana').CQ>ref('Gordon').CQ,'and mid-crisis reads higher than the collapsed one');
+['Rosa','Ana','Gordon'].forEach(n=>{const x=ref(n), LS=LAWSET[n];
+ near(x.CQ,SINAMES.reduce((a,l)=>a+(LS[l]!==undefined?LS[l]:LS._),0)/210*100,1e-9,
+  n+' reference case reads its own laws over 210');});
 ok(ref('Rosa').loaded.length===0,'Rosa holds nothing');
 ok(ref('Gordon').loaded.length>90,'Gordon holds nearly everything');
 
@@ -979,7 +979,7 @@ g('16 \u00b7 the front door');
  ok(Math.abs(s1.reading.DQ-s2.reading.DQ)<1e-9,'a story applied twice reads once');
  ok(s1.reading.vf!==1,'story cues move the gate factor off neutral');
  ok(s1.reading.DQ!==a.reading.DQ,'and the story changes the reading');
- ok(s1.reading.CQ===a.reading.CQ,'blank intake keeps integrity at zero, so CQ stays zero');
+ ok(s1.reading.CQ===a.reading.CQ,'and never CQ, which is the laws alone');
 
  /* gate evidence survives the round trip. this was the v1 defect: the
     multiplier moved every CQ and was never written to the schema. */
@@ -1571,7 +1571,7 @@ g('19b \u00b7 the empty field says it is empty');
     a CQ that is still filling would call this person Contracted for not having
     done the intake. The word waits for all 21. */
  ok(r1.tier===null,'but no tier word is put on it until all 21 laws are in, got '+r1.tier);
- ok(r1.DQ>0&&r1.CQ===0,'and CQ remains zero while integrity has no answered laws, DQ '+r1.DQ.toFixed(1));
+ ok(r1.DQ>0&&r1.CQ===0,'and the shadow reads while CQ waits, DQ '+r1.DQ.toFixed(1));
  S.charge.Fear=0; compute();
  /* AND CHARGE UNDER THE DISPLAY LINE IS STILL CHARGE SOMEBODY ENTERED.
     unread is a claim about whether anything was entered, not about whether it
@@ -1697,16 +1697,30 @@ g('19a \u00b7 the roster covers the scale');
   return compute();};
  /* a persona's table is its measurement, as loadP treats it */
  const by={}; PEOPLE.forEach(p=>{by[p.nm]=rd(p);});
- /* CQ model 3 changes the arithmetic, so legacy persona rank expectations from
-    the law-only model are not acceptance criteria. Every reference persona must
-    now reconcile to the canonical formula and keep expression downstream. */
- ['Tomas','Gordon','Wren','Abraham'].forEach(n=>{
-  near(by[n].CQ,by[n].integrity*by[n].intention/by[n].resistance,1e-9,n+' follows the canonical formula');
-  near(by[n].EX,by[n].CQ*(1-by[n].PULL),1e-9,n+' expression uses canonical CQ and pull');});
+ /* CHANGED 25 SEPTEMBER. This asserted Tomas about 2, Nkem 10, Wren 92 and
+    Abraham 98, and each pair shared a word. Those four were solved by
+    bisection against It*Ig/Rz, where a heavy field could pull CQ to the
+    floor. CQ is the laws alone now, so load no longer reaches it, and the
+    floor pair is reached on expression instead. Their law tables are persona
+    data and were not re-solved: whether the tier word names CQ or expression
+    is the owner's question 1, and re-solving before he rules would pick for
+    him. What is still true, and asserted: the floor cases sit below the
+    median on CQ and further down on expression, the ceiling cases sit in the
+    top two bands, CQ is exactly each table summed over 210, and expression
+    is CQ times what the pull leaves. The readings themselves are printed by
+    the checks, not typed here. */
+ /* Nkem was cut in round QD, and Gordon is the second floor case */
+ ['Tomas','Gordon'].forEach(n=>{
+  ok(by[n].CQ<E.MEDIAN,n+' is a floor case, below the median, got '+by[n].CQ.toFixed(1));
+  ok(by[n].EX<by[n].CQ,n+' and its load pulls expression lower, '+by[n].EX.toFixed(1));});
+ ['Wren','Abraham'].forEach(n=>ok(by[n].CQ>=81,
+  n+' is a ceiling case, in the top two bands, got '+by[n].CQ.toFixed(1)));
+ ['Tomas','Gordon','Wren','Abraham'].forEach(n=>
+  near(by[n].EX,by[n].CQ*(1-by[n].PULL),1e-9,n+' expression is CQ times what the pull leaves'));
  ['Tomas','Gordon','Wren','Abraham'].forEach(n=>{
   const LS=LAWSET[n];
   const sum=SINAMES.reduce((a,l)=>a+((LS[l]!==undefined)?LS[l]:LS._),0);
-  ok(Math.abs(by[n].CQ-by[n].integrity*by[n].intention/by[n].resistance)<1e-9,n+' reads Integrity × Intention / Resistance, '+by[n].CQ.toFixed(1));});
+  ok(Math.abs(by[n].CQ-sum/210*100)<1e-9,n+' reads its laws over 210, '+by[n].CQ.toFixed(1));});
  /* the vocabulary claim itself does not need a persona: a band is ten wide */
  ok(E.tierOf(2).nm===E.tierOf(10).nm,'2 and 10 are the same word: '+E.tierOf(2).nm);
  ok(E.tierOf(92).nm===E.tierOf(98).nm,'92 and 98 are the same word: '+E.tierOf(92).nm);
@@ -4624,9 +4638,11 @@ g('36 · the ceiling is reachable, and it is what expression reads with nothing 
    agree exactly. That is what catches a change made to one copy of the
    formula and not the other.
 
-   The ceiling is expression's: the canonical CQ formula evaluated with shadow
-   removed, then reduced by the residual lever pull. The assertions pin the
-   shadowless baseline and ensure the helper does not mutate the live field. */
+   CHANGED 25 SEPTEMBER from cqCeiling and cqHeadroom, which had CQ as the
+   thing a release moves. CQ is the 21 laws alone now, and the shadow never
+   enters it, so the ceiling is expression's: CQ as the laws read now, times
+   what the lever leaves once the shadow is gone. The assertions are the same
+   ones, on that number. */
 {
  const {exCeiling,exHeadroom}=E;
  ok(typeof exCeiling==='function','exCeiling is reachable from outside the engine');
@@ -4685,14 +4701,14 @@ g('36b · the fitted CQ model, reproduced from the simulation that fitted it');
     stated level, every law at the stated score. */
  const w5=reset(0,0,5), w5h=reset(10,0,5), w10h=reset(10,0,10);
  const r1=(v,d)=>+v.toFixed(d);
- ok(r1(w5.CQ,1)===r1(w5.integrity*w5.intention/w5.resistance,1)&&r1(w5.DQ,1)===0&&r1(w5.PULL,3)===0&&r1(w5.EX,1)===r1(w5.CQ,1),
-  'every law 5, nothing held: formula CQ, DQ 0, pull 0, expression equals CQ, got '
+ ok(r1(w5.CQ,1)===50&&r1(w5.DQ,1)===0&&r1(w5.PULL,3)===0&&r1(w5.EX,1)===50,
+  'every law 5, nothing held: CQ 50, DQ 0, pull 0, expression 50, got '
   +[w5.CQ,w5.DQ,w5.PULL,w5.EX].map(v=>v.toFixed(3)).join(', '));
- ok(r1(w5h.CQ,1)===r1(w5h.integrity*w5h.intention/w5h.resistance,1)&&r1(w5h.DQ,1)===47.9&&r1(w5h.PULL,3)===0.413&&r1(w5h.EX,1)===r1(w5h.CQ*(1-w5h.PULL),1),
-  'every law 5, heavily loaded: formula CQ, DQ 47.9, pull 0.413, expression is derived from CQ, got '
+ ok(r1(w5h.CQ,1)===50&&r1(w5h.DQ,1)===47.9&&r1(w5h.PULL,3)===0.413&&r1(w5h.EX,1)===29.4,
+  'every law 5, heavily loaded: CQ 50, DQ 47.9, pull 0.413, expression 29.4, got '
   +[w5h.CQ,w5h.DQ,w5h.PULL,w5h.EX].map(v=>v.toFixed(3)).join(', '));
- ok(r1(w10h.CQ,1)===r1(w10h.integrity*w10h.intention/w10h.resistance,1)&&r1(w10h.DQ,1)===35.2&&r1(w10h.PULL,3)===0.199&&r1(w10h.EX,1)===r1(w10h.CQ*(1-w10h.PULL),1),
-  'every law 10, heavily loaded: formula CQ, DQ 35.2, pull 0.199, expression is derived from CQ, got '
+ ok(r1(w10h.CQ,1)===100&&r1(w10h.DQ,1)===35.2&&r1(w10h.PULL,3)===0.199&&r1(w10h.EX,1)===80.1,
+  'every law 10, heavily loaded: CQ 100, DQ 35.2, pull 0.199, expression 80.1, got '
   +[w10h.CQ,w10h.DQ,w10h.PULL,w10h.EX].map(v=>v.toFixed(3)).join(', '));
  ok(w5h.SQ.filter(v=>v>=7).length===16&&w10h.SQ.filter(v=>v>=7).length===0,
   'and the heavy one at law 5 has 16 addresses at 7 or more where the one at law 10 has none');
@@ -4707,6 +4723,14 @@ g('36b · the fitted CQ model, reproduced from the simulation that fitted it');
  ok(FIELD.every(n=>n.sq>0),'so on a loaded field none of the four is forced to 0');
  near(h.DQ,h.SQ.reduce((a,v)=>a+v,0)/1120*100,1e-9,'DQ is the 112 over 1120');
  near(h.EX,h.CQ*(1-h.PULL),1e-12,'and expression is CQ times what the pull leaves');
+ /* WILL IS NOT MEASURED, SO THE SEESAW IS THE SHIPPED BELL, TO THE BIT.
+    compute() reads its pull through leverPullWill, a second copy of the
+    curve whose centre may one day move with Will, and Will is 0 until
+    something measures it. The curve table above pins leverPull and not that
+    copy, so this is what catches the two drifting apart. Red on purpose the
+    day Will is real: that day the claim changes and somebody says so. */
+ ok(h.PULL===h.SQ.reduce((a,v)=>a+leverPull(v),0)/h.SQ.length,
+  'and the pull is the mean of leverPull over the 112, to the bit, while Will is unmeasured');
 
  /* NOTHING ENTERED. A blank profile through the boundary: CQ 0 and filling,
     no tier word, and the reading is unread. */
@@ -4734,8 +4758,8 @@ g('36b · the fitted CQ model, reproduced from the simulation that fitted it');
   const fin=compute();
   ok(fin.complete&&fin.answered===21&&typeof fin.tier==='string',
    'all 63 in: complete, 21 answered, and a tier word, '+fin.tier);
-  near(fin.CQ,fin.integrity*fin.intention/fin.resistance,1e-9,
-   'and CQ is the canonical formula over the completed intake');
+  near(fin.CQ,SINAMES.reduce((a,l)=>a+p.laws[l],0)/210*100,1e-9,
+   'and CQ is exactly the record\'s laws over 210');
  }
 
  /* AY1. A RELEASE NEVER LOWERS CQ AND NEVER MAKES ANYTHING WORSE. The live
@@ -4791,7 +4815,7 @@ g('36b · the fitted CQ model, reproduced from the simulation that fitted it');
    SI.forEach(l=>{const a=law0[l.nm], b=lawNow(l.nm); sum+=b-a;
     if(!seat[l.b]){if(b!==a)offSeat++;}
     else if(Math.abs(b-(10-(10-a)*Math.pow(1-LIFT_R,seat[l.b])))>1e-9)stepOff++;});
-   if(Math.abs(r1.CQ-r1.integrity*r1.intention/r1.resistance)>1e-9)sumOff++;
+   if(Math.abs((r1.CQ-r0.CQ)-sum/210*100)>1e-9)sumOff++;
    if(r1.CQ<r0.CQ-1e-12)fell++;
    if(r1.CQ>100+1e-9)over++;
    if(r1.CQ>r0.CQ+1e-12)rose++;
@@ -4801,17 +4825,17 @@ g('36b · the fitted CQ model, reproduced from the simulation that fitted it');
    if(r1.EX<r0.EX-1e-9)exFell++;
    if(r1.SQ.some((v,k)=>v>sq0[k]+1e-9))addrRose++;}
   ok(runs>1900,'the release probe ran, '+runs+' releases');
-  ok(halfMoved>0,'the charge/shadow half can affect CQ through Resistance, moved '+halfMoved);
+  ok(halfMoved===0,'the charge half of a release never moves CQ, so the shadow is not folded in, moved '+halfMoved);
   ok(offSeat===0,'the law half moves no law away from the seats it opened ground at, moved '+offSeat);
   ok(stepOff===0,'and every law at those seats by exactly LIFT_R of the distance left a pattern, off '+stepOff);
-  ok(sumOff===0,'every post-release CQ reconciles to Integrity × Intention / Resistance, off '+sumOff);
-  ok(rose>0,'release work changed CQ through the connected formula in '+rose+' of '+runs+' runs');
-  ok(over===0,'CQ never passes 100 under release work, over '+over);
-  ok(idleMoved<=idle,'no-new-ground runs remain bounded, '+idleMoved+' of '+idle+' changed through the charge/resistance path');
-  ok(maxMove<=100,'release-driven CQ movement stays inside the 0..100 range, max delta '+maxMove.toFixed(3));
+  ok(sumOff===0,'so CQ moves by exactly those laws over 210 and by nothing else, off '+sumOff);
+  ok(rose>runs*0.9,'a release is real change: CQ rose in '+rose+' of '+runs);
+  ok(fell===0&&over===0,'and it never falls and never passes 100, fell '+fell+', over '+over);
+  ok(idleMoved===0,'a run with no new ground moves it not at all, '+idleMoved+' of '+idle+' did');
+  ok(maxMove<0.5,'and one run moves it by less than half a point, at most '+maxMove.toFixed(3));
   ok(dqRose===0,'never raises DQ, rose '+dqRose);
   ok(addrRose===0,'never raises any of the 112, rose '+addrRose);
-  ok(exFell<=runs,'expression stays defined across release runs, fell '+exFell);
+  ok(exFell===0,'and never lowers expression, fell '+exFell);
   console.log('  release probe: CQ rose in '+rose+' of '+runs+' runs, by at most '+maxMove.toFixed(3));
   /* nothing from the probe reaches a later group */
   E.current().work={};
@@ -4934,8 +4958,8 @@ g('36e \u00b7 a release lifts the laws at its seat, fitted to his fifteen thousa
  const end=compute().CQ;
  ok(opened===15000,'fifteen thousand patterns of new ground, '+opened);
  ok(fell===0&&over===0,'CQ never fell and never passed 100 on the way, fell '+fell+', over '+over);
- ok(end>=0&&end<=100,'the final coherence output remains on the 0..100 scale, '+end.toFixed(2));
- near(end,compute().integrity*compute().intention/compute().resistance,1e-9,'and the final reading reconciles to the canonical formula');
+ ok(end>=88&&end<=92,'and lands '+end.toFixed(2)+', inside his 88 to 92');
+ near(end,SINAMES.reduce((a,l)=>a+lawNow(l),0)/210*100,1e-9,'and it is still exactly the 21 laws over 210');
  console.log('  the walk from 50: '+pts.join(', '));
  /* HIS OTHER SENTENCE, as a check and not a fit: "you may not see CQ move, but
     it may move 0.1 or 0.05". A whole run of 24 moves it about a tenth at the
@@ -4984,11 +5008,11 @@ g('36e \u00b7 a release lifts the laws at its seat, fitted to his fifteen thousa
    r.work={}; SI.forEach(l=>{r.work[l.nm]={n:3000,on:S.law[l.nm]};});
    const d1=compute(), same=(sig(d1)===s0);
    r.work={}; releaseWork(r,order.slice(0,15000));
-   rows.push({nm:p.nm, from:d0.CQ, to:compute().CQ, same});});
+   rows.push({nm:p.nm, from:d0.CQ, to:cqSum(), same});});
   const mid=rows.filter(x=>x.from>=25&&x.from<=75);
   ok(rows.length>=10,'the roster ran, '+rows.length+' reference people');
-  ok(mid.length>=5&&mid.every(x=>x.to>=0&&x.to<=100),
-   'every starting case remains inside the model-3 coherence scale: '
+  ok(mid.length>=5&&mid.every(x=>x.to>=85&&x.to<=95),
+   'every one starting between 25 and 75 lands inside 85 to 95: '
    +mid.map(x=>x.nm+' '+x.from.toFixed(0)+' to '+x.to.toFixed(1)).join(', '));
   ok(rows.every(x=>x.same),'and the lift leaves every one\'s saboteurs, complexes and weights exactly as they were, '
    +rows.filter(x=>!x.same).map(x=>x.nm).join(', '));
@@ -5005,14 +5029,13 @@ g('36e \u00b7 a release lifts the laws at its seat, fitted to his fifteen thousa
   ok(moved.slice().sort().join()===HL.slice().sort().join(),
    'one heart address moves the four heart laws and no other, moved '+moved.join(', '));
   HL.forEach(l=>near(lawNow(l),10-5*Math.pow(1-LIFT_R,4),1e-12,l+' took four steps of the distance left'));
-  near(cqSum()-c0,HL.reduce((a,l)=>a+lawNow(l)-5,0)/210*100,1e-12,'and the Integrity input moved by those four over 210');}
- /* RESISTANCE IS IN CQ. The same law answers with a loaded and an empty field
-    should produce different formula readings, with each result reconciling. */
- {CHARGES.forEach(c=>{S.charge[c]=9;}); const a=compute();
-  CHARGES.forEach(c=>{S.charge[c]=0;}); const b=compute();
-  ok(a.CQ!==b.CQ,'a loaded field and an empty field differ through Resistance, '+a.CQ.toFixed(4)+' and '+b.CQ.toFixed(4));
-  near(a.CQ,a.integrity*a.intention/a.resistance,1e-9,'loaded field follows the formula');
-  near(b.CQ,b.integrity*b.intention/b.resistance,1e-9,'empty field follows the formula');}
+  near(cqSum()-c0,HL.reduce((a,l)=>a+lawNow(l)-5,0)/210*100,1e-12,'and CQ moved by those four over 210');}
+ /* THE SHADOW IS NOT IN IT. The same record, the field loaded and then
+    emptied: CQ reads the same both times. Model 3 inverted this on this
+    branch, through Resistance, and was reverted, 22 October. */
+ {CHARGES.forEach(c=>{S.charge[c]=9;}); const a=compute().CQ;
+  CHARGES.forEach(c=>{S.charge[c]=0;}); const b=compute().CQ;
+  ok(a===b,'a loaded field and an empty one read the same CQ, '+a.toFixed(4)+' and '+b.toFixed(4));}
  /* A NEW ANSWER STARTS THE COUNT AGAIN. His 88 to 92 is a reading taken after
     the work, which already contains it; carrying the lift through a new answer
     would count his fifteen thousand twice. */
@@ -5038,7 +5061,7 @@ g('36e \u00b7 a release lifts the laws at its seat, fitted to his fifteen thousa
   releaseWork(r3,meterRun(r3,hk(0)).fresh);
   ok(Object.keys(r3.work).join()==='Compassion','only the answered heart law counts, counted '+Object.keys(r3.work).join());
   ok(!lawIn('Forgiveness'),'and the unanswered ones stay unanswered');
-  near(cqSum()/10,lawNow('Compassion')/210,1e-12,'so Integrity includes that one answered law and its lift');}
+  near(cqSum(),lawNow('Compassion')/210*100,1e-12,'so CQ is that one law, lifted, over 210');}
  /* A FIELD THAT IS NOT THIS RECORD'S WEARS NONE OF ITS WORK, the rule undo and
     the mirror already carry for a reference case in S. */
  {const k=S.rec; S.rec='someone else'; const w=lawWork('Compassion'); S.rec=k;
@@ -5625,8 +5648,7 @@ g('41 · the twenty one on every history row, and a record from before still loa
   'the answered laws read as they were answered, nothing released yet');
  ok(row&&row.lawNow.Unity===null&&row.lawNow.Courage===null,
   'and a law nobody answered is null, not the six it is seeded with');
- ok(row&&typeof row.cq==='number'&&row.cq>=0&&row.cq<=100,'the saved row carries a bounded CQ value under its stamped formula version');
-  if(row&&row.m===E.CQ_MODEL)near(row.cq,Math.max(0,Math.min(100,row.integrity*row.intention/row.resistance)),0.15,'the saved CQ row reconciles to its persisted formula inputs');
+ near(row?lawSum(row):-1,row?row.cq:0,0.06,'the row reconciles: its laws over 210 are its own cq');
  /* A refused write must not leave a staged snapshot sitting in memory: a
     later successful save would otherwise duplicate a run that never saved. */
  const savedText=mem['source.profiles'], historyN=rec.history.length;
@@ -8227,9 +8249,10 @@ g('PLATE WORD · early, partial or full follows how much was answered, never how
 }
 
 g('CQ SPAN · the range on a partial intake is where the finished figure can still land');
-/* cqSpan projects both endpoints through the canonical formula, not raw
-   law totals. It varies open laws from 0 to 10 while holding current
-   intention/resistance fixed, and matches the current reading at the low end. */
+/* The core drill drew cqRange round the figure alone, so at e9ca1ae 1 law
+   answered at 10 read "swings between 0 and 18, the figure is the middle",
+   with CQ 5 and a finished figure anywhere from 5 to 100. cqSpan reads both
+   ends off cqSum with every open law at nothing and at ten. */
 {
  const has=typeof E.cqSpan==='function';
  ok(has,'cqSpan exists');
@@ -8237,15 +8260,15 @@ g('CQ SPAN · the range on a partial intake is where the finished figure can sti
   const r=E.read(p).reading; return {r, s:has?E.cqSpan():null};};
  const a=span(1,10);
  ok(a.s&&Math.abs(a.s.lo-a.r.CQ)<1e-9,'the low end is the figure now, an open law counting nothing, '+(a.s&&a.s.lo)+' against '+a.r.CQ);
- ok(a.s&&a.s.hi>=a.s.lo&&a.s.hi<=100,'one law at 10 and twenty open has a bounded possible finish, '+(a.s&&a.s.hi));
+ ok(a.s&&Math.abs(a.s.hi-100)<1e-9,'one law at 10 and twenty open can still finish at 100, '+(a.s&&a.s.hi));
  ok(a.s&&a.s.enough===false&&a.s.answered===1&&a.s.of===SINAMES.length,'and with most laws open there are not enough answers to give a range, '+JSON.stringify(a.s));
  const b=span(12,5);
- const want=a.s?Math.max(0,Math.min(100,((12*5+(SINAMES.length-12)*10)/210)*b.r.intention/b.r.resistance)):NaN;
+ const want=a.s?(12*5+(SINAMES.length-12)*10)/210*100:NaN;
  ok(b.s&&b.s.enough&&!b.s.complete&&Math.abs(b.s.hi-want)<1e-9&&Math.abs(b.s.lo-b.r.CQ)<1e-9,
   'twelve laws at 5: enough to give a range, from the figure now to every open law at ten, '+JSON.stringify(b.s));
  const c=span(SINAMES.length,7);
  ok(c.s&&c.s.complete&&Math.abs(c.s.lo-c.s.hi)<1e-9&&Math.abs(c.s.lo-c.r.CQ)<1e-9,'every law in, the two ends are the figure');
- ok(Math.abs(E.cqSum()/10-c.r.integrity)<1e-9,'and cqSum supplies the Integrity input, not a competing CQ output');
+ ok(Math.abs(E.cqSum()-c.r.CQ)<1e-9,'and cqSum with nothing passed is CQ exactly as before');
  /* the swing only narrows as laws come in */
  let wide=Infinity, narrows=true;
  for(let n=0;n<=SINAMES.length;n++){const s=span(n,6).s; if(!s)break; const w=s.hi-s.lo; if(w>wide+1e-9)narrows=false; wide=w;}
