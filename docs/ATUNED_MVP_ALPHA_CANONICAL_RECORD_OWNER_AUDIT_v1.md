@@ -72,8 +72,9 @@ Preserve raw source, provenance, candidate/confirmed distinctions, old-profile c
 
 ## Block status
 - **P0 — COMPLETE as architecture/ownership contract.** This is design/contract completion, not runtime completion.
-- **P1 — PARTIAL:** derived story→impression→fetter and canonical address→fetter association edges are implemented; `FLOWSEAT` tone reference is wired through the existing address-seat mapping. Qualium still has no approved runtime value contract, and sensory/emotional waveform capture is not yet structured.
-- **P2 — PARTIAL:** `engine/loop.js` exposes source-backed signal evidence and `ui/loopread.js` renders a marker with source text, candidate provenance, nerve-address identity, and configured tone reference. Full verification and persistence round-trip remain open.
+- **P1-C — IMPLEMENTATION CLOSED; EXECUTION DEFERRED:** regression coverage is authored for deterministic derivation, source/trace provenance, explicit address confirmation, metric isolation, profile round-trip, legacy-profile compatibility, and strict refusal of uncontracted qualium fields. No test pass is claimed.
+- **P2 — IMPLEMENTATION CLOSED; EXECUTION DEFERRED:** `engine/loop.js` exposes source-backed signal evidence and `ui/loopread.js` renders a marker with source text, candidate provenance, nerve-address identity, configured tone reference, and an explicit not-yet-captured qualium dimension. No separate `p.vritti[]` collection and no metric side effects.
+- **Follow-on (not part of P2 marker closure):** structured sensory/emotional waveform capture and a domain-approved qualium orientation vocabulary remain open.
 - **Build/tests — not run in this pass; candidate CI deploy run is queued, not a test result.**
 
 ## Next recursive actions
