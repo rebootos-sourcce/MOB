@@ -1,7 +1,7 @@
 # ATÜNED MVP Alpha — Recursive Execution Contract (Superseding Clarification)
 Version: 1.0
 Date: 2026-10-21
-Status: Active execution plan; source implementation and runtime verification are not claimed by this document.
+Status: Active recursive execution plan; source implementation and runtime verification are not claimed by this document.
 
 ## Authority and supersession
 This document governs execution of the Vritti and release-hit-feedback work in MVP Alpha. Read it with:
@@ -16,7 +16,8 @@ Where older documents conflict with the owner's latest definitions below, the la
 - DQ = Resistance / total shadow, using the existing canonical implementation unless a versioned change is approved.
 - SQ = sum of individual fetter/node weights.
 - Fetter = the name/type of an individual node; its weight contributes to SQ.
-- Vritti (V-R-I-T-T-I) = waveform of sensory input plus emotional input, recorded at the nerve-level record.
+- Vritti (V-R-I-T-T-I) = total waveform of sensory input plus emotional input. Existing story/source records hold raw language and some onboarding context, but source audit has not established that the complete sensory-emotional waveform is already persisted.
+- Qualium = orientation of distortion. It is distinct from Vritti waveform, fetter identity, node-table distortion descriptor (`NODES[].d`), inward/outward charge groupings, and tone/frequency unless an explicit domain mapping establishes a relationship.
 - Vritti and fetter remain separate entities. Their association has provenance and status. A marker is a derived navigation/status affordance, not a score or causal claim.
 - Release execution is not hit confirmation. Only an explicit user-confirmed hit contributes to the confirmed-hit set.
 - Never infer DQ = 100 - CQ. Never let Vritti markers, presentation, holding, rejection, or release execution silently change CQ, DQ, SQ, node weight, or stored-charge estimates.
@@ -28,6 +29,8 @@ Each block is executed in dependency order. After every block:
 3. Add newly discovered dependencies to the same block or a follow-on sub-block.
 4. Continue recursively until every acceptance criterion is either verified or explicitly blocked with evidence.
 5. Never label a criterion complete because a document was written or code was committed. A code criterion requires source inspection and test/build evidence.
+6. Append a Development Statistics Snapshot after every build/pass: overall verified completion and remaining percentage; P0–P6 completion; implemented versus verified work; passed/failed/blocked/not-run tests; open gaps; change since the previous evidence-backed snapshot; and the next target. Percentages must be computed from explicit acceptance criteria, never inferred from commits or document count.
+7. A separate Development Metrics & Verification Auditor responsibility reviews the snapshot each turn. It must flag unsupported completion claims and must not invent test results or percentages.
 
 ## Block 1 — Baseline and authority reconciliation
 ### Work
@@ -40,6 +43,7 @@ Each block is executed in dependency order. After every block:
 - Are metric terms and historical versions distinguished?
 ### Review B
 - Could old records lose new fields on load/save?
+- Is qualium incorrectly aliased to a node distortion label, inward/outward charge grouping, or tone/frequency?
 - Could the UI show a marker unsupported by persisted association state?
 - Could a release be counted as a hit without explicit confirmation?
 ### Exit evidence
@@ -47,8 +51,9 @@ Repository paths, source contracts, dependency map, and contradiction list.
 
 ## Block 2 — Vritti nerve record and fetter marker
 ### Work
-- Map the existing source/imprint, fetter/pattern, nerve-address node, tone, and trace owners before changing storage. Do not add a standalone top-level Vritti collection by default; Vritti is the total waveform connecting existing owners.
-- Preserve raw sensory and emotional source inputs, context, time, provenance, confidence, and waveform representation/method at their canonical owner. Do not invent physiological units.
+- Map the existing source/imprint, fetter/pattern, nerve-address node, tone, qualium semantics, and trace owners before changing storage. See `docs/ATUNED_MVP_ALPHA_CANONICAL_RECORD_OWNER_AUDIT_v1.md`. Do not add a standalone top-level Vritti collection by default; Vritti is the total waveform connecting existing owners.
+- Preserve raw sensory and emotional source inputs, context, time, provenance, confidence, and waveform representation/method at their canonical owner. Existing story text/onboarding fields must not be overstated as a complete waveform record. Do not invent physiological units.
+- Define qualium's allowed orientation vocabulary and canonical owner before creating a field or graph node. Do not assume `NODES[].d` or `OUTWARD`/`INWARD` is equivalent.
 - Connect waveform/source evidence to the canonical fetter and the fetter to the canonical nerve-address node/tone through the existing trace model. Use references, not duplicated entities.
 - Keep candidate, confirmed, and rejected association states distinct. Rejection changes active association state, not the historical Vritti record.
 - Integrate association references with the existing trace allowlist/schema only after validating the allowed node/edge rules.
@@ -135,4 +140,4 @@ Build/test/CI evidence and final Alpha snapshot with no invented scores.
 | Release-chain browser tests | Real candidate revision passes documented browser tests | Not run in this session |
 
 ## Current boundary
-This contract is a superseding execution plan and KPI ledger. The earlier draft's standalone Vritti collection change was reverted after owner clarification. It does not claim production three-layer wiring, marker rendering, voice hit feedback, or test execution. Each such item becomes complete only when implementation and verification evidence are linked.
+This contract is a superseding execution plan and KPI ledger. Qualium is defined as the orientation of distortion; its canonical field/record owner remains unresolved pending the source audit and domain mapping. The earlier draft's standalone Vritti collection change was reverted after owner clarification. It does not claim production three-layer wiring, marker rendering, voice hit feedback, or test execution. Each such item becomes complete only when implementation and verification evidence are linked.
