@@ -1666,14 +1666,42 @@
       "aliases": [],
       "layer": "archetype_taxonomy.candidates",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_taxonomy_unresolved",
-      "definition": null,
-      "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "status": "source_backed_content_taxonomy_unresolved",
+      "definition": "The Warrior is the part of you that meets danger and moves. It is built to protect what matters and to act when others freeze. In its clean form it is courage with a cause.",
+      "essence": "Protection through force. The will to act under threat.",
+      "function": "Project archetype pattern described by the source entry; functional interpretation remains provisional until the taxonomy's role is verified.",
+      "healthyExpression": [
+        "Courage. You move first.",
+        "You hold a line others cannot.",
+        "You protect what matters without being asked.",
+        "You act while others freeze."
+      ],
+      "decoherentExpression": [
+        "It blocks rest. Stillness feels like exposure.",
+        "It blocks trust. Everyone is a possible threat.",
+        "It blocks softness. Tenderness reads as weakness.",
+        "It blocks receiving. You cannot let others carry you."
+      ],
+      "signals": [
+        {
+          "context": "In conflict",
+          "description": "You are calm and decisive while others panic. You take the hit so someone else does not."
+        },
+        {
+          "context": "At rest",
+          "description": "You cannot fully stand down. Stillness reads as exposure, so you stay scanning."
+        },
+        {
+          "context": "When seen",
+          "description": "Attention triggers the guard. Praise and threat land in the same place."
+        }
+      ],
+      "distortions": [
+        "It blocks rest. Stillness feels like exposure.",
+        "It blocks trust. Everyone is a possible threat.",
+        "It blocks softness. Tenderness reads as weakness.",
+        "It blocks receiving. You cannot let others carry you."
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -1684,55 +1712,89 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
-        "ARCH12.json contains Warrior; fields include k, n, band, c, state, glyph, essence, core, origin, through, gifts, shadows, fetters, released."
+        "ARCH12.json entry includes canonical name, essence, core, origin, situational expressions, gifts, shadows, fetters, and released-state copy.",
+        "The archetype module identifies the first twelve entries as carried over verbatim from the owner's archetype dictation."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed content; module claims owner-dictated",
+      "confidence": 0.91,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Extracted all available fields from the matching ARCH12 entry and preserved their source wording as structured content.",
+            "Stable source identity and source version recorded."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Cross-checked the 18 archetype names against ARCHDOM and ARCH18; the names align across the three tables.",
+            "The archetype module explicitly records that six appended entries are not dictated and were drafted from general web research."
+          ],
+          "conflicts": [
+            "Source-module provenance says owner-dictated, but original dictation artifact has not yet been recovered independently."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "The entry name is present in all 18-row archetype mapping tables; mapping labels and fetter/seat tuples are retained separately rather than merged into this record as confirmed causal edges.",
+            "All semantic content fields available in ARCH12 were placed into the shared record envelope."
+          ],
+          "conflicts": [
+            "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Determine whether this taxonomy is blueprint archetypes, Jungian archetypes, or project-specific; reconcile filename ARCH12 with 18 actual entries."
+        "Determine whether this taxonomy represents blueprint archetypes, Jungian archetypes, or a project-specific archetype set.",
+        "Recover the original dictation artifact to independently verify the module's provenance note."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed three repository-evidence review passes; populated semantic fields from ARCH12; retained taxonomy and authorship caveats."
         }
       ],
       "kind": "archetype",
       "nm": "Warrior",
       "seat": null,
       "fam": "archetype_taxonomy.candidates",
-      "def": null,
-      "body": null,
+      "def": "The Warrior is the part of you that meets danger and moves. It is built to protect what matters and to act when others freeze. In its clean form it is courage with a cause.",
+      "body": "The Warrior is the part of you that meets danger and moves. It is built to protect what matters and to act when others freeze. In its clean form it is courage with a cause.",
       "links": [],
       "templateId": null,
       "template": null,
@@ -1741,8 +1803,58 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
-      ]
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "40_the-archetypes.js@e6a7dd0b5891fed6e9903b28e0f7ac00f2a21049",
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "origin": "It installed early, in a moment where being seen meant being in danger. The body learned to arm first and ask later.",
+      "released": "The courage stays. The bracing goes. You act from choice, not threat, and you can rest and still be strong.",
+      "fetters": [
+        {
+          "f": "Brace before being seen",
+          "band": "Solar plexus",
+          "loc": "Solar plexus · T8",
+          "load": 78,
+          "co": "I am safe in the open",
+          "cl": "C-12"
+        },
+        {
+          "f": "Win or be erased",
+          "band": "Solar plexus",
+          "loc": "Solar plexus · T10",
+          "load": 69,
+          "co": "I exist without winning",
+          "cl": "C-12"
+        },
+        {
+          "f": "Rest is weakness",
+          "band": "Solar plexus",
+          "loc": "Solar plexus · T12",
+          "load": 52,
+          "co": "I am strong at rest",
+          "cl": "C-14"
+        },
+        {
+          "f": "Show no soft side",
+          "band": "Heart",
+          "loc": "Heart · T4",
+          "load": 47,
+          "co": "My softness is strength",
+          "cl": "C-08"
+        },
+        {
+          "f": "Stand down means die",
+          "band": "Root",
+          "loc": "Root · S1",
+          "load": 38,
+          "co": "I can lower my guard",
+          "cl": "C-16"
+        }
+      ],
+      "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M50 24 L68 60 L50 51 L32 60 Z\" fill=\"STRc\"/>",
+      "band": "Solar plexus",
+      "flagged": false
     },
     {
       "id": "archetype:candidate:orphan",
@@ -1752,14 +1864,42 @@
       "aliases": [],
       "layer": "archetype_taxonomy.candidates",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_taxonomy_unresolved",
-      "definition": null,
-      "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "status": "source_backed_content_taxonomy_unresolved",
+      "definition": "The Orphan is the part that learned early the world will not always catch you. It braced for that truth and built a self that needs no one.",
+      "essence": "Survival without rescue. Belonging earned the hard way.",
+      "function": "Project archetype pattern described by the source entry; functional interpretation remains provisional until the taxonomy's role is verified.",
+      "healthyExpression": [
+        "Resilience. You endure what breaks others.",
+        "Deep empathy for the left-behind.",
+        "Radical self-reliance.",
+        "You see through false comfort."
+      ],
+      "decoherentExpression": [
+        "It blocks closeness. You leave before you are left.",
+        "It blocks help. You refuse the hand offered.",
+        "It blocks rest. You brace for the next loss.",
+        "It blocks belonging. You stay the outsider on purpose."
+      ],
+      "signals": [
+        {
+          "context": "In closeness",
+          "description": "You keep a measured distance so any loss will cost less."
+        },
+        {
+          "context": "Under stress",
+          "description": "You withdraw and handle it alone before anyone can fail you."
+        },
+        {
+          "context": "When cared for",
+          "description": "Care feels suspect. You wait for the catch."
+        }
+      ],
+      "distortions": [
+        "It blocks closeness. You leave before you are left.",
+        "It blocks help. You refuse the hand offered.",
+        "It blocks rest. You brace for the next loss.",
+        "It blocks belonging. You stay the outsider on purpose."
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -1770,55 +1910,89 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
-        "ARCH12.json contains Orphan; fields include k, n, band, c, state, glyph, essence, core, origin, through, gifts, shadows, fetters, released."
+        "ARCH12.json entry includes canonical name, essence, core, origin, situational expressions, gifts, shadows, fetters, and released-state copy.",
+        "The archetype module identifies the first twelve entries as carried over verbatim from the owner's archetype dictation."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed content; module claims owner-dictated",
+      "confidence": 0.91,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Extracted all available fields from the matching ARCH12 entry and preserved their source wording as structured content.",
+            "Stable source identity and source version recorded."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Cross-checked the 18 archetype names against ARCHDOM and ARCH18; the names align across the three tables.",
+            "The archetype module explicitly records that six appended entries are not dictated and were drafted from general web research."
+          ],
+          "conflicts": [
+            "Source-module provenance says owner-dictated, but original dictation artifact has not yet been recovered independently."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "The entry name is present in all 18-row archetype mapping tables; mapping labels and fetter/seat tuples are retained separately rather than merged into this record as confirmed causal edges.",
+            "All semantic content fields available in ARCH12 were placed into the shared record envelope."
+          ],
+          "conflicts": [
+            "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Determine whether this taxonomy is blueprint archetypes, Jungian archetypes, or project-specific; reconcile filename ARCH12 with 18 actual entries."
+        "Determine whether this taxonomy represents blueprint archetypes, Jungian archetypes, or a project-specific archetype set.",
+        "Recover the original dictation artifact to independently verify the module's provenance note."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed three repository-evidence review passes; populated semantic fields from ARCH12; retained taxonomy and authorship caveats."
         }
       ],
       "kind": "archetype",
       "nm": "Orphan",
       "seat": null,
       "fam": "archetype_taxonomy.candidates",
-      "def": null,
-      "body": null,
+      "def": "The Orphan is the part that learned early the world will not always catch you. It braced for that truth and built a self that needs no one.",
+      "body": "The Orphan is the part that learned early the world will not always catch you. It braced for that truth and built a self that needs no one.",
       "links": [],
       "templateId": null,
       "template": null,
@@ -1827,8 +2001,42 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
-      ]
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "40_the-archetypes.js@e6a7dd0b5891fed6e9903b28e0f7ac00f2a21049",
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "origin": "It set when a need went unmet long enough that needing itself felt dangerous.",
+      "released": "The resilience stays. The bracing for loss goes. You let people close and stay when they do.",
+      "fetters": [
+        {
+          "f": "Closeness will be taken",
+          "band": "Heart",
+          "loc": "Heart · T4",
+          "load": 64,
+          "co": "What I love can stay",
+          "cl": "C-07"
+        },
+        {
+          "f": "I survive alone",
+          "band": "Heart",
+          "loc": "Heart · T2",
+          "load": 58,
+          "co": "I can be held",
+          "cl": "C-07"
+        },
+        {
+          "f": "Need is dangerous",
+          "band": "Sacral",
+          "loc": "Sacral · L2",
+          "load": 44,
+          "co": "I can need and be safe",
+          "cl": "C-05"
+        }
+      ],
+      "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><circle cx=\"50\" cy=\"46\" r=\"16\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/><path d=\"M34 46 a16 8 0 0 0 32 0\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
+      "band": "Heart",
+      "flagged": false
     },
     {
       "id": "archetype:candidate:innocent",
@@ -1838,14 +2046,36 @@
       "aliases": [],
       "layer": "archetype_taxonomy.candidates",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_taxonomy_unresolved",
-      "definition": null,
-      "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "status": "source_backed_content_taxonomy_unresolved",
+      "definition": "The Innocent meets the world without armor. It expects goodness and gives the benefit of the doubt.",
+      "essence": "Open trust. The belief that things can be good.",
+      "function": "Project archetype pattern described by the source entry; functional interpretation remains provisional until the taxonomy's role is verified.",
+      "healthyExpression": [
+        "Faith. You expect the good.",
+        "Openness that disarms others.",
+        "The benefit of the doubt, freely given.",
+        "A clean, unguarded presence."
+      ],
+      "decoherentExpression": [
+        "It blocks discernment. You look away from what is real.",
+        "It blocks boundaries. You trust where you should not.",
+        "It blocks growth. Denial keeps you small."
+      ],
+      "signals": [
+        {
+          "context": "In new rooms",
+          "description": "When active, you enter open. When quiet, you scan for threat first."
+        },
+        {
+          "context": "With promises",
+          "description": "You weigh whether to believe, where you once simply believed."
+        }
+      ],
+      "distortions": [
+        "It blocks discernment. You look away from what is real.",
+        "It blocks boundaries. You trust where you should not.",
+        "It blocks growth. Denial keeps you small."
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -1856,55 +2086,89 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
-        "ARCH12.json contains Innocent; fields include k, n, band, c, state, glyph, essence, core, origin, through, gifts, shadows, fetters, released."
+        "ARCH12.json entry includes canonical name, essence, core, origin, situational expressions, gifts, shadows, fetters, and released-state copy.",
+        "The archetype module identifies the first twelve entries as carried over verbatim from the owner's archetype dictation."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed content; module claims owner-dictated",
+      "confidence": 0.91,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Extracted all available fields from the matching ARCH12 entry and preserved their source wording as structured content.",
+            "Stable source identity and source version recorded."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Cross-checked the 18 archetype names against ARCHDOM and ARCH18; the names align across the three tables.",
+            "The archetype module explicitly records that six appended entries are not dictated and were drafted from general web research."
+          ],
+          "conflicts": [
+            "Source-module provenance says owner-dictated, but original dictation artifact has not yet been recovered independently."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "The entry name is present in all 18-row archetype mapping tables; mapping labels and fetter/seat tuples are retained separately rather than merged into this record as confirmed causal edges.",
+            "All semantic content fields available in ARCH12 were placed into the shared record envelope."
+          ],
+          "conflicts": [
+            "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Determine whether this taxonomy is blueprint archetypes, Jungian archetypes, or project-specific; reconcile filename ARCH12 with 18 actual entries."
+        "Determine whether this taxonomy represents blueprint archetypes, Jungian archetypes, or a project-specific archetype set.",
+        "Recover the original dictation artifact to independently verify the module's provenance note."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed three repository-evidence review passes; populated semantic fields from ARCH12; retained taxonomy and authorship caveats."
         }
       ],
       "kind": "archetype",
       "nm": "Innocent",
       "seat": null,
       "fam": "archetype_taxonomy.candidates",
-      "def": null,
-      "body": null,
+      "def": "The Innocent meets the world without armor. It expects goodness and gives the benefit of the doubt.",
+      "body": "The Innocent meets the world without armor. It expects goodness and gives the benefit of the doubt.",
       "links": [],
       "templateId": null,
       "template": null,
@@ -1913,8 +2177,34 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
-      ]
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "40_the-archetypes.js@e6a7dd0b5891fed6e9903b28e0f7ac00f2a21049",
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "origin": "It quiets when trust is broken often enough that openness starts to feel naive.",
+      "released": "Open trust returns without naivety. You meet people clean.",
+      "fetters": [
+        {
+          "f": "It is not safe to trust",
+          "band": "Crown",
+          "loc": "Crown · C1",
+          "load": 31,
+          "co": "I can trust and stay safe",
+          "cl": "C-01"
+        },
+        {
+          "f": "Hope gets punished",
+          "band": "Heart",
+          "loc": "Heart · T6",
+          "load": 24,
+          "co": "I can hope freely",
+          "cl": "C-09"
+        }
+      ],
+      "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><circle cx=\"50\" cy=\"46\" r=\"15\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
+      "band": "Root",
+      "flagged": false
     },
     {
       "id": "archetype:candidate:caregiver",
@@ -1924,14 +2214,36 @@
       "aliases": [],
       "layer": "archetype_taxonomy.candidates",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_taxonomy_unresolved",
-      "definition": null,
-      "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "status": "source_backed_content_taxonomy_unresolved",
+      "definition": "The Caregiver protects and provides. It is attuned to need and moves to meet it.",
+      "essence": "Tending. Feeling another need as your own.",
+      "function": "Project archetype pattern described by the source entry; functional interpretation remains provisional until the taxonomy's role is verified.",
+      "healthyExpression": [
+        "Generosity that holds people up.",
+        "The instinct to nurture.",
+        "Deep attunement to need.",
+        "Steady, reliable care."
+      ],
+      "decoherentExpression": [
+        "It blocks self-care. Your needs come last.",
+        "It blocks receiving. You only give.",
+        "It blocks rest. You give until empty."
+      ],
+      "signals": [
+        {
+          "context": "With others",
+          "description": "You sense what people need before they say it."
+        },
+        {
+          "context": "With yourself",
+          "description": "Your own needs sit last on the list, often unnamed."
+        }
+      ],
+      "distortions": [
+        "It blocks self-care. Your needs come last.",
+        "It blocks receiving. You only give.",
+        "It blocks rest. You give until empty."
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -1942,55 +2254,89 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
-        "ARCH12.json contains Caregiver; fields include k, n, band, c, state, glyph, essence, core, origin, through, gifts, shadows, fetters, released."
+        "ARCH12.json entry includes canonical name, essence, core, origin, situational expressions, gifts, shadows, fetters, and released-state copy.",
+        "The archetype module identifies the first twelve entries as carried over verbatim from the owner's archetype dictation."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed content; module claims owner-dictated",
+      "confidence": 0.91,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Extracted all available fields from the matching ARCH12 entry and preserved their source wording as structured content.",
+            "Stable source identity and source version recorded."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Cross-checked the 18 archetype names against ARCHDOM and ARCH18; the names align across the three tables.",
+            "The archetype module explicitly records that six appended entries are not dictated and were drafted from general web research."
+          ],
+          "conflicts": [
+            "Source-module provenance says owner-dictated, but original dictation artifact has not yet been recovered independently."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "The entry name is present in all 18-row archetype mapping tables; mapping labels and fetter/seat tuples are retained separately rather than merged into this record as confirmed causal edges.",
+            "All semantic content fields available in ARCH12 were placed into the shared record envelope."
+          ],
+          "conflicts": [
+            "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Determine whether this taxonomy is blueprint archetypes, Jungian archetypes, or project-specific; reconcile filename ARCH12 with 18 actual entries."
+        "Determine whether this taxonomy represents blueprint archetypes, Jungian archetypes, or a project-specific archetype set.",
+        "Recover the original dictation artifact to independently verify the module's provenance note."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed three repository-evidence review passes; populated semantic fields from ARCH12; retained taxonomy and authorship caveats."
         }
       ],
       "kind": "archetype",
       "nm": "Caregiver",
       "seat": null,
       "fam": "archetype_taxonomy.candidates",
-      "def": null,
-      "body": null,
+      "def": "The Caregiver protects and provides. It is attuned to need and moves to meet it.",
+      "body": "The Caregiver protects and provides. It is attuned to need and moves to meet it.",
       "links": [],
       "templateId": null,
       "template": null,
@@ -1999,8 +2345,34 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
-      ]
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "40_the-archetypes.js@e6a7dd0b5891fed6e9903b28e0f7ac00f2a21049",
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "origin": "It quiets when giving once cost too much, or when your own needs were never met in return.",
+      "released": "You give from fullness, not depletion. You receive too.",
+      "fetters": [
+        {
+          "f": "My needs come last",
+          "band": "Heart",
+          "loc": "Heart · T3",
+          "load": 28,
+          "co": "My needs matter too",
+          "cl": "C-08"
+        },
+        {
+          "f": "Love must be earned",
+          "band": "Heart",
+          "loc": "Heart · T5",
+          "load": 23,
+          "co": "I am loved as I am",
+          "cl": "C-09"
+        }
+      ],
+      "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M36 60 Q50 28 64 60\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/><circle cx=\"50\" cy=\"38\" r=\"4\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
+      "band": "Heart",
+      "flagged": false
     },
     {
       "id": "archetype:candidate:explorer",
@@ -2010,14 +2382,36 @@
       "aliases": [],
       "layer": "archetype_taxonomy.candidates",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_taxonomy_unresolved",
-      "definition": null,
-      "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "status": "source_backed_content_taxonomy_unresolved",
+      "definition": "The Explorer seeks. It needs new ground and cannot stay penned for long.",
+      "essence": "The open road. Movement as freedom.",
+      "function": "Project archetype pattern described by the source entry; functional interpretation remains provisional until the taxonomy's role is verified.",
+      "healthyExpression": [
+        "Freedom. You need no permission.",
+        "Curiosity that opens doors.",
+        "The courage to leave.",
+        "You find paths others miss."
+      ],
+      "decoherentExpression": [
+        "It blocks arrival. You never land.",
+        "It blocks roots. Commitment feels like a trap.",
+        "It blocks depth. You move before it gets real."
+      ],
+      "signals": [
+        {
+          "context": "In routine",
+          "description": "You feel the walls. The same path drains you."
+        },
+        {
+          "context": "In the new",
+          "description": "You come alive, but it can tip into never landing."
+        }
+      ],
+      "distortions": [
+        "It blocks arrival. You never land.",
+        "It blocks roots. Commitment feels like a trap.",
+        "It blocks depth. You move before it gets real."
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -2028,55 +2422,89 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
-        "ARCH12.json contains Explorer; fields include k, n, band, c, state, glyph, essence, core, origin, through, gifts, shadows, fetters, released."
+        "ARCH12.json entry includes canonical name, essence, core, origin, situational expressions, gifts, shadows, fetters, and released-state copy.",
+        "The archetype module identifies the first twelve entries as carried over verbatim from the owner's archetype dictation."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed content; module claims owner-dictated",
+      "confidence": 0.91,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Extracted all available fields from the matching ARCH12 entry and preserved their source wording as structured content.",
+            "Stable source identity and source version recorded."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Cross-checked the 18 archetype names against ARCHDOM and ARCH18; the names align across the three tables.",
+            "The archetype module explicitly records that six appended entries are not dictated and were drafted from general web research."
+          ],
+          "conflicts": [
+            "Source-module provenance says owner-dictated, but original dictation artifact has not yet been recovered independently."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "The entry name is present in all 18-row archetype mapping tables; mapping labels and fetter/seat tuples are retained separately rather than merged into this record as confirmed causal edges.",
+            "All semantic content fields available in ARCH12 were placed into the shared record envelope."
+          ],
+          "conflicts": [
+            "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Determine whether this taxonomy is blueprint archetypes, Jungian archetypes, or project-specific; reconcile filename ARCH12 with 18 actual entries."
+        "Determine whether this taxonomy represents blueprint archetypes, Jungian archetypes, or a project-specific archetype set.",
+        "Recover the original dictation artifact to independently verify the module's provenance note."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed three repository-evidence review passes; populated semantic fields from ARCH12; retained taxonomy and authorship caveats."
         }
       ],
       "kind": "archetype",
       "nm": "Explorer",
       "seat": null,
       "fam": "archetype_taxonomy.candidates",
-      "def": null,
-      "body": null,
+      "def": "The Explorer seeks. It needs new ground and cannot stay penned for long.",
+      "body": "The Explorer seeks. It needs new ground and cannot stay penned for long.",
       "links": [],
       "templateId": null,
       "template": null,
@@ -2085,8 +2513,34 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
-      ]
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "40_the-archetypes.js@e6a7dd0b5891fed6e9903b28e0f7ac00f2a21049",
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "origin": "It quiets when staying put became the safer bet, or when movement once meant escape.",
+      "released": "You move toward, not away. You can arrive and stay by choice.",
+      "fetters": [
+        {
+          "f": "I cannot stop or I disappear",
+          "band": "Sacral",
+          "loc": "Sacral · L3",
+          "load": 22,
+          "co": "I exist when still",
+          "cl": "C-05"
+        },
+        {
+          "f": "Roots are traps",
+          "band": "Root",
+          "loc": "Root · S2",
+          "load": 18,
+          "co": "Roots can free me",
+          "cl": "C-16"
+        }
+      ],
+      "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M50 28 L50 64 M50 46 L66 36 M50 46 L34 36\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
+      "band": "Sacral",
+      "flagged": false
     },
     {
       "id": "archetype:candidate:outlaw",
@@ -2096,14 +2550,36 @@
       "aliases": [],
       "layer": "archetype_taxonomy.candidates",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_taxonomy_unresolved",
-      "definition": null,
-      "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "status": "source_backed_content_taxonomy_unresolved",
+      "definition": "The Outlaw breaks what is unjust. It sees the rigged rule and refuses to play.",
+      "essence": "Breaking the rigged game. Refusal of false order.",
+      "function": "Project archetype pattern described by the source entry; functional interpretation remains provisional until the taxonomy's role is verified.",
+      "healthyExpression": [
+        "Liberation. You break what must break.",
+        "The nerve to refuse the rigged game.",
+        "You see the rot others deny.",
+        "Fearless in the face of false authority."
+      ],
+      "decoherentExpression": [
+        "It blocks belonging. You burn bridges you need.",
+        "It blocks trust. Every system is the enemy.",
+        "It blocks peace. You fight when you could rest."
+      ],
+      "signals": [
+        {
+          "context": "When cornered",
+          "description": "It surges. You will burn the structure rather than submit."
+        },
+        {
+          "context": "After",
+          "description": "It hides again, often having burned something you needed."
+        }
+      ],
+      "distortions": [
+        "It blocks belonging. You burn bridges you need.",
+        "It blocks trust. Every system is the enemy.",
+        "It blocks peace. You fight when you could rest."
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -2114,55 +2590,89 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
-        "ARCH12.json contains Outlaw; fields include k, n, band, c, state, glyph, essence, core, origin, through, gifts, shadows, fetters, released."
+        "ARCH12.json entry includes canonical name, essence, core, origin, situational expressions, gifts, shadows, fetters, and released-state copy.",
+        "The archetype module identifies the first twelve entries as carried over verbatim from the owner's archetype dictation."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed content; module claims owner-dictated",
+      "confidence": 0.91,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Extracted all available fields from the matching ARCH12 entry and preserved their source wording as structured content.",
+            "Stable source identity and source version recorded."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Cross-checked the 18 archetype names against ARCHDOM and ARCH18; the names align across the three tables.",
+            "The archetype module explicitly records that six appended entries are not dictated and were drafted from general web research."
+          ],
+          "conflicts": [
+            "Source-module provenance says owner-dictated, but original dictation artifact has not yet been recovered independently."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "The entry name is present in all 18-row archetype mapping tables; mapping labels and fetter/seat tuples are retained separately rather than merged into this record as confirmed causal edges.",
+            "All semantic content fields available in ARCH12 were placed into the shared record envelope."
+          ],
+          "conflicts": [
+            "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Determine whether this taxonomy is blueprint archetypes, Jungian archetypes, or project-specific; reconcile filename ARCH12 with 18 actual entries."
+        "Determine whether this taxonomy represents blueprint archetypes, Jungian archetypes, or a project-specific archetype set.",
+        "Recover the original dictation artifact to independently verify the module's provenance note."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed three repository-evidence review passes; populated semantic fields from ARCH12; retained taxonomy and authorship caveats."
         }
       ],
       "kind": "archetype",
       "nm": "Outlaw",
       "seat": null,
       "fam": "archetype_taxonomy.candidates",
-      "def": null,
-      "body": null,
+      "def": "The Outlaw breaks what is unjust. It sees the rigged rule and refuses to play.",
+      "body": "The Outlaw breaks what is unjust. It sees the rigged rule and refuses to play.",
       "links": [],
       "templateId": null,
       "template": null,
@@ -2171,8 +2681,34 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
-      ]
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "40_the-archetypes.js@e6a7dd0b5891fed6e9903b28e0f7ac00f2a21049",
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "origin": "It flares where power was used against you and rules protected the wrong people.",
+      "released": "You break what is truly unjust, and keep what serves you.",
+      "fetters": [
+        {
+          "f": "The system is against me",
+          "band": "Solar plexus",
+          "loc": "Solar plexus · T9",
+          "load": 41,
+          "co": "I can work within and stay free",
+          "cl": "C-13"
+        },
+        {
+          "f": "Trust is a trap",
+          "band": "Throat",
+          "loc": "Throat · C5",
+          "load": 33,
+          "co": "I can trust with eyes open",
+          "cl": "C-04"
+        }
+      ],
+      "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M34 56 L66 32 M44 32 L66 32 L66 54\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
+      "band": "Solar plexus",
+      "flagged": false
     },
     {
       "id": "archetype:candidate:lover",
@@ -2182,14 +2718,36 @@
       "aliases": [],
       "layer": "archetype_taxonomy.candidates",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_taxonomy_unresolved",
-      "definition": null,
-      "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "status": "source_backed_content_taxonomy_unresolved",
+      "definition": "The Lover seeks closeness and beauty. It wants to merge and to be moved.",
+      "essence": "Bonding. Desire and devotion.",
+      "function": "Project archetype pattern described by the source entry; functional interpretation remains provisional until the taxonomy's role is verified.",
+      "healthyExpression": [
+        "Passion that moves you.",
+        "Devotion to what you love.",
+        "The capacity to truly merge.",
+        "You feel beauty deeply."
+      ],
+      "decoherentExpression": [
+        "It blocks wholeness. You lose yourself in another.",
+        "It blocks discernment. Need feels like love.",
+        "It blocks self-worth. You only feel real when wanted."
+      ],
+      "signals": [
+        {
+          "context": "In attraction",
+          "description": "Desire waits behind the guard rather than moving freely."
+        },
+        {
+          "context": "In a bond",
+          "description": "You can lose your edges, or hold them so tight nothing lands."
+        }
+      ],
+      "distortions": [
+        "It blocks wholeness. You lose yourself in another.",
+        "It blocks discernment. Need feels like love.",
+        "It blocks self-worth. You only feel real when wanted."
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -2200,55 +2758,89 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
-        "ARCH12.json contains Lover; fields include k, n, band, c, state, glyph, essence, core, origin, through, gifts, shadows, fetters, released."
+        "ARCH12.json entry includes canonical name, essence, core, origin, situational expressions, gifts, shadows, fetters, and released-state copy.",
+        "The archetype module identifies the first twelve entries as carried over verbatim from the owner's archetype dictation."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed content; module claims owner-dictated",
+      "confidence": 0.91,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Extracted all available fields from the matching ARCH12 entry and preserved their source wording as structured content.",
+            "Stable source identity and source version recorded."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Cross-checked the 18 archetype names against ARCHDOM and ARCH18; the names align across the three tables.",
+            "The archetype module explicitly records that six appended entries are not dictated and were drafted from general web research."
+          ],
+          "conflicts": [
+            "Source-module provenance says owner-dictated, but original dictation artifact has not yet been recovered independently."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "The entry name is present in all 18-row archetype mapping tables; mapping labels and fetter/seat tuples are retained separately rather than merged into this record as confirmed causal edges.",
+            "All semantic content fields available in ARCH12 were placed into the shared record envelope."
+          ],
+          "conflicts": [
+            "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Determine whether this taxonomy is blueprint archetypes, Jungian archetypes, or project-specific; reconcile filename ARCH12 with 18 actual entries."
+        "Determine whether this taxonomy represents blueprint archetypes, Jungian archetypes, or a project-specific archetype set.",
+        "Recover the original dictation artifact to independently verify the module's provenance note."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed three repository-evidence review passes; populated semantic fields from ARCH12; retained taxonomy and authorship caveats."
         }
       ],
       "kind": "archetype",
       "nm": "Lover",
       "seat": null,
       "fam": "archetype_taxonomy.candidates",
-      "def": null,
-      "body": null,
+      "def": "The Lover seeks closeness and beauty. It wants to merge and to be moved.",
+      "body": "The Lover seeks closeness and beauty. It wants to merge and to be moved.",
       "links": [],
       "templateId": null,
       "template": null,
@@ -2257,8 +2849,34 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
-      ]
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "40_the-archetypes.js@e6a7dd0b5891fed6e9903b28e0f7ac00f2a21049",
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "origin": "It quiets when desire once made you unsafe, or when wanting led to loss.",
+      "released": "You love without disappearing. You stay whole inside closeness.",
+      "fetters": [
+        {
+          "f": "I am only safe when wanted",
+          "band": "Heart",
+          "loc": "Heart · T5",
+          "load": 26,
+          "co": "I am whole unwanted",
+          "cl": "C-09"
+        },
+        {
+          "f": "Desire exposes me",
+          "band": "Sacral",
+          "loc": "Sacral · L1",
+          "load": 20,
+          "co": "My desire is safe",
+          "cl": "C-05"
+        }
+      ],
+      "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M50 60 C34 46 38 32 50 39 C62 32 66 46 50 60 Z\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
+      "band": "Heart",
+      "flagged": false
     },
     {
       "id": "archetype:candidate:creator",
@@ -2268,14 +2886,36 @@
       "aliases": [],
       "layer": "archetype_taxonomy.candidates",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_taxonomy_unresolved",
-      "definition": null,
-      "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "status": "source_backed_content_taxonomy_unresolved",
+      "definition": "The Creator must externalize what is inside. It builds, makes, brings forth.",
+      "essence": "Making. Bringing the new into form.",
+      "function": "Project archetype pattern described by the source entry; functional interpretation remains provisional until the taxonomy's role is verified.",
+      "healthyExpression": [
+        "Imagination without limit.",
+        "The drive to make it real.",
+        "You bring the new into form.",
+        "Vision others cannot yet see."
+      ],
+      "decoherentExpression": [
+        "It blocks finishing. Nothing is ever enough.",
+        "It blocks sharing. The work stays hidden.",
+        "It blocks joy. Making becomes proving."
+      ],
+      "signals": [
+        {
+          "context": "In the work",
+          "description": "Ideas come, but finishing stalls under the weight of not-yet-perfect."
+        },
+        {
+          "context": "In showing",
+          "description": "Exposure of the unfinished feels like exposure of you."
+        }
+      ],
+      "distortions": [
+        "It blocks finishing. Nothing is ever enough.",
+        "It blocks sharing. The work stays hidden.",
+        "It blocks joy. Making becomes proving."
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -2286,55 +2926,89 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
-        "ARCH12.json contains Creator; fields include k, n, band, c, state, glyph, essence, core, origin, through, gifts, shadows, fetters, released."
+        "ARCH12.json entry includes canonical name, essence, core, origin, situational expressions, gifts, shadows, fetters, and released-state copy.",
+        "The archetype module identifies the first twelve entries as carried over verbatim from the owner's archetype dictation."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed content; module claims owner-dictated",
+      "confidence": 0.91,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Extracted all available fields from the matching ARCH12 entry and preserved their source wording as structured content.",
+            "Stable source identity and source version recorded."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Cross-checked the 18 archetype names against ARCHDOM and ARCH18; the names align across the three tables.",
+            "The archetype module explicitly records that six appended entries are not dictated and were drafted from general web research."
+          ],
+          "conflicts": [
+            "Source-module provenance says owner-dictated, but original dictation artifact has not yet been recovered independently."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "The entry name is present in all 18-row archetype mapping tables; mapping labels and fetter/seat tuples are retained separately rather than merged into this record as confirmed causal edges.",
+            "All semantic content fields available in ARCH12 were placed into the shared record envelope."
+          ],
+          "conflicts": [
+            "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Determine whether this taxonomy is blueprint archetypes, Jungian archetypes, or project-specific; reconcile filename ARCH12 with 18 actual entries."
+        "Determine whether this taxonomy represents blueprint archetypes, Jungian archetypes, or a project-specific archetype set.",
+        "Recover the original dictation artifact to independently verify the module's provenance note."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed three repository-evidence review passes; populated semantic fields from ARCH12; retained taxonomy and authorship caveats."
         }
       ],
       "kind": "archetype",
       "nm": "Creator",
       "seat": null,
       "fam": "archetype_taxonomy.candidates",
-      "def": null,
-      "body": null,
+      "def": "The Creator must externalize what is inside. It builds, makes, brings forth.",
+      "body": "The Creator must externalize what is inside. It builds, makes, brings forth.",
       "links": [],
       "templateId": null,
       "template": null,
@@ -2343,8 +3017,34 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
-      ]
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "40_the-archetypes.js@e6a7dd0b5891fed6e9903b28e0f7ac00f2a21049",
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "origin": "It quiets when making was judged, or when the work was never safe to show.",
+      "released": "You make freely and let it be seen unfinished.",
+      "fetters": [
+        {
+          "f": "It is not good enough to show",
+          "band": "Sacral",
+          "loc": "Sacral · L2",
+          "load": 24,
+          "co": "It can be seen unfinished",
+          "cl": "C-06"
+        },
+        {
+          "f": "My voice will be judged",
+          "band": "Throat",
+          "loc": "Throat · C5",
+          "load": 21,
+          "co": "My voice is mine to use",
+          "cl": "C-04"
+        }
+      ],
+      "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M50 26 L64 52 L36 52 Z M50 36 L50 64\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
+      "band": "Throat",
+      "flagged": false
     },
     {
       "id": "archetype:candidate:jester",
@@ -2354,14 +3054,36 @@
       "aliases": [],
       "layer": "archetype_taxonomy.candidates",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_taxonomy_unresolved",
-      "definition": null,
-      "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "status": "source_backed_content_taxonomy_unresolved",
+      "definition": "The Jester finds the lightness and breaks tension. It tells the truth disguised as a joke.",
+      "essence": "Play. The truth a joke can carry.",
+      "function": "Project archetype pattern described by the source entry; functional interpretation remains provisional until the taxonomy's role is verified.",
+      "healthyExpression": [
+        "Levity that lifts a room.",
+        "Presence in the moment.",
+        "The truth only a joke can tell.",
+        "You make the heavy bearable."
+      ],
+      "decoherentExpression": [
+        "It blocks depth. You deflect with the laugh.",
+        "It blocks being seen. The joke is the hiding place.",
+        "It blocks grief. You will not sit with the pain."
+      ],
+      "signals": [
+        {
+          "context": "In tension",
+          "description": "You break it with humor, sometimes before it can be felt."
+        },
+        {
+          "context": "When serious",
+          "description": "Being seen without the joke feels like being seen wounded."
+        }
+      ],
+      "distortions": [
+        "It blocks depth. You deflect with the laugh.",
+        "It blocks being seen. The joke is the hiding place.",
+        "It blocks grief. You will not sit with the pain."
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -2372,55 +3094,89 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
-        "ARCH12.json contains Jester; fields include k, n, band, c, state, glyph, essence, core, origin, through, gifts, shadows, fetters, released."
+        "ARCH12.json entry includes canonical name, essence, core, origin, situational expressions, gifts, shadows, fetters, and released-state copy.",
+        "The archetype module identifies the first twelve entries as carried over verbatim from the owner's archetype dictation."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed content; module claims owner-dictated",
+      "confidence": 0.91,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Extracted all available fields from the matching ARCH12 entry and preserved their source wording as structured content.",
+            "Stable source identity and source version recorded."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Cross-checked the 18 archetype names against ARCHDOM and ARCH18; the names align across the three tables.",
+            "The archetype module explicitly records that six appended entries are not dictated and were drafted from general web research."
+          ],
+          "conflicts": [
+            "Source-module provenance says owner-dictated, but original dictation artifact has not yet been recovered independently."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "The entry name is present in all 18-row archetype mapping tables; mapping labels and fetter/seat tuples are retained separately rather than merged into this record as confirmed causal edges.",
+            "All semantic content fields available in ARCH12 were placed into the shared record envelope."
+          ],
+          "conflicts": [
+            "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Determine whether this taxonomy is blueprint archetypes, Jungian archetypes, or project-specific; reconcile filename ARCH12 with 18 actual entries."
+        "Determine whether this taxonomy represents blueprint archetypes, Jungian archetypes, or a project-specific archetype set.",
+        "Recover the original dictation artifact to independently verify the module's provenance note."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed three repository-evidence review passes; populated semantic fields from ARCH12; retained taxonomy and authorship caveats."
         }
       ],
       "kind": "archetype",
       "nm": "Jester",
       "seat": null,
       "fam": "archetype_taxonomy.candidates",
-      "def": null,
-      "body": null,
+      "def": "The Jester finds the lightness and breaks tension. It tells the truth disguised as a joke.",
+      "body": "The Jester finds the lightness and breaks tension. It tells the truth disguised as a joke.",
       "links": [],
       "templateId": null,
       "template": null,
@@ -2429,8 +3185,34 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
-      ]
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "40_the-archetypes.js@e6a7dd0b5891fed6e9903b28e0f7ac00f2a21049",
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "origin": "It quiets when seriousness became unsafe, so the laugh became the hiding place.",
+      "released": "You play and you can also be still and seen.",
+      "fetters": [
+        {
+          "f": "If serious, they see the wound",
+          "band": "Sacral",
+          "loc": "Sacral · L1",
+          "load": 19,
+          "co": "I can be seen in full",
+          "cl": "C-06"
+        },
+        {
+          "f": "My pain is a burden",
+          "band": "Heart",
+          "loc": "Heart · T3",
+          "load": 16,
+          "co": "My pain can be shared",
+          "cl": "C-08"
+        }
+      ],
+      "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M36 52 Q50 62 64 52 M42 38 Q50 33 58 38\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
+      "band": "Sacral",
+      "flagged": false
     },
     {
       "id": "archetype:candidate:sage",
@@ -2440,14 +3222,36 @@
       "aliases": [],
       "layer": "archetype_taxonomy.candidates",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_taxonomy_unresolved",
-      "definition": null,
-      "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "status": "source_backed_content_taxonomy_unresolved",
+      "definition": "The Sage steps back to see the whole. It seeks understanding over winning.",
+      "essence": "Perspective. Truth beneath the noise.",
+      "function": "Project archetype pattern described by the source entry; functional interpretation remains provisional until the taxonomy's role is verified.",
+      "healthyExpression": [
+        "Perspective. You see the whole.",
+        "Discernment under pressure.",
+        "The long view others miss.",
+        "Calm in complexity."
+      ],
+      "decoherentExpression": [
+        "It blocks feeling. You watch instead of live.",
+        "It blocks action. You analyze instead of move.",
+        "It blocks intimacy. Distance feels safer than presence."
+      ],
+      "signals": [
+        {
+          "context": "In a crisis",
+          "description": "When active, you find the long view. When quiet, the Warrior acts before you can."
+        },
+        {
+          "context": "In feeling",
+          "description": "You may watch the emotion instead of being in it."
+        }
+      ],
+      "distortions": [
+        "It blocks feeling. You watch instead of live.",
+        "It blocks action. You analyze instead of move.",
+        "It blocks intimacy. Distance feels safer than presence."
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -2458,55 +3262,89 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
-        "ARCH12.json contains Sage; fields include k, n, band, c, state, glyph, essence, core, origin, through, gifts, shadows, fetters, released."
+        "ARCH12.json entry includes canonical name, essence, core, origin, situational expressions, gifts, shadows, fetters, and released-state copy.",
+        "The archetype module identifies the first twelve entries as carried over verbatim from the owner's archetype dictation."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed content; module claims owner-dictated",
+      "confidence": 0.91,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Extracted all available fields from the matching ARCH12 entry and preserved their source wording as structured content.",
+            "Stable source identity and source version recorded."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Cross-checked the 18 archetype names against ARCHDOM and ARCH18; the names align across the three tables.",
+            "The archetype module explicitly records that six appended entries are not dictated and were drafted from general web research."
+          ],
+          "conflicts": [
+            "Source-module provenance says owner-dictated, but original dictation artifact has not yet been recovered independently."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "The entry name is present in all 18-row archetype mapping tables; mapping labels and fetter/seat tuples are retained separately rather than merged into this record as confirmed causal edges.",
+            "All semantic content fields available in ARCH12 were placed into the shared record envelope."
+          ],
+          "conflicts": [
+            "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Determine whether this taxonomy is blueprint archetypes, Jungian archetypes, or project-specific; reconcile filename ARCH12 with 18 actual entries."
+        "Determine whether this taxonomy represents blueprint archetypes, Jungian archetypes, or a project-specific archetype set.",
+        "Recover the original dictation artifact to independently verify the module's provenance note."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed three repository-evidence review passes; populated semantic fields from ARCH12; retained taxonomy and authorship caveats."
         }
       ],
       "kind": "archetype",
       "nm": "Sage",
       "seat": null,
       "fam": "archetype_taxonomy.candidates",
-      "def": null,
-      "body": null,
+      "def": "The Sage steps back to see the whole. It seeks understanding over winning.",
+      "body": "The Sage steps back to see the whole. It seeks understanding over winning.",
       "links": [],
       "templateId": null,
       "template": null,
@@ -2515,8 +3353,34 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
-      ]
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "40_the-archetypes.js@e6a7dd0b5891fed6e9903b28e0f7ac00f2a21049",
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "origin": "It quiets when survival runs hot, because reflection needs room the threat does not allow.",
+      "released": "You see clearly and stay in your body while you do.",
+      "fetters": [
+        {
+          "f": "If I feel it I lose control",
+          "band": "Third eye",
+          "loc": "Third eye · C2",
+          "load": 17,
+          "co": "I feel and stay clear",
+          "cl": "C-02"
+        },
+        {
+          "f": "Knowing keeps me safe",
+          "band": "Third eye",
+          "loc": "Third eye · C2",
+          "load": 14,
+          "co": "I can not-know and be safe",
+          "cl": "C-02"
+        }
+      ],
+      "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><circle cx=\"50\" cy=\"46\" r=\"13\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/><circle cx=\"50\" cy=\"46\" r=\"4\" fill=\"STRc\"/>",
+      "band": "Third eye",
+      "flagged": false
     },
     {
       "id": "archetype:candidate:magician",
@@ -2526,14 +3390,36 @@
       "aliases": [],
       "layer": "archetype_taxonomy.candidates",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_taxonomy_unresolved",
-      "definition": null,
-      "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "status": "source_backed_content_taxonomy_unresolved",
+      "definition": "The Magician turns one thing into another. It works with what others cannot see.",
+      "essence": "Transformation. Working with hidden law.",
+      "function": "Project archetype pattern described by the source entry; functional interpretation remains provisional until the taxonomy's role is verified.",
+      "healthyExpression": [
+        "Vision. You change reality.",
+        "You work with what others cannot see.",
+        "The power to transform.",
+        "You turn one thing into another."
+      ],
+      "decoherentExpression": [
+        "It blocks honesty. You hide your hand.",
+        "It blocks trust. Influence becomes manipulation.",
+        "It blocks power. You keep it underground."
+      ],
+      "signals": [
+        {
+          "context": "With influence",
+          "description": "You sense leverage but hesitate to use it openly."
+        },
+        {
+          "context": "In change",
+          "description": "You can transform a situation, or quietly steer it from behind."
+        }
+      ],
+      "distortions": [
+        "It blocks honesty. You hide your hand.",
+        "It blocks trust. Influence becomes manipulation.",
+        "It blocks power. You keep it underground."
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -2544,55 +3430,89 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
-        "ARCH12.json contains Magician; fields include k, n, band, c, state, glyph, essence, core, origin, through, gifts, shadows, fetters, released."
+        "ARCH12.json entry includes canonical name, essence, core, origin, situational expressions, gifts, shadows, fetters, and released-state copy.",
+        "The archetype module identifies the first twelve entries as carried over verbatim from the owner's archetype dictation."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed content; module claims owner-dictated",
+      "confidence": 0.91,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Extracted all available fields from the matching ARCH12 entry and preserved their source wording as structured content.",
+            "Stable source identity and source version recorded."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Cross-checked the 18 archetype names against ARCHDOM and ARCH18; the names align across the three tables.",
+            "The archetype module explicitly records that six appended entries are not dictated and were drafted from general web research."
+          ],
+          "conflicts": [
+            "Source-module provenance says owner-dictated, but original dictation artifact has not yet been recovered independently."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "The entry name is present in all 18-row archetype mapping tables; mapping labels and fetter/seat tuples are retained separately rather than merged into this record as confirmed causal edges.",
+            "All semantic content fields available in ARCH12 were placed into the shared record envelope."
+          ],
+          "conflicts": [
+            "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Determine whether this taxonomy is blueprint archetypes, Jungian archetypes, or project-specific; reconcile filename ARCH12 with 18 actual entries."
+        "Determine whether this taxonomy represents blueprint archetypes, Jungian archetypes, or a project-specific archetype set.",
+        "Recover the original dictation artifact to independently verify the module's provenance note."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed three repository-evidence review passes; populated semantic fields from ARCH12; retained taxonomy and authorship caveats."
         }
       ],
       "kind": "archetype",
       "nm": "Magician",
       "seat": null,
       "fam": "archetype_taxonomy.candidates",
-      "def": null,
-      "body": null,
+      "def": "The Magician turns one thing into another. It works with what others cannot see.",
+      "body": "The Magician turns one thing into another. It works with what others cannot see.",
       "links": [],
       "templateId": null,
       "template": null,
@@ -2601,8 +3521,34 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
-      ]
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "40_the-archetypes.js@e6a7dd0b5891fed6e9903b28e0f7ac00f2a21049",
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "origin": "It quiets where power was punished, so it learned to keep its hand hidden.",
+      "released": "You shape reality in the open, without hiding the hand.",
+      "fetters": [
+        {
+          "f": "My power will be punished",
+          "band": "Third eye",
+          "loc": "Third eye · C3",
+          "load": 15,
+          "co": "My power is safe in the open",
+          "cl": "C-03"
+        },
+        {
+          "f": "I must hide what I see",
+          "band": "Throat",
+          "loc": "Throat · C5",
+          "load": 12,
+          "co": "I can speak what I see",
+          "cl": "C-04"
+        }
+      ],
+      "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M50 28 L50 62 M36 38 L64 54 M64 38 L36 54\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
+      "band": "Third eye",
+      "flagged": false
     },
     {
       "id": "archetype:candidate:ruler",
@@ -2612,14 +3558,36 @@
       "aliases": [],
       "layer": "archetype_taxonomy.candidates",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_taxonomy_unresolved",
-      "definition": null,
-      "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "status": "source_backed_content_taxonomy_unresolved",
+      "definition": "The Ruler orders and leads. It takes responsibility and wants things to work.",
+      "essence": "Order. Responsibility for the whole.",
+      "function": "Project archetype pattern described by the source entry; functional interpretation remains provisional until the taxonomy's role is verified.",
+      "healthyExpression": [
+        "Authority. You hold the structure.",
+        "Stewardship of the whole.",
+        "The will to make it work.",
+        "Order out of chaos."
+      ],
+      "decoherentExpression": [
+        "It blocks trust. You must control everything.",
+        "It blocks flexibility. Order hardens to rigidity.",
+        "It blocks rest. You carry it all alone."
+      ],
+      "signals": [
+        {
+          "context": "In a system",
+          "description": "You see what is broken and want to fix the structure."
+        },
+        {
+          "context": "Under threat",
+          "description": "Control tightens into rigidity rather than steady command."
+        }
+      ],
+      "distortions": [
+        "It blocks trust. You must control everything.",
+        "It blocks flexibility. Order hardens to rigidity.",
+        "It blocks rest. You carry it all alone."
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -2630,55 +3598,89 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
-        "ARCH12.json contains Ruler; fields include k, n, band, c, state, glyph, essence, core, origin, through, gifts, shadows, fetters, released."
+        "ARCH12.json entry includes canonical name, essence, core, origin, situational expressions, gifts, shadows, fetters, and released-state copy.",
+        "The archetype module identifies the first twelve entries as carried over verbatim from the owner's archetype dictation."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed content; module claims owner-dictated",
+      "confidence": 0.91,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Extracted all available fields from the matching ARCH12 entry and preserved their source wording as structured content.",
+            "Stable source identity and source version recorded."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Cross-checked the 18 archetype names against ARCHDOM and ARCH18; the names align across the three tables.",
+            "The archetype module explicitly records that six appended entries are not dictated and were drafted from general web research."
+          ],
+          "conflicts": [
+            "Source-module provenance says owner-dictated, but original dictation artifact has not yet been recovered independently."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "The entry name is present in all 18-row archetype mapping tables; mapping labels and fetter/seat tuples are retained separately rather than merged into this record as confirmed causal edges.",
+            "All semantic content fields available in ARCH12 were placed into the shared record envelope."
+          ],
+          "conflicts": [
+            "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Determine whether this taxonomy is blueprint archetypes, Jungian archetypes, or project-specific; reconcile filename ARCH12 with 18 actual entries."
+        "Determine whether this taxonomy represents blueprint archetypes, Jungian archetypes, or a project-specific archetype set.",
+        "Recover the original dictation artifact to independently verify the module's provenance note."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed three repository-evidence review passes; populated semantic fields from ARCH12; retained taxonomy and authorship caveats."
         }
       ],
       "kind": "archetype",
       "nm": "Ruler",
       "seat": null,
       "fam": "archetype_taxonomy.candidates",
-      "def": null,
-      "body": null,
+      "def": "The Ruler orders and leads. It takes responsibility and wants things to work.",
+      "body": "The Ruler orders and leads. It takes responsibility and wants things to work.",
       "links": [],
       "templateId": null,
       "template": null,
@@ -2687,8 +3689,34 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
-      ]
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "40_the-archetypes.js@e6a7dd0b5891fed6e9903b28e0f7ac00f2a21049",
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "origin": "It quiets when control once failed, so it guards a position instead of governing one.",
+      "released": "You lead from service, not fear. You can share power.",
+      "fetters": [
+        {
+          "f": "No control means danger",
+          "band": "Crown",
+          "loc": "Crown · C1",
+          "load": 21,
+          "co": "I am safe without control",
+          "cl": "C-01"
+        },
+        {
+          "f": "I carry it all alone",
+          "band": "Solar plexus",
+          "loc": "Solar plexus · T8",
+          "load": 18,
+          "co": "I can share the weight",
+          "cl": "C-12"
+        }
+      ],
+      "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M36 56 L36 40 L44 47 L50 36 L56 47 L64 40 L64 56 Z\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
+      "band": "Crown",
+      "flagged": false
     },
     {
       "id": "archetype:candidate:hero",
@@ -2698,14 +3726,36 @@
       "aliases": [],
       "layer": "archetype_taxonomy.candidates",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_taxonomy_unresolved",
-      "definition": null,
-      "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "status": "source_backed_content_provisional_not_dictated",
+      "definition": "The Hero answers the call and moves toward what is hard, not away from it. It wants to prove itself capable and bring back something of value.",
+      "essence": "Rising to the call. Becoming capable through the trial.",
+      "function": "Project archetype pattern described by the source entry; functional interpretation remains provisional until the taxonomy's role is verified.",
+      "healthyExpression": [
+        "Courage to take on what is hard.",
+        "The drive that gets things done.",
+        "You turn adversity into growth.",
+        "You bring back what you learned to help others."
+      ],
+      "decoherentExpression": [
+        "It blocks rest. Worth is earned, never given.",
+        "It blocks failure. A loss reads as erasure.",
+        "It blocks help. Accepting it feels like losing the title."
+      ],
+      "signals": [
+        {
+          "context": "In a challenge",
+          "description": "You rise, and the rising feels like the only safe place to stand."
+        },
+        {
+          "context": "At rest",
+          "description": "Stopping feels like falling behind, so you find the next mountain."
+        }
+      ],
+      "distortions": [
+        "It blocks rest. Worth is earned, never given.",
+        "It blocks failure. A loss reads as erasure.",
+        "It blocks help. Accepting it feels like losing the title."
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -2716,55 +3766,89 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
-        "ARCH12.json contains Hero; fields include k, n, band, c, state, flagged, glyph, essence, core, origin, through, gifts, shadows, fetters, released."
+        "ARCH12.json entry includes canonical name, essence, core, origin, situational expressions, gifts, shadows, fetters, and released-state copy.",
+        "The archetype module marks this entry as web-researched placeholder content, not owner-dictated canon."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed content; explicitly provisional authorship",
+      "confidence": 0.82,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Extracted all available fields from the matching ARCH12 entry and preserved their source wording as structured content.",
+            "Stable source identity and source version recorded."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Cross-checked the 18 archetype names against ARCHDOM and ARCH18; the names align across the three tables.",
+            "The archetype module explicitly records that six appended entries are not dictated and were drafted from general web research."
+          ],
+          "conflicts": [
+            "Content is explicitly flagged as placeholder/web-researched/not dictated; do not present as owner-authored canon."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "The entry name is present in all 18-row archetype mapping tables; mapping labels and fetter/seat tuples are retained separately rather than merged into this record as confirmed causal edges.",
+            "All semantic content fields available in ARCH12 were placed into the shared record envelope."
+          ],
+          "conflicts": [
+            "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Determine whether this taxonomy is blueprint archetypes, Jungian archetypes, or project-specific; reconcile filename ARCH12 with 18 actual entries."
+        "Determine whether this taxonomy represents blueprint archetypes, Jungian archetypes, or a project-specific archetype set.",
+        "Recover owner dictation or approved source and review this web-researched placeholder before treating its prose as canonical."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed three repository-evidence review passes; populated semantic fields from ARCH12; retained taxonomy and authorship caveats."
         }
       ],
       "kind": "archetype",
       "nm": "Hero",
       "seat": null,
       "fam": "archetype_taxonomy.candidates",
-      "def": null,
-      "body": null,
+      "def": "The Hero answers the call and moves toward what is hard, not away from it. It wants to prove itself capable and bring back something of value.",
+      "body": "The Hero answers the call and moves toward what is hard, not away from it. It wants to prove itself capable and bring back something of value.",
       "links": [],
       "templateId": null,
       "template": null,
@@ -2773,8 +3857,34 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
-      ]
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "40_the-archetypes.js@e6a7dd0b5891fed6e9903b28e0f7ac00f2a21049",
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "origin": "It installed where proving yourself once meant survival, so effort became identity.",
+      "released": "You act from purpose, not proof. You can stop and still be enough.",
+      "fetters": [
+        {
+          "f": "Only the win counts",
+          "band": "Solar plexus",
+          "loc": "Solar plexus · T9",
+          "load": 34,
+          "co": "I count even when I lose",
+          "cl": "C-17"
+        },
+        {
+          "f": "I am what I accomplish",
+          "band": "Heart",
+          "loc": "Heart · T4",
+          "load": 27,
+          "co": "I am worth more than the score",
+          "cl": "C-08"
+        }
+      ],
+      "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M32 60 L50 28 L68 60 Z\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/><path d=\"M50 28 L50 38 L58 34 Z\" fill=\"STRc\"/>",
+      "band": "Solar plexus",
+      "flagged": true
     },
     {
       "id": "archetype:candidate:everyman",
@@ -2784,14 +3894,36 @@
       "aliases": [],
       "layer": "archetype_taxonomy.candidates",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_taxonomy_unresolved",
-      "definition": null,
-      "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "status": "source_backed_content_provisional_not_dictated",
+      "definition": "The Everyman wants to fit, to belong, to be one of the group rather than set apart.",
+      "essence": "Belonging. A place at the table, shared with ordinary people.",
+      "function": "Project archetype pattern described by the source entry; functional interpretation remains provisional until the taxonomy's role is verified.",
+      "healthyExpression": [
+        "Connection that crosses difference.",
+        "Loyalty.",
+        "You make people feel normal and safe.",
+        "A grounded, unpretentious presence."
+      ],
+      "decoherentExpression": [
+        "It blocks difference. Standing apart feels like danger.",
+        "It blocks voice. Your no gets swallowed to keep the peace.",
+        "It blocks identity. You become whoever the room needs."
+      ],
+      "signals": [
+        {
+          "context": "In a group",
+          "description": "You read the room and match it, before you know what you actually think."
+        },
+        {
+          "context": "Alone",
+          "description": "Your own preference is hard to locate under everyone else’s."
+        }
+      ],
+      "distortions": [
+        "It blocks difference. Standing apart feels like danger.",
+        "It blocks voice. Your no gets swallowed to keep the peace.",
+        "It blocks identity. You become whoever the room needs."
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -2802,55 +3934,89 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
-        "ARCH12.json contains Everyman; fields include k, n, band, c, state, flagged, glyph, essence, core, origin, through, gifts, shadows, fetters, released."
+        "ARCH12.json entry includes canonical name, essence, core, origin, situational expressions, gifts, shadows, fetters, and released-state copy.",
+        "The archetype module marks this entry as web-researched placeholder content, not owner-dictated canon."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed content; explicitly provisional authorship",
+      "confidence": 0.82,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Extracted all available fields from the matching ARCH12 entry and preserved their source wording as structured content.",
+            "Stable source identity and source version recorded."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Cross-checked the 18 archetype names against ARCHDOM and ARCH18; the names align across the three tables.",
+            "The archetype module explicitly records that six appended entries are not dictated and were drafted from general web research."
+          ],
+          "conflicts": [
+            "Content is explicitly flagged as placeholder/web-researched/not dictated; do not present as owner-authored canon."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "The entry name is present in all 18-row archetype mapping tables; mapping labels and fetter/seat tuples are retained separately rather than merged into this record as confirmed causal edges.",
+            "All semantic content fields available in ARCH12 were placed into the shared record envelope."
+          ],
+          "conflicts": [
+            "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Determine whether this taxonomy is blueprint archetypes, Jungian archetypes, or project-specific; reconcile filename ARCH12 with 18 actual entries."
+        "Determine whether this taxonomy represents blueprint archetypes, Jungian archetypes, or a project-specific archetype set.",
+        "Recover owner dictation or approved source and review this web-researched placeholder before treating its prose as canonical."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed three repository-evidence review passes; populated semantic fields from ARCH12; retained taxonomy and authorship caveats."
         }
       ],
       "kind": "archetype",
       "nm": "Everyman",
       "seat": null,
       "fam": "archetype_taxonomy.candidates",
-      "def": null,
-      "body": null,
+      "def": "The Everyman wants to fit, to belong, to be one of the group rather than set apart.",
+      "body": "The Everyman wants to fit, to belong, to be one of the group rather than set apart.",
       "links": [],
       "templateId": null,
       "template": null,
@@ -2859,8 +4025,34 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
-      ]
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "40_the-archetypes.js@e6a7dd0b5891fed6e9903b28e0f7ac00f2a21049",
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "origin": "It quiets when standing out once cost belonging, so blending in became the safer shape.",
+      "released": "You belong without disappearing into the group. Your own voice stays yours.",
+      "fetters": [
+        {
+          "f": "Standing out gets you cast out",
+          "band": "Heart",
+          "loc": "Heart · T5",
+          "load": 23,
+          "co": "I can stand out and still belong",
+          "cl": "C-09"
+        },
+        {
+          "f": "My own want does not matter here",
+          "band": "Throat",
+          "loc": "Throat · C6",
+          "load": 19,
+          "co": "What I want matters too",
+          "cl": "C-04"
+        }
+      ],
+      "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><circle cx=\"40\" cy=\"52\" r=\"7\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/><circle cx=\"60\" cy=\"52\" r=\"7\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/><circle cx=\"50\" cy=\"38\" r=\"7\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
+      "band": "Heart",
+      "flagged": true
     },
     {
       "id": "archetype:candidate:mentor",
@@ -2870,14 +4062,36 @@
       "aliases": [],
       "layer": "archetype_taxonomy.candidates",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_taxonomy_unresolved",
-      "definition": null,
-      "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "status": "source_backed_content_provisional_not_dictated",
+      "definition": "The Mentor sees further down the road and hands over what it knows to whoever is ready.",
+      "essence": "Guidance. Wisdom passed on, not held.",
+      "function": "Project archetype pattern described by the source entry; functional interpretation remains provisional until the taxonomy's role is verified.",
+      "healthyExpression": [
+        "Wisdom offered freely.",
+        "You see what is coming before others do.",
+        "Patience with the process, not just the outcome.",
+        "You build people up past where you stopped."
+      ],
+      "decoherentExpression": [
+        "It blocks listening. Your view outranks theirs before they have spoken.",
+        "It blocks letting go. The student cannot leave the lesson.",
+        "It blocks being taught. You forget you are still learning too."
+      ],
+      "signals": [
+        {
+          "context": "When asked",
+          "description": "You want to hand over the whole map, not just the next step."
+        },
+        {
+          "context": "When ignored",
+          "description": "The correction hardens. Certainty replaces curiosity."
+        }
+      ],
+      "distortions": [
+        "It blocks listening. Your view outranks theirs before they have spoken.",
+        "It blocks letting go. The student cannot leave the lesson.",
+        "It blocks being taught. You forget you are still learning too."
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -2888,55 +4102,89 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
-        "ARCH12.json contains Mentor; fields include k, n, band, c, state, flagged, glyph, essence, core, origin, through, gifts, shadows, fetters, released."
+        "ARCH12.json entry includes canonical name, essence, core, origin, situational expressions, gifts, shadows, fetters, and released-state copy.",
+        "The archetype module marks this entry as web-researched placeholder content, not owner-dictated canon."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed content; explicitly provisional authorship",
+      "confidence": 0.82,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Extracted all available fields from the matching ARCH12 entry and preserved their source wording as structured content.",
+            "Stable source identity and source version recorded."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Cross-checked the 18 archetype names against ARCHDOM and ARCH18; the names align across the three tables.",
+            "The archetype module explicitly records that six appended entries are not dictated and were drafted from general web research."
+          ],
+          "conflicts": [
+            "Content is explicitly flagged as placeholder/web-researched/not dictated; do not present as owner-authored canon."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "The entry name is present in all 18-row archetype mapping tables; mapping labels and fetter/seat tuples are retained separately rather than merged into this record as confirmed causal edges.",
+            "All semantic content fields available in ARCH12 were placed into the shared record envelope."
+          ],
+          "conflicts": [
+            "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Determine whether this taxonomy is blueprint archetypes, Jungian archetypes, or project-specific; reconcile filename ARCH12 with 18 actual entries."
+        "Determine whether this taxonomy represents blueprint archetypes, Jungian archetypes, or a project-specific archetype set.",
+        "Recover owner dictation or approved source and review this web-researched placeholder before treating its prose as canonical."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed three repository-evidence review passes; populated semantic fields from ARCH12; retained taxonomy and authorship caveats."
         }
       ],
       "kind": "archetype",
       "nm": "Mentor",
       "seat": null,
       "fam": "archetype_taxonomy.candidates",
-      "def": null,
-      "body": null,
+      "def": "The Mentor sees further down the road and hands over what it knows to whoever is ready.",
+      "body": "The Mentor sees further down the road and hands over what it knows to whoever is ready.",
       "links": [],
       "templateId": null,
       "template": null,
@@ -2945,8 +4193,34 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
-      ]
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "40_the-archetypes.js@e6a7dd0b5891fed6e9903b28e0f7ac00f2a21049",
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "origin": "It quiets when guidance once went unheard, or being right stopped being enough.",
+      "released": "You guide without needing to be followed. You can still be a student.",
+      "fetters": [
+        {
+          "f": "Being right is the only safe place",
+          "band": "Third eye",
+          "loc": "Third eye · C3",
+          "load": 22,
+          "co": "I can be wrong and still be safe",
+          "cl": "C-03"
+        },
+        {
+          "f": "My way is the only way through",
+          "band": "Throat",
+          "loc": "Throat · C5",
+          "load": 18,
+          "co": "There is more than one true path",
+          "cl": "C-04"
+        }
+      ],
+      "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M50 26 L58 38 L58 56 L50 66 L42 56 L42 38 Z\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/><circle cx=\"50\" cy=\"46\" r=\"4\" fill=\"STRc\"/>",
+      "band": "Third eye",
+      "flagged": true
     },
     {
       "id": "archetype:candidate:shadowarch",
@@ -2956,14 +4230,36 @@
       "aliases": [],
       "layer": "archetype_taxonomy.candidates",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_taxonomy_unresolved",
-      "definition": null,
-      "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "status": "source_backed_content_provisional_not_dictated",
+      "definition": "The Shadow holds every part of you that got labelled unacceptable and pushed out of view -- the anger, the want, the parts that did not match who you were told to be.",
+      "essence": "What was disowned. The self you built a wall around.",
+      "function": "Project archetype pattern described by the source entry; functional interpretation remains provisional until the taxonomy's role is verified.",
+      "healthyExpression": [
+        "Access to your full range, not just the acceptable half.",
+        "Real compassion, because you know what it costs to hide.",
+        "Energy that was spent hiding is now available.",
+        "Honesty about what is actually there."
+      ],
+      "decoherentExpression": [
+        "It blocks wholeness. A part of you stays exiled.",
+        "It blocks honesty. What you deny in yourself you attack in others.",
+        "It blocks peace. The buried part keeps knocking."
+      ],
+      "signals": [
+        {
+          "context": "In others",
+          "description": "What you cannot stand in someone else is often what you buried in yourself."
+        },
+        {
+          "context": "Under pressure",
+          "description": "What was pushed down comes out sideways, not on your terms."
+        }
+      ],
+      "distortions": [
+        "It blocks wholeness. A part of you stays exiled.",
+        "It blocks honesty. What you deny in yourself you attack in others.",
+        "It blocks peace. The buried part keeps knocking."
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -2974,55 +4270,89 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
-        "ARCH12.json contains Shadow; fields include k, n, band, c, state, flagged, glyph, essence, core, origin, through, gifts, shadows, fetters, released."
+        "ARCH12.json entry includes canonical name, essence, core, origin, situational expressions, gifts, shadows, fetters, and released-state copy.",
+        "The archetype module marks this entry as web-researched placeholder content, not owner-dictated canon."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed content; explicitly provisional authorship",
+      "confidence": 0.82,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Extracted all available fields from the matching ARCH12 entry and preserved their source wording as structured content.",
+            "Stable source identity and source version recorded."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Cross-checked the 18 archetype names against ARCHDOM and ARCH18; the names align across the three tables.",
+            "The archetype module explicitly records that six appended entries are not dictated and were drafted from general web research."
+          ],
+          "conflicts": [
+            "Content is explicitly flagged as placeholder/web-researched/not dictated; do not present as owner-authored canon."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "The entry name is present in all 18-row archetype mapping tables; mapping labels and fetter/seat tuples are retained separately rather than merged into this record as confirmed causal edges.",
+            "All semantic content fields available in ARCH12 were placed into the shared record envelope."
+          ],
+          "conflicts": [
+            "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Determine whether this taxonomy is blueprint archetypes, Jungian archetypes, or project-specific; reconcile filename ARCH12 with 18 actual entries."
+        "Determine whether this taxonomy represents blueprint archetypes, Jungian archetypes, or a project-specific archetype set.",
+        "Recover owner dictation or approved source and review this web-researched placeholder before treating its prose as canonical."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed three repository-evidence review passes; populated semantic fields from ARCH12; retained taxonomy and authorship caveats."
         }
       ],
       "kind": "archetype",
       "nm": "Shadow",
       "seat": null,
       "fam": "archetype_taxonomy.candidates",
-      "def": null,
-      "body": null,
+      "def": "The Shadow holds every part of you that got labelled unacceptable and pushed out of view -- the anger, the want, the parts that did not match who you were told to be.",
+      "body": "The Shadow holds every part of you that got labelled unacceptable and pushed out of view -- the anger, the want, the parts that did not match who you were told to be.",
       "links": [],
       "templateId": null,
       "template": null,
@@ -3031,8 +4361,34 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
-      ]
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "40_the-archetypes.js@e6a7dd0b5891fed6e9903b28e0f7ac00f2a21049",
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "origin": "It formed wherever a real part of you got punished for showing, so it went underground instead of away.",
+      "released": "You own what was disowned. It stops running you from the dark.",
+      "fetters": [
+        {
+          "f": "This part of me is not allowed",
+          "band": "Solar plexus",
+          "loc": "Solar plexus · T10",
+          "load": 29,
+          "co": "Every part of me is allowed",
+          "cl": "C-13"
+        },
+        {
+          "f": "If they saw it they would leave",
+          "band": "Heart",
+          "loc": "Heart · T3",
+          "load": 24,
+          "co": "I can be fully seen and stay",
+          "cl": "C-08"
+        }
+      ],
+      "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M50 22a24 24 0 1 0 0 48 24 24 0 0 1 0-48z\" fill=\"STRc\"/>",
+      "band": "Solar plexus",
+      "flagged": true
     },
     {
       "id": "archetype:candidate:shapeshifter",
@@ -3042,14 +4398,36 @@
       "aliases": [],
       "layer": "archetype_taxonomy.candidates",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_taxonomy_unresolved",
-      "definition": null,
-      "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "status": "source_backed_content_provisional_not_dictated",
+      "definition": "The Shapeshifter reads a room and becomes what it needs, moving between selves the way water moves between containers.",
+      "essence": "Adaptation. Becoming whatever the moment requires.",
+      "function": "Project archetype pattern described by the source entry; functional interpretation remains provisional until the taxonomy's role is verified.",
+      "healthyExpression": [
+        "Real adaptability. You meet people where they are.",
+        "You build bridges others cannot.",
+        "A deep read on what a room needs.",
+        "You are hard to corner or pin down."
+      ],
+      "decoherentExpression": [
+        "It blocks a stable self. There is no fixed ground to stand on.",
+        "It blocks trust. People cannot find the same you twice.",
+        "It blocks intimacy. Closeness needs a self that holds still."
+      ],
+      "signals": [
+        {
+          "context": "Across people",
+          "description": "You are a different person with each one, and none of them are quite lying."
+        },
+        {
+          "context": "Alone",
+          "description": "Without an audience, it is hard to find which shape is actually yours."
+        }
+      ],
+      "distortions": [
+        "It blocks a stable self. There is no fixed ground to stand on.",
+        "It blocks trust. People cannot find the same you twice.",
+        "It blocks intimacy. Closeness needs a self that holds still."
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -3060,55 +4438,89 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
-        "ARCH12.json contains Shapeshifter; fields include k, n, band, c, state, flagged, glyph, essence, core, origin, through, gifts, shadows, fetters, released."
+        "ARCH12.json entry includes canonical name, essence, core, origin, situational expressions, gifts, shadows, fetters, and released-state copy.",
+        "The archetype module marks this entry as web-researched placeholder content, not owner-dictated canon."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed content; explicitly provisional authorship",
+      "confidence": 0.82,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Extracted all available fields from the matching ARCH12 entry and preserved their source wording as structured content.",
+            "Stable source identity and source version recorded."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Cross-checked the 18 archetype names against ARCHDOM and ARCH18; the names align across the three tables.",
+            "The archetype module explicitly records that six appended entries are not dictated and were drafted from general web research."
+          ],
+          "conflicts": [
+            "Content is explicitly flagged as placeholder/web-researched/not dictated; do not present as owner-authored canon."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "The entry name is present in all 18-row archetype mapping tables; mapping labels and fetter/seat tuples are retained separately rather than merged into this record as confirmed causal edges.",
+            "All semantic content fields available in ARCH12 were placed into the shared record envelope."
+          ],
+          "conflicts": [
+            "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Determine whether this taxonomy is blueprint archetypes, Jungian archetypes, or project-specific; reconcile filename ARCH12 with 18 actual entries."
+        "Determine whether this taxonomy represents blueprint archetypes, Jungian archetypes, or a project-specific archetype set.",
+        "Recover owner dictation or approved source and review this web-researched placeholder before treating its prose as canonical."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed three repository-evidence review passes; populated semantic fields from ARCH12; retained taxonomy and authorship caveats."
         }
       ],
       "kind": "archetype",
       "nm": "Shapeshifter",
       "seat": null,
       "fam": "archetype_taxonomy.candidates",
-      "def": null,
-      "body": null,
+      "def": "The Shapeshifter reads a room and becomes what it needs, moving between selves the way water moves between containers.",
+      "body": "The Shapeshifter reads a room and becomes what it needs, moving between selves the way water moves between containers.",
       "links": [],
       "templateId": null,
       "template": null,
@@ -3117,8 +4529,34 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
-      ]
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "40_the-archetypes.js@e6a7dd0b5891fed6e9903b28e0f7ac00f2a21049",
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "origin": "It quiets when one true shape once was not safe, so staying undefined became the shelter.",
+      "released": "You can still adapt, and you also have a shape that stays, even when no one is watching.",
+      "fetters": [
+        {
+          "f": "One true shape is not safe",
+          "band": "Sacral",
+          "loc": "Sacral · L2",
+          "load": 20,
+          "co": "My own shape is safe to keep",
+          "cl": "C-05"
+        },
+        {
+          "f": "I disappear if I stop adapting",
+          "band": "Root",
+          "loc": "Root · S1",
+          "load": 17,
+          "co": "I still exist when I hold still",
+          "cl": "C-16"
+        }
+      ],
+      "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><circle cx=\"45\" cy=\"40\" r=\"11\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/><path d=\"M38 58 Q54 50 62 62 Q50 68 38 58Z\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
+      "band": "Sacral",
+      "flagged": true
     },
     {
       "id": "archetype:candidate:healer",
@@ -3128,14 +4566,36 @@
       "aliases": [],
       "layer": "archetype_taxonomy.candidates",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_taxonomy_unresolved",
-      "definition": null,
-      "essence": null,
-      "function": null,
-      "healthyExpression": [],
-      "decoherentExpression": [],
-      "signals": [],
-      "distortions": [],
+      "status": "source_backed_content_provisional_not_dictated",
+      "definition": "The Healer turns its own wound into the capacity to tend someone else’s. It knows the terrain because it has walked it.",
+      "essence": "Transforming pain into medicine.",
+      "function": "Project archetype pattern described by the source entry; functional interpretation remains provisional until the taxonomy's role is verified.",
+      "healthyExpression": [
+        "Compassion earned the hard way, not performed.",
+        "You know exactly what helps because you needed it once.",
+        "You make people feel less alone in what hurts.",
+        "Presence with pain that does not flinch."
+      ],
+      "decoherentExpression": [
+        "It blocks self-tending. Your wound stays open while you close everyone else’s.",
+        "It blocks receiving. Being helped feels backwards.",
+        "It blocks boundaries. You take on pain that is not yours to carry."
+      ],
+      "signals": [
+        {
+          "context": "With others’ pain",
+          "description": "You recognize it instantly and move to meet it."
+        },
+        {
+          "context": "With your own",
+          "description": "It waits, because someone else’s always seems to need you first."
+        }
+      ],
+      "distortions": [
+        "It blocks self-tending. Your wound stays open while you close everyone else’s.",
+        "It blocks receiving. Being helped feels backwards.",
+        "It blocks boundaries. You take on pain that is not yours to carry."
+      ],
       "upstreamInfluenceIds": [],
       "downstreamEffectIds": [],
       "parentId": null,
@@ -3146,55 +4606,89 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
-        "ARCH12.json contains Healer; fields include k, n, band, c, state, flagged, glyph, essence, core, origin, through, gifts, shadows, fetters, released."
+        "ARCH12.json entry includes canonical name, essence, core, origin, situational expressions, gifts, shadows, fetters, and released-state copy.",
+        "The archetype module marks this entry as web-researched placeholder content, not owner-dictated canon."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed content; explicitly provisional authorship",
+      "confidence": 0.82,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
+          ],
+          "findings": [
+            "Extracted all available fields from the matching ARCH12 entry and preserved their source wording as structured content.",
+            "Stable source identity and source version recorded."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/src/40_the-archetypes.js",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Cross-checked the 18 archetype names against ARCHDOM and ARCH18; the names align across the three tables.",
+            "The archetype module explicitly records that six appended entries are not dictated and were drafted from general web research."
+          ],
+          "conflicts": [
+            "Content is explicitly flagged as placeholder/web-researched/not dictated; do not present as owner-authored canon."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "The entry name is present in all 18-row archetype mapping tables; mapping labels and fetter/seat tuples are retained separately rather than merged into this record as confirmed causal edges.",
+            "All semantic content fields available in ARCH12 were placed into the shared record envelope."
+          ],
+          "conflicts": [
+            "Cross-table consistency does not prove whether these records are Blueprint Archetypes or Jungian Archetypes; taxonomy identity remains unresolved."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Determine whether this taxonomy is blueprint archetypes, Jungian archetypes, or project-specific; reconcile filename ARCH12 with 18 actual entries."
+        "Determine whether this taxonomy represents blueprint archetypes, Jungian archetypes, or a project-specific archetype set.",
+        "Recover owner dictation or approved source and review this web-researched placeholder before treating its prose as canonical."
       ],
-      "notes": [],
+      "notes": [
+        "Three source-review passes completed for the currently located repository evidence; this does not mean taxonomy approval or final runtime closure."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
           "change": "Seeded during source-first inventory; not research-complete or canon-approved."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Completed three repository-evidence review passes; populated semantic fields from ARCH12; retained taxonomy and authorship caveats."
         }
       ],
       "kind": "archetype",
       "nm": "Healer",
       "seat": null,
       "fam": "archetype_taxonomy.candidates",
-      "def": null,
-      "body": null,
+      "def": "The Healer turns its own wound into the capacity to tend someone else’s. It knows the terrain because it has walked it.",
+      "body": "The Healer turns its own wound into the capacity to tend someone else’s. It knows the terrain because it has walked it.",
       "links": [],
       "templateId": null,
       "template": null,
@@ -3203,8 +4697,34 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json"
-      ]
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "40_the-archetypes.js@e6a7dd0b5891fed6e9903b28e0f7ac00f2a21049",
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "origin": "It quiets when the wound never got tended, so it kept tending everyone else’s instead.",
+      "released": "You tend your own wound too. Your care has an edge that keeps it from costing you everything.",
+      "fetters": [
+        {
+          "f": "My wound only counts if it helps someone else",
+          "band": "Heart",
+          "loc": "Heart · T2",
+          "load": 26,
+          "co": "My own healing is enough on its own",
+          "cl": "C-07"
+        },
+        {
+          "f": "I am safe only when I am needed",
+          "band": "Root",
+          "loc": "Root · S2",
+          "load": 21,
+          "co": "I am safe even when I am not needed",
+          "cl": "C-16"
+        }
+      ],
+      "glyph": "<circle cx=\"50\" cy=\"46\" r=\"34\" fill=\"FILLc\" stroke=\"STRc\" stroke-width=\"1.5\"/><path d=\"M34 50 Q50 66 66 50\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/><path d=\"M40 50 Q50 40 60 50\" fill=\"none\" stroke=\"STRc\" stroke-width=\"2\"/>",
+      "band": "Heart",
+      "flagged": true
     },
     {
       "id": "conscious-domain:01",
@@ -8022,5 +9542,15 @@
         "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ]
     }
-  ]
+  ],
+  "lastUpdated": "2026-10-22",
+  "researchProgress": {
+    "archetypeCandidates": {
+      "total": 18,
+      "threePassesComplete": 18,
+      "semanticFieldsPopulated": 18,
+      "canonicalTaxonomyResolved": 0,
+      "ownerDictationIndependentlyRecovered": 0
+    }
+  }
 }
