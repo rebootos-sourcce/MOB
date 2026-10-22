@@ -139,7 +139,7 @@ ok(true,'CQ stays inside 0..100 across the grid');
 ok(reset(0,0,10).Rz>=1&&reset(10,0,0).Rz>=1,'resistance never drops below its floor of 1');
 
 g('6 · SAB33 ranges are bands, not floors');
-/* Micromanager (renamed from Controller on main) is fear 7..10 + anger 5..8 */
+/* Micromanager is fear 7..10 + anger 5..8. Renamed from Controller, 337966b8. */
 function fitFor(name,fear,anger){
  reset(0,0,6); S.charge.Fear=fear; S.charge.Anger=anger;
  const hit=E.sab33Detect().filter(d=>d.nm===name)[0];
