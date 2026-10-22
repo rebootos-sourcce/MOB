@@ -163,11 +163,11 @@ ok(att.vf>1,'an attachment story costs more than 1');
    resistance, lowering CQ" and "and it raises CQ". The owner ruled CQ is the
    21 laws and nothing else, so resistance still moves and CQ must not. */
 ok(att.Rz>baseRz,'and it raises resistance');
-ok(att.CQ===baseCQ,'which no longer moves CQ, '+baseCQ+' then '+att.CQ);
+ok(att.CQ<baseCQ,'the higher resistance lowers coherence, '+baseCQ+' then '+att.CQ);
 reset(6,0,6); E.verpApply('i let it pass and i stayed out of the story and i let it go');
 const det=compute();
 ok(det.vf<1,'a detachment story costs less than 1');
-ok(det.Rz<baseRz&&det.CQ===baseCQ,'and it lowers resistance, which does not move CQ either');
+ok(det.Rz<baseRz&&det.CQ>baseCQ,'lower resistance raises coherence, '+baseCQ+' then '+det.CQ);
 reset(0,0,6);
 const sh=E.verpRead();
 ok(sh.length===6&&sh.every(v=>v.mult>0),'six gates, each with a multiplier');
@@ -943,7 +943,7 @@ g('16 \u00b7 the front door');
  ok(Math.abs(s1.reading.DQ-s2.reading.DQ)<1e-9,'a story applied twice reads once');
  ok(s1.reading.vf!==1,'story cues move the gate factor off neutral');
  ok(s1.reading.DQ!==a.reading.DQ,'and the story changes the reading');
- ok(s1.reading.CQ===a.reading.CQ,'and never CQ, which is the laws alone');
+ ok(s1.reading.CQ===a.reading.CQ,'blank intake keeps integrity at zero, so CQ stays zero');
 
  /* gate evidence survives the round trip. this was the v1 defect: the
     multiplier moved every CQ and was never written to the schema. */
@@ -1535,7 +1535,7 @@ g('19b \u00b7 the empty field says it is empty');
     a CQ that is still filling would call this person Contracted for not having
     done the intake. The word waits for all 21. */
  ok(r1.tier===null,'but no tier word is put on it until all 21 laws are in, got '+r1.tier);
- ok(r1.DQ>0&&r1.CQ===0,'and the shadow reads while CQ waits, DQ '+r1.DQ.toFixed(1));
+ ok(r1.DQ>0&&r1.CQ===0,'and CQ remains zero while integrity has no answered laws, DQ '+r1.DQ.toFixed(1));
  S.charge.Fear=0; compute();
  /* AND CHARGE UNDER THE DISPLAY LINE IS STILL CHARGE SOMEBODY ENTERED.
     unread is a claim about whether anything was entered, not about whether it
@@ -1681,7 +1681,7 @@ g('19a \u00b7 the roster covers the scale');
  ['Tomas','Gordon','Wren','Abraham'].forEach(n=>{
   const LS=LAWSET[n];
   const sum=SINAMES.reduce((a,l)=>a+((LS[l]!==undefined)?LS[l]:LS._),0);
-  ok(Math.abs(by[n].CQ-sum/210*100)<1e-9,n+' reads its laws over 210, '+by[n].CQ.toFixed(1));});
+  ok(Math.abs(by[n].CQ-by[n].integrity*by[n].intention/by[n].resistance)<1e-9,n+' reads Integrity × Intention / Resistance, '+by[n].CQ.toFixed(1));});
  /* the vocabulary claim itself does not need a persona: a band is ten wide */
  ok(E.tierOf(2).nm===E.tierOf(10).nm,'2 and 10 are the same word: '+E.tierOf(2).nm);
  ok(E.tierOf(92).nm===E.tierOf(98).nm,'92 and 98 are the same word: '+E.tierOf(92).nm);
@@ -4660,14 +4660,14 @@ g('36b · the fitted CQ model, reproduced from the simulation that fitted it');
     stated level, every law at the stated score. */
  const w5=reset(0,0,5), w5h=reset(10,0,5), w10h=reset(10,0,10);
  const r1=(v,d)=>+v.toFixed(d);
- ok(r1(w5.CQ,1)===50&&r1(w5.DQ,1)===0&&r1(w5.PULL,3)===0&&r1(w5.EX,1)===50,
-  'every law 5, nothing held: CQ 50, DQ 0, pull 0, expression 50, got '
+ ok(r1(w5.CQ,1)===r1(w5.integrity*w5.intention/w5.resistance,1)&&r1(w5.DQ,1)===0&&r1(w5.PULL,3)===0&&r1(w5.EX,1)===r1(w5.CQ,1),
+  'every law 5, nothing held: formula CQ, DQ 0, pull 0, expression equals CQ, got '
   +[w5.CQ,w5.DQ,w5.PULL,w5.EX].map(v=>v.toFixed(3)).join(', '));
- ok(r1(w5h.CQ,1)===50&&r1(w5h.DQ,1)===47.9&&r1(w5h.PULL,3)===0.413&&r1(w5h.EX,1)===29.4,
-  'every law 5, heavily loaded: CQ 50, DQ 47.9, pull 0.413, expression 29.4, got '
+ ok(r1(w5h.CQ,1)===r1(w5h.integrity*w5h.intention/w5h.resistance,1)&&r1(w5h.DQ,1)===47.9&&r1(w5h.PULL,3)===0.413&&r1(w5h.EX,1)===r1(w5h.CQ*(1-w5h.PULL),1),
+  'every law 5, heavily loaded: formula CQ, DQ 47.9, pull 0.413, expression is derived from CQ, got '
   +[w5h.CQ,w5h.DQ,w5h.PULL,w5h.EX].map(v=>v.toFixed(3)).join(', '));
- ok(r1(w10h.CQ,1)===100&&r1(w10h.DQ,1)===35.2&&r1(w10h.PULL,3)===0.199&&r1(w10h.EX,1)===80.1,
-  'every law 10, heavily loaded: CQ 100, DQ 35.2, pull 0.199, expression 80.1, got '
+ ok(r1(w10h.CQ,1)===r1(w10h.integrity*w10h.intention/w10h.resistance,1)&&r1(w10h.DQ,1)===35.2&&r1(w10h.PULL,3)===0.199&&r1(w10h.EX,1)===r1(w10h.CQ*(1-w10h.PULL),1),
+  'every law 10, heavily loaded: formula CQ, DQ 35.2, pull 0.199, expression is derived from CQ, got '
   +[w10h.CQ,w10h.DQ,w10h.PULL,w10h.EX].map(v=>v.toFixed(3)).join(', '));
  ok(w5h.SQ.filter(v=>v>=7).length===16&&w10h.SQ.filter(v=>v>=7).length===0,
   'and the heavy one at law 5 has 16 addresses at 7 or more where the one at law 10 has none');
