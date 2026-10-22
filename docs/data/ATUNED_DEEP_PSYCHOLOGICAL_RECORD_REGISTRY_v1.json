@@ -1006,41 +1006,31 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "complete",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-          ],
-          "findings": [
-            "Captured the exact owner-stated fifteen-item behavioral-domain label."
-          ],
-          "conflicts": []
+          "status": "pending",
+          "sources": [],
+          "findings": [],
+          "conflicts": [
+            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+            "Independent corroboration not yet performed for the current record content."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+            "Cross-record synthesis and owner/canon ruling not yet completed."
           ]
         }
       ],
@@ -1057,6 +1047,10 @@
         {
           "date": "2026-10-22",
           "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
         }
       ],
       "kind": "domain",
@@ -1081,41 +1075,31 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "complete",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-            ],
-            "findings": [
-              "Captured the exact owner-stated fifteen-item behavioral-domain label."
-            ],
-            "conflicts": []
+            "status": "pending",
+            "sources": [],
+            "findings": [],
+            "conflicts": [
+              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+              "Independent corroboration not yet performed for the current record content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+              "Cross-record synthesis and owner/canon ruling not yet completed."
             ]
           }
         ]
@@ -1179,41 +1163,31 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "complete",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-          ],
-          "findings": [
-            "Captured the exact owner-stated fifteen-item behavioral-domain label."
-          ],
-          "conflicts": []
+          "status": "pending",
+          "sources": [],
+          "findings": [],
+          "conflicts": [
+            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+            "Independent corroboration not yet performed for the current record content."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+            "Cross-record synthesis and owner/canon ruling not yet completed."
           ]
         }
       ],
@@ -1230,6 +1204,10 @@
         {
           "date": "2026-10-22",
           "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
         }
       ],
       "kind": "domain",
@@ -1254,41 +1232,31 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "complete",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-            ],
-            "findings": [
-              "Captured the exact owner-stated fifteen-item behavioral-domain label."
-            ],
-            "conflicts": []
+            "status": "pending",
+            "sources": [],
+            "findings": [],
+            "conflicts": [
+              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+              "Independent corroboration not yet performed for the current record content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+              "Cross-record synthesis and owner/canon ruling not yet completed."
             ]
           }
         ]
@@ -1352,41 +1320,31 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "complete",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-          ],
-          "findings": [
-            "Captured the exact owner-stated fifteen-item behavioral-domain label."
-          ],
-          "conflicts": []
+          "status": "pending",
+          "sources": [],
+          "findings": [],
+          "conflicts": [
+            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+            "Independent corroboration not yet performed for the current record content."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+            "Cross-record synthesis and owner/canon ruling not yet completed."
           ]
         }
       ],
@@ -1403,6 +1361,10 @@
         {
           "date": "2026-10-22",
           "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
         }
       ],
       "kind": "domain",
@@ -1427,41 +1389,31 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "complete",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-            ],
-            "findings": [
-              "Captured the exact owner-stated fifteen-item behavioral-domain label."
-            ],
-            "conflicts": []
+            "status": "pending",
+            "sources": [],
+            "findings": [],
+            "conflicts": [
+              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+              "Independent corroboration not yet performed for the current record content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+              "Cross-record synthesis and owner/canon ruling not yet completed."
             ]
           }
         ]
@@ -1525,41 +1477,31 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "complete",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-          ],
-          "findings": [
-            "Captured the exact owner-stated fifteen-item behavioral-domain label."
-          ],
-          "conflicts": []
+          "status": "pending",
+          "sources": [],
+          "findings": [],
+          "conflicts": [
+            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+            "Independent corroboration not yet performed for the current record content."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+            "Cross-record synthesis and owner/canon ruling not yet completed."
           ]
         }
       ],
@@ -1576,6 +1518,10 @@
         {
           "date": "2026-10-22",
           "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
         }
       ],
       "kind": "domain",
@@ -1600,41 +1546,31 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "complete",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-            ],
-            "findings": [
-              "Captured the exact owner-stated fifteen-item behavioral-domain label."
-            ],
-            "conflicts": []
+            "status": "pending",
+            "sources": [],
+            "findings": [],
+            "conflicts": [
+              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+              "Independent corroboration not yet performed for the current record content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+              "Cross-record synthesis and owner/canon ruling not yet completed."
             ]
           }
         ]
@@ -1698,41 +1634,31 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "complete",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-          ],
-          "findings": [
-            "Captured the exact owner-stated fifteen-item behavioral-domain label."
-          ],
-          "conflicts": []
+          "status": "pending",
+          "sources": [],
+          "findings": [],
+          "conflicts": [
+            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+            "Independent corroboration not yet performed for the current record content."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+            "Cross-record synthesis and owner/canon ruling not yet completed."
           ]
         }
       ],
@@ -1749,6 +1675,10 @@
         {
           "date": "2026-10-22",
           "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
         }
       ],
       "kind": "domain",
@@ -1773,41 +1703,31 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "complete",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-            ],
-            "findings": [
-              "Captured the exact owner-stated fifteen-item behavioral-domain label."
-            ],
-            "conflicts": []
+            "status": "pending",
+            "sources": [],
+            "findings": [],
+            "conflicts": [
+              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+              "Independent corroboration not yet performed for the current record content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+              "Cross-record synthesis and owner/canon ruling not yet completed."
             ]
           }
         ]
@@ -1871,41 +1791,31 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "complete",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-          ],
-          "findings": [
-            "Captured the exact owner-stated fifteen-item behavioral-domain label."
-          ],
-          "conflicts": []
+          "status": "pending",
+          "sources": [],
+          "findings": [],
+          "conflicts": [
+            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+            "Independent corroboration not yet performed for the current record content."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+            "Cross-record synthesis and owner/canon ruling not yet completed."
           ]
         }
       ],
@@ -1922,6 +1832,10 @@
         {
           "date": "2026-10-22",
           "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
         }
       ],
       "kind": "domain",
@@ -1946,41 +1860,31 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "complete",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-            ],
-            "findings": [
-              "Captured the exact owner-stated fifteen-item behavioral-domain label."
-            ],
-            "conflicts": []
+            "status": "pending",
+            "sources": [],
+            "findings": [],
+            "conflicts": [
+              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+              "Independent corroboration not yet performed for the current record content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+              "Cross-record synthesis and owner/canon ruling not yet completed."
             ]
           }
         ]
@@ -2044,41 +1948,31 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "complete",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-          ],
-          "findings": [
-            "Captured the exact owner-stated fifteen-item behavioral-domain label."
-          ],
-          "conflicts": []
+          "status": "pending",
+          "sources": [],
+          "findings": [],
+          "conflicts": [
+            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+            "Independent corroboration not yet performed for the current record content."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+            "Cross-record synthesis and owner/canon ruling not yet completed."
           ]
         }
       ],
@@ -2095,6 +1989,10 @@
         {
           "date": "2026-10-22",
           "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
         }
       ],
       "kind": "domain",
@@ -2119,41 +2017,31 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "complete",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-            ],
-            "findings": [
-              "Captured the exact owner-stated fifteen-item behavioral-domain label."
-            ],
-            "conflicts": []
+            "status": "pending",
+            "sources": [],
+            "findings": [],
+            "conflicts": [
+              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+              "Independent corroboration not yet performed for the current record content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+              "Cross-record synthesis and owner/canon ruling not yet completed."
             ]
           }
         ]
@@ -2217,41 +2105,31 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "complete",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-          ],
-          "findings": [
-            "Captured the exact owner-stated fifteen-item behavioral-domain label."
-          ],
-          "conflicts": []
+          "status": "pending",
+          "sources": [],
+          "findings": [],
+          "conflicts": [
+            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+            "Independent corroboration not yet performed for the current record content."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+            "Cross-record synthesis and owner/canon ruling not yet completed."
           ]
         }
       ],
@@ -2268,6 +2146,10 @@
         {
           "date": "2026-10-22",
           "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
         }
       ],
       "kind": "domain",
@@ -2292,41 +2174,31 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "complete",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-            ],
-            "findings": [
-              "Captured the exact owner-stated fifteen-item behavioral-domain label."
-            ],
-            "conflicts": []
+            "status": "pending",
+            "sources": [],
+            "findings": [],
+            "conflicts": [
+              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+              "Independent corroboration not yet performed for the current record content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+              "Cross-record synthesis and owner/canon ruling not yet completed."
             ]
           }
         ]
@@ -2390,41 +2262,31 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "complete",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-          ],
-          "findings": [
-            "Captured the exact owner-stated fifteen-item behavioral-domain label."
-          ],
-          "conflicts": []
+          "status": "pending",
+          "sources": [],
+          "findings": [],
+          "conflicts": [
+            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+            "Independent corroboration not yet performed for the current record content."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+            "Cross-record synthesis and owner/canon ruling not yet completed."
           ]
         }
       ],
@@ -2441,6 +2303,10 @@
         {
           "date": "2026-10-22",
           "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
         }
       ],
       "kind": "domain",
@@ -2465,41 +2331,31 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "complete",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-            ],
-            "findings": [
-              "Captured the exact owner-stated fifteen-item behavioral-domain label."
-            ],
-            "conflicts": []
+            "status": "pending",
+            "sources": [],
+            "findings": [],
+            "conflicts": [
+              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+              "Independent corroboration not yet performed for the current record content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+              "Cross-record synthesis and owner/canon ruling not yet completed."
             ]
           }
         ]
@@ -2563,41 +2419,31 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "complete",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-          ],
-          "findings": [
-            "Captured the exact owner-stated fifteen-item behavioral-domain label."
-          ],
-          "conflicts": []
+          "status": "pending",
+          "sources": [],
+          "findings": [],
+          "conflicts": [
+            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+            "Independent corroboration not yet performed for the current record content."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+            "Cross-record synthesis and owner/canon ruling not yet completed."
           ]
         }
       ],
@@ -2614,6 +2460,10 @@
         {
           "date": "2026-10-22",
           "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
         }
       ],
       "kind": "domain",
@@ -2638,41 +2488,31 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "complete",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-            ],
-            "findings": [
-              "Captured the exact owner-stated fifteen-item behavioral-domain label."
-            ],
-            "conflicts": []
+            "status": "pending",
+            "sources": [],
+            "findings": [],
+            "conflicts": [
+              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+              "Independent corroboration not yet performed for the current record content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+              "Cross-record synthesis and owner/canon ruling not yet completed."
             ]
           }
         ]
@@ -2736,41 +2576,31 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "complete",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-          ],
-          "findings": [
-            "Captured the exact owner-stated fifteen-item behavioral-domain label."
-          ],
-          "conflicts": []
+          "status": "pending",
+          "sources": [],
+          "findings": [],
+          "conflicts": [
+            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+            "Independent corroboration not yet performed for the current record content."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+            "Cross-record synthesis and owner/canon ruling not yet completed."
           ]
         }
       ],
@@ -2787,6 +2617,10 @@
         {
           "date": "2026-10-22",
           "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
         }
       ],
       "kind": "domain",
@@ -2811,41 +2645,31 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "complete",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-            ],
-            "findings": [
-              "Captured the exact owner-stated fifteen-item behavioral-domain label."
-            ],
-            "conflicts": []
+            "status": "pending",
+            "sources": [],
+            "findings": [],
+            "conflicts": [
+              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+              "Independent corroboration not yet performed for the current record content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+              "Cross-record synthesis and owner/canon ruling not yet completed."
             ]
           }
         ]
@@ -2909,41 +2733,31 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "complete",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-          ],
-          "findings": [
-            "Captured the exact owner-stated fifteen-item behavioral-domain label."
-          ],
-          "conflicts": []
+          "status": "pending",
+          "sources": [],
+          "findings": [],
+          "conflicts": [
+            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+            "Independent corroboration not yet performed for the current record content."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+            "Cross-record synthesis and owner/canon ruling not yet completed."
           ]
         }
       ],
@@ -2960,6 +2774,10 @@
         {
           "date": "2026-10-22",
           "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
         }
       ],
       "kind": "domain",
@@ -2984,41 +2802,31 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "complete",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-            ],
-            "findings": [
-              "Captured the exact owner-stated fifteen-item behavioral-domain label."
-            ],
-            "conflicts": []
+            "status": "pending",
+            "sources": [],
+            "findings": [],
+            "conflicts": [
+              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+              "Independent corroboration not yet performed for the current record content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+              "Cross-record synthesis and owner/canon ruling not yet completed."
             ]
           }
         ]
@@ -3082,41 +2890,31 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "complete",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-          ],
-          "findings": [
-            "Captured the exact owner-stated fifteen-item behavioral-domain label."
-          ],
-          "conflicts": []
+          "status": "pending",
+          "sources": [],
+          "findings": [],
+          "conflicts": [
+            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+            "Independent corroboration not yet performed for the current record content."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+            "Cross-record synthesis and owner/canon ruling not yet completed."
           ]
         }
       ],
@@ -3133,6 +2931,10 @@
         {
           "date": "2026-10-22",
           "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
         }
       ],
       "kind": "domain",
@@ -3157,41 +2959,31 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "complete",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-            ],
-            "findings": [
-              "Captured the exact owner-stated fifteen-item behavioral-domain label."
-            ],
-            "conflicts": []
+            "status": "pending",
+            "sources": [],
+            "findings": [],
+            "conflicts": [
+              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+              "Independent corroboration not yet performed for the current record content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+              "Cross-record synthesis and owner/canon ruling not yet completed."
             ]
           }
         ]
@@ -3255,41 +3047,31 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "complete",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-          ],
-          "findings": [
-            "Captured the exact owner-stated fifteen-item behavioral-domain label."
-          ],
-          "conflicts": []
+          "status": "pending",
+          "sources": [],
+          "findings": [],
+          "conflicts": [
+            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+            "Independent corroboration not yet performed for the current record content."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+            "Cross-record synthesis and owner/canon ruling not yet completed."
           ]
         }
       ],
@@ -3306,6 +3088,10 @@
         {
           "date": "2026-10-22",
           "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
         }
       ],
       "kind": "domain",
@@ -3330,41 +3116,31 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "complete",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-            ],
-            "findings": [
-              "Captured the exact owner-stated fifteen-item behavioral-domain label."
-            ],
-            "conflicts": []
+            "status": "pending",
+            "sources": [],
+            "findings": [],
+            "conflicts": [
+              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+              "Independent corroboration not yet performed for the current record content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+              "Cross-record synthesis and owner/canon ruling not yet completed."
             ]
           }
         ]
@@ -3428,41 +3204,31 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "complete",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-          ],
-          "findings": [
-            "Captured the exact owner-stated fifteen-item behavioral-domain label."
-          ],
-          "conflicts": []
+          "status": "pending",
+          "sources": [],
+          "findings": [],
+          "conflicts": [
+            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+            "Independent corroboration not yet performed for the current record content."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "complete",
-          "sources": [
-            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-          ],
-          "findings": [
-            "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+            "Cross-record synthesis and owner/canon ruling not yet completed."
           ]
         }
       ],
@@ -3479,6 +3245,10 @@
         {
           "date": "2026-10-22",
           "change": "Added clearly labeled provisional definition/body and behavioral expression fields; did not assert canonical approval or mark research passes complete."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
         }
       ],
       "kind": "domain",
@@ -3503,41 +3273,31 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "complete",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22"
-            ],
-            "findings": [
-              "Captured the exact owner-stated fifteen-item behavioral-domain label."
-            ],
-            "conflicts": []
+            "status": "pending",
+            "sources": [],
+            "findings": [],
+            "conflicts": [
+              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Compared owner-stated label against the eighteen domain labels in SOURCE OS CANON."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "The source canon explicitly states that the domain count is unresolved across book (18), compilation (15), and blueprint (14). Several labels differ in wording; no automatic crosswalk is justified."
+              "Independent corroboration not yet performed for the current record content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "complete",
-            "sources": [
-              "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
-            ],
-            "findings": [
-              "Kept the fifteen-item list separate from the eighteen source-canon labels and left all semantic parent links unset."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "Definitions, source version, and any approved label-to-label crosswalk remain unresolved."
+              "Cross-record synthesis and owner/canon ruling not yet completed."
             ]
           }
         ]
@@ -8647,39 +8407,31 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "complete",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-          ],
-          "findings": [
-            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
-          ],
-          "conflicts": []
+          "status": "pending",
+          "sources": [],
+          "findings": [],
+          "conflicts": [
+            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
+          "status": "pending",
           "sources": [],
-          "findings": [
-            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
-          ],
+          "findings": [],
           "conflicts": [
-            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+            "Independent corroboration not yet performed for the current record content."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "blocked",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-          ],
-          "findings": [
-            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+            "Cross-record synthesis and owner/canon ruling not yet completed."
           ]
         }
       ],
@@ -8697,6 +8449,10 @@
         {
           "date": "2026-10-22",
           "change": "Made missing canonical content explicit in required record fields without inventing names or affirmations."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
         }
       ],
       "kind": "conscious_domain",
@@ -8721,39 +8477,31 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "complete",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-            ],
-            "findings": [
-              "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
-            ],
-            "conflicts": []
+            "status": "pending",
+            "sources": [],
+            "findings": [],
+            "conflicts": [
+              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "blocked",
+            "status": "pending",
             "sources": [],
-            "findings": [
-              "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
-            ],
+            "findings": [],
             "conflicts": [
-              "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+              "Independent corroboration not yet performed for the current record content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "blocked",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-            ],
-            "findings": [
-              "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+              "Cross-record synthesis and owner/canon ruling not yet completed."
             ]
           }
         ]
@@ -8813,39 +8561,31 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "complete",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-          ],
-          "findings": [
-            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
-          ],
-          "conflicts": []
+          "status": "pending",
+          "sources": [],
+          "findings": [],
+          "conflicts": [
+            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
+          "status": "pending",
           "sources": [],
-          "findings": [
-            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
-          ],
+          "findings": [],
           "conflicts": [
-            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+            "Independent corroboration not yet performed for the current record content."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "blocked",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-          ],
-          "findings": [
-            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+            "Cross-record synthesis and owner/canon ruling not yet completed."
           ]
         }
       ],
@@ -8863,6 +8603,10 @@
         {
           "date": "2026-10-22",
           "change": "Made missing canonical content explicit in required record fields without inventing names or affirmations."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
         }
       ],
       "kind": "conscious_domain",
@@ -8887,39 +8631,31 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "complete",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-            ],
-            "findings": [
-              "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
-            ],
-            "conflicts": []
+            "status": "pending",
+            "sources": [],
+            "findings": [],
+            "conflicts": [
+              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "blocked",
+            "status": "pending",
             "sources": [],
-            "findings": [
-              "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
-            ],
+            "findings": [],
             "conflicts": [
-              "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+              "Independent corroboration not yet performed for the current record content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "blocked",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-            ],
-            "findings": [
-              "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+              "Cross-record synthesis and owner/canon ruling not yet completed."
             ]
           }
         ]
@@ -8980,39 +8716,31 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "complete",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-          ],
-          "findings": [
-            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
-          ],
-          "conflicts": []
+          "status": "pending",
+          "sources": [],
+          "findings": [],
+          "conflicts": [
+            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
+          "status": "pending",
           "sources": [],
-          "findings": [
-            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
-          ],
+          "findings": [],
           "conflicts": [
-            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+            "Independent corroboration not yet performed for the current record content."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "blocked",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-          ],
-          "findings": [
-            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+            "Cross-record synthesis and owner/canon ruling not yet completed."
           ]
         }
       ],
@@ -9030,6 +8758,10 @@
         {
           "date": "2026-10-22",
           "change": "Made missing canonical content explicit in required record fields without inventing names or affirmations."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
         }
       ],
       "kind": "conscious_domain",
@@ -9054,39 +8786,31 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "complete",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-            ],
-            "findings": [
-              "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
-            ],
-            "conflicts": []
+            "status": "pending",
+            "sources": [],
+            "findings": [],
+            "conflicts": [
+              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "blocked",
+            "status": "pending",
             "sources": [],
-            "findings": [
-              "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
-            ],
+            "findings": [],
             "conflicts": [
-              "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+              "Independent corroboration not yet performed for the current record content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "blocked",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-            ],
-            "findings": [
-              "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+              "Cross-record synthesis and owner/canon ruling not yet completed."
             ]
           }
         ]
@@ -9147,39 +8871,31 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "complete",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-          ],
-          "findings": [
-            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
-          ],
-          "conflicts": []
+          "status": "pending",
+          "sources": [],
+          "findings": [],
+          "conflicts": [
+            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
+          "status": "pending",
           "sources": [],
-          "findings": [
-            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
-          ],
+          "findings": [],
           "conflicts": [
-            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+            "Independent corroboration not yet performed for the current record content."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "blocked",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-          ],
-          "findings": [
-            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+            "Cross-record synthesis and owner/canon ruling not yet completed."
           ]
         }
       ],
@@ -9197,6 +8913,10 @@
         {
           "date": "2026-10-22",
           "change": "Made missing canonical content explicit in required record fields without inventing names or affirmations."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
         }
       ],
       "kind": "conscious_domain",
@@ -9221,39 +8941,31 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "complete",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-            ],
-            "findings": [
-              "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
-            ],
-            "conflicts": []
+            "status": "pending",
+            "sources": [],
+            "findings": [],
+            "conflicts": [
+              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "blocked",
+            "status": "pending",
             "sources": [],
-            "findings": [
-              "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
-            ],
+            "findings": [],
             "conflicts": [
-              "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+              "Independent corroboration not yet performed for the current record content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "blocked",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-            ],
-            "findings": [
-              "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+              "Cross-record synthesis and owner/canon ruling not yet completed."
             ]
           }
         ]
@@ -9314,39 +9026,31 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "complete",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-          ],
-          "findings": [
-            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
-          ],
-          "conflicts": []
+          "status": "pending",
+          "sources": [],
+          "findings": [],
+          "conflicts": [
+            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
+          "status": "pending",
           "sources": [],
-          "findings": [
-            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
-          ],
+          "findings": [],
           "conflicts": [
-            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+            "Independent corroboration not yet performed for the current record content."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "blocked",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-          ],
-          "findings": [
-            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+            "Cross-record synthesis and owner/canon ruling not yet completed."
           ]
         }
       ],
@@ -9364,6 +9068,10 @@
         {
           "date": "2026-10-22",
           "change": "Made missing canonical content explicit in required record fields without inventing names or affirmations."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
         }
       ],
       "kind": "conscious_domain",
@@ -9388,39 +9096,31 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "complete",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-            ],
-            "findings": [
-              "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
-            ],
-            "conflicts": []
+            "status": "pending",
+            "sources": [],
+            "findings": [],
+            "conflicts": [
+              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "blocked",
+            "status": "pending",
             "sources": [],
-            "findings": [
-              "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
-            ],
+            "findings": [],
             "conflicts": [
-              "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+              "Independent corroboration not yet performed for the current record content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "blocked",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-            ],
-            "findings": [
-              "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+              "Cross-record synthesis and owner/canon ruling not yet completed."
             ]
           }
         ]
@@ -9481,39 +9181,31 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "complete",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-          ],
-          "findings": [
-            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
-          ],
-          "conflicts": []
+          "status": "pending",
+          "sources": [],
+          "findings": [],
+          "conflicts": [
+            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
+          "status": "pending",
           "sources": [],
-          "findings": [
-            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
-          ],
+          "findings": [],
           "conflicts": [
-            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+            "Independent corroboration not yet performed for the current record content."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "blocked",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-          ],
-          "findings": [
-            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+            "Cross-record synthesis and owner/canon ruling not yet completed."
           ]
         }
       ],
@@ -9531,6 +9223,10 @@
         {
           "date": "2026-10-22",
           "change": "Made missing canonical content explicit in required record fields without inventing names or affirmations."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
         }
       ],
       "kind": "conscious_domain",
@@ -9555,39 +9251,31 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "complete",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-            ],
-            "findings": [
-              "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
-            ],
-            "conflicts": []
+            "status": "pending",
+            "sources": [],
+            "findings": [],
+            "conflicts": [
+              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "blocked",
+            "status": "pending",
             "sources": [],
-            "findings": [
-              "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
-            ],
+            "findings": [],
             "conflicts": [
-              "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+              "Independent corroboration not yet performed for the current record content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "blocked",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-            ],
-            "findings": [
-              "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+              "Cross-record synthesis and owner/canon ruling not yet completed."
             ]
           }
         ]
@@ -9648,39 +9336,31 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "complete",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-          ],
-          "findings": [
-            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
-          ],
-          "conflicts": []
+          "status": "pending",
+          "sources": [],
+          "findings": [],
+          "conflicts": [
+            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
+          "status": "pending",
           "sources": [],
-          "findings": [
-            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
-          ],
+          "findings": [],
           "conflicts": [
-            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+            "Independent corroboration not yet performed for the current record content."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "blocked",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-          ],
-          "findings": [
-            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+            "Cross-record synthesis and owner/canon ruling not yet completed."
           ]
         }
       ],
@@ -9698,6 +9378,10 @@
         {
           "date": "2026-10-22",
           "change": "Made missing canonical content explicit in required record fields without inventing names or affirmations."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
         }
       ],
       "kind": "conscious_domain",
@@ -9722,39 +9406,31 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "complete",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-            ],
-            "findings": [
-              "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
-            ],
-            "conflicts": []
+            "status": "pending",
+            "sources": [],
+            "findings": [],
+            "conflicts": [
+              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "blocked",
+            "status": "pending",
             "sources": [],
-            "findings": [
-              "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
-            ],
+            "findings": [],
             "conflicts": [
-              "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+              "Independent corroboration not yet performed for the current record content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "blocked",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-            ],
-            "findings": [
-              "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+              "Cross-record synthesis and owner/canon ruling not yet completed."
             ]
           }
         ]
@@ -9815,39 +9491,31 @@
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "complete",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-          ],
-          "findings": [
-            "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
-          ],
-          "conflicts": []
+          "status": "pending",
+          "sources": [],
+          "findings": [],
+          "conflicts": [
+            "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+          ]
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "blocked",
+          "status": "pending",
           "sources": [],
-          "findings": [
-            "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
-          ],
+          "findings": [],
           "conflicts": [
-            "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+            "Independent corroboration not yet performed for the current record content."
           ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "blocked",
-          "sources": [
-            "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-          ],
-          "findings": [
-            "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
-          ],
+          "status": "pending",
+          "sources": [],
+          "findings": [],
           "conflicts": [
-            "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+            "Cross-record synthesis and owner/canon ruling not yet completed."
           ]
         }
       ],
@@ -9865,6 +9533,10 @@
         {
           "date": "2026-10-22",
           "change": "Made missing canonical content explicit in required record fields without inventing names or affirmations."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
         }
       ],
       "kind": "conscious_domain",
@@ -9889,39 +9561,31 @@
           {
             "pass": 1,
             "name": "primary_source_extraction",
-            "status": "complete",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-            ],
-            "findings": [
-              "Captured the owner-stated taxonomy item or explicit unresolved slot as supplied; no canonical source wording was invented."
-            ],
-            "conflicts": []
+            "status": "pending",
+            "sources": [],
+            "findings": [],
+            "conflicts": [
+              "Re-run against the authoritative source edition for this record; prior inventory pass only established the label/source gap, not the content now added."
+            ]
           },
           {
             "pass": 2,
             "name": "independent_corroboration_and_contradiction",
-            "status": "blocked",
+            "status": "pending",
             "sources": [],
-            "findings": [
-              "Searched the inspected MOB/Reboot-OS source index, canonical-table manifest, and relevant source modules; no authoritative definition for this item was located in the reviewed evidence."
-            ],
+            "findings": [],
             "conflicts": [
-              "A failed or empty search does not prove that a source does not exist elsewhere in the repository, manuscript, branches, or conversation history."
+              "Independent corroboration not yet performed for the current record content."
             ]
           },
           {
             "pass": 3,
             "name": "synthesis_and_cross_record_consistency",
-            "status": "blocked",
-            "sources": [
-              "Owner-provided ATUNED DEV conversation context, 2026-10-22; no canonical repository document located in the inspected sources."
-            ],
-            "findings": [
-              "Preserved the item in the registry without assigning unsupported semantic parent/child edges."
-            ],
+            "status": "pending",
+            "sources": [],
+            "findings": [],
             "conflicts": [
-              "Definitions, taxonomy identity, and parent/child structure cannot be synthesized reliably until authoritative source material is recovered."
+              "Cross-record synthesis and owner/canon ruling not yet completed."
             ]
           }
         ]
@@ -24176,7 +23840,7 @@
       "canonicalNamesRecovered": 1,
       "sourceComplete": 0
     },
-    "researchPasses": "Not marked complete by this scaffolding update; evidence-based passes remain to be executed for each record.",
+    "researchPasses": "All 69 pass slots across 23 records explicitly pending; no research pass is claimed complete by the population update.",
     "runtimeIntegration": "Not verified; template catalog remains not yet integrated with engine.",
     "warning": "Structural completeness is not semantic/source completeness. Do not treat provisional text or source-gap placeholders as canonical."
   }
