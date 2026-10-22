@@ -26,7 +26,7 @@ Owner instruction: Set up every record in the shared Nerve-to-Super-Complex reco
 ## 3. Files created in this first record-setup round
 
 - `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_SCHEMA_v1.json` — shared JSON Schema for the record envelope.
-- `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json` — initial registry of 93 records/recorded mapping rows. Every record has three research-pass slots, currently pending. This is an inventory seed, not a claim of completeness or approval.
+- `docs/data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json` — 107 entries: 93 source-backed/owner-stated records and mapping rows plus 14 explicitly non-canonical Blueprint Domain visualization-slot placeholders. Each entry has exactly three research-pass slots. This is an inventory seed, not a claim of complete canonical coverage or approval.
 
 ## 4. Record inventory seeded
 
@@ -39,7 +39,9 @@ Owner instruction: Set up every record in the shared Nerve-to-Super-Complex reco
 | Cultural-figure/domain mappings | 12 | Exact rows from `CDOMAIN.json`; a separate table until taxonomy semantics are verified. |
 | Archetype/domain mappings | 18 | Exact rows from `ARCHDOM.json`; target domain equivalence is unverified. |
 | Archetype/fetter/seat mappings | 18 | Exact rows from `ARCH18.json`; canonical status and fetter semantics are unverified. |
-| **Total seeded registry entries** | **93** | Counts inventory entries, including mapping rows; not the final canonical denominator for the entire engine. |
+| **Source-backed/owner-stated entries** | **93** | Counts records and mapping rows; not the final canonical denominator for the entire engine. |
+| Blueprint Domain visualization placeholders | 14 | Slot-only placeholders; names/definitions are unknown and must not be exposed as canonical records. |
+| **Total registry entries including placeholders** | **107** | Inventory count, not the final canonical denominator for the entire engine. |
 
 This inventory is deliberately not a forced single hierarchy. The owner-stated hierarchy Roots → Domains → Blueprint Archetypes → Jungian Archetypes is a working structure to validate, not permission to force all source tables into that chain.
 
@@ -143,13 +145,14 @@ Do not claim a long-running background process is active. Continue the loop thro
 
 ## 10. Current status and next checkpoint
 
-- Registry seed: **93 entries created in MOB**.
-- Schema: **created in MOB**.
-- Three-pass research: **0/93 records completed** at registry creation; every pass is pending.
-- Semantic parent/child wiring: **not started**, by design, until source-first inventory and research establish supported edges.
+- Registry: **107 entries** — 93 source-backed/owner-stated entries and 14 visualization-slot placeholders.
+- Schema: **created in MOB**; a custom structural audit found 107 unique IDs, exactly three research-pass slots per entry, and no missing shared-envelope fields.
+- Three-pass source review: **66/93 source-backed entries complete for source-row review** (18 archetypes, 18 ARCHDOM mappings, 18 ARCH18 mappings, 12 CDOMAIN mappings). This does not mean their taxonomy semantics are approved.
+- Owner-stated roots/domains/Conscious Domain slots: pass 1 recorded; passes 2 and 3 blocked pending canonical source recovery.
+- Blueprint Domain placeholders: 14 visualization slots recorded; passes 2 and 3 blocked because the visual count does not provide names or definitions.
+- Semantic parent/child wiring: **not started**; do not create unsupported crosswalks.
 - Template assignment, generated runtime parity, graph traversal, and tests: **not yet run for this registry**.
-- Confidence in the *inventory counts for the repository tables inspected*: high.
-- Confidence that the 93 entries are the complete canonical deep-psychological denominator: low; primary-source recovery remains open.
+- Confidence in inspected repository table counts: high. Confidence in completeness of the canonical deep-psychological denominator: low.
 
 ### Immediate next execution
 1. Recover canonical roots/domain/Conscious Domain source from the project's documentation and manuscript artifacts.
@@ -158,3 +161,25 @@ Do not claim a long-running background process is active. Continue the loop thro
 4. Populate complete content and templates.
 5. Add typed parent/child edges, generate, test, and trace both directions.
 6. Refresh this TDD, the layer-count dashboard, source index/register, and executive handshake with actual counts and test output.
+
+## 11. Additional source discovery and three-pass cross-check (2026-10-22)
+
+### Pass A — primary source extraction
+- `atuned/src/40_the-archetypes.js` states the first twelve archetype entries are carried over from the owner’s dictation; six entries appended on 2026-09-24 are flagged as web-researched placeholders and not dictated.
+- The six flagged entries are Hero, Everyman, Mentor, Shadow, Shapeshifter, and Healer.
+- `atuned/data/canon_tables/ARCH12.json` contains 18 actual entries; `ARCH18.json` and `ARCHDOM.json` each also enumerate 18 archetype keys.
+- `atuned/src/45_the-psyche-map.js` defines visualization layers with display counts: Conscious Domains 8, Blueprint Domains 14, Archetypes 12, Masks 7, Hyper-Complexes 6, Saboteurs 14, Complexes 12, Clusters 9, Fetters 18, Child Fetters 9.
+- `atuned/data/canon_tables/manifest.json` separately declares ARCH12=18, ARCH18=18, ARCHDOM=18, CDOMAIN=12, MASKS6=6, HYPER=8, SAB33=33, NODEREG=112. These are not all the same denominator.
+
+### Pass B — independent table/code cross-check
+- All 18 archetype names align across the inspected ARCH12, ARCH18, and ARCHDOM tables. The module's provenance comment qualifies the final six as non-dictated web-researched placeholders.
+- All 18 ARCHDOM rows and all 18 ARCH18 rows received three repository-evidence review passes; their source rows are preserved separately and no semantic cross-layer edge was approved.
+- All 12 CDOMAIN rows received three source-consistency passes. The table’s intended meaning and any relation to Conscious Domains or the fifteen owner-stated behavioral domains remain unresolved.
+- The psyche-map display counts conflict with canonical table counts for Archetypes, Masks, Hyper-Complexes, Saboteurs, and Fetters. The display counts are visualization declarations, not proof of canonical record denominators. Fourteen Blueprint Domain slots were added as explicitly non-canonical placeholders only.
+
+### Pass C — synthesis and gap disposition
+- Registry status is 107 entries, of which 93 are source-backed/owner-stated records or mapping rows and 14 are visual-slot placeholders.
+- Three-pass review completed for 66/93 source-backed entries. Root/domain/Conscious Domain entries remain blocked after pass 1 because authoritative definitions and independent corroboration were not located in the inspected sources.
+- The 18 archetype content records are populated from ARCH12. Six records retain explicit non-dictated provenance; taxonomy identity remains unresolved for all 18.
+- No new semantic parent/child edges have been added. This is intentional: source row consistency does not prove a causal or hierarchical relationship.
+- The registry passed a structural audit for unique IDs, required envelope fields, and exactly three ordered pass slots per entry. This was a custom structural audit, not a full JSON Schema validator or runtime integration test.
