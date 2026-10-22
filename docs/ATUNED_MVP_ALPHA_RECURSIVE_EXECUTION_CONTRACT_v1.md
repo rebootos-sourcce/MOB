@@ -32,6 +32,14 @@ Each block is executed in dependency order. After every block:
 6. Append a Development Statistics Snapshot after every build/pass: overall verified completion and remaining percentage; P0–P6 completion; implemented versus verified work; passed/failed/blocked/not-run tests; open gaps; change since the previous evidence-backed snapshot; and the next target. Percentages must be computed from explicit acceptance criteria, never inferred from commits or document count.
 7. A separate Development Metrics & Verification Auditor responsibility reviews the snapshot each turn. It must flag unsupported completion claims and must not invent test results or percentages.
 
+## Block 1 — P0 canonical contract and owner map (COMPLETE)
+P0 exit decisions are recorded in `docs/ATUNED_MVP_ALPHA_CANONICAL_RECORD_OWNER_AUDIT_v1.md` v1.1. P0 is complete as an architecture/ownership contract, not as runtime implementation. The canonical choices are: Vritti is the linked total sensory-emotional signal, not a new `p.vritti[]` store; fetter is the limiting-belief pattern; qualium is an orientation attribute of the Vritti→fetter interpretation/association; tone is owned/referenced by the canonical nerve-address node/seat owner; associations are provenance-bearing and not causation; the existing 21-law CQ remains the sole operational calculator until a versioned reconciliation of `CQ = (Integrity × Intention) / Resistance` defines units, normalization and zero-resistance behavior. Runtime mapping of `FLOWSEAT` and trace schema changes are P1 implementation tasks, not open P0 semantic decisions.
+
+### P0 exit gate
+- [x] Definitions, current owners, target owners, cardinality, provenance, metric isolation and CQ version policy documented.
+- [x] Runtime gaps moved into P1/P2 acceptance criteria.
+- [x] No standalone Vritti collection.
+
 ## Block 1 — Baseline and authority reconciliation
 ### Work
 - Inventory canonical schema, persistence boundary, trace graph, release queue/session owner, UI rendering owner, tests, build scripts, and CI.
@@ -49,7 +57,7 @@ Each block is executed in dependency order. After every block:
 ### Exit evidence
 Repository paths, source contracts, dependency map, and contradiction list.
 
-## Block 2 — Vritti nerve record and fetter marker
+## Block 2 — P1/P2 record, trace and marker wiring (NEXT)
 ### Work
 - Map the existing source/imprint, fetter/pattern, nerve-address node, tone, qualium semantics, and trace owners before changing storage. See `docs/ATUNED_MVP_ALPHA_CANONICAL_RECORD_OWNER_AUDIT_v1.md`. Do not add a standalone top-level Vritti collection by default; Vritti is the total waveform connecting existing owners.
 - Preserve raw sensory and emotional source inputs, context, time, provenance, confidence, and waveform representation/method at their canonical owner. Existing story text/onboarding fields must not be overstated as a complete waveform record. Do not invent physiological units.
@@ -140,4 +148,4 @@ Build/test/CI evidence and final Alpha snapshot with no invented scores.
 | Release-chain browser tests | Real candidate revision passes documented browser tests | Not run in this session |
 
 ## Current boundary
-This contract is a superseding execution plan and KPI ledger. Qualium is defined as the orientation of distortion; its canonical field/record owner remains unresolved pending the source audit and domain mapping. The earlier draft's standalone Vritti collection change was reverted after owner clarification. It does not claim production three-layer wiring, marker rendering, voice hit feedback, or test execution. Each such item becomes complete only when implementation and verification evidence are linked.
+This contract is a superseding execution plan and KPI ledger. P0 is complete as the canonical architecture/ownership contract. Qualium is defined as the orientation attribute of the Vritti→fetter interpretation/association; tone belongs to the canonical nerve-address node/seat owner. Runtime field/edge wiring, FLOWSEAT source mapping, marker rendering, release hit feedback and test execution remain incomplete. The earlier draft's standalone Vritti collection change was reverted after owner clarification. It does not claim production three-layer wiring, marker rendering, voice hit feedback, or test execution. Each such item becomes complete only when implementation and verification evidence are linked.
