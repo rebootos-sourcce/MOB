@@ -173,7 +173,13 @@ function lawNow(nm){return lawLift(S.law[nm],lawWork(nm));}
 function cqSum(open){return SINAMES.reduce((a,l)=>a+(lawIn(l)?lawNow(l):(open||0)),0)/210*100;}
 /* One formula implementation shared by the engine and derived CQ ranges. */
 function coherenceFormula(integrity,intention,resistance){
- return clamp(integrity*intention/Math.max(1,resistance),0,100);}
+ /* Integrity and Intention are 0..10; canonical Resistance is DQ on 0..100.
+    Convert the first two to percentage points before applying the owner
+    equation. Zero resistance means no shadow: positive inputs saturate at 100.
+    A zero factor still means zero coherence, including unanswered-law state. */
+ if(integrity<=0||intention<=0)return 0;
+ if(resistance<=0)return 100;
+ return clamp((integrity*10)*(intention*10)/resistance,0,100);}
 /* ============================================================
    WHERE THE FINISHED CQ CAN STILL LAND, read off what is unanswered.
 
@@ -427,9 +433,8 @@ function compute(){
  /* THE SIX AXES multiply what every held pattern costs. Detachment is the
     cheapest gate at 0.60, attachment the most expensive at 1.35. No story
     means no gate evidence, so the factor is 1 and nothing changes.
-    Resistance is computed as a normalized divisor for the canonical CQ
-    formula below. The gate factor remains part of that divisor; it is not a
-    second CQ calculator. */
+    Rz is a separate gate multiplier used by existing vitality/drag mechanics.
+    Canonical CQ Resistance is DQ itself. Do not substitute Rz for DQ. */
  const _vf=verpFactor();
  const Rz=Math.max(1,(1+DQ*0.05)*_vf);
  /* ============================================================
@@ -461,17 +466,18 @@ function compute(){
  /* CANONICAL COHERENCE FORMULA, MODEL 3.
     Integrity is the existing 21-law score on its fixed 0..10 input scale;
     unanswered laws contribute zero, and release lift is already included by
-    cqSum()/lawNow(), so release work is not counted twice.
-    Intention is the existing band-derived It value on its 0..10 scale.
-    Resistance is the existing Rz factor, including total shadow DQ and the
-    existing six-axis gate factor, with its established floor of 1.
-    CQ is now the single operational output of Integrity × Intention / Resistance.
+    cqSum()/lawNow(), so release work is not counted twice. Intention is the
+    existing band-derived It value on its 0..10 scale. Resistance is canonical
+    DQ on 0..100. The first two inputs are converted to 0..100 percentage
+    points; zero Resistance saturates the result at 100 when both are positive.
+    Rz remains a separate gate multiplier for other engine mechanics.
+    CQ is the single operational output of Integrity × Intention / Resistance.
     This deliberately replaces the prior law-only CQ output; history is
     stamped with CQ_MODEL=3 so values from the old arithmetic are not compared
     as though they were produced by this formula. */
  const integrity=cqSum()/10;
  const intention=It;
- const resistance=Rz;
+ const resistance=DQ;
  const CQ=answered===0?0:coherenceFormula(integrity,intention,resistance);
  /* THE LEVER. Expression is CQ times what the shadow leaves: "CQ 100 SQ 0
     ... one pulls down the other, it's a lever", and the pull is his bell,
@@ -621,7 +627,7 @@ function exCeiling(){
  var answered=SINAMES.filter(lawIn).length;
  var integrity=cqSum()/10;
  var intention=clamp(BANDS.reduce(function(a,b){return a+bandIg(b);},0)/BANDS.length,0,10);
- var resistance=Math.max(1,verpFactor());
+ var resistance=0; /* the shadowless ceiling has no DQ resistance */
  var shadowlessCQ=answered===0?0:coherenceFormula(integrity,intention,resistance);
  return shadowlessCQ*(1-leverPull(0));
 }
