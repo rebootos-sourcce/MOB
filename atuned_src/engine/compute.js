@@ -570,7 +570,7 @@ function compute(){
  const carrying=W.filter(n=>n.sq>0).sort((a,b)=>b.sq-a.sq);
  return {loaded,carrying,heaviest:carrying[0]||null,
   sabs,cxs,hys,sups,maskRing,DQ,SQ,PULL,EX,Rz,vf:_vf,SQm,poleMean,JQ,excess,
-  FAM_POLE,dist,Ig,It,CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
+  FAM_POLE,dist,Ig,It,integrity,intention,resistance,CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
   outward,organized,gov,
   will,drag,mask,darkB,darkV,root,rootsIn,weakL,balance:balance()};
 }
