@@ -8178,64 +8178,95 @@ g('SW · a range match is checked at a seat its own first charge can reach');
 }
 
 g('SL · the library: every saboteur has a place in the body, grounded on its own charges, and asks its own band');
-/* PIECES TWO AND THREE OF 22 OCTOBER, engine/data/nodes.js and compute.js.
-   Every SAB33 row but one has a SAB_LIB row, and the one is named here with
-   its reason, so wiring it later is a decision. Superior is retired. A row
-   added on 22 October carries only its own canon charges, because the engine
-   reads an address only through its charge. No two rows share two addresses.
-   And the address route names a row only while its own configuration is on
-   the band ramp. Each rule was run on the build before the fix: the first,
-   the second and the last failed there, and the fetter rule is checked
-   against a known bad row below. */
+/* PIECES TWO AND THREE OF 22 OCTOBER, engine/data/nodes.js and compute.js,
+   and the re-grounding of the first thirteen rows later the same day, which
+   the owner asked for. Every SAB33 row but one has a SAB_LIB row, and the
+   one is named here with its reason, so wiring it later is a decision.
+   Superior is retired. Every row carries only its own canon charges,
+   because the engine reads an address only through its charge, and leans
+   the way its bands do, but for one exception named here. No two rows share
+   two addresses. The address route names a row only while its own
+   configuration is on the band ramp, and it reaches every row inside its
+   own band. Each rule is run first on rows that break it: the thirteen as
+   they came, held below, broke the charge rule 16 times in 10 rows, the
+   lean in three rows and the pair rule once, and three rows of the first
+   pass broke the lean. */
 {
- const {SAB_LIB,HCX_LIB,sabFetters,KB_KEY,BY}=E;
+ const {SAB_LIB,HCX_LIB,ALL_SAB,sabFetters,sabLevels,KB_KEY,BY}=E;
  /* Innocent: one low band, fear 2 to 4, and the addresses that say what it
     does carry Disgust. Three fear addresses only reach the address route's
     load above its band. nodes.js has the measurement. */
  const FLAGGED=['Innocent'];
- /* the thirteen that came with the original source, picked by name before
-    SAB33 was ported, and kept as written. nodes.js records which of them
-    read charges their own row does not key on. */
- const LEGACY=['Micromanager','Victim','Perfectionist','Pleaser','Hyper-Achiever','Hyper-Vigilant','Judge',
-  'Avoider','Worrywart','Loner','Nihilist','Aggressor','Imposter'];
+ /* the thirteen as they came with the original source, before the
+    re-grounding: the known bad case every rule below is run on first */
+ const ASCAME=[['Micromanager',[4,36,50]],['Victim',[6,50,3]],['Perfectionist',[40,37,45]],['Pleaser',[66,2,65]],
+  ['Hyper-Achiever',[33,40,48]],['Hyper-Vigilant',[79,1,82]],['Judge',[37,48,82]],['Avoider',[1,14,89]],
+  ['Worrywart',[45,1,3]],['Loner',[55,1,49]],['Nihilist',[91,88,90]],['Aggressor',[36,49,38]],['Imposter',[2,45,66]]]
+  .map(x=>({nm:x[0],nids:x[1]}));
  const libOf=nm=>SAB_LIB.find(s=>KB_KEY(s.nm)===KB_KEY(nm));
+ const rowOf=nm=>SAB33.find(r=>KB_KEY(r[0])===KB_KEY(nm));
  const unwired=SAB33.filter(r=>!libOf(r[0])).map(r=>r[0]);
  ok(JSON.stringify(unwired)===JSON.stringify(FLAGGED),
   'every SAB33 row has a library row but the one flagged, unwired: '+JSON.stringify(unwired));
+ ok(SAB_LIB.length===SAB33.length-FLAGGED.length,'and one library row each, '+SAB_LIB.length);
  ok(!SAB_LIB.some(s=>KB_KEY(s.nm)==='superior'),'Superior is retired from the library');
- ok([48,33,38].every(i=>SAB_LIB.some(s=>s.nids.indexOf(i)>=0)),
-  'and its three addresses stay named by the rows that hold them, so no inferred cluster takes its place');
+ /* Superior's three addresses. 38 is still Aggressor's. 33 and 48 carry
+    Anger, and since the re-grounding no row that answers to them may hold
+    them, so the solar plexus's inferred anger cluster reads them, in
+    Grandiosity, the family Superior had */
+ const solar=ALL_SAB.filter(s=>s.unnamed&&[33,48].every(i=>s.nids.indexOf(i)>=0));
+ ok(libOf('Aggressor').nids.indexOf(38)>=0&&!SAB_LIB.some(s=>s.nids.indexOf(33)>=0||s.nids.indexOf(48)>=0)
+   &&solar.length===1&&solar[0].hcx==='Grandiosity',
+  '38 stays Aggressor\'s, and 33 and 48 are read by one inferred cluster in Grandiosity: '+JSON.stringify(solar.map(s=>s.nm+' '+s.hcx)));
  ok(SAB_LIB.every(s=>s.nids.length===3&&new Set(s.nids).size===3&&s.nids.every(i=>BY[i]&&!BY[i].b.startsWith('Field'))),
   'every row is three different somatic addresses');
  ok(SAB_LIB.every(s=>HCX_LIB.some(h=>h.nm===s.hcx)),'every row names one of the six families');
- /* GROUNDED ON ITS OWN CHARGES */
+ /* RULE 2, GROUNDED ON ITS OWN CHARGES, on every row: there is no legacy
+    exemption any more */
  const FET={fear:'Fear',anger:'Anger',shame:'Shame',disgust:'Disgust',apathy:'Apathy',shock:'Shock',
   sadness:'Sad',surprise:'Surprise',anticipation:'Anticipation'};
- const offCharge=rows=>{const out=[];rows.forEach(s=>{const row=SAB33.find(r=>KB_KEY(r[0])===KB_KEY(s.nm)); if(!row)return;
+ const offCharge=rows=>{const out=[];rows.forEach(s=>{const row=rowOf(s.nm); if(!row)return;
   const own=row[1].map(p=>FET[p[0]]);
   s.nids.forEach(i=>{if(own.indexOf(BY[i].cf)<0)out.push(s.nm+' '+i+' '+BY[i].k+' carries '+BY[i].cf);});});return out;};
- const added=SAB_LIB.filter(s=>LEGACY.indexOf(s.nm)<0);
- ok(added.length===SAB33.length-LEGACY.length-FLAGGED.length,
-  'the rows added on 22 October are every SAB33 row that is neither legacy nor flagged, '+added.length);
- ok(offCharge(added).length===0,'every address of every added row carries one of its own SAB33 charges, off: '+JSON.stringify(offCharge(added)));
- ok(offCharge([{nm:'Pleaser',nids:[66,2,65]}]).length===3,
-  'and the check catches a row on the wrong charge: Pleaser\'s legacy three are all Shame, its row apathy and fear');
- /* ONE DETECTOR, ONE NAME. No added row shares two addresses with any row.
-    One legacy pair already did, Pleaser and Imposter on 2 and 66, and it is
-    held here as the one known pair so a second cannot join it unseen. */
- const pairs=[];
- for(let i=0;i<SAB_LIB.length;i++)for(let j=i+1;j<SAB_LIB.length;j++){
-  const sh=SAB_LIB[i].nids.filter(x=>SAB_LIB[j].nids.indexOf(x)>=0);
-  if(sh.length>=2)pairs.push(SAB_LIB[i].nm+'/'+SAB_LIB[j].nm);}
- ok(JSON.stringify(pairs)===JSON.stringify(['Pleaser/Imposter']),
-  'no two rows share two addresses but the one legacy pair, '+JSON.stringify(pairs));
- /* THE ADDRESS ROUTE ASKS THE BAND. Pleaser's addresses all carry Shame, so
-    shame alone loads them past 3.7 while its own configuration, apathy and
-    fear, is absent. It is not named. */
- reset(0,0,6); S.charge.Shame=10; let r=compute();
+ const offCame=offCharge(ASCAME);
+ ok(offCame.length===16&&new Set(offCame.map(m=>m.split(' ')[0])).size===10,
+  'the check catches the thirteen as they came: '+offCame.length+' addresses off their own charges in '
+  +new Set(offCame.map(m=>m.split(' ')[0])).size+' rows');
+ ok(offCharge(SAB_LIB).length===0,'and every address of every row carries one of its own SAB33 charges, off: '+JSON.stringify(offCharge(SAB_LIB)));
+ /* RULE 3, A ROW LEANS THE WAY ITS BANDS DO: no charge has more of the three
+    than the charge whose band sits highest, read at its centre. Escapist is
+    the one exception. Its fear band is the higher and only 1 Fear says what
+    it does; nodes.js has the reason and the measurement. */
+ const LEAN_EXCEPT=['Escapist'];
+ const mid=p=>(p[1]+p[2])/2;
+ const leanOff=rows=>rows.filter(s=>{const row=rowOf(s.nm); if(!row)return false;
+  const cnt={}; row[1].forEach(p=>cnt[FET[p[0]]]=0); s.nids.forEach(i=>{if(cnt[BY[i].cf]!==undefined)cnt[BY[i].cf]++;});
+  const top=Math.max(...row[1].map(mid)), topN=Math.max(...row[1].filter(p=>mid(p)===top).map(p=>cnt[FET[p[0]]]));
+  return row[1].some(p=>cnt[FET[p[0]]]>topN);}).map(s=>s.nm);
+ const FIRSTPASS=[{nm:'Hyper-Rational',nids:[81,84,74]},{nm:'Cynic',nids:[77,98,13]},{nm:'Escapist',nids:[14,27,18]}];
+ ok(JSON.stringify(leanOff(ASCAME))===JSON.stringify(['Micromanager','Perfectionist','Judge'])
+   &&JSON.stringify(leanOff(FIRSTPASS))===JSON.stringify(['Hyper-Rational','Cynic','Escapist']),
+  'the check catches the rows that broke the lean, as they came '+JSON.stringify(leanOff(ASCAME))
+  +' and in the first pass '+JSON.stringify(leanOff(FIRSTPASS)));
+ ok(JSON.stringify(leanOff(SAB_LIB))===JSON.stringify(LEAN_EXCEPT),
+  'and every row leans the way its bands do but the one exception, off: '+JSON.stringify(leanOff(SAB_LIB)));
+ /* RULE 4, ONE DETECTOR, ONE NAME: no two rows share two addresses, now with
+    no exception. Pleaser and Imposter shared 2 and 66 as they came. */
+ const pairsOf=rows=>{const out=[];
+  for(let i=0;i<rows.length;i++)for(let j=i+1;j<rows.length;j++){
+   const sh=rows[i].nids.filter(x=>rows[j].nids.indexOf(x)>=0);
+   if(sh.length>=2)out.push(rows[i].nm+'/'+rows[j].nm);}
+  return out;};
+ ok(JSON.stringify(pairsOf(ASCAME))===JSON.stringify(['Pleaser/Imposter']),
+  'the check finds the pair the thirteen came with, '+JSON.stringify(pairsOf(ASCAME)));
+ ok(pairsOf(SAB_LIB).length===0,'and no two rows share two addresses, '+JSON.stringify(pairsOf(SAB_LIB)));
+ /* THE ADDRESS ROUTE ASKS THE BAND. Fear alone loads Pleaser's three past
+    3.7, two of them Fear, while its own configuration, apathy and fear, has
+    no apathy in it. It is not named. */
+ reset(0,0,6); S.charge.Fear=10; let r=compute();
  const pl=libOf('Pleaser'), plW=pl.nids.map(i=>BY[i]).reduce((a,n)=>a+n.sq,0)/3;
  ok(plW>=3.7&&!r.sabs.some(s=>!s.over&&KB_KEY(s.nm)==='pleaser'),
-  'shame alone loads Pleaser\'s three addresses to '+plW.toFixed(2)+' and does not name it, because its own band is apathy and fear');
+  'fear alone loads Pleaser\'s three addresses to '+plW.toFixed(2)+' and does not name it, because its own band is apathy and fear');
  /* and inside its own band the check can never remove a naming: the ramp is
     above zero everywhere inside every band */
  const inside=[];
@@ -8244,11 +8275,32 @@ g('SL · the library: every saboteur has a place in the body, grounded on its ow
   cfgs.forEach(c=>{const L={};Object.keys(FET).forEach(k=>L[k]=c[k]||0);if(sabFetters(row[1],L)<=0)inside.push(row[0]);});});
  ok(inside.length===0,'the band check is open everywhere inside every band, closed at: '+JSON.stringify([...new Set(inside)]));
  /* and the field the address route was built for still names it off its
-    addresses: Pleaser at its own band with its addresses loaded, where the
+    addresses: Pleaser at apathy 3 and fear 7, both inside its band, where the
     address reading is the heavier one and so the entry the merge keeps */
- reset(0,0,6); S.charge.Apathy=4; S.charge.Fear=5; S.charge.Shame=10; r=compute();
+ reset(0,0,6); S.charge.Apathy=3; S.charge.Fear=7; r=compute();
  ok(r.sabs.some(s=>!s.over&&!s.named&&KB_KEY(s.nm)==='pleaser'),
-  'with apathy 4 and fear 5 in its band and its addresses loaded, the address route names Pleaser');
+  'with apathy 3 and fear 7 inside its band, the address route names Pleaser');
+ /* AND THE ADDRESS ROUTE REACHES EVERY ROW INSIDE ITS OWN BAND. As they came,
+    Pleaser, Perfectionist, Hyper-Achiever, Hyper-Vigilant and Worrywart had
+    one address or none on their own charges, so their three reached 3.7
+    only off charges they are not made of, and the address route never named
+    them inside their own band. The route's own test, the mean load of the
+    three at 3.7 or more with the configuration on the ramp, read as SW reads
+    the range route: laws 0 to 10 and five souls, at each band's low, centre
+    and high, nothing else held. Run on the five as they came first. */
+ const SOULS=[[0,[0,1]],[4,[3,7]],[9,[6,11]],[14,[9,2]],[18,[11,5]]];
+ const reached=(nm,nids)=>{const row=rowOf(nm); let cfgs=[{}];
+  row[1].forEach(p=>{cfgs=[].concat(...cfgs.map(c=>[p[1],mid(p),p[2]].map(v=>Object.assign({},c,{[p[0]]:v}))));});
+  return SOULS.some(sl=>[0,2,4,6,8,10].some(law=>cfgs.some(c=>{
+   S.doms=[sl[0]];S.arcs=sl[1].slice();S.roots=[];buildSoul();
+   CHARGES.forEach(ch=>{S.charge[ch]=0;S.replace[ch]=0;}); SINAMES.forEach(l=>S.law[l]=law); lawsIn();
+   Object.keys(c).forEach(k=>{S.charge[FET[k]]=c[k];}); compute();
+   return nids.reduce((a,i)=>a+BY[i].sq,0)/3>=3.7&&sabFetters(row[1],sabLevels(true))>0;})));};
+ const FIVE=['Pleaser','Perfectionist','Hyper-Achiever','Hyper-Vigilant','Worrywart'];
+ const cameReached=FIVE.filter(nm=>reached(nm,ASCAME.find(x=>x.nm===nm).nids));
+ ok(cameReached.length===0,'the check fails the five as they came, reached: '+JSON.stringify(cameReached));
+ const never=SAB_LIB.filter(s=>!reached(s.nm,s.nids)).map(s=>s.nm);
+ ok(never.length===0,'and the address route names every one of the '+SAB_LIB.length+' rows inside its own band, never: '+JSON.stringify(never));
  reset(0,0,6);
 }
 
