@@ -126,6 +126,18 @@ for(let v=0;v<=10;v+=1){const x=reset(0,0,v); if(x.CQ<prev-1e-9)mono=false; prev
 ok(mono,'CQ never falls as integrity rises');
 
 g('5 · CQ bounds and the ceiling');
+/* CQ MODEL 3: the public output is the canonical formula, not a parallel law-only score. */
+{
+ const x=reset(0,0,6);
+ near(x.CQ,0,1e-12,'no answered laws means zero Integrity and zero CQ');
+ ok(E.CQ_MODEL===3,'the formula change has its own model version');
+ ok(x.CQ===clamp(x.integrity*x.intention/x.resistance,0,100),
+  'CQ is Integrity × Intention / Resistance');
+ ok(x.integrity>=0&&x.integrity<=10,'Integrity input is on 0..10');
+ ok(x.intention>=0&&x.intention<=10,'Intention input is on 0..10');
+ ok(x.resistance>=1,'Resistance uses the explicit non-zero engine floor');
+}
+
 r=reset(0,0,10);
 near(r.CQ,100,0.001,'all laws 10, nothing held, CQ is 100');
 ok(r.tier==='Mastery','and the tier is Mastery');
