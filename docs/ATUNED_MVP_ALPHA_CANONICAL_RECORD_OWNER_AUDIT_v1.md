@@ -14,7 +14,7 @@ Establish the canonical semantic boundaries and ownership decisions for Vritti �
 | Fetter | Limiting-belief pattern; individual node/type whose weight contributes to SQ | `CHARGES`, `NODES[].cf`, and trace `pattern:fetter:<name>` | Keep canonical fetter identity; no duplicate fetter records. Current trace type `pattern` is overloaded for address and fetter IDs, so type-safe interpretation must use canonical IDs and validation. |
 | Qualium | **Orientation of the distortion** | No existing field is proven equivalent | Treat as an orientation attribute of the Vritti→fetter interpretation/association, with provenance/status. It is not a separate waveform, fetter, node, tone, score, or top-level collection. Do not alias it to `NODES[].d` or `OUTWARD/INWARD` absent an approved domain mapping. If current edge schema cannot safely own attributes, extend the existing canonical association representation; do not invent parallel state. |
 | Nerve-address node | Canonical address node where the model locates tone | `NODES` in `atuned_src/engine/data/nodes.js`; trace derives address `pattern` nodes | Address ID and nerve label come from `NODES`. Fetter↔address association is many-to-many unless a domain rule narrows it. |
-| Tone/frequency | Tone is attached to the nerve-address node at that address | Source comment in `schema.js` names `FLOWSEAT` as “hertz per seat”; exact runtime declaration/consumer not located by this audit | Domain ownership is fixed: tone is read from the canonical address-node/seat owner and referenced, not copied into Vritti or fetter. Locating the runtime constant and mapping seat→address is a P1 source-wiring task, not an open semantic decision. Do not claim validated biological measurement. |
+| Tone/frequency | Tone is attached to the nerve-address node at that address | `FLOWSEAT`/`seatHz` in `atuned_src/engine/data/practice.js`; consumers in `ui/release.js` and `ui/map.js`; trace derives `toneHz` from address seat | `tracePatternAttrs` resolves the configured seat-tone reference onto the derived address view. It is a sound-healing reference, not a measured physiological frequency, and is not copied into a saved Vritti/fetter record. |
 | Trace graph | Navigation and typed, provenance-bearing relationships among existing owners | `p.trace`, `traceNew`, strict node/edge allowlists and `TRACE_RULES` in `atuned_src/engine/trace.js` | Derive relationships that can be derived; store only relationships/decisions not derivable from source. Association is not causation. New rules/attrs require validation, import/export, UI, and tests together. |
 | CQ / Coherence | CQ is Coherence; partial score is available from zero using the current 21-law/210-point engine | `atuned_src/engine/compute.js`; history stores formula version | Keep current 21-law calculator as the sole operational CQ calculator/version until a versioned model decision changes it. |
 | Conceptual CQ equation | `CQ = (Integrity × Intention) / Resistance` | Owner-provided conceptual relationship; component normalization and denominator behavior are not a fully specified executable metric contract | Treat as a conceptual model to reconcile against operational 21-law CQ; do not ship a second canonical calculator or silently replace CQ. A later version must define units, zero-resistance behavior, normalization, migration, and comparative validation before activation. |
@@ -48,7 +48,7 @@ Rules:
 - Fetter identity: `CHARGES` and `NODES[].cf`; current trace graph has no dedicated `fetter` node type.
 - `NODES[].d` is a node-table distortion descriptor, not qualium by default.
 - `OUTWARD/INWARD` are calculation groupings, not qualium by default.
-- Source comment identifies `FLOWSEAT` as hertz per seat, but this audit did not locate its declaration/consumer; P1 must find it and map canonical address/seat owner before wiring.
+- `FLOWSEAT` is located in `engine/data/practice.js`, with `seatHz` mapping through `PMBANDS`; consumers include release audio and the flow map. The trace-derived address view carries this reference without persisted duplicate truth.
 - Trace graph is strict; a new edge or attribute must be validated across graph functions, profile boundary, UI and tests.
 
 ## Three-pass review result
@@ -72,13 +72,13 @@ Preserve raw source, provenance, candidate/confirmed distinctions, old-profile c
 
 ## Block status
 - **P0 — COMPLETE as architecture/ownership contract.** This is design/contract completion, not runtime completion.
-- **P1 — PARTIAL:** derived signal→fetter and canonical address→fetter association edges are now implemented in `engine/trace.js`; `FLOWSEAT` declaration/consumer remains unresolved and qualium still has no approved value contract.
-- **P2 — PARTIAL:** trace path implemented as derived graph relationships; marker rendering/navigation and full verification remain open.
+- **P1 — PARTIAL:** derived story→impression→fetter and canonical address→fetter association edges are implemented; `FLOWSEAT` tone reference is wired through the existing address-seat mapping. Qualium still has no approved runtime value contract, and sensory/emotional waveform capture is not yet structured.
+- **P2 — PARTIAL:** `engine/loop.js` exposes source-backed signal evidence and `ui/loopread.js` renders a marker with source text, candidate provenance, nerve-address identity, and configured tone reference. Full verification and persistence round-trip remain open.
 - **Build/tests — not run in this pass; candidate CI deploy run is queued, not a test result.**
 
 ## Next recursive actions
-1. **P1-A source/tone:** locate `FLOWSEAT` declaration and every consumer; prove the address→seat→tone lookup from source, not assumptions.
-2. **P1-B trace:** done for the minimum graph path: story/imprint→fetter (`supports`, inferred) and canonical address→fetter (`associated_with`, known), derived from existing owners. No new `p.vritti[]` collection.
-3. **P1-C qualium:** still blocked on an approved orientation vocabulary/value contract and canonical owner; do not invent values or add an unchecked edge attribute.
+1. **P1-A source/tone:** implemented by resolving `FLOWSEAT`/`seatHz` through the existing seat map and deriving the tone reference on address nodes; no persisted duplicate tone field.
+2. **P1-B trace:** minimum graph path and UI marker are implemented: story→impression→fetter (`produces`/`supports`, inferred) and canonical address→fetter (`associated_with`, known), derived from existing owners. No new `p.vritti[]` collection.
+3. **P1-C qualium:** remains blocked at runtime-field materialization by the absence of an approved orientation vocabulary/value contract and canonical owner; the semantic definition “orientation of distortion” is fixed. Do not invent values or equate it with `NODES[].d` or OUTWARD/INWARD.
 4. Add/execute tests for provenance, cardinality, idempotency, old-profile compatibility, export/import/reload, and metric isolation.
 5. Run build, engine tests, release-chain tests and candidate-revision CI; update the development snapshot with evidence.
