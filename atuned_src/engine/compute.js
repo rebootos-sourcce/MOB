@@ -94,10 +94,9 @@ const CQ_MODEL=2;
      and 92, plus or minus 3 points of accuracy. Those 15k releases raised my
      CQ."
 
-   Integrity's input to CQ is the 21 laws over 210. The operational CQ also
-   multiplies normalized Integrity by Intention and divides by Resistance.
-   DQ feeds Resistance; SQ remains the separate total of node shadow weights.
-   A release changes Integrity by lifting each answered law at its seat.
+   CQ is still the 21 laws over 210, and nothing else enters it. SQ and DQ are
+   not folded in. What changed is what a law reads: a release closes a small
+   share of the distance between each law at its seat and 10.
 
      law as CQ reads it = 10 - (10 - answer) x (1 - LIFT_R)^n
 
@@ -174,10 +173,15 @@ function cqSum(open){return SINAMES.reduce((a,l)=>a+(lawIn(l)?lawNow(l):(open||0
 /* THE SEESAW, AT MODULE LEVEL so exCeiling can read it too. Will can only
    push the tipping point up from 5 toward 6, never down: moving it the
    other way breaks the rule that "paralysed" pulls at least a hundred times
-   harder than "a little tense" at every level of will. Will has no
-   measurement anywhere in this engine yet, so every caller passes 0, which
-   makes this exactly leverPull, to the digit, until it is real. */
-function leverPullWill(v,w){return leverPhi((v-LEVER_MU-w)/LEVER_SD)/leverPhi((10-LEVER_MU-w)/LEVER_SD);}
+   harder than "a little tense" at every level of will.
+   ONE CURVE, NOT TWO. This is leverPull moved right by w and divided by its
+   own value at 10, so 10 still pulls 1. It was a second copy of the bell,
+   free to drift from the fitted one with nothing tying them. leverPull keeps
+   its body, because engine/pct.js cites it word for word. Will has no
+   measurement anywhere in this engine yet, so every caller passes 0, and at
+   0 this is leverPull to the bit: v minus 0 is v, and leverPull(10) is
+   exactly 1. tests/engine.js 36b holds the bit. */
+function leverPullWill(v,w){return leverPull(v-w)/leverPull(10-w);}
 /* ============================================================
    THE SEVEN CHAKRA WEIGHTS. weight is DQ's own rule, held per seat instead
    of over the whole body: the seat's addresses' SQ summed, over ten times
@@ -233,7 +237,7 @@ function cqSpan(){
    which relCoolDown guarantees is the one the laws in S came from. Returns
    what moved, by law, and CQ before and after as that record reads. */
 function releaseWork(p,keys){
- var out={laws:{}, cq0:compute().CQ, cq1:null, n:0};
+ var out={laws:{}, cq0:cqSum(), cq1:null, n:0};
  /* show only on a worked example, engine/showonly.js */
  if(showRefuse('release',p)){out.cq1=out.cq0;out.refused='example';return out;}
  if(!p||!keys||!keys.length){out.cq1=out.cq0;return out;}
@@ -248,7 +252,7 @@ function releaseWork(p,keys){
   if(!w||w.on!==v)w=p.work[l.nm]={n:0,on:v};
   var before=lawLift(v,w.n); w.n+=u;
   out.laws[l.nm]={seat:l.b, u:u, n:w.n, from:before, to:lawLift(v,w.n)};});
- out.cq1=compute().CQ;
+ out.cq1=cqSum();
  return out;}
 /* A LAW ANSWERED AGAIN IS A NEW READING, even when it lands on the same
    number. The count above would survive a same number answer, because it is
@@ -462,10 +466,8 @@ function compute(){
  const poleMean=W.reduce((a,n)=>a+n.pole,0)/108;
  const JQ=W.reduce((a,n)=>a+n.jq,0)/108;
  const excess=W.filter(n=>n.jq>=4);
- /* Ig and It remain supporting awareness/will readouts. The canonical CQ
-    formula uses integrity (the fixed-denominator law score), It as Intention,
-    and Rz as the normalized Resistance factor; do not substitute Ig for
-    integrity or create a second CQ output. */
+ /* Ig and It no longer enter CQ. They are kept because the Awareness and
+    Will readouts and the will against drag steer below still read them. */
  const Ig=clamp(SINAMES.reduce((a,l)=>a+S.law[l],0)/21 + poleMean*0.30 - JQ*0.42,0,10);
  const It=clamp(BANDS.reduce((a,b)=>a+bandIg(b),0)/7 + poleMean*0.22 - JQ*0.30,0,10);
  /* DQ, THE TOTAL SHADOW. "DQ is a total shadow. I don't know why you keep
@@ -488,9 +490,10 @@ function compute(){
  /* THE SIX AXES multiply what every held pattern costs. Detachment is the
     cheapest gate at 0.60, attachment the most expensive at 1.35. No story
     means no gate evidence, so the factor is 1 and nothing changes.
-    Rz is the normalized Resistance input for CQ, derived from total-shadow
-    DQ and the six-axis gate factor. DQ remains the canonical total-shadow
-    measure; SQ remains total node shadow weight. */
+    Resistance, Rz, is still computed and returned, and it divides nothing:
+    the owner ruled CQ is the 21 laws and nothing else. Rz is the only place
+    the six gates' multiplier lands, and no surface reads it, which
+    engine/verp.js says the same way from its side. */
  const _vf=verpFactor();
  const Rz=Math.max(1,(1+DQ*0.05)*_vf);
  /* ============================================================
@@ -649,7 +652,7 @@ function compute(){
  const carrying=W.filter(n=>n.sq>0).sort((a,b)=>b.sq-a.sq);
  return {loaded,carrying,heaviest:carrying[0]||null,
   sabs,cxs,hys,sups,maskRing,DQ,SQ,PULL,EX,Rz,vf:_vf,SQm,poleMean,JQ,excess,
-  FAM_POLE,dist,Ig,It,will:WILL,seats:seatRows(),CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
+  FAM_POLE,dist,Ig,It,seats:seatRows(),CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
   outward,organized,gov,
   will,drag,mask,darkB,darkV,root,rootsIn,weakL,balance:balance()};
 }

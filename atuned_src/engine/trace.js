@@ -1042,9 +1042,15 @@ function traceFromRecord(p,intents,reading){
      existing impression node as the derived signal-reading layer. Keep
      story→address supports unchanged for legacy consumers; the signal
      impression supports the parser-identified fetter separately. Both edges
-     are derived with inferred provenance, never causation or metric writes. */
+     are derived with inferred provenance, never causation or metric writes.
+     A STORY THE SNIFFER READ NOTHING IN HAS NO READING, SO IT HAS NO
+     IMPRESSION. An impression is the reading of a story (TRACE_NEEDS), and
+     one made for a reading that found nothing joined the story to the graph,
+     so the drawer, which flags a story connected to nothing and never hides
+     it (daily.js, dlyWhy), stopped seeing it. Red in tests/daily.js until
+     this, and main, which has no signal path, never was. */
   var signalId='signal:'+id;
-  var signal=node('impression',signalId,'inferred',{derived:true});
+  var signal=im.length?node('impression',signalId,'inferred',{derived:true}):null;
   if(signal)edge(sk,'produces',signal,'inferred',{derived:true,
    why:'the story text was read as a signal impression; this is a derived interpretation, not a separate persisted waveform'});
   var fetters={};

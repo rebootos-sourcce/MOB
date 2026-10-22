@@ -138,6 +138,35 @@ g('5 · CQ bounds and the ceiling');
  ok(x.integrity===undefined&&x.intention===undefined&&x.resistance===undefined,
   'the model 3 integrity/intention/resistance split is gone, not just unused');
 }
+/* NO KEY OF THE READING IS WRITTEN TWICE. A key written twice in one object
+   literal keeps the last and drops the first without a word, and node --check
+   allows it. will:WILL sat in compute()'s return beside the older will
+   shorthand and lost to it on every call, so compute().will was never the 0
+   it was added to carry. Read off compute's own source and held against the
+   keys a real reading has, after the reader is checked on a literal that
+   does carry a duplicate. */
+{
+ const keysOf=src=>{
+  const at=src.lastIndexOf('return {'); if(at<0)return null;
+  const ks=[]; let depth=0, cur='', q='';
+  for(let i=at+8;i<src.length;i++){const c=src[i];
+   if(q){cur+=c; if(c==='\\')cur+=src[++i]; else if(c===q)q=''; continue;}
+   if(c==="'"||c==='"'||c==='`'){q=c; cur+=c; continue;}
+   if('([{'.includes(c))depth++;
+   if(')]}'.includes(c)){if(!depth)break; depth--;}
+   if(c===','&&!depth){ks.push(cur); cur=''; continue;}
+   cur+=c;}
+  ks.push(cur);
+  return ks.map(s=>s.trim()).filter(Boolean).map(s=>(/^([\w$]+)\s*:/.exec(s)||[0,s])[1]);};
+ const twice=ks=>ks.filter((k,i)=>ks.indexOf(k)!==i);
+ const known=keysOf("function f(){return {a,b:g(1,2),c:'x,}',a:3};}");
+ ok(JSON.stringify(known)==='["a","b","c","a"]'&&JSON.stringify(twice(known))==='["a"]',
+  'the key reader finds the one key written twice in a literal that has one, '+JSON.stringify(known));
+ const ks=keysOf(E.compute.toString()), live=Object.keys(compute());
+ ok(ks&&twice(ks).length===0,'no key of compute()\'s reading is written twice, twice: '+JSON.stringify(ks&&twice(ks)));
+ ok(ks&&ks.length===live.length&&live.every(k=>ks.indexOf(k)>=0),
+  'and the keys read off its source are the keys a reading has, '+(ks&&ks.length)+' against '+live.length);
+}
 
 r=reset(0,0,10);
 near(r.CQ,100,0.001,'all laws 10, nothing held, CQ is 100');
@@ -4724,11 +4753,13 @@ g('36b · the fitted CQ model, reproduced from the simulation that fitted it');
  near(h.DQ,h.SQ.reduce((a,v)=>a+v,0)/1120*100,1e-9,'DQ is the 112 over 1120');
  near(h.EX,h.CQ*(1-h.PULL),1e-12,'and expression is CQ times what the pull leaves');
  /* WILL IS NOT MEASURED, SO THE SEESAW IS THE SHIPPED BELL, TO THE BIT.
-    compute() reads its pull through leverPullWill, a second copy of the
-    curve whose centre may one day move with Will, and Will is 0 until
-    something measures it. The curve table above pins leverPull and not that
-    copy, so this is what catches the two drifting apart. Red on purpose the
-    day Will is real: that day the claim changes and somebody says so. */
+    compute() reads its pull through leverPullWill, whose centre may one day
+    move with Will, and Will is 0 until something measures it. It was a
+    second copy of the bell, and this check was the only thing that caught a
+    drift between the two. It is now leverPull itself, moved by Will, so
+    they cannot drift apart, and this holds what compute() prints to the
+    curve the table above pins. Red on purpose the day Will is real: that
+    day the claim changes and somebody says so. */
  ok(h.PULL===h.SQ.reduce((a,v)=>a+leverPull(v),0)/h.SQ.length,
   'and the pull is the mean of leverPull over the 112, to the bit, while Will is unmeasured');
 
@@ -4969,6 +5000,12 @@ g('36e \u00b7 a release lifts the laws at its seat, fitted to his fifteen thousa
  ok(lastRun>0&&lastRun<firstRun/2,'the last moves it '+lastRun.toFixed(3)+': the same work moves it less as the laws near 10');
  {const c0=cqSum(); releaseWork(rec,meterRun(rec,[order[15000]]).fresh); one=cqSum()-c0;}
  ok(one>0&&one<0.01,'one pattern moves it '+one.toFixed(4)+', which no screen shows');
+ /* WHAT A RELEASE REPORTS IS THE READING. releaseWork reads CQ through
+    cqSum, as main does, and not through two whole compute() calls: the two
+    are the same number while CQ is the laws, and this holds them to it. */
+ {const r0=compute().CQ, o=releaseWork(rec,meterRun(rec,[order[15001]]).fresh), r1=compute().CQ;
+  ok(o.n===1&&o.cq0===r0&&o.cq1===r1&&o.cq1>o.cq0,
+   'what a release reports as CQ before and after is the reading itself, '+o.cq0+' then '+o.cq1);}
  /* A RERUN IS FREE AND MOVES NOTHING. Ground already open spends nothing, so
     it lifts nothing either, which is what keeps the lift from being farmed. */
  {const w=JSON.stringify(rec.work), c0=cqSum(), m=meterRun(rec,order.slice(0,24));

@@ -301,14 +301,19 @@ function saveProfile(p){
  return p;}
 /* a snapshot is what Analytics plots. derived only, never inputs.
 
-   m IS WHICH ARITHMETIC WROTE THE ROW. Model 3, briefly live on this branch,
-   put Integrity times Intention divided by Resistance inside CQ itself and
-   is reverted: that is the same defect AZ5 already killed, measured again
-   on this exact branch (every law at 10 read 48.7, a release lowered CQ on
-   2,881 of 10,000 fields). CQ is the 21 laws and nothing else again, so the
-   row goes back to model 2's shape. A row written under model 3 keeps that
-   stamp and is never read as though it used this formula. tier is null
-   while CQ is still filling. */
+   m IS WHICH ARITHMETIC WROTE THE ROW. cq and dq changed meaning on 25
+   September: cq was It*Ig/Rz and is now the laws over 210, dq was an
+   uncapped sum over the addresses at 4 or more and is now the 112 over 1120.
+   A row written before that carries no m, reads back as 0, and a surface
+   comparing two rows must not report the change of formula as a move in the
+   person. tier is null while CQ is still filling.
+
+   A ROW STAMPED 3 IS REFUSED. Model 3 put Integrity times Intention divided
+   by Resistance inside CQ, was live on this branch on 22 October, and was
+   reverted the same day. validateProfile reads m as 0 to CQ_MODEL, so a row
+   stamped 3 is refused at the boundary by name, and the record carrying it
+   with it, because import is all or nothing. No committed build ever carried
+   model 3, so only a local build of this branch could have written one. */
 function snapshot(p){
  var r=compute();
  return {t:new Date().toISOString(), m:CQ_MODEL, cq:Math.round(r.CQ*10)/10,
@@ -320,19 +325,19 @@ function snapshot(p){
 /* ============================================================
    THE TWENTY ONE, ON EVERY ROW. Ruled 26 September, answering BW Q2:
    "keeping track of the laws over time is excellent, and being able to show
-   a graph to show how far you've come." A row carries both the CQ formula
-   output and its model-3 inputs, while lawNow records each law as the formula's
-   Integrity source so the history can explain where that input came from.
+   a graph to show how far you've come." A row carried cq, which is the laws
+   summed over 210, and not the laws themselves, so no row could say which law
+   moved. This is the twenty one as that same cq read them.
 
    WHAT IS WRITTEN IS lawNow, NOT THE ANSWER, AND THE KEY IS NAMED FOR IT.
    p.laws is the answers, an input, and a second meaning under that same name
-   is a bug that has not happened yet. A law as Integrity reads it is the
-   answer lifted by the releases at its seat since (engine/compute.js, LIFT_R),
-   and the lift is recorded once. Writing the bare answer would draw every
-   release as a flat line, which is the opposite of what the graph is for.
-   Model-3 rows can be checked against their stored Integrity, Intention and
-   Resistance inputs; the law series is evidence for Integrity, not a second
-   CQ calculator.
+   is a bug that has not happened yet. A law as CQ reads it is the answer
+   lifted by the releases at its seat since (engine/compute.js, LIFT_R),
+   and the lift is the whole of what a release does to a law. Writing the bare
+   answer would draw every release as a flat line, which is the opposite of
+   what the graph is for. So the row reconciles with itself: the laws that are
+   not null, summed, over 210, times 100, is the row's own cq to within the
+   rounding of both. The gate asserts it on every row it writes.
 
    A LAW NOT YET ANSWERED IS null, the meaning p.laws already gives it, and CQ
    counts it as nothing (lawIn). Writing the six it is seeded with would put a
