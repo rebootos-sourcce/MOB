@@ -129,13 +129,13 @@ g('5 · CQ bounds and the ceiling');
 /* CQ MODEL 3: the public output is the canonical formula, not a parallel law-only score. */
 {
  const x=reset(0,0,6);
- near(x.CQ,100,1e-12,'zero Resistance with positive Integrity and Intention saturates CQ at 100');
+ near(x.CQ,36,1e-12,'six-point Integrity × Intention over floor-1 Resistance gives CQ 36');
  ok(E.CQ_MODEL===3,'the formula change has its own model version');
- ok(x.CQ===Math.max(0,Math.min(100,x.integrity*x.intention*100/x.resistance)),
+ ok(x.CQ===Math.max(0,Math.min(100,x.integrity*x.intention/x.resistance)),
   'CQ is the normalized Integrity × Intention / DQ formula');
  ok(x.integrity>=0&&x.integrity<=10,'Integrity input is on 0..10');
  ok(x.intention>=0&&x.intention<=10,'Intention input is on 0..10');
- ok(x.resistance===x.DQ,'Resistance is the canonical total-shadow DQ value');
+ ok(x.resistance===x.Rz&&x.resistance>=1,'Resistance is the normalized Rz factor with floor 1');
 }
 
 r=reset(0,0,10);
@@ -164,19 +164,20 @@ const above=fitFor('Victim',10,10);   /* Victim is sadness 6..8 + anger 4..6 */
 ok(!above||!above.exact,'above the band is not exact: the charge escalated past it');
 ok(fitFor('Controller',6,6).score<100,'one step below lo is adjacent, not inside');
 
-g('7 · gate multipliers do not replace canonical DQ resistance');
+g('7 · the six gates multiply normalized resistance');
 r=reset(6,0,6);
-const baseRz=r.Rz, baseDQ=r.DQ, baseCQ=r.CQ;
+const baseRz=r.Rz, baseCQ=r.CQ;
 near(r.vf,1,1e-9,'no story means no gate evidence, factor is 1');
 /* CQ MODEL 3: the owner's coherence formula is the one operational output.
    Pin the mapping and arithmetic so the three inputs cannot drift apart. */
 ok(E.CQ_MODEL===3,'formula history version is model 3');
-near(r.CQ,Math.max(0,Math.min(100,r.integrity*r.intention*100/r.resistance)),1e-12,
+near(r.CQ,Math.max(0,Math.min(100,r.integrity*r.intention/r.resistance)),1e-12,
  'CQ equals clamped Integrity × Intention / Resistance');
 near(r.integrity,E.cqSum()/10,1e-12,
  'Integrity is the fixed-scale 21-law score, including the existing release lift');
 near(r.intention,r.It,1e-12,'Intention is the canonical band-derived It value');
-near(r.resistance,r.DQ,1e-12,'Resistance is canonical DQ, not the separate Rz gate multiplier');
+near(r.resistance,r.Rz,1e-12,'Resistance is the normalized Rz factor derived from DQ and gate state');
+ok(r.resistance>=1,'formula denominator has the explicit normalized resistance floor');
 const unreadProfile=E.blankProfile('unanswered formula'); E.loadProfile(unreadProfile);
 const unreadFormula=compute();
 ok(unreadFormula.answered===0&&unreadFormula.CQ===0,
@@ -189,14 +190,14 @@ ok(oneLawFormula.answered===1&&oneLawFormula.integrity>0&&oneLawFormula.CQ>0,
 reset(6,0,6); E.verpApply('i could not stop going over it and it had me');
 const att=compute();
 ok(att.vf>1,'an attachment story costs more than 1');
-/* DQ is canonical Resistance. The six-axis gate multiplier remains separate
-   and must not change CQ when it changes without changing DQ or Intention. */
-ok(att.Rz>baseRz,'and it raises the separate gate factor');
-ok(att.DQ===baseDQ&&att.CQ===baseCQ,'gate-factor changes alone do not change canonical DQ resistance or CQ');
+/* Gate evidence changes the normalized Resistance factor Rz, which is the
+   denominator in the canonical CQ formula. */
+ok(att.Rz>baseRz,'and it raises normalized resistance');
+ok(att.CQ<baseCQ,'the higher resistance lowers coherence, '+baseCQ+' then '+att.CQ);
 reset(6,0,6); E.verpApply('i let it pass and i stayed out of the story and i let it go');
 const det=compute();
 ok(det.vf<1,'a detachment story costs less than 1');
-ok(det.Rz<baseRz&&det.DQ===baseDQ&&det.CQ===baseCQ,'lower gate factor alone does not change canonical DQ resistance or CQ');
+ok(det.Rz<baseRz&&det.CQ>baseCQ,'lower normalized resistance raises coherence, '+baseCQ+' then '+det.CQ);
 reset(0,0,6);
 const sh=E.verpRead();
 ok(sh.length===6&&sh.every(v=>v.mult>0),'six gates, each with a multiplier');
@@ -385,7 +386,7 @@ const ref=n=>{const p=PEOPLE.find(x=>x.nm===n);
  CHARGES.forEach(c=>{S.charge[c]=p.c[c]||0;S.replace[c]=(p.rep&&p.rep[c])||0;});
  const LS=LAWSET[n];SINAMES.forEach(l=>S.law[l]=LS[l]!==undefined?LS[l]:LS._); lawsIn();
  return compute();};
-['Rosa','Ana','Gordon'].forEach(n=>{const x=ref(n);near(x.CQ,x.integrity*x.intention*100/x.resistance,1e-9,n+' reference case follows the canonical formula');});
+['Rosa','Ana','Gordon'].forEach(n=>{const x=ref(n);near(x.CQ,x.integrity*x.intention/x.resistance,1e-9,n+' reference case follows the canonical formula');});
 ok(ref('Rosa').loaded.length===0,'Rosa holds nothing');
 ok(ref('Gordon').loaded.length>90,'Gordon holds nearly everything');
 
@@ -4676,13 +4677,13 @@ g('36b · the fitted CQ model, reproduced from the simulation that fitted it');
     stated level, every law at the stated score. */
  const w5=reset(0,0,5), w5h=reset(10,0,5), w10h=reset(10,0,10);
  const r1=(v,d)=>+v.toFixed(d);
- ok(r1(w5.CQ,1)===r1(w5.integrity*w5.intention*100/w5.resistance,1)&&r1(w5.DQ,1)===0&&r1(w5.PULL,3)===0&&r1(w5.EX,1)===r1(w5.CQ,1),
+ ok(r1(w5.CQ,1)===r1(w5.integrity*w5.intention/w5.resistance,1)&&r1(w5.DQ,1)===0&&r1(w5.PULL,3)===0&&r1(w5.EX,1)===r1(w5.CQ,1),
   'every law 5, nothing held: formula CQ, DQ 0, pull 0, expression equals CQ, got '
   +[w5.CQ,w5.DQ,w5.PULL,w5.EX].map(v=>v.toFixed(3)).join(', '));
- ok(r1(w5h.CQ,1)===r1(w5h.integrity*w5h.intention*100/w5h.resistance,1)&&r1(w5h.DQ,1)===47.9&&r1(w5h.PULL,3)===0.413&&r1(w5h.EX,1)===r1(w5h.CQ*(1-w5h.PULL),1),
+ ok(r1(w5h.CQ,1)===r1(w5h.integrity*w5h.intention/w5h.resistance,1)&&r1(w5h.DQ,1)===47.9&&r1(w5h.PULL,3)===0.413&&r1(w5h.EX,1)===r1(w5h.CQ*(1-w5h.PULL),1),
   'every law 5, heavily loaded: formula CQ, DQ 47.9, pull 0.413, expression is derived from CQ, got '
   +[w5h.CQ,w5h.DQ,w5h.PULL,w5h.EX].map(v=>v.toFixed(3)).join(', '));
- ok(r1(w10h.CQ,1)===r1(w10h.integrity*w10h.intention*100/w10h.resistance,1)&&r1(w10h.DQ,1)===35.2&&r1(w10h.PULL,3)===0.199&&r1(w10h.EX,1)===r1(w10h.CQ*(1-w10h.PULL),1),
+ ok(r1(w10h.CQ,1)===r1(w10h.integrity*w10h.intention/w10h.resistance,1)&&r1(w10h.DQ,1)===35.2&&r1(w10h.PULL,3)===0.199&&r1(w10h.EX,1)===r1(w10h.CQ*(1-w10h.PULL),1),
   'every law 10, heavily loaded: formula CQ, DQ 35.2, pull 0.199, expression is derived from CQ, got '
   +[w10h.CQ,w10h.DQ,w10h.PULL,w10h.EX].map(v=>v.toFixed(3)).join(', '));
  ok(w5h.SQ.filter(v=>v>=7).length===16&&w10h.SQ.filter(v=>v>=7).length===0,
@@ -4725,7 +4726,7 @@ g('36b · the fitted CQ model, reproduced from the simulation that fitted it');
   const fin=compute();
   ok(fin.complete&&fin.answered===21&&typeof fin.tier==='string',
    'all 63 in: complete, 21 answered, and a tier word, '+fin.tier);
-  near(fin.CQ,fin.integrity*fin.intention*100/fin.resistance,1e-9,
+  near(fin.CQ,fin.integrity*fin.intention/fin.resistance,1e-9,
    'and CQ is the canonical formula over the completed intake');
  }
 
@@ -4782,7 +4783,7 @@ g('36b · the fitted CQ model, reproduced from the simulation that fitted it');
    SI.forEach(l=>{const a=law0[l.nm], b=lawNow(l.nm); sum+=b-a;
     if(!seat[l.b]){if(b!==a)offSeat++;}
     else if(Math.abs(b-(10-(10-a)*Math.pow(1-LIFT_R,seat[l.b])))>1e-9)stepOff++;});
-   if(Math.abs(r1.CQ-r1.integrity*r1.intention*100/r1.resistance)>1e-9)sumOff++;
+   if(Math.abs(r1.CQ-r1.integrity*r1.intention/r1.resistance)>1e-9)sumOff++;
    if(r1.CQ<r0.CQ-1e-12)fell++;
    if(r1.CQ>100+1e-9)over++;
    if(r1.CQ>r0.CQ+1e-12)rose++;
@@ -5002,8 +5003,8 @@ g('36e \u00b7 a release lifts the laws at its seat, fitted to his fifteen thousa
  {CHARGES.forEach(c=>{S.charge[c]=9;}); const a=compute();
   CHARGES.forEach(c=>{S.charge[c]=0;}); const b=compute();
   ok(a.CQ!==b.CQ,'a loaded field and an empty field differ through Resistance, '+a.CQ.toFixed(4)+' and '+b.CQ.toFixed(4));
-  near(a.CQ,a.integrity*a.intention*100/a.resistance,1e-9,'loaded field follows the formula');
-  near(b.CQ,b.integrity*b.intention*100/b.resistance,1e-9,'empty field follows the formula');}
+  near(a.CQ,a.integrity*a.intention/a.resistance,1e-9,'loaded field follows the formula');
+  near(b.CQ,b.integrity*b.intention/b.resistance,1e-9,'empty field follows the formula');}
  /* A NEW ANSWER STARTS THE COUNT AGAIN. His 88 to 92 is a reading taken after
     the work, which already contains it; carrying the lift through a new answer
     would count his fifteen thousand twice. */
@@ -5617,7 +5618,7 @@ g('41 · the twenty one on every history row, and a record from before still loa
  ok(row&&row.lawNow.Unity===null&&row.lawNow.Courage===null,
   'and a law nobody answered is null, not the six it is seeded with');
  ok(row&&typeof row.cq==='number'&&row.cq>=0&&row.cq<=100,'the saved row carries a bounded CQ value under its stamped formula version');
-  if(row&&row.m===E.CQ_MODEL)near(row.cq,Math.max(0,Math.min(100,row.integrity*row.intention*100/row.resistance)),0.15,'the saved CQ row reconciles to its persisted formula inputs');
+  if(row&&row.m===E.CQ_MODEL)near(row.cq,Math.max(0,Math.min(100,row.integrity*row.intention/row.resistance)),0.15,'the saved CQ row reconciles to its persisted formula inputs');
  /* A refused write must not leave a staged snapshot sitting in memory: a
     later successful save would otherwise duplicate a run that never saved. */
  const savedText=mem['source.profiles'], historyN=rec.history.length;
