@@ -1056,8 +1056,8 @@ function relTally(c,live){
   +'</div>'
   /* every figure on the row says what it is in the same place, round PO */
   +(live&&(live.dq!=null||live.cq!=null||live.cqUnread)?'<div class="rel-ct rel-figs-s" id="relfigmean">'
-    +(live.cq!=null?'CQ is your coherence number, how closely you keep the 21 laws. Up is how far this release has lifted it. '
-     :live.cqUnread?'CQ is your coherence number, how closely you keep the 21 laws. It is not read yet, because no law is answered. ':'')
+    +(live.cq!=null?'CQ is your coherence number: Integrity × Intention / Resistance. Up is the change this release produced through the connected formula. '
+     :live.cqUnread?'CQ is your coherence number: Integrity × Intention / Resistance. It is zero until a law supplies Integrity. ':'')
     +(live.dq!=null?'DQ is your shadow reading, the charge your body still holds. Down is how far this release has moved it.':'')
     +'</div>':'')
   +((tw||at)?'<div class="rel-ct rel-figs-s">'+esc([tw,at].filter(Boolean).join(' '))+'</div>':'');}
@@ -3138,10 +3138,10 @@ function relResults(){
   '<div class="rel-clock" id="relrscq">'
   +'<div class="rel-fig"><span>CQ</span><b>'+cqNow.toFixed(2)+'</b></div>'
   +'<div class="rel-fig"><span>Up</span><b>'+Math.max(0,cqNow-RUN.cq0).toFixed(2)+'</b></div></div>'
-  +'<div class="rel-rs-s">CQ is your coherence number, how closely you keep the 21 laws, from nought to a hundred. Up is how far this release lifted it. '
+  +'<div class="rel-rs-s">CQ is your coherence number: Integrity × Intention / Resistance, from zero to one hundred. The change reflects the connected formula inputs. '
   +(RUN.rerun?'A rerun opens no new lines, so it lifts nothing.':'Each new line you open lifts the laws at its seat a little.')+'</div>');
  else if(RUN.cq0!=null)out+=relSect('Your CQ','<div class="rel-clock" id="relrscq"><div class="rel-fig"><span>CQ</span><b>\u2013</b></div></div>'
-  +'<div class="rel-rs-s">CQ is your coherence number, how closely you keep the 21 laws. It is not read yet, because no law is answered. Once one is, each new line you open lifts it a little.</div>');
+  +'<div class="rel-rs-s">CQ is your coherence number: Integrity × Intention / Resistance. It is zero until a law supplies Integrity; release work can also change Resistance.</div>');
  /* 5. what changed, the TDD's own question, unchanged */
  out+=relAskHtml();
  /* 5b. the lines bookmarked on the run, round QQ */
