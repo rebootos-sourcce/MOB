@@ -528,7 +528,7 @@ var AV_DEF={
 /* what taking the role on costs, as a thing that happens in a day. It names
    the saboteur and never calls the person by it. */
 var AV_IMPACT={
- 'Controller':'Handing a thing over feels like dropping it, so the grip stays on.',
+ 'Micromanager':'Handing a thing over feels like dropping it, so the grip stays on.',
  'Pleaser':'Yes comes out before your own answer has been checked.',
  'Stickler':'Time goes into holding everything to the one right way.',
  'Hyper-Rational':'What cannot be explained gets set aside, feelings first.',

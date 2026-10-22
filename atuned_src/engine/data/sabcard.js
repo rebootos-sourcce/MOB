@@ -15,7 +15,7 @@
         from nothing else. No fact here is new canon.
      a  what becomes available. Composed from TWO tables, never guessed: the
         axes this saboteur's SAB33 row keys on, and each axis's opp in CHILD.
-        Controller keys on fear and anger, so its row names trust and
+        Micromanager keys on fear and anger, so its row names trust and
         equanimity. tests/engine.js reads every row against SAB33 and CHILD
         and fails a row that leaves out one of its own opposites, because
         that is how the first draft of Martyr shipped: the approved mock-up
@@ -42,7 +42,7 @@ var SABCARD={
   h:"You mean to start. In the pause before you begin, a reasonable voice speaks up. Just this once. You've earned a break. It never says stop for good, only stop for today. For a moment the easier option feels earned. Then the thing you meant to do is still waiting, and the next pause is easier to win. Reflection: What does the pause help you avoid feeling, and what would make beginning manageable?",
   a:"Everyone has a pause before starting. When the fear isn't the one talking in it, the gap between meaning to and beginning gets short. Trust becomes available that you can handle the first uncomfortable minute, and vitality goes into the thing itself.",
   n:"Notice the pause between meaning to and starting. Separate the reasonable voice from the discomfort it is steering you around. Choose the first small motion before the argument finishes."},
- "controller":{
+ "micromanager":{
   h:"The future feels uncertain. Something may happen, but you cannot quite predict what. That uncertainty can produce anxiety before anything has actually gone wrong. The grip tightens in an attempt to make the outcome predictable: you check, correct, and take over. For a moment, control can feel like safety and the anxiety may ease. Then the room gets smaller: less space for the people around you to move, less room in you to trust without checking first. This is one possible pattern, not an explanation for every act of control. Reflection: When you cannot predict the outcome, what do you feel you need to take control of?",
   a:"Control isn't the problem. It works. When the fear isn't the one holding the grip, there's a beat of equanimity before you act, long enough to decide instead of react. Trust becomes available instead of something to verify first.",
   n:"Notice the moment the grip tightens. Separate the real risk from the old fear running it. Choose the next move from there."},
