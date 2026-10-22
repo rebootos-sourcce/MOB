@@ -144,13 +144,13 @@ function fitFor(name,fear,anger){
  reset(0,0,6); S.charge.Fear=fear; S.charge.Anger=anger;
  const hit=E.sab33Detect().filter(d=>d.nm===name)[0];
  return hit?{score:hit.score,exact:hit.exact}:null;}
-const inside=fitFor('Controller',8,6);
+const inside=fitFor('Micromanager',8,6);
 ok(inside&&inside.score===100&&inside.exact,'inside both bands scores 100 and exact');
-const below=fitFor('Controller',2,1);
+const below=fitFor('Micromanager',2,1);
 ok(!below||below.score<100,'below the band does not score 100: the saboteur has not formed');
 const above=fitFor('Victim',10,10);   /* Victim is sadness 6..8 + anger 4..6 */
 ok(!above||!above.exact,'above the band is not exact: the charge escalated past it');
-ok(fitFor('Controller',6,6).score<100,'one step below lo is adjacent, not inside');
+ok(fitFor('Micromanager',6,6).score<100,'one step below lo is adjacent, not inside');
 
 g('7 · the six gates multiply resistance');
 r=reset(6,0,6);
