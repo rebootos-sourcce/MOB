@@ -16,7 +16,7 @@ No competing CQ calculator is introduced. CQ model version is 3.
 - **Intention**: the existing `It` value, derived from the seven-band `bandIg` average plus the existing pole/JQ adjustments, clamped to 0..10.
 - **Resistance**: the existing `Rz` resistance factor, `max(1, (1 + DQ × 0.05) × verpFactor())`. It is derived from the canonical total-shadow DQ and the existing six-axis gate factor. The floor at 1 prevents division by zero and is explicit engine behavior.
 - **CQ**: `clamp(integrity * intention / resistance, 0, 100)`; if no laws are answered, CQ is explicitly zero. The engine returns the three formula inputs with CQ for auditability.
-- **Derived CQ consumers**: `cqSpan()` computes low/high CQ through the same formula; `releaseWork()` reports formula-based CQ before/after; `exCeiling()` recomputes the no-shadow resistance and removes the pole/JQ contribution from intention before calculating the expression ceiling; analytics labels the formula and marks older model bars as not comparable; history rows persist formula inputs.
+- **Derived CQ consumers**: `cqSpan()` computes low/high CQ through the same formula; `releaseWork()` reports formula-based CQ before/after; `exCeiling()` recomputes the no-shadow resistance and removes the pole/JQ contribution from intention before calculating the expression ceiling; analytics labels the formula and marks older model bars as not comparable; history rows persist formula inputs; release-screen copy describes CQ as the formula output rather than a law-only measure.
 - **Versioning**: `CQ_MODEL=3`; snapshots stamp the model version and persist rounded Integrity, Intention and Resistance inputs. Model-3 rows validate the Resistance floor. Record comparisons are suppressed across model versions, and analytics labels old-model CQ bars as historical/not comparable.
 
 ## Dataflow
@@ -40,6 +40,7 @@ All consumers continue to read the single `compute().CQ` result. `cqSum()` remai
 - Explicit model-3 assertion.
 - CQ span, release deltas, and expression ceiling route through formula-based values.
 - History snapshots persist formula inputs, validate model-3 Resistance, and retain formula version; analytics avoids implying that historical model values are comparable.
+- Release feedback copy and analytics tooltip now describe CQ as Integrity × Intention / Resistance.
 - CQ equals the clamped formula using the exposed inputs.
 - Integrity and Intention remain within 0..10.
 - Resistance is at least 1.
