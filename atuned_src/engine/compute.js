@@ -169,7 +169,7 @@ function lawNow(nm){return lawLift(S.law[nm],lawWork(nm));}
    none, so it is the 0 the ruling gives it. cqSpan asks what the figure
    would be if every open law landed at ten, through this same sum, so the
    two ends of the range are the engine's arithmetic and never a copy of it. */
-function cqSum(open){return SINAMES.reduce((a,l)=>a+(lawIn(l)?lawNow(l):(open||0)),0)/210*100;}
+function cqSum(open){return SINAMES.reduce((a,l)=>a+(lawIn(l)?lawNow(l):(open||0)),0)/210*100;}\n/* One formula implementation shared by the engine and derived CQ ranges. */\nfunction coherenceFormula(integrity,intention,resistance){\n return clamp(integrity*intention/Math.max(1,resistance),0,100);}
 /* ============================================================
    WHERE THE FINISHED CQ CAN STILL LAND, read off what is unanswered.
 
@@ -201,7 +201,7 @@ function cqSpan(){
    which relCoolDown guarantees is the one the laws in S came from. Returns
    what moved, by law, and CQ before and after as that record reads. */
 function releaseWork(p,keys){
- var out={laws:{}, cq0:cqSum(), cq1:null, n:0};
+ var out={laws:{}, cq0:compute().CQ, cq1:null, n:0};
  /* show only on a worked example, engine/showonly.js */
  if(showRefuse('release',p)){out.cq1=out.cq0;out.refused='example';return out;}
  if(!p||!keys||!keys.length){out.cq1=out.cq0;return out;}
@@ -216,7 +216,7 @@ function releaseWork(p,keys){
   if(!w||w.on!==v)w=p.work[l.nm]={n:0,on:v};
   var before=lawLift(v,w.n); w.n+=u;
   out.laws[l.nm]={seat:l.b, u:u, n:w.n, from:before, to:lawLift(v,w.n)};});
- out.cq1=cqSum();
+ out.cq1=compute().CQ;
  return out;}
 /* A LAW ANSWERED AGAIN IS A NEW READING, even when it lands on the same
    number. The count above would survive a same number answer, because it is
@@ -599,7 +599,7 @@ function compute(){
    every address, sq is zero whatever is installed, the four outside take a
    seat mean of zero, and the pull is leverPull(0) at all 112. Nothing is
    mutated and nothing is guessed. */
-function exCeiling(){return cqSum()*(1-leverPull(0));}
+function exCeiling(){\n var r=compute();\n var noShadowResistance=Math.max(1,r.vf);\n return coherenceFormula(cqSum()/10,r.It,noShadowResistance)*(1-leverPull(0));\n}
 /* the gap a release still has in it, for the person about to run one */
 function exHeadroom(exNow){return Math.max(0,exCeiling()-exNow);}
 
