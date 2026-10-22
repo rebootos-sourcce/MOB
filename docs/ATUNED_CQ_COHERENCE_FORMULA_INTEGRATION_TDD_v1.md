@@ -1,0 +1,50 @@
+# ATÜNED — Canonical Coherence Formula Integration TDD
+Version: 1.0
+Date: 2026-10-22
+Status: **Formula wired in source; runtime verification pending.**
+Branch: `atuned/mvp-alpha-recursive-execution`
+
+## Goal
+Make CQ / Coherence one operational engine output defined by:
+
+`CQ = clamp((Integrity × Intention) / Resistance, 0, 100)`
+
+No competing CQ calculator is introduced. CQ model version is 3.
+
+## Canonical source mapping implemented
+- **Integrity**: `cqSum()/10`, the existing fixed-denominator 21-law score on the 0..10 input scale, with unanswered laws contributing zero. `cqSum()` uses `lawNow()`, so eligible release lift is already included once.
+- **Intention**: the existing `It` value, derived from the seven-band `bandIg` average plus the existing pole/JQ adjustments, clamped to 0..10.
+- **Resistance**: the existing `Rz` resistance factor, `max(1, (1 + DQ × 0.05) × verpFactor())`. It is derived from the canonical total-shadow DQ and the existing six-axis gate factor. The floor at 1 prevents division by zero and is explicit engine behavior.
+- **CQ**: `clamp(integrity * intention / resistance, 0, 100)`; if no laws are answered, CQ is explicitly zero. The engine returns the three formula inputs with CQ for auditability.
+- **Versioning**: `CQ_MODEL=3`; snapshots stamp the model version so historical values from model 2 are not silently compared as same-formula readings.
+
+## Dataflow
+`answered laws + eligible release work → Integrity`
+`band integrity + existing pole/JQ adjustment → Intention`
+`total shadow DQ + six-axis gate factor → Resistance`
+`Integrity × Intention / Resistance → clamp 0..100 → CQ / Coherence`
+`CQ → existing tiers, expression lever, governance/quadrant, snapshots, and downstream readers`
+
+All consumers continue to read the single `compute().CQ` result. `cqSum()` remains an input/utility for Integrity and range calculations; it is no longer assigned directly as the public CQ output.
+
+## Guardrails
+1. Do not duplicate the release-lift mechanic.
+2. Do not treat DQ as `100-CQ`.
+3. Do not conflate DQ (total-shadow/resistance input) with SQ (total node shadow weight) or SQm (mean loaded-node weight).
+4. CQ stays in 0..100; unanswered laws contribute zero to Integrity.
+5. Resistance has a nonzero floor of 1; changing this is a domain/model change and requires a new version plus boundary tests.
+6. Any future change to Integrity, Intention, Resistance, scaling, or denominator behavior requires a model version change and migration/comparison plan.
+
+## Regression coverage authored
+- Explicit model-3 assertion.
+- CQ equals the clamped formula using the exposed inputs.
+- Integrity and Intention remain within 0..10.
+- Resistance is at least 1.
+- Blank/no-answered-law CQ remains zero.
+- Existing persistence, deterministic read, tier, bounds, release, and profile tests remain in the suite; old tests that asserted CQ was law-only were revised where directly identified.
+
+## Verification status
+- Source edits and regression-test edits are committed on the feature branch.
+- Local build/test execution was unavailable in this environment.
+- GitHub Actions deploy run `39742889089` was observed queued on 2026-10-22; it is not a pass.
+- Do not claim runtime acceptance until the build, `node tests/engine.js`, `node tests/trace.js`, and the documented release-chain test have completed successfully on the candidate revision.
