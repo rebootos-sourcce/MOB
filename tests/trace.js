@@ -454,6 +454,29 @@ function suite(T,E,ok,g){
   const after=JSON.stringify({meter:p.meter,axes:p.axes,laws:p.laws});
   ok(before===after,'deriving signal/fetter/address links has no metric or persisted-record side effects');
   ok(!Object.prototype.hasOwnProperty.call(p,'vritti'),'no parallel p.vritti collection is introduced');
+  const G2=T.traceFromRecord(p);
+  ok(J(G)===J(G2),'repeated derivation is deterministic and idempotent for the same profile');
+  const round=E.validateProfile(JSON.parse(J(p)));
+  ok(!!round&&round.ok,'profile export/import boundary accepts the current canonical record');
+  if(round&&round.ok){
+   const roundGraph=T.traceFromRecord(round.profile);
+   const roundLoop=T.loopRead(round.profile);
+   ok(J(G)===J(roundGraph),'derived signal markers survive JSON/profile export-import-reload without being persisted as duplicate truth');
+   ok(!!roundLoop.patterns.find(x=>Array.isArray(x.signalSources)&&x.signalSources.some(z=>z.id==='2026-09-21T08:00:00.000Z')),'source-backed marker remains navigable after profile round-trip');
+  }
+  const legacy=JSON.parse(J(p)); delete legacy.trace;
+  const old=E.validateProfile(legacy);
+  ok(!!old&&old.ok,'legacy profile without optional trace layer remains importable');
+  if(old&&old.ok){
+   const oldLoop=T.loopRead(old.profile);
+   ok(!!oldLoop.patterns.find(x=>Array.isArray(x.signalSources)&&x.signalSources.some(z=>z.id==='2026-09-21T08:00:00.000Z')),'legacy profile derives signal markers from canonical story/fetter owners');
+  }
+  const invalidQualium=T.validateTrace({v:1,nodes:[{type:'story',id:'bad-qualium',src:'known',qualium:'inward'}],edges:[]});
+  ok(!invalidQualium.ok&&invalidQualium.errs.some(x=>x.indexOf('may not carry qualium')>=0),'strict trace boundary refuses uncontracted qualium fields rather than inventing orientation values');
+  const fs=require('fs'), ui=fs.readFileSync(path.resolve(__dirname,'../atuned_src/ui/loopread.js'),'utf8');
+  ok(ui.indexOf('Candidate signal-to-fetter association')>=0&&ui.indexOf('Inferred candidate')>=0&&ui.indexOf('User confirmed')>=0,'marker UI explicitly distinguishes candidate and user-confirmed source status');
+  ok(ui.indexOf('Qualium orientation of distortion')>=0&&ui.indexOf('not yet captured')>=0,'marker UI exposes qualium as an explicit unrecorded dimension, not a guessed value');
+  ok(ui.indexOf('source text')>=0&&ui.indexOf('Configured seat-tone reference')>=0,'marker UI exposes source context and the qualified seat-tone reference');
  }
  g('TG12 · same record, same graph, whatever is loaded');
  {
