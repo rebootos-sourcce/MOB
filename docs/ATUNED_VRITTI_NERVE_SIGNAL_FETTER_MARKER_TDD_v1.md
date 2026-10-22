@@ -1,7 +1,7 @@
 # ATÜNED Vritti — Unified Signal, Fetter, Qualium, and Nerve-Node TDD
 Version: 1.2
 Date: 2026-10-21
-Status: Runtime trace path implemented on `atuned/mvp-alpha-recursive-execution`; regression assertions added, execution evidence pending.
+Status: Signal-to-fetter trace, FLOWSEAT tone-reference derivation, and source-backed marker/navigation implemented on `atuned/mvp-alpha-recursive-execution`; regression assertions added, execution evidence pending.
 
 ## 1. Purpose
 Define the unified relationship between:
@@ -84,7 +84,7 @@ The branch implementation in `atuned_src/engine/trace.js` now derives the follow
 
 Regression assertions were added in `tests/trace.js` for path traversal, provenance, canonical address membership, no duplicate Vritti collection, and metric isolation. These assertions are **not considered verified until the candidate revision's test workflow completes successfully**.
 
-Still outside this minimum closure: qualium value contract/association metadata, actual `FLOWSEAT` declaration-to-consumer mapping, derived marker rendering/navigation, and durable structured sensory/emotional waveform capture. Those remain explicit follow-on acceptance criteria; this section does not claim them complete.
+Still outside this minimum closure: a canonical qualium value/owner contract and durable structured sensory/emotional waveform capture. `FLOWSEAT`/`seatHz` are located in `engine/data/practice.js`; `ui/release.js` and `ui/map.js` are existing consumers. `tracePatternAttrs` resolves the configured seat-tone reference onto the derived address node. `ui/loopread.js` renders a source-backed marker with story text and candidate provenance. Test execution and export/import/reload behavior remain unverified.
 
 ## 7. Relationship provenance and state
 Every relationship must use the trace graph's existing allowed edge vocabulary and provenance rules. Candidate/inferred, proposed, observed, and user-confirmed relationships remain distinct. A lexicon or model inference does not become a user-confirmed belief. Invalid endpoints remain unresolved and must not be silently reassigned. Prefer `supports`, `associated_with`, or `addresses` only where their direction and definitions match; update the trace allowlist/TDD/tests together if a new edge type is required.
