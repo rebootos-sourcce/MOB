@@ -213,3 +213,12 @@ Added `proto/knowledge/src/adapt-psychological-registry.js` (commit `74c52ee3268
 - [ ] Generator imports/merges the adapted records.
 - [ ] Runtime validator checks psychological records and typed edges.
 - [ ] Forward/backward graph traversal tests pass.
+
+
+## 2026-10-22 measured audit addendum
+
+The authoritative current registry JSON was fetched via its Git blob SHA and parsed: **125 records**. The 107-entry count previously noted in this TDD is stale. Current family counts: roots 4; behavioral domains 15; archetype candidates 18; Conscious Domains 8; cultural-figure/domain mappings 12; archetype/domain mappings 18; archetype/fetter/seat mappings 18; blueprint visualization slots 14; canonical-domain candidates 18.
+
+Current measured gates: 125/125 template assignments; 102/125 structurally complete; 23 incomplete records (15 behavioral domains and 8 Conscious Domains); 103/125 have research passes 2 and 3 marked complete; 22 are blocked (8 Conscious Domains and 14 blueprint slots); blueprint canonical names recovered 0/14; archetype taxonomy resolved 0/18; approved semantic edges 0 across 36 mapping rows; cultural-figure crosswalks approved 0/12. Basic child/influence/link ID scan found zero dangling IDs, which is not proof of semantic or runtime connectivity.
+
+See [the measured audit](ATUNED_DEEP_PSYCHOLOGICAL_REGISTRY_AUDIT_2026-10-22.md). The adapter has not been executed in Node; generator integration and forward/backward runtime traversal remain open. Do not declare closure until these gates pass.
