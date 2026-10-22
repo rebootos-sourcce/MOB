@@ -859,8 +859,8 @@ function traceFromRecord(p,intents){
      story→address supports unchanged for legacy consumers; the signal
      impression supports the parser-identified fetter separately. Both edges
      are derived with inferred provenance, never causation or metric writes. */
-  var signalKey=traceKey('impression',id);
-  var signal=node('impression',id,'inferred',{derived:true});
+  var signalId='signal:'+id;
+  var signal=node('impression',signalId,'inferred',{derived:true});
   if(signal)edge(sk,'produces',signal,'inferred',{derived:true,
    why:'the story text was read as a signal impression; this is a derived interpretation, not a separate persisted waveform'});
   var fetters={};
