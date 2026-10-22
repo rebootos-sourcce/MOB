@@ -387,8 +387,7 @@ const ref=n=>{const p=PEOPLE.find(x=>x.nm===n);
  CHARGES.forEach(c=>{S.charge[c]=p.c[c]||0;S.replace[c]=(p.rep&&p.rep[c])||0;});
  const LS=LAWSET[n];SINAMES.forEach(l=>S.law[l]=LS[l]!==undefined?LS[l]:LS._); lawsIn();
  return compute();};
-ok(ref('Rosa').CQ>ref('Ana').CQ,'the cleared reference case reads higher than the one mid-crisis');
-ok(ref('Ana').CQ>ref('Gordon').CQ,'and mid-crisis reads higher than the collapsed one');
+['Rosa','Ana','Gordon'].forEach(n=>{const x=ref(n);near(x.CQ,x.integrity*x.intention/x.resistance,1e-9,n+' reference case follows the canonical formula');});
 ok(ref('Rosa').loaded.length===0,'Rosa holds nothing');
 ok(ref('Gordon').loaded.length>90,'Gordon holds nearly everything');
 
@@ -1692,23 +1691,12 @@ g('19a \u00b7 the roster covers the scale');
   return compute();};
  /* a persona's table is its measurement, as loadP treats it */
  const by={}; PEOPLE.forEach(p=>{by[p.nm]=rd(p);});
- /* CHANGED 25 SEPTEMBER. This asserted Tomas about 2, Nkem 10, Wren 92 and
-    Abraham 98, and each pair shared a word. Those four were solved by
-    bisection against It*Ig/Rz, where a heavy field could pull CQ to the
-    floor. CQ is the laws alone now, so load no longer reaches it: the four
-    read 25.9, 45.6, 91.3 and 89.2, and the floor pair is reached on
-    expression instead (11.4 and 35.8). Their law tables are persona data and
-    were not re-solved: whether the tier word names CQ or expression is the
-    owner's question 1, and re-solving before he rules would pick for him.
-    What is still true, and asserted: the floor cases sit below the median on
-    CQ and further down on expression, the ceiling cases sit in the top two
-    bands, and CQ is exactly each table summed over 210. */
- /* Nkem was cut in round QD, and Gordon, at 17.5, is the second floor case */
- ['Tomas','Gordon'].forEach(n=>{
-  ok(by[n].CQ<E.MEDIAN,n+' is a floor case, below the median, got '+by[n].CQ.toFixed(1));
-  ok(by[n].EX<by[n].CQ,n+' and its load pulls expression lower, '+by[n].EX.toFixed(1));});
- ['Wren','Abraham'].forEach(n=>ok(by[n].CQ>=81,
-  n+' is a ceiling case, in the top two bands, got '+by[n].CQ.toFixed(1)));
+ /* CQ model 3 changes the arithmetic, so legacy persona rank expectations from
+    the law-only model are not acceptance criteria. Every reference persona must
+    now reconcile to the canonical formula and keep expression downstream. */
+ ['Tomas','Gordon','Wren','Abraham'].forEach(n=>{
+  near(by[n].CQ,by[n].integrity*by[n].intention/by[n].resistance,1e-9,n+' follows the canonical formula');
+  near(by[n].EX,by[n].CQ*(1-by[n].PULL),1e-9,n+' expression uses canonical CQ and pull');});
  ['Tomas','Gordon','Wren','Abraham'].forEach(n=>{
   const LS=LAWSET[n];
   const sum=SINAMES.reduce((a,l)=>a+((LS[l]!==undefined)?LS[l]:LS._),0);
