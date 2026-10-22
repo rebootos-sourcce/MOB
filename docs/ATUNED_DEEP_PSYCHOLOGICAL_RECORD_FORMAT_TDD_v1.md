@@ -192,3 +192,9 @@ Do not claim a long-running background process is active. Continue the loop thro
 - Runtime: **0/125 records integrated** into the existing generator/validator/runtime. No end-to-end traversal or runtime parity test has been executed.
 - Semantic crosswalks: **0 of 36 ARCHDOM/ARCH18 mapping rows approved as semantic edges**. Eighteen source-canon root-membership edges are recorded, but the source's 18/15/14 domain-count ruling remains unresolved.
 - This is a partial source-review and record-setup milestone, not completion. Do not claim all records complete or wired.
+
+## Code-to-registry contract extraction — 2026-10-22
+
+Completed a static field-by-field comparison of `proto/knowledge/src/gen-data.js` and `proto/knowledge/src/validate-templates.js` against the 125-record psychological registry and its proposed catalog. Exact engine kinds, template IDs, required fields, and validator checks are documented in [`ATUNED_DEEP_PSYCHOLOGICAL_CODE_TO_REGISTRY_CONTRACT_2026-10-22.md`](ATUNED_DEEP_PSYCHOLOGICAL_CODE_TO_REGISTRY_CONTRACT_2026-10-22.md).
+
+Key result: the registry's 125 proposed template assignments are not runtime assignments. The generator does not import this registry, the proposed template IDs are not declared in `TEMPLATE_SCHEMAS`, and the validator only evaluates generated `data.js`. The static comparison is complete; adapter implementation, runtime integration, and executable path tests remain open. No tests were run in a Node environment in this round.
