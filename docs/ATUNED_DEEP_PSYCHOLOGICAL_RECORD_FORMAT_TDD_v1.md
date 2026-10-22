@@ -183,3 +183,12 @@ Do not claim a long-running background process is active. Continue the loop thro
 - The 18 archetype content records are populated from ARCH12. Six records retain explicit non-dictated provenance; taxonomy identity remains unresolved for all 18.
 - No new semantic parent/child edges have been added. This is intentional: source row consistency does not prove a causal or hierarchical relationship.
 - The registry passed a structural audit for unique IDs, required envelope fields, and exactly three ordered pass slots per entry. This was a custom structural audit, not a full JSON Schema validator or runtime integration test.
+
+## Current recursive record status — 2026-10-22
+
+- Registry: **125 unique records**; 125/125 have explicit proposed template assignments and exactly three research-pass slots.
+- Research: **103/125 records have all three repository/source review passes complete**. Pass 1 is complete for all 125. Passes 2 and 3 remain blocked for 22 placeholders: eight Conscious Domain slots and fourteen Blueprint Domain visualization slots.
+- Required fields: **102/125 records structurally complete; 23 incomplete**. Fifteen owner-stated behavioral-domain records lack definition/body; eight Conscious Domain records lack affirmations, and seven of those also lack definition/body.
+- Runtime: **0/125 records integrated** into the existing generator/validator/runtime. No end-to-end traversal or runtime parity test has been executed.
+- Semantic crosswalks: **0 of 36 ARCHDOM/ARCH18 mapping rows approved as semantic edges**. Eighteen source-canon root-membership edges are recorded, but the source's 18/15/14 domain-count ruling remains unresolved.
+- This is a partial source-review and record-setup milestone, not completion. Do not claim all records complete or wired.
