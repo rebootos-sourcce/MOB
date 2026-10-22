@@ -193,7 +193,14 @@ function coherenceFormula(integrity,intention,resistance){
    ============================================================ */
 function cqSpan(){
  var of=SINAMES.length, answered=SINAMES.filter(lawIn).length;
- return {lo:cqSum(), hi:cqSum(10), answered:answered, of:of,
+ /* Keep the range on the same formula as the reading. This is a conditional
+    projection: vary unanswered laws from 0 to 10 while holding the current
+    intention/resistance state fixed, rather than presenting raw law scores as
+    though they were CQ. */
+ var r=compute();
+ var lo=coherenceFormula(cqSum()/10,r.intention,r.resistance);
+ var hi=coherenceFormula(cqSum(10)/10,r.intention,r.resistance);
+ return {lo:lo, hi:hi, answered:answered, of:of,
   complete:answered===of, enough:answered*2>=of};}
 /* WHAT A RELEASE WRITES INTO THE LAWS. keys are the patterns of new ground the
    meter has just recorded, so a rerun passes none and moves nothing. Each key's
@@ -461,7 +468,7 @@ function compute(){
  const integrity=cqSum()/10;
  const intention=It;
  const resistance=Rz;
- const CQ=answered===0?0:clamp(integrity*intention/resistance,0,100);
+ const CQ=answered===0?0:coherenceFormula(integrity,intention,resistance);
  /* THE LEVER. Expression is CQ times what the shadow leaves: "CQ 100 SQ 0
     ... one pulls down the other, it's a lever", and the pull is his bell,
     applied per address because "a little tense" and "paralyzed" are
