@@ -814,6 +814,26 @@ release
 
 The system may add additional node types later, but these should remain semantically distinct.
 
+## Derived only: the chain
+
+Added 22 October 2026. Four more node types are read off a reading and are never added by anything else. They are the four rungs the engine's `compute()` already builds from the addresses up, in the order they stack, and each rung is built from the one before it.
+
+```text
+saboteur
+complex
+hyper_complex
+character
+```
+
+- `saboteur`: a cluster of addresses co-firing, the reading's `sabs`.
+- `complex`: two saboteurs of one family compounded, the reading's `cxs`.
+- `hyper_complex`: a family's complexes compounded, the reading's `hys`.
+- `character`: two hyper-complexes paired, the reading's `sups`. Character is the product's own name for the fourth rung, the Character page's. It is never called super complex here, because super complex already names Psychopathy in the Compass's descent registry, and one word may not name two things.
+
+A rung is derived only. It is made when a reading that `read()` stamped with this record's id is handed to `traceFromRecord`, and at no other time. Every door that adds to a graph refuses the four by name: the public add functions, `traceApply`, `validateTrace` and the stored layer. The practice build's own list of node types does not hold them, so a practice intent cannot name one. A rung is always `inferred` and is never promoted to `user_confirmed`, because it is the arithmetic's reading of a field and not a claim a person made.
+
+The address and the fetter are not new types. Both stay a `pattern`, as they always were: an address by its number, a fetter as `fetter:Name`. A type of their own would stop every stored pattern key resolving.
+
 ---
 
 # 17. Graph Edge Types
@@ -845,6 +865,19 @@ transfers_to
 Edges must be typed.
 
 Do not use generic `related_to` when a meaningful relationship is known.
+
+## The chain is held as supports
+
+Added 22 October 2026. The chain adds no edge type. Each rung is held to the parts the reading counted toward it by `supports`, the word a story placing charge at an address already uses, because the reading registered the part and nothing observed a cause:
+
+```text
+pattern supports saboteur
+saboteur supports complex
+complex supports hyper_complex
+hyper_complex supports character
+```
+
+These four edges are `inferred`, like the rungs at their ends, and are never `user_confirmed`. A path from an address to a character is four of them, one per rung.
 
 ---
 
