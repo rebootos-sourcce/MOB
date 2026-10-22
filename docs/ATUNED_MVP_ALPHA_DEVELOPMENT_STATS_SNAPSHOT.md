@@ -12,9 +12,9 @@ Baseline type: Updated after P0 contract closure; first comparable runtime snaps
 | Build delta | N/A | First comparable snapshot; no previous evidence-backed baseline. |
 
 ## Block-by-block progress
-Percentages below are for the defined implementation acceptance criteria, not file/commit counts.
+Implementation percentages below describe code and integration present on the branch, not verified runtime behavior. Verification remains separately tracked in the headline until tests execute.
 
-| Block | Verified complete | Remaining / unverified | Status and evidence |
+| Block | Implemented (verification pending where noted) | Remaining implementation | Status and evidence |
 |---|---:|---:|---|
 | P0 — Canonical engine contract and owner map | 100% | 0% | Complete as architecture/ownership contract. Qualium is the Vritti→fetter interpretation orientation; tone belongs to canonical nerve-address node/seat owner; CQ equation version policy and metric isolation are fixed. Runtime source wiring is P1, not a P0 blocker. See ATUNED_MVP_ALPHA_CANONICAL_RECORD_OWNER_AUDIT_v1.md v1.1. |
 | P1-A — Source/tone owner seam | 100% implemented / unverified | 0% implementation remaining | `FLOWSEAT`/`seatHz` located in `engine/data/practice.js`; existing consumers in `ui/release.js` and `ui/map.js`; derived address tone reference wired in `engine/trace.js`. Test execution remains unverified. |
