@@ -169,7 +169,10 @@ function lawNow(nm){return lawLift(S.law[nm],lawWork(nm));}
    none, so it is the 0 the ruling gives it. cqSpan asks what the figure
    would be if every open law landed at ten, through this same sum, so the
    two ends of the range are the engine's arithmetic and never a copy of it. */
-function cqSum(open){return SINAMES.reduce((a,l)=>a+(lawIn(l)?lawNow(l):(open||0)),0)/210*100;}\n/* One formula implementation shared by the engine and derived CQ ranges. */\nfunction coherenceFormula(integrity,intention,resistance){\n return clamp(integrity*intention/Math.max(1,resistance),0,100);}
+function cqSum(open){return SINAMES.reduce((a,l)=>a+(lawIn(l)?lawNow(l):(open||0)),0)/210*100;}
+/* One formula implementation shared by the engine and derived CQ ranges. */
+function coherenceFormula(integrity,intention,resistance){
+ return clamp(integrity*intention/Math.max(1,resistance),0,100);}
 /* ============================================================
    WHERE THE FINISHED CQ CAN STILL LAND, read off what is unanswered.
 
@@ -599,7 +602,11 @@ function compute(){
    every address, sq is zero whatever is installed, the four outside take a
    seat mean of zero, and the pull is leverPull(0) at all 112. Nothing is
    mutated and nothing is guessed. */
-function exCeiling(){\n var r=compute();\n var noShadowResistance=Math.max(1,r.vf);\n return coherenceFormula(cqSum()/10,r.It,noShadowResistance)*(1-leverPull(0));\n}
+function exCeiling(){
+ var r=compute();
+ var noShadowResistance=Math.max(1,r.vf);
+ return coherenceFormula(cqSum()/10,r.It,noShadowResistance)*(1-leverPull(0));
+}
 /* the gap a release still has in it, for the person about to run one */
 function exHeadroom(exNow){return Math.max(0,exCeiling()-exNow);}
 
