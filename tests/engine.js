@@ -8190,7 +8190,8 @@ g('SL · the library: every saboteur has a place in the body, grounded on its ow
    own band. Each rule is run first on rows that break it: the thirteen as
    they came, held below, broke the charge rule 16 times in 10 rows, the
    lean in three rows and the pair rule once, and three rows of the first
-   pass broke the lean. */
+   pass broke the lean. Last, each row's family follows the owner's TULA
+   notes, which six of the thirteen did not as they came. */
 {
  const {SAB_LIB,HCX_LIB,ALL_SAB,sabFetters,sabLevels,KB_KEY,BY}=E;
  /* Innocent: one low band, fear 2 to 4, and the addresses that say what it
@@ -8302,6 +8303,53 @@ g('SL · the library: every saboteur has a place in the body, grounded on its ow
  const never=SAB_LIB.filter(s=>!reached(s.nm,s.nids)).map(s=>s.nm);
  ok(never.length===0,'and the address route names every one of the '+SAB_LIB.length+' rows inside its own band, never: '+JSON.stringify(never));
  reset(0,0,6);
+ /* THE FAMILY FOLLOWS THE OWNER'S TULA NOTES, on every row since the
+    families of the first thirteen followed their addresses. TULA ("Emotions
+    & Saboteurs & Hyper Personalities", April 2026) lists the saboteurs each
+    hyper-complex personality comes from. It writes Controller for S02 and
+    Sceptic for Skeptic, written here under the codex names, and a Rebel the
+    codex does not carry. HCX_LIB's sub says which family translates each
+    personality, so the family is read off HCX_LIB and not typed here.
+    Where TULA names one family the row carries it. Where it names two, the
+    row carries the one nodes.js chose and argued, held here so changing it
+    is a decision. Where it names none and the note follows a sibling, the
+    row carries the sibling's family. Run first on the families as they came,
+    which break it six times, and on the two first-pass rows that followed
+    the Worrywart, left behind when it moved. */
+ const TULA={narcissism:['Micromanager','Hyper-Achiever','Judge'],machiavellian:['Manipulator','Skeptic','Rebel'],
+  bipolar:['Dramatizer','Restless','Victim'],BPD:['Victim','People-Pleaser','Imposter'],
+  OCPD:['Stickler','Perfectionist','Hyper-Vigilant'],histrionic:['Dramatizer','People-Pleaser','Dreamer'],
+  antisocial:['Rebel','Aggressor','Deflector'],anxiety:['Worrywart','Hyper-Vigilant','Avoider'],
+  depression:['Victim','Pessimist','Loner'],ADHD:['Restless','Dreamer','Imposter']};
+ const famOfSub=t=>{const h=HCX_LIB.find(f=>String(f.sub).split(' · ').indexOf(t)>=0);return h?h.nm:null;};
+ const untranslated=Object.keys(TULA).filter(t=>!famOfSub(t));
+ ok(untranslated.length===0,'every personality TULA names is one HCX_LIB translates, untranslated: '+JSON.stringify(untranslated));
+ const tulaFam=nm=>[...new Set(Object.keys(TULA).filter(t=>TULA[t].indexOf(nm)>=0).map(famOfSub))];
+ const CHOSEN={Victim:'Collapse','Hyper-Vigilant':'Rigidity',Imposter:'Collapse',Dramatizer:'Grandiosity',
+  'People-Pleaser':'Collapse',Dreamer:'Grandiosity'};
+ const SIBLING={Catastrophizer:'Worrywart',Overthinker:'Worrywart',Martyr:'Victim',Cynic:'Nihilist',
+  Enabler:'Pleaser',Pleaser:'People-Pleaser'};
+ const twoNamed=SAB_LIB.filter(s=>tulaFam(s.nm).length>1).map(s=>s.nm).sort();
+ ok(JSON.stringify(twoNamed)===JSON.stringify(Object.keys(CHOSEN).sort()),
+  'every row TULA names two families for has its choice held here, '+JSON.stringify(twoNamed));
+ const famOff=rows=>{const by={};rows.forEach(s=>{by[s.nm]=s.hcx;});const out=[];
+  rows.forEach(s=>{const n=tulaFam(s.nm);
+   if(n.length===1&&s.hcx!==n[0])out.push(s.nm+' '+s.hcx+', TULA '+n[0]);
+   if(n.length>1&&s.hcx!==CHOSEN[s.nm])out.push(s.nm+' '+s.hcx+', chosen '+CHOSEN[s.nm]+' of '+n.join(' or '));
+   if(!n.length&&SIBLING[s.nm]&&s.hcx!==by[SIBLING[s.nm]])out.push(s.nm+' '+s.hcx+', its sibling '+SIBLING[s.nm]+' '+by[SIBLING[s.nm]]);});
+  return out;};
+ const asFam=f=>SAB_LIB.map(s=>({nm:s.nm,nids:s.nids,hcx:f[s.nm]||s.hcx}));
+ const CAMEFAM={Micromanager:'Rigidity',Judge:'Predatory','Hyper-Vigilant':'Dysregulation',Avoider:'Dissociation',
+  Worrywart:'Dysregulation',Loner:'Dissociation',Catastrophizer:'Dysregulation',Overthinker:'Dysregulation'};
+ const offCameFam=famOff(asFam(CAMEFAM)).map(m=>m.split(' ')[0]);
+ ok(JSON.stringify(offCameFam)===JSON.stringify(['Micromanager','Hyper-Vigilant','Judge','Avoider','Worrywart','Loner']),
+  'the check catches the six families as they came, '+JSON.stringify(offCameFam));
+ const leftBehind=famOff(asFam({Micromanager:'Grandiosity',Judge:'Grandiosity','Hyper-Vigilant':'Rigidity',
+  Avoider:'Collapse',Worrywart:'Collapse',Loner:'Collapse',Catastrophizer:'Dysregulation',Overthinker:'Dysregulation'}))
+  .map(m=>m.split(' ')[0]);
+ ok(JSON.stringify(leftBehind)===JSON.stringify(['Overthinker','Catastrophizer']),
+  'and the two that follow the Worrywart, left behind when it moved, '+JSON.stringify(leftBehind));
+ ok(famOff(SAB_LIB).length===0,'and every row\'s family follows TULA, its chosen one or its sibling, off: '+JSON.stringify(famOff(SAB_LIB)));
 }
 
 g('RB · every worked example with a row runs rituals, written in the shapes the Ritual page reads');
