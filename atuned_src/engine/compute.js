@@ -614,10 +614,16 @@ function compute(){
    seat mean of zero, and the pull is leverPull(0) at all 112. Nothing is
    mutated and nothing is guessed. */
 function exCeiling(){
- var r=compute();
- var noShadowResistance=Math.max(1,r.vf);
- var noShadowIntention=clamp(r.It-r.poleMean*0.22+r.JQ*0.30,0,10);
- return coherenceFormula(cqSum()/10,noShadowIntention,noShadowResistance)*(1-leverPull(0));
+ /* Evaluate the formula at the shadowless ceiling without changing the live
+    field: Integrity keeps answered-law/release-lift state; Intention loses
+    the pole/JQ adjustments caused by shadow; Resistance keeps the story gate
+    factor but removes the DQ multiplier because the shadow is zero. */
+ var answered=SINAMES.filter(lawIn).length;
+ var integrity=cqSum()/10;
+ var intention=clamp(BANDS.reduce(function(a,b){return a+bandIg(b);},0)/BANDS.length,0,10);
+ var resistance=Math.max(1,verpFactor());
+ var shadowlessCQ=answered===0?0:coherenceFormula(integrity,intention,resistance);
+ return shadowlessCQ*(1-leverPull(0));
 }
 /* the gap a release still has in it, for the person about to run one */
 function exHeadroom(exNow){return Math.max(0,exCeiling()-exNow);}
