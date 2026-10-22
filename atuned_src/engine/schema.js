@@ -301,15 +301,16 @@ function saveProfile(p){
  return p;}
 /* a snapshot is what Analytics plots. derived only, never inputs.
 
-   m IS WHICH ARITHMETIC WROTE THE ROW. cq and dq changed meaning on 25
-   September: cq was It*Ig/Rz and is now the laws over 210, dq was an
-   uncapped sum over the addresses at 4 or more and is now the 112 over 1120.
-   A row written before that carries no m, reads back as 0, and a surface
-   comparing two rows must not report the change of formula as a move in the
-   person. tier is null while CQ is still filling. */
+   m IS WHICH ARITHMETIC WROTE THE ROW. CQ model 3 is Integrity × Intention /
+   Resistance; older rows retain their model stamp and must not be interpreted
+   as though they used the current formula. The three formula inputs are saved
+   alongside CQ so a model-3 row can be audited. A row written before model
+   stamping reads back as 0. tier is null while CQ is still filling. */
 function snapshot(p){
  var r=compute();
- return {t:new Date().toISOString(), m:CQ_MODEL, cq:Math.round(r.CQ*10)/10, dq:Math.round(r.DQ*100)/100,
+ return {t:new Date().toISOString(), m:CQ_MODEL, cq:Math.round(r.CQ*10)/10,
+  integrity:Math.round(r.integrity*1000)/1000, intention:Math.round(r.intention*1000)/1000,
+  resistance:Math.round(r.resistance*1000)/1000, dq:Math.round(r.DQ*100)/100,
   sq:Math.round(r.SQm*100)/100, pole:Math.round(r.poleMean*100)/100,
   jq:Math.round(r.JQ*100)/100, rad:Math.round(r.radiance*1000)/1000,
   loaded:r.loaded.length, sab:r.sabs.length, cx:r.cxs.length, hy:r.hys.length, ch:r.sups.length,
@@ -1401,7 +1402,7 @@ function validateProfile(o){
    tier:x.tier==='Collapsed'?'Contracted'
     :(typeof x.tier==='string'||x.tier===null)?x.tier:'Contracted',
    arch:typeof x.arch==='string'?x.arch:''};
-  [['m',0,CQ_MODEL],['cq',0,100],['dq',0,1e4],['sq',0,10],['pole',0,10],['jq',0,10],['rad',0,10],
+  [['m',0,CQ_MODEL],['cq',0,100],['integrity',0,10],['intention',0,10],['resistance',0,100],['dq',0,1e4],['sq',0,10],['pole',0,10],['jq',0,10],['rad',0,10],
    ['loaded',0,1e4],['sab',0,1e4],['cx',0,1e4],['hy',0,1e4],['ch',0,1e4]].forEach(function(f){
    var v=vRange(errs,'history['+i+'].'+f[0],x[f[0]],f[1],f[2]);
    q[f[0]]=v===null?0:v;});
