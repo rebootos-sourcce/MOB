@@ -448,7 +448,7 @@ function suite(T,E,ok,g){
   ok(marked&&marked.signalSources.every(s=>s.status==='candidate'&&s.src==='inferred'),
    'signal marker retains inferred candidate status rather than implying user confirmation');
   const confirmedAddress=JSON.parse(J(p));
-  confirmedAddress.story.entries[0].ob={yes:[53],no:[]};
+  confirmedAddress.story.entries[1].ob={yes:[53],no:[]};
   const confirmedGraph=T.traceFromRecord(confirmedAddress);
   const confirmedEdge=confirmedGraph.edges.find(e=>e.from==='story:'+story.id&&e.to==='pattern:53'&&e.edge==='supports');
   ok(confirmedEdge&&confirmedEdge.src==='user_confirmed'&&confirmedEdge.yes===true,
