@@ -6455,7 +6455,7 @@
       "aliases": [],
       "layer": "archetype_domain_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_target_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -6473,43 +6473,67 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
         "ARCHDOM.json maps Warrior to Power."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; crosswalk semantics unverified",
+      "confidence": 0.86,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+          ],
+          "findings": [
+            "Extracted the source row Warrior → Power."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Confirmed the archetype key Warrior appears in the 18-entry ARCH12 content and ARCH18 mapping table."
+          ],
+          "conflicts": [
+            "Target label \"Power\" does not exactly match any of the fifteen owner-stated behavioral domain labels; do not force a join."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Compared all eighteen mapping rows against the archetype inventory and preserved the row as a separate mapping record.",
+            "No parent/child edge was created because target taxonomy identity is unresolved."
+          ],
+          "conflicts": [
+            "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify target taxonomy and mapping semantics; equivalence to owner-stated behavioral domains is not assumed."
+        "Confirm the intended domain taxonomy and the authority/version for this archetype-to-domain mapping before wiring it as a semantic edge."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; mapping is not approved as an inter-taxonomy edge."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -6530,8 +6554,12 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
-      ]
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "archetypeName": "Warrior",
+      "domainTarget": "Power"
     },
     {
       "id": "mapping:archdom:caregiver",
@@ -6541,7 +6569,7 @@
       "aliases": [],
       "layer": "archetype_domain_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_target_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -6559,43 +6587,67 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
         "ARCHDOM.json maps Caregiver to Healing."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; crosswalk semantics unverified",
+      "confidence": 0.86,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+          ],
+          "findings": [
+            "Extracted the source row Caregiver → Healing."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Confirmed the archetype key Caregiver appears in the 18-entry ARCH12 content and ARCH18 mapping table."
+          ],
+          "conflicts": [
+            "Target label \"Healing\" does not exactly match any of the fifteen owner-stated behavioral domain labels; do not force a join."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Compared all eighteen mapping rows against the archetype inventory and preserved the row as a separate mapping record.",
+            "No parent/child edge was created because target taxonomy identity is unresolved."
+          ],
+          "conflicts": [
+            "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify target taxonomy and mapping semantics; equivalence to owner-stated behavioral domains is not assumed."
+        "Confirm the intended domain taxonomy and the authority/version for this archetype-to-domain mapping before wiring it as a semantic edge."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; mapping is not approved as an inter-taxonomy edge."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -6616,8 +6668,12 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
-      ]
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "archetypeName": "Caregiver",
+      "domainTarget": "Healing"
     },
     {
       "id": "mapping:archdom:creator",
@@ -6627,7 +6683,7 @@
       "aliases": [],
       "layer": "archetype_domain_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_target_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -6645,43 +6701,67 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
         "ARCHDOM.json maps Creator to Creation."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; crosswalk semantics unverified",
+      "confidence": 0.86,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+          ],
+          "findings": [
+            "Extracted the source row Creator → Creation."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Confirmed the archetype key Creator appears in the 18-entry ARCH12 content and ARCH18 mapping table."
+          ],
+          "conflicts": [
+            "Target label \"Creation\" does not exactly match any of the fifteen owner-stated behavioral domain labels; do not force a join."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Compared all eighteen mapping rows against the archetype inventory and preserved the row as a separate mapping record.",
+            "No parent/child edge was created because target taxonomy identity is unresolved."
+          ],
+          "conflicts": [
+            "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify target taxonomy and mapping semantics; equivalence to owner-stated behavioral domains is not assumed."
+        "Confirm the intended domain taxonomy and the authority/version for this archetype-to-domain mapping before wiring it as a semantic edge."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; mapping is not approved as an inter-taxonomy edge."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -6702,8 +6782,12 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
-      ]
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "archetypeName": "Creator",
+      "domainTarget": "Creation"
     },
     {
       "id": "mapping:archdom:sage",
@@ -6713,7 +6797,7 @@
       "aliases": [],
       "layer": "archetype_domain_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_target_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -6731,43 +6815,67 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
         "ARCHDOM.json maps Sage to Knowledge."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; crosswalk semantics unverified",
+      "confidence": 0.86,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+          ],
+          "findings": [
+            "Extracted the source row Sage → Knowledge."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Confirmed the archetype key Sage appears in the 18-entry ARCH12 content and ARCH18 mapping table."
+          ],
+          "conflicts": [
+            "Target label \"Knowledge\" is not identical to the owner-stated domain taxonomy label set; equivalence remains unproven."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Compared all eighteen mapping rows against the archetype inventory and preserved the row as a separate mapping record.",
+            "No parent/child edge was created because target taxonomy identity is unresolved."
+          ],
+          "conflicts": [
+            "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify target taxonomy and mapping semantics; equivalence to owner-stated behavioral domains is not assumed."
+        "Confirm the intended domain taxonomy and the authority/version for this archetype-to-domain mapping before wiring it as a semantic edge."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; mapping is not approved as an inter-taxonomy edge."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -6788,8 +6896,12 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
-      ]
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "archetypeName": "Sage",
+      "domainTarget": "Knowledge"
     },
     {
       "id": "mapping:archdom:jester",
@@ -6799,7 +6911,7 @@
       "aliases": [],
       "layer": "archetype_domain_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_target_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -6817,43 +6929,67 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
         "ARCHDOM.json maps Jester to Play."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; crosswalk semantics unverified",
+      "confidence": 0.86,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+          ],
+          "findings": [
+            "Extracted the source row Jester → Play."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Confirmed the archetype key Jester appears in the 18-entry ARCH12 content and ARCH18 mapping table."
+          ],
+          "conflicts": [
+            "Target label \"Play\" does not exactly match any of the fifteen owner-stated behavioral domain labels; do not force a join."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Compared all eighteen mapping rows against the archetype inventory and preserved the row as a separate mapping record.",
+            "No parent/child edge was created because target taxonomy identity is unresolved."
+          ],
+          "conflicts": [
+            "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify target taxonomy and mapping semantics; equivalence to owner-stated behavioral domains is not assumed."
+        "Confirm the intended domain taxonomy and the authority/version for this archetype-to-domain mapping before wiring it as a semantic edge."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; mapping is not approved as an inter-taxonomy edge."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -6874,8 +7010,12 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
-      ]
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "archetypeName": "Jester",
+      "domainTarget": "Play"
     },
     {
       "id": "mapping:archdom:lover",
@@ -6885,7 +7025,7 @@
       "aliases": [],
       "layer": "archetype_domain_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_target_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -6903,43 +7043,67 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
         "ARCHDOM.json maps Lover to Love."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; crosswalk semantics unverified",
+      "confidence": 0.86,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+          ],
+          "findings": [
+            "Extracted the source row Lover → Love."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Confirmed the archetype key Lover appears in the 18-entry ARCH12 content and ARCH18 mapping table."
+          ],
+          "conflicts": [
+            "Target label \"Love\" does not exactly match any of the fifteen owner-stated behavioral domain labels; do not force a join."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Compared all eighteen mapping rows against the archetype inventory and preserved the row as a separate mapping record.",
+            "No parent/child edge was created because target taxonomy identity is unresolved."
+          ],
+          "conflicts": [
+            "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify target taxonomy and mapping semantics; equivalence to owner-stated behavioral domains is not assumed."
+        "Confirm the intended domain taxonomy and the authority/version for this archetype-to-domain mapping before wiring it as a semantic edge."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; mapping is not approved as an inter-taxonomy edge."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -6960,8 +7124,12 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
-      ]
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "archetypeName": "Lover",
+      "domainTarget": "Love"
     },
     {
       "id": "mapping:archdom:magician",
@@ -6971,7 +7139,7 @@
       "aliases": [],
       "layer": "archetype_domain_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_target_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -6989,43 +7157,67 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
         "ARCHDOM.json maps Magician to Mystery."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; crosswalk semantics unverified",
+      "confidence": 0.86,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+          ],
+          "findings": [
+            "Extracted the source row Magician → Mystery."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Confirmed the archetype key Magician appears in the 18-entry ARCH12 content and ARCH18 mapping table."
+          ],
+          "conflicts": [
+            "Target label \"Mystery\" does not exactly match any of the fifteen owner-stated behavioral domain labels; do not force a join."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Compared all eighteen mapping rows against the archetype inventory and preserved the row as a separate mapping record.",
+            "No parent/child edge was created because target taxonomy identity is unresolved."
+          ],
+          "conflicts": [
+            "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify target taxonomy and mapping semantics; equivalence to owner-stated behavioral domains is not assumed."
+        "Confirm the intended domain taxonomy and the authority/version for this archetype-to-domain mapping before wiring it as a semantic edge."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; mapping is not approved as an inter-taxonomy edge."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -7046,8 +7238,12 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
-      ]
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "archetypeName": "Magician",
+      "domainTarget": "Mystery"
     },
     {
       "id": "mapping:archdom:innocent",
@@ -7057,7 +7253,7 @@
       "aliases": [],
       "layer": "archetype_domain_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_target_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -7075,43 +7271,67 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
         "ARCHDOM.json maps Innocent to Nature."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; crosswalk semantics unverified",
+      "confidence": 0.86,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+          ],
+          "findings": [
+            "Extracted the source row Innocent → Nature."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Confirmed the archetype key Innocent appears in the 18-entry ARCH12 content and ARCH18 mapping table."
+          ],
+          "conflicts": [
+            "Target label \"Nature\" does not exactly match any of the fifteen owner-stated behavioral domain labels; do not force a join."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Compared all eighteen mapping rows against the archetype inventory and preserved the row as a separate mapping record.",
+            "No parent/child edge was created because target taxonomy identity is unresolved."
+          ],
+          "conflicts": [
+            "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify target taxonomy and mapping semantics; equivalence to owner-stated behavioral domains is not assumed."
+        "Confirm the intended domain taxonomy and the authority/version for this archetype-to-domain mapping before wiring it as a semantic edge."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; mapping is not approved as an inter-taxonomy edge."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -7132,8 +7352,12 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
-      ]
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "archetypeName": "Innocent",
+      "domainTarget": "Nature"
     },
     {
       "id": "mapping:archdom:outlaw",
@@ -7143,7 +7367,7 @@
       "aliases": [],
       "layer": "archetype_domain_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_target_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -7161,43 +7385,67 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
         "ARCHDOM.json maps Outlaw to Destruction."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; crosswalk semantics unverified",
+      "confidence": 0.86,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+          ],
+          "findings": [
+            "Extracted the source row Outlaw → Destruction."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Confirmed the archetype key Outlaw appears in the 18-entry ARCH12 content and ARCH18 mapping table."
+          ],
+          "conflicts": [
+            "Target label \"Destruction\" does not exactly match any of the fifteen owner-stated behavioral domain labels; do not force a join."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Compared all eighteen mapping rows against the archetype inventory and preserved the row as a separate mapping record.",
+            "No parent/child edge was created because target taxonomy identity is unresolved."
+          ],
+          "conflicts": [
+            "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify target taxonomy and mapping semantics; equivalence to owner-stated behavioral domains is not assumed."
+        "Confirm the intended domain taxonomy and the authority/version for this archetype-to-domain mapping before wiring it as a semantic edge."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; mapping is not approved as an inter-taxonomy edge."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -7218,8 +7466,12 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
-      ]
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "archetypeName": "Outlaw",
+      "domainTarget": "Destruction"
     },
     {
       "id": "mapping:archdom:ruler",
@@ -7229,7 +7481,7 @@
       "aliases": [],
       "layer": "archetype_domain_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_target_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -7247,43 +7499,67 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
         "ARCHDOM.json maps Ruler to Architect."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; crosswalk semantics unverified",
+      "confidence": 0.86,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+          ],
+          "findings": [
+            "Extracted the source row Ruler → Architect."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Confirmed the archetype key Ruler appears in the 18-entry ARCH12 content and ARCH18 mapping table."
+          ],
+          "conflicts": [
+            "Target label \"Architect\" does not exactly match any of the fifteen owner-stated behavioral domain labels; do not force a join."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Compared all eighteen mapping rows against the archetype inventory and preserved the row as a separate mapping record.",
+            "No parent/child edge was created because target taxonomy identity is unresolved."
+          ],
+          "conflicts": [
+            "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify target taxonomy and mapping semantics; equivalence to owner-stated behavioral domains is not assumed."
+        "Confirm the intended domain taxonomy and the authority/version for this archetype-to-domain mapping before wiring it as a semantic edge."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; mapping is not approved as an inter-taxonomy edge."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -7304,8 +7580,12 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
-      ]
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "archetypeName": "Ruler",
+      "domainTarget": "Architect"
     },
     {
       "id": "mapping:archdom:explorer",
@@ -7315,7 +7595,7 @@
       "aliases": [],
       "layer": "archetype_domain_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_target_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -7333,43 +7613,67 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
         "ARCHDOM.json maps Explorer to Nature."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; crosswalk semantics unverified",
+      "confidence": 0.86,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+          ],
+          "findings": [
+            "Extracted the source row Explorer → Nature."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Confirmed the archetype key Explorer appears in the 18-entry ARCH12 content and ARCH18 mapping table."
+          ],
+          "conflicts": [
+            "Target label \"Nature\" does not exactly match any of the fifteen owner-stated behavioral domain labels; do not force a join."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Compared all eighteen mapping rows against the archetype inventory and preserved the row as a separate mapping record.",
+            "No parent/child edge was created because target taxonomy identity is unresolved."
+          ],
+          "conflicts": [
+            "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify target taxonomy and mapping semantics; equivalence to owner-stated behavioral domains is not assumed."
+        "Confirm the intended domain taxonomy and the authority/version for this archetype-to-domain mapping before wiring it as a semantic edge."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; mapping is not approved as an inter-taxonomy edge."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -7390,8 +7694,12 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
-      ]
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "archetypeName": "Explorer",
+      "domainTarget": "Nature"
     },
     {
       "id": "mapping:archdom:orphan",
@@ -7401,7 +7709,7 @@
       "aliases": [],
       "layer": "archetype_domain_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_target_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -7419,43 +7727,67 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
         "ARCHDOM.json maps Orphan to Guardian."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; crosswalk semantics unverified",
+      "confidence": 0.86,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+          ],
+          "findings": [
+            "Extracted the source row Orphan → Guardian."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Confirmed the archetype key Orphan appears in the 18-entry ARCH12 content and ARCH18 mapping table."
+          ],
+          "conflicts": [
+            "Target label \"Guardian\" does not exactly match any of the fifteen owner-stated behavioral domain labels; do not force a join."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Compared all eighteen mapping rows against the archetype inventory and preserved the row as a separate mapping record.",
+            "No parent/child edge was created because target taxonomy identity is unresolved."
+          ],
+          "conflicts": [
+            "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify target taxonomy and mapping semantics; equivalence to owner-stated behavioral domains is not assumed."
+        "Confirm the intended domain taxonomy and the authority/version for this archetype-to-domain mapping before wiring it as a semantic edge."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; mapping is not approved as an inter-taxonomy edge."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -7476,8 +7808,12 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
-      ]
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "archetypeName": "Orphan",
+      "domainTarget": "Guardian"
     },
     {
       "id": "mapping:archdom:hero",
@@ -7487,7 +7823,7 @@
       "aliases": [],
       "layer": "archetype_domain_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_target_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -7505,43 +7841,67 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
         "ARCHDOM.json maps Hero to Power."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; crosswalk semantics unverified",
+      "confidence": 0.86,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+          ],
+          "findings": [
+            "Extracted the source row Hero → Power."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Confirmed the archetype key Hero appears in the 18-entry ARCH12 content and ARCH18 mapping table."
+          ],
+          "conflicts": [
+            "Target label \"Power\" does not exactly match any of the fifteen owner-stated behavioral domain labels; do not force a join."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Compared all eighteen mapping rows against the archetype inventory and preserved the row as a separate mapping record.",
+            "No parent/child edge was created because target taxonomy identity is unresolved."
+          ],
+          "conflicts": [
+            "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify target taxonomy and mapping semantics; equivalence to owner-stated behavioral domains is not assumed."
+        "Confirm the intended domain taxonomy and the authority/version for this archetype-to-domain mapping before wiring it as a semantic edge."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; mapping is not approved as an inter-taxonomy edge."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -7562,8 +7922,12 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
-      ]
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "archetypeName": "Hero",
+      "domainTarget": "Power"
     },
     {
       "id": "mapping:archdom:everyman",
@@ -7573,7 +7937,7 @@
       "aliases": [],
       "layer": "archetype_domain_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_target_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -7591,43 +7955,67 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
         "ARCHDOM.json maps Everyman to Communication."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; crosswalk semantics unverified",
+      "confidence": 0.86,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+          ],
+          "findings": [
+            "Extracted the source row Everyman → Communication."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Confirmed the archetype key Everyman appears in the 18-entry ARCH12 content and ARCH18 mapping table."
+          ],
+          "conflicts": [
+            "Target label \"Communication\" does not exactly match any of the fifteen owner-stated behavioral domain labels; do not force a join."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Compared all eighteen mapping rows against the archetype inventory and preserved the row as a separate mapping record.",
+            "No parent/child edge was created because target taxonomy identity is unresolved."
+          ],
+          "conflicts": [
+            "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify target taxonomy and mapping semantics; equivalence to owner-stated behavioral domains is not assumed."
+        "Confirm the intended domain taxonomy and the authority/version for this archetype-to-domain mapping before wiring it as a semantic edge."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; mapping is not approved as an inter-taxonomy edge."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -7648,8 +8036,12 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
-      ]
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "archetypeName": "Everyman",
+      "domainTarget": "Communication"
     },
     {
       "id": "mapping:archdom:mentor",
@@ -7659,7 +8051,7 @@
       "aliases": [],
       "layer": "archetype_domain_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_target_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -7677,43 +8069,67 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
         "ARCHDOM.json maps Mentor to Knowledge."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; crosswalk semantics unverified",
+      "confidence": 0.86,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+          ],
+          "findings": [
+            "Extracted the source row Mentor → Knowledge."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Confirmed the archetype key Mentor appears in the 18-entry ARCH12 content and ARCH18 mapping table."
+          ],
+          "conflicts": [
+            "Target label \"Knowledge\" is not identical to the owner-stated domain taxonomy label set; equivalence remains unproven."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Compared all eighteen mapping rows against the archetype inventory and preserved the row as a separate mapping record.",
+            "No parent/child edge was created because target taxonomy identity is unresolved."
+          ],
+          "conflicts": [
+            "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify target taxonomy and mapping semantics; equivalence to owner-stated behavioral domains is not assumed."
+        "Confirm the intended domain taxonomy and the authority/version for this archetype-to-domain mapping before wiring it as a semantic edge."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; mapping is not approved as an inter-taxonomy edge."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -7734,8 +8150,12 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
-      ]
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "archetypeName": "Mentor",
+      "domainTarget": "Knowledge"
     },
     {
       "id": "mapping:archdom:shadow",
@@ -7745,7 +8165,7 @@
       "aliases": [],
       "layer": "archetype_domain_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_target_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -7763,43 +8183,67 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
         "ARCHDOM.json maps Shadow to Death."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; crosswalk semantics unverified",
+      "confidence": 0.86,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+          ],
+          "findings": [
+            "Extracted the source row Shadow → Death."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Confirmed the archetype key Shadow appears in the 18-entry ARCH12 content and ARCH18 mapping table."
+          ],
+          "conflicts": [
+            "Target label \"Death\" does not exactly match any of the fifteen owner-stated behavioral domain labels; do not force a join."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Compared all eighteen mapping rows against the archetype inventory and preserved the row as a separate mapping record.",
+            "No parent/child edge was created because target taxonomy identity is unresolved."
+          ],
+          "conflicts": [
+            "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify target taxonomy and mapping semantics; equivalence to owner-stated behavioral domains is not assumed."
+        "Confirm the intended domain taxonomy and the authority/version for this archetype-to-domain mapping before wiring it as a semantic edge."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; mapping is not approved as an inter-taxonomy edge."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -7820,8 +8264,12 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
-      ]
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "archetypeName": "Shadow",
+      "domainTarget": "Death"
     },
     {
       "id": "mapping:archdom:shapeshifter",
@@ -7831,7 +8279,7 @@
       "aliases": [],
       "layer": "archetype_domain_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_target_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -7849,43 +8297,67 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
         "ARCHDOM.json maps Shapeshifter to Trickster."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; crosswalk semantics unverified",
+      "confidence": 0.86,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+          ],
+          "findings": [
+            "Extracted the source row Shapeshifter → Trickster."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Confirmed the archetype key Shapeshifter appears in the 18-entry ARCH12 content and ARCH18 mapping table."
+          ],
+          "conflicts": [
+            "Target label \"Trickster\" does not exactly match any of the fifteen owner-stated behavioral domain labels; do not force a join."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Compared all eighteen mapping rows against the archetype inventory and preserved the row as a separate mapping record.",
+            "No parent/child edge was created because target taxonomy identity is unresolved."
+          ],
+          "conflicts": [
+            "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify target taxonomy and mapping semantics; equivalence to owner-stated behavioral domains is not assumed."
+        "Confirm the intended domain taxonomy and the authority/version for this archetype-to-domain mapping before wiring it as a semantic edge."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; mapping is not approved as an inter-taxonomy edge."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -7906,8 +8378,12 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
-      ]
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "archetypeName": "Shapeshifter",
+      "domainTarget": "Trickster"
     },
     {
       "id": "mapping:archdom:healer",
@@ -7917,7 +8393,7 @@
       "aliases": [],
       "layer": "archetype_domain_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_target_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -7935,43 +8411,67 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
       ],
       "sourceClaims": [
         "ARCHDOM.json maps Healer to Healing."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed table row; crosswalk semantics unverified",
+      "confidence": 0.86,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
+          ],
+          "findings": [
+            "Extracted the source row Healer → Healing."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Confirmed the archetype key Healer appears in the 18-entry ARCH12 content and ARCH18 mapping table."
+          ],
+          "conflicts": [
+            "Target label \"Healing\" does not exactly match any of the fifteen owner-stated behavioral domain labels; do not force a join."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Compared all eighteen mapping rows against the archetype inventory and preserved the row as a separate mapping record.",
+            "No parent/child edge was created because target taxonomy identity is unresolved."
+          ],
+          "conflicts": [
+            "Table consistency does not establish canonical semantics or a Root → Domain → Blueprint → Jungian relationship."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify target taxonomy and mapping semantics; equivalence to owner-stated behavioral domains is not assumed."
+        "Confirm the intended domain taxonomy and the authority/version for this archetype-to-domain mapping before wiring it as a semantic edge."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; mapping is not approved as an inter-taxonomy edge."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -7992,8 +8492,12 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCHDOM.json"
-      ]
+        "ARCHDOM.json@cc2cec9775282a658625b1f4435ee2e04ecb300b",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6"
+      ],
+      "archetypeName": "Healer",
+      "domainTarget": "Healing"
     },
     {
       "id": "mapping:arch18:01",
@@ -8003,7 +8507,7 @@
       "aliases": [],
       "layer": "archetype_fetter_seat_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_mapping_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -8021,43 +8525,72 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
       ],
       "sourceClaims": [
         "ARCH18.json row 1 maps Warrior to Controller at solar."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed tuple; label corroborated, relation semantics unverified",
+      "confidence": 0.85,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Extracted the source tuple Warrior → Controller @ solar."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Confirmed Warrior exists in the 18-entry archetype table.",
+            "Fetter label \"Controller\" also occurs in SAB33.",
+            "Seat label retained as supplied; normalization not inferred."
+          ],
+          "conflicts": [
+            "ARCH18 does not state whether this is causal, illustrative, or a UI association."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Compared all eighteen tuples against the archetype list and checked fetter labels against the Saboteur inventory.",
+            "Repeated fetter labels across multiple archetypes were preserved as multiple source rows, not collapsed into a single causal edge."
+          ],
+          "conflicts": [
+            "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify whether this table is canonical, experimental, or illustrative; resolve fetter identity and seat normalization."
+        "Verify the table's intended use and whether the archetype/fetter/seat tuple is canonically approved; resolve any label/seat mismatches before wiring."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; no semantic graph edge is implied by this record alone."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -8078,8 +8611,14 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
-      ]
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "SAB33.json@73eca795255cb3124a6ee56af1509ff92b2c3dcf",
+        "NODEREG.json@8a2daa54b9a94dc9df6136f4a39a62bc57a6d9a3"
+      ],
+      "archetypeName": "Warrior",
+      "fetterLabel": "Controller",
+      "seatLabel": "solar"
     },
     {
       "id": "mapping:arch18:02",
@@ -8089,7 +8628,7 @@
       "aliases": [],
       "layer": "archetype_fetter_seat_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_mapping_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -8107,43 +8646,72 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
       ],
       "sourceClaims": [
         "ARCH18.json row 2 maps Caregiver to Pleaser at heart."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed tuple; label corroborated, relation semantics unverified",
+      "confidence": 0.85,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Extracted the source tuple Caregiver → Pleaser @ heart."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Confirmed Caregiver exists in the 18-entry archetype table.",
+            "Fetter label \"Pleaser\" also occurs in SAB33.",
+            "Seat label retained as supplied; normalization not inferred."
+          ],
+          "conflicts": [
+            "ARCH18 does not state whether this is causal, illustrative, or a UI association."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Compared all eighteen tuples against the archetype list and checked fetter labels against the Saboteur inventory.",
+            "Repeated fetter labels across multiple archetypes were preserved as multiple source rows, not collapsed into a single causal edge."
+          ],
+          "conflicts": [
+            "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify whether this table is canonical, experimental, or illustrative; resolve fetter identity and seat normalization."
+        "Verify the table's intended use and whether the archetype/fetter/seat tuple is canonically approved; resolve any label/seat mismatches before wiring."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; no semantic graph edge is implied by this record alone."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -8164,8 +8732,14 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
-      ]
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "SAB33.json@73eca795255cb3124a6ee56af1509ff92b2c3dcf",
+        "NODEREG.json@8a2daa54b9a94dc9df6136f4a39a62bc57a6d9a3"
+      ],
+      "archetypeName": "Caregiver",
+      "fetterLabel": "Pleaser",
+      "seatLabel": "heart"
     },
     {
       "id": "mapping:arch18:03",
@@ -8175,7 +8749,7 @@
       "aliases": [],
       "layer": "archetype_fetter_seat_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_mapping_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -8193,43 +8767,72 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
       ],
       "sourceClaims": [
         "ARCH18.json row 3 maps Creator to Stickler at throat."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed tuple; label corroborated, relation semantics unverified",
+      "confidence": 0.85,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Extracted the source tuple Creator → Stickler @ throat."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Confirmed Creator exists in the 18-entry archetype table.",
+            "Fetter label \"Stickler\" also occurs in SAB33.",
+            "Seat label retained as supplied; normalization not inferred."
+          ],
+          "conflicts": [
+            "ARCH18 does not state whether this is causal, illustrative, or a UI association."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Compared all eighteen tuples against the archetype list and checked fetter labels against the Saboteur inventory.",
+            "Repeated fetter labels across multiple archetypes were preserved as multiple source rows, not collapsed into a single causal edge."
+          ],
+          "conflicts": [
+            "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify whether this table is canonical, experimental, or illustrative; resolve fetter identity and seat normalization."
+        "Verify the table's intended use and whether the archetype/fetter/seat tuple is canonically approved; resolve any label/seat mismatches before wiring."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; no semantic graph edge is implied by this record alone."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -8250,8 +8853,14 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
-      ]
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "SAB33.json@73eca795255cb3124a6ee56af1509ff92b2c3dcf",
+        "NODEREG.json@8a2daa54b9a94dc9df6136f4a39a62bc57a6d9a3"
+      ],
+      "archetypeName": "Creator",
+      "fetterLabel": "Stickler",
+      "seatLabel": "throat"
     },
     {
       "id": "mapping:arch18:04",
@@ -8261,7 +8870,7 @@
       "aliases": [],
       "layer": "archetype_fetter_seat_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_mapping_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -8279,43 +8888,72 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
       ],
       "sourceClaims": [
         "ARCH18.json row 4 maps Sage to Hyper-Rational at eye."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed tuple; label corroborated, relation semantics unverified",
+      "confidence": 0.85,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Extracted the source tuple Sage → Hyper-Rational @ eye."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Confirmed Sage exists in the 18-entry archetype table.",
+            "Fetter label \"Hyper-Rational\" also occurs in SAB33.",
+            "Seat label retained as supplied; normalization not inferred."
+          ],
+          "conflicts": [
+            "ARCH18 does not state whether this is causal, illustrative, or a UI association."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Compared all eighteen tuples against the archetype list and checked fetter labels against the Saboteur inventory.",
+            "Repeated fetter labels across multiple archetypes were preserved as multiple source rows, not collapsed into a single causal edge."
+          ],
+          "conflicts": [
+            "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify whether this table is canonical, experimental, or illustrative; resolve fetter identity and seat normalization."
+        "Verify the table's intended use and whether the archetype/fetter/seat tuple is canonically approved; resolve any label/seat mismatches before wiring."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; no semantic graph edge is implied by this record alone."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -8336,8 +8974,14 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
-      ]
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "SAB33.json@73eca795255cb3124a6ee56af1509ff92b2c3dcf",
+        "NODEREG.json@8a2daa54b9a94dc9df6136f4a39a62bc57a6d9a3"
+      ],
+      "archetypeName": "Sage",
+      "fetterLabel": "Hyper-Rational",
+      "seatLabel": "eye"
     },
     {
       "id": "mapping:arch18:05",
@@ -8347,7 +8991,7 @@
       "aliases": [],
       "layer": "archetype_fetter_seat_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_mapping_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -8365,43 +9009,72 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
       ],
       "sourceClaims": [
         "ARCH18.json row 5 maps Jester to Restless at sacral."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed tuple; label corroborated, relation semantics unverified",
+      "confidence": 0.85,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Extracted the source tuple Jester → Restless @ sacral."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Confirmed Jester exists in the 18-entry archetype table.",
+            "Fetter label \"Restless\" also occurs in SAB33.",
+            "Seat label retained as supplied; normalization not inferred."
+          ],
+          "conflicts": [
+            "ARCH18 does not state whether this is causal, illustrative, or a UI association."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Compared all eighteen tuples against the archetype list and checked fetter labels against the Saboteur inventory.",
+            "Repeated fetter labels across multiple archetypes were preserved as multiple source rows, not collapsed into a single causal edge."
+          ],
+          "conflicts": [
+            "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify whether this table is canonical, experimental, or illustrative; resolve fetter identity and seat normalization."
+        "Verify the table's intended use and whether the archetype/fetter/seat tuple is canonically approved; resolve any label/seat mismatches before wiring."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; no semantic graph edge is implied by this record alone."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -8422,8 +9095,14 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
-      ]
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "SAB33.json@73eca795255cb3124a6ee56af1509ff92b2c3dcf",
+        "NODEREG.json@8a2daa54b9a94dc9df6136f4a39a62bc57a6d9a3"
+      ],
+      "archetypeName": "Jester",
+      "fetterLabel": "Restless",
+      "seatLabel": "sacral"
     },
     {
       "id": "mapping:arch18:06",
@@ -8433,7 +9112,7 @@
       "aliases": [],
       "layer": "archetype_fetter_seat_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_mapping_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -8451,43 +9130,72 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
       ],
       "sourceClaims": [
         "ARCH18.json row 6 maps Lover to Hyper-Vigilant at heart."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed tuple; label corroborated, relation semantics unverified",
+      "confidence": 0.85,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Extracted the source tuple Lover → Hyper-Vigilant @ heart."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Confirmed Lover exists in the 18-entry archetype table.",
+            "Fetter label \"Hyper-Vigilant\" also occurs in SAB33.",
+            "Seat label retained as supplied; normalization not inferred."
+          ],
+          "conflicts": [
+            "ARCH18 does not state whether this is causal, illustrative, or a UI association."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Compared all eighteen tuples against the archetype list and checked fetter labels against the Saboteur inventory.",
+            "Repeated fetter labels across multiple archetypes were preserved as multiple source rows, not collapsed into a single causal edge."
+          ],
+          "conflicts": [
+            "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify whether this table is canonical, experimental, or illustrative; resolve fetter identity and seat normalization."
+        "Verify the table's intended use and whether the archetype/fetter/seat tuple is canonically approved; resolve any label/seat mismatches before wiring."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; no semantic graph edge is implied by this record alone."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -8508,8 +9216,14 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
-      ]
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "SAB33.json@73eca795255cb3124a6ee56af1509ff92b2c3dcf",
+        "NODEREG.json@8a2daa54b9a94dc9df6136f4a39a62bc57a6d9a3"
+      ],
+      "archetypeName": "Lover",
+      "fetterLabel": "Hyper-Vigilant",
+      "seatLabel": "heart"
     },
     {
       "id": "mapping:arch18:07",
@@ -8519,7 +9233,7 @@
       "aliases": [],
       "layer": "archetype_fetter_seat_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_mapping_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -8537,43 +9251,72 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
       ],
       "sourceClaims": [
         "ARCH18.json row 7 maps Magician to Victim at eye."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed tuple; label corroborated, relation semantics unverified",
+      "confidence": 0.85,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Extracted the source tuple Magician → Victim @ eye."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Confirmed Magician exists in the 18-entry archetype table.",
+            "Fetter label \"Victim\" also occurs in SAB33.",
+            "Seat label retained as supplied; normalization not inferred."
+          ],
+          "conflicts": [
+            "ARCH18 does not state whether this is causal, illustrative, or a UI association."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Compared all eighteen tuples against the archetype list and checked fetter labels against the Saboteur inventory.",
+            "Repeated fetter labels across multiple archetypes were preserved as multiple source rows, not collapsed into a single causal edge."
+          ],
+          "conflicts": [
+            "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify whether this table is canonical, experimental, or illustrative; resolve fetter identity and seat normalization."
+        "Verify the table's intended use and whether the archetype/fetter/seat tuple is canonically approved; resolve any label/seat mismatches before wiring."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; no semantic graph edge is implied by this record alone."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -8594,8 +9337,14 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
-      ]
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "SAB33.json@73eca795255cb3124a6ee56af1509ff92b2c3dcf",
+        "NODEREG.json@8a2daa54b9a94dc9df6136f4a39a62bc57a6d9a3"
+      ],
+      "archetypeName": "Magician",
+      "fetterLabel": "Victim",
+      "seatLabel": "eye"
     },
     {
       "id": "mapping:arch18:08",
@@ -8605,7 +9354,7 @@
       "aliases": [],
       "layer": "archetype_fetter_seat_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_mapping_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -8623,43 +9372,72 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
       ],
       "sourceClaims": [
         "ARCH18.json row 8 maps Innocent to Restless at root."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed tuple; label corroborated, relation semantics unverified",
+      "confidence": 0.85,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Extracted the source tuple Innocent → Restless @ root."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Confirmed Innocent exists in the 18-entry archetype table.",
+            "Fetter label \"Restless\" also occurs in SAB33.",
+            "Seat label retained as supplied; normalization not inferred."
+          ],
+          "conflicts": [
+            "ARCH18 does not state whether this is causal, illustrative, or a UI association."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Compared all eighteen tuples against the archetype list and checked fetter labels against the Saboteur inventory.",
+            "Repeated fetter labels across multiple archetypes were preserved as multiple source rows, not collapsed into a single causal edge."
+          ],
+          "conflicts": [
+            "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify whether this table is canonical, experimental, or illustrative; resolve fetter identity and seat normalization."
+        "Verify the table's intended use and whether the archetype/fetter/seat tuple is canonically approved; resolve any label/seat mismatches before wiring."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; no semantic graph edge is implied by this record alone."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -8680,8 +9458,14 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
-      ]
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "SAB33.json@73eca795255cb3124a6ee56af1509ff92b2c3dcf",
+        "NODEREG.json@8a2daa54b9a94dc9df6136f4a39a62bc57a6d9a3"
+      ],
+      "archetypeName": "Innocent",
+      "fetterLabel": "Restless",
+      "seatLabel": "root"
     },
     {
       "id": "mapping:arch18:09",
@@ -8691,7 +9475,7 @@
       "aliases": [],
       "layer": "archetype_fetter_seat_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_mapping_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -8709,43 +9493,72 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
       ],
       "sourceClaims": [
         "ARCH18.json row 9 maps Outlaw to Judge at solar."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed tuple; label corroborated, relation semantics unverified",
+      "confidence": 0.85,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Extracted the source tuple Outlaw → Judge @ solar."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Confirmed Outlaw exists in the 18-entry archetype table.",
+            "Fetter label \"Judge\" also occurs in SAB33.",
+            "Seat label retained as supplied; normalization not inferred."
+          ],
+          "conflicts": [
+            "ARCH18 does not state whether this is causal, illustrative, or a UI association."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Compared all eighteen tuples against the archetype list and checked fetter labels against the Saboteur inventory.",
+            "Repeated fetter labels across multiple archetypes were preserved as multiple source rows, not collapsed into a single causal edge."
+          ],
+          "conflicts": [
+            "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify whether this table is canonical, experimental, or illustrative; resolve fetter identity and seat normalization."
+        "Verify the table's intended use and whether the archetype/fetter/seat tuple is canonically approved; resolve any label/seat mismatches before wiring."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; no semantic graph edge is implied by this record alone."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -8766,8 +9579,14 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
-      ]
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "SAB33.json@73eca795255cb3124a6ee56af1509ff92b2c3dcf",
+        "NODEREG.json@8a2daa54b9a94dc9df6136f4a39a62bc57a6d9a3"
+      ],
+      "archetypeName": "Outlaw",
+      "fetterLabel": "Judge",
+      "seatLabel": "solar"
     },
     {
       "id": "mapping:arch18:10",
@@ -8777,7 +9596,7 @@
       "aliases": [],
       "layer": "archetype_fetter_seat_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_mapping_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -8795,43 +9614,72 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
       ],
       "sourceClaims": [
         "ARCH18.json row 10 maps Ruler to Hyper-Achiever at crown."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed tuple; label corroborated, relation semantics unverified",
+      "confidence": 0.85,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Extracted the source tuple Ruler → Hyper-Achiever @ crown."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Confirmed Ruler exists in the 18-entry archetype table.",
+            "Fetter label \"Hyper-Achiever\" also occurs in SAB33.",
+            "Seat label retained as supplied; normalization not inferred."
+          ],
+          "conflicts": [
+            "ARCH18 does not state whether this is causal, illustrative, or a UI association."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Compared all eighteen tuples against the archetype list and checked fetter labels against the Saboteur inventory.",
+            "Repeated fetter labels across multiple archetypes were preserved as multiple source rows, not collapsed into a single causal edge."
+          ],
+          "conflicts": [
+            "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify whether this table is canonical, experimental, or illustrative; resolve fetter identity and seat normalization."
+        "Verify the table's intended use and whether the archetype/fetter/seat tuple is canonically approved; resolve any label/seat mismatches before wiring."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; no semantic graph edge is implied by this record alone."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -8852,8 +9700,14 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
-      ]
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "SAB33.json@73eca795255cb3124a6ee56af1509ff92b2c3dcf",
+        "NODEREG.json@8a2daa54b9a94dc9df6136f4a39a62bc57a6d9a3"
+      ],
+      "archetypeName": "Ruler",
+      "fetterLabel": "Hyper-Achiever",
+      "seatLabel": "crown"
     },
     {
       "id": "mapping:arch18:11",
@@ -8863,7 +9717,7 @@
       "aliases": [],
       "layer": "archetype_fetter_seat_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_mapping_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -8881,43 +9735,72 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
       ],
       "sourceClaims": [
         "ARCH18.json row 11 maps Explorer to Restless at sacral."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed tuple; label corroborated, relation semantics unverified",
+      "confidence": 0.85,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Extracted the source tuple Explorer → Restless @ sacral."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Confirmed Explorer exists in the 18-entry archetype table.",
+            "Fetter label \"Restless\" also occurs in SAB33.",
+            "Seat label retained as supplied; normalization not inferred."
+          ],
+          "conflicts": [
+            "ARCH18 does not state whether this is causal, illustrative, or a UI association."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Compared all eighteen tuples against the archetype list and checked fetter labels against the Saboteur inventory.",
+            "Repeated fetter labels across multiple archetypes were preserved as multiple source rows, not collapsed into a single causal edge."
+          ],
+          "conflicts": [
+            "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify whether this table is canonical, experimental, or illustrative; resolve fetter identity and seat normalization."
+        "Verify the table's intended use and whether the archetype/fetter/seat tuple is canonically approved; resolve any label/seat mismatches before wiring."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; no semantic graph edge is implied by this record alone."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -8938,8 +9821,14 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
-      ]
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "SAB33.json@73eca795255cb3124a6ee56af1509ff92b2c3dcf",
+        "NODEREG.json@8a2daa54b9a94dc9df6136f4a39a62bc57a6d9a3"
+      ],
+      "archetypeName": "Explorer",
+      "fetterLabel": "Restless",
+      "seatLabel": "sacral"
     },
     {
       "id": "mapping:arch18:12",
@@ -8949,7 +9838,7 @@
       "aliases": [],
       "layer": "archetype_fetter_seat_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_mapping_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -8967,43 +9856,72 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
       ],
       "sourceClaims": [
         "ARCH18.json row 12 maps Orphan to Worrywart at heart."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed tuple; label corroborated, relation semantics unverified",
+      "confidence": 0.85,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Extracted the source tuple Orphan → Worrywart @ heart."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Confirmed Orphan exists in the 18-entry archetype table.",
+            "Fetter label \"Worrywart\" also occurs in SAB33.",
+            "Seat label retained as supplied; normalization not inferred."
+          ],
+          "conflicts": [
+            "ARCH18 does not state whether this is causal, illustrative, or a UI association."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Compared all eighteen tuples against the archetype list and checked fetter labels against the Saboteur inventory.",
+            "Repeated fetter labels across multiple archetypes were preserved as multiple source rows, not collapsed into a single causal edge."
+          ],
+          "conflicts": [
+            "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify whether this table is canonical, experimental, or illustrative; resolve fetter identity and seat normalization."
+        "Verify the table's intended use and whether the archetype/fetter/seat tuple is canonically approved; resolve any label/seat mismatches before wiring."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; no semantic graph edge is implied by this record alone."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -9024,8 +9942,14 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
-      ]
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "SAB33.json@73eca795255cb3124a6ee56af1509ff92b2c3dcf",
+        "NODEREG.json@8a2daa54b9a94dc9df6136f4a39a62bc57a6d9a3"
+      ],
+      "archetypeName": "Orphan",
+      "fetterLabel": "Worrywart",
+      "seatLabel": "heart"
     },
     {
       "id": "mapping:arch18:13",
@@ -9035,7 +9959,7 @@
       "aliases": [],
       "layer": "archetype_fetter_seat_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_mapping_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -9053,43 +9977,72 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
       ],
       "sourceClaims": [
         "ARCH18.json row 13 maps Hero to Hyper-Achiever at solar."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed tuple; label corroborated, relation semantics unverified",
+      "confidence": 0.85,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Extracted the source tuple Hero → Hyper-Achiever @ solar."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Confirmed Hero exists in the 18-entry archetype table.",
+            "Fetter label \"Hyper-Achiever\" also occurs in SAB33.",
+            "Seat label retained as supplied; normalization not inferred."
+          ],
+          "conflicts": [
+            "ARCH18 does not state whether this is causal, illustrative, or a UI association."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Compared all eighteen tuples against the archetype list and checked fetter labels against the Saboteur inventory.",
+            "Repeated fetter labels across multiple archetypes were preserved as multiple source rows, not collapsed into a single causal edge."
+          ],
+          "conflicts": [
+            "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify whether this table is canonical, experimental, or illustrative; resolve fetter identity and seat normalization."
+        "Verify the table's intended use and whether the archetype/fetter/seat tuple is canonically approved; resolve any label/seat mismatches before wiring."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; no semantic graph edge is implied by this record alone."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -9110,8 +10063,14 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
-      ]
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "SAB33.json@73eca795255cb3124a6ee56af1509ff92b2c3dcf",
+        "NODEREG.json@8a2daa54b9a94dc9df6136f4a39a62bc57a6d9a3"
+      ],
+      "archetypeName": "Hero",
+      "fetterLabel": "Hyper-Achiever",
+      "seatLabel": "solar"
     },
     {
       "id": "mapping:arch18:14",
@@ -9121,7 +10080,7 @@
       "aliases": [],
       "layer": "archetype_fetter_seat_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_mapping_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -9139,43 +10098,72 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
       ],
       "sourceClaims": [
         "ARCH18.json row 14 maps Everyman to Pleaser at heart."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed tuple; label corroborated, relation semantics unverified",
+      "confidence": 0.85,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Extracted the source tuple Everyman → Pleaser @ heart."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Confirmed Everyman exists in the 18-entry archetype table.",
+            "Fetter label \"Pleaser\" also occurs in SAB33.",
+            "Seat label retained as supplied; normalization not inferred."
+          ],
+          "conflicts": [
+            "ARCH18 does not state whether this is causal, illustrative, or a UI association."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Compared all eighteen tuples against the archetype list and checked fetter labels against the Saboteur inventory.",
+            "Repeated fetter labels across multiple archetypes were preserved as multiple source rows, not collapsed into a single causal edge."
+          ],
+          "conflicts": [
+            "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify whether this table is canonical, experimental, or illustrative; resolve fetter identity and seat normalization."
+        "Verify the table's intended use and whether the archetype/fetter/seat tuple is canonically approved; resolve any label/seat mismatches before wiring."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; no semantic graph edge is implied by this record alone."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -9196,8 +10184,14 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
-      ]
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "SAB33.json@73eca795255cb3124a6ee56af1509ff92b2c3dcf",
+        "NODEREG.json@8a2daa54b9a94dc9df6136f4a39a62bc57a6d9a3"
+      ],
+      "archetypeName": "Everyman",
+      "fetterLabel": "Pleaser",
+      "seatLabel": "heart"
     },
     {
       "id": "mapping:arch18:15",
@@ -9207,7 +10201,7 @@
       "aliases": [],
       "layer": "archetype_fetter_seat_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_mapping_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -9225,43 +10219,72 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
       ],
       "sourceClaims": [
         "ARCH18.json row 15 maps Mentor to Stickler at eye."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed tuple; label corroborated, relation semantics unverified",
+      "confidence": 0.85,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Extracted the source tuple Mentor → Stickler @ eye."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Confirmed Mentor exists in the 18-entry archetype table.",
+            "Fetter label \"Stickler\" also occurs in SAB33.",
+            "Seat label retained as supplied; normalization not inferred."
+          ],
+          "conflicts": [
+            "ARCH18 does not state whether this is causal, illustrative, or a UI association."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Compared all eighteen tuples against the archetype list and checked fetter labels against the Saboteur inventory.",
+            "Repeated fetter labels across multiple archetypes were preserved as multiple source rows, not collapsed into a single causal edge."
+          ],
+          "conflicts": [
+            "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify whether this table is canonical, experimental, or illustrative; resolve fetter identity and seat normalization."
+        "Verify the table's intended use and whether the archetype/fetter/seat tuple is canonically approved; resolve any label/seat mismatches before wiring."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; no semantic graph edge is implied by this record alone."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -9282,8 +10305,14 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
-      ]
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "SAB33.json@73eca795255cb3124a6ee56af1509ff92b2c3dcf",
+        "NODEREG.json@8a2daa54b9a94dc9df6136f4a39a62bc57a6d9a3"
+      ],
+      "archetypeName": "Mentor",
+      "fetterLabel": "Stickler",
+      "seatLabel": "eye"
     },
     {
       "id": "mapping:arch18:16",
@@ -9293,7 +10322,7 @@
       "aliases": [],
       "layer": "archetype_fetter_seat_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_mapping_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -9311,43 +10340,72 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
       ],
       "sourceClaims": [
         "ARCH18.json row 16 maps Shadow to Judge at solar."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed tuple; label corroborated, relation semantics unverified",
+      "confidence": 0.85,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Extracted the source tuple Shadow → Judge @ solar."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Confirmed Shadow exists in the 18-entry archetype table.",
+            "Fetter label \"Judge\" also occurs in SAB33.",
+            "Seat label retained as supplied; normalization not inferred."
+          ],
+          "conflicts": [
+            "ARCH18 does not state whether this is causal, illustrative, or a UI association."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Compared all eighteen tuples against the archetype list and checked fetter labels against the Saboteur inventory.",
+            "Repeated fetter labels across multiple archetypes were preserved as multiple source rows, not collapsed into a single causal edge."
+          ],
+          "conflicts": [
+            "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify whether this table is canonical, experimental, or illustrative; resolve fetter identity and seat normalization."
+        "Verify the table's intended use and whether the archetype/fetter/seat tuple is canonically approved; resolve any label/seat mismatches before wiring."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; no semantic graph edge is implied by this record alone."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -9368,8 +10426,14 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
-      ]
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "SAB33.json@73eca795255cb3124a6ee56af1509ff92b2c3dcf",
+        "NODEREG.json@8a2daa54b9a94dc9df6136f4a39a62bc57a6d9a3"
+      ],
+      "archetypeName": "Shadow",
+      "fetterLabel": "Judge",
+      "seatLabel": "solar"
     },
     {
       "id": "mapping:arch18:17",
@@ -9379,7 +10443,7 @@
       "aliases": [],
       "layer": "archetype_fetter_seat_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_mapping_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -9397,43 +10461,72 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
       ],
       "sourceClaims": [
         "ARCH18.json row 17 maps Shapeshifter to Restless at sacral."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed tuple; label corroborated, relation semantics unverified",
+      "confidence": 0.85,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Extracted the source tuple Shapeshifter → Restless @ sacral."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Confirmed Shapeshifter exists in the 18-entry archetype table.",
+            "Fetter label \"Restless\" also occurs in SAB33.",
+            "Seat label retained as supplied; normalization not inferred."
+          ],
+          "conflicts": [
+            "ARCH18 does not state whether this is causal, illustrative, or a UI association."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Compared all eighteen tuples against the archetype list and checked fetter labels against the Saboteur inventory.",
+            "Repeated fetter labels across multiple archetypes were preserved as multiple source rows, not collapsed into a single causal edge."
+          ],
+          "conflicts": [
+            "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify whether this table is canonical, experimental, or illustrative; resolve fetter identity and seat normalization."
+        "Verify the table's intended use and whether the archetype/fetter/seat tuple is canonically approved; resolve any label/seat mismatches before wiring."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; no semantic graph edge is implied by this record alone."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -9454,8 +10547,14 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
-      ]
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "SAB33.json@73eca795255cb3124a6ee56af1509ff92b2c3dcf",
+        "NODEREG.json@8a2daa54b9a94dc9df6136f4a39a62bc57a6d9a3"
+      ],
+      "archetypeName": "Shapeshifter",
+      "fetterLabel": "Restless",
+      "seatLabel": "sacral"
     },
     {
       "id": "mapping:arch18:18",
@@ -9465,7 +10564,7 @@
       "aliases": [],
       "layer": "archetype_fetter_seat_mapping_table",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "source_backed_mapping_unverified",
+      "status": "source_row_three_pass_reviewed_mapping_semantics_unresolved",
       "definition": null,
       "essence": null,
       "function": null,
@@ -9483,43 +10582,72 @@
       "nonExamples": [],
       "safetyNotes": [],
       "sourceRefs": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
       ],
       "sourceClaims": [
         "ARCH18.json row 18 maps Healer to Hyper-Vigilant at heart."
       ],
-      "evidenceStrength": "unassessed",
-      "confidence": null,
+      "evidenceStrength": "source-backed tuple; label corroborated, relation semantics unverified",
+      "confidence": 0.85,
       "researchPasses": [
         {
           "pass": 1,
           "name": "primary_source_extraction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
+          ],
+          "findings": [
+            "Extracted the source tuple Healer → Hyper-Vigilant @ heart."
+          ],
           "conflicts": []
         },
         {
           "pass": 2,
           "name": "independent_corroboration_and_contradiction",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Confirmed Healer exists in the 18-entry archetype table.",
+            "Fetter label \"Hyper-Vigilant\" also occurs in SAB33.",
+            "Seat label retained as supplied; normalization not inferred."
+          ],
+          "conflicts": [
+            "ARCH18 does not state whether this is causal, illustrative, or a UI association."
+          ]
         },
         {
           "pass": 3,
           "name": "synthesis_and_cross_record_consistency",
-          "status": "pending",
-          "sources": [],
-          "findings": [],
-          "conflicts": []
+          "status": "complete",
+          "sources": [
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH12.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/SAB33.json",
+            "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/NODEREG.json"
+          ],
+          "findings": [
+            "Compared all eighteen tuples against the archetype list and checked fetter labels against the Saboteur inventory.",
+            "Repeated fetter labels across multiple archetypes were preserved as multiple source rows, not collapsed into a single causal edge."
+          ],
+          "conflicts": [
+            "The source row alone does not prove a semantic parent-child edge, anatomical mapping, or canonical status."
+          ]
         }
       ],
       "unresolvedQuestions": [
-        "Verify whether this table is canonical, experimental, or illustrative; resolve fetter identity and seat normalization."
+        "Verify the table's intended use and whether the archetype/fetter/seat tuple is canonically approved; resolve any label/seat mismatches before wiring."
       ],
-      "notes": [],
+      "notes": [
+        "Three review passes complete for source-row consistency; no semantic graph edge is implied by this record alone."
+      ],
       "changelog": [
         {
           "date": "2026-10-22",
@@ -9540,8 +10668,14 @@
         "missingFields": []
       },
       "sourceIds": [
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon_tables/ARCH18.json"
-      ]
+        "ARCH18.json@dc4a5713c70c63d93569226b7e2cdb3dc29299a6",
+        "ARCH12.json@2294d2a0bdde603e331a45e2f1f4785571719fff",
+        "SAB33.json@73eca795255cb3124a6ee56af1509ff92b2c3dcf",
+        "NODEREG.json@8a2daa54b9a94dc9df6136f4a39a62bc57a6d9a3"
+      ],
+      "archetypeName": "Healer",
+      "fetterLabel": "Hyper-Vigilant",
+      "seatLabel": "heart"
     },
     {
       "id": "blueprint-domain-slot:01",
@@ -10999,6 +12133,11 @@
       "visualSlots": 14,
       "canonicalNamesRecovered": 0,
       "threePassesComplete": 0
+    },
+    "mappingRows": {
+      "total": 36,
+      "threePassesComplete": 36,
+      "semanticEdgesApproved": 0
     }
   },
   "layerVisualizationInventory": [
