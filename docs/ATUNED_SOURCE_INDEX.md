@@ -54,4 +54,5 @@ When a source or audit file is discovered, add its repository-relative path, rol
 - [Deep-Psychological Record-Format TDD v1](ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_v1.md) — mandatory source-first sequence, shared record envelope, three distinct research passes, and closure gates.
 - [Deep-Psychological Record Registry v1](data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json) — 93 seeded records and mapping rows; research passes are pending and taxonomy/crosswalk claims remain explicitly unresolved.
 - [Deep-Psychological Record Schema v1](data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_SCHEMA_v1.json) — JSON Schema for the shared record envelope.
+- [Deep-Psychological Three-Pass Research Audit — 2026-10-22](ATUNED_DEEP_PSYCHOLOGICAL_THREE_PASS_RESEARCH_AUDIT_2026-10-22.md) — source inventory, three-pass findings, 107 registry entries, provenance conflicts, and blocked work.
 
