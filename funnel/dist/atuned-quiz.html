@@ -515,36 +515,80 @@ const NODES=
    compounds into. The engine reads an address only through the charge it
    carries, n.cf, so three addresses are three charges at three places.
 
-   THE FIRST THIRTEEN came with the original source and are kept as written.
-   They were picked by name against each saboteur's own words, before SAB33 was
-   ported on 20 September, and several read a charge their canon row does not
-   key on: Pleaser's three all carry Shame, where its row is apathy and fear.
-   That is recorded here and not changed, because moving them moves every
-   reading that already names them.
-
-   ROWS WERE ADDED ON 22 OCTOBER for every saboteur the codex defines but one,
-   flagged below, so it has a place in the body and not only a charge range.
-   Each was picked the way the thirteen were, with one check they never had:
+   EVERY ROW IS HELD TO FOUR RULES, and tests/engine.js, SL, checks each one
+   on every row:
      1. by name, against its own words: SABDEF's definition, trigger and
-        sentence in kb.js, and SABAUTH's composition in canon.js. Each note
-        says which words each address answers.
+        sentence in kb.js, SABAUTH's composition in canon.js, and the line
+        the owner's TULA notes give it where they say more. Each note says
+        which words each address answers.
      2. every address carries one of the row's own SAB33 charges. An address
         carrying another charge would name the saboteur off a charge it is not
         made of. Where the most literal address carries the wrong charge it
         was left out, and the note says so.
-     3. no added row shares two addresses with any row. Two rows sharing two
-        of three fire together and are one detector with two names. One
-        legacy pair already does, Pleaser and Imposter on 2 and 66, and is
-        recorded rather than changed.
-   The family. The owner's TULA notes ("Emotions & Saboteurs & Hyper
+     3. a row leans the way its bands do: no charge has more of the three
+        addresses than the charge whose band sits highest, read at the band's
+        centre. Escapist is the one exception, and its note says why.
+     4. no two rows share two addresses. Two rows sharing two of three fire
+        together and are one detector with two names.
+   The candidates for each row are written by hand from its words, each
+   ranked as a word it uses, a close paraphrase, or only plausible, and the
+   rows are then placed together, the lowest total rank that keeps rules 2
+   to 4, because one row's choice closes another's: Hyper-Vigilant and
+   Worrywart both answer to 83 Paranoia and 1 Fear, and only one of them may
+   hold both. Where two candidates tie, the note says which was kept and why.
+
+   ROWS WERE ADDED ON 22 OCTOBER for every saboteur the codex defines but one,
+   flagged below, so it has a place in the body and not only a charge range.
+
+   THE FIRST THIRTEEN WERE RE-GROUNDED LATER THE SAME DAY, reversing what
+   this header first said of them, that they were kept as written and not
+   changed. They came with the original source, picked by name before SAB33
+   was ported on 20 September, and they were left alone because moving them
+   moves every reading that already names them. The owner then asked for
+   them to be re-grounded, so that reason no longer holds, and the readings
+   move. Measured on the build before the change: 10 of the 13 had at least
+   one address off their own charges, 16 addresses in all; Micromanager and
+   Judge had none off and gave anger two of three under a higher band;
+   Pleaser and Imposter shared 2 and 66. Five, Pleaser, Perfectionist,
+   Hyper-Achiever, Hyper-Vigilant and Worrywart, had one address or none on
+   their own charges, so their three reached 3.7 only off charges they are
+   not made of, and the address route never named them inside their own
+   band. Twelve of the thirteen changed. Aggressor met every rule and is as
+   it came. Pleaser's three were all Shame and are gone, which ends the pair
+   with Imposter, and 66 People Pleasing stays People-Pleaser's, whose row
+   carries shame.
+   Three of the rows added in the first pass broke rule 3, though this
+   header said every added row met it: Hyper-Rational and Cynic are fixed,
+   and Escapist is the exception. Pessimist met every rule and moved one
+   address so that Worrywart could meet rule 4.
+   Seven addresses left the library and no row holds them now: 18 Lust, 33
+   Pride, 48 Superiority, 55 Longing, 79 Hypervigilance, 88 Doubt Of God and
+   89 Hubris. Eight joined it: 5, 24, 42, 44, 53, 76, 97 and 107. core.js
+   reads every address no row holds through an inferred cluster, so the
+   clusters moved with them, eighteen before and thirteen after. One move
+   matters more than the rest: 88 and 89 join the crown's inferred anger
+   cluster, and core.js's GRAND rule files a cluster as Grandiosity when any
+   one of its addresses is named for grandiosity, so Hubris turns that
+   cluster from Predatory to Grandiosity. On the worked examples the reading
+   that leads, the mask, moves for four people, and for none of them through
+   a named row: the Hubris move alone moves Sofia's and Lance 15's and
+   decides which way Gordon's goes, and Ana's Grandiosity complex,
+   Hyper-Achiever with the solar cluster that 33 and 48 joined, crosses 6.5,
+   the line for one complex to make a hyper-complex, by a tenth.
+   Their families were not re-grounded. By the method below six of the
+   thirteen would move: Micromanager and Judge to Grandiosity, which
+   translates the Narcissism TULA puts them in; Hyper-Vigilant to Rigidity
+   or Collapse, OCPD or anxiety; Avoider and Worrywart to Collapse, anxiety;
+   Loner to Collapse, depression. That would move the hyper-complex each of
+   them compounds into, which is a separate question, and it is left open.
+
+   THE FAMILY. The owner's TULA notes ("Emotions & Saboteurs & Hyper
    Personalities", April 2026) list the saboteurs each hyper-complex
    personality comes from, and HCX_LIB's sub names the personalities each
-   family translates. Where TULA names one family it is used. Where it names
-   two, the family whose d describes the saboteur's own SABDEF behaviour is
-   used and both are named. Where it names none, the nearest canon sibling
-   decides and the note says which.
-   A row also leans the way its bands do: the charge with the higher band
-   gets two of the three addresses.
+   family translates. For the rows added on 22 October, where TULA names one
+   family it is used; where it names two, the family whose d describes the
+   saboteur's own SABDEF behaviour is used and both are named; where it
+   names none, the nearest canon sibling decides and the note says which.
 
    ONE IS FLAGGED AND NOT WIRED: INNOCENT, S28. Its canon row is one low band,
    fear 2 to 4, and the addresses that say what it does, refusal to see, are
@@ -564,6 +608,15 @@ const NODES=
    names were saboteurs whose own bands said they had not formed or had been
    displaced, and the rows above, without the check, add 38 more: 59 names
    on the worked examples, 21 of them inside their own band.
+   The re-grounding does not replace the check. A row on its own charges
+   answers those charges, not the band they sit in. With the check set
+   aside the library gives 86 names on the worked examples, 52 outside their
+   band, where the first pass gave 95 and 58; with it, 34, every one inside.
+   What the re-grounding changes is reach. Over 6,000 random fields the
+   sixteen rows that moved fire inside their own band 3,010 times where they
+   fired 1,466, and set at their own band positions the address route names
+   them in 1,598 of 5,400 settings where it named them in 594. Not one of
+   them is named less.
 
    SUPERIOR IS RETIRED, 22 October. It was a fourteenth row, 48 Superiority,
    33 Pride and 38 Entitlement in Grandiosity, and it was in neither SAB33 nor
@@ -573,29 +626,118 @@ const NODES=
    idea one rung up, as Entitlement, "that someone is beneath you", a layer on
    the saboteurs Narcissism is made of, Controller, Hyper-Achiever and Judge,
    and Narcissism is the Grandiosity family. As a saboteur it was a second
-   name for addresses canon rows already read: 33 and 48 are Hyper-Achiever's,
-   48 is Judge's, 38 is Aggressor's. All three carry Anger at the solar
-   plexus, and over 6,000 random fields it fired together with Aggressor on 88
-   per cent of the fields where either fired. Retiring it costs no address:
-   all three stay named by the rows that hold them, so no inferred cluster
-   appears in its place.
+   name for addresses canon rows already read: 33 and 48 were
+   Hyper-Achiever's, 48 was Judge's, 38 is Aggressor's. All three carry Anger
+   at the solar plexus, and over 6,000 random fields it fired together with
+   Aggressor on 88 per cent of the fields where either fired. When it was
+   retired all three stayed named by those rows. Since the re-grounding 33
+   Pride and 48 Superiority are named by no row: Hyper-Achiever is apathy
+   and fear, and Judge keeps one anger address, its own name, where a second
+   would break rule 3. They join the solar plexus's inferred anger cluster,
+   which core.js files as Grandiosity, the family Superior had. 38 stays
+   Aggressor's.
    ============================================================ */
 const SAB_LIB=[
- /* S02. The owner renamed Controller to Micromanager on 18 October in
-    canon.js; the rename reaches the library here. Same three addresses. */
- {"nm":"Micromanager","nids":[4,36,50],"hcx":"Rigidity"},
- {"nm":"Victim","nids":[6,50,3],"hcx":"Collapse"},
- {"nm":"Perfectionist","nids":[40,37,45],"hcx":"Rigidity"},
- {"nm":"Pleaser","nids":[66,2,65],"hcx":"Collapse"},
- {"nm":"Hyper-Achiever","nids":[33,40,48],"hcx":"Grandiosity"},
- {"nm":"Hyper-Vigilant","nids":[79,1,82],"hcx":"Dysregulation"},
- {"nm":"Judge","nids":[37,48,82],"hcx":"Predatory"},
- {"nm":"Avoider","nids":[1,14,89],"hcx":"Dissociation"},
- {"nm":"Worrywart","nids":[45,1,3],"hcx":"Dysregulation"},
- {"nm":"Loner","nids":[55,1,49],"hcx":"Dissociation"},
- {"nm":"Nihilist","nids":[91,88,90],"hcx":"Collapse"},
+ /* S02 Micromanager, fear and anger, its fear band the higher, so two fear
+    addresses and one anger. 4 Control, safety through force, "if I release
+    my grip"; 42 Rigidity, will into inflexibility, the fear response "running
+    so long it looks like a management style"; 36 Anger, power misused, the
+    "do-as-I-say mechanism" its definition layers in. It was 4, 36 and 50:
+    50 Resentment carries Anger, which gave anger two of three under a higher
+    fear band, and 50 stays the Victim's. The owner renamed Controller to
+    Micromanager on 18 October in canon.js. */
+ {"nm":"Micromanager","nids":[4,42,36],"hcx":"Rigidity"},
+ /* S03 Victim, sadness, anger and apathy, its sadness band the highest. 6
+    Victimhood, agency into blame, "this keeps happening to me"; 44
+    Unworthiness, the self-loathing SABAUTH names, which carries Sad because
+    canon.js reads UNWORTH as a heart key; 50 Resentment at the heart, pain
+    held, the resentment TULA's line gives it beside sadness. It was 6, 50 and
+    3: 3 Guilt carries Shame, which its row does not key on. 54 Martyrdom,
+    which its definition names, is the Martyr's, and 44 keeps the two apart. */
+ {"nm":"Victim","nids":[6,44,50],"hcx":"Collapse"},
+ /* S04 Perfectionist, disgust and anger, its disgust band the higher. TULA:
+    "driven by an aversion to imperfection". 37 Judgment, "imperfections in
+    self and others"; 84 Distortion, reality mis-seen, "it is not good enough
+    yet"; 97 Need To Be Special, identity into distinction, the "continuous
+    pressure to do better". It was 40, 37 and 45: 40 Perfectionism, its own
+    name, carries Fear and 45 Anxiety carries Anticipation. The node map's
+    Fear at 40 and SABAUTH's "fear of failure" read it as fear, where its
+    row and TULA's line read disgust and anger; the canon row decides here,
+    and the disagreement between the owner's sources is left open. */
+ {"nm":"Perfectionist","nids":[37,84,97],"hcx":"Rigidity"},
+ /* S05 Pleaser, apathy and fear, its fear band the higher, 3 to 8 against 3
+    to 5. 5 Insecurity, belonging into dependency, "to gain acceptance", the
+    fear of rejection SABAUTH names; 1 Fear, threat into avoidance, "when
+    there is potential for disapproval"; 30 Guilt Of Pleasure, joy into self
+    denial, TULA's "sometimes neglecting personal needs". It was 66, 2 and 65,
+    all three Shame, and not one of them was on its own charges. 66 People
+    Pleasing is the most literal and stays People-Pleaser's, whose row
+    carries shame. Leaving 2 and 66 ends the pair it shared with Imposter. */
+ {"nm":"Pleaser","nids":[5,1,30],"hcx":"Collapse"},
+ /* S06 Hyper-Achiever, apathy and fear, both bands centred at 6, so either
+    may take two. 40 Perfectionism, idealism into rigidity, the "fear of
+    being ordinary"; 17 Addiction, craving, the "workaholic", "overwork"; 24
+    Avoidance Of Pleasure, "when rest is available", refused. It was 33, 40
+    and 48: 33 Pride and 48 Superiority carry Anger, which its row does not
+    key on. */
+ {"nm":"Hyper-Achiever","nids":[40,17,24],"hcx":"Grandiosity"},
+ /* S08 Hyper-Vigilant, fear and anger, its fear band the higher. 83 Paranoia
+    and 1 Fear are its SABAUTH word for word; 78 Distrust, for when "trust is
+    required". All three carry Fear; its anger is read by the band check,
+    which still has to find it in its band. It was 79, 1 and 82: 79
+    Hypervigilance, its own name, carries Anticipation, because canon.js
+    reads HYPERVIGIL as anticipation, and 82 Projection carries Disgust.
+    SABAUTH's third word, Panic, is 15 Panic, which carries Surprise. */
+ {"nm":"Hyper-Vigilant","nids":[83,1,78],"hcx":"Dysregulation"},
+ /* S11 Judge, disgust, anger and apathy, its disgust band the highest. 37
+    Judgment, its own name and SABAUTH's "othering"; 82 Projection, othering
+    into blame, "someone is responsible for this"; 80 Dogma, belief into
+    rigidity, "certainty without evidence". It was 37, 48 and 82: 48
+    Superiority carries Anger, which gave anger two of three under a higher
+    disgust band. */
+ {"nm":"Judge","nids":[37,82,80],"hcx":"Predatory"},
+ /* S33 Avoider, apathy and fear, its apathy band the higher. 1 Fear, threat
+    into avoidance, the "fear of confrontation"; 92 Spiritual Escapism,
+    presence into bypass, "not present for it"; 86 Idealism, fantasy into
+    denial of reality, SABAUTH's "delusion", "if I stay unaware". It was 1,
+    14 and 89: 89 Hubris carries Anger, and 14 Escapism is the Escapist's,
+    the line its own definition draws: "not fleeing discomfort the way the
+    Escapist does". */
+ {"nm":"Avoider","nids":[1,92,86],"hcx":"Dissociation"},
+ /* S14 Worrywart, fear and sadness, its fear band the higher. 83 Paranoia,
+    narrative spinning, the "rehearsal of disaster", "worst-case scenarios";
+    7 Scarcity, resources into hoarding, the "illusion of preparedness"; 56
+    Closed Heart, vulnerability into armour, "worrying is preparation". It
+    was 45, 1 and 3: 45 Anxiety carries Anticipation and 3 Guilt carries
+    Shame. 1 Fear is its SABAUTH word and could not stay: beside 83 it is
+    Hyper-Vigilant's pair, beside 7 it is Catastrophizer's. */
+ {"nm":"Worrywart","nids":[83,7,56],"hcx":"Dysregulation"},
+ /* S15 Loner, sadness and fear, its sadness band the higher. 53 Separation,
+    unity into isolation, "withdraws from contact"; 56 Closed Heart,
+    vulnerability into armour, SABAUTH's "fear of intimacy" and its
+    definition's "independence as defense"; 78 Distrust, SABAUTH's first
+    word. It was 55, 1 and 49: 49 Hatred carries Anger. 61 Rejection, the
+    "fear of rejection" its definition names, answers one phrase where 56
+    answers two, so 56 takes the place. */
+ {"nm":"Loner","nids":[53,56,78],"hcx":"Dissociation"},
+ /* S27 Nihilist, disgust and sadness, its disgust band the higher. 91
+    Nihilism, its own name, the "refusal of meaning"; 90 Spiritual Pride,
+    insight into superiority, the "contempt" SABAUTH names; 77 Cynicism,
+    clarity into dismissal, "despair worn as clarity". It was 91, 88 and 90:
+    88 Doubt Of God carries Anger, its Resentment label routed by REROUTE. */
+ {"nm":"Nihilist","nids":[91,90,77],"hcx":"Collapse"},
+ /* S21 Aggressor, anger and apathy, unchanged: all three carry Anger, its
+    higher band, and they are its SABAUTH in order, 36 Anger for aggression,
+    49 Hatred for cruelty, 38 Entitlement for self-importance. */
  {"nm":"Aggressor","nids":[36,49,38],"hcx":"Predatory"},
- {"nm":"Imposter","nids":[2,45,66],"hcx":"Collapse"},
+ /* S20 Imposter, shame and fear, its shame band the higher. 107
+    Self-Exclusion, belonging into disconnection, "they will find out I do
+    not belong here"; 2 Shame, SABAUTH's first word; 85 Doubt, intuition into
+    dismissal, the "discounting of evidence". It was 2, 45 and 66: 45 Anxiety
+    carries Anticipation, the "anticipation of exposure" SABAUTH names and
+    its row does not key on. 66 People Pleasing, the fraud it fears it is,
+    answers less closely than 85 and stays People-Pleaser's. */
+ {"nm":"Imposter","nids":[107,2,85],"hcx":"Collapse"},
  /* S01 Negotiator, fear and apathy. 85 Doubt and 11 Resistance are the doubt
     SABAUTH names and the pause its trigger names, change held off one more
     day. 17 Addiction is "just this once", the momentary gratification TULA
@@ -613,13 +755,21 @@ const SAB_LIB=[
     correction of others SABAUTH names. Two at the throat, where SNIFFER_SPEC
     seats the Creator it pairs with. Rigidity: TULA, OCPD. */
  {"nm":"Stickler","nids":[80,72,68],"hcx":"Rigidity"},
- /* S07 Hyper-Rational, shock and disgust. 81 Overanalysis; 84 Distortion,
-    reality mis-seen, "if I can't explain it, it isn't real"; 74 Talking To
-    Avoid Feeling, the dismissal of emotion SABAUTH names. Two at the third
-    eye, the Sage's seat. Dissociation: TULA names no family; the reasoned
-    answer with nobody feeling inside it is Dissociation's d, the outline that
-    holds with nobody in it. */
- {"nm":"Hyper-Rational","nids":[81,84,74],"hcx":"Dissociation"},
+ /* S07 Hyper-Rational, shock and disgust, its disgust band the higher, so
+    two disgust addresses and one shock. 74 Talking To Avoid Feeling,
+    presence into avoidance, the "dismissal of emotions" SABAUTH names, the
+    "emotional concerns" it is impatient with, the "emotional input" that
+    triggers it; 84 Distortion, reality mis-seen, "if I can't explain it, it
+    isn't real"; 76 Delusion, truth into illusion, the same sentence from the
+    other side, what cannot be explained called unreal. On 22 October it was
+    81, 84 and 74, two shock under a higher disgust band, which the header
+    claimed no row did. One of the two shock addresses had to go: 74 answers
+    three of its phrases and 81 Overanalysis, "processes everything through
+    logic", one, and 81 stays the Skeptic's. Two at the third eye, the Sage's
+    seat. Dissociation: TULA names no family; the reasoned answer with nobody
+    feeling inside it is Dissociation's d, the outline that holds with nobody
+    in it. */
+ {"nm":"Hyper-Rational","nids":[74,84,76],"hcx":"Dissociation"},
  /* S12 Deflector, shame and anger. 59 Blame, responsibility pushed outward,
     "does not own"; 93 False Humility, the pretending SABAUTH names; 2 Shame,
     worth rejected, "if they knew the real me they would leave". 70 Excuse
@@ -669,13 +819,18 @@ const SAB_LIB=[
     TULA names no family; SABDEF files martyrdom under Victim, which is
     Collapse. */
  {"nm":"Martyr","nids":[54,3,30],"hcx":"Collapse"},
- /* S23 Cynic, disgust and sadness. 77 Cynicism, the pre-emptive dismissal;
-    98 Unworthy Of God, disbelief; 13 Disconnection, presence into numbness,
-    unimpressed and so safe from disappointment. Root and crown, the seats
-    SNIFFER_SPEC gives the Orphan it pairs with, and the third eye. Collapse:
-    TULA names no family; Nihilist runs on the same two charges and is
-    Collapse. */
- {"nm":"Cynic","nids":[77,98,13],"hcx":"Collapse"},
+ /* S23 Cynic, disgust and sadness, its disgust band the higher, so two
+    disgust addresses and one sad. 77 Cynicism, its own name, the
+    "pre-emptive dismissal"; 76 Delusion, truth into illusion, "optimism is
+    naive", hope called an illusion; 13 Disconnection, presence into
+    numbness, SABAUTH's "lack of effort" and TULA's "safety of skepticism",
+    unimpressed and so safe from disappointment, as its card puts it. On 22
+    October it was 77, 98 and 13, two sad under a higher disgust band, and 98
+    is now the Pessimist's. Root and third eye: with 98 it loses the crown,
+    one of the two seats SNIFFER_SPEC gives the Orphan it pairs with.
+    Collapse: TULA names no family; Nihilist runs on the same two charges and
+    is Collapse. */
+ {"nm":"Cynic","nids":[77,76,13],"hcx":"Collapse"},
  /* S24 Manipulator, anger and apathy. 25 Manipulation Through Emotion,
     control by emotional blackmail; 57 Manipulative Kindness, transactional
     giving; 43 Resentment, the grudge, which SNIFFER_SPEC rules is anger and
@@ -689,19 +844,33 @@ const SAB_LIB=[
     Shock and Anticipation, which its row does not key on. Dysregulation:
     TULA names no family; Worrywart, its nearest sibling, is Dysregulation. */
  {"nm":"Overthinker","nids":[85,83,46],"hcx":"Dysregulation"},
- /* S26 Escapist, apathy and fear. SABAUTH word for word: 14 Escapism, 27
-    Fantasy for the overindulgence in fantasies, 18 Lust for the sensual
-    desire. Root and sacral, the seats SNIFFER_SPEC gives the Explorer it
-    pairs with. It shares 14 with Avoider and nothing more, the line SABDEF
-    draws between them. Dissociation: TULA names no family; Avoider is
-    Dissociation, and leaving before the feeling finishes is the outline
-    left empty. */
- {"nm":"Escapist","nids":[14,27,18],"hcx":"Dissociation"},
- /* S29 Pessimist, sadness and fear. 91 Nihilism, the first word of its
-    SABAUTH; 83 Paranoia, the case built before the outcome arrives; 56
-    Closed Heart, vulnerability into armour against the hope. Collapse: TULA,
-    Depression. */
- {"nm":"Pessimist","nids":[91,83,56],"hcx":"Collapse"},
+ /* S26 Escapist, apathy and fear, and the one row that does not lean the
+    way its bands do. Its fear band is the higher, 6 to 8 against apathy 4 to
+    6, and of the addresses carrying Fear only 1 Fear, threat into
+    avoidance, says what it does: TULA's "avoids dealing with issues", the
+    exit its definition takes from discomfort "before it resolves". A second
+    fear address would be one picked for its charge and not its words. So it
+    carries its fear once, beside 14 Escapism and 27 Fantasy, the
+    "overindulgence in fantasies" SABAUTH names. On 22 October it was 14, 27
+    and 18, all three apathy, which the header claimed no row did, and 18
+    Lust, SABAUTH's "sensual desire", is the address that gave way: set at
+    its own band positions over the sweep's 270 settings, the address route
+    names it in 80 with 1 and in 51 with 18. tests/engine.js, SL, holds it
+    as the one exception by name. Root and sacral, the seats SNIFFER_SPEC
+    gives the Explorer it pairs with. It shares 1 with Avoider and nothing
+    more, and 14, the line Avoider's definition draws between them, is its
+    own. Dissociation: TULA names no family; Avoider is Dissociation, and
+    leaving before the feeling finishes is the outline left empty. */
+ {"nm":"Escapist","nids":[14,27,1],"hcx":"Dissociation"},
+ /* S29 Pessimist, sadness and fear, its sadness band the higher. 91
+    Nihilism, the first word of its SABAUTH; 83 Paranoia, narrative spinning,
+    the case built "before they materialize"; 98 Unworthy Of God, divinity
+    into disbelief, SABAUTH's "hopelessness", "it will not work out". On 22
+    October it was 91, 83 and 56 and met every rule. Worrywart's re-grounding
+    needed 83 and 56 together and had nothing as close, and two rows may not
+    share two, so 56 Closed Heart went to Worrywart and 98 came free from the
+    Cynic. Collapse: TULA, Depression. */
+ {"nm":"Pessimist","nids":[91,83,98],"hcx":"Collapse"},
  /* S30 Catastrophizer, fear and sadness. 1 Fear, instinct and threat; 7
     Scarcity, resources, the threat to survival its definition jumps to; 16
     Collapse, structure gone, "this will destroy everything". All three at the
@@ -8153,10 +8322,9 @@ const CQ_MODEL=2;
      and 92, plus or minus 3 points of accuracy. Those 15k releases raised my
      CQ."
 
-   Integrity's input to CQ is the 21 laws over 210. The operational CQ also
-   multiplies normalized Integrity by Intention and divides by Resistance.
-   DQ feeds Resistance; SQ remains the separate total of node shadow weights.
-   A release changes Integrity by lifting each answered law at its seat.
+   CQ is still the 21 laws over 210, and nothing else enters it. SQ and DQ are
+   not folded in. What changed is what a law reads: a release closes a small
+   share of the distance between each law at its seat and 10.
 
      law as CQ reads it = 10 - (10 - answer) x (1 - LIFT_R)^n
 
@@ -8233,10 +8401,15 @@ function cqSum(open){return SINAMES.reduce((a,l)=>a+(lawIn(l)?lawNow(l):(open||0
 /* THE SEESAW, AT MODULE LEVEL so exCeiling can read it too. Will can only
    push the tipping point up from 5 toward 6, never down: moving it the
    other way breaks the rule that "paralysed" pulls at least a hundred times
-   harder than "a little tense" at every level of will. Will has no
-   measurement anywhere in this engine yet, so every caller passes 0, which
-   makes this exactly leverPull, to the digit, until it is real. */
-function leverPullWill(v,w){return leverPhi((v-LEVER_MU-w)/LEVER_SD)/leverPhi((10-LEVER_MU-w)/LEVER_SD);}
+   harder than "a little tense" at every level of will.
+   ONE CURVE, NOT TWO. This is leverPull moved right by w and divided by its
+   own value at 10, so 10 still pulls 1. It was a second copy of the bell,
+   free to drift from the fitted one with nothing tying them. leverPull keeps
+   its body, because engine/pct.js cites it word for word. Will has no
+   measurement anywhere in this engine yet, so every caller passes 0, and at
+   0 this is leverPull to the bit: v minus 0 is v, and leverPull(10) is
+   exactly 1. tests/engine.js 36b holds the bit. */
+function leverPullWill(v,w){return leverPull(v-w)/leverPull(10-w);}
 /* ============================================================
    THE SEVEN CHAKRA WEIGHTS. weight is DQ's own rule, held per seat instead
    of over the whole body: the seat's addresses' SQ summed, over ten times
@@ -8292,7 +8465,7 @@ function cqSpan(){
    which relCoolDown guarantees is the one the laws in S came from. Returns
    what moved, by law, and CQ before and after as that record reads. */
 function releaseWork(p,keys){
- var out={laws:{}, cq0:compute().CQ, cq1:null, n:0};
+ var out={laws:{}, cq0:cqSum(), cq1:null, n:0};
  /* show only on a worked example, engine/showonly.js */
  if(showRefuse('release',p)){out.cq1=out.cq0;out.refused='example';return out;}
  if(!p||!keys||!keys.length){out.cq1=out.cq0;return out;}
@@ -8307,7 +8480,7 @@ function releaseWork(p,keys){
   if(!w||w.on!==v)w=p.work[l.nm]={n:0,on:v};
   var before=lawLift(v,w.n); w.n+=u;
   out.laws[l.nm]={seat:l.b, u:u, n:w.n, from:before, to:lawLift(v,w.n)};});
- out.cq1=compute().CQ;
+ out.cq1=cqSum();
  return out;}
 /* A LAW ANSWERED AGAIN IS A NEW READING, even when it lands on the same
    number. The count above would survive a same number answer, because it is
@@ -8521,10 +8694,8 @@ function compute(){
  const poleMean=W.reduce((a,n)=>a+n.pole,0)/108;
  const JQ=W.reduce((a,n)=>a+n.jq,0)/108;
  const excess=W.filter(n=>n.jq>=4);
- /* Ig and It remain supporting awareness/will readouts. The canonical CQ
-    formula uses integrity (the fixed-denominator law score), It as Intention,
-    and Rz as the normalized Resistance factor; do not substitute Ig for
-    integrity or create a second CQ output. */
+ /* Ig and It no longer enter CQ. They are kept because the Awareness and
+    Will readouts and the will against drag steer below still read them. */
  const Ig=clamp(SINAMES.reduce((a,l)=>a+S.law[l],0)/21 + poleMean*0.30 - JQ*0.42,0,10);
  const It=clamp(BANDS.reduce((a,b)=>a+bandIg(b),0)/7 + poleMean*0.22 - JQ*0.30,0,10);
  /* DQ, THE TOTAL SHADOW. "DQ is a total shadow. I don't know why you keep
@@ -8547,9 +8718,10 @@ function compute(){
  /* THE SIX AXES multiply what every held pattern costs. Detachment is the
     cheapest gate at 0.60, attachment the most expensive at 1.35. No story
     means no gate evidence, so the factor is 1 and nothing changes.
-    Rz is the normalized Resistance input for CQ, derived from total-shadow
-    DQ and the six-axis gate factor. DQ remains the canonical total-shadow
-    measure; SQ remains total node shadow weight. */
+    Resistance, Rz, is still computed and returned, and it divides nothing:
+    the owner ruled CQ is the 21 laws and nothing else. Rz is the only place
+    the six gates' multiplier lands, and no surface reads it, which
+    engine/verp.js says the same way from its side. */
  const _vf=verpFactor();
  const Rz=Math.max(1,(1+DQ*0.05)*_vf);
  /* ============================================================
@@ -8708,7 +8880,7 @@ function compute(){
  const carrying=W.filter(n=>n.sq>0).sort((a,b)=>b.sq-a.sq);
  return {loaded,carrying,heaviest:carrying[0]||null,
   sabs,cxs,hys,sups,maskRing,DQ,SQ,PULL,EX,Rz,vf:_vf,SQm,poleMean,JQ,excess,
-  FAM_POLE,dist,Ig,It,will:WILL,seats:seatRows(),CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
+  FAM_POLE,dist,Ig,It,seats:seatRows(),CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
   outward,organized,gov,
   will,drag,mask,darkB,darkV,root,rootsIn,weakL,balance:balance()};
 }
@@ -11047,9 +11219,15 @@ function traceFromRecord(p,intents,reading){
      existing impression node as the derived signal-reading layer. Keep
      story→address supports unchanged for legacy consumers; the signal
      impression supports the parser-identified fetter separately. Both edges
-     are derived with inferred provenance, never causation or metric writes. */
+     are derived with inferred provenance, never causation or metric writes.
+     A STORY THE SNIFFER READ NOTHING IN HAS NO READING, SO IT HAS NO
+     IMPRESSION. An impression is the reading of a story (TRACE_NEEDS), and
+     one made for a reading that found nothing joined the story to the graph,
+     so the drawer, which flags a story connected to nothing and never hides
+     it (daily.js, dlyWhy), stopped seeing it. Red in tests/daily.js until
+     this, and main, which has no signal path, never was. */
   var signalId='signal:'+id;
-  var signal=node('impression',signalId,'inferred',{derived:true});
+  var signal=im.length?node('impression',signalId,'inferred',{derived:true}):null;
   if(signal)edge(sk,'produces',signal,'inferred',{derived:true,
    why:'the story text was read as a signal impression; this is a derived interpretation, not a separate persisted waveform'});
   var fetters={};
@@ -11495,14 +11673,19 @@ function saveProfile(p){
  return p;}
 /* a snapshot is what Analytics plots. derived only, never inputs.
 
-   m IS WHICH ARITHMETIC WROTE THE ROW. Model 3, briefly live on this branch,
-   put Integrity times Intention divided by Resistance inside CQ itself and
-   is reverted: that is the same defect AZ5 already killed, measured again
-   on this exact branch (every law at 10 read 48.7, a release lowered CQ on
-   2,881 of 10,000 fields). CQ is the 21 laws and nothing else again, so the
-   row goes back to model 2's shape. A row written under model 3 keeps that
-   stamp and is never read as though it used this formula. tier is null
-   while CQ is still filling. */
+   m IS WHICH ARITHMETIC WROTE THE ROW. cq and dq changed meaning on 25
+   September: cq was It*Ig/Rz and is now the laws over 210, dq was an
+   uncapped sum over the addresses at 4 or more and is now the 112 over 1120.
+   A row written before that carries no m, reads back as 0, and a surface
+   comparing two rows must not report the change of formula as a move in the
+   person. tier is null while CQ is still filling.
+
+   A ROW STAMPED 3 IS REFUSED. Model 3 put Integrity times Intention divided
+   by Resistance inside CQ, was live on this branch on 22 October, and was
+   reverted the same day. validateProfile reads m as 0 to CQ_MODEL, so a row
+   stamped 3 is refused at the boundary by name, and the record carrying it
+   with it, because import is all or nothing. No committed build ever carried
+   model 3, so only a local build of this branch could have written one. */
 function snapshot(p){
  var r=compute();
  return {t:new Date().toISOString(), m:CQ_MODEL, cq:Math.round(r.CQ*10)/10,
@@ -11514,19 +11697,19 @@ function snapshot(p){
 /* ============================================================
    THE TWENTY ONE, ON EVERY ROW. Ruled 26 September, answering BW Q2:
    "keeping track of the laws over time is excellent, and being able to show
-   a graph to show how far you've come." A row carries both the CQ formula
-   output and its model-3 inputs, while lawNow records each law as the formula's
-   Integrity source so the history can explain where that input came from.
+   a graph to show how far you've come." A row carried cq, which is the laws
+   summed over 210, and not the laws themselves, so no row could say which law
+   moved. This is the twenty one as that same cq read them.
 
    WHAT IS WRITTEN IS lawNow, NOT THE ANSWER, AND THE KEY IS NAMED FOR IT.
    p.laws is the answers, an input, and a second meaning under that same name
-   is a bug that has not happened yet. A law as Integrity reads it is the
-   answer lifted by the releases at its seat since (engine/compute.js, LIFT_R),
-   and the lift is recorded once. Writing the bare answer would draw every
-   release as a flat line, which is the opposite of what the graph is for.
-   Model-3 rows can be checked against their stored Integrity, Intention and
-   Resistance inputs; the law series is evidence for Integrity, not a second
-   CQ calculator.
+   is a bug that has not happened yet. A law as CQ reads it is the answer
+   lifted by the releases at its seat since (engine/compute.js, LIFT_R),
+   and the lift is the whole of what a release does to a law. Writing the bare
+   answer would draw every release as a flat line, which is the opposite of
+   what the graph is for. So the row reconciles with itself: the laws that are
+   not null, summed, over 210, times 100, is the row's own cq to within the
+   rounding of both. The gate asserts it on every row it writes.
 
    A LAW NOT YET ANSWERED IS null, the meaning p.laws already gives it, and CQ
    counts it as nothing (lawIn). Writing the six it is seeded with would put a
