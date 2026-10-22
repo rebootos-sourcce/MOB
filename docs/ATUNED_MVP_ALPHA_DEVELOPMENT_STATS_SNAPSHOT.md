@@ -23,7 +23,7 @@ Implementation percentages below describe code and integration present on the br
 | P2 — Trace graph/marker integration | 100% implemented; execution deferred | 0% implementation remaining | Existing pattern row now exposes source-backed story text, inferred/candidate status, canonical nerve address and nerve label, configured FLOWSEAT seat-tone reference, and explicit unrecorded qualium dimension. Marker is derived; no duplicate Vritti collection or metric writes. Structured sensory/emotional capture is split into a separate follow-on block, not counted as marker integration. |
 | P3 — CQ/DQ/SQ calculation integration | 0% | 100% | Existing calculations are present; this pass did not complete the versioned reconciliation of the conceptual CQ formula or add regression proof for relationship isolation. |
 | P4 — Release/intervention loop | 0% | 100% | Release hit-feedback requirements are documented elsewhere; no new implementation or tests completed in this pass. |
-| P5 — End-to-end verification | 0% | 100% | Build and test commands were not executed. No CI workflow run was returned for commit 610a552cb636debcba2e8f087770180e7d36dec1. |
+| P5 — End-to-end verification | 0% verified | 100% unverified | Latest observed GitHub Actions `deploy` run for candidate head `80ef47456b7863815b93128e1425973ebf4ffa2f` is queued (run 39740515791). Local build/test execution is unavailable in this environment; no pass is claimed. |
 | P6 — Final integration and handoff | 0% | 100% | Cannot close until runtime implementation and verification evidence exist. |
 
 ## Implemented versus verified
