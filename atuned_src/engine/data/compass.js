@@ -533,6 +533,16 @@ function mirrorAt(seatLoad, seatIg){
  var clear=1-clamp(seatLoad,0,10)/10;
  var honest=clamp(seatIg,0,10)/10;
  return Math.round(clamp(clear*0.62+honest*0.38,0,1)*100);}
+/* ONE READER, FOR ALL FOUR CALLERS. mirrorAt took seatIg on a 0 to 10 scale
+   and every caller typed out bandIg(seat) by hand to get it, which seeds an
+   unanswered law to 6. compassAt reads a row from compute()'s own seatRows()
+   instead, which carries an honest ig, null when the seat has nothing
+   answered. NULL IS AN ANSWER: a seat that has not been answered reads as
+   not yet read, the way the rest of this file already treats a null. */
+function compassAt(row){
+ if(!row)return null;
+ if(row.ig==null)return null;
+ return mirrorAt(row.weight*10, row.ig*10);}
 /* THE DARK READ. The owner's rule: malignant plus decoherent on the
    same axis is the configuration to name. Neither alone is it. A
    high malignant share in a coherent field is a hard week; a

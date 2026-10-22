@@ -759,9 +759,9 @@ function coneSeatAt(t){
    same arithmetic the mirror drill prints, so a node and the drill it opens
    cannot disagree. */
 function coneMirPos(m){
- var grp=W_ADDR().filter(function(n){return n.b===m.seat;});
- var load=grp.length?grp.reduce(function(a,n){return a+n.sq;},0)/grp.length:0;
- return mirrorAt(load,bandIg(m.seat));}
+ var row=compute().seats.filter(function(s){return s.seat===m.seat;})[0];
+ var pos=compassAt(row);
+ return pos==null?50:pos;}
 /* a seat's laws as CQ reads them, out of a hundred. lawNow and not bandIg,
    and an unanswered law as nought, because that is what cqSum does, and the
    shell's mean being CQ is the only reason it is drawn against the coherence

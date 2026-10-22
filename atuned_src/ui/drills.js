@@ -961,10 +961,10 @@ function runPoleDrill(end){
   +'</p>';
  /* where this person sits on each axis, read rather than asked */
  h+='<div class="pm-eye">Where you sit on each</div><div class="ad-rows">';
+ var seatRowsNow=compute().seats;
  MIRROR.forEach(function(m){
-  var grp=W.filter(function(n){return n.b===m.seat;});
-  var load=grp.length?grp.reduce(function(a,n){return a+n.sq;},0)/grp.length:0;
-  var pos=mirrorAt(load,bandIg(m.seat));
+  var row=seatRowsNow.filter(function(s){return s.seat===m.seat;})[0];
+  var pos=compassAt(row); if(pos==null)pos=50;
   var c=seatCol(m.seat);
   h+='<button type="button" class="ad-r" data-mirror="'+m.k+'" title="'+esc(m.ask)+'">'
    +cr(m.seat,pos,{size:'xs',raw:String(pos),hot:false})
@@ -1176,13 +1176,16 @@ function NUMWORD(n){
  return 'The '+((NUMWORDS[n]||String(n)).toLowerCase());}
 function avOf(){ return (CURP&&CURP.avatar)||avatarBlank(); }
 function avRows(){
- var av=avOf();
+ var av=avOf(), seatRowsNow=compute().seats;
  return (av.pairs||[]).map(function(pr){
   var seg=readSeat(pr.notbe);
   var load=0, ig=6;
-  if(seg){var grp=W.filter(function(n){return n.b===seg;});
-   load=grp.length?grp.reduce(function(a,n){return a+n.sq;},0)/grp.length:0;
-   ig=bandIg(seg);}
+  if(seg){var row=seatRowsNow.filter(function(s){return s.seat===seg;})[0];
+   load=row?row.weight*10:0;
+   /* honest, not bandIg's seeded six: a seat only partly answered no longer
+      blends in a guess for the laws it hasn't got yet. 6 stays the fallback
+      for the true nothing-answered case, same as it always read. */
+   ig=row&&row.ig!=null?row.ig*10:6;}
   return {pair:pr, gap:seg?avatarGap(pr,seg,load,ig):null};});}
 /* the seat a sentence about a bad day resolves to. the story parser already
    does this work, so this asks it rather than owning a second lexicon. */
@@ -1398,9 +1401,13 @@ function runAgeYear(a){
 /* one axis, both ends, and the question that tells them apart */
 function runMirrorDrill(k){
  var m=MIRROR.filter(function(x){return x.k===k;})[0]; if(!m)return;
- var grp=W.filter(function(n){return n.b===m.seat;});
- var load=grp.length?grp.reduce(function(a,n){return a+n.sq;},0)/grp.length:0;
- var pos=mirrorAt(load,bandIg(m.seat)), c=seatCol(m.seat);
+ var row=compute().seats.filter(function(s){return s.seat===m.seat;})[0];
+ /* a null ig means the seat's own laws are not yet answered. The ring still
+    needs a number to draw at; 50 is the least wrong one until this gets its
+    own unread treatment, which is a design pass and not decided here. The
+    value shown as text says so honestly rather than printing a guess. */
+ var pos=compassAt(row), unread=(pos==null); if(unread)pos=50;
+ var c=seatCol(m.seat);
  rdShell('<div class="pm-eye">'+esc(m.q)+'</div>'
   +'<div class="ad-nm">'+esc(m.up)+' against '+esc(m.dn)+'</div>'
   +'<div class="ad-sub">at the '+String(m.seat).toLowerCase()+'</div>'
@@ -1412,7 +1419,7 @@ function runMirrorDrill(k){
   +'<div class="ad-rows"><div class="ad-r static">'
    +cr(m.seat,pos,{size:'sm',raw:String(pos),hot:false})
    +'<span class="ad-k">'+esc(m.dn)+' at nought, '+esc(m.up)+' at a hundred</span>'
-   +'<span class="ad-v" style="color:'+c+'">'+pos+'</span></div></div>'
+   +'<span class="ad-v" style="color:'+c+'">'+(unread?'not yet answered':pos)+'</span></div></div>'
   +'<p class="ad-p">Read from what is held at the '+String(m.seat).toLowerCase()
   +' and the integrity measured there. Not asked, and not a verdict. Both ends are behaviours '
   +'and the axis is one you are on whether or not you look at it.</p>');}

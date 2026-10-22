@@ -179,6 +179,30 @@ function cqSum(open){return SINAMES.reduce((a,l)=>a+(lawIn(l)?lawNow(l):(open||0
    makes this exactly leverPull, to the digit, until it is real. */
 function leverPullWill(v,w){return leverPhi((v-LEVER_MU-w)/LEVER_SD)/leverPhi((10-LEVER_MU-w)/LEVER_SD);}
 /* ============================================================
+   THE SEVEN CHAKRA WEIGHTS. weight is DQ's own rule, held per seat instead
+   of over the whole body: the seat's addresses' SQ summed, over ten times
+   how many addresses it has, so it reads 0 to 1 the same way DQ reads 0 to
+   100. over is the same sum read through jq, the overshoot. open is 1 minus
+   weight. pull is the seat's own share of PULL, what the torus reads.
+
+   ig IS HONEST, UNLIKE bandIg. bandIg seeds an unanswered law to 6 so the sq
+   relief and the Ig/It readouts always have a number, and that seeding is
+   correct for them. It is wrong for anything shown as a position, because a
+   seat nobody has answered for would still print a confident place on the
+   Compass and swell the torus on the strength of a guess nobody gave. So
+   seatRows takes the mean of lawNow over only the laws this seat has
+   answered, and null when it has none. Null is an answer, not a zero. */
+function seatRows(){
+ return BANDS.map(function(b){
+  var g=W.filter(function(n){return n.b===b;});
+  var weight=g.length?g.reduce(function(a,n){return a+n.sq;},0)/(10*g.length):0;
+  var over=g.length?g.reduce(function(a,n){return a+n.jq;},0)/(10*g.length):0;
+  var pull=g.length?g.reduce(function(a,n){return a+leverPullWill(n.sq,0);},0)/g.length:0;
+  var laws=SI.filter(function(l){return l.b===b&&lawIn(l.nm);});
+  var ig=laws.length?laws.reduce(function(a,l){return a+lawNow(l.nm);},0)/laws.length/10:null;
+  return {seat:b, n:g.length, weight:weight, over:over,
+   open:clamp(1-weight,0,1), pull:pull, ig:ig};});}
+/* ============================================================
    WHERE THE FINISHED CQ CAN STILL LAND, read off what is unanswered.
 
    The core drill said "The reading swings between lo and hi. The figure is
@@ -585,7 +609,7 @@ function compute(){
  const carrying=W.filter(n=>n.sq>0).sort((a,b)=>b.sq-a.sq);
  return {loaded,carrying,heaviest:carrying[0]||null,
   sabs,cxs,hys,sups,maskRing,DQ,SQ,PULL,EX,Rz,vf:_vf,SQm,poleMean,JQ,excess,
-  FAM_POLE,dist,Ig,It,will:WILL,CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
+  FAM_POLE,dist,Ig,It,will:WILL,seats:seatRows(),CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
   outward,organized,gov,
   will,drag,mask,darkB,darkV,root,rootsIn,weakL,balance:balance()};
 }
