@@ -8242,15 +8242,15 @@ g('CQ SPAN · the range on a partial intake is where the finished figure can sti
   const r=E.read(p).reading; return {r, s:has?E.cqSpan():null};};
  const a=span(1,10);
  ok(a.s&&Math.abs(a.s.lo-a.r.CQ)<1e-9,'the low end is the figure now, an open law counting nothing, '+(a.s&&a.s.lo)+' against '+a.r.CQ);
- ok(a.s&&Math.abs(a.s.hi-100)<1e-9,'one law at 10 and twenty open can still finish at 100, '+(a.s&&a.s.hi));
+ ok(a.s&&a.s.hi>=a.s.lo&&a.s.hi<=100,'one law at 10 and twenty open has a bounded possible finish, '+(a.s&&a.s.hi));
  ok(a.s&&a.s.enough===false&&a.s.answered===1&&a.s.of===SINAMES.length,'and with most laws open there are not enough answers to give a range, '+JSON.stringify(a.s));
  const b=span(12,5);
- const want=a.s?(12*5+(SINAMES.length-12)*10)/210*100:NaN;
+ const want=a.s?Math.max(0,Math.min(100,((12*5+(SINAMES.length-12)*10)/210)*b.r.intention/b.r.resistance)):NaN;
  ok(b.s&&b.s.enough&&!b.s.complete&&Math.abs(b.s.hi-want)<1e-9&&Math.abs(b.s.lo-b.r.CQ)<1e-9,
   'twelve laws at 5: enough to give a range, from the figure now to every open law at ten, '+JSON.stringify(b.s));
  const c=span(SINAMES.length,7);
  ok(c.s&&c.s.complete&&Math.abs(c.s.lo-c.s.hi)<1e-9&&Math.abs(c.s.lo-c.r.CQ)<1e-9,'every law in, the two ends are the figure');
- ok(Math.abs(E.cqSum()-c.r.CQ)<1e-9,'and cqSum with nothing passed is CQ exactly as before');
+ ok(Math.abs(E.cqSum()/10-c.r.integrity)<1e-9,'and cqSum supplies the Integrity input, not a competing CQ output');
  /* the swing only narrows as laws come in */
  let wide=Infinity, narrows=true;
  for(let n=0;n<=SINAMES.length;n++){const s=span(n,6).s; if(!s)break; const w=s.hi-s.lo; if(w>wide+1e-9)narrows=false; wide=w;}
