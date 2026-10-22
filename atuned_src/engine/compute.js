@@ -453,8 +453,9 @@ function compute(){
     10,000 simulated intakes; this rule fell in none of 630,000 answers.
 
     The default 6 still sits in S.law for an unanswered law, because the
-    band relief inside sq and the Ig readout need a number. It never enters
-    CQ: lawIn() is what says whether a law was answered. */
+    band relief inside sq and the band-derived Intention readout need a number.
+    It is excluded from Integrity by lawIn(); if no laws are answered, the
+    public CQ is explicitly zero. */
  const answered=SINAMES.filter(lawIn).length;
  const complete=(answered===SINAMES.length);
  /* CANONICAL COHERENCE FORMULA, MODEL 3.
