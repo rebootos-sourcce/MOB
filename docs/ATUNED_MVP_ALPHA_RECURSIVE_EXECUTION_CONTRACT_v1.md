@@ -47,9 +47,9 @@ Repository paths, source contracts, dependency map, and contradiction list.
 
 ## Block 2 — Vritti nerve record and fetter marker
 ### Work
-- Add a versioned Vritti record to the canonical profile/data boundary; preserve raw sensory and emotional inputs separately from normalization.
-- Record nerve address, context, observed time, provenance, confidence, stable ID, and waveform representation/method. Do not invent physiological units.
-- Support zero or more associations per Vritti and zero or more Vritti records per fetter.
+- Map the existing source/imprint, fetter/pattern, nerve-address node, tone, and trace owners before changing storage. Do not add a standalone top-level Vritti collection by default; Vritti is the total waveform connecting existing owners.
+- Preserve raw sensory and emotional source inputs, context, time, provenance, confidence, and waveform representation/method at their canonical owner. Do not invent physiological units.
+- Connect waveform/source evidence to the canonical fetter and the fetter to the canonical nerve-address node/tone through the existing trace model. Use references, not duplicated entities.
 - Keep candidate, confirmed, and rejected association states distinct. Rejection changes active association state, not the historical Vritti record.
 - Integrate association references with the existing trace allowlist/schema only after validating the allowed node/edge rules.
 - Render a derived fetter marker with distinct candidate/confirmed states and navigation to the associated record(s). A missing link must be visible and must not auto-reassign.
@@ -62,7 +62,7 @@ Repository paths, source contracts, dependency map, and contradiction list.
 - Test missing links, duplicate events, reload, export/import, rejected associations, and old profiles.
 - Assert no change to CQ/DQ/SQ/node weights/hit counts from Vritti/marker operations alone.
 ### Exit evidence
-Schema and persistence changes, trace validation, UI path, migration coverage, and passing tests.
+Canonical owner map, trace validation, UI path, migration coverage, and passing tests.
 
 ## Block 3 — Release hit-feedback state machine
 ### Work
@@ -124,8 +124,8 @@ Build/test/CI evidence and final Alpha snapshot with no invented scores.
 | CQ/Coherence naming | One canonical name/metric, partial CQ behavior preserved | Contract clarified; runtime cross-surface audit pending |
 | DQ/Resistance | Canonical meaning retained; no CQ complement assumption | Contract clarified; runtime cross-surface audit pending |
 | SQ/fetter weights | SQ is sum of individual node weights; no marker side effects | Contract clarified; regression proof pending |
-| Vritti persistence | Record survives validation, reload, export/import | Not implemented/verified |
-| Vritti association | Candidate/confirmed/rejected provenance survives and is navigable | Not implemented/verified |
+| Vritti signal ownership | Existing source/imprint record owns raw sensory/emotional inputs and waveform reference; no parallel collection | Owner map pending |
+| Vritti–fetter–node links | Typed relationships preserve provenance and navigate across existing owners | Not implemented/verified |
 | Fetter marker | Derived state opens correct Vritti record(s) | Not implemented/verified |
 | Release hit feedback | Explicit hit only; hold/reject/execute distinct | Not implemented/verified |
 | Voice safety | Low-confidence command causes no state change | Not implemented/verified |
@@ -135,4 +135,4 @@ Build/test/CI evidence and final Alpha snapshot with no invented scores.
 | Release-chain browser tests | Real candidate revision passes documented browser tests | Not run in this session |
 
 ## Current boundary
-This contract is a superseding execution plan and KPI ledger. It does not claim production Vritti wiring, marker rendering, voice hit feedback, or test execution. Each such item becomes complete only when implementation and verification evidence are linked.
+This contract is a superseding execution plan and KPI ledger. The earlier draft's standalone Vritti collection change was reverted after owner clarification. It does not claim production three-layer wiring, marker rendering, voice hit feedback, or test execution. Each such item becomes complete only when implementation and verification evidence are linked.
