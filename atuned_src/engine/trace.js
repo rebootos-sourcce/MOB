@@ -853,12 +853,16 @@ function traceFromRecord(p,intents){
    if(!by[k]){by[k]={amt:0, named:false}; order.push(k);}
    by[k].amt+=x.amt||0; if(!x.inferred)by[k].named=true;
    by[k].fetter=x.fetter||null;});
-  /* THE SIGNAL → FETTER → ADDRESS PATH.
-     The story/imprint is the nearest existing signal owner; it is not
-     mislabeled as a fully structured sensory-emotional waveform. Each
-     fetter comes from the parser's canonical label, and each address→fetter
-     membership comes from NODES[].cf. These are supports/association, never
-     causation. All are derived on read; no duplicate collection or metrics. */
+  /* THE SIGNAL → FETTER PATH.
+     Story text is the raw source, not a fully structured waveform. Use the
+     existing impression node as the derived signal-reading layer. Keep
+     story→address supports unchanged for legacy consumers; the signal
+     impression supports the parser-identified fetter separately. Both edges
+     are derived with inferred provenance, never causation or metric writes. */
+  var signalKey=traceKey('impression',id);
+  var signal=node('impression',id,'inferred',{derived:true});
+  if(signal)edge(sk,'produces',signal,'inferred',{derived:true,
+   why:'the story text was read as a signal impression; this is a derived interpretation, not a separate persisted waveform'});
   var fetters={};
   im.forEach(function(x){
    var f=x&&typeof x.fetter==='string'?x.fetter:null;
@@ -866,7 +870,7 @@ function traceFromRecord(p,intents){
   });
   Object.keys(fetters).sort().forEach(function(f){
    var fk=node('pattern','fetter:'+f,'known',tracePatternAttrs('fetter:'+f));
-   if(fk)edge(sk,'supports',fk,'inferred',{derived:true,
+   if(signal&&fk)edge(signal,'supports',fk,'inferred',{derived:true,
     why:'the parser identified '+f+' as the limiting-belief pattern in this source; this is an interpretation, not causation'});
   });
   order.forEach(function(k){
