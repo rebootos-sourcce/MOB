@@ -723,7 +723,7 @@ function anaRungCard(r,nm){
 function anaPctFig(kind,v,r){return {p:pct(kind,v)||0,raw:fmtPct(kind,v,{unread:r&&r.unread})};}
 var ANA_MET={
  cq:{nm:'Coherence',seat:'Crown',txt:'CQ',
-  tip:'CQ is your coherence number, built only from your answers on the laws.',
+  tip:'CQ is your coherence number: Integrity × Intention / Resistance. The 21-law score supplies Integrity.',
   fig:function(r){return anaPctFig('cq',r.CQ,r);}},
  dq:{nm:'Shadow',seat:'Root',txt:'DQ',
   tip:'Shadow is all the charge left at your addresses, added up, as a share of the most they could hold.',
