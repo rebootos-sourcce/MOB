@@ -1,6 +1,6 @@
 # ATÜNED MVP Alpha — Development Statistics Snapshot
 Snapshot: 2026-10-22 (CQ formula model 3 engine, history, and consumer integration pass)
-Scope: Unified Vritti / fetter / qualium / nerve-node architecture workstream
+Scope: Priority-1 CQ / Coherence formula integration, including downstream projections and the connected signal architecture
 Baseline type: Updated after P0 contract closure; first comparable runtime snapshot remains unavailable, so no build delta is claimed.
 
 ## Headline
@@ -23,7 +23,7 @@ Implementation percentages below describe code and integration present on the br
 | P2 — Trace graph/marker integration | 100% implemented; execution deferred | 0% implementation remaining | Existing pattern row now exposes source-backed story text, inferred/candidate status, canonical nerve address and nerve label, configured FLOWSEAT seat-tone reference, and explicit unrecorded qualium dimension. Marker is derived; no duplicate Vritti collection or metric writes. Structured sensory/emotional capture is split into a separate follow-on block, not counted as marker integration. |
 | P3 — CQ/DQ/SQ calculation integration | 100% implemented / unverified | 0% source implementation remaining | `compute.js` now exposes Integrity (`cqSum()/10`), Intention (`It`), Resistance (`Rz`), and one canonical CQ = clamp(Integrity × Intention / Resistance, 0..100); `CQ_MODEL=3`. `cqSpan`, release before/after values, expression ceiling, profile history snapshots/validation, and analytics labels are routed through or versioned against the same formula. Regression assertions updated. Runtime execution remains pending. See `ATUNED_CQ_COHERENCE_FORMULA_INTEGRATION_TDD_v1.md`. |
 | P4 — Release/intervention loop | 0% | 100% | Release hit-feedback requirements are documented elsewhere; no new implementation or tests completed in this pass. |
-| P5 — End-to-end verification | 0% verified | 100% unverified | Latest observed GitHub Actions `deploy` run for candidate head `765ac01b5a156ab6f9859bd06091dcee11e4dcf0` is queued (run 39743080252). This run is not a test result. Local build/test execution is unavailable in this environment; no pass is claimed. |
+| P5 — End-to-end verification | 0% verified | 100% unverified | Candidate GitHub Actions deploy/gate runs are still queued; no completed test result is available at this snapshot. Local build/test execution is unavailable in this environment; no pass is claimed. |
 | P6 — Final integration and handoff | 0% | 100% | Cannot close until runtime implementation and verification evidence exist. |
 
 ## Implemented versus verified
@@ -39,7 +39,7 @@ Implementation percentages below describe code and integration present on the br
 4. Build and test execution remains deferred by instruction; run ./atuned_src/BUILD-engine.sh, node tests/engine.js, node tests/trace.js, and the documented release-chain command before claiming runtime verification.
 
 ## Next recursive execution target
-Priority 1 is CQ formula model 3. Source wiring and regression assertions are committed; next inspect the candidate CI run, repair every failure recursively, then run engine, trace, and release-chain acceptance. Do not advance structured sensory/emotional capture or release feedback ahead of CQ acceptance.
+Priority 1 is CQ formula model 3. Source wiring, formula-consistent range/ceiling projections, and regression assertions are committed. Candidate CI/gate runs remain queued; inspect the first completed run, repair every failure recursively, then run engine, trace, and release-chain acceptance. Do not advance structured sensory/emotional capture or release feedback ahead of CQ acceptance.
 
 ## Audit rule
 Do not upgrade a percentage because a document was written or a commit exists. Mark criteria complete only when the defined source/behavior criteria and applicable verification evidence are satisfied. Update this file after every subsequent build/pass and preserve the previous snapshot for delta calculation.
