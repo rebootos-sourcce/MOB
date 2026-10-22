@@ -166,14 +166,15 @@ No completion percentages should be calculated from unverified denominators. Cur
 
 | Family | Seeded records/rows | Research status | Wiring status |
 |---|---:|---|---|
-| Owner-stated roots | 4 | Three passes pending | Parent/child links not assigned pending source verification |
-| Owner-stated behavioral domains | 15 | Three passes pending | Parent/child links not assigned pending source verification |
-| Archetype candidates from Reboot-OS ARCH12.json | 18 | Three passes pending; taxonomy identity unresolved | No forced blueprint/Jungian equivalence |
-| Conscious Domains | 8 slots | Three passes pending; seven labels unresolved | No crosswalk assigned |
-| CDOMAIN cultural-figure mappings | 12 | Three passes pending | Separate table; semantics unresolved |
-| ARCHDOM archetype/domain mappings | 18 | Three passes pending | Mapping exists in source table; target taxonomy equivalence unverified |
-| ARCH18 archetype/fetter/seat mappings | 18 | Three passes pending | Mapping exists in source table; canonical status unverified |
-| **Total deep-psychological registry entries** | **93** | **0/93 research-complete** | **No new semantic edges verified in this registry** |
+| Owner-stated roots | 4 | Pass 1 captured; passes 2–3 blocked pending canonical source recovery | Parent/child links not assigned |
+| Owner-stated behavioral domains | 15 | Pass 1 captured; passes 2–3 blocked pending canonical source recovery | Parent/child links not assigned |
+| Archetype candidates from Reboot-OS ARCH12.json | 18 | All three repository-evidence passes complete; six explicitly non-dictated placeholders; taxonomy identity unresolved | No forced blueprint/Jungian equivalence |
+| Conscious Domains | 8 slots | Pass 1 captured; passes 2–3 blocked; seven names unresolved | No crosswalk assigned |
+| CDOMAIN cultural-figure mappings | 12 | Three source-consistency passes complete; table semantics unresolved | No crosswalk assigned |
+| ARCHDOM archetype/domain mappings | 18 | Three source-consistency passes complete; target taxonomy equivalence unverified | No semantic edges approved |
+| ARCH18 archetype/fetter/seat mappings | 18 | Three source-consistency passes complete; mapping semantics unresolved | No semantic edges approved |
+| Blueprint Domain visualization placeholders | 14 | Pass 1 confirms only a visualization count; passes 2–3 blocked | Slot-only, non-canonical |
+| **Source-backed/owner-stated entries** | **93** | **66/93 three-pass source reviews complete** | **No new semantic edges verified** |
+| **Registry total including visualization placeholders** | **107** | **All records remain open for canonical completeness/approval** | **Not wired to runtime** |
 
-The registry is an inventory seed, not the canonical total for the complete engine. See ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_v1.md and data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json. Do not remove existing closure flags until generated data and tests prove closure.
-
+The Psyche Map visualization also declares counts that conflict with canonical table counts: Archetypes 12 vs 18 source entries; Masks 7 vs MASKS6=6; Hyper-Complexes 6 vs HYPER=8 and a separate MOB six-item HCX library; Saboteurs 14 vs SAB33=33; Fetters 18 vs NODEREG=112. Treat these as version/visualization discrepancies, not interchangeable denominators. See ATUNED_DEEP_PSYCHOLOGICAL_RECORD_FORMAT_TDD_v1.md and data/ATUNED_DEEP_PSYCHOLOGICAL_RECORD_REGISTRY_v1.json.
