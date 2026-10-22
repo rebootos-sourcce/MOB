@@ -132,6 +132,9 @@ function blankProfile(name){
   gates:{verp:{aware:0,detach:0,intent:0,ignore:0,attach:0,averse:0},
          lean:{benign:0,malignant:0}},   /* the cost multiplier, v2 */
   story:{entries:[]}, rituals:[], history:[],
+  /* Vritti is a nerve-level sensory + emotional waveform record. It is kept
+     distinct from fetter identity and validated at the profile boundary. */
+  vritti:[],
   /* THE PRACTICE OBJECTS, engine/practice.js. Additive: an older record has
      none and is filled from this blank, and no SCHEMA_V bump, which is the
      owner's call. p.rituals above is the Ritual tab's day log and is a
@@ -1049,6 +1052,64 @@ function validateProfile(o){
   var q=vRange(errs,'axes.'+c.nm+'.opp',a.opp,0,10);
   if(h!==null)p.axes[c.nm].held=h;
   if(q!==null)p.axes[c.nm].opp=q;});
+ /* VRITTI, nerve-level sensory + emotional waveform. Raw reports are kept
+    separate from normalized interpretation. Association state is explicit;
+    this record is never itself a fetter or a metric. Missing is an older
+    profile and receives the empty list. */
+ if(o.vritti!==undefined&&o.vritti!==null){
+  if(!Array.isArray(o.vritti))errs.push('vritti must be a list');
+  else if(o.vritti.length>10000)errs.push('vritti exceeds 10000 records');
+  else{
+   var seenV={};
+   p.vritti=o.vritti.map(function(v,i){
+    var path='vritti['+i+']';
+    if(!v||typeof v!=='object'||Array.isArray(v)){errs.push(path+' must be an object');return null;}
+    var id=typeof v.id==='string'?v.id.slice(0,120):'';
+    if(!id)errs.push(path+'.id is required');
+    if(id&&seenV[id])errs.push(path+'.id duplicates '+id);
+    if(id)seenV[id]=true;
+    var nerve=typeof v.nerve_address==='string'?v.nerve_address.slice(0,200):'';
+    var sensory=v.sensory_input&&typeof v.sensory_input==='object'&&!Array.isArray(v.sensory_input)?v.sensory_input:{raw:typeof v.sensory_input==='string'?v.sensory_input:'',normalized:null,source:'unknown'};
+    var emotional=v.emotional_input&&typeof v.emotional_input==='object'&&!Array.isArray(v.emotional_input)?v.emotional_input:{raw:typeof v.emotional_input==='string'?v.emotional_input:'',normalized:null,source:'unknown'};
+    function report(x,label){
+     return {raw:typeof x.raw==='string'?x.raw.slice(0,4000):'',
+      normalized:x.normalized&&typeof x.normalized==='object'&&!Array.isArray(x.normalized)?x.normalized:null,
+      source:typeof x.source==='string'?x.source.slice(0,120):'unknown'};
+    }
+    var prov=v.provenance&&typeof v.provenance==='object'?v.provenance:{};
+    var origin=['user','observed','inferred','imported'].indexOf(prov.origin)>=0?prov.origin:'inferred';
+    var confidence=typeof prov.confidence==='number'&&isFinite(prov.confidence)&&prov.confidence>=0&&prov.confidence<=1?prov.confidence:null;
+    if(prov.confidence!==undefined&&prov.confidence!==null&&confidence===null)errs.push(path+'.provenance.confidence must be 0..1');
+    var waveform=v.waveform&&typeof v.waveform==='object'&&!Array.isArray(v.waveform)?v.waveform:{representation:v.waveform===undefined?null:v.waveform,method:null,units:null};
+    var associations=Array.isArray(v.associations)?v.associations:[];
+    if(associations.length>1000)errs.push(path+'.associations exceeds 1000 links');
+    var seenA={};
+    associations=associations.slice(0,1000).map(function(a,j){
+     var ap=path+'.associations['+j+']';
+     if(!a||typeof a!=='object'||Array.isArray(a)){errs.push(ap+' must be an object');return null;}
+     var fid=typeof a.fetter_id==='string'?a.fetter_id.slice(0,120):'';
+     if(!fid)errs.push(ap+'.fetter_id is required');
+     var status=['candidate','confirmed','rejected'].indexOf(a.status)>=0?a.status:'candidate';
+     if(a.fetter_id!==undefined&&['candidate','confirmed','rejected'].indexOf(a.status)<0)errs.push(ap+'.status must be candidate, confirmed, or rejected');
+     var key=fid+'|'+status;
+     if(fid&&seenA[key])errs.push(ap+' duplicates '+key);
+     if(fid)seenA[key]=true;
+     return {fetter_id:fid,status:status,evidence:a.evidence&&typeof a.evidence==='object'&&!Array.isArray(a.evidence)?a.evidence:{},
+      created_at:typeof a.created_at==='string'?a.created_at:null,updated_at:typeof a.updated_at==='string'?a.updated_at:null,
+      provenance:['known','inferred','proposed','user_confirmed','observed'].indexOf(a.provenance)>=0?a.provenance:'inferred'};
+    }).filter(Boolean);
+    return {id:id,nerve_address:nerve,sensory_input:report(sensory,'sensory_input'),
+     emotional_input:report(emotional,'emotional_input'),
+     waveform:{representation:waveform.representation===undefined?null:waveform.representation,
+      method:typeof waveform.method==='string'?waveform.method.slice(0,200):null,
+      units:typeof waveform.units==='string'?waveform.units.slice(0,80):null},
+     context:v.context&&typeof v.context==='object'&&!Array.isArray(v.context)?v.context:{},
+     observed_at:typeof v.observed_at==='string'?v.observed_at:null,
+     provenance:{origin:origin,confidence:confidence,source:typeof prov.source==='string'?prov.source.slice(0,200):null},
+     associations:associations,schema_version:1};
+   }).filter(Boolean);
+  }
+ }
  /* the 21 laws. null is a law not yet measured and is not an error. */
  if(o.laws&&typeof o.laws==='object')SI.forEach(function(l){
   if(o.laws[l.nm]===undefined||o.laws[l.nm]===null)return;
