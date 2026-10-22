@@ -754,8 +754,16 @@ function traceWithSoul(p,fn){
 
 function tracePatternAttrs(i){
  var f=TRACE_FETTER.exec(String(i));
- if(f)return {name:f[1], seat:null, nerve:null, fetter:f[1]};
- var n=BY[+i]; return n?{name:n.k, seat:n.b, nerve:n.n||null, fetter:n.cf||null}:{};}
+ if(f)return {name:f[1], seat:null, nerve:null, fetter:f[1], toneHz:null, toneSource:null};
+ var n=BY[+i];
+ if(!n)return {};
+ /* FLOWSEAT owns the symbolic seat-tone reference. Attach its resolved value
+    to the derived address view, never copy it into the saved node/profile.
+    This is a configured sound-healing reference, not a measured nerve signal. */
+ var hz=(typeof seatHz==='function')?seatHz(n.b):null;
+ return {name:n.k, seat:n.b, nerve:n.n||null, fetter:n.cf||null,
+  toneHz:typeof hz==='number'&&isFinite(hz)?hz:null,
+  toneSource:typeof hz==='number'&&isFinite(hz)?'FLOWSEAT seat-tone mapping':null};}
 
 /* ============================================================
    traceFromRecord(p, intents)
