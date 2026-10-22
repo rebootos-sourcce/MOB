@@ -1006,8 +1006,8 @@ const kb=await page.evaluate(()=>{
    matters is that every deck the codex claims to hold is reachable by name.
    The owner asked where the stack and the universal laws were: both were here
    under names that did not say what they held, so those two are named here. */
-{const want=['Fetters','Child emotions','Saboteurs','Moral integrity','Masks',
-  'Domains','Archetypes','Gates','The cards','The stack','Universal laws'];
+{const want=['Fetters','Child emotions','Saboteurs','Laws of Moral Integrity','Masks',
+  'Domains','Archetypes','Laws of Action','The cards','The stack','Universal laws'];
  const miss=want.filter(w=>kb.names.indexOf(w)<0);
  ok(miss.length===0,'every deck is reachable by name'
   +(miss.length?', missing '+miss.join(', '):'')+', '+kb.names.length+' decks');
@@ -1031,8 +1031,10 @@ const kb=await page.evaluate(()=>{
     why this asserts on what a person reads rather than on a key. */
  ok(kb.names.indexOf('Nodes')<0,
   'and the deck of addresses is no longer called Nodes');
- ok(kb.names.indexOf('Laws')<0,
-  'and the twenty one are Moral integrity, not Laws');
+ /* and on 22 October the three sets of laws took one scheme, so neither name
+    the decks carried before it may come back either */
+ ok(kb.names.indexOf('Laws')<0&&kb.names.indexOf('Moral integrity')<0&&kb.names.indexOf('Gates')<0,
+  'and the twenty one are the Laws of Moral Integrity and the six the Laws of Action, not Laws, Moral integrity or Gates');
  /* the glossary is not a deck. A name is glossed once, in one table, and the
     search shows it; fifty six rows whose whole content is a definition are an
     answer to a question rather than a deck of readings. */
@@ -7267,7 +7269,7 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
  ok(a.tab&&a.lshut&&a.stored===null,'a first visit at 1600 lands on the Field with the left column shut and nothing stored, '+JSON.stringify({lshut:a.lshut,stored:a.stored}));
  ok(a.energetics&&a.left==='Root Energetics','the left rail keeps Root Energetics, closed, '+a.left);
  ok(a.esum==='Energetic summary','and the summary keeps its own name, Energetic summary, so no two sections share one, '+a.esum);
- ok(a.seats==='Assemblage points'&&a.gates==='Action'&&!a.stale.length,'the bar says Assemblage points and Action, and neither old word, '+JSON.stringify([a.seats,a.gates,a.stale]));
+ ok(a.seats==='Assemblage points'&&a.gates==='Laws of Action'&&!a.stale.length,'the bar says Assemblage points and Laws of Action, and neither old word, '+JSON.stringify([a.seats,a.gates,a.stale]));
  ok(a.view===3&&a.custom===null&&a.ring==='100.0 100','depth starts full, Blueprint, and its ring reads full, '+a.ring);
  ok(a.togMark!==a.foldMark,'the bar\'s fold and the column\'s fold wear two marks, since they now stand side by side');
  /* ONE PRESS ON ONE LAYER IS NOT DEPTH GOING TO NOTHING. The ring was binary,
@@ -7284,7 +7286,7 @@ console.log('\n=== GO: the Field lands with its column shut, two names changed, 
  /* the drills a press on those two layers reaches answer under the same words */
  const d=await wide.pg.evaluate(()=>{runSeatDrill(APC[0]);const s=document.querySelector('#rdrill .pm-eye').textContent;
   runGatesDrill('aware');const g=document.querySelector('#rdrill .pm-eye').textContent;rdClose();return [s,g];});
- ok(/^Assemblage point$/i.test(d[0])&&/^Higher action$/i.test(d[1]),'the drills they open say assemblage point and action, '+d.join(', '));
+ ok(/^Assemblage point$/i.test(d[0])&&/^Right action$/i.test(d[1]),'the drills they open say assemblage point and right action, '+d.join(', '));
  /* THE COLUMN OPENED IS REMEMBERED, and at 1600 the row folds to its fold,
     Layers and Depth, rather than hanging a circle under itself */
  await wide.pg.click('#lfold'); await wide.pg.waitForTimeout(300);

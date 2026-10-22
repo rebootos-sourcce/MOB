@@ -141,7 +141,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* VERPCUE was reachable as a browser global and absent from the contract,
      so no test could check the lean tables against it. One phrase in both
      moves two instruments on one occurrence, which is what 'let it go' did. */
-                  VERPCUE:VERPCUE, VERPMULT:VERPMULT,
+                  VERPCUE:VERPCUE, VERPMULT:VERPMULT, VERP_VS:VERP_VS,
                   LEAN_FRAME_W:LEAN_FRAME_W, LEAN_TRUST_CAP:LEAN_TRUST_CAP,
                   LEAN_TRUST_HALF:LEAN_TRUST_HALF, LEAN_MIN_CH:LEAN_MIN_CH,
   /* the door */  read:read, input:input, throughput:throughput, output:output,

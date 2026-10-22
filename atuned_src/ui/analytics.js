@@ -285,7 +285,7 @@ function anaRender(){
     to every time" was the section describing itself under its own heading.
     The twenty one bars are the count, and the scale is said once, where it
     is answered, in the intake's key. */
- out+='<div class="pm-eye" style="margin-top:20px">Moral integrity</div>'
+ out+='<div class="pm-eye" style="margin-top:20px">Laws of Moral Integrity</div>'
   +'<div class="ana-laws">';
  laws.forEach(function(l){
   /* a bar is a button now, round RB, and opens its law in the trail */
@@ -629,7 +629,9 @@ function anaSeatCard(r,nm){
   +(s2.hot===1?' is':'es are')+' held here.</p>';
  /* the laws seated here, as doors, round RB. They were chips that went nowhere. */
  var laws=SI.filter(function(l){return l.b===bn;});
- h+='<div class="pm-eye">Moral integrity seated here</div><div class="ad-rows">'+laws.map(function(l){
+ /* plain: six words is a sentence, not a label, by the capitalize rule in
+    shell/head.html, so it keeps the case it is written in */
+ h+='<div class="pm-eye plain">Laws of Moral Integrity seated here</div><div class="ad-rows">'+laws.map(function(l){
   var read=(typeof lawIn!=='function')||lawIn(l.nm), v=S.law[l.nm];
   return '<button type="button" class="ad-r" data-ana="'+anaKey('law',l.nm)+'" title="'+esc('Open '+l.nm)+'">'
    +crBadge(bn,read?pct('law',v)||0:0,{size:'sm',raw:read?fmtPct('law',v):'\u2013',title:l.nm+(read?'':', not read yet')})

@@ -2148,7 +2148,9 @@ body.quiet .rb-t i::before,body.rm .rb-t i::before,body.quiet .rb-t i::after,bod
 body.punch .kb{border-color:transparent;background:var(--panel-2)}
 /* the wheel is the main graphic. in Punch it carries a fifth more colour. */
 body.punch canvas#cv{filter:saturate(1.2)}
-.gate-r .ad-m{margin-left:auto;font-family:var(--num);color:var(--dim);font-size:11.5px}
+/* .gate-r .ad-m set the gate rows' multiplier, x0.70, at the right edge. The
+   rows no longer print it, because nothing held is multiplied by a gate
+   (engine/verp.js), so the rule had nothing left to style. */
 /* ============================================================
    THE BADGE. The icon carries the percent, the pill carries the number.
 

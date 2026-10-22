@@ -198,7 +198,7 @@ function kbRowsOf(sec){
  /* a gate's percent is its share of the gate evidence in the story, which is
     honestly zero until a story exists. Zero is a reading and prints. */
  if(sec==='gate') verpRead().forEach(function(g){
-  out.push(kbRow('gate', g.nm, g.side+' gate', g.side==='higher'?'Crown':'Root',
+  out.push(kbRow('gate', g.nm, g.side==='higher'?'right action':'wrong action', g.side==='higher'?'Crown':'Root',
    g.pct||0, GATEGLYPH[g.k]||null, g));});
  /* THE FOURTH THING IS NEVER THE THIRD THING SAID TWICE. The stack is the
     seven seats, so its name and its seat are the same word and the row read
@@ -327,6 +327,10 @@ function kbRowsOf(sec){
    Integrity; he said moral, so moral wins, and the disagreement is recorded in
    BOOK-ERRATA.md rather than argued here.
 
+   And on 22 October the three sets of laws took one scheme: Moral integrity
+   is the Laws of Moral Integrity and Gates is the Laws of Action. Moral stays
+   in the name, his 15 October correction in .claude/agents/emmy.md.
+
    The glossary is gone from this list on purpose. See kbRows.
 
    AND THE LIST RUNS THE OTHER WAY, KT. His words: "I want you to reverse
@@ -335,8 +339,8 @@ function kbRowsOf(sec){
    same eleven decks exactly reversed, and the page opens on the first of
    them. Order only: no key, name or deck changed. */
 const KB_SECS=[['harm','Universal laws'],['seat','The stack'],['card','The cards'],
- ['gate','Gates'],['arch','Archetypes'],['dom','Domains'],['mask','Masks'],
- ['law','Moral integrity'],['sab','Saboteurs'],['fetter','Child emotions'],
+ ['gate','Laws of Action'],['arch','Archetypes'],['dom','Domains'],['mask','Masks'],
+ ['law','Laws of Moral Integrity'],['sab','Saboteurs'],['fetter','Child emotions'],
  ['addr','Fetters']];
 
 /* whether nothing has been read, asked once and never typed */
@@ -352,7 +356,7 @@ const KB_OF={
  mask:'of the mask at full weight',
  dom:'of your strongest blueprint lobe',
  arch:'of your strongest archetype',
- gate:'of the gate evidence in your story',
+ gate:'of every Law of Action read in your story',
  seat:'of the seat’s addresses carrying charge',
  card:'of the axis the card releases, where the card names one',
  harm:'of the law kept, where the intake scores it',
@@ -365,7 +369,7 @@ const KB_OF={
 const KB_AXHD={
  nature:'Laws of nature · Sat, how the field behaves',
  human:'Laws of human nature · Chit, how awareness comes into a body',
- spirit:'Moral integrity · Ananda, what keeps you in one piece',
+ spirit:'Laws of Moral Integrity · Ananda, what keeps you in one piece',
  express:'Laws of expression · what it comes out as',
  emotion:'The nine architectures', measure:'The instruments', meta:'The frame'};
 
@@ -379,7 +383,7 @@ function kbMatch(row,q){
    Fetter and fetter reads Child emotion, which is the rename: the keys are
    identity and the labels are what a person sees. */
 const KB_KIND={node:'Fetter',fetter:'Child emotion',sab:'Saboteur',
- law:'Moral integrity',dom:'Domain',arch:'Archetype',gate:'Gate',
+ law:'Law of Moral Integrity',dom:'Domain',arch:'Archetype',gate:'Law of Action',
  harm:'Universal law',gloss:'Term',seat:'Seat',mask:'Mask',card:'Card',
  axcard:'Card',band:'Band',kind:'Pattern',pole:'Pole'};
 
@@ -533,7 +537,7 @@ function kbRender(){
   /* A LAW IS LISTED ONCE ON A PAGE. The twenty one moral integrity laws are
      also universal laws in the book's own list, so a seat's page printed
      Unity twice, a screen apart. Where both decks are on the page the law
-     stands under Moral integrity, the deck the intake scores, and the
+     stands under the Laws of Moral Integrity, the deck the intake scores, and the
      universal laws list keeps the ones that are only its own. */
   if(rows.some(function(x){return x.k==='law';}))
    rows=rows.filter(function(x){return !(x.k==='harm'&&x.axis==='spirit');});

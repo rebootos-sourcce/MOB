@@ -240,10 +240,11 @@ function leadSees(what){ return LEAD_SEES.indexOf(what)>=0; }
    everything except how far up the chain a person sees (SIGHT) and how much
    new ground they may open (grant). The first six are the owner's own words of
    1 October, "your own reading at the level of the 112 addresses, domains,
-   archetypes, laws, gates and shadow", with gates said as action because that
-   is the word the Field's bar already prints for them. */
-const PLAN_ALWAYS=['your 112 addresses','the domains','the archetypes','the laws',
- 'action','shadow','the pain map','every tool','the journal',
+   archetypes, laws, gates and shadow", with the laws and the gates said by the
+   names the Field's bar prints for them since 22 October, the Laws of Moral
+   Integrity and the Laws of Action. */
+const PLAN_ALWAYS=['your 112 addresses','the domains','the archetypes','the Laws of Moral Integrity',
+ 'the Laws of Action','shadow','the pain map','every tool','the journal',
  'rerunning anything already open'];
 /* ANNUAL. TWO MONTHS FREE IS OUT, on the owner's ruling.
 

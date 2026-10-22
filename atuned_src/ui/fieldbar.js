@@ -86,21 +86,25 @@ const VICON=[
    thing two things. The rest of the product still says seat in about a
    hundred and twenty places, and whether that sweep goes product wide is his
    call, asked in the round's report rather than done here by default.
-   Laws and Character keep their names: Laws is still open between the
-   options he named, and Character to Masks would have put two buttons on
+   Character keeps its name: Character to Masks would have put two buttons on
    this bar with one name while masks was a layer here. It is not one now:
    he ruled the masks off every sub menu and onto the Body's figure, CH in
    TASKS.md, so the bar carries no Masks switch and bmDrawMasks in
-   ui/map.js draws them. */
+   ui/map.js draws them.
+
+   LAWS AND ACTION ARE NAMED NOW, 22 October: one scheme for the three sets
+   of laws, so Laws is the Laws of Moral Integrity and Action is the Laws of
+   Action. Moral stays in the name on purpose, his 15 October correction in
+   .claude/agents/emmy.md. The count in the tooltip is read off SI. */
 const FB_LAYERS=[
  {k:'addresses',g:'carry',nm:'Addresses',ic:FB_IC_ADDR,
   tip:'Your 112 addresses. Each mark is the charge held at one place.'},
  {k:'seats',g:'carry',nm:'Assemblage points',ic:FB_IC_SEAT,
   tip:'The seven seats, from the base of your spine to the top of your head.'},
- {k:'laws',g:'carry',nm:'Laws',ic:fbFlay('laws'),
-  tip:'The twenty one laws, each set at its assemblage point. Their sum is the number at the centre.'},
- {k:'gates',g:'carry',nm:'Action',ic:fbFlay('gates'),
-  tip:'Six ways of meeting a charge, round the core. Awareness, detachment and intention sit across from ignorance, attachment and aversion.'},
+ {k:'laws',g:'carry',nm:'Laws of Moral Integrity',ic:fbFlay('laws'),
+  tip:'The '+SI.length+' Laws of Moral Integrity, each set at its assemblage point. Their sum is the number at the centre.'},
+ {k:'gates',g:'carry',nm:'Laws of Action',ic:fbFlay('gates'),
+  tip:'The Laws of Action round the core, each move of right action set across from the wrong action it stands against.'},
  {k:'shadow',g:'carry',nm:'Decoherence',ic:fbFlay('shadow'),
   tip:'Decoherence. All the charge on all 112 addresses, shown as a tint behind everything.'},
  {k:'stories',g:'carry',nm:'Stories',ic:fbFlay('stories'),
@@ -191,12 +195,12 @@ function fbValues(r){
   m:dk.v!==dash?'Ring and number: the heaviest assemblage point, '+r.darkB+', at '+dk.v+'.'
    :'Ring and number: the heaviest assemblage point. Nothing is carrying yet.'};
  V.laws={p:cq.p,v:cq.v,c:seatCol('Crown'),
-  m:'Ring and number: coherence, CQ, which is the laws summed.'};
+  m:'Ring and number: CQ, the Laws of Moral Integrity added up.'};
  var G=verpRead(), hi=G.filter(function(g){return g.side==='higher';}).reduce(function(a,g){return a+g.pct;},0),
   anyG=G.some(function(g){return g.pct>0;});
  V.gates={p:anyG?pct('gate',hi):0,v:anyG?fmtPct('gate',hi):dash,c:seatCol('Heart'),
-  m:anyG?'Ring and number: how much of what you wrote ran through awareness, detachment and intention.'
-   :'No story has been read for action yet.'};
+  m:anyG?'Ring and number: right action, its share of every Law of Action read in your stories.'
+   :'Nothing read yet, so none of your stories has run through the Laws of Action.'};
  V.shadow={p:dqv.p,v:dqv.v,c:seatCol('Root'),
   m:'Ring and number: shadow weight, DQ, the weight on all 112 addresses.'};
  var ai=atomIndex()||{}, traced=carry.length?carry.filter(function(n){return (ai[n.i]||[]).length;}).length/carry.length*100:0;

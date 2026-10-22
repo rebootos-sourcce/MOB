@@ -204,6 +204,12 @@ const sh=E.verpRead();
 ok(sh.length===6&&sh.every(v=>v.mult>0),'six gates, each with a multiplier');
 ok(sh.filter(v=>v.side==='higher').length===3&&sh.filter(v=>v.side==='lower').length===3,
    'three higher, three lower');
+/* THE PAIRS, read off VERP_VS. Each move of right action stands across from
+   exactly one wrong action and the table says it both ways round, so the drill
+   and the dial name the same opposite whichever end a person opens. */
+ok(sh.every(v=>{const o=sh.filter(x=>x.k===E.VERP_VS[v.k])[0];return !!o&&o.side!==v.side&&E.VERP_VS[o.k]===v.k;})
+   &&Object.keys(E.VERP_VS).length===sh.length,
+   'every Law of Action stands across from one on the other side, both ways round, '+JSON.stringify(E.VERP_VS));
 /* A PHRASE OUTRANKS THE WORDS INSIDE IT. verpScan was a bare indexOf, so
    Intention's 'kept going' counted inside Attachment's 'kept going over', and
    a cue counted inside a longer word. Red on f7188cba, each check beside the
@@ -2388,9 +2394,10 @@ g('23 \u00b7 the plan. what it grants, what it lets you see, and what it refuses
     1 October made the fact differ by tier. SIGHT is the one table. */
  ok(PLANS.every(p=>!('see' in p)),'no row of the ladder types a sight of its own, SIGHT is the table');
  ok(PLAN_ALWAYS.length>=3,'and what is on every tier is named rather than remembered');
- ok(['your 112 addresses','the domains','the archetypes','the laws','action','shadow']
+ /* the laws and the gates by the names the Field's bar prints since 22 October */
+ ok(['your 112 addresses','the domains','the archetypes','the Laws of Moral Integrity','the Laws of Action','shadow']
    .every(w=>PLAN_ALWAYS.indexOf(w)>=0),
-  'what is on every tier is the owner\'s own list: addresses, domains, archetypes, laws, action and shadow');
+  'what is on every tier is the owner\'s own list: addresses, domains, archetypes, the Laws of Moral Integrity, the Laws of Action and shadow');
  ok(!PLAN_ALWAYS.some(w=>/saboteur|complex|character|whole reading/i.test(w)),
   'and nothing in it is a rung a tier buys, or the whole reading, which is no longer on every tier');
 

@@ -33,10 +33,13 @@ function describe(h,r,still){
  /* the compass's own two words for its two ends, cone.js, and nothing new */
  if(h.k==='pole')return '<u>compass</u> <b>'+(h.end==='up'?'Coherent':'Decoherent')+'</b>'
   +'<hr><b>Click for detail.</b>';
+ /* a Law of Action, right or wrong. It said "everything held weighs x0.70"
+    under the share, and nothing held is multiplied by a gate (engine/verp.js),
+    so that line went with the drill's. */
  if(h.k==='gate'){var v=h.v;
-  return '<u>'+(v.side==='higher'?'higher gate':'lower gate')+'</u> <b>'+esc(v.nm)+'</b><hr>'
-   +esc(v.d||'')+'<hr>'+(v.n?'<b>'+v.pct+'%</b> of your story, in '+v.n+' sentence'+(v.n===1?'':'s'):'no story yet')
-   +'<br>everything held weighs <b>\u00d7'+v.mult.toFixed(2)+'</b><hr><b>Click for detail.</b>';}
+  return '<u>'+(v.side==='higher'?'right action':'wrong action')+'</u> <b>'+esc(v.nm)+'</b><hr>'
+   +esc(v.d||'')+'<hr>'+(v.n?'<b>'+v.pct+'%</b> of your story, in '+v.n+' sentence'+(v.n===1?'':'s'):'not read yet')
+   +'<hr><b>Click for detail.</b>';}
  /* V21, speak to a ten year old. This read "001 Fear / Root seat, Lumbar
     Plexus / axis Fear / susceptibility 1.00 / held 0.3, opposite 8.8 / SQ
     0.0": a storage index, which is CO-15 by name, and four variable names.

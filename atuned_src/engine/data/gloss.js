@@ -150,7 +150,19 @@ var UNPACK_BASE={
  'saboteur':'A saboteur is a named habit that runs on the charge held at several addresses at once.',
  'mask':'A mask is a way of showing up, such as Child or Teen, read from the weight held at a group of seats.',
  'axis':'An axis is a feeling and its opposite, such as fear and trust, and the instrument reads how much of the first is held and how much of the second is in place.',
- 'cq':'CQ is your coherence number, built only from your answers on the laws.',
+ /* CQ IS THE INTEGRITY, NOT THE COHERENCE. This said "your coherence number",
+    which made CQ and coherence one thing. The 25 September ruling makes CQ
+    the 21 laws added up (cqSum, engine/compute.js), and coherence is what
+    that integrity holds up. The coherence sentence below is not touched. */
+ 'cq':'CQ is the Laws of Moral Integrity added up, the integrity that coherence is built on.',
+ /* THE LAWS OF ACTION, 22 October. The six gates took the name the three sets
+    of laws share, read as right action against wrong action. Each sentence
+    says what the move does to a strong feeling, the drill's own words, and
+    none says a gate multiplies anything held, because none does
+    (engine/verp.js). The Laws of Moral Integrity are built below, off SI. */
+ 'laws of action':'The Laws of Action are the moves you make when a strong feeling rises, and each one either meets the feeling or misses it.',
+ 'right action':'Right action is meeting a strong feeling: you notice it, stay out of its story and keep to what you meant.',
+ 'wrong action':'Wrong action is missing a strong feeling, following its story or going around it, and it is how a feeling sticks as charge.',
  /* DQ stood as a bare label on the release clock. Round RG. */
  'dq':'DQ is your shadow weight: all the charge you carry, on every address, against the most your body could hold.',
  'coherence':'Coherence is when what you mean, what you do and what your body does point the same way.',
@@ -296,6 +308,10 @@ function unpackAll(){
    t['law:'+l.nm.toLowerCase()]=l.nm+' is how often you '+(IQ_STEM[l.nm]||'')
     +', when it costs you, when nobody would know and on an ordinary day.';});
   t['law']='A law is one of '+SI.length+' ways of keeping your integrity, read from three questions you answer about each.';}
+ /* the set by its name, 22 October. Its own guard, because it needs only SI,
+    and the law entry above waits on IQ_STEM as well */
+ if(typeof SI!=='undefined')
+  t['laws of moral integrity']='The Laws of Moral Integrity are '+SI.length+' ways of behaving, and each one you keep blocks one way your body gets pulled into stress.';
  /* the nine feelings, as the ends of the nine axes */
  if(typeof CHILD!=='undefined')
   CHILD.forEach(function(c){

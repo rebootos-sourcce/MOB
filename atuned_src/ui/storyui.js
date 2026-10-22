@@ -2377,8 +2377,11 @@ function stLawRow(t){
   +'<em style="flex:0 0 auto;font-style:normal;font-size:12px;color:var(--dim)">in '+t.n+(t.n===1?' entry':' entries')+'</em></div>';}
 function stLawPaint(){
  var b=document.getElementById('stlawb'); if(!b)return;
- var o='<p class="st-none" style="margin:0 0 10px">From your own words, not a score: which of the 21 laws of '
-  +'integrity read as held or let go in what you wrote. Nothing here moves your coherence number yet.</p>';
+ /* KEPT, NOT HELD. Held is the word for charge at an address, so a law is
+    kept or let go, and the set is named the way every other surface names it,
+    the count read off SI. */
+ var o='<p class="st-none" style="margin:0 0 10px">From your own words, not a score: which of the '+SI.length+' Laws of '
+  +'Moral Integrity read as kept or let go in what you wrote. Nothing here moves your coherence number yet.</p>';
  stLawWins().forEach(function(w){
   o+=stAnaHead(w.say,w.entries?w.entries+(w.entries===1?' entry':' entries'):'–');
   if(!w.entries)o+='<p class="st-none" style="margin-top:4px">Nothing written.</p>';
@@ -2391,8 +2394,13 @@ function stLawPaint(){
      character flaw without the two readings it was built from beside it. */
   o+='<p style="margin:6px 0 2px">Avoidance reads <b>'+g.intentional.avoidance+' per cent</b> in your last entry, built '
    +'from the two readings below it and never shown without them.</p>'
-   +'<p style="margin:2px 0">Aware against reactive, clean: <b>'+Math.round(g.aware*100)+' per cent</b>.</p>'
-   +'<p style="margin:2px 0">Detached against attached, clean: <b>'+Math.round(g.detached*100)+' per cent</b>.</p>';}
+   /* TWO LAWS OF ACTION, EACH AGAINST THE MOVE ACROSS FROM IT. These read
+      "Aware against reactive, clean", and sniffGates (engine/sniff.js) scores
+      aware against ignore, so reactive named an end the figure never counts,
+      and clean was the spec's word for the share. Each figure is the right
+      action's share of its own pair. */
+   +'<p style="margin:2px 0">Awareness against ignorance: <b>'+Math.round(g.aware*100)+' per cent</b> awareness.</p>'
+   +'<p style="margin:2px 0">Detachment against attachment: <b>'+Math.round(g.detached*100)+' per cent</b> detachment.</p>';}
  b.innerHTML=o;}
 
 /* ============================================================

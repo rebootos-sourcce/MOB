@@ -250,7 +250,10 @@ function lawDrillHtml(l,o){
     finding: "Truth 6.0. Working but not strong." lawIn is the engine's own
     answer to whether it was entered. Round J13. */
  var read=(typeof lawIn!=='function')||lawIn(l.nm);
- var h='<div class="pm-eye">Law of integrity, '+l.b.toLowerCase()+'</div>'
+ /* plain: a comma with a word after it makes this a sentence by the
+    capitalize rule in shell/head.html, which the old "Law of integrity, root"
+    broke as well and no walk reached */
+ var h='<div class="pm-eye plain">Law of Moral Integrity, '+l.b.toLowerCase()+'</div>'
   +'<div class="ad-nm">'+l.nm+(read?' '+v.toFixed(1):'')+'</div>'
   +'<div class="pm-eye">How it runs through you</div><p class="ad-p">'
   /* V21 and pass 1. "Under 4 it is not resisting, it is closed, and
@@ -481,33 +484,56 @@ function runCoreDrill(){
   +gatesBlock(null);
  rdShell(h);}
 
-/* the six gates. three higher keep charge from binding, three lower bind it.
-   the percent is the share of the story that ran through each gate, the
-   multiplier is what that gate does to everything held. */
+/* THE LAWS OF ACTION, three moves of right action and three of wrong action,
+   each row its share of every Law of Action read in the stories.
+
+   THE MULTIPLIER IS GONE FROM THE ROWS AND THE PARAGRAPH. Each row printed
+   x0.70 or x1.35 and the paragraph called it "the cost on everything held",
+   and nothing held is multiplied by it (engine/verp.js says where it goes).
+   And the two sides were told apart by colour alone, Heart against Root, with
+   no word on the drill to say which was which, so each side stands under its
+   own name now. */
 function gatesBlock(focus){
  var V=verpRead(), evid=V.some(function(v){return v.pct>0;});
- var rows=V.map(function(v){
-  var c=v.side==='higher'?seatCol('Heart'):seatCol('Root');
+ var rows=function(side){return V.filter(function(v){return v.side===side;}).map(function(v){
+  var c=side==='higher'?seatCol('Heart'):seatCol('Root');
   return '<button class="ad-r gate-r'+(focus===v.k?' on':'')+'" data-gate="'+v.k+'" style="--c:'+c+'">'
    +'<span class="ad-k">'+esc(v.nm)+'</span>'
-   +'<span class="ad-v">'+(evid?v.pct+'%':'')+'</span>'
-   +'<span class="ad-m">\u00d7'+v.mult.toFixed(2)+'</span></button>';}).join('');
- /* ACTION, GO in TASKS.md, the bar's name for this layer now, and his reading
-    of it: right action and wrong action. The six keep their own names. */
- return '<div class="pm-eye">Action</div><p class="ad-p">'
-  +(evid?'The share of the story that ran through each of the six. ':'No story yet, so none of the six has evidence. ')
-  +'The higher three leave charge where it is. The lower three bind it, and the multiplier is the cost on everything held.</p>'
-  +'<div class="ad-rows">'+rows+'</div>';}
+   +'<span class="ad-v">'+(evid?v.pct+'%':'')+'</span></button>';}).join('');};
+ /* ACTION, GO in TASKS.md, and his reading of it: right action and wrong
+    action. Named the Laws of Action on 22 October, the third set beside the
+    Laws of Moral Integrity and the Laws of Expression. The six keep their own
+    names. */
+ return '<div class="pm-eye">Laws of Action</div><p class="ad-p">'
+  +'The moves you make when a strong feeling rises. Right action lets the feeling pass. Wrong action makes it stick. '
+  +(evid?'Each row is its share of every Law of Action read in your stories.'
+   :'Nothing read yet, so none of your sentences has run through them.')+'</p>'
+  +'<div class="pm-eye">Right action</div><div class="ad-rows">'+rows('higher')+'</div>'
+  +'<div class="pm-eye">Wrong action</div><div class="ad-rows">'+rows('lower')+'</div>';}
+/* ONE LAW OF ACTION. This said "Everything held is multiplied by 0.70 for the
+   share that runs this way, so it lightens the load", which no arithmetic in
+   the engine does. It says what the move does to a feeling now, names the move
+   across from it in that move's own words (VERP_VS, engine/verp.js), and counts
+   what ran through it.
+
+   NOTHING READ YET ONLY WHEN NOTHING WAS. Once any story has run through any
+   of the six, a gate with none of its own says that, because "nothing read
+   yet" beside five rows carrying a share would be false. */
 function runGatesDrill(k){
- var v=verpRead().filter(function(x){return x.k===k;})[0];
+ var V=verpRead(), v=V.filter(function(x){return x.k===k;})[0];
  if(!v){runCoreDrill();return;}
- var h='<div class="pm-eye">'+(v.side==='higher'?'Higher action':'Lower action')+'</div>'
+ var o=V.filter(function(x){return x.k===VERP_VS[k];})[0], up=v.side==='higher';
+ var read=V.some(function(x){return x.n>0;});
+ var h='<div class="pm-eye">'+(up?'Right action':'Wrong action')+'</div>'
   +'<div class="ad-nm">'+esc(v.nm)+'</div>'
   +'<div class="pm-eye">What it sounds like</div><p class="ad-p">'+esc(v.d)+'</p>'
   +'<div class="pm-eye">What it does</div><p class="ad-p">'
-  +(v.pct?'<b>'+v.pct+'%</b> of the story ran through '+esc(v.nm.toLowerCase())+', '+v.n+' sentence'+(v.n===1?'':'s')+'. ':'Nothing in the story has run through it yet. ')
-  +'Everything held is multiplied by <b>'+v.mult.toFixed(2)+'</b> for the share that runs this way'
-  +(v.mult<1?', so it lightens the load.':v.mult>1?', so it adds to the load.':'.')+'</p>'
+  +(up?'It lets the feeling pass without sticking. ':'It makes the feeling stick in your body as charge. ')
+  +(v.n?'<b>'+v.n+' sentence'+(v.n===1?'':'s')+'</b> ran through '+esc(v.nm.toLowerCase())
+     +', <b>'+v.pct+'%</b> of every Law of Action read in your stories.'
+   :read?'No sentence of yours has run through it yet.'
+   :'Nothing read yet, so no sentence of yours has run through it.')+'</p>'
+  +(o?'<div class="pm-eye">Across from it</div><p class="ad-p"><b>'+esc(o.nm)+'</b>. '+esc(o.d)+'</p>':'')
   +gatesBlock(k);
  rdShell(h);}
 

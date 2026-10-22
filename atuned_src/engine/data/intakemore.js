@@ -258,7 +258,10 @@ const IX_ACT=[
    rename here is a migration. rows is the table above. nm is the heading and
    line is the one sentence that says what the block is, because a term of art
    never stands alone (UNPACK EVERY SYMBOL, CLAUDE.md): archetype, axis and
-   action axis are each said in plain words in the block that uses them.
+   the Laws of Action are each said in plain words in the block that uses
+   them. The last was called action axes until 22 October, when the six took
+   the name the three sets of laws share; the id stays acts, because it is
+   the key the answers are saved under.
    A row finds its colour in the renderer, from the seat ARCH and CHILD already
    place it at. The actions have none of their own in the product, and the gates
    are drawn at the Heart in the Field's bar (ui/fieldbar.js), so they take that.
@@ -269,5 +272,5 @@ const IX_BLOCKS=[
   line:'An archetype is a stock role people play, like the one who leads or the one who helps. Each one here puts two of those roles against each other, in a short scene or a short pair of actions. Pick the one closer to what you actually do.'},
  {id:'axes', nm:'Emotional axes', rows:IX_AXIS,
   line:'An axis is a line from a feeling to its opposite. Each question is a feeling the body can hold. Say how often it runs in you.'},
- {id:'acts', nm:'Action axes', rows:IX_ACT,
-  line:'An action axis is a move you make when a feeling rises, from meeting it to going around it. Say how often you make each one.'}];
+ {id:'acts', nm:'Laws of Action', rows:IX_ACT,
+  line:'The Laws of Action are the moves you make when a strong feeling rises. Right action meets the feeling and wrong action misses it, follows its story or goes around it. Say how often you make each one.'}];

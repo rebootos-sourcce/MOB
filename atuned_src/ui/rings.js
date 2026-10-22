@@ -707,12 +707,13 @@ function frPoles(M,r,cx,cy,inner){
    two left hand gates further than the four others and leaves every sector on
    the rim where it is. */
 const FR_GATE_AT={intent:-150,aware:-90,detach:-30,averse:30,ignore:90,attach:150};
-const FR_GATE_VS={aware:'ignore',ignore:'aware',detach:'attach',attach:'detach',intent:'averse',averse:'intent'};
+/* each gate's opposite is VERP_VS in engine/verp.js, the one pairing table,
+   which the action drill names it from as well */
 function frCollar(M,cx,cy,edge,sm){
  var G=frGates(),V=G.hi.concat(G.lo),by={};V.forEach(function(v){by[v.k]=v;});
  var rc=edge+(sm?3:4),wc=sm?3:4,span=46*Math.PI/180,gz=sm?11:13,Rg=gz/2+3,ph=15,clear=rc+wc/2+2;
  V.forEach(function(v){var t=(FR_GATE_AT[v.k]||0)*Math.PI/180,ev=G.ev,c=M.seat(v.side==='higher'?'Heart':'Root');
-  var o=by[FR_GATE_VS[v.k]],sum=v.pct+(o?o.pct:0),f=ev&&sum>0?v.pct/sum:0;
+  var o=by[VERP_VS[v.k]],sum=v.pct+(o?o.pct:0),f=ev&&sum>0?v.pct/sum:0;
   var pw=G.pw(v),ct=Math.cos(t),st=Math.sin(t),gr=rc+wc/2+Rg+3,gx,gy,px,py;
   for(var n=0;n<200;n++){gx=cx+ct*gr;gy=cy+st*gr;px=gx+Rg-4;py=gy+Rg-7;
    var nx=Math.max(px,Math.min(cx,px+pw)),ny=Math.max(py,Math.min(cy,py+ph));

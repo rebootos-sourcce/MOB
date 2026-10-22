@@ -102,11 +102,11 @@ function cqRamp(cq){
 /* ============================================================
    THE CORE ATOMIZES.
 
-   The core is CQ, and CQ is not a primitive. It is intention times
-   integrity over resistance, and every one of those is a sum over
-   things the instrument already measures. A solid disc with a number
-   on it was the one place in this product where a figure was drawn
-   as though it had no parts.
+   The core is CQ, and CQ is not a primitive. It is the 21 Laws of
+   Moral Integrity summed over 210, ruled 25 September (cqSum,
+   engine/compute.js), and every law is a score the instrument already
+   holds. A solid disc with a number on it was the one place in this
+   product where a figure was drawn as though it had no parts.
 
    So zoom resolves it, the same way zoom already resolves the depth
    ladder outside it. Three layers, each a real decomposition, each
@@ -623,10 +623,12 @@ function verpArrows(cr0){
  lo.forEach(function(v,i){gate(v,i,lo.length,false);});
  if(evid){
   var top=V.slice().sort(function(a,b){return b.pct-a.pct;})[0];
+  /* a second line under this read "costs x0.70 on everything held", the
+     multiplier the action drill printed too. Nothing held is multiplied by a
+     gate (engine/verp.js), so both are gone. */
   if(top.pct>=34){
    txt('defaults to '+top.nm.toLowerCase(),CX,CY+rr+R+22,13,
-    top.side==='higher'?hx(PAL.Heart):hx(PAL.Root),.95,600);
-   txt('costs \u00d7'+top.mult.toFixed(2)+' on everything held',CX,CY+rr+R+38,11,INK(),.5,400);}}}
+    top.side==='higher'?hx(PAL.Heart):hx(PAL.Root),.95,600);}}}
 
 /* ============================================================
    THE WHEEL, four depths. A complexity ladder, not four skins.
