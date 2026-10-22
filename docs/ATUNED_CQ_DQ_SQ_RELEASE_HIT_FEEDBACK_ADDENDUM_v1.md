@@ -4,7 +4,8 @@ Status: Owner clarification; implementation contract, not proof of runtime compl
 
 ## 1. Owner's canonical vocabulary
 - **CQ = Coherence.** These are two names for the same measure, not separate outputs.
-- **DQ = Resistance.** DQ represents the total sum of the shadow. Do not model DQ as `100 - CQ`.
+- **DQ = the canonical total-shadow Resistance measure.** DQ represents the total sum of the shadow. Do not model DQ as `100 - CQ` or conflate DQ with SQ.
+- **Formula Resistance input = normalized `Rz`.** `Rz` derives from DQ and the six-axis gate factor and has a floor of 1. It is the formula's normalized denominator, not a second user-facing metric; DQ remains the canonical total-shadow resistance readout.
 - **SQ = total shadow weight.** SQ is the sum of the individual weights of nodes.
 - **Fetter = the name/type of a node.** The fetter's individual weight is that node's contribution to SQ.
 - Keep the entity name (fetter), individual node weight, SQ aggregate, and DQ/Resistance aggregate distinct in storage and display.
@@ -40,11 +41,11 @@ Owner formula: `CQ = (Integrity × Intention) / Resistance`. CQ and Coherence ar
 The working branch implements this as **CQ model 3** in `atuned_src/engine/compute.js`:
 - **Integrity** = the existing 21-law score on the 0–10 scale (`cqSum()/10)); unanswered laws contribute zero. The existing release lift is already included through `lawNow()` and must not be applied a second time.
 - **Intention** = the existing band-derived `It` value on the 0–10 scale.
-- **Resistance** = the existing `Rz` factor, derived from total shadow `DQ` and the six-axis gate factor, with the established denominator floor of 1.
+- **Resistance** = the normalized operational `Rz` factor, derived from total-shadow DQ and the six-axis gate factor, with the established denominator floor of 1. DQ is the canonical raw total-shadow Resistance measure; Rz is the normalized formula denominator needed by the engine's existing 0–10 Integrity and Intention scales.
 - **CQ** = `clamp(Integrity * Intention / Resistance, 0, 100)`, with CQ set to zero when no laws have been answered. Tier words remain gated on all 21 laws being answered.
 - History rows are stamped with `CQ_MODEL=3` so records from the former law-only calculation are not compared as if they used the same arithmetic.
 
-This is an explicit model change from the prior 21-law-only CQ output. DQ remains Resistance/total shadow; SQ remains total node shadow weight. Do not substitute SQ for DQ or use `100-CQ` for Resistance. The formula wiring and regression assertions are present on the working branch, but runtime acceptance is **not complete until the engine build, tests, downstream consumer audit, and history/persistence checks execute successfully**. Any mismatch between the owner's intended meanings of Integrity/Intention/Resistance and the existing engine owners must be raised as a specific domain decision rather than hidden in another formula.
+This is an explicit model change from the prior 21-law-only CQ output. DQ remains the canonical total-shadow Resistance measure; Rz is the normalized formula denominator derived from DQ and gate context; SQ remains total node shadow weight. Do not substitute SQ for DQ or use `100-CQ` for Resistance. The formula wiring and regression assertions are present on the working branch, but runtime acceptance is **not complete until the engine build, tests, downstream consumer audit, and history/persistence checks execute successfully**. Any mismatch between the owner's intended meanings of Integrity/Intention/Resistance and the existing engine owners must be raised as a specific domain decision rather than hidden in another formula.
 
 ## 4. Release pile: optional voice-activated hit feedback
 Before a release run, offer a setting to enable or disable voice-activated decisions. Provide equivalent visible interactive controls for accessibility and noisy environments. When disabled, the existing release flow remains available without mandatory per-item decisions.
