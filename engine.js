@@ -289,7 +289,7 @@ var SEATXY=(function(){
    ============================================================ */
 var SAB33=[
  ["Negotiator",     [["fear",4,6],["apathy",3,5]]],
- ["Controller",     [["fear",7,10],["anger",5,8]]],
+ ["Micromanager",   [["fear",7,10],["anger",5,8]]],
  ["Victim",         [["sadness",6,8],["anger",5,7],["apathy",2,5]]],
  ["Perfectionist",  [["disgust",5,7],["anger",4,6]]],
  ["Pleaser",        [["apathy",3,5],["fear",3,8]]],
@@ -484,7 +484,7 @@ var SABAUTH={
  'Victim':"Sadness + Self-loathing + Hopelessness"};
 
 /* archetype rolls up from its primary saboteur. wired into the archetype drill. */
-var ARCH18=[['Warrior','Controller','Solar'],['Caregiver','Pleaser','Heart'],
+var ARCH18=[['Warrior','Micromanager','Solar'],['Caregiver','Pleaser','Heart'],
  ['Creator','Stickler','Throat'],['Sage','Hyper-Rational','3rd Eye'],
  ['Jester','Avoider','Sacral'],['Lover','Hyper-Vigilant','Heart'],
  ['Magician','Victim','Crown'],['Innocent','Restless','Root'],
@@ -1612,14 +1612,65 @@ function compassPoleLines(m,end){
    structural layer. Refer to licensed clinical professionals for
    parallel support." */
 const DESCENT=[
- {nm:'Narcissism',      kind:'complex',
-  d:'Grandiose entitlement. The self appointed arbiter. Personal situations described in strategic terms.'},
+ {nm:'Narcissism', kind:'complex',
+  d:'Grandiose entitlement; the self-appointed arbiter. Personal situations are interpreted through status, exceptionalism, entitlement, and the need to preserve a superior self-image.',
+  content:{
+   inferred:false, inferenceBasis:'The complex name and core description are explicitly source-defined in this DESCENT registry. The detailed behavioral template is a research-informed expansion, not a clinical diagnosis.',
+   behavior:'May overstate personal importance or achievements, expect special treatment, seek admiration, discount other perspectives, or respond defensively to criticism. Vulnerable shame or humiliation may sit beneath grandiosity; presentation can vary by context.',
+   triggerMechanism:'A perceived status threat, criticism, loss of admiration, boundary, or another person’s independent need can activate a defensive move to restore superiority or control. Treat this as a hypothesis to check against observed behavior, not a claim about every person.',
+   livedExample:'In a team discussion, another person receives credit. The person experiences this as a threat to rank, reframes the other person as incompetent, redirects the discussion toward their own contribution, and struggles to acknowledge the other person’s work.',
+   impact:'Can reduce mutuality, trust, feedback quality, and capacity to repair harm when other people’s needs are treated as secondary to protecting self-image.',
+   practice:'Pause before defending rank. State the observable facts, name the impact on the other person, acknowledge one valid point or contribution without qualification, and ask what repair or shared outcome is needed.',
+   oppositeName:'Grounded Self-Worth', oppositeId:'opposite:Narcissism', oppositeDefinition:'Grounded self-worth with humility, reciprocal empathy, accountability, and respect for others as equally real, not self-erasure or self-contempt.',
+   oppositeStatus:'inferred-working-counterpart; not asserted as a canonical one-to-one opposite',
+   confidence:0.78, reviewStatus:'external-research-pass-A-done; semantic-pass-B-and-adversarial-pass-C-pending',
+   researchSources:['https://www.psychiatry.org/News-room/APA-Blogs/What-Is-Narcissistic-Personality-Disorder','https://pmc.ncbi.nlm.nih.gov/articles/PMC4415495/','https://pubmed.ncbi.nlm.nih.gov/34860434/','https://www.sciencedirect.com/science/article/pii/S0092656622001428','https://pubmed.ncbi.nlm.nih.gov/35913765/'],
+   researchPasses:[
+    {pass:'A · construct and source check',focus:'APA overview and foundational narcissism literature; separate source-defined framework wording from clinical construct descriptions.',sources:['https://www.psychiatry.org/News-room/APA-Blogs/What-Is-Narcissistic-Personality-Disorder','https://pmc.ncbi.nlm.nih.gov/articles/PMC4415495/'],finding:'Retain status protection, entitlement and self-image as framework language; do not diagnose or equate the framework record with a disorder.'},
+    {pass:'B · dimension and evidence check',focus:'Meta-analytic work on grandiose/vulnerable narcissism, empathy facets and interpersonal functioning.',sources:['https://pubmed.ncbi.nlm.nih.gov/34860434/','https://www.sciencedirect.com/science/article/pii/S0092656622001428','https://pubmed.ncbi.nlm.nih.gov/35913765/'],finding:'Narcissism is multidimensional; interpersonal and empathy associations vary by facet and measure. Keep triggers probabilistic and behavior-specific.'},
+    {pass:'C · counterpart/adversarial review',focus:'Test whether the inverse is overclaimed and whether practice could be mistaken for clinical treatment.',sources:['https://pubmed.ncbi.nlm.nih.gov/34860434/','https://www.sciencedirect.com/science/article/pii/S0092656622001428'],finding:'Grounded Self-Worth is a design hypothesis, not a validated one-to-one opposite. Emphasize observable humility, reciprocal regard and accountability; do not prescribe treatment.'}
+   ]
+  }},
  {nm:'Machiavellianism',kind:'hyper complex',
   d:'The narcissistic stack plus active suppression of empathy. Feeling right has become more important than feeling connected.',
-  gate:'Malignancy begins where harm to others becomes instrumental.'},
- {nm:'Psychopathy',     kind:'super complex',
+  gate:'Malignancy begins where harm to others becomes instrumental.',
+  content:{
+   inferred:false, inferenceBasis:'The higher-order placement and brief description are explicitly source-defined in this DESCENT registry. Detailed behavior and opposite are research-informed expansions, not diagnoses.',
+   behavior:'May use strategic impression management, selective disclosure, deception, cynical assumptions, or interpersonal leverage to pursue an outcome. Empathy may be used instrumentally rather than to guide care; research does not support treating every person with this trait as identical.',
+   triggerMechanism:'A desired outcome, competition, perceived vulnerability, or distrust can shift the decision rule from mutual agreement toward control of information and other people’s choices.',
+   livedExample:'During a disagreement, the person privately tells each colleague a different version of events to isolate an opponent and secure a decision, while presenting the move as neutral problem-solving.',
+   impact:'Undermines informed consent, stable trust, fair collaboration, and shared decision-making; apparent cooperation can become difficult to distinguish from tactical compliance.',
+   practice:'Make the goal and relevant information explicit, disclose conflicts of interest, invite independent verification, give others a genuine option to refuse, and choose a route that remains defensible if all affected parties know the facts.',
+   oppositeName:'Transparent Reciprocal Agency', oppositeId:'opposite:Machiavellianism', oppositeDefinition:'Transparent, principled agency: truthful communication, reciprocal consent, fair dealing, and strategic skill constrained by care and accountability.',
+   oppositeStatus:'inferred-working-counterpart; not asserted as a canonical one-to-one opposite',
+   confidence:0.76, reviewStatus:'external-research-pass-A-done; semantic-pass-B-and-adversarial-pass-C-pending',
+   researchSources:['https://pmc.ncbi.nlm.nih.gov/articles/PMC3717508/','https://pubmed.ncbi.nlm.nih.gov/34636074/','https://pmc.ncbi.nlm.nih.gov/articles/PMC6031853/','https://onlinelibrary.wiley.com/doi/10.1002/job.2877?af=R','https://pmc.ncbi.nlm.nih.gov/articles/PMC13422123/'],
+   researchPasses:[
+    {pass:'A · construct and source check',focus:'Review strategic manipulation, deception and Dark Triad overlap; preserve the source-defined placement without clinical equivalence.',sources:['https://pmc.ncbi.nlm.nih.gov/articles/PMC3717508/','https://pubmed.ncbi.nlm.nih.gov/34636074/'],finding:'Machiavellianism is discussed as a subclinical trait construct; its boundaries with psychopathy and the validity of common measures remain debated.'},
+    {pass:'B · context and outcome check',focus:'Examine ethical leadership, workplace behavior and newer meta-analytic leadership evidence.',sources:['https://pmc.ncbi.nlm.nih.gov/articles/PMC6031853/','https://onlinelibrary.wiley.com/doi/10.1002/job.2877?af=R'],finding:'Context and ethical constraints can shape observed outcomes; avoid portraying every person or setting as identical or behavior as inevitable.'},
+    {pass:'C · adversarial/counterpart review',focus:'Check newer systematic synthesis of dishonest behavior and test the proposed opposite against agency and consent.',sources:['https://pmc.ncbi.nlm.nih.gov/articles/PMC13422123/','https://pubmed.ncbi.nlm.nih.gov/34636074/'],finding:'Associations vary by outcome and construct measurement. Transparent Reciprocal Agency is an inferred practice pole, not a validated clinical opposite; focus on disclosure, consent and verifiable accountability.'}
+   ]
+  }},
+ {nm:'Psychopathy',kind:'super complex',
   d:'Structural absence of the empathy feedback loop. The Machiavellian suppresses, so there is something to suppress. This does not suppress, because harm is always a neutral option.',
-  refer:true}];
+  refer:true,
+  content:{
+   inferred:false, inferenceBasis:'The super-complex placement and core phrasing are explicitly source-defined in this DESCENT registry. The added behavioral template is research-informed and must not be used to diagnose an individual.',
+   behavior:'The source model describes harm-related feedback as structurally unavailable or not constraining choice. In real-world research, psychopathy is a complex construct with varied measures; do not infer it from a single action, conflict, or perceived lack of warmth.',
+   triggerMechanism:'In the source model, a choice point occurs where another person’s welfare would normally constrain an action, but the anticipated harm does not function as a meaningful stop signal. This is a model description, not a validated clinical mechanism for an individual.',
+   livedExample:'A decision-maker recognizes that a choice will predictably injure another person, but treats that injury as irrelevant to the decision and proceeds without meaningful consideration of consent, responsibility, or repair.',
+   impact:'If this pattern is present, ordinary appeals to shared feeling may not be sufficient to protect others; prioritize boundaries, accountability, documented decisions, and appropriate professional support.',
+   practice:'Do not rely on an assumed emotional response. Make behavioral limits explicit, document decisions and consequences, require independent oversight where harm risk exists, and seek qualified professional guidance when safety or clinical concerns arise.',
+   oppositeName:'Empathic Accountability', oppositeId:'opposite:Psychopathy', oppositeDefinition:'Empathic accountability: recognizing others’ welfare as decision-relevant, inhibiting preventable harm, respecting consent, and taking responsibility for consequences.',
+   oppositeStatus:'inferred-working-counterpart; not asserted as a canonical one-to-one opposite',
+   confidence:0.64, reviewStatus:'external-research-pass-A-partial; source model wording requires expert review; semantic-pass-B-and-adversarial-pass-C-pending',
+   researchSources:['https://pubmed.ncbi.nlm.nih.gov/34636074/','https://pubmed.ncbi.nlm.nih.gov/23885245/','https://pubmed.ncbi.nlm.nih.gov/35349788/','https://www.annualreviews.org/content/journals/10.1146/annurev-clinpsy-072720-012851','https://pmc.ncbi.nlm.nih.gov/articles/PMC13422123/','https://www.sciencedirect.com/science/article/abs/pii/S0191886923003549'],
+   researchPasses:[
+    {pass:'A · construct and safety check',focus:'Review psychopathy construct and measurement; separate ATÜNED source model from clinical/forensic assessment.',sources:['https://pubmed.ncbi.nlm.nih.gov/34636074/','https://www.annualreviews.org/content/journals/10.1146/annurev-clinpsy-072720-012851'],finding:'Psychopathy is a complex research construct; the source model’s “structural absence” wording is not a validated individual mechanism or diagnostic rule.'},
+    {pass:'B · evidence and facet check',focus:'Review meta-analysis of empathy domains and systematic work on dark-trait measurement.',sources:['https://pubmed.ncbi.nlm.nih.gov/35349788/','https://www.sciencedirect.com/science/article/abs/pii/S0191886923003549'],finding:'Empathy associations differ by dimension and measurement; avoid assuming global absence of empathy or inferring a trait from one action.'},
+    {pass:'C · adversarial/safety review',focus:'Test for deterministic or stigmatizing language against newer systematic evidence on behavioral outcomes.',sources:['https://pmc.ncbi.nlm.nih.gov/articles/PMC13422123/','https://pubmed.ncbi.nlm.nih.gov/35349788/'],finding:'Population-level associations do not diagnose individuals or establish inevitable harm. Empathic Accountability is an inferred behavioral pole; safeguards should emphasize observable conduct, boundaries, oversight and qualified support.'}
+   ]
+  }}];
 const DESCENT_REFER='Work at the address. Do not work the structural layer, and say so plainly. '
  +'This configuration needs a licensed clinician alongside, not instead.';
 
@@ -1634,6 +1685,16 @@ function mirrorAt(seatLoad, seatIg){
  var clear=1-clamp(seatLoad,0,10)/10;
  var honest=clamp(seatIg,0,10)/10;
  return Math.round(clamp(clear*0.62+honest*0.38,0,1)*100);}
+/* ONE READER, FOR ALL FOUR CALLERS. mirrorAt took seatIg on a 0 to 10 scale
+   and every caller typed out bandIg(seat) by hand to get it, which seeds an
+   unanswered law to 6. compassAt reads a row from compute()'s own seatRows()
+   instead, which carries an honest ig, null when the seat has nothing
+   answered. NULL IS AN ANSWER: a seat that has not been answered reads as
+   not yet read, the way the rest of this file already treats a null. */
+function compassAt(row){
+ if(!row)return null;
+ if(row.ig==null)return null;
+ return mirrorAt(row.weight*10, row.ig*10);}
 /* THE DARK READ. The owner's rule: malignant plus decoherent on the
    same axis is the configuration to name. Neither alone is it. A
    high malignant share in a coherent field is a hard week; a
@@ -3133,7 +3194,12 @@ var KB_KEY=function(s){return String(s||'').replace(/^[Tt]he\s+/,'').toLowerCase
 var SABDEF={"negotiator":{"c":"S01","d":"Argues against your own intentions. Always sounds reasonable. Never says stop forever, says stop today. The fear of discomfort is mild enough to be rationalized away. The happiness available from the easier option is just high enough to make the rationalization feel earned. Together they produce the internal diplomat who can talk you out of anything, not through force, but through the perfectly reasonable argument that now is not the right moment. The most dangerous saboteur in the system because it sounds exactly like you.","t":"The moment between intending to do the necessary thing and beginning to do it. The pause.","i":"Begin the action before the internal dialogue completes. Remove the pause. The Negotiator only has power in the gap between intention and motion. Close the gap.","q":"I can start tomorrow. / Just this once. / I've earned a break."},"controller":{"c":"S02","d":"Hypervigilance at the level of outcomes. The foundation of the Type A pattern. Not a personality trait, a fear response that has been running so long it looks like a management style. The fear underneath: something will go wrong, someone will get hurt, or the situation will fall apart if I release my grip. Self-control registers as 10. Anything less registers as loss. The delta between perceived control and actual control is the zone of active saboteur behavior. Anger layers in as a do-as-I-say mechanism, authority used to close the control gap quickly. Entitlement provides the justification: it is not just that I need to control this. It is that I am right to. Competition drives the adversarial edge, not just winning but not-losing, which is a different frequency entirely.","t":"The moment control begins to slip. Uncertainty in outcomes. Others not performing to expectation. Delegation without confirmation. Silence where confirmation should be.","i":"Control is a belief held under pressure. The person fails control the same way a person fails a landing, only if they quit. Recognize that the need to be in control and the experience of being out of control are both charges, not conditions. Neither is real. Locate the fear underneath. Release the fear. The need to control loses what it was standing on.","q":"If I don't control this, something will go wrong."},"victim":{"c":"S03","d":"Focuses on internal feelings and victim mentality for attention. Martyrdom.","t":"When accountability is required.","i":"Identify one thing within your control. Take one action on it.","q":"This keeps happening to me."},"perfectionist":{"c":"S04","d":"Continuous pressure to do better. Anxiety about imperfections in self and others.","t":"Before completion or release of work.","i":"Set a fixed completion time. Release at that time regardless of state.","q":"It is not good enough yet."},"pleaser":{"c":"S05","d":"Indirectly tries to gain acceptance by helping, pleasing, rescuing, or flattering.","t":"When there is potential for disapproval or when a boundary is needed.","i":"State a preference or limit once. Do not explain or apologize.","q":"My worth depends on making others happy."},"hyper achiever":{"c":"S06","d":"Dependent on constant performance for self-respect. Workaholic.","t":"When performance is not being measured or when rest is available.","i":"Rest without producing for one hour. No metrics.","q":"My worth is in my output."},"hyper rational":{"c":"S07","d":"Processes everything through logic. Impatient with emotional concerns.","t":"When emotional input is offered.","i":"Name the emotion present in the room before analyzing the problem.","q":"If I can't explain it, it isn't real."},"hyper vigilant":{"c":"S08","d":"Continuous anxiety about potential dangers. Constant risk management.","t":"When the environment changes or trust is required.","i":"Identify one thing that is safe. Hold that for 60 seconds.","q":"The threat is always just ahead."},"restless":{"c":"S09","d":"Constant search for new activities. Rarely at peace with the current moment.","t":"When the current situation becomes familiar or stable.","i":"Stay with the current thing for twice as long as the impulse to move suggests.","q":"The next thing will be better."},"stickler":{"c":"S10","d":"Perfectionism and need for order. Anxiety when standards are not met.","t":"When the environment or person deviates from the correct way.","i":"Identify one situation where your standard is serving your fear, not your values.","q":"There is a right way and a wrong way."},"judge":{"c":"S11","d":"Judges self and others. Replays past failures. The master saboteur, activates all others.","t":"When someone, including self, falls short of standard.","i":"Find one thing that is right about the situation being judged.","q":"Someone is responsible for this."},"deflector":{"c":"S12","d":"Does not own. Justification to avoid accountability.","t":"When direct accountability or personal disclosure is required.","i":"Stay with the direct question for 10 seconds before redirecting.","q":"If they knew the real me they would leave."},"dramatizer":{"c":"S13","d":"Amplifies the emotional intensity of situations to generate attention or movement.","t":"When intensity of feeling is present and an audience is available.","i":"Reduce the intensity of the next statement by half.","q":"My pain must be visible to matter."},"worrywart":{"c":"S14","d":"Runs continuous worst-case scenarios. Mistakes anxiety for planning.","t":"When the future is uncertain.","i":"Name the specific worst case. Name one action if it occurs.","q":"Worrying is preparation."},"loner":{"c":"S15","d":"Withdraws from contact as protection. Independence as defense, not a value. Fear of rejection co-mingling with shame of belonging at sufficient magnitude. The person does not experience themselves as afraid, they experience themselves as preferring solitude. Release the fear and sad nodes and the solitude remains if chosen, not if driven.","t":"When connection is available and would be beneficial.","i":"Make one direct request for connection.","q":"Needing others is weakness."},"people pleaser":{"c":"S16","d":"Approval-seeking at the expense of authenticity.","t":"When approval is uncertain or a boundary is needed.","i":"Identify the response that serves the relationship rather than the approval.","q":"If they don't like me I have failed."},"skeptic":{"c":"S17","d":"Defaults to distrust and doubt. Skepticism as protection against disappointment.","t":"When new information challenges the current model.","i":"Sit with the new information for 24 hours before dismissing it.","q":"Trust gets you hurt."},"dreamer":{"c":"S18","d":"Lives in possibility without building the bridge toward it. Avoids the friction of execution.","t":"When the gap between vision and current reality is visible.","i":"Identify one concrete step. Execute it today.","q":"Someday the conditions will be right."},"procrastinator":{"c":"S19","d":"Delays action on important tasks. Mistakes motion for progress.","t":"When the important task is clear and available.","i":"Begin. Not finish. Not plan. Begin. Three minutes.","q":"I work better under pressure."},"imposter":{"c":"S20","d":"Believes their competence is unearned and discoverable as fraud.","t":"When competence is being evaluated or recognition is offered.","i":"Identify one thing you know that the room does not. State it.","q":"They will find out I do not belong here."},"aggressor":{"c":"S21","d":"Uses anger and force to override resistance. Mistakes compliance for agreement.","t":"When authority is challenged or outcome is not proceeding as required.","i":"Pause 5 seconds. Name the fear underneath the anger before responding.","q":"Aggression gets results."},"martyr":{"c":"S22","d":"Sacrifices for others to generate obligation or moral authority.","t":"When sacrifice has been made and goes unrecognized.","i":"Identify whether the sacrifice was chosen or performed. If performed, stop.","q":"I give everything and receive nothing."},"cynic":{"c":"S23","d":"Undermines possibility through pre-emptive dismissal.","t":"When hope or enthusiasm is present in self or others.","i":"Identify one thing good about the situation being dismissed.","q":"Optimism is naive."},"manipulator":{"c":"S24","d":"Achieves outcomes indirectly through influence, withholding, or positioning.","t":"When the direct approach feels risky.","i":"State the actual need directly. Once. Without positioning.","q":"Direct requests make me vulnerable."},"overthinker":{"c":"S25","d":"Loops on decisions past the point of useful analysis.","t":"When a decision is required and the outcome is uncertain.","i":"Set a decision time limit. Decide at that limit. Do not extend it.","q":"More analysis will produce the right answer."},"escapist":{"c":"S26","d":"Uses pleasure, distraction, or movement to exit discomfort before it resolves.","t":"When the present moment is uncomfortable and an exit is available.","i":"Stay in the discomfort for two minutes. Name what is present.","q":"I just need to not feel this right now."},"avoider":{"c":"S33","d":"Declines the engagement before it can cost anything. Not fleeing discomfort the way the Escapist does, and not arguing the way the Negotiator does. Not present for it.","t":"When something asks to be dealt with and not dealing with it carries no immediate penalty.","i":"Name the thing being avoided out loud, then do the smallest piece of it.","q":"If I stay unaware, nothing can land on me."},"nihilist":{"c":"S27","d":"Removes the foundation of meaning as a pre-emptive strike against disappointment.","t":"When meaning is required to justify effort.","i":"Identify one action worth doing regardless of meaning. Do it.","q":"Nothing matters enough to sustain effort."},"innocent":{"c":"S28","d":"Maintains deliberate unawareness to avoid responsibility or conflict.","t":"When complexity, conflict, or moral weight is present.","i":"Name one thing you know that you are pretending not to know.","q":"I don't want to be involved."},"pessimist":{"c":"S29","d":"Pre-empts positive outcomes by building a case against them before they materialize.","t":"When a positive outcome is possible.","i":"Name the best thing that could really happen. Act from that.","q":"It will not work out."},"catastrophizer":{"c":"S30","d":"Pictures the worst outcome in every unknown. The Worrywart does this on a smaller scale. The Catastrophizer jumps from an ordinary unknown to a threat to survival.","t":"Any unresolved uncertainty.","i":"Describe the actual current situation without projection. Stay in the present tense.","q":"This will destroy everything."},"enabler":{"c":"S31","d":"Backs up the harmful patterns of others to keep the relationship or avoid conflict. Not the same as the Pleaser: the Enabler backs up behavior they know is harmful.","t":"When someone they care about is repeating a destructive pattern.","i":"Name what you see. Once. Without attachment to the response.","q":"If I say something they will leave."},"control freak":{"c":"S32","d":"The colloquial name for the Controller and Hyper-Vigilant composite at Type A intensity. Hypervigilance running on outcomes and on threat at the same time. The body is scanning forward (what could go wrong) and downward (am I in command of this) in continuous loop. Reads to other people as competence under pressure. Reads in the body as never landing. The same fear that drives Controller (something will go wrong if I release grip) and the same fear that drives Hyper-Vigilant (the threat is just ahead) co-mingle here at sufficient magnitude that they cannot be felt as separate. Distinct from Controller alone: Control Freak does not wait for the control gap to open before acting. Distinct from Hyper-Vigilant alone: Control Freak organizes the scan around its own agency, not around external monitoring. Type A is the social presentation. The somatic state is sustained sympathetic activation that the body has normalized as baseline.","t":"Any environment the person did not configure. Any outcome the person did not design. Any silence where confirmation should be.","i":"Lock the jaw, the shoulders, and the diaphragm for a count of five. Notice they were already locked. Release on the exhale. The drill shows the body can hold a state without scanning it. Repeat until the scan stops without being asked to.","q":"If I am not running this, no one is."}};
 var DOMDEF={"knowledge":{"n":"I","c":"pattern recognition, codification, teaching, symbolic thinking. The person who reads before being asked to. Somatic knowledge is true knowledge, once it's in the body, deception doesn't work on you. You can feel the lie before it forms a word.","x":"over-intellectualization, false certainty, knowledge as a barrier rather than a bridge."},"communication":{"n":"II","c":"bridging, translation, exact words, quick thinking. The connector, the person who translates between people, between ideas, between worlds.","x":"manipulation, saying one thing and then another, using what you know to get a hold over people."},"power":{"n":"III","c":"physical courage, holding your ground, guarding what matters. Force aimed at what is in the way, not at people.","x":"domination, violence without purpose, war as identity."},"imperium":{"n":"IV","c":"governance, structural authority, organizing chaos into function. sees how systems should be organized.","x":"domination, entitlement, autocracy."},"creation":{"n":"V","c":"building, executing, bringing vision into form. Always needed to make things. When you can't create it feels like disconnection, like the system is broken. Financial stress kills creativity not motivationally but anatomically: the survival charge consumes the current before it reaches the generative center. When the root clears, the sacral opens, the creative current flows again. Not as discipline. As a natural consequence of the channel being clear.","x":"perfectionism as paralysis, identity tied to output."},"dissolution":{"n":"VI","c":"deliberate dissolution, clearing what's false or finished, making space for what comes next. Sees what needs to end.","x":"destruction as identity, nihilism, chaos without rebuilding."},"love":{"n":"VII","c":"union, intimacy, the force that draws beings into genuine contact. Love as a state the person generates, not receives. Always knew what brings people together.","x":"codependency, possession, love as completion rather than addition."},"healing":{"n":"VIII","c":"directed intervention, active clearing, creating conditions in which restoration happens. Finds the broken thing in any room.","x":"rescuer complex, martyrdom, healing as identity."},"sacrifice":{"n":"IX","c":"voluntary descent, the chosen ordeal, sacrifice as the mechanism that produces insight unavailable any other way. The knowledge that comes from what was given up, not accumulated. The real use of experience: take in as much as you can, then let go of the names you gave it. Words illuminate, they don't contain.","x":"suffering as identity, the descent without return."},"justice":{"n":"X","c":"discernment of what's real and what's false. Accountability without cruelty. Moral disorder doesn't just feel wrong, it triggers the nervous system. When truth is a 10, anything less is somatic. You can feel the lie before it forms a word. If you lie, you knock your own nervous system off balance.","x":"rigid judgment, self-righteousness, justice as control."},"trickster":{"n":"XI","c":"disruption of rigid patterns, revealing what's hidden through inversion, innovation through disorder. Sees the absurdity in what everyone else treats as fixed.","x":"deception as lifestyle, instability mistaken for freedom."},"nature":{"n":"XII","c":"alignment with biological truth, growth through patience rather than force. Thinks in cycles rather than straight lines.","x":"rejection of structure, naturalism as escape from complexity."},"mystery":{"n":"XIII","c":"navigation of the unseen, death and rebirth as structural realities. Can hold darkness without being consumed. Always drawn to what's hidden.","x":"obsession with shadow, nihilism, identity built on the margin."},"duty":{"n":"XIV","c":"right action regardless of personal cost. Loyalty to what's true, not what's comfortable. Does the right thing even when no one is watching.","x":"rigidity, losing self in obligation, duty performed for an audience."},"play":{"n":"XV","c":"the generative state of pure engagement. Awe. Creativity for its own sake. Not the absence of seriousness, the intelligence serious people miss. Always able to find what's alive in something.","x":"avoidance through play, irresponsibility, lightness that refuses depth."},"death":{"n":"XVI","c":"completion. Endings held cleanly. The threshold kept, the thread cut when the thread is finished, presence with what's dying without flinching. Releases what's done so renewal has room.","x":"morbidity, clinging that refuses every ending, or dealing endings as power."},"fate":{"n":"XVII","c":"reads the pattern and its timing. Knows what must unfold and when to move. Acts at the right moment without forcing the thread.","x":"fatalism, abdication of choice, reading the pattern as an excuse to never act."},"guardian":{"n":"XVIII","c":"the watch kept. A perimeter held so what's inside can live. Protection without possession, sanctuary without walls that strangle.","x":"overprotection that smothers, vigilance that never rests, walls against life itself."},"provision":{"n":"XIX","c":"the one who makes sure there's enough, and not only for today. Supply held against a season nobody can see yet. The granary, the harvest, the wage. Provides for, rather than trades with.","x":"worth measured only in what's furnished, hoarding dressed as prudence, the provider who can't be provided for."}};
 var KB_RENAME={"descent":"Sacrifice","connection":"Love","exchange":"Communication","restoration":"Healing"};
-var GLOSS=[{"t":"Address","d":"One exact place in your body where a pattern sits. Every pattern has one. Release works at that place in the body, not on your thoughts."},{"t":"Allostatic load","d":"The wear on your body from stress that keeps switching on and never fully switches off. It builds up like interest on a debt nobody paid. In this model, release brings it down by working on the addresses where that stress is held. This instrument does not measure it."},{"t":"Archetype","d":"One of 12 kinds of character you are born with. Domains feed your blueprint, and your blueprint splits into the twelve archetypes, each its own step. An archetype has no address of its own, so there is nothing at one place to release. Release work changes where a pattern points, not what the archetype is."},{"t":"Ascension","d":"When the world around you, and your own feelings, stop steering you. Things lose their grip because your survival patterns have stopped giving the orders. It is a way of running, not a finish line, so no number of releases counts you in."},{"t":"Attention","d":"Where you point your mind. It comes two ways: wide, taking everything in, or narrow, fixed on one thing. Attention steers. Will pushes."},{"t":"Aura","d":"A field around the body, said to come from the state of your nerves. This instrument does not measure it, and neither does any other. Living tissue does give off a very faint light, from ordinary cell chemistry, but nobody has shown that light carries the state of your nerves. The word stays as a way to talk about how other people feel you, not as a reading."},{"t":"Awareness","d":"How far open the soul's window is. The wider it opens, the more of what is really there you take in."},{"t":"Biophoton field","d":"Very faint light given off by living tissue, too faint for your eyes to see. It is real, and labs have measured it since the 1950s. It comes from the cells' normal chemistry, not from the state of your nerves. This product does not claim it carries the aura, and nothing in the instrument reads it."},{"t":"Chakra","d":"A seat. In this model, a field you cannot touch, made by a bundle of nerves. There are seven, from the base of the spine to the top of the head, though that exact count is a modern Western idea from 1927; older traditions count five, six, eight or more. The word is kept because the work is done in it, not because anyone has measured one."},{"t":"Charge","d":"Survival energy stuck at one place in the body. It gets stuck when a stress reaction starts and never gets to finish. When your attention reaches it, it feels like heat, pressure, tingling or weight."},{"t":"Clair","d":"A sense beyond the five: seeing, hearing, feeling or knowing something without eyes, ears, skin or working it out. The names are clairvoyance, clairaudience, clairsentience and claircognizance, and there are others. Soma breaks them apart. Clear the soma and they work together."},{"t":"Coherence","d":"When what you mean, what you do and what your body does all point the same way, with fewer parts of you pulling against each other. The instrument works it out from your answers. It does not measure your body. CQ is its number."},{"t":"Replacement state","d":"The quality a pattern was blocking, installed at the same address once the charge there is released. Where fear was held, trust. It shows up in what you do, what you feel and what your body does. It is not a general good feeling. It is the one quality this pattern kept out."},{"t":"Consciousness","d":"Energy that carries information, and you meet it two ways. At its widest it has no edges and no focus: infinite consciousness. At its narrowest it is you, aware, in one place. The same thing, seen through a wide opening or a small one."},{"t":"CQ","d":"Coherence Quotient, your coherence number. You answer questions on the 21 Laws of Moral Integrity, each scored 0 to 10, and CQ adds them up, out of 210. Nothing else goes into it. It starts at 0 and fills as you answer. The shadow never pulls it down. The shadow pulls on how you come across instead."},{"t":"Distortion","d":"What happens to what you mean when it passes through places in the body that carry charge. The message leaves whole and comes out bent, like a straight stick that looks bent in water. It is a word for that bending and not a separate number: it used to be the same reading as SQ under a second name."},{"t":"DQ","d":"Decoherence, the shadow number. All the weight held at all 112 addresses, added up, against the most they could hold. A high DQ reads as energy spent holding up parts of you that pull against each other."},{"t":"Drag","d":"Everything slowing your willpower down, added together. Charge at your addresses and the saboteurs running on it pull on the link between mind, body and spirit, like a heavy bag. The instrument works it out from what you enter. It does not measure your muscles or any inflammation. In this model, drag is why willpower runs out."},{"t":"Earth Star","d":"A point just outside the body, at the centre between your feet. It holds you to the ground the way an anchor holds a boat."},{"t":"Ego","d":"The mind stuck to the body. It is never quite here: it flips between thinking and feeling to get through the day, and fear does the steering. The ego is the mask your character wears. It is your DQ, every SQ that is running, and every pattern and every kind of awareness that comes with living as a body, all added up."},{"t":"Fetter","d":"A named pattern that sits at one address and fires when something matches it. There is one at every address, 112 in all: the ones in the body, plus four just outside it, two above the head and two below the feet. It fires when the match arrives, however long ago it was put there."},{"t":"Five paths","d":"Five ways into the work, each named for a teacher. Krishna, flow. Buddha, awareness. Christ, the body. Rama, alignment. Lao Tzu, the horizontal. All five end at the same Source, and the Anchor Principle runs under all of them."},{"t":"Hardened mask","d":"The part of what life taught you that does not wear off with time or with a big change in your life. In this model, release at the address is what clears it. That is the model's claim. Nothing here has measured it. Habits you keep going by repeating them are different: a change in your life can clear those on its own."},{"t":"Hyper-complex","d":"A named group of saboteurs that run together as one. Heavier than a single saboteur, because each pattern in the group keeps the others going."},{"t":"Integrity","d":"All of your coherence, added up. It lifts your nervous system by keeping you inside your own moral lines, the way a ship's hull has to be whole, a hundred percent, or the water gets in. It is measured by how closely you keep the 21 Laws of Moral Integrity."},{"t":"Intention","d":"What you mean to happen. It is part willpower, part wanting, part drive. Moving toward something feels good. If you have not picked what you want, avoiding things takes its place."},{"t":"Justification mechanic","d":"The way the body protects its own patterns. Blaming, changing the subject and making excuses are a tag fighting back, the way your body fights a germ. The body guards the pattern because the truth feels too hard to face. Narcissism is this, turned all the way up."},{"t":"Karma","d":"What your thoughts and actions send out into the world, and what comes back to you because of them. It goes round, like an echo. It comes back so you can learn the lesson, get past it, and send it on so it never comes back again. Karma is cause and effect, bouncing between you and the world."},{"t":"Kosha","d":"One of six layers that everything you live through passes through, like light through six panes of coloured glass. The six are the body, energy, the mind, wisdom, bliss and language. Each one changes what passes through it."},{"t":"Kundalini","d":"Life energy stored at the base of the spine. It rises from there to the top of the head once enough addresses along the way are cleared, the way water runs once a pipe is unblocked."},{"t":"Letting go","d":"The release protocol. It does two things, in order. First it lowers the charge at an address. Then, while that place is still open, it installs the quality the pattern was blocking. An affirmation does only the second and skips the first."},{"t":"Limiting belief","d":"A tag that squeezes something big you lived through into a small label. Every time you say I am this, you make one. That is how labels work, not a judgment on you. The label is always smaller than what happened."},{"t":"Mask","d":"Built up distortion that has started to pass for who you are. It is what most people call their personality: patterns stored at addresses in the body, firing the way life trained them to. The mask is not who you are."},{"t":"Memory","d":"What is left when a vritti is taken as yours: what came in through your senses and your feelings, named as yours and stored in the body."},{"t":"Merkaba","d":"A spinning shape made of energy, used in the release protocol. Its top half spins left and its bottom half spins right. Spinning against each other, they shake up the flow at an address, and that opens it for release."},{"t":"Node","d":"Another word for an address: one exact place on the body's energy map. There are 112. Most are in the body. Four sit just outside it: the Earth Star, centred between your feet, the Gaia Gateway below it, the Sol Star just above your head, and the Stellar Gateway above that."},{"t":"Ojas","d":"A Sanskrit word meaning vigour: life energy that builds up in meditation and wraps around you like a cocoon, spinning on its own to wake the nervous system and let stress out. It is also the protocol for an address too dense or too numb to feel, stage 4 or stage 5, bringing back enough feeling there for release to start."},{"t":"Perception","d":"How you take in what is around you and make sense of it. It turns raw energy into pictures, words and feelings you can understand."},{"t":"Plexus","d":"A bundle of nerves you could find in the body, like the solar plexus behind your stomach. The plexus is the wiring. The chakra is the field the wiring gives off. Trouble in the nerves shows up as trouble in the chakra."},{"t":"Presence","d":"How much of you other people can feel when you walk into a room."},{"t":"Primary node","d":"The main address carrying charge in a group of addresses around it. Clear it and the ones around it let go on their own. Work on the others without finding it, and only part of the charge comes out."},{"t":"Pure perception","d":"All the clairs working together, with nothing bending them. Thoughts still come. What changes is that every sense is open at once and they agree. It opens up as the soma gets lighter and the walls between the clairs come down."},{"t":"Reading-as-release","d":"Release that happens by reading. You read a Letting Go sequence, written the right way, and the body releases at the place the sequence names. Nothing to picture in your head. Reading the lines does both steps."},{"t":"Release","d":"Stored charge leaving the body through the nerves. You can feel it and see it: heat, shaking, tears, a change in your breathing. The pattern loses what was powering it."},{"t":"Resistance","d":"All the drag added together: the charge held at every address, made heavier or lighter by what your stories show, pushing back against the signal moving through you. The instrument works it out from what you enter. It does not measure inflammation or anything else in your body. Release brings it down by lowering the charge it is made of. It does not change your CQ, which is the laws alone."},{"t":"Saboteur","d":"One of 33 named patterns of behavior, each one a fetter squeezed into a habit you keep repeating. Each has its own belief, its own place in the body and its own feeling."},{"t":"Self-unraveling state","d":"When enough gates have cleared, the body starts releasing by itself. The soma lets go without you running the protocol. This is how you know a release session worked: the body keeps releasing on its own, and not only the one address you worked on."},{"t":"Signal chain","d":"The loop everything runs through, every moment. It starts in the field of awareness around you and goes through your senses, your nerves, your brain, your thinking, how it relates to you, the three axes, your feelings, the rules you were raised with, the koshas and your archetypes, then back out to the field."},{"t":"Soma","d":"The field of energy your nervous system gives off, set by the state it is in. As soma builds up it becomes load, like weight in a backpack. Where soma fields overlap they break up what you can perceive and make walls your awareness cannot see through."},{"t":"Sol Star","d":"A point just above the top of your head. It is where you reach past your body and open out to the field around you."},{"t":"Source","d":"The field as it is before any pattern is put in. The bedrock under everything else. What is left when every pattern is cleared."},{"t":"Superego","d":"The part of the mind that guards what you were told. It is made of the stories and rules an adult handed down to you. It sits on the surface and protects those beliefs. The ego goes deeper, because the ego lives in the body."},{"t":"Tag","d":"The moment something that hit you hard gets a name and gets stored at an address. The name locks it in. From then on the body watches for anything that matches, and when it finds one, the pattern stored there fires."},{"t":"Two mechanics","d":"The two steps a full release needs, in this order. First, Release: the charge at the address goes down. Second, Embodied Truth: while the address is open, the quality the pattern was blocking is installed. Do the first without the second and the address is left with nothing to run instead."},{"t":"Vritti","d":"A ripple of what you sense and what you feel, coming in from outside. It travels along your nerves to your brain, where it is put together and noticed. Once you take it as yours, the vritti is what caves in the nerve, the chakra and your field of awareness."},{"t":"Willpower","d":"How much push you have to spend, not a kind of person. It works like a battery: sleep charges it, and pushing through resistance drains it. Release the charge stuck in your body and the drag drops, so willpower goes up. It has no reading of its own; what drags on it shows up as Resistance, which is already read."}];
+/* THREE ROWS REWORDED, 22 October. Integrity read "All of your coherence,
+   added up", which made it the whole of coherence; it is the first part,
+   the hull, and CQ is its number. CQ read "your coherence number", the same
+   collapse from the other side. Intention opens on what you meant against
+   what you still do, which is the reading intentionRead makes. */
+var GLOSS=[{"t":"Address","d":"One exact place in your body where a pattern sits. Every pattern has one. Release works at that place in the body, not on your thoughts."},{"t":"Allostatic load","d":"The wear on your body from stress that keeps switching on and never fully switches off. It builds up like interest on a debt nobody paid. In this model, release brings it down by working on the addresses where that stress is held. This instrument does not measure it."},{"t":"Archetype","d":"One of 12 kinds of character you are born with. Domains feed your blueprint, and your blueprint splits into the twelve archetypes, each its own step. An archetype has no address of its own, so there is nothing at one place to release. Release work changes where a pattern points, not what the archetype is."},{"t":"Ascension","d":"When the world around you, and your own feelings, stop steering you. Things lose their grip because your survival patterns have stopped giving the orders. It is a way of running, not a finish line, so no number of releases counts you in."},{"t":"Attention","d":"Where you point your mind. It comes two ways: wide, taking everything in, or narrow, fixed on one thing. Attention steers. Will pushes."},{"t":"Aura","d":"A field around the body, said to come from the state of your nerves. This instrument does not measure it, and neither does any other. Living tissue does give off a very faint light, from ordinary cell chemistry, but nobody has shown that light carries the state of your nerves. The word stays as a way to talk about how other people feel you, not as a reading."},{"t":"Awareness","d":"How far open the soul's window is. The wider it opens, the more of what is really there you take in."},{"t":"Biophoton field","d":"Very faint light given off by living tissue, too faint for your eyes to see. It is real, and labs have measured it since the 1950s. It comes from the cells' normal chemistry, not from the state of your nerves. This product does not claim it carries the aura, and nothing in the instrument reads it."},{"t":"Chakra","d":"A seat. In this model, a field you cannot touch, made by a bundle of nerves. There are seven, from the base of the spine to the top of the head, though that exact count is a modern Western idea from 1927; older traditions count five, six, eight or more. The word is kept because the work is done in it, not because anyone has measured one."},{"t":"Charge","d":"Survival energy stuck at one place in the body. It gets stuck when a stress reaction starts and never gets to finish. When your attention reaches it, it feels like heat, pressure, tingling or weight."},{"t":"Clair","d":"A sense beyond the five: seeing, hearing, feeling or knowing something without eyes, ears, skin or working it out. The names are clairvoyance, clairaudience, clairsentience and claircognizance, and there are others. Soma breaks them apart. Clear the soma and they work together."},{"t":"Coherence","d":"When what you mean, what you do and what your body does all point the same way, with fewer parts of you pulling against each other. The instrument works it out from your answers. It does not measure your body. CQ is its number."},{"t":"Replacement state","d":"The quality a pattern was blocking, installed at the same address once the charge there is released. Where fear was held, trust. It shows up in what you do, what you feel and what your body does. It is not a general good feeling. It is the one quality this pattern kept out."},{"t":"Consciousness","d":"Energy that carries information, and you meet it two ways. At its widest it has no edges and no focus: infinite consciousness. At its narrowest it is you, aware, in one place. The same thing, seen through a wide opening or a small one."},{"t":"CQ","d":"Coherence Quotient. It reads your integrity and nothing else. You answer questions on the 21 Laws of Moral Integrity, each scored 0 to 10, and CQ adds them up, out of 210. Nothing else goes into it. It starts at 0 and fills as you answer. The shadow never pulls it down. The shadow pulls on how you come across instead."},{"t":"Distortion","d":"What happens to what you mean when it passes through places in the body that carry charge. The message leaves whole and comes out bent, like a straight stick that looks bent in water. It is a word for that bending and not a separate number: it used to be the same reading as SQ under a second name."},{"t":"DQ","d":"Decoherence, the shadow number. All the weight held at all 112 addresses, added up, against the most they could hold. A high DQ reads as energy spent holding up parts of you that pull against each other."},{"t":"Drag","d":"Everything slowing your willpower down, added together. Charge at your addresses and the saboteurs running on it pull on the link between mind, body and spirit, like a heavy bag. The instrument works it out from what you enter. It does not measure your muscles or any inflammation. In this model, drag is why willpower runs out."},{"t":"Earth Star","d":"A point just outside the body, at the centre between your feet. It holds you to the ground the way an anchor holds a boat."},{"t":"Ego","d":"The mind stuck to the body. It is never quite here: it flips between thinking and feeling to get through the day, and fear does the steering. The ego is the mask your character wears. It is your DQ, every SQ that is running, and every pattern and every kind of awareness that comes with living as a body, all added up."},{"t":"Fetter","d":"A named pattern that sits at one address and fires when something matches it. There is one at every address, 112 in all: the ones in the body, plus four just outside it, two above the head and two below the feet. It fires when the match arrives, however long ago it was put there."},{"t":"Five paths","d":"Five ways into the work, each named for a teacher. Krishna, flow. Buddha, awareness. Christ, the body. Rama, alignment. Lao Tzu, the horizontal. All five end at the same Source, and the Anchor Principle runs under all of them."},{"t":"Hardened mask","d":"The part of what life taught you that does not wear off with time or with a big change in your life. In this model, release at the address is what clears it. That is the model's claim. Nothing here has measured it. Habits you keep going by repeating them are different: a change in your life can clear those on its own."},{"t":"Hyper-complex","d":"A named group of saboteurs that run together as one. Heavier than a single saboteur, because each pattern in the group keeps the others going."},{"t":"Integrity","d":"How closely you keep the 21 Laws of Moral Integrity, and the first part of your coherence. It lifts your nervous system by keeping you inside your own moral lines, the way a ship's hull has to be whole, a hundred percent, or the water gets in. CQ is its number."},{"t":"Intention","d":"What you meant to do, and how much of it you still do when a strong feeling rises. It is part willpower, part wanting, part drive. Moving toward something feels good. If you have not picked what you want, avoiding things takes its place."},{"t":"Justification mechanic","d":"The way the body protects its own patterns. Blaming, changing the subject and making excuses are a tag fighting back, the way your body fights a germ. The body guards the pattern because the truth feels too hard to face. Narcissism is this, turned all the way up."},{"t":"Karma","d":"What your thoughts and actions send out into the world, and what comes back to you because of them. It goes round, like an echo. It comes back so you can learn the lesson, get past it, and send it on so it never comes back again. Karma is cause and effect, bouncing between you and the world."},{"t":"Kosha","d":"One of six layers that everything you live through passes through, like light through six panes of coloured glass. The six are the body, energy, the mind, wisdom, bliss and language. Each one changes what passes through it."},{"t":"Kundalini","d":"Life energy stored at the base of the spine. It rises from there to the top of the head once enough addresses along the way are cleared, the way water runs once a pipe is unblocked."},{"t":"Letting go","d":"The release protocol. It does two things, in order. First it lowers the charge at an address. Then, while that place is still open, it installs the quality the pattern was blocking. An affirmation does only the second and skips the first."},{"t":"Limiting belief","d":"A tag that squeezes something big you lived through into a small label. Every time you say I am this, you make one. That is how labels work, not a judgment on you. The label is always smaller than what happened."},{"t":"Mask","d":"Built up distortion that has started to pass for who you are. It is what most people call their personality: patterns stored at addresses in the body, firing the way life trained them to. The mask is not who you are."},{"t":"Memory","d":"What is left when a vritti is taken as yours: what came in through your senses and your feelings, named as yours and stored in the body."},{"t":"Merkaba","d":"A spinning shape made of energy, used in the release protocol. Its top half spins left and its bottom half spins right. Spinning against each other, they shake up the flow at an address, and that opens it for release."},{"t":"Node","d":"Another word for an address: one exact place on the body's energy map. There are 112. Most are in the body. Four sit just outside it: the Earth Star, centred between your feet, the Gaia Gateway below it, the Sol Star just above your head, and the Stellar Gateway above that."},{"t":"Ojas","d":"A Sanskrit word meaning vigour: life energy that builds up in meditation and wraps around you like a cocoon, spinning on its own to wake the nervous system and let stress out. It is also the protocol for an address too dense or too numb to feel, stage 4 or stage 5, bringing back enough feeling there for release to start."},{"t":"Perception","d":"How you take in what is around you and make sense of it. It turns raw energy into pictures, words and feelings you can understand."},{"t":"Plexus","d":"A bundle of nerves you could find in the body, like the solar plexus behind your stomach. The plexus is the wiring. The chakra is the field the wiring gives off. Trouble in the nerves shows up as trouble in the chakra."},{"t":"Presence","d":"How much of you other people can feel when you walk into a room."},{"t":"Primary node","d":"The main address carrying charge in a group of addresses around it. Clear it and the ones around it let go on their own. Work on the others without finding it, and only part of the charge comes out."},{"t":"Pure perception","d":"All the clairs working together, with nothing bending them. Thoughts still come. What changes is that every sense is open at once and they agree. It opens up as the soma gets lighter and the walls between the clairs come down."},{"t":"Reading-as-release","d":"Release that happens by reading. You read a Letting Go sequence, written the right way, and the body releases at the place the sequence names. Nothing to picture in your head. Reading the lines does both steps."},{"t":"Release","d":"Stored charge leaving the body through the nerves. You can feel it and see it: heat, shaking, tears, a change in your breathing. The pattern loses what was powering it."},{"t":"Resistance","d":"All the drag added together: the charge held at every address, made heavier or lighter by what your stories show, pushing back against the signal moving through you. The instrument works it out from what you enter. It does not measure inflammation or anything else in your body. Release brings it down by lowering the charge it is made of. It does not change your CQ, which is the laws alone."},{"t":"Saboteur","d":"One of 33 named patterns of behavior, each one a fetter squeezed into a habit you keep repeating. Each has its own belief, its own place in the body and its own feeling."},{"t":"Self-unraveling state","d":"When enough gates have cleared, the body starts releasing by itself. The soma lets go without you running the protocol. This is how you know a release session worked: the body keeps releasing on its own, and not only the one address you worked on."},{"t":"Signal chain","d":"The loop everything runs through, every moment. It starts in the field of awareness around you and goes through your senses, your nerves, your brain, your thinking, how it relates to you, the three axes, your feelings, the rules you were raised with, the koshas and your archetypes, then back out to the field."},{"t":"Soma","d":"The field of energy your nervous system gives off, set by the state it is in. As soma builds up it becomes load, like weight in a backpack. Where soma fields overlap they break up what you can perceive and make walls your awareness cannot see through."},{"t":"Sol Star","d":"A point just above the top of your head. It is where you reach past your body and open out to the field around you."},{"t":"Source","d":"The field as it is before any pattern is put in. The bedrock under everything else. What is left when every pattern is cleared."},{"t":"Superego","d":"The part of the mind that guards what you were told. It is made of the stories and rules an adult handed down to you. It sits on the surface and protects those beliefs. The ego goes deeper, because the ego lives in the body."},{"t":"Tag","d":"The moment something that hit you hard gets a name and gets stored at an address. The name locks it in. From then on the body watches for anything that matches, and when it finds one, the pattern stored there fires."},{"t":"Two mechanics","d":"The two steps a full release needs, in this order. First, Release: the charge at the address goes down. Second, Embodied Truth: while the address is open, the quality the pattern was blocking is installed. Do the first without the second and the address is left with nothing to run instead."},{"t":"Vritti","d":"A ripple of what you sense and what you feel, coming in from outside. It travels along your nerves to your brain, where it is put together and noticed. Once you take it as yours, the vritti is what caves in the nerve, the chakra and your field of awareness."},{"t":"Willpower","d":"How much push you have to spend, not a kind of person. It works like a battery: sleep charges it, and pushing through resistance drains it. Release the charge stuck in your body and the drag drops, so willpower goes up. It has no reading of its own; what drags on it shows up as Resistance, which is already read."}];
 var HARM=[{"c":"E01","t":"All Is One","a":"nature","ch":"Chapter 19"},{"c":"E02","t":"All Is Motion","a":"nature","ch":"Chapter 19"},{"c":"E03","t":"Polarity","a":"nature","ch":"Chapter 19"},{"c":"E04","t":"All Fields Correspond","a":"nature","ch":"Chapter 19"},{"c":"E05","t":"Like Fields Attract","a":"nature","ch":"Chapter 19"},{"c":"E06","t":"Inspired Action","a":"nature","ch":"Chapter 19"},{"c":"E07","t":"Transmutation","a":"nature","ch":"Chapter 19"},{"c":"E08","t":"Cause & Effect","a":"nature","ch":"Chapter 19"},{"c":"E09","t":"Compensation","a":"nature","ch":"Chapter 19"},{"c":"E10","t":"Potential","a":"nature","ch":"Chapter 19"},{"c":"E11","t":"Relativity","a":"nature","ch":"Chapter 19"},{"c":"E12","t":"Rhythm","a":"nature","ch":"Chapter 19"},{"c":"E13","t":"Gender","a":"nature","ch":"Chapter 19"},{"c":"E14","t":"Form","a":"human","ch":"Chapter 19"},{"c":"E15","t":"Archetype","a":"human","ch":"Chapter 19"},{"c":"E16","t":"Biofield","a":"human","ch":"Chapter 19"},{"c":"E17","t":"Attunement","a":"human","ch":"Chapter 19"},{"c":"E18","t":"Perception","a":"human","ch":"Chapter 19"},{"c":"E19","t":"Intelligence","a":"human","ch":"Chapter 19"},{"c":"E20","t":"Pleasure & Pain","a":"human","ch":"Chapter 19"},{"c":"E21","t":"The Three Axes","a":"human","ch":"Chapter 19"},{"c":"E22","t":"Symbol","a":"human","ch":"Chapter 19"},{"c":"E23","t":"Identity","a":"human","ch":"Chapter 19"},{"c":"E24","t":"Choice","a":"human","ch":"Chapter 19"},{"c":"E25","t":"Ego","a":"human","ch":"Chapter 19"},{"c":"E26","t":"Intention","a":"human","ch":"Chapter 19"},{"c":"E27","t":"Action","a":"human","ch":"Chapter 19"},{"c":"E28","t":"Memory","a":"human","ch":"Chapter 19"},{"c":"E29","t":"Truth","a":"spirit","ch":"Chapter 19"},{"c":"E30","t":"Transparency","a":"spirit","ch":"Chapter 19"},{"c":"E31","t":"Unity","a":"spirit","ch":"Chapter 19"},{"c":"E32","t":"Awareness","a":"spirit","ch":"Chapter 19"},{"c":"E33","t":"Presence","a":"spirit","ch":"Chapter 19"},{"c":"E34","t":"Equanimity","a":"spirit","ch":"Chapter 19"},{"c":"E35","t":"Compassion","a":"spirit","ch":"Chapter 19"},{"c":"E36","t":"Forgiveness","a":"spirit","ch":"Chapter 19"},{"c":"E37","t":"Courage","a":"spirit","ch":"Chapter 19"},{"c":"E38","t":"Temperance","a":"spirit","ch":"Chapter 19"},{"c":"E39","t":"Duty","a":"spirit","ch":"Chapter 19"},{"c":"E40","t":"Accountability","a":"spirit","ch":"Chapter 19"},{"c":"E41","t":"Justice","a":"spirit","ch":"Chapter 19"},{"c":"E42","t":"Non-Harm","a":"spirit","ch":"Chapter 19"},{"c":"E43","t":"Responsibility","a":"spirit","ch":"Chapter 19"},{"c":"E44","t":"Humility","a":"spirit","ch":"Chapter 19"},{"c":"E45","t":"Generosity","a":"spirit","ch":"Chapter 19"},{"c":"E46","t":"Detachment","a":"spirit","ch":"Chapter 19"},{"c":"E47","t":"Patience","a":"spirit","ch":"Chapter 19"},{"c":"E48","t":"Aesthetic Beauty","a":"spirit","ch":"Chapter 19"},{"c":"E49","t":"Nature","a":"spirit","ch":"Chapter 19"},{"c":"E50","t":"Peace","a":"express","ch":"Chapter 19"},{"c":"E51","t":"Play","a":"express","ch":"Chapter 19"},{"c":"E52","t":"Curiosity","a":"express","ch":"Chapter 19"},{"c":"E53","t":"Creativity","a":"express","ch":"Chapter 19"},{"c":"E54","t":"Flow","a":"express","ch":"Chapter 19"},{"c":"E55","t":"Wonder","a":"express","ch":"Chapter 19"},{"c":"E56","t":"Order","a":"express","ch":"Chapter 19"},{"c":"E57","t":"Love","a":"express","ch":"Chapter 19"},{"c":"E58","t":"Purpose","a":"express","ch":"Chapter 19"},{"c":"E59","t":"Will","a":"express","ch":"Chapter 19"},{"c":"E60","t":"Fear · Safety","a":"emotion","ch":"Chapter 19"},{"c":"E61","t":"Anger · Calm","a":"emotion","ch":"Chapter 19"},{"c":"E62","t":"Shame · Worth","a":"emotion","ch":"Chapter 19"},{"c":"E63","t":"Disgust · Acceptance","a":"emotion","ch":"Chapter 19"},{"c":"E64","t":"Apathy · Joy","a":"emotion","ch":"Chapter 19"},{"c":"E65","t":"Shock","a":"emotion","ch":"Chapter 19"},{"c":"E66","t":"Sad · Happy","a":"emotion","ch":"Chapter 19"},{"c":"E67","t":"Surprise","a":"emotion","ch":"Chapter 19"},{"c":"E68","t":"Anticipation","a":"emotion","ch":"Chapter 19"},{"c":"E69","t":"Physical","a":"measure","ch":"Chapter 19"},{"c":"E70","t":"Intellectual","a":"measure","ch":"Chapter 19"},{"c":"E71","t":"Emotional","a":"measure","ch":"Chapter 19"},{"c":"E72","t":"Wisdom","a":"measure","ch":"Chapter 19"},{"c":"E73","t":"Adversity","a":"measure","ch":"Chapter 19"},{"c":"E74","t":"Coherence","a":"measure","ch":"Chapter 19"},{"c":"E75","t":"Meta- Awareness","a":"meta","ch":"Chapter 19"},{"c":"E76","t":"Coherence","a":"meta","ch":"Chapter 19"}];
 var HARM_AX={nature:'Laws of Nature',human:'Laws of Human Nature',spirit:'Laws of Moral Integrity',
  express:'Laws of Expression',emotion:'The nine architectures',measure:'The instruments',meta:'The frame'};
@@ -3210,135 +3276,135 @@ var HARM_FAM={
    ============================================================ */
 var SABCARD={
  "negotiator":{
-  h:"You mean to start. In the pause before you begin, a reasonable voice speaks up. Just this once. You've earned a break. It never says stop for good, only stop for today. For a moment the easier option feels earned. Then the thing you meant to do is still waiting, and the next pause is easier to win.",
+  h:"You mean to start. In the pause before you begin, a reasonable voice speaks up. Just this once. You've earned a break. It never says stop for good, only stop for today. For a moment the easier option feels earned. Then the thing you meant to do is still waiting, and the next pause is easier to win. Reflection: What does the pause help you avoid feeling, and what would make beginning manageable?",
   a:"Everyone has a pause before starting. When the fear isn't the one talking in it, the gap between meaning to and beginning gets short. Trust becomes available that you can handle the first uncomfortable minute, and vitality goes into the thing itself.",
   n:"Notice the pause between meaning to and starting. Separate the reasonable voice from the discomfort it is steering you around. Choose the first small motion before the argument finishes."},
  "controller":{
-  h:"Something turns uncertain. Someone hasn't followed through. An outcome stops feeling guaranteed. Before anything has actually gone wrong, the grip tightens anyway. You check. You correct. You take over. For a moment it works, the grip reads as safety. Then the room gets smaller: less space for the people around you to move, less room in you to trust without checking first.",
+  h:"The future feels uncertain. Something may happen, but you cannot quite predict what. That uncertainty can produce anxiety before anything has actually gone wrong. The grip tightens in an attempt to make the outcome predictable: you check, correct, and take over. For a moment, control can feel like safety and the anxiety may ease. Then the room gets smaller: less space for the people around you to move, less room in you to trust without checking first. This is one possible pattern, not an explanation for every act of control. Reflection: When you cannot predict the outcome, what do you feel you need to take control of?",
   a:"Control isn't the problem. It works. When the fear isn't the one holding the grip, there's a beat of equanimity before you act, long enough to decide instead of react. Trust becomes available instead of something to verify first.",
   n:"Notice the moment the grip tightens. Separate the real risk from the old fear running it. Choose the next move from there."},
  "victim":{
-  h:"Something goes wrong and somebody asks what part was yours. The first answer that comes is the list of what was done to you. You tell it again. People lean in. For a moment the attention feels like being held. Then nothing has moved, and the next thing that goes wrong lands on the same spot.",
+  h:"Something goes wrong and somebody asks what part was yours. The first answer that comes is the list of what was done to you. You tell it again. People lean in. For a moment the attention feels like being held. Then nothing has moved, and the next thing that goes wrong lands on the same spot. Reflection: What happened to you, and what part of the situation is still yours to influence?",
   a:"The hurt might be real. Some of it probably was done to you. When the charge isn't telling the story, there's room to find the one part that is yours to move. Equanimity becomes available to look at it without a fight, vitality to act on it, and joy has a way back in.",
   n:"Notice the moment the story starts to replay. Separate what happened to you from what is still in your hands. Choose one thing in your hands and do it."},
  "perfectionist":{
-  h:"The work is nearly done. You see one more flaw, then another, in your work and in other people's. You fix it. You hold it back a little longer. For a moment the extra pass feels like care. Then the deadline slides, the work never leaves your hands, and the people around you feel the pressure too.",
+  h:"The work is nearly done. You see one more flaw, then another, in your work and in other people's. You fix it. You hold it back a little longer. For a moment the extra pass feels like care. Then the deadline slides, the work never leaves your hands, and the people around you feel the pressure too. Reflection: Which flaw genuinely matters, and what are you asking the extra pass to protect you from?",
   a:"High standards make good work. When the charge isn't setting them, there's room to see a finished thing as finished. Acceptance becomes available for work that has flaws, and equanimity when somebody else's work does too.",
   n:"Notice the urge for one more pass. Separate the flaw that matters from the pressure to keep going. Choose a time to hand it over, and hand it over then."},
  "pleaser":{
-  h:"Somebody might be let down. A limit is needed, and the limit could cost their approval. So you help instead. You smooth it over, pay a compliment, take on the extra job. For a moment the room stays warm. Then your own preference has gone unsaid again, and the tiredness is the kind rest doesn't fix.",
+  h:"Somebody might be let down. A limit is needed, and the limit could cost their approval. So you help instead. You smooth it over, pay a compliment, take on the extra job. For a moment the room stays warm. Then your own preference has gone unsaid again, and the tiredness is the kind rest doesn't fix. Reflection: What do you actually want here, and what do you fear might happen if you say it plainly?",
   a:"Helping can be generous. When the fear isn't asking for approval, there's room to say what you want once and let it stand. Trust becomes available that the relationship can hold a no, and vitality comes back to what you choose to give.",
   n:"Notice the moment you reach to smooth things over. Separate what you want from what will keep them pleased. Choose to say the preference once, with no apology attached."},
  "hyper achiever":{
-  h:"Rest is available. Nobody is measuring anything. Something in you won't let the time sit empty. You open the laptop. You find one more thing to finish. For a moment the output feels like proof of your worth. Then the proof wears off by evening, and the next day needs more of it.",
+  h:"Rest is available. Nobody is measuring anything. Something in you won't let the time sit empty. You open the laptop. You find one more thing to finish. For a moment the output feels like proof of your worth. Then the proof wears off by evening, and the next day needs more of it. Reflection: If your output did not prove anything about your worth, what would you choose to do next?",
   a:"Real work gets done this way. When the fear isn't keeping score, there's room for an hour that produces nothing. Vitality becomes available that doesn't come from output, and trust that your worth is still there when you stop.",
   n:"Notice the reach for the next task when rest is on offer. Separate what needs doing from what the output is meant to show. Choose an hour with nothing to show for it."},
  "hyper rational":{
-  h:"Somebody brings a feeling into the room. You go straight to the problem. You ask for the facts, find the logic, offer the fix. The feeling gets set aside as noise. For a moment the clarity feels like help. Then the other person goes quiet, and whatever you felt yourself never got named.",
+  h:"Somebody brings a feeling into the room. You go straight to the problem. You ask for the facts, find the logic, offer the fix. The feeling gets set aside as noise. For a moment the clarity feels like help. Then the other person goes quiet, and whatever you felt yourself never got named. Reflection: What feeling might need to be heard before you try to solve the problem?",
   a:"Logic solves real things. When the charge isn't steering away from feeling, there's room to let an emotion count as information. Groundedness becomes available when a feeling shows up, and acceptance of what can't be explained yet.",
   n:"Notice the jump from a feeling to a fix. Separate the problem from what the person in front of you feels. Choose to name the feeling first, then think."},
  "hyper vigilant":{
-  h:"Something in the room changes. Somebody asks you to trust them. Your attention goes to the exits, the risks, what could go wrong next. You scan. You plan around it. For a moment the watching feels like protection. Then the scan never switches off, and nothing gets to feel safe for long.",
+  h:"Something in the room changes. Somebody asks you to trust them. Your attention goes to the exits, the risks, what could go wrong next. You scan. You plan around it. For a moment the watching feels like protection. Then the scan never switches off, and nothing gets to feel safe for long. Reflection: What is a real risk in front of you, and what is a possibility your attention keeps rehearsing?",
   a:"Watching has kept you out of real trouble. When the fear isn't running the scan, there's room to notice what is safe right now. Trust becomes available in small amounts, and equanimity when the room changes again.",
   n:"Notice the scan starting when something changes. Separate the real risk in front of you from the one that is always just ahead. Choose one thing that is safe and stay with it for a minute."},
  "restless":{
-  h:"Things settle. The job, the place, the plan starts to feel familiar. An itch starts. You look for the next thing, a new project, a new place, a new plan. For a moment the new thing feels alive. Then it settles too, and the itch comes back on schedule.",
+  h:"Things settle. The job, the place, the plan starts to feel familiar. An itch starts. You look for the next thing, a new project, a new place, a new plan. For a moment the new thing feels alive. Then it settles too, and the itch comes back on schedule. Reflection: Are you moving toward something meaningful, or away from the discomfort of staying?",
   a:"Curiosity moves things forward. When the charge isn't pushing you out of the moment, there's room to stay long enough for something to deepen. Vitality becomes available in the familiar thing, and trust that staying won't trap you.",
   n:"Notice the itch when things go quiet and steady. Separate real curiosity from the push to leave. Choose to stay twice as long as the itch wants."},
  "stickler":{
-  h:"Somebody does it differently. The dishwasher is loaded wrong, the report is out of order, the plan skipped a step. You feel the wrongness before you think about it. You correct it. You explain the right way. For a moment the order feels like relief. Then people stop doing things around you, and you end up doing everything the right way alone.",
+  h:"Somebody does it differently. The dishwasher is loaded wrong, the report is out of order, the plan skipped a step. You feel the wrongness before you think about it. You correct it. You explain the right way. For a moment the order feels like relief. Then people stop doing things around you, and you end up doing everything the right way alone. Reflection: Which standard matters here, and where could another workable approach be acceptable?",
   a:"Order helps. When the charge isn't enforcing it, there's room to tell a standard you value from one that only keeps the fear down. Acceptance becomes available for another way that works, and equanimity when things are out of place.",
   n:"Notice the jolt when something is done another way. Separate the standard you value from the fear it is guarding. Choose which one to act on."},
  "judge":{
-  h:"Somebody falls short, and sometimes that somebody is you. The verdict arrives fast. You find the fault. You replay the old failures that seem to back it up. For a moment the judgment feels like seeing clearly. Then the same eye turns on everything, and every other pattern has something to feed on.",
+  h:"Somebody falls short, and sometimes that somebody is you. The verdict arrives fast. You find the fault. You replay the old failures that seem to back it up. For a moment the judgment feels like seeing clearly. Then the same eye turns on everything, and every other pattern has something to feed on. Reflection: What specifically went wrong, without turning it into a verdict about the person?",
   a:"Some things really are wrong. When the charge isn't passing the sentence, there's room to see what is also right about the same situation. Acceptance becomes available toward others and toward you, along with equanimity and the vitality the verdicts were using up.",
   n:"Notice the verdict as it forms. Separate what actually went wrong from who you're blaming for it. Choose to find one thing that is right about it."},
  "deflector":{
-  h:"Somebody asks a direct question, or something asks you to own your part. You change the subject. You explain why it wasn't really you. You make a joke. For a moment the attention moves somewhere safer. Then the question is still there, and the person asking learns less about you each time.",
+  h:"Somebody asks a direct question, or something asks you to own your part. You change the subject. You explain why it wasn't really you. You make a joke. For a moment the attention moves somewhere safer. Then the question is still there, and the person asking learns less about you each time. Reflection: What part of the question feels hardest to answer directly?",
   a:"Some things can stay private. When the shame isn't steering the answer, there's room to stay with the question long enough to answer it. Worth becomes available that doesn't depend on staying unseen, and equanimity when someone looks closely.",
   n:"Notice the swerve when a direct question lands. Separate what is being asked from what you fear it shows. Choose to stay with the question for ten seconds before you answer."},
  "dramatizer":{
-  h:"A strong feeling arrives and people are around. The volume goes up. You tell it bigger. The story gets sharper with each telling. For a moment the room moves and the feeling is seen. Then people start bracing when you speak, and the real size of what you felt gets lost.",
+  h:"A strong feeling arrives and people are around. The volume goes up. You tell it bigger. The story gets sharper with each telling. For a moment the room moves and the feeling is seen. Then people start bracing when you speak, and the real size of what you felt gets lost. Reflection: What is the feeling at its actual size, before the story around it grows?",
   a:"The feeling may be big. When the charge isn't turning it up, there's room to say it at the size it actually is. Groundedness becomes available inside a strong feeling, and joy that doesn't need an audience.",
   n:"Notice the volume rising as you start to speak. Separate the size of the feeling from the size of the telling. Choose to say the next part at half the volume."},
  "worrywart":{
-  h:"The future is unclear. Your mind runs ahead to what could go wrong. You picture it. You picture the next one. Then you go back and run the first one again. For a moment the worry feels like getting ready. Then nothing has been decided, and you're worn out by a day that hasn't happened.",
+  h:"The future is unclear. Your mind runs ahead to what could go wrong. You picture it. You picture the next one. Then you go back and run the first one again. For a moment the worry feels like getting ready. Then nothing has been decided, and you're worn out by a day that hasn't happened. Reflection: What is one specific risk you can prepare for, and what remains uncertain rather than actionable?",
   a:"Plans need some thinking ahead. When the fear isn't running the forecast, there's room to name one real risk and one real answer to it. Trust becomes available in your ability to handle what comes, and joy in the day you're actually in.",
   n:"Notice the loop when a new worry starts. Separate the specific worst case from the general dread. Choose one action you would take if it happened, and stop there."},
  "loner":{
-  h:"Connection is on offer. Somebody invites you in, or help would make this easier. You decline. You handle it alone, and it feels like preferring your own company. For a moment the distance feels like strength. Then the gap gets wider, and asking gets harder the longer it goes.",
+  h:"Connection is on offer. Somebody invites you in, or help would make this easier. You decline. You handle it alone, and it feels like preferring your own company. For a moment the distance feels like strength. Then the gap gets wider, and asking gets harder the longer it goes. Reflection: Do you genuinely want solitude right now, or does needing someone feel too risky?",
   a:"Solitude can be good. When the fear isn't choosing it for you, there's room to want people and to let them in. Trust becomes available in the people close to you, and joy in being with them.",
   n:"Notice the step back when connection is offered. Separate wanting time alone from avoiding the risk of needing someone. Choose one direct ask for company or help."},
  "people pleaser":{
-  h:"You can't tell if they approve. A boundary would help, and it might cost their liking you. You adjust. You agree. You say what lands well over what's true. For a moment their warmth feels like being all right. Then you can't remember what you actually think, and the relationship is with someone you're performing.",
+  h:"You can't tell if they approve. A boundary would help, and it might cost their liking you. You adjust. You agree. You say what lands well over what's true. For a moment their warmth feels like being all right. Then you can't remember what you actually think, and the relationship is with someone you're performing. Reflection: What answer would be honest and considerate, even if it does not win approval?",
   a:"Caring what people think keeps you connected. When the shame isn't asking for approval, there's room to give the answer that's good for the relationship. Worth becomes available that doesn't hang on their face, and vitality in being yourself with them.",
   n:"Notice the shift as you read their reaction. Separate what serves the relationship from what wins their approval. Choose the first one."},
  "skeptic":{
-  h:"Something new arrives that doesn't fit what you already think. The doubt comes first. You look for the flaw. You find a reason it won't work. For a moment the doubt feels like protection from being fooled. Then nothing new gets in, and the picture you're holding stops matching the world.",
+  h:"Something new arrives that doesn't fit what you already think. The doubt comes first. You look for the flaw. You find a reason it won't work. For a moment the doubt feels like protection from being fooled. Then nothing new gets in, and the picture you're holding stops matching the world. Reflection: What evidence would help you evaluate this fairly without dismissing it in advance?",
   a:"Good questions catch real mistakes. When the charge isn't guarding you against disappointment, there's room to let a new idea sit before you decide. Acceptance becomes available for what doesn't fit yet, and groundedness when it shakes something you believed.",
   n:"Notice the first reason to dismiss it. Separate a real flaw from the old guard against being let down. Choose to sit with it for a day before deciding."},
  "dreamer":{
-  h:"You can see how good it could be, and how far away it is. The gap shows, and you go back to the picture. You refine the vision. You wait for better conditions. For a moment the dream feels close. Then the gap stays the same size, and the dream gets harder to look at.",
+  h:"You can see how good it could be, and how far away it is. The gap shows, and you go back to the picture. You refine the vision. You wait for better conditions. For a moment the dream feels close. Then the gap stays the same size, and the dream gets harder to look at. Reflection: What is one small action that would bring the vision into contact with reality?",
   a:"Vision points somewhere worth going. When the charge isn't keeping you in the picture, there's room to take the first clumsy step. Vitality becomes available in the work itself, and joy in the thing as it actually gets built.",
   n:"Notice the drift back to the vision when the gap shows. Separate the picture from the next step it needs. Choose one concrete step and do it today."},
  "procrastinator":{
-  h:"The important thing is clear, and nothing stands in the way of starting. So you do something else. You tidy, plan, answer messages, stay busy. For a moment the motion feels like progress. Then the deadline gets close, the pressure arrives, and the work gets done in a rush you call your style.",
+  h:"The important thing is clear, and nothing stands in the way of starting. So you do something else. You tidy, plan, answer messages, stay busy. For a moment the motion feels like progress. Then the deadline gets close, the pressure arrives, and the work gets done in a rush you call your style. Reflection: What makes the first step difficult, and what is the smallest useful start?",
   a:"Some things do need time. When the fear isn't pushing the start back, there's room to begin before you feel ready. Trust becomes available that a rough start is still a start, and joy in work that gets done without a panic.",
   n:"Notice the side task you pick up in its place. Separate getting ready from actually beginning. Choose to begin for three minutes."},
  "imposter":{
-  h:"Somebody praises the work, or the work is about to be judged. A cold drop arrives. You wave the praise off. You over prepare. You wait to be found out. For a moment playing small feels safer. Then the evidence of what you can do keeps piling up, and none of it lands.",
+  h:"Somebody praises the work, or the work is about to be judged. A cold drop arrives. You wave the praise off. You over prepare. You wait to be found out. For a moment playing small feels safer. Then the evidence of what you can do keeps piling up, and none of it lands. Reflection: What evidence of your ability are you discounting, and what do you still need to learn?",
   a:"Humility keeps you learning. When the shame isn't grading you, there's room to count what you actually know. Worth becomes available from the evidence that's already there, and trust that you earned your place in the room.",
   n:"Notice the wave off as praise arrives. Separate what you know from what you fear they'll see. Choose one thing you know that the room doesn't, and say it."},
  "aggressor":{
-  h:"Somebody pushes back, or the plan stalls. The heat comes up fast. You raise your voice. You push harder. You override. For a moment it works, people fall in line. Then the agreement turns out to be fear, and what they actually think goes underground.",
+  h:"Somebody pushes back, or the plan stalls. The heat comes up fast. You raise your voice. You push harder. You override. For a moment it works, people fall in line. Then the agreement turns out to be fear, and what they actually think goes underground. Reflection: What is the real issue beneath the heat, and how could you address it without intimidation?",
   a:"Sometimes things need pushing. When the anger isn't the one pushing, there's room for a pause long enough to see what's underneath it. Equanimity becomes available when you're challenged, and vitality that doesn't need a fight.",
   n:"Notice the heat as somebody pushes back. Separate the anger from the fear underneath it. Choose your next words after a five second pause."},
  "martyr":{
-  h:"Giving can become a way to make yourself necessary. You say yes when you mean no. You carry what somebody else could carry. You wait for the sacrifice to be noticed, and when it isn't, something in you hardens.",
+  h:"Giving can become a way to make yourself necessary. You say yes when you mean no. You carry what somebody else could carry. You wait for the sacrifice to be noticed, and when it isn't, something in you hardens. Reflection: Would you still choose to give this if nobody noticed or owed you anything?",
   a:"The giving might be real. So might the exhaustion. What matters is whether it was freely chosen, or whether giving became the way a place got earned. When the charge isn't driving it, there's room to ask what you actually want to do. Worth becomes available instead of something to earn, with room for joy and vitality in what you choose to give.",
   n:"Notice the give before you've offered it. Separate what you want to do from what you feel is owed. Choose from the first one."},
  "cynic":{
-  h:"Someone gets excited, or you catch yourself hoping. You get there first with the reason it won't last. You roll your eyes. You name the catch. For a moment being unimpressed feels safe from disappointment. Then the hope in the room dries up, including yours.",
+  h:"Someone gets excited, or you catch yourself hoping. You get there first with the reason it won't last. You roll your eyes. You name the catch. For a moment being unimpressed feels safe from disappointment. Then the hope in the room dries up, including yours. Reflection: What is genuinely flawed here, and what might still be worthwhile?",
   a:"Some things are overhyped. When the charge isn't dismissing it in advance, there's room to see what is actually good. Acceptance becomes available for hope that might not work out, and joy in it while it's here.",
   n:"Notice the eye roll before you say it. Separate a real catch from the guard against being let down. Choose to name one good thing about it."},
  "manipulator":{
-  h:"You need something, and asking straight out feels too exposed. So you go around. You hint. You hold something back until they offer. You set things up so they come to you. For a moment it works, and you never had to ask. Then people sense the angle, and trust gets thinner each time.",
+  h:"You need something, and asking straight out feels too exposed. So you go around. You hint. You hold something back until they offer. You set things up so they come to you. For a moment it works, and you never had to ask. Then people sense the angle, and trust gets thinner each time. Reflection: What do you need, and what would it look like to ask for it directly?",
   a:"Everyone has needs. When the charge isn't steering around the ask, there's room to say the need straight. Equanimity becomes available for hearing yes or no, and the vitality that went into the setup comes back.",
   n:"Notice the angle forming before you ask. Separate the actual need from the setup around it. Choose to say the need once, directly."},
  "overthinker":{
-  h:"A decision is due and the outcome is unclear. You look at it again. You weigh one more angle. You ask one more person. For a moment the thinking feels responsible. Then the loop runs past anything new to learn, and the clock makes the choice for you.",
+  h:"A decision is due and the outcome is unclear. You look at it again. You weigh one more angle. You ask one more person. For a moment the thinking feels responsible. Then the loop runs past anything new to learn, and the clock makes the choice for you. Reflection: What information is still missing, and when will more thinking stop helping?",
   a:"Some choices need thinking through. When the fear isn't asking for certainty, there's room to decide with what you know. Trust becomes available in a good enough choice, and worth that doesn't depend on getting it perfect.",
   n:"Notice the loop once you've stopped learning anything new. Separate the information you need from the certainty you want. Choose a time to decide, and decide then."},
  "escapist":{
-  h:"Something uncomfortable starts, and there's a way out. You reach for the phone, the snack, the drink, the drive. For a moment the feeling goes quiet. Then it comes back unfinished, and the exits get used more often.",
+  h:"Something uncomfortable starts, and there's a way out. You reach for the phone, the snack, the drink, the drive. For a moment the feeling goes quiet. Then it comes back unfinished, and the exits get used more often. Reflection: Do you need a restorative break, or are you leaving before you can name what you feel?",
   a:"A break can help. When the fear isn't reaching for the exit, there's room to stay with a hard feeling until it moves. Vitality becomes available in being here, and trust that you can get through discomfort without leaving.",
   n:"Notice the reach for the exit. Separate needing a real break from leaving before the feeling finishes. Choose to stay for two minutes and name what's there."},
  "avoider":{
-  h:"Something needs dealing with, and leaving it costs nothing today. So it slides. You don't argue with it or run from it. You just don't look. For a moment nothing can land on you. Then the pile grows quietly, and the bill comes due all at once.",
+  h:"Something needs dealing with, and leaving it costs nothing today. So it slides. You don't argue with it or run from it. You just don't look. For a moment nothing can land on you. Then the pile grows quietly, and the bill comes due all at once. Reflection: What is the real reason this can wait, or what makes it difficult to face now?",
   a:"Some things can wait. When the fear isn't keeping your eyes off it, there's room to look at the thing directly. Vitality becomes available for the smallest piece of it, and trust that you can handle what you find.",
   n:"Notice the thing you keep not looking at. Separate what can wait from what you're avoiding. Choose to say it out loud, then do the smallest piece."},
  "nihilist":{
-  h:"Effort needs a reason, and the reason starts to look thin. You knock it down before it can let you down. You call it pointless. You stop trying. For a moment nothing can disappoint you. Then nothing can reach you either, and the days go flat.",
+  h:"Effort needs a reason, and the reason starts to look thin. You knock it down before it can let you down. You call it pointless. You stop trying. For a moment nothing can disappoint you. Then nothing can reach you either, and the days go flat. Reflection: Even without a complete answer about meaning, what still matters enough to do?",
   a:"Big questions are worth asking. When the charge isn't answering them in advance, there's room to do something worth doing anyway. Acceptance becomes available for not having the full answer, and joy in what you do meanwhile.",
   n:"Notice the moment you call it pointless. Separate the honest question from the guard against disappointment. Choose one thing worth doing either way, and do it."},
  "innocent":{
-  h:"Things get complicated. A conflict starts, or a choice carries moral weight. You step back. You don't ask. You let yourself not know. For a moment staying out of it keeps you clean. Then something you could have seen happens anyway, and staying out made you part of it.",
+  h:"Things get complicated. A conflict starts, or a choice carries moral weight. You step back. You don't ask. You let yourself not know. For a moment staying out of it keeps you clean. Then something you could have seen happens anyway, and staying out made you part of it. Reflection: What do you already know about this situation that you have not wanted to acknowledge?",
   a:"Not every fight is yours. When the fear isn't closing your eyes, there's room to see what you already know. Trust becomes available that you can face it, and that knowing won't sink you.",
   n:"Notice the step back when it gets complicated. Separate what isn't yours from what you're pretending not to see. Choose to name one thing you already know."},
  "pessimist":{
-  h:"A good outcome becomes possible. You start building the case against it. You list what will go wrong. You lower your hopes before anyone else can. For a moment expecting the worst feels like protection. Then you put in less, the outcome gets smaller, and the case comes true.",
+  h:"A good outcome becomes possible. You start building the case against it. You list what will go wrong. You lower your hopes before anyone else can. For a moment expecting the worst feels like protection. Then you put in less, the outcome gets smaller, and the case comes true. Reflection: What is the realistic risk, and what is the best plausible outcome worth acting toward?",
   a:"Some plans do fail. When the charge isn't writing the ending, there's room to picture the good outcome as clearly as the bad one. Trust becomes available that it might work, and joy in giving it a real try.",
   n:"Notice the case building against a good outcome. Separate the real risk from the guard against hope. Choose the best thing that could really happen, and act from there."},
  "catastrophizer":{
-  h:"Something is unresolved. A message goes unanswered, a result is pending. In seconds it stops being an unknown and becomes the end of everything. You feel the grief of it ahead of time. For a moment you feel braced. Then the body pays for a disaster that hasn't happened, and usually never does.",
+  h:"Something is unresolved. A message goes unanswered, a result is pending. In seconds it stops being an unknown and becomes the end of everything. You feel the grief of it ahead of time. For a moment you feel braced. Then the body pays for a disaster that hasn't happened, and usually never does. Reflection: What do you know right now, and what part of the outcome are you imagining?",
   a:"Some things are serious. When the fear isn't jumping to the end, there's room to see where things actually stand right now. Trust becomes available in the facts in front of you, and joy in a day that isn't a disaster.",
   n:"Notice the jump from not knowing to the worst. Separate what is true right now from what you're picturing. Choose to describe the situation as it is, in the present tense."},
  "enabler":{
-  h:"Someone you care about is doing the harmful thing again. You see it. You don't say it. You cover for them, lend the money, make the excuse. For a moment the peace holds and they stay close. Then the pattern grows, and the silence is part of what keeps it going.",
+  h:"Someone you care about is doing the harmful thing again. You see it. You don't say it. You cover for them, lend the money, make the excuse. For a moment the peace holds and they stay close. Then the pattern grows, and the silence is part of what keeps it going. Reflection: How can you care about this person without covering for behavior that is causing harm?",
   a:"Standing by people matters. When the shame isn't keeping you quiet, there's room to say what you see once and let them answer. Worth becomes available that doesn't depend on them staying, and vitality that was going into covering for them.",
   n:"Notice the moment you start to cover for them. Separate keeping the peace from keeping the pattern. Choose to say what you see, once, and let them answer."},
  "control freak":{
-  h:"You walk into something you didn't set up. A plan you didn't design. A silence where a yes should be. You start running it before any gap opens. You scan ahead for what could go wrong, and check that you're the one in charge. To other people it looks like competence. In the body it never lands, and the scan becomes the normal state.",
+  h:"You walk into something you didn't set up. A plan you didn't design. A silence where a yes should be. You start running it before any gap opens. You scan ahead for what could go wrong, and check that you're the one in charge. To other people it looks like competence. In the body it never lands, and the scan becomes the normal state. Reflection: What genuinely needs your attention, and what could safely remain in someone else's hands?",
   a:"People rely on what you can do. When the fear isn't running the scan, there's room for your body to land in the room you're in. Presence becomes available here and not ahead, equanimity in a plan you didn't design, and trust in other people's hands.",
   n:"Notice the jaw, the shoulders and the breath already locked. Separate the work in front of you from the scan running ahead of it. Choose to loosen them on the out breath, and see what still needs you."}};
 
@@ -3942,7 +4008,10 @@ const IX_ACT=[
    rename here is a migration. rows is the table above. nm is the heading and
    line is the one sentence that says what the block is, because a term of art
    never stands alone (UNPACK EVERY SYMBOL, CLAUDE.md): archetype, axis and
-   action axis are each said in plain words in the block that uses them.
+   the Laws of Action are each said in plain words in the block that uses
+   them. The last was called action axes until 22 October, when the six took
+   the name the three sets of laws share; the id stays acts, because it is
+   the key the answers are saved under.
    A row finds its colour in the renderer, from the seat ARCH and CHILD already
    place it at. The actions have none of their own in the product, and the gates
    are drawn at the Heart in the Field's bar (ui/fieldbar.js), so they take that.
@@ -3953,8 +4022,8 @@ const IX_BLOCKS=[
   line:'An archetype is a stock role people play, like the one who leads or the one who helps. Each one here puts two of those roles against each other, in a short scene or a short pair of actions. Pick the one closer to what you actually do.'},
  {id:'axes', nm:'Emotional axes', rows:IX_AXIS,
   line:'An axis is a line from a feeling to its opposite. Each question is a feeling the body can hold. Say how often it runs in you.'},
- {id:'acts', nm:'Action axes', rows:IX_ACT,
-  line:'An action axis is a move you make when a feeling rises, from meeting it to going around it. Say how often you make each one.'}];
+ {id:'acts', nm:'Laws of Action', rows:IX_ACT,
+  line:'The Laws of Action are the moves you make when a strong feeling rises. Right action meets the feeling and wrong action misses it, follows its story or goes around it. Say how often you make each one.'}];
 /* ============================================================
    THE MEANING TABLE. Round PO, ruled 2 October: UNPACK EVERY SYMBOL.
 
@@ -4107,7 +4176,19 @@ var UNPACK_BASE={
  'saboteur':'A saboteur is a named habit that runs on the charge held at several addresses at once.',
  'mask':'A mask is a way of showing up, such as Child or Teen, read from the weight held at a group of seats.',
  'axis':'An axis is a feeling and its opposite, such as fear and trust, and the instrument reads how much of the first is held and how much of the second is in place.',
- 'cq':'CQ is your coherence number, built only from your answers on the laws.',
+ /* CQ IS THE INTEGRITY, NOT THE COHERENCE. This said "your coherence number",
+    which made CQ and coherence one thing. The 25 September ruling makes CQ
+    the 21 laws added up (cqSum, engine/compute.js), and coherence is what
+    that integrity holds up. The coherence sentence below is not touched. */
+ 'cq':'CQ is the Laws of Moral Integrity added up, the integrity that coherence is built on.',
+ /* THE LAWS OF ACTION, 22 October. The six gates took the name the three sets
+    of laws share, read as right action against wrong action. Each sentence
+    says what the move does to a strong feeling, the drill's own words, and
+    none says a gate multiplies anything held, because none does
+    (engine/verp.js). The Laws of Moral Integrity are built below, off SI. */
+ 'laws of action':'The Laws of Action are the moves you make when a strong feeling rises, and each one either meets the feeling or misses it.',
+ 'right action':'Right action is meeting a strong feeling: you notice it, stay out of its story and keep to what you meant.',
+ 'wrong action':'Wrong action is missing a strong feeling, following its story or going around it, and it is how a feeling sticks as charge.',
  /* DQ stood as a bare label on the release clock. Round RG. */
  'dq':'DQ is your shadow weight: all the charge you carry, on every address, against the most your body could hold.',
  'coherence':'Coherence is when what you mean, what you do and what your body does point the same way.',
@@ -4253,6 +4334,10 @@ function unpackAll(){
    t['law:'+l.nm.toLowerCase()]=l.nm+' is how often you '+(IQ_STEM[l.nm]||'')
     +', when it costs you, when nobody would know and on an ordinary day.';});
   t['law']='A law is one of '+SI.length+' ways of keeping your integrity, read from three questions you answer about each.';}
+ /* the set by its name, 22 October. Its own guard, because it needs only SI,
+    and the law entry above waits on IQ_STEM as well */
+ if(typeof SI!=='undefined')
+  t['laws of moral integrity']='The Laws of Moral Integrity are '+SI.length+' ways of behaving, and each one you keep blocks one way your body gets pulled into stress.';
  /* the nine feelings, as the ends of the nine axes */
  if(typeof CHILD!=='undefined')
   CHILD.forEach(function(c){
@@ -4813,10 +4898,20 @@ function pctMove(kind,before,after,opts){
  return {from:a?a+'%':PCT_DASH, to:b?b+'%':PCT_DASH, a:a, b:b, moved:a!==b, up:b>a};}
 
 /* ============================================================
-   THE SIX AXES. Three higher gates and three lower gates. This is
-   not a display, it is a COST MULTIPLIER on every held pattern.
-   A lower gate multiplies what the pattern costs down. A higher
-   gate multiplies it up. It moves every CQ in the app.
+   THE LAWS OF ACTION, keyed gates. Right action is aware, detach and
+   intent; wrong action is ignore, attach and averse. Each move of right
+   action stands across from one wrong action, VERP_VS below. The side
+   keys stay higher and lower, because a key is identity.
+
+   VERPMULT reaches Rz only and Rz reaches no surface, so no copy may say
+   a gate multiplies anything held. This header said each gate was "a COST
+   MULTIPLIER on every held pattern" that "moves every CQ in the app", and
+   it had the two sides backwards as well: it said a lower gate multiplied
+   the cost down, where VERPMULT gives the lower three 1.25 to 1.35. The
+   action drill, the Field's tooltip and the wheel repeated it, printing
+   x0.70 beside Awareness and "everything held weighs" under it. CQ is the
+   laws alone (cqSum, engine/compute.js), so the only place the multiplier
+   lands is Rz, which compute() returns and no surface reads.
    ============================================================ */
 var VERP=[
  {k:'aware',  nm:'Awareness',  side:'higher', d:'I was present with the sensation.'},
@@ -4825,6 +4920,13 @@ var VERP=[
  {k:'ignore', nm:'Ignorance',  side:'lower',  d:'I did not see it coming, or I chose not to look.'},
  {k:'attach', nm:'Attachment', side:'lower',  d:'The story had me. I went with it.'},
  {k:'averse', nm:'Aversion',   side:'lower',  d:'I went around it. I avoided the thing.'}];
+/* WHAT EACH MOVE STANDS ACROSS FROM, both ways round. One table, read by the
+   action drill to name the opposite (ui/drills.js) and by the dial's collar to
+   share a ring between the two ends of a pair (ui/rings.js). It lived in
+   rings.js as FR_GATE_VS, where the drill could reach it only through a
+   renderer's constant, and a second copy in the drill is a pairing that can
+   drift from the one the dial draws. */
+var VERP_VS={aware:'ignore',ignore:'aware',detach:'attach',attach:'detach',intent:'averse',averse:'intent'};
 var VERPMULT={aware:0.7, detach:0.6, intent:0.75, ignore:1.3, attach:1.35, averse:1.25};
 var VERPMIX={aware:0,detach:0,intent:0,ignore:0,attach:0,averse:0};
 var VERPCUE={
@@ -7259,9 +7361,10 @@ const CQ_MODEL=2;
      and 92, plus or minus 3 points of accuracy. Those 15k releases raised my
      CQ."
 
-   CQ is still the 21 laws over 210, and nothing else enters it. SQ and DQ are
-   not folded in. What changed is what a law reads: a release closes a small
-   share of the distance between each law at its seat and 10.
+   Integrity's input to CQ is the 21 laws over 210. The operational CQ also
+   multiplies normalized Integrity by Intention and divides by Resistance.
+   DQ feeds Resistance; SQ remains the separate total of node shadow weights.
+   A release changes Integrity by lifting each answered law at its seat.
 
      law as CQ reads it = 10 - (10 - answer) x (1 - LIFT_R)^n
 
@@ -7335,6 +7438,37 @@ function lawNow(nm){return lawLift(S.law[nm],lawWork(nm));}
    would be if every open law landed at ten, through this same sum, so the
    two ends of the range are the engine's arithmetic and never a copy of it. */
 function cqSum(open){return SINAMES.reduce((a,l)=>a+(lawIn(l)?lawNow(l):(open||0)),0)/210*100;}
+/* THE SEESAW, AT MODULE LEVEL so exCeiling can read it too. Will can only
+   push the tipping point up from 5 toward 6, never down: moving it the
+   other way breaks the rule that "paralysed" pulls at least a hundred times
+   harder than "a little tense" at every level of will. Will has no
+   measurement anywhere in this engine yet, so every caller passes 0, which
+   makes this exactly leverPull, to the digit, until it is real. */
+function leverPullWill(v,w){return leverPhi((v-LEVER_MU-w)/LEVER_SD)/leverPhi((10-LEVER_MU-w)/LEVER_SD);}
+/* ============================================================
+   THE SEVEN CHAKRA WEIGHTS. weight is DQ's own rule, held per seat instead
+   of over the whole body: the seat's addresses' SQ summed, over ten times
+   how many addresses it has, so it reads 0 to 1 the same way DQ reads 0 to
+   100. over is the same sum read through jq, the overshoot. open is 1 minus
+   weight. pull is the seat's own share of PULL, what the torus reads.
+
+   ig IS HONEST, UNLIKE bandIg. bandIg seeds an unanswered law to 6 so the sq
+   relief and the Ig/It readouts always have a number, and that seeding is
+   correct for them. It is wrong for anything shown as a position, because a
+   seat nobody has answered for would still print a confident place on the
+   Compass and swell the torus on the strength of a guess nobody gave. So
+   seatRows takes the mean of lawNow over only the laws this seat has
+   answered, and null when it has none. Null is an answer, not a zero. */
+function seatRows(){
+ return BANDS.map(function(b){
+  var g=W.filter(function(n){return n.b===b;});
+  var weight=g.length?g.reduce(function(a,n){return a+n.sq;},0)/(10*g.length):0;
+  var over=g.length?g.reduce(function(a,n){return a+n.jq;},0)/(10*g.length):0;
+  var pull=g.length?g.reduce(function(a,n){return a+leverPullWill(n.sq,0);},0)/g.length:0;
+  var laws=SI.filter(function(l){return l.b===b&&lawIn(l.nm);});
+  var ig=laws.length?laws.reduce(function(a,l){return a+lawNow(l.nm);},0)/laws.length/10:null;
+  return {seat:b, n:g.length, weight:weight, over:over,
+   open:clamp(1-weight,0,1), pull:pull, ig:ig};});}
 /* ============================================================
    WHERE THE FINISHED CQ CAN STILL LAND, read off what is unanswered.
 
@@ -7366,7 +7500,7 @@ function cqSpan(){
    which relCoolDown guarantees is the one the laws in S came from. Returns
    what moved, by law, and CQ before and after as that record reads. */
 function releaseWork(p,keys){
- var out={laws:{}, cq0:cqSum(), cq1:null, n:0};
+ var out={laws:{}, cq0:compute().CQ, cq1:null, n:0};
  /* show only on a worked example, engine/showonly.js */
  if(showRefuse('release',p)){out.cq1=out.cq0;out.refused='example';return out;}
  if(!p||!keys||!keys.length){out.cq1=out.cq0;return out;}
@@ -7381,7 +7515,7 @@ function releaseWork(p,keys){
   if(!w||w.on!==v)w=p.work[l.nm]={n:0,on:v};
   var before=lawLift(v,w.n); w.n+=u;
   out.laws[l.nm]={seat:l.b, u:u, n:w.n, from:before, to:lawLift(v,w.n)};});
- out.cq1=cqSum();
+ out.cq1=compute().CQ;
  return out;}
 /* A LAW ANSWERED AGAIN IS A NEW READING, even when it lands on the same
    number. The count above would survive a same number answer, because it is
@@ -7555,8 +7689,10 @@ function compute(){
  const poleMean=W.reduce((a,n)=>a+n.pole,0)/108;
  const JQ=W.reduce((a,n)=>a+n.jq,0)/108;
  const excess=W.filter(n=>n.jq>=4);
- /* Ig and It no longer enter CQ. They are kept because the Awareness and
-    Will readouts and the will against drag steer below still read them. */
+ /* Ig and It remain supporting awareness/will readouts. The canonical CQ
+    formula uses integrity (the fixed-denominator law score), It as Intention,
+    and Rz as the normalized Resistance factor; do not substitute Ig for
+    integrity or create a second CQ output. */
  const Ig=clamp(SINAMES.reduce((a,l)=>a+S.law[l],0)/21 + poleMean*0.30 - JQ*0.42,0,10);
  const It=clamp(BANDS.reduce((a,b)=>a+bandIg(b),0)/7 + poleMean*0.22 - JQ*0.30,0,10);
  /* DQ, THE TOTAL SHADOW. "DQ is a total shadow. I don't know why you keep
@@ -7579,42 +7715,59 @@ function compute(){
  /* THE SIX AXES multiply what every held pattern costs. Detachment is the
     cheapest gate at 0.60, attachment the most expensive at 1.35. No story
     means no gate evidence, so the factor is 1 and nothing changes.
-    Resistance is still computed and reported, because the gates drill names
-    it, but it divides nothing any more: the owner ruled CQ is the 21 laws and
-    nothing else, and verpFactor stops multiplying anything in CQ with it. */
+    Rz is the normalized Resistance input for CQ, derived from total-shadow
+    DQ and the six-axis gate factor. DQ remains the canonical total-shadow
+    measure; SQ remains total node shadow weight. */
  const _vf=verpFactor();
  const Rz=Math.max(1,(1+DQ*0.05)*_vf);
  /* ============================================================
     CQ, THE 21 LAWS SUMMED OVER 210. Ruled 25 September, fitted by the ten
-    thousand run simulation (AZ5, DECISIONS.md "The CQ model, fitted").
+    thousand run simulation (AZ5, DECISIONS.md "The CQ model, fitted"),
+    and ruled again, as a direct answer to the owner's own restated
+    formula, 22 October: Coherence equals Integrity times Intention
+    divided by Resistance runs for real as the shape of Expression below,
+    not as a second division inside CQ itself. CQ stays pure.
 
-    This was clamp(It*Ig/Rz). Ig was the law mean and It was the band mean of
-    the same 21 laws, so the laws were counted twice and CQ went as their
-    square: every law at 5 read 25 where his ruling reads 50 (AY2). And both
-    factors carried poleMean and JQ, so installing an opposite past 6 pushed
-    JQ up and CQ down: a release lowered CQ in 22 of 10,000 random fields
-    (AY1, measured at 9f4c7e5). Neither can happen now, because nothing but
-    a law score is read.
+    MODEL 3, BRIEFLY LIVE ON THIS BRANCH, IS THE SAME DEFECT AS THE
+    FORMULA THE AZ5 SIMULATION ALREADY KILLED, MEASURED AGAIN TODAY.
+    It set CQ to clamp(integrity*It/Rz), It being the band mean of the
+    same 21 laws read a second way. Measured on this exact branch: every
+    law at 10 with axes at their 6 default read 48.7, not the 100 the
+    all-tens invariant requires, and a release lowered CQ on 2,881 of
+    10,000 random fields, where the pure sum lowers it on none. That is
+    worse than the formula AY1 already measured and killed at 22 of
+    10,000. Reverted; new data for Intention and Resistance does not
+    make the same shape of division safe inside CQ.
 
-    AN UNANSWERED LAW COUNTS 0 AGAINST A FIXED 210, so CQ fills from zero as
-    the laws land and can only rise while a person is answering. "I don't
-    want it to go from 100 down, because that's demoralizing." The mean of
-    the laws answered so far, which the desktop runs, fell in every one of
-    10,000 simulated intakes; this rule fell in none of 630,000 answers.
+    AN UNANSWERED LAW COUNTS 0 AGAINST A FIXED 210, so CQ fills from zero
+    as the laws land and can only rise while a person is answering. "I
+    don't want it to go from 100 down, because that's demoralizing." The
+    mean of the laws answered so far, which the desktop runs, fell in
+    every one of 10,000 simulated intakes; this rule fell in none of
+    630,000 answers.
 
     The default 6 still sits in S.law for an unanswered law, because the
-    band relief inside sq and the Ig readout need a number. It never enters
-    CQ: lawIn() is what says whether a law was answered. */
+    band relief inside sq and the Ig/It readouts still need a number.
+    It never enters CQ: lawIn() is what says whether a law was answered. */
  const answered=SINAMES.filter(lawIn).length;
  const complete=(answered===SINAMES.length);
  /* each law as answered, plus what releases at its seat have added since. See
     LIFT_R above. It is still a law score and nothing else. */
  const CQ=cqSum();
- /* THE LEVER. Expression is CQ times what the shadow leaves: "CQ 100 SQ 0
-    ... one pulls down the other, it's a lever", and the pull is his bell,
-    applied per address because "a little tense" and "paralyzed" are
-    intensity at a place. PULL is the mean of leverPull over the 112. */
- const PULL=SQ.reduce((a,v)=>a+leverPull(v),0)/SQ.length;
+ /* THE SEESAW. Expression is CQ times what the shadow leaves, and this is
+    where Integrity times Intention divided by Resistance actually runs:
+    Integrity is the plank (CQ itself), Intention and Resistance are the two
+    ends. "Frames, gates, bends, shows." The bend is the same bell curve as
+    before, Phi over the 112 SQ values, centred at 5, width 1.25, except the
+    centre now moves with WILL: willpower can only push the tipping point
+    up, from 5 toward 6, never down, because moving it down would break the
+    rule that "paralysed" must pull at least a hundred times harder than "a
+    little tense" at every level of will. WILL has no measurement anywhere
+    in this engine yet, so it is 0 here, which makes this exactly the curve
+    already shipped, to the digit. Nothing moves until Will is real; that is
+    the correct behaviour, not a gap. */
+ const WILL=0;
+ const PULL=SQ.reduce((a,v)=>a+leverPullWill(v,WILL),0)/SQ.length;
  const EX=CQ*(1-PULL);
  /* One table. This was a literal copy of the thresholds and the names, and a
     previous commit claimed to have removed the duplicate after removing only
@@ -7723,7 +7876,7 @@ function compute(){
  const carrying=W.filter(n=>n.sq>0).sort((a,b)=>b.sq-a.sq);
  return {loaded,carrying,heaviest:carrying[0]||null,
   sabs,cxs,hys,sups,maskRing,DQ,SQ,PULL,EX,Rz,vf:_vf,SQm,poleMean,JQ,excess,
-  FAM_POLE,dist,Ig,It,CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
+  FAM_POLE,dist,Ig,It,will:WILL,seats:seatRows(),CQ,answered,complete,tier,unread,measured,under,benign,malig,X,Y,Z,radiance,aff:af,pi,si,dch,steer,
   outward,organized,gov,
   will,drag,mask,darkB,darkV,root,rootsIn,weakL,balance:balance()};
 }
@@ -7750,7 +7903,7 @@ function compute(){
    every address, sq is zero whatever is installed, the four outside take a
    seat mean of zero, and the pull is leverPull(0) at all 112. Nothing is
    mutated and nothing is guessed. */
-function exCeiling(){return cqSum()*(1-leverPull(0));}
+function exCeiling(){return cqSum()*(1-leverPullWill(0,0));}
 /* the gap a release still has in it, for the person about to run one */
 function exHeadroom(exNow){return Math.max(0,exCeiling()-exNow);}
 
@@ -8163,10 +8316,11 @@ function leadSees(what){ return LEAD_SEES.indexOf(what)>=0; }
    everything except how far up the chain a person sees (SIGHT) and how much
    new ground they may open (grant). The first six are the owner's own words of
    1 October, "your own reading at the level of the 112 addresses, domains,
-   archetypes, laws, gates and shadow", with gates said as action because that
-   is the word the Field's bar already prints for them. */
-const PLAN_ALWAYS=['your 112 addresses','the domains','the archetypes','the laws',
- 'action','shadow','the pain map','every tool','the journal',
+   archetypes, laws, gates and shadow", with the laws and the gates said by the
+   names the Field's bar prints for them since 22 October, the Laws of Moral
+   Integrity and the Laws of Action. */
+const PLAN_ALWAYS=['your 112 addresses','the domains','the archetypes','the Laws of Moral Integrity',
+ 'the Laws of Action','shadow','the pain map','every tool','the journal',
  'rerunning anything already open'];
 /* ANNUAL. TWO MONTHS FREE IS OUT, on the owner's ruling.
 
@@ -9082,9 +9236,10 @@ var TRACE_V=1;
 /* WHICH DERIVATION MADE A DERIVED GRAPH, TDD section 27's algorithm
    version. A graph read under one rule compared with one read under
    another is a change of rule, not a change in the person. */
-/* 2, 3 October: the mirror card's Yes is read as the person's confirmation
-   (yesOf in traceFromRecord). */
-var TRACE_ALG=2;
+/* 2, 3 October: the mirror card's Yes is read as the person's confirmation.
+   3, 22 October: derived story→signal-impression→fetter and canonical
+   address→fetter membership are added to the graph read. */
+var TRACE_ALG=3;
 
 /* TDD section 16, exactly. */
 var TRACE_NODE_TYPES=['story','impression','pattern','goal','behavior','protocol',
@@ -9240,7 +9395,7 @@ var TRACE_TABLE=['pattern','release','reframe'];
 /* THE TYPES THE RECORD CAN ANSWER FOR. Anything else stored in p.trace
    belongs to the practice objects, whose schema is not this file's, and
    is counted as unchecked rather than claimed to resolve. */
-var TRACE_RESOLVED=['story','pattern','release','reframe'];
+var TRACE_RESOLVED=['story','impression','pattern','release','reframe'];
 /* A truth channel is a reframe. The same test relCounts makes in
    ui/release.js over the channel part of a meter key. */
 var TRACE_TRUTH=/truth$/;
@@ -9773,8 +9928,16 @@ function traceWithSoul(p,fn){
 
 function tracePatternAttrs(i){
  var f=TRACE_FETTER.exec(String(i));
- if(f)return {name:f[1], seat:null, nerve:null, fetter:f[1]};
- var n=BY[+i]; return n?{name:n.k, seat:n.b, nerve:n.n||null, fetter:n.cf||null}:{};}
+ if(f)return {name:f[1], seat:null, nerve:null, fetter:f[1], toneHz:null, toneSource:null};
+ var n=BY[+i];
+ if(!n)return {};
+ /* FLOWSEAT owns the symbolic seat-tone reference. Attach its resolved value
+    to the derived address view, never copy it into the saved node/profile.
+    This is a configured sound-healing reference, not a measured nerve signal. */
+ var hz=(typeof seatHz==='function')?seatHz(n.b):null;
+ return {name:n.k, seat:n.b, nerve:n.n||null, fetter:n.cf||null,
+  toneHz:typeof hz==='number'&&isFinite(hz)?hz:null,
+  toneSource:typeof hz==='number'&&isFinite(hz)?'FLOWSEAT seat-tone mapping':null};}
 
 /* ============================================================
    traceFromRecord(p, intents)
@@ -9872,6 +10035,26 @@ function traceFromRecord(p,intents){
    if(!by[k]){by[k]={amt:0, named:false}; order.push(k);}
    by[k].amt+=x.amt||0; if(!x.inferred)by[k].named=true;
    by[k].fetter=x.fetter||null;});
+  /* THE SIGNAL → FETTER PATH.
+     Story text is the raw source, not a fully structured waveform. Use the
+     existing impression node as the derived signal-reading layer. Keep
+     story→address supports unchanged for legacy consumers; the signal
+     impression supports the parser-identified fetter separately. Both edges
+     are derived with inferred provenance, never causation or metric writes. */
+  var signalId='signal:'+id;
+  var signal=node('impression',signalId,'inferred',{derived:true});
+  if(signal)edge(sk,'produces',signal,'inferred',{derived:true,
+   why:'the story text was read as a signal impression; this is a derived interpretation, not a separate persisted waveform'});
+  var fetters={};
+  im.forEach(function(x){
+   var f=x&&typeof x.fetter==='string'?x.fetter:null;
+   if(f&&CHARGES.indexOf(f)>=0)fetters[f]=1;
+  });
+  Object.keys(fetters).sort().forEach(function(f){
+   var fk=node('pattern','fetter:'+f,'known',tracePatternAttrs('fetter:'+f));
+   if(signal&&fk)edge(signal,'supports',fk,'inferred',{derived:true,
+    why:'the parser identified '+f+' as the limiting-belief pattern in this source; this is an interpretation, not causation'});
+  });
   order.forEach(function(k){
    var pk=node('pattern',k,'known',tracePatternAttrs(k));
    if(!pk)return;
@@ -9881,6 +10064,15 @@ function traceFromRecord(p,intents){
      :'the seat was read and the address was chosen by the fallback, not by the words'});});
   yesOf(sk,e);});
 
+ /* CANONICAL ADDRESS→FETTER MEMBERSHIP. NODES[].cf owns this mapping.
+    It is a known classification edge, not a claim about the person's state. */
+ W.forEach(function(n){
+  if(!n||!n.cf||CHARGES.indexOf(n.cf)<0)return;
+  var ak=node('pattern',String(n.i),'known',tracePatternAttrs(String(n.i)));
+  var fk=node('pattern','fetter:'+n.cf,'known',tracePatternAttrs('fetter:'+n.cf));
+  if(ak&&fk)edge(ak,'associated_with',fk,'known',{derived:true,
+   why:'canonical NODES[].cf membership; association does not imply causation'});
+ });
  /* THE LINES OPENED. One node per address and channel, which is
     meterKey's own form with no line. */
  var groups={}, gorder=[];
@@ -10266,15 +10458,18 @@ function saveProfile(p){
  return p;}
 /* a snapshot is what Analytics plots. derived only, never inputs.
 
-   m IS WHICH ARITHMETIC WROTE THE ROW. cq and dq changed meaning on 25
-   September: cq was It*Ig/Rz and is now the laws over 210, dq was an
-   uncapped sum over the addresses at 4 or more and is now the 112 over 1120.
-   A row written before that carries no m, reads back as 0, and a surface
-   comparing two rows must not report the change of formula as a move in the
-   person. tier is null while CQ is still filling. */
+   m IS WHICH ARITHMETIC WROTE THE ROW. Model 3, briefly live on this branch,
+   put Integrity times Intention divided by Resistance inside CQ itself and
+   is reverted: that is the same defect AZ5 already killed, measured again
+   on this exact branch (every law at 10 read 48.7, a release lowered CQ on
+   2,881 of 10,000 fields). CQ is the 21 laws and nothing else again, so the
+   row goes back to model 2's shape. A row written under model 3 keeps that
+   stamp and is never read as though it used this formula. tier is null
+   while CQ is still filling. */
 function snapshot(p){
  var r=compute();
- return {t:new Date().toISOString(), m:CQ_MODEL, cq:Math.round(r.CQ*10)/10, dq:Math.round(r.DQ*100)/100,
+ return {t:new Date().toISOString(), m:CQ_MODEL, cq:Math.round(r.CQ*10)/10,
+  dq:Math.round(r.DQ*100)/100,
   sq:Math.round(r.SQm*100)/100, pole:Math.round(r.poleMean*100)/100,
   jq:Math.round(r.JQ*100)/100, rad:Math.round(r.radiance*1000)/1000,
   loaded:r.loaded.length, sab:r.sabs.length, cx:r.cxs.length, hy:r.hys.length, ch:r.sups.length,
@@ -10282,19 +10477,19 @@ function snapshot(p){
 /* ============================================================
    THE TWENTY ONE, ON EVERY ROW. Ruled 26 September, answering BW Q2:
    "keeping track of the laws over time is excellent, and being able to show
-   a graph to show how far you've come." A row carried cq, which is the laws
-   summed over 210, and not the laws themselves, so no row could say which law
-   moved. This is the twenty one as that same cq read them.
+   a graph to show how far you've come." A row carries both the CQ formula
+   output and its model-3 inputs, while lawNow records each law as the formula's
+   Integrity source so the history can explain where that input came from.
 
    WHAT IS WRITTEN IS lawNow, NOT THE ANSWER, AND THE KEY IS NAMED FOR IT.
    p.laws is the answers, an input, and a second meaning under that same name
-   is a bug that has not happened yet. A law as CQ reads it is the answer
-   lifted by the releases at its seat since (engine/compute.js, LIFT_R),
-   and the lift is the whole of what a release does to a law. Writing the bare
-   answer would draw every release as a flat line, which is the opposite of
-   what the graph is for. So the row reconciles with itself: the laws that are
-   not null, summed, over 210, times 100, is the row's own cq to within the
-   rounding of both. The gate asserts it on every row it writes.
+   is a bug that has not happened yet. A law as Integrity reads it is the
+   answer lifted by the releases at its seat since (engine/compute.js, LIFT_R),
+   and the lift is recorded once. Writing the bare answer would draw every
+   release as a flat line, which is the opposite of what the graph is for.
+   Model-3 rows can be checked against their stored Integrity, Intention and
+   Resistance inputs; the law series is evidence for Integrity, not a second
+   CQ calculator.
 
    A LAW NOT YET ANSWERED IS null, the meaning p.laws already gives it, and CQ
    counts it as nothing (lawIn). Writing the six it is seeded with would put a
@@ -14029,6 +14224,25 @@ function loopRead(p){
   (into[e.to]=into[e.to]||[]).push(e);
   (from[e.from]=from[e.from]||[]).push(e);});
  var typeOf=function(k){return traceSplit(k).type;};
+ /* SIGNAL MARKERS. Resolve the derived story→impression→fetter path back to
+    the existing source entry. This is navigation metadata, not another
+    waveform record and not a confirmed physiological or causal claim. */
+ var signalByFetter={}, storyIds=traceStoryIds(p), storyEntries=(p.story&&Array.isArray(p.story.entries))?p.story.entries:[];
+ var sourceByStory={};
+ storyIds.forEach(function(id,i){sourceByStory['story:'+id]=storyEntries[i]||null;});
+ g.edges.forEach(function(e){
+  if(e.edge!=='supports'||e.from.indexOf('impression:')!==0||e.to.indexOf('pattern:fetter:')!==0)return;
+  var producer=g.edges.filter(function(x){return x.edge==='produces'&&x.to===e.from&&x.from.indexOf('story:')===0;})[0];
+  if(!producer)return;
+  var entry=sourceByStory[producer.from]; if(!entry)return;
+  var fetter=traceSplit(e.to).id.slice('fetter:'.length);
+  (signalByFetter[fetter]=signalByFetter[fetter]||[]).push({id:traceSplit(producer.from).id,
+   at:entry.t||null,text:typeof entry.text==='string'?entry.text:'',src:e.src||'inferred',
+   status:e.src==='user_confirmed'?'confirmed':'candidate'});
+ });
+ Object.keys(signalByFetter).forEach(function(f){
+  var seen={}; signalByFetter[f]=signalByFetter[f].filter(function(s){var k=s.id+'|'+s.src;if(seen[k])return false;seen[k]=1;return true;});
+ });
 
  /* PRACTICE HISTORY. A practice event is a node whether or not it happened:
     the practice build hands the graph every event it holds, scheduled and
@@ -14061,15 +14275,22 @@ function loopRead(p){
      lookup the story edges are made with. Found by the practitioner page,
      round QB, whose examples reach their patterns through practice first. */
   var at=(!n.name&&typeof tracePatternAttrs==='function')?tracePatternAttrs(n.id):{};
-  var row={key:k, id:n.id, name:n.name||at.name||n.id, seat:n.seat||at.seat||null, fetter:n.fetter||at.fetter||null,
+  var fetterKey=n.fetter||at.fetter||null;
+  var row={key:k, id:n.id, name:n.name||at.name||n.id, seat:n.seat||at.seat||null, fetter:fetterKey,
    nerve:n.nerve||at.nerve||null, address:/^[0-9]+$/.test(n.id)?+n.id:null,
+   toneHz:typeof n.toneHz==='number'&&isFinite(n.toneHz)?n.toneHz:null,
+   toneSource:n.toneSource||null,
    state:'unanswered', named:false, stories:0, weight:0, lines:0, truths:0,
    protocols:[], rituals:0, practised:0, evFor:0, evAgainst:0, by:null,
    /* WHAT THE PERSON SAID CHANGED after each release here, read off the
       evidence directly, because a verification is never an edge (RV_METRIC,
       engine/practice.js). Counted by answer, with the newest, and never added
       to evFor or evAgainst: an answer is what was said, not support. */
-   said:{n:0, by:{}, last:null}};
+   said:{n:0, by:{}, last:null},
+   /* Derived signal evidence linked through the canonical fetter. The raw
+      source remains the story entry; sensory and emotional components are
+      not claimed to be separately captured by this legacy text field. */
+   signalSources:signalByFetter[fetterKey||'']||[]};
   if(row.address!==null&&typeof releaseVerifyAt==='function')
    releaseVerifyAt(P,row.address).forEach(function(v){
     row.said.n++; row.said.by[v.value]=(row.said.by[v.value]||0)+1; row.said.last=v.value;});
@@ -20457,7 +20678,7 @@ if(typeof module!=='undefined'&&module.exports){
   /* VERPCUE was reachable as a browser global and absent from the contract,
      so no test could check the lean tables against it. One phrase in both
      moves two instruments on one occurrence, which is what 'let it go' did. */
-                  VERPCUE:VERPCUE, VERPMULT:VERPMULT,
+                  VERPCUE:VERPCUE, VERPMULT:VERPMULT, VERP_VS:VERP_VS,
                   LEAN_FRAME_W:LEAN_FRAME_W, LEAN_TRUST_CAP:LEAN_TRUST_CAP,
                   LEAN_TRUST_HALF:LEAN_TRUST_HALF, LEAN_MIN_CH:LEAN_MIN_CH,
   /* the door */  read:read, input:input, throughput:throughput, output:output,
@@ -20859,6 +21080,26 @@ function charSeatState(means,igs,c,out){
  o.leaks=[0,1,2,3,4,5,6].filter(function(k){return o.lk[k]>.12;})
   .sort(function(a,b){return o.lk[b]-o.lk[a]||a-b;}).slice(0,3);
  return o;}
+
+/* THE AURIC FIELD. Ruled 22 October: the total of the energy body is the
+   biofield, how it shows outward is the auric field, driven by how open or
+   closed each chakra is, and the canon's own words for it are "the torus
+   field in expression". This was already computed, under no name, every
+   time the Character page drew its torus. No new arithmetic: it is
+   charSeatState read with compute()'s own honest seatRows() rather than
+   bandIg, so a seat nobody has answered for does not swell the field on a
+   guess either. r is a compute() result. */
+function auricField(r){
+ var rows=r.seats, means=rows.map(function(s){return s.weight;}),
+  igs=rows.map(function(s){return s.ig;});
+ var st=charSeatState(means,igs,clamp(r.CQ/100,0,1));
+ var seats=rows.map(function(s,k){
+  return {seat:s.seat, open:st.open[k], closed:st.sh[k], leak:st.lk[k]};});
+ return {seats:seats, leaks:st.leaks.map(function(k){return rows[k].seat;}),
+  /* biofield: the plain mean of how open the seven seats are, 0 to 1. "the
+     total energy body added up into one field" read as one number on this
+     scale, not a literal sum of seven fractions to a ceiling of seven. */
+  biofield:seats.reduce(function(a,s){return a+s.open;},0)/seats.length};}
 
 /* THE TORUS OSCILLATES, AND VITALITY SETS HOW. Round PE: "its oscillation, a
    breathing of radius and a slow wave along its height, has an amplitude and a
