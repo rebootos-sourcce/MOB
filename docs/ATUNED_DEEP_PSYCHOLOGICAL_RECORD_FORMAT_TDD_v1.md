@@ -198,3 +198,18 @@ Do not claim a long-running background process is active. Continue the loop thro
 Completed a static field-by-field comparison of `proto/knowledge/src/gen-data.js` and `proto/knowledge/src/validate-templates.js` against the 125-record psychological registry and its proposed catalog. Exact engine kinds, template IDs, required fields, and validator checks are documented in [`ATUNED_DEEP_PSYCHOLOGICAL_CODE_TO_REGISTRY_CONTRACT_2026-10-22.md`](ATUNED_DEEP_PSYCHOLOGICAL_CODE_TO_REGISTRY_CONTRACT_2026-10-22.md).
 
 Key result: the registry's 125 proposed template assignments are not runtime assignments. The generator does not import this registry, the proposed template IDs are not declared in `TEMPLATE_SCHEMAS`, and the validator only evaluates generated `data.js`. The static comparison is complete; adapter implementation, runtime integration, and executable path tests remain open. No tests were run in a Node environment in this round.
+
+## Adapter implementation checkpoint — 2026-10-22
+
+Added `proto/knowledge/src/adapt-psychological-registry.js` (commit `74c52ee3268a1fb53c75fb75265681fe2ba3270e`). It deterministically reads the registry and proposed template catalog, projects each record into an explicit `psych_<sourceKind>` namespace, preserves template payload, links, parent/child declarations, provenance, research-pass slots, confidence, status, and unresolved questions, and reports missing required fields without fabricating content. It checks duplicate IDs, undefined/mismatched template assignments, three-pass-slot presence, and dangling links/parent/child references.
+
+**Important boundary:** this adapter deliberately emits a separate psychological registry and marks `runtimeIntegrated: false`. It does not modify the existing Nerve-to-Super-Complex graph or claim that unapproved taxonomies are equivalent. This is the safe first implementation step before a deliberate merge contract is approved.
+
+### Verification status
+- [x] Adapter source committed.
+- [ ] Adapter executed in Node against the current repository checkout.
+- [ ] Adapter output counts compared with registry counts.
+- [ ] Automated smoke tests executed.
+- [ ] Generator imports/merges the adapted records.
+- [ ] Runtime validator checks psychological records and typed edges.
+- [ ] Forward/backward graph traversal tests pass.
