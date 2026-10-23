@@ -234,3 +234,12 @@ Chapter 12 of v341 presents 12 archetypes as a distinct layer from the 19 domain
 - Conscious Domain independent external corroboration: 0/8 in this cycle; pass 2 blocked.
 - Owner rulings required: at least the Architect/Rulership contradiction and the compound-label taxonomy decisions.
 - Schema validation, adapter/runtime execution, traversal, regression, and automated link check: not run in this cycle.
+
+
+### Registry contract check after pass-status updates
+
+- Latest registry blob SHA: `0e08a2ab98cef7f4ac925d3322793627f6a5be31`; commit [be3efd4](https://github.com/rebootos-sourcce/MOB/commit/be3efd44fd3a8e2cd86c4d5d10932318d8ffc2af).
+- Added the required `templateValidation.status` field to the 23 target records, without altering their unresolved semantic content.
+- A local structural check against the schema's declared types, required fields, array bounds, and enum constraints found **0 schema-shape errors across the 23 target records** and no invalid research-pass enum values.
+- The same check found **140 existing errors among the full 125-record registry**, all outside the 23-target set: missing `templateValidation.status` in other records and non-string `signals` values in several archetype records. This is a real repository-wide schema conformance blocker; do not claim the full registry passes.
+- This was a targeted structural checker, not execution of the repository's own audit program or a standards-complete JSON Schema implementation. The project validator, adapter, runtime traversal, regression suite, and link checker remain NOT RUN.
