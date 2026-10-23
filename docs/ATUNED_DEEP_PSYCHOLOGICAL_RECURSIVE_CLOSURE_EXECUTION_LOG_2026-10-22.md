@@ -148,3 +148,14 @@ Research the 15 behavioral-domain records and 8 Conscious Domain records first b
 2. Complete the remaining 8 Conscious Domain pass-2 evidence gap, without treating broad conceptual similarity as confirmation.
 3. Reconcile the 15 behavioral-domain roster with the v341 19-domain roster using the exact v341 renaming/cluster passage and preserve unresolved distinctions.
 4. Run full typed-edge reciprocal checks, then execute adapter/audit tests in a real checkout.
+
+
+## 2026-10-22 — Fresh static regression
+
+- Registry commit: `698675f147f574d6eec99fb0072ab666b3e6840f`.
+- Current registry blob SHA: `91ba0e5eaf6173de414fcd87cc2e96c6a2947aab`.
+- Added `templateValidation.status` to 102 records and normalized structured archetype signals to the declared string-array form for 18 records.
+- Fresh parse: 125 records, 125 unique IDs; missing status fields 0; invalid signal types 0; research-pass shape errors 0; dangling references 0; parent-child reciprocity mismatches 0.
+- Strict three-pass evidence gate: 117/125. The 14 blueprint records are complete as non-canonical visualization slots. Eight Conscious Domains remain blocked at independent corroboration; their missing `affirmation` fields remain explicit and unfilled rather than fabricated.
+- Content statuses: 102 complete, 15 provisional-content-populated, 8 source-extracted/cross-record-review-pending.
+- This is a custom static regression, not execution of the repository validator, adapter, test suite, runtime traversal, or integration. Runtime remains not yet wired.
