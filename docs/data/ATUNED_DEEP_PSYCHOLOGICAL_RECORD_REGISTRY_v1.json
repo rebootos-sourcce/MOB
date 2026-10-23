@@ -968,7 +968,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
       "definition": "The behavioral domain concerned with acquiring, evaluating, organizing, and applying understanding.",
       "essence": null,
       "function": null,
@@ -993,14 +993,17 @@
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+        "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
       ],
       "sourceClaims": [
         "Knowledge is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
-        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
+        "V341 source crosswalk candidate: Knowledge ↔ Knowledge. Evidence note: exact label match; semantics still require review. This is not an approved canonical semantic mapping."
       ],
-      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
       "researchPasses": [
         {
@@ -1036,7 +1039,8 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
       ],
       "notes": [],
       "changelog": [
@@ -1051,6 +1055,10 @@
         {
           "date": "2026-10-22",
           "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
         }
       ],
       "kind": "domain",
@@ -1125,7 +1133,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
       "definition": "The behavioral domain concerned with transmitting meaning and exchanging information, resources, attention, or value between people and systems.",
       "essence": null,
       "function": null,
@@ -1150,14 +1158,17 @@
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+        "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
       ],
       "sourceClaims": [
         "Communication and Exchange is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
-        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
+        "V341 source crosswalk candidate: Communication and Exchange ↔ Communication. Evidence note: v341 explicitly says the standing simple name is Communication; prior/alternate label Connection/Exchange requires alias adjudication. This is not an approved canonical semantic mapping."
       ],
-      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
       "researchPasses": [
         {
@@ -1193,7 +1204,8 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
       ],
       "notes": [],
       "changelog": [
@@ -1208,6 +1220,10 @@
         {
           "date": "2026-10-22",
           "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
         }
       ],
       "kind": "domain",
@@ -1282,7 +1298,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
       "definition": "The behavioral domain concerned with mobilizing will, energy, and effort toward a chosen aim.",
       "essence": null,
       "function": null,
@@ -1307,14 +1323,17 @@
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+        "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
       ],
       "sourceClaims": [
         "Directed Force is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
-        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
+        "V341 source crosswalk candidate: Directed Force ↔ Power. Evidence note: v341 explicitly states Power (Directed Force). This is not an approved canonical semantic mapping."
       ],
-      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
       "researchPasses": [
         {
@@ -1350,7 +1369,8 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
       ],
       "notes": [],
       "changelog": [
@@ -1365,6 +1385,10 @@
         {
           "date": "2026-10-22",
           "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
         }
       ],
       "kind": "domain",
@@ -1439,7 +1463,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
       "definition": "The behavioral domain concerned with stewardship, governance, boundaries, structure, and coordinated responsibility.",
       "essence": null,
       "function": null,
@@ -1464,14 +1488,17 @@
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+        "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
       ],
       "sourceClaims": [
         "Rulership and Order is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
-        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
+        "V341 source crosswalk candidate: Rulership and Order ↔ Architect (Rulership) / Imperium. Evidence note: v341 says Architect (Rulership) is distinct from Power, but displayed 19-label list uses Imperium in Architect cluster and omits Architect as a roster member; contradiction. This is not an approved canonical semantic mapping."
       ],
-      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
       "researchPasses": [
         {
@@ -1507,7 +1534,8 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
       ],
       "notes": [],
       "changelog": [
@@ -1522,6 +1550,10 @@
         {
           "date": "2026-10-22",
           "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
         }
       ],
       "kind": "domain",
@@ -1596,7 +1628,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
       "definition": "The behavioral domain concerned with bringing an intention or possibility into an observable form.",
       "essence": null,
       "function": null,
@@ -1621,14 +1653,17 @@
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+        "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
       ],
       "sourceClaims": [
         "Creation and Manifestation is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
-        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
+        "V341 source crosswalk candidate: Creation and Manifestation ↔ Creation. Evidence note: candidate alias; source roster uses Creation. This is not an approved canonical semantic mapping."
       ],
-      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
       "researchPasses": [
         {
@@ -1664,7 +1699,8 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
       ],
       "notes": [],
       "changelog": [
@@ -1679,6 +1715,10 @@
         {
           "date": "2026-10-22",
           "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
         }
       ],
       "kind": "domain",
@@ -1753,7 +1793,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
       "definition": "The behavioral domain concerned with ending, dismantling, releasing, or changing forms that no longer serve their purpose.",
       "essence": null,
       "function": null,
@@ -1778,14 +1818,17 @@
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+        "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
       ],
       "sourceClaims": [
         "Destruction and Transformation is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
-        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
+        "V341 source crosswalk candidate: Destruction and Transformation ↔ Dissolution. Evidence note: v341 explicitly says the standing simple name is Dissolution. This is not an approved canonical semantic mapping."
       ],
-      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
       "researchPasses": [
         {
@@ -1821,7 +1864,8 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
       ],
       "notes": [],
       "changelog": [
@@ -1836,6 +1880,10 @@
         {
           "date": "2026-10-22",
           "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
         }
       ],
       "kind": "domain",
@@ -1910,7 +1958,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
       "definition": "The behavioral domain concerned with relational bonding, care, intimacy, belonging, and connection across difference.",
       "essence": null,
       "function": null,
@@ -1935,14 +1983,17 @@
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+        "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
       ],
       "sourceClaims": [
         "Love and Connection is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
-        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
+        "V341 source crosswalk candidate: Love and Connection ↔ Love. Evidence note: v341 explicitly says the standing simple name is Love. This is not an approved canonical semantic mapping."
       ],
-      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
       "researchPasses": [
         {
@@ -1978,7 +2029,8 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
       ],
       "notes": [],
       "changelog": [
@@ -1993,6 +2045,10 @@
         {
           "date": "2026-10-22",
           "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
         }
       ],
       "kind": "domain",
@@ -2067,7 +2123,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
       "definition": "The behavioral domain concerned with repair, recovery, reintegration, and the restoration of functional capacity after disruption.",
       "essence": null,
       "function": null,
@@ -2092,14 +2148,17 @@
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+        "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
       ],
       "sourceClaims": [
         "Healing and Restoration is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
-        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
+        "V341 source crosswalk candidate: Healing and Restoration ↔ Healing. Evidence note: v341 explicitly says the standing simple name is Healing. This is not an approved canonical semantic mapping."
       ],
-      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
       "researchPasses": [
         {
@@ -2135,7 +2194,8 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
       ],
       "notes": [],
       "changelog": [
@@ -2150,6 +2210,10 @@
         {
           "date": "2026-10-22",
           "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
         }
       ],
       "kind": "domain",
@@ -2224,7 +2288,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
       "definition": "The behavioral domain concerned with relinquishing something of value, entering difficult experience, and extracting learning without glorifying suffering.",
       "essence": null,
       "function": null,
@@ -2249,14 +2313,17 @@
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+        "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
       ],
       "sourceClaims": [
         "Sacrifice and Wisdom Through Descent is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
-        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
+        "V341 source crosswalk candidate: Sacrifice and Wisdom Through Descent ↔ Sacrifice. Evidence note: v341 explicitly says the standing simple name is Sacrifice. This is not an approved canonical semantic mapping."
       ],
-      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
       "researchPasses": [
         {
@@ -2292,7 +2359,8 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
       ],
       "notes": [],
       "changelog": [
@@ -2307,6 +2375,10 @@
         {
           "date": "2026-10-22",
           "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
         }
       ],
       "kind": "domain",
@@ -2381,7 +2453,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
       "definition": "The behavioral domain concerned with truthful representation, fair treatment, proportionate accountability, and alignment between claims and evidence.",
       "essence": null,
       "function": null,
@@ -2406,14 +2478,17 @@
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+        "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
       ],
       "sourceClaims": [
         "Justice and Truth is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
-        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
+        "V341 source crosswalk candidate: Justice and Truth ↔ Justice. Evidence note: candidate crosswalk; source roster uses Justice; Truth also names a Conscious Domain, so not a one-to-one semantic approval. This is not an approved canonical semantic mapping."
       ],
-      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
       "researchPasses": [
         {
@@ -2449,7 +2524,8 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
       ],
       "notes": [],
       "changelog": [
@@ -2464,6 +2540,10 @@
         {
           "date": "2026-10-22",
           "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
         }
       ],
       "kind": "domain",
@@ -2538,7 +2618,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
       "definition": "The behavioral domain concerned with exposing assumptions, interrupting stale patterns, and introducing alternative perspectives through play, inversion, or disruption.",
       "essence": null,
       "function": null,
@@ -2563,14 +2643,17 @@
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+        "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
       ],
       "sourceClaims": [
         "Trickster and Disruption is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
-        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
+        "V341 source crosswalk candidate: Trickster and Disruption ↔ Trickster. Evidence note: candidate alias; source roster uses Trickster. This is not an approved canonical semantic mapping."
       ],
-      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
       "researchPasses": [
         {
@@ -2606,7 +2689,8 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
       ],
       "notes": [],
       "changelog": [
@@ -2621,6 +2705,10 @@
         {
           "date": "2026-10-22",
           "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
         }
       ],
       "kind": "domain",
@@ -2695,7 +2783,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
       "definition": "The behavioral domain concerned with ecological awareness, embodied feedback, natural processes, and intelligence that emerges through relationship with living systems.",
       "essence": null,
       "function": null,
@@ -2720,14 +2808,17 @@
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+        "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
       ],
       "sourceClaims": [
         "Nature and Organic Intelligence is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
-        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
+        "V341 source crosswalk candidate: Nature and Organic Intelligence ↔ Nature. Evidence note: candidate alias; source roster uses Nature. This is not an approved canonical semantic mapping."
       ],
-      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
       "researchPasses": [
         {
@@ -2763,7 +2854,8 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
       ],
       "notes": [],
       "changelog": [
@@ -2778,6 +2870,10 @@
         {
           "date": "2026-10-22",
           "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
         }
       ],
       "kind": "domain",
@@ -2852,7 +2948,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
       "definition": "The behavioral domain concerned with engaging uncertainty, hidden causes, ambiguity, and phenomena not yet fully understood.",
       "essence": null,
       "function": null,
@@ -2877,14 +2973,17 @@
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+        "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
       ],
       "sourceClaims": [
         "Mystery and the Unseen is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
-        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
+        "V341 source crosswalk candidate: Mystery and the Unseen ↔ Mystery. Evidence note: candidate alias; source roster uses Mystery. This is not an approved canonical semantic mapping."
       ],
-      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
       "researchPasses": [
         {
@@ -2920,7 +3019,8 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
       ],
       "notes": [],
       "changelog": [
@@ -2935,6 +3035,10 @@
         {
           "date": "2026-10-22",
           "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
         }
       ],
       "kind": "domain",
@@ -3009,7 +3113,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
       "definition": "The behavioral domain concerned with sustained commitment to a value, practice, or source of meaning expressed through responsible action.",
       "essence": null,
       "function": null,
@@ -3034,14 +3138,17 @@
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+        "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
       ],
       "sourceClaims": [
         "Devotion and Right Action is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
-        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
+        "V341 source crosswalk candidate: Devotion and Right Action ↔ Duty. Evidence note: v341 explicitly says the standing simple name is Duty. This is not an approved canonical semantic mapping."
       ],
-      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
       "researchPasses": [
         {
@@ -3077,7 +3184,8 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
       ],
       "notes": [],
       "changelog": [
@@ -3092,6 +3200,10 @@
         {
           "date": "2026-10-22",
           "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
         }
       ],
       "kind": "domain",
@@ -3166,7 +3278,7 @@
       "aliases": [],
       "layer": "deep_psychological.behavioral_domains",
       "taxonomyVersion": "deep-psychological-record-contract-v1",
-      "status": "provisional_content_populated_source_and_crosswalk_open",
+      "status": "provisional_content_populated_v341_candidate_crosswalk_open",
       "definition": "The behavioral domain concerned with exploration, experimentation, spontaneous creativity, humor, and the intrinsic pleasure of participation.",
       "essence": null,
       "function": null,
@@ -3191,14 +3303,17 @@
       "safetyNotes": [],
       "sourceRefs": [
         "Owner-provided ATUNED DEV conversation context, 2026-10-22",
-        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json"
+        "https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json",
+        "Conversation upload MOB_Complete_v341.html; SHA-256 79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4; Chapter 12 Stacking Architecture (#ch17), Chapter 28 The Domains (#ch-domains).",
+        "docs/ATUNED_DEEP_PSYCHOLOGICAL_23_RECORD_SOURCE_CROSSWALK_2026-10-22.md"
       ],
       "sourceClaims": [
         "Play and Creative Delight is in the owner-stated list of fifteen behavioral domains.",
         "Compared against SOURCE OS CANON registers.domains; exact label equivalence to canonical domain candidates is not established.",
-        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion."
+        "Provisional definition and body added 2026-10-22 for scaffolding only; owner confirmation or authoritative source is required before canonical promotion.",
+        "V341 source crosswalk candidate: Play and Creative Delight ↔ Play. Evidence note: candidate alias; source roster uses Play. This is not an approved canonical semantic mapping."
       ],
-      "evidenceStrength": "Owner-stated label; semantic definition/body are provisional inference, not source-verified canon.",
+      "evidenceStrength": "v341 roster/rename evidence extracted; semantic crosswalk and owner ruling pending.",
       "confidence": 0.55,
       "researchPasses": [
         {
@@ -3234,7 +3349,8 @@
       ],
       "unresolvedQuestions": [
         "Recover the fifteen-domain compilation source and resolve the canonical 18/15/14 count ruling.",
-        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling."
+        "Confirm provisional definition/body against authoritative ATÜNED source; recover the fifteen-domain compilation and resolve 18/15/14 count ruling.",
+        "Review v341 source evidence and adjudicate candidate mapping; do not promote lexical/alias correspondence without semantic review."
       ],
       "notes": [],
       "changelog": [
@@ -3249,6 +3365,10 @@
         {
           "date": "2026-10-22",
           "change": "Reset all three research-pass slots to pending because current content population does not constitute three completed evidence passes."
+        },
+        {
+          "date": "2026-10-22",
+          "change": "Added v341 source provenance and an explicitly unapproved crosswalk candidate. Existing provisional definition remains provisional; no canonical approval granted."
         }
       ],
       "kind": "domain",
