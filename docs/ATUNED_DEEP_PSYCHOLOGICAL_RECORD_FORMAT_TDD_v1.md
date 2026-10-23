@@ -222,3 +222,29 @@ The authoritative current registry JSON was fetched via its Git blob SHA and par
 Current measured gates: 125/125 template assignments; 102/125 structurally complete; 23 incomplete records (15 behavioral domains and 8 Conscious Domains); 103/125 have research passes 2 and 3 marked complete; 22 are blocked (8 Conscious Domains and 14 blueprint slots); blueprint canonical names recovered 0/14; archetype taxonomy resolved 0/18; approved semantic edges 0 across 36 mapping rows; cultural-figure crosswalks approved 0/12. Basic child/influence/link ID scan found zero dangling IDs, which is not proof of semantic or runtime connectivity.
 
 See [the measured audit](ATUNED_DEEP_PSYCHOLOGICAL_REGISTRY_AUDIT_2026-10-22.md). The adapter has not been executed in Node; generator integration and forward/backward runtime traversal remain open. Do not declare closure until these gates pass.
+
+
+## 2026-10-22 build ledger, path register, and continuous link maintenance
+
+The durable build ledger and link register is now part of the repository:
+[ATUNED_DEEP_PSYCHOLOGICAL_BUILD_LEDGER_AND_LINK_REGISTER_2026-10-22.md](ATUNED_DEEP_PSYCHOLOGICAL_BUILD_LEDGER_AND_LINK_REGISTER_2026-10-22.md).
+
+This ledger is the AI-to-AI continuity index for the current build. It lists the TDD, audit addendum, registry audit, population update, executive handshake, three-pass research audit, code-to-registry contract, registry JSON, schema, template catalog, adapter, audit program, source search, and repository tree. It also contains the live work queue, completion evidence requirements, and build-cycle log.
+
+### Mandatory maintenance contract
+
+- Update the ledger and this TDD in the same work cycle after every meaningful change to records, schemas, source files, code, tests, paths, links, or acceptance status.
+- Re-fetch the current default branch and current registry SHA before edits. Do not trust stale copies, previous handoff ZIPs, or old record counts.
+- Whenever a file is moved or renamed, search for and update every inbound Markdown reference. Validate relative paths and external URLs; record the actual result of the link check.
+- For every canonical record claim, capture the exact source path, version, section/heading, and a traceable evidence note. A search link is a discovery aid, not canonical evidence.
+- Track structural population, source-backed completion, taxonomy approval, runtime integration, and test closure as separate gates.
+- Every test entry must include the exact command, output summary, exit code, and commit SHA. Tests not executed must remain marked NOT RUN or NOT VERIFIED.
+- Keep the 15 behavioral-domain records distinct from the 19 native domains described in the v341 review until a source-backed crosswalk resolves the discrepancy. Do not silently merge, rename, omit, or promote candidate records.
+- The ledger's status is not itself proof of link validation or runtime success. Those checks remain open until evidence is committed.
+
+### Current verified documentation update
+
+- Build ledger commit: `81a0e5a27d69ca2850263d33c395367e96f78978`.
+- Ledger link: [Build ledger and link register](ATUNED_DEEP_PSYCHOLOGICAL_BUILD_LEDGER_AND_LINK_REGISTER_2026-10-22.md).
+- The repository population report describes the 23-record structural population update at commit [f8faa88b31341b56d50dcc1751d483f9dad19675](https://github.com/rebootos-sourcce/MOB/commit/f8faa88b31341b56d50dcc1751d483f9dad19675).
+- This documentation update does not claim that the canonical content, adapter execution, generator/validator integration, runtime traversal, or link checker has passed.
