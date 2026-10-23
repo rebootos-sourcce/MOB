@@ -1,6 +1,6 @@
 # Deep Psychological 23-Record Source Crosswalk
 Date: 2026-10-22
-Status: INVENTORY VERIFIED; SEMANTIC CROSSWALK OPEN; DO NOT PROMOTE TO CANON
+Status: V341 SOURCE EXTRACTED; SEMANTIC CROSSWALK AND OWNER RULINGS OPEN; DO NOT PROMOTE TO CANON
 
 ## Why this document exists
 This file records the exact target IDs in the current registry and distinguishes (1) owner-stated behavioral-domain labels, (2) the 18 labels grouped under the four roots in the available SOURCE OS CANON, and (3) the eight Conscious Domain records. It is deliberately not a forced one-to-one mapping.
@@ -11,7 +11,7 @@ This file records the exact target IDs in the current registry and distinguishes
 - Registry total: 125 records.
 - The available [SOURCE OS CANON](https://github.com/rebootos-sourcce/Reboot-OS/blob/main/atuned/data/canon.json) is version 1.0.0 and its metadata says its source build is `MOB_Complete_v184.html`, not v341. Its blob SHA at inspection: `27a7a178de1e87252fa8e59554a66735dbeb0aed`.
 - The SOURCE OS CANON explicitly records the domain-count dispute: 18 in the book, 15 in the compilation, and 14 in the blueprint file. This ruling is open. Therefore, its 18 labels cannot be assumed to be semantically equivalent to the 15 owner-stated labels below.
-- A repository tree search found no `MOB_Complete_v341.html` file in the MOB default branch. The exact v341 source must be supplied or located in another accessible source before source claims can be attributed to v341.
+- A repository tree search found no `MOB_Complete_v341.html` file in the MOB default branch. This earlier inventory note is superseded by the v341 source-recovery correction below: the exact uploaded v341 file was subsequently materialized and inspected.
 - The source crosswalk is a research artifact, not canonical approval. All 23 target records still require evidence-based research passes and review.
 
 ## A. Exact 15 behavioral-domain target IDs
@@ -67,14 +67,14 @@ Do not treat lexical overlap as equivalence. Do not infer that Rulership and Ord
 
 | Registry ID | Current display name | Current state | Required action |
 |---|---|---|---|
-| `conscious-domain:01` | Empyrean Consciousness | Owner-stated grouping; definition/affirmation source gap | Locate exact authoritative definition and affirmation |
-| `conscious-domain:02` | UNRESOLVED_CONSCIOUS_DOMAIN_1 | Name/definition/affirmation source gap | Recover source; preserve ID |
-| `conscious-domain:03` | UNRESOLVED_CONSCIOUS_DOMAIN_2 | Name/definition/affirmation source gap | Recover source; preserve ID |
-| `conscious-domain:04` | UNRESOLVED_CONSCIOUS_DOMAIN_3 | Name/definition/affirmation source gap | Recover source; preserve ID |
-| `conscious-domain:05` | UNRESOLVED_CONSCIOUS_DOMAIN_4 | Name/definition/affirmation source gap | Recover source; preserve ID |
-| `conscious-domain:06` | UNRESOLVED_CONSCIOUS_DOMAIN_5 | Name/definition/affirmation source gap | Recover source; preserve ID |
-| `conscious-domain:07` | UNRESOLVED_CONSCIOUS_DOMAIN_6 | Name/definition/affirmation source gap | Recover source; preserve ID |
-| `conscious-domain:08` | UNRESOLVED_CONSCIOUS_DOMAIN_7 | Name/definition/affirmation source gap | Recover source; preserve ID |
+| `conscious-domain:01` | Empyrean Consciousness | v341 name/definition extracted | Complete passes 2–3; approval pending |
+| `conscious-domain:02` | Crown Consciousness | v341 name/definition extracted | Complete passes 2–3; approval pending |
+| `conscious-domain:03` | Perception Consciousness | v341 name/definition extracted | Complete passes 2–3; approval pending |
+| `conscious-domain:04` | Truth Consciousness | v341 name/definition extracted | Complete passes 2–3; approval pending |
+| `conscious-domain:05` | Heart Consciousness | v341 name/definition extracted | Complete passes 2–3; approval pending |
+| `conscious-domain:06` | Value Consciousness | v341 name/definition extracted | Complete passes 2–3; approval pending |
+| `conscious-domain:07` | Royal Consciousness | v341 name/definition extracted | Complete passes 2–3; approval pending |
+| `conscious-domain:08` | Creative Consciousness | v341 name/definition extracted | Complete passes 2–3; approval pending |
 
 ## D. Required source-recovery procedure
 1. Obtain the actual `MOB_Complete_v341.html` source or a verifiable canonical export that explicitly identifies version 341.
@@ -176,3 +176,10 @@ The chapter also contains three additional consciousness entries—Pattern Consc
 3. Capture the relevant v341 passages and exact HTML anchors in per-record evidence fields or a linked evidence appendix; do not copy long source prose wholesale where concise quotations and claim-level paraphrase suffice.
 4. Resolve the Architect/Rulership versus Imperium issue with an explicit owner ruling before canonical approval.
 5. Run schema validation, adapter tests, runtime traversal, and link checks; record command, result, and commit.
+
+
+## Registry update — v341 source evidence attached
+
+The live registry now contains the eight source-backed Conscious Domain names and definition summaries in `conscious-domain:01` through `conscious-domain:08`. The 15 behavioral-domain records now each carry v341 provenance and an explicitly unapproved candidate mapping note. Existing behavioral definitions remain provisional. These changes were committed in registry commits `507d730b837d1ed26ca5a33a7ce879d80574b843` and `1ef9d6faf5ec3207ee7c69bf96954f141fc2e18d`.
+
+Do not mark the three-pass research task complete: pass 1 source extraction is recorded for the eight Conscious Domain records; independent corroboration and cross-record synthesis remain pending. The 15 behavioral-domain mappings are candidates, not canonical approvals. The Architect (Rulership)/Imperium roster contradiction remains an owner ruling.
