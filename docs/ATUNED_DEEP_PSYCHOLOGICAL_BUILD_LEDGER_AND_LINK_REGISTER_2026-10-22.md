@@ -174,3 +174,28 @@ This entry supersedes earlier ledger lines that say the exact v341 file has not 
 - Schema/runtime/link tests verified in this cycle: 0.
 - Confidence in file identity and extracted roster: 0.98.
 - Confidence in final semantic mapping: not scored; owner rulings and independent corroboration remain open.
+
+
+## 2026-10-22 — target schema-shape check and full-registry blocker
+
+- Latest registry blob SHA: `0e08a2ab98cef7f4ac925d3322793627f6a5be31`; update commit [be3efd4](https://github.com/rebootos-sourcce/MOB/commit/be3efd44fd3a8e2cd86c4d5d10932318d8ffc2af).
+- Added `templateValidation.status` to the 23 target records to satisfy the required envelope field without promoting semantic content.
+- Target-only structural schema check: 23/23 records checked, 0 reported shape errors, 0 invalid research-pass enum values.
+- Full-registry structural check: 125 records checked, 140 reported errors outside the 23-target set. Existing failures include missing `templateValidation.status` on root/archetype/other records and non-string `signals` elements in some archetype records.
+- Scope/limitation: this was a targeted checker of schema-declared types, required properties, array bounds, and enums. It was not the repository's own audit script and not a standards-complete JSON Schema validator. The full registry is **not schema-clean**.
+- Crosswalk follow-up commit: [f94f6d8](https://github.com/rebootos-sourcce/MOB/commit/f94f6d829ab1effa632c851977d6a885874f53af).
+- TDD follow-up commit: [a58b794](https://github.com/rebootos-sourcce/MOB/commit/a58b794563e9d18e1d948f2c76766bf387dffd20).
+
+### Revised acceptance gates
+| Gate | Status |
+|---|---|
+| v341 source recovery / identity | COMPLETE |
+| 23 target IDs inventoried | COMPLETE |
+| v341 labels and 8 Conscious Domain definitions extracted | COMPLETE |
+| 15 candidate classifications documented | COMPLETE; mappings remain unapproved |
+| Target-record schema shape | COMPLETE under targeted checker |
+| Full registry schema validation | BLOCKED / FAILING: 140 baseline errors remain |
+| Independent corroboration for Conscious Domain records | BLOCKED |
+| Owner ruling on Architect/Rulership and compound labels | OPEN |
+| Repository audit script / adapter / runtime traversal / regression | NOT RUN |
+| Automated Markdown link and anchor checker | NOT RUN |
