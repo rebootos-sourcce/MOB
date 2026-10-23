@@ -294,3 +294,14 @@ Registry commit [be3efd4](https://github.com/rebootos-sourcce/MOB/commit/be3efd4
 **Do not mark full registry schema validation passed.** The same check found 140 existing errors in the other records of the 125-record registry: missing `templateValidation.status` fields and non-string `signals` values in some archetype records. The checker was a targeted structural check, not the repository's own audit program or a standards-complete JSON Schema implementation. Run the project validator and reconcile these legacy-shape mismatches before claiming full schema conformance.
 
 The crosswalk records this distinction and the current registry SHA. Adapter execution, runtime integration, graph traversal, regression, and automated link checking remain not run/not verified.
+
+
+## Executive recursive-closure strategy update — 2026-10-22
+
+The current execution strategy and next-thread handshake are now defined in:
+- `docs/ATUNED_DEEP_PSYCHOLOGICAL_THREE-PASS_RECURSIVE_CLOSURE_STRATEGY_2026-10-22.md`
+- `docs/ATUNED_DEEP_PSYCHOLOGICAL_EXECUTIVE_HANDSHAKE_NEXT_THREAD_2026-10-22.md`
+
+The strategy requires three distinct strategy reviews (source/inventory fidelity; independent challenge/defect classification; synthesis/dependency/safety) followed by eight execution blocks and four repeatable recursive rounds. Four rounds are a minimum plan, not a hard stop: any failed gate reopens its owning block. The handshake explicitly directs the next thread to re-fetch current HEAD, inspect the prior thread/folder only for missing context, and continue from the first failed or unverified gate.
+
+The current baseline figures in this TDD remain historical until re-fetched. Do not treat the plan or handshake as evidence that source research, schema repair, runtime integration, graph traversal, regression, or link checking passed. Preserve the v341 taxonomy contradiction and unapproved mappings. Update the TDD, registry, crosswalk, execution log, and ledger together after each meaningful build cycle.
