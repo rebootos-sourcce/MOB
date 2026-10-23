@@ -183,3 +183,54 @@ The chapter also contains three additional consciousness entries—Pattern Consc
 The live registry now contains the eight source-backed Conscious Domain names and definition summaries in `conscious-domain:01` through `conscious-domain:08`. The 15 behavioral-domain records now each carry v341 provenance and an explicitly unapproved candidate mapping note. Existing behavioral definitions remain provisional. These changes were committed in registry commits `507d730b837d1ed26ca5a33a7ce879d80574b843` and `1ef9d6faf5ec3207ee7c69bf96954f141fc2e18d`.
 
 Do not mark the three-pass research task complete: pass 1 source extraction is recorded for the eight Conscious Domain records; independent corroboration and cross-record synthesis remain pending. The 15 behavioral-domain mappings are candidates, not canonical approvals. The Architect (Rulership)/Imperium roster contradiction remains an owner ruling.
+
+
+## Record-level three-pass review update — 2026-10-22
+
+Registry research-pass metadata was updated in commit [3bf815f](https://github.com/rebootos-sourcce/MOB/commit/3bf815f0ef50ab706ac57bb4d32c7c12eb122136). The statuses below are deliberately conservative: source extraction and comparisons are recorded, but canonical adjudication is not represented as complete.
+
+### Behavioral-domain candidate classifications
+
+| Registry ID | Registry label | v341 evidence / candidate | Classification | Closure condition |
+|---|---|---|---|---|
+| `domain:01` | Knowledge | Architect cluster includes Knowledge | Exact lexical candidate | Owner confirms identity/edge |
+| `domain:02` | Communication and Exchange | v341 uses Communication; historical v184 list uses Exchange | Plausible composite; not exact | Resolve Communication vs Exchange and compound label |
+| `domain:03` | Directed Force | v341 explicitly writes “Power (Directed Force)” in its naming ruling; roster member label is Power | Source-stated alias candidate | Owner confirms whether registry record is alias, composite, or separate |
+| `domain:04` | Rulership and Order | v341 says “Architect (Rulership)” is separate from Power, but Architect is not a member of the displayed 19-label roster | Contradiction; owner ruling required | Decide whether Architect is a root, a domain, an alias, or a separate record; preserve current count until ruled |
+| `domain:05` | Creation and Manifestation | Engine cluster includes Creation | Plausible composite; not exact | Resolve whether Manifestation is alias, descriptor, or separate concept |
+| `domain:06` | Destruction and Transformation | Engine cluster includes Dissolution | Plausible composite; not exact | Resolve compound wording against source |
+| `domain:07` | Love and Connection | Weaver cluster includes Love; Connection is the cluster name and historical label | Plausible composite; not exact | Resolve alias/cluster distinction |
+| `domain:08` | Healing and Restoration | Weaver cluster includes Healing; historical v184 list includes Restoration | Plausible composite; version drift | Resolve whether Restoration is a prior alias or separate concept |
+| `domain:09` | Sacrifice and Wisdom Through Descent | Engine cluster includes Sacrifice; historical list includes Descent | Plausible composite; version drift | Resolve Sacrifice/Descent relationship from primary wording |
+| `domain:10` | Justice and Truth | Architect cluster includes Justice | Plausible composite; not exact | Resolve whether Truth is a descriptor or separate concept |
+| `domain:11` | Trickster and Disruption | Witness cluster includes Trickster | Plausible composite; not exact | Resolve whether Disruption is a descriptor or separate concept |
+| `domain:12` | Nature and Organic Intelligence | Witness cluster includes Nature | Plausible composite; not exact | Resolve whether Organic Intelligence is a descriptor or separate concept |
+| `domain:13` | Mystery and the Unseen | Witness cluster includes Mystery | Plausible composite; not exact | Resolve whether Unseen is a descriptor or separate concept |
+| `domain:14` | Devotion and Right Action | Architect cluster includes Duty; Duty appears among the seven surviving simple names | Plausible candidate; not exact | Resolve Duty vs Devotion/Right Action |
+| `domain:15` | Play and Creative Delight | Weaver cluster includes Play | Plausible composite; not exact | Resolve whether Creative Delight is an alias or descriptor |
+
+No candidate above creates an approved semantic edge. These are explicit hypotheses grounded in source wording, not canonical mappings. Registry definitions remain provisional.
+
+### Research-pass status semantics
+
+- All 15 behavioral-domain records now have pass 1 marked `complete` for extracting the v341 roster and comparing the relevant in-source passages; pass 2 marked `complete` for cross-version comparison against the historical v184 CANON; pass 3 is `in_progress` because semantic identity and owner rulings remain open.
+- All eight Conscious Domain records have pass 1 marked `complete` for extracting their source names and definition summaries from Chapter 32, anchor `#ch22`. Pass 2 is `blocked` because an independent external corroborating source has not been established in this cycle. Pass 3 is `in_progress` pending cross-record relation review and canonical approval.
+- The v184 CANON is historical comparison material only; it is not an independent authority over v341. An internal cross-section check is not described as independent external corroboration.
+- These are three distinct research stages, not three claims of certainty. The pass status is recorded in the registry and must remain conservative until the missing evidence/owner rulings are supplied.
+
+### Additional source-taxonomy note
+
+Chapter 12 of v341 presents 12 archetypes as a distinct layer from the 19 domains. The chapter's attribution note says the twelve descriptions are synthesized from Carol Pearson's formalization and practitioner observation, and explicitly cautions that Jung did not enumerate this same twelve-archetype list. Do not label the twelve as a canonical list enumerated by Jung; retain the book's “Jungian” usage as the source's stated convention.
+
+### Current measurable closure
+
+- v341 source SHA-256 verified: `79c8ddd9fc3ea586cec56f523351702ee1ac96336ceff39f80730582332466e4`.
+- Registry records: 125.
+- Target records reviewed: 23/23.
+- v341 Conscious Domain names extracted: 8/8.
+- v341 native domain labels inventoried: 19/19.
+- Behavioral candidate classifications documented: 15/15.
+- Behavioral canonical mappings approved: 0/15.
+- Conscious Domain independent external corroboration: 0/8 in this cycle; pass 2 blocked.
+- Owner rulings required: at least the Architect/Rulership contradiction and the compound-label taxonomy decisions.
+- Schema validation, adapter/runtime execution, traversal, regression, and automated link check: not run in this cycle.
